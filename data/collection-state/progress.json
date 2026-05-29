@@ -3,7 +3,8 @@
     "indian-princesses-off-broadway-2025/playbill--unknown.json",
     "well-ill-let-you-go-off-broadway-2026/ny1--spectrum-news-staff.json",
     "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
-    "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json"
+    "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+    "beetlejuice-west-end-2026/city-am--unknown.json"
   ],
   "failed": [
     "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json",
@@ -11,7 +12,16 @@
     "yoah-off-broadway-2026/variety--pat-saperstein.json",
     "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
     "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
-    "the-loved-ones-off-broadway-2026/broadwayworld--team-bww.json"
+    "the-loved-ones-off-broadway-2026/broadwayworld--team-bww.json",
+    "beetlejuice-west-end-2026/guardian--unknown.json",
+    "beetlejuice-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "the-p-word-off-west-end-2026/broadwayworld--aliya-al-hassan.json",
+    "the-p-word-off-west-end-2026/standard--nick-curtis.json",
+    "the-p-word-off-west-end-2026/thestage--sam-marlowe.json",
+    "the-p-word-off-west-end-2026/whatsonstage--frey-kwa-hawking.json",
+    "dark-of-the-moon-west-end-2026/guardian-uk--unknown.json",
+    "dark-of-the-moon-west-end-2026/timeout--andrzej-lukowski.json",
+    "dark-of-the-moon-west-end-2026/timeout-london--andrzej-lukowski.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -21,16 +31,29 @@
       "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/beetlejuice-west-end-2026/city-am--unknown.json",
+      "beetlejuice-west-end-2026/city-am--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/beetlejuice-west-end-2026/guardian--unknown.json",
+      "data/review-texts/the-p-word-off-west-end-2026/thestage--sam-marlowe.json"
+    ],
     "archive": [
       "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
     ]
   },
   "startTime": "2026-05-29T09:12:22.266Z",
-  "lastProcessed": "the-loved-ones-off-broadway-2026/broadwayworld--team-bww.json",
-  "log": []
+  "lastProcessed": "dark-of-the-moon-west-end-2026/timeout-london--andrzej-lukowski.json",
+  "log": [
+    {
+      "t": "2026-05-29T09:26:26.403Z",
+      "event": "bb-session",
+      "session": "12f4ecce",
+      "url": "https://www.cityam.com/beetlejuice-musical-review-ive-never-heard-west-end-fans-"
+    }
+  ]
 }
