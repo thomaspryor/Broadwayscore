@@ -173,6 +173,19 @@ function isNonTheaterContent(show) {
   return false;
 }
 
+// Extra fields for a TodayTix OB show pulled in WITHOUT the "Off Broadway"
+// subcategory (i.e. rescued by the venue-name fallback). That's a lower-
+// confidence inference — we're overriding TodayTix's missing tag from our own
+// venue list — so mark it provisional + a distinct discoverySource. This routes
+// it through validate-show-venue.js --all-provisional for a Playbill cross-check
+// before the venue/date are trusted (CLAUDE.md §3). Subcat-tagged shows are
+// TodayTix's own authoritative classification and get no flags.
+function obFallbackFlags(show) {
+  const taggedOB = show.subcategories?.some(sc => sc.name === 'Off Broadway');
+  if (taggedOB) return {};
+  return { provisional: true, discoverySource: 'todaytix-venue-fallback' };
+}
+
 // TodayTix API - public, no auth required, no Cloudflare
 function fetchTodayTixPage(offset = 0, limit = 100) {
   return new Promise((resolve, reject) => {
@@ -276,6 +289,8 @@ async function fetchShowsFromTodayTix() {
       description: show.description || '',
       todayTixCategory: show.category?.name || null,
       todaytixId: show.id || null,
+      // provisional + discoverySource when rescued by the venue-name fallback
+      ...obFallbackFlags(show),
     });
   }
 
@@ -2232,6 +2247,7 @@ if (require.main === module) {
 module.exports = {
   isNonTheaterContent,
   isOneNightShow,
+  obFallbackFlags,
   EXCLUDED_TITLES,
   NON_THEATER_PATTERNS,
   VENUE_LISTING_PAGES,
