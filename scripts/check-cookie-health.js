@@ -21,6 +21,7 @@ const path = require('path');
 const { loadCookiesByFileKey, loadCookieMeta, getEnvVarForFileKey, getAllFileKeys, COOKIE_DIR } = require('./lib/cookie-loader');
 const { fetchWithCookiesPlain } = require('./lib/fetch-plain');
 const { buildCookieHeaderForUrl } = require('./lib/cookie-loader');
+const { extractArticleTextFromUrl } = require('./lib/article-extractor');
 
 // --- Outlet Configuration ---
 
@@ -32,6 +33,7 @@ const CRITICAL_OUTLETS = {
     envVar: 'NYT_COOKIES',
     testUrl: 'https://www.nytimes.com/2022/10/06/theater/1776-review-broadway.html',
     authCookies: ['NYT-S', 'nyt-a'],
+    minBodyChars: 1500,
   },
   wsj: {
     envVar: 'WSJ_COOKIES',
@@ -67,12 +69,24 @@ const CRITICAL_OUTLETS = {
   },
   thestage: {
     envVar: 'THESTAGE_COOKIES',
-    testUrl: 'https://www.thestage.co.uk/',
-    // Stage's logged-in cookie set is just 5: VISITOR, USER, USERSECURE, AWSALB, AWSALBCORS.
-    // USERSECURE is the actual subscriber auth token. Verified by fetching Stage homepage
-    // with the bundle and observing "my account" in nav + no "sign in" markers (2026-04-10).
+    // Test a REVIEW (not the homepage): the homepage logged-out state is too
+    // subtle for keyword detection, but a review behind the paywall returns a
+    // registration wall with ~0 extractable body. minBodyChars catches the
+    // dead-session case that expiry-date checks miss (2026-05-29: USER cookie
+    // had 338d left but the session was dead server-side).
+    testUrl: 'https://www.thestage.co.uk/reviews/1536-review-ambassadors-theatre-london-ava-pickett',
     authCookies: ['USERSECURE', 'USER'],
     minCookies: 3, // VISITOR + USER + USERSECURE is the floor; AWS LB cookies are bonuses
+    minBodyChars: 1200,
+  },
+  variety: {
+    envVar: 'VARIETY_COOKIES',
+    // Variety reviews are free but the layout interleaves promo modules; a body
+    // under this floor means the extractor truncated (2026-05-29 regression) or
+    // the page changed. No subscriber auth cookie — body length is the signal.
+    testUrl: 'https://variety.com/2026/legit/reviews/rocky-horror-show-broadway-review-revival-lacks-shock-fun-luke-evans-1236728429/',
+    authCookies: [],
+    minBodyChars: 1500,
   },
   thetimes: {
     envVar: 'THETIMES_COOKIES',
@@ -295,7 +309,7 @@ function checkGeneralHealth(cookies) {
 
 // --- Layer 3: Live Access Test via ScrapingBee ---
 
-async function checkLiveAccess(fileKey, testUrl, cookies, authCookies) {
+async function checkLiveAccess(fileKey, testUrl, cookies, authCookies, minBodyChars) {
   const apiKey = process.env.SCRAPINGBEE_API_KEY;
   if (!apiKey) {
     return { status: 'skip', message: 'SCRAPINGBEE_API_KEY not set' };
@@ -340,6 +354,19 @@ async function checkLiveAccess(fileKey, testUrl, cookies, authCookies) {
       return { status: 'fail', message: `Paywalled (${html.length} chars)` };
     }
     if (html.length < 2000) return { status: 'warn', message: `Short (${html.length} chars)` };
+
+    // Body-length signal: the most reliable end-to-end check. A live session +
+    // working extractor yields thousands of chars; a dead session (paywall that
+    // slips past keyword detection) or a truncating extractor yields a few
+    // hundred. Catches both regardless of cause (Stage logout, Variety
+    // truncation — both 2026-05-29).
+    if (minBodyChars) {
+      const body = extractArticleTextFromUrl(html, testUrl) || '';
+      if (body.length < minBodyChars) {
+        return { status: 'fail', message: `Body too short: ${body.length}/${minBodyChars} chars (paywall or broken extractor)` };
+      }
+      return { status: 'pass', message: `OK (body ${body.length} chars)` };
+    }
 
     return { status: 'pass', message: `OK (${html.length} chars)` };
   } catch (err) {
@@ -537,7 +564,7 @@ async function main() {
       // take for these domains, so this is the real end-to-end verification.
       const live = config.proxyBlocked
         ? await checkLiveAccessPlain(fileKey, config.testUrl, config.authCookies)
-        : await checkLiveAccess(fileKey, config.testUrl, existing.cookies, config.authCookies);
+        : await checkLiveAccess(fileKey, config.testUrl, existing.cookies, config.authCookies, config.minBodyChars);
       console.log(`${icons[live.status]} ${fileKey}: ${live.message}`);
       return { name: fileKey, layer: 3, status: live.status, message: live.message, isCritical: true };
     });
