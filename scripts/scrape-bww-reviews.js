@@ -1144,9 +1144,20 @@ function gitCheckpoint(count, total, label) {
 const BWW_REVIEWS_LANDING_URL = 'https://www.broadwayworld.com/reviews/';
 
 async function discoverRoundupsFromBwwLanding() {
-  const html = await fetchHtml(BWW_REVIEWS_LANDING_URL);
+  // fetchHtml THROWS when the full BD→SB→Playwright chain fails (transient
+  // Cloudflare block on BWW). A failed landing fetch must NOT crash the job
+  // — the daily cron retries and no data is lost. Degrade to empty result
+  // + ::warning:: so landingDiscoverMode returns [] and main() exits 0.
+  // (2026-05-28 scheduled run #26584010898 crashed exactly this way.)
+  let html;
+  try {
+    html = await fetchHtml(BWW_REVIEWS_LANDING_URL);
+  } catch (err) {
+    console.log(`::warning::[LANDING] BWW /reviews/ fetch failed (${(err.message || '').slice(0, 100)}) — skipping landing discovery this run; daily cron will retry.`);
+    return [];
+  }
   if (!html || html.length < 1000) {
-    console.log('  [LANDING] empty or blocked response from BWW /reviews/');
+    console.log('::warning::[LANDING] empty or blocked response from BWW /reviews/ — skipping landing discovery this run.');
     return [];
   }
   const $ = cheerio.load(html);
