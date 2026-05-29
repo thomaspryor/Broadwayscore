@@ -9,9 +9,20 @@
     "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
     "well-ill-let-you-go-off-broadway-2026/ny1--spectrum-news-staff.json",
     "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
-    "fallen-angels-2026/nytg--gillian-russo.json"
+    "fallen-angels-2026/nytg--gillian-russo.json",
+    "avenue-q-west-end-2026/thereviewshub--unknown.json",
+    "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
+    "maybe-happy-ending-2024/variety--unknown.json",
+    "maybe-happy-ending-2024/washpost--unknown.json"
   ],
-  "failed": [],
+  "failed": [
+    "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "titanique-west-end-2024/times-uk--clive-davis.json",
+    "hadestown-west-end-2024/times-uk--clive-davis.json",
+    "mj-2022/broadwaynews--charles-isherwood.json",
+    "mj-2022/nydailynews--karu-f-daniels.json"
+  ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
@@ -21,12 +32,20 @@
       "well-ill-let-you-go-off-broadway-2026/nytg--andy-lefkowitz.json",
       "well-ill-let-you-go-off-broadway-2026/ny1--spectrum-news-staff.json",
       "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
-      "fallen-angels-2026/nytg--gillian-russo.json"
+      "fallen-angels-2026/nytg--gillian-russo.json",
+      "avenue-q-west-end-2026/thereviewshub--unknown.json",
+      "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
+      "maybe-happy-ending-2024/washpost--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/maybe-happy-ending-2024/variety--unknown.json",
+      "maybe-happy-ending-2024/variety--unknown.json"
+    ],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": [
@@ -36,6 +55,18 @@
     ]
   },
   "startTime": "2026-05-29T06:04:08.331Z",
-  "lastProcessed": "fallen-angels-2026/nytg--gillian-russo.json",
-  "log": []
+  "lastProcessed": "mj-2022/nydailynews--karu-f-daniels.json",
+  "log": [
+    {
+      "t": "2026-05-29T06:09:05.941Z",
+      "event": "bb-session",
+      "session": "adbdcae8",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
+    },
+    {
+      "t": "2026-05-29T06:09:06.291Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }
