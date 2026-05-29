@@ -421,7 +421,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
                     <div className="w-8 h-8 rounded-full bg-surface-overlay flex items-center justify-center text-xs font-black text-gray-300 mb-2">{c.initials}</div>
                     <div className="text-[12px] font-bold leading-tight">{c.name}</div>
                     <div className="text-[9px] text-brand font-semibold mt-0.5 leading-tight">{c.outlets.join(' · ')}</div>
-                    <div className="text-[10px] text-gray-500 mt-1 leading-snug line-clamp-3">{c.bio}</div>
+                    <div className={`text-[10px] text-gray-500 mt-1 leading-snug ${expanded ? '' : 'line-clamp-3'}`}>{c.bio}</div>
                   </button>
                 );
               })}
