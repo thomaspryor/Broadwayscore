@@ -19,7 +19,7 @@
 
 import { test, describe } from 'node:test';
 import assert from 'node:assert';
-import { extractArticleText } from '../../scripts/lib/article-extractor.js';
+import { extractArticleText, extractPublishDate } from '../../scripts/lib/article-extractor.js';
 
 describe('article-extractor: 1minutecritic.com entry-content', () => {
   test('extracts review body and stops before related-article teasers', () => {
@@ -67,5 +67,33 @@ describe('article-extractor: 1minutecritic.com entry-content', () => {
     const text = extractArticleText(html, '1minutecritic.com');
     assert.ok(text.includes('Body text about the show'));
     assert.ok(!text.includes('About the critic'), 'author bio leaked');
+  });
+});
+
+describe('extractPublishDate — page metadata date extraction', () => {
+  test('reads article:published_time meta (OpenGraph / WordPress)', () => {
+    const html = '<meta property="article:published_time" content="2026-05-27T02:00:00+00:00">';
+    assert.equal(extractPublishDate(html), '2026-05-27');
+  });
+
+  test('reads JSON-LD datePublished', () => {
+    assert.equal(extractPublishDate('{"datePublished":"2026-04-01"}'), '2026-04-01');
+  });
+
+  test('reads <time datetime>', () => {
+    assert.equal(extractPublishDate('<time datetime="2026-02-20T12:00">Feb 20</time>'), '2026-02-20');
+  });
+
+  test('meta wins over time tag when both present (priority order)', () => {
+    const html =
+      '<meta property="article:published_time" content="2026-05-27T02:00:00Z">' +
+      '<time datetime="2020-01-01">old</time>';
+    assert.equal(extractPublishDate(html), '2026-05-27');
+  });
+
+  test('returns null when no date metadata present', () => {
+    assert.equal(extractPublishDate('<div>no date here</div>'), null);
+    assert.equal(extractPublishDate(''), null);
+    assert.equal(extractPublishDate(null), null);
   });
 });
