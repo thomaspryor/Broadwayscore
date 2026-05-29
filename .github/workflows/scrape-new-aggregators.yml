@@ -3,11 +3,17 @@ name: Scrape New Aggregators
 
 on:
   schedule:
-    # 14:00 UTC daily (10am ET). PV roundups for OB shows publish mid-week
-    # (e.g. The Maids 2026-05-25, Heated Rivalry 2026-05-26 both landed
-    # between Sunday runs). Daily catches them inside 24h instead of waiting
-    # up to 6 days. PV-only fetch is cheap (~1 SB credit/run).
-    - cron: '0 14 * * *'
+    # Mon-Sat 14:00 UTC (10am ET) — category-page discovery only (Steps 1-3
+    # of PV: fetch the Verdict category page, match articles, fetch matched
+    # articles). The per-show Google fallback (Step 4, ~135 SERP calls /
+    # ~35min) is SKIPPED via --skip-google-fallback on these runs. Daily
+    # catches new mid-week OB roundup articles (The Maids, Heated Rivalry)
+    # inside 24h, cheaply (~1-5 SB credits/run).
+    - cron: '0 14 * * 1-6'
+    # Sunday 14:00 UTC — weekly DEEP run WITH the full per-show Google
+    # fallback, for the long tail of shows not on the category page. This
+    # restores the original (pre-2026-05-27) weekly fallback cadence.
+    - cron: '0 14 * * 0'
   workflow_dispatch:
     inputs:
       aggregator:
@@ -73,11 +79,22 @@ jobs:
         run: |
           echo "Scraping Playbill Verdict review links..."
           SHOWS_FLAG=""
+          # Default: skip the expensive per-show Google fallback (Step 4).
+          SKIP_FLAG="--skip-google-fallback"
           if [ -n "${{ inputs.shows }}" ]; then
             SHOWS_FLAG="--shows=${{ inputs.shows }}"
+            SKIP_FLAG=""   # targeted runs go straight to Google by design
             echo "Targeted mode: ${{ inputs.shows }}"
           fi
-          node scripts/scrape-playbill-verdict.js $SHOWS_FLAG
+          # Sunday weekly deep cron OR any manual dispatch → run the full
+          # Google fallback. Mon-Sat daily cron keeps SKIP_FLAG set.
+          if [ "${{ github.event.schedule }}" = "0 14 * * 0" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            SKIP_FLAG=""
+            echo "Deep run: per-show Google fallback ENABLED"
+          else
+            echo "Daily run: per-show Google fallback skipped (category-page discovery only)"
+          fi
+          node scripts/scrape-playbill-verdict.js $SHOWS_FLAG $SKIP_FLAG
 
       - name: Push review-texts to private repo (PV)
         if: always()
