@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-05-29T04:10:05.805Z",
+  "updatedAt": "2026-05-29T12:34:36.579Z",
   "shows": {
     "dark-of-the-moon-west-end-2026": {
       "openingDate": "2026-05-26",
@@ -81,7 +81,14 @@
     },
     "beetlejuice-west-end-2026": {
       "openingDate": "2026-05-28",
-      "snapshot": [],
+      "snapshot": [
+        {
+          "outletId": "city-am",
+          "criticName": "Adam Bloodworth",
+          "url": "https://www.cityam.com/beetlejuice-musical-review-ive-never-heard-west-end-fans-scream-this-loud/",
+          "scored": true
+        }
+      ],
       "lastAlertAt": null
     },
     "the-p-word-off-west-end-2026": {
@@ -98,8 +105,19 @@
           "criticName": "Arifa Akbar",
           "url": "https://www.theguardian.com/stage/2022/sep/16/the-p-word-review-an-irresistible-romance-bush-theatre",
           "scored": true
+        },
+        {
+          "outletId": "whatsonstage",
+          "criticName": "Frey Kwa Hawking",
+          "url": "https://www.whatsonstage.com/london-theatre/reviews/the-p-word-waleed-akhtar-bush_57364.html",
+          "scored": true
         }
       ],
+      "lastAlertAt": null
+    },
+    "david-copperfield-59e59-theaters-off-broadway-2026": {
+      "openingDate": "2026-05-29",
+      "snapshot": [],
       "lastAlertAt": null
     }
   }
