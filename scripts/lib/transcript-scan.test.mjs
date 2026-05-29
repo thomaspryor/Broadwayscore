@@ -203,6 +203,42 @@ test('approval-of: checks ONLY last user msg, not stale earlier ones', () => {
   } finally { cleanup(); }
 });
 
+// Plain-language approval (no hash transcription required). The human glance is
+// the safety; the hash was pointless friction. Negation-guarded.
+for (const phrase of ['approved', 'ship it', 'lgtm', 'looks good', 'yes, approved', 'Yup', 'go ahead and ship it']) {
+  test(`approval-of: accepts plain affirmative "${phrase}"`, () => {
+    const { path, cleanup } = writeFixture([
+      makeAssistantText('here is the visual — ok to ship?'),
+      makeUserText(phrase),
+    ]);
+    try {
+      const r = queryApprovalOf(walkTranscript(path), '6c0949ba442d0357');
+      assert.equal(r.approved, true);
+      assert.equal(r.via, 'plain-affirmative');
+    } finally { cleanup(); }
+  });
+}
+
+for (const phrase of ["don't ship yet", 'not approved', 'no', 'hold off', 'can we improve the layout first', 'looks good, but fix the mobile padding first', 'yes, wait until tonight', 'approved except change the color']) {
+  test(`approval-of: rejects non-approval "${phrase}"`, () => {
+    const { path, cleanup } = writeFixture([makeUserText(phrase)]);
+    try {
+      const r = queryApprovalOf(walkTranscript(path), '6c0949ba442d0357');
+      assert.equal(r.approved, false);
+    } finally { cleanup(); }
+  });
+}
+
+test('approval-of: explicit wrong-hash form still rejected (plain path does not leak across verdicts)', () => {
+  const { path, cleanup } = writeFixture([
+    makeUserText('APPROVED: deadbeefdeadbeef'),
+  ]);
+  try {
+    const r = queryApprovalOf(walkTranscript(path), '6c0949ba442d0357');
+    assert.equal(r.approved, false); // hash-qualified → strict; bare-word fallback disabled
+  } finally { cleanup(); }
+});
+
 // ── push-ingress ────────────────────────────────────────────────────────────
 
 test('push-ingress: matches git push variants', () => {

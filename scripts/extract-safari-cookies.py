@@ -691,6 +691,24 @@ def main():
             print(f"printf '%s' '{cmd['b64'][:20]}...' > /tmp/cookies-b64.txt && gh secret set {cmd['name']} < /tmp/cookies-b64.txt")
             print()
 
+    # Verify the freshly-saved cookies actually pull full review text (catches a
+    # session that died server-side while its cookie expiry still looks healthy —
+    # the failure that silently logged us out of The Stage for ~11 days). Free,
+    # uses the residential IP we're already on. Non-fatal: a probe failure here
+    # just means "go log into that site in Safari," not that extraction failed.
+    if not dry_run:
+        try:
+            print()
+            print("=" * 60)
+            print("  Verifying logged-in state (extracted review body length)...")
+            print("=" * 60)
+            repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            subprocess.run(["node", "scripts/verify-cookie-login.js"], cwd=repo_root, timeout=300)
+        except FileNotFoundError:
+            print("  (skipped: 'node' not found)")
+        except Exception as e:
+            print(f"  (verify skipped: {e})")
+
     print()
     print("Done! Cookies saved locally" + (" and pushed to GitHub." if auto_push else "."))
 
