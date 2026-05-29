@@ -56,6 +56,33 @@ describe('article-extractor: 1minutecritic.com entry-content', () => {
     assert.ok(!text.includes('Share this'), 'share block leaked');
   });
 
+  test('does NOT truncate a body paragraph with a bolded trailing-hyphen label + internal 1mc link', () => {
+    // Regression (code-review 2026-05-28): the boundary alternation must use
+    // en-dash ONLY. A bare hyphen-minus over-matched legit review prose like
+    // "<strong>Cast - </strong><a href=1mc-link>" and truncated the body to 0.
+    const html =
+      '<html><body><div class="entry-content">' +
+        '<p>' + 'Opening paragraph with substantial real review content here. '.repeat(4) + '</p>' +
+        '<p><strong>Cast - </strong><a href="https://1minutecritic.com/profiles/jane-doe/">Jane Doe</a> delivers the standout performance.</p>' +
+        '<p>' + 'A full closing paragraph of genuine criticism that must survive. '.repeat(4) + '</p>' +
+        '<div class="addtoany_share_save_container">Share</div>' +
+      '</div></body></html>';
+    const text = extractArticleText(html, '1minutecritic.com');
+    assert.ok(text.includes('must survive'), 'bolded-hyphen body was truncated — bare-hyphen boundary regression');
+    assert.ok(text.includes('standout performance'), 'mid-body content after the hyphen label was dropped');
+  });
+
+  test('still stops at en-dash related teaser (boundary not weakened by the hyphen fix)', () => {
+    const html =
+      '<html><body><div class="entry-content">' +
+        '<p>' + 'Genuine review content that should be captured in full. '.repeat(6) + '</p>' +
+        '<p><strong>Theater &#8211; </strong><a href="https://1minutecritic.com/another-review/">A related show</a></p>' +
+      '</div></body></html>';
+    const text = extractArticleText(html, '1minutecritic.com');
+    assert.ok(text.includes('captured in full'));
+    assert.ok(!text.includes('A related show'), 'en-dash related teaser leaked');
+  });
+
   test('stops at post-author-area when share block absent', () => {
     const html =
       '<html><body>' +
