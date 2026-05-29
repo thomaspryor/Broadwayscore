@@ -18,6 +18,7 @@
 const fs = require('fs');
 const path = require('path');
 const { matchTitleToShow, matchSlugToShow, cleanSlugTitle, loadShows, cleanExternalTitle, titleWordsMatch } = require('./lib/show-matching');
+const { pruneUnmatchedAudit } = require('./lib/aggregator-candidate-extract');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, isJunkOutlet, maybeUpgradeUrl } = require('./lib/review-normalization');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
@@ -723,8 +724,19 @@ async function scrapePlaybillVerdict() {
       const prev = byUrl.get(u.url);
       byUrl.set(u.url, { ...u, firstSeen: prev?.firstSeen || now, lastSeen: now });
     }
-    fs.writeFileSync(auditPath, JSON.stringify([...byUrl.values()], null, 2));
-    console.log(`Wrote ${unmatchedArticles.length} unmatched articles to ${auditPath} (total tracked: ${byUrl.size})`);
+    // Prune entries that no longer belong (promoted/now-matched shows +
+    // infrastructure) so the file doesn't grow unbounded across daily runs.
+    const nowMatchesShow = (e) => {
+      if (e.slug && matchSlugToShow(e.slug, shows)) return true;
+      if (e.title) {
+        const m = matchTitleToShow(e.title, shows, { market: 'broadway' });
+        if (m && m.confidence === 'high') return true;
+      }
+      return false;
+    };
+    const { kept, pruned } = pruneUnmatchedAudit([...byUrl.values()], nowMatchesShow);
+    fs.writeFileSync(auditPath, JSON.stringify(kept, null, 2));
+    console.log(`Wrote ${unmatchedArticles.length} unmatched articles to ${auditPath} (total tracked: ${kept.length}, pruned ${pruned})`);
   } catch (auditErr) {
     console.log(`  [WARN] Could not write unmatched-articles audit: ${auditErr.message}`);
   }

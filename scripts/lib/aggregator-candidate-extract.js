@@ -299,6 +299,35 @@ function slugCollidesWith(title, existingSlugs) {
 }
 
 /**
+ * Prune an unmatched-audit array (the *-unmatched.json the PV + BWW landing
+ * scrapers write) of entries that no longer belong:
+ *   - infrastructure slugs (site nav / legal / feeds) — never a show, so they
+ *     would otherwise accumulate forever;
+ *   - entries whose slug/title now resolves to a show — the show was matched or
+ *     manually promoted into shows.json since the entry was first logged.
+ *
+ * The scrapers route a now-matched article to their `matched` bucket, never
+ * back into `unmatched`, so a pruned entry does NOT come back next run. Pruning
+ * the MERGED (existing + this-run) set means infrastructure is dropped every
+ * run even though the landing scan re-surfaces it — the file never persists it.
+ *
+ * `nowMatchesShow(entry)` is supplied by the caller so this stays pure and the
+ * matcher choice (PV: matchSlugToShow + matchTitleToShow; BWW:
+ * matchBwwRoundupSlugToShow) lives with the scraper. Returns { kept, pruned }.
+ */
+function pruneUnmatchedAudit(entries, nowMatchesShow) {
+  const kept = [];
+  let pruned = 0;
+  for (const e of Array.isArray(entries) ? entries : []) {
+    if (!e || typeof e !== 'object') continue;
+    if (isInfrastructureSlug(e.slug) || isInfrastructureSlug(e.url)) { pruned++; continue; }
+    if (typeof nowMatchesShow === 'function' && nowMatchesShow(e)) { pruned++; continue; }
+    kept.push(e);
+  }
+  return { kept, pruned };
+}
+
+/**
  * The best title we can name BEFORE fetching: PV ships a `title` on the audit
  * record; BWW only a slug (parse it). Lets the driver skip a fetch when the
  * show is already in shows.json — which is the common case for an unmatched
@@ -399,6 +428,7 @@ module.exports = {
   extractArticleFields,
   classifyTitleDelta,
   slugCollidesWith,
+  pruneUnmatchedAudit,
   referenceTitle,
   classifyCandidate,
   titleCaseShout,

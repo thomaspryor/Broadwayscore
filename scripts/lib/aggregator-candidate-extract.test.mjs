@@ -23,6 +23,7 @@ const {
   classifyTitleDelta,
   classifyCandidate,
   slugCollidesWith,
+  pruneUnmatchedAudit,
   referenceTitle,
 } = require('./aggregator-candidate-extract.js');
 
@@ -171,6 +172,29 @@ test('referenceTitle + slugCollidesWith pre-fetch guard (ship-check P0)', () => 
   // A title already in shows.json → driver skips the fetch.
   assert.equal(slugCollidesWith('Dad Dont Read This', new Set(['dad-dont-read-this'])), true);
   assert.equal(slugCollidesWith('Brand New Show', new Set(['dad-dont-read-this'])), false);
+});
+
+test('pruneUnmatchedAudit drops infrastructure + now-matched, keeps unknown', () => {
+  const entries = [
+    { url: 'https://playbill.com/article/site-map', slug: 'site-map', title: 'Site Map' },
+    { url: 'https://playbill.com/article/playbill-rss-feeds', slug: 'playbill-rss-feeds' },
+    { url: 'https://x/article/promoted-show', slug: 'promoted-show', title: 'Promoted Show' },
+    { url: 'https://x/article/brand-new', slug: 'brand-new', title: 'Brand New Show' },
+  ];
+  // Simulates "Promoted Show" now living in shows.json.
+  const nowMatchesShow = (e) => e.slug === 'promoted-show';
+  const { kept, pruned } = pruneUnmatchedAudit(entries, nowMatchesShow);
+  assert.equal(pruned, 3, 'site-map + rss-feeds + promoted-show');
+  assert.deepEqual(kept.map(e => e.slug), ['brand-new']);
+});
+
+test('pruneUnmatchedAudit tolerates junk input + missing matcher', () => {
+  assert.deepEqual(pruneUnmatchedAudit(null, () => false), { kept: [], pruned: 0 });
+  assert.deepEqual(pruneUnmatchedAudit([null, 'x', 42], () => false), { kept: [], pruned: 0 });
+  // No matcher → only infrastructure is pruned.
+  const r = pruneUnmatchedAudit([{ slug: 'site-map' }, { slug: 'real-show' }]);
+  assert.equal(r.pruned, 1);
+  assert.deepEqual(r.kept.map(e => e.slug), ['real-show']);
 });
 
 test('low-confidence PV entries are not new candidates', () => {
