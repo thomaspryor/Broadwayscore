@@ -174,25 +174,41 @@ test('referenceTitle + slugCollidesWith pre-fetch guard (ship-check P0)', () => 
   assert.equal(slugCollidesWith('Brand New Show', new Set(['dad-dont-read-this'])), false);
 });
 
-test('pruneUnmatchedAudit drops infrastructure + now-matched, keeps unknown', () => {
+test('pruneUnmatchedAudit (PV) drops infrastructure + exact-slug-in-shows, keeps new', () => {
   const entries = [
     { url: 'https://playbill.com/article/site-map', slug: 'site-map', title: 'Site Map' },
     { url: 'https://playbill.com/article/playbill-rss-feeds', slug: 'playbill-rss-feeds' },
     { url: 'https://x/article/promoted-show', slug: 'promoted-show', title: 'Promoted Show' },
+    { url: 'https://x/article/hamlet-at-bam', slug: 'hamlet-at-bam', title: 'Hamlet at BAM' },
     { url: 'https://x/article/brand-new', slug: 'brand-new', title: 'Brand New Show' },
   ];
-  // Simulates "Promoted Show" now living in shows.json.
-  const nowMatchesShow = (e) => e.slug === 'promoted-show';
-  const { kept, pruned } = pruneUnmatchedAudit(entries, nowMatchesShow);
-  assert.equal(pruned, 3, 'site-map + rss-feeds + promoted-show');
-  assert.deepEqual(kept.map(e => e.slug), ['brand-new']);
+  // shows.json contains the promoted show AND an old token-sharing namesake.
+  const existingSlugs = new Set(['promoted-show', 'hamlet-2009']);
+  const { kept, pruned } = pruneUnmatchedAudit(entries, { source: 'playbill-verdict', existingSlugs });
+  assert.equal(pruned, 3, 'site-map + rss-feeds + promoted-show (exact slug)');
+  // INVARIANT: "Hamlet at BAM" shares tokens with hamlet-2009 but its slug is
+  // not in shows.json, so it MUST survive — the loose-matcher regression both
+  // ship-check reviewers flagged would have wrongly pruned it.
+  assert.deepEqual(kept.map(e => e.slug), ['hamlet-at-bam', 'brand-new']);
 });
 
-test('pruneUnmatchedAudit tolerates junk input + missing matcher', () => {
-  assert.deepEqual(pruneUnmatchedAudit(null, () => false), { kept: [], pruned: 0 });
-  assert.deepEqual(pruneUnmatchedAudit([null, 'x', 42], () => false), { kept: [], pruned: 0 });
-  // No matcher → only infrastructure is pruned.
-  const r = pruneUnmatchedAudit([{ slug: 'site-map' }, { slug: 'real-show' }]);
+test('pruneUnmatchedAudit (BWW) derives the gate title from the slug', () => {
+  const entries = [
+    { url: 'a', slug: 'Review-Roundup-DAD-DONT-READ-THIS-At-St-Lukes-Theatre-20260515' },
+    { url: 'b', slug: 'Review-Roundup-CELEBRITY-AUTOPBIOGRAPHY-On-Broadway-20260518' },
+  ];
+  // "Dad Don't Read This" was promoted → shows.json slug 'dad-dont-read-this'.
+  const existingSlugs = new Set(['dad-dont-read-this']);
+  const { kept, pruned } = pruneUnmatchedAudit(entries, { source: 'bww-roundup', existingSlugs });
+  assert.equal(pruned, 1);
+  assert.deepEqual(kept.map(e => e.slug), ['Review-Roundup-CELEBRITY-AUTOPBIOGRAPHY-On-Broadway-20260518']);
+});
+
+test('pruneUnmatchedAudit tolerates junk input + empty slug set', () => {
+  assert.deepEqual(pruneUnmatchedAudit(null, { source: 'playbill-verdict', existingSlugs: new Set() }), { kept: [], pruned: 0 });
+  assert.deepEqual(pruneUnmatchedAudit([null, 'x', 42], {}), { kept: [], pruned: 0 });
+  // No existingSlugs → only infrastructure is pruned.
+  const r = pruneUnmatchedAudit([{ slug: 'site-map' }, { slug: 'real-show', title: 'Real Show' }], { source: 'playbill-verdict' });
   assert.equal(r.pruned, 1);
   assert.deepEqual(r.kept.map(e => e.slug), ['real-show']);
 });

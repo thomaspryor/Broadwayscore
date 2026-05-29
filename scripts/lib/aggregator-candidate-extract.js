@@ -303,25 +303,40 @@ function slugCollidesWith(title, existingSlugs) {
  * scrapers write) of entries that no longer belong:
  *   - infrastructure slugs (site nav / legal / feeds) — never a show, so they
  *     would otherwise accumulate forever;
- *   - entries whose slug/title now resolves to a show — the show was matched or
- *     manually promoted into shows.json since the entry was first logged.
+ *   - entries whose reference title now slug-collides with a show in
+ *     shows.json — the show was matched or manually promoted since the entry
+ *     was logged.
+ *
+ * The "already in shows" gate is DELIBERATELY the SAME exact-slug membership
+ * (`slugCollidesWith(referenceTitle(source, entry), existingSlugs)`) that
+ * extract-aggregator-candidates.js uses pre-fetch. Using the live token-set
+ * matchers (matchSlugToShow / matchTitleToShow) here would be LOOSER than that
+ * gate and could silently delete a genuinely new candidate that merely shares
+ * title tokens with an existing/closed namesake (e.g. a new "Hamlet at BAM"
+ * vs an old "hamlet-2009") before extract ever fetches it — a lost discovery.
+ * Baking the exact gate in (rather than a caller-supplied predicate) keeps
+ * prune and extract provably in agreement.
  *
  * The scrapers route a now-matched article to their `matched` bucket, never
  * back into `unmatched`, so a pruned entry does NOT come back next run. Pruning
  * the MERGED (existing + this-run) set means infrastructure is dropped every
  * run even though the landing scan re-surfaces it — the file never persists it.
  *
- * `nowMatchesShow(entry)` is supplied by the caller so this stays pure and the
- * matcher choice (PV: matchSlugToShow + matchTitleToShow; BWW:
- * matchBwwRoundupSlugToShow) lives with the scraper. Returns { kept, pruned }.
+ * @param {Array} entries  the merged unmatched-audit records
+ * @param {object} opts
+ * @param {'playbill-verdict'|'bww-roundup'} opts.source  picks the referenceTitle strategy
+ * @param {Set<string>} opts.existingSlugs  slugs already in shows.json
+ * @returns {{kept: Array, pruned: number}}
  */
-function pruneUnmatchedAudit(entries, nowMatchesShow) {
+function pruneUnmatchedAudit(entries, { source, existingSlugs } = {}) {
+  const slugs = existingSlugs instanceof Set ? existingSlugs : new Set();
   const kept = [];
   let pruned = 0;
   for (const e of Array.isArray(entries) ? entries : []) {
     if (!e || typeof e !== 'object') continue;
     if (isInfrastructureSlug(e.slug) || isInfrastructureSlug(e.url)) { pruned++; continue; }
-    if (typeof nowMatchesShow === 'function' && nowMatchesShow(e)) { pruned++; continue; }
+    const ref = referenceTitle(source, e);
+    if (ref && slugCollidesWith(ref, slugs)) { pruned++; continue; }
     kept.push(e);
   }
   return { kept, pruned };

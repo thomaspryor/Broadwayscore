@@ -724,17 +724,11 @@ async function scrapePlaybillVerdict() {
       const prev = byUrl.get(u.url);
       byUrl.set(u.url, { ...u, firstSeen: prev?.firstSeen || now, lastSeen: now });
     }
-    // Prune entries that no longer belong (promoted/now-matched shows +
+    // Prune entries that no longer belong (already-in-shows by exact slug +
     // infrastructure) so the file doesn't grow unbounded across daily runs.
-    const nowMatchesShow = (e) => {
-      if (e.slug && matchSlugToShow(e.slug, shows)) return true;
-      if (e.title) {
-        const m = matchTitleToShow(e.title, shows, { market: 'broadway' });
-        if (m && m.confidence === 'high') return true;
-      }
-      return false;
-    };
-    const { kept, pruned } = pruneUnmatchedAudit([...byUrl.values()], nowMatchesShow);
+    // Gate matches extract-aggregator-candidates.js exactly — see pruneUnmatchedAudit.
+    const existingSlugs = new Set(shows.map(s => s.slug).filter(Boolean));
+    const { kept, pruned } = pruneUnmatchedAudit([...byUrl.values()], { source: 'playbill-verdict', existingSlugs });
     fs.writeFileSync(auditPath, JSON.stringify(kept, null, 2));
     console.log(`Wrote ${unmatchedArticles.length} unmatched articles to ${auditPath} (total tracked: ${kept.length}, pruned ${pruned})`);
   } catch (auditErr) {
