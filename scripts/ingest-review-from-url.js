@@ -40,7 +40,7 @@
 const fs = require('fs');
 const path = require('path');
 const { fetchPage } = require('./lib/scraper');
-const { extractArticleTextFromUrl } = require('./lib/article-extractor');
+const { extractArticleTextFromUrl, extractPublishDate } = require('./lib/article-extractor');
 const { resolveCanonicalOutletId, _parseDomain, _buildDomainMap } = require('./lib/outlet-canonicalize');
 const { getOutletDisplayName } = require('./lib/review-normalization');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
@@ -145,6 +145,16 @@ function extractByline(html) {
 
   const critic = criticArg || extractByline(html) || 'Unknown';
 
+  // Page-date extraction: when --publish-date wasn't supplied, pull it from
+  // standard CMS metadata (article:published_time / JSON-LD / <time>). Without
+  // this the review lands with publishDate:undefined, which fails-open through
+  // the anticipatory-pre-opening gate and weakens temporal wrong-production
+  // detection. (1minutecritic HR + Maids incident, 2026-05-28.)
+  const publishDate = publishDateArg || extractPublishDate(html) || null;
+  if (!publishDateArg && publishDate) {
+    console.log(`  → Extracted publishDate from page metadata: ${publishDate}`);
+  }
+
   let outletId;
   let outletName;
   if (outletArg) {
@@ -173,7 +183,7 @@ function extractByline(html) {
   console.log(`║  Critic:  ${critic}${criticArg ? '' : ' (extracted)'}`);
   console.log(`║  URL:     ${url}`);
   console.log(`║  Text:    ${text.length} chars`);
-  if (publishDateArg) console.log(`║  Pub:     ${publishDateArg}`);
+  if (publishDate) console.log(`║  Pub:     ${publishDate}`);
   console.log(`╚══════════════════════════════════════════════════╝`);
 
   // Same collision pre-check as ingest-manual-review.js. Stale wrongProduction
@@ -186,7 +196,7 @@ function extractByline(html) {
     outletId,
     criticName: critic,
     url,
-    publishDate: publishDateArg,
+    publishDate: publishDate,
     forceClearStale,
   });
   if (!collision.ok) {
@@ -203,7 +213,7 @@ function extractByline(html) {
     fullText: text,
     originalScore: null,
     originalScoreSource: null,
-    publishDate: publishDateArg,
+    publishDate: publishDate,
   });
 
   const result = createOrMergeReviewFile(showId, {

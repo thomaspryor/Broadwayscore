@@ -197,6 +197,45 @@ function extractArticleTextFromUrl(html, url) {
   return extractArticleText(html, host);
 }
 
+/**
+ * Extract a review's publish date from page metadata, normalized to
+ * YYYY-MM-DD. Tries the standard CMS sources in priority order:
+ *   1. <meta property="article:published_time" content="...">  (OpenGraph,
+ *      emitted by WordPress + most CMSs)
+ *   2. JSON-LD "datePublished"
+ *   3. <time datetime="...">  (HTML5 semantic, theme-dependent)
+ *
+ * Added 2026-05-28: ingest-review-from-url.js previously had NO page-date
+ * extraction — it only used the --publish-date CLI arg, so every URL-ingested
+ * review without an explicit date got publishDate:undefined (1minutecritic
+ * HR + Maids incident). A missing publishDate fails-open through the
+ * anticipatory-pre-opening gate and weakens temporal wrong-production
+ * detection. These two tags are present on essentially every WordPress/CMS
+ * review page, so this one helper fixes the date gap for all outlets ingested
+ * via this path.
+ *
+ * Returns YYYY-MM-DD string or null.
+ */
+function extractPublishDate(html) {
+  if (!html || typeof html !== 'string') return null;
+  const candidates = [
+    html.match(/<meta[^>]+property=["']article:published_time["'][^>]+content=["']([^"']+)["']/i),
+    html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']article:published_time["']/i),
+    html.match(/["']datePublished["']\s*:\s*["']([^"']+)["']/),
+    html.match(/<time[^>]+datetime=["']([^"']+)["']/i),
+  ];
+  for (const m of candidates) {
+    if (!m || !m[1]) continue;
+    // Most sources are ISO 8601 (2026-05-27T02:00:00+00:00) — take the date part.
+    const iso = m[1].match(/^(\d{4}-\d{2}-\d{2})/);
+    if (iso) return iso[1];
+    // Fall back to Date parsing for non-ISO formats.
+    const d = new Date(m[1]);
+    if (!Number.isNaN(d.getTime())) return d.toISOString().slice(0, 10);
+  }
+  return null;
+}
+
 function extractWsjNextData(html) {
   const m = html.match(/<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/);
   if (!m) return null;
@@ -223,4 +262,4 @@ function extractWsjNextData(html) {
   return text.trim() || null;
 }
 
-module.exports = { extractArticleText, extractArticleTextFromUrl, stripHtml };
+module.exports = { extractArticleText, extractArticleTextFromUrl, extractPublishDate, stripHtml };
