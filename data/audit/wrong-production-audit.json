@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-29T13:11:56.660Z",
+  "timestamp": "2026-05-29T15:13:55.819Z",
   "stats": {
-    "totalReviews": 37784,
-    "alreadyFlagged": 16631,
+    "totalReviews": 37781,
+    "alreadyFlagged": 16597,
     "dateGuardCatches": 106,
     "directorMismatch": 797,
-    "tvFilmSignals": 1031,
+    "tvFilmSignals": 1033,
     "londonSignals": 582,
-    "offBroadwaySignals": 452,
+    "offBroadwaySignals": 454,
     "yearMismatch": 78,
-    "noPublishDate": 3953
+    "noPublishDate": 3951
   },
   "findings": [
     {
@@ -813,6 +813,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "all-nighter-off-broadway-2025",
+      "file": "off-off-online--adrienne-onofri.json",
+      "score": 62,
+      "publishDate": "2025-03-11",
+      "url": "https://www.offoffonline.com/offoffonline/2025/3/8/all-nighter",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"streaming series\""
         }
       ]
     },
@@ -5778,6 +5792,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "eurydice-off-broadway-2026",
+      "file": "playbill--diep-tran.json",
+      "score": null,
+      "publishDate": "2025-06-03",
+      "url": "https://playbill.com/article/eurydice-starring-maya-hawke-and-brian-darcy-james-gets-extended-read-the-reviews",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"streaming series\""
         }
       ]
     },
@@ -26179,6 +26207,20 @@
       ]
     },
     {
+      "showId": "all-nighter-off-broadway-2025",
+      "file": "nytimes--maya-phillips.json",
+      "score": 42,
+      "publishDate": "2025-03-10",
+      "url": "https://www.nytimes.com/2025/03/10/theater/all-nighter-play-review-lester.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"park avenue armory\""
+        }
+      ]
+    },
+    {
       "showId": "american-buffalo-2022",
       "file": "dailybeast--tim-teeman.json",
       "score": 85,
@@ -39583,6 +39625,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "trophy-boys-off-broadway-2025",
+      "file": "vulture--jackson-mchenry.json",
+      "score": 63,
+      "publishDate": "2025-06-25",
+      "url": "https://www.vulture.com/article/theater-reviews-trophy-boys-and-lowcountry.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
         }
       ]
     },
