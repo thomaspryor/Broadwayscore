@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-05-29T19:08:31.553Z",
-  "processed": 12,
-  "failed": 23,
-  "successRate": "34.3%",
+  "updatedAt": "2026-05-29T19:11:36.956Z",
+  "processed": 13,
+  "failed": 32,
+  "successRate": "28.9%",
   "tierBreakdown": {
-    "playwright": 8,
+    "playwright": 9,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 1,
+    "archiveToday": 3,
     "archive": 2
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-05-29T13:15:33.661Z",
@@ -25,6 +25,12 @@
       "t": "2026-05-29T13:15:34.078Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-05-29T19:10:38.255Z",
+      "event": "bb-session",
+      "session": "0fd0722e",
+      "url": "https://www.facebook.com/whatsonstage/posts/dark-of-the-moon-is-a-spellbinding-n"
     }
   ]
 }
