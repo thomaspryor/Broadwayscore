@@ -38,6 +38,9 @@ const EXPECTED = {
   'Soho Rep':          { min: 0,  max: 2,  mustInclude: [] },   // 1 current show typical; sometimes between productions
   'The New Group':     { min: 1,  max: 5,  mustInclude: [] },   // hero + obj-title cards; verifies cross-venue dedup with Signature
   'Irish Rep':         { min: 1,  max: 4,  mustInclude: [] },
+  // St. Ann's Warehouse (added to OB_VENUE_CONFIGS 9b07b87295). Homepage
+  // /show/<slug>/ links; fixture captured 2026-05-28 (~59KB) parsed 6 shows.
+  'St. Ann\'s Warehouse': { min: 4, max: 10, mustInclude: ['the-maids', 'anna-christie'] },
 };
 
 for (const venue of OB_VENUE_CONFIGS) {
