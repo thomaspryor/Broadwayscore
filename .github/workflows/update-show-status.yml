@@ -270,6 +270,14 @@ jobs:
           date -u > data/audit/pipeline-health/update-show-status.last-success
 
       # Step 5: Commit and push changes (skip if validation failed)
+      # Keep the Off-Broadway venue allowlist (used by the TodayTix discovery
+      # fallback) in sync with the OB shows now in shows.json. Idempotent —
+      # a no-op when no new OB venue appeared. See scripts/build-ob-venues.js.
+      - name: Regenerate Off-Broadway venue allowlist
+        if: always() && steps.validate.outcome != 'failure'
+        run: node scripts/build-ob-venues.js
+        continue-on-error: true
+
       - name: Commit and push changes
         if: always() && steps.validate.outcome != 'failure'
         run: |
@@ -281,6 +289,7 @@ jobs:
           fi
           git add data/show-score-urls.json 2>/dev/null || true
           git add data/show-score-candidates.json 2>/dev/null || true
+          git add data/off-broadway-venues.json 2>/dev/null || true
           git add data/audit/pipeline-health/ 2>/dev/null || true
 
           # Only commit if there are staged changes
