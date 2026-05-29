@@ -18,6 +18,7 @@
 const fs = require('fs');
 const path = require('path');
 const { matchTitleToShow, matchSlugToShow, cleanSlugTitle, loadShows, cleanExternalTitle, titleWordsMatch } = require('./lib/show-matching');
+const { pruneUnmatchedAudit } = require('./lib/aggregator-candidate-extract');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, isJunkOutlet, maybeUpgradeUrl } = require('./lib/review-normalization');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
@@ -723,8 +724,13 @@ async function scrapePlaybillVerdict() {
       const prev = byUrl.get(u.url);
       byUrl.set(u.url, { ...u, firstSeen: prev?.firstSeen || now, lastSeen: now });
     }
-    fs.writeFileSync(auditPath, JSON.stringify([...byUrl.values()], null, 2));
-    console.log(`Wrote ${unmatchedArticles.length} unmatched articles to ${auditPath} (total tracked: ${byUrl.size})`);
+    // Prune entries that no longer belong (already-in-shows by exact slug +
+    // infrastructure) so the file doesn't grow unbounded across daily runs.
+    // Gate matches extract-aggregator-candidates.js exactly — see pruneUnmatchedAudit.
+    const existingSlugs = new Set(shows.map(s => s.slug).filter(Boolean));
+    const { kept, pruned } = pruneUnmatchedAudit([...byUrl.values()], { source: 'playbill-verdict', existingSlugs });
+    fs.writeFileSync(auditPath, JSON.stringify(kept, null, 2));
+    console.log(`Wrote ${unmatchedArticles.length} unmatched articles to ${auditPath} (total tracked: ${kept.length}, pruned ${pruned})`);
   } catch (auditErr) {
     console.log(`  [WARN] Could not write unmatched-articles audit: ${auditErr.message}`);
   }
