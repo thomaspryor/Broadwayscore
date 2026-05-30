@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-30T18:48:25.773Z",
+  "timestamp": "2026-05-30T19:08:36.878Z",
   "stats": {
-    "totalReviews": 37812,
+    "totalReviews": 37811,
     "alreadyFlagged": 16604,
     "dateGuardCatches": 106,
-    "directorMismatch": 809,
+    "directorMismatch": 810,
     "tvFilmSignals": 1034,
     "londonSignals": 584,
     "offBroadwaySignals": 455,
-    "yearMismatch": 78,
-    "noPublishDate": 3960
+    "yearMismatch": 79,
+    "noPublishDate": 3959
   },
   "findings": [
     {
@@ -1855,6 +1855,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"alex timbers\" from beetlejuice-2025"
+        }
+      ]
+    },
+    {
+      "showId": "beetlejuice-west-end-2026",
+      "file": "musical-theatre-review--unknown.json",
+      "score": 82,
+      "publishDate": null,
+      "url": "https://musicaltheatrereview.com/beetlejuice-the-musical-prince-edward-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"alex timbers\" from beetlejuice-2025"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2019 (2x) more than 2026 (0x). 2019 matches production: beetlejuice-2019"
         }
       ]
     },
@@ -5916,6 +5935,7 @@
     {
       "showId": "equus-west-end-2026",
       "file": "london-theatre--matt-wolf.json",
+      "score": 86,
       "publishDate": "2026-05-19",
       "url": "https://www.londontheatre.co.uk/reviews/equus-review-menier-chocolate-factory",
       "findings": [
@@ -27961,7 +27981,7 @@
       "file": "guardian--unknown.json",
       "score": null,
       "publishDate": null,
-      "url": "https://www.theguardian.com/books/2024/nov/02/alan-bennett-at-90-what-will-people-think-i-dont-care-any-more",
+      "url": "https://www.theguardian.com/stage/2026/may/15/linda-bassett-call-the-midwife-caryl-churchill-alexander-zeldin-care",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -27987,7 +28007,7 @@
     {
       "showId": "care-west-end-2026",
       "file": "london-theatre--holly-omahony.json",
-      "score": null,
+      "score": 79,
       "publishDate": "2026-05-20",
       "url": "https://www.londontheatre.co.uk/reviews/care-review-young-vic",
       "findings": [
