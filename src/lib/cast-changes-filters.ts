@@ -110,6 +110,16 @@ export function dedupeByPersonShow(events: CastEvent[]): CastEvent[] {
     let winner: CastEvent = existing;
     if (newAdded && oldAdded) winner = newAdded > oldAdded ? event : existing;
     else if (newAdded && !oldAdded) winner = event;
+
+    // Preserve the more specific role if the winner's is missing/Unknown
+    // (mirror of scripts/lib/cast-changes-filters.js dedupeByPersonShow).
+    const loser = winner === event ? existing : event;
+    const winnerRole = winner.role && winner.role !== 'Unknown' ? winner.role : '';
+    const loserRole = loser.role && loser.role !== 'Unknown' ? loser.role : '';
+    if (winnerRole.length === 0 && loserRole.length > 0) {
+      winner = { ...winner, role: loserRole };
+    }
+
     groups.set(key, winner);
   }
   return Array.from(groups.values());
