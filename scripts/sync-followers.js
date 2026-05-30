@@ -77,6 +77,20 @@ function isValidEmail(email) {
   return typeof email === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
+// Test/QA addresses that must never reach a subscriber list or Resend audience.
+// They land in the owner's inbox (+test aliases) or bounce (example.com), and
+// inflate audience counts + skew open/click stats. Precise patterns only — a real
+// subscriber using plus-addressing to TAG their signup (e.g.
+// josephmagic+broadwayscorecard@gmail.com) must NOT be filtered.
+function isTestEmail(email) {
+  if (typeof email !== 'string') return false;
+  const [localPart = '', domain = ''] = email.toLowerCase().trim().split('@');
+  if (domain === 'example.com' || domain === 'example.org' || domain === 'example.net') return true;
+  if (localPart.includes('+test')) return true;   // owner +test / +testing aliases
+  if (/^test[-.]/.test(localPart) || localPart === 'test') return true; // test-we-subscriber, test-probe-…
+  return false;
+}
+
 async function fetchAllSubmissions(formId, token, sinceDate) {
   const submissions = [];
   let offset = 0;
@@ -448,7 +462,7 @@ async function main() {
 
   console.log(`\nSubscriber results: ${subscribersAdded} subscribed, ${subscribersRemoved} unsubscribed, ${generalSubscribers.size} total`);
 
-  const subscribersList = Array.from(generalSubscribers).sort();
+  const subscribersList = Array.from(generalSubscribers).filter(e => !isTestEmail(e)).sort();
   if (!DRY_RUN) {
     const subscribersData = {
       _meta: {
@@ -522,7 +536,7 @@ async function main() {
 
     console.log(`\nWE subscriber results: ${weAdded} subscribed, ${weRemoved} unsubscribed, ${weSubscribers.size} total`);
 
-    weList = Array.from(weSubscribers).sort();
+    weList = Array.from(weSubscribers).filter(e => !isTestEmail(e)).sort();
     if (!DRY_RUN) {
       const weData = {
         _meta: {
@@ -579,4 +593,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { syncResendAudience };
+module.exports = { syncResendAudience, isTestEmail };
