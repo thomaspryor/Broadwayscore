@@ -669,15 +669,16 @@ async function main() {
     // Build HTML — footer uses {{{RESEND_UNSUBSCRIBE_URL}}} (Resend's template variable)
     const html = buildBroadcastOpeningNightHtml(showsForEmail, null, MARKET);
 
-    // Resolve Resend audience id for this market. Same Broadway id used by sync-followers.js
-    // (audience ids are not secret). WE audience id is env-only — set RESEND_WE_AUDIENCE_ID
-    // before sending West End broadcasts.
+    // Resolve Resend audience id for this market. Audience ids are not secret, so
+    // both are hardcoded (env vars can still override). These MUST match the
+    // audiences that sync-followers.js populates: Broadway → General, WE → West End.
     const RESEND_BROADWAY_AUDIENCE_ID = '472ec5ef-d7cc-4c48-8007-c0a6a302e7a4';
+    const RESEND_WE_AUDIENCE_ID = '0b17260b-6a72-4a5a-a700-7b7526f18d87';
     const audienceId = isLondonMarket(MARKET)
-      ? process.env.RESEND_WE_AUDIENCE_ID
+      ? (process.env.RESEND_WE_AUDIENCE_ID || RESEND_WE_AUDIENCE_ID)
       : (process.env.RESEND_BROADWAY_AUDIENCE_ID || RESEND_BROADWAY_AUDIENCE_ID);
     if (!audienceId) {
-      throw new Error(`Missing RESEND_WE_AUDIENCE_ID — cannot create West End Resend broadcast.`);
+      throw new Error(`Missing Resend audience id for market ${MARKET} — cannot create broadcast.`);
     }
 
     // Acquire cross-session send lock before creating the Resend draft.
