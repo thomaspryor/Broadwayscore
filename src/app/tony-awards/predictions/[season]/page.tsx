@@ -7,6 +7,7 @@ import { BlendedTrioDisplay } from '@/components/show-cards';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { featureFlags } from '@/config/feature-flags';
 import { SeasonSelect } from '@/components/SeasonSelect';
+import FeaturedSpotSlim from '@/components/FeaturedSpotSlim';
 import { CategorySection, SHOW_LEVEL_CATEGORIES } from '@/components/tony-noms/CategorySection';
 import { CeremonyCountdown } from '@/components/tony/CeremonyCountdown';
 import { TrackRecord } from '@/components/tony/TrackRecord';
@@ -529,6 +530,21 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
             ineligible={ineligibleByCategory[cat.key]}
           />
         ))}
+
+        {/* Beat the Critics promo — slot between major categories and performer/craft
+            categories. Current season only; BTC closes at ceremony start. */}
+        {isCurrent && (
+          <div className="my-6">
+            <FeaturedSpotSlim
+              eyebrow="Now playing"
+              title="Think you know Broadway better than the critics?"
+              ctaLabel="Make your picks"
+              href="/beat-the-critics"
+              accent="btc"
+              stat={{ icon: '★', label: 'Beat the Critics' }}
+            />
+          </div>
+        )}
 
         {/* Performer + craft categories — no model predictions; data depends on season:
             - Current season: GD/Kalshi/Polymarket odds + critic/audience/award scores
