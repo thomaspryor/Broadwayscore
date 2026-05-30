@@ -404,20 +404,20 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
             <p className="text-base leading-snug text-gray-300 text-center">Pick Tony winners.</p>
             <p className="text-base leading-snug text-gray-300 text-center">Compete against top critics.</p>
             <div className="mt-1 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-400 text-sm font-semibold whitespace-nowrap">
-              🎁 Beat a critic &mdash; win a <strong>$200 TodayTix gift card</strong>
+              🎁 Beat a critic &mdash; chance to win a <strong>$200 TodayTix gift card</strong>
             </div>
             <div className="text-[14px] text-gray-600 font-semibold">Prize sponsored by <span className="text-red-500/70">TodayTix</span></div>
             <a href="/beat-the-critics/rules" className="text-[10px] text-gray-600 hover:text-gray-400 transition-colors">Official Rules</a>
           </div>
 
           {/* Critic grid */}
-          <div className="animate-fade-up w-full mt-4" style={{ animationDelay: '0.85s', animationFillMode: 'both' }}>
-            <div className="text-[10px] font-bold uppercase tracking-widest text-gray-600 mb-2 text-center">Your Competition</div>
+          <div className="w-full mt-4">
+            <div className="animate-fade-up text-[10px] font-bold uppercase tracking-widest text-gray-600 mb-2 text-center" style={{ animationDelay: '0.85s', animationFillMode: 'both' }}>Your Competition</div>
             <div className="grid grid-cols-3 gap-2">
               {CRITICS.map((c, i) => {
                 const expanded = expandedCriticIdx === i;
                 return (
-                  <button key={i} onClick={() => setExpandedCriticIdx(expanded ? null : i)} className="rounded-xl bg-surface-raised ring-1 ring-white/5 p-3 text-left w-full transition-all duration-200 hover:ring-white/10 active:scale-[0.98]">
+                  <button key={i} onClick={() => setExpandedCriticIdx(expanded ? null : i)} className="animate-fade-up rounded-xl bg-surface-raised ring-1 ring-white/5 p-3 text-left w-full transition-all duration-200 hover:ring-white/10 active:scale-[0.98]" style={{ animationDelay: `${0.88 + i * 0.1}s`, animationFillMode: 'both' }}>
                     <div className="w-8 h-8 rounded-full bg-surface-overlay flex items-center justify-center text-xs font-black text-gray-300 mb-2">{c.initials}</div>
                     <div className="text-[12px] font-bold leading-tight">{c.name}</div>
                     <div className="text-[9px] text-brand font-semibold mt-0.5 leading-tight">{c.outlets.join(' · ')}</div>
@@ -481,10 +481,11 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
           </div>
           <div className="mt-8 pb-10">
             <div className="text-center mb-4 text-[11px] text-amber-400/60 font-semibold">
-              Beat a critic &mdash; win a <span className="text-amber-400/80">$200 TodayTix gift card</span>
+              Beat a critic &mdash; chance to win a <span className="text-amber-400/80">$200 TodayTix gift card</span>
             </div>
             <button onClick={handleLockIn} disabled={!selectedTitle} className={`w-full py-4 rounded-[14px] text-base font-bold transition-all duration-200 ${selectedTitle ? 'bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_20px_rgba(255,19,104,0.3)] hover:-translate-y-0.5' : 'bg-surface-overlay text-gray-500 cursor-not-allowed'}`}>{selectedTitle ? 'Lock In: ' + selectedTitle + ' \u2192' : 'Lock In Pick'}</button>
             <p className="text-center mt-2.5 text-xs text-gray-500">Not sure? Go with your gut!</p>
+            <p className="text-center mt-1 text-xs"><a href="https://demo.broadwayscorecard.com/tony-awards/predictions/2025-2026" target="_blank" rel="noopener noreferrer" className="text-amber-400 hover:text-amber-300 transition-colors">Check our Predictions &rarr;</a></p>
           </div>
         </div>
       </div>
