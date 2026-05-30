@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-30T11:38:48.710Z",
+  "timestamp": "2026-05-30T16:16:58.223Z",
   "stats": {
-    "totalReviews": 37811,
-    "alreadyFlagged": 16605,
+    "totalReviews": 37817,
+    "alreadyFlagged": 16607,
     "dateGuardCatches": 106,
     "directorMismatch": 809,
-    "tvFilmSignals": 1033,
+    "tvFilmSignals": 1034,
     "londonSignals": 584,
-    "offBroadwaySignals": 454,
+    "offBroadwaySignals": 455,
     "yearMismatch": 78,
-    "noPublishDate": 3956
+    "noPublishDate": 3962
   },
   "findings": [
     {
@@ -1816,7 +1816,7 @@
       "file": "guardian--chris-wiegand.json",
       "score": 56,
       "publishDate": "2026-05-25",
-      "url": "https://www.theguardian.com/stage/gallery/2026/may/25/beetlejuice-west-end-musical-in-pictures",
+      "url": "https://www.theguardian.com/stage/2026/may/29/beetlejuice-the-musical-review-prince-edward-theatre-london",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -8768,6 +8768,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 2\""
+        }
+      ]
+    },
+    {
+      "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
+      "file": "front-row-center--nicole-itkin.json",
+      "score": 79,
+      "publishDate": "2026-05-29",
+      "url": "https://thefrontrowcenter.com/2026/05/heated-rivalry-the-unauthorized-musical-parody/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -27946,7 +27960,7 @@
       "file": "guardian--unknown.json",
       "score": null,
       "publishDate": null,
-      "url": "https://www.theguardian.com/stage/2026/may/15/linda-bassett-call-the-midwife-caryl-churchill-alexander-zeldin-care",
+      "url": "https://www.theguardian.com/books/2024/nov/02/alan-bennett-at-90-what-will-people-think-i-dont-care-any-more",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -35385,6 +35399,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
+        }
+      ]
+    },
+    {
+      "showId": "small-off-broadway-2026",
+      "file": "theater-life--unknown.json",
+      "publishDate": "2026-05-29",
+      "url": "https://theaterlife.com/small/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
         }
       ]
     },
