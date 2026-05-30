@@ -34,6 +34,10 @@ const { serpQuery } = require('./lib/url-discovery');
 const { matchTitleToShow, loadShows } = require('./lib/show-matching');
 const { isNotBroadway } = require('./lib/content-filters');
 const { isLondonMarket } = require('./lib/venue-classification');
+const {
+  mergePreservingAddedDate,
+  findClosureDupe,
+} = require('./lib/cast-changes-filters');
 
 // ==================== Configuration ====================
 
@@ -1206,6 +1210,28 @@ function mergeEvents(existing, newEvents, source) {
         continue;
       }
 
+      // Closure de-dup runs first: a production has exactly ONE closure per
+      // closing date, but the captured name/role vary by source ("Death
+      // Becomes Her" vs the showId), so the name/role-keyed checks below miss
+      // it and a second closure row leaks in. Match on date alone and keep the
+      // richer record, pinning the earliest (first-seen) addedDate.
+      if (event.type === 'closure') {
+        const closureDupe = findClosureDupe(showData.upcoming, event);
+        if (closureDupe) {
+          const existingPriority = SOURCE_PRIORITY[closureDupe.sourceType] || 0;
+          const newPriority = SOURCE_PRIORITY[event.sourceType] || 0;
+          const richerNote = (event.note || '').length > (closureDupe.note || '').length;
+          if (newPriority > existingPriority || (newPriority === existingPriority && richerNote)) {
+            mergePreservingAddedDate(closureDupe, event);
+            changes.push({ showId, type: 'upgraded-closure', event, source });
+            stats.eventsUpgraded++;
+          }
+          // else: keep existing record untouched (write-once addedDate preserved)
+          continue;
+        }
+        // No existing closure on this date — fall through to add it as new.
+      }
+
       // Check for exact duplicate
       const exactDupe = showData.upcoming.find(e =>
         e.name === event.name &&
@@ -1220,7 +1246,7 @@ function mergeEvents(existing, newEvents, source) {
         const newPriority = SOURCE_PRIORITY[event.sourceType] || 0;
 
         if (newPriority > existingPriority) {
-          Object.assign(exactDupe, event);
+          mergePreservingAddedDate(exactDupe, event);
           changes.push({ showId, type: 'upgraded', event, source });
           stats.eventsUpgraded++;
         }
@@ -1241,7 +1267,7 @@ function mergeEvents(existing, newEvents, source) {
         const newPriority = SOURCE_PRIORITY[event.sourceType] || 0;
 
         if (newPriority > existingPriority) {
-          Object.assign(fuzzyDupe, event);
+          mergePreservingAddedDate(fuzzyDupe, event);
           changes.push({ showId, type: 'upgraded-fuzzy', event, source });
           stats.eventsUpgraded++;
         }
@@ -1262,7 +1288,7 @@ function mergeEvents(existing, newEvents, source) {
         const existingRole = samePersonDupe.role && samePersonDupe.role !== 'Unknown' ? samePersonDupe.role : '';
         const newRole = event.role && event.role !== 'Unknown' ? event.role : '';
         if (newRole.length > existingRole.length) {
-          Object.assign(samePersonDupe, event);
+          mergePreservingAddedDate(samePersonDupe, event);
           changes.push({ showId, type: 'upgraded-role', event, source });
           stats.eventsUpgraded++;
         }
