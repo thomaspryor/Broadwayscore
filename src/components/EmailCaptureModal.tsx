@@ -69,12 +69,12 @@ function getTriggerCopy(trigger: GateTrigger, isWE: boolean): { heading: string;
       subheading: `Enter your email for full access to ${market} investment data.`,
     },
     exit_intent: {
-      heading: `Never Miss a New ${market} Show`,
-      subheading: 'No spam, no schedule \u2014 just opening night scores. Unsubscribe anytime.',
+      heading: 'Know the score before you book',
+      subheading: 'Get each new show\u2019s score when it opens, so you know what\u2019s worth seeing.',
     },
     scroll_depth: {
-      heading: `Never Miss a New ${market} Show`,
-      subheading: 'Get opening night scores delivered to your inbox. Unsubscribe anytime.',
+      heading: 'Know the score before you book',
+      subheading: 'Get each new show\u2019s score when it opens, so you know what\u2019s worth seeing.',
     },
     return_visitor: {
       heading: `Never miss a new ${market} show`,
