@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-30T16:16:58.223Z",
+  "timestamp": "2026-05-30T18:48:25.773Z",
   "stats": {
-    "totalReviews": 37817,
-    "alreadyFlagged": 16607,
+    "totalReviews": 37812,
+    "alreadyFlagged": 16604,
     "dateGuardCatches": 106,
     "directorMismatch": 809,
     "tvFilmSignals": 1034,
     "londonSignals": 584,
     "offBroadwaySignals": 455,
     "yearMismatch": 78,
-    "noPublishDate": 3962
+    "noPublishDate": 3960
   },
   "findings": [
     {
@@ -1828,7 +1828,7 @@
     {
       "showId": "beetlejuice-west-end-2026",
       "file": "london-theatre--anya-ryan.json",
-      "score": null,
+      "score": 65,
       "publishDate": "2026-05-29",
       "url": "https://www.londontheatre.co.uk/reviews/beetlejuice-review-prince-edward-theatre",
       "findings": [
@@ -1902,10 +1902,10 @@
     },
     {
       "showId": "beetlejuice-west-end-2026",
-      "file": "times-uk--clive-davis.json",
-      "score": 62,
+      "file": "thestage--sam-marlowe.json",
+      "score": 31,
       "publishDate": "2026-05-29",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/beetlejuice-review-theatre-musical-tim-burton-prince-edward-london-zfgcfwq3s",
+      "url": "https://thestage.co.uk/reviews/beetlejuice-the-musical-review-prince-edward-theatre-london",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -1916,9 +1916,10 @@
     },
     {
       "showId": "beetlejuice-west-end-2026",
-      "file": "whatsonstage--alex-wood.json",
-      "publishDate": "2026-05-28",
-      "url": "https://www.whatsonstage.com/news/beetlejuice-in-the-west-end-review_1722801/",
+      "file": "times-uk--clive-davis.json",
+      "score": 62,
+      "publishDate": "2026-05-29",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/beetlejuice-review-theatre-musical-tim-burton-prince-edward-london-zfgcfwq3s",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
