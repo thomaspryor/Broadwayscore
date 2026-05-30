@@ -425,6 +425,55 @@ function checkSync() {
     return { name: 'Sync: open show coverage', status: worstStatus, message: parts.join('; '), hint: 'Check gather-reviews and weekly-grosses workflows' };
   }));
 
+  // B2b: Per-show social-pulse freshness. The `Freshness: social-pulse/_budget.json`
+  // check above only proves the WORKFLOW ran — it can't see a still-running show
+  // whose own file silently stopped refreshing (the update-social-pulse fetcher
+  // can skip individual shows on partial failures). And a show whose status flips
+  // away from open/previews leaves a frozen file forever. Both surfaced the School
+  // Girls incident (file stuck at a 2026-04-13 fetch for 6+ weeks). We flag any
+  // currently-running Broadway/West End show whose public .social.json is older
+  // than the consumer staleness window (14 days, mirrors MAX_SOCIAL_PULSE_AGE_DAYS
+  // in src/lib/data-social-pulse.ts) — those would be hidden from the show page +
+  // /trending by the display guards, i.e. silently disappear from users.
+  results.push(runCheck('Sync: social-pulse per-show freshness', () => {
+    const STALE_DAYS = 14;
+    const shows = readJSON(path.join(DATA_DIR, 'shows.json'));
+    const showList = shows.shows || Object.values(shows).filter(s => s && s.id);
+    // Match the fetcher's scope (scripts/lib/list-running-shows.js): running
+    // (open/previews) shows in the Broadway or West End markets. Off-Broadway is
+    // out of scope for the social pipeline, so its missing files aren't gaps.
+    const inScope = showList.filter(s =>
+      (s.status === 'open' || s.status === 'previews') &&
+      ((s.category || 'broadway') === 'broadway' || s.category === 'west-end'));
+    const pulseDir = path.join(__dirname, '..', 'public', 'data', 'shows');
+
+    const stale = [];
+    for (const show of inScope) {
+      const f = path.join(pulseDir, `${show.id}.social.json`);
+      if (!fs.existsSync(f)) continue; // no file yet = cold-start, handled elsewhere
+      let u;
+      try { u = readJSON(f).u; } catch { continue; }
+      const ageH = hoursAgo(u);
+      if (ageH / 24 > STALE_DAYS) {
+        stale.push({ title: show.title, days: Math.round(ageH / 24) });
+      }
+    }
+
+    if (stale.length === 0) {
+      return { name: 'Sync: social-pulse per-show freshness', status: 'pass', message: `${inScope.length} running BW/WE shows — no stale social-pulse files` };
+    }
+    stale.sort((a, b) => b.days - a.days);
+    const sample = stale.slice(0, 5).map(s => `${s.title} (${s.days}d)`).join(', ');
+    // A running show going stale is a real silent failure → warn (error if widespread).
+    const status = stale.length > 5 ? 'error' : 'warn';
+    return {
+      name: 'Sync: social-pulse per-show freshness',
+      status,
+      message: `${stale.length} running show(s) with social-pulse >${STALE_DAYS}d stale: ${sample}`,
+      hint: 'update-social-pulse ran but skipped these shows, or their status changed leaving a frozen file. Re-run: gh workflow run update-social-pulse.yml. They are currently hidden from show pages + /trending by the staleness guard.',
+    };
+  }));
+
   // B3: Phantom show detection — open shows with TBA venue and no reviews
   // Auto-discover can create phantom entries when isMultiProduction() treats TBA-venue
   // shows as distinct productions. These show up as open shows with no reviews and no venue.

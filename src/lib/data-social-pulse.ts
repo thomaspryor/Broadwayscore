@@ -64,6 +64,35 @@ export type TrendingPick = RawSocialPulse & { compositeScore: number };
 export const MIN_TRENDING_VOLUME = 50;
 
 /**
+ * Maximum age (days) of a social-pulse fetch before we treat it as stale and
+ * stop surfacing it. The fetcher (update-social-pulse.yml) runs weekly and only
+ * refreshes open/previews shows (scripts/lib/list-running-shows.js), so an
+ * upcoming or closed show keeps a FROZEN file indefinitely — e.g. School Girls;
+ * Or, The African Mean Girls Play sat at a 2026-04-13 fetch for 6+ weeks while
+ * upcoming. Without this guard the show page and /trending render that stale
+ * data under a "last 7 days" framing. 14 days = one full weekly cycle plus a
+ * week of slack for a late/missed cron, so a still-running show never flickers
+ * off mid-week. Mirrors the newsletter guard in scripts/newsletter/generate.mjs.
+ */
+export const MAX_SOCIAL_PULSE_AGE_DAYS = 14;
+
+/**
+ * True if `fetchedAtISO` is present, parseable, and within
+ * MAX_SOCIAL_PULSE_AGE_DAYS of `now`. A missing/garbled timestamp is treated as
+ * stale (safe direction — better to hide than to show undated data). `now` is a
+ * parameter (not Date.now()) so callers stay testable; build-time callers pass
+ * the default. Output therefore depends on build date — intentional, since the
+ * data genuinely ages, and CI + local builds on the same day stay in sync.
+ */
+export function isFreshPulse(fetchedAtISO: string | null | undefined, now: Date = new Date()): boolean {
+  if (!fetchedAtISO) return false;
+  const fetched = Date.parse(fetchedAtISO);
+  if (Number.isNaN(fetched)) return false;
+  const ageMs = now.getTime() - fetched;
+  return ageMs <= MAX_SOCIAL_PULSE_AGE_DAYS * 24 * 60 * 60 * 1000;
+}
+
+/**
  * Synchronously reads the social pulse payload for a show. Safe to call
  * from React server components and getStaticProps equivalents.
  *
@@ -86,13 +115,23 @@ export function getSocialPulse(showId: string): SocialPulsePayload | null {
     return null;
   }
 
+  let parsed: SocialPulsePayload;
   try {
-    return JSON.parse(raw) as SocialPulsePayload;
+    parsed = JSON.parse(raw) as SocialPulsePayload;
   } catch (err) {
     // eslint-disable-next-line no-console
     console.warn(`[data-social-pulse] Failed to parse ${filePath}: ${(err as Error).message}`);
     return null;
   }
+
+  // Suppress stale data: the weekly fetcher only refreshes open/previews shows,
+  // so an upcoming/closed show keeps a frozen `.social.json` forever. `u` is the
+  // fetchedAt ISO timestamp in the compact schema. See isFreshPulse / the
+  // School Girls incident. Callers should ALSO status-gate (open/previews) so a
+  // recently-closed show's still-fresh card doesn't linger past closing.
+  if (!isFreshPulse(parsed.u)) return null;
+
+  return parsed;
 }
 
 /**
@@ -162,6 +201,8 @@ function readAllRawSocialPulses(): RawSocialPulse[] {
  * Exclusions:
  *   - tier === 'Hidden' (below MIN_MENTIONS_FOR_CARD — not enough signal)
  *   - volume < MIN_TRENDING_VOLUME (see constant doc — page-specific floor)
+ *   - stale fetches (fetchedAt older than MAX_SOCIAL_PULSE_AGE_DAYS) — a frozen
+ *     file from an upcoming/closed show would otherwise rank on stale volume
  *   - showIds not present in `knownShowIds` (prevents dead-end rows for
  *     shows in the pulse corpus but missing from shows.json — e.g. an
  *     upcoming show the social scraper picked up before the show record
@@ -188,6 +229,7 @@ export function getTopTrendingShows(
         p.market === market &&
         p.tier !== 'Hidden' &&
         p.volume >= MIN_TRENDING_VOLUME &&
+        isFreshPulse(p.fetchedAt) &&
         knownShowIds.has(p.showId),
     )
     .map<TrendingPick>((p) => ({
