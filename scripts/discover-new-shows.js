@@ -31,6 +31,18 @@ const { cleanSearchTitle } = require('./lib/title-normalization');
 const { splitCombinedCredits } = require('./lib/credit-splitting');
 const { scrapeCurrentRuntimes, matchRuntimesToShows, batchScrapeAgeRecommendations } = require('./lib/broadway-com-runtimes');
 const { isLondonMarket, isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue } = require('./lib/venue-classification');
+const { BROADWAY_THEATERS, normalizeVenueName: normalizeBroadwayVenue } = require('./lib/broadway-theaters');
+
+// Strict exact-match set of the 41 official Broadway houses (canonical + aliases),
+// normalized. We deliberately do NOT use broadway-theaters' isOfficialBroadwayTheater
+// here: its findTheater() does loose substring matching (great for resolving a
+// known shows.json venue, wrong for discovery), which false-positives "Lotte New
+// York Palace Hotel" → Palace Theatre and "Laura Pels Theatre" (an OB house).
+const BROADWAY_HOUSE_NAMES = new Set();
+for (const t of Object.values(BROADWAY_THEATERS)) {
+  if (t.canonical) BROADWAY_HOUSE_NAMES.add(normalizeBroadwayVenue(t.canonical));
+  for (const alias of t.aliases || []) BROADWAY_HOUSE_NAMES.add(normalizeBroadwayVenue(alias));
+}
 const { classifyShow } = require('./lib/classify-show');
 const { scrapePlaybillOBData, checkSilentRot } = require('./lib/playbill-ob-schedule');
 const {
@@ -173,6 +185,38 @@ function isNonTheaterContent(show) {
   return false;
 }
 
+// Extra fields for a TodayTix OB show pulled in WITHOUT the "Off Broadway"
+// subcategory (i.e. rescued by the venue-name fallback). That's a lower-
+// confidence inference — we're overriding TodayTix's missing tag from our own
+// venue list — so mark it provisional + a distinct discoverySource. This routes
+// it through validate-show-venue.js --all-provisional for a Playbill cross-check
+// before the venue/date are trusted (CLAUDE.md §3). Subcat-tagged shows are
+// TodayTix's own authoritative classification and get no flags.
+function obFallbackFlags(show) {
+  const taggedOB = show.subcategories?.some(sc => sc.name === 'Off Broadway');
+  if (taggedOB) return {};
+  return { provisional: true, discoverySource: 'todaytix-venue-fallback' };
+}
+
+// True when a TodayTix venue (string or { name }) is one of the 41 official
+// Broadway houses. Lets discovery rescue Broadway shows TodayTix lists without
+// the "Broadway" subcat (e.g. Other Desert Cities @ Hudson Theatre, 2026-05-29).
+function isBroadwayHouse(venue) {
+  const name = typeof venue === 'string' ? venue : venue?.name;
+  if (!name || name === 'TBA') return false;
+  return BROADWAY_HOUSE_NAMES.has(normalizeBroadwayVenue(name));
+}
+
+// Same as obFallbackFlags but for Broadway: a show rescued by the venue-house
+// match (no "Broadway" subcat) is a lower-confidence inference, so flag it
+// provisional for IBDB/Playbill cross-validation. Subcat-tagged Broadway shows
+// are TodayTix's own authoritative classification and get no flags.
+function bwayFallbackFlags(show) {
+  const taggedBway = show.subcategories?.some(sc => sc.name === 'Broadway');
+  if (taggedBway) return {};
+  return { provisional: true, discoverySource: 'todaytix-venue-fallback' };
+}
+
 // TodayTix API - public, no auth required, no Cloudflare
 function fetchTodayTixPage(offset = 0, limit = 100) {
   return new Promise((resolve, reject) => {
@@ -209,9 +253,13 @@ async function fetchShowsFromTodayTix() {
 
   // Filter by subcategories: Broadway always, Off-Broadway when flag is set
   // Gate 1: One-night shows are filtered at TodayTix ingestion (not IBDB historical)
-  const broadwayShows = allShows.filter(s =>
-    s.subcategories?.some(sc => sc.name === 'Broadway') && !isNonTheaterContent(s) && !isOneNightShow(s)
-  );
+  const broadwayShows = allShows.filter(s => {
+    if (isNonTheaterContent(s) || isOneNightShow(s)) return false;
+    // TodayTix mis-tags some Broadway shows (no "Broadway" subcat). Fall back to
+    // venue: if it plays one of the 41 official Broadway houses, include it.
+    // Other Desert Cities (Hudson Theatre) slipped through on subcat alone.
+    return s.subcategories?.some(sc => sc.name === 'Broadway') || isBroadwayHouse(s.venue);
+  });
   const offBroadwayShows = includeOffBroadway ? allShows.filter(s => {
     if (s.subcategories?.some(sc => sc.name === 'Broadway')) return false; // exclude shows tagged as both
     // TodayTix mis-tags some OB shows (no "Off Broadway" subcat). Fall back to
@@ -255,6 +303,8 @@ async function fetchShowsFromTodayTix() {
       description: show.description || '',
       todayTixCategory: show.category?.name || null,
       todaytixId: show.id || null,
+      // provisional + discoverySource when rescued by the Broadway-house fallback
+      ...bwayFallbackFlags(show),
     });
   }
 
@@ -276,10 +326,12 @@ async function fetchShowsFromTodayTix() {
       description: show.description || '',
       todayTixCategory: show.category?.name || null,
       todaytixId: show.id || null,
+      // provisional + discoverySource when rescued by the venue-name fallback
+      ...obFallbackFlags(show),
     });
   }
 
-  console.log(`TodayTix API: ${allShows.length} total NYC shows, ${broadwayShows.length} Broadway-tagged, ${offBroadwayShows.length} Off-Broadway (subcat or known venue), ${showsList.length} unique`);
+  console.log(`TodayTix API: ${allShows.length} total NYC shows, ${broadwayShows.length} Broadway (subcat or known house), ${offBroadwayShows.length} Off-Broadway (subcat or known venue), ${showsList.length} unique`);
   return showsList;
 }
 
@@ -2232,6 +2284,9 @@ if (require.main === module) {
 module.exports = {
   isNonTheaterContent,
   isOneNightShow,
+  obFallbackFlags,
+  bwayFallbackFlags,
+  isBroadwayHouse,
   EXCLUDED_TITLES,
   NON_THEATER_PATTERNS,
   VENUE_LISTING_PAGES,

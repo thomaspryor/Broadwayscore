@@ -218,20 +218,25 @@ export default function BeatTheCriticsPage() {
     })),
   };
 
-  // Helper to merge curated show pools from multiple categories (deduped by slug)
-  function mergeShowPools(...catTitles: string[]): SerializedTonyShow[] {
-    const seen = new Set<string>();
-    const merged: SerializedTonyShow[] = [];
-    for (const title of catTitles) {
-      const cat = categoryMap.get(title);
-      if (!cat) continue;
-      const curated = CURATED_SHOW_NOMINEES[title];
-      for (const s of [...cat.shows, ...cat.upcoming]) {
-        if (curated && !curated.includes(s.slug)) continue;
-        if (!seen.has(s.slug)) { seen.add(s.slug); merged.push(s); }
-      }
+  // Exact 2026 Tony nominees per creative/technical category (sourced from tony-nominations.json)
+  const CURATED_TIER4_NOMINEES: Record<string, string[]> = {
+    'Best Direction of a Musical': ['two-strangers', 'ragtime', 'schmigadoon', 'the-lost-boys', 'cats-the-jellicle-ball'],
+    'Best Direction of a Play':    ['liberation', 'oedipus', 'death-of-a-salesman', 'giant', 'the-balusters'],
+    'Best Original Score':         ['two-strangers', 'schmigadoon', 'the-lost-boys', 'joe-turners-come-and-gone', 'death-of-a-salesman'],
+    'Best Book of a Musical':      ['two-strangers', 'schmigadoon', 'the-lost-boys', 'titanique'],
+    'Best Choreography':           ['ragtime', 'schmigadoon', 'the-rocky-horror-show', 'the-lost-boys', 'cats-the-jellicle-ball'],
+    'Best Orchestrations':         ['two-strangers', 'chess', 'schmigadoon', 'the-lost-boys', 'cats-the-jellicle-ball'],
+  };
+
+  // Flat slug index across all eligible categories (includes shows not in tier1 curated lists)
+  const allShowsBySlug = new Map<string, SerializedTonyShow>();
+  for (const cat of grouped) {
+    for (const s of [...cat.shows, ...cat.upcoming]) {
+      if (!allShowsBySlug.has(s.slug)) allShowsBySlug.set(s.slug, s);
     }
-    return merged;
+  }
+  function buildFromSlugs(slugs: string[]): SerializedTonyShow[] {
+    return slugs.map(slug => allShowsBySlug.get(slug)).filter((s): s is SerializedTonyShow => !!s);
   }
 
   // Tier 4: Creative & Technical (show-based — CriticScore applies)
@@ -240,12 +245,12 @@ export default function BeatTheCriticsPage() {
     label: 'Tier 4',
     name: 'Creative & Technical',
     categories: [
-      { title: 'Best Direction of a Musical', nominees: mergeShowPools('Best Musical', 'Best Revival of a Musical') },
-      { title: 'Best Direction of a Play', nominees: mergeShowPools('Best Play', 'Best Revival of a Play') },
-      { title: 'Best Original Score', nominees: mergeShowPools('Best Musical') },
-      { title: 'Best Book of a Musical', nominees: mergeShowPools('Best Musical') },
-      { title: 'Best Choreography', nominees: mergeShowPools('Best Musical', 'Best Revival of a Musical') },
-      { title: 'Best Orchestrations', nominees: mergeShowPools('Best Musical', 'Best Revival of a Musical') },
+      { title: 'Best Direction of a Musical', nominees: buildFromSlugs(CURATED_TIER4_NOMINEES['Best Direction of a Musical']) },
+      { title: 'Best Direction of a Play',    nominees: buildFromSlugs(CURATED_TIER4_NOMINEES['Best Direction of a Play']) },
+      { title: 'Best Original Score',         nominees: buildFromSlugs(CURATED_TIER4_NOMINEES['Best Original Score']) },
+      { title: 'Best Book of a Musical',      nominees: buildFromSlugs(CURATED_TIER4_NOMINEES['Best Book of a Musical']) },
+      { title: 'Best Choreography',           nominees: buildFromSlugs(CURATED_TIER4_NOMINEES['Best Choreography']) },
+      { title: 'Best Orchestrations',         nominees: buildFromSlugs(CURATED_TIER4_NOMINEES['Best Orchestrations']) },
     ],
   };
 

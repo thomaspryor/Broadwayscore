@@ -534,3 +534,47 @@ describe('isIncludableForRebuild — not_a_review + json-ld star exception (Bug 
     );
   });
 });
+
+describe('isIncludableForRebuild — contamination regression (date-guard FP clear + roundup)', () => {
+  // Regression for the 2026-05-29 contamination sweep: a date guard fired
+  // wrongProduction against a stale/incorrect show closingDate (since
+  // corrected). The reviews are legit (within 30d of opening, CV says correct
+  // production). Clearing via wrongProductionManualClear must make them
+  // includable again; an UNCLEARED date-guard flag must stay excluded.
+  it('excludes an uncleared date-guard wrongProduction false positive', () => {
+    assert.strictEqual(
+      isIncludableForRebuild({
+        fullText: 'A real review of the production.',
+        wrongProduction: true,
+        wrongProductionNote: 'Date guard: review 2025-03-10 is 106d after 2024-11-17 (close+7d)',
+        contentVerification: { wrongProduction: false },
+      }),
+      false
+    );
+  });
+
+  it('includes the same review once wrongProductionManualClear clears it', () => {
+    assert.strictEqual(
+      isIncludableForRebuild({
+        fullText: 'A real review of the production.',
+        wrongProduction: false,
+        wrongProductionManualClear: true,
+        wrongProductionReason: 'Date-guard false positive: stale closingDate since corrected.',
+        contentVerification: { wrongProduction: false },
+      }),
+      true
+    );
+  });
+
+  it('excludes a BWW Review-Roundup page flagged isRoundupArticle', () => {
+    assert.strictEqual(
+      isIncludableForRebuild({
+        fullText: 'Critics weigh in on the new show...',
+        isRoundupArticle: true,
+        roundupArticleReason: 'manual: URL matches Review-Roundup pattern',
+        url: 'https://www.broadwayworld.com/off-broadway/article/Review-Roundup-FOO-20260508',
+      }),
+      false
+    );
+  });
+});

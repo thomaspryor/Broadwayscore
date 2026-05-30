@@ -32,17 +32,17 @@ export default function BeatTheCriticsRulesPage() {
 
         <section>
           <h2 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-2">3. How to Enter</h2>
-          <p className="text-sm">Visit <a href="https://broadwayscorecard.com/beat-the-critics" className="text-brand underline">broadwayscorecard.com/beat-the-critics</a>, complete at minimum the Best Musical, Best Play, Best Revival of a Musical, and Best Revival of a Play categories (Round 1), and provide your email address. You may continue through additional rounds to improve your chances. Limit one (1) entry per person. Entries submitted by automated means are void.</p>
+          <p className="text-sm">Visit <a href="https://broadwayscorecard.com/beat-the-critics" className="text-brand underline">broadwayscorecard.com/beat-the-critics</a>, complete at minimum the Best Musical, Best Play, Best Revival of a Musical, and Best Revival of a Play categories (Round 1), and provide your email address. You may continue through additional rounds to enter more categories, expanding the set compared against each critic. Limit one (1) entry per person. Entries submitted by automated means are void.</p>
         </section>
 
         <section>
           <h2 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-2">4. Prize</h2>
-          <p className="text-sm">One (1) winner will receive a TodayTix gift card with an approximate retail value of $200 USD. Prize is non-transferable. No cash equivalent or substitution, except at the sole discretion of Broadway Scorecard. Any gift card terms, expiration, and conditions are governed solely by TodayTix.</p>
+          <p className="text-sm">One (1) winner will receive a TodayTix gift card valued at $200 USD. Prize is non-transferable. No cash equivalent or substitution, except at the sole discretion of Broadway Scorecard. Any gift card terms, expiration, and conditions are governed solely by TodayTix.</p>
         </section>
 
         <section>
           <h2 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-2">5. Winner Selection</h2>
-          <p className="text-sm">Following the Tony Award ceremony on June 7, 2026, one (1) winner will be selected at random from all eligible entries where the participant&apos;s prediction accuracy (correct picks divided by categories entered) exceeds the prediction accuracy of at least one (1) of the featured critics on those same categories. Participants who enter more categories are compared across a larger shared set. If no eligible entries meet this criterion, one (1) winner will be selected at random from all eligible entries. Odds of winning depend on the number of eligible entries received.</p>
+          <p className="text-sm">Following the Tony Award ceremony on June 8, 2026, one (1) winner will be selected at random from all eligible entries where the participant&apos;s prediction accuracy (correct picks divided by categories entered) exceeds the prediction accuracy of at least one (1) of the featured critics on those same categories. Participants who enter more categories are compared across a larger shared set. If no eligible entries meet this criterion, one (1) winner will be selected at random from all eligible entries. Odds of winning depend on the number of eligible entries received.</p>
         </section>
 
         <section>

@@ -75,6 +75,30 @@ function approvalRe(hash) {
   return new RegExp(`APPROVED:\\s+${safe}\\b`);
 }
 
+// Plain-language approval (2026-05-29): transcribing the exact `APPROVED: <hash>`
+// was painful, pointless friction — for a non-technical user a 16-char hash is
+// noise. When a UI push is gated AND a fresh verdict already exists, a clear
+// plain affirmative in the last user message is enough; the human glance (they
+// confirm after seeing the visual) is the real safety, the hash never was.
+// Negation-guarded so it stays a deliberate yes (fails toward asking again, not
+// toward shipping, on anything ambiguous).
+const PLAIN_APPROVAL_RE = /\b(?:approved?|ship it(?:\s+now)?|lgtm|looks good|go ahead|send it|yep|yup|yes(?:\s+ship)?|do it)\b/i;
+// Reject on negation OR conditional/change-request words — "looks good but fix X
+// first", "yes, wait", "approved except…" are NOT a clean ship. Fails toward
+// asking again, never toward shipping.
+const APPROVAL_NEGATION_RE = /\b(?:don'?t|do not|not|never|hold|wait|stop|cancel|no|but|however|except|first|fix|change|instead|before|unless|although|though|hold on|revisit)\b/i;
+
+function isPlainApproval(text) {
+  if (!text || typeof text !== 'string') return false;
+  // If the user used the explicit hash form (`APPROVED: <hash>`), honor it
+  // STRICTLY via approvalRe — the bare word "approved" must not approve a
+  // DIFFERENT verdict than the one named. Preserves per-hash scoping so a stale
+  // approval of verdict A can't green-light verdict B.
+  if (/APPROVED:\s*[A-Za-z0-9]{6,}/.test(text)) return false;
+  if (APPROVAL_NEGATION_RE.test(text)) return false; // "don't ship", "not yet", etc.
+  return PLAIN_APPROVAL_RE.test(text);
+}
+
 // Reference-attached detection — Claude Code surfaces user-attached images as:
 //   - tool_result content blocks with type=image
 //   - text blocks containing the marker "[Image #N]" with path "/var/folders/.../clipboard-*.png"
@@ -188,8 +212,14 @@ export function queryApprovalOf(events, hash) {
   for (let i = events.length - 1; i >= 0; i--) {
     const e = events[i];
     if (e.kind === 'user_text') {
-      const matched = re.test(e.text);
-      return { approved: matched, lastUserText: e.text.slice(0, 200), matchedHash: hash };
+      const exact = re.test(e.text);
+      const plain = isPlainApproval(e.text);
+      return {
+        approved: exact || plain,
+        via: exact ? 'hash' : (plain ? 'plain-affirmative' : null),
+        lastUserText: e.text.slice(0, 200),
+        matchedHash: hash,
+      };
     }
   }
   return { approved: false, reason: 'no user text in transcript' };

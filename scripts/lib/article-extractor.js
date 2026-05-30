@@ -39,6 +39,73 @@ function stripHtml(s) {
 }
 
 /**
+ * Remove balanced <div>…</div> blocks whose opening tag's class contains any of
+ * the given needles. Regex can't match nested divs, so we walk the tag stream and
+ * splice out each target block by depth-counting to its matching close.
+ */
+function removeBalancedDivBlocks(html, classNeedles) {
+  let out = html;
+  for (const needle of classNeedles) {
+    const openRe = new RegExp(
+      '<div[^>]*class="[^"]*' + needle.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '[^"]*"[^>]*>',
+      'i'
+    );
+    let guard = 0;
+    let idx;
+    while ((idx = out.search(openRe)) > -1 && guard++ < 50) {
+      const tagRe = /<div\b[^>]*>|<\/div>/g;
+      tagRe.lastIndex = idx;
+      let depth = 0;
+      let end = -1;
+      let m;
+      while ((m = tagRe.exec(out))) {
+        if (m[0] === '</div>') {
+          depth--;
+          if (depth === 0) { end = m.index + 6; break; }
+        } else {
+          depth++;
+        }
+      }
+      if (end === -1) break; // unbalanced — leave as-is rather than corrupt
+      out = out.slice(0, idx) + ' ' + out.slice(end);
+    }
+  }
+  return out;
+}
+
+/**
+ * Variety (variety.com) — the review body lives in a single `div.a-content`, but
+ * the current layout injects promo modules MID-ARTICLE: `injected-related-story`
+ * ("Related Stories") and `pmc-contextual-player` ("Popular on Variety"). The old
+ * DOM patterns stopped at the first `</div></article>` and returned ~600–840 chars
+ * (the lede + bled-in promo link text), silently truncating every Variety review.
+ * Static HTML, so the production fetch path (cookie-plain / SB render_js=false)
+ * hits the same truncation. (2026-05-29 incident — rocky-horror/beaches/balusters
+ * all extracted <840 chars while the full review is ~6.3–6.9K chars.)
+ *
+ * Strategy: slice from `a-content` open to the first post-body marker, strip the
+ * two promo containers by balanced-div removal, then collect review <p> prose.
+ * Verified against 3 fixtures → 6254 / 6401 / 6919 chars, zero promo bleed.
+ */
+function extractVarietyBody(html) {
+  const openM = html.match(/<div[^>]*class="[^"]*\ba-content\b[^"]*"[^>]*>/);
+  if (!openM) return null;
+  const open = openM.index;
+  let end = html.length;
+  for (const mk of ['Read More About', 'Jump to Comments', 'More from Variety', 'Sign Up for Variety']) {
+    const i = html.indexOf(mk, open);
+    if (i > -1 && i < end) end = i;
+  }
+  let region = html.slice(open, end);
+  region = removeBalancedDivBlocks(region, ['injected-related-story', 'pmc-contextual-player']);
+  const paras = [...region.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/g)]
+    .map((m) => stripHtml(m[1]))
+    .filter((t) => t.length > 40 && /[a-z]/.test(t));
+  const body = paras.join('\n\n');
+  return body.length >= 300 ? body : null;
+}
+
+/**
  * Per-outlet patterns. Order matters: most specific first.
  * Each entry: [hostnameMatch, regex, minLength].
  * minLength gates against accidental shell-match (e.g. matching 200 chars of nav).
@@ -165,6 +232,13 @@ function extractArticleText(html, hostname) {
   if (host.includes('wsj.com')) {
     const wsjText = extractWsjNextData(html);
     if (wsjText && wsjText.length >= 300) return wsjText;
+  }
+
+  // Variety: promo modules injected mid-article break the DOM patterns (truncate
+  // to ~800 chars). Dedicated extractor strips them and collects review prose.
+  if (host.includes('variety.com')) {
+    const varietyText = extractVarietyBody(html);
+    if (varietyText && varietyText.length >= 300) return varietyText;
   }
 
   for (const [hostMatch, re, minLen] of PATTERNS) {

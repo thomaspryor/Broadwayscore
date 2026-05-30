@@ -47,7 +47,7 @@ const CRITICS: CriticPanelist[] = [
   { name: 'Matthew Wexler', outlets: ['1 Minute Critic'], initials: 'MW', bio: 'Founder of 1 Minute Critic. Theater critic and member of the American Theatre Critics Association.' },
 ];
 
-// Picks are hidden until after the ceremony — critics' picks revealed June 7, 2026
+// Picks are hidden until after the ceremony — critics' picks revealed June 8, 2026
 const PICKS_REVEAL_DATE = new Date('2026-06-08T00:00:00Z');
 const PICKS_REVEALED = Date.now() >= PICKS_REVEAL_DATE.getTime();
 
@@ -153,12 +153,16 @@ function ActorPoster({ nominee }: { nominee: ActorNominee }) {
   return (<div className="w-11 h-11 rounded-lg bg-surface-overlay flex items-center justify-center text-xs font-extrabold text-white/30 flex-shrink-0">{initials.toUpperCase()}</div>);
 }
 
+function shortTitle(title: string): string {
+  return title.replace(' (Carry a Cake Across New York)', '');
+}
+
 function NomineeCard({ show, selected, onSelect }: { show: SerializedTonyShow; selected: boolean; onSelect: () => void }) {
   return (
     <button onClick={onSelect} className={`w-full flex items-center gap-3.5 p-3.5 rounded-[14px] text-left transition-all duration-200 ${selected ? 'bg-[#ff1368]/[0.06] border-2 border-[#ff1368] shadow-[0_0_20px_rgba(255,19,104,0.1)]' : 'bg-surface-raised border-2 border-transparent hover:bg-surface-overlay hover:border-white/10'}`}>
       <ShowPoster show={show} />
       <div className="flex-1 min-w-0">
-        <div className="text-[15px] font-bold line-clamp-2 leading-snug">{show.title}</div>
+        <div className="text-[15px] font-bold line-clamp-2 leading-snug">{shortTitle(show.title)}</div>
         <div className="text-xs text-gray-500">{show.venue}</div>
       </div>
       <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all duration-200 ${selected ? 'border-[#ff1368]' : 'border-white/20'}`}>
@@ -228,7 +232,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
   const [countdownExpired, setCountdownExpired] = useState(() => Date.now() >= new Date('2026-06-08T00:00:00Z').getTime());
   const [pickStats, setPickStats] = useState<{ totalSubmissions: number; picks: Record<string, Record<string, number>> } | null>(null);
   useEffect(() => {
-    const ceremony = new Date('2026-06-08T00:00:00Z'); // 8 PM ET June 7
+    const ceremony = new Date('2026-06-08T00:00:00Z'); // 8 PM ET June 8
     const tick = () => {
       const diff = ceremony.getTime() - Date.now();
       if (diff <= 0) { setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 }); setCountdownExpired(true); return; }
@@ -404,24 +408,24 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
             <p className="text-base leading-snug text-gray-300 text-center">Pick Tony winners.</p>
             <p className="text-base leading-snug text-gray-300 text-center">Compete against top critics.</p>
             <div className="mt-1 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-400 text-sm font-semibold whitespace-nowrap">
-              🎁 Beat a critic &mdash; win a <strong>$200 TodayTix gift card</strong>
+              🎁 Beat a critic &mdash; chance to win a <strong>$200 TodayTix gift card</strong>
             </div>
-            <div className="text-[11px] text-gray-600 font-semibold">Prize sponsored by <span className="text-red-500/70">TodayTix</span></div>
+            <div className="flex items-center justify-center gap-1.5 text-[14px] text-gray-600 font-semibold">Prize sponsored by <img src="/todaytix-logo.svg" alt="TodayTix" className="h-[14px] opacity-80" /></div>
             <a href="/beat-the-critics/rules" className="text-[10px] text-gray-600 hover:text-gray-400 transition-colors">Official Rules</a>
           </div>
 
           {/* Critic grid */}
-          <div className="animate-fade-up w-full mt-4" style={{ animationDelay: '0.85s', animationFillMode: 'both' }}>
-            <div className="text-[10px] font-bold uppercase tracking-widest text-gray-600 mb-2 text-center">Your Competition</div>
+          <div className="w-full mt-4">
+            <div className="animate-fade-up text-[10px] font-bold uppercase tracking-widest text-gray-600 mb-2 text-center" style={{ animationDelay: '0.85s', animationFillMode: 'both' }}>Your Competition</div>
             <div className="grid grid-cols-3 gap-2">
               {CRITICS.map((c, i) => {
                 const expanded = expandedCriticIdx === i;
                 return (
-                  <button key={i} onClick={() => setExpandedCriticIdx(expanded ? null : i)} className="rounded-xl bg-surface-raised ring-1 ring-white/5 p-3 text-left w-full transition-all duration-200 hover:ring-white/10 active:scale-[0.98]">
+                  <button key={i} onClick={() => setExpandedCriticIdx(expanded ? null : i)} className="animate-fade-up rounded-xl bg-surface-raised ring-1 ring-white/5 p-3 text-left w-full transition-all duration-200 hover:ring-white/10 active:scale-[0.98]" style={{ animationDelay: `${0.88 + i * 0.1}s`, animationFillMode: 'both' }}>
                     <div className="w-8 h-8 rounded-full bg-surface-overlay flex items-center justify-center text-xs font-black text-gray-300 mb-2">{c.initials}</div>
                     <div className="text-[12px] font-bold leading-tight">{c.name}</div>
                     <div className="text-[9px] text-brand font-semibold mt-0.5 leading-tight">{c.outlets.join(' · ')}</div>
-                    <div className="text-[10px] text-gray-500 mt-1 leading-snug line-clamp-3">{c.bio}</div>
+                    <div className={`text-[10px] text-gray-500 mt-1 leading-snug ${expanded ? '' : 'line-clamp-3'}`}>{c.bio}</div>
                   </button>
                 );
               })}
@@ -481,10 +485,11 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
           </div>
           <div className="mt-8 pb-10">
             <div className="text-center mb-4 text-[11px] text-amber-400/60 font-semibold">
-              Beat a critic &mdash; win a <span className="text-amber-400/80">$200 TodayTix gift card</span>
+              Beat a critic &mdash; chance to win a <span className="text-amber-400/80">$200 TodayTix gift card</span>
             </div>
-            <button onClick={handleLockIn} disabled={!selectedTitle} className={`w-full py-4 rounded-[14px] text-base font-bold transition-all duration-200 ${selectedTitle ? 'bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_20px_rgba(255,19,104,0.3)] hover:-translate-y-0.5' : 'bg-surface-overlay text-gray-500 cursor-not-allowed'}`}>{selectedTitle ? 'Lock In: ' + selectedTitle + ' \u2192' : 'Lock In Pick'}</button>
+            <button onClick={handleLockIn} disabled={!selectedTitle} className={`w-full py-4 rounded-[14px] text-base font-bold transition-all duration-200 ${selectedTitle ? 'bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_20px_rgba(255,19,104,0.3)] hover:-translate-y-0.5' : 'bg-surface-overlay text-gray-500 cursor-not-allowed'}`}>{selectedTitle ? 'Lock In: ' + shortTitle(selectedTitle) + ' \u2192' : 'Lock In Pick'}</button>
             <p className="text-center mt-2.5 text-xs text-gray-500">Not sure? Go with your gut!</p>
+            <p className="text-center mt-1 text-xs"><a href="https://demo.broadwayscorecard.com/tony-awards/predictions/2025-2026" target="_blank" rel="noopener noreferrer" className="text-amber-400 hover:text-amber-300 transition-colors">Check our Predictions &rarr;</a></p>
           </div>
         </div>
       </div>
@@ -504,7 +509,10 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
     const tonyPredictionPick = isActor ? '' : getTonyPredictionPick(nominees);
     const picksAvailable = picksRevealed && criticHasPicks();
     const criticPicks = CRITICS.map(c => isActor ? getActorCriticPick(c, currentCategory.title) : getCriticPick(c, currentCategory.title));
-    const categoryVotes = pickStats?.picks[currentCategory.title] ?? {};
+    const rawCategoryVotes = pickStats?.picks[currentCategory.title] ?? {};
+    // Include the user's own pick so they always see themselves in the breakdown
+    const categoryVotes: Record<string, number> = { ...rawCategoryVotes };
+    if (userPick) categoryVotes[userPick] = (categoryVotes[userPick] ?? 0) + 1;
     const totalCategoryVotes = Object.values(categoryVotes).reduce((a, b) => a + b, 0);
     const crowdPcts = isActor ? [] : (() => {
       if (totalCategoryVotes === 0) return nominees.map(() => 0);
@@ -546,7 +554,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
               <div className="text-sm font-bold truncate">{userPick}</div>
               {isActor && (() => { const picked = actorNominees.find(n => n.name === userPick); return picked ? <div className="text-[10px] text-gray-500 truncate">{picked.showTitle}</div> : null; })()}
             </div>
-            {!isActor && <span className={`shrink-0 text-xs font-black uppercase tracking-wider px-3 py-1.5 rounded-lg ${matchesTonyPrediction ? 'bg-green-500/25 text-green-300' : 'bg-white/8 text-gray-300'}`}>{matchesTonyPrediction ? 'Match!' : 'Different'}</span>}
+            {!isActor && matchesTonyPrediction && <span className="shrink-0 text-xs font-black uppercase tracking-wider px-3 py-1.5 rounded-lg bg-green-500/25 text-green-300">Match!</span>}
           </div>
 
           {/* Critics Panel */}
@@ -566,7 +574,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
                 </div>
                 {tonyPredictionPickShow && <ShowPoster show={tonyPredictionPickShow} size="xs" />}
                 <div className="text-sm font-bold truncate flex-1 min-w-0">{tonyPredictionPick}</div>
-                <span className={`shrink-0 text-xs font-black uppercase tracking-wider px-3 py-1.5 rounded-lg ${matchesTonyPrediction ? 'bg-green-500/25 text-green-300' : 'bg-white/8 text-gray-300'}`}>{matchesTonyPrediction ? 'Match!' : 'Different'}</span>
+                {matchesTonyPrediction && <span className="shrink-0 text-xs font-black uppercase tracking-wider px-3 py-1.5 rounded-lg bg-green-500/25 text-green-300">Match!</span>}
               </div>
             )}
 
@@ -578,28 +586,24 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
               const actorPick = isActor && pick ? actorNominees.find(n => n.name === pick) : undefined;
               return (
                 <div key={i} className={`rounded-xl mb-2 px-3.5 py-3 flex items-center gap-2.5 animate-slide-in ${isMatch ? 'bg-green-500/[0.06] ring-1 ring-green-500/15' : 'bg-surface-raised ring-1 ring-white/5'}`} style={{ animationDelay: `${(isActor ? 0.3 : 0.4) + i * 0.1}s`, animationFillMode: 'both' }}>
-                  <div className="w-[116px] shrink-0 flex items-center gap-2 min-w-0 overflow-hidden">
+                  <div className="w-[148px] shrink-0 flex items-center gap-2 min-w-0 overflow-hidden">
                     <div className="w-7 h-7 rounded-full bg-surface-overlay flex items-center justify-center text-[10px] font-bold text-gray-400 shrink-0">{critic.initials}</div>
                     <div className="leading-tight min-w-0 overflow-hidden">
                       <div className="text-xs font-bold truncate">{critic.name}</div>
                       <div className="text-[10px] text-gray-500 truncate">{critic.outlets.join(' · ')}</div>
                     </div>
                   </div>
-                  {pick === null ? (
-                    <div className="w-8 h-8 rounded-lg bg-surface-overlay flex items-center justify-center text-lg text-gray-600 shrink-0">?</div>
-                  ) : pickShow ? (
-                    <ShowPoster show={pickShow} size="xs" />
-                  ) : actorPick ? (
-                    <ActorPoster nominee={actorPick} />
-                  ) : null}
+                  {pick !== null && (pickShow ? <ShowPoster show={pickShow} size="xs" /> : actorPick ? <ActorPoster nominee={actorPick} /> : null)}
                   <div className="min-w-0 flex-1">
-                    <div className={`text-sm font-bold truncate ${pick === null ? 'text-gray-600' : ''}`}>{pick ?? '?'}</div>
-                    {actorPick && <div className="text-[10px] text-gray-500 truncate">{actorPick.showTitle}</div>}
-                    {pick === null && <div className="text-[10px] text-gray-600">Revealed June 7</div>}
+                    {pick === null
+                      ? <div className="text-sm text-gray-500">Revealed June 8</div>
+                      : <><div className="text-sm font-bold truncate">{shortTitle(pick)}</div>
+                         {actorPick && <div className="text-[10px] text-gray-500 truncate">{actorPick.showTitle}</div>}</>
+                    }
                   </div>
-                  <span className={`shrink-0 text-xs font-black uppercase tracking-wider px-3 py-1.5 rounded-lg ${pick === null ? 'bg-white/5 text-gray-700' : isMatch ? 'bg-green-500/25 text-green-300' : 'bg-white/8 text-gray-300'}`}>
-                    {pick === null ? 'June 7' : isMatch ? 'Match!' : 'Different'}
-                  </span>
+                  {isMatch && (
+                    <span className="shrink-0 text-xs font-black uppercase tracking-wider px-3 py-1.5 rounded-lg bg-green-500/25 text-green-300">Match!</span>
+                  )}
                 </div>
               );
             })}
@@ -705,12 +709,12 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
           <div className="w-full max-w-[380px] p-5 rounded-2xl bg-green-500/[0.06] border border-green-500/15 text-center animate-fade-up">
             <div className="text-3xl mb-2">🎭</div>
             <h3 className="text-base font-bold text-green-400">You&apos;re entered!</h3>
-            <p className="text-sm text-gray-400 mt-1.5">After the June 7 ceremony, we&apos;ll email you with your results — showing exactly how your picks stacked up against the critics.</p>
+            <p className="text-sm text-gray-400 mt-1.5">After the June 8 ceremony, we&apos;ll email you with your results — showing exactly how your picks stacked up against the critics.</p>
           </div>
         ) : (
           <div className="w-full max-w-[380px] p-5 rounded-2xl bg-gradient-to-br from-[#ff1368]/[0.06] to-brand/[0.04] border border-[#ff1368]/10 animate-fade-up">
             <h3 className="text-base font-bold">Submit your picks</h3>
-            <p className="text-sm text-gray-400 mt-1.5 mb-1">Enter your email to officially enter. After the ceremony on June 7, we&apos;ll automatically email you with your results.</p>
+            <p className="text-sm text-gray-400 mt-1.5 mb-1">Enter your email to officially enter. After the ceremony on June 8, we&apos;ll automatically email you with your results.</p>
             <p className="text-sm font-semibold text-amber-400 mb-4">🎟️ Beat a critic and you&apos;ll be entered in the <strong>$200 TodayTix prize draw</strong>.</p>
             <div className="flex gap-2 mb-3">
               <input ref={emailRef} type="email" placeholder="you@email.com" className="flex-1 px-4 py-3.5 rounded-xl border border-white/10 bg-surface-raised text-white text-sm outline-none focus:border-[#ff1368] transition-colors placeholder:text-gray-500" />
