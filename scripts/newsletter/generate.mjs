@@ -1980,7 +1980,11 @@ const outDir = process.env.NEWSLETTER_OUT_DIR
     : path.join(repo, 'data/newsletter-drafts'));
 fs.mkdirSync(outDir, { recursive: true });
 const slug = `A-${argDate}`;
-fs.writeFileSync(`${outDir}/${slug}.html`, html);
+// Tag every first-party link with UTMs for GA4/PostHog attribution before
+// writing the draft (idempotent — see scripts/lib/email-utm.js). Resend
+// click-tracking preserves the query string, so these survive the redirect.
+const { applyUtm } = cjsRequire('../lib/email-utm.js');
+fs.writeFileSync(`${outDir}/${slug}.html`, applyUtm(html, { source: 'newsletter', campaign: `weekly-${weekEndStr}` }));
 // Sidecar JSON with subject + section-by-section run report so the send
 // script can pick up the subject without parsing HTML, and so we can detect
 // silently-skipped sections in regression tests / CI.

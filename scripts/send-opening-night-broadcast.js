@@ -24,9 +24,19 @@ const path = require('path');
 const { execSync } = require('child_process');
 const { sendAlert } = require('./lib/discord-notify');
 const {
-  postJSON, buildBroadcastOpeningNightHtml, buildBroadcastSubjectLine, buildUnsubscribeUrl,
+  postJSON, buildBroadcastOpeningNightHtml: buildBroadcastOpeningNightHtmlRaw, buildBroadcastSubjectLine, buildUnsubscribeUrl,
 } = require('./lib/email-templates');
+const { applyUtm } = require('./lib/email-utm');
 const { isLondonMarket } = require('./lib/venue-classification');
+
+// Wrap the HTML builder so every send/draft path picks up GA4/PostHog UTM
+// attribution (idempotent — see scripts/lib/email-utm.js). Campaign is the
+// show set so opening-night traffic can be grouped per show in analytics.
+function buildBroadcastOpeningNightHtml(shows, sendTo, market) {
+  const html = buildBroadcastOpeningNightHtmlRaw(shows, sendTo, market);
+  const campaign = `opening-${(shows || []).map(s => s.showId).filter(Boolean).join('-') || market}`;
+  return applyUtm(html, { source: 'opening-night', campaign });
+}
 const { checkPreviewDedup } = require('./lib/preview-dedup');
 const { acquireSendLock, releaseSendLock } = require('./lib/send-lock');
 
