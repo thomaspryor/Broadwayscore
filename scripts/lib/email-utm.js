@@ -71,8 +71,10 @@ function applyUtm(html, opts) {
     throw new Error('applyUtm: { source, campaign } are required');
   }
   const cfg = { source, medium, campaign };
-  // Match href="..." and href='...' — capture the quote so we re-emit it.
-  return html.replace(/href\s*=\s*(["'])(.*?)\1/gi, (full, quote, url) => {
+  // Match the `href` attribute only — capture the quote so we re-emit it. The
+  // (?<![\w-]) lookbehind keeps it from matching `data-href`, `x-href`, etc.
+  // (where `href=` is a substring), which would corrupt non-link metadata.
+  return html.replace(/(?<![\w-])href\s*=\s*(["'])(.*?)\1/gi, (full, quote, url) => {
     const tagged = tagUrl(url, cfg);
     return tagged ? `href=${quote}${tagged}${quote}` : full;
   });
