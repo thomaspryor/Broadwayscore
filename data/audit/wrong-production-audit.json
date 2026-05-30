@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-30T09:20:51.695Z",
+  "timestamp": "2026-05-30T11:38:48.710Z",
   "stats": {
-    "totalReviews": 37792,
-    "alreadyFlagged": 16603,
+    "totalReviews": 37811,
+    "alreadyFlagged": 16605,
     "dateGuardCatches": 106,
-    "directorMismatch": 806,
+    "directorMismatch": 809,
     "tvFilmSignals": 1033,
-    "londonSignals": 583,
+    "londonSignals": 584,
     "offBroadwaySignals": 454,
     "yearMismatch": 78,
-    "noPublishDate": 3950
+    "noPublishDate": 3956
   },
   "findings": [
     {
@@ -1757,10 +1757,38 @@
     },
     {
       "showId": "beetlejuice-west-end-2026",
+      "file": "artsdesk--gary-naylor.json",
+      "score": 49,
+      "publishDate": "2026-05-29",
+      "url": "http://theartsdesk.com/theatre/beetlejuice-musical-prince-edward-theatre-review-you-should-know-what-youre-getting?amp",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"alex timbers\" from beetlejuice-2025"
+        }
+      ]
+    },
+    {
+      "showId": "beetlejuice-west-end-2026",
       "file": "artsdesk--unknown.json",
       "score": 40,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/beetlejuice-musical-prince-edward-theatre-review-you-should-know-what-youre-getting",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"alex timbers\" from beetlejuice-2025"
+        }
+      ]
+    },
+    {
+      "showId": "beetlejuice-west-end-2026",
+      "file": "daily-mail--patrick-marmion.json",
+      "score": 79,
+      "publishDate": "2026-05-29",
+      "url": null,
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -1788,7 +1816,7 @@
       "file": "guardian--chris-wiegand.json",
       "score": 56,
       "publishDate": "2026-05-25",
-      "url": "https://www.theguardian.com/stage/2026/may/29/beetlejuice-the-musical-review-prince-edward-theatre-london",
+      "url": "https://www.theguardian.com/stage/gallery/2026/may/25/beetlejuice-west-end-musical-in-pictures",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -1850,6 +1878,20 @@
       "score": 59,
       "publishDate": "2026-05-29",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/beetlejuice-musical-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"alex timbers\" from beetlejuice-2025"
+        }
+      ]
+    },
+    {
+      "showId": "beetlejuice-west-end-2026",
+      "file": "thereviewshub--john-cutler.json",
+      "score": 76,
+      "publishDate": "2026-05-29",
+      "url": "https://www.thereviewshub.com/beetlejuice-prince-edward-theatre-london/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -27112,6 +27154,20 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 143d before show (2025-05-18 vs 2025-10-08)"
+        }
+      ]
+    },
+    {
+      "showId": "beetlejuice-west-end-2026",
+      "file": "theatre-weekly--greg-stewart.json",
+      "score": 81,
+      "publishDate": "2026-05-28",
+      "url": "https://theatreweekly.com/review-beetlejuice-the-musical-at-prince-edward-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
