@@ -8,6 +8,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
 import { track } from '@vercel/analytics';
+import { captureEvent } from '@/lib/posthog-events';
 import { Modal, ModalCloseButton } from '@/components/show-cards';
 import { SUBSCRIBED_KEY_PREFIX } from '@/hooks/useFormspreeSubscribed';
 import { isLondonPath } from '@/hooks/useCurrentMarket';
@@ -119,6 +120,7 @@ export default function EmailCaptureModal({
   useEffect(() => {
     if (isOpen) {
       track('gate_modal_shown', { trigger, is_return_visitor: trigger === 'return_visitor' });
+      captureEvent('gate_modal_shown', { trigger, is_return_visitor: trigger === 'return_visitor' });
     }
   }, [isOpen, trigger]);
 
@@ -171,13 +173,15 @@ export default function EmailCaptureModal({
       }
 
       // Track email capture
-      track('email_captured', {
+      const captureProps = {
         has_name: !!userData.name,
         has_company: !!userData.company,
         role: userData.role || 'none',
         trigger,
         is_return_visitor: trigger === 'return_visitor',
-      });
+      };
+      track('email_captured', captureProps);
+      captureEvent('email_captured', captureProps);
 
       onSubmit(userData);
 

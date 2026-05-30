@@ -13,6 +13,7 @@
 import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
 import dynamic from 'next/dynamic';
 import { track } from '@vercel/analytics';
+import { captureEvent } from '@/lib/posthog-events';
 import { type GateTrigger, type CapturedUserData } from '@/components/EmailCaptureModal';
 import { emailCaptureConfig } from '@/config/email-capture';
 import { isFormspreeSubscribed } from '@/hooks/useFormspreeSubscribed';
@@ -117,6 +118,7 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
   const handleModalClose = useCallback(() => {
     if (modalBlocking) return; // Can't close blocking modals
     track('gate_modal_dismissed', { trigger: modalTrigger });
+    captureEvent('gate_modal_dismissed', { trigger: modalTrigger });
     setModalOpen(false);
   }, [modalBlocking, modalTrigger]);
 
