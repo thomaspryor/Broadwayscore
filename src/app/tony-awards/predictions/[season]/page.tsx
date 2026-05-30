@@ -28,6 +28,7 @@ import {
   computeBlendedAccuracyStats,
   getSeasonSummary,
   getTonyTrackRecord,
+  isBtcPromoActive,
 } from '@/lib/data-tony-predictions';
 
 const allSeasons = getAllPredictionSeasons();
@@ -532,8 +533,8 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
         ))}
 
         {/* Beat the Critics promo — slot between major categories and performer/craft
-            categories. Current season only; BTC closes at ceremony start. */}
-        {isCurrent && (
+            categories. Current season + entries-open gate (closes ceremony eve 11:59 ET). */}
+        {isCurrent && isBtcPromoActive() && (
           <FeaturedSpot
             eyebrow="Beat the Critics"
             title="Think you know Broadway better than the critics?"

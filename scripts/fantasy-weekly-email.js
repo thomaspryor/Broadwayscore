@@ -26,6 +26,7 @@
 const fs = require('fs');
 const path = require('path');
 const { postJSON } = require('./lib/email-templates');
+const { applyUtm } = require('./lib/email-utm');
 const { acquireSendLock, releaseSendLock } = require('./lib/send-lock');
 const { fetchFantasyEntries, computeLeaderboard } = require('./lib/fantasy-helpers');
 
@@ -170,8 +171,9 @@ async function main() {
     // Continue without leaderboard — top shows section is still valuable
   }
 
-  const html = buildEmailHtml(leaderboard);
   const weekEnding = scoresData._meta.weekEnding;
+  // Tag first-party links for GA4/PostHog attribution (idempotent — see scripts/lib/email-utm.js).
+  const html = applyUtm(buildEmailHtml(leaderboard), { source: 'fantasy', campaign: `fantasy-${weekEnding}` });
   const subject = `BFL Week ${weekEnding} — Score Update`;
 
   if (isDryRun) {

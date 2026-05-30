@@ -24,9 +24,19 @@ const path = require('path');
 const { execSync } = require('child_process');
 const { sendAlert } = require('./lib/discord-notify');
 const {
-  postJSON, buildBroadcastOpeningNightHtml, buildBroadcastSubjectLine, buildUnsubscribeUrl,
+  postJSON, buildBroadcastOpeningNightHtml: buildBroadcastOpeningNightHtmlRaw, buildBroadcastSubjectLine, buildUnsubscribeUrl,
 } = require('./lib/email-templates');
+const { applyUtm } = require('./lib/email-utm');
 const { isLondonMarket } = require('./lib/venue-classification');
+
+// Wrap the HTML builder so every send/draft path picks up GA4/PostHog UTM
+// attribution (idempotent — see scripts/lib/email-utm.js). Campaign is the
+// show set so opening-night traffic can be grouped per show in analytics.
+function buildBroadcastOpeningNightHtml(shows, sendTo, market) {
+  const html = buildBroadcastOpeningNightHtmlRaw(shows, sendTo, market);
+  const campaign = `opening-${(shows || []).map(s => s.showId).filter(Boolean).join('-') || market}`;
+  return applyUtm(html, { source: 'opening-night', campaign });
+}
 const { checkPreviewDedup } = require('./lib/preview-dedup');
 const { acquireSendLock, releaseSendLock } = require('./lib/send-lock');
 
@@ -669,15 +679,16 @@ async function main() {
     // Build HTML — footer uses {{{RESEND_UNSUBSCRIBE_URL}}} (Resend's template variable)
     const html = buildBroadcastOpeningNightHtml(showsForEmail, null, MARKET);
 
-    // Resolve Resend audience id for this market. Same Broadway id used by sync-followers.js
-    // (audience ids are not secret). WE audience id is env-only — set RESEND_WE_AUDIENCE_ID
-    // before sending West End broadcasts.
+    // Resolve Resend audience id for this market. Audience ids are not secret, so
+    // both are hardcoded (env vars can still override). These MUST match the
+    // audiences that sync-followers.js populates: Broadway → General, WE → West End.
     const RESEND_BROADWAY_AUDIENCE_ID = '472ec5ef-d7cc-4c48-8007-c0a6a302e7a4';
+    const RESEND_WE_AUDIENCE_ID = '0b17260b-6a72-4a5a-a700-7b7526f18d87';
     const audienceId = isLondonMarket(MARKET)
-      ? process.env.RESEND_WE_AUDIENCE_ID
+      ? (process.env.RESEND_WE_AUDIENCE_ID || RESEND_WE_AUDIENCE_ID)
       : (process.env.RESEND_BROADWAY_AUDIENCE_ID || RESEND_BROADWAY_AUDIENCE_ID);
     if (!audienceId) {
-      throw new Error(`Missing RESEND_WE_AUDIENCE_ID — cannot create West End Resend broadcast.`);
+      throw new Error(`Missing Resend audience id for market ${MARKET} — cannot create broadcast.`);
     }
 
     // Acquire cross-session send lock before creating the Resend draft.
