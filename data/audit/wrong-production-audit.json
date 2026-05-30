@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-30T19:18:07.480Z",
+  "timestamp": "2026-05-30T23:40:41.979Z",
   "stats": {
-    "totalReviews": 37805,
-    "alreadyFlagged": 16604,
+    "totalReviews": 37845,
+    "alreadyFlagged": 16629,
     "dateGuardCatches": 106,
-    "directorMismatch": 810,
-    "tvFilmSignals": 1034,
+    "directorMismatch": 811,
+    "tvFilmSignals": 1035,
     "londonSignals": 584,
-    "offBroadwaySignals": 455,
+    "offBroadwaySignals": 456,
     "yearMismatch": 79,
-    "noPublishDate": 3953
+    "noPublishDate": 3964
   },
   "findings": [
     {
@@ -18471,6 +18471,20 @@
       ]
     },
     {
+      "showId": "spamalot-2005",
+      "file": "culturesauce--thom-geier.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://culturesauce.com/2023/11/16/spamalot-broadway-revival-review-monty-python/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"josh rhodes\" from spamalot-2023"
+        }
+      ]
+    },
+    {
       "showId": "spamalot-2023",
       "file": "broadwaynews--brittani-samuel.json",
       "score": 82,
@@ -18673,6 +18687,20 @@
       "score": 82,
       "publishDate": "2017-12-08T08:31:39",
       "url": "https://thefrontrowcenter.com/2017/12/spongebob-squarepants-broadway-musical/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "spring-awakening-2006",
+      "file": "talkinbroadway--matthew-murray.json",
+      "score": 32,
+      "publishDate": "2006-12-10",
+      "url": "https://www.talkinbroadway.com/page/world/SpringAwakening.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -27981,7 +28009,7 @@
       "file": "guardian--unknown.json",
       "score": null,
       "publishDate": null,
-      "url": "https://www.theguardian.com/stage/2026/may/15/linda-bassett-call-the-midwife-caryl-churchill-alexander-zeldin-care",
+      "url": "https://www.theguardian.com/books/2024/nov/02/alan-bennett-at-90-what-will-people-think-i-dont-care-any-more",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -35426,6 +35454,7 @@
     {
       "showId": "small-off-broadway-2026",
       "file": "theater-life--unknown.json",
+      "score": 92,
       "publishDate": "2026-05-29",
       "url": "https://theaterlife.com/small/",
       "findings": [
@@ -35526,6 +35555,20 @@
       "score": 92,
       "publishDate": "2006-12-11",
       "url": "https://www.nytimes.com/2006/12/11/theater/reviews/11spri.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
+        }
+      ]
+    },
+    {
+      "showId": "spring-awakening-2006",
+      "file": "timeout--adam-feldman.json",
+      "score": 88,
+      "publishDate": "2006-12-08",
+      "url": "https://www.timeout.com/newyork/theater/spring-awakening-1",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
