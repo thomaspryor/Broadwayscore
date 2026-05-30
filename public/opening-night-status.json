@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-30T06:57:01.231Z",
+  "generatedAt": "2026-05-30T11:38:53.045Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -764,23 +764,23 @@
       "status": "open",
       "slug": "beetlejuice-west-end",
       "thumbnail": "/images/shows/beetlejuice-west-end-2026/thumbnail.webp",
-      "siteScore": 65.73,
-      "liveScore": 66,
-      "scoreDrift": 0.269999999999996,
+      "siteScore": 66.87,
+      "liveScore": 67,
+      "scoreDrift": 0.12999999999999545,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 9,
-      "t1": 5,
-      "t2": 3,
+      "total": 14,
+      "t1": 7,
+      "t2": 6,
       "t3": 1,
-      "positive": 2,
-      "mixed": 7,
-      "negative": 0,
+      "positive": 5,
+      "mixed": 8,
+      "negative": 1,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 6,
+        "highConfidence": 11,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -795,10 +795,6 @@
       "missingT1": [
         {
           "name": "Observer",
-          "isDualMarket": true
-        },
-        {
-          "name": "Daily Mail",
           "isDualMarket": true
         }
       ],
@@ -851,6 +847,42 @@
           "p": 2,
           "m": 7,
           "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-05-30T07:46:40.546Z",
+          "rc": 10,
+          "s": 63.32,
+          "t1": 5,
+          "t2": 4,
+          "t3": 1,
+          "p": 2,
+          "m": 7,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-05-30T09:20:56.614Z",
+          "rc": 11,
+          "s": 62.84,
+          "t1": 6,
+          "t2": 4,
+          "t3": 1,
+          "p": 2,
+          "m": 8,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-05-30T11:38:53.045Z",
+          "rc": 14,
+          "s": 66.87,
+          "t1": 7,
+          "t2": 6,
+          "t3": 1,
+          "p": 5,
+          "m": 8,
+          "n": 1,
           "bc": "waiting"
         }
       ]
