@@ -19,7 +19,7 @@
  * float and aren't publishing it.
  */
 
-import { getBroadwayShows } from '../../src/lib/data-core';
+import { getAllShows } from '../../src/lib/data-core';
 
 let cache: Map<string, number | null> | null = null;
 let cacheRaw: Map<string, number | null> | null = null;
@@ -28,10 +28,21 @@ function buildCache() {
   if (cache && cacheRaw) return;
   cache = new Map();
   cacheRaw = new Map();
-  for (const s of getBroadwayShows()) {
+  // Use getAllShows() — covers Broadway, Off-Broadway, West End, Off-West End,
+  // and opera. Broadway-only would silently return null for WE/OB shows and a
+  // caller could fall back to raw-mean, which is exactly what this helper
+  // exists to prevent.
+  for (const s of getAllShows()) {
     cacheRaw.set(s.id, s.compositeScore ?? null);
     cache.set(s.id, s.compositeScore == null ? null : Math.round(s.compositeScore));
   }
+}
+
+/** Reset the cache. Call between runs if reviews.json changes mid-process
+ *  (long-running servers, tsx --watch). One-shot scripts don't need this. */
+export function resetCache(): void {
+  cache = null;
+  cacheRaw = null;
 }
 
 /** Canonical Critic Score for a show, rounded to integer the way the site displays it. */
@@ -46,15 +57,18 @@ export function getCriticScoreRaw(showId: string): number | null {
   return cacheRaw!.get(showId) ?? null;
 }
 
-/** Full map of {showId → integer Critic Score} for batch analyses. */
+/** Full map of {showId → integer Critic Score} for batch analyses.
+ *  Returns a defensive copy — callers can't mutate the internal cache. */
 export function getCriticScoreMap(): Map<string, number | null> {
   buildCache();
-  return cache!;
+  return new Map(cache!);
 }
 
 /** CLI: `npx tsx scripts/lib/canonical-critic-scores.ts > /tmp/critic-scores.json`
  *  Dumps the integer map as JSON so JS scripts (which can't import TS) can read it. */
-if (import.meta.url === `file://${process.argv[1]}`) {
+import { fileURLToPath } from 'url';
+import { resolve } from 'path';
+if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) {
   const out: Record<string, number | null> = {};
   for (const [id, score] of getCriticScoreMap()) out[id] = score;
   process.stdout.write(JSON.stringify(out, null, 2));
