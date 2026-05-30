@@ -307,6 +307,7 @@ export default function HomePage() {
             href="/tony-awards/predictions/2025-2026"
             accent="gold"
             stat={{ value: `${tonyTrackRecord.pct}%`, label: 'Track record' }}
+            trackingId="homepage_above_fold_tony_predictions"
           />
         )}
         <FeaturedRowServer shows={bestRecentShows} />

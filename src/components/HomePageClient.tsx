@@ -869,6 +869,23 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
                     { value: `${tonyTrackRecord.seasons}`, label: 'seasons' },
                     { value: `${tonyTrackRecord.hits}/${tonyTrackRecord.cells}`, label: 'matched' },
                   ]}
+                  trackingId="homepage_off_broadway_below_tony_predictions"
+                />
+              )}
+              {row.title === 'Tony Winning Shows' && tonyPromoActive && (
+                <FeaturedSpot
+                  eyebrow="Beat the Critics"
+                  title="Think you know Broadway better than the critics?"
+                  description="Pick the Tony winners against our model and the top critics. One entry wins a $200 TodayTix gift card."
+                  ctaLabel="Make your picks"
+                  href="/beat-the-critics"
+                  accent="btc"
+                  stat={{ value: '$200', label: 'TodayTix gift card', compactLabel: 'Prize' }}
+                  secondary={[
+                    { value: '26', label: 'categories' },
+                    { value: 'Jun 7', label: 'ceremony' },
+                  ]}
+                  trackingId="homepage_tony_winning_below_btc"
                 />
               )}
             </div>
