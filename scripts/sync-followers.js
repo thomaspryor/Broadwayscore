@@ -142,74 +142,6 @@ function httpJSON(method, url, body, headers) {
 function postJSON(url, body, headers) { return httpJSON('POST', url, body, headers); }
 function patchJSON(url, body, headers) { return httpJSON('PATCH', url, body, headers); }
 const delay = (ms) => new Promise(r => setTimeout(r, ms));
-const maskEmail = (e) => e.replace(/(.{2}).*(@.*)/, '$1***$2');
-
-/**
- * Sync a subscriber list into a Resend audience: add missing contacts, and
- * optionally remove "stray" emails that no longer belong (e.g. WE-only emails
- * that an earlier single-audience sync merged into the Broadway audience).
- * Existing contacts are left untouched so deliberate unsubscribes are preserved.
- *
- * @param {string} audienceId   Resend audience id
- * @param {string} label        Human label for logs (e.g. 'Broadway', 'West End')
- * @param {string[]} desiredList Emails that SHOULD be in this audience
- * @param {Set<string>|null} removeSet Lowercased emails to remove if present (null = no removals)
- * @param {string} resendApiKey
- */
-async function syncResendAudience(audienceId, label, desiredList, removeSet, resendApiKey) {
-  console.log(`\n  Syncing ${label} subscribers to Resend audience ${audienceId}...`);
-
-  const existing = new Set();
-  try {
-    const result = await fetchJSON(`https://api.resend.com/audiences/${audienceId}/contacts`, {
-      'Authorization': `Bearer ${resendApiKey}`,
-    });
-    for (const c of (result.data || [])) existing.add(c.email.toLowerCase());
-    console.log(`  Found ${existing.size} existing ${label} Resend contacts`);
-  } catch (err) {
-    console.error(`  Error fetching ${label} Resend contacts: ${err.message}`);
-    return;
-  }
-
-  // Add missing subscribers
-  const toAdd = desiredList.filter(e => !existing.has(e.toLowerCase()));
-  let added = 0, addErrors = 0;
-  for (const email of toAdd) {
-    try {
-      await postJSON(`https://api.resend.com/audiences/${audienceId}/contacts`, {
-        email,
-        unsubscribed: false,
-      }, { 'Authorization': `Bearer ${resendApiKey}` });
-      added++;
-    } catch (err) {
-      addErrors++;
-      if (addErrors <= 3) console.error(`  Error adding ${maskEmail(email)}: ${err.message}`);
-    }
-    await delay(200); // Rate limit
-  }
-
-  // Remove strays that shouldn't be in this audience (e.g. WE-only from Broadway)
-  let removed = 0, removeErrors = 0;
-  if (removeSet && removeSet.size > 0) {
-    for (const email of existing) {
-      if (!removeSet.has(email)) continue;
-      try {
-        await httpJSON('DELETE',
-          `https://api.resend.com/audiences/${audienceId}/contacts/${encodeURIComponent(email)}`,
-          {}, { 'Authorization': `Bearer ${resendApiKey}` });
-        removed++;
-        console.log(`  - Removed ${maskEmail(email)} from ${label} audience (belongs to other market)`);
-      } catch (err) {
-        removeErrors++;
-        if (removeErrors <= 3) console.error(`  Error removing ${maskEmail(email)}: ${err.message}`);
-      }
-      await delay(200); // Rate limit
-    }
-  }
-
-  const errs = addErrors + removeErrors;
-  console.log(`  ${label} Resend sync: ${added} added, ${removed} removed${errs > 0 ? `, ${errs} errors` : ''}`);
-}
 
 /**
  * Sync a subscriber list into Buttondown.
@@ -549,34 +481,57 @@ async function main() {
     }
   }
 
-  // --- 5. Sync to Resend audiences (after both lists are finalized) ---
-  // Two separate audiences power broadcasts: Broadway (General) and West End.
-  // Broadway broadcasts target the General audience; WE broadcasts target the WE
-  // audience (see send-opening-night-broadcast.js → RESEND_WE_AUDIENCE_ID).
-  // Audience ids are not secret (same convention as the hardcoded Broadway id).
+  // --- 5. Sync to Resend audience (after both lists are finalized) ---
+  // Resend is used for broadcast sends. Upserts contacts — adding missing, no deletions.
   const resendApiKey = process.env.RESEND_API_KEY;
-  const RESEND_BROADWAY_AUDIENCE_ID = process.env.RESEND_BROADWAY_AUDIENCE_ID || '472ec5ef-d7cc-4c48-8007-c0a6a302e7a4';
-  const RESEND_WE_AUDIENCE_ID = process.env.RESEND_WE_AUDIENCE_ID || '0b17260b-6a72-4a5a-a700-7b7526f18d87';
+  const resendAudienceId = '472ec5ef-d7cc-4c48-8007-c0a6a302e7a4';
 
   if (!DRY_RUN && resendApiKey) {
-    // West End subscribers belong in the WE audience only. Anyone subscribed to
-    // BOTH markets stays in both audiences (only WE-only emails are pulled out
-    // of the Broadway audience, where the old single-audience sync had merged them).
-    const bwSet = new Set(subscribersList.map(e => e.toLowerCase()));
-    const weOnly = new Set(weList.map(e => e.toLowerCase()).filter(e => !bwSet.has(e)));
+    console.log('\n  Syncing subscribers to Resend audience...');
 
-    await syncResendAudience(RESEND_BROADWAY_AUDIENCE_ID, 'Broadway', subscribersList, weOnly, resendApiKey);
-    await syncResendAudience(RESEND_WE_AUDIENCE_ID, 'West End', weList, null, resendApiKey);
+    // Fetch existing Resend contacts
+    const resendExisting = new Set();
+    try {
+      const result = await fetchJSON(`https://api.resend.com/audiences/${resendAudienceId}/contacts`, {
+        'Authorization': `Bearer ${resendApiKey}`,
+      });
+      const contacts = result.data || [];
+      for (const c of contacts) resendExisting.add(c.email.toLowerCase());
+      console.log(`  Found ${resendExisting.size} existing Resend contacts`);
+    } catch (err) {
+      console.error(`  Error fetching Resend contacts: ${err.message}`);
+    }
+
+    // Add missing subscribers (Broadway + WE combined — Resend uses one audience)
+    const allSubscribers = new Set([...subscribersList, ...weList]);
+    const toAdd = [...allSubscribers].filter(e => !resendExisting.has(e.toLowerCase()));
+
+    if (toAdd.length === 0) {
+      console.log('  Resend audience is up to date');
+    } else {
+      console.log(`  Adding ${toAdd.length} new contacts to Resend...`);
+      let resendAdded = 0, resendErrors = 0;
+      for (const email of toAdd) {
+        try {
+          await postJSON(`https://api.resend.com/audiences/${resendAudienceId}/contacts`, {
+            email,
+            unsubscribed: false,
+          }, { 'Authorization': `Bearer ${resendApiKey}` });
+          resendAdded++;
+        } catch (err) {
+          resendErrors++;
+          if (resendErrors <= 3) console.error(`  Error adding ${email.replace(/(.{2}).*(@.*)/, '$1***$2')}: ${err.message}`);
+        }
+        await delay(200); // Rate limit
+      }
+      console.log(`  Resend sync: ${resendAdded} added${resendErrors > 0 ? `, ${resendErrors} errors` : ''}`);
+    }
   } else if (!resendApiKey) {
     console.log('\n  Skipping Resend sync (no RESEND_API_KEY)');
   }
 }
 
-if (require.main === module) {
-  main().catch(err => {
-    console.error('Fatal error:', err.message);
-    process.exit(1);
-  });
-}
-
-module.exports = { syncResendAudience };
+main().catch(err => {
+  console.error('Fatal error:', err.message);
+  process.exit(1);
+});
