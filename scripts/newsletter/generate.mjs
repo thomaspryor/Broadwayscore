@@ -39,6 +39,31 @@ const weekEndStr = weekEndDate.toISOString().slice(0, 10);
 const horizon7Date = new Date(weekEndDate); horizon7Date.setDate(horizon7Date.getDate() + 7);
 const horizon7Str = horizon7Date.toISOString().slice(0, 10);
 
+// --- Cross-issue memory (data/newsletter-state.json) ---------------------------
+// Persisted week-over-week so the digest never re-features last week's biggest
+// mover or re-announces a closing it already announced. Best-effort: a missing
+// or corrupt file degrades to "no memory" (everything is fair game).
+const STATE_PATH = path.join(repo, 'data/newsletter-state.json');
+let _priorState = { issues: [] };
+try { _priorState = JSON.parse(fs.readFileSync(STATE_PATH, 'utf8')) || { issues: [] }; } catch {}
+const _priorIssues = (_priorState.issues || [])
+  .filter(i => i && i.weekStart && i.weekStart < weekStartStr)
+  .sort((a, b) => b.weekStart.localeCompare(a.weekStart));
+const _lastIssue = _priorIssues[0] || null;
+const lastMoverIds = new Set(_lastIssue ? (_lastIssue.moverShowIds || []) : []);
+const recentAnnouncedIds = new Set(_priorIssues.slice(0, 4).flatMap(i => i.announcedClosingShowIds || []));
+
+// --- Within-issue cross-section de-dup -----------------------------------------
+// A show featured in a higher section is suppressed from every lower one, so a
+// single show (e.g. Fallen Angels) never appears in Movers AND Closings AND
+// Casting in the same email. Sections add their rendered ids as a side effect,
+// in render order; lower sections skip anything already claimed.
+const featuredShowIds = new Set();
+const _moverShowIds = [];
+const _announcedShowIds = [];
+const notFeatured = (id) => !featuredShowIds.has(id);
+const markFeatured = (...ids) => { for (const id of ids) if (id) featuredShowIds.add(id); };
+
 function inWeek(dateStr) { if (!dateStr) return false; return dateStr >= weekStartStr && dateStr <= weekEndStr; }
 function inWeekDateOnly(d) { if (!d) return false; const s = (typeof d === 'string') ? d.slice(0, 10) : new Date(d).toISOString().slice(0, 10); return s >= weekStartStr && s <= weekEndStr; }
 function fmt(dateStr) { const d = new Date(dateStr + (dateStr.length === 10 ? 'T12:00:00' : '')); return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'America/New_York' }); }
@@ -455,10 +480,14 @@ function openingEventsForWeek(category) {
 
 // SECTION: BW openings (includes reopenings — see openingEventsForWeek)
 function broadwayOpenings() {
-  const events = openingEventsForWeek('broadway');
+  // Only feature shows we actually have reviews for (never name a no-review show).
+  const events = openingEventsForWeek('broadway')
+    .filter(e => notFeatured(e.show.id))
+    .filter(e => { const a = aggregateScore(e.show.id); return a && a.count >= minReviews('broadway'); });
   if (!events.length) return { html: null, list: [] };
   const reopeningIds = new Set(events.filter(e => e.isReopening).map(e => e.show.id));
   const list = events.map(e => e.show);
+  markFeatured(...list.map(s => s.id));
   const hasOpen = events.some(e => !e.isReopening);
   const hasReopen = events.some(e => e.isReopening);
   const title = hasOpen && hasReopen ? 'Opened on Broadway'
@@ -474,18 +503,24 @@ function broadwayOpenings() {
 // pending count gets promoted to the heading subtitle only when there's at
 // least one show to render alongside it.
 function offBroadwayOpenings() {
-  const events = openingEventsForWeek('off-broadway');
-  if (!events.length) return { html: null, list: [] };
-  const reopeningIds = new Set(events.filter(e => e.isReopening).map(e => e.show.id));
-  const list = events.map(e => e.show);
-  const withScore = list.map(s => ({ s, agg: aggregateScore(s.id) })).filter(x => x.agg && x.agg.count >= 3);
+  // Grace window: include OB shows that opened in the last 28 days, not just the
+  // strict in-week opening — this catches shows that were added to our DB late.
+  // Opera is excluded (it has its own section); only shows with reviews qualify;
+  // the highest-scored show leads as the featured opening.
+  const cutoffDate = new Date(weekStartStr + 'T12:00:00'); cutoffDate.setDate(cutoffDate.getDate() - 28);
+  const cutoff = cutoffDate.toISOString().slice(0, 10);
+  const withScore = shows
+    .filter(s => s.category === 'off-broadway' && s.status === 'open' && !isOperaShow(s)
+      && s.openingDate && s.openingDate >= cutoff && s.openingDate <= weekEndStr
+      && notFeatured(s.id))
+    .map(s => ({ s, agg: aggregateScore(s.id) }))
+    .filter(x => x.agg && x.agg.count >= minReviews('off-broadway'))
+    .sort((a, b) => ((b.agg.raw ?? b.agg.avg) - (a.agg.raw ?? a.agg.avg)));
   if (!withScore.length) return { html: null, list: [] };
-  const pending = list.length - withScore.length;
-  const body = withScore.map(x => showRow(x.s, { isReopening: reopeningIds.has(x.s.id) })).join('');
-  const hasOpen = withScore.some(x => !reopeningIds.has(x.s.id));
-  const hasReopen = withScore.some(x => reopeningIds.has(x.s.id));
-  const title = hasOpen ? 'Opened Off-Broadway' : (hasReopen ? 'Reopened Off-Broadway' : 'Opened Off-Broadway');
-  return { html: sectionWrap(sectionHeading(title, pending ? `+${pending} needs more reviews` : ''), body), list: withScore.map(x => x.s) };
+  const list = withScore.slice(0, 8).map(x => x.s); // cap the recent-openings list
+  markFeatured(...list.map(s => s.id));
+  const body = list.map(s => showRow(s, {})).join('');
+  return { html: sectionWrap(sectionHeading('Opened Off-Broadway'), body), list };
 }
 
 // Tracks whether the most recent Coming Up render included a Broadway show.
@@ -581,6 +616,7 @@ function findRenderableCriticMovers() {
     if (Math.abs(delta) < 1) continue;
     const show = shows.find(s => s.id === id);
     if (!show) continue;
+    if (lastMoverIds.has(id) || !notFeatured(id)) continue; // no week-over-week repeat; no cross-section dupe
     if (show.category !== 'broadway' && show.category !== 'off-broadway') continue;
     if (isOperaShow(show)) continue;
     // Don't double-surface a show that's already in an Openings section.
@@ -648,6 +684,7 @@ function biggestMoverSection() {
       // hard enough to cross a grade boundary.
       const show = shows.find(s => s.id === id);
       if (!show) return;
+      if (lastMoverIds.has(id) || !notFeatured(id)) return; // no week-over-week repeat; no cross-section dupe
       if (show.category !== 'broadway' && show.category !== 'off-broadway') return;
     if (isOperaShow(show)) return;
       // Off-Broadway threshold lowered 100 → 50 (Gemini final review): 100
@@ -683,6 +720,9 @@ function biggestMoverSection() {
     return out.slice(0, 1);
   }
   const audMovers = audienceGradeMovers();
+  // Record what the mover section actually rendered (for cross-section de-dup
+  // below + next week's cross-issue memory).
+  [...moverList, ...audMovers].forEach(m => { _moverShowIds.push(m.show.id); markFeatured(m.show.id); });
   function audGradeColor(g) {
     if (!g) return '#6b7280';
     if (g === 'A+' || g === 'A') return '#16a34a';
@@ -1010,10 +1050,12 @@ function announcedClosingsSection() {
     const show = shows.find(s => s.id === showId);
     if (!show || show.category !== 'broadway' || isOperaShow(show) || show.status !== 'open' || !show.closingDate) return;
     if (show.closingDate <= weekEndStr) return; // already passed
+    if (!notFeatured(show.id) || recentAnnouncedIds.has(show.id)) return; // shown above, or already announced in a recent issue
     announcements.push({ show, closingDate: show.closingDate });
   });
   if (!announcements.length) return null;
   announcements.sort((a, b) => a.closingDate.localeCompare(b.closingDate));
+  announcements.forEach(a => { _announcedShowIds.push(a.show.id); markFeatured(a.show.id); });
   const rows = announcements.map((a, i, arr) => {
     const isLast = i === arr.length - 1;
     const agg = aggregateScore(a.show.id);
@@ -1113,17 +1155,16 @@ function closingSection() {
     if (!s.closingDate || s.closingDate <= weekEndStr || s.closingDate > horizon7Str) return false;
     if (s.status !== 'open') return false;
     if (!['broadway', 'off-broadway'].includes(s.category)) return false; // NYC only
+    if (!notFeatured(s.id)) return false; // already surfaced in a higher section
     // Must have a qualifying critic score (drop pending/no-score shows)
     const a = aggregateScore(s.id);
     return a && a.count >= minReviews(s.category);
   }).sort((a, b) => a.closingDate.localeCompare(b.closingDate));
   if (!list.length) return null;
-  const marketTagColor = (cat) => (cat === 'west-end' || cat === 'off-west-end') ? '#f472b6' : '#d4a574';
-  const marketTagBg = (cat) => (cat === 'west-end' || cat === 'off-west-end') ? 'rgba(244,114,182,0.12)' : 'rgba(212,165,116,0.12)';
-  const rows = list.map((s, i) => {
+  markFeatured(...list.map(s => s.id));
+  const rowFor = (s, isLast) => {
     const a = aggregateScore(s.id);
     const score = a && a.count >= minReviews(s.category) ? a.avg : null;
-    const isLast = i === list.length - 1;
     const borderBottom = !isLast ? 'border-bottom:1px solid rgba(255,255,255,0.05);' : '';
     return `<tr>
       <td valign="middle" width="52" style="padding:12px 10px 12px 0;${borderBottom}">${thumb(s, 40)}</td>
@@ -1135,12 +1176,20 @@ function closingSection() {
         ${score != null ? smallBadge(score, 40, s.category) : ''}
       </td>
     </tr>`;
-  }).join('');
-  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" class="cardbg">
-    <tr><td style="padding:4px 16px;">
-      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">${rows}</table>
-    </td></tr>
-  </table>`;
+  };
+  // Split Broadway (top) and Off-Broadway (below) under their own sub-labels.
+  const groupBlock = (label, items) => {
+    if (!items.length) return '';
+    const rows = items.map((s, i) => rowFor(s, i === items.length - 1)).join('');
+    return `<tr><td style="padding:14px 16px 2px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#d4a574;">${label}</td></tr>
+      <tr><td style="padding:0 16px;"><table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">${rows}</table></td></tr>`;
+  };
+  const bw = list.filter(s => s.category === 'broadway');
+  const ob = list.filter(s => s.category === 'off-broadway');
+  const divider = (bw.length && ob.length)
+    ? '<tr><td style="padding:6px 16px;"><div style="border-top:1px solid rgba(255,255,255,0.08);"></div></td></tr>'
+    : '';
+  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" class="cardbg">${groupBlock('Broadway', bw)}${divider}${groupBlock('Off-Broadway', ob)}</table>`;
   return sectionWrap(sectionHeading('Closing this Week'), body);
 }
 
@@ -1157,7 +1206,9 @@ function castingSection() {
   // window (weekStart - 7d) but that resurfaces last-week's casting in this
   // week's email, which contradicts the weekly-digest premise. Aligned with
   // the announced-closings tightening per user note 2026-05-24.
-  const recent = eventsAll.filter(e => e.addedDate && e.addedDate >= weekStartStr && e.addedDate <= weekEndStr);
+  // Closures belong in the closing sections, never here — exclude them so this
+  // section only ever shows real cast moves (joins / departures / swaps).
+  const recent = eventsAll.filter(e => e.type !== 'closure' && e.addedDate && e.addedDate >= weekStartStr && e.addedDate <= weekEndStr);
   if (!recent.length) return null;
   const byShow = {};
   recent.forEach(e => { (byShow[e.showId] ||= []).push(e); });
@@ -1204,7 +1255,10 @@ function castingSection() {
   });
   // For each show, surface 1-2 events with arrival/departure icons
   const groups = [];
-  showEntries.slice(0, 5).forEach(events => {
+  showEntries
+    .filter(events => events.length && notFeatured(events[0].showId))
+    .slice(0, 5).forEach(events => {
+    markFeatured(events[0].showId);
     const showTitle = events[0].showTitle;
     const closure = events.find(e => e.type === 'closure');
     const arr = events.find(e => e.type === 'arrival');
@@ -1694,6 +1748,20 @@ const commercial = sections.run('recoupment', () => commercialSection());
 const bz   = sections.run('social-buzz', () => buzziestSection());
 const tony = sections.run('tony-predictions', () => tonyWatchSection());
 const cas  = sections.run('casting-updates', () => castingSection());
+
+// Persist this issue's memory (mover + announced closings + everything featured)
+// so next week's run suppresses repeats. Best-effort — never fail the build.
+try {
+  const _issues = (_priorState.issues || []).filter(i => i && i.weekStart !== weekStartStr);
+  _issues.push({
+    weekStart: weekStartStr,
+    moverShowIds: _moverShowIds,
+    announcedClosingShowIds: _announcedShowIds,
+    featuredShowIds: Array.from(featuredShowIds),
+  });
+  _issues.sort((a, b) => a.weekStart.localeCompare(b.weekStart));
+  fs.writeFileSync(STATE_PATH, JSON.stringify({ issues: _issues.slice(-12) }, null, 2) + '\n');
+} catch (e) { process.stderr.write('[newsletter] state write failed: ' + e.message + '\n'); }
 const lon  = sections.run('london-openings', () => londonSection());
 const opera = sections.run('opera-openings', () => operaOpeningsSection());
 const outlier = sections.run('outlier-of-the-week', () => outlierSection());
@@ -1789,8 +1857,10 @@ const { scoreCandidates, buildSubjectFromCandidates, buildLedeFromCandidates } =
 // Compute the opening EVENTS (with isReopening flag) for the scorer so its
 // verbiage matches the section's "Reopened" verb. broadwayOpenings()/
 // offBroadwayOpenings() return shows-only; we re-derive the flag here.
-const bwEvents = openingEventsForWeek('broadway');
-const obEvents = openingEventsForWeek('off-broadway');
+// Never advertise a show in the subject/lede that has no reviews yet.
+const _subjHasScore = (s) => { const a = aggregateScore(s.id); return a && a.count >= minReviews(s.category); };
+const bwEvents = openingEventsForWeek('broadway').filter(e => _subjHasScore(e.show));
+const obEvents = openingEventsForWeek('off-broadway').filter(e => _subjHasScore(e.show));
 
 const newsworthyInputs = {
   bwOpenings: bwEvents,
@@ -1922,8 +1992,9 @@ const html = `<!DOCTYPE html>
      raw HTML). Background + color stay inline so they survive Outlook 2007+
      stripping <style> blocks; structural CSS lives here. See feedback note
      on Gmail clipping in newsletter-drafts. */
-  .mp{display:inline-block;padding:1px 7px;border-radius:999px;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;vertical-align:2px}
-  .gp{display:inline-block;padding:2px 7px;border-radius:999px;font-weight:600;font-size:11px;letter-spacing:.04em;margin-right:4px}
+  /* Unified pill box model — market (.mp) and format/production (.gp) pills
+     render at identical height so REVIVAL never sits taller than OFF-BWAY. */
+  .mp,.gp{display:inline-block;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.05em;line-height:1.5;vertical-align:middle;margin-right:4px}
   .tdec{text-decoration:none;display:inline-block}
   .cardbg{background:#1a1a24;border-radius:16px;border:1px solid rgba(255,255,255,.05)}
   .showttl{margin:0;font-size:16px;font-weight:600;color:#fff;letter-spacing:-.01em}

@@ -36,7 +36,7 @@ on:
         default: '[DRAFT]'
 
 permissions:
-  contents: read
+  contents: write
   actions: write
 
 # Avoid racing a manual dispatch against the Saturday cron, or back-to-back
@@ -140,6 +140,25 @@ jobs:
           NEWSLETTER_SUBJECT_PREFIX: ${{ github.event.inputs.subjectPrefix || '[DRAFT]' }}
         run: |
           node scripts/newsletter/send-test.mjs
+
+      # Persist the cross-issue de-dup state (data/newsletter-state.json). The
+      # generator UPSERTs this week's mover/announced-closing IDs so next week's
+      # run can suppress a slow-moving show (e.g. Fallen Angels) from being
+      # re-featured as the Biggest Mover two weeks running. Committed to main —
+      # it's a small app-state file, not one of the private core-data files.
+      # No-op guard so a byte-identical state doesn't create an empty commit.
+      - name: Commit newsletter de-dup state
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/newsletter-state.json
+          if git diff --cached --quiet; then
+            echo "::notice::newsletter-state.json unchanged — nothing to commit"
+            exit 0
+          fi
+          git commit -m "chore(newsletter): update de-dup state for ${{ steps.week.outputs.weekStart }}"
+          bash scripts/lib/push-with-retry.sh 5 main || { echo "::warning::newsletter-state push failed"; exit 1; }
 
       - name: Notify on failure
         if: failure()
