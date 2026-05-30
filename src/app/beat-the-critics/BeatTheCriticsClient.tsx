@@ -547,7 +547,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
               <div className="text-sm font-bold truncate">{userPick}</div>
               {isActor && (() => { const picked = actorNominees.find(n => n.name === userPick); return picked ? <div className="text-[10px] text-gray-500 truncate">{picked.showTitle}</div> : null; })()}
             </div>
-            {!isActor && <span className={`shrink-0 text-xs font-black uppercase tracking-wider px-3 py-1.5 rounded-lg ${matchesTonyPrediction ? 'bg-green-500/25 text-green-300' : 'bg-white/8 text-gray-300'}`}>{matchesTonyPrediction ? 'Match!' : 'Different'}</span>}
+            {!isActor && matchesTonyPrediction && <span className="shrink-0 text-xs font-black uppercase tracking-wider px-3 py-1.5 rounded-lg bg-green-500/25 text-green-300">Match!</span>}
           </div>
 
           {/* Critics Panel */}
@@ -567,7 +567,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
                 </div>
                 {tonyPredictionPickShow && <ShowPoster show={tonyPredictionPickShow} size="xs" />}
                 <div className="text-sm font-bold truncate flex-1 min-w-0">{tonyPredictionPick}</div>
-                <span className={`shrink-0 text-xs font-black uppercase tracking-wider px-3 py-1.5 rounded-lg ${matchesTonyPrediction ? 'bg-green-500/25 text-green-300' : 'bg-white/8 text-gray-300'}`}>{matchesTonyPrediction ? 'Match!' : 'Different'}</span>
+                {matchesTonyPrediction && <span className="shrink-0 text-xs font-black uppercase tracking-wider px-3 py-1.5 rounded-lg bg-green-500/25 text-green-300">Match!</span>}
               </div>
             )}
 
@@ -598,9 +598,11 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
                     {actorPick && <div className="text-[10px] text-gray-500 truncate">{actorPick.showTitle}</div>}
                     {pick === null && <div className="text-[10px] text-gray-600">Revealed June 7</div>}
                   </div>
-                  <span className={`shrink-0 text-xs font-black uppercase tracking-wider px-3 py-1.5 rounded-lg ${pick === null ? 'bg-white/5 text-gray-700' : isMatch ? 'bg-green-500/25 text-green-300' : 'bg-white/8 text-gray-300'}`}>
-                    {pick === null ? 'June 7' : isMatch ? 'Match!' : 'Different'}
-                  </span>
+                  {(pick === null || isMatch) && (
+                    <span className={`shrink-0 text-xs font-black uppercase tracking-wider px-3 py-1.5 rounded-lg ${pick === null ? 'bg-white/5 text-gray-700' : 'bg-green-500/25 text-green-300'}`}>
+                      {pick === null ? 'June 7' : 'Match!'}
+                    </span>
+                  )}
                 </div>
               );
             })}
