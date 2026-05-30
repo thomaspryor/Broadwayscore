@@ -1363,10 +1363,22 @@ function buzziestSection() {
     return { position: +m[1], total: +m[2], market: m[3] };
   }
   // Load social pulse for open BW/OB shows. .social.json keyed by SHOW ID.
+  // Only 'open'/'previews' shows are eligible: the social-pulse fetcher
+  // (scripts/lib/list-running-shows.js) only refreshes running shows, so an
+  // 'upcoming' or 'closed' show carries a frozen .social.json that would
+  // surface stale data every week under the "last 7 days" heading.
+  // (School Girls; Or, The African Mean Girls Play was stuck at its 2026-04-13
+  // fetch for 6+ weeks because it's upcoming — opens 2026-09-08.)
+  // Staleness guard below is the belt-and-suspenders backstop in case the
+  // weekly cron skips a still-running show.
   const socialDir = path.join(repo, 'public/data/shows');
+  // Reject pulse data fetched more than 10 days before this newsletter's week
+  // end. The cron runs Mondays; fresh data is at most ~7 days old, +3 days slack
+  // for a late/missed cron. Computed off argDate (not Date.now) to stay deterministic.
+  const pulseStaleCutoff = new Date(weekEndDate); pulseStaleCutoff.setDate(pulseStaleCutoff.getDate() - 10);
   const candidates = [];
   shows.forEach(s => {
-    if (!['open', 'previews', 'upcoming'].includes(s.status)) return;
+    if (!['open', 'previews'].includes(s.status)) return;
     if (s.category !== 'broadway' && s.category !== 'off-broadway') return;
     if (isOperaShow(s)) return;
     const f = path.join(socialDir, s.id + '.social.json');
@@ -1374,6 +1386,9 @@ function buzziestSection() {
     try {
       const sp = JSON.parse(fs.readFileSync(f, 'utf8'));
       if (sp.t === 'Hidden') return;
+      // Skip stale pulse data — `u` is the fetchedAt ISO timestamp.
+      const fetchedAt = sp.u ? new Date(sp.u) : null;
+      if (!fetchedAt || Number.isNaN(fetchedAt.getTime()) || fetchedAt < pulseStaleCutoff) return;
       candidates.push({ show: s, sp, rank: parseRank(sp.r) });
     } catch {}
   });
