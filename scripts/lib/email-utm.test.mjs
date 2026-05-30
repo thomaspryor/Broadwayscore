@@ -42,6 +42,16 @@ test('tolerates whitespace around href=', () => {
   assert.ok(out.includes('utm_source=newsletter'));
 });
 
+test('does NOT match data-href / x-href (href= is a substring)', () => {
+  const html = '<div data-href="https://broadwayscorecard.com/x">z</div>';
+  assert.equal(applyUtm(html, opts), html, 'data-href must be left untouched');
+  // ...but a real href elsewhere in the same string still gets tagged
+  const mixed = '<div data-href="https://broadwayscorecard.com/x"><a href="https://broadwayscorecard.com/y">y</a></div>';
+  const out = applyUtm(mixed, opts);
+  assert.ok(out.includes('data-href="https://broadwayscorecard.com/x"'), 'data-href untouched');
+  assert.ok(out.includes('/y?utm_source=newsletter'), 'real href tagged');
+});
+
 test('is idempotent — running twice equals running once', () => {
   const html = '<a href="https://broadwayscorecard.com/show/giant">x</a><a href="https://broadwayscorecard.com/about">y</a>';
   const once = applyUtm(html, opts);

@@ -54,7 +54,20 @@ interface ProGateProviderProps {
 const BLOCKING_TRIGGERS: GateTrigger[] = ['csv_download', 'json_download', 'page_view_limit'];
 
 export function ProGateProvider({ children, pageViewThreshold = emailCaptureConfig.pageViewGate.threshold }: ProGateProviderProps) {
-  const [hasEmail, setHasEmail] = useState(false);
+  // Email capture is per-market. A visitor subscribed to Broadway must still be
+  // offered the West End list when browsing /west-end (and vice versa) — otherwise
+  // the dominant market's subscribers permanently suppress the other market's
+  // pop-up. `market` drives both the hasEmail gate (below) and the modal's own
+  // form routing (EmailCaptureModal computes the same isLondonPath check).
+  const pathname = usePathname();
+  const market = pathname && isLondonPath(pathname) ? 'west-end' : 'broadway';
+
+  // Initialize hasEmail synchronously from the CURRENT market's subscription, so an
+  // already-subscribed user is never transiently treated as hasEmail=false on the
+  // first render — that window could fire a page-view nag before the [market]
+  // effect below commits. SSR-safe: isFormspreeSubscribed try/catches localStorage
+  // and returns false on the server (the gated modal is ssr:false anyway).
+  const [hasEmail, setHasEmail] = useState(() => isFormspreeSubscribed(market));
   const [userData, setUserData] = useState<CapturedUserData | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalTrigger, setModalTrigger] = useState<GateTrigger>('page_view_limit');
@@ -64,14 +77,6 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
   const [passiveModalFired, setPassiveModalFired] = useState(false);
   const [isReturnVisitor, setIsReturnVisitor] = useState(false);
   const [isClient, setIsClient] = useState(false);
-
-  // Email capture is per-market. A visitor subscribed to Broadway must still be
-  // offered the West End list when browsing /west-end (and vice versa) — otherwise
-  // the dominant market's subscribers permanently suppress the other market's
-  // pop-up. `market` drives both the hasEmail gate (below) and the modal's own
-  // form routing (EmailCaptureModal computes the same isLondonPath check).
-  const pathname = usePathname();
-  const market = pathname && isLondonPath(pathname) ? 'west-end' : 'broadway';
   // Recapture: true when pre-fix modal user needs to be re-shown the modal to capture via Formspree
   const [needsRecapture, setNeedsRecapture] = useState(false);
 
