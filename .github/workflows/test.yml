@@ -29,6 +29,14 @@ on:
       - 'scripts/lib/content-quality.js'
       - 'scripts/lib/classify-category.js'
       - 'scripts/lib/per-category-precursor.js'
+      # Email generators — so changes to outbound email (incl. UTM tagging via
+      # scripts/lib/email-utm.js) run the colocated scripts/lib/*.test.mjs step.
+      - 'scripts/lib/email-utm.js'
+      - 'scripts/lib/email-templates.js'
+      - 'scripts/newsletter/**'
+      - 'scripts/send-opening-night-broadcast.js'
+      - 'scripts/fantasy-weekly-email.js'
+      - 'scripts/send-btc-results.js'
       - 'scripts/scrape-drama-desk.js'
       - 'scripts/scrape-outer-critics.js'
       - 'scripts/scrape-drama-league.js'
