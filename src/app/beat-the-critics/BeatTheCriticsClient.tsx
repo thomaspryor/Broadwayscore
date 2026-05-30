@@ -505,7 +505,10 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
     const tonyPredictionPick = isActor ? '' : getTonyPredictionPick(nominees);
     const picksAvailable = picksRevealed && criticHasPicks();
     const criticPicks = CRITICS.map(c => isActor ? getActorCriticPick(c, currentCategory.title) : getCriticPick(c, currentCategory.title));
-    const categoryVotes = pickStats?.picks[currentCategory.title] ?? {};
+    const rawCategoryVotes = pickStats?.picks[currentCategory.title] ?? {};
+    // Include the user's own pick so they always see themselves in the breakdown
+    const categoryVotes: Record<string, number> = { ...rawCategoryVotes };
+    if (userPick) categoryVotes[userPick] = (categoryVotes[userPick] ?? 0) + 1;
     const totalCategoryVotes = Object.values(categoryVotes).reduce((a, b) => a + b, 0);
     const crowdPcts = isActor ? [] : (() => {
       if (totalCategoryVotes === 0) return nominees.map(() => 0);
