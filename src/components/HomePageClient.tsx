@@ -75,6 +75,7 @@ interface HomePageClientProps {
   tonyTrackRecord?: { pct: number; hits: number; cells: number; seasons: number };
   /** Whether the homepage Tony promo should render (auto-hides post-ceremony) */
   tonyPromoActive?: boolean;
+  btcPromoActive?: boolean;
 }
 
 // URL parameter values
@@ -214,7 +215,7 @@ function FeaturedRow({ title, shows, viewAllHref, minCount = 4 }: { title: strin
 }
 
 // Inner component that uses searchParams
-function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [], westEndShows = [], totalShows, totalReviews, totalCritics = 0, totalOutlets = 0, skipHero, skipFirstMusicals, featuredRows = [], marketOpenCounts, awardWinnerSets, tonyTrackRecord, tonyPromoActive }: HomePageClientProps) {
+function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [], westEndShows = [], totalShows, totalReviews, totalCritics = 0, totalOutlets = 0, skipHero, skipFirstMusicals, featuredRows = [], marketOpenCounts, awardWinnerSets, tonyTrackRecord, tonyPromoActive, btcPromoActive }: HomePageClientProps) {
   const initialSearchParams = useSearchParams();
 
   // Local state for instant updates (no full-page reload)
@@ -872,7 +873,7 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
                   trackingId="homepage_off_broadway_below_tony_predictions"
                 />
               )}
-              {row.title === 'Tony Winning Shows' && tonyPromoActive && (
+              {row.title === 'Tony Winning Shows' && btcPromoActive && (
                 <FeaturedSpot
                   eyebrow="Beat the Critics"
                   title="Think you know Broadway better than the critics?"

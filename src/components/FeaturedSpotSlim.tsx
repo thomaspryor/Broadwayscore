@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { trackPromoClick } from '@/lib/promo-tracking';
 
 type Accent = 'gold' | 'btc';
 
@@ -84,9 +85,7 @@ export default function FeaturedSpotSlim({
 }: FeaturedSpotSlimProps) {
   const handleClick = () => {
     if (!trackingId) return;
-    try {
-      window.posthog?.capture('promo_click', { placement: trackingId, variant: 'featured_spot_slim', href, accent });
-    } catch {}
+    trackPromoClick(trackingId, { variant: 'featured_spot_slim', href, accent });
   };
 
   return (
