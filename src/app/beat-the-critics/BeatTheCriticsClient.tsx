@@ -157,6 +157,12 @@ function shortTitle(title: string): string {
   return title.replace(' (Carry a Cake Across New York)', '');
 }
 
+function ph(event: string, props?: Record<string, unknown>) {
+  try {
+    (window as unknown as { posthog?: { capture: (e: string, p?: Record<string, unknown>) => void } }).posthog?.capture(event, props);
+  } catch {}
+}
+
 function NomineeCard({ show, selected, onSelect }: { show: SerializedTonyShow; selected: boolean; onSelect: () => void }) {
   return (
     <button onClick={onSelect} className={`w-full flex items-center gap-3.5 p-3.5 rounded-[14px] text-left transition-all duration-200 ${selected ? 'bg-[#ff1368]/[0.06] border-2 border-[#ff1368] shadow-[0_0_20px_rgba(255,19,104,0.1)]' : 'bg-surface-raised border-2 border-transparent hover:bg-surface-overlay hover:border-white/10'}`}>
@@ -260,6 +266,15 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
       .then(data => setPickStats(data))
       .catch(() => {});
   }, []);
+  const resultsTrackedRef = useRef(false);
+  useEffect(() => {
+    if (screen === 'results' && !resultsTrackedRef.current) {
+      resultsTrackedRef.current = true;
+      ph('btc_results_reached', { total_picks_made: totalPicksMade, entries_earned: entriesEarned });
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [screen]);
+
   const emailRef = useRef<HTMLInputElement>(null);
   const emailSubmittingRef = useRef(false);
   const currentTier = data.tiers[currentTierIdx];
@@ -279,8 +294,15 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
 
   const handleLockIn = useCallback(() => {
     if (!currentCategory || !picks[currentCategory.title]) return;
+    ph('btc_pick_locked_in', {
+      tier: currentTier?.key,
+      tier_name: currentTier?.name,
+      category: currentCategory.title,
+      pick: picks[currentCategory.title],
+      total_picks_made: totalPicksMade,
+    });
     setScreen('reveal');
-  }, [currentCategory, picks]);
+  }, [currentCategory, picks, currentTier, totalPicksMade]);
 
   const findNextNonEmptyCategory = useCallback((fromCatIdx: number): number | null => {
     for (let i = fromCatIdx + 1; i < totalCategoriesInTier; i++) {
@@ -349,6 +371,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
         localStorage.setItem(`${SUBSCRIBED_KEY_PREFIX}broadway`, 'true');
         localStorage.setItem('btc-email-submitted', '1');
       } catch { /* localStorage unavailable */ }
+      ph('btc_email_submitted', { total_picks_made: totalPicksMade, entries_earned: entriesEarned });
       setEmailSubmitted(true);
     } catch {
       setEmailError('Network error. Please try again.');
@@ -356,7 +379,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
       emailSubmittingRef.current = false;
       setEmailSubmitting(false);
     }
-  }, [picks, data.season.ceremonyYear]);
+  }, [picks, data.season.ceremonyYear, totalPicksMade, entriesEarned]);
 
   const shareText = useCallback(() => {
     const lines: string[] = [];
@@ -374,14 +397,17 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
   const handleShare = useCallback(async () => {
     const text = shareText();
     if (navigator.share) {
+      ph('btc_shared', { method: 'native' });
       try { await navigator.share({ title: 'My Tony Picks — Beat the Critics', text }); } catch { /* user cancelled */ }
     } else {
+      ph('btc_shared', { method: 'clipboard' });
       await navigator.clipboard.writeText(text);
       alert('Copied to clipboard!');
     }
   }, [shareText]);
 
   const handleShareX = useCallback(() => {
+    ph('btc_shared', { method: 'x' });
     const text = encodeURIComponent(shareText());
     window.open(`https://x.com/intent/tweet?text=${text}`, '_blank');
   }, [shareText]);
@@ -433,7 +459,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
           </div>
 
           <p className="animate-fade-up text-[13px] text-gray-500 mt-4 max-w-[300px] text-center leading-relaxed" style={{ animationDelay: '0.88s', animationFillMode: 'both' }}>Only 1 round required to enter — do all 4 for your best shot at beating the critics.</p>
-          <button onClick={() => { setCurrentTierIdx(0); const firstIdx = data.tiers[0]?.categories.findIndex(c => categoryHasNominees(c)) ?? 0; setCurrentCatIdx(firstIdx >= 0 ? firstIdx : 0); goToScreen('picking'); }} className="animate-fade-up mt-4 inline-flex items-center gap-2.5 px-10 py-4 rounded-[14px] bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white text-[17px] font-bold shadow-[0_4px_24px_rgba(255,19,104,0.35)] hover:shadow-[0_8px_32px_rgba(255,19,104,0.45)] hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-200" style={{ animationDelay: '0.9s', animationFillMode: 'both' }}>Make Your Picks &rarr;</button>
+          <button onClick={() => { ph('btc_started'); setCurrentTierIdx(0); const firstIdx = data.tiers[0]?.categories.findIndex(c => categoryHasNominees(c)) ?? 0; setCurrentCatIdx(firstIdx >= 0 ? firstIdx : 0); goToScreen('picking'); }} className="animate-fade-up mt-4 inline-flex items-center gap-2.5 px-10 py-4 rounded-[14px] bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white text-[17px] font-bold shadow-[0_4px_24px_rgba(255,19,104,0.35)] hover:shadow-[0_8px_32px_rgba(255,19,104,0.45)] hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-200" style={{ animationDelay: '0.9s', animationFillMode: 'both' }}>Make Your Picks &rarr;</button>
           {!countdownExpired && (
             <div className="animate-fade-up mt-5 flex flex-col items-center gap-2" style={{ animationDelay: '0.95s', animationFillMode: 'both' }}>
               <div className="text-[10px] font-semibold text-gray-600 uppercase tracking-widest">until the Tonys</div>
@@ -679,11 +705,11 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
 
           {nextTier ? (
             <>
-              <button onClick={handleNextTier} className="w-full py-4 rounded-[14px] text-base font-bold bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_24px_rgba(255,19,104,0.35)] hover:-translate-y-0.5 transition-all mb-3">
+              <button onClick={() => { ph('btc_tier_completed', { tier: currentTier?.key, tier_name: currentTier?.name, tier_num: currentTierIdx + 1, action: 'continue' }); handleNextTier(); }} className="w-full py-4 rounded-[14px] text-base font-bold bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_24px_rgba(255,19,104,0.35)] hover:-translate-y-0.5 transition-all mb-3">
                 Continue to {nextTier.name} &rarr;
                 <span className="block text-xs font-medium opacity-80 mt-0.5">Round {tierNumber + 1} of {data.tiers.length}</span>
               </button>
-              <button onClick={() => goToScreen('results')} className="w-full py-3.5 rounded-[14px] text-sm font-semibold border border-white/10 text-gray-400 hover:border-brand hover:text-brand transition-all">
+              <button onClick={() => { ph('btc_tier_completed', { tier: currentTier?.key, tier_name: currentTier?.name, tier_num: currentTierIdx + 1, action: 'skip_to_results' }); goToScreen('results'); }} className="w-full py-3.5 rounded-[14px] text-sm font-semibold border border-white/10 text-gray-400 hover:border-brand hover:text-brand transition-all">
                 {currentTierIdx === 0 ? 'Submit & Enter Prize Draw' : 'Save & Share My Ballot'}
               </button>
             </>
