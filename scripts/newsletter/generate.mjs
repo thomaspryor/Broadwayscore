@@ -507,7 +507,7 @@ function offBroadwayOpenings() {
   // strict in-week opening — this catches shows that were added to our DB late.
   // Opera is excluded (it has its own section); only shows with reviews qualify;
   // the highest-scored show leads as the featured opening.
-  const cutoffDate = new Date(weekStartStr + 'T12:00:00'); cutoffDate.setDate(cutoffDate.getDate() - 28);
+  const cutoffDate = new Date(weekStartStr + 'T12:00:00'); cutoffDate.setDate(cutoffDate.getDate() - 14);
   const cutoff = cutoffDate.toISOString().slice(0, 10);
   const withScore = shows
     .filter(s => s.category === 'off-broadway' && s.status === 'open' && !isOperaShow(s)
@@ -1155,6 +1155,7 @@ function closingSection() {
     if (!s.closingDate || s.closingDate <= weekEndStr || s.closingDate > horizon7Str) return false;
     if (s.status !== 'open') return false;
     if (!['broadway', 'off-broadway'].includes(s.category)) return false; // NYC only
+    if (isOperaShow(s)) return false; // opera has its own section — never in NYC closings
     if (!notFeatured(s.id)) return false; // already surfaced in a higher section
     // Must have a qualifying critic score (drop pending/no-score shows)
     const a = aggregateScore(s.id);
@@ -1208,79 +1209,41 @@ function castingSection() {
   // the announced-closings tightening per user note 2026-05-24.
   // Closures belong in the closing sections, never here — exclude them so this
   // section only ever shows real cast moves (joins / departures / swaps).
-  const recent = eventsAll.filter(e => e.type !== 'closure' && e.addedDate && e.addedDate >= weekStartStr && e.addedDate <= weekEndStr);
+  // A renderable cast move must be an arrival/departure/swap with a REAL
+  // performer name and at least one date. Filters out: closures (own section),
+  // note/absence rows, placeholder names ("X replacement", "TBA"/"TBD"), and
+  // dateless rows ("no dates means these aren't useful" — user, 2026-05-30).
+  const PLACEHOLDER = /\breplacement\b|^tba$|^tbd$|^t\.?b\.?[ad]\.?$/i;
+  const isRealMove = (e) => {
+    if (!['arrival', 'departure'].includes(e.type)) return false;
+    const name = (e.name || '').trim();
+    if (!name || PLACEHOLDER.test(name)) return false;
+    if (!e.date && !e.endDate) return false;
+    return true;
+  };
+  const recent = eventsAll.filter(e => isRealMove(e) && e.addedDate && e.addedDate >= weekStartStr && e.addedDate <= weekEndStr);
   if (!recent.length) return null;
   const byShow = {};
   recent.forEach(e => { (byShow[e.showId] ||= []).push(e); });
-  // Per-show, collapse closure-as-N-departures into a single closure row.
-  // The closure event itself may have been added BEFORE the lookback window
-  // (e.g., closure announced 3 weeks ago, one ensemble actor departure
-  // scraped fresh this week). We must reach BACK into the full upcoming
-  // events to fetch any existing closure for the show — otherwise the
-  // lookback filter strands the departure and renders "Actor departs ·
-  // final <closure date>" again, which is the exact bug this section
-  // was rewritten to prevent.
-  Object.keys(byShow).forEach(showId => {
-    const recentShowEvents = byShow[showId];
-    const allShowEvents = (castData.shows[showId]?.upcoming || []);
-    const existingClosure = allShowEvents.find(e => e.type === 'closure');
-    const alreadyHasClosure = recentShowEvents.some(e => e.type === 'closure');
-    // Inject the show-level closure (with the same showId/showTitle envelope
-    // the recent events carry) so reconcileClosure can suppress the stranded
-    // departures. The envelope is only used by downstream rendering loops.
-    const eventsForReconcile = existingClosure && !alreadyHasClosure
-      ? [{ ...existingClosure, showId, showTitle: recentShowEvents[0].showTitle }, ...recentShowEvents]
-      : recentShowEvents;
-    byShow[showId] = reconcileClosure(eventsForReconcile);
-    // If we injected a closure purely for suppression purposes and the show
-    // already had a closure addedDate outside the lookback (i.e. NOT fresh
-    // news), don't surface the closure row — the result is the closure was
-    // used silently to clean up the rendering, but no row is emitted.
-    if (existingClosure && !alreadyHasClosure) {
-      byShow[showId] = byShow[showId].filter(e => e.type !== 'closure');
-    }
-  });
-  // Sort shows so closures surface first within the 5-row cap — a show closing
-  // is more newsworthy than a routine ensemble swap and must never be crowded
-  // out. Within closures, sort by closure date ascending so the soonest-to-
-  // close show leads (most urgent to a reader planning attendance).
-  const showEntries = Object.values(byShow).sort((a, b) => {
-    const aClose = a.find(e => e.type === 'closure');
-    const bClose = b.find(e => e.type === 'closure');
-    const aRank = aClose ? 0 : 1;
-    const bRank = bClose ? 0 : 1;
-    if (aRank !== bRank) return aRank - bRank;
-    if (aClose && bClose) return (aClose.date || '').localeCompare(bClose.date || '');
-    return 0;
-  });
-  // For each show, surface 1-2 events with arrival/departure icons
+  const showEntries = Object.values(byShow);
+  // cast-changes.json uses `date` (start) and `endDate` (last performance).
+  function rangeOf(e) {
+    const parts = [];
+    if (e && e.date) parts.push(`from ${fmt(e.date)}`);
+    if (e && e.endDate) parts.push(`through ${fmt(e.endDate)}`);
+    return parts.length ? ` <span style="color:#fbbf24;">· ${parts.join(' · ')}</span>` : '';
+  }
+  // For each show, surface a single arrival/departure/swap row.
   const groups = [];
   showEntries
     .filter(events => events.length && notFeatured(events[0].showId))
     .slice(0, 5).forEach(events => {
     markFeatured(events[0].showId);
     const showTitle = events[0].showTitle;
-    const closure = events.find(e => e.type === 'closure');
     const arr = events.find(e => e.type === 'arrival');
     const dep = events.find(e => e.type === 'departure');
     const items = [];
-    // cast-changes.json uses `date` (start) and `endDate` (last performance).
-    // Both are optional — surface "from X · through Y" / "from X" / "through Y"
-    // depending on what's known.
-    function rangeOf(e) {
-      const parts = [];
-      if (e && e.date) parts.push(`from ${fmt(e.date)}`);
-      if (e && e.endDate) parts.push(`through ${fmt(e.endDate)}`);
-      return parts.length ? ` <span style="color:#fbbf24;">· ${parts.join(' · ')}</span>` : '';
-    }
-    if (closure) {
-      // Closure rows used #ef4444 (the "critical miss" red) — that misreads as
-      // a negative review badge to non-technical scanning readers. Neutral
-      // grey reads as "ended/concluded" without overloading critic-score
-      // semantics. Reviewers (GPT-4o + Claude QA + Codex) all flagged red.
-      const tail = closure.date ? ` <span style="color:#fbbf24;">· final ${fmt(closure.date)}</span>` : '';
-      items.push({ icon: '×', color: '#9ca3af', text: `<strong style="color:#fff;">Show closes</strong>${tail}` });
-    } else if (arr && dep) {
+    if (arr && dep) {
       const range = rangeOf(arr);
       items.push({ icon: '↻', color: '#d4a574', text: `${castLink(arr.name, `<strong style="color:#fff;">${arr.name}</strong>`)} in for ${castLink(dep.name, dep.name)}${range}` });
     } else if (arr) {
@@ -1289,10 +1252,8 @@ function castingSection() {
     } else if (dep) {
       const tail = dep.date ? ` <span style="color:#fbbf24;">· final ${fmt(dep.date)}</span>` : '';
       items.push({ icon: '↘', color: '#9ca3af', text: `${castLink(dep.name, `<strong style="color:#fff;">${dep.name}</strong>`)} departs${tail}` });
-    } else {
-      items.push({ icon: '·', color: '#9ca3af', text: `${castLink(events[0].name, events[0].name)} — ${events[0].role}` });
     }
-    groups.push({ showTitle, items });
+    if (items.length) groups.push({ showTitle, items });
   });
   if (!groups.length) return null;
   const rows = groups.map((g, i) => `
