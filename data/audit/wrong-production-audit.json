@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-05-30T09:07:09.500Z",
+  "timestamp": "2026-05-30T09:20:51.695Z",
   "stats": {
     "totalReviews": 37792,
     "alreadyFlagged": 16603,
     "dateGuardCatches": 106,
-    "directorMismatch": 805,
+    "directorMismatch": 806,
     "tvFilmSignals": 1033,
     "londonSignals": 583,
     "offBroadwaySignals": 454,
@@ -1836,6 +1836,20 @@
       "score": 83,
       "publishDate": "2026-05-29",
       "url": "https://standard.co.uk/culture/theatre/beetlejuice-the-musical-review-prince-edward-b1284074.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"alex timbers\" from beetlejuice-2025"
+        }
+      ]
+    },
+    {
+      "showId": "beetlejuice-west-end-2026",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 59,
+      "publishDate": "2026-05-29",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/beetlejuice-musical-review/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
