@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-31T11:42:49.945Z",
+  "timestamp": "2026-05-31T12:16:34.106Z",
   "stats": {
-    "totalReviews": 37860,
-    "alreadyFlagged": 16634,
+    "totalReviews": 37855,
+    "alreadyFlagged": 16636,
     "dateGuardCatches": 106,
-    "directorMismatch": 812,
+    "directorMismatch": 813,
     "tvFilmSignals": 1035,
     "londonSignals": 584,
     "offBroadwaySignals": 456,
     "yearMismatch": 79,
-    "noPublishDate": 3968
+    "noPublishDate": 3963
   },
   "findings": [
     {
@@ -1816,7 +1816,7 @@
       "file": "guardian--chris-wiegand.json",
       "score": 56,
       "publishDate": "2026-05-25",
-      "url": "https://www.theguardian.com/stage/gallery/2026/may/25/beetlejuice-west-end-musical-in-pictures",
+      "url": "https://www.theguardian.com/stage/2026/may/29/beetlejuice-the-musical-review-prince-edward-theatre-london",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -1939,6 +1939,20 @@
       "score": 62,
       "publishDate": "2026-05-29",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/beetlejuice-review-theatre-musical-tim-burton-prince-edward-london-zfgcfwq3s",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"alex timbers\" from beetlejuice-2025"
+        }
+      ]
+    },
+    {
+      "showId": "beetlejuice-west-end-2026",
+      "file": "west-end-best-friend--jenny-ell.json",
+      "score": 90,
+      "publishDate": "2026-05-28",
+      "url": "https://www.westendbestfriend.co.uk/news/review-beetlejuice-the-musical-prince-edward-theatre",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -28023,7 +28037,7 @@
       "file": "guardian--unknown.json",
       "score": null,
       "publishDate": null,
-      "url": "https://www.theguardian.com/books/2024/nov/02/alan-bennett-at-90-what-will-people-think-i-dont-care-any-more",
+      "url": "https://www.theguardian.com/stage/2026/may/15/linda-bassett-call-the-midwife-caryl-churchill-alexander-zeldin-care",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
