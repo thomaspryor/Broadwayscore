@@ -72,8 +72,10 @@ const TOTAL_START_TIME = Date.now();
 // Today's date string
 const TODAY = new Date().toISOString().split('T')[0];
 
-// Load shows data
-const allShows = loadShows();
+// Load shows data. Only when run directly — importing this module for its
+// exported helpers (validateEvent etc.) must not require shows.json to exist
+// (the unit-test job's no-data-dependency batch + Dependabot have no core data).
+const allShows = require.main === module ? loadShows() : [];
 
 // Stats tracking
 const stats = {

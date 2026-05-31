@@ -23,7 +23,7 @@ const repo = path.resolve(__dirname, '..', '..');
 // paths now (was hardcoded /Users/tompryor/... — broke on CI).
 const cjsRequire = createRequire(import.meta.url);
 const { buildUnsubscribeUrl } = cjsRequire(path.join(repo, 'scripts/lib/email-templates'));
-const { reconcileClosure } = cjsRequire(path.join(repo, 'scripts/lib/cast-changes-filters'));
+const { reconcileClosure, reconcileClosureDateWithClosingDate } = cjsRequire(path.join(repo, 'scripts/lib/cast-changes-filters'));
 const { reviews } = JSON.parse(fs.readFileSync(path.join(repo, 'data/reviews.json'), 'utf8'));
 const { shows } = JSON.parse(fs.readFileSync(path.join(repo, 'data/shows.json'), 'utf8'));
 const castData = JSON.parse(fs.readFileSync(path.join(repo, 'data/cast-changes.json'), 'utf8'));
@@ -1201,10 +1201,15 @@ function castingSection() {
     const show = shows.find(s => s.id === showId);
     if (!show || show.category !== 'broadway' || isOperaShow(show)) return;
     const data = castData.shows[showId];
-    // reconcileClosure PER SHOW (never across shows — a closure in one show must
-    // not suppress a same-date departure in another) folds per-actor departures
-    // that restate the closing into the closure event before we render.
-    reconcileClosure(data.upcoming || []).forEach(u =>
+    // Defend at the READ boundary against a stale closure date: cast-changes.json
+    // is only healed by the weekly audit, so between runs (or in local preview) a
+    // closure event may still carry the pre-extension date. Reconcile it to the
+    // broadway.com-audited shows.json closingDate FIRST so reconcileClosure folds
+    // departures against the correct date. Then reconcileClosure PER SHOW (never
+    // across shows — a closure in one show must not suppress a same-date departure
+    // in another).
+    const healed = reconcileClosureDateWithClosingDate(data.upcoming || [], show.closingDate).events;
+    reconcileClosure(healed).forEach(u =>
       eventsAll.push({ ...u, showId, showTitle: show.title }),
     );
   });
