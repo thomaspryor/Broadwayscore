@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-05-31T11:50:59.962Z",
+  "generatedAt": "2026-05-31T12:49:21.611Z",
   "date": "2026-05-31",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 188277,
+  "entryCount": 190454,
   "shows": [
     {
       "showId": "an-ideal-husband-west-end-2026",
@@ -2736,7 +2736,7 @@
     },
     {
       "showId": "beetlejuice-west-end-2026",
-      "reviewCount": 20,
+      "reviewCount": 21,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4147,6 +4147,21 @@
     {
       "showId": "spamalot-2005",
       "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "other-desert-cities-2026",
+      "reviewCount": 1,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
