@@ -450,9 +450,41 @@ function dedupeClosures(events) {
     // Keep the longer note; always pin earliest addedDate.
     const pinned = earliestAddedDate(prev.addedDate, e.addedDate);
     if ((e.note || '').length > (prev.note || '').length) Object.assign(prev, e);
-    prev.addedDate = pinned;
+    prev.addedDate = pinned != null ? pinned : prev.addedDate;
   }
   return out;
+}
+
+/**
+ * Reconcile a show's closure event date against the canonical closing date from
+ * shows.json (broadway.com-audited daily). A closure event captures the date
+ * known at announcement time and is NEVER updated when the show extends, so it
+ * silently goes stale (rocky-horror, titanique, moulin-rouge all lagged the
+ * canonical date by months). A stale closure date is corrosive: reconcileClosure
+ * anchors on it and folds the WRONG per-actor departures, and any consumer that
+ * renders it ships a wrong final-performance date.
+ *
+ * `canonicalClosingDate` is the shows.json `closingDate` (YYYY-MM-DD) or null.
+ * Returns { events, repaired } where repaired counts corrected closures. The
+ * corrected closure keeps its write-once addedDate + sourceUrl but takes the
+ * canonical date and a neutral note (the original prose referenced the stale
+ * date). Pure — callable from the audit (write) and as a detector (count only).
+ */
+function reconcileClosureDateWithClosingDate(events, canonicalClosingDate) {
+  if (!canonicalClosingDate || !/^\d{4}-\d{2}-\d{2}$/.test(canonicalClosingDate)) {
+    return { events, repaired: 0 };
+  }
+  let repaired = 0;
+  const out = events.map(e => {
+    if (e.type !== 'closure' || !e.date || e.date === canonicalClosingDate) return e;
+    repaired++;
+    return {
+      ...e,
+      date: canonicalClosingDate,
+      note: `Production closes ${canonicalClosingDate} (date reconciled to broadway.com-audited closingDate).`,
+    };
+  });
+  return { events: out, repaired };
 }
 
 function applyPublicFilters(events, today = new Date(), opts = {}) {
@@ -489,4 +521,5 @@ module.exports = {
   mergePreservingAddedDate,
   findClosureDupe,
   dedupeClosures,
+  reconcileClosureDateWithClosingDate,
 };

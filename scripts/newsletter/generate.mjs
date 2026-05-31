@@ -23,7 +23,7 @@ const repo = path.resolve(__dirname, '..', '..');
 // paths now (was hardcoded /Users/tompryor/... — broke on CI).
 const cjsRequire = createRequire(import.meta.url);
 const { buildUnsubscribeUrl } = cjsRequire(path.join(repo, 'scripts/lib/email-templates'));
-const { reconcileClosure } = cjsRequire(path.join(repo, 'scripts/lib/cast-changes-filters'));
+const { reconcileClosure, reconcileClosureDateWithClosingDate } = cjsRequire(path.join(repo, 'scripts/lib/cast-changes-filters'));
 const { reviews } = JSON.parse(fs.readFileSync(path.join(repo, 'data/reviews.json'), 'utf8'));
 const { shows } = JSON.parse(fs.readFileSync(path.join(repo, 'data/shows.json'), 'utf8'));
 const castData = JSON.parse(fs.readFileSync(path.join(repo, 'data/cast-changes.json'), 'utf8'));
@@ -1201,7 +1201,17 @@ function castingSection() {
     const show = shows.find(s => s.id === showId);
     if (!show || show.category !== 'broadway' || isOperaShow(show)) return;
     const data = castData.shows[showId];
-    (data.upcoming || []).forEach(u => eventsAll.push({ ...u, showId, showTitle: show.title }));
+    // Defend at the READ boundary against a stale closure date: cast-changes.json
+    // is only healed by the weekly audit, so between runs (or in local preview) a
+    // closure event may still carry the pre-extension date. Reconcile it to the
+    // broadway.com-audited shows.json closingDate FIRST so reconcileClosure folds
+    // departures against the correct date. Then reconcileClosure PER SHOW (never
+    // across shows — a closure in one show must not suppress a same-date departure
+    // in another).
+    const healed = reconcileClosureDateWithClosingDate(data.upcoming || [], show.closingDate).events;
+    reconcileClosure(healed).forEach(u =>
+      eventsAll.push({ ...u, showId, showTitle: show.title }),
+    );
   });
   // Recent: addedDate IN THE WEEK WINDOW. Earlier versions used a 14-day
   // window (weekStart - 7d) but that resurfaces last-week's casting in this
@@ -1214,10 +1224,20 @@ function castingSection() {
   // note/absence rows, placeholder names ("X replacement", "TBA"/"TBD"), and
   // dateless rows ("no dates means these aren't useful" — user, 2026-05-30).
   const PLACEHOLDER = /\breplacement\b|^tba$|^tbd$|^t\.?b\.?[ad]\.?$/i;
+  // A "departure" whose name IS the production (e.g. "Moulin Rouge! The Musical
+  // Company") is a show-wide closing restated as a per-actor row, not a person.
+  // Rendering it prints "<Show> Company departs" — the closure-as-departure bug.
+  const norm = (s) => (s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+  const isProductionName = (e) => {
+    const n = norm(e.name);
+    const t = norm(e.showTitle);
+    return !!n && !!t && (n === t || n.startsWith(t));
+  };
   const isRealMove = (e) => {
     if (!['arrival', 'departure'].includes(e.type)) return false;
     const name = (e.name || '').trim();
     if (!name || PLACEHOLDER.test(name)) return false;
+    if (isProductionName(e)) return false;
     if (!e.date && !e.endDate) return false;
     return true;
   };

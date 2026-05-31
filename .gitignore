@@ -50,6 +50,9 @@ tests/fixtures/opening-night/
 # Cleanup backups (contain copyrighted review text)
 data/audit/cleanup-backups/
 
+# Scraper pre-write backups (cast-changes.backup-<ts>.json) — must never be committed
+data/cast-changes.backup-*.json
+
 # Subscriber/follower PII (generated fresh each workflow run)
 data/subscribers.json
 data/subscribers-westend.json
