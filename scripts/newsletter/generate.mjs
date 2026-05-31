@@ -2001,7 +2001,7 @@ const html = `<!DOCTYPE html>
   <div style="font-size:13px;color:#9ca3af;">Weekly Round-up · ${fmt(weekStartStr)} – ${fmt(weekEndStr)}, ${yearForFooter}</div>
 </td></tr>
 ${ledeText ? `<tr><td style="padding:6px 4px 20px;">
-  <div style="font-size:14px;line-height:1.55;color:#d1d5db;font-style:italic;border-left:2px solid #d4a574;padding-left:12px;">${ledeText}</div>
+  <div style="font-size:14px;line-height:1.55;color:#d1d5db;border-left:2px solid #d4a574;padding-left:12px;">${ledeText}</div>
 </td></tr>` : '<tr><td style="padding:0 4px 12px;"></td></tr>'}
 ${sectionOrder.join('')}
 <tr><td align="center" style="padding:40px 4px 8px;">
