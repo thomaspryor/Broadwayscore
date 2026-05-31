@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-05-31T20:39:15.826Z",
+  "generatedAt": "2026-05-31T21:38:20.891Z",
   "date": "2026-05-31",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 200307,
+  "entryCount": 201397,
   "shows": [
     {
       "showId": "an-ideal-husband-west-end-2026",
@@ -1536,7 +1536,7 @@
     },
     {
       "showId": "chat-noir-off-west-end-2026",
-      "reviewCount": 1,
+      "reviewCount": 2,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1581,7 +1581,7 @@
     },
     {
       "showId": "burlesque-west-end-2026",
-      "reviewCount": 17,
+      "reviewCount": 16,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -3636,7 +3636,7 @@
     },
     {
       "showId": "the-comeuppance-off-broadway-2026",
-      "reviewCount": 14,
+      "reviewCount": 15,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4026,7 +4026,7 @@
     },
     {
       "showId": "dark-of-the-moon-west-end-2026",
-      "reviewCount": 13,
+      "reviewCount": 16,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4071,7 +4071,7 @@
     },
     {
       "showId": "the-p-word-off-west-end-2026",
-      "reviewCount": 3,
+      "reviewCount": 6,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4116,21 +4116,6 @@
     },
     {
       "showId": "in-the-heights-2008",
-      "reviewCount": 6,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
-        "rebuilt-to-deployed": null
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
-      "showId": "spring-awakening-2006",
       "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
@@ -4145,8 +4130,23 @@
       "slowest_reviews": []
     },
     {
+      "showId": "spring-awakening-2006",
+      "reviewCount": 8,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
       "showId": "spamalot-2005",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4192,6 +4192,21 @@
     {
       "showId": "shit-meet-fan-off-broadway-2024",
       "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "ragtime-2025",
+      "reviewCount": 31,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
