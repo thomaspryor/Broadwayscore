@@ -163,6 +163,21 @@ function findSynonymDuplicates(shows) {
           }
         }
       }
+      // winnerNames keys must also be canonical — otherwise the arrays can look
+      // clean while winnerNames carries a stale synonym key (silent over-credit).
+      if (node.winnerNames && typeof node.winnerNames === 'object') {
+        const keyGroups = new Map();
+        for (const key of Object.keys(node.winnerNames)) {
+          const canon = canonicalizeAwardCategory(ck, key);
+          if (!keyGroups.has(canon)) keyGroups.set(canon, new Set());
+          keyGroups.get(canon).add(key);
+        }
+        for (const [canonical, keys] of keyGroups) {
+          if (keys.size > 1) {
+            issues.push({ showId, ceremony: ck, field: 'winnerNames', canonical, variants: [...keys] });
+          }
+        }
+      }
     }
   }
   return issues;

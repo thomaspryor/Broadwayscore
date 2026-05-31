@@ -37,7 +37,7 @@ const path = require('path');
 const { normalizeTitle } = require('./lib/title-match');
 const { writeAwardsJsonAtomic } = require('./lib/awards-atomic-write');
 const { validateAwardsObject, validatePrecursorSource } = require('./lib/awards-schema-validator');
-const { canonicalizeAllShows, findSynonymDuplicates } = require('./lib/award-category-canonical');
+const { canonicalizeAllShows, findSynonymDuplicates, canonicalizeAwardCategory } = require('./lib/award-category-canonical');
 const { classifyCategory, KNOWN_UNSCORED_CATEGORIES } = require('./lib/classify-category');
 
 const PUBLIC_AWARDS = path.join(__dirname, '..', 'data', 'awards.json');
@@ -459,7 +459,14 @@ function applyDDOCCDL(source, fieldKey, awardsShows, titleById, opts) {
   const strictSeason = UK_CEREMONIES.has(fieldKey);
   let matched = 0;
   const unmatched = [];
-  for (const [scrapedCategory, years] of Object.entries(source)) {
+  for (const [rawScrapedCategory, years] of Object.entries(source)) {
+    // Canonicalize the scraped category up front so EVERYTHING downstream —
+    // wins/nominatedFor writes, winnerNames keys, AND the cross-show stale-winner
+    // cleanup below (which matches by scrapedCategory) — operates in canonical
+    // space. Without this, a future "Direction of a Musical" scrape would write
+    // canonical "Director..." but its cleanup would search for the raw string and
+    // miss already-canonicalized entries, leaving a stale winner on the wrong show.
+    const scrapedCategory = canonicalizeAwardCategory(fieldKey, rawScrapedCategory);
     for (const yearEntry of years) {
       const callOpts = { ...opts, sourceYear: yearEntry.year, strictSeason };
 
