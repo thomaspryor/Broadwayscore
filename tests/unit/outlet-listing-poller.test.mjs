@@ -15,6 +15,7 @@ const {
   parseSitemapXml,
   extractListingUrls,
   buildSerpQuery,
+  mergeAlwaysOnOutlets,
 } = require('../../scripts/lib/outlet-listing-helpers.js');
 
 // ---------------------------------------------------------------------------
@@ -335,5 +336,42 @@ describe('buildSerpQuery', () => {
   test('includes site: prefix', () => {
     const q = buildSerpQuery('thestage.co.uk');
     assert.ok(q.startsWith('site:thestage.co.uk'));
+  });
+});
+
+// ---------------------------------------------------------------------------
+// mergeAlwaysOnOutlets — configured outlets are polled regardless of volume gate
+// (regression: The Recs' late 5-star Lost Boys review was missed because the
+//  outlet fell below the ≥5-shows derived-qualifying gate and was never polled)
+// ---------------------------------------------------------------------------
+
+describe('mergeAlwaysOnOutlets', () => {
+  test('always includes configured outlets even when not derived', () => {
+    const derived = ['nytimes', 'variety'];
+    const configured = ['the-recs', 'nytimes', 'guardian'];
+    const out = mergeAlwaysOnOutlets(derived, configured, new Set());
+    assert.ok(out.includes('the-recs'), 'the-recs must be polled even below the volume gate');
+    assert.ok(out.includes('guardian'));
+  });
+
+  test('dedupes outlets present in both sources', () => {
+    const out = mergeAlwaysOnOutlets(['nytimes'], ['nytimes', 'the-recs'], new Set());
+    assert.equal(out.filter(x => x === 'nytimes').length, 1);
+  });
+
+  test('preserves derived-first ordering, then new configured', () => {
+    const out = mergeAlwaysOnOutlets(['a', 'b'], ['b', 'c'], new Set());
+    assert.deepEqual(out, ['a', 'b', 'c']);
+  });
+
+  test('excludes skip-listed outlets from both sources', () => {
+    const out = mergeAlwaysOnOutlets(['a', 'broadwayworld'], ['the-recs', 'broadwayworld'], new Set(['broadwayworld']));
+    assert.ok(!out.includes('broadwayworld'));
+    assert.ok(out.includes('the-recs'));
+  });
+
+  test('drops falsy ids', () => {
+    const out = mergeAlwaysOnOutlets(['a', null, ''], ['the-recs', undefined], new Set());
+    assert.deepEqual(out, ['a', 'the-recs']);
   });
 });
