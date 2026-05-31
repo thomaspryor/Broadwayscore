@@ -503,7 +503,7 @@ function broadwayOpenings() {
 // pending count gets promoted to the heading subtitle only when there's at
 // least one show to render alongside it.
 function offBroadwayOpenings() {
-  // Grace window: include OB shows that opened in the last 28 days, not just the
+  // Grace window: include OB shows that opened in the last 14 days, not just the
   // strict in-week opening — this catches shows that were added to our DB late.
   // Opera is excluded (it has its own section); only shows with reviews qualify;
   // the highest-scored show leads as the featured opening.
@@ -1715,6 +1715,13 @@ function mostReadSection(climberList) {
 const { createSectionRunner } = cjsRequire(path.join(scriptDir, '..', 'lib', 'newsletter-sections.js'));
 const sections = createSectionRunner();
 
+// ORDERING CONTRACT (do not reorder without care): sections that share the
+// `featuredShowIds` cross-section de-dup MUST be CALLED in render order —
+// openings → biggest-movers → closing-this-week → announced-closings →
+// casting-updates. Each marks the shows it renders; later sections skip them.
+// Reordering silently moves shows between sections (no crash). The subject/lede
+// block (below) ALSO depends on bwO/obO being computed first — it reads
+// bwO.list/obO.list, so it must stay after these calls.
 const bwO = broadwayOpenings();
 const obO = offBroadwayOpenings();
 sections.run('broadway-openings', () => bwO.html);
@@ -1732,6 +1739,17 @@ const tony = sections.run('tony-predictions', () => tonyWatchSection());
 // (btc accent = rose-500). Copy is identical to the on-site homepage shelf:
 // eyebrow + title + description + CTA + $200 stat pill. Email-safe table render.
 function btcPromoSection() {
+  // Campaign date gate — mirror the on-site isBtcPromoActive() window so the
+  // email promo auto-expires exactly like the homepage shelf. The contest is a
+  // $200 TodayTix prize tied to the Tony ceremony; shipping it after the
+  // ceremony would email subscribers an expired offer. Window = 35 days before
+  // the ceremony through ceremony day (src/config/tony-ceremony.ts getBtcWindow).
+  const TONY_CEREMONY = '2026-06-08';
+  const campEnd = new Date(TONY_CEREMONY + 'T23:59:59');
+  const campStart = new Date(campEnd.getTime() - 35 * 24 * 60 * 60 * 1000);
+  const campStartStr = campStart.toISOString().slice(0, 10);
+  // Active if this issue's week overlaps the campaign window.
+  if (weekEndStr < campStartStr || weekStartStr > TONY_CEREMONY) return null;
   const href = `${SITE}/beat-the-critics`;
   const ROSE = '#f43f5e';
   const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" class="cardbg" style="border:1px solid rgba(255,255,255,0.06);border-top:2px solid ${ROSE};border-radius:12px;">
