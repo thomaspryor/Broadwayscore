@@ -1708,18 +1708,21 @@ const box      = sections.run('box-office', () => boxOfficeSection());
 const commercial = sections.run('recoupment', () => commercialSection());
 const bz   = sections.run('social-buzz', () => buzziestSection());
 const tony = sections.run('tony-predictions', () => tonyWatchSection());
-// SECTION: Beat the Critics promo — mirrors src/components/PromoShelf.tsx (btc
-// variant). Colors + copy are kept in sync with the on-site shelf: emerald
-// gradient card, green border, gradient CTA. Self-contained card (eyebrow lives
-// inside it, like the site), so no duplicate sectionHeading above it.
+// SECTION: Beat the Critics promo — mirrors src/components/FeaturedSpotSlim.tsx
+// (btc accent = rose-500). Copy is identical to the on-site homepage shelf:
+// eyebrow + title + description + CTA + $200 stat pill. Email-safe table render.
 function btcPromoSection() {
   const href = `${SITE}/beat-the-critics`;
-  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#0a1f1a" class="cardbg" style="background:linear-gradient(135deg,#0a1f1a 0%,#0f0f14 60%);border:1px solid rgba(52,211,153,0.35);border-radius:12px;">
+  const ROSE = '#f43f5e';
+  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" class="cardbg" style="border:1px solid rgba(255,255,255,0.06);border-top:2px solid ${ROSE};border-radius:12px;">
     <tr><td style="padding:20px;">
-      <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#34d399;margin-bottom:8px;">Beat the Critics</div>
-      <div style="font-size:18px;font-weight:800;color:#ffffff;line-height:1.25;margin-bottom:8px;">Think you can out-guess the critics?</div>
-      <div style="font-size:14px;color:#c8d6cf;line-height:1.5;margin-bottom:16px;">Predict the score before reviews drop. Lock in your picks and see how you stack up.</div>
-      <a href="${href}" style="display:inline-block;background:linear-gradient(135deg,#34d399,#10b981);color:#04150f;font-size:14px;font-weight:700;text-decoration:none;padding:11px 20px;border-radius:8px;">Play Beat the Critics &rarr;</a>
+      <div style="margin-bottom:8px;"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:${ROSE};vertical-align:middle;margin-right:7px;"></span><span style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:${ROSE};vertical-align:middle;">Beat the Critics</span></div>
+      <div style="font-size:18px;font-weight:800;color:#ffffff;line-height:1.25;margin-bottom:8px;">Think you know Broadway better than the critics?</div>
+      <div style="font-size:14px;color:#c8c8d0;line-height:1.5;margin-bottom:16px;">Pick the Tony winners against our model and the top critics. One entry wins a $200 TodayTix gift card.</div>
+      <table role="presentation" cellspacing="0" cellpadding="0" border="0"><tr>
+        <td valign="middle" style="padding-right:14px;"><a href="${href}" style="display:inline-block;background:${ROSE};color:#ffffff;font-size:14px;font-weight:700;text-decoration:none;padding:11px 20px;border-radius:999px;">Make your picks &rarr;</a></td>
+        <td valign="middle"><span style="display:inline-block;background:rgba(244,63,94,0.10);border:1px solid rgba(244,63,94,0.40);color:#fda4af;font-size:12px;font-weight:600;padding:6px 12px;border-radius:999px;">$200 TodayTix gift card</span></td>
+      </tr></table>
     </td></tr>
   </table>`;
   // No sectionHeading — the eyebrow inside the card is the label, matching the
