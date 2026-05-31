@@ -23,7 +23,7 @@ const repo = path.resolve(__dirname, '..', '..');
 // paths now (was hardcoded /Users/tompryor/... — broke on CI).
 const cjsRequire = createRequire(import.meta.url);
 const { buildUnsubscribeUrl } = cjsRequire(path.join(repo, 'scripts/lib/email-templates'));
-const { reconcileClosure } = cjsRequire(path.join(repo, 'scripts/lib/cast-changes-filters'));
+const { reconcileClosure, reconcileClosureDateWithClosingDate } = cjsRequire(path.join(repo, 'scripts/lib/cast-changes-filters'));
 const { reviews } = JSON.parse(fs.readFileSync(path.join(repo, 'data/reviews.json'), 'utf8'));
 const { shows } = JSON.parse(fs.readFileSync(path.join(repo, 'data/shows.json'), 'utf8'));
 const castData = JSON.parse(fs.readFileSync(path.join(repo, 'data/cast-changes.json'), 'utf8'));
@@ -1201,7 +1201,17 @@ function castingSection() {
     const show = shows.find(s => s.id === showId);
     if (!show || show.category !== 'broadway' || isOperaShow(show)) return;
     const data = castData.shows[showId];
-    (data.upcoming || []).forEach(u => eventsAll.push({ ...u, showId, showTitle: show.title }));
+    // Defend at the READ boundary against a stale closure date: cast-changes.json
+    // is only healed by the weekly audit, so between runs (or in local preview) a
+    // closure event may still carry the pre-extension date. Reconcile it to the
+    // broadway.com-audited shows.json closingDate FIRST so reconcileClosure folds
+    // departures against the correct date. Then reconcileClosure PER SHOW (never
+    // across shows — a closure in one show must not suppress a same-date departure
+    // in another).
+    const healed = reconcileClosureDateWithClosingDate(data.upcoming || [], show.closingDate).events;
+    reconcileClosure(healed).forEach(u =>
+      eventsAll.push({ ...u, showId, showTitle: show.title }),
+    );
   });
   // Recent: addedDate IN THE WEEK WINDOW. Earlier versions used a 14-day
   // window (weekStart - 7d) but that resurfaces last-week's casting in this
@@ -1214,10 +1224,20 @@ function castingSection() {
   // note/absence rows, placeholder names ("X replacement", "TBA"/"TBD"), and
   // dateless rows ("no dates means these aren't useful" — user, 2026-05-30).
   const PLACEHOLDER = /\breplacement\b|^tba$|^tbd$|^t\.?b\.?[ad]\.?$/i;
+  // A "departure" whose name IS the production (e.g. "Moulin Rouge! The Musical
+  // Company") is a show-wide closing restated as a per-actor row, not a person.
+  // Rendering it prints "<Show> Company departs" — the closure-as-departure bug.
+  const norm = (s) => (s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+  const isProductionName = (e) => {
+    const n = norm(e.name);
+    const t = norm(e.showTitle);
+    return !!n && !!t && (n === t || n.startsWith(t));
+  };
   const isRealMove = (e) => {
     if (!['arrival', 'departure'].includes(e.type)) return false;
     const name = (e.name || '').trim();
     if (!name || PLACEHOLDER.test(name)) return false;
+    if (isProductionName(e)) return false;
     if (!e.date && !e.endDate) return false;
     return true;
   };
@@ -1708,18 +1728,21 @@ const box      = sections.run('box-office', () => boxOfficeSection());
 const commercial = sections.run('recoupment', () => commercialSection());
 const bz   = sections.run('social-buzz', () => buzziestSection());
 const tony = sections.run('tony-predictions', () => tonyWatchSection());
-// SECTION: Beat the Critics promo — mirrors src/components/PromoShelf.tsx (btc
-// variant). Colors + copy are kept in sync with the on-site shelf: emerald
-// gradient card, green border, gradient CTA. Self-contained card (eyebrow lives
-// inside it, like the site), so no duplicate sectionHeading above it.
+// SECTION: Beat the Critics promo — mirrors src/components/FeaturedSpotSlim.tsx
+// (btc accent = rose-500). Copy is identical to the on-site homepage shelf:
+// eyebrow + title + description + CTA + $200 stat pill. Email-safe table render.
 function btcPromoSection() {
   const href = `${SITE}/beat-the-critics`;
-  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#0a1f1a" class="cardbg" style="background:linear-gradient(135deg,#0a1f1a 0%,#0f0f14 60%);border:1px solid rgba(52,211,153,0.35);border-radius:12px;">
+  const ROSE = '#f43f5e';
+  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" class="cardbg" style="border:1px solid rgba(255,255,255,0.06);border-top:2px solid ${ROSE};border-radius:12px;">
     <tr><td style="padding:20px;">
-      <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#34d399;margin-bottom:8px;">Beat the Critics</div>
-      <div style="font-size:18px;font-weight:800;color:#ffffff;line-height:1.25;margin-bottom:8px;">Think you can out-guess the critics?</div>
-      <div style="font-size:14px;color:#c8d6cf;line-height:1.5;margin-bottom:16px;">Predict the score before reviews drop. Lock in your picks and see how you stack up.</div>
-      <a href="${href}" style="display:inline-block;background:linear-gradient(135deg,#34d399,#10b981);color:#04150f;font-size:14px;font-weight:700;text-decoration:none;padding:11px 20px;border-radius:8px;">Play Beat the Critics &rarr;</a>
+      <div style="margin-bottom:8px;"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:${ROSE};vertical-align:middle;margin-right:7px;"></span><span style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:${ROSE};vertical-align:middle;">Beat the Critics</span></div>
+      <div style="font-size:18px;font-weight:800;color:#ffffff;line-height:1.25;margin-bottom:8px;">Think you know Broadway better than the critics?</div>
+      <div style="font-size:14px;color:#c8c8d0;line-height:1.5;margin-bottom:16px;">Pick the Tony winners against our model and the top critics. One entry wins a $200 TodayTix gift card.</div>
+      <table role="presentation" cellspacing="0" cellpadding="0" border="0"><tr>
+        <td valign="middle" style="padding-right:14px;"><a href="${href}" style="display:inline-block;background:${ROSE};color:#ffffff;font-size:14px;font-weight:700;text-decoration:none;padding:11px 20px;border-radius:999px;">Make your picks &rarr;</a></td>
+        <td valign="middle"><span style="display:inline-block;background:rgba(244,63,94,0.10);border:1px solid rgba(244,63,94,0.40);color:#fda4af;font-size:12px;font-weight:600;padding:6px 12px;border-radius:999px;">$200 TodayTix gift card</span></td>
+      </tr></table>
     </td></tr>
   </table>`;
   // No sectionHeading — the eyebrow inside the card is the label, matching the
