@@ -123,6 +123,36 @@ function deriveQualifyingOutlets(allReviews, allShows, skipOutlets, opts = {}) {
 }
 
 /**
+ * Merge the dynamically-derived qualifying outlets with the "always-on" outlets
+ * we've explicitly configured a dedicated strategy for (RSS/sitemap/WP API).
+ *
+ * Why: deriveQualifyingOutlets gates on review volume (≥minShowCount shows/4mo),
+ * which is right for SERP-fallback outlets discovered from reviews.json. But an
+ * outlet with a hand-configured strategy is high-value by definition and must be
+ * polled EVERY run even when its show count is below the gate — otherwise it
+ * depends solely on per-show SERP timing, which silently drops late/low-rank
+ * reviews. That gap missed The Recs' 5-star The Lost Boys review (2026-04).
+ *
+ * Order: derived outlets first (sorted by volume), then any configured outlets
+ * not already present. Skip-listed outlets are excluded from both sources.
+ *
+ * @param {string[]} derived       - output of deriveQualifyingOutlets
+ * @param {string[]} configuredIds - outletIds with an explicit strategy config
+ * @param {Set}      skipOutlets   - outletIds to exclude
+ * @returns {string[]} deduped union
+ */
+function mergeAlwaysOnOutlets(derived, configuredIds, skipOutlets = new Set()) {
+  const seen = new Set();
+  const out = [];
+  for (const id of [...derived, ...configuredIds]) {
+    if (!id || skipOutlets.has(id) || seen.has(id)) continue;
+    seen.add(id);
+    out.push(id);
+  }
+  return out;
+}
+
+/**
  * Parse an RSS 2.0 / Atom feed XML string and return articles published
  * within the lookback window.
  *
@@ -288,6 +318,7 @@ function extractListingUrls(html, domain) {
 module.exports = {
   findMatchingShows,
   deriveQualifyingOutlets,
+  mergeAlwaysOnOutlets,
   parseRssFeed,
   parseWpApiPosts,
   parseSitemapXml,
