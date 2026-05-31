@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-31T16:25:32.886Z",
+  "timestamp": "2026-05-31T17:15:20.355Z",
   "stats": {
-    "totalReviews": 37889,
-    "alreadyFlagged": 16643,
+    "totalReviews": 37892,
+    "alreadyFlagged": 16648,
     "dateGuardCatches": 106,
-    "directorMismatch": 813,
+    "directorMismatch": 812,
     "tvFilmSignals": 1035,
-    "londonSignals": 584,
+    "londonSignals": 585,
     "offBroadwaySignals": 456,
     "yearMismatch": 79,
-    "noPublishDate": 3970
+    "noPublishDate": 3972
   },
   "findings": [
     {
@@ -23983,20 +23983,6 @@
       ]
     },
     {
-      "showId": "titanique-off-broadway-2022",
-      "file": "thewrap--robert-hofler.json",
-      "score": 81,
-      "publishDate": "2022-12-14",
-      "url": "https://www.thewrap.com/titanique-off-broadway-review-celine-dion-titanic/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"tye blue\" from titanique-2026"
-        }
-      ]
-    },
-    {
       "showId": "tootsie-2019",
       "file": "broadway-blog--matthew-wexler.json",
       "score": 76,
@@ -29765,6 +29751,20 @@
       "score": 61,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/grace-pervades-theatre-royal-haymarket-review-ralph-fiennes-starrer-seems-old-times",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "grace-pervades-west-end-2026",
+      "file": "broadwayworld--team-bww.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/shows/Grace-Pervades-335731.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
