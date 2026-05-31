@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-05-31T21:18:42.358Z",
+  "runDate": "2026-05-31T21:37:15.945Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,41 +11,41 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 12,
-    "failed": 105,
+    "processed": 3,
+    "failed": 122,
     "skipped": 0,
-    "successRate": "10.3%"
+    "successRate": "2.4%"
   },
   "tierBreakdown": {
-    "playwright": 5,
+    "playwright": 1,
     "amp": 0,
-    "browserbase": 5,
+    "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 2,
+    "scrapingbee": 0,
     "brightdata": 2,
-    "archiveToday": 3,
-    "archive": 1
+    "archiveToday": 6,
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 5,
-    "tier1Success": 5,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 3,
-    "tier1_5Success": 3,
-    "tier2Attempts": 2,
-    "tier2Success": 2,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 2,
-    "tier4Success": 2,
-    "totalFailed": 82,
-    "scrapingBeePageCredits": 11,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 79,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 3,
-    "browserbaseMinutesUsed": 0.7,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 79,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
@@ -53,16 +53,7 @@
   "processed": [
     "celebrity-autobiography-2026/talkinbroadway--unknown.json",
     "the-maids-off-broadway-2026/thewrap--unknown.json",
-    "the-maids-off-broadway-2026/playbill--unknown.json",
-    "becky-shaw-2026/variety--unknown.json",
-    "becky-shaw-2026/deadline--unknown.json",
-    "paddington-the-musical-west-end-2025/musical-theatre-review--unknown.json",
-    "ragtime-2025/nytimes--unknown.json",
-    "burlesque-west-end-2026/theatreandtonic--unknown.json",
-    "heathers-the-musical-off-broadway-2025/theatrely--unknown.json",
-    "my-neighbour-totoro-west-end-2025/london-theatre--unknown.json",
-    "my-neighbour-totoro-west-end-2025/standard--unknown.json",
-    "my-neighbour-totoro-west-end-2025/whatsonstage--unknown.json"
+    "the-maids-off-broadway-2026/playbill--unknown.json"
   ],
   "failed": [
     "indian-princesses-off-broadway-2025/pages-on-stages--mason-pilevsky.json",
@@ -88,9 +79,26 @@
     "equus-west-end-2026/the-jewish-chronicle--unknown.json",
     "equus-west-end-2026/thereviewshub--unknown.json",
     "equus-west-end-2026/timeout--andrzej-lukowski.json",
-    "schmigadoon-2026/variety--aramide-tinubu.json",
-    "schmigadoon-2026/latimes--unknown.json",
-    "inter-alia-west-end-2026/theatreandtonic--unknown.json",
+    "beetlejuice-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "the-p-word-off-west-end-2026/broadwayworld--aliya-al-hassan.json",
+    "the-p-word-off-west-end-2026/standard--nick-curtis.json",
+    "the-p-word-off-west-end-2026/thestage--sam-marlowe.json",
+    "the-p-word-off-west-end-2026/whatsonstage--frey-kwa-hawking.json",
+    "dark-of-the-moon-west-end-2026/guardian-uk--unknown.json",
+    "dark-of-the-moon-west-end-2026/timeout--andrzej-lukowski.json",
+    "dark-of-the-moon-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "dark-of-the-moon-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "dark-of-the-moon-west-end-2026/artsdesk--unknown.json",
+    "dark-of-the-moon-west-end-2026/cambridge--unknown.json",
+    "dark-of-the-moon-west-end-2026/london-theatre--unknown.json",
+    "dark-of-the-moon-west-end-2026/standard--dominic-cavendish.json",
+    "dark-of-the-moon-west-end-2026/thestage--unknown.json",
+    "care-west-end-2026/i-paper--unknown.json",
+    "care-west-end-2026/the-upcoming-uk--unknown.json",
+    "care-west-end-2026/times-uk--unknown.json",
+    "equus-west-end-2026/the-jewish-chronicle--unknown.json",
+    "equus-west-end-2026/thereviewshub--unknown.json",
+    "equus-west-end-2026/timeout--andrzej-lukowski.json",
     "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
     "matilda-the-musical-west-end-2021/whatsonstage--meriel-patrick.json",
     "tammy-faye-2024/stageandcinema--mike-mineo.json",
@@ -173,25 +181,12 @@
   ],
   "tierDetails": {
     "playwright": [
-      "the-maids-off-broadway-2026/playbill--unknown.json",
-      "paddington-the-musical-west-end-2025/musical-theatre-review--unknown.json",
-      "burlesque-west-end-2026/theatreandtonic--unknown.json",
-      "my-neighbour-totoro-west-end-2025/london-theatre--unknown.json",
-      "my-neighbour-totoro-west-end-2025/whatsonstage--unknown.json"
+      "the-maids-off-broadway-2026/playbill--unknown.json"
     ],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/schmigadoon-2026/variety--aramide-tinubu.json",
-      "data/review-texts/becky-shaw-2026/variety--unknown.json",
-      "becky-shaw-2026/variety--unknown.json",
-      "data/review-texts/becky-shaw-2026/deadline--unknown.json",
-      "becky-shaw-2026/deadline--unknown.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [
-      "ragtime-2025/nytimes--unknown.json",
-      "heathers-the-musical-off-broadway-2025/theatrely--unknown.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [
       "celebrity-autobiography-2026/talkinbroadway--unknown.json",
       "the-maids-off-broadway-2026/thewrap--unknown.json"
@@ -199,55 +194,13 @@
     "archiveToday": [
       "data/review-texts/the-p-word-off-west-end-2026/thestage--sam-marlowe.json",
       "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
+      "data/review-texts/dark-of-the-moon-west-end-2026/thestage--unknown.json",
+      "data/review-texts/the-p-word-off-west-end-2026/thestage--sam-marlowe.json",
+      "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
       "data/review-texts/dark-of-the-moon-west-end-2026/thestage--unknown.json"
     ],
-    "archive": [
-      "my-neighbour-totoro-west-end-2025/standard--unknown.json"
-    ]
+    "archive": []
   },
-  "failuresByOutlet": {
-    "hypable": {
-      "count": 1,
-      "domain": "hypable.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Washington Post": {
-      "count": 1,
-      "domain": "washingtonpost.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": false
-    },
-    "ABC News": {
-      "count": 5,
-      "domain": "abcnews.go.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "About Entertainment": {
-      "count": 19,
-      "domain": "theater.nytimes.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": true
-    },
-    "HuffPost": {
-      "count": 3,
-      "domain": "huffingtonpost.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "On Off Broadway": {
-      "count": 1,
-      "domain": "onoffbroadway.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
