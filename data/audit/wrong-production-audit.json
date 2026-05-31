@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-30T23:40:41.979Z",
+  "timestamp": "2026-05-31T05:34:02.679Z",
   "stats": {
     "totalReviews": 37845,
-    "alreadyFlagged": 16629,
+    "alreadyFlagged": 16630,
     "dateGuardCatches": 106,
     "directorMismatch": 811,
     "tvFilmSignals": 1035,
-    "londonSignals": 584,
+    "londonSignals": 583,
     "offBroadwaySignals": 456,
     "yearMismatch": 79,
-    "noPublishDate": 3964
+    "noPublishDate": 3963
   },
   "findings": [
     {
@@ -18473,7 +18473,7 @@
     {
       "showId": "spamalot-2005",
       "file": "culturesauce--thom-geier.json",
-      "score": null,
+      "score": 61,
       "publishDate": null,
       "url": "https://culturesauce.com/2023/11/16/spamalot-broadway-revival-review-monty-python/",
       "findings": [
@@ -18698,7 +18698,7 @@
     {
       "showId": "spring-awakening-2006",
       "file": "talkinbroadway--matthew-murray.json",
-      "score": 32,
+      "score": 45,
       "publishDate": "2006-12-10",
       "url": "https://www.talkinbroadway.com/page/world/SpringAwakening.html",
       "findings": [
@@ -28009,7 +28009,7 @@
       "file": "guardian--unknown.json",
       "score": null,
       "publishDate": null,
-      "url": "https://www.theguardian.com/books/2024/nov/02/alan-bennett-at-90-what-will-people-think-i-dont-care-any-more",
+      "url": "https://www.theguardian.com/stage/2026/may/15/linda-bassett-call-the-midwife-caryl-churchill-alexander-zeldin-care",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -29737,20 +29737,6 @@
       "score": 61,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/grace-pervades-theatre-royal-haymarket-review-ralph-fiennes-starrer-seems-old-times",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "grace-pervades-west-end-2026",
-      "file": "broadwayworld--team-bww.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/shows/Grace-Pervades-335731.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -35566,7 +35552,7 @@
     {
       "showId": "spring-awakening-2006",
       "file": "timeout--adam-feldman.json",
-      "score": 88,
+      "score": 87,
       "publishDate": "2006-12-08",
       "url": "https://www.timeout.com/newyork/theater/spring-awakening-1",
       "findings": [
