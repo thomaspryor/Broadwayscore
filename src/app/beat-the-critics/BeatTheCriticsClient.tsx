@@ -579,19 +579,19 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
               <div className="text-sm font-bold truncate">{userPick}</div>
               {isActor && (() => { const picked = actorNominees.find(n => n.name === userPick); return picked ? <div className="text-[10px] text-gray-500 truncate">{picked.showTitle}</div> : null; })()}
             </div>
-            {!isActor && matchesTonyPrediction && <span className="shrink-0 text-xs font-black uppercase tracking-wider px-3 py-1.5 rounded-lg bg-green-500/25 text-green-300">Match!</span>}
+            {!isActor && currentTierIdx === 0 && matchesTonyPrediction && <span className="shrink-0 text-xs font-black uppercase tracking-wider px-3 py-1.5 rounded-lg bg-green-500/25 text-green-300">Match!</span>}
           </div>
 
           {/* Critics Panel */}
           <div className="mb-6">
             <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-500 mb-3">
               Critics Panel
-              {!isActor && <span className="text-[10px] font-semibold uppercase tracking-wider">Powered by <span className="text-brand">CriticScore</span></span>}
+              {!isActor && currentTierIdx === 0 && <span className="text-[10px] font-semibold uppercase tracking-wider">Powered by <span className="text-brand">CriticScore</span></span>}
               <div className="flex-1 h-px bg-white/5" />
             </div>
 
-            {/* Tony Prediction row — show categories only */}
-            {!isActor && (
+            {/* Tony Prediction row — Tier 1 (Big Four) only */}
+            {!isActor && currentTierIdx === 0 && (
               <div className={`rounded-xl mb-2 px-3.5 py-3 flex items-center gap-2.5 animate-slide-in ${matchesTonyPrediction ? 'bg-green-500/[0.08] ring-1 ring-green-500/20' : 'bg-surface-raised ring-1 ring-white/5'}`} style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
                 <div className="w-[116px] shrink-0 leading-tight min-w-0">
                   <div className="text-xs font-bold text-brand">Broadway Scorecard</div>
