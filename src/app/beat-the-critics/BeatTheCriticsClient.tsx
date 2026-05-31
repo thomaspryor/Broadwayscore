@@ -417,9 +417,9 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
   // ─── Landing Screen ───
   if (screen === 'landing') {
     return (
-      <div className="min-h-screen bg-surface relative overflow-hidden flex flex-col">
+      <div className="min-h-screen w-full bg-surface relative overflow-x-hidden flex flex-col">
         <div className="absolute inset-0 pointer-events-none"><div className="absolute top-0 left-1/4 w-96 h-96 bg-[#ff1368]/[0.06] rounded-full blur-[120px]" /><div className="absolute bottom-1/4 right-1/4 w-72 h-72 bg-brand/[0.04] rounded-full blur-[100px]" /></div>
-        <div className="relative z-10 flex-1 flex flex-col items-center justify-start max-w-[480px] mx-auto px-6 pt-8 pb-10 text-center">
+        <div className="relative z-10 flex-1 flex flex-col items-center justify-start w-full max-w-[480px] mx-auto px-6 pt-8 pb-10 text-center">
           <div className="animate-fade-up" style={{ animationDelay: '0.2s', animationFillMode: 'both' }}><BtcBrand /></div>
           <div className="animate-fade-up mt-6" style={{ animationDelay: '0.4s', animationFillMode: 'both' }}>
             <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#ff1368]/10 border border-[#ff1368]/20 text-[#ff1368] text-xs font-semibold tracking-widest uppercase">
