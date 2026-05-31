@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-31T09:17:20.870Z",
+  "timestamp": "2026-05-31T11:29:03.042Z",
   "stats": {
-    "totalReviews": 37847,
-    "alreadyFlagged": 16630,
+    "totalReviews": 37850,
+    "alreadyFlagged": 16633,
     "dateGuardCatches": 106,
-    "directorMismatch": 811,
+    "directorMismatch": 812,
     "tvFilmSignals": 1035,
     "londonSignals": 584,
     "offBroadwaySignals": 456,
     "yearMismatch": 79,
-    "noPublishDate": 3963
+    "noPublishDate": 3962
   },
   "findings": [
     {
@@ -1939,6 +1939,20 @@
       "score": 62,
       "publishDate": "2026-05-29",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/beetlejuice-review-theatre-musical-tim-burton-prince-edward-london-zfgcfwq3s",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"alex timbers\" from beetlejuice-2025"
+        }
+      ]
+    },
+    {
+      "showId": "beetlejuice-west-end-2026",
+      "file": "whatsonstage--alex-wood.json",
+      "score": 58,
+      "publishDate": "2026-05-28",
+      "url": "https://www.whatsonstage.com/news/beetlejuice-in-the-west-end-review_1722801/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -28009,7 +28023,7 @@
       "file": "guardian--unknown.json",
       "score": null,
       "publishDate": null,
-      "url": "https://www.theguardian.com/stage/2026/may/15/linda-bassett-call-the-midwife-caryl-churchill-alexander-zeldin-care",
+      "url": "https://www.theguardian.com/books/2024/nov/02/alan-bennett-at-90-what-will-people-think-i-dont-care-any-more",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
