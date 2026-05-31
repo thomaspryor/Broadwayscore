@@ -42,6 +42,10 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import url from 'node:url';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const { canonicalizeAwardCategory } = require('../../scripts/lib/award-category-canonical.js');
 
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 const AWARDS_FILE = path.join(__dirname, '..', '..', 'data', 'awards.json');
@@ -60,12 +64,21 @@ function precursorRow(precursor, category, year) {
 }
 
 function findShowsWithWin(fieldKey, category, person) {
+  // Canonicalize both sides: precursor category strings (e.g. bare
+  // "Distinguished Performance") may differ from the canonical winnerNames key
+  // ("Distinguished Performance Award"). See scripts/lib/award-category-canonical.js.
+  const canonCat = canonicalizeAwardCategory(fieldKey, category);
   const hits = [];
   for (const [showId, show] of Object.entries(shows)) {
     const ceremony = show[fieldKey];
-    if (!ceremony) continue;
-    const names = ceremony.winnerNames?.[category] || [];
-    if (names.includes(person)) hits.push(showId);
+    if (!ceremony || !ceremony.winnerNames) continue;
+    for (const [key, names] of Object.entries(ceremony.winnerNames)) {
+      if (canonicalizeAwardCategory(fieldKey, key) === canonCat
+          && Array.isArray(names) && names.includes(person)) {
+        hits.push(showId);
+        break;
+      }
+    }
   }
   return hits;
 }

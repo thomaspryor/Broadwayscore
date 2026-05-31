@@ -37,6 +37,7 @@ const path = require('path');
 const { normalizeTitle } = require('./lib/title-match');
 const { writeAwardsJsonAtomic } = require('./lib/awards-atomic-write');
 const { validateAwardsObject, validatePrecursorSource } = require('./lib/awards-schema-validator');
+const { canonicalizeAllShows, findSynonymDuplicates } = require('./lib/award-category-canonical');
 const { classifyCategory, KNOWN_UNSCORED_CATEGORIES } = require('./lib/classify-category');
 
 const PUBLIC_AWARDS = path.join(__dirname, '..', 'data', 'awards.json');
@@ -893,6 +894,13 @@ function main() {
   const pulRes = applyPulitzer(PULITZER, awardsShows, titleById, matcherOpts);
   const histPulRes = applyHistoricPulitzerById(HISTORIC_PULITZER, awardsShows);
 
+  // Collapse synonym-variant categories (e.g. DD/OCC "Direction of a Musical" +
+  // "Director of a Musical" — one award scraped twice). Runs AFTER all apply*
+  // so it normalizes whatever the scrapers produced this run. See
+  // scripts/lib/award-category-canonical.js and feedback_awards_duplicate_categories.
+  const canonChanged = canonicalizeAllShows(awardsShows);
+  if (canonChanged > 0) console.log(`Canonicalized synonym-variant categories on ${canonChanged} show(s)`);
+
   console.log('\nMatch stats:');
   console.log(`  Drama Desk:           ${ddRes.matched} matched, ${ddRes.unmatched.length} unmatched (mostly OB shows not in awards.json)`);
   console.log(`  Outer Critics:        ${occRes.matched} matched, ${occRes.unmatched.length} unmatched`);
@@ -985,6 +993,7 @@ function main() {
   applyDDOCCDL(WHATSONSTAGE, 'whatsOnStage', secondShows, titleById, matcherOpts);
   applyPulitzer(PULITZER, secondShows, titleById, matcherOpts);
   applyHistoricPulitzerById(HISTORIC_PULITZER, secondShows);
+  canonicalizeAllShows(secondShows);
   // Don't update _meta on second pass (timestamp would diverge); strip before compare
   const firstNoMeta = JSON.parse(serialized);
   delete firstNoMeta._meta;
@@ -1007,6 +1016,16 @@ function main() {
     console.error(e.message);
     process.exit(1);
   }
+
+  // 6b) Synonym-duplicate guard — no ceremony node may list two name variants of
+  //     the same award (the forum-reported double-count/double-display bug).
+  const synonymDupes = findSynonymDuplicates(awards.shows || awards);
+  if (synonymDupes.length > 0) {
+    console.error(`\n✗ Synonym-duplicate categories survived canonicalization (${synonymDupes.length}):`);
+    console.error(JSON.stringify(synonymDupes.slice(0, 10), null, 2));
+    process.exit(1);
+  }
+  console.log('✓ No synonym-duplicate categories');
 
   // 7) Atomic dual-repo write — public + private succeed together or both
   //    roll back. Prevents silent drift on partial failure (Codex P1).
