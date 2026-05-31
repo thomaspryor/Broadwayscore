@@ -7,6 +7,11 @@
  * award twice on the show page.
  *
  * Run: node --test tests/unit/award-category-canonical.test.mjs
+ *
+ * TESTS-VS-DERIVED-DATA-EXEMPT: the data gate reads data/awards.json to assert a
+ * STRUCTURAL invariant (zero synonym-duplicate categories, computed by the
+ * canonical lib itself) — not a rot-prone factual pin like "X won category Y".
+ * It must read the shipped derived file because gating that file is the point.
  */
 
 import { describe, it } from 'node:test';
