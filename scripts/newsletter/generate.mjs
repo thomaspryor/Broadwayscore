@@ -1708,7 +1708,21 @@ const box      = sections.run('box-office', () => boxOfficeSection());
 const commercial = sections.run('recoupment', () => commercialSection());
 const bz   = sections.run('social-buzz', () => buzziestSection());
 const tony = sections.run('tony-predictions', () => tonyWatchSection());
+// SECTION: Beat the Critics promo — mirrors the on-site BTC shelf (emerald/gold).
+function btcPromoSection() {
+  const href = `${SITE}/beat-the-critics`;
+  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#10241c" class="cardbg" style="border:1px solid rgba(16,185,129,0.30);border-radius:12px;">
+    <tr><td style="padding:18px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#34d399;margin-bottom:8px;">New Game</div>
+      <div style="font-size:14px;color:#c8d6cf;line-height:1.5;margin-bottom:14px;">Predict how critics will score the next big opening, before reviews drop.</div>
+      <a href="${href}" style="display:inline-block;background:#10b981;color:#04150f;font-size:14px;font-weight:700;text-decoration:none;padding:10px 18px;border-radius:8px;">Play Beat the Critics &rarr;</a>
+    </td></tr>
+  </table>`;
+  return sectionWrap(sectionHeading('Beat the Critics'), body);
+}
+
 const cas  = sections.run('casting-updates', () => castingSection());
+const btcPromo = sections.run('btc-promo', () => btcPromoSection());
 
 // Persist this issue's memory (mover + announced closings + everything featured)
 // so next week's run suppresses repeats. Best-effort — never fail the build.
@@ -1788,6 +1802,7 @@ const sectionOrder = [
   _slot('biggest-movers', mover),
   _slot('closing-this-week', clo),
   _slot('announced-closings', announced),
+  _slot('btc-promo', btcPromo),
   _slot('box-office', box),
   _slot('recoupment', commercial),
   _slot('social-buzz', bz),
