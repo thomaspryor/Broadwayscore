@@ -1,24 +1,5 @@
 [
   {
-    "recordedAt": "2026-05-29T13:11:58.923Z",
-    "showId": "the-maids-off-broadway-2026",
-    "newFile": "nytimes--unknown.json",
-    "ok": false,
-    "file": "nytimes--ben-brantley.json",
-    "reason": "stale-flag-on-existing-file",
-    "detail": {
-      "existingUrl": "http://www.nytimes.com/2014/08/10/theater/cate-blanchett-and-isabelle-huppert-in-the-maids.html",
-      "existingFlags": {
-        "wrongProduction": true,
-        "wrongShow": false,
-        "wrongProductionAutoCleared": false
-      },
-      "existingPublishDate": "August 10, 2014",
-      "incomingUrl": "https://www.nytimes.com/2026/05/28/theater/the-maids-review-yerin-ha-kip-williams.html",
-      "incomingPublishDate": "2026-05-28"
-    }
-  },
-  {
     "recordedAt": "2026-05-29T13:11:59.159Z",
     "showId": "becky-shaw-2026",
     "newFile": "nytimes--unknown.json",
@@ -9497,6 +9478,25 @@
       "existingPublishDate": "August 10, 2014",
       "incomingUrl": "https://www.nytimes.com/2026/05/28/theater/the-maids-review-yerin-ha-kip-williams.html",
       "incomingPublishDate": "2026-05-28"
+    }
+  },
+  {
+    "recordedAt": "2026-05-31T09:13:48.514Z",
+    "showId": "the-maids-off-broadway-2026",
+    "newFile": "guardian--unknown.json",
+    "ok": false,
+    "file": "guardian--arifa-akbar.json",
+    "reason": "stale-flag-on-existing-file",
+    "detail": {
+      "existingUrl": "https://www.theguardian.com/stage/2025/oct/22/the-maids-review-dorian-gray-kip-williams-donmar-warehouse-jean-genet",
+      "existingFlags": {
+        "wrongProduction": true,
+        "wrongShow": false,
+        "wrongProductionAutoCleared": false
+      },
+      "existingPublishDate": "2025-10-22",
+      "incomingUrl": "https://www.theguardian.com/stage/2025/jan/12/the-maids-review-jean-genets-chilling-game-of-master-and-servant",
+      "incomingPublishDate": null
     }
   }
 ]
