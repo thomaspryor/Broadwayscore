@@ -1,68 +1,47 @@
 {
-  "timestamp": "2026-05-19T03:57:15.492Z",
+  "timestamp": "2026-05-31T04:37:47.348Z",
   "hasIssues": true,
   "current": {
+    "date": "2026-05-31",
+    "totalReviews": 38526,
+    "unknownOutlets": 0,
+    "duplicates": 1,
+    "syncDelta": 20450
+  },
+  "previous": {
     "date": "2026-05-19",
     "totalReviews": 37694,
     "unknownOutlets": 6,
     "duplicates": 0,
     "syncDelta": 19958
   },
-  "previous": {
-    "date": "2026-03-15",
-    "totalReviews": 31996,
-    "unknownOutlets": 10,
-    "duplicates": 3,
-    "syncDelta": 14392
-  },
   "issues": [
     {
-      "type": "unknown_outlets",
+      "type": "duplicates",
       "severity": "warning",
-      "message": "6 reviews have unknown outlets",
+      "message": "1 duplicate reviews detected",
       "examples": [
         {
-          "file": "data/review-texts/and-juliet-2022/this-show-delivers-just-what-youd-expect-it-is-what-it-is--over-heels.json",
-          "outletId": "this-show-delivers-just-what-youd-expect-it-is-what-it-is",
-          "outlet": "this-show-delivers-just-what-youd-expect-it-is-what-it-is"
-        },
-        {
-          "file": "data/review-texts/joe-turners-come-and-gone-2026/reddit--unknown.json",
-          "outletId": "reddit",
-          "outlet": "reddit"
-        },
-        {
-          "file": "data/review-texts/la-traviata-off-broadway-2026/was-along-for-the-ride--jonathan-loy.json",
-          "outletId": "was-along-for-the-ride",
-          "outlet": "was-along-for-the-ride"
-        },
-        {
-          "file": "data/review-texts/the-lost-boys-2026/reddit--unknown.json",
-          "outletId": "reddit",
-          "outlet": "reddit"
-        },
-        {
-          "file": "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
-          "outletId": "lincolncenterfestivalorg",
-          "outlet": "lincolncenterfestivalorg"
-        },
-        {
-          "file": "data/review-texts/the-price-off-west-end-2026/theatre-reviews--unknown.json",
-          "outletId": "theatre-reviews",
-          "outlet": "theatre-reviews"
+          "file": "data/review-texts/american-idiot-2010/variety--steven-suskin.json",
+          "key": "american-idiot-2010|variety|steven suskin"
         }
       ]
     },
     {
       "type": "sync_delta",
       "severity": "critical",
-      "message": "review-texts (37694) and reviews.json (17736) are out of sync by 19958 reviews"
+      "message": "review-texts (38526) and reviews.json (18076) are out of sync by 20450 reviews"
+    },
+    {
+      "type": "duplicates_degradation",
+      "severity": "warning",
+      "message": "Duplicates increased from 0 to 1"
     }
   ],
   "summary": {
-    "totalReviews": 37694,
-    "unknownOutlets": 6,
-    "duplicates": 0,
-    "syncDelta": 19958
+    "totalReviews": 38526,
+    "unknownOutlets": 0,
+    "duplicates": 1,
+    "syncDelta": 20450
   }
 }
