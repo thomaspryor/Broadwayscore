@@ -23,6 +23,7 @@ import awardsData from '../../data/awards.json';
 import criticPicksRawData from '../../data/tony-critic-picks.json';
 import tonyLosoStatsData from '../../data/tony-loso-stats.json';
 import gdComparisonData from '../../data/analysis/gd-vs-broadwayscore.json';
+import frozenAudienceData from '../../data/tony-frozen-audience-grades.json';
 
 type CriticPicksFile = { picks: Record<string, Record<string, string>> };
 
@@ -485,7 +486,22 @@ export interface IneligibleShow {
  * grade (which blends 5 sources by reviewCount). These two have the most
  * consistent coverage across the 11-season backtest window.
  */
+/**
+ * Frozen audience grades for shows in COMPLETED Tony seasons. Once a season is
+ * over, its nominees' audience grades are snapshotted here (oldest value we
+ * have, closest to ceremony time) so post-ceremony rating drift can no longer
+ * re-rank past seasons or move the published track-record accuracy. New ratings
+ * of a years-old show are irrelevant to that season's Tony race. The current
+ * season is intentionally absent — it stays on live data until it completes,
+ * then gets frozen by scripts/freeze-tony-audience-grades.ts. See that script.
+ */
+const FROZEN_TONY_AUDIENCE: Record<string, { grade: number; season: string }> =
+  (frozenAudienceData as { grades?: Record<string, { grade: number; season: string }> }).grades ?? {};
+
 export function computeTonyAudienceGrade(showId: string): number | null {
+  const frozen = FROZEN_TONY_AUDIENCE[showId];
+  if (frozen && typeof frozen.grade === 'number') return frozen.grade;
+
   const buzz = getAudienceBuzz(showId);
   if (!buzz) return null;
   const ss = buzz.sources?.showScore?.score;

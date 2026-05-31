@@ -1820,8 +1820,13 @@ const { scoreCandidates, buildSubjectFromCandidates, buildLedeFromCandidates } =
 // offBroadwayOpenings() return shows-only; we re-derive the flag here.
 // Never advertise a show in the subject/lede that has no reviews yet.
 const _subjHasScore = (s) => { const a = aggregateScore(s.id); return a && a.count >= minReviews(s.category); };
-const bwEvents = openingEventsForWeek('broadway').filter(e => _subjHasScore(e.show));
-const obEvents = openingEventsForWeek('off-broadway').filter(e => _subjHasScore(e.show));
+// Subject/lede must describe the SAME shows the body actually renders. Use the
+// section's returned lists (bwO.list / obO.list) — these already apply the
+// review gate AND the OB 14-day grace window. Recomputing with the strict
+// in-week window here was the bug that made the subject ignore Heated Rivalry
+// (opened May 12, shown in the body) and fall back to an obscure closing.
+const bwEvents = bwO.list.map(s => ({ show: s }));
+const obEvents = obO.list.map(s => ({ show: s }));
 
 const newsworthyInputs = {
   bwOpenings: bwEvents,
@@ -1860,7 +1865,8 @@ const newsworthyInputs = {
   })(),
   closingsThisWeek: shows.filter(s =>
     s.closingDate && s.closingDate >= weekStartStr && s.closingDate <= weekEndStr
-    && s.status === 'open' && (s.category === 'broadway' || s.category === 'off-broadway') && !isOperaShow(s)),
+    && s.status === 'open' && (s.category === 'broadway' || s.category === 'off-broadway') && !isOperaShow(s)
+    && _subjHasScore(s)), // never lead the subject with a show we have no reviews for
   announcedClosings: (() => {
     // Mirror announcedClosingsSection exactly: closure events added IN THE
     // WEEK WINDOW only. The prior 28-day lookback resurfaced 3-week-old
