@@ -1,24 +1,5 @@
 [
   {
-    "recordedAt": "2026-05-29T18:54:21.880Z",
-    "showId": "end-of-the-rainbow-west-end-2026",
-    "newFile": "whatsonstage--unknown.json",
-    "ok": false,
-    "file": "whatsonstage--alun-hood.json",
-    "reason": "stale-flag-on-existing-file",
-    "detail": {
-      "existingUrl": "https://www.whatsonstage.com/news/end-of-the-rainbow-with-jinkx-monsoon-at-soho-theatre-walthamstow-review_1722318/",
-      "existingFlags": {
-        "wrongProduction": false,
-        "wrongShow": true,
-        "wrongProductionAutoCleared": false
-      },
-      "existingPublishDate": "2026-05-22",
-      "incomingUrl": "https://www.whatsonstage.com/news/a-midsummer-nights-dream-at-shakespeares-globe-review_1720033/",
-      "incomingPublishDate": null
-    }
-  },
-  {
     "recordedAt": "2026-05-29T18:56:16.022Z",
     "showId": "equus-west-end-2026",
     "newFile": "standard--nick-curtis.json",
@@ -9496,6 +9477,25 @@
       },
       "existingPublishDate": null,
       "incomingUrl": "https://www.theguardian.com/stage/2025/jan/22/not-a-word-review-barbican-pit-london-bru-theatre",
+      "incomingPublishDate": null
+    }
+  },
+  {
+    "recordedAt": "2026-05-31T12:11:27.352Z",
+    "showId": "the-maids-off-broadway-2026",
+    "newFile": "guardian--unknown.json",
+    "ok": false,
+    "file": "guardian--arifa-akbar.json",
+    "reason": "stale-flag-on-existing-file",
+    "detail": {
+      "existingUrl": "https://www.theguardian.com/stage/2025/oct/22/the-maids-review-dorian-gray-kip-williams-donmar-warehouse-jean-genet",
+      "existingFlags": {
+        "wrongProduction": true,
+        "wrongShow": false,
+        "wrongProductionAutoCleared": false
+      },
+      "existingPublishDate": "2025-10-22",
+      "incomingUrl": "https://www.theguardian.com/stage/2025/jan/12/the-maids-review-jean-genets-chilling-game-of-master-and-servant",
       "incomingPublishDate": null
     }
   }
