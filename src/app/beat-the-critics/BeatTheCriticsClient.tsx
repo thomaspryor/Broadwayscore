@@ -728,14 +728,16 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
   return (
     <div className="min-h-screen bg-surface flex flex-col">
       <div className="sticky top-0 z-10 px-5 py-4 flex items-center justify-between border-b border-white/5 bg-surface/90 backdrop-blur-xl"><button onClick={() => goToScreen('reveal')} className="text-gray-400 text-sm hover:text-white transition-colors p-2 -m-2">&larr; Back</button><div className="text-xs font-bold">Your Ballot</div><div /></div>
-      <div className="flex-1 px-5 py-6 max-w-[480px] mx-auto w-full flex flex-col items-center">
+      <div className="flex-1 px-5 py-4 max-w-[480px] mx-auto w-full flex flex-col items-center">
 
         {/* Email / Submission — FIRST, above the fold */}
         {emailSubmitted ? (
-          <div className="w-full max-w-[380px] p-5 rounded-2xl bg-green-500/[0.06] border border-green-500/15 text-center animate-fade-up">
-            <div className="text-3xl mb-2">🎭</div>
-            <h3 className="text-base font-bold text-green-400">You&apos;re entered!</h3>
-            <p className="text-sm text-gray-400 mt-1.5">After the June 8 ceremony, we&apos;ll email you with your results — showing exactly how your picks stacked up against the critics.</p>
+          <div className="w-full max-w-[380px] px-4 py-3 rounded-2xl bg-green-500/[0.06] border border-green-500/15 text-center animate-fade-up flex items-center gap-3">
+            <div className="text-2xl shrink-0">🎭</div>
+            <div className="text-left">
+              <h3 className="text-sm font-bold text-green-400">You&apos;re entered!</h3>
+              <p className="text-xs text-gray-400 mt-0.5">After the June 8 ceremony, we&apos;ll email you your results.</p>
+            </div>
           </div>
         ) : (
           <div className="w-full max-w-[380px] p-5 rounded-2xl bg-gradient-to-br from-[#ff1368]/[0.06] to-brand/[0.04] border border-[#ff1368]/10 animate-fade-up">
@@ -754,12 +756,12 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
 
         {/* Share buttons */}
         {emailSubmitted ? (
-          <div className="w-full max-w-[380px] mt-4 animate-fade-up">
-            <button onClick={handleShare} className="w-full py-4 rounded-[14px] text-base font-bold bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_24px_rgba(255,19,104,0.35)] hover:shadow-[0_8px_32px_rgba(255,19,104,0.45)] hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-200 flex items-center justify-center gap-2.5">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13" /></svg>
+          <div className="w-full max-w-[380px] mt-3 animate-fade-up">
+            <button onClick={handleShare} className="w-full py-3 rounded-[14px] text-sm font-bold bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_24px_rgba(255,19,104,0.35)] hover:shadow-[0_8px_32px_rgba(255,19,104,0.45)] hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-200 flex items-center justify-center gap-2.5">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13" /></svg>
               Share My Picks
             </button>
-            <div className="flex gap-2.5 mt-3 justify-center">
+            <div className="flex gap-2.5 mt-2 justify-center">
               <button onClick={handleShareX} className="flex items-center gap-1.5 px-5 py-2.5 rounded-[10px] text-sm font-semibold border border-white/10 bg-surface-raised text-white hover:border-brand hover:-translate-y-0.5 transition-all">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" /></svg>
                 Post
@@ -777,17 +779,17 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
         )}
 
         {/* Ballot Card — collapsed by default */}
-        <div className="w-full max-w-[380px] mt-5 rounded-[20px] overflow-hidden bg-surface-raised border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.5)] animate-fade-up" style={{ animationDelay: '0.2s', animationFillMode: 'both' }}>
-          <div className="px-6 pt-6 pb-4 bg-gradient-to-br from-[#ff1368]/10 to-brand/[0.06] border-b border-white/5"><div className="text-center"><BtcBrand size="small" /><div className="text-[22px] font-black tracking-tight mt-4">My Tony Picks</div><div className="text-sm text-gray-400">Beat the Critics &middot; {data.season.ceremonyYear}</div></div></div>
+        <div className="w-full max-w-[380px] mt-3 rounded-[20px] overflow-hidden bg-surface-raised border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.5)] animate-fade-up" style={{ animationDelay: '0.2s', animationFillMode: 'both' }}>
+          <div className="px-6 pt-4 pb-3 bg-gradient-to-br from-[#ff1368]/10 to-brand/[0.06] border-b border-white/5"><div className="text-center"><BtcBrand size="small" /><div className="text-[18px] font-black tracking-tight mt-2">My Tony Picks</div><div className="text-xs text-gray-400">Beat the Critics &middot; {data.season.ceremonyYear}</div></div></div>
           <div className="relative">
-            <div className={`px-6 py-4${!ballotExpanded ? ' max-h-[220px] overflow-hidden' : ''}`}>
+            <div className={`px-5 py-3${!ballotExpanded ? ' max-h-[220px] overflow-hidden' : ''}`}>
               {data.tiers.map(tier => {
                 const tierPicks = tier.categories.filter(categoryHasNominees).filter(cat => picks[cat.title]);
                 if (tierPicks.length === 0) return null;
                 return (
                   <div key={tier.key}>
-                    <div className="text-[9px] font-bold uppercase tracking-wider text-gray-600 mt-3 first:mt-0 mb-1">{tier.name}</div>
-                    {tierPicks.map(cat => (<div key={cat.title} className="flex items-center justify-between py-2 border-b border-white/5 last:border-b-0"><div className="text-[10px] font-semibold uppercase tracking-wider text-gray-500">{cat.title.replace('Best ', '').replace('Revival of a ', 'Revival \u00b7 ').replace('Featured ', 'Feat. ')}</div><div className="text-sm font-bold text-right">{picks[cat.title]}</div></div>))}
+                    <div className="text-[9px] font-bold uppercase tracking-wider text-gray-600 mt-2 first:mt-0 mb-0.5 text-center">{tier.name}</div>
+                    {tierPicks.map(cat => (<div key={cat.title} className="flex items-center justify-between py-1.5 border-b border-white/5 last:border-b-0"><div className="text-[10px] font-semibold uppercase tracking-wider text-gray-500 shrink-0 mr-2">{cat.title.replace('Best ', '').replace('Revival of a ', 'Revival \u00b7 ').replace('Featured ', 'Feat. ')}</div><div className="text-xs font-bold text-right">{picks[cat.title]}</div></div>))}
                   </div>
                 );
               })}
