@@ -578,7 +578,7 @@ function upcomingOpeningsSection() {
     </tr>${!isLast ? '<tr><td colspan="2" style="padding:0 16px;"><div style="border-top:1px solid rgba(255,255,255,0.05);"></div></td></tr>' : ''}`;
   }).join('');
   const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" class="cardbg">${rows}
-    ${seeAllLink(`${SITE}/`, remaining > 0 ? `See ${remaining} more upcoming` : 'See all upcoming openings')}
+    ${seeAllLink(`${SITE}/calendar`, remaining > 0 ? `See ${remaining} more upcoming` : 'See all upcoming openings')}
   </table>`;
   return sectionWrap(sectionHeading('Coming Up', 'next 14 days'), body);
 }
