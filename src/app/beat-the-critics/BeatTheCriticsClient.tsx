@@ -232,7 +232,6 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
   const [shuffleSeed] = useState(() => Math.floor(Math.random() * 1000000));
   const [emailSubmitted, setEmailSubmitted] = useState(false);
   const [emailSubmitting, setEmailSubmitting] = useState(false);
-  const [ballotExpanded, setBallotExpanded] = useState(false);
   const [emailError, setEmailError] = useState('');
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [countdownExpired, setCountdownExpired] = useState(() => Date.now() >= new Date('2026-06-08T00:00:00Z').getTime());
@@ -781,32 +780,20 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
         {/* Ballot Card — collapsed by default */}
         <div className="w-full max-w-[380px] mt-3 rounded-[20px] overflow-hidden bg-surface-raised border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.5)] animate-fade-up" style={{ animationDelay: '0.2s', animationFillMode: 'both' }}>
           <div className="px-6 pt-4 pb-3 bg-gradient-to-br from-[#ff1368]/10 to-brand/[0.06] border-b border-white/5"><div className="text-center"><BtcBrand size="small" /><div className="text-[18px] font-black tracking-tight mt-2">My Tony Picks</div><div className="text-xs text-gray-400">Beat the Critics &middot; {data.season.ceremonyYear}</div></div></div>
-          <div className="relative">
-            <div className={`px-5 py-3${!ballotExpanded ? ' max-h-[220px] overflow-hidden' : ''}`}>
-              {data.tiers.map(tier => {
-                const tierPicks = tier.categories.filter(categoryHasNominees).filter(cat => picks[cat.title]);
-                if (tierPicks.length === 0) return null;
-                return (
-                  <div key={tier.key}>
-                    <div className="text-[9px] font-bold uppercase tracking-wider text-gray-600 mt-2 first:mt-0 mb-0.5 text-center">{tier.name}</div>
-                    {tierPicks.map(cat => (<div key={cat.title} className="flex items-center justify-between py-1.5 border-b border-white/5 last:border-b-0"><div className="text-[10px] font-semibold uppercase tracking-wider text-gray-500 shrink-0 mr-2">{cat.title.replace('Best ', '').replace('Revival of a ', 'Revival \u00b7 ').replace('Featured ', 'Feat. ')}</div><div className="text-xs font-bold text-right">{picks[cat.title]}</div></div>))}
-                  </div>
-                );
-              })}
-              {allCompletedPicks.length === 0 && (<div className="py-4 text-center text-gray-500 text-sm">No picks made yet</div>)}
-            </div>
-            {!ballotExpanded && (
-              <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-surface-raised to-transparent pointer-events-none" />
-            )}
+          <div className="px-5 py-3">
+            {data.tiers.map(tier => {
+              const tierPicks = tier.categories.filter(categoryHasNominees).filter(cat => picks[cat.title]);
+              if (tierPicks.length === 0) return null;
+              return (
+                <div key={tier.key}>
+                  <div className="text-[9px] font-bold uppercase tracking-wider text-gray-600 mt-2 first:mt-0 mb-0.5 text-center">{tier.name}</div>
+                  {tierPicks.map(cat => (<div key={cat.title} className="flex items-center justify-between py-1.5 border-b border-white/5 last:border-b-0"><div className="text-[10px] font-semibold uppercase tracking-wider text-gray-500 shrink-0 mr-2">{cat.title.replace('Best ', '').replace('Revival of a ', 'Revival \u00b7 ').replace('Featured ', 'Feat. ')}</div><div className="text-xs font-bold text-right">{picks[cat.title]}</div></div>))}
+                </div>
+              );
+            })}
+            {allCompletedPicks.length === 0 && (<div className="py-4 text-center text-gray-500 text-sm">No picks made yet</div>)}
           </div>
-          <div className="px-6 py-3 border-t border-white/5 text-center">
-            <button onClick={() => setBallotExpanded(b => !b)} className="text-sm font-semibold text-[#ff1368] hover:opacity-80 transition-opacity">
-              {ballotExpanded ? 'Show less ↑' : `Show all ${allCompletedPicks.length} picks ↓`}
-            </button>
-          </div>
-          {ballotExpanded && (
-            <div className="px-6 py-4 bg-[#ff1368]/[0.04] border-t border-white/5 text-center"><div className="text-sm font-bold text-[#ff1368]">Can you Beat the Critics?</div><div className="text-xs text-gray-500 mt-1">broadwayscorecard.com/beat-the-critics</div></div>
-          )}
+          <div className="px-6 py-4 bg-[#ff1368]/[0.04] border-t border-white/5 text-center"><div className="text-sm font-bold text-[#ff1368]">Can you Beat the Critics?</div><div className="text-xs text-gray-500 mt-1">broadwayscorecard.com/beat-the-critics</div></div>
         </div>
       </div>
     </div>
