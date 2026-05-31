@@ -318,12 +318,20 @@ function validateEvent(event) {
     if (!event.name || typeof event.name !== 'string') return false;
   }
 
-  // Validate date format if present
-  if (event.date && !/^\d{4}-\d{2}-\d{2}$/.test(event.date) && !/^\d{4}-\d{2}$/.test(event.date)) {
-    return false;
-  }
-  if (event.endDate && !/^\d{4}-\d{2}-\d{2}$/.test(event.endDate) && !/^\d{4}-\d{2}$/.test(event.endDate)) {
-    return false;
+  // Validate + NORMALIZE dates. Coerce month-only (YYYY-MM) to the first of the
+  // month so every downstream `===` dedup and date compare is precision-consistent
+  // (a closure '2026-06' vs '2026-06-28' must not be treated as two events). Then
+  // reject impossible calendar dates: the regex alone accepts '2026-02-31', which
+  // new Date() silently rolls to 2026-03-03 — a 3-day phantom shift that defeats
+  // dedup and mis-renders. Round-trip through UTC to catch these.
+  for (const field of ['date', 'endDate']) {
+    let v = event[field];
+    if (!v) continue;
+    if (/^\d{4}-\d{2}$/.test(v)) v = `${v}-01`;
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(v)) return false;
+    const d = new Date(`${v}T00:00:00Z`);
+    if (Number.isNaN(d.getTime()) || d.toISOString().slice(0, 10) !== v) return false;
+    event[field] = v;
   }
 
   return true;
@@ -1858,9 +1866,17 @@ async function main() {
 }
 
 const { cleanup: scraperCleanup } = require('./lib/scraper');
-main()
-  .catch(err => {
-    console.error('[Fatal]', err);
-    process.exit(1);
-  })
-  .finally(() => scraperCleanup());
+
+// Only run when invoked directly (`node scripts/scrape-cast-changes.js`). Guard
+// added because requiring this module for testing/inspection used to silently
+// launch a full scrape — writing cast-changes.json + backups as a side effect.
+if (require.main === module) {
+  main()
+    .catch(err => {
+      console.error('[Fatal]', err);
+      process.exit(1);
+    })
+    .finally(() => scraperCleanup());
+}
+
+module.exports = { validateEvent, suppressClosureRedundantDepartures, mergeEvents };

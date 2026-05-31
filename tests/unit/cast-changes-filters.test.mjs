@@ -18,6 +18,7 @@ import {
   mergePreservingAddedDate,
   findClosureDupe,
   dedupeClosures,
+  reconcileClosureDateWithClosingDate,
 } from '../../scripts/lib/cast-changes-filters.js';
 
 const TODAY = new Date('2026-05-23');
@@ -473,4 +474,36 @@ test('dedupeClosures keeps distinct closing dates separate', () => {
     { type: 'closure', date: '2026-07-01', note: 'b', addedDate: '2026-05-20' },
   ];
   assert.equal(dedupeClosures(events).length, 2);
+});
+
+// ==================== closure date reconciliation vs shows.json ====================
+
+test('reconcileClosureDateWithClosingDate corrects a stale closure date to canonical', () => {
+  const events = [
+    { type: 'closure', name: 'The Show', date: '2026-07-01', note: 'ends in July', sourceUrl: 'http://x', addedDate: '2026-02-05' },
+    { type: 'departure', name: 'Actor', date: '2026-07-01' },
+  ];
+  const { events: out, repaired } = reconcileClosureDateWithClosingDate(events, '2026-08-30');
+  assert.equal(repaired, 1);
+  const c = out.find(e => e.type === 'closure');
+  assert.equal(c.date, '2026-08-30', 'date corrected to canonical');
+  assert.equal(c.addedDate, '2026-02-05', 'write-once addedDate preserved');
+  assert.equal(c.sourceUrl, 'http://x', 'sourceUrl preserved');
+  assert.match(c.note, /reconciled to broadway\.com/);
+  assert.equal(out.find(e => e.type === 'departure').date, '2026-07-01', 'non-closures untouched');
+});
+
+test('reconcileClosureDateWithClosingDate is a no-op when already canonical', () => {
+  const events = [{ type: 'closure', date: '2026-08-30', note: 'ok', addedDate: '2026-02-05' }];
+  const { events: out, repaired } = reconcileClosureDateWithClosingDate(events, '2026-08-30');
+  assert.equal(repaired, 0);
+  assert.equal(out[0].note, 'ok', 'untouched when already correct');
+});
+
+test('reconcileClosureDateWithClosingDate no-ops on missing/invalid canonical date', () => {
+  const events = [{ type: 'closure', date: '2026-07-01', addedDate: '2026-02-05' }];
+  for (const bad of [null, undefined, '', '2026-08', 'garbage']) {
+    const { repaired } = reconcileClosureDateWithClosingDate(events, bad);
+    assert.equal(repaired, 0, `no-op for ${JSON.stringify(bad)}`);
+  }
 });

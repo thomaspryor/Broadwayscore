@@ -76,8 +76,21 @@ jobs:
           fi
           node scripts/scrape-cast-changes.js $ARGS
 
+      # Validation gate: auto-heal (reconcile stale closure dates vs shows.json,
+      # dedupe closures, reclassify departure-as-closure) then verify clean.
+      # Runs ONLY if the scrape succeeded — a crashed/partial scrape must never
+      # reach the commit step. --strict exits non-zero on any residual issue,
+      # failing the job before commit. This is the gate that was missing while
+      # bad cast-changes data shipped straight to main (direct pushes aren't
+      # gated by branch-protection status checks).
+      - name: Audit and validate cast changes
+        if: success()
+        run: |
+          node scripts/audit-cast-changes.js --write
+          node scripts/audit-cast-changes.js --strict
+
       - name: Check for changes
-        if: always()
+        if: success()
         id: check_changes
         run: |
           if [[ -n $(git status --porcelain data/cast-changes.json data/audit/cast-changes-diff.json) ]]; then
@@ -89,7 +102,7 @@ jobs:
           fi
 
       - name: Commit and push changes
-        if: always() && steps.check_changes.outputs.has_changes == 'true'
+        if: success() && steps.check_changes.outputs.has_changes == 'true'
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"

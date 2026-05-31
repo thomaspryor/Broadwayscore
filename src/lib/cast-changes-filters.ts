@@ -169,6 +169,32 @@ export function dedupeClosures(events: CastEvent[]): CastEvent[] {
   return out;
 }
 
+/**
+ * Reconcile a show's closure event date against the canonical closing date from
+ * shows.json. A closure event is never updated when the show extends, so it goes
+ * stale; this corrects it. Mirror of reconcileClosureDateWithClosingDate() in
+ * scripts/lib/cast-changes-filters.js.
+ */
+export function reconcileClosureDateWithClosingDate(
+  events: CastEvent[],
+  canonicalClosingDate?: string | null,
+): { events: CastEvent[]; repaired: number } {
+  if (!canonicalClosingDate || !/^\d{4}-\d{2}-\d{2}$/.test(canonicalClosingDate)) {
+    return { events, repaired: 0 };
+  }
+  let repaired = 0;
+  const out = events.map(e => {
+    if (e.type !== 'closure' || !e.date || e.date === canonicalClosingDate) return e;
+    repaired++;
+    return {
+      ...e,
+      date: canonicalClosingDate,
+      note: `Production closes ${canonicalClosingDate} (date reconciled to broadway.com-audited closingDate).`,
+    };
+  });
+  return { events: out, repaired };
+}
+
 export function reconcileClosure(events: CastEvent[]): CastEvent[] {
   const closureDates = events
     .filter(e => e.type === 'closure' && e.date)

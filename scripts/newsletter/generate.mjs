@@ -1201,7 +1201,12 @@ function castingSection() {
     const show = shows.find(s => s.id === showId);
     if (!show || show.category !== 'broadway' || isOperaShow(show)) return;
     const data = castData.shows[showId];
-    (data.upcoming || []).forEach(u => eventsAll.push({ ...u, showId, showTitle: show.title }));
+    // reconcileClosure PER SHOW (never across shows — a closure in one show must
+    // not suppress a same-date departure in another) folds per-actor departures
+    // that restate the closing into the closure event before we render.
+    reconcileClosure(data.upcoming || []).forEach(u =>
+      eventsAll.push({ ...u, showId, showTitle: show.title }),
+    );
   });
   // Recent: addedDate IN THE WEEK WINDOW. Earlier versions used a 14-day
   // window (weekStart - 7d) but that resurfaces last-week's casting in this
@@ -1214,10 +1219,20 @@ function castingSection() {
   // note/absence rows, placeholder names ("X replacement", "TBA"/"TBD"), and
   // dateless rows ("no dates means these aren't useful" — user, 2026-05-30).
   const PLACEHOLDER = /\breplacement\b|^tba$|^tbd$|^t\.?b\.?[ad]\.?$/i;
+  // A "departure" whose name IS the production (e.g. "Moulin Rouge! The Musical
+  // Company") is a show-wide closing restated as a per-actor row, not a person.
+  // Rendering it prints "<Show> Company departs" — the closure-as-departure bug.
+  const norm = (s) => (s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+  const isProductionName = (e) => {
+    const n = norm(e.name);
+    const t = norm(e.showTitle);
+    return !!n && !!t && (n === t || n.startsWith(t));
+  };
   const isRealMove = (e) => {
     if (!['arrival', 'departure'].includes(e.type)) return false;
     const name = (e.name || '').trim();
     if (!name || PLACEHOLDER.test(name)) return false;
+    if (isProductionName(e)) return false;
     if (!e.date && !e.endDate) return false;
     return true;
   };
