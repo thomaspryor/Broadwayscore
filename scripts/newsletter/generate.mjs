@@ -1708,17 +1708,23 @@ const box      = sections.run('box-office', () => boxOfficeSection());
 const commercial = sections.run('recoupment', () => commercialSection());
 const bz   = sections.run('social-buzz', () => buzziestSection());
 const tony = sections.run('tony-predictions', () => tonyWatchSection());
-// SECTION: Beat the Critics promo — mirrors the on-site BTC shelf (emerald/gold).
+// SECTION: Beat the Critics promo — mirrors src/components/PromoShelf.tsx (btc
+// variant). Colors + copy are kept in sync with the on-site shelf: emerald
+// gradient card, green border, gradient CTA. Self-contained card (eyebrow lives
+// inside it, like the site), so no duplicate sectionHeading above it.
 function btcPromoSection() {
   const href = `${SITE}/beat-the-critics`;
-  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#10241c" class="cardbg" style="border:1px solid rgba(16,185,129,0.30);border-radius:12px;">
-    <tr><td style="padding:18px;">
-      <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#34d399;margin-bottom:8px;">New Game</div>
-      <div style="font-size:14px;color:#c8d6cf;line-height:1.5;margin-bottom:14px;">Predict how critics will score the next big opening, before reviews drop.</div>
-      <a href="${href}" style="display:inline-block;background:#10b981;color:#04150f;font-size:14px;font-weight:700;text-decoration:none;padding:10px 18px;border-radius:8px;">Play Beat the Critics &rarr;</a>
+  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#0a1f1a" class="cardbg" style="background:linear-gradient(135deg,#0a1f1a 0%,#0f0f14 60%);border:1px solid rgba(52,211,153,0.35);border-radius:12px;">
+    <tr><td style="padding:20px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#34d399;margin-bottom:8px;">Beat the Critics</div>
+      <div style="font-size:18px;font-weight:800;color:#ffffff;line-height:1.25;margin-bottom:8px;">Think you can out-guess the critics?</div>
+      <div style="font-size:14px;color:#c8d6cf;line-height:1.5;margin-bottom:16px;">Predict the score before reviews drop. Lock in your picks and see how you stack up.</div>
+      <a href="${href}" style="display:inline-block;background:linear-gradient(135deg,#34d399,#10b981);color:#04150f;font-size:14px;font-weight:700;text-decoration:none;padding:11px 20px;border-radius:8px;">Play Beat the Critics &rarr;</a>
     </td></tr>
   </table>`;
-  return sectionWrap(sectionHeading('Beat the Critics'), body);
+  // No sectionHeading — the eyebrow inside the card is the label, matching the
+  // standalone on-site shelf. sectionWrap with empty heading keeps spacing.
+  return sectionWrap('', body);
 }
 
 const cas  = sections.run('casting-updates', () => castingSection());
@@ -2001,7 +2007,7 @@ const html = `<!DOCTYPE html>
   <div style="font-size:13px;color:#9ca3af;">Weekly Round-up · ${fmt(weekStartStr)} – ${fmt(weekEndStr)}, ${yearForFooter}</div>
 </td></tr>
 ${ledeText ? `<tr><td style="padding:6px 4px 20px;">
-  <div style="font-size:14px;line-height:1.55;color:#d1d5db;font-style:italic;border-left:2px solid #d4a574;padding-left:12px;">${ledeText}</div>
+  <div style="font-size:14px;line-height:1.55;color:#d1d5db;border-left:2px solid #d4a574;padding-left:12px;">${ledeText}</div>
 </td></tr>` : '<tr><td style="padding:0 4px 12px;"></td></tr>'}
 ${sectionOrder.join('')}
 <tr><td align="center" style="padding:40px 4px 8px;">
