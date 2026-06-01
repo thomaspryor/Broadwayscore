@@ -247,7 +247,17 @@
     "dark-of-the-moon-west-end-2026/artsdesk--unknown.json",
     "dark-of-the-moon-west-end-2026/cambridge--unknown.json",
     "dark-of-the-moon-west-end-2026/london-theatre--unknown.json",
-    "care-west-end-2026/i-paper--unknown.json"
+    "care-west-end-2026/i-paper--unknown.json",
+    "care-west-end-2026/the-upcoming-uk--unknown.json",
+    "care-west-end-2026/times-uk--unknown.json",
+    "equus-west-end-2026/the-jewish-chronicle--unknown.json",
+    "equus-west-end-2026/thereviewshub--unknown.json",
+    "equus-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "equus-west-end-2026/artsdesk--unknown.json",
+    "equus-west-end-2026/thestage--holly-o.json",
+    "equus-west-end-2026/times-uk--clive-davis.json",
+    "end-of-the-rainbow-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "1536-west-end-2026/timeout-london--andrjez-lukowski.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -274,7 +284,9 @@
       "in-the-heights-2008/thestage--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/equus-west-end-2026/thereviewshub--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
@@ -288,6 +300,7 @@
     ],
     "archiveToday": [
       "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
+      "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
       "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json"
     ],
     "archive": [
@@ -300,7 +313,7 @@
     ]
   },
   "startTime": "2026-06-01T16:25:46.508Z",
-  "lastProcessed": "care-west-end-2026/i-paper--unknown.json",
+  "lastProcessed": "1536-west-end-2026/timeout-london--andrjez-lukowski.json",
   "log": [
     {
       "t": "2026-06-01T21:42:39.705Z",
@@ -313,6 +326,12 @@
       "event": "bb-session",
       "session": "34c227bf",
       "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
+    },
+    {
+      "t": "2026-06-01T21:46:21.375Z",
+      "event": "bb-session",
+      "session": "45d88183",
+      "url": "https://www.thereviewshub.com/equus-menier-chocolate-factory-london/"
     }
   ]
 }
