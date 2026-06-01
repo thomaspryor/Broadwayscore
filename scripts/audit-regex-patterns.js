@@ -87,7 +87,7 @@ const PATTERN_ALLOWLIST = {
   // garbage content. Sized to current baseline + 30%.
   'NAVIGATION_PATTERNS::0': 50,   // /^(home|about|contact|faq|...)\s*$/im
   'NAVIGATION_PATTERNS::1': 200,  // /skip\s+to\s+(main\s+)?content/ — raw 143
-  'NAVIGATION_PATTERNS::2': 200,  // /\b(footer|header|sidebar|navigation|...)\b/
+  'NAVIGATION_PATTERNS::2': 260,  // /\b(footer|header|sidebar|navigation|...)\b/ — raw 201
   'NAVIGATION_PATTERNS::4': 1200, // /related\s+(articles?|stories|posts)/
   'NAVIGATION_PATTERNS::5': 70,   // /popular\s+(articles?|stories|posts)/
   'NAVIGATION_PATTERNS::6': 400,  // /latest\s+(articles?|stories|news)/
@@ -146,6 +146,22 @@ const PATTERN_CALIBRATION = {
         + 'if the bump comes from an ACTIVE outlet (not the documented '
         + 'archives), it is a scraper regression, fix the strip; if from '
         + 'an archive, accept and bump.',
+  },
+  'NAVIGATION_PATTERNS::2': {
+    commit: 'pending',
+    date: '2026-06-01',
+    rawHits: 201,
+    headroom: 1.3,
+    note: '/\\b(footer|header|sidebar|navigation|...)\\b/ — bare nav-chrome '
+        + 'keywords. Diffuse: sampled hits span distinct outlets (newyorker '
+        + 'prose "navigation problems", cleveland + bloomberg archive chrome) '
+        + '1-per-outlet, not concentrated — corpus-growth drift, not a scraper '
+        + 'regression. Surfaced 201/200 only after the duplicateOf gate stopped '
+        + 'short-circuiting this step (it ran earlier in Data Validation and '
+        + 'failed first, skipping this audit). Runtime scoring unaffected: '
+        + "detectNavigationJunk requires 5+ keyword hits, so a single bare "
+        + 'match never excludes a review. Next bump: probe by-outlet; '
+        + 'concentration in one ACTIVE outlet = scraper chrome leak, fix the strip.',
   },
   'NAVIGATION_PATTERNS::7': {
     commit: '07bfb0c497',

@@ -106,7 +106,23 @@ runs:
               // fields where committed had content are restored unconditionally.
               // Strongest defense for opening-night ingestion.
               const isLocked = committed._locked === true || local._locked === true;
+              // Intentional duplicateOf clear (review-write-guard.js and the
+              // audit-duplicate-of-url-mismatch.js --fix heal both null
+              // duplicateOf/duplicateReason AND set duplicateClearReason to mark
+              // the clear as deliberate). duplicateOf/duplicateReason are in
+              // PROTECTED, so without this exception the restore below treats
+              // the null as data loss and reverts the clear -- which is exactly
+              // why stale duplicateOf flags could never be healed and the
+              // test.yml stale-duplicateOf gate stayed red indefinitely (the
+              // daily heal logged Protected-N-from-data-loss and pushed
+              // nothing). Honor the clear signal. 2026-06-01.
+              const intentionalDupClear = !isEmpty(local.duplicateClearReason);
               for (const field of PROTECTED) {
+                if (intentionalDupClear
+                    && (field === 'duplicateOf' || field === 'duplicateReason')
+                    && isEmpty(local[field])) {
+                  continue;
+                }
                 const committedHasContent = !isEmpty(committed[field]);
                 const localIsEmpty = isEmpty(local[field]);
                 if (committedHasContent && (localIsEmpty || isLocked)) {
