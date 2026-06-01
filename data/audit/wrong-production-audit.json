@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-31T23:53:53.583Z",
+  "timestamp": "2026-06-01T03:57:32.740Z",
   "stats": {
-    "totalReviews": 37894,
-    "alreadyFlagged": 16664,
+    "totalReviews": 37895,
+    "alreadyFlagged": 16663,
     "dateGuardCatches": 106,
-    "directorMismatch": 812,
-    "tvFilmSignals": 1035,
-    "londonSignals": 585,
-    "offBroadwaySignals": 456,
+    "directorMismatch": 813,
+    "tvFilmSignals": 1036,
+    "londonSignals": 587,
+    "offBroadwaySignals": 457,
     "yearMismatch": 79,
-    "noPublishDate": 3958
+    "noPublishDate": 3960
   },
   "findings": [
     {
@@ -23983,6 +23983,25 @@
       ]
     },
     {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "thestage--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.thestage.co.uk/reviews/to-kill-a-mockingbird-review-leeds-playhouse-leeds-aaron-sorkin-richard-coyle",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from to-kill-a-mockingbird-2018"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
       "showId": "tootsie-2019",
       "file": "broadway-blog--matthew-wexler.json",
       "score": 76,
@@ -25751,6 +25770,20 @@
       "score": 90,
       "publishDate": "2026-05-14",
       "url": "https://www.broadwayworld.com/westend/article/Review-1536-The-Ambassadors-Theatre-20260514",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "1536-west-end-2026",
+      "file": "thestage--holly-o.json",
+      "score": null,
+      "publishDate": "2026-05-13",
+      "url": "https://www.thestage.co.uk/reviews/1536-review-ambassadors-theatre-london-ava-pickett",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -28023,7 +28056,7 @@
       "file": "guardian--unknown.json",
       "score": null,
       "publishDate": null,
-      "url": "https://www.theguardian.com/books/2024/nov/02/alan-bennett-at-90-what-will-people-think-i-dont-care-any-more",
+      "url": "https://www.theguardian.com/stage/2026/may/15/linda-bassett-call-the-midwife-caryl-churchill-alexander-zeldin-care",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -30306,6 +30339,24 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "hamlet-2009",
+      "file": "thestage--nicole-serratore.json",
+      "publishDate": null,
+      "url": "https://www.thestage.co.uk/reviews/hamlet-review-at-park-avenue-armory-new-york-robert-icke-alex-lawther",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"park avenue armory\""
         }
       ]
     },
