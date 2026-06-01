@@ -1,20 +1,37 @@
 {
-  "updatedAt": "2026-06-01T11:02:53.880Z",
-  "processed": 9,
-  "failed": 877,
-  "successRate": "1.0%",
+  "updatedAt": "2026-06-01T06:25:55.851Z",
+  "processed": 11,
+  "failed": 755,
+  "successRate": "1.4%",
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 6,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingbee": 1,
     "brightdata": 2,
-    "archiveToday": 29,
+    "archiveToday": 23,
     "archive": 2
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
+    {
+      "t": "2026-06-01T01:24:42.699Z",
+      "event": "bb-session",
+      "session": "a9bbfc57",
+      "url": "https://a.talkinbroadway.com/allthatchat_new/d.php?id=2626606"
+    },
+    {
+      "t": "2026-06-01T01:24:43.282Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-01T01:33:41.348Z",
+      "event": "bb-session",
+      "session": "b636a61d",
+      "url": "https://a.talkinbroadway.com/allthatchat_new/d.php?id=2626606"
+    },
     {
       "t": "2026-06-01T01:33:41.934Z",
       "event": "bb-cookie-inject",
@@ -87,45 +104,26 @@
       "domain": "talkinbroadway.com"
     },
     {
-      "t": "2026-06-01T06:50:56.863Z",
+      "t": "2026-06-01T06:22:11.052Z",
       "event": "bb-session",
-      "session": "62d41e09",
-      "url": "https://a.talkinbroadway.com/allthatchat_new/d.php?id=2626606"
+      "session": "95b37f60",
+      "url": "https://variety.com/2026/tv/reviews/daniel-radcliffe-every-brilliant-thing-broad"
     },
     {
-      "t": "2026-06-01T06:50:57.444Z",
+      "t": "2026-06-01T06:22:12.072Z",
       "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
+      "domain": "variety.com"
     },
     {
-      "t": "2026-06-01T07:05:11.037Z",
+      "t": "2026-06-01T06:22:34.975Z",
       "event": "bb-session",
-      "session": "13f5d230",
-      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
+      "session": "a6481558",
+      "url": "https://www.wsj.com/articles/becky-shaw-review-love-sex-and-scheming-on-broadway"
     },
     {
-      "t": "2026-06-01T09:01:51.455Z",
-      "event": "bb-session",
-      "session": "850eb6a9",
-      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
-    },
-    {
-      "t": "2026-06-01T09:39:06.057Z",
-      "event": "bb-session",
-      "session": "c26e2b04",
-      "url": "https://charingcrosstheatre.co.uk/theatre/dark-of-the-moon"
-    },
-    {
-      "t": "2026-06-01T09:40:19.354Z",
-      "event": "bb-session",
-      "session": "05c97cc6",
-      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
-    },
-    {
-      "t": "2026-06-01T10:24:19.876Z",
-      "event": "bb-session",
-      "session": "4c020e2f",
-      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
+      "t": "2026-06-01T06:22:36.008Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
