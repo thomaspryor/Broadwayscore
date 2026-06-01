@@ -239,13 +239,36 @@ function urlMatchesShow(href, tokens) {
 // (ship-check): cap BD credit burn at ~1 fetch per unique article per run.
 const _articleCache = new Map();
 
+// Run-level fetch health. A single un-scrapeable article is tolerated (logged
+// + skipped) so the hourly audit doesn't crash on one bad URL — e.g. a BWW
+// `/westend/` redirect that all providers fail. But if EVERY attempted article
+// fetch throws, the scraper stack itself is down (dead Bright Data zone /
+// exhausted ScrapingBee / no Playwright) — the run must still redden CI so the
+// outage is visible. See plan-review 2026-05-31. `errors` counts hard throws
+// (all providers failed); `empty` counts 200-but-no-content (can be a legit
+// page with no matching links, so it does NOT count toward the outage floor).
+const _fetchStats = { attempts: 0, errors: 0, empty: 0 };
+
 async function extractAggregatorReviewUrls(articleUrl, show) {
   let html;
   if (_articleCache.has(articleUrl)) {
     html = _articleCache.get(articleUrl);
   } else {
-    const r = await fetchPage(articleUrl);
+    _fetchStats.attempts++;
+    let r;
+    try {
+      r = await fetchPage(articleUrl);
+    } catch (e) {
+      // Per-URL scrape failure. Mirror audit-url-validation.js:392 — record the
+      // throw, warn, continue. The run-level floor below still reddens CI if
+      // the WHOLE collector is down (every attempted fetch threw).
+      _fetchStats.errors++;
+      console.log(`::warning::aggregator fetch failed (${hostOf(articleUrl) || articleUrl}): ${e.message.split('\n')[0].slice(0, 120)}`);
+      _articleCache.set(articleUrl, null);
+      return null;
+    }
     if (!r?.content) {
+      _fetchStats.empty++;
       _articleCache.set(articleUrl, null);
       return null;
     }
@@ -555,6 +578,16 @@ function ingestMissingUrl(showId, url, knownOutletId) {
     for (const u of unknownOutlets) {
       console.log(`  ${u.host} — ${u.occurrences} occurrence(s) across ${u.shows.length} show(s): ${u.sampleUrls[0]}`);
     }
+  }
+
+  // Collector-outage floor (plan-review 2026-05-31): tolerate one bad URL, but
+  // if every attempted article fetch threw, the scraper stack is down — redden
+  // CI so a dead Bright Data zone / exhausted SB doesn't masquerade as "no gaps
+  // found" (which would silently miss reviews during opening night). Distinct
+  // from --fail-on-gap: this fires on infrastructure failure, not on gaps.
+  if (_fetchStats.attempts >= 3 && _fetchStats.errors === _fetchStats.attempts) {
+    console.error(`::error::collector outage — all ${_fetchStats.errors}/${_fetchStats.attempts} aggregator article fetches threw (Bright Data / ScrapingBee / Playwright all failing). Check BRIGHTDATA_ZONE + ScrapingBee credits; this audit found nothing because nothing could be fetched.`);
+    process.exit(1);
   }
 
   if (failOnGap && audit.counts.withGap > 0) {

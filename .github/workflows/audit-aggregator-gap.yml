@@ -50,6 +50,13 @@ jobs:
 
       - run: npm ci
 
+      # The audit's scraper fallback chain (Bright Data → ScrapingBee →
+      # Playwright) reaches Playwright for complex sites (e.g. BroadwayWorld).
+      # Without browsers installed, Playwright throws "Executable doesn't exist"
+      # and the article fetch fails. Shared cached action per .github/workflows/CLAUDE.md.
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
       - name: Checkout core data
         uses: ./.github/actions/checkout-core-data
         with:
