@@ -57,6 +57,26 @@ describe('article-extractor: The Stage subscriber-only body', () => {
     assert.ok(!text.includes('© Copyright'), 'copyright line leaked');
   });
 
+  test('drops single-first-name author bio (Holly is a culture journalist)', () => {
+    // Regression (2026-05-31): the multi-word-name pattern required at least
+    // one Lastname token, so bylines using just a first name in the bio
+    // ("Holly is a culture journalist…") slipped through. Confirmed leaked on
+    // 3 of 16 Stage re-ingests. The bio filter now allows zero additional
+    // name parts but requires "is a/an/the (culture|theatre|freelance)? X".
+    const html =
+      '<html><body><article>' +
+      '<div class="aos-Article-IntroText"><p>A blistering revival of an old favourite.</p></div>' +
+      '<div class="aos-DS32-WYSEdit">' +
+        '<p>' + 'The opening builds tension with patient, precise direction throughout the first act. '.repeat(4) + '</p>' +
+      '</div>' +
+      '<p>Holly is a culture journalist and theatre critic. She is an editor for Backstage Magazine.</p>' +
+      '</article></body></html>';
+    const text = extractArticleText(html, 'thestage.co.uk');
+    assert.ok(text.includes('blistering revival'), 'standfirst captured');
+    assert.ok(!text.includes('Holly is a culture journalist'),
+      `single-first-name bio leaked: …${text.slice(-200)}`);
+  });
+
   test('returns null on logged-out HTML (no IntroText present)', () => {
     // When the session is dead the registration wall returns no IntroText
     // wrapper. Extractor returns null so the verifier still flags logout.

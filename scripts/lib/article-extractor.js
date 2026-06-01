@@ -94,8 +94,10 @@ function extractStageBody(html) {
   if (!startM) return null;
   const region = html.slice(startM.index);
   const isTrailingNoise = (t) =>
-    // Author bio: "Firstname Lastname is a freelance journalist…"
-    /^[A-Z][a-z]+(?:\s+[A-Z][a-z'-]+)+\s+is\s+(?:a|an|the|freelance|theatre)/i.test(t) ||
+    // Author bio: "Firstname [Lastname] is a (culture|theatre|freelance)? journalist/critic/..."
+    // First-name-only bylines (e.g. "Holly is a culture journalist…") slipped the
+    // multi-word-name pattern, so allow zero additional name parts.
+    /^[A-Z][a-z]+(?:\s+[A-Z][a-z'-]+)*\s+is\s+(?:a|an|the|freelance|theatre)\s+(?:culture\s+|theatre\s+|freelance\s+|theater\s+)?(?:journalist|critic|writer|editor|reviewer)/i.test(t) ||
     // Subscribe pitch
     /subscription\s+starting|Invest in The Stage|Subscribe\s+Start a subscription/i.test(t) ||
     // Copyright
