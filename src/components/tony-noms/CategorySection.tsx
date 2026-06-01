@@ -156,6 +156,7 @@ const CRITIC_PICK_OUTLETS: Record<string, { outletName: string; critic: string }
   ew:           { outletName: 'Entertainment Weekly',  critic: 'Dalton Ross' },
   nysun:        { outletName: 'The New York Sun',      critic: 'Elysa Gardner' },
   theatermania: { outletName: 'TheaterMania',          critic: 'TheaterMania Staff' },
+  slant:        { outletName: 'Slant Magazine',        critic: 'Dan Rubins' },
 };
 
 function PressPicks({ picks }: { picks?: string[] }) {
