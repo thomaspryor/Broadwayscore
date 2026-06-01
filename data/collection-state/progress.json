@@ -976,7 +976,16 @@
     "equus-west-end-2026/all-that-dazzles-uk--unknown.json",
     "equus-west-end-2026/artsdesk--unknown.json",
     "equus-west-end-2026/thestage--holly-o.json",
-    "equus-west-end-2026/times-uk--clive-davis.json"
+    "equus-west-end-2026/times-uk--clive-davis.json",
+    "end-of-the-rainbow-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "1536-west-end-2026/timeout-london--andrjez-lukowski.json",
+    "1536-west-end-2026/artsdesk--helen-hawkins.json",
+    "1536-west-end-2026/artsdesk--rachel-halliburton.json",
+    "1536-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
+    "1536-west-end-2026/london-theatre--unknown.json",
+    "1536-west-end-2026/the-recs--the-recs-jdh.json",
+    "1536-west-end-2026/times-uk--clive-davis.json",
+    "1536-west-end-2026/times-uk--dominic-maxwell.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -998,7 +1007,8 @@
     "browserbase": [
       "data/review-texts/schmigadoon-2026/variety--aramide-tinubu.json",
       "data/review-texts/taboo-2003/nytimes--ben-brantley.json",
-      "data/review-texts/equus-west-end-2026/thereviewshub--unknown.json"
+      "data/review-texts/equus-west-end-2026/thereviewshub--unknown.json",
+      "data/review-texts/1536-west-end-2026/london-theatre--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1058,7 +1068,7 @@
     ]
   },
   "startTime": "2026-05-31T15:17:43.029Z",
-  "lastProcessed": "equus-west-end-2026/times-uk--clive-davis.json",
+  "lastProcessed": "1536-west-end-2026/times-uk--dominic-maxwell.json",
   "log": [
     {
       "t": "2026-05-31T18:39:09.043Z",
@@ -1264,6 +1274,12 @@
       "event": "bb-session",
       "session": "2735f2ce",
       "url": "https://www.thereviewshub.com/equus-menier-chocolate-factory-london/"
+    },
+    {
+      "t": "2026-06-01T12:34:23.609Z",
+      "event": "bb-session",
+      "session": "0e61c2a0",
+      "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=27853"
     }
   ]
 }
