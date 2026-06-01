@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-06-01T06:07:31.693Z",
+  "updatedAt": "2026-06-01T06:52:26.126Z",
   "processed": 6,
-  "failed": 750,
+  "failed": 754,
   "successRate": "0.8%",
   "tierBreakdown": {
     "playwright": 3,
@@ -10,23 +10,11 @@
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 2,
-    "archiveToday": 23,
+    "archiveToday": 24,
     "archive": 1
   },
   "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-05-31T23:17:11.588Z",
-      "event": "bb-session",
-      "session": "9eb3caba",
-      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
-    },
-    {
-      "t": "2026-06-01T00:34:11.714Z",
-      "event": "bb-session",
-      "session": "4c0e4c9b",
-      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
-    },
     {
       "t": "2026-06-01T00:51:43.249Z",
       "event": "bb-session",
@@ -123,6 +111,17 @@
     },
     {
       "t": "2026-06-01T06:06:08.005Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-01T06:50:56.863Z",
+      "event": "bb-session",
+      "session": "62d41e09",
+      "url": "https://a.talkinbroadway.com/allthatchat_new/d.php?id=2626606"
+    },
+    {
+      "t": "2026-06-01T06:50:57.444Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }
