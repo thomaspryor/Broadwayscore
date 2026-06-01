@@ -32,6 +32,13 @@ COOKIE_FILE = next((p for p in COOKIE_FILE_CANDIDATES if os.path.isfile(p) and o
 
 # Domain groups: which domains map to which output file
 DOMAIN_GROUPS = {
+    "newspapers": {
+        # newspapers.com is "by Ancestry" — session/auth cookies live on both
+        # newspapers.com and ancestry.com after an Ancestry SSO login.
+        "domains": [".newspapers.com", "newspapers.com", ".ancestry.com", "ancestry.com"],
+        "output": "newspapers.json",
+        "secret_name": "NEWSPAPERS_COOKIES",
+    },
     "wsj": {
         "domains": [".wsj.com", ".dowjones.com", "wsj.com", "dowjones.com"],
         "output": "wsj.json",

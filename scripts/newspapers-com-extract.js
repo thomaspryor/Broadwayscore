@@ -115,6 +115,10 @@ function parseArgs() {
     dateRange: parseInt(get('date-range') || '3', 10),
     searchOnly: args.includes('--search-only'),
     verbose: args.includes('--verbose'),
+    // Drive a remote Browserbase stealth browser (bypasses Cloudflare) and inject
+    // the saved newspapers.com session cookies for subscription auth. Local
+    // Playwright Chrome fails newspapers.com's Cloudflare Turnstile.
+    browserbase: args.includes('--browserbase') || process.env.BROWSERBASE_ENABLED === 'true',
   };
 }
 
@@ -649,29 +653,66 @@ async function main() {
 
   const { chromium } = require('playwright');
 
-  console.log('\nLaunching browser (headed — required for newspapers.com)...');
-  // Real installed Chrome (channel: 'chrome') — bundled Chrome-for-Testing
-  // fails newspapers.com's Cloudflare Turnstile. Must match paywall-browser-login.js.
-  const npLaunchOpts = {
-    headless: false,
-    viewport: { width: 1280, height: 900 },
-    args: [
-      '--disable-blink-features=AutomationControlled',
-      '--disable-features=IsolateOrigins,site-per-process',
-    ],
-    ignoreDefaultArgs: ['--enable-automation'],
-    locale: 'en-US',
-    timezoneId: 'America/New_York',
-  };
-  let context;
-  try {
-    context = await chromium.launchPersistentContext(PROFILE_DIR, { ...npLaunchOpts, channel: 'chrome' });
-  } catch (err) {
-    console.log(`  → real Chrome unavailable (${err.message.split('\n')[0]}); using bundled chromium`);
-    context = await chromium.launchPersistentContext(PROFILE_DIR, npLaunchOpts);
-  }
+  let context, page, browser = null;
 
-  const page = context.pages()[0] || await context.newPage();
+  if (opts.browserbase) {
+    // Remote Browserbase stealth browser bypasses newspapers.com's Cloudflare
+    // Turnstile (which local Playwright Chrome cannot pass). Subscription auth
+    // comes from injected session cookies extracted from Safari.
+    const cookiePath = path.join('data', 'cookies', 'newspapers.json');
+    if (!fs.existsSync(cookiePath)) {
+      throw new Error(`--browserbase needs ${cookiePath}. Log into newspapers.com in Safari, then run: python3 scripts/extract-safari-cookies.py`);
+    }
+    const raw = JSON.parse(fs.readFileSync(cookiePath, 'utf8'));
+    const cookies = (Array.isArray(raw) ? raw : raw.cookies || []).map(c => ({
+      name: c.name,
+      value: c.value,
+      domain: c.domain,
+      path: c.path || '/',
+      ...(typeof c.expires === 'number' && c.expires > 0 ? { expires: c.expires } : {}),
+      httpOnly: !!c.httpOnly,
+      secure: c.secure !== false,
+      sameSite: ['Strict', 'Lax', 'None'].includes(c.sameSite) ? c.sameSite : 'Lax',
+    }));
+    const apiKey = process.env.BROWSERBASE_API_KEY;
+    const projectId = process.env.BROWSERBASE_PROJECT_ID;
+    if (!apiKey || !projectId) throw new Error('BROWSERBASE_API_KEY / BROWSERBASE_PROJECT_ID not set');
+    console.log(`\nCreating Browserbase session (stealth + proxies, ${cookies.length} cookies)...`);
+    const resp = await fetch('https://api.browserbase.com/v1/sessions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-BB-API-Key': apiKey },
+      body: JSON.stringify({ projectId, proxies: true, browserSettings: { solveCaptchas: true } }),
+    });
+    if (!resp.ok) throw new Error(`Browserbase session create failed: ${resp.status} ${await resp.text()}`);
+    const session = await resp.json();
+    console.log(`  session ${session.id} → connecting...`);
+    browser = await chromium.connectOverCDP(session.connectUrl);
+    context = browser.contexts()[0] || await browser.newContext();
+    await context.addCookies(cookies);
+    page = context.pages()[0] || await context.newPage();
+  } else {
+    console.log('\nLaunching browser (headed — required for newspapers.com)...');
+    // Real installed Chrome (channel: 'chrome') — bundled Chrome-for-Testing
+    // fails newspapers.com's Cloudflare Turnstile. Must match paywall-browser-login.js.
+    const npLaunchOpts = {
+      headless: false,
+      viewport: { width: 1280, height: 900 },
+      args: [
+        '--disable-blink-features=AutomationControlled',
+        '--disable-features=IsolateOrigins,site-per-process',
+      ],
+      ignoreDefaultArgs: ['--enable-automation'],
+      locale: 'en-US',
+      timezoneId: 'America/New_York',
+    };
+    try {
+      context = await chromium.launchPersistentContext(PROFILE_DIR, { ...npLaunchOpts, channel: 'chrome' });
+    } catch (err) {
+      console.log(`  → real Chrome unavailable (${err.message.split('\n')[0]}); using bundled chromium`);
+      context = await chromium.launchPersistentContext(PROFILE_DIR, npLaunchOpts);
+    }
+    page = context.pages()[0] || await context.newPage();
+  }
 
   // Quick login check
   console.log('Verifying login...');
@@ -737,7 +778,8 @@ async function main() {
   console.log(`\nTotals: ${totalExtracted} extracted, ${totalNotFound} not found, ${totalSkipped} skipped, ${totalErrors} errors`);
   console.log(`Progress saved to /tmp/newspapers-extract-progress.json`);
 
-  await context.close();
+  await context.close().catch(() => {});
+  if (browser) await browser.close().catch(() => {});
   console.log('\nDone. Browser closed.');
 }
 
