@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-01T07:36:21.795Z",
+  "timestamp": "2026-06-01T08:17:16.864Z",
   "stats": {
-    "totalReviews": 37895,
-    "alreadyFlagged": 16665,
+    "totalReviews": 37933,
+    "alreadyFlagged": 16675,
     "dateGuardCatches": 106,
     "directorMismatch": 817,
     "tvFilmSignals": 1043,
-    "londonSignals": 594,
+    "londonSignals": 593,
     "offBroadwaySignals": 458,
     "yearMismatch": 79,
-    "noPublishDate": 3958
+    "noPublishDate": 3987
   },
   "findings": [
     {
@@ -3730,7 +3730,7 @@
     {
       "showId": "cats-the-jellicle-ball-off-broadway-2024",
       "file": "wsj--unknown.json",
-      "score": null,
+      "score": 89,
       "publishDate": null,
       "url": "https://www.wsj.com/articles/cats-the-jellicle-ball-review-wondrous-and-whisker-free-7e8237ba?gaa_at=eafs&gaa_n=AWEtsqf3rhX__INBXHgRHsI3IxIHt9SNy6mPj-PFQxxnEmKl0aTpO0dMHH2i&gaa_ts=69bd9c85&gaa_sig=CNgwMSu6ZTQjgdYO1Jas5jqZde5lxGvAMXF487IUMqeQbwSxAWsi-0160s1kyEWidvhQW1_8apI3seh7hkEJBg%3D%3D",
       "findings": [
@@ -6191,7 +6191,7 @@
     {
       "showId": "evita-west-end-2025",
       "file": "variety--david-benedict.json",
-      "score": 52,
+      "score": 63,
       "publishDate": "2025-07-02",
       "url": "https://variety.com/2025/legit/reviews/evita-review-rachel-zegler-musical-west-end-1236445000/",
       "findings": [
@@ -18649,7 +18649,7 @@
     {
       "showId": "spamalot-2005",
       "file": "thestage--unknown.json",
-      "score": null,
+      "score": 41,
       "publishDate": null,
       "url": "https://www.thestage.co.uk/reviews/spamalot-review-at-st-james-theatre-new-york-by-eric-idle",
       "findings": [
@@ -26207,19 +26207,6 @@
       ]
     },
     {
-      "showId": "a-midsummer-nights-dream-globe-west-end-2026",
-      "file": "standard--nick-curtissurprised.json",
-      "publishDate": null,
-      "url": "https://www.standard.co.uk/culture/theatre/a-midsummer-night-s-dream-globe-review-b1281076.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"donmar warehouse\""
-        }
-      ]
-    },
-    {
       "showId": "a-mirrored-monet-west-end-2026",
       "file": "whatsonstage--miriam-sallon.json",
       "score": 39,
@@ -28230,7 +28217,7 @@
       "file": "guardian--unknown.json",
       "score": null,
       "publishDate": null,
-      "url": "https://www.theguardian.com/books/2024/nov/02/alan-bennett-at-90-what-will-people-think-i-dont-care-any-more",
+      "url": "https://www.theguardian.com/stage/2026/may/15/linda-bassett-call-the-midwife-caryl-churchill-alexander-zeldin-care",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -34866,7 +34853,7 @@
     {
       "showId": "rent-1996",
       "file": "newyorker--john-lahr-1996.json",
-      "score": null,
+      "score": 88,
       "publishDate": "1996-02-19",
       "url": "https://www.newyorker.com/magazine/1996/02/19/hello-and-goodbye",
       "findings": [
