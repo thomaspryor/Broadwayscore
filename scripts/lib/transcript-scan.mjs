@@ -82,7 +82,7 @@ function approvalRe(hash) {
 // confirm after seeing the visual) is the real safety, the hash never was.
 // Negation-guarded so it stays a deliberate yes (fails toward asking again, not
 // toward shipping, on anything ambiguous).
-const PLAIN_APPROVAL_RE = /\b(?:approved?|ship it(?:\s+now)?|lgtm|looks good|go ahead|send it|yep|yup|yes(?:\s+ship)?|do it)\b/i;
+const PLAIN_APPROVAL_RE = /\b(?:approved?|ship it(?:\s+now)?|ship now|lgtm|looks good|looks great|great|perfect|awesome|beautiful|love it|nice|go ahead|send it|yep|yup|yes(?:\s+ship)?|do it)\b/i;
 // Reject on negation OR conditional/change-request words — "looks good but fix X
 // first", "yes, wait", "approved except…" are NOT a clean ship. Fails toward
 // asking again, never toward shipping.
