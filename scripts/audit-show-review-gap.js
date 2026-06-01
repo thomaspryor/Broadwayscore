@@ -182,6 +182,7 @@ async function findAggregatorArticles(show) {
   ];
   const urls = new Set();
   for (const q of queries) {
+    _serpStats.attempts++;
     try {
       const results = await serpQuery(q, { num: 5 });
       for (const r of (results || [])) {
@@ -197,6 +198,7 @@ async function findAggregatorArticles(show) {
         }
       }
     } catch (e) {
+      _serpStats.errors++;
       if (verbose) console.error(`  SERP error for ${id}: ${e.message}`);
     }
   }
@@ -249,6 +251,16 @@ const _articleCache = new Map();
 // page with no matching links, so it does NOT count toward the outage floor).
 const _fetchStats = { attempts: 0, errors: 0, empty: 0 };
 
+// Discovery (SERP) health — companion to _fetchStats for the OTHER outage class.
+// findAggregatorArticles swallows SERP errors (returns [] on failure,
+// indistinguishable from "no coverage"). Without this counter, a total SERP/key
+// outage makes every show report 0 articles → extractAggregatorReviewUrls is
+// never called → _fetchStats.attempts stays 0 → the article-fetch floor can't
+// fire, and the audit silently reports "no gaps" during a real blackout
+// (ship-check 2026-06-01, both reviewers). Count SERP calls + errors so the
+// floor below catches discovery outage too.
+const _serpStats = { attempts: 0, errors: 0 };
+
 async function extractAggregatorReviewUrls(articleUrl, show) {
   let html;
   if (_articleCache.has(articleUrl)) {
@@ -264,7 +276,10 @@ async function extractAggregatorReviewUrls(articleUrl, show) {
       // the WHOLE collector is down (every attempted fetch threw).
       _fetchStats.errors++;
       console.log(`::warning::aggregator fetch failed (${hostOf(articleUrl) || articleUrl}): ${e.message.split('\n')[0].slice(0, 120)}`);
-      _articleCache.set(articleUrl, null);
+      // Do NOT cache null on a THROW: a transient failure shouldn't poison the
+      // URL for other shows that share this article, and re-attempting on each
+      // show keeps _fetchStats accurate so the outage floor fires on a real
+      // blackout (ship-check 2026-06-01). Only legit empty-content is cached.
       return null;
     }
     if (!r?.content) {
@@ -587,6 +602,15 @@ function ingestMissingUrl(showId, url, knownOutletId) {
   // from --fail-on-gap: this fires on infrastructure failure, not on gaps.
   if (_fetchStats.attempts >= 3 && _fetchStats.errors === _fetchStats.attempts) {
     console.error(`::error::collector outage — all ${_fetchStats.errors}/${_fetchStats.attempts} aggregator article fetches threw (Bright Data / ScrapingBee / Playwright all failing). Check BRIGHTDATA_ZONE + ScrapingBee credits; this audit found nothing because nothing could be fetched.`);
+    process.exit(1);
+  }
+  // Discovery-outage floor (ship-check 2026-06-01): the article-fetch floor
+  // above only fires once we reach fetching. If SERP discovery itself is down,
+  // 0 articles are found, fetching never happens, and the audit would otherwise
+  // report "no gaps" during a total blackout. If every SERP query errored,
+  // redden. Requires >=3 attempts so a tiny --show run can't false-trigger.
+  if (_serpStats.attempts >= 3 && _serpStats.errors === _serpStats.attempts) {
+    console.error(`::error::discovery outage — all ${_serpStats.errors}/${_serpStats.attempts} SERP queries errored (SCRAPINGBEE_API_KEY / SERP provider down). No aggregator articles could be discovered; "no gaps" here is meaningless.`);
     process.exit(1);
   }
 

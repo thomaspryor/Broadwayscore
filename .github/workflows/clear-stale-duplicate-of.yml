@@ -28,6 +28,11 @@ on:
         required: false
         default: 'false'
         type: string
+      force_bulk:
+        description: 'Override the >25 surge guard (for a legitimate large backlog cleanup)'
+        required: false
+        default: 'false'
+        type: string
 
 permissions:
   contents: write
@@ -73,7 +78,14 @@ jobs:
       - name: Apply fix
         if: steps.audit.outputs.status != '0' && inputs.dry_run != 'true'
         run: |
-          node scripts/audit-duplicate-of-url-mismatch.js --fix
+          # --fix refuses >25 clears in one run (surge guard — a spike usually
+          # means a producer regression, not routine drift). For a legitimate
+          # large backlog cleanup, re-run this workflow with force_bulk=true.
+          if [ "${{ inputs.force_bulk }}" = "true" ]; then
+            node scripts/audit-duplicate-of-url-mismatch.js --fix --force-bulk
+          else
+            node scripts/audit-duplicate-of-url-mismatch.js --fix
+          fi
 
       - name: Push to private repo
         if: steps.audit.outputs.status != '0' && inputs.dry_run != 'true'
