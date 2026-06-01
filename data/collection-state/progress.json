@@ -4,7 +4,8 @@
     "the-maids-off-broadway-2026/thewrap--unknown.json",
     "the-maids-off-broadway-2026/playbill--unknown.json",
     "grease-2007/whatsonstage--unknown.json",
-    "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json"
+    "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
+    "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/playbill--unknown.json"
   ],
   "failed": [
     "indian-princesses-off-broadway-2025/pages-on-stages--mason-pilevsky.json",
@@ -720,13 +721,18 @@
     "1536-west-end-2026/the-recs--the-recs-jdh.json",
     "1536-west-end-2026/thestage--holly-o.json",
     "1536-west-end-2026/times-uk--clive-davis.json",
-    "1536-west-end-2026/times-uk--dominic-maxwell.json"
+    "1536-west-end-2026/times-uk--dominic-maxwell.json",
+    "jerome-off-broadway-2025/one-minute-critic--unknown.json",
+    "jerome-off-broadway-2025/talkinbroadway--unknown.json",
+    "indian-princesses-off-broadway-2025/pages-on-stages--mason-pilevsky.json",
+    "the-maids-off-broadway-2026/ew--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "the-maids-off-broadway-2026/playbill--unknown.json",
-      "grease-2007/whatsonstage--unknown.json"
+      "grease-2007/whatsonstage--unknown.json",
+      "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/playbill--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -761,7 +767,7 @@
     ]
   },
   "startTime": "2026-05-31T15:17:43.029Z",
-  "lastProcessed": "1536-west-end-2026/times-uk--dominic-maxwell.json",
+  "lastProcessed": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/playbill--unknown.json",
   "log": [
     {
       "t": "2026-05-31T18:39:09.043Z",
@@ -786,6 +792,17 @@
       "event": "bb-session",
       "session": "4c0e4c9b",
       "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
+    },
+    {
+      "t": "2026-06-01T00:51:43.249Z",
+      "event": "bb-session",
+      "session": "7a8e00bd",
+      "url": "https://a.talkinbroadway.com/allthatchat_new/d.php?id=2626606"
+    },
+    {
+      "t": "2026-06-01T00:51:44.361Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
