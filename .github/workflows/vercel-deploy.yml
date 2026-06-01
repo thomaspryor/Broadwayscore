@@ -59,11 +59,32 @@ jobs:
           # `--workflow="Deploy to Vercel"` then errors with
           # `could not resolve to a unique workflow; found: vercel-deploy.yml
           # vercel-deploy.yml`, which broke every deploy on 2026-05-27.
+          # Fail-safe the gh lookup: under `bash -eo pipefail`, a transient
+          # GitHub API hiccup here used to crash the whole preflight step and
+          # redden the deploy. Capture failure instead of aborting.
+          GH_FAILED=0
           LAST_DEPLOYED=$(gh run list \
             --workflow=vercel-deploy.yml \
             --limit=30 \
             --json headSha,conclusion \
-            --jq '[.[] | select(.conclusion == "success")][0].headSha // ""')
+            --jq '[.[] | select(.conclusion == "success")][0].headSha // ""') || GH_FAILED=1
+          if [ "$GH_FAILED" = "1" ]; then
+            if [ "${{ github.event_name }}" = "schedule" ]; then
+              # Can't determine last-deployed SHA → can't safely dedup. On a
+              # cron tick the safe choice is SKIP (next 5-min tick retries),
+              # NOT proceed — defaulting to proceed would force a deploy on
+              # every API blip and, with dedup blind, risk the parallel-build
+              # cascade we work hard to prevent.
+              echo "::warning::gh run list failed (transient GitHub API?) — skipping this scheduled tick; next cron retries"
+              echo "proceed=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            # workflow_dispatch / workflow_run: explicit ship intent. Proceed
+            # without SHA dedup; the vercel-production-deploy concurrency group
+            # collapses any parallel builds.
+            echo "::warning::gh run list failed — proceeding for ${{ github.event_name }} without SHA dedup"
+            LAST_DEPLOYED=""
+          fi
           echo "Main HEAD:     $MAIN_HEAD"
           echo "Last deployed: $LAST_DEPLOYED"
 

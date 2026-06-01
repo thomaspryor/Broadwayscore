@@ -97,7 +97,13 @@ jobs:
           message: 'data: Update from update-theatr'
 
       - name: Dispatch deploy
-        if: always() && inputs.dry_run != true
+        # success() (not always()): only deploy when the scrape, token rotation
+        # AND push-core-data all succeeded. Previously always() fired a Vercel
+        # deploy even when the scrape failed (e.g. expired THEATR_REFRESH_TOKEN
+        # — a weeks-long state), shipping a no-op deploy and feeding the deploy
+        # cascade. No new data → no deploy. (Theatr's own red still surfaces the
+        # expired token via check-secrets-health's update-theatr run-history check.)
+        if: success() && inputs.dry_run != true
         uses: ./.github/actions/dispatch-deploy
 
       - name: Notify on failure

@@ -27,6 +27,15 @@ const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const args = process.argv.slice(2);
 const FIX = args.includes('--fix');
 const JSON_OUT = args.includes('--json');
+const FORCE_BULK = args.includes('--force-bulk');
+
+// Surge guard: --fix nulls duplicateOf flags, which re-admits those reviews to
+// scoring. A handful per day is normal churn. A sudden spike means a producer
+// regression (e.g. review-write-guard writing bad pointers, or a mass sibling
+// rename) — auto-clearing it would flood scoring with double-counted reviews.
+// Above this count, --fix refuses and reddens CI for manual review unless
+// --force-bulk is passed. See plan-review pre-mortem (SECONDARY) 2026-05-31.
+const FIX_SURGE_THRESHOLD = 25;
 
 function walkShowDirs(root) {
   if (!fs.existsSync(root)) return [];
@@ -125,6 +134,10 @@ function main() {
   }
 
   if (FIX) {
+    if (mismatches.length > FIX_SURGE_THRESHOLD && !FORCE_BULK) {
+      console.error(`::error::Refusing to auto-clear ${mismatches.length} stale duplicateOf flags (> ${FIX_SURGE_THRESHOLD}). A spike this large usually means a producer regression, not routine churn — auto-clearing would re-admit a flood of reviews to scoring. Investigate the cause, then re-run with --force-bulk if the clears are legitimate.`);
+      process.exit(1);
+    }
     const cleared = fix(mismatches);
     console.log(`\nCleared ${cleared} stale duplicateOf flag(s). Re-run rebuild to surface the recovered reviews.`);
     process.exit(0);
