@@ -1,4 +1,55 @@
 {
+  "runDate": "2026-06-01T07:05:01.152Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 300,
+    "priority": "all",
+    "showFilter": "",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 22,
+    "failed": 969,
+    "skipped": 0,
+    "successRate": "2.2%"
+  },
+  "tierBreakdown": {
+    "playwright": 11,
+    "amp": 0,
+    "browserbase": 2,
+    "directCookies": 0,
+    "scrapingbee": 6,
+    "brightdata": 4,
+    "archiveToday": 24,
+    "archive": 5
+  },
+  "statistics": {
+    "tier1Attempts": 20,
+    "tier1Success": 13,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 3,
+    "tier1_5Success": 2,
+    "tier2Attempts": 8,
+    "tier2Success": 6,
+    "tier3Attempts": 7,
+    "tier3Success": 4,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
+    "tier4Attempts": 12,
+    "tier4Success": 5,
+    "totalFailed": 213,
+    "scrapingBeePageCredits": 24,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 3,
+    "browserbaseMinutesUsed": 1.1,
+    "urlDiscoveryAttempts": 210,
+    "urlDiscoverySuccess": 1,
+    "urlDiscoveryCapped": 0
+  },
   "processed": [
     "celebrity-autobiography-2026/talkinbroadway--unknown.json",
     "the-maids-off-broadway-2026/thewrap--unknown.json",
@@ -994,8 +1045,7 @@
     "the-loved-ones-off-broadway-2026/broadwayworld--team-bww.json",
     "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
   ],
-  "skipped": [],
-  "tierBreakdown": {
+  "tierDetails": {
     "playwright": [
       "the-maids-off-broadway-2026/playbill--unknown.json",
       "grease-2007/whatsonstage--unknown.json",
@@ -1063,164 +1113,27 @@
       "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json"
     ]
   },
-  "startTime": "2026-05-31T15:17:43.029Z",
-  "lastProcessed": "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
-  "log": [
-    {
-      "t": "2026-05-31T18:39:09.043Z",
-      "event": "bb-session",
-      "session": "8216e95e",
-      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
+  "failuresByOutlet": {
+    "The Guardian": {
+      "count": 1,
+      "domain": "theguardian.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     },
+    "hypable": {
+      "count": 1,
+      "domain": "hypable.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
+  "urlDiscoveries": [
     {
-      "t": "2026-05-31T20:32:22.673Z",
-      "event": "bb-session",
-      "session": "cc562b5f",
-      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
-    },
-    {
-      "t": "2026-05-31T23:17:11.588Z",
-      "event": "bb-session",
-      "session": "9eb3caba",
-      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
-    },
-    {
-      "t": "2026-06-01T00:34:11.714Z",
-      "event": "bb-session",
-      "session": "4c0e4c9b",
-      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
-    },
-    {
-      "t": "2026-06-01T00:51:43.249Z",
-      "event": "bb-session",
-      "session": "7a8e00bd",
-      "url": "https://a.talkinbroadway.com/allthatchat_new/d.php?id=2626606"
-    },
-    {
-      "t": "2026-06-01T00:51:44.361Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-06-01T01:24:42.699Z",
-      "event": "bb-session",
-      "session": "a9bbfc57",
-      "url": "https://a.talkinbroadway.com/allthatchat_new/d.php?id=2626606"
-    },
-    {
-      "t": "2026-06-01T01:24:43.282Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-06-01T01:33:41.348Z",
-      "event": "bb-session",
-      "session": "b636a61d",
-      "url": "https://a.talkinbroadway.com/allthatchat_new/d.php?id=2626606"
-    },
-    {
-      "t": "2026-06-01T01:33:41.934Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-06-01T02:08:20.395Z",
-      "event": "bb-session",
-      "session": "bf022b35",
-      "url": "https://a.talkinbroadway.com/allthatchat_new/d.php?id=2626606"
-    },
-    {
-      "t": "2026-06-01T02:08:21.278Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-06-01T02:16:26.679Z",
-      "event": "bb-session",
-      "session": "28000cdb",
-      "url": "https://a.talkinbroadway.com/allthatchat_new/d.php?id=2626606"
-    },
-    {
-      "t": "2026-06-01T02:16:27.602Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-06-01T03:44:06.489Z",
-      "event": "bb-session",
-      "session": "e2828ade",
-      "url": "https://a.talkinbroadway.com/allthatchat_new/d.php?id=2626606"
-    },
-    {
-      "t": "2026-06-01T03:44:07.083Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-06-01T04:33:32.088Z",
-      "event": "bb-session",
-      "session": "88ba93e3",
-      "url": "https://a.talkinbroadway.com/allthatchat_new/d.php?id=2626606"
-    },
-    {
-      "t": "2026-06-01T04:33:32.971Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-06-01T04:55:58.281Z",
-      "event": "bb-session",
-      "session": "559e0f57",
-      "url": "https://a.talkinbroadway.com/allthatchat_new/d.php?id=2626606"
-    },
-    {
-      "t": "2026-06-01T04:55:59.228Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-06-01T06:06:07.204Z",
-      "event": "bb-session",
-      "session": "110b017e",
-      "url": "https://a.talkinbroadway.com/allthatchat_new/d.php?id=2626606"
-    },
-    {
-      "t": "2026-06-01T06:06:08.005Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-06-01T06:22:11.052Z",
-      "event": "bb-session",
-      "session": "95b37f60",
-      "url": "https://variety.com/2026/tv/reviews/daniel-radcliffe-every-brilliant-thing-broad"
-    },
-    {
-      "t": "2026-06-01T06:22:12.072Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-01T06:22:34.975Z",
-      "event": "bb-session",
-      "session": "a6481558",
-      "url": "https://www.wsj.com/articles/becky-shaw-review-love-sex-and-scheming-on-broadway"
-    },
-    {
-      "t": "2026-06-01T06:22:36.008Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-06-01T07:02:37.393Z",
-      "event": "bb-session",
-      "session": "e61e5317",
-      "url": "https://theater.nytimes.com/mem/theater/treview.html?res=9E0DEEDB1438F937A25752C"
-    },
-    {
-      "t": "2026-06-01T07:02:38.421Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "reviewId": "paddington-the-musical-west-end-2025/musical-theatre-review--unknown.json",
+      "oldUrl": "https://musicaltheatrereview.com/paddington-the-musical-savoy-theatre/",
+      "newUrl": "https://musicaltheatrereview.com/paddington-the-musical-is-the-biggest-winner-at-the-olivier-awards-2026/"
     }
   ]
 }
