@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-06-01T01:35:10.293Z",
+  "updatedAt": "2026-06-01T02:09:55.841Z",
   "processed": 6,
-  "failed": 726,
+  "failed": 730,
   "successRate": "0.8%",
   "tierBreakdown": {
     "playwright": 3,
@@ -10,7 +10,7 @@
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 2,
-    "archiveToday": 20,
+    "archiveToday": 21,
     "archive": 1
   },
   "browserbaseSessions": 1,
@@ -69,6 +69,17 @@
     },
     {
       "t": "2026-06-01T01:33:41.934Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-01T02:08:20.395Z",
+      "event": "bb-session",
+      "session": "bf022b35",
+      "url": "https://a.talkinbroadway.com/allthatchat_new/d.php?id=2626606"
+    },
+    {
+      "t": "2026-06-01T02:08:21.278Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }
