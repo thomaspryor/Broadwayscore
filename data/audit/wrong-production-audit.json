@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-01T13:01:06.187Z",
+  "timestamp": "2026-06-01T16:49:08.024Z",
   "stats": {
-    "totalReviews": 37929,
-    "alreadyFlagged": 16676,
+    "totalReviews": 37921,
+    "alreadyFlagged": 16677,
     "dateGuardCatches": 106,
     "directorMismatch": 818,
     "tvFilmSignals": 1042,
-    "londonSignals": 593,
+    "londonSignals": 592,
     "offBroadwaySignals": 458,
     "yearMismatch": 79,
-    "noPublishDate": 3977
+    "noPublishDate": 3974
   },
   "findings": [
     {
@@ -1606,7 +1606,7 @@
       "file": "independent--louis-chilton.json",
       "score": 40,
       "publishDate": "2026-04-17",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
+      "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -38906,19 +38906,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
-        }
-      ]
-    },
-    {
-      "showId": "the-maids-off-broadway-2026",
-      "file": "playbill--unknown.json",
-      "publishDate": "2026-05-27",
-      "url": "https://playbill.com/article/read-the-reviews-for-the-maids-off-broadway",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
