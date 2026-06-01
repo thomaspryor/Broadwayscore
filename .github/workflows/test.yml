@@ -20,6 +20,18 @@ on:
       - 'scripts/audit-orphan-show-ids.js'
       - 'scripts/validate-show-venue.js'
       - 'scripts/lib/review-write-guard.js'
+      # Scoring watchlist (CLAUDE.md §12.7) — a change to any of these can shift
+      # composite scores, yet a direct push touching them used to run ZERO CI
+      # (the colocated scripts/lib/*.test.mjs + data-validation gates were
+      # skipped). src/lib/{scoring,engine,data-core}.ts are already covered by
+      # 'src/**'; these script-side ones were the gap. 2026-06-01.
+      - 'scripts/lib/review-guards.js'
+      - 'scripts/lib/review-normalization.js'
+      - 'scripts/rebuild-all-reviews.js'
+      - 'scripts/lib/rebuild-helpers.js'
+      - 'scripts/lib/score-extractors.js'
+      - 'scripts/lib/score-parsers.js'
+      - 'scripts/lib/score-routing.js'
       - 'scripts/lib/show-matching.js'
       - 'scripts/audit-slug-match-routing.js'
       - 'scripts/apply-slug-misroute-whitelist.js'
