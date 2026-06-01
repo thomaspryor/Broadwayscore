@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-01T07:04:05.211Z",
+  "timestamp": "2026-06-01T07:36:21.795Z",
   "stats": {
-    "totalReviews": 37896,
-    "alreadyFlagged": 16663,
+    "totalReviews": 37895,
+    "alreadyFlagged": 16665,
     "dateGuardCatches": 106,
-    "directorMismatch": 813,
-    "tvFilmSignals": 1036,
-    "londonSignals": 587,
-    "offBroadwaySignals": 457,
+    "directorMismatch": 817,
+    "tvFilmSignals": 1043,
+    "londonSignals": 594,
+    "offBroadwaySignals": 458,
     "yearMismatch": 79,
-    "noPublishDate": 3961
+    "noPublishDate": 3958
   },
   "findings": [
     {
@@ -415,6 +415,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2004 (2x) more than 2014 (0x). 2004 matches production: a-raisin-in-the-sun-2004"
+        }
+      ]
+    },
+    {
+      "showId": "a-strange-loop-2022",
+      "file": "wsj--charles-isherwood.json",
+      "score": 88,
+      "publishDate": "April 28, 2022",
+      "url": "https://www.wsj.com/arts-culture/theater/a-strange-loop-mr-saturday-night-review-broadway-opposites-attract-11651788064?gaa_at=eafs&gaa_n=AWEtsqfA81a3yDkxrV-jNV8WJKzsG5pza-ZpJqw1il9rTt9_jjbNKctg7WD2&gaa_ts=698c3742&gaa_sig=mSXMNFdfK9bgLhg3N3Vr29jMHTNBNetljE302V9TxzBVyt4yTWXdWCw-jc_Jp5moE3B2ChPG1vjezUIgVwqUug%3D%3D",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -2235,6 +2249,19 @@
       ]
     },
     {
+      "showId": "betty-buckley-random-notes-off-broadway-2026",
+      "file": "variety--unknown.json",
+      "publishDate": null,
+      "url": "https://variety.com/interstitial/?ref=http%3A%2F%2Fvariety.com%2F2013%2Flegit%2Freviews%2Foff-broadway-review-the-old-friends-1200608115%2F",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "between-riverside-and-crazy-2022",
       "file": "broadway-and-me--janice-c-simpson.json",
       "score": 79,
@@ -2273,6 +2300,24 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "between-the-river-and-the-sea-west-end-2026",
+      "file": "standard--unknown.json",
+      "publishDate": null,
+      "url": "https://www.standard.co.uk/culture/theatre/between-the-river-and-the-sea-review-b1279502.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -3683,6 +3728,25 @@
       ]
     },
     {
+      "showId": "cats-the-jellicle-ball-off-broadway-2024",
+      "file": "wsj--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.wsj.com/articles/cats-the-jellicle-ball-review-wondrous-and-whisker-free-7e8237ba?gaa_at=eafs&gaa_n=AWEtsqf3rhX__INBXHgRHsI3IxIHt9SNy6mPj-PFQxxnEmKl0aTpO0dMHH2i&gaa_ts=69bd9c85&gaa_sig=CNgwMSu6ZTQjgdYO1Jas5jqZde5lxGvAMXF487IUMqeQbwSxAWsi-0160s1kyEWidvhQW1_8apI3seh7hkEJBg%3D%3D",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"zhailon levingston\" from cats-the-jellicle-ball-2026"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bill rauch\" from cats-the-jellicle-ball-2026"
+        }
+      ]
+    },
+    {
       "showId": "charlie-and-the-chocolate-factory-2017",
       "file": "dctheatrescene--richard-seff.json",
       "score": 61,
@@ -4670,6 +4734,20 @@
       "score": 72,
       "publishDate": "2024-01-29",
       "url": "https://nypost.com/2024/01/29/entertainment/days-of-wine-and-roses-review-alcoholism-broadway-show-is-no-happy-hour/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "days-of-wine-and-roses-2024",
+      "file": "variety--aramide-tinubu.json",
+      "score": 77,
+      "publishDate": "January 29, 2024",
+      "url": "https://variety.com/2005/legit/reviews/days-of-wine-and-roses-2-1200527616/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -5975,6 +6053,20 @@
       ]
     },
     {
+      "showId": "equus-west-end-2026",
+      "file": "telegraph--unknown.json",
+      "score": 96,
+      "publishDate": null,
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/equus-review-menier-chocolate-factory/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "escape-to-margaritaville-2018",
       "file": "broadwayworld--michael-dale.json",
       "score": 72,
@@ -6093,6 +6185,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"barrow street\""
+        }
+      ]
+    },
+    {
+      "showId": "evita-west-end-2025",
+      "file": "variety--david-benedict.json",
+      "score": 52,
+      "publishDate": "2025-07-02",
+      "url": "https://variety.com/2025/legit/reviews/evita-review-rachel-zegler-musical-west-end-1236445000/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael grandage\" from evita-2012"
         }
       ]
     },
@@ -12629,6 +12735,20 @@
       ]
     },
     {
+      "showId": "linda-vista-2019",
+      "file": "variety--aramide-tinubu.json",
+      "score": 78,
+      "publishDate": "October 11, 2019",
+      "url": "https://variety.com/2019/legit/reviews/linda-vista-review-tracy-letts-1203380423/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 3\""
+        }
+      ]
+    },
+    {
       "showId": "little-bear-ridge-road-2025",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 88,
@@ -17874,6 +17994,20 @@
       ]
     },
     {
+      "showId": "six-2021",
+      "file": "wsj--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.wsj.com/arts-culture/television/schmigadoon-review-musical-comedy-as-youve-never-seen-it-11626371130?gaa_at=eafs&gaa_n=AWEtsqezSW9xD5eJyQtgdq8oMQMxemDByeOqoXSvkgIFkQQHyf7I-Naxdct6&gaa_ts=69cfe20d&gaa_sig=PDwXU3m7L1y4COB1_qlm5sIXoiShd-uOAOl7w4-LJ054oonPoN5-U4e48GA4pP-2juTsJzQMuF4IT4dzhXOGGg%3D%3D",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"apple tv\""
+        }
+      ]
+    },
+    {
       "showId": "six-degrees-of-separation-2017",
       "file": "deadline--jeremy-gerard.json",
       "score": 92,
@@ -18504,6 +18638,20 @@
       "score": 61,
       "publishDate": null,
       "url": "https://culturesauce.com/2023/11/16/spamalot-broadway-revival-review-monty-python/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"josh rhodes\" from spamalot-2023"
+        }
+      ]
+    },
+    {
+      "showId": "spamalot-2005",
+      "file": "thestage--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.thestage.co.uk/reviews/spamalot-review-at-st-james-theatre-new-york-by-eric-idle",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -26059,6 +26207,19 @@
       ]
     },
     {
+      "showId": "a-midsummer-nights-dream-globe-west-end-2026",
+      "file": "standard--nick-curtissurprised.json",
+      "publishDate": null,
+      "url": "https://www.standard.co.uk/culture/theatre/a-midsummer-night-s-dream-globe-review-b1281076.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
       "showId": "a-mirrored-monet-west-end-2026",
       "file": "whatsonstage--miriam-sallon.json",
       "score": 39,
@@ -27745,6 +27906,19 @@
     },
     {
       "showId": "broken-glass-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "publishDate": null,
+      "url": "https://www.standard.co.uk/culture/theatre/broken-glass-young-vic-review-b1273400.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "broken-glass-west-end-2026",
       "file": "times-uk--clive-davis.json",
       "score": 51,
       "publishDate": "2026-03-04",
@@ -28056,7 +28230,7 @@
       "file": "guardian--unknown.json",
       "score": null,
       "publishDate": null,
-      "url": "https://www.theguardian.com/stage/2026/may/15/linda-bassett-call-the-midwife-caryl-churchill-alexander-zeldin-care",
+      "url": "https://www.theguardian.com/books/2024/nov/02/alan-bennett-at-90-what-will-people-think-i-dont-care-any-more",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -28118,6 +28292,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "caroline-off-broadway-2026",
+      "file": "thestage--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.thestage.co.uk/advice/caroline-lennon-my-first-job-taught-me-theres-no-such-thing-as-a-bad-audience",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -34679,11 +34867,18 @@
       "showId": "rent-1996",
       "file": "newyorker--john-lahr-1996.json",
       "score": null,
+      "publishDate": "1996-02-19",
+      "url": "https://www.newyorker.com/magazine/1996/02/19/hello-and-goodbye",
       "findings": [
         {
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 57d before show (1996-02-19 vs 1996-04-16)"
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
         }
       ]
     },
@@ -38640,6 +38835,20 @@
     },
     {
       "showId": "the-lion-king-west-end-2021",
+      "file": "telegraph--claire-allfree.json",
+      "score": 79,
+      "publishDate": null,
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/hot-wing-king-nationals-dorfman-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-west-end-2021",
       "file": "telegraph--david-gritten.json",
       "score": 96,
       "publishDate": "October 17th, 2014",
@@ -38862,6 +39071,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-p-word-off-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.standard.co.uk/culture/theatre/krapp-s-last-tape-review-b1282049.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -39170,6 +39393,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"brooklyn academy\""
+        }
+      ]
+    },
+    {
+      "showId": "the-price-2017",
+      "file": "wsj--terry-teachout.json",
+      "score": 78,
+      "publishDate": "March 2, 2017",
+      "url": "https://www.wsj.com/articles/the-price-review-a-major-miller-back-on-broadway-1489710601",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
