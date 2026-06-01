@@ -9,6 +9,8 @@ const CRITIC_PICK_OUTLETS: Record<string, { outletName: string; critic: string }
   culturesauce: { outletName: 'Culture Sauce',         critic: 'Thom Geier' },
   nytg:         { outletName: 'New York Theatre Guide', critic: 'Mickey-Jo Theatre' },
   ew:           { outletName: 'Entertainment Weekly',  critic: 'Dalton Ross' },
+  nysun:        { outletName: 'The New York Sun',      critic: 'Elysa Gardner' },
+  theatermania: { outletName: 'TheaterMania',          critic: 'TheaterMania Staff' },
 };
 
 export function OutletPickLogo({ outletId }: { outletId: string }) {

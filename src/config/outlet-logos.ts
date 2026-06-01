@@ -107,6 +107,8 @@ export const OUTLET_LOGOS: Record<string, OutletLogoConfig> = {
   'THEATRELY': { domain: 'theatrely.com', color: '#ec4899', abbrev: 'TH' },
 
   'New York Theater': { domain: 'newyorktheater.me', color: '#6366f1', abbrev: 'NYT' },
+  'The New York Sun': { domain: 'nysun.com', color: '#c5a253', abbrev: 'SUN' },
+  'New York Sun': { domain: 'nysun.com', color: '#c5a253', abbrev: 'SUN' },
   'New York Theatre Guide': { domain: 'newyorktheatreguide.com', color: '#000000', abbrev: 'NYTG' },
   'NY Stage Review': { domain: 'nystagereview.com', color: '#4f46e5', abbrev: 'NYSR' },
   'New York Stage Review': { domain: 'nystagereview.com', color: '#4f46e5', abbrev: 'NYSR' },
