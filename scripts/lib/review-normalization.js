@@ -1285,7 +1285,7 @@ function normalizeUrl(url) {
       .replace(/#.*$/, '');
     // Tracking-param strip first so any later regex can anchor on the
     // post-strip path/query state.
-    u = u.replace(/[?&](utm_\w+|ref|source|fbclid|gclid|partner|emc|_r|smid|campaign|algo|nc)=[^&]*/g, '')
+    u = u.replace(/[?&](utm_\w+|ref|source|fbclid|gclid|partner|emc|_r|smid|campaign|algo|nc|srsltid)=[^&]*/g, '')
       .replace(/\?$/, '')
       .replace(/\?&/, '?');
     // AMP-suffix strip (added 2026-04-28, Item 3 of systematic CI plan).
