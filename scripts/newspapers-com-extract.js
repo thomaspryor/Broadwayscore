@@ -650,13 +650,26 @@ async function main() {
   const { chromium } = require('playwright');
 
   console.log('\nLaunching browser (headed — required for newspapers.com)...');
-  const context = await chromium.launchPersistentContext(PROFILE_DIR, {
+  // Real installed Chrome (channel: 'chrome') — bundled Chrome-for-Testing
+  // fails newspapers.com's Cloudflare Turnstile. Must match paywall-browser-login.js.
+  const npLaunchOpts = {
     headless: false,
-    viewport: { width: 1200, height: 800 },
-    args: ['--disable-blink-features=AutomationControlled'],
+    viewport: { width: 1280, height: 900 },
+    args: [
+      '--disable-blink-features=AutomationControlled',
+      '--disable-features=IsolateOrigins,site-per-process',
+    ],
+    ignoreDefaultArgs: ['--enable-automation'],
     locale: 'en-US',
     timezoneId: 'America/New_York',
-  });
+  };
+  let context;
+  try {
+    context = await chromium.launchPersistentContext(PROFILE_DIR, { ...npLaunchOpts, channel: 'chrome' });
+  } catch (err) {
+    console.log(`  → real Chrome unavailable (${err.message.split('\n')[0]}); using bundled chromium`);
+    context = await chromium.launchPersistentContext(PROFILE_DIR, npLaunchOpts);
+  }
 
   const page = context.pages()[0] || await context.newPage();
 
