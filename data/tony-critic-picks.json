@@ -3,7 +3,7 @@
     "description": "Critic Tony Award winner predictions by category. Show categories keyed by showId; acting categories keyed by person name (case-insensitive match).",
     "season": "2025-26",
     "ceremonyYear": 2026,
-    "updated": "2026-05-23"
+    "updated": "2026-05-31"
   },
   "sources": [
     {
@@ -21,75 +21,144 @@
       "shortName": "VAR",
       "color": "#7b2d8b",
       "url": "https://variety.com/lists/tonys-awards-winner-predictions-2026/"
+    },
+    {
+      "id": "culturesauce",
+      "outlet": "Culture Sauce",
+      "critic": "Thom Geier",
+      "shortName": "CS",
+      "color": "#e0a93b",
+      "url": "https://culturesauce.com/tony-award-winner-predictions-2026/"
+    },
+    {
+      "id": "nytg",
+      "outlet": "New York Theatre Guide",
+      "critic": "Mickey-Jo Theatre",
+      "shortName": "NYTG",
+      "color": "#1a1a1a",
+      "url": "https://www.newyorktheatreguide.com/theatre-news/news/the-tony-awards-2026-who-will-and-who-should-win"
+    },
+    {
+      "id": "ew",
+      "outlet": "Entertainment Weekly",
+      "critic": "Dalton Ross",
+      "shortName": "EW",
+      "color": "#e50914",
+      "url": "https://ew.com/2026-tony-awards-predictions-who-should-and-will-win-11984365"
     }
   ],
   "picks": {
     "Best Musical": {
       "nyt": "the-lost-boys-2026",
-      "variety": "two-strangers-bway-2025"
+      "variety": "two-strangers-bway-2025",
+      "culturesauce": "schmigadoon-2026",
+      "nytg": "schmigadoon-2026",
+      "ew": "the-lost-boys-2026"
     },
     "Best Play": {
       "nyt": "giant-2026",
-      "variety": "liberation-2025"
+      "variety": "liberation-2025",
+      "culturesauce": "liberation-2025",
+      "nytg": "giant-2026",
+      "ew": "giant-2026"
     },
     "Best Revival of a Musical": {
       "nyt": "ragtime-2025",
-      "variety": "ragtime-2025"
+      "variety": "ragtime-2025",
+      "culturesauce": "cats-the-jellicle-ball-2026",
+      "nytg": "ragtime-2025",
+      "ew": "ragtime-2025"
     },
     "Best Revival of a Play": {
       "nyt": "death-of-a-salesman-2026",
-      "variety": "death-of-a-salesman-2026"
+      "variety": "death-of-a-salesman-2026",
+      "culturesauce": "death-of-a-salesman-2026",
+      "nytg": "death-of-a-salesman-2026",
+      "ew": "death-of-a-salesman-2026"
     },
     "Best Actor in a Musical": {
       "nyt": "Joshua Henry",
-      "variety": "Joshua Henry"
+      "variety": "Joshua Henry",
+      "culturesauce": "Joshua Henry",
+      "nytg": "Joshua Henry",
+      "ew": "Joshua Henry"
     },
     "Best Actress in a Musical": {
       "nyt": "Caissie Levy",
-      "variety": "Caissie Levy"
+      "variety": "Caissie Levy",
+      "culturesauce": "Caissie Levy",
+      "nytg": "Caissie Levy",
+      "ew": "Caissie Levy"
     },
     "Best Actor in a Play": {
       "nyt": "Nathan Lane",
-      "variety": "Nathan Lane"
+      "variety": "Nathan Lane",
+      "culturesauce": "Nathan Lane",
+      "nytg": "John Lithgow",
+      "ew": "Nathan Lane"
     },
     "Best Actress in a Play": {
       "nyt": "Lesley Manville",
-      "variety": "Lesley Manville"
+      "variety": "Lesley Manville",
+      "culturesauce": "Lesley Manville",
+      "nytg": "Lesley Manville",
+      "ew": "Lesley Manville"
     },
     "Best Featured Actor in a Musical": {
       "nyt": "André De Shields",
-      "variety": "André De Shields"
+      "variety": "André De Shields",
+      "culturesauce": "André De Shields",
+      "nytg": "André De Shields",
+      "ew": "André De Shields"
     },
     "Best Featured Actress in a Musical": {
       "nyt": "Shoshana Bean",
-      "variety": "Shoshana Bean"
+      "variety": "Shoshana Bean",
+      "culturesauce": "Shoshana Bean",
+      "nytg": "Shoshana Bean",
+      "ew": "Shoshana Bean"
     },
     "Best Featured Actor in a Play": {
       "nyt": "Alden Ehrenreich",
-      "variety": "Danny Burstein"
+      "variety": "Danny Burstein",
+      "culturesauce": "Alden Ehrenreich",
+      "nytg": "Alden Ehrenreich",
+      "ew": "Christopher Abbott"
     },
     "Best Featured Actress in a Play": {
-      "variety": "Laurie Metcalf"
+      "variety": "Laurie Metcalf",
+      "culturesauce": "Laurie Metcalf",
+      "nytg": "Laurie Metcalf",
+      "ew": "Laurie Metcalf"
     },
     "Best Direction of a Musical": {
       "nyt": "the-lost-boys-2026",
-      "variety": "cats-the-jellicle-ball-2026"
+      "variety": "cats-the-jellicle-ball-2026",
+      "culturesauce": "cats-the-jellicle-ball-2026",
+      "nytg": "ragtime-2025"
     },
     "Best Direction of a Play": {
       "nyt": "death-of-a-salesman-2026",
-      "variety": "liberation-2025"
+      "variety": "liberation-2025",
+      "culturesauce": "death-of-a-salesman-2026",
+      "nytg": "death-of-a-salesman-2026"
     },
     "Best Choreography": {
       "nyt": "schmigadoon-2026",
-      "variety": "cats-the-jellicle-ball-2026"
+      "variety": "cats-the-jellicle-ball-2026",
+      "culturesauce": "cats-the-jellicle-ball-2026"
     },
     "Best Book of a Musical": {
       "nyt": "schmigadoon-2026",
-      "variety": "two-strangers-bway-2025"
+      "variety": "two-strangers-bway-2025",
+      "culturesauce": "schmigadoon-2026",
+      "nytg": "two-strangers-bway-2025"
     },
     "Best Original Score": {
       "nyt": "two-strangers-bway-2025",
-      "variety": "two-strangers-bway-2025"
+      "variety": "two-strangers-bway-2025",
+      "culturesauce": "two-strangers-bway-2025",
+      "nytg": "schmigadoon-2026"
     }
   }
 }

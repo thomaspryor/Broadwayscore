@@ -4,8 +4,11 @@ import { useState } from 'react';
 import { getOutletLogoUrl, getOutletConfig } from '@/config/outlet-logos';
 
 const CRITIC_PICK_OUTLETS: Record<string, { outletName: string; critic: string }> = {
-  nyt:      { outletName: 'The New York Times', critic: 'Helen Shaw' },
-  variety:  { outletName: 'Variety',            critic: 'Clayton Davis' },
+  nyt:          { outletName: 'The New York Times',    critic: 'Helen Shaw' },
+  variety:      { outletName: 'Variety',               critic: 'Clayton Davis' },
+  culturesauce: { outletName: 'Culture Sauce',         critic: 'Thom Geier' },
+  nytg:         { outletName: 'New York Theatre Guide', critic: 'Mickey-Jo Theatre' },
+  ew:           { outletName: 'Entertainment Weekly',  critic: 'Dalton Ross' },
 };
 
 export function OutletPickLogo({ outletId }: { outletId: string }) {
