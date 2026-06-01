@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-01T09:03:47.950Z",
+  "timestamp": "2026-06-01T11:52:06.062Z",
   "stats": {
-    "totalReviews": 37934,
-    "alreadyFlagged": 16675,
+    "totalReviews": 37920,
+    "alreadyFlagged": 16678,
     "dateGuardCatches": 106,
-    "directorMismatch": 817,
+    "directorMismatch": 818,
     "tvFilmSignals": 1043,
     "londonSignals": 593,
     "offBroadwaySignals": 458,
     "yearMismatch": 79,
-    "noPublishDate": 3991
+    "noPublishDate": 3974
   },
   "findings": [
     {
@@ -1939,6 +1939,20 @@
       "score": 31,
       "publishDate": "2026-05-29",
       "url": "https://thestage.co.uk/reviews/beetlejuice-the-musical-review-prince-edward-theatre-london",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"alex timbers\" from beetlejuice-2025"
+        }
+      ]
+    },
+    {
+      "showId": "beetlejuice-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 56,
+      "publishDate": "2026-05-28",
+      "url": "https://www.timeout.com/london/news/review-beetlejuice-the-musical-at-the-london-palladium-052826",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
