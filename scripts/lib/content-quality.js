@@ -111,6 +111,37 @@ const ERROR_PAGE_PATTERNS = [
   /oops!?\s+page\s+unavailable/i,
 ];
 
+// Strong, position-INDEPENDENT error-page signatures. Unlike ERROR_PAGE_PATTERNS
+// (only scanned in the first 300 chars to avoid prose FPs like "has been
+// removed"), these phrases are unambiguous web error-page chrome that never
+// appears in real review prose, so they're safe to scan over the WHOLE body.
+// Origin: Variety/AndyGram 404 pages scraped as reviews led with a long mega-menu
+// chrome prefix ("Plus Icon Film… Mega Menu… Read Next:…"), pushing the
+// "404 Page Not Found" / "the page you were looking for cannot be found" marker
+// PAST the 300-char window, so detectErrorPage missed them and they reached
+// scoring. Verified FP-safe across the corpus: 0 matches on legit scored reviews
+// (2026-06-01 ship-check follow-up). See feedback_test_yml_data_gates_flap...
+const STRONG_ERROR_PAGE_PATTERNS = [
+  /\bpage\s+not\s+found\b/i,
+  /\b404\s+(?:error|not\s+found)\b/i,
+  /\berror\s+404\b/i,
+  /the\s+page\s+you('re|\s+are)\s+looking\s+for/i,
+];
+
+/**
+ * Scan the entire body for unambiguous error-page chrome (position-independent).
+ * @param {string} text
+ * @returns {{ detected: boolean, match: string|null }}
+ */
+function detectStrongErrorPageAnywhere(text) {
+  const t = (typeof text === 'string') ? text : '';
+  for (const pattern of STRONG_ERROR_PAGE_PATTERNS) {
+    const m = t.match(pattern);
+    if (m) return { detected: true, match: m[0] };
+  }
+  return { detected: false, match: null };
+}
+
 /**
  * Patterns that indicate newsletter/subscription forms (not review content)
  * @type {RegExp[]}
@@ -793,6 +824,15 @@ function isGarbageContent(text) {
   const errorPage = detectErrorPage(errorCheckText);
   if (errorPage.detected) {
     return { isGarbage: true, reason: `Error/404 page: "${errorPage.match}"` };
+  }
+
+  // Strong error-page signatures scanned over the WHOLE body (not just the first
+  // 300 chars). Catches 404 pages whose error marker is buried after a long
+  // nav-chrome prefix (Variety mega-menu, etc.) — the 300-char window above
+  // misses those. Only the unambiguous phrases (FP-safe corpus-wide).
+  const strongError = detectStrongErrorPageAnywhere(collapsedForErrorCheck);
+  if (strongError.detected) {
+    return { isGarbage: true, reason: `Error/404 page (body): "${strongError.match}"` };
   }
 
   // Check for legal/privacy page
