@@ -74,6 +74,42 @@ function removeBalancedDivBlocks(html, classNeedles) {
 }
 
 /**
+ * The Stage (thestage.co.uk) — paywalled subscription site. Until the cookie
+ * auth was restored (2026-05-31) every fetch returned a registration wall with
+ * 0 body, so there was no point having an extractor. With valid USERSECURE
+ * cookies, the full review body comes through in <p> tags spread across
+ * multiple `aos-DS32-WYSEdit` (CMS rich-text) blocks, with an inline
+ * `aos-Article-RelatedContent` widget injected mid-article (so a tight end
+ * marker truncates). The trailing author bio / subscribe pitch / copyright
+ * are also <p> tags and need content-based filtering.
+ *
+ * Strategy: from the IntroText (standfirst) onward, collect substantial <p>
+ * prose and drop the known trailing-noise paragraph shapes (author bio,
+ * subscribe CTA, copyright). Verified against the a-dolls-house review:
+ * logged-in → 2959 chars (10 paragraphs, matches on-disk 3300); logged-out
+ * → 0 (so the verifier still flags a dead session correctly).
+ */
+function extractStageBody(html) {
+  const startM = html.match(/<div[^>]*class="[^"]*aos-Article-IntroText[^"]*"[^>]*>/);
+  if (!startM) return null;
+  const region = html.slice(startM.index);
+  const isTrailingNoise = (t) =>
+    // Author bio: "Firstname Lastname is a freelance journalist…"
+    /^[A-Z][a-z]+(?:\s+[A-Z][a-z'-]+)+\s+is\s+(?:a|an|the|freelance|theatre)/i.test(t) ||
+    // Subscribe pitch
+    /subscription\s+starting|Invest in The Stage|Subscribe\s+Start a subscription/i.test(t) ||
+    // Copyright
+    /^©\s*Copyright/.test(t) ||
+    // Related-articles widget link clusters
+    /Related Articles|More from this Author|Login Register/i.test(t);
+  const paras = [...region.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/g)]
+    .map((m) => stripHtml(m[1]))
+    .filter((t) => t.length > 40 && /[a-z]/.test(t) && !isTrailingNoise(t));
+  const body = paras.join('\n\n');
+  return body.length >= 300 ? body : null;
+}
+
+/**
  * Variety (variety.com) — the review body lives in a single `div.a-content`, but
  * the current layout injects promo modules MID-ARTICLE: `injected-related-story`
  * ("Related Stories") and `pmc-contextual-player` ("Popular on Variety"). The old
@@ -239,6 +275,14 @@ function extractArticleText(html, hostname) {
   if (host.includes('variety.com')) {
     const varietyText = extractVarietyBody(html);
     if (varietyText && varietyText.length >= 300) return varietyText;
+  }
+
+  // The Stage: requires subscriber auth; body lives in <p> across multiple
+  // aos-DS32-WYSEdit blocks with mid-article promo widgets. Logged-out HTML
+  // has no body, so this returns null and the verifier still flags logout.
+  if (host.includes('thestage.co.uk')) {
+    const stageText = extractStageBody(html);
+    if (stageText && stageText.length >= 300) return stageText;
   }
 
   for (const [hostMatch, re, minLen] of PATTERNS) {
