@@ -2252,6 +2252,12 @@ const TRACKING_PARAM_NAMES = new Set([
   'nc',
   'algo',
   'impression_id',
+  // Google Merchant / Shopping "Search Results Source Landing Tracking ID" —
+  // appended to organic links from Google surfaces. Always a tracking value,
+  // never an article identifier. Seen on 196 review files; without stripping it,
+  // ew.com/.../review/?srsltid=X and ew.com/.../review/ canonicalize differently
+  // and the same review double-counts (aint-too-proud EW, 2026-06-01).
+  'srsltid',
 ]);
 const TRACKING_PARAM_PREFIXES = ['utm_', 'mc_', 'pk_', 'hsa_', 'mtm_'];
 
