@@ -1,15 +1,15 @@
 {
   "system": "cwv",
-  "status": "pass",
-  "lastChecked": "2026-05-31T08:04:21.633Z",
+  "status": "warn",
+  "lastChecked": "2026-06-01T08:51:53.526Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "CWV: performance",
-      "status": "pass",
-      "message": "All metrics within thresholds (7d ago)"
+      "status": "warn",
+      "message": "Threshold violations: Mobile LCP 6.0s"
     }
   ]
 }

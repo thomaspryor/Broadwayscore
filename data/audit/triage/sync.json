@@ -1,7 +1,7 @@
 {
   "system": "sync",
   "status": "warn",
-  "lastChecked": "2026-05-31T08:04:21.632Z",
+  "lastChecked": "2026-06-01T08:51:53.526Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -14,7 +14,7 @@
     {
       "name": "Sync: open show coverage",
       "status": "pass",
-      "message": "40 open shows all have reviews and grosses"
+      "message": "41 open shows all have reviews and grosses"
     },
     {
       "name": "Sync: social-pulse per-show freshness",
@@ -28,18 +28,18 @@
     },
     {
       "name": "Sync: cast coverage",
-      "status": "pass",
-      "message": "40 active Broadway shows all have cast data"
+      "status": "warn",
+      "message": "1 missing file: Other Desert Cities"
     },
     {
       "name": "Sync: baseline drift",
-      "status": "warn",
-      "message": "Reviews dropped: 18078 vs baseline 18080"
+      "status": "pass",
+      "message": "2634 shows, 151 open, 18126 reviews (all at or above baseline)"
     },
     {
       "name": "Sync: grosses weekEnding",
-      "status": "pass",
-      "message": "weekEnding 5/17/2026 (14d ago)"
+      "status": "warn",
+      "message": "weekEnding 5/17/2026 is 15 days ago (2 missed weeks)"
     }
   ]
 }
