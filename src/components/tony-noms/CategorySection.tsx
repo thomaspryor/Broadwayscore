@@ -164,7 +164,7 @@ function PressPicks({ picks }: { picks?: string[] }) {
   const knownPicks = picks.filter(id => CRITIC_PICK_OUTLETS[id]);
   if (knownPicks.length === 0) return null;
   return (
-    <div className="flex items-center gap-0.5">
+    <div className="flex flex-wrap items-center justify-center gap-0.5 max-w-[88px]">
       {knownPicks.map(id => {
         const meta = CRITIC_PICK_OUTLETS[id];
         const logoUrl = getOutletLogoUrl(meta.outletName);
@@ -243,7 +243,7 @@ function SectionColumnHeader({ isMajor, isPersonLevel = false, hideMarketOdds = 
             <div className="hidden sm:flex flex-col items-center w-20">
               <span className={HEADER_LINE}>Precursor</span><span className={HEADER_LINE}>Awards</span>
             </div>
-            <div className="flex flex-col items-center w-14">
+            <div className="flex flex-col items-center w-24">
               <span className={HEADER_LINE}>Press</span><span className={HEADER_LINE}>Picks</span>
             </div>
           </>
@@ -253,7 +253,7 @@ function SectionColumnHeader({ isMajor, isPersonLevel = false, hideMarketOdds = 
             <div className="hidden sm:flex flex-col items-center w-20 ml-3 sm:ml-4">
               <span className={HEADER_LINE}>Precursor</span><span className={HEADER_LINE}>Awards</span>
             </div>
-            <div className="flex flex-col items-center w-14">
+            <div className="flex flex-col items-center w-24">
               <span className={HEADER_LINE}>Press</span><span className={HEADER_LINE}>Picks</span>
             </div>
           </>
@@ -320,7 +320,7 @@ function MajorNomineeRow({ show, winProbability, rank, ceremonyDate, hideMarketO
         <div className="hidden sm:flex w-20 items-center justify-center">
           <PrecursorChips wins={show.precursorWins} />
         </div>
-        <div className="flex w-14 items-center justify-center">
+        <div className="flex w-24 items-center justify-center">
           <PressPicks picks={show.criticPicks} />
         </div>
       </div>
@@ -399,7 +399,7 @@ function PerformerRow({ show, hideMarketOdds = false }: { show: TonyCategory['sh
         <div className="hidden sm:flex w-20 items-center justify-center ml-3 sm:ml-4">
           <PrecursorChips wins={show.precursorWins} />
         </div>
-        <div className="flex w-14 items-center justify-center">
+        <div className="flex w-24 items-center justify-center">
           <PressPicks picks={show.criticPicks} />
         </div>
       </div>
@@ -467,7 +467,7 @@ function CraftRow({ show, ceremonyDate, hideMarketOdds = false }: { show: TonyCa
         <div className="hidden sm:flex w-20 items-center justify-center">
           <PrecursorChips wins={show.precursorWins} />
         </div>
-        <div className="flex w-14 items-center justify-center">
+        <div className="flex w-24 items-center justify-center">
           <PressPicks picks={show.criticPicks} />
         </div>
       </div>
