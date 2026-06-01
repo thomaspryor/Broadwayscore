@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-01T11:52:06.062Z",
+  "timestamp": "2026-06-01T13:01:06.187Z",
   "stats": {
-    "totalReviews": 37920,
-    "alreadyFlagged": 16678,
+    "totalReviews": 37929,
+    "alreadyFlagged": 16676,
     "dateGuardCatches": 106,
     "directorMismatch": 818,
-    "tvFilmSignals": 1043,
+    "tvFilmSignals": 1042,
     "londonSignals": 593,
     "offBroadwaySignals": 458,
     "yearMismatch": 79,
-    "noPublishDate": 3974
+    "noPublishDate": 3977
   },
   "findings": [
     {
@@ -2259,19 +2259,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"mike nichols\" from betrayal-2013"
-        }
-      ]
-    },
-    {
-      "showId": "betty-buckley-random-notes-off-broadway-2026",
-      "file": "variety--unknown.json",
-      "publishDate": null,
-      "url": "https://variety.com/interstitial/?ref=http%3A%2F%2Fvariety.com%2F2013%2Flegit%2Freviews%2Foff-broadway-review-the-old-friends-1200608115%2F",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -28231,7 +28218,7 @@
       "file": "guardian--unknown.json",
       "score": null,
       "publishDate": null,
-      "url": "https://www.theguardian.com/stage/2026/may/15/linda-bassett-call-the-midwife-caryl-churchill-alexander-zeldin-care",
+      "url": "https://www.theguardian.com/books/2024/nov/02/alan-bennett-at-90-what-will-people-think-i-dont-care-any-more",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
