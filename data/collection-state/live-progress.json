@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-06-01T02:09:55.841Z",
+  "updatedAt": "2026-06-01T02:17:49.573Z",
   "processed": 6,
-  "failed": 730,
+  "failed": 734,
   "successRate": "0.8%",
   "tierBreakdown": {
     "playwright": 3,
@@ -80,6 +80,17 @@
     },
     {
       "t": "2026-06-01T02:08:21.278Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-01T02:16:26.679Z",
+      "event": "bb-session",
+      "session": "28000cdb",
+      "url": "https://a.talkinbroadway.com/allthatchat_new/d.php?id=2626606"
+    },
+    {
+      "t": "2026-06-01T02:16:27.602Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }
