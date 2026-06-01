@@ -193,6 +193,34 @@ function seedFileExists(showId, outletId) {
   return files.some(f => f.startsWith(`${outletId}--`) && f.endsWith('.json'));
 }
 
+// Best-effort text extraction from newspapers.com's /api/article/page response.
+// Shape is undocumented; harvest text from the likely fields and fall back to
+// collecting the longest string values anywhere in the payload.
+function harvestArticleText(json) {
+  if (!json) return '';
+  if (typeof json.ocr === 'string' && json.ocr.length) return json.ocr;
+  const out = [];
+  const arr = json.articles || json.data || json.results || (Array.isArray(json) ? json : null);
+  if (Array.isArray(arr)) {
+    for (const a of arr) {
+      if (!a || typeof a !== 'object') continue;
+      const t = a.text || a.ocr || a.content || a.body || a.fullText || a.transcription || '';
+      if (typeof t === 'string' && t.length) out.push(t);
+      if (Array.isArray(a.lines)) out.push(a.lines.map(l => (typeof l === 'string' ? l : (l && (l.text || l.value)) || '')).join(' '));
+    }
+  }
+  if (out.join('').length > 40) return out.join('\n\n');
+  // Fallback: recursively gather long strings (>60 chars) from the payload.
+  const strings = [];
+  (function walk(o, depth) {
+    if (depth > 6 || o == null) return;
+    if (typeof o === 'string') { if (o.length > 60) strings.push(o); return; }
+    if (Array.isArray(o)) { o.forEach(x => walk(x, depth + 1)); return; }
+    if (typeof o === 'object') Object.values(o).forEach(x => walk(x, depth + 1));
+  })(json, 0);
+  return strings.join('\n\n');
+}
+
 // ─── OCR Extraction ──────────────────────────────────────────────────────────
 
 /**
@@ -206,14 +234,22 @@ async function extractOcrFromImage(page, imageId, verbose) {
 
     const handler = async (response) => {
       const url = response.url();
-      if (url.includes('/ocr/') && url.includes(String(imageId))) {
+      // newspapers.com now serves article text from /api/article/page/{id}/articles
+      // (older builds used /ocr/{id}). Match either, for this image.
+      const isArticleApi = url.includes('/api/article/page/') && url.includes(String(imageId));
+      const isLegacyOcr = url.includes('/ocr/') && url.includes(String(imageId));
+      if (isArticleApi || isLegacyOcr) {
         try {
           const json = await response.json();
-          ocrText = json.ocr || '';
-          ocrReceived = true;
-          if (verbose) console.log(`    OCR intercepted: ${ocrText.length} chars`);
+          if (verbose && isArticleApi) console.log(`    article-api raw keys: ${JSON.stringify(Object.keys(json)).slice(0, 200)}`);
+          const text = isLegacyOcr ? (json.ocr || '') : harvestArticleText(json);
+          if (text && text.length) {
+            ocrText = text;
+            ocrReceived = true;
+            if (verbose) console.log(`    text intercepted: ${ocrText.length} chars (${isArticleApi ? 'article-api' : 'ocr'})`);
+          }
         } catch (e) {
-          if (verbose) console.log(`    OCR parse error: ${e.message}`);
+          if (verbose) console.log(`    parse error: ${e.message}`);
         }
       }
     };
@@ -235,16 +271,30 @@ async function extractOcrFromImage(page, imageId, verbose) {
       await page.waitForTimeout(500);
     }
 
-    page.off('response', handler);
-
     if (!ocrReceived) {
-      // Try scrolling/clicking to trigger OCR load
-      if (verbose) console.log('    No OCR intercepted, trying page interaction...');
-      // Some pages need a click or scroll to trigger the OCR request
-      await page.evaluate(() => window.scrollBy(0, 300));
-      await page.waitForTimeout(3000);
+      // The viewer often loads article text only on interaction. Since the
+      // session is authenticated, call the article API directly from the page
+      // (same-origin → carries auth + any in-page access token).
+      if (verbose) console.log('    No passive intercept — calling article API directly...');
+      try {
+        const direct = await page.evaluate(async (id) => {
+          const res = await fetch(`/api/article/page/${id}/articles`, { headers: { accept: 'application/json' } });
+          if (!res.ok) return { status: res.status, body: (await res.text()).slice(0, 120) };
+          return { status: 200, json: await res.json() };
+        }, imageId);
+        if (direct.status === 200 && direct.json) {
+          const t = harvestArticleText(direct.json);
+          if (t && t.length) { ocrText = t; ocrReceived = true; if (verbose) console.log(`    direct article API: ${t.length} chars`); }
+          else if (verbose) console.log(`    direct article API: 200 but no text harvested. keys=${JSON.stringify(Object.keys(direct.json)).slice(0,160)}`);
+        } else if (verbose) {
+          console.log(`    direct article API → ${direct.status} ${direct.body || ''}`);
+        }
+      } catch (e) {
+        if (verbose) console.log(`    direct article API error: ${e.message}`);
+      }
     }
 
+    page.off('response', handler);
     resolve(ocrText);
   });
 }
@@ -657,38 +707,30 @@ async function main() {
 
   if (opts.browserbase) {
     // Remote Browserbase stealth browser bypasses newspapers.com's Cloudflare
-    // Turnstile (which local Playwright Chrome cannot pass). Subscription auth
-    // comes from injected session cookies extracted from Safari.
-    const cookiePath = path.join('data', 'cookies', 'newspapers.json');
-    if (!fs.existsSync(cookiePath)) {
-      throw new Error(`--browserbase needs ${cookiePath}. Log into newspapers.com in Safari, then run: python3 scripts/extract-safari-cookies.py`);
+    // Turnstile. Subscription auth comes from a PERSISTENT Browserbase context
+    // that was logged in once via scripts/newspapers-browserbase-login.js —
+    // Safari cookie injection does NOT work (macOS Tahoe hides the httpOnly auth
+    // cookies, and newspapers.com issues a per-view image-access token that only
+    // a genuinely logged-in session can mint).
+    const ctxFile = path.join('data', 'collection-state', 'browserbase-newspapers-context.json');
+    if (!fs.existsSync(ctxFile)) {
+      throw new Error(`--browserbase needs a logged-in context. Run: node scripts/newspapers-browserbase-login.js (one-time login).`);
     }
-    const raw = JSON.parse(fs.readFileSync(cookiePath, 'utf8'));
-    const cookies = (Array.isArray(raw) ? raw : raw.cookies || []).map(c => ({
-      name: c.name,
-      value: c.value,
-      domain: c.domain,
-      path: c.path || '/',
-      ...(typeof c.expires === 'number' && c.expires > 0 ? { expires: c.expires } : {}),
-      httpOnly: !!c.httpOnly,
-      secure: c.secure !== false,
-      sameSite: ['Strict', 'Lax', 'None'].includes(c.sameSite) ? c.sameSite : 'Lax',
-    }));
+    const contextId = JSON.parse(fs.readFileSync(ctxFile, 'utf8')).contextId;
     const apiKey = process.env.BROWSERBASE_API_KEY;
     const projectId = process.env.BROWSERBASE_PROJECT_ID;
     if (!apiKey || !projectId) throw new Error('BROWSERBASE_API_KEY / BROWSERBASE_PROJECT_ID not set');
-    console.log(`\nCreating Browserbase session (stealth + proxies, ${cookies.length} cookies)...`);
+    console.log(`\nCreating Browserbase session on persistent context ${contextId}...`);
     const resp = await fetch('https://api.browserbase.com/v1/sessions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'X-BB-API-Key': apiKey },
-      body: JSON.stringify({ projectId, proxies: true, browserSettings: { solveCaptchas: true } }),
+      body: JSON.stringify({ projectId, proxies: true, browserSettings: { context: { id: contextId, persist: false }, solveCaptchas: true } }),
     });
     if (!resp.ok) throw new Error(`Browserbase session create failed: ${resp.status} ${await resp.text()}`);
     const session = await resp.json();
     console.log(`  session ${session.id} → connecting...`);
     browser = await chromium.connectOverCDP(session.connectUrl);
     context = browser.contexts()[0] || await browser.newContext();
-    await context.addCookies(cookies);
     page = context.pages()[0] || await context.newPage();
   } else {
     console.log('\nLaunching browser (headed — required for newspapers.com)...');
