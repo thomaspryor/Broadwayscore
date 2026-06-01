@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-01T06:59:48.213Z",
-  "processed": 19,
-  "failed": 957,
-  "successRate": "1.9%",
+  "updatedAt": "2026-06-01T07:02:51.821Z",
+  "processed": 20,
+  "failed": 966,
+  "successRate": "2.0%",
   "tierBreakdown": {
-    "playwright": 9,
+    "playwright": 10,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 5,
     "brightdata": 4,
     "archiveToday": 24,
     "archive": 5
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-06-01T01:24:42.699Z",
-      "event": "bb-session",
-      "session": "a9bbfc57",
-      "url": "https://a.talkinbroadway.com/allthatchat_new/d.php?id=2626606"
-    },
-    {
-      "t": "2026-06-01T01:24:43.282Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
     {
       "t": "2026-06-01T01:33:41.348Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-06-01T06:22:36.008Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-01T07:02:37.393Z",
+      "event": "bb-session",
+      "session": "e61e5317",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?res=9E0DEEDB1438F937A25752C"
+    },
+    {
+      "t": "2026-06-01T07:02:38.421Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

@@ -18,7 +18,8 @@
     "company-2021/theatrely--andrew-martini.json",
     "escape-to-margaritaville-2018/playbill--gabriel-agosto.json",
     "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
-    "in-the-heights-2008/thestage--unknown.json"
+    "in-the-heights-2008/thestage--unknown.json",
+    "spring-awakening-2006/thestage--unknown.json"
   ],
   "failed": [
     "indian-princesses-off-broadway-2025/pages-on-stages--mason-pilevsky.json",
@@ -977,7 +978,16 @@
     "title-of-show-2008/mycentraljerseycom--charles-paolino.json",
     "south-pacific-2008/newyorker--john-lahr.json",
     "in-the-heights-2008/curtainup--unknown.json",
-    "in-the-heights-2008/huffpost--unknown.json"
+    "in-the-heights-2008/huffpost--unknown.json",
+    "the-farnsworth-invention-2007/variety--charles-isherwood.json",
+    "pygmalion-2007/variety--david-rooney.json",
+    "journeys-end-2007/variety--david-rooney.json",
+    "spring-awakening-2006/backstage--unknown.json",
+    "spring-awakening-2006/time--unknown.json",
+    "mary-poppins-2006/variety--charles-isherwood.json",
+    "tarzan-2006/variety--charles-isherwood.json",
+    "spamalot-2005/thestage--unknown.json",
+    "taboo-2003/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -990,11 +1000,13 @@
       "paddington-the-musical-west-end-2025/musical-theatre-review--unknown.json",
       "the-adding-machine-off-broadway-2026/dc-theater-arts--deb-miller.json",
       "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
-      "in-the-heights-2008/thestage--unknown.json"
+      "in-the-heights-2008/thestage--unknown.json",
+      "spring-awakening-2006/thestage--unknown.json"
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/schmigadoon-2026/variety--aramide-tinubu.json"
+      "data/review-texts/schmigadoon-2026/variety--aramide-tinubu.json",
+      "data/review-texts/taboo-2003/nytimes--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1045,7 +1057,7 @@
     ]
   },
   "startTime": "2026-05-31T15:17:43.029Z",
-  "lastProcessed": "in-the-heights-2008/thestage--unknown.json",
+  "lastProcessed": "taboo-2003/nytimes--ben-brantley.json",
   "log": [
     {
       "t": "2026-05-31T18:39:09.043Z",
@@ -1191,6 +1203,17 @@
       "t": "2026-06-01T06:22:36.008Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-01T07:02:37.393Z",
+      "event": "bb-session",
+      "session": "e61e5317",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?res=9E0DEEDB1438F937A25752C"
+    },
+    {
+      "t": "2026-06-01T07:02:38.421Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
