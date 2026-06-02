@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-06-02T10:51:42.202Z",
+  "updatedAt": "2026-06-02T11:34:31.545Z",
   "processed": 6,
-  "failed": 66,
-  "successRate": "8.3%",
+  "failed": 70,
+  "successRate": "7.9%",
   "tierBreakdown": {
     "playwright": 3,
     "amp": 0,
@@ -10,7 +10,7 @@
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 1,
-    "archiveToday": 2,
+    "archiveToday": 3,
     "archive": 2
   },
   "browserbaseSessions": 1,
@@ -26,6 +26,17 @@
       "event": "bb-session",
       "session": "063a9cfe",
       "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
+    },
+    {
+      "t": "2026-06-02T11:33:06.001Z",
+      "event": "bb-session",
+      "session": "96a4bf0c",
+      "url": "https://a.talkinbroadway.com/allthatchat_new/d.php?id=2626606"
+    },
+    {
+      "t": "2026-06-02T11:33:07.137Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
