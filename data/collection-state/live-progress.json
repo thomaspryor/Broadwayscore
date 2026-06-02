@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-06-02T04:48:17.191Z",
+  "updatedAt": "2026-06-02T06:51:58.750Z",
   "processed": 32,
-  "failed": 394,
-  "successRate": "7.5%",
+  "failed": 398,
+  "successRate": "7.4%",
   "tierBreakdown": {
     "playwright": 22,
     "amp": 0,
@@ -10,23 +10,11 @@
     "directCookies": 0,
     "scrapingbee": 4,
     "brightdata": 2,
-    "archiveToday": 14,
+    "archiveToday": 15,
     "archive": 6
   },
   "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-06-01T22:17:48.238Z",
-      "event": "bb-session",
-      "session": "4aae2392",
-      "url": "https://charingcrosstheatre.co.uk/theatre/dark-of-the-moon"
-    },
-    {
-      "t": "2026-06-01T23:31:19.226Z",
-      "event": "bb-session",
-      "session": "67c2ac0b",
-      "url": "https://charingcrosstheatre.co.uk/theatre/dark-of-the-moon"
-    },
     {
       "t": "2026-06-02T00:07:19.417Z",
       "event": "bb-session",
@@ -125,6 +113,17 @@
     },
     {
       "t": "2026-06-02T04:47:01.869Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-02T06:50:37.829Z",
+      "event": "bb-session",
+      "session": "9098f964",
+      "url": "https://a.talkinbroadway.com/allthatchat_new/d.php?id=2626606"
+    },
+    {
+      "t": "2026-06-02T06:50:38.874Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }
