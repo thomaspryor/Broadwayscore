@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-06-02T00:50:49.668Z",
+  "updatedAt": "2026-06-02T01:25:31.862Z",
   "processed": 32,
-  "failed": 370,
-  "successRate": "8.0%",
+  "failed": 374,
+  "successRate": "7.9%",
   "tierBreakdown": {
     "playwright": 22,
     "amp": 0,
@@ -10,10 +10,10 @@
     "directCookies": 0,
     "scrapingbee": 4,
     "brightdata": 2,
-    "archiveToday": 9,
+    "archiveToday": 10,
     "archive": 6
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-06-01T21:42:39.705Z",
@@ -85,6 +85,17 @@
       "t": "2026-06-02T00:48:41.219Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-06-02T01:24:08.938Z",
+      "event": "bb-session",
+      "session": "134bde22",
+      "url": "https://a.talkinbroadway.com/allthatchat_new/d.php?id=2626606"
+    },
+    {
+      "t": "2026-06-02T01:24:09.416Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
