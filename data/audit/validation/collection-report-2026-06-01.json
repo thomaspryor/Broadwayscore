@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-06-01T17:06:04.517Z",
+  "runDate": "2026-06-01T21:50:56.940Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,43 +11,43 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 30,
-    "failed": 206,
+    "processed": 33,
+    "failed": 234,
     "skipped": 0,
-    "successRate": "12.7%"
+    "successRate": "12.4%"
   },
   "tierBreakdown": {
-    "playwright": 20,
+    "playwright": 24,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingbee": 4,
+    "scrapingbee": 6,
     "brightdata": 2,
-    "archiveToday": 0,
-    "archive": 6
+    "archiveToday": 1,
+    "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 26,
-    "tier1Success": 23,
+    "tier1Attempts": 6,
+    "tier1Success": 5,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
-    "tier2Attempts": 6,
-    "tier2Success": 5,
-    "tier3Attempts": 3,
-    "tier3Success": 3,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 1,
+    "tier2Attempts": 2,
+    "tier2Success": 2,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 12,
-    "tier4Success": 8,
-    "totalFailed": 203,
-    "scrapingBeePageCredits": 14,
+    "tier4Attempts": 4,
+    "tier4Success": 0,
+    "totalFailed": 129,
+    "scrapingBeePageCredits": 11,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 207,
-    "urlDiscoverySuccess": 2,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.2,
+    "urlDiscoveryAttempts": 129,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -76,11 +76,14 @@
     "company-2021/theatrely--andrew-martini.json",
     "escape-to-margaritaville-2018/playbill--gabriel-agosto.json",
     "the-little-foxes-2017/whatsonstage--sarah-crompton.json",
-    "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
-    "clybourne-park-2012/latimes--david-ng.json",
-    "a-little-night-music-2009/nytg--unknown.json",
-    "in-the-heights-2008/thestage--unknown.json",
-    "animal-wisdom-2022/nytimes--ben-brantley.json"
+    "equus-west-end-2026/timeout-london--unknown.json",
+    "the-people-versus-lenny-bruce-off-broadway-2026/theater-pizzazz--unknown.json",
+    "grace-pervades-west-end-2026/independent--unknown.json",
+    "joe-turners-come-and-gone-2026/broadwaynews--unknown.json",
+    "masquerade-off-broadway-2025/nytimes--unknown.json",
+    "masquerade-off-broadway-2025/off-off-online--james-wilson.json",
+    "all-my-sons-west-end-2025/independent--unknown.json",
+    "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json"
   ],
   "failed": [
     "well-ill-let-you-go-off-broadway-2026/timeout--unknown.json",
@@ -158,6 +161,36 @@
     "the-price-2017/theater-in-the-now--michael-block.json",
     "come-from-away-2017/newyorker--hilton-als.json",
     "come-from-away-2017/off-script-with-dan-dwyer--dan-dwyer.json",
+    "beetlejuice-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "the-p-word-off-west-end-2026/broadwayworld--aliya-al-hassan.json",
+    "the-p-word-off-west-end-2026/whatsonstage--frey-kwa-hawking.json",
+    "dark-of-the-moon-west-end-2026/guardian-uk--unknown.json",
+    "dark-of-the-moon-west-end-2026/timeout--andrzej-lukowski.json",
+    "dark-of-the-moon-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "dark-of-the-moon-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "dark-of-the-moon-west-end-2026/artsdesk--unknown.json",
+    "dark-of-the-moon-west-end-2026/cambridge--unknown.json",
+    "dark-of-the-moon-west-end-2026/london-theatre--unknown.json",
+    "care-west-end-2026/i-paper--unknown.json",
+    "care-west-end-2026/the-upcoming-uk--unknown.json",
+    "care-west-end-2026/times-uk--unknown.json",
+    "equus-west-end-2026/the-jewish-chronicle--unknown.json",
+    "equus-west-end-2026/thereviewshub--unknown.json",
+    "equus-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "equus-west-end-2026/artsdesk--unknown.json",
+    "equus-west-end-2026/standard--unknown.json",
+    "equus-west-end-2026/thestage--holly-o.json",
+    "equus-west-end-2026/times-uk--clive-davis.json",
+    "end-of-the-rainbow-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "1536-west-end-2026/timeout-london--andrjez-lukowski.json",
+    "1536-west-end-2026/artsdesk--helen-hawkins.json",
+    "1536-west-end-2026/artsdesk--rachel-halliburton.json",
+    "1536-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
+    "1536-west-end-2026/london-theatre--unknown.json",
+    "1536-west-end-2026/the-recs--the-recs-jdh.json",
+    "1536-west-end-2026/times-uk--clive-davis.json",
+    "1536-west-end-2026/times-uk--dominic-maxwell.json",
+    "grace-pervades-west-end-2026/telegraph--unknown.json",
     "come-from-away-2017/st-louis-post-dispatch--bruce-r-miller.json",
     "the-present-2017/thestage--unknown.json",
     "in-transit-2016/nydailynews--joe-dziemianowicz.json",
@@ -253,7 +286,6 @@
     "enron-2010/backstage--erik-haagensen.json",
     "promises-promises-2010/toronto-star--richard-ouzounian.json",
     "la-cage-aux-folles-2010/backstage--david-sheward.json",
-    "million-dollar-quartet-2010/times-uk--dominic-maxwell.json",
     "million-dollar-quartet-2010/backstage--david-sheward.json",
     "the-addams-family-2010/backstage--erik-haagensen.json",
     "red-2010/backstage--erik-haagensen.json",
@@ -280,7 +312,6 @@
     "hedda-gabler-2009/newsday--linda-winer.json",
     "title-of-show-2008/mycentraljerseycom--charles-paolino.json",
     "south-pacific-2008/newyorker--john-lahr.json",
-    "in-the-heights-2008/huffpost--unknown.json",
     "the-farnsworth-invention-2007/variety--charles-isherwood.json",
     "pygmalion-2007/variety--david-rooney.json",
     "journeys-end-2007/variety--david-rooney.json",
@@ -310,43 +341,48 @@
       "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
       "all-my-sons-west-end-2025/theatre-weekly--unknown.json",
       "the-little-foxes-2017/whatsonstage--sarah-crompton.json",
-      "a-little-night-music-2009/nytg--unknown.json",
-      "in-the-heights-2008/thestage--unknown.json"
+      "equus-west-end-2026/timeout-london--unknown.json",
+      "the-people-versus-lenny-bruce-off-broadway-2026/theater-pizzazz--unknown.json",
+      "grace-pervades-west-end-2026/independent--unknown.json",
+      "masquerade-off-broadway-2025/off-off-online--james-wilson.json",
+      "all-my-sons-west-end-2025/independent--unknown.json",
+      "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/taboo-2003/nytimes--ben-brantley.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
       "hamlet-off-broadway-2026/sunday-telegraph--diane-snyder.json",
       "company-2021/theatrely--andrew-martini.json",
-      "trouble-in-mind-2021/broadwayworld--unknown.json"
+      "trouble-in-mind-2021/broadwayworld--unknown.json",
+      "joe-turners-come-and-gone-2026/broadwaynews--unknown.json",
+      "masquerade-off-broadway-2025/nytimes--unknown.json"
     ],
     "brightdata": [
       "celebrity-autobiography-2026/talkinbroadway--unknown.json",
       "the-maids-off-broadway-2026/thewrap--unknown.json"
     ],
+    "archiveToday": [
+      "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json"
+    ],
     "archiveToday": [],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
-      "escape-to-margaritaville-2018/playbill--gabriel-agosto.json",
-      "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
-      "clybourne-park-2012/latimes--david-ng.json",
-      "animal-wisdom-2022/nytimes--ben-brantley.json"
+      "escape-to-margaritaville-2018/playbill--gabriel-agosto.json"
     ]
   },
-  "failuresByOutlet": {},
-  "urlDiscoveries": [
-    {
-      "reviewId": "my-neighbour-totoro-west-end-2025/british-theatre--julia-jordan.json",
-      "oldUrl": "https://www.britishtheatre.com/posts/my-neighbour-totoro-confirms-final-west-end-extension-london-run-to-close-in-jan",
-      "newUrl": "https://www.britishtheatre.com/posts/my-neighbour-totoro-announces-triumphant-return-with-new-west-end-cast"
-    },
-    {
-      "reviewId": "all-my-sons-west-end-2025/theatre-weekly--unknown.json",
-      "oldUrl": "https://theatreweekly.com/bryan-cranston-and-marianne-jean-baptistes-all-my-sons-confirmed-for-global-cinema-release/",
-      "newUrl": "https://theatreweekly.com/production-images-released-for-all-my-sons-at-wyndhams-theatre/"
+  "failuresByOutlet": {
+    "The Telegraph": {
+      "count": 1,
+      "domain": "telegraph.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     }
-  ]
+  },
+  "urlDiscoveries": []
 }
