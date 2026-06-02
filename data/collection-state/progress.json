@@ -5,7 +5,8 @@
     "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
     "grace-pervades-west-end-2026/telegraph--unknown.json",
     "one-flew-over-the-cuckoos-nest-west-end-2026/financialtimes--sarah-hemming.json",
-    "beetlejuice-west-end-2026/timeout--unknown.json"
+    "beetlejuice-west-end-2026/timeout--unknown.json",
+    "celebrity-autobiography-2026/talkinbroadway--unknown.json"
   ],
   "failed": [
     "titanique-west-end-2024/times-uk--clive-davis.json",
@@ -114,6 +115,10 @@
     "jerome-off-broadway-2025/one-minute-critic--unknown.json",
     "jerome-off-broadway-2025/talkinbroadway--unknown.json",
     "indian-princesses-off-broadway-2025/pages-on-stages--mason-pilevsky.json",
+    "the-maids-off-broadway-2026/ew--unknown.json",
+    "jerome-off-broadway-2025/one-minute-critic--unknown.json",
+    "jerome-off-broadway-2025/talkinbroadway--unknown.json",
+    "indian-princesses-off-broadway-2025/pages-on-stages--mason-pilevsky.json",
     "the-maids-off-broadway-2026/ew--unknown.json"
   ],
   "skipped": [],
@@ -133,7 +138,8 @@
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [
-      "grace-pervades-west-end-2026/telegraph--unknown.json"
+      "grace-pervades-west-end-2026/telegraph--unknown.json",
+      "celebrity-autobiography-2026/talkinbroadway--unknown.json"
     ],
     "archiveToday": [
       "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
@@ -141,6 +147,7 @@
       "data/review-texts/jerome-off-broadway-2025/talkinbroadway--unknown.json",
       "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
       "data/review-texts/1536-west-end-2026/the-recs--the-recs-jdh.json",
+      "data/review-texts/jerome-off-broadway-2025/talkinbroadway--unknown.json",
       "data/review-texts/jerome-off-broadway-2025/talkinbroadway--unknown.json",
       "data/review-texts/jerome-off-broadway-2025/talkinbroadway--unknown.json"
     ],
@@ -218,6 +225,17 @@
     },
     {
       "t": "2026-06-02T13:36:45.104Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-02T15:00:06.284Z",
+      "event": "bb-session",
+      "session": "c06d2991",
+      "url": "https://a.talkinbroadway.com/allthatchat_new/d.php?id=2626606"
+    },
+    {
+      "t": "2026-06-02T15:00:06.806Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }
