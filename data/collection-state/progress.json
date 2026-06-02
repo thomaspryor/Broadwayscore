@@ -364,7 +364,17 @@
     "equus-west-end-2026/thereviewshub--unknown.json",
     "equus-west-end-2026/all-that-dazzles-uk--unknown.json",
     "equus-west-end-2026/artsdesk--unknown.json",
-    "equus-west-end-2026/thestage--holly-o.json"
+    "equus-west-end-2026/thestage--holly-o.json",
+    "equus-west-end-2026/times-uk--clive-davis.json",
+    "end-of-the-rainbow-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "1536-west-end-2026/timeout-london--andrjez-lukowski.json",
+    "1536-west-end-2026/artsdesk--helen-hawkins.json",
+    "1536-west-end-2026/artsdesk--rachel-halliburton.json",
+    "1536-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
+    "1536-west-end-2026/london-theatre--unknown.json",
+    "1536-west-end-2026/the-recs--the-recs-jdh.json",
+    "1536-west-end-2026/times-uk--clive-davis.json",
+    "1536-west-end-2026/times-uk--dominic-maxwell.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -388,7 +398,8 @@
       "data/review-texts/1536-west-end-2026/london-theatre--unknown.json",
       "data/review-texts/equus-west-end-2026/thereviewshub--unknown.json",
       "data/review-texts/1536-west-end-2026/london-theatre--unknown.json",
-      "data/review-texts/equus-west-end-2026/thereviewshub--unknown.json"
+      "data/review-texts/equus-west-end-2026/thereviewshub--unknown.json",
+      "data/review-texts/1536-west-end-2026/london-theatre--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -417,7 +428,9 @@
       "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
       "data/review-texts/equus-west-end-2026/thestage--holly-o.json",
       "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
-      "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json"
+      "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
+      "data/review-texts/equus-west-end-2026/thestage--holly-o.json",
+      "data/review-texts/1536-west-end-2026/the-recs--the-recs-jdh.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -426,7 +439,7 @@
     ]
   },
   "startTime": "2026-06-02T09:29:57.740Z",
-  "lastProcessed": "equus-west-end-2026/thestage--holly-o.json",
+  "lastProcessed": "1536-west-end-2026/times-uk--dominic-maxwell.json",
   "log": [
     {
       "t": "2026-06-02T09:36:10.539Z",
@@ -588,6 +601,12 @@
       "t": "2026-06-02T23:20:26.694Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-06-02T23:23:18.498Z",
+      "event": "bb-session",
+      "session": "f4bc8959",
+      "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=27853"
     }
   ]
 }
