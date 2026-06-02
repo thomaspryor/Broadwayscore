@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-06-01T23:35:44.775Z",
-  "processed": 31,
-  "failed": 314,
-  "successRate": "9.0%",
+  "updatedAt": "2026-06-02T00:07:25.796Z",
+  "processed": 32,
+  "failed": 318,
+  "successRate": "9.1%",
   "tierBreakdown": {
-    "playwright": 21,
+    "playwright": 22,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 4,
     "brightdata": 2,
-    "archiveToday": 6,
+    "archiveToday": 7,
     "archive": 6
   },
   "browserbaseSessions": 1,
@@ -50,6 +50,17 @@
       "event": "bb-session",
       "session": "67c2ac0b",
       "url": "https://charingcrosstheatre.co.uk/theatre/dark-of-the-moon"
+    },
+    {
+      "t": "2026-06-02T00:05:38.492Z",
+      "event": "bb-session",
+      "session": "11da640a",
+      "url": "https://a.talkinbroadway.com/allthatchat_new/d.php?id=2626606"
+    },
+    {
+      "t": "2026-06-02T00:05:39.096Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }

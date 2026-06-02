@@ -30,7 +30,8 @@
     "a-little-night-music-2009/nytg--unknown.json",
     "in-the-heights-2008/thestage--unknown.json",
     "animal-wisdom-2022/nytimes--ben-brantley.json",
-    "equus-west-end-2026/timeout--andrzej-lukowski.json"
+    "equus-west-end-2026/timeout--andrzej-lukowski.json",
+    "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/playbill--unknown.json"
   ],
   "failed": [
     "well-ill-let-you-go-off-broadway-2026/timeout--unknown.json",
@@ -346,7 +347,11 @@
     "1536-west-end-2026/london-theatre--unknown.json",
     "1536-west-end-2026/the-recs--the-recs-jdh.json",
     "1536-west-end-2026/times-uk--clive-davis.json",
-    "1536-west-end-2026/times-uk--dominic-maxwell.json"
+    "1536-west-end-2026/times-uk--dominic-maxwell.json",
+    "jerome-off-broadway-2025/one-minute-critic--unknown.json",
+    "jerome-off-broadway-2025/talkinbroadway--unknown.json",
+    "indian-princesses-off-broadway-2025/pages-on-stages--mason-pilevsky.json",
+    "the-maids-off-broadway-2026/ew--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -371,7 +376,8 @@
       "the-little-foxes-2017/whatsonstage--sarah-crompton.json",
       "a-little-night-music-2009/nytg--unknown.json",
       "in-the-heights-2008/thestage--unknown.json",
-      "equus-west-end-2026/timeout--andrzej-lukowski.json"
+      "equus-west-end-2026/timeout--andrzej-lukowski.json",
+      "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/playbill--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -395,7 +401,8 @@
       "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
       "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
       "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
-      "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json"
+      "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
+      "data/review-texts/jerome-off-broadway-2025/talkinbroadway--unknown.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -407,7 +414,7 @@
     ]
   },
   "startTime": "2026-06-01T16:25:46.508Z",
-  "lastProcessed": "1536-west-end-2026/times-uk--dominic-maxwell.json",
+  "lastProcessed": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/playbill--unknown.json",
   "log": [
     {
       "t": "2026-06-01T21:42:39.705Z",
@@ -444,6 +451,17 @@
       "event": "bb-session",
       "session": "67c2ac0b",
       "url": "https://charingcrosstheatre.co.uk/theatre/dark-of-the-moon"
+    },
+    {
+      "t": "2026-06-02T00:05:38.492Z",
+      "event": "bb-session",
+      "session": "11da640a",
+      "url": "https://a.talkinbroadway.com/allthatchat_new/d.php?id=2626606"
+    },
+    {
+      "t": "2026-06-02T00:05:39.096Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
