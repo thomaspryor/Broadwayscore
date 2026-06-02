@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "generatedAt": "2026-05-26T06:31:56.121Z",
+    "generatedAt": "2026-06-02T06:39:21.674Z",
     "threshold": 40,
-    "showsScanned": 1693,
-    "reviewsScanned": 32556,
-    "duplicatesFound": 82,
+    "showsScanned": 1719,
+    "reviewsScanned": 32969,
+    "duplicatesFound": 86,
     "byMethod": {
       "similarity": [
         {
@@ -20,6 +20,36 @@
           "primaryScore": 91,
           "secondaryScore": 77,
           "scoreDiff": 14,
+          "textSource": "fullText"
+        },
+        {
+          "showId": "act-one-2014",
+          "method": "similarity",
+          "similarity": 60,
+          "primaryFile": "nytg--david-roberts.json",
+          "primaryOutlet": "New York Theatre Guide",
+          "primaryCritic": "David Roberts",
+          "secondaryFile": "front-row-center--tulis-mccall.json",
+          "secondaryOutlet": "The Front Row Center",
+          "secondaryCritic": "Tulis McCall",
+          "primaryScore": 80,
+          "secondaryScore": 58,
+          "scoreDiff": 22,
+          "textSource": "fullText"
+        },
+        {
+          "showId": "american-idiot-2010",
+          "method": "similarity",
+          "similarity": 49,
+          "primaryFile": "hollywood-reporter--david-rooney.json",
+          "primaryOutlet": "The Hollywood Reporter",
+          "primaryCritic": "David Rooney",
+          "secondaryFile": "reuters--frank-scheck.json",
+          "secondaryOutlet": "Reuters",
+          "secondaryCritic": "Frank Scheck",
+          "primaryScore": 62,
+          "secondaryScore": 65,
+          "scoreDiff": 3,
           "textSource": "fullText"
         },
         {
@@ -80,6 +110,21 @@
           "primaryScore": 90,
           "secondaryScore": 91,
           "scoreDiff": 1,
+          "textSource": "fullText"
+        },
+        {
+          "showId": "beautiful-the-carole-king-musical-2014",
+          "method": "similarity",
+          "similarity": 61,
+          "primaryFile": "newsday--steve-parks.json",
+          "primaryOutlet": "Newsday",
+          "primaryCritic": "Steve Parks",
+          "secondaryFile": "ap--mark-kennedy.json",
+          "secondaryOutlet": "Associated Press",
+          "secondaryCritic": "Mark Kennedy",
+          "primaryScore": 76,
+          "secondaryScore": 39,
+          "scoreDiff": 37,
           "textSource": "fullText"
         },
         {
@@ -158,6 +203,21 @@
           "textSource": "fullText"
         },
         {
+          "showId": "cyrano-de-bergerac-2012",
+          "method": "similarity",
+          "similarity": 68,
+          "primaryFile": "newsday--linda-winer.json",
+          "primaryOutlet": "Newsday",
+          "primaryCritic": "Linda Winer",
+          "secondaryFile": "amny--matt-windman.json",
+          "secondaryOutlet": "amNY",
+          "secondaryCritic": "Matt Windman",
+          "primaryScore": 46,
+          "secondaryScore": 44,
+          "scoreDiff": 2,
+          "textSource": "fullText"
+        },
+        {
           "showId": "disaster-2016",
           "method": "similarity",
           "similarity": 93,
@@ -173,6 +233,21 @@
           "textSource": "fullText"
         },
         {
+          "showId": "elling-2010",
+          "method": "similarity",
+          "similarity": 44,
+          "primaryFile": "hollywood-reporter--unknown.json",
+          "primaryOutlet": "The Hollywood Reporter",
+          "primaryCritic": "",
+          "secondaryFile": "reuters--david-rooney.json",
+          "secondaryOutlet": "Reuters/Hollywood Reporter",
+          "secondaryCritic": "David Rooney",
+          "primaryScore": 42,
+          "secondaryScore": 44,
+          "scoreDiff": 2,
+          "textSource": "fullText"
+        },
+        {
           "showId": "end-of-the-rainbow-2012",
           "method": "similarity",
           "similarity": 70,
@@ -185,6 +260,21 @@
           "primaryScore": 70,
           "secondaryScore": 65,
           "scoreDiff": 5,
+          "textSource": "fullText"
+        },
+        {
+          "showId": "enron-2010",
+          "method": "similarity",
+          "similarity": 54,
+          "primaryFile": "ap--michael-kuchwara.json",
+          "primaryOutlet": "Associated Press",
+          "primaryCritic": "Michael Kuchwara",
+          "secondaryFile": "abc-news--unknown.json",
+          "secondaryOutlet": "ABC News",
+          "secondaryCritic": "",
+          "primaryScore": 60,
+          "secondaryScore": 56,
+          "scoreDiff": 4,
           "textSource": "fullText"
         },
         {
@@ -214,6 +304,21 @@
           "secondaryCritic": "Ben Brantley",
           "primaryScore": 93,
           "secondaryScore": 94,
+          "scoreDiff": 1,
+          "textSource": "fullText"
+        },
+        {
+          "showId": "follies-2011",
+          "method": "similarity",
+          "similarity": 69,
+          "primaryFile": "newsday--linda-winer.json",
+          "primaryOutlet": "Newsday",
+          "primaryCritic": "Linda Winer",
+          "secondaryFile": "amny--matt-windman.json",
+          "secondaryOutlet": "am New York",
+          "secondaryCritic": "Matt Windman",
+          "primaryScore": 77,
+          "secondaryScore": 76,
           "scoreDiff": 1,
           "textSource": "fullText"
         },
@@ -398,6 +503,21 @@
           "textSource": "fullText"
         },
         {
+          "showId": "in-transit-2016",
+          "method": "similarity",
+          "similarity": 61,
+          "primaryFile": "front-row-center--stanford-friedman.json",
+          "primaryOutlet": "Front Row Center",
+          "primaryCritic": "Stanford Friedman",
+          "secondaryFile": "nytg--william-wolf.json",
+          "secondaryOutlet": "New York Theatre Guide",
+          "secondaryCritic": "William Wolf",
+          "primaryScore": 65,
+          "secondaryScore": 82,
+          "scoreDiff": 17,
+          "textSource": "fullText"
+        },
+        {
           "showId": "irenas-vow-2009",
           "method": "similarity",
           "similarity": 88,
@@ -485,6 +605,21 @@
           "primaryScore": 75,
           "secondaryScore": 78,
           "scoreDiff": 3,
+          "textSource": "fullText"
+        },
+        {
+          "showId": "lobby-hero-2018",
+          "method": "similarity",
+          "similarity": 57,
+          "primaryFile": "nytg--william-wolf.json",
+          "primaryOutlet": "New York Theatre Guide",
+          "primaryCritic": "William Wolf",
+          "secondaryFile": "front-row-center--kathleen-campion.json",
+          "secondaryOutlet": "Front Row Center",
+          "secondaryCritic": "Kathleen Campion",
+          "primaryScore": 79,
+          "secondaryScore": 78,
+          "scoreDiff": 1,
           "textSource": "fullText"
         },
         {
@@ -578,6 +713,36 @@
           "textSource": "fullText"
         },
         {
+          "showId": "oklahoma-2019",
+          "method": "similarity",
+          "similarity": 69,
+          "primaryFile": "chicagotribune--chris-jones.json",
+          "primaryOutlet": "Chicago Tribune",
+          "primaryCritic": "Chris Jones",
+          "secondaryFile": "nydailynews--broadway-news.json",
+          "secondaryOutlet": "New York Daily News",
+          "secondaryCritic": "Broadway News",
+          "primaryScore": 63,
+          "secondaryScore": 64,
+          "scoreDiff": 1,
+          "textSource": "fullText"
+        },
+        {
+          "showId": "on-the-twentieth-century-2015",
+          "method": "similarity",
+          "similarity": 58,
+          "primaryFile": "front-row-center--tulis-mccall.json",
+          "primaryOutlet": "The Front Row Center",
+          "primaryCritic": "Tulis McCall",
+          "secondaryFile": "nytg--brian-scott-lipton.json",
+          "secondaryOutlet": "New York Theatre Guide",
+          "secondaryCritic": "Brian Scott Lipton",
+          "primaryScore": 93,
+          "secondaryScore": 91,
+          "scoreDiff": 2,
+          "textSource": "fullText"
+        },
+        {
           "showId": "on-your-feet-2015",
           "method": "similarity",
           "similarity": 76,
@@ -623,6 +788,21 @@
           "textSource": "fullText"
         },
         {
+          "showId": "oslo-2017",
+          "method": "similarity",
+          "similarity": 52,
+          "primaryFile": "nytg--david-gordon.json",
+          "primaryOutlet": "New York Theatre Guide",
+          "primaryCritic": "David Gordon",
+          "secondaryFile": "front-row-center--kathleen-campion.json",
+          "secondaryOutlet": "Front Row Center",
+          "secondaryCritic": "Kathleen Campion",
+          "primaryScore": 82,
+          "secondaryScore": 81,
+          "scoreDiff": 1,
+          "textSource": "fullText"
+        },
+        {
           "showId": "parade-2023",
           "method": "similarity",
           "similarity": 88,
@@ -635,6 +815,21 @@
           "primaryScore": 78,
           "secondaryScore": 90,
           "scoreDiff": 12,
+          "textSource": "fullText"
+        },
+        {
+          "showId": "peter-pan-goes-wrong-2023",
+          "method": "similarity",
+          "similarity": 69,
+          "primaryFile": "nydailynews--new-york-daily-news.json",
+          "primaryOutlet": "New York Daily News",
+          "primaryCritic": "New York Daily News",
+          "secondaryFile": "chicagotribune--chris-jones.json",
+          "secondaryOutlet": "Chicago Tribune",
+          "secondaryCritic": "Chris Jones",
+          "primaryScore": 83,
+          "secondaryScore": 84,
+          "scoreDiff": 1,
           "textSource": "fullText"
         },
         {
@@ -833,6 +1028,21 @@
           "textSource": "fullText"
         },
         {
+          "showId": "take-me-out-2022",
+          "method": "similarity",
+          "similarity": 47,
+          "primaryFile": "guardian--adrian-horton.json",
+          "primaryOutlet": "The Guardian",
+          "primaryCritic": "Adrian Horton",
+          "secondaryFile": "vulture--helen-shaw.json",
+          "secondaryOutlet": "Vulture",
+          "secondaryCritic": "Helen Shaw",
+          "primaryScore": null,
+          "secondaryScore": 73,
+          "scoreDiff": 73,
+          "textSource": "fullText"
+        },
+        {
           "showId": "the-bands-visit-2017",
           "method": "similarity",
           "similarity": 99,
@@ -923,6 +1133,21 @@
           "textSource": "fullText"
         },
         {
+          "showId": "the-humans-2016",
+          "method": "similarity",
+          "similarity": 68,
+          "primaryFile": "front-row-center--kathleen-campion.json",
+          "primaryOutlet": "Front Row Center",
+          "primaryCritic": "Kathleen Campion",
+          "secondaryFile": "nytg--tulis-mccall.json",
+          "secondaryOutlet": "New York Theatre Guide",
+          "secondaryCritic": "Tulis McCall",
+          "primaryScore": 89,
+          "secondaryScore": 89,
+          "scoreDiff": 0,
+          "textSource": "fullText"
+        },
+        {
           "showId": "the-music-man-2022",
           "method": "similarity",
           "similarity": 95,
@@ -953,175 +1178,8 @@
           "textSource": "fullText"
         },
         {
-          "showId": "the-waverly-gallery-2018",
-          "method": "similarity",
-          "similarity": 79,
-          "primaryFile": "chicagotribune--matt-windman.json",
-          "primaryOutlet": "Chicago Tribune",
-          "primaryCritic": "Matt Windman",
-          "secondaryFile": "nydailynews--chris-jones.json",
-          "secondaryOutlet": "New York Daily News",
-          "secondaryCritic": "Chris Jones",
-          "primaryScore": 79,
-          "secondaryScore": 84,
-          "scoreDiff": 5,
-          "textSource": "fullText"
-        }
-      ],
-      "similarity+llm": [
-        {
-          "showId": "act-one-2014",
-          "method": "similarity+llm",
-          "similarity": 60,
-          "primaryFile": "nytg--david-roberts.json",
-          "primaryOutlet": "New York Theatre Guide",
-          "primaryCritic": "David Roberts",
-          "secondaryFile": "front-row-center--tulis-mccall.json",
-          "secondaryOutlet": "The Front Row Center",
-          "secondaryCritic": "Tulis McCall",
-          "primaryScore": 80,
-          "secondaryScore": 58,
-          "scoreDiff": 22,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "american-idiot-2010",
-          "method": "similarity+llm",
-          "similarity": 49,
-          "primaryFile": "hollywood-reporter--david-rooney.json",
-          "primaryOutlet": "The Hollywood Reporter",
-          "primaryCritic": "David Rooney",
-          "secondaryFile": "reuters--frank-scheck.json",
-          "secondaryOutlet": "Reuters",
-          "secondaryCritic": "Frank Scheck",
-          "primaryScore": 62,
-          "secondaryScore": 65,
-          "scoreDiff": 3,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "cyrano-de-bergerac-2012",
-          "method": "similarity+llm",
-          "similarity": 68,
-          "primaryFile": "newsday--linda-winer.json",
-          "primaryOutlet": "Newsday",
-          "primaryCritic": "Linda Winer",
-          "secondaryFile": "amny--matt-windman.json",
-          "secondaryOutlet": "amNY",
-          "secondaryCritic": "Matt Windman",
-          "primaryScore": 46,
-          "secondaryScore": 44,
-          "scoreDiff": 2,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "elling-2010",
-          "method": "similarity+llm",
-          "similarity": 44,
-          "primaryFile": "hollywood-reporter--unknown.json",
-          "primaryOutlet": "The Hollywood Reporter",
-          "primaryCritic": "",
-          "secondaryFile": "reuters--david-rooney.json",
-          "secondaryOutlet": "Reuters/Hollywood Reporter",
-          "secondaryCritic": "David Rooney",
-          "primaryScore": 42,
-          "secondaryScore": 44,
-          "scoreDiff": 2,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "follies-2011",
-          "method": "similarity+llm",
-          "similarity": 69,
-          "primaryFile": "newsday--linda-winer.json",
-          "primaryOutlet": "Newsday",
-          "primaryCritic": "Linda Winer",
-          "secondaryFile": "amny--matt-windman.json",
-          "secondaryOutlet": "am New York",
-          "secondaryCritic": "Matt Windman",
-          "primaryScore": 77,
-          "secondaryScore": 76,
-          "scoreDiff": 1,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "lobby-hero-2018",
-          "method": "similarity+llm",
-          "similarity": 57,
-          "primaryFile": "nytg--william-wolf.json",
-          "primaryOutlet": "New York Theatre Guide",
-          "primaryCritic": "William Wolf",
-          "secondaryFile": "front-row-center--kathleen-campion.json",
-          "secondaryOutlet": "Front Row Center",
-          "secondaryCritic": "Kathleen Campion",
-          "primaryScore": 79,
-          "secondaryScore": 78,
-          "scoreDiff": 1,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "oklahoma-2019",
-          "method": "similarity+llm",
-          "similarity": 69,
-          "primaryFile": "chicagotribune--chris-jones.json",
-          "primaryOutlet": "Chicago Tribune",
-          "primaryCritic": "Chris Jones",
-          "secondaryFile": "nydailynews--broadway-news.json",
-          "secondaryOutlet": "New York Daily News",
-          "secondaryCritic": "Broadway News",
-          "primaryScore": 63,
-          "secondaryScore": 64,
-          "scoreDiff": 1,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "peter-pan-goes-wrong-2023",
-          "method": "similarity+llm",
-          "similarity": 69,
-          "primaryFile": "nydailynews--new-york-daily-news.json",
-          "primaryOutlet": "New York Daily News",
-          "primaryCritic": "New York Daily News",
-          "secondaryFile": "chicagotribune--chris-jones.json",
-          "secondaryOutlet": "Chicago Tribune",
-          "secondaryCritic": "Chris Jones",
-          "primaryScore": 83,
-          "secondaryScore": 84,
-          "scoreDiff": 1,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "take-me-out-2022",
-          "method": "similarity+llm",
-          "similarity": 47,
-          "primaryFile": "guardian--adrian-horton.json",
-          "primaryOutlet": "The Guardian",
-          "primaryCritic": "Adrian Horton",
-          "secondaryFile": "vulture--helen-shaw.json",
-          "secondaryOutlet": "Vulture",
-          "secondaryCritic": "Helen Shaw",
-          "primaryScore": null,
-          "secondaryScore": 73,
-          "scoreDiff": 73,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "the-humans-2016",
-          "method": "similarity+llm",
-          "similarity": 68,
-          "primaryFile": "front-row-center--kathleen-campion.json",
-          "primaryOutlet": "Front Row Center",
-          "primaryCritic": "Kathleen Campion",
-          "secondaryFile": "nytg--tulis-mccall.json",
-          "secondaryOutlet": "New York Theatre Guide",
-          "secondaryCritic": "Tulis McCall",
-          "primaryScore": 89,
-          "secondaryScore": 89,
-          "scoreDiff": 0,
-          "textSource": "fullText"
-        },
-        {
           "showId": "the-price-2017",
-          "method": "similarity+llm",
+          "method": "similarity",
           "similarity": 64,
           "primaryFile": "front-row-center--tulis-mccall.json",
           "primaryOutlet": "Front Row Center",
@@ -1135,8 +1193,23 @@
           "textSource": "fullText"
         },
         {
+          "showId": "the-waverly-gallery-2018",
+          "method": "similarity",
+          "similarity": 79,
+          "primaryFile": "chicagotribune--matt-windman.json",
+          "primaryOutlet": "Chicago Tribune",
+          "primaryCritic": "Matt Windman",
+          "secondaryFile": "nydailynews--chris-jones.json",
+          "secondaryOutlet": "New York Daily News",
+          "secondaryCritic": "Chris Jones",
+          "primaryScore": 79,
+          "secondaryScore": 84,
+          "scoreDiff": 5,
+          "textSource": "fullText"
+        },
+        {
           "showId": "travesties-2018",
-          "method": "similarity+llm",
+          "method": "similarity",
           "similarity": 53,
           "primaryFile": "nytg--tom-millward.json",
           "primaryOutlet": "New York Theatre Guide",
@@ -1151,7 +1224,7 @@
         },
         {
           "showId": "venus-in-fur-2011",
-          "method": "similarity+llm",
+          "method": "similarity",
           "similarity": 69,
           "primaryFile": "newsday--linda-winer.json",
           "primaryOutlet": "Newsday",
@@ -1225,21 +1298,6 @@
           "secondaryScore": null,
           "scoreDiff": 0,
           "textSource": "excerpts"
-        },
-        {
-          "showId": "spring-awakening-2015",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "ap--mark-kennedy.json",
-          "primaryOutlet": "Associated Press",
-          "primaryCritic": "Mark Kennedy",
-          "secondaryFile": "abc-news--mark-kennedy.json",
-          "secondaryOutlet": "ABC News",
-          "secondaryCritic": "Mark Kennedy",
-          "primaryScore": 89,
-          "secondaryScore": 84,
-          "scoreDiff": 5,
-          "textSource": "fullText"
         }
       ]
     }
@@ -1262,7 +1320,7 @@
     },
     {
       "showId": "act-one-2014",
-      "method": "similarity+llm",
+      "method": "similarity",
       "similarity": 60,
       "primaryFile": "nytg--david-roberts.json",
       "primaryOutlet": "New York Theatre Guide",
@@ -1277,7 +1335,7 @@
     },
     {
       "showId": "american-idiot-2010",
-      "method": "similarity+llm",
+      "method": "similarity",
       "similarity": 49,
       "primaryFile": "hollywood-reporter--david-rooney.json",
       "primaryOutlet": "The Hollywood Reporter",
@@ -1348,6 +1406,21 @@
       "primaryScore": 90,
       "secondaryScore": 91,
       "scoreDiff": 1,
+      "textSource": "fullText"
+    },
+    {
+      "showId": "beautiful-the-carole-king-musical-2014",
+      "method": "similarity",
+      "similarity": 61,
+      "primaryFile": "newsday--steve-parks.json",
+      "primaryOutlet": "Newsday",
+      "primaryCritic": "Steve Parks",
+      "secondaryFile": "ap--mark-kennedy.json",
+      "secondaryOutlet": "Associated Press",
+      "secondaryCritic": "Mark Kennedy",
+      "primaryScore": 76,
+      "secondaryScore": 39,
+      "scoreDiff": 37,
       "textSource": "fullText"
     },
     {
@@ -1427,7 +1500,7 @@
     },
     {
       "showId": "cyrano-de-bergerac-2012",
-      "method": "similarity+llm",
+      "method": "similarity",
       "similarity": 68,
       "primaryFile": "newsday--linda-winer.json",
       "primaryOutlet": "Newsday",
@@ -1457,7 +1530,7 @@
     },
     {
       "showId": "elling-2010",
-      "method": "similarity+llm",
+      "method": "similarity",
       "similarity": 44,
       "primaryFile": "hollywood-reporter--unknown.json",
       "primaryOutlet": "The Hollywood Reporter",
@@ -1483,6 +1556,21 @@
       "primaryScore": 70,
       "secondaryScore": 65,
       "scoreDiff": 5,
+      "textSource": "fullText"
+    },
+    {
+      "showId": "enron-2010",
+      "method": "similarity",
+      "similarity": 54,
+      "primaryFile": "ap--michael-kuchwara.json",
+      "primaryOutlet": "Associated Press",
+      "primaryCritic": "Michael Kuchwara",
+      "secondaryFile": "abc-news--unknown.json",
+      "secondaryOutlet": "ABC News",
+      "secondaryCritic": "",
+      "primaryScore": 60,
+      "secondaryScore": 56,
+      "scoreDiff": 4,
       "textSource": "fullText"
     },
     {
@@ -1517,7 +1605,7 @@
     },
     {
       "showId": "follies-2011",
-      "method": "similarity+llm",
+      "method": "similarity",
       "similarity": 69,
       "primaryFile": "newsday--linda-winer.json",
       "primaryOutlet": "Newsday",
@@ -1741,6 +1829,21 @@
       "textSource": "fullText"
     },
     {
+      "showId": "in-transit-2016",
+      "method": "similarity",
+      "similarity": 61,
+      "primaryFile": "front-row-center--stanford-friedman.json",
+      "primaryOutlet": "Front Row Center",
+      "primaryCritic": "Stanford Friedman",
+      "secondaryFile": "nytg--william-wolf.json",
+      "secondaryOutlet": "New York Theatre Guide",
+      "secondaryCritic": "William Wolf",
+      "primaryScore": 65,
+      "secondaryScore": 82,
+      "scoreDiff": 17,
+      "textSource": "fullText"
+    },
+    {
       "showId": "irenas-vow-2009",
       "method": "similarity",
       "similarity": 88,
@@ -1832,7 +1935,7 @@
     },
     {
       "showId": "lobby-hero-2018",
-      "method": "similarity+llm",
+      "method": "similarity",
       "similarity": 57,
       "primaryFile": "nytg--william-wolf.json",
       "primaryOutlet": "New York Theatre Guide",
@@ -1967,7 +2070,7 @@
     },
     {
       "showId": "oklahoma-2019",
-      "method": "similarity+llm",
+      "method": "similarity",
       "similarity": 69,
       "primaryFile": "chicagotribune--chris-jones.json",
       "primaryOutlet": "Chicago Tribune",
@@ -1978,6 +2081,21 @@
       "primaryScore": 63,
       "secondaryScore": 64,
       "scoreDiff": 1,
+      "textSource": "fullText"
+    },
+    {
+      "showId": "on-the-twentieth-century-2015",
+      "method": "similarity",
+      "similarity": 58,
+      "primaryFile": "front-row-center--tulis-mccall.json",
+      "primaryOutlet": "The Front Row Center",
+      "primaryCritic": "Tulis McCall",
+      "secondaryFile": "nytg--brian-scott-lipton.json",
+      "secondaryOutlet": "New York Theatre Guide",
+      "secondaryCritic": "Brian Scott Lipton",
+      "primaryScore": 93,
+      "secondaryScore": 91,
+      "scoreDiff": 2,
       "textSource": "fullText"
     },
     {
@@ -2026,6 +2144,21 @@
       "textSource": "fullText"
     },
     {
+      "showId": "oslo-2017",
+      "method": "similarity",
+      "similarity": 52,
+      "primaryFile": "nytg--david-gordon.json",
+      "primaryOutlet": "New York Theatre Guide",
+      "primaryCritic": "David Gordon",
+      "secondaryFile": "front-row-center--kathleen-campion.json",
+      "secondaryOutlet": "Front Row Center",
+      "secondaryCritic": "Kathleen Campion",
+      "primaryScore": 82,
+      "secondaryScore": 81,
+      "scoreDiff": 1,
+      "textSource": "fullText"
+    },
+    {
       "showId": "parade-2023",
       "method": "similarity",
       "similarity": 88,
@@ -2042,7 +2175,7 @@
     },
     {
       "showId": "peter-pan-goes-wrong-2023",
-      "method": "similarity+llm",
+      "method": "similarity",
       "similarity": 69,
       "primaryFile": "nydailynews--new-york-daily-news.json",
       "primaryOutlet": "New York Daily News",
@@ -2192,21 +2325,6 @@
     },
     {
       "showId": "spring-awakening-2015",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "ap--mark-kennedy.json",
-      "primaryOutlet": "Associated Press",
-      "primaryCritic": "Mark Kennedy",
-      "secondaryFile": "abc-news--mark-kennedy.json",
-      "secondaryOutlet": "ABC News",
-      "secondaryCritic": "Mark Kennedy",
-      "primaryScore": 89,
-      "secondaryScore": 84,
-      "scoreDiff": 5,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "spring-awakening-2015",
       "method": "similarity",
       "similarity": 84,
       "primaryFile": "dctheatrescene--var-block.json",
@@ -2267,7 +2385,7 @@
     },
     {
       "showId": "take-me-out-2022",
-      "method": "similarity+llm",
+      "method": "similarity",
       "similarity": 47,
       "primaryFile": "guardian--adrian-horton.json",
       "primaryOutlet": "The Guardian",
@@ -2372,7 +2490,7 @@
     },
     {
       "showId": "the-humans-2016",
-      "method": "similarity+llm",
+      "method": "similarity",
       "similarity": 68,
       "primaryFile": "front-row-center--kathleen-campion.json",
       "primaryOutlet": "Front Row Center",
@@ -2417,7 +2535,7 @@
     },
     {
       "showId": "the-price-2017",
-      "method": "similarity+llm",
+      "method": "similarity",
       "similarity": 64,
       "primaryFile": "front-row-center--tulis-mccall.json",
       "primaryOutlet": "Front Row Center",
@@ -2447,7 +2565,7 @@
     },
     {
       "showId": "travesties-2018",
-      "method": "similarity+llm",
+      "method": "similarity",
       "similarity": 53,
       "primaryFile": "nytg--tom-millward.json",
       "primaryOutlet": "New York Theatre Guide",
@@ -2462,7 +2580,7 @@
     },
     {
       "showId": "venus-in-fur-2011",
-      "method": "similarity+llm",
+      "method": "similarity",
       "similarity": 69,
       "primaryFile": "newsday--linda-winer.json",
       "primaryOutlet": "Newsday",
