@@ -1,4 +1,55 @@
 {
+  "runDate": "2026-06-02T02:59:01.254Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 300,
+    "priority": "all",
+    "showFilter": "",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 38,
+    "failed": 588,
+    "skipped": 0,
+    "successRate": "6.1%"
+  },
+  "tierBreakdown": {
+    "playwright": 24,
+    "amp": 0,
+    "browserbase": 3,
+    "directCookies": 0,
+    "scrapingbee": 7,
+    "brightdata": 3,
+    "archiveToday": 12,
+    "archive": 8
+  },
+  "statistics": {
+    "tier1Attempts": 9,
+    "tier1Success": 6,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 1,
+    "tier2Attempts": 4,
+    "tier2Success": 4,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 7,
+    "tier4Success": 3,
+    "totalFailed": 203,
+    "scrapingBeePageCredits": 22,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.2,
+    "urlDiscoveryAttempts": 205,
+    "urlDiscoverySuccess": 1,
+    "urlDiscoveryCapped": 0
+  },
   "processed": [
     "beetlejuice-west-end-2026/british-theatre--unknown.json",
     "dark-of-the-moon-west-end-2026/thereviewshub--unknown.json",
@@ -629,8 +680,7 @@
     "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
     "the-loved-ones-off-broadway-2026/broadwayworld--team-bww.json"
   ],
-  "skipped": [],
-  "tierBreakdown": {
+  "tierDetails": {
     "playwright": [
       "beetlejuice-west-end-2026/british-theatre--unknown.json",
       "dark-of-the-moon-west-end-2026/thereviewshub--unknown.json",
@@ -690,10 +740,7 @@
       "data/review-texts/equus-west-end-2026/thestage--holly-o.json",
       "data/review-texts/jerome-off-broadway-2025/talkinbroadway--unknown.json",
       "data/review-texts/jerome-off-broadway-2025/talkinbroadway--unknown.json",
-      "data/review-texts/jerome-off-broadway-2025/talkinbroadway--unknown.json",
-      "data/review-texts/jerome-off-broadway-2025/talkinbroadway--unknown.json",
-      "data/review-texts/jerome-off-broadway-2025/talkinbroadway--unknown.json",
-      "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json"
+      "data/review-texts/jerome-off-broadway-2025/talkinbroadway--unknown.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -706,123 +753,12 @@
       "les-miserables-1987/broadwayworld--stage-tube.json"
     ]
   },
-  "startTime": "2026-06-01T16:25:46.508Z",
-  "lastProcessed": "the-loved-ones-off-broadway-2026/broadwayworld--team-bww.json",
-  "log": [
+  "failuresByOutlet": {},
+  "urlDiscoveries": [
     {
-      "t": "2026-06-01T21:42:39.705Z",
-      "event": "bb-session",
-      "session": "0fbc3d09",
-      "url": "https://charingcrosstheatre.co.uk/theatre/dark-of-the-moon"
-    },
-    {
-      "t": "2026-06-01T21:43:33.667Z",
-      "event": "bb-session",
-      "session": "34c227bf",
-      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
-    },
-    {
-      "t": "2026-06-01T21:46:21.375Z",
-      "event": "bb-session",
-      "session": "45d88183",
-      "url": "https://www.thereviewshub.com/equus-menier-chocolate-factory-london/"
-    },
-    {
-      "t": "2026-06-01T21:48:30.120Z",
-      "event": "bb-session",
-      "session": "16156ae0",
-      "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=27853"
-    },
-    {
-      "t": "2026-06-01T22:17:48.238Z",
-      "event": "bb-session",
-      "session": "4aae2392",
-      "url": "https://charingcrosstheatre.co.uk/theatre/dark-of-the-moon"
-    },
-    {
-      "t": "2026-06-01T23:31:19.226Z",
-      "event": "bb-session",
-      "session": "67c2ac0b",
-      "url": "https://charingcrosstheatre.co.uk/theatre/dark-of-the-moon"
-    },
-    {
-      "t": "2026-06-02T00:07:19.417Z",
-      "event": "bb-session",
-      "session": "4bdd05b4",
-      "url": "https://charingcrosstheatre.co.uk/theatre/dark-of-the-moon"
-    },
-    {
-      "t": "2026-06-02T00:08:15.504Z",
-      "event": "bb-session",
-      "session": "26f28367",
-      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
-    },
-    {
-      "t": "2026-06-02T00:44:41.699Z",
-      "event": "bb-session",
-      "session": "263f47cb",
-      "url": "https://charingcrosstheatre.co.uk/theatre/dark-of-the-moon"
-    },
-    {
-      "t": "2026-06-02T00:45:36.856Z",
-      "event": "bb-session",
-      "session": "56ec9a5c",
-      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
-    },
-    {
-      "t": "2026-06-02T00:48:40.254Z",
-      "event": "bb-session",
-      "session": "e02ce7fe",
-      "url": "https://thestage.co.uk/reviews/equus-review-menier-chocolate-factory-london-lind"
-    },
-    {
-      "t": "2026-06-02T00:48:41.219Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
-    {
-      "t": "2026-06-02T01:24:08.938Z",
-      "event": "bb-session",
-      "session": "134bde22",
-      "url": "https://a.talkinbroadway.com/allthatchat_new/d.php?id=2626606"
-    },
-    {
-      "t": "2026-06-02T01:24:09.416Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-06-02T01:32:56.277Z",
-      "event": "bb-session",
-      "session": "daaf552c",
-      "url": "https://a.talkinbroadway.com/allthatchat_new/d.php?id=2626606"
-    },
-    {
-      "t": "2026-06-02T01:32:57.334Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-06-02T01:42:36.257Z",
-      "event": "bb-session",
-      "session": "cd9ed95b",
-      "url": "https://a.talkinbroadway.com/allthatchat_new/d.php?id=2626606"
-    },
-    {
-      "t": "2026-06-02T01:42:36.813Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-06-02T02:28:18.277Z",
-      "event": "bb-session",
-      "session": "7ad51112",
-      "url": "https://variety.com/2026/tv/reviews/daniel-radcliffe-every-brilliant-thing-broad"
-    },
-    {
-      "t": "2026-06-02T02:28:19.326Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
+      "reviewId": "beaches-2026/billboard--rebecca-milzoff.json",
+      "oldUrl": "https://www.billboard.com/music/pop/jessica-vosk-beaches-broadway-otto-titsling-marc-shaiman-1236236228/",
+      "newUrl": "https://ca.billboard.com/the-beaches-billboard-canada-airplay-charts"
     }
   ]
 }
