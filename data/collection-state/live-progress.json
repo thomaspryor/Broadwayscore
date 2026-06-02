@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-06-02T12:14:39.339Z",
+  "updatedAt": "2026-06-02T13:00:12.372Z",
   "processed": 6,
-  "failed": 99,
-  "successRate": "5.7%",
+  "failed": 103,
+  "successRate": "5.5%",
   "tierBreakdown": {
     "playwright": 3,
     "amp": 0,
@@ -10,10 +10,10 @@
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 1,
-    "archiveToday": 5,
+    "archiveToday": 6,
     "archive": 2
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-06-02T09:36:10.539Z",
@@ -61,6 +61,17 @@
       "event": "bb-session",
       "session": "0e4eaa72",
       "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=27853"
+    },
+    {
+      "t": "2026-06-02T12:58:56.098Z",
+      "event": "bb-session",
+      "session": "6b74b726",
+      "url": "https://a.talkinbroadway.com/allthatchat_new/d.php?id=2626606"
+    },
+    {
+      "t": "2026-06-02T12:58:56.851Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
