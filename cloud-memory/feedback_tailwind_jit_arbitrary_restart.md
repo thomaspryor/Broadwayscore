@@ -2,6 +2,7 @@
 name: feedback-tailwind-jit-arbitrary-restart
 description: New Tailwind arbitrary classes (e.g. min-w-[760px]) added mid-dev-server are NOT picked up by hot-reload; CSS computes as default (0). Restart dev server to force a Tailwind rescan.
 metadata:
+  archived: true
   type: feedback
   originSessionId: dbb4711d-b2fd-4824-a30c-440ee0feee95
 ---
