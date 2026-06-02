@@ -627,7 +627,17 @@
     "mary-poppins-2006/variety--charles-isherwood.json",
     "tarzan-2006/variety--charles-isherwood.json",
     "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
-    "the-loved-ones-off-broadway-2026/broadwayworld--team-bww.json"
+    "the-loved-ones-off-broadway-2026/broadwayworld--team-bww.json",
+    "war-horse-west-end-2026/standard--nick-curtis.json",
+    "war-horse-west-end-2026/whatsonstage--sarah-crompton.json",
+    "beetlejuice-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "the-p-word-off-west-end-2026/broadwayworld--aliya-al-hassan.json",
+    "the-p-word-off-west-end-2026/whatsonstage--frey-kwa-hawking.json",
+    "dark-of-the-moon-west-end-2026/guardian-uk--unknown.json",
+    "dark-of-the-moon-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "dark-of-the-moon-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "dark-of-the-moon-west-end-2026/artsdesk--unknown.json",
+    "dark-of-the-moon-west-end-2026/cambridge--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -707,7 +717,7 @@
     ]
   },
   "startTime": "2026-06-01T16:25:46.508Z",
-  "lastProcessed": "the-loved-ones-off-broadway-2026/broadwayworld--team-bww.json",
+  "lastProcessed": "dark-of-the-moon-west-end-2026/cambridge--unknown.json",
   "log": [
     {
       "t": "2026-06-01T21:42:39.705Z",
@@ -823,6 +833,18 @@
       "t": "2026-06-02T02:28:19.326Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-02T07:44:25.956Z",
+      "event": "bb-session",
+      "session": "1fe01293",
+      "url": "https://charingcrosstheatre.co.uk/theatre/dark-of-the-moon"
+    },
+    {
+      "t": "2026-06-02T07:45:28.287Z",
+      "event": "bb-session",
+      "session": "4c28b2ff",
+      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
     }
   ]
 }
