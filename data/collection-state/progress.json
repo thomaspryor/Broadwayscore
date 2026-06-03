@@ -3,7 +3,8 @@
     "and-then-the-rodeo-burned-down-off-broadway-2026/nytg--unknown.json",
     "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
     "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
-    "equus-west-end-2026/timeout--andrzej-lukowski.json"
+    "equus-west-end-2026/timeout--andrzej-lukowski.json",
+    "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json"
   ],
   "failed": [
     "well-ill-let-you-go-off-broadway-2026/ny1--spectrum-news-staff.json",
@@ -32,7 +33,9 @@
     "equus-west-end-2026/thereviewshub--unknown.json",
     "equus-west-end-2026/all-that-dazzles-uk--unknown.json",
     "equus-west-end-2026/artsdesk--unknown.json",
-    "equus-west-end-2026/thestage--holly-o.json"
+    "equus-west-end-2026/thestage--holly-o.json",
+    "equus-west-end-2026/times-uk--clive-davis.json",
+    "end-of-the-rainbow-west-end-2026/all-that-dazzles-uk--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -49,14 +52,16 @@
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/well-ill-let-you-go-off-broadway-2026/ny1--spectrum-news-staff.json",
-      "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json"
+      "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
+      "data/review-texts/equus-west-end-2026/thestage--holly-o.json"
     ],
     "archive": [
-      "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
+      "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+      "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json"
     ]
   },
   "startTime": "2026-06-03T09:40:30.835Z",
-  "lastProcessed": "equus-west-end-2026/thestage--holly-o.json",
+  "lastProcessed": "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
   "log": [
     {
       "t": "2026-06-03T09:41:55.824Z",
@@ -69,6 +74,17 @@
       "event": "bb-session",
       "session": "86216072",
       "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
+    },
+    {
+      "t": "2026-06-03T10:00:14.451Z",
+      "event": "bb-session",
+      "session": "78c33195",
+      "url": "https://thestage.co.uk/reviews/equus-review-menier-chocolate-factory-london-lind"
+    },
+    {
+      "t": "2026-06-03T10:00:15.096Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
