@@ -113,31 +113,20 @@ test('isStuckInPreviews fires only when the show would actually display a score'
   assert.equal(isStuckInPreviews(null, { count: 10, tier1And2: 5 }), false);
 });
 
-test('chooseOpeningDateBackfill prefers press night, falls back to previewsStartDate when dateless', () => {
-  // Normal case: review cluster present → press night wins.
+test('chooseOpeningDateBackfill derives openingDate from press night only, never fabricates', () => {
+  // Normal case: review cluster present → press night (modal date).
   assert.deepEqual(
     chooseOpeningDateBackfill({ openingDate: null, previewsStartDate: '2026-05-01' }, ['2026-05-31', '2026-05-31', '2026-06-01'], isReached),
     { date: '2026-05-31', source: 'review-derived-press-night' },
   );
-  // P1: every review dateless → fall back to previewsStartDate (past) so the show
-  // doesn't flip to open while staying openingDate:null.
-  assert.deepEqual(
-    chooseOpeningDateBackfill({ openingDate: null, previewsStartDate: '2026-05-01' }, [], isReached),
-    { date: '2026-05-01', source: 'review-driven-fallback-previews-start' },
-  );
-  // Dateless AND previewsStartDate is in the future (upcoming show) → write nothing
-  // (a future openingDate would oscillate via Check 2c).
-  assert.equal(
-    chooseOpeningDateBackfill({ openingDate: null, previewsStartDate: '2027-01-01' }, [], isReached),
-    null,
-  );
-  // Dateless with no previewsStartDate → null (status still flips; score unstuck).
+  // Every review dateless → null. We do NOT fabricate from previewsStartDate (that's
+  // previews start, not opening; openingDate renders verbatim as "Opened {date}").
+  // The status still flips; openingDate stays null (a tolerated state for open shows).
+  assert.equal(chooseOpeningDateBackfill({ openingDate: null, previewsStartDate: '2026-05-01' }, [], isReached), null);
+  // Dateless with no previewsStartDate → null.
   assert.equal(chooseOpeningDateBackfill({ openingDate: null }, [], isReached), null);
-  // A future-only press night with a past previewsStartDate → fall back, never write the future date.
-  assert.deepEqual(
-    chooseOpeningDateBackfill({ openingDate: null, previewsStartDate: '2026-05-01' }, ['2027-03-03'], isReached),
-    { date: '2026-05-01', source: 'review-driven-fallback-previews-start' },
-  );
+  // A future-only press night → null, never write the future date (Check 2c oscillation guard).
+  assert.equal(chooseOpeningDateBackfill({ openingDate: null, previewsStartDate: '2026-05-01' }, ['2027-03-03'], isReached), null);
   // Never overwrite an existing openingDate.
   assert.equal(chooseOpeningDateBackfill({ openingDate: '2026-04-04', previewsStartDate: '2026-05-01' }, ['2026-05-31'], isReached), null);
 });

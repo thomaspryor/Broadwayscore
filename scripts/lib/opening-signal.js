@@ -128,25 +128,29 @@ function isStuckInPreviews(show, counts) {
 }
 
 /**
- * Choose the openingDate to backfill when flipping a stuck show to open.
- * Prefers the review cluster (press night); falls back to previewsStartDate when
- * every review is dateless (~16% of reviews carry no publishDate) so the show
- * doesn't flip to open while staying openingDate:null. Only ever returns a
- * past/today date — a future date would let Check 2c revert open→previews
- * (oscillation). Returns { date, source } or null (leave openingDate null;
- * status still flips, which already unsticks the score).
+ * Choose the openingDate to backfill when flipping a stuck show to open, derived
+ * ONLY from the review cluster (press night = modal review date). Returns
+ * { date, source } when a past/today press night is derivable, else null.
  *
- * `isDateReached` is injected (date <= today) so the lib stays deterministic and
- * testable without touching the clock.
+ * Deliberately does NOT fabricate a date from previewsStartDate when reviews are
+ * dateless: previewsStartDate is the previews start, not opening night, and
+ * openingDate is surfaced verbatim as "Opened {date}" (src/.../ShowHeroRedesign)
+ * and drives opening-night lookback automation. A knowably-early date there is
+ * worse than null — the project rule is never fake data (CLAUDE.md). `open` with
+ * a null openingDate is an already-tolerated state (validate-data does not flag
+ * it; the page simply omits the "Opened" line). The status flip alone unsticks
+ * the score, which is the actual fix; the caller logs the rare null case so a
+ * real openingDate can be filled later.
+ *
+ * Only ever returns a past/today date — a future date would let Check 2c revert
+ * open→previews (oscillation). `isDateReached` is injected (date <= today) so the
+ * lib stays deterministic and testable without touching the clock.
  */
 function chooseOpeningDateBackfill(show, dates, isDateReached) {
   if (!show || show.openingDate) return null;
   const pressNight = estimatePressNight(dates);
   if (pressNight && isDateReached(pressNight)) {
     return { date: pressNight, source: 'review-derived-press-night' };
-  }
-  if (show.previewsStartDate && isDateReached(show.previewsStartDate)) {
-    return { date: show.previewsStartDate, source: 'review-driven-fallback-previews-start' };
   }
   return null;
 }
