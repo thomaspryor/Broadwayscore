@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-06-03T08:03:42.141Z",
+  "updatedAt": "2026-06-03T11:42:48.050Z",
   "shows": {
     "beetlejuice-west-end-2026": {
       "openingDate": "2026-05-28",
@@ -206,7 +206,14 @@
     },
     "war-horse-west-end-2026": {
       "openingDate": "2026-06-02",
-      "snapshot": [],
+      "snapshot": [
+        {
+          "outletId": "timeout-london",
+          "criticName": "Andrzej Lukowski",
+          "url": "https://www.timeout.com/london/theatre/war-horse-review",
+          "scored": true
+        }
+      ],
       "lastAlertAt": null
     },
     "and-then-the-rodeo-burned-down-off-broadway-2026": {
@@ -231,6 +238,12 @@
           "scored": true
         },
         {
+          "outletId": "nytg",
+          "criticName": "Amelia Merrill",
+          "url": "https://www.newyorktheatreguide.com/reviews/and-then-the-rodeo-burned-down-off-broadway-review",
+          "scored": true
+        },
+        {
           "outletId": "talkinbroadway",
           "criticName": "Unknown",
           "url": "https://www.talkinbroadway.com/page/ob/05_31_26.html",
@@ -243,6 +256,11 @@
           "scored": true
         }
       ],
+      "lastAlertAt": null
+    },
+    "driftwood-west-end-2026": {
+      "openingDate": "2026-06-03",
+      "snapshot": [],
       "lastAlertAt": null
     }
   }
