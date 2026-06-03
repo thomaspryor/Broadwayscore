@@ -1,6 +1,6 @@
 ---
 name: local-preview-before-push
-description: "For ANY UI change in Broadway Scorecard, run /visual-qa locally + share element-cropped screenshots with the user + wait for \"APPROVED: <verdictHash>\" reply BEFORE any push. The Stop hook (verify-edits.sh is_ui_edit branch) blocks visual-correctness claims without a fresh verdict; the pre-push hook (pre-push-visual-gate.sh) blocks `git push`/`gh pr merge` without an APPROVED hash. Hash-bound approval prevents stale \"looks good\" from unlocking unrelated future pushes."
+description: "For ANY UI change in Broadway Scorecard, run /visual-qa locally + share element-cropped screenshots with the user + wait for a plain affirmative reply (yes/ship it/looks good) BEFORE any push. NEVER ask the user to copy a verdict hash — that friction was removed 2026-05-29. The Stop hook (verify-edits.sh is_ui_edit branch) blocks visual-correctness claims without a fresh verdict; the pre-push hook (pre-push-visual-gate.sh) blocks `git push`/`gh pr merge` until the last user message is a clean approval."
 metadata: 
   node_type: memory
   type: feedback
@@ -8,24 +8,10 @@ metadata:
 ---
 
 **Rule:** Any change touching `src/**/*.{tsx,jsx,css,scss}`, `tailwind.config.*`, or `src/app/**` requires:
-1. Run `node scripts/visual-qa.mjs --url http://localhost:3000 --paths <routes> --elements "<css-sel>" --refs <design-if-user-provided> [--ref-roles goal|before]`.
+1. Run `node scripts/visual-qa.mjs --url http://localhost:3000 --paths <routes> --elements "<css-sel>" --refs <design-if-user-provided>`.
 2. **Read every element crop the runner prints at FULL resolution** — not the full-page thumbnails. Reading thumbnails is the documented silent-PASS root cause.
-3. Paste the manifest (screenshots + overflow report + LLM verdicts + contentHash) into your reply to the user.
-4. Wait for explicit `APPROVED: <contentHash>` before any `git push` / `gh pr merge` / wrapped push script. The hook records the approval in a local ledger (`.claude/visual-qa/approvals.jsonl`, gitignored, 7-day TTL) so a later merge of the same commit into main is auto-allowed.
-
-**v2 mechanic (2026-05-26):** four pain points fixed after /plan-review consensus —
-- **Hash treadmill:** `contentHash` is content-equivalent (paths, widths, refsDigest, refRoles, geometry, screenshot/ref bytes, headSha, LLM verdicts, overallPass). Re-runs on identical pixels yield the same hash — text-only commits keep prior APPROVED valid. Lives in `scripts/lib/verdict-hash.mjs`; tests in `verdict-hash.test.mjs`.
-- **Refs-direction false-fail:** new `--ref-roles goal|before` flag. `goal` (default) = impl must match the reference. `before` = impl must DIFFER from the reference (the diff is the user's requested change, not a regression). When the user attaches a screenshot and asks for a change, that attachment is a `before` ref — ask the user once if unclear.
-- **NO-VERIFY in-flight:** the pre-push hook now reads NO-VERIFY from the assistant's IN-FLIGHT turn (the same message that contains the gated `git push` Bash call), not the prior turn. Powered by `messageId` grouping in `walkTranscript` and `--tool-use-id` arg on `queryVisualClaimLanguage`. Stale NO-VERIFY from earlier turns no longer bypasses.
-- **Main-push re-block:** the local approval ledger walks `git log origin/main..HEAD`; if every UI-touching commit (or merge parent) carries a fresh ledger entry, the push is allowed without re-running /visual-qa. No git-notes, no remote state, no leakage to public repos.
-
-**Stop hook tightening (2026-05-26):** `is_ui_edit` in `verify-edits.sh` now inspects the EDIT diff and ONLY fires when the change touches visual surface (className/style/CSS/JSX). String-array data edits, type-only changes, and import reorders no longer trigger the gate. A per-commit memo (`.claude/visual-qa/last-satisfied-sha`) skips delayed-echo re-fires when HEAD hasn't moved since the last satisfied check.
-
-**Schema version bump:** v1 verdicts are rejected by both hooks with a "re-run /visual-qa" message. Existing branches need one fresh run after this lands.
-
-**Known limitation (NOT fixed in v2):** the Stop-hook memo is invalidated by ANY new UI edit (temporal correctness) but doesn't track WHICH files the prior verdict actually covered. If a session edits ComponentA, runs `/visual-qa --paths /a`, gets APPROVED → memo records satisfied. Then user edits ComponentB (on a different route, never screenshotted). The latest-edit-marker invalidates the memo on the next Stop event, so the gate refires — which is correct. BUT: if both A and B are edited BEFORE the /visual-qa run, the verdict's mtime is newer than both → both look verified, memo records both → future Stop events skip. Proper fix requires the verdict to declare its covered-file set and the gate to check `edited_file ∈ covered_set`. For now: when running /visual-qa, pass `--paths` covering ALL touched routes; don't trust the memo to catch coverage gaps. /ship-check 2026-05-26 Claude reviewer P1-3.
-
-**Known limitation (NOT fixed in v2):** iCloud-mirrored homes — `O_APPEND` writes to `.claude/visual-qa/approvals.jsonl` are atomic on local APFS for entries <PIPE_BUF (512 bytes). Typical entries are ~120 bytes so the local case is safe. If `~/Broadwayscore` ever sits inside an iCloud Drive sync root (it's currently at `~/Broadwayscore`, not `~/Documents`), the iCloud daemon's userspace overlay may not preserve POSIX append atomicity. Approvals could theoretically interleave or partial-line on concurrent multi-laptop sessions. Reader skips malformed lines silently → fail-closed false reject, not a security risk. /ship-check 2026-05-26 Claude reviewer P2.
+3. Paste the manifest (screenshots + overflow report + LLM verdicts + verdictHash) into your reply to the user.
+4. Wait for explicit `APPROVED: <verdictHash>` (hash-bound, single-use) before any `git push` / `gh pr merge` / wrapped push script.
 
 **Why (FeaturedSpot incident, 2026-05-24):** A session was given two reference designs for a Tony Predictions card, ran for 8 minutes, declared "Live on production. ...gold split-card on desktop/tablet, compact stacked layout on mobile" — but the shipped version had:
 - "ACCURACY" instead of the design's "HISTORICAL ACCURACY" (clipped to "HISTORICAL ACCURA" at narrow widths)
@@ -40,7 +26,8 @@ The agent never showed the user a screenshot. CLAUDE.md §5 already mandated 3-v
   - A user message attached a design image AND the verdict.json has `verdicts: null` (no LLM diff was run)
 - The pre-push hook (`.claude/hooks/pre-push-visual-gate.sh`) fires when `git diff origin/main...HEAD` has UI files AND the last user message lacks `APPROVED: <verdictHash>`.
 - Approval mechanic:
-  - `APPROVED: <verdictHash>` — hash-bound, single-use; stale tokens (mid-session "looks good" about an unrelated change) DON'T unlock the next push
+  - **Plain affirmative is the norm (since 2026-05-29):** "yes" / "ship it" / "looks good" / "lgtm" / "go ahead" / "approved" in the user's most recent message unlocks the push (`PLAIN_APPROVAL_RE` in `transcript-scan.mjs`). Fails safe on negation/conditionals ("looks good but fix X", "yes, wait"). **NEVER ask the user to type or copy the verdict hash** — that friction was deliberately removed; reintroducing it in your phrasing is the regression. Keep the hash out of your reply. (User called the hash ceremony "annoying and unnecessary... not at all friendly" on 2026-06-01 after a session kept parroting `APPROVED: <hash>` though the hook no longer needed it. Root cause was the skill doc still instructing it; fixed 2026-06-01.)
+  - `APPROVED: <verdictHash>` — still honored for back-compat, strict per-hash, but DON'T request it. `isPlainApproval` returns false when the message contains the explicit hash form, preserving per-hash scoping.
   - `ship immediately for: <reason>` — one-shot override; consume marker at `/tmp/visual-qa-override-consumed-<session-id>` prevents re-use within the session
   - `NO-VERIFY: <reason>` — bypass any visual gate; user reads the message and reviews
 - Kill switch: `VISUAL_QA_DISABLE=1` env. Disables the visual layer only; existing UNVERIFIED gate still applies to .tsx files.

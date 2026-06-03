@@ -1,6 +1,7 @@
 ---
 name: silent-merge-loss-on-reformat
 description: A worktree branch with a large reformat/restructure on a JSON file silently loses additions in a 3-way merge when main has any concurrent edit to the same file. Ship-check tests catch it; the merge does not.
+archived: true
 metadata: 
   node_type: memory
   type: feedback

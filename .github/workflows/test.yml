@@ -44,6 +44,12 @@ on:
       - 'scripts/lib/award-category-canonical.js'
       - 'scripts/lib/outlet-listing-helpers.js'
       - 'scripts/outlet-listing-poller.js'
+      # Status updater + review-driven open signal (Check 2d). A regression here
+      # re-strands opened shows in 'previews' and suppresses their score (rodeo /
+      # the-last-man / small, 2026-06). The colocated opening-signal.test.mjs only
+      # runs in CI when one of these paths changes, so they MUST be listed.
+      - 'scripts/update-show-status.js'
+      - 'scripts/lib/opening-signal.js'
       # Email generators — so changes to outbound email (incl. UTM tagging via
       # scripts/lib/email-utm.js) run the colocated scripts/lib/*.test.mjs step.
       - 'scripts/lib/email-utm.js'

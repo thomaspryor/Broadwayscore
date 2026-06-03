@@ -4,6 +4,8 @@
 
 ## 🌐 External APIs & services
 - [Vercel API access](feedback_vercel_api_access.md) — VERCEL_TOKEN in .env; prj_wmBnDUrCQCwabIAYPbnMiIP3wg15
+- [Analytics Real Users lens](feedback_analytics_real_users_lens.md) — GA4 Direct is bot-inflated; use PostHog (proj 332742) w/ is_owner + Singapore/China/Vietnam excluded; Vercel has no query API
+- [Newsletter has no UTM](feedback_newsletter_no_utm.md) — email traffic untrackable; General list only ~328; add UTMs to measure
 - [Google Search Console API](feedback_gsc_api_auth.md) — gcloud ADC + webmasters scope (with cloud-platform); X-Goog-User-Project header required
 
 ## 👤 User profile & session discipline
@@ -11,6 +13,8 @@
 - [No premature handoff](feedback_no_premature_handoff.md) — never offer handoff; /done is punctuation
 - [Next steps are actions](feedback_next_steps_actionable.md) — if you CAN do it, DO it now
 - [No diff-review offers](feedback_no_review_offers_user_not_technical.md) — user is non-technical; never offer "review the diff" or commit-vs-review choice
+- [Absorb gate ceremony](feedback_absorb_gate_ceremony.md) — run hooks/visual-qa/approvals myself; never verbatim-echo hook output; report outcomes not process
+- [No human-day estimates](feedback_no_human_day_estimates.md) — estimate in Claude-pace minutes for work I'm doing, not "half a day"
 - [User device context](feedback_user_device_context.md) — laptop+phone; infer from message style
 - [Always wait for async](feedback_always_wait_async.md) — never end turn while deploy/rebuild runs
 - [Flag-gated: verify on demo](feedback_flag_gated_verify_on_demo.md) — prod deploy ≠ user-visible; verify demo URL
@@ -23,6 +27,7 @@
 - [Sprint plans need /plan-review](feedback_sprint_plan_needs_review.md) — always /plan-review before multi-sprint plans
 - [Test pure function at I/O boundary](feedback_test_pure_function_at_io_boundary.md) — also test wrapper against real data
 - [Email drafting style](feedback_email_drafting.md) — minimal em dashes; no mid-paragraph hard breaks
+- [Anti-AI-slop writing rules](feedback_anti_ai_slop_writing.md) — strip em dashes, "It's not X it's Y", "delve/robust", hedges, fake comparisons before sending external copy
 - [Ask with recommendation](feedback_ask_with_recommendation.md) — lead with (Recommended) option 1 + why
 - [Two-model UI review](feedback_two_model_ui_review.md) — GPT-4o + Gemini parallel on screenshots
 - [Three-model audit needs code-reader](feedback_three_model_audit_modality.md) — vision models hallucinate "X is missing"; pair with Claude subagent w/ file access for data audits
@@ -46,6 +51,7 @@
 - [Dual repo data files](feedback_dual_repo_data_files.md) — shows.json/reviews.json authoritative in private repo
 - [awards.json dual repo](feedback_awards_json_dual_repo.md) — CI overlays private copy; must fix BOTH
 - [data/review-texts NOT a symlink](feedback_review_texts_not_symlink.md) — edit ~/broadway-review-texts/ directly
+- [Stray symlink crashes pipeline](feedback_stray_symlink_crashes_pipeline.md) — committed abs-path symlink dangles in CI; readdir→stat ENOENT; use listShowDirs() + push-action strips symlinks
 - [audit-review-contamination strict CI gate](feedback_audit_contamination_strict_mode.md) — strict A/B/C fail CI; B = false-pos wrongProduction
 - [Commit data repo edits IMMEDIATELY](feedback_data_repos_clobber_uncommitted.md) — pull --rebase clobbers uncommitted dirty state
 - [Reset+rsync wipes CI fields](feedback_reset_rsync_wipes_ci_fields.md) — never reset-hard+rsync for push rejections
@@ -56,6 +62,9 @@
 - [page.evaluate .click() races hydration](feedback_playwright_evaluate_click_hydration.md) — synthesized DOM .click() fires before React handler attaches; use page.getByRole().click() for actionability
 
 ## ⚙️ CI / GitHub Actions / workflows
+- [push-review-texts reverts intentional clears](feedback_push_review_texts_reverts_intentional_clears.md) — duplicateOf in PROTECTED_FIELDS; heal clears silently reverted unless duplicateClearReason exception
+- [test.yml data gates flap + short-circuit](feedback_test_yml_data_gates_flap_and_shortcircuit.md) — hourly corpus drift trips gates; first failure masks rest; triage drift-bump vs real-signal-fix
+- [CI red: stale state + brittle assertions](feedback_ci_red_stale_state_and_brittle_assertions.md) — gate on persistent state w/ only write-time heal fails forever; E2E hardcoded date/threshold flaps; classify failure-vs-cancelled first
 - [vercel build env block required](feedback_vercel_env_block_required.md) — NEXT_PUBLIC_* must go in build step env: block
 - [Vercel NFT dynamic paths + excludes](feedback_vercel_nft_dynamic_paths.md) — no dynamic paths in server code; before adding outputFileTracingExcludes, grep src/ — CI guard `audit-nft-excluded-runtime-reads.js` enforces. See also [[nft-excludes-vs-runtime-reads]]
 - [Conservative default = common case](feedback_conservative_default_can_be_common_case.md) — "unknown → assume X" breaks when unknown IS common
@@ -65,6 +74,8 @@
 - [GHA cron delays](feedback_github_cron_delays.md) — crons fire 30min-3h late; shift earlier + launchd backup
 - [`if: always()` cleanup budget](feedback_if_always_does_not_run_on_cancel.md) — runs on cancel but ~5min window; push-with-retry inside starves later steps. Raise timeout-minutes; don't trust the cleanup chain
 - [Silent workflow failures](feedback_silent_workflow_failures.md) — never || true on git push; use ::warning::
+- [CI step short-circuits colocated tests](feedback_ci_step_short_circuits_colocated_tests.md) — red tests/unit batch skips later scripts/lib/*.test.mjs step; verify a new test actually RAN in CI
+- [test.yml push path allow-list](feedback_test_yml_push_path_allowlist.md) — non-listed scripts/ pushes trigger ZERO CI; add new script paths to on.push.paths
 - [Silent git/merge failures](feedback_silent_git_add_failures.md) — git add 2>/dev/null || true may stage NOTHING; also JSON reformat drops additions ([[silent-merge-loss-on-reformat]])
 - [Pipe masks exit code](feedback_pipe_masks_exit_code.md) — node x.js | tail hides node exit; use pipefail
 - [Workflow YAML inline-commit smoke test](feedback_workflow_yaml_needs_manual_fire.md) — manual-fire surfaces missing git config user.name/email
@@ -83,7 +94,14 @@
 - [Live-API contract test](feedback_live_api_contract_test.md) — call live API; unit tests miss empirical behavior
 - [API JSON key whitespace](feedback_api_key_whitespace.md) — trailing-space keys silent-miss on lookup; normalize at load not at site
 - [Refactor parity test on real data](feedback_refactor_parity_test.md) — old vs new predicate against real data; 0 diffs = safe
+- [Paywalled star outlets not gaps](feedback_paywalled_star_outlets_not_gaps.md) — Stage stubs scored via aggregatorStars-fallback; gap-scans must exclude _pending/ + count aggregatorStars
+- [Cookie health: body-length not expiry](feedback_cookie_health_body_length_not_expiry.md) — cookie present+unexpired ≠ live session; verify via extracted review-body length; verify-cookie-login.js; re-login needs user
 - [Verify bug claim before fixing](feedback_verify_bug_claim_before_fixing.md) — reproduce against live data before writing fix
+
+## 📋 Open work
+- [OB venue historical backfill](project_ob_venue_historical_backfill.md) — past 4-5mo from Atlantic/Vineyard/MCC archive pages (Signature past prods already captured via /productions/)
+- [OB Tier A deferred](project_ob_tier_a_deferred.md) — TFANA (SSL outage) + Second Stage Uptown (dormant season) — revisit when reachable
+- [Manual stubs bypass venue/date validation](feedback_manual_stub_bypasses_validation.md) — NEVER stub shows.json from memory; look up Playbill production page first
 
 ## 🎯 Opening night pipeline
 - [Joe Turner master log 2026-04-25/26](feedback_admin_ingest_opening_night_2026-04-26.md) — ~42 issues; read FIRST for next opening night
@@ -103,7 +121,8 @@
 - [OBA Playbill SERP scraper](feedback_oba_scraper_playbill_serp_pattern.md) — no-Wikipedia awards: SERP+DOM parse, applyDDOCCDL not applyObie, trust JSON-LD date
 
 ## 🎭 Tony predictions model
-- [Tony predictions accuracy](project_tony_predictions_accuracy.md) — recipe weights, 92.9% accuracy, current signals
+- [Tony predictions accuracy](project_tony_predictions_accuracy.md) — recipe weights, 93% accuracy, frozen audience grades
+- [Freeze Tony audience grades](feedback_freeze_tony_audience_grades.md) — historical-prediction metrics must freeze inputs; live cron drift re-ranked closed seasons
 
 ## 📊 Data pipeline & scraping
 - [Closing-date automation gaps](feedback_closing_date_audit_gaps.md) — 4 silent gaps; broadway.org/TodayTix lag; WE=0 automation
@@ -146,6 +165,7 @@
 - [Cast closure is its own event type](feedback_cast_changes_closure_type.md) — show closures must be `closure` events, not N per-actor `departure`
 - [duplicateOf URL-mismatch = stale flag](feedback_duplicate_of_url_mismatch.md) — A.duplicateOf=B w/o matching URLs is a bug; CI gate + self-heal in review-write-guard
 - [Orphan slim show files](feedback_orphan_slim_show_files.md) — public/data/shows/{id}.json must match a shows.json id; CI gate audits and --fix deletes
+- [In-sample accuracy needs LOSO](feedback_in_sample_accuracy_claims_need_loso.md) — never publish in-sample backtest % as "Accuracy"; reframe label or run LOSO
 
 ## 🤖 LLM / evals
 - [LLM prompts must be market/type-aware](feedback_llm_prompts_market_aware.md) — inject opera-prompt-context.js for opera/special shows
@@ -154,18 +174,17 @@
 - [LLM verifier hallucinates](feedback_llm_verifier_hallucinates.md) — Gemini isValid:true at 48% on garbage; post-check
 - [Opus for classification](feedback_opus_for_classification.md) — Sonnet 75% FN on review vs commentary; use Opus
 - [Editorial drift guard](feedback_editorial_drift.md) — drift guard discards LLM content on show count change
+- [isBroadwayCategory takes object](feedback_isbroadway_takes_object.md) — pass show object not string; predicate silently returns true for any truthy string
+- [creativeTeam role case-drift](feedback_creative_team_role_case_drift.md) — ROLE_TO_CATEGORIES exact-case; canonicalize at write site
 
 ## 🎨 UI / design system
 - [Mobile link min-height + row exceptions](feedback_mobile_link_min_height.md) — a{min-height:44px}; .performer-row/.craft-row opt out; e2e-guarded
 - [Design system reference](design-system.md) — surfaces, score tiers, shared components, banned patterns
-- [Visual verify before push](feedback_visual_verify_before_push.md) — screenshot before commit; tsc ≠ visual
-- [Visual QA: 3 viewports required](feedback_playwright_1440px_required.md) — 390×844 + 768×1024 + 1440×900; tablet was the silent gap
-- [Tailwind JIT — restart after new arbitrary classes](feedback_tailwind_jit_arbitrary_restart.md) — `min-w-[760px]` etc. compute as 0px until dev-server restart
+- [Local preview before push](feedback_local_preview_before_push.md) — `/visual-qa` runs locally; APPROVED:<hash> required; supersedes screenshot/3-viewport entries
 - [Preserve parallel-session colors](feedback_preserve_parallel_session_colors.md) — keep colors from parallel sessions, not CD palette
-- [Round once, share everywhere](feedback_round_once_share_everywhere.md) — centralize in isCriticalGold()
-- [Map iterator spread broken](feedback_map_iterator_spread.md) — use Array.from(); tsconfig es5 breaks spread
 - [Demo flags client-only](feedback_demo_flags_client_only.md) — isDemo()/window checks in 'use client' only
 - [React.lazy() for App Router split](feedback_react_lazy_for_app_router_split.md) — next/dynamic from server = no-op; use 'use client' Loader + React.lazy + Suspense
+- [Above-fold features live in page.tsx](feedback_page_tsx_renders_before_homepageclient.md) — FeaturedRowServer/hero render in page.tsx BEFORE HomePageClient subtree; source-order in client component is misleading
 - [A/B tests](feedback_ab_test_guardrails.md) — PostHog filters/exclusions/stat-sig thresholds
 
 ## 💼 Commercial / features / video
@@ -173,7 +192,8 @@
 - [Feature launch sequence](project_feature_launch_sequence.md) — Lottery/Rush → Awards/Tony → Commercial
 - [VideoScore](project_videoscore_feature.md) — video critic reviews via transcript sentiment
 - [Recoupment RSS poller architecture](feedback_recoupment_rss_poller_architecture.md) — hourly Variety+Deadline poll; shared classify lib; trackRecoupment flag
-- [Enhancement-deal designation policy](feedback_enhancement_deal_designation_policy.md) — Easy Winner/Flop requires HARD trade-press citation; default to Nonprofit+null. Indirect signals (early closing, soft grosses) NOT sufficient. Applied 2026-05-24.
+- [Enhancement-deal designation policy](feedback_enhancement_deal_designation_policy.md) — Easy Winner/Flop requires HARD trade-press citation; default to Nonprofit+null; indirect signals NOT sufficient
+- [Nonprofit venue vs production](feedback_nonprofit_venue_vs_production.md) — nonprofitOrg tags the producing nonprofit, NOT the venue owner; commercial rentals at nonprofit theaters stay commercial
 
 ## 📚 Reference & repo layout
 - [Repo layout](repo_layout.md) — three repos (web, iOS, data) with GitHub names and paths
