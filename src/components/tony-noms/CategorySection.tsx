@@ -160,13 +160,29 @@ const CRITIC_PICK_OUTLETS: Record<string, { outletName: string; critic: string }
   timeout:      { outletName: 'Time Out New York',     critic: 'Adam Feldman' },
 };
 
+// Cap the number of rendered avatars so the chip cluster stays one row tall.
+// At w-5 (20px) + gap-0.5 (2px), four items = 86px, which fits the 88px max
+// width. Without this cap, front-runners that collect many critic picks during
+// Tony season (e.g. 9 picks) wrap to 3 rows and inflate the surrounding row
+// past its compact-height guard (tests/e2e/tony-nominees-row-height.spec.ts).
+const PRESS_PICKS_MAX_VISIBLE = 4;
+
 function PressPicks({ picks }: { picks?: string[] }) {
   if (!picks || picks.length === 0) return null;
   const knownPicks = picks.filter(id => CRITIC_PICK_OUTLETS[id]);
   if (knownPicks.length === 0) return null;
+
+  const overflow = knownPicks.length > PRESS_PICKS_MAX_VISIBLE;
+  // When overflowing, reserve the last slot for the "+N" counter chip.
+  const visible = overflow ? knownPicks.slice(0, PRESS_PICKS_MAX_VISIBLE - 1) : knownPicks;
+  const hidden = knownPicks.slice(visible.length);
+  const overflowTitle = hidden
+    .map(id => CRITIC_PICK_OUTLETS[id].outletName)
+    .join(', ') + ' also pick this show to win';
+
   return (
-    <div className="flex flex-wrap items-center justify-center gap-0.5 max-w-[88px]">
-      {knownPicks.map(id => {
+    <div className="flex flex-nowrap items-center justify-center gap-0.5 max-w-[88px]">
+      {visible.map(id => {
         const meta = CRITIC_PICK_OUTLETS[id];
         const logoUrl = getOutletLogoUrl(meta.outletName);
         const config = getOutletConfig(meta.outletName);
@@ -192,6 +208,14 @@ function PressPicks({ picks }: { picks?: string[] }) {
           </div>
         );
       })}
+      {overflow && (
+        <div
+          className="w-5 h-5 rounded-full bg-surface-raised border border-white/10 flex items-center justify-center flex-shrink-0 text-[9px] font-bold text-gray-300 leading-none"
+          title={overflowTitle}
+        >
+          +{hidden.length}
+        </div>
+      )}
     </div>
   );
 }

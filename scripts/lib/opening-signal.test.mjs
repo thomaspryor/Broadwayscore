@@ -19,8 +19,12 @@ const {
   countByShow,
   estimatePressNight,
   isStuckInPreviews,
+  chooseOpeningDateBackfill,
   findStuckPreviews,
 } = require('./opening-signal.js');
+
+// Deterministic clock for backfill tests: "today" is 2026-06-03.
+const isReached = (d) => new Date(d) <= new Date('2026-06-03');
 
 test('thresholds mirror src/config/score-buckets.ts MIN_REVIEWS_FOR_SCORE*', () => {
   assert.equal(MIN_REVIEWS_BY_CATEGORY.broadway, 5);
@@ -107,6 +111,24 @@ test('isStuckInPreviews fires only when the show would actually display a score'
   assert.equal(isStuckInPreviews({ status: 'closed', category: 'broadway' }, { count: 10, tier1And2: 5 }), false);
   assert.equal(isStuckInPreviews({ status: 'previews', category: 'off-broadway' }, undefined), false);
   assert.equal(isStuckInPreviews(null, { count: 10, tier1And2: 5 }), false);
+});
+
+test('chooseOpeningDateBackfill derives openingDate from press night only, never fabricates', () => {
+  // Normal case: review cluster present → press night (modal date).
+  assert.deepEqual(
+    chooseOpeningDateBackfill({ openingDate: null, previewsStartDate: '2026-05-01' }, ['2026-05-31', '2026-05-31', '2026-06-01'], isReached),
+    { date: '2026-05-31', source: 'review-derived-press-night' },
+  );
+  // Every review dateless → null. We do NOT fabricate from previewsStartDate (that's
+  // previews start, not opening; openingDate renders verbatim as "Opened {date}").
+  // The status still flips; openingDate stays null (a tolerated state for open shows).
+  assert.equal(chooseOpeningDateBackfill({ openingDate: null, previewsStartDate: '2026-05-01' }, [], isReached), null);
+  // Dateless with no previewsStartDate → null.
+  assert.equal(chooseOpeningDateBackfill({ openingDate: null }, [], isReached), null);
+  // A future-only press night → null, never write the future date (Check 2c oscillation guard).
+  assert.equal(chooseOpeningDateBackfill({ openingDate: null, previewsStartDate: '2026-05-01' }, ['2027-03-03'], isReached), null);
+  // Never overwrite an existing openingDate.
+  assert.equal(chooseOpeningDateBackfill({ openingDate: '2026-04-04', previewsStartDate: '2026-05-01' }, ['2026-05-31'], isReached), null);
 });
 
 test('findStuckPreviews surfaces stuck shows with press-night estimate, ignores healthy ones', () => {

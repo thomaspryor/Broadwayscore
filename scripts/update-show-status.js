@@ -20,7 +20,8 @@ const path = require('path');
 const https = require('https');
 const { extractStatusFromHtml } = require('./lib/show-score-status');
 const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
-const { countByShow, isStuckInPreviews, estimatePressNight } = require('./lib/opening-signal');
+const { countByShow, isStuckInPreviews, chooseOpeningDateBackfill } = require('./lib/opening-signal');
+const { openingDateSourceHint } = require('./lib/opening-date-sources');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const REVIEWS_FILE = path.join(__dirname, '..', 'data', 'reviews.json');
@@ -704,21 +705,30 @@ async function updateShowStatuses() {
         // Marker: this is a catch-up flip driven by accumulated reviews, NOT a
         // live opening. It MUST be excluded from opened_count/opened_slugs so it
         // doesn't trigger opening-night automation (poller, broadcast) for a show
-        // that opened days/weeks ago. See openedShows filter below.
+        // that opened days/weeks ago. See openedShows filter below. Trade-off:
+        // this also withholds the catch-up show from the gather-reviews / cast /
+        // indexing dispatches that key on opened_slugs — acceptable because those
+        // self-heal on their own weekly schedules, and avoiding a wrong broadcast
+        // (email about a weeks-old "opening") is the higher priority (CLAUDE.md §17).
         changes.reviewDriven = true;
         changes.note = `${reviewCount} scored reviews (${entry.tier1And2} T1/T2) — meets score-display threshold; opened but status never flipped`;
         if (!dryRun) show.status = 'open';
         // Backfill a missing openingDate from the review cluster (press night).
         // Only when the estimate is in the past — a future/today date would let
-        // Check 2c immediately revert open→previews next run (oscillation).
+        // Check 2c revert open→previews next run (oscillation). When every review
+        // is dateless we do NOT fabricate a date (previewsStartDate ≠ opening, and
+        // openingDate is shown verbatim as "Opened {date}"); we leave it null —
+        // an already-tolerated state for open shows — and log it for manual fill.
         if (!show.openingDate) {
-          const pressNight = estimatePressNight(entry.dates);
-          if (pressNight && isDateReached(pressNight)) {
-            changes.openingDate = { from: 'null', to: pressNight };
+          const backfill = chooseOpeningDateBackfill(show, entry.dates, isDateReached);
+          if (backfill) {
+            changes.openingDate = { from: 'null', to: backfill.date };
             if (!dryRun) {
-              show.openingDate = pressNight;
-              show.openingDateSource = 'review-derived-press-night';
+              show.openingDate = backfill.date;
+              show.openingDateSource = backfill.source;
             }
+          } else {
+            console.log(`  ℹ️  ${show.title} (${show.id}): flipped previews→open via review signal but no press-night date is derivable (reviews dateless) — openingDate left null; fill from ${openingDateSourceHint(show.category)}`);
           }
         }
       }

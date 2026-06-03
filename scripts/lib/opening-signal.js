@@ -128,6 +128,34 @@ function isStuckInPreviews(show, counts) {
 }
 
 /**
+ * Choose the openingDate to backfill when flipping a stuck show to open, derived
+ * ONLY from the review cluster (press night = modal review date). Returns
+ * { date, source } when a past/today press night is derivable, else null.
+ *
+ * Deliberately does NOT fabricate a date from previewsStartDate when reviews are
+ * dateless: previewsStartDate is the previews start, not opening night, and
+ * openingDate is surfaced verbatim as "Opened {date}" (src/.../ShowHeroRedesign)
+ * and drives opening-night lookback automation. A knowably-early date there is
+ * worse than null — the project rule is never fake data (CLAUDE.md). `open` with
+ * a null openingDate is an already-tolerated state (validate-data does not flag
+ * it; the page simply omits the "Opened" line). The status flip alone unsticks
+ * the score, which is the actual fix; the caller logs the rare null case so a
+ * real openingDate can be filled later.
+ *
+ * Only ever returns a past/today date — a future date would let Check 2c revert
+ * open→previews (oscillation). `isDateReached` is injected (date <= today) so the
+ * lib stays deterministic and testable without touching the clock.
+ */
+function chooseOpeningDateBackfill(show, dates, isDateReached) {
+  if (!show || show.openingDate) return null;
+  const pressNight = estimatePressNight(dates);
+  if (pressNight && isDateReached(pressNight)) {
+    return { date: pressNight, source: 'review-derived-press-night' };
+  }
+  return null;
+}
+
+/**
  * Find every stuck show. `countMap` is the output of countByShow().
  * Returns [{ id, title, category, status, reviewCount, tier1And2, openingDate, pressNight }].
  */
@@ -161,5 +189,6 @@ module.exports = {
   countByShow,
   estimatePressNight,
   isStuckInPreviews,
+  chooseOpeningDateBackfill,
   findStuckPreviews,
 };
