@@ -39,7 +39,8 @@
     "amaze-off-broadway-2026/timeout--adam-feldman.json",
     "beaches-2026/chicago-sun-times--unknown.json",
     "between-the-river-and-the-sea-west-end-2026/whatsonstage--sarah-crompton.json",
-    "all-my-sons-west-end-2025/independent--unknown.json"
+    "all-my-sons-west-end-2025/independent--unknown.json",
+    "equus-west-end-2026/timeout--andrzej-lukowski.json"
   ],
   "failed": [
     "jerome-off-broadway-2025/one-minute-critic--unknown.json",
@@ -595,7 +596,16 @@
     "the-p-word-off-west-end-2026/sunday-telegraph--unknown.json",
     "the-p-word-off-west-end-2026/whatsonstage--frey-kwa-hawking.json",
     "dark-of-the-moon-west-end-2026/guardian-uk--unknown.json",
-    "dark-of-the-moon-west-end-2026/timeout-london--andrzej-lukowski.json"
+    "dark-of-the-moon-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "dark-of-the-moon-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "dark-of-the-moon-west-end-2026/artsdesk--unknown.json",
+    "dark-of-the-moon-west-end-2026/cambridge--unknown.json",
+    "dark-of-the-moon-west-end-2026/london-theatre--unknown.json",
+    "care-west-end-2026/i-paper--unknown.json",
+    "care-west-end-2026/the-upcoming-uk--unknown.json",
+    "care-west-end-2026/times-uk--unknown.json",
+    "equus-west-end-2026/the-jewish-chronicle--unknown.json",
+    "equus-west-end-2026/thereviewshub--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -621,7 +631,8 @@
       "chess-2025/the-contending--unknown.json",
       "beaches-2026/chicago-sun-times--unknown.json",
       "between-the-river-and-the-sea-west-end-2026/whatsonstage--sarah-crompton.json",
-      "all-my-sons-west-end-2025/independent--unknown.json"
+      "all-my-sons-west-end-2025/independent--unknown.json",
+      "equus-west-end-2026/timeout--andrzej-lukowski.json"
     ],
     "amp": [],
     "browserbase": [
@@ -667,7 +678,8 @@
       "data/review-texts/jerome-off-broadway-2025/talkinbroadway--unknown.json",
       "data/review-texts/jerome-off-broadway-2025/talkinbroadway--unknown.json",
       "data/review-texts/360-allstars-off-west-end-2026/thestage--unknown.json",
-      "data/review-texts/war-horse-west-end-2026/thestage--unknown.json"
+      "data/review-texts/war-horse-west-end-2026/thestage--unknown.json",
+      "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -678,7 +690,7 @@
     ]
   },
   "startTime": "2026-06-03T03:38:17.541Z",
-  "lastProcessed": "dark-of-the-moon-west-end-2026/timeout-london--andrzej-lukowski.json",
+  "lastProcessed": "equus-west-end-2026/timeout--andrzej-lukowski.json",
   "log": [
     {
       "t": "2026-06-03T09:41:55.824Z",
@@ -753,6 +765,12 @@
       "t": "2026-06-03T12:12:22.329Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-03T19:35:15.212Z",
+      "event": "bb-session",
+      "session": "8baa419e",
+      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
     }
   ]
 }
