@@ -20,8 +20,10 @@ const path = require('path');
 const https = require('https');
 const { extractStatusFromHtml } = require('./lib/show-score-status');
 const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
+const { countByShow, isStuckInPreviews, estimatePressNight, minReviewsForScore } = require('./lib/opening-signal');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
+const REVIEWS_FILE = path.join(__dirname, '..', 'data', 'reviews.json');
 const URLS_FILE = path.join(__dirname, '..', 'data', 'show-score-urls.json');
 const ARCHIVE_DIR = path.join(__dirname, '..', 'data', 'aggregator-archive', 'show-score');
 const dryRun = process.argv.includes('--dry-run');
@@ -579,6 +581,18 @@ async function updateShowStatuses() {
   const data = loadShows();
   const updates = [];
 
+  // Review-driven open signal: reviews.json is the post-rebuild displayed set
+  // (every entry scored 1-100, no wrongProduction/roundup flags), so a per-show
+  // count == the site's review count. Used by Check 2d below to flip shows that
+  // opened but never got their status flipped (null openingDate + no ShowScore).
+  let reviewCounts = {};
+  try {
+    const rraw = JSON.parse(fs.readFileSync(REVIEWS_FILE, 'utf8'));
+    reviewCounts = countByShow(rraw.reviews || rraw);
+  } catch (err) {
+    console.log(`  ⚠️  Could not load reviews.json for review-driven open signal: ${err.message}`);
+  }
+
   // Refresh closing dates from TodayTix BEFORE status checks
   // so extensions are detected before the closing-grace-period logic runs
   const { reopenedIds, ttActiveShowIds } = await refreshTodayTixDates(data, updates);
@@ -657,6 +671,41 @@ async function updateShowStatuses() {
       }
     }
 
+    // Check 2d: Review-driven open. A show in previews/upcoming that has
+    // accumulated enough scored reviews to display a score has demonstrably
+    // opened — critics review on/after press night, not during previews. This
+    // is the backstop for the failure mode where Check 2/2b can't fire because
+    // openingDate is null and there's no ShowScore URL (rodeo/the-last-man/small,
+    // 2026-06). The threshold equals the site's score-display threshold, so this
+    // only ever flips shows that are already past the "enough reviews" bar.
+    // Runs only when the earlier date-based checks didn't already change status.
+    if (!changes.status) {
+      const entry = reviewCounts[show.id];
+      const reviewCount = entry ? entry.count : 0;
+      if (isStuckInPreviews(show, reviewCount)) {
+        const from = show.status;
+        changes.status = { from, to: 'open' };
+        // Marker: this is a catch-up flip driven by accumulated reviews, NOT a
+        // live opening. It MUST be excluded from opened_count/opened_slugs so it
+        // doesn't trigger opening-night automation (poller, broadcast) for a show
+        // that opened days/weeks ago. See openedShows filter below.
+        changes.reviewDriven = true;
+        changes.note = `${reviewCount} scored reviews (>= ${minReviewsForScore(show.category)} for ${show.category}) — opened but status never flipped`;
+        if (!dryRun) show.status = 'open';
+        // Backfill a missing openingDate from the review cluster (press night).
+        if (!show.openingDate) {
+          const pressNight = estimatePressNight(entry.dates);
+          if (pressNight) {
+            changes.openingDate = { from: 'null', to: pressNight };
+            if (!dryRun) {
+              show.openingDate = pressNight;
+              show.openingDateSource = 'review-derived-press-night';
+            }
+          }
+        }
+      }
+    }
+
     // Check 3: Flag shows that might need attention (but don't change them)
     if (show.status === 'open' && !show.closingDate) {
       // These are open-ended runs - no action needed
@@ -683,6 +732,7 @@ async function updateShowStatuses() {
     for (const update of updates) {
       console.log(`\n${update.title}:`);
       for (const [field, change] of Object.entries(update.changes)) {
+        if (field === 'reviewDriven') continue; // internal marker, not a field change
         if (typeof change === 'string') {
           console.log(`  ${field}: ${change}`);
         } else {
@@ -721,8 +771,12 @@ async function updateShowStatuses() {
     fs.appendFileSync(outputFile, `updates_count=${updates.length}\n`);
     fs.appendFileSync(outputFile, `updated_shows=${updates.map(u => u.title).join(', ')}\n`);
 
-    // Separate output for shows transitioning previews→open (for downstream triggers)
-    const openedShows = updates.filter(u => u.changes.status?.from === 'previews' && u.changes.status?.to === 'open');
+    // Separate output for shows transitioning previews→open (for downstream triggers).
+    // Exclude review-driven catch-up flips (Check 2d) — those shows opened days/weeks
+    // ago, so triggering the opening-night poller/broadcast for them would be wrong.
+    const openedShows = updates.filter(u =>
+      u.changes.status?.from === 'previews' && u.changes.status?.to === 'open' && !u.changes.reviewDriven
+    );
     fs.appendFileSync(outputFile, `opened_count=${openedShows.length}\n`);
     fs.appendFileSync(outputFile, `opened_slugs=${openedShows.map(u => u.id).join(',')}\n`);
 
