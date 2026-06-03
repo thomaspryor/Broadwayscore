@@ -448,7 +448,11 @@
     "equus-west-end-2026/artsdesk--unknown.json",
     "equus-west-end-2026/thestage--holly-o.json",
     "equus-west-end-2026/times-uk--clive-davis.json",
-    "end-of-the-rainbow-west-end-2026/all-that-dazzles-uk--unknown.json"
+    "end-of-the-rainbow-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "jerome-off-broadway-2025/one-minute-critic--unknown.json",
+    "jerome-off-broadway-2025/talkinbroadway--unknown.json",
+    "indian-princesses-off-broadway-2025/pages-on-stages--mason-pilevsky.json",
+    "the-maids-off-broadway-2026/ew--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -513,7 +517,8 @@
       "data/review-texts/1536-west-end-2026/the-recs--the-recs-jdh.json",
       "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
       "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
-      "data/review-texts/equus-west-end-2026/thestage--holly-o.json"
+      "data/review-texts/equus-west-end-2026/thestage--holly-o.json",
+      "data/review-texts/jerome-off-broadway-2025/talkinbroadway--unknown.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -522,7 +527,7 @@
     ]
   },
   "startTime": "2026-06-02T09:29:57.740Z",
-  "lastProcessed": "end-of-the-rainbow-west-end-2026/all-that-dazzles-uk--unknown.json",
+  "lastProcessed": "the-maids-off-broadway-2026/ew--unknown.json",
   "log": [
     {
       "t": "2026-06-02T09:36:10.539Z",
@@ -731,6 +736,17 @@
       "t": "2026-06-03T01:17:33.051Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-06-03T01:21:02.635Z",
+      "event": "bb-session",
+      "session": "151e3f1d",
+      "url": "https://a.talkinbroadway.com/allthatchat_new/d.php?id=2626606"
+    },
+    {
+      "t": "2026-06-03T01:21:03.215Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
