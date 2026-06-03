@@ -712,13 +712,12 @@ async function updateShowStatuses() {
         changes.reviewDriven = true;
         changes.note = `${reviewCount} scored reviews (${entry.tier1And2} T1/T2) — meets score-display threshold; opened but status never flipped`;
         if (!dryRun) show.status = 'open';
-        // Backfill a missing openingDate. Prefer the review cluster (press night);
-        // when every review for the show is dateless (~16% of reviews carry no
-        // publishDate), fall back to previewsStartDate so the show doesn't flip to
-        // open while staying openingDate:null — the exact stranded state this fix
-        // targets. Only ever write a past/today date: a future date would let
-        // Check 2c revert open→previews next run (oscillation). previewsStartDate
-        // is always <= opening, so it's a safe lower-bound estimate.
+        // Backfill a missing openingDate from the review cluster (press night).
+        // Only when the estimate is in the past — a future/today date would let
+        // Check 2c revert open→previews next run (oscillation). When every review
+        // is dateless we do NOT fabricate a date (previewsStartDate ≠ opening, and
+        // openingDate is shown verbatim as "Opened {date}"); we leave it null —
+        // an already-tolerated state for open shows — and log it for manual fill.
         if (!show.openingDate) {
           const backfill = chooseOpeningDateBackfill(show, entry.dates, isDateReached);
           if (backfill) {
@@ -727,6 +726,8 @@ async function updateShowStatuses() {
               show.openingDate = backfill.date;
               show.openingDateSource = backfill.source;
             }
+          } else {
+            console.log(`  ℹ️  ${show.title} (${show.id}): flipped previews→open via review signal but no press-night date is derivable (reviews dateless) — openingDate left null; fill from Playbill when known`);
           }
         }
       }
