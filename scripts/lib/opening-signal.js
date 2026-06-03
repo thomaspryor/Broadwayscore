@@ -10,14 +10,20 @@
  *
  * The reviews themselves are ground-truth that a show opened: critics review
  * on/after press night, not during previews. So once a show in previews/upcoming
- * has accumulated enough scored reviews to display a score, it has demonstrably
- * opened and should be flipped — independent of openingDate or ShowScore.
+ * has accumulated ENOUGH reviews TO DISPLAY A SCORE, it has demonstrably opened
+ * and should be flipped — independent of openingDate or ShowScore.
  *
- * These thresholds MIRROR src/config/score-buckets.ts (MIN_REVIEWS_FOR_SCORE*).
- * If you change them there, change them here too — the unit test pins them.
+ * The "enough to display a score" test MUST match the site exactly, or we flip a
+ * show to `open` (labelling it "Now Playing", fabricating an openingDate) while
+ * the score is still gated as TBD — the original symptom, inverted. So this file
+ * ports `reviewsRemainingForScore` from src/config/score-buckets.ts verbatim,
+ * including the T3-only (+2) penalty. The constants are mirrored below; the
+ * colocated test pins both the constants AND the T3-only logic. If you change the
+ * thresholds in score-buckets.ts, change them here too.
  */
 
-// Mirror of MIN_REVIEWS_FOR_SCORE* in src/config/score-buckets.ts.
+// Mirror of the MIN_REVIEWS_FOR_SCORE* / T3_ONLY_EXTRA_REVIEWS constants in
+// src/config/score-buckets.ts.
 const MIN_REVIEWS_BY_CATEGORY = {
   broadway: 5,
   'off-broadway': 3,
@@ -25,27 +31,53 @@ const MIN_REVIEWS_BY_CATEGORY = {
   'off-west-end': 3,
 };
 const MIN_REVIEWS_DEFAULT = 5;
+const MIN_REVIEWS_CURATED_HISTORICAL = 4;
+const T3_ONLY_EXTRA_REVIEWS = 2;
 
 // Statuses that should auto-flip to 'open' once the review signal fires.
 const PRE_OPEN_STATUSES = new Set(['previews', 'upcoming']);
 
-function minReviewsForScore(category) {
+function minReviewsForCategory(category) {
   return MIN_REVIEWS_BY_CATEGORY[category] ?? MIN_REVIEWS_DEFAULT;
 }
 
 /**
- * Build { showId: { count, dates: [YYYY-MM-DD,...] } } from a clean reviews.json
- * review list. reviews.json is the post-rebuild displayed set: every entry has a
- * numeric assignedScore and no wrongProduction/wrongShow/roundup flags, so a raw
- * per-showId count equals the site's displayed review count.
+ * Verbatim port of reviewsRemainingForScore() in src/config/score-buckets.ts.
+ * Returns how many more reviews are needed before a score displays (0 = qualifies).
  */
-function countByShow(reviews) {
+function reviewsRemainingForScore(reviewCount, category, tier1And2Count, isCuratedHistorical) {
+  let min = minReviewsForCategory(category);
+  if (isCuratedHistorical && (!category || category === 'broadway') && (tier1And2Count ?? 0) >= 1) {
+    min = MIN_REVIEWS_CURATED_HISTORICAL;
+  }
+  if (tier1And2Count !== undefined && tier1And2Count === 0) {
+    min += T3_ONLY_EXTRA_REVIEWS;
+  }
+  return Math.max(0, min - reviewCount);
+}
+
+/**
+ * Build { showId: { count, tier1And2, dates: [YYYY-MM-DD,...] } } from a clean
+ * reviews.json review list. reviews.json is the post-rebuild displayed set: every
+ * entry has a numeric assignedScore and no wrongProduction/wrongShow/roundup
+ * flags, so a raw per-showId count equals the site's displayed review count.
+ *
+ * @param reviews array of reviews.json entries
+ * @param getTier (review) => number|undefined — outlet tier (1/2/3/4). Used to
+ *   count T1/T2 reviews, which the score-display threshold needs (T3-only shows
+ *   require +2 reviews). Omit and tier1And2 is left undefined (no T3 penalty).
+ */
+function countByShow(reviews, getTier) {
   const map = {};
   for (const r of reviews) {
     const id = r.showId;
     if (!id) continue;
-    if (!map[id]) map[id] = { count: 0, dates: [] };
+    if (!map[id]) map[id] = { count: 0, tier1And2: 0, dates: [] };
     map[id].count += 1;
+    if (getTier) {
+      const t = getTier(r);
+      if (t === 1 || t === 2) map[id].tier1And2 += 1;
+    }
     const d = r.publishDate || r.date;
     if (typeof d === 'string' && /^\d{4}-\d{2}-\d{2}/.test(d)) {
       map[id].dates.push(d.slice(0, 10));
@@ -59,7 +91,8 @@ function countByShow(reviews) {
  * Press night is the modal date (most critics review that day); ties break to
  * the earliest. Returns 'YYYY-MM-DD' or null when no usable dates exist.
  * Note: a single early outlet (Talkin' Broadway can publish ~24h pre-opening,
- * CLAUDE.md rule 14) won't win the mode against the press-night cluster.
+ * CLAUDE.md rule 14) won't win the mode against the press-night cluster. The
+ * caller still guards against future dates before writing openingDate.
  */
 function estimatePressNight(dates) {
   const valid = (dates || []).filter((d) => typeof d === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(d));
@@ -69,8 +102,7 @@ function estimatePressNight(dates) {
   let best = null;
   let bestCount = -1;
   for (const d of Object.keys(freq).sort()) {
-    // sorted ascending => first to reach a given max count is the earliest, so
-    // strict > keeps the earliest on ties.
+    // sorted ascending + strict > keeps the earliest date on count ties.
     if (freq[d] > bestCount) {
       bestCount = freq[d];
       best = d;
@@ -81,30 +113,36 @@ function estimatePressNight(dates) {
 
 /**
  * Is this show stuck in a pre-open status despite having a displayable review
- * slate? Returns true when status is previews/upcoming AND reviewCount meets the
- * category's score-display threshold.
+ * slate? Returns true when status is previews/upcoming AND the show has enough
+ * reviews to display a score by the SAME rule the site uses (reviewsRemaining===0).
+ *
+ * @param counts { count, tier1And2 } from countByShow(). A bare number is also
+ *   accepted for back-compat (treated as count with tier1And2 unknown).
  */
-function isStuckInPreviews(show, reviewCount) {
+function isStuckInPreviews(show, counts) {
   if (!show || !PRE_OPEN_STATUSES.has(show.status)) return false;
-  return reviewCount >= minReviewsForScore(show.category);
+  const count = typeof counts === 'number' ? counts : (counts ? counts.count : 0);
+  const tier1And2 = typeof counts === 'number' ? undefined : (counts ? counts.tier1And2 : undefined);
+  // A show in previews/upcoming is never a curated-historical import, so pass false.
+  return reviewsRemainingForScore(count, show.category, tier1And2, false) === 0;
 }
 
 /**
  * Find every stuck show. `countMap` is the output of countByShow().
- * Returns [{ id, title, category, status, reviewCount, openingDate, pressNight }].
+ * Returns [{ id, title, category, status, reviewCount, tier1And2, openingDate, pressNight }].
  */
 function findStuckPreviews(shows, countMap) {
   const out = [];
   for (const show of shows) {
     const entry = countMap[show.id];
-    const reviewCount = entry ? entry.count : 0;
-    if (!isStuckInPreviews(show, reviewCount)) continue;
+    if (!isStuckInPreviews(show, entry)) continue;
     out.push({
       id: show.id,
       title: show.title,
       category: show.category,
       status: show.status,
-      reviewCount,
+      reviewCount: entry ? entry.count : 0,
+      tier1And2: entry ? entry.tier1And2 : 0,
       openingDate: show.openingDate ?? null,
       pressNight: entry ? estimatePressNight(entry.dates) : null,
     });
@@ -115,8 +153,11 @@ function findStuckPreviews(shows, countMap) {
 module.exports = {
   MIN_REVIEWS_BY_CATEGORY,
   MIN_REVIEWS_DEFAULT,
+  MIN_REVIEWS_CURATED_HISTORICAL,
+  T3_ONLY_EXTRA_REVIEWS,
   PRE_OPEN_STATUSES,
-  minReviewsForScore,
+  minReviewsForCategory,
+  reviewsRemainingForScore,
   countByShow,
   estimatePressNight,
   isStuckInPreviews,
