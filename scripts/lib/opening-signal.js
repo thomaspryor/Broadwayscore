@@ -128,6 +128,30 @@ function isStuckInPreviews(show, counts) {
 }
 
 /**
+ * Choose the openingDate to backfill when flipping a stuck show to open.
+ * Prefers the review cluster (press night); falls back to previewsStartDate when
+ * every review is dateless (~16% of reviews carry no publishDate) so the show
+ * doesn't flip to open while staying openingDate:null. Only ever returns a
+ * past/today date — a future date would let Check 2c revert open→previews
+ * (oscillation). Returns { date, source } or null (leave openingDate null;
+ * status still flips, which already unsticks the score).
+ *
+ * `isDateReached` is injected (date <= today) so the lib stays deterministic and
+ * testable without touching the clock.
+ */
+function chooseOpeningDateBackfill(show, dates, isDateReached) {
+  if (!show || show.openingDate) return null;
+  const pressNight = estimatePressNight(dates);
+  if (pressNight && isDateReached(pressNight)) {
+    return { date: pressNight, source: 'review-derived-press-night' };
+  }
+  if (show.previewsStartDate && isDateReached(show.previewsStartDate)) {
+    return { date: show.previewsStartDate, source: 'review-driven-fallback-previews-start' };
+  }
+  return null;
+}
+
+/**
  * Find every stuck show. `countMap` is the output of countByShow().
  * Returns [{ id, title, category, status, reviewCount, tier1And2, openingDate, pressNight }].
  */
@@ -161,5 +185,6 @@ module.exports = {
   countByShow,
   estimatePressNight,
   isStuckInPreviews,
+  chooseOpeningDateBackfill,
   findStuckPreviews,
 };

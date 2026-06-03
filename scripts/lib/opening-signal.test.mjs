@@ -19,8 +19,12 @@ const {
   countByShow,
   estimatePressNight,
   isStuckInPreviews,
+  chooseOpeningDateBackfill,
   findStuckPreviews,
 } = require('./opening-signal.js');
+
+// Deterministic clock for backfill tests: "today" is 2026-06-03.
+const isReached = (d) => new Date(d) <= new Date('2026-06-03');
 
 test('thresholds mirror src/config/score-buckets.ts MIN_REVIEWS_FOR_SCORE*', () => {
   assert.equal(MIN_REVIEWS_BY_CATEGORY.broadway, 5);
@@ -107,6 +111,35 @@ test('isStuckInPreviews fires only when the show would actually display a score'
   assert.equal(isStuckInPreviews({ status: 'closed', category: 'broadway' }, { count: 10, tier1And2: 5 }), false);
   assert.equal(isStuckInPreviews({ status: 'previews', category: 'off-broadway' }, undefined), false);
   assert.equal(isStuckInPreviews(null, { count: 10, tier1And2: 5 }), false);
+});
+
+test('chooseOpeningDateBackfill prefers press night, falls back to previewsStartDate when dateless', () => {
+  // Normal case: review cluster present → press night wins.
+  assert.deepEqual(
+    chooseOpeningDateBackfill({ openingDate: null, previewsStartDate: '2026-05-01' }, ['2026-05-31', '2026-05-31', '2026-06-01'], isReached),
+    { date: '2026-05-31', source: 'review-derived-press-night' },
+  );
+  // P1: every review dateless → fall back to previewsStartDate (past) so the show
+  // doesn't flip to open while staying openingDate:null.
+  assert.deepEqual(
+    chooseOpeningDateBackfill({ openingDate: null, previewsStartDate: '2026-05-01' }, [], isReached),
+    { date: '2026-05-01', source: 'review-driven-fallback-previews-start' },
+  );
+  // Dateless AND previewsStartDate is in the future (upcoming show) → write nothing
+  // (a future openingDate would oscillate via Check 2c).
+  assert.equal(
+    chooseOpeningDateBackfill({ openingDate: null, previewsStartDate: '2027-01-01' }, [], isReached),
+    null,
+  );
+  // Dateless with no previewsStartDate → null (status still flips; score unstuck).
+  assert.equal(chooseOpeningDateBackfill({ openingDate: null }, [], isReached), null);
+  // A future-only press night with a past previewsStartDate → fall back, never write the future date.
+  assert.deepEqual(
+    chooseOpeningDateBackfill({ openingDate: null, previewsStartDate: '2026-05-01' }, ['2027-03-03'], isReached),
+    { date: '2026-05-01', source: 'review-driven-fallback-previews-start' },
+  );
+  // Never overwrite an existing openingDate.
+  assert.equal(chooseOpeningDateBackfill({ openingDate: '2026-04-04', previewsStartDate: '2026-05-01' }, ['2026-05-31'], isReached), null);
 });
 
 test('findStuckPreviews surfaces stuck shows with press-night estimate, ignores healthy ones', () => {
