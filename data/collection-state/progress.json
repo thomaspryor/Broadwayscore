@@ -17,7 +17,11 @@
     "company-2021/theatrely--andrew-martini.json",
     "escape-to-margaritaville-2018/playbill--gabriel-agosto.json",
     "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
-    "the-miracle-worker-2010/newsday--linda-winer.json"
+    "the-miracle-worker-2010/newsday--linda-winer.json",
+    "jerome-off-broadway-2025/vulture--unknown.json",
+    "jerome-off-broadway-2025/theatermania--unknown.json",
+    "jerome-off-broadway-2025/exeunt-magazine--unknown.json",
+    "jerome-off-broadway-2025/front-row-center--unknown.json"
   ],
   "failed": [
     "jerome-off-broadway-2025/one-minute-critic--unknown.json",
@@ -258,7 +262,13 @@
     "equus-west-end-2026/artsdesk--unknown.json",
     "equus-west-end-2026/thestage--holly-o.json",
     "equus-west-end-2026/times-uk--clive-davis.json",
-    "end-of-the-rainbow-west-end-2026/all-that-dazzles-uk--unknown.json"
+    "end-of-the-rainbow-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "jerome-off-broadway-2025/nytimes--unknown.json",
+    "jerome-off-broadway-2025/nysr--unknown.json",
+    "jerome-off-broadway-2025/one-minute-critic--unknown.json",
+    "jerome-off-broadway-2025/talkinbroadway--unknown.json",
+    "jerome-off-broadway-2025/the-recs--unknown.json",
+    "indian-princesses-off-broadway-2025/pages-on-stages--mason-pilevsky.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -270,7 +280,9 @@
       "kinky-boots-the-musical-west-end-2026/whatsonstage--alex-wood.json",
       "maybe-happy-ending-2024/washpost--unknown.json",
       "moulin-rouge-the-musical-west-end-2021/independent--alice-saville.json",
-      "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json"
+      "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+      "jerome-off-broadway-2025/theatermania--unknown.json",
+      "jerome-off-broadway-2025/one-minute-critic--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -283,16 +295,22 @@
       "matilda-the-musical-west-end-2021/daily-mail--patrick-marmion.json",
       "company-2021/theatrely--andrew-martini.json",
       "trouble-in-mind-2021/broadwayworld--unknown.json",
-      "the-miracle-worker-2010/newsday--linda-winer.json"
+      "the-miracle-worker-2010/newsday--linda-winer.json",
+      "jerome-off-broadway-2025/exeunt-magazine--unknown.json",
+      "jerome-off-broadway-2025/front-row-center--unknown.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "jerome-off-broadway-2025/vulture--unknown.json"
+    ],
     "archiveToday": [
       "data/review-texts/well-ill-let-you-go-off-broadway-2026/ny1--spectrum-news-staff.json",
       "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
       "data/review-texts/equus-west-end-2026/thestage--holly-o.json",
       "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
       "data/review-texts/jerome-off-broadway-2025/talkinbroadway--unknown.json",
-      "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json"
+      "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
+      "data/review-texts/jerome-off-broadway-2025/nysr--unknown.json",
+      "data/review-texts/jerome-off-broadway-2025/the-recs--unknown.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -303,7 +321,7 @@
     ]
   },
   "startTime": "2026-06-03T03:38:17.541Z",
-  "lastProcessed": "end-of-the-rainbow-west-end-2026/all-that-dazzles-uk--unknown.json",
+  "lastProcessed": "indian-princesses-off-broadway-2025/pages-on-stages--mason-pilevsky.json",
   "log": [
     {
       "t": "2026-06-03T09:41:55.824Z",
@@ -390,6 +408,17 @@
       "event": "bb-session",
       "session": "52b5bf6a",
       "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
+    },
+    {
+      "t": "2026-06-03T13:26:49.322Z",
+      "event": "bb-session",
+      "session": "42e1c811",
+      "url": "https://a.talkinbroadway.com/allthatchat_new/d.php?id=2626606"
+    },
+    {
+      "t": "2026-06-03T13:26:49.886Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
