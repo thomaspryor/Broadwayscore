@@ -233,7 +233,11 @@
     "mary-poppins-2006/variety--charles-isherwood.json",
     "tarzan-2006/variety--charles-isherwood.json",
     "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
-    "the-loved-ones-off-broadway-2026/broadwayworld--team-bww.json"
+    "the-loved-ones-off-broadway-2026/broadwayworld--team-bww.json",
+    "jerome-off-broadway-2025/one-minute-critic--unknown.json",
+    "jerome-off-broadway-2025/talkinbroadway--unknown.json",
+    "indian-princesses-off-broadway-2025/pages-on-stages--mason-pilevsky.json",
+    "the-maids-off-broadway-2026/ew--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -260,15 +264,13 @@
       "trouble-in-mind-2021/broadwayworld--unknown.json",
       "the-miracle-worker-2010/newsday--linda-winer.json"
     ],
-    "brightdata": [
-      "celebrity-autobiography-2026/talkinbroadway--unknown.json"
-    ],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/well-ill-let-you-go-off-broadway-2026/ny1--spectrum-news-staff.json",
       "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
       "data/review-texts/equus-west-end-2026/thestage--holly-o.json",
-      "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json"
+      "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
+      "data/review-texts/jerome-off-broadway-2025/talkinbroadway--unknown.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -279,7 +281,7 @@
     ]
   },
   "startTime": "2026-06-03T03:38:17.541Z",
-  "lastProcessed": "the-loved-ones-off-broadway-2026/broadwayworld--team-bww.json",
+  "lastProcessed": "the-maids-off-broadway-2026/ew--unknown.json",
   "log": [
     {
       "t": "2026-06-03T09:41:55.824Z",
@@ -343,6 +345,17 @@
       "t": "2026-06-03T06:27:59.389Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-03T11:55:23.071Z",
+      "event": "bb-session",
+      "session": "e2356d89",
+      "url": "https://a.talkinbroadway.com/allthatchat_new/d.php?id=2626606"
+    },
+    {
+      "t": "2026-06-03T11:55:23.599Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
