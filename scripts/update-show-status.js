@@ -21,6 +21,7 @@ const https = require('https');
 const { extractStatusFromHtml } = require('./lib/show-score-status');
 const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
 const { countByShow, isStuckInPreviews, chooseOpeningDateBackfill } = require('./lib/opening-signal');
+const { openingDateSourceHint } = require('./lib/opening-date-sources');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const REVIEWS_FILE = path.join(__dirname, '..', 'data', 'reviews.json');
@@ -727,7 +728,7 @@ async function updateShowStatuses() {
               show.openingDateSource = backfill.source;
             }
           } else {
-            console.log(`  ℹ️  ${show.title} (${show.id}): flipped previews→open via review signal but no press-night date is derivable (reviews dateless) — openingDate left null; fill from Playbill when known`);
+            console.log(`  ℹ️  ${show.title} (${show.id}): flipped previews→open via review signal but no press-night date is derivable (reviews dateless) — openingDate left null; fill from ${openingDateSourceHint(show.category)}`);
           }
         }
       }
