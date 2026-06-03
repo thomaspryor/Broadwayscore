@@ -8,7 +8,10 @@
     "well-ill-let-you-go-off-broadway-2026/ny1--spectrum-news-staff.json",
     "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
     "kinky-boots-the-musical-west-end-2026/express-uk--stefan-kyriazis.json",
-    "kinky-boots-the-musical-west-end-2026/whatsonstage--alex-wood.json"
+    "kinky-boots-the-musical-west-end-2026/whatsonstage--alex-wood.json",
+    "maybe-happy-ending-2024/variety--unknown.json",
+    "maybe-happy-ending-2024/washpost--unknown.json",
+    "moulin-rouge-the-musical-west-end-2021/independent--alice-saville.json"
   ],
   "failed": [
     "jerome-off-broadway-2025/one-minute-critic--unknown.json",
@@ -28,7 +31,14 @@
     "grace-pervades-west-end-2026/telegraph--unknown.json",
     "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
     "ragtime-2025/bloomberg--chris-rovzar.json",
-    "turandot-off-broadway-2025/parterre-box--unknown.json"
+    "turandot-off-broadway-2025/parterre-box--unknown.json",
+    "titanique-west-end-2024/times-uk--clive-davis.json",
+    "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
+    "hadestown-west-end-2024/times-uk--clive-davis.json",
+    "mj-2022/broadwaynews--charles-isherwood.json",
+    "mj-2022/nydailynews--karu-f-daniels.json",
+    "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
+    "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -37,10 +47,15 @@
       "jerome-off-broadway-2025/culturesauce--thom-geier.json",
       "well-ill-let-you-go-off-broadway-2026/ny1--spectrum-news-staff.json",
       "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
-      "kinky-boots-the-musical-west-end-2026/whatsonstage--alex-wood.json"
+      "kinky-boots-the-musical-west-end-2026/whatsonstage--alex-wood.json",
+      "maybe-happy-ending-2024/washpost--unknown.json",
+      "moulin-rouge-the-musical-west-end-2021/independent--alice-saville.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/maybe-happy-ending-2024/variety--unknown.json",
+      "maybe-happy-ending-2024/variety--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
@@ -60,7 +75,7 @@
     ]
   },
   "startTime": "2026-06-03T03:38:17.541Z",
-  "lastProcessed": "turandot-off-broadway-2025/parterre-box--unknown.json",
+  "lastProcessed": "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json",
   "log": [
     {
       "t": "2026-06-03T03:39:42.821Z",
@@ -105,6 +120,17 @@
       "t": "2026-06-03T04:36:06.960Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-03T06:27:58.514Z",
+      "event": "bb-session",
+      "session": "b0fe8aa1",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
+    },
+    {
+      "t": "2026-06-03T06:27:59.389Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
