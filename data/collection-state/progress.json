@@ -1,11 +1,16 @@
 {
   "processed": [
     "jerome-off-broadway-2025/nytg--kyle-turner.json",
-    "jerome-off-broadway-2025/culturesauce--thom-geier.json"
+    "jerome-off-broadway-2025/culturesauce--thom-geier.json",
+    "celebrity-autobiography-2026/talkinbroadway--unknown.json"
   ],
   "failed": [
     "jerome-off-broadway-2025/one-minute-critic--unknown.json",
-    "jerome-off-broadway-2025/talkinbroadway--unknown.json"
+    "jerome-off-broadway-2025/talkinbroadway--unknown.json",
+    "jerome-off-broadway-2025/one-minute-critic--unknown.json",
+    "jerome-off-broadway-2025/talkinbroadway--unknown.json",
+    "indian-princesses-off-broadway-2025/pages-on-stages--mason-pilevsky.json",
+    "the-maids-off-broadway-2026/ew--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -17,12 +22,16 @@
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
-    "brightdata": [],
-    "archiveToday": [],
+    "brightdata": [
+      "celebrity-autobiography-2026/talkinbroadway--unknown.json"
+    ],
+    "archiveToday": [
+      "data/review-texts/jerome-off-broadway-2025/talkinbroadway--unknown.json"
+    ],
     "archive": []
   },
   "startTime": "2026-06-03T03:38:17.541Z",
-  "lastProcessed": "jerome-off-broadway-2025/talkinbroadway--unknown.json",
+  "lastProcessed": "the-maids-off-broadway-2026/ew--unknown.json",
   "log": [
     {
       "t": "2026-06-03T03:39:42.821Z",
@@ -32,6 +41,17 @@
     },
     {
       "t": "2026-06-03T03:39:43.887Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-03T04:07:27.419Z",
+      "event": "bb-session",
+      "session": "a30661d8",
+      "url": "https://a.talkinbroadway.com/allthatchat_new/d.php?id=2626606"
+    },
+    {
+      "t": "2026-06-03T04:07:28.209Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }
