@@ -19,7 +19,8 @@
     "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
     "the-miracle-worker-2010/newsday--linda-winer.json",
     "grace-pervades-west-end-2026/telegraph--unknown.json",
-    "a-steady-rain-2009/latimes--unknown.json"
+    "a-steady-rain-2009/latimes--unknown.json",
+    "animal-wisdom-2022/nytimes--ben-brantley.json"
   ],
   "failed": [
     "jerome-off-broadway-2025/one-minute-critic--unknown.json",
@@ -433,7 +434,8 @@
     "journeys-end-2007/variety--david-rooney.json",
     "mary-poppins-2006/variety--charles-isherwood.json",
     "tarzan-2006/variety--charles-isherwood.json",
-    "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json"
+    "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
+    "the-loved-ones-off-broadway-2026/broadwayworld--team-bww.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -450,7 +452,9 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/maybe-happy-ending-2024/variety--unknown.json",
-      "maybe-happy-ending-2024/variety--unknown.json"
+      "maybe-happy-ending-2024/variety--unknown.json",
+      "data/review-texts/animal-wisdom-2022/nytimes--ben-brantley.json",
+      "animal-wisdom-2022/nytimes--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -481,7 +485,7 @@
     ]
   },
   "startTime": "2026-06-03T03:38:17.541Z",
-  "lastProcessed": "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
+  "lastProcessed": "the-loved-ones-off-broadway-2026/broadwayworld--team-bww.json",
   "log": [
     {
       "t": "2026-06-03T09:41:55.824Z",
@@ -545,6 +549,17 @@
       "t": "2026-06-03T06:27:59.389Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-03T12:12:21.903Z",
+      "event": "bb-session",
+      "session": "055ed2b0",
+      "url": "https://www.nytimes.com/2017/10/13/theater/review-animal-wisdom-heather-christia"
+    },
+    {
+      "t": "2026-06-03T12:12:22.329Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
