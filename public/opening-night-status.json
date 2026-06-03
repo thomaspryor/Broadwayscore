@@ -1,7 +1,107 @@
 {
-  "generatedAt": "2026-06-02T17:38:16.990Z",
+  "generatedAt": "2026-06-03T05:42:03.432Z",
   "lookbackDays": 3,
   "shows": [
+    {
+      "id": "driftwood-west-end-2026",
+      "title": "Driftwood",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-06-03",
+      "status": "upcoming",
+      "slug": "driftwood-west-end",
+      "thumbnail": "/images/shows/driftwood-west-end-2026/thumbnail.webp",
+      "siteScore": null,
+      "liveScore": null,
+      "scoreDrift": null,
+      "belowThreshold": true,
+      "reviewsNeeded": 5,
+      "siteFileExists": true,
+      "total": 0,
+      "t1": 0,
+      "t2": 0,
+      "t3": 0,
+      "positive": 0,
+      "mixed": 0,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "0/8 total",
+          "T1:0/3",
+          "T2:0/2",
+          "hi-conf:0/6"
+        ],
+        "highConfidence": 0,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        }
+      ]
+    },
     {
       "id": "war-horse-west-end-2026",
       "title": "War Horse",
@@ -109,27 +209,27 @@
       "slug": "jerome-off-broadway",
       "thumbnail": "/images/shows/jerome-off-broadway-2025/thumbnail.jpg",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 57,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 5,
+      "reviewsNeeded": 1,
       "siteFileExists": true,
-      "total": 0,
+      "total": 2,
       "t1": 0,
-      "t2": 0,
-      "t3": 0,
+      "t2": 1,
+      "t3": 1,
       "positive": 0,
-      "mixed": 0,
-      "negative": 0,
+      "mixed": 1,
+      "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/12 total",
+          "2/12 total",
           "T1:0/3",
-          "T2:0/3",
-          "hi-conf:0/8"
+          "T2:1/3",
+          "hi-conf:2/8"
         ],
-        "highConfidence": 0,
+        "highConfidence": 2,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -255,10 +355,6 @@
         {
           "name": "The Daily Beast",
           "isDualMarket": false
-        },
-        {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
         },
         {
           "name": "New York Theater",
@@ -467,41 +563,55 @@
         {
           "name": "London Box Office",
           "isDualMarket": false
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-06-03T05:42:03.432Z",
+          "rc": 2,
+          "s": 57,
+          "t1": 0,
+          "t2": 1,
+          "t3": 1,
+          "p": 0,
+          "m": 1,
+          "n": 1,
+          "bc": "waiting"
         }
       ]
     },
     {
-      "id": "silverback-mountain-off-broadway-2026",
-      "title": "Silverback Mountain",
+      "id": "and-then-the-rodeo-burned-down-off-broadway-2026",
+      "title": "And Then The Rodeo Burned Down",
       "market": "broadway",
       "category": "off-broadway",
       "type": "play",
-      "openingDate": "2026-05-30",
+      "openingDate": "2026-05-31",
       "status": "open",
-      "slug": "silverback-mountain-off-broadway",
-      "thumbnail": "/images/shows/silverback-mountain-off-broadway-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": null,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 5,
+      "slug": "and-then-the-rodeo-burned-down-off-broadway",
+      "thumbnail": "/images/shows/and-then-the-rodeo-burned-down-off-broadway-2026/thumbnail.webp",
+      "siteScore": 81.85,
+      "liveScore": 82,
+      "scoreDrift": 0.15000000000000568,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 0,
-      "t1": 0,
-      "t2": 0,
-      "t3": 0,
-      "positive": 0,
+      "total": 5,
+      "t1": 1,
+      "t2": 3,
+      "t3": 1,
+      "positive": 5,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/12 total",
-          "T1:0/3",
-          "T2:0/3",
-          "hi-conf:0/8"
+          "5/12 total",
+          "T1:1/3",
+          "T2:2/3",
+          "hi-conf:3/8"
         ],
-        "highConfidence": 0,
+        "highConfidence": 3,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -514,10 +624,6 @@
         "detail": "Not yet broadcast-ready"
       },
       "missingT1": [
-        {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
         {
           "name": "Vulture",
           "isDualMarket": false
@@ -633,15 +739,7 @@
           "isDualMarket": true
         },
         {
-          "name": "New York Theater",
-          "isDualMarket": false
-        },
-        {
           "name": "Theatrely",
-          "isDualMarket": false
-        },
-        {
-          "name": "Talkin' Broadway",
           "isDualMarket": false
         },
         {
@@ -690,10 +788,6 @@
         },
         {
           "name": "NY1",
-          "isDualMarket": false
-        },
-        {
-          "name": "Front Row Center",
           "isDualMarket": false
         },
         {
@@ -843,36 +937,25 @@
         {
           "name": "London Box Office",
           "isDualMarket": false
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-06-03T05:42:03.432Z",
+          "rc": 5,
+          "s": 81.85,
+          "t1": 1,
+          "t2": 3,
+          "t3": 1,
+          "p": 5,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     }
   ],
   "upcoming": [
-    {
-      "id": "driftwood-west-end-2026",
-      "title": "Driftwood",
-      "market": "west-end",
-      "category": "off-west-end",
-      "type": "play",
-      "openingDate": "2026-06-03",
-      "status": "upcoming",
-      "slug": "driftwood-west-end",
-      "thumbnail": "/images/shows/driftwood-west-end-2026/thumbnail.webp",
-      "daysUntil": 1,
-      "readinessChecks": {
-        "wrongProduction": {
-          "pass": true,
-          "detail": "No pre-existing score files"
-        }
-      },
-      "readinessSummary": {
-        "failures": 1,
-        "warnings": 0,
-        "unknowns": 2,
-        "total": 4
-      },
-      "preflight": false
-    },
     {
       "id": "girl-interrupted-off-broadway-2026",
       "title": "Girl, Interrupted",
@@ -883,7 +966,7 @@
       "status": "previews",
       "slug": "girl-interrupted-off-broadway",
       "thumbnail": "/images/shows/girl-interrupted-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 2,
+      "daysUntil": 1,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -922,7 +1005,7 @@
       "status": "previews",
       "slug": "are-you-watching-west-end",
       "thumbnail": "/images/shows/are-you-watching-west-end-2026/thumbnail.webp",
-      "daysUntil": 2,
+      "daysUntil": 1,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -947,7 +1030,7 @@
       "status": "previews",
       "slug": "a-woman-among-women-off-broadway",
       "thumbnail": "/images/shows/a-woman-among-women-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 2,
+      "daysUntil": 1,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -986,7 +1069,7 @@
       "status": "previews",
       "slug": "fear-and-wonder-off-broadway",
       "thumbnail": "/images/shows/fear-and-wonder-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 6,
+      "daysUntil": 5,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1025,7 +1108,7 @@
       "status": "upcoming",
       "slug": "im-almost-there-off-broadway",
       "thumbnail": "/images/shows/im-almost-there-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 7,
+      "daysUntil": 6,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1064,7 +1147,7 @@
       "status": "upcoming",
       "slug": "the-truth-a-comedy-by-florian-zeller-west-end",
       "thumbnail": "/images/shows/the-truth-a-comedy-by-florian-zeller-west-end-2026/thumbnail.webp",
-      "daysUntil": 7,
+      "daysUntil": 6,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1089,6 +1172,84 @@
       "status": "upcoming",
       "slug": "henry-vi-a-trilogy-in-two-parts-off-broadway",
       "thumbnail": "/images/shows/henry-vi-a-trilogy-in-two-parts-off-broadway-2026/thumbnail.jpg",
+      "daysUntil": 6,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": false,
+          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived — bww-rr-discover.js will auto-fetch within minutes of publication",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Not yet archived — tb-direct-url.js will discover at poll time",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
+      },
+      "preflight": false
+    },
+    {
+      "id": "youth-in-flames-off-broadway-2026",
+      "title": "Youth in Flames",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "play",
+      "openingDate": "2026-06-10",
+      "status": "previews",
+      "slug": "youth-in-flames-off-broadway",
+      "thumbnail": "/images/shows/youth-in-flames-off-broadway-2026/thumbnail.jpg",
+      "daysUntil": 7,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": false,
+          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived — bww-rr-discover.js will auto-fetch within minutes of publication",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Not yet archived — tb-direct-url.js will discover at poll time",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
+      },
+      "preflight": false
+    },
+    {
+      "id": "catch-of-the-day-off-broadway-2026",
+      "title": "Catch of the Day",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "play",
+      "openingDate": "2026-06-10",
+      "status": "previews",
+      "slug": "catch-of-the-day-off-broadway",
+      "thumbnail": "/images/shows/catch-of-the-day-off-broadway-2026/thumbnail.jpg",
       "daysUntil": 7,
       "readinessChecks": {
         "wrongProduction": {
