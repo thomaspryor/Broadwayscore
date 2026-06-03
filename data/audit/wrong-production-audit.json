@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-03T05:41:58.889Z",
+  "timestamp": "2026-06-03T11:37:15.808Z",
   "stats": {
-    "totalReviews": 37925,
-    "alreadyFlagged": 16675,
-    "dateGuardCatches": 106,
-    "directorMismatch": 819,
-    "tvFilmSignals": 1042,
+    "totalReviews": 37934,
+    "alreadyFlagged": 16682,
+    "dateGuardCatches": 108,
+    "directorMismatch": 820,
+    "tvFilmSignals": 1044,
     "londonSignals": 592,
     "offBroadwaySignals": 458,
     "yearMismatch": 79,
-    "noPublishDate": 3971
+    "noPublishDate": 3968
   },
   "findings": [
     {
@@ -1271,6 +1271,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"streaming service\""
+        }
+      ]
+    },
+    {
+      "showId": "and-then-the-rodeo-burned-down-off-broadway-2026",
+      "file": "nytg--amelia-merrill.json",
+      "score": 84,
+      "publishDate": "2026-06-01",
+      "url": "https://www.newyorktheatreguide.com/reviews/and-then-the-rodeo-burned-down-off-broadway-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -5900,6 +5914,24 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "driftwood-west-end-2026",
+      "file": "whatsonstage--alison-brinkworth.json",
+      "publishDate": "2026-04-29",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 35d before show (2026-04-29 vs 2026-06-03)"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -24636,6 +24668,20 @@
       ]
     },
     {
+      "showId": "war-horse-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 97,
+      "publishDate": "2026-06-02",
+      "url": "https://www.timeout.com/london/theatre/war-horse-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from war-horse-2011"
+        }
+      ]
+    },
+    {
       "showId": "war-paint-2017",
       "file": "broadwayworld--michael-dale.json",
       "score": 68,
@@ -29027,6 +29073,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "driftwood-west-end-2026",
+      "file": "financialtimes--sarah-hemming.json",
+      "publishDate": "2026-04-29",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 35d before show (2026-04-29 vs 2026-06-03)"
         }
       ]
     },

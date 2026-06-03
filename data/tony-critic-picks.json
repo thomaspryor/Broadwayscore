@@ -3,7 +3,7 @@
     "description": "Critic Tony Award winner predictions by category. Show categories keyed by showId; acting categories keyed by person name (case-insensitive match).",
     "season": "2025-26",
     "ceremonyYear": 2026,
-    "updated": "2026-06-01"
+    "updated": "2026-06-03"
   },
   "sources": [
     {
@@ -69,6 +69,14 @@
       "shortName": "SLANT",
       "color": "#ff6b6b",
       "url": "https://www.slantmagazine.com/awards/tony-awards-2026-winner-predictions/"
+    },
+    {
+      "id": "timeout",
+      "outlet": "Time Out New York",
+      "critic": "Adam Feldman",
+      "shortName": "TO",
+      "color": "#e31b23",
+      "url": "https://www.timeout.com/newyork/theater/complete-2026-tony-award-predictions"
     }
   ],
   "picks": {
@@ -79,7 +87,8 @@
       "nytg": "schmigadoon-2026",
       "ew": "the-lost-boys-2026",
       "nysun": "schmigadoon-2026",
-      "slant": "the-lost-boys-2026"
+      "slant": "the-lost-boys-2026",
+      "timeout": "the-lost-boys-2026"
     },
     "Best Play": {
       "nyt": "giant-2026",
@@ -88,7 +97,8 @@
       "nytg": "giant-2026",
       "ew": "giant-2026",
       "nysun": "liberation-2025",
-      "slant": "liberation-2025"
+      "slant": "liberation-2025",
+      "timeout": "liberation-2025"
     },
     "Best Revival of a Musical": {
       "nyt": "ragtime-2025",
@@ -97,7 +107,8 @@
       "nytg": "ragtime-2025",
       "ew": "ragtime-2025",
       "nysun": "ragtime-2025",
-      "slant": "cats-the-jellicle-ball-2026"
+      "slant": "cats-the-jellicle-ball-2026",
+      "timeout": "cats-the-jellicle-ball-2026"
     },
     "Best Revival of a Play": {
       "nyt": "death-of-a-salesman-2026",
@@ -106,7 +117,8 @@
       "nytg": "death-of-a-salesman-2026",
       "ew": "death-of-a-salesman-2026",
       "nysun": "death-of-a-salesman-2026",
-      "slant": "death-of-a-salesman-2026"
+      "slant": "death-of-a-salesman-2026",
+      "timeout": "death-of-a-salesman-2026"
     },
     "Best Actor in a Musical": {
       "nyt": "Joshua Henry",
@@ -116,7 +128,8 @@
       "ew": "Joshua Henry",
       "nysun": "Joshua Henry",
       "theatermania": "Joshua Henry",
-      "slant": "Joshua Henry"
+      "slant": "Joshua Henry",
+      "timeout": "Joshua Henry"
     },
     "Best Actress in a Musical": {
       "nyt": "Caissie Levy",
@@ -126,7 +139,8 @@
       "ew": "Caissie Levy",
       "nysun": "Caissie Levy",
       "theatermania": "Caissie Levy",
-      "slant": "Marla Mindelle"
+      "slant": "Marla Mindelle",
+      "timeout": "Caissie Levy"
     },
     "Best Actor in a Play": {
       "nyt": "Nathan Lane",
@@ -136,7 +150,8 @@
       "ew": "Nathan Lane",
       "nysun": "John Lithgow",
       "theatermania": "John Lithgow",
-      "slant": "John Lithgow"
+      "slant": "John Lithgow",
+      "timeout": "John Lithgow"
     },
     "Best Actress in a Play": {
       "nyt": "Lesley Manville",
@@ -146,7 +161,8 @@
       "ew": "Lesley Manville",
       "nysun": "Lesley Manville",
       "theatermania": "Lesley Manville",
-      "slant": "Lesley Manville"
+      "slant": "Lesley Manville",
+      "timeout": "Lesley Manville"
     },
     "Best Featured Actor in a Musical": {
       "nyt": "André De Shields",
@@ -154,7 +170,8 @@
       "culturesauce": "André De Shields",
       "nytg": "André De Shields",
       "ew": "André De Shields",
-      "slant": "Ben Levi Ross"
+      "slant": "Ben Levi Ross",
+      "timeout": "Ali Louis Bourzgui"
     },
     "Best Featured Actress in a Musical": {
       "nyt": "Shoshana Bean",
@@ -162,7 +179,8 @@
       "culturesauce": "Shoshana Bean",
       "nytg": "Shoshana Bean",
       "ew": "Shoshana Bean",
-      "slant": "Nichelle Lewis"
+      "slant": "Nichelle Lewis",
+      "timeout": "Shoshana Bean"
     },
     "Best Featured Actor in a Play": {
       "nyt": "Alden Ehrenreich",
@@ -170,14 +188,16 @@
       "culturesauce": "Alden Ehrenreich",
       "nytg": "Alden Ehrenreich",
       "ew": "Christopher Abbott",
-      "slant": "Alden Ehrenreich"
+      "slant": "Alden Ehrenreich",
+      "timeout": "Alden Ehrenreich"
     },
     "Best Featured Actress in a Play": {
       "variety": "Laurie Metcalf",
       "culturesauce": "Laurie Metcalf",
       "nytg": "Laurie Metcalf",
       "ew": "Laurie Metcalf",
-      "slant": "Laurie Metcalf"
+      "slant": "Laurie Metcalf",
+      "timeout": "Laurie Metcalf"
     },
     "Best Direction of a Musical": {
       "nyt": "the-lost-boys-2026",
@@ -185,7 +205,8 @@
       "culturesauce": "cats-the-jellicle-ball-2026",
       "nytg": "ragtime-2025",
       "nysun": "ragtime-2025",
-      "slant": "cats-the-jellicle-ball-2026"
+      "slant": "cats-the-jellicle-ball-2026",
+      "timeout": "cats-the-jellicle-ball-2026"
     },
     "Best Direction of a Play": {
       "nyt": "death-of-a-salesman-2026",
@@ -193,14 +214,16 @@
       "culturesauce": "death-of-a-salesman-2026",
       "nytg": "death-of-a-salesman-2026",
       "nysun": "liberation-2025",
-      "slant": "death-of-a-salesman-2026"
+      "slant": "death-of-a-salesman-2026",
+      "timeout": "death-of-a-salesman-2026"
     },
     "Best Choreography": {
       "nyt": "schmigadoon-2026",
       "variety": "cats-the-jellicle-ball-2026",
       "culturesauce": "cats-the-jellicle-ball-2026",
       "nysun": "cats-the-jellicle-ball-2026",
-      "slant": "cats-the-jellicle-ball-2026"
+      "slant": "cats-the-jellicle-ball-2026",
+      "timeout": "cats-the-jellicle-ball-2026"
     },
     "Best Book of a Musical": {
       "nyt": "schmigadoon-2026",
@@ -208,7 +231,8 @@
       "culturesauce": "schmigadoon-2026",
       "nytg": "two-strangers-bway-2025",
       "nysun": "schmigadoon-2026",
-      "slant": "schmigadoon-2026"
+      "slant": "schmigadoon-2026",
+      "timeout": "schmigadoon-2026"
     },
     "Best Original Score": {
       "nyt": "two-strangers-bway-2025",
@@ -216,7 +240,8 @@
       "culturesauce": "two-strangers-bway-2025",
       "nytg": "schmigadoon-2026",
       "nysun": "two-strangers-bway-2025",
-      "slant": "two-strangers-bway-2025"
+      "slant": "two-strangers-bway-2025",
+      "timeout": "two-strangers-bway-2025"
     }
   }
 }
