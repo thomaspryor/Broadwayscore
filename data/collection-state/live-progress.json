@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-06-03T10:00:50.359Z",
+  "updatedAt": "2026-06-03T10:58:20.733Z",
   "processed": 5,
-  "failed": 29,
-  "successRate": "14.7%",
+  "failed": 39,
+  "successRate": "11.4%",
   "tierBreakdown": {
     "playwright": 2,
     "amp": 0,
@@ -37,6 +37,18 @@
       "t": "2026-06-03T10:00:15.096Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-06-03T10:55:56.048Z",
+      "event": "bb-session",
+      "session": "7ba60421",
+      "url": "https://charingcrosstheatre.co.uk/theatre/dark-of-the-moon"
+    },
+    {
+      "t": "2026-06-03T10:57:40.504Z",
+      "event": "bb-session",
+      "session": "f130482c",
+      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
     }
   ]
 }
