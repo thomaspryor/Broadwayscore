@@ -470,10 +470,24 @@ function applyDDOCCDL(source, fieldKey, awardsShows, titleById, opts) {
     for (const yearEntry of years) {
       const callOpts = { ...opts, sourceYear: yearEntry.year, strictSeason };
 
+      // Explicit tie co-winners from the year-page parser: each winner is
+      // paired with its OWN production in the markup (e.g. DD 2026 Lead
+      // Performance in a Musical: Henry + Levy, both Ragtime; Lead Play:
+      // Lithgow/Giant + Manville/Oedipus). When present we attribute each
+      // person to their paired show directly — no nominee-adjacency or Tony
+      // fallback guessing. Only trust it when every entry has BOTH person+show.
+      const explicitWinnerEntries = Array.isArray(yearEntry.winnerEntries)
+        && yearEntry.winnerEntries.length > 0
+        && yearEntry.winnerEntries.every((e) => e && e.person && e.show)
+        ? yearEntry.winnerEntries
+        : null;
+
       // Resolve winner titles — may be show titles OR person names (acting categories).
-      const winnerTitles = Array.isArray(yearEntry.winners) && yearEntry.winners.length > 0
-        ? yearEntry.winners
-        : (yearEntry.winner ? [yearEntry.winner] : []);
+      const winnerTitles = explicitWinnerEntries
+        ? explicitWinnerEntries.map((e) => e.person)
+        : (Array.isArray(yearEntry.winners) && yearEntry.winners.length > 0
+            ? yearEntry.winners
+            : (yearEntry.winner ? [yearEntry.winner] : []));
 
       // Detect person-name winners: if NONE of the winner titles resolve to a show, they're people.
       const anyWinnerIsShow = winnerTitles.some(
@@ -509,7 +523,20 @@ function applyDDOCCDL(source, fieldKey, awardsShows, titleById, opts) {
       // etc) that aren't Tony-nominated and were silently dropped by the
       // prior Tony-only logic.
       const personWinnerShowMap = new Map(); // normalizedName → showId[]
-      if (winnerIsPersonName && !winnerShowUntracked) {
+      if (explicitWinnerEntries) {
+        // Authoritative person→show pairing straight from the year-page markup.
+        for (const e of explicitWinnerEntries) {
+          const sid = findShowIdByTitle(e.show, awardsShows, titleById, callOpts);
+          if (!sid) {
+            unmatched.push(`${fieldKey}/${scrapedCategory}/${yearEntry.year}: tie winner "${e.person}" → show "${e.show}" not tracked in shows.json`);
+            continue;
+          }
+          const key = normalizeTitle(e.person);
+          const arr = personWinnerShowMap.get(key) || [];
+          if (!arr.includes(sid)) arr.push(sid);
+          personWinnerShowMap.set(key, arr);
+        }
+      } else if (winnerIsPersonName && !winnerShowUntracked) {
         const season = ceremonyYearToTonySeason(callOpts.sourceYear);
         const noms = yearEntry.nominees || [];
         for (const w of winnerTitles) {
