@@ -35,6 +35,27 @@
     "equus-west-end-2026/artsdesk--unknown.json",
     "equus-west-end-2026/thestage--holly-o.json",
     "equus-west-end-2026/times-uk--clive-davis.json",
+    "end-of-the-rainbow-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "war-horse-west-end-2026/standard--nick-curtis.json",
+    "war-horse-west-end-2026/whatsonstage--sarah-crompton.json",
+    "beetlejuice-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "the-p-word-off-west-end-2026/broadwayworld--aliya-al-hassan.json",
+    "the-p-word-off-west-end-2026/whatsonstage--frey-kwa-hawking.json",
+    "dark-of-the-moon-west-end-2026/guardian-uk--unknown.json",
+    "dark-of-the-moon-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "dark-of-the-moon-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "dark-of-the-moon-west-end-2026/artsdesk--unknown.json",
+    "dark-of-the-moon-west-end-2026/cambridge--unknown.json",
+    "dark-of-the-moon-west-end-2026/london-theatre--unknown.json",
+    "care-west-end-2026/i-paper--unknown.json",
+    "care-west-end-2026/the-upcoming-uk--unknown.json",
+    "care-west-end-2026/times-uk--unknown.json",
+    "equus-west-end-2026/the-jewish-chronicle--unknown.json",
+    "equus-west-end-2026/thereviewshub--unknown.json",
+    "equus-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "equus-west-end-2026/artsdesk--unknown.json",
+    "equus-west-end-2026/thestage--holly-o.json",
+    "equus-west-end-2026/times-uk--clive-davis.json",
     "end-of-the-rainbow-west-end-2026/all-that-dazzles-uk--unknown.json"
   ],
   "skipped": [],
@@ -44,7 +65,9 @@
       "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/equus-west-end-2026/thereviewshub--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "equus-west-end-2026/timeout--andrzej-lukowski.json"
@@ -53,7 +76,8 @@
     "archiveToday": [
       "data/review-texts/well-ill-let-you-go-off-broadway-2026/ny1--spectrum-news-staff.json",
       "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
-      "data/review-texts/equus-west-end-2026/thestage--holly-o.json"
+      "data/review-texts/equus-west-end-2026/thestage--holly-o.json",
+      "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json"
     ],
     "archive": [
       "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
@@ -61,7 +85,7 @@
     ]
   },
   "startTime": "2026-06-03T09:40:30.835Z",
-  "lastProcessed": "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
+  "lastProcessed": "end-of-the-rainbow-west-end-2026/all-that-dazzles-uk--unknown.json",
   "log": [
     {
       "t": "2026-06-03T09:41:55.824Z",
@@ -83,6 +107,35 @@
     },
     {
       "t": "2026-06-03T10:00:15.096Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-06-03T10:55:56.048Z",
+      "event": "bb-session",
+      "session": "7ba60421",
+      "url": "https://charingcrosstheatre.co.uk/theatre/dark-of-the-moon"
+    },
+    {
+      "t": "2026-06-03T10:57:40.504Z",
+      "event": "bb-session",
+      "session": "f130482c",
+      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
+    },
+    {
+      "t": "2026-06-03T11:00:21.445Z",
+      "event": "bb-session",
+      "session": "4037c7bf",
+      "url": "https://www.thereviewshub.com/equus-menier-chocolate-factory-london/"
+    },
+    {
+      "t": "2026-06-03T11:02:24.815Z",
+      "event": "bb-session",
+      "session": "9d811b19",
+      "url": "https://thestage.co.uk/reviews/equus-review-menier-chocolate-factory-london-lind"
+    },
+    {
+      "t": "2026-06-03T11:02:25.308Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
