@@ -189,6 +189,28 @@ function validateNoDuplicates(shows) {
     ok('No duplicate slugs');
   }
 
+  // Check duplicate ibdbUrl — each IBDB production maps to exactly one show entry.
+  // Two shows sharing an ibdbUrl means a revival was cloned from the original
+  // production's IBDB page and silently inherited its opening/preview dates (and
+  // sometimes status). This is exactly how the 2026 Other Desert Cities / Evita /
+  // Dreamgirls revivals landed in the "currently on Broadway" section with their
+  // 2011/1979/1981 opening dates and a bogus "14+ years on Broadway" label.
+  // Fix: null the stale ibdbUrl on the newer entry (or set the correct production URL).
+  const ibdbGroups = new Map();
+  for (const s of shows) {
+    if (!s.ibdbUrl) continue;
+    if (!ibdbGroups.has(s.ibdbUrl)) ibdbGroups.set(s.ibdbUrl, []);
+    ibdbGroups.get(s.ibdbUrl).push(s.id);
+  }
+  const dupIbdb = [...ibdbGroups.entries()].filter(([, idsArr]) => idsArr.length > 1);
+  if (dupIbdb.length > 0) {
+    for (const [url, idsArr] of dupIbdb) {
+      error(`Shared ibdbUrl ${url} across ${idsArr.length} shows: ${idsArr.join(', ')} — each IBDB production maps to one show; null the stale url on the revival entry so it can't inherit the original production's dates`);
+    }
+  } else {
+    ok('No shared ibdbUrls across shows');
+  }
+
   // Market-specific slug validation
   const weShowsMissing = shows.filter(s => s.category === 'west-end' && !s.slug.includes('west-end'));
   const oweShowsMissing = shows.filter(s => s.category === 'off-west-end' && !s.slug.includes('off-west-end'));
