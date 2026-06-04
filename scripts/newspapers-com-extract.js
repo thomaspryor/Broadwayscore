@@ -31,6 +31,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { heuristicClassify } = require('./lib/non-review-patterns');
 
 // ─── Configuration ───────────────────────────────────────────────────────────
 
@@ -770,6 +771,14 @@ async function processShow(page, showId, opts) {
 
       console.log(`    Relevant: mentions "${show.title}"`);
       console.log(`    Preview: ${text.slice(0, 200).replace(/\n/g, ' ')}...`);
+
+      // Hard gate: never save wrong-page newspaper OCR (weather/sports/listings)
+      // or other non-review content. Same classifier as the CI non-review audit.
+      const nonReview = heuristicClassify(text);
+      if (nonReview && nonReview.confidence === 'high') {
+        console.log(`    REJECTED — non-review content (${nonReview.type}): ${String(nonReview.evidence).slice(0, 70)}`);
+        continue;
+      }
 
       // Prefer the byline GPT-4o read off the page; fall back to the era-guess.
       const criticName = opts.critic || visionByline || likelyCritic(paper, openYear) || 'Unknown';
