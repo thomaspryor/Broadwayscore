@@ -31,6 +31,13 @@ const args = process.argv.slice(2);
 const showArg = args.find(a => a.startsWith('--show='))?.split('=')[1];
 const showsArg = args.find(a => a.startsWith('--shows='))?.split('=')[1];
 const allOpera = args.includes('--all-opera');
+// --all-open: drain _pending for every open/previews show (not just opera). This is the
+// general-purpose drain — multi-critic outlet hits (Times/Standard/Guardian) strand in _pending
+// with pendingReason:no-byline and were previously only recovered for opera shows, so 500+ real
+// reviews across 70+ WE/Broadway shows sat stranded. See data/audit/we-discovery-diagnosis.md.
+// --all-pending: drain EVERY show that has a _pending dir (full backlog, including closed).
+const allOpen = args.includes('--all-open');
+const allPending = args.includes('--all-pending');
 const dryRun = args.includes('--dry-run');
 
 const PENDING_ROOT = path.join(__dirname, '../data/review-texts/_pending');
@@ -42,11 +49,32 @@ function listOperaShowIds() {
   return (data.shows || data).filter(s => s.type === 'opera').map(s => s.id);
 }
 
+// Show IDs that currently have a non-empty _pending dir.
+function listShowIdsWithPending() {
+  if (!fs.existsSync(PENDING_ROOT)) return [];
+  return fs.readdirSync(PENDING_ROOT, { withFileTypes: true })
+    .filter(d => d.isDirectory())
+    .map(d => d.name)
+    .filter(id => {
+      try { return fs.readdirSync(path.join(PENDING_ROOT, id)).some(f => f.endsWith('.json')); }
+      catch { return false; }
+    });
+}
+
+function listOpenShowIdsWithPending() {
+  const showsPath = path.join(__dirname, '../data/shows.json');
+  const data = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+  const statusById = new Map((data.shows || data).map(s => [s.id, s.status]));
+  return listShowIdsWithPending().filter(id => ['open', 'previews'].includes(statusById.get(id)));
+}
+
 function showIds() {
   if (showArg) return [showArg];
   if (showsArg) return showsArg.split(',').map(s => s.trim()).filter(Boolean);
   if (allOpera) return listOperaShowIds();
-  console.error('Usage: --show=ID | --shows=ID1,ID2 | --all-opera');
+  if (allOpen) return listOpenShowIdsWithPending();
+  if (allPending) return listShowIdsWithPending();
+  console.error('Usage: --show=ID | --shows=ID1,ID2 | --all-opera | --all-open | --all-pending');
   process.exit(1);
 }
 

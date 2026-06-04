@@ -124,6 +124,20 @@ jobs:
         continue-on-error: true
         timeout-minutes: 15
 
+      # Drain the _pending/ no-byline sink for all open shows. Multi-critic-outlet
+      # hits (Times/Standard/Guardian) route to _pending awaiting byline extraction,
+      # but nothing drained it for non-opera shows — 500+ real reviews across 70+
+      # WE/Broadway shows stranded. See data/audit/we-discovery-diagnosis.md.
+      - name: Drain pending no-byline reviews (open shows)
+        if: inputs.skip_backfill_critics != 'true'
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+        run: node scripts/replay-pending-bylines.js --all-open 2>&1 | tee -a /tmp/locked-skip.log
+        continue-on-error: true
+        timeout-minutes: 20
+
       # ---- Push review-texts changes ----
       # if: always() so even partial enrichment (one step cancelled / errored) still
       # pushes the flags written by the steps that did complete. Same pattern as
