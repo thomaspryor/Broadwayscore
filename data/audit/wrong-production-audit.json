@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-06-04T17:07:06.726Z",
+  "timestamp": "2026-06-04T23:41:09.568Z",
   "stats": {
-    "totalReviews": 38016,
-    "alreadyFlagged": 16694,
+    "totalReviews": 38077,
+    "alreadyFlagged": 16735,
     "dateGuardCatches": 108,
-    "directorMismatch": 825,
-    "tvFilmSignals": 1045,
-    "londonSignals": 600,
-    "offBroadwaySignals": 459,
+    "directorMismatch": 828,
+    "tvFilmSignals": 1046,
+    "londonSignals": 604,
+    "offBroadwaySignals": 460,
     "yearMismatch": 79,
     "noPublishDate": 3992
   },
@@ -2036,7 +2036,7 @@
       "file": "whatsonstage--alex-wood.json",
       "score": 58,
       "publishDate": "2026-05-29",
-      "url": "https://www.whatsonstage.com/news/beetlejuice-in-the-west-end-did-the-ghost-with-the-most-get-roasted-by-critics_1723063/",
+      "url": "https://www.whatsonstage.com/news/beetlejuice-in-the-west-end-review_1722801/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -9027,6 +9027,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
+      "file": "nytimes--tim-teeman.json",
+      "score": null,
+      "publishDate": "2026-05-27",
+      "url": "https://www.nytimes.com/2026/05/27/theater/heated-rivalry-parody-theater-off-broadway.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -24670,6 +24684,20 @@
     },
     {
       "showId": "war-horse-west-end-2026",
+      "file": "financialtimes--sarah-hemming.json",
+      "score": 97,
+      "publishDate": "2026-06-03",
+      "url": "https://www.ft.com/content/25fe81b8-ded0-4aa4-ad0c-a6609990f578",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from war-horse-2011"
+        }
+      ]
+    },
+    {
+      "showId": "war-horse-west-end-2026",
       "file": "london-theatre--unknown.json",
       "score": 92,
       "publishDate": "2026-06-03",
@@ -24684,6 +24712,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "war-horse-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "score": 80,
+      "publishDate": "2026-06-04",
+      "url": "https://www.standard.co.uk/culture/theatre/war-horse-review-national-theatre-b1284771.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from war-horse-2011"
         }
       ]
     },
@@ -24754,6 +24796,20 @@
       "score": 97,
       "publishDate": "2026-06-02",
       "url": "https://www.timeout.com/london/theatre/war-horse-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from war-horse-2011"
+        }
+      ]
+    },
+    {
+      "showId": "war-horse-west-end-2026",
+      "file": "times-uk--dominic-maxwell.json",
+      "score": 80,
+      "publishDate": "2026-06-03",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/national-theatre-war-horse-review-lhrzw69hp",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -28379,6 +28435,34 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "care-west-end-2026",
+      "file": "guardian--david-jays.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.theguardian.com/stage/2026/may/15/linda-bassett-call-the-midwife-caryl-churchill-alexander-zeldin-care",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "care-west-end-2026",
+      "file": "guardian--susannah-clapp.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.theguardian.com/stage/2025/jan/19/the-week-in-theatre-oliver-lionel-bart-matthew-bourne-gielgud-theatre-review-the-devil-may-care-bernard-shaw-southwark-playhouse-mark-giesser-national-theatre-of-wales-michael-sheen",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
         }
       ]
     },
@@ -38162,6 +38246,20 @@
     },
     {
       "showId": "the-emporium-off-broadway-2025",
+      "file": "nysr--michael-sommers.json",
+      "score": null,
+      "publishDate": "2026-05-19",
+      "url": "https://nystagereview.com/2026/05/18/thornton-wilders-the-emporium-department-story/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"csc\""
+        }
+      ]
+    },
+    {
+      "showId": "the-emporium-off-broadway-2025",
       "file": "the-interested-bystander--cary-wong.json",
       "score": 49,
       "publishDate": null,
@@ -40647,6 +40745,20 @@
     },
     {
       "showId": "war-horse-west-end-2026",
+      "file": "radio-times--joanna-magill.json",
+      "score": 62,
+      "publishDate": "2026-06-03",
+      "url": "https://www.radiotimes.com/going-out/going-out-reviews/war-horse-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "war-horse-west-end-2026",
       "file": "south-london--unknown.json",
       "score": 91,
       "publishDate": "2026-06-04",
@@ -40656,6 +40768,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"olivier theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "war-horse-west-end-2026",
+      "file": "theatre-vibe--lizzie-loveridge.json",
+      "score": 89,
+      "publishDate": "2026-06-03",
+      "url": "https://theatrevibe.co.uk/2026/06/03/review-warhorse-olivier-national-2026/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },

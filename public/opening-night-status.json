@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-04T17:07:12.462Z",
+  "generatedAt": "2026-06-04T23:41:14.130Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -47,6 +47,10 @@
       },
       "missingT1": [
         {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
           "name": "Vulture",
           "isDualMarket": false
         },
@@ -89,10 +93,6 @@
         {
           "name": "Newsday",
           "isDualMarket": false
-        },
-        {
-          "name": "The Guardian",
-          "isDualMarket": true
         },
         {
           "name": "Broadway News",
@@ -848,24 +848,23 @@
       "status": "open",
       "slug": "driftwood-west-end",
       "thumbnail": "/images/shows/driftwood-west-end-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": 75,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 1,
+      "siteScore": 70.1,
+      "liveScore": 70,
+      "scoreDrift": -0.09999999999999432,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 2,
-      "t1": 1,
+      "total": 4,
+      "t1": 3,
       "t2": 1,
       "t3": 0,
       "positive": 1,
-      "mixed": 1,
+      "mixed": 3,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "2/8 total",
-          "T1:1/3",
+          "4/8 total",
           "T2:1/2",
           "hi-conf:1/6"
         ],
@@ -883,19 +882,11 @@
       },
       "missingT1": [
         {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
-        {
           "name": "Observer",
           "isDualMarket": true
         },
         {
           "name": "The Telegraph",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Times (UK)",
           "isDualMarket": true
         },
         {
@@ -941,6 +932,18 @@
           "m": 1,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-06-04T23:41:14.130Z",
+          "rc": 4,
+          "s": 70.1,
+          "t1": 3,
+          "t2": 1,
+          "t3": 0,
+          "p": 1,
+          "m": 3,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -954,25 +957,23 @@
       "status": "open",
       "slug": "war-horse-west-end",
       "thumbnail": "/images/shows/war-horse-west-end-2026/thumbnail.webp",
-      "siteScore": 89.66,
-      "liveScore": 90,
-      "scoreDrift": 0.3400000000000034,
+      "siteScore": 88.98,
+      "liveScore": 89,
+      "scoreDrift": 0.01999999999999602,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 16,
-      "t1": 4,
+      "total": 20,
+      "t1": 5,
       "t2": 7,
-      "t3": 5,
-      "positive": 16,
-      "mixed": 0,
+      "t3": 8,
+      "positive": 19,
+      "mixed": 1,
       "negative": 0,
       "readiness": {
-        "ready": false,
-        "reasons": [
-          "T1:2/3"
-        ],
-        "highConfidence": 7,
+        "ready": true,
+        "reasons": [],
+        "highConfidence": 10,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -982,7 +983,7 @@
       },
       "broadcast": {
         "state": "waiting",
-        "detail": "Not yet broadcast-ready"
+        "detail": "Ready — awaiting send"
       },
       "missingT1": [
         {
@@ -1078,6 +1079,18 @@
           "t3": 5,
           "p": 16,
           "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-06-04T23:41:14.130Z",
+          "rc": 20,
+          "s": 88.98,
+          "t1": 5,
+          "t2": 7,
+          "t3": 8,
+          "p": 19,
+          "m": 1,
           "n": 0,
           "bc": "waiting"
         }
