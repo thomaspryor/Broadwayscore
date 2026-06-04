@@ -75,7 +75,6 @@ export default function TonyPressPicksPage() {
                   || a.title.localeCompare(b.title),
               );
               const coveringOutlets = new Set(cat.shows.flatMap(s => s.criticPicks ?? [])).size;
-              const maxCount = Math.max(1, ...nominees.map(n => n.criticPicks?.length ?? 0));
 
               return (
                 <section key={cat.key} className="bg-surface-raised rounded-xl p-4 sm:p-5">
@@ -89,37 +88,36 @@ export default function TonyPressPicksPage() {
                   <div className="space-y-2">
                     {nominees.map(nom => {
                       const count = nom.criticPicks?.length ?? 0;
-                      const isLeader = count > 0 && count === maxCount;
                       const name = nom.nomineePersonName ?? nom.title;
                       const sub = nom.nomineePersonName ? nom.title : null;
                       return (
                         <div
                           key={nom.slug + (nom.nomineePersonName ?? '')}
-                          className={`flex items-center gap-3 ${count === 0 ? 'opacity-45' : ''}`}
+                          className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-3"
                         >
                           {/* Name */}
-                          <div className="w-32 sm:w-44 flex-shrink-0 min-w-0">
-                            <div className={`text-sm truncate ${isLeader ? 'text-white font-semibold' : 'text-gray-300'}`}>
+                          <div className="sm:w-44 sm:flex-shrink-0 min-w-0">
+                            <div className="text-sm truncate text-gray-200">
                               {name}
                             </div>
                             {sub && <div className="text-[10px] text-gray-500 truncate">{sub}</div>}
                           </div>
 
-                          {/* Bar */}
-                          <div className="flex-1 min-w-0 h-2.5 rounded-full bg-surface-overlay overflow-hidden">
-                            <div
-                              className={`h-full rounded-full ${isLeader ? 'bg-amber-400' : 'bg-amber-400/30'}`}
-                              style={{ width: `${(count / Math.max(1, coveringOutlets)) * 100}%` }}
-                            />
-                          </div>
-
-                          {/* Count */}
-                          <div className={`w-5 flex-shrink-0 text-right text-sm tabular-nums ${count === 0 ? 'text-gray-600' : isLeader ? 'text-amber-300 font-bold' : 'text-gray-400'}`}>
-                            {count}
+                          {/* Bar + count (own full-width row on mobile so the bar never collapses) */}
+                          <div className="flex items-center gap-2 sm:flex-1 min-w-0">
+                            <div className="flex-1 min-w-0 h-2.5 rounded-full bg-surface-overlay overflow-hidden">
+                              <div
+                                className="h-full rounded-full bg-amber-400"
+                                style={{ width: `${(count / Math.max(1, coveringOutlets)) * 100}%` }}
+                              />
+                            </div>
+                            <div className="w-5 flex-shrink-0 text-right text-sm tabular-nums text-gray-300">
+                              {count}
+                            </div>
                           </div>
 
                           {/* Logos */}
-                          <div className="w-[112px] flex-shrink-0 flex flex-wrap items-center gap-0.5">
+                          <div className="flex flex-wrap items-center gap-0.5 sm:w-[112px] sm:flex-shrink-0">
                             {(nom.criticPicks ?? []).map(id => (
                               <OutletPickLogo key={id} outletId={id} />
                             ))}

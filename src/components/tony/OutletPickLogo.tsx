@@ -14,6 +14,10 @@ const CRITIC_PICK_OUTLETS: Record<string, { outletName: string; critic: string }
   slant:        { outletName: 'Slant Magazine',        critic: 'Dan Rubins' },
   timeout:      { outletName: 'Time Out New York',     critic: 'Adam Feldman' },
   thr:          { outletName: 'The Hollywood Reporter', critic: 'Ben Zauzmer' },
+  deadline:     { outletName: 'Deadline',              critic: 'Greg Evans' },
+  cityguide:    { outletName: 'City Guide New York',   critic: 'Griffin Miller' },
+  vf:           { outletName: 'Vanity Fair',           critic: 'Little Gold Men' },
+  elle:         { outletName: 'Elle',                  critic: 'Samuel Maude' },
 };
 
 export function OutletPickLogo({ outletId }: { outletId: string }) {
