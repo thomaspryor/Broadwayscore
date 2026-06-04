@@ -44,7 +44,8 @@
     "a-little-night-music-2009/musical-theatre-review--angela-thomas.json",
     "carrie-1988/nytg--unknown.json",
     "war-horse-west-end-2026/whatsonstage--maygan-forbes.json",
-    "equus-west-end-2026/timeout--andrzej-lukowski.json"
+    "equus-west-end-2026/timeout--andrzej-lukowski.json",
+    "small-off-broadway-2026/the-interested-bystander--cary-wong.json"
   ],
   "failed": [
     "jerome-off-broadway-2025/one-minute-critic--unknown.json",
@@ -755,7 +756,14 @@
     "equus-west-end-2026/thestage--holly-o.json",
     "equus-west-end-2026/times-uk--clive-davis.json",
     "end-of-the-rainbow-west-end-2026/all-that-dazzles-uk--unknown.json",
-    "the-last-man-off-west-end-2026/thestage--sam-marlowe.json"
+    "the-last-man-off-west-end-2026/thestage--sam-marlowe.json",
+    "jerome-off-broadway-2025/playbill--unknown.json",
+    "jerome-off-broadway-2025/talkinbroadway--unknown.json",
+    "small-off-broadway-2026/pages-on-stages--unknown.json",
+    "small-off-broadway-2026/the-recs--unknown.json",
+    "small-off-broadway-2026/washpost--unknown.json",
+    "indian-princesses-off-broadway-2025/pages-on-stages--mason-pilevsky.json",
+    "the-maids-off-broadway-2026/ew--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -785,7 +793,8 @@
       "fences-2010/nytg--unknown.json",
       "a-little-night-music-2009/musical-theatre-review--angela-thomas.json",
       "carrie-1988/nytg--unknown.json",
-      "war-horse-west-end-2026/whatsonstage--maygan-forbes.json"
+      "war-horse-west-end-2026/whatsonstage--maygan-forbes.json",
+      "small-off-broadway-2026/the-interested-bystander--cary-wong.json"
     ],
     "amp": [],
     "browserbase": [
@@ -843,7 +852,8 @@
       "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
       "data/review-texts/equus-west-end-2026/thestage--holly-o.json",
       "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
-      "data/review-texts/equus-west-end-2026/thestage--holly-o.json"
+      "data/review-texts/equus-west-end-2026/thestage--holly-o.json",
+      "data/review-texts/jerome-off-broadway-2025/talkinbroadway--unknown.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -854,7 +864,7 @@
     ]
   },
   "startTime": "2026-06-03T03:38:17.541Z",
-  "lastProcessed": "the-last-man-off-west-end-2026/thestage--sam-marlowe.json",
+  "lastProcessed": "the-maids-off-broadway-2026/ew--unknown.json",
   "log": [
     {
       "t": "2026-06-03T09:41:55.824Z",
@@ -1033,6 +1043,17 @@
       "t": "2026-06-04T01:07:02.278Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-06-04T01:20:06.024Z",
+      "event": "bb-session",
+      "session": "492a6f7f",
+      "url": "https://a.talkinbroadway.com/allthatchat_new/d.php?id=2626606"
+    },
+    {
+      "t": "2026-06-04T01:20:06.687Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }

@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-04T01:09:02.591Z",
-  "processed": 45,
-  "failed": 709,
+  "updatedAt": "2026-06-04T01:22:47.605Z",
+  "processed": 46,
+  "failed": 716,
   "successRate": "6.0%",
   "tierBreakdown": {
-    "playwright": 26,
+    "playwright": 27,
     "amp": 0,
     "browserbase": 6,
     "directCookies": 0,
     "scrapingbee": 16,
     "brightdata": 4,
-    "archiveToday": 22,
+    "archiveToday": 23,
     "archive": 5
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-06-03T12:12:21.903Z",
-      "event": "bb-session",
-      "session": "055ed2b0",
-      "url": "https://www.nytimes.com/2017/10/13/theater/review-animal-wisdom-heather-christia"
-    },
-    {
-      "t": "2026-06-03T12:12:22.329Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-06-03T19:35:15.212Z",
       "event": "bb-session",
@@ -129,6 +118,17 @@
       "t": "2026-06-04T01:07:02.278Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-06-04T01:20:06.024Z",
+      "event": "bb-session",
+      "session": "492a6f7f",
+      "url": "https://a.talkinbroadway.com/allthatchat_new/d.php?id=2626606"
+    },
+    {
+      "t": "2026-06-04T01:20:06.687Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
