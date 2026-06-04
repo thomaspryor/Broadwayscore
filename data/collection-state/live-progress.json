@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-06-04T03:10:09.422Z",
+  "updatedAt": "2026-06-04T03:23:57.921Z",
   "processed": 45,
-  "failed": 826,
-  "successRate": "5.2%",
+  "failed": 833,
+  "successRate": "5.1%",
   "tierBreakdown": {
     "playwright": 26,
     "amp": 0,
@@ -10,23 +10,11 @@
     "directCookies": 0,
     "scrapingbee": 16,
     "brightdata": 4,
-    "archiveToday": 25,
+    "archiveToday": 26,
     "archive": 6
   },
   "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-06-03T21:43:36.210Z",
-      "event": "bb-session",
-      "session": "56d003d1",
-      "url": "https://charingcrosstheatre.co.uk/theatre/dark-of-the-moon"
-    },
-    {
-      "t": "2026-06-03T21:45:26.847Z",
-      "event": "bb-session",
-      "session": "cc41eaa8",
-      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
-    },
     {
       "t": "2026-06-03T21:47:39.477Z",
       "event": "bb-session",
@@ -126,6 +114,17 @@
     },
     {
       "t": "2026-06-04T03:08:22.785Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-04T03:21:47.197Z",
+      "event": "bb-session",
+      "session": "d03838ed",
+      "url": "https://a.talkinbroadway.com/allthatchat_new/d.php?id=2626606"
+    },
+    {
+      "t": "2026-06-04T03:21:47.667Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }
