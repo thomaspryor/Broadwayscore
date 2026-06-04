@@ -72,6 +72,8 @@ export const OUTLET_LOGOS: Record<string, OutletLogoConfig> = {
   'Deadline': { domain: 'deadline.com', color: '#000000', abbrev: 'DL' },
   'DEADLINE': { domain: 'deadline.com', color: '#000000', abbrev: 'DL' },
 
+  'City Guide New York': { domain: 'cityguideny.com', color: '#2563eb', abbrev: 'CG' },
+
   'IndieWire': { domain: 'indiewire.com', color: '#ff6b35', abbrev: 'IW' },
 
   'The Wrap': { domain: 'thewrap.com', color: '#1a1a1a', abbrev: 'TW' },
@@ -137,6 +139,8 @@ export const OUTLET_LOGOS: Record<string, OutletLogoConfig> = {
   'Rolling Stone': { domain: 'rollingstone.com', color: '#ff0000', abbrev: 'RS' },
 
   'Vanity Fair': { domain: 'vanityfair.com', color: '#000000', abbrev: 'VF' },
+
+  'Elle': { domain: 'elle.com', color: '#000000', abbrev: 'E' },
 
   'People': { domain: 'people.com', color: '#e60012', abbrev: 'P' },
 

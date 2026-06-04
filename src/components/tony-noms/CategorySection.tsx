@@ -159,6 +159,10 @@ const CRITIC_PICK_OUTLETS: Record<string, { outletName: string; critic: string }
   slant:        { outletName: 'Slant Magazine',        critic: 'Dan Rubins' },
   timeout:      { outletName: 'Time Out New York',     critic: 'Adam Feldman' },
   thr:          { outletName: 'The Hollywood Reporter', critic: 'Ben Zauzmer' },
+  deadline:     { outletName: 'Deadline',              critic: 'Greg Evans' },
+  cityguide:    { outletName: 'City Guide New York',   critic: 'Griffin Miller' },
+  vf:           { outletName: 'Vanity Fair',           critic: 'Little Gold Men' },
+  elle:         { outletName: 'Elle',                  critic: 'Samuel Maude' },
 };
 
 // Cap the number of rendered avatars so the chip cluster stays one row tall.
@@ -170,8 +174,11 @@ function PressPicks({ picks }: { picks?: string[] }) {
   if (!picks || picks.length === 0) return null;
   const knownPicks = picks.filter(id => CRITIC_PICK_OUTLETS[id]);
   if (knownPicks.length === 0) return null;
-  // Wrap all outlet logos across up to two rows (5 per row) rather than
-  // collapsing behind a "+N" chip — the user wants every outlet's logo visible.
+  // Wrap all outlet logos (6 per row at 16px) rather than collapsing behind a
+  // "+N" chip — every outlet's logo stays visible. Chips are 16px (not 20px) so
+  // that near-unanimous categories (e.g. 12 outlets picking Joshua Henry) wrap to
+  // 2 rows, keeping the performer row under the 70px row-height guard
+  // (tests/e2e/tony-nominees-row-height.spec.ts).
   return (
     <div className="flex flex-wrap items-center justify-center gap-0.5 max-w-[112px]">
       {knownPicks.map(id => {
@@ -181,18 +188,18 @@ function PressPicks({ picks }: { picks?: string[] }) {
         const title = `${meta.outletName} (${meta.critic}) picks this show to win`;
         if (logoUrl) {
           return (
-            <div key={id} className="w-5 h-5 rounded-full bg-white flex items-center justify-center flex-shrink-0 overflow-hidden" title={title}>
-              <img src={logoUrl} alt={meta.outletName} className="w-3.5 h-3.5 object-contain" />
+            <div key={id} className="w-4 h-4 rounded-full bg-white flex items-center justify-center flex-shrink-0 overflow-hidden" title={title}>
+              <img src={logoUrl} alt={meta.outletName} className="w-3 h-3 object-contain" />
             </div>
           );
         }
         const abbrev = config?.abbrev || meta.outletName.charAt(0);
         const bgColor = config?.color || '#374151';
-        const textSize = abbrev.length > 2 ? 'text-[7px]' : 'text-[9px]';
+        const textSize = abbrev.length > 2 ? 'text-[6px]' : 'text-[8px]';
         return (
           <div
             key={id}
-            className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${textSize} font-bold text-white leading-none`}
+            className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 ${textSize} font-bold text-white leading-none`}
             style={{ backgroundColor: bgColor }}
             title={title}
           >
