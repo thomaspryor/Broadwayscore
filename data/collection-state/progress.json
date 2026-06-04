@@ -12,7 +12,8 @@
     "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
     "company-2021/theatrely--andrew-martini.json",
     "escape-to-margaritaville-2018/playbill--gabriel-agosto.json",
-    "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json"
+    "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
+    "whos-afraid-of-virginia-woolf-2020/deadline--greg-evans.json"
   ],
   "failed": [
     "jerome-off-broadway-2025/playbill--unknown.json",
@@ -208,7 +209,16 @@
     "exit-the-king-2009/newsday--linda-winer.json",
     "impressionism-2009/newsday--linda-winer.json",
     "33-variations-2009/newsday--unknown.json",
-    "the-story-of-my-life-2009/newsday--linda-winer.json"
+    "the-story-of-my-life-2009/newsday--linda-winer.json",
+    "hedda-gabler-2009/newsday--linda-winer.json",
+    "title-of-show-2008/mycentraljerseycom--charles-paolino.json",
+    "south-pacific-2008/newyorker--john-lahr.json",
+    "the-farnsworth-invention-2007/variety--charles-isherwood.json",
+    "pygmalion-2007/variety--david-rooney.json",
+    "journeys-end-2007/variety--david-rooney.json",
+    "mary-poppins-2006/variety--charles-isherwood.json",
+    "tarzan-2006/variety--charles-isherwood.json",
+    "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -222,7 +232,9 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/maybe-happy-ending-2024/variety--unknown.json",
-      "maybe-happy-ending-2024/variety--unknown.json"
+      "maybe-happy-ending-2024/variety--unknown.json",
+      "data/review-texts/whos-afraid-of-virginia-woolf-2020/deadline--greg-evans.json",
+      "whos-afraid-of-virginia-woolf-2020/deadline--greg-evans.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -243,7 +255,7 @@
     ]
   },
   "startTime": "2026-06-04T04:34:53.808Z",
-  "lastProcessed": "the-story-of-my-life-2009/newsday--linda-winer.json",
+  "lastProcessed": "whos-afraid-of-virginia-woolf-2020/deadline--greg-evans.json",
   "log": [
     {
       "t": "2026-06-04T04:36:00.998Z",
@@ -266,6 +278,17 @@
       "t": "2026-06-04T07:45:19.317Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-04T08:22:22.867Z",
+      "event": "bb-session",
+      "session": "aa93bac6",
+      "url": "https://deadline.com/2020/03/whos-afraid-of-virginia-woolf-starring-laurie-metca"
+    },
+    {
+      "t": "2026-06-04T08:22:23.610Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
