@@ -12,6 +12,8 @@ const CRITIC_PICK_OUTLETS: Record<string, { outletName: string; critic: string }
   nysun:        { outletName: 'The New York Sun',      critic: 'Elysa Gardner' },
   theatermania: { outletName: 'TheaterMania',          critic: 'TheaterMania Staff' },
   slant:        { outletName: 'Slant Magazine',        critic: 'Dan Rubins' },
+  timeout:      { outletName: 'Time Out New York',     critic: 'Adam Feldman' },
+  thr:          { outletName: 'The Hollywood Reporter', critic: 'Ben Zauzmer' },
 };
 
 export function OutletPickLogo({ outletId }: { outletId: string }) {

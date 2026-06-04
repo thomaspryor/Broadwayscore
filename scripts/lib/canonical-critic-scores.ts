@@ -2,16 +2,19 @@
  * canonical-critic-scores.ts — THE only sanctioned way to get a show's Critic
  * Score for any analysis, post, email, or external claim.
  *
- * Why this exists: a 2026-05-30 near-miss had a Reddit post about to ship with
- * critic scores computed as a raw mean of reviews.json `assignedScore` values,
- * which is NOT the same number the site displays on a show's page. The site
- * uses tier-weighted compositeScore (T1 outlets 1.0, T2 0.75, T3 0.35) computed
- * by `computeCriticScore()` in src/lib/engine.ts. Anything labeled "critic
- * score" externally must match what the site shows.
+ * SOURCE OF TRUTH: `public/data/shows/{id}.json` (the slim files served to the
+ * live site). The `cs` field there is computed by
+ * `scripts/generate-mobile-data.js` from raw review-text files via
+ * `loadReviewsWithBlog()` + `compute-critic-score.js`. By reading the slim
+ * files directly, this helper guarantees parity with the live site by
+ * definition — there is no second pipeline to drift.
  *
- * RULE: in any analysis script (or any code that produces external-facing
- * numbers), import from this module. Do NOT iterate reviews.json and compute
- * your own average — that produces a non-canonical number.
+ * Why this version exists: the previous implementation read `data/reviews.json`
+ * via `getAllShows()` → `engine.ts`, which applies different review-inclusion
+ * filters than the slim-file generator. For In the Heights (2008) the helper
+ * returned 69 while the live site (and the slim file) had 78 — same scorer,
+ * different filtered inputs. The 2026-06-02 incident shipped a guest-post doc
+ * with the helper's fabricated numbers because nothing reconciled to prod.
  *
  * Display convention: integer rounding (the site does this — external copy
  * must match). Use `getCriticScore(showId)` which already rounds; only use
@@ -19,7 +22,12 @@
  * float and aren't publishing it.
  */
 
-import { getAllShows } from '../../src/lib/data-core';
+import { readFileSync, readdirSync, existsSync } from 'fs';
+import { resolve, join, dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const SLIM_DIR = resolve(dirname(__filename), '..', '..', 'public', 'data', 'shows');
 
 let cache: Map<string, number | null> | null = null;
 let cacheRaw: Map<string, number | null> | null = null;
@@ -28,18 +36,29 @@ function buildCache() {
   if (cache && cacheRaw) return;
   cache = new Map();
   cacheRaw = new Map();
-  // Use getAllShows() — covers Broadway, Off-Broadway, West End, Off-West End,
-  // and opera. Broadway-only would silently return null for WE/OB shows and a
-  // caller could fall back to raw-mean, which is exactly what this helper
-  // exists to prevent.
-  for (const s of getAllShows()) {
-    cacheRaw.set(s.id, s.compositeScore ?? null);
-    cache.set(s.id, s.compositeScore == null ? null : Math.round(s.compositeScore));
+  if (!existsSync(SLIM_DIR)) {
+    throw new Error(
+      `canonical-critic-scores: ${SLIM_DIR} does not exist. ` +
+      `Run \`node scripts/generate-mobile-data.js\` first, or ensure the slim ` +
+      `files are present in this worktree.`
+    );
+  }
+  for (const f of readdirSync(SLIM_DIR)) {
+    if (!f.endsWith('.json')) continue;
+    const id = f.slice(0, -5);
+    let raw: number | null = null;
+    try {
+      const j = JSON.parse(readFileSync(join(SLIM_DIR, f), 'utf8'));
+      raw = typeof j.cs === 'number' ? j.cs : null;
+    } catch {
+      raw = null;
+    }
+    cacheRaw.set(id, raw);
+    cache.set(id, raw == null ? null : Math.round(raw));
   }
 }
 
-/** Reset the cache. Call between runs if reviews.json changes mid-process
- *  (long-running servers, tsx --watch). One-shot scripts don't need this. */
+/** Reset the cache. Call between runs if slim files change mid-process. */
 export function resetCache(): void {
   cache = null;
   cacheRaw = null;
@@ -51,7 +70,7 @@ export function getCriticScore(showId: string): number | null {
   return cache!.get(showId) ?? null;
 }
 
-/** Raw (unrounded) Critic Score. Use only for internal sort/tiebreak; never publish externally. */
+/** Raw (unrounded) Critic Score from the slim file. Use only for internal sort/tiebreak; never publish externally. */
 export function getCriticScoreRaw(showId: string): number | null {
   buildCache();
   return cacheRaw!.get(showId) ?? null;
@@ -66,8 +85,6 @@ export function getCriticScoreMap(): Map<string, number | null> {
 
 /** CLI: `npx tsx scripts/lib/canonical-critic-scores.ts > /tmp/critic-scores.json`
  *  Dumps the integer map as JSON so JS scripts (which can't import TS) can read it. */
-import { fileURLToPath } from 'url';
-import { resolve } from 'path';
 if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) {
   const out: Record<string, number | null> = {};
   for (const [id, score] of getCriticScoreMap()) out[id] = score;

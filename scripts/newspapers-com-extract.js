@@ -96,6 +96,30 @@ const PAPERS = {
       { name: 'Howard Shapiro', years: [2000, 2015] },
     ],
   },
+  nypost: {
+    name: 'New York Post',
+    outletId: 'nypost',
+    outlet: 'New York Post',
+    searchName: 'New York Post',
+    resultName: 'New York Post',
+    location: 'new york',
+    critics: [
+      { name: 'Johnny Oleksinski', years: [2017, 2026] },
+      { name: 'Elisabeth Vincentelli', years: [2010, 2017] },
+      { name: 'Clive Barnes', years: [1977, 2008] },
+    ],
+  },
+  usatoday: {
+    name: 'USA Today',
+    outletId: 'usatoday',
+    outlet: 'USA Today',
+    searchName: 'USA TODAY',
+    resultName: 'USA TODAY',
+    location: null,
+    critics: [
+      { name: 'Elysa Gardner', years: [2000, 2015] },
+    ],
+  },
 };
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -119,6 +143,14 @@ function parseArgs() {
     // the saved newspapers.com session cookies for subscription auth. Local
     // Playwright Chrome fails newspapers.com's Cloudflare Turnstile.
     browserbase: args.includes('--browserbase') || process.env.BROWSERBASE_ENABLED === 'true',
+    // Local real-Chrome on this machine's residential IP (Cloudflare passes here),
+    // authed via the full cookie bundle in data/cookies/np-full.json.
+    local: args.includes('--local'),
+    // Get page text by downloading the page JPG and OCR'ing it with GPT-4o vision
+    // (newspapers.com's old /ocr/ text endpoint is gone).
+    vision: args.includes('--vision'),
+    // Re-extract even if a (possibly wrong-production) file already exists.
+    force: args.includes('--force'),
   };
 }
 
@@ -219,6 +251,109 @@ function harvestArticleText(json) {
     if (typeof o === 'object') Object.values(o).forEach(x => walk(x, depth + 1));
   })(json, 0);
   return strings.join('\n\n');
+}
+
+// Download the full page as JPG (subscriber "Save as JPG") and OCR it with
+// GPT-4o vision, extracting only the target show's review. Returns text or ''.
+// newspapers.com's old /ocr/ text API is gone, so the scanned image is the
+// only source; the page renders as positioned <img> tiles (no DOM text).
+async function extractViaDownloadOcr(page, imageId, showTitle, verbose) {
+  const tmp = require('os').tmpdir();
+  const jpgPath = path.join(tmp, `np-page-${imageId}.jpg`);
+  try {
+    await page.goto(`https://www.newspapers.com/image/${imageId}/`, { timeout: 60000, waitUntil: 'domcontentloaded' });
+    await page.waitForTimeout(5000);
+    const title = await page.title().catch(() => '');
+    if (/just a moment|attention required/i.test(title)) { if (verbose) console.log('    CF blocked image page'); return ''; }
+    await page.locator('button:has-text("Print/Download"), a:has-text("Print/Download")').first().click().catch(() => {});
+    await page.waitForTimeout(1500);
+    await page.locator('text=Entire Page').first().click().catch(() => {});
+    await page.waitForTimeout(2000);
+    const [download] = await Promise.all([
+      page.waitForEvent('download', { timeout: 40000 }).catch(() => null),
+      page.locator('button:has-text("Save as JPG"), a:has-text("Save as JPG")').first().click().catch(() => {}),
+    ]);
+    if (!download) { if (verbose) console.log('    no JPG download produced'); return ''; }
+    await download.saveAs(jpgPath);
+    const size = fs.existsSync(jpgPath) ? fs.statSync(jpgPath).size : 0;
+    if (verbose) console.log(`    downloaded page JPG: ${size} bytes`);
+    if (size < 20000) return { text: '', byline: null };
+    return await visionOcrShowReview(jpgPath, showTitle, verbose);
+  } catch (e) {
+    if (verbose) console.log(`    download/ocr error: ${e.message}`);
+    return { text: '', byline: null };
+  } finally {
+    try { if (fs.existsSync(jpgPath)) fs.unlinkSync(jpgPath); } catch (e) {}
+    // clean band crops
+    for (let i = 1; i <= 6; i++) { const b = jpgPath.replace('.jpg', `-b${i}.jpg`); try { if (fs.existsSync(b)) fs.unlinkSync(b); } catch (e) {} }
+  }
+}
+
+// Split a tall page JPG into legible horizontal bands and OCR each with GPT-4o,
+// asking only for the target show's theater review. Concatenate the hits.
+async function visionOcrShowReview(jpgPath, showTitle, verbose) {
+  const { execSync } = require('child_process');
+  // get dimensions
+  let w = 0, h = 0;
+  try {
+    const out = execSync(`sips -g pixelWidth -g pixelHeight "${jpgPath}"`, { encoding: 'utf8' });
+    w = +(out.match(/pixelWidth:\s*(\d+)/) || [])[1] || 0;
+    h = +(out.match(/pixelHeight:\s*(\d+)/) || [])[1] || 0;
+  } catch (e) {}
+  const bandH = 1500, overlap = 200;
+  const bands = [];
+  if (h && w) {
+    for (let y = 0; y < h; y += (bandH - overlap)) {
+      const bh = Math.min(bandH, h - y);
+      if (bh < 300) break;
+      const bp = jpgPath.replace('.jpg', `-b${bands.length + 1}.jpg`);
+      try { execSync(`sips -c ${bh} ${w} --cropOffset ${y} 0 "${jpgPath}" --out "${bp}" >/dev/null 2>&1`); bands.push(bp); } catch (e) {}
+    }
+  }
+  if (!bands.length) bands.push(jpgPath);
+  const parts = [];
+  let byline = null;
+  for (const bp of bands) {
+    let t = await gpt4oOcr(bp, showTitle, verbose);
+    if (!t || /^NONE\b/i.test(t.trim())) continue;
+    // pull the BYLINE: line GPT-4o was asked to prepend
+    const bm = t.match(/^\s*BYLINE:\s*(.+)$/im);
+    if (bm) {
+      const b = bm[1].trim();
+      if (!byline && b && !/^unknown$/i.test(b)) byline = b.replace(/^by\s+/i, '').trim();
+      t = t.replace(/^\s*BYLINE:.*$/im, '').trim();
+    }
+    if (t.length > 120) parts.push(t);
+  }
+  const joined = parts.join('\n\n');
+  if (verbose) console.log(`    vision OCR: ${parts.length}/${bands.length} bands had the review, ${joined.length} chars, byline=${byline || '?'}`);
+  return { text: joined, byline };
+}
+
+async function gpt4oOcr(imgPath, showTitle, verbose) {
+  const b64 = fs.readFileSync(imgPath).toString('base64');
+  const prompt = `This is a slice of a scanned newspaper page. I want ONLY a CRITICAL THEATER REVIEW of the production "${showTitle}" — a critic's evaluation with opinions/verdict on the show's quality, performances, staging, songs, etc.
+
+Output the review body verbatim, starting with "BYLINE: <critic name>" on the first line if a byline is visible (else "BYLINE: unknown").
+
+Output exactly NONE if this slice has no such review — in particular, return NONE for: box-office/ticket/business stories, advance "buzz"/preview pieces published before opening, casting news, interviews, event listings, photo captions, or articles that merely mention "${showTitle}" without critically evaluating it.`;
+  const body = { model: 'gpt-4o', max_tokens: 3000, messages: [{ role: 'user', content: [
+    { type: 'text', text: prompt },
+    { type: 'image_url', image_url: { url: 'data:image/jpeg;base64,' + b64, detail: 'high' } },
+  ] }] };
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      const r = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + process.env.OPENAI_API_KEY }, body: JSON.stringify(body),
+      });
+      if (r.status === 429 || r.status >= 500) { await new Promise(res => setTimeout(res, 3000 * attempt)); continue; }
+      const j = await r.json();
+      if (!r.ok) { if (verbose) console.log(`    gpt-4o error: ${JSON.stringify(j).slice(0, 150)}`); return ''; }
+      // strip any markdown code-fence wrapper GPT-4o adds (```plaintext ... ```)
+      return (j.choices[0].message.content || '').replace(/```[a-z]*\n?/gi, '').replace(/```/g, '').trim();
+    } catch (e) { if (verbose) console.log(`    gpt-4o fetch error: ${e.message}`); await new Promise(res => setTimeout(res, 2000)); }
+  }
+  return '';
 }
 
 // ─── OCR Extraction ──────────────────────────────────────────────────────────
@@ -549,8 +684,9 @@ async function processShow(page, showId, opts) {
   for (const paper of papersToSearch) {
     console.log(`\n--- ${paper.name} ---`);
 
-    // Check if we already have a review from this outlet
-    if (seedFileExists(showId, paper.outletId)) {
+    // Check if we already have a review from this outlet (--force bypasses; the
+    // existing file may be a wrong-production placeholder we want to supersede).
+    if (!opts.force && seedFileExists(showId, paper.outletId)) {
       console.log(`  Already have a review file for ${paper.outletId} — skipping`);
       results.papers[paper.outletId] = { status: 'skipped', reason: 'exists' };
       continue;
@@ -601,18 +737,23 @@ async function processShow(page, showId, opts) {
 
     // Try each search result until we find a relevant one
     let extracted = false;
-    for (let ri = 0; ri < Math.min(searchResults.length, 3); ri++) {
+    for (let ri = 0; ri < Math.min(searchResults.length, 6); ri++) {
       const candidate = searchResults[ri];
       console.log(`\n  Trying result [${ri}]: Image ${candidate.imageId} (${candidate.paper || '?'}, ${candidate.dateStr || '?'})...`);
-      const rawOcr = await extractOcrFromImage(page, candidate.imageId, opts.verbose);
-
-      if (!rawOcr) {
-        console.log('    No OCR text received.');
-        continue;
+      let rawOcr, text, visionByline = null;
+      if (opts.vision) {
+        const vr = await extractViaDownloadOcr(page, candidate.imageId, show.title, opts.verbose);
+        text = (vr && vr.text) || '';
+        visionByline = vr && vr.byline;
+        rawOcr = text;
+        if (!text) { console.log('    No review text via vision OCR (or not a review).'); continue; }
+        console.log(`    Vision OCR: ${text.length} chars${visionByline ? ` — byline: ${visionByline}` : ''}`);
+      } else {
+        rawOcr = await extractOcrFromImage(page, candidate.imageId, opts.verbose);
+        if (!rawOcr) { console.log('    No OCR text received.'); continue; }
+        text = reconstructOcr(rawOcr);
+        console.log(`    OCR: ${rawOcr.length} raw → ${text.length} reconstructed chars`);
       }
-
-      const text = reconstructOcr(rawOcr);
-      console.log(`    OCR: ${rawOcr.length} raw → ${text.length} reconstructed chars`);
 
       // Quality checks
       if (text.length < 100) {
@@ -630,7 +771,8 @@ async function processShow(page, showId, opts) {
       console.log(`    Relevant: mentions "${show.title}"`);
       console.log(`    Preview: ${text.slice(0, 200).replace(/\n/g, ' ')}...`);
 
-      const criticName = opts.critic || likelyCritic(paper, openYear) || 'Unknown';
+      // Prefer the byline GPT-4o read off the page; fall back to the era-guess.
+      const criticName = opts.critic || visionByline || likelyCritic(paper, openYear) || 'Unknown';
       const publishDate = parseDateStr(candidate.dateStr);
       saveSeedFile(showId, paper, criticName, candidate.imageId, publishDate, rawOcr, text);
       results.papers[paper.outletId] = { status: 'extracted', imageId: candidate.imageId, chars: text.length };
@@ -640,7 +782,7 @@ async function processShow(page, showId, opts) {
 
     if (!extracted) {
       console.log(`  Could not find a relevant review in ${searchResults.length} results`);
-      results.papers[paper.outletId] = { status: 'not-relevant', tried: Math.min(searchResults.length, 3) };
+      results.papers[paper.outletId] = { status: 'not-relevant', tried: Math.min(searchResults.length, 6) };
     }
 
     // Delay between papers to avoid rate limiting
@@ -674,8 +816,9 @@ async function main() {
     process.exit(1);
   }
 
-  // Check profile exists
-  if (!fs.existsSync(PROFILE_DIR)) {
+  // Check profile exists (only for the legacy local-profile mode; --local and
+  // --browserbase carry their own auth).
+  if (!opts.local && !opts.browserbase && !fs.existsSync(PROFILE_DIR)) {
     console.error(`No browser profile at ${PROFILE_DIR}`);
     console.error('Run first: node scripts/paywall-browser-login.js --site=newspapers');
     process.exit(1);
@@ -705,7 +848,28 @@ async function main() {
 
   let context, page, browser = null;
 
-  if (opts.browserbase) {
+  if (opts.local) {
+    // Local real Chrome on this machine's residential IP — Cloudflare is far more
+    // lenient here than on datacenter/proxy IPs. Auth via the full cookie bundle
+    // (incl. httpOnly session tokens) exported from the logged-in Browserbase
+    // context to data/cookies/np-full.json. Requires `--vision` for text.
+    const cookieFile = path.join('data', 'cookies', 'np-full.json');
+    if (!fs.existsSync(cookieFile)) throw new Error(`--local needs ${cookieFile} (full auth cookie bundle).`);
+    const raw = JSON.parse(fs.readFileSync(cookieFile, 'utf8'));
+    const skipCf = new Set(['cf_clearance', '__cf_bm', '_cfuvid']); // IP/UA-bound; let local Chrome mint fresh
+    const cookies = (Array.isArray(raw) ? raw : raw.cookies || []).filter(c => !skipCf.has(c.name)).map(c => ({
+      name: c.name, value: c.value, domain: c.domain, path: c.path || '/',
+      ...(typeof c.expires === 'number' && c.expires > 0 ? { expires: c.expires } : {}),
+      httpOnly: !!c.httpOnly, secure: c.secure !== false,
+      sameSite: ['Strict', 'Lax', 'None'].includes(c.sameSite) ? c.sameSite : 'Lax',
+    }));
+    console.log(`\nLaunching local Chrome (residential IP) with ${cookies.length} auth cookies...`);
+    const opt = { headless: false, channel: 'chrome', viewport: { width: 1400, height: 1700 }, acceptDownloads: true, args: ['--disable-blink-features=AutomationControlled'], ignoreDefaultArgs: ['--enable-automation'], locale: 'en-US', timezoneId: 'America/New_York' };
+    try { context = await chromium.launchPersistentContext('/tmp/np-local-extract-profile', opt); }
+    catch (e) { console.log(`  real Chrome unavailable (${e.message.split('\n')[0]}); bundled chromium`); delete opt.channel; context = await chromium.launchPersistentContext('/tmp/np-local-extract-profile', opt); }
+    await context.addCookies(cookies);
+    page = context.pages()[0] || await context.newPage();
+  } else if (opts.browserbase) {
     // Remote Browserbase stealth browser bypasses newspapers.com's Cloudflare
     // Turnstile. Subscription auth comes from a PERSISTENT Browserbase context
     // that was logged in once via scripts/newspapers-browserbase-login.js —

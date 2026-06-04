@@ -158,6 +158,7 @@ const CRITIC_PICK_OUTLETS: Record<string, { outletName: string; critic: string }
   theatermania: { outletName: 'TheaterMania',          critic: 'TheaterMania Staff' },
   slant:        { outletName: 'Slant Magazine',        critic: 'Dan Rubins' },
   timeout:      { outletName: 'Time Out New York',     critic: 'Adam Feldman' },
+  thr:          { outletName: 'The Hollywood Reporter', critic: 'Ben Zauzmer' },
 };
 
 // Cap the number of rendered avatars so the chip cluster stays one row tall.
@@ -165,24 +166,15 @@ const CRITIC_PICK_OUTLETS: Record<string, { outletName: string; critic: string }
 // width. Without this cap, front-runners that collect many critic picks during
 // Tony season (e.g. 9 picks) wrap to 3 rows and inflate the surrounding row
 // past its compact-height guard (tests/e2e/tony-nominees-row-height.spec.ts).
-const PRESS_PICKS_MAX_VISIBLE = 4;
-
 function PressPicks({ picks }: { picks?: string[] }) {
   if (!picks || picks.length === 0) return null;
   const knownPicks = picks.filter(id => CRITIC_PICK_OUTLETS[id]);
   if (knownPicks.length === 0) return null;
-
-  const overflow = knownPicks.length > PRESS_PICKS_MAX_VISIBLE;
-  // When overflowing, reserve the last slot for the "+N" counter chip.
-  const visible = overflow ? knownPicks.slice(0, PRESS_PICKS_MAX_VISIBLE - 1) : knownPicks;
-  const hidden = knownPicks.slice(visible.length);
-  const overflowTitle = hidden
-    .map(id => CRITIC_PICK_OUTLETS[id].outletName)
-    .join(', ') + ' also pick this show to win';
-
+  // Wrap all outlet logos across up to two rows (5 per row) rather than
+  // collapsing behind a "+N" chip — the user wants every outlet's logo visible.
   return (
-    <div className="flex flex-nowrap items-center justify-center gap-0.5 max-w-[88px]">
-      {visible.map(id => {
+    <div className="flex flex-wrap items-center justify-center gap-0.5 max-w-[112px]">
+      {knownPicks.map(id => {
         const meta = CRITIC_PICK_OUTLETS[id];
         const logoUrl = getOutletLogoUrl(meta.outletName);
         const config = getOutletConfig(meta.outletName);
@@ -208,14 +200,6 @@ function PressPicks({ picks }: { picks?: string[] }) {
           </div>
         );
       })}
-      {overflow && (
-        <div
-          className="w-5 h-5 rounded-full bg-surface-raised border border-white/10 flex items-center justify-center flex-shrink-0 text-[9px] font-bold text-gray-300 leading-none"
-          title={overflowTitle}
-        >
-          +{hidden.length}
-        </div>
-      )}
     </div>
   );
 }
@@ -268,7 +252,7 @@ function SectionColumnHeader({ isMajor, isPersonLevel = false, hideMarketOdds = 
             <div className="hidden sm:flex flex-col items-center w-20">
               <span className={HEADER_LINE}>Precursor</span><span className={HEADER_LINE}>Awards</span>
             </div>
-            <div className="flex flex-col items-center w-24">
+            <div className="flex flex-col items-center w-28">
               <span className={HEADER_LINE}>Press</span><span className={HEADER_LINE}>Picks</span>
             </div>
           </>
@@ -278,7 +262,7 @@ function SectionColumnHeader({ isMajor, isPersonLevel = false, hideMarketOdds = 
             <div className="hidden sm:flex flex-col items-center w-20 ml-3 sm:ml-4">
               <span className={HEADER_LINE}>Precursor</span><span className={HEADER_LINE}>Awards</span>
             </div>
-            <div className="flex flex-col items-center w-24">
+            <div className="flex flex-col items-center w-28">
               <span className={HEADER_LINE}>Press</span><span className={HEADER_LINE}>Picks</span>
             </div>
           </>
@@ -345,7 +329,7 @@ function MajorNomineeRow({ show, winProbability, rank, ceremonyDate, hideMarketO
         <div className="hidden sm:flex w-20 items-center justify-center">
           <PrecursorChips wins={show.precursorWins} />
         </div>
-        <div className="flex w-24 items-center justify-center">
+        <div className="flex w-28 items-center justify-center">
           <PressPicks picks={show.criticPicks} />
         </div>
       </div>
@@ -424,7 +408,7 @@ function PerformerRow({ show, hideMarketOdds = false }: { show: TonyCategory['sh
         <div className="hidden sm:flex w-20 items-center justify-center ml-3 sm:ml-4">
           <PrecursorChips wins={show.precursorWins} />
         </div>
-        <div className="flex w-24 items-center justify-center">
+        <div className="flex w-28 items-center justify-center">
           <PressPicks picks={show.criticPicks} />
         </div>
       </div>
@@ -492,7 +476,7 @@ function CraftRow({ show, ceremonyDate, hideMarketOdds = false }: { show: TonyCa
         <div className="hidden sm:flex w-20 items-center justify-center">
           <PrecursorChips wins={show.precursorWins} />
         </div>
-        <div className="flex w-24 items-center justify-center">
+        <div className="flex w-28 items-center justify-center">
           <PressPicks picks={show.criticPicks} />
         </div>
       </div>
