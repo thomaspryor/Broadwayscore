@@ -1,13 +1,13 @@
 {
   "_meta": {
     "description": "Critic-outlet affinity audit report",
-    "lastUpdated": "2026-06-04T16:27:28.493Z",
+    "lastUpdated": "2026-06-04T17:07:09.466Z",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 38647,
-    "skippedFiles": 17563,
-    "totalCritics": 1424,
+    "totalFilesScanned": 38697,
+    "skippedFiles": 17568,
+    "totalCritics": 1441,
     "registryCritics": 515,
-    "flaggedReviews": 22
+    "flaggedReviews": 20
   },
   "flaggedReviews": [
     {
@@ -33,6 +33,17 @@
       "totalReviews": 339
     },
     {
+      "critic": "Chris Omaweng",
+      "criticSlug": "chris-omaweng",
+      "outlet": "london-theatre",
+      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "file": "london-theatre--chris-omaweng.json",
+      "outletShare": 4,
+      "primaryOutlet": "londontheatre1",
+      "primaryShare": 96,
+      "totalReviews": 26
+    },
+    {
       "critic": "Dominic Maxwell",
       "criticSlug": "dominic-maxwell",
       "outlet": "the-sun",
@@ -41,7 +52,7 @@
       "outletShare": 3,
       "primaryOutlet": "times-uk",
       "primaryShare": 97,
-      "totalReviews": 30
+      "totalReviews": 31
     },
     {
       "critic": "Michael Dale",
@@ -165,28 +176,6 @@
       "totalReviews": 14
     },
     {
-      "critic": "Susannah Clapp",
-      "criticSlug": "susannah-clapp",
-      "outlet": "guardian",
-      "showId": "an-enemy-of-the-people-2024",
-      "file": "guardian--susannah-clapp.json",
-      "outletShare": 8,
-      "primaryOutlet": "observer",
-      "primaryShare": 92,
-      "totalReviews": 24
-    },
-    {
-      "critic": "Susannah Clapp",
-      "criticSlug": "susannah-clapp",
-      "outlet": "guardian",
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "guardian--susannah-clapp.json",
-      "outletShare": 8,
-      "primaryOutlet": "observer",
-      "primaryShare": 92,
-      "totalReviews": 24
-    },
-    {
       "critic": "Howard Shapiro",
       "criticSlug": "howard-shapiro",
       "outlet": "philadelphiainquirer",
@@ -196,17 +185,6 @@
       "primaryOutlet": "philadelphia-inquirer",
       "primaryShare": 96,
       "totalReviews": 27
-    },
-    {
-      "critic": "Chris Omaweng",
-      "criticSlug": "chris-omaweng",
-      "outlet": "london-theatre",
-      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
-      "file": "london-theatre--chris-omaweng.json",
-      "outletShare": 4,
-      "primaryOutlet": "londontheatre1",
-      "primaryShare": 96,
-      "totalReviews": 25
     },
     {
       "critic": "David Kaufman",
@@ -491,7 +469,7 @@
         "theatrecat",
         "everything-theatre"
       ],
-      "totalReviews": 748
+      "totalReviews": 750
     },
     {
       "critic": "Mary Beer",
@@ -1190,6 +1168,18 @@
       "totalReviews": 29
     },
     {
+      "critic": "Tim Bano",
+      "slug": "tim-bano",
+      "outlets": [
+        "thestage",
+        "financialtimes",
+        "standard",
+        "timeout-london",
+        "independent"
+      ],
+      "totalReviews": 25
+    },
+    {
       "critic": "Julianna Barnaby",
       "slug": "julianna-barnaby",
       "outlets": [
@@ -1197,6 +1187,15 @@
         "standard"
       ],
       "totalReviews": 3
+    },
+    {
+      "critic": "Quentin Letts",
+      "slug": "quentin-letts",
+      "outlets": [
+        "times-uk",
+        "daily-mail"
+      ],
+      "totalReviews": 15
     },
     {
       "critic": "Theo Bosanquet",
@@ -1217,7 +1216,7 @@
         "nytimes",
         "variety"
       ],
-      "totalReviews": 37
+      "totalReviews": 38
     },
     {
       "critic": "Jesse Oxfeld",
@@ -1377,18 +1376,6 @@
         "standard"
       ],
       "totalReviews": 31
-    },
-    {
-      "critic": "Tim Bano",
-      "slug": "tim-bano",
-      "outlets": [
-        "thestage",
-        "financialtimes",
-        "timeout-london",
-        "standard",
-        "independent"
-      ],
-      "totalReviews": 24
     },
     {
       "critic": "Kevin Filipski",
@@ -1815,15 +1802,6 @@
       "totalReviews": 17
     },
     {
-      "critic": "Quentin Letts",
-      "slug": "quentin-letts",
-      "outlets": [
-        "times-uk",
-        "daily-mail"
-      ],
-      "totalReviews": 13
-    },
-    {
       "critic": "Bobby McGuire",
       "slug": "bobby-mcguire",
       "outlets": [
@@ -1833,6 +1811,16 @@
         "edge-new-york"
       ],
       "totalReviews": 6
+    },
+    {
+      "critic": "Mark Fisher",
+      "slug": "mark-fisher",
+      "outlets": [
+        "guardian",
+        "times-uk",
+        "variety"
+      ],
+      "totalReviews": 4
     },
     {
       "critic": "Barbara Siegel",
@@ -1945,15 +1933,6 @@
         "theater-pizzazz"
       ],
       "totalReviews": 4
-    },
-    {
-      "critic": "Mark Fisher",
-      "slug": "mark-fisher",
-      "outlets": [
-        "guardian",
-        "variety"
-      ],
-      "totalReviews": 3
     },
     {
       "critic": "Scott Mitchell",
