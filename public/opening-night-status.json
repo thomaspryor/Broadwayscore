@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-04T05:39:54.507Z",
+  "generatedAt": "2026-06-04T10:00:35.366Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -9,7 +9,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-06-04",
-      "status": "previews",
+      "status": "open",
       "slug": "girl-interrupted-off-broadway",
       "thumbnail": "/images/shows/girl-interrupted-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
@@ -385,7 +385,7 @@
       "category": "west-end",
       "type": "play",
       "openingDate": "2026-06-04",
-      "status": "previews",
+      "status": "open",
       "slug": "are-you-watching-west-end",
       "thumbnail": "/images/shows/are-you-watching-west-end-2026/thumbnail.webp",
       "siteScore": null,
@@ -485,7 +485,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-06-04",
-      "status": "previews",
+      "status": "open",
       "slug": "a-woman-among-women-off-broadway",
       "thumbnail": "/images/shows/a-woman-among-women-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
@@ -1098,23 +1098,23 @@
       "status": "open",
       "slug": "jerome-off-broadway",
       "thumbnail": "/images/shows/jerome-off-broadway-2025/thumbnail.jpg",
-      "siteScore": 64.7,
-      "liveScore": 65,
-      "scoreDrift": 0.29999999999999716,
+      "siteScore": 63.94,
+      "liveScore": 64,
+      "scoreDrift": 0.060000000000002274,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 10,
+      "total": 11,
       "t1": 2,
-      "t2": 5,
+      "t2": 6,
       "t3": 3,
       "positive": 3,
-      "mixed": 5,
+      "mixed": 6,
       "negative": 2,
       "readiness": {
         "ready": false,
         "reasons": [
-          "10/12 total",
+          "11/12 total",
           "T1:2/3",
           "hi-conf:4/8"
         ],
@@ -1192,10 +1192,6 @@
         {
           "name": "New York Post",
           "isDualMarket": false
-        },
-        {
-          "name": "BroadwayWorld",
-          "isDualMarket": true
         },
         {
           "name": "amNewYork",
@@ -1446,11 +1442,62 @@
           "m": 5,
           "n": 2,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-06-04T09:34:09.631Z",
+          "rc": 11,
+          "s": 63.94,
+          "t1": 2,
+          "t2": 6,
+          "t3": 3,
+          "p": 3,
+          "m": 6,
+          "n": 2,
+          "bc": "waiting"
         }
       ]
     }
   ],
   "upcoming": [
+    {
+      "id": "silverback-mountain-off-broadway-2026",
+      "title": "Silverback Mountain",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "play",
+      "openingDate": "2026-06-05",
+      "status": "open",
+      "slug": "silverback-mountain-off-broadway",
+      "thumbnail": "/images/shows/silverback-mountain-off-broadway-2026/thumbnail.webp",
+      "daysUntil": 1,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": false,
+          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived — bww-rr-discover.js will auto-fetch within minutes of publication",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Not yet archived — tb-direct-url.js will discover at poll time",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
+      },
+      "preflight": false
+    },
     {
       "id": "fear-and-wonder-off-broadway-2026",
       "title": "Fear & Wonder",
