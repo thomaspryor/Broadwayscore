@@ -47,6 +47,7 @@ const { discoverCorrectUrl, OUTLET_DOMAINS } = require('./lib/url-discovery');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { llmFallbackExtract, hasStructuralMarkers } = require('./lib/llm-extractor');
+const { verifyAggregatorUrl } = require('./lib/show-match-verifier');
 const { normalizeOutlet, normalizeUrl: normalizeUrlCanonical } = require('./lib/review-normalization');
 const { extractReviewsFromLBO } = require('./scrape-london-box-office-roundups');
 const { extractReviews: extractTheatreReviews } = require('./scrape-theatre-reviews');
@@ -806,6 +807,14 @@ async function runAggregators(show) {
           if (result && result.content && result.content.length > 1000 &&
               result.content.includes('⭑') &&
               result.content.toLowerCase().includes(titleWord.toLowerCase())) {
+            // Cross-show gate: TR's search/URL-guessing can land on a different show's
+            // roundup (e.g. "war horse" → equus-menier-reviews → Equus contamination).
+            // verifyAggregatorUrl uses slug + page-title/venue/date signals.
+            const v = verifyAggregatorUrl({ url: trUrl, html: result.content, show, openingDate: show.openingDate });
+            if (!v.isValid) {
+              console.log(`    ✗ TR ${trUrl} rejected: ${v.rejectReason} (cross-show guard)`);
+              continue;
+            }
             trHtml = result.content;
             console.log(`    Found at: ${trUrl} (via ${result.source})`);
             break;
@@ -827,7 +836,14 @@ async function runAggregators(show) {
               console.log(`    WP API found: ${roundup.link}`);
               const pageResult = await fetchPage(roundup.link, { renderJs: false });
               if (pageResult && pageResult.content && pageResult.content.length > 1000) {
-                trHtml = pageResult.content;
+                // Cross-show gate: WP-API search for "war horse" returns the Equus
+                // roundup. Reject roundups that don't match this show.
+                const v = verifyAggregatorUrl({ url: roundup.link, html: pageResult.content, show, openingDate: show.openingDate });
+                if (v.isValid) {
+                  trHtml = pageResult.content;
+                } else {
+                  console.log(`    ✗ TR WP-API ${roundup.link} rejected: ${v.rejectReason} (cross-show guard)`);
+                }
               }
             }
           }
