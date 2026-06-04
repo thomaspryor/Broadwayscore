@@ -469,7 +469,7 @@ function createOrMergeReviewFile(showId, input, options = {}) {
  * @private
  */
 function _mergeIntoExisting(filepath, existing, ctx) {
-  const { input, fields, dryRun, onMerge } = ctx;
+  const { showId, input, fields, dryRun, onMerge } = ctx;
   let changed = false;
 
   // Fields that are FINAL once set by a human — never overwrite regardless of
