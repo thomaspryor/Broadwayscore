@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-04T17:22:24.127Z",
+  "generatedAt": "2026-06-04T19:09:24.878Z",
   "date": "2026-06-04",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 239750,
+  "entryCount": 232109,
   "shows": [
     {
       "showId": "an-ideal-husband-west-end-2026",
@@ -4357,6 +4357,21 @@
     {
       "showId": "driftwood-west-end-2026",
       "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "glengarry-glen-ross-west-end-2026",
+      "reviewCount": 1,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
