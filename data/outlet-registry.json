@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-05-28T05:45:43.840Z",
+    "lastUpdated": "2026-06-04T16:54:19.588Z",
     "version": "2.1.0",
     "lastChange": "T3->T4 demotion of 38 long-tail/stale outlets"
   },
@@ -916,7 +916,7 @@
     },
     "financialtimes": {
       "displayName": "Financial Times",
-      "tier": 2,
+      "tier": 1,
       "isDualMarket": true,
       "aliases": [
         "financialtimes",
@@ -8265,7 +8265,7 @@
     },
     "daily-mail": {
       "displayName": "Daily Mail",
-      "tier": 1,
+      "tier": 2,
       "region": "london",
       "isDualMarket": true,
       "aliases": [
@@ -9745,6 +9745,14 @@
         "nitelifeexchange-com"
       ],
       "domain": "nitelifeexchange.com"
+    },
+    "philadelphiainquirer": {
+      "displayName": "Philadelphiainquirer",
+      "tier": 3,
+      "aliases": [
+        "philadelphiainquirer"
+      ],
+      "domain": "newspapers.com"
     }
   },
   "_aliasIndex": {
