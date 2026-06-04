@@ -34,6 +34,11 @@ on:
       - 'scripts/lib/award-category-canonical.js'
       - 'scripts/lib/outlet-listing-helpers.js'
       - 'scripts/outlet-listing-poller.js'
+      # visual-qa push-gate helper — colocated test runs in the scripts/lib step
+      # but the workflow only fires when a push-path matches; without this entry
+      # edits to the gate would get ZERO CI coverage (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/transcript-scan.js'
+      - 'scripts/lib/transcript-scan.mjs'
       # Email generators — so changes to outbound email (incl. UTM tagging via
       # scripts/lib/email-utm.js) run the colocated scripts/lib/*.test.mjs step.
       - 'scripts/lib/email-utm.js'
