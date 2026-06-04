@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-04T14:31:28.357Z",
+  "timestamp": "2026-06-04T15:33:48.910Z",
   "stats": {
-    "totalReviews": 37973,
+    "totalReviews": 37960,
     "alreadyFlagged": 16690,
     "dateGuardCatches": 108,
-    "directorMismatch": 824,
+    "directorMismatch": 825,
     "tvFilmSignals": 1045,
-    "londonSignals": 598,
+    "londonSignals": 600,
     "offBroadwaySignals": 459,
     "yearMismatch": 79,
-    "noPublishDate": 3963
+    "noPublishDate": 3950
   },
   "findings": [
     {
@@ -1633,7 +1633,7 @@
       "file": "independent--louis-chilton.json",
       "score": 40,
       "publishDate": "2026-04-17",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
+      "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -24762,6 +24762,20 @@
       ]
     },
     {
+      "showId": "war-horse-west-end-2026",
+      "file": "times-uk--unknown.json",
+      "score": 78,
+      "publishDate": "2026-06-03",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/national-theatre-war-horse-review-lhrzw69hp",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from war-horse-2011"
+        }
+      ]
+    },
+    {
       "showId": "war-paint-2017",
       "file": "broadwayworld--michael-dale.json",
       "score": 68,
@@ -40590,6 +40604,20 @@
     },
     {
       "showId": "war-horse-west-end-2026",
+      "file": "british-theatre--unknown.json",
+      "score": 90,
+      "publishDate": "2026-06-02",
+      "url": "https://www.britishtheatreguide.info/reviews/war-horse-national-theatr-25639",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "war-horse-west-end-2026",
       "file": "broadwayworld--unknown.json",
       "score": 91,
       "publishDate": "2026-06-03",
@@ -40613,6 +40641,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "war-horse-west-end-2026",
+      "file": "south-london--unknown.json",
+      "score": 91,
+      "publishDate": "2026-06-04",
+      "url": "https://southlondon.co.uk/area/southwark/review-war-horse-at-the-olivier-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"olivier theatre\""
         }
       ]
     },
