@@ -36,3 +36,25 @@ test('does NOT flag a review that merely mentions weather or sports in passing',
   const review = 'The staging is stunning. Set on a sweltering July night, the production opened this week to a standing ovation; the direction is masterful and the performances riveting.';
   assert.equal(heuristicClassify(review), null);
 });
+
+// Ship-check findings: bare "scoreboard"/weather metaphors must NOT trip the
+// hard CI gate (one FP would block all deploys).
+test('does NOT flag review metaphors ("scoreboard of emotions", "50/50 gamble")', () => {
+  assert.equal(heuristicClassify('This musical is a scoreboard of emotions, brilliantly directed and thrilling from curtain to curtain.'), null);
+  assert.equal(heuristicClassify('Partly cloudy skies hang over Act II, a 50/50 gamble that the unfortunately thin book never quite resolves despite riveting performances.'), null);
+});
+
+// Still catches the real sports page (scoreboard + sports context).
+test('still flags a real sports scoreboard page', () => {
+  const r = heuristicClassify('SCOREBOARD SECTION 2 SPORTS CHICAGO TRIBUNE box score standings GB wins losses');
+  assert.ok(r && r.confidence === 'high' && r.type === 'sports_page');
+});
+
+// A real review that carries incidental scrape boilerplate ("BROWSER UPDATE" /
+// "please upgrade your browser") must NOT be flagged high — that boilerplate
+// rides along with ~72 genuine WSJ/HuffPost reviews. The reviewSignals guard
+// protects them; junk classes are advisory, not a hard gate.
+test('does NOT hard-flag a real review carrying browser-update boilerplate', () => {
+  const r = heuristicClassify('Please upgrade your browser. BROWSER UPDATE. The production, directed by Mike Nichols, is thrilling; the staging feels brisk and the performances riveting, earning a standing ovation.');
+  assert.ok(!r || r.confidence !== 'high', 'real review with boilerplate must not be high-confidence');
+});

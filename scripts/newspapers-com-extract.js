@@ -708,6 +708,15 @@ async function processShow(page, showId, opts) {
       console.log(`  OCR: ${rawOcr.length} raw chars -> ${text.length} reconstructed chars`);
       console.log(`  Preview: ${text.slice(0, 200).replace(/\n/g, ' ')}...`);
 
+      // Same non-review gate as the search path — a manually-supplied image ID
+      // must not bypass it (weather/sports/junk pages never get saved).
+      const nonReviewImg = heuristicClassify(text);
+      if (nonReviewImg && nonReviewImg.confidence === 'high') {
+        console.log(`  REJECTED — non-review content (${nonReviewImg.type}): ${String(nonReviewImg.evidence).slice(0, 70)}`);
+        results.papers[paper.outletId] = { status: 'rejected-non-review', imageId: opts.image, type: nonReviewImg.type };
+        continue;
+      }
+
       const criticName = opts.critic || likelyCritic(paper, openYear) || 'Unknown';
       saveSeedFile(showId, paper, criticName, opts.image, null, rawOcr, text);
       results.papers[paper.outletId] = { status: 'extracted', imageId: opts.image, chars: text.length };

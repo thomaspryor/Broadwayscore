@@ -39,7 +39,12 @@ const NON_REVIEW_PATTERNS = [
   { pattern: /(?:(?:age|aged) \d{2,3}).{0,40}(?:died|death|passed|memorial|funeral|tribute)/i, type: 'obituary' },
   { pattern: /(?:died|death|passed|memorial|funeral|tribute).{0,40}(?:(?:age|aged) \d{2,3})/i, type: 'obituary' },
   { pattern: /\bremembering\b.{0,20}(?:who|life|legacy|career)/i, type: 'obituary' },
-  // Garbage scrapes
+  // Garbage scrapes — advisory only (NOT definitive). Real scraped reviews often
+  // carry an incidental "BROWSER UPDATE"/"please upgrade your browser" boilerplate
+  // fragment alongside the actual review text; making these single-match-definitive
+  // false-flags ~72 genuine WSJ/HuffPost reviews. The reviewSignals>=2 guard keeps
+  // them from gating real reviews; pure junk (no review signals, 2+ matches) still
+  // reaches high-confidence via the standard rule.
   { pattern: /(?:BROWSER UPDATE|To gain access to the full experience|please upgrade your browser)/i, type: 'garbage_scrape' },
   { pattern: /(?:Subscribe to continue|subscribe now to read|sign in to continue reading|Already a subscriber)/i, type: 'paywall_wall' },
   { pattern: /(?:\.has-text-align-justify|margin-left:\s*auto|div\.admz)/i, type: 'css_junk' },
@@ -52,10 +57,12 @@ const NON_REVIEW_PATTERNS = [
   // Require clock times so Fiddler's "Sunrise, Sunset" song (and similar) don't match.
   { pattern: /\bsunrise\b.{0,12}\d{1,2}:\d{2}\s*[ap]?\.?m?\.?.{0,25}\bsunset\b.{0,12}\d{1,2}:\d{2}/i, type: 'weather_page', definitive: true },
   { pattern: /\b(?:five|5)[-\s]day forecast\b/i, type: 'weather_page', definitive: true },
-  { pattern: /\b(?:partly|mostly)\s+(?:cloudy|sunny)\b[\s\S]{0,30}\b\d{1,3}\s*[\/|]\s*\d{1,3}\b/i, type: 'weather_page', definitive: true },
-  // Sports pages: scoreboard headers, box scores, standings.
-  { pattern: /\bscoreboard\b/i, type: 'sports_page', definitive: true },
-  { pattern: /\bbox score\b/i, type: 'sports_page', definitive: true },
+  // (Dropped bare "partly cloudy NN/NN" — FP'd on review metaphors like "a 50/50
+  // gamble". The signals above already catch real weather pages.)
+  // Sports pages: require sports CONTEXT near "scoreboard" so review metaphors
+  // ("a scoreboard of emotions") don't trip the hard CI gate.
+  { pattern: /\bscoreboard\b[\s\S]{0,120}\b(?:standings|box score|final score|sports|innings?|quarterback|touchdowns?|\bN[BFH]L\b|\bMLB\b)\b/i, type: 'sports_page', definitive: true },
+  { pattern: /\bbox score\b[\s\S]{0,80}\b(?:innings?|at bat|rebounds?|assists?|final|quarter)\b/i, type: 'sports_page', definitive: true },
   { pattern: /\|\s*sports\s*\|/i, type: 'sports_page', definitive: true },
   { pattern: /\bstandings\b[\s\S]{0,40}\b(?:gb|wins?|losses?|pct)\b/i, type: 'sports_page', definitive: true },
 ];

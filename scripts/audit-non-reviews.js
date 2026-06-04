@@ -295,7 +295,10 @@ async function main() {
   // (obituary/preview/interview) can FP on real reviews that mention a death etc.,
   // so they stay advisory in the cron, not a hard build gate.
   if (STRICT) {
-    const GATE_TYPES = new Set(['weather_page', 'sports_page', 'garbage_scrape', 'css_junk', 'paywall_wall']);
+    // Hard-gate ONLY the definitive wrong-page classes (0 FPs across 34k). Junk/
+    // paywall/css stay advisory in the cron — gating them false-fails on real
+    // reviews that carry scrape boilerplate (verified: 72 WSJ/HuffPost FPs).
+    const GATE_TYPES = new Set(['weather_page', 'sports_page']);
     const high = flagged.filter(f => f.confidence === 'high' && GATE_TYPES.has(f.type));
     if (high.length > 0) {
       console.error(`\n❌ STRICT: ${high.length} scored review(s) classified as non-review content:`);
