@@ -865,7 +865,14 @@
     "mary-poppins-2006/variety--charles-isherwood.json",
     "tarzan-2006/variety--charles-isherwood.json",
     "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
-    "the-loved-ones-off-broadway-2026/broadwayworld--team-bww.json"
+    "the-loved-ones-off-broadway-2026/broadwayworld--team-bww.json",
+    "jerome-off-broadway-2025/playbill--unknown.json",
+    "jerome-off-broadway-2025/talkinbroadway--unknown.json",
+    "small-off-broadway-2026/pages-on-stages--unknown.json",
+    "small-off-broadway-2026/the-recs--unknown.json",
+    "small-off-broadway-2026/washpost--unknown.json",
+    "indian-princesses-off-broadway-2025/pages-on-stages--mason-pilevsky.json",
+    "the-maids-off-broadway-2026/ew--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -954,6 +961,7 @@
       "data/review-texts/equus-west-end-2026/thestage--holly-o.json",
       "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
       "data/review-texts/equus-west-end-2026/thestage--holly-o.json",
+      "data/review-texts/jerome-off-broadway-2025/talkinbroadway--unknown.json",
       "data/review-texts/jerome-off-broadway-2025/talkinbroadway--unknown.json",
       "data/review-texts/jerome-off-broadway-2025/talkinbroadway--unknown.json"
     ],
@@ -1166,6 +1174,17 @@
     },
     {
       "t": "2026-06-04T01:51:01.556Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-04T03:07:24.751Z",
+      "event": "bb-session",
+      "session": "371a8aee",
+      "url": "https://a.talkinbroadway.com/allthatchat_new/d.php?id=2626606"
+    },
+    {
+      "t": "2026-06-04T03:07:25.774Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }
