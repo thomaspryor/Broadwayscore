@@ -25,7 +25,9 @@
     "chess-2025/the-contending--unknown.json",
     "titanique-west-end-2024/british-theatre--susan-novak.json",
     "hadestown-west-end-2024/thereviewshub--unknown.json",
-    "360-allstars-off-west-end-2026/west-end-best-friend--unknown.json"
+    "360-allstars-off-west-end-2026/west-end-best-friend--unknown.json",
+    "animal-wisdom-2022/nytimes--ben-brantley.json",
+    "whos-afraid-of-virginia-woolf-2020/wsj--charles-isherwood.json"
   ],
   "failed": [
     "the-p-word-off-west-end-2026/sunday-telegraph--claire-allfree.json",
@@ -427,7 +429,16 @@
     "impressionism-2009/newsday--linda-winer.json",
     "33-variations-2009/newsday--unknown.json",
     "the-story-of-my-life-2009/newsday--linda-winer.json",
-    "hedda-gabler-2009/newsday--linda-winer.json"
+    "hedda-gabler-2009/newsday--linda-winer.json",
+    "title-of-show-2008/mycentraljerseycom--charles-paolino.json",
+    "south-pacific-2008/newyorker--john-lahr.json",
+    "the-farnsworth-invention-2007/variety--charles-isherwood.json",
+    "pygmalion-2007/variety--david-rooney.json",
+    "journeys-end-2007/variety--david-rooney.json",
+    "mary-poppins-2006/variety--charles-isherwood.json",
+    "tarzan-2006/variety--charles-isherwood.json",
+    "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
+    "the-loved-ones-off-broadway-2026/broadwayworld--team-bww.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -452,7 +463,9 @@
       "data/review-texts/maybe-happy-ending-2024/variety--unknown.json",
       "maybe-happy-ending-2024/variety--unknown.json",
       "data/review-texts/whos-afraid-of-virginia-woolf-2020/deadline--greg-evans.json",
-      "whos-afraid-of-virginia-woolf-2020/deadline--greg-evans.json"
+      "whos-afraid-of-virginia-woolf-2020/deadline--greg-evans.json",
+      "data/review-texts/whos-afraid-of-virginia-woolf-2020/wsj--charles-isherwood.json",
+      "whos-afraid-of-virginia-woolf-2020/wsj--charles-isherwood.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -461,7 +474,8 @@
       "trouble-in-mind-2021/broadwayworld--unknown.json",
       "war-horse-west-end-2026/city-am--unknown.json",
       "hadestown-west-end-2024/thereviewshub--unknown.json",
-      "trouble-in-mind-2021/broadwayworld--unknown.json"
+      "trouble-in-mind-2021/broadwayworld--unknown.json",
+      "animal-wisdom-2022/nytimes--ben-brantley.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -477,7 +491,7 @@
     ]
   },
   "startTime": "2026-06-04T04:34:53.808Z",
-  "lastProcessed": "hedda-gabler-2009/newsday--linda-winer.json",
+  "lastProcessed": "the-loved-ones-off-broadway-2026/broadwayworld--team-bww.json",
   "log": [
     {
       "t": "2026-06-04T11:24:42.850Z",
@@ -511,6 +525,17 @@
       "t": "2026-06-04T08:22:23.610Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-06-04T13:15:46.534Z",
+      "event": "bb-session",
+      "session": "9c3f89db",
+      "url": "https://www.wsj.com/articles/whos-afraid-of-virginia-woolf-a-classic-play-throug"
+    },
+    {
+      "t": "2026-06-04T13:15:47.147Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

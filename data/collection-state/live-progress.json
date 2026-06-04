@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-04T13:14:31.141Z",
-  "processed": 26,
-  "failed": 400,
-  "successRate": "6.1%",
+  "updatedAt": "2026-06-04T13:17:41.472Z",
+  "processed": 28,
+  "failed": 409,
+  "successRate": "6.4%",
   "tierBreakdown": {
     "playwright": 14,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 6,
     "directCookies": 0,
-    "scrapingbee": 6,
+    "scrapingbee": 7,
     "brightdata": 0,
     "archiveToday": 1,
     "archive": 6
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-06-04T11:24:42.850Z",
@@ -47,6 +47,17 @@
       "t": "2026-06-04T08:22:23.610Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-06-04T13:15:46.534Z",
+      "event": "bb-session",
+      "session": "9c3f89db",
+      "url": "https://www.wsj.com/articles/whos-afraid-of-virginia-woolf-a-classic-play-throug"
+    },
+    {
+      "t": "2026-06-04T13:15:47.147Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
