@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-04T09:34:09.631Z",
+  "generatedAt": "2026-06-04T10:00:35.366Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -9,7 +9,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-06-04",
-      "status": "previews",
+      "status": "open",
       "slug": "girl-interrupted-off-broadway",
       "thumbnail": "/images/shows/girl-interrupted-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
@@ -385,7 +385,7 @@
       "category": "west-end",
       "type": "play",
       "openingDate": "2026-06-04",
-      "status": "previews",
+      "status": "open",
       "slug": "are-you-watching-west-end",
       "thumbnail": "/images/shows/are-you-watching-west-end-2026/thumbnail.webp",
       "siteScore": null,
@@ -485,7 +485,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-06-04",
-      "status": "previews",
+      "status": "open",
       "slug": "a-woman-among-women-off-broadway",
       "thumbnail": "/images/shows/a-woman-among-women-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
@@ -1459,6 +1459,45 @@
     }
   ],
   "upcoming": [
+    {
+      "id": "silverback-mountain-off-broadway-2026",
+      "title": "Silverback Mountain",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "play",
+      "openingDate": "2026-06-05",
+      "status": "open",
+      "slug": "silverback-mountain-off-broadway",
+      "thumbnail": "/images/shows/silverback-mountain-off-broadway-2026/thumbnail.webp",
+      "daysUntil": 1,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": false,
+          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived — bww-rr-discover.js will auto-fetch within minutes of publication",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Not yet archived — tb-direct-url.js will discover at poll time",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
+      },
+      "preflight": false
+    },
     {
       "id": "fear-and-wonder-off-broadway-2026",
       "title": "Fear & Wonder",
