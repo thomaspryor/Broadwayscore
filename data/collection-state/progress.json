@@ -14,6 +14,14 @@
     "small-off-broadway-2026/the-recs--unknown.json",
     "small-off-broadway-2026/washpost--unknown.json",
     "indian-princesses-off-broadway-2025/pages-on-stages--mason-pilevsky.json",
+    "the-maids-off-broadway-2026/ew--unknown.json",
+    "jerome-off-broadway-2025/broadwayworld--unknown.json",
+    "jerome-off-broadway-2025/playbill--unknown.json",
+    "jerome-off-broadway-2025/talkinbroadway--unknown.json",
+    "small-off-broadway-2026/pages-on-stages--unknown.json",
+    "small-off-broadway-2026/the-recs--unknown.json",
+    "small-off-broadway-2026/washpost--unknown.json",
+    "indian-princesses-off-broadway-2025/pages-on-stages--mason-pilevsky.json",
     "the-maids-off-broadway-2026/ew--unknown.json"
   ],
   "skipped": [],
@@ -22,9 +30,12 @@
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "jerome-off-broadway-2025/broadwayworld--unknown.json"
+    ],
     "brightdata": [],
     "archiveToday": [
+      "data/review-texts/jerome-off-broadway-2025/talkinbroadway--unknown.json",
       "data/review-texts/jerome-off-broadway-2025/talkinbroadway--unknown.json",
       "data/review-texts/jerome-off-broadway-2025/talkinbroadway--unknown.json"
     ],
@@ -52,6 +63,17 @@
     },
     {
       "t": "2026-06-04T06:35:10.131Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-04T07:24:54.722Z",
+      "event": "bb-session",
+      "session": "927e6080",
+      "url": "https://a.talkinbroadway.com/allthatchat_new/d.php?id=2626606"
+    },
+    {
+      "t": "2026-06-04T07:24:55.703Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }
