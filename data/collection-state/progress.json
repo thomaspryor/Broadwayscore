@@ -27,7 +27,8 @@
     "hadestown-west-end-2024/thereviewshub--unknown.json",
     "360-allstars-off-west-end-2026/west-end-best-friend--unknown.json",
     "animal-wisdom-2022/nytimes--ben-brantley.json",
-    "whos-afraid-of-virginia-woolf-2020/wsj--charles-isherwood.json"
+    "whos-afraid-of-virginia-woolf-2020/wsj--charles-isherwood.json",
+    "war-horse-west-end-2026/whatsonstage--maygan-forbes.json"
   ],
   "failed": [
     "the-p-word-off-west-end-2026/sunday-telegraph--claire-allfree.json",
@@ -438,7 +439,16 @@
     "mary-poppins-2006/variety--charles-isherwood.json",
     "tarzan-2006/variety--charles-isherwood.json",
     "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
-    "the-loved-ones-off-broadway-2026/broadwayworld--team-bww.json"
+    "the-loved-ones-off-broadway-2026/broadwayworld--team-bww.json",
+    "driftwood-west-end-2026/times-uk--clive-davis.json",
+    "war-horse-west-end-2026/times-uk--chris-bennion.json",
+    "war-horse-west-end-2026/times-uk--clive-davis.json",
+    "beetlejuice-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "the-p-word-off-west-end-2026/whatsonstage--frey-kwa-hawking.json",
+    "dark-of-the-moon-west-end-2026/guardian-uk--unknown.json",
+    "dark-of-the-moon-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "dark-of-the-moon-west-end-2026/artsdesk--unknown.json",
+    "dark-of-the-moon-west-end-2026/cambridge--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -456,7 +466,8 @@
       "la-traviata-off-broadway-2026/financialtimes--unknown.json",
       "chess-2025/the-contending--unknown.json",
       "titanique-west-end-2024/british-theatre--susan-novak.json",
-      "360-allstars-off-west-end-2026/west-end-best-friend--unknown.json"
+      "360-allstars-off-west-end-2026/west-end-best-friend--unknown.json",
+      "war-horse-west-end-2026/whatsonstage--maygan-forbes.json"
     ],
     "amp": [],
     "browserbase": [
@@ -491,7 +502,7 @@
     ]
   },
   "startTime": "2026-06-04T04:34:53.808Z",
-  "lastProcessed": "the-loved-ones-off-broadway-2026/broadwayworld--team-bww.json",
+  "lastProcessed": "dark-of-the-moon-west-end-2026/cambridge--unknown.json",
   "log": [
     {
       "t": "2026-06-04T11:24:42.850Z",
@@ -536,6 +547,18 @@
       "t": "2026-06-04T13:15:47.147Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-04T20:25:10.154Z",
+      "event": "bb-session",
+      "session": "51baf75c",
+      "url": "https://charingcrosstheatre.co.uk/theatre/dark-of-the-moon"
+    },
+    {
+      "t": "2026-06-04T20:26:33.549Z",
+      "event": "bb-session",
+      "session": "b8a880f0",
+      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
     }
   ]
 }
