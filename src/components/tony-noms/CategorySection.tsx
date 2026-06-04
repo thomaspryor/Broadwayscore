@@ -160,8 +160,11 @@ function PressPicks({ picks }: { picks?: string[] }) {
   if (!picks || picks.length === 0) return null;
   const knownPicks = picks.filter(id => CRITIC_PICK_OUTLETS[id]);
   if (knownPicks.length === 0) return null;
+  // Wrap to a second line when more than 3 picks. Each badge is w-5 (20px)
+  // with gap-0.5 (2px), so 3 fit in 64px. Constraining max-w prevents long
+  // pick lists from stretching the column.
   return (
-    <div className="flex items-center gap-0.5">
+    <div className="flex flex-wrap items-center gap-0.5 max-w-[64px]">
       {knownPicks.map(id => {
         const meta = CRITIC_PICK_OUTLETS[id];
         const logoUrl = getOutletLogoUrl(meta.outletName);
