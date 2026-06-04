@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-04T10:00:29.529Z",
+  "timestamp": "2026-06-04T14:31:28.357Z",
   "stats": {
-    "totalReviews": 37961,
-    "alreadyFlagged": 16688,
+    "totalReviews": 37973,
+    "alreadyFlagged": 16690,
     "dateGuardCatches": 108,
     "directorMismatch": 824,
-    "tvFilmSignals": 1044,
-    "londonSignals": 592,
+    "tvFilmSignals": 1045,
+    "londonSignals": 598,
     "offBroadwaySignals": 459,
     "yearMismatch": 79,
-    "noPublishDate": 3969
+    "noPublishDate": 3963
   },
   "findings": [
     {
@@ -65,6 +65,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hulu\""
+        }
+      ]
+    },
+    {
+      "showId": "360-allstars-off-west-end-2026",
+      "file": "west-end-best-friend--james-springthorpe.json",
+      "publishDate": "2026-06-03",
+      "url": "https://www.westendbestfriend.co.uk/news/review-360-allstars-peacock-theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -9913,20 +9926,6 @@
       ]
     },
     {
-      "showId": "in-the-heights-2008",
-      "file": "wsj--terry-teachout.json",
-      "score": 83,
-      "publishDate": "March 17, 2008",
-      "url": "https://www.wsj.com/arts-culture/film/in-the-heights-review-youre-the-top-11623361012?gaa_at=eafs&gaa_n=AWEtsqcIgibAdMTw8bBDORdE8fJvpK_mAMtq8yt63tHkojpWh00ZrvS1sPPk&gaa_ts=698bae69&gaa_sig=iXMozv1cKpGqJ6mkOGzB0X2bIm-_o2U9u33TOhYqcmZ4nriq__9O2UGyJRbvcgb4eNY1Jt_IL-sDYbqp-uoWNQ%3D%3D",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"hbo max\""
-        }
-      ]
-    },
-    {
       "showId": "in-transit-2016",
       "file": "broadwayworld--michael-dale.json",
       "score": 72,
@@ -18682,29 +18681,15 @@
     },
     {
       "showId": "spamalot-2005",
-      "file": "culturesauce--thom-geier.json",
-      "score": 61,
-      "publishDate": null,
-      "url": "https://culturesauce.com/2023/11/16/spamalot-broadway-revival-review-monty-python/",
+      "file": "nydailynews--howard-kissel-bway.json",
+      "score": 55,
+      "publishDate": "2005-03-18",
+      "url": "https://www.newspapers.com/image/408961446/",
       "findings": [
         {
-          "type": "DIRECTOR_MISMATCH",
+          "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
-          "detail": "Mentions director \"josh rhodes\" from spamalot-2023"
-        }
-      ]
-    },
-    {
-      "showId": "spamalot-2005",
-      "file": "thestage--unknown.json",
-      "score": 41,
-      "publishDate": null,
-      "url": "https://www.thestage.co.uk/reviews/spamalot-review-at-st-james-theatre-new-york-by-eric-idle",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"josh rhodes\" from spamalot-2023"
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -24679,6 +24664,44 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"marianne elliott\" from war-horse-2011"
+        }
+      ]
+    },
+    {
+      "showId": "war-horse-west-end-2026",
+      "file": "london-theatre--unknown.json",
+      "score": 92,
+      "publishDate": "2026-06-03",
+      "url": "https://www.londontheatre.co.uk/reviews/war-horse-review-national-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from war-horse-2011"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "war-horse-west-end-2026",
+      "file": "standard--unknown.json",
+      "score": 87,
+      "publishDate": null,
+      "url": "https://www.standard.co.uk/culture/theatre/war-horse-review-national-theatre-b1284771.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from war-horse-2011"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -40557,6 +40580,62 @@
       "score": 88,
       "publishDate": "April 14, 2011",
       "url": "https://leisureblogs.chicagotribune.com/the_theater_loop/2011/04/war-horse-broadway-review-national-theatre-great-britain.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "war-horse-west-end-2026",
+      "file": "broadwayworld--unknown.json",
+      "score": 91,
+      "publishDate": "2026-06-03",
+      "url": "https://www.broadwayworld.com/westend/article/Review-WAR-HORSE-National-Theatre-20260603",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "war-horse-west-end-2026",
+      "file": "london-box-office--unknown.json",
+      "score": 89,
+      "publishDate": "2026-06-03",
+      "url": "https://www.londonboxoffice.co.uk/news/post/war-horse-nt-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "war-horse-west-end-2026",
+      "file": "theupcoming--unknown.json",
+      "score": 94,
+      "publishDate": "2026-06-03",
+      "url": "https://www.theupcoming.co.uk/2026/06/03/warhorse-at-the-national-theatre-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "war-horse-west-end-2026",
+      "file": "west-end-best-friend--tom-ambrose.json",
+      "score": 90,
+      "publishDate": "2026-06-03",
+      "url": "https://www.westendbestfriend.co.uk/news/review-war-horse-national-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
