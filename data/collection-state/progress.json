@@ -6,7 +6,9 @@
     "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
     "well-ill-let-you-go-off-broadway-2026/ny1--spectrum-news-staff.json",
     "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
-    "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
+    "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+    "maybe-happy-ending-2024/variety--unknown.json",
+    "maybe-happy-ending-2024/washpost--unknown.json"
   ],
   "failed": [
     "jerome-off-broadway-2025/playbill--unknown.json",
@@ -18,17 +20,29 @@
     "the-maids-off-broadway-2026/ew--unknown.json",
     "ragtime-2025/bloomberg--chris-rovzar.json",
     "titanique-west-end-2024/times-uk--clive-davis.json",
-    "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json"
+    "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
+    "hadestown-west-end-2024/times-uk--clive-davis.json",
+    "mj-2022/broadwaynews--charles-isherwood.json",
+    "mj-2022/nydailynews--karu-f-daniels.json",
+    "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
+    "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json",
+    "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json",
+    "harry-potter-2021/front-row-center--tulis-mccall.json",
+    "harry-potter-2021/woman-around-town--alix-cohen.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "driftwood-west-end-2026/british-theatre--susan-novak.json",
       "well-ill-let-you-go-off-broadway-2026/ny1--spectrum-news-staff.json",
-      "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json"
+      "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+      "maybe-happy-ending-2024/washpost--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/maybe-happy-ending-2024/variety--unknown.json",
+      "maybe-happy-ending-2024/variety--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "the-p-word-off-west-end-2026/sunday-telegraph--claire-allfree.json"
@@ -44,7 +58,7 @@
     ]
   },
   "startTime": "2026-06-04T04:34:53.808Z",
-  "lastProcessed": "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
+  "lastProcessed": "harry-potter-2021/woman-around-town--alix-cohen.json",
   "log": [
     {
       "t": "2026-06-04T04:36:00.998Z",
@@ -56,6 +70,17 @@
       "t": "2026-06-04T04:36:02.090Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-04T07:45:18.594Z",
+      "event": "bb-session",
+      "session": "7f5afbf4",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
+    },
+    {
+      "t": "2026-06-04T07:45:19.317Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
