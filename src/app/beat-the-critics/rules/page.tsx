@@ -27,7 +27,7 @@ export default function BeatTheCriticsRulesPage() {
 
         <section>
           <h2 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-2">2. Entry Period</h2>
-          <p className="text-sm">Entries are accepted beginning at 12:00 AM Eastern Time on May 18, 2026 and closing at 11:59 PM Eastern Time on June 6, 2026. Entries submitted after that time will not be eligible for the prize draw.</p>
+          <p className="text-sm">Entries are accepted beginning at 12:00 AM Eastern Time on May 18, 2026 and closing at 7:59 PM Eastern Time on June 7, 2026 (one minute before the Tony Awards ceremony broadcast begins). Entries submitted after that time will not be eligible for the prize draw.</p>
         </section>
 
         <section>
