@@ -26,6 +26,36 @@ const path = require('path');
 const { fetchPage } = require('./lib/scraper');
 const { extractAuthorFromHtml, extractHighConfidenceAuthor } = require('./lib/content-quality');
 const { normalizeCritic } = require('./lib/review-normalization');
+const { isBlockedReviewUrl } = require('./lib/domain-filters');
+const { verifyAggregatorUrl } = require('./lib/show-match-verifier');
+
+// Non-theatre news sections. Same-title film/TV/lifestyle articles (the Beetlejuice
+// *film*, a Tim Burton interview) carry the show title in their <title>, so show-match
+// passes them — but they are wrong PRODUCTION, not theatre reviews.
+const NON_THEATRE_SECTIONS = new Set([
+  'film', 'films', 'movies', 'tv', 'tv-radio', 'tv-and-radio', 'music', 'books',
+  'life-style', 'lifestyle', 'fashion', 'money', 'sport', 'sports', 'food-drink',
+]);
+
+/**
+ * Reason a stranded _pending review must NOT be promoted to the main show dir,
+ * or null if it's safe to promote. Pure (no I/O) so it's unit-testable.
+ *   1. Aggregator / listing / ticket / feature-interview URL (isBlockedReviewUrl).
+ *   2. Non-theatre news section (film/tv/lifestyle) — wrong production, same title.
+ *   3. verifyAggregatorUrl show-match fails — different show.
+ * @param {string} url  @param {string} html  @param {{id,title,venue,openingDate}} show
+ * @returns {string|null}
+ */
+function pendingPromoteRejectReason(url, html, show) {
+  if (isBlockedReviewUrl(url)) return 'aggregator/listing/feature URL, not an outlet review';
+  let seg = [];
+  try { seg = new URL(url).pathname.toLowerCase().split('/').filter(Boolean); } catch { /* malformed */ }
+  const badSection = seg.find(s => NON_THEATRE_SECTIONS.has(s));
+  if (badSection) return `non-theatre section (${badSection}) — wrong production`;
+  const v = verifyAggregatorUrl({ url, html, show, openingDate: show && show.openingDate });
+  if (!v.isValid) return `not this show (${v.rejectReason})`;
+  return null;
+}
 
 const args = process.argv.slice(2);
 const showArg = args.find(a => a.startsWith('--show='))?.split('=')[1];
@@ -135,6 +165,19 @@ async function processShow(showId) {
         kept++;
         continue;
       }
+      // Validate BEFORE promoting. _pending for open shows holds junk beyond real
+      // stranded reviews (Beetlejuice exposed this 2026-06-04): aggregator URLs
+      // misattributed to an outlet (a westendtheatre roundup filed under 'telegraph'
+      // fabricates a fake Telegraph review with the roundup author's byline), same-title
+      // wrong-production articles (the Beetlejuice *film* / a Tim Burton interview filed
+      // under 'times-uk'), and wrong-show hits. Promoting these contaminates the show.
+      const rejectReason = pendingPromoteRejectReason(url, html, show);
+      if (rejectReason) {
+        console.log(`  [${file}] REJECT: ${rejectReason} — deleting`);
+        fs.unlinkSync(filepath);
+        rejected++;
+        continue;
+      }
       // extractHighConfidenceAuthor returns string|null; extractAuthorFromHtml returns
       // { name, source } | null. Normalize to plain string.
       const hcRaw = extractHighConfidenceAuthor(html);
@@ -185,23 +228,27 @@ async function processShow(showId) {
   return { promoted, kept, rejected };
 }
 
-(async () => {
-  const ids = showIds();
-  console.log(`Processing ${ids.length} show(s)${dryRun ? ' [DRY RUN]' : ''}\n`);
+module.exports = { pendingPromoteRejectReason, NON_THEATRE_SECTIONS };
 
-  let totalPromoted = 0, totalKept = 0, totalRejected = 0;
-  for (const id of ids) {
-    const { promoted, kept, rejected } = await processShow(id);
-    totalPromoted += promoted;
-    totalKept += kept;
-    totalRejected += rejected || 0;
-  }
+if (require.main === module) {
+  (async () => {
+    const ids = showIds();
+    console.log(`Processing ${ids.length} show(s)${dryRun ? ' [DRY RUN]' : ''}\n`);
 
-  console.log(`\n━━━ Replay complete ━━━`);
-  console.log(`Promoted: ${totalPromoted}`);
-  console.log(`Rejected (wrong-prod or wrong-year, deleted): ${totalRejected}`);
-  console.log(`Kept in _pending: ${totalKept}`);
-})().catch(e => {
-  console.error(e);
-  process.exit(1);
-});
+    let totalPromoted = 0, totalKept = 0, totalRejected = 0;
+    for (const id of ids) {
+      const { promoted, kept, rejected } = await processShow(id);
+      totalPromoted += promoted;
+      totalKept += kept;
+      totalRejected += rejected || 0;
+    }
+
+    console.log(`\n━━━ Replay complete ━━━`);
+    console.log(`Promoted: ${totalPromoted}`);
+    console.log(`Rejected (wrong-prod or wrong-year, deleted): ${totalRejected}`);
+    console.log(`Kept in _pending: ${totalKept}`);
+  })().catch(e => {
+    console.error(e);
+    process.exit(1);
+  });
+}
