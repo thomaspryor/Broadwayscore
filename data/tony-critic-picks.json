@@ -3,7 +3,7 @@
     "description": "Critic Tony Award winner predictions by category. Show categories keyed by showId; acting categories keyed by person name (case-insensitive match).",
     "season": "2025-26",
     "ceremonyYear": 2026,
-    "updated": "2026-06-03"
+    "updated": "2026-06-04"
   },
   "sources": [
     {
@@ -77,6 +77,14 @@
       "shortName": "TO",
       "color": "#e31b23",
       "url": "https://www.timeout.com/newyork/theater/complete-2026-tony-award-predictions"
+    },
+    {
+      "id": "thr",
+      "outlet": "The Hollywood Reporter",
+      "critic": "Ben Zauzmer",
+      "shortName": "THR",
+      "color": "#000000",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/tony-awards-predictions-2026-1236611539/"
     }
   ],
   "picks": {
@@ -88,7 +96,8 @@
       "ew": "the-lost-boys-2026",
       "nysun": "schmigadoon-2026",
       "slant": "the-lost-boys-2026",
-      "timeout": "the-lost-boys-2026"
+      "timeout": "the-lost-boys-2026",
+      "thr": "schmigadoon-2026"
     },
     "Best Play": {
       "nyt": "giant-2026",
@@ -98,7 +107,8 @@
       "ew": "giant-2026",
       "nysun": "liberation-2025",
       "slant": "liberation-2025",
-      "timeout": "liberation-2025"
+      "timeout": "liberation-2025",
+      "thr": "liberation-2025"
     },
     "Best Revival of a Musical": {
       "nyt": "ragtime-2025",
@@ -108,7 +118,8 @@
       "ew": "ragtime-2025",
       "nysun": "ragtime-2025",
       "slant": "cats-the-jellicle-ball-2026",
-      "timeout": "cats-the-jellicle-ball-2026"
+      "timeout": "cats-the-jellicle-ball-2026",
+      "thr": "ragtime-2025"
     },
     "Best Revival of a Play": {
       "nyt": "death-of-a-salesman-2026",
@@ -118,7 +129,8 @@
       "ew": "death-of-a-salesman-2026",
       "nysun": "death-of-a-salesman-2026",
       "slant": "death-of-a-salesman-2026",
-      "timeout": "death-of-a-salesman-2026"
+      "timeout": "death-of-a-salesman-2026",
+      "thr": "death-of-a-salesman-2026"
     },
     "Best Actor in a Musical": {
       "nyt": "Joshua Henry",
@@ -129,7 +141,8 @@
       "nysun": "Joshua Henry",
       "theatermania": "Joshua Henry",
       "slant": "Joshua Henry",
-      "timeout": "Joshua Henry"
+      "timeout": "Joshua Henry",
+      "thr": "Joshua Henry"
     },
     "Best Actress in a Musical": {
       "nyt": "Caissie Levy",
@@ -140,7 +153,8 @@
       "nysun": "Caissie Levy",
       "theatermania": "Caissie Levy",
       "slant": "Marla Mindelle",
-      "timeout": "Caissie Levy"
+      "timeout": "Caissie Levy",
+      "thr": "Caissie Levy"
     },
     "Best Actor in a Play": {
       "nyt": "Nathan Lane",
@@ -151,7 +165,8 @@
       "nysun": "John Lithgow",
       "theatermania": "John Lithgow",
       "slant": "John Lithgow",
-      "timeout": "John Lithgow"
+      "timeout": "John Lithgow",
+      "thr": "John Lithgow"
     },
     "Best Actress in a Play": {
       "nyt": "Lesley Manville",
@@ -162,7 +177,8 @@
       "nysun": "Lesley Manville",
       "theatermania": "Lesley Manville",
       "slant": "Lesley Manville",
-      "timeout": "Lesley Manville"
+      "timeout": "Lesley Manville",
+      "thr": "Lesley Manville"
     },
     "Best Featured Actor in a Musical": {
       "nyt": "André De Shields",
@@ -171,7 +187,8 @@
       "nytg": "André De Shields",
       "ew": "André De Shields",
       "slant": "Ben Levi Ross",
-      "timeout": "Ali Louis Bourzgui"
+      "timeout": "Ali Louis Bourzgui",
+      "thr": "André De Shields"
     },
     "Best Featured Actress in a Musical": {
       "nyt": "Shoshana Bean",
@@ -180,7 +197,8 @@
       "nytg": "Shoshana Bean",
       "ew": "Shoshana Bean",
       "slant": "Nichelle Lewis",
-      "timeout": "Shoshana Bean"
+      "timeout": "Shoshana Bean",
+      "thr": "Shoshana Bean"
     },
     "Best Featured Actor in a Play": {
       "nyt": "Alden Ehrenreich",
@@ -189,7 +207,8 @@
       "nytg": "Alden Ehrenreich",
       "ew": "Christopher Abbott",
       "slant": "Alden Ehrenreich",
-      "timeout": "Alden Ehrenreich"
+      "timeout": "Alden Ehrenreich",
+      "thr": "Alden Ehrenreich"
     },
     "Best Featured Actress in a Play": {
       "variety": "Laurie Metcalf",
@@ -197,7 +216,8 @@
       "nytg": "Laurie Metcalf",
       "ew": "Laurie Metcalf",
       "slant": "Laurie Metcalf",
-      "timeout": "Laurie Metcalf"
+      "timeout": "Laurie Metcalf",
+      "thr": "Laurie Metcalf"
     },
     "Best Direction of a Musical": {
       "nyt": "the-lost-boys-2026",
@@ -206,7 +226,8 @@
       "nytg": "ragtime-2025",
       "nysun": "ragtime-2025",
       "slant": "cats-the-jellicle-ball-2026",
-      "timeout": "cats-the-jellicle-ball-2026"
+      "timeout": "cats-the-jellicle-ball-2026",
+      "thr": "cats-the-jellicle-ball-2026"
     },
     "Best Direction of a Play": {
       "nyt": "death-of-a-salesman-2026",
@@ -215,7 +236,8 @@
       "nytg": "death-of-a-salesman-2026",
       "nysun": "liberation-2025",
       "slant": "death-of-a-salesman-2026",
-      "timeout": "death-of-a-salesman-2026"
+      "timeout": "death-of-a-salesman-2026",
+      "thr": "death-of-a-salesman-2026"
     },
     "Best Choreography": {
       "nyt": "schmigadoon-2026",
@@ -223,7 +245,8 @@
       "culturesauce": "cats-the-jellicle-ball-2026",
       "nysun": "cats-the-jellicle-ball-2026",
       "slant": "cats-the-jellicle-ball-2026",
-      "timeout": "cats-the-jellicle-ball-2026"
+      "timeout": "cats-the-jellicle-ball-2026",
+      "thr": "schmigadoon-2026"
     },
     "Best Book of a Musical": {
       "nyt": "schmigadoon-2026",
@@ -232,7 +255,8 @@
       "nytg": "two-strangers-bway-2025",
       "nysun": "schmigadoon-2026",
       "slant": "schmigadoon-2026",
-      "timeout": "schmigadoon-2026"
+      "timeout": "schmigadoon-2026",
+      "thr": "schmigadoon-2026"
     },
     "Best Original Score": {
       "nyt": "two-strangers-bway-2025",
@@ -241,7 +265,8 @@
       "nytg": "schmigadoon-2026",
       "nysun": "two-strangers-bway-2025",
       "slant": "two-strangers-bway-2025",
-      "timeout": "two-strangers-bway-2025"
+      "timeout": "two-strangers-bway-2025",
+      "thr": "the-lost-boys-2026"
     }
   }
 }
