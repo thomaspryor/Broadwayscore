@@ -728,7 +728,10 @@
     "equus-west-end-2026/thereviewshub--unknown.json",
     "equus-west-end-2026/all-that-dazzles-uk--unknown.json",
     "equus-west-end-2026/artsdesk--unknown.json",
-    "equus-west-end-2026/thestage--holly-o.json"
+    "equus-west-end-2026/thestage--holly-o.json",
+    "equus-west-end-2026/times-uk--clive-davis.json",
+    "end-of-the-rainbow-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "the-last-man-off-west-end-2026/thestage--sam-marlowe.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -811,7 +814,8 @@
       "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
       "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
       "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
-      "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json"
+      "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
+      "data/review-texts/equus-west-end-2026/thestage--holly-o.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -822,7 +826,7 @@
     ]
   },
   "startTime": "2026-06-03T03:38:17.541Z",
-  "lastProcessed": "equus-west-end-2026/thestage--holly-o.json",
+  "lastProcessed": "the-last-man-off-west-end-2026/thestage--sam-marlowe.json",
   "log": [
     {
       "t": "2026-06-03T09:41:55.824Z",
@@ -950,6 +954,28 @@
       "event": "bb-session",
       "session": "dbaf625d",
       "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
+    },
+    {
+      "t": "2026-06-04T00:06:22.696Z",
+      "event": "bb-session",
+      "session": "81533e33",
+      "url": "https://thestage.co.uk/reviews/equus-review-menier-chocolate-factory-london-lind"
+    },
+    {
+      "t": "2026-06-04T00:06:23.754Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-06-04T00:08:03.672Z",
+      "event": "bb-session",
+      "session": "c328453b",
+      "url": "https://www.thestage.co.uk/reviews/care-review-young-vic-london-alexander-zeldin"
+    },
+    {
+      "t": "2026-06-04T00:08:04.654Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
