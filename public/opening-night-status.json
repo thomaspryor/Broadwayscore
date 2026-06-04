@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-04T16:27:31.733Z",
+  "generatedAt": "2026-06-04T17:07:12.462Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -46,10 +46,6 @@
         "detail": "Not yet broadcast-ready"
       },
       "missingT1": [
-        {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
         {
           "name": "Vulture",
           "isDualMarket": false
@@ -151,10 +147,6 @@
         {
           "name": "Observer",
           "isDualMarket": true
-        },
-        {
-          "name": "Playbill",
-          "isDualMarket": false
         },
         {
           "name": "The Daily Beast",
@@ -523,16 +515,8 @@
       },
       "missingT1": [
         {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
-        {
           "name": "Vulture",
           "isDualMarket": false
-        },
-        {
-          "name": "Variety",
-          "isDualMarket": true
         },
         {
           "name": "The Hollywood Reporter",
@@ -881,7 +865,8 @@
         "ready": false,
         "reasons": [
           "2/8 total",
-          "T1:0/3",
+          "T1:1/3",
+          "T2:1/2",
           "hi-conf:1/6"
         ],
         "highConfidence": 1,
