@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-03T17:23:04.951Z",
+  "timestamp": "2026-06-04T05:39:49.864Z",
   "stats": {
-    "totalReviews": 37956,
-    "alreadyFlagged": 16681,
+    "totalReviews": 37960,
+    "alreadyFlagged": 16683,
     "dateGuardCatches": 108,
-    "directorMismatch": 822,
+    "directorMismatch": 824,
     "tvFilmSignals": 1044,
     "londonSignals": 592,
     "offBroadwaySignals": 459,
     "yearMismatch": 79,
-    "noPublishDate": 3977
+    "noPublishDate": 3974
   },
   "findings": [
     {
@@ -24684,10 +24684,38 @@
     },
     {
       "showId": "war-horse-west-end-2026",
+      "file": "sunday-telegraph--dominic-cavendish.json",
+      "score": 89,
+      "publishDate": "2026-06-03",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/war-horse-national-theatre-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from war-horse-2011"
+        }
+      ]
+    },
+    {
+      "showId": "war-horse-west-end-2026",
       "file": "theatrecat--unknown.json",
       "score": 91,
       "publishDate": "2026-06-03",
       "url": "https://theatrecat.com/2026/06/03/war-horse-olivier-se1/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from war-horse-2011"
+        }
+      ]
+    },
+    {
+      "showId": "war-horse-west-end-2026",
+      "file": "thestage--tom-wicker.json",
+      "score": 97,
+      "publishDate": "2026-06-03",
+      "url": "https://www.thestage.co.uk/reviews/war-horse-review-2026-olivier-theatre-national-theatre-london",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -26743,6 +26771,7 @@
     {
       "showId": "amaze-off-broadway-2026",
       "file": "timeout--adam-feldman.json",
+      "score": 78,
       "publishDate": "2026-06-02",
       "url": "https://timeout.com/newyork/theater/amaze-review-magic-show-jamie-allan",
       "findings": [
@@ -28320,7 +28349,7 @@
       "file": "guardian--unknown.json",
       "score": null,
       "publishDate": null,
-      "url": "https://www.theguardian.com/books/2024/nov/02/alan-bennett-at-90-what-will-people-think-i-dont-care-any-more",
+      "url": "https://www.theguardian.com/stage/2026/may/15/linda-bassett-call-the-midwife-caryl-churchill-alexander-zeldin-care",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
