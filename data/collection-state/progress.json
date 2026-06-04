@@ -560,7 +560,12 @@
     "equus-west-end-2026/the-jewish-chronicle--unknown.json",
     "equus-west-end-2026/thereviewshub--unknown.json",
     "equus-west-end-2026/all-that-dazzles-uk--unknown.json",
-    "equus-west-end-2026/artsdesk--unknown.json"
+    "equus-west-end-2026/artsdesk--unknown.json",
+    "equus-west-end-2026/thestage--holly-o.json",
+    "equus-west-end-2026/times-uk--clive-davis.json",
+    "equus-west-end-2026/whatsonstage--alun-hood.json",
+    "end-of-the-rainbow-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "mother-courage-and-her-children-globe-west-end-2026/times-uk--allan-radcliffe.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -611,7 +616,8 @@
       "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
       "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
       "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
-      "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json"
+      "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
+      "data/review-texts/equus-west-end-2026/thestage--holly-o.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -623,7 +629,7 @@
     ]
   },
   "startTime": "2026-06-04T04:34:53.808Z",
-  "lastProcessed": "equus-west-end-2026/artsdesk--unknown.json",
+  "lastProcessed": "mother-courage-and-her-children-globe-west-end-2026/times-uk--allan-radcliffe.json",
   "log": [
     {
       "t": "2026-06-04T11:24:42.850Z",
@@ -733,6 +739,17 @@
       "event": "bb-session",
       "session": "20e4daca",
       "url": "https://www.thereviewshub.com/equus-menier-chocolate-factory-london/"
+    },
+    {
+      "t": "2026-06-04T23:13:44.681Z",
+      "event": "bb-session",
+      "session": "512df069",
+      "url": "https://thestage.co.uk/reviews/equus-review-menier-chocolate-factory-london-lind"
+    },
+    {
+      "t": "2026-06-04T23:13:45.240Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
