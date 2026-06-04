@@ -205,7 +205,12 @@ test('approval-of: checks ONLY last user msg, not stale earlier ones', () => {
 
 // Plain-language approval (no hash transcription required). The human glance is
 // the safety; the hash was pointless friction. Negation-guarded.
-for (const phrase of ['approved', 'ship it', 'lgtm', 'looks good', 'yes, approved', 'Yup', 'go ahead and ship it']) {
+// The bare-verb cases (Ship all four, push them, send everything) are the ones
+// the 2026-05-29 narrow regex missed — see 2026-06-04 incident where the user
+// typed "Ship all four" and was forced to transcribe a 16-char hash instead.
+for (const phrase of ['approved', 'ship it', 'lgtm', 'looks good', 'yes, approved', 'Yup', 'go ahead and ship it',
+  'Ship all four', 'ship all four (Deadline, City Guide, Vanity Fair, Elle)', 'ship them all', 'ship everything',
+  'push it', 'push them', 'send everything', 'deploy it', 'good to go', 'all good', 'go for it', 'yeah ship it']) {
   test(`approval-of: accepts plain affirmative "${phrase}"`, () => {
     const { path, cleanup } = writeFixture([
       makeAssistantText('here is the visual — ok to ship?'),

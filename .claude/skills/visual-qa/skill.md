@@ -71,7 +71,7 @@ LLM review (if --refs):
 Look good? Reply "yes" / "ship it" / "looks good" to push, or tell me what to fix.
 ```
 
-**DO NOT ask the user to type or copy a hash.** Since 2026-05-29 the gate accepts a plain affirmative ("yes", "ship it", "lgtm", "looks good", "go ahead", "send it", "approved") in their most recent message — the human glance after seeing the visual IS the safety, the hash never was. Asking a non-technical user to transcribe a 16-char hex string is exactly the friction that was removed; reintroducing it in your phrasing is a regression. Keep the verdict hash out of your reply entirely.
+**DO NOT ask the user to type or copy a hash.** The gate accepts any plain affirmative in their most recent message — bare ship/push/send/deploy verbs in any phrasing all count: "ship it", "ship all four", "ship them", "push it", "send everything", "yes", "lgtm", "looks good", "go ahead", "good to go", "approved". The human glance after seeing the visual IS the safety, the hash never was. Asking a non-technical user to transcribe a 16-char hex string is exactly the friction that was removed; reintroducing it in your phrasing is a regression. Keep the verdict hash out of your reply entirely.
 
 ### 5. STOP. Wait for the user's plain affirmative (or change request).
 
@@ -79,7 +79,7 @@ The pre-push hook blocks `git push` / `gh pr merge` / wrapped push scripts until
 
 ## What the user can say to unlock
 
-- Any plain affirmative — `yes`, `ship it`, `looks good`, `lgtm`, `go ahead`, `send it`, `approved` — in their most recent message. This is the normal path. (`APPROVED: <hash>` still works for back-compat and is honored strictly per-hash, but never *ask* for it.) Approval is recorded in the local ledger (`.claude/visual-qa/approvals.jsonl`) so a later merge of this commit into main is auto-allowed.
+- Any plain affirmative — `yes`, `ship it`, `ship all four`, `ship them`, `push it`, `send everything`, `looks good`, `lgtm`, `go ahead`, `good to go`, `approved` — in their most recent message. This is the normal path. (`APPROVED: <hash>` still works for back-compat and is honored strictly per-hash, but never *ask* for it.) Approval is recorded in the local ledger (`.claude/visual-qa/approvals.jsonl`) so a later merge of this commit into main is auto-allowed.
 - `ship immediately for: <reason>` — one-shot override. Use when user wants to skip preview entirely (hotfix, etc.). Consumed after one push; subsequent pushes require fresh approval.
 
 Otherwise the gate is firm. If you genuinely cannot run /visual-qa (cloud sandbox with no Playwright, dev server can't boot due to data issue, etc.), put `NO-VERIFY: <specific reason>` in **the same assistant message** as the `git push` Bash call — the pre-push hook scans the in-flight turn (the message containing the gated tool_use), not the prior turn. **Expect the user to ask why.** Stale NO-VERIFY from earlier turns no longer bypasses the push gate.
