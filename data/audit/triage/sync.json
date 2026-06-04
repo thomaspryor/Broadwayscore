@@ -1,7 +1,7 @@
 {
   "system": "sync",
   "status": "warn",
-  "lastChecked": "2026-06-03T08:39:20.505Z",
+  "lastChecked": "2026-06-04T08:28:39.144Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -14,7 +14,7 @@
     {
       "name": "Sync: open show coverage",
       "status": "pass",
-      "message": "41 open shows all have reviews and grosses"
+      "message": "40 open shows all have reviews and grosses"
     },
     {
       "name": "Sync: social-pulse per-show freshness",
@@ -29,17 +29,17 @@
     {
       "name": "Sync: cast coverage",
       "status": "warn",
-      "message": "3 empty cast: The Balusters, Oh, Mary!, Other Desert Cities"
+      "message": "2 empty cast: The Balusters, Oh, Mary!"
     },
     {
       "name": "Sync: baseline drift",
       "status": "pass",
-      "message": "2636 shows, 153 open, 18124 reviews (all at or above baseline)"
+      "message": "2643 shows, 155 open, 18147 reviews (all at or above baseline)"
     },
     {
       "name": "Sync: grosses weekEnding",
       "status": "pass",
-      "message": "weekEnding 5/24/2026 (10d ago)"
+      "message": "weekEnding 5/31/2026 (4d ago)"
     }
   ]
 }
