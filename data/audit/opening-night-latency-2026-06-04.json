@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-04T15:27:59.633Z",
+  "generatedAt": "2026-06-04T17:22:24.127Z",
   "date": "2026-06-04",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 234282,
+  "entryCount": 239750,
   "shows": [
     {
       "showId": "an-ideal-husband-west-end-2026",
@@ -1341,7 +1341,7 @@
     },
     {
       "showId": "the-last-man-off-west-end-2026",
-      "reviewCount": 9,
+      "reviewCount": 8,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2151,7 +2151,7 @@
     },
     {
       "showId": "schmigadoon-2026",
-      "reviewCount": 43,
+      "reviewCount": 41,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2466,7 +2466,7 @@
     },
     {
       "showId": "black-is-the-color-of-my-voice-west-end-2026",
-      "reviewCount": 4,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4026,7 +4026,7 @@
     },
     {
       "showId": "dark-of-the-moon-west-end-2026",
-      "reviewCount": 16,
+      "reviewCount": 14,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4071,7 +4071,7 @@
     },
     {
       "showId": "the-p-word-off-west-end-2026",
-      "reviewCount": 8,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4131,7 +4131,7 @@
     },
     {
       "showId": "spring-awakening-2006",
-      "reviewCount": 9,
+      "reviewCount": 8,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4326,7 +4326,7 @@
     },
     {
       "showId": "war-horse-west-end-2026",
-      "reviewCount": 14,
+      "reviewCount": 16,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4357,6 +4357,21 @@
     {
       "showId": "driftwood-west-end-2026",
       "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "360-allstars-off-west-end-2026",
+      "reviewCount": 1,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
