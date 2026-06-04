@@ -247,6 +247,15 @@ const PATTERNS = [
   ['frontmezzjunkies.com', /<div[^>]+class="[^"]*entry-content[^"]*"[^>]*>([\s\S]*?)<div[^>]+(?:id="jp-post-flair"|class="[^"]*(?:sharedaddy|jp-relatedposts|wpcnt|sd-sharing|sd-like)[^"]*")/, 300],
   ['frontmezzjunkies.com', /<div[^>]+class="[^"]*entry-content[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<\/article>/, 300],
 
+  // WhatsOnStage (whatsonstage.com) — major West End outlet. Review body lives
+  // in <div class="news-content">. Trailing social-share icons, the
+  // "featured in this story" section, and article-tags all sit AFTER the body
+  // (some inside the same container), so stop at the first of those markers.
+  // Without this pattern the generic <article> fallback returned nav chrome /
+  // empty text, which made the collector flag real War Horse / etc. reviews as
+  // wrongShow ("not a review") — the 2026-06-04 War Horse contamination incident.
+  ['whatsonstage.com', /<div[^>]+class="[^"]*news-content[^"]*"[^>]*>([\s\S]*?)<(?:section[^>]+class="[^"]*(?:article-tags|featured-in-this-story)|div[^>]+class="[^"]*social-share-news-icons)/, 300],
+
   // Generic fallbacks (any host) — see extractGeneric below for largest-match logic.
   [null, /<article[^>]*>([\s\S]*?)<\/article>/, 300],
   [null, /<main[^>]*>([\s\S]*?)<\/main>/, 500],
