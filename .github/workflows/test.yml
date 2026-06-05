@@ -35,6 +35,13 @@ on:
       - 'scripts/backfill-cast-web.js'
       - 'data/cast/**'
       - 'scripts/lib/content-quality.js'
+      # Comparative within-band scoring (anchored-v6 cluster fix). The colocated
+      # scripts/lib/*.test.mjs step covers comparative-band.test.mjs; without
+      # these path entries a push to them triggers ZERO CI (allow-list gate).
+      - 'scripts/lib/comparative-band.js'
+      - 'scripts/lib/comparative-band.test.mjs'
+      - 'scripts/llm-scoring/comparative-rescore.ts'
+      - 'scripts/llm-scoring/config.ts'
       - 'scripts/lib/classify-category.js'
       - 'scripts/lib/per-category-precursor.js'
       - 'scripts/lib/award-category-canonical.js'
