@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-05T04:00:26.424Z",
-  "processed": 39,
-  "failed": 671,
-  "successRate": "5.5%",
+  "updatedAt": "2026-06-05T04:02:55.318Z",
+  "processed": 41,
+  "failed": 679,
+  "successRate": "5.7%",
   "tierBreakdown": {
-    "playwright": 17,
+    "playwright": 18,
     "amp": 0,
     "browserbase": 22,
     "directCookies": 0,
     "scrapingbee": 12,
-    "brightdata": 1,
+    "brightdata": 2,
     "archiveToday": 13,
     "archive": 6
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
-    {
-      "t": "2026-06-05T00:06:27.939Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-05T00:09:37.671Z",
-      "event": "bb-session",
-      "session": "51b85e19",
-      "url": "https://bachtrack.com/review-ultimo-sueno-frida-diego-frank-colker-nezet-seguin-"
-    },
     {
       "t": "2026-06-05T00:47:06.990Z",
       "event": "bb-session",
@@ -123,6 +112,17 @@
     },
     {
       "t": "2026-06-05T03:58:53.572Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-05T04:01:10.883Z",
+      "event": "bb-session",
+      "session": "0af1491c",
+      "url": "https://www.nytimes.com/2021/11/03/theater/alice-childress-trouble-in-mind.html"
+    },
+    {
+      "t": "2026-06-05T04:01:11.606Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

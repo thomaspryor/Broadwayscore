@@ -38,7 +38,9 @@
     "a-woman-among-women-off-broadway-2026/nytimes--laura-collins-hughes.json",
     "this-is-not-about-me-59e59-theaters-off-broadway-2026/nytimes--helen-shaw.json",
     "hamlet-off-broadway-2026/hollywood-reporter--david-rooney.json",
-    "hamlet-off-broadway-2026/thewrap--steve-pond.json"
+    "hamlet-off-broadway-2026/thewrap--steve-pond.json",
+    "trouble-in-mind-2021/nytimes--maya-phillips.json",
+    "trouble-in-mind-2021/broadwayworld--unknown.json"
   ],
   "failed": [
     "the-p-word-off-west-end-2026/sunday-telegraph--claire-allfree.json",
@@ -711,7 +713,15 @@
     "yoah-off-broadway-2026/variety--pat-saperstein.json",
     "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
     "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
-    "the-tempest-globe-west-end-2026/express-uk--neil-norman.json"
+    "the-tempest-globe-west-end-2026/express-uk--neil-norman.json",
+    "art-2025/broadwaynews--michael-abourizk.json",
+    "redwood-2025/gmanetwork--stuart-santiago.json",
+    "redwood-2025/juiceph--wanggo-gallaga.json",
+    "stereophonic-2024/usatoday--charles-isherwood.json",
+    "the-whos-tommy-2024/broadwaynews--brittani-samuel.json",
+    "here-lies-love-2023/aaartsalliance--rohan-zhou-lee.json",
+    "sweeney-todd-2023/nbcnews--variety-referenced-by-nbc.json",
+    "diana-the-musical-2021/nbcnews--liz-shannon-miller.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -732,7 +742,8 @@
       "360-allstars-off-west-end-2026/west-end-best-friend--unknown.json",
       "war-horse-west-end-2026/whatsonstage--maygan-forbes.json",
       "equus-west-end-2026/timeout--andrzej-lukowski.json",
-      "jerome-off-broadway-2025/playbill--unknown.json"
+      "jerome-off-broadway-2025/playbill--unknown.json",
+      "trouble-in-mind-2021/broadwayworld--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -775,7 +786,8 @@
       "this-is-not-about-me-59e59-theaters-off-broadway-2026/nytimes--helen-shaw.json"
     ],
     "brightdata": [
-      "hamlet-off-broadway-2026/thewrap--steve-pond.json"
+      "hamlet-off-broadway-2026/thewrap--steve-pond.json",
+      "trouble-in-mind-2021/nytimes--maya-phillips.json"
     ],
     "archiveToday": [
       "data/review-texts/jerome-off-broadway-2025/talkinbroadway--unknown.json",
@@ -790,8 +802,7 @@
       "data/review-texts/equus-west-end-2026/thestage--holly-o.json",
       "data/review-texts/el-ultimo-sueno-de-frida-y-diego-off-broadway-2026/bachtrack--david-wolfson.json",
       "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
-      "data/review-texts/equus-west-end-2026/thestage--holly-o.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json"
+      "data/review-texts/equus-west-end-2026/thestage--holly-o.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -803,7 +814,7 @@
     ]
   },
   "startTime": "2026-06-04T04:34:53.808Z",
-  "lastProcessed": "the-tempest-globe-west-end-2026/express-uk--neil-norman.json",
+  "lastProcessed": "diana-the-musical-2021/nbcnews--liz-shannon-miller.json",
   "log": [
     {
       "t": "2026-06-04T11:24:42.850Z",
@@ -1079,6 +1090,17 @@
     },
     {
       "t": "2026-06-05T03:58:53.572Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-05T04:01:10.883Z",
+      "event": "bb-session",
+      "session": "0af1491c",
+      "url": "https://www.nytimes.com/2021/11/03/theater/alice-childress-trouble-in-mind.html"
+    },
+    {
+      "t": "2026-06-05T04:01:11.606Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
