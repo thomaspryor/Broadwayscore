@@ -311,15 +311,15 @@ jobs:
           # data/audit/ (tracked in the public repo, NOT the core-data overlay). `cd data`
           # then git resolves the repo root .git and pushes these audit files to main.
           cd data || exit 0
-          if [ ! -d audit/poller-backoff ] && [ ! -f audit/serp-burst-ledger.json ]; then
+          if [ ! -d audit/poller-backoff ] && [ ! -f audit/serp-burst-ledger.json ] && [ ! -f audit/serp-session-ledger.json ]; then
             echo "No backoff/ledger state to commit"
             exit 0
           fi
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
-          git add audit/poller-backoff/ audit/serp-burst-ledger.json 2>/dev/null || true
+          git add audit/poller-backoff/ audit/serp-burst-ledger.json audit/serp-session-ledger.json 2>/dev/null || true
           git diff --cached --quiet && { echo "No backoff/ledger changes"; exit 0; }
-          git commit -m "audit: Opening night poller — backoff + SERP-burst state update [skip ci]"
+          git commit -m "audit: Opening night poller — backoff + SERP ledger state update [skip ci]"
           bash ../scripts/lib/push-with-retry.sh 5 main || echo "::warning::Backoff/ledger state push failed (non-critical)"
 
       - name: Commit new review files

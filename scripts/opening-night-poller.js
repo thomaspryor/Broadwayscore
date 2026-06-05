@@ -60,6 +60,10 @@ const {
   checkSerpBurstAllowed,
   isCascadeTripwireExceeded,
 } = require('./lib/serp-burst-caps');
+const {
+  DEFAULT_SERP_SESSION_CONFIG,
+  checkSerpSessionAllowed,
+} = require('./lib/serp-session-cap');
 const { sendAlert } = require('./lib/discord-notify');
 
 // Paths
@@ -70,6 +74,7 @@ const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
 const OUTLET_REGISTRY_PATH = path.join(DATA_DIR, 'outlet-registry.json');
 const BACKOFF_DIR = path.join(DATA_DIR, 'audit', 'poller-backoff');
 const SERP_BURST_LEDGER_PATH = path.join(DATA_DIR, 'audit', 'serp-burst-ledger.json');
+const SERP_SESSION_LEDGER_PATH = path.join(DATA_DIR, 'audit', 'serp-session-ledger.json');
 
 /**
  * Balusters postmortem CLASS 7 — exponential backoff for no-op polls.
@@ -161,6 +166,52 @@ function incrementSerpBurstLedger(showId, now = new Date()) {
   ledger.globalBursts += 1;
   ledger.perShow[showId] = (ledger.perShow[showId] || 0) + 1;
   writeSerpBurstLedger(ledger);
+  return ledger;
+}
+
+/**
+ * Daily ledger for the SERP-SESSION cap (Sprint 1, scripts/lib/serp-session-cap.js).
+ * Counts EVERY SERP-running poller cycle (burst or normal), per-show and globally, as a
+ * hard daily ceiling so the now-poller-owned SERP (after the Sprint-2 orchestrator-deferral
+ * removal) can never run unbounded. Same persistence model as the burst ledger and
+ * poller-backoff state: a plain JSON file in the MAIN repo working tree under data/audit/,
+ * committed by the workflow's backoff/ledger step, reset on UTC date rollover. Like the
+ * burst ledger it is ADVISORY under cross-run concurrency (read-modify-write can lose an
+ * increment); the TRUE hard per-cycle bound remains SERP_BUDGET (12 outlet calls).
+ */
+function loadSerpSessionLedger(now = new Date()) {
+  const today = utcDateKey(now);
+  let raw = null;
+  try {
+    if (fs.existsSync(SERP_SESSION_LEDGER_PATH)) {
+      raw = JSON.parse(fs.readFileSync(SERP_SESSION_LEDGER_PATH, 'utf8'));
+    }
+  } catch { raw = null; }
+  if (!raw || raw.date !== today) {
+    return { date: today, globalSessions: 0, perShow: {} };
+  }
+  return {
+    date: today,
+    globalSessions: raw.globalSessions || 0,
+    perShow: raw.perShow || {},
+  };
+}
+
+function writeSerpSessionLedger(ledger) {
+  try {
+    const dir = path.dirname(SERP_SESSION_LEDGER_PATH);
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(SERP_SESSION_LEDGER_PATH, JSON.stringify(ledger, null, 2));
+  } catch (e) {
+    console.log(`  [SERP session] ledger write failed (non-fatal): ${e.message}`);
+  }
+}
+
+function incrementSerpSessionLedger(showId, now = new Date()) {
+  const ledger = loadSerpSessionLedger(now);
+  ledger.globalSessions += 1;
+  ledger.perShow[showId] = (ledger.perShow[showId] || 0) + 1;
+  writeSerpSessionLedger(ledger);
   return ledger;
 }
 
@@ -1812,6 +1863,30 @@ async function pollCycle() {
       missingOutlets = [...ukOutlets, ...rest];
     }
     if (missingOutlets.length > 0) {
+      // Daily SERP-SESSION cap (Sprint 1, scripts/lib/serp-session-cap.js). A hard per-show +
+      // daily-global ceiling on SERP-running cycles, consulted for ALL SERP runs (burst or
+      // normal) right before the network fan-out. Strict no-op at today's ~2 cycles/opening
+      // (perShowCap 30, dailyGlobalCap 60); the real safety net once the Sprint-2 orchestrator
+      // deferral removal makes the poller the sole owner of "when to run SERP". Increment only
+      // when SERP actually runs (missing outlets exist AND not capped), so a capped or no-op
+      // cycle never consumes the budget and starves another opening.
+      const sessionLedger = loadSerpSessionLedger();
+      const sessionDecision = checkSerpSessionAllowed({
+        perShowToday: sessionLedger.perShow[SHOW_ID] || 0,
+        globalToday: sessionLedger.globalSessions,
+      });
+      if (!sessionDecision.allowed) {
+        console.log(
+          `\n[Layer 4] SERP Backup... SKIPPED (daily SERP-session cap reached: ` +
+          `${sessionDecision.reason} ${sessionDecision.used}/${sessionDecision.limit})`
+        );
+        // Leave serpResults = [] and fall through; layers 1-3 results still process below.
+      } else {
+      incrementSerpSessionLedger(SHOW_ID);
+      console.log(
+        `  [SERP session ${(sessionLedger.perShow[SHOW_ID] || 0) + 1}/${DEFAULT_SERP_SESSION_CONFIG.perShowCap} this show, ` +
+        `${sessionLedger.globalSessions + 1}/${DEFAULT_SERP_SESSION_CONFIG.dailyGlobalCap} today]`
+      );
       // Count the burst against the daily ledger only when SERP actually runs (missing
       // outlets exist) — a no-op cycle where everything is already found must not consume
       // the daily/per-show cap and starve another opening.
@@ -1843,6 +1918,7 @@ async function pollCycle() {
         }
       }
       serpResults = await runSERPBackup(show, missingOutlets, knownUrls);
+      } // end: daily SERP-session cap allowed
     } else {
       console.log('\n[Layer 4] SERP Backup... all T1/T2 outlets found');
     }
@@ -2003,4 +2079,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { pollCycle, checkReadiness, getMissingT1T2Outlets, getThresholds, preWipePreOpeningFiles, pollMode, shouldRunSerpForMode, isBrightDataAllowedForShow, SERP_BUDGET, runSERPBackup, loadSerpBurstLedger, incrementSerpBurstLedger, SERP_BURST_LEDGER_PATH };
+module.exports = { pollCycle, checkReadiness, getMissingT1T2Outlets, getThresholds, preWipePreOpeningFiles, pollMode, shouldRunSerpForMode, isBrightDataAllowedForShow, SERP_BUDGET, runSERPBackup, loadSerpBurstLedger, incrementSerpBurstLedger, SERP_BURST_LEDGER_PATH, loadSerpSessionLedger, incrementSerpSessionLedger, SERP_SESSION_LEDGER_PATH };
