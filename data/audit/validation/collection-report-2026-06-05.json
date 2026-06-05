@@ -1,27 +1,27 @@
 {
-  "runDate": "2026-06-05T21:31:27.705Z",
+  "runDate": "2026-06-05T22:35:47.748Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 300,
+    "maxReviews": 100,
     "priority": "all",
-    "showFilter": "high-fidelity-2006,holler-if-ya-hear-me-2014,how-to-dance-in-ohio-2023,in-my-life-2005,in-transit-2016,indecent-2017,it-shoulda-been-you-2015,john-proctor-is-the-villain-2025,kinky-boots-2013,kpop-2022,latin-history-for-morons-2017,left-on-tenth-2024,legally-blonde-2007,leopoldstadt-2022,les-miserables-2014,lestat-2006,linda-vista-2019,living-on-love-2015,mcneal-2024,misery-2015,mothers-and-sons-2014,motown-the-musical-2013,nice-work-if-you-can-get-it-2012,noises-off-2016,oh-hello-on-broadway-2016,on-the-town-2014,on-your-feet-2015,once-on-this-island-2017,orlando-off-broadway-2026,orphans-2013,othello-2025,our-town-2024,outside-mullingar-2014,parade-2023,paradise-square-2022,peter-pan-goes-wrong-2023,picnic-2013,pirates-the-penzance-musical-2025,pretty-woman-the-musical-2018,prima-facie-2023,proof-2026,purpose-2025,red-2010,rock-of-ages-2009,rocky-2014,school-of-rock-the-musical-2015,sea-wall-a-life-2019,sexual-misconduct-of-the-middle-classes-off-broadway-2026,she-loves-me-2016,shining-city-2006,side-show-2014,skeleton-crew-2022,skylight-2015,smash-2025,souvenir-2005,spring-awakening-2015,straight-white-men-2018,suffs-2024,sunset-baby-off-broadway-2026,sunset-boulevard-2024,sweat-2017,sweeney-todd-2005,swept-away-2024,sylvia-2015,the-audience-2015,the-boys-in-the-band-2018,the-bridges-of-madison-county-2014,the-cherry-orchard-2016,the-children-2017,the-coast-of-utopia-2006,the-color-purple-2005,the-cottage-2023,the-elephant-man-2014,the-front-page-2016,the-great-gatsby-2024,the-heiress-2012,the-iceman-cometh-2018,the-last-ship-2014,the-lyons-2012,the-mystery-of-edwin-drood-2012,the-nance-2013,the-nap-2018,the-notebook-2024,the-odd-couple-2005,the-pajama-game-2006,the-price-2017,the-realistic-joneses-2014,the-seagull-2008,the-shark-is-broken-2023,the-snow-geese-2013,the-thanksgiving-play-2023,the-wedding-singer-2006,the-winslow-boy-2013,the-wiz-2024,time-and-the-conways-2017,topdog-underdog-2022,tuck-everlasting-2016,twelfth-night-2013,violet-2014,walking-with-ghosts-2022,war-horse-2011,wit-2012,young-frankenstein-2007",
-    "aggressive": false,
+    "showFilter": "",
+    "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
-    "failed": 0,
+    "processed": 1,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "100.0%"
+    "successRate": "50.0%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 4,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
@@ -33,40 +33,36 @@
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 4,
-    "tier2Success": 4,
+    "tier2Attempts": 1,
+    "tier2Success": 1,
     "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
     "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 0,
-    "scrapingBeePageCredits": 40,
+    "totalFailed": 1,
+    "scrapingBeePageCredits": 10,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "the-great-gatsby-2024/nytimes--unknown.json",
-    "sexual-misconduct-of-the-middle-classes-off-broadway-2026/nytimes--jesse-green.json",
-    "orlando-off-broadway-2026/nytimes--unknown.json",
-    "sunset-baby-off-broadway-2026/nytimes--juan-a-ramirez.json"
+    "morgan-bassichis-can-i-be-frank-off-broadway-2026/nytimes--helen-shaw.json"
   ],
-  "failed": [],
+  "failed": [
+    "spamalot-off-broadway-2026/nytimes--jesse-green.json"
+  ],
   "tierDetails": {
     "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [
-      "the-great-gatsby-2024/nytimes--unknown.json",
-      "sexual-misconduct-of-the-middle-classes-off-broadway-2026/nytimes--jesse-green.json",
-      "orlando-off-broadway-2026/nytimes--unknown.json",
-      "sunset-baby-off-broadway-2026/nytimes--juan-a-ramirez.json"
+      "morgan-bassichis-can-i-be-frank-off-broadway-2026/nytimes--helen-shaw.json"
     ],
     "brightdata": [],
     "archiveToday": [],
