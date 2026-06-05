@@ -52,6 +52,7 @@ const { execSync, execFileSync } = require('child_process');
 
 const { fetchPage } = require('./lib/scraper');
 const { serpQuery } = require('./lib/url-discovery');
+const { provisionalOutletIdFromHost } = require('./lib/outlet-canonicalize');
 
 const ROOT = path.join(__dirname, '..');
 const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
@@ -109,6 +110,9 @@ function hostOf(u) {
   try { return new URL(u).hostname.replace(/^www\./, '').toLowerCase(); }
   catch { return null; }
 }
+
+// provisionalOutletIdFromHost lives in scripts/lib/outlet-canonicalize.js so the
+// gap audit and its unit test share one implementation (CLAUDE.md §15).
 
 function isReviewUrl(href) {
   if (!href || !href.startsWith('http')) return false;
@@ -460,18 +464,26 @@ async function dispatchGatherFor(showId) {
 // whose host is unknown to the registry (those should be added to the registry
 // first via the unknown-aggregator-outlets audit).
 function ingestMissingUrl(showId, url, knownOutletId) {
-  if (!knownOutletId) {
-    return { ok: false, reason: 'unknown-outlet' };
+  const args = ['scripts/ingest-review-from-url.js', `--show=${showId}`, `--url=${url}`];
+  let provisional = false;
+  if (knownOutletId) {
+    args.push(`--outlet=${knownOutletId}`);
+  } else {
+    // Auto-onboard: capture the review under a domain-derived provisional slug
+    // rather than skipping (the pre-2026-06-05 behavior, which lost the ctvoice /
+    // New York Notebook class). The host is still recorded in
+    // unknown-aggregator-outlets.json so it can be promoted to a real registry
+    // entry; --provisional skips fuzzy alias resolution so the slug is written as-is.
+    const provId = provisionalOutletIdFromHost(hostOf(url));
+    if (!provId) return { ok: false, reason: 'unknown-outlet-no-host', provisional: true };
+    args.push(`--outlet=${provId}`, '--provisional');
+    provisional = true;
   }
   try {
-    execFileSync(
-      'node',
-      ['scripts/ingest-review-from-url.js', `--show=${showId}`, `--url=${url}`, `--outlet=${knownOutletId}`],
-      { stdio: 'pipe', timeout: 120000 }
-    );
-    return { ok: true, reason: null };
+    execFileSync('node', args, { stdio: 'pipe', timeout: 120000 });
+    return { ok: true, reason: null, provisional };
   } catch (e) {
-    return { ok: false, reason: e.message.split('\n')[0].slice(0, 100) };
+    return { ok: false, reason: e.message.split('\n')[0].slice(0, 100), provisional };
   }
 }
 
@@ -518,26 +530,27 @@ function ingestMissingUrl(showId, url, knownOutletId) {
     // outlets are skipped (see data/audit/unknown-aggregator-outlets.json for
     // registry-onboarding queue).
     if (ingestMissing && r.missing.length > 0) {
-      const knownMissing = r.missing.filter(m => m.knownOutletId);
-      const ingestable = knownMissing.slice(0, INGEST_PER_SHOW_CAP);
-      // P1 fix 2026-05-27 (ship-check): record cap-skipped URLs in the audit
-      // so future runs (and operators) can see they exist and weren't silently
-      // dropped. Without this, the cap created an invisible backlog.
-      const cappedSkipped = knownMissing.slice(INGEST_PER_SHOW_CAP);
-      const skipped = r.missing.filter(m => !m.knownOutletId);
+      // Auto-onboard 2026-06-05: ingest ALL missing URLs, not just registry-known
+      // outlets. Unknown outlets are captured under a domain-derived provisional
+      // slug (ingestMissingUrl) instead of being skipped — that skip lost the
+      // ctvoice / New York Notebook class on the Girl, Interrupted opening. The
+      // host is still recorded in unknown-aggregator-outlets.json for promotion
+      // to a real registry entry.
+      const ingestable = r.missing.slice(0, INGEST_PER_SHOW_CAP);
+      // P1 fix 2026-05-27 (ship-check): record cap-skipped URLs so future runs
+      // (and operators) can see they exist and weren't silently dropped.
+      const cappedSkipped = r.missing.slice(INGEST_PER_SHOW_CAP);
       r.ingestResults = [];
-      r.ingestSkippedByCap = cappedSkipped.map(m => ({ url: m.url, host: m.host, outletId: m.knownOutletId }));
+      r.ingestSkippedByCap = cappedSkipped.map(m => ({ url: m.url, host: m.host, outletId: m.knownOutletId || provisionalOutletIdFromHost(m.host) }));
       for (const m of ingestable) {
         const res = ingestMissingUrl(r.showId, m.url, m.knownOutletId);
-        r.ingestResults.push({ url: m.url, host: m.host, outletId: m.knownOutletId, ok: res.ok, reason: res.reason });
-        const tag = res.ok ? '✅ ingested' : `✗ ingest failed (${res.reason || 'unknown'})`;
+        const outletId = m.knownOutletId || provisionalOutletIdFromHost(m.host);
+        r.ingestResults.push({ url: m.url, host: m.host, outletId, provisional: !!res.provisional, ok: res.ok, reason: res.reason });
+        const tag = res.ok ? (res.provisional ? `✅ ingested (provisional outlet "${outletId}")` : '✅ ingested') : `✗ ingest failed (${res.reason || 'unknown'})`;
         console.log(`  ${tag}: ${m.url}`);
       }
       if (cappedSkipped.length > 0) {
         console.log(`  ⏸  skipped ${cappedSkipped.length} URL(s) over per-show cap (--ingest-cap=${INGEST_PER_SHOW_CAP}) — recorded in audit JSON for next run`);
-      }
-      if (skipped.length > 0) {
-        console.log(`  ⏸  skipped ${skipped.length} URL(s) with unknown outlets (see unknown-aggregator-outlets.json): ${skipped.map(s => s.host).join(', ')}`);
       }
     }
   }
@@ -564,7 +577,7 @@ function ingestMissingUrl(showId, url, knownOutletId) {
     for (const m of r.missing) {
       if (m.knownOutletId) continue;
       if (!unknownOutletHosts.has(m.host)) {
-        unknownOutletHosts.set(m.host, { host: m.host, occurrences: 0, sampleUrls: [], shows: new Set() });
+        unknownOutletHosts.set(m.host, { host: m.host, provisionalOutletId: provisionalOutletIdFromHost(m.host), occurrences: 0, sampleUrls: [], shows: new Set() });
       }
       const e = unknownOutletHosts.get(m.host);
       e.occurrences++;
@@ -614,11 +627,32 @@ function ingestMissingUrl(showId, url, knownOutletId) {
     process.exit(1);
   }
 
-  if (failOnGap && audit.counts.withGap > 0) {
-    for (const r of results) {
-      if (r.missing.length + r.flaggedMisses.length === 0) continue;
-      console.log(`::warning::${r.showId} (${r.title}): ${r.missing.length} aggregator URLs not gathered, ${r.flaggedMisses.length} flagged out`);
+  // Expected-vs-captured alert (girl-interrupted 2026-06-05): after auto-ingest,
+  // surface any show that STILL has roundup-cited reviews we couldn't capture.
+  // Unlike check-opening-night-completeness.js (which only detects DISAPPEARANCE
+  // vs a prior snapshot), this catches reviews that were never captured at all —
+  // absence at first sight. A cited URL is by definition already published, so no
+  // settle window is needed. Fires on every run (not just --fail-on-gap) so the
+  // hourly cron surfaces residual gaps in the daily digest via ::warning::.
+  const residualShows = [];
+  for (const r of results) {
+    const failedIngest = (r.ingestResults || []).filter(x => !x.ok).length;
+    const capped = (r.ingestSkippedByCap || []).length;
+    // When --ingest-missing wasn't run, every missing URL is still residual.
+    const uningested = ingestMissing ? 0 : r.missing.length;
+    const residual = failedIngest + capped + uningested + r.flaggedMisses.length;
+    if (residual > 0) {
+      residualShows.push({ showId: r.showId, title: r.title, residual, failedIngest, capped, uningested, flaggedOut: r.flaggedMisses.length });
     }
+  }
+  if (residualShows.length > 0) {
+    for (const s of residualShows) {
+      console.log(`::warning::review gap — ${s.showId} (${s.title}): ${s.residual} roundup-cited review(s) still uncaptured after auto-ingest (failed=${s.failedIngest} capped=${s.capped} uningested=${s.uningested} flaggedOut=${s.flaggedOut})`);
+    }
+    console.log(`Expected-vs-captured: ${residualShows.length} show(s) with residual review gaps after auto-ingest.`);
+  }
+
+  if (failOnGap && audit.counts.withGap > 0) {
     process.exit(1);
   }
 })().catch(e => {

@@ -62,6 +62,14 @@ const criticArg = getArg('critic');
 const publishDateArg = getArg('publish-date');
 const dryRun = hasFlag('dry-run');
 const forceClearStale = hasFlag('force-clear-stale-flag');
+// Provisional onboarding: use --outlet verbatim as a slug WITHOUT fuzzy alias
+// resolution. For aggregator-cited outlets not yet in the registry (the ctvoice /
+// New York Notebook class, girl-interrupted 2026-06-05), normalizeOutlet() can
+// mis-resolve a free-form name to a wrong registered canonical (e.g.
+// "new-york-notebook" -> "vulture" via a fuzzy New York Magazine match), which then
+// trips the domain-mismatch guard and drops the review. With --provisional the
+// caller has already derived a domain-safe slug and wants it written as-is.
+const provisional = hasFlag('provisional');
 
 if (!showId || !url) {
   console.error('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--dry-run]');
@@ -157,7 +165,22 @@ function extractByline(html) {
 
   let outletId;
   let outletName;
-  if (outletArg) {
+  if (outletArg && provisional) {
+    // Provisional onboarding — trust the caller's domain-derived slug as-is.
+    // The domain-mismatch guard (validateUrlDomain) passes because an
+    // unregistered slug has no expected domain to mismatch (url-discovery.js:841).
+    // Do NOT call getOutletDisplayName here — it fuzzy-normalizes the slug and can
+    // resolve a provisional id to a wrong registered display (e.g. "newyorknotebook"
+    // -> "Vulture"). Humanize the slug directly; the human onboarding step sets the
+    // canonical display name when the outlet is added to the registry.
+    outletId = outletArg;
+    outletName = outletArg
+      .split('-')
+      .filter(Boolean)
+      .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(' ');
+    console.warn(`⚠️  provisional outlet "${outletId}" (not in registry) — onboard to outlet-registry.json after review.`);
+  } else if (outletArg) {
     const resolved = resolveCanonicalOutletId({ outletArg, url });
     if (resolved.warning) console.warn(`⚠️  ${resolved.warning}`);
     outletId = resolved.outletId;

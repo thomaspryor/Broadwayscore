@@ -158,9 +158,37 @@ function getCvStyle(outletId) {
   return VALID_CV_STYLES.has(style) ? style : 'standard';
 }
 
+/**
+ * Derive a domain-safe provisional outletId for a host not yet in the registry,
+ * so an aggregator-cited review from an unknown outlet can still be captured (the
+ * ctvoice / New York Notebook class, girl-interrupted 2026-06-05) instead of
+ * being skipped. Intended to be passed to ingest-review-from-url.js --provisional
+ * (no fuzzy alias resolution, which would mis-map e.g. "new-york-notebook" to
+ * "vulture" via a New York Magazine fuzzy match).
+ *
+ * Substack publications live on a subdomain (newyorknotebook.substack.com ->
+ * "newyorknotebook"); everything else uses the second-level domain label
+ * (ctvoice.com -> "ctvoice", 1minutecritic.com -> "1minutecritic").
+ *
+ * @param {string} host - hostname (with or without leading www.)
+ * @returns {string|null} provisional slug, or null if no usable label
+ */
+function provisionalOutletIdFromHost(host) {
+  if (!host || typeof host !== 'string') return null;
+  const h = host.replace(/^www\./, '').toLowerCase().trim();
+  const parts = h.split('.').filter(Boolean);
+  if (parts.length < 2) return null;
+  const label = (h.endsWith('.substack.com') && parts.length >= 3)
+    ? parts[0]
+    : parts[parts.length - 2];
+  const slug = label.replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  return slug || null;
+}
+
 module.exports = {
   resolveCanonicalOutletId,
   getCvStyle,
+  provisionalOutletIdFromHost,
   // exposed for tests
   _buildDomainMap: buildDomainMap,
   _parseDomain: parseDomain,
