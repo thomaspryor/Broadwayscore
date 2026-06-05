@@ -31,7 +31,17 @@
     "mj-2022/nydailynews--karu-f-daniels.json",
     "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
     "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json",
-    "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json"
+    "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json",
+    "harry-potter-2021/front-row-center--tulis-mccall.json",
+    "harry-potter-2021/woman-around-town--alix-cohen.json",
+    "the-book-of-mormon-west-end-2024/telegraph--claire-allfree.json",
+    "book-of-mormon-2011/new-jersey-newsroom--michael-sommers.json",
+    "book-of-mormon-2011/ap--mark-kennedy.json",
+    "book-of-mormon-2011/backstage--david-sheward.json",
+    "the-lion-king-1997/familyvacationcritic--unknown.json",
+    "the-music-man-off-broadway-2026/nytimes--tammy-lagorce.json",
+    "beaches-2026/nytimes--houman-barekat.json",
+    "beaches-2026/nytimes--jesse-green.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -45,7 +55,8 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/maybe-happy-ending-2024/variety--unknown.json",
-      "maybe-happy-ending-2024/variety--unknown.json"
+      "maybe-happy-ending-2024/variety--unknown.json",
+      "data/review-texts/beaches-2026/nytimes--houman-barekat.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -59,7 +70,7 @@
     ]
   },
   "startTime": "2026-06-05T09:41:09.872Z",
-  "lastProcessed": "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json",
+  "lastProcessed": "beaches-2026/nytimes--jesse-green.json",
   "log": [
     {
       "t": "2026-06-05T09:47:27.505Z",
@@ -71,6 +82,17 @@
       "t": "2026-06-05T09:47:28.154Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-05T09:49:42.592Z",
+      "event": "bb-session",
+      "session": "e57a734a",
+      "url": "https://www.nytimes.com/2026/04/22/theater/the-resistible-rise-of-arturo-ui-rsc-"
+    },
+    {
+      "t": "2026-06-05T09:49:43.135Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
