@@ -23,6 +23,12 @@ on:
       - 'scripts/validate-show-venue.js'
       - 'scripts/lib/review-write-guard.js'
       - 'scripts/lib/show-matching.js'
+      # SERP/URL discovery + review guards — exercised by the no-data unit batch and
+      # scripts/test-opening-night-fixes.js (run in the opening-night step). Without these,
+      # changes to core discovery/scoring-guard logic push with ZERO CI coverage.
+      - 'scripts/lib/url-discovery.js'
+      - 'scripts/lib/review-guards.js'
+      - 'scripts/test-opening-night-fixes.js'
       - 'scripts/audit-slug-match-routing.js'
       - 'scripts/apply-slug-misroute-whitelist.js'
       - 'scripts/lib/cast-extraction-guards.js'
