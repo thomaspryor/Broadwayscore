@@ -143,6 +143,83 @@ const PROTECTED_FIELDS = [
 ];
 
 /**
+ * Generalized intentional-clear breadcrumbs.
+ *
+ * Rebase-time restorers (.github/actions/push-review-texts/action.yml and
+ * scripts/lib/restore-protected-fields.js) treat an empty PROTECTED field whose
+ * committed/remote counterpart had content as data-loss and revert it. That is
+ * correct UNLESS the empty value is a DELIBERATE clear carrying a durable
+ * breadcrumb — otherwise a CI rebase silently re-flags a human-verified review.
+ *
+ * Originally only duplicateOf/duplicateReason had this exception (via
+ * duplicateClearReason). It is the same failure mode for wrongProduction /
+ * wrongShow / originalScore manual-clears: clear-stale-wrong-production-flags.js,
+ * rediscover-review-urls.js, fix-p0-score-corruption.js and the rebuild nuclear
+ * guard all null/delete those fields and write a breadcrumb, yet the restore had
+ * no notion of those breadcrumbs and would resurrect the stale flag.
+ *
+ * Each entry maps a PROTECTED field to a predicate over the LOCAL record that
+ * returns true when an empty value is an intentional clear. The breadcrumb
+ * fields are themselves in PROTECTED_FIELDS, so they reliably survive the rebase
+ * and are a trustworthy signal. KEEP IN SYNC with the inline copy in
+ * .github/actions/push-review-texts/action.yml (it requires this module).
+ */
+const _isEmptyValue = (v) => v === undefined || v === null
+  || (typeof v === 'string' && v.length === 0)
+  || (Array.isArray(v) && v.length === 0);
+
+// Canonical "human/audit cleared wrongProduction" predicate — matches the
+// rebuild nuclear guard (scripts/rebuild-all-reviews.js ~2041) and
+// isLikelyStaleWrongProduction (scripts/lib/review-guards.js ~815).
+const _wrongProductionCleared = (d) =>
+  d.wrongProductionManualClear === true ||
+  d.wrongProductionOverride === true ||
+  d.wrongProductionAutoCleared === true ||
+  d.humanReviewedWrongProduction === false ||
+  !_isEmptyValue(d.wrongProductionClearedNote);
+
+const _wrongShowCleared = (d) =>
+  d.wrongShowManualClear === true ||
+  d.wrongShowOverride === true ||
+  d.wrongShowAutoCleared === true;
+
+const _wrongArticleCleared = (d) =>
+  d.wrongArticleManualClear === true ||
+  d.humanReviewedWrongArticle === false;
+
+const CLEAR_BREADCRUMBS = {
+  duplicateOf: (d) => !_isEmptyValue(d.duplicateClearReason),
+  duplicateReason: (d) => !_isEmptyValue(d.duplicateClearReason),
+  wrongProduction: _wrongProductionCleared,
+  wrongProductionNote: _wrongProductionCleared,
+  wrongProductionReason: _wrongProductionCleared,
+  wrongShow: _wrongShowCleared,
+  wrongShowReason: _wrongShowCleared,
+  wrongShowNote: _wrongShowCleared,
+  wrongFullText: _wrongArticleCleared,
+  wrongAttribution: _wrongArticleCleared,
+  originalScore: (d) => d.originalScoreCleared === true,
+  originalScoreSource: (d) => d.originalScoreCleared === true,
+  originalScoreNormalized: (d) => d.originalScoreCleared === true,
+};
+
+/**
+ * Returns true when `field` is empty in `localData` BECAUSE it was deliberately
+ * cleared (a durable breadcrumb proves it), so a rebase-time restore should NOT
+ * resurrect the committed/remote value. Returns false for fields with no
+ * registered breadcrumb (default to data-loss protection).
+ *
+ * @param {string} field
+ * @param {object} localData - the local/working-tree review record
+ * @returns {boolean}
+ */
+function isIntentionalClear(field, localData) {
+  if (!localData) return false;
+  const pred = CLEAR_BREADCRUMBS[field];
+  return typeof pred === 'function' ? !!pred(localData) : false;
+}
+
+/**
  * Safely write a review JSON file, preserving any existing scored/collected data.
  *
  * @param {string} filePath - Absolute path to the review JSON file
@@ -871,4 +948,4 @@ function _updateSisterStoresOnRename(srcPath, dstPath) {
   return { llmScoreMoved, pointersUpdated, sisterStoreConflict, sisterStoreError };
 }
 
-module.exports = { safeWriteReview, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, PROTECTED_FIELDS };
+module.exports = { safeWriteReview, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, isIntentionalClear };
