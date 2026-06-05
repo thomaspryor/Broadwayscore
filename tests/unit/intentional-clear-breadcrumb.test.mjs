@@ -46,13 +46,11 @@ test('isIntentionalClear: duplicateOf honored only with duplicateClearReason', (
   assert.equal(isIntentionalClear('duplicateOf', { duplicateClearReason: '' }), false);
 });
 
-test('isIntentionalClear: wrongProduction honors every canonical clear signal', () => {
+test('isIntentionalClear: wrongProduction matches the canonical human-clear triplet', () => {
   for (const breadcrumb of [
     { wrongProductionManualClear: true },
     { wrongProductionOverride: true },
-    { wrongProductionAutoCleared: true },
     { humanReviewedWrongProduction: false },
-    { wrongProductionClearedNote: '[2026-04-26 cleared stale]' },
   ]) {
     assert.equal(isIntentionalClear('wrongProduction', breadcrumb), true,
       `expected clear for ${JSON.stringify(breadcrumb)}`);
@@ -62,15 +60,26 @@ test('isIntentionalClear: wrongProduction honors every canonical clear signal', 
   // No breadcrumb, or the flag merely true (not cleared) → NOT an intentional clear.
   assert.equal(isIntentionalClear('wrongProduction', {}), false);
   assert.equal(isIntentionalClear('wrongProduction', { humanReviewedWrongProduction: true }), false);
+  // Rebuild's string-typed auto-clear is NOT a manual clear (and sets the flag to
+  // `false`, not empty) — must match review-guards.js, which ignores it.
+  assert.equal(isIntentionalClear('wrongProduction', { wrongProductionAutoCleared: 'rebuild: UK URL' }), false);
+  // ClearedNote alone (without ManualClear) is not a clear signal on its own.
+  assert.equal(isIntentionalClear('wrongProduction', { wrongProductionClearedNote: 'x' }), false);
 });
 
-test('isIntentionalClear: wrongShow and wrong-article families', () => {
+test('isIntentionalClear: wrongShow reuses canonical wrongShowCleared (incl. production signals)', () => {
   assert.equal(isIntentionalClear('wrongShow', { wrongShowManualClear: true }), true);
   assert.equal(isIntentionalClear('wrongShow', { wrongShowOverride: true }), true);
-  assert.equal(isIntentionalClear('wrongShow', { wrongShowAutoCleared: true }), true);
   assert.equal(isIntentionalClear('wrongShowReason', { wrongShowManualClear: true }), true);
+  // Canonical wrongShowCleared also honors production-level human clears.
+  assert.equal(isIntentionalClear('wrongShow', { wrongProductionManualClear: true }), true);
+  assert.equal(isIntentionalClear('wrongShow', { humanReviewedWrongProduction: false }), true);
+  // String-typed auto-clear not honored; no breadcrumb not honored.
+  assert.equal(isIntentionalClear('wrongShow', { wrongShowAutoCleared: 'rebuild: x' }), false);
   assert.equal(isIntentionalClear('wrongShow', {}), false);
+});
 
+test('isIntentionalClear: wrong-article family', () => {
   assert.equal(isIntentionalClear('wrongFullText', { wrongArticleManualClear: true }), true);
   assert.equal(isIntentionalClear('wrongAttribution', { humanReviewedWrongArticle: false }), true);
   assert.equal(isIntentionalClear('wrongFullText', {}), false);

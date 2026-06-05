@@ -155,12 +155,13 @@ try {
           (local[field] === undefined || local[field] === null)
         ) {
           // Intentional-clear exception: if the LOCAL record deliberately
-          // cleared this field (durable breadcrumb present), the empty value is
-          // not data-loss — honor it instead of resurrecting the remote flag.
-          // rediscover-review-urls.js DELETES wrongProduction/wrongShow then
-          // calls this script, and clear-stale-wrong-production-flags.js writes
-          // wrongProductionManualClear=true; without this guard the remote's
-          // stale `true` would come right back. (2026-06-05)
+          // cleared this field and carries the canonical breadcrumb (e.g. a
+          // human wrongProductionManualClear / humanReviewedWrongProduction:false,
+          // wrongShowCleared signals, originalScoreCleared, or duplicateClearReason),
+          // the empty value is not data-loss — honor it instead of resurrecting
+          // the remote flag. Without this guard the remote's stale `true` comes
+          // right back on every rebase. Mirrors the action.yml restore skip and
+          // review-guards.js is-cleared semantics. (2026-06-05)
           if (isIntentionalClear(field, local)) continue;
           local[field] = remote[field];
           modified = true;

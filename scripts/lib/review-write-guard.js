@@ -152,36 +152,62 @@ const PROTECTED_FIELDS = [
  * breadcrumb — otherwise a CI rebase silently re-flags a human-verified review.
  *
  * Originally only duplicateOf/duplicateReason had this exception (via
- * duplicateClearReason). It is the same failure mode for wrongProduction /
- * wrongShow / originalScore manual-clears: clear-stale-wrong-production-flags.js,
- * rediscover-review-urls.js, fix-p0-score-corruption.js and the rebuild nuclear
- * guard all null/delete those fields and write a breadcrumb, yet the restore had
- * no notion of those breadcrumbs and would resurrect the stale flag.
+ * duplicateClearReason). It is the same failure mode for the manual-clear
+ * families that NULL or DELETE a flag and leave a durable signal:
+ * wrongProduction (manual clear / override / humanReviewedWrongProduction:false),
+ * wrongShow (review-guards.js wrongShowCleared), wrong-article, and originalScore
+ * (originalScoreCleared, set by fix-p0-score-corruption.js). Without honoring the
+ * breadcrumb, a CI rebase resurrects the stale flag and re-flags the review.
  *
  * Each entry maps a PROTECTED field to a predicate over the LOCAL record that
- * returns true when an empty value is an intentional clear. The breadcrumb
- * fields are themselves in PROTECTED_FIELDS, so they reliably survive the rebase
- * and are a trustworthy signal. KEEP IN SYNC with the inline copy in
+ * returns true when an empty value is an intentional clear. The wrong-flag and
+ * originalScore breadcrumb fields are themselves in PROTECTED_FIELDS, so they survive
+ * a rebase. duplicateClearReason is the one exception: it is intentionally NOT
+ * protected (it must stay nullable — review-write-guard nulls it when a sibling
+ * becomes a live duplicate again, see ~line 351), but the action.yml push-restore
+ * reads it from the SAME working tree that wrote it, so it is still reliable on
+ * that path. KEEP IN SYNC with the inline copy in
  * .github/actions/push-review-texts/action.yml (it requires this module).
+ *
+ * The predicates MIRROR the canonical "is-cleared" semantics used for inclusion
+ * (review-guards.js) — not a broader/looser set — so the restore never diverges
+ * from what the rebuild itself treats as cleared. NOTE: rebuild's
+ * wrongProductionAutoCleared/wrongShowAutoCleared are STRING annotations (and set
+ * the flag to `false`, which is not "empty"), so they are deliberately NOT
+ * treated as clear breadcrumbs here — that matches review-guards.js, which also
+ * ignores them. originalScoreCleared is sticky (never reset); the trade-off is
+ * acceptable because backfill-original-scores.js already skips cleared files, so
+ * a legitimate re-acquire of originalScore does not flow through the restore.
  */
 const _isEmptyValue = (v) => v === undefined || v === null
   || (typeof v === 'string' && v.length === 0)
   || (Array.isArray(v) && v.length === 0);
 
-// Canonical "human/audit cleared wrongProduction" predicate — matches the
-// rebuild nuclear guard (scripts/rebuild-all-reviews.js ~2041) and
-// isLikelyStaleWrongProduction (scripts/lib/review-guards.js ~815).
+// Canonical "human cleared wrongProduction" predicate — EXACTLY the triplet used
+// by the rebuild nuclear guard (scripts/rebuild-all-reviews.js ~2041) and
+// isLikelyStaleWrongProduction (scripts/lib/review-guards.js ~815). Do not add
+// wrongProductionAutoCleared (string-typed, flag set false not deleted) or
+// wrongProductionClearedNote (always co-occurs with ManualClear) — that would
+// drift from the canonical predicate.
 const _wrongProductionCleared = (d) =>
   d.wrongProductionManualClear === true ||
   d.wrongProductionOverride === true ||
-  d.wrongProductionAutoCleared === true ||
-  d.humanReviewedWrongProduction === false ||
-  !_isEmptyValue(d.wrongProductionClearedNote);
+  d.humanReviewedWrongProduction === false;
 
-const _wrongShowCleared = (d) =>
-  d.wrongShowManualClear === true ||
-  d.wrongShowOverride === true ||
-  d.wrongShowAutoCleared === true;
+// Reuse the canonical wrongShow-cleared predicate (lazy require keeps this module
+// circular-safe — review-guards.js has no top-level require back to here). It
+// already unions the production-level human-clear signals, which a bespoke copy
+// here previously omitted.
+const _wrongShowCleared = (d) => {
+  try {
+    return !!require('./review-guards').wrongShowCleared(d);
+  } catch {
+    // Fallback if review-guards is unavailable in a minimal env — superset of
+    // the production triplet plus the wrongShow-specific manual signals.
+    return d.wrongShowManualClear === true || d.wrongShowOverride === true
+      || _wrongProductionCleared(d);
+  }
+};
 
 const _wrongArticleCleared = (d) =>
   d.wrongArticleManualClear === true ||
