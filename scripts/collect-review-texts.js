@@ -4183,6 +4183,10 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   data.textWordCount = cleanedText.split(/\s+/).filter(w => w.length > 0).length;
   data.archivePath = archivePath;
   data.textFetchedAt = new Date().toISOString();
+  // Consume the URL-correction refetch signal once we have fresh text from the
+  // corrected URL — otherwise the needsRefetch bypass (skip logic above) would
+  // refetch this file on every run forever.
+  if (data.needsRefetch) data.needsRefetch = false;
 
   // Extract publishDate from HTML if not already set
   if (!data.publishDate && html) {
@@ -5540,6 +5544,16 @@ function findReviewsToProcess() {
           || data.humanReviewScore != null;
         const isWrongContent = (data.wrongAttribution || data.wrongProduction || data.wrongShow)
           && !isHumanVerified;
+        // A URL-corrected review must be refetched immediately: its wrongShow /
+        // stale-text flags describe the content of the OLD url, not the corrected
+        // one. `needsRefetch` is set by the URL-correction paths
+        // (review-normalization.js, gather-reviews.js, retry-wrong-urls.js) but was
+        // read by nothing here — so a corrected review (e.g. the NYT Helen Shaw
+        // review whose url was upgraded from the preview) sat behind the 14-day
+        // wrongShow cooldown, unfetched, with the preview author's byline frozen in
+        // (girl-interrupted 2026-06-05). When set, bypass the wrong-content cooldown
+        // AND the "already has good text" short-circuit below.
+        const urlCorrectedRefetch = data.needsRefetch === true && !!data.urlCorrectedFrom;
         if (isWrongContent && !CONFIG.incompleteReasonFilter.includes('wrong_content')) {
           // Allow retry for collector-flagged wrongShow files (bad scrape of correct URL)
           // These have wrongShowReason starting with "Collector LLM" — distinguishes from
@@ -5547,7 +5561,10 @@ function findReviewsToProcess() {
           const isCollectorFlagged = data.wrongShow && typeof data.wrongShowReason === 'string'
             && data.wrongShowReason.startsWith('Collector LLM');
           const retryAge = data.wrongShowRetryAt ? Date.now() - new Date(data.wrongShowRetryAt).getTime() : Infinity;
-          const retryAllowed = isCollectorFlagged && retryAge > 14 * 24 * 60 * 60 * 1000; // 14-day cooldown
+          // 14-day cooldown for collector-flagged retries; a URL correction is a
+          // strong signal the next fetch will succeed, so it bypasses the cooldown.
+          const retryAllowed = (isCollectorFlagged && retryAge > 14 * 24 * 60 * 60 * 1000)
+            || urlCorrectedRefetch;
           if (!retryAllowed) {
             logExclusion({ script: 'collect-review-texts', showId, file, reason: 'skippedWrongContent', details: { url: data.url, outletId: data.outletId, wrongShow: data.wrongShow, wrongProduction: data.wrongProduction } });
             continue;
@@ -5568,7 +5585,7 @@ function findReviewsToProcess() {
           // Re-collect if existing fullText is garbage (cookie consent, GDPR banners, etc.)
           const hasGarbageText = textLen > 0 && isGarbageContent(data.fullText).isGarbage;
           // Always re-try truncated/needs-rescrape reviews - they have text but it's incomplete or garbage
-          if (!isTruncated && !needsUrlDiscovery && !hasGarbageText && (data.isFullReview === true || data.textQuality === 'full' || textLen > 1500) && !failedFetches.has(reviewId)) {
+          if (!isTruncated && !needsUrlDiscovery && !hasGarbageText && !urlCorrectedRefetch && (data.isFullReview === true || data.textQuality === 'full' || textLen > 1500) && !failedFetches.has(reviewId)) {
             continue;
           }
           // Skip complete reviews even if they appear in failedFetches — the failure entry is stale
