@@ -260,6 +260,22 @@ function extractBWWReviewsCount(showId) {
 // Step 3: Gap Detection + Report
 // ============================================================
 
+// Count reviews stranded in data/review-texts/_pending/{showId}/. These were
+// DISCOVERED but never promoted into the show dir (multi-critic outlets with no
+// byline). This is the failure mode that silently hid ~500 reviews across 70+
+// shows (the War Horse / _pending strand, 2026-06-04). A non-zero strand on an
+// OPEN show means real reviews aren't on the page yet — the canary for a drain
+// regression. Read-only (no network).
+function countPendingStrand(showId) {
+  const dir = path.join(REVIEW_TEXTS_DIR, '_pending', showId);
+  if (!fs.existsSync(dir)) return 0;
+  try {
+    return fs.readdirSync(dir).filter(f => f.endsWith('.json')).length;
+  } catch {
+    return 0;
+  }
+}
+
 function parseArgs() {
   const args = {};
   for (const arg of process.argv.slice(2)) {
@@ -396,10 +412,15 @@ function main() {
     const trulyMissing = Math.max(0, maxAggregatorCount - local.total);
     totalTrulyMissing += trulyMissing;
 
+    const pendingStrand = countPendingStrand(showId);
+    const isOpenish = show.status === 'open' || show.status === 'previews';
+    if (pendingStrand > 0 && isOpenish) flags.push(`pending-strand-${pendingStrand}`);
+
     allShowData[showId] = {
       title: show.title,
       status: show.status,
       totalLocal: local.total,
+      pendingStrand,
       hasGap,
       totalGap,
       trulyMissing,
@@ -485,6 +506,24 @@ function main() {
       console.log(`\nComma-separated for gather-reviews:`);
       console.log(gapShows.map(([id]) => id).join(','));
     }
+  }
+
+  // Pending-strand canary: open shows with DISCOVERED-but-unpromoted reviews
+  // stranded in _pending. A non-zero count here means real reviews aren't on the
+  // page — the exact silent failure that hid ~500 reviews (2026-06-04).
+  const strandShows = Object.entries(allShowData)
+    .filter(([, d]) => d.pendingStrand > 0 && (d.status === 'open' || d.status === 'previews'))
+    .sort((a, b) => b[1].pendingStrand - a[1].pendingStrand);
+  if (strandShows.length > 0) {
+    const strandTotal = strandShows.reduce((n, [, d]) => n + d.pendingStrand, 0);
+    console.log(`\n⚠️  Open shows with reviews stranded in _pending (${strandShows.length} shows, ${strandTotal} reviews):`);
+    console.log('   (discovered but not promoted — run: node scripts/replay-pending-bylines.js --all-open)');
+    for (const [id, d] of strandShows.slice(0, 25)) {
+      console.log(`   ${id} [${d.status}]: ${d.pendingStrand} stranded (local=${d.totalLocal})`);
+    }
+    // GitHub annotation so the weekly audit run surfaces the strand without a
+    // dedicated alert workflow. Fires only for open/previews shows.
+    console.log(`::warning::aggregator-coverage: ${strandTotal} discovered reviews stranded in _pending across ${strandShows.length} open shows — run replay-pending-bylines.js --all-open`);
   }
 
   // Top gaps (open shows first, then by totalGap descending)
