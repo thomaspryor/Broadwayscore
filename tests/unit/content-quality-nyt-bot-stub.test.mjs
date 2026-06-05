@@ -92,3 +92,20 @@ test('bot stub in first 70% of text is caught by regular severe check (paywall_o
   // nyt_bot_stub (via severeAnywhere) — either way, severeCount > 0.
   assert.ok(result.severeCount > 0, 'expected at least one severe signal for early-position stub');
 });
+
+test('incomplete-reason classifies nyt_bot_stub signal as bot_blocked (not paywall)', () => {
+  // Regression for collect-review-texts routing: enableBrowserbase only fires on
+  // 'bot_blocked'; if classified as 'paywall', Browserbase is skipped and Archive.org
+  // (which has no pre-paywall NYT snapshots) is used instead — yielding 0 re-collections.
+  const { classifyIncompleteReason } = require(path.join(__dirname, '..', '..', 'scripts', 'lib', 'incomplete-reason.js'));
+  const review = {
+    url: 'https://www.nytimes.com/2023/04/01/theater/example-review.html',
+    contentTier: 'truncated',
+    truncationSignals: ['nyt_bot_stub'],
+    fullText: NYT_STUB_TEXT,
+    wordCount: 380,
+  };
+  const result = classifyIncompleteReason(review);
+  assert.equal(result?.incompleteReason, 'bot_blocked',
+    `expected 'bot_blocked', got '${result?.incompleteReason}' — Browserbase won't fire for 'paywall' reason`);
+});
