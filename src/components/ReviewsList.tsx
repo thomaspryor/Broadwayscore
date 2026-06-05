@@ -2,7 +2,7 @@
 
 import { useState, useMemo, memo } from 'react';
 import Link from 'next/link';
-import { getOutletLogoUrl, getOutletConfig } from '@/config/outlet-logos';
+import { getOutletLogoUrlById, getOutletConfigById } from '@/config/outlet-logos';
 import { featureFlags } from '@/config/feature-flags';
 import { getScoreColorClass } from '@/components/show-cards';
 import { getGoldThreshold } from '@/config/score-buckets';
@@ -67,11 +67,13 @@ function formatDate(dateStr: string | null | undefined): string {
 }
 
 
-function OutletLogo({ outlet }: { outlet: string }) {
+function OutletLogo({ outlet, outletId }: { outlet: string; outletId?: string }) {
   const [imageError, setImageError] = useState(false);
 
-  const logoUrl = getOutletLogoUrl(outlet);
-  const config = getOutletConfig(outlet);
+  // Resolve by canonical outletId first (covers every registry outlet with a
+  // domain), then fall back to the legacy name-keyed map.
+  const logoUrl = getOutletLogoUrlById(outletId, outlet);
+  const config = getOutletConfigById(outletId, outlet);
 
   if (logoUrl && !imageError) {
     return (
@@ -179,7 +181,7 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category }: { revi
         >
           <span aria-hidden="true">{review.reviewScore}</span>
         </div>
-        <OutletLogo outlet={review.outlet} />
+        <OutletLogo outlet={review.outlet} outletId={review.outletId} />
         <span style={{ flex: '1 1 auto', minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} className="font-bold text-white text-sm sm:text-base">
           {featureFlags.criticPages && review.outletSlug ? (
             <Link href={`/critics/outlets/${review.outletSlug}`} className="hover:text-brand transition-colors">{review.outlet}</Link>
