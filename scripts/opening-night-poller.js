@@ -60,6 +60,7 @@ const {
   checkSerpBurstAllowed,
   isCascadeTripwireExceeded,
 } = require('./lib/serp-burst-caps');
+const { sendAlert } = require('./lib/discord-notify');
 
 // Paths
 const DATA_DIR = path.join(__dirname, '..', 'data');
@@ -119,8 +120,8 @@ function isInAggressiveWindow(show) {
  * increment, so the daily ceiling is ADVISORY — under concurrency it can be exceeded by up to
  * ~(Nconcurrent-1) bursts per tick. The TRUE hard bound is the per-cycle SERP_BUDGET (12
  * outlet calls); with realistic concurrency of 2-3 WE openings the worst-case overspend is a
- * few hundred SERP calls/day, nowhere near a cascade. Kill-switch (delete the
- * ENABLE_WE_SERP_BURST variable) is the ultimate backstop.
+ * few hundred SERP calls/day, nowhere near a cascade. Emergency kill-switch (set the
+ * DISABLE_WE_SERP_BURST variable) is the ultimate backstop.
  */
 function utcDateKey(now = new Date()) {
   return now.toISOString().slice(0, 10);
@@ -135,15 +136,17 @@ function loadSerpBurstLedger(now = new Date()) {
     }
   } catch { raw = null; }
   if (!raw || raw.date !== today) {
-    return { date: today, globalBursts: 0, perShow: {} };
+    return { date: today, globalBursts: 0, perShow: {}, tripwireAlerted: false };
   }
-  return { date: today, globalBursts: raw.globalBursts || 0, perShow: raw.perShow || {} };
+  return {
+    date: today,
+    globalBursts: raw.globalBursts || 0,
+    perShow: raw.perShow || {},
+    tripwireAlerted: raw.tripwireAlerted || false,
+  };
 }
 
-function incrementSerpBurstLedger(showId, now = new Date()) {
-  const ledger = loadSerpBurstLedger(now);
-  ledger.globalBursts += 1;
-  ledger.perShow[showId] = (ledger.perShow[showId] || 0) + 1;
+function writeSerpBurstLedger(ledger) {
   try {
     const dir = path.dirname(SERP_BURST_LEDGER_PATH);
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
@@ -151,6 +154,13 @@ function incrementSerpBurstLedger(showId, now = new Date()) {
   } catch (e) {
     console.log(`  [SERP burst] ledger write failed (non-fatal): ${e.message}`);
   }
+}
+
+function incrementSerpBurstLedger(showId, now = new Date()) {
+  const ledger = loadSerpBurstLedger(now);
+  ledger.globalBursts += 1;
+  ledger.perShow[showId] = (ledger.perShow[showId] || 0) + 1;
+  writeSerpBurstLedger(ledger);
   return ledger;
 }
 
@@ -159,13 +169,17 @@ const SHOW_ID = (process.argv.find(a => a.startsWith('--show=')) || '').replace(
 const DRY_RUN = process.argv.includes('--dry-run');
 const SKIP_SERP = process.argv.includes('--skip-serp');
 const FORCE_SERP = process.argv.includes('--force-serp');
-// Feature flag (default OFF) + kill-switch for the WE opening-night SERP burst. When ON,
-// an incoming --skip-serp (e.g. the orchestrator's iteration-1-8 deferral) is overridden
-// for aggressive-window WE shows, under the hard ceilings in scripts/lib/serp-burst-caps.js.
-// Flag OFF → --skip-serp is honored exactly as before: the burst block never runs and the
-// SKIPPED log is unchanged (the added env var/module exports are inert). Runtime behavior is
-// identical to pre-change. Toggle: gh variable set ENABLE_WE_SERP_BURST --body true (delete to disable).
-const ENABLE_WE_SERP_BURST = process.env.ENABLE_WE_SERP_BURST === 'true';
+// WE opening-night SERP burst: ON by default (this is an automated system — no human
+// watches openings). The burst overrides the orchestrator's iteration-1-8 --skip-serp
+// deferral for aggressive-window WE shows, bounded entirely by AUTOMATED safety:
+//   - hard daily-global + per-show caps (auto-stop runaway with zero human input)
+//   - the existing 3h-post-opening gate
+//   - per-cycle SERP_BUDGET (hard per-invocation bound)
+//   - it adds SERP calls only inside poller cycles that already run on fixed crons, so it
+//     CANNOT trigger a workflow cascade
+//   - a tripwire that fires a real owner email (sendAlert) if daily bursts get unusually high
+// Emergency kill-switch (rarely needed): gh variable set DISABLE_WE_SERP_BURST --body true
+const ENABLE_WE_SERP_BURST = process.env.DISABLE_WE_SERP_BURST !== 'true';
 const SKIP_SITE_SEARCH = process.argv.includes('--skip-site-search');
 const VERBOSE = process.argv.includes('--verbose') || true; // Always verbose for CI logs
 // Escape hatches: bypass SERP discovery when discovery fails (wrong Google result, unindexed page)
@@ -1687,13 +1701,13 @@ async function pollCycle() {
     return true;
   }
 
-  // WE opening-night SERP burst (flag-gated, hard-capped). Corrected diagnosis
+  // WE opening-night SERP burst (ON by default, hard-capped). Corrected diagnosis
   // (data/audit/we-serp-diagnosis-corrected.md): the orchestrator forces --skip-serp on
   // iterations 1-8, and those runs are usually cancelled before the deferred SERP (iter
-  // 9-10) ever runs — so aggressive-window WE shows get no SERP at all. When
-  // ENABLE_WE_SERP_BURST is on, override --skip-serp for those shows, but only under the
-  // daily-global + per-show ceilings in scripts/lib/serp-burst-caps.js (the per-cycle
-  // SERP_BUDGET still bounds outlet fan-out). Flag OFF → byte-identical to before.
+  // 9-10) ever runs — so aggressive-window WE shows get no SERP at all. We override
+  // --skip-serp for those shows, bounded by the daily-global + per-show ceilings in
+  // scripts/lib/serp-burst-caps.js (the per-cycle SERP_BUDGET still bounds outlet fan-out).
+  // Disabled only via the DISABLE_WE_SERP_BURST kill-switch.
   let serpBurstActive = false;
   if (SKIP_SERP && ENABLE_WE_SERP_BURST) {
     const hoursSinceOpening = show.openingDate
@@ -1712,7 +1726,7 @@ async function pollCycle() {
       serpBurstActive = true;
       console.log(
         `\n[Layer 4] SERP BURST: overriding --skip-serp for aggressive-window WE show ` +
-        `(flag ENABLE_WE_SERP_BURST; ${ledger.perShow[SHOW_ID] || 0}/${DEFAULT_SERP_BURST_CONFIG.perShowCap} this show, ` +
+        `(${ledger.perShow[SHOW_ID] || 0}/${DEFAULT_SERP_BURST_CONFIG.perShowCap} this show, ` +
         `${ledger.globalBursts}/${DEFAULT_SERP_BURST_CONFIG.dailyGlobalCap} used today)`
       );
     } else {
@@ -1803,12 +1817,29 @@ async function pollCycle() {
       // the daily/per-show cap and starve another opening.
       if (serpBurstActive) {
         const updated = incrementSerpBurstLedger(SHOW_ID);
-        if (isCascadeTripwireExceeded(updated.globalBursts)) {
-          console.log(
-            `::warning::SERP burst cascade tripwire: ${updated.globalBursts} WE SERP bursts today ` +
-            `(>= ${DEFAULT_SERP_BURST_CONFIG.cascadeTripwire}, daily cap ${DEFAULT_SERP_BURST_CONFIG.dailyGlobalCap}). ` +
-            `Kill-switch: gh variable delete ENABLE_WE_SERP_BURST`
-          );
+        // Automated tripwire: if daily bursts get unusually high, fire ONE real owner email
+        // (sendAlert) per UTC day — no human log-watching required. The hard daily cap still
+        // auto-stops further bursts regardless. tripwireAlerted (persisted in the ledger)
+        // dedupes so we don't email every cycle.
+        if (isCascadeTripwireExceeded(updated.globalBursts) && !updated.tripwireAlerted) {
+          updated.tripwireAlerted = true;
+          writeSerpBurstLedger(updated);
+          const msg =
+            `${updated.globalBursts} WE opening-night SERP bursts today ` +
+            `(tripwire ${DEFAULT_SERP_BURST_CONFIG.cascadeTripwire}, hard daily cap ${DEFAULT_SERP_BURST_CONFIG.dailyGlobalCap}). ` +
+            `Bursts auto-stop at the cap; this is an early heads-up. ` +
+            `Emergency off: gh variable set DISABLE_WE_SERP_BURST --body true`;
+          console.log(`::warning::SERP burst cascade tripwire: ${msg}`);
+          try {
+            await sendAlert({
+              title: 'WE SERP burst tripwire',
+              description: msg,
+              severity: 'warning',
+              email: true,
+            });
+          } catch (e) {
+            console.log(`  [SERP burst] tripwire alert failed (non-fatal): ${e.message}`);
+          }
         }
       }
       serpResults = await runSERPBackup(show, missingOutlets, knownUrls);
