@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-05T05:34:20.575Z",
+  "generatedAt": "2026-06-05T09:25:46.568Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -388,27 +388,26 @@
       "status": "open",
       "slug": "girl-interrupted-off-broadway",
       "thumbnail": "/images/shows/girl-interrupted-off-broadway-2026/thumbnail.webp",
-      "siteScore": 74.53,
-      "liveScore": 75,
-      "scoreDrift": 0.46999999999999886,
+      "siteScore": 72.46,
+      "liveScore": 72,
+      "scoreDrift": -0.45999999999999375,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 5,
+      "total": 6,
       "t1": 3,
-      "t2": 2,
+      "t2": 3,
       "t3": 0,
       "positive": 4,
-      "mixed": 1,
+      "mixed": 2,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "5/12 total",
-          "T2:2/3",
-          "hi-conf:1/8"
+          "6/12 total",
+          "hi-conf:2/8"
         ],
-        "highConfidence": 1,
+        "highConfidence": 2,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -513,14 +512,6 @@
         },
         {
           "name": "The Daily Beast",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
-        },
-        {
-          "name": "New York Theater",
           "isDualMarket": false
         },
         {
@@ -744,6 +735,18 @@
           "m": 1,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-06-05T09:25:46.568Z",
+          "rc": 6,
+          "s": 72.46,
+          "t1": 3,
+          "t2": 3,
+          "t3": 0,
+          "p": 4,
+          "m": 2,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -857,28 +860,27 @@
       "status": "open",
       "slug": "a-woman-among-women-off-broadway",
       "thumbnail": "/images/shows/a-woman-among-women-off-broadway-2026/thumbnail.jpg",
-      "siteScore": null,
-      "liveScore": null,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 5,
+      "siteScore": 61.5,
+      "liveScore": 62,
+      "scoreDrift": 0.5,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 0,
+      "total": 5,
       "t1": 0,
-      "t2": 0,
+      "t2": 5,
       "t3": 0,
-      "positive": 0,
-      "mixed": 0,
-      "negative": 0,
+      "positive": 1,
+      "mixed": 2,
+      "negative": 2,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/12 total",
+          "5/12 total",
           "T1:0/3",
-          "T2:0/3",
-          "hi-conf:0/8"
+          "hi-conf:2/8"
         ],
-        "highConfidence": 0,
+        "highConfidence": 2,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -954,19 +956,11 @@
           "isDualMarket": false
         },
         {
-          "name": "TheaterMania",
-          "isDualMarket": false
-        },
-        {
           "name": "BroadwayWorld",
           "isDualMarket": true
         },
         {
           "name": "amNewYork",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Stage Review",
           "isDualMarket": false
         },
         {
@@ -995,14 +989,6 @@
         },
         {
           "name": "The Daily Beast",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
-        },
-        {
-          "name": "New York Theater",
           "isDualMarket": false
         },
         {
@@ -1212,6 +1198,20 @@
         {
           "name": "London Box Office",
           "isDualMarket": false
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-06-05T09:25:46.568Z",
+          "rc": 5,
+          "s": 61.5,
+          "t1": 0,
+          "t2": 5,
+          "t3": 0,
+          "p": 1,
+          "m": 2,
+          "n": 2,
+          "bc": "waiting"
         }
       ]
     },
