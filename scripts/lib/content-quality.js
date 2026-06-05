@@ -1173,6 +1173,20 @@ const TRUNCATION_SIGNALS = {
     /click\s+here\s+to\s+read/i,
     /full\s+(article|story)\s+(available|requires)/i,
   ],
+  // Severe signals that must scan the FULL text (not just first 70%).
+  // These are position-independent: they never appear in real review prose,
+  // so there is no risk of false positives from footer chrome.
+  // The 70% window on `severe` was added to prevent "Read More" navigation
+  // links from falsely flagging paywalls; that concern does not apply here.
+  severeAnywhere: [
+    // NYT bot-detection / JS-loader artifact that appears AFTER partial article text.
+    // The scraper captured only the visible (pre-bot-wall) portion of the review.
+    // Appears at 90-95% of the file — always outside the 70% severe scan window.
+    // Observed across 185 files (2026-06-05 probe). See PAYWALL_PATTERNS line ~55
+    // for the corresponding detectPaywall() entry and the audit-regex-patterns.js
+    // PAYWALL_PATTERNS::15 allow-listing entry.
+    /trouble\s+retrieving\s+the\s+article\s+content/i,
+  ],
   // Moderate signals - likely truncated
   moderate: [
     /\.{3}\s*$/,  // Ends with ellipsis
@@ -1269,6 +1283,19 @@ function detectTruncationSignals(text) {
       signals.push('paywall_or_login_prompt');
       severeCount++;
       break; // One severe is enough
+    }
+  }
+
+  // Check position-independent severe signals (full text scan).
+  // These patterns are unambiguous — they never appear in real review prose,
+  // so the 70% region restriction does not apply.
+  if (severeCount === 0) {
+    for (const pattern of TRUNCATION_SIGNALS.severeAnywhere) {
+      if (pattern.test(text)) {
+        signals.push('nyt_bot_stub');
+        severeCount++;
+        break;
+      }
     }
   }
 
