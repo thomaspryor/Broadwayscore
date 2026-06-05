@@ -37,7 +37,8 @@
     "the-mystery-of-edwin-drood-amt-theater-off-broadway-2026/nytimes--helen-shaw.json",
     "a-woman-among-women-off-broadway-2026/nytimes--laura-collins-hughes.json",
     "this-is-not-about-me-59e59-theaters-off-broadway-2026/nytimes--helen-shaw.json",
-    "hamlet-off-broadway-2026/hollywood-reporter--david-rooney.json"
+    "hamlet-off-broadway-2026/hollywood-reporter--david-rooney.json",
+    "hamlet-off-broadway-2026/thewrap--steve-pond.json"
   ],
   "failed": [
     "the-p-word-off-west-end-2026/sunday-telegraph--claire-allfree.json",
@@ -701,7 +702,16 @@
     "book-of-mormon-2011/ap--mark-kennedy.json",
     "book-of-mormon-2011/backstage--david-sheward.json",
     "the-lion-king-1997/familyvacationcritic--unknown.json",
-    "the-music-man-off-broadway-2026/nytimes--tammy-lagorce.json"
+    "the-music-man-off-broadway-2026/nytimes--tammy-lagorce.json",
+    "beaches-2026/nytimes--houman-barekat.json",
+    "beaches-2026/nytimes--jesse-green.json",
+    "beaches-2026/nytimes--sarah-bahr.json",
+    "beaches-2026/nytimes--sarah-lyall.json",
+    "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
+    "yoah-off-broadway-2026/variety--pat-saperstein.json",
+    "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
+    "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
+    "the-tempest-globe-west-end-2026/express-uk--neil-norman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -764,7 +774,9 @@
       "a-woman-among-women-off-broadway-2026/nytimes--laura-collins-hughes.json",
       "this-is-not-about-me-59e59-theaters-off-broadway-2026/nytimes--helen-shaw.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "hamlet-off-broadway-2026/thewrap--steve-pond.json"
+    ],
     "archiveToday": [
       "data/review-texts/jerome-off-broadway-2025/talkinbroadway--unknown.json",
       "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
@@ -790,7 +802,7 @@
     ]
   },
   "startTime": "2026-06-04T04:34:53.808Z",
-  "lastProcessed": "hamlet-off-broadway-2026/hollywood-reporter--david-rooney.json",
+  "lastProcessed": "the-tempest-globe-west-end-2026/express-uk--neil-norman.json",
   "log": [
     {
       "t": "2026-06-04T11:24:42.850Z",
@@ -1057,6 +1069,17 @@
       "t": "2026-06-05T03:58:00.745Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-06-05T03:58:52.875Z",
+      "event": "bb-session",
+      "session": "3ea332f2",
+      "url": "https://www.nytimes.com/2026/04/22/theater/the-resistible-rise-of-arturo-ui-rsc-"
+    },
+    {
+      "t": "2026-06-05T03:58:53.572Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
