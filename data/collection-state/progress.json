@@ -610,7 +610,17 @@
     "indian-princesses-off-broadway-2025/pages-on-stages--mason-pilevsky.json",
     "the-maids-off-broadway-2026/ew--unknown.json",
     "lauder-scotlands-kilted-king-of-broadway-off-broadway-2026/nytimes--helen-shaw.json",
-    "el-ultimo-sueno-de-frida-y-diego-off-broadway-2026/bachtrack--david-wolfson.json"
+    "el-ultimo-sueno-de-frida-y-diego-off-broadway-2026/bachtrack--david-wolfson.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--laura-collins-hughes.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/playbill--unknown.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
+    "small-off-broadway-2026/pages-on-stages--unknown.json",
+    "small-off-broadway-2026/the-recs--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -647,7 +657,9 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
       "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/variety--haley-kluge.json",
-      "and-then-the-rodeo-burned-down-off-broadway-2026/variety--haley-kluge.json"
+      "and-then-the-rodeo-burned-down-off-broadway-2026/variety--haley-kluge.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -686,7 +698,7 @@
     ]
   },
   "startTime": "2026-06-04T04:34:53.808Z",
-  "lastProcessed": "el-ultimo-sueno-de-frida-y-diego-off-broadway-2026/bachtrack--david-wolfson.json",
+  "lastProcessed": "small-off-broadway-2026/the-recs--unknown.json",
   "log": [
     {
       "t": "2026-06-04T11:24:42.850Z",
@@ -864,6 +876,28 @@
       "event": "bb-session",
       "session": "51b85e19",
       "url": "https://bachtrack.com/review-ultimo-sueno-frida-diego-frank-colker-nezet-seguin-"
+    },
+    {
+      "t": "2026-06-05T00:47:06.990Z",
+      "event": "bb-session",
+      "session": "336e5e91",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-05T00:47:09.714Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-05T00:47:30.298Z",
+      "event": "bb-session",
+      "session": "ccf047a4",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-05T00:47:31.119Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
