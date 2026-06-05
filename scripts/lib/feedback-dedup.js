@@ -102,13 +102,18 @@ function diagnosisText(diag) {
  * @param {object} newDiag         New diagnosis ({summary, whatsHappening, showId, submitterShow, originalMessage})
  * @param {Array<{number:number, diagnosis:object}>} openBugs  Existing open bug-diagnosis issues
  * @param {object} [opts]
- * @param {number} [opts.showMatchThreshold=0.25]  Jaccard bar when showId matches
+ * @param {number} [opts.showMatchThreshold=0.12]  Jaccard bar when showId matches
  * @param {number} [opts.topicThreshold=0.5]       Overlap-coefficient bar when no showId
- * @param {number} [opts.minSharedTokens=2]        Absolute shared-token floor for the show-agnostic branch
+ * @param {number} [opts.minSharedTokens=2]        Absolute shared-token floor (both branches)
  * @returns {{number:number, diagnosis:object, similarity:number, reason:string}|null}
  */
 function findDuplicateOpenBug(newDiag, openBugs, opts = {}) {
-  const showMatchThreshold = opts.showMatchThreshold ?? 0.25;
+  // 0.12 is calibrated from the real backlog (E2E, 2026-06-05): genuine
+  // same-show duplicates bottom out at ~0.21 Jaccard (verbose AI diagnoses of
+  // the SAME bug dilute overlap — the Caissie Levy / Ragtime co-winner pair
+  // landed at 0.216 and was MISSED at the old 0.25 bar), while genuinely
+  // DIFFERENT bugs on the same show sit at ≤0.03. 0.12 lives in that gap.
+  const showMatchThreshold = opts.showMatchThreshold ?? 0.12;
   const topicThreshold = opts.topicThreshold ?? 0.5;
   const minSharedTokens = opts.minSharedTokens ?? 2;
 
@@ -125,14 +130,17 @@ function findDuplicateOpenBug(newDiag, openBugs, opts = {}) {
 
     const existTokens = tokenize(diagnosisText(existing));
     const jac = jaccard(newTokens, existTokens);
+    const sharedSameShow = intersectionSize(newTokens, existTokens);
     const existShow = existing.showId || null;
 
     let isDup = false;
     let reason = '';
     let sim = jac;
 
-    if (newShow && existShow && newShow === existShow && jac >= showMatchThreshold) {
-      // Show already pinned — a modest topic overlap is enough.
+    if (newShow && existShow && newShow === existShow && jac >= showMatchThreshold && sharedSameShow >= minSharedTokens) {
+      // Show already pinned — a modest topic overlap is enough, but still
+      // require ≥2 shared tokens so a single coincidental word can't merge two
+      // genuinely different bugs on the same show.
       isDup = true;
       reason = `same showId "${newShow}" + topic similarity ${jac.toFixed(2)}`;
     } else if (!newShow && !existShow) {
