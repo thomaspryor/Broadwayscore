@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-06-05T08:18:22.087Z",
+  "updatedAt": "2026-06-05T08:22:17.315Z",
   "processed": 0,
-  "failed": 20,
+  "failed": 27,
   "successRate": "0%",
   "tierBreakdown": {
     "playwright": 0,
@@ -10,16 +10,27 @@
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 1,
+    "archiveToday": 2,
     "archive": 0
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-06-05T08:15:24.657Z",
       "event": "bb-session",
       "session": "2fdee616",
       "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
+    },
+    {
+      "t": "2026-06-05T08:20:09.149Z",
+      "event": "bb-session",
+      "session": "1e860e59",
+      "url": "https://thestage.co.uk/reviews/equus-review-menier-chocolate-factory-london-lind"
+    },
+    {
+      "t": "2026-06-05T08:20:10.183Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }

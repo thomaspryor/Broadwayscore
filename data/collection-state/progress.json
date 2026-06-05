@@ -20,7 +20,14 @@
     "care-west-end-2026/whatsonstage--judi-herman.json",
     "equus-west-end-2026/the-jewish-chronicle--unknown.json",
     "equus-west-end-2026/thereviewshub--unknown.json",
-    "equus-west-end-2026/all-that-dazzles-uk--unknown.json"
+    "equus-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "equus-west-end-2026/artsdesk--unknown.json",
+    "equus-west-end-2026/thestage--holly-o.json",
+    "equus-west-end-2026/times-uk--clive-davis.json",
+    "equus-west-end-2026/whatsonstage--alun-hood.json",
+    "end-of-the-rainbow-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
+    "mother-courage-and-her-children-globe-west-end-2026/times-uk--allan-radcliffe.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -31,18 +38,30 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json"
+      "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
+      "data/review-texts/equus-west-end-2026/thestage--holly-o.json"
     ],
     "archive": []
   },
   "startTime": "2026-06-05T08:12:57.904Z",
-  "lastProcessed": "equus-west-end-2026/all-that-dazzles-uk--unknown.json",
+  "lastProcessed": "mother-courage-and-her-children-globe-west-end-2026/times-uk--allan-radcliffe.json",
   "log": [
     {
       "t": "2026-06-05T08:15:24.657Z",
       "event": "bb-session",
       "session": "2fdee616",
       "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
+    },
+    {
+      "t": "2026-06-05T08:20:09.149Z",
+      "event": "bb-session",
+      "session": "1e860e59",
+      "url": "https://thestage.co.uk/reviews/equus-review-menier-chocolate-factory-london-lind"
+    },
+    {
+      "t": "2026-06-05T08:20:10.183Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
