@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-05T17:08:16.385Z",
+  "timestamp": "2026-06-05T21:17:45.016Z",
   "stats": {
-    "totalReviews": 38143,
-    "alreadyFlagged": 16758,
+    "totalReviews": 38130,
+    "alreadyFlagged": 16749,
     "dateGuardCatches": 108,
     "directorMismatch": 831,
-    "tvFilmSignals": 1047,
-    "londonSignals": 605,
+    "tvFilmSignals": 1046,
+    "londonSignals": 606,
     "offBroadwaySignals": 460,
     "yearMismatch": 79,
-    "noPublishDate": 3995
+    "noPublishDate": 3990
   },
   "findings": [
     {
@@ -33821,6 +33821,20 @@
       ]
     },
     {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "file": "whatsonstage--tom-millward.json",
+      "score": null,
+      "publishDate": "2025-03-21",
+      "url": "https://www.whatsonstage.com/news/my-neighbour-totoro-celebrates-its-official-west-end-opening-night_1670554/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "natasha-pierre-and-the-great-comet-of-1812-2016",
       "file": "broadway-and-me--janice-c-simpson.json",
       "score": 62,
@@ -35531,20 +35545,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Contains TV/film keyword: \"season 1\""
-        }
-      ]
-    },
-    {
-      "showId": "schmigadoon-2026",
-      "file": "theatrely--kobi-kassal.json",
-      "score": 91,
-      "publishDate": "2026-04-20T23:00:00-04:00",
-      "url": "https://www.theatrely.com/post/schmigadoon-is-pure-broadway-joy-review",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Contains TV/film keyword: \"streaming series\""
         }
       ]
     },
