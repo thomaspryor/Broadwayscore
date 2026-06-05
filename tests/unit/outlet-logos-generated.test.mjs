@@ -1,12 +1,16 @@
-// Guard: src/config/outlet-logos-generated.json must stay in sync with the
-// canonical data/outlet-registry.json. Outlet logos in ReviewsList resolve by
-// outletId against this generated map; if the registry gains outlets/domains
-// and the map isn't regenerated, those outlets silently lose their logos (the
-// exact regression this fix addressed — 378 unmapped outlets rendered a gray
-// letter-circle). Regenerate with: node scripts/generate-outlet-logos.js
+// Guard: the outlet-logos generator (scripts/generate-outlet-logos.js) must keep
+// producing a healthy, well-formed map from the canonical outlet-registry.json.
+// OutletLogo in ReviewsList resolves logos by outletId against this map; a broken
+// generator or registry-shape change would silently drop logos back to gray
+// letter-circles (the regression this fix addressed — 378 unmapped outlets).
+//
+// NOTE: we deliberately do NOT assert byte-equality against the committed
+// src/config/outlet-logos-generated.json. The registry is bot-updated ~daily
+// (push-core-data), so a strict drift check would turn CI red on unrelated
+// registry commits. Instead, prebuild.sh always regenerates the file from the
+// current registry, and these tests assert the generator's output is sound.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 import { createRequire } from 'node:module';
@@ -15,17 +19,7 @@ const require = createRequire(import.meta.url);
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '../..');
 
-const { buildMap, serialize, OUT_PATH } = require(resolve(ROOT, 'scripts/generate-outlet-logos.js'));
-
-test('generated outlet-logos map is in sync with the registry (no drift)', () => {
-  const { map } = buildMap();
-  const committed = readFileSync(OUT_PATH, 'utf8');
-  assert.equal(
-    serialize(map),
-    committed,
-    'outlet-logos-generated.json is stale — run `node scripts/generate-outlet-logos.js` and commit the result'
-  );
-});
+const { buildMap } = require(resolve(ROOT, 'scripts/generate-outlet-logos.js'));
 
 test('map covers a healthy share of registry domains', () => {
   const { map } = buildMap();
