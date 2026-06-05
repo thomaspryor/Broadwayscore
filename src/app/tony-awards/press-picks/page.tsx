@@ -49,8 +49,11 @@ export default function TonyPressPicksPage() {
               {season.ceremonyYear} Tony Awards — Critic Press Picks
             </h1>
             <p className="mt-1.5 text-sm text-gray-400">
-              Who <span className="text-gray-200 font-semibold">{SOURCES.length} outlets</span> predict will win, category by category.
-              Bars show how many critics agree on each nominee.
+              Who <span className="text-gray-200 font-semibold">{SOURCES.length} outlets</span> predict <span className="text-gray-200 font-semibold">will win</span> — not who <span className="italic">should</span> win.
+              Bars show how many outlets agree on each nominee.
+            </p>
+            <p className="mt-1 text-xs text-gray-500">
+              When an outlet separated its prediction from a personal favorite, we use its &ldquo;will win&rdquo; call. Some outlets cover fewer categories, so each block notes how many weighed in.
             </p>
 
             {/* Outlet legend */}
