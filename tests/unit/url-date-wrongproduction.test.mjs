@@ -180,16 +180,8 @@ describe('getWrongProductionReasonFromUrl — fail-safe edge cases', () => {
     );
   });
 
-  it('returns null for off-broadway shows (regional transfers)', () => {
-    const offBway = { ...fallenAngels, category: 'off-broadway' };
-    assert.strictEqual(
-      getWrongProductionReasonFromUrl(
-        'https://www.nytimes.com/2024/03/14/theater/x.html',
-        offBway
-      ),
-      null
-    );
-  });
+  // NOTE: off-broadway was blanket-exempt here until 2026-06-05. It is no longer —
+  // see the dedicated "off-broadway lead window + prior-run exemption" block below.
 
   it('returns null for invalid month in URL (e.g. /YYYY/14/)', () => {
     assert.strictEqual(
@@ -222,6 +214,67 @@ describe('getWrongProductionReasonFromUrl — fail-safe edge cases', () => {
     );
     assert.ok(reason);
     assert.match(reason, /2024-03-15/);
+  });
+});
+
+describe('getWrongProductionReasonFromUrl — off-broadway lead window + prior-run exemption', () => {
+  // OB shows legitimately carry same-season pre-transfer coverage, so they use a
+  // wider 180-day lead window than Broadway (30d) instead of the old blanket exempt.
+  const obShow = {
+    id: 'girl-interrupted-off-broadway-2026',
+    category: 'off-broadway',
+    previewsStartDate: '2026-05-13',
+    openingDate: '2026-06-04',
+  };
+
+  it('flags the Our New Girl cross-attribution (2025 article on 2026 OB show)', () => {
+    // The girl-interrupted 2026-06-05 incident: a 2025 Guardian review of a DIFFERENT
+    // show ("Our New Girl") attached via the shared "girl" title token.
+    const reason = getWrongProductionReasonFromUrl(
+      'https://www.theguardian.com/stage/2025/apr/14/our-new-girl-review-lyric-belfast',
+      obShow
+    );
+    assert.ok(reason, 'should flag — 13 months before previews, no prior run');
+    assert.match(reason, /prior\/different production/i);
+  });
+
+  it('flags an OB article >180 days before previews (no prior run)', () => {
+    const reason = getWrongProductionReasonFromUrl(
+      'https://www.nytimes.com/2025/01/20/theater/x-review.html',
+      obShow
+    );
+    assert.ok(reason);
+  });
+
+  it('KEEPS an OB same-season pre-transfer article within the 180-day window', () => {
+    // 2026-01-20 is ~113 days before 2026-05-13 previews → within OB window.
+    const reason = getWrongProductionReasonFromUrl(
+      'https://www.nytimes.com/2026/01/20/theater/some-ob-show-first-look.html',
+      obShow
+    );
+    assert.strictEqual(reason, null);
+  });
+
+  it('KEEPS an OB review dated within a declared prior-run window', () => {
+    // Sexual Misconduct of the Middle Classes 2026 — Audible Minetta Lane 2025 run.
+    const priorRunShow = {
+      id: 'sexual-misconduct-of-the-middle-classes-off-broadway-2026',
+      category: 'off-broadway',
+      previewsStartDate: '2026-03-17',
+      openingDate: '2026-03-17',
+      priorRuns: [{ openingDate: '2025-05-01', closingDate: '2025-07-15' }],
+    };
+    const reason = getWrongProductionReasonFromUrl(
+      'https://www.nytimes.com/2025/05/08/theater/sexual-misconduct-review.html',
+      priorRunShow
+    );
+    assert.strictEqual(reason, null, 'prior-run coverage is legit, must not flag');
+  });
+
+  it('Broadway lead window stays tight at 30 days (unchanged)', () => {
+    // 60 days before previews on Broadway → still flagged (no widening for BW).
+    const bw = { id: 'x', category: 'broadway', previewsStartDate: '2026-05-01', openingDate: '2026-05-15' };
+    assert.ok(getWrongProductionReasonFromUrl('https://www.nytimes.com/2026/03/01/theater/x-review.html', bw));
   });
 });
 

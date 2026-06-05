@@ -717,10 +717,12 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
       'first-look', 'first look', 'cast-announced', 'cast announced', 'full-cast', 'meet-the-cast',
       'photos:', 'photo-gallery', 'tickets-on-sale', 'lottery', 'rush-policy', 'all-that-chat',
       'allthatchat', '/forum/', 'business-news',
-      // Obituaries/tributes — high-signal, never in a review slug or headline. Matters most
-      // for slugless outlets (FT /content/{uuid}): the bypass below skips urlLooksLikeReview's
-      // URL-path /obituar reject, but this is a TITLE check so it still catches FT obituaries.
-      'obituar', 'appreciation:'];
+      // Obituaries — high-signal stem ('obituar' → obituary/obituaries), never appears in a
+      // review slug or headline. Matters most for slugless outlets (FT /content/{uuid}): the
+      // bypass below skips urlLooksLikeReview's URL-path /obituar reject, so this TITLE check
+      // is what still catches FT obituaries. (Deliberately NOT adding broader tribute tokens
+      // like 'appreciation' — they collide with legitimate review headlines.)
+      'obituar'];
     const isNonReview = nonReviewTerms.some(t => title.includes(t) || urlLower.includes(t));
     if (isNonReview) {
       log(`    ✗ Skipping non-review: ${url.substring(0, 80)}...`);
