@@ -34,7 +34,8 @@
     "and-then-the-rodeo-burned-down-off-broadway-2026/variety--haley-kluge.json",
     "lauder-scotlands-kilted-king-of-broadway-off-broadway-2026/nytimes--brittani-samuel.json",
     "the-mystery-of-edwin-drood-amt-theater-off-broadway-2026/nytimes--brittani-samuel.json",
-    "the-mystery-of-edwin-drood-amt-theater-off-broadway-2026/nytimes--helen-shaw.json"
+    "the-mystery-of-edwin-drood-amt-theater-off-broadway-2026/nytimes--helen-shaw.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--laura-collins-hughes.json"
   ],
   "failed": [
     "the-p-word-off-west-end-2026/sunday-telegraph--claire-allfree.json",
@@ -648,7 +649,16 @@
     "small-off-broadway-2026/the-recs--unknown.json",
     "small-off-broadway-2026/washpost--unknown.json",
     "indian-princesses-off-broadway-2025/pages-on-stages--mason-pilevsky.json",
-    "the-maids-off-broadway-2026/ew--unknown.json"
+    "the-maids-off-broadway-2026/ew--unknown.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/playbill--unknown.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
+    "small-off-broadway-2026/pages-on-stages--unknown.json",
+    "small-off-broadway-2026/the-recs--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -688,7 +698,10 @@
       "and-then-the-rodeo-burned-down-off-broadway-2026/variety--haley-kluge.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
-      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json"
+      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -701,7 +714,8 @@
       "animal-wisdom-2022/nytimes--ben-brantley.json",
       "lauder-scotlands-kilted-king-of-broadway-off-broadway-2026/nytimes--brittani-samuel.json",
       "the-mystery-of-edwin-drood-amt-theater-off-broadway-2026/nytimes--brittani-samuel.json",
-      "the-mystery-of-edwin-drood-amt-theater-off-broadway-2026/nytimes--helen-shaw.json"
+      "the-mystery-of-edwin-drood-amt-theater-off-broadway-2026/nytimes--helen-shaw.json",
+      "a-woman-among-women-off-broadway-2026/nytimes--laura-collins-hughes.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -729,7 +743,7 @@
     ]
   },
   "startTime": "2026-06-04T04:34:53.808Z",
-  "lastProcessed": "the-maids-off-broadway-2026/ew--unknown.json",
+  "lastProcessed": "small-off-broadway-2026/the-recs--unknown.json",
   "log": [
     {
       "t": "2026-06-04T11:24:42.850Z",
@@ -946,6 +960,39 @@
       "t": "2026-06-05T00:51:21.791Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-05T01:55:32.681Z",
+      "event": "bb-session",
+      "session": "49fb8bb7",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-05T01:55:33.185Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-05T01:56:19.883Z",
+      "event": "bb-session",
+      "session": "33b06cf9",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-05T01:56:20.410Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-05T01:56:35.922Z",
+      "event": "bb-session",
+      "session": "d66fb135",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-05T01:56:36.329Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
