@@ -442,7 +442,17 @@
     "mary-poppins-2006/variety--charles-isherwood.json",
     "tarzan-2006/variety--charles-isherwood.json",
     "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
-    "the-loved-ones-off-broadway-2026/broadwayworld--team-bww.json"
+    "the-loved-ones-off-broadway-2026/broadwayworld--team-bww.json",
+    "driftwood-west-end-2026/times-uk--clive-davis.json",
+    "war-horse-west-end-2026/times-uk--chris-bennion.json",
+    "war-horse-west-end-2026/times-uk--clive-davis.json",
+    "beetlejuice-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "beetlejuice-west-end-2026/amny--matt-windman.json",
+    "the-p-word-off-west-end-2026/whatsonstage--frey-kwa-hawking.json",
+    "dark-of-the-moon-west-end-2026/guardian-uk--unknown.json",
+    "dark-of-the-moon-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "dark-of-the-moon-west-end-2026/artsdesk--unknown.json",
+    "dark-of-the-moon-west-end-2026/cambridge--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -477,7 +487,9 @@
     "brightdata": [
       "girl-interrupted-off-broadway-2026/talkinbroadway--unknown.json"
     ],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json"
+    ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
@@ -487,7 +499,7 @@
     ]
   },
   "startTime": "2026-06-05T09:41:09.872Z",
-  "lastProcessed": "the-loved-ones-off-broadway-2026/broadwayworld--team-bww.json",
+  "lastProcessed": "dark-of-the-moon-west-end-2026/cambridge--unknown.json",
   "log": [
     {
       "t": "2026-06-05T09:47:27.505Z",
@@ -510,6 +522,12 @@
       "t": "2026-06-05T09:49:43.135Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-05T20:19:05.846Z",
+      "event": "bb-session",
+      "session": "527fa9c2",
+      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
     }
   ]
 }
