@@ -79,6 +79,37 @@ test('same show but different topic is NOT deduped', () => {
   assert.equal(dup, null, 'different topic on same show should not dedupe');
 });
 
+test('REGRESSION (E2E 2026-06-05): verbose same-show duplicate below 0.25 still dedupes', () => {
+  // The live E2E created a fresh Caissie/Ragtime bug whose AI diagnosis landed
+  // at only 0.216 Jaccard vs the open #356/#358 — MISSED at the old 0.25 bar,
+  // wrongly creating a duplicate issue + owner email. The threshold is now 0.12.
+  const newRagtimeBug = {
+    showId: 'ragtime-2025',
+    summary: 'The Ragtime awards section is missing Caissie Levy as a co-winner of the Drama Desk Award for Best Leading Performance in a Musical, which she shared with Joshua Henry. The site currently only credits Joshua Henry.',
+    whatsHappening: 'The Drama Desk award data for Ragtime omits Caissie Levy.',
+    submitterShow: 'Ragtime',
+    originalMessage: 'The Ragtime page is missing an award winner. Caissie Levy co-won the Drama Desk for Best Leading Performance in a Musical, tied with Joshua Henry, but the site only credits him.',
+  };
+  const openRagtimeIssue = {
+    showId: 'ragtime-2025',
+    summary: 'User reports that Caissie Levy is missing as a co-winner of the Drama Desk Award for best leading performance',
+    whatsHappening: 'The site does not list Caissie Levy among Drama Desk winners.',
+    submitterShow: 'Ragtime',
+    originalMessage: 'Caissie Levy also won the Drama Desk for best leading performance.',
+  };
+  const dup = findDuplicateOpenBug(newRagtimeBug, [{ number: 356, diagnosis: openRagtimeIssue }]);
+  assert.ok(dup, 'verbose same-show duplicate must dedupe at the calibrated threshold');
+  assert.equal(dup.number, 356);
+});
+
+test('REGRESSION: genuinely different bugs on the same show do NOT dedupe', () => {
+  // From the real backlog: a misattribution bug vs a score-explanation bug on
+  // the same show sit at ~0.02-0.03 Jaccard — must stay separate.
+  const misattribution = { showId: 'two-strangers-bway-2025', summary: 'The site appears to be showing a Variety review that belongs to a different production' };
+  const scoreExplain = { showId: 'two-strangers-bway-2025', summary: 'The score of 75 is not a simple average; it uses a weighted tier calculation' };
+  assert.equal(findDuplicateOpenBug(misattribution, [{ number: 244, diagnosis: scoreExplain }]), null);
+});
+
 test('picks the highest-similarity match among multiple opens', () => {
   const openBugs = [
     { number: 100, diagnosis: obA },       // unrelated to Caissie
