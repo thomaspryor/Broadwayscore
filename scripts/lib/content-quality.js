@@ -142,6 +142,55 @@ function detectStrongErrorPageAnywhere(text) {
   return { detected: false, match: null };
 }
 
+// Unambiguous full-page chrome (cookie-consent banners, dedicated legal/privacy
+// pages, hard paywall walls) whose distinctive marker can be pushed PAST the
+// first-500-char windows used by detectCookieConsent (line ~271) and the legal
+// no-review branch (line ~845) by a long nav-chrome prefix — the exact failure
+// mode the 404 STRONG_ERROR_PAGE_PATTERNS fixed for error pages.
+//
+// CRITICAL DIFFERENCE from STRONG_ERROR_PAGE_PATTERNS: "page not found" never
+// appears in a real review's footer, so it's safe to scan position-independently
+// over ANY text. These phrases DO appear as trailing footer/account chrome on
+// hundreds of genuine scraped reviews (WSJ "Continue reading… with a subscription",
+// HollywoodReporter "Terms of Use | Privacy Policy", TimeOut "Thanks for
+// subscribing!", The Stage GDPR footer). So detectStrongChromeDumpAnywhere is
+// ONLY consulted for files that LACK substantial review content (no review prose
+// to protect) AND only when the marker is NOT in trailing junk — i.e. a genuine
+// chrome-dump page, not a real review with a footer. Verified against the full
+// corpus (2026-06-05): 0 currently-scored real reviews newly flagged. See
+// memory/feedback_content_quality_regex_fps.md and the 404 origin note above.
+const STRONG_CHROME_DUMP_PATTERNS = [
+  // Cookie-consent / GDPR full sentences — never occur in review prose.
+  /your\s+consent\s+will\s+be\s+valid/i,
+  /consent\s+management\s+platform/i,
+  /manage\s+(your\s+)?cookie\s+(preferences|settings|consent)/i,
+  // Dedicated legal/privacy page titles at line start.
+  /^cookie\s+(policy|notice|consent)\b/im,
+  /^legal\s+(notice|disclaimer)\b/im,
+  /^copyright\s+(notice|policy)\b/im,
+  // Hard paywall walls — full call-to-action sentences (not bare "members only").
+  /subscribe\s+to\s+(continue|read|access)\b/i,
+  /sign\s+in\s+to\s+(continue|read|access|view)\b/i,
+  /log\s+in\s+to\s+(continue|read|access|view)\b/i,
+];
+
+/**
+ * Scan the whole body for unambiguous chrome-dump markers (cookie/legal/paywall
+ * full-page chrome). Position-independent, but intended ONLY for callers that
+ * have already established the text lacks substantial review content — see
+ * STRONG_CHROME_DUMP_PATTERNS for why this must not run on real reviews.
+ * @param {string} text
+ * @returns {{ detected: boolean, match: string|null }}
+ */
+function detectStrongChromeDumpAnywhere(text) {
+  const t = (typeof text === 'string') ? text : '';
+  for (const pattern of STRONG_CHROME_DUMP_PATTERNS) {
+    const m = t.match(pattern);
+    if (m) return { detected: true, match: m[0] };
+  }
+  return { detected: false, match: null };
+}
+
 /**
  * Patterns that indicate newsletter/subscription forms (not review content)
  * @type {RegExp[]}
@@ -791,6 +840,20 @@ function isGarbageContent(text) {
   const cookieConsent = detectCookieConsent(text);
   if (cookieConsent.detected) {
     return { isGarbage: true, reason: `Cookie consent/GDPR banner: "${cookieConsent.match}"` };
+  }
+
+  // Buried chrome-dump scan. detectCookieConsent and the legal no-review branch
+  // both only look at the first 500 chars; a long nav-chrome prefix can push the
+  // cookie/legal/paywall marker past that window on a page that is entirely
+  // chrome (no review). Mirror the 404 STRONG_ERROR scan, but gate hard on
+  // (a) NO substantial review content — there's no review prose to protect — and
+  // (b) the marker not being trailing junk, so a footer link/banner on a short
+  // real review is never flagged. Both conditions hold only for true chrome dumps.
+  if (!hasSubstantialReviewContent) {
+    const strongChrome = detectStrongChromeDumpAnywhere(trimmed);
+    if (strongChrome.detected && !_isPatternInTrailingJunk(trimmed, strongChrome.match)) {
+      return { isGarbage: true, reason: `Chrome-dump page (buried marker): "${strongChrome.match}"` };
+    }
   }
 
   // Check for ad blocker message
@@ -2535,6 +2598,8 @@ module.exports = {
   detectPaywall,
   detectLegalPage,
   detectErrorPage,
+  detectStrongErrorPageAnywhere,
+  detectStrongChromeDumpAnywhere,
   detectNewsletter,
   detectUrlOnly,
   detectNavigationJunk,
@@ -2556,6 +2621,8 @@ module.exports = {
   LEGAL_PAGE_PATTERNS,
   COOKIE_CONSENT_PATTERNS,
   ERROR_PAGE_PATTERNS,
+  STRONG_ERROR_PAGE_PATTERNS,
+  STRONG_CHROME_DUMP_PATTERNS,
   NEWSLETTER_PATTERNS,
   NAVIGATION_PATTERNS,
   WRONG_ARTICLE_PATTERNS,

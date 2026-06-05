@@ -39,6 +39,11 @@ const PATTERN_FAMILIES = [
   'LEGAL_PAGE_PATTERNS',
   'COOKIE_CONSENT_PATTERNS',
   'ERROR_PAGE_PATTERNS',
+  // Position-independent chrome-dump markers (gated at runtime on no-review +
+  // non-trailing). Raw corpus hits are ~0; the gate trips only if a scraper
+  // regression starts emitting these as bulk chrome. See content-quality.js
+  // STRONG_CHROME_DUMP_PATTERNS.
+  'STRONG_CHROME_DUMP_PATTERNS',
   'NEWSLETTER_PATTERNS',
   'NAVIGATION_PATTERNS',
   'WRONG_ARTICLE_PATTERNS',
