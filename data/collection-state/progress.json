@@ -681,7 +681,17 @@
     "mass-west-end-2026/times-uk--rachel-halliburton.json",
     "the-rocky-horror-show-2026/nytimes--charlotte-dulany.json",
     "a-midsummer-nights-dream-globe-west-end-2026/times-uk--donald-hutera.json",
-    "a-midsummer-nights-dream-globe-west-end-2026/whatsonstage--judi-herman.json"
+    "a-midsummer-nights-dream-globe-west-end-2026/whatsonstage--judi-herman.json",
+    "fallen-angels-2026/nytimes--michael-paulson.json",
+    "inter-alia-west-end-2026/variety--leo-barraclough.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "titanique-west-end-2024/times-uk--clive-davis.json",
+    "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
+    "hadestown-west-end-2024/times-uk--clive-davis.json",
+    "mj-2022/broadwaynews--charles-isherwood.json",
+    "mj-2022/nydailynews--karu-f-daniels.json",
+    "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
+    "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -724,7 +734,8 @@
       "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
-      "data/review-texts/im-not-being-funny-west-end-2026/express-uk--stefan-kyriazis.json"
+      "data/review-texts/im-not-being-funny-west-end-2026/express-uk--stefan-kyriazis.json",
+      "data/review-texts/inter-alia-west-end-2026/variety--leo-barraclough.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -767,7 +778,7 @@
     ]
   },
   "startTime": "2026-06-04T04:34:53.808Z",
-  "lastProcessed": "a-midsummer-nights-dream-globe-west-end-2026/whatsonstage--judi-herman.json",
+  "lastProcessed": "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json",
   "log": [
     {
       "t": "2026-06-04T11:24:42.850Z",
@@ -1012,6 +1023,17 @@
       "event": "bb-session",
       "session": "b2361c9f",
       "url": "https://www.express.co.uk/entertainment/theatre/2016861/tom-hiddleston-hayley-at"
+    },
+    {
+      "t": "2026-06-05T03:56:19.429Z",
+      "event": "bb-session",
+      "session": "2647ecca",
+      "url": "https://variety.com/2026/legit/news/rosamund-pike-texting-inter-alia-1236764726/"
+    },
+    {
+      "t": "2026-06-05T03:56:20.181Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
