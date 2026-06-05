@@ -18,7 +18,13 @@
  */
 
 const fs = require('fs');
+const path = require('path');
 const { execSync } = require('child_process');
+// Generalized intentional-clear breadcrumbs — single source of truth. When the
+// LOCAL record deliberately cleared a field (durable breadcrumb present), we
+// must NOT restore the remote value, or a CI rebase silently re-flags a
+// human-verified review. See review-write-guard.js. (2026-06-05)
+const { isIntentionalClear } = require(path.join(__dirname, 'review-write-guard.js'));
 
 // Fields that must be preserved across rebases. Two categories:
 //   (a) MANUAL human corrections CI should never touch — see DoaS Apr 9-10
@@ -148,6 +154,15 @@ try {
           remote[field] !== null &&
           (local[field] === undefined || local[field] === null)
         ) {
+          // Intentional-clear exception: if the LOCAL record deliberately
+          // cleared this field and carries the canonical breadcrumb (e.g. a
+          // human wrongProductionManualClear / humanReviewedWrongProduction:false,
+          // wrongShowCleared signals, originalScoreCleared, or duplicateClearReason),
+          // the empty value is not data-loss — honor it instead of resurrecting
+          // the remote flag. Without this guard the remote's stale `true` comes
+          // right back on every rebase. Mirrors the action.yml restore skip and
+          // review-guards.js is-cleared semantics. (2026-06-05)
+          if (isIntentionalClear(field, local)) continue;
           local[field] = remote[field];
           modified = true;
           process.stderr.write(`  Restored ${field} in ${f}\n`);

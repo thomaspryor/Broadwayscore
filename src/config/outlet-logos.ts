@@ -1,12 +1,21 @@
 // Outlet Logo Configuration
 // Maps outlet names to their logo URLs and brand colors
 
+// Generated from the canonical data/outlet-registry.json (keyed by outletId).
+// Covers every registry outlet that has a domain (~590), so logos resolve by
+// outletId and we never silently miss a configured outlet. Regenerate with:
+//   node scripts/generate-outlet-logos.js
+import GENERATED_BY_ID from './outlet-logos-generated.json';
+
 export interface OutletLogoConfig {
   domain: string;       // For logo services (clearbit, google favicons)
   color?: string;       // Brand color for fallback circle
   abbrev?: string;      // Abbreviation for letter fallback
   darkBg?: boolean;     // If logo needs dark background
 }
+
+const OUTLET_LOGOS_BY_ID: Record<string, OutletLogoConfig & { displayName?: string }> =
+  GENERATED_BY_ID as Record<string, OutletLogoConfig & { displayName?: string }>;
 
 // Canonical outlet domain mappings
 // Used with: https://logo.clearbit.com/{domain}
@@ -246,4 +255,33 @@ export function getOutletFaviconUrl(outlet: string): string | null {
 // Get outlet config (for fallback styling)
 export function getOutletConfig(outlet: string): OutletLogoConfig | null {
   return OUTLET_LOGOS[outlet] || null;
+}
+
+// ---- outletId-based resolution (preferred) ----------------------------------
+// Reviews carry a canonical `outletId`; resolving by id covers every outlet in
+// the registry that has a domain, so new/long-tail outlets get logos
+// automatically. Name-based lookups above remain as a fallback for callers that
+// only have a display name.
+
+function favicon(domain: string): string {
+  // Google Favicons (Clearbit Logo API was shut down after HubSpot acquisition)
+  return `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
+}
+
+// Get logo URL for an outlet by its canonical id (falls back to name lookup).
+export function getOutletLogoUrlById(outletId?: string | null, outletName?: string): string | null {
+  if (outletId) {
+    const byId = OUTLET_LOGOS_BY_ID[outletId];
+    if (byId?.domain) return favicon(byId.domain);
+  }
+  return outletName ? getOutletLogoUrl(outletName) : null;
+}
+
+// Get outlet config (for fallback styling) by id, falling back to name lookup.
+export function getOutletConfigById(outletId?: string | null, outletName?: string): OutletLogoConfig | null {
+  if (outletId) {
+    const byId = OUTLET_LOGOS_BY_ID[outletId];
+    if (byId) return byId;
+  }
+  return outletName ? getOutletConfig(outletName) : null;
 }
