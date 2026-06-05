@@ -55,6 +55,11 @@ const { matchTitleToShow, validateRoundupPageTitle } = require('./lib/show-match
 const { fetchPage, fetchJSON } = require('./lib/scraper');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const { tryTbDirectUrl } = require('./lib/tb-direct-url');
+const {
+  DEFAULT_SERP_BURST_CONFIG,
+  checkSerpBurstAllowed,
+  isCascadeTripwireExceeded,
+} = require('./lib/serp-burst-caps');
 
 // Paths
 const DATA_DIR = path.join(__dirname, '..', 'data');
@@ -63,6 +68,7 @@ const REVIEWS_PATH = path.join(DATA_DIR, 'reviews.json');
 const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
 const OUTLET_REGISTRY_PATH = path.join(DATA_DIR, 'outlet-registry.json');
 const BACKOFF_DIR = path.join(DATA_DIR, 'audit', 'poller-backoff');
+const SERP_BURST_LEDGER_PATH = path.join(DATA_DIR, 'audit', 'serp-burst-ledger.json');
 
 /**
  * Balusters postmortem CLASS 7 — exponential backoff for no-op polls.
@@ -100,11 +106,66 @@ function isInAggressiveWindow(show) {
   return hoursSinceOpening >= 0 && hoursSinceOpening < 6;
 }
 
+/**
+ * Daily ledger for the WE SERP burst (see scripts/lib/serp-burst-caps.js). Provides a
+ * best-effort DAILY-GLOBAL + per-show ceiling across independent CI poller runs. Persisted as
+ * data/audit/serp-burst-ledger.json in the MAIN repo working tree (tracked in the public repo,
+ * NOT the core-data overlay), committed by the workflow's backoff step — the exact same
+ * persistence model as poller-backoff state. Resets on UTC date rollover.
+ *
+ * Concurrency caveat (deliberate, bounded — NOT a hard cross-run guarantee): two WE shows
+ * opening the same morning run as parallel poller jobs and share this one ledger. The
+ * read-modify-write (plus push-with-retry's "keep local" rebase of audit/) can lose an
+ * increment, so the daily ceiling is ADVISORY — under concurrency it can be exceeded by up to
+ * ~(Nconcurrent-1) bursts per tick. The TRUE hard bound is the per-cycle SERP_BUDGET (12
+ * outlet calls); with realistic concurrency of 2-3 WE openings the worst-case overspend is a
+ * few hundred SERP calls/day, nowhere near a cascade. Kill-switch (delete the
+ * ENABLE_WE_SERP_BURST variable) is the ultimate backstop.
+ */
+function utcDateKey(now = new Date()) {
+  return now.toISOString().slice(0, 10);
+}
+
+function loadSerpBurstLedger(now = new Date()) {
+  const today = utcDateKey(now);
+  let raw = null;
+  try {
+    if (fs.existsSync(SERP_BURST_LEDGER_PATH)) {
+      raw = JSON.parse(fs.readFileSync(SERP_BURST_LEDGER_PATH, 'utf8'));
+    }
+  } catch { raw = null; }
+  if (!raw || raw.date !== today) {
+    return { date: today, globalBursts: 0, perShow: {} };
+  }
+  return { date: today, globalBursts: raw.globalBursts || 0, perShow: raw.perShow || {} };
+}
+
+function incrementSerpBurstLedger(showId, now = new Date()) {
+  const ledger = loadSerpBurstLedger(now);
+  ledger.globalBursts += 1;
+  ledger.perShow[showId] = (ledger.perShow[showId] || 0) + 1;
+  try {
+    const dir = path.dirname(SERP_BURST_LEDGER_PATH);
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(SERP_BURST_LEDGER_PATH, JSON.stringify(ledger, null, 2));
+  } catch (e) {
+    console.log(`  [SERP burst] ledger write failed (non-fatal): ${e.message}`);
+  }
+  return ledger;
+}
+
 // CLI args
 const SHOW_ID = (process.argv.find(a => a.startsWith('--show=')) || '').replace('--show=', '');
 const DRY_RUN = process.argv.includes('--dry-run');
 const SKIP_SERP = process.argv.includes('--skip-serp');
 const FORCE_SERP = process.argv.includes('--force-serp');
+// Feature flag (default OFF) + kill-switch for the WE opening-night SERP burst. When ON,
+// an incoming --skip-serp (e.g. the orchestrator's iteration-1-8 deferral) is overridden
+// for aggressive-window WE shows, under the hard ceilings in scripts/lib/serp-burst-caps.js.
+// Flag OFF → --skip-serp is honored exactly as before: the burst block never runs and the
+// SKIPPED log is unchanged (the added env var/module exports are inert). Runtime behavior is
+// identical to pre-change. Toggle: gh variable set ENABLE_WE_SERP_BURST --body true (delete to disable).
+const ENABLE_WE_SERP_BURST = process.env.ENABLE_WE_SERP_BURST === 'true';
 const SKIP_SITE_SEARCH = process.argv.includes('--skip-site-search');
 const VERBOSE = process.argv.includes('--verbose') || true; // Always verbose for CI logs
 // Escape hatches: bypass SERP discovery when discovery fails (wrong Google result, unindexed page)
@@ -1626,8 +1687,41 @@ async function pollCycle() {
     return true;
   }
 
+  // WE opening-night SERP burst (flag-gated, hard-capped). Corrected diagnosis
+  // (data/audit/we-serp-diagnosis-corrected.md): the orchestrator forces --skip-serp on
+  // iterations 1-8, and those runs are usually cancelled before the deferred SERP (iter
+  // 9-10) ever runs — so aggressive-window WE shows get no SERP at all. When
+  // ENABLE_WE_SERP_BURST is on, override --skip-serp for those shows, but only under the
+  // daily-global + per-show ceilings in scripts/lib/serp-burst-caps.js (the per-cycle
+  // SERP_BUDGET still bounds outlet fan-out). Flag OFF → byte-identical to before.
+  let serpBurstActive = false;
+  if (SKIP_SERP && ENABLE_WE_SERP_BURST) {
+    const hoursSinceOpening = show.openingDate
+      ? (Date.now() - new Date(show.openingDate).getTime()) / 3600000
+      : null;
+    const ledger = loadSerpBurstLedger();
+    const decision = checkSerpBurstAllowed({
+      flagEnabled: true,
+      show,
+      mode: _mode,
+      hoursSinceOpening,
+      burstsToday: ledger.globalBursts,
+      burstsForShowToday: ledger.perShow[SHOW_ID] || 0,
+    });
+    if (decision.allowed) {
+      serpBurstActive = true;
+      console.log(
+        `\n[Layer 4] SERP BURST: overriding --skip-serp for aggressive-window WE show ` +
+        `(flag ENABLE_WE_SERP_BURST; ${ledger.perShow[SHOW_ID] || 0}/${DEFAULT_SERP_BURST_CONFIG.perShowCap} this show, ` +
+        `${ledger.globalBursts}/${DEFAULT_SERP_BURST_CONFIG.dailyGlobalCap} used today)`
+      );
+    } else {
+      console.log(`\n[Layer 4] SERP burst not allowed (${decision.reason}) — honoring --skip-serp`);
+    }
+  }
+
   let serpResults = [];
-  if (!SKIP_SERP && shouldRunSerp()) {
+  if ((!SKIP_SERP && shouldRunSerp()) || serpBurstActive) {
     const foundOutletIds = getFoundOutletIds(SHOW_ID);
     for (const r of [...aggResults, ...rssResults, ...siteSearchResults]) {
       if (r.outletId) foundOutletIds.add(r.outletId.toLowerCase());
@@ -1704,15 +1798,29 @@ async function pollCycle() {
       missingOutlets = [...ukOutlets, ...rest];
     }
     if (missingOutlets.length > 0) {
+      // Count the burst against the daily ledger only when SERP actually runs (missing
+      // outlets exist) — a no-op cycle where everything is already found must not consume
+      // the daily/per-show cap and starve another opening.
+      if (serpBurstActive) {
+        const updated = incrementSerpBurstLedger(SHOW_ID);
+        if (isCascadeTripwireExceeded(updated.globalBursts)) {
+          console.log(
+            `::warning::SERP burst cascade tripwire: ${updated.globalBursts} WE SERP bursts today ` +
+            `(>= ${DEFAULT_SERP_BURST_CONFIG.cascadeTripwire}, daily cap ${DEFAULT_SERP_BURST_CONFIG.dailyGlobalCap}). ` +
+            `Kill-switch: gh variable delete ENABLE_WE_SERP_BURST`
+          );
+        }
+      }
       serpResults = await runSERPBackup(show, missingOutlets, knownUrls);
     } else {
       console.log('\n[Layer 4] SERP Backup... all T1/T2 outlets found');
     }
   } else if (!SKIP_SERP) {
     // shouldRunSerp() already logged the skip reason
-  } else {
+  } else if (!ENABLE_WE_SERP_BURST) {
     console.log('\n[Layer 4] SERP Backup... SKIPPED (--skip-serp)');
   }
+  // else: ENABLE_WE_SERP_BURST on but burst disallowed — the "burst not allowed" line above already logged it
 
   // ── Process discovered reviews ──
   const allDiscovered = [...aggResults, ...rssResults, ...siteSearchResults, ...serpResults];
@@ -1864,4 +1972,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { pollCycle, checkReadiness, getMissingT1T2Outlets, getThresholds, preWipePreOpeningFiles, pollMode, shouldRunSerpForMode, isBrightDataAllowedForShow, SERP_BUDGET, runSERPBackup };
+module.exports = { pollCycle, checkReadiness, getMissingT1T2Outlets, getThresholds, preWipePreOpeningFiles, pollMode, shouldRunSerpForMode, isBrightDataAllowedForShow, SERP_BUDGET, runSERPBackup, loadSerpBurstLedger, incrementSerpBurstLedger, SERP_BURST_LEDGER_PATH };
