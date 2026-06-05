@@ -1628,6 +1628,9 @@ showDirs.forEach(showId => {
         const tierResult = classifyContentTier(data);
         const oldTier = data.contentTier;
         data.contentTier = tierResult.contentTier;
+        // Propagate truncationSignals so classifyIncompleteReason (called next) can
+        // use them for routing (e.g., nyt_bot_stub → bot_blocked not paywall).
+        if (tierResult.truncationSignals) data.truncationSignals = tierResult.truncationSignals;
         if (!oldTier || oldTier !== tierResult.contentTier) {
           try {
             const sourceData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
