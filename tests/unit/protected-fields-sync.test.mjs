@@ -50,7 +50,7 @@ test('push-review-texts/action.yml effective PROTECTED list contains every openi
   // and unions with a small ACTION_EXTRA list. We mirror that composition.
   const actionYml = readRepo('.github/actions/push-review-texts/action.yml');
   assert.ok(
-    /PROTECTED_FIELDS\s*\}\s*=\s*require\(/.test(actionYml),
+    /\bPROTECTED_FIELDS\b[^}]*\}\s*=\s*require\(/.test(actionYml),
     'action.yml must require { PROTECTED_FIELDS } from scripts/lib/review-write-guard.js (S2-T2)'
   );
   const extraMatch = actionYml.match(/const\s+ACTION_EXTRA\s*=\s*\[([\s\S]*?)\];/);
