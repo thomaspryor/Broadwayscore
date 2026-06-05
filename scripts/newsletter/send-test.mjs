@@ -58,6 +58,19 @@ if (process.env.NEWSLETTER_SUBJECT_PREFIX) {
   subject = `${process.env.NEWSLETTER_SUBJECT_PREFIX} ${subject}`;
 }
 
+// Guard: never fire accidentally from local testing or regression runs.
+// CI=true (GitHub Actions) allows the send; locally set NEWSLETTER_SEND=1
+// or pass --force to override.
+const ALLOW_SEND = process.env.CI === 'true'
+  || process.env.NEWSLETTER_SEND === '1'
+  || process.argv.includes('--force');
+if (!ALLOW_SEND) {
+  console.log('[DRY RUN] Would send to:', RECIPIENT);
+  console.log('[DRY RUN] Subject:', subject);
+  console.log('[DRY RUN] Set NEWSLETTER_SEND=1 or pass --force to actually send.');
+  process.exit(0);
+}
+
 const body = {
   from: 'Broadway Scorecard <updates@broadwayscorecard.com>',
   to: [RECIPIENT],
