@@ -39,6 +39,10 @@ const PATTERN_FAMILIES = [
   'LEGAL_PAGE_PATTERNS',
   'COOKIE_CONSENT_PATTERNS',
   'ERROR_PAGE_PATTERNS',
+  // Whole-body 404/error chrome scanned position-independently (detectStrongError
+  // PageAnywhere). Phrases never appear in real review prose or footers, so raw
+  // corpus hits among scored-tier reviews are 0. Registered for FP-gate coverage.
+  'STRONG_ERROR_PAGE_PATTERNS',
   // Position-independent chrome-dump markers (gated at runtime on no-review +
   // non-trailing). Raw corpus hits are ~0; the gate trips only if a scraper
   // regression starts emitting these as bulk chrome. See content-quality.js
