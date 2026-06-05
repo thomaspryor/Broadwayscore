@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-04T23:41:09.568Z",
+  "timestamp": "2026-06-05T05:34:16.121Z",
   "stats": {
-    "totalReviews": 38077,
-    "alreadyFlagged": 16735,
+    "totalReviews": 38096,
+    "alreadyFlagged": 16753,
     "dateGuardCatches": 108,
     "directorMismatch": 828,
-    "tvFilmSignals": 1046,
+    "tvFilmSignals": 1047,
     "londonSignals": 604,
     "offBroadwaySignals": 460,
     "yearMismatch": 79,
-    "noPublishDate": 3992
+    "noPublishDate": 3987
   },
   "findings": [
     {
@@ -18197,6 +18197,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"richard eyre\" from skylight-1996"
+        }
+      ]
+    },
+    {
+      "showId": "small-off-broadway-2026",
+      "file": "guardian--arifa-akbar.json",
+      "score": 56,
+      "publishDate": null,
+      "url": "https://www.theguardian.com/stage/2025/oct/10/small-hotel-review-theatre-royal-bath",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -38247,7 +38261,7 @@
     {
       "showId": "the-emporium-off-broadway-2025",
       "file": "nysr--michael-sommers.json",
-      "score": null,
+      "score": 73,
       "publishDate": "2026-05-19",
       "url": "https://nystagereview.com/2026/05/18/thornton-wilders-the-emporium-department-story/",
       "findings": [
