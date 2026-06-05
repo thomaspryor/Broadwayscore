@@ -2449,7 +2449,11 @@ showDirs.forEach(showId => {
         delete data.assignedScore;
         delete data.ensembleData;
         const hasExcerpt = !!(data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.stagedoorExcerpt || data.lboRoundupExcerpt);
-        data.contentTier = hasExcerpt ? 'excerpt' : 'stub';
+        // Respect a human contentTier override (the only direct contentTier setter
+        // that bypassed classifyContentTier's manualContentTier check). Mirrors the
+        // wrongProduction setter-guard discipline (shouldSkipWrongProductionAudit):
+        // a committed manual override must never be silently downgraded. Piece 3.
+        if (!data.manualContentTier) data.contentTier = hasExcerpt ? 'excerpt' : 'stub';
         if (!hasExcerpt) {
           logExclusion("skippedFullTextWrongAuthor", showId, file, data);
           stats.skippedFullTextWrongAuthor = (stats.skippedFullTextWrongAuthor || 0) + 1;
@@ -2725,7 +2729,11 @@ showDirs.forEach(showId => {
         delete data.assignedScore;
         delete data.ensembleData;
         const hasExcerpt = !!(data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.stagedoorExcerpt || data.lboRoundupExcerpt);
-        data.contentTier = hasExcerpt ? 'excerpt' : 'stub';
+        // Respect a human contentTier override (the only direct contentTier setter
+        // that bypassed classifyContentTier's manualContentTier check). Mirrors the
+        // wrongProduction setter-guard discipline (shouldSkipWrongProductionAudit):
+        // a committed manual override must never be silently downgraded. Piece 3.
+        if (!data.manualContentTier) data.contentTier = hasExcerpt ? 'excerpt' : 'stub';
         if (!hasExcerpt) {
           logExclusion("skippedFullTextWrongAuthor", showId, file, data);
           stats.skippedFullTextWrongAuthor = (stats.skippedFullTextWrongAuthor || 0) + 1;
