@@ -109,3 +109,20 @@ test('incomplete-reason classifies nyt_bot_stub signal as bot_blocked (not paywa
   assert.equal(result?.incompleteReason, 'bot_blocked',
     `expected 'bot_blocked', got '${result?.incompleteReason}' — Browserbase won't fire for 'paywall' reason`);
 });
+
+test('incomplete-reason classifies bot_blocked via fullText fallback when truncationSignals absent', () => {
+  // Rebuild reads source files before propagating truncationSignals into data.
+  // The fullText-scan fallback in Layer A.5 catches the pattern even when
+  // truncationSignals is not set on the review object.
+  const { classifyIncompleteReason } = require(path.join(__dirname, '..', '..', 'scripts', 'lib', 'incomplete-reason.js'));
+  const review = {
+    url: 'https://www.nytimes.com/2023/04/01/theater/example-review.html',
+    contentTier: 'truncated',
+    // truncationSignals intentionally absent (mimics source file before rebuild propagation)
+    fullText: NYT_STUB_TEXT,
+    wordCount: 380,
+  };
+  const result = classifyIncompleteReason(review);
+  assert.equal(result?.incompleteReason, 'bot_blocked',
+    `expected 'bot_blocked' via fullText scan, got '${result?.incompleteReason}'`);
+});
