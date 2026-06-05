@@ -12,6 +12,16 @@ interface PickSource { id: string; outlet: string; critic: string; shortName: st
 const SOURCES = (criticPicksData as { sources: PickSource[] }).sources;
 const PICK_CATEGORIES = new Set(Object.keys((criticPicksData as { picks: Record<string, unknown> }).picks));
 
+// Display order only — NOT a credibility ranking. Every outlet counts as one
+// equal vote in the consensus bars. Trades + theater specialists are listed
+// first, general/lifestyle outlets last, purely so the legend reads sensibly.
+const OUTLET_ORDER = ['nyt', 'variety', 'thr', 'timeout', 'slant', 'nytg', 'theatermania', 'nysun', 'ew', 'deadline', 'culturesauce', 'cityguide', 'vf', 'elle'];
+const orderIdx = (id: string) => {
+  const i = OUTLET_ORDER.indexOf(id);
+  return i === -1 ? 999 : i;
+};
+const ORDERED_SOURCES = [...SOURCES].sort((a, b) => orderIdx(a.id) - orderIdx(b.id));
+
 export const metadata: Metadata = {
   title: `${season.ceremonyYear} Tony Awards — Critic Press Picks`,
   description: `Who ${SOURCES.length} critics predict will win at the ${season.ceremonyYear} Tony Awards, category by category. See where the press agrees and where it splits.`,
@@ -58,7 +68,7 @@ export default function TonyPressPicksPage() {
 
             {/* Outlet legend */}
             <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2">
-              {SOURCES.map(s => (
+              {ORDERED_SOURCES.map(s => (
                 <div key={s.id} className="flex items-center gap-1.5">
                   <OutletPickLogo outletId={s.id} />
                   <span className="text-[11px] text-gray-400 leading-none">
@@ -121,7 +131,7 @@ export default function TonyPressPicksPage() {
 
                           {/* Logos */}
                           <div className="flex flex-wrap items-center gap-0.5 sm:w-[112px] sm:flex-shrink-0">
-                            {(nom.criticPicks ?? []).map(id => (
+                            {(nom.criticPicks ?? []).slice().sort((a, b) => orderIdx(a) - orderIdx(b)).map(id => (
                               <OutletPickLogo key={id} outletId={id} />
                             ))}
                           </div>
