@@ -36,6 +36,7 @@ import {
   precursorSweepConversionScore,
   castActingNomsScore,
   belowTheLineNomsScore,
+  topCatPrecursorScore,
   type TonyCategoryKey,
 } from '../src/lib/data-tony-predictions';
 
@@ -819,7 +820,115 @@ async function runAwardsSweep(): Promise<void> {
   console.log('  - Permutation null Bonferroni p<0.0125 per category (separate --permutations check)');
 }
 
+// ── Naive precursor-leader baseline ──────────────────────────────────────
+// dsbuddy/r-dataisbeautiful-style reference point: ignore critic, audience and
+// the feasibility filter entirely; just pick the nominee with the strongest
+// top-category precursor signal (rank by topCatPrecursorScore across DL/OCC/DD
+// wins+noms). Parameter-free, so there is nothing to train — the same number
+// is both in-sample and out-of-sample. Ties at the top (incl. the all-zero
+// "no precursor signal" case) are scored as a fair coin-flip: the winner is
+// credited 1/(#tied) of a hit, so nominee ordering can't bias the number and
+// the denominator stays equal to the model's 43 contests.
+function runBaseline(): void {
+  console.log('========================================================');
+  console.log('Naive precursor-leader baseline (rank by topCatPrecursorScore)');
+  console.log('========================================================');
+  let totH = 0, totN = 0;
+  for (const catKey of CATEGORY_KEYS) {
+    const title = CATEGORY_KEY_TO_TITLE[catKey];
+    const fixtures = loadFixtures(catKey);
+    let h = 0, n = 0;
+    for (const f of fixtures) {
+      const ranked = f.nominees
+        .map((nm) => ({ showId: nm.showId, s: topCatPrecursorScore(nm.showId, title) }))
+        .sort((a, b) => b.s - a.s);
+      if (ranked.length === 0) continue;
+      const maxS = ranked[0].s;
+      const tied = ranked.filter((r) => r.s === maxS);
+      n++;
+      if (tied.some((r) => r.showId === f.winnerShowId)) h += 1 / tied.length;
+    }
+    totH += h; totN += n;
+    console.log(`  ${catKey.padEnd(22)}  ${h.toFixed(1)}/${n}  (${fmtPct(h, n)})`);
+  }
+  console.log();
+  console.log(`  TOTAL precursor-leader baseline: ${totH.toFixed(1)}/${totN} = ${fmtPct(totH, totN)}`);
+  console.log(`  (Run the default audit for the shipped-model LOSO to compare.)`);
+}
+
+// ── LOSO calibration / reliability table ─────────────────────────────────
+// For every held-out fold, train the shipped per-category procedure on the
+// other seasons, then read the softmax probability (T=T_SOFTMAX) the model
+// assigns to its own top pick. Bin those probabilities and compare predicted
+// confidence vs the actual hit rate — the dsbuddy "things it calls 75%+ win
+// ~79% of the time" reliability check, done out-of-sample.
+function topPickProb(
+  fixture: SeasonFixture,
+  catKey: TonyCategoryKey,
+  recipes: Recipe[],
+  awardsCfg: AwardsConfig,
+  T: number,
+): { showId: string; prob: number } | null {
+  const scored = fixture.nominees
+    .map((nm) => ({ showId: nm.showId, score: scoreFor(nm, recipes, catKey, fixture.label, awardsCfg) }))
+    .filter((r): r is { showId: string; score: number } => r.score != null);
+  if (scored.length === 0) return null;
+  const maxS = Math.max(...scored.map((s) => s.score));
+  const exps = scored.map((s) => Math.exp((s.score - maxS) / T));
+  const sum = exps.reduce((a, b) => a + b, 0);
+  if (sum <= 0) return null;
+  let bestI = 0;
+  for (let i = 1; i < scored.length; i++) if (scored[i].score > scored[bestI].score) bestI = i;
+  return { showId: scored[bestI].showId, prob: exps[bestI] / sum };
+}
+
+function runCalibration(): void {
+  console.log();
+  console.log('========================================================');
+  console.log(`LOSO calibration (softmax T=${T_SOFTMAX}, shipped procedure per category)`);
+  console.log('========================================================');
+  const records: Array<{ p: number; hit: number }> = [];
+  for (const catKey of CATEGORY_KEYS) {
+    const proc = SHIPPED_PROCEDURE[catKey];
+    const fixtures = loadFixtures(catKey);
+    for (let i = 0; i < fixtures.length; i++) {
+      const held = fixtures[i];
+      const train = fixtures.filter((_, j) => j !== i);
+      stampSweepConvScores(fixtures, catKey, held.label);
+      const recipes = trainRecipes(train, catKey, proc, SHIPPED_AWARDS_CONFIG);
+      const tp = topPickProb(held, catKey, recipes, SHIPPED_AWARDS_CONFIG, T_SOFTMAX);
+      if (!tp) continue;
+      records.push({ p: tp.prob, hit: tp.showId === held.winnerShowId ? 1 : 0 });
+    }
+  }
+  const bins: Array<{ lo: number; hi: number; label: string }> = [
+    { lo: 0.0, hi: 0.6, label: '< 60%' },
+    { lo: 0.6, hi: 0.8, label: '60–80%' },
+    { lo: 0.8, hi: 1.01, label: '80–100%' },
+  ];
+  console.log('  bucket     n   mean predicted   actual hit rate');
+  console.log('  ' + '-'.repeat(50));
+  for (const b of bins) {
+    const inBin = records.filter((r) => r.p >= b.lo && r.p < b.hi);
+    if (inBin.length === 0) { console.log(`  ${b.label.padEnd(8)}   0          n/a               n/a`); continue; }
+    const meanP = inBin.reduce((s, r) => s + r.p, 0) / inBin.length;
+    const hitRate = inBin.reduce((s, r) => s + r.hit, 0) / inBin.length;
+    console.log(`  ${b.label.padEnd(8)}  ${String(inBin.length).padStart(2)}     ${(meanP * 100).toFixed(1)}%            ${(hitRate * 100).toFixed(1)}%`);
+  }
+  const overallP = records.reduce((s, r) => s + r.p, 0) / records.length;
+  const overallHit = records.reduce((s, r) => s + r.hit, 0) / records.length;
+  const brier = records.reduce((s, r) => s + (r.p - r.hit) ** 2, 0) / records.length;
+  console.log('  ' + '-'.repeat(50));
+  console.log(`  overall   ${String(records.length).padStart(2)}     ${(overallP * 100).toFixed(1)}%            ${(overallHit * 100).toFixed(1)}%`);
+  console.log(`  Brier score (top-pick prob vs hit): ${brier.toFixed(3)}  (lower is better; 0 = perfect)`);
+}
+
 function main(): void {
+  if (process.argv.includes('--baseline')) {
+    runBaseline();
+    runCalibration();
+    return;
+  }
   if (AWARDS_SWEEP) {
     runAwardsSweep();
     return;
