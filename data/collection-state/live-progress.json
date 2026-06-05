@@ -4,7 +4,7 @@
   "failed": 636,
   "successRate": "5.4%",
   "tierBreakdown": {
-    "playwright": 17,
+    "playwright": 18,
     "amp": 0,
     "browserbase": 20,
     "directCookies": 0,
@@ -13,7 +13,7 @@
     "archiveToday": 14,
     "archive": 6
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-06-05T00:09:37.671Z",
@@ -123,6 +123,17 @@
     },
     {
       "t": "2026-06-05T04:06:03.238Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-05T04:01:10.883Z",
+      "event": "bb-session",
+      "session": "0af1491c",
+      "url": "https://www.nytimes.com/2021/11/03/theater/alice-childress-trouble-in-mind.html"
+    },
+    {
+      "t": "2026-06-05T04:01:11.606Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
