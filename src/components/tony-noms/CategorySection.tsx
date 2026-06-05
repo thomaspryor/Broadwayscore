@@ -163,6 +163,9 @@ const CRITIC_PICK_OUTLETS: Record<string, { outletName: string; critic: string }
   cityguide:    { outletName: 'City Guide New York',   critic: 'Griffin Miller' },
   vf:           { outletName: 'Vanity Fair',           critic: 'Little Gold Men' },
   elle:         { outletName: 'Elle',                  critic: 'Samuel Maude' },
+  bg:           { outletName: 'Boston Globe',          critic: 'Christopher Wallenberg' },
+  nytpaulson:   { outletName: 'The New York Times',    critic: 'Michael Paulson' },
+  chitrib:      { outletName: 'Chicago Tribune',       critic: 'Chris Jones' },
 };
 
 // Cap the number of rendered avatars so the chip cluster stays one row tall.
