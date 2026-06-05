@@ -29,12 +29,15 @@ const { normalizeCritic } = require('./lib/review-normalization');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { verifyAggregatorUrl } = require('./lib/show-match-verifier');
 
-// Non-theatre news sections. Same-title film/TV/lifestyle articles (the Beetlejuice
-// *film*, a Tim Burton interview) carry the show title in their <title>, so show-match
-// passes them — but they are wrong PRODUCTION, not theatre reviews.
+// Non-theatre news sections. Same-title film articles (the Beetlejuice *film*) carry
+// the show title in their <title>, so show-match passes them — but they are wrong
+// PRODUCTION, not theatre reviews. NARROW to clearly-non-theatre sections only:
+// outlets routinely file REAL theatre reviews under tv/music/lifestyle/books sections
+// (Daily Mail /tv/, USA Today /entertainment/music/, WashPost /lifestyle/), so those
+// would be false positives. Only sections a stage review never legitimately appears in.
+// (ship-check 2026-06-05: the broad list + delete would have destroyed real reviews.)
 const NON_THEATRE_SECTIONS = new Set([
-  'film', 'films', 'movies', 'tv', 'tv-radio', 'tv-and-radio', 'music', 'books',
-  'life-style', 'lifestyle', 'fashion', 'money', 'sport', 'sports', 'food-drink',
+  'film', 'films', 'movies', 'sport', 'sports', 'money', 'fashion', 'food-drink',
 ]);
 
 /**
@@ -131,6 +134,11 @@ async function processShow(showId) {
   for (const file of files) {
     const filepath = path.join(pendingDir, file);
     const data = JSON.parse(fs.readFileSync(filepath, 'utf8'));
+    // Already evaluated and skipped on a prior run — don't re-fetch the URL.
+    if (data.promoteSkippedReason) {
+      kept++;
+      continue;
+    }
     const url = data.url;
     if (!url) {
       console.log(`  [${file}] no URL — skip`);
@@ -173,9 +181,16 @@ async function processShow(showId) {
       // under 'times-uk'), and wrong-show hits. Promoting these contaminates the show.
       const rejectReason = pendingPromoteRejectReason(url, html, show);
       if (rejectReason) {
-        console.log(`  [${file}] REJECT: ${rejectReason} — deleting`);
-        fs.unlinkSync(filepath);
-        rejected++;
+        // KEEP, never delete. The URL-level checks have false positives (outlets file
+        // real theatre reviews under odd sections; verifyAggregatorUrl can miss on opaque
+        // slugs). Deleting was irreversible data loss (ship-check 2026-06-05). Annotate so
+        // future cron runs skip it without re-fetching, and leave it in _pending for a
+        // human / better tooling — promotion just doesn't happen.
+        console.log(`  [${file}] SKIP (kept in _pending): ${rejectReason}`);
+        data.promoteSkippedReason = rejectReason;
+        data.promoteSkippedAt = new Date().toISOString();
+        if (!dryRun) fs.writeFileSync(filepath, JSON.stringify(data, null, 2));
+        kept++;
         continue;
       }
       // extractHighConfidenceAuthor returns string|null; extractAuthorFromHtml returns
