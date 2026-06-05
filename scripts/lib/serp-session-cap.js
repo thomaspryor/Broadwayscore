@@ -8,8 +8,11 @@
  * deferral, and the WE SERP burst override. Sprint 2 removes the orchestrator deferral
  * so the poller becomes the single owner of "when to run SERP". Before that cost control
  * is removed, this module installs an EXPLICIT per-show + daily-global ceiling on
- * SERP-running poller cycles, so the now-poller-owned SERP can never run unbounded (this
- * repo has hit 1000+ runs/day cascades — memory/feedback_workflow_cascade_prevention.md).
+ * SERP-running poller cycles, bounding the now-poller-owned SERP (this repo has hit
+ * 1000+ runs/day cascades — memory/feedback_workflow_cascade_prevention.md). The ceiling
+ * is ADVISORY across concurrent CI runs (the caller's ledger is read-modify-write, like
+ * serp-burst-caps.js), so the true HARD per-cycle bound remains SERP_BUDGET (12 outlet
+ * calls); this cap bounds the NUMBER of SERP-running cycles per UTC day, fail-closed.
  *
  * SPRINT 1 INVARIANT — this cap is a STRICT NO-OP at today's volume. Ground truth
  * (data/audit/we-serp-diagnosis-corrected.md, S1-T1): ~0-2 SERP-running cycles per
