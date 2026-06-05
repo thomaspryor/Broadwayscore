@@ -93,6 +93,14 @@ const NON_REVIEW_HOST_PATTERNS = [
   // venue & box-office (not reviews)
   /\.org$/, // catches many venue domains; allow-list known critic .orgs below
   /^ci\.ovationtix\.com$/,
+  // ticketing / box-office hosts — aggregator "Get Tickets" links, never reviews.
+  // Before 2026-06-05 these were skipped only because their unknown outlet was
+  // skipped; with auto-onboard they would be ingested as bogus "telecharge" /
+  // "todaytix" provisional outlets, so they must be filtered at the source.
+  /^telecharge\.com$/, /^ticketmaster\.com$/, /(^|\.)todaytix\.com$/,
+  /^seatgeek\.com$/, /^stubhub\.com$/, /^broadwaydirect\.com$/,
+  /(^|\.)ticketmaster\./, /^ovationtix\.com$/, /^web\.ovationtix\.com$/,
+  /^tickets\./, /^boxoffice\./,
 ];
 
 const ALLOWED_ORG_HOSTS = new Set([
@@ -104,6 +112,7 @@ const NON_REVIEW_PATH_PATTERNS = [
   /^\/reviews\/?$/,   // BWW landing
   /^\/industry-/, /^\/theatre-auditions/, /^\/youth-theater/,
   /^\/newsroom/, /^\/newsletter/,
+  /\/tickets?(\/|$|-)/i, // "Get Tickets" / box-office links, not reviews
 ];
 
 function hostOf(u) {
