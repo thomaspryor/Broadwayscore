@@ -40,7 +40,12 @@
     "hamlet-off-broadway-2026/hollywood-reporter--david-rooney.json",
     "hamlet-off-broadway-2026/thewrap--steve-pond.json",
     "trouble-in-mind-2021/nytimes--maya-phillips.json",
-    "trouble-in-mind-2021/broadwayworld--unknown.json"
+    "trouble-in-mind-2021/broadwayworld--unknown.json",
+    "faith-healer-2006/broadwayworld--walter-mcbride.json",
+    "chess-2003/nytg--joe-dziemianowicz.json",
+    "chess-2003/deadline--pete-hammond.json",
+    "chess-2003/artsfuse--christopher-caggiano.json",
+    "gypsy-2003/hollywood-reporter--leslie-felperin.json"
   ],
   "failed": [
     "the-p-word-off-west-end-2026/sunday-telegraph--claire-allfree.json",
@@ -881,7 +886,12 @@
     "the-story-of-my-life-2009/newsday--linda-winer.json",
     "hedda-gabler-2009/newsday--linda-winer.json",
     "title-of-show-2008/mycentraljerseycom--charles-paolino.json",
-    "south-pacific-2008/newyorker--john-lahr.json"
+    "south-pacific-2008/newyorker--john-lahr.json",
+    "the-farnsworth-invention-2007/variety--charles-isherwood.json",
+    "pygmalion-2007/variety--david-rooney.json",
+    "journeys-end-2007/variety--david-rooney.json",
+    "mary-poppins-2006/variety--charles-isherwood.json",
+    "tarzan-2006/variety--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -903,7 +913,10 @@
       "war-horse-west-end-2026/whatsonstage--maygan-forbes.json",
       "equus-west-end-2026/timeout--andrzej-lukowski.json",
       "jerome-off-broadway-2025/playbill--unknown.json",
-      "trouble-in-mind-2021/broadwayworld--unknown.json"
+      "trouble-in-mind-2021/broadwayworld--unknown.json",
+      "faith-healer-2006/broadwayworld--walter-mcbride.json",
+      "chess-2003/nytg--joe-dziemianowicz.json",
+      "chess-2003/artsfuse--christopher-caggiano.json"
     ],
     "amp": [],
     "browserbase": [
@@ -928,7 +941,11 @@
       "data/review-texts/im-not-being-funny-west-end-2026/express-uk--stefan-kyriazis.json",
       "data/review-texts/inter-alia-west-end-2026/variety--leo-barraclough.json",
       "data/review-texts/hamlet-off-broadway-2026/hollywood-reporter--david-rooney.json",
-      "hamlet-off-broadway-2026/hollywood-reporter--david-rooney.json"
+      "hamlet-off-broadway-2026/hollywood-reporter--david-rooney.json",
+      "data/review-texts/chess-2003/deadline--pete-hammond.json",
+      "chess-2003/deadline--pete-hammond.json",
+      "data/review-texts/gypsy-2003/hollywood-reporter--leslie-felperin.json",
+      "gypsy-2003/hollywood-reporter--leslie-felperin.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -974,7 +991,7 @@
     ]
   },
   "startTime": "2026-06-04T04:34:53.808Z",
-  "lastProcessed": "south-pacific-2008/newyorker--john-lahr.json",
+  "lastProcessed": "gypsy-2003/hollywood-reporter--leslie-felperin.json",
   "log": [
     {
       "t": "2026-06-04T11:24:42.850Z",
@@ -1263,6 +1280,28 @@
       "t": "2026-06-05T04:01:11.606Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-05T04:26:40.189Z",
+      "event": "bb-session",
+      "session": "dd7ebb8c",
+      "url": "https://deadline.com/video/critical-thinking-review-john-leguizamo-makes-true-st"
+    },
+    {
+      "t": "2026-06-05T04:26:41.033Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-06-05T04:27:05.660Z",
+      "event": "bb-session",
+      "session": "e0244db8",
+      "url": "https://www.hollywoodreporter.com/news/general-news/imelda-staunton-gypsy-theate"
+    },
+    {
+      "t": "2026-06-05T04:27:06.367Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
