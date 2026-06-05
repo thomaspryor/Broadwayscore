@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-05T03:57:15.258Z",
-  "processed": 37,
-  "failed": 653,
+  "updatedAt": "2026-06-05T03:58:17.041Z",
+  "processed": 38,
+  "failed": 662,
   "successRate": "5.4%",
   "tierBreakdown": {
     "playwright": 17,
     "amp": 0,
-    "browserbase": 20,
+    "browserbase": 22,
     "directCookies": 0,
     "scrapingbee": 12,
     "brightdata": 0,
     "archiveToday": 13,
     "archive": 6
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-06-05T00:05:11.877Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-05T00:05:22.326Z",
-      "event": "bb-session",
-      "session": "7c654b7c",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
     {
       "t": "2026-06-05T00:05:22.912Z",
       "event": "bb-cookie-inject",
@@ -125,6 +114,17 @@
       "t": "2026-06-05T03:56:20.181Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-05T03:58:00.006Z",
+      "event": "bb-session",
+      "session": "c4906a34",
+      "url": "https://www.hollywoodreporter.com/news/general-news/hamlet-theater-review-127800"
+    },
+    {
+      "t": "2026-06-05T03:58:00.745Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
