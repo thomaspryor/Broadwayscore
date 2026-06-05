@@ -270,7 +270,16 @@ function countPendingStrand(showId) {
   const dir = path.join(REVIEW_TEXTS_DIR, '_pending', showId);
   if (!fs.existsSync(dir)) return 0;
   try {
-    return fs.readdirSync(dir).filter(f => f.endsWith('.json')).length;
+    // Count only RECOVERABLE strands — exclude files the drain already evaluated and
+    // skipped (promoteSkippedReason set), which are not promotable and shouldn't read
+    // as "real reviews missing from the page".
+    return fs.readdirSync(dir).filter(f => f.endsWith('.json')).filter(f => {
+      try {
+        return !JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')).promoteSkippedReason;
+      } catch {
+        return true;
+      }
+    }).length;
   } catch {
     return 0;
   }

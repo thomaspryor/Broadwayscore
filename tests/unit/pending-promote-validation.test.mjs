@@ -33,11 +33,16 @@ describe('pendingPromoteRejectReason', () => {
     assert.ok(r && /non-theatre section \(film\)/.test(r), `expected film reject, got ${r}`);
   });
 
-  test('REJECTS a lifestyle interview (wrong production)', () => {
+  // Narrowed 2026-06-05 (ship-check): outlets file REAL theatre reviews under
+  // tv/music/lifestyle sections (Daily Mail /tv/, USA Today /entertainment/music/,
+  // WashPost /lifestyle/), so those sections must NOT auto-reject — that was destroying
+  // real reviews. A genuine theatre review under a /tv/ section is promoted; a same-title
+  // interview is left to the downstream LLM non-review classifier, not this URL gate.
+  test('does NOT reject a real theatre review filed under /tv/ (false-positive guard)', () => {
     const r = pendingPromoteRejectReason(
-      'https://www.thetimes.com/life-style/article/tim-burton-interview-beetlejuice',
-      titled('Tim Burton interview Beetlejuice'), SHOW);
-    assert.ok(r && /life-style/.test(r), `expected lifestyle reject, got ${r}`);
+      'https://www.dailymail.co.uk/tv/article-15559075/review-Shadowlands-London-Aldwych-Theatre.html',
+      titled('Beetlejuice review — Aldwych Theatre'), SHOW);
+    assert.equal(r, null, `a real review under /tv/ must not be section-rejected, got ${r}`);
   });
 
   test('REJECTS a different show entirely (show-match)', () => {

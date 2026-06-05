@@ -434,6 +434,47 @@ function urlLooksLikeReview(url, showTitle) {
 }
 
 /**
+ * Outlets whose article URLs carry NO human-readable slug — the path is an opaque
+ * UUID/id, so urlLooksLikeReview() can never match show-title words and will reject
+ * every legitimate review. The Financial Times is the canonical case: review URLs
+ * are https://www.ft.com/content/{uuid} with no title in the path. Other paywalled
+ * nationals (Times/Telegraph/Guardian/Independent) use slugged URLs and must NOT be
+ * listed here — they pass the slug guard normally.
+ *
+ * Matched precisely by domain + path prefix so only article URLs (/content/...) get
+ * the exemption; FT section/tag pages (/life-arts, /companies) are NOT matched.
+ *
+ * Callers that exempt these from the URL-slug guard MUST substitute a compensating
+ * control — at minimum a SERP-result TITLE match (the show title appearing in the
+ * Google result title). The domain-restricted + date-bounded SERP query (site:ft.com
+ * "title" review {year}), a content-type title filter (reject interviews/obituaries),
+ * and validateSerpCandidate's snippet check provide defense in depth.
+ */
+const SLUGLESS_REVIEW_URL_PATTERNS = [
+  { domain: 'ft.com', pathPrefix: '/content/' },
+];
+
+/**
+ * @param {string} url
+ * @returns {boolean} true if the URL is a slugless article URL (e.g. FT /content/{uuid})
+ *   that urlLooksLikeReview() cannot validate by slug.
+ */
+function isSluglessReviewUrl(url) {
+  if (!url || typeof url !== 'string') return false;
+  let parsed;
+  try {
+    parsed = new URL(url);
+  } catch {
+    return false;
+  }
+  const host = parsed.hostname.replace(/^www\./, '').toLowerCase();
+  const path = parsed.pathname.toLowerCase();
+  return SLUGLESS_REVIEW_URL_PATTERNS.some(
+    p => (host === p.domain || host.endsWith('.' + p.domain)) && path.startsWith(p.pathPrefix)
+  );
+}
+
+/**
  * Date-mismatch guard: detects reviews likely from a prior production.
  *
  * If a review was published more than `thresholdDays` before the show's
@@ -2394,6 +2435,7 @@ module.exports = {
   getWrongProductionReasonForUnknownCritic,
   urlYearFromPath,
   urlLooksLikeReview,
+  isSluglessReviewUrl,
   isLikelyWrongProduction,
   isLikelyTourReview,
   isRoundupUrl,
