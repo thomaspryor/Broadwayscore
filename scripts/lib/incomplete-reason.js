@@ -115,6 +115,16 @@ function classifyIncompleteReason(review, failedFetchEntry) {
       }
     }
   } catch (e) { /* malformed URL */ }
+  // Layer A.5: Bot-detection stubs embedded in partial review text — NOT a subscriber paywall.
+  // These stubs appear at 90-95% of the file (after real article prose), past the normal
+  // severe-truncation scan window. Requires CAPTCHA-solving tier (Browserbase), NOT Archive.org.
+  const truncSignalsEarly = review.truncationSignals || [];
+  if (truncSignalsEarly.includes('nyt_bot_stub')) {
+    return {
+      incompleteReason: 'bot_blocked',
+      incompleteDetail: 'NYT bot-detection JS-loader stub detected in review text'
+    };
+  }
   // Layer B: Explicit paywall signals in text
   if (fullText) {
     const paywallCheck = detectPaywall(fullText);
@@ -126,7 +136,7 @@ function classifyIncompleteReason(review, failedFetchEntry) {
     }
   }
   // Layer C: Truncation signals
-  const truncSignals = review.truncationSignals || [];
+  const truncSignals = truncSignalsEarly; // same reference; declared in A.5
   if (truncSignals.includes('paywall_or_login_prompt')) {
     return {
       incompleteReason: 'paywall',
