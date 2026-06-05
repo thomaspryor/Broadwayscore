@@ -200,6 +200,7 @@ jobs:
               const dup = findDuplicateOpenBug(diagPayload, openBugs);
               if (dup) {
                 console.log(`Duplicate of open issue #${dup.number} (${dup.reason}) — commenting, not creating new`);
+                let commented = false;
                 try {
                   await github.rest.issues.createComment({
                     owner: context.repo.owner,
@@ -213,10 +214,16 @@ jobs:
                       `_Matched as a duplicate (${dup.reason}); folded in here instead of opening a new issue._`,
                     ].join('\n'),
                   });
+                  commented = true;
                 } catch (err) {
                   console.log(`  Failed to comment on #${dup.number}: ${err.message}`);
                 }
-                continue;
+                // Only suppress the new issue if the dedup comment actually
+                // landed. The submission is already marked processed upstream,
+                // so a failed comment with `continue` would silently lose the
+                // report — fall through to normal issue creation instead.
+                if (commented) continue;
+                console.log('  Comment failed — creating a normal issue so the report is not lost');
               }
 
               const body = [

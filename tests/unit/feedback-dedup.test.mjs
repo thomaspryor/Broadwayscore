@@ -88,6 +88,17 @@ test('picks the highest-similarity match among multiple opens', () => {
   assert.equal(dup.number, 356);
 });
 
+test('show-agnostic merge requires >=2 shared tokens (no single-word merges)', () => {
+  // Two unrelated show-agnostic bugs sharing exactly ONE meaningful token.
+  // After stopword stripping each is tiny, so a single shared word would clear
+  // 0.5 overlap — the floor must block it.
+  const a = { showId: null, summary: 'The homepage filter buttons behave unexpectedly' };
+  const b = { showId: null, summary: 'The homepage layout looks cramped' };
+  assert.equal(findDuplicateOpenBug(a, [{ number: 1, diagnosis: b }]), null);
+  // A genuine pair sharing 3+ tokens still dedupes.
+  assert.ok(findDuplicateOpenBug(scoresB, [{ number: 270, diagnosis: scoresA }]));
+});
+
 test('empty / missing inputs are safe', () => {
   assert.equal(findDuplicateOpenBug(null, [{ number: 1, diagnosis: caissieA }]), null);
   assert.equal(findDuplicateOpenBug(caissieA, []), null);

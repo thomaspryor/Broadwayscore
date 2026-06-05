@@ -104,11 +104,13 @@ function diagnosisText(diag) {
  * @param {object} [opts]
  * @param {number} [opts.showMatchThreshold=0.25]  Jaccard bar when showId matches
  * @param {number} [opts.topicThreshold=0.5]       Overlap-coefficient bar when no showId
+ * @param {number} [opts.minSharedTokens=2]        Absolute shared-token floor for the show-agnostic branch
  * @returns {{number:number, diagnosis:object, similarity:number, reason:string}|null}
  */
 function findDuplicateOpenBug(newDiag, openBugs, opts = {}) {
   const showMatchThreshold = opts.showMatchThreshold ?? 0.25;
   const topicThreshold = opts.topicThreshold ?? 0.5;
+  const minSharedTokens = opts.minSharedTokens ?? 2;
 
   if (!newDiag || !Array.isArray(openBugs) || openBugs.length === 0) return null;
 
@@ -135,12 +137,16 @@ function findDuplicateOpenBug(newDiag, openBugs, opts = {}) {
       reason = `same showId "${newShow}" + topic similarity ${jac.toFixed(2)}`;
     } else if (!newShow && !existShow) {
       // Show-agnostic bug — use overlap coefficient so a terse report and a
-      // verbose report of the same issue still match.
+      // verbose report of the same issue still match. Guard with an absolute
+      // shared-token floor: after aggressive stopword stripping a terse report
+      // can tokenize to 2-3 words, where a SINGLE shared generic token already
+      // clears 0.5 overlap and would falsely merge unrelated bugs.
+      const sharedTokens = intersectionSize(newTokens, existTokens);
       const ov = overlap(newTokens, existTokens);
-      if (ov >= topicThreshold) {
+      if (ov >= topicThreshold && sharedTokens >= minSharedTokens) {
         isDup = true;
         sim = ov;
-        reason = `show-agnostic topic overlap ${ov.toFixed(2)}`;
+        reason = `show-agnostic topic overlap ${ov.toFixed(2)} (${sharedTokens} shared)`;
       }
     }
 
