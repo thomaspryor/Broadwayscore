@@ -192,12 +192,14 @@ jobs:
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
           BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
-          # Feature flag + kill-switch for the WE opening-night SERP burst (default OFF).
-          # When 'true', the poller overrides the orchestrator's iteration-1-8 --skip-serp
-          # deferral for aggressive-window WE shows, under the hard caps in
-          # scripts/lib/serp-burst-caps.js. Enable:  gh variable set ENABLE_WE_SERP_BURST --body true
-          # Disable: gh variable delete ENABLE_WE_SERP_BURST
-          ENABLE_WE_SERP_BURST: ${{ vars.ENABLE_WE_SERP_BURST }}
+          # WE opening-night SERP burst is ON by default (automated; overrides the
+          # orchestrator's iteration-1-8 --skip-serp deferral for aggressive-window WE shows,
+          # bounded by the hard caps in scripts/lib/serp-burst-caps.js). Emergency kill-switch:
+          #   gh variable set DISABLE_WE_SERP_BURST --body true   (delete the var to re-enable).
+          DISABLE_WE_SERP_BURST: ${{ vars.DISABLE_WE_SERP_BURST }}
+          # For the burst cascade tripwire's automated owner email (scripts/lib/discord-notify.js).
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         run: |
           IFS=',' read -ra SHOW_ARRAY <<< "${{ steps.find.outputs.shows }}"
           ANY_NEW=false

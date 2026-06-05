@@ -81,14 +81,15 @@ test('Hop 4: poller.js parses --skip-serp and gates runSERPBackup behind !SKIP_S
   );
 });
 
-test('Hop 4b: the ONLY override of --skip-serp is the flag-gated, capped WE SERP burst', () => {
-  // 2026-06-04: the WE opening-night SERP burst (scripts/lib/serp-burst-caps.js) is the one
-  // sanctioned way SERP runs despite --skip-serp. It MUST stay behind ENABLE_WE_SERP_BURST
-  // (default OFF) so the deferral is preserved whenever the flag is unset. If someone adds an
-  // unconditional bypass of SKIP_SERP, this guard fails.
+test('Hop 4b: the ONLY override of --skip-serp is the capped WE SERP burst, kill-switchable', () => {
+  // 2026-06-05: the WE opening-night SERP burst (scripts/lib/serp-burst-caps.js) is the one
+  // sanctioned way SERP runs despite --skip-serp. It is ON by default (automated system) and
+  // disabled ONLY by the DISABLE_WE_SERP_BURST kill-switch — so the emergency off must exist,
+  // and the override must still be cap-gated. If someone adds an unconditional bypass of
+  // SKIP_SERP, or removes the kill-switch, this guard fails.
   assert.ok(
-    /ENABLE_WE_SERP_BURST\s*=\s*process\.env\.ENABLE_WE_SERP_BURST\s*===\s*'true'/.test(POLLER_JS),
-    'opening-night-poller.js: ENABLE_WE_SERP_BURST flag (env-gated, default OFF) is missing.'
+    /ENABLE_WE_SERP_BURST\s*=\s*process\.env\.DISABLE_WE_SERP_BURST\s*!==\s*'true'/.test(POLLER_JS),
+    'opening-night-poller.js: burst must be ON by default with a DISABLE_WE_SERP_BURST kill-switch.'
   );
   // serpBurstActive (the override) may only be set inside the SKIP_SERP && ENABLE_WE_SERP_BURST block.
   assert.ok(
