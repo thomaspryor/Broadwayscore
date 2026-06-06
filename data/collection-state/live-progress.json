@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-06T02:45:17.361Z",
-  "processed": 18,
-  "failed": 2,
-  "successRate": "90.0%",
+  "updatedAt": "2026-06-06T02:53:49.009Z",
+  "processed": 24,
+  "failed": 6,
+  "successRate": "80.0%",
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 6,
     "directCookies": 0,
-    "scrapingbee": 16,
-    "brightdata": 0,
-    "archiveToday": 1,
+    "scrapingbee": 19,
+    "brightdata": 1,
+    "archiveToday": 5,
     "archive": 1
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 10,
   "recentActivity": [
     {
       "t": "2026-06-06T02:39:29.903Z",
@@ -45,6 +45,83 @@
     },
     {
       "t": "2026-06-06T02:42:29.887Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T02:45:51.650Z",
+      "event": "bb-session",
+      "session": "80976542",
+      "url": "https://www.nytimes.com/2019/08/08/theater/sea-wall-a-life-review-broadway-gylle"
+    },
+    {
+      "t": "2026-06-06T02:45:52.777Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T02:47:38.621Z",
+      "event": "bb-session",
+      "session": "4e6971f1",
+      "url": "https://www.nytimes.com/2018/10/25/theater/the-waverly-gallery-review-elaine-may"
+    },
+    {
+      "t": "2026-06-06T02:47:39.622Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T02:49:21.312Z",
+      "event": "bb-session",
+      "session": "d172e9c9",
+      "url": "https://www.nytimes.com/2018/08/16/theater/review-pretty-woman-the-musical-broad"
+    },
+    {
+      "t": "2026-06-06T02:49:22.226Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T02:49:55.145Z",
+      "event": "bb-session",
+      "session": "330bd5db",
+      "url": "https://www.nytimes.com/2018/04/23/theater/summer-review-donna-summer-musical.ht"
+    },
+    {
+      "t": "2026-06-06T02:49:56.137Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T02:51:22.648Z",
+      "event": "bb-session",
+      "session": "9dc48804",
+      "url": "https://www.nytimes.com/2018/04/11/theater/review-children-of-a-lesser-god-broad"
+    },
+    {
+      "t": "2026-06-06T02:51:23.609Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T02:51:50.558Z",
+      "event": "bb-session",
+      "session": "b6da3bc0",
+      "url": "https://www.nytimes.com/2018/04/09/theater/mean-girls-review.html"
+    },
+    {
+      "t": "2026-06-06T02:51:51.525Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T02:53:31.340Z",
+      "event": "bb-session",
+      "session": "2b286081",
+      "url": "https://www.nytimes.com/2018/03/22/theater/frozen-review-disney-broadway.html?mt"
+    },
+    {
+      "t": "2026-06-06T02:53:32.253Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

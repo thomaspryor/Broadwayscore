@@ -17,11 +17,21 @@
     "topdog-underdog-2022/nytimes--jesse-green.json",
     "leopoldstadt-2022/nytimes--jesse-green.json",
     "paradise-square-2022/nytimes--jesse-green.json",
-    "linda-vista-2019/nytimes--ben-brantley.json"
+    "linda-vista-2019/nytimes--ben-brantley.json",
+    "betrayal-2019/nytimes--ben-brantley.json",
+    "aint-too-proud-2019/nytimes--ben-brantley.json",
+    "the-nap-2018/nytimes--ben-brantley.json",
+    "pretty-woman-the-musical-2018/nytimes--ben-brantley.json",
+    "children-of-a-lesser-god-2018/nytimes--jesse-green.json",
+    "frozen-2018/nytimes--jesse-green.json"
   ],
   "failed": [
     "spamalot-off-broadway-2026/nytimes--jesse-green.json",
-    "mike-birbiglia-the-old-man-and-the-pool-2022/nytimes--jesse-green.json"
+    "mike-birbiglia-the-old-man-and-the-pool-2022/nytimes--jesse-green.json",
+    "sea-wall-a-life-2019/nytimes--laura-collins-hughes.json",
+    "the-waverly-gallery-2018/nytimes--jesse-green.json",
+    "summer-2018/nytimes--jesse-green.json",
+    "mean-girls-2018/nytimes--jesse-green.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -29,7 +39,11 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/good-night-oscar-2023/nytimes--jesse-green.json",
-      "good-night-oscar-2023/nytimes--jesse-green.json"
+      "good-night-oscar-2023/nytimes--jesse-green.json",
+      "data/review-texts/pretty-woman-the-musical-2018/nytimes--ben-brantley.json",
+      "pretty-woman-the-musical-2018/nytimes--ben-brantley.json",
+      "data/review-texts/frozen-2018/nytimes--jesse-green.json",
+      "frozen-2018/nytimes--jesse-green.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -48,18 +62,27 @@
       "topdog-underdog-2022/nytimes--jesse-green.json",
       "leopoldstadt-2022/nytimes--jesse-green.json",
       "paradise-square-2022/nytimes--jesse-green.json",
-      "linda-vista-2019/nytimes--ben-brantley.json"
+      "linda-vista-2019/nytimes--ben-brantley.json",
+      "betrayal-2019/nytimes--ben-brantley.json",
+      "aint-too-proud-2019/nytimes--ben-brantley.json",
+      "the-nap-2018/nytimes--ben-brantley.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "children-of-a-lesser-god-2018/nytimes--jesse-green.json"
+    ],
     "archiveToday": [
-      "data/review-texts/mike-birbiglia-the-old-man-and-the-pool-2022/nytimes--jesse-green.json"
+      "data/review-texts/mike-birbiglia-the-old-man-and-the-pool-2022/nytimes--jesse-green.json",
+      "data/review-texts/sea-wall-a-life-2019/nytimes--laura-collins-hughes.json",
+      "data/review-texts/the-waverly-gallery-2018/nytimes--jesse-green.json",
+      "data/review-texts/summer-2018/nytimes--jesse-green.json",
+      "data/review-texts/mean-girls-2018/nytimes--jesse-green.json"
     ],
     "archive": [
       "stereophonic-2024/nytimes--jesse-green.json"
     ]
   },
   "startTime": "2026-06-06T02:37:21.290Z",
-  "lastProcessed": "linda-vista-2019/nytimes--ben-brantley.json",
+  "lastProcessed": "frozen-2018/nytimes--jesse-green.json",
   "log": [
     {
       "t": "2026-06-06T02:39:29.903Z",
@@ -91,6 +114,83 @@
     },
     {
       "t": "2026-06-06T02:42:29.887Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T02:45:51.650Z",
+      "event": "bb-session",
+      "session": "80976542",
+      "url": "https://www.nytimes.com/2019/08/08/theater/sea-wall-a-life-review-broadway-gylle"
+    },
+    {
+      "t": "2026-06-06T02:45:52.777Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T02:47:38.621Z",
+      "event": "bb-session",
+      "session": "4e6971f1",
+      "url": "https://www.nytimes.com/2018/10/25/theater/the-waverly-gallery-review-elaine-may"
+    },
+    {
+      "t": "2026-06-06T02:47:39.622Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T02:49:21.312Z",
+      "event": "bb-session",
+      "session": "d172e9c9",
+      "url": "https://www.nytimes.com/2018/08/16/theater/review-pretty-woman-the-musical-broad"
+    },
+    {
+      "t": "2026-06-06T02:49:22.226Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T02:49:55.145Z",
+      "event": "bb-session",
+      "session": "330bd5db",
+      "url": "https://www.nytimes.com/2018/04/23/theater/summer-review-donna-summer-musical.ht"
+    },
+    {
+      "t": "2026-06-06T02:49:56.137Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T02:51:22.648Z",
+      "event": "bb-session",
+      "session": "9dc48804",
+      "url": "https://www.nytimes.com/2018/04/11/theater/review-children-of-a-lesser-god-broad"
+    },
+    {
+      "t": "2026-06-06T02:51:23.609Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T02:51:50.558Z",
+      "event": "bb-session",
+      "session": "b6da3bc0",
+      "url": "https://www.nytimes.com/2018/04/09/theater/mean-girls-review.html"
+    },
+    {
+      "t": "2026-06-06T02:51:51.525Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T02:53:31.340Z",
+      "event": "bb-session",
+      "session": "2b286081",
+      "url": "https://www.nytimes.com/2018/03/22/theater/frozen-review-disney-broadway.html?mt"
+    },
+    {
+      "t": "2026-06-06T02:53:32.253Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
