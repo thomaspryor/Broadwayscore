@@ -1,8 +1,8 @@
 {
-  "runDate": "2026-06-06T06:23:25.013Z",
+  "runDate": "2026-06-06T06:24:31.220Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 0,
     "priority": "all",
     "showFilter": "",
     "aggressive": true,
@@ -11,10 +11,10 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 8,
-    "failed": 11,
+    "processed": 10,
+    "failed": 9,
     "skipped": 0,
-    "successRate": "42.1%"
+    "successRate": "52.6%"
   },
   "tierBreakdown": {
     "playwright": 0,
@@ -24,7 +24,7 @@
     "scrapingbee": 5,
     "brightdata": 1,
     "archiveToday": 0,
-    "archive": 2
+    "archive": 4
   },
   "statistics": {
     "tier1Attempts": 0,
@@ -33,19 +33,19 @@
     "ampSuccess": 0,
     "tier1_5Attempts": 10,
     "tier1_5Success": 0,
-    "tier2Attempts": 18,
-    "tier2Success": 15,
+    "tier2Attempts": 16,
+    "tier2Success": 13,
     "tier3Attempts": 1,
     "tier3Success": 1,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
     "tier4Attempts": 3,
     "tier4Success": 2,
-    "totalFailed": 11,
-    "scrapingBeePageCredits": 87,
+    "totalFailed": 9,
+    "scrapingBeePageCredits": 85,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 10,
-    "browserbaseMinutesUsed": 5.8,
+    "browserbaseMinutesUsed": 5.9,
     "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
@@ -57,8 +57,10 @@
     "bring-it-on-the-musical-2012/nytimes--charles-isherwood.json",
     "born-yesterday-2011/nytimes--ben-brantley.json",
     "war-horse-2011/nytimes--ben-brantley.json",
+    "the-seagull-2008/about-entertainment--ben-brantley.json",
     "young-frankenstein-2007/nytimes--ben-brantley.json",
-    "shining-city-2006/nytimes--ben-brantley.json"
+    "shining-city-2006/nytimes--ben-brantley.json",
+    "in-my-life-2005/about-entertainment--ben-brantley.json"
   ],
   "failed": [
     "spamalot-off-broadway-2026/nytimes--jesse-green.json",
@@ -66,7 +68,6 @@
     "cat-on-a-hot-tin-roof-2013/about-entertainment--ben-brantley.json",
     "rock-of-ages-2009/nytimes--ben-brantley.json",
     "rock-of-ages-2009/nytimes--charles-isherwood.json",
-    "the-seagull-2008/about-entertainment--ben-brantley.json",
     "high-fidelity-2006/about-entertainment--ben-brantley.json",
     "lestat-2006/about-entertainment--ben-brantley.json",
     "souvenir-2005/about-entertainment--ben-brantley.json",
@@ -80,17 +81,19 @@
     "scrapingbee": [
       "waiting-for-godot-2025/nytimes--laura-collins-hughes.json",
       "swept-away-2024/nytimes--jesse-green.json",
+      "bring-it-on-the-musical-2012/nytimes--charles-isherwood.json",
       "born-yesterday-2011/nytimes--ben-brantley.json",
-      "war-horse-2011/nytimes--ben-brantley.json",
-      "young-frankenstein-2007/nytimes--ben-brantley.json"
+      "war-horse-2011/nytimes--ben-brantley.json"
     ],
     "brightdata": [
       "good-night-oscar-2023/nytimes--jesse-green.json"
     ],
     "archiveToday": [],
     "archive": [
-      "bring-it-on-the-musical-2012/nytimes--charles-isherwood.json",
-      "shining-city-2006/nytimes--ben-brantley.json"
+      "the-seagull-2008/about-entertainment--ben-brantley.json",
+      "young-frankenstein-2007/nytimes--ben-brantley.json",
+      "shining-city-2006/nytimes--ben-brantley.json",
+      "in-my-life-2005/about-entertainment--ben-brantley.json"
     ]
   },
   "failuresByOutlet": {},
