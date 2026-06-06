@@ -15,7 +15,7 @@ const PICK_CATEGORIES = new Set(Object.keys((criticPicksData as { picks: Record<
 // Display order only — NOT a credibility ranking. Every outlet counts as one
 // equal vote in the consensus bars. Trades + theater specialists are listed
 // first, general/lifestyle outlets last, purely so the legend reads sensibly.
-const OUTLET_ORDER = ['nyt', 'nytpaulson', 'variety', 'thr', 'timeout', 'slant', 'bg', 'chitrib', 'nytg', 'theatermania', 'nysun', 'ew', 'deadline', 'culturesauce', 'cityguide', 'vf', 'elle'];
+const OUTLET_ORDER = ['nyt', 'nytpaulson', 'variety', 'thr', 'thewrap', 'timeout', 'slant', 'bg', 'chitrib', 'nytg', 'theatermania', 'nysun', 'ew', 'deadline', 'culturesauce', 'cityguide', 'vf', 'elle'];
 const orderIdx = (id: string) => {
   const i = OUTLET_ORDER.indexOf(id);
   return i === -1 ? 999 : i;
