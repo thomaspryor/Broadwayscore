@@ -35,13 +35,23 @@
     "bronx-bombers-2014/nytimes--ben-brantley.json",
     "outside-mullingar-2014/nytimes--charles-isherwood.json",
     "beautiful-the-carole-king-musical-2014/nytimes--ben-brantley.json",
-    "the-snow-geese-2013/nytimes--ben-brantley.json"
+    "the-snow-geese-2013/nytimes--ben-brantley.json",
+    "the-nance-2013/nytimes--ben-brantley.json",
+    "motown-the-musical-2013/nytimes--charles-isherwood.json",
+    "hands-on-a-hardbody-2013/nytimes--charles-isherwood.json",
+    "a-christmas-story-the-musical-2012/nytimes--charles-isherwood.json",
+    "the-heiress-2012/nytimes--ben-brantley.json",
+    "bring-it-on-the-musical-2012/nytimes--charles-isherwood.json"
   ],
   "failed": [
     "spamalot-off-broadway-2026/nytimes--jesse-green.json",
     "sea-wall-a-life-2019/nytimes--laura-collins-hughes.json",
     "holler-if-ya-hear-me-2014/nytimes--ben-brantley.json",
-    "bullets-over-broadway-2014/nytimes--ben-brantley.json"
+    "bullets-over-broadway-2014/nytimes--ben-brantley.json",
+    "a-time-to-kill-2013/nytimes--charles-isherwood.json",
+    "cat-on-a-hot-tin-roof-2013/about-entertainment--ben-brantley.json",
+    "the-anarchist-2012/nytimes--ben-brantley.json",
+    "dead-accounts-2012/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -78,11 +88,18 @@
       "bronx-bombers-2014/nytimes--ben-brantley.json",
       "outside-mullingar-2014/nytimes--charles-isherwood.json",
       "beautiful-the-carole-king-musical-2014/nytimes--ben-brantley.json",
-      "the-snow-geese-2013/nytimes--ben-brantley.json"
+      "the-snow-geese-2013/nytimes--ben-brantley.json",
+      "the-nance-2013/nytimes--ben-brantley.json",
+      "motown-the-musical-2013/nytimes--charles-isherwood.json",
+      "hands-on-a-hardbody-2013/nytimes--charles-isherwood.json",
+      "a-christmas-story-the-musical-2012/nytimes--charles-isherwood.json",
+      "bring-it-on-the-musical-2012/nytimes--charles-isherwood.json"
     ],
     "archiveToday": [
       "data/review-texts/holler-if-ya-hear-me-2014/nytimes--ben-brantley.json",
-      "data/review-texts/bullets-over-broadway-2014/nytimes--ben-brantley.json"
+      "data/review-texts/bullets-over-broadway-2014/nytimes--ben-brantley.json",
+      "data/review-texts/the-anarchist-2012/nytimes--ben-brantley.json",
+      "data/review-texts/dead-accounts-2012/nytimes--ben-brantley.json"
     ],
     "archive": [
       "waiting-for-godot-2025/nytimes--laura-collins-hughes.json",
@@ -93,10 +110,23 @@
       "side-show-2014/nytimes--ben-brantley.json",
       "the-last-ship-2014/nytimes--ben-brantley.json",
       "on-the-town-2014/nytimes--ben-brantley.json",
-      "the-bridges-of-madison-county-2014/nytimes--ben-brantley.json"
+      "the-bridges-of-madison-county-2014/nytimes--ben-brantley.json",
+      "the-heiress-2012/nytimes--ben-brantley.json"
     ]
   },
   "startTime": "2026-06-06T04:35:40.969Z",
-  "lastProcessed": "the-snow-geese-2013/nytimes--ben-brantley.json",
-  "log": []
+  "lastProcessed": "bring-it-on-the-musical-2012/nytimes--charles-isherwood.json",
+  "log": [
+    {
+      "t": "2026-06-06T04:55:01.869Z",
+      "event": "bb-session",
+      "session": "9ab0a1c8",
+      "url": "http://theater.nytimes.com/2013/01/18/theater/reviews/cat-on-a-hot-tin-roof-at-r"
+    },
+    {
+      "t": "2026-06-06T04:55:02.648Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
