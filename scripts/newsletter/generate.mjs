@@ -672,6 +672,7 @@ function biggestMoverSection() {
     try { before = JSON.parse(fs.readFileSync(path.join(snapDir, snapFile), 'utf8')); }
     catch { return []; }
     const totalReviewsFor = d => Object.values(d.sources || {}).reduce((a, s) => a + (s?.reviewCount ?? 0), 0);
+    const GRADE_ORDER = ['A+','A','A-','B+','B','B-','C+','C','C-','D','F'];
     const grade = (s) => {
       if (s == null) return null;
       if (s >= 90) return 'A+'; if (s >= 88) return 'A'; if (s >= 83) return 'A-';
@@ -706,10 +707,12 @@ function biggestMoverSection() {
       if (!bg || !ng || bg === ng) return;
       if (Math.abs(n.combinedScore - b.combinedScore) < 2) return;
       const dir = n.combinedScore > b.combinedScore ? 'up' : 'down';
+      const gradeSteps = Math.abs(GRADE_ORDER.indexOf(ng) - GRADE_ORDER.indexOf(bg));
       out.push({
         show,
         beforeGrade: bg, afterGrade: ng,
         dir,
+        gradeCount: gradeSteps || 1,
         magnitude: Math.abs(n.combinedScore - b.combinedScore),
         reviewCount: nReviews,
         reviewDelta: nReviews - bReviews,
@@ -760,7 +763,7 @@ function biggestMoverSection() {
           <td valign="middle" style="padding:0 6px;color:#6b7280;font-size:14px;">→</td>
           <td align="center" valign="middle">${audGradeBox(m.afterGrade)}</td>
         </tr></table>
-        <div style="font-size:11px;color:${dirColor};margin-top:6px;font-weight:700;">${dirArrow} ${m.dir} 1 grade</div>
+        <div style="font-size:11px;color:${dirColor};margin-top:6px;font-weight:700;">${dirArrow} ${m.dir} ${m.gradeCount} grade${m.gradeCount === 1 ? '' : 's'}</div>
       </td>
     </tr>`;
   }).join('');
@@ -1500,7 +1503,7 @@ function buzziestSection() {
       </td>
       ${rc && c.rank ? `<td valign="middle" width="60" align="center" style="padding:6px 0;${!isLast?'border-bottom:1px solid rgba(255,255,255,0.05);':''}">
         <div style="font-size:9px;font-weight:700;color:${d.color};letter-spacing:0.06em;text-transform:uppercase;margin-bottom:3px;">${d.label}</div>
-        <div style="display:inline-block;width:36px;height:36px;border-radius:8px;background:${rc.bg};color:${rc.text};font-size:14px;font-weight:800;line-height:36px;text-align:center;box-shadow:0 2px 6px ${rc.bg}55;">#${c.rank.position}</div>
+        <div style="display:inline-block;width:36px;height:36px;border-radius:8px;background:${rc.bg};color:${rc.text};font-size:14px;font-weight:800;line-height:36px;text-align:center;box-shadow:0 2px 6px ${rc.bg}55;">#${i + 2}</div>
       </td>` : '<td></td>'}
     </tr>`;
   }).join('');
@@ -1711,7 +1714,7 @@ function mostReadSection(climberList) {
   if (!items.length) return null;
   // Format growth as "↑ 3.2× from last week" — multiplicative reads better
   // than raw delta when the base is small. Round to 1 decimal.
-  const fmtGrowth = (g) => `↑ ${g.toFixed(1)}× from last week`;
+  const fmtGrowth = (g) => `↑ ${Math.round(g)}× from last week`;
   const rows = items.map((it, i, arr) => {
     const border = i < arr.length - 1 ? 'border-bottom:1px solid rgba(255,255,255,0.05);' : '';
     return `<tr>
