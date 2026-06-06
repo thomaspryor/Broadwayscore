@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-06T06:10:35.424Z",
-  "processed": 76,
-  "failed": 55,
-  "successRate": "58.0%",
+  "updatedAt": "2026-06-06T06:12:27.089Z",
+  "processed": 80,
+  "failed": 61,
+  "successRate": "56.7%",
   "tierBreakdown": {
-    "playwright": 22,
+    "playwright": 24,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 6,
     "directCookies": 0,
     "scrapingbee": 21,
     "brightdata": 17,
     "archiveToday": 20,
     "archive": 16
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-06-06T04:58:40.603Z",
-      "event": "bb-session",
-      "session": "fa8a0fd6",
-      "url": "http://theater.nytimes.com/2013/01/18/theater/reviews/cat-on-a-hot-tin-roof-at-r"
-    },
-    {
-      "t": "2026-06-06T04:58:41.618Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-06-06T05:05:31.559Z",
       "event": "bb-session",
@@ -111,6 +100,28 @@
     },
     {
       "t": "2026-06-06T06:07:41.686Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-06T06:11:37.564Z",
+      "event": "bb-session",
+      "session": "f9028c31",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/death-of-a-salesman-theater-rev"
+    },
+    {
+      "t": "2026-06-06T06:11:38.520Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-06-06T06:11:55.596Z",
+      "event": "bb-session",
+      "session": "73c8bcdc",
+      "url": "https://variety.com/2026/legit/news/death-of-a-salesman-broadway-review-nathan-l"
+    },
+    {
+      "t": "2026-06-06T06:11:56.523Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }

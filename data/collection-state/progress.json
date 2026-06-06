@@ -75,7 +75,11 @@
     "proof-2026/variety--brent-lang.json",
     "proof-2026/cititour--brian-scott-lipton.json",
     "avenue-q-west-end-2026/radio-times--joanna-magill.json",
-    "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json"
+    "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
+    "the-fear-of-13-2026/one-minute-critic--matthew-wexler.json",
+    "death-of-a-salesman-2026/hollywood-reporter--david-rooney.json",
+    "death-of-a-salesman-2026/variety--rebecca-rubin.json",
+    "death-of-a-salesman-2026/theatermania--pete-hempstead.json"
   ],
   "failed": [
     "spamalot-off-broadway-2026/nytimes--jesse-green.json",
@@ -132,7 +136,13 @@
     "schmigadoon-2026/variety--unknown.json",
     "avenue-q-west-end-2026/british-theatre--susan-novak.json",
     "avenue-q-west-end-2026/telegraph--marianka-swain.json",
-    "proof-2026/cote-notices--david-cote.json"
+    "proof-2026/cote-notices--david-cote.json",
+    "proof-2026/slantmagazine--mike-dressel.json",
+    "titanique-2026/british-theatre--unknown.json",
+    "titanique-2026/wsj--charles-isherwood.json",
+    "titanique-2026/one-minute-critic--matthew-wexler.json",
+    "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
+    "death-of-a-salesman-2026/dailybeast--tim-teeman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -158,12 +168,18 @@
       "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
       "the-balusters-2026/theatre-reviews-limited--david-roberts.json",
       "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
-      "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json"
+      "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
+      "the-fear-of-13-2026/one-minute-critic--matthew-wexler.json",
+      "death-of-a-salesman-2026/theatermania--pete-hempstead.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/proof-2026/variety--brent-lang.json",
-      "proof-2026/variety--brent-lang.json"
+      "proof-2026/variety--brent-lang.json",
+      "data/review-texts/death-of-a-salesman-2026/hollywood-reporter--david-rooney.json",
+      "death-of-a-salesman-2026/hollywood-reporter--david-rooney.json",
+      "data/review-texts/death-of-a-salesman-2026/variety--rebecca-rubin.json",
+      "death-of-a-salesman-2026/variety--rebecca-rubin.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -250,7 +266,7 @@
     ]
   },
   "startTime": "2026-06-06T04:44:29.355Z",
-  "lastProcessed": "proof-2026/cote-notices--david-cote.json",
+  "lastProcessed": "death-of-a-salesman-2026/theatermania--pete-hempstead.json",
   "log": [
     {
       "t": "2026-06-06T04:58:40.603Z",
@@ -348,6 +364,28 @@
     },
     {
       "t": "2026-06-06T06:07:41.686Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-06T06:11:37.564Z",
+      "event": "bb-session",
+      "session": "f9028c31",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/death-of-a-salesman-theater-rev"
+    },
+    {
+      "t": "2026-06-06T06:11:38.520Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-06-06T06:11:55.596Z",
+      "event": "bb-session",
+      "session": "73c8bcdc",
+      "url": "https://variety.com/2026/legit/news/death-of-a-salesman-broadway-review-nathan-l"
+    },
+    {
+      "t": "2026-06-06T06:11:56.523Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
