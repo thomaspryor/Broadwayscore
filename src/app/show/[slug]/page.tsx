@@ -363,7 +363,10 @@ export default async function ShowPage({ params }: { params: { slug: string } })
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemas) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@graph': schemas,
+        }) }}
       />
 
       {/* Sticky Score Header */}
