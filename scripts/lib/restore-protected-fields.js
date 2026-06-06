@@ -93,11 +93,21 @@ const MANUAL_FIELDS = [
   'wrongShowRetryAt',
 ];
 
-// Nested fields under contentVerification that are manually set
+// Nested fields under contentVerification that are manually set, mapped to the
+// TOP-LEVEL field whose intentional-clear breadcrumb governs them. The rebuild
+// pre-pass promotes contentVerification flags to top-level every run
+// (scripts/rebuild-all-reviews.js ~1320), so resurrecting a stale CV flag here
+// silently re-excludes a review whose top-level flag was deliberately cleared
+// (e.g. a human wrongProductionManualClear, or a URL-replace reset in
+// review-normalization.js that deletes contentVerification). Honor the clear.
 const MANUAL_CV_FIELDS = [
   'wrongProduction',
   'wrongArticle',
 ];
+const CV_FIELD_TO_TOPLEVEL = {
+  wrongProduction: 'wrongProduction',
+  wrongArticle: 'wrongFullText',
+};
 
 const remoteRef = process.argv[2];
 if (!remoteRef) {
@@ -223,6 +233,12 @@ try {
         for (const key of MANUAL_CV_FIELDS) {
           const remoteVal = remote.contentVerification[key];
           if (remoteVal === undefined || remoteVal === null) continue;
+
+          // Intentional-clear exception (mirrors the top-level loop): if the
+          // governing top-level field was deliberately cleared, do NOT resurrect
+          // the nested CV flag — the rebuild pre-pass would re-promote it and
+          // silently re-exclude the review.
+          if (isIntentionalClear(CV_FIELD_TO_TOPLEVEL[key], local)) continue;
 
           if (!local.contentVerification) local.contentVerification = {};
           const localVal = local.contentVerification[key];
