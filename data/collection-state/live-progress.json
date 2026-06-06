@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-06-06T05:55:58.877Z",
+  "updatedAt": "2026-06-06T05:57:11.958Z",
   "processed": 29,
-  "failed": 11,
-  "successRate": "72.5%",
+  "failed": 13,
+  "successRate": "69.0%",
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
@@ -13,30 +13,8 @@
     "archiveToday": 0,
     "archive": 4
   },
-  "browserbaseSessions": 16,
+  "browserbaseSessions": 18,
   "recentActivity": [
-    {
-      "t": "2026-06-06T05:47:55.980Z",
-      "event": "bb-session",
-      "session": "2a558b21",
-      "url": "https://www.nytimes.com/2011/03/04/theater/reviews/04good.html"
-    },
-    {
-      "t": "2026-06-06T05:47:57.026Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-06T05:48:50.087Z",
-      "event": "bb-session",
-      "session": "1a9502f0",
-      "url": "https://www.nytimes.com/2009/04/08/theater/reviews/08rock.html?ref=arts"
-    },
-    {
-      "t": "2026-06-06T05:48:51.094Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-06-06T05:49:11.011Z",
       "event": "bb-session",
@@ -122,6 +100,28 @@
     },
     {
       "t": "2026-06-06T05:55:23.199Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:55:59.803Z",
+      "event": "bb-session",
+      "session": "5f308413",
+      "url": "http://theater.nytimes.com/2005/10/21/theater/reviews/21life.html"
+    },
+    {
+      "t": "2026-06-06T05:56:00.738Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:56:36.611Z",
+      "event": "bb-session",
+      "session": "4b1746c0",
+      "url": "http://theater.nytimes.com/2005/10/07/theater/reviews/07nake.html?adxnnl=1&amp;a"
+    },
+    {
+      "t": "2026-06-06T05:56:37.610Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
