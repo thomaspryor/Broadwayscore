@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-06T05:21:31.279Z",
+  "timestamp": "2026-06-06T11:37:43.007Z",
   "stats": {
-    "totalReviews": 38129,
-    "alreadyFlagged": 16765,
-    "dateGuardCatches": 107,
-    "directorMismatch": 832,
+    "totalReviews": 38144,
+    "alreadyFlagged": 16777,
+    "dateGuardCatches": 106,
+    "directorMismatch": 835,
     "tvFilmSignals": 1047,
-    "londonSignals": 607,
-    "offBroadwaySignals": 464,
-    "yearMismatch": 80,
-    "noPublishDate": 3988
+    "londonSignals": 611,
+    "offBroadwaySignals": 459,
+    "yearMismatch": 81,
+    "noPublishDate": 3987
   },
   "findings": [
     {
@@ -387,6 +387,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2004 (2x) more than 2014 (0x). 2004 matches production: a-raisin-in-the-sun-2004"
+        }
+      ]
+    },
+    {
+      "showId": "a-raisin-in-the-sun-2014",
+      "file": "nytimes--ben-brantley.json",
+      "score": 74,
+      "publishDate": "April 3, 2014",
+      "url": "http://www.nytimes.com/2014/04/04/theater/raisin-in-the-sun-brings-denzel-washington-back-to-broadway.html",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2004 (2x) more than 2014 (1x). 2004 matches production: a-raisin-in-the-sun-2004"
         }
       ]
     },
@@ -5884,7 +5898,7 @@
       "showId": "dog-day-afternoon-2026",
       "file": "one-minute-critic--matthew-wexler.json",
       "score": 64,
-      "publishDate": null,
+      "publishDate": "2026-04-02",
       "url": "https://1minutecritic.com/dog-day-afternoon-broadway-review-jon-bernthal-ebon-moss-bachrach/",
       "findings": [
         {
@@ -5905,20 +5919,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hulu\""
-        }
-      ]
-    },
-    {
-      "showId": "dog-man-the-musical-west-end-2026",
-      "file": "timeout--andrzej-lukowski.json",
-      "score": 88,
-      "publishDate": "2023-12-17",
-      "url": "https://www.timeout.com/london/news/dog-man-the-musical-coming-to-london-in-summer-2026-120225",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 955d before show (2023-12-17 vs 2026-07-29)"
         }
       ]
     },
@@ -6767,6 +6767,20 @@
       "score": 74,
       "publishDate": "2016-01-29",
       "url": "https://nytheatreguide.com/2016/01/broadway-review-fiddler-on-the-roof-at-the-broadway-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+        }
+      ]
+    },
+    {
+      "showId": "fiddler-on-the-roof-2015",
+      "file": "nytimes--charles-isherwood.json",
+      "score": 82,
+      "publishDate": "December 20, 2015",
+      "url": "http://www.nytimes.com/2015/12/21/theater/review-a-fiddler-on-the-roof-revival-with-an-echo-of-modernity.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -8456,11 +8470,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"arthur laurents\" from gypsy-2008"
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"new world stages\""
         }
       ]
     },
@@ -19062,6 +19071,20 @@
     },
     {
       "showId": "spring-awakening-2015",
+      "file": "nytimes--charles-isherwood.json",
+      "score": 91,
+      "publishDate": "September 27, 2015",
+      "url": "http://www.nytimes.com/2015/09/28/theater/review-spring-awakening-by-deaf-west-theater-brings-a-new-sensation-to-broadway.html?_r=0",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from spring-awakening-2006"
+        }
+      ]
+    },
+    {
+      "showId": "spring-awakening-2015",
       "file": "talkinbroadway--matthew-murray.json",
       "score": 80,
       "publishDate": "2015-09-27",
@@ -20894,6 +20917,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from book-of-mormon-2011"
         }
       ]
     },
@@ -27358,20 +27386,6 @@
       ]
     },
     {
-      "showId": "antigone-this-play-i-read-in-high-school-off-broadway-2026",
-      "file": "theatre-reviews-limited--david-roberts.json",
-      "score": 60,
-      "publishDate": "2026-03-22",
-      "url": "https://www.theatrereviews.com/off-broadway-review-antigone-this-play-i-read-in-high-school-at-the-public-theaters-barbaralee-theater-extended-through-saturday-april-4-2026/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
-        }
-      ]
-    },
-    {
       "showId": "arcadia-west-end-2026",
       "file": "guardian--arifa-akbar.json",
       "score": 66,
@@ -28501,6 +28515,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "file": "times-uk--quentin-letts.json",
+      "score": 72,
+      "publishDate": "2021-12-19",
+      "url": "https://www.thetimes.co.uk/article/cabaret-is-amazing-but-eddie-redmayne-is-miscast-nxsnxvczb",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -30373,6 +30401,20 @@
     },
     {
       "showId": "grace-pervades-west-end-2026",
+      "file": "british-theatre--susan-novak.json",
+      "score": 91,
+      "publishDate": "2026-05-01",
+      "url": "https://www.britishtheatre.com/posts/grace-pervades-review-ralph-fiennes-and-miranda-raison-shine-in-david-hare-s-tri",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "grace-pervades-west-end-2026",
       "file": "broadwayworld--team-bww.json",
       "score": null,
       "publishDate": null,
@@ -32049,6 +32091,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "lbc--johnny-jenkins.json",
+      "score": 91,
+      "publishDate": "2026-04-08",
+      "url": "https://www.lbc.co.uk/article/inter-alia-review-best-plays-ever-seen-5HjdXRZ_2/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
@@ -36811,6 +36867,20 @@
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "file": "times-uk--dominic-maxwell.json",
+      "score": 100,
+      "publishDate": "2023-12-15",
+      "url": "https://www.thetimes.co.uk/article/stranger-things-the-first-shadow-review-strange-and-staggeringly-good-klckxpnk5",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "variety--david-benedict.json",
       "score": 87,
       "publishDate": "2023-12-15",
@@ -37351,20 +37421,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
-        }
-      ]
-    },
-    {
-      "showId": "tammy-faye-2024",
-      "file": "theatre-reviews-limited--david-roberts.json",
-      "score": 40,
-      "publishDate": "2024-11-19",
-      "url": "https://www.theatrereviews.com/broadway-review-tammy-faye-at-the-palace-theatre-currently-on/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"barrow street\""
         }
       ]
     },
@@ -39044,20 +39100,6 @@
       ]
     },
     {
-      "showId": "the-last-five-years-2025",
-      "file": "theatre-reviews-limited--joseph-verlezza.json",
-      "score": 65,
-      "publishDate": "2025-04-14",
-      "url": "https://www.theatrereviews.com/broadway-review-the-last-five-years-at-the-hudson-theatre-through-sunday-june-22-2025/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"barrow street\""
-        }
-      ]
-    },
-    {
       "showId": "the-last-ship-2014",
       "file": "vulture--jesse-green.json",
       "score": 42,
@@ -40163,20 +40205,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Contains TV/film keyword: \"season 2\""
-        }
-      ]
-    },
-    {
-      "showId": "the-unknown-off-broadway-2026",
-      "file": "theatre-reviews-limited--david-roberts.json",
-      "score": 88,
-      "publishDate": "2026-03-13",
-      "url": "https://www.theatrereviews.com/off-broadway-review-the-unknown-at-studio-seaview-through-sunday-april-12-2026/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"vineyard theatre\""
         }
       ]
     },
