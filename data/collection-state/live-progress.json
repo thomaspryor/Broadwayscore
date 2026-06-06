@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-06T07:06:34.824Z",
-  "processed": 171,
-  "failed": 140,
-  "successRate": "55.0%",
+  "updatedAt": "2026-06-06T07:12:08.309Z",
+  "processed": 175,
+  "failed": 146,
+  "successRate": "54.5%",
   "tierBreakdown": {
-    "playwright": 76,
+    "playwright": 77,
     "amp": 0,
     "browserbase": 25,
     "directCookies": 0,
     "scrapingbee": 27,
     "brightdata": 23,
     "archiveToday": 34,
-    "archive": 35
+    "archive": 38
   },
-  "browserbaseSessions": 13,
+  "browserbaseSessions": 14,
   "recentActivity": [
-    {
-      "t": "2026-06-06T06:15:49.182Z",
-      "event": "bb-session",
-      "session": "419d8a83",
-      "url": "https://variety.com/2026/legit/reviews/dog-day-afternoon-broadway-review-jon-ber"
-    },
-    {
-      "t": "2026-06-06T06:15:50.095Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-06-06T06:17:02.642Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-06-06T07:04:47.286Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-06T07:07:09.716Z",
+      "event": "bb-session",
+      "session": "5cd372ec",
+      "url": "http://www.wsj.com/articles/SB106748686155075900"
+    },
+    {
+      "t": "2026-06-06T07:07:10.793Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
