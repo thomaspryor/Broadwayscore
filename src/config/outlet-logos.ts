@@ -27,6 +27,9 @@ export const OUTLET_LOGOS: Record<string, OutletLogoConfig> = {
   'NEW YORK TIMES': { domain: 'nytimes.com', color: '#000000', abbrev: 'T', darkBg: true },
   'NYT': { domain: 'nytimes.com', color: '#000000', abbrev: 'T', darkBg: true },
 
+  'The Times (UK)': { domain: 'thetimes.com', color: '#000000', abbrev: 'TIMES' },
+  'The Times': { domain: 'thetimes.com', color: '#000000', abbrev: 'TIMES' },
+
   'The Washington Post': { domain: 'washingtonpost.com', color: '#000000', abbrev: 'WP' },
   'Washington Post': { domain: 'washingtonpost.com', color: '#000000', abbrev: 'WP' },
   'WASHINGTON POST': { domain: 'washingtonpost.com', color: '#000000', abbrev: 'WP' },

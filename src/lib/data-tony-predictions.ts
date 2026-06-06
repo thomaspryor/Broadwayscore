@@ -25,7 +25,7 @@ import tonyLosoStatsData from '../../data/tony-loso-stats.json';
 import gdComparisonData from '../../data/analysis/gd-vs-broadwayscore.json';
 import frozenAudienceData from '../../data/tony-frozen-audience-grades.json';
 
-type CriticPicksFile = { picks: Record<string, Record<string, string>> };
+type CriticPicksFile = { picks: Record<string, Record<string, string>>; shouldPicks?: Record<string, Record<string, string>> };
 
 const PERSON_MATCH_CATEGORIES = new Set([
   'Best Actor in a Musical', 'Best Actress in a Musical',
@@ -38,6 +38,23 @@ const PERSON_MATCH_CATEGORIES = new Set([
 export function lookupCriticPicks(showId: string, personName: string | null, tonyCategory: string): string[] {
   const data = criticPicksRawData as unknown as CriticPicksFile;
   const catPicks = data.picks[tonyCategory];
+  if (!catPicks) return [];
+  const isPersonCat = PERSON_MATCH_CATEGORIES.has(tonyCategory);
+  const result: string[] = [];
+  for (const [outletId, pick] of Object.entries(catPicks)) {
+    if (isPersonCat) {
+      if (personName && pick.toLowerCase() === personName.toLowerCase()) result.push(outletId);
+    } else {
+      if (pick === showId) result.push(outletId);
+    }
+  }
+  return result;
+}
+
+/** Return outlet IDs whose critic said this show/person SHOULD win the given category. */
+export function lookupShouldPicks(showId: string, personName: string | null, tonyCategory: string): string[] {
+  const data = criticPicksRawData as unknown as CriticPicksFile;
+  const catPicks = data.shouldPicks?.[tonyCategory];
   if (!catPicks) return [];
   const isPersonCat = PERSON_MATCH_CATEGORIES.has(tonyCategory);
   const result: string[] = [];
@@ -420,6 +437,8 @@ export interface SerializedTonyShow {
   nomineeCategoryTitle?: string | null;
   /** Outlet IDs (e.g. "nyt", "variety") whose critic picked this show/person to win. */
   criticPicks?: string[];
+  /** Outlet IDs whose critic said this show/person SHOULD win (separate from will-win). */
+  shouldPicks?: string[];
   /** Ceremonies where this show won the matching Tony category: 'DL', 'OCC', 'DD'. */
   precursorWins?: string[];
 }
