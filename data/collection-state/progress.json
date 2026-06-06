@@ -1,5 +1,15 @@
 {
-  "processed": [],
+  "processed": [
+    "proof-2026/nytimes--helen-shaw.json",
+    "hercules-west-end-2025/nytimes--matt-wolf.json",
+    "heathers-the-musical-off-broadway-2025/nytimes--elisabeth-vincentelli.json",
+    "the-great-gatsby-2024/nytimes--maya-phillips.json",
+    "hadestown-2019/nytimes--ben-brantley.json",
+    "archduke-west-end-2026/nytimes--juan-a-ramirez.json",
+    "marjorie-prime-2025/nytimes--elisabeth-vincentelli.json",
+    "waiting-for-godot-2025/nytimes--laura-collins-hughes.json",
+    "call-me-izzy-2025/nytimes--jesse-green.json"
+  ],
   "failed": [
     "spamalot-off-broadway-2026/nytimes--jesse-green.json"
   ],
@@ -7,14 +17,50 @@
   "tierBreakdown": {
     "playwright": [],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/proof-2026/nytimes--helen-shaw.json",
+      "proof-2026/nytimes--helen-shaw.json",
+      "data/review-texts/hadestown-2019/nytimes--ben-brantley.json",
+      "hadestown-2019/nytimes--ben-brantley.json"
+    ],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "hercules-west-end-2025/nytimes--matt-wolf.json",
+      "heathers-the-musical-off-broadway-2025/nytimes--elisabeth-vincentelli.json",
+      "the-great-gatsby-2024/nytimes--maya-phillips.json",
+      "archduke-west-end-2026/nytimes--juan-a-ramirez.json",
+      "marjorie-prime-2025/nytimes--elisabeth-vincentelli.json",
+      "waiting-for-godot-2025/nytimes--laura-collins-hughes.json",
+      "call-me-izzy-2025/nytimes--jesse-green.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-06-06T01:34:20.288Z",
-  "lastProcessed": "spamalot-off-broadway-2026/nytimes--jesse-green.json",
-  "log": []
+  "startTime": "2026-06-06T01:47:59.562Z",
+  "lastProcessed": "call-me-izzy-2025/nytimes--jesse-green.json",
+  "log": [
+    {
+      "t": "2026-06-06T01:48:51.347Z",
+      "event": "bb-session",
+      "session": "aff6ec01",
+      "url": "https://www.nytimes.com/2026/04/16/theater/proof-review-ayo-edebiri-don-cheadle."
+    },
+    {
+      "t": "2026-06-06T01:48:52.470Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T01:50:39.165Z",
+      "event": "bb-session",
+      "session": "998c341e",
+      "url": "https://www.nytimes.com/2019/04/17/theater/hadestown-review-broadway-anais-mitch"
+    },
+    {
+      "t": "2026-06-06T01:50:40.126Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
