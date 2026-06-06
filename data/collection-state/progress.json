@@ -61,7 +61,17 @@
     "leap-of-faith-2012/nytimes--ben-brantley.json",
     "the-motherfucker-with-the-hat-2011/nytimes--ben-brantley.json",
     "colin-quinn-long-story-short-2010/nytimes--charles-isherwood.json",
-    "the-scottsboro-boys-2010/nytimes--ben-brantley.json"
+    "the-scottsboro-boys-2010/nytimes--ben-brantley.json",
+    "mrs-warrens-profession-2010/nytimes--ben-brantley.json",
+    "the-pitmen-painters-2010/nytimes--charles-isherwood.json",
+    "everyday-rapture-2010/nytimes--ben-brantley.json",
+    "million-dollar-quartet-2010/nytimes--ben-brantley.json",
+    "the-philanthropist-2009/nytimes--ben-brantley.json",
+    "rock-of-ages-2009/nytimes--ben-brantley.json",
+    "rock-of-ages-2009/nytimes--charles-isherwood.json",
+    "the-story-of-my-life-2009/nytimes--ben-brantley.json",
+    "american-buffalo-2008/nytimes--ben-brantley.json",
+    "the-seagull-2008/about-entertainment--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -118,7 +128,14 @@
       "data/review-texts/leap-of-faith-2012/nytimes--ben-brantley.json",
       "data/review-texts/the-motherfucker-with-the-hat-2011/nytimes--ben-brantley.json",
       "data/review-texts/colin-quinn-long-story-short-2010/nytimes--charles-isherwood.json",
-      "data/review-texts/the-scottsboro-boys-2010/nytimes--ben-brantley.json"
+      "data/review-texts/the-scottsboro-boys-2010/nytimes--ben-brantley.json",
+      "data/review-texts/mrs-warrens-profession-2010/nytimes--ben-brantley.json",
+      "data/review-texts/the-pitmen-painters-2010/nytimes--charles-isherwood.json",
+      "data/review-texts/everyday-rapture-2010/nytimes--ben-brantley.json",
+      "data/review-texts/million-dollar-quartet-2010/nytimes--ben-brantley.json",
+      "data/review-texts/the-philanthropist-2009/nytimes--ben-brantley.json",
+      "data/review-texts/the-story-of-my-life-2009/nytimes--ben-brantley.json",
+      "data/review-texts/american-buffalo-2008/nytimes--ben-brantley.json"
     ],
     "archive": [
       "waiting-for-godot-2025/nytimes--laura-collins-hughes.json",
@@ -135,7 +152,7 @@
     ]
   },
   "startTime": "2026-06-06T04:35:40.969Z",
-  "lastProcessed": "the-scottsboro-boys-2010/nytimes--ben-brantley.json",
+  "lastProcessed": "the-seagull-2008/about-entertainment--ben-brantley.json",
   "log": [
     {
       "t": "2026-06-06T04:55:01.869Z",
@@ -156,6 +173,17 @@
     },
     {
       "t": "2026-06-06T04:59:52.808Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:11:17.756Z",
+      "event": "bb-session",
+      "session": "33cc4684",
+      "url": "http://theater.nytimes.com/2008/10/03/theater/reviews/03seag.html"
+    },
+    {
+      "t": "2026-06-06T05:11:18.545Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

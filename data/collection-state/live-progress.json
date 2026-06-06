@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-06-06T05:03:47.183Z",
+  "updatedAt": "2026-06-06T05:11:50.077Z",
   "processed": 48,
-  "failed": 12,
-  "successRate": "80.0%",
+  "failed": 22,
+  "successRate": "68.6%",
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
@@ -10,10 +10,10 @@
     "directCookies": 0,
     "scrapingbee": 19,
     "brightdata": 18,
-    "archiveToday": 8,
+    "archiveToday": 15,
     "archive": 11
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-06-06T04:55:01.869Z",
@@ -34,6 +34,17 @@
     },
     {
       "t": "2026-06-06T04:59:52.808Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:11:17.756Z",
+      "event": "bb-session",
+      "session": "33cc4684",
+      "url": "http://theater.nytimes.com/2008/10/03/theater/reviews/03seag.html"
+    },
+    {
+      "t": "2026-06-06T05:11:18.545Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
