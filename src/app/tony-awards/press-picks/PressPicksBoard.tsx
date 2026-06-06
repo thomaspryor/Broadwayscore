@@ -71,7 +71,7 @@ export function PressPicksBoard({ categories, sources }: { categories: BoardCate
         {mode === 'will' ? (
           <>Who <span className="text-gray-200 font-semibold">{legend.length} outlets</span> predict <span className="text-gray-200 font-semibold">will win</span>. Bars show how many agree on each nominee.</>
         ) : (
-          <>Who <span className="text-gray-200 font-semibold">{legend.length} critics</span> say <span className="text-gray-200 font-semibold">should win</span> — their personal favorite, separate from the prediction. A thinner field; not every outlet offers a "should win."</>
+          <>Who <span className="text-gray-200 font-semibold">{legend.length} critics</span> say <span className="text-gray-200 font-semibold">should win</span> — their personal favorite, separate from the prediction. A thinner field; not every outlet offers a &quot;should win.&quot;</>
         )}
       </p>
 
