@@ -1934,6 +1934,7 @@ function loadBrowserbaseUsage() {
       if (saved.date === today) {
         browserbaseUsage = saved;
         browserbaseUsage.sessionsThisRun = 0; // Reset per-run counter
+        browserbaseUsage.sessionsPerDomain = {}; // Per-domain cap is per-run, not per-day (prevents cross-run starvation in chained rounds)
         console.log(`  Browserbase usage loaded: ${browserbaseUsage.sessionsToday}/${CONFIG.browserbaseMaxSessionsPerDay} sessions today`);
       } else {
         // New day - archive previous day and reset
