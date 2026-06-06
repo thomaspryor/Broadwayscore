@@ -103,15 +103,23 @@ const MANUAL_FIELDS = [
 const MANUAL_CV_FIELDS = [
   'wrongProduction',
   'wrongArticle',
+  'isFilmTv',
 ];
 // CV flags are promoted to a top-level flag by the rebuild pre-pass; the mapping
 // is to whatever flag that promotion SETS, because that is the flag a human clear
 // would target. cv.wrongProduction → wrongProduction; cv.wrongArticle → wrongShow
 // (rebuild-all-reviews.js ~1393 sets d.wrongShow = true on cv.wrongArticle, NOT
-// wrongFullText). Mapping to the wrong top-level field would make the skip a no-op.
+// wrongFullText); cv.isFilmTv → wrongShow (rebuild-all-reviews.js ~1407). Mapping
+// to the wrong top-level field would make the skip a no-op.
+// NOTE: this nested per-subfield restore is the -X theirs path only. The action.yml
+// push restore protects the WHOLE contentVerification object (it is in
+// PROTECTED_FIELDS) and has no CV-clear breadcrumb, so a breadcrumb-less reset that
+// deletes the whole object (review-normalization URL-replace ~line 619) can still
+// rehydrate it wholesale — tracked as a separate card (breadcrumb-less reset class).
 const CV_FIELD_TO_TOPLEVEL = {
   wrongProduction: 'wrongProduction',
   wrongArticle: 'wrongShow',
+  isFilmTv: 'wrongShow',
 };
 
 const remoteRef = process.argv[2];
