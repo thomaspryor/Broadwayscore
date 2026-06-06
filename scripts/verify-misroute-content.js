@@ -197,8 +197,32 @@ async function runPool(items, worker, size) {
     return d;
   }, CONCURRENCY);
 
+  // Fail-CLOSED verifier-health guard. If a whole model is down — e.g. a
+  // retired/404'd model id (gemini-2.0-flash did exactly this 2026-06) — every
+  // row collapses to a single-model 'needs-human' and a naive reader could
+  // trust the surviving model's 'b'. Detect a model-wide failure (>50% of rows
+  // errored for one model) and REFUSE to emit any confirm from this run.
+  const errs = { gemini: 0, openai: 0 };
+  for (const f of todo) {
+    const v = f.verifierVerdict || {};
+    if (v.gemini && v.gemini.verdict === 'error') errs.gemini++;
+    if (v.openai && v.openai.verdict === 'error') errs.openai++;
+  }
+  const degraded = todo.length > 0 && (errs.gemini / todo.length > 0.5 || errs.openai / todo.length > 0.5);
+  if (degraded) {
+    for (const f of todo) {
+      if (f.confirm === true) { f.confirm = false; }
+      if (f.verifierVerdict) f.verifierVerdict.decision = 'verifier-degraded';
+    }
+  }
+
   // Persist updated whitelist (confirm:true now set on confirmed-to rows).
   fs.writeFileSync(OUT, JSON.stringify(Array.isArray(raw) ? findings : { ...raw, findings, verifiedAt: new Date().toISOString() }, null, 2));
+
+  if (degraded) {
+    console.error(`\n🛑 VERIFIER DEGRADED: gemini errored ${errs.gemini}/${todo.length}, openai ${errs.openai}/${todo.length} — a model is down (check the model id / API status). ALL confirms suppressed; nothing from this run is safe to apply.`);
+    process.exitCode = 1;
+  }
 
   // Human-readable report.
   const BT = String.fromCharCode(96);

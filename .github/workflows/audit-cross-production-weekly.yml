@@ -76,6 +76,21 @@ jobs:
         env:
           REVIEW_TEXTS_DIR: ${{ github.workspace }}/data/review-texts
 
+      - name: Report new slug misroutes
+        # Subtracts the committed disposition list (data/audit/slug-misroute-
+        # dispositioned.json — leave-as-is findings already triaged) from the
+        # fresh audit. APPLIED/DELETED misroutes self-drop from the audit, so
+        # what's left after subtraction is genuinely NEW + un-triaged. Emails the
+        # operator (only if >0) with the LOCAL verify+apply commands. READ-ONLY:
+        # writes nothing, moves nothing, no LLM calls in CI (operator verifies
+        # locally where keys live in .env). continue-on-error so a transient
+        # email failure never skips the non-if:always() commit step below.
+        continue-on-error: true
+        run: node scripts/disposition-misroute.js report --email
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+
       - name: Extract aggregator candidates
         # Turns the unmatched-article audit (written by the PV + BWW scrapers
         # earlier on Sunday) into OB-discovery candidates staged in
