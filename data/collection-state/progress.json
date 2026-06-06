@@ -323,7 +323,17 @@
     "yoah-off-broadway-2026/variety--pat-saperstein.json",
     "seagull-true-story-off-broadway-2026/nysr--frank-scheck.json",
     "a-mirrored-monet-west-end-2026/guardian--lucinda-everett.json",
-    "a-mirrored-monet-west-end-2026/thestage--paul-vale.json"
+    "a-mirrored-monet-west-end-2026/thestage--paul-vale.json",
+    "beetlejuice-west-end-2026/amny--matt-windman.json",
+    "dark-of-the-moon-west-end-2026/guardian--arifa-akbar.json",
+    "equus-west-end-2026/guardian--unknown.json",
+    "end-of-the-rainbow-west-end-2026/new-jersey-newsroom--michael-sommers.json",
+    "end-of-the-rainbow-west-end-2026/philadelphia-inquirer--howard-shapiro.json",
+    "end-of-the-rainbow-west-end-2026/thestage--unknown.json",
+    "end-of-the-rainbow-west-end-2026/hollywood-reporter--david-rooney.json",
+    "im-not-being-funny-west-end-2026/guardian--brian-logan.json",
+    "mercury-off-broadway-2026/theatrecat--unknown.json",
+    "a-midsummer-nights-dream-globe-west-end-2026/guardian--miriam-gillinson.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -606,7 +616,7 @@
     ]
   },
   "startTime": "2026-06-06T04:44:29.355Z",
-  "lastProcessed": "a-mirrored-monet-west-end-2026/thestage--paul-vale.json",
+  "lastProcessed": "a-midsummer-nights-dream-globe-west-end-2026/guardian--miriam-gillinson.json",
   "log": [
     {
       "t": "2026-06-06T06:19:34.296Z",
@@ -849,6 +859,17 @@
       "t": "2026-06-06T07:37:03.011Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-06T07:54:05.871Z",
+      "event": "bb-session",
+      "session": "9dfc405d",
+      "url": "https://thestage.co.uk/reviews/end-of-the-rainbow-review-soho-theatre-walthamsto"
+    },
+    {
+      "t": "2026-06-06T07:54:07.291Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
