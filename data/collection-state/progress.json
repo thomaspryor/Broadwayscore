@@ -363,7 +363,17 @@
     "deep-azure-globe-west-end-2026/telegraph--fiona-mountford.json",
     "deep-azure-globe-west-end-2026/thestage--dave-fargnoli.json",
     "oh-mary-west-end-2025/guardian--arifa-akbar.json",
-    "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json"
+    "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "burlesque-west-end-2026/thestage--paul-vale.json",
+    "burlesque-west-end-2026/times-uk--clive-davis.json",
+    "hercules-west-end-2025/times-uk--dominic-maxwell.json",
+    "hercules-west-end-2025/thestage--sam-marlowe.json",
+    "stranger-things-2024/thestage--unknown.json",
+    "stranger-things-2024/broadwaynews--brittani-samuel.json",
+    "operation-mincemeat-2025/thereviewshub--unknown.json",
+    "operation-mincemeat-2025/broadwaynews--brittani-samuel.json",
+    "titanique-west-end-2024/thestage--paul-vale.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -600,7 +610,11 @@
       "data/review-texts/the-authenticator-west-end-2026/thestage--unknown.json",
       "data/review-texts/a-mirrored-monet-west-end-2026/thestage--paul-vale.json",
       "data/review-texts/end-of-the-rainbow-west-end-2026/thestage--unknown.json",
-      "data/review-texts/deep-azure-globe-west-end-2026/thestage--dave-fargnoli.json"
+      "data/review-texts/deep-azure-globe-west-end-2026/thestage--dave-fargnoli.json",
+      "data/review-texts/burlesque-west-end-2026/thestage--paul-vale.json",
+      "data/review-texts/stranger-things-2024/thestage--unknown.json",
+      "data/review-texts/stranger-things-2024/broadwaynews--brittani-samuel.json",
+      "data/review-texts/operation-mincemeat-2025/broadwaynews--brittani-samuel.json"
     ],
     "archive": [
       "misery-2015/nytimes--charles-isherwood.json",
@@ -651,7 +665,7 @@
     ]
   },
   "startTime": "2026-06-06T04:44:29.355Z",
-  "lastProcessed": "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json",
+  "lastProcessed": "titanique-west-end-2024/thestage--paul-vale.json",
   "log": [
     {
       "t": "2026-06-06T06:19:34.296Z",
@@ -914,6 +928,28 @@
     },
     {
       "t": "2026-06-06T07:59:19.428Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-06-06T08:01:22.355Z",
+      "event": "bb-session",
+      "session": "401d57da",
+      "url": "https://www.thestage.co.uk/reviews/burlesque-review-savoy-theatre-london-christi"
+    },
+    {
+      "t": "2026-06-06T08:01:23.338Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-06-06T08:04:06.406Z",
+      "event": "bb-session",
+      "session": "24b43ee3",
+      "url": "https://www.thestage.co.uk/news/netflix-documentary-to-go-behind-the-scenes-of-s"
+    },
+    {
+      "t": "2026-06-06T08:04:07.424Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
