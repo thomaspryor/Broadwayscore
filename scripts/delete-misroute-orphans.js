@@ -32,10 +32,26 @@ const DEFERRED = flag('deferred', path.join(process.env.HOME || '', 'Documents/c
 const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR || path.join(process.env.HOME || '/tmp', 'broadway-review-texts');
 
 if (!fs.existsSync(DEFERRED)) { console.error(`Deferred file not found: ${DEFERRED}`); process.exit(1); }
-const candidates = (JSON.parse(fs.readFileSync(DEFERRED, 'utf8')).orphanDeleteCandidates) || [];
-if (!candidates.length) { console.log('No orphan-delete candidates.'); process.exit(0); }
+const INCLUDE_DIFF_URL = args.includes('--include-diff-url');
+const deferredObj = JSON.parse(fs.readFileSync(DEFERRED, 'utf8'));
+let candidates = (deferredObj.orphanDeleteCandidates || []).map(c => ({ ...c, set: 'orphan' }));
+if (INCLUDE_DIFF_URL) candidates = candidates.concat((deferredObj.unresolvedDiffUrl || []).map(c => ({ ...c, set: 'diff-url' })));
+if (!candidates.length) { console.log('No candidates.'); process.exit(0); }
 
 const textLen = r => String(r.fullText || r.reviewText || '').length;
+// Word-shingle overlap (8-grams) — used to confirm two files are the SAME
+// review when their URL fields differ (review discovered via roundup-url vs
+// direct-url). Returns null when either text is too short to compare.
+function textOverlap(a, b) {
+  const tok = s => String(s || '').toLowerCase().replace(/[^a-z0-9 ]/g, ' ').split(/\s+/).filter(Boolean);
+  const A = tok(a), B = tok(b);
+  if (A.length < 8 || B.length < 8) return null;
+  const sb = new Set();
+  for (let i = 0; i + 8 <= B.length; i++) sb.add(B.slice(i, i + 8).join(' '));
+  let hit = 0, tot = 0;
+  for (let i = 0; i + 8 <= A.length; i++) { tot++; if (sb.has(A.slice(i, i + 8).join(' '))) hit++; }
+  return tot ? Math.round(100 * hit / tot) : 0;
+}
 
 console.log(`Mode: ${APPLY ? 'APPLY (deleting)' : 'DRY-RUN'} | review-texts: ${REVIEW_TEXTS_DIR}`);
 console.log(`Orphan candidates: ${candidates.length}\n`);
@@ -59,10 +75,20 @@ for (const c of candidates) {
   // otherwise be deleted (ship-check Codex 2026-05-30). No shared URL → defer.
   const urlFields = r => [r.url, r.bwwRoundupUrl, r.playbillVerdictUrl].filter(Boolean);
   const fUrls = urlFields(F), tUrls = urlFields(T);
-  const sameArticle = fUrls.some(u => tUrls.includes(u));
+  const sharedUrl = fUrls.some(u => tUrls.includes(u));
+  // Same-article proof, strongest first:
+  //   1. a shared URL field, OR
+  //   2. high text-shingle overlap (>=85%) when both have text (covers the
+  //      roundup-url-vs-direct-url duplicate where URL fields differ), OR
+  //   3. an EMPTY FROM stub while TO holds a real review (>300ch) from the same
+  //      outlet--critic filename — the FROM is a redundant wrong-show stub.
+  const ov = textOverlap(F.fullText || F.reviewText, T.fullText || T.reviewText);
+  const sameArticle = sharedUrl
+    || (ov != null && ov >= 85)
+    || (textLen(F) === 0 && textLen(T) > 300);
   if (!sameArticle) {
-    res.deferred++; deferredRows.push({ ...c, reason: 'no shared URL between FROM and TO — verify same article manually' });
-    console.log(`  [DEFER no-shared-url] ${c.from}/${c.file} (FROM ${textLen(F)}ch; no url field matches TO)`);
+    res.deferred++; deferredRows.push({ ...c, reason: `not provably same article (sharedUrl=${sharedUrl}, overlap=${ov}, fromLen=${textLen(F)}, toLen=${textLen(T)})` });
+    console.log(`  [DEFER not-same-article] ${c.from}/${c.file} (sharedUrl=${sharedUrl} ov=${ov} F=${textLen(F)} T=${textLen(T)})`);
     continue;
   }
 
