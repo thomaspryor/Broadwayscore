@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-06T05:46:46.783Z",
-  "processed": 16,
-  "failed": 4,
-  "successRate": "80.0%",
+  "updatedAt": "2026-06-06T05:52:52.200Z",
+  "processed": 23,
+  "failed": 7,
+  "successRate": "76.7%",
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 14,
-    "brightdata": 3,
+    "scrapingbee": 17,
+    "brightdata": 5,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 2
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 10,
   "recentActivity": [
     {
       "t": "2026-06-06T05:40:19.995Z",
@@ -45,6 +45,83 @@
     },
     {
       "t": "2026-06-06T05:44:02.819Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:46:47.679Z",
+      "event": "bb-session",
+      "session": "6023aba6",
+      "url": "http://theater.nytimes.com/2013/01/18/theater/reviews/cat-on-a-hot-tin-roof-at-r"
+    },
+    {
+      "t": "2026-06-06T05:46:48.147Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:47:48.574Z",
+      "event": "bb-session",
+      "session": "ec8fcf7f",
+      "url": "https://www.nytimes.com/2012/08/02/theater/reviews/bring-it-on-the-musical-at-st"
+    },
+    {
+      "t": "2026-06-06T05:47:49.072Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:48:46.227Z",
+      "event": "bb-session",
+      "session": "ce50ea3e",
+      "url": "http://www.nytimes.com/2012/04/24/theater/reviews/ghost-the-musical-at-the-lunt-"
+    },
+    {
+      "t": "2026-06-06T05:48:47.332Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:49:50.415Z",
+      "event": "bb-session",
+      "session": "2530c013",
+      "url": "http://theater.nytimes.com/2011/04/25/theater/reviews/born-yesterday-with-jim-be"
+    },
+    {
+      "t": "2026-06-06T05:49:50.974Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:50:52.821Z",
+      "event": "bb-session",
+      "session": "18b472b9",
+      "url": "https://www.nytimes.com/2011/03/04/theater/reviews/04good.html"
+    },
+    {
+      "t": "2026-06-06T05:50:53.383Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:51:29.959Z",
+      "event": "bb-session",
+      "session": "ba1596a7",
+      "url": "https://www.nytimes.com/2009/04/08/theater/reviews/08rock.html"
+    },
+    {
+      "t": "2026-06-06T05:51:30.512Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:52:31.318Z",
+      "event": "bb-session",
+      "session": "f6b745e2",
+      "url": "https://www.nytimes.com/2009/04/08/theater/reviews/08rock.html?ref=arts"
+    },
+    {
+      "t": "2026-06-06T05:52:31.810Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
