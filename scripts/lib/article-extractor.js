@@ -144,6 +144,29 @@ function extractVarietyBody(html) {
 }
 
 /**
+ * Lighting & Sound America (lightingandsoundamerica.com) — an old table-based
+ * site with NO body container div. The review prose is a run of sibling
+ * <p><font face="Arial,Helvetica,Geneva,Swiss,SunSans-Regular">…</p> paragraphs;
+ * the nav/footer use other fonts. Because its story.asp?ID=… URLs carry no title
+ * in the path, L&SA reviews were both filtered out of discovery AND saved as
+ * stubs (no extractor pattern) — it recurred as the dominant Show Score gap
+ * across shows (Receptionist/Animal Wisdom/Jerome/Indian Princesses, 2026-06-06).
+ * Strategy: collect the Arial-font review paragraphs, drop trailing chrome.
+ */
+function extractLsaBody(html) {
+  const paras = [...html.matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi)]
+    .filter((m) => /<font[^>]+face="Arial,Helvetica,Geneva,Swiss/i.test(m[1]))
+    .map((m) => stripHtml(m[1]))
+    .filter((t) => t.length > 40 && /[a-z]/.test(t)
+      && !/^©|All rights reserved|PLASA Media|Subscribe to (?:News|LSA)|Back to|Today's News/i.test(t)
+      // Contact/address footer block ("Lighting&Sound America, 372 Central Park
+      // West… Tel:… lsamedia.com") shares the Arial review font, so drop by content.
+      && !/Lighting\s*&\s*Sound America\s*,|Central Park West|Tel:\s*\d|lsamedia\.com/i.test(t));
+  const body = paras.join('\n\n');
+  return body.length >= 300 ? body : null;
+}
+
+/**
  * Per-outlet patterns. Order matters: most specific first.
  * Each entry: [hostnameMatch, regex, minLength].
  * minLength gates against accidental shell-match (e.g. matching 200 chars of nav).
@@ -294,6 +317,13 @@ function extractArticleText(html, hostname) {
   if (host.includes('thestage.co.uk')) {
     const stageText = extractStageBody(html);
     if (stageText && stageText.length >= 300) return stageText;
+  }
+
+  // Lighting & Sound America: table-based layout, no container div — prose lives
+  // in sibling <p><font face="Arial…"> paragraphs (see extractLsaBody).
+  if (host.includes('lightingandsoundamerica.com')) {
+    const lsaText = extractLsaBody(html);
+    if (lsaText && lsaText.length >= 300) return lsaText;
   }
 
   for (const [hostMatch, re, minLen] of PATTERNS) {
