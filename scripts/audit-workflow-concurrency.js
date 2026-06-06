@@ -15,8 +15,8 @@
  * Rule:
  *   For each workflow triggered on push to main, if its concurrency group
  *   COLLAPSES multiple commits (does not include github.run_id / github.sha /
- *   github.run_number / github.event.head_commit.id), then cancel-in-progress
- *   must NOT be the literal `true`. Allowed:
+ *   github.run_number / github.run_attempt / head_commit.id), then
+ *   cancel-in-progress must NOT be the literal `true`. Allowed:
  *     - `false`
  *     - a conditional expression, e.g. ${{ github.ref != 'refs/heads/main' }}
  *     - literal `true` IFF the concurrency block carries an explicit
@@ -25,25 +25,94 @@
  *
  * Per-run groups (run_id/sha/etc.) are exempt: they never collapse commits, so
  * cancel-in-progress is a no-op there regardless of value.
+ *
+ * No external deps (js-yaml is NOT installed in test.yml's lint-workflows job —
+ * it runs setup-node but no `npm ci`). Parsed with an indentation-aware reader,
+ * same approach as scripts/audit-cron-health-coverage.js.
  */
 const fs = require('fs');
 const path = require('path');
-const yaml = require('js-yaml');
 
 const WORKFLOW_DIR = path.join(__dirname, '..', '.github', 'workflows');
 const MEMORY_REF = 'memory/feedback_test_yml_cancel_in_progress.md';
-// Tokens that make a concurrency group unique per run/commit (so it never collapses commits).
-const PER_RUN_TOKENS = ['github.run_id', 'github.run_number', 'github.sha', 'head_commit.id', 'github.run_attempt'];
+const PER_RUN_TOKENS = ['github.run_id', 'github.run_number', 'github.sha', 'github.run_attempt', 'head_commit.id'];
 const ANNOTATION = 'concurrency-cancel-ok';
 
-function triggersOnMainPush(doc) {
-  const on = doc && doc.on;
-  if (!on || typeof on !== 'object') return false;
-  const push = on.push;
-  if (!push || typeof push !== 'object') return false;
-  const branches = push.branches;
-  if (!branches) return false;
-  return JSON.stringify(branches).includes('main');
+const indentOf = (line) => line.length - line.replace(/^ +/, '').length;
+const stripComment = (s) => s.replace(/\s+#.*$/, '').trim();
+
+// Lines (excluding blanks/comments) strictly more indented than the header at startIdx.
+function childLines(lines, startIdx) {
+  const headerIndent = indentOf(lines[startIdx]);
+  const out = [];
+  for (let i = startIdx + 1; i < lines.length; i++) {
+    const line = lines[i];
+    if (line.trim() === '' || line.trim().startsWith('#')) continue;
+    if (indentOf(line) <= headerIndent) break;
+    out.push(line);
+  }
+  return out;
+}
+
+function triggersOnMainPush(raw) {
+  const lines = raw.split('\n');
+  // Top-level `on:` (indent 0). Accept `on:` and `'on':`.
+  const onIdx = lines.findIndex((l) => /^['"]?on['"]?\s*:/.test(l) && indentOf(l) === 0);
+  if (onIdx === -1) return false;
+  const onChildIdxs = [];
+  const onIndent = indentOf(lines[onIdx]);
+  for (let i = onIdx + 1; i < lines.length; i++) {
+    if (lines[i].trim() === '' || lines[i].trim().startsWith('#')) continue;
+    if (indentOf(lines[i]) <= onIndent) break;
+    onChildIdxs.push(i);
+  }
+  // `push:` directly under `on:`.
+  const pushIdx = onChildIdxs.find((i) => /^\s*push\s*:/.test(lines[i]));
+  if (pushIdx === undefined) return false;
+  const pushKids = childLines(lines, pushIdx);
+  // Find the `branches:` entry inside the push block and check it lists main.
+  for (let j = 0; j < pushKids.length; j++) {
+    const t = stripComment(pushKids[j]);
+    const inline = t.match(/^branches\s*:\s*(.+)$/);
+    if (inline) {
+      // e.g. branches: [main]  or  branches: [main, release]
+      return /\bmain\b/.test(inline[1]);
+    }
+    if (/^branches\s*:\s*$/.test(t)) {
+      // list form: subsequent `- main` items, more indented than this branches: line
+      const absIdx = lines.indexOf(pushKids[j]);
+      for (const item of childLines(lines, absIdx)) {
+        if (/^\s*-\s*['"]?main['"]?\s*$/.test(stripComment(item))) return true;
+      }
+      return false;
+    }
+  }
+  return false;
+}
+
+function readConcurrency(raw) {
+  const lines = raw.split('\n');
+  const cIdx = lines.findIndex((l) => /^concurrency\s*:/.test(l) && indentOf(l) === 0);
+  if (cIdx === -1) return null;
+  const kids = childLines(lines, cIdx);
+  let group = '';
+  let cancelRaw = null;
+  // blockText must include comment lines so the `# concurrency-cancel-ok:` annotation
+  // is visible — childLines() strips comments, so rebuild the raw indented slice here.
+  const blockRaw = [lines[cIdx]];
+  for (let i = cIdx + 1; i < lines.length; i++) {
+    if (lines[i].trim() === '') { blockRaw.push(lines[i]); continue; }
+    if (indentOf(lines[i]) <= 0 && !lines[i].trim().startsWith('#')) break;
+    blockRaw.push(lines[i]);
+  }
+  const blockText = blockRaw.join('\n');
+  for (const k of kids) {
+    const g = k.match(/^\s*group\s*:\s*(.+)$/);
+    if (g) group = g[1].trim();
+    const c = stripComment(k).match(/^cancel-in-progress\s*:\s*(.+)$/);
+    if (c) cancelRaw = c[1].trim();
+  }
+  return { group, cancelRaw, blockText };
 }
 
 function main() {
@@ -54,33 +123,22 @@ function main() {
   const violations = [];
 
   for (const file of files) {
-    const full = path.join(WORKFLOW_DIR, file);
-    const raw = fs.readFileSync(full, 'utf8');
-    let doc;
-    try {
-      doc = yaml.load(raw);
-    } catch (e) {
-      // Don't fail the whole guard on a parse error here — actionlint owns YAML validity.
-      continue;
-    }
-    if (!triggersOnMainPush(doc)) continue;
+    const raw = fs.readFileSync(path.join(WORKFLOW_DIR, file), 'utf8');
+    if (!triggersOnMainPush(raw)) continue;
 
-    const c = doc.concurrency;
-    if (!c || typeof c !== 'object') continue; // no concurrency block → nothing to cancel
-    const cip = c['cancel-in-progress'];
+    const c = readConcurrency(raw);
+    if (!c) continue; // no concurrency block → nothing cancels
 
-    // Only the literal boolean `true` is a problem. js-yaml parses an expression
-    // string (`${{ ... }}`) as a string, and `false` as boolean false — both pass.
-    if (cip !== true) continue;
+    // Only the literal `true` is a problem. `false` and a `${{ ... }}` expression pass.
+    if (c.cancelRaw !== 'true') continue;
 
-    const group = String(c.group || '');
-    const isPerRun = PER_RUN_TOKENS.some((t) => group.includes(t));
+    const isPerRun = PER_RUN_TOKENS.some((t) => c.group.includes(t));
     if (isPerRun) continue; // unique per run → never collapses commits
 
-    // Allow an explicit opt-out annotation in the concurrency block.
-    if (raw.includes(ANNOTATION)) continue;
+    // Explicit opt-out annotation inside the concurrency block.
+    if (c.blockText.includes(ANNOTATION)) continue;
 
-    violations.push({ file, group });
+    violations.push({ file, group: c.group });
   }
 
   if (violations.length) {
