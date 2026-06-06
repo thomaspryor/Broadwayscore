@@ -79,7 +79,9 @@
     "war-horse-2011/nytimes--ben-brantley.json",
     "catch-me-if-you-can-2011/nytimes--ben-brantley.json",
     "good-people-2011/nytimes--ben-brantley.json",
-    "hamlet-2009/nytimes--ben-brantley.json"
+    "hamlet-2009/nytimes--ben-brantley.json",
+    "young-frankenstein-2007/nytimes--ben-brantley.json",
+    "legally-blonde-2007/nytimes--ben-brantley.json"
   ],
   "failed": [
     "spamalot-off-broadway-2026/nytimes--jesse-green.json",
@@ -101,7 +103,15 @@
     "everyday-rapture-2010/nytimes--ben-brantley.json",
     "million-dollar-quartet-2010/nytimes--ben-brantley.json",
     "the-philanthropist-2009/nytimes--ben-brantley.json",
-    "rock-of-ages-2009/nytimes--ben-brantley.json"
+    "rock-of-ages-2009/nytimes--ben-brantley.json",
+    "rock-of-ages-2009/nytimes--charles-isherwood.json",
+    "the-story-of-my-life-2009/nytimes--ben-brantley.json",
+    "american-buffalo-2008/nytimes--ben-brantley.json",
+    "the-seagull-2008/about-entertainment--ben-brantley.json",
+    "the-seagull-2008/nytimes--ben-brantley.json",
+    "thurgood-2008/nytimes--ben-brantley.json",
+    "high-fidelity-2006/about-entertainment--ben-brantley.json",
+    "the-coast-of-utopia-2006/about-entertainment--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -164,7 +174,9 @@
       "born-yesterday-2011/nytimes--charles-isherwood.json",
       "war-horse-2011/nytimes--ben-brantley.json",
       "catch-me-if-you-can-2011/nytimes--ben-brantley.json",
-      "good-people-2011/nytimes--ben-brantley.json"
+      "good-people-2011/nytimes--ben-brantley.json",
+      "young-frankenstein-2007/nytimes--ben-brantley.json",
+      "legally-blonde-2007/nytimes--ben-brantley.json"
     ],
     "archiveToday": [
       "data/review-texts/something-rotten-2015/nytimes--ben-brantley.json",
@@ -181,7 +193,10 @@
       "data/review-texts/the-pitmen-painters-2010/nytimes--charles-isherwood.json",
       "data/review-texts/everyday-rapture-2010/nytimes--ben-brantley.json",
       "data/review-texts/million-dollar-quartet-2010/nytimes--ben-brantley.json",
-      "data/review-texts/the-philanthropist-2009/nytimes--ben-brantley.json"
+      "data/review-texts/the-philanthropist-2009/nytimes--ben-brantley.json",
+      "data/review-texts/the-story-of-my-life-2009/nytimes--ben-brantley.json",
+      "data/review-texts/american-buffalo-2008/nytimes--ben-brantley.json",
+      "data/review-texts/thurgood-2008/nytimes--ben-brantley.json"
     ],
     "archive": [
       "once-on-this-island-2017/nytimes--ben-brantley.json",
@@ -215,7 +230,7 @@
     ]
   },
   "startTime": "2026-06-06T03:32:12.394Z",
-  "lastProcessed": "rock-of-ages-2009/nytimes--ben-brantley.json",
+  "lastProcessed": "the-coast-of-utopia-2006/about-entertainment--ben-brantley.json",
   "log": [
     {
       "t": "2026-06-06T04:04:18.292Z",
@@ -236,6 +251,39 @@
     },
     {
       "t": "2026-06-06T04:09:31.930Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T04:22:12.410Z",
+      "event": "bb-session",
+      "session": "fe6573a6",
+      "url": "http://theater.nytimes.com/2008/10/03/theater/reviews/03seag.html"
+    },
+    {
+      "t": "2026-06-06T04:22:13.481Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T04:24:56.957Z",
+      "event": "bb-session",
+      "session": "ae9eb3e6",
+      "url": "http://theater.nytimes.com/2006/12/08/theater/reviews/08fide.html"
+    },
+    {
+      "t": "2026-06-06T04:24:57.809Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T04:25:31.769Z",
+      "event": "bb-session",
+      "session": "cb9cdcee",
+      "url": "http://theater.nytimes.com/2006/11/28/theater/reviews/28coas.html"
+    },
+    {
+      "t": "2026-06-06T04:25:32.736Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
