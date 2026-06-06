@@ -357,6 +357,16 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
           )}
         </div>
 
+        {/* Link to winners page — visible for current season near ceremony */}
+        {isCurrent && new Date() >= new Date('2026-05-23T00:00:00Z') && (
+          <div className="mb-4 px-4 py-3 rounded-xl border border-amber-500/20 bg-amber-500/5 text-sm flex items-center justify-between gap-3">
+            <span className="text-gray-300">See our #1 pick for all 26 categories on one page.</span>
+            <Link href="/tony-awards/winners-2026" className="text-amber-400 font-semibold whitespace-nowrap hover:text-amber-300 transition-colors">
+              Predicted winners →
+            </Link>
+          </div>
+        )}
+
         {/* Track Record — collapsed by default on the season page.
             Summary line stays inline so the credibility signal is visible
             without expanding; full breakdown lives inside the details. */}
