@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-06T11:37:47.440Z",
+  "generatedAt": "2026-06-06T12:57:18.874Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -388,23 +388,23 @@
       "status": "open",
       "slug": "girl-interrupted-off-broadway",
       "thumbnail": "/images/shows/girl-interrupted-off-broadway-2026/thumbnail.webp",
-      "siteScore": 68.87,
-      "liveScore": 69,
-      "scoreDrift": 0.12999999999999545,
+      "siteScore": 70.77,
+      "liveScore": 71,
+      "scoreDrift": 0.23000000000000398,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 16,
+      "total": 18,
       "t1": 5,
-      "t2": 6,
+      "t2": 8,
       "t3": 5,
-      "positive": 8,
+      "positive": 10,
       "mixed": 8,
       "negative": 0,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 10,
+        "highConfidence": 11,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -736,6 +736,18 @@
           "m": 8,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-06-06T12:57:18.874Z",
+          "rc": 18,
+          "s": 70.77,
+          "t1": 5,
+          "t2": 8,
+          "t3": 5,
+          "p": 10,
+          "m": 8,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -749,28 +761,28 @@
       "status": "open",
       "slug": "are-you-watching-west-end",
       "thumbnail": "/images/shows/are-you-watching-west-end-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": 81,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 3,
+      "siteScore": 78,
+      "liveScore": 78,
+      "scoreDrift": 0,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 2,
-      "t1": 2,
-      "t2": 0,
+      "total": 5,
+      "t1": 3,
+      "t2": 2,
       "t3": 0,
-      "positive": 2,
-      "mixed": 0,
+      "positive": 4,
+      "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "2/8 total",
-          "T1:1/3",
+          "5/8 total",
+          "T1:2/3",
           "T2:1/2",
-          "hi-conf:2/6"
+          "hi-conf:3/6"
         ],
-        "highConfidence": 2,
+        "highConfidence": 3,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -820,6 +832,10 @@
         {
           "name": "New York Theatre Guide",
           "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
         }
       ],
       "timeline": [
@@ -832,6 +848,18 @@
           "t3": 0,
           "p": 2,
           "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-06-06T12:57:18.874Z",
+          "rc": 5,
+          "s": 78,
+          "t1": 3,
+          "t2": 2,
+          "t3": 0,
+          "p": 4,
+          "m": 1,
           "n": 0,
           "bc": "waiting"
         }
@@ -847,27 +875,27 @@
       "status": "open",
       "slug": "a-woman-among-women-off-broadway",
       "thumbnail": "/images/shows/a-woman-among-women-off-broadway-2026/thumbnail.jpg",
-      "siteScore": 61.27,
-      "liveScore": 61,
-      "scoreDrift": -0.2700000000000031,
+      "siteScore": 64.86,
+      "liveScore": 65,
+      "scoreDrift": 0.14000000000000057,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 8,
+      "total": 9,
       "t1": 0,
-      "t2": 5,
+      "t2": 6,
       "t3": 3,
-      "positive": 1,
+      "positive": 2,
       "mixed": 5,
       "negative": 2,
       "readiness": {
         "ready": false,
         "reasons": [
-          "8/12 total",
+          "9/12 total",
           "T1:0/3",
-          "hi-conf:3/8"
+          "hi-conf:4/8"
         ],
-        "highConfidence": 3,
+        "highConfidence": 4,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1200,6 +1228,18 @@
           "t2": 5,
           "t3": 3,
           "p": 1,
+          "m": 5,
+          "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-06-06T12:57:18.874Z",
+          "rc": 9,
+          "s": 64.86,
+          "t1": 0,
+          "t2": 6,
+          "t3": 3,
+          "p": 2,
           "m": 5,
           "n": 2,
           "bc": "waiting"
