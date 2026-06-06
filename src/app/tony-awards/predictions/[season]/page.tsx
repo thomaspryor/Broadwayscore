@@ -533,7 +533,7 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
         ))}
 
         {/* Beat the Critics promo — slot between major categories and performer/craft
-            categories. Current season + entries-open gate (closes ceremony eve 11:59 ET). */}
+            categories. Current season + entries-open gate (closes 7:59 PM ET on ceremony day). */}
         {isCurrent && isBtcPromoActive() && (
           <FeaturedSpot
             eyebrow="Beat the Critics"
