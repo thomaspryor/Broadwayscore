@@ -172,6 +172,21 @@ function getKnownDomainMap() {
   return map;
 }
 
+// Curated show → Show Score page URL map (data/show-score-urls.json), loaded once.
+// Used by the Show Score reconciliation source; missing entries fall back to
+// slug construction in showScoreUrlForShow.
+let _showScoreUrlMap = null;
+function getShowScoreUrlMap() {
+  if (_showScoreUrlMap) return _showScoreUrlMap;
+  try {
+    const raw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'show-score-urls.json'), 'utf8'));
+    _showScoreUrlMap = raw.shows || raw || {};
+  } catch {
+    _showScoreUrlMap = {};
+  }
+  return _showScoreUrlMap;
+}
+
 function loadReviews() {
   const data = JSON.parse(fs.readFileSync(REVIEWS_PATH, 'utf8'));
   return Array.isArray(data) ? data : (data.reviews || []);
@@ -189,6 +204,7 @@ function loadDirFiles(showId) {
 async function findAggregatorArticles(show) {
   const title = show.title;
   const id = show.id;
+  const tokens = titleTokens(title);
   const queries = [
     `site:playbill.com/article "${title}" reviews`,
     `site:broadwayworld.com "Review Roundup" "${title}"`,
@@ -201,13 +217,21 @@ async function findAggregatorArticles(show) {
       for (const r of (results || [])) {
         const u = r.link || r.url;
         if (!u) continue;
+        // The SERP routinely returns OTHER shows' verdict/roundup articles for a
+        // show's query (cold-start ranking). Require the show's title tokens in the
+        // article slug so we don't fetch + extract a wrong-show roundup (e.g. the
+        // "weather-girl" Playbill verdict for a "Girl, Interrupted" query —
+        // girl-interrupted 2026-06-06). Verdict slugs embed the title, so a real
+        // match passes; "weather-girl" matches only "girl" and is rejected.
+        const clean = u.split('?')[0].split('#')[0];
+        if (!urlMatchesShow(clean, tokens)) continue;
         // Playbill Verdict article patterns
         if (/playbill\.com\/article\/(read|what|reviews|critics)/i.test(u) && /\.html?$|article\//.test(u)) {
-          urls.add(u.split('?')[0].split('#')[0]);
+          urls.add(clean);
         }
         // BWW Review Roundup article patterns
         if (/broadwayworld\.com\/article\/Review-Roundup-/i.test(u)) {
-          urls.add(u.split('?')[0].split('#')[0]);
+          urls.add(clean);
         }
       }
     } catch (e) {
@@ -253,8 +277,15 @@ function urlMatchesShow(href, tokens) {
     // `maids` slip into `/the-handmaids-tale-revival` because "maids"
     // appears inside "handmaids". Segment match catches the actual show
     // slug while rejecting accidental substring overlap.
-    const segments = p.split(/[\/\-_.\s]+/).filter(Boolean);
-    return tokens.some(t => segments.includes(t));
+    const segments = new Set(p.split(/[\/\-_.\s]+/).filter(Boolean));
+    const matched = tokens.filter(t => segments.has(t)).length;
+    // Require enough DISTINCTIVE overlap so a different show that merely shares a
+    // common word isn't accepted — "Weather Girl" matched "Girl, Interrupted" on
+    // "girl" alone (girl-interrupted 2026-06-06), the same title-token class as the
+    // original wrong-show leak. Short titles (1-2 tokens) must match ALL tokens;
+    // longer titles tolerate one missing token (slug truncation / subtitle drop).
+    if (tokens.length <= 2) return matched === tokens.length;
+    return matched >= tokens.length - 1;
   } catch { return false; }
 }
 
@@ -365,14 +396,39 @@ async function auditShow(show) {
 
   const articles = await findAggregatorArticles(show);
   result.aggregatorArticles = articles;
-  if (articles.length === 0) return result;
 
   const aggUrls = new Set();
   for (const art of articles) {
     const urls = await extractAggregatorReviewUrls(art, show);
     if (urls) for (const u of urls) aggUrls.add(u);
   }
+
+  // Show Score per-show page → direct outlet review URLs. Show Score covers
+  // off-Broadway (unlike DTLI, which is Broadway-only) — it lands later and
+  // lists fewer reviews than Playbill/BWW, but the hourly audit eventually
+  // reconciles a review that surfaced only there. Filtered through the same
+  // isReviewUrl + urlMatchesShow gates so ticketing/maps/form links on the
+  // Show Score page never become bogus "missing reviews" (girl-interrupted
+  // 2026-06-06 — same class as the telecharge false-positive).
+  try {
+    const { showScoreUrlForShow, extractShowScoreReviewUrls } = require('./lib/show-score-discover');
+    const ssUrl = showScoreUrlForShow(show, getShowScoreUrlMap());
+    if (ssUrl) {
+      const r = await fetchPage(ssUrl, { timeout: 45000 });
+      const html = (typeof r === 'string') ? r : ((r && (r.content || r.html || r.body)) || '');
+      const tokens = titleTokens(show.title);
+      for (const u of extractShowScoreReviewUrls(html)) {
+        if (isReviewUrl(u) && urlMatchesShow(u, tokens)) {
+          aggUrls.add(u.split('?')[0].split('#')[0]);
+        }
+      }
+    }
+  } catch (e) {
+    if (verbose) console.error(`  Show Score discovery error for ${show.id}: ${e.message}`);
+  }
+
   result.aggregatorListedUrls = [...aggUrls];
+  if (aggUrls.size === 0) return result;
 
   const dirData = loadDirFiles(show.id);
   result.dirFiles = dirData.length;
@@ -507,7 +563,9 @@ function ingestMissingUrl(showId, url, knownOutletId) {
   }
 }
 
-(async () => {
+// CLI entry — guarded so the module can be require()'d by unit tests without
+// running the audit (CLAUDE.md §15: test the real urlMatchesShow/titleTokens).
+if (require.main === module) (async () => {
   const allShows = loadShows();
   let targets;
   if (showFilter) {
@@ -679,3 +737,5 @@ function ingestMissingUrl(showId, url, knownOutletId) {
   console.error('Fatal:', e.message);
   process.exit(1);
 });
+
+module.exports = { urlMatchesShow, titleTokens, provisionalOutletIdFromHost };
