@@ -323,7 +323,17 @@
     "yoah-off-broadway-2026/variety--pat-saperstein.json",
     "seagull-true-story-off-broadway-2026/nysr--frank-scheck.json",
     "a-mirrored-monet-west-end-2026/guardian--lucinda-everett.json",
-    "a-mirrored-monet-west-end-2026/thestage--paul-vale.json"
+    "a-mirrored-monet-west-end-2026/thestage--paul-vale.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "a-woman-among-women-off-broadway-2026/playbill--unknown.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "girl-interrupted-off-broadway-2026/playbill--unknown.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
+    "small-off-broadway-2026/guardian--arifa-akbar.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -447,7 +457,9 @@
       "hamilton-west-end-2021/hollywood-reporter--demetrios-matheou.json",
       "data/review-texts/book-of-mormon-2011/variety--marilyn-stasio.json",
       "data/review-texts/innocence-off-broadway-2026/wsj--heidi-waleson.json",
-      "innocence-off-broadway-2026/wsj--heidi-waleson.json"
+      "innocence-off-broadway-2026/wsj--heidi-waleson.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -606,7 +618,7 @@
     ]
   },
   "startTime": "2026-06-06T04:44:29.355Z",
-  "lastProcessed": "a-mirrored-monet-west-end-2026/thestage--paul-vale.json",
+  "lastProcessed": "small-off-broadway-2026/guardian--arifa-akbar.json",
   "log": [
     {
       "t": "2026-06-06T06:19:34.296Z",
@@ -849,6 +861,28 @@
       "t": "2026-06-06T07:37:03.011Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-06T10:49:01.638Z",
+      "event": "bb-session",
+      "session": "56c96de5",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-06T10:49:02.546Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-06T10:49:16.182Z",
+      "event": "bb-session",
+      "session": "ed3450f1",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-06T10:49:16.914Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

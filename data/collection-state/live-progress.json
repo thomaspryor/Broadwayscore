@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-06-06T07:41:14.374Z",
-  "processed": 199,
-  "failed": 182,
-  "successRate": "52.2%",
+  "updatedAt": "2026-06-06T10:50:25.039Z",
+  "processed": 165,
+  "failed": 167,
+  "successRate": "49.7%",
   "tierBreakdown": {
     "playwright": 90,
     "amp": 0,
-    "browserbase": 27,
+    "browserbase": 29,
     "directCookies": 0,
     "scrapingbee": 28,
     "brightdata": 37,
     "archiveToday": 37,
     "archive": 44
   },
-  "browserbaseSessions": 15,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-06-06T06:17:46.620Z",
-      "event": "bb-session",
-      "session": "f4699841",
-      "url": "https://www.wsj.com/articles/giant-review-john-lithgows-brilliantly-bad-tempered"
-    },
-    {
-      "t": "2026-06-06T06:17:47.545Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-06-06T06:25:07.046Z",
-      "event": "bb-session",
-      "session": "7b13eaf6",
-      "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broa"
-    },
-    {
-      "t": "2026-06-06T06:25:08.581Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-06-06T06:39:04.375Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-06-06T07:37:03.011Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-06T10:49:01.638Z",
+      "event": "bb-session",
+      "session": "56c96de5",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-06T10:49:02.546Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-06T10:49:16.182Z",
+      "event": "bb-session",
+      "session": "ed3450f1",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-06T10:49:16.914Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
