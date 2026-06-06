@@ -80,6 +80,36 @@ const verbose = args.includes('--verbose');
 // credits — 5 per show per cron run is a sane budget.
 const INGEST_PER_SHOW_CAP = parseInt(args.find(a => a.startsWith('--ingest-cap='))?.split('=')[1] || '5', 10);
 
+// Checkpointing (added 2026-06-06): the CI job has timeout-minutes:25 and every
+// hourly run was being CANCELLED at the cap — so a single run never finished a
+// full sweep and later shows were never audited. With --checkpoint the run
+// processes the LEAST-recently-audited shows first, skips shows audited within a
+// freshness window, and stops cleanly under a soft time budget — so successive
+// hourly runs grind through the whole eligible set (and, with --include-closed,
+// the back catalogue) instead of re-auditing the same first shows forever.
+const useCheckpoint = args.includes('--checkpoint');
+const includeClosed = args.includes('--include-closed');
+const TIME_BUDGET_MS = parseInt(args.find(a => a.startsWith('--time-budget-min='))?.split('=')[1] || '20', 10) * 60 * 1000;
+const FRESHNESS_HOURS = parseInt(args.find(a => a.startsWith('--freshness-hours='))?.split('=')[1] || '12', 10);
+const CHECKPOINT_PATH = path.join(ROOT, 'data', 'audit', 'gap-audit-checkpoint.json');
+function loadCheckpoint() {
+  try { return JSON.parse(fs.readFileSync(CHECKPOINT_PATH, 'utf8')) || {}; } catch { return {}; }
+}
+function saveCheckpoint(cp) {
+  try { fs.writeFileSync(CHECKPOINT_PATH, JSON.stringify(cp, null, 2)); } catch { /* non-fatal */ }
+}
+// How long to skip a show after auditing it. Closed shows that came back clean
+// rarely change, so they get a long skip (don't re-burn credits); open shows and
+// shows with gaps are re-checked sooner so newly-published reviews are caught.
+function freshnessMsFor(show, lastEntry) {
+  const closed = show && show.status === 'closed';
+  // A closed show that audited clean won't get new reviews — re-check only yearly
+  // (effectively one-time) so the back-catalogue grind doesn't burn credits forever.
+  if (closed && lastEntry && lastEntry.gaps === 0) return 365 * 24 * 60 * 60 * 1000; // 365d
+  if (closed) return 14 * 24 * 60 * 60 * 1000; // 14d — retry closed shows that still had gaps
+  return FRESHNESS_HOURS * 60 * 60 * 1000; // open/previews — re-check often for new reviews
+}
+
 // Non-review domains we ignore inside aggregator articles (platform widgets,
 // social, navigation, store links, internal Playbill/BWW article navigation).
 const NON_REVIEW_HOST_PATTERNS = [
@@ -369,7 +399,9 @@ function classifyShowFile(d) {
 
 function isShowEligible(show) {
   if (!show.openingDate) return false;
-  if (!['open', 'previews'].includes(show.status)) return false;
+  // --include-closed: also audit closed shows (one-time back-catalogue backfill).
+  // Without it, only currently open/previews shows are checked (the default cron).
+  if (!includeClosed && !['open', 'previews'].includes(show.status)) return false;
   const opened = new Date(show.openingDate);
   const today = new Date();
   const diffDays = (today - opened) / 86400000;
@@ -580,13 +612,48 @@ if (require.main === module) (async () => {
     targets = allShows.filter(isShowEligible);
   }
 
-  console.log(`audit-show-review-gap: ${targets.length} target(s) (window=${windowDays}d)`);
+  // Checkpoint ordering: process least-recently-audited shows first and skip
+  // those still within their freshness window, so each time-boxed run makes
+  // forward progress instead of re-auditing the same first shows every hour.
+  const checkpoint = useCheckpoint ? loadCheckpoint() : {};
+  if (useCheckpoint && !showFilter) {
+    const now = Date.now();
+    const before = targets.length;
+    targets = targets
+      .filter((s) => {
+        const e = checkpoint[s.id];
+        if (!e) return true; // never audited → always include
+        return (now - new Date(e.at).getTime()) >= freshnessMsFor(s, e);
+      })
+      .sort((a, b) => {
+        const ta = checkpoint[a.id] ? new Date(checkpoint[a.id].at).getTime() : 0;
+        const tb = checkpoint[b.id] ? new Date(checkpoint[b.id].at).getTime() : 0;
+        return ta - tb; // oldest / never-audited first
+      });
+    console.log(`audit-show-review-gap: ${targets.length}/${before} due for audit (checkpoint, freshness skip applied)`);
+  }
+
+  console.log(`audit-show-review-gap: ${targets.length} target(s) (window=${windowDays}d${includeClosed ? ', incl. closed' : ''})`);
 
   const results = [];
   const dispatched = new Set();
+  const runStart = Date.now();
+  let budgetHit = false;
   for (const s of targets) {
+    // Soft time budget: stop taking on new shows before the CI hard timeout so
+    // the checkpoint + ingested review-texts commit cleanly (the 25-min cancel
+    // race). Next run resumes from the next least-recently-audited show.
+    if (useCheckpoint && (Date.now() - runStart) > TIME_BUDGET_MS) {
+      budgetHit = true;
+      console.log(`⏱  time budget (${Math.round(TIME_BUDGET_MS / 60000)}m) reached — stopping after ${results.length} shows; checkpoint will resume the rest next run.`);
+      break;
+    }
     if (verbose) console.log(`\n${s.id} "${s.title}" (${s.openingDate} ${s.status})`);
     const r = await auditShow(s);
+    if (useCheckpoint) {
+      checkpoint[s.id] = { at: new Date().toISOString(), gaps: r.missing.length + r.flaggedMisses.length };
+      saveCheckpoint(checkpoint);
+    }
     results.push(r);
     const gapTotal = r.missing.length + r.flaggedMisses.length;
     const summary = `  ${r.inReviewsJson}/${r.aggregatorListedUrls.length || '?'} reviews | ${gapTotal} gap (missing=${r.missing.length} flagged=${r.flaggedMisses.length})`;
@@ -680,7 +747,10 @@ if (require.main === module) (async () => {
     }, null, 2));
     console.log(`Wrote unknown-outlets: ${UNKNOWN_OUTLETS_PATH} (${unknownOutlets.length} hosts)`);
   }
-  console.log(`Summary: ${audit.counts.withGap}/${targets.length} shows with gaps | ${audit.counts.totalMissing} URLs not in dir | ${audit.counts.totalFlaggedMisses} URLs in dir but flagged out | ${unknownOutlets.length} unknown outlets`);
+  console.log(`Summary: ${audit.counts.withGap}/${results.length} shows audited with gaps | ${audit.counts.totalMissing} URLs not in dir | ${audit.counts.totalFlaggedMisses} URLs in dir but flagged out | ${unknownOutlets.length} unknown outlets`);
+  if (useCheckpoint) {
+    console.log(`Checkpoint: ${results.length} shows audited this run${budgetHit ? ' (time-budget partial — remaining shows resume next run)' : ' (full eligible set complete)'}. State: ${CHECKPOINT_PATH}`);
+  }
   if (verbose && unknownOutlets.length > 0) {
     console.log('\nUnknown outlets (not in outlet-registry.json):');
     for (const u of unknownOutlets) {
@@ -740,4 +810,4 @@ if (require.main === module) (async () => {
   process.exit(1);
 });
 
-module.exports = { urlMatchesShow, titleTokens, provisionalOutletIdFromHost };
+module.exports = { urlMatchesShow, titleTokens, provisionalOutletIdFromHost, freshnessMsFor };

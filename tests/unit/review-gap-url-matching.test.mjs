@@ -14,7 +14,26 @@ import assert from 'node:assert';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { urlMatchesShow, titleTokens } = require('../../scripts/audit-show-review-gap.js');
+const { urlMatchesShow, titleTokens, freshnessMsFor } = require('../../scripts/audit-show-review-gap.js');
+
+const HOUR = 60 * 60 * 1000;
+const DAY = 24 * HOUR;
+
+describe('freshnessMsFor — checkpoint re-audit cadence', () => {
+  it('open shows are re-checked within hours (new reviews keep landing)', () => {
+    assert.ok(freshnessMsFor({ status: 'open' }, { gaps: 0 }) <= 24 * HOUR);
+  });
+  it('a clean closed show is effectively one-time (~yearly)', () => {
+    assert.strictEqual(freshnessMsFor({ status: 'closed' }, { gaps: 0 }), 365 * DAY);
+  });
+  it('a closed show that still had gaps is retried sooner', () => {
+    const ms = freshnessMsFor({ status: 'closed' }, { gaps: 2 });
+    assert.ok(ms < 365 * DAY && ms >= 7 * DAY, `expected a short retry window, got ${ms / DAY}d`);
+  });
+  it('never-audited handled by caller (no lastEntry) — returns a finite window', () => {
+    assert.ok(Number.isFinite(freshnessMsFor({ status: 'closed' }, null)));
+  });
+});
 
 describe('titleTokens', () => {
   it('drops stopwords and short tokens', () => {
