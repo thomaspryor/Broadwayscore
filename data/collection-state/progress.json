@@ -135,7 +135,13 @@
     "stranger-things-the-first-shadow-west-end-2023/telegraph--dominic-cavendish.json",
     "operation-mincemeat-west-end-2024/express-uk--neil-norman.json",
     "operation-mincemeat-west-end-2024/times-uk--clive-davis.json",
-    "and-juliet-2022/newyorker--helen-shaw.json"
+    "and-juliet-2022/newyorker--helen-shaw.json",
+    "moulin-rouge-the-musical-west-end-2021/londonist--franco-milazzo.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/hollywood-reporter--demetrios-matheou.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--quentin-letts.json",
+    "six-2021/one-minute-critic--matthew-wexler.json",
+    "six-2021/pages-on-stages--mason-pilevsky.json",
+    "little-shop-of-horrors-off-broadway-2019/theatre-reviews-limited--david-roberts.json"
   ],
   "failed": [
     "spamalot-off-broadway-2026/nytimes--jesse-green.json",
@@ -242,7 +248,11 @@
     "operation-mincemeat-west-end-2024/guardian--emma-john.json",
     "and-juliet-2022/broadway-blog--joey-sims.json",
     "mj-2022/broadwaynews--charles-isherwood.json",
-    "mj-2022/nydailynews--karu-f-daniels.json"
+    "mj-2022/nydailynews--karu-f-daniels.json",
+    "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--clive-davis.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--dominic-maxwell.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/independent--alice-saville.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -303,7 +313,10 @@
       "maybe-happy-ending-2024/theatre-reviews-limited--joseph-verlezza.json",
       "the-great-gatsby-2024/observer--david-cote.json",
       "hadestown-west-end-2024/shy-strange-manic--kariss-ainsworth.json",
-      "stranger-things-the-first-shadow-west-end-2023/i-paper--fiona-mountford.json"
+      "stranger-things-the-first-shadow-west-end-2023/i-paper--fiona-mountford.json",
+      "six-2021/one-minute-critic--matthew-wexler.json",
+      "six-2021/pages-on-stages--mason-pilevsky.json",
+      "little-shop-of-horrors-off-broadway-2019/theatre-reviews-limited--david-roberts.json"
     ],
     "amp": [],
     "browserbase": [
@@ -322,7 +335,9 @@
       "data/review-texts/ragtime-2025/wsj--charles-isherwood.json",
       "ragtime-2025/wsj--charles-isherwood.json",
       "data/review-texts/maybe-happy-ending-2024/variety--unknown.json",
-      "maybe-happy-ending-2024/variety--unknown.json"
+      "maybe-happy-ending-2024/variety--unknown.json",
+      "data/review-texts/cabaret-at-the-kit-kat-club-west-end-2021/hollywood-reporter--demetrios-matheou.json",
+      "cabaret-at-the-kit-kat-club-west-end-2021/hollywood-reporter--demetrios-matheou.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -433,11 +448,13 @@
       "stranger-things-the-first-shadow-west-end-2023/telegraph--dominic-cavendish.json",
       "operation-mincemeat-west-end-2024/express-uk--neil-norman.json",
       "operation-mincemeat-west-end-2024/times-uk--clive-davis.json",
-      "and-juliet-2022/newyorker--helen-shaw.json"
+      "and-juliet-2022/newyorker--helen-shaw.json",
+      "moulin-rouge-the-musical-west-end-2021/londonist--franco-milazzo.json",
+      "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--quentin-letts.json"
     ]
   },
   "startTime": "2026-06-06T04:44:29.355Z",
-  "lastProcessed": "mj-2022/nydailynews--karu-f-daniels.json",
+  "lastProcessed": "little-shop-of-horrors-off-broadway-2019/theatre-reviews-limited--david-roberts.json",
   "log": [
     {
       "t": "2026-06-06T04:58:40.603Z",
@@ -614,6 +631,17 @@
       "t": "2026-06-06T06:39:05.334Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-06T06:45:08.735Z",
+      "event": "bb-session",
+      "session": "1fc77c39",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/cabaret-eddie-redmayne-jessie-b"
+    },
+    {
+      "t": "2026-06-06T06:45:09.729Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }

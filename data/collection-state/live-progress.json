@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-06T06:44:53.449Z",
-  "processed": 136,
-  "failed": 105,
-  "successRate": "56.4%",
+  "updatedAt": "2026-06-06T06:46:52.646Z",
+  "processed": 142,
+  "failed": 109,
+  "successRate": "56.6%",
   "tierBreakdown": {
-    "playwright": 57,
+    "playwright": 60,
     "amp": 0,
-    "browserbase": 16,
+    "browserbase": 18,
     "directCookies": 0,
     "scrapingbee": 26,
     "brightdata": 19,
     "archiveToday": 29,
-    "archive": 28
+    "archive": 30
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 9,
   "recentActivity": [
-    {
-      "t": "2026-06-06T05:22:53.492Z",
-      "event": "bb-session",
-      "session": "2eb52d12",
-      "url": "http://theater.nytimes.com/2006/04/26/theater/reviews/26lest.html"
-    },
-    {
-      "t": "2026-06-06T05:22:54.447Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-06-06T05:23:36.640Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-06-06T06:39:05.334Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-06T06:45:08.735Z",
+      "event": "bb-session",
+      "session": "1fc77c39",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/cabaret-eddie-redmayne-jessie-b"
+    },
+    {
+      "t": "2026-06-06T06:45:09.729Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
