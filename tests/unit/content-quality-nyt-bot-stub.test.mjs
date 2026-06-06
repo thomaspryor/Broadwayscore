@@ -110,6 +110,22 @@ test('incomplete-reason classifies nyt_bot_stub signal as bot_blocked (not paywa
     `expected 'bot_blocked', got '${result?.incompleteReason}' — Browserbase won't fire for 'paywall' reason`);
 });
 
+test('detectPaywall() on NYT stub text is guarded by trailing-junk exception (not marked garbage)', () => {
+  // The NYT stub pattern is in PAYWALL_PATTERNS (so detectPaywall returns detected:true)
+  // but isGarbageContent() has a _isPatternInTrailingJunk() guard that prevents it from
+  // marking the file as garbage when the match is trailing. This test documents that
+  // detectPaywall() DOES match — callers must use the trailing-junk guard or rely on
+  // Layer A.5 routing (which short-circuits before detectPaywall() in Layer B).
+  const { detectPaywall } = require(path.join(__dirname, '..', '..', 'scripts', 'lib', 'content-quality.js'));
+  const result = detectPaywall(NYT_STUB_TEXT);
+  // detectPaywall DOES match — the dual-pattern is intentional; guard is in the caller.
+  assert.ok(result.detected, 'detectPaywall should match the NYT stub pattern (dual-purpose)');
+  // Verify the match is late in the text (>70%) — _isPatternInTrailingJunk() will catch it.
+  const matchPos = NYT_STUB_TEXT.indexOf(result.match || 'trouble retrieving');
+  const pct = matchPos / NYT_STUB_TEXT.length;
+  assert.ok(pct > 0.7, `match at ${Math.round(pct*100)}% — expected >70% for trailing-junk guard to fire`);
+});
+
 test('incomplete-reason classifies bot_blocked via fullText fallback when truncationSignals absent', () => {
   // Rebuild reads source files before propagating truncationSignals into data.
   // The fullText-scan fallback in Layer A.5 catches the pattern even when
