@@ -85,6 +85,33 @@ test('isIntentionalClear: wrong-article family', () => {
   assert.equal(isIntentionalClear('wrongFullText', {}), false);
 });
 
+test('isIntentionalClear: rediscover reset (_previousWrongFlags) is honored, sub-field precise', () => {
+  // rediscover-review-urls.js deletes the flag + records the prior value.
+  const reWP = { _previousWrongFlags: { wrongProduction: true, wrongShow: false } };
+  assert.equal(isIntentionalClear('wrongProduction', reWP), true);
+  assert.equal(isIntentionalClear('wrongProductionReason', reWP), true);
+  // It only cleared wrongProduction → do NOT suppress a wrongShow restore.
+  assert.equal(isIntentionalClear('wrongShow', reWP), false);
+
+  const reWS = { _previousWrongFlags: { wrongProduction: false, wrongShow: true } };
+  assert.equal(isIntentionalClear('wrongShow', reWS), true);
+  assert.equal(isIntentionalClear('wrongProduction', reWS), false);
+
+  // Both cleared.
+  const reBoth = { _previousWrongFlags: { wrongProduction: true, wrongShow: true } };
+  assert.equal(isIntentionalClear('wrongProduction', reBoth), true);
+  assert.equal(isIntentionalClear('wrongShow', reBoth), true);
+
+  // Absent / empty marker → not a clear.
+  assert.equal(isIntentionalClear('wrongProduction', { _previousWrongFlags: {} }), false);
+  assert.equal(isIntentionalClear('wrongShow', {}), false);
+});
+
+test('_previousWrongFlags is itself a PROTECTED_FIELD (breadcrumb must survive rebase)', () => {
+  assert.ok(PROTECTED_FIELDS.includes('_previousWrongFlags'),
+    '_previousWrongFlags must be protected so the rediscover clear signal is not lost on rebase');
+});
+
 test('isIntentionalClear: originalScore cleared via originalScoreCleared breadcrumb', () => {
   assert.equal(isIntentionalClear('originalScore', { originalScoreCleared: true }), true);
   assert.equal(isIntentionalClear('originalScoreSource', { originalScoreCleared: true }), true);

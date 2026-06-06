@@ -79,6 +79,11 @@ const PROTECTED_FIELDS = [
   'wrongProductionAutoCleared',
   'wrongProductionAutoClearedAt',
   'wrongProductionReason',
+  // rediscover-review-urls.js breadcrumb: prior wrong-flag values recorded when a
+  // URL is rediscovered and the flags are deleted for re-scrape. Protected so the
+  // intentional-clear signal (CLEAR_BREADCRUMBS) survives a rebase rather than
+  // being lost, which would let the restore resurrect the stale flag.
+  '_previousWrongFlags',
   'wrongAttribution',
   'manualContentTier',
   'designation',
@@ -155,9 +160,11 @@ const PROTECTED_FIELDS = [
  * duplicateClearReason). It is the same failure mode for the manual-clear
  * families that NULL or DELETE a flag and leave a durable signal:
  * wrongProduction (manual clear / override / humanReviewedWrongProduction:false),
- * wrongShow (review-guards.js wrongShowCleared), wrong-article, and originalScore
- * (originalScoreCleared, set by fix-p0-score-corruption.js). Without honoring the
- * breadcrumb, a CI rebase resurrects the stale flag and re-flags the review.
+ * wrongShow (review-guards.js wrongShowCleared), wrong-article, originalScore
+ * (originalScoreCleared, set by fix-p0-score-corruption.js), and the rediscover
+ * reset (rediscover-review-urls.js deletes wrongProduction/wrongShow for re-scrape
+ * and records _previousWrongFlags). Without honoring the breadcrumb, a CI rebase
+ * resurrects the stale flag and re-flags the review (or makes rediscover a no-op).
  *
  * Each entry maps a PROTECTED field to a predicate over the LOCAL record that
  * returns true when an empty value is an intentional clear. The wrong-flag and
@@ -183,22 +190,37 @@ const _isEmptyValue = (v) => v === undefined || v === null
   || (typeof v === 'string' && v.length === 0)
   || (Array.isArray(v) && v.length === 0);
 
+// rediscover-review-urls.js DELETES wrongProduction/wrongShow (+reasons) to force a
+// fresh re-scrape of a rediscovered URL, recording the prior values in
+// _previousWrongFlags. That deletion is an intentional clear — the classifiers
+// re-derive the flags on the next enrich pass — but without honoring this marker
+// the rebase-restore resurrects the stale flag and rediscover becomes a no-op for
+// flagged reviews (the whole point being to re-scrape wrong_content). Sub-field
+// precise so it only suppresses restore of a flag rediscover actually cleared.
+const _rediscoveredWrongProduction = (d) =>
+  !!(d._previousWrongFlags && d._previousWrongFlags.wrongProduction);
+const _rediscoveredWrongShow = (d) =>
+  !!(d._previousWrongFlags && d._previousWrongFlags.wrongShow);
+
 // Canonical "human cleared wrongProduction" predicate — EXACTLY the triplet used
 // by the rebuild nuclear guard (scripts/rebuild-all-reviews.js ~2041) and
 // isLikelyStaleWrongProduction (scripts/lib/review-guards.js ~815). Do not add
 // wrongProductionAutoCleared (string-typed, flag set false not deleted) or
 // wrongProductionClearedNote (always co-occurs with ManualClear) — that would
-// drift from the canonical predicate.
+// drift from the canonical predicate. The rediscover reset is the one non-human
+// clear honored here (separate, sub-field-gated signal).
 const _wrongProductionCleared = (d) =>
   d.wrongProductionManualClear === true ||
   d.wrongProductionOverride === true ||
-  d.humanReviewedWrongProduction === false;
+  d.humanReviewedWrongProduction === false ||
+  _rediscoveredWrongProduction(d);
 
 // Reuse the canonical wrongShow-cleared predicate (lazy require keeps this module
 // circular-safe — review-guards.js has no top-level require back to here). It
 // already unions the production-level human-clear signals, which a bespoke copy
-// here previously omitted.
+// here previously omitted. Plus the rediscover reset.
 const _wrongShowCleared = (d) => {
+  if (_rediscoveredWrongShow(d)) return true;
   try {
     return !!require('./review-guards').wrongShowCleared(d);
   } catch {
