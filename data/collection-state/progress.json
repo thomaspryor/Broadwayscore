@@ -85,7 +85,10 @@
     "700-sundays-2013/nytimes--charles-isherwood.json",
     "the-snow-geese-2013/nytimes--ben-brantley.json",
     "the-winslow-boy-2013/nytimes--ben-brantley.json",
-    "a-night-with-janis-joplin-2013/nytimes--charles-isherwood.json"
+    "a-night-with-janis-joplin-2013/nytimes--charles-isherwood.json",
+    "girl-interrupted-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "jerome-off-broadway-2025/off-off-online--edward-karam.json",
+    "jerome-off-broadway-2025/one-minute-critic--jerry-portwood.json"
   ],
   "failed": [
     "spamalot-off-broadway-2026/nytimes--jesse-green.json",
@@ -100,13 +103,27 @@
     "wolf-hall-parts-one-and-two-2015/nytimes--ben-brantley.json",
     "on-the-town-2014/nytimes--charles-isherwood.json",
     "lady-day-at-emersons-bar-and-grill-2014/nytimes--ben-brantley.json",
-    "a-time-to-kill-2013/nytimes--charles-isherwood.json"
+    "a-time-to-kill-2013/nytimes--charles-isherwood.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "a-woman-among-women-off-broadway-2026/playbill--unknown.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "girl-interrupted-off-broadway-2026/playbill--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "girl-interrupted-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "jerome-off-broadway-2025/off-off-online--edward-karam.json",
+      "jerome-off-broadway-2025/one-minute-critic--jerry-portwood.json"
+    ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "waiting-for-godot-2025/nytimes--laura-collins-hughes.json",
@@ -200,7 +217,8 @@
       "data/review-texts/something-rotten-2015/nytimes--ben-brantley.json",
       "data/review-texts/wolf-hall-parts-one-and-two-2015/nytimes--ben-brantley.json",
       "data/review-texts/on-the-town-2014/nytimes--charles-isherwood.json",
-      "data/review-texts/lady-day-at-emersons-bar-and-grill-2014/nytimes--ben-brantley.json"
+      "data/review-texts/lady-day-at-emersons-bar-and-grill-2014/nytimes--ben-brantley.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json"
     ],
     "archive": [
       "heathers-the-musical-off-broadway-2025/nytimes--elisabeth-vincentelli.json",
@@ -215,6 +233,29 @@
     ]
   },
   "startTime": "2026-06-06T02:43:46.622Z",
-  "lastProcessed": "a-night-with-janis-joplin-2013/nytimes--charles-isherwood.json",
-  "log": []
+  "lastProcessed": "jerome-off-broadway-2025/one-minute-critic--jerry-portwood.json",
+  "log": [
+    {
+      "t": "2026-06-06T03:53:12.838Z",
+      "event": "bb-session",
+      "session": "92415770",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-06T03:53:13.359Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-06T03:53:24.692Z",
+      "event": "bb-session",
+      "session": "1d918e1f",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-06T03:53:25.194Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }
