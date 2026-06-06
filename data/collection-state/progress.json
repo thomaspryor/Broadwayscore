@@ -17,7 +17,17 @@
     "bandstand-2017/nytimes--alexis-soloski.json",
     "bandstand-2017/nytimes--jesse-green.json",
     "charlie-and-the-chocolate-factory-2017/nytimes--ben-brantley.json",
-    "hello-dolly-2017/nytimes--jesse-green.json"
+    "hello-dolly-2017/nytimes--jesse-green.json",
+    "sweat-2017/nytimes--matt-windman.json",
+    "the-price-2017/nytimes--alexis-soloski.json",
+    "the-price-2017/nytimes--chris-jones.json",
+    "falsettos-2016/nytimes--charles-isherwood.json",
+    "the-front-page-2016/nytimes--ben-brantley.json",
+    "the-cherry-orchard-2016/nytimes--ben-brantley.json",
+    "cats-2016/nytimes--ben-brantley.json",
+    "cirque-du-soleil-paramour-2016/nytimes--charles-isherwood.json",
+    "tuck-everlasting-2016/nytimes--ben-brantley.json",
+    "tuck-everlasting-2016/nytimes--charles-isherwood.json"
   ],
   "failed": [
     "spamalot-off-broadway-2026/nytimes--jesse-green.json",
@@ -25,7 +35,9 @@
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "the-front-page-2016/nytimes--ben-brantley.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
@@ -43,7 +55,12 @@
       "the-children-2017/nytimes--ben-brantley.json",
       "bandstand-2017/nytimes--alexis-soloski.json",
       "bandstand-2017/nytimes--jesse-green.json",
-      "hello-dolly-2017/nytimes--jesse-green.json"
+      "hello-dolly-2017/nytimes--jesse-green.json",
+      "sweat-2017/nytimes--matt-windman.json",
+      "the-price-2017/nytimes--alexis-soloski.json",
+      "the-price-2017/nytimes--chris-jones.json",
+      "falsettos-2016/nytimes--charles-isherwood.json",
+      "the-cherry-orchard-2016/nytimes--ben-brantley.json"
     ],
     "brightdata": [
       "proof-2026/nytimes--helen-shaw.json",
@@ -52,10 +69,14 @@
     "archiveToday": [],
     "archive": [
       "once-on-this-island-2017/nytimes--ben-brantley.json",
-      "charlie-and-the-chocolate-factory-2017/nytimes--ben-brantley.json"
+      "charlie-and-the-chocolate-factory-2017/nytimes--ben-brantley.json",
+      "cats-2016/nytimes--ben-brantley.json",
+      "cirque-du-soleil-paramour-2016/nytimes--charles-isherwood.json",
+      "tuck-everlasting-2016/nytimes--ben-brantley.json",
+      "tuck-everlasting-2016/nytimes--charles-isherwood.json"
     ]
   },
   "startTime": "2026-06-06T03:32:12.394Z",
-  "lastProcessed": "hello-dolly-2017/nytimes--jesse-green.json",
+  "lastProcessed": "tuck-everlasting-2016/nytimes--charles-isherwood.json",
   "log": []
 }
