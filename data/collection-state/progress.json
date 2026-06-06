@@ -393,7 +393,17 @@
     "mj-2022/nydailynews--karu-f-daniels.json",
     "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
     "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--clive-davis.json",
-    "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--dominic-maxwell.json"
+    "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--dominic-maxwell.json",
+    "cabaret-at-the-kit-kat-club-west-end-2021/independent--alice-saville.json",
+    "little-shop-of-horrors-off-broadway-2019/wsj--charles-isherwood.json",
+    "moulin-rouge-2019/broadwayworld--michael-dale.json",
+    "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json",
+    "the-play-that-goes-wrong-off-broadway-2019/talkinbroadway--unknown.json",
+    "six-the-musical-west-end-2021/london-box-office--stuart-king.json",
+    "six-the-musical-west-end-2021/theatre-bee-uk--theatre-bee-uk.json",
+    "magic-mike-live-west-end-2021/standard--henry-hitchings.json",
+    "magic-mike-live-west-end-2021/thestage--francesca-peschier.json",
+    "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -639,7 +649,8 @@
       "data/review-texts/operation-mincemeat-2025/broadwaynews--brittani-samuel.json",
       "data/review-texts/titanique-west-end-2024/thestage--paul-vale.json",
       "data/review-texts/the-devil-wears-prada-west-end-2024/thestage--sam-marlowe.json",
-      "data/review-texts/and-juliet-2022/broadway-blog--joey-sims.json"
+      "data/review-texts/and-juliet-2022/broadway-blog--joey-sims.json",
+      "data/review-texts/magic-mike-live-west-end-2021/thestage--francesca-peschier.json"
     ],
     "archive": [
       "misery-2015/nytimes--charles-isherwood.json",
@@ -691,7 +702,7 @@
     ]
   },
   "startTime": "2026-06-06T04:44:29.355Z",
-  "lastProcessed": "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--dominic-maxwell.json",
+  "lastProcessed": "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json",
   "log": [
     {
       "t": "2026-06-06T06:19:34.296Z",
@@ -998,6 +1009,17 @@
     },
     {
       "t": "2026-06-06T08:10:40.333Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-06-06T08:15:53.273Z",
+      "event": "bb-session",
+      "session": "1a1b55cb",
+      "url": "https://www.thestage.co.uk/reviews/magic-mike-live-review-at-london-hippodrome--"
+    },
+    {
+      "t": "2026-06-06T08:15:54.293Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
