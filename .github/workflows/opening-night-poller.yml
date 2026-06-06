@@ -317,7 +317,19 @@ jobs:
           fi
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
-          git add audit/poller-backoff/ audit/serp-burst-ledger.json audit/serp-session-ledger.json 2>/dev/null || true
+          # Stage each path INDEPENDENTLY. `git add a b c` is atomic: if ANY pathspec matches
+          # nothing it fails (exit 128) and stages NONE of them. The SERP-burst ledger only
+          # exists after a WE burst actually fires, so for most runs that pathspec is missing —
+          # which silently blocked staging of the backoff state AND the session ledger (the
+          # `2>/dev/null || true` hid the fatal). Guard existence per file so a missing ledger
+          # can't starve the others. (Regression introduced with the WE-burst pathspec.)
+          # Each line ends `|| true` so a missing file (guard false) OR a real add failure
+          # never aborts this step under `bash -e` — staging is best-effort; the commit below
+          # only fires if something actually got staged. (Ledgers are rewritten on UTC rollover,
+          # never deleted, so the `-f` guard never needs to stage a deletion.)
+          git add audit/poller-backoff/ 2>/dev/null || true
+          { [ -f audit/serp-burst-ledger.json ] && git add audit/serp-burst-ledger.json; } || true
+          { [ -f audit/serp-session-ledger.json ] && git add audit/serp-session-ledger.json; } || true
           git diff --cached --quiet && { echo "No backoff/ledger changes"; exit 0; }
           git commit -m "audit: Opening night poller — backoff + SERP ledger state update [skip ci]"
           bash ../scripts/lib/push-with-retry.sh 5 main || echo "::warning::Backoff/ledger state push failed (non-critical)"
