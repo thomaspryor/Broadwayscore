@@ -22,6 +22,7 @@ export const WEIGHTS = {
   BW_OPENING_GOLD_BUMP: 15,           // critical-gold debut is the biggest event of the week
   OB_OPENING_BASE: 70,                // smaller market but still review news
   OB_OPENING_GOLD_BUMP: 15,
+  WE_GOLD_OPENING_BASE: 78,           // Critical Gold West End earns subject line (non-gold WE excluded)
   OUTLIER_BASE: 70,                   // a critic out of step IS review news
   OUTLIER_LARGE_BUMP: 10,             // ≥20pt delta from consensus
   BIGGEST_MOVER_BASE: 72,             // score moves are the most direct review signal
@@ -102,6 +103,21 @@ export function scoreCandidates(input) {
       : `${s.title} ${verb} on Broadway`;
     out.push({ kind: isReopen ? 'bw-reopening' : 'bw-opening', weight: WEIGHTS.BW_OPENING_BASE + goldBump, headline, show: s, slug: s.slug,
       verdictTier: tier, verdictPrefix: `${s.title} ${verb} to `, openingVenue: 'Broadway' });
+  }
+
+  // 1b. West End Gold openings — only Critical Gold WE shows enter the scorer.
+  // Non-gold WE shows stay in London Openings but never lead the subject line.
+  for (const item of (input.weGoldOpenings || [])) {
+    const s = item.show || item;
+    const score = input.aggregateScore ? input.aggregateScore(s.id)?.avg : null;
+    const tier = reviewVerdictTier(score, s.category);
+    const verdict = tier ? VERDICT_VARIANTS[tier][0] : null;
+    // Always Gold, so always use the top phrase
+    const headline = verdict
+      ? `${s.title} opens in London to ${verdict}`
+      : `${s.title} opens in London`;
+    out.push({ kind: 'we-gold-opening', weight: WEIGHTS.WE_GOLD_OPENING_BASE, headline, show: s, slug: s.slug,
+      verdictTier: tier, verdictPrefix: `${s.title} opens in London to `, openingVenue: 'London' });
   }
 
   // 2. Off-Broadway openings (or reopenings).
