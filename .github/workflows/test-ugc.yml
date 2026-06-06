@@ -16,7 +16,10 @@ on:
 
 concurrency:
   group: test-ugc-${{ github.ref }}
-  cancel-in-progress: true
+  # On main: never cancel — every commit must run the UGC suite (a cancelled run leaves
+  # that commit unvalidated). On PRs: cancel superseded runs.
+  # See memory/feedback_test_yml_cancel_in_progress.md.
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
   ugc-tests:

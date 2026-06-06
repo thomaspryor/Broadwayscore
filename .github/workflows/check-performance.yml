@@ -19,7 +19,10 @@ on:
 
 concurrency:
   group: check-performance-${{ github.ref }}
-  cancel-in-progress: true
+  # On main: never cancel — every commit must be size-checked (a cancelled run leaves
+  # the bundle-size gate unevaluated for that commit). On PRs: cancel superseded runs.
+  # See memory/feedback_test_yml_cancel_in_progress.md.
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
   bundle-size:

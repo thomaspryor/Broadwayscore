@@ -101,7 +101,14 @@ on:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}
-  cancel-in-progress: true
+  # On PRs: cancel superseded runs — only the latest commit on a branch matters.
+  # On main: NEVER cancel. Every commit to the protected trunk is permanent and must
+  #   complete validation; cancel-in-progress meant each push killed the prior run
+  #   mid-setup, so ~75% of main commits landed unvalidated AND the cancelled runs
+  #   emitted misleading jsdom/shows.json failures that sent sessions chasing phantom
+  #   bugs. Matches the "queued, not cancelled" pattern already used by rebuild-reviews,
+  #   enrich-reviews, and llm-ensemble-score. See memory/feedback_test_yml_cancel_in_progress.md.
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
   lint-workflows:
@@ -175,6 +182,16 @@ jobs:
             exit 1
           fi
           echo "All exemptions still failing — no decay."
+
+      - name: Audit — no push-to-main workflow cancels main commits
+        # Prevents the recurring "no clean CI signal" class: a push-to-main workflow
+        # with a ref-keyed concurrency group + cancel-in-progress:true kills the prior
+        # run on every commit, so most main commits land unvalidated AND cancelled
+        # runs emit phantom jsdom/shows.json failures. test.yml had this for months
+        # and it was re-diagnosed almost daily. Guard fails if it (or any sibling)
+        # regresses. Opt-out for idempotent jobs via a "# concurrency-cancel-ok:"
+        # annotation. See memory/feedback_test_yml_cancel_in_progress.md.
+        run: node scripts/audit-workflow-concurrency.js
 
       - name: Audit — check-cron-health max_hours vs real cron cadence
         # Catches the 2026-05-24 class of bug where an entry's max_hours is

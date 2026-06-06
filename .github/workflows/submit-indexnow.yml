@@ -33,6 +33,9 @@ on:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
+  # concurrency-cancel-ok: idempotent search-engine ping — only the latest sitemap/URL
+  # state needs submitting, so cancelling a superseded run on main is correct (not a
+  # lost validation). Annotation read by scripts/audit-workflow-concurrency.js.
   cancel-in-progress: true
 
 jobs:
