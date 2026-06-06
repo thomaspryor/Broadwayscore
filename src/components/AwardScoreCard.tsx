@@ -443,7 +443,7 @@ export default function AwardScoreCard({ showId, awards, openingDate, tonyNamesB
       )}
 
       {(hasTony || hasPulitzer || result.displayScore > 0) && (
-        <div className="mt-1.5 -mb-1 sm:-mb-2">
+        <div className="mt-1.5 -mb-1 sm:-mb-2 flex flex-wrap items-center gap-x-5 gap-y-1">
           <Link
             href={awards?.tony?.season ? `/award-score/${seasonSlug(awards.tony.season)}` : '/award-score'}
             className="inline-flex items-center gap-1.5 text-xs font-medium text-brand hover:text-brand-hover transition-colors group"
@@ -451,6 +451,15 @@ export default function AwardScoreCard({ showId, awards, openingDate, tonyNamesB
             <span>See all award scores</span>
             <span className="inline-block transition-transform group-hover:translate-x-0.5" aria-hidden="true">→</span>
           </Link>
+          {awards?.tony?.ceremony === '78th' && (
+            <Link
+              href="/tony-awards/winners-2026"
+              className="inline-flex items-center gap-1.5 text-xs font-medium text-amber-400 hover:text-amber-300 transition-colors group"
+            >
+              <span>2026 Tony winners</span>
+              <span className="inline-block transition-transform group-hover:translate-x-0.5" aria-hidden="true">→</span>
+            </Link>
+          )}
         </div>
       )}
     </section>
