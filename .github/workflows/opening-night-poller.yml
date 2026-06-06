@@ -549,7 +549,7 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add data/audit/*.json 2>/dev/null || true
-          git add public/opening-night-status.json public/status.html 2>/dev/null || true
+          bash scripts/lib/git-add-existing.sh public/opening-night-status.json public/status.html
           git add public/data/shows/ 2>/dev/null || true
           git checkout -- data/reviews.json data/audience-buzz.json 2>/dev/null || true
           git diff --cached --quiet && { echo "No public data changes to commit"; exit 0; }

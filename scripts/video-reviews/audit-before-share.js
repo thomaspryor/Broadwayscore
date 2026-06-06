@@ -23,6 +23,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { GPT4O, CLAUDE_OPUS } = require('../lib/models');
 
 const ROOT = path.resolve(__dirname, '../..');
 const REVIEWS_PATH = path.join(ROOT, 'data/video-reviews.json');
@@ -35,7 +36,7 @@ const OUT_PATH = path.join(ROOT, 'data/audit/video-review-audit.json');
 // Set AUDIT_PROVIDER=anthropic + AUDIT_MODEL=claude-opus-4-7 to run with Opus
 // (useful for cross-check or if OpenAI is down).
 const AUDIT_PROVIDER = process.env.AUDIT_PROVIDER || 'openai';
-const MODEL = process.env.AUDIT_MODEL || (AUDIT_PROVIDER === 'openai' ? 'gpt-4o' : 'claude-opus-4-7');
+const MODEL = process.env.AUDIT_MODEL || (AUDIT_PROVIDER === 'openai' ? GPT4O : CLAUDE_OPUS);
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;

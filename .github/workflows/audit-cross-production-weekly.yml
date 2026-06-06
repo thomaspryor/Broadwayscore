@@ -133,7 +133,7 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add data/audit/same-title-confusion.json data/audit/slug-misroute-audit.json
-          git add data/audit/ob-venue-candidates.json data/audit/ob-aggregator-rejections.json 2>/dev/null || true
+          bash scripts/lib/git-add-existing.sh data/audit/ob-venue-candidates.json data/audit/ob-aggregator-rejections.json
           CP=$(node -e "const d=require('./data/audit/same-title-confusion.json'); console.log(d.findings ? d.findings.length : 0)" 2>/dev/null || echo "?")
           SM=$(node -e "const d=require('./data/audit/slug-misroute-audit.json'); console.log(d.findings ? d.findings.length : 0)" 2>/dev/null || echo "?")
           AGG=$(node -e "const d=require('./data/audit/ob-aggregator-rejections.json'); console.log((d.counts&&d.counts.accepted||0)+' new, '+(d.counts&&d.counts.rejected||0)+' rejected')" 2>/dev/null || echo "0 new")

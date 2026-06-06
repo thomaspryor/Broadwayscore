@@ -40,7 +40,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           # Only add specific SEO audit files — never git add -A
-          git add --force data/audit/seo-health.json data/audit/seo-performance-history.json data/audit/indexing-api-usage.json 2>/dev/null || true
+          bash scripts/lib/git-add-existing.sh --force data/audit/seo-health.json data/audit/seo-performance-history.json data/audit/indexing-api-usage.json
           if git diff --cached --quiet; then
             echo "No audit data changes to commit"
           else

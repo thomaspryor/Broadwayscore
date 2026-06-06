@@ -135,7 +135,7 @@ async function runTests() {
     {
       claudeModel: 'claude-sonnet-4-20250514',
       openaiModel: 'gpt-4o',
-      geminiModel: 'gemini-2.0-flash',
+      geminiModel: 'gemini-2.5-flash',
       verbose: true
     }
   );

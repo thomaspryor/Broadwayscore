@@ -18,6 +18,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
+const { GEMINI_FLASH } = require('./lib/models');
 
 // ============================================================
 // CONFIG
@@ -140,7 +141,7 @@ class ImageVerifier {
   constructor(apiKey) {
     const genAI = new GoogleGenerativeAI(apiKey);
     this.model = genAI.getGenerativeModel({
-      model: 'gemini-2.0-flash',
+      model: GEMINI_FLASH,
       generationConfig: {
         temperature: 0.2,
         maxOutputTokens: 300,

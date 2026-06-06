@@ -23,6 +23,7 @@ const https = require('https');
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const { GEMINI_FLASH, GPT4O } = require('./lib/models');
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
@@ -82,7 +83,7 @@ function htmlToText(html) {
   return text.slice(0, 4000);
 }
 
-async function callOpenAI(prompt, { model = 'gpt-4o', maxTokens = 500 } = {}) {
+async function callOpenAI(prompt, { model = GPT4O, maxTokens = 500 } = {}) {
   const body = JSON.stringify({
     model,
     messages: [{ role: 'user', content: prompt }],
@@ -125,7 +126,7 @@ async function callGemini(prompt) {
   return new Promise((resolve, reject) => {
     const req = https.request({
       hostname: 'generativelanguage.googleapis.com',
-      path: `/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`,
+      path: `/v1beta/models/${GEMINI_FLASH}:generateContent?key=${GEMINI_API_KEY}`,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' }
     }, (res) => {

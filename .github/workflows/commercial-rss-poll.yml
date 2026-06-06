@@ -83,7 +83,7 @@ jobs:
       - name: Commit data changes
         if: always() && inputs.dry_run != true
         run: |
-          git add data/commercial-pending-review.json data/commercial-rss-state.json 2>/dev/null || true
+          bash scripts/lib/git-add-existing.sh data/commercial-pending-review.json data/commercial-rss-state.json
           bash scripts/lib/stage-data-changes.sh
           if git diff --staged --quiet; then
             echo "No changes to commit"

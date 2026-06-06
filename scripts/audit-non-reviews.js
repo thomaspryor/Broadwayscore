@@ -48,6 +48,7 @@ const AUDIT_DIR = path.join(__dirname, '../data/audit');
 // extractor reuses the exact same detection (single source of truth). The shared
 // version adds the wrong-page newspaper-OCR signals (weather/sports/listings).
 const { NON_REVIEW_PATTERNS, REVIEW_INDICATORS, heuristicClassify } = require('./lib/non-review-patterns');
+const { GEMINI_FLASH } = require('./lib/models');
 
 // ============================================================
 // LLM Classification (Layer 2 — Gemini Flash)
@@ -57,7 +58,7 @@ function callGemini(prompt) {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) throw new Error('GEMINI_API_KEY not set');
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_FLASH}:generateContent?key=${apiKey}`;
 
   return new Promise((resolve, reject) => {
     const body = JSON.stringify({

@@ -112,7 +112,7 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
 
-          git add data/audit/non-review-audit.json data/audit/cross-outlet-duplicates.json 2>/dev/null || true
+          bash scripts/lib/git-add-existing.sh data/audit/non-review-audit.json data/audit/cross-outlet-duplicates.json
 
           if git diff --staged --quiet; then
             echo "No audit report changes"

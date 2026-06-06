@@ -65,6 +65,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
+const { CLAUDE_HAIKU, GPT4O_MINI, GEMINI_FLASH } = require('./lib/models');
 
 // --- Load .env ---
 try {
@@ -437,7 +438,7 @@ function callClaude(systemPrompt, userPrompt) {
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) throw new Error('ANTHROPIC_API_KEY not set');
   const body = JSON.stringify({
-    model: 'claude-haiku-4-5-20251001',
+    model: CLAUDE_HAIKU,
     max_tokens: 400,
     temperature: 0.1,
     system: systemPrompt,
@@ -477,7 +478,7 @@ function callOpenAI(systemPrompt, userPrompt) {
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) throw new Error('OPENAI_API_KEY not set');
   const body = JSON.stringify({
-    model: 'gpt-4o-mini',
+    model: GPT4O_MINI,
     messages: [
       { role: 'system', content: systemPrompt },
       { role: 'user', content: userPrompt },
@@ -517,7 +518,7 @@ function callOpenAI(systemPrompt, userPrompt) {
 function callGemini(systemPrompt, userPrompt) {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) throw new Error('GEMINI_API_KEY not set');
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_FLASH}:generateContent?key=${apiKey}`;
   const body = JSON.stringify({
     contents: [{ role: 'user', parts: [{ text: systemPrompt + '\n\n' + userPrompt }] }],
     generationConfig: { temperature: 0.1, maxOutputTokens: 400 },

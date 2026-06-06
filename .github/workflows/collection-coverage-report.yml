@@ -25,7 +25,7 @@ jobs:
       - name: Commit coverage data
         if: always()
         run: |
-          git add data/audit/collection-coverage.json data/audit/collection-coverage-history.json || true
+          bash scripts/lib/git-add-existing.sh data/audit/collection-coverage.json data/audit/collection-coverage-history.json
           git diff --staged --quiet && exit 0
           git commit -m "data: Update collection coverage report [skip ci]"
           bash scripts/lib/push-with-retry.sh 5 main

@@ -360,7 +360,7 @@ jobs:
           # never make it back to main and the broadcast gate stays permanently
           # blocked even after the LLM ensemble resolves the orphan(s).
           git add -u data/audit/ 2>/dev/null || true
-          git add public/opening-night-status.json public/status.html 2>/dev/null || true
+          bash scripts/lib/git-add-existing.sh public/opening-night-status.json public/status.html
           git add public/data/shows/ 2>/dev/null || true
           # Lock audit-trail snapshot (Lost Boys 2026-04-27 Gap #6).
           git add public/data/admin/locks.json 2>/dev/null || true

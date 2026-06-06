@@ -15,6 +15,7 @@
  */
 
 const https = require('https');
+const { GEMINI_FLASH, GPT4O_MINI, CLAUDE_SONNET, KIMI } = require('./models');
 
 // Zod-like schema validation (inline to avoid dependency)
 const VALID_SENTIMENTS = ['enthusiastic', 'positive', 'mixed', 'negative', 'neutral'];
@@ -144,7 +145,7 @@ async function callGemini(prompt) {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) throw new Error('GEMINI_API_KEY not set');
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_FLASH}:generateContent?key=${apiKey}`;
 
   const body = JSON.stringify({
     contents: [{ role: 'user', parts: [{ text: prompt }] }],
@@ -186,7 +187,7 @@ async function callOpenAI(prompt) {
   if (!apiKey) throw new Error('OPENAI_API_KEY not set');
 
   const body = JSON.stringify({
-    model: 'gpt-4o-mini',
+    model: GPT4O_MINI,
     temperature: 0.1,
     messages: [{ role: 'user', content: prompt }]
   });
@@ -229,7 +230,7 @@ async function callKimi(prompt) {
   if (!apiKey) throw new Error('OPENROUTER_API_KEY not set');
 
   const body = JSON.stringify({
-    model: 'moonshotai/kimi-k2.5',
+    model: KIMI,
     temperature: 0.1,
     messages: [{ role: 'user', content: prompt }]
   });
@@ -274,7 +275,7 @@ async function callClaude(prompt) {
   if (!apiKey) throw new Error('ANTHROPIC_API_KEY not set');
 
   const body = JSON.stringify({
-    model: 'claude-sonnet-4-6',
+    model: CLAUDE_SONNET,
     max_tokens: 2000,
     messages: [{ role: 'user', content: prompt }]
   });

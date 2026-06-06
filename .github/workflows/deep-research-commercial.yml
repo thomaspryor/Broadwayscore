@@ -113,7 +113,7 @@ jobs:
         if: always() && inputs.dry_run != true
         run: |
           # commercial.json is gitignored (core data); push-core-data syncs it to the private repo.
-          git add data/commercial-pending-review.json data/deep-research-cost-log.json data/deep-research-progress.json data/commercial-research-spend.json data/commercial-research-queue.json 2>/dev/null || true
+          bash scripts/lib/git-add-existing.sh data/commercial-pending-review.json data/deep-research-cost-log.json data/deep-research-progress.json data/commercial-research-spend.json data/commercial-research-queue.json
 
           if git diff --staged --quiet; then
             echo "No pending results to commit"

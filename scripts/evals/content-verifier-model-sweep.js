@@ -19,6 +19,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { GEMINI_FLASH, GPT4O_MINI, GPT4O, KIMI, CLAUDE_HAIKU, CLAUDE_SONNET, CLAUDE_OPUS } = require('../lib/models');
 
 const FIXTURE = path.join(
   __dirname, '..', '..',
@@ -30,49 +31,49 @@ const MODELS = {
   'gemini-2-flash': {
     provider: 'google',
     api: 'google',
-    model: 'gemini-2.0-flash',
+    model: GEMINI_FLASH,
     priceIn: 0.10, priceOut: 0.40,
     envKey: 'GEMINI_API_KEY',
   },
   'gpt-4o-mini': {
     provider: 'openai',
     api: 'openai',
-    model: 'gpt-4o-mini',
+    model: GPT4O_MINI,
     priceIn: 0.15, priceOut: 0.60,
     envKey: 'OPENAI_API_KEY',
   },
   'gpt-4o': {
     provider: 'openai',
     api: 'openai',
-    model: 'gpt-4o',
+    model: GPT4O,
     priceIn: 2.50, priceOut: 10.00,
     envKey: 'OPENAI_API_KEY',
   },
   'kimi-k2.5': {
     provider: 'moonshotai',
     api: 'openrouter',
-    model: 'moonshotai/kimi-k2.5',
+    model: KIMI,
     priceIn: 0.15, priceOut: 2.50,
     envKey: 'OPENROUTER_API_KEY',
   },
   'claude-haiku-4-5': {
     provider: 'anthropic',
     api: 'anthropic',
-    model: 'claude-haiku-4-5-20251001',
+    model: CLAUDE_HAIKU,
     priceIn: 1.00, priceOut: 5.00,
     envKey: 'ANTHROPIC_API_KEY',
   },
   'claude-sonnet-4-6': {
     provider: 'anthropic',
     api: 'anthropic',
-    model: 'claude-sonnet-4-6',
+    model: CLAUDE_SONNET,
     priceIn: 3.00, priceOut: 15.00,
     envKey: 'ANTHROPIC_API_KEY',
   },
   'claude-opus-4-7': {
     provider: 'anthropic',
     api: 'anthropic',
-    model: 'claude-opus-4-7',
+    model: CLAUDE_OPUS,
     priceIn: 15.00, priceOut: 75.00,
     envKey: 'ANTHROPIC_API_KEY',
   },

@@ -30,6 +30,7 @@ const { extractExplicitScore } = require('./lib/llm-score-extractor');
 const { normalizeLlmResult, LETTER_GRADES } = require('./lib/score-parsers');
 const { setExtractedScore } = require('./lib/score-routing');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { GEMINI_FLASH, GPT4O_MINI } = require('./lib/models');
 
 // --- CLI args ---
 const args = process.argv.slice(2);
@@ -115,7 +116,7 @@ function callGemini(systemPrompt, userPrompt) {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) throw new Error('GEMINI_API_KEY not set');
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_FLASH}:generateContent?key=${apiKey}`;
   const body = JSON.stringify({
     contents: [
       { role: 'user', parts: [{ text: systemPrompt + '\n\n' + userPrompt }] }
@@ -157,7 +158,7 @@ function callOpenAI(systemPrompt, userPrompt) {
   if (!apiKey) throw new Error('OPENAI_API_KEY not set');
 
   const body = JSON.stringify({
-    model: 'gpt-4o-mini',
+    model: GPT4O_MINI,
     temperature: 0.0,
     max_tokens: 200,
     messages: [

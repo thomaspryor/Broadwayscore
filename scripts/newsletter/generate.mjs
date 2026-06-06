@@ -50,8 +50,13 @@ const _priorIssues = (_priorState.issues || [])
   .filter(i => i && i.weekStart && i.weekStart < weekStartStr)
   .sort((a, b) => b.weekStart.localeCompare(a.weekStart));
 const _lastIssue = _priorIssues[0] || null;
-const lastMoverIds = new Set(_lastIssue ? (_lastIssue.moverShowIds || []) : []);
+const lastMoverIds = new Set(_priorIssues.slice(0, 2).flatMap(i => i.moverShowIds || []));
 const recentAnnouncedIds = new Set(_priorIssues.slice(0, 4).flatMap(i => i.announcedClosingShowIds || []));
+// Suppress any show that appeared in last week's email from the OB Openings
+// section. The 14-day grace window causes OB shows to re-surface the following
+// week even though subscribers already saw them. featuredShowIds was always
+// saved; this wires it back up on the read side.
+const lastFeaturedIds = new Set(_lastIssue ? (_lastIssue.featuredShowIds || []) : []);
 
 // --- Within-issue cross-section de-dup -----------------------------------------
 // A show featured in a higher section is suppressed from every lower one, so a
@@ -126,6 +131,7 @@ function scoreTier(score, category) {
   if (score >= 55) return { id: 'skip', label: 'Skippable', bg: '#d97706', solid: '#d97706', text: '#1a1a1a', glow: '0 2px 8px rgba(217,119,6,0.3)' };
   return { id: 'miss', label: 'Critical Miss', bg: '#ef4444', solid: '#ef4444', text: '#fff', glow: '0 2px 8px rgba(239,68,68,0.3)' };
 }
+function isGoldTier(score, category) { return scoreTier(score, category)?.id === 'gold'; }
 
 // `box-sizing:border-box` is the fix — Critical Gold has a 2px border which would
 // otherwise expand the box past nominal `size`; with border-box the border lives
@@ -512,7 +518,7 @@ function offBroadwayOpenings() {
   const withScore = shows
     .filter(s => s.category === 'off-broadway' && s.status === 'open' && !isOperaShow(s)
       && s.openingDate && s.openingDate >= cutoff && s.openingDate <= weekEndStr
-      && notFeatured(s.id))
+      && notFeatured(s.id) && !lastFeaturedIds.has(s.id)) // suppress last week's shows
     .map(s => ({ s, agg: aggregateScore(s.id) }))
     .filter(x => x.agg && x.agg.count >= minReviews('off-broadway'))
     .sort((a, b) => ((b.agg.raw ?? b.agg.avg) - (a.agg.raw ?? a.agg.avg)));
@@ -988,7 +994,9 @@ function findWeekOutlier() {
       const avg = tierWeightedAverage(others);
       if (avg == null) continue;
       const diff = r.assignedScore - avg;
-      if (!best || Math.abs(diff) > Math.abs(best.diff)) {
+      // Only positive outliers — a lone rave is a delight; a lone pan just signals disagreement
+      // without telling readers something actionable. If no positive outlier exists this week, skip.
+      if (diff > 0 && (!best || diff > best.diff)) {
         const show = shows.find(s => s.id === id);
         if (show && (show.category === 'broadway' || show.category === 'off-broadway') && !isOperaShow(show)) {
           best = { review: r, show, diff, peerAvg: Math.round(avg), outlet: r.outlet };
@@ -996,7 +1004,7 @@ function findWeekOutlier() {
       }
     }
   }
-  if (!best || Math.abs(best.diff) < 12) return null;
+  if (!best || best.diff < 12) return null;
   return best;
 }
 
@@ -1010,7 +1018,7 @@ function outlierSection() {
   const outletMap = { 'Deadline': 'deadline.com', 'New York Theatre Guide': 'newyorktheatreguide.com', 'TheaterMania': 'theatermania.com', 'New York Stage Review': 'newyorkstagereview.com', "Talkin' Broadway": 'talkinbroadway.com', "New York Daily News": 'nydailynews.com', 'The Recs': 'therecs.com', '1 Minute Critic': '1minutecritic.com', 'Cititour': 'cititour.com', 'Time Out New York': 'timeout.com', 'Vulture': 'vulture.com', 'The New York Times': 'nytimes.com', 'Variety': 'variety.com', 'New York Post': 'nypost.com', 'The Hollywood Reporter': 'hollywoodreporter.com', 'TheWrap': 'thewrap.com', 'The Times (UK)': 'thetimes.com', 'Front Row Center': 'frontrowcenter.com', 'Theater Scene': 'theaterscene.net', 'The Guardian': 'theguardian.com', 'WhatsOnStage': 'whatsonstage.com', 'TheaterScene.net': 'theaterscene.net', 'The Stage': 'thestage.co.uk', 'Stage and Cinema': 'stageandcinema.com' };
   const domain = outletMap[r.outlet] || (r.outlet || '').toLowerCase().replace(/[^a-z0-9]+/g, '') + '.com';
   const logoUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
-  const directionWord = best.diff < 0 ? 'below' : 'above';
+  const directionWord = 'above'; // always positive outlier now
   const cleanQuote = pickReviewQuote(r);
   const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" class="cardbg">
     <tr>
@@ -1579,16 +1587,36 @@ function seasonStandingFor(openedShow) {
   return sectionWrap(sectionHeading(`${seasonLabel} — How ${openedShow.title} stacks up`), body);
 }
 
-// SECTION: From London — show market label per show
+// Tracks whether London Openings contains a Critical Gold show this week.
+// Set as side-effect of londonSection() so the assembly block can promote the
+// section to an early slot (right after NYC openings) — same pattern as
+// `_upcomingHasBroadway` for Coming Up.
+let _londonHasGoldOpening = false;
+
+// SECTION: From London — show market label per show.
+// When a West End show opens to Critical Gold (≥85), it earns the full
+// `showRow` treatment (poster + score badge + venue) and the section floats
+// up next to the NYC opening cards. Non-gold shows keep the compact layout.
 function londonSection() {
   const list = shows.filter(s => (s.category === 'west-end' || s.category === 'off-west-end') && inWeek(s.openingDate));
   if (!list.length) return null;
   const withScore = list.map(s => ({ s, agg: aggregateScore(s.id) })).filter(x => x.agg && x.agg.count >= minReviews(x.s.category));
   if (!withScore.length) return null;
-  // London = secondary section. More compact than NYC openings:
-  // square thumb (not poster), no venue, no day-of-week. All rows in one card.
+  // Sort: Gold first, then by score desc
+  withScore.sort((a, b) => {
+    const ag = isGoldTier(a.agg.avg, a.s.category) ? 1 : 0;
+    const bg = isGoldTier(b.agg.avg, b.s.category) ? 1 : 0;
+    if (ag !== bg) return bg - ag;
+    return (b.agg.raw ?? b.agg.avg) - (a.agg.raw ?? a.agg.avg);
+  });
+  _londonHasGoldOpening = withScore.some(x => isGoldTier(x.agg.avg, x.s.category));
   const marketColor = '#f472b6';
-  const rows = withScore.map((x, i, arr) => {
+  const goldRows = withScore.filter(x => isGoldTier(x.agg.avg, x.s.category));
+  const nonGoldRows = withScore.filter(x => !isGoldTier(x.agg.avg, x.s.category));
+  // Gold-tier shows: full showRow (poster, venue, audience chip, score badge)
+  const goldHtml = goldRows.map(x => showRow(x.s, {})).join('');
+  // Non-gold shows: compact card (existing layout)
+  const compactRows = nonGoldRows.map((x, i, arr) => {
     const score = x.agg.avg;
     const market = x.s.category === 'west-end' ? 'WEST END' : 'OFF WEST END';
     const isLast = i === arr.length - 1;
@@ -1605,9 +1633,10 @@ function londonSection() {
       </td>
     </tr>${!isLast ? '<tr><td colspan="3" style="padding:0 16px;"><div style="border-top:1px solid rgba(255,255,255,0.05);"></div></td></tr>' : ''}`;
   }).join('');
-  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="background:#1a1a24;border-radius:16px;border:1px solid rgba(244,114,182,0.18);">${rows}
-    ${seeAllLink(`${SITE}/west-end`, 'Explore the full West End Scorecard', { color: '#f472b6' })}
-  </table>`;
+  const seeAll = seeAllLink(`${SITE}/west-end`, 'Explore the full West End Scorecard', { color: '#f472b6' });
+  const compactCard = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="background:#1a1a24;border-radius:16px;border:1px solid rgba(244,114,182,0.18);">${compactRows}${seeAll}</table>`;
+  const seeAllOnlyCard = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="background:#1a1a24;border-radius:16px;border:1px solid rgba(244,114,182,0.18);">${seeAll}</table>`;
+  const body = goldHtml + (nonGoldRows.length ? compactCard : seeAllOnlyCard);
   return sectionWrap(sectionHeading('London Openings', null, { href: `${SITE}/west-end` }), body);
 }
 
@@ -1817,8 +1846,14 @@ if (seasonStandings.length) {
 //   • Has a Broadway show → top slot (right after the just-opened cards).
 //   • OB-only slate → drop to bottom, just above Most-Read Pages — still
 //     in the email for fans planning ahead, but not leading.
+// London Openings placement: when a Critical Gold West End show opens, it
+// earns a slot right next to the NYC opening cards (before movers). A Gold
+// West End opening is as significant as a Gold NYC opening. Non-gold weeks:
+// London stays at the bottom alongside opera/casting.
 const upcomingTop = upcoming && _upcomingHasBroadway ? upcoming : null;
 const upcomingBottom = upcoming && !_upcomingHasBroadway ? upcoming : null;
+const londonTop = lon && _londonHasGoldOpening ? lon : null;
+const londonBottom = lon && !_londonHasGoldOpening ? lon : null;
 
 // Tony Predictions is OPT-IN, not part of the default sectionOrder (user
 // direction 2026-05-24). Reasoning: the section is only relevant for ~6-8
@@ -1845,6 +1880,7 @@ if (_includeSet.size) process.stderr.write(`[newsletter] opt-in sections: ${[...
 const sectionOrder = [
   _slot('broadway-openings', bwO.html),
   _slot('offbroadway-openings', obO.html),
+  _slot('london-openings', londonTop),   // Gold WE openings float up to join NYC openers
   _slot('upcoming-openings', upcomingTop),
   _slot('biggest-movers', mover),
   _slot('closing-this-week', clo),
@@ -1855,7 +1891,7 @@ const sectionOrder = [
   _slot('social-buzz', bz),
   _slot('tony-predictions', tony),
   _slot('outlier-of-the-week', outlier),
-  _slot('london-openings', lon),
+  _slot('london-openings', londonBottom), // Non-gold WE openings stay at bottom
   _slot('opera-openings', opera),
   _slot('casting-updates', cas),
   ...(_dropSet.has('season-standing') ? [] : seasonStandings),
@@ -1889,10 +1925,18 @@ const _subjHasScore = (s) => { const a = aggregateScore(s.id); return a && a.cou
 // (opened May 12, shown in the body) and fall back to an obscure closing.
 const bwEvents = bwO.list.map(s => ({ show: s }));
 const obEvents = obO.list.map(s => ({ show: s }));
+// West End openings: only the Gold-tier ones enter the scorer (same threshold
+// londonSection uses for the featured showRow format). Non-gold WE shows
+// aren't subject-line news for a US-focused newsletter audience.
+const weGoldEvents = shows
+  .filter(s => (s.category === 'west-end' || s.category === 'off-west-end') && inWeek(s.openingDate))
+  .filter(s => { const a = aggregateScore(s.id); return a && a.count >= minReviews(s.category) && isGoldTier(a.avg, s.category); })
+  .map(s => ({ show: s }));
 
 const newsworthyInputs = {
   bwOpenings: bwEvents,
   obOpenings: obEvents,
+  weGoldOpenings: weGoldEvents,
   aggregateScore,
   recoupments: (() => {
     // Mirror commercialSection: firstAdded must be in this week's window.

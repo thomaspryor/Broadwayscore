@@ -19,6 +19,7 @@
 const https = require('https');
 const cheerio = require('cheerio');
 const { titleWordsMatchWithConfidence } = require('./show-matching');
+const { GEMINI_FLASH, GPT4O_MINI } = require('./models');
 
 // Confidence threshold below which the LLM tiebreaker fires
 const LLM_CONFIDENCE_THRESHOLD = 0.75;
@@ -31,7 +32,7 @@ function callGemini(prompt) {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) throw new Error('GEMINI_API_KEY not set');
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_FLASH}:generateContent?key=${apiKey}`;
 
   return new Promise((resolve, reject) => {
     const body = JSON.stringify({
@@ -72,7 +73,7 @@ function callOpenAI(prompt) {
 
   return new Promise((resolve, reject) => {
     const body = JSON.stringify({
-      model: 'gpt-4o-mini',
+      model: GPT4O_MINI,
       messages: [{ role: 'user', content: prompt }],
       max_tokens: 20,
       temperature: 0.1

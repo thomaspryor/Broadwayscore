@@ -21,6 +21,7 @@ const path = require('path');
 const outletsPath = path.join(__dirname, 'config', 'critic-outlets.json');
 const outletsConfig = JSON.parse(fs.readFileSync(outletsPath, 'utf8'));
 const { isLondonMarket } = require('./lib/venue-classification');
+const { CLAUDE_SONNET } = require('./lib/models');
 
 const ALL_OUTLETS = [
   ...outletsConfig.tier1.map(o => ({ ...o, tier: 1 })),
@@ -75,7 +76,7 @@ Respond in JSON format:
       'anthropic-version': '2023-06-01'
     },
     body: JSON.stringify({
-      model: 'claude-sonnet-4-6',
+      model: CLAUDE_SONNET,
       max_tokens: 1024,
       messages: [{ role: 'user', content: prompt }]
     })
