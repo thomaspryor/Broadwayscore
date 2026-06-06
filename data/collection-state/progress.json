@@ -28,7 +28,17 @@
     "stereophonic-2024/nytimes--jesse-green.json",
     "suffs-2024/nytimes--jesse-green.json",
     "the-wiz-2024/nytimes--maya-phillips.json",
-    "the-notebook-2024/nytimes--jesse-green.json"
+    "the-notebook-2024/nytimes--jesse-green.json",
+    "days-of-wine-and-roses-2024/nytimes--jesse-green.json",
+    "how-to-dance-in-ohio-2023/nytimes--jesse-green.json",
+    "the-shark-is-broken-2023/nytimes--jesse-green.json",
+    "the-cottage-2023/nytimes--jesse-green.json",
+    "good-night-oscar-2023/nytimes--jesse-green.json",
+    "prima-facie-2023/nytimes--jesse-green.json",
+    "the-thanksgiving-play-2023/nytimes--jesse-green.json",
+    "peter-pan-goes-wrong-2023/nytimes--jesse-green.json",
+    "parade-2023/nytimes--jesse-green.json",
+    "kpop-2022/nytimes--jesse-green.json"
   ],
   "failed": [
     "spamalot-off-broadway-2026/nytimes--jesse-green.json"
@@ -45,7 +55,11 @@
       "data/review-texts/our-town-2024/nytimes--jesse-green.json",
       "our-town-2024/nytimes--jesse-green.json",
       "data/review-texts/suffs-2024/nytimes--jesse-green.json",
-      "suffs-2024/nytimes--jesse-green.json"
+      "suffs-2024/nytimes--jesse-green.json",
+      "data/review-texts/how-to-dance-in-ohio-2023/nytimes--jesse-green.json",
+      "how-to-dance-in-ohio-2023/nytimes--jesse-green.json",
+      "data/review-texts/the-shark-is-broken-2023/nytimes--jesse-green.json",
+      "the-shark-is-broken-2023/nytimes--jesse-green.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -73,16 +87,24 @@
     "brightdata": [
       "cabaret-2024/nytimes--jesse-green.json",
       "stereophonic-2024/nytimes--jesse-green.json",
-      "the-notebook-2024/nytimes--jesse-green.json"
+      "the-notebook-2024/nytimes--jesse-green.json",
+      "days-of-wine-and-roses-2024/nytimes--jesse-green.json",
+      "the-cottage-2023/nytimes--jesse-green.json",
+      "good-night-oscar-2023/nytimes--jesse-green.json",
+      "prima-facie-2023/nytimes--jesse-green.json",
+      "peter-pan-goes-wrong-2023/nytimes--jesse-green.json"
     ],
     "archiveToday": [],
     "archive": [
       "mcneal-2024/nytimes--jesse-green.json",
-      "the-wiz-2024/nytimes--maya-phillips.json"
+      "the-wiz-2024/nytimes--maya-phillips.json",
+      "the-thanksgiving-play-2023/nytimes--jesse-green.json",
+      "parade-2023/nytimes--jesse-green.json",
+      "kpop-2022/nytimes--jesse-green.json"
     ]
   },
   "startTime": "2026-06-06T01:47:59.562Z",
-  "lastProcessed": "the-notebook-2024/nytimes--jesse-green.json",
+  "lastProcessed": "kpop-2022/nytimes--jesse-green.json",
   "log": [
     {
       "t": "2026-06-06T01:48:51.347Z",
@@ -158,6 +180,39 @@
     },
     {
       "t": "2026-06-06T01:59:42.922Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T02:00:51.978Z",
+      "event": "bb-session",
+      "session": "df9d76fc",
+      "url": "https://www.nytimes.com/2024/01/28/theater/days-of-wine-and-roses-review-broadwa"
+    },
+    {
+      "t": "2026-06-06T02:00:53.025Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T02:01:49.016Z",
+      "event": "bb-session",
+      "session": "11d94d34",
+      "url": "https://www.nytimes.com/2023/12/10/theater/how-to-dance-in-ohio-review.html"
+    },
+    {
+      "t": "2026-06-06T02:01:50.186Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T02:02:15.820Z",
+      "event": "bb-session",
+      "session": "419916b8",
+      "url": "https://www.nytimes.com/2023/08/10/theater/the-shark-is-broken-review.html"
+    },
+    {
+      "t": "2026-06-06T02:02:16.813Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
