@@ -69,7 +69,15 @@
     "motown-the-musical-2013/nytimes--charles-isherwood.json",
     "hands-on-a-hardbody-2013/nytimes--charles-isherwood.json",
     "a-christmas-story-the-musical-2012/nytimes--charles-isherwood.json",
-    "the-heiress-2012/nytimes--ben-brantley.json"
+    "the-heiress-2012/nytimes--ben-brantley.json",
+    "bring-it-on-the-musical-2012/nytimes--charles-isherwood.json",
+    "ghost-the-musical-2012/nytimes--charles-isherwood.json",
+    "wit-2012/nytimes--ben-brantley.json",
+    "born-yesterday-2011/nytimes--ben-brantley.json",
+    "born-yesterday-2011/nytimes--charles-isherwood.json",
+    "war-horse-2011/nytimes--ben-brantley.json",
+    "catch-me-if-you-can-2011/nytimes--ben-brantley.json",
+    "good-people-2011/nytimes--ben-brantley.json"
   ],
   "failed": [
     "spamalot-off-broadway-2026/nytimes--jesse-green.json",
@@ -81,7 +89,9 @@
     "a-time-to-kill-2013/nytimes--charles-isherwood.json",
     "cat-on-a-hot-tin-roof-2013/about-entertainment--ben-brantley.json",
     "the-anarchist-2012/nytimes--ben-brantley.json",
-    "dead-accounts-2012/nytimes--ben-brantley.json"
+    "dead-accounts-2012/nytimes--ben-brantley.json",
+    "leap-of-faith-2012/nytimes--ben-brantley.json",
+    "the-motherfucker-with-the-hat-2011/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -145,7 +155,15 @@
       "motown-the-musical-2013/nytimes--charles-isherwood.json",
       "hands-on-a-hardbody-2013/nytimes--charles-isherwood.json",
       "a-christmas-story-the-musical-2012/nytimes--charles-isherwood.json",
-      "the-heiress-2012/nytimes--ben-brantley.json"
+      "the-heiress-2012/nytimes--ben-brantley.json",
+      "bring-it-on-the-musical-2012/nytimes--charles-isherwood.json",
+      "ghost-the-musical-2012/nytimes--charles-isherwood.json",
+      "wit-2012/nytimes--ben-brantley.json",
+      "born-yesterday-2011/nytimes--ben-brantley.json",
+      "born-yesterday-2011/nytimes--charles-isherwood.json",
+      "war-horse-2011/nytimes--ben-brantley.json",
+      "catch-me-if-you-can-2011/nytimes--ben-brantley.json",
+      "good-people-2011/nytimes--ben-brantley.json"
     ],
     "archiveToday": [
       "data/review-texts/something-rotten-2015/nytimes--ben-brantley.json",
@@ -153,7 +171,9 @@
       "data/review-texts/on-the-town-2014/nytimes--charles-isherwood.json",
       "data/review-texts/lady-day-at-emersons-bar-and-grill-2014/nytimes--ben-brantley.json",
       "data/review-texts/the-anarchist-2012/nytimes--ben-brantley.json",
-      "data/review-texts/dead-accounts-2012/nytimes--ben-brantley.json"
+      "data/review-texts/dead-accounts-2012/nytimes--ben-brantley.json",
+      "data/review-texts/leap-of-faith-2012/nytimes--ben-brantley.json",
+      "data/review-texts/the-motherfucker-with-the-hat-2011/nytimes--ben-brantley.json"
     ],
     "archive": [
       "the-cottage-2023/nytimes--jesse-green.json",
@@ -175,7 +195,7 @@
     ]
   },
   "startTime": "2026-06-06T03:41:24.164Z",
-  "lastProcessed": "the-heiress-2012/nytimes--ben-brantley.json",
+  "lastProcessed": "good-people-2011/nytimes--ben-brantley.json",
   "log": [
     {
       "t": "2026-06-06T04:13:18.644Z",
@@ -185,6 +205,17 @@
     },
     {
       "t": "2026-06-06T04:13:19.622Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T04:18:49.361Z",
+      "event": "bb-session",
+      "session": "05af3b89",
+      "url": "http://theater.nytimes.com/2011/04/25/theater/reviews/born-yesterday-with-jim-be"
+    },
+    {
+      "t": "2026-06-06T04:18:50.689Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
