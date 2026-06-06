@@ -527,7 +527,7 @@ jobs:
           mkdir -p data/audit/pipeline-health
           date -u > data/audit/pipeline-health/collect-review-texts.last-success
           git add data/audit/pipeline-health/
-          git diff --staged --quiet || git commit -m "health: Record collect-review-texts success" && git push || echo "::warning::Health recording push failed"
+          git diff --staged --quiet || git commit -m "health: Record collect-review-texts success" && bash scripts/lib/push-with-retry.sh || echo "::warning::Health recording push failed"
 
   # Parallel multi-job mode (matrix strategy)
   collect-reviews-parallel:
