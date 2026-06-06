@@ -52,6 +52,10 @@ const PAYWALL_PATTERNS = [
   // The full NYT chrome is "We are having trouble retrieving the article content.
   // Please enable JavaScript in your browser settings. Thank you for your patience
   // while we verify access." The first line is the most distinctive.
+  // DUAL-PURPOSE: also in TRUNCATION_SIGNALS.severeAnywhere (tags 'nyt_bot_stub').
+  // Here detectPaywall() uses _isPatternInTrailingJunk() to strip it via cleanText()
+  // rather than marking the whole file garbage. classifyIncompleteReason() Layer A.5
+  // short-circuits before Layer B's detectPaywall() call, so no routing conflict.
   /trouble\s+retrieving\s+the\s+article\s+content/i,
 ];
 
