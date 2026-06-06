@@ -4,6 +4,7 @@ const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
 const REVIEW_TEXTS_TOKEN = process.env.REVIEW_TEXTS_TOKEN || '';
 const SUBMISSIONS_REPO = 'thomaspryor/broadway-scorecard-data';
 const SUBMISSIONS_PATH = 'data/beat-the-critics-submissions.jsonl';
+const FAILED_PATH = 'data/beat-the-critics-failed.jsonl';
 const FROM_EMAIL = 'Broadway Scorecard <noreply@broadwayscorecard.com>';
 
 // In-memory rate limit: max 3 submissions per IP per 10 minutes.
@@ -82,6 +83,44 @@ async function storeSubmission(record: {
   throw new Error(`storeSubmission failed after ${MAX_RETRIES} retries (SHA conflicts)`);
 }
 
+// Dead-letter: if storeSubmission exhausts retries, write to a separate file
+// so the entry isn't lost entirely. Best-effort — does not throw.
+async function storeFailedSubmission(record: {
+  email: string;
+  picks: Record<string, string>;
+  ceremonyYear: number;
+  submittedAt: string;
+  failedAt: string;
+}): Promise<void> {
+  if (!REVIEW_TEXTS_TOKEN) return;
+  const apiBase = `https://api.github.com/repos/${SUBMISSIONS_REPO}/contents/${FAILED_PATH}`;
+  const headers = {
+    Authorization: `Bearer ${REVIEW_TEXTS_TOKEN}`,
+    'Content-Type': 'application/json',
+    Accept: 'application/vnd.github+json',
+  };
+  try {
+    const getRes = await fetch(apiBase, { headers });
+    let currentContent = '';
+    let sha: string | undefined;
+    if (getRes.ok) {
+      const data = await getRes.json() as { content: string; sha: string };
+      currentContent = Buffer.from(data.content.replace(/\n/g, ''), 'base64').toString('utf8');
+      sha = data.sha;
+    }
+    const newContent = Buffer.from(currentContent + JSON.stringify(record) + '\n').toString('base64');
+    await fetch(apiBase, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify({
+        message: `fix: dead-letter BTC submission [skip ci]`,
+        content: newContent,
+        ...(sha ? { sha } : {}),
+      }),
+    });
+  } catch { /* silently ignore — primary store already failed */ }
+}
+
 export async function POST(req: NextRequest) {
   try {
     const { email, picks, ceremonyYear } = await req.json() as {
@@ -150,11 +189,14 @@ export async function POST(req: NextRequest) {
 </html>`;
 
     // Store submission first — this is the critical path for prize-draw eligibility.
-    // If it fails, return 500 so the user can retry. Email is sent after.
+    // If it fails, write to dead-letter file and return 500 so the user can retry.
+    const submittedAt = new Date().toISOString();
     try {
-      await storeSubmission({ email, picks, ceremonyYear, submittedAt: new Date().toISOString() });
+      await storeSubmission({ email, picks, ceremonyYear, submittedAt });
     } catch (err) {
       console.error('storeSubmission failed:', err);
+      // Dead-letter: preserve the entry even if the main store failed
+      await storeFailedSubmission({ email, picks, ceremonyYear, submittedAt, failedAt: new Date().toISOString() });
       return NextResponse.json({ error: 'Failed to save your picks. Please try again.' }, { status: 500 });
     }
 
