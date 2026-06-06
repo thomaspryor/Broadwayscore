@@ -6,6 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { safeWriteReview } = require('./lib/review-write-guard');
+const { CLAUDE_SONNET } = require('./lib/models');
 
 const envPath = path.join(__dirname, '..', '.env');
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY ||
@@ -21,7 +22,7 @@ const rtDir = path.join(__dirname, '..', 'data', 'review-texts');
 function callClaude(prompt, text) {
   return new Promise((resolve, reject) => {
     const body = JSON.stringify({
-      model: 'claude-sonnet-4-6',
+      model: CLAUDE_SONNET,
       max_tokens: 4000,
       messages: [{ role: 'user', content: prompt + '\n\n' + text }]
     });

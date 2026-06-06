@@ -16,6 +16,7 @@ import { diagnoseBug } from './diagnose-feedback-bug.js';
 
 const require = createRequire(import.meta.url);
 const { buildFeedbackThankYouEmail, postJSON } = require('./lib/email-templates.js');
+const { CLAUDE_SONNET } = require('./lib/models');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -178,7 +179,7 @@ Respond in this JSON format:
   console.log('Categorizing feedback with Claude API...\n');
 
   const message = await anthropic.messages.create({
-    model: 'claude-sonnet-4-6',
+    model: CLAUDE_SONNET,
     max_tokens: 4000,
     messages: [{ role: 'user', content: prompt }]
   });

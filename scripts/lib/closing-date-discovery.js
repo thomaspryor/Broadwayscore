@@ -17,6 +17,7 @@
 const https = require('https');
 const { serpQuery } = require('./url-discovery');
 const { fetchPage } = require('../lib/scraper');
+const { CLAUDE_SONNET } = require('./models');
 
 const CREDIBLE_HOSTS = [
   'variety.com',
@@ -37,7 +38,7 @@ function callClaudeSonnet(prompt) {
   if (!apiKey) throw new Error('ANTHROPIC_API_KEY not set');
   return new Promise((resolve, reject) => {
     const body = JSON.stringify({
-      model: 'claude-sonnet-4-6',
+      model: CLAUDE_SONNET,
       max_tokens: 400,
       messages: [{ role: 'user', content: prompt }],
     });

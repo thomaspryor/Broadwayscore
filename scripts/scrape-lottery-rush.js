@@ -27,6 +27,7 @@ const path = require('path');
 const https = require('https');
 const { matchTitleToShow, loadShows } = require('./lib/show-matching');
 const { cleanSearchTitle } = require('./lib/title-normalization');
+const { CLAUDE_SONNET } = require('./lib/models');
 
 // ==================== Configuration ====================
 
@@ -917,7 +918,7 @@ ${articleText}`;
         'content-type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
+        model: CLAUDE_SONNET,
         max_tokens: 8000,
         messages: [{ role: 'user', content: prompt }],
       }),
@@ -1158,7 +1159,7 @@ ${pageText}`;
         'content-type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
+        model: CLAUDE_SONNET,
         max_tokens: 8000,
         messages: [{ role: 'user', content: prompt }],
       }),
