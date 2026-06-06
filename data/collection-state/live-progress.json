@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-06T02:52:50.100Z",
-  "processed": 23,
+  "updatedAt": "2026-06-06T02:56:31.096Z",
+  "processed": 33,
   "failed": 7,
-  "successRate": "76.7%",
+  "successRate": "82.5%",
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 19,
-    "brightdata": 3,
+    "brightdata": 11,
     "archiveToday": 4,
-    "archive": 1
+    "archive": 2
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 10,
   "recentActivity": [
     {
       "t": "2026-06-06T02:40:29.103Z",
@@ -111,6 +111,17 @@
     },
     {
       "t": "2026-06-06T02:52:33.408Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T02:53:06.024Z",
+      "event": "bb-session",
+      "session": "733dc5d5",
+      "url": "https://www.nytimes.com/2017/12/12/theater/review-in-the-children-manhattan-thea"
+    },
+    {
+      "t": "2026-06-06T02:53:06.428Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

@@ -22,7 +22,17 @@
     "aint-too-proud-2019/nytimes--ben-brantley.json",
     "the-nap-2018/nytimes--ben-brantley.json",
     "pretty-woman-the-musical-2018/nytimes--ben-brantley.json",
-    "children-of-a-lesser-god-2018/nytimes--jesse-green.json"
+    "children-of-a-lesser-god-2018/nytimes--jesse-green.json",
+    "the-children-2017/nytimes--ben-brantley.json",
+    "once-on-this-island-2017/nytimes--ben-brantley.json",
+    "latin-history-for-morons-2017/nytimes--jesse-green.json",
+    "time-and-the-conways-2017/nytimes--ben-brantley.json",
+    "bandstand-2017/nytimes--alexis-soloski.json",
+    "charlie-and-the-chocolate-factory-2017/nytimes--ben-brantley.json",
+    "indecent-2017/nytimes--ben-brantley.json",
+    "sweat-2017/nytimes--matt-windman.json",
+    "the-price-2017/nytimes--alexis-soloski.json",
+    "the-price-2017/nytimes--chris-jones.json"
   ],
   "failed": [
     "spamalot-off-broadway-2026/nytimes--jesse-green.json",
@@ -37,7 +47,10 @@
   "tierBreakdown": {
     "playwright": [],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-children-2017/nytimes--ben-brantley.json",
+      "the-children-2017/nytimes--ben-brantley.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "heathers-the-musical-off-broadway-2025/nytimes--elisabeth-vincentelli.json",
@@ -63,7 +76,15 @@
     "brightdata": [
       "good-night-oscar-2023/nytimes--jesse-green.json",
       "peter-pan-goes-wrong-2023/nytimes--jesse-green.json",
-      "children-of-a-lesser-god-2018/nytimes--jesse-green.json"
+      "children-of-a-lesser-god-2018/nytimes--jesse-green.json",
+      "once-on-this-island-2017/nytimes--ben-brantley.json",
+      "latin-history-for-morons-2017/nytimes--jesse-green.json",
+      "time-and-the-conways-2017/nytimes--ben-brantley.json",
+      "bandstand-2017/nytimes--alexis-soloski.json",
+      "indecent-2017/nytimes--ben-brantley.json",
+      "sweat-2017/nytimes--matt-windman.json",
+      "the-price-2017/nytimes--alexis-soloski.json",
+      "the-price-2017/nytimes--chris-jones.json"
     ],
     "archiveToday": [
       "data/review-texts/mike-birbiglia-the-old-man-and-the-pool-2022/nytimes--jesse-green.json",
@@ -72,11 +93,12 @@
       "data/review-texts/mean-girls-2018/nytimes--jesse-green.json"
     ],
     "archive": [
-      "pretty-woman-the-musical-2018/nytimes--ben-brantley.json"
+      "pretty-woman-the-musical-2018/nytimes--ben-brantley.json",
+      "charlie-and-the-chocolate-factory-2017/nytimes--ben-brantley.json"
     ]
   },
   "startTime": "2026-06-06T02:37:04.871Z",
-  "lastProcessed": "frozen-2018/nytimes--jesse-green.json",
+  "lastProcessed": "the-price-2017/nytimes--chris-jones.json",
   "log": [
     {
       "t": "2026-06-06T02:40:29.103Z",
@@ -174,6 +196,17 @@
     },
     {
       "t": "2026-06-06T02:52:33.408Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T02:53:06.024Z",
+      "event": "bb-session",
+      "session": "733dc5d5",
+      "url": "https://www.nytimes.com/2017/12/12/theater/review-in-the-children-manhattan-thea"
+    },
+    {
+      "t": "2026-06-06T02:53:06.428Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
