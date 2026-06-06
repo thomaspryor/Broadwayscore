@@ -704,7 +704,15 @@
     "care-west-end-2026/times-uk--clive-davis.json",
     "care-west-end-2026/times-uk--mark-fisher.json",
     "care-west-end-2026/times-uk--unknown.json",
-    "care-west-end-2026/whatsonstage--judi-herman.json"
+    "care-west-end-2026/whatsonstage--judi-herman.json",
+    "equus-west-end-2026/guardian--unknown.json",
+    "equus-west-end-2026/the-jewish-chronicle--unknown.json",
+    "equus-west-end-2026/thereviewshub--unknown.json",
+    "equus-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "equus-west-end-2026/artsdesk--unknown.json",
+    "equus-west-end-2026/thestage--holly-o.json",
+    "equus-west-end-2026/times-uk--clive-davis.json",
+    "equus-west-end-2026/whatsonstage--alun-hood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1138,7 +1146,7 @@
     ]
   },
   "startTime": "2026-06-06T04:44:29.355Z",
-  "lastProcessed": "care-west-end-2026/whatsonstage--judi-herman.json",
+  "lastProcessed": "equus-west-end-2026/whatsonstage--alun-hood.json",
   "log": [
     {
       "t": "2026-06-06T06:19:34.296Z",
@@ -1518,6 +1526,17 @@
     },
     {
       "t": "2026-06-06T23:12:41.851Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-06-06T23:16:34.825Z",
+      "event": "bb-session",
+      "session": "2d080f62",
+      "url": "https://thestage.co.uk/reviews/equus-review-menier-chocolate-factory-london-lind"
+    },
+    {
+      "t": "2026-06-06T23:16:35.372Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
