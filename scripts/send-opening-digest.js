@@ -76,6 +76,19 @@ function publishThresholds(market) {
   };
 }
 
+// Score/grade DISPLAY gates — keep in parity with the live site so the digest
+// never surfaces a number the public show page would itself suppress. A digest
+// that shows "Recommended 81" off 2 reviews while also flagging "Needs help —
+// 2/15 reviews" reads as contradictory and untrustworthy.
+//   Critic score: src/lib/market-utils.ts getMarketMinReviews()
+//                 → 3 (London + Off-Broadway), 5 (Broadway).
+//   Audience grade: src/lib/audience-grade-utils.ts MIN_AUDIENCE_REVIEWS = 15.
+// Below these, the digest shows "TBD" / "Audience: —" rather than a firm verdict.
+function minReviewsToShowScore(market) {
+  return (market === 'west-end' || market === 'off-west-end' || market === 'off-broadway') ? 3 : 5;
+}
+const MIN_AUDIENCE_REVIEWS = 15;
+
 // ---------------------------------------------------------------------------
 // CLI
 // ---------------------------------------------------------------------------
@@ -242,9 +255,11 @@ function getAudience(audienceBuzz, showId) {
   for (const src of Object.values(row.sources || {})) {
     if (src && typeof src.reviewCount === 'number') totalReviews += src.reviewCount;
   }
+  // Parity with the live site: no audience letter grade below MIN_AUDIENCE_REVIEWS.
+  const enoughForGrade = totalReviews >= MIN_AUDIENCE_REVIEWS;
   return {
-    designation: row.designation || null,
-    score: typeof row.combinedScore === 'number' ? Math.round(row.combinedScore) : null,
+    designation: enoughForGrade ? (row.designation || null) : null,
+    score: enoughForGrade && typeof row.combinedScore === 'number' ? Math.round(row.combinedScore) : null,
     reviewCount: totalReviews,
   };
 }
@@ -260,7 +275,12 @@ function buildRows(shows, reviewMap, audienceBuzz, sentData, importantSet, exclu
     .map(s => {
       const market = getMarket(s);
       const reviews = reviewMap.get(s.id) || [];
-      const score = computeCriticScore(reviews, market);
+      // Only show a firm critic score once we clear the live-site minimum.
+      // Below it the row renders "TBD" — the review-progress line still shows
+      // the running count, so the owner sees momentum without a premature verdict.
+      const score = reviews.length >= minReviewsToShowScore(market)
+        ? computeCriticScore(reviews, market)
+        : null;
       const q = scoreQualifies(reviews, market);
       const audience = getAudience(audienceBuzz, s.id);
       const excluded = excludedMap.has(s.id);
@@ -539,17 +559,48 @@ function renderBroadcastReadyRow(row) {
   });
 }
 
-function renderOtherRecentRow(row) {
-  let action = '';
-  if (row.excluded) {
-    action = sitePill('Excluded from predictions', { color: TOKENS.textMuted, bg: TOKENS.surfaceOverlay });
-  } else if (row.important) {
-    action = row.qualifies
-      ? sitePill('Qualifies', { color: TOKENS.open, bg: 'rgba(16,185,129,0.18)' })
-      : sitePill(`Building${row.qualifyGap ? ' — ' + row.qualifyGap : ''}`, { color: TOKENS.textMuted, bg: TOKENS.surfaceOverlay });
+// Small inline score pill for the compact "other" rows — number only, no tier
+// label or audience chip. Honors the same TBD gate as the full card.
+function smallScorePill(row) {
+  const score = row.criticScore;
+  if (score == null) {
+    return `<span style="display:inline-block;min-width:38px;padding:5px 9px;border-radius:8px;background:${TOKENS.surfaceOverlay};border:1px solid ${TOKENS.border};color:#9ca3af;font-size:12px;font-weight:700;text-align:center;line-height:1;">TBD</span>`;
   }
-  return renderShowCardRow(row, { actionPills: action, secondaryLine: renderRecentSecondary(row) });
+  const tier = criticTier(score, row.market);
+  const glow = tier.glow ? 'border:2px solid #C8960E;' : '';
+  return `<span style="display:inline-block;min-width:38px;padding:6px 9px;border-radius:8px;background:${tier.bg};color:${tier.fg};font-size:16px;font-weight:800;text-align:center;line-height:1;letter-spacing:-0.02em;${glow}">${score}</span>`;
 }
+
+// Compact one-line row for low-signal sections. No thumbnail, no pills — just
+// title · market, a status line, and a small score pill on the right. Keeps
+// "Other recent/upcoming" from drowning the action items above them.
+function renderCompactRow(row, kind) {
+  const when = `${esc(whenLabel(row.daysFromToday))} · ${esc(formatHumanDate(row.date))}`;
+  let status;
+  if (kind === 'upcoming') {
+    if (row.expected) status = `expects ~${row.expected} reviews`;
+    else if (row.excluded) status = 'excluded from predictions';
+    else status = 'expected reviews TBD';
+  } else {
+    const n = `${row.reviewCount} review${row.reviewCount === 1 ? '' : 's'}`;
+    if (row.broadcastSent === true) status = `${n} · ✓ broadcast sent`;
+    else if (row.expected && row.reviewCount >= row.expected) status = `${n} · ✓ on track`;
+    else if (row.expected) status = `${n} (expected ~${row.expected})`;
+    else status = n;
+  }
+  return `
+  <tr style="border-top:1px solid ${TOKENS.borderSubtle};">
+    <td style="padding:10px 12px 10px 0;vertical-align:middle;">
+      <a href="${esc(row.url)}" style="color:${TOKENS.text};text-decoration:none;font-size:14px;font-weight:600;">${esc(row.title)}</a>
+      <span style="color:${TOKENS.textDim};font-size:12px;font-weight:500;"> · ${esc(row.marketLabel)}</span>
+      <div style="margin-top:3px;color:${TOKENS.textMuted};font-size:12px;line-height:1.4;">${when} · ${status}</div>
+    </td>
+    <td style="padding:10px 0;vertical-align:middle;width:56px;text-align:right;">${smallScorePill(row)}</td>
+  </tr>`;
+}
+
+function renderCompactRecentRow(row) { return renderCompactRow(row, 'recent'); }
+function renderCompactUpcomingRow(row) { return renderCompactRow(row, 'upcoming'); }
 
 function renderSection(title, count, bodyHtml) {
   return `
@@ -611,8 +662,8 @@ function renderRegionBlock(regionKey, sections) {
   if (needsHelp.length) inner += renderSection('Needs help', needsHelp.length, renderTable(needsHelp, renderNeedsHelpRow));
   if (broadcastReady.length) inner += renderSection('Broadcast ready', broadcastReady.length, renderTable(broadcastReady, renderBroadcastReadyRow));
   if (comingUp.length) inner += renderSection('Coming up', comingUp.length, renderTable(comingUp, renderUpcomingRow));
-  if (otherRecent.length) inner += renderSection('Other recent (last 7 days)', otherRecent.length, renderTable(otherRecent, renderOtherRecentRow));
-  if (otherUpcoming.length) inner += renderSection('Other upcoming (next 7 days)', otherUpcoming.length, renderTable(otherUpcoming, renderUpcomingRow));
+  if (otherRecent.length) inner += renderSection('Other recent (last 7 days)', otherRecent.length, renderTable(otherRecent, renderCompactRecentRow));
+  if (otherUpcoming.length) inner += renderSection('Other upcoming (next 7 days)', otherUpcoming.length, renderTable(otherUpcoming, renderCompactUpcomingRow));
   return `
     <div style="margin:40px 0 16px 0;">
       ${headerHtml}
@@ -762,7 +813,13 @@ async function main() {
   console.log(`Sent. ${subject}`);
 }
 
-main().catch(err => {
-  console.error(err);
-  process.exit(1);
-});
+// Exported for unit tests (tests/unit/opening-digest-gates.test.mjs). The display
+// gates are the load-bearing trust logic — test them against the real fns.
+module.exports = { minReviewsToShowScore, getAudience, MIN_AUDIENCE_REVIEWS };
+
+if (require.main === module) {
+  main().catch(err => {
+    console.error(err);
+    process.exit(1);
+  });
+}

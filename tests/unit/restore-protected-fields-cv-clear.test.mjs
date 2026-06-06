@@ -54,6 +54,36 @@ test('CV restore is SKIPPED when the top-level flag was intentionally cleared', 
     'stale CV.wrongProduction must NOT be resurrected over an intentional top-level clear');
 });
 
+test('CV.wrongArticle is governed by a wrongShow clear (it promotes to wrongShow, not wrongFullText)', () => {
+  const { dir, git } = makeRepo();
+  // Remote: classifier flagged the article via contentVerification.wrongArticle.
+  write(dir, { url: 'x', contentVerification: { wrongArticle: true } });
+  git('add -A'); git('commit -qm base');
+  const remote = git('rev-parse HEAD').toString().trim();
+  // Local: human cleared wrongShow (the flag CV.wrongArticle promotes to); CV deleted.
+  write(dir, { url: 'x', wrongShowManualClear: true });
+  git('add -A'); git('commit -qm local');
+
+  execSync(`node ${SCRIPT} ${remote}`, { cwd: dir, stdio: ['pipe', 'pipe', 'pipe'] });
+  const after = read(dir);
+  assert.equal(after.contentVerification?.wrongArticle, undefined,
+    'stale CV.wrongArticle must NOT be resurrected over a wrongShow clear (it re-promotes to wrongShow)');
+});
+
+test('CV.isFilmTv is governed by a wrongShow clear (it also promotes to wrongShow)', () => {
+  const { dir, git } = makeRepo();
+  write(dir, { url: 'x', contentVerification: { isFilmTv: true } });
+  git('add -A'); git('commit -qm base');
+  const remote = git('rev-parse HEAD').toString().trim();
+  write(dir, { url: 'x', wrongShowManualClear: true });
+  git('add -A'); git('commit -qm local');
+
+  execSync(`node ${SCRIPT} ${remote}`, { cwd: dir, stdio: ['pipe', 'pipe', 'pipe'] });
+  const after = read(dir);
+  assert.equal(after.contentVerification?.isFilmTv, undefined,
+    'stale CV.isFilmTv must NOT be resurrected over a wrongShow clear (it re-promotes to wrongShow)');
+});
+
 test('CV restore STILL fires for genuine data-loss (no clear breadcrumb)', () => {
   const { dir, git } = makeRepo();
   write(dir, { url: 'x', contentVerification: { wrongProduction: true } });

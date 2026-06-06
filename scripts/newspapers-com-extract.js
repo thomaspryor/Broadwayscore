@@ -88,7 +88,7 @@ const PAPERS = {
   },
   philinquirer: {
     name: 'Philadelphia Inquirer',
-    outletId: 'philadelphiainquirer',
+    outletId: 'philadelphia-inquirer',
     outlet: 'Philadelphia Inquirer',
     searchName: 'Philadelphia Inquirer',
     resultName: 'The Philadelphia Inquirer',

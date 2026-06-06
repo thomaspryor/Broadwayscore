@@ -11,6 +11,7 @@ import {
   groupIntoCategories,
   serializeShow,
   lookupCriticPicks,
+  lookupShouldPicks,
   getPrecursorWins,
   type SerializedTonyShow,
   type TonyCategory,
@@ -330,6 +331,7 @@ export function enrichMajorCategoriesWithOdds(
         kalshiOdds: kalshiNominees ? findMarketOdds(kalshiNominees, show.title) : null,
         kalshiOddsChange: findMarketOddsChange(kalshiCatData, show.title),
         criticPicks: showId ? lookupCriticPicks(showId, null, cat.title) : [],
+        shouldPicks: showId ? lookupShouldPicks(showId, null, cat.title) : [],
         precursorWins: showId ? getPrecursorWins(showId, cat.title) : [],
       };
     });
@@ -415,6 +417,7 @@ export function getNomineesByCategory(season: TonySeasonWindow): TonyCategory[] 
           nomineePriorNominations: pastStats?.priorNominations ?? 0,
           nomineePriorWins: pastStats?.priorWins ?? 0,
           criticPicks: lookupCriticPicks(nom.showId, personName, catTitle),
+          shouldPicks: lookupShouldPicks(nom.showId, personName, catTitle),
           precursorWins: getPrecursorWins(nom.showId, catTitle, personName),
         });
       }
@@ -463,6 +466,7 @@ export function getNomineesByCategory(season: TonySeasonWindow): TonyCategory[] 
           nomineePersonName: personName,
           nomineeCategoryTitle: catTitle,
           criticPicks: lookupCriticPicks(showId, null, catTitle),
+          shouldPicks: lookupShouldPicks(showId, null, catTitle),
           precursorWins: getPrecursorWins(showId, catTitle),
         });
       }

@@ -25,7 +25,7 @@ import tonyLosoStatsData from '../../data/tony-loso-stats.json';
 import gdComparisonData from '../../data/analysis/gd-vs-broadwayscore.json';
 import frozenAudienceData from '../../data/tony-frozen-audience-grades.json';
 
-type CriticPicksFile = { picks: Record<string, Record<string, string>> };
+type CriticPicksFile = { picks: Record<string, Record<string, string>>; shouldPicks?: Record<string, Record<string, string>> };
 
 const PERSON_MATCH_CATEGORIES = new Set([
   'Best Actor in a Musical', 'Best Actress in a Musical',
@@ -38,6 +38,23 @@ const PERSON_MATCH_CATEGORIES = new Set([
 export function lookupCriticPicks(showId: string, personName: string | null, tonyCategory: string): string[] {
   const data = criticPicksRawData as unknown as CriticPicksFile;
   const catPicks = data.picks[tonyCategory];
+  if (!catPicks) return [];
+  const isPersonCat = PERSON_MATCH_CATEGORIES.has(tonyCategory);
+  const result: string[] = [];
+  for (const [outletId, pick] of Object.entries(catPicks)) {
+    if (isPersonCat) {
+      if (personName && pick.toLowerCase() === personName.toLowerCase()) result.push(outletId);
+    } else {
+      if (pick === showId) result.push(outletId);
+    }
+  }
+  return result;
+}
+
+/** Return outlet IDs whose critic said this show/person SHOULD win the given category. */
+export function lookupShouldPicks(showId: string, personName: string | null, tonyCategory: string): string[] {
+  const data = criticPicksRawData as unknown as CriticPicksFile;
+  const catPicks = data.shouldPicks?.[tonyCategory];
   if (!catPicks) return [];
   const isPersonCat = PERSON_MATCH_CATEGORIES.has(tonyCategory);
   const result: string[] = [];
@@ -420,6 +437,8 @@ export interface SerializedTonyShow {
   nomineeCategoryTitle?: string | null;
   /** Outlet IDs (e.g. "nyt", "variety") whose critic picked this show/person to win. */
   criticPicks?: string[];
+  /** Outlet IDs whose critic said this show/person SHOULD win (separate from will-win). */
+  shouldPicks?: string[];
   /** Ceremonies where this show won the matching Tony category: 'DL', 'OCC', 'DD'. */
   precursorWins?: string[];
 }
@@ -2089,17 +2108,18 @@ export function isTonyPromoActive(now: Date = new Date(), sunsetDays = 2): boole
 
 /**
  * Beat the Critics promo activity gate. BTC entries close per official rules
- * at 11:59 PM Eastern Time the night BEFORE the ceremony (≈ ceremonyDate
- * 03:59 UTC). Returns true only while entries are still being accepted.
- * Falls back to "active" if ceremony date is unknown.
+ * at 7:59 PM Eastern Time on the ceremony date — one minute before the Tony
+ * Awards broadcast begins (≈ ceremony day 23:59 UTC, since EDT = UTC-4 in
+ * June). Returns true only while entries are still being accepted. Falls back
+ * to "active" if ceremony date is unknown.
  */
 export function isBtcPromoActive(now: Date = new Date()): boolean {
   const current = getTonySeasonWindow();
   const record = tonySeasonForCeremonyYear(current.ceremonyYear);
   const ceremonyDate = record?.ceremonyDate;
   if (!ceremonyDate) return true;
-  // 11:59 PM Eastern (EDT = UTC-4 in June) = ceremony day 03:59 UTC
-  const deadlineMs = new Date(`${ceremonyDate}T03:59:59Z`).getTime();
+  // 7:59 PM Eastern (EDT = UTC-4 in June) = ceremony day 23:59 UTC
+  const deadlineMs = new Date(`${ceremonyDate}T23:59:59Z`).getTime();
   return now.getTime() <= deadlineMs;
 }
 

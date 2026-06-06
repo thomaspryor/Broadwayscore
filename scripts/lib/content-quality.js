@@ -1303,6 +1303,19 @@ function detectTruncationSignals(text) {
     }
   }
 
+  // WSJ paywall CTA — position-gated: only flag as truncated when the CTA appears
+  // before 90% of the text. At ≥90% it is footer chrome on a complete review
+  // (cleanText() strips it); before 90% the article was cut off at the subscription
+  // wall (same bug class as nyt_bot_stub, smaller scale — 1776-2022 observed 2026-06-06).
+  if (severeCount === 0) {
+    const wsjCtaPat = /reading\s+your\s+article\s+with\s*a?\s+WSJ\s+(?:membership|subscription)/i;
+    const wsjM = wsjCtaPat.exec(text);
+    if (wsjM && wsjM.index < text.length * 0.9) {
+      signals.push('wsj_paywall_cta');
+      severeCount++;
+    }
+  }
+
   // Check moderate signals
   for (const pattern of TRUNCATION_SIGNALS.moderate) {
     if (pattern.test(text)) {

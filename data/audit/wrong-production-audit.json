@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-06T13:37:58.826Z",
+  "timestamp": "2026-06-06T16:16:12.517Z",
   "stats": {
-    "totalReviews": 38140,
-    "alreadyFlagged": 16781,
+    "totalReviews": 38125,
+    "alreadyFlagged": 16752,
     "dateGuardCatches": 106,
-    "directorMismatch": 835,
-    "tvFilmSignals": 1047,
+    "directorMismatch": 836,
+    "tvFilmSignals": 1049,
     "londonSignals": 610,
     "offBroadwaySignals": 459,
     "yearMismatch": 81,
-    "noPublishDate": 3977
+    "noPublishDate": 3987
   },
   "findings": [
     {
@@ -10731,6 +10731,20 @@
     },
     {
       "showId": "into-the-woods-west-end-2025",
+      "file": "nytimes--alexis-soloski.json",
+      "score": null,
+      "publishDate": "2025-12-12",
+      "url": "https://www.nytimes.com/2025/12/12/theater/into-the-woods-bridge-theater.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
       "file": "observer--susannah-clapp.json",
       "score": 94,
       "publishDate": "2025-12-19",
@@ -14481,6 +14495,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hbo max\""
+        }
+      ]
+    },
+    {
+      "showId": "new-york-new-york-2023",
+      "file": "hollywood-reporter--caitlin-huston.json",
+      "score": 58,
+      "publishDate": "April 26, 2023",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-musical-new-york-new-york-closing-date-1235543618/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"apple tv\""
         }
       ]
     },
@@ -19178,6 +19206,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"trevor nunn\" from starlight-express-1987"
+        }
+      ]
+    },
+    {
+      "showId": "stereophonic-2024",
+      "file": "hollywood-reporter--angie-han.json",
+      "score": 95,
+      "publishDate": "April 19, 2024",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/stereophonic-review-theater-david-adjmi-broadway-1235877998/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"apple tv\""
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
         }
       ]
     },
@@ -36367,20 +36414,6 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 155d before show (2023-10-29T22:30:03 vs 2024-04-02)"
-        }
-      ]
-    },
-    {
-      "showId": "stereophonic-2024",
-      "file": "hollywood-reporter--angie-han.json",
-      "score": 95,
-      "publishDate": "April 19, 2024",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/stereophonic-review-theater-david-adjmi-broadway-1235877998/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
         }
       ]
     },
