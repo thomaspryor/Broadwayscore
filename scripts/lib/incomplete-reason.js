@@ -130,6 +130,20 @@ function classifyIncompleteReason(review, failedFetchEntry) {
       incompleteDetail: 'NYT bot-detection JS-loader stub detected in review text'
     };
   }
+  // Layer A.6: WSJ paywall CTA before 90% of text — article cut off at subscription wall.
+  // At ≥90% the CTA is footer chrome on a complete review; before 90% = genuine truncation.
+  const hasWsjPaywallCta = truncSignalsEarly.includes('wsj_paywall_cta') ||
+    (fullText && (() => {
+      const wsjPat = /reading\s+your\s+article\s+with\s*a?\s+WSJ\s+(?:membership|subscription)/i;
+      const m = wsjPat.exec(fullText);
+      return m && m.index < fullText.length * 0.9;
+    })());
+  if (hasWsjPaywallCta) {
+    return {
+      incompleteReason: 'bot_blocked',
+      incompleteDetail: 'WSJ paywall CTA before 90% of text — article truncated at subscription wall'
+    };
+  }
   // Layer B: Explicit paywall signals in text
   if (fullText) {
     const paywallCheck = detectPaywall(fullText);
