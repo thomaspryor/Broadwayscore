@@ -22,7 +22,7 @@ export interface BoardSource {
 }
 
 // Display order only — NOT a credibility ranking. Every outlet is one equal vote.
-const OUTLET_ORDER = ['nyt', 'nytpaulson', 'variety', 'thr', 'thewrap', 'timeout', 'slant', 'bg', 'chitrib', 'timesuk', 'nytg', 'theatermania', 'nysun', 'ew', 'deadline', 'culturesauce', 'cityguide', 'parade', 'vf', 'elle'];
+const OUTLET_ORDER = ['nyt', 'nytpaulson', 'variety', 'thr', 'thewrap', 'timeout', 'slant', 'bg', 'chitrib', 'timesuk', 'nytg', 'theatermania', 'nysun', 'ew', 'deadline', 'culturesauce', 'cityguide', 'parade', 'vf', 'elle', 'rbroadway'];
 const orderIdx = (id: string) => {
   const i = OUTLET_ORDER.indexOf(id);
   return i === -1 ? 999 : i;
