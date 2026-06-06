@@ -321,7 +321,7 @@ export default function MyShowsClient() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8 pb-12">
+    <div data-testid="my-shows-content" className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8 pb-12">
       {/* Header */}
       <div className="flex items-center justify-between mb-2">
         <h1 className="text-2xl sm:text-3xl font-extrabold text-white">My Shows</h1>
