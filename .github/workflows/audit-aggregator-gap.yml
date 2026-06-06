@@ -26,6 +26,10 @@ on:
         description: 'Exit non-zero when any in-window show has gaps (default false — advisory)'
         required: false
         default: 'false'
+      include_closed:
+        description: 'Also audit closed shows — back-catalogue backfill (default true)'
+        required: false
+        default: 'true'
 
 concurrency:
   group: audit-aggregator-gap
@@ -69,11 +73,21 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          WINDOW="${{ github.event.inputs.window_days || '21' }}"
+          # Default window widened to 3y + include-closed so the cron grinds the
+          # whole back-catalogue, not just the last 21d. Checkpointing + the soft
+          # time budget keep each 25-min run from timing out (every run was being
+          # cancelled at the cap before, so the sweep never finished — 2026-06-06).
+          WINDOW="${{ github.event.inputs.window_days || '1095' }}"
           DISPATCH="${{ github.event.inputs.dispatch_gather || 'false' }}"
           INGEST="${{ github.event.inputs.ingest_missing || 'true' }}"
           FAIL="${{ github.event.inputs.fail_on_gap || 'false' }}"
-          ARGS="--window=$WINDOW"
+          INCLUDE_CLOSED="${{ github.event.inputs.include_closed || 'true' }}"
+          # Always checkpoint so consecutive hourly runs resume from where the last
+          # one stopped rather than re-auditing the same first shows forever.
+          ARGS="--window=$WINDOW --checkpoint --time-budget-min=20"
+          if [ "$INCLUDE_CLOSED" = "true" ]; then
+            ARGS="$ARGS --include-closed"
+          fi
           if [ "$DISPATCH" = "true" ]; then
             ARGS="$ARGS --dispatch-gather"
           fi
@@ -94,7 +108,9 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           # Audit JSON lives in the public repo
-          git add data/audit/show-review-gap.json data/audit/unknown-aggregator-outlets.json || true
+          # Commit the checkpoint too — it's what lets consecutive runs resume
+          # instead of re-auditing the same first shows (the 25-min-timeout fix).
+          git add data/audit/show-review-gap.json data/audit/unknown-aggregator-outlets.json data/audit/gap-audit-checkpoint.json || true
           if git diff --cached --quiet; then
             echo "No audit changes to commit"
           else
