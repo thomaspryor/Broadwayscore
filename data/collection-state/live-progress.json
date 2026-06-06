@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-06T06:37:04.593Z",
-  "processed": 119,
-  "failed": 92,
-  "successRate": "56.4%",
+  "updatedAt": "2026-06-06T06:40:11.992Z",
+  "processed": 125,
+  "failed": 96,
+  "successRate": "56.6%",
   "tierBreakdown": {
-    "playwright": 49,
+    "playwright": 53,
     "amp": 0,
-    "browserbase": 14,
+    "browserbase": 16,
     "directCookies": 0,
-    "scrapingbee": 24,
+    "scrapingbee": 25,
     "brightdata": 18,
-    "archiveToday": 26,
+    "archiveToday": 28,
     "archive": 23
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 8,
   "recentActivity": [
-    {
-      "t": "2026-06-06T05:21:39.785Z",
-      "event": "bb-session",
-      "session": "f3158bad",
-      "url": "http://theater.nytimes.com/2006/10/26/theater/reviews/26butl.html"
-    },
-    {
-      "t": "2026-06-06T05:21:40.708Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-06-06T05:22:53.492Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-06-06T06:25:08.581Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-06T06:39:04.375Z",
+      "event": "bb-session",
+      "session": "a9a024dc",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
+    },
+    {
+      "t": "2026-06-06T06:39:05.334Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
