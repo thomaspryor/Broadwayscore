@@ -18,7 +18,17 @@
     "othello-2025/nytimes--jesse-green.json",
     "purpose-2025/nytimes--jesse-green.json",
     "eureka-day-2024/nytimes--jesse-green.json",
-    "swept-away-2024/nytimes--jesse-green.json"
+    "swept-away-2024/nytimes--jesse-green.json",
+    "a-wonderful-world-the-louis-armstrong-musical-2024/nytimes--jesse-green.json",
+    "left-on-tenth-2024/nytimes--jesse-green.json",
+    "sunset-boulevard-2024/nytimes--jesse-green.json",
+    "our-town-2024/nytimes--jesse-green.json",
+    "mcneal-2024/nytimes--jesse-green.json",
+    "cabaret-2024/nytimes--jesse-green.json",
+    "stereophonic-2024/nytimes--jesse-green.json",
+    "suffs-2024/nytimes--jesse-green.json",
+    "the-wiz-2024/nytimes--maya-phillips.json",
+    "the-notebook-2024/nytimes--jesse-green.json"
   ],
   "failed": [
     "spamalot-off-broadway-2026/nytimes--jesse-green.json"
@@ -31,7 +41,11 @@
       "data/review-texts/proof-2026/nytimes--helen-shaw.json",
       "proof-2026/nytimes--helen-shaw.json",
       "data/review-texts/hadestown-2019/nytimes--ben-brantley.json",
-      "hadestown-2019/nytimes--ben-brantley.json"
+      "hadestown-2019/nytimes--ben-brantley.json",
+      "data/review-texts/our-town-2024/nytimes--jesse-green.json",
+      "our-town-2024/nytimes--jesse-green.json",
+      "data/review-texts/suffs-2024/nytimes--jesse-green.json",
+      "suffs-2024/nytimes--jesse-green.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -51,14 +65,24 @@
       "othello-2025/nytimes--jesse-green.json",
       "purpose-2025/nytimes--jesse-green.json",
       "eureka-day-2024/nytimes--jesse-green.json",
-      "swept-away-2024/nytimes--jesse-green.json"
+      "swept-away-2024/nytimes--jesse-green.json",
+      "a-wonderful-world-the-louis-armstrong-musical-2024/nytimes--jesse-green.json",
+      "left-on-tenth-2024/nytimes--jesse-green.json",
+      "sunset-boulevard-2024/nytimes--jesse-green.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "cabaret-2024/nytimes--jesse-green.json",
+      "stereophonic-2024/nytimes--jesse-green.json",
+      "the-notebook-2024/nytimes--jesse-green.json"
+    ],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "mcneal-2024/nytimes--jesse-green.json",
+      "the-wiz-2024/nytimes--maya-phillips.json"
+    ]
   },
   "startTime": "2026-06-06T01:47:59.562Z",
-  "lastProcessed": "swept-away-2024/nytimes--jesse-green.json",
+  "lastProcessed": "the-notebook-2024/nytimes--jesse-green.json",
   "log": [
     {
       "t": "2026-06-06T01:48:51.347Z",
@@ -79,6 +103,61 @@
     },
     {
       "t": "2026-06-06T01:50:40.126Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T01:56:19.779Z",
+      "event": "bb-session",
+      "session": "329f8d3e",
+      "url": "https://www.nytimes.com/2024/10/10/theater/our-town-review-jim-parsons.html"
+    },
+    {
+      "t": "2026-06-06T01:56:20.824Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T01:57:05.638Z",
+      "event": "bb-session",
+      "session": "a45927e3",
+      "url": "https://www.nytimes.com/2024/04/21/theater/cabaret-review-eddie-redmayne.html"
+    },
+    {
+      "t": "2026-06-06T01:57:06.580Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T01:58:04.519Z",
+      "event": "bb-session",
+      "session": "338ff55d",
+      "url": "https://www.nytimes.com/2024/04/19/theater/stereophonic-review.html"
+    },
+    {
+      "t": "2026-06-06T01:58:05.514Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T01:58:50.577Z",
+      "event": "bb-session",
+      "session": "4aa982ba",
+      "url": "https://www.nytimes.com/2024/04/18/theater/suffs-review-broadway-shaina-taub.htm"
+    },
+    {
+      "t": "2026-06-06T01:58:51.552Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T01:59:41.905Z",
+      "event": "bb-session",
+      "session": "b36a5c01",
+      "url": "https://www.nytimes.com/2024/03/14/theater/the-notebook-review-broadway-musical."
+    },
+    {
+      "t": "2026-06-06T01:59:42.922Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
