@@ -39,7 +39,12 @@
     "born-yesterday-2011/nytimes--charles-isherwood.json",
     "war-horse-2011/nytimes--ben-brantley.json",
     "catch-me-if-you-can-2011/nytimes--ben-brantley.json",
-    "good-people-2011/nytimes--ben-brantley.json"
+    "good-people-2011/nytimes--ben-brantley.json",
+    "young-frankenstein-2007/nytimes--ben-brantley.json",
+    "legally-blonde-2007/nytimes--ben-brantley.json",
+    "butley-2006/about-entertainment--ben-brantley.json",
+    "shining-city-2006/nytimes--ben-brantley.json",
+    "the-wedding-singer-2006/nytimes--ben-brantley.json"
   ],
   "failed": [
     "spamalot-off-broadway-2026/nytimes--jesse-green.json",
@@ -61,7 +66,12 @@
     "the-philanthropist-2009/nytimes--ben-brantley.json",
     "rock-of-ages-2009/nytimes--ben-brantley.json",
     "rock-of-ages-2009/nytimes--charles-isherwood.json",
-    "the-story-of-my-life-2009/nytimes--ben-brantley.json"
+    "the-story-of-my-life-2009/nytimes--ben-brantley.json",
+    "the-seagull-2008/about-entertainment--ben-brantley.json",
+    "the-seagull-2008/nytimes--ben-brantley.json",
+    "high-fidelity-2006/about-entertainment--ben-brantley.json",
+    "the-coast-of-utopia-2006/about-entertainment--ben-brantley.json",
+    "a-chorus-line-2006/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -107,7 +117,11 @@
       "born-yesterday-2011/nytimes--charles-isherwood.json",
       "war-horse-2011/nytimes--ben-brantley.json",
       "catch-me-if-you-can-2011/nytimes--ben-brantley.json",
-      "good-people-2011/nytimes--ben-brantley.json"
+      "good-people-2011/nytimes--ben-brantley.json",
+      "young-frankenstein-2007/nytimes--ben-brantley.json",
+      "legally-blonde-2007/nytimes--ben-brantley.json",
+      "shining-city-2006/nytimes--ben-brantley.json",
+      "the-wedding-singer-2006/nytimes--ben-brantley.json"
     ],
     "archiveToday": [
       "data/review-texts/on-the-town-2014/nytimes--charles-isherwood.json",
@@ -129,11 +143,12 @@
       "noises-off-2016/nytimes--ben-brantley.json",
       "a-raisin-in-the-sun-2014/nytimes--ben-brantley.json",
       "outside-mullingar-2014/nytimes--charles-isherwood.json",
-      "the-snow-geese-2013/nytimes--ben-brantley.json"
+      "the-snow-geese-2013/nytimes--ben-brantley.json",
+      "butley-2006/about-entertainment--ben-brantley.json"
     ]
   },
   "startTime": "2026-06-06T04:40:29.475Z",
-  "lastProcessed": "the-story-of-my-life-2009/nytimes--ben-brantley.json",
+  "lastProcessed": "the-wedding-singer-2006/nytimes--ben-brantley.json",
   "log": [
     {
       "t": "2026-06-06T04:56:02.886Z",
@@ -154,6 +169,50 @@
     },
     {
       "t": "2026-06-06T05:01:50.094Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:13:02.521Z",
+      "event": "bb-session",
+      "session": "412207f6",
+      "url": "http://theater.nytimes.com/2008/10/03/theater/reviews/03seag.html"
+    },
+    {
+      "t": "2026-06-06T05:13:03.299Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:14:46.486Z",
+      "event": "bb-session",
+      "session": "9ac35508",
+      "url": "http://theater.nytimes.com/2006/12/08/theater/reviews/08fide.html"
+    },
+    {
+      "t": "2026-06-06T05:14:47.296Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:15:23.405Z",
+      "event": "bb-session",
+      "session": "8d720027",
+      "url": "http://theater.nytimes.com/2006/11/28/theater/reviews/28coas.html"
+    },
+    {
+      "t": "2026-06-06T05:15:24.130Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:15:48.507Z",
+      "event": "bb-session",
+      "session": "2c2a0045",
+      "url": "http://theater.nytimes.com/2006/10/26/theater/reviews/26butl.html"
+    },
+    {
+      "t": "2026-06-06T05:15:49.274Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

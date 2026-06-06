@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-06T05:13:01.393Z",
-  "processed": 40,
-  "failed": 20,
-  "successRate": "66.7%",
+  "updatedAt": "2026-06-06T05:17:25.243Z",
+  "processed": 45,
+  "failed": 25,
+  "successRate": "64.3%",
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 19,
-    "brightdata": 17,
+    "brightdata": 21,
     "archiveToday": 14,
-    "archive": 4
+    "archive": 5
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-06-06T04:56:02.886Z",
@@ -34,6 +34,50 @@
     },
     {
       "t": "2026-06-06T05:01:50.094Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:13:02.521Z",
+      "event": "bb-session",
+      "session": "412207f6",
+      "url": "http://theater.nytimes.com/2008/10/03/theater/reviews/03seag.html"
+    },
+    {
+      "t": "2026-06-06T05:13:03.299Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:14:46.486Z",
+      "event": "bb-session",
+      "session": "9ac35508",
+      "url": "http://theater.nytimes.com/2006/12/08/theater/reviews/08fide.html"
+    },
+    {
+      "t": "2026-06-06T05:14:47.296Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:15:23.405Z",
+      "event": "bb-session",
+      "session": "8d720027",
+      "url": "http://theater.nytimes.com/2006/11/28/theater/reviews/28coas.html"
+    },
+    {
+      "t": "2026-06-06T05:15:24.130Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:15:48.507Z",
+      "event": "bb-session",
+      "session": "2c2a0045",
+      "url": "http://theater.nytimes.com/2006/10/26/theater/reviews/26butl.html"
+    },
+    {
+      "t": "2026-06-06T05:15:49.274Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
