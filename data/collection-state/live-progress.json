@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-06T06:17:21.043Z",
-  "processed": 96,
-  "failed": 75,
-  "successRate": "56.1%",
+  "updatedAt": "2026-06-06T06:22:06.547Z",
+  "processed": 103,
+  "failed": 78,
+  "successRate": "56.9%",
   "tierBreakdown": {
-    "playwright": 33,
+    "playwright": 37,
     "amp": 0,
-    "browserbase": 10,
+    "browserbase": 12,
     "directCookies": 0,
-    "scrapingbee": 21,
+    "scrapingbee": 22,
     "brightdata": 17,
-    "archiveToday": 20,
-    "archive": 21
+    "archiveToday": 21,
+    "archive": 22
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-06-06T05:20:29.064Z",
-      "event": "bb-session",
-      "session": "cbeb30dc",
-      "url": "http://theater.nytimes.com/2006/12/08/theater/reviews/08fide.html"
-    },
-    {
-      "t": "2026-06-06T05:20:29.988Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-06-06T05:21:04.325Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-06-06T06:17:03.647Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-06T06:17:46.620Z",
+      "event": "bb-session",
+      "session": "f4699841",
+      "url": "https://www.wsj.com/articles/giant-review-john-lithgows-brilliantly-bad-tempered"
+    },
+    {
+      "t": "2026-06-06T06:17:47.545Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

@@ -95,7 +95,14 @@
     "dog-day-afternoon-2026/variety--owen-gleiberman.json",
     "dog-day-afternoon-2026/one-minute-critic--matthew-wexler.json",
     "teeth-n-smiles-west-end-2026/broadwayworld--alexander-cohen.json",
-    "giant-2026/variety--daniel-daddario.json"
+    "giant-2026/variety--daniel-daddario.json",
+    "giant-2026/theatre-reviews-limited--joseph-verlezza.json",
+    "giant-2026/nytg--gillian-russo.json",
+    "giant-2026/wsj--charles-isherwood.json",
+    "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+    "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json",
+    "burnout-paradise-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "im-sorry-prime-minister-west-end-2026/thestage--dave-fargnoli.json"
   ],
   "failed": [
     "spamalot-off-broadway-2026/nytimes--jesse-green.json",
@@ -172,7 +179,10 @@
     "romeo-and-juliet-west-end-2026/hollywood-reporter--david-rooney.json",
     "dog-day-afternoon-2026/theatre-reviews-limited--david-roberts.json",
     "dog-day-afternoon-2026/broadway-and-me--janice-c-simpson.json",
-    "teeth-n-smiles-west-end-2026/times-uk--dominic-maxwell.json"
+    "teeth-n-smiles-west-end-2026/times-uk--dominic-maxwell.json",
+    "deep-azure-globe-west-end-2026/telegraph--fiona-mountford.json",
+    "deep-azure-globe-west-end-2026/thestage--dave-fargnoli.json",
+    "oh-mary-west-end-2025/guardian--arifa-akbar.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -209,7 +219,11 @@
       "les-liaisons-dangereuses-west-end-2026/times-uk--clive-davis.json",
       "romeo-and-juliet-west-end-2026/thestage--alun-hood.json",
       "romeo-and-juliet-west-end-2026/west-end-best-friend--livvy-perrett.json",
-      "dog-day-afternoon-2026/one-minute-critic--matthew-wexler.json"
+      "dog-day-afternoon-2026/one-minute-critic--matthew-wexler.json",
+      "giant-2026/theatre-reviews-limited--joseph-verlezza.json",
+      "giant-2026/nytg--gillian-russo.json",
+      "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json",
+      "burnout-paradise-off-broadway-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
     "browserbase": [
@@ -222,7 +236,9 @@
       "data/review-texts/dog-day-afternoon-2026/variety--owen-gleiberman.json",
       "dog-day-afternoon-2026/variety--owen-gleiberman.json",
       "data/review-texts/giant-2026/variety--daniel-daddario.json",
-      "giant-2026/variety--daniel-daddario.json"
+      "giant-2026/variety--daniel-daddario.json",
+      "data/review-texts/giant-2026/wsj--charles-isherwood.json",
+      "giant-2026/wsj--charles-isherwood.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -246,7 +262,8 @@
       "the-last-ship-2014/nytimes--ben-brantley.json",
       "holler-if-ya-hear-me-2014/nytimes--ben-brantley.json",
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/front-row-center--nicole-itkin.json",
-      "proof-2026/nytimes--helen-shaw.json"
+      "proof-2026/nytimes--helen-shaw.json",
+      "im-sorry-prime-minister-west-end-2026/thestage--dave-fargnoli.json"
     ],
     "brightdata": [
       "good-night-oscar-2023/nytimes--jesse-green.json",
@@ -287,7 +304,8 @@
       "data/review-texts/the-constant-wife-2005/nytimes--ben-brantley.json",
       "data/review-texts/barnum-1980/nytimes--frank-rich.json",
       "data/review-texts/war-horse-west-end-2026/thestage--tom-wicker.json",
-      "data/review-texts/end-of-the-rainbow-west-end-2026/thestage--unknown.json"
+      "data/review-texts/end-of-the-rainbow-west-end-2026/thestage--unknown.json",
+      "data/review-texts/deep-azure-globe-west-end-2026/thestage--dave-fargnoli.json"
     ],
     "archive": [
       "misery-2015/nytimes--charles-isherwood.json",
@@ -310,11 +328,12 @@
       "cats-the-jellicle-ball-2026/amny--matt-windman.json",
       "les-liaisons-dangereuses-west-end-2026/telegraph--claire-allfree.json",
       "les-liaisons-dangereuses-west-end-2026/new-statesman--zuzanna-lachendro.json",
-      "teeth-n-smiles-west-end-2026/broadwayworld--alexander-cohen.json"
+      "teeth-n-smiles-west-end-2026/broadwayworld--alexander-cohen.json",
+      "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
     ]
   },
   "startTime": "2026-06-06T04:44:29.355Z",
-  "lastProcessed": "giant-2026/variety--daniel-daddario.json",
+  "lastProcessed": "oh-mary-west-end-2025/guardian--arifa-akbar.json",
   "log": [
     {
       "t": "2026-06-06T04:58:40.603Z",
@@ -458,6 +477,17 @@
       "t": "2026-06-06T06:17:03.647Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-06T06:17:46.620Z",
+      "event": "bb-session",
+      "session": "f4699841",
+      "url": "https://www.wsj.com/articles/giant-review-john-lithgows-brilliantly-bad-tempered"
+    },
+    {
+      "t": "2026-06-06T06:17:47.545Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
