@@ -5,7 +5,9 @@ const REVIEW_TEXTS_TOKEN = process.env.REVIEW_TEXTS_TOKEN || '';
 const SUBMISSIONS_REPO = 'thomaspryor/broadway-scorecard-data';
 const SUBMISSIONS_PATH = 'data/beat-the-critics-submissions.jsonl';
 const FAILED_PATH = 'data/beat-the-critics-failed.jsonl';
+const ERROR_LOG_PATH = 'data/beat-the-critics-errors.jsonl';
 const FROM_EMAIL = 'Broadway Scorecard <noreply@broadwayscorecard.com>';
+const ADMIN_EMAIL = 'thomas.pryor@gmail.com';
 
 // In-memory rate limit: max 3 submissions per IP per 10 minutes.
 // Resets on cold start — good enough for casual spam prevention without Redis.
@@ -121,6 +123,60 @@ async function storeFailedSubmission(record: {
   } catch { /* silently ignore — primary store already failed */ }
 }
 
+// Log errors to GitHub + send admin alert. Best-effort — never throws.
+async function logError(event: {
+  type: 'store_failed' | 'resend_failed';
+  email: string;
+  error: string;
+  at: string;
+}): Promise<void> {
+  // 1. Append to GitHub error log
+  if (REVIEW_TEXTS_TOKEN) {
+    const apiBase = `https://api.github.com/repos/${SUBMISSIONS_REPO}/contents/${ERROR_LOG_PATH}`;
+    const headers = {
+      Authorization: `Bearer ${REVIEW_TEXTS_TOKEN}`,
+      'Content-Type': 'application/json',
+      Accept: 'application/vnd.github+json',
+    };
+    try {
+      const getRes = await fetch(apiBase, { headers });
+      let currentContent = '';
+      let sha: string | undefined;
+      if (getRes.ok) {
+        const data = await getRes.json() as { content: string; sha: string };
+        currentContent = Buffer.from(data.content.replace(/\n/g, ''), 'base64').toString('utf8');
+        sha = data.sha;
+      }
+      const newContent = Buffer.from(currentContent + JSON.stringify(event) + '\n').toString('base64');
+      await fetch(apiBase, {
+        method: 'PUT',
+        headers,
+        body: JSON.stringify({
+          message: `fix: BTC error log [skip ci]`,
+          content: newContent,
+          ...(sha ? { sha } : {}),
+        }),
+      });
+    } catch { /* best-effort */ }
+  }
+
+  // 2. Admin alert email
+  if (RESEND_API_KEY) {
+    try {
+      await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          from: FROM_EMAIL,
+          to: [ADMIN_EMAIL],
+          subject: `⚠️ BTC submission error: ${event.type}`,
+          html: `<pre>${JSON.stringify(event, null, 2)}</pre>`,
+        }),
+      });
+    } catch { /* best-effort */ }
+  }
+}
+
 export async function POST(req: NextRequest) {
   try {
     const { email, picks, ceremonyYear } = await req.json() as {
@@ -194,9 +250,12 @@ export async function POST(req: NextRequest) {
     try {
       await storeSubmission({ email, picks, ceremonyYear, submittedAt });
     } catch (err) {
-      console.error('storeSubmission failed:', err);
-      // Dead-letter: preserve the entry even if the main store failed
-      await storeFailedSubmission({ email, picks, ceremonyYear, submittedAt, failedAt: new Date().toISOString() });
+      const errMsg = err instanceof Error ? err.message : String(err);
+      console.error('storeSubmission failed:', errMsg);
+      await Promise.all([
+        storeFailedSubmission({ email, picks, ceremonyYear, submittedAt, failedAt: new Date().toISOString() }),
+        logError({ type: 'store_failed', email, error: errMsg, at: submittedAt }),
+      ]);
       return NextResponse.json({ error: 'Failed to save your picks. Please try again.' }, { status: 500 });
     }
 
@@ -220,9 +279,12 @@ export async function POST(req: NextRequest) {
       if (!res.ok) {
         const body = await res.text();
         console.error('Resend error:', res.status, body);
+        void logError({ type: 'resend_failed', email, error: `${res.status}: ${body.slice(0, 200)}`, at: submittedAt });
       }
     } catch (emailErr) {
-      console.error('Resend fetch threw:', emailErr);
+      const errMsg = emailErr instanceof Error ? emailErr.message : String(emailErr);
+      console.error('Resend fetch threw:', errMsg);
+      void logError({ type: 'resend_failed', email, error: errMsg, at: submittedAt });
     }
 
     return NextResponse.json({ success: true });
