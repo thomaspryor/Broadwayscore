@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-06T18:48:11.295Z",
+  "timestamp": "2026-06-06T23:38:21.955Z",
   "stats": {
-    "totalReviews": 38086,
-    "alreadyFlagged": 16709,
+    "totalReviews": 38081,
+    "alreadyFlagged": 16715,
     "dateGuardCatches": 106,
-    "directorMismatch": 836,
-    "tvFilmSignals": 1049,
-    "londonSignals": 610,
+    "directorMismatch": 837,
+    "tvFilmSignals": 1050,
+    "londonSignals": 611,
     "offBroadwaySignals": 459,
     "yearMismatch": 81,
-    "noPublishDate": 3990
+    "noPublishDate": 3977
   },
   "findings": [
     {
@@ -10175,20 +10175,6 @@
     },
     {
       "showId": "into-the-woods-2022",
-      "file": "broadwaynews--brittani-samuel.json",
-      "score": 78,
-      "publishDate": "July 10, 2022",
-      "url": "https://www.broadwaynews.com/2022/07/10/into-the-woods-is-talent-forward-in-every-sense/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-2022",
       "file": "dailybeast--tim-teeman.json",
       "score": 95,
       "publishDate": "July 10, 2022",
@@ -10732,7 +10718,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "nytimes--alexis-soloski.json",
-      "score": null,
+      "score": 79,
       "publishDate": "2025-12-12",
       "url": "https://www.nytimes.com/2025/12/12/theater/into-the-woods-bridge-theater.html",
       "findings": [
@@ -15901,6 +15887,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "patriots-2024",
+      "file": "wsj--charles-isherwood.json",
+      "score": 76,
+      "publishDate": "April 23, 2024",
+      "url": "https://www.wsj.com/articles/patriots-review-on-broadway-putin-peter-morgan-russia-michael-stuhlbarg-b5577abf?gaa_at=eafs&gaa_n=AWEtsqcSROb4alYI4bCQniLOC1Do0gOYttsMiXzX8AuLwraz7Eeo_pKSMSoK&gaa_ts=6995367b&gaa_sig=FHK9oVn7S91l7LY0uj2TfTGxLO6BV7SqakrA0bpgd6YjjqXpWmCLhLgDJoJ6Jaf6XwMozKdvhh3-EJGTaMDF7Q%3D%3D",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -25252,6 +25257,25 @@
     },
     {
       "showId": "west-side-story-2020",
+      "file": "broadwaynews--charles-isherwood.json",
+      "score": 72,
+      "publishDate": "February 20th, 2020",
+      "url": "https://broadwaynews.com/2020/02/20/review-ivo-van-hoves-west-side-story-feels-more-cinematic-than-theatrical/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from west-side-story-2009"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerome robbins\" from west-side-story-1980"
+        }
+      ]
+    },
+    {
+      "showId": "west-side-story-2020",
       "file": "broadwayworld--michael-dale.json",
       "score": 64,
       "publishDate": null,
@@ -27422,6 +27446,7 @@
     {
       "showId": "animal-wisdom-off-broadway-2022",
       "file": "theatre-reviews-limited--unknown.json",
+      "score": 22,
       "publishDate": "2026-05-23",
       "url": "https://www.theatrereviews.com/off-broadway-review-animal-wisdom-at-the-romulus-linney-courtyard-theatre-at-the-pershing-square-signature-center-through-sunday-june-14-2026/",
       "findings": [
