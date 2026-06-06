@@ -92,7 +92,7 @@ jobs:
       - name: Commit and push changes
         if: always() && steps.build.outcome != 'failure'
         run: |
-          git add data/commercial-changelog.json data/audit/commercial-data-audit.json 2>/dev/null || true
+          bash scripts/lib/git-add-existing.sh data/commercial-changelog.json data/audit/commercial-data-audit.json
 
           if git diff --staged --quiet; then
             echo "No changes to commit"
