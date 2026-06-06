@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-06-06T01:34:41.191Z",
-  "processed": 0,
+  "updatedAt": "2026-06-06T02:40:44.542Z",
+  "processed": 9,
   "failed": 1,
-  "successRate": "0%",
+  "successRate": "90.0%",
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 8,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-06-06T02:39:29.903Z",
+      "event": "bb-session",
+      "session": "9870c3b0",
+      "url": "https://www.nytimes.com/2024/04/19/theater/stereophonic-review.html"
+    },
+    {
+      "t": "2026-06-06T02:39:31.023Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
