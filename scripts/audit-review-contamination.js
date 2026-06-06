@@ -136,7 +136,12 @@ const WIRE_OUTLETS = new Set(['ap', 'reuters', 'upi']);
 // original Broadway productions.
 // theatrevibe.co.uk: hosts archived UK newspaper reviews ingested via
 // Theatre Record (source='theatre-record'), e.g. Metro London reviews.
-const ARCHIVE_MIRROR_DOMAINS = new Set(['jasonraize.net', 'theatrevibe.co.uk']);
+// newspapers.com: digitized newspaper archive (Newsday, NY Daily News, NYT,
+// LA Times, Chicago Tribune, Philadelphia Inquirer, …) used by the pre-2010
+// vision-OCR pipeline (scripts/newspapers-com-extract.js). The URL domain is
+// the archive; the internal outletId is ground truth. Rebuild already exempts
+// it in EXEMPT_URL_DOMAINS (rebuild-all-reviews.js) — this gives the audit parity.
+const ARCHIVE_MIRROR_DOMAINS = new Set(['jasonraize.net', 'theatrevibe.co.uk', 'newspapers.com']);
 
 // ─────────────────────────────────────────────────
 // Detectors
