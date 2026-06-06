@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-06-06T05:26:38.942Z",
-  "processed": 48,
-  "failed": 34,
-  "successRate": "58.5%",
+  "updatedAt": "2026-06-06T05:44:34.737Z",
+  "processed": 8,
+  "failed": 2,
+  "successRate": "80.0%",
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 19,
-    "brightdata": 15,
-    "archiveToday": 17,
-    "archive": 14
+    "scrapingbee": 7,
+    "brightdata": 1,
+    "archiveToday": 0,
+    "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-06-06T05:42:49.234Z",
+      "event": "bb-session",
+      "session": "f13a2b5a",
+      "url": "https://www.nytimes.com/2023/04/24/theater/good-night-oscar-review-sean-hayes-wi"
+    },
+    {
+      "t": "2026-06-06T05:42:50.172Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
