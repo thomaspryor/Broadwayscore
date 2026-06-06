@@ -46,7 +46,7 @@ export class GeminiScorer {
   constructor(apiKey: string, options: Partial<GeminiScoringOptions> = {}) {
     this.client = new GoogleGenerativeAI(apiKey);
     this.options = {
-      // 2026-04-28: switched default from 'gemini-2.0-flash' to 'gemini-2.5-flash'.
+      // 2026-04-28: switched default from 'gemini-2.5-flash' to 'gemini-2.5-flash'.
       // 2.0-flash hit free-tier 1500 RPD repeatedly during bulk rescores, causing
       // every Gemini call to fail through 5 retries (~60s/call) and silently
       // demoting the ensemble to two-model-fallback. 2.5-flash uses a separate

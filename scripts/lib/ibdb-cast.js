@@ -256,7 +256,7 @@ Title 2: "${ibdbTitle}"`;
   if (process.env.GEMINI_API_KEY) {
     try {
       const result = await new Promise((resolve, reject) => {
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`;
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`;
         const body = JSON.stringify({
           contents: [{ role: 'user', parts: [{ text: prompt }] }],
           generationConfig: { temperature: 0, maxOutputTokens: 10 }

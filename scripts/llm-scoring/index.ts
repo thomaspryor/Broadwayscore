@@ -1618,7 +1618,7 @@ async function main(): Promise<void> {
     const claudeOutputCost = options.model.includes('haiku') ? 4.00 : 15.00;
     const openaiInputCost = 2.50;  // gpt-4o
     const openaiOutputCost = 10.00;
-    const geminiInputCost = 1.25;  // gemini-2.0-flash
+    const geminiInputCost = 1.25;  // gemini-2.5-flash
     const geminiOutputCost = 5.00;
     const kimiInputCost = 1.50;  // kimi-k2.5 via openrouter (approximate)
     const kimiOutputCost = 5.00;
