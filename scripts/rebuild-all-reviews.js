@@ -1628,6 +1628,9 @@ showDirs.forEach(showId => {
         const tierResult = classifyContentTier(data);
         const oldTier = data.contentTier;
         data.contentTier = tierResult.contentTier;
+        // Propagate truncationSignals so classifyIncompleteReason (called next) can
+        // use them for routing (e.g., nyt_bot_stub → bot_blocked not paywall).
+        if (tierResult.truncationSignals) data.truncationSignals = tierResult.truncationSignals;
         if (!oldTier || oldTier !== tierResult.contentTier) {
           try {
             const sourceData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
@@ -2449,7 +2452,11 @@ showDirs.forEach(showId => {
         delete data.assignedScore;
         delete data.ensembleData;
         const hasExcerpt = !!(data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.stagedoorExcerpt || data.lboRoundupExcerpt);
-        data.contentTier = hasExcerpt ? 'excerpt' : 'stub';
+        // Respect a human contentTier override (the only direct contentTier setter
+        // that bypassed classifyContentTier's manualContentTier check). Mirrors the
+        // wrongProduction setter-guard discipline (shouldSkipWrongProductionAudit):
+        // a committed manual override must never be silently downgraded. Piece 3.
+        if (!data.manualContentTier) data.contentTier = hasExcerpt ? 'excerpt' : 'stub';
         if (!hasExcerpt) {
           logExclusion("skippedFullTextWrongAuthor", showId, file, data);
           stats.skippedFullTextWrongAuthor = (stats.skippedFullTextWrongAuthor || 0) + 1;
@@ -2725,7 +2732,11 @@ showDirs.forEach(showId => {
         delete data.assignedScore;
         delete data.ensembleData;
         const hasExcerpt = !!(data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.stagedoorExcerpt || data.lboRoundupExcerpt);
-        data.contentTier = hasExcerpt ? 'excerpt' : 'stub';
+        // Respect a human contentTier override (the only direct contentTier setter
+        // that bypassed classifyContentTier's manualContentTier check). Mirrors the
+        // wrongProduction setter-guard discipline (shouldSkipWrongProductionAudit):
+        // a committed manual override must never be silently downgraded. Piece 3.
+        if (!data.manualContentTier) data.contentTier = hasExcerpt ? 'excerpt' : 'stub';
         if (!hasExcerpt) {
           logExclusion("skippedFullTextWrongAuthor", showId, file, data);
           stats.skippedFullTextWrongAuthor = (stats.skippedFullTextWrongAuthor || 0) + 1;
@@ -3949,6 +3960,41 @@ if (consistencyIssues.length > 0) {
     allReviews.length = 0;
     allReviews.push(...deduped);
     stats.skippedMultiCriticOutletDedup = removed;
+  }
+}
+
+// POST-PROCESSING (pass 2): outlet-DISPLAY-NAME dedup, matching validate-data.js's
+// duplicate outlet+critic invariant EXACTLY (scripts/validate-data.js ~L1441:
+// key = outlet.toLowerCase().trim() | criticName.toLowerCase().trim() per show).
+// Pass 1 above keys on outletId, so the same critic split across two outletId
+// variants of one outlet — e.g. `timeout` ("Time Out") + `timeout-london`
+// ("Time Out London"), both Andrzej Lukowski on showstopper-WE — survives pass 1
+// but trips the Data Validation gate, turning main red until the next rebuild
+// happens to clean it. Keying pass 2 on the display name guarantees the rebuild
+// can never emit what the gate rejects. Keep the most-recent entry on collision.
+{
+  const beforeCount = allReviews.length;
+  const byShowOutletName = new Map();
+  for (const review of allReviews) {
+    const outletKey = (review.outlet || 'unknown').toLowerCase().trim();
+    const criticKey = (review.criticName || 'unknown').toLowerCase().trim();
+    const key = `${review.showId}|${outletKey}|${criticKey}`;
+    if (!byShowOutletName.has(key)) {
+      byShowOutletName.set(key, review);
+    } else {
+      const existing = byShowOutletName.get(key);
+      if ((review.publishDate || '') > (existing.publishDate || '')) {
+        byShowOutletName.set(key, review);
+      }
+    }
+  }
+  const deduped = [...byShowOutletName.values()];
+  const removed = beforeCount - deduped.length;
+  if (removed > 0) {
+    console.log(`\nOutlet-name dedup: removed ${removed} same-display-name+critic duplicate(s) (validate-data invariant)`);
+    allReviews.length = 0;
+    allReviews.push(...deduped);
+    stats.skippedOutletNameDedup = removed;
   }
 }
 

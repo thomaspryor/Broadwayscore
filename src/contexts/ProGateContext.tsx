@@ -12,10 +12,13 @@
 
 import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
 import dynamic from 'next/dynamic';
+import { usePathname } from 'next/navigation';
 import { track } from '@vercel/analytics';
+import { captureEvent } from '@/lib/posthog-events';
 import { type GateTrigger, type CapturedUserData } from '@/components/EmailCaptureModal';
 import { emailCaptureConfig } from '@/config/email-capture';
 import { isFormspreeSubscribed } from '@/hooks/useFormspreeSubscribed';
+import { isLondonPath } from '@/hooks/useCurrentMarket';
 
 const EmailCaptureModal = dynamic(() => import('@/components/EmailCaptureModal'), { ssr: false });
 
@@ -51,7 +54,20 @@ interface ProGateProviderProps {
 const BLOCKING_TRIGGERS: GateTrigger[] = ['csv_download', 'json_download', 'page_view_limit'];
 
 export function ProGateProvider({ children, pageViewThreshold = emailCaptureConfig.pageViewGate.threshold }: ProGateProviderProps) {
-  const [hasEmail, setHasEmail] = useState(false);
+  // Email capture is per-market. A visitor subscribed to Broadway must still be
+  // offered the West End list when browsing /west-end (and vice versa) — otherwise
+  // the dominant market's subscribers permanently suppress the other market's
+  // pop-up. `market` drives both the hasEmail gate (below) and the modal's own
+  // form routing (EmailCaptureModal computes the same isLondonPath check).
+  const pathname = usePathname();
+  const market = pathname && isLondonPath(pathname) ? 'west-end' : 'broadway';
+
+  // Initialize hasEmail synchronously from the CURRENT market's subscription, so an
+  // already-subscribed user is never transiently treated as hasEmail=false on the
+  // first render — that window could fire a page-view nag before the [market]
+  // effect below commits. SSR-safe: isFormspreeSubscribed try/catches localStorage
+  // and returns false on the server (the gated modal is ssr:false anyway).
+  const [hasEmail, setHasEmail] = useState(() => isFormspreeSubscribed(market));
   const [userData, setUserData] = useState<CapturedUserData | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalTrigger, setModalTrigger] = useState<GateTrigger>('page_view_limit');
@@ -71,10 +87,12 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
       const saved = localStorage.getItem(STORAGE_KEY);
       const formspreeSubscribed = isFormspreeSubscribed();
 
+      // NOTE: hasEmail is derived per-market in the dedicated effect below — do NOT
+      // set it globally here, or a subscriber to one market is treated as subscribed
+      // everywhere and never sees the other market's pop-up.
       if (saved) {
         const parsed = JSON.parse(saved) as CapturedUserData;
         setUserData(parsed);
-        setHasEmail(true);
 
         // Recapture: user submitted via the broken pre-fix modal (Jan 29 – Mar 12, 2026).
         // Their email was only saved to localStorage, not sent to Formspree.
@@ -83,10 +101,6 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
           localStorage.setItem(RECAPTURED_KEY, 'true'); // Only attempt once
           setNeedsRecapture(true);
         }
-      } else if (formspreeSubscribed) {
-        // User subscribed via Formspree (header, footer, homepage banner, show follow)
-        // Treat as having email so we don't nag them again
-        setHasEmail(true);
       }
 
       // Check if return visitor (visited 1+ days ago, no email)
@@ -104,6 +118,14 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
     }
   }, []);
 
+  // Derive hasEmail from the CURRENT market's subscription state. Re-runs on
+  // navigation between markets so a Broadway-only subscriber who lands on a
+  // /west-end page is still gated as "no email" and gets the WE pop-up.
+  useEffect(() => {
+    if (!isClient) return;
+    setHasEmail(isFormspreeSubscribed(market));
+  }, [market, isClient]);
+
   const triggerGate = useCallback((trigger: GateTrigger) => {
     if (hasEmail) return; // Don't show if already have email
     if (modalOpen) return; // Don't stack modals
@@ -117,6 +139,7 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
   const handleModalClose = useCallback(() => {
     if (modalBlocking) return; // Can't close blocking modals
     track('gate_modal_dismissed', { trigger: modalTrigger });
+    captureEvent('gate_modal_dismissed', { trigger: modalTrigger });
     setModalOpen(false);
   }, [modalBlocking, modalTrigger]);
 
@@ -135,12 +158,14 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
   // Listen for mid-session subscriptions from inline forms (FooterEmailCapture, etc.)
   useEffect(() => {
     const handleSubscribed = () => {
-      setHasEmail(true);
+      // Re-evaluate for the current market rather than blanket-true, so subscribing
+      // to one market doesn't suppress the other market's pop-up.
+      setHasEmail(isFormspreeSubscribed(market));
       setModalOpen(false);
     };
     window.addEventListener('bsc_subscribed', handleSubscribed);
     return () => window.removeEventListener('bsc_subscribed', handleSubscribed);
-  }, []);
+  }, [market]);
 
   // Exit intent detection - fires when mouse leaves viewport toward top (desktop only)
   useEffect(() => {

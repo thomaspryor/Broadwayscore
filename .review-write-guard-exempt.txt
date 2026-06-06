@@ -138,3 +138,4 @@ flag-wrong-production-pending.js -- legacy-pending-migration
 migrate-reroute-backlog.js -- legacy-pending-migration
 opening-night-latency-report.js -- legacy-pending-migration
 unflag-wrong-production-fps.js -- legacy-pending-migration
+notion-action-poll.js -- writes to scripts/agent-memory/ only; review-texts appears in dep-existence check (line 358) not in any writeFileSync path

@@ -35,7 +35,10 @@ test.describe('Homepage', () => {
     await expect(showCards.first()).toBeVisible({ timeout: 10000 });
 
     const count = await showCards.count();
-    expect(count).toBeGreaterThan(10);
+    // "At least 10" per the intent above — the homepage curates exactly 10
+    // featured/show links, so assert >= 10 (was > 10, which flapped red the
+    // moment the count landed on exactly 10).
+    expect(count).toBeGreaterThanOrEqual(10);
   });
 
   test('show cards have required elements', async ({ page }) => {

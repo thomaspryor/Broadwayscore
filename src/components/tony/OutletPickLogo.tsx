@@ -4,8 +4,25 @@ import { useState } from 'react';
 import { getOutletLogoUrl, getOutletConfig } from '@/config/outlet-logos';
 
 const CRITIC_PICK_OUTLETS: Record<string, { outletName: string; critic: string }> = {
-  nyt:      { outletName: 'The New York Times', critic: 'Helen Shaw' },
-  variety:  { outletName: 'Variety',            critic: 'Clayton Davis' },
+  nyt:          { outletName: 'The New York Times',    critic: 'Helen Shaw' },
+  variety:      { outletName: 'Variety',               critic: 'Clayton Davis' },
+  culturesauce: { outletName: 'Culture Sauce',         critic: 'Thom Geier' },
+  nytg:         { outletName: 'New York Theatre Guide', critic: 'Mickey-Jo Theatre' },
+  ew:           { outletName: 'Entertainment Weekly',  critic: 'Dalton Ross' },
+  nysun:        { outletName: 'The New York Sun',      critic: 'Elysa Gardner' },
+  theatermania: { outletName: 'TheaterMania',          critic: 'TheaterMania Staff' },
+  slant:        { outletName: 'Slant Magazine',        critic: 'Dan Rubins' },
+  timeout:      { outletName: 'Time Out New York',     critic: 'Adam Feldman' },
+  thr:          { outletName: 'The Hollywood Reporter', critic: 'Ben Zauzmer' },
+  deadline:     { outletName: 'Deadline',              critic: 'Greg Evans' },
+  cityguide:    { outletName: 'City Guide New York',   critic: 'Griffin Miller' },
+  vf:           { outletName: 'Vanity Fair',           critic: 'Little Gold Men' },
+  elle:         { outletName: 'Elle',                  critic: 'Samuel Maude' },
+  bg:           { outletName: 'Boston Globe',          critic: 'Christopher Wallenberg' },
+  nytpaulson:   { outletName: 'The New York Times',    critic: 'Michael Paulson' },
+  chitrib:      { outletName: 'Chicago Tribune',       critic: 'Chris Jones' },
+  thewrap:      { outletName: 'The Wrap',              critic: 'Robert Hofler' },
+  parade:       { outletName: 'Parade',               critic: 'Jessica Sager' },
 };
 
 export function OutletPickLogo({ outletId }: { outletId: string }) {

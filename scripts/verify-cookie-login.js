@@ -39,12 +39,15 @@ const { extractArticleTextFromUrl } = require('./lib/article-extractor');
 const TARGETS = [
   { outlet: 'nytimes',   url: 'https://www.nytimes.com/2026/04/22/theater/beaches-review-broadway.html', minBody: 1500 },
   { outlet: 'variety',   url: 'https://variety.com/2026/legit/reviews/rocky-horror-show-broadway-review-revival-lacks-shock-fun-luke-evans-1236728429/', minBody: 1500 },
-  { outlet: 'thestage',  url: 'https://www.thestage.co.uk/reviews/1536-review-ambassadors-theatre-london-ava-pickett', minBody: 1200 },
+  { outlet: 'thestage',  url: 'https://www.thestage.co.uk/reviews/a-dolls-house-review-at-the-hudson-theatre-new-york-starring-jessica-chastain', minBody: 1200 },
   { outlet: 'wsj',       url: 'https://www.wsj.com/articles/gypsy-review-audra-mcdonalds-turn-on-broadway-ff528df3', minBody: 1500 },
   { outlet: 'newyorker', url: 'https://www.newyorker.com/magazine/2023/03/20/dolls-house-review-broadway-jessica-chastain', minBody: 1500 },
   { outlet: 'wapo',      url: 'https://www.washingtonpost.com/entertainment/theater/2025/04/10/boop-smash-broadway-review/', minBody: 1500 },
   { outlet: 'ft',        url: 'https://www.ft.com/content/681beb68-5155-11df-bed9-00144feab49a', minBody: 1200 },
-  { outlet: 'thetimes',  url: 'https://www.thetimes.com/culture/theatre-dance/article/1776-review-broadway-revival', minBody: 1200 },
+  // The Times has DataDome-style device verification that challenges plain-HTTPS
+  // fetches even with valid cookies; body extraction is unreliable. Probe the
+  // homepage and check for the logged-in marker instead.
+  { outlet: 'thetimes',  url: 'https://www.thetimes.com/', loggedInMarker: /my\s*account|sign\s*out/i },
 ];
 
 function getArg(name) {
@@ -57,17 +60,27 @@ const onlyOutlets = (getArg('outlet') || '').split(',').map((s) => s.trim()).fil
 async function probe(t) {
   let body = '';
   let htmlLen = 0;
+  let html = '';
   let error = null;
   try {
     const r = await fetchPage(t.url, { source: 'verify-cookie-login' });
-    const html = (r && (r.content || r.html || r.body)) || (typeof r === 'string' ? r : '');
+    html = (r && (r.content || r.html || r.body)) || (typeof r === 'string' ? r : '');
     htmlLen = html.length;
-    body = extractArticleTextFromUrl(html, t.url) || '';
+    if (!t.loggedInMarker) body = extractArticleTextFromUrl(html, t.url) || '';
   } catch (e) {
     error = e.message;
   }
-  const ok = !error && body.length >= t.minBody;
-  return { outlet: t.outlet, ok, bodyLen: body.length, minBody: t.minBody, htmlLen, error, url: t.url };
+  let ok, detail;
+  if (t.loggedInMarker) {
+    // Marker mode: outlets with anti-bot challenges where body extraction is
+    // unreliable. Trust the logged-in marker (e.g. "my account") in the HTML.
+    ok = !error && t.loggedInMarker.test(html);
+    detail = `marker ${ok ? 'present' : 'absent'} (html ${htmlLen})`;
+  } else {
+    ok = !error && body.length >= t.minBody;
+    detail = `body ${body.length} / need ${t.minBody}`;
+  }
+  return { outlet: t.outlet, ok, detail, error, url: t.url };
 }
 
 (async () => {
@@ -83,8 +96,7 @@ async function probe(t) {
     console.log('\n=== Cookie login verification (extracted body length) ===\n');
     for (const r of results) {
       const mark = r.error ? '⚠️  ERROR     ' : r.ok ? '✅ logged-in  ' : '❌ LOGGED-OUT ';
-      const detail = r.error ? r.error : `body ${r.bodyLen} / need ${r.minBody}`;
-      console.log(`${mark} ${r.outlet.padEnd(11)} ${detail}`);
+      console.log(`${mark} ${r.outlet.padEnd(11)} ${r.error || r.detail}`);
     }
     const bad = results.filter((r) => !r.ok);
     console.log('');

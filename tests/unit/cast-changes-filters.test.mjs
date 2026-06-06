@@ -14,6 +14,11 @@ import {
   normalizeIdentifier,
   CLOSURE_NOTE_PHRASES,
   noteMatchesClosurePhrase,
+  earliestAddedDate,
+  mergePreservingAddedDate,
+  findClosureDupe,
+  dedupeClosures,
+  reconcileClosureDateWithClosingDate,
 } from '../../scripts/lib/cast-changes-filters.js';
 
 const TODAY = new Date('2026-05-23');
@@ -405,4 +410,100 @@ test('audit reclassifier requires group size >= 2 (no singleton-promotion)', asy
   ];
   const out2 = reclassify(cluster, 'test');
   assert.equal(out2.rewritten.filter(e => e.type === 'closure').length, 1, 'cluster did not reclassify');
+});
+
+// ==================== write-once addedDate + closure de-dup ====================
+
+test('earliestAddedDate returns the earlier date (first-seen wins)', () => {
+  assert.equal(earliestAddedDate('2026-05-27', '2026-05-19'), '2026-05-19');
+  assert.equal(earliestAddedDate('2026-05-19', '2026-05-27'), '2026-05-19');
+  assert.equal(earliestAddedDate(undefined, '2026-05-19'), '2026-05-19');
+  assert.equal(earliestAddedDate('2026-05-19', null), '2026-05-19');
+});
+
+test('mergePreservingAddedDate keeps first-seen addedDate on a source upgrade', () => {
+  // Simulates a higher-priority source re-discovering an existing closure:
+  // every field upgrades EXCEPT addedDate, which stays pinned to first-seen.
+  const existing = {
+    type: 'closure', name: 'death-becomes-her-2024', role: 'Production',
+    date: '2026-06-28', note: 'short', sourceType: 'official-site', addedDate: '2026-05-19',
+  };
+  const fresh = {
+    type: 'closure', name: 'Death Becomes Her', role: 'Production',
+    date: '2026-06-28', note: 'Final performance at the Lunt-Fontanne Theatre on June 28, 2026.',
+    sourceType: 'playbill', addedDate: '2026-05-30',
+  };
+  mergePreservingAddedDate(existing, fresh);
+  assert.equal(existing.addedDate, '2026-05-19', 'addedDate must not move forward');
+  assert.equal(existing.note, fresh.note, 'richer fields upgrade');
+  assert.equal(existing.sourceType, 'playbill');
+});
+
+test('findClosureDupe matches a closure by date even when name/role differ', () => {
+  const upcoming = [
+    { type: 'closure', name: 'death-becomes-her-2024', role: 'Production', date: '2026-06-28' },
+    { type: 'departure', name: 'Megan Hilty', role: 'Madeline', date: '2026-06-28' },
+  ];
+  const dupe = findClosureDupe(upcoming, {
+    type: 'closure', name: 'Death Becomes Her', role: 'Production', date: '2026-06-28',
+  });
+  assert.ok(dupe, 'should find existing closure on same date');
+  assert.equal(dupe.name, 'death-becomes-her-2024');
+  // Non-closure or different date → no match
+  assert.equal(findClosureDupe(upcoming, { type: 'arrival', date: '2026-06-28' }), null);
+  assert.equal(findClosureDupe(upcoming, { type: 'closure', date: '2026-07-01' }), null);
+});
+
+test('dedupeClosures collapses two closures on the same date, keeping richer note + earliest addedDate', () => {
+  const events = [
+    { type: 'closure', name: 'death-becomes-her-2024', role: 'Production', date: '2026-06-28', note: 'short', addedDate: '2026-05-19' },
+    { type: 'closure', name: 'Death Becomes Her', role: 'Production', date: '2026-06-28', note: 'Final performance at the Lunt-Fontanne Theatre on June 28, 2026.', addedDate: '2026-05-27' },
+    { type: 'departure', name: 'X', role: 'Y', date: '2026-06-28' },
+  ];
+  const out = dedupeClosures(events);
+  const closures = out.filter(e => e.type === 'closure');
+  assert.equal(closures.length, 1, 'one closure per date');
+  assert.equal(closures[0].addedDate, '2026-05-19', 'earliest addedDate pinned');
+  assert.match(closures[0].note, /Final performance/, 'richer note kept');
+  assert.equal(out.filter(e => e.type === 'departure').length, 1, 'non-closures untouched');
+});
+
+test('dedupeClosures keeps distinct closing dates separate', () => {
+  const events = [
+    { type: 'closure', date: '2026-06-28', note: 'a', addedDate: '2026-05-19' },
+    { type: 'closure', date: '2026-07-01', note: 'b', addedDate: '2026-05-20' },
+  ];
+  assert.equal(dedupeClosures(events).length, 2);
+});
+
+// ==================== closure date reconciliation vs shows.json ====================
+
+test('reconcileClosureDateWithClosingDate corrects a stale closure date to canonical', () => {
+  const events = [
+    { type: 'closure', name: 'The Show', date: '2026-07-01', note: 'ends in July', sourceUrl: 'http://x', addedDate: '2026-02-05' },
+    { type: 'departure', name: 'Actor', date: '2026-07-01' },
+  ];
+  const { events: out, repaired } = reconcileClosureDateWithClosingDate(events, '2026-08-30');
+  assert.equal(repaired, 1);
+  const c = out.find(e => e.type === 'closure');
+  assert.equal(c.date, '2026-08-30', 'date corrected to canonical');
+  assert.equal(c.addedDate, '2026-02-05', 'write-once addedDate preserved');
+  assert.equal(c.sourceUrl, 'http://x', 'sourceUrl preserved');
+  assert.match(c.note, /reconciled to broadway\.com/);
+  assert.equal(out.find(e => e.type === 'departure').date, '2026-07-01', 'non-closures untouched');
+});
+
+test('reconcileClosureDateWithClosingDate is a no-op when already canonical', () => {
+  const events = [{ type: 'closure', date: '2026-08-30', note: 'ok', addedDate: '2026-02-05' }];
+  const { events: out, repaired } = reconcileClosureDateWithClosingDate(events, '2026-08-30');
+  assert.equal(repaired, 0);
+  assert.equal(out[0].note, 'ok', 'untouched when already correct');
+});
+
+test('reconcileClosureDateWithClosingDate no-ops on missing/invalid canonical date', () => {
+  const events = [{ type: 'closure', date: '2026-07-01', addedDate: '2026-02-05' }];
+  for (const bad of [null, undefined, '', '2026-08', 'garbage']) {
+    const { repaired } = reconcileClosureDateWithClosingDate(events, bad);
+    assert.equal(repaired, 0, `no-op for ${JSON.stringify(bad)}`);
+  }
 });

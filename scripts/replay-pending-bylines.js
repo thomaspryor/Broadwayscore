@@ -26,11 +26,51 @@ const path = require('path');
 const { fetchPage } = require('./lib/scraper');
 const { extractAuthorFromHtml, extractHighConfidenceAuthor } = require('./lib/content-quality');
 const { normalizeCritic } = require('./lib/review-normalization');
+const { isBlockedReviewUrl } = require('./lib/domain-filters');
+const { verifyAggregatorUrl } = require('./lib/show-match-verifier');
+
+// Non-theatre news sections. Same-title film articles (the Beetlejuice *film*) carry
+// the show title in their <title>, so show-match passes them — but they are wrong
+// PRODUCTION, not theatre reviews. NARROW to clearly-non-theatre sections only:
+// outlets routinely file REAL theatre reviews under tv/music/lifestyle/books sections
+// (Daily Mail /tv/, USA Today /entertainment/music/, WashPost /lifestyle/), so those
+// would be false positives. Only sections a stage review never legitimately appears in.
+// (ship-check 2026-06-05: the broad list + delete would have destroyed real reviews.)
+const NON_THEATRE_SECTIONS = new Set([
+  'film', 'films', 'movies', 'sport', 'sports', 'money', 'fashion', 'food-drink',
+]);
+
+/**
+ * Reason a stranded _pending review must NOT be promoted to the main show dir,
+ * or null if it's safe to promote. Pure (no I/O) so it's unit-testable.
+ *   1. Aggregator / listing / ticket / feature-interview URL (isBlockedReviewUrl).
+ *   2. Non-theatre news section (film/tv/lifestyle) — wrong production, same title.
+ *   3. verifyAggregatorUrl show-match fails — different show.
+ * @param {string} url  @param {string} html  @param {{id,title,venue,openingDate}} show
+ * @returns {string|null}
+ */
+function pendingPromoteRejectReason(url, html, show) {
+  if (isBlockedReviewUrl(url)) return 'aggregator/listing/feature URL, not an outlet review';
+  let seg = [];
+  try { seg = new URL(url).pathname.toLowerCase().split('/').filter(Boolean); } catch { /* malformed */ }
+  const badSection = seg.find(s => NON_THEATRE_SECTIONS.has(s));
+  if (badSection) return `non-theatre section (${badSection}) — wrong production`;
+  const v = verifyAggregatorUrl({ url, html, show, openingDate: show && show.openingDate });
+  if (!v.isValid) return `not this show (${v.rejectReason})`;
+  return null;
+}
 
 const args = process.argv.slice(2);
 const showArg = args.find(a => a.startsWith('--show='))?.split('=')[1];
 const showsArg = args.find(a => a.startsWith('--shows='))?.split('=')[1];
 const allOpera = args.includes('--all-opera');
+// --all-open: drain _pending for every open/previews show (not just opera). This is the
+// general-purpose drain — multi-critic outlet hits (Times/Standard/Guardian) strand in _pending
+// with pendingReason:no-byline and were previously only recovered for opera shows, so 500+ real
+// reviews across 70+ WE/Broadway shows sat stranded. See data/audit/we-discovery-diagnosis.md.
+// --all-pending: drain EVERY show that has a _pending dir (full backlog, including closed).
+const allOpen = args.includes('--all-open');
+const allPending = args.includes('--all-pending');
 const dryRun = args.includes('--dry-run');
 
 const PENDING_ROOT = path.join(__dirname, '../data/review-texts/_pending');
@@ -42,11 +82,32 @@ function listOperaShowIds() {
   return (data.shows || data).filter(s => s.type === 'opera').map(s => s.id);
 }
 
+// Show IDs that currently have a non-empty _pending dir.
+function listShowIdsWithPending() {
+  if (!fs.existsSync(PENDING_ROOT)) return [];
+  return fs.readdirSync(PENDING_ROOT, { withFileTypes: true })
+    .filter(d => d.isDirectory())
+    .map(d => d.name)
+    .filter(id => {
+      try { return fs.readdirSync(path.join(PENDING_ROOT, id)).some(f => f.endsWith('.json')); }
+      catch { return false; }
+    });
+}
+
+function listOpenShowIdsWithPending() {
+  const showsPath = path.join(__dirname, '../data/shows.json');
+  const data = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+  const statusById = new Map((data.shows || data).map(s => [s.id, s.status]));
+  return listShowIdsWithPending().filter(id => ['open', 'previews'].includes(statusById.get(id)));
+}
+
 function showIds() {
   if (showArg) return [showArg];
   if (showsArg) return showsArg.split(',').map(s => s.trim()).filter(Boolean);
   if (allOpera) return listOperaShowIds();
-  console.error('Usage: --show=ID | --shows=ID1,ID2 | --all-opera');
+  if (allOpen) return listOpenShowIdsWithPending();
+  if (allPending) return listShowIdsWithPending();
+  console.error('Usage: --show=ID | --shows=ID1,ID2 | --all-opera | --all-open | --all-pending');
   process.exit(1);
 }
 
@@ -73,6 +134,11 @@ async function processShow(showId) {
   for (const file of files) {
     const filepath = path.join(pendingDir, file);
     const data = JSON.parse(fs.readFileSync(filepath, 'utf8'));
+    // Already evaluated and skipped on a prior run — don't re-fetch the URL.
+    if (data.promoteSkippedReason) {
+      kept++;
+      continue;
+    }
     const url = data.url;
     if (!url) {
       console.log(`  [${file}] no URL — skip`);
@@ -104,6 +170,26 @@ async function processShow(showId) {
       html = result?.content;
       if (!html) {
         console.log(`  [${file}] fetch returned no content — keep`);
+        kept++;
+        continue;
+      }
+      // Validate BEFORE promoting. _pending for open shows holds junk beyond real
+      // stranded reviews (Beetlejuice exposed this 2026-06-04): aggregator URLs
+      // misattributed to an outlet (a westendtheatre roundup filed under 'telegraph'
+      // fabricates a fake Telegraph review with the roundup author's byline), same-title
+      // wrong-production articles (the Beetlejuice *film* / a Tim Burton interview filed
+      // under 'times-uk'), and wrong-show hits. Promoting these contaminates the show.
+      const rejectReason = pendingPromoteRejectReason(url, html, show);
+      if (rejectReason) {
+        // KEEP, never delete. The URL-level checks have false positives (outlets file
+        // real theatre reviews under odd sections; verifyAggregatorUrl can miss on opaque
+        // slugs). Deleting was irreversible data loss (ship-check 2026-06-05). Annotate so
+        // future cron runs skip it without re-fetching, and leave it in _pending for a
+        // human / better tooling — promotion just doesn't happen.
+        console.log(`  [${file}] SKIP (kept in _pending): ${rejectReason}`);
+        data.promoteSkippedReason = rejectReason;
+        data.promoteSkippedAt = new Date().toISOString();
+        if (!dryRun) fs.writeFileSync(filepath, JSON.stringify(data, null, 2));
         kept++;
         continue;
       }
@@ -157,23 +243,27 @@ async function processShow(showId) {
   return { promoted, kept, rejected };
 }
 
-(async () => {
-  const ids = showIds();
-  console.log(`Processing ${ids.length} show(s)${dryRun ? ' [DRY RUN]' : ''}\n`);
+module.exports = { pendingPromoteRejectReason, NON_THEATRE_SECTIONS };
 
-  let totalPromoted = 0, totalKept = 0, totalRejected = 0;
-  for (const id of ids) {
-    const { promoted, kept, rejected } = await processShow(id);
-    totalPromoted += promoted;
-    totalKept += kept;
-    totalRejected += rejected || 0;
-  }
+if (require.main === module) {
+  (async () => {
+    const ids = showIds();
+    console.log(`Processing ${ids.length} show(s)${dryRun ? ' [DRY RUN]' : ''}\n`);
 
-  console.log(`\n━━━ Replay complete ━━━`);
-  console.log(`Promoted: ${totalPromoted}`);
-  console.log(`Rejected (wrong-prod or wrong-year, deleted): ${totalRejected}`);
-  console.log(`Kept in _pending: ${totalKept}`);
-})().catch(e => {
-  console.error(e);
-  process.exit(1);
-});
+    let totalPromoted = 0, totalKept = 0, totalRejected = 0;
+    for (const id of ids) {
+      const { promoted, kept, rejected } = await processShow(id);
+      totalPromoted += promoted;
+      totalKept += kept;
+      totalRejected += rejected || 0;
+    }
+
+    console.log(`\n━━━ Replay complete ━━━`);
+    console.log(`Promoted: ${totalPromoted}`);
+    console.log(`Rejected (wrong-prod or wrong-year, deleted): ${totalRejected}`);
+    console.log(`Kept in _pending: ${totalKept}`);
+  })().catch(e => {
+    console.error(e);
+    process.exit(1);
+  });
+}

@@ -1285,7 +1285,7 @@ function normalizeUrl(url) {
       .replace(/#.*$/, '');
     // Tracking-param strip first so any later regex can anchor on the
     // post-strip path/query state.
-    u = u.replace(/[?&](utm_\w+|ref|source|fbclid|gclid|partner|emc|_r|smid|campaign|algo|nc)=[^&]*/g, '')
+    u = u.replace(/[?&](utm_\w+|ref|source|fbclid|gclid|partner|emc|_r|smid|campaign|algo|nc|srsltid)=[^&]*/g, '')
       .replace(/\?$/, '')
       .replace(/\?&/, '?');
     // AMP-suffix strip (added 2026-04-28, Item 3 of systematic CI plan).
@@ -1339,12 +1339,64 @@ function isProfileUrl(url) {
   return false;
 }
 
+// Generic URL-slug tokens that don't identify a specific show. Excluded from the
+// cross-show match below so a shared "review"/"theatre" token can't make e.g. an
+// Equus URL look like it belongs to a War Horse review.
+const URL_GENERIC_SLUG_TOKENS = new Set([
+  // show-agnostic article/section words
+  'review', 'reviews', 'roundup', 'roundups', 'round', 'ups', 'news', 'article',
+  'culture', 'story', 'stories', 'arts', 'stage', 'play', 'plays', 'musical',
+  'musicals', 'tickets', 'production', 'productions', 'opening', 'press', 'night',
+  'show', 'shows', 'feature', 'features', 'entertainment', 'post', 'posts',
+  // venue / market words common to West End + Broadway slugs
+  'theatre', 'theater', 'national', 'west', 'end', 'london', 'broadway',
+  'olivier', 'lyttelton', 'cottesloe', 'menier', 'chocolate', 'factory',
+  // stopwords that survive slug tokenisation
+  'the', 'and', 'for', 'with', 'from', 'are', 'was',
+]);
+
+// Distinctive (show-identifying) tokens from a URL slug. Drops generic words,
+// pure numbers, and very short fragments.
+function _showSlugTokens(url) {
+  if (!url) return [];
+  const { urlSlugTokens } = require('./show-match-verifier');
+  return urlSlugTokens(url).filter(
+    (t) => t.length >= 3 && !URL_GENERIC_SLUG_TOKENS.has(t) && !/^\d+$/.test(t)
+  );
+}
+
+/**
+ * True when `newUrl`'s slug clearly identifies a DIFFERENT show than the one
+ * described by `refShowTitle` (or, if no title, by `refUrl`'s slug). Returns
+ * false when there is no confident signal (no distinctive tokens on either
+ * side) so callers fail open. Used to block combined-roundup cross-show
+ * contamination at both the URL-upgrade and empty-fill paths.
+ */
+function slugLooksLikeDifferentShow(newUrl, { showTitle, refUrl } = {}) {
+  const newTokens = new Set(_showSlugTokens(newUrl));
+  if (!newTokens.size) return false;
+  let refTokens = [];
+  if (showTitle) {
+    const { titleTokens } = require('./show-match-verifier');
+    refTokens = titleTokens(showTitle);
+  }
+  if (!refTokens.length) refTokens = _showSlugTokens(refUrl || '');
+  if (!refTokens.length) return false;
+  return !refTokens.some((t) => newTokens.has(t));
+}
+
 /**
  * Upgrade a review file's primary URL when an aggregator provides a better one.
  * Only replaces when existing content is bad (truncated/stub/excerpt/missing).
  * Returns true if the URL was upgraded (caller should mark file as changed).
+ *
+ * @param {object} [opts]
+ * @param {string} [opts.showTitle] - Title of the review's show. When supplied,
+ *   the candidate URL must share a distinctive token with it (or with the
+ *   existing URL slug) or the upgrade is refused — this blocks combined-roundup
+ *   cross-show swaps (the 2026-06-04 War Horse → Equus contamination).
  */
-function maybeUpgradeUrl(existingData, newUrl, source) {
+function maybeUpgradeUrl(existingData, newUrl, source, opts = {}) {
   if (!newUrl || existingData.url === newUrl) return false;
   // Reject invalid replacement URLs (relative paths, profile pages)
   if (!newUrl.startsWith('http://') && !newUrl.startsWith('https://')) return false;
@@ -1354,6 +1406,15 @@ function maybeUpgradeUrl(existingData, newUrl, source) {
     || (existingData.contentTier && existingData.contentTier !== 'complete')
     || existingData.needsRefetch;
   if (!badContent) return false;
+
+  // Cross-show guard: never replace a URL with one that points at a DIFFERENT
+  // show. A combined theatre.reviews roundup (War Horse + Equus) supplied an
+  // Equus URL as an "upgrade" for a WhatsOnStage War Horse review whose real URL
+  // had a bad (cookie-walled) scrape, silently swapping war-horse → equus.
+  if (slugLooksLikeDifferentShow(newUrl, { showTitle: opts.showTitle, refUrl: existingData.url })) {
+    return false; // candidate URL is about a different show — refuse the swap
+  }
+
   existingData.urlCorrectedFrom = existingData.url;
   existingData.urlCorrectedReason = `Replaced with ${source} URL — original had bad/missing content`;
   existingData.url = newUrl;
@@ -1386,6 +1447,7 @@ module.exports = {
   levenshteinDistance,
   findExistingReviewFile,
   maybeUpgradeUrl,
+  slugLooksLikeDifferentShow,
   validateCriticOutlet,
   loadCriticRegistry,
   resolveOutletFromCritic,

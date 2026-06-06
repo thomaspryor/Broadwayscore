@@ -52,6 +52,7 @@ const { execSync, execFileSync } = require('child_process');
 
 const { fetchPage } = require('./lib/scraper');
 const { serpQuery } = require('./lib/url-discovery');
+const { provisionalOutletIdFromHost } = require('./lib/outlet-canonicalize');
 
 const ROOT = path.join(__dirname, '..');
 const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
@@ -92,6 +93,14 @@ const NON_REVIEW_HOST_PATTERNS = [
   // venue & box-office (not reviews)
   /\.org$/, // catches many venue domains; allow-list known critic .orgs below
   /^ci\.ovationtix\.com$/,
+  // ticketing / box-office hosts — aggregator "Get Tickets" links, never reviews.
+  // Before 2026-06-05 these were skipped only because their unknown outlet was
+  // skipped; with auto-onboard they would be ingested as bogus "telecharge" /
+  // "todaytix" provisional outlets, so they must be filtered at the source.
+  /^telecharge\.com$/, /^ticketmaster\.com$/, /(^|\.)todaytix\.com$/,
+  /^seatgeek\.com$/, /^stubhub\.com$/, /^broadwaydirect\.com$/,
+  /(^|\.)ticketmaster\./, /^ovationtix\.com$/, /^web\.ovationtix\.com$/,
+  /^tickets\./, /^boxoffice\./,
 ];
 
 const ALLOWED_ORG_HOSTS = new Set([
@@ -103,12 +112,16 @@ const NON_REVIEW_PATH_PATTERNS = [
   /^\/reviews\/?$/,   // BWW landing
   /^\/industry-/, /^\/theatre-auditions/, /^\/youth-theater/,
   /^\/newsroom/, /^\/newsletter/,
+  /\/tickets?(\/|$|-)/i, // "Get Tickets" / box-office links, not reviews
 ];
 
 function hostOf(u) {
   try { return new URL(u).hostname.replace(/^www\./, '').toLowerCase(); }
   catch { return null; }
 }
+
+// provisionalOutletIdFromHost lives in scripts/lib/outlet-canonicalize.js so the
+// gap audit and its unit test share one implementation (CLAUDE.md §15).
 
 function isReviewUrl(href) {
   if (!href || !href.startsWith('http')) return false;
@@ -182,6 +195,7 @@ async function findAggregatorArticles(show) {
   ];
   const urls = new Set();
   for (const q of queries) {
+    _serpStats.attempts++;
     try {
       const results = await serpQuery(q, { num: 5 });
       for (const r of (results || [])) {
@@ -197,8 +211,20 @@ async function findAggregatorArticles(show) {
         }
       }
     } catch (e) {
+      _serpStats.errors++;
       if (verbose) console.error(`  SERP error for ${id}: ${e.message}`);
     }
+  }
+  // Deterministic BWW Review Roundup discovery via the market section page
+  // (/off-broadway/ etc.) — does NOT depend on Google SERP, which ranks fresh
+  // opening-night roundups poorly and missed the BWW RR for A Woman Among Women
+  // (2026-06). Cheap ScrapingBee scan; falls back internally to reviews.php.
+  try {
+    const { discoverBwwRoundupUrl } = require('./lib/bww-rr-discover');
+    const bww = await discoverBwwRoundupUrl(show);
+    if (bww && bww.url) urls.add(bww.url.split('?')[0].split('#')[0]);
+  } catch (e) {
+    if (verbose) console.error(`  BWW section discovery error for ${id}: ${e.message}`);
   }
   return [...urls];
 }
@@ -239,13 +265,49 @@ function urlMatchesShow(href, tokens) {
 // (ship-check): cap BD credit burn at ~1 fetch per unique article per run.
 const _articleCache = new Map();
 
+// Run-level fetch health. A single un-scrapeable article is tolerated (logged
+// + skipped) so the hourly audit doesn't crash on one bad URL — e.g. a BWW
+// `/westend/` redirect that all providers fail. But if EVERY attempted article
+// fetch throws, the scraper stack itself is down (dead Bright Data zone /
+// exhausted ScrapingBee / no Playwright) — the run must still redden CI so the
+// outage is visible. See plan-review 2026-05-31. `errors` counts hard throws
+// (all providers failed); `empty` counts 200-but-no-content (can be a legit
+// page with no matching links, so it does NOT count toward the outage floor).
+const _fetchStats = { attempts: 0, errors: 0, empty: 0 };
+
+// Discovery (SERP) health — companion to _fetchStats for the OTHER outage class.
+// findAggregatorArticles swallows SERP errors (returns [] on failure,
+// indistinguishable from "no coverage"). Without this counter, a total SERP/key
+// outage makes every show report 0 articles → extractAggregatorReviewUrls is
+// never called → _fetchStats.attempts stays 0 → the article-fetch floor can't
+// fire, and the audit silently reports "no gaps" during a real blackout
+// (ship-check 2026-06-01, both reviewers). Count SERP calls + errors so the
+// floor below catches discovery outage too.
+const _serpStats = { attempts: 0, errors: 0 };
+
 async function extractAggregatorReviewUrls(articleUrl, show) {
   let html;
   if (_articleCache.has(articleUrl)) {
     html = _articleCache.get(articleUrl);
   } else {
-    const r = await fetchPage(articleUrl);
+    _fetchStats.attempts++;
+    let r;
+    try {
+      r = await fetchPage(articleUrl);
+    } catch (e) {
+      // Per-URL scrape failure. Mirror audit-url-validation.js:392 — record the
+      // throw, warn, continue. The run-level floor below still reddens CI if
+      // the WHOLE collector is down (every attempted fetch threw).
+      _fetchStats.errors++;
+      console.log(`::warning::aggregator fetch failed (${hostOf(articleUrl) || articleUrl}): ${e.message.split('\n')[0].slice(0, 120)}`);
+      // Do NOT cache null on a THROW: a transient failure shouldn't poison the
+      // URL for other shows that share this article, and re-attempting on each
+      // show keeps _fetchStats accurate so the outage floor fires on a real
+      // blackout (ship-check 2026-06-01). Only legit empty-content is cached.
+      return null;
+    }
     if (!r?.content) {
+      _fetchStats.empty++;
       _articleCache.set(articleUrl, null);
       return null;
     }
@@ -422,18 +484,26 @@ async function dispatchGatherFor(showId) {
 // whose host is unknown to the registry (those should be added to the registry
 // first via the unknown-aggregator-outlets audit).
 function ingestMissingUrl(showId, url, knownOutletId) {
-  if (!knownOutletId) {
-    return { ok: false, reason: 'unknown-outlet' };
+  const args = ['scripts/ingest-review-from-url.js', `--show=${showId}`, `--url=${url}`];
+  let provisional = false;
+  if (knownOutletId) {
+    args.push(`--outlet=${knownOutletId}`);
+  } else {
+    // Auto-onboard: capture the review under a domain-derived provisional slug
+    // rather than skipping (the pre-2026-06-05 behavior, which lost the ctvoice /
+    // New York Notebook class). The host is still recorded in
+    // unknown-aggregator-outlets.json so it can be promoted to a real registry
+    // entry; --provisional skips fuzzy alias resolution so the slug is written as-is.
+    const provId = provisionalOutletIdFromHost(hostOf(url));
+    if (!provId) return { ok: false, reason: 'unknown-outlet-no-host', provisional: true };
+    args.push(`--outlet=${provId}`, '--provisional');
+    provisional = true;
   }
   try {
-    execFileSync(
-      'node',
-      ['scripts/ingest-review-from-url.js', `--show=${showId}`, `--url=${url}`, `--outlet=${knownOutletId}`],
-      { stdio: 'pipe', timeout: 120000 }
-    );
-    return { ok: true, reason: null };
+    execFileSync('node', args, { stdio: 'pipe', timeout: 120000 });
+    return { ok: true, reason: null, provisional };
   } catch (e) {
-    return { ok: false, reason: e.message.split('\n')[0].slice(0, 100) };
+    return { ok: false, reason: e.message.split('\n')[0].slice(0, 100), provisional };
   }
 }
 
@@ -480,26 +550,27 @@ function ingestMissingUrl(showId, url, knownOutletId) {
     // outlets are skipped (see data/audit/unknown-aggregator-outlets.json for
     // registry-onboarding queue).
     if (ingestMissing && r.missing.length > 0) {
-      const knownMissing = r.missing.filter(m => m.knownOutletId);
-      const ingestable = knownMissing.slice(0, INGEST_PER_SHOW_CAP);
-      // P1 fix 2026-05-27 (ship-check): record cap-skipped URLs in the audit
-      // so future runs (and operators) can see they exist and weren't silently
-      // dropped. Without this, the cap created an invisible backlog.
-      const cappedSkipped = knownMissing.slice(INGEST_PER_SHOW_CAP);
-      const skipped = r.missing.filter(m => !m.knownOutletId);
+      // Auto-onboard 2026-06-05: ingest ALL missing URLs, not just registry-known
+      // outlets. Unknown outlets are captured under a domain-derived provisional
+      // slug (ingestMissingUrl) instead of being skipped — that skip lost the
+      // ctvoice / New York Notebook class on the Girl, Interrupted opening. The
+      // host is still recorded in unknown-aggregator-outlets.json for promotion
+      // to a real registry entry.
+      const ingestable = r.missing.slice(0, INGEST_PER_SHOW_CAP);
+      // P1 fix 2026-05-27 (ship-check): record cap-skipped URLs so future runs
+      // (and operators) can see they exist and weren't silently dropped.
+      const cappedSkipped = r.missing.slice(INGEST_PER_SHOW_CAP);
       r.ingestResults = [];
-      r.ingestSkippedByCap = cappedSkipped.map(m => ({ url: m.url, host: m.host, outletId: m.knownOutletId }));
+      r.ingestSkippedByCap = cappedSkipped.map(m => ({ url: m.url, host: m.host, outletId: m.knownOutletId || provisionalOutletIdFromHost(m.host) }));
       for (const m of ingestable) {
         const res = ingestMissingUrl(r.showId, m.url, m.knownOutletId);
-        r.ingestResults.push({ url: m.url, host: m.host, outletId: m.knownOutletId, ok: res.ok, reason: res.reason });
-        const tag = res.ok ? '✅ ingested' : `✗ ingest failed (${res.reason || 'unknown'})`;
+        const outletId = m.knownOutletId || provisionalOutletIdFromHost(m.host);
+        r.ingestResults.push({ url: m.url, host: m.host, outletId, provisional: !!res.provisional, ok: res.ok, reason: res.reason });
+        const tag = res.ok ? (res.provisional ? `✅ ingested (provisional outlet "${outletId}")` : '✅ ingested') : `✗ ingest failed (${res.reason || 'unknown'})`;
         console.log(`  ${tag}: ${m.url}`);
       }
       if (cappedSkipped.length > 0) {
         console.log(`  ⏸  skipped ${cappedSkipped.length} URL(s) over per-show cap (--ingest-cap=${INGEST_PER_SHOW_CAP}) — recorded in audit JSON for next run`);
-      }
-      if (skipped.length > 0) {
-        console.log(`  ⏸  skipped ${skipped.length} URL(s) with unknown outlets (see unknown-aggregator-outlets.json): ${skipped.map(s => s.host).join(', ')}`);
       }
     }
   }
@@ -526,7 +597,7 @@ function ingestMissingUrl(showId, url, knownOutletId) {
     for (const m of r.missing) {
       if (m.knownOutletId) continue;
       if (!unknownOutletHosts.has(m.host)) {
-        unknownOutletHosts.set(m.host, { host: m.host, occurrences: 0, sampleUrls: [], shows: new Set() });
+        unknownOutletHosts.set(m.host, { host: m.host, provisionalOutletId: provisionalOutletIdFromHost(m.host), occurrences: 0, sampleUrls: [], shows: new Set() });
       }
       const e = unknownOutletHosts.get(m.host);
       e.occurrences++;
@@ -557,11 +628,51 @@ function ingestMissingUrl(showId, url, knownOutletId) {
     }
   }
 
-  if (failOnGap && audit.counts.withGap > 0) {
-    for (const r of results) {
-      if (r.missing.length + r.flaggedMisses.length === 0) continue;
-      console.log(`::warning::${r.showId} (${r.title}): ${r.missing.length} aggregator URLs not gathered, ${r.flaggedMisses.length} flagged out`);
+  // Collector-outage floor (plan-review 2026-05-31): tolerate one bad URL, but
+  // if every attempted article fetch threw, the scraper stack is down — redden
+  // CI so a dead Bright Data zone / exhausted SB doesn't masquerade as "no gaps
+  // found" (which would silently miss reviews during opening night). Distinct
+  // from --fail-on-gap: this fires on infrastructure failure, not on gaps.
+  if (_fetchStats.attempts >= 3 && _fetchStats.errors === _fetchStats.attempts) {
+    console.error(`::error::collector outage — all ${_fetchStats.errors}/${_fetchStats.attempts} aggregator article fetches threw (Bright Data / ScrapingBee / Playwright all failing). Check BRIGHTDATA_ZONE + ScrapingBee credits; this audit found nothing because nothing could be fetched.`);
+    process.exit(1);
+  }
+  // Discovery-outage floor (ship-check 2026-06-01): the article-fetch floor
+  // above only fires once we reach fetching. If SERP discovery itself is down,
+  // 0 articles are found, fetching never happens, and the audit would otherwise
+  // report "no gaps" during a total blackout. If every SERP query errored,
+  // redden. Requires >=3 attempts so a tiny --show run can't false-trigger.
+  if (_serpStats.attempts >= 3 && _serpStats.errors === _serpStats.attempts) {
+    console.error(`::error::discovery outage — all ${_serpStats.errors}/${_serpStats.attempts} SERP queries errored (SCRAPINGBEE_API_KEY / SERP provider down). No aggregator articles could be discovered; "no gaps" here is meaningless.`);
+    process.exit(1);
+  }
+
+  // Expected-vs-captured alert (girl-interrupted 2026-06-05): after auto-ingest,
+  // surface any show that STILL has roundup-cited reviews we couldn't capture.
+  // Unlike check-opening-night-completeness.js (which only detects DISAPPEARANCE
+  // vs a prior snapshot), this catches reviews that were never captured at all —
+  // absence at first sight. A cited URL is by definition already published, so no
+  // settle window is needed. Fires on every run (not just --fail-on-gap) so the
+  // hourly cron surfaces residual gaps in the daily digest via ::warning::.
+  const residualShows = [];
+  for (const r of results) {
+    const failedIngest = (r.ingestResults || []).filter(x => !x.ok).length;
+    const capped = (r.ingestSkippedByCap || []).length;
+    // When --ingest-missing wasn't run, every missing URL is still residual.
+    const uningested = ingestMissing ? 0 : r.missing.length;
+    const residual = failedIngest + capped + uningested + r.flaggedMisses.length;
+    if (residual > 0) {
+      residualShows.push({ showId: r.showId, title: r.title, residual, failedIngest, capped, uningested, flaggedOut: r.flaggedMisses.length });
     }
+  }
+  if (residualShows.length > 0) {
+    for (const s of residualShows) {
+      console.log(`::warning::review gap — ${s.showId} (${s.title}): ${s.residual} roundup-cited review(s) still uncaptured after auto-ingest (failed=${s.failedIngest} capped=${s.capped} uningested=${s.uningested} flaggedOut=${s.flaggedOut})`);
+    }
+    console.log(`Expected-vs-captured: ${residualShows.length} show(s) with residual review gaps after auto-ingest.`);
+  }
+
+  if (failOnGap && audit.counts.withGap > 0) {
     process.exit(1);
   }
 })().catch(e => {

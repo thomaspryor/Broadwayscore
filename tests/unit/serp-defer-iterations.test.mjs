@@ -71,12 +71,36 @@ test('Hop 4: poller.js parses --skip-serp and gates runSERPBackup behind !SKIP_S
     /const\s+SKIP_SERP\s*=\s*process\.argv\.includes\('--skip-serp'\)/.test(POLLER_JS),
     'opening-night-poller.js no longer parses --skip-serp into SKIP_SERP constant'
   );
-  // The SERP branch must be guarded by !SKIP_SERP — if this is removed, the
-  // flag becomes a no-op and the whole deferral is silently defeated.
+  // The normal SERP branch must STILL be guarded by `!SKIP_SERP && shouldRunSerp()`.
+  // (The gate may now be one disjunct of a larger condition — see Hop 4b for the only
+  // permitted override — but the deferral guard itself must remain intact.)
   assert.ok(
-    /if\s*\(\s*!SKIP_SERP\s*&&\s*shouldRunSerp\(\)\s*\)/.test(POLLER_JS),
+    /!SKIP_SERP\s*&&\s*shouldRunSerp\(\)/.test(POLLER_JS),
     'opening-night-poller.js: runSERPBackup is no longer gated on `!SKIP_SERP && shouldRunSerp()`. ' +
       'Deferral is silently defeated — every iteration will run SERP.'
+  );
+});
+
+test('Hop 4b: the ONLY override of --skip-serp is the capped WE SERP burst, kill-switchable', () => {
+  // 2026-06-05: the WE opening-night SERP burst (scripts/lib/serp-burst-caps.js) is the one
+  // sanctioned way SERP runs despite --skip-serp. It is ON by default (automated system) and
+  // disabled ONLY by the DISABLE_WE_SERP_BURST kill-switch — so the emergency off must exist,
+  // and the override must still be cap-gated. If someone adds an unconditional bypass of
+  // SKIP_SERP, or removes the kill-switch, this guard fails.
+  assert.ok(
+    /ENABLE_WE_SERP_BURST\s*=\s*process\.env\.DISABLE_WE_SERP_BURST\s*!==\s*'true'/.test(POLLER_JS),
+    'opening-night-poller.js: burst must be ON by default with a DISABLE_WE_SERP_BURST kill-switch.'
+  );
+  // serpBurstActive (the override) may only be set inside the SKIP_SERP && ENABLE_WE_SERP_BURST block.
+  assert.ok(
+    /if\s*\(\s*SKIP_SERP\s*&&\s*ENABLE_WE_SERP_BURST\s*\)/.test(POLLER_JS),
+    'opening-night-poller.js: the SERP burst override is no longer gated on ' +
+      '`SKIP_SERP && ENABLE_WE_SERP_BURST` — an unflagged bypass would defeat the deferral.'
+  );
+  // The burst override path must consult the cap helper (hard ceilings), not run unbounded.
+  assert.ok(
+    /checkSerpBurstAllowed\s*\(/.test(POLLER_JS),
+    'opening-night-poller.js: SERP burst no longer routes through checkSerpBurstAllowed (caps bypassed).'
   );
 });
 

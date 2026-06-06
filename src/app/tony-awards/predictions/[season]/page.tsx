@@ -7,6 +7,7 @@ import { BlendedTrioDisplay } from '@/components/show-cards';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { featureFlags } from '@/config/feature-flags';
 import { SeasonSelect } from '@/components/SeasonSelect';
+import FeaturedSpot from '@/components/FeaturedSpot';
 import { CategorySection, SHOW_LEVEL_CATEGORIES } from '@/components/tony-noms/CategorySection';
 import { CeremonyCountdown } from '@/components/tony/CeremonyCountdown';
 import { TrackRecord } from '@/components/tony/TrackRecord';
@@ -27,6 +28,7 @@ import {
   computeBlendedAccuracyStats,
   getSeasonSummary,
   getTonyTrackRecord,
+  isBtcPromoActive,
 } from '@/lib/data-tony-predictions';
 
 const allSeasons = getAllPredictionSeasons();
@@ -529,6 +531,25 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
             ineligible={ineligibleByCategory[cat.key]}
           />
         ))}
+
+        {/* Beat the Critics promo — slot between major categories and performer/craft
+            categories. Current season + entries-open gate (closes ceremony eve 11:59 ET). */}
+        {isCurrent && isBtcPromoActive() && (
+          <FeaturedSpot
+            eyebrow="Beat the Critics"
+            title="Think you know Broadway better than the critics?"
+            description="Pick the Tony winners against our model and the top critics. One entry wins a $200 TodayTix gift card."
+            ctaLabel="Make your picks"
+            href="/beat-the-critics"
+            accent="btc"
+            stat={{ value: '$200', label: 'TodayTix gift card', compactLabel: 'Prize' }}
+            secondary={[
+              { value: '26', label: 'categories' },
+              { value: 'Jun 7', label: 'ceremony' },
+            ]}
+            trackingId="tony_predictions_mid_btc"
+          />
+        )}
 
         {/* Performer + craft categories — no model predictions; data depends on season:
             - Current season: GD/Kalshi/Polymarket odds + critic/audience/award scores

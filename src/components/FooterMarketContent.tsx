@@ -70,6 +70,7 @@ export default function FooterMarketContent({ totalReviews, featureFlags }: Foot
             <ul className="space-y-2 text-sm text-gray-400">
               <li><Link href="/reviews" className="hover:text-white transition-colors">Reviews</Link></li>
               {featureFlags.criticPages && <li><Link href="/critics" className="hover:text-white transition-colors">Critics</Link></li>}
+              {featureFlags.criticPages && <li><Link href="/critics/outlets" className="hover:text-white transition-colors">Outlets</Link></li>}
               <li><Link href="/olivier-awards" className="hover:text-white transition-colors">Olivier Awards</Link></li>
               <li><Link href="/west-end/methodology" className="hover:text-white transition-colors">How It Works</Link></li>
               <li><Link href="/" className="hover:text-white transition-colors">Broadway Shows</Link></li>
@@ -134,6 +135,7 @@ export default function FooterMarketContent({ totalReviews, featureFlags }: Foot
               <li><Link href="/reviews" className="hover:text-white transition-colors">Reviews</Link></li>
               <li><Link href="/guides" className="hover:text-white transition-colors">Guides</Link></li>
               {featureFlags.criticPages && <li><Link href="/critics" className="hover:text-white transition-colors">Critics</Link></li>}
+              {featureFlags.criticPages && <li><Link href="/critics/outlets" className="hover:text-white transition-colors">Outlets</Link></li>}
               {featureFlags.creativePages && <li><Link href="/directors" className="hover:text-white transition-colors">Directors</Link></li>}
               {featureFlags.creativePages && <li><Link href="/playwrights" className="hover:text-white transition-colors">Playwrights</Link></li>}
               {featureFlags.creativePages && <li><Link href="/composers" className="hover:text-white transition-colors">Composers</Link></li>}

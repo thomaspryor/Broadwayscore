@@ -11,6 +11,7 @@ import type { ShowAwards, AwardsDesignation } from '@/lib/data-types';
 import { TrophyIcon, StarIcon, ChevronIcon, PulitzerIcon } from '@/components/icons';
 import { sortByImportance, isMajorCategory } from '@/config/awards';
 import { featureFlags } from '@/config/feature-flags';
+import { seasonSlug } from '@/lib/tony-seasons';
 import AwardScoreCard from '@/components/AwardScoreCard';
 
 /** Convert short season "2025-26" to full label "2025-2026" for prediction URLs */
@@ -570,7 +571,7 @@ export default function AwardsCard({ showId, awards, openingDate, tonyNamesByCat
           season-specific Tony predictions page. */}
       <div className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-2">
         <Link
-          href={awards?.tony?.season ? `/award-score/${toFullSeasonLabel(awards.tony.season)}` : '/award-score'}
+          href={awards?.tony?.season ? `/award-score/${seasonSlug(awards.tony.season)}` : '/award-score'}
           className="inline-flex items-center gap-1.5 text-xs font-medium text-brand hover:text-brand-hover transition-colors group"
         >
           <span>See all award scores</span>

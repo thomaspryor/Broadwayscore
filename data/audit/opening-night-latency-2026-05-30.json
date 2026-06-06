@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-05-30T17:40:26.303Z",
+  "generatedAt": "2026-05-30T23:38:55.065Z",
   "date": "2026-05-30",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 175166,
+  "entryCount": 175201,
   "shows": [
     {
       "showId": "an-ideal-husband-west-end-2026",
@@ -1476,7 +1476,7 @@
     },
     {
       "showId": "equus-west-end-2026",
-      "reviewCount": 12,
+      "reviewCount": 13,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1521,7 +1521,7 @@
     },
     {
       "showId": "magic-mike-live-west-end-2021",
-      "reviewCount": 11,
+      "reviewCount": 12,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1551,7 +1551,7 @@
     },
     {
       "showId": "one-flew-over-the-cuckoos-nest-west-end-2026",
-      "reviewCount": 7,
+      "reviewCount": 8,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2736,7 +2736,7 @@
     },
     {
       "showId": "beetlejuice-west-end-2026",
-      "reviewCount": 14,
+      "reviewCount": 19,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2751,7 +2751,7 @@
     },
     {
       "showId": "care-west-end-2026",
-      "reviewCount": 17,
+      "reviewCount": 18,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2766,7 +2766,7 @@
     },
     {
       "showId": "end-of-the-rainbow-west-end-2026",
-      "reviewCount": 10,
+      "reviewCount": 11,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -3261,7 +3261,7 @@
     },
     {
       "showId": "1536-west-end-2026",
-      "reviewCount": 16,
+      "reviewCount": 17,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4011,7 +4011,7 @@
     },
     {
       "showId": "sticks-and-bones-1972",
-      "reviewCount": 1,
+      "reviewCount": 2,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4086,6 +4086,21 @@
     },
     {
       "showId": "small-off-broadway-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 23102303,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "jerome-off-broadway-2025",
       "reviewCount": 1,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,

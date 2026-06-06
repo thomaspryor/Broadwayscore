@@ -110,9 +110,89 @@ export function dedupeByPersonShow(events: CastEvent[]): CastEvent[] {
     let winner: CastEvent = existing;
     if (newAdded && oldAdded) winner = newAdded > oldAdded ? event : existing;
     else if (newAdded && !oldAdded) winner = event;
+
+    // Preserve the more specific role if the winner's is missing/Unknown
+    // (mirror of scripts/lib/cast-changes-filters.js dedupeByPersonShow).
+    const loser = winner === event ? existing : event;
+    const winnerRole = winner.role && winner.role !== 'Unknown' ? winner.role : '';
+    const loserRole = loser.role && loser.role !== 'Unknown' ? loser.role : '';
+    if (winnerRole.length === 0 && loserRole.length > 0) {
+      winner = { ...winner, role: loserRole };
+    }
+
     groups.set(key, winner);
   }
   return Array.from(groups.values());
+}
+
+/**
+ * Pick the earliest (first-seen) of two addedDate strings. Mirrors the JS
+ * lib helper of the same name.
+ */
+export function earliestAddedDate(
+  a?: string | null,
+  b?: string | null,
+): string | null | undefined {
+  const da = parseISO(a);
+  const db = parseISO(b);
+  if (da && db) return da <= db ? a : b;
+  if (da) return a;
+  if (db) return b;
+  return a || b;
+}
+
+/**
+ * Collapse multiple closure events for the same closing date down to one,
+ * keeping the richer note and pinning the earliest addedDate. Read-side
+ * defense-in-depth so a pre-fix duplicate closure never double-renders.
+ * Mirror of dedupeClosures() in scripts/lib/cast-changes-filters.js.
+ */
+export function dedupeClosures(events: CastEvent[]): CastEvent[] {
+  const byDate = new Map<string, CastEvent>();
+  const out: CastEvent[] = [];
+  for (const e of events) {
+    if (e.type !== 'closure' || !e.date) {
+      out.push(e);
+      continue;
+    }
+    const prev = byDate.get(e.date);
+    if (!prev) {
+      const copy = { ...e };
+      byDate.set(e.date, copy);
+      out.push(copy);
+      continue;
+    }
+    const pinned = earliestAddedDate(prev.addedDate, e.addedDate);
+    if ((e.note || '').length > (prev.note || '').length) Object.assign(prev, e);
+    prev.addedDate = pinned ?? prev.addedDate;
+  }
+  return out;
+}
+
+/**
+ * Reconcile a show's closure event date against the canonical closing date from
+ * shows.json. A closure event is never updated when the show extends, so it goes
+ * stale; this corrects it. Mirror of reconcileClosureDateWithClosingDate() in
+ * scripts/lib/cast-changes-filters.js.
+ */
+export function reconcileClosureDateWithClosingDate(
+  events: CastEvent[],
+  canonicalClosingDate?: string | null,
+): { events: CastEvent[]; repaired: number } {
+  if (!canonicalClosingDate || !/^\d{4}-\d{2}-\d{2}$/.test(canonicalClosingDate)) {
+    return { events, repaired: 0 };
+  }
+  let repaired = 0;
+  const out = events.map(e => {
+    if (e.type !== 'closure' || !e.date || e.date === canonicalClosingDate) return e;
+    repaired++;
+    return {
+      ...e,
+      date: canonicalClosingDate,
+      note: `Production closes ${canonicalClosingDate} (date reconciled to broadway.com-audited closingDate).`,
+    };
+  });
+  return { events: out, repaired };
 }
 
 export function reconcileClosure(events: CastEvent[]): CastEvent[] {
@@ -376,6 +456,7 @@ export function applyPublicFilters(
   out = filterPastEvents(out, today, keepDaysAfter);
   out = filterStaleAddedDates(out, today, maxAddedAgeDays);
   out = dedupeByPersonShow(out);
+  out = dedupeClosures(out);
   out = reconcileClosure(out);
   return out;
 }

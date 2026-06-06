@@ -192,6 +192,14 @@ jobs:
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
           BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+          # WE opening-night SERP burst is ON by default (automated; overrides the
+          # orchestrator's iteration-1-8 --skip-serp deferral for aggressive-window WE shows,
+          # bounded by the hard caps in scripts/lib/serp-burst-caps.js). Emergency kill-switch:
+          #   gh variable set DISABLE_WE_SERP_BURST --body true   (delete the var to re-enable).
+          DISABLE_WE_SERP_BURST: ${{ vars.DISABLE_WE_SERP_BURST }}
+          # For the burst cascade tripwire's automated owner email (scripts/lib/discord-notify.js).
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         run: |
           IFS=',' read -ra SHOW_ARRAY <<< "${{ steps.find.outputs.shows }}"
           ANY_NEW=false
@@ -299,18 +307,20 @@ jobs:
         if: steps.find.outputs.has_shows == 'true' && always()
         continue-on-error: true
         run: |
-          # Backoff state lives in the core-data checkout (same as data/audit/*).
+          # Backoff state + SERP-burst ledger live in the MAIN repo working tree under
+          # data/audit/ (tracked in the public repo, NOT the core-data overlay). `cd data`
+          # then git resolves the repo root .git and pushes these audit files to main.
           cd data || exit 0
-          if [ ! -d audit/poller-backoff ]; then
-            echo "No backoff state to commit"
+          if [ ! -d audit/poller-backoff ] && [ ! -f audit/serp-burst-ledger.json ] && [ ! -f audit/serp-session-ledger.json ]; then
+            echo "No backoff/ledger state to commit"
             exit 0
           fi
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
-          git add audit/poller-backoff/
-          git diff --cached --quiet && { echo "No backoff changes"; exit 0; }
-          git commit -m "audit: Opening night poller — backoff state update [skip ci]"
-          bash ../scripts/lib/push-with-retry.sh 5 main || echo "::warning::Backoff state push failed (non-critical)"
+          git add audit/poller-backoff/ audit/serp-burst-ledger.json audit/serp-session-ledger.json 2>/dev/null || true
+          git diff --cached --quiet && { echo "No backoff/ledger changes"; exit 0; }
+          git commit -m "audit: Opening night poller — backoff + SERP ledger state update [skip ci]"
+          bash ../scripts/lib/push-with-retry.sh 5 main || echo "::warning::Backoff/ledger state push failed (non-critical)"
 
       - name: Commit new review files
         if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'

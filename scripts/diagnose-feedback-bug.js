@@ -68,6 +68,10 @@ const BUG_CATEGORIES = {
     keywords: ['recoup', 'investment', 'commercial', 'biz', 'capitalization', 'running cost', 'profit'],
     files: ['src/lib/data-commercial.ts', 'src/config/commercial.ts'],
   },
+  awards: {
+    keywords: ['award', 'won', 'winner', 'drama desk', 'tony award', 'outer critics', 'occ', 'olivier', 'drama league', 'co-winner', 'co-win', 'tie', 'omitted from', 'missing from award', 'should have won', 'should be listed'],
+    files: [],
+  },
 };
 
 // Default files for unclassifiable bugs
@@ -250,6 +254,24 @@ function loadShowData(showName) {
 }
 
 /**
+ * Load the awards.json slice for specific show IDs only — avoids pumping the
+ * full ~600KB file into the diagnosis prompt when only one show's entry matters.
+ */
+function loadShowAwardsSlice(showIds) {
+  try {
+    const awardsRaw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/awards.json'), 'utf8'));
+    const slice = {};
+    for (const id of showIds) {
+      if (awardsRaw.shows?.[id]) slice[id] = awardsRaw.shows[id];
+    }
+    if (Object.keys(slice).length === 0) return null;
+    return JSON.stringify({ shows: slice }, null, 2);
+  } catch {
+    return null;
+  }
+}
+
+/**
  * Build context from relevant files within token budget
  */
 function buildCodeContext(categories) {
@@ -343,6 +365,16 @@ export async function diagnoseBug(message, showName, userCategory) {
     }
   }
 
+  const isAwardsBug = categories.includes('awards');
+
+  // Load awards slice for the matched shows (avoids loading full ~600KB awards.json)
+  let awardsDataStr = '';
+  if (isAwardsBug && allShowData.length > 0) {
+    const showIds = allShowData.map(d => d.show?.id || d.id).filter(Boolean);
+    const slice = loadShowAwardsSlice(showIds);
+    if (slice) awardsDataStr = `## Awards Data for This Show\n\`\`\`json\n${slice}\n\`\`\``;
+  }
+
   if (allShowData.length > 0) {
     showDataStr = allShowData.map(d => {
       const show = d.show || d;
@@ -351,6 +383,25 @@ export async function diagnoseBug(message, showName, userCategory) {
   }
 
   // 4. Build diagnosis prompt
+  const awardsInstructions = isAwardsBug ? `
+
+## Awards Bug Instructions (apply when the report is about a missing or wrong award winner)
+If this is an awards co-winner bug (a person who tied for an award but is missing from the data):
+- Identify the exact ceremony key (one of: tony|dramadesk|outerCriticsCircle|dramaLeague|olivier)
+- Identify the exact category name as it appears in the Awards Data above
+- Identify the missing person's name (use the EXACT spelling from the Awards Data if they appear in nominees)
+- Identify the existing winners already in the data
+- Only set fixType:"data" with awards subfields if you can verify ALL of these from the Awards Data provided. If no Awards Data is available or the show/ceremony/category is not found, set confidence:"low".
+- Tony Award co-winners are a special case: always set confidence:"medium" at most for Tony ties (they require additional validation files not shown here).
+
+When you identify an awards co-winner bug, include these extra fields in your JSON:
+  "targetFile": "awards.json",
+  "operation": "append-winner",
+  "ceremony": "<ceremony key>",
+  "category": "<exact category name>",
+  "missingPerson": "<person's name>",
+  "existingWinners": ["<name1>", ...]` : '';
+
   const prompt = `You are diagnosing a user-reported bug on Broadway Scorecard (broadwayscorecard.com), a Broadway review aggregator.
 
 ## User's Bug Report
@@ -359,6 +410,8 @@ export async function diagnoseBug(message, showName, userCategory) {
 **Message:** ${message}
 
 ${showDataStr || ''}
+
+${awardsDataStr || ''}
 
 ${codeContext ? `## Relevant Source Code\n${codeContext}` : ''}
 
@@ -370,6 +423,7 @@ ${codeContext ? `## Relevant Source Code\n${codeContext}` : ''}
 5. Propose a concrete fix in 1-2 sentences, or say "no fix needed" if it's working as designed
 6. Rate your confidence: high (obvious cause found), medium (likely but uncertain), low (speculative)
 7. CRITICAL: Do NOT assert specific production years, revival numbers, or historical Broadway facts unless you can verify them from the Show Data provided above. If no show data was loaded, say "the show's data file" without guessing years or production details. Getting production details wrong (e.g., saying "2005 original" when it was a "2015 revival") undermines trust in the diagnosis.
+${awardsInstructions}
 
 Respond with ONLY a JSON object in this exact format:
 {

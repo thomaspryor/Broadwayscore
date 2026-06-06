@@ -244,7 +244,7 @@ export default function MethodologyPage() {
               </div>
               <p className="text-gray-300 text-sm">
                 NYC anchors: The New York Times, Vulture, Variety, Hollywood Reporter, WSJ, Washington Post, The New Yorker, Time Out NY, Broadway News, Deadline, AP, Newsday, LA Times.
-                London anchors: The Guardian (dual), Times UK, Telegraph, Standard, Daily Mail, Financial Times, The Stage, Time Out London, Independent, Observer.
+                London anchors: The Guardian (dual), Times UK, Telegraph, Standard, Financial Times, The Stage, Time Out London, Independent, Observer.
               </p>
             </div>
 
@@ -255,7 +255,7 @@ export default function MethodologyPage() {
               </div>
               <p className="text-gray-300 text-sm">
                 NYC: TheaterMania, NYSR, BroadwayWorld, NY Theatre Guide, Theatrely, NY Daily News, NY Post, Observer (US), Theater Life, Front Row Center, NYTG, Theater Scene, Cititour, Playbill, EW, Rolling Stone, People, Newsweek, Slate, IndieWire.
-                London: WhatsOnStage, London Theatre, The Reviews Hub, BroadwayWorld UK, Arts Desk, British Theatre Guide, Spectator UK, Everything Theatre, Theatre Weekly.
+                London: Daily Mail, WhatsOnStage, London Theatre, The Reviews Hub, BroadwayWorld UK, Arts Desk, British Theatre Guide, Spectator UK, Everything Theatre, Theatre Weekly.
               </p>
             </div>
 

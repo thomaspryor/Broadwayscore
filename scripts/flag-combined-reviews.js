@@ -95,6 +95,19 @@ function main() {
           data.wrongShowOverrideReason =
             'URL co-occurs across ' + uniqueShows.size + ' show dirs — joint review';
           data.wrongShowOverrideAt = new Date().toISOString();
+          // The override clears the rebuild gate, but the scorer's UNSCORED /
+          // needsRescore queries (llm-ensemble-score.yml) BOTH exclude any file
+          // that still carries a rejectionReason — so the file would land in
+          // reviews.json unscored and never be picked up (the Mandell / NY
+          // Theater combined-review deadlock, girl-interrupted 2026-06-05).
+          // Clear the stale rejection breadcrumbs and request a rescore so the
+          // combined-review Haiku fallback (llm-scoring/index.ts) can run.
+          delete data.rejectionReason;
+          delete data.rejectedBy;
+          delete data.rejectedAt;
+          delete data.rejectionReasoning;
+          delete data.rescoreCompletedAt;
+          data.needsRescore = true;
         }
         safeWriteReview(entry.filePath, data);
       }

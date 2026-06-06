@@ -42,7 +42,13 @@ function buildShowLookup(): Map<string, ComputedShow> {
 
 export default function TrendingPage() {
   const showLookup = buildShowLookup();
-  const knownShowIds: ReadonlySet<string> = new Set(showLookup.keys());
+  // Restrict to currently-running shows: "trending" means current buzz, and a
+  // closed show's social-pulse file is frozen (the fetcher stops refreshing it).
+  // Composes with getTopTrendingShows' staleness filter to keep recently-closed
+  // shows (still inside the 14-day freshness window) off the leaderboard.
+  const knownShowIds: ReadonlySet<string> = new Set(
+    Array.from(showLookup.values()).filter((s) => s.status === 'open' || s.status === 'previews').map((s) => s.id),
+  );
   const picks = getTopTrendingShows('Broadway', knownShowIds, 1000);
   const lastUpdated = getTrendingLastUpdated();
 

@@ -18,7 +18,13 @@
  */
 
 const fs = require('fs');
+const path = require('path');
 const { execSync } = require('child_process');
+// Generalized intentional-clear breadcrumbs — single source of truth. When the
+// LOCAL record deliberately cleared a field (durable breadcrumb present), we
+// must NOT restore the remote value, or a CI rebase silently re-flags a
+// human-verified review. See review-write-guard.js. (2026-06-05)
+const { isIntentionalClear } = require(path.join(__dirname, 'review-write-guard.js'));
 
 // Fields that must be preserved across rebases. Two categories:
 //   (a) MANUAL human corrections CI should never touch — see DoaS Apr 9-10
@@ -87,11 +93,21 @@ const MANUAL_FIELDS = [
   'wrongShowRetryAt',
 ];
 
-// Nested fields under contentVerification that are manually set
+// Nested fields under contentVerification that are manually set, mapped to the
+// TOP-LEVEL field whose intentional-clear breadcrumb governs them. The rebuild
+// pre-pass promotes contentVerification flags to top-level every run
+// (scripts/rebuild-all-reviews.js ~1320), so resurrecting a stale CV flag here
+// silently re-excludes a review whose top-level flag was deliberately cleared
+// (e.g. a human wrongProductionManualClear, or a URL-replace reset in
+// review-normalization.js that deletes contentVerification). Honor the clear.
 const MANUAL_CV_FIELDS = [
   'wrongProduction',
   'wrongArticle',
 ];
+const CV_FIELD_TO_TOPLEVEL = {
+  wrongProduction: 'wrongProduction',
+  wrongArticle: 'wrongFullText',
+};
 
 const remoteRef = process.argv[2];
 if (!remoteRef) {
@@ -148,6 +164,15 @@ try {
           remote[field] !== null &&
           (local[field] === undefined || local[field] === null)
         ) {
+          // Intentional-clear exception: if the LOCAL record deliberately
+          // cleared this field and carries the canonical breadcrumb (e.g. a
+          // human wrongProductionManualClear / humanReviewedWrongProduction:false,
+          // wrongShowCleared signals, originalScoreCleared, or duplicateClearReason),
+          // the empty value is not data-loss — honor it instead of resurrecting
+          // the remote flag. Without this guard the remote's stale `true` comes
+          // right back on every rebase. Mirrors the action.yml restore skip and
+          // review-guards.js is-cleared semantics. (2026-06-05)
+          if (isIntentionalClear(field, local)) continue;
           local[field] = remote[field];
           modified = true;
           process.stderr.write(`  Restored ${field} in ${f}\n`);
@@ -208,6 +233,12 @@ try {
         for (const key of MANUAL_CV_FIELDS) {
           const remoteVal = remote.contentVerification[key];
           if (remoteVal === undefined || remoteVal === null) continue;
+
+          // Intentional-clear exception (mirrors the top-level loop): if the
+          // governing top-level field was deliberately cleared, do NOT resurrect
+          // the nested CV flag — the rebuild pre-pass would re-promote it and
+          // silently re-exclude the review.
+          if (isIntentionalClear(CV_FIELD_TO_TOPLEVEL[key], local)) continue;
 
           if (!local.contentVerification) local.contentVerification = {};
           const localVal = local.contentVerification[key];

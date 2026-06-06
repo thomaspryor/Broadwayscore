@@ -8,6 +8,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
 import { track } from '@vercel/analytics';
+import { captureEvent } from '@/lib/posthog-events';
 import { Modal, ModalCloseButton } from '@/components/show-cards';
 import { SUBSCRIBED_KEY_PREFIX } from '@/hooks/useFormspreeSubscribed';
 import { isLondonPath } from '@/hooks/useCurrentMarket';
@@ -68,12 +69,12 @@ function getTriggerCopy(trigger: GateTrigger, isWE: boolean): { heading: string;
       subheading: `Enter your email for full access to ${market} investment data.`,
     },
     exit_intent: {
-      heading: `Never Miss a New ${market} Show`,
-      subheading: 'No spam, no schedule \u2014 just opening night scores. Unsubscribe anytime.',
+      heading: 'Know the score before you book',
+      subheading: 'Get each new show\u2019s score when it opens, so you know what\u2019s worth seeing.',
     },
     scroll_depth: {
-      heading: `Never Miss a New ${market} Show`,
-      subheading: 'Get opening night scores delivered to your inbox. Unsubscribe anytime.',
+      heading: 'Know the score before you book',
+      subheading: 'Get each new show\u2019s score when it opens, so you know what\u2019s worth seeing.',
     },
     return_visitor: {
       heading: `Never miss a new ${market} show`,
@@ -119,6 +120,7 @@ export default function EmailCaptureModal({
   useEffect(() => {
     if (isOpen) {
       track('gate_modal_shown', { trigger, is_return_visitor: trigger === 'return_visitor' });
+      captureEvent('gate_modal_shown', { trigger, is_return_visitor: trigger === 'return_visitor' });
     }
   }, [isOpen, trigger]);
 
@@ -171,13 +173,15 @@ export default function EmailCaptureModal({
       }
 
       // Track email capture
-      track('email_captured', {
+      const captureProps = {
         has_name: !!userData.name,
         has_company: !!userData.company,
         role: userData.role || 'none',
         trigger,
         is_return_visitor: trigger === 'return_visitor',
-      });
+      };
+      track('email_captured', captureProps);
+      captureEvent('email_captured', captureProps);
 
       onSubmit(userData);
 

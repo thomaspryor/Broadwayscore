@@ -47,6 +47,7 @@ const { discoverCorrectUrl, OUTLET_DOMAINS } = require('./lib/url-discovery');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { llmFallbackExtract, hasStructuralMarkers } = require('./lib/llm-extractor');
+const { verifyAggregatorUrl } = require('./lib/show-match-verifier');
 const { normalizeOutlet, normalizeUrl: normalizeUrlCanonical } = require('./lib/review-normalization');
 const { extractReviewsFromLBO } = require('./scrape-london-box-office-roundups');
 const { extractReviews: extractTheatreReviews } = require('./scrape-theatre-reviews');
@@ -54,6 +55,16 @@ const { matchTitleToShow, validateRoundupPageTitle } = require('./lib/show-match
 const { fetchPage, fetchJSON } = require('./lib/scraper');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const { tryTbDirectUrl } = require('./lib/tb-direct-url');
+const {
+  DEFAULT_SERP_BURST_CONFIG,
+  checkSerpBurstAllowed,
+  isCascadeTripwireExceeded,
+} = require('./lib/serp-burst-caps');
+const {
+  DEFAULT_SERP_SESSION_CONFIG,
+  checkSerpSessionAllowed,
+} = require('./lib/serp-session-cap');
+const { sendAlert } = require('./lib/discord-notify');
 
 // Paths
 const DATA_DIR = path.join(__dirname, '..', 'data');
@@ -62,6 +73,8 @@ const REVIEWS_PATH = path.join(DATA_DIR, 'reviews.json');
 const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
 const OUTLET_REGISTRY_PATH = path.join(DATA_DIR, 'outlet-registry.json');
 const BACKOFF_DIR = path.join(DATA_DIR, 'audit', 'poller-backoff');
+const SERP_BURST_LEDGER_PATH = path.join(DATA_DIR, 'audit', 'serp-burst-ledger.json');
+const SERP_SESSION_LEDGER_PATH = path.join(DATA_DIR, 'audit', 'serp-session-ledger.json');
 
 /**
  * Balusters postmortem CLASS 7 — exponential backoff for no-op polls.
@@ -99,11 +112,125 @@ function isInAggressiveWindow(show) {
   return hoursSinceOpening >= 0 && hoursSinceOpening < 6;
 }
 
+/**
+ * Daily ledger for the WE SERP burst (see scripts/lib/serp-burst-caps.js). Provides a
+ * best-effort DAILY-GLOBAL + per-show ceiling across independent CI poller runs. Persisted as
+ * data/audit/serp-burst-ledger.json in the MAIN repo working tree (tracked in the public repo,
+ * NOT the core-data overlay), committed by the workflow's backoff step — the exact same
+ * persistence model as poller-backoff state. Resets on UTC date rollover.
+ *
+ * Concurrency caveat (deliberate, bounded — NOT a hard cross-run guarantee): two WE shows
+ * opening the same morning run as parallel poller jobs and share this one ledger. The
+ * read-modify-write (plus push-with-retry's "keep local" rebase of audit/) can lose an
+ * increment, so the daily ceiling is ADVISORY — under concurrency it can be exceeded by up to
+ * ~(Nconcurrent-1) bursts per tick. The TRUE hard bound is the per-cycle SERP_BUDGET (12
+ * outlet calls); with realistic concurrency of 2-3 WE openings the worst-case overspend is a
+ * few hundred SERP calls/day, nowhere near a cascade. Emergency kill-switch (set the
+ * DISABLE_WE_SERP_BURST variable) is the ultimate backstop.
+ */
+function utcDateKey(now = new Date()) {
+  return now.toISOString().slice(0, 10);
+}
+
+function loadSerpBurstLedger(now = new Date()) {
+  const today = utcDateKey(now);
+  let raw = null;
+  try {
+    if (fs.existsSync(SERP_BURST_LEDGER_PATH)) {
+      raw = JSON.parse(fs.readFileSync(SERP_BURST_LEDGER_PATH, 'utf8'));
+    }
+  } catch { raw = null; }
+  if (!raw || raw.date !== today) {
+    return { date: today, globalBursts: 0, perShow: {}, tripwireAlerted: false };
+  }
+  return {
+    date: today,
+    globalBursts: raw.globalBursts || 0,
+    perShow: raw.perShow || {},
+    tripwireAlerted: raw.tripwireAlerted || false,
+  };
+}
+
+function writeSerpBurstLedger(ledger) {
+  try {
+    const dir = path.dirname(SERP_BURST_LEDGER_PATH);
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(SERP_BURST_LEDGER_PATH, JSON.stringify(ledger, null, 2));
+  } catch (e) {
+    console.log(`  [SERP burst] ledger write failed (non-fatal): ${e.message}`);
+  }
+}
+
+function incrementSerpBurstLedger(showId, now = new Date()) {
+  const ledger = loadSerpBurstLedger(now);
+  ledger.globalBursts += 1;
+  ledger.perShow[showId] = (ledger.perShow[showId] || 0) + 1;
+  writeSerpBurstLedger(ledger);
+  return ledger;
+}
+
+/**
+ * Daily ledger for the SERP-SESSION cap (Sprint 1, scripts/lib/serp-session-cap.js).
+ * Counts EVERY SERP-running poller cycle (burst or normal), per-show and globally, as a
+ * hard daily ceiling so the now-poller-owned SERP (after the Sprint-2 orchestrator-deferral
+ * removal) can never run unbounded. Same persistence model as the burst ledger and
+ * poller-backoff state: a plain JSON file in the MAIN repo working tree under data/audit/,
+ * committed by the workflow's backoff/ledger step, reset on UTC date rollover. Like the
+ * burst ledger it is ADVISORY under cross-run concurrency (read-modify-write can lose an
+ * increment); the TRUE hard per-cycle bound remains SERP_BUDGET (12 outlet calls).
+ */
+function loadSerpSessionLedger(now = new Date()) {
+  const today = utcDateKey(now);
+  let raw = null;
+  try {
+    if (fs.existsSync(SERP_SESSION_LEDGER_PATH)) {
+      raw = JSON.parse(fs.readFileSync(SERP_SESSION_LEDGER_PATH, 'utf8'));
+    }
+  } catch { raw = null; }
+  if (!raw || raw.date !== today) {
+    return { date: today, globalSessions: 0, perShow: {} };
+  }
+  return {
+    date: today,
+    globalSessions: raw.globalSessions || 0,
+    perShow: raw.perShow || {},
+  };
+}
+
+function writeSerpSessionLedger(ledger) {
+  try {
+    const dir = path.dirname(SERP_SESSION_LEDGER_PATH);
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(SERP_SESSION_LEDGER_PATH, JSON.stringify(ledger, null, 2));
+  } catch (e) {
+    console.log(`  [SERP session] ledger write failed (non-fatal): ${e.message}`);
+  }
+}
+
+function incrementSerpSessionLedger(showId, now = new Date()) {
+  const ledger = loadSerpSessionLedger(now);
+  ledger.globalSessions += 1;
+  ledger.perShow[showId] = (ledger.perShow[showId] || 0) + 1;
+  writeSerpSessionLedger(ledger);
+  return ledger;
+}
+
 // CLI args
 const SHOW_ID = (process.argv.find(a => a.startsWith('--show=')) || '').replace('--show=', '');
 const DRY_RUN = process.argv.includes('--dry-run');
 const SKIP_SERP = process.argv.includes('--skip-serp');
 const FORCE_SERP = process.argv.includes('--force-serp');
+// WE opening-night SERP burst: ON by default (this is an automated system — no human
+// watches openings). The burst overrides the orchestrator's iteration-1-8 --skip-serp
+// deferral for aggressive-window WE shows, bounded entirely by AUTOMATED safety:
+//   - hard daily-global + per-show caps (auto-stop runaway with zero human input)
+//   - the existing 3h-post-opening gate
+//   - per-cycle SERP_BUDGET (hard per-invocation bound)
+//   - it adds SERP calls only inside poller cycles that already run on fixed crons, so it
+//     CANNOT trigger a workflow cascade
+//   - a tripwire that fires a real owner email (sendAlert) if daily bursts get unusually high
+// Emergency kill-switch (rarely needed): gh variable set DISABLE_WE_SERP_BURST --body true
+const ENABLE_WE_SERP_BURST = process.env.DISABLE_WE_SERP_BURST !== 'true';
 const SKIP_SITE_SEARCH = process.argv.includes('--skip-site-search');
 const VERBOSE = process.argv.includes('--verbose') || true; // Always verbose for CI logs
 // Escape hatches: bypass SERP discovery when discovery fails (wrong Google result, unindexed page)
@@ -474,36 +601,41 @@ async function runAggregators(show) {
   let BWW_ROUNDUP_URL = BWW_ROUNDUP_URL_CLI || show.bwwRoundupUrl || '';
   let bwwResolvedVia = BWW_ROUNDUP_URL_CLI ? 'CLI' : (show.bwwRoundupUrl ? 'shows.json' : null);
 
-  // Primary auto-discovery: scrape broadwayworld.com/reviews.php via Browserbase.
-  // SERP/Google indexing lags BWW publication by 1-6 hours — direct listing
-  // updates within minutes, so it's the reliable path. Costs ~$0.10/call.
-  // Skipped when a manual override is already present OR for off-Broadway (no BWW RR).
-  if (!BWW_ROUNDUP_URL && !isOffBroadway && !isWestEnd) {
-    if (!process.env.BROWSERBASE_API_KEY || !process.env.BROWSERBASE_PROJECT_ID) {
-      // Fail-loud: opening-night automation depends on this path. Silent skip
-      // on missing secrets is the Beaches-2026-04-22 failure mode — poller falls
-      // through to SERP/URL-guessing which hits wrong or unpublished URLs.
+  // Primary auto-discovery for Broadway AND off-Broadway. OB roundups live on
+  // BWW's /off-broadway/ section page (cheap ScrapingBee scan, no Browserbase) —
+  // discoverBwwRoundupUrl tries that first, then falls back to reviews.php
+  // (Browserbase) for Broadway. SERP/Google indexing lags BWW publication by
+  // 1-6 hours; the listing pages update within minutes. Pre-2026-06-06 OB was
+  // skipped here entirely, so off-Broadway roundups (Girl, Interrupted /
+  // A Woman Among Women) were only ever found via flaky Google SERP.
+  if (!BWW_ROUNDUP_URL && !isWestEnd) {
+    const browserbaseReady = process.env.BROWSERBASE_API_KEY && process.env.BROWSERBASE_PROJECT_ID;
+    // reviews.php (the Broadway fallback) needs Browserbase; the OB section scan
+    // does not — only fail-loud about missing Browserbase when it actually matters.
+    if (!browserbaseReady && !isOffBroadway) {
+      // Silent skip on missing secrets is the Beaches-2026-04-22 failure mode —
+      // poller falls through to SERP/URL-guessing which hits wrong/unpublished URLs.
       console.log('::warning::BWW reviews.php discovery SKIPPED — BROWSERBASE_API_KEY or BROWSERBASE_PROJECT_ID missing from env. Set secrets on this workflow.');
     } else {
       try {
         const { discoverBwwRoundupUrl } = require('./lib/bww-rr-discover.js');
-        console.log('  Trying BWW reviews.php listing (Browserbase)...');
+        console.log('  Trying BWW roundup discovery (section scan → reviews.php)...');
         const discovery = await discoverBwwRoundupUrl(show);
         if (discovery.url) {
           BWW_ROUNDUP_URL = discovery.url;
-          bwwResolvedVia = 'reviews.php';
-          console.log(`  BWW RR URL auto-discovered: ${BWW_ROUNDUP_URL}`);
+          bwwResolvedVia = discovery.via || 'bww-discover';
+          console.log(`  BWW RR URL auto-discovered (${bwwResolvedVia}): ${BWW_ROUNDUP_URL}`);
         } else {
           const tried = (discovery.candidates || []).length;
-          console.log(`  reviews.php: no matching BWW RR (${tried} anchors seen, 0 matched show) — falling through to SERP/guessing`);
+          console.log(`  BWW discovery: no matching RR (${tried} anchors seen, 0 matched show) — falling through to SERP/guessing`);
         }
       } catch (err) {
-        console.log(`::warning::reviews.php discovery error (falling through to SERP): ${err.message}`);
+        console.log(`::warning::BWW discovery error (falling through to SERP): ${err.message}`);
       }
     }
   }
 
-  if (!isOffBroadway && (!isWestEnd || BWW_ROUNDUP_URL)) {
+  if (!isWestEnd || BWW_ROUNDUP_URL) {
     try {
       if (BWW_ROUNDUP_URL) console.log(`  BWW RR URL: ${BWW_ROUNDUP_URL} (${bwwResolvedVia || 'SERP'})`);
       console.log('  Checking BWW Review Roundup...');
@@ -806,6 +938,14 @@ async function runAggregators(show) {
           if (result && result.content && result.content.length > 1000 &&
               result.content.includes('⭑') &&
               result.content.toLowerCase().includes(titleWord.toLowerCase())) {
+            // Cross-show gate: TR's search/URL-guessing can land on a different show's
+            // roundup (e.g. "war horse" → equus-menier-reviews → Equus contamination).
+            // verifyAggregatorUrl uses slug + page-title/venue/date signals.
+            const v = verifyAggregatorUrl({ url: trUrl, html: result.content, show, openingDate: show.openingDate });
+            if (!v.isValid) {
+              console.log(`    ✗ TR ${trUrl} rejected: ${v.rejectReason} (cross-show guard)`);
+              continue;
+            }
             trHtml = result.content;
             console.log(`    Found at: ${trUrl} (via ${result.source})`);
             break;
@@ -827,7 +967,14 @@ async function runAggregators(show) {
               console.log(`    WP API found: ${roundup.link}`);
               const pageResult = await fetchPage(roundup.link, { renderJs: false });
               if (pageResult && pageResult.content && pageResult.content.length > 1000) {
-                trHtml = pageResult.content;
+                // Cross-show gate: WP-API search for "war horse" returns the Equus
+                // roundup. Reject roundups that don't match this show.
+                const v = verifyAggregatorUrl({ url: roundup.link, html: pageResult.content, show, openingDate: show.openingDate });
+                if (v.isValid) {
+                  trHtml = pageResult.content;
+                } else {
+                  console.log(`    ✗ TR WP-API ${roundup.link} rejected: ${v.rejectReason} (cross-show guard)`);
+                }
               }
             }
           }
@@ -1610,8 +1757,41 @@ async function pollCycle() {
     return true;
   }
 
+  // WE opening-night SERP burst (ON by default, hard-capped). Corrected diagnosis
+  // (data/audit/we-serp-diagnosis-corrected.md): the orchestrator forces --skip-serp on
+  // iterations 1-8, and those runs are usually cancelled before the deferred SERP (iter
+  // 9-10) ever runs — so aggressive-window WE shows get no SERP at all. We override
+  // --skip-serp for those shows, bounded by the daily-global + per-show ceilings in
+  // scripts/lib/serp-burst-caps.js (the per-cycle SERP_BUDGET still bounds outlet fan-out).
+  // Disabled only via the DISABLE_WE_SERP_BURST kill-switch.
+  let serpBurstActive = false;
+  if (SKIP_SERP && ENABLE_WE_SERP_BURST) {
+    const hoursSinceOpening = show.openingDate
+      ? (Date.now() - new Date(show.openingDate).getTime()) / 3600000
+      : null;
+    const ledger = loadSerpBurstLedger();
+    const decision = checkSerpBurstAllowed({
+      flagEnabled: true,
+      show,
+      mode: _mode,
+      hoursSinceOpening,
+      burstsToday: ledger.globalBursts,
+      burstsForShowToday: ledger.perShow[SHOW_ID] || 0,
+    });
+    if (decision.allowed) {
+      serpBurstActive = true;
+      console.log(
+        `\n[Layer 4] SERP BURST: overriding --skip-serp for aggressive-window WE show ` +
+        `(${ledger.perShow[SHOW_ID] || 0}/${DEFAULT_SERP_BURST_CONFIG.perShowCap} this show, ` +
+        `${ledger.globalBursts}/${DEFAULT_SERP_BURST_CONFIG.dailyGlobalCap} used today)`
+      );
+    } else {
+      console.log(`\n[Layer 4] SERP burst not allowed (${decision.reason}) — honoring --skip-serp`);
+    }
+  }
+
   let serpResults = [];
-  if (!SKIP_SERP && shouldRunSerp()) {
+  if ((!SKIP_SERP && shouldRunSerp()) || serpBurstActive) {
     const foundOutletIds = getFoundOutletIds(SHOW_ID);
     for (const r of [...aggResults, ...rssResults, ...siteSearchResults]) {
       if (r.outletId) foundOutletIds.add(r.outletId.toLowerCase());
@@ -1688,15 +1868,71 @@ async function pollCycle() {
       missingOutlets = [...ukOutlets, ...rest];
     }
     if (missingOutlets.length > 0) {
+      // Daily SERP-SESSION cap (Sprint 1, scripts/lib/serp-session-cap.js). A hard per-show +
+      // daily-global ceiling on SERP-running cycles, consulted for ALL SERP runs (burst or
+      // normal) right before the network fan-out. Strict no-op at today's ~2 cycles/opening
+      // (perShowCap 30, dailyGlobalCap 60); the real safety net once the Sprint-2 orchestrator
+      // deferral removal makes the poller the sole owner of "when to run SERP". Increment only
+      // when SERP actually runs (missing outlets exist AND not capped), so a capped or no-op
+      // cycle never consumes the budget and starves another opening.
+      const sessionLedger = loadSerpSessionLedger();
+      const sessionDecision = checkSerpSessionAllowed({
+        perShowToday: sessionLedger.perShow[SHOW_ID] || 0,
+        globalToday: sessionLedger.globalSessions,
+      });
+      if (!sessionDecision.allowed) {
+        console.log(
+          `\n[Layer 4] SERP Backup... SKIPPED (daily SERP-session cap reached: ` +
+          `${sessionDecision.reason} ${sessionDecision.used}/${sessionDecision.limit})`
+        );
+        // Leave serpResults = [] and fall through; layers 1-3 results still process below.
+      } else {
+      incrementSerpSessionLedger(SHOW_ID);
+      console.log(
+        `  [SERP session ${(sessionLedger.perShow[SHOW_ID] || 0) + 1}/${DEFAULT_SERP_SESSION_CONFIG.perShowCap} this show, ` +
+        `${sessionLedger.globalSessions + 1}/${DEFAULT_SERP_SESSION_CONFIG.dailyGlobalCap} today]`
+      );
+      // Count the burst against the daily ledger only when SERP actually runs (missing
+      // outlets exist) — a no-op cycle where everything is already found must not consume
+      // the daily/per-show cap and starve another opening.
+      if (serpBurstActive) {
+        const updated = incrementSerpBurstLedger(SHOW_ID);
+        // Automated tripwire: if daily bursts get unusually high, fire ONE real owner email
+        // (sendAlert) per UTC day — no human log-watching required. The hard daily cap still
+        // auto-stops further bursts regardless. tripwireAlerted (persisted in the ledger)
+        // dedupes so we don't email every cycle.
+        if (isCascadeTripwireExceeded(updated.globalBursts) && !updated.tripwireAlerted) {
+          updated.tripwireAlerted = true;
+          writeSerpBurstLedger(updated);
+          const msg =
+            `${updated.globalBursts} WE opening-night SERP bursts today ` +
+            `(tripwire ${DEFAULT_SERP_BURST_CONFIG.cascadeTripwire}, hard daily cap ${DEFAULT_SERP_BURST_CONFIG.dailyGlobalCap}). ` +
+            `Bursts auto-stop at the cap; this is an early heads-up. ` +
+            `Emergency off: gh variable set DISABLE_WE_SERP_BURST --body true`;
+          console.log(`::warning::SERP burst cascade tripwire: ${msg}`);
+          try {
+            await sendAlert({
+              title: 'WE SERP burst tripwire',
+              description: msg,
+              severity: 'warning',
+              email: true,
+            });
+          } catch (e) {
+            console.log(`  [SERP burst] tripwire alert failed (non-fatal): ${e.message}`);
+          }
+        }
+      }
       serpResults = await runSERPBackup(show, missingOutlets, knownUrls);
+      } // end: daily SERP-session cap allowed
     } else {
       console.log('\n[Layer 4] SERP Backup... all T1/T2 outlets found');
     }
   } else if (!SKIP_SERP) {
     // shouldRunSerp() already logged the skip reason
-  } else {
+  } else if (!ENABLE_WE_SERP_BURST) {
     console.log('\n[Layer 4] SERP Backup... SKIPPED (--skip-serp)');
   }
+  // else: ENABLE_WE_SERP_BURST on but burst disallowed — the "burst not allowed" line above already logged it
 
   // ── Process discovered reviews ──
   const allDiscovered = [...aggResults, ...rssResults, ...siteSearchResults, ...serpResults];
@@ -1848,4 +2084,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { pollCycle, checkReadiness, getMissingT1T2Outlets, getThresholds, preWipePreOpeningFiles, pollMode, shouldRunSerpForMode, isBrightDataAllowedForShow, SERP_BUDGET, runSERPBackup };
+module.exports = { pollCycle, checkReadiness, getMissingT1T2Outlets, getThresholds, preWipePreOpeningFiles, pollMode, shouldRunSerpForMode, isBrightDataAllowedForShow, SERP_BUDGET, runSERPBackup, loadSerpBurstLedger, incrementSerpBurstLedger, SERP_BURST_LEDGER_PATH, loadSerpSessionLedger, incrementSerpSessionLedger, SERP_SESSION_LEDGER_PATH };

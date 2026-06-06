@@ -3,49 +3,54 @@
   "showId": "hamilton-west-end-2021",
   "showTitle": "Hamilton",
   "market": "West End",
-  "fetchedAt": "2026-05-27T10:13:16.939Z",
+  "fetchedAt": "2026-06-01T09:19:03.713Z",
   "tier": "Steady",
-  "volume": 102,
-  "positivePct": 88,
-  "weekOverWeekPct": 3,
-  "baselineMultiple": 0.96,
+  "volume": 23,
+  "positivePct": 100,
+  "weekOverWeekPct": -77,
+  "baselineMultiple": 0.22,
   "platformBreakdown": {
-    "x": 74,
-    "tiktok": 19,
-    "instagram": 1,
-    "reddit": 8
+    "x": 0,
+    "tiktok": 20,
+    "instagram": 3,
+    "reddit": 0
   },
   "topQuotes": [
     {
-      "text": "Recommendations for September Hi everyone, I'm 36 years old an relatively new to theatre, I'm going to London by…",
-      "platform": "reddit",
-      "author": "u/poogy71",
-      "url": "https://www.reddit.com/r/TheWestEnd/comments/1tinaxm/recommendations_for_september/"
+      "text": "@Hamilton The best day of our lives if you were wondering… #broadway #hamilton #musical #musicaltheatre @Hamilton West…",
+      "platform": "tiktok",
+      "author": "@broadwayourwaysf",
+      "url": "https://www.tiktok.com/@broadwayourwaysf/video/7645007016355745037"
     },
     {
-      "text": "i can’t stress enough how serious i am about the victoria hamilton-barritt west end hel campaign like guys she has got…",
-      "platform": "x",
-      "author": "@judybernlys",
-      "url": "https://x.com/judybernlys/status/2043446476005675091"
+      "text": "👑 First ever RELAXED Hamilton performance in London! What a brilliant night. 🙏 [29/04/26] AD #HamiltonLDN…",
+      "platform": "tiktok",
+      "author": "@jacksamueltheatre",
+      "url": "https://www.tiktok.com/@jacksamueltheatre/video/7634347185613671702"
     }
   ],
-  "xTrueVolume": 24,
+  "xTrueVolume": 42,
   "baseline": {
-    "mean": 105.787109375,
+    "mean": 95.438720703125,
     "weeksOfHistory": 8
   },
-  "costUsd": 0.1355,
+  "costUsd": 0.1145,
   "rawCounts": {
-    "reddit": 38,
-    "twitter": 160,
+    "reddit": 0,
+    "twitter": 0,
     "tiktok": 20,
     "instagram": 15
   },
-  "errors": [],
+  "errors": [
+    {
+      "platform": "x",
+      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 502 <html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n</body>\r\n</html>\r\n"
+    }
+  ],
   "rank": {
-    "position": 50,
-    "total": 60,
-    "text": "50/60 West End"
+    "position": 55,
+    "total": 61,
+    "text": "55/61 West End"
   },
-  "compositeScore": 89.76
+  "compositeScore": 23
 }

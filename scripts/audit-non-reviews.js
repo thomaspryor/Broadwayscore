@@ -28,8 +28,10 @@ const https = require('https');
 
 // --- CLI args ---
 const args = process.argv.slice(2);
-const DRY_RUN = args.includes('--dry-run');
-const SKIP_LLM = args.includes('--skip-llm');
+const DRY_RUN = args.includes('--dry-run') || args.includes('--strict');
+const STRICT = args.includes('--strict'); // CI gate: report-only, exit 1 on high-confidence non-reviews
+const SKIP_LLM = args.includes('--skip-llm') || args.includes('--strict'); // strict uses free heuristics only
+
 const VERBOSE = args.includes('--verbose');
 const FORCE = args.includes('--force');
 const SHOW_FILTER = (args.find(a => a.startsWith('--show=')) || '').split('=')[1] || '';
@@ -42,96 +44,10 @@ const AUDIT_DIR = path.join(__dirname, '../data/audit');
 // Heuristic Non-Review Detection (Layer 1 — free)
 // ============================================================
 
-const NON_REVIEW_PATTERNS = [
-  // Press releases / promotional
-  { pattern: /(?:is pleased to announce|announces?\s+(?:that|the)|tickets? (?:are\s+)?(?:now\s+)?on sale|available at the box office)/i, type: 'press_release' },
-  // Cast announcements
-  { pattern: /(?:joins? the cast|has been cast|will star in|casting (?:announced|complete))/i, type: 'cast_announcement' },
-  // Previews / anticipation articles
-  { pattern: /(?:what to expect|first look at|sneak peek|before (?:it|the show) opens|preview article|previews begin)/i, type: 'preview_article' },
-  // News/closings
-  { pattern: /(?:closes? (?:early|unexpectedly|on)|final performance|closing notice|has been (?:cancelled|postponed|delayed))/i, type: 'news_article' },
-  // Interviews — Q:\s requires Q&A context (not Times UK quiz "Q: What was...")
-  { pattern: /(?:in (?:an|this) interview|(?:we|I) (?:spoke|sat down|chatted) with|Q&A with|exclusive interview)/i, type: 'interview' },
-  { pattern: /Q:\s.{5,80}\nA:\s/i, type: 'interview' },
-  // Listicles
-  { pattern: /(?:top \d+ (?:shows|musicals|plays)|best (?:shows|musicals|plays) of \d{4}|our picks for|ranking (?:the|every)|must-see shows)/i, type: 'listicle' },
-  // Award coverage
-  { pattern: /(?:tony (?:nominations|winners|predictions)|award (?:nominations|winners)|receives? \d+ nomination)/i, type: 'awards_coverage' },
-  // Photo galleries
-  { pattern: /(?:photo gallery|see the photos|in photos|production photos|first photos)/i, type: 'photo_gallery' },
-  // Obituaries — age N requires death/memorial context (not biographical mentions like "at age 34, Wilson wrote...")
-  { pattern: /(?:has died|passed away|in memoriam)/i, type: 'obituary' },
-  { pattern: /(?:(?:age|aged) \d{2,3}).{0,40}(?:died|death|passed|memorial|funeral|tribute)/i, type: 'obituary' },
-  { pattern: /(?:died|death|passed|memorial|funeral|tribute).{0,40}(?:(?:age|aged) \d{2,3})/i, type: 'obituary' },
-  { pattern: /\bremembering\b.{0,20}(?:who|life|legacy|career)/i, type: 'obituary' },
-  // Garbage scrapes: paywall walls, browser updates, CSS junk
-  { pattern: /(?:BROWSER UPDATE|To gain access to the full experience|please upgrade your browser)/i, type: 'garbage_scrape' },
-  { pattern: /(?:Subscribe to continue|subscribe now to read|sign in to continue reading|Already a subscriber)/i, type: 'paywall_wall' },
-  { pattern: /(?:\.has-text-align-justify|margin-left:\s*auto|div\.admz)/i, type: 'css_junk' },
-];
-
-// Patterns that strongly indicate it IS a review (suppress false positives)
-const REVIEW_INDICATORS = [
-  /(?:stars?|rating|grade|score):\s*[A-F][+-]?/i,       // explicit rating
-  /\b(?:directed by|written by|choreographed by)\b/i,    // production credits in review context
-  /(?:opened? (?:last|this) (?:night|week)|opening night)/i, // opened language
-  /(?:the (?:production|performance|staging|direction) (?:is|was|feels?))/i,  // evaluative language
-  /(?:brilliantly|masterfully|unfortunately|disappointing|thrilling|riveting|stunning)/i,  // review adjectives
-  /(?:curtain call|standing ovation|intermission)/i,       // theater-specific
-  /\d\s*(?:out of|\/)\s*(?:5|10|4)\s*stars?/i,              // numeric rating (3/5 stars, 8 out of 10)
-  /(?:stars?|rating):\s*\d/i,                                // "stars: 4", "rating: 7"
-];
-
-/**
- * Layer 1: Heuristic classification.
- * Only checks the first 400 chars (the lead/intro) for non-review signals,
- * since review body text often mentions casts, awards, etc. in passing.
- * Returns { isNonReview: bool, type: string, confidence: 'high'|'medium', evidence: string }
- * or null if heuristics are inconclusive.
- */
-function heuristicClassify(text) {
-  if (!text || text.length < 50) return null;
-
-  // Check full text for review indicators — if strong review signals, it's a review
-  let reviewSignals = 0;
-  for (const pattern of REVIEW_INDICATORS) {
-    if (pattern.test(text)) reviewSignals++;
-  }
-
-  // Check ONLY the opening of the text for non-review signals
-  // Non-review articles declare their purpose early; reviews mentioning these
-  // concepts in the body are still reviews.
-  const opening = text.substring(0, 400);
-  const matches = [];
-  for (const { pattern, type } of NON_REVIEW_PATTERNS) {
-    const m = opening.match(pattern);
-    if (m) matches.push({ type, evidence: m[0] });
-  }
-
-  if (matches.length === 0) return null; // No non-review signals in opening
-
-  // Any review signals override non-review signals (reviews discuss shows!)
-  if (reviewSignals >= 2) return null;
-
-  // Multiple non-review signals in opening + no review signals = high confidence
-  if (matches.length >= 2 && reviewSignals === 0) {
-    return {
-      isNonReview: true,
-      type: matches[0].type,
-      confidence: 'high',
-      evidence: matches.map(m => m.evidence).join('; ')
-    };
-  }
-
-  // Single signal in opening = medium confidence (send to LLM)
-  return {
-    isNonReview: true,
-    type: matches[0].type,
-    confidence: 'medium',
-    evidence: matches[0].evidence
-  };
-}
+// Patterns + heuristic classifier now live in a shared lib so the newspapers.com
+// extractor reuses the exact same detection (single source of truth). The shared
+// version adds the wrong-page newspaper-OCR signals (weather/sports/listings).
+const { NON_REVIEW_PATTERNS, REVIEW_INDICATORS, heuristicClassify } = require('./lib/non-review-patterns');
 
 // ============================================================
 // LLM Classification (Layer 2 — Gemini Flash)
@@ -373,6 +289,26 @@ async function main() {
   }
   fs.writeFileSync(reportPath, JSON.stringify(report, null, 2) + '\n');
   console.log(`\nAudit report: ${reportPath}`);
+
+  // CI gate: fail only on DEFINITIVE wrong-page / junk classes — these never have
+  // legit false positives (verified 0 across 34k scored reviews). Soft heuristics
+  // (obituary/preview/interview) can FP on real reviews that mention a death etc.,
+  // so they stay advisory in the cron, not a hard build gate.
+  if (STRICT) {
+    // Hard-gate ONLY the definitive wrong-page classes (0 FPs across 34k). Junk/
+    // paywall/css stay advisory in the cron — gating them false-fails on real
+    // reviews that carry scrape boilerplate (verified: 72 WSJ/HuffPost FPs).
+    const GATE_TYPES = new Set(['weather_page', 'sports_page']);
+    const high = flagged.filter(f => f.confidence === 'high' && GATE_TYPES.has(f.type));
+    if (high.length > 0) {
+      console.error(`\n❌ STRICT: ${high.length} scored review(s) classified as non-review content:`);
+      for (const f of high.slice(0, 25)) console.error(`   ${f.showId}/${f.file} — ${f.type}: ${String(f.evidence).slice(0, 80)}`);
+      console.error('\nThese must not be scored. Flag wrongProduction/invalid or delete them, then rebuild.');
+      process.exit(1);
+    }
+    console.log('\n✓ STRICT: no high-confidence non-reviews among scored reviews.');
+    return;
+  }
 
   // Apply flags (if not dry-run, only high-confidence)
   if (!DRY_RUN) {

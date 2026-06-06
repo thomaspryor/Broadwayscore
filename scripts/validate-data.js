@@ -31,6 +31,7 @@ const { VALID_TIERS } = require('./lib/outlet-tiers');
 // per historical-import convention; use this instead of raw string compare.
 const { isBroadwayCategory } = require('./lib/venue-classification');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { openingDateSourceHint } = require('./lib/opening-date-sources');
 
 // Notion 362637c5-416f-8174 — sentinel file consumed by .github/actions/push-core-data
 // to refuse pushing when validation failed. The composite action used `if: always()`
@@ -186,6 +187,28 @@ function validateNoDuplicates(shows) {
     error(`Duplicate slugs: ${[...new Set(dupSlugs)].join(', ')}`);
   } else {
     ok('No duplicate slugs');
+  }
+
+  // Check duplicate ibdbUrl — each IBDB production maps to exactly one show entry.
+  // Two shows sharing an ibdbUrl means a revival was cloned from the original
+  // production's IBDB page and silently inherited its opening/preview dates (and
+  // sometimes status). This is exactly how the 2026 Other Desert Cities / Evita /
+  // Dreamgirls revivals landed in the "currently on Broadway" section with their
+  // 2011/1979/1981 opening dates and a bogus "14+ years on Broadway" label.
+  // Fix: null the stale ibdbUrl on the newer entry (or set the correct production URL).
+  const ibdbGroups = new Map();
+  for (const s of shows) {
+    if (!s.ibdbUrl) continue;
+    if (!ibdbGroups.has(s.ibdbUrl)) ibdbGroups.set(s.ibdbUrl, []);
+    ibdbGroups.get(s.ibdbUrl).push(s.id);
+  }
+  const dupIbdb = [...ibdbGroups.entries()].filter(([, idsArr]) => idsArr.length > 1);
+  if (dupIbdb.length > 0) {
+    for (const [url, idsArr] of dupIbdb) {
+      error(`Shared ibdbUrl ${url} across ${idsArr.length} shows: ${idsArr.join(', ')} — each IBDB production maps to one show; null the stale url on the revival entry so it can't inherit the original production's dates`);
+    }
+  } else {
+    ok('No shared ibdbUrls across shows');
   }
 
   // Market-specific slug validation
@@ -411,6 +434,22 @@ function validateDates(shows) {
       const ninetyDaysAgo = new Date(Date.now() - 90 * 86400000);
       const stale = discoveredAt && discoveredAt < ninetyDaysAgo;
       warn(`Show "${show.title}" (${show.id}) is status:upcoming with null openingDate${stale ? ' AND stale discoveredAt (>90d)' : ''} — orchestrator/gather will never fire for it. Backfill openingDate from Playbill or mark closed/announced.`);
+    }
+
+    // Soft check: status='open' with null openingDate is a stranded state — the
+    // show's "Opened {date}" line renders blank and opening-night-reviews.yml
+    // (keyed on an openingDate lookback) can't discover its reviews. Surfaced by
+    // the Check-2d review-driven flip, which intentionally leaves openingDate null
+    // rather than fabricate one when every review is dateless. Market-aware: the
+    // fill source differs (IBDB is Broadway-only; OB/WE/OWE each have their own
+    // enricher). Suggestion-only — like the opening-date audit, we never auto-write
+    // an opening date without a confirming signal.
+    // NOTE: unlike the upcoming sibling above, we do NOT exempt provisional shows.
+    // `provisional` is a discovery-confidence flag, not opening-date completeness;
+    // an *open* (live, scored) show with no opening date is the stranded state we
+    // want regardless of how it was discovered — doubly so if also provisional.
+    if (show.status === 'open' && !show.openingDate) {
+      warn(`Show "${show.title}" (${show.id}, ${show.category || 'no-category'}) is status:open with null openingDate — score shows but "Opened …" is blank and opening-night review discovery can't anchor. Backfill from ${openingDateSourceHint(show.category)}.`);
     }
 
     // Previews with no opening date AND old previewsStartDate = likely stale/bogus entry

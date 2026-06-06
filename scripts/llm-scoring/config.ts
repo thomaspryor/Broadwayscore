@@ -785,6 +785,26 @@ Response: { "scoreable": false, "rejection": "garbage_text", "reasoning": "404 p
 `;
 }
 
+// ========================================
+// COMPARATIVE WITHIN-BAND SCORING
+// ========================================
+// buildAnchoredBandBlock (above) positions a SINGLE review within its star
+// band. In isolation, genuine strong raves all snap to the q3≈97 anchor, so a
+// show's four 5★ raves show 97/97/97/97 even when the prose warmth differs.
+// The comparative pass re-scores a show's same-band reviews TOGETHER so the
+// models rank them by relative warmth (validated 2026-06-05: GPT-4o + Gemini
+// both spread War Horse's four 5★ reviews 92-99 and agreed on the ordering).
+// The pure prompt/parser/combine live in scripts/lib/comparative-band.js so
+// they're require()-testable with no API key; re-exported here per the
+// scoring-config convention that all prompt builders are reachable from config.
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+export const {
+  buildComparativeBandPrompt,
+  parseComparativeResponse,
+  combineComparative,
+  orderingAgreement,
+} = require('../lib/comparative-band');
+
 /**
  * Build the V6 user-message prompt for a review.
  * Same shape as buildPromptV5 — context + reviewText.

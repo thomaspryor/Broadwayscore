@@ -41,6 +41,20 @@
                   "minLength": 1,
                   "description": "Optional. For acting categories where `winner` stores the SHOW name (Cats: The Jellicle Ball etc.), this holds the WINNING PERFORMER's name. enrich-awards-with-precursors.js writes it into the show's winnerNames map so chip-render attributes to the right performer."
                 },
+                "winnerEntries": {
+                  "description": "Optional. Tie co-winners with explicit per-winner production pairing, emitted by the year-page scraper when a category has multiple winners joined by ' and ' (e.g. DD 70th Lead Performance in a Musical: Joshua Henry + Caissie Levy, both Ragtime; Lead Play: Lithgow/Giant + Manville/Oedipus). enrich attributes each person to their paired show directly — no nominee-adjacency or Tony fallback. `winnerPersonName`/`winner` mirror the first entry for back-compat.",
+                  "type": "array",
+                  "minItems": 2,
+                  "items": {
+                    "type": "object",
+                    "required": ["person", "show"],
+                    "additionalProperties": false,
+                    "properties": {
+                      "person": { "type": "string", "minLength": 1 },
+                      "show": { "type": "string", "minLength": 1 }
+                    }
+                  }
+                },
                 "noAward": {
                   "type": "boolean",
                   "description": "True when the ceremony gave no award this year in this category (e.g. NYDCC Best Musical 2018, 2021, 2023)."

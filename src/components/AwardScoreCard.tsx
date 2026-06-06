@@ -9,6 +9,7 @@ import { sortByImportance, isMajorCategory } from '@/config/awards';
 import { AwardScoreBadge, AWARD_TIER_LABEL, getAwardTierLabelClass } from '@/components/show-cards';
 import { featureFlags } from '@/config/feature-flags';
 import { daysUntilTonyCeremony } from '@/lib/tony-cutoffs';
+import { seasonSlug } from '@/lib/tony-seasons';
 import { OTHER_CEREMONY_CONFIGS, type OtherAwardConfig, type OtherAwardKey } from '@/config/ceremonies';
 
 interface AwardScoreCardProps {
@@ -444,7 +445,7 @@ export default function AwardScoreCard({ showId, awards, openingDate, tonyNamesB
       {(hasTony || hasPulitzer || result.displayScore > 0) && (
         <div className="mt-1.5 -mb-1 sm:-mb-2">
           <Link
-            href={awards?.tony?.season ? `/award-score/${toFullSeasonLabel(awards.tony.season)}` : '/award-score'}
+            href={awards?.tony?.season ? `/award-score/${seasonSlug(awards.tony.season)}` : '/award-score'}
             className="inline-flex items-center gap-1.5 text-xs font-medium text-brand hover:text-brand-hover transition-colors group"
           >
             <span>See all award scores</span>

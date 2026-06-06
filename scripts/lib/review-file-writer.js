@@ -27,6 +27,7 @@ const {
   isJunkOutlet,
   isSuspiciousOutletId,
   maybeUpgradeUrl,
+  slugLooksLikeDifferentShow,
   getOutletDisplayName,
   resolveOutletFromUrl,
   loadOutletRegistry,
@@ -139,6 +140,23 @@ function _getShowCategory(showId) {
   if (showId.includes('-west-end-')) return 'west-end';
   if (showId.includes('-off-west-end-')) return 'off-west-end';
   return null;
+}
+
+// ─── Lazy-loaded show title map for the maybeUpgradeUrl cross-show guard ───
+let _showTitleCache = null;
+function _getShowTitle(showId) {
+  if (!_showTitleCache) {
+    try {
+      const shows = require(SHOWS_PATH).shows;
+      _showTitleCache = {};
+      for (const s of shows) {
+        if (s.id && s.title) _showTitleCache[s.id] = s.title;
+      }
+    } catch {
+      _showTitleCache = {};
+    }
+  }
+  return _showTitleCache[showId] || null;
 }
 
 /**
@@ -451,7 +469,7 @@ function createOrMergeReviewFile(showId, input, options = {}) {
  * @private
  */
 function _mergeIntoExisting(filepath, existing, ctx) {
-  const { input, fields, dryRun, onMerge } = ctx;
+  const { showId, input, fields, dryRun, onMerge } = ctx;
   let changed = false;
 
   // Fields that are FINAL once set by a human — never overwrite regardless of
@@ -488,11 +506,13 @@ function _mergeIntoExisting(filepath, existing, ctx) {
     }
   }
 
-  // URL upgrade
-  if (input.url && maybeUpgradeUrl(existing, input.url, input.source)) {
+  // URL upgrade — pass the show title so the cross-show guard can reject a
+  // candidate URL that belongs to a different show (combined-roundup contamination).
+  if (input.url && maybeUpgradeUrl(existing, input.url, input.source, { showTitle: _getShowTitle(showId) })) {
     changed = true;
   }
-  if (input.url && !existing.url) {
+  if (input.url && !existing.url &&
+      !slugLooksLikeDifferentShow(input.url, { showTitle: _getShowTitle(showId) })) {
     existing.url = input.url;
     changed = true;
   }

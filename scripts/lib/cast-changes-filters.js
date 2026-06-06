@@ -386,6 +386,107 @@ function detectCrossShowConflicts(showsData) {
   return warnings;
 }
 
+/**
+ * Pick the earliest (first-seen) of two addedDate strings. Missing/unparseable
+ * dates lose to a real date; if neither parses, the first non-empty wins.
+ */
+function earliestAddedDate(a, b) {
+  const da = parseISO(a);
+  const db = parseISO(b);
+  if (da && db) return da <= db ? a : b;
+  if (da) return a;
+  if (db) return b;
+  return a || b;
+}
+
+/**
+ * Merge `source` field-values into `target` in place, but keep `addedDate`
+ * write-once: it is pinned to the EARLIEST (first-seen) of the two records.
+ *
+ * The scraper stamps `addedDate = TODAY` on every freshly-extracted event, so a
+ * naive Object.assign(target, source) on a source-priority upgrade silently
+ * re-stamps the original first-seen date to today — that's the "bulk re-stamp"
+ * that made every closure look freshly-announced. addedDate must never move
+ * forward once set; downstream consumers (newsletter "announced this week")
+ * key on it. Returns `target`.
+ */
+function mergePreservingAddedDate(target, source) {
+  const pinnedAddedDate = earliestAddedDate(target.addedDate, source.addedDate);
+  Object.assign(target, source);
+  target.addedDate = pinnedAddedDate;
+  return target;
+}
+
+/**
+ * Find an existing closure event in `upcoming` that is the same closing as
+ * `event`. A production has exactly ONE closure per closing date, but the
+ * captured `name`/`role` vary by source ("Death Becomes Her" vs the showId
+ * "death-becomes-her-2024"), so name/role-keyed dedup misses it and a second
+ * closure row leaks in. Match closures on `date` alone. Returns the existing
+ * closure or null. Only meaningful for `event.type === 'closure'`.
+ */
+function findClosureDupe(upcoming, event) {
+  if (!event || event.type !== 'closure' || !event.date) return null;
+  return (upcoming || []).find(e => e.type === 'closure' && e.date === event.date) || null;
+}
+
+/**
+ * Collapse multiple closure events for the same closing date down to one,
+ * keeping the richer note and pinning the earliest addedDate. Read-side
+ * defense-in-depth so a pre-fix duplicate in the data never double-renders.
+ */
+function dedupeClosures(events) {
+  const byDate = new Map();
+  const out = [];
+  for (const e of events) {
+    if (e.type !== 'closure' || !e.date) { out.push(e); continue; }
+    const prev = byDate.get(e.date);
+    if (!prev) {
+      const copy = { ...e };
+      byDate.set(e.date, copy);
+      out.push(copy);
+      continue;
+    }
+    // Keep the longer note; always pin earliest addedDate.
+    const pinned = earliestAddedDate(prev.addedDate, e.addedDate);
+    if ((e.note || '').length > (prev.note || '').length) Object.assign(prev, e);
+    prev.addedDate = pinned != null ? pinned : prev.addedDate;
+  }
+  return out;
+}
+
+/**
+ * Reconcile a show's closure event date against the canonical closing date from
+ * shows.json (broadway.com-audited daily). A closure event captures the date
+ * known at announcement time and is NEVER updated when the show extends, so it
+ * silently goes stale (rocky-horror, titanique, moulin-rouge all lagged the
+ * canonical date by months). A stale closure date is corrosive: reconcileClosure
+ * anchors on it and folds the WRONG per-actor departures, and any consumer that
+ * renders it ships a wrong final-performance date.
+ *
+ * `canonicalClosingDate` is the shows.json `closingDate` (YYYY-MM-DD) or null.
+ * Returns { events, repaired } where repaired counts corrected closures. The
+ * corrected closure keeps its write-once addedDate + sourceUrl but takes the
+ * canonical date and a neutral note (the original prose referenced the stale
+ * date). Pure — callable from the audit (write) and as a detector (count only).
+ */
+function reconcileClosureDateWithClosingDate(events, canonicalClosingDate) {
+  if (!canonicalClosingDate || !/^\d{4}-\d{2}-\d{2}$/.test(canonicalClosingDate)) {
+    return { events, repaired: 0 };
+  }
+  let repaired = 0;
+  const out = events.map(e => {
+    if (e.type !== 'closure' || !e.date || e.date === canonicalClosingDate) return e;
+    repaired++;
+    return {
+      ...e,
+      date: canonicalClosingDate,
+      note: `Production closes ${canonicalClosingDate} (date reconciled to broadway.com-audited closingDate).`,
+    };
+  });
+  return { events: out, repaired };
+}
+
 function applyPublicFilters(events, today = new Date(), opts = {}) {
   const maxAddedAgeDays = opts.maxAddedAgeDays != null ? opts.maxAddedAgeDays : 60;
   const keepDaysAfter = opts.keepDaysAfter != null ? opts.keepDaysAfter : 7;
@@ -396,6 +497,7 @@ function applyPublicFilters(events, today = new Date(), opts = {}) {
   out = filterPastEvents(out, today, keepDaysAfter);
   out = filterStaleAddedDates(out, today, maxAddedAgeDays);
   out = dedupeByPersonShow(out);
+  out = dedupeClosures(out);
   out = reconcileClosure(out);
   return out;
 }
@@ -415,4 +517,9 @@ module.exports = {
   applyPublicFilters,
   CLOSURE_NOTE_PHRASES,
   noteMatchesClosurePhrase,
+  earliestAddedDate,
+  mergePreservingAddedDate,
+  findClosureDupe,
+  dedupeClosures,
+  reconcileClosureDateWithClosingDate,
 };

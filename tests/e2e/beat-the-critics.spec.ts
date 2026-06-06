@@ -180,16 +180,19 @@ test.describe('picking flow — Tier 1 (The Big Four)', () => {
     await expect(page.getByText("Here's what the experts picked")).toBeVisible({ timeout: 10000 });
   });
 
-  test('reveal screen shows "Revealed June 7" for all 3 critics (PICKS_REVEALED=false)', async ({ page }) => {
+  test('reveal screen shows a "Revealed <date>" badge for all 3 critics (PICKS_REVEALED=false)', async ({ page }) => {
     await gotoLanding(page);
     await startPicking(page);
     await pickFirstNominee(page);
     await lockIn(page);
 
-    // Each critic row has "June 7" label (the badge shows "June 7" when picks not revealed)
-    const june7Badges = page.getByText('June 7');
-    const count = await june7Badges.count();
-    // 3 critics + possibly the badge text — at least 3
+    // Before the reveal date each critic row shows a "Revealed <date>" badge.
+    // Match on the stable "Revealed " prefix, NOT a hardcoded date — the reveal
+    // date is config-driven (PICKS_REVEAL_DATE in BeatTheCriticsClient.tsx) and
+    // has already moved June 7 → June 8 once, silently breaking this test.
+    const revealBadges = page.getByText(/^Revealed /);
+    const count = await revealBadges.count();
+    // 3 critics in the CRITICS panel → 3 badges.
     expect(count).toBeGreaterThanOrEqual(3);
   });
 
@@ -322,7 +325,7 @@ test.describe('results ballot', () => {
     await expect(page.getByText('My Tony Picks')).toBeVisible();
 
     // At least one pick row is rendered
-    const pickRows = page.locator('.flex.items-center.justify-between.py-2');
+    const pickRows = page.locator('.flex.items-center.justify-between.py-1\\.5');
     await expect(pickRows.first()).toBeVisible({ timeout: 10000 });
 
     const visibleText = await page.locator('body').innerText();

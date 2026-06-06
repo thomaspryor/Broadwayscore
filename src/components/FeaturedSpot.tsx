@@ -1,6 +1,9 @@
-import Link from 'next/link';
+'use client';
 
-type Accent = 'gold' | 'brand';
+import Link from 'next/link';
+import { trackPromoClick } from '@/lib/promo-tracking';
+
+type Accent = 'gold' | 'brand' | 'btc';
 
 interface FeaturedSpotStat {
   value: string;
@@ -23,26 +26,33 @@ interface FeaturedSpotProps {
   accent?: Accent;
   stat?: FeaturedSpotStat;
   secondary?: FeaturedSpotSecondary[];
+  /** Identifier for analytics (placement + campaign). Required to track clicks. */
+  trackingId?: string;
 }
+
 
 const ACCENT_DOT: Record<Accent, string> = {
   gold: 'bg-score-must-see shadow-[0_0_8px_rgba(255,215,0,0.6)]',
   brand: 'bg-brand shadow-[0_0_8px_rgba(212,165,116,0.5)]',
+  btc: 'bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.55)]',
 };
 
 const ACCENT_TOP_EDGE: Record<Accent, string> = {
   gold: 'bg-gradient-to-r from-transparent via-score-must-see/70 to-transparent',
   brand: 'bg-gradient-to-r from-transparent via-brand/70 to-transparent',
+  btc: 'bg-gradient-to-r from-transparent via-rose-500/70 to-transparent',
 };
 
 const ACCENT_DIVIDER: Record<Accent, string> = {
   gold: 'lg:before:bg-score-must-see/15',
   brand: 'lg:before:bg-brand/20',
+  btc: 'lg:before:bg-rose-500/20',
 };
 
 const CTA_CLASS: Record<Accent, string> = {
   gold: 'bg-accent-warm text-surface hover:bg-brand hover:shadow-glow-sm',
   brand: 'bg-brand text-surface hover:bg-brand-hover hover:shadow-glow-sm',
+  btc: 'bg-rose-500 text-white hover:bg-rose-400 hover:shadow-glow-sm',
 };
 
 const ArrowIcon = () => (
@@ -100,6 +110,26 @@ function BrandStatPill({ value, label }: { value: string; label: string }) {
   );
 }
 
+function BtcCompactPill({ value, label }: { value: string; label: string }) {
+  return (
+    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-pill score-must-see text-surface whitespace-nowrap shadow-[0_0_10px_rgba(255,215,0,0.25)]">
+      <span className="text-[11px] font-extrabold leading-none">{value}</span>
+      <span className="h-2.5 w-px bg-surface/40" aria-hidden="true" />
+      <span className="text-[9px] font-bold uppercase tracking-wider leading-none">{label}</span>
+    </div>
+  );
+}
+
+function BtcStatPill({ value, label }: { value: string; label: string }) {
+  return (
+    <div className="flex items-center gap-3 px-4 py-2.5 rounded-pill score-must-see text-surface max-w-full shadow-[0_0_24px_rgba(255,215,0,0.25)]">
+      <span className="text-2xl font-extrabold tracking-tight leading-none flex-shrink-0">{value}</span>
+      <span className="h-7 w-px bg-surface/40 flex-shrink-0" aria-hidden="true" />
+      <span className="text-[10px] font-bold uppercase tracking-wider leading-tight min-w-0">{label}</span>
+    </div>
+  );
+}
+
 export default function FeaturedSpot({
   eyebrow,
   title,
@@ -109,10 +139,16 @@ export default function FeaturedSpot({
   accent = 'gold',
   stat,
   secondary,
+  trackingId,
 }: FeaturedSpotProps) {
-  const StatPill = accent === 'gold' ? GoldStatPill : BrandStatPill;
-  const CompactPill = accent === 'gold' ? GoldCompactPill : BrandCompactPill;
+  const StatPill = accent === 'gold' ? GoldStatPill : accent === 'btc' ? BtcStatPill : BrandStatPill;
+  const CompactPill = accent === 'gold' ? GoldCompactPill : accent === 'btc' ? BtcCompactPill : BrandCompactPill;
   const compactLabel = stat?.compactLabel ?? stat?.label;
+
+  const handleClick = () => {
+    if (!trackingId) return;
+    trackPromoClick(trackingId, { variant: 'featured_spot', href, accent });
+  };
 
   return (
     <section aria-label={`Featured: ${title}`} className="my-6 sm:my-8">
@@ -121,6 +157,7 @@ export default function FeaturedSpot({
         <Link
           href={href}
           prefetch={false}
+          onClick={handleClick}
           aria-label={`${title} — ${ctaLabel}`}
           className="absolute inset-0 z-20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface rounded-card"
         >

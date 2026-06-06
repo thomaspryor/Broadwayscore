@@ -1,29 +1,93 @@
 {
-  "timestamp": "2026-05-30T09:37:24.775Z",
+  "timestamp": "2026-06-03T10:34:49.913Z",
   "summary": {
     "eventsAdded": 0,
     "eventsUpgraded": 0,
-    "eventsCleaned": 1,
-    "showsCleaned": 2,
-    "totalChanges": 3,
+    "eventsCleaned": 10,
+    "showsCleaned": 0,
+    "totalChanges": 10,
     "errors": 0
   },
   "changes": [
     {
       "showId": "just-in-time-2025",
+      "changeType": "applied-arrival",
+      "eventType": "arrival",
+      "name": "Olivia Holt",
+      "role": "Connie Francis",
+      "date": "2026-05-30"
+    },
+    {
+      "showId": "six-2021",
       "changeType": "applied-departure",
       "eventType": "departure",
-      "name": "Isa Briones",
-      "role": "Connie Francis",
-      "date": "2026-05-29"
+      "name": "Dylan Mulvaney",
+      "role": "Anne Boleyn",
+      "date": "2026-05-31"
     },
     {
-      "showId": "beaches-2026",
-      "changeType": "removed-closed"
+      "showId": "six-2021",
+      "changeType": "applied-arrival",
+      "eventType": "arrival",
+      "name": "Kirstin Maldonado",
+      "role": "Anne Boleyn",
+      "date": "2026-06-01"
     },
     {
-      "showId": "the-receptionist-off-broadway-2026",
-      "changeType": "removed-closed"
+      "showId": "six-2021",
+      "changeType": "cleaned-note",
+      "eventType": "note",
+      "name": "TBA",
+      "role": "Anne Boleyn",
+      "date": "2026-05-31"
+    },
+    {
+      "showId": "six-2021",
+      "changeType": "cleaned-note",
+      "eventType": "note",
+      "name": "Anne Boleyn replacement",
+      "role": "Anne Boleyn",
+      "date": "2026-05-31"
+    },
+    {
+      "showId": "mj-2022",
+      "changeType": "applied-departure",
+      "eventType": "departure",
+      "name": "Tavon Olds-Sample",
+      "role": "Michael",
+      "date": "2026-05-31"
+    },
+    {
+      "showId": "mj-2022",
+      "changeType": "cleaned-note",
+      "eventType": "note",
+      "name": "TBD (swings/understudies)",
+      "role": "Michael",
+      "date": "2026-06-01"
+    },
+    {
+      "showId": "mj-2022",
+      "changeType": "applied-arrival",
+      "eventType": "arrival",
+      "name": "Brandon Lee Harris",
+      "role": "Michael Jackson",
+      "date": "2026-06-01"
+    },
+    {
+      "showId": "hadestown-2019",
+      "changeType": "applied-departure",
+      "eventType": "departure",
+      "name": "Joshua Colley",
+      "role": "Orpheus",
+      "date": "2026-05-31"
+    },
+    {
+      "showId": "hadestown-2019",
+      "changeType": "applied-arrival",
+      "eventType": "arrival",
+      "name": "Jeffrey Cornelius",
+      "role": "Orpheus",
+      "date": "2026-06-02"
     }
   ],
   "stats": {
@@ -35,8 +99,8 @@
     "officialSitesChecked": 0,
     "eventsAdded": 0,
     "eventsUpgraded": 0,
-    "eventsCleaned": 1,
-    "showsCleaned": 2,
+    "eventsCleaned": 10,
+    "showsCleaned": 0,
     "errors": []
   }
 }

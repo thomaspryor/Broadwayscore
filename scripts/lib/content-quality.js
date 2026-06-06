@@ -52,6 +52,10 @@ const PAYWALL_PATTERNS = [
   // The full NYT chrome is "We are having trouble retrieving the article content.
   // Please enable JavaScript in your browser settings. Thank you for your patience
   // while we verify access." The first line is the most distinctive.
+  // DUAL-PURPOSE: also in TRUNCATION_SIGNALS.severeAnywhere (tags 'nyt_bot_stub').
+  // Here detectPaywall() uses _isPatternInTrailingJunk() to strip it via cleanText()
+  // rather than marking the whole file garbage. classifyIncompleteReason() Layer A.5
+  // short-circuits before Layer B's detectPaywall() call, so no routing conflict.
   /trouble\s+retrieving\s+the\s+article\s+content/i,
 ];
 
@@ -110,6 +114,86 @@ const ERROR_PAGE_PATTERNS = [
   /we\s+can'?t\s+find\s+(that|the)\s+(page|article)/i,
   /oops!?\s+page\s+unavailable/i,
 ];
+
+// Strong, position-INDEPENDENT error-page signatures. Unlike ERROR_PAGE_PATTERNS
+// (only scanned in the first 300 chars to avoid prose FPs like "has been
+// removed"), these phrases are unambiguous web error-page chrome that never
+// appears in real review prose, so they're safe to scan over the WHOLE body.
+// Origin: Variety/AndyGram 404 pages scraped as reviews led with a long mega-menu
+// chrome prefix ("Plus Icon Film… Mega Menu… Read Next:…"), pushing the
+// "404 Page Not Found" / "the page you were looking for cannot be found" marker
+// PAST the 300-char window, so detectErrorPage missed them and they reached
+// scoring. Verified FP-safe across the corpus: 0 matches on legit scored reviews
+// (2026-06-01 ship-check follow-up). See feedback_test_yml_data_gates_flap...
+const STRONG_ERROR_PAGE_PATTERNS = [
+  /\bpage\s+not\s+found\b/i,
+  /\b404\s+(?:error|not\s+found)\b/i,
+  /\berror\s+404\b/i,
+  /the\s+page\s+you('re|\s+are)\s+looking\s+for/i,
+];
+
+/**
+ * Scan the entire body for unambiguous error-page chrome (position-independent).
+ * @param {string} text
+ * @returns {{ detected: boolean, match: string|null }}
+ */
+function detectStrongErrorPageAnywhere(text) {
+  const t = (typeof text === 'string') ? text : '';
+  for (const pattern of STRONG_ERROR_PAGE_PATTERNS) {
+    const m = t.match(pattern);
+    if (m) return { detected: true, match: m[0] };
+  }
+  return { detected: false, match: null };
+}
+
+// Unambiguous full-page chrome (cookie-consent banners, dedicated legal/privacy
+// pages, hard paywall walls) whose distinctive marker can be pushed PAST the
+// first-500-char windows used by detectCookieConsent (line ~271) and the legal
+// no-review branch (line ~845) by a long nav-chrome prefix — the exact failure
+// mode the 404 STRONG_ERROR_PAGE_PATTERNS fixed for error pages.
+//
+// CRITICAL DIFFERENCE from STRONG_ERROR_PAGE_PATTERNS: "page not found" never
+// appears in a real review's footer, so it's safe to scan position-independently
+// over ANY text. These phrases DO appear as trailing footer/account chrome on
+// hundreds of genuine scraped reviews (WSJ "Continue reading… with a subscription",
+// HollywoodReporter "Terms of Use | Privacy Policy", TimeOut "Thanks for
+// subscribing!", The Stage GDPR footer). So detectStrongChromeDumpAnywhere is
+// ONLY consulted for files that LACK substantial review content (no review prose
+// to protect) AND only when the marker is NOT in trailing junk — i.e. a genuine
+// chrome-dump page, not a real review with a footer. Verified against the full
+// corpus (2026-06-05): 0 currently-scored real reviews newly flagged. See
+// memory/feedback_content_quality_regex_fps.md and the 404 origin note above.
+const STRONG_CHROME_DUMP_PATTERNS = [
+  // Cookie-consent / GDPR full sentences — never occur in review prose.
+  /your\s+consent\s+will\s+be\s+valid/i,
+  /consent\s+management\s+platform/i,
+  /manage\s+(your\s+)?cookie\s+(preferences|settings|consent)/i,
+  // Dedicated legal/privacy page titles at line start.
+  /^cookie\s+(policy|notice|consent)\b/im,
+  /^legal\s+(notice|disclaimer)\b/im,
+  /^copyright\s+(notice|policy)\b/im,
+  // Hard paywall walls — full call-to-action sentences (not bare "members only").
+  /subscribe\s+to\s+(continue|read|access)\b/i,
+  /sign\s+in\s+to\s+(continue|read|access|view)\b/i,
+  /log\s+in\s+to\s+(continue|read|access|view)\b/i,
+];
+
+/**
+ * Scan the whole body for unambiguous chrome-dump markers (cookie/legal/paywall
+ * full-page chrome). Position-independent, but intended ONLY for callers that
+ * have already established the text lacks substantial review content — see
+ * STRONG_CHROME_DUMP_PATTERNS for why this must not run on real reviews.
+ * @param {string} text
+ * @returns {{ detected: boolean, match: string|null }}
+ */
+function detectStrongChromeDumpAnywhere(text) {
+  const t = (typeof text === 'string') ? text : '';
+  for (const pattern of STRONG_CHROME_DUMP_PATTERNS) {
+    const m = t.match(pattern);
+    if (m) return { detected: true, match: m[0] };
+  }
+  return { detected: false, match: null };
+}
 
 /**
  * Patterns that indicate newsletter/subscription forms (not review content)
@@ -762,6 +846,20 @@ function isGarbageContent(text) {
     return { isGarbage: true, reason: `Cookie consent/GDPR banner: "${cookieConsent.match}"` };
   }
 
+  // Buried chrome-dump scan. detectCookieConsent and the legal no-review branch
+  // both only look at the first 500 chars; a long nav-chrome prefix can push the
+  // cookie/legal/paywall marker past that window on a page that is entirely
+  // chrome (no review). Mirror the 404 STRONG_ERROR scan, but gate hard on
+  // (a) NO substantial review content — there's no review prose to protect — and
+  // (b) the marker not being trailing junk, so a footer link/banner on a short
+  // real review is never flagged. Both conditions hold only for true chrome dumps.
+  if (!hasSubstantialReviewContent) {
+    const strongChrome = detectStrongChromeDumpAnywhere(trimmed);
+    if (strongChrome.detected && !_isPatternInTrailingJunk(trimmed, strongChrome.match)) {
+      return { isGarbage: true, reason: `Chrome-dump page (buried marker): "${strongChrome.match}"` };
+    }
+  }
+
   // Check for ad blocker message
   const adBlocker = detectAdBlocker(text);
   if (adBlocker.detected) {
@@ -793,6 +891,15 @@ function isGarbageContent(text) {
   const errorPage = detectErrorPage(errorCheckText);
   if (errorPage.detected) {
     return { isGarbage: true, reason: `Error/404 page: "${errorPage.match}"` };
+  }
+
+  // Strong error-page signatures scanned over the WHOLE body (not just the first
+  // 300 chars). Catches 404 pages whose error marker is buried after a long
+  // nav-chrome prefix (Variety mega-menu, etc.) — the 300-char window above
+  // misses those. Only the unambiguous phrases (FP-safe corpus-wide).
+  const strongError = detectStrongErrorPageAnywhere(collapsedForErrorCheck);
+  if (strongError.detected) {
+    return { isGarbage: true, reason: `Error/404 page (body): "${strongError.match}"` };
   }
 
   // Check for legal/privacy page
@@ -1070,6 +1177,20 @@ const TRUNCATION_SIGNALS = {
     /click\s+here\s+to\s+read/i,
     /full\s+(article|story)\s+(available|requires)/i,
   ],
+  // Severe signals that must scan the FULL text (not just first 70%).
+  // These are position-independent: they never appear in real review prose,
+  // so there is no risk of false positives from footer chrome.
+  // The 70% window on `severe` was added to prevent "Read More" navigation
+  // links from falsely flagging paywalls; that concern does not apply here.
+  severeAnywhere: [
+    // NYT bot-detection / JS-loader artifact that appears AFTER partial article text.
+    // The scraper captured only the visible (pre-bot-wall) portion of the review.
+    // Appears at 90-95% of the file — always outside the 70% severe scan window.
+    // Observed across 185 files (2026-06-05 probe). See PAYWALL_PATTERNS line ~55
+    // for the corresponding detectPaywall() entry and the audit-regex-patterns.js
+    // PAYWALL_PATTERNS::15 allow-listing entry.
+    /trouble\s+retrieving\s+the\s+article\s+content/i,
+  ],
   // Moderate signals - likely truncated
   moderate: [
     /\.{3}\s*$/,  // Ends with ellipsis
@@ -1166,6 +1287,19 @@ function detectTruncationSignals(text) {
       signals.push('paywall_or_login_prompt');
       severeCount++;
       break; // One severe is enough
+    }
+  }
+
+  // Check position-independent severe signals (full text scan).
+  // These patterns are unambiguous — they never appear in real review prose,
+  // so the 70% region restriction does not apply.
+  if (severeCount === 0) {
+    for (const pattern of TRUNCATION_SIGNALS.severeAnywhere) {
+      if (pattern.test(text)) {
+        signals.push('nyt_bot_stub');
+        severeCount++;
+        break;
+      }
     }
   }
 
@@ -2495,6 +2629,8 @@ module.exports = {
   detectPaywall,
   detectLegalPage,
   detectErrorPage,
+  detectStrongErrorPageAnywhere,
+  detectStrongChromeDumpAnywhere,
   detectNewsletter,
   detectUrlOnly,
   detectNavigationJunk,
@@ -2516,6 +2652,8 @@ module.exports = {
   LEGAL_PAGE_PATTERNS,
   COOKIE_CONSENT_PATTERNS,
   ERROR_PAGE_PATTERNS,
+  STRONG_ERROR_PAGE_PATTERNS,
+  STRONG_CHROME_DUMP_PATTERNS,
   NEWSLETTER_PATTERNS,
   NAVIGATION_PATTERNS,
   WRONG_ARTICLE_PATTERNS,

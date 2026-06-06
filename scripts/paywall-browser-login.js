@@ -90,13 +90,30 @@ async function main() {
   const { chromium } = require('playwright');
 
   console.log('\nLaunching browser (headed mode — do NOT close it)...');
-  const context = await chromium.launchPersistentContext(site.profileDir, {
+  // Use the REAL installed Google Chrome (channel: 'chrome') rather than the
+  // bundled Chrome-for-Testing build. Cloudflare Turnstile fingerprints the
+  // for-testing binary and fails verification (the greyed-out "Sign in" button
+  // on newspapers.com). Real Chrome passes the challenge. Fall back to bundled
+  // chromium only if real Chrome isn't installed.
+  const launchOpts = {
     headless: false,
-    viewport: { width: 1200, height: 800 },
-    args: ['--disable-blink-features=AutomationControlled'],
+    viewport: { width: 1280, height: 900 },
+    args: [
+      '--disable-blink-features=AutomationControlled',
+      '--disable-features=IsolateOrigins,site-per-process',
+    ],
+    ignoreDefaultArgs: ['--enable-automation'],
     locale: 'en-US',
     timezoneId: 'America/New_York',
-  });
+  };
+  let context;
+  try {
+    context = await chromium.launchPersistentContext(site.profileDir, { ...launchOpts, channel: 'chrome' });
+    console.log('  → using installed Google Chrome (channel: chrome)');
+  } catch (err) {
+    console.log(`  → real Chrome unavailable (${err.message.split('\n')[0]}); falling back to bundled chromium`);
+    context = await chromium.launchPersistentContext(site.profileDir, launchOpts);
+  }
 
   const page = context.pages()[0] || await context.newPage();
 

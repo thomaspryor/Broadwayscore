@@ -57,6 +57,7 @@ const {
 const {
   findMatchingShows,
   deriveQualifyingOutlets,
+  mergeAlwaysOnOutlets,
   parseRssFeed,
   parseWpApiPosts,
   parseSitemapXml,
@@ -564,11 +565,22 @@ async function main() {
     qualifyingOutlets = opts.outlets;
     console.log(`Targeting specific outlets: ${qualifyingOutlets.join(', ')}`);
   } else {
-    qualifyingOutlets = deriveQualifyingOutlets(allReviews, allShows, SKIP_OUTLETS, {
+    const derived = deriveQualifyingOutlets(allReviews, allShows, SKIP_OUTLETS, {
       minShowCount: opts.minShowCount,
       lookbackDays: 120,
     });
-    console.log(`Qualifying outlets (≥${opts.minShowCount} shows/4mo): ${qualifyingOutlets.length}`);
+    // Always-on outlets: any outlet we bothered to configure a dedicated strategy
+    // for (RSS/sitemap/listing-html or WP API) is high-value and must be polled
+    // EVERY run, regardless of the ≥minShowCount volume gate. The gate is for
+    // SERP-fallback outlets discovered dynamically from reviews.json; a configured
+    // outlet below the threshold (e.g. The Recs, a star-authoritative blog with a
+    // low show count) would otherwise be skipped and depend solely on per-show
+    // SERP timing — which silently drops late/low-rank reviews. That gap missed
+    // The Recs' 5-star The Lost Boys review (opened late in a busy week, 2026-04).
+    const configured = [...Object.keys(OUTLET_STRATEGY_CONFIG), ...Object.keys(WP_API_CONFIG)];
+    qualifyingOutlets = mergeAlwaysOnOutlets(derived, configured, SKIP_OUTLETS);
+    const added = qualifyingOutlets.length - derived.length;
+    console.log(`Qualifying outlets: ${qualifyingOutlets.length} (${derived.length} derived ≥${opts.minShowCount} shows/4mo + ${added} always-on configured)`);
   }
 
   // --- Per-outlet sweep ---

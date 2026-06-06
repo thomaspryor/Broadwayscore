@@ -34,6 +34,10 @@ const { serpQuery } = require('./lib/url-discovery');
 const { matchTitleToShow, loadShows } = require('./lib/show-matching');
 const { isNotBroadway } = require('./lib/content-filters');
 const { isLondonMarket } = require('./lib/venue-classification');
+const {
+  mergePreservingAddedDate,
+  findClosureDupe,
+} = require('./lib/cast-changes-filters');
 
 // ==================== Configuration ====================
 
@@ -68,8 +72,10 @@ const TOTAL_START_TIME = Date.now();
 // Today's date string
 const TODAY = new Date().toISOString().split('T')[0];
 
-// Load shows data
-const allShows = loadShows();
+// Load shows data. Only when run directly — importing this module for its
+// exported helpers (validateEvent etc.) must not require shows.json to exist
+// (the unit-test job's no-data-dependency batch + Dependabot have no core data).
+const allShows = require.main === module ? loadShows() : [];
 
 // Stats tracking
 const stats = {
@@ -314,12 +320,20 @@ function validateEvent(event) {
     if (!event.name || typeof event.name !== 'string') return false;
   }
 
-  // Validate date format if present
-  if (event.date && !/^\d{4}-\d{2}-\d{2}$/.test(event.date) && !/^\d{4}-\d{2}$/.test(event.date)) {
-    return false;
-  }
-  if (event.endDate && !/^\d{4}-\d{2}-\d{2}$/.test(event.endDate) && !/^\d{4}-\d{2}$/.test(event.endDate)) {
-    return false;
+  // Validate + NORMALIZE dates. Coerce month-only (YYYY-MM) to the first of the
+  // month so every downstream `===` dedup and date compare is precision-consistent
+  // (a closure '2026-06' vs '2026-06-28' must not be treated as two events). Then
+  // reject impossible calendar dates: the regex alone accepts '2026-02-31', which
+  // new Date() silently rolls to 2026-03-03 — a 3-day phantom shift that defeats
+  // dedup and mis-renders. Round-trip through UTC to catch these.
+  for (const field of ['date', 'endDate']) {
+    let v = event[field];
+    if (!v) continue;
+    if (/^\d{4}-\d{2}$/.test(v)) v = `${v}-01`;
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(v)) return false;
+    const d = new Date(`${v}T00:00:00Z`);
+    if (Number.isNaN(d.getTime()) || d.toISOString().slice(0, 10) !== v) return false;
+    event[field] = v;
   }
 
   return true;
@@ -1206,6 +1220,28 @@ function mergeEvents(existing, newEvents, source) {
         continue;
       }
 
+      // Closure de-dup runs first: a production has exactly ONE closure per
+      // closing date, but the captured name/role vary by source ("Death
+      // Becomes Her" vs the showId), so the name/role-keyed checks below miss
+      // it and a second closure row leaks in. Match on date alone and keep the
+      // richer record, pinning the earliest (first-seen) addedDate.
+      if (event.type === 'closure') {
+        const closureDupe = findClosureDupe(showData.upcoming, event);
+        if (closureDupe) {
+          const existingPriority = SOURCE_PRIORITY[closureDupe.sourceType] || 0;
+          const newPriority = SOURCE_PRIORITY[event.sourceType] || 0;
+          const richerNote = (event.note || '').length > (closureDupe.note || '').length;
+          if (newPriority > existingPriority || (newPriority === existingPriority && richerNote)) {
+            mergePreservingAddedDate(closureDupe, event);
+            changes.push({ showId, type: 'upgraded-closure', event, source });
+            stats.eventsUpgraded++;
+          }
+          // else: keep existing record untouched (write-once addedDate preserved)
+          continue;
+        }
+        // No existing closure on this date — fall through to add it as new.
+      }
+
       // Check for exact duplicate
       const exactDupe = showData.upcoming.find(e =>
         e.name === event.name &&
@@ -1220,7 +1256,7 @@ function mergeEvents(existing, newEvents, source) {
         const newPriority = SOURCE_PRIORITY[event.sourceType] || 0;
 
         if (newPriority > existingPriority) {
-          Object.assign(exactDupe, event);
+          mergePreservingAddedDate(exactDupe, event);
           changes.push({ showId, type: 'upgraded', event, source });
           stats.eventsUpgraded++;
         }
@@ -1241,7 +1277,7 @@ function mergeEvents(existing, newEvents, source) {
         const newPriority = SOURCE_PRIORITY[event.sourceType] || 0;
 
         if (newPriority > existingPriority) {
-          Object.assign(fuzzyDupe, event);
+          mergePreservingAddedDate(fuzzyDupe, event);
           changes.push({ showId, type: 'upgraded-fuzzy', event, source });
           stats.eventsUpgraded++;
         }
@@ -1262,7 +1298,7 @@ function mergeEvents(existing, newEvents, source) {
         const existingRole = samePersonDupe.role && samePersonDupe.role !== 'Unknown' ? samePersonDupe.role : '';
         const newRole = event.role && event.role !== 'Unknown' ? event.role : '';
         if (newRole.length > existingRole.length) {
-          Object.assign(samePersonDupe, event);
+          mergePreservingAddedDate(samePersonDupe, event);
           changes.push({ showId, type: 'upgraded-role', event, source });
           stats.eventsUpgraded++;
         }
@@ -1832,9 +1868,17 @@ async function main() {
 }
 
 const { cleanup: scraperCleanup } = require('./lib/scraper');
-main()
-  .catch(err => {
-    console.error('[Fatal]', err);
-    process.exit(1);
-  })
-  .finally(() => scraperCleanup());
+
+// Only run when invoked directly (`node scripts/scrape-cast-changes.js`). Guard
+// added because requiring this module for testing/inspection used to silently
+// launch a full scrape — writing cast-changes.json + backups as a side effect.
+if (require.main === module) {
+  main()
+    .catch(err => {
+      console.error('[Fatal]', err);
+      process.exit(1);
+    })
+    .finally(() => scraperCleanup());
+}
+
+module.exports = { validateEvent, suppressClosureRedundantDepartures, mergeEvents };

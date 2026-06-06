@@ -52,7 +52,7 @@ export default function BeatTheCriticsRulesPage() {
 
         <section>
           <h2 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-2">7. Privacy</h2>
-          <p className="text-sm">Email addresses collected are used solely to notify entrants of their results and to contact the winner. We will not share your email with third parties for marketing purposes.</p>
+          <p className="text-sm">By submitting your email, you will be added to the Broadway Scorecard mailing list and notified of your results after the ceremony. You may unsubscribe at any time. We will not share your email with third parties for marketing purposes.</p>
         </section>
 
         <section>

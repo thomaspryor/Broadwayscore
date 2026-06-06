@@ -42,6 +42,11 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import url from 'node:url';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const { canonicalizeAwardCategory } = require('../../scripts/lib/award-category-canonical.js');
+const { parseWinnersNomineesCell } = require('../../scripts/lib/year-page-precursor.js');
 
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 const AWARDS_FILE = path.join(__dirname, '..', '..', 'data', 'awards.json');
@@ -60,12 +65,21 @@ function precursorRow(precursor, category, year) {
 }
 
 function findShowsWithWin(fieldKey, category, person) {
+  // Canonicalize both sides: precursor category strings (e.g. bare
+  // "Distinguished Performance") may differ from the canonical winnerNames key
+  // ("Distinguished Performance Award"). See scripts/lib/award-category-canonical.js.
+  const canonCat = canonicalizeAwardCategory(fieldKey, category);
   const hits = [];
   for (const [showId, show] of Object.entries(shows)) {
     const ceremony = show[fieldKey];
-    if (!ceremony) continue;
-    const names = ceremony.winnerNames?.[category] || [];
-    if (names.includes(person)) hits.push(showId);
+    if (!ceremony || !ceremony.winnerNames) continue;
+    for (const [key, names] of Object.entries(ceremony.winnerNames)) {
+      if (canonicalizeAwardCategory(fieldKey, key) === canonCat
+          && Array.isArray(names) && names.includes(person)) {
+        hits.push(showId);
+        break;
+      }
+    }
   }
   return hits;
 }
@@ -153,10 +167,7 @@ describe('Pair-based person-winner attribution — derived from precursor data',
   });
 
   it('DD 2026 Lead Performance in a Musical: winner credited to precursor-declared show', () => {
-    // Same invariant as above for the musical category. Track A corrected
-    // the prior Henry@Ragtime / Levy@Chess split (which was a misread of
-    // the flat-list as a tie) to a single Henry@Ragtime win — matching the
-    // Wikipedia row.
+    // Same invariant as above for the musical category.
     const row = precursorRow(dd, 'Outstanding Lead Performance in a Musical', 2026);
     assert.ok(row, 'precursor DD 2026 Lead Performance in a Musical missing');
     assert.ok(row.winnerPersonName, 'precursor DD 2026 Lead Musical has no winnerPersonName');
@@ -168,6 +179,64 @@ describe('Pair-based person-winner attribution — derived from precursor data',
       hits.includes(expected),
       `expected ${expected} to have ${person} for DD 2026 Lead Musical; got ${JSON.stringify(hits)}`
     );
+  });
+
+  // Tie co-winners must BOTH be credited. DD 2026 Lead Performance in a Musical
+  // was a TIE: Joshua Henry AND Caissie Levy, both for Ragtime. A prior pass
+  // wrongly collapsed it to a single Henry win (read the flat per-category list
+  // as a non-tie); user feedback (2026-06-02) flagged the missing Levy. The
+  // year-page scraper now parses ' and '-joined co-winners (winnerEntries) so
+  // both names survive. This is the regression guard for that bug.
+  it('DD 2026 Lead Performance in a Musical is a TIE: both Caissie Levy AND Joshua Henry credited to Ragtime', () => {
+    const dd2 = shows['ragtime-2025']?.dramadesk;
+    assert.ok(dd2, 'ragtime-2025.dramadesk missing');
+    const names = dd2.winnerNames?.['Outstanding Lead Performance in a Musical'] || [];
+    assert.ok(
+      names.includes('Joshua Henry') && names.includes('Caissie Levy'),
+      `ragtime-2025 DD Lead Musical must credit BOTH tie co-winners; got ${JSON.stringify(names)}`
+    );
+  });
+
+  // Co-winners in DIFFERENT productions must each land on their own show.
+  it('DD 2026 Lead Performance in a Play tie: Lithgow→Giant, Manville→Oedipus (split shows)', () => {
+    const lithgow = findShowsWithWin('dramadesk', 'Outstanding Lead Performance in a Play', 'John Lithgow');
+    const manville = findShowsWithWin('dramadesk', 'Outstanding Lead Performance in a Play', 'Lesley Manville');
+    assert.ok(lithgow.includes('giant-2026'), `Lithgow should win at giant-2026; got ${JSON.stringify(lithgow)}`);
+    assert.ok(manville.includes('oedipus-2025'), `Manville should win at oedipus-2025; got ${JSON.stringify(manville)}`);
+  });
+});
+
+describe('Year-page parser: tie co-winners vs collaborative single wins', () => {
+  // Real 70th Drama Desk Awards (2026) wikitext. A TIE separates two
+  // independently-bold winners with " and " between quote-runs; a single
+  // collaborative win lists its people as "[[A]] and [[B]]" (the "and"
+  // flanked by brackets/text, NOT quotes) and may embed "and" in a title
+  // ("Joe Turner's Come and Gone"). Only the former must split.
+  function row(cell) { return parseWinnersNomineesCell(`* ${cell}`); }
+
+  it('same-show tie → 2 winnerEntries, both → same production', () => {
+    const r = row(`'''[[Joshua Henry]]''' and '''[[Caissie Levy]]''', ''[[Ragtime (musical)|Ragtime]]''`);
+    assert.equal(r.winnerEntries?.length, 2);
+    assert.deepEqual(r.winnerEntries.map((e) => `${e.person}@${e.show}`),
+      ['Joshua Henry@Ragtime', 'Caissie Levy@Ragtime']);
+  });
+
+  it('split-show tie → each winner keeps own production (title with "and" intact)', () => {
+    const r = row(`'''[[Alden Ehrenreich]], ''[[Becky Shaw]]''''' and '''[[Ruben Santiago-Hudson]], ''[[Joe Turner's Come and Gone]]'''''`);
+    assert.equal(r.winnerEntries?.length, 2);
+    assert.deepEqual(r.winnerEntries.map((e) => e.show), ['Becky Shaw', "Joe Turner's Come and Gone"]);
+  });
+
+  // Teams yield <2 entries, so scrapeYear's `length > 1` gate never emits a
+  // winnerEntries tie for them (they keep their single collaborative win).
+  it('collaborative single win ("A and B, Show") does NOT split into a tie', () => {
+    const r = row(`'''Jen Schriever and [[Michael Arden]], ''[[The Lost Boys (musical)|The Lost Boys]]'''''`);
+    assert.ok((r.winnerEntries?.length ?? 0) < 2, `team win must not split into a tie; got ${JSON.stringify(r.winnerEntries)}`);
+  });
+
+  it('"[[A]] and B, Show" (one linked, one plain) does NOT split', () => {
+    const r = row(`'''[[Brian Quijada]] and Nygel D. Robinson, ''[[Mexodus]]'''''`);
+    assert.ok((r.winnerEntries?.length ?? 0) < 2, `team win must not split into a tie; got ${JSON.stringify(r.winnerEntries)}`);
   });
 });
 

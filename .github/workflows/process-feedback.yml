@@ -2,8 +2,10 @@ name: Process Feedback Submissions
 
 on:
   schedule:
-    # Run daily at 9 AM UTC (4 AM EST)
-    - cron: '0 9 * * *'
+    # Every 10 min — feedback is triaged + (auto-fixed | flagged) within minutes,
+    # not the next day. Cheap: repo is public (free Actions minutes) and the
+    # Anthropic calls only fire when there are NEW, un-deduped submissions.
+    - cron: '*/10 * * * *'
   workflow_dispatch: # Manual trigger
 
 concurrency:
@@ -66,16 +68,28 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_DISPATCH_TOKEN }}
         run: |
-          # Set repo to "not watching" — owner only gets @mentions, not every issue/comment.
-          # All pipeline notifications go via custom emails (Resend), not GitHub.
-          curl -sf -X PUT \
+          # "Not watching" — owner only gets @mentions, not every bot-created
+          # issue/comment. All pipeline notifications go via Resend, not GitHub.
+          # NOTE: unwatching requires DELETE on the subscription. The old code
+          # used PUT {"subscribed":false}, which GitHub rejects (422) and which
+          # left the owner subscribed — the root cause of the per-issue email
+          # noise. DELETE removes the subscription (idempotent: 404 = already
+          # unwatched). Needs the token's "notifications" (or repo) scope.
+          code=$(curl -s -o /dev/null -w '%{http_code}' -X DELETE \
             -H "Authorization: Bearer $GH_TOKEN" \
             -H "Accept: application/vnd.github+json" \
-            "https://api.github.com/repos/${{ github.repository }}/subscription" \
-            -d '{"subscribed":false}' > /dev/null 2>&1 || echo "Note: could not update subscription (may need notifications scope)"
+            "https://api.github.com/repos/${{ github.repository }}/subscription")
+          echo "Unwatch DELETE returned HTTP $code (204=unwatched, 404=already not watching)"
+          if [ "$code" != "204" ] && [ "$code" != "404" ]; then
+            echo "::warning::Could not unwatch repo (HTTP $code) — GH_DISPATCH_TOKEN may lack 'notifications' scope; owner may keep getting issue emails."
+          fi
 
-      - name: Create GitHub Issue for Summary
-        if: success() && steps.process.outputs.has_submissions == 'true'
+      # Only fires when there is a Formshield spam-flagged item needing a manual
+      # "Not Spam" rescue. Routine feedback no longer creates a digest issue:
+      # bugs become deduped bug-diagnosis issues, praise/features get submitter
+      # thank-yous. This kills the daily "Feedback Digest" notification noise.
+      - name: Create Needs-Review Issue (spam-flagged only)
+        if: success() && steps.process.outputs.has_spam_flagged == 'true'
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -94,9 +108,9 @@ jobs:
             await github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: `Feedback Digest - ${new Date().toISOString().split('T')[0]}`,
+              title: `Feedback Needs Review (spam-flagged) - ${new Date().toISOString().split('T')[0]}`,
               body: summary,
-              labels: ['feedback-digest']
+              labels: ['feedback-digest', 'needs-review']
             });
 
       - name: Notify on failure
@@ -130,7 +144,30 @@ jobs:
               return;
             }
 
-            console.log(`Creating ${diagnosed.length} bug diagnosis issue(s)`);
+            console.log(`Diagnosed ${diagnosed.length} bug(s); checking against open issues for duplicates`);
+
+            // Topic-level dedup: a repeat report of an already-open bug must NOT
+            // create a new issue or re-ping the owner. See scripts/lib/feedback-dedup.js.
+            const { findDuplicateOpenBug } = require(`${process.env.GITHUB_WORKSPACE}/scripts/lib/feedback-dedup.js`);
+
+            function parseDiagnosisJson(issueBody) {
+              const m = (issueBody || '').match(/<!-- DIAGNOSIS_JSON\n([\s\S]*?)\nDIAGNOSIS_JSON -->/);
+              if (!m) return null;
+              try { return JSON.parse(m[1]); } catch { return null; }
+            }
+
+            // Fetch all OPEN bug-diagnosis issues and extract their embedded diagnosis.
+            const openIssues = await github.paginate(github.rest.issues.listForRepo, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'bug-diagnosis',
+              per_page: 100,
+            });
+            const openBugs = openIssues
+              .map(iss => ({ number: iss.number, diagnosis: parseDiagnosisJson(iss.body) }))
+              .filter(b => b.diagnosis);
+            console.log(`Found ${openBugs.length} open bug-diagnosis issue(s) to dedup against`);
 
             // Load shows.json for resolving show IDs
             const showsRaw = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
@@ -156,6 +193,38 @@ jobs:
                 submitterShow: submission.show || null,
                 originalMessage: submission.message || null,
               };
+
+              // Skip if this bug duplicates an already-open issue — comment on
+              // the existing one (no new issue, no new auto-fix dispatch, no
+              // new owner email).
+              const dup = findDuplicateOpenBug(diagPayload, openBugs);
+              if (dup) {
+                console.log(`Duplicate of open issue #${dup.number} (${dup.reason}) — commenting, not creating new`);
+                let commented = false;
+                try {
+                  await github.rest.issues.createComment({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: dup.number,
+                    body: [
+                      `Another user reported this${submission.name ? ` (${submission.name})` : ''} on ${new Date().toISOString().split('T')[0]}:`,
+                      '',
+                      `> ${(submission.message || '(no message)').replace(/\n/g, '\n> ')}`,
+                      '',
+                      `_Matched as a duplicate (${dup.reason}); folded in here instead of opening a new issue._`,
+                    ].join('\n'),
+                  });
+                  commented = true;
+                } catch (err) {
+                  console.log(`  Failed to comment on #${dup.number}: ${err.message}`);
+                }
+                // Only suppress the new issue if the dedup comment actually
+                // landed. The submission is already marked processed upstream,
+                // so a failed comment with `continue` would silently lose the
+                // report — fall through to normal issue creation instead.
+                if (commented) continue;
+                console.log('  Comment failed — creating a normal issue so the report is not lost');
+              }
 
               const body = [
                 `## Bug Report: ${item.summary}`,
@@ -194,6 +263,10 @@ jobs:
               });
 
               console.log(`Created issue #${issue.data.number}: ${title}`);
+
+              // Make this new issue dedup-able for the rest of this run (two
+              // near-identical reports in one batch should collapse too).
+              openBugs.push({ number: issue.data.number, diagnosis: diagPayload });
 
               // Dispatch auto-fix workflow (GITHUB_TOKEN events don't trigger issues.opened)
               try {

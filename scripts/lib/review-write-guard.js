@@ -79,6 +79,11 @@ const PROTECTED_FIELDS = [
   'wrongProductionAutoCleared',
   'wrongProductionAutoClearedAt',
   'wrongProductionReason',
+  // rediscover-review-urls.js breadcrumb: prior wrong-flag values recorded when a
+  // URL is rediscovered and the flags are deleted for re-scrape. Protected so the
+  // intentional-clear signal (CLEAR_BREADCRUMBS) survives a rebase rather than
+  // being lost, which would let the restore resurrect the stale flag.
+  '_previousWrongFlags',
   'wrongAttribution',
   'manualContentTier',
   'designation',
@@ -141,6 +146,126 @@ const PROTECTED_FIELDS = [
   // clearFailureFlags() clears them explicitly on success paths. (Pattern Card #1,
   // Notion 346637c5-416f-8154-9500-f09fd49e5a2a, 2026-04-17)
 ];
+
+/**
+ * Generalized intentional-clear breadcrumbs.
+ *
+ * Rebase-time restorers (.github/actions/push-review-texts/action.yml and
+ * scripts/lib/restore-protected-fields.js) treat an empty PROTECTED field whose
+ * committed/remote counterpart had content as data-loss and revert it. That is
+ * correct UNLESS the empty value is a DELIBERATE clear carrying a durable
+ * breadcrumb — otherwise a CI rebase silently re-flags a human-verified review.
+ *
+ * Originally only duplicateOf/duplicateReason had this exception (via
+ * duplicateClearReason). It is the same failure mode for the manual-clear
+ * families that NULL or DELETE a flag and leave a durable signal:
+ * wrongProduction (manual clear / override / humanReviewedWrongProduction:false),
+ * wrongShow (review-guards.js wrongShowCleared), wrong-article, originalScore
+ * (originalScoreCleared, set by fix-p0-score-corruption.js), and the rediscover
+ * reset (rediscover-review-urls.js deletes wrongProduction/wrongShow for re-scrape
+ * and records _previousWrongFlags). Without honoring the breadcrumb, a CI rebase
+ * resurrects the stale flag and re-flags the review (or makes rediscover a no-op).
+ *
+ * Each entry maps a PROTECTED field to a predicate over the LOCAL record that
+ * returns true when an empty value is an intentional clear. The wrong-flag and
+ * originalScore breadcrumb fields are themselves in PROTECTED_FIELDS, so they survive
+ * a rebase. duplicateClearReason is the one exception: it is intentionally NOT
+ * protected (it must stay nullable — review-write-guard nulls it when a sibling
+ * becomes a live duplicate again, see ~line 351), but the action.yml push-restore
+ * reads it from the SAME working tree that wrote it, so it is still reliable on
+ * that path. KEEP IN SYNC with the inline copy in
+ * .github/actions/push-review-texts/action.yml (it requires this module).
+ *
+ * The predicates MIRROR the canonical "is-cleared" semantics used for inclusion
+ * (review-guards.js) — not a broader/looser set — so the restore never diverges
+ * from what the rebuild itself treats as cleared. NOTE: rebuild's
+ * wrongProductionAutoCleared/wrongShowAutoCleared are STRING annotations (and set
+ * the flag to `false`, which is not "empty"), so they are deliberately NOT
+ * treated as clear breadcrumbs here — that matches review-guards.js, which also
+ * ignores them. originalScoreCleared is sticky (never reset); the trade-off is
+ * acceptable because backfill-original-scores.js already skips cleared files, so
+ * a legitimate re-acquire of originalScore does not flow through the restore.
+ */
+const _isEmptyValue = (v) => v === undefined || v === null
+  || (typeof v === 'string' && v.length === 0)
+  || (Array.isArray(v) && v.length === 0);
+
+// rediscover-review-urls.js DELETES wrongProduction/wrongShow (+reasons) to force a
+// fresh re-scrape of a rediscovered URL, recording the prior values in
+// _previousWrongFlags. That deletion is an intentional clear — the classifiers
+// re-derive the flags on the next enrich pass — but without honoring this marker
+// the rebase-restore resurrects the stale flag and rediscover becomes a no-op for
+// flagged reviews (the whole point being to re-scrape wrong_content). Sub-field
+// precise so it only suppresses restore of a flag rediscover actually cleared.
+const _rediscoveredWrongProduction = (d) =>
+  !!(d._previousWrongFlags && d._previousWrongFlags.wrongProduction);
+const _rediscoveredWrongShow = (d) =>
+  !!(d._previousWrongFlags && d._previousWrongFlags.wrongShow);
+
+// Canonical "human cleared wrongProduction" predicate — EXACTLY the triplet used
+// by the rebuild nuclear guard (scripts/rebuild-all-reviews.js ~2041) and
+// isLikelyStaleWrongProduction (scripts/lib/review-guards.js ~815). Do not add
+// wrongProductionAutoCleared (string-typed, flag set false not deleted) or
+// wrongProductionClearedNote (always co-occurs with ManualClear) — that would
+// drift from the canonical predicate. The rediscover reset is the one non-human
+// clear honored here (separate, sub-field-gated signal).
+const _wrongProductionCleared = (d) =>
+  d.wrongProductionManualClear === true ||
+  d.wrongProductionOverride === true ||
+  d.humanReviewedWrongProduction === false ||
+  _rediscoveredWrongProduction(d);
+
+// Reuse the canonical wrongShow-cleared predicate (lazy require keeps this module
+// circular-safe — review-guards.js has no top-level require back to here). It
+// already unions the production-level human-clear signals, which a bespoke copy
+// here previously omitted. Plus the rediscover reset.
+const _wrongShowCleared = (d) => {
+  if (_rediscoveredWrongShow(d)) return true;
+  try {
+    return !!require('./review-guards').wrongShowCleared(d);
+  } catch {
+    // Fallback if review-guards is unavailable in a minimal env — superset of
+    // the production triplet plus the wrongShow-specific manual signals.
+    return d.wrongShowManualClear === true || d.wrongShowOverride === true
+      || _wrongProductionCleared(d);
+  }
+};
+
+const _wrongArticleCleared = (d) =>
+  d.wrongArticleManualClear === true ||
+  d.humanReviewedWrongArticle === false;
+
+const CLEAR_BREADCRUMBS = {
+  duplicateOf: (d) => !_isEmptyValue(d.duplicateClearReason),
+  duplicateReason: (d) => !_isEmptyValue(d.duplicateClearReason),
+  wrongProduction: _wrongProductionCleared,
+  wrongProductionNote: _wrongProductionCleared,
+  wrongProductionReason: _wrongProductionCleared,
+  wrongShow: _wrongShowCleared,
+  wrongShowReason: _wrongShowCleared,
+  wrongShowNote: _wrongShowCleared,
+  wrongFullText: _wrongArticleCleared,
+  wrongAttribution: _wrongArticleCleared,
+  originalScore: (d) => d.originalScoreCleared === true,
+  originalScoreSource: (d) => d.originalScoreCleared === true,
+  originalScoreNormalized: (d) => d.originalScoreCleared === true,
+};
+
+/**
+ * Returns true when `field` is empty in `localData` BECAUSE it was deliberately
+ * cleared (a durable breadcrumb proves it), so a rebase-time restore should NOT
+ * resurrect the committed/remote value. Returns false for fields with no
+ * registered breadcrumb (default to data-loss protection).
+ *
+ * @param {string} field
+ * @param {object} localData - the local/working-tree review record
+ * @returns {boolean}
+ */
+function isIntentionalClear(field, localData) {
+  if (!localData) return false;
+  const pred = CLEAR_BREADCRUMBS[field];
+  return typeof pred === 'function' ? !!pred(localData) : false;
+}
 
 /**
  * Safely write a review JSON file, preserving any existing scored/collected data.
@@ -344,6 +469,11 @@ function safeWriteReview(filePath, newData, options = {}) {
       console.warn(`[review-write-guard] URL collision: ${path.basename(filePath)} shares URL with ${collider} — marking as duplicate`);
       newData.duplicateOf = collider;
       newData.duplicateReason = 'url-collision-detected-at-write';
+      // Clear any stale clear-breadcrumb from a prior heal — this file is now a
+      // live duplicate again, so a leftover duplicateClearReason would lie about
+      // its state (and the push-review-texts restore exception keys on that
+      // breadcrumb). Keep the marker consistent with the live flag. 2026-06-01.
+      newData.duplicateClearReason = null;
     }
   }
 
@@ -866,4 +996,4 @@ function _updateSisterStoresOnRename(srcPath, dstPath) {
   return { llmScoreMoved, pointersUpdated, sisterStoreConflict, sisterStoreError };
 }
 
-module.exports = { safeWriteReview, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, PROTECTED_FIELDS };
+module.exports = { safeWriteReview, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, isIntentionalClear };

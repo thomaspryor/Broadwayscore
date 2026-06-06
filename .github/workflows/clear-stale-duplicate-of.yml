@@ -13,12 +13,23 @@ name: Clear Stale duplicateOf Flags
 # rewritten; this workflow covers the case where the sibling vanishes.
 on:
   schedule:
-    # Weekly on Sundays at 11 AM UTC (after the Sunday morning rebuild storm)
-    - cron: '0 11 * * 0'
+    # Daily at 11:30 AM UTC. Was weekly (Sundays) but stale flags accumulate
+    # between runs faster than that — the test.yml gate ("Audit stale
+    # duplicateOf flags") reads live data state and trips on EVERY push whenever
+    # any flag is outstanding, so a weekly heal left main red most of the week.
+    # Daily heal keeps the gate green without removing its teeth (the gate stays
+    # a hard failure; this just stops slow accumulation). Offset to :30 to avoid
+    # piling onto the contended 11:00 UTC slot (opening-digest, outlet-listing-poller).
+    - cron: '30 11 * * *'
   workflow_dispatch:
     inputs:
       dry_run:
         description: 'Report only, no fix'
+        required: false
+        default: 'false'
+        type: string
+      force_bulk:
+        description: 'Override the >25 surge guard (for a legitimate large backlog cleanup)'
         required: false
         default: 'false'
         type: string
@@ -67,7 +78,14 @@ jobs:
       - name: Apply fix
         if: steps.audit.outputs.status != '0' && inputs.dry_run != 'true'
         run: |
-          node scripts/audit-duplicate-of-url-mismatch.js --fix
+          # --fix refuses >25 clears in one run (surge guard — a spike usually
+          # means a producer regression, not routine drift). For a legitimate
+          # large backlog cleanup, re-run this workflow with force_bulk=true.
+          if [ "${{ inputs.force_bulk }}" = "true" ]; then
+            node scripts/audit-duplicate-of-url-mismatch.js --fix --force-bulk
+          else
+            node scripts/audit-duplicate-of-url-mismatch.js --fix
+          fi
 
       - name: Push to private repo
         if: steps.audit.outputs.status != '0' && inputs.dry_run != 'true'

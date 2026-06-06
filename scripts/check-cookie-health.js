@@ -74,7 +74,7 @@ const CRITICAL_OUTLETS = {
     // registration wall with ~0 extractable body. minBodyChars catches the
     // dead-session case that expiry-date checks miss (2026-05-29: USER cookie
     // had 338d left but the session was dead server-side).
-    testUrl: 'https://www.thestage.co.uk/reviews/1536-review-ambassadors-theatre-london-ava-pickett',
+    testUrl: 'https://www.thestage.co.uk/reviews/a-dolls-house-review-at-the-hudson-theatre-new-york-starring-jessica-chastain',
     authCookies: ['USERSECURE', 'USER'],
     minCookies: 3, // VISITOR + USER + USERSECURE is the floor; AWS LB cookies are bonuses
     minBodyChars: 1200,

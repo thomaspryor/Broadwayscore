@@ -1,7 +1,7 @@
 ---
 name: visual-qa
 version: "1.0.0"
-description: "MANDATORY for any UI change before push. Sweeps localhost at 5 widths (360-1440), takes element-cropped legibility shots (full pixel resolution — NOT thumbnail), runs structural overflow probe (scrollWidth > clientWidth), and (optionally) runs two-model LLM diff review against reference designs. Writes verdict.json with contentHash. ALWAYS run + Read every element crop at full size + share manifest with user BEFORE pushing UI changes. The pre-push hook blocks deploys without APPROVED: <contentHash> from the user in the most recent message."
+description: "MANDATORY for any UI change before push. Sweeps localhost at 5 widths (360-1440), takes element-cropped legibility shots (full pixel resolution — NOT thumbnail), runs structural overflow probe (scrollWidth > clientWidth), and (optionally) runs two-model LLM diff review against reference designs. Writes verdict.json with contentHash. ALWAYS run + Read every element crop at full size + share manifest with user BEFORE pushing UI changes. The pre-push hook blocks deploys until the user gives a plain affirmative (yes/ship it/looks good) in their most recent message — never ask them to copy a hash."
 allowed-tools: Bash, Read, Write
 user-invocable: true
 ---
@@ -55,7 +55,6 @@ Format:
 
 ```
 Visual QA — branch <branch>, URL <url>
-Verdict hash: <hash>
 
 Element crops (full resolution):
   - <path-1> @ 360px  [reads the image]
@@ -69,17 +68,18 @@ LLM review (if --refs):
   - OpenAI: PASS|FAIL — <specific issues>
   - Gemini: PASS|FAIL — <specific issues>
 
-Awaiting your approval. Reply with `APPROVED: <hash>` to push,
-or describe what to fix.
+Look good? Reply "yes" / "ship it" / "looks good" to push, or tell me what to fix.
 ```
 
-### 5. STOP. Wait for the user's explicit `APPROVED: <hash>` reply.
+**DO NOT ask the user to type or copy a hash.** The gate accepts any plain affirmative in their most recent message — bare ship/push/send/deploy verbs in any phrasing all count: "ship it", "ship all four", "ship them", "push it", "send everything", "yes", "lgtm", "looks good", "go ahead", "good to go", "approved". The human glance after seeing the visual IS the safety, the hash never was. Asking a non-technical user to transcribe a 16-char hex string is exactly the friction that was removed; reintroducing it in your phrasing is a regression. Keep the verdict hash out of your reply entirely.
 
-The pre-push hook will block `git push` / `gh pr merge` / wrapped push scripts until the LAST user message contains the literal string `APPROVED: <hash>` matching the current verdict.
+### 5. STOP. Wait for the user's plain affirmative (or change request).
+
+The pre-push hook blocks `git push` / `gh pr merge` / wrapped push scripts until the LAST user message is a clean approval. A plain affirmative is enough; the gate fails safe on negation or conditionals ("looks good but fix X", "yes, wait") so those do NOT unlock.
 
 ## What the user can say to unlock
 
-- `APPROVED: <hash>` — match the contentHash exactly, lower-case hex, no extra characters. Pre-push hook unlocks for this verdict AND records the approval in the local ledger (`.claude/visual-qa/approvals.jsonl`) so a subsequent merge of this commit into main is auto-allowed (no re-run needed).
+- Any plain affirmative — `yes`, `ship it`, `ship all four`, `ship them`, `push it`, `send everything`, `looks good`, `lgtm`, `go ahead`, `good to go`, `approved` — in their most recent message. This is the normal path. (`APPROVED: <hash>` still works for back-compat and is honored strictly per-hash, but never *ask* for it.) Approval is recorded in the local ledger (`.claude/visual-qa/approvals.jsonl`) so a later merge of this commit into main is auto-allowed.
 - `ship immediately for: <reason>` — one-shot override. Use when user wants to skip preview entirely (hotfix, etc.). Consumed after one push; subsequent pushes require fresh approval.
 
 Otherwise the gate is firm. If you genuinely cannot run /visual-qa (cloud sandbox with no Playwright, dev server can't boot due to data issue, etc.), put `NO-VERIFY: <specific reason>` in **the same assistant message** as the `git push` Bash call — the pre-push hook scans the in-flight turn (the message containing the gated tool_use), not the prior turn. **Expect the user to ask why.** Stale NO-VERIFY from earlier turns no longer bypasses the push gate.

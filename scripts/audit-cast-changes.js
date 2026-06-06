@@ -32,6 +32,7 @@ const {
   dedupeByPersonShow,
   normalizeIdentifier,
   noteMatchesClosurePhrase,
+  reconcileClosureDateWithClosingDate,
 } = require('./lib/cast-changes-filters');
 
 const DATA_PATH = path.join(__dirname, '..', 'data', 'cast-changes.json');
@@ -173,12 +174,31 @@ function dropStaleAutoFlagged(events, maxAgeDays = 30) {
   return { events: filtered, dropped };
 }
 
+// Canonical closing dates live in shows.json (broadway.com-audited daily). Build
+// showId -> closingDate so we can reconcile stale closure events. Missing file is
+// tolerated (CI workspaces without private data) — reconciliation simply no-ops.
+function loadClosingDates() {
+  const map = new Map();
+  try {
+    const showsPath = path.join(__dirname, '..', 'data', 'shows.json');
+    const shows = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+    for (const s of shows.shows || []) {
+      if (s.id && s.closingDate) map.set(s.id, s.closingDate);
+    }
+  } catch {
+    /* shows.json absent (CI without private data) — skip reconciliation */
+  }
+  return map;
+}
+
 function main() {
   const raw = fs.readFileSync(DATA_PATH, 'utf8');
   const data = JSON.parse(raw);
+  const closingDates = loadClosingDates();
 
   const report = {
     showsExamined: 0,
+    staleClosureDatesRepaired: 0,
     closuresReclassified: 0,
     departuresReclassifiedAsClosure: 0,
     contradictedClosuresDropped: 0,
@@ -200,6 +220,12 @@ function main() {
     upcoming = reclass.rewritten;
     report.closuresReclassified += reclass.closureGroupCount;
     report.departuresReclassifiedAsClosure += reclass.reclassifiedCount;
+
+    // Reconcile stale closure dates against canonical shows.json closingDate.
+    // A closure event is never updated when the show extends, so it drifts.
+    const recon = reconcileClosureDateWithClosingDate(upcoming, closingDates.get(showId));
+    upcoming = recon.events;
+    report.staleClosureDatesRepaired += recon.repaired;
 
     // Name-variant dedup (e.g. "Joanna 'JoJo' Levesque" + "Joanna Levesque" + smart-quote twin)
     const beforeDedup = upcoming.length;
@@ -262,6 +288,7 @@ function main() {
 
   console.log('Audit summary:');
   console.log(`  Shows examined:                              ${report.showsExamined}`);
+  console.log(`  Stale closure dates repaired (vs shows.json):${report.staleClosureDatesRepaired}`);
   console.log(`  Closure groups reclassified:                 ${report.closuresReclassified}`);
   console.log(`  Per-actor departures collapsed into closure: ${report.departuresReclassifiedAsClosure}`);
   console.log(`  Contradicted closures dropped (stale):       ${report.contradictedClosuresDropped}`);
@@ -294,6 +321,7 @@ function main() {
   }
 
   const totalIssues =
+    report.staleClosureDatesRepaired +
     report.departuresReclassifiedAsClosure +
     report.contradictedClosuresDropped +
     report.contradictedArrivalsDropped +

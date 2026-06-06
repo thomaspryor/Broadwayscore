@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-05-28T05:45:43.840Z",
+    "lastUpdated": "2026-06-05T15:34:09.434Z",
     "version": "2.1.0",
     "lastChange": "T3->T4 demotion of 38 long-tail/stale outlets"
   },
@@ -916,7 +916,7 @@
     },
     "financialtimes": {
       "displayName": "Financial Times",
-      "tier": 2,
+      "tier": 1,
       "isDualMarket": true,
       "aliases": [
         "financialtimes",
@@ -1392,7 +1392,8 @@
         "the philadelphia inquirer",
         "philly inquirer",
         "the-inquirer",
-        "philadelpia-inquirer"
+        "philadelpia-inquirer",
+        "philadelphiainquirer"
       ],
       "domain": "inquirer.com",
       "domainAliases": [
@@ -8265,7 +8266,7 @@
     },
     "daily-mail": {
       "displayName": "Daily Mail",
-      "tier": 1,
+      "tier": 2,
       "region": "london",
       "isDualMarket": true,
       "aliases": [
@@ -9745,6 +9746,22 @@
         "nitelifeexchange-com"
       ],
       "domain": "nitelifeexchange.com"
+    },
+    "ctvoice-com": {
+      "displayName": "Ctvoice Com",
+      "tier": 3,
+      "aliases": [
+        "ctvoice-com"
+      ],
+      "domain": "ctvoice.com"
+    },
+    "ctvoice": {
+      "displayName": "Ctvoice",
+      "tier": 3,
+      "aliases": [
+        "ctvoice"
+      ],
+      "domain": "ctvoice.com"
     }
   },
   "_aliasIndex": {

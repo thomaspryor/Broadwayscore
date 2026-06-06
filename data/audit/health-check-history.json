@@ -1,6 +1,6 @@
 {
-  "lastRun": "2026-05-30T07:54:04.721Z",
-  "consecutiveErrorDays": 6,
+  "lastRun": "2026-06-06T07:57:10.903Z",
+  "consecutiveErrorDays": 13,
   "results": [
     {
       "name": "Freshness: reviews.json",
@@ -25,7 +25,7 @@
     {
       "name": "Freshness: commercial.json",
       "status": "pass",
-      "message": "5d old"
+      "message": "6d old"
     },
     {
       "name": "Freshness: critic-consensus.json",
@@ -39,8 +39,8 @@
     },
     {
       "name": "Freshness: cast-changes.json",
-      "status": "pass",
-      "message": "1d old"
+      "status": "warn",
+      "message": "3d old (warn threshold: 3d)"
     },
     {
       "name": "Freshness: nyt-critics-picks.json",
@@ -55,7 +55,7 @@
     {
       "name": "Freshness: social-pulse/_budget.json",
       "status": "pass",
-      "message": "3d old"
+      "message": "5d old"
     },
     {
       "name": "Freshness: tony-win-probabilities.json",
@@ -75,7 +75,7 @@
     {
       "name": "Push verify: shows.json",
       "status": "pass",
-      "message": "Data synced (23h old, workflow 4d ago)"
+      "message": "Data synced (23h old, workflow 11d ago)"
     },
     {
       "name": "Sync: review-texts vs reviews.json",
@@ -88,24 +88,29 @@
       "message": "40 open shows all have reviews and grosses"
     },
     {
+      "name": "Sync: social-pulse per-show freshness",
+      "status": "pass",
+      "message": "85 running BW/WE shows — no stale social-pulse files"
+    },
+    {
       "name": "Sync: phantom show detection",
       "status": "pass",
       "message": "No phantom show candidates found"
     },
     {
       "name": "Sync: cast coverage",
-      "status": "pass",
-      "message": "40 active Broadway shows all have cast data"
+      "status": "warn",
+      "message": "2 empty cast: The Balusters, Oh, Mary!"
     },
     {
       "name": "Sync: baseline drift",
       "status": "pass",
-      "message": "2631 shows, 157 open, 18055 reviews (all at or above baseline)"
+      "message": "2650 shows, 157 open, 18217 reviews (all at or above baseline)"
     },
     {
       "name": "Sync: grosses weekEnding",
       "status": "pass",
-      "message": "weekEnding 5/17/2026 (13d ago)"
+      "message": "weekEnding 5/31/2026 (6d ago)"
     },
     {
       "name": "Pipeline: rebuild-reviews",
@@ -115,7 +120,7 @@
     {
       "name": "Pipeline: update-show-status",
       "status": "pass",
-      "message": "Last success 22h ago"
+      "message": "Last success 23h ago"
     },
     {
       "name": "Pipeline: collect-review-texts",
@@ -124,23 +129,23 @@
     },
     {
       "name": "Pipeline: weekly-grosses",
-      "status": "pass",
-      "message": "Last success 4d ago"
-    },
-    {
-      "name": "Pipeline: weekly-integrity",
       "status": "warn",
       "message": "Last success 11d ago (threshold: 10d)"
     },
     {
-      "name": "Pipeline: test",
+      "name": "Pipeline: weekly-integrity",
       "status": "pass",
-      "message": "Last success 17h ago"
+      "message": "Last success 6d ago"
+    },
+    {
+      "name": "Pipeline: test",
+      "status": "warn",
+      "message": "Last success 3d ago (threshold: 2d)"
     },
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.9% scored (18055/18250)"
+      "message": "98.8% scored (18217/18441)"
     },
     {
       "name": "Cookies: expiration",
@@ -149,13 +154,13 @@
     },
     {
       "name": "CWV: performance",
-      "status": "pass",
-      "message": "All metrics within thresholds (6d ago)"
+      "status": "warn",
+      "message": "Threshold violations: Mobile LCP 6.0s"
     },
     {
       "name": "SEO: health",
-      "status": "error",
-      "message": "1 critical SEO anomalies: "
+      "status": "pass",
+      "message": "Healthy (6d ago)"
     },
     {
       "name": "Cron: Update Show Status",
@@ -175,7 +180,7 @@
     {
       "name": "Cron: LLM Ensemble Score",
       "status": "pass",
-      "message": "0h ago, success"
+      "message": "0h ago, "
     },
     {
       "name": "Cron failed: Test Suite",
@@ -185,12 +190,12 @@
     {
       "name": "Cron: Opening Night Broadcast",
       "status": "pass",
-      "message": "1h ago, success"
+      "message": "2h ago, success"
     },
     {
-      "name": "Cron failed: Update Lottery/Rush",
-      "status": "warn",
-      "message": "Last run failed (2d ago)"
+      "name": "Cron: Update Lottery/Rush",
+      "status": "pass",
+      "message": "2d ago, success"
     },
     {
       "name": "Cron: Weekly Grosses",
@@ -208,9 +213,9 @@
       "message": "7h ago, success"
     },
     {
-      "name": "Cron failed: Update Cast Changes",
-      "status": "warn",
-      "message": "Last run failed (3d ago)"
+      "name": "Cron: Update Cast Changes",
+      "status": "pass",
+      "message": "3d ago, success"
     },
     {
       "name": "Cron: NYT Critics Picks",
@@ -225,7 +230,7 @@
     {
       "name": "Cron: Update Social Pulse",
       "status": "pass",
-      "message": "3d ago, success"
+      "message": "5d ago, success"
     },
     {
       "name": "Secrets: health",
@@ -235,7 +240,7 @@
     {
       "name": "Credits: ScrapingBee",
       "status": "pass",
-      "message": "1369k credits left (46%) · 69k/day burn · lasts until renewal Jun 5"
+      "message": "950k credits left (95%) · renews Jul 5 (burn rate unavailable — <5 days into cycle)"
     }
   ],
   "lastCleanStreak": 0

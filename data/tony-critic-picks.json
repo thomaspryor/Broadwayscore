@@ -3,7 +3,7 @@
     "description": "Critic Tony Award winner predictions by category. Show categories keyed by showId; acting categories keyed by person name (case-insensitive match).",
     "season": "2025-26",
     "ceremonyYear": 2026,
-    "updated": "2026-05-23"
+    "updated": "2026-06-06"
   },
   "sources": [
     {
@@ -21,75 +21,433 @@
       "shortName": "VAR",
       "color": "#7b2d8b",
       "url": "https://variety.com/lists/tonys-awards-winner-predictions-2026/"
+    },
+    {
+      "id": "culturesauce",
+      "outlet": "Culture Sauce",
+      "critic": "Thom Geier",
+      "shortName": "CS",
+      "color": "#e0a93b",
+      "url": "https://culturesauce.com/tony-award-winner-predictions-2026/"
+    },
+    {
+      "id": "nytg",
+      "outlet": "New York Theatre Guide",
+      "critic": "Mickey-Jo Theatre",
+      "shortName": "NYTG",
+      "color": "#1a1a1a",
+      "url": "https://www.newyorktheatreguide.com/theatre-news/news/the-tony-awards-2026-who-will-and-who-should-win"
+    },
+    {
+      "id": "ew",
+      "outlet": "Entertainment Weekly",
+      "critic": "Dalton Ross",
+      "shortName": "EW",
+      "color": "#e50914",
+      "url": "https://ew.com/2026-tony-awards-predictions-who-should-and-will-win-11984365"
+    },
+    {
+      "id": "nysun",
+      "outlet": "The New York Sun",
+      "critic": "Elysa Gardner",
+      "shortName": "SUN",
+      "color": "#c5a253",
+      "url": "https://www.nysun.com/article/predicting-the-79th-tony-awards"
+    },
+    {
+      "id": "theatermania",
+      "outlet": "TheaterMania",
+      "critic": "TheaterMania Staff",
+      "shortName": "TM",
+      "color": "#7c3aed",
+      "url": "https://www.theatermania.com/news/predictions-which-leading-actors-will-win-a-tony-award-in-2026_1839069/"
+    },
+    {
+      "id": "slant",
+      "outlet": "Slant Magazine",
+      "critic": "Dan Rubins",
+      "shortName": "SLANT",
+      "color": "#ff6b6b",
+      "url": "https://www.slantmagazine.com/awards/tony-awards-2026-winner-predictions/"
+    },
+    {
+      "id": "timeout",
+      "outlet": "Time Out New York",
+      "critic": "Adam Feldman",
+      "shortName": "TO",
+      "color": "#e31b23",
+      "url": "https://www.timeout.com/newyork/theater/complete-2026-tony-award-predictions"
+    },
+    {
+      "id": "thr",
+      "outlet": "The Hollywood Reporter",
+      "critic": "Ben Zauzmer",
+      "shortName": "THR",
+      "color": "#000000",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/tony-awards-predictions-2026-1236611539/"
+    },
+    {
+      "id": "deadline",
+      "outlet": "Deadline",
+      "critic": "Greg Evans",
+      "shortName": "DL",
+      "color": "#000000",
+      "url": "https://deadline.com/lists/tony-awards-predictions-winners-2026/"
+    },
+    {
+      "id": "cityguide",
+      "outlet": "City Guide New York",
+      "critic": "Griffin Miller",
+      "shortName": "CG",
+      "color": "#2563eb",
+      "url": "https://www.cityguideny.com/article/tony-awards-ballot-winner-predictions-2026"
+    },
+    {
+      "id": "vf",
+      "outlet": "Vanity Fair",
+      "critic": "Little Gold Men",
+      "shortName": "VF",
+      "color": "#000000",
+      "url": "https://www.vanityfair.com/culture/story/tonys-2026-predictions-little-gold-men"
+    },
+    {
+      "id": "elle",
+      "outlet": "Elle",
+      "critic": "Samuel Maude",
+      "shortName": "ELLE",
+      "color": "#000000",
+      "url": "https://www.elle.com/culture/theater/a71349678/tony-awards-predictions-2026/"
+    },
+    {
+      "id": "bg",
+      "outlet": "The Boston Globe",
+      "critic": "Christopher Wallenberg",
+      "shortName": "BG",
+      "color": "#000000",
+      "url": "https://www.bostonglobe.com/2026/06/04/arts/tony-award-winner-predictions/"
+    },
+    {
+      "id": "nytpaulson",
+      "outlet": "The New York Times",
+      "critic": "Michael Paulson",
+      "shortName": "NYT",
+      "color": "#1a1a1a",
+      "url": "https://www.nytimes.com/2026/06/05/theater/tony-awards-2026-predictions.html"
+    },
+    {
+      "id": "chitrib",
+      "outlet": "Chicago Tribune",
+      "critic": "Chris Jones",
+      "shortName": "CHI",
+      "color": "#00549f",
+      "url": "https://www.chicagotribune.com/2026/06/04/tony-awards-guide-2026/"
+    },
+    {
+      "id": "thewrap",
+      "outlet": "The Wrap",
+      "critic": "Robert Hofler",
+      "shortName": "WRAP",
+      "color": "#1a1a1a",
+      "url": "https://www.thewrap.com/industry-news/awards/tony-awards-2026-winner-predictions-who-should-win/"
+    },
+    {
+      "id": "parade",
+      "outlet": "Parade",
+      "critic": "Jessica Sager",
+      "shortName": "PAR",
+      "color": "#d6336c",
+      "url": "https://parade.com/entertainment/tony-awards-predictions-winners-2026"
     }
   ],
   "picks": {
     "Best Musical": {
       "nyt": "the-lost-boys-2026",
-      "variety": "two-strangers-bway-2025"
+      "variety": "two-strangers-bway-2025",
+      "culturesauce": "schmigadoon-2026",
+      "nytg": "schmigadoon-2026",
+      "ew": "the-lost-boys-2026",
+      "nysun": "schmigadoon-2026",
+      "theatermania": "the-lost-boys-2026",
+      "slant": "the-lost-boys-2026",
+      "timeout": "the-lost-boys-2026",
+      "thr": "schmigadoon-2026",
+      "deadline": "the-lost-boys-2026",
+      "cityguide": "the-lost-boys-2026",
+      "elle": "schmigadoon-2026",
+      "bg": "schmigadoon-2026",
+      "nytpaulson": "schmigadoon-2026",
+      "chitrib": "the-lost-boys-2026",
+      "thewrap": "schmigadoon-2026",
+      "parade": "the-lost-boys-2026"
     },
     "Best Play": {
       "nyt": "giant-2026",
-      "variety": "liberation-2025"
+      "variety": "liberation-2025",
+      "culturesauce": "liberation-2025",
+      "nytg": "giant-2026",
+      "ew": "giant-2026",
+      "nysun": "liberation-2025",
+      "theatermania": "liberation-2025",
+      "slant": "liberation-2025",
+      "timeout": "liberation-2025",
+      "thr": "liberation-2025",
+      "deadline": "liberation-2025",
+      "cityguide": "liberation-2025",
+      "vf": "liberation-2025",
+      "elle": "liberation-2025",
+      "bg": "liberation-2025",
+      "nytpaulson": "liberation-2025",
+      "thewrap": "liberation-2025",
+      "parade": "liberation-2025"
     },
     "Best Revival of a Musical": {
       "nyt": "ragtime-2025",
-      "variety": "ragtime-2025"
+      "variety": "ragtime-2025",
+      "culturesauce": "cats-the-jellicle-ball-2026",
+      "nytg": "ragtime-2025",
+      "ew": "ragtime-2025",
+      "nysun": "ragtime-2025",
+      "theatermania": "cats-the-jellicle-ball-2026",
+      "slant": "cats-the-jellicle-ball-2026",
+      "timeout": "cats-the-jellicle-ball-2026",
+      "thr": "ragtime-2025",
+      "deadline": "ragtime-2025",
+      "cityguide": "cats-the-jellicle-ball-2026",
+      "elle": "ragtime-2025",
+      "bg": "ragtime-2025",
+      "nytpaulson": "cats-the-jellicle-ball-2026",
+      "chitrib": "ragtime-2025",
+      "thewrap": "ragtime-2025",
+      "parade": "ragtime-2025"
     },
     "Best Revival of a Play": {
       "nyt": "death-of-a-salesman-2026",
-      "variety": "death-of-a-salesman-2026"
+      "variety": "death-of-a-salesman-2026",
+      "culturesauce": "death-of-a-salesman-2026",
+      "nytg": "death-of-a-salesman-2026",
+      "ew": "death-of-a-salesman-2026",
+      "nysun": "death-of-a-salesman-2026",
+      "theatermania": "death-of-a-salesman-2026",
+      "slant": "death-of-a-salesman-2026",
+      "timeout": "death-of-a-salesman-2026",
+      "thr": "death-of-a-salesman-2026",
+      "deadline": "death-of-a-salesman-2026",
+      "cityguide": "death-of-a-salesman-2026",
+      "vf": "death-of-a-salesman-2026",
+      "elle": "death-of-a-salesman-2026",
+      "bg": "death-of-a-salesman-2026",
+      "nytpaulson": "death-of-a-salesman-2026",
+      "thewrap": "death-of-a-salesman-2026",
+      "parade": "death-of-a-salesman-2026"
     },
     "Best Actor in a Musical": {
       "nyt": "Joshua Henry",
-      "variety": "Joshua Henry"
+      "variety": "Joshua Henry",
+      "culturesauce": "Joshua Henry",
+      "nytg": "Joshua Henry",
+      "ew": "Joshua Henry",
+      "nysun": "Joshua Henry",
+      "theatermania": "Joshua Henry",
+      "slant": "Joshua Henry",
+      "timeout": "Joshua Henry",
+      "thr": "Joshua Henry",
+      "deadline": "Joshua Henry",
+      "cityguide": "Joshua Henry",
+      "elle": "Joshua Henry",
+      "bg": "Joshua Henry",
+      "nytpaulson": "Joshua Henry",
+      "thewrap": "Joshua Henry",
+      "parade": "Joshua Henry"
     },
     "Best Actress in a Musical": {
       "nyt": "Caissie Levy",
-      "variety": "Caissie Levy"
+      "variety": "Caissie Levy",
+      "culturesauce": "Caissie Levy",
+      "nytg": "Caissie Levy",
+      "ew": "Caissie Levy",
+      "nysun": "Caissie Levy",
+      "theatermania": "Caissie Levy",
+      "slant": "Marla Mindelle",
+      "timeout": "Caissie Levy",
+      "thr": "Caissie Levy",
+      "deadline": "Caissie Levy",
+      "cityguide": "Caissie Levy",
+      "elle": "Caissie Levy",
+      "bg": "Caissie Levy",
+      "nytpaulson": "Caissie Levy",
+      "thewrap": "Caissie Levy",
+      "parade": "Caissie Levy"
     },
     "Best Actor in a Play": {
       "nyt": "Nathan Lane",
-      "variety": "Nathan Lane"
+      "variety": "Nathan Lane",
+      "culturesauce": "Nathan Lane",
+      "nytg": "John Lithgow",
+      "ew": "Nathan Lane",
+      "nysun": "John Lithgow",
+      "theatermania": "John Lithgow",
+      "slant": "John Lithgow",
+      "timeout": "John Lithgow",
+      "thr": "John Lithgow",
+      "deadline": "Nathan Lane",
+      "cityguide": "John Lithgow",
+      "vf": "John Lithgow",
+      "elle": "Nathan Lane",
+      "bg": "John Lithgow",
+      "nytpaulson": "John Lithgow",
+      "thewrap": "John Lithgow",
+      "parade": "John Lithgow"
     },
     "Best Actress in a Play": {
       "nyt": "Lesley Manville",
-      "variety": "Lesley Manville"
+      "variety": "Lesley Manville",
+      "culturesauce": "Lesley Manville",
+      "nytg": "Lesley Manville",
+      "ew": "Lesley Manville",
+      "nysun": "Lesley Manville",
+      "theatermania": "Lesley Manville",
+      "slant": "Lesley Manville",
+      "timeout": "Lesley Manville",
+      "thr": "Lesley Manville",
+      "deadline": "Lesley Manville",
+      "cityguide": "Lesley Manville",
+      "elle": "Lesley Manville",
+      "bg": "Lesley Manville",
+      "nytpaulson": "Lesley Manville",
+      "thewrap": "Lesley Manville",
+      "parade": "Lesley Manville"
     },
     "Best Featured Actor in a Musical": {
       "nyt": "André De Shields",
-      "variety": "André De Shields"
+      "variety": "André De Shields",
+      "culturesauce": "André De Shields",
+      "nytg": "André De Shields",
+      "ew": "André De Shields",
+      "slant": "Ben Levi Ross",
+      "timeout": "Ali Louis Bourzgui",
+      "thr": "André De Shields",
+      "deadline": "André De Shields",
+      "cityguide": "André De Shields",
+      "elle": "André De Shields",
+      "thewrap": "André De Shields",
+      "parade": "André De Shields"
     },
     "Best Featured Actress in a Musical": {
       "nyt": "Shoshana Bean",
-      "variety": "Shoshana Bean"
+      "variety": "Shoshana Bean",
+      "culturesauce": "Shoshana Bean",
+      "nytg": "Shoshana Bean",
+      "ew": "Shoshana Bean",
+      "slant": "Nichelle Lewis",
+      "timeout": "Shoshana Bean",
+      "thr": "Shoshana Bean",
+      "deadline": "Shoshana Bean",
+      "cityguide": "Shoshana Bean",
+      "elle": "Shoshana Bean",
+      "thewrap": "Shoshana Bean",
+      "parade": "Shoshana Bean"
     },
     "Best Featured Actor in a Play": {
       "nyt": "Alden Ehrenreich",
-      "variety": "Danny Burstein"
+      "variety": "Danny Burstein",
+      "culturesauce": "Alden Ehrenreich",
+      "nytg": "Alden Ehrenreich",
+      "ew": "Christopher Abbott",
+      "slant": "Alden Ehrenreich",
+      "timeout": "Alden Ehrenreich",
+      "thr": "Alden Ehrenreich",
+      "deadline": "Alden Ehrenreich",
+      "cityguide": "Alden Ehrenreich",
+      "elle": "Alden Ehrenreich",
+      "thewrap": "Alden Ehrenreich",
+      "parade": "Alden Ehrenreich"
     },
     "Best Featured Actress in a Play": {
-      "variety": "Laurie Metcalf"
+      "variety": "Laurie Metcalf",
+      "culturesauce": "Laurie Metcalf",
+      "nytg": "Laurie Metcalf",
+      "ew": "Laurie Metcalf",
+      "slant": "Laurie Metcalf",
+      "timeout": "Laurie Metcalf",
+      "thr": "Laurie Metcalf",
+      "deadline": "Laurie Metcalf",
+      "cityguide": "Laurie Metcalf",
+      "elle": "Laurie Metcalf",
+      "chitrib": "Laurie Metcalf",
+      "thewrap": "June Squibb",
+      "parade": "Laurie Metcalf"
     },
     "Best Direction of a Musical": {
       "nyt": "the-lost-boys-2026",
-      "variety": "cats-the-jellicle-ball-2026"
+      "variety": "cats-the-jellicle-ball-2026",
+      "culturesauce": "cats-the-jellicle-ball-2026",
+      "nytg": "ragtime-2025",
+      "nysun": "ragtime-2025",
+      "slant": "cats-the-jellicle-ball-2026",
+      "timeout": "cats-the-jellicle-ball-2026",
+      "thr": "cats-the-jellicle-ball-2026",
+      "deadline": "cats-the-jellicle-ball-2026",
+      "cityguide": "ragtime-2025",
+      "elle": "cats-the-jellicle-ball-2026",
+      "thewrap": "cats-the-jellicle-ball-2026",
+      "parade": "cats-the-jellicle-ball-2026"
     },
     "Best Direction of a Play": {
       "nyt": "death-of-a-salesman-2026",
-      "variety": "liberation-2025"
+      "variety": "liberation-2025",
+      "culturesauce": "death-of-a-salesman-2026",
+      "nytg": "death-of-a-salesman-2026",
+      "nysun": "liberation-2025",
+      "slant": "death-of-a-salesman-2026",
+      "timeout": "death-of-a-salesman-2026",
+      "thr": "death-of-a-salesman-2026",
+      "deadline": "death-of-a-salesman-2026",
+      "cityguide": "death-of-a-salesman-2026",
+      "elle": "death-of-a-salesman-2026",
+      "thewrap": "death-of-a-salesman-2026",
+      "parade": "death-of-a-salesman-2026"
     },
     "Best Choreography": {
       "nyt": "schmigadoon-2026",
-      "variety": "cats-the-jellicle-ball-2026"
+      "variety": "cats-the-jellicle-ball-2026",
+      "culturesauce": "cats-the-jellicle-ball-2026",
+      "nysun": "cats-the-jellicle-ball-2026",
+      "slant": "cats-the-jellicle-ball-2026",
+      "timeout": "cats-the-jellicle-ball-2026",
+      "thr": "schmigadoon-2026",
+      "cityguide": "cats-the-jellicle-ball-2026",
+      "elle": "cats-the-jellicle-ball-2026",
+      "parade": "cats-the-jellicle-ball-2026"
     },
     "Best Book of a Musical": {
       "nyt": "schmigadoon-2026",
-      "variety": "two-strangers-bway-2025"
+      "variety": "two-strangers-bway-2025",
+      "culturesauce": "schmigadoon-2026",
+      "nytg": "two-strangers-bway-2025",
+      "nysun": "schmigadoon-2026",
+      "slant": "schmigadoon-2026",
+      "timeout": "schmigadoon-2026",
+      "thr": "schmigadoon-2026",
+      "deadline": "two-strangers-bway-2025",
+      "cityguide": "schmigadoon-2026",
+      "elle": "schmigadoon-2026",
+      "thewrap": "schmigadoon-2026",
+      "parade": "schmigadoon-2026"
     },
     "Best Original Score": {
       "nyt": "two-strangers-bway-2025",
-      "variety": "two-strangers-bway-2025"
+      "variety": "two-strangers-bway-2025",
+      "culturesauce": "two-strangers-bway-2025",
+      "nytg": "schmigadoon-2026",
+      "nysun": "two-strangers-bway-2025",
+      "slant": "two-strangers-bway-2025",
+      "timeout": "two-strangers-bway-2025",
+      "thr": "the-lost-boys-2026",
+      "deadline": "the-lost-boys-2026",
+      "cityguide": "two-strangers-bway-2025",
+      "elle": "two-strangers-bway-2025",
+      "thewrap": "schmigadoon-2026",
+      "parade": "the-lost-boys-2026"
     }
   }
 }

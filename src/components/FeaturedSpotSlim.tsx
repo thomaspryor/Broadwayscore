@@ -1,4 +1,7 @@
+'use client';
+
 import Link from 'next/link';
+import { trackPromoClick } from '@/lib/promo-tracking';
 
 type Accent = 'gold' | 'btc';
 
@@ -15,6 +18,8 @@ interface FeaturedSpotSlimProps {
   href: string;
   accent?: Accent;
   stat: FeaturedSpotSlimStat;
+  /** Identifier for analytics (placement + campaign). Required to track clicks. */
+  trackingId?: string;
 }
 
 const ACCENT_DOT: Record<Accent, string> = {
@@ -76,13 +81,20 @@ export default function FeaturedSpotSlim({
   href,
   accent = 'gold',
   stat,
+  trackingId,
 }: FeaturedSpotSlimProps) {
+  const handleClick = () => {
+    if (!trackingId) return;
+    trackPromoClick(trackingId, { variant: 'featured_spot_slim', href, accent });
+  };
+
   return (
     <section aria-label={`Featured: ${title}`} className="mb-4 sm:mb-6">
       <div className="group relative overflow-hidden rounded-card bg-surface-raised border border-white/5 shadow-card transition-all duration-200 hover:border-white/10 hover:shadow-card-hover">
         <Link
           href={href}
           prefetch={false}
+          onClick={handleClick}
           aria-label={`${title} — ${ctaLabel}`}
           className="absolute inset-0 z-20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface rounded-card"
         >

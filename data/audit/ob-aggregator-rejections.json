@@ -1,0 +1,49 @@
+{
+  "generatedAt": "2026-05-31T14:38:35.609Z",
+  "counts": {
+    "accepted": 1,
+    "rejected": 6,
+    "byReason": {
+      "low-confidence-existing-match": 5,
+      "placeholder-venue-no-theater": 1
+    }
+  },
+  "rejected": [
+    {
+      "url": "https://playbill.com/article/weekly-schedule-of-current-broadway-shows",
+      "slug": "weekly-schedule-of-current-broadway-shows",
+      "source": "playbill-verdict",
+      "reason": "low-confidence-existing-match"
+    },
+    {
+      "url": "https://playbill.com/article/broadway-rush-lottery-and-standing-room-only-policies-com-116003",
+      "slug": "broadway-rush-lottery-and-standing-room-only-policies-com-116003",
+      "source": "playbill-verdict",
+      "reason": "low-confidence-existing-match"
+    },
+    {
+      "url": "https://playbill.com/article/schedule-of-upcoming-and-announced-broadway-shows",
+      "slug": "schedule-of-upcoming-and-announced-broadway-shows",
+      "source": "playbill-verdict",
+      "reason": "low-confidence-existing-match"
+    },
+    {
+      "url": "https://playbill.com/article/playbills-ultimate-guide-to-broadway-ticket-buying",
+      "slug": "playbills-ultimate-guide-to-broadway-ticket-buying",
+      "source": "playbill-verdict",
+      "reason": "low-confidence-existing-match"
+    },
+    {
+      "url": "https://playbill.com/article/broadway-real-estate",
+      "slug": "broadway-real-estate",
+      "source": "playbill-verdict",
+      "reason": "low-confidence-existing-match"
+    },
+    {
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-CELEBRITY-AUTOPBIOGRAPHY-On-Broadway-20260518",
+      "slug": "Review-Roundup-CELEBRITY-AUTOPBIOGRAPHY-On-Broadway-20260518",
+      "source": "bww-roundup",
+      "reason": "placeholder-venue-no-theater"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 {
   "system": "freshness",
-  "status": "pass",
-  "lastChecked": "2026-05-30T07:54:04.722Z",
+  "status": "warn",
+  "lastChecked": "2026-06-06T07:57:10.905Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -29,7 +29,7 @@
     {
       "name": "Freshness: commercial.json",
       "status": "pass",
-      "message": "5d old"
+      "message": "6d old"
     },
     {
       "name": "Freshness: critic-consensus.json",
@@ -43,8 +43,8 @@
     },
     {
       "name": "Freshness: cast-changes.json",
-      "status": "pass",
-      "message": "1d old"
+      "status": "warn",
+      "message": "3d old (warn threshold: 3d)"
     },
     {
       "name": "Freshness: nyt-critics-picks.json",
@@ -59,7 +59,7 @@
     {
       "name": "Freshness: social-pulse/_budget.json",
       "status": "pass",
-      "message": "3d old"
+      "message": "5d old"
     },
     {
       "name": "Freshness: tony-win-probabilities.json",

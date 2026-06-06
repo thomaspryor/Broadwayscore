@@ -23,6 +23,7 @@ import awardsData from '../../data/awards.json';
 import criticPicksRawData from '../../data/tony-critic-picks.json';
 import tonyLosoStatsData from '../../data/tony-loso-stats.json';
 import gdComparisonData from '../../data/analysis/gd-vs-broadwayscore.json';
+import frozenAudienceData from '../../data/tony-frozen-audience-grades.json';
 
 type CriticPicksFile = { picks: Record<string, Record<string, string>> };
 
@@ -485,7 +486,22 @@ export interface IneligibleShow {
  * grade (which blends 5 sources by reviewCount). These two have the most
  * consistent coverage across the 11-season backtest window.
  */
+/**
+ * Frozen audience grades for shows in COMPLETED Tony seasons. Once a season is
+ * over, its nominees' audience grades are snapshotted here (oldest value we
+ * have, closest to ceremony time) so post-ceremony rating drift can no longer
+ * re-rank past seasons or move the published track-record accuracy. New ratings
+ * of a years-old show are irrelevant to that season's Tony race. The current
+ * season is intentionally absent — it stays on live data until it completes,
+ * then gets frozen by scripts/freeze-tony-audience-grades.ts. See that script.
+ */
+const FROZEN_TONY_AUDIENCE: Record<string, { grade: number; season: string }> =
+  (frozenAudienceData as { grades?: Record<string, { grade: number; season: string }> }).grades ?? {};
+
 export function computeTonyAudienceGrade(showId: string): number | null {
+  const frozen = FROZEN_TONY_AUDIENCE[showId];
+  if (frozen && typeof frozen.grade === 'number') return frozen.grade;
+
   const buzz = getAudienceBuzz(showId);
   if (!buzz) return null;
   const ss = buzz.sources?.showScore?.score;
@@ -2069,6 +2085,22 @@ export function isTonyPromoActive(now: Date = new Date(), sunsetDays = 2): boole
   if (!ceremonyDate) return true;
   const sunsetMs = new Date(`${ceremonyDate}T23:59:59Z`).getTime() + sunsetDays * 24 * 60 * 60 * 1000;
   return now.getTime() <= sunsetMs;
+}
+
+/**
+ * Beat the Critics promo activity gate. BTC entries close per official rules
+ * at 11:59 PM Eastern Time the night BEFORE the ceremony (≈ ceremonyDate
+ * 03:59 UTC). Returns true only while entries are still being accepted.
+ * Falls back to "active" if ceremony date is unknown.
+ */
+export function isBtcPromoActive(now: Date = new Date()): boolean {
+  const current = getTonySeasonWindow();
+  const record = tonySeasonForCeremonyYear(current.ceremonyYear);
+  const ceremonyDate = record?.ceremonyDate;
+  if (!ceremonyDate) return true;
+  // 11:59 PM Eastern (EDT = UTC-4 in June) = ceremony day 03:59 UTC
+  const deadlineMs = new Date(`${ceremonyDate}T03:59:59Z`).getTime();
+  return now.getTime() <= deadlineMs;
 }
 
 // --- Historical Winners ---

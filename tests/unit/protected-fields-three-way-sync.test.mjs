@@ -46,7 +46,7 @@ function loadActionPushProtected() {
   const text = fs.readFileSync(yamlPath, 'utf8');
 
   // The action must require PROTECTED_FIELDS from review-write-guard.js.
-  if (!/PROTECTED_FIELDS\s*\}\s*=\s*require\(/.test(text)) {
+  if (!/\bPROTECTED_FIELDS\b[^}]*\}\s*=\s*require\(/.test(text)) {
     throw new Error(
       'action.yml must require { PROTECTED_FIELDS } from scripts/lib/review-write-guard.js (S2-T2 unification)'
     );

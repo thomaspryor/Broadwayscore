@@ -75,6 +75,7 @@ interface HomePageClientProps {
   tonyTrackRecord?: { pct: number; hits: number; cells: number; seasons: number };
   /** Whether the homepage Tony promo should render (auto-hides post-ceremony) */
   tonyPromoActive?: boolean;
+  btcPromoActive?: boolean;
 }
 
 // URL parameter values
@@ -214,7 +215,7 @@ function FeaturedRow({ title, shows, viewAllHref, minCount = 4 }: { title: strin
 }
 
 // Inner component that uses searchParams
-function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [], westEndShows = [], totalShows, totalReviews, totalCritics = 0, totalOutlets = 0, skipHero, skipFirstMusicals, featuredRows = [], marketOpenCounts, awardWinnerSets, tonyTrackRecord, tonyPromoActive }: HomePageClientProps) {
+function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [], westEndShows = [], totalShows, totalReviews, totalCritics = 0, totalOutlets = 0, skipHero, skipFirstMusicals, featuredRows = [], marketOpenCounts, awardWinnerSets, tonyTrackRecord, tonyPromoActive, btcPromoActive }: HomePageClientProps) {
   const initialSearchParams = useSearchParams();
 
   // Local state for instant updates (no full-page reload)
@@ -869,6 +870,23 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
                     { value: `${tonyTrackRecord.seasons}`, label: 'seasons' },
                     { value: `${tonyTrackRecord.hits}/${tonyTrackRecord.cells}`, label: 'matched' },
                   ]}
+                  trackingId="homepage_off_broadway_below_tony_predictions"
+                />
+              )}
+              {row.title === 'Tony Winning Shows' && btcPromoActive && (
+                <FeaturedSpot
+                  eyebrow="Beat the Critics"
+                  title="Think you know Broadway better than the critics?"
+                  description="Pick the Tony winners against our model and the top critics. One entry wins a $200 TodayTix gift card."
+                  ctaLabel="Make your picks"
+                  href="/beat-the-critics"
+                  accent="btc"
+                  stat={{ value: '$200', label: 'TodayTix gift card', compactLabel: 'Prize' }}
+                  secondary={[
+                    { value: '26', label: 'categories' },
+                    { value: 'Jun 7', label: 'ceremony' },
+                  ]}
+                  trackingId="homepage_tony_winning_below_btc"
                 />
               )}
             </div>

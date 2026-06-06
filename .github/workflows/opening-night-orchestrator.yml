@@ -374,7 +374,12 @@ jobs:
             esac
           fi
 
-          # skip_serp=true when SB credits < 15%; auto-clears when credits renew
+          # skip_serp=true ONLY when SB credits drop below 1% remaining (check-sb-credits.js
+          # --floor-remaining-pct=1, set in the "Check API budget" step above); auto-clears when
+          # credits renew. NOTE: this is a near-empty-tank backstop, NOT a 15% threshold — SB
+          # credits have never dropped below ~30% in practice, so budget-driven SERP skips are
+          # effectively never the cause of a missed opening-night SERP. The real SERP-skip driver
+          # is SERP_DEFER_ITERATIONS below. See data/audit/we-serp-diagnosis-corrected.md.
           SKIP_SERP_FLAG=""
           if [ "$SKIP_SERP" = "true" ]; then
             SKIP_SERP_FLAG="-f skip_serp=true"

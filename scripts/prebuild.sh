@@ -27,6 +27,11 @@ node scripts/build-actor-slugs-manifest.js
 node scripts/build-cast-manifest.js
 # Brand tokens — regenerate public/brand-tokens.json from canonical source
 node scripts/generate-brand-tokens.js
+# Outlet logos — regenerate src/config/outlet-logos-generated.json from the
+# canonical outlet-registry.json. Cheap, and the registry is bot-updated ~daily
+# (push-core-data), so always regenerate to keep review logos current without a
+# manual step. The committed copy is a dev/tsc convenience that this overwrites.
+node scripts/generate-outlet-logos.js
 # Always regenerate public show JSONs — they must match the reviews.json
 # used by show pages in THIS build. Skipping this causes 0.1-0.9 pt drift
 # when rebuild workflows commit stale public JSONs between deploys. (~30s)

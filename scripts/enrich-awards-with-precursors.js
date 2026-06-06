@@ -37,6 +37,7 @@ const path = require('path');
 const { normalizeTitle } = require('./lib/title-match');
 const { writeAwardsJsonAtomic } = require('./lib/awards-atomic-write');
 const { validateAwardsObject, validatePrecursorSource } = require('./lib/awards-schema-validator');
+const { canonicalizeAllShows, findSynonymDuplicates, canonicalizeAwardCategory } = require('./lib/award-category-canonical');
 const { classifyCategory, KNOWN_UNSCORED_CATEGORIES } = require('./lib/classify-category');
 
 const PUBLIC_AWARDS = path.join(__dirname, '..', 'data', 'awards.json');
@@ -458,14 +459,35 @@ function applyDDOCCDL(source, fieldKey, awardsShows, titleById, opts) {
   const strictSeason = UK_CEREMONIES.has(fieldKey);
   let matched = 0;
   const unmatched = [];
-  for (const [scrapedCategory, years] of Object.entries(source)) {
+  for (const [rawScrapedCategory, years] of Object.entries(source)) {
+    // Canonicalize the scraped category up front so EVERYTHING downstream —
+    // wins/nominatedFor writes, winnerNames keys, AND the cross-show stale-winner
+    // cleanup below (which matches by scrapedCategory) — operates in canonical
+    // space. Without this, a future "Direction of a Musical" scrape would write
+    // canonical "Director..." but its cleanup would search for the raw string and
+    // miss already-canonicalized entries, leaving a stale winner on the wrong show.
+    const scrapedCategory = canonicalizeAwardCategory(fieldKey, rawScrapedCategory);
     for (const yearEntry of years) {
       const callOpts = { ...opts, sourceYear: yearEntry.year, strictSeason };
 
+      // Explicit tie co-winners from the year-page parser: each winner is
+      // paired with its OWN production in the markup (e.g. DD 2026 Lead
+      // Performance in a Musical: Henry + Levy, both Ragtime; Lead Play:
+      // Lithgow/Giant + Manville/Oedipus). When present we attribute each
+      // person to their paired show directly — no nominee-adjacency or Tony
+      // fallback guessing. Only trust it when every entry has BOTH person+show.
+      const explicitWinnerEntries = Array.isArray(yearEntry.winnerEntries)
+        && yearEntry.winnerEntries.length > 0
+        && yearEntry.winnerEntries.every((e) => e && e.person && e.show)
+        ? yearEntry.winnerEntries
+        : null;
+
       // Resolve winner titles — may be show titles OR person names (acting categories).
-      const winnerTitles = Array.isArray(yearEntry.winners) && yearEntry.winners.length > 0
-        ? yearEntry.winners
-        : (yearEntry.winner ? [yearEntry.winner] : []);
+      const winnerTitles = explicitWinnerEntries
+        ? explicitWinnerEntries.map((e) => e.person)
+        : (Array.isArray(yearEntry.winners) && yearEntry.winners.length > 0
+            ? yearEntry.winners
+            : (yearEntry.winner ? [yearEntry.winner] : []));
 
       // Detect person-name winners: if NONE of the winner titles resolve to a show, they're people.
       const anyWinnerIsShow = winnerTitles.some(
@@ -501,7 +523,20 @@ function applyDDOCCDL(source, fieldKey, awardsShows, titleById, opts) {
       // etc) that aren't Tony-nominated and were silently dropped by the
       // prior Tony-only logic.
       const personWinnerShowMap = new Map(); // normalizedName → showId[]
-      if (winnerIsPersonName && !winnerShowUntracked) {
+      if (explicitWinnerEntries) {
+        // Authoritative person→show pairing straight from the year-page markup.
+        for (const e of explicitWinnerEntries) {
+          const sid = findShowIdByTitle(e.show, awardsShows, titleById, callOpts);
+          if (!sid) {
+            unmatched.push(`${fieldKey}/${scrapedCategory}/${yearEntry.year}: tie winner "${e.person}" → show "${e.show}" not tracked in shows.json`);
+            continue;
+          }
+          const key = normalizeTitle(e.person);
+          const arr = personWinnerShowMap.get(key) || [];
+          if (!arr.includes(sid)) arr.push(sid);
+          personWinnerShowMap.set(key, arr);
+        }
+      } else if (winnerIsPersonName && !winnerShowUntracked) {
         const season = ceremonyYearToTonySeason(callOpts.sourceYear);
         const noms = yearEntry.nominees || [];
         for (const w of winnerTitles) {
@@ -893,6 +928,13 @@ function main() {
   const pulRes = applyPulitzer(PULITZER, awardsShows, titleById, matcherOpts);
   const histPulRes = applyHistoricPulitzerById(HISTORIC_PULITZER, awardsShows);
 
+  // Collapse synonym-variant categories (e.g. DD/OCC "Direction of a Musical" +
+  // "Director of a Musical" — one award scraped twice). Runs AFTER all apply*
+  // so it normalizes whatever the scrapers produced this run. See
+  // scripts/lib/award-category-canonical.js and feedback_awards_duplicate_categories.
+  const canonChanged = canonicalizeAllShows(awardsShows);
+  if (canonChanged > 0) console.log(`Canonicalized synonym-variant categories on ${canonChanged} show(s)`);
+
   console.log('\nMatch stats:');
   console.log(`  Drama Desk:           ${ddRes.matched} matched, ${ddRes.unmatched.length} unmatched (mostly OB shows not in awards.json)`);
   console.log(`  Outer Critics:        ${occRes.matched} matched, ${occRes.unmatched.length} unmatched`);
@@ -985,6 +1027,7 @@ function main() {
   applyDDOCCDL(WHATSONSTAGE, 'whatsOnStage', secondShows, titleById, matcherOpts);
   applyPulitzer(PULITZER, secondShows, titleById, matcherOpts);
   applyHistoricPulitzerById(HISTORIC_PULITZER, secondShows);
+  canonicalizeAllShows(secondShows);
   // Don't update _meta on second pass (timestamp would diverge); strip before compare
   const firstNoMeta = JSON.parse(serialized);
   delete firstNoMeta._meta;
@@ -1007,6 +1050,16 @@ function main() {
     console.error(e.message);
     process.exit(1);
   }
+
+  // 6b) Synonym-duplicate guard — no ceremony node may list two name variants of
+  //     the same award (the forum-reported double-count/double-display bug).
+  const synonymDupes = findSynonymDuplicates(awards.shows || awards);
+  if (synonymDupes.length > 0) {
+    console.error(`\n✗ Synonym-duplicate categories survived canonicalization (${synonymDupes.length}):`);
+    console.error(JSON.stringify(synonymDupes.slice(0, 10), null, 2));
+    process.exit(1);
+  }
+  console.log('✓ No synonym-duplicate categories');
 
   // 7) Atomic dual-repo write — public + private succeed together or both
   //    roll back. Prevents silent drift on partial failure (Codex P1).

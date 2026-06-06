@@ -45,7 +45,7 @@ interface EmailCaptureConfig {
 
 const presets: Record<string, EmailCaptureConfig> = {
   soft: {
-    excludedPaths: ['/feedback', '/submit-review', '/methodology'],
+    excludedPaths: ['/feedback', '/submit-review', '/methodology', '/beat-the-critics'],
     exitIntent: { enabled: false },
     pageViewGate: { threshold: 8 },
     homepageBanner: {
@@ -64,7 +64,7 @@ const presets: Record<string, EmailCaptureConfig> = {
     },
   },
   aggressive: {
-    excludedPaths: ['/feedback', '/submit-review'],
+    excludedPaths: ['/feedback', '/submit-review', '/beat-the-critics'],
     exitIntent: { enabled: true },
     pageViewGate: { threshold: 2 },
     homepageBanner: {

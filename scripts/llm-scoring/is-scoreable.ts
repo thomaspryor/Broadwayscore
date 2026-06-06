@@ -22,10 +22,6 @@
 const { hasExcerpt: hasAnyExcerpt } = require('../lib/excerpt-fields');
 const { isIncludableForRebuild } = require('../lib/review-guards');
 
-// Outlets confirmed to not publish star ratings. Setting originalScore on these
-// triggers the weekly integrity check hard-violation gate (check-score-integrity.js).
-const NO_STAR_OUTLETS = new Set(['london-theatre']);
-
 export function isScoreable(data: Record<string, any>, show?: Record<string, any>, filePath?: string): boolean {
   if (!isIncludableForRebuild(data, show, filePath)) return false;
 
@@ -35,11 +31,18 @@ export function isScoreable(data: Record<string, any>, show?: Record<string, any
   //     gate but is scraper noise; LLM scoring it is meaningless.
   //   showNotMentioned without excerpt: the show isn't named in the text;
   //     no anchor for LLM to score against.
-  //   NO_STAR_OUTLETS: outlet doesn't publish numeric ratings; scoring would
-  //     create an originalScore with no ground truth, flagged by check-score-integrity.js.
+  //
+  // NOTE: do NOT add a "no-star outlet" exclusion here. An outlet that publishes
+  // no star rating still publishes review TEXT, and the LLM ensemble scores text
+  // into `assignedScore` (a composite) — it never fabricates an `originalScore`
+  // (the raw published star). The real invariant ("no-star outlets must not carry
+  // an originalScore") is enforced independently by check-score-integrity.js.
+  // A NO_STAR_OUTLETS gate here instead silently blocked ALL scoring for such
+  // outlets, orphaning real reviews unscored (london-theatre, 5 WE openings,
+  // 2026-05-30). This mirror must stay in sync with scripts/lib/is-scoreable.js,
+  // which never carried the gate.
   if (data.incompleteReason === 'scraper_garbage') return false;
   if (data.showNotMentioned && !hasAnyExcerpt(data)) return false;
-  if (data.outletId && NO_STAR_OUTLETS.has(data.outletId)) return false;
 
   return true;
 }

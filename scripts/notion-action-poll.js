@@ -336,6 +336,63 @@ If you learned something durable that would help future automated sessions on th
 Be thorough but concise. Focus on actionable information.`;
 }
 
+// ── Per-action worktree isolation ────────────────────────────────────
+// The automated session runs with --dangerously-skip-permissions in cwd. Running
+// it in the SHARED main checkout means its code edits get silently reverted by the
+// worktree-first git hooks / parallel CI, and its pushes come from a possibly-dirty
+// tree. Isolate each action in its own git worktree off origin/main (shares the
+// object store — cheap). Gitignored deps the session needs are symlinked in —
+// worktree-LOCAL and NEVER committed, so the stray-committed-symlink CI landmine
+// (feedback_stray_symlink_crashes_pipeline) does not apply; node_modules resolves
+// via the parent main repo automatically. EVERY step is best-effort: on ANY failure
+// we fall back to REPO_DIR (prior behavior), so this can never break the dispatcher.
+function provisionActionWorktree(card) {
+  try {
+    const branch = `action-${card.id.slice(0, 8)}`;
+    const wtPath = path.join(REPO_DIR, '.claude', 'worktrees', branch);
+    execSync('git fetch origin main --quiet', { cwd: REPO_DIR, timeout: 60000, stdio: 'ignore' });
+    // Idempotent: clear any stale worktree/branch left by a previous run of this card.
+    try { execSync(`git worktree remove --force "${wtPath}"`, { cwd: REPO_DIR, stdio: 'ignore' }); } catch {}
+    try { execSync(`git branch -D "${branch}"`, { cwd: REPO_DIR, stdio: 'ignore' }); } catch {}
+    execSync(`git worktree add --force -b "${branch}" "${wtPath}" origin/main`, { cwd: REPO_DIR, timeout: 60000, stdio: 'ignore' });
+    for (const dep of ['.env', 'data/review-texts', 'data/shows.json', 'data/reviews.json']) {
+      const src = path.join(REPO_DIR, dep), dst = path.join(wtPath, dep);
+      try {
+        if (fs.existsSync(src) && !fs.existsSync(dst)) {
+          fs.mkdirSync(path.dirname(dst), { recursive: true });
+          fs.symlinkSync(src, dst);
+        }
+      } catch { /* dep optional */ }
+    }
+    log(`  isolated session in worktree ${wtPath} (branch ${branch})`);
+    return { path: wtPath, branch };
+  } catch (e) {
+    log(`  worktree isolation unavailable (${e.message}); running in main`);
+    return null;
+  }
+}
+
+function teardownActionWorktree(wt) {
+  if (!wt) return;
+  try {
+    // Preserve the session's work if it committed but did NOT push/merge to main —
+    // never delete a branch with unpushed commits.
+    let unpushed = '0';
+    try {
+      unpushed = execSync(`git -C "${wt.path}" rev-list --count origin/main..HEAD`,
+        { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+    } catch { /* if we can't tell, err on the side of keeping it */ unpushed = '?'; }
+    if (unpushed !== '0') {
+      log(`  KEEPING worktree ${wt.path} — ${unpushed} unpushed commit(s); session work not on main, review manually`);
+      return;
+    }
+    execSync(`git worktree remove --force "${wt.path}"`, { cwd: REPO_DIR, stdio: 'ignore' });
+    try { execSync(`git branch -D "${wt.branch}"`, { cwd: REPO_DIR, stdio: 'ignore' }); } catch {}
+  } catch (e) {
+    log(`  worktree teardown skipped: ${e.message}`);
+  }
+}
+
 // ── Run Claude CLI ───────────────────────────────────────────────────
 
 function runClaude(prompt, card) {
@@ -345,6 +402,10 @@ function runClaude(prompt, card) {
   // Write prompt to temp file to avoid shell escaping issues
   const tmpPrompt = path.join(require('os').tmpdir(), `action-prompt-${card.id.slice(0, 8)}.txt`);
 
+  // Isolate the automated session in its own worktree (falls back to REPO_DIR).
+  const wt = provisionActionWorktree(card);
+  const runDir = wt ? wt.path : REPO_DIR;
+
   try {
     fs.writeFileSync(tmpPrompt, prompt);
 
@@ -353,7 +414,7 @@ function runClaude(prompt, card) {
     const result = execSync(
       `cat "${tmpPrompt}" | claude --print --dangerously-skip-permissions --verbose`,
       {
-        cwd: REPO_DIR,
+        cwd: runDir,
         timeout: 30 * 60 * 1000, // 30 min max
         maxBuffer: 10 * 1024 * 1024, // 10 MB
         encoding: 'utf8',
@@ -383,6 +444,7 @@ function runClaude(prompt, card) {
     return { result: `[Automated session error] ${err.message.slice(0, 500)}`, memoryUpdate: null };
   } finally {
     try { fs.unlinkSync(tmpPrompt); } catch {}
+    teardownActionWorktree(wt);
   }
 }
 

@@ -1,11 +1,11 @@
 {
   "_meta": {
-    "generatedAt": "2026-05-30T09:40:54.097Z",
+    "generatedAt": "2026-06-06T09:45:52.780Z",
     "description": "Per-show critic-review extraction gaps (extracted < page-stated count). See scripts/fetch-aggregator-pages.ts carousel-scroll logic."
   },
-  "totalGaps": 486,
-  "errorSeverity": 390,
-  "warningSeverity": 96,
+  "totalGaps": 496,
+  "errorSeverity": 392,
+  "warningSeverity": 104,
   "gaps": [
     {
       "showId": "1776-2022",
@@ -195,6 +195,15 @@
       "gap": 35,
       "ratio": 0.19,
       "severity": "error"
+    },
+    {
+      "showId": "all-nighter-off-broadway-2025",
+      "category": "off-broadway",
+      "expected": 9,
+      "extracted": 8,
+      "gap": 1,
+      "ratio": 0.89,
+      "severity": "warning"
     },
     {
       "showId": "allegiance-2015",
@@ -681,6 +690,15 @@
       "gap": 19,
       "ratio": 0.3,
       "severity": "error"
+    },
+    {
+      "showId": "caroline-off-broadway-2026",
+      "category": "off-broadway",
+      "expected": 12,
+      "extracted": 8,
+      "gap": 4,
+      "ratio": 0.67,
+      "severity": "warning"
     },
     {
       "showId": "caroline-or-change-2004",
@@ -1382,6 +1400,15 @@
       "extracted": 8,
       "gap": 15,
       "ratio": 0.35,
+      "severity": "error"
+    },
+    {
+      "showId": "grangeville-off-broadway-2026",
+      "category": "off-broadway",
+      "expected": 17,
+      "extracted": 8,
+      "gap": 9,
+      "ratio": 0.47,
       "severity": "error"
     },
     {
@@ -2312,6 +2339,15 @@
       "severity": "warning"
     },
     {
+      "showId": "miles-for-mary-off-broadway-2026",
+      "category": "off-broadway",
+      "expected": 23,
+      "extracted": 8,
+      "gap": 15,
+      "ratio": 0.35,
+      "severity": "error"
+    },
+    {
       "showId": "misery-2015",
       "category": "broadway",
       "expected": 49,
@@ -2705,6 +2741,15 @@
       "extracted": 8,
       "gap": 6,
       "ratio": 0.57,
+      "severity": "warning"
+    },
+    {
+      "showId": "oratorio-for-living-things-off-broadway-2026",
+      "category": "off-broadway",
+      "expected": 9,
+      "extracted": 8,
+      "gap": 1,
+      "ratio": 0.89,
       "severity": "warning"
     },
     {
@@ -3257,6 +3302,15 @@
       "severity": "error"
     },
     {
+      "showId": "sunset-baby-off-broadway-2026",
+      "category": "off-broadway",
+      "expected": 15,
+      "extracted": 8,
+      "gap": 7,
+      "ratio": 0.53,
+      "severity": "warning"
+    },
+    {
       "showId": "sunset-boulevard-1994",
       "category": "broadway",
       "expected": 20,
@@ -3390,6 +3444,15 @@
       "gap": 51,
       "ratio": 0.14,
       "severity": "error"
+    },
+    {
+      "showId": "the-comeuppance-off-broadway-2026",
+      "category": "off-broadway",
+      "expected": 14,
+      "extracted": 8,
+      "gap": 6,
+      "ratio": 0.57,
+      "severity": "warning"
     },
     {
       "showId": "the-cottage-2023",
@@ -3752,6 +3815,15 @@
       "severity": "error"
     },
     {
+      "showId": "the-lonely-few-off-broadway-2024",
+      "category": "off-broadway",
+      "expected": 11,
+      "extracted": 8,
+      "gap": 3,
+      "ratio": 0.73,
+      "severity": "warning"
+    },
+    {
       "showId": "the-minutes-2022",
       "category": "broadway",
       "expected": 20,
@@ -4103,6 +4175,15 @@
       "severity": "warning"
     },
     {
+      "showId": "three-houses-off-broadway-2026",
+      "category": "off-broadway",
+      "expected": 10,
+      "extracted": 8,
+      "gap": 2,
+      "ratio": 0.8,
+      "severity": "warning"
+    },
+    {
       "showId": "three-tall-women-2018",
       "category": "broadway",
       "expected": 69,
@@ -4182,6 +4263,15 @@
       "gap": 33,
       "ratio": 0.2,
       "severity": "error"
+    },
+    {
+      "showId": "trophy-boys-off-broadway-2025",
+      "category": "off-broadway",
+      "expected": 12,
+      "extracted": 8,
+      "gap": 4,
+      "ratio": 0.67,
+      "severity": "warning"
     },
     {
       "showId": "trouble-in-mind-2021",

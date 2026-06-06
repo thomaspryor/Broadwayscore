@@ -278,11 +278,20 @@ const SITE_SEARCH_ENDPOINTS = {
     // Rate limit: 1 req/sec with 'test' key (fine for opening night use)
     fetchAndParse: async (showTitle) => {
       const q = encodeURIComponent(`${showTitle} review`);
-      const url = `https://content.guardianapis.com/search?q=${q}&tag=stage/stage&api-key=test&page-size=20&order-by=relevance`;
+      // show-tags=tone returns each result's tone tags so we can keep ONLY actual
+      // reviews. The `{title} review` query otherwise also returns features,
+      // interviews, and making-of pieces — the Guardian Jun-2 "show-reinvention"
+      // feature for Girl, Interrupted was scored 76 as a review before this filter
+      // (girl-interrupted 2026-06-05). Allowlisting tone/reviews drops them at the
+      // source (the codebase's positive-signal pattern, cf. Variety /legit/reviews/).
+      // Wrong-SHOW reviews (a real review of a different show) still pass here — that
+      // is the date/title guard's job (getWrongProductionReasonFromUrl), not this.
+      const url = `https://content.guardianapis.com/search?q=${q}&tag=stage/stage&show-tags=tone&api-key=test&page-size=20&order-by=relevance`;
       const data = await fetchSSR(url);
       const parsed = JSON.parse(data);
       return (parsed.response?.results || [])
         .filter(r => r.webUrl)
+        .filter(r => (r.tags || []).some(t => t.id === 'tone/reviews'))
         .map(r => r.webUrl);
     },
   },

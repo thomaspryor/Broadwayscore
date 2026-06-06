@@ -368,6 +368,12 @@ async function main() {
     if (process.env.GITHUB_OUTPUT) {
       const has = (newSubmissions.length + spamFlagged.length) > 0;
       fs.appendFileSync(process.env.GITHUB_OUTPUT, `has_submissions=${has}\n`);
+      // The Feedback Digest GitHub issue is pure noise for routine feedback
+      // (bugs become their own deduped bug-diagnosis issues; praise/features
+      // get submitter thank-yous). The ONLY genuinely owner-actionable digest
+      // case is a Formshield spam-flagged item needing a manual "Not Spam"
+      // rescue — so the workflow gates the digest issue on this.
+      fs.appendFileSync(process.env.GITHUB_OUTPUT, `has_spam_flagged=${spamFlagged.length > 0}\n`);
     }
 
     if (newSubmissions.length === 0 && spamFlagged.length === 0) {

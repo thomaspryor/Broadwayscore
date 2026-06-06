@@ -138,17 +138,71 @@ function parseWinnersNomineesCell(cellText) {
     return null;
   }
 
-  let winner = null;
-  let winnerPersonName = null;
+  /** Extract the SHOW from a winner segment using ONLY italic-anchored cases,
+   *  so a bold bare person `'''[[Person]]'''` is never mis-read as a show
+   *  (bulletTitle's bareLink/plain fallbacks would return the person name). */
+  function bulletShow(seg) {
+    const stripped = seg.replace(/(^|\s)'''\[\[[^\]]+\]\]'''(?!')/g, '$1');
+    let m = stripped.match(/''\[\[([^\]|]+)(?:\|([^\]]+))?\]\]''/);
+    if (m) {
+      const t = cleanTitle(m[2] || m[1]);
+      if (t && t.length > 1) return t;
+    }
+    m = stripped.match(/''([^'\n][^'\n]*?)''/);
+    if (m) {
+      const t = cleanTitle(m[1]);
+      if (t && t.length > 1) return t;
+    }
+    return null;
+  }
+
+  /** Person from a winner segment: bold bare link `'''[[Person]]'''`, or the
+   *  `[[Person]], ''Show''` / `Person, ''Show''` pair forms. */
+  function winnerPerson(seg) {
+    let m = seg.match(/(?<!')'''\[\[([^\]|]+)(?:\|([^\]]+))?\]\]'''(?!')/);
+    if (m) return cleanTitle(m[2] || m[1]);
+    return bulletPersonName(seg);
+  }
+
+  /** Parse a WINNER bullet into [{ person, show }]. Handles ties joined by
+   *  " and ": both `'''[[A]]''' and '''[[B]]''', ''Show''` (shared production)
+   *  and `'''[[A]], ''ShowA''''' and '''[[B]], ''ShowB'''''` (split shows).
+   *  person is null for show-only categories (`'''''Show'''''`). */
+  function parseWinnerBullet(b) {
+    // Split co-winners ONLY on an " and " that sits between two quote-runs
+    // (`...''' and '''...` or `...''''' and '''...`) — the boundary between two
+    // independently-bold winners in a tie. A collaborative single win lists its
+    // people as `[[A]] and [[B]]` (the "and" flanked by brackets/text, not
+    // quotes), and show titles like "Joe Turner's Come and Gone" embed "and"
+    // mid-text — neither must split. See the team/title cases in
+    // tests/unit/awards-person-winner-pairing.test.mjs.
+    const segments = b.split(/(?<=')\s+and\s+(?=')/);
+    const parsed = segments.map((seg) => ({ person: winnerPerson(seg), show: bulletShow(seg) }));
+    const shows = parsed.map((p) => p.show).filter(Boolean);
+    const distinct = [...new Set(shows.map((s) => s.toLowerCase()))];
+    if (distinct.length === 1) {
+      const only = shows[0];
+      for (const p of parsed) if (p.person && !p.show) p.show = only;
+    }
+    return parsed.filter((p) => p.person || p.show);
+  }
+
+  const winnerEntries = []; // [{ person, show }] — supports tie co-winners.
   const nominees = [];
   for (const b of bullets) {
-    const title = bulletTitle(b);
-    if (!title) continue;
-    if (winner === null && /'{5}/.test(b)) {
-      winner = title;
-      winnerPersonName = bulletPersonName(b);
+    // Winner rows are bold (`'''`); nominee rows use only italic (`''`) for the show.
+    if (/'''/.test(b)) {
+      const entries = parseWinnerBullet(b);
+      if (entries.length > 0) {
+        for (const e of entries) {
+          winnerEntries.push(e);
+          if (e.show) nominees.push(e.show); // keep winner show in nominees (legacy adjacency)
+        }
+        continue;
+      }
     }
-    nominees.push(title);
+    const title = bulletTitle(b);
+    if (title) nominees.push(title);
   }
   // De-dup nominees while preserving order.
   const seen = new Set();
@@ -158,7 +212,11 @@ function parseWinnersNomineesCell(cellText) {
     seen.add(key);
     return true;
   });
-  return { winner, nominees: unique, winnerPersonName };
+  // Back-compat scalar fields point at the first winner; winnerEntries carries
+  // the full set (so tie co-winners survive — e.g. Henry + Levy, Ragtime 2026).
+  const winner = (winnerEntries.find((e) => e.show) || {}).show || null;
+  const winnerPersonName = (winnerEntries.find((e) => e.person) || {}).person || null;
+  return { winner, nominees: unique, winnerPersonName, winnerEntries };
 }
 
 /** Scrape one Wikipedia year page. Returns `{ [category]: { year, winner, winnerPersonName?, nominees } }`. */
@@ -197,9 +255,15 @@ async function scrapeYear({ year, pageTitleFn, sectionHeadings, categoryPrefixRe
       const restCell = cells.slice(1).join('\n| ');
       const category = extractCategory(firstCell);
       if (!category || !categoryPrefixRe.test(category)) continue;
-      const { winner, nominees, winnerPersonName } = parseWinnersNomineesCell(restCell);
+      const { winner, nominees, winnerPersonName, winnerEntries } = parseWinnersNomineesCell(restCell);
       if (nominees.length === 0) continue;
-      categories[category] = { year, winner, nominees, ...(winnerPersonName ? { winnerPersonName } : {}) };
+      categories[category] = {
+        year,
+        winner,
+        nominees,
+        ...(winnerPersonName ? { winnerPersonName } : {}),
+        ...(winnerEntries && winnerEntries.length > 1 ? { winnerEntries } : {}),
+      };
       rowCount++;
     }
   }
@@ -229,11 +293,16 @@ function mergeYearIntoBaseline(baseline, year, perCategory) {
       // (which often holds person names from per-category scrapes).
       if (entry.winner && existing.winners && !entry.winners) delete existing.winners;
       if (entry.winners) existing.winners = entry.winners;
+      // Tie co-winners (year-page authoritative). Drop a stale array if this
+      // year is no longer a tie.
+      if (entry.winnerEntries) existing.winnerEntries = entry.winnerEntries;
+      else delete existing.winnerEntries;
     } else {
       list.push({
         year,
         winner: entry.winner,
         ...(entry.winnerPersonName ? { winnerPersonName: entry.winnerPersonName } : {}),
+        ...(entry.winnerEntries ? { winnerEntries: entry.winnerEntries } : {}),
         nominees: [...entry.nominees],
       });
       list.sort((a, b) => a.year - b.year);

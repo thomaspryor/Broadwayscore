@@ -1,11 +1,16 @@
 ---
 name: feedback_playwright_1440px_required
-description: UI screenshots must be taken at THREE viewports (390 + 768 + 1440) before committing — single-viewport verification ships regressions
+description: SUPERSEDED by [[local-preview-before-push]] — scripts/visual-qa.mjs now sweeps 5 widths (360/414/768/1024/1440) with structural overflow probe + per-element full-resolution crops
+archived: true
 metadata: 
   node_type: memory
   type: feedback
   originSessionId: a41695bf-11df-44a9-bb18-74431ce60773
 ---
+
+**SUPERSEDED 2026-05-24** — see [[local-preview-before-push]] and `.claude/skills/visual-qa/skill.md`. The runner sweeps a broader set of widths automatically and reads element crops at full resolution to defeat the thumbnail-PASS failure mode.
+
+Original content below for history:
 
 Verify every UI change at **all three viewports**: mobile 390×844, tablet 768×1024, desktop 1440×900. Before AND after.
 

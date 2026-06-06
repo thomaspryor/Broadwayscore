@@ -75,7 +75,7 @@ runs:
           const guardPath = process.env.GITHUB_WORKSPACE
             ? path.join(process.env.GITHUB_WORKSPACE, 'scripts/lib/review-write-guard.js')
             : path.resolve('scripts/lib/review-write-guard.js');
-          const { PROTECTED_FIELDS } = require(guardPath);
+          const { PROTECTED_FIELDS, isIntentionalClear } = require(guardPath);
           const ACTION_EXTRA = [
             // SERP retry state intentionally excluded from guard's PROTECTED_FIELDS
             // because clearFailureFlags() clears them on success. But on rebase,
@@ -106,7 +106,26 @@ runs:
               // fields where committed had content are restored unconditionally.
               // Strongest defense for opening-night ingestion.
               const isLocked = committed._locked === true || local._locked === true;
+              // Intentional-clear breadcrumb exception (GENERALIZED 2026-06-05).
+              // Some heals/audits deliberately null or delete a PROTECTED field
+              // and leave a durable breadcrumb marking the clear as intentional
+              // (duplicateClearReason for duplicateOf; the canonical human-clear
+              // signals for wrongProduction/wrongShow; originalScoreCleared for
+              // originalScore). Without honoring those breadcrumbs the restore
+              // below treats the empty value as data loss and resurrects the
+              // stale flag — which is exactly why the stale-duplicateOf gate
+              // stayed red indefinitely (Protected-N-from-data-loss, pushed
+              // nothing). Originally field-specific to duplicateOf; the same bug
+              // applied to the other manual-clear families, so the predicate now
+              // lives in review-write-guard.js (isIntentionalClear) as the single
+              // source of truth, mirroring the canonical is-cleared semantics in
+              // review-guards.js. NOTE: this skip runs BEFORE the isLocked branch
+              // so an intentional clear is honored even on a _locked file (same
+              // precedence the duplicateOf carve-out always had).
               for (const field of PROTECTED) {
+                if (isEmpty(local[field]) && isIntentionalClear(field, local)) {
+                  continue;
+                }
                 const committedHasContent = !isEmpty(committed[field]);
                 const localIsEmpty = isEmpty(local[field]);
                 if (committedHasContent && (localIsEmpty || isLocked)) {

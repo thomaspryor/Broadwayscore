@@ -1,16 +1,41 @@
 {
-  "generatedAt": "2026-05-24T14:36:03.548Z",
-  "totalFindings": 1,
+  "generatedAt": "2026-05-31T14:37:57.239Z",
+  "totalFindings": 3,
   "findings": [
     {
-      "currentShowId": "les-liaisons-dangereuses-west-end-2026",
-      "suggestedShowId": "les-liaisons-dangereuses-2016",
+      "currentShowId": "spamalot-2005",
+      "suggestedShowId": "spamalot-2023",
+      "confidence": "high",
+      "signals": [
+        "url-year-match",
+        "url-year:2023"
+      ],
+      "reviewFile": "data/review-texts/spamalot-2005/culturesauce--thom-geier.json",
+      "url": "https://culturesauce.com/2023/11/16/spamalot-broadway-revival-review-monty-pytho",
+      "reason": "url-year"
+    },
+    {
+      "currentShowId": "spamalot-2005",
+      "suggestedShowId": "spamalot-2023",
+      "confidence": "high",
+      "signals": [
+        "url-year-match",
+        "duplicate-in-suggested-dir",
+        "url-year:2024"
+      ],
+      "reviewFile": "data/review-texts/spamalot-2005/pages-on-stages--mason-pilevsky.json",
+      "url": "https://pagesonstages.wordpress.com/2024/03/03/spamalot/",
+      "reason": "url-year"
+    },
+    {
+      "currentShowId": "spamalot-2005",
+      "suggestedShowId": "spamalot-2023",
       "confidence": "medium",
       "signals": [
         "venue-slug-match"
       ],
-      "reviewFile": "data/review-texts/les-liaisons-dangereuses-west-end-2026/sunday-telegraph--matt-wolf.json",
-      "url": "http://www.telegraph.co.uk/theatre/what-to-see/les-liaisons-dangereuses-booth-th",
+      "reviewFile": "data/review-texts/spamalot-2005/thestage--unknown.json",
+      "url": "https://www.thestage.co.uk/reviews/spamalot-review-at-st-james-theatre-new-york-",
       "reason": "venue"
     }
   ]

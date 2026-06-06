@@ -1,7 +1,7 @@
 {
   "system": "cron failed",
   "status": "warn",
-  "lastChecked": "2026-05-30T07:54:04.724Z",
+  "lastChecked": "2026-06-06T07:57:10.907Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -10,16 +10,6 @@
       "name": "Cron failed: Test Suite",
       "status": "warn",
       "message": "Last run failed (1h ago)"
-    },
-    {
-      "name": "Cron failed: Update Lottery/Rush",
-      "status": "warn",
-      "message": "Last run failed (2d ago)"
-    },
-    {
-      "name": "Cron failed: Update Cast Changes",
-      "status": "warn",
-      "message": "Last run failed (3d ago)"
     }
   ]
 }

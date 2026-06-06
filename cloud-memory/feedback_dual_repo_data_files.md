@@ -1,6 +1,6 @@
 ---
-name: Dual-repo core data gotcha (shows.json, reviews.json, commercial.json)
-description: "shows.json/reviews.json/commercial.json authoritative in private repo; public copies are symlinks."
+name: Dual-repo core data gotcha (shows.json, reviews.json)
+description: "shows.json/reviews.json authoritative in private repo; public edits overwritten."
 type: feedback
 originSessionId: afca0caa-8249-42ba-9d0f-90ac617cc92a
 ---
@@ -10,9 +10,8 @@ originSessionId: afca0caa-8249-42ba-9d0f-90ac617cc92a
 
 **How to apply:**
 - `data/reviews.json` is a symlink to `~/broadway-scorecard-data/reviews.json` (already gitignored + untracked)
-- `data/shows.json` is a symlink to `~/broadway-scorecard-data/shows.json` (converted 2026-04-11)
-- `data/commercial.json` is a symlink to `~/broadway-scorecard-data/commercial.json` (converted 2026-05-24 — `scripts/setup-local-data.sh` SYMLINK_FILES now includes commercial.json; before this, `validate-data.js` reported stale counts because the public copy was a manually-`cp`-maintained mirror that drifted whenever the private repo was written to)
-- When editing any of these files locally via Edit/Write/node scripts, **the change writes through the symlink to the private repo** — you still need to `git add/commit/push` in `/Users/tompryor/broadway-scorecard-data/` to make it permanent
+- `data/shows.json` is now a symlink to `~/broadway-scorecard-data/shows.json` (converted 2026-04-11, see commit on both repos)
+- When editing either file locally via Edit/Write/node scripts, **the change writes through the symlink to the private repo** — you still need to `git add/commit/push` in `/Users/tompryor/broadway-scorecard-data/` to make it permanent
 - All the other core data files (awards, critic-registry, outlet-registry, etc.) live in the private repo only and are pulled into `data/` by `setup-local-data.sh`. Edits to those files would also need to be pushed to private.
 - **Never commit `data/shows.json` or `data/reviews.json` to the public `Broadwayscore` repo** — they are gitignored (lines 119, 120 of `.gitignore`). If you see them staged, something is wrong.
 

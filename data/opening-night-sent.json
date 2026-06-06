@@ -230,7 +230,7 @@
       "draftStatus": "draft",
       "sentAt": null,
       "recipientCount": null,
-      "lastReconciledAt": "2026-05-30T17:28:34.334Z"
+      "lastReconciledAt": "2026-06-06T13:36:43.831Z"
     },
     "the-balusters-2026": {
       "draftCreatedAt": "2026-04-22T14:06:25.171Z",
@@ -243,7 +243,7 @@
       "draftStatus": "draft",
       "sentAt": null,
       "recipientCount": null,
-      "lastReconciledAt": "2026-05-30T17:28:34.421Z"
+      "lastReconciledAt": "2026-06-06T13:36:43.905Z"
     },
     "broadway:beaches-2026": {
       "draftCreatedAt": "2026-04-23T16:55:22.415Z",
@@ -370,6 +370,25 @@
       "recipientCount": null,
       "broadcastKey": "broadway:the-lost-boys-2026",
       "lastReconciledAt": "2026-04-28T13:41:24.340Z"
+    },
+    "west-end:beetlejuice-west-end-2026": {
+      "completed": true,
+      "draftStatus": "sent",
+      "method": "manual-user-send",
+      "sentAt": "2026-06-03T19:45:14.000Z",
+      "reviewCount": 21,
+      "recordedBy": "claude-session-686a623e",
+      "note": "Sent manually by user to West End subscribers, out-of-band (not via send-opening-night-broadcast.js). Recorded completed:true to suppress duplicate auto-draft from opening-night-broadcast.yml (workflow_run on scoring + 12:30 UTC cron). sentAt approximate (user reported send 2026-06-03); no Resend draftId captured."
+    },
+    "beetlejuice-west-end-2026": {
+      "completed": true,
+      "draftStatus": "sent",
+      "method": "manual-user-send",
+      "sentAt": "2026-06-03T19:45:14.000Z",
+      "reviewCount": 21,
+      "recordedBy": "claude-session-686a623e",
+      "note": "Sent manually by user to West End subscribers, out-of-band (not via send-opening-night-broadcast.js). Recorded completed:true to suppress duplicate auto-draft from opening-night-broadcast.yml (workflow_run on scoring + 12:30 UTC cron). sentAt approximate (user reported send 2026-06-03); no Resend draftId captured.",
+      "broadcastKey": "west-end:beetlejuice-west-end-2026"
     }
   }
 }

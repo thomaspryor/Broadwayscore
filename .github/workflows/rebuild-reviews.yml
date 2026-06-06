@@ -141,6 +141,17 @@ jobs:
         run: node scripts/apply-audit-flags.js
         continue-on-error: true
 
+      # Sweep dormant stale duplicateOf flags. The review-write-guard self-heal
+      # only fires when a file is rewritten; a file whose duplicateOf sibling was
+      # swept/renamed but which is never re-gathered (closed shows, quiet WE runs)
+      # keeps a stale flag that fails the Data Validation gate (test.yml) on EVERY
+      # triggered run — the root cause of "main red every couple hours". Running
+      # --fix here clears them on each rebuild; push-review-texts ships the result.
+      - name: Sweep stale duplicateOf flags
+        if: inputs.skip_enrichment != 'true'
+        run: node scripts/audit-duplicate-of-url-mismatch.js --fix 2>&1 | tee -a /tmp/locked-skip.log
+        continue-on-error: true
+
       - name: Rebuild reviews.json
         env:
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}

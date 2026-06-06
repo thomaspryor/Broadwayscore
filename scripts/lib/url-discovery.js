@@ -16,7 +16,7 @@ const scraper = require('./scraper');
 const { domainMatchesExpected, setRegistryDomainAliases } = scraper;
 const { isUrlYearOutsideWindow, hasTryoutUrlMarker } = require('./content-filters');
 const { isLondonMarket } = require('./venue-classification');
-const { urlLooksLikeReview } = require('./review-guards');
+const { urlLooksLikeReview, isSluglessReviewUrl } = require('./review-guards');
 const { validateSerpCandidate } = require('./serp-candidate-validator');
 const { recordBdCall } = require('./bd-telemetry');
 
@@ -716,7 +716,13 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
     const nonReviewTerms = ['interview', 'box-office', 'box office', 'grosses', 'gross-', 'begins-previews',
       'first-look', 'first look', 'cast-announced', 'cast announced', 'full-cast', 'meet-the-cast',
       'photos:', 'photo-gallery', 'tickets-on-sale', 'lottery', 'rush-policy', 'all-that-chat',
-      'allthatchat', '/forum/', 'business-news'];
+      'allthatchat', '/forum/', 'business-news',
+      // Obituaries — high-signal stem ('obituar' → obituary/obituaries), never appears in a
+      // review slug or headline. Matters most for slugless outlets (FT /content/{uuid}): the
+      // bypass below skips urlLooksLikeReview's URL-path /obituar reject, so this TITLE check
+      // is what still catches FT obituaries. (Deliberately NOT adding broader tribute tokens
+      // like 'appreciation' — they collide with legitimate review headlines.)
+      'obituar'];
     const isNonReview = nonReviewTerms.some(t => title.includes(t) || urlLower.includes(t));
     if (isNonReview) {
       log(`    ✗ Skipping non-review: ${url.substring(0, 80)}...`);
@@ -730,8 +736,27 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
     // Cross-show URL slug guard: verify URL path contains show title words.
     // Catches SERP results where Google returns the right domain but wrong show
     // (e.g., Monte Cristo review when searching for Becky Shaw).
-    if (showInfo.title && !urlLooksLikeReview(url, showInfo.title)) {
+    //
+    // Slugless-domain exemption (FT /content/{uuid}): these URLs carry no title
+    // words in the path, so the strict urlLooksLikeReview() slug check rejects every
+    // legitimate FT review. For slugless domains ONLY, disambiguate via the SERP
+    // result TITLE instead (titleHasShow, computed above — a substring match that is
+    // robust to "Show, Venue — review" headlines where word-boundary matching breaks
+    // on the comma). The remaining guards that keep wrong FT /content/ articles out:
+    //   - the domain-restricted, date-bounded SERP query (site:ft.com "title" review ${year})
+    //   - the nonReviewTerms TITLE filter above (now includes obituaries/tributes),
+    //     which is the content-type defense the URL-path /obituar reject can't give a
+    //     slugless URL
+    //   - the titleHasReview requirement above
+    //   - validateSerpCandidate below (cross-market / wrong-production markers)
+    // Scoped to slugless URLs so non-FT discovery behavior is byte-identical.
+    const isSlugless = isSluglessReviewUrl(url);
+    if (showInfo.title && !isSlugless && !urlLooksLikeReview(url, showInfo.title)) {
       log(`    ✗ URL slug doesn't match "${showInfo.title}": ${url.substring(0, 80)}`);
+      continue;
+    }
+    if (isSlugless && !titleHasShow) {
+      log(`    ✗ Slugless URL, show title not in result title for "${showInfo.title}": ${url.substring(0, 80)}`);
       continue;
     }
 

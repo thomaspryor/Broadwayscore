@@ -232,18 +232,23 @@ function applyTemporalOverrides(wpFlag, filmTvFlag, wpConfidence, openingDate, p
  *   - NYT / Variety / Playbill / Vulture / WaPo: /YYYY/MM/DD/ or /YYYY/MM/
  *   - Guardian: /YYYY/monthname/DD/  (e.g. /2025/jun/30/)
  *
- * Applies the same 30-day-before-earliest rule as the existing publishDate guard
- * at scripts/gather-reviews.js:3060-3082. Also checks post-closing window so
- * revival/tour articles about closed productions are flagged.
+ * Applies a 30-day-before-earliest lead window for Broadway and a wider 180-day
+ * window for off-broadway (which legitimately carries same-season pre-transfer /
+ * out-of-town coverage). Also checks the post-closing window so revival/tour
+ * articles about closed productions are flagged. Reviews dated within a declared
+ * show.priorRuns window are exempt in ALL markets (legit earlier-staging coverage).
  *
- * Mirrors scripts/flag-wrong-production-by-url-date.js:54-65 so both the ingest-
- * time guard and the post-hoc sweep apply identical logic.
+ * Off-broadway was BLANKET-exempt here until 2026-06-05 — meaning no URL-date
+ * guard ran for OB shows at all, which let a 2025 "Our New Girl" Guardian article
+ * cross-attribute to the 2026 "Girl, Interrupted" OB show via the "girl" title
+ * token. The narrower fix (wide OB window + priorRuns exemption) catches that
+ * 13-month gap without flagging real same-season pre-transfer reviews.
  *
  * Returns a reason string (to be used as wrongProductionNote) or null if:
  *   - url / show missing
  *   - url path has no /YYYY/MM[/DD]/ or /YYYY/monthname[/DD]/ segment
  *   - show has no earliest date to compare against
- *   - show is off-broadway (exempt — regional transfers)
+ *   - extracted URL date is within a declared prior-run window
  *   - extracted URL date is within both the lead window and the trailing window
  *
  * @param {string|null} url
@@ -281,7 +286,7 @@ function urlYearFromPath(url) {
 
 function getWrongProductionReasonFromUrl(url, show) {
   if (!url || typeof url !== 'string') return null;
-  if (!show || show.category === 'off-broadway') return null;
+  if (!show) return null;
   const earliest = show.previewsStartDate || show.openingDate;
   if (!earliest) return null;
 
@@ -298,6 +303,16 @@ function getWrongProductionReasonFromUrl(url, show) {
   const dayPart = m[3] ? String(m[3]).padStart(2, '0') : '15';
   const urlDate = new Date(`${year}-${month}-${dayPart}`);
   if (isNaN(urlDate.getTime())) return null;
+
+  // Prior-run exemption (ALL markets): a review dated within a declared prior
+  // run is legitimate coverage of an earlier staging, not a wrong-production
+  // cross-attribution. Off-broadway shows in particular carry same-season
+  // out-of-town / earlier-venue coverage — without this exemption the wider OB
+  // window below would false-flag it (e.g. Sexual Misconduct of the Middle
+  // Classes 2026, whose Audible Minetta Lane 2025 reviews predate previews by
+  // ~290 days). Lazy require to avoid a load-order cycle.
+  const { isWithinPriorRun } = require('./wrong-production-autoclear');
+  if (isWithinPriorRun(urlDate, show.priorRuns)) return null;
 
   const earliestDate = new Date(earliest);
   if (isNaN(earliestDate.getTime())) return null;
@@ -317,8 +332,17 @@ function getWrongProductionReasonFromUrl(url, show) {
     }
   }
 
-  if (daysBefore > 30) {
-    return `Auto-flagged: URL date ${urlDateStr} is ${daysBefore} days before show earliest date ${earliest}. Likely prior production.`;
+  // Lead window: off-broadway legitimately carries same-season pre-transfer
+  // coverage, so use a wider window (180d) than Broadway (30d). Anything beyond
+  // that — and not within a declared prior run (exempted above) — is a
+  // cross-attribution, not pre-transfer coverage. This is the guard that catches
+  // a 2025 "Our New Girl" Guardian article landing on the 2026 "Girl, Interrupted"
+  // OB show via the shared "girl" title token (girl-interrupted incident,
+  // 2026-06-05). Pre-2026-06-05, off-broadway was blanket-exempt here, so no
+  // date guard ran for OB at all.
+  const leadWindowDays = show.category === 'off-broadway' ? 180 : 30;
+  if (daysBefore > leadWindowDays) {
+    return `Auto-flagged: URL date ${urlDateStr} is ${daysBefore} days before show earliest date ${earliest}. Likely prior/different production.`;
   }
 
   return null;
@@ -431,6 +455,47 @@ function urlLooksLikeReview(url, showTitle) {
   }
 
   return false;
+}
+
+/**
+ * Outlets whose article URLs carry NO human-readable slug — the path is an opaque
+ * UUID/id, so urlLooksLikeReview() can never match show-title words and will reject
+ * every legitimate review. The Financial Times is the canonical case: review URLs
+ * are https://www.ft.com/content/{uuid} with no title in the path. Other paywalled
+ * nationals (Times/Telegraph/Guardian/Independent) use slugged URLs and must NOT be
+ * listed here — they pass the slug guard normally.
+ *
+ * Matched precisely by domain + path prefix so only article URLs (/content/...) get
+ * the exemption; FT section/tag pages (/life-arts, /companies) are NOT matched.
+ *
+ * Callers that exempt these from the URL-slug guard MUST substitute a compensating
+ * control — at minimum a SERP-result TITLE match (the show title appearing in the
+ * Google result title). The domain-restricted + date-bounded SERP query (site:ft.com
+ * "title" review {year}), a content-type title filter (reject interviews/obituaries),
+ * and validateSerpCandidate's snippet check provide defense in depth.
+ */
+const SLUGLESS_REVIEW_URL_PATTERNS = [
+  { domain: 'ft.com', pathPrefix: '/content/' },
+];
+
+/**
+ * @param {string} url
+ * @returns {boolean} true if the URL is a slugless article URL (e.g. FT /content/{uuid})
+ *   that urlLooksLikeReview() cannot validate by slug.
+ */
+function isSluglessReviewUrl(url) {
+  if (!url || typeof url !== 'string') return false;
+  let parsed;
+  try {
+    parsed = new URL(url);
+  } catch {
+    return false;
+  }
+  const host = parsed.hostname.replace(/^www\./, '').toLowerCase();
+  const path = parsed.pathname.toLowerCase();
+  return SLUGLESS_REVIEW_URL_PATTERNS.some(
+    p => (host === p.domain || host.endsWith('.' + p.domain)) && path.startsWith(p.pathPrefix)
+  );
 }
 
 /**
@@ -2252,6 +2317,12 @@ const TRACKING_PARAM_NAMES = new Set([
   'nc',
   'algo',
   'impression_id',
+  // Google Merchant / Shopping "Search Results Source Landing Tracking ID" —
+  // appended to organic links from Google surfaces. Always a tracking value,
+  // never an article identifier. Seen on 196 review files; without stripping it,
+  // ew.com/.../review/?srsltid=X and ew.com/.../review/ canonicalize differently
+  // and the same review double-counts (aint-too-proud EW, 2026-06-01).
+  'srsltid',
 ]);
 const TRACKING_PARAM_PREFIXES = ['utm_', 'mc_', 'pk_', 'hsa_', 'mtm_'];
 
@@ -2388,6 +2459,7 @@ module.exports = {
   getWrongProductionReasonForUnknownCritic,
   urlYearFromPath,
   urlLooksLikeReview,
+  isSluglessReviewUrl,
   isLikelyWrongProduction,
   isLikelyTourReview,
   isRoundupUrl,

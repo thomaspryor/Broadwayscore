@@ -82,7 +82,13 @@ function approvalRe(hash) {
 // confirm after seeing the visual) is the real safety, the hash never was.
 // Negation-guarded so it stays a deliberate yes (fails toward asking again, not
 // toward shipping, on anything ambiguous).
-const PLAIN_APPROVAL_RE = /\b(?:approved?|ship it(?:\s+now)?|lgtm|looks good|go ahead|send it|yep|yup|yes(?:\s+ship)?|do it)\b/i;
+// Affirmative vocabulary. 2026-06-04: broadened after the user typed a perfectly
+// clear "Ship all four" and the gate didn't recognize it (only "ship it"/"ship
+// now" matched), forcing the painful hash fallback. The negation/conditional
+// guard below is what keeps this safe, so the verbs themselves can be bare:
+// "ship", "push", "send", "deploy", "publish", "merge", "go" all count, in any
+// phrasing ("ship all four", "push them", "send everything", "ship 'em").
+const PLAIN_APPROVAL_RE = /\b(?:approved?|ship|push|send|deploy|publish|merge|lgtm|looks good|looks great|great|perfect|awesome|beautiful|love it|nice|go ahead|go for it|good to go|all good|yep|yup|yeah|yes|do it)\b/i;
 // Reject on negation OR conditional/change-request words — "looks good but fix X
 // first", "yes, wait", "approved except…" are NOT a clean ship. Fails toward
 // asking again, never toward shipping.

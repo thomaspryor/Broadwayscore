@@ -1,9 +1,15 @@
 ---
 name: Visual verify before push
-description: Every UI change must be screenshot-verified on a running site before committing — tsc/lint is not visual verification
+description: SUPERSEDED by [[local-preview-before-push]] — same rule, now mechanically enforced by hooks (verify-edits.sh is_ui_edit + pre-push-visual-gate.sh) instead of advisory
+archived: true
 type: feedback
 originSessionId: 89a611cf-8c76-4361-89a4-5b6776e4a8c8
 ---
+
+**SUPERSEDED 2026-05-24** — see [[local-preview-before-push]] and `.claude/skills/visual-qa/skill.md`. The gate now blocks Stop and push automatically when UI files change without a fresh verdict.
+
+Original content below for history:
+
 Every UI change must be visually verified on a running dev server (or live site) before committing. TypeScript passing and lint passing tell you nothing about whether the page looks correct.
 
 **Why:** Session on 2026-04-12 shipped 4 broken logo iterations in a row — wrong image file (screenshot used as logo), background color mismatch, shield cropped too tight, logo displayed too small. Each time Claude said "done" without actually looking at the result on a real page. The user had to catch every issue.

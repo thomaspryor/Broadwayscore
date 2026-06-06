@@ -142,15 +142,59 @@ const FLAG_FIELDS = new Set([
 // vs HEAD), the two repos are aligned. For --base=main, code changes are compared
 // against main but data-flag changes are still compared against review-texts HEAD —
 // which is the correct behavior (review-texts HEAD = last committed data state).
+// Session baseline: data/review-texts is a single clone SHARED by all concurrent
+// CMUX Claude sessions (+ local automation), so `git diff HEAD` below sees the
+// UNION of every session's uncommitted churn — which made this delta report
+// dozens of "flips" that belong to OTHER sessions, not the one running the check
+// (2026-06-01 incident). The session-start hook snapshots the files already dirty
+// when THIS session began, keyed by CMUX_SURFACE_ID, to
+// /tmp/scoring-delta-baseline-<id>.tsv (lines: "<sha1>\t<relpath>"). We exclude
+// any changed file whose current content sha1 matches its baseline sha1 — i.e. it
+// was already dirty at session start and this session did NOT touch it.
+// Fallback: no baseline (non-CMUX, or hook didn't run) → report everything (prior
+// behavior). This only ever REDUCES cross-session noise, never hides a change THIS
+// session made: a file this session further-edits has a different sha1 → kept.
+function loadSessionBaseline() {
+  const sid = process.env.CMUX_SURFACE_ID || process.env.CMUX_WORKSPACE_ID;
+  if (!sid) return null;
+  try {
+    const m = new Map();
+    for (const line of fs.readFileSync(`/tmp/scoring-delta-baseline-${sid}.tsv`, 'utf8').split('\n')) {
+      const tab = line.indexOf('\t');
+      if (tab > 0) m.set(line.slice(tab + 1), line.slice(0, tab));
+    }
+    return m.size ? m : null;
+  } catch { return null; }
+}
+const _sessionBaseline = loadSessionBaseline();
+
 function detectDataFlagChanges() {
   const result = new Map();
   const rtGit = path.join(REVIEW_TEXTS_DIR, '.git');
   if (!fs.existsSync(rtGit)) return result;
   try {
-    const changed = execSync('git diff HEAD --name-only', {
+    let changed = execSync('git diff HEAD --name-only', {
       cwd: REVIEW_TEXTS_DIR, encoding: 'utf8',
     }).trim().split('\n').filter(f => f && f.endsWith('.json') && !f.endsWith('failed-fetches.json'));
     if (changed.length === 0) return result;
+    // Exclude files already dirty at session start and untouched by this session
+    // (other sessions' churn) — see loadSessionBaseline() above.
+    if (_sessionBaseline) {
+      const before = changed.length;
+      changed = changed.filter(relPath => {
+        const baseHash = _sessionBaseline.get(relPath);
+        if (!baseHash) return true; // not dirty at session start → this session's
+        try {
+          const cur = crypto.createHash('sha1')
+            .update(fs.readFileSync(path.join(REVIEW_TEXTS_DIR, relPath)))
+            .digest('hex');
+          return cur !== baseHash; // changed since start → keep; identical → drop
+        } catch { return true; }
+      });
+      const dropped = before - changed.length;
+      if (dropped > 0) log(`[scoring-delta] excluded ${dropped} pre-session review-texts file(s) (other sessions' churn) via CMUX baseline; ${changed.length} changed by this session`);
+      if (changed.length === 0) return result;
+    }
     if (changed.length > 2000) {
       log(`[scoring-delta] data-flag: ${changed.length} changed files — scanning first 2000 (raise cap if this audit is larger)`);
     }

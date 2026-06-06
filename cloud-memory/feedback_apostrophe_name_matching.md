@@ -1,6 +1,7 @@
 ---
 name: Apostrophe in names breaks \b regex matching — normalize before matching
 description: \bobrien\b doesn't match "O'Brien" because apostrophe creates word boundary issue. Affects any code matching director/critic/cast names against fullText. Normalize both sides identically.
+archived: true
 type: feedback
 originSessionId: 06b1bebc-35af-4865-a244-7ceec920ae23
 ---

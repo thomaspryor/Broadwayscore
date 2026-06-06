@@ -282,7 +282,11 @@ export default async function ShowPage({ params }: { params: { slug: string } })
   const consensus = getCriticConsensus(show.id);
   const lotteryRush = getLotteryRush(show.id);
   const showSchedule = getShowSchedule(show.id);
-  const socialPulse = getSocialPulse(show.id);
+  // Social buzz is only meaningful for currently-running shows. getSocialPulse
+  // already suppresses stale fetches; this status gate additionally hides the
+  // card for upcoming/closed shows (whose files are frozen and never refresh).
+  const socialPulse =
+    show.status === 'open' || show.status === 'previews' ? getSocialPulse(show.id) : null;
   // Cross-show ranks. Flag-gated for safe rollout — toggle in Vercel env
   // (NEXT_PUBLIC_FEATURES=showRanks). O(1) lookup after the module-scope
   // index is built on first call. 'all' format slice powers the hero rank

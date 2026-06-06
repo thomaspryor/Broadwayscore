@@ -538,6 +538,69 @@ assert(
 );
 
 // ============================================================
+// Slugless-domain SERP exemption (FT /content/{uuid})
+// FT review URLs carry no title words, so urlLooksLikeReview() (strict slug
+// guard) rejects them. isSluglessReviewUrl() flags ft.com/content/* so
+// discoverCorrectUrl can fall back to the SERP-title match. Other paywalled
+// nationals (Times/Guardian/Telegraph/Independent) use slugged URLs and MUST
+// NOT be flagged slugless. See feedback: FT SERP discovery gap.
+// ============================================================
+console.log('\n=== Slugless-domain SERP exemption (FT) ===\n');
+
+const { isSluglessReviewUrl } = require('./lib/review-guards');
+
+// Strict slug guard still rejects FT (unchanged) — the exemption lives in the
+// discoverCorrectUrl caller, not in urlLooksLikeReview itself.
+assert(
+  !urlLooksLikeReview('https://www.ft.com/content/a1b2c3d4-1234-5678-9abc-def012345678', 'Hamlet'),
+  'urlLooksLikeReview still rejects slugless FT /content/{uuid} URL'
+);
+assert(
+  isSluglessReviewUrl('https://www.ft.com/content/a1b2c3d4-1234-5678-9abc-def012345678'),
+  'isSluglessReviewUrl: FT /content/{uuid} is slugless'
+);
+assert(
+  isSluglessReviewUrl('https://ft.com/content/abc-def') ,
+  'isSluglessReviewUrl: bare ft.com (no www) /content/ is slugless'
+);
+assert(
+  !isSluglessReviewUrl('https://www.ft.com/life-arts'),
+  'isSluglessReviewUrl: FT section page (/life-arts) is NOT slugless'
+);
+assert(
+  !isSluglessReviewUrl('https://www.thetimes.co.uk/article/hamlet-review-abc'),
+  'isSluglessReviewUrl: The Times slugged /article/ URL is NOT slugless'
+);
+assert(
+  !isSluglessReviewUrl('https://www.theguardian.com/stage/2026/jun/01/hamlet-review'),
+  'isSluglessReviewUrl: Guardian slugged URL is NOT slugless'
+);
+assert(
+  !isSluglessReviewUrl('https://www.telegraph.co.uk/theatre/what-to-see/hamlet-review/'),
+  'isSluglessReviewUrl: Telegraph slugged URL is NOT slugless'
+);
+assert(
+  !isSluglessReviewUrl('not-a-url'),
+  'isSluglessReviewUrl: non-URL input returns false (no throw)'
+);
+
+// discoverCorrectUrl source must carry the slugless exemption + its title-match guard
+const urlDiscSluglessSrc = require('fs').readFileSync(require('path').join(__dirname, 'lib', 'url-discovery.js'), 'utf8');
+assert(
+  urlDiscSluglessSrc.includes('isSluglessReviewUrl(url)') &&
+  urlDiscSluglessSrc.includes('!isSlugless && !urlLooksLikeReview(url, showInfo.title)'),
+  'url-discovery.js: discoverCorrectUrl exempts slugless URLs from the slug guard'
+);
+assert(
+  urlDiscSluglessSrc.includes('isSlugless && !titleHasShow'),
+  'url-discovery.js: slugless exemption still requires show title in SERP result title (titleHasShow)'
+);
+assert(
+  urlDiscSluglessSrc.includes("'obituar'"),
+  'url-discovery.js: nonReviewTerms rejects obituaries (content-type guard for slugless FT)'
+);
+
+// ============================================================
 // Vulture site-search endpoint configuration
 // Verifies SITE_SEARCH_ENDPOINTS has Vulture correctly configured.
 // ============================================================

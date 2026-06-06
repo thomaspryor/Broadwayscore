@@ -18,6 +18,7 @@
 const fs = require('fs');
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
+const { applyUtm } = require('./lib/email-utm');
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const FROM_EMAIL = 'Broadway Scorecard <noreply@broadwayscorecard.com>';
@@ -271,14 +272,15 @@ async function main() {
   let sent = 0, failed = 0;
   for (const sub of toSend) {
     const isWinner = !SEND_TO && prizeWinner && sub.email.toLowerCase() === prizeWinner.email.toLowerCase();
-    const html = buildResultsHtml({
+    // Tag first-party links for GA4/PostHog attribution (idempotent — see scripts/lib/email-utm.js).
+    const html = applyUtm(buildResultsHtml({
       submission: sub,
       score: sub.score,
       criticScores,
       criticPicks: criticPicksData,
       winners,
       isWinner,
-    });
+    }), { source: 'beat-the-critics', campaign: `btc-results-${CEREMONY_YEAR}` });
 
     const subject = `Your Tony results: ${sub.score.correct}/${Object.keys(winners).length} correct — Beat the Critics`;
 

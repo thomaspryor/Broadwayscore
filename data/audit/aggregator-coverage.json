@@ -1,35 +1,35 @@
 {
   "_meta": {
-    "generatedAt": "2026-05-25T07:26:23.223Z",
+    "generatedAt": "2026-06-01T07:37:24.142Z",
     "description": "Per-show per-aggregator review coverage audit (read-only)",
-    "totalShows": 2587,
-    "showsWithGaps": 1235,
-    "totalMissingReviews": 53468,
-    "totalTrulyMissing": 25331
+    "totalShows": 2634,
+    "showsWithGaps": 1257,
+    "totalMissingReviews": 53712,
+    "totalTrulyMissing": 25547
   },
   "summary": {
     "archiveCounts": {
-      "dtli": 833,
-      "showScore": 849,
-      "bww": 900,
-      "bwwReviews": 1987,
-      "playbillVerdict": 632,
-      "nycTheatre": 72
+      "dtli": 835,
+      "showScore": 871,
+      "bww": 902,
+      "bwwReviews": 1993,
+      "playbillVerdict": 641,
+      "nycTheatre": 73
     },
     "totalGaps": {
-      "dtli": 728,
-      "showScore": 629,
-      "bww": 790,
-      "bwwReviews": 751,
-      "playbillVerdict": 532,
+      "dtli": 729,
+      "showScore": 646,
+      "bww": 792,
+      "bwwReviews": 752,
+      "playbillVerdict": 540,
       "nycTheatre": 20
     },
     "totalMissing": {
-      "dtli": 4632,
-      "showScore": 17517,
-      "bww": 11206,
-      "bwwReviews": 12264,
-      "playbillVerdict": 7728,
+      "dtli": 4633,
+      "showScore": 17690,
+      "bww": 11213,
+      "bwwReviews": 12269,
+      "playbillVerdict": 7786,
       "nycTheatre": 121
     },
     "totalOverExtracted": {
@@ -41,12 +41,12 @@
       "nycTheatre": 0
     },
     "showsNeverSearched": {
-      "dtli": 1754,
-      "showScore": 1607,
-      "bww": 1687,
-      "bwwReviews": 600,
-      "playbillVerdict": 1955,
-      "nycTheatre": 2515
+      "dtli": 1799,
+      "showScore": 1632,
+      "bww": 1732,
+      "bwwReviews": 641,
+      "playbillVerdict": 1993,
+      "nycTheatre": 2561
     }
   },
   "shows": {
@@ -222,7 +222,7 @@
     },
     "beaches-2026": {
       "title": "Beaches, A New Musical",
-      "status": "open",
+      "status": "closed",
       "totalLocal": 0,
       "hasGap": true,
       "totalGap": 21,
@@ -32979,11 +32979,10 @@
           "hasArchive": false
         },
         "bww": {
-          "archiveCount": 0,
+          "archiveCount": null,
           "extractedCount": 0,
-          "gap": 0,
-          "hasArchive": true,
-          "method": "none-found"
+          "gap": null,
+          "hasArchive": false
         },
         "bwwReviews": {
           "archiveCount": null,
@@ -33008,6 +33007,7 @@
       "flags": [
         "dtli-no-archive",
         "showScore-no-archive",
+        "bww-no-archive",
         "bwwReviews-no-archive",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
@@ -39712,11 +39712,10 @@
           "error": "west-end-page"
         },
         "bww": {
-          "archiveCount": 0,
+          "archiveCount": null,
           "extractedCount": 0,
-          "gap": 0,
-          "hasArchive": true,
-          "method": "none-found"
+          "gap": null,
+          "hasArchive": false
         },
         "bwwReviews": {
           "archiveCount": 0,
@@ -39741,6 +39740,7 @@
       "maxAggregatorCount": 0,
       "flags": [
         "dtli-no-archive",
+        "bww-no-archive",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
       ]
@@ -113403,7 +113403,7 @@
     },
     "the-receptionist-off-broadway-2026": {
       "title": "The Receptionist",
-      "status": "open",
+      "status": "closed",
       "totalLocal": 0,
       "hasGap": true,
       "totalGap": 14,
@@ -116907,7 +116907,7 @@
     },
     "what-we-did-before-our-moth-days-off-broadway-2026": {
       "title": "What We Did Before Our Moth Days",
-      "status": "open",
+      "status": "closed",
       "totalLocal": 0,
       "hasGap": true,
       "totalGap": 21,
@@ -118646,7 +118646,7 @@
     },
     "rheology-off-broadway-2026": {
       "title": "Rheology",
-      "status": "open",
+      "status": "closed",
       "totalLocal": 0,
       "hasGap": true,
       "totalGap": 3,
@@ -118757,11 +118757,11 @@
     },
     "indian-princesses-off-broadway-2025": {
       "title": "Indian Princesses",
-      "status": "upcoming",
+      "status": "open",
       "totalLocal": 0,
-      "hasGap": false,
-      "totalGap": 0,
-      "trulyMissing": 0,
+      "hasGap": true,
+      "totalGap": 18,
+      "trulyMissing": 9,
       "aggregators": {
         "dtli": {
           "archiveCount": null,
@@ -118770,16 +118770,18 @@
           "hasArchive": false
         },
         "showScore": {
-          "archiveCount": null,
+          "archiveCount": 9,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 9,
+          "hasArchive": true,
+          "method": "heading"
         },
         "bww": {
-          "archiveCount": null,
+          "archiveCount": 3,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 3,
+          "hasArchive": true,
+          "method": "blog-postings"
         },
         "bwwReviews": {
           "archiveCount": 0,
@@ -118789,10 +118791,11 @@
           "method": "one-feed-blocks"
         },
         "playbillVerdict": {
-          "archiveCount": null,
+          "archiveCount": 6,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 6,
+          "hasArchive": true,
+          "method": "link-count"
         },
         "nycTheatre": {
           "archiveCount": null,
@@ -118801,12 +118804,12 @@
           "hasArchive": false
         }
       },
-      "maxAggregatorCount": 0,
+      "maxAggregatorCount": 9,
       "flags": [
         "dtli-no-archive",
-        "showScore-no-archive",
-        "bww-no-archive",
-        "playbillVerdict-no-archive",
+        "showScore-under-9",
+        "bww-under-3",
+        "playbillVerdict-under-6",
         "nycTheatre-no-archive"
       ]
     },
@@ -119037,17 +119040,18 @@
     },
     "animal-wisdom-off-broadway-2022": {
       "title": "Animal Wisdom",
-      "status": "upcoming",
+      "status": "open",
       "totalLocal": 0,
-      "hasGap": false,
-      "totalGap": 0,
-      "trulyMissing": 0,
+      "hasGap": true,
+      "totalGap": 11,
+      "trulyMissing": 10,
       "aggregators": {
         "dtli": {
-          "archiveCount": null,
+          "archiveCount": 1,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 1,
+          "hasArchive": true,
+          "method": "thumbs"
         },
         "showScore": {
           "archiveCount": 0,
@@ -119070,10 +119074,11 @@
           "method": "one-feed-blocks"
         },
         "playbillVerdict": {
-          "archiveCount": null,
+          "archiveCount": 10,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 10,
+          "hasArchive": true,
+          "method": "link-count"
         },
         "nycTheatre": {
           "archiveCount": null,
@@ -119082,11 +119087,11 @@
           "hasArchive": false
         }
       },
-      "maxAggregatorCount": 0,
+      "maxAggregatorCount": 10,
       "flags": [
-        "dtli-no-archive",
+        "dtli-under-1",
         "bww-no-archive",
-        "playbillVerdict-no-archive",
+        "playbillVerdict-under-10",
         "nycTheatre-no-archive"
       ]
     },
@@ -120501,7 +120506,7 @@
     },
     "beetlejuice-west-end-2026": {
       "title": "Beetlejuice",
-      "status": "previews",
+      "status": "open",
       "totalLocal": 0,
       "hasGap": true,
       "totalGap": 107,
@@ -122712,7 +122717,7 @@
     },
     "into-the-woods-west-end-2025": {
       "title": "Into the Woods",
-      "status": "open",
+      "status": "closed",
       "totalLocal": 0,
       "hasGap": true,
       "totalGap": 24,
@@ -123829,7 +123834,7 @@
     },
     "please-please-me-west-end-2026": {
       "title": "Please Please Me",
-      "status": "open",
+      "status": "closed",
       "totalLocal": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -124166,7 +124171,7 @@
     },
     "are-you-watching-west-end-2026": {
       "title": "Are You Watching?",
-      "status": "upcoming",
+      "status": "previews",
       "totalLocal": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -124701,10 +124706,11 @@
           "hasArchive": false
         },
         "playbillVerdict": {
-          "archiveCount": null,
+          "archiveCount": 0,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 0,
+          "hasArchive": true,
+          "method": "link-count"
         },
         "nycTheatre": {
           "archiveCount": null,
@@ -124718,7 +124724,6 @@
         "dtli-no-archive",
         "bww-no-archive",
         "bwwReviews-no-archive",
-        "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
       ]
     },
@@ -125505,7 +125510,7 @@
     },
     "krapps-last-tape-godots-todo-list-west-end-2026": {
       "title": "Krapp’s Last Tape/Godot’s To-Do List",
-      "status": "open",
+      "status": "closed",
       "totalLocal": 0,
       "hasGap": true,
       "totalGap": 5,
@@ -129274,7 +129279,7 @@
     },
     "silverback-mountain-off-broadway-2026": {
       "title": "Silverback Mountain",
-      "status": "upcoming",
+      "status": "open",
       "totalLocal": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -129287,10 +129292,11 @@
           "hasArchive": false
         },
         "showScore": {
-          "archiveCount": null,
+          "archiveCount": 0,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 0,
+          "hasArchive": true,
+          "method": "none-found"
         },
         "bww": {
           "archiveCount": null,
@@ -129321,7 +129327,6 @@
       "maxAggregatorCount": 0,
       "flags": [
         "dtli-no-archive",
-        "showScore-no-archive",
         "bww-no-archive",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
@@ -130162,7 +130167,7 @@
     },
     "dark-of-the-moon-west-end-2026": {
       "title": "Dark of the Moon",
-      "status": "previews",
+      "status": "open",
       "totalLocal": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -130175,10 +130180,11 @@
           "hasArchive": false
         },
         "showScore": {
-          "archiveCount": null,
+          "archiveCount": 0,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 0,
+          "hasArchive": true,
+          "method": "none-found"
         },
         "bww": {
           "archiveCount": null,
@@ -130209,7 +130215,6 @@
       "maxAggregatorCount": 0,
       "flags": [
         "dtli-no-archive",
-        "showScore-no-archive",
         "bww-no-archive",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
@@ -130495,7 +130500,7 @@
     },
     "the-guy-who-didnt-like-musicals-west-end-2026": {
       "title": "The Guy Who Didn't Like Musicals",
-      "status": "open",
+      "status": "closed",
       "totalLocal": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -131216,11 +131221,11 @@
     },
     "the-p-word-off-west-end-2026": {
       "title": "The P Word",
-      "status": "upcoming",
+      "status": "open",
       "totalLocal": 0,
-      "hasGap": false,
-      "totalGap": 0,
-      "trulyMissing": 0,
+      "hasGap": true,
+      "totalGap": 6,
+      "trulyMissing": 6,
       "aggregators": {
         "dtli": {
           "archiveCount": null,
@@ -131229,10 +131234,11 @@
           "hasArchive": false
         },
         "showScore": {
-          "archiveCount": null,
+          "archiveCount": 6,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 6,
+          "hasArchive": true,
+          "method": "heading"
         },
         "bww": {
           "archiveCount": null,
@@ -131260,10 +131266,10 @@
           "hasArchive": false
         }
       },
-      "maxAggregatorCount": 0,
+      "maxAggregatorCount": 6,
       "flags": [
         "dtli-no-archive",
-        "showScore-no-archive",
+        "showScore-under-6",
         "bww-no-archive",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
@@ -131517,10 +131523,11 @@
           "hasArchive": false
         },
         "bwwReviews": {
-          "archiveCount": null,
+          "archiveCount": 0,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 0,
+          "hasArchive": true,
+          "method": "one-feed-blocks"
         },
         "playbillVerdict": {
           "archiveCount": null,
@@ -131539,7 +131546,6 @@
       "flags": [
         "dtli-no-archive",
         "bww-no-archive",
-        "bwwReviews-no-archive",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
       ]
@@ -135572,7 +135578,7 @@
     },
     "soledad-barrio-and-noche-flamenca-aqua-fresca-off-broadway-2026": {
       "title": "Soledad Barrio & Noche Flamenca: Aqua Fresca",
-      "status": "open",
+      "status": "closed",
       "totalLocal": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -136127,9 +136133,9 @@
       "title": "Heated Rivalry: The Unauthorized Musical Parody",
       "status": "open",
       "totalLocal": 0,
-      "hasGap": false,
-      "totalGap": 0,
-      "trulyMissing": 0,
+      "hasGap": true,
+      "totalGap": 12,
+      "trulyMissing": 8,
       "aggregators": {
         "dtli": {
           "archiveCount": null,
@@ -136145,10 +136151,11 @@
           "method": "none-found"
         },
         "bww": {
-          "archiveCount": null,
+          "archiveCount": 4,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 4,
+          "hasArchive": true,
+          "method": "blog-postings"
         },
         "bwwReviews": {
           "archiveCount": 0,
@@ -136158,24 +136165,25 @@
           "method": "one-feed-blocks"
         },
         "playbillVerdict": {
-          "archiveCount": null,
+          "archiveCount": 8,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 8,
+          "hasArchive": true,
+          "method": "link-count"
         },
         "nycTheatre": {
-          "archiveCount": null,
+          "archiveCount": 0,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 0,
+          "hasArchive": true,
+          "method": "none-found"
         }
       },
-      "maxAggregatorCount": 0,
+      "maxAggregatorCount": 8,
       "flags": [
         "dtli-no-archive",
-        "bww-no-archive",
-        "playbillVerdict-no-archive",
-        "nycTheatre-no-archive"
+        "bww-under-4",
+        "playbillVerdict-under-8"
       ]
     },
     "now-you-see-me-live-west-end-2026": {
@@ -136623,7 +136631,7 @@
     },
     "david-copperfield-59e59-theaters-off-broadway-2026": {
       "title": "David Copperfield (59E59 Theaters)",
-      "status": "previews",
+      "status": "open",
       "totalLocal": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -137120,7 +137128,7 @@
     },
     "harry-connick-jr-off-broadway-2026": {
       "title": "Harry Connick Jr.",
-      "status": "previews",
+      "status": "closed",
       "totalLocal": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -137783,7 +137791,7 @@
     },
     "liv-redpath-and-harry-rylance-off-broadway-2026": {
       "title": "Liv Redpath & Harry Rylance",
-      "status": "upcoming",
+      "status": "previews",
       "totalLocal": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -138502,9 +138510,9 @@
       "title": "Girls",
       "status": "announced",
       "totalLocal": 0,
-      "hasGap": false,
-      "totalGap": 0,
-      "trulyMissing": 0,
+      "hasGap": true,
+      "totalGap": 5,
+      "trulyMissing": 5,
       "aggregators": {
         "dtli": {
           "archiveCount": null,
@@ -138531,10 +138539,11 @@
           "hasArchive": false
         },
         "playbillVerdict": {
-          "archiveCount": null,
+          "archiveCount": 5,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 5,
+          "hasArchive": true,
+          "method": "link-count"
         },
         "nycTheatre": {
           "archiveCount": null,
@@ -138543,13 +138552,13 @@
           "hasArchive": false
         }
       },
-      "maxAggregatorCount": 0,
+      "maxAggregatorCount": 5,
       "flags": [
         "dtli-no-archive",
         "showScore-no-archive",
         "bww-no-archive",
         "bwwReviews-no-archive",
-        "playbillVerdict-no-archive",
+        "playbillVerdict-under-5",
         "nycTheatre-no-archive"
       ]
     },
@@ -138888,9 +138897,9 @@
       "title": "Derren Brown: Only Human",
       "status": "announced",
       "totalLocal": 0,
-      "hasGap": false,
-      "totalGap": 0,
-      "trulyMissing": 0,
+      "hasGap": true,
+      "totalGap": 12,
+      "trulyMissing": 12,
       "aggregators": {
         "dtli": {
           "archiveCount": null,
@@ -138917,10 +138926,11 @@
           "hasArchive": false
         },
         "playbillVerdict": {
-          "archiveCount": null,
+          "archiveCount": 12,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 12,
+          "hasArchive": true,
+          "method": "link-count"
         },
         "nycTheatre": {
           "archiveCount": null,
@@ -138929,13 +138939,13 @@
           "hasArchive": false
         }
       },
-      "maxAggregatorCount": 0,
+      "maxAggregatorCount": 12,
       "flags": [
         "dtli-no-archive",
         "showScore-no-archive",
         "bww-no-archive",
         "bwwReviews-no-archive",
-        "playbillVerdict-no-archive",
+        "playbillVerdict-under-12",
         "nycTheatre-no-archive"
       ]
     },
@@ -139275,9 +139285,9 @@
       "title": "Morgan Bassichis: Can I Be Frank?",
       "status": "open",
       "totalLocal": 0,
-      "hasGap": false,
-      "totalGap": 0,
-      "trulyMissing": 0,
+      "hasGap": true,
+      "totalGap": 8,
+      "trulyMissing": 8,
       "aggregators": {
         "dtli": {
           "archiveCount": null,
@@ -139286,10 +139296,11 @@
           "hasArchive": false
         },
         "showScore": {
-          "archiveCount": null,
+          "archiveCount": 8,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 8,
+          "hasArchive": true,
+          "method": "heading"
         },
         "bww": {
           "archiveCount": null,
@@ -139316,10 +139327,10 @@
           "hasArchive": false
         }
       },
-      "maxAggregatorCount": 0,
+      "maxAggregatorCount": 8,
       "flags": [
         "dtli-no-archive",
-        "showScore-no-archive",
+        "showScore-under-8",
         "bww-no-archive",
         "bwwReviews-no-archive",
         "playbillVerdict-no-archive",
@@ -140952,10 +140963,11 @@
           "hasArchive": false
         },
         "bwwReviews": {
-          "archiveCount": null,
+          "archiveCount": 0,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 0,
+          "hasArchive": true,
+          "method": "one-feed-blocks"
         },
         "playbillVerdict": {
           "archiveCount": null,
@@ -140975,7 +140987,6 @@
         "dtli-no-archive",
         "showScore-no-archive",
         "bww-no-archive",
-        "bwwReviews-no-archive",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
       ]
@@ -141425,7 +141436,7 @@
       "status": "open",
       "totalLocal": 0,
       "hasGap": true,
-      "totalGap": 7,
+      "totalGap": 10,
       "trulyMissing": 5,
       "aggregators": {
         "dtli": {
@@ -141436,10 +141447,11 @@
           "method": "thumbs"
         },
         "showScore": {
-          "archiveCount": null,
+          "archiveCount": 3,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 3,
+          "hasArchive": true,
+          "method": "heading"
         },
         "bww": {
           "archiveCount": null,
@@ -141471,7 +141483,7 @@
       "maxAggregatorCount": 5,
       "flags": [
         "dtli-under-5",
-        "showScore-no-archive",
+        "showScore-under-3",
         "bww-no-archive",
         "playbillVerdict-under-2",
         "nycTheatre-no-archive"
@@ -142029,7 +142041,7 @@
     },
     "return-to-the-forest-off-west-end-2026": {
       "title": "Return to the Forest",
-      "status": "upcoming",
+      "status": "previews",
       "totalLocal": 0,
       "hasGap": false,
       "totalGap": 0,
@@ -144201,10 +144213,11 @@
           "method": "heading"
         },
         "bww": {
-          "archiveCount": null,
+          "archiveCount": 0,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 0,
+          "hasArchive": true,
+          "method": "none-found"
         },
         "bwwReviews": {
           "archiveCount": 0,
@@ -144231,7 +144244,6 @@
       "flags": [
         "dtli-no-archive",
         "showScore-under-5",
-        "bww-no-archive",
         "playbillVerdict-under-9",
         "nycTheatre-no-archive"
       ]
@@ -144590,10 +144602,11 @@
           "hasArchive": false
         },
         "bww": {
-          "archiveCount": null,
+          "archiveCount": 0,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 0,
+          "hasArchive": true,
+          "method": "none-found"
         },
         "bwwReviews": {
           "archiveCount": null,
@@ -144618,7 +144631,6 @@
       "flags": [
         "dtli-no-archive",
         "showScore-no-archive",
-        "bww-no-archive",
         "bwwReviews-no-archive",
         "playbillVerdict-no-archive",
         "nycTheatre-no-archive"
@@ -145525,10 +145537,11 @@
           "hasArchive": false
         },
         "showScore": {
-          "archiveCount": null,
+          "archiveCount": 0,
           "extractedCount": 0,
-          "gap": null,
-          "hasArchive": false
+          "gap": 0,
+          "hasArchive": true,
+          "method": "none-found"
         },
         "bww": {
           "archiveCount": null,
@@ -145558,7 +145571,6 @@
       "maxAggregatorCount": 0,
       "flags": [
         "dtli-no-archive",
-        "showScore-no-archive",
         "bww-no-archive",
         "bwwReviews-no-archive",
         "playbillVerdict-no-archive",
@@ -145702,6 +145714,61 @@
           "hasArchive": false
         },
         "bwwReviews": {
+          "archiveCount": 0,
+          "extractedCount": 0,
+          "gap": 0,
+          "hasArchive": true,
+          "method": "one-feed-blocks"
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 0,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-no-archive",
+        "bww-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "the-smile-of-her-off-west-end-2026": {
+      "title": "The Smile Of Her",
+      "status": "announced",
+      "totalLocal": 0,
+      "hasGap": false,
+      "totalGap": 0,
+      "trulyMissing": 0,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
           "archiveCount": null,
           "extractedCount": 0,
           "gap": null,
@@ -145730,8 +145797,2555 @@
         "nycTheatre-no-archive"
       ]
     },
-    "the-smile-of-her-off-west-end-2026": {
-      "title": "The Smile Of Her",
+    "rent-west-end-2026": {
+      "title": "Rent",
+      "status": "announced",
+      "totalLocal": 0,
+      "hasGap": true,
+      "totalGap": 1,
+      "trulyMissing": 1,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": 0,
+          "extractedCount": 0,
+          "gap": 0,
+          "hasArchive": true,
+          "method": "one-feed-blocks"
+        },
+        "playbillVerdict": {
+          "archiveCount": 1,
+          "extractedCount": 0,
+          "gap": 1,
+          "hasArchive": true,
+          "method": "link-count"
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 1,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-no-archive",
+        "bww-no-archive",
+        "playbillVerdict-under-1",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "liberace-and-liza-a-tribute-west-end-2026": {
+      "title": "Liberace & Liza: A Tribute",
+      "status": "announced",
+      "totalLocal": 0,
+      "hasGap": false,
+      "totalGap": 0,
+      "trulyMissing": 0,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 0,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-no-archive",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "lets-love-off-broadway-2026": {
+      "title": "Let's Love",
+      "status": "closed",
+      "totalLocal": 0,
+      "hasGap": false,
+      "totalGap": 0,
+      "trulyMissing": 0,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 0,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-no-archive",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "msblackforpresident-off-broadway-2026": {
+      "title": "Ms. Blakk for President",
+      "status": "upcoming",
+      "totalLocal": 0,
+      "hasGap": false,
+      "totalGap": 0,
+      "trulyMissing": 0,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 0,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-no-archive",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "king-of-the-yees-off-broadway-2026": {
+      "title": "KING OF THE YEES",
+      "status": "upcoming",
+      "totalLocal": 0,
+      "hasGap": false,
+      "totalGap": 0,
+      "trulyMissing": 0,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 0,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-no-archive",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "miles-for-mary-off-broadway-2026": {
+      "title": "MILES FOR MARY",
+      "status": "upcoming",
+      "totalLocal": 0,
+      "hasGap": true,
+      "totalGap": 23,
+      "trulyMissing": 23,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": 0,
+          "extractedCount": 0,
+          "gap": 0,
+          "hasArchive": true,
+          "method": "none-found"
+        },
+        "showScore": {
+          "archiveCount": 23,
+          "extractedCount": 0,
+          "gap": 23,
+          "hasArchive": true,
+          "method": "heading"
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": 0,
+          "extractedCount": 0,
+          "gap": 0,
+          "hasArchive": true,
+          "method": "one-feed-blocks"
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 23,
+      "flags": [
+        "showScore-under-23",
+        "bww-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "angela-s-mixtape-off-broadway-2026": {
+      "title": "Angela's Mixtape",
+      "status": "upcoming",
+      "totalLocal": 0,
+      "hasGap": false,
+      "totalGap": 0,
+      "trulyMissing": 0,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 0,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-no-archive",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "the-comeuppance-off-broadway-2026": {
+      "title": "The Comeuppance",
+      "status": "closed",
+      "totalLocal": 0,
+      "hasGap": true,
+      "totalGap": 14,
+      "trulyMissing": 14,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": 14,
+          "extractedCount": 0,
+          "gap": 14,
+          "hasArchive": true,
+          "method": "heading"
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 14,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-under-14",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "sunset-baby-off-broadway-2026": {
+      "title": "Sunset Baby",
+      "status": "closed",
+      "totalLocal": 0,
+      "hasGap": true,
+      "totalGap": 15,
+      "trulyMissing": 15,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": 15,
+          "extractedCount": 0,
+          "gap": 15,
+          "hasArchive": true,
+          "method": "heading"
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 15,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-under-15",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "orlando-off-broadway-2026": {
+      "title": "Orlando",
+      "status": "closed",
+      "totalLocal": 0,
+      "hasGap": false,
+      "totalGap": 0,
+      "trulyMissing": 0,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 0,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-no-archive",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "three-houses-off-broadway-2026": {
+      "title": "Three Houses",
+      "status": "closed",
+      "totalLocal": 0,
+      "hasGap": true,
+      "totalGap": 10,
+      "trulyMissing": 10,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": 10,
+          "extractedCount": 0,
+          "gap": 10,
+          "hasArchive": true,
+          "method": "heading"
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 10,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-under-10",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "bad-krey-l-off-broadway-2026": {
+      "title": "Bad Kreyòl",
+      "status": "closed",
+      "totalLocal": 0,
+      "hasGap": false,
+      "totalGap": 0,
+      "trulyMissing": 0,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 0,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-no-archive",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "grangeville-off-broadway-2026": {
+      "title": "GRANGEVILLE",
+      "status": "closed",
+      "totalLocal": 0,
+      "hasGap": true,
+      "totalGap": 17,
+      "trulyMissing": 17,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": 17,
+          "extractedCount": 0,
+          "gap": 17,
+          "hasArchive": true,
+          "method": "heading"
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 17,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-under-17",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "eurydice-off-broadway-2026": {
+      "title": "EURYDICE",
+      "status": "closed",
+      "totalLocal": 0,
+      "hasGap": false,
+      "totalGap": 0,
+      "trulyMissing": 0,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 0,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-no-archive",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "oratorio-for-living-things-off-broadway-2026": {
+      "title": "ORATORIO FOR LIVING THINGS",
+      "status": "closed",
+      "totalLocal": 0,
+      "hasGap": true,
+      "totalGap": 9,
+      "trulyMissing": 9,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": 9,
+          "extractedCount": 0,
+          "gap": 9,
+          "hasArchive": true,
+          "method": "heading"
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 9,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-under-9",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "uncensored-no-need-to-overthink-it-off-broadway-2026": {
+      "title": "Uncensored: No Need to Overthink It",
+      "status": "closed",
+      "totalLocal": 0,
+      "hasGap": false,
+      "totalGap": 0,
+      "trulyMissing": 0,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 0,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-no-archive",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "caroline-off-broadway-2026": {
+      "title": "Caroline",
+      "status": "closed",
+      "totalLocal": 0,
+      "hasGap": true,
+      "totalGap": 12,
+      "trulyMissing": 12,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": 12,
+          "extractedCount": 0,
+          "gap": 12,
+          "hasArchive": true,
+          "method": "heading"
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 12,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-under-12",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "all-nighter-off-broadway-2025": {
+      "title": "All Nighter",
+      "status": "closed",
+      "totalLocal": 0,
+      "hasGap": true,
+      "totalGap": 9,
+      "trulyMissing": 9,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": 9,
+          "extractedCount": 0,
+          "gap": 9,
+          "hasArchive": true,
+          "method": "heading"
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 9,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-under-9",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "trophy-boys-off-broadway-2025": {
+      "title": "Trophy Boys",
+      "status": "closed",
+      "totalLocal": 0,
+      "hasGap": true,
+      "totalGap": 12,
+      "trulyMissing": 12,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": 12,
+          "extractedCount": 0,
+          "gap": 12,
+          "hasArchive": true,
+          "method": "heading"
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 12,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-under-12",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "the-lonely-few-off-broadway-2024": {
+      "title": "The Lonely Few",
+      "status": "closed",
+      "totalLocal": 0,
+      "hasGap": true,
+      "totalGap": 11,
+      "trulyMissing": 11,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": 11,
+          "extractedCount": 0,
+          "gap": 11,
+          "hasArchive": true,
+          "method": "heading"
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 11,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-under-11",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "shit-meet-fan-off-broadway-2024": {
+      "title": "Shit. Meet. Fan.",
+      "status": "closed",
+      "totalLocal": 0,
+      "hasGap": true,
+      "totalGap": 7,
+      "trulyMissing": 7,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": 7,
+          "extractedCount": 0,
+          "gap": 7,
+          "hasArchive": true,
+          "method": "heading"
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 7,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-under-7",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "abigails-party-west-end-2026": {
+      "title": "Abigail’s Party",
+      "status": "announced",
+      "totalLocal": 0,
+      "hasGap": false,
+      "totalGap": 0,
+      "trulyMissing": 0,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 0,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-no-archive",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "redcliffe-off-west-end-2026": {
+      "title": "Redcliffe",
+      "status": "announced",
+      "totalLocal": 0,
+      "hasGap": false,
+      "totalGap": 0,
+      "trulyMissing": 0,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 0,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-no-archive",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "448-psychosis-off-west-end-2026": {
+      "title": "448 Psychosis",
+      "status": "announced",
+      "totalLocal": 0,
+      "hasGap": false,
+      "totalGap": 0,
+      "trulyMissing": 0,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 0,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-no-archive",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "are-you-a-robot-off-west-end-2026": {
+      "title": "Are You A Robot",
+      "status": "announced",
+      "totalLocal": 0,
+      "hasGap": false,
+      "totalGap": 0,
+      "trulyMissing": 0,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 0,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-no-archive",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "ride-the-cyclone-off-west-end-2026": {
+      "title": "Ride The Cyclone",
+      "status": "announced",
+      "totalLocal": 0,
+      "hasGap": false,
+      "totalGap": 0,
+      "trulyMissing": 0,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 0,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-no-archive",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "pride-a-creative-celebration-off-west-end-2026": {
+      "title": "Pride A Creative Celebration",
+      "status": "announced",
+      "totalLocal": 0,
+      "hasGap": false,
+      "totalGap": 0,
+      "trulyMissing": 0,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 0,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-no-archive",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "edinburgh-fringe-comedy-previews-off-west-end-2026": {
+      "title": "Edinburgh Fringe Comedy Previews",
+      "status": "announced",
+      "totalLocal": 0,
+      "hasGap": false,
+      "totalGap": 0,
+      "trulyMissing": 0,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 0,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-no-archive",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "the-jonathan-larson-project-off-west-end-2026": {
+      "title": "The Jonathan Larson Project",
+      "status": "announced",
+      "totalLocal": 0,
+      "hasGap": false,
+      "totalGap": 0,
+      "trulyMissing": 0,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 0,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-no-archive",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "firebird-off-west-end-2026": {
+      "title": "Firebird",
+      "status": "announced",
+      "totalLocal": 0,
+      "hasGap": false,
+      "totalGap": 0,
+      "trulyMissing": 0,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 0,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-no-archive",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "twenty-thousand-streets-off-west-end-2026": {
+      "title": "Twenty Thousand Streets",
+      "status": "announced",
+      "totalLocal": 0,
+      "hasGap": false,
+      "totalGap": 0,
+      "trulyMissing": 0,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 0,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-no-archive",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "poet-on-a-string-off-broadway-2026": {
+      "title": "Poet On A String",
+      "status": "open",
+      "totalLocal": 0,
+      "hasGap": false,
+      "totalGap": 0,
+      "trulyMissing": 0,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": 0,
+          "extractedCount": 0,
+          "gap": 0,
+          "hasArchive": true,
+          "method": "none-found"
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 0,
+      "flags": [
+        "dtli-no-archive",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "fear-and-wonder-off-broadway-2026": {
+      "title": "Fear & Wonder",
+      "status": "previews",
+      "totalLocal": 0,
+      "hasGap": false,
+      "totalGap": 0,
+      "trulyMissing": 0,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 0,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-no-archive",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "broken-snow-off-broadway-2026": {
+      "title": "Broken Snow",
+      "status": "open",
+      "totalLocal": 0,
+      "hasGap": true,
+      "totalGap": 19,
+      "trulyMissing": 8,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": 6,
+          "extractedCount": 0,
+          "gap": 6,
+          "hasArchive": true,
+          "method": "heading"
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": 5,
+          "extractedCount": 0,
+          "gap": 5,
+          "hasArchive": true,
+          "method": "one-feed-blocks"
+        },
+        "playbillVerdict": {
+          "archiveCount": 8,
+          "extractedCount": 0,
+          "gap": 8,
+          "hasArchive": true,
+          "method": "link-count"
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 8,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-under-6",
+        "bww-no-archive",
+        "bwwReviews-under-5",
+        "playbillVerdict-under-8",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "bedlams-othello-off-broadway-2026": {
+      "title": "Bedlam's Othello",
+      "status": "open",
+      "totalLocal": 0,
+      "hasGap": true,
+      "totalGap": 8,
+      "trulyMissing": 8,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": 8,
+          "extractedCount": 0,
+          "gap": 8,
+          "hasArchive": true,
+          "method": "link-count"
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 8,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-no-archive",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-under-8",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "heated-rivalry-the-unauthorized-parody-musical-off-broadway-2026": {
+      "title": "HEATED RIVALRY: THE UNAUTHORIZED PARODY MUSICAL",
+      "status": "previews",
+      "totalLocal": 0,
+      "hasGap": false,
+      "totalGap": 0,
+      "trulyMissing": 0,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 0,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-no-archive",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "phyl-off-broadway-2026": {
+      "title": "PHYL",
+      "status": "previews",
+      "totalLocal": 0,
+      "hasGap": false,
+      "totalGap": 0,
+      "trulyMissing": 0,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 0,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-no-archive",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "don-quixote-off-broadway-2026": {
+      "title": "Don Quixote",
+      "status": "upcoming",
+      "totalLocal": 0,
+      "hasGap": false,
+      "totalGap": 0,
+      "trulyMissing": 0,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 0,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-no-archive",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "ectoplasm-off-broadway-2026": {
+      "title": "Ectoplasm",
+      "status": "upcoming",
+      "totalLocal": 0,
+      "hasGap": true,
+      "totalGap": 2,
+      "trulyMissing": 2,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": 2,
+          "extractedCount": 0,
+          "gap": 2,
+          "hasArchive": true,
+          "method": "heading"
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 2,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-under-2",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "armory-public-tours-off-broadway-2026": {
+      "title": "Armory Public Tours",
+      "status": "previews",
+      "totalLocal": 0,
+      "hasGap": false,
+      "totalGap": 0,
+      "trulyMissing": 0,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 0,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-no-archive",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "onegin-off-broadway-2026": {
+      "title": "Onegin",
+      "status": "upcoming",
+      "totalLocal": 0,
+      "hasGap": false,
+      "totalGap": 0,
+      "trulyMissing": 0,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 0,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-no-archive",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "the-black-mirror-experience-off-broadway-2026": {
+      "title": "The Black Mirror Experience",
+      "status": "upcoming",
+      "totalLocal": 0,
+      "hasGap": false,
+      "totalGap": 0,
+      "trulyMissing": 0,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 0,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-no-archive",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "the-unsinkable-off-broadway-2026": {
+      "title": "The Unsinkable",
+      "status": "announced",
+      "totalLocal": 0,
+      "hasGap": false,
+      "totalGap": 0,
+      "trulyMissing": 0,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 0,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-no-archive",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "kilgallen-off-broadway-2026": {
+      "title": "Kilgallen",
+      "status": "announced",
+      "totalLocal": 0,
+      "hasGap": false,
+      "totalGap": 0,
+      "trulyMissing": 0,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 0,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-no-archive",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "other-desert-cities-2026": {
+      "title": "Other Desert Cities",
+      "status": "open",
+      "totalLocal": 0,
+      "hasGap": false,
+      "totalGap": 0,
+      "trulyMissing": 0,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": 0,
+          "extractedCount": 0,
+          "gap": 0,
+          "hasArchive": true,
+          "method": "none-found"
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 0,
+      "flags": [
+        "dtli-no-archive",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "truly-howard-hughes-off-broadway-2026": {
+      "title": "Truly, Howard Hughes",
+      "status": "upcoming",
+      "totalLocal": 0,
+      "hasGap": false,
+      "totalGap": 0,
+      "trulyMissing": 0,
+      "aggregators": {
+        "dtli": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "showScore": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bww": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "bwwReviews": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "playbillVerdict": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        },
+        "nycTheatre": {
+          "archiveCount": null,
+          "extractedCount": 0,
+          "gap": null,
+          "hasArchive": false
+        }
+      },
+      "maxAggregatorCount": 0,
+      "flags": [
+        "dtli-no-archive",
+        "showScore-no-archive",
+        "bww-no-archive",
+        "bwwReviews-no-archive",
+        "playbillVerdict-no-archive",
+        "nycTheatre-no-archive"
+      ]
+    },
+    "new2ny-series-off-broadway-2026": {
+      "title": "New2NY Series",
       "status": "announced",
       "totalLocal": 0,
       "hasGap": false,

@@ -23,7 +23,7 @@ const repo = path.resolve(__dirname, '..', '..');
 // paths now (was hardcoded /Users/tompryor/... — broke on CI).
 const cjsRequire = createRequire(import.meta.url);
 const { buildUnsubscribeUrl } = cjsRequire(path.join(repo, 'scripts/lib/email-templates'));
-const { reconcileClosure } = cjsRequire(path.join(repo, 'scripts/lib/cast-changes-filters'));
+const { reconcileClosure, reconcileClosureDateWithClosingDate } = cjsRequire(path.join(repo, 'scripts/lib/cast-changes-filters'));
 const { reviews } = JSON.parse(fs.readFileSync(path.join(repo, 'data/reviews.json'), 'utf8'));
 const { shows } = JSON.parse(fs.readFileSync(path.join(repo, 'data/shows.json'), 'utf8'));
 const castData = JSON.parse(fs.readFileSync(path.join(repo, 'data/cast-changes.json'), 'utf8'));
@@ -38,6 +38,31 @@ const weekEndDate = new Date(argDate + 'T12:00:00'); weekEndDate.setDate(weekEnd
 const weekEndStr = weekEndDate.toISOString().slice(0, 10);
 const horizon7Date = new Date(weekEndDate); horizon7Date.setDate(horizon7Date.getDate() + 7);
 const horizon7Str = horizon7Date.toISOString().slice(0, 10);
+
+// --- Cross-issue memory (data/newsletter-state.json) ---------------------------
+// Persisted week-over-week so the digest never re-features last week's biggest
+// mover or re-announces a closing it already announced. Best-effort: a missing
+// or corrupt file degrades to "no memory" (everything is fair game).
+const STATE_PATH = path.join(repo, 'data/newsletter-state.json');
+let _priorState = { issues: [] };
+try { _priorState = JSON.parse(fs.readFileSync(STATE_PATH, 'utf8')) || { issues: [] }; } catch {}
+const _priorIssues = (_priorState.issues || [])
+  .filter(i => i && i.weekStart && i.weekStart < weekStartStr)
+  .sort((a, b) => b.weekStart.localeCompare(a.weekStart));
+const _lastIssue = _priorIssues[0] || null;
+const lastMoverIds = new Set(_lastIssue ? (_lastIssue.moverShowIds || []) : []);
+const recentAnnouncedIds = new Set(_priorIssues.slice(0, 4).flatMap(i => i.announcedClosingShowIds || []));
+
+// --- Within-issue cross-section de-dup -----------------------------------------
+// A show featured in a higher section is suppressed from every lower one, so a
+// single show (e.g. Fallen Angels) never appears in Movers AND Closings AND
+// Casting in the same email. Sections add their rendered ids as a side effect,
+// in render order; lower sections skip anything already claimed.
+const featuredShowIds = new Set();
+const _moverShowIds = [];
+const _announcedShowIds = [];
+const notFeatured = (id) => !featuredShowIds.has(id);
+const markFeatured = (...ids) => { for (const id of ids) if (id) featuredShowIds.add(id); };
 
 function inWeek(dateStr) { if (!dateStr) return false; return dateStr >= weekStartStr && dateStr <= weekEndStr; }
 function inWeekDateOnly(d) { if (!d) return false; const s = (typeof d === 'string') ? d.slice(0, 10) : new Date(d).toISOString().slice(0, 10); return s >= weekStartStr && s <= weekEndStr; }
@@ -455,10 +480,14 @@ function openingEventsForWeek(category) {
 
 // SECTION: BW openings (includes reopenings — see openingEventsForWeek)
 function broadwayOpenings() {
-  const events = openingEventsForWeek('broadway');
+  // Only feature shows we actually have reviews for (never name a no-review show).
+  const events = openingEventsForWeek('broadway')
+    .filter(e => notFeatured(e.show.id))
+    .filter(e => { const a = aggregateScore(e.show.id); return a && a.count >= minReviews('broadway'); });
   if (!events.length) return { html: null, list: [] };
   const reopeningIds = new Set(events.filter(e => e.isReopening).map(e => e.show.id));
   const list = events.map(e => e.show);
+  markFeatured(...list.map(s => s.id));
   const hasOpen = events.some(e => !e.isReopening);
   const hasReopen = events.some(e => e.isReopening);
   const title = hasOpen && hasReopen ? 'Opened on Broadway'
@@ -474,18 +503,24 @@ function broadwayOpenings() {
 // pending count gets promoted to the heading subtitle only when there's at
 // least one show to render alongside it.
 function offBroadwayOpenings() {
-  const events = openingEventsForWeek('off-broadway');
-  if (!events.length) return { html: null, list: [] };
-  const reopeningIds = new Set(events.filter(e => e.isReopening).map(e => e.show.id));
-  const list = events.map(e => e.show);
-  const withScore = list.map(s => ({ s, agg: aggregateScore(s.id) })).filter(x => x.agg && x.agg.count >= 3);
+  // Grace window: include OB shows that opened in the last 14 days, not just the
+  // strict in-week opening — this catches shows that were added to our DB late.
+  // Opera is excluded (it has its own section); only shows with reviews qualify;
+  // the highest-scored show leads as the featured opening.
+  const cutoffDate = new Date(weekStartStr + 'T12:00:00'); cutoffDate.setDate(cutoffDate.getDate() - 14);
+  const cutoff = cutoffDate.toISOString().slice(0, 10);
+  const withScore = shows
+    .filter(s => s.category === 'off-broadway' && s.status === 'open' && !isOperaShow(s)
+      && s.openingDate && s.openingDate >= cutoff && s.openingDate <= weekEndStr
+      && notFeatured(s.id))
+    .map(s => ({ s, agg: aggregateScore(s.id) }))
+    .filter(x => x.agg && x.agg.count >= minReviews('off-broadway'))
+    .sort((a, b) => ((b.agg.raw ?? b.agg.avg) - (a.agg.raw ?? a.agg.avg)));
   if (!withScore.length) return { html: null, list: [] };
-  const pending = list.length - withScore.length;
-  const body = withScore.map(x => showRow(x.s, { isReopening: reopeningIds.has(x.s.id) })).join('');
-  const hasOpen = withScore.some(x => !reopeningIds.has(x.s.id));
-  const hasReopen = withScore.some(x => reopeningIds.has(x.s.id));
-  const title = hasOpen ? 'Opened Off-Broadway' : (hasReopen ? 'Reopened Off-Broadway' : 'Opened Off-Broadway');
-  return { html: sectionWrap(sectionHeading(title, pending ? `+${pending} needs more reviews` : ''), body), list: withScore.map(x => x.s) };
+  const list = withScore.slice(0, 8).map(x => x.s); // cap the recent-openings list
+  markFeatured(...list.map(s => s.id));
+  const body = list.map(s => showRow(s, {})).join('');
+  return { html: sectionWrap(sectionHeading('Opened Off-Broadway'), body), list };
 }
 
 // Tracks whether the most recent Coming Up render included a Broadway show.
@@ -543,7 +578,7 @@ function upcomingOpeningsSection() {
     </tr>${!isLast ? '<tr><td colspan="2" style="padding:0 16px;"><div style="border-top:1px solid rgba(255,255,255,0.05);"></div></td></tr>' : ''}`;
   }).join('');
   const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" class="cardbg">${rows}
-    ${seeAllLink(`${SITE}/`, remaining > 0 ? `See ${remaining} more upcoming` : 'See all upcoming openings')}
+    ${seeAllLink(`${SITE}/browse/upcoming-broadway-shows`, remaining > 0 ? `See ${remaining} more upcoming` : 'See all upcoming openings')}
   </table>`;
   return sectionWrap(sectionHeading('Coming Up', 'next 14 days'), body);
 }
@@ -581,6 +616,7 @@ function findRenderableCriticMovers() {
     if (Math.abs(delta) < 1) continue;
     const show = shows.find(s => s.id === id);
     if (!show) continue;
+    if (lastMoverIds.has(id) || !notFeatured(id)) continue; // no week-over-week repeat; no cross-section dupe
     if (show.category !== 'broadway' && show.category !== 'off-broadway') continue;
     if (isOperaShow(show)) continue;
     // Don't double-surface a show that's already in an Openings section.
@@ -648,6 +684,7 @@ function biggestMoverSection() {
       // hard enough to cross a grade boundary.
       const show = shows.find(s => s.id === id);
       if (!show) return;
+      if (lastMoverIds.has(id) || !notFeatured(id)) return; // no week-over-week repeat; no cross-section dupe
       if (show.category !== 'broadway' && show.category !== 'off-broadway') return;
     if (isOperaShow(show)) return;
       // Off-Broadway threshold lowered 100 → 50 (Gemini final review): 100
@@ -683,6 +720,9 @@ function biggestMoverSection() {
     return out.slice(0, 1);
   }
   const audMovers = audienceGradeMovers();
+  // Record what the mover section actually rendered (for cross-section de-dup
+  // below + next week's cross-issue memory).
+  [...moverList, ...audMovers].forEach(m => { _moverShowIds.push(m.show.id); markFeatured(m.show.id); });
   function audGradeColor(g) {
     if (!g) return '#6b7280';
     if (g === 'A+' || g === 'A') return '#16a34a';
@@ -1010,10 +1050,12 @@ function announcedClosingsSection() {
     const show = shows.find(s => s.id === showId);
     if (!show || show.category !== 'broadway' || isOperaShow(show) || show.status !== 'open' || !show.closingDate) return;
     if (show.closingDate <= weekEndStr) return; // already passed
+    if (!notFeatured(show.id) || recentAnnouncedIds.has(show.id)) return; // shown above, or already announced in a recent issue
     announcements.push({ show, closingDate: show.closingDate });
   });
   if (!announcements.length) return null;
   announcements.sort((a, b) => a.closingDate.localeCompare(b.closingDate));
+  announcements.forEach(a => { _announcedShowIds.push(a.show.id); markFeatured(a.show.id); });
   const rows = announcements.map((a, i, arr) => {
     const isLast = i === arr.length - 1;
     const agg = aggregateScore(a.show.id);
@@ -1113,17 +1155,17 @@ function closingSection() {
     if (!s.closingDate || s.closingDate <= weekEndStr || s.closingDate > horizon7Str) return false;
     if (s.status !== 'open') return false;
     if (!['broadway', 'off-broadway'].includes(s.category)) return false; // NYC only
+    if (isOperaShow(s)) return false; // opera has its own section — never in NYC closings
+    if (!notFeatured(s.id)) return false; // already surfaced in a higher section
     // Must have a qualifying critic score (drop pending/no-score shows)
     const a = aggregateScore(s.id);
     return a && a.count >= minReviews(s.category);
   }).sort((a, b) => a.closingDate.localeCompare(b.closingDate));
   if (!list.length) return null;
-  const marketTagColor = (cat) => (cat === 'west-end' || cat === 'off-west-end') ? '#f472b6' : '#d4a574';
-  const marketTagBg = (cat) => (cat === 'west-end' || cat === 'off-west-end') ? 'rgba(244,114,182,0.12)' : 'rgba(212,165,116,0.12)';
-  const rows = list.map((s, i) => {
+  markFeatured(...list.map(s => s.id));
+  const rowFor = (s, isLast) => {
     const a = aggregateScore(s.id);
     const score = a && a.count >= minReviews(s.category) ? a.avg : null;
-    const isLast = i === list.length - 1;
     const borderBottom = !isLast ? 'border-bottom:1px solid rgba(255,255,255,0.05);' : '';
     return `<tr>
       <td valign="middle" width="52" style="padding:12px 10px 12px 0;${borderBottom}">${thumb(s, 40)}</td>
@@ -1135,12 +1177,20 @@ function closingSection() {
         ${score != null ? smallBadge(score, 40, s.category) : ''}
       </td>
     </tr>`;
-  }).join('');
-  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" class="cardbg">
-    <tr><td style="padding:4px 16px;">
-      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">${rows}</table>
-    </td></tr>
-  </table>`;
+  };
+  // Split Broadway (top) and Off-Broadway (below) under their own sub-labels.
+  const groupBlock = (label, items) => {
+    if (!items.length) return '';
+    const rows = items.map((s, i) => rowFor(s, i === items.length - 1)).join('');
+    return `<tr><td style="padding:14px 16px 2px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#d4a574;">${label}</td></tr>
+      <tr><td style="padding:0 16px;"><table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">${rows}</table></td></tr>`;
+  };
+  const bw = list.filter(s => s.category === 'broadway');
+  const ob = list.filter(s => s.category === 'off-broadway');
+  const divider = (bw.length && ob.length)
+    ? '<tr><td style="padding:6px 16px;"><div style="border-top:1px solid rgba(255,255,255,0.08);"></div></td></tr>'
+    : '';
+  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" class="cardbg">${groupBlock('Broadway', bw)}${divider}${groupBlock('Off-Broadway', ob)}</table>`;
   return sectionWrap(sectionHeading('Closing this Week'), body);
 }
 
@@ -1151,82 +1201,69 @@ function castingSection() {
     const show = shows.find(s => s.id === showId);
     if (!show || show.category !== 'broadway' || isOperaShow(show)) return;
     const data = castData.shows[showId];
-    (data.upcoming || []).forEach(u => eventsAll.push({ ...u, showId, showTitle: show.title }));
+    // Defend at the READ boundary against a stale closure date: cast-changes.json
+    // is only healed by the weekly audit, so between runs (or in local preview) a
+    // closure event may still carry the pre-extension date. Reconcile it to the
+    // broadway.com-audited shows.json closingDate FIRST so reconcileClosure folds
+    // departures against the correct date. Then reconcileClosure PER SHOW (never
+    // across shows — a closure in one show must not suppress a same-date departure
+    // in another).
+    const healed = reconcileClosureDateWithClosingDate(data.upcoming || [], show.closingDate).events;
+    reconcileClosure(healed).forEach(u =>
+      eventsAll.push({ ...u, showId, showTitle: show.title }),
+    );
   });
   // Recent: addedDate IN THE WEEK WINDOW. Earlier versions used a 14-day
   // window (weekStart - 7d) but that resurfaces last-week's casting in this
   // week's email, which contradicts the weekly-digest premise. Aligned with
   // the announced-closings tightening per user note 2026-05-24.
-  const recent = eventsAll.filter(e => e.addedDate && e.addedDate >= weekStartStr && e.addedDate <= weekEndStr);
+  // Closures belong in the closing sections, never here — exclude them so this
+  // section only ever shows real cast moves (joins / departures / swaps).
+  // A renderable cast move must be an arrival/departure/swap with a REAL
+  // performer name and at least one date. Filters out: closures (own section),
+  // note/absence rows, placeholder names ("X replacement", "TBA"/"TBD"), and
+  // dateless rows ("no dates means these aren't useful" — user, 2026-05-30).
+  const PLACEHOLDER = /\breplacement\b|^tba$|^tbd$|^t\.?b\.?[ad]\.?$/i;
+  // A "departure" whose name IS the production (e.g. "Moulin Rouge! The Musical
+  // Company") is a show-wide closing restated as a per-actor row, not a person.
+  // Rendering it prints "<Show> Company departs" — the closure-as-departure bug.
+  const norm = (s) => (s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+  const isProductionName = (e) => {
+    const n = norm(e.name);
+    const t = norm(e.showTitle);
+    return !!n && !!t && (n === t || n.startsWith(t));
+  };
+  const isRealMove = (e) => {
+    if (!['arrival', 'departure'].includes(e.type)) return false;
+    const name = (e.name || '').trim();
+    if (!name || PLACEHOLDER.test(name)) return false;
+    if (isProductionName(e)) return false;
+    if (!e.date && !e.endDate) return false;
+    return true;
+  };
+  const recent = eventsAll.filter(e => isRealMove(e) && e.addedDate && e.addedDate >= weekStartStr && e.addedDate <= weekEndStr);
   if (!recent.length) return null;
   const byShow = {};
   recent.forEach(e => { (byShow[e.showId] ||= []).push(e); });
-  // Per-show, collapse closure-as-N-departures into a single closure row.
-  // The closure event itself may have been added BEFORE the lookback window
-  // (e.g., closure announced 3 weeks ago, one ensemble actor departure
-  // scraped fresh this week). We must reach BACK into the full upcoming
-  // events to fetch any existing closure for the show — otherwise the
-  // lookback filter strands the departure and renders "Actor departs ·
-  // final <closure date>" again, which is the exact bug this section
-  // was rewritten to prevent.
-  Object.keys(byShow).forEach(showId => {
-    const recentShowEvents = byShow[showId];
-    const allShowEvents = (castData.shows[showId]?.upcoming || []);
-    const existingClosure = allShowEvents.find(e => e.type === 'closure');
-    const alreadyHasClosure = recentShowEvents.some(e => e.type === 'closure');
-    // Inject the show-level closure (with the same showId/showTitle envelope
-    // the recent events carry) so reconcileClosure can suppress the stranded
-    // departures. The envelope is only used by downstream rendering loops.
-    const eventsForReconcile = existingClosure && !alreadyHasClosure
-      ? [{ ...existingClosure, showId, showTitle: recentShowEvents[0].showTitle }, ...recentShowEvents]
-      : recentShowEvents;
-    byShow[showId] = reconcileClosure(eventsForReconcile);
-    // If we injected a closure purely for suppression purposes and the show
-    // already had a closure addedDate outside the lookback (i.e. NOT fresh
-    // news), don't surface the closure row — the result is the closure was
-    // used silently to clean up the rendering, but no row is emitted.
-    if (existingClosure && !alreadyHasClosure) {
-      byShow[showId] = byShow[showId].filter(e => e.type !== 'closure');
-    }
-  });
-  // Sort shows so closures surface first within the 5-row cap — a show closing
-  // is more newsworthy than a routine ensemble swap and must never be crowded
-  // out. Within closures, sort by closure date ascending so the soonest-to-
-  // close show leads (most urgent to a reader planning attendance).
-  const showEntries = Object.values(byShow).sort((a, b) => {
-    const aClose = a.find(e => e.type === 'closure');
-    const bClose = b.find(e => e.type === 'closure');
-    const aRank = aClose ? 0 : 1;
-    const bRank = bClose ? 0 : 1;
-    if (aRank !== bRank) return aRank - bRank;
-    if (aClose && bClose) return (aClose.date || '').localeCompare(bClose.date || '');
-    return 0;
-  });
-  // For each show, surface 1-2 events with arrival/departure icons
+  const showEntries = Object.values(byShow);
+  // cast-changes.json uses `date` (start) and `endDate` (last performance).
+  function rangeOf(e) {
+    const parts = [];
+    if (e && e.date) parts.push(`from ${fmt(e.date)}`);
+    if (e && e.endDate) parts.push(`through ${fmt(e.endDate)}`);
+    return parts.length ? ` <span style="color:#fbbf24;">· ${parts.join(' · ')}</span>` : '';
+  }
+  // For each show, surface a single arrival/departure/swap row.
   const groups = [];
-  showEntries.slice(0, 5).forEach(events => {
+  showEntries
+    .filter(events => events.length && notFeatured(events[0].showId))
+    .slice(0, 5).forEach(events => {
+    markFeatured(events[0].showId);
     const showTitle = events[0].showTitle;
-    const closure = events.find(e => e.type === 'closure');
     const arr = events.find(e => e.type === 'arrival');
     const dep = events.find(e => e.type === 'departure');
     const items = [];
-    // cast-changes.json uses `date` (start) and `endDate` (last performance).
-    // Both are optional — surface "from X · through Y" / "from X" / "through Y"
-    // depending on what's known.
-    function rangeOf(e) {
-      const parts = [];
-      if (e && e.date) parts.push(`from ${fmt(e.date)}`);
-      if (e && e.endDate) parts.push(`through ${fmt(e.endDate)}`);
-      return parts.length ? ` <span style="color:#fbbf24;">· ${parts.join(' · ')}</span>` : '';
-    }
-    if (closure) {
-      // Closure rows used #ef4444 (the "critical miss" red) — that misreads as
-      // a negative review badge to non-technical scanning readers. Neutral
-      // grey reads as "ended/concluded" without overloading critic-score
-      // semantics. Reviewers (GPT-4o + Claude QA + Codex) all flagged red.
-      const tail = closure.date ? ` <span style="color:#fbbf24;">· final ${fmt(closure.date)}</span>` : '';
-      items.push({ icon: '×', color: '#9ca3af', text: `<strong style="color:#fff;">Show closes</strong>${tail}` });
-    } else if (arr && dep) {
+    if (arr && dep) {
       const range = rangeOf(arr);
       items.push({ icon: '↻', color: '#d4a574', text: `${castLink(arr.name, `<strong style="color:#fff;">${arr.name}</strong>`)} in for ${castLink(dep.name, dep.name)}${range}` });
     } else if (arr) {
@@ -1235,10 +1272,8 @@ function castingSection() {
     } else if (dep) {
       const tail = dep.date ? ` <span style="color:#fbbf24;">· final ${fmt(dep.date)}</span>` : '';
       items.push({ icon: '↘', color: '#9ca3af', text: `${castLink(dep.name, `<strong style="color:#fff;">${dep.name}</strong>`)} departs${tail}` });
-    } else {
-      items.push({ icon: '·', color: '#9ca3af', text: `${castLink(events[0].name, events[0].name)} — ${events[0].role}` });
     }
-    groups.push({ showTitle, items });
+    if (items.length) groups.push({ showTitle, items });
   });
   if (!groups.length) return null;
   const rows = groups.map((g, i) => `
@@ -1363,10 +1398,22 @@ function buzziestSection() {
     return { position: +m[1], total: +m[2], market: m[3] };
   }
   // Load social pulse for open BW/OB shows. .social.json keyed by SHOW ID.
+  // Only 'open'/'previews' shows are eligible: the social-pulse fetcher
+  // (scripts/lib/list-running-shows.js) only refreshes running shows, so an
+  // 'upcoming' or 'closed' show carries a frozen .social.json that would
+  // surface stale data every week under the "last 7 days" heading.
+  // (School Girls; Or, The African Mean Girls Play was stuck at its 2026-04-13
+  // fetch for 6+ weeks because it's upcoming — opens 2026-09-08.)
+  // Staleness guard below is the belt-and-suspenders backstop in case the
+  // weekly cron skips a still-running show.
   const socialDir = path.join(repo, 'public/data/shows');
+  // Reject pulse data fetched more than 10 days before this newsletter's week
+  // end. The cron runs Mondays; fresh data is at most ~7 days old, +3 days slack
+  // for a late/missed cron. Computed off argDate (not Date.now) to stay deterministic.
+  const pulseStaleCutoff = new Date(weekEndDate); pulseStaleCutoff.setDate(pulseStaleCutoff.getDate() - 10);
   const candidates = [];
   shows.forEach(s => {
-    if (!['open', 'previews', 'upcoming'].includes(s.status)) return;
+    if (!['open', 'previews'].includes(s.status)) return;
     if (s.category !== 'broadway' && s.category !== 'off-broadway') return;
     if (isOperaShow(s)) return;
     const f = path.join(socialDir, s.id + '.social.json');
@@ -1374,6 +1421,9 @@ function buzziestSection() {
     try {
       const sp = JSON.parse(fs.readFileSync(f, 'utf8'));
       if (sp.t === 'Hidden') return;
+      // Skip stale pulse data — `u` is the fetchedAt ISO timestamp.
+      const fetchedAt = sp.u ? new Date(sp.u) : null;
+      if (!fetchedAt || Number.isNaN(fetchedAt.getTime()) || fetchedAt < pulseStaleCutoff) return;
       candidates.push({ show: s, sp, rank: parseRank(sp.r) });
     } catch {}
   });
@@ -1665,6 +1715,13 @@ function mostReadSection(climberList) {
 const { createSectionRunner } = cjsRequire(path.join(scriptDir, '..', 'lib', 'newsletter-sections.js'));
 const sections = createSectionRunner();
 
+// ORDERING CONTRACT (do not reorder without care): sections that share the
+// `featuredShowIds` cross-section de-dup MUST be CALLED in render order —
+// openings → biggest-movers → closing-this-week → announced-closings →
+// casting-updates. Each marks the shows it renders; later sections skip them.
+// Reordering silently moves shows between sections (no crash). The subject/lede
+// block (below) ALSO depends on bwO/obO being computed first — it reads
+// bwO.list/obO.list, so it must stay after these calls.
 const bwO = broadwayOpenings();
 const obO = offBroadwayOpenings();
 sections.run('broadway-openings', () => bwO.html);
@@ -1678,7 +1735,55 @@ const box      = sections.run('box-office', () => boxOfficeSection());
 const commercial = sections.run('recoupment', () => commercialSection());
 const bz   = sections.run('social-buzz', () => buzziestSection());
 const tony = sections.run('tony-predictions', () => tonyWatchSection());
+// SECTION: Beat the Critics promo — mirrors src/components/FeaturedSpotSlim.tsx
+// (btc accent = rose-500). Copy is identical to the on-site homepage shelf:
+// eyebrow + title + description + CTA + $200 stat pill. Email-safe table render.
+function btcPromoSection() {
+  // Campaign date gate — mirror the on-site isBtcPromoActive() window so the
+  // email promo auto-expires exactly like the homepage shelf. The contest is a
+  // $200 TodayTix prize tied to the Tony ceremony; shipping it after the
+  // ceremony would email subscribers an expired offer. Window = 35 days before
+  // the ceremony through ceremony day (src/config/tony-ceremony.ts getBtcWindow).
+  const TONY_CEREMONY = '2026-06-08';
+  const campEnd = new Date(TONY_CEREMONY + 'T23:59:59');
+  const campStart = new Date(campEnd.getTime() - 35 * 24 * 60 * 60 * 1000);
+  const campStartStr = campStart.toISOString().slice(0, 10);
+  // Active if this issue's week overlaps the campaign window.
+  if (weekEndStr < campStartStr || weekStartStr > TONY_CEREMONY) return null;
+  const href = `${SITE}/beat-the-critics`;
+  const ROSE = '#f43f5e';
+  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" class="cardbg" style="border:1px solid rgba(255,255,255,0.06);border-top:2px solid ${ROSE};border-radius:12px;">
+    <tr><td style="padding:20px;">
+      <div style="margin-bottom:8px;"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:${ROSE};vertical-align:middle;margin-right:7px;"></span><span style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:${ROSE};vertical-align:middle;">Beat the Critics</span></div>
+      <div style="font-size:18px;font-weight:800;color:#ffffff;line-height:1.25;margin-bottom:8px;">Think you know Broadway better than the critics?</div>
+      <div style="font-size:14px;color:#c8c8d0;line-height:1.5;margin-bottom:16px;">Pick the Tony winners against our model and the top critics. One entry wins a $200 TodayTix gift card.</div>
+      <table role="presentation" cellspacing="0" cellpadding="0" border="0"><tr>
+        <td valign="middle" style="padding-right:14px;"><a href="${href}" style="display:inline-block;background:${ROSE};color:#ffffff;font-size:14px;font-weight:700;text-decoration:none;padding:11px 20px;border-radius:999px;">Make your picks &rarr;</a></td>
+        <td valign="middle"><span style="display:inline-block;background:rgba(244,63,94,0.10);border:1px solid rgba(244,63,94,0.40);color:#fda4af;font-size:12px;font-weight:600;padding:6px 12px;border-radius:999px;">$200 TodayTix gift card</span></td>
+      </tr></table>
+    </td></tr>
+  </table>`;
+  // No sectionHeading — the eyebrow inside the card is the label, matching the
+  // standalone on-site shelf. sectionWrap with empty heading keeps spacing.
+  return sectionWrap('', body);
+}
+
 const cas  = sections.run('casting-updates', () => castingSection());
+const btcPromo = sections.run('btc-promo', () => btcPromoSection());
+
+// Persist this issue's memory (mover + announced closings + everything featured)
+// so next week's run suppresses repeats. Best-effort — never fail the build.
+try {
+  const _issues = (_priorState.issues || []).filter(i => i && i.weekStart !== weekStartStr);
+  _issues.push({
+    weekStart: weekStartStr,
+    moverShowIds: _moverShowIds,
+    announcedClosingShowIds: _announcedShowIds,
+    featuredShowIds: Array.from(featuredShowIds),
+  });
+  _issues.sort((a, b) => a.weekStart.localeCompare(b.weekStart));
+  fs.writeFileSync(STATE_PATH, JSON.stringify({ issues: _issues.slice(-12) }, null, 2) + '\n');
+} catch (e) { process.stderr.write('[newsletter] state write failed: ' + e.message + '\n'); }
 const lon  = sections.run('london-openings', () => londonSection());
 const opera = sections.run('opera-openings', () => operaOpeningsSection());
 const outlier = sections.run('outlier-of-the-week', () => outlierSection());
@@ -1744,6 +1849,7 @@ const sectionOrder = [
   _slot('biggest-movers', mover),
   _slot('closing-this-week', clo),
   _slot('announced-closings', announced),
+  _slot('btc-promo', btcPromo),
   _slot('box-office', box),
   _slot('recoupment', commercial),
   _slot('social-buzz', bz),
@@ -1774,8 +1880,15 @@ const { scoreCandidates, buildSubjectFromCandidates, buildLedeFromCandidates } =
 // Compute the opening EVENTS (with isReopening flag) for the scorer so its
 // verbiage matches the section's "Reopened" verb. broadwayOpenings()/
 // offBroadwayOpenings() return shows-only; we re-derive the flag here.
-const bwEvents = openingEventsForWeek('broadway');
-const obEvents = openingEventsForWeek('off-broadway');
+// Never advertise a show in the subject/lede that has no reviews yet.
+const _subjHasScore = (s) => { const a = aggregateScore(s.id); return a && a.count >= minReviews(s.category); };
+// Subject/lede must describe the SAME shows the body actually renders. Use the
+// section's returned lists (bwO.list / obO.list) — these already apply the
+// review gate AND the OB 14-day grace window. Recomputing with the strict
+// in-week window here was the bug that made the subject ignore Heated Rivalry
+// (opened May 12, shown in the body) and fall back to an obscure closing.
+const bwEvents = bwO.list.map(s => ({ show: s }));
+const obEvents = obO.list.map(s => ({ show: s }));
 
 const newsworthyInputs = {
   bwOpenings: bwEvents,
@@ -1814,7 +1927,8 @@ const newsworthyInputs = {
   })(),
   closingsThisWeek: shows.filter(s =>
     s.closingDate && s.closingDate >= weekStartStr && s.closingDate <= weekEndStr
-    && s.status === 'open' && (s.category === 'broadway' || s.category === 'off-broadway') && !isOperaShow(s)),
+    && s.status === 'open' && (s.category === 'broadway' || s.category === 'off-broadway') && !isOperaShow(s)
+    && _subjHasScore(s)), // never lead the subject with a show we have no reviews for
   announcedClosings: (() => {
     // Mirror announcedClosingsSection exactly: closure events added IN THE
     // WEEK WINDOW only. The prior 28-day lookback resurfaced 3-week-old
@@ -1907,8 +2021,9 @@ const html = `<!DOCTYPE html>
      raw HTML). Background + color stay inline so they survive Outlook 2007+
      stripping <style> blocks; structural CSS lives here. See feedback note
      on Gmail clipping in newsletter-drafts. */
-  .mp{display:inline-block;padding:1px 7px;border-radius:999px;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;vertical-align:2px}
-  .gp{display:inline-block;padding:2px 7px;border-radius:999px;font-weight:600;font-size:11px;letter-spacing:.04em;margin-right:4px}
+  /* Unified pill box model — market (.mp) and format/production (.gp) pills
+     render at identical height so REVIVAL never sits taller than OFF-BWAY. */
+  .mp,.gp{display:inline-block;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.05em;line-height:1.5;vertical-align:middle;margin-right:4px}
   .tdec{text-decoration:none;display:inline-block}
   .cardbg{background:#1a1a24;border-radius:16px;border:1px solid rgba(255,255,255,.05)}
   .showttl{margin:0;font-size:16px;font-weight:600;color:#fff;letter-spacing:-.01em}
@@ -1933,7 +2048,7 @@ const html = `<!DOCTYPE html>
   <div style="font-size:13px;color:#9ca3af;">Weekly Round-up · ${fmt(weekStartStr)} – ${fmt(weekEndStr)}, ${yearForFooter}</div>
 </td></tr>
 ${ledeText ? `<tr><td style="padding:6px 4px 20px;">
-  <div style="font-size:14px;line-height:1.55;color:#d1d5db;font-style:italic;border-left:2px solid #d4a574;padding-left:12px;">${ledeText}</div>
+  <div style="font-size:14px;line-height:1.55;color:#d1d5db;border-left:2px solid #d4a574;padding-left:12px;">${ledeText}</div>
 </td></tr>` : '<tr><td style="padding:0 4px 12px;"></td></tr>'}
 ${sectionOrder.join('')}
 <tr><td align="center" style="padding:40px 4px 8px;">
@@ -1965,7 +2080,11 @@ const outDir = process.env.NEWSLETTER_OUT_DIR
     : path.join(repo, 'data/newsletter-drafts'));
 fs.mkdirSync(outDir, { recursive: true });
 const slug = `A-${argDate}`;
-fs.writeFileSync(`${outDir}/${slug}.html`, html);
+// Tag every first-party link with UTMs for GA4/PostHog attribution before
+// writing the draft (idempotent — see scripts/lib/email-utm.js). Resend
+// click-tracking preserves the query string, so these survive the redirect.
+const { applyUtm } = cjsRequire('../lib/email-utm.js');
+fs.writeFileSync(`${outDir}/${slug}.html`, applyUtm(html, { source: 'newsletter', campaign: `weekly-${weekEndStr}` }));
 // Sidecar JSON with subject + section-by-section run report so the send
 // script can pick up the subject without parsing HTML, and so we can detect
 // silently-skipped sections in regression tests / CI.

@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect } from 'react';
 import { track } from '@vercel/analytics';
+import { captureEvent } from '@/lib/posthog-events';
 import { useCurrentMarket } from '@/hooks/useCurrentMarket';
 import { isFormspreeSubscribed, SUBSCRIBED_KEY_PREFIX } from '@/hooks/useFormspreeSubscribed';
 const FORMSPREE_SUBSCRIBER_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_SUBSCRIBER_FORM_ID || '';
@@ -96,6 +97,7 @@ export function useFormspreeCapture(options: FormspreeCaptureOptions): Formspree
         } catch { /* noop */ }
         setIsSubscribed(true);
         track('email_captured', { source: options.source, userGroup: options.userGroup, market });
+        captureEvent('email_captured', { source: options.source, userGroup: options.userGroup, market });
         return true;
       } else {
         setStatus('error');

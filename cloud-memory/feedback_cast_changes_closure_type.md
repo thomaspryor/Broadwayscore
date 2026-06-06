@@ -1,6 +1,7 @@
 ---
 name: cast-changes-closure-type
 description: "Show closures must be modeled as a top-level 'closure' event, not as N per-actor 'departure' events"
+archived: true
 metadata: 
   node_type: memory
   type: feedback
