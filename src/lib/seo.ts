@@ -138,6 +138,9 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string, per
     ...(lastUpdated && { dateModified: lastUpdated }),
     eventStatus: 'https://schema.org/EventScheduled',
     eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    // @id makes this entity referenceable by @id from critic Review schemas
+    // in the same @graph document (see show page injection in page.tsx).
+    '@id': `${BASE_URL}/show/${show.slug}#event`,
   };
 
   // Add aggregate rating if we have scores and sufficient reviews
@@ -241,12 +244,11 @@ export function generateCriticReviewsSchema(
 ): Record<string, unknown>[] {
   if (!reviews || reviews.length === 0) return [];
 
-  const showUrl = `${BASE_URL}/show/${show.slug}`;
-  const itemReviewed = {
-    '@type': 'TheaterEvent',
-    name: show.title,
-    url: showUrl,
-  };
+  // Reference the main TheaterEvent entity by @id rather than inlining a new
+  // incomplete TheaterEvent object. Each Review's itemReviewed previously created
+  // 8 additional TheaterEvent candidates missing startDate/location → GSC FAIL.
+  // The @id reference resolves within the @graph document emitted by the show page.
+  const itemReviewed = { '@id': `${BASE_URL}/show/${show.slug}#event` };
 
   const eligible = reviews
     .filter(r => r.tier === 1 || r.tier === 2)
