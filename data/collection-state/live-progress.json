@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-06-06T07:57:10.383Z",
-  "processed": 167,
-  "failed": 185,
-  "successRate": "47.4%",
+  "updatedAt": "2026-06-06T07:59:52.946Z",
+  "processed": 168,
+  "failed": 194,
+  "successRate": "46.4%",
   "tierBreakdown": {
     "playwright": 91,
     "amp": 0,
@@ -10,22 +10,11 @@
     "directCookies": 0,
     "scrapingbee": 29,
     "brightdata": 37,
-    "archiveToday": 38,
-    "archive": 44
+    "archiveToday": 39,
+    "archive": 45
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-06-06T06:25:07.046Z",
-      "event": "bb-session",
-      "session": "7b13eaf6",
-      "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broa"
-    },
-    {
-      "t": "2026-06-06T06:25:08.581Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-06-06T06:39:04.375Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-06-06T07:54:07.291Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-06-06T07:59:18.447Z",
+      "event": "bb-session",
+      "session": "0c182331",
+      "url": "https://www.thestage.co.uk/reviews/deep-azure-review-sam-wanamaker-playhouse-sha"
+    },
+    {
+      "t": "2026-06-06T07:59:19.428Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }

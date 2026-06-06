@@ -166,7 +166,8 @@
     "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
     "seagull-true-story-off-broadway-2026/theatermania--christian-lewis.json",
     "avenue-q-west-end-2026/telegraph--marianka-swain.json",
-    "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json"
+    "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
+    "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json"
   ],
   "failed": [
     "spamalot-off-broadway-2026/nytimes--jesse-green.json",
@@ -353,7 +354,16 @@
     "romeo-and-juliet-west-end-2026/wsj--unknown.json",
     "romeo-and-juliet-west-end-2026/amny--unknown.json",
     "romeo-and-juliet-west-end-2026/ap--mark-kennedy.json",
-    "romeo-and-juliet-west-end-2026/nbcny--unknown.json"
+    "romeo-and-juliet-west-end-2026/nbcny--unknown.json",
+    "romeo-and-juliet-west-end-2026/ny1--unknown.json",
+    "romeo-and-juliet-west-end-2026/hollywood-reporter--david-rooney.json",
+    "dog-day-afternoon-2026/theatre-reviews-limited--david-roberts.json",
+    "dog-day-afternoon-2026/broadway-and-me--janice-c-simpson.json",
+    "teeth-n-smiles-west-end-2026/times-uk--dominic-maxwell.json",
+    "deep-azure-globe-west-end-2026/telegraph--fiona-mountford.json",
+    "deep-azure-globe-west-end-2026/thestage--dave-fargnoli.json",
+    "oh-mary-west-end-2025/guardian--arifa-akbar.json",
+    "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -589,7 +599,8 @@
       "data/review-texts/flyby-off-west-end-2026/thestage--unknown.json",
       "data/review-texts/the-authenticator-west-end-2026/thestage--unknown.json",
       "data/review-texts/a-mirrored-monet-west-end-2026/thestage--paul-vale.json",
-      "data/review-texts/end-of-the-rainbow-west-end-2026/thestage--unknown.json"
+      "data/review-texts/end-of-the-rainbow-west-end-2026/thestage--unknown.json",
+      "data/review-texts/deep-azure-globe-west-end-2026/thestage--dave-fargnoli.json"
     ],
     "archive": [
       "misery-2015/nytimes--charles-isherwood.json",
@@ -635,11 +646,12 @@
       "les-miserables-west-end-2021/times-uk--clive-davis.json",
       "the-receptionist-off-broadway-2026/culturesauce--thom-geier.json",
       "broken-snow-off-broadway-2026/theater-scene--darryl-reilly.json",
-      "one-flew-over-the-cuckoos-nest-west-end-2026/telegraph--dominic-cavendish.json"
+      "one-flew-over-the-cuckoos-nest-west-end-2026/telegraph--dominic-cavendish.json",
+      "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json"
     ]
   },
   "startTime": "2026-06-06T04:44:29.355Z",
-  "lastProcessed": "romeo-and-juliet-west-end-2026/nbcny--unknown.json",
+  "lastProcessed": "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json",
   "log": [
     {
       "t": "2026-06-06T06:19:34.296Z",
@@ -891,6 +903,17 @@
     },
     {
       "t": "2026-06-06T07:54:07.291Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-06-06T07:59:18.447Z",
+      "event": "bb-session",
+      "session": "0c182331",
+      "url": "https://www.thestage.co.uk/reviews/deep-azure-review-sam-wanamaker-playhouse-sha"
+    },
+    {
+      "t": "2026-06-06T07:59:19.428Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
