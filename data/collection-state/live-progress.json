@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-06T05:41:02.640Z",
-  "processed": 8,
-  "failed": 2,
-  "successRate": "80.0%",
+  "updatedAt": "2026-06-06T05:45:08.966Z",
+  "processed": 17,
+  "failed": 3,
+  "successRate": "85.0%",
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 7,
-    "brightdata": 1,
+    "scrapingbee": 14,
+    "brightdata": 2,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 1
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-06-06T05:39:20.443Z",
@@ -23,6 +23,28 @@
     },
     {
       "t": "2026-06-06T05:39:21.420Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:42:02.309Z",
+      "event": "bb-session",
+      "session": "c081e49d",
+      "url": "http://www.nytimes.com/2014/03/14/theater/rocky-the-musical-brings-songs-to-a-fi"
+    },
+    {
+      "t": "2026-06-06T05:42:03.184Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:44:02.856Z",
+      "event": "bb-session",
+      "session": "dc0a1ecf",
+      "url": "https://www.nytimes.com/2013/04/16/theater/reviews/the-nance-starring-nathan-lan"
+    },
+    {
+      "t": "2026-06-06T05:44:03.843Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
