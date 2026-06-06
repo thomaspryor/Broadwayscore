@@ -1,3 +1,4 @@
+# hygiene-push-ok: force-pushes --all + --tags to rewrite git history (purge utility, not a normal data push)
 name: "Purge copyrighted/sensitive paths from git history"
 
 # Deep clean: removes copyrighted review data and sensitive files from ALL commits.

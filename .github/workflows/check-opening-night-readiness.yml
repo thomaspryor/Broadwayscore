@@ -60,3 +60,10 @@ jobs:
             MARKET_FLAG="--market=${{ inputs.market }}"
           fi
           node scripts/check-opening-night-readiness.js --show=${{ inputs.show_id }} $MARKET_FLAG
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Opening Night Readiness Check Failed'
+          severity: 'warning'

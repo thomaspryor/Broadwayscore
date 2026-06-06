@@ -203,3 +203,10 @@ jobs:
             process.exit(1);
           }
           SCRIPT
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Investigate Alert Failed'
+          severity: 'warning'

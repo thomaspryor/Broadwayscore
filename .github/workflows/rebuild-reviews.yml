@@ -609,4 +609,4 @@ jobs:
           mkdir -p data/audit/pipeline-health
           date -u > data/audit/pipeline-health/rebuild-reviews.last-success
           git add data/audit/pipeline-health/
-          git diff --staged --quiet || git commit -m "health: Record rebuild-reviews success" && git push || echo "::warning::Health recording push failed"
+          git diff --staged --quiet || git commit -m "health: Record rebuild-reviews success" && bash scripts/lib/push-with-retry.sh || echo "::warning::Health recording push failed"

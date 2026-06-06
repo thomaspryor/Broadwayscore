@@ -63,4 +63,11 @@ jobs:
             exit 0
           fi
           git commit -m "snapshot: audience grades $(date -u +%Y-%m-%d)"
-          git push
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Snapshot Audience Grades Failed'
+          severity: 'warning'

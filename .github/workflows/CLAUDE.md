@@ -13,7 +13,7 @@ All new workflows MUST include the `notify-failure` composite action (`.github/a
           title: 'Workflow Name Failed'
           severity: 'warning'  # Only use 'critical' for the 5 listed in §Notification Severity
 ```
-For critical workflows, add `email: 'true'` + `resend_api_key`/`owner_email` secrets. The `discord_webhook` input is accepted but ignored (kept for call-site compatibility — no need to pass it in new workflows). Currently 100/100 workflows have notifications.
+For critical workflows, add `email: 'true'` + `resend_api_key`/`owner_email` secrets. The `discord_webhook` input is accepted but ignored (kept for call-site compatibility — no need to pass it in new workflows). Currently 186/186 workflows have notifications. A CI guard in `test.yml` (`audit-workflow-hygiene.js`) enforces this for all new workflows. Exempt a workflow: add `# hygiene-notify-ok: <reason>` anywhere in the file.
 
 ## Playwright Setup
 
@@ -22,7 +22,7 @@ All workflows that use Playwright MUST use the shared composite action instead o
       - name: Setup Playwright
         uses: ./.github/actions/setup-playwright
 ```
-This caches `~/.cache/ms-playwright` across runs (~15s saved per workflow). For non-chromium browsers:
+This caches `~/.cache/ms-playwright` across runs (~15s saved per workflow). CI guard in `test.yml` enforces this; exempt with `# hygiene-playwright-ok: <reason>`. For non-chromium browsers:
 ```yaml
         with:
           browsers: 'chromium webkit'
@@ -35,7 +35,7 @@ All push-to-remote steps MUST use the shared script instead of inline retry loop
 ```bash
 bash scripts/lib/push-with-retry.sh [max_retries] [branch]
 ```
-Defaults: 5 retries, main branch. Handles cleanup, rebase -X theirs, random backoff, `::error::` + `exit 1` on failure.
+Defaults: 7 retries, main branch. Handles cleanup, rebase -X theirs, random backoff, `::error::` + `exit 1` on failure. CI guard in `test.yml` enforces this; exempt with `# hygiene-push-ok: <reason>` (external remotes, custom retry loops).
 
 ## Public Show JSON Safety
 

@@ -183,7 +183,7 @@ jobs:
             echo "No junk files to clean"
           else
             git commit -m "chore: Auto-cleanup junk outlet review files"
-            git push origin main || echo "::warning::Push failed — cleanup data may not have synced"
+            bash scripts/lib/push-with-retry.sh || echo "::warning::Push failed — cleanup data may not have synced"
           fi
 
       - name: P0 score integrity check
@@ -212,7 +212,7 @@ jobs:
             echo "No changes to commit"
           else
             git commit -m "data: Update integrity history"
-            git push origin main
+            bash scripts/lib/push-with-retry.sh
           fi
 
       - name: Create issue if problems found
@@ -243,4 +243,4 @@ jobs:
           mkdir -p data/audit/pipeline-health
           date -u > data/audit/pipeline-health/weekly-integrity.last-success
           git add data/audit/pipeline-health/
-          git diff --staged --quiet || git commit -m "health: Record weekly-integrity success" && git push || echo "::warning::Health recording push failed"
+          git diff --staged --quiet || git commit -m "health: Record weekly-integrity success" && bash scripts/lib/push-with-retry.sh || echo "::warning::Health recording push failed"
