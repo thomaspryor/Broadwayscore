@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-06-05T21:33:29.058Z",
+  "generatedAt": "2026-06-06T05:19:24.012Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 0,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 3,
+    "newlyFlagged": 3,
     "alreadyFlagged": 0,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
-    "avgScoreDiff": 0
+    "criticsAffected": 1,
+    "showsAffected": 3,
+    "avgSimilarity": 79,
+    "avgScoreDiff": 12.7
   },
   "syndicationPairs": [
     {
@@ -96,7 +96,44 @@
       "count": 0
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "Ben Brantley",
+      "showId": "nice-work-if-you-can-get-it-2012",
+      "primaryOutlet": "about-entertainment",
+      "secondaryOutlet": "nytimes",
+      "primaryFile": "about-entertainment--ben-brantley.json",
+      "secondaryFile": "nytimes--ben-brantley.json",
+      "similarity": 100,
+      "primaryScore": 61,
+      "secondaryScore": 76,
+      "scoreDiff": 15
+    },
+    {
+      "critic": "Ben Brantley",
+      "showId": "orphans-2013",
+      "primaryOutlet": "about-entertainment",
+      "secondaryOutlet": "nytimes",
+      "primaryFile": "about-entertainment--ben-brantley.json",
+      "secondaryFile": "nytimes--ben-brantley.json",
+      "similarity": 52,
+      "primaryScore": 43,
+      "secondaryScore": 61,
+      "scoreDiff": 18
+    },
+    {
+      "critic": "Ben Brantley",
+      "showId": "the-lyons-2012",
+      "primaryOutlet": "about-entertainment",
+      "secondaryOutlet": "nytimes",
+      "primaryFile": "about-entertainment--ben-brantley.json",
+      "secondaryFile": "nytimes--ben-brantley.json",
+      "similarity": 84,
+      "primaryScore": 80,
+      "secondaryScore": 85,
+      "scoreDiff": 5
+    }
+  ],
   "authorMismatches": [
     {
       "showId": "birthday-candles-2022",
