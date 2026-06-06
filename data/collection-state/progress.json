@@ -173,7 +173,8 @@
     "and-juliet-2022/newyorker--conde-nast.json",
     "the-play-that-goes-wrong-west-end-2021/telegraph--dominic-cavendish.json",
     "the-play-that-goes-wrong-west-end-2021/thestage--natasha-tripney.json",
-    "the-play-that-goes-wrong-west-end-2021/times-uk--dominic-maxwell.json"
+    "the-play-that-goes-wrong-west-end-2021/times-uk--dominic-maxwell.json",
+    "the-book-of-mormon-west-end-2024/times-uk--libby-purves.json"
   ],
   "failed": [
     "spamalot-off-broadway-2026/nytimes--jesse-green.json",
@@ -413,7 +414,16 @@
     "hamilton-west-end-2021/thestage--holly-omahony.json",
     "the-play-that-goes-wrong-west-end-2021/chicagotribune--chris-jones.json",
     "aladdin-2014/culturesauce--thom-geier.json",
-    "aladdin-2014/thisbroadsway--sandra-mcfarland.json"
+    "aladdin-2014/thisbroadsway--sandra-mcfarland.json",
+    "the-book-of-mormon-west-end-2024/talkinbroadway--unknown.json",
+    "the-book-of-mormon-west-end-2024/guardian--arifa-akbar.json",
+    "the-book-of-mormon-west-end-2024/telegraph--claire-allfree.json",
+    "matilda-the-musical-west-end-2021/ew--unknown.json",
+    "matilda-the-musical-west-end-2021/guardian--lyn-gardner.json",
+    "matilda-the-musical-west-end-2021/guardian--emma-brockes.json",
+    "book-of-mormon-2011/deadline--unknown.json",
+    "book-of-mormon-2011/variety--marilyn-stasio.json",
+    "book-of-mormon-2011/new-jersey-newsroom--michael-sommers.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -510,7 +520,8 @@
       "seagull-true-story-off-broadway-2026/theatermania--christian-lewis.json",
       "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
       "stranger-things-the-first-shadow-west-end-2023/times-uk--dominic-maxwell.json",
-      "the-play-that-goes-wrong-west-end-2021/times-uk--dominic-maxwell.json"
+      "the-play-that-goes-wrong-west-end-2021/times-uk--dominic-maxwell.json",
+      "the-book-of-mormon-west-end-2024/times-uk--libby-purves.json"
     ],
     "amp": [],
     "browserbase": [
@@ -540,7 +551,8 @@
       "hamilton-west-end-2021/hollywood-reporter--demetrios-matheou.json",
       "data/review-texts/book-of-mormon-2011/variety--marilyn-stasio.json",
       "data/review-texts/innocence-off-broadway-2026/wsj--heidi-waleson.json",
-      "innocence-off-broadway-2026/wsj--heidi-waleson.json"
+      "innocence-off-broadway-2026/wsj--heidi-waleson.json",
+      "data/review-texts/book-of-mormon-2011/variety--marilyn-stasio.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -664,7 +676,8 @@
       "data/review-texts/and-juliet-2022/broadway-blog--joey-sims.json",
       "data/review-texts/magic-mike-live-west-end-2021/thestage--francesca-peschier.json",
       "data/review-texts/hamilton-west-end-2021/thestage--holly-omahony.json",
-      "data/review-texts/aladdin-2014/culturesauce--thom-geier.json"
+      "data/review-texts/aladdin-2014/culturesauce--thom-geier.json",
+      "data/review-texts/aladdin-2014/thisbroadsway--sandra-mcfarland.json"
     ],
     "archive": [
       "misery-2015/nytimes--charles-isherwood.json",
@@ -717,7 +730,7 @@
     ]
   },
   "startTime": "2026-06-06T04:44:29.355Z",
-  "lastProcessed": "aladdin-2014/thisbroadsway--sandra-mcfarland.json",
+  "lastProcessed": "book-of-mormon-2011/new-jersey-newsroom--michael-sommers.json",
   "log": [
     {
       "t": "2026-06-06T06:19:34.296Z",
@@ -1048,6 +1061,17 @@
       "t": "2026-06-06T08:17:54.286Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-06-06T08:22:26.489Z",
+      "event": "bb-session",
+      "session": "e4a66ab1",
+      "url": "https://variety.com/2011/film/reviews/0s-1s-1117944828/"
+    },
+    {
+      "t": "2026-06-06T08:22:27.516Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

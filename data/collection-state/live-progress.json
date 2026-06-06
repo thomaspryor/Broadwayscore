@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-06T08:21:57.839Z",
-  "processed": 174,
-  "failed": 238,
-  "successRate": "42.2%",
+  "updatedAt": "2026-06-06T08:22:43.759Z",
+  "processed": 175,
+  "failed": 247,
+  "successRate": "41.5%",
   "tierBreakdown": {
-    "playwright": 93,
+    "playwright": 94,
     "amp": 0,
-    "browserbase": 27,
+    "browserbase": 28,
     "directCookies": 0,
     "scrapingbee": 30,
     "brightdata": 38,
-    "archiveToday": 49,
+    "archiveToday": 50,
     "archive": 47
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 9,
   "recentActivity": [
-    {
-      "t": "2026-06-06T07:07:09.716Z",
-      "event": "bb-session",
-      "session": "5cd372ec",
-      "url": "http://www.wsj.com/articles/SB106748686155075900"
-    },
-    {
-      "t": "2026-06-06T07:07:10.793Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-06-06T07:37:01.916Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-06-06T08:17:54.286Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-06-06T08:22:26.489Z",
+      "event": "bb-session",
+      "session": "e4a66ab1",
+      "url": "https://variety.com/2011/film/reviews/0s-1s-1117944828/"
+    },
+    {
+      "t": "2026-06-06T08:22:27.516Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
