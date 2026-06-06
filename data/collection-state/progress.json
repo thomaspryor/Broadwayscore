@@ -81,7 +81,10 @@
     "good-people-2011/nytimes--ben-brantley.json",
     "hamlet-2009/nytimes--ben-brantley.json",
     "young-frankenstein-2007/nytimes--ben-brantley.json",
-    "legally-blonde-2007/nytimes--ben-brantley.json"
+    "legally-blonde-2007/nytimes--ben-brantley.json",
+    "shining-city-2006/nytimes--ben-brantley.json",
+    "the-wedding-singer-2006/nytimes--ben-brantley.json",
+    "the-pajama-game-2006/nytimes--ben-brantley.json"
   ],
   "failed": [
     "spamalot-off-broadway-2026/nytimes--jesse-green.json",
@@ -111,7 +114,14 @@
     "the-seagull-2008/nytimes--ben-brantley.json",
     "thurgood-2008/nytimes--ben-brantley.json",
     "high-fidelity-2006/about-entertainment--ben-brantley.json",
-    "the-coast-of-utopia-2006/about-entertainment--ben-brantley.json"
+    "the-coast-of-utopia-2006/about-entertainment--ben-brantley.json",
+    "butley-2006/about-entertainment--ben-brantley.json",
+    "a-chorus-line-2006/nytimes--ben-brantley.json",
+    "lestat-2006/about-entertainment--ben-brantley.json",
+    "the-color-purple-2005/about-entertainment--ben-brantley.json",
+    "the-woman-in-white-2005/nytimes--ben-brantley.json",
+    "souvenir-2005/nytimes--ben-brantley.json",
+    "souvenir-2005/about-entertainment--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -176,7 +186,10 @@
       "catch-me-if-you-can-2011/nytimes--ben-brantley.json",
       "good-people-2011/nytimes--ben-brantley.json",
       "young-frankenstein-2007/nytimes--ben-brantley.json",
-      "legally-blonde-2007/nytimes--ben-brantley.json"
+      "legally-blonde-2007/nytimes--ben-brantley.json",
+      "shining-city-2006/nytimes--ben-brantley.json",
+      "the-wedding-singer-2006/nytimes--ben-brantley.json",
+      "the-pajama-game-2006/nytimes--ben-brantley.json"
     ],
     "archiveToday": [
       "data/review-texts/something-rotten-2015/nytimes--ben-brantley.json",
@@ -196,7 +209,9 @@
       "data/review-texts/the-philanthropist-2009/nytimes--ben-brantley.json",
       "data/review-texts/the-story-of-my-life-2009/nytimes--ben-brantley.json",
       "data/review-texts/american-buffalo-2008/nytimes--ben-brantley.json",
-      "data/review-texts/thurgood-2008/nytimes--ben-brantley.json"
+      "data/review-texts/thurgood-2008/nytimes--ben-brantley.json",
+      "data/review-texts/the-woman-in-white-2005/nytimes--ben-brantley.json",
+      "data/review-texts/souvenir-2005/nytimes--ben-brantley.json"
     ],
     "archive": [
       "once-on-this-island-2017/nytimes--ben-brantley.json",
@@ -230,7 +245,7 @@
     ]
   },
   "startTime": "2026-06-06T03:32:12.394Z",
-  "lastProcessed": "the-coast-of-utopia-2006/about-entertainment--ben-brantley.json",
+  "lastProcessed": "souvenir-2005/about-entertainment--ben-brantley.json",
   "log": [
     {
       "t": "2026-06-06T04:04:18.292Z",
@@ -284,6 +299,50 @@
     },
     {
       "t": "2026-06-06T04:25:32.736Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T04:26:06.729Z",
+      "event": "bb-session",
+      "session": "59744045",
+      "url": "http://theater.nytimes.com/2006/10/26/theater/reviews/26butl.html"
+    },
+    {
+      "t": "2026-06-06T04:26:07.701Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T04:27:46.416Z",
+      "event": "bb-session",
+      "session": "c1ef7a12",
+      "url": "http://theater.nytimes.com/2006/04/26/theater/reviews/26lest.html"
+    },
+    {
+      "t": "2026-06-06T04:27:47.354Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T04:28:44.085Z",
+      "event": "bb-session",
+      "session": "4102adff",
+      "url": "http://theater.nytimes.com/2005/12/02/theater/reviews/02purp.html"
+    },
+    {
+      "t": "2026-06-06T04:28:45.014Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T04:31:25.391Z",
+      "event": "bb-session",
+      "session": "442d03a6",
+      "url": "http://theater.nytimes.com/2005/11/11/theater/reviews/11souv.html?adxnnl=1&amp;a"
+    },
+    {
+      "t": "2026-06-06T04:31:26.410Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
