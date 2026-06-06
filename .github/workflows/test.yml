@@ -53,6 +53,9 @@ on:
       # edits to the gate would get ZERO CI coverage (feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/transcript-scan.js'
       - 'scripts/lib/transcript-scan.mjs'
+      # Workflow hygiene guard — enforce notify-failure, setup-playwright, push-with-retry
+      # on all 186 workflows. Without this path entry, edits to the guard get ZERO CI.
+      - 'scripts/audit-workflow-hygiene.js'
       # Email generators — so changes to outbound email (incl. UTM tagging via
       # scripts/lib/email-utm.js) run the colocated scripts/lib/*.test.mjs step.
       - 'scripts/lib/email-utm.js'
@@ -192,6 +195,16 @@ jobs:
         # regresses. Opt-out for idempotent jobs via a "# concurrency-cancel-ok:"
         # annotation. See memory/feedback_test_yml_cancel_in_progress.md.
         run: node scripts/audit-workflow-concurrency.js
+
+      - name: Audit — workflow hygiene (notify-failure, playwright, push-with-retry)
+        # Guards three workflow hygiene rules:
+        # (a) Any scheduled/push/dispatch workflow must include notify-failure as last step
+        # (b) No inline `npx playwright install` — use .github/actions/setup-playwright
+        # (c) Any `git push` to origin must use scripts/lib/push-with-retry.sh (not bare git push)
+        # Exempt a workflow with # hygiene-notify-ok/playwright-ok/push-ok: <reason>.
+        # Root cause for each rule: (a) baseline rot via SKIP-VISUAL-CHECK in red CI,
+        # (b) browser cache miss wastes 15s/run, (c) bare || echo swallows push failures.
+        run: node scripts/audit-workflow-hygiene.js
 
       - name: Audit — check-cron-health max_hours vs real cron cadence
         # Catches the 2026-05-24 class of bug where an entry's max_hours is
@@ -1258,7 +1271,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/audit/pipeline-health/
-          git diff --staged --quiet || git commit -m "health: Record test success" && git push || echo "::warning::Health recording push failed"
+          git diff --staged --quiet || git commit -m "health: Record test success" && bash scripts/lib/push-with-retry.sh || echo "::warning::Health recording push failed"
 
   e2e-tests:
     name: E2E Tests

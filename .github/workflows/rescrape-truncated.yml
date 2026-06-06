@@ -350,7 +350,7 @@ jobs:
               git rebase --abort 2>/dev/null || true
               git pull --no-rebase -X ours origin main
             }
-            git push || echo "::warning::Push failed — collected data may not have synced"
+            bash scripts/lib/push-with-retry.sh || echo "::warning::Push failed — collected data may not have synced"
           fi
 
 

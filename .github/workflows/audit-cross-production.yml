@@ -64,5 +64,12 @@ jobs:
             git config user.email "github-actions[bot]@users.noreply.github.com"
             git add cross-production-audit.json
             git commit -m "audit: Update cross-production audit results [skip ci]"
-            git push origin main || echo "::warning::Failed to push audit results"
+            bash scripts/lib/push-with-retry.sh || echo "::warning::Failed to push audit results"
           fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Audit Cross-Production Failed'
+          severity: 'warning'
