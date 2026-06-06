@@ -102,7 +102,14 @@
     "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
     "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json",
     "burnout-paradise-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-    "im-sorry-prime-minister-west-end-2026/thestage--dave-fargnoli.json"
+    "im-sorry-prime-minister-west-end-2026/thestage--dave-fargnoli.json",
+    "oh-mary-west-end-2025/musical-theatre-review--angela-thomas.json",
+    "oh-mary-west-end-2025/timeout-london--andrzej-lukowski.json",
+    "paranormal-activity-west-end-2025/telegraph--tim-robey.json",
+    "the-hunger-games-on-stage-west-end-2025/theatre-weekly--greg-stewart.json",
+    "chess-2025/theatre-reviews-limited--joseph-verlezza.json",
+    "ragtime-2025/wsj--charles-isherwood.json",
+    "the-producers-west-end-2025/london-theatre--anya-ryan.json"
   ],
   "failed": [
     "spamalot-off-broadway-2026/nytimes--jesse-green.json",
@@ -182,7 +189,10 @@
     "teeth-n-smiles-west-end-2026/times-uk--dominic-maxwell.json",
     "deep-azure-globe-west-end-2026/telegraph--fiona-mountford.json",
     "deep-azure-globe-west-end-2026/thestage--dave-fargnoli.json",
-    "oh-mary-west-end-2025/guardian--arifa-akbar.json"
+    "oh-mary-west-end-2025/guardian--arifa-akbar.json",
+    "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json",
+    "two-strangers-bway-2025/theatre-reviews-limited--joseph-verlezza.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -223,7 +233,12 @@
       "giant-2026/theatre-reviews-limited--joseph-verlezza.json",
       "giant-2026/nytg--gillian-russo.json",
       "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json",
-      "burnout-paradise-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+      "burnout-paradise-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "oh-mary-west-end-2025/musical-theatre-review--angela-thomas.json",
+      "oh-mary-west-end-2025/timeout-london--andrzej-lukowski.json",
+      "the-hunger-games-on-stage-west-end-2025/theatre-weekly--greg-stewart.json",
+      "chess-2025/theatre-reviews-limited--joseph-verlezza.json",
+      "the-producers-west-end-2025/london-theatre--anya-ryan.json"
     ],
     "amp": [],
     "browserbase": [
@@ -238,7 +253,9 @@
       "data/review-texts/giant-2026/variety--daniel-daddario.json",
       "giant-2026/variety--daniel-daddario.json",
       "data/review-texts/giant-2026/wsj--charles-isherwood.json",
-      "giant-2026/wsj--charles-isherwood.json"
+      "giant-2026/wsj--charles-isherwood.json",
+      "data/review-texts/ragtime-2025/wsj--charles-isherwood.json",
+      "ragtime-2025/wsj--charles-isherwood.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -263,7 +280,8 @@
       "holler-if-ya-hear-me-2014/nytimes--ben-brantley.json",
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/front-row-center--nicole-itkin.json",
       "proof-2026/nytimes--helen-shaw.json",
-      "im-sorry-prime-minister-west-end-2026/thestage--dave-fargnoli.json"
+      "im-sorry-prime-minister-west-end-2026/thestage--dave-fargnoli.json",
+      "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json"
     ],
     "brightdata": [
       "good-night-oscar-2023/nytimes--jesse-green.json",
@@ -329,11 +347,12 @@
       "les-liaisons-dangereuses-west-end-2026/telegraph--claire-allfree.json",
       "les-liaisons-dangereuses-west-end-2026/new-statesman--zuzanna-lachendro.json",
       "teeth-n-smiles-west-end-2026/broadwayworld--alexander-cohen.json",
-      "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
+      "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+      "paranormal-activity-west-end-2025/telegraph--tim-robey.json"
     ]
   },
   "startTime": "2026-06-06T04:44:29.355Z",
-  "lastProcessed": "oh-mary-west-end-2025/guardian--arifa-akbar.json",
+  "lastProcessed": "the-producers-west-end-2025/london-theatre--anya-ryan.json",
   "log": [
     {
       "t": "2026-06-06T04:58:40.603Z",
@@ -486,6 +505,17 @@
     },
     {
       "t": "2026-06-06T06:17:47.545Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-06T06:25:07.046Z",
+      "event": "bb-session",
+      "session": "7b13eaf6",
+      "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broa"
+    },
+    {
+      "t": "2026-06-06T06:25:08.581Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

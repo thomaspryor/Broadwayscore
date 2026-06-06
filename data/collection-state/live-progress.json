@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-06T06:22:06.547Z",
-  "processed": 103,
-  "failed": 78,
-  "successRate": "56.9%",
+  "updatedAt": "2026-06-06T06:25:47.117Z",
+  "processed": 110,
+  "failed": 81,
+  "successRate": "57.6%",
   "tierBreakdown": {
-    "playwright": 37,
+    "playwright": 42,
     "amp": 0,
-    "browserbase": 12,
+    "browserbase": 14,
     "directCookies": 0,
-    "scrapingbee": 22,
+    "scrapingbee": 23,
     "brightdata": 17,
     "archiveToday": 21,
-    "archive": 22
+    "archive": 23
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
-    {
-      "t": "2026-06-06T05:21:04.325Z",
-      "event": "bb-session",
-      "session": "71788bd5",
-      "url": "http://theater.nytimes.com/2006/11/28/theater/reviews/28coas.html"
-    },
-    {
-      "t": "2026-06-06T05:21:05.235Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-06-06T05:21:39.785Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-06-06T06:17:47.545Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-06T06:25:07.046Z",
+      "event": "bb-session",
+      "session": "7b13eaf6",
+      "url": "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broa"
+    },
+    {
+      "t": "2026-06-06T06:25:08.581Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
