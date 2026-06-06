@@ -68,7 +68,14 @@
     "the-price-off-west-end-2026/british-theatre--susan-novak.json",
     "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
     "the-balusters-2026/theatre-reviews-limited--david-roberts.json",
-    "schmigadoon-2026/thewrap--robert-hofler.json"
+    "schmigadoon-2026/thewrap--robert-hofler.json",
+    "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
+    "fallen-angels-2026/talkinbroadway--unknown.json",
+    "proof-2026/nytimes--helen-shaw.json",
+    "proof-2026/variety--brent-lang.json",
+    "proof-2026/cititour--brian-scott-lipton.json",
+    "avenue-q-west-end-2026/radio-times--joanna-magill.json",
+    "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json"
   ],
   "failed": [
     "spamalot-off-broadway-2026/nytimes--jesse-green.json",
@@ -122,7 +129,10 @@
     "mass-west-end-2026/guardian--unknown.json",
     "a-midsummer-nights-dream-globe-west-end-2026/guardian--miriam-gillinson.json",
     "the-price-off-west-end-2026/wsj--unknown.json",
-    "schmigadoon-2026/variety--unknown.json"
+    "schmigadoon-2026/variety--unknown.json",
+    "avenue-q-west-end-2026/british-theatre--susan-novak.json",
+    "avenue-q-west-end-2026/telegraph--marianka-swain.json",
+    "proof-2026/cote-notices--david-cote.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -146,10 +156,15 @@
       "kenrex-off-broadway-2026/theatermania--zachary-stewart.json",
       "the-price-off-west-end-2026/british-theatre--susan-novak.json",
       "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
-      "the-balusters-2026/theatre-reviews-limited--david-roberts.json"
+      "the-balusters-2026/theatre-reviews-limited--david-roberts.json",
+      "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
+      "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/proof-2026/variety--brent-lang.json",
+      "proof-2026/variety--brent-lang.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "waiting-for-godot-2025/nytimes--laura-collins-hughes.json",
@@ -171,7 +186,8 @@
       "side-show-2014/nytimes--ben-brantley.json",
       "the-last-ship-2014/nytimes--ben-brantley.json",
       "holler-if-ya-hear-me-2014/nytimes--ben-brantley.json",
-      "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/front-row-center--nicole-itkin.json"
+      "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/front-row-center--nicole-itkin.json",
+      "proof-2026/nytimes--helen-shaw.json"
     ],
     "brightdata": [
       "good-night-oscar-2023/nytimes--jesse-green.json",
@@ -188,7 +204,9 @@
       "shining-city-2006/nytimes--ben-brantley.json",
       "the-wedding-singer-2006/nytimes--ben-brantley.json",
       "the-pajama-game-2006/nytimes--ben-brantley.json",
-      "schmigadoon-2026/thewrap--robert-hofler.json"
+      "schmigadoon-2026/thewrap--robert-hofler.json",
+      "fallen-angels-2026/talkinbroadway--unknown.json",
+      "proof-2026/cititour--brian-scott-lipton.json"
     ],
     "archiveToday": [
       "data/review-texts/on-the-town-2014/nytimes--charles-isherwood.json",
@@ -227,11 +245,12 @@
       "good-people-2011/nytimes--ben-brantley.json",
       "butley-2006/about-entertainment--ben-brantley.json",
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
-      "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
+      "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
+      "avenue-q-west-end-2026/radio-times--joanna-magill.json"
     ]
   },
   "startTime": "2026-06-06T04:44:29.355Z",
-  "lastProcessed": "schmigadoon-2026/thewrap--robert-hofler.json",
+  "lastProcessed": "proof-2026/cote-notices--david-cote.json",
   "log": [
     {
       "t": "2026-06-06T04:58:40.603Z",
@@ -320,6 +339,17 @@
       "t": "2026-06-06T05:23:37.673Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T06:07:40.613Z",
+      "event": "bb-session",
+      "session": "8976ee8a",
+      "url": "https://variety.com/2026/legit/reviews/proof-broadway-review-ayo-edebiri-don-che"
+    },
+    {
+      "t": "2026-06-06T06:07:41.686Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-06T06:06:24.266Z",
-  "processed": 69,
-  "failed": 52,
-  "successRate": "57.0%",
+  "updatedAt": "2026-06-06T06:10:35.424Z",
+  "processed": 76,
+  "failed": 55,
+  "successRate": "58.0%",
   "tierBreakdown": {
-    "playwright": 20,
+    "playwright": 22,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 20,
-    "brightdata": 15,
+    "scrapingbee": 21,
+    "brightdata": 17,
     "archiveToday": 20,
-    "archive": 15
+    "archive": 16
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-06-06T04:58:40.603Z",
@@ -102,6 +102,17 @@
       "t": "2026-06-06T05:23:37.673Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T06:07:40.613Z",
+      "event": "bb-session",
+      "session": "8976ee8a",
+      "url": "https://variety.com/2026/legit/reviews/proof-broadway-review-ayo-edebiri-don-che"
+    },
+    {
+      "t": "2026-06-06T06:07:41.686Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
