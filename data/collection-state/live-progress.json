@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-06T05:16:31.293Z",
-  "processed": 53,
-  "failed": 27,
-  "successRate": "66.3%",
+  "updatedAt": "2026-06-06T05:21:45.524Z",
+  "processed": 54,
+  "failed": 36,
+  "successRate": "60.0%",
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 19,
-    "brightdata": 21,
-    "archiveToday": 16,
+    "brightdata": 22,
+    "archiveToday": 18,
     "archive": 13
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 8,
   "recentActivity": [
     {
       "t": "2026-06-06T04:55:01.869Z",
@@ -78,6 +78,28 @@
     },
     {
       "t": "2026-06-06T05:14:56.482Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:16:32.351Z",
+      "event": "bb-session",
+      "session": "063038ba",
+      "url": "http://theater.nytimes.com/2006/04/26/theater/reviews/26lest.html"
+    },
+    {
+      "t": "2026-06-06T05:16:33.053Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:17:28.491Z",
+      "event": "bb-session",
+      "session": "8f45f0e7",
+      "url": "http://theater.nytimes.com/2005/12/02/theater/reviews/02purp.html"
+    },
+    {
+      "t": "2026-06-06T05:17:29.181Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
