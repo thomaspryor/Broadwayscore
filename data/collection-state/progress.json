@@ -41,7 +41,13 @@
     "hands-on-a-hardbody-2013/nytimes--charles-isherwood.json",
     "a-christmas-story-the-musical-2012/nytimes--charles-isherwood.json",
     "the-heiress-2012/nytimes--ben-brantley.json",
-    "bring-it-on-the-musical-2012/nytimes--charles-isherwood.json"
+    "bring-it-on-the-musical-2012/nytimes--charles-isherwood.json",
+    "ghost-the-musical-2012/nytimes--charles-isherwood.json",
+    "wit-2012/nytimes--ben-brantley.json",
+    "born-yesterday-2011/nytimes--ben-brantley.json",
+    "born-yesterday-2011/nytimes--charles-isherwood.json",
+    "war-horse-2011/nytimes--ben-brantley.json",
+    "good-people-2011/nytimes--ben-brantley.json"
   ],
   "failed": [
     "spamalot-off-broadway-2026/nytimes--jesse-green.json",
@@ -51,7 +57,11 @@
     "a-time-to-kill-2013/nytimes--charles-isherwood.json",
     "cat-on-a-hot-tin-roof-2013/about-entertainment--ben-brantley.json",
     "the-anarchist-2012/nytimes--ben-brantley.json",
-    "dead-accounts-2012/nytimes--ben-brantley.json"
+    "dead-accounts-2012/nytimes--ben-brantley.json",
+    "leap-of-faith-2012/nytimes--ben-brantley.json",
+    "the-motherfucker-with-the-hat-2011/nytimes--ben-brantley.json",
+    "colin-quinn-long-story-short-2010/nytimes--charles-isherwood.json",
+    "the-scottsboro-boys-2010/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -93,13 +103,22 @@
       "motown-the-musical-2013/nytimes--charles-isherwood.json",
       "hands-on-a-hardbody-2013/nytimes--charles-isherwood.json",
       "a-christmas-story-the-musical-2012/nytimes--charles-isherwood.json",
-      "bring-it-on-the-musical-2012/nytimes--charles-isherwood.json"
+      "bring-it-on-the-musical-2012/nytimes--charles-isherwood.json",
+      "ghost-the-musical-2012/nytimes--charles-isherwood.json",
+      "born-yesterday-2011/nytimes--ben-brantley.json",
+      "born-yesterday-2011/nytimes--charles-isherwood.json",
+      "war-horse-2011/nytimes--ben-brantley.json",
+      "good-people-2011/nytimes--ben-brantley.json"
     ],
     "archiveToday": [
       "data/review-texts/holler-if-ya-hear-me-2014/nytimes--ben-brantley.json",
       "data/review-texts/bullets-over-broadway-2014/nytimes--ben-brantley.json",
       "data/review-texts/the-anarchist-2012/nytimes--ben-brantley.json",
-      "data/review-texts/dead-accounts-2012/nytimes--ben-brantley.json"
+      "data/review-texts/dead-accounts-2012/nytimes--ben-brantley.json",
+      "data/review-texts/leap-of-faith-2012/nytimes--ben-brantley.json",
+      "data/review-texts/the-motherfucker-with-the-hat-2011/nytimes--ben-brantley.json",
+      "data/review-texts/colin-quinn-long-story-short-2010/nytimes--charles-isherwood.json",
+      "data/review-texts/the-scottsboro-boys-2010/nytimes--ben-brantley.json"
     ],
     "archive": [
       "waiting-for-godot-2025/nytimes--laura-collins-hughes.json",
@@ -111,11 +130,12 @@
       "the-last-ship-2014/nytimes--ben-brantley.json",
       "on-the-town-2014/nytimes--ben-brantley.json",
       "the-bridges-of-madison-county-2014/nytimes--ben-brantley.json",
-      "the-heiress-2012/nytimes--ben-brantley.json"
+      "the-heiress-2012/nytimes--ben-brantley.json",
+      "wit-2012/nytimes--ben-brantley.json"
     ]
   },
   "startTime": "2026-06-06T04:35:40.969Z",
-  "lastProcessed": "bring-it-on-the-musical-2012/nytimes--charles-isherwood.json",
+  "lastProcessed": "the-scottsboro-boys-2010/nytimes--ben-brantley.json",
   "log": [
     {
       "t": "2026-06-06T04:55:01.869Z",
@@ -125,6 +145,17 @@
     },
     {
       "t": "2026-06-06T04:55:02.648Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T04:59:52.047Z",
+      "event": "bb-session",
+      "session": "3f338575",
+      "url": "http://theater.nytimes.com/2011/04/25/theater/reviews/born-yesterday-with-jim-be"
+    },
+    {
+      "t": "2026-06-06T04:59:52.808Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
