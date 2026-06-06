@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-06-06T06:15:18.169Z",
-  "processed": 90,
-  "failed": 71,
-  "successRate": "55.9%",
+  "updatedAt": "2026-06-06T06:17:21.043Z",
+  "processed": 96,
+  "failed": 75,
+  "successRate": "56.1%",
   "tierBreakdown": {
-    "playwright": 30,
+    "playwright": 33,
     "amp": 0,
-    "browserbase": 6,
+    "browserbase": 10,
     "directCookies": 0,
     "scrapingbee": 21,
     "brightdata": 17,
     "archiveToday": 20,
-    "archive": 20
+    "archive": 21
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 5,
   "recentActivity": [
-    {
-      "t": "2026-06-06T05:05:31.559Z",
-      "event": "bb-session",
-      "session": "a368641e",
-      "url": "http://theater.nytimes.com/2011/04/25/theater/reviews/born-yesterday-with-jim-be"
-    },
-    {
-      "t": "2026-06-06T05:05:32.590Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-06T05:18:47.403Z",
-      "event": "bb-session",
-      "session": "9a951e88",
-      "url": "http://theater.nytimes.com/2008/10/03/theater/reviews/03seag.html"
-    },
-    {
-      "t": "2026-06-06T05:18:48.334Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-06-06T05:20:29.064Z",
       "event": "bb-session",
@@ -122,6 +100,28 @@
     },
     {
       "t": "2026-06-06T06:11:56.523Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-06T06:15:49.182Z",
+      "event": "bb-session",
+      "session": "419d8a83",
+      "url": "https://variety.com/2026/legit/reviews/dog-day-afternoon-broadway-review-jon-ber"
+    },
+    {
+      "t": "2026-06-06T06:15:50.095Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-06T06:17:02.642Z",
+      "event": "bb-session",
+      "session": "d39451ed",
+      "url": "https://variety.com/2026/legit/reviews/giant-broadway-review-john-lithgow-roald-"
+    },
+    {
+      "t": "2026-06-06T06:17:03.647Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }

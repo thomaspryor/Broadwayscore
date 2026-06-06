@@ -89,7 +89,13 @@
     "les-liaisons-dangereuses-west-end-2026/monstagigz--unknown.json",
     "les-liaisons-dangereuses-west-end-2026/telegraph--claire-allfree.json",
     "les-liaisons-dangereuses-west-end-2026/new-statesman--zuzanna-lachendro.json",
-    "les-liaisons-dangereuses-west-end-2026/times-uk--clive-davis.json"
+    "les-liaisons-dangereuses-west-end-2026/times-uk--clive-davis.json",
+    "romeo-and-juliet-west-end-2026/thestage--alun-hood.json",
+    "romeo-and-juliet-west-end-2026/west-end-best-friend--livvy-perrett.json",
+    "dog-day-afternoon-2026/variety--owen-gleiberman.json",
+    "dog-day-afternoon-2026/one-minute-critic--matthew-wexler.json",
+    "teeth-n-smiles-west-end-2026/broadwayworld--alexander-cohen.json",
+    "giant-2026/variety--daniel-daddario.json"
   ],
   "failed": [
     "spamalot-off-broadway-2026/nytimes--jesse-green.json",
@@ -162,7 +168,11 @@
     "romeo-and-juliet-west-end-2026/amny--unknown.json",
     "romeo-and-juliet-west-end-2026/ap--mark-kennedy.json",
     "romeo-and-juliet-west-end-2026/nbcny--unknown.json",
-    "romeo-and-juliet-west-end-2026/ny1--unknown.json"
+    "romeo-and-juliet-west-end-2026/ny1--unknown.json",
+    "romeo-and-juliet-west-end-2026/hollywood-reporter--david-rooney.json",
+    "dog-day-afternoon-2026/theatre-reviews-limited--david-roberts.json",
+    "dog-day-afternoon-2026/broadway-and-me--janice-c-simpson.json",
+    "teeth-n-smiles-west-end-2026/times-uk--dominic-maxwell.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -196,7 +206,10 @@
       "inter-alia-west-end-2026/west-end-best-friend--cara-brazier.json",
       "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
       "les-liaisons-dangereuses-west-end-2026/monstagigz--unknown.json",
-      "les-liaisons-dangereuses-west-end-2026/times-uk--clive-davis.json"
+      "les-liaisons-dangereuses-west-end-2026/times-uk--clive-davis.json",
+      "romeo-and-juliet-west-end-2026/thestage--alun-hood.json",
+      "romeo-and-juliet-west-end-2026/west-end-best-friend--livvy-perrett.json",
+      "dog-day-afternoon-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
     "browserbase": [
@@ -205,7 +218,11 @@
       "data/review-texts/death-of-a-salesman-2026/hollywood-reporter--david-rooney.json",
       "death-of-a-salesman-2026/hollywood-reporter--david-rooney.json",
       "data/review-texts/death-of-a-salesman-2026/variety--rebecca-rubin.json",
-      "death-of-a-salesman-2026/variety--rebecca-rubin.json"
+      "death-of-a-salesman-2026/variety--rebecca-rubin.json",
+      "data/review-texts/dog-day-afternoon-2026/variety--owen-gleiberman.json",
+      "dog-day-afternoon-2026/variety--owen-gleiberman.json",
+      "data/review-texts/giant-2026/variety--daniel-daddario.json",
+      "giant-2026/variety--daniel-daddario.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -292,11 +309,12 @@
       "inter-alia-west-end-2026/lbc--johnny-jenkins.json",
       "cats-the-jellicle-ball-2026/amny--matt-windman.json",
       "les-liaisons-dangereuses-west-end-2026/telegraph--claire-allfree.json",
-      "les-liaisons-dangereuses-west-end-2026/new-statesman--zuzanna-lachendro.json"
+      "les-liaisons-dangereuses-west-end-2026/new-statesman--zuzanna-lachendro.json",
+      "teeth-n-smiles-west-end-2026/broadwayworld--alexander-cohen.json"
     ]
   },
   "startTime": "2026-06-06T04:44:29.355Z",
-  "lastProcessed": "romeo-and-juliet-west-end-2026/ny1--unknown.json",
+  "lastProcessed": "giant-2026/variety--daniel-daddario.json",
   "log": [
     {
       "t": "2026-06-06T04:58:40.603Z",
@@ -416,6 +434,28 @@
     },
     {
       "t": "2026-06-06T06:11:56.523Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-06T06:15:49.182Z",
+      "event": "bb-session",
+      "session": "419d8a83",
+      "url": "https://variety.com/2026/legit/reviews/dog-day-afternoon-broadway-review-jon-ber"
+    },
+    {
+      "t": "2026-06-06T06:15:50.095Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-06T06:17:02.642Z",
+      "event": "bb-session",
+      "session": "d39451ed",
+      "url": "https://variety.com/2026/legit/reviews/giant-broadway-review-john-lithgow-roald-"
+    },
+    {
+      "t": "2026-06-06T06:17:03.647Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
