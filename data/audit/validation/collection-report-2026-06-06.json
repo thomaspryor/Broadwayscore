@@ -17,7 +17,7 @@
     "successRate": "86.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 6,
     "directCookies": 0,
@@ -66,6 +66,7 @@
     "almost-famous-2022/nytimes--jesse-green.json",
     "walking-with-ghosts-2022/nytimes--alexis-soloski.json",
     "topdog-underdog-2022/nytimes--jesse-green.json",
+    "1776-2022/nytimes--jesse-green.json",
     "leopoldstadt-2022/nytimes--jesse-green.json",
     "paradise-square-2022/nytimes--jesse-green.json",
     "linda-vista-2019/nytimes--ben-brantley.json",
@@ -155,7 +156,9 @@
     "a-time-to-kill-2013/nytimes--charles-isherwood.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "the-front-page-2016/nytimes--ben-brantley.json"
+    ],
     "amp": [],
     "browserbase": [
       "data/review-texts/good-night-oscar-2023/nytimes--jesse-green.json",
@@ -180,6 +183,7 @@
       "almost-famous-2022/nytimes--jesse-green.json",
       "walking-with-ghosts-2022/nytimes--alexis-soloski.json",
       "topdog-underdog-2022/nytimes--jesse-green.json",
+      "1776-2022/nytimes--jesse-green.json",
       "leopoldstadt-2022/nytimes--jesse-green.json",
       "paradise-square-2022/nytimes--jesse-green.json",
       "linda-vista-2019/nytimes--ben-brantley.json",
@@ -243,6 +247,8 @@
       "data/review-texts/the-waverly-gallery-2018/nytimes--jesse-green.json",
       "data/review-texts/summer-2018/nytimes--jesse-green.json",
       "data/review-texts/mean-girls-2018/nytimes--jesse-green.json",
+      "data/review-texts/angels-in-america-2018/nytimes--ben-brantley-pt2.json",
+      "data/review-texts/hello-dolly-2017/nytimes--jesse-green.json",
       "data/review-texts/the-glass-menagerie-2017/nytimes--ben-brantley.json",
       "data/review-texts/fully-committed-2016/nytimes--unknown.json",
       "data/review-texts/something-rotten-2015/nytimes--ben-brantley.json",
