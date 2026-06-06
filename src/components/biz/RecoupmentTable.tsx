@@ -35,8 +35,9 @@ function formatCurrency(amount: number): string {
 }
 
 function formatDate(dateStr: string): string {
-  // Input: "2025-01" or "2024-06"
+  // Input: "2025-01", "2024-06", or "2026" (year-only when exact month unknown)
   const [year, month] = dateStr.split('-');
+  if (!month) return year;
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   return `${months[parseInt(month) - 1]} ${year}`;
 }
