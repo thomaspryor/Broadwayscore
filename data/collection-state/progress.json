@@ -9,7 +9,10 @@
     "the-seagull-2008/about-entertainment--ben-brantley.json",
     "young-frankenstein-2007/nytimes--ben-brantley.json",
     "shining-city-2006/nytimes--ben-brantley.json",
-    "in-my-life-2005/about-entertainment--ben-brantley.json"
+    "in-my-life-2005/about-entertainment--ben-brantley.json",
+    "war-horse-west-end-2026/thestage--tom-wicker.json",
+    "dark-of-the-moon-west-end-2026/guardian--arifa-akbar.json",
+    "equus-west-end-2026/timeout--andrzej-lukowski.json"
   ],
   "failed": [
     "spamalot-off-broadway-2026/nytimes--jesse-green.json",
@@ -20,13 +23,42 @@
     "high-fidelity-2006/about-entertainment--ben-brantley.json",
     "lestat-2006/about-entertainment--ben-brantley.json",
     "souvenir-2005/about-entertainment--ben-brantley.json",
-    "a-naked-girl-on-the-appian-way-2005/about-entertainment--ben-brantley.json"
+    "a-naked-girl-on-the-appian-way-2005/about-entertainment--ben-brantley.json",
+    "are-you-watching-west-end-2026/times-uk--clive-davis.json",
+    "driftwood-west-end-2026/times-uk--clive-davis.json",
+    "war-horse-west-end-2026/times-uk--chris-bennion.json",
+    "war-horse-west-end-2026/times-uk--clive-davis.json",
+    "beetlejuice-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "beetlejuice-west-end-2026/amny--matt-windman.json",
+    "the-p-word-off-west-end-2026/whatsonstage--frey-kwa-hawking.json",
+    "dark-of-the-moon-west-end-2026/guardian-uk--unknown.json",
+    "dark-of-the-moon-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "dark-of-the-moon-west-end-2026/artsdesk--unknown.json",
+    "dark-of-the-moon-west-end-2026/cambridge--unknown.json",
+    "dark-of-the-moon-west-end-2026/thestage--unknown.json",
+    "care-west-end-2026/i-paper--unknown.json",
+    "care-west-end-2026/london-theatre--matt-wolf.json",
+    "care-west-end-2026/the-upcoming-uk--unknown.json",
+    "care-west-end-2026/times-uk--clive-davis.json",
+    "care-west-end-2026/times-uk--mark-fisher.json",
+    "care-west-end-2026/times-uk--unknown.json",
+    "care-west-end-2026/whatsonstage--judi-herman.json",
+    "equus-west-end-2026/guardian--unknown.json",
+    "equus-west-end-2026/the-jewish-chronicle--unknown.json",
+    "equus-west-end-2026/thereviewshub--unknown.json",
+    "equus-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "equus-west-end-2026/artsdesk--unknown.json",
+    "equus-west-end-2026/thestage--holly-o.json",
+    "equus-west-end-2026/times-uk--clive-davis.json",
+    "equus-west-end-2026/whatsonstage--alun-hood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/equus-west-end-2026/thereviewshub--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "waiting-for-godot-2025/nytimes--laura-collins-hughes.json",
@@ -34,12 +66,19 @@
       "good-night-oscar-2023/nytimes--jesse-green.json",
       "born-yesterday-2011/nytimes--ben-brantley.json",
       "war-horse-2011/nytimes--ben-brantley.json",
-      "young-frankenstein-2007/nytimes--ben-brantley.json"
+      "young-frankenstein-2007/nytimes--ben-brantley.json",
+      "war-horse-west-end-2026/thestage--tom-wicker.json",
+      "equus-west-end-2026/timeout--andrzej-lukowski.json"
     ],
     "brightdata": [
-      "shining-city-2006/nytimes--ben-brantley.json"
+      "shining-city-2006/nytimes--ben-brantley.json",
+      "dark-of-the-moon-west-end-2026/guardian--arifa-akbar.json"
     ],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
+      "data/review-texts/dark-of-the-moon-west-end-2026/thestage--unknown.json",
+      "data/review-texts/equus-west-end-2026/thestage--holly-o.json"
+    ],
     "archive": [
       "bring-it-on-the-musical-2012/nytimes--charles-isherwood.json",
       "the-seagull-2008/about-entertainment--ben-brantley.json",
@@ -47,7 +86,7 @@
     ]
   },
   "startTime": "2026-06-06T06:18:00.486Z",
-  "lastProcessed": "a-naked-girl-on-the-appian-way-2005/about-entertainment--ben-brantley.json",
+  "lastProcessed": "equus-west-end-2026/whatsonstage--alun-hood.json",
   "log": [
     {
       "t": "2026-06-06T06:19:34.296Z",
@@ -147,6 +186,46 @@
       "t": "2026-06-06T06:26:32.738Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T07:09:40.768Z",
+      "event": "bb-session",
+      "session": "8d940aac",
+      "url": "https://charingcrosstheatre.co.uk/theatre/dark-of-the-moon"
+    },
+    {
+      "t": "2026-06-06T07:11:08.060Z",
+      "event": "bb-session",
+      "session": "a36af93f",
+      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
+    },
+    {
+      "t": "2026-06-06T07:13:20.627Z",
+      "event": "bb-session",
+      "session": "fc884f9d",
+      "url": "https://thestage.co.uk/reviews/dark-of-the-moon-review-charing-cross-theatre-lon"
+    },
+    {
+      "t": "2026-06-06T07:13:21.034Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-06-06T07:16:23.391Z",
+      "event": "bb-session",
+      "session": "6977f178",
+      "url": "https://www.thereviewshub.com/equus-menier-chocolate-factory-london/"
+    },
+    {
+      "t": "2026-06-06T07:19:34.974Z",
+      "event": "bb-session",
+      "session": "608045a4",
+      "url": "https://thestage.co.uk/reviews/equus-review-menier-chocolate-factory-london-lind"
+    },
+    {
+      "t": "2026-06-06T07:19:35.384Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }

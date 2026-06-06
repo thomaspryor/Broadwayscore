@@ -1,48 +1,20 @@
 {
-  "updatedAt": "2026-06-06T06:27:29.772Z",
-  "processed": 10,
-  "failed": 9,
-  "successRate": "52.6%",
+  "updatedAt": "2026-06-06T07:20:02.639Z",
+  "processed": 13,
+  "failed": 36,
+  "successRate": "26.5%",
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingbee": 6,
-    "brightdata": 1,
-    "archiveToday": 0,
+    "scrapingbee": 8,
+    "brightdata": 2,
+    "archiveToday": 3,
     "archive": 3
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 5,
   "recentActivity": [
-    {
-      "t": "2026-06-06T06:19:34.296Z",
-      "event": "bb-session",
-      "session": "5277a163",
-      "url": "http://theater.nytimes.com/2013/01/18/theater/reviews/cat-on-a-hot-tin-roof-at-r"
-    },
-    {
-      "t": "2026-06-06T06:19:34.936Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-06T06:21:51.363Z",
-      "event": "bb-session",
-      "session": "ca905c0c",
-      "url": "https://www.nytimes.com/2009/04/08/theater/reviews/08rock.html"
-    },
-    {
-      "t": "2026-06-06T06:21:51.989Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-06T06:22:29.072Z",
-      "event": "bb-session",
-      "session": "b6830f0b",
-      "url": "http://theater.nytimes.com/2008/10/03/theater/reviews/03seag.html"
-    },
     {
       "t": "2026-06-06T06:22:29.617Z",
       "event": "bb-cookie-inject",
@@ -113,6 +85,46 @@
       "t": "2026-06-06T06:26:32.738Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T07:09:40.768Z",
+      "event": "bb-session",
+      "session": "8d940aac",
+      "url": "https://charingcrosstheatre.co.uk/theatre/dark-of-the-moon"
+    },
+    {
+      "t": "2026-06-06T07:11:08.060Z",
+      "event": "bb-session",
+      "session": "a36af93f",
+      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
+    },
+    {
+      "t": "2026-06-06T07:13:20.627Z",
+      "event": "bb-session",
+      "session": "fc884f9d",
+      "url": "https://thestage.co.uk/reviews/dark-of-the-moon-review-charing-cross-theatre-lon"
+    },
+    {
+      "t": "2026-06-06T07:13:21.034Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-06-06T07:16:23.391Z",
+      "event": "bb-session",
+      "session": "6977f178",
+      "url": "https://www.thereviewshub.com/equus-menier-chocolate-factory-london/"
+    },
+    {
+      "t": "2026-06-06T07:19:34.974Z",
+      "event": "bb-session",
+      "session": "608045a4",
+      "url": "https://thestage.co.uk/reviews/equus-review-menier-chocolate-factory-london-lind"
+    },
+    {
+      "t": "2026-06-06T07:19:35.384Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
