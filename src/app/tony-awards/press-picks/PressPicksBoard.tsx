@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { OutletPickLogo } from '@/components/tony/OutletPickLogo';
 
 export interface BoardNominee {
@@ -33,6 +33,22 @@ type Mode = 'will' | 'should';
 export function PressPicksBoard({ categories, sources }: { categories: BoardCategory[]; sources: BoardSource[] }) {
   const [mode, setMode] = useState<Mode>('will');
 
+  // Deep-link support: ?view=should opens directly in Should Win mode.
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get('view') === 'should') setMode('should');
+  }, []);
+
+  // Keep the URL in sync so the current view is shareable (no full navigation).
+  const selectMode = (m: Mode) => {
+    setMode(m);
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href);
+      if (m === 'should') url.searchParams.set('view', 'should');
+      else url.searchParams.delete('view');
+      window.history.replaceState(null, '', url);
+    }
+  };
+
   // Outlets participating in the active mode (have at least one pick somewhere).
   const activeOutletIds = new Set<string>();
   for (const cat of categories) {
@@ -51,7 +67,7 @@ export function PressPicksBoard({ categories, sources }: { categories: BoardCate
       <div className="mt-4 inline-flex items-center gap-1 p-1 rounded-full bg-surface-overlay">
         <button
           type="button"
-          onClick={() => setMode('will')}
+          onClick={() => selectMode('will')}
           className={`${tabBase} ${mode === 'will' ? 'bg-amber-400 text-black' : 'text-gray-300 hover:text-white'}`}
           aria-pressed={mode === 'will'}
         >
@@ -59,7 +75,7 @@ export function PressPicksBoard({ categories, sources }: { categories: BoardCate
         </button>
         <button
           type="button"
-          onClick={() => setMode('should')}
+          onClick={() => selectMode('should')}
           className={`${tabBase} ${mode === 'should' ? 'bg-amber-400 text-black' : 'text-gray-300 hover:text-white'}`}
           aria-pressed={mode === 'should'}
         >
