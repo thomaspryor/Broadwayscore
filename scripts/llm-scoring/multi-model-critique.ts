@@ -57,7 +57,7 @@ async function getCritique(model: string, client: any): Promise<string> {
       return response.choices[0].message.content || '';
     }
     else if (model === 'Gemini') {
-      const genModel = client.getGenerativeModel({ model: 'gemini-2.0-flash' });
+      const genModel = client.getGenerativeModel({ model: 'gemini-2.5-flash' });
       const result = await genModel.generateContent(CRITIQUE_PROMPT);
       return result.response.text();
     }

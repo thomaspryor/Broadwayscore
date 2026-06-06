@@ -70,7 +70,7 @@ function callGemini(prompt) {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) throw new Error('GEMINI_API_KEY not set');
 
-  // gemini-2.0-flash was retired by Google (HTTP 404 "no longer available")
+  // gemini-2.5-flash was retired by Google (HTTP 404 "no longer available")
   // ~2026-06; 2.5-flash is the current equivalent (already used by the
   // llm-scoring ensemble). NOTE: ~30 other scripts still hardcode the dead
   // 2.0-flash — tracked as a separate class-fix card.

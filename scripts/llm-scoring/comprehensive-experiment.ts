@@ -404,7 +404,7 @@ async function main() {
 
   const claudeScorer = new ReviewScorer(claudeKey, { model: 'claude-sonnet-4-20250514', verbose: false });
   const openaiScorer = new OpenAIReviewScorer(openaiKey, { model: 'gpt-4o', verbose: false });
-  const geminiScorer = geminiKey ? new GeminiScorer(geminiKey, { model: 'gemini-2.0-flash', verbose: false }) : null;
+  const geminiScorer = geminiKey ? new GeminiScorer(geminiKey, { model: 'gemini-2.5-flash', verbose: false }) : null;
 
   console.log(`Models: Claude Sonnet, GPT-4o${geminiScorer ? ', Gemini 2.0 Flash' : ''}`);
 

@@ -30,7 +30,7 @@ const MODELS = {
   'gemini-2-flash': {
     provider: 'google',
     api: 'google',
-    model: 'gemini-2.0-flash',
+    model: 'gemini-2.5-flash',
     priceIn: 0.10, priceOut: 0.40,
     envKey: 'GEMINI_API_KEY',
   },

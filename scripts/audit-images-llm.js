@@ -140,7 +140,7 @@ class ImageVerifier {
   constructor(apiKey) {
     const genAI = new GoogleGenerativeAI(apiKey);
     this.model = genAI.getGenerativeModel({
-      model: 'gemini-2.0-flash',
+      model: 'gemini-2.5-flash',
       generationConfig: {
         temperature: 0.2,
         maxOutputTokens: 300,

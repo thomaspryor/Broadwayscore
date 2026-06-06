@@ -211,7 +211,7 @@ async function scoreWithGemini(reviewText, context) {
   const { GoogleGenerativeAI } = require('@google/generative-ai');
   const client = new GoogleGenerativeAI(GEMINI_API_KEY);
   const model = client.getGenerativeModel({
-    model: 'gemini-2.0-flash',
+    model: 'gemini-2.5-flash',
     generationConfig: { temperature: 0.3, topP: 0.8, maxOutputTokens: 500 }
   });
 
