@@ -404,23 +404,25 @@ async function auditShow(show) {
   }
 
   // Show Score per-show page → direct outlet review URLs. Show Score covers
-  // off-Broadway (unlike DTLI, which is Broadway-only) — it lands later and
-  // lists fewer reviews than Playbill/BWW, but the hourly audit eventually
-  // reconciles a review that surfaced only there. Filtered through the same
-  // isReviewUrl + urlMatchesShow gates so ticketing/maps/form links on the
-  // Show Score page never become bogus "missing reviews" (girl-interrupted
-  // 2026-06-06 — same class as the telecharge false-positive).
+  // off-Broadway (unlike DTLI, which is Broadway-only) — it lands later and lists
+  // fewer reviews than Playbill/BWW, but the hourly audit eventually reconciles a
+  // review that surfaced only there. We PAGINATE (Show Score renders only the
+  // first 8; the rest come from /paginate_critic_reviews — The Receptionist has
+  // 13). The "Read more" links are show-page-vouched, so we do NOT title-match
+  // them — that lets opaque outlet URLs through (Lighting & Sound America uses
+  // story.asp?ID=… with no title in the path, which title-matching rejected, so
+  // L&SA was systematically missed across shows, 2026-06-06). isReviewUrl still
+  // strips ticketing/maps/form links.
   try {
-    const { showScoreUrlForShow, extractShowScoreReviewUrls } = require('./lib/show-score-discover');
+    const { showScoreUrlForShow, fetchAllShowScoreReviewUrls } = require('./lib/show-score-discover');
     const ssUrl = showScoreUrlForShow(show, getShowScoreUrlMap());
     if (ssUrl) {
-      const r = await fetchPage(ssUrl, { timeout: 45000 });
-      const html = (typeof r === 'string') ? r : ((r && (r.content || r.html || r.body)) || '');
-      const tokens = titleTokens(show.title);
-      for (const u of extractShowScoreReviewUrls(html)) {
-        if (isReviewUrl(u) && urlMatchesShow(u, tokens)) {
-          aggUrls.add(u.split('?')[0].split('#')[0]);
-        }
+      const fetchHtml = async (u) => {
+        const r = await fetchPage(u, { timeout: 45000 });
+        return (typeof r === 'string') ? r : ((r && (r.content || r.html || r.body)) || '');
+      };
+      for (const u of await fetchAllShowScoreReviewUrls(ssUrl, fetchHtml)) {
+        if (isReviewUrl(u)) aggUrls.add(u.split('?')[0].split('#')[0]);
       }
     }
   } catch (e) {
