@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-06-06T06:21:17.447Z",
+  "runDate": "2026-06-06T06:23:25.013Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
@@ -11,47 +11,46 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 10,
-    "failed": 10,
+    "processed": 8,
+    "failed": 11,
     "skipped": 0,
-    "successRate": "50.0%"
+    "successRate": "42.1%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 7,
-    "brightdata": 2,
+    "scrapingbee": 5,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 2
   },
   "statistics": {
     "tier1Attempts": 0,
     "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 9,
+    "tier1_5Attempts": 10,
     "tier1_5Success": 0,
     "tier2Attempts": 18,
-    "tier2Success": 16,
-    "tier3Attempts": 2,
-    "tier3Success": 2,
+    "tier2Success": 15,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 2,
-    "tier4Success": 0,
-    "totalFailed": 10,
-    "scrapingBeePageCredits": 106,
+    "tier4Attempts": 3,
+    "tier4Success": 2,
+    "totalFailed": 11,
+    "scrapingBeePageCredits": 87,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 9,
-    "browserbaseMinutesUsed": 5.1,
+    "browserbaseSessionsUsed": 10,
+    "browserbaseMinutesUsed": 5.8,
     "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "proof-2026/nytimes--helen-shaw.json",
     "waiting-for-godot-2025/nytimes--laura-collins-hughes.json",
     "swept-away-2024/nytimes--jesse-green.json",
     "good-night-oscar-2023/nytimes--jesse-green.json",
@@ -59,8 +58,7 @@
     "born-yesterday-2011/nytimes--ben-brantley.json",
     "war-horse-2011/nytimes--ben-brantley.json",
     "young-frankenstein-2007/nytimes--ben-brantley.json",
-    "shining-city-2006/nytimes--ben-brantley.json",
-    "in-my-life-2005/about-entertainment--ben-brantley.json"
+    "shining-city-2006/nytimes--ben-brantley.json"
   ],
   "failed": [
     "spamalot-off-broadway-2026/nytimes--jesse-green.json",
@@ -80,21 +78,19 @@
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [
-      "proof-2026/nytimes--helen-shaw.json",
       "waiting-for-godot-2025/nytimes--laura-collins-hughes.json",
       "swept-away-2024/nytimes--jesse-green.json",
-      "bring-it-on-the-musical-2012/nytimes--charles-isherwood.json",
       "born-yesterday-2011/nytimes--ben-brantley.json",
       "war-horse-2011/nytimes--ben-brantley.json",
       "young-frankenstein-2007/nytimes--ben-brantley.json"
     ],
     "brightdata": [
-      "good-night-oscar-2023/nytimes--jesse-green.json",
-      "shining-city-2006/nytimes--ben-brantley.json"
+      "good-night-oscar-2023/nytimes--jesse-green.json"
     ],
     "archiveToday": [],
     "archive": [
-      "in-my-life-2005/about-entertainment--ben-brantley.json"
+      "bring-it-on-the-musical-2012/nytimes--charles-isherwood.json",
+      "shining-city-2006/nytimes--ben-brantley.json"
     ]
   },
   "failuresByOutlet": {},

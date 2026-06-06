@@ -1,6 +1,5 @@
 {
   "processed": [
-    "proof-2026/nytimes--helen-shaw.json",
     "waiting-for-godot-2025/nytimes--laura-collins-hughes.json",
     "swept-away-2024/nytimes--jesse-green.json",
     "good-night-oscar-2023/nytimes--jesse-green.json",
@@ -8,8 +7,7 @@
     "born-yesterday-2011/nytimes--ben-brantley.json",
     "war-horse-2011/nytimes--ben-brantley.json",
     "young-frankenstein-2007/nytimes--ben-brantley.json",
-    "shining-city-2006/nytimes--ben-brantley.json",
-    "in-my-life-2005/about-entertainment--ben-brantley.json"
+    "shining-city-2006/nytimes--ben-brantley.json"
   ],
   "failed": [
     "spamalot-off-broadway-2026/nytimes--jesse-green.json",
@@ -30,122 +28,131 @@
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [
-      "proof-2026/nytimes--helen-shaw.json",
       "waiting-for-godot-2025/nytimes--laura-collins-hughes.json",
       "swept-away-2024/nytimes--jesse-green.json",
-      "bring-it-on-the-musical-2012/nytimes--charles-isherwood.json",
       "born-yesterday-2011/nytimes--ben-brantley.json",
       "war-horse-2011/nytimes--ben-brantley.json",
       "young-frankenstein-2007/nytimes--ben-brantley.json"
     ],
     "brightdata": [
-      "good-night-oscar-2023/nytimes--jesse-green.json",
-      "shining-city-2006/nytimes--ben-brantley.json"
+      "good-night-oscar-2023/nytimes--jesse-green.json"
     ],
     "archiveToday": [],
     "archive": [
-      "in-my-life-2005/about-entertainment--ben-brantley.json"
+      "bring-it-on-the-musical-2012/nytimes--charles-isherwood.json",
+      "shining-city-2006/nytimes--ben-brantley.json"
     ]
   },
-  "startTime": "2026-06-06T06:12:06.706Z",
+  "startTime": "2026-06-06T06:13:57.177Z",
   "lastProcessed": "a-naked-girl-on-the-appian-way-2005/about-entertainment--ben-brantley.json",
   "log": [
     {
-      "t": "2026-06-06T06:13:49.113Z",
+      "t": "2026-06-06T06:15:25.085Z",
       "event": "bb-session",
-      "session": "c9258bcb",
+      "session": "5126ad49",
       "url": "https://www.nytimes.com/2023/04/24/theater/good-night-oscar-review-sean-hayes-wi"
     },
     {
-      "t": "2026-06-06T06:13:49.859Z",
+      "t": "2026-06-06T06:15:26.178Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-06-06T06:14:28.971Z",
+      "t": "2026-06-06T06:16:05.934Z",
       "event": "bb-session",
-      "session": "001a7301",
+      "session": "7a460cc3",
       "url": "http://theater.nytimes.com/2013/01/18/theater/reviews/cat-on-a-hot-tin-roof-at-r"
     },
     {
-      "t": "2026-06-06T06:14:29.667Z",
+      "t": "2026-06-06T06:16:06.850Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-06-06T06:16:20.992Z",
+      "t": "2026-06-06T06:17:20.659Z",
       "event": "bb-session",
-      "session": "28f6b039",
+      "session": "1b1498d3",
+      "url": "https://www.nytimes.com/2012/08/02/theater/reviews/bring-it-on-the-musical-at-st"
+    },
+    {
+      "t": "2026-06-06T06:17:21.621Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T06:18:41.025Z",
+      "event": "bb-session",
+      "session": "dddb3ad6",
       "url": "http://theater.nytimes.com/2008/10/03/theater/reviews/03seag.html"
     },
     {
-      "t": "2026-06-06T06:16:21.820Z",
+      "t": "2026-06-06T06:18:42.007Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-06-06T06:17:12.486Z",
+      "t": "2026-06-06T06:19:34.519Z",
       "event": "bb-session",
-      "session": "065558fd",
+      "session": "f0d8e10c",
       "url": "http://theater.nytimes.com/2006/12/08/theater/reviews/08fide.html"
     },
     {
-      "t": "2026-06-06T06:17:13.890Z",
+      "t": "2026-06-06T06:19:35.502Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-06-06T06:18:15.561Z",
+      "t": "2026-06-06T06:20:39.617Z",
       "event": "bb-session",
-      "session": "6fb7bc66",
+      "session": "c106542c",
       "url": "https://www.nytimes.com/2006/05/10/theater/reviews/10shin.html"
     },
     {
-      "t": "2026-06-06T06:18:16.331Z",
+      "t": "2026-06-06T06:20:40.717Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-06-06T06:18:59.249Z",
+      "t": "2026-06-06T06:21:02.237Z",
       "event": "bb-session",
-      "session": "28a2bde9",
+      "session": "ef0cef66",
       "url": "http://theater.nytimes.com/2006/04/26/theater/reviews/26lest.html"
     },
     {
-      "t": "2026-06-06T06:18:59.931Z",
+      "t": "2026-06-06T06:21:03.241Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-06-06T06:19:34.670Z",
+      "t": "2026-06-06T06:21:38.594Z",
       "event": "bb-session",
-      "session": "e04e8269",
+      "session": "3a28ba2a",
       "url": "http://theater.nytimes.com/2005/11/11/theater/reviews/11souv.html?adxnnl=1&amp;a"
     },
     {
-      "t": "2026-06-06T06:19:35.300Z",
+      "t": "2026-06-06T06:21:39.606Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-06-06T06:20:00.111Z",
+      "t": "2026-06-06T06:22:14.681Z",
       "event": "bb-session",
-      "session": "3fd89493",
+      "session": "fce6010a",
       "url": "http://theater.nytimes.com/2005/10/21/theater/reviews/21life.html"
     },
     {
-      "t": "2026-06-06T06:20:00.880Z",
+      "t": "2026-06-06T06:22:15.691Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-06-06T06:20:35.518Z",
+      "t": "2026-06-06T06:22:43.378Z",
       "event": "bb-session",
-      "session": "a748a1c6",
+      "session": "0ef3b146",
       "url": "http://theater.nytimes.com/2005/10/07/theater/reviews/07nake.html?adxnnl=1&amp;a"
     },
     {
-      "t": "2026-06-06T06:20:36.203Z",
+      "t": "2026-06-06T06:22:44.392Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
