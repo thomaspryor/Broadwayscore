@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-05T21:35:30.833Z",
+  "timestamp": "2026-06-06T05:21:31.279Z",
   "stats": {
-    "totalReviews": 38128,
-    "alreadyFlagged": 16749,
-    "dateGuardCatches": 108,
-    "directorMismatch": 831,
-    "tvFilmSignals": 1046,
-    "londonSignals": 606,
-    "offBroadwaySignals": 460,
-    "yearMismatch": 79,
-    "noPublishDate": 3986
+    "totalReviews": 38129,
+    "alreadyFlagged": 16765,
+    "dateGuardCatches": 107,
+    "directorMismatch": 832,
+    "tvFilmSignals": 1047,
+    "londonSignals": 607,
+    "offBroadwaySignals": 464,
+    "yearMismatch": 80,
+    "noPublishDate": 3988
   },
   "findings": [
     {
@@ -1299,6 +1299,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "angels-in-america-2018",
+      "file": "nytimes--ben-brantley-pt2.json",
+      "score": 93,
+      "publishDate": "March 25, 2018",
+      "url": "https://www.nytimes.com/2018/03/25/theater/angels-in-america-review-nathan-lane-andrew-garfield.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
         }
       ]
     },
@@ -21496,6 +21515,25 @@
       ]
     },
     {
+      "showId": "the-elephant-man-2014",
+      "file": "nytimes--ben-brantley.json",
+      "score": 35,
+      "publishDate": "December 7, 2014",
+      "url": "http://www.nytimes.com/2014/12/08/theater/bradley-cooper-in-the-elephant-man-on-broadway.html?_r=0",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sean mathias\" from the-elephant-man-2002"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2002 (2x) more than 2014 (1x). 2002 matches production: the-elephant-man-2002"
+        }
+      ]
+    },
+    {
       "showId": "the-encounter-2016",
       "file": "broadwayworld--michael-dale.json",
       "score": 42,
@@ -26779,6 +26817,34 @@
       ]
     },
     {
+      "showId": "aint-too-proud-2019",
+      "file": "nytimes--ben-brantley.json",
+      "score": 78,
+      "publishDate": "March 22, 2019",
+      "url": "https://www.nytimes.com/2019/03/21/theater/aint-too-proud-review-the-temptations.html?partner=IFTTT",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"new world stages\""
+        }
+      ]
+    },
+    {
+      "showId": "aint-too-proud-2019",
+      "file": "nytimes--jesse-green.json",
+      "score": 79,
+      "publishDate": "March 22, 2019",
+      "url": "https://www.nytimes.com/2019/03/21/theater/aint-too-proud-review-the-temptations.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"new world stages\""
+        }
+      ]
+    },
+    {
       "showId": "all-in-comedy-about-love-2024",
       "file": "nysr--frank-scheck.json",
       "score": 63,
@@ -29266,6 +29332,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "disgraced-2014",
+      "file": "nytimes--ben-brantley.json",
+      "score": 88,
+      "publishDate": "October 23, 2014",
+      "url": "http://www.nytimes.com/2014/10/24/theater/josh-radner-and-gretchen-mol-star-in-disgraced-on-broadway.html?_r=0",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -32618,6 +32698,20 @@
     },
     {
       "showId": "latin-history-for-morons-2017",
+      "file": "nytimes--jesse-green.json",
+      "score": 63,
+      "publishDate": "November 16, 2017",
+      "url": "https://www.nytimes.com/2017/11/15/theater/latin-history-for-morons-review-john-leguizamo.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "latin-history-for-morons-2017",
       "file": "stage-left--robert-russo.json",
       "score": 78,
       "publishDate": "November 19, 2017",
@@ -34358,20 +34452,6 @@
       ]
     },
     {
-      "showId": "oklahoma-2002",
-      "file": "nytimes--benedict-nightingale.json",
-      "score": 82,
-      "publishDate": "March 17, 2002",
-      "url": "http://www.nytimes.com/2002/03/17/theater/theater-the-briton-who-revived-oklahoma.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
       "showId": "old-times-2015",
       "file": "huffpost--michael-glitz.json",
       "score": 93,
@@ -35705,6 +35785,7 @@
     {
       "showId": "sexual-misconduct-of-the-middle-classes-off-broadway-2026",
       "file": "nytimes--jesse-green.json",
+      "score": 88,
       "publishDate": "May 8, 2025",
       "url": "https://www.nytimes.com/2025/05/08/theater/review-hugh-jackman-in-a-twisty-tale-of-sexual-misconduct.html",
       "findings": [
@@ -38650,20 +38731,6 @@
       ]
     },
     {
-      "showId": "the-great-gatsby-2024",
-      "file": "nytimes--maya-phillips.json",
-      "score": 63,
-      "publishDate": "June 29, 2023",
-      "url": "https://www.nytimes.com/2024/04/25/theater/the-great-gatsby-review-noblezada-jordan.html",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 274d before show (June 29, 2023 vs 2024-03-29)"
-        }
-      ]
-    },
-    {
       "showId": "the-height-of-the-storm-2019",
       "file": "guardian--jesse-green.json",
       "score": 93,
@@ -39327,6 +39394,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-nap-2018",
+      "file": "nytimes--ben-brantley.json",
+      "score": 82,
+      "publishDate": "September 27, 2018",
+      "url": "https://www.nytimes.com/2018/09/27/theater/the-nap-review-richard-bean-snooker.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
