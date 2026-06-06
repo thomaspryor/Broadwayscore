@@ -33,6 +33,7 @@ const path = require('path');
 const https = require('https');
 
 const { parseGrossesAnalysisPost } = require('./lib/parse-grosses');
+const { CLAUDE_SONNET } = require('./lib/models');
 
 // Universal scraper with Bright Data → ScrapingBee → Playwright fallback
 let universalScraper;
@@ -498,7 +499,7 @@ async function parseGrossesPost(selftext) {
 
   try {
     const body = JSON.stringify({
-      model: 'claude-sonnet-4-6',
+      model: CLAUDE_SONNET,
       max_tokens: 4000,
       messages: [{
         role: 'user',
@@ -1432,7 +1433,7 @@ Respond with ONLY valid JSON (no markdown code fences):
 }`;
 
   const body = JSON.stringify({
-    model: 'claude-sonnet-4-6',
+    model: CLAUDE_SONNET,
     max_tokens: 8000,
     system: systemPrompt,
     messages: [{

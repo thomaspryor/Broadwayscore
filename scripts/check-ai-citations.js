@@ -15,6 +15,7 @@
  */
 
 const Anthropic = require('@anthropic-ai/sdk');
+const { CLAUDE_SONNET } = require('./lib/models');
 
 // Test prompts - these are queries where Broadway Scorecard should appear
 const TEST_PROMPTS = [
@@ -42,7 +43,7 @@ const CITATION_INDICATORS = [
 async function checkCitation(client, prompt) {
   try {
     const response = await client.messages.create({
-      model: 'claude-sonnet-4-6',
+      model: CLAUDE_SONNET,
       max_tokens: 1024,
       messages: [
         {

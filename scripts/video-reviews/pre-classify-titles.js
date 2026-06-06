@@ -22,6 +22,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { CLAUDE_HAIKU } = require('../lib/models');
 
 const DISCOVERY_DIR = path.join(__dirname, '../../data/video-reviews-discovery');
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
@@ -34,7 +35,7 @@ async function classifyTitleBatch(titles, creatorName, platform) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
     body: JSON.stringify({
-      model: 'claude-haiku-4-5-20251001',
+      model: CLAUDE_HAIKU,
       max_tokens: 2048,
       messages: [{
         role: 'user',

@@ -5,6 +5,7 @@
 const Anthropic = require('@anthropic-ai/sdk').default;
 const OpenAI = require('openai').default;
 const { GoogleGenerativeAI } = require('@google/generative-ai');
+const { CLAUDE_SONNET, GPT4O, GEMINI_FLASH } = require('./lib/models');
 const fs = require('fs');
 const path = require('path');
 
@@ -58,7 +59,7 @@ REVIEW TEXT:
 
 async function scoreWithClaude(client, text) {
   const response = await client.messages.create({
-    model: 'claude-sonnet-4-6',
+    model: CLAUDE_SONNET,
     max_tokens: 100,
     messages: [{ role: 'user', content: PROMPT + text }]
   });
@@ -73,7 +74,7 @@ async function scoreWithClaude(client, text) {
 
 async function scoreWithOpenAI(client, text) {
   const response = await client.chat.completions.create({
-    model: 'gpt-4o',
+    model: GPT4O,
     max_tokens: 100,
     messages: [{ role: 'user', content: PROMPT + text }]
   });
@@ -87,7 +88,7 @@ async function scoreWithOpenAI(client, text) {
 }
 
 async function scoreWithGemini(client, text) {
-  const model = client.getGenerativeModel({ model: 'gemini-2.5-flash' });
+  const model = client.getGenerativeModel({ model: GEMINI_FLASH });
   const result = await model.generateContent(PROMPT + text);
   const content = result.response.text().trim();
   try {

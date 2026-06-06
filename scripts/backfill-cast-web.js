@@ -30,6 +30,7 @@ const {
   scoreSerpResult,
   SERP_MIN_SCORE,
 } = require('./lib/cast-extraction-guards');
+const { GEMINI_FLASH, CLAUDE_HAIKU } = require('./lib/models');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const CAST_DIR = path.join(__dirname, '..', 'data', 'cast');
@@ -221,7 +222,7 @@ function deriveVenueLabel(category) {
 }
 
 async function callGemini(prompt, apiKey) {
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_FLASH}:generateContent?key=${apiKey}`;
   const result = await httpRequest(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -246,7 +247,7 @@ async function callAnthropic(prompt, apiKey) {
       'anthropic-version': '2023-06-01',
     },
     body: JSON.stringify({
-      model: 'claude-haiku-4-5-20251001',
+      model: CLAUDE_HAIKU,
       max_tokens: 2000,
       temperature: 0.1,
       messages: [{ role: 'user', content: prompt }],

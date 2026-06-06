@@ -23,6 +23,7 @@ const https = require('https');
 const path = require('path');
 const fs = require('fs');
 const { normalizeLlmResult: sharedNormalizeLlmResult, LETTER_GRADES } = require('./score-parsers');
+const { GEMINI_FLASH, GPT4O_MINI } = require('./models');
 
 // Lazy-load outlet-registry for starScale lookups. Tests can avoid this by
 // passing `opts.starScale` directly to extractExplicitScore.
@@ -147,7 +148,7 @@ function callGemini(systemPrompt, userPrompt) {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) throw new Error('GEMINI_API_KEY not set');
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_FLASH}:generateContent?key=${apiKey}`;
   const body = JSON.stringify({
     contents: [
       { role: 'user', parts: [{ text: systemPrompt + '\n\n' + userPrompt }] }
@@ -189,7 +190,7 @@ function callOpenAI(systemPrompt, userPrompt) {
   if (!apiKey) throw new Error('OPENAI_API_KEY not set');
 
   const body = JSON.stringify({
-    model: 'gpt-4o-mini',
+    model: GPT4O_MINI,
     temperature: 0.0,
     max_tokens: 200,
     messages: [

@@ -11,9 +11,10 @@
  */
 
 const https = require('https');
+const { GPT4O_MINI } = require('./models');
 
 const ENDPOINT = { hostname: 'api.openai.com', path: '/v1/chat/completions' };
-const MODEL = 'gpt-4o-mini';
+const MODEL = GPT4O_MINI;
 
 /**
  * Strip HTML to first 6KB of plain text. Whitespace-normalized.

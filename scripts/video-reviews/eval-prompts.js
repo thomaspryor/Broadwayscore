@@ -11,6 +11,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { CLAUDE_SONNET } = require('../lib/models');
 
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 if (!ANTHROPIC_API_KEY) { console.error('Missing ANTHROPIC_API_KEY'); process.exit(1); }
@@ -73,8 +74,8 @@ function getShowList() {
     .map(s => `${s.title} (${s.id})`).join(', ');
 }
 
-const CLASSIFY_MODEL = process.env.CLASSIFY_MODEL || 'claude-sonnet-4-6';
-const SCORE_MODEL = process.env.SCORE_MODEL || 'claude-sonnet-4-6';
+const CLASSIFY_MODEL = process.env.CLASSIFY_MODEL || CLAUDE_SONNET;
+const SCORE_MODEL = process.env.SCORE_MODEL || CLAUDE_SONNET;
 
 async function callClaude(prompt, model) {
   const resp = await fetch('https://api.anthropic.com/v1/messages', {

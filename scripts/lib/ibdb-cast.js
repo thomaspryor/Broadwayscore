@@ -31,6 +31,7 @@ const https = require('https');
 const { JSDOM } = require('jsdom');
 const { fetchPage } = require('./scraper');
 const { isLondonMarket } = require('./venue-classification');
+const { GEMINI_FLASH, GPT4O_MINI } = require('./models');
 
 const RATE_LIMIT_MS = 1500;
 
@@ -256,7 +257,7 @@ Title 2: "${ibdbTitle}"`;
   if (process.env.GEMINI_API_KEY) {
     try {
       const result = await new Promise((resolve, reject) => {
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`;
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_FLASH}:generateContent?key=${process.env.GEMINI_API_KEY}`;
         const body = JSON.stringify({
           contents: [{ role: 'user', parts: [{ text: prompt }] }],
           generationConfig: { temperature: 0, maxOutputTokens: 10 }
@@ -290,7 +291,7 @@ Title 2: "${ibdbTitle}"`;
     try {
       const result = await new Promise((resolve, reject) => {
         const body = JSON.stringify({
-          model: 'gpt-4o-mini',
+          model: GPT4O_MINI,
           messages: [{ role: 'user', content: prompt }],
           max_tokens: 10,
           temperature: 0

@@ -16,6 +16,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { CLAUDE_SONNET } = require('./lib/models');
 
 const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
@@ -83,7 +84,7 @@ function matchShowToSlug(showName, commercial, shows) {
 function callClaude(prompt) {
   return new Promise((resolve, reject) => {
     const payload = JSON.stringify({
-      model: 'claude-sonnet-4-6',
+      model: CLAUDE_SONNET,
       max_tokens: 2000,
       messages: [{ role: 'user', content: prompt }],
     });

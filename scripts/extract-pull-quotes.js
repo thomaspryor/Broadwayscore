@@ -28,6 +28,7 @@ const https = require('https');
 const { shouldRejectAsReservation } = require('./lib/pull-quote-guards');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { GEMINI_FLASH, GPT4O_MINI } = require('./lib/models');
 
 // --- CLI args ---
 const args = process.argv.slice(2);
@@ -119,7 +120,7 @@ function callGemini(systemPrompt, userPrompt) {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) throw new Error('GEMINI_API_KEY not set');
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_FLASH}:generateContent?key=${apiKey}`;
   const body = JSON.stringify({
     contents: [
       { role: 'user', parts: [{ text: systemPrompt + '\n\n---\n\n' + userPrompt }] }
@@ -161,7 +162,7 @@ function callOpenAI(systemPrompt, userPrompt) {
   if (!apiKey) throw new Error('OPENAI_API_KEY not set');
 
   const body = JSON.stringify({
-    model: 'gpt-4o-mini',
+    model: GPT4O_MINI,
     temperature: 0.1,
     max_tokens: 300,
     messages: [
