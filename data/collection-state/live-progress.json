@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-06T05:48:21.086Z",
-  "processed": 17,
-  "failed": 3,
-  "successRate": "85.0%",
+  "updatedAt": "2026-06-06T05:53:57.007Z",
+  "processed": 24,
+  "failed": 6,
+  "successRate": "80.0%",
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 15,
-    "brightdata": 2,
+    "scrapingbee": 17,
+    "brightdata": 5,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 2
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 10,
   "recentActivity": [
     {
       "t": "2026-06-06T05:42:49.234Z",
@@ -34,6 +34,94 @@
     },
     {
       "t": "2026-06-06T05:45:45.252Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:48:22.229Z",
+      "event": "bb-session",
+      "session": "dcfc79f7",
+      "url": "http://theater.nytimes.com/2013/01/18/theater/reviews/cat-on-a-hot-tin-roof-at-r"
+    },
+    {
+      "t": "2026-06-06T05:48:23.016Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:49:30.813Z",
+      "event": "bb-session",
+      "session": "0c57d971",
+      "url": "https://www.nytimes.com/2012/01/27/theater/reviews/cynthia-nixon-in-wit-at-manha"
+    },
+    {
+      "t": "2026-06-06T05:49:31.616Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:50:28.443Z",
+      "event": "bb-session",
+      "session": "0d069234",
+      "url": "https://www.nytimes.com/2011/04/25/theater/reviews/born-yesterday-with-jim-belus"
+    },
+    {
+      "t": "2026-06-06T05:50:29.115Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:50:51.592Z",
+      "event": "bb-session",
+      "session": "e5b4de2e",
+      "url": "http://theater.nytimes.com/2011/04/25/theater/reviews/born-yesterday-with-jim-be"
+    },
+    {
+      "t": "2026-06-06T05:50:52.422Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:51:27.878Z",
+      "event": "bb-session",
+      "session": "533be7cd",
+      "url": "https://www.nytimes.com/2011/04/15/theater/reviews/war-horse-from-national-theat"
+    },
+    {
+      "t": "2026-06-06T05:51:28.577Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:52:28.254Z",
+      "event": "bb-session",
+      "session": "4a0f005b",
+      "url": "https://www.nytimes.com/2011/03/04/theater/reviews/04good.html"
+    },
+    {
+      "t": "2026-06-06T05:52:28.995Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:53:05.970Z",
+      "event": "bb-session",
+      "session": "f0874517",
+      "url": "https://www.nytimes.com/2009/04/08/theater/reviews/08rock.html"
+    },
+    {
+      "t": "2026-06-06T05:53:06.740Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:53:39.165Z",
+      "event": "bb-session",
+      "session": "3ec79e8a",
+      "url": "https://www.nytimes.com/2009/04/08/theater/reviews/08rock.html?ref=arts"
+    },
+    {
+      "t": "2026-06-06T05:53:39.973Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
