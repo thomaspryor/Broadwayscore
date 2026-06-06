@@ -5598,7 +5598,8 @@ function findReviewsToProcess() {
           // appears in failedFetches. Re-collection can destroy live scored reviews by fetching garbage
           // and triggering LLM rejection flags that null fullText and delete assignedScore.
           // Override: explicit reviewFilter (specific file targeting) bypasses this guard.
-          if (shouldSkipScoredReview(data, CONFIG.reviewFilter.size)) {
+          // Override: truncated reviews always need re-collection (scored on partial text is wrong).
+          if (!isTruncated && shouldSkipScoredReview(data, CONFIG.reviewFilter.size)) {
             continue;
           }
         }
