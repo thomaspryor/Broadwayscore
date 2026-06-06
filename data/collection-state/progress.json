@@ -8,16 +8,29 @@
     "stereophonic-2024/nytimes--jesse-green.json",
     "the-wiz-2024/nytimes--maya-phillips.json",
     "the-notebook-2024/nytimes--jesse-green.json",
-    "days-of-wine-and-roses-2024/nytimes--jesse-green.json"
+    "days-of-wine-and-roses-2024/nytimes--jesse-green.json",
+    "good-night-oscar-2023/nytimes--jesse-green.json",
+    "the-thanksgiving-play-2023/nytimes--jesse-green.json",
+    "peter-pan-goes-wrong-2023/nytimes--jesse-green.json",
+    "almost-famous-2022/nytimes--jesse-green.json",
+    "walking-with-ghosts-2022/nytimes--alexis-soloski.json",
+    "topdog-underdog-2022/nytimes--jesse-green.json",
+    "leopoldstadt-2022/nytimes--jesse-green.json",
+    "paradise-square-2022/nytimes--jesse-green.json",
+    "linda-vista-2019/nytimes--ben-brantley.json"
   ],
   "failed": [
-    "spamalot-off-broadway-2026/nytimes--jesse-green.json"
+    "spamalot-off-broadway-2026/nytimes--jesse-green.json",
+    "mike-birbiglia-the-old-man-and-the-pool-2022/nytimes--jesse-green.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/good-night-oscar-2023/nytimes--jesse-green.json",
+      "good-night-oscar-2023/nytimes--jesse-green.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "heathers-the-musical-off-broadway-2025/nytimes--elisabeth-vincentelli.json",
@@ -27,16 +40,26 @@
       "cabaret-2024/nytimes--jesse-green.json",
       "the-wiz-2024/nytimes--maya-phillips.json",
       "the-notebook-2024/nytimes--jesse-green.json",
-      "days-of-wine-and-roses-2024/nytimes--jesse-green.json"
+      "days-of-wine-and-roses-2024/nytimes--jesse-green.json",
+      "the-thanksgiving-play-2023/nytimes--jesse-green.json",
+      "peter-pan-goes-wrong-2023/nytimes--jesse-green.json",
+      "almost-famous-2022/nytimes--jesse-green.json",
+      "walking-with-ghosts-2022/nytimes--alexis-soloski.json",
+      "topdog-underdog-2022/nytimes--jesse-green.json",
+      "leopoldstadt-2022/nytimes--jesse-green.json",
+      "paradise-square-2022/nytimes--jesse-green.json",
+      "linda-vista-2019/nytimes--ben-brantley.json"
     ],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/mike-birbiglia-the-old-man-and-the-pool-2022/nytimes--jesse-green.json"
+    ],
     "archive": [
       "stereophonic-2024/nytimes--jesse-green.json"
     ]
   },
   "startTime": "2026-06-06T02:37:21.290Z",
-  "lastProcessed": "days-of-wine-and-roses-2024/nytimes--jesse-green.json",
+  "lastProcessed": "linda-vista-2019/nytimes--ben-brantley.json",
   "log": [
     {
       "t": "2026-06-06T02:39:29.903Z",
@@ -46,6 +69,28 @@
     },
     {
       "t": "2026-06-06T02:39:31.023Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T02:41:11.048Z",
+      "event": "bb-session",
+      "session": "41d81a54",
+      "url": "https://www.nytimes.com/2023/04/24/theater/good-night-oscar-review-sean-hayes-wi"
+    },
+    {
+      "t": "2026-06-06T02:41:12.076Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T02:42:28.766Z",
+      "event": "bb-session",
+      "session": "c6b65ee7",
+      "url": "https://www.nytimes.com/2022/11/14/theater/mike-birbiglia-the-old-man-and-the-po"
+    },
+    {
+      "t": "2026-06-06T02:42:29.887Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
