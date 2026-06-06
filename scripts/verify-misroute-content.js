@@ -53,6 +53,15 @@ const CONCURRENCY = parseInt(flag('concurrency', '4'), 10);
 // to confirm:true (LLM nondeterminism footgun, ship-check Codex 2026-05-28).
 // Pass --reverify to deliberately re-evaluate every eligible row from scratch.
 const REVERIFY = args.includes('--reverify');
+// By default only clean rows (no warnings, not out-of-scope) are verified.
+// --include-flagged also verifies rows carrying heuristic warnings
+// (to-year-far / no-date / from-also-full-match); --include-oos also verifies
+// Class-C generic-bin rows. The content check reads the review's OWN url+text
+// and is the real arbiter — the warnings/Class-C labels were only heuristics,
+// and the two-model agreement gate still fails closed, so a flagged row that
+// is genuinely about the TO show is safe to confirm while the rest are rejected.
+const INCLUDE_FLAGGED = args.includes('--include-flagged');
+const INCLUDE_OOS = args.includes('--include-oos');
 const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR || path.join(process.env.HOME || '/tmp', 'broadway-review-texts');
 
 if (!fs.existsSync(WHITELIST)) { console.error(`Whitelist not found: ${WHITELIST}`); process.exit(1); }
@@ -65,11 +74,12 @@ const raw = JSON.parse(fs.readFileSync(WHITELIST, 'utf8'));
 const findings = Array.isArray(raw) ? raw : raw.findings;
 if (!Array.isArray(findings)) { console.error('Whitelist has no findings array.'); process.exit(1); }
 
-// Only verify rows that are otherwise apply-eligible: no blocking warnings,
-// not out-of-scope, not already confirmed. (Flagged rows stay human-only.)
+// Verify rows not yet confirmed/verified. By default only clean rows; opt into
+// flagged and/or out-of-scope rows explicitly. Two-model agreement still gates
+// every confirm, so widening the candidate set never loosens the safety bar.
 const eligible = findings.filter(f =>
-  (!f.warnings || f.warnings.length === 0)
-  && !f.outOfScope
+  (INCLUDE_FLAGGED || !f.warnings || f.warnings.length === 0)
+  && (INCLUDE_OOS || !f.outOfScope)
   && f.confirm !== true
   && (REVERIFY || !f.verifierVerdict));   // prior verdicts are sticky unless --reverify
 
