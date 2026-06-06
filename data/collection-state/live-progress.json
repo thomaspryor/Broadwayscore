@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-06T06:15:46.969Z",
-  "processed": 7,
-  "failed": 3,
-  "successRate": "70.0%",
+  "updatedAt": "2026-06-06T06:21:13.458Z",
+  "processed": 10,
+  "failed": 10,
+  "successRate": "50.0%",
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 6,
-    "brightdata": 1,
+    "scrapingbee": 7,
+    "brightdata": 2,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 1
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 9,
   "recentActivity": [
     {
       "t": "2026-06-06T06:13:49.113Z",
@@ -34,6 +34,83 @@
     },
     {
       "t": "2026-06-06T06:14:29.667Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T06:16:20.992Z",
+      "event": "bb-session",
+      "session": "28f6b039",
+      "url": "http://theater.nytimes.com/2008/10/03/theater/reviews/03seag.html"
+    },
+    {
+      "t": "2026-06-06T06:16:21.820Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T06:17:12.486Z",
+      "event": "bb-session",
+      "session": "065558fd",
+      "url": "http://theater.nytimes.com/2006/12/08/theater/reviews/08fide.html"
+    },
+    {
+      "t": "2026-06-06T06:17:13.890Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T06:18:15.561Z",
+      "event": "bb-session",
+      "session": "6fb7bc66",
+      "url": "https://www.nytimes.com/2006/05/10/theater/reviews/10shin.html"
+    },
+    {
+      "t": "2026-06-06T06:18:16.331Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T06:18:59.249Z",
+      "event": "bb-session",
+      "session": "28a2bde9",
+      "url": "http://theater.nytimes.com/2006/04/26/theater/reviews/26lest.html"
+    },
+    {
+      "t": "2026-06-06T06:18:59.931Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T06:19:34.670Z",
+      "event": "bb-session",
+      "session": "e04e8269",
+      "url": "http://theater.nytimes.com/2005/11/11/theater/reviews/11souv.html?adxnnl=1&amp;a"
+    },
+    {
+      "t": "2026-06-06T06:19:35.300Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T06:20:00.111Z",
+      "event": "bb-session",
+      "session": "3fd89493",
+      "url": "http://theater.nytimes.com/2005/10/21/theater/reviews/21life.html"
+    },
+    {
+      "t": "2026-06-06T06:20:00.880Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T06:20:35.518Z",
+      "event": "bb-session",
+      "session": "a748a1c6",
+      "url": "http://theater.nytimes.com/2005/10/07/theater/reviews/07nake.html?adxnnl=1&amp;a"
+    },
+    {
+      "t": "2026-06-06T06:20:36.203Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
