@@ -7,11 +7,21 @@
     "school-of-rock-the-musical-2015/nytimes--ben-brantley.json",
     "misery-2015/nytimes--charles-isherwood.json",
     "hand-to-god-2015/nytimes--ben-brantley.json",
-    "side-show-2014/nytimes--ben-brantley.json"
+    "side-show-2014/nytimes--ben-brantley.json",
+    "hedwig-and-the-angry-inch-2014/nytimes--ben-brantley.json",
+    "mothers-and-sons-2014/nytimes--ben-brantley.json",
+    "rocky-2014/nytimes--ben-brantley.json",
+    "bronx-bombers-2014/nytimes--ben-brantley.json",
+    "beautiful-the-carole-king-musical-2014/nytimes--ben-brantley.json",
+    "the-snow-geese-2013/nytimes--ben-brantley.json",
+    "the-nance-2013/nytimes--ben-brantley.json",
+    "motown-the-musical-2013/nytimes--charles-isherwood.json",
+    "hands-on-a-hardbody-2013/nytimes--charles-isherwood.json"
   ],
   "failed": [
     "spamalot-off-broadway-2026/nytimes--jesse-green.json",
-    "sea-wall-a-life-2019/nytimes--laura-collins-hughes.json"
+    "sea-wall-a-life-2019/nytimes--laura-collins-hughes.json",
+    "a-time-to-kill-2013/nytimes--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -26,16 +36,25 @@
       "school-of-rock-the-musical-2015/nytimes--ben-brantley.json",
       "misery-2015/nytimes--charles-isherwood.json",
       "hand-to-god-2015/nytimes--ben-brantley.json",
-      "side-show-2014/nytimes--ben-brantley.json"
+      "side-show-2014/nytimes--ben-brantley.json",
+      "hedwig-and-the-angry-inch-2014/nytimes--ben-brantley.json",
+      "mothers-and-sons-2014/nytimes--ben-brantley.json",
+      "bronx-bombers-2014/nytimes--ben-brantley.json",
+      "beautiful-the-carole-king-musical-2014/nytimes--ben-brantley.json",
+      "the-snow-geese-2013/nytimes--ben-brantley.json",
+      "the-nance-2013/nytimes--ben-brantley.json",
+      "motown-the-musical-2013/nytimes--charles-isherwood.json",
+      "hands-on-a-hardbody-2013/nytimes--charles-isherwood.json"
     ],
     "brightdata": [
-      "good-night-oscar-2023/nytimes--jesse-green.json"
+      "good-night-oscar-2023/nytimes--jesse-green.json",
+      "rocky-2014/nytimes--ben-brantley.json"
     ],
     "archiveToday": [],
     "archive": []
   },
   "startTime": "2026-06-06T05:41:12.446Z",
-  "lastProcessed": "side-show-2014/nytimes--ben-brantley.json",
+  "lastProcessed": "hands-on-a-hardbody-2013/nytimes--charles-isherwood.json",
   "log": [
     {
       "t": "2026-06-06T05:42:49.234Z",
@@ -45,6 +64,17 @@
     },
     {
       "t": "2026-06-06T05:42:50.172Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:45:44.341Z",
+      "event": "bb-session",
+      "session": "7b5bc698",
+      "url": "http://www.nytimes.com/2014/03/14/theater/rocky-the-musical-brings-songs-to-a-fi"
+    },
+    {
+      "t": "2026-06-06T05:45:45.252Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
