@@ -205,26 +205,91 @@ async function fetchReviewsPageAnchors() {
 }
 
 /**
+ * Map a show to its BWW section listing page. BWW section pages carry a "Latest
+ * Reviews" widget that links Review-Roundup articles within minutes of publish —
+ * cheaper and more reliable than Google SERP, and (unlike reviews.php) reachable
+ * without Browserbase. Verified 2026-06-06: /off-broadway/ listed both the
+ * A Woman Among Women and Girl, Interrupted roundups; the main homepage did not.
+ */
+function sectionUrlForShow(show) {
+  const cat = String(show && show.category || '').toLowerCase();
+  if (cat === 'off-broadway') return 'https://www.broadwayworld.com/off-broadway/';
+  if (cat === 'west-end' || cat === 'off-west-end') return 'https://www.broadwayworld.com/westend/';
+  return 'https://www.broadwayworld.com/'; // broadway / default (homepage)
+}
+
+/**
+ * Cheap section-page anchor scan via the standard scraper chain. Prefers
+ * ScrapingBee (proven reliable for broadwayworld section pages; Bright Data has
+ * shown intermittent empty-200s and Playwright times out on BWW's CF interstitial).
+ * Returns [] on any failure so the caller falls through to the Browserbase path.
+ */
+async function fetchSectionPageAnchors(show) {
+  const url = sectionUrlForShow(show);
+  let html = '';
+  try {
+    const { fetchWithScrapingBee } = require('./scraper');
+    const r = await fetchWithScrapingBee(url, { renderJs: false });
+    html = (r && (r.content || r.html || r.body)) || '';
+  } catch { /* fall through to fetchPage */ }
+  if (!html || html.length < 5000) {
+    try {
+      const { fetchPage } = require('./scraper');
+      const r = await fetchPage(url, { timeout: 60000 });
+      html = (typeof r === 'string') ? r : ((r && (r.content || r.html || r.body)) || '');
+    } catch { /* leave html empty */ }
+  }
+  const { extractRoundupAnchors } = require('./bww-homepage-scan');
+  return extractRoundupAnchors(html);
+}
+
+/**
  * Primary entry point: find the BWW RR URL for a given show.
  *
- * @param {object} show - shows.json record; needs { title, openingDate }
+ * Discovery order (cheapest + most reliable first):
+ *   1. Market section-page scan (ScrapingBee, no Browserbase, no Google lag).
+ *      This is the path that makes OFF-Broadway work consistently — its roundups
+ *      live on /off-broadway/, which SERP ranked poorly and the poller used to
+ *      skip entirely (girl-interrupted / a-woman-among-women 2026-06).
+ *   2. reviews.php via Browserbase (Cloudflare-gated; the proven Broadway path).
+ *
+ * @param {object} show - shows.json record; needs { title, openingDate, category }
  * @param {object} [opts]
- * @param {function} [opts.fetchAnchors] - override for testing; returns string[]
- * @returns {Promise<{ url: string|null, candidates: Array<{url:string, score:number}> }>}
+ * @param {function} [opts.fetchAnchors] - override the reviews.php fetch (testing)
+ * @param {function} [opts.fetchSectionAnchors] - override the section fetch (testing)
+ * @returns {Promise<{ url: string|null, candidates: Array<{url:string, score:number}>, via: string }>}
  */
 async function discoverBwwRoundupUrl(show, opts = {}) {
-  const fetchAnchors = opts.fetchAnchors || fetchReviewsPageAnchors;
-  const anchors = await fetchAnchors();
-  const candidates = anchors
+  const score = (anchors) => anchors
     .map(url => ({ url, score: scoreCandidate(url, show) }))
     .filter(c => c.score >= 10)              // must at least match title tokens
     .sort((a, b) => b.score - a.score);
-  return { url: candidates[0]?.url || null, candidates };
+
+  // 1. Cheap section-page scan first.
+  let anchors = [];
+  try {
+    const fetchSection = opts.fetchSectionAnchors || fetchSectionPageAnchors;
+    anchors = await fetchSection(show);
+  } catch { anchors = []; }
+  let candidates = score(anchors);
+  if (candidates.length > 0) {
+    return { url: candidates[0].url, candidates, via: 'section' };
+  }
+
+  // 2. Fall back to reviews.php (Browserbase).
+  const fetchAnchors = opts.fetchAnchors || fetchReviewsPageAnchors;
+  try {
+    anchors = await fetchAnchors();
+  } catch { anchors = []; }
+  candidates = score(anchors);
+  return { url: candidates[0]?.url || null, candidates, via: 'reviews.php' };
 }
 
 module.exports = {
   discoverBwwRoundupUrl,
   fetchReviewsPageAnchors,
+  fetchSectionPageAnchors,
+  sectionUrlForShow,
   scoreCandidate,
   slugMatchesShow,
   tokensFromTitle,

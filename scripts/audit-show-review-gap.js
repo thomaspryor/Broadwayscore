@@ -215,6 +215,17 @@ async function findAggregatorArticles(show) {
       if (verbose) console.error(`  SERP error for ${id}: ${e.message}`);
     }
   }
+  // Deterministic BWW Review Roundup discovery via the market section page
+  // (/off-broadway/ etc.) — does NOT depend on Google SERP, which ranks fresh
+  // opening-night roundups poorly and missed the BWW RR for A Woman Among Women
+  // (2026-06). Cheap ScrapingBee scan; falls back internally to reviews.php.
+  try {
+    const { discoverBwwRoundupUrl } = require('./lib/bww-rr-discover');
+    const bww = await discoverBwwRoundupUrl(show);
+    if (bww && bww.url) urls.add(bww.url.split('?')[0].split('#')[0]);
+  } catch (e) {
+    if (verbose) console.error(`  BWW section discovery error for ${id}: ${e.message}`);
+  }
   return [...urls];
 }
 

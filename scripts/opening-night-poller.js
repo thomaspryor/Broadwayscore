@@ -550,36 +550,41 @@ async function runAggregators(show) {
   let BWW_ROUNDUP_URL = BWW_ROUNDUP_URL_CLI || show.bwwRoundupUrl || '';
   let bwwResolvedVia = BWW_ROUNDUP_URL_CLI ? 'CLI' : (show.bwwRoundupUrl ? 'shows.json' : null);
 
-  // Primary auto-discovery: scrape broadwayworld.com/reviews.php via Browserbase.
-  // SERP/Google indexing lags BWW publication by 1-6 hours — direct listing
-  // updates within minutes, so it's the reliable path. Costs ~$0.10/call.
-  // Skipped when a manual override is already present OR for off-Broadway (no BWW RR).
-  if (!BWW_ROUNDUP_URL && !isOffBroadway && !isWestEnd) {
-    if (!process.env.BROWSERBASE_API_KEY || !process.env.BROWSERBASE_PROJECT_ID) {
-      // Fail-loud: opening-night automation depends on this path. Silent skip
-      // on missing secrets is the Beaches-2026-04-22 failure mode — poller falls
-      // through to SERP/URL-guessing which hits wrong or unpublished URLs.
+  // Primary auto-discovery for Broadway AND off-Broadway. OB roundups live on
+  // BWW's /off-broadway/ section page (cheap ScrapingBee scan, no Browserbase) —
+  // discoverBwwRoundupUrl tries that first, then falls back to reviews.php
+  // (Browserbase) for Broadway. SERP/Google indexing lags BWW publication by
+  // 1-6 hours; the listing pages update within minutes. Pre-2026-06-06 OB was
+  // skipped here entirely, so off-Broadway roundups (Girl, Interrupted /
+  // A Woman Among Women) were only ever found via flaky Google SERP.
+  if (!BWW_ROUNDUP_URL && !isWestEnd) {
+    const browserbaseReady = process.env.BROWSERBASE_API_KEY && process.env.BROWSERBASE_PROJECT_ID;
+    // reviews.php (the Broadway fallback) needs Browserbase; the OB section scan
+    // does not — only fail-loud about missing Browserbase when it actually matters.
+    if (!browserbaseReady && !isOffBroadway) {
+      // Silent skip on missing secrets is the Beaches-2026-04-22 failure mode —
+      // poller falls through to SERP/URL-guessing which hits wrong/unpublished URLs.
       console.log('::warning::BWW reviews.php discovery SKIPPED — BROWSERBASE_API_KEY or BROWSERBASE_PROJECT_ID missing from env. Set secrets on this workflow.');
     } else {
       try {
         const { discoverBwwRoundupUrl } = require('./lib/bww-rr-discover.js');
-        console.log('  Trying BWW reviews.php listing (Browserbase)...');
+        console.log('  Trying BWW roundup discovery (section scan → reviews.php)...');
         const discovery = await discoverBwwRoundupUrl(show);
         if (discovery.url) {
           BWW_ROUNDUP_URL = discovery.url;
-          bwwResolvedVia = 'reviews.php';
-          console.log(`  BWW RR URL auto-discovered: ${BWW_ROUNDUP_URL}`);
+          bwwResolvedVia = discovery.via || 'bww-discover';
+          console.log(`  BWW RR URL auto-discovered (${bwwResolvedVia}): ${BWW_ROUNDUP_URL}`);
         } else {
           const tried = (discovery.candidates || []).length;
-          console.log(`  reviews.php: no matching BWW RR (${tried} anchors seen, 0 matched show) — falling through to SERP/guessing`);
+          console.log(`  BWW discovery: no matching RR (${tried} anchors seen, 0 matched show) — falling through to SERP/guessing`);
         }
       } catch (err) {
-        console.log(`::warning::reviews.php discovery error (falling through to SERP): ${err.message}`);
+        console.log(`::warning::BWW discovery error (falling through to SERP): ${err.message}`);
       }
     }
   }
 
-  if (!isOffBroadway && (!isWestEnd || BWW_ROUNDUP_URL)) {
+  if (!isWestEnd || BWW_ROUNDUP_URL) {
     try {
       if (BWW_ROUNDUP_URL) console.log(`  BWW RR URL: ${BWW_ROUNDUP_URL} (${bwwResolvedVia || 'SERP'})`);
       console.log('  Checking BWW Review Roundup...');

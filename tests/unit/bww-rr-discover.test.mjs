@@ -113,28 +113,31 @@ describe('scoreCandidate', () => {
 
 describe('discoverBwwRoundupUrl', () => {
   const fetchAnchors = async () => REAL_ANCHORS;
+  // No-op section scan so reviews.php-path tests don't hit the network (the
+  // section scan runs first in production; injecting [] makes it fall through).
+  const fetchSectionAnchors = async () => [];
 
   it('finds Fear of 13 from real anchor list', async () => {
     const show = { title: 'The Fear of 13', openingDate: '2026-04-15' };
-    const result = await discoverBwwRoundupUrl(show, { fetchAnchors });
+    const result = await discoverBwwRoundupUrl(show, { fetchAnchors, fetchSectionAnchors });
     assert.strictEqual(result.url, REAL_ANCHORS[0]);
   });
 
   it('finds Titanique from real anchor list', async () => {
     const show = { title: 'Titanique', openingDate: '2026-04-12' };
-    const result = await discoverBwwRoundupUrl(show, { fetchAnchors });
+    const result = await discoverBwwRoundupUrl(show, { fetchAnchors, fetchSectionAnchors });
     assert.strictEqual(result.url, REAL_ANCHORS[1]);
   });
 
   it('finds Death of a Salesman', async () => {
     const show = { title: 'Death of a Salesman', openingDate: '2026-04-09' };
-    const result = await discoverBwwRoundupUrl(show, { fetchAnchors });
+    const result = await discoverBwwRoundupUrl(show, { fetchAnchors, fetchSectionAnchors });
     assert.strictEqual(result.url, REAL_ANCHORS[2]);
   });
 
   it('returns null when show is not in the listing', async () => {
     const show = { title: 'Hamilton', openingDate: '2026-04-15' };
-    const result = await discoverBwwRoundupUrl(show, { fetchAnchors });
+    const result = await discoverBwwRoundupUrl(show, { fetchAnchors, fetchSectionAnchors });
     assert.strictEqual(result.url, null);
     assert.strictEqual(result.candidates.length, 0);
   });
@@ -142,7 +145,7 @@ describe('discoverBwwRoundupUrl', () => {
   it('returns null on empty anchor list', async () => {
     const result = await discoverBwwRoundupUrl(
       { title: 'Anything', openingDate: '2026-04-15' },
-      { fetchAnchors: async () => [] }
+      { fetchAnchors: async () => [], fetchSectionAnchors: async () => [] }
     );
     assert.strictEqual(result.url, null);
   });
@@ -154,7 +157,38 @@ describe('discoverBwwRoundupUrl', () => {
       'https://www.broadwayworld.com/article/Review-Roundup-TITANIQUE-Sets-Sail-on-Broadway-20260412',
     ];
     const show = { title: 'Titanique', openingDate: '2026-04-12' };
-    const result = await discoverBwwRoundupUrl(show, { fetchAnchors: async () => fakeAnchors });
+    const result = await discoverBwwRoundupUrl(show, { fetchAnchors: async () => fakeAnchors, fetchSectionAnchors: async () => [] });
     assert.ok(result.url.includes('20260412'), `expected 2026 url, got ${result.url}`);
+  });
+});
+
+describe('discoverBwwRoundupUrl — section-page discovery (off-Broadway)', () => {
+  // The off-Broadway fix: OB roundups live on BWW's /off-broadway/ section page,
+  // found via a cheap ScrapingBee scan BEFORE the Browserbase reviews.php fallback.
+  const OB_SECTION_ANCHORS = [
+    'https://www.broadwayworld.com/article/Review-Roundup-A-WOMAN-AMONG-WOMEN-at-Lincoln-Center-Theater-20260605',
+    'https://www.broadwayworld.com/article/Review-Roundup-GIRL-INTERRUPTED-Opens-At-The-Public-Theater-20260604',
+  ];
+
+  it('finds an OB roundup via the section scan without touching reviews.php', async () => {
+    const show = { title: 'A Woman Among Women', openingDate: '2026-06-04', category: 'off-broadway' };
+    let reviewsPhpCalled = false;
+    const result = await discoverBwwRoundupUrl(show, {
+      fetchSectionAnchors: async () => OB_SECTION_ANCHORS,
+      fetchAnchors: async () => { reviewsPhpCalled = true; return []; },
+    });
+    assert.strictEqual(result.via, 'section');
+    assert.ok(result.url.includes('A-WOMAN-AMONG-WOMEN'), `got ${result.url}`);
+    assert.strictEqual(reviewsPhpCalled, false, 'section hit must short-circuit the Browserbase path');
+  });
+
+  it('falls back to reviews.php when the section scan finds nothing', async () => {
+    const show = { title: 'A Woman Among Women', openingDate: '2026-06-04', category: 'off-broadway' };
+    const result = await discoverBwwRoundupUrl(show, {
+      fetchSectionAnchors: async () => [],
+      fetchAnchors: async () => OB_SECTION_ANCHORS,
+    });
+    assert.strictEqual(result.via, 'reviews.php');
+    assert.ok(result.url.includes('A-WOMAN-AMONG-WOMEN'), `got ${result.url}`);
   });
 });
