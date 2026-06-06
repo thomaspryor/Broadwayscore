@@ -25,6 +25,7 @@ const CRITIC_PICK_OUTLETS: Record<string, { outletName: string; critic: string }
   parade:       { outletName: 'Parade',               critic: 'Jessica Sager' },
   timesuk:      { outletName: 'The Times (UK)',        critic: 'Ben Kawaller' },
   rbroadway:    { outletName: 'r/Broadway',           critic: 'Community vote · 320+ fans' },
+  '1minutecritic': { outletName: '1 Minute Critic',      critic: 'Matthew Wexler' },
 };
 
 export function OutletPickLogo({ outletId }: { outletId: string }) {
