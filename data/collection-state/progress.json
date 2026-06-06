@@ -22,7 +22,12 @@
     "born-yesterday-2011/nytimes--ben-brantley.json",
     "born-yesterday-2011/nytimes--charles-isherwood.json",
     "war-horse-2011/nytimes--ben-brantley.json",
-    "good-people-2011/nytimes--ben-brantley.json"
+    "good-people-2011/nytimes--ben-brantley.json",
+    "young-frankenstein-2007/nytimes--ben-brantley.json",
+    "a-chorus-line-2006/nytimes--ben-brantley.json",
+    "shining-city-2006/nytimes--ben-brantley.json",
+    "the-wedding-singer-2006/nytimes--ben-brantley.json",
+    "the-pajama-game-2006/nytimes--ben-brantley.json"
   ],
   "failed": [
     "spamalot-off-broadway-2026/nytimes--jesse-green.json",
@@ -31,7 +36,12 @@
     "a-time-to-kill-2013/nytimes--charles-isherwood.json",
     "cat-on-a-hot-tin-roof-2013/about-entertainment--ben-brantley.json",
     "rock-of-ages-2009/nytimes--ben-brantley.json",
-    "rock-of-ages-2009/nytimes--charles-isherwood.json"
+    "rock-of-ages-2009/nytimes--charles-isherwood.json",
+    "the-seagull-2008/about-entertainment--ben-brantley.json",
+    "the-seagull-2008/nytimes--ben-brantley.json",
+    "high-fidelity-2006/about-entertainment--ben-brantley.json",
+    "lestat-2006/about-entertainment--ben-brantley.json",
+    "souvenir-2005/about-entertainment--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -63,16 +73,21 @@
       "school-of-rock-the-musical-2015/nytimes--ben-brantley.json",
       "rocky-2014/nytimes--ben-brantley.json",
       "ghost-the-musical-2012/nytimes--charles-isherwood.json",
-      "good-people-2011/nytimes--ben-brantley.json"
+      "good-people-2011/nytimes--ben-brantley.json",
+      "young-frankenstein-2007/nytimes--ben-brantley.json",
+      "shining-city-2006/nytimes--ben-brantley.json",
+      "the-wedding-singer-2006/nytimes--ben-brantley.json",
+      "the-pajama-game-2006/nytimes--ben-brantley.json"
     ],
     "archiveToday": [],
     "archive": [
       "bring-it-on-the-musical-2012/nytimes--charles-isherwood.json",
-      "born-yesterday-2011/nytimes--charles-isherwood.json"
+      "born-yesterday-2011/nytimes--charles-isherwood.json",
+      "a-chorus-line-2006/nytimes--ben-brantley.json"
     ]
   },
   "startTime": "2026-06-06T05:38:33.695Z",
-  "lastProcessed": "rock-of-ages-2009/nytimes--charles-isherwood.json",
+  "lastProcessed": "souvenir-2005/about-entertainment--ben-brantley.json",
   "log": [
     {
       "t": "2026-06-06T05:40:19.995Z",
@@ -181,6 +196,72 @@
     },
     {
       "t": "2026-06-06T05:52:31.810Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:52:53.071Z",
+      "event": "bb-session",
+      "session": "353fd1cb",
+      "url": "http://theater.nytimes.com/2008/10/03/theater/reviews/03seag.html"
+    },
+    {
+      "t": "2026-06-06T05:52:53.528Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:53:44.652Z",
+      "event": "bb-session",
+      "session": "656796dd",
+      "url": "https://www.nytimes.com/2008/10/03/theater/reviews/03seag.html"
+    },
+    {
+      "t": "2026-06-06T05:53:45.216Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:54:17.492Z",
+      "event": "bb-session",
+      "session": "56922ea1",
+      "url": "https://www.nytimes.com/2007/11/09/theater/reviews/09fran.html"
+    },
+    {
+      "t": "2026-06-06T05:54:18.002Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:54:39.727Z",
+      "event": "bb-session",
+      "session": "b63f38fa",
+      "url": "http://theater.nytimes.com/2006/12/08/theater/reviews/08fide.html"
+    },
+    {
+      "t": "2026-06-06T05:54:40.246Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:56:09.979Z",
+      "event": "bb-session",
+      "session": "6363606c",
+      "url": "http://theater.nytimes.com/2006/04/26/theater/reviews/26lest.html"
+    },
+    {
+      "t": "2026-06-06T05:56:10.456Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:57:21.765Z",
+      "event": "bb-session",
+      "session": "03c01886",
+      "url": "http://theater.nytimes.com/2005/11/11/theater/reviews/11souv.html?adxnnl=1&amp;a"
+    },
+    {
+      "t": "2026-06-06T05:57:22.226Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
