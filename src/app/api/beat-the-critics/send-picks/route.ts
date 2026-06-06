@@ -24,9 +24,10 @@ function checkRateLimit(ip: string): boolean {
   return true;
 }
 
-// Append submission to private repo JSONL. Retries up to 3× on SHA conflicts
-// (concurrent submissions). Throws on unrecoverable failure so the caller
-// can return a 500 and let the user retry rather than silently losing the entry.
+// Append submission to private repo JSONL. Retries up to 12× on SHA conflicts
+// with jitter so concurrent submissions don't collide on the same retry window.
+// Throws on unrecoverable failure so the caller can return a 500 and let the
+// user retry rather than silently losing the entry.
 async function storeSubmission(record: {
   email: string;
   picks: Record<string, string>;
@@ -41,7 +42,13 @@ async function storeSubmission(record: {
     Accept: 'application/vnd.github+json',
   };
 
-  for (let attempt = 0; attempt < 3; attempt++) {
+  const MAX_RETRIES = 12;
+  for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
+    if (attempt > 0) {
+      // Jitter: 150–600ms so concurrent retries don't re-collide
+      await new Promise(r => setTimeout(r, 150 + Math.random() * 450));
+    }
+
     const getRes = await fetch(apiBase, { headers });
     let currentContent = '';
     let sha: string | undefined;
@@ -72,7 +79,7 @@ async function storeSubmission(record: {
     const body = await putRes.text();
     throw new Error(`GitHub PUT failed: ${putRes.status} ${body}`);
   }
-  throw new Error('storeSubmission failed after 3 retries (SHA conflicts)');
+  throw new Error(`storeSubmission failed after ${MAX_RETRIES} retries (SHA conflicts)`);
 }
 
 export async function POST(req: NextRequest) {
