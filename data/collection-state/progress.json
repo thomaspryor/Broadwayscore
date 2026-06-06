@@ -5,13 +5,22 @@
     "good-night-oscar-2023/nytimes--jesse-green.json",
     "bring-it-on-the-musical-2012/nytimes--charles-isherwood.json",
     "born-yesterday-2011/nytimes--ben-brantley.json",
-    "war-horse-2011/nytimes--ben-brantley.json"
+    "war-horse-2011/nytimes--ben-brantley.json",
+    "the-seagull-2008/about-entertainment--ben-brantley.json",
+    "young-frankenstein-2007/nytimes--ben-brantley.json",
+    "shining-city-2006/nytimes--ben-brantley.json",
+    "in-my-life-2005/about-entertainment--ben-brantley.json"
   ],
   "failed": [
     "spamalot-off-broadway-2026/nytimes--jesse-green.json",
     "a-time-to-kill-2013/nytimes--charles-isherwood.json",
     "cat-on-a-hot-tin-roof-2013/about-entertainment--ben-brantley.json",
-    "rock-of-ages-2009/nytimes--ben-brantley.json"
+    "rock-of-ages-2009/nytimes--ben-brantley.json",
+    "rock-of-ages-2009/nytimes--charles-isherwood.json",
+    "high-fidelity-2006/about-entertainment--ben-brantley.json",
+    "lestat-2006/about-entertainment--ben-brantley.json",
+    "souvenir-2005/about-entertainment--ben-brantley.json",
+    "a-naked-girl-on-the-appian-way-2005/about-entertainment--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -24,16 +33,21 @@
       "swept-away-2024/nytimes--jesse-green.json",
       "good-night-oscar-2023/nytimes--jesse-green.json",
       "born-yesterday-2011/nytimes--ben-brantley.json",
-      "war-horse-2011/nytimes--ben-brantley.json"
+      "war-horse-2011/nytimes--ben-brantley.json",
+      "young-frankenstein-2007/nytimes--ben-brantley.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "shining-city-2006/nytimes--ben-brantley.json"
+    ],
     "archiveToday": [],
     "archive": [
-      "bring-it-on-the-musical-2012/nytimes--charles-isherwood.json"
+      "bring-it-on-the-musical-2012/nytimes--charles-isherwood.json",
+      "the-seagull-2008/about-entertainment--ben-brantley.json",
+      "in-my-life-2005/about-entertainment--ben-brantley.json"
     ]
   },
   "startTime": "2026-06-06T06:18:00.486Z",
-  "lastProcessed": "rock-of-ages-2009/nytimes--ben-brantley.json",
+  "lastProcessed": "a-naked-girl-on-the-appian-way-2005/about-entertainment--ben-brantley.json",
   "log": [
     {
       "t": "2026-06-06T06:19:34.296Z",
@@ -54,6 +68,83 @@
     },
     {
       "t": "2026-06-06T06:21:51.989Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T06:22:29.072Z",
+      "event": "bb-session",
+      "session": "b6830f0b",
+      "url": "http://theater.nytimes.com/2008/10/03/theater/reviews/03seag.html"
+    },
+    {
+      "t": "2026-06-06T06:22:29.617Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T06:23:15.238Z",
+      "event": "bb-session",
+      "session": "0e1a093a",
+      "url": "http://theater.nytimes.com/2006/12/08/theater/reviews/08fide.html"
+    },
+    {
+      "t": "2026-06-06T06:23:15.767Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T06:24:26.360Z",
+      "event": "bb-session",
+      "session": "34e54a04",
+      "url": "https://www.nytimes.com/2006/05/10/theater/reviews/10shin.html"
+    },
+    {
+      "t": "2026-06-06T06:24:26.909Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T06:24:59.851Z",
+      "event": "bb-session",
+      "session": "91d7aea5",
+      "url": "http://theater.nytimes.com/2006/04/26/theater/reviews/26lest.html"
+    },
+    {
+      "t": "2026-06-06T06:25:00.414Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T06:25:35.748Z",
+      "event": "bb-session",
+      "session": "74750df5",
+      "url": "http://theater.nytimes.com/2005/11/11/theater/reviews/11souv.html?adxnnl=1&amp;a"
+    },
+    {
+      "t": "2026-06-06T06:25:36.285Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T06:26:00.801Z",
+      "event": "bb-session",
+      "session": "fcd87e55",
+      "url": "http://theater.nytimes.com/2005/10/21/theater/reviews/21life.html"
+    },
+    {
+      "t": "2026-06-06T06:26:01.367Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T06:26:32.224Z",
+      "event": "bb-session",
+      "session": "03e0679e",
+      "url": "http://theater.nytimes.com/2005/10/07/theater/reviews/07nake.html?adxnnl=1&amp;a"
+    },
+    {
+      "t": "2026-06-06T06:26:32.738Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
