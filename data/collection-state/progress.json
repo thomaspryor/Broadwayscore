@@ -141,7 +141,13 @@
     "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--quentin-letts.json",
     "six-2021/one-minute-critic--matthew-wexler.json",
     "six-2021/pages-on-stages--mason-pilevsky.json",
-    "little-shop-of-horrors-off-broadway-2019/theatre-reviews-limited--david-roberts.json"
+    "little-shop-of-horrors-off-broadway-2019/theatre-reviews-limited--david-roberts.json",
+    "moulin-rouge-2019/theatre-reviews-limited--joseph-verlezza.json",
+    "moulin-rouge-2019/billboard--mary-j-dimeglio.json",
+    "hadestown-2019/broadwaynews--charles-isherwood.json",
+    "hadestown-2019/wsj--terry-teachout.json",
+    "hadestown-2019/carole-di-tosti--carole-di-tosti.json",
+    "hadestown-2019/theater-life--barry-gordin.json"
   ],
   "failed": [
     "spamalot-off-broadway-2026/nytimes--jesse-green.json",
@@ -252,7 +258,11 @@
     "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
     "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--clive-davis.json",
     "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--dominic-maxwell.json",
-    "cabaret-at-the-kit-kat-club-west-end-2021/independent--alice-saville.json"
+    "cabaret-at-the-kit-kat-club-west-end-2021/independent--alice-saville.json",
+    "little-shop-of-horrors-off-broadway-2019/wsj--charles-isherwood.json",
+    "moulin-rouge-2019/broadwayworld--michael-dale.json",
+    "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json",
+    "the-play-that-goes-wrong-off-broadway-2019/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -316,7 +326,10 @@
       "stranger-things-the-first-shadow-west-end-2023/i-paper--fiona-mountford.json",
       "six-2021/one-minute-critic--matthew-wexler.json",
       "six-2021/pages-on-stages--mason-pilevsky.json",
-      "little-shop-of-horrors-off-broadway-2019/theatre-reviews-limited--david-roberts.json"
+      "little-shop-of-horrors-off-broadway-2019/theatre-reviews-limited--david-roberts.json",
+      "moulin-rouge-2019/theatre-reviews-limited--joseph-verlezza.json",
+      "hadestown-2019/carole-di-tosti--carole-di-tosti.json",
+      "hadestown-2019/theater-life--barry-gordin.json"
     ],
     "amp": [],
     "browserbase": [
@@ -337,7 +350,9 @@
       "data/review-texts/maybe-happy-ending-2024/variety--unknown.json",
       "maybe-happy-ending-2024/variety--unknown.json",
       "data/review-texts/cabaret-at-the-kit-kat-club-west-end-2021/hollywood-reporter--demetrios-matheou.json",
-      "cabaret-at-the-kit-kat-club-west-end-2021/hollywood-reporter--demetrios-matheou.json"
+      "cabaret-at-the-kit-kat-club-west-end-2021/hollywood-reporter--demetrios-matheou.json",
+      "data/review-texts/hadestown-2019/wsj--terry-teachout.json",
+      "hadestown-2019/wsj--terry-teachout.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -387,7 +402,8 @@
       "fallen-angels-2026/talkinbroadway--unknown.json",
       "proof-2026/cititour--brian-scott-lipton.json",
       "just-in-time-2025/newyorker--conde-nast.json",
-      "maybe-happy-ending-2024/newyorker--naomi-fry.json"
+      "maybe-happy-ending-2024/newyorker--naomi-fry.json",
+      "moulin-rouge-2019/billboard--mary-j-dimeglio.json"
     ],
     "archiveToday": [
       "data/review-texts/on-the-town-2014/nytimes--charles-isherwood.json",
@@ -450,11 +466,12 @@
       "operation-mincemeat-west-end-2024/times-uk--clive-davis.json",
       "and-juliet-2022/newyorker--helen-shaw.json",
       "moulin-rouge-the-musical-west-end-2021/londonist--franco-milazzo.json",
-      "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--quentin-letts.json"
+      "cabaret-at-the-kit-kat-club-west-end-2021/times-uk--quentin-letts.json",
+      "hadestown-2019/broadwaynews--charles-isherwood.json"
     ]
   },
   "startTime": "2026-06-06T04:44:29.355Z",
-  "lastProcessed": "little-shop-of-horrors-off-broadway-2019/theatre-reviews-limited--david-roberts.json",
+  "lastProcessed": "the-play-that-goes-wrong-off-broadway-2019/talkinbroadway--unknown.json",
   "log": [
     {
       "t": "2026-06-06T04:58:40.603Z",
@@ -642,6 +659,17 @@
       "t": "2026-06-06T06:45:09.729Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-06-06T06:47:27.545Z",
+      "event": "bb-session",
+      "session": "a1d74771",
+      "url": "https://www.wsj.com/articles/hadestown-review-a-musical-heats-up-broadway-115555"
+    },
+    {
+      "t": "2026-06-06T06:47:28.574Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

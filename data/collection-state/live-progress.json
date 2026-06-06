@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-06T06:46:52.646Z",
-  "processed": 142,
-  "failed": 109,
-  "successRate": "56.6%",
+  "updatedAt": "2026-06-06T06:48:30.690Z",
+  "processed": 148,
+  "failed": 113,
+  "successRate": "56.7%",
   "tierBreakdown": {
-    "playwright": 60,
+    "playwright": 63,
     "amp": 0,
-    "browserbase": 18,
+    "browserbase": 20,
     "directCookies": 0,
     "scrapingbee": 26,
-    "brightdata": 19,
+    "brightdata": 20,
     "archiveToday": 29,
-    "archive": 30
+    "archive": 31
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-06-06T05:23:36.640Z",
-      "event": "bb-session",
-      "session": "bb0f719c",
-      "url": "http://theater.nytimes.com/2005/12/02/theater/reviews/02purp.html"
-    },
-    {
-      "t": "2026-06-06T05:23:37.673Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-06-06T06:07:40.613Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-06-06T06:45:09.729Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-06-06T06:47:27.545Z",
+      "event": "bb-session",
+      "session": "a1d74771",
+      "url": "https://www.wsj.com/articles/hadestown-review-a-musical-heats-up-broadway-115555"
+    },
+    {
+      "t": "2026-06-06T06:47:28.574Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
