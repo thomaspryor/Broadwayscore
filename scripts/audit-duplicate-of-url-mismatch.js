@@ -76,8 +76,18 @@ function audit() {
         continue;
       }
 
-      const a = normalizeUrl(data.url);
-      const b = normalizeUrl(sibling.url);
+      // Compare path WITHOUT the query string. normalizeUrl strips a fixed
+      // allow-list of tracking params (utm_*, ref, fbclid, …) but not every
+      // outlet's — e.g. WSJ's Google-news-feed `?st=…&mod=googlenewsfeed`,
+      // which made a correctly-deduped WSJ review (same article, tracked vs
+      // bare URL) flag as a false-positive url-mismatch and flap the CI gate
+      // (home-2024/wsj 2026-06-06). A genuine stale flag (the Sommers case —
+      // a URL corrected to a DIFFERENT article) differs by PATH, so dropping
+      // the query keeps that detection while killing tracking-only noise.
+      // Done here (not in normalizeUrl, which is on the scoring watchlist).
+      const stripQuery = (u) => u.split('?')[0];
+      const a = stripQuery(normalizeUrl(data.url));
+      const b = stripQuery(normalizeUrl(sibling.url));
       if (a && b && a !== b) {
         mismatches.push({
           showId: path.basename(showDir),
