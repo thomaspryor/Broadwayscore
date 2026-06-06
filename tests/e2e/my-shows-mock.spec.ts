@@ -483,12 +483,19 @@ test.describe('My Shows — Desktop Layout (1440px)', () => {
 
 // ─── Visual Regression (screenshots) ───────────────────────────
 
+// Scope snapshots to the My Shows content container, NOT the full page. fullPage
+// snapshots captured the shared header/footer too, so any unrelated chrome change
+// (e.g. adding a footer nav item) shifted everything and red'd every My Shows
+// baseline even when My Shows itself was unchanged — a recurring source of false
+// CI reds (test-ugc red 2026-06-04..06). Element-clipping decouples them: only a
+// real change inside [data-testid="my-shows-content"] moves these baselines.
 test.describe('My Shows — Visual Regression', () => {
+  const content = (page: Page) => page.getByTestId('my-shows-content');
+
   test('diary list view at 390px', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await goToMock(page);
-    await expect(page).toHaveScreenshot('my-shows-diary-list-390.png', {
-      fullPage: true,
+    await expect(content(page)).toHaveScreenshot('my-shows-diary-list-390.png', {
       animations: 'disabled',
     });
   });
@@ -497,8 +504,7 @@ test.describe('My Shows — Visual Regression', () => {
     await page.setViewportSize({ width: 390, height: 844 });
     await goToMock(page);
     await page.getByRole('button', { name: 'Grid view' }).click();
-    await expect(page).toHaveScreenshot('my-shows-diary-grid-390.png', {
-      fullPage: true,
+    await expect(content(page)).toHaveScreenshot('my-shows-diary-grid-390.png', {
       animations: 'disabled',
     });
   });
@@ -506,8 +512,7 @@ test.describe('My Shows — Visual Regression', () => {
   test('watchlist grid view at 390px', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await goToMock(page, 'watchlist');
-    await expect(page).toHaveScreenshot('my-shows-watchlist-grid-390.png', {
-      fullPage: true,
+    await expect(content(page)).toHaveScreenshot('my-shows-watchlist-grid-390.png', {
       animations: 'disabled',
     });
   });
@@ -515,8 +520,7 @@ test.describe('My Shows — Visual Regression', () => {
   test('diary list view at 1440px', async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await goToMock(page);
-    await expect(page).toHaveScreenshot('my-shows-diary-list-1440.png', {
-      fullPage: true,
+    await expect(content(page)).toHaveScreenshot('my-shows-diary-list-1440.png', {
       animations: 'disabled',
     });
   });

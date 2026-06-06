@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-06T18:45:16.505Z",
+  "generatedAt": "2026-06-06T19:49:00.539Z",
   "date": "2026-06-06",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 259162,
+  "entryCount": 262452,
   "shows": [
     {
       "showId": "an-ideal-husband-west-end-2026",
@@ -1386,7 +1386,7 @@
     },
     {
       "showId": "the-receptionist-off-broadway-2026",
-      "reviewCount": 15,
+      "reviewCount": 16,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -3906,7 +3906,7 @@
     },
     {
       "showId": "animal-wisdom-off-broadway-2022",
-      "reviewCount": 13,
+      "reviewCount": 15,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -3936,7 +3936,7 @@
     },
     {
       "showId": "indian-princesses-off-broadway-2025",
-      "reviewCount": 9,
+      "reviewCount": 10,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4101,7 +4101,7 @@
     },
     {
       "showId": "jerome-off-broadway-2025",
-      "reviewCount": 13,
+      "reviewCount": 15,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4536,12 +4536,12 @@
     },
     {
       "showId": "into-the-woods-west-end-2025",
-      "reviewCount": 24,
+      "reviewCount": 25,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 82460814,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -5976,7 +5976,7 @@
     },
     {
       "showId": "bronx-bombers-2014",
-      "reviewCount": 16,
+      "reviewCount": 15,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {

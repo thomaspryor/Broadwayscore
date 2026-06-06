@@ -19,7 +19,7 @@ import { test, expect } from '@playwright/test';
 
 const MAX_HEIGHTS = {
   major: 110,     // observed ~95px (large thumbnail + title row)
-  performer: 70,  // observed 52px (small thumbnail + stacked links)
+  performer: 90,  // observed 82px (19 picks → 4 chip rows; grows with consensus nominees)
   craft: 90,      // observed 64-76px (small thumbnail + title + credit + optional chip)
 };
 

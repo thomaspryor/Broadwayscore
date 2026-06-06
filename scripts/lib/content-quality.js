@@ -1419,6 +1419,20 @@ function classifyContentTier(review) {
   // to prevent rebuild from reclassifying it.
   const VALID_TIERS = new Set(['complete', 'truncated', 'excerpt', 'stub', 'invalid']);
   if (review.manualContentTier && VALID_TIERS.has(review.manualContentTier)) {
+    // Exception: manualContentTier=complete is overridden when severe truncation
+    // signals (e.g. nyt_bot_stub) are present. The text is objectively incomplete
+    // regardless of what was manually set — the manual override was incorrect.
+    if (review.manualContentTier === 'complete') {
+      const sigs = detectTruncationSignals(review.fullText || '', { outletId: review.outletId, publishDate: review.publishDate });
+      if (sigs.severeCount > 0) {
+        return {
+          contentTier: 'truncated',
+          wordCount: countWords(review.fullText || ''),
+          truncationSignals: sigs.signals,
+          tierReason: `Downgraded from manual complete: severe signals ${sigs.signals.join(', ')}`
+        };
+      }
+    }
     return {
       contentTier: review.manualContentTier,
       wordCount: countWords(review.fullText || ''),
