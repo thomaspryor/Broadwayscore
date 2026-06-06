@@ -47,7 +47,12 @@
     "born-yesterday-2011/nytimes--ben-brantley.json",
     "born-yesterday-2011/nytimes--charles-isherwood.json",
     "war-horse-2011/nytimes--ben-brantley.json",
-    "good-people-2011/nytimes--ben-brantley.json"
+    "good-people-2011/nytimes--ben-brantley.json",
+    "young-frankenstein-2007/nytimes--ben-brantley.json",
+    "legally-blonde-2007/nytimes--ben-brantley.json",
+    "the-coast-of-utopia-2006/about-entertainment--ben-brantley.json",
+    "shining-city-2006/nytimes--ben-brantley.json",
+    "the-wedding-singer-2006/nytimes--ben-brantley.json"
   ],
   "failed": [
     "spamalot-off-broadway-2026/nytimes--jesse-green.json",
@@ -71,7 +76,12 @@
     "rock-of-ages-2009/nytimes--charles-isherwood.json",
     "the-story-of-my-life-2009/nytimes--ben-brantley.json",
     "american-buffalo-2008/nytimes--ben-brantley.json",
-    "the-seagull-2008/about-entertainment--ben-brantley.json"
+    "the-seagull-2008/about-entertainment--ben-brantley.json",
+    "the-seagull-2008/nytimes--ben-brantley.json",
+    "thurgood-2008/nytimes--ben-brantley.json",
+    "high-fidelity-2006/about-entertainment--ben-brantley.json",
+    "butley-2006/about-entertainment--ben-brantley.json",
+    "a-chorus-line-2006/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -118,7 +128,10 @@
       "born-yesterday-2011/nytimes--ben-brantley.json",
       "born-yesterday-2011/nytimes--charles-isherwood.json",
       "war-horse-2011/nytimes--ben-brantley.json",
-      "good-people-2011/nytimes--ben-brantley.json"
+      "good-people-2011/nytimes--ben-brantley.json",
+      "legally-blonde-2007/nytimes--ben-brantley.json",
+      "shining-city-2006/nytimes--ben-brantley.json",
+      "the-wedding-singer-2006/nytimes--ben-brantley.json"
     ],
     "archiveToday": [
       "data/review-texts/holler-if-ya-hear-me-2014/nytimes--ben-brantley.json",
@@ -135,7 +148,8 @@
       "data/review-texts/million-dollar-quartet-2010/nytimes--ben-brantley.json",
       "data/review-texts/the-philanthropist-2009/nytimes--ben-brantley.json",
       "data/review-texts/the-story-of-my-life-2009/nytimes--ben-brantley.json",
-      "data/review-texts/american-buffalo-2008/nytimes--ben-brantley.json"
+      "data/review-texts/american-buffalo-2008/nytimes--ben-brantley.json",
+      "data/review-texts/thurgood-2008/nytimes--ben-brantley.json"
     ],
     "archive": [
       "waiting-for-godot-2025/nytimes--laura-collins-hughes.json",
@@ -148,11 +162,13 @@
       "on-the-town-2014/nytimes--ben-brantley.json",
       "the-bridges-of-madison-county-2014/nytimes--ben-brantley.json",
       "the-heiress-2012/nytimes--ben-brantley.json",
-      "wit-2012/nytimes--ben-brantley.json"
+      "wit-2012/nytimes--ben-brantley.json",
+      "young-frankenstein-2007/nytimes--ben-brantley.json",
+      "the-coast-of-utopia-2006/about-entertainment--ben-brantley.json"
     ]
   },
   "startTime": "2026-06-06T04:35:40.969Z",
-  "lastProcessed": "the-seagull-2008/about-entertainment--ben-brantley.json",
+  "lastProcessed": "the-wedding-singer-2006/nytimes--ben-brantley.json",
   "log": [
     {
       "t": "2026-06-06T04:55:01.869Z",
@@ -184,6 +200,39 @@
     },
     {
       "t": "2026-06-06T05:11:18.545Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:13:46.946Z",
+      "event": "bb-session",
+      "session": "cd9b29c3",
+      "url": "http://theater.nytimes.com/2006/12/08/theater/reviews/08fide.html"
+    },
+    {
+      "t": "2026-06-06T05:13:47.659Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:14:22.276Z",
+      "event": "bb-session",
+      "session": "f371b87e",
+      "url": "http://theater.nytimes.com/2006/11/28/theater/reviews/28coas.html"
+    },
+    {
+      "t": "2026-06-06T05:14:22.940Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:14:55.733Z",
+      "event": "bb-session",
+      "session": "bf9c1a07",
+      "url": "http://theater.nytimes.com/2006/10/26/theater/reviews/26butl.html"
+    },
+    {
+      "t": "2026-06-06T05:14:56.482Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
