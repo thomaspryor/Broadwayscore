@@ -1,20 +1,37 @@
 {
-  "updatedAt": "2026-06-06T22:13:57.811Z",
+  "updatedAt": "2026-06-06T21:08:36.714Z",
   "processed": 269,
-  "failed": 442,
-  "successRate": "37.8%",
+  "failed": 414,
+  "successRate": "39.4%",
   "tierBreakdown": {
     "playwright": 158,
     "amp": 0,
-    "browserbase": 29,
+    "browserbase": 28,
     "directCookies": 0,
     "scrapingbee": 35,
     "brightdata": 50,
-    "archiveToday": 75,
+    "archiveToday": 74,
     "archive": 67
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 1,
   "recentActivity": [
+    {
+      "t": "2026-06-06T07:59:18.447Z",
+      "event": "bb-session",
+      "session": "0c182331",
+      "url": "https://www.thestage.co.uk/reviews/deep-azure-review-sam-wanamaker-playhouse-sha"
+    },
+    {
+      "t": "2026-06-06T07:59:19.428Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-06-06T08:01:22.355Z",
+      "event": "bb-session",
+      "session": "401d57da",
+      "url": "https://www.thestage.co.uk/reviews/burlesque-review-savoy-theatre-london-christi"
+    },
     {
       "t": "2026-06-06T08:01:23.338Z",
       "event": "bb-cookie-inject",
@@ -108,24 +125,6 @@
       "event": "bb-session",
       "session": "71d681b2",
       "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
-    },
-    {
-      "t": "2026-06-06T22:07:51.833Z",
-      "event": "bb-session",
-      "session": "711bf86f",
-      "url": "https://charingcrosstheatre.co.uk/theatre/dark-of-the-moon"
-    },
-    {
-      "t": "2026-06-06T22:09:17.697Z",
-      "event": "bb-session",
-      "session": "883deed8",
-      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
-    },
-    {
-      "t": "2026-06-06T22:12:57.256Z",
-      "event": "bb-session",
-      "session": "d70aa889",
-      "url": "https://www.thereviewshub.com/equus-menier-chocolate-factory-london/"
     }
   ]
 }
