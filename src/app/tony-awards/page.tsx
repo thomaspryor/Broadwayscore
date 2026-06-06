@@ -158,6 +158,24 @@ export default function TonyAwardsHubPage() {
             </div>
           ) : null}
 
+          {/* Winners 2026 Teaser */}
+          {nominationsAnnounced && (
+            <Link href="/tony-awards/winners-2026" className="p-4 sm:p-5 rounded-xl border border-amber-500/20 bg-amber-500/5 hover:bg-amber-500/10 transition-colors group">
+              <div className="flex items-center justify-between mb-2">
+                <h2 className="text-sm font-semibold text-white uppercase tracking-wide">2026 Tony Winners</h2>
+                <svg className="w-5 h-5 text-gray-500 group-hover:text-amber-400 transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+              <p className="text-sm text-gray-400 mb-3">
+                Our predicted winners for all 26 Tony categories — ceremony June 8
+              </p>
+              <p className="text-sm text-amber-400 mt-3 group-hover:text-amber-300 transition-colors">
+                See predicted winners &rarr;
+              </p>
+            </Link>
+          )}
+
           {/* Nominees Teaser */}
           {nominationsAnnounced && (
             <Link href="/tony-awards/nominees" className="p-4 sm:p-5 rounded-xl border border-white/5 bg-surface-overlay hover:bg-white/[0.04] transition-colors group">

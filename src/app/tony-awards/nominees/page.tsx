@@ -129,6 +129,16 @@ export default function TonyNomineesPage() {
           </div>
         )}
 
+        {/* Link to winners page — visible near ceremony */}
+        {new Date() >= new Date('2026-05-23T00:00:00Z') && (
+          <div className="mb-6 px-4 py-3 rounded-xl border border-amber-500/20 bg-amber-500/5 text-sm flex items-center justify-between gap-3">
+            <span className="text-gray-300">See who we think wins each of the 26 categories.</span>
+            <Link href="/tony-awards/winners-2026" className="text-amber-400 font-semibold whitespace-nowrap hover:text-amber-300 transition-colors">
+              Predicted winners →
+            </Link>
+          </div>
+        )}
+
         {/* Category sections */}
         {categories.map(cat => (
           <CategorySection key={cat.key} category={cat} winProbs={categoryWinProbs.get(cat.key)} ceremonyDate={ceremonyDate} />
