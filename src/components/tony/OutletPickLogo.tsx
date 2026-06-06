@@ -22,6 +22,7 @@ const CRITIC_PICK_OUTLETS: Record<string, { outletName: string; critic: string }
   nytpaulson:   { outletName: 'The New York Times',    critic: 'Michael Paulson' },
   chitrib:      { outletName: 'Chicago Tribune',       critic: 'Chris Jones' },
   thewrap:      { outletName: 'The Wrap',              critic: 'Robert Hofler' },
+  parade:       { outletName: 'Parade',               critic: 'Jessica Sager' },
 };
 
 export function OutletPickLogo({ outletId }: { outletId: string }) {
