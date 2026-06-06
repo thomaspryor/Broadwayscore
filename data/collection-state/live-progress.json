@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-06-06T04:01:26.244Z",
-  "processed": 65,
-  "failed": 5,
-  "successRate": "92.9%",
+  "updatedAt": "2026-06-06T04:06:31.978Z",
+  "processed": 71,
+  "failed": 9,
+  "successRate": "88.8%",
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 19,
-    "brightdata": 22,
-    "archiveToday": 3,
+    "brightdata": 28,
+    "archiveToday": 5,
     "archive": 24
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-06-06T04:03:29.606Z",
+      "event": "bb-session",
+      "session": "5e390eeb",
+      "url": "http://theater.nytimes.com/2013/01/18/theater/reviews/cat-on-a-hot-tin-roof-at-r"
+    },
+    {
+      "t": "2026-06-06T04:03:31.073Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
