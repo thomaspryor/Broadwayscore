@@ -16,12 +16,22 @@
     "the-snow-geese-2013/nytimes--ben-brantley.json",
     "the-nance-2013/nytimes--ben-brantley.json",
     "motown-the-musical-2013/nytimes--charles-isherwood.json",
-    "hands-on-a-hardbody-2013/nytimes--charles-isherwood.json"
+    "hands-on-a-hardbody-2013/nytimes--charles-isherwood.json",
+    "bring-it-on-the-musical-2012/nytimes--charles-isherwood.json",
+    "ghost-the-musical-2012/nytimes--charles-isherwood.json",
+    "wit-2012/nytimes--ben-brantley.json",
+    "born-yesterday-2011/nytimes--ben-brantley.json",
+    "born-yesterday-2011/nytimes--charles-isherwood.json",
+    "war-horse-2011/nytimes--ben-brantley.json",
+    "good-people-2011/nytimes--ben-brantley.json"
   ],
   "failed": [
     "spamalot-off-broadway-2026/nytimes--jesse-green.json",
     "sea-wall-a-life-2019/nytimes--laura-collins-hughes.json",
-    "a-time-to-kill-2013/nytimes--charles-isherwood.json"
+    "a-time-to-kill-2013/nytimes--charles-isherwood.json",
+    "cat-on-a-hot-tin-roof-2013/about-entertainment--ben-brantley.json",
+    "rock-of-ages-2009/nytimes--ben-brantley.json",
+    "rock-of-ages-2009/nytimes--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -43,19 +53,26 @@
       "beautiful-the-carole-king-musical-2014/nytimes--ben-brantley.json",
       "the-snow-geese-2013/nytimes--ben-brantley.json",
       "motown-the-musical-2013/nytimes--charles-isherwood.json",
-      "hands-on-a-hardbody-2013/nytimes--charles-isherwood.json"
+      "hands-on-a-hardbody-2013/nytimes--charles-isherwood.json",
+      "bring-it-on-the-musical-2012/nytimes--charles-isherwood.json",
+      "ghost-the-musical-2012/nytimes--charles-isherwood.json",
+      "wit-2012/nytimes--ben-brantley.json",
+      "born-yesterday-2011/nytimes--charles-isherwood.json"
     ],
     "brightdata": [
       "good-night-oscar-2023/nytimes--jesse-green.json",
-      "the-nance-2013/nytimes--ben-brantley.json"
+      "the-nance-2013/nytimes--ben-brantley.json",
+      "good-people-2011/nytimes--ben-brantley.json"
     ],
     "archiveToday": [],
     "archive": [
-      "rocky-2014/nytimes--ben-brantley.json"
+      "rocky-2014/nytimes--ben-brantley.json",
+      "born-yesterday-2011/nytimes--ben-brantley.json",
+      "war-horse-2011/nytimes--ben-brantley.json"
     ]
   },
   "startTime": "2026-06-06T05:37:41.296Z",
-  "lastProcessed": "hands-on-a-hardbody-2013/nytimes--charles-isherwood.json",
+  "lastProcessed": "rock-of-ages-2009/nytimes--charles-isherwood.json",
   "log": [
     {
       "t": "2026-06-06T05:39:20.443Z",
@@ -87,6 +104,61 @@
     },
     {
       "t": "2026-06-06T05:44:03.843Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:45:09.896Z",
+      "event": "bb-session",
+      "session": "a8da3651",
+      "url": "http://theater.nytimes.com/2013/01/18/theater/reviews/cat-on-a-hot-tin-roof-at-r"
+    },
+    {
+      "t": "2026-06-06T05:45:10.870Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:46:34.556Z",
+      "event": "bb-session",
+      "session": "62284f2e",
+      "url": "https://www.nytimes.com/2011/04/25/theater/reviews/born-yesterday-with-jim-belus"
+    },
+    {
+      "t": "2026-06-06T05:46:35.612Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:47:01.489Z",
+      "event": "bb-session",
+      "session": "aee82ae1",
+      "url": "http://theater.nytimes.com/2011/04/25/theater/reviews/born-yesterday-with-jim-be"
+    },
+    {
+      "t": "2026-06-06T05:47:02.523Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:47:55.980Z",
+      "event": "bb-session",
+      "session": "2a558b21",
+      "url": "https://www.nytimes.com/2011/03/04/theater/reviews/04good.html"
+    },
+    {
+      "t": "2026-06-06T05:47:57.026Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:48:50.087Z",
+      "event": "bb-session",
+      "session": "1a9502f0",
+      "url": "https://www.nytimes.com/2009/04/08/theater/reviews/08rock.html?ref=arts"
+    },
+    {
+      "t": "2026-06-06T05:48:51.094Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
