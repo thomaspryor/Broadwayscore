@@ -33,6 +33,7 @@
 const fs = require('fs');
 const path = require('path');
 const { isLikelyStaleWrongProduction } = require('./lib/review-guards');
+const { CLAUDE_SONNET } = require('./lib/models');
 
 const args = process.argv.slice(2);
 const APPLY = args.includes('--apply');
@@ -133,7 +134,7 @@ Reply with JSON only: {"isThisProduction": true|false, "confidence": "high"|"med
       'anthropic-version': '2023-06-01',
     },
     body: JSON.stringify({
-      model: 'claude-sonnet-4-6',
+      model: CLAUDE_SONNET,
       max_tokens: 200,
       messages: [{ role: 'user', content: prompt }],
     }),

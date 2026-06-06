@@ -14,8 +14,9 @@
  */
 
 const OpenAI = require('openai');
+const { GPT4O_MINI } = require('./models');
 
-const MODEL = 'gpt-4o-mini';
+const MODEL = GPT4O_MINI;
 const BATCH_SIZE = 20;
 
 /**

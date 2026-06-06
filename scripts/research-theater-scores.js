@@ -21,6 +21,7 @@
 const fs = require('fs');
 const path = require('path');
 const { fetchPage, cleanup } = require('./lib/scraper');
+const { GPT4O } = require('./lib/models');
 
 const RESEARCH_DIR = path.join(__dirname, '..', 'data', 'theater-research');
 const METADATA_PATH = path.join(__dirname, '..', 'data', 'theater-metadata.json');
@@ -106,7 +107,7 @@ async function callGPT4o(theaterName, sourceText) {
           'Authorization': `Bearer ${apiKey}`,
         },
         body: JSON.stringify({
-          model: 'gpt-4o',
+          model: GPT4O,
           temperature: 0.3,
           max_tokens: 500,
           messages: [

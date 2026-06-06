@@ -41,9 +41,10 @@ if (fs.existsSync(envPath)) {
 // CONFIG
 // ========================================
 
+const { KIMI } = require('./lib/models');
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 const OPENROUTER_BASE_URL = 'https://openrouter.ai/api/v1/chat/completions';
-const KIMI_MODEL = 'moonshotai/kimi-k2.5';
+const KIMI_MODEL = KIMI;
 const REVIEW_TEXTS_DIR = path.join(__dirname, '../data/review-texts');
 
 const args = process.argv.slice(2);

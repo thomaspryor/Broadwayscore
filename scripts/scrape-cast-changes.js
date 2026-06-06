@@ -38,6 +38,7 @@ const {
   mergePreservingAddedDate,
   findClosureDupe,
 } = require('./lib/cast-changes-filters');
+const { CLAUDE_SONNET } = require('./lib/models');
 
 // ==================== Configuration ====================
 
@@ -270,7 +271,7 @@ async function callClaude(prompt, maxTokens = 4000) {
       'content-type': 'application/json',
     },
     body: JSON.stringify({
-      model: 'claude-sonnet-4-6',
+      model: CLAUDE_SONNET,
       max_tokens: maxTokens,
       messages: [{ role: 'user', content: prompt }],
     }),

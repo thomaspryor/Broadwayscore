@@ -50,7 +50,7 @@ const _priorIssues = (_priorState.issues || [])
   .filter(i => i && i.weekStart && i.weekStart < weekStartStr)
   .sort((a, b) => b.weekStart.localeCompare(a.weekStart));
 const _lastIssue = _priorIssues[0] || null;
-const lastMoverIds = new Set(_lastIssue ? (_lastIssue.moverShowIds || []) : []);
+const lastMoverIds = new Set(_priorIssues.slice(0, 2).flatMap(i => i.moverShowIds || []));
 const recentAnnouncedIds = new Set(_priorIssues.slice(0, 4).flatMap(i => i.announcedClosingShowIds || []));
 // Suppress any show that appeared in last week's email from the OB Openings
 // section. The 14-day grace window causes OB shows to re-surface the following
