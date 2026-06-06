@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-06T04:06:31.978Z",
-  "processed": 71,
-  "failed": 9,
-  "successRate": "88.8%",
+  "updatedAt": "2026-06-06T04:11:47.354Z",
+  "processed": 79,
+  "failed": 11,
+  "successRate": "87.8%",
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 19,
-    "brightdata": 28,
-    "archiveToday": 5,
+    "brightdata": 36,
+    "archiveToday": 7,
     "archive": 24
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-06-06T04:03:29.606Z",
@@ -23,6 +23,17 @@
     },
     {
       "t": "2026-06-06T04:03:31.073Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T04:09:14.012Z",
+      "event": "bb-session",
+      "session": "03967929",
+      "url": "http://theater.nytimes.com/2011/04/25/theater/reviews/born-yesterday-with-jim-be"
+    },
+    {
+      "t": "2026-06-06T04:09:15.035Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
