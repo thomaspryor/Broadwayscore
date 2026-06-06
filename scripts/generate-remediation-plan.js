@@ -27,6 +27,7 @@ import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
 const { buildFixApprovalEmail } = require('./lib/email-templates.js');
+const { GPT4O_MINI, CLAUDE_SONNET } = require('./lib/models');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -140,7 +141,7 @@ Respond with ONLY a JSON object:
 If everything looks correct, return {"passed": true, "issues": [], "confidence": "high"}.`;
 
   const data = JSON.stringify({
-    model: 'gpt-4o-mini',
+    model: GPT4O_MINI,
     temperature: 0.1,
     max_tokens: 500,
     messages: [{ role: 'user', content: prompt }],
@@ -400,7 +401,7 @@ Or if you cannot create an actionable plan:
   let plan;
   try {
     const message = await anthropic.messages.create({
-      model: 'claude-sonnet-4-6',
+      model: CLAUDE_SONNET,
       max_tokens: 4000,
       messages: [{ role: 'user', content: prompt }],
     });

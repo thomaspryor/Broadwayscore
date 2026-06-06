@@ -10,6 +10,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { CLAUDE_SONNET, GPT4O } = require('./lib/models');
 
 const PLAN_PATH = path.join(__dirname, '../docs/biz-section-plan.md');
 
@@ -49,7 +50,7 @@ async function askClaude() {
       'anthropic-version': '2023-06-01',
     },
     body: JSON.stringify({
-      model: 'claude-sonnet-4-6',
+      model: CLAUDE_SONNET,
       max_tokens: 1024,
       messages: [{ role: 'user', content: PROMPT }],
     }),
@@ -81,7 +82,7 @@ async function askGPT() {
       'Authorization': `Bearer ${apiKey}`,
     },
     body: JSON.stringify({
-      model: 'gpt-4o',
+      model: GPT4O,
       max_tokens: 1024,
       messages: [{ role: 'user', content: PROMPT }],
     }),

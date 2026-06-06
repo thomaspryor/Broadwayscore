@@ -21,6 +21,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { execSync } = require('child_process');
+const { CLAUDE_SONNET } = require('./lib/models');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const AUDIT_DIR = path.join(DATA_DIR, 'audit');
@@ -209,7 +210,7 @@ async function callClaude(userPrompt) {
 
   return new Promise((resolve, reject) => {
     const body = JSON.stringify({
-      model: 'claude-sonnet-4-6',
+      model: CLAUDE_SONNET,
       max_tokens: 300,
       messages: [{ role: 'user', content: userPrompt }],
       system: 'You are a data pipeline analyst for Broadway Scorecard, a review aggregator. You understand that review drops are usually caused by: (1) quality flags (wrongShow, wrongProduction, duplicate) being applied to review files, (2) deduplication runs, (3) cross-market guard corrections, (4) pipeline logic changes that re-classify reviews. Genuine data corruption — a scraper bug silently deleting valid reviews — is rare. Be concise and direct. Never hedge with "could be" when the evidence points clearly in one direction.',

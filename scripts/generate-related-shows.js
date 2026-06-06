@@ -19,6 +19,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { GPT4O_MINI, GEMINI_FLASH } = require('./lib/models');
 
 const ROOT = path.resolve(__dirname, '..');
 const SHOWS_FILE = path.join(ROOT, 'data', 'shows.json');
@@ -202,7 +203,7 @@ function callOpenAI(prompt) {
 
   return new Promise((resolve, reject) => {
     const body = JSON.stringify({
-      model: 'gpt-4o-mini',
+      model: GPT4O_MINI,
       temperature: 0.3,
       max_tokens: 2000,
       messages: [{ role: 'user', content: prompt }]
@@ -236,7 +237,7 @@ function callGemini(prompt) {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) throw new Error('GEMINI_API_KEY not set');
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_FLASH}:generateContent?key=${apiKey}`;
 
   return new Promise((resolve, reject) => {
     const body = JSON.stringify({

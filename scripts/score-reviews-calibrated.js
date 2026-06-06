@@ -21,6 +21,7 @@
 const fs = require('fs');
 const path = require('path');
 const Anthropic = require('@anthropic-ai/sdk').default;
+const { CLAUDE_SONNET } = require('./lib/models');
 
 const reviewsDir = path.join(__dirname, '../data/review-texts');
 const llmScoresDir = path.join(__dirname, '../data/llm-scores');
@@ -123,7 +124,7 @@ async function scoreReview(client, reviewText, showId, outlet) {
   const truncatedText = reviewText.length > 4000 ? reviewText.substring(0, 4000) + '...' : reviewText;
 
   const response = await client.messages.create({
-    model: 'claude-sonnet-4-6',
+    model: CLAUDE_SONNET,
     max_tokens: 500,
     messages: [
       {
@@ -329,7 +330,7 @@ async function main() {
         // Save to review file (inline)
         review.llmScore = llmScoreData;
         review.llmMetadata = {
-          model: 'claude-sonnet-4-6',
+          model: CLAUDE_SONNET,
           scoredAt: llmScoreData.scoredAt,
           promptVersion: llmScoreData.promptVersion,
           inputTokens: result.inputTokens,

@@ -16,6 +16,7 @@
 const fs = require('fs');
 const path = require('path');
 const Anthropic = require('@anthropic-ai/sdk').default;
+const { CLAUDE_HAIKU } = require('./lib/models');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const DRY_RUN = !process.argv.includes('--apply');
@@ -28,7 +29,7 @@ const client = new Anthropic();
 
 async function extractDateWithLLM(headerText, outlet, showTitle) {
   const response = await client.messages.create({
-    model: 'claude-haiku-4-5-20251001',
+    model: CLAUDE_HAIKU,
     max_tokens: 50,
     messages: [{
       role: 'user',

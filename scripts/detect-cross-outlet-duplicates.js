@@ -46,6 +46,7 @@ const AUDIT_DIR = path.join(__dirname, '../data/audit');
 
 // Outlet tier lookup — reads from outlet-registry.json (source of truth)
 const { getTier } = require('./lib/outlet-tiers');
+const { GEMINI_FLASH } = require('./lib/models');
 
 // ============================================================
 // Text Processing
@@ -113,7 +114,7 @@ function callGemini(prompt) {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) throw new Error('GEMINI_API_KEY not set');
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_FLASH}:generateContent?key=${apiKey}`;
 
   return new Promise((resolve, reject) => {
     const body = JSON.stringify({

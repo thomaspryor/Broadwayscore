@@ -25,6 +25,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { CLAUDE_SONNET, CLAUDE_OPUS } = require('../lib/models');
 
 const RAW_DIR = path.join(__dirname, '../../data/video-reviews-transcripts/raw');
 const CLASSIFIED_DIR = path.join(__dirname, '../../data/video-reviews-transcripts/classified');
@@ -67,9 +68,9 @@ async function classifyBatch(transcripts, showList) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01', 'anthropic-beta': 'advisor-tool-2026-03-01' },
     body: JSON.stringify({
-      model: 'claude-sonnet-4-6',
+      model: CLAUDE_SONNET,
       max_tokens: 2048,
-      tools: [{ type: 'advisor_20260301', name: 'advisor', model: 'claude-opus-4-7', max_uses: 1 }],
+      tools: [{ type: 'advisor_20260301', name: 'advisor', model: CLAUDE_OPUS, max_uses: 1 }],
       messages: [{
         role: 'user',
         content: `Classify these video transcripts. For each, determine:
