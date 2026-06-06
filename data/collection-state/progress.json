@@ -121,7 +121,13 @@
     "the-color-purple-2005/about-entertainment--ben-brantley.json",
     "the-woman-in-white-2005/nytimes--ben-brantley.json",
     "souvenir-2005/nytimes--ben-brantley.json",
-    "souvenir-2005/about-entertainment--ben-brantley.json"
+    "souvenir-2005/about-entertainment--ben-brantley.json",
+    "sweeney-todd-2005/nytimes--ben-brantley.json",
+    "the-odd-couple-2005/about-entertainment--ben-brantley.json",
+    "in-my-life-2005/about-entertainment--ben-brantley.json",
+    "a-naked-girl-on-the-appian-way-2005/about-entertainment--ben-brantley.json",
+    "the-constant-wife-2005/nytimes--ben-brantley.json",
+    "barnum-1980/nytimes--frank-rich.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -211,7 +217,9 @@
       "data/review-texts/american-buffalo-2008/nytimes--ben-brantley.json",
       "data/review-texts/thurgood-2008/nytimes--ben-brantley.json",
       "data/review-texts/the-woman-in-white-2005/nytimes--ben-brantley.json",
-      "data/review-texts/souvenir-2005/nytimes--ben-brantley.json"
+      "data/review-texts/souvenir-2005/nytimes--ben-brantley.json",
+      "data/review-texts/the-constant-wife-2005/nytimes--ben-brantley.json",
+      "data/review-texts/barnum-1980/nytimes--frank-rich.json"
     ],
     "archive": [
       "once-on-this-island-2017/nytimes--ben-brantley.json",
@@ -245,7 +253,7 @@
     ]
   },
   "startTime": "2026-06-06T03:32:12.394Z",
-  "lastProcessed": "souvenir-2005/about-entertainment--ben-brantley.json",
+  "lastProcessed": "barnum-1980/nytimes--frank-rich.json",
   "log": [
     {
       "t": "2026-06-06T04:04:18.292Z",
@@ -343,6 +351,17 @@
     },
     {
       "t": "2026-06-06T04:31:26.410Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T04:32:11.342Z",
+      "event": "bb-session",
+      "session": "fe64803d",
+      "url": "http://theater.nytimes.com/2005/10/28/theater/reviews/28odd.html"
+    },
+    {
+      "t": "2026-06-06T04:32:12.645Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

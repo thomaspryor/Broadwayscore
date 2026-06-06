@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-06-06T04:31:51.671Z",
+  "updatedAt": "2026-06-06T04:35:30.275Z",
   "processed": 85,
-  "failed": 35,
-  "successRate": "70.8%",
+  "failed": 41,
+  "successRate": "67.5%",
   "tierBreakdown": {
     "playwright": 1,
     "amp": 0,
@@ -10,10 +10,10 @@
     "directCookies": 0,
     "scrapingbee": 19,
     "brightdata": 37,
-    "archiveToday": 20,
+    "archiveToday": 22,
     "archive": 28
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 10,
   "recentActivity": [
     {
       "t": "2026-06-06T04:04:18.292Z",
@@ -111,6 +111,17 @@
     },
     {
       "t": "2026-06-06T04:31:26.410Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T04:32:11.342Z",
+      "event": "bb-session",
+      "session": "fe64803d",
+      "url": "http://theater.nytimes.com/2005/10/28/theater/reviews/28odd.html"
+    },
+    {
+      "t": "2026-06-06T04:32:12.645Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
