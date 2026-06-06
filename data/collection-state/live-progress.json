@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-06T05:50:33.767Z",
-  "processed": 17,
-  "failed": 3,
-  "successRate": "85.0%",
+  "updatedAt": "2026-06-06T05:56:50.028Z",
+  "processed": 24,
+  "failed": 6,
+  "successRate": "80.0%",
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 15,
-    "brightdata": 1,
+    "scrapingbee": 17,
+    "brightdata": 3,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 4
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 9,
   "recentActivity": [
     {
       "t": "2026-06-06T05:45:36.641Z",
@@ -23,6 +23,94 @@
     },
     {
       "t": "2026-06-06T05:45:37.545Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:50:34.818Z",
+      "event": "bb-session",
+      "session": "e78c10ca",
+      "url": "http://theater.nytimes.com/2013/01/18/theater/reviews/cat-on-a-hot-tin-roof-at-r"
+    },
+    {
+      "t": "2026-06-06T05:50:35.600Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:51:36.863Z",
+      "event": "bb-session",
+      "session": "e405d7c7",
+      "url": "https://www.nytimes.com/2012/08/02/theater/reviews/bring-it-on-the-musical-at-st"
+    },
+    {
+      "t": "2026-06-06T05:51:37.792Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:52:51.016Z",
+      "event": "bb-session",
+      "session": "1dd3b77a",
+      "url": "https://www.nytimes.com/2011/04/25/theater/reviews/born-yesterday-with-jim-belus"
+    },
+    {
+      "t": "2026-06-06T05:52:51.872Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:53:22.494Z",
+      "event": "bb-session",
+      "session": "10e359b6",
+      "url": "http://theater.nytimes.com/2011/04/25/theater/reviews/born-yesterday-with-jim-be"
+    },
+    {
+      "t": "2026-06-06T05:53:23.194Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:54:03.628Z",
+      "event": "bb-session",
+      "session": "cb89c495",
+      "url": "https://www.nytimes.com/2011/04/15/theater/reviews/war-horse-from-national-theat"
+    },
+    {
+      "t": "2026-06-06T05:54:04.392Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:54:33.170Z",
+      "event": "bb-session",
+      "session": "5bca465b",
+      "url": "https://www.nytimes.com/2011/03/04/theater/reviews/04good.html"
+    },
+    {
+      "t": "2026-06-06T05:54:34.528Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:55:22.148Z",
+      "event": "bb-session",
+      "session": "990e874b",
+      "url": "https://www.nytimes.com/2009/04/08/theater/reviews/08rock.html"
+    },
+    {
+      "t": "2026-06-06T05:55:22.968Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:56:15.686Z",
+      "event": "bb-session",
+      "session": "840e0505",
+      "url": "https://www.nytimes.com/2009/04/08/theater/reviews/08rock.html?ref=arts"
+    },
+    {
+      "t": "2026-06-06T05:56:16.454Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
