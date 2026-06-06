@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-06T08:16:15.908Z",
-  "processed": 171,
-  "failed": 231,
-  "successRate": "42.5%",
+  "updatedAt": "2026-06-06T08:21:57.839Z",
+  "processed": 174,
+  "failed": 238,
+  "successRate": "42.2%",
   "tierBreakdown": {
-    "playwright": 92,
+    "playwright": 93,
     "amp": 0,
     "browserbase": 27,
     "directCookies": 0,
-    "scrapingbee": 29,
+    "scrapingbee": 30,
     "brightdata": 38,
-    "archiveToday": 47,
-    "archive": 46
+    "archiveToday": 49,
+    "archive": 47
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 8,
   "recentActivity": [
-    {
-      "t": "2026-06-06T07:04:46.264Z",
-      "event": "bb-session",
-      "session": "438d0d07",
-      "url": "https://variety.com/2011/film/reviews/0s-1s-1117944828/"
-    },
-    {
-      "t": "2026-06-06T07:04:47.286Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-06-06T07:07:09.716Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-06-06T08:15:54.293Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-06-06T08:17:53.291Z",
+      "event": "bb-session",
+      "session": "020f90ae",
+      "url": "https://www.thestage.co.uk/opinion/hamilton-at-victoria-palace-theatre-london--r"
+    },
+    {
+      "t": "2026-06-06T08:17:54.286Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }

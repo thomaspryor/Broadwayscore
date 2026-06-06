@@ -170,7 +170,10 @@
     "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json",
     "maybe-happy-ending-2024/newyorker--conde-nast.json",
     "stranger-things-the-first-shadow-west-end-2023/times-uk--dominic-maxwell.json",
-    "and-juliet-2022/newyorker--conde-nast.json"
+    "and-juliet-2022/newyorker--conde-nast.json",
+    "the-play-that-goes-wrong-west-end-2021/telegraph--dominic-cavendish.json",
+    "the-play-that-goes-wrong-west-end-2021/thestage--natasha-tripney.json",
+    "the-play-that-goes-wrong-west-end-2021/times-uk--dominic-maxwell.json"
   ],
   "failed": [
     "spamalot-off-broadway-2026/nytimes--jesse-green.json",
@@ -403,7 +406,14 @@
     "six-the-musical-west-end-2021/theatre-bee-uk--theatre-bee-uk.json",
     "magic-mike-live-west-end-2021/standard--henry-hitchings.json",
     "magic-mike-live-west-end-2021/thestage--francesca-peschier.json",
-    "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json"
+    "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json",
+    "harry-potter-2021/indiewire--david-ehrlich.json",
+    "harry-potter-2021/front-row-center--tulis-mccall.json",
+    "harry-potter-2021/woman-around-town--alix-cohen.json",
+    "hamilton-west-end-2021/thestage--holly-omahony.json",
+    "the-play-that-goes-wrong-west-end-2021/chicagotribune--chris-jones.json",
+    "aladdin-2014/culturesauce--thom-geier.json",
+    "aladdin-2014/thisbroadsway--sandra-mcfarland.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -499,7 +509,8 @@
       "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
       "seagull-true-story-off-broadway-2026/theatermania--christian-lewis.json",
       "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
-      "stranger-things-the-first-shadow-west-end-2023/times-uk--dominic-maxwell.json"
+      "stranger-things-the-first-shadow-west-end-2023/times-uk--dominic-maxwell.json",
+      "the-play-that-goes-wrong-west-end-2021/times-uk--dominic-maxwell.json"
     ],
     "amp": [],
     "browserbase": [
@@ -561,7 +572,8 @@
       "oh-mary-2024/broadwaynews--brittani-samuel.json",
       "magic-mike-live-west-end-2021/independent--hugh-montgomery.json",
       "the-lion-king-1997/broadwayworld--brett-cullum.json",
-      "avenue-q-west-end-2026/telegraph--marianka-swain.json"
+      "avenue-q-west-end-2026/telegraph--marianka-swain.json",
+      "the-play-that-goes-wrong-west-end-2021/telegraph--dominic-cavendish.json"
     ],
     "brightdata": [
       "good-night-oscar-2023/nytimes--jesse-green.json",
@@ -650,7 +662,9 @@
       "data/review-texts/titanique-west-end-2024/thestage--paul-vale.json",
       "data/review-texts/the-devil-wears-prada-west-end-2024/thestage--sam-marlowe.json",
       "data/review-texts/and-juliet-2022/broadway-blog--joey-sims.json",
-      "data/review-texts/magic-mike-live-west-end-2021/thestage--francesca-peschier.json"
+      "data/review-texts/magic-mike-live-west-end-2021/thestage--francesca-peschier.json",
+      "data/review-texts/hamilton-west-end-2021/thestage--holly-omahony.json",
+      "data/review-texts/aladdin-2014/culturesauce--thom-geier.json"
     ],
     "archive": [
       "misery-2015/nytimes--charles-isherwood.json",
@@ -698,11 +712,12 @@
       "broken-snow-off-broadway-2026/theater-scene--darryl-reilly.json",
       "one-flew-over-the-cuckoos-nest-west-end-2026/telegraph--dominic-cavendish.json",
       "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json",
-      "and-juliet-2022/newyorker--conde-nast.json"
+      "and-juliet-2022/newyorker--conde-nast.json",
+      "the-play-that-goes-wrong-west-end-2021/thestage--natasha-tripney.json"
     ]
   },
   "startTime": "2026-06-06T04:44:29.355Z",
-  "lastProcessed": "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json",
+  "lastProcessed": "aladdin-2014/thisbroadsway--sandra-mcfarland.json",
   "log": [
     {
       "t": "2026-06-06T06:19:34.296Z",
@@ -1020,6 +1035,17 @@
     },
     {
       "t": "2026-06-06T08:15:54.293Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-06-06T08:17:53.291Z",
+      "event": "bb-session",
+      "session": "020f90ae",
+      "url": "https://www.thestage.co.uk/opinion/hamilton-at-victoria-palace-theatre-london--r"
+    },
+    {
+      "t": "2026-06-06T08:17:54.286Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
