@@ -2108,17 +2108,18 @@ export function isTonyPromoActive(now: Date = new Date(), sunsetDays = 2): boole
 
 /**
  * Beat the Critics promo activity gate. BTC entries close per official rules
- * at 11:59 PM Eastern Time the night BEFORE the ceremony (≈ ceremonyDate
- * 03:59 UTC). Returns true only while entries are still being accepted.
- * Falls back to "active" if ceremony date is unknown.
+ * at 7:59 PM Eastern Time on the ceremony date — one minute before the Tony
+ * Awards broadcast begins (≈ ceremony day 23:59 UTC, since EDT = UTC-4 in
+ * June). Returns true only while entries are still being accepted. Falls back
+ * to "active" if ceremony date is unknown.
  */
 export function isBtcPromoActive(now: Date = new Date()): boolean {
   const current = getTonySeasonWindow();
   const record = tonySeasonForCeremonyYear(current.ceremonyYear);
   const ceremonyDate = record?.ceremonyDate;
   if (!ceremonyDate) return true;
-  // 11:59 PM Eastern (EDT = UTC-4 in June) = ceremony day 03:59 UTC
-  const deadlineMs = new Date(`${ceremonyDate}T03:59:59Z`).getTime();
+  // 7:59 PM Eastern (EDT = UTC-4 in June) = ceremony day 23:59 UTC
+  const deadlineMs = new Date(`${ceremonyDate}T23:59:59Z`).getTime();
   return now.getTime() <= deadlineMs;
 }
 

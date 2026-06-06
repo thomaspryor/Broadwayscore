@@ -33,9 +33,43 @@ const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR || path.join(process.env.H
 
 if (!fs.existsSync(DEFERRED)) { console.error(`Deferred file not found: ${DEFERRED}`); process.exit(1); }
 const INCLUDE_DIFF_URL = args.includes('--include-diff-url');
-const deferredObj = JSON.parse(fs.readFileSync(DEFERRED, 'utf8'));
-let candidates = (deferredObj.orphanDeleteCandidates || []).map(c => ({ ...c, set: 'orphan' }));
-if (INCLUDE_DIFF_URL) candidates = candidates.concat((deferredObj.unresolvedDiffUrl || []).map(c => ({ ...c, set: 'diff-url' })));
+// Optional but recommended: tie every deletion to the independent 2-model
+// content verification. Only rows the verifier marked decision='confirmed-to'
+// (the review IS about the TO show) are eligible — this is the strongest
+// same-article + correct-attribution guarantee and closes the theoretical
+// holes in the heuristic same-article checks (filename collision, boilerplate
+// overlap FP). ship-check Codex 2026-06-06.
+const VERIFIED = flag('verified', '');
+let confirmedSet = null;
+if (VERIFIED) {
+  if (!fs.existsSync(VERIFIED)) { console.error(`--verified file not found: ${VERIFIED}`); process.exit(1); }
+  const vf = JSON.parse(fs.readFileSync(VERIFIED, 'utf8')).findings || [];
+  confirmedSet = new Set(vf
+    .filter(f => f.verifierVerdict && f.verifierVerdict.decision === 'confirmed-to')
+    .map(f => `${f.from}|${f.to}|${f.file}`));
+  console.log(`Verified gate: ${confirmedSet.size} confirmed-to rows loaded from ${path.basename(VERIFIED)}`);
+}
+// Candidate source. Default: the apply script's deferred dest-exists lists.
+// --candidates-from-whitelist: instead take every confirmed-to row from the
+// --verified whitelist (used for the flagged/Class-C set, which the apply
+// script's warnings-gate + matcher stale-guard intentionally block — the
+// 2-model content verdict is the authority for those, not the matcher). The
+// per-row dest-exists + same-article + no-content-loss checks below still
+// apply, and dest-not-exists rows are skipped as 'to-missing' (those are moves,
+// handled by the apply script, not here).
+const FROM_WHITELIST = args.includes('--candidates-from-whitelist');
+let candidates;
+if (FROM_WHITELIST) {
+  if (!confirmedSet) { console.error('--candidates-from-whitelist requires --verified=PATH'); process.exit(1); }
+  const vf = JSON.parse(fs.readFileSync(VERIFIED, 'utf8')).findings || [];
+  candidates = vf
+    .filter(f => f.confirm === true && f.verifierVerdict && f.verifierVerdict.decision === 'confirmed-to')
+    .map(f => ({ from: f.from, to: f.to, file: f.file, set: 'verified-whitelist' }));
+} else {
+  const deferredObj = JSON.parse(fs.readFileSync(DEFERRED, 'utf8'));
+  candidates = (deferredObj.orphanDeleteCandidates || []).map(c => ({ ...c, set: 'orphan' }));
+  if (INCLUDE_DIFF_URL) candidates = candidates.concat((deferredObj.unresolvedDiffUrl || []).map(c => ({ ...c, set: 'diff-url' })));
+}
 if (!candidates.length) { console.log('No candidates.'); process.exit(0); }
 
 const textLen = r => String(r.fullText || r.reviewText || '').length;
@@ -64,6 +98,12 @@ for (const c of candidates) {
   const toPath = path.join(REVIEW_TEXTS_DIR, c.to, c.file);
   if (!fs.existsSync(fromPath)) { res.skipped++; console.log(`  [SKIP from-missing] ${c.from}/${c.file}`); continue; }
   if (!fs.existsSync(toPath)) { res.skipped++; console.log(`  [SKIP to-missing — TO copy gone, not an orphan] ${c.from}/${c.file}`); continue; }
+
+  if (confirmedSet && !confirmedSet.has(`${c.from}|${c.to}|${c.file}`)) {
+    res.deferred++; deferredRows.push({ ...c, reason: 'not a 2-model confirmed-to row — excluded by --verified gate' });
+    console.log(`  [DEFER not-verified] ${c.from}/${c.file}`);
+    continue;
+  }
 
   const F = JSON.parse(fs.readFileSync(fromPath, 'utf8'));
   const T = JSON.parse(fs.readFileSync(toPath, 'utf8'));

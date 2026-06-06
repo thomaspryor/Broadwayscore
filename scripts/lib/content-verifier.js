@@ -70,12 +70,19 @@ function callGemini(prompt) {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) throw new Error('GEMINI_API_KEY not set');
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+  // gemini-2.0-flash was retired by Google (HTTP 404 "no longer available")
+  // ~2026-06; 2.5-flash is the current equivalent (already used by the
+  // llm-scoring ensemble). NOTE: ~30 other scripts still hardcode the dead
+  // 2.0-flash — tracked as a separate class-fix card.
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
 
   return new Promise((resolve, reject) => {
     const body = JSON.stringify({
       contents: [{ role: 'user', parts: [{ text: prompt }] }],
-      generationConfig: { temperature: 0.1, maxOutputTokens: 400 }
+      // thinkingBudget:0 — gemini-2.5-flash is a thinking model; without this it
+      // spends the whole maxOutputTokens budget on internal thinking and returns
+      // empty/truncated text (memory: feedback_gemini_thinking_token_budget).
+      generationConfig: { temperature: 0.1, maxOutputTokens: 400, thinkingConfig: { thinkingBudget: 0 } }
     });
 
     const req = https.request(url, {
