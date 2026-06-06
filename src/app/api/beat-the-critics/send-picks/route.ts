@@ -201,24 +201,28 @@ export async function POST(req: NextRequest) {
     }
 
     // Confirmation email — best-effort; entry is already stored above.
-    const res = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${RESEND_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        from: FROM_EMAIL,
-        to: [email],
-        subject: `Your ${ceremonyYear} Tony Award Picks`,
-        html,
-      }),
-    });
-
-    if (!res.ok) {
-      const body = await res.text();
-      console.error('Resend error:', res.status, body);
-      // Entry is stored — still return success. User is entered even without email.
+    // Wrapped in try/catch so a network throw doesn't propagate to the outer catch
+    // and return a 500 to the user even though their submission was saved.
+    try {
+      const res = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${RESEND_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          from: FROM_EMAIL,
+          to: [email],
+          subject: `Your ${ceremonyYear} Tony Award Picks`,
+          html,
+        }),
+      });
+      if (!res.ok) {
+        const body = await res.text();
+        console.error('Resend error:', res.status, body);
+      }
+    } catch (emailErr) {
+      console.error('Resend fetch threw:', emailErr);
     }
 
     return NextResponse.json({ success: true });
