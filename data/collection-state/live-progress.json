@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-06-06T05:59:49.525Z",
+  "updatedAt": "2026-06-06T06:00:54.505Z",
   "processed": 30,
-  "failed": 10,
-  "successRate": "75.0%",
+  "failed": 12,
+  "successRate": "71.4%",
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
@@ -13,30 +13,8 @@
     "archiveToday": 0,
     "archive": 5
   },
-  "browserbaseSessions": 16,
+  "browserbaseSessions": 18,
   "recentActivity": [
-    {
-      "t": "2026-06-06T05:51:27.878Z",
-      "event": "bb-session",
-      "session": "533be7cd",
-      "url": "https://www.nytimes.com/2011/04/15/theater/reviews/war-horse-from-national-theat"
-    },
-    {
-      "t": "2026-06-06T05:51:28.577Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-06T05:52:28.254Z",
-      "event": "bb-session",
-      "session": "4a0f005b",
-      "url": "https://www.nytimes.com/2011/03/04/theater/reviews/04good.html"
-    },
-    {
-      "t": "2026-06-06T05:52:28.995Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-06-06T05:53:05.970Z",
       "event": "bb-session",
@@ -122,6 +100,28 @@
     },
     {
       "t": "2026-06-06T05:59:17.220Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:59:50.444Z",
+      "event": "bb-session",
+      "session": "8b082025",
+      "url": "http://theater.nytimes.com/2005/10/21/theater/reviews/21life.html"
+    },
+    {
+      "t": "2026-06-06T05:59:51.213Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T06:00:27.846Z",
+      "event": "bb-session",
+      "session": "5ccdbd15",
+      "url": "http://theater.nytimes.com/2005/10/07/theater/reviews/07nake.html?adxnnl=1&amp;a"
+    },
+    {
+      "t": "2026-06-06T06:00:28.656Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

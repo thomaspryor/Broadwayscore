@@ -41,7 +41,9 @@
     "the-seagull-2008/about-entertainment--ben-brantley.json",
     "high-fidelity-2006/about-entertainment--ben-brantley.json",
     "lestat-2006/about-entertainment--ben-brantley.json",
-    "souvenir-2005/about-entertainment--ben-brantley.json"
+    "souvenir-2005/about-entertainment--ben-brantley.json",
+    "in-my-life-2005/about-entertainment--ben-brantley.json",
+    "a-naked-girl-on-the-appian-way-2005/about-entertainment--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -88,7 +90,7 @@
     ]
   },
   "startTime": "2026-06-06T05:41:12.446Z",
-  "lastProcessed": "souvenir-2005/about-entertainment--ben-brantley.json",
+  "lastProcessed": "a-naked-girl-on-the-appian-way-2005/about-entertainment--ben-brantley.json",
   "log": [
     {
       "t": "2026-06-06T05:42:49.234Z",
@@ -263,6 +265,28 @@
     },
     {
       "t": "2026-06-06T05:59:17.220Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T05:59:50.444Z",
+      "event": "bb-session",
+      "session": "8b082025",
+      "url": "http://theater.nytimes.com/2005/10/21/theater/reviews/21life.html"
+    },
+    {
+      "t": "2026-06-06T05:59:51.213Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-06T06:00:27.846Z",
+      "event": "bb-session",
+      "session": "5ccdbd15",
+      "url": "http://theater.nytimes.com/2005/10/07/theater/reviews/07nake.html?adxnnl=1&amp;a"
+    },
+    {
+      "t": "2026-06-06T06:00:28.656Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
