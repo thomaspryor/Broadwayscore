@@ -194,7 +194,11 @@
     "broken-snow-off-broadway-2026/theater-scene--darryl-reilly.json",
     "one-flew-over-the-cuckoos-nest-west-end-2026/telegraph--dominic-cavendish.json",
     "rheology-off-broadway-2026/timeout--billy-mcentee.json",
-    "the-adding-machine-off-broadway-2026/timeout--raven-snook.json"
+    "the-adding-machine-off-broadway-2026/timeout--raven-snook.json",
+    "innocence-off-broadway-2026/wsj--heidi-waleson.json",
+    "the-authenticator-west-end-2026/times-uk--clive-davis.json",
+    "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+    "seagull-true-story-off-broadway-2026/theatermania--christian-lewis.json"
   ],
   "failed": [
     "spamalot-off-broadway-2026/nytimes--jesse-green.json",
@@ -372,7 +376,13 @@
     "heart-wall-west-end-2026/guardian--arifa-akbar.json",
     "heart-wall-west-end-2026/theupcoming--benedetta-mancusi.json",
     "flyby-off-west-end-2026/guardian--arifa-akbar.json",
-    "flyby-off-west-end-2026/thestage--unknown.json"
+    "flyby-off-west-end-2026/thestage--unknown.json",
+    "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
+    "the-authenticator-west-end-2026/thestage--unknown.json",
+    "yoah-off-broadway-2026/variety--pat-saperstein.json",
+    "seagull-true-story-off-broadway-2026/nysr--frank-scheck.json",
+    "a-mirrored-monet-west-end-2026/guardian--lucinda-everett.json",
+    "a-mirrored-monet-west-end-2026/thestage--paul-vale.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -463,7 +473,10 @@
       "hamlet-off-broadway-2026/dc-theater-arts--deb-miller.json",
       "broken-snow-off-broadway-2026/culturesauce--thom-geier.json",
       "broken-snow-off-broadway-2026/one-minute-critic--jerry-portwood.json",
-      "rheology-off-broadway-2026/timeout--billy-mcentee.json"
+      "rheology-off-broadway-2026/timeout--billy-mcentee.json",
+      "the-authenticator-west-end-2026/times-uk--clive-davis.json",
+      "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+      "seagull-true-story-off-broadway-2026/theatermania--christian-lewis.json"
     ],
     "amp": [],
     "browserbase": [
@@ -491,7 +504,9 @@
       "harry-potter-2021/wsj--terry-teachout.json",
       "data/review-texts/hamilton-west-end-2021/hollywood-reporter--demetrios-matheou.json",
       "hamilton-west-end-2021/hollywood-reporter--demetrios-matheou.json",
-      "data/review-texts/book-of-mormon-2011/variety--marilyn-stasio.json"
+      "data/review-texts/book-of-mormon-2011/variety--marilyn-stasio.json",
+      "data/review-texts/innocence-off-broadway-2026/wsj--heidi-waleson.json",
+      "innocence-off-broadway-2026/wsj--heidi-waleson.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -598,7 +613,9 @@
       "data/review-texts/the-play-that-goes-wrong-west-end-2021/thestage--natasha-tripney.json",
       "data/review-texts/aladdin-2014/culturesauce--thom-geier.json",
       "data/review-texts/aladdin-2014/thisbroadsway--sandra-mcfarland.json",
-      "data/review-texts/flyby-off-west-end-2026/thestage--unknown.json"
+      "data/review-texts/flyby-off-west-end-2026/thestage--unknown.json",
+      "data/review-texts/the-authenticator-west-end-2026/thestage--unknown.json",
+      "data/review-texts/a-mirrored-monet-west-end-2026/thestage--paul-vale.json"
     ],
     "archive": [
       "misery-2015/nytimes--charles-isherwood.json",
@@ -648,7 +665,7 @@
     ]
   },
   "startTime": "2026-06-06T04:44:29.355Z",
-  "lastProcessed": "flyby-off-west-end-2026/thestage--unknown.json",
+  "lastProcessed": "a-mirrored-monet-west-end-2026/thestage--paul-vale.json",
   "log": [
     {
       "t": "2026-06-06T04:58:40.603Z",
@@ -889,6 +906,17 @@
     },
     {
       "t": "2026-06-06T07:07:10.793Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-06T07:37:01.916Z",
+      "event": "bb-session",
+      "session": "5896aa8c",
+      "url": "https://www.wsj.com/arts-culture/theater/innocence-review-an-attacks-aftermath-a"
+    },
+    {
+      "t": "2026-06-06T07:37:03.011Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
