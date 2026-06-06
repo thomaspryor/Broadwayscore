@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-06T05:21:31.279Z",
+  "timestamp": "2026-06-06T07:46:27.316Z",
   "stats": {
-    "totalReviews": 38129,
-    "alreadyFlagged": 16765,
-    "dateGuardCatches": 107,
-    "directorMismatch": 832,
+    "totalReviews": 38126,
+    "alreadyFlagged": 16774,
+    "dateGuardCatches": 106,
+    "directorMismatch": 834,
     "tvFilmSignals": 1047,
-    "londonSignals": 607,
+    "londonSignals": 609,
     "offBroadwaySignals": 464,
-    "yearMismatch": 80,
-    "noPublishDate": 3988
+    "yearMismatch": 81,
+    "noPublishDate": 3981
   },
   "findings": [
     {
@@ -387,6 +387,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2004 (2x) more than 2014 (0x). 2004 matches production: a-raisin-in-the-sun-2004"
+        }
+      ]
+    },
+    {
+      "showId": "a-raisin-in-the-sun-2014",
+      "file": "nytimes--ben-brantley.json",
+      "score": 74,
+      "publishDate": "April 3, 2014",
+      "url": "http://www.nytimes.com/2014/04/04/theater/raisin-in-the-sun-brings-denzel-washington-back-to-broadway.html",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2004 (2x) more than 2014 (1x). 2004 matches production: a-raisin-in-the-sun-2004"
         }
       ]
     },
@@ -5884,7 +5898,7 @@
       "showId": "dog-day-afternoon-2026",
       "file": "one-minute-critic--matthew-wexler.json",
       "score": 64,
-      "publishDate": null,
+      "publishDate": "2026-04-02",
       "url": "https://1minutecritic.com/dog-day-afternoon-broadway-review-jon-bernthal-ebon-moss-bachrach/",
       "findings": [
         {
@@ -5905,20 +5919,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hulu\""
-        }
-      ]
-    },
-    {
-      "showId": "dog-man-the-musical-west-end-2026",
-      "file": "timeout--andrzej-lukowski.json",
-      "score": 88,
-      "publishDate": "2023-12-17",
-      "url": "https://www.timeout.com/london/news/dog-man-the-musical-coming-to-london-in-summer-2026-120225",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 955d before show (2023-12-17 vs 2026-07-29)"
         }
       ]
     },
@@ -6767,6 +6767,20 @@
       "score": 74,
       "publishDate": "2016-01-29",
       "url": "https://nytheatreguide.com/2016/01/broadway-review-fiddler-on-the-roof-at-the-broadway-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+        }
+      ]
+    },
+    {
+      "showId": "fiddler-on-the-roof-2015",
+      "file": "nytimes--charles-isherwood.json",
+      "score": 82,
+      "publishDate": "December 20, 2015",
+      "url": "http://www.nytimes.com/2015/12/21/theater/review-a-fiddler-on-the-roof-revival-with-an-echo-of-modernity.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -19062,6 +19076,20 @@
     },
     {
       "showId": "spring-awakening-2015",
+      "file": "nytimes--charles-isherwood.json",
+      "score": 91,
+      "publishDate": "September 27, 2015",
+      "url": "http://www.nytimes.com/2015/09/28/theater/review-spring-awakening-by-deaf-west-theater-brings-a-new-sensation-to-broadway.html?_r=0",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from spring-awakening-2006"
+        }
+      ]
+    },
+    {
+      "showId": "spring-awakening-2015",
       "file": "talkinbroadway--matthew-murray.json",
       "score": 80,
       "publishDate": "2015-09-27",
@@ -30373,6 +30401,20 @@
     },
     {
       "showId": "grace-pervades-west-end-2026",
+      "file": "british-theatre--susan-novak.json",
+      "score": 91,
+      "publishDate": "2026-05-01",
+      "url": "https://www.britishtheatre.com/posts/grace-pervades-review-ralph-fiennes-and-miranda-raison-shine-in-david-hare-s-tri",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "grace-pervades-west-end-2026",
       "file": "broadwayworld--team-bww.json",
       "score": null,
       "publishDate": null,
@@ -32049,6 +32091,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "lbc--johnny-jenkins.json",
+      "score": 91,
+      "publishDate": "2026-04-08",
+      "url": "https://www.lbc.co.uk/article/inter-alia-review-best-plays-ever-seen-5HjdXRZ_2/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
