@@ -167,7 +167,8 @@
     "seagull-true-story-off-broadway-2026/theatermania--christian-lewis.json",
     "avenue-q-west-end-2026/telegraph--marianka-swain.json",
     "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
-    "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json"
+    "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json",
+    "maybe-happy-ending-2024/newyorker--conde-nast.json"
   ],
   "failed": [
     "spamalot-off-broadway-2026/nytimes--jesse-green.json",
@@ -373,7 +374,16 @@
     "stranger-things-2024/broadwaynews--brittani-samuel.json",
     "operation-mincemeat-2025/thereviewshub--unknown.json",
     "operation-mincemeat-2025/broadwaynews--brittani-samuel.json",
-    "titanique-west-end-2024/thestage--paul-vale.json"
+    "titanique-west-end-2024/thestage--paul-vale.json",
+    "titanique-west-end-2024/times-uk--clive-davis.json",
+    "oliver-west-end-2024/i-paper--fiona-mountford.json",
+    "oliver-west-end-2024/times-uk--clive-davis.json",
+    "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
+    "the-devil-wears-prada-west-end-2024/thestage--sam-marlowe.json",
+    "death-becomes-her-2024/chicago-reader--kerry-reid.json",
+    "maybe-happy-ending-2024/theatermania--adam-feldman.json",
+    "oh-mary-2024/west-end-best-friend--unknown.json",
+    "hadestown-west-end-2024/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -569,7 +579,8 @@
       "the-phantom-of-the-opera-west-end-1986/telegraph--dominic-cavendish.json",
       "amaze-off-broadway-2026/timeout--adam-feldman.json",
       "dog-man-the-musical-west-end-2026/timeout--andrzej-lukowski.json",
-      "the-adding-machine-off-broadway-2026/timeout--raven-snook.json"
+      "the-adding-machine-off-broadway-2026/timeout--raven-snook.json",
+      "maybe-happy-ending-2024/newyorker--conde-nast.json"
     ],
     "archiveToday": [
       "data/review-texts/on-the-town-2014/nytimes--charles-isherwood.json",
@@ -614,7 +625,9 @@
       "data/review-texts/burlesque-west-end-2026/thestage--paul-vale.json",
       "data/review-texts/stranger-things-2024/thestage--unknown.json",
       "data/review-texts/stranger-things-2024/broadwaynews--brittani-samuel.json",
-      "data/review-texts/operation-mincemeat-2025/broadwaynews--brittani-samuel.json"
+      "data/review-texts/operation-mincemeat-2025/broadwaynews--brittani-samuel.json",
+      "data/review-texts/titanique-west-end-2024/thestage--paul-vale.json",
+      "data/review-texts/the-devil-wears-prada-west-end-2024/thestage--sam-marlowe.json"
     ],
     "archive": [
       "misery-2015/nytimes--charles-isherwood.json",
@@ -665,7 +678,7 @@
     ]
   },
   "startTime": "2026-06-06T04:44:29.355Z",
-  "lastProcessed": "titanique-west-end-2024/thestage--paul-vale.json",
+  "lastProcessed": "hadestown-west-end-2024/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-06-06T06:19:34.296Z",
@@ -950,6 +963,28 @@
     },
     {
       "t": "2026-06-06T08:04:07.424Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-06-06T08:09:05.659Z",
+      "event": "bb-session",
+      "session": "b099755f",
+      "url": "https://www.thestage.co.uk/reviews/titanique-review-criterion-theatre-london-tit"
+    },
+    {
+      "t": "2026-06-06T08:09:06.628Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-06-06T08:10:39.182Z",
+      "event": "bb-session",
+      "session": "4b5a3580",
+      "url": "https://www.thestage.co.uk/reviews/the-devil-wears-prada-review-dominion-theatre"
+    },
+    {
+      "t": "2026-06-06T08:10:40.333Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
