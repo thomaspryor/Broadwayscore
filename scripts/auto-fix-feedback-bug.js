@@ -38,6 +38,11 @@ const ALLOWED_FIELDS = {
   'audience-buzz.json': [
     'title',
   ],
+  // awards.json: only winnerNames appends are auto-fixable (append-winner operation).
+  // Tony co-winners are excluded — they require awards-confirmed-ties.json update.
+  'awards.json': [
+    'winnerNames',
+  ],
 };
 
 const ALLOWED_FILES = Object.keys(ALLOWED_FIELDS);
@@ -154,6 +159,92 @@ async function main() {
 
   const show = shows[showIndex];
   console.log(`Found show: ${show.title} (${show.id})`);
+
+  // 6a. Awards co-winner fix: applied directly from diagnosis — no second Claude call needed.
+  //     Tony ties route to manual (require awards-confirmed-ties.json update).
+  if (diagnosis.targetFile === 'awards.json' && diagnosis.operation === 'append-winner') {
+    const { ceremony, category, missingPerson, existingWinners } = diagnosis;
+
+    if (!ceremony || !category || !missingPerson) {
+      writeComment('## Requires Manual Review\n\nAwards diagnosis is missing ceremony, category, or missingPerson. A maintainer will review.\n\n---\n*Auto-processed by feedback pipeline*');
+      output('skipped');
+      return;
+    }
+
+    // Tony co-winners need awards-confirmed-ties.json update — always route to manual.
+    if (ceremony === 'tony') {
+      writeComment('## Requires Manual Review\n\nTony Award co-winners require updating `data/awards-confirmed-ties.json` — this cannot be auto-applied. A maintainer will review.\n\n---\n*Auto-processed by feedback pipeline*');
+      output('skipped');
+      return;
+    }
+
+    const awardsData = loadJsonFile('data/awards.json');
+    const showAwards = awardsData.shows?.[show.id];
+    if (!showAwards) {
+      writeComment(`## Requires Manual Review\n\nShow \`${show.id}\` not found in awards.json. A maintainer will review.\n\n---\n*Auto-processed by feedback pipeline*`);
+      output('skipped');
+      return;
+    }
+
+    const ceremonyEntry = showAwards[ceremony];
+    if (!ceremonyEntry) {
+      writeComment(`## Requires Manual Review\n\nCeremony \`${ceremony}\` not found for show \`${show.id}\` in awards.json. A maintainer will review.\n\n---\n*Auto-processed by feedback pipeline*`);
+      output('skipped');
+      return;
+    }
+
+    const currentWinners = ceremonyEntry.winnerNames?.[category];
+    if (!currentWinners) {
+      writeComment(`## Requires Manual Review\n\nNo \`winnerNames\` entry for category "${category}" in ${ceremony} — cannot auto-create. A maintainer will review.\n\n---\n*Auto-processed by feedback pipeline*`);
+      output('skipped');
+      return;
+    }
+
+    // oldValue parity: existingWinners from diagnosis must match current data
+    if (existingWinners && JSON.stringify(currentWinners) !== JSON.stringify(existingWinners)) {
+      writeComment(`## Requires Manual Review\n\nAwards data has changed since diagnosis (current winners don't match expected). A maintainer will review.\n\n---\n*Auto-processed by feedback pipeline*`);
+      output('skipped');
+      return;
+    }
+
+    // Near-duplicate name check: prevent committing misspelled duplicates
+    const normalize = n => n.toLowerCase().replace(/[^a-z]/g, '');
+    const alreadyPresent = currentWinners.some(n => normalize(n) === normalize(missingPerson));
+    if (alreadyPresent) {
+      const comment = currentWinners.includes(missingPerson)
+        ? `## Already Fixed\n\n"${missingPerson}" is already listed as a winner in the awards data.`
+        : `## Requires Manual Review\n\nA name similar to "${missingPerson}" already exists in winners (possible spelling variant). A maintainer will review.`;
+      writeComment(`${comment}\n\n---\n*Auto-processed by feedback pipeline*`);
+      output('not-a-bug');
+      return;
+    }
+
+    // Apply: append missing co-winner
+    ceremonyEntry.winnerNames[category] = [...currentWinners, missingPerson];
+    if (ceremonyEntry.wins && !ceremonyEntry.wins.includes(category)) {
+      ceremonyEntry.wins.push(category);
+    }
+
+    saveJsonFile('data/awards.json', awardsData);
+    console.log(`Applied awards fix: added "${missingPerson}" to ${show.id}/${ceremony}/${category}`);
+
+    // Validate — rollback awards.json only on failure
+    console.log('Running validation...');
+    if (!runValidation()) {
+      console.error('Validation failed — rolling back awards.json');
+      try {
+        execSync('git checkout -- data/awards.json', { cwd: ROOT, stdio: 'pipe' });
+      } catch { /* best effort */ }
+      writeComment('## Validation Failed\n\nThe awards fix failed data validation and has been rolled back. A maintainer will review.\n\n---\n*Auto-processed by feedback pipeline*');
+      output('validation-failed');
+      return;
+    }
+
+    writeComment(`## Fix Applied\n\n**Show:** ${show.title}\n**Change:** Added "${missingPerson}" as co-winner for ${ceremony} / ${category}\n\nThe fix will be live within a few minutes after deployment.\n\n---\n*Auto-fixed by feedback pipeline*`);
+    output('fixed');
+    console.log('Awards co-winner fix applied successfully');
+    return;
+  }
 
   // 6. Call Claude to generate exact edits
   const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });

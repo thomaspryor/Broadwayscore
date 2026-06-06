@@ -46,7 +46,7 @@ runs:
         # Previous diff-based optimization silently missed changes (e.g.,
         # _meta.lastUpdated updates) for unknown reasons — removing it.
         COPIED=""
-        for f in shows.json reviews.json grosses.json grosses-history.json commercial.json audience-buzz.json critic-consensus.json critic-registry.json outlet-registry.json diary-shows.json audience-reviews-lbo.json opening-night-sent.json followers.json subscribers.json subscribers-westend.json; do
+        for f in shows.json reviews.json grosses.json grosses-history.json commercial.json audience-buzz.json critic-consensus.json critic-registry.json outlet-registry.json diary-shows.json audience-reviews-lbo.json opening-night-sent.json followers.json subscribers.json subscribers-westend.json awards.json; do
           if [ -f "data/$f" ]; then
             cp -f "data/$f" /tmp/core-data-checkout/
             COPIED="$COPIED $f"
