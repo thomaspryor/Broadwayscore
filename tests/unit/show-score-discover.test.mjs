@@ -13,7 +13,13 @@ import assert from 'node:assert';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { showScoreUrlForShow, extractShowScoreReviewUrls } = require('../../scripts/lib/show-score-discover.js');
+const {
+  showScoreUrlForShow,
+  extractShowScoreReviewUrls,
+  extractReadMoreUrls,
+  parseShowScorePagination,
+  fetchAllShowScoreReviewUrls,
+} = require('../../scripts/lib/show-score-discover.js');
 
 describe('showScoreUrlForShow', () => {
   it('prefers the curated url map', () => {
@@ -67,5 +73,53 @@ describe('extractShowScoreReviewUrls', () => {
   it('handles empty/garbage input', () => {
     assert.deepStrictEqual(extractShowScoreReviewUrls(''), []);
     assert.deepStrictEqual(extractShowScoreReviewUrls(null), []);
+  });
+});
+
+describe('extractReadMoreUrls — show-page-vouched links incl. opaque URLs', () => {
+  it('pulls "Read more" hrefs, including title-less outlet URLs (L&SA)', () => {
+    const html = `
+      <a href="http://www.lightingandsoundamerica.com/news/story.asp?ID=TEZUG4">Read more</a>
+      <a href="https://www.nytimes.com/2026/05/10/theater/the-receptionist-review.html">Read more</a>
+      <a href="https://www.show-score.com/off-broadway-shows/the-receptionist">Read more</a>
+    `;
+    const urls = extractReadMoreUrls(html);
+    assert.ok(urls.includes('http://www.lightingandsoundamerica.com/news/story.asp?ID=TEZUG4'),
+      'opaque L&SA story.asp URL must survive (no title-match applied)');
+    assert.ok(urls.some(u => /nytimes\.com/.test(u)));
+    assert.ok(!urls.some(u => /show-score\.com/.test(u)));
+  });
+});
+
+describe('parseShowScorePagination', () => {
+  it('reads next-page-path and total-count', () => {
+    const html = `<div data-next-page-path='/shows/the-receptionist/paginate_critic_reviews' data-total-count='13'>`;
+    const p = parseShowScorePagination(html);
+    assert.strictEqual(p.nextPagePath, '/shows/the-receptionist/paginate_critic_reviews');
+    assert.strictEqual(p.totalCount, 13);
+  });
+  it('returns nulls when absent', () => {
+    const p = parseShowScorePagination('<div>no pagination</div>');
+    assert.strictEqual(p.nextPagePath, null);
+    assert.strictEqual(p.totalCount, 0);
+  });
+});
+
+describe('fetchAllShowScoreReviewUrls — paginates past the initial 8', () => {
+  it('follows pagination and unions all pages', async () => {
+    const page1 = `<div data-next-page-path='/shows/x/paginate_critic_reviews' data-total-count='11'>` +
+      Array.from({ length: 8 }, (_, i) => `<a href="https://o${i}.com/r">a</a>Read more`).join('');
+    const fetchHtml = async (u) => {
+      if (!/paginate/.test(u)) return page1;
+      if (/page=2/.test(u)) return JSON.stringify({ html: '<a href="https://o8.com/r">Read more</a><a href="https://o9.com/r">Read more</a><a href="https://o10.com/r">Read more</a>' });
+      return JSON.stringify({ html: '' }); // page 3 empty → stop
+    };
+    const urls = await fetchAllShowScoreReviewUrls('https://www.show-score.com/off-broadway-shows/x', fetchHtml);
+    assert.strictEqual(urls.length, 11, `expected 11 unique review URLs, got ${urls.length}`);
+  });
+
+  it('returns [] when the page fetch fails', async () => {
+    const urls = await fetchAllShowScoreReviewUrls('https://x', async () => { throw new Error('boom'); });
+    assert.deepStrictEqual(urls, []);
   });
 });
