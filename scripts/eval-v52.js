@@ -17,6 +17,7 @@
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { CLAUDE_SONNET, GPT4O, GEMINI_FLASH } = require('./lib/models');
 
 // Load .env file manually (source .env doesn't work in all environments)
 const envPath = path.join(__dirname, '../.env');
@@ -168,7 +169,7 @@ async function scoreWithClaude(reviewText, context) {
 
   const prompt = buildPromptV5(reviewText, context);
   const response = await client.messages.create({
-    model: 'claude-sonnet-4-6',
+    model: CLAUDE_SONNET,
     max_tokens: 500,
     system: SYSTEM_PROMPT_V5,
     messages: [{ role: 'user', content: prompt }]
@@ -188,7 +189,7 @@ async function scoreWithOpenAI(reviewText, context) {
       'Authorization': `Bearer ${OPENAI_API_KEY}`
     },
     body: JSON.stringify({
-      model: 'gpt-4o',
+      model: GPT4O,
       messages: [
         { role: 'system', content: SYSTEM_PROMPT_V5 },
         { role: 'user', content: prompt }
@@ -211,7 +212,7 @@ async function scoreWithGemini(reviewText, context) {
   const { GoogleGenerativeAI } = require('@google/generative-ai');
   const client = new GoogleGenerativeAI(GEMINI_API_KEY);
   const model = client.getGenerativeModel({
-    model: 'gemini-2.5-flash',
+    model: GEMINI_FLASH,
     generationConfig: { temperature: 0.3, topP: 0.8, maxOutputTokens: 500 }
   });
 

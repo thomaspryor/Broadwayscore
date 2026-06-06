@@ -32,6 +32,7 @@ const path = require('path');
 const https = require('https');
 const { serpQuery } = require('./lib/url-discovery');
 const { normalizeSources } = require('./lib/commercial-sources');
+const { CLAUDE_SONNET } = require('./lib/models');
 
 // ---------------------------------------------------------------------------
 // Paths
@@ -255,7 +256,7 @@ ${evidence}`;
   const cleanContent = truncatedContent.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, ' ');
 
   const body = JSON.stringify({
-    model: 'claude-sonnet-4-6',
+    model: CLAUDE_SONNET,
     max_tokens: 2000,
     messages: [
       { role: 'user', content: cleanContent },

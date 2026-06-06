@@ -22,6 +22,9 @@ import { Anthropic } from '@anthropic-ai/sdk';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { createRequire } from 'module';
+const _require = createRequire(import.meta.url);
+const { CLAUDE_SONNET } = _require('./lib/models');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -315,7 +318,7 @@ async function callClaude(prompt) {
   });
 
   const message = await anthropic.messages.create({
-    model: 'claude-sonnet-4-6',
+    model: CLAUDE_SONNET,
     max_tokens: 2000,
     messages: [{ role: 'user', content: prompt }],
   });

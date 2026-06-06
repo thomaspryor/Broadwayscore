@@ -35,6 +35,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { safeWriteReview, safeRenameReview } = require('./lib/review-write-guard');
+const { CLAUDE_HAIKU, CLAUDE_OPUS, GEMINI_FLASH } = require('./lib/models');
 
 let lockedSkipCount = 0;
 
@@ -115,12 +116,12 @@ function callClaude(systemPrompt, userPrompt) {
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) throw new Error('ANTHROPIC_API_KEY not set');
   const body = JSON.stringify({
-    model: 'claude-haiku-4-5-20251001',
+    model: CLAUDE_HAIKU,
     max_tokens: 300,
     temperature: 0.1,
     system: systemPrompt,
     messages: [{ role: 'user', content: userPrompt }],
-    tools: [{ type: 'advisor_20260301', name: 'advisor', model: 'claude-opus-4-7', max_uses: 1 }]
+    tools: [{ type: 'advisor_20260301', name: 'advisor', model: CLAUDE_OPUS, max_uses: 1 }]
   });
   return new Promise((resolve, reject) => {
     const req = https.request('https://api.anthropic.com/v1/messages', {
@@ -156,7 +157,7 @@ function callClaude(systemPrompt, userPrompt) {
 function callGemini(systemPrompt, userPrompt) {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) throw new Error('GEMINI_API_KEY not set');
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_FLASH}:generateContent?key=${apiKey}`;
   const body = JSON.stringify({
     contents: [{ role: 'user', parts: [{ text: systemPrompt + '\n\n' + userPrompt }] }],
     generationConfig: { temperature: 0.1, maxOutputTokens: 300 }

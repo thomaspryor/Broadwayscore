@@ -17,6 +17,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { GEMINI_FLASH } = require('./models');
 
 // ============================================================
 // CONFIG
@@ -145,7 +146,7 @@ function getGeminiModel() {
   const { GoogleGenerativeAI } = require('@google/generative-ai');
   const genAI = new GoogleGenerativeAI(apiKey);
   geminiModel = genAI.getGenerativeModel({
-    model: 'gemini-2.5-flash',
+    model: GEMINI_FLASH,
     generationConfig: {
       temperature: 0.2,
       maxOutputTokens: 300,

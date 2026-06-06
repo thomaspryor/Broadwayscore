@@ -15,6 +15,7 @@
 
 const https = require('https');
 const crypto = require('crypto');
+const { GEMINI_FLASH, GPT4O_MINI, CLAUDE_HAIKU, CLAUDE_SONNET } = require('./models');
 const { isLondonMarket } = require('./venue-classification');
 const { applyTemporalOverrides } = require('./review-guards');
 const { buildVenueContext: _expandVenueContext } = require('./venue-aliases');
@@ -74,7 +75,7 @@ function callGemini(prompt) {
   // ~2026-06; 2.5-flash is the current equivalent (already used by the
   // llm-scoring ensemble). NOTE: ~30 other scripts still hardcode the dead
   // 2.0-flash — tracked as a separate class-fix card.
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_FLASH}:generateContent?key=${apiKey}`;
 
   return new Promise((resolve, reject) => {
     const body = JSON.stringify({
@@ -120,7 +121,7 @@ function callOpenAI(prompt) {
 
   return new Promise((resolve, reject) => {
     const body = JSON.stringify({
-      model: 'gpt-4o-mini',
+      model: GPT4O_MINI,
       messages: [{ role: 'user', content: prompt }],
       max_tokens: 400,
       temperature: 0.1
@@ -199,8 +200,8 @@ function callAnthropic(model) {
   };
 }
 
-const callClaudeHaiku = callAnthropic('claude-haiku-4-5-20251001');
-const callClaudeSonnet = callAnthropic('claude-sonnet-4-6');
+const callClaudeHaiku = callAnthropic(CLAUDE_HAIKU);
+const callClaudeSonnet = callAnthropic(CLAUDE_SONNET);
 
 // ============================================================
 // Provider Chain

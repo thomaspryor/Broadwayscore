@@ -18,6 +18,7 @@ const https = require('https');
 const { isValidSynopsis } = require('./lib/synopsis-validation');
 const { isValidCreativeTeamName, lookupIBDBDates } = require('./lib/ibdb-dates');
 const { serpQuery } = require('./lib/url-discovery');
+const { CLAUDE_HAIKU } = require('./lib/models');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const TODAYTIX_IDS_PATH = path.join(__dirname, '..', 'data', 'todaytix-ids.json');
@@ -261,7 +262,7 @@ Return ONLY the JSON array, no other text.`;
 function callClaudeAPI(prompt, maxTokens) {
   return new Promise((resolve) => {
     const postData = JSON.stringify({
-      model: 'claude-haiku-4-5-20251001',
+      model: CLAUDE_HAIKU,
       max_tokens: maxTokens,
       messages: [{ role: 'user', content: prompt }]
     });
