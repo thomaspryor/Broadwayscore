@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-07T09:17:39.036Z",
+  "timestamp": "2026-06-07T11:05:58.942Z",
   "stats": {
-    "totalReviews": 38085,
-    "alreadyFlagged": 16719,
+    "totalReviews": 38091,
+    "alreadyFlagged": 16720,
     "dateGuardCatches": 106,
-    "directorMismatch": 837,
+    "directorMismatch": 839,
     "tvFilmSignals": 1049,
-    "londonSignals": 612,
-    "offBroadwaySignals": 459,
+    "londonSignals": 613,
+    "offBroadwaySignals": 460,
     "yearMismatch": 81,
-    "noPublishDate": 3973
+    "noPublishDate": 3971
   },
   "findings": [
     {
@@ -1878,6 +1878,20 @@
       "score": 56,
       "publishDate": "2026-05-25",
       "url": "https://www.theguardian.com/stage/2026/may/29/beetlejuice-the-musical-review-prince-edward-theatre-london",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"alex timbers\" from beetlejuice-2025"
+        }
+      ]
+    },
+    {
+      "showId": "beetlejuice-west-end-2026",
+      "file": "hampstead-highgate-express--bridget-galton.json",
+      "score": 77,
+      "publishDate": "2026-05-31",
+      "url": null,
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -24849,6 +24863,20 @@
     },
     {
       "showId": "war-horse-west-end-2026",
+      "file": "londontheatre1--mary-beer.json",
+      "score": 62,
+      "publishDate": "2026-06-06",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from war-horse-2011"
+        }
+      ]
+    },
+    {
+      "showId": "war-horse-west-end-2026",
       "file": "standard--nick-curtis.json",
       "score": 79,
       "publishDate": "2026-06-04",
@@ -27547,6 +27575,20 @@
       "score": 71,
       "publishDate": "2026-06-05",
       "url": "https://www.londonboxoffice.co.uk/news/post/are-you-watching-royal-court-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "are-you-watching-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "score": 63,
+      "publishDate": null,
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/are-you-watching-review-sex-violence-and-voyeurism-rrjn8b7jf",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -30412,6 +30454,20 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 197d before show (October 14, 2021 vs 2022-04-29)"
+        }
+      ]
+    },
+    {
+      "showId": "girl-interrupted-off-broadway-2026",
+      "file": "theatrely--joey-sims.json",
+      "score": 72,
+      "publishDate": null,
+      "url": "https://www.theatrely.com/post/critics-notebook-indian-princesses-girl-interrupted",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
         }
       ]
     },
