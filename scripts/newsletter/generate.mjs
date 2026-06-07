@@ -894,9 +894,8 @@ function tonyWatchSection() {
     const isLast = i === arr.length - 1;
     // Tightened: thumb 48→40, our-pick box 44→40, row padding 10→7. ~12px saved per row.
     const thumbHtml = r.show ? thumb(r.show, 40) : `<div style="width:40px;height:40px;border-radius:8px;background:#2a2a38;text-align:center;line-height:40px;font-size:18px;color:#6b7280;">🏆</div>`;
-    const glow = '0 0 12px rgba(251,191,36,0.35),0 2px 8px rgba(0,0,0,0.4)';
-    const borderColor = '#fbbf24';
-    const ourPickBox = `<div style="box-sizing:border-box;display:inline-block;width:40px;height:40px;border-radius:8px;background:#1a1a24;border:2px solid ${borderColor};color:${borderColor};font-size:13px;font-weight:700;line-height:36px;text-align:center;box-shadow:${glow};">${r.pct}%</div>`;
+    // Match site's OurPickBox winner style (CategorySection.tsx winnerClass/winnerStyle)
+    const ourPickBox = `<div style="box-sizing:border-box;display:inline-block;width:44px;height:44px;border-radius:8px;background:linear-gradient(135deg,rgba(245,158,11,0.25),rgba(217,119,6,0.35));border:1px solid rgba(245,158,11,0.5);color:#fcd34d;font-size:13px;font-weight:700;line-height:44px;text-align:center;box-shadow:0 4px 6px rgba(245,158,11,0.2);">${r.pct}%</div>`;
     const predictedPill = `<span style="display:inline-block;padding:1px 7px;border-radius:999px;background:#1a1a24;border:1px solid #fbbf24;color:#fbbf24;font-size:9px;font-weight:700;letter-spacing:0.08em;vertical-align:2px;margin-left:6px;">★ PREDICTED</span>`;
     const eyebrow = `<div style="font-size:10px;font-weight:700;color:#d4a574;letter-spacing:0.10em;text-transform:uppercase;margin-bottom:2px;">${r.eyebrow}</div>`;
     return `<tr>
