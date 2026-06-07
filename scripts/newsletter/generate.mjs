@@ -348,7 +348,7 @@ function marketPill(category) {
 }
 
 function pill(label, color = '#c084fc', bg = 'rgba(168,85,247,0.15)') {
-  return `<span class="gp" style="background:${bg};color:${color}">${label}</span>`;
+  return `<span class="gp" style="display:inline-block;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.05em;line-height:1.5;vertical-align:middle;margin-right:4px;background:${bg};color:${color}">${label}</span>`;
 }
 
 function thumb(show, size = 64) {
