@@ -1878,6 +1878,7 @@ const sectionOrder = [
   _slot('broadway-openings', bwO.html),
   _slot('offbroadway-openings', obO.html),
   _slot('london-openings', londonTop),   // Gold WE openings float up to join NYC openers
+  _slot('tony-predictions', _londonHasGoldOpening ? tony : null), // below Gold London
   _slot('upcoming-openings', upcomingTop),
   _slot('biggest-movers', mover),
   _slot('closing-this-week', clo),
@@ -1886,9 +1887,9 @@ const sectionOrder = [
   _slot('box-office', box),
   _slot('recoupment', commercial),
   _slot('social-buzz', bz),
-  _slot('tony-predictions', tony),
   _slot('outlier-of-the-week', outlier),
   _slot('london-openings', londonBottom), // Non-gold WE openings stay at bottom
+  _slot('tony-predictions', !_londonHasGoldOpening ? tony : null), // below non-Gold London
   _slot('opera-openings', opera),
   _slot('casting-updates', cas),
   ...(_dropSet.has('season-standing') ? [] : seasonStandings),
