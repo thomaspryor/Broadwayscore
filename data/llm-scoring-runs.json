@@ -641400,5 +641400,25 @@
         "error": "input_validation_failed:body_too_short"
       }
     ]
+  },
+  {
+    "startedAt": "2026-06-07T22:57:45.661Z",
+    "completedAt": "2026-06-07T22:57:45.848Z",
+    "totalReviews": 55,
+    "processed": 0,
+    "skipped": 54,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "errorDetails": [
+      {
+        "showId": "war-horse-west-end-2026",
+        "outletId": "click-liverpool",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
   }
 ]
