@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-07T21:33:13.326Z",
+  "timestamp": "2026-06-07T22:38:55.272Z",
   "stats": {
     "totalReviews": 38168,
     "alreadyFlagged": 16743,
     "dateGuardCatches": 106,
-    "directorMismatch": 842,
+    "directorMismatch": 841,
     "tvFilmSignals": 1049,
     "londonSignals": 616,
     "offBroadwaySignals": 460,
     "yearMismatch": 80,
-    "noPublishDate": 4001
+    "noPublishDate": 4002
   },
   "findings": [
     {
@@ -24938,24 +24938,10 @@
     },
     {
       "showId": "war-horse-west-end-2026",
-      "file": "sunday-telegraph--dominic-cavendish.json",
-      "score": 89,
-      "publishDate": "2026-06-03",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/war-horse-national-theatre-review/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"marianne elliott\" from war-horse-2011"
-        }
-      ]
-    },
-    {
-      "showId": "war-horse-west-end-2026",
       "file": "telegraph--dominic-cavendish.json",
       "score": 91,
       "publishDate": "2026-06-03",
-      "url": null,
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/war-horse-national-theatre-review/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -41055,7 +41041,7 @@
       "file": "broadwayworld--aliya-al-hassan.json",
       "score": 91,
       "publishDate": "2026-06-03",
-      "url": null,
+      "url": "https://www.broadwayworld.com/westend/article/Review-WAR-HORSE-National-Theatre-20260603",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
