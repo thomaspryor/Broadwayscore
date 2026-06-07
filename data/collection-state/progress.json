@@ -973,7 +973,14 @@
     "care-west-end-2026/times-uk--mark-fisher.json",
     "care-west-end-2026/times-uk--unknown.json",
     "care-west-end-2026/whatsonstage--judi-herman.json",
-    "equus-west-end-2026/guardian--unknown.json"
+    "equus-west-end-2026/guardian--unknown.json",
+    "equus-west-end-2026/the-jewish-chronicle--unknown.json",
+    "equus-west-end-2026/thereviewshub--unknown.json",
+    "equus-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "equus-west-end-2026/artsdesk--unknown.json",
+    "equus-west-end-2026/thestage--holly-o.json",
+    "equus-west-end-2026/times-uk--clive-davis.json",
+    "equus-west-end-2026/whatsonstage--alun-hood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1013,9 +1020,7 @@
       "data/review-texts/equus-west-end-2026/thereviewshub--unknown.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
-      "data/review-texts/small-off-broadway-2026/theater-pizzazz--unknown.json"
+      "data/review-texts/equus-west-end-2026/thereviewshub--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1036,7 +1041,7 @@
     ]
   },
   "startTime": "2026-06-07T05:20:43.951Z",
-  "lastProcessed": "equus-west-end-2026/guardian--unknown.json",
+  "lastProcessed": "equus-west-end-2026/whatsonstage--alun-hood.json",
   "log": [
     {
       "t": "2026-06-07T05:21:08.825Z",
@@ -1269,6 +1274,23 @@
     },
     {
       "t": "2026-06-07T12:30:34.795Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-06-07T12:33:01.344Z",
+      "event": "bb-session",
+      "session": "fac30ff3",
+      "url": "https://www.thereviewshub.com/equus-menier-chocolate-factory-london/"
+    },
+    {
+      "t": "2026-06-07T12:34:56.657Z",
+      "event": "bb-session",
+      "session": "8b78f9b7",
+      "url": "https://thestage.co.uk/reviews/equus-review-menier-chocolate-factory-london-lind"
+    },
+    {
+      "t": "2026-06-07T12:34:57.665Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
