@@ -571,9 +571,21 @@ function smallScorePill(row) {
   return `<span style="display:inline-block;min-width:38px;padding:6px 9px;border-radius:8px;background:${tier.bg};color:${tier.fg};font-size:16px;font-weight:800;text-align:center;line-height:1;letter-spacing:-0.02em;${glow}">${score}</span>`;
 }
 
-// Compact one-line row for low-signal sections. No thumbnail, no pills — just
-// title · market, a status line, and a small score pill on the right. Keeps
-// "Other recent/upcoming" from drowning the action items above them.
+// Small 48×48 square thumbnail for the compact rows — same poster as the full
+// card, scaled down. Keeps low-signal sections visually consistent with the
+// action sections (a region that is all "other" shouldn't read as broken/bare)
+// while staying lighter than the full card (no metadata pills, no score column).
+function compactThumbnailHtml(row) {
+  if (row.thumbnail) {
+    return `<img src="${esc(row.thumbnail)}" alt="${esc(row.title)}" width="48" height="48" style="display:block;width:48px;height:48px;border-radius:6px;object-fit:cover;background:${TOKENS.surfaceOverlay};">`;
+  }
+  return `<div style="width:48px;height:48px;background:${TOKENS.surfaceOverlay};border-radius:6px;"></div>`;
+}
+
+// Compact one-line row for low-signal sections. Small poster, no metadata pills,
+// no score column — just title · market, a status line, and a small score pill
+// on the right. Keeps "Other recent/upcoming" from drowning the action items
+// above them while still reading as a real card, not a stripped-down list.
 function renderCompactRow(row, kind) {
   const when = `${esc(whenLabel(row.daysFromToday))} · ${esc(formatHumanDate(row.date))}`;
   let status;
@@ -590,6 +602,7 @@ function renderCompactRow(row, kind) {
   }
   return `
   <tr style="border-top:1px solid ${TOKENS.borderSubtle};">
+    <td style="padding:10px 10px 10px 0;vertical-align:middle;width:48px;">${compactThumbnailHtml(row)}</td>
     <td style="padding:10px 12px 10px 0;vertical-align:middle;">
       <a href="${esc(row.url)}" style="color:${TOKENS.text};text-decoration:none;font-size:14px;font-weight:600;">${esc(row.title)}</a>
       <span style="color:${TOKENS.textDim};font-size:12px;font-weight:500;"> · ${esc(row.marketLabel)}</span>
