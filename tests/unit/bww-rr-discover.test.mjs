@@ -191,4 +191,17 @@ describe('discoverBwwRoundupUrl — section-page discovery (off-Broadway)', () =
     assert.strictEqual(result.via, 'reviews.php');
     assert.ok(result.url.includes('A-WOMAN-AMONG-WOMEN'), `got ${result.url}`);
   });
+
+  it('skipReviewsPhp avoids the Browserbase fallback (closed-show cost guard)', async () => {
+    const show = { title: 'Some Old Show', openingDate: '2024-01-01', category: 'off-broadway', status: 'closed' };
+    let reviewsPhpCalled = false;
+    const result = await discoverBwwRoundupUrl(show, {
+      skipReviewsPhp: true,
+      fetchSectionAnchors: async () => [], // section finds nothing
+      fetchAnchors: async () => { reviewsPhpCalled = true; return []; },
+    });
+    assert.strictEqual(result.via, 'section-only');
+    assert.strictEqual(result.url, null);
+    assert.strictEqual(reviewsPhpCalled, false, 'must NOT hit Browserbase reviews.php for a closed show');
+  });
 });

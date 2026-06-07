@@ -275,7 +275,10 @@ async function findAggregatorArticles(show) {
   // (2026-06). Cheap ScrapingBee scan; falls back internally to reviews.php.
   try {
     const { discoverBwwRoundupUrl } = require('./lib/bww-rr-discover');
-    const bww = await discoverBwwRoundupUrl(show);
+    // For closed shows skip the Browserbase reviews.php fallback — it only lists
+    // recent roundups, so it can't help an old show and would burn ~$0.10/show
+    // across the back-catalogue grind (the cheap section scan still runs).
+    const bww = await discoverBwwRoundupUrl(show, { skipReviewsPhp: show.status === 'closed' });
     if (bww && bww.url) urls.add(bww.url.split('?')[0].split('#')[0]);
   } catch (e) {
     if (verbose) console.error(`  BWW section discovery error for ${id}: ${e.message}`);

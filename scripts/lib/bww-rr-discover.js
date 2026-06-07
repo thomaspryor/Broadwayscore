@@ -276,7 +276,14 @@ async function discoverBwwRoundupUrl(show, opts = {}) {
     return { url: candidates[0].url, candidates, via: 'section' };
   }
 
-  // 2. Fall back to reviews.php (Browserbase).
+  // 2. Fall back to reviews.php (Browserbase, ~$0.10/call). Skippable: reviews.php
+  //    only lists RECENT roundups, so for a closed/old show the section scan having
+  //    found nothing means reviews.php won't either — firing Browserbase there is a
+  //    guaranteed-miss cost (the back-catalogue grind would burn ~$0.10 × hundreds
+  //    of closed shows). Callers pass skipReviewsPhp:true for closed shows.
+  if (opts.skipReviewsPhp) {
+    return { url: null, candidates: [], via: 'section-only' };
+  }
   const fetchAnchors = opts.fetchAnchors || fetchReviewsPageAnchors;
   try {
     anchors = await fetchAnchors();
