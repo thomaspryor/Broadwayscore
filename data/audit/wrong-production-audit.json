@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-07T20:52:35.150Z",
+  "timestamp": "2026-06-07T21:22:22.998Z",
   "stats": {
-    "totalReviews": 38185,
-    "alreadyFlagged": 16727,
+    "totalReviews": 38168,
+    "alreadyFlagged": 16743,
     "dateGuardCatches": 106,
-    "directorMismatch": 841,
+    "directorMismatch": 842,
     "tvFilmSignals": 1049,
-    "londonSignals": 615,
+    "londonSignals": 616,
     "offBroadwaySignals": 460,
     "yearMismatch": 80,
-    "noPublishDate": 4044
+    "noPublishDate": 4001
   },
   "findings": [
     {
@@ -23756,6 +23756,20 @@
     },
     {
       "showId": "the-rocky-horror-show-2026",
+      "file": "the-contending--frank-j-avella.json",
+      "score": null,
+      "publishDate": "2026-05-01",
+      "url": "https://thecontending.com/the-rocky-horror-show-luke-evans-astounds-in-campy-queer-tastic-revival/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jim sharman\" from the-rocky-horror-show-1975"
+        }
+      ]
+    },
+    {
+      "showId": "the-rocky-horror-show-2026",
       "file": "thewrap--robert-hofler.json",
       "score": 76,
       "publishDate": "2026-04-23",
@@ -27645,6 +27659,20 @@
       "score": 82,
       "publishDate": "2026-04-17",
       "url": "https://www.standard.co.uk/culture/theatre/avenue-q-review-b1278927.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "avenue-q-west-end-2026",
+      "file": "west-end-wilma--unknown.json",
+      "score": null,
+      "publishDate": "2026-04-18",
+      "url": "https://westendwilma.com/review-avenue-q-london-theatre-2026/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
