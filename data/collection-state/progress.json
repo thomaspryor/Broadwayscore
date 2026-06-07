@@ -689,7 +689,17 @@
     "beetlejuice-west-end-2026/amny--matt-windman.json",
     "the-p-word-off-west-end-2026/whatsonstage--frey-kwa-hawking.json",
     "dark-of-the-moon-west-end-2026/guardian-uk--unknown.json",
-    "dark-of-the-moon-west-end-2026/all-that-dazzles-uk--unknown.json"
+    "dark-of-the-moon-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "dark-of-the-moon-west-end-2026/artsdesk--unknown.json",
+    "dark-of-the-moon-west-end-2026/cambridge--unknown.json",
+    "dark-of-the-moon-west-end-2026/thestage--unknown.json",
+    "care-west-end-2026/i-paper--unknown.json",
+    "care-west-end-2026/london-theatre--matt-wolf.json",
+    "care-west-end-2026/the-upcoming-uk--unknown.json",
+    "care-west-end-2026/times-uk--clive-davis.json",
+    "care-west-end-2026/times-uk--mark-fisher.json",
+    "care-west-end-2026/times-uk--unknown.json",
+    "care-west-end-2026/whatsonstage--judi-herman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -727,13 +737,15 @@
     "brightdata": [
       "dark-of-the-moon-west-end-2026/guardian--arifa-akbar.json"
     ],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json"
+    ],
     "archive": [
       "small-off-broadway-2026/culturesauce--thom-geier.json"
     ]
   },
   "startTime": "2026-06-07T05:20:43.951Z",
-  "lastProcessed": "dark-of-the-moon-west-end-2026/all-that-dazzles-uk--unknown.json",
+  "lastProcessed": "care-west-end-2026/whatsonstage--judi-herman.json",
   "log": [
     {
       "t": "2026-06-07T05:21:08.825Z",
@@ -844,6 +856,12 @@
       "t": "2026-06-07T10:09:36.173Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-07T10:45:20.106Z",
+      "event": "bb-session",
+      "session": "00991f13",
+      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
     }
   ]
 }
