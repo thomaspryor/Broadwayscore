@@ -235,17 +235,16 @@ function dedupeByKind(candidates) {
 // Build a subject line from the top candidates. Caps at 130 chars; appends
 // ", and more." when ≥3 items survive.
 export function buildSubjectFromCandidates(candidates, opts = {}) {
-  const prefix = opts.prefix || 'Scorecard Weekly: ';
-  if (!candidates.length) return `${prefix}this week in NYC theatre.`;
+  if (!candidates.length) return 'This week in NYC theatre.';
   const unique = dedupeByKind(candidates);
   const items = unique.slice(0, 4).map(c => c.headline);
   let parts = items.slice();
   let tail = parts.length >= 3 ? ', and more.' : '.';
-  let subject = prefix + parts.join(', ') + tail;
-  while (subject.length > 130 && parts.length > 1) {
+  let subject = parts.join(', ') + tail;
+  while (subject.length > 80 && parts.length > 1) {
     parts.pop();
     tail = parts.length >= 3 ? ', and more.' : '.';
-    subject = prefix + parts.join(', ') + tail;
+    subject = parts.join(', ') + tail;
   }
   return subject;
 }
