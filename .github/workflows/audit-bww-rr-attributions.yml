@@ -82,7 +82,7 @@ jobs:
           echo "Action: review each, add confirmed mis-attributions to scripts/lib/critic-canonicalization.js CRITIC_CANONICAL_MAP."
 
       - name: Upload audit artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: bww-rr-audit-${{ github.run_id }}
           path: /tmp/audit.json
