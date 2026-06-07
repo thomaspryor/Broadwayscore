@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-07T09:17:42.749Z",
+  "generatedAt": "2026-06-07T11:06:03.489Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -388,23 +388,23 @@
       "status": "open",
       "slug": "girl-interrupted-off-broadway",
       "thumbnail": "/images/shows/girl-interrupted-off-broadway-2026/thumbnail.webp",
-      "siteScore": 70.77,
+      "siteScore": 70.84,
       "liveScore": 71,
-      "scoreDrift": 0.23000000000000398,
+      "scoreDrift": 0.1599999999999966,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 18,
+      "total": 19,
       "t1": 5,
-      "t2": 8,
+      "t2": 9,
       "t3": 5,
       "positive": 10,
-      "mixed": 8,
+      "mixed": 9,
       "negative": 0,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 11,
+        "highConfidence": 12,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -744,6 +744,18 @@
           "m": 8,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-06-07T11:06:03.489Z",
+          "rc": 19,
+          "s": 70.84,
+          "t1": 5,
+          "t2": 9,
+          "t3": 5,
+          "p": 10,
+          "m": 9,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -757,28 +769,23 @@
       "status": "open",
       "slug": "are-you-watching-west-end",
       "thumbnail": "/images/shows/are-you-watching-west-end-2026/thumbnail.webp",
-      "siteScore": 77,
-      "liveScore": 77,
-      "scoreDrift": 0,
+      "siteScore": 75.1,
+      "liveScore": 75,
+      "scoreDrift": -0.09999999999999432,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 6,
-      "t1": 3,
-      "t2": 3,
+      "total": 9,
+      "t1": 4,
+      "t2": 5,
       "t3": 0,
-      "positive": 4,
-      "mixed": 2,
+      "positive": 6,
+      "mixed": 3,
       "negative": 0,
       "readiness": {
-        "ready": false,
-        "reasons": [
-          "6/8 total",
-          "T1:2/3",
-          "T2:1/2",
-          "hi-conf:4/6"
-        ],
-        "highConfidence": 4,
+        "ready": true,
+        "reasons": [],
+        "highConfidence": 8,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -788,7 +795,7 @@
       },
       "broadcast": {
         "state": "waiting",
-        "detail": "Not yet broadcast-ready"
+        "detail": "Ready — awaiting send"
       },
       "missingT1": [
         {
@@ -868,6 +875,18 @@
           "t3": 0,
           "p": 4,
           "m": 2,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-06-07T11:06:03.489Z",
+          "rc": 9,
+          "s": 75.1,
+          "t1": 4,
+          "t2": 5,
+          "t3": 0,
+          "p": 6,
+          "m": 3,
           "n": 0,
           "bc": "waiting"
         }
