@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-06-07T14:41:51.884Z",
-  "totalScanned": 38775,
+  "generatedAt": "2026-06-07T18:43:13.421Z",
+  "totalScanned": 38814,
   "findings": [
     {
       "from": "a-midsummer-nights-dream-globe-west-end-2026",
@@ -1949,6 +1949,40 @@
     {
       "from": "giant-2026",
       "to": "john-lithgow-stories-by-heart-2018",
+      "file": "amny--matt-windman.json",
+      "slug": "Review-Roundup-GIANT-Opens-On-Broadway-Starring-John-Lithgow-As-Roald-Dahl-20260323",
+      "source": "bww",
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-GIANT-Opens-On-Broadway-Starring-John-Lithgow-As-Roald-Dahl-20260323",
+      "fromTokens": "giant",
+      "toTokens": "john|lithgow",
+      "articleYear": 2026,
+      "toYearGap": 8,
+      "fromYearGap": 0,
+      "fromShow": {
+        "title": "Giant",
+        "venue": "Music Box Theatre",
+        "openingDate": "2026-03-23",
+        "status": "open",
+        "category": "broadway"
+      },
+      "toShow": {
+        "title": "John Lithgow: Stories By Heart",
+        "venue": "Todd Haimes Theatre",
+        "openingDate": "2018-01-11",
+        "status": "closed",
+        "category": "broadway"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [
+        "to-year-far",
+        "from-also-full-match"
+      ],
+      "confirm": false
+    },
+    {
+      "from": "giant-2026",
+      "to": "john-lithgow-stories-by-heart-2018",
       "file": "chicagotribune--chris-jones.json",
       "slug": "Review-Roundup-GIANT-Opens-On-Broadway-Starring-John-Lithgow-As-Roald-Dahl-20260323",
       "source": "bww",
@@ -2493,6 +2527,40 @@
     {
       "from": "giant-2026",
       "to": "john-lithgow-stories-by-heart-2018",
+      "file": "timeout--adam-feldman.json",
+      "slug": "Review-Roundup-GIANT-Opens-On-Broadway-Starring-John-Lithgow-As-Roald-Dahl-20260323",
+      "source": "bww",
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-GIANT-Opens-On-Broadway-Starring-John-Lithgow-As-Roald-Dahl-20260323",
+      "fromTokens": "giant",
+      "toTokens": "john|lithgow",
+      "articleYear": 2026,
+      "toYearGap": 8,
+      "fromYearGap": 0,
+      "fromShow": {
+        "title": "Giant",
+        "venue": "Music Box Theatre",
+        "openingDate": "2026-03-23",
+        "status": "open",
+        "category": "broadway"
+      },
+      "toShow": {
+        "title": "John Lithgow: Stories By Heart",
+        "venue": "Todd Haimes Theatre",
+        "openingDate": "2018-01-11",
+        "status": "closed",
+        "category": "broadway"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [
+        "to-year-far",
+        "from-also-full-match"
+      ],
+      "confirm": false
+    },
+    {
+      "from": "giant-2026",
+      "to": "john-lithgow-stories-by-heart-2018",
       "file": "variety--daniel-daddario.json",
       "slug": "Review-Roundup-GIANT-Opens-On-Broadway-Starring-John-Lithgow-As-Roald-Dahl-20260323",
       "source": "bww",
@@ -2525,34 +2593,35 @@
       "confirm": false
     },
     {
-      "from": "happy-ending-west-end-2026",
-      "to": "maybe-happy-ending-2024",
-      "file": "nytg--joe-dziemianowicz.json",
-      "slug": "Review-Roundup-MAYBE-HAPPY-ENDING-Starring-Darren-Criss-and-Helen-J-Shen-20241112",
+      "from": "giant-2026",
+      "to": "john-lithgow-stories-by-heart-2018",
+      "file": "vulture--sara-holdren.json",
+      "slug": "Review-Roundup-GIANT-Opens-On-Broadway-Starring-John-Lithgow-As-Roald-Dahl-20260323",
       "source": "bww",
-      "url": "https://www.broadwayworld.com/article/Review-Roundup-MAYBE-HAPPY-ENDING-Starring-Darren-Criss-and-Helen-J-Shen-20241112",
-      "fromTokens": "happy|ending",
-      "toTokens": "maybe|happy|ending",
-      "articleYear": 2024,
-      "toYearGap": 0,
-      "fromYearGap": null,
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-GIANT-Opens-On-Broadway-Starring-John-Lithgow-As-Roald-Dahl-20260323",
+      "fromTokens": "giant",
+      "toTokens": "john|lithgow",
+      "articleYear": 2026,
+      "toYearGap": 8,
+      "fromYearGap": 0,
       "fromShow": {
-        "title": "Happy Ending",
-        "venue": "Southwark",
-        "openingDate": null,
-        "status": "announced",
-        "category": "off-west-end"
+        "title": "Giant",
+        "venue": "Music Box Theatre",
+        "openingDate": "2026-03-23",
+        "status": "open",
+        "category": "broadway"
       },
       "toShow": {
-        "title": "Maybe Happy Ending",
-        "venue": "Belasco Theatre",
-        "openingDate": "2024-11-12",
-        "status": "open",
+        "title": "John Lithgow: Stories By Heart",
+        "venue": "Todd Haimes Theatre",
+        "openingDate": "2018-01-11",
+        "status": "closed",
         "category": "broadway"
       },
       "class": "A",
       "outOfScope": false,
       "warnings": [
+        "to-year-far",
         "from-also-full-match"
       ],
       "confirm": false
@@ -2650,74 +2719,6 @@
       "class": "A",
       "outOfScope": false,
       "warnings": [],
-      "confirm": false
-    },
-    {
-      "from": "les-liaisons-dangereuses-2008",
-      "to": "nt-live-les-liaisons-dangereuses-off-west-end-2026",
-      "file": "ap--mark-kennedy.json",
-      "slug": "Review-Roundup-LES-LIAISONS-DANGEREUSES-Opens-on-Broadway-Updating-LIVE-20161030",
-      "source": "bww",
-      "url": "https://www.broadwayworld.com/article/Review-Roundup-LES-LIAISONS-DANGEREUSES-Opens-on-Broadway-Updating-LIVE-20161030",
-      "fromTokens": "les|liaisons|dangereuses",
-      "toTokens": "live|les|liaisons|dangereuses",
-      "articleYear": 2016,
-      "toYearGap": null,
-      "fromYearGap": 8,
-      "fromShow": {
-        "title": "Les Liaisons Dangereuses",
-        "venue": "Todd Haimes Theatre",
-        "openingDate": "2008-05-01",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "toShow": {
-        "title": "Nt Live Les Liaisons Dangereuses",
-        "venue": "Kiln Theatre",
-        "openingDate": null,
-        "status": "announced",
-        "category": "off-west-end"
-      },
-      "class": "A",
-      "outOfScope": false,
-      "warnings": [
-        "no-date",
-        "from-also-full-match"
-      ],
-      "confirm": false
-    },
-    {
-      "from": "les-liaisons-dangereuses-2008",
-      "to": "nt-live-les-liaisons-dangereuses-off-west-end-2026",
-      "file": "broadwayworld--michael-dale.json",
-      "slug": "Review-Roundup-LES-LIAISONS-DANGEREUSES-Opens-on-Broadway-Updating-LIVE-20161030",
-      "source": "bww",
-      "url": "https://www.broadwayworld.com/article/Review-Roundup-LES-LIAISONS-DANGEREUSES-Opens-on-Broadway-Updating-LIVE-20161030",
-      "fromTokens": "les|liaisons|dangereuses",
-      "toTokens": "live|les|liaisons|dangereuses",
-      "articleYear": 2016,
-      "toYearGap": null,
-      "fromYearGap": 8,
-      "fromShow": {
-        "title": "Les Liaisons Dangereuses",
-        "venue": "Todd Haimes Theatre",
-        "openingDate": "2008-05-01",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "toShow": {
-        "title": "Nt Live Les Liaisons Dangereuses",
-        "venue": "Kiln Theatre",
-        "openingDate": null,
-        "status": "announced",
-        "category": "off-west-end"
-      },
-      "class": "A",
-      "outOfScope": false,
-      "warnings": [
-        "no-date",
-        "from-also-full-match"
-      ],
       "confirm": false
     },
     {
@@ -3199,112 +3200,10 @@
     {
       "from": "les-liaisons-dangereuses-west-end-2026",
       "to": "nt-live-les-liaisons-dangereuses-off-west-end-2026",
-      "file": "hollywood-reporter--unknown.json",
-      "slug": "Review-Roundup-LES-LIAISONS-DANGEREUSES-Opens-on-Broadway-Updating-LIVE-20161030",
-      "source": "bww",
-      "url": "http://www.hollywoodreporter.com/review/les-liaisons-dangereuses-942316",
-      "fromTokens": "les|liaisons|dangereuses",
-      "toTokens": "live|les|liaisons|dangereuses",
-      "articleYear": 2016,
-      "toYearGap": null,
-      "fromYearGap": 10,
-      "fromShow": {
-        "title": "Les Liaisons Dangereuses",
-        "venue": "Lyttelton Theatre",
-        "openingDate": "2026-04-01",
-        "status": "closed",
-        "category": "west-end"
-      },
-      "toShow": {
-        "title": "Nt Live Les Liaisons Dangereuses",
-        "venue": "Kiln Theatre",
-        "openingDate": null,
-        "status": "announced",
-        "category": "off-west-end"
-      },
-      "class": "A",
-      "outOfScope": false,
-      "warnings": [
-        "no-date",
-        "from-also-full-match"
-      ],
-      "confirm": false
-    },
-    {
-      "from": "les-liaisons-dangereuses-west-end-2026",
-      "to": "nt-live-les-liaisons-dangereuses-off-west-end-2026",
-      "file": "newsday--unknown.json",
-      "slug": "Review-Roundup-LES-LIAISONS-DANGEREUSES-Opens-on-Broadway-Updating-LIVE-20161030",
-      "source": "bww",
-      "url": "http://www.newsday.com/entertainment/theater/schreiber-mcteer-play-with-fire-in-les-liaisons-dangereuses-1.12521474",
-      "fromTokens": "les|liaisons|dangereuses",
-      "toTokens": "live|les|liaisons|dangereuses",
-      "articleYear": 2016,
-      "toYearGap": null,
-      "fromYearGap": 10,
-      "fromShow": {
-        "title": "Les Liaisons Dangereuses",
-        "venue": "Lyttelton Theatre",
-        "openingDate": "2026-04-01",
-        "status": "closed",
-        "category": "west-end"
-      },
-      "toShow": {
-        "title": "Nt Live Les Liaisons Dangereuses",
-        "venue": "Kiln Theatre",
-        "openingDate": null,
-        "status": "announced",
-        "category": "off-west-end"
-      },
-      "class": "A",
-      "outOfScope": false,
-      "warnings": [
-        "no-date",
-        "from-also-full-match"
-      ],
-      "confirm": false
-    },
-    {
-      "from": "les-liaisons-dangereuses-west-end-2026",
-      "to": "nt-live-les-liaisons-dangereuses-off-west-end-2026",
       "file": "telegraph--claire-allfree.json",
       "slug": "Review-Roundup-LES-LIAISONS-DANGEREUSES-Opens-on-Broadway-Updating-LIVE-20161030",
       "source": "bww",
       "url": "http://www.telegraph.co.uk/theatre/what-to-see/les-liaisons-dangereuses-booth-theatre-new-york-review/",
-      "fromTokens": "les|liaisons|dangereuses",
-      "toTokens": "live|les|liaisons|dangereuses",
-      "articleYear": 2016,
-      "toYearGap": null,
-      "fromYearGap": 10,
-      "fromShow": {
-        "title": "Les Liaisons Dangereuses",
-        "venue": "Lyttelton Theatre",
-        "openingDate": "2026-04-01",
-        "status": "closed",
-        "category": "west-end"
-      },
-      "toShow": {
-        "title": "Nt Live Les Liaisons Dangereuses",
-        "venue": "Kiln Theatre",
-        "openingDate": null,
-        "status": "announced",
-        "category": "off-west-end"
-      },
-      "class": "A",
-      "outOfScope": false,
-      "warnings": [
-        "no-date",
-        "from-also-full-match"
-      ],
-      "confirm": false
-    },
-    {
-      "from": "les-liaisons-dangereuses-west-end-2026",
-      "to": "nt-live-les-liaisons-dangereuses-off-west-end-2026",
-      "file": "thewrap--unknown.json",
-      "slug": "Review-Roundup-LES-LIAISONS-DANGEREUSES-Opens-on-Broadway-Updating-LIVE-20161030",
-      "source": "bww",
-      "url": "http://www.thewrap.com/les-liaisons-dangereuses-broadway-review-liev-schreiber-janet-mcteer-bring-old-blighty-to-france/",
       "fromTokens": "les|liaisons|dangereuses",
       "toTokens": "live|les|liaisons|dangereuses",
       "articleYear": 2016,
