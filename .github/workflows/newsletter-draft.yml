@@ -119,6 +119,12 @@ jobs:
           mkdir -p "$NEWSLETTER_OUT_DIR"
           node scripts/newsletter/generate.mjs "${{ steps.week.outputs.weekStart }}"
 
+      - name: Pre-send check (HTML invariants, UTMs, subject, lede)
+        env:
+          NEWSLETTER_OUT_DIR: ${{ github.workspace }}/data/newsletter-drafts
+        run: |
+          node scripts/newsletter/pre-send-check.mjs "${{ steps.week.outputs.weekStart }}"
+
       - name: Regression test (catches silent section drops)
         env:
           NEWSLETTER_OUT_DIR: ${{ github.workspace }}/data/newsletter-drafts

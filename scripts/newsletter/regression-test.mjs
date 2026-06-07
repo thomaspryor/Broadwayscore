@@ -83,11 +83,11 @@ for (const [name, bs] of baselineByName) {
   }
 }
 
-// Invariant 3: subject must be non-empty and ≤ 200 chars.
+// Invariant 3: subject must be non-empty and ≤ 80 chars.
 if (!current.subject) {
   failures.push('subject is empty');
-} else if (current.subject.length > 200) {
-  failures.push(`subject too long (${current.subject.length} chars)`);
+} else if (current.subject.length > 80) {
+  failures.push(`subject too long (${current.subject.length} chars, max 80)`);
 }
 
 if (failures.length === 0) {
