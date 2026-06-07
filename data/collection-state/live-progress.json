@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-06-07T09:32:02.339Z",
+  "updatedAt": "2026-06-07T10:12:20.024Z",
   "processed": 14,
-  "failed": 647,
+  "failed": 664,
   "successRate": "2.1%",
   "tierBreakdown": {
     "playwright": 11,
     "amp": 0,
-    "browserbase": 9,
+    "browserbase": 11,
     "directCookies": 0,
     "scrapingbee": 1,
     "brightdata": 0,
@@ -100,6 +100,28 @@
     },
     {
       "t": "2026-06-07T09:29:04.897Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-07T10:09:20.250Z",
+      "event": "bb-session",
+      "session": "5555e84a",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-07T10:09:21.268Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-07T10:09:35.207Z",
+      "event": "bb-session",
+      "session": "50cf8266",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-07T10:09:36.173Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
