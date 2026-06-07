@@ -273,7 +273,17 @@ async function checkPrivateRepoPAT() {
     return { name: 'Private Repo PAT', status: 'fail', message: `Repo access failed — ${issues.join(', ')}` };
   }
 
-  return { name: 'Private Repo PAT', status: 'pass', message: 'Token valid, both private repos accessible' };
+  // Fine-grained PATs can return 200 on repo metadata but 403 on contents (expired or missing permission).
+  // Test the exact contents endpoint the BTC submission route uses.
+  const contentsCheck = await httpsGet(
+    'https://api.github.com/repos/thomaspryor/broadway-scorecard-data/contents/data/beat-the-critics-submissions.jsonl',
+    headers,
+  );
+  if (contentsCheck.status !== 200) {
+    return { name: 'Private Repo PAT', status: 'fail', message: `Token cannot read BTC submissions file (${contentsCheck.status}) — submissions will fail` };
+  }
+
+  return { name: 'Private Repo PAT', status: 'pass', message: 'Token valid, both private repos accessible, contents readable' };
 }
 
 async function checkVercel() {
