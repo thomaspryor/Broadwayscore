@@ -213,7 +213,13 @@ export function currentPredictionSeason(today: Date = new Date()): TonySeasonRec
   const actualIndex = TONY_CUTOFFS.findIndex(r => r.label === actual.label);
   if (actualIndex > 0) {
     const prev = TONY_CUTOFFS[actualIndex - 1];
-    if (prev.ceremonyDate && prev.ceremonyDate > iso) return prev;
+    if (prev.ceremonyDate) {
+      // Show the outgoing season through ceremony day + 14-day grace period
+      const d = new Date(prev.ceremonyDate);
+      d.setDate(d.getDate() + 14);
+      const gracePeriodEnd = d.toISOString().slice(0, 10);
+      if (gracePeriodEnd >= iso) return prev;
+    }
   }
   return actual;
 }
