@@ -89,7 +89,12 @@ jobs:
           INCLUDE_CLOSED="${{ github.event.inputs.include_closed || 'true' }}"
           # Always checkpoint so consecutive hourly runs resume from where the last
           # one stopped rather than re-auditing the same first shows forever.
-          ARGS="--window=$WINDOW --checkpoint --time-budget-min=25"
+          # Budget 18 (not 25): a single deep show can overshoot the between-show
+          # budget check by several minutes, and the commit/push to the busy main
+          # repo (5-retry, racing concurrent CI) needs slack — at 25 some runs were
+          # still pushing when the 40-min job cap hit (exit 143). 18 leaves the
+          # commit ~17 min even after a slow-show overshoot (2026-06-07).
+          ARGS="--window=$WINDOW --checkpoint --time-budget-min=18"
           if [ "$INCLUDE_CLOSED" = "true" ]; then
             ARGS="$ARGS --include-closed"
           fi
