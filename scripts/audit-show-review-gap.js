@@ -158,8 +158,16 @@ function isReviewUrl(href) {
   const h = hostOf(href);
   if (!h) return false;
   if (NON_REVIEW_HOST_PATTERNS.some(rx => rx.test(h)) && !ALLOWED_ORG_HOSTS.has(h)) return false;
-  // Skip Playbill/BWW internal navigation (we WANT outlet URLs, not aggregator URLs)
-  if ((h === 'playbill.com' || h === 'broadwayworld.com') && !/\/(review|reviews|theater|theatre|news|stage|culture|arts)/i.test(href)) return false;
+  // Skip Playbill/BWW internal navigation (we WANT outlet URLs, not aggregator URLs).
+  // Require at least 2 path segments so bare section roots like playbill.com/news
+  // or broadwayworld.com/theater are rejected (they're category pages, not reviews).
+  if (h === 'playbill.com' || h === 'broadwayworld.com') {
+    if (!/\/(review|reviews|theater|theatre|news|stage|culture|arts)/i.test(href)) return false;
+    try {
+      const segments = new URL(href).pathname.split('/').filter(Boolean);
+      if (segments.length < 2) return false; // bare section root e.g. /news
+    } catch { return false; }
+  }
   try {
     const p = new URL(href).pathname;
     if (NON_REVIEW_PATH_PATTERNS.some(rx => rx.test(p))) return false;
@@ -593,7 +601,7 @@ function ingestMissingUrl(showId, url, knownOutletId) {
     provisional = true;
   }
   try {
-    execFileSync('node', args, { stdio: 'pipe', timeout: 120000 });
+    execFileSync('node', args, { stdio: 'pipe', timeout: 120000, killSignal: 'SIGKILL' });
     return { ok: true, reason: null, provisional };
   } catch (e) {
     return { ok: false, reason: e.message.split('\n')[0].slice(0, 100), provisional };
