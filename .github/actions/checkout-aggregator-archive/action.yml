@@ -10,13 +10,12 @@ runs:
   using: composite
   steps:
     - name: Restore aggregator-archive cache
-      uses: actions/cache@v4
+      uses: actions/cache/restore@v5
       with:
         path: /tmp/aggregator-archive-checkout
         key: aggregator-archive-${{ runner.os }}-${{ github.run_id }}
         restore-keys: |
           aggregator-archive-${{ runner.os }}-
-        save-always: true
 
     - name: Clone or update aggregator-archive
       shell: bash
@@ -65,3 +64,10 @@ runs:
         else
           echo "::warning::No aggregator-archive directory found in private repo"
         fi
+
+    - name: Save aggregator-archive cache
+      uses: actions/cache/save@v5
+      if: always()
+      with:
+        path: /tmp/aggregator-archive-checkout
+        key: aggregator-archive-${{ runner.os }}-${{ github.run_id }}

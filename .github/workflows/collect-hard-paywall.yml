@@ -347,7 +347,7 @@ jobs:
           fi
 
       - name: Upload collection report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: always()
         with:
           name: hard-paywall-report-${{ inputs.domain }}
@@ -571,7 +571,7 @@ jobs:
           fi
 
       - name: Upload collection report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: always()
         with:
           name: hard-paywall-report-${{ matrix.domain }}

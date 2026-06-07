@@ -336,7 +336,7 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Update from bulk-collect-review-texts'
       - name: Upload collection report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: always()
         with:
           name: collection-report-batch-${{ matrix.batch_id }}
