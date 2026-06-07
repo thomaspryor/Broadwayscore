@@ -1540,7 +1540,16 @@
     "care-west-end-2026/the-upcoming-uk--unknown.json",
     "care-west-end-2026/times-uk--clive-davis.json",
     "care-west-end-2026/times-uk--mark-fisher.json",
-    "care-west-end-2026/times-uk--unknown.json"
+    "care-west-end-2026/times-uk--unknown.json",
+    "care-west-end-2026/whatsonstage--judi-herman.json",
+    "equus-west-end-2026/guardian--unknown.json",
+    "equus-west-end-2026/the-jewish-chronicle--unknown.json",
+    "equus-west-end-2026/thereviewshub--unknown.json",
+    "equus-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "equus-west-end-2026/artsdesk--unknown.json",
+    "equus-west-end-2026/thestage--holly-o.json",
+    "equus-west-end-2026/times-uk--clive-davis.json",
+    "equus-west-end-2026/whatsonstage--alun-hood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1601,14 +1610,15 @@
       "data/review-texts/war-horse-west-end-2026/financialtimes--unknown.json",
       "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
       "data/review-texts/war-horse-west-end-2026/financialtimes--unknown.json",
-      "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json"
+      "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
+      "data/review-texts/equus-west-end-2026/thestage--holly-o.json"
     ],
     "archive": [
       "small-off-broadway-2026/culturesauce--thom-geier.json"
     ]
   },
   "startTime": "2026-06-07T05:20:43.951Z",
-  "lastProcessed": "care-west-end-2026/times-uk--unknown.json",
+  "lastProcessed": "equus-west-end-2026/whatsonstage--alun-hood.json",
   "log": [
     {
       "t": "2026-06-07T05:21:08.825Z",
@@ -1887,6 +1897,17 @@
       "event": "bb-session",
       "session": "db23a591",
       "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
+    },
+    {
+      "t": "2026-06-07T22:02:24.803Z",
+      "event": "bb-session",
+      "session": "c9b9f3a9",
+      "url": "https://thestage.co.uk/reviews/equus-review-menier-chocolate-factory-london-lind"
+    },
+    {
+      "t": "2026-06-07T22:02:25.810Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
