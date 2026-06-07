@@ -111,7 +111,7 @@ function aggregateScore(showId) {
 }
 
 function minReviews(category) {
-  return (category === 'off-broadway' || category === 'off-west-end') ? 3 : 5;
+  return (category === 'off-broadway' || category === 'off-west-end') ? 5 : 5;
 }
 
 function getImage(show) {
