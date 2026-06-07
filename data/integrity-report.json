@@ -1,47 +1,68 @@
 {
-  "timestamp": "2026-05-31T04:37:47.348Z",
+  "timestamp": "2026-06-07T04:38:23.639Z",
   "hasIssues": true,
   "current": {
+    "date": "2026-06-07",
+    "totalReviews": 38761,
+    "unknownOutlets": 1,
+    "duplicates": 2,
+    "syncDelta": 20536
+  },
+  "previous": {
     "date": "2026-05-31",
     "totalReviews": 38526,
     "unknownOutlets": 0,
     "duplicates": 1,
     "syncDelta": 20450
   },
-  "previous": {
-    "date": "2026-05-19",
-    "totalReviews": 37694,
-    "unknownOutlets": 6,
-    "duplicates": 0,
-    "syncDelta": 19958
-  },
   "issues": [
+    {
+      "type": "unknown_outlets",
+      "severity": "warning",
+      "message": "1 reviews have unknown outlets",
+      "examples": [
+        {
+          "file": "data/review-texts/la-traviata-off-broadway-2026/was-along-for-the-ride--jonathan-loy.json",
+          "outletId": "was-along-for-the-ride",
+          "outlet": "was-along-for-the-ride"
+        }
+      ]
+    },
     {
       "type": "duplicates",
       "severity": "warning",
-      "message": "1 duplicate reviews detected",
+      "message": "2 duplicate reviews detected",
       "examples": [
         {
           "file": "data/review-texts/american-idiot-2010/variety--steven-suskin.json",
           "key": "american-idiot-2010|variety|steven suskin"
+        },
+        {
+          "file": "data/review-texts/an-ideal-husband-west-end-2026/financialtimes--tim-bano.json",
+          "key": "an-ideal-husband-west-end-2026|financialtimes|tim bano"
         }
       ]
     },
     {
       "type": "sync_delta",
       "severity": "critical",
-      "message": "review-texts (38526) and reviews.json (18076) are out of sync by 20450 reviews"
+      "message": "review-texts (38761) and reviews.json (18225) are out of sync by 20536 reviews"
+    },
+    {
+      "type": "unknown_outlets_degradation",
+      "severity": "warning",
+      "message": "Unknown outlets increased from 0 to 1"
     },
     {
       "type": "duplicates_degradation",
       "severity": "warning",
-      "message": "Duplicates increased from 0 to 1"
+      "message": "Duplicates increased from 1 to 2"
     }
   ],
   "summary": {
-    "totalReviews": 38526,
-    "unknownOutlets": 0,
-    "duplicates": 1,
-    "syncDelta": 20450
+    "totalReviews": 38761,
+    "unknownOutlets": 1,
+    "duplicates": 2,
+    "syncDelta": 20536
   }
 }
