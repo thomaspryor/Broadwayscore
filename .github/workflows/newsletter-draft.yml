@@ -34,6 +34,10 @@ on:
         description: 'Subject prefix (e.g. [DRAFT], [DRAFT MANUAL]).'
         required: false
         default: '[DRAFT]'
+      ledeOverride:
+        description: 'Optional editorial lede override (overrides auto-generated intro).'
+        required: false
+        default: ''
 
 permissions:
   contents: write
@@ -110,6 +114,7 @@ jobs:
           # popular-pages.mjs returns null and the section silently no-ops.
           GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
           GA_SERVICE_ACCOUNT_KEY: ${{ secrets.GA_SERVICE_ACCOUNT_KEY }}
+          LEDE_OVERRIDE: ${{ github.event.inputs.ledeOverride }}
         run: |
           mkdir -p "$NEWSLETTER_OUT_DIR"
           node scripts/newsletter/generate.mjs "${{ steps.week.outputs.weekStart }}"
