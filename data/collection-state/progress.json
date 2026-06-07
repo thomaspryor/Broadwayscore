@@ -812,7 +812,17 @@
     "maggots-west-end-2026/guardian--arifa-akbar.json",
     "beautiful-little-fool-west-end-2026/guardian--emma-john.json",
     "into-the-woods-west-end-2025/variety--naveen-kumar.json",
-    "all-my-sons-west-end-2025/newsday--barbara-schuler.json"
+    "all-my-sons-west-end-2025/newsday--barbara-schuler.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "a-woman-among-women-off-broadway-2026/playbill--unknown.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "girl-interrupted-off-broadway-2026/playbill--unknown.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
+    "small-off-broadway-2026/guardian--arifa-akbar.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1010,7 +1020,9 @@
       "innocence-off-broadway-2026/wsj--heidi-waleson.json",
       "data/review-texts/book-of-mormon-2011/variety--marilyn-stasio.json",
       "data/review-texts/book-of-mormon-2011/variety--marilyn-stasio.json",
-      "data/review-texts/tristan-und-isolde-off-broadway-2026/bachtrack--noa-l-bat-miri.json"
+      "data/review-texts/tristan-und-isolde-off-broadway-2026/bachtrack--noa-l-bat-miri.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1259,7 +1271,7 @@
     ]
   },
   "startTime": "2026-06-06T04:44:29.355Z",
-  "lastProcessed": "all-my-sons-west-end-2025/newsday--barbara-schuler.json",
+  "lastProcessed": "small-off-broadway-2026/guardian--arifa-akbar.json",
   "log": [
     {
       "t": "2026-06-06T06:19:34.296Z",
@@ -1680,6 +1692,28 @@
       "event": "bb-session",
       "session": "4dd4d242",
       "url": "https://bachtrack.com/review-tristan-isolde-sharon-nezet-seguin-davidsen-spyres-"
+    },
+    {
+      "t": "2026-06-07T00:42:53.647Z",
+      "event": "bb-session",
+      "session": "e72bbae6",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-07T00:42:54.238Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-07T00:43:06.442Z",
+      "event": "bb-session",
+      "session": "4ff8032d",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-07T00:43:06.983Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
