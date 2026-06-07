@@ -305,6 +305,28 @@ function main() {
 
   console.log('=== Aggregator Coverage Audit ===\n');
 
+  // Fail-loud guard: the audit derives totalLocal + byAggregator counts from
+  // per-show files in data/review-texts/. If that directory is missing or
+  // suspiciously small, every show silently gets totalLocal=0 and
+  // trulyMissing collapses to maxAggregatorCount across the board (the
+  // 2026-05 incident: audit workflow lacked the checkout-review-texts step
+  // → ~3 weeks of corrupt audit output before anyone noticed). Bail rather
+  // than commit a junk audit file.
+  if (!fs.existsSync(REVIEW_TEXTS_DIR)) {
+    console.error(`::error::review-texts directory missing: ${REVIEW_TEXTS_DIR}`);
+    console.error('  The workflow must check out the private review-texts repo before running this audit.');
+    console.error('  Add `.github/actions/checkout-review-texts` to the workflow.');
+    process.exit(1);
+  }
+  const showDirCount = fs.readdirSync(REVIEW_TEXTS_DIR).filter(name => {
+    try { return fs.statSync(path.join(REVIEW_TEXTS_DIR, name)).isDirectory(); }
+    catch { return false; }
+  }).length;
+  if (showDirCount < 200) {
+    console.error(`::error::review-texts dir present but only ${showDirCount} show subdirs — expected hundreds. Bad checkout?`);
+    process.exit(1);
+  }
+
   // Load shows
   const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
   let shows = showsData.shows || showsData;
