@@ -528,43 +528,61 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
           </details>
         )}
 
-        {/* 4 major categories — single shared CategorySection layout for visual parity with Nominations Center */}
-        {categories.map(cat => (
-          <CategorySection
-            key={cat.key}
-            sectionId={cat.key}
-            category={cat}
-            description={cat.description}
-            winProbs={categoryWinProbs.get(cat.key)}
-            ceremonyDate={ceremonyDate}
-            categoryOutcome={categoryOutcomeStatus[cat.key]}
-            ineligible={ineligibleByCategory[cat.key]}
-          />
-        ))}
+        {/* Coming Soon — shown when the season has too few shows to make meaningful predictions */}
+        {totalScored < 2 && winnerCount === 0 ? (
+          <div className="rounded-xl border border-white/10 bg-surface-overlay p-8 text-center mb-10">
+            <p className="text-2xl mb-2">🎭</p>
+            <h2 className="text-lg font-bold text-white mb-2">Predictions coming soon</h2>
+            <p className="text-gray-400 text-sm max-w-md mx-auto">
+              The {season.label} Tony season is just getting started. Predictions will be available once enough shows have opened and been reviewed — Broadway&apos;s season runs September through April.
+            </p>
+            <Link
+              href={`/tony-awards/predictions/${allSeasonLabels[1] ?? ''}`}
+              className="inline-block mt-5 text-sm text-brand hover:text-brand-hover transition-colors"
+            >
+              See {allSeasonLabels[1]} predictions and results &rarr;
+            </Link>
+          </div>
+        ) : (
+          <>
+            {/* 4 major categories — single shared CategorySection layout for visual parity with Nominations Center */}
+            {categories.map(cat => (
+              <CategorySection
+                key={cat.key}
+                sectionId={cat.key}
+                category={cat}
+                description={cat.description}
+                winProbs={categoryWinProbs.get(cat.key)}
+                ceremonyDate={ceremonyDate}
+                categoryOutcome={categoryOutcomeStatus[cat.key]}
+                ineligible={ineligibleByCategory[cat.key]}
+              />
+            ))}
 
-        {/* Beat the Critics promo — slot between major categories and performer/craft
-            categories. Current season + entries-open gate (closes 7:59 PM ET on ceremony day). */}
-        {isCurrent && isBtcPromoActive() && (
-          <FeaturedSpot
-            eyebrow="Beat the Critics"
-            title="Think you know Broadway better than the critics?"
-            description="Pick the Tony winners against our model and the top critics. One entry wins a $200 TodayTix gift card."
-            ctaLabel="Make your picks"
-            href="/beat-the-critics"
-            accent="btc"
-            stat={{ value: '$200', label: 'TodayTix gift card', compactLabel: 'Prize' }}
-            secondary={[
-              { value: '26', label: 'categories' },
-              { value: 'Jun 7', label: 'ceremony' },
-            ]}
-            trackingId="tony_predictions_mid_btc"
-          />
+            {/* Beat the Critics promo — current season + entries-open gate only */}
+            {isCurrent && isBtcPromoActive() && (
+              <FeaturedSpot
+                eyebrow="Beat the Critics"
+                title="Think you know Broadway better than the critics?"
+                description="Pick the Tony winners against our model and the top critics. One entry wins a $200 TodayTix gift card."
+                ctaLabel="Make your picks"
+                href="/beat-the-critics"
+                accent="btc"
+                stat={{ value: '$200', label: 'TodayTix gift card', compactLabel: 'Prize' }}
+                secondary={[
+                  { value: '26', label: 'categories' },
+                  { value: 'Jun 7', label: 'ceremony' },
+                ]}
+                trackingId="tony_predictions_mid_btc"
+              />
+            )}
+          </>
         )}
 
         {/* Performer + craft categories — no model predictions; data depends on season:
             - Current season: GD/Kalshi/Polymarket odds + critic/audience/award scores
             - Past seasons: critic/audience/award scores only (markets are closed) */}
-        {nonMajorCategories.length > 0 && (
+        {totalScored >= 2 && nonMajorCategories.length > 0 && (
           <section className="mt-10">
             <div className="mb-4">
               <h2 className="text-xl font-bold text-white">Performer &amp; Craft Categories</h2>
