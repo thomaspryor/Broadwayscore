@@ -2001,7 +2001,7 @@ const newsworthyInputs = {
   // Same source of truth biggestMoverSection uses — the scorer can never
   // surface a mover that the section doesn't actually render. Returns null
   // when no candidate passes the section's newsworthy gates.
-  topMover: findRenderableCriticMovers()[0] || null,
+  topMover: (() => { const m = findRenderableCriticMovers()[0]; return (m && Math.abs(m.after - m.before) >= 5) ? m : null; })(),
   tonyDaysOut: (() => {
     const ceremony = new Date('2026-06-08T00:00:00');
     return Math.max(0, Math.ceil((ceremony - new Date(weekEndStr + 'T12:00:00')) / 86400000));
