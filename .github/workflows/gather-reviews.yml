@@ -130,7 +130,7 @@ jobs:
       # Restore 24h SERP cache (scripts/lib/serp-cache.js). Cuts duplicate
       # Bright Data SERP calls across gather-reviews / poller / orchestrator.
       - name: Restore SERP cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: /tmp/bd-serp-cache
           key: bd-serp-cache-${{ github.run_id }}

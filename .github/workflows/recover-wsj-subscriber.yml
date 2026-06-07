@@ -135,7 +135,7 @@ jobs:
 
       - name: Upload recovery report
         if: always() && env.SKIP != 'true'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: wsj-subscriber-recovery-report
           path: data/audit/wsj-subscriber-recovery-report.json
