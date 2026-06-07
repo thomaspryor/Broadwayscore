@@ -884,6 +884,54 @@ async function sendAlerts(healthData, anomalies) {
   }
 }
 
+// Show pages to monitor for rich results verdict (confirmed verdict:FAIL before 2026-06-07 fix)
+const RICH_RESULTS_SLUGS = [
+  'schmigadoon',
+  'the-lost-boys',
+  'cats-the-jellicle-ball',
+  'death-of-a-salesman-2024',
+  'dog-day-afternoon',
+];
+
+async function checkRichResults(token) {
+  console.log('\n--- Rich Results Verdict ---');
+  const results = [];
+  for (const slug of RICH_RESULTS_SLUGS) {
+    const inspectionUrl = `${SITE_HOST}/show/${slug}`;
+    try {
+      const res = await fetch('https://searchconsole.googleapis.com/v1/urlInspection/index:inspect', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          'X-Goog-User-Project': 'cowriter-27499',
+        },
+        body: JSON.stringify({ inspectionUrl, siteUrl: SITE_URL_GSC }),
+      });
+      if (!res.ok) {
+        const text = await res.text();
+        console.log(`  ${slug}: ERROR ${res.status} — ${text.slice(0, 80)}`);
+        results.push({ slug, verdict: 'ERROR', error: `${res.status}` });
+        continue;
+      }
+      const data = await res.json();
+      const verdict = data.inspectionResult?.richResultsResult?.verdict || 'UNKNOWN';
+      const detectedItems = data.inspectionResult?.richResultsResult?.detectedItems || [];
+      const types = detectedItems.map(i => i.richResultType).join(', ') || 'none';
+      console.log(`  ${slug}: ${verdict} (types: ${types})`);
+      results.push({ slug, verdict, types });
+      await new Promise(r => setTimeout(r, 300));
+    } catch (err) {
+      console.log(`  ${slug}: FETCH_ERROR — ${err.message}`);
+      results.push({ slug, verdict: 'ERROR', error: err.message });
+    }
+  }
+  const passing = results.filter(r => r.verdict === 'PASS').length;
+  const failing = results.filter(r => r.verdict === 'FAIL').length;
+  console.log(`  Result: ${passing} PASS, ${failing} FAIL, ${results.length - passing - failing} other`);
+  return { results, passing, failing };
+}
+
 // --- Main ---
 
 async function main() {
@@ -945,6 +993,7 @@ async function main() {
   const highValuePages = await submitHighValuePages(wmToken);
   const targetKeywords = await checkTargetKeywords(wmToken);
   const coreWebVitals = await checkCoreWebVitals();
+  const richResults = await checkRichResults(wmToken);
 
   // Anomaly detection
   const history = loadHistory();
@@ -972,7 +1021,18 @@ async function main() {
     coreWebVitals,
     anomalies,
     quotaUsedToday: readQuotaLedger().used,
+    richResults: richResults.results,
   };
+
+  // Alert if any monitored show page is still FAIL after the 2026-06-07 @graph fix
+  if (richResults.failing > 0) {
+    anomalies.push({
+      type: 'rich_results_fail',
+      severity: 'warning',
+      message: `${richResults.failing} show page(s) still have verdict:FAIL in Google rich results`,
+      pages: richResults.results.filter(r => r.verdict === 'FAIL').map(r => r.slug),
+    });
+  }
 
   if (!dryRun) {
     saveSnapshot(healthData, performance);
@@ -992,6 +1052,7 @@ async function main() {
   console.log(`  High-Value Submissions: ${highValuePages.submitted} submitted, ${highValuePages.skipped} at backoff limit`);
   console.log(`  Target Keywords: ${targetKeywords.filter(r => r.position !== null).length}/${TARGET_KEYWORDS.length} ranking`);
   console.log(`  Core Web Vitals: ${coreWebVitals.length} pages checked`);
+  console.log(`  Rich Results: ${richResults.passing}/${RICH_RESULTS_SLUGS.length} PASS${richResults.failing > 0 ? ` ⚠ ${richResults.failing} FAIL` : ''}`);
   console.log(`  Anomalies: ${anomalies.length}`);
   console.log(`  Indexing Quota Used: ${readQuotaLedger().used}/200`);
 
