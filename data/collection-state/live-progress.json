@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-07T06:56:06.490Z",
-  "processed": 12,
-  "failed": 223,
-  "successRate": "5.1%",
+  "updatedAt": "2026-06-07T06:59:53.715Z",
+  "processed": 13,
+  "failed": 232,
+  "successRate": "5.3%",
   "tierBreakdown": {
     "playwright": 10,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 7,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 1
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-06-07T05:21:08.825Z",
@@ -45,6 +45,39 @@
     },
     {
       "t": "2026-06-07T06:08:54.913Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-07T06:58:14.630Z",
+      "event": "bb-session",
+      "session": "8247f12e",
+      "url": "https://www.nytimes.com/2026/06/03/theater/caissie-levy-broadway-tonys-ragtime.h"
+    },
+    {
+      "t": "2026-06-07T06:58:15.488Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-07T06:58:29.850Z",
+      "event": "bb-session",
+      "session": "ac5ca929",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-07T06:58:30.801Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-07T06:58:45.329Z",
+      "event": "bb-session",
+      "session": "482f80b8",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-07T06:58:46.255Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }

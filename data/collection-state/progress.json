@@ -11,7 +11,8 @@
     "celebrity-autobiography-2026/one-minute-critic--matthew-wexler.json",
     "the-maids-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "maybe-happy-ending-2024/variety--unknown.json",
-    "maybe-happy-ending-2024/washpost--unknown.json"
+    "maybe-happy-ending-2024/washpost--unknown.json",
+    "girl-interrupted-off-broadway-2026/theatrely--unknown.json"
   ],
   "failed": [
     "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
@@ -236,7 +237,16 @@
     "our-mothers-brief-affair-2016/observer--rex-reed.json",
     "old-times-2015/observer--rex-reed.json",
     "wolf-hall-parts-one-and-two-2015/timeout--adam-feldman.json",
-    "the-elephant-man-2014/observer--rex-reed.json"
+    "the-elephant-man-2014/observer--rex-reed.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "a-woman-among-women-off-broadway-2026/playbill--unknown.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "girl-interrupted-off-broadway-2026/playbill--unknown.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -257,10 +267,15 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
       "data/review-texts/maybe-happy-ending-2024/variety--unknown.json",
-      "maybe-happy-ending-2024/variety--unknown.json"
+      "maybe-happy-ending-2024/variety--unknown.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
     ],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "girl-interrupted-off-broadway-2026/theatrely--unknown.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": [
@@ -268,7 +283,7 @@
     ]
   },
   "startTime": "2026-06-07T05:20:43.951Z",
-  "lastProcessed": "the-elephant-man-2014/observer--rex-reed.json",
+  "lastProcessed": "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
   "log": [
     {
       "t": "2026-06-07T05:21:08.825Z",
@@ -300,6 +315,39 @@
     },
     {
       "t": "2026-06-07T06:08:54.913Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-07T06:58:14.630Z",
+      "event": "bb-session",
+      "session": "8247f12e",
+      "url": "https://www.nytimes.com/2026/06/03/theater/caissie-levy-broadway-tonys-ragtime.h"
+    },
+    {
+      "t": "2026-06-07T06:58:15.488Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-07T06:58:29.850Z",
+      "event": "bb-session",
+      "session": "ac5ca929",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-07T06:58:30.801Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-07T06:58:45.329Z",
+      "event": "bb-session",
+      "session": "482f80b8",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-07T06:58:46.255Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
