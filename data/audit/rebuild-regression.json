@@ -1,13 +1,43 @@
 {
-  "timestamp": "2026-06-05T10:41:15.161Z",
+  "timestamp": "2026-06-07T16:07:49.847Z",
   "regressions": [
     {
-      "showId": "war-horse-west-end-2026",
-      "oldCount": 20,
+      "showId": "take-me-out-2022",
+      "oldCount": 26,
       "newCount": 15,
-      "dropped": 5,
-      "scoredOnDisk": 21,
+      "dropped": 11,
+      "scoredOnDisk": 19,
       "flaggedScored": 11,
+      "inlineGuardExcluded": 0,
+      "reason": "scored files exist but being dropped"
+    },
+    {
+      "showId": "machinal-2014",
+      "oldCount": 25,
+      "newCount": 22,
+      "dropped": 3,
+      "scoredOnDisk": 25,
+      "flaggedScored": 12,
+      "inlineGuardExcluded": 1,
+      "reason": "scored files exist but being dropped"
+    },
+    {
+      "showId": "the-philanthropist-2009",
+      "oldCount": 8,
+      "newCount": 5,
+      "dropped": 3,
+      "scoredOnDisk": 8,
+      "flaggedScored": 10,
+      "inlineGuardExcluded": 0,
+      "reason": "scored files exist but being dropped"
+    },
+    {
+      "showId": "twelfth-night-2013",
+      "oldCount": 6,
+      "newCount": 3,
+      "dropped": 3,
+      "scoredOnDisk": 10,
+      "flaggedScored": 14,
       "inlineGuardExcluded": 0,
       "reason": "scored files exist but being dropped"
     }
