@@ -1136,8 +1136,10 @@
       "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+      "data/review-texts/small-off-broadway-2026/theater-pizzazz--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1886,26 +1888,43 @@
       "domain": "variety.com"
     },
     {
-      "t": "2026-06-07T02:15:52.557Z",
+      "t": "2026-06-07T02:14:24.046Z",
       "event": "bb-session",
-      "session": "48b9def4",
+      "session": "fe072f48",
+      "url": "https://www.nytimes.com/2026/06/03/theater/caissie-levy-broadway-tonys-ragtime.h"
+    },
+    {
+      "t": "2026-06-07T02:14:25.043Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-07T02:14:38.632Z",
+      "event": "bb-session",
+      "session": "c89169bf",
       "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
     },
     {
-      "t": "2026-06-07T02:15:53.209Z",
+      "t": "2026-06-07T02:14:39.610Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     },
     {
-      "t": "2026-06-07T02:16:07.151Z",
+      "t": "2026-06-07T02:14:52.252Z",
       "event": "bb-session",
-      "session": "683eba6c",
+      "session": "5ea6d97f",
       "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
     },
     {
-      "t": "2026-06-07T02:16:07.643Z",
+      "t": "2026-06-07T02:14:53.201Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-07T02:17:23.993Z",
+      "event": "bb-session",
+      "session": "97cf8ffc",
+      "url": "https://theaterpizzazz.com/small-a-jockeys-indestructible-passion/"
     }
   ]
 }
