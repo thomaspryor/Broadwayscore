@@ -221,6 +221,19 @@ Example: `const x = 'border-gray-500'; // design-lint-ok[border-neutral]: legacy
 
 Use sparingly — drift is the default failure mode (129 zinc refs cleaned 2026-04-12, 44 gray/slate refs cleaned 2026-04-13 before the guard shipped).
 
+## Visual regression baselines (test-ugc)
+
+Playwright snapshot baselines live in `tests/e2e/__screenshots__/chromium/`. They are **linux-rendered** — you cannot regenerate them on a Mac (fonts/anti-aliasing differ, every snapshot would diff). Regenerate ONLY in CI:
+
+```bash
+gh workflow run test-ugc.yml -f update_snapshots=true   # writes + commits new baselines [skip ci]
+gh workflow run test-ugc.yml                            # normal run to confirm the comparison passes
+```
+
+The `update_snapshots` run only *writes* baselines (it doesn't compare), so always follow it with a plain run to prove green.
+
+**Scope snapshots to a component region, never `fullPage: true`.** Full-page snapshots capture the shared header/footer, so any unrelated chrome change (e.g. a new footer nav item) shifts everything and reds every feature baseline — this caused test-ugc to be red 2026-06-04..06 (+28px footer growth broke all My Shows snapshots). Clip to a stable container instead: `await expect(page.getByTestId('my-shows-content')).toHaveScreenshot(...)`. Add a `data-testid` to the feature wrapper if one doesn't exist.
+
 ## Maintenance
 
 When adding new shared components or tokens, update this file. When a session reads this doc and finds it incomplete, add the missing information before proceeding.

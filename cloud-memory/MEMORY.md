@@ -59,7 +59,7 @@
 - [vercel build env block required](feedback_vercel_env_block_required.md) — NEXT_PUBLIC_* must go in build step env: block
 - [Vercel NFT dynamic paths + excludes](feedback_vercel_nft_dynamic_paths.md) — no dynamic paths in server code; grep src/ before outputFileTracingExcludes; CI guard enforces
 - [Conservative default = common case](feedback_conservative_default_can_be_common_case.md) — "unknown → assume X" breaks when unknown IS common
-- [CI red vs main baseline](feedback_ci_failure_preexisting_baseline.md) — check if main's last run was also red first
+- [Cancelled main CI = concurrency](feedback_test_yml_cancel_in_progress.md) — cancelled+jsdom/shows.json ≠ real fail; cancel PRs only
 - [GitHub auto-disables stale workflows](feedback_github_auto_disable_workflows.md) — ~60 days inactive → silently disabled; HTTP 422
 - [GHA secrets not usable in if:](feedback_gha_secrets_in_if.md) — step-level if conditions can't read secrets
 - [GHA cron delays](feedback_github_cron_delays.md) — fire 30min-3h late; shift earlier + launchd backup
