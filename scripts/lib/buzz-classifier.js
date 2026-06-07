@@ -149,7 +149,7 @@ async function callGemini(prompt) {
 
   const body = JSON.stringify({
     contents: [{ role: 'user', parts: [{ text: prompt }] }],
-    generationConfig: { temperature: 0.1 }
+    generationConfig: { temperature: 0.1, thinkingConfig: { thinkingBudget: 0 } }
   });
 
   return new Promise((resolve, reject) => {
