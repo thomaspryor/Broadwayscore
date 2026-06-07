@@ -283,7 +283,13 @@
     "call-me-izzy-2025/theater-life--barry-gordin.json",
     "smash-2025/broadway-and-me--janice-c-simpson.json",
     "pen-pals-off-broadway-2025/theater-life--barry-gordin.json",
-    "bad-krey-l-off-broadway-2026/timeout--raven-snook.json"
+    "bad-krey-l-off-broadway-2026/timeout--raven-snook.json",
+    "cats-the-jellicle-ball-off-broadway-2024/culturesauce--thom-geier.json",
+    "mother-play-2024/broadwaynews--brittani-samuel.json",
+    "illinoise-2024/broadwaynews--brittani-samuel.json",
+    "uncle-vanya-2024/broadwaynews--brittani-samuel.json",
+    "mary-jane-2024/broadwaynews--brittani-samuel.json",
+    "heart-of-rock-and-roll-2024/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
     "spamalot-off-broadway-2026/nytimes--jesse-green.json",
@@ -963,7 +969,11 @@
     "yellow-face-2024/wsj--charles-isherwood.json",
     "yellow-face-2024/aaartsalliance--katie-gee-salisbury.json",
     "mcneal-2024/thestage--lane-williamson.json",
-    "the-hills-of-california-2024/wsj--charles-isherwood.json"
+    "the-hills-of-california-2024/wsj--charles-isherwood.json",
+    "the-hills-of-california-2024/thestage--sam-marlowe.json",
+    "the-hills-of-california-2024/times-uk--clive-davis.json",
+    "the-roommate-2024/thestage--lane-williamson.json",
+    "illinoise-2024/guardian--adrian-horton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1213,7 +1223,10 @@
       "gotta-dance-off-broadway-2026/new-york-classical-review--george-grella.json",
       "public-charge-off-broadway-2026/timeout--unknown.json",
       "into-the-woods-west-end-2025/nytimes--alexis-soloski.json",
-      "bad-krey-l-off-broadway-2026/timeout--raven-snook.json"
+      "bad-krey-l-off-broadway-2026/timeout--raven-snook.json",
+      "illinoise-2024/broadwaynews--brittani-samuel.json",
+      "uncle-vanya-2024/broadwaynews--brittani-samuel.json",
+      "mary-jane-2024/broadwaynews--brittani-samuel.json"
     ],
     "brightdata": [
       "good-night-oscar-2023/nytimes--jesse-green.json",
@@ -1345,7 +1358,8 @@
       "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
       "data/review-texts/dark-of-the-moon-west-end-2026/thestage--unknown.json",
       "data/review-texts/a-wonderful-world-the-louis-armstrong-musical-2024/thestage--lane-williamson.json",
-      "data/review-texts/mcneal-2024/thestage--lane-williamson.json"
+      "data/review-texts/mcneal-2024/thestage--lane-williamson.json",
+      "data/review-texts/the-roommate-2024/thestage--lane-williamson.json"
     ],
     "archive": [
       "misery-2015/nytimes--charles-isherwood.json",
@@ -1419,11 +1433,14 @@
       "cold-war-choir-practice-off-broadway-2026/broadway-and-me--janice-c-simpson.json",
       "shadowlands-west-end-2026/broadwayworld--aliya-al-hassan.json",
       "bug-2026/broadway-and-me--janice-c-simpson.json",
-      "smash-2025/broadway-and-me--janice-c-simpson.json"
+      "smash-2025/broadway-and-me--janice-c-simpson.json",
+      "cats-the-jellicle-ball-off-broadway-2024/culturesauce--thom-geier.json",
+      "mother-play-2024/broadwaynews--brittani-samuel.json",
+      "heart-of-rock-and-roll-2024/broadwaynews--brittani-samuel.json"
     ]
   },
   "startTime": "2026-06-06T04:44:29.355Z",
-  "lastProcessed": "the-hills-of-california-2024/wsj--charles-isherwood.json",
+  "lastProcessed": "heart-of-rock-and-roll-2024/broadwaynews--brittani-samuel.json",
   "log": [
     {
       "t": "2026-06-06T06:19:34.296Z",
@@ -1965,6 +1982,17 @@
       "t": "2026-06-07T04:04:26.573Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-07T04:07:11.869Z",
+      "event": "bb-session",
+      "session": "7849edae",
+      "url": "https://www.thestage.co.uk/reviews/the-roommate-review-booth-theatre-new-york-mi"
+    },
+    {
+      "t": "2026-06-07T04:07:12.332Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
