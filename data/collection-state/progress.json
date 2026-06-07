@@ -762,7 +762,17 @@
     "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json",
     "harry-potter-2021/front-row-center--tulis-mccall.json",
     "harry-potter-2021/woman-around-town--alix-cohen.json",
-    "the-play-that-goes-wrong-west-end-2021/chicagotribune--chris-jones.json"
+    "the-play-that-goes-wrong-west-end-2021/chicagotribune--chris-jones.json",
+    "the-book-of-mormon-west-end-2024/talkinbroadway--unknown.json",
+    "the-book-of-mormon-west-end-2024/telegraph--claire-allfree.json",
+    "matilda-the-musical-west-end-2021/ew--unknown.json",
+    "book-of-mormon-2011/deadline--unknown.json",
+    "book-of-mormon-2011/variety--marilyn-stasio.json",
+    "book-of-mormon-2011/new-jersey-newsroom--michael-sommers.json",
+    "book-of-mormon-2011/ap--mark-kennedy.json",
+    "book-of-mormon-2011/backstage--david-sheward.json",
+    "wicked-2003/standard--unknown.json",
+    "wicked-2003/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -956,6 +966,7 @@
       "data/review-texts/book-of-mormon-2011/variety--marilyn-stasio.json",
       "data/review-texts/innocence-off-broadway-2026/wsj--heidi-waleson.json",
       "innocence-off-broadway-2026/wsj--heidi-waleson.json",
+      "data/review-texts/book-of-mormon-2011/variety--marilyn-stasio.json",
       "data/review-texts/book-of-mormon-2011/variety--marilyn-stasio.json"
     ],
     "directCookies": [],
@@ -1200,7 +1211,7 @@
     ]
   },
   "startTime": "2026-06-06T04:44:29.355Z",
-  "lastProcessed": "the-play-that-goes-wrong-west-end-2021/chicagotribune--chris-jones.json",
+  "lastProcessed": "wicked-2003/wsj--terry-teachout.json",
   "log": [
     {
       "t": "2026-06-06T06:19:34.296Z",
@@ -1593,6 +1604,28 @@
       "t": "2026-06-06T23:16:35.372Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-06-07T00:10:59.689Z",
+      "event": "bb-session",
+      "session": "3613a0e8",
+      "url": "https://variety.com/2011/film/reviews/0s-1s-1117944828/"
+    },
+    {
+      "t": "2026-06-07T00:11:00.777Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-07T00:11:42.003Z",
+      "event": "bb-session",
+      "session": "b17643d8",
+      "url": "http://www.wsj.com/articles/SB106748686155075900"
+    },
+    {
+      "t": "2026-06-07T00:11:43.124Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

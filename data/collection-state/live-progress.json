@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-06-07T00:10:25.275Z",
+  "updatedAt": "2026-06-07T00:12:02.192Z",
   "processed": 273,
-  "failed": 488,
-  "successRate": "35.9%",
+  "failed": 498,
+  "successRate": "35.4%",
   "tierBreakdown": {
     "playwright": 159,
     "amp": 0,
-    "browserbase": 28,
+    "browserbase": 29,
     "directCookies": 0,
     "scrapingbee": 37,
     "brightdata": 50,
     "archiveToday": 76,
     "archive": 68
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-06-06T08:04:07.424Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
-    {
-      "t": "2026-06-06T08:09:05.659Z",
-      "event": "bb-session",
-      "session": "b099755f",
-      "url": "https://www.thestage.co.uk/reviews/titanique-review-criterion-theatre-london-tit"
-    },
-    {
-      "t": "2026-06-06T08:09:06.628Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
-    {
-      "t": "2026-06-06T08:10:39.182Z",
-      "event": "bb-session",
-      "session": "4b5a3580",
-      "url": "https://www.thestage.co.uk/reviews/the-devil-wears-prada-review-dominion-theatre"
-    },
     {
       "t": "2026-06-06T08:10:40.333Z",
       "event": "bb-cookie-inject",
@@ -125,6 +103,28 @@
       "t": "2026-06-06T23:16:35.372Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-06-07T00:10:59.689Z",
+      "event": "bb-session",
+      "session": "3613a0e8",
+      "url": "https://variety.com/2011/film/reviews/0s-1s-1117944828/"
+    },
+    {
+      "t": "2026-06-07T00:11:00.777Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-07T00:11:42.003Z",
+      "event": "bb-session",
+      "session": "b17643d8",
+      "url": "http://www.wsj.com/articles/SB106748686155075900"
+    },
+    {
+      "t": "2026-06-07T00:11:43.124Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
