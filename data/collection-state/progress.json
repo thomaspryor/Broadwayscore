@@ -645,7 +645,17 @@
     "the-little-mermaid-2008/nypost--clive-barnes.json",
     "is-he-dead-2007/nypost--clive-barnes.json",
     "inherit-the-wind-2007/nypost--clive-barnes.json",
-    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json"
+    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "a-woman-among-women-off-broadway-2026/playbill--unknown.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "girl-interrupted-off-broadway-2026/playbill--unknown.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
+    "small-off-broadway-2026/guardian--arifa-akbar.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -670,6 +680,8 @@
       "maybe-happy-ending-2024/variety--unknown.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
     ],
     "directCookies": [],
@@ -683,7 +695,7 @@
     ]
   },
   "startTime": "2026-06-07T05:20:43.951Z",
-  "lastProcessed": "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+  "lastProcessed": "small-off-broadway-2026/guardian--arifa-akbar.json",
   "log": [
     {
       "t": "2026-06-07T05:21:08.825Z",
@@ -748,6 +760,28 @@
     },
     {
       "t": "2026-06-07T06:58:46.255Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-07T09:28:49.307Z",
+      "event": "bb-session",
+      "session": "b7f73f7d",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-07T09:28:50.303Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-07T09:29:03.449Z",
+      "event": "bb-session",
+      "session": "1a47e965",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-07T09:29:04.897Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
