@@ -1697,7 +1697,8 @@ function mostReadSection(climberList) {
     if (show.category !== 'broadway' && show.category !== 'off-broadway') continue;
     if (isOperaShow(show)) continue;
     const a = aggregateScore(show.id);
-    const eligible = a && a.count >= minReviews(show.category);
+    const trendingMin = show.category === 'broadway' ? 5 : 5; // OB default is 3, too low for Trending
+    const eligible = a && a.count >= trendingMin;
     if (!eligible) continue; // Trending list: scored shows only (user 2026-05-24)
     items.push({
       show,
