@@ -1372,7 +1372,7 @@ jobs:
           TEST_BASE_URL: https://broadwayscorecard.com
 
       - name: Upload test results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: always()
         with:
           name: playwright-report
@@ -1491,7 +1491,7 @@ jobs:
           bash scripts/lib/push-with-retry.sh
 
       - name: Upload test results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: always()
         with:
           name: visual-regression-report

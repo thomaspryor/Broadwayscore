@@ -152,7 +152,7 @@ jobs:
           echo "${{ steps.audit.outputs.gap_count }}" > /tmp/gap-data/gap-count.txt
           echo "${{ steps.audit.outputs.truly_missing }}" > /tmp/gap-data/truly-missing.txt
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: gap-data
           path: /tmp/gap-data/
@@ -375,7 +375,7 @@ jobs:
 
       - name: Upload failure report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: failures-batch-${{ matrix.batch_id }}
           path: /tmp/failures/

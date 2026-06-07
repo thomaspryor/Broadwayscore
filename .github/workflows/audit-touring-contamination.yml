@@ -150,7 +150,7 @@ jobs:
           node scripts/audit-touring-contamination.js $ARGS
 
       - name: Upload audit report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: always()
         with:
           name: touring-contamination-report-${{ steps.inputs.outputs.market }}

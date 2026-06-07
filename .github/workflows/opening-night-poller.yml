@@ -168,7 +168,7 @@ jobs:
       # Bright Data SERP calls across poller/orchestrator dispatches.
       - name: Restore SERP cache
         if: steps.find.outputs.has_shows == 'true'
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: /tmp/bd-serp-cache
           key: bd-serp-cache-${{ github.run_id }}
