@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-06-07T10:12:20.024Z",
-  "processed": 14,
-  "failed": 664,
+  "updatedAt": "2026-06-07T10:48:40.848Z",
+  "processed": 15,
+  "failed": 691,
   "successRate": "2.1%",
   "tierBreakdown": {
     "playwright": 11,
@@ -9,18 +9,12 @@
     "browserbase": 11,
     "directCookies": 0,
     "scrapingbee": 1,
-    "brightdata": 0,
-    "archiveToday": 0,
+    "brightdata": 1,
+    "archiveToday": 1,
     "archive": 1
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-06-07T05:21:08.825Z",
-      "event": "bb-session",
-      "session": "9b66724c",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
     {
       "t": "2026-06-07T05:21:09.952Z",
       "event": "bb-cookie-inject",
@@ -124,6 +118,12 @@
       "t": "2026-06-07T10:09:36.173Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-07T10:45:20.106Z",
+      "event": "bb-session",
+      "session": "00991f13",
+      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
     }
   ]
 }

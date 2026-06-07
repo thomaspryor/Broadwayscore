@@ -13,7 +13,8 @@
     "maybe-happy-ending-2024/variety--unknown.json",
     "maybe-happy-ending-2024/washpost--unknown.json",
     "girl-interrupted-off-broadway-2026/theatrely--unknown.json",
-    "equus-west-end-2026/timeout--andrzej-lukowski.json"
+    "equus-west-end-2026/timeout--andrzej-lukowski.json",
+    "dark-of-the-moon-west-end-2026/guardian--arifa-akbar.json"
   ],
   "failed": [
     "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
@@ -679,7 +680,34 @@
     "small-off-broadway-2026/washpost--unknown.json",
     "indian-princesses-off-broadway-2025/pages-on-stages--mason-pilevsky.json",
     "the-maids-off-broadway-2026/ew--unknown.json",
-    "the-maids-off-broadway-2026/nydailynews--unknown.json"
+    "the-maids-off-broadway-2026/nydailynews--unknown.json",
+    "are-you-watching-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "driftwood-west-end-2026/times-uk--clive-davis.json",
+    "war-horse-west-end-2026/times-uk--chris-bennion.json",
+    "war-horse-west-end-2026/times-uk--clive-davis.json",
+    "beetlejuice-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "beetlejuice-west-end-2026/amny--matt-windman.json",
+    "the-p-word-off-west-end-2026/whatsonstage--frey-kwa-hawking.json",
+    "dark-of-the-moon-west-end-2026/guardian-uk--unknown.json",
+    "dark-of-the-moon-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "dark-of-the-moon-west-end-2026/artsdesk--unknown.json",
+    "dark-of-the-moon-west-end-2026/cambridge--unknown.json",
+    "dark-of-the-moon-west-end-2026/thestage--unknown.json",
+    "care-west-end-2026/i-paper--unknown.json",
+    "care-west-end-2026/london-theatre--matt-wolf.json",
+    "care-west-end-2026/the-upcoming-uk--unknown.json",
+    "care-west-end-2026/times-uk--clive-davis.json",
+    "care-west-end-2026/times-uk--mark-fisher.json",
+    "care-west-end-2026/times-uk--unknown.json",
+    "care-west-end-2026/whatsonstage--judi-herman.json",
+    "equus-west-end-2026/guardian--unknown.json",
+    "equus-west-end-2026/the-jewish-chronicle--unknown.json",
+    "equus-west-end-2026/thereviewshub--unknown.json",
+    "equus-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "equus-west-end-2026/artsdesk--unknown.json",
+    "equus-west-end-2026/thestage--holly-o.json",
+    "equus-west-end-2026/times-uk--clive-davis.json",
+    "equus-west-end-2026/whatsonstage--alun-hood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -714,14 +742,18 @@
     "scrapingbee": [
       "girl-interrupted-off-broadway-2026/theatrely--unknown.json"
     ],
-    "brightdata": [],
-    "archiveToday": [],
+    "brightdata": [
+      "dark-of-the-moon-west-end-2026/guardian--arifa-akbar.json"
+    ],
+    "archiveToday": [
+      "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json"
+    ],
     "archive": [
       "small-off-broadway-2026/culturesauce--thom-geier.json"
     ]
   },
   "startTime": "2026-06-07T05:20:43.951Z",
-  "lastProcessed": "the-maids-off-broadway-2026/nydailynews--unknown.json",
+  "lastProcessed": "equus-west-end-2026/whatsonstage--alun-hood.json",
   "log": [
     {
       "t": "2026-06-07T05:21:08.825Z",
@@ -832,6 +864,12 @@
       "t": "2026-06-07T10:09:36.173Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-07T10:45:20.106Z",
+      "event": "bb-session",
+      "session": "00991f13",
+      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
     }
   ]
 }
