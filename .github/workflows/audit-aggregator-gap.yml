@@ -43,7 +43,11 @@ permissions:
 jobs:
   audit:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    # 40 (was 25): the audit honors a 25-min soft time budget, then the commit +
+    # review-texts push (5-retry, racing concurrent CI) needs headroom. At 25 the
+    # job was hard-cancelled MID-COMMIT so the checkpoint + ingests never landed
+    # and the backfill stalled (2026-06-07). 40 leaves ~12 min for the commit.
+    timeout-minutes: 40
     if: ${{ vars.AGGREGATOR_GAP_AUDIT_DISABLED != 'true' }}
     steps:
       - uses: actions/checkout@v4
@@ -85,7 +89,7 @@ jobs:
           INCLUDE_CLOSED="${{ github.event.inputs.include_closed || 'true' }}"
           # Always checkpoint so consecutive hourly runs resume from where the last
           # one stopped rather than re-auditing the same first shows forever.
-          ARGS="--window=$WINDOW --checkpoint --time-budget-min=20"
+          ARGS="--window=$WINDOW --checkpoint --time-budget-min=25"
           if [ "$INCLUDE_CLOSED" = "true" ]; then
             ARGS="$ARGS --include-closed"
           fi
