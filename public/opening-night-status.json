@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-07T07:16:53.038Z",
+  "generatedAt": "2026-06-07T07:46:45.056Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -757,28 +757,28 @@
       "status": "open",
       "slug": "are-you-watching-west-end",
       "thumbnail": "/images/shows/are-you-watching-west-end-2026/thumbnail.webp",
-      "siteScore": 78,
-      "liveScore": 78,
+      "siteScore": 77,
+      "liveScore": 77,
       "scoreDrift": 0,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 5,
+      "total": 6,
       "t1": 3,
-      "t2": 2,
+      "t2": 3,
       "t3": 0,
       "positive": 4,
-      "mixed": 1,
+      "mixed": 2,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "5/8 total",
+          "6/8 total",
           "T1:2/3",
           "T2:1/2",
-          "hi-conf:3/6"
+          "hi-conf:4/6"
         ],
-        "highConfidence": 3,
+        "highConfidence": 4,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -856,6 +856,18 @@
           "t3": 0,
           "p": 4,
           "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-06-07T07:46:45.056Z",
+          "rc": 6,
+          "s": 77,
+          "t1": 3,
+          "t2": 3,
+          "t3": 0,
+          "p": 4,
+          "m": 2,
           "n": 0,
           "bc": "waiting"
         }

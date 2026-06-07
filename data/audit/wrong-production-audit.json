@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-07T07:16:47.045Z",
+  "timestamp": "2026-06-07T07:46:40.509Z",
   "stats": {
     "totalReviews": 38085,
     "alreadyFlagged": 16719,
     "dateGuardCatches": 106,
     "directorMismatch": 837,
     "tvFilmSignals": 1049,
-    "londonSignals": 611,
+    "londonSignals": 612,
     "offBroadwaySignals": 459,
     "yearMismatch": 81,
-    "noPublishDate": 3974
+    "noPublishDate": 3973
   },
   "findings": [
     {
@@ -27538,6 +27538,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "are-you-watching-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "score": 71,
+      "publishDate": "2026-06-05",
+      "url": "https://www.londonboxoffice.co.uk/news/post/are-you-watching-royal-court-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
