@@ -274,7 +274,11 @@ export function buildLedeFromCandidates(candidates) {
 }
 
 function headlineToSentence(c) {
-  // Capitalize the first character and add a period if missing.
-  const h = c.headline.charAt(0).toUpperCase() + c.headline.slice(1);
+  let h = c.headline.charAt(0).toUpperCase() + c.headline.slice(1);
+  // Italicize the show title wherever it appears in the headline.
+  const title = c.show?.title;
+  if (title && h.includes(title)) {
+    h = h.replace(title, `<em>${title}</em>`);
+  }
   return h.endsWith('.') ? h : h + '.';
 }
