@@ -1,20 +1,31 @@
 {
-  "updatedAt": "2026-06-07T04:29:23.089Z",
+  "updatedAt": "2026-06-07T04:29:43.870Z",
   "processed": 319,
-  "failed": 710,
-  "successRate": "31.0%",
+  "failed": 703,
+  "successRate": "31.2%",
   "tierBreakdown": {
     "playwright": 166,
     "amp": 0,
-    "browserbase": 51,
+    "browserbase": 50,
     "directCookies": 0,
     "scrapingbee": 54,
     "brightdata": 51,
     "archiveToday": 81,
     "archive": 84
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 2,
   "recentActivity": [
+    {
+      "t": "2026-06-07T04:04:26.027Z",
+      "event": "bb-session",
+      "session": "942062df",
+      "url": "https://www.wsj.com/arts-culture/theater/the-hills-of-california-review-jez-butt"
+    },
+    {
+      "t": "2026-06-07T04:04:26.573Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
     {
       "t": "2026-06-07T04:07:11.869Z",
       "event": "bb-session",
@@ -93,37 +104,26 @@
       "domain": "wsj.com"
     },
     {
-      "t": "2026-06-07T04:25:51.347Z",
+      "t": "2026-06-07T04:28:12.191Z",
       "event": "bb-session",
-      "session": "056fa43a",
+      "session": "2716bca9",
       "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
     },
     {
-      "t": "2026-06-07T04:25:52.373Z",
+      "t": "2026-06-07T04:28:13.222Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     },
     {
-      "t": "2026-06-07T04:26:06.485Z",
+      "t": "2026-06-07T04:28:28.998Z",
       "event": "bb-session",
-      "session": "316ba5b7",
+      "session": "a68828c9",
       "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
     },
     {
-      "t": "2026-06-07T04:26:07.427Z",
+      "t": "2026-06-07T04:28:29.936Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-07T04:27:18.896Z",
-      "event": "bb-session",
-      "session": "352dddfe",
-      "url": "https://www.nytimes.com/2026/06/01/arts/andy-halliday-dead.html"
-    },
-    {
-      "t": "2026-06-07T04:27:19.871Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
     }
   ]
 }
