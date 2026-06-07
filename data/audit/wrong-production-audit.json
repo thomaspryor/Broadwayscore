@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-06T23:38:21.955Z",
+  "timestamp": "2026-06-07T02:03:58.494Z",
   "stats": {
-    "totalReviews": 38081,
-    "alreadyFlagged": 16715,
+    "totalReviews": 38080,
+    "alreadyFlagged": 16718,
     "dateGuardCatches": 106,
     "directorMismatch": 837,
-    "tvFilmSignals": 1050,
+    "tvFilmSignals": 1049,
     "londonSignals": 611,
     "offBroadwaySignals": 459,
     "yearMismatch": 81,
-    "noPublishDate": 3977
+    "noPublishDate": 3975
   },
   "findings": [
     {
@@ -443,20 +443,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2004 (2x) more than 2014 (0x). 2004 matches production: a-raisin-in-the-sun-2004"
-        }
-      ]
-    },
-    {
-      "showId": "a-strange-loop-2022",
-      "file": "wsj--charles-isherwood.json",
-      "score": 88,
-      "publishDate": "April 28, 2022",
-      "url": "https://www.wsj.com/arts-culture/theater/a-strange-loop-mr-saturday-night-review-broadway-opposites-attract-11651788064?gaa_at=eafs&gaa_n=AWEtsqfA81a3yDkxrV-jNV8WJKzsG5pza-ZpJqw1il9rTt9_jjbNKctg7WD2&gaa_ts=698c3742&gaa_sig=mSXMNFdfK9bgLhg3N3Vr29jMHTNBNetljE302V9TxzBVyt4yTWXdWCw-jc_Jp5moE3B2ChPG1vjezUIgVwqUug%3D%3D",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },

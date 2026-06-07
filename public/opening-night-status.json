@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-06T23:38:26.437Z",
+  "generatedAt": "2026-06-07T02:04:03.058Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -470,6 +470,10 @@
         {
           "name": "New York Post",
           "isDualMarket": false
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
         },
         {
           "name": "amNewYork",
@@ -1241,115 +1245,6 @@
           "bc": "waiting"
         }
       ]
-    },
-    {
-      "id": "driftwood-west-end-2026",
-      "title": "Driftwood",
-      "market": "west-end",
-      "category": "off-west-end",
-      "type": "play",
-      "openingDate": "2026-06-03",
-      "status": "open",
-      "slug": "driftwood-west-end",
-      "thumbnail": "/images/shows/driftwood-west-end-2026/thumbnail.webp",
-      "siteScore": 70.1,
-      "liveScore": 70,
-      "scoreDrift": -0.09999999999999432,
-      "belowThreshold": false,
-      "reviewsNeeded": 0,
-      "siteFileExists": true,
-      "total": 4,
-      "t1": 3,
-      "t2": 1,
-      "t3": 0,
-      "positive": 1,
-      "mixed": 3,
-      "negative": 0,
-      "readiness": {
-        "ready": false,
-        "reasons": [
-          "4/8 total",
-          "T2:1/2",
-          "hi-conf:1/6"
-        ],
-        "highConfidence": 1,
-        "thresholds": {
-          "minReviews": 8,
-          "minT1": 3,
-          "minT2": 2,
-          "minHiConf": 6
-        }
-      },
-      "broadcast": {
-        "state": "waiting",
-        "detail": "Not yet broadcast-ready"
-      },
-      "missingT1": [
-        {
-          "name": "Observer",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Telegraph",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Independent",
-          "isDualMarket": true
-        },
-        {
-          "name": "Daily Mail",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Stage",
-          "isDualMarket": true
-        }
-      ],
-      "missingT2": [
-        {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "Variety",
-          "isDualMarket": true
-        },
-        {
-          "name": "BroadwayWorld",
-          "isDualMarket": true
-        },
-        {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
-        }
-      ],
-      "timeline": [
-        {
-          "t": "2026-06-03T17:23:09.327Z",
-          "rc": 2,
-          "s": 75,
-          "t1": 1,
-          "t2": 1,
-          "t3": 0,
-          "p": 1,
-          "m": 1,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-06-04T23:41:14.130Z",
-          "rc": 4,
-          "s": 70.1,
-          "t1": 3,
-          "t2": 1,
-          "t3": 0,
-          "p": 1,
-          "m": 3,
-          "n": 0,
-          "bc": "waiting"
-        }
-      ]
     }
   ],
   "upcoming": [
@@ -1363,7 +1258,7 @@
       "status": "previews",
       "slug": "fear-and-wonder-off-broadway",
       "thumbnail": "/images/shows/fear-and-wonder-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 2,
+      "daysUntil": 1,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1402,7 +1297,7 @@
       "status": "upcoming",
       "slug": "im-almost-there-off-broadway",
       "thumbnail": "/images/shows/im-almost-there-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 3,
+      "daysUntil": 2,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1441,7 +1336,7 @@
       "status": "upcoming",
       "slug": "the-truth-a-comedy-by-florian-zeller-west-end",
       "thumbnail": "/images/shows/the-truth-a-comedy-by-florian-zeller-west-end-2026/thumbnail.webp",
-      "daysUntil": 3,
+      "daysUntil": 2,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1466,7 +1361,7 @@
       "status": "upcoming",
       "slug": "henry-vi-a-trilogy-in-two-parts-off-broadway",
       "thumbnail": "/images/shows/henry-vi-a-trilogy-in-two-parts-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 3,
+      "daysUntil": 2,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1505,7 +1400,7 @@
       "status": "previews",
       "slug": "youth-in-flames-off-broadway",
       "thumbnail": "/images/shows/youth-in-flames-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 4,
+      "daysUntil": 3,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1544,7 +1439,7 @@
       "status": "previews",
       "slug": "catch-of-the-day-off-broadway",
       "thumbnail": "/images/shows/catch-of-the-day-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 4,
+      "daysUntil": 3,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1583,7 +1478,7 @@
       "status": "upcoming",
       "slug": "much-ado-about-nothing-globe-west-end",
       "thumbnail": "/images/shows/much-ado-about-nothing-globe-west-end-2026/thumbnail.webp",
-      "daysUntil": 5,
+      "daysUntil": 4,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1608,7 +1503,7 @@
       "status": "upcoming",
       "slug": "a-life-in-four-seasons-west-end",
       "thumbnail": "/images/shows/a-life-in-four-seasons-west-end-2026/thumbnail.webp",
-      "daysUntil": 5,
+      "daysUntil": 4,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
