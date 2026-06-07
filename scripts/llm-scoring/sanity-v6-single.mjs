@@ -41,7 +41,7 @@ const r = await fetch(
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       contents: [{ parts: [{ text: `${systemPrompt}\n\n---\n\n${userPrompt}` }] }],
-      generationConfig: { responseMimeType: 'application/json', maxOutputTokens: 4096, temperature: 0.1 }
+      generationConfig: { responseMimeType: 'application/json', maxOutputTokens: 4096, temperature: 0.1, thinkingConfig: { thinkingBudget: 0 } }
     })
   }
 );

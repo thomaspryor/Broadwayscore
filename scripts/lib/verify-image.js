@@ -150,6 +150,7 @@ function getGeminiModel() {
     generationConfig: {
       temperature: 0.2,
       maxOutputTokens: 300,
+      thinkingConfig: { thinkingBudget: 0 }, // 2.5-flash thinking eats the budget; see feedback_gemini_thinking_token_budget
     }
   });
   return geminiModel;

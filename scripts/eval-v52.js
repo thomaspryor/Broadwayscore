@@ -213,7 +213,7 @@ async function scoreWithGemini(reviewText, context) {
   const client = new GoogleGenerativeAI(GEMINI_API_KEY);
   const model = client.getGenerativeModel({
     model: GEMINI_FLASH,
-    generationConfig: { temperature: 0.3, topP: 0.8, maxOutputTokens: 500 }
+    generationConfig: { temperature: 0.3, topP: 0.8, maxOutputTokens: 500, thinkingConfig: { thinkingBudget: 0 } }
   });
 
   const prompt = buildPromptV5(reviewText, context);

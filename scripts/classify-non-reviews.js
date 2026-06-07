@@ -186,7 +186,7 @@ function callGemini(systemPrompt, userPrompt) {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_FLASH}:generateContent?key=${apiKey}`;
   const body = JSON.stringify({
     contents: [{ role: 'user', parts: [{ text: systemPrompt + '\n\n' + userPrompt }] }],
-    generationConfig: { temperature: 0.1, maxOutputTokens: 200 }
+    generationConfig: { temperature: 0.1, maxOutputTokens: 200, thinkingConfig: { thinkingBudget: 0 } }
   });
   return new Promise((resolve, reject) => {
     const req = https.request(url, {

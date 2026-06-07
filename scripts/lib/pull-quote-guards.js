@@ -85,6 +85,16 @@ const COPYRIGHT_CHROME_PATTERNS = [
   /click here to/i,
   /\bsign up\b/i,
   /\bnewsletter\b/i,
+  // Affiliate / reader-funding disclaimers that lead many outlet pages
+  // (Evening Standard: "When you purchase through links on our site, we may
+  //  earn an affiliate commission." / "The Standard's journalism is supported
+  //  by our readers."). War Horse 2026-06-07.
+  /affiliate commission/i,
+  /purchase through links/i,
+  /through links on our site/i,
+  /journalism is supported by/i,
+  /supported by our readers/i,
+  /we may earn a/i,
 ];
 
 function hasCopyrightChrome(excerpt) {

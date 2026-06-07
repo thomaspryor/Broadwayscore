@@ -338,6 +338,8 @@ function extractExcerptFromFullText(fullText, showTitle) {
     if (/^Home\s*[>|]/i.test(sentence)) continue;
     if (/By clicking submit/i.test(sentence)) continue;
     if (/newsletter|sign up for|subscribe to|Get all the top news/i.test(sentence)) continue;
+    // Affiliate / reader-funding disclaimers (Evening Standard etc.) that lead many pages
+    if (/affiliate commission|purchase through links|journalism is supported by|supported by our readers|we may earn a/i.test(sentence)) continue;
     if (/<a\s+href=/i.test(sentence)) continue;
     if (/^Skip to (content|main)/i.test(sentence)) continue;
     if (/Democracy Dies/i.test(sentence)) continue;

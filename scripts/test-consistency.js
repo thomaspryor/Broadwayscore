@@ -88,7 +88,7 @@ async function scoreWithOpenAI(client, text) {
 }
 
 async function scoreWithGemini(client, text) {
-  const model = client.getGenerativeModel({ model: GEMINI_FLASH });
+  const model = client.getGenerativeModel({ model: GEMINI_FLASH, generationConfig: { thinkingConfig: { thinkingBudget: 0 } } });
   const result = await model.generateContent(PROMPT + text);
   const content = result.response.text().trim();
   try {

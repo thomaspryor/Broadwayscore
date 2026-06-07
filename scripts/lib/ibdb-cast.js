@@ -260,7 +260,7 @@ Title 2: "${ibdbTitle}"`;
         const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_FLASH}:generateContent?key=${process.env.GEMINI_API_KEY}`;
         const body = JSON.stringify({
           contents: [{ role: 'user', parts: [{ text: prompt }] }],
-          generationConfig: { temperature: 0, maxOutputTokens: 10 }
+          generationConfig: { temperature: 0, maxOutputTokens: 10, thinkingConfig: { thinkingBudget: 0 } }
         });
         const req = https.request(url, { method: 'POST', headers: { 'Content-Type': 'application/json' } }, (res) => {
           let data = '';

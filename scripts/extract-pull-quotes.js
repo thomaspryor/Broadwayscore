@@ -125,7 +125,12 @@ function callGemini(systemPrompt, userPrompt) {
     contents: [
       { role: 'user', parts: [{ text: systemPrompt + '\n\n---\n\n' + userPrompt }] }
     ],
-    generationConfig: { temperature: 0.1, maxOutputTokens: 300 }
+    // thinkingBudget:0 is REQUIRED for gemini-2.5-flash: thinking tokens count
+    // against maxOutputTokens and silently truncate the response. Without it a
+    // 300-token budget gets eaten by ~285 thinking tokens, leaving ~3 tokens of
+    // visible output → pull quotes cut off mid-sentence ("Hell yeah!", "The show
+    // stands as a rip-roaring"). See feedback_gemini_thinking_token_budget.
+    generationConfig: { temperature: 0.1, maxOutputTokens: 300, thinkingConfig: { thinkingBudget: 0 } }
   });
 
   return new Promise((resolve, reject) => {

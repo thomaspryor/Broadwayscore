@@ -120,7 +120,7 @@ async function callOpenAI(prompt, { model = GPT4O, maxTokens = 500 } = {}) {
 async function callGemini(prompt) {
   const body = JSON.stringify({
     contents: [{ parts: [{ text: prompt }] }],
-    generationConfig: { temperature: 0, maxOutputTokens: 500 }
+    generationConfig: { temperature: 0, maxOutputTokens: 500, thinkingConfig: { thinkingBudget: 0 } }
   });
 
   return new Promise((resolve, reject) => {
