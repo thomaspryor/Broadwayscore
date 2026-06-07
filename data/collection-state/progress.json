@@ -20,7 +20,9 @@
     "war-horse-west-end-2026/thereviewshub--unknown.json",
     "the-p-word-off-west-end-2026/thereviewshub--unknown.json",
     "schmigadoon-2026/nytg--unknown.json",
-    "fallen-angels-2026/nytg--unknown.json"
+    "fallen-angels-2026/nytg--unknown.json",
+    "war-horse-west-end-2026/click-liverpool--carie-schneider.json",
+    "beetlejuice-west-end-2026/guardian-uk--unknown.json"
   ],
   "failed": [
     "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
@@ -1360,7 +1362,15 @@
     "small-off-broadway-2026/washpost--unknown.json",
     "indian-princesses-off-broadway-2025/pages-on-stages--mason-pilevsky.json",
     "the-maids-off-broadway-2026/ew--unknown.json",
-    "the-maids-off-broadway-2026/nydailynews--unknown.json"
+    "the-maids-off-broadway-2026/nydailynews--unknown.json",
+    "are-you-watching-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "driftwood-west-end-2026/times-uk--clive-davis.json",
+    "war-horse-west-end-2026/financialtimes--unknown.json",
+    "war-horse-west-end-2026/plays-international--maryam-philpott.json",
+    "war-horse-west-end-2026/times-uk--chris-bennion.json",
+    "war-horse-west-end-2026/times-uk--clive-davis.json",
+    "beetlejuice-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "beetlejuice-west-end-2026/amny--matt-windman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1379,7 +1389,9 @@
       "glengarry-glen-ross-west-end-2026/british-theatre--unknown.json",
       "are-you-watching-west-end-2026/west-end-best-friend--unknown.json",
       "schmigadoon-2026/nytg--unknown.json",
-      "fallen-angels-2026/nytg--unknown.json"
+      "fallen-angels-2026/nytg--unknown.json",
+      "war-horse-west-end-2026/click-liverpool--carie-schneider.json",
+      "beetlejuice-west-end-2026/guardian-uk--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1414,14 +1426,15 @@
       "dark-of-the-moon-west-end-2026/guardian--arifa-akbar.json"
     ],
     "archiveToday": [
-      "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json"
+      "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
+      "data/review-texts/war-horse-west-end-2026/financialtimes--unknown.json"
     ],
     "archive": [
       "small-off-broadway-2026/culturesauce--thom-geier.json"
     ]
   },
   "startTime": "2026-06-07T05:20:43.951Z",
-  "lastProcessed": "the-maids-off-broadway-2026/nydailynews--unknown.json",
+  "lastProcessed": "beetlejuice-west-end-2026/amny--matt-windman.json",
   "log": [
     {
       "t": "2026-06-07T05:21:08.825Z",
@@ -1666,6 +1679,17 @@
       "t": "2026-06-07T15:25:12.526Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-07T19:21:55.298Z",
+      "event": "bb-session",
+      "session": "37d03f47",
+      "url": "https://www.ft.com/content/25fe81b8-ded0-4aa4-ad0c-a6609990f578?syn-25a6b1a6=1"
+    },
+    {
+      "t": "2026-06-07T19:21:55.849Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
     }
   ]
 }

@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-07T15:28:11.072Z",
-  "processed": 21,
-  "failed": 1338,
-  "successRate": "1.5%",
+  "updatedAt": "2026-06-07T19:23:36.355Z",
+  "processed": 23,
+  "failed": 1346,
+  "successRate": "1.7%",
   "tierBreakdown": {
-    "playwright": 15,
+    "playwright": 17,
     "amp": 0,
     "browserbase": 20,
     "directCookies": 0,
     "scrapingbee": 3,
     "brightdata": 1,
-    "archiveToday": 1,
+    "archiveToday": 2,
     "archive": 1
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-06-07T10:50:52.611Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-07T10:52:04.262Z",
-      "event": "bb-session",
-      "session": "730e3684",
-      "url": "https://www.nytimes.com/2026/06/01/arts/andy-halliday-dead.html"
-    },
     {
       "t": "2026-06-07T10:52:05.288Z",
       "event": "bb-cookie-inject",
@@ -125,6 +114,17 @@
       "t": "2026-06-07T15:25:12.526Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-07T19:21:55.298Z",
+      "event": "bb-session",
+      "session": "37d03f47",
+      "url": "https://www.ft.com/content/25fe81b8-ded0-4aa4-ad0c-a6609990f578?syn-25a6b1a6=1"
+    },
+    {
+      "t": "2026-06-07T19:21:55.849Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
     }
   ]
 }
