@@ -282,7 +282,8 @@
     "into-the-woods-west-end-2025/nytimes--alexis-soloski.json",
     "call-me-izzy-2025/theater-life--barry-gordin.json",
     "smash-2025/broadway-and-me--janice-c-simpson.json",
-    "pen-pals-off-broadway-2025/theater-life--barry-gordin.json"
+    "pen-pals-off-broadway-2025/theater-life--barry-gordin.json",
+    "bad-krey-l-off-broadway-2026/timeout--raven-snook.json"
   ],
   "failed": [
     "spamalot-off-broadway-2026/nytimes--jesse-green.json",
@@ -953,7 +954,16 @@
     "boop-2025/broadway-and-me--janice-c-simpson.json",
     "boop-2025/theatre-reviews-limited--joseph-verlezza.json",
     "redwood-2025/gmanetwork--stuart-santiago.json",
-    "redwood-2025/juiceph--wanggo-gallaga.json"
+    "redwood-2025/juiceph--wanggo-gallaga.json",
+    "eureka-day-2024/times-uk--clive-davis.json",
+    "cult-of-love-2024/theatre-reviews-limited--david-roberts.json",
+    "swept-away-2024/wsj--charles-isherwood.json",
+    "a-wonderful-world-the-louis-armstrong-musical-2024/thestage--lane-williamson.json",
+    "sunset-boulevard-2024/wsj--charles-isherwood.json",
+    "yellow-face-2024/wsj--charles-isherwood.json",
+    "yellow-face-2024/aaartsalliance--katie-gee-salisbury.json",
+    "mcneal-2024/thestage--lane-williamson.json",
+    "the-hills-of-california-2024/wsj--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1202,7 +1212,8 @@
       "becky-shaw-2026/cote-notices--david-cote.json",
       "gotta-dance-off-broadway-2026/new-york-classical-review--george-grella.json",
       "public-charge-off-broadway-2026/timeout--unknown.json",
-      "into-the-woods-west-end-2025/nytimes--alexis-soloski.json"
+      "into-the-woods-west-end-2025/nytimes--alexis-soloski.json",
+      "bad-krey-l-off-broadway-2026/timeout--raven-snook.json"
     ],
     "brightdata": [
       "good-night-oscar-2023/nytimes--jesse-green.json",
@@ -1332,7 +1343,9 @@
       "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
       "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
       "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
-      "data/review-texts/dark-of-the-moon-west-end-2026/thestage--unknown.json"
+      "data/review-texts/dark-of-the-moon-west-end-2026/thestage--unknown.json",
+      "data/review-texts/a-wonderful-world-the-louis-armstrong-musical-2024/thestage--lane-williamson.json",
+      "data/review-texts/mcneal-2024/thestage--lane-williamson.json"
     ],
     "archive": [
       "misery-2015/nytimes--charles-isherwood.json",
@@ -1410,7 +1423,7 @@
     ]
   },
   "startTime": "2026-06-06T04:44:29.355Z",
-  "lastProcessed": "pen-pals-off-broadway-2025/theater-life--barry-gordin.json",
+  "lastProcessed": "the-hills-of-california-2024/wsj--charles-isherwood.json",
   "log": [
     {
       "t": "2026-06-06T06:19:34.296Z",
@@ -1908,6 +1921,50 @@
       "t": "2026-06-07T01:23:47.126Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-07T03:58:19.210Z",
+      "event": "bb-session",
+      "session": "42eac2ca",
+      "url": "https://www.wsj.com/arts-culture/theater/swept-away-review-broadway-avett-brothe"
+    },
+    {
+      "t": "2026-06-07T03:58:19.757Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-07T04:00:58.778Z",
+      "event": "bb-session",
+      "session": "fe8e6514",
+      "url": "https://www.wsj.com/arts-culture/theater/sunset-boulevard-broadway-review-nicole"
+    },
+    {
+      "t": "2026-06-07T04:00:59.352Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-07T04:01:58.992Z",
+      "event": "bb-session",
+      "session": "c8d22df2",
+      "url": "https://www.wsj.com/arts-culture/theater/yellow-face-review-david-henry-hwang-br"
+    },
+    {
+      "t": "2026-06-07T04:01:59.600Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-07T04:04:26.027Z",
+      "event": "bb-session",
+      "session": "942062df",
+      "url": "https://www.wsj.com/arts-culture/theater/the-hills-of-california-review-jez-butt"
+    },
+    {
+      "t": "2026-06-07T04:04:26.573Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
