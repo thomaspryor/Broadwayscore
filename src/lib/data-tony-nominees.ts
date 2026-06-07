@@ -194,6 +194,49 @@ function asMarketData(raw: unknown): PmData | null {
 const POLYMARKET_DATA = asMarketData(polymarketOddsRaw);
 const KALSHI_DATA = asMarketData(kalshiOddsRaw);
 
+/**
+ * Rescale a category's market odds (Kalshi + Polymarket) so each column sums
+ * to 100% across the rendered rows.
+ *
+ * WHY: real-money markets quote every nominee as an independent binary
+ * contract, so the raw implied probabilities carry an overround (vig) and sum
+ * to MORE than 100% — Kalshi's thin Tony markets routinely total ~140-150%.
+ * Displaying the raw prices side by side reads as broken ("these add up to way
+ * more than 100"). Dividing each value by the column total removes the
+ * overround while preserving the relative ranking.
+ *
+ * WHY at display time (not on the source JSON): some craft categories have a
+ * person nominated for two different shows (e.g. Kai Harada — Sound Design for
+ * both Ragtime and Cats), but Kalshi lists a single per-person market. That
+ * one market value legitimately lands on two rendered rows, so only a sum over
+ * the ACTUAL rendered rows reaches 100%. Normalizing the source map can't see
+ * the duplication and leaves those categories at ~131%.
+ *
+ * The day-over-day change is scaled by the same factor so the arrow stays
+ * proportional to the displayed (normalized) value. Null odds are left as-is.
+ */
+function renormalizeCategoryMarketOdds(shows: SerializedTonyShow[]): SerializedTonyShow[] {
+  const factorFor = (key: 'kalshiOdds' | 'polymarketOdds'): number | null => {
+    const sum = shows.reduce((s, sh) => s + (typeof sh[key] === 'number' ? (sh[key] as number) : 0), 0);
+    return sum > 0 ? 1 / sum : null;
+  };
+  const kFactor = factorFor('kalshiOdds');
+  const pFactor = factorFor('polymarketOdds');
+  if (kFactor == null && pFactor == null) return shows;
+  return shows.map(sh => {
+    const out = { ...sh };
+    if (kFactor != null && typeof sh.kalshiOdds === 'number') {
+      out.kalshiOdds = sh.kalshiOdds * kFactor;
+      if (typeof sh.kalshiOddsChange === 'number') out.kalshiOddsChange = sh.kalshiOddsChange * kFactor;
+    }
+    if (pFactor != null && typeof sh.polymarketOdds === 'number') {
+      out.polymarketOdds = sh.polymarketOdds * pFactor;
+      if (typeof sh.polymarketOddsChange === 'number') out.polymarketOddsChange = sh.polymarketOddsChange * pFactor;
+    }
+    return out;
+  });
+}
+
 function loadMarketData(filename: string): PmData | null {
   if (filename === 'tony-polymarket-odds.json') return POLYMARKET_DATA;
   if (filename === 'tony-kalshi-odds.json') return KALSHI_DATA;
@@ -335,7 +378,7 @@ export function enrichMajorCategoriesWithOdds(
         precursorWins: showId ? getPrecursorWins(showId, cat.title) : [],
       };
     });
-    return { ...cat, shows };
+    return { ...cat, shows: renormalizeCategoryMarketOdds(shows) };
   });
 }
 
@@ -481,7 +524,7 @@ export function getNomineesByCategory(season: TonySeasonWindow): TonyCategory[] 
       key: catTitle.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
       title: catTitle,
       description: '',
-      shows,
+      shows: renormalizeCategoryMarketOdds(shows),
       upcoming: [],
     });
   }
