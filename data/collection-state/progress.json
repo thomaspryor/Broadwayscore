@@ -296,7 +296,13 @@
     "suffs-2024/broadwaynews--brittani-samuel.json",
     "suffs-2024/broadway-and-me--janice-c-simpson.json",
     "suffs-2024/times-uk--nancy-durrant.json",
-    "the-wiz-2024/broadwaynews--brittani-samuel.json"
+    "the-wiz-2024/broadwaynews--brittani-samuel.json",
+    "the-wiz-2024/washpost--gloria-oladipo.json",
+    "lempicka-2024/broadwaynews--brittani-samuel.json",
+    "lempicka-2024/broadway-and-me--janice-c-simpson.json",
+    "the-notebook-2024/broadway-and-me--janice-c-simpson.json",
+    "days-of-wine-and-roses-2024/wsj--charles-isherwood.json",
+    "prayer-for-the-french-republic-2024/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
     "spamalot-off-broadway-2026/nytimes--jesse-green.json",
@@ -983,7 +989,11 @@
     "illinoise-2024/guardian--adrian-horton.json",
     "cabaret-2024/observer--jesse-green.json",
     "stereophonic-2024/usatoday--charles-isherwood.json",
-    "the-wiz-2024/thestage--lane-williamson.json"
+    "the-wiz-2024/thestage--lane-williamson.json",
+    "orlando-off-broadway-2026/guardian--unknown.json",
+    "the-whos-tommy-2024/broadwaynews--brittani-samuel.json",
+    "water-for-elephants-2024/broadway-and-me--janice-c-simpson.json",
+    "an-enemy-of-the-people-2024/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1150,7 +1160,8 @@
       "public-charge-off-broadway-2026/theater-life--barry-gordin.json",
       "the-tragedy-of-coriolanus-off-broadway-2026/timeout--billy-mcentee.json",
       "call-me-izzy-2025/theater-life--barry-gordin.json",
-      "pen-pals-off-broadway-2025/theater-life--barry-gordin.json"
+      "pen-pals-off-broadway-2025/theater-life--barry-gordin.json",
+      "the-wiz-2024/washpost--gloria-oladipo.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1190,7 +1201,9 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
       "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+      "data/review-texts/days-of-wine-and-roses-2024/wsj--charles-isherwood.json",
+      "days-of-wine-and-roses-2024/wsj--charles-isherwood.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1240,7 +1253,9 @@
       "patriots-2024/broadwaynews--brittani-samuel.json",
       "cabaret-2024/broadwaynews--brittani-samuel.json",
       "stereophonic-2024/broadwaynews--brittani-samuel.json",
-      "the-wiz-2024/broadwaynews--brittani-samuel.json"
+      "the-wiz-2024/broadwaynews--brittani-samuel.json",
+      "lempicka-2024/broadwaynews--brittani-samuel.json",
+      "prayer-for-the-french-republic-2024/broadwaynews--brittani-samuel.json"
     ],
     "brightdata": [
       "good-night-oscar-2023/nytimes--jesse-green.json",
@@ -1373,7 +1388,8 @@
       "data/review-texts/dark-of-the-moon-west-end-2026/thestage--unknown.json",
       "data/review-texts/a-wonderful-world-the-louis-armstrong-musical-2024/thestage--lane-williamson.json",
       "data/review-texts/mcneal-2024/thestage--lane-williamson.json",
-      "data/review-texts/the-roommate-2024/thestage--lane-williamson.json"
+      "data/review-texts/the-roommate-2024/thestage--lane-williamson.json",
+      "data/review-texts/the-wiz-2024/thestage--lane-williamson.json"
     ],
     "archive": [
       "misery-2015/nytimes--charles-isherwood.json",
@@ -1453,11 +1469,13 @@
       "heart-of-rock-and-roll-2024/broadwaynews--brittani-samuel.json",
       "suffs-2024/broadwaynews--brittani-samuel.json",
       "suffs-2024/broadway-and-me--janice-c-simpson.json",
-      "suffs-2024/times-uk--nancy-durrant.json"
+      "suffs-2024/times-uk--nancy-durrant.json",
+      "lempicka-2024/broadway-and-me--janice-c-simpson.json",
+      "the-notebook-2024/broadway-and-me--janice-c-simpson.json"
     ]
   },
   "startTime": "2026-06-06T04:44:29.355Z",
-  "lastProcessed": "the-wiz-2024/thestage--lane-williamson.json",
+  "lastProcessed": "prayer-for-the-french-republic-2024/broadwaynews--brittani-samuel.json",
   "log": [
     {
       "t": "2026-06-06T06:19:34.296Z",
@@ -2010,6 +2028,17 @@
       "t": "2026-06-07T04:07:12.332Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-06-07T04:12:02.877Z",
+      "event": "bb-session",
+      "session": "8955c436",
+      "url": "https://www.wsj.com/articles/days-of-wine-and-roses-review-the-intoxicating-decl"
+    },
+    {
+      "t": "2026-06-07T04:12:03.472Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
