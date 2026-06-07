@@ -273,7 +273,10 @@
     "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
     "becky-shaw-2026/cote-notices--david-cote.json",
     "gotta-dance-off-broadway-2026/new-york-classical-review--george-grella.json",
-    "public-charge-off-broadway-2026/timeout--unknown.json"
+    "public-charge-off-broadway-2026/timeout--unknown.json",
+    "public-charge-off-broadway-2026/theater-life--barry-gordin.json",
+    "cold-war-choir-practice-off-broadway-2026/broadway-and-me--janice-c-simpson.json",
+    "shadowlands-west-end-2026/broadwayworld--aliya-al-hassan.json"
   ],
   "failed": [
     "spamalot-off-broadway-2026/nytimes--jesse-green.json",
@@ -792,7 +795,14 @@
     "one-flew-over-the-cuckoos-nest-west-end-2026/standard--nick-curtis.json",
     "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
     "yoah-off-broadway-2026/variety--pat-saperstein.json",
-    "seagull-true-story-off-broadway-2026/nysr--frank-scheck.json"
+    "seagull-true-story-off-broadway-2026/nysr--frank-scheck.json",
+    "tristan-und-isolde-off-broadway-2026/bachtrack--noa-l-bat-miri.json",
+    "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
+    "antigone-this-play-i-read-in-high-school-off-broadway-2026/one-minute-critic--billy-mcentee.json",
+    "you-got-older-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+    "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
+    "dracula-west-end-2025/nysr--unknown.json",
+    "dracula-west-end-2025/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -955,7 +965,8 @@
       "job-2024/theatre-reviews-limited--david-roberts.json",
       "starlight-express-west-end-2024/thereviewshub--the-reviews-hub-london.json",
       "equus-west-end-2026/timeout--andrzej-lukowski.json",
-      "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json"
+      "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
+      "public-charge-off-broadway-2026/theater-life--barry-gordin.json"
     ],
     "amp": [],
     "browserbase": [
@@ -987,7 +998,8 @@
       "data/review-texts/innocence-off-broadway-2026/wsj--heidi-waleson.json",
       "innocence-off-broadway-2026/wsj--heidi-waleson.json",
       "data/review-texts/book-of-mormon-2011/variety--marilyn-stasio.json",
-      "data/review-texts/book-of-mormon-2011/variety--marilyn-stasio.json"
+      "data/review-texts/book-of-mormon-2011/variety--marilyn-stasio.json",
+      "data/review-texts/tristan-und-isolde-off-broadway-2026/bachtrack--noa-l-bat-miri.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1228,11 +1240,13 @@
       "the-hills-of-california-2024/broadwaynews--brittani-samuel.json",
       "once-upon-a-mattress-2024/wsj--charles-isherwood.json",
       "job-2024/broadwaynews--brittani-samuel.json",
-      "girl-interrupted-off-broadway-2026/broadwayworld--unknown.json"
+      "girl-interrupted-off-broadway-2026/broadwayworld--unknown.json",
+      "cold-war-choir-practice-off-broadway-2026/broadway-and-me--janice-c-simpson.json",
+      "shadowlands-west-end-2026/broadwayworld--aliya-al-hassan.json"
     ]
   },
   "startTime": "2026-06-06T04:44:29.355Z",
-  "lastProcessed": "public-charge-off-broadway-2026/timeout--unknown.json",
+  "lastProcessed": "shadowlands-west-end-2026/broadwayworld--aliya-al-hassan.json",
   "log": [
     {
       "t": "2026-06-06T06:19:34.296Z",
@@ -1647,6 +1661,12 @@
       "t": "2026-06-07T00:11:43.124Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-07T00:15:00.289Z",
+      "event": "bb-session",
+      "session": "4dd4d242",
+      "url": "https://bachtrack.com/review-tristan-isolde-sharon-nezet-seguin-davidsen-spyres-"
     }
   ]
 }
