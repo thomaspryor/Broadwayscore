@@ -1,25 +1,20 @@
 {
-  "updatedAt": "2026-06-07T13:26:08.635Z",
+  "updatedAt": "2026-06-07T13:28:25.124Z",
   "processed": 21,
-  "failed": 1175,
-  "successRate": "1.8%",
+  "failed": 1182,
+  "successRate": "1.7%",
   "tierBreakdown": {
     "playwright": 15,
     "amp": 0,
-    "browserbase": 20,
+    "browserbase": 21,
     "directCookies": 0,
     "scrapingbee": 3,
     "brightdata": 1,
     "archiveToday": 1,
     "archive": 1
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-06-07T10:50:52.611Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-06-07T10:52:04.262Z",
       "event": "bb-session",
@@ -125,6 +120,12 @@
       "t": "2026-06-07T13:25:31.221Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-07T13:27:17.810Z",
+      "event": "bb-session",
+      "session": "8d8a4a7e",
+      "url": "https://theaterpizzazz.com/small-a-jockeys-indestructible-passion/"
     }
   ]
 }
