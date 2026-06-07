@@ -302,7 +302,15 @@
     "lempicka-2024/broadway-and-me--janice-c-simpson.json",
     "the-notebook-2024/broadway-and-me--janice-c-simpson.json",
     "days-of-wine-and-roses-2024/wsj--charles-isherwood.json",
-    "prayer-for-the-french-republic-2024/broadwaynews--brittani-samuel.json"
+    "prayer-for-the-french-republic-2024/broadwaynews--brittani-samuel.json",
+    "appropriate-2023/wsj--charles-isherwood.json",
+    "harmony-2023/broadwaynews--brittani-samuel.json",
+    "i-need-that-2023/timeout--adam-feldman.json",
+    "stereophonic-off-broadway-2023/wsj--charles-isherwood.json",
+    "gutenberg-2023/wsj--charles-isherwood.json",
+    "merrily-we-roll-along-2023/broadwaynews--naveen-kumar.json",
+    "merrily-we-roll-along-2023/wsj--charles-isherwood.json",
+    "jajas-african-hair-braiding-2023/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
     "spamalot-off-broadway-2026/nytimes--jesse-green.json",
@@ -993,7 +1001,9 @@
     "orlando-off-broadway-2026/guardian--unknown.json",
     "the-whos-tommy-2024/broadwaynews--brittani-samuel.json",
     "water-for-elephants-2024/broadway-and-me--janice-c-simpson.json",
-    "an-enemy-of-the-people-2024/times-uk--clive-davis.json"
+    "an-enemy-of-the-people-2024/times-uk--clive-davis.json",
+    "i-need-that-2023/wsj--charles-isherwood.json",
+    "purlie-victorious-2023/thestage--lane-williamson.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1203,7 +1213,16 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
       "data/review-texts/days-of-wine-and-roses-2024/wsj--charles-isherwood.json",
-      "days-of-wine-and-roses-2024/wsj--charles-isherwood.json"
+      "days-of-wine-and-roses-2024/wsj--charles-isherwood.json",
+      "data/review-texts/appropriate-2023/wsj--charles-isherwood.json",
+      "appropriate-2023/wsj--charles-isherwood.json",
+      "data/review-texts/i-need-that-2023/wsj--charles-isherwood.json",
+      "data/review-texts/stereophonic-off-broadway-2023/wsj--charles-isherwood.json",
+      "stereophonic-off-broadway-2023/wsj--charles-isherwood.json",
+      "data/review-texts/gutenberg-2023/wsj--charles-isherwood.json",
+      "gutenberg-2023/wsj--charles-isherwood.json",
+      "data/review-texts/merrily-we-roll-along-2023/wsj--charles-isherwood.json",
+      "merrily-we-roll-along-2023/wsj--charles-isherwood.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1255,7 +1274,10 @@
       "stereophonic-2024/broadwaynews--brittani-samuel.json",
       "the-wiz-2024/broadwaynews--brittani-samuel.json",
       "lempicka-2024/broadwaynews--brittani-samuel.json",
-      "prayer-for-the-french-republic-2024/broadwaynews--brittani-samuel.json"
+      "prayer-for-the-french-republic-2024/broadwaynews--brittani-samuel.json",
+      "harmony-2023/broadwaynews--brittani-samuel.json",
+      "i-need-that-2023/timeout--adam-feldman.json",
+      "jajas-african-hair-braiding-2023/broadwaynews--brittani-samuel.json"
     ],
     "brightdata": [
       "good-night-oscar-2023/nytimes--jesse-green.json",
@@ -1389,7 +1411,8 @@
       "data/review-texts/a-wonderful-world-the-louis-armstrong-musical-2024/thestage--lane-williamson.json",
       "data/review-texts/mcneal-2024/thestage--lane-williamson.json",
       "data/review-texts/the-roommate-2024/thestage--lane-williamson.json",
-      "data/review-texts/the-wiz-2024/thestage--lane-williamson.json"
+      "data/review-texts/the-wiz-2024/thestage--lane-williamson.json",
+      "data/review-texts/purlie-victorious-2023/thestage--lane-williamson.json"
     ],
     "archive": [
       "misery-2015/nytimes--charles-isherwood.json",
@@ -1471,11 +1494,12 @@
       "suffs-2024/broadway-and-me--janice-c-simpson.json",
       "suffs-2024/times-uk--nancy-durrant.json",
       "lempicka-2024/broadway-and-me--janice-c-simpson.json",
-      "the-notebook-2024/broadway-and-me--janice-c-simpson.json"
+      "the-notebook-2024/broadway-and-me--janice-c-simpson.json",
+      "merrily-we-roll-along-2023/broadwaynews--naveen-kumar.json"
     ]
   },
   "startTime": "2026-06-06T04:44:29.355Z",
-  "lastProcessed": "prayer-for-the-french-republic-2024/broadwaynews--brittani-samuel.json",
+  "lastProcessed": "purlie-victorious-2023/thestage--lane-williamson.json",
   "log": [
     {
       "t": "2026-06-06T06:19:34.296Z",
@@ -2037,6 +2061,61 @@
     },
     {
       "t": "2026-06-07T04:12:03.472Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-07T04:12:40.272Z",
+      "event": "bb-session",
+      "session": "7b6df742",
+      "url": "https://www.wsj.com/articles/appropriate-review-drama-coded-into-its-dna-42f5e6d"
+    },
+    {
+      "t": "2026-06-07T04:12:40.807Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-07T04:13:40.904Z",
+      "event": "bb-session",
+      "session": "a53cfb3a",
+      "url": "https://www.wsj.com/articles/i-need-that-review-danny-devito-theresa-rebeck-lucy"
+    },
+    {
+      "t": "2026-06-07T04:13:41.423Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-07T04:13:59.910Z",
+      "event": "bb-session",
+      "session": "10962ad1",
+      "url": "https://www.wsj.com/articles/stereophonic-review-fictionalizing-fleetwood-mac-pl"
+    },
+    {
+      "t": "2026-06-07T04:14:01.191Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-07T04:14:23.494Z",
+      "event": "bb-session",
+      "session": "6a35b388",
+      "url": "https://www.wsj.com/articles/gutenberg-the-musical-review-broadway-andrew-rannel"
+    },
+    {
+      "t": "2026-06-07T04:14:23.994Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-07T04:14:57.462Z",
+      "event": "bb-session",
+      "session": "4377c5b7",
+      "url": "https://www.wsj.com/articles/merrily-we-roll-along-review-old-friends-back-on-br"
+    },
+    {
+      "t": "2026-06-07T04:14:57.996Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
