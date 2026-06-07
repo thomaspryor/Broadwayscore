@@ -9,7 +9,9 @@
     "animal-wisdom-off-broadway-2022/nytg--christian-lewis.json",
     "animal-wisdom-off-broadway-2022/one-minute-critic--lindsay-b-davis.json",
     "celebrity-autobiography-2026/one-minute-critic--matthew-wexler.json",
-    "the-maids-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+    "the-maids-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "maybe-happy-ending-2024/variety--unknown.json",
+    "maybe-happy-ending-2024/washpost--unknown.json"
   ],
   "failed": [
     "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
@@ -28,7 +30,15 @@
     "small-off-broadway-2026/washpost--unknown.json",
     "indian-princesses-off-broadway-2025/pages-on-stages--mason-pilevsky.json",
     "the-maids-off-broadway-2026/ew--unknown.json",
-    "the-maids-off-broadway-2026/nydailynews--unknown.json"
+    "the-maids-off-broadway-2026/nydailynews--unknown.json",
+    "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
+    "matilda-the-musical-west-end-2021/whatsonstage--meriel-patrick.json",
+    "tammy-faye-2024/stageandcinema--mike-mineo.json",
+    "yellow-face-2024/nypost--johnny-oleksinski.json",
+    "the-hills-of-california-2024/times-uk--ann-treneman.json",
+    "mary-jane-2024/ew--joey-nolfi.json",
+    "stereophonic-2024/observer--jesse-green.json",
+    "suffs-2024/guardian--adrian-horton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -41,12 +51,15 @@
       "animal-wisdom-off-broadway-2022/nytg--christian-lewis.json",
       "animal-wisdom-off-broadway-2022/one-minute-critic--lindsay-b-davis.json",
       "celebrity-autobiography-2026/one-minute-critic--matthew-wexler.json",
-      "the-maids-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+      "the-maids-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "maybe-happy-ending-2024/washpost--unknown.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+      "data/review-texts/maybe-happy-ending-2024/variety--unknown.json",
+      "maybe-happy-ending-2024/variety--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -57,7 +70,7 @@
     ]
   },
   "startTime": "2026-06-07T05:20:43.951Z",
-  "lastProcessed": "the-maids-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+  "lastProcessed": "suffs-2024/guardian--adrian-horton.json",
   "log": [
     {
       "t": "2026-06-07T05:21:08.825Z",
@@ -78,6 +91,17 @@
     },
     {
       "t": "2026-06-07T05:21:24.302Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-07T06:08:53.902Z",
+      "event": "bb-session",
+      "session": "e28c4311",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
+    },
+    {
+      "t": "2026-06-07T06:08:54.913Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
