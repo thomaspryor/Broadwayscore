@@ -10,12 +10,15 @@
  *   ACTIVE         — last run < 30 days ago
  *
  * Usage:
- *   node scripts/audit-workflow-activity.js            # print full report
+ *   node scripts/audit-workflow-activity.js            # print full report (uses cache)
  *   node scripts/audit-workflow-activity.js --json     # JSON output
+ *   node scripts/audit-workflow-activity.js --force    # bypass cache, fetch fresh data
  *
  * Requires: GH_TOKEN env var (or GITHUB_TOKEN) with repo access.
- * Rate limit: uses the workflow runs API (5000 req/hour for authenticated calls).
- * Each workflow = 1 API call; 186 workflows = 186 calls. Runs in parallel (20 concurrent).
+ * Rate limit: each workflow = 2 API calls (info + last run); 186 workflows = 372 calls total.
+ * Cache: results stored in /tmp/bwsc-workflow-activity-cache.json (24h TTL).
+ *        Re-running within 24h costs 0 API calls. Use --force to bypass.
+ * Concurrency: 5 workers with 500ms inter-call spacing to stay under secondary rate limits.
  */
 'use strict';
 const fs = require('fs');
@@ -26,7 +29,11 @@ const WORKFLOW_DIR = path.join(__dirname, '..', '.github', 'workflows');
 const REPO = 'thomaspryor/Broadwayscore';
 const TOKEN = process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
 const JSON_OUTPUT = process.argv.includes('--json');
-const CONCURRENCY = 20;
+const FORCE = process.argv.includes('--force');
+const CONCURRENCY = 5;
+const CALL_SPACING_MS = 500;
+const CACHE_FILE = '/tmp/bwsc-workflow-activity-cache.json';
+const CACHE_TTL_MS = 24 * 60 * 60 * 1000;
 
 // Critical workflows from check-cron-health.yml — these MUST stay active.
 // Entries have format: "workflow.yml|max_hours|Name"
@@ -39,7 +46,34 @@ function parseCriticalCrons() {
   return new Set(workflows);
 }
 
-function apiGet(url) {
+// Load cache; returns {} on miss/error/force.
+function loadCache() {
+  if (FORCE) return {};
+  try {
+    const raw = fs.readFileSync(CACHE_FILE, 'utf8');
+    const cache = JSON.parse(raw);
+    // Purge keys for workflow files that no longer exist
+    const existing = new Set(
+      fs.readdirSync(WORKFLOW_DIR).filter(f => f.endsWith('.yml') || f.endsWith('.yaml'))
+    );
+    for (const key of Object.keys(cache)) {
+      if (!existing.has(key)) delete cache[key];
+    }
+    return cache;
+  } catch {
+    return {};
+  }
+}
+
+function saveCache(cache) {
+  try { fs.writeFileSync(CACHE_FILE, JSON.stringify(cache, null, 2)); } catch { /* best-effort */ }
+}
+
+function sleep(ms) {
+  return new Promise(r => setTimeout(r, ms));
+}
+
+function apiGet(url, retries = 3) {
   return new Promise((resolve, reject) => {
     const opts = {
       headers: {
@@ -51,9 +85,18 @@ function apiGet(url) {
     https.get(url, opts, (res) => {
       let body = '';
       res.on('data', (d) => (body += d));
-      res.on('end', () => {
+      res.on('end', async () => {
         if (res.statusCode === 200) {
           try { resolve(JSON.parse(body)); } catch { resolve(null); }
+        } else if (res.statusCode === 403 && retries > 0) {
+          // Secondary rate limit — back off and retry
+          const retryAfter = parseInt(res.headers['retry-after'] || '60', 10);
+          const delay = Math.max(retryAfter * 1000, 10000);
+          if (!JSON_OUTPUT) {
+            process.stderr.write(`  ⏳ Secondary rate limit hit, waiting ${Math.round(delay / 1000)}s...\n`);
+          }
+          await sleep(delay);
+          try { resolve(await apiGet(url, retries - 1)); } catch (e) { reject(e); }
         } else {
           resolve({ _status: res.statusCode, _body: body });
         }
@@ -98,11 +141,23 @@ function bucket(state, lastRun) {
   return 'ACTIVE';
 }
 
-async function processWorkflow(filename) {
+async function processWorkflow(filename, cache) {
+  const now = Date.now();
+  const cached = cache[filename];
+  if (cached && (now - cached.fetchedAt) < CACHE_TTL_MS) {
+    return cached.result;
+  }
+
+  await sleep(CALL_SPACING_MS);
   const info = await getWorkflowId(filename);
-  if (!info) return { filename, bucket: 'UNKNOWN', error: 'not found in API' };
+  if (!info) {
+    const result = { filename, bucket: 'UNKNOWN', error: 'not found in API' };
+    cache[filename] = { fetchedAt: now, result };
+    return result;
+  }
+  await sleep(CALL_SPACING_MS);
   const lastRun = await getLastRun(info.id);
-  return {
+  const result = {
     filename,
     name: info.name,
     state: info.state,
@@ -112,6 +167,8 @@ async function processWorkflow(filename) {
     lastConclusion: lastRun?.conclusion ?? null,
     runNumber: lastRun?.runNumber ?? null,
   };
+  cache[filename] = { fetchedAt: now, result };
+  return result;
 }
 
 // Bounded concurrency pool
@@ -138,11 +195,23 @@ async function main() {
     .filter(f => f.endsWith('.yml') || f.endsWith('.yaml'))
     .sort();
 
+  const cache = loadCache();
+  const staleCount = files.filter(f => {
+    const c = cache[f];
+    return !c || (Date.now() - c.fetchedAt) >= CACHE_TTL_MS;
+  }).length;
+  const fromCache = files.length - staleCount;
+
   if (!JSON_OUTPUT) {
-    console.error(`Auditing ${files.length} workflows (${CONCURRENCY} concurrent)...`);
+    if (fromCache > 0 && !FORCE) {
+      console.error(`Auditing ${files.length} workflows — ${fromCache} from cache, ${staleCount} fetching (${CONCURRENCY} concurrent, 500ms spacing)...`);
+    } else {
+      console.error(`Auditing ${files.length} workflows (${CONCURRENCY} concurrent, 500ms spacing)...`);
+    }
   }
 
-  const results = await runPool(files, processWorkflow, CONCURRENCY);
+  const results = await runPool(files, (f) => processWorkflow(f, cache), CONCURRENCY);
+  saveCache(cache);
 
   const criticalCrons = parseCriticalCrons();
 
@@ -167,6 +236,7 @@ async function main() {
   console.log(`\n═══════════════════════════════════════════════════════`);
   console.log(`  Workflow Activity Audit — ${now}`);
   console.log(`  Repo: ${REPO}  |  Total: ${files.length} workflows`);
+  if (fromCache > 0 && !FORCE) console.log(`  (${fromCache} results from cache — use --force for fresh data)`);
   console.log(`═══════════════════════════════════════════════════════`);
 
   if (buckets.DISABLED.length) {

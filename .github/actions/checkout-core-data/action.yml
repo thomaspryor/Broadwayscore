@@ -10,13 +10,12 @@ runs:
   using: composite
   steps:
     - name: Restore core data cache
-      uses: actions/cache@v4
+      uses: actions/cache/restore@v5
       with:
         path: /tmp/core-data-checkout
         key: core-data-${{ runner.os }}-${{ github.run_id }}
         restore-keys: |
           core-data-${{ runner.os }}-
-        save-always: true
 
     - name: Clone or update core data repo
       shell: bash
@@ -97,3 +96,10 @@ runs:
         for f in /tmp/core-data-checkout/*.json; do
           [ -f "$f" ] && cp -f "$f" /tmp/core-data-snapshot/
         done
+
+    - name: Save core data cache
+      uses: actions/cache/save@v5
+      if: always()
+      with:
+        path: /tmp/core-data-checkout
+        key: core-data-${{ runner.os }}-${{ github.run_id }}

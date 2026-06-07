@@ -365,7 +365,13 @@ export default async function ShowPage({ params }: { params: { slug: string } })
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify({
           '@context': 'https://schema.org',
-          '@graph': schemas,
+          // Strip per-schema @context keys — they're invalid inside @graph (spec requires
+          // @context only at the document root, not on member objects).
+          '@graph': schemas.map(s => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { '@context': _ctx, ...rest } = s as Record<string, unknown>;
+            return rest;
+          }),
         }) }}
       />
 
