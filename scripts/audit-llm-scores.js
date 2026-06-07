@@ -157,7 +157,7 @@ function callGemini(systemPrompt, userPrompt) {
     contents: [
       { role: 'user', parts: [{ text: systemPrompt + '\n\n' + userPrompt }] }
     ],
-    generationConfig: { temperature: 0.1, maxOutputTokens: 300 }
+    generationConfig: { temperature: 0.1, maxOutputTokens: 300, thinkingConfig: { thinkingBudget: 0 } }
   });
 
   return new Promise((resolve, reject) => {

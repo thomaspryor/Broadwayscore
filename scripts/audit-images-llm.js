@@ -145,6 +145,7 @@ class ImageVerifier {
       generationConfig: {
         temperature: 0.2,
         maxOutputTokens: 300,
+        thinkingConfig: { thinkingBudget: 0 }, // 2.5-flash thinking eats budget; see feedback_gemini_thinking_token_budget
       }
     });
     this.rateLimiter = new RateLimiter(RPM_LIMIT);

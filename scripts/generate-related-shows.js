@@ -242,7 +242,7 @@ function callGemini(prompt) {
   return new Promise((resolve, reject) => {
     const body = JSON.stringify({
       contents: [{ role: 'user', parts: [{ text: prompt }] }],
-      generationConfig: { temperature: 0.3, maxOutputTokens: 2000 }
+      generationConfig: { temperature: 0.3, maxOutputTokens: 2000, thinkingConfig: { thinkingBudget: 0 } }
     });
 
     const req = https.request(url, {
