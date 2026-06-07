@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-07T20:44:37.668Z",
+  "generatedAt": "2026-06-07T21:43:48.801Z",
   "date": "2026-06-07",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 285870,
+  "entryCount": 287018,
   "shows": [
     {
       "showId": "an-ideal-husband-west-end-2026",
@@ -36,12 +36,12 @@
     },
     {
       "showId": "the-rocky-horror-show-2026",
-      "reviewCount": 27,
+      "reviewCount": 30,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 1514091,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -411,12 +411,12 @@
     },
     {
       "showId": "the-lost-boys-2026",
-      "reviewCount": 34,
+      "reviewCount": 36,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 1597675,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -1296,12 +1296,12 @@
     },
     {
       "showId": "avenue-q-west-end-2026",
-      "reviewCount": 23,
+      "reviewCount": 24,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 1192195,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -1401,12 +1401,12 @@
     },
     {
       "showId": "death-of-a-salesman-2026",
-      "reviewCount": 28,
+      "reviewCount": 29,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 929218,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -1476,7 +1476,7 @@
     },
     {
       "showId": "equus-west-end-2026",
-      "reviewCount": 13,
+      "reviewCount": 14,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1581,7 +1581,7 @@
     },
     {
       "showId": "burlesque-west-end-2026",
-      "reviewCount": 17,
+      "reviewCount": 16,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1746,7 +1746,7 @@
     },
     {
       "showId": "oliver-west-end-2024",
-      "reviewCount": 12,
+      "reviewCount": 13,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1881,12 +1881,12 @@
     },
     {
       "showId": "the-balusters-2026",
-      "reviewCount": 32,
+      "reviewCount": 34,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 1466366,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -2151,7 +2151,7 @@
     },
     {
       "showId": "schmigadoon-2026",
-      "reviewCount": 49,
+      "reviewCount": 38,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2166,12 +2166,12 @@
     },
     {
       "showId": "fallen-angels-2026",
-      "reviewCount": 29,
+      "reviewCount": 31,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 1340618,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -2186,7 +2186,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 1163333,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -2211,7 +2211,7 @@
     },
     {
       "showId": "titanique-2026",
-      "reviewCount": 23,
+      "reviewCount": 24,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2361,7 +2361,7 @@
     },
     {
       "showId": "a-midsummer-nights-dream-globe-west-end-2026",
-      "reviewCount": 7,
+      "reviewCount": 8,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2736,7 +2736,7 @@
     },
     {
       "showId": "beetlejuice-west-end-2026",
-      "reviewCount": 23,
+      "reviewCount": 26,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2751,7 +2751,7 @@
     },
     {
       "showId": "care-west-end-2026",
-      "reviewCount": 21,
+      "reviewCount": 22,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -3261,7 +3261,7 @@
     },
     {
       "showId": "1536-west-end-2026",
-      "reviewCount": 17,
+      "reviewCount": 16,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -3471,7 +3471,7 @@
     },
     {
       "showId": "giant-2026",
-      "reviewCount": 20,
+      "reviewCount": 24,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4071,7 +4071,7 @@
     },
     {
       "showId": "the-p-word-off-west-end-2026",
-      "reviewCount": 10,
+      "reviewCount": 9,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4326,7 +4326,7 @@
     },
     {
       "showId": "war-horse-west-end-2026",
-      "reviewCount": 24,
+      "reviewCount": 25,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4386,7 +4386,7 @@
     },
     {
       "showId": "360-allstars-off-west-end-2026",
-      "reviewCount": 1,
+      "reviewCount": 2,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -6501,7 +6501,7 @@
     },
     {
       "showId": "moulin-rouge-2019",
-      "reviewCount": 42,
+      "reviewCount": 41,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -7401,7 +7401,7 @@
     },
     {
       "showId": "are-you-watching-west-end-2026",
-      "reviewCount": 10,
+      "reviewCount": 11,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -8452,6 +8452,21 @@
     {
       "showId": "gutenberg-2023",
       "reviewCount": 25,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-visitors-off-broadway-2026",
+      "reviewCount": 1,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
