@@ -329,7 +329,12 @@
     "camelot-2023/broadway-and-me--janice-c-simpson.json",
     "fat-ham-2023/broadwaynews--brittani-samuel.json",
     "fat-ham-2023/timeout--adam-feldman.json",
-    "fat-ham-2023/timeout--raven-snook.json"
+    "fat-ham-2023/timeout--raven-snook.json",
+    "bad-cinderella-2023/wsj--charles-isherwood.json",
+    "bob-fosses-dancin-2023/wsj--charles-isherwood.json",
+    "pictures-from-home-2023/newyorker--conde-nast.json",
+    "pictures-from-home-2023/broadway-and-me--janice-c-simpson.json",
+    "between-riverside-and-crazy-2022/wsj--charles-isherwood.json"
   ],
   "failed": [
     "spamalot-off-broadway-2026/nytimes--jesse-green.json",
@@ -1033,7 +1038,12 @@
     "fat-ham-2023/newyorker--vinson-cunningham.json",
     "shucked-2023/wsj--charles-isherwood.json",
     "life-of-pi-2023/wsj--charles-isherwood.json",
-    "sweeney-todd-2023/broadway-and-me--janice-c-simpson.json"
+    "sweeney-todd-2023/broadway-and-me--janice-c-simpson.json",
+    "sweeney-todd-2023/nbcnews--variety-referenced-by-nbc.json",
+    "bad-cinderella-2023/bloomberg--chris-rovzar.json",
+    "bob-fosses-dancin-2023/timeout--adam-feldman.json",
+    "a-dolls-house-2023/broadway-and-me--janice-c-simpson.json",
+    "pictures-from-home-2023/thestage--nicole-serratore.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1207,7 +1217,8 @@
       "new-york-new-york-2023/washpost--peter-marks.json",
       "summer-1976-2023/ew--dalton-ross.json",
       "fat-ham-2023/timeout--adam-feldman.json",
-      "fat-ham-2023/timeout--raven-snook.json"
+      "fat-ham-2023/timeout--raven-snook.json",
+      "pictures-from-home-2023/broadway-and-me--janice-c-simpson.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1373,7 +1384,10 @@
       "once-upon-a-one-more-time-2023/wsj--charles-isherwood.json",
       "grey-house-2023/newyorker--conde-nast.json",
       "prima-facie-2023/newyorker--conde-nast.json",
-      "the-thanksgiving-play-2023/wsj--charles-isherwood.json"
+      "the-thanksgiving-play-2023/wsj--charles-isherwood.json",
+      "bad-cinderella-2023/wsj--charles-isherwood.json",
+      "bob-fosses-dancin-2023/wsj--charles-isherwood.json",
+      "between-riverside-and-crazy-2022/wsj--charles-isherwood.json"
     ],
     "archiveToday": [
       "data/review-texts/on-the-town-2014/nytimes--charles-isherwood.json",
@@ -1456,7 +1470,8 @@
       "data/review-texts/mcneal-2024/thestage--lane-williamson.json",
       "data/review-texts/the-roommate-2024/thestage--lane-williamson.json",
       "data/review-texts/the-wiz-2024/thestage--lane-williamson.json",
-      "data/review-texts/purlie-victorious-2023/thestage--lane-williamson.json"
+      "data/review-texts/purlie-victorious-2023/thestage--lane-williamson.json",
+      "data/review-texts/pictures-from-home-2023/thestage--nicole-serratore.json"
     ],
     "archive": [
       "misery-2015/nytimes--charles-isherwood.json",
@@ -1544,11 +1559,12 @@
       "the-cottage-2023/amny--matt-windman.json",
       "here-lies-love-2023/broadwaynews--brittani-samuel.json",
       "camelot-2023/broadway-and-me--janice-c-simpson.json",
-      "fat-ham-2023/broadwaynews--brittani-samuel.json"
+      "fat-ham-2023/broadwaynews--brittani-samuel.json",
+      "pictures-from-home-2023/newyorker--conde-nast.json"
     ]
   },
   "startTime": "2026-06-06T04:44:29.355Z",
-  "lastProcessed": "sweeney-todd-2023/broadway-and-me--janice-c-simpson.json",
+  "lastProcessed": "between-riverside-and-crazy-2022/wsj--charles-isherwood.json",
   "log": [
     {
       "t": "2026-06-06T06:19:34.296Z",
@@ -2167,6 +2183,17 @@
       "t": "2026-06-07T04:14:57.996Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-07T04:32:37.297Z",
+      "event": "bb-session",
+      "session": "471ed3fc",
+      "url": "https://www.thestage.co.uk/reviews/pictures-from-home-review-at-studio-54-broadw"
+    },
+    {
+      "t": "2026-06-07T04:32:37.837Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
