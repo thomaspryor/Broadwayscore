@@ -707,7 +707,24 @@
     "equus-west-end-2026/artsdesk--unknown.json",
     "equus-west-end-2026/thestage--holly-o.json",
     "equus-west-end-2026/times-uk--clive-davis.json",
-    "equus-west-end-2026/whatsonstage--alun-hood.json"
+    "equus-west-end-2026/whatsonstage--alun-hood.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "a-woman-among-women-off-broadway-2026/playbill--unknown.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "girl-interrupted-off-broadway-2026/playbill--unknown.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
+    "small-off-broadway-2026/guardian--arifa-akbar.json",
+    "small-off-broadway-2026/pages-on-stages--unknown.json",
+    "small-off-broadway-2026/the-recs--unknown.json",
+    "small-off-broadway-2026/theater-pizzazz--unknown.json",
+    "small-off-broadway-2026/washpost--unknown.json",
+    "indian-princesses-off-broadway-2025/pages-on-stages--mason-pilevsky.json",
+    "the-maids-off-broadway-2026/ew--unknown.json",
+    "the-maids-off-broadway-2026/nydailynews--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -736,7 +753,10 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -753,7 +773,7 @@
     ]
   },
   "startTime": "2026-06-07T05:20:43.951Z",
-  "lastProcessed": "equus-west-end-2026/whatsonstage--alun-hood.json",
+  "lastProcessed": "the-maids-off-broadway-2026/nydailynews--unknown.json",
   "log": [
     {
       "t": "2026-06-07T05:21:08.825Z",
@@ -870,6 +890,39 @@
       "event": "bb-session",
       "session": "00991f13",
       "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
+    },
+    {
+      "t": "2026-06-07T10:50:41.825Z",
+      "event": "bb-session",
+      "session": "dc032327",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-07T10:50:42.254Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-07T10:50:52.189Z",
+      "event": "bb-session",
+      "session": "9b761cf5",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-07T10:50:52.611Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-07T10:52:04.262Z",
+      "event": "bb-session",
+      "session": "730e3684",
+      "url": "https://www.nytimes.com/2026/06/01/arts/andy-halliday-dead.html"
+    },
+    {
+      "t": "2026-06-07T10:52:05.288Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
