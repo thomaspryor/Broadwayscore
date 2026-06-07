@@ -1859,21 +1859,14 @@ const upcomingBottom = upcoming && !_upcomingHasBroadway ? upcoming : null;
 const londonTop = lon && _londonHasGoldOpening ? lon : null;
 const londonBottom = lon && !_londonHasGoldOpening ? lon : null;
 
-// Tony Predictions is OPT-IN, not part of the default sectionOrder (user
-// direction 2026-05-24). Reasoning: the section is only relevant for ~6-8
-// weeks/year (nominations → ceremony), methodology + weights need manual
-// re-tuning each season, and a dedicated Tony email reads better than a
-// section buried in the weekly. Set NEWSLETTER_INCLUDE_SECTIONS=tony-predictions
-// to add it back for a specific render (e.g. the ceremony-eve weekly).
-// The tonyWatchSection() function still runs above so it's available for
-// dedicated Tony emails — only the inclusion in the weekly's sectionOrder
-// is opt-in. Drop list (NEWSLETTER_DROP_SECTIONS) is a one-off lever for
-// suppressing any other section ad hoc.
+// Drop list (NEWSLETTER_DROP_SECTIONS) is a one-off lever for suppressing
+// any section ad hoc. OPT_IN_SECTIONS is empty — tony-predictions was
+// previously opt-in but is now always-on (returns null gracefully off-season).
 const _dropEnv = (process.env.NEWSLETTER_DROP_SECTIONS || '').trim();
 const _dropSet = new Set(_dropEnv ? _dropEnv.split(',').map(s => s.trim()).filter(Boolean) : []);
 const _includeEnv = (process.env.NEWSLETTER_INCLUDE_SECTIONS || '').trim();
 const _includeSet = new Set(_includeEnv ? _includeEnv.split(',').map(s => s.trim()).filter(Boolean) : []);
-const OPT_IN_SECTIONS = new Set(['tony-predictions']);
+const OPT_IN_SECTIONS = new Set([]);
 function _slot(name, html) {
   if (_dropSet.has(name)) return null;
   if (OPT_IN_SECTIONS.has(name) && !_includeSet.has(name)) return null;
