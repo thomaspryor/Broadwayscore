@@ -8,14 +8,14 @@
  * the same script works when invoked from a git worktree where data/ files
  * aren't checked in — see memory/feedback_worktree_code_changes.md.
  */
-import { getBroadwayShows } from '/Users/tompryor/Broadwayscore/src/lib/data-core';
+import { getBroadwayShows } from '../../src/lib/data-core';
 import {
   getTonySeasonWindow,
   getEligibleShows,
   groupIntoCategories,
   resolveRecipeTier,
-} from '/Users/tompryor/Broadwayscore/src/lib/data-tony-predictions';
-import { hasNominationsBeenAnnounced } from '/Users/tompryor/Broadwayscore/src/lib/tony-cutoffs';
+} from '../../src/lib/data-tony-predictions';
+import { hasNominationsBeenAnnounced } from '../../src/lib/tony-cutoffs';
 
 const season = getTonySeasonWindow();
 const allShows = getBroadwayShows();
