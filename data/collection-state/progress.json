@@ -1003,7 +1003,35 @@
     "our-mothers-brief-affair-2016/observer--rex-reed.json",
     "old-times-2015/observer--rex-reed.json",
     "wolf-hall-parts-one-and-two-2015/timeout--adam-feldman.json",
-    "the-elephant-man-2014/observer--rex-reed.json"
+    "the-elephant-man-2014/observer--rex-reed.json",
+    "disgraced-2014/observer--rex-reed.json",
+    "hedwig-and-the-angry-inch-2014/observer--rex-reed.json",
+    "hedwig-and-the-angry-inch-2014/rollingstone--rob-sheffield.json",
+    "all-the-way-2014/observer--rex-reed.json",
+    "motown-the-musical-2013/observer--rex-reed.json",
+    "rodgers-hammersteins-cinderella-2013/vulture--jesse-green.json",
+    "rodgers-hammersteins-cinderella-2013/stageandcinema--jonas-schwartz.json",
+    "picnic-2013/observer--rex-reed.json",
+    "ghost-the-musical-2012/timeout--david-cote.json",
+    "clybourne-park-2012/usatoday--elysa-gardner.json",
+    "jesus-christ-superstar-2012/stageandcinema--jonas-schwartz.json",
+    "on-a-clear-day-you-can-see-forever-2011/vulture--jesse-green.json",
+    "bloody-bloody-andrew-jackson-2010/vulture--jesse-green.json",
+    "red-2010/chicagotribune--chris-jones.json",
+    "ragtime-2009/nydailynews--joe-dziemianowicz.json",
+    "hamlet-2009/nydailynews--joe-dziemianowicz.json",
+    "hamlet-2009/usatoday--elysa-gardner.json",
+    "the-norman-conquests-2009/nydailynews--joe-dziemianowicz.json",
+    "the-norman-conquests-2009/observer--rex-reed.json",
+    "reasons-to-be-pretty-2009/usatoday--elysa-gardner.json",
+    "shrek-the-musical-2008/usatoday--elysa-gardner.json",
+    "all-my-sons-2008/usatoday--elysa-gardner.json",
+    "macbeth-2008/usatoday--elysa-gardner.json",
+    "come-back-little-sheba-2008/usatoday--elysa-gardner.json",
+    "the-little-mermaid-2008/nypost--clive-barnes.json",
+    "is-he-dead-2007/nypost--clive-barnes.json",
+    "inherit-the-wind-2007/nypost--clive-barnes.json",
+    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1042,8 +1070,7 @@
       "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
       "data/review-texts/equus-west-end-2026/thereviewshub--unknown.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
-      "data/review-texts/equus-west-end-2026/thereviewshub--unknown.json"
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1055,16 +1082,14 @@
       "dark-of-the-moon-west-end-2026/guardian--arifa-akbar.json"
     ],
     "archiveToday": [
-      "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
-      "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
-      "data/review-texts/dark-of-the-moon-west-end-2026/thestage--unknown.json"
+      "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json"
     ],
     "archive": [
       "small-off-broadway-2026/culturesauce--thom-geier.json"
     ]
   },
   "startTime": "2026-06-07T05:20:43.951Z",
-  "lastProcessed": "the-elephant-man-2014/observer--rex-reed.json",
+  "lastProcessed": "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
   "log": [
     {
       "t": "2026-06-07T05:21:08.825Z",
@@ -1276,46 +1301,6 @@
       "t": "2026-06-07T11:38:39.074Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-07T12:27:02.965Z",
-      "event": "bb-session",
-      "session": "3eeb70eb",
-      "url": "https://charingcrosstheatre.co.uk/theatre/dark-of-the-moon"
-    },
-    {
-      "t": "2026-06-07T12:28:27.938Z",
-      "event": "bb-session",
-      "session": "6f2c69cd",
-      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
-    },
-    {
-      "t": "2026-06-07T12:30:33.838Z",
-      "event": "bb-session",
-      "session": "0e9e301b",
-      "url": "https://thestage.co.uk/reviews/dark-of-the-moon-review-charing-cross-theatre-lon"
-    },
-    {
-      "t": "2026-06-07T12:30:34.795Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
-    {
-      "t": "2026-06-07T12:33:01.344Z",
-      "event": "bb-session",
-      "session": "fac30ff3",
-      "url": "https://www.thereviewshub.com/equus-menier-chocolate-factory-london/"
-    },
-    {
-      "t": "2026-06-07T12:34:56.657Z",
-      "event": "bb-session",
-      "session": "8b78f9b7",
-      "url": "https://thestage.co.uk/reviews/equus-review-menier-chocolate-factory-london-lind"
-    },
-    {
-      "t": "2026-06-07T12:34:57.665Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
     }
   ]
 }
