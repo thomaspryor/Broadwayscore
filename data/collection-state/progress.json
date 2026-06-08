@@ -336,7 +336,10 @@
     "be-more-chill-2019/wsj--terry-teachout.json",
     "network-2018/ny1--roma-torre.json",
     "network-2018/thestage--mark-shenton.json",
-    "the-cher-show-2018/medium--christian-lewis.json"
+    "the-cher-show-2018/medium--christian-lewis.json",
+    "the-cher-show-2018/thestage--nicole-serratore.json",
+    "the-prom-2018/thestage--mark-shenton.json",
+    "king-kong-2018/limelight-magazine-au--clive-paget.json"
   ],
   "failed": [
     "a-woman-among-women-off-broadway-2026/playbill--unknown.json",
@@ -894,7 +897,14 @@
     "network-2018/wsj--terry-teachout.json",
     "network-2018/dailybeast--tim-teeman.json",
     "network-2018/washpost--peter-marks.json",
-    "the-cher-show-2018/wsj--terry-teachout.json"
+    "the-cher-show-2018/wsj--terry-teachout.json",
+    "the-prom-2018/wsj--terry-teachout.json",
+    "the-prom-2018/journal-inquirer--tim-leininger.json",
+    "the-new-one-2018/theater-news-online--joe-dziemianowicz.json",
+    "king-kong-2018/usatoday--charles-isherwood.json",
+    "king-kong-2018/washpost--peter-marks.json",
+    "king-kong-2018/theatre-reviews-limited--joseph-verlezza.json",
+    "king-kong-2018/phindie--kathryn-osenlund.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1045,7 +1055,9 @@
       "burn-this-2019/theatermania--jesse-green.json",
       "what-the-constitution-means-to-me-2019/thestage--nicole-serratore.json",
       "network-2018/ny1--roma-torre.json",
-      "network-2018/thestage--mark-shenton.json"
+      "network-2018/thestage--mark-shenton.json",
+      "the-cher-show-2018/thestage--nicole-serratore.json",
+      "the-prom-2018/thestage--mark-shenton.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1184,7 +1196,8 @@
       "mexodus-off-broadway-2026/chicagotribune--unknown.json",
       "masquerade-off-broadway-2025/nytimes--unknown.json",
       "trouble-in-mind-2021/broadwayworld--unknown.json",
-      "hillary-and-clinton-2019/timeout--adam-feldman.json"
+      "hillary-and-clinton-2019/timeout--adam-feldman.json",
+      "king-kong-2018/limelight-magazine-au--clive-paget.json"
     ],
     "brightdata": [
       "the-balusters-2026/broadwayworld--unknown.json",
@@ -1292,7 +1305,9 @@
       "data/review-texts/network-2018/wsj--terry-teachout.json",
       "data/review-texts/network-2018/dailybeast--tim-teeman.json",
       "data/review-texts/network-2018/washpost--peter-marks.json",
-      "data/review-texts/the-cher-show-2018/wsj--terry-teachout.json"
+      "data/review-texts/the-cher-show-2018/wsj--terry-teachout.json",
+      "data/review-texts/the-prom-2018/wsj--terry-teachout.json",
+      "data/review-texts/king-kong-2018/usatoday--charles-isherwood.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -1361,7 +1376,7 @@
     ]
   },
   "startTime": "2026-06-08T06:16:07.453Z",
-  "lastProcessed": "the-cher-show-2018/medium--christian-lewis.json",
+  "lastProcessed": "king-kong-2018/phindie--kathryn-osenlund.json",
   "log": [
     {
       "t": "2026-06-08T06:27:00.120Z",
@@ -1966,6 +1981,17 @@
       "t": "2026-06-08T17:09:01.657Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-06-08T17:13:39.149Z",
+      "event": "bb-session",
+      "session": "1a878701",
+      "url": "https://www.usatoday.com/story/life/theater/2018/11/09/king-kong-broadway-review"
+    },
+    {
+      "t": "2026-06-08T17:13:39.691Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
     }
   ]
 }

@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-08T17:10:43.552Z",
-  "processed": 337,
-  "failed": 556,
+  "updatedAt": "2026-06-08T17:16:28.981Z",
+  "processed": 340,
+  "failed": 563,
   "successRate": "37.7%",
   "tierBreakdown": {
-    "playwright": 147,
+    "playwright": 149,
     "amp": 0,
     "browserbase": 55,
     "directCookies": 0,
-    "scrapingbee": 78,
+    "scrapingbee": 79,
     "brightdata": 40,
-    "archiveToday": 64,
+    "archiveToday": 66,
     "archive": 63
   },
-  "browserbaseSessions": 25,
+  "browserbaseSessions": 26,
   "recentActivity": [
-    {
-      "t": "2026-06-08T16:38:07.399Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-06-08T16:41:37.839Z",
-      "event": "bb-session",
-      "session": "67b8e8c9",
-      "url": "https://www.wsj.com/articles/ink-review-indelibly-entertaining-11556223021"
-    },
     {
       "t": "2026-06-08T16:41:38.436Z",
       "event": "bb-cookie-inject",
@@ -124,6 +113,17 @@
       "t": "2026-06-08T17:09:01.657Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-06-08T17:13:39.149Z",
+      "event": "bb-session",
+      "session": "1a878701",
+      "url": "https://www.usatoday.com/story/life/theater/2018/11/09/king-kong-broadway-review"
+    },
+    {
+      "t": "2026-06-08T17:13:39.691Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
     }
   ]
 }
