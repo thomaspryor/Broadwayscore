@@ -2169,7 +2169,10 @@
     "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
     "small-off-broadway-2026/guardian--arifa-akbar.json",
     "small-off-broadway-2026/pages-on-stages--unknown.json",
-    "small-off-broadway-2026/the-recs--unknown.json"
+    "small-off-broadway-2026/the-recs--unknown.json",
+    "small-off-broadway-2026/theater-pizzazz--unknown.json",
+    "small-off-broadway-2026/washpost--unknown.json",
+    "indian-princesses-off-broadway-2025/pages-on-stages--mason-pilevsky.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2252,7 +2255,8 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
       "data/review-texts/small-off-broadway-2026/theater-pizzazz--unknown.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+      "data/review-texts/small-off-broadway-2026/theater-pizzazz--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -2281,7 +2285,7 @@
     ]
   },
   "startTime": "2026-06-07T05:20:43.951Z",
-  "lastProcessed": "small-off-broadway-2026/the-recs--unknown.json",
+  "lastProcessed": "indian-princesses-off-broadway-2025/pages-on-stages--mason-pilevsky.json",
   "log": [
     {
       "t": "2026-06-07T05:21:08.825Z",
@@ -2943,6 +2947,12 @@
       "t": "2026-06-08T04:59:35.118Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-08T05:01:57.660Z",
+      "event": "bb-session",
+      "session": "451bf8ec",
+      "url": "https://theaterpizzazz.com/small-a-jockeys-indestructible-passion/"
     }
   ]
 }
