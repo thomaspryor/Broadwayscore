@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-06-08T12:52:13.209Z",
-  "processed": 293,
-  "failed": 320,
-  "successRate": "47.8%",
+  "updatedAt": "2026-06-08T13:32:50.501Z",
+  "processed": 294,
+  "failed": 329,
+  "successRate": "47.2%",
   "tierBreakdown": {
-    "playwright": 124,
+    "playwright": 125,
     "amp": 0,
-    "browserbase": 28,
+    "browserbase": 30,
     "directCookies": 0,
     "scrapingbee": 73,
     "brightdata": 33,
     "archiveToday": 32,
     "archive": 59
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-06-08T08:08:59.368Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-06-08T08:11:19.293Z",
-      "event": "bb-session",
-      "session": "a6a88b70",
-      "url": "https://www.nytimes.com/2023/04/24/theater/good-night-oscar-review-sean-hayes-wi"
-    },
-    {
-      "t": "2026-06-08T08:11:20.106Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-08T08:12:17.602Z",
-      "event": "bb-session",
-      "session": "c0f73fb7",
-      "url": "https://www.wsj.com/articles/the-thanksgiving-play-review-rehearsing-a-holiday-h"
-    },
     {
       "t": "2026-06-08T08:12:18.362Z",
       "event": "bb-cookie-inject",
@@ -124,6 +102,28 @@
       "event": "bb-session",
       "session": "2c4e4800",
       "url": "https://theaterpizzazz.com/small-a-jockeys-indestructible-passion/"
+    },
+    {
+      "t": "2026-06-08T13:31:18.274Z",
+      "event": "bb-session",
+      "session": "5a951a96",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-08T13:31:18.746Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-08T13:31:29.896Z",
+      "event": "bb-session",
+      "session": "06ac1ea1",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-08T13:31:30.290Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

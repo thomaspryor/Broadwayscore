@@ -292,7 +292,8 @@
     "the-height-of-the-storm-2019/front-row-center--kathleen-campion.json",
     "sea-wall-a-life-2019/theatermania--adam-feldman.json",
     "frankie-and-johnny-in-the-clair-de-lune-2019/timeout--adam-feldman.json",
-    "frankie-and-johnny-in-the-clair-de-lune-2019/uinterview--erik-meers.json"
+    "frankie-and-johnny-in-the-clair-de-lune-2019/uinterview--erik-meers.json",
+    "a-woman-among-women-off-broadway-2026/playbill--unknown.json"
   ],
   "failed": [
     "a-woman-among-women-off-broadway-2026/playbill--unknown.json",
@@ -614,7 +615,16 @@
     "small-off-broadway-2026/pages-on-stages--unknown.json",
     "small-off-broadway-2026/the-recs--unknown.json",
     "small-off-broadway-2026/theater-pizzazz--unknown.json",
-    "small-off-broadway-2026/washpost--unknown.json"
+    "small-off-broadway-2026/washpost--unknown.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
+    "small-off-broadway-2026/guardian--arifa-akbar.json",
+    "small-off-broadway-2026/pages-on-stages--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -742,7 +752,8 @@
       "the-great-society-2019/thestage--naveen-kumar.json",
       "the-height-of-the-storm-2019/nyt-theater--jonathan-mandell.json",
       "the-height-of-the-storm-2019/theatre-reviews-limited--david-roberts.json",
-      "sea-wall-a-life-2019/theatermania--adam-feldman.json"
+      "sea-wall-a-life-2019/theatermania--adam-feldman.json",
+      "a-woman-among-women-off-broadway-2026/playbill--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -773,7 +784,9 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
       "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
       "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
-      "data/review-texts/small-off-broadway-2026/theater-pizzazz--unknown.json"
+      "data/review-texts/small-off-broadway-2026/theater-pizzazz--unknown.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -983,7 +996,7 @@
     ]
   },
   "startTime": "2026-06-08T06:16:07.453Z",
-  "lastProcessed": "small-off-broadway-2026/washpost--unknown.json",
+  "lastProcessed": "small-off-broadway-2026/pages-on-stages--unknown.json",
   "log": [
     {
       "t": "2026-06-08T06:27:00.120Z",
@@ -1190,6 +1203,28 @@
       "event": "bb-session",
       "session": "2c4e4800",
       "url": "https://theaterpizzazz.com/small-a-jockeys-indestructible-passion/"
+    },
+    {
+      "t": "2026-06-08T13:31:18.274Z",
+      "event": "bb-session",
+      "session": "5a951a96",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-08T13:31:18.746Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-08T13:31:29.896Z",
+      "event": "bb-session",
+      "session": "06ac1ea1",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-08T13:31:30.290Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
