@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-08T08:45:12.164Z",
+  "timestamp": "2026-06-08T09:44:15.840Z",
   "stats": {
-    "totalReviews": 38201,
+    "totalReviews": 38200,
     "alreadyFlagged": 16755,
     "dateGuardCatches": 106,
     "directorMismatch": 842,
     "tvFilmSignals": 1050,
-    "londonSignals": 617,
+    "londonSignals": 616,
     "offBroadwaySignals": 460,
     "yearMismatch": 80,
-    "noPublishDate": 4020
+    "noPublishDate": 4016
   },
   "findings": [
     {
@@ -27967,20 +27967,6 @@
       "score": 78,
       "publishDate": "2026-05-31",
       "url": "https://westendwilma.com/beetlejuice-musical-review-london-2026/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "betrayal-2019",
-      "file": "broadwayworld--michael-dale.json",
-      "score": 80,
-      "publishDate": "2019-09-06",
-      "url": "https://www.broadwayworld.com/article/BWW-Review-Director-Jamie-Lloyds-Subtle-Way-With-Harold-Pinters-BETRAYAL-Makes-For-Riveting-Storytelling-20190906",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
