@@ -309,7 +309,12 @@
     "hamlet-off-broadway-2026/dc-theater-arts--deb-miller.json",
     "hamlet-off-broadway-2026/nysr--unknown.json",
     "teeth-n-smiles-west-end-2026/broadwayworld--alexander-cohen.json",
-    "all-my-sons-west-end-2025/independent--unknown.json"
+    "all-my-sons-west-end-2025/independent--unknown.json",
+    "the-collaboration-2022/newyorker--conde-nast.json",
+    "kpop-2022/broadway-and-me--janice-c-simpson.json",
+    "hangmen-2022/wsj--charles-isherwood.json",
+    "american-buffalo-2022/wsj--charles-isherwood.json",
+    "plaza-suite-2022/wsj--charles-isherwood.json"
   ],
   "failed": [
     "a-woman-among-women-off-broadway-2026/playbill--unknown.json",
@@ -794,7 +799,12 @@
     "orlando-off-broadway-2026/guardian--unknown.json",
     "the-whos-tommy-2024/broadwaynews--brittani-samuel.json",
     "here-lies-love-2023/aaartsalliance--rohan-zhou-lee.json",
-    "prima-facie-2023/newyorker--conde-nast.json"
+    "prima-facie-2023/newyorker--conde-nast.json",
+    "sweeney-todd-2023/nbcnews--variety-referenced-by-nbc.json",
+    "a-dolls-house-2023/broadway-and-me--janice-c-simpson.json",
+    "into-the-woods-2022/newyorker--conde-nast.json",
+    "slave-play-2021/standard--nick-curtis.json",
+    "trouble-in-mind-2021/broadwayworld--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -934,7 +944,8 @@
       "hamlet-off-broadway-2026/nytg--amelia-merrill.json",
       "hamlet-off-broadway-2026/dc-theater-arts--deb-miller.json",
       "hamlet-off-broadway-2026/nysr--unknown.json",
-      "all-my-sons-west-end-2025/independent--unknown.json"
+      "all-my-sons-west-end-2025/independent--unknown.json",
+      "kpop-2022/broadway-and-me--janice-c-simpson.json"
     ],
     "amp": [],
     "browserbase": [
@@ -980,7 +991,13 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
       "data/review-texts/small-off-broadway-2026/theater-pizzazz--unknown.json",
       "data/review-texts/gloria-2026/amny--unknown.json",
-      "data/review-texts/gloria-2026/billboard--unknown.json"
+      "data/review-texts/gloria-2026/billboard--unknown.json",
+      "data/review-texts/hangmen-2022/wsj--charles-isherwood.json",
+      "hangmen-2022/wsj--charles-isherwood.json",
+      "data/review-texts/american-buffalo-2022/wsj--charles-isherwood.json",
+      "american-buffalo-2022/wsj--charles-isherwood.json",
+      "data/review-texts/plaza-suite-2022/wsj--charles-isherwood.json",
+      "plaza-suite-2022/wsj--charles-isherwood.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1095,7 +1112,8 @@
       "the-height-of-the-storm-2019/timeout--tom-wicker.json",
       "betrayal-2019/broadwayworld--michael-dale.json",
       "frankie-and-johnny-in-the-clair-de-lune-2019/timeout--adam-feldman.json",
-      "the-maids-off-broadway-2026/thewrap--unknown.json"
+      "the-maids-off-broadway-2026/thewrap--unknown.json",
+      "the-collaboration-2022/newyorker--conde-nast.json"
     ],
     "archiveToday": [
       "data/review-texts/fallen-angels-2026/talkinbroadway--unknown.json",
@@ -1197,7 +1215,7 @@
     ]
   },
   "startTime": "2026-06-08T06:16:07.453Z",
-  "lastProcessed": "prima-facie-2023/newyorker--conde-nast.json",
+  "lastProcessed": "trouble-in-mind-2021/broadwayworld--unknown.json",
   "log": [
     {
       "t": "2026-06-08T06:27:00.120Z",
@@ -1559,6 +1577,39 @@
       "event": "bb-session",
       "session": "3c92fde7",
       "url": "http://www.billboard.com/articles/review/6753841/on-your-feet-theater-review-glo"
+    },
+    {
+      "t": "2026-06-08T16:20:31.310Z",
+      "event": "bb-session",
+      "session": "79668d10",
+      "url": "https://www.wsj.com/articles/hangmen-martin-mcdonagh-david-threlfall-gaby-french"
+    },
+    {
+      "t": "2026-06-08T16:20:31.873Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-08T16:20:54.090Z",
+      "event": "bb-session",
+      "session": "3a3237c2",
+      "url": "https://www.wsj.com/articles/american-buffalo-david-mamet-circle-in-the-square-s"
+    },
+    {
+      "t": "2026-06-08T16:20:54.596Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-08T16:21:15.577Z",
+      "event": "bb-session",
+      "session": "9249aede",
+      "url": "https://www.wsj.com/articles/plaza-suite-neil-simon-sarah-jessica-parker-matthew"
+    },
+    {
+      "t": "2026-06-08T16:21:16.134Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
