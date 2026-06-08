@@ -322,7 +322,12 @@
     "frankie-and-johnny-in-the-clair-de-lune-2019/thestage--naveen-kumar.json",
     "ink-2019/wsj--terry-teachout.json",
     "all-my-sons-2019/theater-life--barry-gordin.json",
-    "gary-a-sequel-to-titus-andronicus-2019/thestage--nicole-serratore.json"
+    "gary-a-sequel-to-titus-andronicus-2019/thestage--nicole-serratore.json",
+    "hillary-and-clinton-2019/timeout--adam-feldman.json",
+    "burn-this-2019/nyt-theater--unknown.json",
+    "burn-this-2019/theatermania--jesse-green.json",
+    "oklahoma-2019/front-row-center--tulis-mccall.json",
+    "oklahoma-2019/medium--christian-lewis.json"
   ],
   "failed": [
     "a-woman-among-women-off-broadway-2026/playbill--unknown.json",
@@ -854,7 +859,12 @@
     "all-my-sons-2019/ny1--roma-torre.json",
     "gary-a-sequel-to-titus-andronicus-2019/washpost--peter-marks.json",
     "gary-a-sequel-to-titus-andronicus-2019/wsj--edward-rothstein.json",
-    "gary-a-sequel-to-titus-andronicus-2019/medium--christian-lewis.json"
+    "gary-a-sequel-to-titus-andronicus-2019/medium--christian-lewis.json",
+    "hillary-and-clinton-2019/wsj--terry-teachout.json",
+    "burn-this-2019/front-row-center--sarah-downs.json",
+    "burn-this-2019/thestage--nicole-serratore.json",
+    "oklahoma-2019/wsj--terry-teachout.json",
+    "oklahoma-2019/talkinbroadway--matthew-murray.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1000,7 +1010,9 @@
       "frankie-and-johnny-in-the-clair-de-lune-2019/broadway-and-me--janice-c-simpson.json",
       "frankie-and-johnny-in-the-clair-de-lune-2019/thestage--naveen-kumar.json",
       "all-my-sons-2019/theater-life--barry-gordin.json",
-      "gary-a-sequel-to-titus-andronicus-2019/thestage--nicole-serratore.json"
+      "gary-a-sequel-to-titus-andronicus-2019/thestage--nicole-serratore.json",
+      "burn-this-2019/nyt-theater--unknown.json",
+      "burn-this-2019/theatermania--jesse-green.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1138,7 +1150,8 @@
       "joe-turners-come-and-gone-2026/broadwaynews--unknown.json",
       "mexodus-off-broadway-2026/chicagotribune--unknown.json",
       "masquerade-off-broadway-2025/nytimes--unknown.json",
-      "trouble-in-mind-2021/broadwayworld--unknown.json"
+      "trouble-in-mind-2021/broadwayworld--unknown.json",
+      "hillary-and-clinton-2019/timeout--adam-feldman.json"
     ],
     "brightdata": [
       "the-balusters-2026/broadwayworld--unknown.json",
@@ -1175,7 +1188,8 @@
       "betrayal-2019/broadwayworld--michael-dale.json",
       "frankie-and-johnny-in-the-clair-de-lune-2019/timeout--adam-feldman.json",
       "the-maids-off-broadway-2026/thewrap--unknown.json",
-      "the-collaboration-2022/newyorker--conde-nast.json"
+      "the-collaboration-2022/newyorker--conde-nast.json",
+      "oklahoma-2019/medium--christian-lewis.json"
     ],
     "archiveToday": [
       "data/review-texts/fallen-angels-2026/talkinbroadway--unknown.json",
@@ -1226,7 +1240,10 @@
       "data/review-texts/tootsie-2019/chicagotribune--chris-jones.json",
       "data/review-texts/tootsie-2019/washpost--peter-marks.json",
       "data/review-texts/gary-a-sequel-to-titus-andronicus-2019/washpost--peter-marks.json",
-      "data/review-texts/gary-a-sequel-to-titus-andronicus-2019/wsj--edward-rothstein.json"
+      "data/review-texts/gary-a-sequel-to-titus-andronicus-2019/wsj--edward-rothstein.json",
+      "data/review-texts/hillary-and-clinton-2019/wsj--terry-teachout.json",
+      "data/review-texts/oklahoma-2019/wsj--terry-teachout.json",
+      "data/review-texts/oklahoma-2019/talkinbroadway--matthew-murray.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -1288,11 +1305,12 @@
       "the-height-of-the-storm-2019/timeout--adam-feldman.json",
       "the-height-of-the-storm-2019/front-row-center--kathleen-campion.json",
       "frankie-and-johnny-in-the-clair-de-lune-2019/uinterview--erik-meers.json",
-      "teeth-n-smiles-west-end-2026/broadwayworld--alexander-cohen.json"
+      "teeth-n-smiles-west-end-2026/broadwayworld--alexander-cohen.json",
+      "oklahoma-2019/front-row-center--tulis-mccall.json"
     ]
   },
   "startTime": "2026-06-08T06:16:07.453Z",
-  "lastProcessed": "gary-a-sequel-to-titus-andronicus-2019/medium--christian-lewis.json",
+  "lastProcessed": "oklahoma-2019/talkinbroadway--matthew-murray.json",
   "log": [
     {
       "t": "2026-06-08T06:27:00.120Z",
@@ -1825,6 +1843,17 @@
       "t": "2026-06-08T16:46:52.881Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-06-08T16:53:50.539Z",
+      "event": "bb-session",
+      "session": "ba9c775a",
+      "url": "https://talkinbroadway.com/world/Oklahoma19.html"
+    },
+    {
+      "t": "2026-06-08T16:53:51.090Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
