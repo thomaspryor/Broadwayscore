@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-06-08T19:39:26.332Z",
+  "updatedAt": "2026-06-08T19:42:09.290Z",
   "processed": 296,
-  "failed": 416,
-  "successRate": "41.6%",
+  "failed": 424,
+  "successRate": "41.1%",
   "tierBreakdown": {
     "playwright": 126,
     "amp": 0,
@@ -10,22 +10,11 @@
     "directCookies": 0,
     "scrapingbee": 73,
     "brightdata": 34,
-    "archiveToday": 36,
+    "archiveToday": 37,
     "archive": 59
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-06-08T14:16:49.028Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-08T15:01:38.531Z",
-      "event": "bb-session",
-      "session": "5d692e15",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
     {
       "t": "2026-06-08T15:01:39.597Z",
       "event": "bb-cookie-inject",
@@ -123,6 +112,17 @@
     },
     {
       "t": "2026-06-08T19:37:54.299Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-06-08T19:41:33.137Z",
+      "event": "bb-session",
+      "session": "9c4b8ea6",
+      "url": "https://thestage.co.uk/reviews/equus-review-menier-chocolate-factory-london-lind"
+    },
+    {
+      "t": "2026-06-08T19:41:33.954Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     }
