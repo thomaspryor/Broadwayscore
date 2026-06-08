@@ -327,7 +327,11 @@
     "burn-this-2019/nyt-theater--unknown.json",
     "burn-this-2019/theatermania--jesse-green.json",
     "oklahoma-2019/front-row-center--tulis-mccall.json",
-    "oklahoma-2019/medium--christian-lewis.json"
+    "oklahoma-2019/medium--christian-lewis.json",
+    "king-lear-2019/wsj--terry-teachout.json",
+    "what-the-constitution-means-to-me-2019/wsj--terry-teachout.json",
+    "what-the-constitution-means-to-me-2019/front-row-center--stanford-friedman.json",
+    "what-the-constitution-means-to-me-2019/thestage--nicole-serratore.json"
   ],
   "failed": [
     "a-woman-among-women-off-broadway-2026/playbill--unknown.json",
@@ -864,7 +868,13 @@
     "burn-this-2019/front-row-center--sarah-downs.json",
     "burn-this-2019/thestage--nicole-serratore.json",
     "oklahoma-2019/wsj--terry-teachout.json",
-    "oklahoma-2019/talkinbroadway--matthew-murray.json"
+    "oklahoma-2019/talkinbroadway--matthew-murray.json",
+    "king-lear-2019/scribicide--aaron-botwick.json",
+    "king-lear-2019/show-showdown--wendy-caster.json",
+    "what-the-constitution-means-to-me-2019/washpost--peter-marks.json",
+    "aint-too-proud-2019/vulture--jesse-green.json",
+    "aint-too-proud-2019/talkinbroadway--matthew-murray.json",
+    "kiss-me-kate-2019/gotham-playgoer--robert-sholiton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1012,7 +1022,8 @@
       "all-my-sons-2019/theater-life--barry-gordin.json",
       "gary-a-sequel-to-titus-andronicus-2019/thestage--nicole-serratore.json",
       "burn-this-2019/nyt-theater--unknown.json",
-      "burn-this-2019/theatermania--jesse-green.json"
+      "burn-this-2019/theatermania--jesse-green.json",
+      "what-the-constitution-means-to-me-2019/thestage--nicole-serratore.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1189,7 +1200,8 @@
       "frankie-and-johnny-in-the-clair-de-lune-2019/timeout--adam-feldman.json",
       "the-maids-off-broadway-2026/thewrap--unknown.json",
       "the-collaboration-2022/newyorker--conde-nast.json",
-      "oklahoma-2019/medium--christian-lewis.json"
+      "oklahoma-2019/medium--christian-lewis.json",
+      "what-the-constitution-means-to-me-2019/wsj--terry-teachout.json"
     ],
     "archiveToday": [
       "data/review-texts/fallen-angels-2026/talkinbroadway--unknown.json",
@@ -1243,7 +1255,10 @@
       "data/review-texts/gary-a-sequel-to-titus-andronicus-2019/wsj--edward-rothstein.json",
       "data/review-texts/hillary-and-clinton-2019/wsj--terry-teachout.json",
       "data/review-texts/oklahoma-2019/wsj--terry-teachout.json",
-      "data/review-texts/oklahoma-2019/talkinbroadway--matthew-murray.json"
+      "data/review-texts/oklahoma-2019/talkinbroadway--matthew-murray.json",
+      "data/review-texts/what-the-constitution-means-to-me-2019/washpost--peter-marks.json",
+      "data/review-texts/aint-too-proud-2019/vulture--jesse-green.json",
+      "data/review-texts/aint-too-proud-2019/talkinbroadway--matthew-murray.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -1306,11 +1321,13 @@
       "the-height-of-the-storm-2019/front-row-center--kathleen-campion.json",
       "frankie-and-johnny-in-the-clair-de-lune-2019/uinterview--erik-meers.json",
       "teeth-n-smiles-west-end-2026/broadwayworld--alexander-cohen.json",
-      "oklahoma-2019/front-row-center--tulis-mccall.json"
+      "oklahoma-2019/front-row-center--tulis-mccall.json",
+      "king-lear-2019/wsj--terry-teachout.json",
+      "what-the-constitution-means-to-me-2019/front-row-center--stanford-friedman.json"
     ]
   },
   "startTime": "2026-06-08T06:16:07.453Z",
-  "lastProcessed": "oklahoma-2019/talkinbroadway--matthew-murray.json",
+  "lastProcessed": "kiss-me-kate-2019/gotham-playgoer--robert-sholiton.json",
   "log": [
     {
       "t": "2026-06-08T06:27:00.120Z",
@@ -1852,6 +1869,28 @@
     },
     {
       "t": "2026-06-08T16:53:51.090Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-08T16:56:42.743Z",
+      "event": "bb-session",
+      "session": "7e3bbf30",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/what-the-constitution"
+    },
+    {
+      "t": "2026-06-08T16:56:43.345Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-06-08T16:59:03.531Z",
+      "event": "bb-session",
+      "session": "63af0ecd",
+      "url": "https://www.talkinbroadway.com/world/AintTooProud.html"
+    },
+    {
+      "t": "2026-06-08T16:59:04.030Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }
