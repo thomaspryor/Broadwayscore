@@ -342,7 +342,11 @@
     "king-kong-2018/limelight-magazine-au--clive-paget.json",
     "american-son-2018/showbiz411--roger-friedman.json",
     "the-waverly-gallery-2018/wsj--matt-windman.json",
-    "the-waverly-gallery-2018/thestage--mark-shenton.json"
+    "the-waverly-gallery-2018/thestage--mark-shenton.json",
+    "the-ferryman-2018/wsj--terry-teachout.json",
+    "the-ferryman-2018/amny--matt-windman.json",
+    "the-ferryman-2018/medium--christian-lewis.json",
+    "the-nap-2018/theater-life--barry-gordin.json"
   ],
   "failed": [
     "a-woman-among-women-off-broadway-2026/playbill--unknown.json",
@@ -914,7 +918,13 @@
     "torch-song-2018/guardian--jesse-green.json",
     "torch-song-2018/theater-news-online--jeremy-gerard.json",
     "torch-song-2018/cititour--brian-scott-lipton.json",
-    "torch-song-2018/talkinbroadway--matthew-murray.json"
+    "torch-song-2018/talkinbroadway--matthew-murray.json",
+    "the-waverly-gallery-2018/theater-news-online--matt-windman.json",
+    "the-waverly-gallery-2018/journal-inquirer--tim-leininger.json",
+    "the-waverly-gallery-2018/talkinbroadway--matthew-murray.json",
+    "the-ferryman-2018/theater-news-online--jessica-branch.json",
+    "the-nap-2018/theater-news-online--jeremy-gerard.json",
+    "bernhardthamlet-2018/theater-news-online--jeremy-gerard.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1068,7 +1078,8 @@
       "network-2018/thestage--mark-shenton.json",
       "the-cher-show-2018/thestage--nicole-serratore.json",
       "the-prom-2018/thestage--mark-shenton.json",
-      "the-waverly-gallery-2018/thestage--mark-shenton.json"
+      "the-waverly-gallery-2018/thestage--mark-shenton.json",
+      "the-nap-2018/theater-life--barry-gordin.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1252,7 +1263,9 @@
       "be-more-chill-2019/wsj--terry-teachout.json",
       "the-cher-show-2018/medium--christian-lewis.json",
       "american-son-2018/showbiz411--roger-friedman.json",
-      "the-waverly-gallery-2018/wsj--matt-windman.json"
+      "the-waverly-gallery-2018/wsj--matt-windman.json",
+      "the-ferryman-2018/wsj--terry-teachout.json",
+      "the-ferryman-2018/medium--christian-lewis.json"
     ],
     "archiveToday": [
       "data/review-texts/fallen-angels-2026/talkinbroadway--unknown.json",
@@ -1324,7 +1337,8 @@
       "data/review-texts/king-kong-2018/washpost--peter-marks.json",
       "data/review-texts/torch-song-2018/thestage--mark-shenton.json",
       "data/review-texts/american-son-2018/washpost--peter-marks.json",
-      "data/review-texts/torch-song-2018/talkinbroadway--matthew-murray.json"
+      "data/review-texts/torch-song-2018/talkinbroadway--matthew-murray.json",
+      "data/review-texts/the-waverly-gallery-2018/talkinbroadway--matthew-murray.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -1389,11 +1403,12 @@
       "teeth-n-smiles-west-end-2026/broadwayworld--alexander-cohen.json",
       "oklahoma-2019/front-row-center--tulis-mccall.json",
       "king-lear-2019/wsj--terry-teachout.json",
-      "what-the-constitution-means-to-me-2019/front-row-center--stanford-friedman.json"
+      "what-the-constitution-means-to-me-2019/front-row-center--stanford-friedman.json",
+      "the-ferryman-2018/amny--matt-windman.json"
     ]
   },
   "startTime": "2026-06-08T06:16:07.453Z",
-  "lastProcessed": "the-waverly-gallery-2018/thestage--mark-shenton.json",
+  "lastProcessed": "bernhardthamlet-2018/theater-news-online--jeremy-gerard.json",
   "log": [
     {
       "t": "2026-06-08T06:27:00.120Z",
@@ -2040,6 +2055,17 @@
     },
     {
       "t": "2026-06-08T17:21:43.222Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-08T17:24:21.296Z",
+      "event": "bb-session",
+      "session": "78272a59",
+      "url": "https://talkinbroadway.com/page/regional/newyork/ny695.html"
+    },
+    {
+      "t": "2026-06-08T17:24:21.813Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }
