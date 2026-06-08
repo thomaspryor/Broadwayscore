@@ -1,18 +1,1256 @@
 {
-  "generatedAt": "2026-06-08T06:36:00.555Z",
+  "generatedAt": "2026-06-08T08:41:27.059Z",
   "windowDays": 1095,
-  "targets": 148,
+  "targets": 136,
   "counts": {
-    "withGap": 13,
-    "totalMissing": 127,
+    "withGap": 10,
+    "totalMissing": 121,
     "totalFlaggedMisses": 0
   },
   "results": [
     {
-      "showId": "eugene-onegin-off-broadway-2026",
-      "title": "Eugene Onegin",
-      "openingDate": "2026-04-20",
+      "showId": "broken-glass-west-end-2026",
+      "title": "Broken Glass",
+      "openingDate": "2026-03-03",
       "status": "closed",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "title": "Inter Alia",
+      "openingDate": "2026-04-07",
+      "status": "open",
+      "category": "west-end",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-Suzie-Millers-INTER-ALIA-Transfers-to-The-West-End-20260408"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.timeout.com/london/theatre/inter-alia",
+        "https://www.whatsonstage.com/news/inter-alia-west-end-review-rosamund-pike-is-supreme-in-a-well-judged-performance_1717504/",
+        "https://www.londontheatre.co.uk/reviews/inter-alia-review-rosamund-pike-suzie-miller",
+        "https://www.standard.co.uk/culture/theatre/inter-alia-review-rosamund-pike-b1277876.html",
+        "https://www.thetimes.com/culture/theatre-dance/article/inter-alia-review-rosamund-pike-kpnr8cmg6",
+        "https://www.thestage.co.uk/reviews/inter-alia-review-wyndhams-theatre-london",
+        "https://everything-theatre.co.uk/2026/04/review-inter-alia-wyndhams-theatre/",
+        "https://www.westendbestfriend.co.uk/news/review-inter-alia-the-wyndhams-theatre",
+        "https://theatreandtonic.co.uk/blog/inter-alia-at-wyndhams-theatre-review"
+      ],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 15,
+      "missing": [
+        {
+          "url": "https://www.timeout.com/london/theatre/inter-alia",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london"
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/inter-alia-west-end-review-rosamund-pike-is-supreme-in-a-well-judged-performance_1717504/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage"
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/inter-alia-review-rosamund-pike-suzie-miller",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/inter-alia-review-rosamund-pike-b1277876.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard"
+        },
+        {
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/inter-alia-review-rosamund-pike-kpnr8cmg6",
+          "host": "thetimes.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/inter-alia-review-wyndhams-theatre-london",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage"
+        },
+        {
+          "url": "https://everything-theatre.co.uk/2026/04/review-inter-alia-wyndhams-theatre/",
+          "host": "everything-theatre.co.uk",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.westendbestfriend.co.uk/news/review-inter-alia-the-wyndhams-theatre",
+          "host": "westendbestfriend.co.uk",
+          "knownOutletId": "west-end-best-friend"
+        },
+        {
+          "url": "https://theatreandtonic.co.uk/blog/inter-alia-at-wyndhams-theatre-review",
+          "host": "theatreandtonic.co.uk",
+          "knownOutletId": null
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "ingestResults": [
+        {
+          "url": "https://www.timeout.com/london/theatre/inter-alia",
+          "host": "timeout.com",
+          "outletId": "timeout-london",
+          "provisional": false,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=inter-alia-west-end-2026 --url=https:/"
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/inter-alia-west-end-review-rosamund-pike-is-supreme-in-a-well-judged-performance_1717504/",
+          "host": "whatsonstage.com",
+          "outletId": "whatsonstage",
+          "provisional": false,
+          "ok": false,
+          "reason": "spawnSync node ETIMEDOUT"
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/inter-alia-review-rosamund-pike-suzie-miller",
+          "host": "londontheatre.co.uk",
+          "outletId": "co",
+          "provisional": true,
+          "ok": false,
+          "reason": "spawnSync node ETIMEDOUT"
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/inter-alia-review-rosamund-pike-b1277876.html",
+          "host": "standard.co.uk",
+          "outletId": "standard",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/inter-alia-review-rosamund-pike-kpnr8cmg6",
+          "host": "thetimes.com",
+          "outletId": "thetimes",
+          "provisional": true,
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.thestage.co.uk/reviews/inter-alia-review-wyndhams-theatre-london",
+          "host": "thestage.co.uk",
+          "outletId": "thestage"
+        },
+        {
+          "url": "https://everything-theatre.co.uk/2026/04/review-inter-alia-wyndhams-theatre/",
+          "host": "everything-theatre.co.uk",
+          "outletId": "co"
+        },
+        {
+          "url": "https://www.westendbestfriend.co.uk/news/review-inter-alia-the-wyndhams-theatre",
+          "host": "westendbestfriend.co.uk",
+          "outletId": "west-end-best-friend"
+        },
+        {
+          "url": "https://theatreandtonic.co.uk/blog/inter-alia-at-wyndhams-theatre-review",
+          "host": "theatreandtonic.co.uk",
+          "outletId": "co"
+        }
+      ]
+    },
+    {
+      "showId": "silverback-mountain-off-broadway-2026",
+      "title": "Silverback Mountain",
+      "openingDate": "2026-06-05",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://d4ov6iqsvotvt.cloudfront.net",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-regular-400-27da0e58c35276629aa3a2da60f2dba2d1e149bda7991346de3676fcbd3db989.woff2",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-light-300-6069894d8e39d47ebbb6723d869f4e8302f63980d403369fcb556a08b2a43f05.woff2",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-brands-400-84abb92e6b70b787c333540b97f08e758e7fc5b1627963cd7c045eaabb8cfcef.woff2",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Regular-7b5dc1aeba33f724aa530071bc99c336e8cb8aef02c4d8ece0b2c2f18b468aec.woff2",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Medium-699f505963eb3e5205fcb7c294cfd0aa26bf2a018aa383d07f9543ea48ed0a24.woff2",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-SemiBold-1305d4570afa31aad3e616ee40ef22be4c836b9c7f852b18fda655e45ad1830e.woff2",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Bold-9ca97ade87ab582e4550f60c328e0dacf939d7ff14a23cbf53908dd694ab308d.woff2",
+        "https://fonts.gstatic.com",
+        "https://fonts.googleapis.com/css2",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/vendors_v3-e33cbbab98cdb7643ce0937e85cf5c95f3cf9a320feacc29bb816c0e6e533d34.css",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/application_v3-20f16d5ef5daef94c7cdb74c9f3146bd53e743b81809a9ade92f26a51f1b6df4.css",
+        "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/vendor-fde82a95.chunk.css",
+        "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/membership_bundle~promo_ticket_bundle-afbed0f9.chunk.css",
+        "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/membership_bundle-75917b78.chunk.css",
+        "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/common-484225fd.chunk.css",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/apple-touch-icon-c6200c9822af8a301654011794a1de37ce659cb4037dd73a2b327c64db42f1f9.png",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/icon-f88d83923107c58a348dbc6f102e89c31f3824cded9fd45f5437786d7cfeb062.svg",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/favicon-b48fd9122981448f30ed8879033467df30d423d872503455ab4e53e62f8808d0.ico",
+        "https://maps.google.com/",
+        "https://silverbackmountain.ludus.com/index.php",
+        "https://www.todaytixgroup.com/careers",
+        "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform"
+      ],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "https://d4ov6iqsvotvt.cloudfront.net",
+          "host": "d4ov6iqsvotvt.cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-regular-400-27da0e58c35276629aa3a2da60f2dba2d1e149bda7991346de3676fcbd3db989.woff2",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-light-300-6069894d8e39d47ebbb6723d869f4e8302f63980d403369fcb556a08b2a43f05.woff2",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-brands-400-84abb92e6b70b787c333540b97f08e758e7fc5b1627963cd7c045eaabb8cfcef.woff2",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Regular-7b5dc1aeba33f724aa530071bc99c336e8cb8aef02c4d8ece0b2c2f18b468aec.woff2",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Medium-699f505963eb3e5205fcb7c294cfd0aa26bf2a018aa383d07f9543ea48ed0a24.woff2",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-SemiBold-1305d4570afa31aad3e616ee40ef22be4c836b9c7f852b18fda655e45ad1830e.woff2",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Bold-9ca97ade87ab582e4550f60c328e0dacf939d7ff14a23cbf53908dd694ab308d.woff2",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://fonts.gstatic.com",
+          "host": "fonts.gstatic.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "host": "fonts.googleapis.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/vendors_v3-e33cbbab98cdb7643ce0937e85cf5c95f3cf9a320feacc29bb816c0e6e533d34.css",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/application_v3-20f16d5ef5daef94c7cdb74c9f3146bd53e743b81809a9ade92f26a51f1b6df4.css",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/vendor-fde82a95.chunk.css",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/membership_bundle~promo_ticket_bundle-afbed0f9.chunk.css",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/membership_bundle-75917b78.chunk.css",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/common-484225fd.chunk.css",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/apple-touch-icon-c6200c9822af8a301654011794a1de37ce659cb4037dd73a2b327c64db42f1f9.png",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/icon-f88d83923107c58a348dbc6f102e89c31f3824cded9fd45f5437786d7cfeb062.svg",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/favicon-b48fd9122981448f30ed8879033467df30d423d872503455ab4e53e62f8808d0.ico",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://maps.google.com/",
+          "host": "maps.google.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://silverbackmountain.ludus.com/index.php",
+          "host": "silverbackmountain.ludus.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.todaytixgroup.com/careers",
+          "host": "todaytixgroup.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
+          "host": "docs.google.com",
+          "knownOutletId": null
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "ingestResults": [
+        {
+          "url": "https://d4ov6iqsvotvt.cloudfront.net",
+          "host": "d4ov6iqsvotvt.cloudfront.net",
+          "outletId": "cloudfront",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=silverback-mountain-off-broadway-2026 "
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-regular-400-27da0e58c35276629aa3a2da60f2dba2d1e149bda7991346de3676fcbd3db989.woff2",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "outletId": "cloudfront",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=silverback-mountain-off-broadway-2026 "
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-light-300-6069894d8e39d47ebbb6723d869f4e8302f63980d403369fcb556a08b2a43f05.woff2",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "outletId": "cloudfront",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=silverback-mountain-off-broadway-2026 "
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-brands-400-84abb92e6b70b787c333540b97f08e758e7fc5b1627963cd7c045eaabb8cfcef.woff2",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "outletId": "cloudfront",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=silverback-mountain-off-broadway-2026 "
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Regular-7b5dc1aeba33f724aa530071bc99c336e8cb8aef02c4d8ece0b2c2f18b468aec.woff2",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "outletId": "cloudfront",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=silverback-mountain-off-broadway-2026 "
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Medium-699f505963eb3e5205fcb7c294cfd0aa26bf2a018aa383d07f9543ea48ed0a24.woff2",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-SemiBold-1305d4570afa31aad3e616ee40ef22be4c836b9c7f852b18fda655e45ad1830e.woff2",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Bold-9ca97ade87ab582e4550f60c328e0dacf939d7ff14a23cbf53908dd694ab308d.woff2",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://fonts.gstatic.com",
+          "host": "fonts.gstatic.com",
+          "outletId": "gstatic"
+        },
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "host": "fonts.googleapis.com",
+          "outletId": "googleapis"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/vendors_v3-e33cbbab98cdb7643ce0937e85cf5c95f3cf9a320feacc29bb816c0e6e533d34.css",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/application_v3-20f16d5ef5daef94c7cdb74c9f3146bd53e743b81809a9ade92f26a51f1b6df4.css",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/vendor-fde82a95.chunk.css",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/membership_bundle~promo_ticket_bundle-afbed0f9.chunk.css",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/membership_bundle-75917b78.chunk.css",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/common-484225fd.chunk.css",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/apple-touch-icon-c6200c9822af8a301654011794a1de37ce659cb4037dd73a2b327c64db42f1f9.png",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/icon-f88d83923107c58a348dbc6f102e89c31f3824cded9fd45f5437786d7cfeb062.svg",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/favicon-b48fd9122981448f30ed8879033467df30d423d872503455ab4e53e62f8808d0.ico",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://maps.google.com/",
+          "host": "maps.google.com",
+          "outletId": "google"
+        },
+        {
+          "url": "https://silverbackmountain.ludus.com/index.php",
+          "host": "silverbackmountain.ludus.com",
+          "outletId": "ludus"
+        },
+        {
+          "url": "https://www.todaytixgroup.com/careers",
+          "host": "todaytixgroup.com",
+          "outletId": "todaytixgroup"
+        },
+        {
+          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
+          "host": "docs.google.com",
+          "outletId": "google"
+        }
+      ]
+    },
+    {
+      "showId": "the-truth-a-comedy-by-florian-zeller-west-end-2026",
+      "title": "THE TRUTH a comedy by Florian Zeller",
+      "openingDate": "2026-06-09",
+      "status": "upcoming",
+      "category": "west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "the-maids-off-broadway-2026",
+      "title": "The Maids",
+      "openingDate": "2026-05-17",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-Kip-Williams-THE-MAIDS-Transfers-Off-Broadway-20260527",
+        "https://www.broadwayworld.com/article/Review-Roundup-THE-MAIDS-20010101"
+      ],
+      "aggregatorListedUrls": [
+        "https://artsfuse.org/329385/theater-review-the-maids-and-kenrex-a-tale-of-two-theatrical-experiments/",
+        "https://culturesauce.com/jean-genet-the-maids-kip-williams-off-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/the-maids-off-broadway-review",
+        "https://1minutecritic.com/the-maids-st-anns-warehouse-review-kip-williams/"
+      ],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 12,
+      "missing": [
+        {
+          "url": "https://artsfuse.org/329385/theater-review-the-maids-and-kenrex-a-tale-of-two-theatrical-experiments/",
+          "host": "artsfuse.org",
+          "knownOutletId": "artsfuse"
+        },
+        {
+          "url": "https://culturesauce.com/jean-genet-the-maids-kip-williams-off-broadway-review/",
+          "host": "culturesauce.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/the-maids-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg"
+        },
+        {
+          "url": "https://1minutecritic.com/the-maids-st-anns-warehouse-review-kip-williams/",
+          "host": "1minutecritic.com",
+          "knownOutletId": "one-minute-critic"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "ingestResults": [
+        {
+          "url": "https://artsfuse.org/329385/theater-review-the-maids-and-kenrex-a-tale-of-two-theatrical-experiments/",
+          "host": "artsfuse.org",
+          "outletId": "artsfuse",
+          "provisional": false,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=the-maids-off-broadway-2026 --url=http"
+        },
+        {
+          "url": "https://culturesauce.com/jean-genet-the-maids-kip-williams-off-broadway-review/",
+          "host": "culturesauce.com",
+          "outletId": "culturesauce",
+          "provisional": true,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/the-maids-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "outletId": "nytg",
+          "provisional": false,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=the-maids-off-broadway-2026 --url=http"
+        },
+        {
+          "url": "https://1minutecritic.com/the-maids-st-anns-warehouse-review-kip-williams/",
+          "host": "1minutecritic.com",
+          "outletId": "one-minute-critic",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": []
+    },
+    {
+      "showId": "nicole-travolta-is-doing-alright-off-broadway-2026",
+      "title": "Nicole Travolta is Doing Alright",
+      "openingDate": "2026-04-01",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.newyorktheatreguide.com/reviews/nicole-travolta-is-doing-alright-off-broadway-review",
+        "https://www.theaterscene.net/plays/solo-plays/nicole-travolta-is-doing-alright/victor-gluck/",
+        "https://culturesauce.com/2026/04/06/nicole-travolta-doing-alright-off-broadway-review/",
+        "https://www.offoffonline.com/offoffonline/2026/4/2/nicole-travolta-is-doing-alright"
+      ],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 2,
+      "missing": [
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/nicole-travolta-is-doing-alright-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg"
+        },
+        {
+          "url": "https://www.theaterscene.net/plays/solo-plays/nicole-travolta-is-doing-alright/victor-gluck/",
+          "host": "theaterscene.net",
+          "knownOutletId": "theater-scene"
+        },
+        {
+          "url": "https://culturesauce.com/2026/04/06/nicole-travolta-doing-alright-off-broadway-review/",
+          "host": "culturesauce.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.offoffonline.com/offoffonline/2026/4/2/nicole-travolta-is-doing-alright",
+          "host": "offoffonline.com",
+          "knownOutletId": "off-off-online"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "ingestResults": [
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/nicole-travolta-is-doing-alright-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "outletId": "nytg",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://www.theaterscene.net/plays/solo-plays/nicole-travolta-is-doing-alright/victor-gluck/",
+          "host": "theaterscene.net",
+          "outletId": "theater-scene",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://culturesauce.com/2026/04/06/nicole-travolta-doing-alright-off-broadway-review/",
+          "host": "culturesauce.com",
+          "outletId": "culturesauce",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=nicole-travolta-is-doing-alright-off-b"
+        },
+        {
+          "url": "https://www.offoffonline.com/offoffonline/2026/4/2/nicole-travolta-is-doing-alright",
+          "host": "offoffonline.com",
+          "outletId": "off-off-online",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": []
+    },
+    {
+      "showId": "olga-pericet-baile-sonoro-off-broadway-2026",
+      "title": "Olga Pericet: Baile Sonoro",
+      "openingDate": "2026-05-22",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "jamire-williams-off-broadway-2026",
+      "title": "Jamire Williams",
+      "openingDate": "2026-03-25",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "the-authenticator-west-end-2026",
+      "title": "The Authenticator",
+      "openingDate": "2026-04-02",
+      "status": "closed",
+      "category": "west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "mass-west-end-2026",
+      "title": "Mass",
+      "openingDate": "2026-04-29",
+      "status": "closed",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "dark-of-the-moon-west-end-2026",
+      "title": "Dark of the Moon",
+      "openingDate": "2026-05-26",
+      "status": "open",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "evening-all-afternoon-west-end-2026",
+      "title": "Evening All Afternoon",
+      "openingDate": "2026-02-23",
+      "status": "closed",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "the-guy-who-didnt-like-musicals-west-end-2026",
+      "title": "The Guy Who Didn't Like Musicals",
+      "openingDate": "2026-05-14",
+      "status": "closed",
+      "category": "west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "war-horse-west-end-2026",
+      "title": "War Horse",
+      "openingDate": "2026-06-02",
+      "status": "open",
+      "category": "west-end",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-WAR-HORSE-Hits-the-Silver-Screen-20111217"
+      ],
+      "aggregatorListedUrls": [
+        "https://d4ov6iqsvotvt.cloudfront.net",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-regular-400-27da0e58c35276629aa3a2da60f2dba2d1e149bda7991346de3676fcbd3db989.woff2",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-light-300-6069894d8e39d47ebbb6723d869f4e8302f63980d403369fcb556a08b2a43f05.woff2",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-brands-400-84abb92e6b70b787c333540b97f08e758e7fc5b1627963cd7c045eaabb8cfcef.woff2",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Regular-7b5dc1aeba33f724aa530071bc99c336e8cb8aef02c4d8ece0b2c2f18b468aec.woff2",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Medium-699f505963eb3e5205fcb7c294cfd0aa26bf2a018aa383d07f9543ea48ed0a24.woff2",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-SemiBold-1305d4570afa31aad3e616ee40ef22be4c836b9c7f852b18fda655e45ad1830e.woff2",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Bold-9ca97ade87ab582e4550f60c328e0dacf939d7ff14a23cbf53908dd694ab308d.woff2",
+        "https://fonts.gstatic.com",
+        "https://fonts.googleapis.com/css2",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/vendors_v3-e33cbbab98cdb7643ce0937e85cf5c95f3cf9a320feacc29bb816c0e6e533d34.css",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/application_v3-20f16d5ef5daef94c7cdb74c9f3146bd53e743b81809a9ade92f26a51f1b6df4.css",
+        "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/vendor-fde82a95.chunk.css",
+        "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/membership_bundle~promo_ticket_bundle-afbed0f9.chunk.css",
+        "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/membership_bundle-75917b78.chunk.css",
+        "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/common-484225fd.chunk.css",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/apple-touch-icon-c6200c9822af8a301654011794a1de37ce659cb4037dd73a2b327c64db42f1f9.png",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/icon-f88d83923107c58a348dbc6f102e89c31f3824cded9fd45f5437786d7cfeb062.svg",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/favicon-b48fd9122981448f30ed8879033467df30d423d872503455ab4e53e62f8808d0.ico",
+        "https://maps.google.com/",
+        "https://youtu.be/iY5YMshpCcw",
+        "https://www.todaytixgroup.com/careers",
+        "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform"
+      ],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 25,
+      "missing": [
+        {
+          "url": "https://d4ov6iqsvotvt.cloudfront.net",
+          "host": "d4ov6iqsvotvt.cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-regular-400-27da0e58c35276629aa3a2da60f2dba2d1e149bda7991346de3676fcbd3db989.woff2",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-light-300-6069894d8e39d47ebbb6723d869f4e8302f63980d403369fcb556a08b2a43f05.woff2",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-brands-400-84abb92e6b70b787c333540b97f08e758e7fc5b1627963cd7c045eaabb8cfcef.woff2",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Regular-7b5dc1aeba33f724aa530071bc99c336e8cb8aef02c4d8ece0b2c2f18b468aec.woff2",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Medium-699f505963eb3e5205fcb7c294cfd0aa26bf2a018aa383d07f9543ea48ed0a24.woff2",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-SemiBold-1305d4570afa31aad3e616ee40ef22be4c836b9c7f852b18fda655e45ad1830e.woff2",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Bold-9ca97ade87ab582e4550f60c328e0dacf939d7ff14a23cbf53908dd694ab308d.woff2",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://fonts.gstatic.com",
+          "host": "fonts.gstatic.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "host": "fonts.googleapis.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/vendors_v3-e33cbbab98cdb7643ce0937e85cf5c95f3cf9a320feacc29bb816c0e6e533d34.css",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/application_v3-20f16d5ef5daef94c7cdb74c9f3146bd53e743b81809a9ade92f26a51f1b6df4.css",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/vendor-fde82a95.chunk.css",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/membership_bundle~promo_ticket_bundle-afbed0f9.chunk.css",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/membership_bundle-75917b78.chunk.css",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/common-484225fd.chunk.css",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/apple-touch-icon-c6200c9822af8a301654011794a1de37ce659cb4037dd73a2b327c64db42f1f9.png",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/icon-f88d83923107c58a348dbc6f102e89c31f3824cded9fd45f5437786d7cfeb062.svg",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/favicon-b48fd9122981448f30ed8879033467df30d423d872503455ab4e53e62f8808d0.ico",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://maps.google.com/",
+          "host": "maps.google.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://youtu.be/iY5YMshpCcw",
+          "host": "youtu.be",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.todaytixgroup.com/careers",
+          "host": "todaytixgroup.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
+          "host": "docs.google.com",
+          "knownOutletId": null
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "ingestResults": [
+        {
+          "url": "https://d4ov6iqsvotvt.cloudfront.net",
+          "host": "d4ov6iqsvotvt.cloudfront.net",
+          "outletId": "cloudfront",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=war-horse-west-end-2026 --url=https://"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-regular-400-27da0e58c35276629aa3a2da60f2dba2d1e149bda7991346de3676fcbd3db989.woff2",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "outletId": "cloudfront",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=war-horse-west-end-2026 --url=https://"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-light-300-6069894d8e39d47ebbb6723d869f4e8302f63980d403369fcb556a08b2a43f05.woff2",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "outletId": "cloudfront",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=war-horse-west-end-2026 --url=https://"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-brands-400-84abb92e6b70b787c333540b97f08e758e7fc5b1627963cd7c045eaabb8cfcef.woff2",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "outletId": "cloudfront",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=war-horse-west-end-2026 --url=https://"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Regular-7b5dc1aeba33f724aa530071bc99c336e8cb8aef02c4d8ece0b2c2f18b468aec.woff2",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "outletId": "cloudfront",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=war-horse-west-end-2026 --url=https://"
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Medium-699f505963eb3e5205fcb7c294cfd0aa26bf2a018aa383d07f9543ea48ed0a24.woff2",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-SemiBold-1305d4570afa31aad3e616ee40ef22be4c836b9c7f852b18fda655e45ad1830e.woff2",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Bold-9ca97ade87ab582e4550f60c328e0dacf939d7ff14a23cbf53908dd694ab308d.woff2",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://fonts.gstatic.com",
+          "host": "fonts.gstatic.com",
+          "outletId": "gstatic"
+        },
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "host": "fonts.googleapis.com",
+          "outletId": "googleapis"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/vendors_v3-e33cbbab98cdb7643ce0937e85cf5c95f3cf9a320feacc29bb816c0e6e533d34.css",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/application_v3-20f16d5ef5daef94c7cdb74c9f3146bd53e743b81809a9ade92f26a51f1b6df4.css",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/vendor-fde82a95.chunk.css",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/membership_bundle~promo_ticket_bundle-afbed0f9.chunk.css",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/membership_bundle-75917b78.chunk.css",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/common-484225fd.chunk.css",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/apple-touch-icon-c6200c9822af8a301654011794a1de37ce659cb4037dd73a2b327c64db42f1f9.png",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/icon-f88d83923107c58a348dbc6f102e89c31f3824cded9fd45f5437786d7cfeb062.svg",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/favicon-b48fd9122981448f30ed8879033467df30d423d872503455ab4e53e62f8808d0.ico",
+          "host": "d2kbhv4d9rykxy.cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://maps.google.com/",
+          "host": "maps.google.com",
+          "outletId": "google"
+        },
+        {
+          "url": "https://youtu.be/iY5YMshpCcw",
+          "host": "youtu.be",
+          "outletId": "youtu"
+        },
+        {
+          "url": "https://www.todaytixgroup.com/careers",
+          "host": "todaytixgroup.com",
+          "outletId": "todaytixgroup"
+        },
+        {
+          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
+          "host": "docs.google.com",
+          "outletId": "google"
+        }
+      ]
+    },
+    {
+      "showId": "new-born-off-broadway-2026",
+      "title": "New Born",
+      "openingDate": "2026-05-08",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-NEW-BORN-Starring-Hugh-Jackman-Sepideh-Moafi-Marianna-Gailus-20260515"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.nytimes.com/2026/05/15/theater/new-born-review-hugh-jackman.html",
+        "https://www.wsj.com/articles/new-born-and-what-happened-was-reviews-complicated-relationships-a8f3ecb8",
+        "https://www.theatermania.com/news/review-in-ella-hicksons-new-born-hugh-jackman-will-trim-your-tree_1836852/",
+        "https://culturesauce.com/hugh-jackman-new-born-off-broadway-review/",
+        "https://nystagereview.com/2026/05/14/what-happened-was-and-new-born-a-showcase-for-fine-actors-at-the-minetta-lane/",
+        "https://www.newyorktheatreguide.com/reviews/new-born-off-broadway-review",
+        "https://www.talkinbroadway.com/page/ob/05_15_26.html",
+        "https://1minutecritic.com/new-born-review-hugh-jackman/"
+      ],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 8,
+      "missing": [
+        {
+          "url": "https://www.nytimes.com/2026/05/15/theater/new-born-review-hugh-jackman.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes"
+        },
+        {
+          "url": "https://www.wsj.com/articles/new-born-and-what-happened-was-reviews-complicated-relationships-a8f3ecb8",
+          "host": "wsj.com",
+          "knownOutletId": "wsj"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-in-ella-hicksons-new-born-hugh-jackman-will-trim-your-tree_1836852/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania"
+        },
+        {
+          "url": "https://culturesauce.com/hugh-jackman-new-born-off-broadway-review/",
+          "host": "culturesauce.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://nystagereview.com/2026/05/14/what-happened-was-and-new-born-a-showcase-for-fine-actors-at-the-minetta-lane/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/new-born-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg"
+        },
+        {
+          "url": "https://www.talkinbroadway.com/page/ob/05_15_26.html",
+          "host": "talkinbroadway.com",
+          "knownOutletId": "talkinbroadway"
+        },
+        {
+          "url": "https://1minutecritic.com/new-born-review-hugh-jackman/",
+          "host": "1minutecritic.com",
+          "knownOutletId": "one-minute-critic"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "ingestResults": [
+        {
+          "url": "https://www.nytimes.com/2026/05/15/theater/new-born-review-hugh-jackman.html",
+          "host": "nytimes.com",
+          "outletId": "nytimes",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://www.wsj.com/articles/new-born-and-what-happened-was-reviews-complicated-relationships-a8f3ecb8",
+          "host": "wsj.com",
+          "outletId": "wsj",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-in-ella-hicksons-new-born-hugh-jackman-will-trim-your-tree_1836852/",
+          "host": "theatermania.com",
+          "outletId": "theatermania",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://culturesauce.com/hugh-jackman-new-born-off-broadway-review/",
+          "host": "culturesauce.com",
+          "outletId": "culturesauce",
+          "provisional": true,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://nystagereview.com/2026/05/14/what-happened-was-and-new-born-a-showcase-for-fine-actors-at-the-minetta-lane/",
+          "host": "nystagereview.com",
+          "outletId": "nysr",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/new-born-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "outletId": "nytg"
+        },
+        {
+          "url": "https://www.talkinbroadway.com/page/ob/05_15_26.html",
+          "host": "talkinbroadway.com",
+          "outletId": "talkinbroadway"
+        },
+        {
+          "url": "https://1minutecritic.com/new-born-review-hugh-jackman/",
+          "host": "1minutecritic.com",
+          "outletId": "one-minute-critic"
+        }
+      ]
+    },
+    {
+      "showId": "agatha-christies-black-coffee-grounds-for-murder-off-broadway-2026",
+      "title": "Agatha Christie's Black Coffee: Grounds for Murder",
+      "openingDate": "2026-04-18",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "what-happened-was-off-broadway-2026",
+      "title": "What Happened Was",
+      "openingDate": "2026-04-14",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.nytimes.com/2026/04/21/theater/what-happened-was-review.html",
+        "https://www.newyorktheatreguide.com/reviews/what-happened-was-off-broadway-review-corey-stoll-cecily-strong",
+        "https://www.theatermania.com/news/review-what-happened-was-corey-stoll-and-cecily-strong-have-a-very-awkward-date_1833600/",
+        "https://www.talkinbroadway.com/page/ob/04_23_26.html",
+        "https://culturesauce.com/2026/04/24/corey-stoll-cecily-strong-what-happened-was-off-broadway-review/"
+      ],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 5,
+      "missing": [
+        {
+          "url": "https://www.nytimes.com/2026/04/21/theater/what-happened-was-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/what-happened-was-off-broadway-review-corey-stoll-cecily-strong",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-what-happened-was-corey-stoll-and-cecily-strong-have-a-very-awkward-date_1833600/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania"
+        },
+        {
+          "url": "https://www.talkinbroadway.com/page/ob/04_23_26.html",
+          "host": "talkinbroadway.com",
+          "knownOutletId": "talkinbroadway"
+        },
+        {
+          "url": "https://culturesauce.com/2026/04/24/corey-stoll-cecily-strong-what-happened-was-off-broadway-review/",
+          "host": "culturesauce.com",
+          "knownOutletId": null
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "ingestResults": [
+        {
+          "url": "https://www.nytimes.com/2026/04/21/theater/what-happened-was-review.html",
+          "host": "nytimes.com",
+          "outletId": "nytimes",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/what-happened-was-off-broadway-review-corey-stoll-cecily-strong",
+          "host": "newyorktheatreguide.com",
+          "outletId": "nytg",
+          "provisional": false,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=what-happened-was-off-broadway-2026 --"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-what-happened-was-corey-stoll-and-cecily-strong-have-a-very-awkward-date_1833600/",
+          "host": "theatermania.com",
+          "outletId": "theatermania",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://www.talkinbroadway.com/page/ob/04_23_26.html",
+          "host": "talkinbroadway.com",
+          "outletId": "talkinbroadway",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://culturesauce.com/2026/04/24/corey-stoll-cecily-strong-what-happened-was-off-broadway-review/",
+          "host": "culturesauce.com",
+          "outletId": "culturesauce",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=what-happened-was-off-broadway-2026 --"
+        }
+      ],
+      "ingestSkippedByCap": []
+    },
+    {
+      "showId": "henry-vi-a-trilogy-in-two-parts-off-broadway-2026",
+      "title": "Henry VI: A Trilogy in Two Parts",
+      "openingDate": "2026-06-09",
+      "status": "upcoming",
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
@@ -41,7 +1279,7 @@
       ],
       "dirFiles": 0,
       "dirClean": 0,
-      "inReviewsJson": 5,
+      "inReviewsJson": 0,
       "missing": [
         {
           "url": "https://d4ov6iqsvotvt.cloudfront.net",
@@ -163,7 +1401,7 @@
           "outletId": "cloudfront",
           "provisional": true,
           "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=eugene-onegin-off-broadway-2026 --url="
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=henry-vi-a-trilogy-in-two-parts-off-br"
         },
         {
           "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-regular-400-27da0e58c35276629aa3a2da60f2dba2d1e149bda7991346de3676fcbd3db989.woff2",
@@ -171,7 +1409,7 @@
           "outletId": "cloudfront",
           "provisional": true,
           "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=eugene-onegin-off-broadway-2026 --url="
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=henry-vi-a-trilogy-in-two-parts-off-br"
         },
         {
           "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-light-300-6069894d8e39d47ebbb6723d869f4e8302f63980d403369fcb556a08b2a43f05.woff2",
@@ -179,7 +1417,7 @@
           "outletId": "cloudfront",
           "provisional": true,
           "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=eugene-onegin-off-broadway-2026 --url="
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=henry-vi-a-trilogy-in-two-parts-off-br"
         },
         {
           "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-brands-400-84abb92e6b70b787c333540b97f08e758e7fc5b1627963cd7c045eaabb8cfcef.woff2",
@@ -187,7 +1425,7 @@
           "outletId": "cloudfront",
           "provisional": true,
           "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=eugene-onegin-off-broadway-2026 --url="
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=henry-vi-a-trilogy-in-two-parts-off-br"
         },
         {
           "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Regular-7b5dc1aeba33f724aa530071bc99c336e8cb8aef02c4d8ece0b2c2f18b468aec.woff2",
@@ -195,7 +1433,7 @@
           "outletId": "cloudfront",
           "provisional": true,
           "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=eugene-onegin-off-broadway-2026 --url="
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=henry-vi-a-trilogy-in-two-parts-off-br"
         }
       ],
       "ingestSkippedByCap": [
@@ -287,88 +1525,214 @@
       ]
     },
     {
-      "showId": "amaze-magic-off-broadway-2025",
-      "title": "AMAZE Magic",
-      "openingDate": "2025-07-20",
+      "showId": "the-choir-of-man-off-west-end-2026",
+      "title": "The Choir of Man",
+      "openingDate": "2026-03-14",
+      "status": "closed",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "gabbys-dollhouse-live-off-west-end-2026",
+      "title": "Gabby's Dollhouse Live!",
+      "openingDate": "2026-03-31",
+      "status": "closed",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "the-p-word-off-west-end-2026",
+      "title": "The P Word",
+      "openingDate": "2026-05-28",
       "status": "open",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "flyby-off-west-end-2026",
+      "title": "FLYBY",
+      "openingDate": "2026-04-09",
+      "status": "closed",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "myras-story-west-end-2026",
+      "title": "Myra's Story",
+      "openingDate": "2026-04-12",
+      "status": "closed",
+      "category": "west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "unfortunate-the-untold-story-of-ursula-the-sea-witch-west-end-2026",
+      "title": "Unfortunate: The Untold Story of Ursula the Sea Witch",
+      "openingDate": "2026-02-06",
+      "status": "closed",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "yoah-off-broadway-2026",
+      "title": "YOAH",
+      "openingDate": "2026-04-02",
+      "status": "closed",
       "category": "off-broadway",
       "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "gotta-dance-off-broadway-2026",
+      "title": "Gotta Dance!",
+      "openingDate": "2026-03-20",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/what-do-the-critics-think-of-gotta-dance-off-broadway",
+        "https://www.broadwayworld.com/article/Review-Roundup-GOTTA-DANCE-Opens-Off-Broadway-at-the-York-Theatre-20251204"
+      ],
       "aggregatorListedUrls": [
-        "https://www.newyorktheatreguide.com/reviews/amaze-off-broadway-review-jamie-allan",
-        "https://www.theatermania.com/news/review-jamie-allans-amaze-will-wow-kids-and-their-gen-xer-parents-too_1795840/",
-        "https://nystagereview.com/2025/08/13/amaze-magic-magical-storytelling/",
-        "https://www.theaterscene.net/plays/offbway-plays/amaze/victor-gluck/",
-        "https://theaterlife.com/jamie-allans-amaze/",
-        "https://www.hollywoodsoapbox.com/review-come-for-the-magic-stay-for-jamie-allans-story/",
-        "https://stageandcinema.com/2025/08/13/amaze-jamie-allan/",
-        "https://luxuryexperience.com/featured/jamie-allans-amaze-new-world-stages-nyc-ny-usa/"
+        "https://1minutecritic.com/gotta-dance-york-theatre-review/",
+        "https://cititour.com/NYC_Broadway/Gotta-Dance/1346",
+        "https://nystagereview.com/2025/12/03/gotta-dance-gotta-dance-better-than-this/",
+        "https://therecs.co.uk/gotta-dance/",
+        "https://www.theatermania.com/news/review-gotta-dance-hands-broadway-hoofers-a-kickline-of-classics_1813720/",
+        "https://www.talkinbroadway.com/page/ob/03_31_26.html",
+        "https://www.theaterscene.net/musicals/offbway/gotta-dance-2/christopher-caz/",
+        "https://theaterlife.com/gotta-dance-1-2/",
+        "https://pagesonstages.com/2026/03/31/gotta-dance/",
+        "https://www.theaterscene.net/dance/gotta-dance/victor-gluck/",
+        "https://www.interestedbystander.com/2025/12/reviews-catching-up-on-theater.html"
       ],
       "dirFiles": 0,
       "dirClean": 0,
-      "inReviewsJson": 8,
+      "inReviewsJson": 4,
       "missing": [
         {
-          "url": "https://www.newyorktheatreguide.com/reviews/amaze-off-broadway-review-jamie-allan",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg"
+          "url": "https://1minutecritic.com/gotta-dance-york-theatre-review/",
+          "host": "1minutecritic.com",
+          "knownOutletId": "one-minute-critic"
         },
         {
-          "url": "https://www.theatermania.com/news/review-jamie-allans-amaze-will-wow-kids-and-their-gen-xer-parents-too_1795840/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania"
+          "url": "https://cititour.com/NYC_Broadway/Gotta-Dance/1346",
+          "host": "cititour.com",
+          "knownOutletId": "cititour"
         },
         {
-          "url": "https://nystagereview.com/2025/08/13/amaze-magic-magical-storytelling/",
+          "url": "https://nystagereview.com/2025/12/03/gotta-dance-gotta-dance-better-than-this/",
           "host": "nystagereview.com",
           "knownOutletId": "nysr"
         },
         {
-          "url": "https://www.theaterscene.net/plays/offbway-plays/amaze/victor-gluck/",
+          "url": "https://therecs.co.uk/gotta-dance/",
+          "host": "therecs.co.uk",
+          "knownOutletId": "the-recs"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-gotta-dance-hands-broadway-hoofers-a-kickline-of-classics_1813720/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania"
+        },
+        {
+          "url": "https://www.talkinbroadway.com/page/ob/03_31_26.html",
+          "host": "talkinbroadway.com",
+          "knownOutletId": "talkinbroadway"
+        },
+        {
+          "url": "https://www.theaterscene.net/musicals/offbway/gotta-dance-2/christopher-caz/",
           "host": "theaterscene.net",
           "knownOutletId": "theater-scene"
         },
         {
-          "url": "https://theaterlife.com/jamie-allans-amaze/",
+          "url": "https://theaterlife.com/gotta-dance-1-2/",
           "host": "theaterlife.com",
           "knownOutletId": "theater-life"
         },
         {
-          "url": "https://www.hollywoodsoapbox.com/review-come-for-the-magic-stay-for-jamie-allans-story/",
-          "host": "hollywoodsoapbox.com",
-          "knownOutletId": "hollywood-soapbox"
+          "url": "https://pagesonstages.com/2026/03/31/gotta-dance/",
+          "host": "pagesonstages.com",
+          "knownOutletId": "pages-on-stages"
         },
         {
-          "url": "https://stageandcinema.com/2025/08/13/amaze-jamie-allan/",
-          "host": "stageandcinema.com",
-          "knownOutletId": "stageandcinema"
+          "url": "https://www.theaterscene.net/dance/gotta-dance/victor-gluck/",
+          "host": "theaterscene.net",
+          "knownOutletId": "theater-scene"
         },
         {
-          "url": "https://luxuryexperience.com/featured/jamie-allans-amaze-new-world-stages-nyc-ny-usa/",
-          "host": "luxuryexperience.com",
-          "knownOutletId": "luxury-experience"
+          "url": "https://www.interestedbystander.com/2025/12/reviews-catching-up-on-theater.html",
+          "host": "interestedbystander.com",
+          "knownOutletId": "the-interested-bystander"
         }
       ],
       "dirOnly": [],
       "flaggedMisses": [],
       "ingestResults": [
         {
-          "url": "https://www.newyorktheatreguide.com/reviews/amaze-off-broadway-review-jamie-allan",
-          "host": "newyorktheatreguide.com",
-          "outletId": "nytg",
+          "url": "https://1minutecritic.com/gotta-dance-york-theatre-review/",
+          "host": "1minutecritic.com",
+          "outletId": "one-minute-critic",
           "provisional": false,
           "ok": true,
           "reason": null
         },
         {
-          "url": "https://www.theatermania.com/news/review-jamie-allans-amaze-will-wow-kids-and-their-gen-xer-parents-too_1795840/",
-          "host": "theatermania.com",
-          "outletId": "theatermania",
+          "url": "https://cititour.com/NYC_Broadway/Gotta-Dance/1346",
+          "host": "cititour.com",
+          "outletId": "cititour",
           "provisional": false,
-          "ok": true,
-          "reason": null
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=gotta-dance-off-broadway-2026 --url=ht"
         },
         {
-          "url": "https://nystagereview.com/2025/08/13/amaze-magic-magical-storytelling/",
+          "url": "https://nystagereview.com/2025/12/03/gotta-dance-gotta-dance-better-than-this/",
           "host": "nystagereview.com",
           "outletId": "nysr",
           "provisional": false,
@@ -376,17 +1740,17 @@
           "reason": null
         },
         {
-          "url": "https://www.theaterscene.net/plays/offbway-plays/amaze/victor-gluck/",
-          "host": "theaterscene.net",
-          "outletId": "theater-scene",
+          "url": "https://therecs.co.uk/gotta-dance/",
+          "host": "therecs.co.uk",
+          "outletId": "the-recs",
           "provisional": false,
           "ok": true,
           "reason": null
         },
         {
-          "url": "https://theaterlife.com/jamie-allans-amaze/",
-          "host": "theaterlife.com",
-          "outletId": "theater-life",
+          "url": "https://www.theatermania.com/news/review-gotta-dance-hands-broadway-hoofers-a-kickline-of-classics_1813720/",
+          "host": "theatermania.com",
+          "outletId": "theatermania",
           "provisional": false,
           "ok": true,
           "reason": null
@@ -394,251 +1758,121 @@
       ],
       "ingestSkippedByCap": [
         {
-          "url": "https://www.hollywoodsoapbox.com/review-come-for-the-magic-stay-for-jamie-allans-story/",
-          "host": "hollywoodsoapbox.com",
-          "outletId": "hollywood-soapbox"
+          "url": "https://www.talkinbroadway.com/page/ob/03_31_26.html",
+          "host": "talkinbroadway.com",
+          "outletId": "talkinbroadway"
         },
         {
-          "url": "https://stageandcinema.com/2025/08/13/amaze-jamie-allan/",
-          "host": "stageandcinema.com",
-          "outletId": "stageandcinema"
+          "url": "https://www.theaterscene.net/musicals/offbway/gotta-dance-2/christopher-caz/",
+          "host": "theaterscene.net",
+          "outletId": "theater-scene"
         },
         {
-          "url": "https://luxuryexperience.com/featured/jamie-allans-amaze-new-world-stages-nyc-ny-usa/",
-          "host": "luxuryexperience.com",
-          "outletId": "luxury-experience"
+          "url": "https://theaterlife.com/gotta-dance-1-2/",
+          "host": "theaterlife.com",
+          "outletId": "theater-life"
+        },
+        {
+          "url": "https://pagesonstages.com/2026/03/31/gotta-dance/",
+          "host": "pagesonstages.com",
+          "outletId": "pages-on-stages"
+        },
+        {
+          "url": "https://www.theaterscene.net/dance/gotta-dance/victor-gluck/",
+          "host": "theaterscene.net",
+          "outletId": "theater-scene"
+        },
+        {
+          "url": "https://www.interestedbystander.com/2025/12/reviews-catching-up-on-theater.html",
+          "host": "interestedbystander.com",
+          "outletId": "the-interested-bystander"
         }
       ]
     },
     {
-      "showId": "i-wish-my-life-were-like-a-musical-off-broadway-2026",
-      "title": "I Wish My Life Were Like A Musical",
-      "openingDate": "2026-02-06",
-      "status": "closed",
-      "category": "off-broadway",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.offoffonline.com/offoffonline/2026/2/7/i-wish-my-life-were-like-a-musical"
-      ],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 2,
-      "missing": [
-        {
-          "url": "https://www.offoffonline.com/offoffonline/2026/2/7/i-wish-my-life-were-like-a-musical",
-          "host": "offoffonline.com",
-          "knownOutletId": "off-off-online"
-        }
-      ],
-      "dirOnly": [],
-      "flaggedMisses": [],
-      "ingestResults": [
-        {
-          "url": "https://www.offoffonline.com/offoffonline/2026/2/7/i-wish-my-life-were-like-a-musical",
-          "host": "offoffonline.com",
-          "outletId": "off-off-online",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "anne-teresa-de-keersmaeker-exit-above-off-broadway-2026",
-      "title": "Anne Teresa De Keersmaeker: EXIT ABOVE",
-      "openingDate": "2026-03-05",
-      "status": "closed",
-      "category": "off-broadway",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [],
-      "dirOnly": [],
-      "flaggedMisses": []
-    },
-    {
-      "showId": "aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026",
-      "title": "A.I.M by Kyle Abraham: Cassette Vol. 1",
-      "openingDate": "2026-04-16",
-      "status": "closed",
-      "category": "off-broadway",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [],
-      "dirOnly": [],
-      "flaggedMisses": []
-    },
-    {
-      "showId": "tristan-und-isolde-off-broadway-2026",
-      "title": "Tristan und Isolde",
-      "openingDate": "2026-03-09",
-      "status": "closed",
-      "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/what-did-reviews-say-about-tristan-und-isolde-at-met-opera"
-      ],
-      "aggregatorListedUrls": [
-        "https://bachtrack.com/review-tristan-isolde-sharon-nezet-seguin-davidsen-spyres-metropolitan-opera-new-york-march-2026",
-        "https://www.broadwayworld.com/bwwopera/article/Review-Davidsen-an-ISOLDE-for-the-Ages-Alongside-Spyres-Splendid-TRISTAN-in-Wagner-at-the-Met-20260310",
-        "https://www.nytimes.com/2026/03/10/arts/music/tristan-und-isolde-met-opera-review.html",
-        "https://operawire.com/metropolitan-opera-2025-26-review-tristan-und-isolde/",
-        "https://www.thetimes.com/culture/classical-opera/article/tristan-und-isolde-review-the-met-has-a-pair-who-stand-with-the-greats-z8gk8ltjx"
-      ],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 12,
-      "missing": [
-        {
-          "url": "https://bachtrack.com/review-tristan-isolde-sharon-nezet-seguin-davidsen-spyres-metropolitan-opera-new-york-march-2026",
-          "host": "bachtrack.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://www.broadwayworld.com/bwwopera/article/Review-Davidsen-an-ISOLDE-for-the-Ages-Alongside-Spyres-Splendid-TRISTAN-in-Wagner-at-the-Met-20260310",
-          "host": "broadwayworld.com",
-          "knownOutletId": "broadwayworld"
-        },
-        {
-          "url": "https://www.nytimes.com/2026/03/10/arts/music/tristan-und-isolde-met-opera-review.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes"
-        },
-        {
-          "url": "https://operawire.com/metropolitan-opera-2025-26-review-tristan-und-isolde/",
-          "host": "operawire.com",
-          "knownOutletId": "operawire"
-        },
-        {
-          "url": "https://www.thetimes.com/culture/classical-opera/article/tristan-und-isolde-review-the-met-has-a-pair-who-stand-with-the-greats-z8gk8ltjx",
-          "host": "thetimes.com",
-          "knownOutletId": null
-        }
-      ],
-      "dirOnly": [],
-      "flaggedMisses": [],
-      "ingestResults": [
-        {
-          "url": "https://bachtrack.com/review-tristan-isolde-sharon-nezet-seguin-davidsen-spyres-metropolitan-opera-new-york-march-2026",
-          "host": "bachtrack.com",
-          "outletId": "bachtrack",
-          "provisional": true,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=tristan-und-isolde-off-broadway-2026 -"
-        },
-        {
-          "url": "https://www.broadwayworld.com/bwwopera/article/Review-Davidsen-an-ISOLDE-for-the-Ages-Alongside-Spyres-Splendid-TRISTAN-in-Wagner-at-the-Met-20260310",
-          "host": "broadwayworld.com",
-          "outletId": "broadwayworld",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.nytimes.com/2026/03/10/arts/music/tristan-und-isolde-met-opera-review.html",
-          "host": "nytimes.com",
-          "outletId": "nytimes",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://operawire.com/metropolitan-opera-2025-26-review-tristan-und-isolde/",
-          "host": "operawire.com",
-          "outletId": "operawire",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.thetimes.com/culture/classical-opera/article/tristan-und-isolde-review-the-met-has-a-pair-who-stand-with-the-greats-z8gk8ltjx",
-          "host": "thetimes.com",
-          "outletId": "thetimes",
-          "provisional": true,
-          "ok": true,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "a-woman-among-women-off-broadway-2026",
-      "title": "A Woman Among Women",
-      "openingDate": "2026-06-04",
+      "showId": "well-ill-let-you-go-off-broadway-2026",
+      "title": "Well, I'll Let You Go",
+      "openingDate": "2026-04-30",
       "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [
-        "https://playbill.com/article/what-are-reviews-for-a-woman-among-women-at-lincoln-center-theater",
-        "https://www.broadwayworld.com/article/Review-Roundup-A-WOMAN-AMONG-WOMEN-at-Lincoln-Center-Theater-20260605"
+        "https://playbill.com/article/what-do-reviews-think-of-bubba-weilers-well-ill-let-you-go-at-studio-seaview"
       ],
       "aggregatorListedUrls": [
-        "https://culturesauce.com/woman-among-women-off-broadway-review/",
-        "https://newyorktheater.me/2026/06/04/theater-reviews-girl-interrupted-a-woman-among-women/",
-        "https://www.newyorktheatreguide.com/reviews/a-woman-among-women-off-broadway-review",
-        "https://nystagereview.com/2026/06/04/a-woman-among-women-hubris-and-you/",
-        "https://nystagereview.com/2026/06/04/a-woman-among-women-a-female-all-my-sons-without-the-tragedy/",
-        "https://therecs.co.uk/a-woman-among-women/",
-        "https://www.theatermania.com/news/review-a-woman-among-women-is-a-frustrating-experience-at-lct3_1840772/",
-        "https://www.theatermania.com/news/review-a-woman-among-women-breaks-in-the-new-bushwick-starr_1753294/",
-        "https://exeuntnyc.com/reviews/review-a-woman-among-women-at-the-bushwick-starr/",
-        "https://newyorktheater.me/2024/10/19/a-woman-among-women-review-arthur-miller-male-to-female-in-bushwick/"
+        "https://1minutecritic.com/well-ill-let-you-go-review-off-broadway/",
+        "https://cititour.com/NYC_Broadway/Well-Ill-Let-You-Go/1379",
+        "https://culturesauce.com/well-ill-let-you-go-2026-off-broadway-review/",
+        "https://nystagereview.com/2026/05/14/well-ill-let-you-go-coping-with-grief-magnificently/",
+        "https://www.theatermania.com/news/review-well-ill-let-you-go-explores-the-truth-about-death-and-marriage_1836974/",
+        "https://www.thewrap.com/creative-content/theater/well-ill-let-you-go-off-broadway-review/",
+        "https://studioseaview.com/show/well-ill-let-you-go/",
+        "https://www.nytimes.com/2025/08/08/theater/cul-let-go-review.html",
+        "https://www.newyorktheatreguide.com/reviews/well-ill-let-you-go-off-broadway-review",
+        "https://www.theatermania.com/news/review-well-ill-let-you-go-an-elegiac-off-broadway-tearjerker_1796117/",
+        "https://exeuntnyc.com/reviews/review-well-ill-let-you-go-at-irondale-center/",
+        "https://newyorktheater.me/2025/08/20/well-ill-let-you-go-review/"
       ],
       "dirFiles": 0,
       "dirClean": 0,
-      "inReviewsJson": 9,
+      "inReviewsJson": 10,
       "missing": [
         {
-          "url": "https://culturesauce.com/woman-among-women-off-broadway-review/",
+          "url": "https://1minutecritic.com/well-ill-let-you-go-review-off-broadway/",
+          "host": "1minutecritic.com",
+          "knownOutletId": "one-minute-critic"
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/Well-Ill-Let-You-Go/1379",
+          "host": "cititour.com",
+          "knownOutletId": "cititour"
+        },
+        {
+          "url": "https://culturesauce.com/well-ill-let-you-go-2026-off-broadway-review/",
           "host": "culturesauce.com",
           "knownOutletId": null
         },
         {
-          "url": "https://newyorktheater.me/2026/06/04/theater-reviews-girl-interrupted-a-woman-among-women/",
-          "host": "newyorktheater.me",
-          "knownOutletId": "nyt-theater"
+          "url": "https://nystagereview.com/2026/05/14/well-ill-let-you-go-coping-with-grief-magnificently/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr"
         },
         {
-          "url": "https://www.newyorktheatreguide.com/reviews/a-woman-among-women-off-broadway-review",
+          "url": "https://www.theatermania.com/news/review-well-ill-let-you-go-explores-the-truth-about-death-and-marriage_1836974/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania"
+        },
+        {
+          "url": "https://www.thewrap.com/creative-content/theater/well-ill-let-you-go-off-broadway-review/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap"
+        },
+        {
+          "url": "https://studioseaview.com/show/well-ill-let-you-go/",
+          "host": "studioseaview.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.nytimes.com/2025/08/08/theater/cul-let-go-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/well-ill-let-you-go-off-broadway-review",
           "host": "newyorktheatreguide.com",
           "knownOutletId": "nytg"
         },
         {
-          "url": "https://nystagereview.com/2026/06/04/a-woman-among-women-hubris-and-you/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr"
-        },
-        {
-          "url": "https://nystagereview.com/2026/06/04/a-woman-among-women-a-female-all-my-sons-without-the-tragedy/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr"
-        },
-        {
-          "url": "https://therecs.co.uk/a-woman-among-women/",
-          "host": "therecs.co.uk",
-          "knownOutletId": "the-recs"
-        },
-        {
-          "url": "https://www.theatermania.com/news/review-a-woman-among-women-is-a-frustrating-experience-at-lct3_1840772/",
+          "url": "https://www.theatermania.com/news/review-well-ill-let-you-go-an-elegiac-off-broadway-tearjerker_1796117/",
           "host": "theatermania.com",
           "knownOutletId": "theatermania"
         },
         {
-          "url": "https://www.theatermania.com/news/review-a-woman-among-women-breaks-in-the-new-bushwick-starr_1753294/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania"
-        },
-        {
-          "url": "https://exeuntnyc.com/reviews/review-a-woman-among-women-at-the-bushwick-starr/",
+          "url": "https://exeuntnyc.com/reviews/review-well-ill-let-you-go-at-irondale-center/",
           "host": "exeuntnyc.com",
           "knownOutletId": "exeunt-magazine"
         },
         {
-          "url": "https://newyorktheater.me/2024/10/19/a-woman-among-women-review-arthur-miller-male-to-female-in-bushwick/",
+          "url": "https://newyorktheater.me/2025/08/20/well-ill-let-you-go-review/",
           "host": "newyorktheater.me",
           "knownOutletId": "nyt-theater"
         }
@@ -647,7 +1881,23 @@
       "flaggedMisses": [],
       "ingestResults": [
         {
-          "url": "https://culturesauce.com/woman-among-women-off-broadway-review/",
+          "url": "https://1minutecritic.com/well-ill-let-you-go-review-off-broadway/",
+          "host": "1minutecritic.com",
+          "outletId": "one-minute-critic",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/Well-Ill-Let-You-Go/1379",
+          "host": "cititour.com",
+          "outletId": "cititour",
+          "provisional": false,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=well-ill-let-you-go-off-broadway-2026 "
+        },
+        {
+          "url": "https://culturesauce.com/well-ill-let-you-go-2026-off-broadway-review/",
           "host": "culturesauce.com",
           "outletId": "culturesauce",
           "provisional": true,
@@ -655,23 +1905,7 @@
           "reason": null
         },
         {
-          "url": "https://newyorktheater.me/2026/06/04/theater-reviews-girl-interrupted-a-woman-among-women/",
-          "host": "newyorktheater.me",
-          "outletId": "nyt-theater",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/a-woman-among-women-off-broadway-review",
-          "host": "newyorktheatreguide.com",
-          "outletId": "nytg",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://nystagereview.com/2026/06/04/a-woman-among-women-hubris-and-you/",
+          "url": "https://nystagereview.com/2026/05/14/well-ill-let-you-go-coping-with-grief-magnificently/",
           "host": "nystagereview.com",
           "outletId": "nysr",
           "provisional": false,
@@ -679,9 +1913,9 @@
           "reason": null
         },
         {
-          "url": "https://nystagereview.com/2026/06/04/a-woman-among-women-a-female-all-my-sons-without-the-tragedy/",
-          "host": "nystagereview.com",
-          "outletId": "nysr",
+          "url": "https://www.theatermania.com/news/review-well-ill-let-you-go-explores-the-truth-about-death-and-marriage_1836974/",
+          "host": "theatermania.com",
+          "outletId": "theatermania",
           "provisional": false,
           "ok": true,
           "reason": null
@@ -689,846 +1923,48 @@
       ],
       "ingestSkippedByCap": [
         {
-          "url": "https://therecs.co.uk/a-woman-among-women/",
-          "host": "therecs.co.uk",
-          "outletId": "the-recs"
+          "url": "https://www.thewrap.com/creative-content/theater/well-ill-let-you-go-off-broadway-review/",
+          "host": "thewrap.com",
+          "outletId": "thewrap"
         },
         {
-          "url": "https://www.theatermania.com/news/review-a-woman-among-women-is-a-frustrating-experience-at-lct3_1840772/",
+          "url": "https://studioseaview.com/show/well-ill-let-you-go/",
+          "host": "studioseaview.com",
+          "outletId": "studioseaview"
+        },
+        {
+          "url": "https://www.nytimes.com/2025/08/08/theater/cul-let-go-review.html",
+          "host": "nytimes.com",
+          "outletId": "nytimes"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/well-ill-let-you-go-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "outletId": "nytg"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-well-ill-let-you-go-an-elegiac-off-broadway-tearjerker_1796117/",
           "host": "theatermania.com",
           "outletId": "theatermania"
         },
         {
-          "url": "https://www.theatermania.com/news/review-a-woman-among-women-breaks-in-the-new-bushwick-starr_1753294/",
-          "host": "theatermania.com",
-          "outletId": "theatermania"
-        },
-        {
-          "url": "https://exeuntnyc.com/reviews/review-a-woman-among-women-at-the-bushwick-starr/",
+          "url": "https://exeuntnyc.com/reviews/review-well-ill-let-you-go-at-irondale-center/",
           "host": "exeuntnyc.com",
           "outletId": "exeunt-magazine"
         },
         {
-          "url": "https://newyorktheater.me/2024/10/19/a-woman-among-women-review-arthur-miller-male-to-female-in-bushwick/",
+          "url": "https://newyorktheater.me/2025/08/20/well-ill-let-you-go-review/",
           "host": "newyorktheater.me",
           "outletId": "nyt-theater"
         }
       ]
     },
     {
-      "showId": "the-karate-kid-the-musical-west-end-2026",
-      "title": "The Karate Kid - The Musical",
-      "openingDate": "2026-04-28",
-      "status": "closed",
-      "category": "off-west-end",
-      "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-Pre-Broadway-Run-of-THE-KARATE-KID-Opens-in-St-Louis-20220602"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.stlmag.com/culture/theater/review-karate-kid-the-musical-st-louis-world-premiere/",
-        "https://wbkr.com/karate-kid-musical-stages-st-louis/"
-      ],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [
-        {
-          "url": "https://www.stlmag.com/culture/theater/review-karate-kid-the-musical-st-louis-world-premiere/",
-          "host": "stlmag.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://wbkr.com/karate-kid-musical-stages-st-louis/",
-          "host": "wbkr.com",
-          "knownOutletId": null
-        }
-      ],
-      "dirOnly": [],
-      "flaggedMisses": [],
-      "ingestResults": [
-        {
-          "url": "https://www.stlmag.com/culture/theater/review-karate-kid-the-musical-st-louis-world-premiere/",
-          "host": "stlmag.com",
-          "outletId": "stlmag",
-          "provisional": true,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://wbkr.com/karate-kid-musical-stages-st-louis/",
-          "host": "wbkr.com",
-          "outletId": "wbkr",
-          "provisional": true,
-          "ok": true,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "burlesque-west-end-2026",
-      "title": "Burlesque",
-      "openingDate": "2025-07-22",
-      "status": "open",
-      "category": "off-west-end",
-      "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-BURLESQUE-THE-MUSICAL-Opens-in-London-20250722"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-review-explosive-energy-and-powerhouse-vocals-ctrrm7cbk",
-        "https://www.theguardian.com/stage/2025/jul/22/burlesque-the-musical-review-christina-aguilera",
-        "https://www.whatsonstage.com/news/burlesque-review-west-end-musical-is-a-frivolous-and-flimsy-frolic_1687704/",
-        "https://www.dailymail.co.uk/tvshowbiz/article-14930715/PATRICK-MARMION-reviews-Burlesque-Savoy-Theatre-laborious-theatrical-rehash-lamentable-film.html",
-        "https://www.cityam.com/burlesque-musical-review-christina-aquilera-show-is-quality-trash/",
-        "https://www.westendbestfriend.co.uk/news/review-burlesque-the-musical-savoy-theatre",
-        "https://www.londontheatre.co.uk/reviews/burlesque-the-musical-review-savoy-theatre",
-        "https://www.standard.co.uk/culture/theatre/burlesque-savoy-theatre-review-b1239600.html",
-        "https://www.timeout.com/london/news/review-burlesque-the-musical-savoy-theatre-072325",
-        "https://www.thestage.co.uk/reviews/burlesque-review-savoy-theatre-london-christina-aguilera",
-        "https://theatreandtonic.co.uk/blog/burlesque-the-musical-savoy-theatre-review"
-      ],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 16,
-      "missing": [
-        {
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-review-explosive-energy-and-powerhouse-vocals-ctrrm7cbk",
-          "host": "thetimes.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2025/jul/22/burlesque-the-musical-review-christina-aguilera",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian"
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/burlesque-review-west-end-musical-is-a-frivolous-and-flimsy-frolic_1687704/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage"
-        },
-        {
-          "url": "https://www.dailymail.co.uk/tvshowbiz/article-14930715/PATRICK-MARMION-reviews-Burlesque-Savoy-Theatre-laborious-theatrical-rehash-lamentable-film.html",
-          "host": "dailymail.co.uk",
-          "knownOutletId": "daily-mail"
-        },
-        {
-          "url": "https://www.cityam.com/burlesque-musical-review-christina-aquilera-show-is-quality-trash/",
-          "host": "cityam.com",
-          "knownOutletId": "city-am"
-        },
-        {
-          "url": "https://www.westendbestfriend.co.uk/news/review-burlesque-the-musical-savoy-theatre",
-          "host": "westendbestfriend.co.uk",
-          "knownOutletId": "west-end-best-friend"
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/burlesque-the-musical-review-savoy-theatre",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://www.standard.co.uk/culture/theatre/burlesque-savoy-theatre-review-b1239600.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard"
-        },
-        {
-          "url": "https://www.timeout.com/london/news/review-burlesque-the-musical-savoy-theatre-072325",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london"
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/burlesque-review-savoy-theatre-london-christina-aguilera",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage"
-        },
-        {
-          "url": "https://theatreandtonic.co.uk/blog/burlesque-the-musical-savoy-theatre-review",
-          "host": "theatreandtonic.co.uk",
-          "knownOutletId": null
-        }
-      ],
-      "dirOnly": [],
-      "flaggedMisses": [],
-      "ingestResults": [
-        {
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-review-explosive-energy-and-powerhouse-vocals-ctrrm7cbk",
-          "host": "thetimes.com",
-          "outletId": "thetimes",
-          "provisional": true,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2025/jul/22/burlesque-the-musical-review-christina-aguilera",
-          "host": "theguardian.com",
-          "outletId": "guardian",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/burlesque-review-west-end-musical-is-a-frivolous-and-flimsy-frolic_1687704/",
-          "host": "whatsonstage.com",
-          "outletId": "whatsonstage",
-          "provisional": false,
-          "ok": false,
-          "reason": "spawnSync node ETIMEDOUT"
-        },
-        {
-          "url": "https://www.dailymail.co.uk/tvshowbiz/article-14930715/PATRICK-MARMION-reviews-Burlesque-Savoy-Theatre-laborious-theatrical-rehash-lamentable-film.html",
-          "host": "dailymail.co.uk",
-          "outletId": "daily-mail",
-          "provisional": false,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=burlesque-west-end-2026 --url=https://"
-        },
-        {
-          "url": "https://www.cityam.com/burlesque-musical-review-christina-aquilera-show-is-quality-trash/",
-          "host": "cityam.com",
-          "outletId": "city-am",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://www.westendbestfriend.co.uk/news/review-burlesque-the-musical-savoy-theatre",
-          "host": "westendbestfriend.co.uk",
-          "outletId": "west-end-best-friend"
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/burlesque-the-musical-review-savoy-theatre",
-          "host": "londontheatre.co.uk",
-          "outletId": "co"
-        },
-        {
-          "url": "https://www.standard.co.uk/culture/theatre/burlesque-savoy-theatre-review-b1239600.html",
-          "host": "standard.co.uk",
-          "outletId": "standard"
-        },
-        {
-          "url": "https://www.timeout.com/london/news/review-burlesque-the-musical-savoy-theatre-072325",
-          "host": "timeout.com",
-          "outletId": "timeout-london"
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/burlesque-review-savoy-theatre-london-christina-aguilera",
-          "host": "thestage.co.uk",
-          "outletId": "thestage"
-        },
-        {
-          "url": "https://theatreandtonic.co.uk/blog/burlesque-the-musical-savoy-theatre-review",
-          "host": "theatreandtonic.co.uk",
-          "outletId": "co"
-        }
-      ]
-    },
-    {
-      "showId": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026",
-      "title": "Here There Are Blueberries (Theatre Royal Stratford East)",
-      "openingDate": "2026-02-11",
-      "status": "closed",
-      "category": "off-west-end",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.standard.co.uk/culture/theatre/here-there-are-blueberries-stratford-east-review-b1270724.html",
-        "https://www.theguardian.com/stage/2026/feb/13/here-there-are-blueberries-review-theatre-royal-stratford-east-london",
-        "https://www.timeout.com/london/theatre/here-there-are-blueberries-review",
-        "https://www.thetimes.com/culture/theatre-dance/article/here-there-are-blueberries-review-stratford-london-0zrdrzlj3",
-        "https://www.allthatdazzles.co.uk/post/review-here-there-are-blueberries-stratford-east"
-      ],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 12,
-      "missing": [
-        {
-          "url": "https://www.standard.co.uk/culture/theatre/here-there-are-blueberries-stratford-east-review-b1270724.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2026/feb/13/here-there-are-blueberries-review-theatre-royal-stratford-east-london",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian"
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/here-there-are-blueberries-review",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london"
-        },
-        {
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/here-there-are-blueberries-review-stratford-london-0zrdrzlj3",
-          "host": "thetimes.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://www.allthatdazzles.co.uk/post/review-here-there-are-blueberries-stratford-east",
-          "host": "allthatdazzles.co.uk",
-          "knownOutletId": "all-that-dazzles-uk"
-        }
-      ],
-      "dirOnly": [],
-      "flaggedMisses": [],
-      "ingestResults": [
-        {
-          "url": "https://www.standard.co.uk/culture/theatre/here-there-are-blueberries-stratford-east-review-b1270724.html",
-          "host": "standard.co.uk",
-          "outletId": "standard",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2026/feb/13/here-there-are-blueberries-review-theatre-royal-stratford-east-london",
-          "host": "theguardian.com",
-          "outletId": "guardian",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/here-there-are-blueberries-review",
-          "host": "timeout.com",
-          "outletId": "timeout-london",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/here-there-are-blueberries-review-stratford-london-0zrdrzlj3",
-          "host": "thetimes.com",
-          "outletId": "thetimes",
-          "provisional": true,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.allthatdazzles.co.uk/post/review-here-there-are-blueberries-stratford-east",
-          "host": "allthatdazzles.co.uk",
-          "outletId": "all-that-dazzles-uk",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "i-was-a-teenage-shedevil-west-end-2026",
-      "title": "I Was a Teenage She-Devil",
-      "openingDate": "2026-04-02",
-      "status": "closed",
-      "category": "off-west-end",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [],
-      "dirOnly": [],
-      "flaggedMisses": []
-    },
-    {
-      "showId": "dear-england-new-wimbledon-theatre-west-end-2026",
-      "title": "Dear England (New Wimbledon Theatre)",
-      "openingDate": "2026-02-24",
-      "status": "announced",
-      "category": "west-end",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.telegraph.co.uk/theatre/what-to-see/the-ladies-football-club-sheffield-crucible-review/",
-        "https://www.allthatdazzles.co.uk/post/review-dear-england-new-wimbledon-theatre---uk-tour",
-        "https://www.londontheatre.co.uk/reviews/dear-england-review-national-theatre",
-        "https://www.londontheatre.co.uk/reviews/dear-england-review-olivier-theatre",
-        "https://www.standard.co.uk/culture/theatre/dear-england-national-theatre-review-james-graham-gareth-southgate-harry-kane-b1089139.html",
-        "https://www.standard.co.uk/culture/theatre/dear-england-national-theatre-olivier-review-b1217522.html",
-        "https://www.theguardian.com/stage/2023/jun/20/dear-england-review-touching-funny-retelling-of-gareth-southgates-quiet-revolution",
-        "https://www.timeout.com/london/theatre/dear-england-review",
-        "https://www.timeout.com/london/theatre/dear-england-review-2",
-        "https://www.telegraph.co.uk/theatre/what-to-see/dear-england-olivier-review-joseph-fiennes-gareth-southgate/",
-        "https://www.telegraph.co.uk/theatre/what-to-see/dear-england-2025-national-theatre-review-gareth-southgate/",
-        "https://www.whatsonstage.com/news/dear-england-review-the-revised-play-includes-the-2024-euros-and-gareth-southgates-retirement-and-still-hits-the-back-of-the-net_1669877/",
-        "https://theartsdesk.com/theatre/dear-england-national-theatre-review-filtering-national-narrative-through-sport",
-        "https://www.allthatdazzles.co.uk/post/review-dear-england-olivier-theatre",
-        "https://www.theguardian.com/stage/2025/mar/19/dear-england-review-reboot-james-graham-gareth-southgate-national-theatre",
-        "https://theartsdesk.com/theatre/dear-england-national-theatre-review-extra-time-stirring-soccer-classic",
-        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/dear-england-review-national-theatre-b2361490.html",
-        "https://www.thestage.co.uk/long-reviews/dear-england-review-olivier-theatre-national-theatre-london-joseph-fiennes-james-graham-rupert-goold-gareth-southgate"
-      ],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 2,
-      "missing": [
-        {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-ladies-football-club-sheffield-crucible-review/",
-          "host": "telegraph.co.uk",
-          "knownOutletId": "sunday-telegraph"
-        },
-        {
-          "url": "https://www.allthatdazzles.co.uk/post/review-dear-england-new-wimbledon-theatre---uk-tour",
-          "host": "allthatdazzles.co.uk",
-          "knownOutletId": "all-that-dazzles-uk"
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/dear-england-review-national-theatre",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/dear-england-review-olivier-theatre",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://www.standard.co.uk/culture/theatre/dear-england-national-theatre-review-james-graham-gareth-southgate-harry-kane-b1089139.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard"
-        },
-        {
-          "url": "https://www.standard.co.uk/culture/theatre/dear-england-national-theatre-olivier-review-b1217522.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2023/jun/20/dear-england-review-touching-funny-retelling-of-gareth-southgates-quiet-revolution",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian"
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/dear-england-review",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london"
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/dear-england-review-2",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london"
-        },
-        {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/dear-england-olivier-review-joseph-fiennes-gareth-southgate/",
-          "host": "telegraph.co.uk",
-          "knownOutletId": "sunday-telegraph"
-        },
-        {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/dear-england-2025-national-theatre-review-gareth-southgate/",
-          "host": "telegraph.co.uk",
-          "knownOutletId": "sunday-telegraph"
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/dear-england-review-the-revised-play-includes-the-2024-euros-and-gareth-southgates-retirement-and-still-hits-the-back-of-the-net_1669877/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage"
-        },
-        {
-          "url": "https://theartsdesk.com/theatre/dear-england-national-theatre-review-filtering-national-narrative-through-sport",
-          "host": "theartsdesk.com",
-          "knownOutletId": "artsdesk"
-        },
-        {
-          "url": "https://www.allthatdazzles.co.uk/post/review-dear-england-olivier-theatre",
-          "host": "allthatdazzles.co.uk",
-          "knownOutletId": "all-that-dazzles-uk"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2025/mar/19/dear-england-review-reboot-james-graham-gareth-southgate-national-theatre",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian"
-        },
-        {
-          "url": "https://theartsdesk.com/theatre/dear-england-national-theatre-review-extra-time-stirring-soccer-classic",
-          "host": "theartsdesk.com",
-          "knownOutletId": "artsdesk"
-        },
-        {
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/dear-england-review-national-theatre-b2361490.html",
-          "host": "independent.co.uk",
-          "knownOutletId": "independent"
-        },
-        {
-          "url": "https://www.thestage.co.uk/long-reviews/dear-england-review-olivier-theatre-national-theatre-london-joseph-fiennes-james-graham-rupert-goold-gareth-southgate",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage"
-        }
-      ],
-      "dirOnly": [],
-      "flaggedMisses": [],
-      "ingestResults": [
-        {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-ladies-football-club-sheffield-crucible-review/",
-          "host": "telegraph.co.uk",
-          "outletId": "sunday-telegraph",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.allthatdazzles.co.uk/post/review-dear-england-new-wimbledon-theatre---uk-tour",
-          "host": "allthatdazzles.co.uk",
-          "outletId": "all-that-dazzles-uk",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/dear-england-review-national-theatre",
-          "host": "londontheatre.co.uk",
-          "outletId": "co",
-          "provisional": true,
-          "ok": false,
-          "reason": "spawnSync node ETIMEDOUT"
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/dear-england-review-olivier-theatre",
-          "host": "londontheatre.co.uk",
-          "outletId": "co",
-          "provisional": true,
-          "ok": false,
-          "reason": "spawnSync node ETIMEDOUT"
-        },
-        {
-          "url": "https://www.standard.co.uk/culture/theatre/dear-england-national-theatre-review-james-graham-gareth-southgate-harry-kane-b1089139.html",
-          "host": "standard.co.uk",
-          "outletId": "standard",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://www.standard.co.uk/culture/theatre/dear-england-national-theatre-olivier-review-b1217522.html",
-          "host": "standard.co.uk",
-          "outletId": "standard"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2023/jun/20/dear-england-review-touching-funny-retelling-of-gareth-southgates-quiet-revolution",
-          "host": "theguardian.com",
-          "outletId": "guardian"
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/dear-england-review",
-          "host": "timeout.com",
-          "outletId": "timeout-london"
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/dear-england-review-2",
-          "host": "timeout.com",
-          "outletId": "timeout-london"
-        },
-        {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/dear-england-olivier-review-joseph-fiennes-gareth-southgate/",
-          "host": "telegraph.co.uk",
-          "outletId": "sunday-telegraph"
-        },
-        {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/dear-england-2025-national-theatre-review-gareth-southgate/",
-          "host": "telegraph.co.uk",
-          "outletId": "sunday-telegraph"
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/dear-england-review-the-revised-play-includes-the-2024-euros-and-gareth-southgates-retirement-and-still-hits-the-back-of-the-net_1669877/",
-          "host": "whatsonstage.com",
-          "outletId": "whatsonstage"
-        },
-        {
-          "url": "https://theartsdesk.com/theatre/dear-england-national-theatre-review-filtering-national-narrative-through-sport",
-          "host": "theartsdesk.com",
-          "outletId": "artsdesk"
-        },
-        {
-          "url": "https://www.allthatdazzles.co.uk/post/review-dear-england-olivier-theatre",
-          "host": "allthatdazzles.co.uk",
-          "outletId": "all-that-dazzles-uk"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2025/mar/19/dear-england-review-reboot-james-graham-gareth-southgate-national-theatre",
-          "host": "theguardian.com",
-          "outletId": "guardian"
-        },
-        {
-          "url": "https://theartsdesk.com/theatre/dear-england-national-theatre-review-extra-time-stirring-soccer-classic",
-          "host": "theartsdesk.com",
-          "outletId": "artsdesk"
-        },
-        {
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/dear-england-review-national-theatre-b2361490.html",
-          "host": "independent.co.uk",
-          "outletId": "independent"
-        },
-        {
-          "url": "https://www.thestage.co.uk/long-reviews/dear-england-review-olivier-theatre-national-theatre-london-joseph-fiennes-james-graham-rupert-goold-gareth-southgate",
-          "host": "thestage.co.uk",
-          "outletId": "thestage"
-        }
-      ]
-    },
-    {
-      "showId": "the-music-man-off-broadway-2026",
-      "title": "The Music Man",
-      "openingDate": "2026-05-08",
+      "showId": "spring-dances-2026-off-broadway-2026",
+      "title": "Spring Dances 2026",
+      "openingDate": "2026-03-26",
       "status": "closed",
       "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/what-did-the-critics-have-to-say-about-the-music-man-on-broadway-starring-hugh-jackman-and-sutton-foster",
-        "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-Norm-Lewis-Jessie-Mueller-and-Rosie-ODonnell-in-THE-MUSIC-MAN-20190208",
-        "https://www.broadwayworld.com/article/Review-Roundup-Adam-Pascal-Leads-5-Star-Theatricals-THE-MUSIC-MAN-What-Did-the-Critics-Think-20191025"
-      ],
-      "aggregatorListedUrls": [
-        "https://nypost.com/2022/02/10/the-music-man-review-hugh-jackmans-revival-is-a-let-down/",
-        "https://www.amny.com/entertainment/broadway/review-the-music-man-is-an-epic-letdown/",
-        "https://broadwaynews.com/2022/02/10/review-a-mechanical-music-man-misses-its-heart/",
-        "https://www.thedailybeast.com/sutton-foster-is-the-real-star-of-the-music-man-on-broadway",
-        "https://deadline.com/2022/02/music-man-broadway-review-hugh-jackman-sutton-foster-1234928014/",
-        "https://didtheylikeit.com/shows/the-music-man/we-dont-want-what-the-music-man-is-selling/",
-        "https://www.hollywoodreporter.com/lifestyle/arts/hugh-jackman-and-sutton-foster-in-the-music-man-theater-review-1235091456/",
-        "https://www.nydailynews.com/entertainment/broadway/ny-broadway-music-man-hugh-jackman-20220211-w43rkaapvnamxdvej6gtdoxte4-story.html",
-        "https://www.vulture.com/2022/02/theater-review-hugh-jackman-in-the-music-man-on-broadway.html",
-        "https://www.newyorktheatreguide.com/reviews/the-music-man-broadway-review-hugh-jackman-sutton-foster",
-        "https://www.nytimes.com/2022/02/10/theater/the-music-man-review.html",
-        "https://www.slantmagazine.com/theater/the-music-man-review-hugh-jackman/",
-        "https://www.showbiz411.com/2022/02/10/review-hugh-jackman-sutton-foster-light-up-broadway-with-boffo-music-man-star-studded-premiere",
-        "https://observer.com/2022/02/the-music-man-hugh-jackman-dazzles-in-the-perfect-role/",
-        "https://www.theatrely.com/post/the-music-man-stirs-up-good-trouble-review",
-        "https://www.thewrap.com/the-music-man-broadway-review-hugh-jackman-leads-the-big-parade/",
-        "https://www.timeout.com/newyork/theater/music-man-broadway-revival-review-hugh-jackman-sutton-foster",
-        "https://www.washingtonpost.com/entertainment/theater_dance/trouble-ya-got-none-in-the-kennedy-centers-revival-of-the-music-man/2019/02/08/3a972218-2b56-11e9-b011-d8500644dc98_story.html",
-        "https://laexcites.com/2019/10/19/review-5-star-theatricals-the-music-man/",
-        "https://www.stageandcinema.com/2019/10/19/music-man-kavli/"
-      ],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [
-        {
-          "url": "https://nypost.com/2022/02/10/the-music-man-review-hugh-jackmans-revival-is-a-let-down/",
-          "host": "nypost.com",
-          "knownOutletId": "nypost"
-        },
-        {
-          "url": "https://www.amny.com/entertainment/broadway/review-the-music-man-is-an-epic-letdown/",
-          "host": "amny.com",
-          "knownOutletId": "amny"
-        },
-        {
-          "url": "https://broadwaynews.com/2022/02/10/review-a-mechanical-music-man-misses-its-heart/",
-          "host": "broadwaynews.com",
-          "knownOutletId": "broadwaynews"
-        },
-        {
-          "url": "https://www.thedailybeast.com/sutton-foster-is-the-real-star-of-the-music-man-on-broadway",
-          "host": "thedailybeast.com",
-          "knownOutletId": "dailybeast"
-        },
-        {
-          "url": "https://deadline.com/2022/02/music-man-broadway-review-hugh-jackman-sutton-foster-1234928014/",
-          "host": "deadline.com",
-          "knownOutletId": "deadline"
-        },
-        {
-          "url": "https://didtheylikeit.com/shows/the-music-man/we-dont-want-what-the-music-man-is-selling/",
-          "host": "didtheylikeit.com",
-          "knownOutletId": "dtli"
-        },
-        {
-          "url": "https://www.hollywoodreporter.com/lifestyle/arts/hugh-jackman-and-sutton-foster-in-the-music-man-theater-review-1235091456/",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter"
-        },
-        {
-          "url": "https://www.nydailynews.com/entertainment/broadway/ny-broadway-music-man-hugh-jackman-20220211-w43rkaapvnamxdvej6gtdoxte4-story.html",
-          "host": "nydailynews.com",
-          "knownOutletId": "nydailynews"
-        },
-        {
-          "url": "https://www.vulture.com/2022/02/theater-review-hugh-jackman-in-the-music-man-on-broadway.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/the-music-man-broadway-review-hugh-jackman-sutton-foster",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg"
-        },
-        {
-          "url": "https://www.nytimes.com/2022/02/10/theater/the-music-man-review.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes"
-        },
-        {
-          "url": "https://www.slantmagazine.com/theater/the-music-man-review-hugh-jackman/",
-          "host": "slantmagazine.com",
-          "knownOutletId": "slantmagazine"
-        },
-        {
-          "url": "https://www.showbiz411.com/2022/02/10/review-hugh-jackman-sutton-foster-light-up-broadway-with-boffo-music-man-star-studded-premiere",
-          "host": "showbiz411.com",
-          "knownOutletId": "showbiz411"
-        },
-        {
-          "url": "https://observer.com/2022/02/the-music-man-hugh-jackman-dazzles-in-the-perfect-role/",
-          "host": "observer.com",
-          "knownOutletId": "observer"
-        },
-        {
-          "url": "https://www.theatrely.com/post/the-music-man-stirs-up-good-trouble-review",
-          "host": "theatrely.com",
-          "knownOutletId": "theatrely"
-        },
-        {
-          "url": "https://www.thewrap.com/the-music-man-broadway-review-hugh-jackman-leads-the-big-parade/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap"
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/music-man-broadway-revival-review-hugh-jackman-sutton-foster",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london"
-        },
-        {
-          "url": "https://www.washingtonpost.com/entertainment/theater_dance/trouble-ya-got-none-in-the-kennedy-centers-revival-of-the-music-man/2019/02/08/3a972218-2b56-11e9-b011-d8500644dc98_story.html",
-          "host": "washingtonpost.com",
-          "knownOutletId": "washpost"
-        },
-        {
-          "url": "https://laexcites.com/2019/10/19/review-5-star-theatricals-the-music-man/",
-          "host": "laexcites.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://www.stageandcinema.com/2019/10/19/music-man-kavli/",
-          "host": "stageandcinema.com",
-          "knownOutletId": "stageandcinema"
-        }
-      ],
-      "dirOnly": [],
-      "flaggedMisses": [],
-      "ingestResults": [
-        {
-          "url": "https://nypost.com/2022/02/10/the-music-man-review-hugh-jackmans-revival-is-a-let-down/",
-          "host": "nypost.com",
-          "outletId": "nypost",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.amny.com/entertainment/broadway/review-the-music-man-is-an-epic-letdown/",
-          "host": "amny.com",
-          "outletId": "amny",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://broadwaynews.com/2022/02/10/review-a-mechanical-music-man-misses-its-heart/",
-          "host": "broadwaynews.com",
-          "outletId": "broadwaynews",
-          "provisional": false,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=the-music-man-off-broadway-2026 --url="
-        },
-        {
-          "url": "https://www.thedailybeast.com/sutton-foster-is-the-real-star-of-the-music-man-on-broadway",
-          "host": "thedailybeast.com",
-          "outletId": "dailybeast",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://deadline.com/2022/02/music-man-broadway-review-hugh-jackman-sutton-foster-1234928014/",
-          "host": "deadline.com",
-          "outletId": "deadline",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://didtheylikeit.com/shows/the-music-man/we-dont-want-what-the-music-man-is-selling/",
-          "host": "didtheylikeit.com",
-          "outletId": "dtli"
-        },
-        {
-          "url": "https://www.hollywoodreporter.com/lifestyle/arts/hugh-jackman-and-sutton-foster-in-the-music-man-theater-review-1235091456/",
-          "host": "hollywoodreporter.com",
-          "outletId": "hollywood-reporter"
-        },
-        {
-          "url": "https://www.nydailynews.com/entertainment/broadway/ny-broadway-music-man-hugh-jackman-20220211-w43rkaapvnamxdvej6gtdoxte4-story.html",
-          "host": "nydailynews.com",
-          "outletId": "nydailynews"
-        },
-        {
-          "url": "https://www.vulture.com/2022/02/theater-review-hugh-jackman-in-the-music-man-on-broadway.html",
-          "host": "vulture.com",
-          "outletId": "vulture"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/the-music-man-broadway-review-hugh-jackman-sutton-foster",
-          "host": "newyorktheatreguide.com",
-          "outletId": "nytg"
-        },
-        {
-          "url": "https://www.nytimes.com/2022/02/10/theater/the-music-man-review.html",
-          "host": "nytimes.com",
-          "outletId": "nytimes"
-        },
-        {
-          "url": "https://www.slantmagazine.com/theater/the-music-man-review-hugh-jackman/",
-          "host": "slantmagazine.com",
-          "outletId": "slantmagazine"
-        },
-        {
-          "url": "https://www.showbiz411.com/2022/02/10/review-hugh-jackman-sutton-foster-light-up-broadway-with-boffo-music-man-star-studded-premiere",
-          "host": "showbiz411.com",
-          "outletId": "showbiz411"
-        },
-        {
-          "url": "https://observer.com/2022/02/the-music-man-hugh-jackman-dazzles-in-the-perfect-role/",
-          "host": "observer.com",
-          "outletId": "observer"
-        },
-        {
-          "url": "https://www.theatrely.com/post/the-music-man-stirs-up-good-trouble-review",
-          "host": "theatrely.com",
-          "outletId": "theatrely"
-        },
-        {
-          "url": "https://www.thewrap.com/the-music-man-broadway-review-hugh-jackman-leads-the-big-parade/",
-          "host": "thewrap.com",
-          "outletId": "thewrap"
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/music-man-broadway-revival-review-hugh-jackman-sutton-foster",
-          "host": "timeout.com",
-          "outletId": "timeout-london"
-        },
-        {
-          "url": "https://www.washingtonpost.com/entertainment/theater_dance/trouble-ya-got-none-in-the-kennedy-centers-revival-of-the-music-man/2019/02/08/3a972218-2b56-11e9-b011-d8500644dc98_story.html",
-          "host": "washingtonpost.com",
-          "outletId": "washpost"
-        },
-        {
-          "url": "https://laexcites.com/2019/10/19/review-5-star-theatricals-the-music-man/",
-          "host": "laexcites.com",
-          "outletId": "laexcites"
-        },
-        {
-          "url": "https://www.stageandcinema.com/2019/10/19/music-man-kavli/",
-          "host": "stageandcinema.com",
-          "outletId": "stageandcinema"
-        }
-      ]
-    },
-    {
-      "showId": "alice-in-wonderland-west-end-2026",
-      "title": "Alice in Wonderland",
-      "openingDate": "2026-03-27",
-      "status": "closed",
-      "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [],
       "dirFiles": 0,
@@ -1539,409 +1975,19 @@
       "flaggedMisses": []
     },
     {
-      "showId": "a-life-in-four-seasons-west-end-2026",
-      "title": "A Life in Four Seasons",
-      "openingDate": "2026-06-11",
-      "status": "upcoming",
-      "category": "west-end",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [],
-      "dirOnly": [],
-      "flaggedMisses": []
-    },
-    {
-      "showId": "equus-west-end-2026",
-      "title": "Equus",
-      "openingDate": "2026-05-18",
-      "status": "open",
-      "category": "off-west-end",
-      "aggregatorArticles": [
-        "https://playbill.com/article/read-reviews-for-london-revival-of-equus"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.standard.co.uk/go/london/theatre/equus-review-west-end-trafalgar-studios-a4190751.html",
-        "https://www.telegraph.co.uk/theatre/what-to-see/equus-trafalgar-studios-review-saddle-splendid-revival/",
-        "https://www.theupcoming.co.uk/2019/07/16/equus-at-trafalgar-studios-theatre-review/",
-        "https://www.standard.co.uk/culture/theatre/equus-review-potent-and-clever-revival-makes-the-play-seem-better-than-it-is-a4190751.html",
-        "https://www.timeout.com/london/theatre/equus-review",
-        "https://theartsdesk.com/theatre/equus-trafalgar-studios-review-passionate-intensity",
-        "https://www.thestage.co.uk/reviews/60834",
-        "https://www.theguardian.com/stage/2019/feb/25/equus-review-peter-shaffer-horse-blinding-theatre-royal-stratford-east-london-ned-bennett"
-      ],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 14,
-      "missing": [
-        {
-          "url": "https://www.standard.co.uk/go/london/theatre/equus-review-west-end-trafalgar-studios-a4190751.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard"
-        },
-        {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/equus-trafalgar-studios-review-saddle-splendid-revival/",
-          "host": "telegraph.co.uk",
-          "knownOutletId": "sunday-telegraph"
-        },
-        {
-          "url": "https://www.theupcoming.co.uk/2019/07/16/equus-at-trafalgar-studios-theatre-review/",
-          "host": "theupcoming.co.uk",
-          "knownOutletId": "theupcoming"
-        },
-        {
-          "url": "https://www.standard.co.uk/culture/theatre/equus-review-potent-and-clever-revival-makes-the-play-seem-better-than-it-is-a4190751.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard"
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/equus-review",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london"
-        },
-        {
-          "url": "https://theartsdesk.com/theatre/equus-trafalgar-studios-review-passionate-intensity",
-          "host": "theartsdesk.com",
-          "knownOutletId": "artsdesk"
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/60834",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2019/feb/25/equus-review-peter-shaffer-horse-blinding-theatre-royal-stratford-east-london-ned-bennett",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian"
-        }
-      ],
-      "dirOnly": [],
-      "flaggedMisses": [],
-      "ingestResults": [
-        {
-          "url": "https://www.standard.co.uk/go/london/theatre/equus-review-west-end-trafalgar-studios-a4190751.html",
-          "host": "standard.co.uk",
-          "outletId": "standard",
-          "provisional": false,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=equus-west-end-2026 --url=https://www."
-        },
-        {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/equus-trafalgar-studios-review-saddle-splendid-revival/",
-          "host": "telegraph.co.uk",
-          "outletId": "sunday-telegraph",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.theupcoming.co.uk/2019/07/16/equus-at-trafalgar-studios-theatre-review/",
-          "host": "theupcoming.co.uk",
-          "outletId": "theupcoming",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.standard.co.uk/culture/theatre/equus-review-potent-and-clever-revival-makes-the-play-seem-better-than-it-is-a4190751.html",
-          "host": "standard.co.uk",
-          "outletId": "standard",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/equus-review",
-          "host": "timeout.com",
-          "outletId": "timeout-london",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://theartsdesk.com/theatre/equus-trafalgar-studios-review-passionate-intensity",
-          "host": "theartsdesk.com",
-          "outletId": "artsdesk"
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/60834",
-          "host": "thestage.co.uk",
-          "outletId": "thestage"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2019/feb/25/equus-review-peter-shaffer-horse-blinding-theatre-royal-stratford-east-london-ned-bennett",
-          "host": "theguardian.com",
-          "outletId": "guardian"
-        }
-      ]
-    },
-    {
-      "showId": "sexual-misconduct-of-the-middle-classes-off-broadway-2026",
-      "title": "Sexual Misconduct of the Middle Classes",
-      "openingDate": "2026-03-17",
+      "showId": "transcendency-rising-short-plays-about-defying-limitations-off-broadway-2026",
+      "title": "Transcendency Rising: Short Plays About Defying Limitations",
+      "openingDate": "2026-03-21",
       "status": "closed",
       "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/what-are-reviews-saying-about-sexual-misconduct-of-the-middle-classes-starring-hugh-jackman-and-ella-beatty",
-        "https://www.broadwayworld.com/article/Review-Roundup-Ella-Beatty-and-Hugh-Jackman-Star-In-SEXUAL-MISCONDUCT-OF-THE-MIDDLE-CLASSES-20250508"
-      ],
-      "aggregatorListedUrls": [
-        "https://cititour.com/NYC_News/Review-Hugh-Jackman-Seduces-Us-Into-Sexual-Misconduct-of-the-Middle-Classes/9466",
-        "https://culturesauce.com/2025/05/08/hugh-jackman-sexual-misconduct-of-the-middle-classes-off-broadway-review/",
-        "https://nystagereview.com/2025/05/08/sexual-misconduct-of-the-middle-classes-star-power-up-close/",
-        "https://nystagereview.com/2025/05/08/sexual-misconduct-of-the-middle-classes-lets-hear-it-from-the-boy/",
-        "https://newyorktheater.me/2025/05/08/sexual-misconduct-of-the-middle-classes-review-hugh-jackman-launches-his-company/",
-        "https://www.newyorktheatreguide.com/reviews/sexual-misconduct-of-the-middle-classes-off-broadway-review-hugh-jackman-ella-beatty",
-        "https://www.wsj.com/articles/sexual-misconduct-of-the-middle-classes-review-hugh-jackmans-flawed-human-51031bbc",
-        "https://www.theatermania.com/news/review-sexual-misconduct-of-the-middle-classes-hugh-jackmans-metoo-affair_1780970/",
-        "https://twi-ny.com/2025/05/12/sexual-misconduct-of-the-middle-classes-audible-minetta-lane-theatre/",
-        "http://pagesonstages.com/2025/06/15/sexual-misconduct-middle-classes/"
-      ],
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
       "dirFiles": 0,
       "dirClean": 0,
-      "inReviewsJson": 6,
-      "missing": [
-        {
-          "url": "https://cititour.com/NYC_News/Review-Hugh-Jackman-Seduces-Us-Into-Sexual-Misconduct-of-the-Middle-Classes/9466",
-          "host": "cititour.com",
-          "knownOutletId": "cititour"
-        },
-        {
-          "url": "https://culturesauce.com/2025/05/08/hugh-jackman-sexual-misconduct-of-the-middle-classes-off-broadway-review/",
-          "host": "culturesauce.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://nystagereview.com/2025/05/08/sexual-misconduct-of-the-middle-classes-star-power-up-close/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr"
-        },
-        {
-          "url": "https://nystagereview.com/2025/05/08/sexual-misconduct-of-the-middle-classes-lets-hear-it-from-the-boy/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr"
-        },
-        {
-          "url": "https://newyorktheater.me/2025/05/08/sexual-misconduct-of-the-middle-classes-review-hugh-jackman-launches-his-company/",
-          "host": "newyorktheater.me",
-          "knownOutletId": "nyt-theater"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/sexual-misconduct-of-the-middle-classes-off-broadway-review-hugh-jackman-ella-beatty",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg"
-        },
-        {
-          "url": "https://www.wsj.com/articles/sexual-misconduct-of-the-middle-classes-review-hugh-jackmans-flawed-human-51031bbc",
-          "host": "wsj.com",
-          "knownOutletId": "wsj"
-        },
-        {
-          "url": "https://www.theatermania.com/news/review-sexual-misconduct-of-the-middle-classes-hugh-jackmans-metoo-affair_1780970/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania"
-        },
-        {
-          "url": "https://twi-ny.com/2025/05/12/sexual-misconduct-of-the-middle-classes-audible-minetta-lane-theatre/",
-          "host": "twi-ny.com",
-          "knownOutletId": "this-week-in-new-york"
-        },
-        {
-          "url": "http://pagesonstages.com/2025/06/15/sexual-misconduct-middle-classes/",
-          "host": "pagesonstages.com",
-          "knownOutletId": "pages-on-stages"
-        }
-      ],
+      "inReviewsJson": 0,
+      "missing": [],
       "dirOnly": [],
-      "flaggedMisses": [],
-      "ingestResults": [
-        {
-          "url": "https://cititour.com/NYC_News/Review-Hugh-Jackman-Seduces-Us-Into-Sexual-Misconduct-of-the-Middle-Classes/9466",
-          "host": "cititour.com",
-          "outletId": "cititour",
-          "provisional": false,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=sexual-misconduct-of-the-middle-classe"
-        },
-        {
-          "url": "https://culturesauce.com/2025/05/08/hugh-jackman-sexual-misconduct-of-the-middle-classes-off-broadway-review/",
-          "host": "culturesauce.com",
-          "outletId": "culturesauce",
-          "provisional": true,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=sexual-misconduct-of-the-middle-classe"
-        },
-        {
-          "url": "https://nystagereview.com/2025/05/08/sexual-misconduct-of-the-middle-classes-star-power-up-close/",
-          "host": "nystagereview.com",
-          "outletId": "nysr",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://nystagereview.com/2025/05/08/sexual-misconduct-of-the-middle-classes-lets-hear-it-from-the-boy/",
-          "host": "nystagereview.com",
-          "outletId": "nysr",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://newyorktheater.me/2025/05/08/sexual-misconduct-of-the-middle-classes-review-hugh-jackman-launches-his-company/",
-          "host": "newyorktheater.me",
-          "outletId": "nyt-theater",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/sexual-misconduct-of-the-middle-classes-off-broadway-review-hugh-jackman-ella-beatty",
-          "host": "newyorktheatreguide.com",
-          "outletId": "nytg"
-        },
-        {
-          "url": "https://www.wsj.com/articles/sexual-misconduct-of-the-middle-classes-review-hugh-jackmans-flawed-human-51031bbc",
-          "host": "wsj.com",
-          "outletId": "wsj"
-        },
-        {
-          "url": "https://www.theatermania.com/news/review-sexual-misconduct-of-the-middle-classes-hugh-jackmans-metoo-affair_1780970/",
-          "host": "theatermania.com",
-          "outletId": "theatermania"
-        },
-        {
-          "url": "https://twi-ny.com/2025/05/12/sexual-misconduct-of-the-middle-classes-audible-minetta-lane-theatre/",
-          "host": "twi-ny.com",
-          "outletId": "this-week-in-new-york"
-        },
-        {
-          "url": "http://pagesonstages.com/2025/06/15/sexual-misconduct-middle-classes/",
-          "host": "pagesonstages.com",
-          "outletId": "pages-on-stages"
-        }
-      ]
-    },
-    {
-      "showId": "the-hunger-games-on-stage-west-end-2025",
-      "title": "The Hunger Games On Stage",
-      "openingDate": "2025-11-28",
-      "status": "open",
-      "category": "off-west-end",
-      "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-What-Di-the-Critics-Think-of-THE-HUNGER-GAMES-ON-STAGE-20251113"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.whatsonstage.com/news/the-hunger-games-on-stage-review-flickers-of-brilliance-that-dont-catch-fire_1702082/",
-        "https://www.telegraph.co.uk/theatre/what-to-see/hunger-games-on-stage-west-end/",
-        "https://www.theguardian.com/stage/2025/nov/13/the-hunger-games-on-stage-review-thundering-fight-to-the-death-in-a-dazzling-dystopia",
-        "https://www.thetimes.com/culture/theatre-dance/article/hunger-games-on-stage-review-zczllb0bj",
-        "https://www.thestage.co.uk/reviews/the-hunger-games-on-stage-review-troubadour-canary-wharf-theatre-london",
-        "https://www.timeout.com/london/news/review-the-hunger-games-on-stage-111225",
-        "https://inews.co.uk/culture/arts/hunger-games-stage-show-everything-wrong-4025669"
-      ],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 24,
-      "missing": [
-        {
-          "url": "https://www.whatsonstage.com/news/the-hunger-games-on-stage-review-flickers-of-brilliance-that-dont-catch-fire_1702082/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage"
-        },
-        {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/hunger-games-on-stage-west-end/",
-          "host": "telegraph.co.uk",
-          "knownOutletId": "sunday-telegraph"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2025/nov/13/the-hunger-games-on-stage-review-thundering-fight-to-the-death-in-a-dazzling-dystopia",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian"
-        },
-        {
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/hunger-games-on-stage-review-zczllb0bj",
-          "host": "thetimes.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/the-hunger-games-on-stage-review-troubadour-canary-wharf-theatre-london",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage"
-        },
-        {
-          "url": "https://www.timeout.com/london/news/review-the-hunger-games-on-stage-111225",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london"
-        },
-        {
-          "url": "https://inews.co.uk/culture/arts/hunger-games-stage-show-everything-wrong-4025669",
-          "host": "inews.co.uk",
-          "knownOutletId": "i-paper"
-        }
-      ],
-      "dirOnly": [],
-      "flaggedMisses": [],
-      "ingestResults": [
-        {
-          "url": "https://www.whatsonstage.com/news/the-hunger-games-on-stage-review-flickers-of-brilliance-that-dont-catch-fire_1702082/",
-          "host": "whatsonstage.com",
-          "outletId": "whatsonstage",
-          "provisional": false,
-          "ok": false,
-          "reason": "spawnSync node ETIMEDOUT"
-        },
-        {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/hunger-games-on-stage-west-end/",
-          "host": "telegraph.co.uk",
-          "outletId": "sunday-telegraph",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2025/nov/13/the-hunger-games-on-stage-review-thundering-fight-to-the-death-in-a-dazzling-dystopia",
-          "host": "theguardian.com",
-          "outletId": "guardian",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/hunger-games-on-stage-review-zczllb0bj",
-          "host": "thetimes.com",
-          "outletId": "thetimes",
-          "provisional": true,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/the-hunger-games-on-stage-review-troubadour-canary-wharf-theatre-london",
-          "host": "thestage.co.uk",
-          "outletId": "thestage",
-          "provisional": false,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=the-hunger-games-on-stage-west-end-202"
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://www.timeout.com/london/news/review-the-hunger-games-on-stage-111225",
-          "host": "timeout.com",
-          "outletId": "timeout-london"
-        },
-        {
-          "url": "https://inews.co.uk/culture/arts/hunger-games-stage-show-everything-wrong-4025669",
-          "host": "inews.co.uk",
-          "outletId": "i-paper"
-        }
-      ]
+      "flaggedMisses": []
     }
   ]
 }
