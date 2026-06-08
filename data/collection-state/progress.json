@@ -225,7 +225,15 @@
     "fat-ham-2023/timeout--adam-feldman.json",
     "fat-ham-2023/timeout--raven-snook.json",
     "life-of-pi-2023/wsj--charles-isherwood.json",
-    "sweeney-todd-2023/broadway-and-me--janice-c-simpson.json"
+    "sweeney-todd-2023/broadway-and-me--janice-c-simpson.json",
+    "bad-cinderella-2023/wsj--charles-isherwood.json",
+    "bad-cinderella-2023/bloomberg--chris-rovzar.json",
+    "bob-fosses-dancin-2023/wsj--charles-isherwood.json",
+    "pictures-from-home-2023/newyorker--conde-nast.json",
+    "pictures-from-home-2023/newyorker--helen-shaw.json",
+    "pictures-from-home-2023/broadway-and-me--janice-c-simpson.json",
+    "between-riverside-and-crazy-2022/wsj--charles-isherwood.json",
+    "between-riverside-and-crazy-2022/stagebuddy--elyse-trevers.json"
   ],
   "failed": [
     "a-woman-among-women-off-broadway-2026/playbill--unknown.json",
@@ -471,7 +479,9 @@
     "the-whos-tommy-2024/broadwaynews--brittani-samuel.json",
     "here-lies-love-2023/aaartsalliance--rohan-zhou-lee.json",
     "prima-facie-2023/newyorker--conde-nast.json",
-    "sweeney-todd-2023/nbcnews--variety-referenced-by-nbc.json"
+    "sweeney-todd-2023/nbcnews--variety-referenced-by-nbc.json",
+    "a-dolls-house-2023/broadway-and-me--janice-c-simpson.json",
+    "between-riverside-and-crazy-2022/guardian--jesse-dorris.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -580,7 +590,8 @@
       "summer-1976-2023/ew--dalton-ross.json",
       "fat-ham-2023/timeout--adam-feldman.json",
       "fat-ham-2023/timeout--raven-snook.json",
-      "sweeney-todd-2023/broadway-and-me--janice-c-simpson.json"
+      "sweeney-todd-2023/broadway-and-me--janice-c-simpson.json",
+      "between-riverside-and-crazy-2022/stagebuddy--elyse-trevers.json"
     ],
     "amp": [],
     "browserbase": [
@@ -602,7 +613,11 @@
       "data/review-texts/the-thanksgiving-play-2023/wsj--charles-isherwood.json",
       "the-thanksgiving-play-2023/wsj--charles-isherwood.json",
       "data/review-texts/life-of-pi-2023/wsj--charles-isherwood.json",
-      "life-of-pi-2023/wsj--charles-isherwood.json"
+      "life-of-pi-2023/wsj--charles-isherwood.json",
+      "data/review-texts/bad-cinderella-2023/wsj--charles-isherwood.json",
+      "bad-cinderella-2023/wsj--charles-isherwood.json",
+      "data/review-texts/bob-fosses-dancin-2023/wsj--charles-isherwood.json",
+      "bob-fosses-dancin-2023/wsj--charles-isherwood.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -687,7 +702,8 @@
       "grey-house-2023/newyorker--conde-nast.json",
       "the-sign-in-sidney-brusteins-window-2023/cititour--brian-scott-lipton.json",
       "fat-ham-2023/newyorker--conde-nast.json",
-      "fat-ham-2023/newyorker--vinson-cunningham.json"
+      "fat-ham-2023/newyorker--vinson-cunningham.json",
+      "between-riverside-and-crazy-2022/wsj--charles-isherwood.json"
     ],
     "archiveToday": [
       "data/review-texts/fallen-angels-2026/talkinbroadway--unknown.json",
@@ -732,11 +748,15 @@
       "suffs-2024/times-uk--nancy-durrant.json",
       "water-for-elephants-2024/broadway-and-me--janice-c-simpson.json",
       "the-notebook-2024/broadway-and-me--janice-c-simpson.json",
-      "camelot-2023/broadway-and-me--janice-c-simpson.json"
+      "camelot-2023/broadway-and-me--janice-c-simpson.json",
+      "bad-cinderella-2023/bloomberg--chris-rovzar.json",
+      "pictures-from-home-2023/newyorker--conde-nast.json",
+      "pictures-from-home-2023/newyorker--helen-shaw.json",
+      "pictures-from-home-2023/broadway-and-me--janice-c-simpson.json"
     ]
   },
   "startTime": "2026-06-08T06:16:07.453Z",
-  "lastProcessed": "sweeney-todd-2023/nbcnews--variety-referenced-by-nbc.json",
+  "lastProcessed": "between-riverside-and-crazy-2022/guardian--jesse-dorris.json",
   "log": [
     {
       "t": "2026-06-08T06:27:00.120Z",
@@ -869,6 +889,28 @@
     },
     {
       "t": "2026-06-08T08:15:01.257Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-08T08:16:34.602Z",
+      "event": "bb-session",
+      "session": "882c26a1",
+      "url": "https://www.wsj.com/articles/bad-cinderella-review-a-not-so-refreshed-fairy-tale"
+    },
+    {
+      "t": "2026-06-08T08:16:35.467Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-08T08:17:24.930Z",
+      "event": "bb-session",
+      "session": "f80514b8",
+      "url": "https://www.wsj.com/articles/bob-fosses-dancin-review-a-faded-razzle-dazzle-revu"
+    },
+    {
+      "t": "2026-06-08T08:17:25.704Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
