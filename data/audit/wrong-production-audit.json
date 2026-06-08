@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-08T08:11:59.220Z",
+  "timestamp": "2026-06-08T08:45:12.164Z",
   "stats": {
-    "totalReviews": 38200,
+    "totalReviews": 38201,
     "alreadyFlagged": 16755,
     "dateGuardCatches": 106,
-    "directorMismatch": 841,
+    "directorMismatch": 842,
     "tvFilmSignals": 1050,
     "londonSignals": 617,
     "offBroadwaySignals": 460,
     "yearMismatch": 80,
-    "noPublishDate": 4019
+    "noPublishDate": 4020
   },
   "findings": [
     {
@@ -10291,6 +10291,20 @@
       "score": 87,
       "publishDate": "July 18th, 2022",
       "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-2022",
+      "file": "newyorker--alexandra-schwartz.json",
+      "score": null,
+      "publishDate": "August 8th, 2022",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/into-the-woods-08-22-22",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
