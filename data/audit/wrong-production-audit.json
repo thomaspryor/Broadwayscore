@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-08T09:44:15.840Z",
+  "timestamp": "2026-06-08T11:45:42.937Z",
   "stats": {
-    "totalReviews": 38200,
-    "alreadyFlagged": 16755,
+    "totalReviews": 38199,
+    "alreadyFlagged": 16756,
     "dateGuardCatches": 106,
     "directorMismatch": 842,
     "tvFilmSignals": 1050,
-    "londonSignals": 616,
+    "londonSignals": 615,
     "offBroadwaySignals": 460,
     "yearMismatch": 80,
-    "noPublishDate": 4016
+    "noPublishDate": 4013
   },
   "findings": [
     {
@@ -32289,20 +32289,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "inter-alia-west-end-2026",
-      "file": "lbc--johnny-jenkins.json",
-      "score": 91,
-      "publishDate": "2026-04-08",
-      "url": "https://www.lbc.co.uk/article/inter-alia-review-best-plays-ever-seen-5HjdXRZ_2/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
