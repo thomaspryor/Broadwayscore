@@ -292,7 +292,12 @@ function cleanResponse(response) {
   cleaned = cleaned.replace(/^(Quote|Excerpt|Pull quote|Sentence):\s*/i, '');
 
   // Strip trailing attribution like "— Critic Name" or "- Outlet"
-  cleaned = cleaned.replace(/\s*[\u2014\u2013\-]\s*[A-Z][a-z].*$/, '');
+  // REQUIRE whitespace before the dash so hyphenated compounds/names aren't cut:
+  // "Toni-Leslie James", "Japanese-Americans", "Night-Time", "twice-Pulitzered"
+  // have NO space before the hyphen, so they survive. Real attribution
+  // (" \u2014 Ben Brantley", " - Variety") always has a leading space. War Horse
+  // 2026-06-07: the old `\s*[-\u2013\u2014]\s*[A-Z][a-z]` cut 100+ quotes mid-word.
+  cleaned = cleaned.replace(/\s+(?:[\u2014\u2013]\s*|-\s+)[A-Z][a-z].*$/, '');
 
   return cleaned || null;
 }

@@ -293,8 +293,10 @@ function extractReviewsFromRoundup(html, showId) {
       const outlet = trailingOutlet[1].trim();
       // Only accept if it matches a known outlet name
       if (!looksLikeOutlet(outlet)) return;
-      // Strip the trailing " - Outlet" from the excerpt
-      const excerpt = text.replace(/\s*[-\u2013\u2014]\s*[A-Z][A-Za-z\s.&']{2,50}\s*$/, '').trim();
+      // Strip the trailing " - Outlet" from the excerpt. Require whitespace
+      // before the dash so hyphenated compounds (Night-Time, Toni-Leslie) at the
+      // tail aren't cut \u2014 attribution always has a leading space.
+      const excerpt = text.replace(/\s+(?:[\u2013\u2014]\s*|-\s+)[A-Z][A-Za-z\s.&']{2,50}\s*$/, '').trim();
       // Clean leading/trailing quotes
       const cleanExcerpt = excerpt.replace(/^["\u201c\u201d]+/, '').replace(/["\u201c\u201d]+$/, '').trim();
       if (cleanExcerpt.length > 30) {
