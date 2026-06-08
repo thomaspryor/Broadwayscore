@@ -601,7 +601,17 @@
     "frankie-and-johnny-in-the-clair-de-lune-2019/gotham-playgoer--robert-sholiton.json",
     "frankie-and-johnny-in-the-clair-de-lune-2019/theatres-leiter-side--samuel-l-leiter.json",
     "frankie-and-johnny-in-the-clair-de-lune-2019/theater-news-online--jeremy-gerard.json",
-    "frankie-and-johnny-in-the-clair-de-lune-2019/wsj--terry-teachout.json"
+    "frankie-and-johnny-in-the-clair-de-lune-2019/wsj--terry-teachout.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "a-woman-among-women-off-broadway-2026/playbill--unknown.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
+    "small-off-broadway-2026/guardian--arifa-akbar.json",
+    "small-off-broadway-2026/pages-on-stages--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -755,7 +765,11 @@
       "data/review-texts/bad-cinderella-2023/wsj--charles-isherwood.json",
       "bad-cinderella-2023/wsj--charles-isherwood.json",
       "data/review-texts/bob-fosses-dancin-2023/wsj--charles-isherwood.json",
-      "bob-fosses-dancin-2023/wsj--charles-isherwood.json"
+      "bob-fosses-dancin-2023/wsj--charles-isherwood.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -965,7 +979,7 @@
     ]
   },
   "startTime": "2026-06-08T06:16:07.453Z",
-  "lastProcessed": "frankie-and-johnny-in-the-clair-de-lune-2019/wsj--terry-teachout.json",
+  "lastProcessed": "small-off-broadway-2026/pages-on-stages--unknown.json",
   "log": [
     {
       "t": "2026-06-08T06:27:00.120Z",
@@ -1122,6 +1136,50 @@
       "t": "2026-06-08T08:17:25.704Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-08T12:48:32.872Z",
+      "event": "bb-session",
+      "session": "4d0cbbe3",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-08T12:48:33.521Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-08T12:48:44.990Z",
+      "event": "bb-session",
+      "session": "9f4692c7",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-08T12:48:45.512Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-08T12:49:51.707Z",
+      "event": "bb-session",
+      "session": "44232196",
+      "url": "https://www.nytimes.com/2026/06/01/arts/andy-halliday-dead.html"
+    },
+    {
+      "t": "2026-06-08T12:49:52.315Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-08T12:50:32.606Z",
+      "event": "bb-session",
+      "session": "020230a4",
+      "url": "https://www.nytimes.com/2026/05/31/theater/othello-review-wendell-pierce.html"
+    },
+    {
+      "t": "2026-06-08T12:50:33.151Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
