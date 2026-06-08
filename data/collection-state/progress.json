@@ -320,7 +320,9 @@
     "frankie-and-johnny-in-the-clair-de-lune-2019/wsj--terry-teachout.json",
     "frankie-and-johnny-in-the-clair-de-lune-2019/broadway-and-me--janice-c-simpson.json",
     "frankie-and-johnny-in-the-clair-de-lune-2019/thestage--naveen-kumar.json",
-    "ink-2019/wsj--terry-teachout.json"
+    "ink-2019/wsj--terry-teachout.json",
+    "all-my-sons-2019/theater-life--barry-gordin.json",
+    "gary-a-sequel-to-titus-andronicus-2019/thestage--nicole-serratore.json"
   ],
   "failed": [
     "a-woman-among-women-off-broadway-2026/playbill--unknown.json",
@@ -844,7 +846,15 @@
     "ink-2019/theater-news-online--joe-dziemianowicz.json",
     "ink-2019/ny1--ny1-roma-torre.json",
     "tootsie-2019/theatre-reviews-limited--joseph-verlezza.json",
-    "tootsie-2019/wsj--terry-teachout.json"
+    "tootsie-2019/wsj--terry-teachout.json",
+    "tootsie-2019/chicagotribune--chris-jones.json",
+    "tootsie-2019/washpost--peter-marks.json",
+    "tootsie-2019/theater-news-online--joe-dziemianowicz.json",
+    "tootsie-2019/thestage--nicole-serratore.json",
+    "all-my-sons-2019/ny1--roma-torre.json",
+    "gary-a-sequel-to-titus-andronicus-2019/washpost--peter-marks.json",
+    "gary-a-sequel-to-titus-andronicus-2019/wsj--edward-rothstein.json",
+    "gary-a-sequel-to-titus-andronicus-2019/medium--christian-lewis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -988,7 +998,9 @@
       "kpop-2022/broadway-and-me--janice-c-simpson.json",
       "pass-over-2021/broadway-and-me--janice-c-simpson.json",
       "frankie-and-johnny-in-the-clair-de-lune-2019/broadway-and-me--janice-c-simpson.json",
-      "frankie-and-johnny-in-the-clair-de-lune-2019/thestage--naveen-kumar.json"
+      "frankie-and-johnny-in-the-clair-de-lune-2019/thestage--naveen-kumar.json",
+      "all-my-sons-2019/theater-life--barry-gordin.json",
+      "gary-a-sequel-to-titus-andronicus-2019/thestage--nicole-serratore.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1210,7 +1222,11 @@
       "data/review-texts/sea-wall-a-life-2019/talkinbroadway--matthew-murray.json",
       "data/review-texts/frankie-and-johnny-in-the-clair-de-lune-2019/vulture--jesse-green.json",
       "data/review-texts/frankie-and-johnny-in-the-clair-de-lune-2019/theatres-leiter-side--samuel-l-leiter.json",
-      "data/review-texts/tootsie-2019/wsj--terry-teachout.json"
+      "data/review-texts/tootsie-2019/wsj--terry-teachout.json",
+      "data/review-texts/tootsie-2019/chicagotribune--chris-jones.json",
+      "data/review-texts/tootsie-2019/washpost--peter-marks.json",
+      "data/review-texts/gary-a-sequel-to-titus-andronicus-2019/washpost--peter-marks.json",
+      "data/review-texts/gary-a-sequel-to-titus-andronicus-2019/wsj--edward-rothstein.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -1276,7 +1292,7 @@
     ]
   },
   "startTime": "2026-06-08T06:16:07.453Z",
-  "lastProcessed": "tootsie-2019/wsj--terry-teachout.json",
+  "lastProcessed": "gary-a-sequel-to-titus-andronicus-2019/medium--christian-lewis.json",
   "log": [
     {
       "t": "2026-06-08T06:27:00.120Z",
@@ -1787,6 +1803,28 @@
       "t": "2026-06-08T16:41:38.436Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-08T16:44:29.685Z",
+      "event": "bb-session",
+      "session": "0f6569a8",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-tootsie-is-a-c"
+    },
+    {
+      "t": "2026-06-08T16:44:30.233Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-06-08T16:46:52.336Z",
+      "event": "bb-session",
+      "session": "35989424",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/gary-a-sequel-to-titu"
+    },
+    {
+      "t": "2026-06-08T16:46:52.881Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
