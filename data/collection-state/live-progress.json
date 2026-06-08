@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-08T07:03:20.078Z",
-  "processed": 100,
-  "failed": 80,
-  "successRate": "55.6%",
+  "updatedAt": "2026-06-08T07:07:39.833Z",
+  "processed": 105,
+  "failed": 85,
+  "successRate": "55.3%",
   "tierBreakdown": {
-    "playwright": 62,
+    "playwright": 64,
     "amp": 0,
-    "browserbase": 5,
+    "browserbase": 6,
     "directCookies": 0,
-    "scrapingbee": 15,
+    "scrapingbee": 16,
     "brightdata": 5,
     "archiveToday": 2,
-    "archive": 17
+    "archive": 19
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-06-08T06:27:00.120Z",
@@ -53,6 +53,23 @@
       "t": "2026-06-08T06:50:07.578Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-08T07:05:29.035Z",
+      "event": "bb-session",
+      "session": "8bf9b37c",
+      "url": "http://www.amny.com/entertainment/on-your-feet-review-this-rhythm-will-barely-ge"
+    },
+    {
+      "t": "2026-06-08T07:05:29.877Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-06-08T07:07:31.703Z",
+      "event": "bb-session",
+      "session": "4e20920c",
+      "url": "http://www.billboard.com/articles/review/6753841/on-your-feet-theater-review-glo"
     }
   ]
 }

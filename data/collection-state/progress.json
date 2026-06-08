@@ -99,7 +99,12 @@
     "the-lion-king-west-end-2021/shy-strange-manic--kariss-ainsworth.json",
     "mamma-mia-west-end-2021/west-end-wilma--west-end-wilma.json",
     "the-lion-king-1997/timeout--adam-feldman.json",
-    "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json"
+    "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
+    "les-miserables-west-end-2021/times-uk--clive-davis.json",
+    "the-mousetrap-west-end-2021/standard--jessie-thompson.json",
+    "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
+    "amaze-off-broadway-2026/timeout--adam-feldman.json",
+    "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json"
   ],
   "failed": [
     "a-woman-among-women-off-broadway-2026/playbill--unknown.json",
@@ -181,7 +186,12 @@
     "wicked-2003/standard--unknown.json",
     "the-lion-king-1997/calgary-herald--louis-b-hobson.json",
     "the-lion-king-1997/familyvacationcritic--unknown.json",
-    "the-lion-king-1997/maryland-theatre-guide--susan-brall.json"
+    "the-lion-king-1997/maryland-theatre-guide--susan-brall.json",
+    "gloria-2026/amny--unknown.json",
+    "gloria-2026/billboard--unknown.json",
+    "gloria-2026/financialtimes--unknown.json",
+    "gloria-2026/huffpost--unknown.json",
+    "gloria-2026/perez-hilton--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -247,7 +257,9 @@
       "witness-for-the-prosecution-west-end-2022/london-box-office--stuart-king.json",
       "the-book-of-mormon-west-end-2024/musical-theatre-review--unknown.json",
       "book-of-mormon-2011/financialtimes--brendan-lemon.json",
-      "mamma-mia-west-end-2021/west-end-wilma--west-end-wilma.json"
+      "mamma-mia-west-end-2021/west-end-wilma--west-end-wilma.json",
+      "the-mousetrap-west-end-2021/standard--jessie-thompson.json",
+      "the-mousetrap-west-end-2021/theatre-weekly--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -255,7 +267,8 @@
       "schmigadoon-2026/variety--unknown.json",
       "data/review-texts/death-of-a-salesman-2026/parade--janice-kaplan.json",
       "data/review-texts/maybe-happy-ending-2024/variety--unknown.json",
-      "maybe-happy-ending-2024/variety--unknown.json"
+      "maybe-happy-ending-2024/variety--unknown.json",
+      "data/review-texts/gloria-2026/amny--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -273,7 +286,8 @@
       "magic-mike-live-west-end-2021/independent--hugh-montgomery.json",
       "the-book-of-mormon-west-end-2024/nydailynews--unknown.json",
       "the-lion-king-1997/timeout--adam-feldman.json",
-      "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json"
+      "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
+      "amaze-off-broadway-2026/timeout--adam-feldman.json"
     ],
     "brightdata": [
       "the-balusters-2026/broadwayworld--unknown.json",
@@ -303,11 +317,13 @@
       "witness-for-the-prosecution-west-end-2022/london-box-office--phil-willmott.json",
       "book-of-mormon-2011/village-voice--michael-musto.json",
       "wicked-west-end-2021/thestage--paul-vale.json",
-      "the-lion-king-west-end-2021/shy-strange-manic--kariss-ainsworth.json"
+      "the-lion-king-west-end-2021/shy-strange-manic--kariss-ainsworth.json",
+      "les-miserables-west-end-2021/times-uk--clive-davis.json",
+      "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json"
     ]
   },
   "startTime": "2026-06-08T06:16:07.453Z",
-  "lastProcessed": "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
+  "lastProcessed": "gloria-2026/perez-hilton--unknown.json",
   "log": [
     {
       "t": "2026-06-08T06:27:00.120Z",
@@ -347,6 +363,23 @@
       "t": "2026-06-08T06:50:07.578Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-08T07:05:29.035Z",
+      "event": "bb-session",
+      "session": "8bf9b37c",
+      "url": "http://www.amny.com/entertainment/on-your-feet-review-this-rhythm-will-barely-ge"
+    },
+    {
+      "t": "2026-06-08T07:05:29.877Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-06-08T07:07:31.703Z",
+      "event": "bb-session",
+      "session": "4e20920c",
+      "url": "http://www.billboard.com/articles/review/6753841/on-your-feet-theater-review-glo"
     }
   ]
 }
