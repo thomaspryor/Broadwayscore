@@ -1,19 +1,5 @@
 [
   {
-    "startedAt": "2026-06-05T15:29:16.911Z",
-    "completedAt": "2026-06-05T15:29:40.852Z",
-    "totalReviews": 26,
-    "processed": 4,
-    "skipped": 22,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 39016,
-      "output": 1016,
-      "total": 59745
-    },
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-06-05T17:01:50.344Z",
     "completedAt": "2026-06-05T17:01:59.936Z",
     "totalReviews": 38826,
@@ -686918,6 +686904,26 @@
   {
     "startedAt": "2026-06-08T08:53:56.547Z",
     "completedAt": "2026-06-08T08:53:56.733Z",
+    "totalReviews": 54,
+    "processed": 0,
+    "skipped": 53,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "errorDetails": [
+      {
+        "showId": "war-horse-west-end-2026",
+        "outletId": "click-liverpool",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-06-08T09:06:51.679Z",
+    "completedAt": "2026-06-08T09:06:51.864Z",
     "totalReviews": 54,
     "processed": 0,
     "skipped": 53,
