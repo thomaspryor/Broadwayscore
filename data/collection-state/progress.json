@@ -26,7 +26,15 @@
     "the-lost-boys-2026/broadwayworld--unknown.json",
     "the-lost-boys-2026/chicago-sun-times--mark-kennedy.json",
     "the-price-off-west-end-2026/british-theatre--susan-novak.json",
-    "the-rocky-horror-show-2026/artsfuse--christopher-caggiano.json"
+    "the-rocky-horror-show-2026/artsfuse--christopher-caggiano.json",
+    "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+    "the-balusters-2026/broadwayworld--unknown.json",
+    "schmigadoon-2026/nytg--unknown.json",
+    "schmigadoon-2026/variety--unknown.json",
+    "schmigadoon-2026/musical-theatre-review--unknown.json",
+    "schmigadoon-2026/thewrap--robert-hofler.json",
+    "schmigadoon-2026/broadwayworld--unknown.json",
+    "schmigadoon-2026/chicago-sun-times--mark-kennedy.json"
   ],
   "failed": [
     "a-woman-among-women-off-broadway-2026/playbill--unknown.json",
@@ -41,7 +49,9 @@
     "1536-west-end-2026/theatrecat--unknown.json",
     "grace-pervades-west-end-2026/standard--ghenet-pinderhughes-randall.json",
     "mercury-off-broadway-2026/theatrecat--unknown.json",
-    "the-price-off-west-end-2026/wsj--unknown.json"
+    "the-price-off-west-end-2026/wsj--unknown.json",
+    "the-rocky-horror-show-2026/theater-scene--deirdre-donovan.json",
+    "the-balusters-2026/pages-on-stages--mason-pilevsky.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -70,13 +80,24 @@
       "the-lost-boys-2026/broadwayworld--unknown.json",
       "the-lost-boys-2026/chicago-sun-times--mark-kennedy.json",
       "the-price-off-west-end-2026/british-theatre--susan-novak.json",
-      "the-rocky-horror-show-2026/artsfuse--christopher-caggiano.json"
+      "the-rocky-horror-show-2026/artsfuse--christopher-caggiano.json",
+      "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+      "schmigadoon-2026/nytg--unknown.json",
+      "schmigadoon-2026/musical-theatre-review--unknown.json",
+      "schmigadoon-2026/broadwayworld--unknown.json",
+      "schmigadoon-2026/chicago-sun-times--mark-kennedy.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/schmigadoon-2026/variety--unknown.json",
+      "schmigadoon-2026/variety--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "the-balusters-2026/broadwayworld--unknown.json",
+      "schmigadoon-2026/thewrap--robert-hofler.json"
+    ],
     "archiveToday": [],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -84,6 +105,18 @@
     ]
   },
   "startTime": "2026-06-08T06:16:07.453Z",
-  "lastProcessed": "the-rocky-horror-show-2026/artsfuse--christopher-caggiano.json",
-  "log": []
+  "lastProcessed": "schmigadoon-2026/chicago-sun-times--mark-kennedy.json",
+  "log": [
+    {
+      "t": "2026-06-08T06:27:00.120Z",
+      "event": "bb-session",
+      "session": "f234bd7d",
+      "url": "https://variety.com/2026/legit/awards/schmigadoon-best-musical-cinco-paul-apple-"
+    },
+    {
+      "t": "2026-06-08T06:27:01.073Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }
