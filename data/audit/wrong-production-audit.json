@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-08T05:38:00.662Z",
+  "timestamp": "2026-06-08T08:45:12.164Z",
   "stats": {
-    "totalReviews": 38165,
-    "alreadyFlagged": 16744,
+    "totalReviews": 38201,
+    "alreadyFlagged": 16755,
     "dateGuardCatches": 106,
-    "directorMismatch": 841,
-    "tvFilmSignals": 1049,
-    "londonSignals": 616,
+    "directorMismatch": 842,
+    "tvFilmSignals": 1050,
+    "londonSignals": 617,
     "offBroadwaySignals": 460,
     "yearMismatch": 80,
-    "noPublishDate": 3997
+    "noPublishDate": 4020
   },
   "findings": [
     {
@@ -10291,6 +10291,20 @@
       "score": 87,
       "publishDate": "July 18th, 2022",
       "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-2022",
+      "file": "newyorker--alexandra-schwartz.json",
+      "score": null,
+      "publishDate": "August 8th, 2022",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/into-the-woods-08-22-22",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -24195,6 +24209,20 @@
     },
     {
       "showId": "titanique-2026",
+      "file": "broadwayworld--nicole-rosky.json",
+      "score": null,
+      "publishDate": "2026-04-12",
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-TITANIQUE-Sets-Sail-on-Broadway-20260412",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "titanique-2026",
       "file": "guardian--adrian-horton.json",
       "score": 77,
       "publishDate": "2026-04-13",
@@ -32280,6 +32308,20 @@
     },
     {
       "showId": "inter-alia-west-end-2026",
+      "file": "lbc--johnny-jenkins.json",
+      "score": 91,
+      "publishDate": "2026-04-08",
+      "url": "https://www.lbc.co.uk/article/inter-alia-review-best-plays-ever-seen-5HjdXRZ_2/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 82,
       "publishDate": "2026-04-14",
@@ -34145,7 +34187,7 @@
       "file": "whatsonstage--tom-millward.json",
       "score": null,
       "publishDate": "2025-03-21",
-      "url": "https://www.whatsonstage.com/london-theatre/reviews/my-neighbour-totoro-review-colossal-spirits-awe-in_57635.html",
+      "url": "https://www.whatsonstage.com/news/my-neighbour-totoro-celebrates-its-official-west-end-opening-night_1670554/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

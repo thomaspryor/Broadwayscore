@@ -1,6 +1,6 @@
 {
-  "lastRun": "2026-06-07T08:12:12.748Z",
-  "consecutiveErrorDays": 14,
+  "lastRun": "2026-06-08T08:35:55.734Z",
+  "consecutiveErrorDays": 15,
   "results": [
     {
       "name": "Freshness: reviews.json",
@@ -10,22 +10,22 @@
     {
       "name": "Freshness: shows.json",
       "status": "pass",
-      "message": "23h old"
+      "message": "1h old"
     },
     {
       "name": "Freshness: grosses.json",
       "status": "pass",
-      "message": "4d old"
+      "message": "5d old"
     },
     {
       "name": "Freshness: audience-buzz.json",
       "status": "pass",
-      "message": "0h old"
+      "message": "2h old"
     },
     {
       "name": "Freshness: commercial.json",
       "status": "pass",
-      "message": "11h old"
+      "message": "1d old"
     },
     {
       "name": "Freshness: critic-consensus.json",
@@ -34,28 +34,28 @@
     },
     {
       "name": "Freshness: lottery-rush.json",
-      "status": "warn",
-      "message": "3d old (warn threshold: 2d)"
+      "status": "error",
+      "message": "4d old (error threshold: 3d)"
     },
     {
       "name": "Freshness: cast-changes.json",
       "status": "pass",
-      "message": "1d old"
+      "message": "2d old"
     },
     {
       "name": "Freshness: nyt-critics-picks.json",
       "status": "pass",
-      "message": "2d old"
+      "message": "2h old"
     },
     {
       "name": "Freshness: video-reviews.json",
       "status": "pass",
-      "message": "6d old"
+      "message": "3h old"
     },
     {
       "name": "Freshness: social-pulse/_budget.json",
       "status": "pass",
-      "message": "6d old"
+      "message": "7d old"
     },
     {
       "name": "Freshness: tony-win-probabilities.json",
@@ -75,7 +75,7 @@
     {
       "name": "Push verify: shows.json",
       "status": "pass",
-      "message": "Data synced (23h old, workflow 12d ago)"
+      "message": "Data synced (1h old, workflow 13d ago)"
     },
     {
       "name": "Sync: review-texts vs reviews.json",
@@ -85,12 +85,12 @@
     {
       "name": "Sync: open show coverage",
       "status": "pass",
-      "message": "40 open shows all have reviews and grosses"
+      "message": "39 open shows all have reviews and grosses"
     },
     {
       "name": "Sync: social-pulse per-show freshness",
       "status": "pass",
-      "message": "83 running BW/WE shows — no stale social-pulse files"
+      "message": "82 running BW/WE shows — no stale social-pulse files"
     },
     {
       "name": "Sync: phantom show detection",
@@ -104,18 +104,18 @@
     },
     {
       "name": "Sync: baseline drift",
-      "status": "warn",
-      "message": "Reviews dropped: 18227 vs baseline 18228"
+      "status": "pass",
+      "message": "2651 shows, 144 open, 18263 reviews (all at or above baseline)"
     },
     {
       "name": "Sync: grosses weekEnding",
       "status": "pass",
-      "message": "weekEnding 5/31/2026 (7d ago)"
+      "message": "weekEnding 5/31/2026 (8d ago)"
     },
     {
       "name": "Pipeline: rebuild-reviews",
       "status": "pass",
-      "message": "Last success 0h ago"
+      "message": "Last success 1h ago"
     },
     {
       "name": "Pipeline: update-show-status",
@@ -125,27 +125,27 @@
     {
       "name": "Pipeline: collect-review-texts",
       "status": "pass",
-      "message": "Last success 0h ago"
+      "message": "Last success 1h ago"
     },
     {
       "name": "Pipeline: weekly-grosses",
       "status": "warn",
-      "message": "Last success 12d ago (threshold: 10d)"
+      "message": "Last success 13d ago (threshold: 10d)"
     },
     {
       "name": "Pipeline: weekly-integrity",
       "status": "pass",
-      "message": "Last success 3h ago"
+      "message": "Last success 1d ago"
     },
     {
       "name": "Pipeline: test",
       "status": "pass",
-      "message": "Last success 1h ago"
+      "message": "Last success 14h ago"
     },
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.8% scored (18227/18453)"
+      "message": "98.7% scored (18263/18499)"
     },
     {
       "name": "Cookies: expiration",
@@ -154,33 +154,33 @@
     },
     {
       "name": "CWV: performance",
-      "status": "warn",
-      "message": "Threshold violations: Mobile LCP 6.0s"
+      "status": "pass",
+      "message": "All metrics within thresholds (23h ago)"
     },
     {
       "name": "SEO: health",
       "status": "pass",
-      "message": "Healthy (7d ago)"
+      "message": "Healthy (1d ago)"
     },
     {
-      "name": "Cron: Update Show Status",
-      "status": "pass",
-      "message": "23h ago, cancelled"
+      "name": "Cron failed: Update Show Status",
+      "status": "warn",
+      "message": "Last run failed (24h ago)"
     },
     {
       "name": "Cron: Rebuild Reviews",
       "status": "pass",
-      "message": "0h ago, "
+      "message": "0h ago, cancelled"
     },
     {
       "name": "Cron: Collect Review Texts",
       "status": "pass",
-      "message": "0h ago, "
+      "message": "1h ago, "
     },
     {
       "name": "Cron: LLM Ensemble Score",
       "status": "pass",
-      "message": "0h ago, "
+      "message": "1h ago, success"
     },
     {
       "name": "Cron failed: Test Suite",
@@ -193,14 +193,14 @@
       "message": "1h ago, success"
     },
     {
-      "name": "Cron: Update Lottery/Rush",
-      "status": "pass",
-      "message": "3d ago, success"
+      "name": "Cron failed: Update Lottery/Rush",
+      "status": "warn",
+      "message": "Last run failed (1d ago)"
     },
     {
       "name": "Cron: Weekly Grosses",
       "status": "pass",
-      "message": "4d ago, success"
+      "message": "5d ago, success"
     },
     {
       "name": "Cron: Update Show Score",
@@ -210,37 +210,37 @@
     {
       "name": "Cron: Update Mezzanine",
       "status": "pass",
-      "message": "7h ago, success"
+      "message": "8h ago, success"
     },
     {
       "name": "Cron: Update Cast Changes",
       "status": "pass",
-      "message": "23h ago, success"
+      "message": "2d ago, success"
     },
     {
       "name": "Cron: NYT Critics Picks",
       "status": "pass",
-      "message": "2d ago, success"
+      "message": "2h ago, success"
     },
     {
       "name": "Cron: Weekly Video Reviews",
       "status": "pass",
-      "message": "6d ago, success"
+      "message": "3h ago, success"
     },
     {
       "name": "Cron: Update Social Pulse",
       "status": "pass",
-      "message": "6d ago, success"
+      "message": "1h ago, "
     },
     {
       "name": "Secrets: health",
       "status": "error",
-      "message": "Last check FAILED (6d ago)"
+      "message": "Last check FAILED (7d ago)"
     },
     {
       "name": "Credits: ScrapingBee",
       "status": "pass",
-      "message": "883k credits left (88%) · renews Jul 5 (burn rate unavailable — <5 days into cycle)"
+      "message": "803k credits left (80%) · renews Jul 5 (burn rate unavailable — <5 days into cycle)"
     }
   ],
   "lastCleanStreak": 0

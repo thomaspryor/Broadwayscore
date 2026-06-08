@@ -1,25 +1,5 @@
 [
   {
-    "startedAt": "2026-06-05T14:28:21.188Z",
-    "completedAt": "2026-06-05T14:28:21.365Z",
-    "totalReviews": 20,
-    "processed": 0,
-    "skipped": 19,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "errorDetails": [
-      {
-        "showId": "jerome-off-broadway-2025",
-        "outletId": "off-off-online",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-06-05T15:29:16.911Z",
     "completedAt": "2026-06-05T15:29:40.852Z",
     "totalReviews": 26,
@@ -686932,6 +686912,26 @@
           "total": 1
         },
         "hasDisagreement": false
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-06-08T08:53:56.547Z",
+    "completedAt": "2026-06-08T08:53:56.733Z",
+    "totalReviews": 54,
+    "processed": 0,
+    "skipped": 53,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "errorDetails": [
+      {
+        "showId": "war-horse-west-end-2026",
+        "outletId": "click-liverpool",
+        "error": "input_validation_failed:body_too_short"
       }
     ]
   }
