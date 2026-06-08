@@ -3,49 +3,54 @@
   "showId": "mj-2022",
   "showTitle": "MJ The Musical",
   "market": "Broadway",
-  "fetchedAt": "2026-06-01T08:27:29.206Z",
-  "tier": "Steady",
-  "volume": 166,
-  "positivePct": 84,
-  "weekOverWeekPct": -2,
-  "baselineMultiple": 0.98,
+  "fetchedAt": "2026-06-08T08:22:50.377Z",
+  "tier": "Rising",
+  "volume": 157,
+  "positivePct": 92,
+  "weekOverWeekPct": -5,
+  "baselineMultiple": 0.93,
   "platformBreakdown": {
-    "x": 132,
-    "tiktok": 19,
+    "x": 142,
+    "tiktok": 0,
     "instagram": 15,
     "reddit": 0
   },
   "topQuotes": [
     {
-      "text": "First Day with MJ on Broadway! 📚 • Excited and grateful to be continuing on with @mjthemusical on Broadway after 3…",
+      "text": "Encore! We couldn’t get enough of this play! 🎶 #MJtheMusical We won tickets to this fantastic play from Casino Night…",
       "platform": "instagram",
-      "author": "@the_zion_king",
-      "url": "https://www.instagram.com/p/DY8DuS8le8r/"
+      "author": "@addisongreenwx",
+      "url": "https://www.instagram.com/p/DZRP1NYjajJ/"
     },
     {
-      "text": "I’ve been celebrating the king of pop all week 🐐 @MJ the Musical #michaeljackson #michael #mjthemusical…",
-      "platform": "tiktok",
-      "author": "@_jayohh_",
-      "url": "https://www.tiktok.com/@_jayohh_/video/7633106407646170399"
+      "text": "#LISA with MATTE MARTINEZ (as MJ) 🎪MJ The Musical (broadway) 📍Neil Simon Theatre, NYC @wearelloud…",
+      "platform": "x",
+      "author": "@LaliceUpdates",
+      "url": "https://x.com/LaliceUpdates/status/2052760034967478575"
     }
   ],
-  "xTrueVolume": 20,
+  "xTrueVolume": 18,
   "baseline": {
-    "mean": 169.62689208984375,
+    "mean": 168.04853057861328,
     "weeksOfHistory": 8
   },
-  "costUsd": 0.1305,
+  "costUsd": 0.1263,
   "rawCounts": {
     "reddit": 0,
     "twitter": 160,
-    "tiktok": 20,
+    "tiktok": 0,
     "instagram": 15
   },
-  "errors": [],
+  "errors": [
+    {
+      "platform": "tiktok",
+      "error": "Apify run failed (clockworks~tiktok-scraper): 502 <html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n</body>\r\n</html>\r\n"
+    }
+  ],
   "rank": {
-    "position": 19,
+    "position": 15,
     "total": 44,
-    "text": "19/44 Broadway"
+    "text": "15/44 Broadway"
   },
-  "compositeScore": 139.44
+  "compositeScore": 144.44
 }
