@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-08T12:38:22.531Z",
+  "timestamp": "2026-06-08T13:47:46.089Z",
   "stats": {
-    "totalReviews": 38205,
-    "alreadyFlagged": 16761,
+    "totalReviews": 38199,
+    "alreadyFlagged": 16765,
     "dateGuardCatches": 106,
     "directorMismatch": 842,
     "tvFilmSignals": 1050,
     "londonSignals": 616,
     "offBroadwaySignals": 460,
     "yearMismatch": 80,
-    "noPublishDate": 4010
+    "noPublishDate": 4000
   },
   "findings": [
     {
@@ -10302,7 +10302,7 @@
     {
       "showId": "into-the-woods-2022",
       "file": "newyorker--alexandra-schwartz.json",
-      "score": null,
+      "score": 87,
       "publishDate": "August 8th, 2022",
       "url": "https://www.newyorker.com/goings-on-about-town/theatre/into-the-woods-08-22-22",
       "findings": [
@@ -27613,6 +27613,20 @@
     },
     {
       "showId": "are-you-watching-west-end-2026",
+      "file": "british-theatre--keith-mckenna.json",
+      "score": 64,
+      "publishDate": "2026-06-08",
+      "url": "https://www.britishtheatreguide.info/reviews/are-you-watchin-royal-court-the-25647",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "are-you-watching-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 71,
       "publishDate": "2026-06-05",
@@ -32163,20 +32177,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
-        }
-      ]
-    },
-    {
-      "showId": "ink-2019",
-      "file": "medium--christian-lewis.json",
-      "score": 80,
-      "publishDate": null,
-      "url": "https://medium.com/@christianlewis_11156/review-journalism-drama-ink-is-as-sensational-as-its-subject-7c2c22bf9655",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
