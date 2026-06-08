@@ -381,7 +381,17 @@
     "book-of-mormon-2011/ap--mark-kennedy.json",
     "book-of-mormon-2011/backstage--david-sheward.json",
     "wicked-2003/standard--unknown.json",
-    "the-lion-king-1997/calgary-herald--louis-b-hobson.json"
+    "the-lion-king-1997/calgary-herald--louis-b-hobson.json",
+    "the-lion-king-1997/familyvacationcritic--unknown.json",
+    "the-lion-king-1997/maryland-theatre-guide--susan-brall.json",
+    "gloria-2026/amny--unknown.json",
+    "gloria-2026/billboard--unknown.json",
+    "gloria-2026/financialtimes--unknown.json",
+    "gloria-2026/huffpost--unknown.json",
+    "gloria-2026/perez-hilton--unknown.json",
+    "as-you-like-it-globe-west-end-2026/london-box-office--nicky-allpress.json",
+    "cats-west-end-2026/new-york-city-theatre--unknown.json",
+    "the-comedy-about-spies-west-end-2026/guardian--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -489,16 +499,8 @@
       "maybe-happy-ending-2024/variety--unknown.json",
       "data/review-texts/gloria-2026/amny--unknown.json",
       "data/review-texts/gloria-2026/billboard--unknown.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
-      "data/review-texts/small-off-broadway-2026/theater-pizzazz--unknown.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
-      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
+      "data/review-texts/gloria-2026/amny--unknown.json",
+      "data/review-texts/gloria-2026/billboard--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -606,7 +608,7 @@
     ]
   },
   "startTime": "2026-06-08T06:16:07.453Z",
-  "lastProcessed": "the-lion-king-1997/calgary-herald--louis-b-hobson.json",
+  "lastProcessed": "the-comedy-about-spies-west-end-2026/guardian--unknown.json",
   "log": [
     {
       "t": "2026-06-08T06:27:00.120Z",
@@ -669,6 +671,23 @@
       "event": "bb-session",
       "session": "a985a615",
       "url": "https://www.facebook.com/Playbill/posts/the-west-end-transfer-of-ava-picketts-15"
+    },
+    {
+      "t": "2026-06-08T07:56:35.393Z",
+      "event": "bb-session",
+      "session": "110705e6",
+      "url": "http://www.amny.com/entertainment/on-your-feet-review-this-rhythm-will-barely-ge"
+    },
+    {
+      "t": "2026-06-08T07:56:36.152Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-06-08T07:58:47.374Z",
+      "event": "bb-session",
+      "session": "c563aded",
+      "url": "http://www.billboard.com/articles/review/6753841/on-your-feet-theater-review-glo"
     }
   ]
 }
