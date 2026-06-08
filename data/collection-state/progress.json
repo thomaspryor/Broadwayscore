@@ -331,7 +331,9 @@
     "king-lear-2019/wsj--terry-teachout.json",
     "what-the-constitution-means-to-me-2019/wsj--terry-teachout.json",
     "what-the-constitution-means-to-me-2019/front-row-center--stanford-friedman.json",
-    "what-the-constitution-means-to-me-2019/thestage--nicole-serratore.json"
+    "what-the-constitution-means-to-me-2019/thestage--nicole-serratore.json",
+    "kiss-me-kate-2019/wsj--terry-teachout.json",
+    "be-more-chill-2019/wsj--terry-teachout.json"
   ],
   "failed": [
     "a-woman-among-women-off-broadway-2026/playbill--unknown.json",
@@ -874,7 +876,15 @@
     "what-the-constitution-means-to-me-2019/washpost--peter-marks.json",
     "aint-too-proud-2019/vulture--jesse-green.json",
     "aint-too-proud-2019/talkinbroadway--matthew-murray.json",
-    "kiss-me-kate-2019/gotham-playgoer--robert-sholiton.json"
+    "kiss-me-kate-2019/gotham-playgoer--robert-sholiton.json",
+    "kiss-me-kate-2019/theater-life--barry-gordin.json",
+    "kiss-me-kate-2019/washpost--peter-marks.json",
+    "kiss-me-kate-2019/theater-news-online--jeremy-gerard.json",
+    "kiss-me-kate-2019/front-row-center--tulis-mccall.json",
+    "kiss-me-kate-2019/talkinbroadway--matthew-murray.json",
+    "true-west-2019/vulture--jesse-green.json",
+    "true-west-2019/theater-news-online--jeremy-gerard.json",
+    "choir-boy-2019/scribicide--aaron-botwick.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1201,7 +1211,9 @@
       "the-maids-off-broadway-2026/thewrap--unknown.json",
       "the-collaboration-2022/newyorker--conde-nast.json",
       "oklahoma-2019/medium--christian-lewis.json",
-      "what-the-constitution-means-to-me-2019/wsj--terry-teachout.json"
+      "what-the-constitution-means-to-me-2019/wsj--terry-teachout.json",
+      "kiss-me-kate-2019/wsj--terry-teachout.json",
+      "be-more-chill-2019/wsj--terry-teachout.json"
     ],
     "archiveToday": [
       "data/review-texts/fallen-angels-2026/talkinbroadway--unknown.json",
@@ -1258,7 +1270,10 @@
       "data/review-texts/oklahoma-2019/talkinbroadway--matthew-murray.json",
       "data/review-texts/what-the-constitution-means-to-me-2019/washpost--peter-marks.json",
       "data/review-texts/aint-too-proud-2019/vulture--jesse-green.json",
-      "data/review-texts/aint-too-proud-2019/talkinbroadway--matthew-murray.json"
+      "data/review-texts/aint-too-proud-2019/talkinbroadway--matthew-murray.json",
+      "data/review-texts/kiss-me-kate-2019/washpost--peter-marks.json",
+      "data/review-texts/kiss-me-kate-2019/talkinbroadway--matthew-murray.json",
+      "data/review-texts/true-west-2019/vulture--jesse-green.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -1327,7 +1342,7 @@
     ]
   },
   "startTime": "2026-06-08T06:16:07.453Z",
-  "lastProcessed": "kiss-me-kate-2019/gotham-playgoer--robert-sholiton.json",
+  "lastProcessed": "choir-boy-2019/scribicide--aaron-botwick.json",
   "log": [
     {
       "t": "2026-06-08T06:27:00.120Z",
@@ -1891,6 +1906,28 @@
     },
     {
       "t": "2026-06-08T16:59:04.030Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-08T16:59:55.266Z",
+      "event": "bb-session",
+      "session": "071fd8b7",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/kiss-me-kate-gets-a-g"
+    },
+    {
+      "t": "2026-06-08T16:59:55.748Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-06-08T17:03:18.080Z",
+      "event": "bb-session",
+      "session": "7ebc67f6",
+      "url": "https://talkinbroadway.com/world/KissMeKate.html"
+    },
+    {
+      "t": "2026-06-08T17:03:18.620Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }
