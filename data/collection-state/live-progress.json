@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-08T08:06:28.663Z",
-  "processed": 199,
-  "failed": 241,
-  "successRate": "45.2%",
+  "updatedAt": "2026-06-08T08:08:52.416Z",
+  "processed": 208,
+  "failed": 242,
+  "successRate": "46.2%",
   "tierBreakdown": {
-    "playwright": 97,
+    "playwright": 100,
     "amp": 0,
-    "browserbase": 9,
+    "browserbase": 11,
     "directCookies": 0,
-    "scrapingbee": 58,
+    "scrapingbee": 63,
     "brightdata": 9,
     "archiveToday": 4,
     "archive": 36
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-06-08T07:05:29.035Z",
@@ -54,6 +54,17 @@
       "event": "bb-session",
       "session": "c563aded",
       "url": "http://www.billboard.com/articles/review/6753841/on-your-feet-theater-review-glo"
+    },
+    {
+      "t": "2026-06-08T08:07:01.446Z",
+      "event": "bb-session",
+      "session": "7802acce",
+      "url": "https://www.wsj.com/articles/the-cottage-review-a-bedroom-farce-braves-broadway-"
+    },
+    {
+      "t": "2026-06-08T08:07:02.246Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

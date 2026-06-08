@@ -198,7 +198,16 @@
     "the-notebook-2024/broadway-and-me--janice-c-simpson.json",
     "prayer-for-the-french-republic-2024/broadwaynews--brittani-samuel.json",
     "harmony-2023/broadwaynews--brittani-samuel.json",
-    "i-need-that-2023/timeout--adam-feldman.json"
+    "i-need-that-2023/timeout--adam-feldman.json",
+    "merrily-we-roll-along-2023/broadwaynews--naveen-kumar.json",
+    "jajas-african-hair-braiding-2023/broadwaynews--brittani-samuel.json",
+    "purlie-victorious-2023/thestage--lane-williamson.json",
+    "the-cottage-2023/wsj--charles-isherwood.json",
+    "the-cottage-2023/theater-life--paulanne-simmons.json",
+    "here-lies-love-2023/broadwaynews--brittani-samuel.json",
+    "just-for-us-2023/timeout--adam-feldman.json",
+    "just-for-us-2023/timeout--raven-snook.json",
+    "just-for-us-2023/theater-life--barry-gordin.json"
   ],
   "failed": [
     "a-woman-among-women-off-broadway-2026/playbill--unknown.json",
@@ -441,7 +450,8 @@
     "cabaret-2024/observer--jesse-green.json",
     "stereophonic-2024/usatoday--charles-isherwood.json",
     "orlando-off-broadway-2026/guardian--unknown.json",
-    "the-whos-tommy-2024/broadwaynews--brittani-samuel.json"
+    "the-whos-tommy-2024/broadwaynews--brittani-samuel.json",
+    "here-lies-love-2023/aaartsalliance--rohan-zhou-lee.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -542,7 +552,10 @@
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
       "the-wiz-2024/thestage--lane-williamson.json",
       "the-wiz-2024/washpost--gloria-oladipo.json",
-      "lempicka-2024/broadway-and-me--janice-c-simpson.json"
+      "lempicka-2024/broadway-and-me--janice-c-simpson.json",
+      "purlie-victorious-2023/thestage--lane-williamson.json",
+      "the-cottage-2023/theater-life--paulanne-simmons.json",
+      "just-for-us-2023/theater-life--barry-gordin.json"
     ],
     "amp": [],
     "browserbase": [
@@ -554,7 +567,9 @@
       "data/review-texts/gloria-2026/amny--unknown.json",
       "data/review-texts/gloria-2026/billboard--unknown.json",
       "data/review-texts/gloria-2026/amny--unknown.json",
-      "data/review-texts/gloria-2026/billboard--unknown.json"
+      "data/review-texts/gloria-2026/billboard--unknown.json",
+      "data/review-texts/the-cottage-2023/wsj--charles-isherwood.json",
+      "the-cottage-2023/wsj--charles-isherwood.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -615,7 +630,12 @@
       "lempicka-2024/broadwaynews--brittani-samuel.json",
       "prayer-for-the-french-republic-2024/broadwaynews--brittani-samuel.json",
       "harmony-2023/broadwaynews--brittani-samuel.json",
-      "i-need-that-2023/timeout--adam-feldman.json"
+      "i-need-that-2023/timeout--adam-feldman.json",
+      "merrily-we-roll-along-2023/broadwaynews--naveen-kumar.json",
+      "jajas-african-hair-braiding-2023/broadwaynews--brittani-samuel.json",
+      "here-lies-love-2023/broadwaynews--brittani-samuel.json",
+      "just-for-us-2023/timeout--adam-feldman.json",
+      "just-for-us-2023/timeout--raven-snook.json"
     ],
     "brightdata": [
       "the-balusters-2026/broadwayworld--unknown.json",
@@ -674,7 +694,7 @@
     ]
   },
   "startTime": "2026-06-08T06:16:07.453Z",
-  "lastProcessed": "i-need-that-2023/timeout--adam-feldman.json",
+  "lastProcessed": "just-for-us-2023/theater-life--barry-gordin.json",
   "log": [
     {
       "t": "2026-06-08T06:27:00.120Z",
@@ -754,6 +774,17 @@
       "event": "bb-session",
       "session": "c563aded",
       "url": "http://www.billboard.com/articles/review/6753841/on-your-feet-theater-review-glo"
+    },
+    {
+      "t": "2026-06-08T08:07:01.446Z",
+      "event": "bb-session",
+      "session": "7802acce",
+      "url": "https://www.wsj.com/articles/the-cottage-review-a-bedroom-farce-braves-broadway-"
+    },
+    {
+      "t": "2026-06-08T08:07:02.246Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
