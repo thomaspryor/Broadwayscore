@@ -34,7 +34,11 @@
     "schmigadoon-2026/musical-theatre-review--unknown.json",
     "schmigadoon-2026/thewrap--robert-hofler.json",
     "schmigadoon-2026/broadwayworld--unknown.json",
-    "schmigadoon-2026/chicago-sun-times--mark-kennedy.json"
+    "schmigadoon-2026/chicago-sun-times--mark-kennedy.json",
+    "schmigadoon-2026/parade--janice-kaplan.json",
+    "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
+    "avenue-q-west-end-2026/guardian-uk--unknown.json",
+    "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json"
   ],
   "failed": [
     "a-woman-among-women-off-broadway-2026/playbill--unknown.json",
@@ -52,20 +56,12 @@
     "the-price-off-west-end-2026/wsj--unknown.json",
     "the-rocky-horror-show-2026/theater-scene--deirdre-donovan.json",
     "the-balusters-2026/pages-on-stages--mason-pilevsky.json",
-    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
-    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
-    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
-    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
-    "a-woman-among-women-off-broadway-2026/playbill--unknown.json",
-    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
-    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
-    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
-    "small-off-broadway-2026/guardian--arifa-akbar.json",
-    "small-off-broadway-2026/pages-on-stages--unknown.json",
-    "small-off-broadway-2026/the-recs--unknown.json",
-    "small-off-broadway-2026/theater-pizzazz--unknown.json",
-    "small-off-broadway-2026/washpost--unknown.json",
-    "indian-princesses-off-broadway-2025/pages-on-stages--mason-pilevsky.json"
+    "fallen-angels-2026/talkinbroadway--unknown.json",
+    "fallen-angels-2026/theater-scene--marc-miller.json",
+    "avenue-q-west-end-2026/nottingham-confidential--unknown.json",
+    "avenue-q-west-end-2026/telegraph--marianka-swain.json",
+    "avenue-q-west-end-2026/the-recs--erin-muldoon.json",
+    "proof-2026/pages-on-stages--mason-pilevsky.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -99,7 +95,10 @@
       "schmigadoon-2026/nytg--unknown.json",
       "schmigadoon-2026/musical-theatre-review--unknown.json",
       "schmigadoon-2026/broadwayworld--unknown.json",
-      "schmigadoon-2026/chicago-sun-times--mark-kennedy.json"
+      "schmigadoon-2026/chicago-sun-times--mark-kennedy.json",
+      "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
+      "avenue-q-west-end-2026/guardian-uk--unknown.json",
+      "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json"
     ],
     "amp": [],
     "browserbase": [
@@ -109,19 +108,24 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
     ],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "schmigadoon-2026/parade--janice-kaplan.json"
+    ],
     "brightdata": [
       "the-balusters-2026/broadwayworld--unknown.json",
       "schmigadoon-2026/thewrap--robert-hofler.json"
     ],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/fallen-angels-2026/talkinbroadway--unknown.json",
+      "data/review-texts/avenue-q-west-end-2026/the-recs--erin-muldoon.json"
+    ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
     ]
   },
   "startTime": "2026-06-08T06:16:07.453Z",
-  "lastProcessed": "indian-princesses-off-broadway-2025/pages-on-stages--mason-pilevsky.json",
+  "lastProcessed": "proof-2026/pages-on-stages--mason-pilevsky.json",
   "log": [
     {
       "t": "2026-06-08T06:27:00.120Z",
@@ -135,26 +139,15 @@
       "domain": "variety.com"
     },
     {
-      "t": "2026-06-08T07:19:11.737Z",
+      "t": "2026-06-08T06:30:55.313Z",
       "event": "bb-session",
-      "session": "b20f5095",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+      "session": "62e6b137",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2645871"
     },
     {
-      "t": "2026-06-08T07:19:13.508Z",
+      "t": "2026-06-08T06:30:56.003Z",
       "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-08T07:19:25.305Z",
-      "event": "bb-session",
-      "session": "938e0e6d",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
-    {
-      "t": "2026-06-08T07:19:26.226Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
+      "domain": "talkinbroadway.com"
     }
   ]
 }
