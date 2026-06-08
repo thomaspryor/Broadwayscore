@@ -1,70 +1,106 @@
 {
-  "generatedAt": "2026-06-08T01:53:09.686Z",
+  "generatedAt": "2026-06-08T02:52:10.407Z",
   "windowDays": 1095,
-  "targets": 191,
+  "targets": 184,
   "counts": {
     "withGap": 6,
-    "totalMissing": 104,
+    "totalMissing": 88,
     "totalFlaggedMisses": 0
   },
   "results": [
     {
-      "showId": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026",
-      "title": "The Unlikely Pilgrimage of Harold Fry",
-      "openingDate": "2026-02-10",
+      "showId": "driftwood-west-end-2026",
+      "title": "Driftwood",
+      "openingDate": "2026-06-03",
+      "status": "open",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "consumed-west-end-2026",
+      "title": "Consumed",
+      "openingDate": "2026-03-18",
       "status": "closed",
-      "category": "west-end",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "care-west-end-2026",
+      "title": "CARE",
+      "openingDate": "2026-05-19",
+      "status": "open",
+      "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.londontheatre.co.uk/reviews/the-unlikely-pilgrimage-of-harold-fry-review-rachel-joyce-passenger-mark-addy",
-        "https://www.standard.co.uk/culture/theatre/the-unlikely-pilgrimage-of-harold-fry-theatre-royal-haymarket-review-b1270389.html",
-        "https://www.telegraph.co.uk/theatre/what-to-see/the-unlikely-pilgrimage-of-harold-fry-review-west-end/",
-        "https://www.thestage.co.uk/reviews/the-unlikely-pilgrimage-of-harold-fry-review-theatre-royal-haymarket-london",
-        "https://www.whatsonstage.com/news/the-unlikely-pilgrimage-of-harold-fry-in-the-west-end-review_1711758/"
+        "https://www.londontheatre.co.uk/reviews/care-review-young-vic",
+        "https://www.standard.co.uk/culture/theatre/care-at-young-vic-review-b1283041.html",
+        "https://www.timeout.com/london/theatre/care-1-review",
+        "https://www.telegraph.co.uk/theatre/what-to-see/care-young-vic-review/",
+        "https://www.whatsonstage.com/news/alexander-zeldins-care-at-the-young-vic-review_1722077/",
+        "https://www.thestage.co.uk/reviews/care-review-young-vic-london-alexander-zeldin"
       ],
       "dirFiles": 0,
       "dirClean": 0,
-      "inReviewsJson": 13,
+      "inReviewsJson": 22,
       "missing": [
         {
-          "url": "https://www.londontheatre.co.uk/reviews/the-unlikely-pilgrimage-of-harold-fry-review-rachel-joyce-passenger-mark-addy",
+          "url": "https://www.londontheatre.co.uk/reviews/care-review-young-vic",
           "host": "londontheatre.co.uk",
           "knownOutletId": null
         },
         {
-          "url": "https://www.standard.co.uk/culture/theatre/the-unlikely-pilgrimage-of-harold-fry-theatre-royal-haymarket-review-b1270389.html",
+          "url": "https://www.standard.co.uk/culture/theatre/care-at-young-vic-review-b1283041.html",
           "host": "standard.co.uk",
           "knownOutletId": "standard"
         },
         {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-unlikely-pilgrimage-of-harold-fry-review-west-end/",
+          "url": "https://www.timeout.com/london/theatre/care-1-review",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london"
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/care-young-vic-review/",
           "host": "telegraph.co.uk",
           "knownOutletId": "sunday-telegraph"
         },
         {
-          "url": "https://www.thestage.co.uk/reviews/the-unlikely-pilgrimage-of-harold-fry-review-theatre-royal-haymarket-london",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage"
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/the-unlikely-pilgrimage-of-harold-fry-in-the-west-end-review_1711758/",
+          "url": "https://www.whatsonstage.com/news/alexander-zeldins-care-at-the-young-vic-review_1722077/",
           "host": "whatsonstage.com",
           "knownOutletId": "whatsonstage"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/care-review-young-vic-london-alexander-zeldin",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage"
         }
       ],
       "dirOnly": [],
       "flaggedMisses": [],
       "ingestResults": [
         {
-          "url": "https://www.londontheatre.co.uk/reviews/the-unlikely-pilgrimage-of-harold-fry-review-rachel-joyce-passenger-mark-addy",
+          "url": "https://www.londontheatre.co.uk/reviews/care-review-young-vic",
           "host": "londontheatre.co.uk",
           "outletId": "co",
           "provisional": true,
           "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=the-unlikely-pilgrimage-of-harold-fry-"
+          "reason": "spawnSync node ETIMEDOUT"
         },
         {
-          "url": "https://www.standard.co.uk/culture/theatre/the-unlikely-pilgrimage-of-harold-fry-theatre-royal-haymarket-review-b1270389.html",
+          "url": "https://www.standard.co.uk/culture/theatre/care-at-young-vic-review-b1283041.html",
           "host": "standard.co.uk",
           "outletId": "standard",
           "provisional": false,
@@ -72,7 +108,15 @@
           "reason": null
         },
         {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-unlikely-pilgrimage-of-harold-fry-review-west-end/",
+          "url": "https://www.timeout.com/london/theatre/care-1-review",
+          "host": "timeout.com",
+          "outletId": "timeout-london",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/care-young-vic-review/",
           "host": "telegraph.co.uk",
           "outletId": "sunday-telegraph",
           "provisional": false,
@@ -80,15 +124,7 @@
           "reason": null
         },
         {
-          "url": "https://www.thestage.co.uk/reviews/the-unlikely-pilgrimage-of-harold-fry-review-theatre-royal-haymarket-london",
-          "host": "thestage.co.uk",
-          "outletId": "thestage",
-          "provisional": false,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=the-unlikely-pilgrimage-of-harold-fry-"
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/the-unlikely-pilgrimage-of-harold-fry-in-the-west-end-review_1711758/",
+          "url": "https://www.whatsonstage.com/news/alexander-zeldins-care-at-the-young-vic-review_1722077/",
           "host": "whatsonstage.com",
           "outletId": "whatsonstage",
           "provisional": false,
@@ -96,46 +132,620 @@
           "reason": "spawnSync node ETIMEDOUT"
         }
       ],
-      "ingestSkippedByCap": []
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.thestage.co.uk/reviews/care-review-young-vic-london-alexander-zeldin",
+          "host": "thestage.co.uk",
+          "outletId": "thestage"
+        }
+      ]
     },
     {
-      "showId": "the-boy-who-harnessed-the-wind-west-end-2026",
-      "title": "The Boy Who Harnessed the Wind",
-      "openingDate": "2026-05-05",
-      "status": "open",
-      "category": "west-end",
+      "showId": "heart-wall-west-end-2026",
+      "title": "HEART WALL",
+      "openingDate": "2026-04-14",
+      "status": "closed",
+      "category": "off-west-end",
       "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "sweetmeats-west-end-2026",
+      "title": "Sweetmeats",
+      "openingDate": "2026-02-07",
+      "status": "closed",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "im-not-being-funny-west-end-2026",
+      "title": "I’m Not Being Funny",
+      "openingDate": "2026-05-07",
+      "status": "open",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "an-ideal-husband-west-end-2026",
+      "title": "An Ideal Husband",
+      "openingDate": "2026-05-07",
+      "status": "closed",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "jajas-african-hair-braiding-west-end-2026",
+      "title": "Jaja's African Hair Braiding",
+      "openingDate": "2026-03-26",
+      "status": "closed",
+      "category": "off-west-end",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-what-do-critics-think-of-jajas-african-hair-braiding-on-broadway",
+        "https://www.broadwayworld.com/article/Review-Roundup-JAJAS-AFRICAN-HAIR-BRAIDING-Opens-On-Broadway-20231003"
+      ],
       "aggregatorListedUrls": [
-        "https://www.londontheatre.co.uk/reviews/the-boy-who-harnessed-the-wind-review-soho-place"
+        "https://cititour.com/NYC_Broadway/JaJas-African-Hair-Braiding/1171",
+        "https://www.thedailybeast.com/broadway-review-jajas-african-hair-braiding-has-both-style-and-substance",
+        "https://ew.com/theater/theater-reviews/jajas-african-hair-braiding-review-broadway/",
+        "https://www.theguardian.com/stage/2023/oct/03/jajas-african-hair-braiding-harlem-broadway-play-review",
+        "https://www.nydailynews.com/2023/10/03/broadway-review-harlem-set-jajas-african-hair-braiding-is-a-fun-and-bubbly-slice-of-life/",
+        "https://www.vulture.com/2023/10/theater-review-jajas-african-hair-braiding.html",
+        "https://nystagereview.com/2023/10/03/jajas-african-hair-braiding-harlem-braids-maybe-not-tight-enough/",
+        "https://nystagereview.com/2023/10/03/jajas-african-hair-braiding-tressed-to-impress/https://nystagereview.com/2023/10/03/jajas-african-hair-braiding-tressed-to-impress/",
+        "https://www.newyorktheatreguide.com/reviews/jajas-african-hair-braiding-broadway-review",
+        "https://www.nytimes.com/2023/10/03/theater/jajas-african-hair-braiding-review.html",
+        "https://www.theatrely.com/post/jajas-african-hair-braiding-an-unbridled-joy-review",
+        "https://www.theatermania.com/news/review-steel-magnolias-in-harlem-jajas-african-hair-braiding-comes-to-broadway_1716476/",
+        "https://variety.com/2023/legit/reviews/jajas-african-hair-braiding-review-broadway-1235740710/",
+        "https://www.thewrap.com/jajas-african-hair-braiding-broadway-review-jocelyn-bioh/",
+        "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-jajas-african-hair-braiding-broadway-review-20231004-cnqbpkgoyjgc7pa24koxyjwuia-story.html"
       ],
       "dirFiles": 0,
       "dirClean": 0,
-      "inReviewsJson": 9,
+      "inReviewsJson": 10,
       "missing": [
         {
-          "url": "https://www.londontheatre.co.uk/reviews/the-boy-who-harnessed-the-wind-review-soho-place",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": null
+          "url": "https://cititour.com/NYC_Broadway/JaJas-African-Hair-Braiding/1171",
+          "host": "cititour.com",
+          "knownOutletId": "cititour"
+        },
+        {
+          "url": "https://www.thedailybeast.com/broadway-review-jajas-african-hair-braiding-has-both-style-and-substance",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast"
+        },
+        {
+          "url": "https://ew.com/theater/theater-reviews/jajas-african-hair-braiding-review-broadway/",
+          "host": "ew.com",
+          "knownOutletId": "ew"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2023/oct/03/jajas-african-hair-braiding-harlem-broadway-play-review",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian"
+        },
+        {
+          "url": "https://www.nydailynews.com/2023/10/03/broadway-review-harlem-set-jajas-african-hair-braiding-is-a-fun-and-bubbly-slice-of-life/",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews"
+        },
+        {
+          "url": "https://www.vulture.com/2023/10/theater-review-jajas-african-hair-braiding.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture"
+        },
+        {
+          "url": "https://nystagereview.com/2023/10/03/jajas-african-hair-braiding-harlem-braids-maybe-not-tight-enough/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr"
+        },
+        {
+          "url": "https://nystagereview.com/2023/10/03/jajas-african-hair-braiding-tressed-to-impress/https://nystagereview.com/2023/10/03/jajas-african-hair-braiding-tressed-to-impress/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/jajas-african-hair-braiding-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg"
+        },
+        {
+          "url": "https://www.nytimes.com/2023/10/03/theater/jajas-african-hair-braiding-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes"
+        },
+        {
+          "url": "https://www.theatrely.com/post/jajas-african-hair-braiding-an-unbridled-joy-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-steel-magnolias-in-harlem-jajas-african-hair-braiding-comes-to-broadway_1716476/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania"
+        },
+        {
+          "url": "https://variety.com/2023/legit/reviews/jajas-african-hair-braiding-review-broadway-1235740710/",
+          "host": "variety.com",
+          "knownOutletId": "variety"
+        },
+        {
+          "url": "https://www.thewrap.com/jajas-african-hair-braiding-broadway-review-jocelyn-bioh/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap"
+        },
+        {
+          "url": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-jajas-african-hair-braiding-broadway-review-20231004-cnqbpkgoyjgc7pa24koxyjwuia-story.html",
+          "host": "chicagotribune.com",
+          "knownOutletId": "chicagotribune"
         }
       ],
       "dirOnly": [],
       "flaggedMisses": [],
       "ingestResults": [
         {
-          "url": "https://www.londontheatre.co.uk/reviews/the-boy-who-harnessed-the-wind-review-soho-place",
-          "host": "londontheatre.co.uk",
-          "outletId": "co",
-          "provisional": true,
+          "url": "https://cititour.com/NYC_Broadway/JaJas-African-Hair-Braiding/1171",
+          "host": "cititour.com",
+          "outletId": "cititour",
+          "provisional": false,
           "ok": false,
-          "reason": "spawnSync node ETIMEDOUT"
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=jajas-african-hair-braiding-west-end-2"
+        },
+        {
+          "url": "https://www.thedailybeast.com/broadway-review-jajas-african-hair-braiding-has-both-style-and-substance",
+          "host": "thedailybeast.com",
+          "outletId": "dailybeast",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://ew.com/theater/theater-reviews/jajas-african-hair-braiding-review-broadway/",
+          "host": "ew.com",
+          "outletId": "ew",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2023/oct/03/jajas-african-hair-braiding-harlem-broadway-play-review",
+          "host": "theguardian.com",
+          "outletId": "guardian",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://www.nydailynews.com/2023/10/03/broadway-review-harlem-set-jajas-african-hair-braiding-is-a-fun-and-bubbly-slice-of-life/",
+          "host": "nydailynews.com",
+          "outletId": "nydailynews",
+          "provisional": false,
+          "ok": true,
+          "reason": null
         }
       ],
-      "ingestSkippedByCap": []
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.vulture.com/2023/10/theater-review-jajas-african-hair-braiding.html",
+          "host": "vulture.com",
+          "outletId": "vulture"
+        },
+        {
+          "url": "https://nystagereview.com/2023/10/03/jajas-african-hair-braiding-harlem-braids-maybe-not-tight-enough/",
+          "host": "nystagereview.com",
+          "outletId": "nysr"
+        },
+        {
+          "url": "https://nystagereview.com/2023/10/03/jajas-african-hair-braiding-tressed-to-impress/https://nystagereview.com/2023/10/03/jajas-african-hair-braiding-tressed-to-impress/",
+          "host": "nystagereview.com",
+          "outletId": "nysr"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/jajas-african-hair-braiding-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "outletId": "nytg"
+        },
+        {
+          "url": "https://www.nytimes.com/2023/10/03/theater/jajas-african-hair-braiding-review.html",
+          "host": "nytimes.com",
+          "outletId": "nytimes"
+        },
+        {
+          "url": "https://www.theatrely.com/post/jajas-african-hair-braiding-an-unbridled-joy-review",
+          "host": "theatrely.com",
+          "outletId": "theatrely"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-steel-magnolias-in-harlem-jajas-african-hair-braiding-comes-to-broadway_1716476/",
+          "host": "theatermania.com",
+          "outletId": "theatermania"
+        },
+        {
+          "url": "https://variety.com/2023/legit/reviews/jajas-african-hair-braiding-review-broadway-1235740710/",
+          "host": "variety.com",
+          "outletId": "variety"
+        },
+        {
+          "url": "https://www.thewrap.com/jajas-african-hair-braiding-broadway-review-jocelyn-bioh/",
+          "host": "thewrap.com",
+          "outletId": "thewrap"
+        },
+        {
+          "url": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-jajas-african-hair-braiding-broadway-review-20231004-cnqbpkgoyjgc7pa24koxyjwuia-story.html",
+          "host": "chicagotribune.com",
+          "outletId": "chicagotribune"
+        }
+      ]
     },
     {
-      "showId": "black-is-the-color-of-my-voice-west-end-2026",
-      "title": "Black Is The Color Of My Voice",
-      "openingDate": "2026-01-12",
+      "showId": "one-flew-over-the-cuckoos-nest-west-end-2026",
+      "title": "One Flew Over the Cuckoo’s Nest",
+      "openingDate": "2026-04-15",
+      "status": "closed",
+      "category": "west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "deep-azure-globe-west-end-2026",
+      "title": "Deep Azure - Globe",
+      "openingDate": "2026-02-17",
+      "status": "open",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "the-boy-at-the-back-of-the-class-west-end-2026",
+      "title": "The Boy At The Back Of The Class",
+      "openingDate": "2026-04-07",
+      "status": "closed",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "mother-courage-and-her-children-globe-west-end-2026",
+      "title": "Mother Courage and Her Children - Globe",
+      "openingDate": "2026-05-15",
+      "status": "open",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "a-midsummer-nights-dream-globe-west-end-2026",
+      "title": "A Midsummer Night's Dream - Globe",
+      "openingDate": "2026-04-23",
+      "status": "open",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "please-please-me-west-end-2026",
+      "title": "Please Please Me",
+      "openingDate": "2026-04-16",
+      "status": "closed",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "the-playboy-of-the-western-world-west-end-2025",
+      "title": "The Playboy of the Western World",
+      "openingDate": "2025-12-11",
+      "status": "closed",
+      "category": "west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "much-ado-about-nothing-globe-west-end-2026",
+      "title": "Much Ado About Nothing - Globe",
+      "openingDate": "2026-06-11",
+      "status": "upcoming",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "maggots-west-end-2026",
+      "title": "Maggots",
+      "openingDate": "2026-01-27",
+      "status": "closed",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "les-liaisons-dangereuses-west-end-2026",
+      "title": "Les Liaisons Dangereuses",
+      "openingDate": "2026-04-01",
+      "status": "closed",
+      "category": "west-end",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-LES-LIAISONS-DANGEREUSES-Opens-on-Broadway-Updating-LIVE-20161030"
+      ],
+      "aggregatorListedUrls": [
+        "http://www.nytimes.com/2016/10/31/theater/liaisons-dangereuses-review.html",
+        "http://www.newstimes.com/entertainment/article/Review-NYC-revival-of-Les-Liaisons-Dangereuses-10423873.php",
+        "https://www.timeout.com/newyork/blog/theater-review-les-liaisons-dangereuses-seduces-broadway-again-102816",
+        "http://www.hollywoodreporter.com/review/les-liaisons-dangereuses-942316",
+        "http://deadline.com/2016/10/liaisons-dangereuses-liev-schreiber-review-1201844490/",
+        "https://www.washingtonpost.com/news/arts-and-entertainment/wp/2016/10/30/les-liaisons-dangereuses-on-broadway-a-danger-free-zone/",
+        "http://www.newsday.com/entertainment/theater/schreiber-mcteer-play-with-fire-in-les-liaisons-dangereuses-1.12521474",
+        "http://www.telegraph.co.uk/theatre/what-to-see/les-liaisons-dangereuses-booth-theatre-new-york-review/",
+        "http://www.thedailybeast.com/articles/2016/10/30/les-liaisons-on-broadway-tedious-not-dangerous.html",
+        "http://www.nj.com/entertainment/index.ssf/2016/10/les_liaisons_dangereuses_liev_schreiber_broadway_r.html",
+        "http://www.thewrap.com/les-liaisons-dangereuses-broadway-review-liev-schreiber-janet-mcteer-bring-old-blighty-to-france/",
+        "http://variety.com/2016/legit/reviews/les-liaisons-dangereuses-review-liev-schreiber-1201904602/",
+        "http://www.vulture.com/2016/10/reviews-les-liaisons-dangereuses-the-harvest.html",
+        "http://www.amny.com/entertainment/les-liaisons-dangereuses-review-broadway-revival-dangerously-disjointed-1.12530333",
+        "https://www.theguardian.com/stage/2016/oct/30/les-liaisons-dangereuses-broadway-review-liev-schreiber-janet-mcteer"
+      ],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 23,
+      "missing": [
+        {
+          "url": "http://www.nytimes.com/2016/10/31/theater/liaisons-dangereuses-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes"
+        },
+        {
+          "url": "http://www.newstimes.com/entertainment/article/Review-NYC-revival-of-Les-Liaisons-Dangereuses-10423873.php",
+          "host": "newstimes.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.timeout.com/newyork/blog/theater-review-les-liaisons-dangereuses-seduces-broadway-again-102816",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london"
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/les-liaisons-dangereuses-942316",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter"
+        },
+        {
+          "url": "http://deadline.com/2016/10/liaisons-dangereuses-liev-schreiber-review-1201844490/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline"
+        },
+        {
+          "url": "https://www.washingtonpost.com/news/arts-and-entertainment/wp/2016/10/30/les-liaisons-dangereuses-on-broadway-a-danger-free-zone/",
+          "host": "washingtonpost.com",
+          "knownOutletId": "washpost"
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/schreiber-mcteer-play-with-fire-in-les-liaisons-dangereuses-1.12521474",
+          "host": "newsday.com",
+          "knownOutletId": "newsday"
+        },
+        {
+          "url": "http://www.telegraph.co.uk/theatre/what-to-see/les-liaisons-dangereuses-booth-theatre-new-york-review/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph"
+        },
+        {
+          "url": "http://www.thedailybeast.com/articles/2016/10/30/les-liaisons-on-broadway-tedious-not-dangerous.html",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast"
+        },
+        {
+          "url": "http://www.nj.com/entertainment/index.ssf/2016/10/les_liaisons_dangereuses_liev_schreiber_broadway_r.html",
+          "host": "nj.com",
+          "knownOutletId": "njcom"
+        },
+        {
+          "url": "http://www.thewrap.com/les-liaisons-dangereuses-broadway-review-liev-schreiber-janet-mcteer-bring-old-blighty-to-france/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap"
+        },
+        {
+          "url": "http://variety.com/2016/legit/reviews/les-liaisons-dangereuses-review-liev-schreiber-1201904602/",
+          "host": "variety.com",
+          "knownOutletId": "variety"
+        },
+        {
+          "url": "http://www.vulture.com/2016/10/reviews-les-liaisons-dangereuses-the-harvest.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture"
+        },
+        {
+          "url": "http://www.amny.com/entertainment/les-liaisons-dangereuses-review-broadway-revival-dangerously-disjointed-1.12530333",
+          "host": "amny.com",
+          "knownOutletId": "amny"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2016/oct/30/les-liaisons-dangereuses-broadway-review-liev-schreiber-janet-mcteer",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "ingestResults": [
+        {
+          "url": "http://www.nytimes.com/2016/10/31/theater/liaisons-dangereuses-review.html",
+          "host": "nytimes.com",
+          "outletId": "nytimes",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "http://www.newstimes.com/entertainment/article/Review-NYC-revival-of-Les-Liaisons-Dangereuses-10423873.php",
+          "host": "newstimes.com",
+          "outletId": "newstimes",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=les-liaisons-dangereuses-west-end-2026"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/blog/theater-review-les-liaisons-dangereuses-seduces-broadway-again-102816",
+          "host": "timeout.com",
+          "outletId": "timeout-london",
+          "provisional": false,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=les-liaisons-dangereuses-west-end-2026"
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/les-liaisons-dangereuses-942316",
+          "host": "hollywoodreporter.com",
+          "outletId": "hollywood-reporter",
+          "provisional": false,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=les-liaisons-dangereuses-west-end-2026"
+        },
+        {
+          "url": "http://deadline.com/2016/10/liaisons-dangereuses-liev-schreiber-review-1201844490/",
+          "host": "deadline.com",
+          "outletId": "deadline",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.washingtonpost.com/news/arts-and-entertainment/wp/2016/10/30/les-liaisons-dangereuses-on-broadway-a-danger-free-zone/",
+          "host": "washingtonpost.com",
+          "outletId": "washpost"
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/schreiber-mcteer-play-with-fire-in-les-liaisons-dangereuses-1.12521474",
+          "host": "newsday.com",
+          "outletId": "newsday"
+        },
+        {
+          "url": "http://www.telegraph.co.uk/theatre/what-to-see/les-liaisons-dangereuses-booth-theatre-new-york-review/",
+          "host": "telegraph.co.uk",
+          "outletId": "sunday-telegraph"
+        },
+        {
+          "url": "http://www.thedailybeast.com/articles/2016/10/30/les-liaisons-on-broadway-tedious-not-dangerous.html",
+          "host": "thedailybeast.com",
+          "outletId": "dailybeast"
+        },
+        {
+          "url": "http://www.nj.com/entertainment/index.ssf/2016/10/les_liaisons_dangereuses_liev_schreiber_broadway_r.html",
+          "host": "nj.com",
+          "outletId": "njcom"
+        },
+        {
+          "url": "http://www.thewrap.com/les-liaisons-dangereuses-broadway-review-liev-schreiber-janet-mcteer-bring-old-blighty-to-france/",
+          "host": "thewrap.com",
+          "outletId": "thewrap"
+        },
+        {
+          "url": "http://variety.com/2016/legit/reviews/les-liaisons-dangereuses-review-liev-schreiber-1201904602/",
+          "host": "variety.com",
+          "outletId": "variety"
+        },
+        {
+          "url": "http://www.vulture.com/2016/10/reviews-les-liaisons-dangereuses-the-harvest.html",
+          "host": "vulture.com",
+          "outletId": "vulture"
+        },
+        {
+          "url": "http://www.amny.com/entertainment/les-liaisons-dangereuses-review-broadway-revival-dangerously-disjointed-1.12530333",
+          "host": "amny.com",
+          "outletId": "amny"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2016/oct/30/les-liaisons-dangereuses-broadway-review-liev-schreiber-janet-mcteer",
+          "host": "theguardian.com",
+          "outletId": "guardian"
+        }
+      ]
+    },
+    {
+      "showId": "are-you-watching-west-end-2026",
+      "title": "Are You Watching?",
+      "openingDate": "2026-06-04",
       "status": "open",
       "category": "west-end",
       "aggregatorArticles": [],
@@ -148,108 +758,122 @@
       "flaggedMisses": []
     },
     {
-      "showId": "high-noon-west-end-2025",
-      "title": "High Noon",
-      "openingDate": "2026-01-09",
+      "showId": "between-the-river-and-the-sea-west-end-2026",
+      "title": "Between The River and The Sea",
+      "openingDate": "2026-04-20",
       "status": "closed",
       "category": "west-end",
       "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "worlds-greatest-lover-west-end-2026",
+      "title": "World’s Greatest Lover",
+      "openingDate": "2026-04-22",
+      "status": "open",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "end-of-the-rainbow-west-end-2026",
+      "title": "End of the Rainbow",
+      "openingDate": "2026-05-15",
+      "status": "open",
+      "category": "off-west-end",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-END-OF-THE-RAINBOW-Opens-on-Broadway-All-the-Reviews-20120403"
+      ],
       "aggregatorListedUrls": [
-        "https://www.londontheatre.co.uk/reviews/high-noon-review-harold-pinter-theatre",
-        "https://www.standard.co.uk/culture/theatre/high-noon-theatre-review-billy-crudup-b1265970.html",
-        "https://www.theguardian.com/stage/2026/jan/10/high-noon-review-billy-crudup-brings-classic-hollywood-western-back-with-a-bang",
-        "https://www.timeout.com/london/theatre/high-noon-review",
-        "https://www.telegraph.co.uk/theatre/what-to-see/high-noon-harold-pinter-theatre-review/",
-        "https://www.thetimes.com/culture/theatre-dance/article/high-noon-review-billy-crudup-b0w2hghzt",
-        "https://www.whatsonstage.com/news/high-noon-west-end-review-billy-crudup-and-denise-gough-in-a-suitably-wild-western_1708194/",
-        "https://theartsdesk.com/theatre/high-noon-harold-pinter-theatre-review-film-classic-becomes-platitudinous-parable",
-        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/high-noon-play-harold-pinter-theatre-billy-crudup-b2898002.html",
-        "https://www.thestage.co.uk/reviews/high-noon-review-harold-pinter-theatre-london-denise-gough-billy-crudup-eric-roth"
+        "http://theater.nytimes.com/2012/04/03/theater/reviews/end-of-the-rainbow-on-judy-garland-at-belasco-theater.html",
+        "http://www.huffingtonpost.com/huff-wires/20120402/us-theater-review-end-of-the-rainbow/",
+        "http://www.hollywoodreporter.com/review/end-of-the-rainbow-theater-review-306891",
+        "http://www.timeout.com/newyork/theater/end-of-the-rainbow-belasco-theatre-march-24-2012-1",
+        "http://www.backstage.com/bso/reviews-ny-theatre-broadway/ny-review-end-of-the-rainbow-1006650352.story",
+        "http://www.amny.com/urbanite-1.812039/theater-review-end-of-the-rainbow-2-5-stars-1.3639008",
+        "http://www.newjerseynewsroom.com/new-york-theater/review-end-of-the-rainbow-reveals-trash"
       ],
       "dirFiles": 0,
       "dirClean": 0,
-      "inReviewsJson": 20,
+      "inReviewsJson": 13,
       "missing": [
         {
-          "url": "https://www.londontheatre.co.uk/reviews/high-noon-review-harold-pinter-theatre",
-          "host": "londontheatre.co.uk",
+          "url": "http://theater.nytimes.com/2012/04/03/theater/reviews/end-of-the-rainbow-on-judy-garland-at-belasco-theater.html",
+          "host": "theater.nytimes.com",
           "knownOutletId": null
         },
         {
-          "url": "https://www.standard.co.uk/culture/theatre/high-noon-theatre-review-billy-crudup-b1265970.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard"
+          "url": "http://www.huffingtonpost.com/huff-wires/20120402/us-theater-review-end-of-the-rainbow/",
+          "host": "huffingtonpost.com",
+          "knownOutletId": null
         },
         {
-          "url": "https://www.theguardian.com/stage/2026/jan/10/high-noon-review-billy-crudup-brings-classic-hollywood-western-back-with-a-bang",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian"
+          "url": "http://www.hollywoodreporter.com/review/end-of-the-rainbow-theater-review-306891",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter"
         },
         {
-          "url": "https://www.timeout.com/london/theatre/high-noon-review",
+          "url": "http://www.timeout.com/newyork/theater/end-of-the-rainbow-belasco-theatre-march-24-2012-1",
           "host": "timeout.com",
           "knownOutletId": "timeout-london"
         },
         {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/high-noon-harold-pinter-theatre-review/",
-          "host": "telegraph.co.uk",
-          "knownOutletId": "sunday-telegraph"
+          "url": "http://www.backstage.com/bso/reviews-ny-theatre-broadway/ny-review-end-of-the-rainbow-1006650352.story",
+          "host": "backstage.com",
+          "knownOutletId": "backstage"
         },
         {
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/high-noon-review-billy-crudup-b0w2hghzt",
-          "host": "thetimes.com",
-          "knownOutletId": null
+          "url": "http://www.amny.com/urbanite-1.812039/theater-review-end-of-the-rainbow-2-5-stars-1.3639008",
+          "host": "amny.com",
+          "knownOutletId": "amny"
         },
         {
-          "url": "https://www.whatsonstage.com/news/high-noon-west-end-review-billy-crudup-and-denise-gough-in-a-suitably-wild-western_1708194/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage"
-        },
-        {
-          "url": "https://theartsdesk.com/theatre/high-noon-harold-pinter-theatre-review-film-classic-becomes-platitudinous-parable",
-          "host": "theartsdesk.com",
-          "knownOutletId": "artsdesk"
-        },
-        {
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/high-noon-play-harold-pinter-theatre-billy-crudup-b2898002.html",
-          "host": "independent.co.uk",
-          "knownOutletId": "independent"
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/high-noon-review-harold-pinter-theatre-london-denise-gough-billy-crudup-eric-roth",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage"
+          "url": "http://www.newjerseynewsroom.com/new-york-theater/review-end-of-the-rainbow-reveals-trash",
+          "host": "newjerseynewsroom.com",
+          "knownOutletId": "new-jersey-newsroom"
         }
       ],
       "dirOnly": [],
       "flaggedMisses": [],
       "ingestResults": [
         {
-          "url": "https://www.londontheatre.co.uk/reviews/high-noon-review-harold-pinter-theatre",
-          "host": "londontheatre.co.uk",
-          "outletId": "co",
+          "url": "http://theater.nytimes.com/2012/04/03/theater/reviews/end-of-the-rainbow-on-judy-garland-at-belasco-theater.html",
+          "host": "theater.nytimes.com",
+          "outletId": "nytimes",
           "provisional": true,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "http://www.huffingtonpost.com/huff-wires/20120402/us-theater-review-end-of-the-rainbow/",
+          "host": "huffingtonpost.com",
+          "outletId": "huffingtonpost",
+          "provisional": true,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/end-of-the-rainbow-theater-review-306891",
+          "host": "hollywoodreporter.com",
+          "outletId": "hollywood-reporter",
+          "provisional": false,
           "ok": false,
-          "reason": "spawnSync node ETIMEDOUT"
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=end-of-the-rainbow-west-end-2026 --url"
         },
         {
-          "url": "https://www.standard.co.uk/culture/theatre/high-noon-theatre-review-billy-crudup-b1265970.html",
-          "host": "standard.co.uk",
-          "outletId": "standard",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2026/jan/10/high-noon-review-billy-crudup-brings-classic-hollywood-western-back-with-a-bang",
-          "host": "theguardian.com",
-          "outletId": "guardian",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/high-noon-review",
+          "url": "http://www.timeout.com/newyork/theater/end-of-the-rainbow-belasco-theatre-march-24-2012-1",
           "host": "timeout.com",
           "outletId": "timeout-london",
           "provisional": false,
@@ -257,672 +881,103 @@
           "reason": null
         },
         {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/high-noon-harold-pinter-theatre-review/",
-          "host": "telegraph.co.uk",
-          "outletId": "sunday-telegraph",
+          "url": "http://www.backstage.com/bso/reviews-ny-theatre-broadway/ny-review-end-of-the-rainbow-1006650352.story",
+          "host": "backstage.com",
+          "outletId": "backstage",
           "provisional": false,
-          "ok": true,
-          "reason": null
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=end-of-the-rainbow-west-end-2026 --url"
         }
       ],
       "ingestSkippedByCap": [
         {
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/high-noon-review-billy-crudup-b0w2hghzt",
-          "host": "thetimes.com",
-          "outletId": "thetimes"
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/high-noon-west-end-review-billy-crudup-and-denise-gough-in-a-suitably-wild-western_1708194/",
-          "host": "whatsonstage.com",
-          "outletId": "whatsonstage"
-        },
-        {
-          "url": "https://theartsdesk.com/theatre/high-noon-harold-pinter-theatre-review-film-classic-becomes-platitudinous-parable",
-          "host": "theartsdesk.com",
-          "outletId": "artsdesk"
-        },
-        {
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/high-noon-play-harold-pinter-theatre-billy-crudup-b2898002.html",
-          "host": "independent.co.uk",
-          "outletId": "independent"
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/high-noon-review-harold-pinter-theatre-london-denise-gough-billy-crudup-eric-roth",
-          "host": "thestage.co.uk",
-          "outletId": "thestage"
-        }
-      ]
-    },
-    {
-      "showId": "starlight-express-west-end-2024",
-      "title": "Starlight Express",
-      "openingDate": "2024-06-29",
-      "status": "closed",
-      "category": "off-west-end",
-      "aggregatorArticles": [
-        "https://playbill.com/article/reviews-did-londons-new-starlight-express-have-critics-aboard"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.broadwayworld.com/westend/article/Review-STARLIGHT-EXPRESS-Troubadour-Theatre-20240701",
-        "https://www.culturewhisper.com/r/musicals/review_starlight_express_troubadour_wembley_park/17969",
-        "https://www.dailymail.co.uk/tvshowbiz/article-13585761/Starlight-Express-review-trainwreck-No-ear-blasting-scorcher-revival-writes-PATRICK-MARMION.html",
-        "https://www.theguardian.com/stage/article/2024/jun/30/starlight-express-review-andrew-lloyd-webber-troubadour-wembley-park-theatre-london",
-        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/starlight-express-review-wembley-troubadour-b2570717.html",
-        "https://inews.co.uk/culture/arts/starlight-express-review-naff-3138148",
-        "https://www.londontheatre1.com/reviews/andrew-lloyd-webbers-starlight-express-review/",
-        "https://www.londontheatre.co.uk/reviews/starlight-express-review-troubadour-wembley-park-theatre",
-        "https://loureviews.blog/2024/07/01/theatre-review-starlight-express-troubadour-wembley-park-theatre/",
-        "https://www.nytimes.com/2024/07/01/theater/starlight-express-review-london.html",
-        "https://www.thestage.co.uk/reviews/starlight-express-review-troubadour-wembley-park-london-andrew-lloyd-webber-richard-stilgoe-luke-sheppard",
-        "https://www.telegraph.co.uk/theatre/what-to-see/starlight-express-troubadour-wembley-park-review/",
-        "https://www.timeout.com/london/theatre/starlight-express-review",
-        "https://www.thetimes.com/culture/theatre-dance/article/starlight-express-review-6cmvsm6j6",
-        "https://variety.com/2024/legit/reviews/starlight-express-review-andrew-lloyd-webber-roller-skating-musical-london-revival-1236057050/",
-        "https://www.westendbestfriend.co.uk/news/review-starlight-express-troubadour-wembley-park-theatre",
-        "https://www.whatsonstage.com/news/starlight-express-review-not-first-class-but-a-technical-rollercoaster-ride_1610072/"
-      ],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 24,
-      "missing": [
-        {
-          "url": "https://www.broadwayworld.com/westend/article/Review-STARLIGHT-EXPRESS-Troubadour-Theatre-20240701",
-          "host": "broadwayworld.com",
-          "knownOutletId": "broadwayworld"
-        },
-        {
-          "url": "https://www.culturewhisper.com/r/musicals/review_starlight_express_troubadour_wembley_park/17969",
-          "host": "culturewhisper.com",
-          "knownOutletId": "culture-whisper"
-        },
-        {
-          "url": "https://www.dailymail.co.uk/tvshowbiz/article-13585761/Starlight-Express-review-trainwreck-No-ear-blasting-scorcher-revival-writes-PATRICK-MARMION.html",
-          "host": "dailymail.co.uk",
-          "knownOutletId": "daily-mail"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/article/2024/jun/30/starlight-express-review-andrew-lloyd-webber-troubadour-wembley-park-theatre-london",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian"
-        },
-        {
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/starlight-express-review-wembley-troubadour-b2570717.html",
-          "host": "independent.co.uk",
-          "knownOutletId": "independent"
-        },
-        {
-          "url": "https://inews.co.uk/culture/arts/starlight-express-review-naff-3138148",
-          "host": "inews.co.uk",
-          "knownOutletId": "i-paper"
-        },
-        {
-          "url": "https://www.londontheatre1.com/reviews/andrew-lloyd-webbers-starlight-express-review/",
-          "host": "londontheatre1.com",
-          "knownOutletId": "londontheatre1"
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/starlight-express-review-troubadour-wembley-park-theatre",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://loureviews.blog/2024/07/01/theatre-review-starlight-express-troubadour-wembley-park-theatre/",
-          "host": "loureviews.blog",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://www.nytimes.com/2024/07/01/theater/starlight-express-review-london.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes"
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/starlight-express-review-troubadour-wembley-park-london-andrew-lloyd-webber-richard-stilgoe-luke-sheppard",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage"
-        },
-        {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/starlight-express-troubadour-wembley-park-review/",
-          "host": "telegraph.co.uk",
-          "knownOutletId": "sunday-telegraph"
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/starlight-express-review",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london"
-        },
-        {
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/starlight-express-review-6cmvsm6j6",
-          "host": "thetimes.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://variety.com/2024/legit/reviews/starlight-express-review-andrew-lloyd-webber-roller-skating-musical-london-revival-1236057050/",
-          "host": "variety.com",
-          "knownOutletId": "variety"
-        },
-        {
-          "url": "https://www.westendbestfriend.co.uk/news/review-starlight-express-troubadour-wembley-park-theatre",
-          "host": "westendbestfriend.co.uk",
-          "knownOutletId": "west-end-best-friend"
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/starlight-express-review-not-first-class-but-a-technical-rollercoaster-ride_1610072/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage"
-        }
-      ],
-      "dirOnly": [],
-      "flaggedMisses": [],
-      "ingestResults": [
-        {
-          "url": "https://www.broadwayworld.com/westend/article/Review-STARLIGHT-EXPRESS-Troubadour-Theatre-20240701",
-          "host": "broadwayworld.com",
-          "outletId": "broadwayworld",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.culturewhisper.com/r/musicals/review_starlight_express_troubadour_wembley_park/17969",
-          "host": "culturewhisper.com",
-          "outletId": "culture-whisper",
-          "provisional": false,
-          "ok": false,
-          "reason": "spawnSync node ETIMEDOUT"
-        },
-        {
-          "url": "https://www.dailymail.co.uk/tvshowbiz/article-13585761/Starlight-Express-review-trainwreck-No-ear-blasting-scorcher-revival-writes-PATRICK-MARMION.html",
-          "host": "dailymail.co.uk",
-          "outletId": "daily-mail",
-          "provisional": false,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=starlight-express-west-end-2024 --url="
-        },
-        {
-          "url": "https://www.theguardian.com/stage/article/2024/jun/30/starlight-express-review-andrew-lloyd-webber-troubadour-wembley-park-theatre-london",
-          "host": "theguardian.com",
-          "outletId": "guardian",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/starlight-express-review-wembley-troubadour-b2570717.html",
-          "host": "independent.co.uk",
-          "outletId": "independent",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://inews.co.uk/culture/arts/starlight-express-review-naff-3138148",
-          "host": "inews.co.uk",
-          "outletId": "i-paper"
-        },
-        {
-          "url": "https://www.londontheatre1.com/reviews/andrew-lloyd-webbers-starlight-express-review/",
-          "host": "londontheatre1.com",
-          "outletId": "londontheatre1"
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/starlight-express-review-troubadour-wembley-park-theatre",
-          "host": "londontheatre.co.uk",
-          "outletId": "co"
-        },
-        {
-          "url": "https://loureviews.blog/2024/07/01/theatre-review-starlight-express-troubadour-wembley-park-theatre/",
-          "host": "loureviews.blog",
-          "outletId": "loureviews"
-        },
-        {
-          "url": "https://www.nytimes.com/2024/07/01/theater/starlight-express-review-london.html",
-          "host": "nytimes.com",
-          "outletId": "nytimes"
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/starlight-express-review-troubadour-wembley-park-london-andrew-lloyd-webber-richard-stilgoe-luke-sheppard",
-          "host": "thestage.co.uk",
-          "outletId": "thestage"
-        },
-        {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/starlight-express-troubadour-wembley-park-review/",
-          "host": "telegraph.co.uk",
-          "outletId": "sunday-telegraph"
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/starlight-express-review",
-          "host": "timeout.com",
-          "outletId": "timeout-london"
-        },
-        {
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/starlight-express-review-6cmvsm6j6",
-          "host": "thetimes.com",
-          "outletId": "thetimes"
-        },
-        {
-          "url": "https://variety.com/2024/legit/reviews/starlight-express-review-andrew-lloyd-webber-roller-skating-musical-london-revival-1236057050/",
-          "host": "variety.com",
-          "outletId": "variety"
-        },
-        {
-          "url": "https://www.westendbestfriend.co.uk/news/review-starlight-express-troubadour-wembley-park-theatre",
-          "host": "westendbestfriend.co.uk",
-          "outletId": "west-end-best-friend"
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/starlight-express-review-not-first-class-but-a-technical-rollercoaster-ride_1610072/",
-          "host": "whatsonstage.com",
-          "outletId": "whatsonstage"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-west-end-2025",
-      "title": "Into the Woods",
-      "openingDate": "2025-12-11",
-      "status": "closed",
-      "category": "off-west-end",
-      "aggregatorArticles": [
-        "https://playbill.com/article/reviews-what-did-the-critics-think-of-broadways-into-the-woods-revival",
-        "https://playbill.com/article/reviews-what-did-the-critics-have-to-say-about-new-york-city-center-encores-into-the-woods",
-        "https://playbill.com/article/reviews-what-did-critics-think-of-the-re-imagined-u-k-into-the-woods",
-        "https://playbill.com/article/read-reviews-for-hollywood-bowl-into-the-woods-starring-patina-miller-sutton-foster-skylar-astin-cheyenne-jackson",
-        "https://www.broadwayworld.com/article/Review-Roundup-INTO-THE-WOODS-Opens-on-Broadway--Updating-Live-20220710",
-        "https://www.broadwayworld.com/article/Review-Roundup-INTO-THE-WOODS-Hits-the-Road-What-Are-the-Critics-Saying-20230329",
-        "https://www.broadwayworld.com/article/Review-Roundup-The-Public-Theaters-INTO-THE-WOODS-in-Central-Park-Updating-LIVE-20120809",
-        "https://www.broadwayworld.com/article/Review-Roundup-INTO-THE-WOODS-Opens-at-New-York-City-Center-Encores-20220506",
-        "https://www.broadwayworld.com/article/Review-Roundup-Were-the-Critics-Enchanted-By-INTO-THE-WOODS-at-the-Hollywood-Bowl-20190728"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.amny.com/entertainment/broadway/into-the-woods-revival-review-july-2022/",
-        "https://www.thedailybeast.com/stephen-sondheims-into-the-woods-is-sheer-moving-magic-on-broadway",
-        "https://deadline.com/2022/07/into-the-woods-broadway-review-1235061007/",
-        "https://www.hollywoodreporter.com/lifestyle/arts/into-the-woods-stephen-sondheim-broadway-1235177573/",
-        "https://www.nydailynews.com/entertainment/broadway/ny-broadway-into-the-woods-review-20220711-idmgzuuyvvchzla7fscesafbm4-story.html",
-        "https://nystagereview.com/2022/07/10/into-the-woods-the-beloved-sondheim-lapine-musical-in-full-bloom/",
-        "https://www.nytimes.com/2022/07/10/theater/into-the-woods-review.html",
-        "https://observer.com/2022/07/review-into-the-woods-still-casts-a-sensational-spell-on-broadway/",
-        "http://www.theatrely.com/post/a-sublime-into-the-woods-kicks-off-a-new-season-review",
-        "https://www.timeout.com/newyork/theater/into-the-woods-broadway-review-revival-sara-bareilles-stephen-sondheim",
-        "https://variety.com/2022/theater/reviews/into-the-woods-review-revival-sondheim-broadway-city-center-encores-1235312251/",
-        "https://www.vulture.com/2022/07/theater-review-into-the-woods-sondheim-lapine-bareilles-broadway-2022.html",
-        "https://www.washingtonpost.com/theater-dance/2022/07/10/into-the-woods-bareilles-sondheim/",
-        "https://www.thewrap.com/into-the-woods-broadway-review-sondheim-revival/",
-        "https://www.thedailybeast.com/encores-all-star-into-the-woods-is-the-perfect-tribute-to-stephen-sondheim",
-        "https://nystagereview.com/2022/05/06/into-the-woods-sondheim-leads-encores-out-of-darkness/",
-        "https://www.nytimes.com/2022/05/06/theater/into-the-woods-review.html",
-        "https://www.theatrely.com/post/into-the-woods-with-a-hurricane-of-talent-review",
-        "https://www.theaterpizzazz.com/into-the-woods/",
-        "https://www.theguardian.com/stage/2022/aug/25/into-the-woods-review-terry-gilliams-rollicking-take-on-sondheims-fairytale-collision",
-        "https://www.thestage.co.uk/long-reviews/into-the-woods-directed-by-terry-gilliam-review-at-theatre-royal-bath",
-        "https://theatrecat.com/2022/08/25/into-the-woods-theatre-royal-bath/",
-        "https://theatrevibe.co.uk/2022/08/26/review-into-the-woods-theatre-royal-bath-2022/",
-        "https://vigourtimes.com/happy-ever-after-for-terry-gilliams-cancelled-fairy-tale-patrick-marmion-reviews-into-the-woods/",
-        "https://hollywoodreporter.com/review/into-the-woods-theater-1227473",
-        "https://laexcites.com/2019/07/27/review-a-star-studded-into-the-woods-hollywood-bowl/",
-        "https://www.latimes.com/entertainment-arts/story/2019-07-28/into-the-woods-sutton-foster-skylar-astin-hollywood-bowl-review",
-        "https://southpasadenan.com/enchanting-evening-at-hollywood-bowls-into-the-woods/",
-        "https://stageandcinema.com/2019/07/27/into-the-woods-hollywood-bowl/",
-        "https://nypost.com/2022/07/10/into-the-woods-broadway-review-high-octane-unfiltered-sondheim/",
-        "https://www.theatrely.com/post/a-sublime-into-the-woods-kicks-off-a-new-season-review",
-        "https://www.newyorktheatreguide.com/reviews/into-the-woods-broadway-review-sara-bareilles-brian-darcy-james",
-        "https://www.washingtonpost.com/theater-dance/2023/02/26/into-the-woods-sondheim-kennedy/",
-        "https://dailyfreepress.com/2023/03/22/review-emerson-colonial-theatres-into-the-the-woods-a-refreshing-take-on-a-sondheim-classic-but-doesnt-pack-an-emotional-punch/",
-        "https://www.newcitystage.com/2023/05/02/the-time-is-now-a-review-of-into-the-woods-at-broadway-in-chicago/",
-        "https://www.orlandoweekly.com/arts/broadway-in-orlando-a-wondrous-journey-back-into-the-woods-that-no-theater-fan-should-miss-34363986",
-        "https://attractionsmagazine.com/theater-review-into-the-woods-broadway/",
-        "https://datebook.sfchronicle.com/theater/broadway-sf-into-the-woods-curran-review-18126656",
-        "https://www.latimes.com/entertainment-arts/story/2023-07-03/review-tony-nominated-into-the-woods-revival-ahmanson-best-of-lifetime",
-        "https://variety.com/2023/legit/news/into-the-woods-review-ahmanson-theater-stephen-sondheim-broadway-tour-1235660010/",
-        "http://theater.nytimes.com/2012/08/10/theater/reviews/into-the-woods-by-stephen-sondheim-and-james-lapine.html",
-        "http://www.usatoday.com/life/theater/reviews/story/2012-08-09/into-the-woods-amy-adams/56922288/1",
-        "http://www.bloomberg.com/news/2012-08-10/sex-crazed-wolf-moody-cow-spark-into-the-woods-review.html",
-        "http://blogs.villagevoice.com/dailymusto/2012/08/into_the_woods.php",
-        "http://www.boston.com/ae/theater-arts/2012/08/09/review-into-the-woods-thrilling-and-inventive/wfIqOPLrHUrIc3mrf9vZTK/story.html",
-        "http://www.amny.com/urbanite-1.812039/theater-review-into-the-woods-2-stars-1.3894398",
-        "http://www.hollywoodreporter.com/review/into-the-woods-theater-amy-adams-360420",
-        "http://www.philly.com/philly/entertainment/20120809_N_Y__review___lsquo_Into_the_Woods_.html",
-        "http://www.newsday.com/entertainment/theater/review-into-the-woods-1.3890348",
-        "http://www.washingtonpost.com/lifestyle/style/sondheim-in-the-park-into-the-woods-with-amy-adams-and-donna-murphy/2012/08/09/1e118310-e25e-11e1-89f7-76e23a982d06_story.html",
-        "http://www.huffingtonpost.com/wilborn-hampton/into-the-woods-review_b_1752641.html",
-        "http://www.timeout.com/newyork/theater/into-the-woods-1",
-        "http://www.backstage.com/bso/reviews-ny-theatre-off-broadway/ny-review-into-the-woods-1007795162.story",
-        "https://www.hollywoodreporter.com/review/into-the-woods-theater-1227473",
-        "https://www.stageandcinema.com/2019/07/27/into-the-woods-hollywood-bowl/",
-        "https://onstageandscreen.com/2019/07/27/theater-review-into-the-woods-at-the-hollywood-bowl/",
-        "https://www.londontheatre.co.uk/reviews/into-the-woods-review-bridge-theatre",
-        "https://www.standard.co.uk/culture/theatre/into-the-woods-review-bridge-theatre-b1262271.html",
-        "https://www.theguardian.com/stage/2025/dec/12/into-the-woods-review-bridge-theatre-london",
-        "https://www.telegraph.co.uk/theatre/what-to-see/into-the-woods-review-bridge-theatre/",
-        "https://www.whatsonstage.com/news/into-the-woods-at-the-bridge-theatre-review-magical-moments-in-the-woods_1706187/",
-        "https://www.thestage.co.uk/reviews/into-the-woods-review-bridge-theatre-london-stephen-sondheim-jordan-fein",
-        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/into-the-woods-bridge-theatre-sondheim-review-b2883199.html",
-        "https://www.londontheatre.co.uk/theatre-news/news/learn-about-the-production-history-of-into-the-woods"
-      ],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 25,
-      "missing": [
-        {
-          "url": "https://www.amny.com/entertainment/broadway/into-the-woods-revival-review-july-2022/",
+          "url": "http://www.amny.com/urbanite-1.812039/theater-review-end-of-the-rainbow-2-5-stars-1.3639008",
           "host": "amny.com",
-          "knownOutletId": "amny"
+          "outletId": "amny"
         },
         {
-          "url": "https://www.thedailybeast.com/stephen-sondheims-into-the-woods-is-sheer-moving-magic-on-broadway",
-          "host": "thedailybeast.com",
-          "knownOutletId": "dailybeast"
-        },
+          "url": "http://www.newjerseynewsroom.com/new-york-theater/review-end-of-the-rainbow-reveals-trash",
+          "host": "newjerseynewsroom.com",
+          "outletId": "new-jersey-newsroom"
+        }
+      ]
+    },
+    {
+      "showId": "the-tempest-globe-west-end-2026",
+      "title": "The Tempest - Globe",
+      "openingDate": "2026-01-29",
+      "status": "closed",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "man-and-boy-west-end-2026",
+      "title": "Man and Boy",
+      "openingDate": "2026-02-09",
+      "status": "closed",
+      "category": "west-end",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-MAN-AND-BOY-20111010"
+      ],
+      "aggregatorListedUrls": [
+        "http://theater.nytimes.com/2011/10/10/theater/reviews/man-and-boy-with-frank-langella-review.html",
+        "http://www.usatoday.com/life/theater/reviews/story/2011-10-09/man-and-boy-frank-langella/50713146/1",
+        "http://www.nydailynews.com/entertainment/music/2011/10/10/2011-10-10_man_and_boy_review_frank_langella_is_rich_in_poor_play.html",
+        "http://www.newsday.com/entertainment/theater/langella-riveting-in-cheesy-man-and-boy-1.3233458",
+        "http://blogs.villagevoice.com/dailymusto/2011/10/man_and_boy.php",
+        "http://www.businessweek.com/news/2011-10-09/langella-s-suave-mogul-crashes-in-man-and-boy-jeremy-gerard.html",
+        "http://www.newjerseynewsroom.com/new-york-theater/review-man-and-boy-studies-a-scoundrel-and-his-son",
+        "http://newyork.timeout.com/arts-culture/theater/2047799/review-man-and-boy"
+      ],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 8,
+      "missing": [
         {
-          "url": "https://deadline.com/2022/07/into-the-woods-broadway-review-1235061007/",
-          "host": "deadline.com",
-          "knownOutletId": "deadline"
-        },
-        {
-          "url": "https://www.hollywoodreporter.com/lifestyle/arts/into-the-woods-stephen-sondheim-broadway-1235177573/",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter"
-        },
-        {
-          "url": "https://www.nydailynews.com/entertainment/broadway/ny-broadway-into-the-woods-review-20220711-idmgzuuyvvchzla7fscesafbm4-story.html",
-          "host": "nydailynews.com",
-          "knownOutletId": "nydailynews"
-        },
-        {
-          "url": "https://nystagereview.com/2022/07/10/into-the-woods-the-beloved-sondheim-lapine-musical-in-full-bloom/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr"
-        },
-        {
-          "url": "https://www.nytimes.com/2022/07/10/theater/into-the-woods-review.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes"
-        },
-        {
-          "url": "https://observer.com/2022/07/review-into-the-woods-still-casts-a-sensational-spell-on-broadway/",
-          "host": "observer.com",
-          "knownOutletId": "observer"
-        },
-        {
-          "url": "http://www.theatrely.com/post/a-sublime-into-the-woods-kicks-off-a-new-season-review",
-          "host": "theatrely.com",
-          "knownOutletId": "theatrely"
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/into-the-woods-broadway-review-revival-sara-bareilles-stephen-sondheim",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london"
-        },
-        {
-          "url": "https://variety.com/2022/theater/reviews/into-the-woods-review-revival-sondheim-broadway-city-center-encores-1235312251/",
-          "host": "variety.com",
-          "knownOutletId": "variety"
-        },
-        {
-          "url": "https://www.vulture.com/2022/07/theater-review-into-the-woods-sondheim-lapine-bareilles-broadway-2022.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture"
-        },
-        {
-          "url": "https://www.washingtonpost.com/theater-dance/2022/07/10/into-the-woods-bareilles-sondheim/",
-          "host": "washingtonpost.com",
-          "knownOutletId": "washpost"
-        },
-        {
-          "url": "https://www.thewrap.com/into-the-woods-broadway-review-sondheim-revival/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap"
-        },
-        {
-          "url": "https://www.thedailybeast.com/encores-all-star-into-the-woods-is-the-perfect-tribute-to-stephen-sondheim",
-          "host": "thedailybeast.com",
-          "knownOutletId": "dailybeast"
-        },
-        {
-          "url": "https://nystagereview.com/2022/05/06/into-the-woods-sondheim-leads-encores-out-of-darkness/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr"
-        },
-        {
-          "url": "https://www.nytimes.com/2022/05/06/theater/into-the-woods-review.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes"
-        },
-        {
-          "url": "https://www.theatrely.com/post/into-the-woods-with-a-hurricane-of-talent-review",
-          "host": "theatrely.com",
-          "knownOutletId": "theatrely"
-        },
-        {
-          "url": "https://www.theaterpizzazz.com/into-the-woods/",
-          "host": "theaterpizzazz.com",
-          "knownOutletId": "theater-pizzazz"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2022/aug/25/into-the-woods-review-terry-gilliams-rollicking-take-on-sondheims-fairytale-collision",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian"
-        },
-        {
-          "url": "https://www.thestage.co.uk/long-reviews/into-the-woods-directed-by-terry-gilliam-review-at-theatre-royal-bath",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage"
-        },
-        {
-          "url": "https://theatrecat.com/2022/08/25/into-the-woods-theatre-royal-bath/",
-          "host": "theatrecat.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://theatrevibe.co.uk/2022/08/26/review-into-the-woods-theatre-royal-bath-2022/",
-          "host": "theatrevibe.co.uk",
-          "knownOutletId": "theatre-vibe"
-        },
-        {
-          "url": "https://vigourtimes.com/happy-ever-after-for-terry-gilliams-cancelled-fairy-tale-patrick-marmion-reviews-into-the-woods/",
-          "host": "vigourtimes.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://hollywoodreporter.com/review/into-the-woods-theater-1227473",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter"
-        },
-        {
-          "url": "https://laexcites.com/2019/07/27/review-a-star-studded-into-the-woods-hollywood-bowl/",
-          "host": "laexcites.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://www.latimes.com/entertainment-arts/story/2019-07-28/into-the-woods-sutton-foster-skylar-astin-hollywood-bowl-review",
-          "host": "latimes.com",
-          "knownOutletId": "latimes"
-        },
-        {
-          "url": "https://southpasadenan.com/enchanting-evening-at-hollywood-bowls-into-the-woods/",
-          "host": "southpasadenan.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://stageandcinema.com/2019/07/27/into-the-woods-hollywood-bowl/",
-          "host": "stageandcinema.com",
-          "knownOutletId": "stageandcinema"
-        },
-        {
-          "url": "https://nypost.com/2022/07/10/into-the-woods-broadway-review-high-octane-unfiltered-sondheim/",
-          "host": "nypost.com",
-          "knownOutletId": "nypost"
-        },
-        {
-          "url": "https://www.theatrely.com/post/a-sublime-into-the-woods-kicks-off-a-new-season-review",
-          "host": "theatrely.com",
-          "knownOutletId": "theatrely"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/into-the-woods-broadway-review-sara-bareilles-brian-darcy-james",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg"
-        },
-        {
-          "url": "https://www.washingtonpost.com/theater-dance/2023/02/26/into-the-woods-sondheim-kennedy/",
-          "host": "washingtonpost.com",
-          "knownOutletId": "washpost"
-        },
-        {
-          "url": "https://dailyfreepress.com/2023/03/22/review-emerson-colonial-theatres-into-the-the-woods-a-refreshing-take-on-a-sondheim-classic-but-doesnt-pack-an-emotional-punch/",
-          "host": "dailyfreepress.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://www.newcitystage.com/2023/05/02/the-time-is-now-a-review-of-into-the-woods-at-broadway-in-chicago/",
-          "host": "newcitystage.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://www.orlandoweekly.com/arts/broadway-in-orlando-a-wondrous-journey-back-into-the-woods-that-no-theater-fan-should-miss-34363986",
-          "host": "orlandoweekly.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://attractionsmagazine.com/theater-review-into-the-woods-broadway/",
-          "host": "attractionsmagazine.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://datebook.sfchronicle.com/theater/broadway-sf-into-the-woods-curran-review-18126656",
-          "host": "datebook.sfchronicle.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://www.latimes.com/entertainment-arts/story/2023-07-03/review-tony-nominated-into-the-woods-revival-ahmanson-best-of-lifetime",
-          "host": "latimes.com",
-          "knownOutletId": "latimes"
-        },
-        {
-          "url": "https://variety.com/2023/legit/news/into-the-woods-review-ahmanson-theater-stephen-sondheim-broadway-tour-1235660010/",
-          "host": "variety.com",
-          "knownOutletId": "variety"
-        },
-        {
-          "url": "http://theater.nytimes.com/2012/08/10/theater/reviews/into-the-woods-by-stephen-sondheim-and-james-lapine.html",
+          "url": "http://theater.nytimes.com/2011/10/10/theater/reviews/man-and-boy-with-frank-langella-review.html",
           "host": "theater.nytimes.com",
           "knownOutletId": null
         },
         {
-          "url": "http://www.usatoday.com/life/theater/reviews/story/2012-08-09/into-the-woods-amy-adams/56922288/1",
+          "url": "http://www.usatoday.com/life/theater/reviews/story/2011-10-09/man-and-boy-frank-langella/50713146/1",
           "host": "usatoday.com",
           "knownOutletId": "usatoday"
         },
         {
-          "url": "http://www.bloomberg.com/news/2012-08-10/sex-crazed-wolf-moody-cow-spark-into-the-woods-review.html",
-          "host": "bloomberg.com",
-          "knownOutletId": "bloomberg"
+          "url": "http://www.nydailynews.com/entertainment/music/2011/10/10/2011-10-10_man_and_boy_review_frank_langella_is_rich_in_poor_play.html",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews"
         },
         {
-          "url": "http://blogs.villagevoice.com/dailymusto/2012/08/into_the_woods.php",
-          "host": "blogs.villagevoice.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "http://www.boston.com/ae/theater-arts/2012/08/09/review-into-the-woods-thrilling-and-inventive/wfIqOPLrHUrIc3mrf9vZTK/story.html",
-          "host": "boston.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "http://www.amny.com/urbanite-1.812039/theater-review-into-the-woods-2-stars-1.3894398",
-          "host": "amny.com",
-          "knownOutletId": "amny"
-        },
-        {
-          "url": "http://www.hollywoodreporter.com/review/into-the-woods-theater-amy-adams-360420",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter"
-        },
-        {
-          "url": "http://www.philly.com/philly/entertainment/20120809_N_Y__review___lsquo_Into_the_Woods_.html",
-          "host": "philly.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "http://www.newsday.com/entertainment/theater/review-into-the-woods-1.3890348",
+          "url": "http://www.newsday.com/entertainment/theater/langella-riveting-in-cheesy-man-and-boy-1.3233458",
           "host": "newsday.com",
           "knownOutletId": "newsday"
         },
         {
-          "url": "http://www.washingtonpost.com/lifestyle/style/sondheim-in-the-park-into-the-woods-with-amy-adams-and-donna-murphy/2012/08/09/1e118310-e25e-11e1-89f7-76e23a982d06_story.html",
-          "host": "washingtonpost.com",
-          "knownOutletId": "washpost"
-        },
-        {
-          "url": "http://www.huffingtonpost.com/wilborn-hampton/into-the-woods-review_b_1752641.html",
-          "host": "huffingtonpost.com",
+          "url": "http://blogs.villagevoice.com/dailymusto/2011/10/man_and_boy.php",
+          "host": "blogs.villagevoice.com",
           "knownOutletId": null
         },
         {
-          "url": "http://www.timeout.com/newyork/theater/into-the-woods-1",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london"
-        },
-        {
-          "url": "http://www.backstage.com/bso/reviews-ny-theatre-off-broadway/ny-review-into-the-woods-1007795162.story",
-          "host": "backstage.com",
-          "knownOutletId": "backstage"
-        },
-        {
-          "url": "https://www.hollywoodreporter.com/review/into-the-woods-theater-1227473",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter"
-        },
-        {
-          "url": "https://www.stageandcinema.com/2019/07/27/into-the-woods-hollywood-bowl/",
-          "host": "stageandcinema.com",
-          "knownOutletId": "stageandcinema"
-        },
-        {
-          "url": "https://onstageandscreen.com/2019/07/27/theater-review-into-the-woods-at-the-hollywood-bowl/",
-          "host": "onstageandscreen.com",
-          "knownOutletId": "on-stage-and-screen"
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/into-the-woods-review-bridge-theatre",
-          "host": "londontheatre.co.uk",
+          "url": "http://www.businessweek.com/news/2011-10-09/langella-s-suave-mogul-crashes-in-man-and-boy-jeremy-gerard.html",
+          "host": "businessweek.com",
           "knownOutletId": null
         },
         {
-          "url": "https://www.standard.co.uk/culture/theatre/into-the-woods-review-bridge-theatre-b1262271.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard"
+          "url": "http://www.newjerseynewsroom.com/new-york-theater/review-man-and-boy-studies-a-scoundrel-and-his-son",
+          "host": "newjerseynewsroom.com",
+          "knownOutletId": "new-jersey-newsroom"
         },
         {
-          "url": "https://www.theguardian.com/stage/2025/dec/12/into-the-woods-review-bridge-theatre-london",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian"
-        },
-        {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/into-the-woods-review-bridge-theatre/",
-          "host": "telegraph.co.uk",
-          "knownOutletId": "sunday-telegraph"
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/into-the-woods-at-the-bridge-theatre-review-magical-moments-in-the-woods_1706187/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage"
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/into-the-woods-review-bridge-theatre-london-stephen-sondheim-jordan-fein",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage"
-        },
-        {
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/into-the-woods-bridge-theatre-sondheim-review-b2883199.html",
-          "host": "independent.co.uk",
-          "knownOutletId": "independent"
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/theatre-news/news/learn-about-the-production-history-of-into-the-woods",
-          "host": "londontheatre.co.uk",
+          "url": "http://newyork.timeout.com/arts-culture/theater/2047799/review-man-and-boy",
+          "host": "newyork.timeout.com",
           "knownOutletId": null
         }
       ],
@@ -930,7 +985,444 @@
       "flaggedMisses": [],
       "ingestResults": [
         {
-          "url": "https://www.amny.com/entertainment/broadway/into-the-woods-revival-review-july-2022/",
+          "url": "http://theater.nytimes.com/2011/10/10/theater/reviews/man-and-boy-with-frank-langella-review.html",
+          "host": "theater.nytimes.com",
+          "outletId": "nytimes",
+          "provisional": true,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "http://www.usatoday.com/life/theater/reviews/story/2011-10-09/man-and-boy-frank-langella/50713146/1",
+          "host": "usatoday.com",
+          "outletId": "usatoday",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/music/2011/10/10/2011-10-10_man_and_boy_review_frank_langella_is_rich_in_poor_play.html",
+          "host": "nydailynews.com",
+          "outletId": "nydailynews",
+          "provisional": false,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=man-and-boy-west-end-2026 --url=http:/"
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/langella-riveting-in-cheesy-man-and-boy-1.3233458",
+          "host": "newsday.com",
+          "outletId": "newsday",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "http://blogs.villagevoice.com/dailymusto/2011/10/man_and_boy.php",
+          "host": "blogs.villagevoice.com",
+          "outletId": "villagevoice",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=man-and-boy-west-end-2026 --url=http:/"
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "http://www.businessweek.com/news/2011-10-09/langella-s-suave-mogul-crashes-in-man-and-boy-jeremy-gerard.html",
+          "host": "businessweek.com",
+          "outletId": "businessweek"
+        },
+        {
+          "url": "http://www.newjerseynewsroom.com/new-york-theater/review-man-and-boy-studies-a-scoundrel-and-his-son",
+          "host": "newjerseynewsroom.com",
+          "outletId": "new-jersey-newsroom"
+        },
+        {
+          "url": "http://newyork.timeout.com/arts-culture/theater/2047799/review-man-and-boy",
+          "host": "newyork.timeout.com",
+          "outletId": "timeout"
+        }
+      ]
+    },
+    {
+      "showId": "the-holy-rosenbergs-west-end-2026",
+      "title": "The Holy Rosenbergs",
+      "openingDate": "2026-03-08",
+      "status": "closed",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "beautiful-little-fool-west-end-2026",
+      "title": "Beautiful Little Fool",
+      "openingDate": "2026-01-22",
+      "status": "closed",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "copenhagen-west-end-2026",
+      "title": "Copenhagen",
+      "openingDate": "2026-04-07",
+      "status": "closed",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "im-every-woman-the-chaka-khan-musical-west-end-2026",
+      "title": "I'm Every Woman, The Chaka Khan Musical",
+      "openingDate": "2026-03-05",
+      "status": "closed",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "the-rat-trap-west-end-2026",
+      "title": "The Rat Trap",
+      "openingDate": "2026-01-28",
+      "status": "closed",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "summerfolk-west-end-2026",
+      "title": "Summerfolk",
+      "openingDate": "2026-03-17",
+      "status": "closed",
+      "category": "west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "midnight-a-new-original-musical-by-todrick-hall-west-end-2026",
+      "title": "Midnight - A New Original Musical by Todrick Hall",
+      "openingDate": "2026-02-20",
+      "status": "closed",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "a-mirrored-monet-west-end-2026",
+      "title": "A Mirrored Monet",
+      "openingDate": "2026-03-24",
+      "status": "closed",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "it-walks-around-the-house-at-night-west-end-2026",
+      "title": "It Walks Around The House At Night",
+      "openingDate": "2026-03-04",
+      "status": "closed",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
+      "title": "John Proctor Is the Villain",
+      "openingDate": "2026-03-26",
+      "status": "closed",
+      "category": "west-end",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-are-out-for-john-proctor-is-the-villain-starring-sadie-sink",
+        "https://playbill.com/article/what-do-london-critics-think-of-john-proctor-is-the-villain",
+        "https://www.broadwayworld.com/article/Review-Roundup-JOHN-PROCTOR-IS-THE-VILLAIN-Opens-On-Broadway-20250414"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.amny.com/entertainment/theater/review-john-proctor-is-the-villain/",
+        "https://www.chicagotribune.com/2025/04/14/review-john-proctor-is-the-villain-on-broadway-reinvents-the-crucible-for-today/",
+        "https://cititour.com/NYC_Broadway/John-Proctor-is-the-Villain/1296",
+        "https://culturesauce.com/2025/04/14/john-proctor-is-the-villain-broadway-review/",
+        "https://ew.com/john-proctor-is-the-villain-sadie-sink-broadway-play-review-11714446",
+        "https://www.thedailybeast.com/john-proctor-is-the-villain-review-the-crucible-gets-a-fiery-metoo-rewrite/",
+        "https://deadline.com/2025/04/john-proctor-is-the-villain-broadway-review-sadie-sink-1236367854/",
+        "https://www.digitaljournal.com/entertainment/review-john-proctor-is-the-villain-starring-sadie-sink-is-a-new-original-comedy-on-broadway/article",
+        "https://www.theguardian.com/stage/2025/apr/14/john-proctor-is-the-villain-review",
+        "https://www.hollywoodreporter.com/lifestyle/arts/john-proctor-is-the-villain-review-sadie-sink-broadway-1236190543/",
+        "https://nypost.com/2025/04/14/entertainment/john-proctor-is-the-villain-review-stranger-things-star-sadie-sink-leads-likable-long-metoo-drama/",
+        "https://nystagereview.com/2025/04/14/john-proctor-is-the-villain-a-metoo-conversation-with-the-crucible/",
+        "https://nystagereview.com/2025/04/14/john-proctor-is-the-villain-a-fearless-gen-z-look-at-the-crucible/",
+        "https://newyorktheater.me/2025/04/14/john-proctor-is-the-villain-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/john-proctor-is-the-villain-broadway-review-sadie-sink",
+        "https://www.nytimes.com/2025/04/14/theater/john-proctor-is-the-villain-review-sink.html",
+        "https://observer.com/2025/04/review-high-schoolers-tell-truth-and-shame-the-devil-in-john-proctor-is-the-villain/",
+        "https://www.theatermania.com/news/review-john-proctor-is-the-villain-is-a-broadway-stunner_1770362/",
+        "https://www.theatrely.com/post/a-heady-sex-education-in-john-proctor-is-the-villain-review",
+        "https://www.timeout.com/newyork/theater/john-proctor-is-the-villain-broadway-review-sadie-sink-crucible-metoo",
+        "https://variety.com/2025/legit/reviews/john-proctor-is-the-villain-review-broadway-sadie-sink-1236368941/",
+        "https://www.washingtonpost.com/entertainment/theater/2025/04/14/john-proctor-is-the-villain-broadway-review/",
+        "https://www.thewrap.com/john-proctor-is-the-villain-broadway-review-sadie-sink/",
+        "https://www.theguardian.com/stage/2026/mar/27/john-proctor-is-the-villain-review-royal-court-theatre",
+        "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/john-proctor-is-the-villain-review-royal-court-b2946888.html",
+        "https://www.newstatesman.com/culture/2026/03/john-proctor-is-the-villain-is-a-thrilling-teenage-girl-take-on-the-crucible",
+        "https://therecs.co.uk/john-proctor-is-the-villain/",
+        "https://www.thestage.co.uk/reviews/john-proctor-is-the-villain-review-jerwood-theatre-downstairs-royal-court-london",
+        "https://www.standard.co.uk/culture/theatre/john-proctor-is-the-villain-royal-court-theatre-review-b1276711.html",
+        "https://www.telegraph.co.uk/theatre/what-to-see/royal-court-theatre-john-proctor-is-the-villain-review/",
+        "https://www.timeout.com/london/news/review-john-proctor-is-the-villain-at-the-royal-court-theatre-in-london-032626",
+        "https://www.thetimes.com/culture/theatre-dance/article/john-proctor-is-the-villain-review-arthur-miller-for-the-metoo-era-kx3bcrjbl",
+        "https://theatreandtonic.co.uk/blog/john-proctor-is-the-villain-royal-court-theatre-review",
+        "https://www.whatsonstage.com/news/john-proctor-is-the-villain-review-the-crucible-on-trial-at-the-royal-court_1716579/",
+        "https://www.londontheatre.co.uk/reviews/john-proctor-is-the-villain-review-royal-court",
+        "https://www.broadwayworld.com/westend/article/Review-JOHN-PROCTOR-IS-THE-VILLAIN-Royal-Court-Theatre-20260327",
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/john-proctor-is-the-villain-review-royal-court-b2946888.html"
+      ],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 16,
+      "missing": [
+        {
+          "url": "https://www.amny.com/entertainment/theater/review-john-proctor-is-the-villain/",
+          "host": "amny.com",
+          "knownOutletId": "amny"
+        },
+        {
+          "url": "https://www.chicagotribune.com/2025/04/14/review-john-proctor-is-the-villain-on-broadway-reinvents-the-crucible-for-today/",
+          "host": "chicagotribune.com",
+          "knownOutletId": "chicagotribune"
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/John-Proctor-is-the-Villain/1296",
+          "host": "cititour.com",
+          "knownOutletId": "cititour"
+        },
+        {
+          "url": "https://culturesauce.com/2025/04/14/john-proctor-is-the-villain-broadway-review/",
+          "host": "culturesauce.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://ew.com/john-proctor-is-the-villain-sadie-sink-broadway-play-review-11714446",
+          "host": "ew.com",
+          "knownOutletId": "ew"
+        },
+        {
+          "url": "https://www.thedailybeast.com/john-proctor-is-the-villain-review-the-crucible-gets-a-fiery-metoo-rewrite/",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast"
+        },
+        {
+          "url": "https://deadline.com/2025/04/john-proctor-is-the-villain-broadway-review-sadie-sink-1236367854/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline"
+        },
+        {
+          "url": "https://www.digitaljournal.com/entertainment/review-john-proctor-is-the-villain-starring-sadie-sink-is-a-new-original-comedy-on-broadway/article",
+          "host": "digitaljournal.com",
+          "knownOutletId": "digital-journal"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2025/apr/14/john-proctor-is-the-villain-review",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/lifestyle/arts/john-proctor-is-the-villain-review-sadie-sink-broadway-1236190543/",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter"
+        },
+        {
+          "url": "https://nypost.com/2025/04/14/entertainment/john-proctor-is-the-villain-review-stranger-things-star-sadie-sink-leads-likable-long-metoo-drama/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost"
+        },
+        {
+          "url": "https://nystagereview.com/2025/04/14/john-proctor-is-the-villain-a-metoo-conversation-with-the-crucible/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr"
+        },
+        {
+          "url": "https://nystagereview.com/2025/04/14/john-proctor-is-the-villain-a-fearless-gen-z-look-at-the-crucible/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr"
+        },
+        {
+          "url": "https://newyorktheater.me/2025/04/14/john-proctor-is-the-villain-broadway-review/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/john-proctor-is-the-villain-broadway-review-sadie-sink",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg"
+        },
+        {
+          "url": "https://www.nytimes.com/2025/04/14/theater/john-proctor-is-the-villain-review-sink.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes"
+        },
+        {
+          "url": "https://observer.com/2025/04/review-high-schoolers-tell-truth-and-shame-the-devil-in-john-proctor-is-the-villain/",
+          "host": "observer.com",
+          "knownOutletId": "observer"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-john-proctor-is-the-villain-is-a-broadway-stunner_1770362/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania"
+        },
+        {
+          "url": "https://www.theatrely.com/post/a-heady-sex-education-in-john-proctor-is-the-villain-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/john-proctor-is-the-villain-broadway-review-sadie-sink-crucible-metoo",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london"
+        },
+        {
+          "url": "https://variety.com/2025/legit/reviews/john-proctor-is-the-villain-review-broadway-sadie-sink-1236368941/",
+          "host": "variety.com",
+          "knownOutletId": "variety"
+        },
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater/2025/04/14/john-proctor-is-the-villain-broadway-review/",
+          "host": "washingtonpost.com",
+          "knownOutletId": "washpost"
+        },
+        {
+          "url": "https://www.thewrap.com/john-proctor-is-the-villain-broadway-review-sadie-sink/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2026/mar/27/john-proctor-is-the-villain-review-royal-court-theatre",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian"
+        },
+        {
+          "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/john-proctor-is-the-villain-review-royal-court-b2946888.html",
+          "host": "the-independent.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.newstatesman.com/culture/2026/03/john-proctor-is-the-villain-is-a-thrilling-teenage-girl-take-on-the-crucible",
+          "host": "newstatesman.com",
+          "knownOutletId": "new-statesman"
+        },
+        {
+          "url": "https://therecs.co.uk/john-proctor-is-the-villain/",
+          "host": "therecs.co.uk",
+          "knownOutletId": "the-recs"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/john-proctor-is-the-villain-review-jerwood-theatre-downstairs-royal-court-london",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage"
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/john-proctor-is-the-villain-royal-court-theatre-review-b1276711.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard"
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/royal-court-theatre-john-proctor-is-the-villain-review/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph"
+        },
+        {
+          "url": "https://www.timeout.com/london/news/review-john-proctor-is-the-villain-at-the-royal-court-theatre-in-london-032626",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london"
+        },
+        {
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/john-proctor-is-the-villain-review-arthur-miller-for-the-metoo-era-kx3bcrjbl",
+          "host": "thetimes.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://theatreandtonic.co.uk/blog/john-proctor-is-the-villain-royal-court-theatre-review",
+          "host": "theatreandtonic.co.uk",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/john-proctor-is-the-villain-review-the-crucible-on-trial-at-the-royal-court_1716579/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage"
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/john-proctor-is-the-villain-review-royal-court",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.broadwayworld.com/westend/article/Review-JOHN-PROCTOR-IS-THE-VILLAIN-Royal-Court-Theatre-20260327",
+          "host": "broadwayworld.com",
+          "knownOutletId": "broadwayworld"
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/john-proctor-is-the-villain-review-royal-court-b2946888.html",
+          "host": "independent.co.uk",
+          "knownOutletId": "independent"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "ingestResults": [
+        {
+          "url": "https://www.amny.com/entertainment/theater/review-john-proctor-is-the-villain/",
           "host": "amny.com",
           "outletId": "amny",
           "provisional": false,
@@ -938,446 +1430,198 @@
           "reason": null
         },
         {
-          "url": "https://www.thedailybeast.com/stephen-sondheims-into-the-woods-is-sheer-moving-magic-on-broadway",
-          "host": "thedailybeast.com",
-          "outletId": "dailybeast",
+          "url": "https://www.chicagotribune.com/2025/04/14/review-john-proctor-is-the-villain-on-broadway-reinvents-the-crucible-for-today/",
+          "host": "chicagotribune.com",
+          "outletId": "chicagotribune",
           "provisional": false,
           "ok": true,
           "reason": null
         },
         {
-          "url": "https://deadline.com/2022/07/into-the-woods-broadway-review-1235061007/",
-          "host": "deadline.com",
-          "outletId": "deadline",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.hollywoodreporter.com/lifestyle/arts/into-the-woods-stephen-sondheim-broadway-1235177573/",
-          "host": "hollywoodreporter.com",
-          "outletId": "hollywood-reporter",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.nydailynews.com/entertainment/broadway/ny-broadway-into-the-woods-review-20220711-idmgzuuyvvchzla7fscesafbm4-story.html",
-          "host": "nydailynews.com",
-          "outletId": "nydailynews",
+          "url": "https://cititour.com/NYC_Broadway/John-Proctor-is-the-Villain/1296",
+          "host": "cititour.com",
+          "outletId": "cititour",
           "provisional": false,
           "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=into-the-woods-west-end-2025 --url=htt"
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=john-proctor-is-the-villain-west-end-2"
+        },
+        {
+          "url": "https://culturesauce.com/2025/04/14/john-proctor-is-the-villain-broadway-review/",
+          "host": "culturesauce.com",
+          "outletId": "culturesauce",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=john-proctor-is-the-villain-west-end-2"
+        },
+        {
+          "url": "https://ew.com/john-proctor-is-the-villain-sadie-sink-broadway-play-review-11714446",
+          "host": "ew.com",
+          "outletId": "ew",
+          "provisional": false,
+          "ok": true,
+          "reason": null
         }
       ],
       "ingestSkippedByCap": [
         {
-          "url": "https://nystagereview.com/2022/07/10/into-the-woods-the-beloved-sondheim-lapine-musical-in-full-bloom/",
-          "host": "nystagereview.com",
-          "outletId": "nysr"
-        },
-        {
-          "url": "https://www.nytimes.com/2022/07/10/theater/into-the-woods-review.html",
-          "host": "nytimes.com",
-          "outletId": "nytimes"
-        },
-        {
-          "url": "https://observer.com/2022/07/review-into-the-woods-still-casts-a-sensational-spell-on-broadway/",
-          "host": "observer.com",
-          "outletId": "observer"
-        },
-        {
-          "url": "http://www.theatrely.com/post/a-sublime-into-the-woods-kicks-off-a-new-season-review",
-          "host": "theatrely.com",
-          "outletId": "theatrely"
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/into-the-woods-broadway-review-revival-sara-bareilles-stephen-sondheim",
-          "host": "timeout.com",
-          "outletId": "timeout-london"
-        },
-        {
-          "url": "https://variety.com/2022/theater/reviews/into-the-woods-review-revival-sondheim-broadway-city-center-encores-1235312251/",
-          "host": "variety.com",
-          "outletId": "variety"
-        },
-        {
-          "url": "https://www.vulture.com/2022/07/theater-review-into-the-woods-sondheim-lapine-bareilles-broadway-2022.html",
-          "host": "vulture.com",
-          "outletId": "vulture"
-        },
-        {
-          "url": "https://www.washingtonpost.com/theater-dance/2022/07/10/into-the-woods-bareilles-sondheim/",
-          "host": "washingtonpost.com",
-          "outletId": "washpost"
-        },
-        {
-          "url": "https://www.thewrap.com/into-the-woods-broadway-review-sondheim-revival/",
-          "host": "thewrap.com",
-          "outletId": "thewrap"
-        },
-        {
-          "url": "https://www.thedailybeast.com/encores-all-star-into-the-woods-is-the-perfect-tribute-to-stephen-sondheim",
+          "url": "https://www.thedailybeast.com/john-proctor-is-the-villain-review-the-crucible-gets-a-fiery-metoo-rewrite/",
           "host": "thedailybeast.com",
           "outletId": "dailybeast"
         },
         {
-          "url": "https://nystagereview.com/2022/05/06/into-the-woods-sondheim-leads-encores-out-of-darkness/",
-          "host": "nystagereview.com",
-          "outletId": "nysr"
+          "url": "https://deadline.com/2025/04/john-proctor-is-the-villain-broadway-review-sadie-sink-1236367854/",
+          "host": "deadline.com",
+          "outletId": "deadline"
         },
         {
-          "url": "https://www.nytimes.com/2022/05/06/theater/into-the-woods-review.html",
-          "host": "nytimes.com",
-          "outletId": "nytimes"
+          "url": "https://www.digitaljournal.com/entertainment/review-john-proctor-is-the-villain-starring-sadie-sink-is-a-new-original-comedy-on-broadway/article",
+          "host": "digitaljournal.com",
+          "outletId": "digital-journal"
         },
         {
-          "url": "https://www.theatrely.com/post/into-the-woods-with-a-hurricane-of-talent-review",
-          "host": "theatrely.com",
-          "outletId": "theatrely"
-        },
-        {
-          "url": "https://www.theaterpizzazz.com/into-the-woods/",
-          "host": "theaterpizzazz.com",
-          "outletId": "theater-pizzazz"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2022/aug/25/into-the-woods-review-terry-gilliams-rollicking-take-on-sondheims-fairytale-collision",
+          "url": "https://www.theguardian.com/stage/2025/apr/14/john-proctor-is-the-villain-review",
           "host": "theguardian.com",
           "outletId": "guardian"
         },
         {
-          "url": "https://www.thestage.co.uk/long-reviews/into-the-woods-directed-by-terry-gilliam-review-at-theatre-royal-bath",
-          "host": "thestage.co.uk",
-          "outletId": "thestage"
-        },
-        {
-          "url": "https://theatrecat.com/2022/08/25/into-the-woods-theatre-royal-bath/",
-          "host": "theatrecat.com",
-          "outletId": "theatrecat"
-        },
-        {
-          "url": "https://theatrevibe.co.uk/2022/08/26/review-into-the-woods-theatre-royal-bath-2022/",
-          "host": "theatrevibe.co.uk",
-          "outletId": "theatre-vibe"
-        },
-        {
-          "url": "https://vigourtimes.com/happy-ever-after-for-terry-gilliams-cancelled-fairy-tale-patrick-marmion-reviews-into-the-woods/",
-          "host": "vigourtimes.com",
-          "outletId": "vigourtimes"
-        },
-        {
-          "url": "https://hollywoodreporter.com/review/into-the-woods-theater-1227473",
+          "url": "https://www.hollywoodreporter.com/lifestyle/arts/john-proctor-is-the-villain-review-sadie-sink-broadway-1236190543/",
           "host": "hollywoodreporter.com",
           "outletId": "hollywood-reporter"
         },
         {
-          "url": "https://laexcites.com/2019/07/27/review-a-star-studded-into-the-woods-hollywood-bowl/",
-          "host": "laexcites.com",
-          "outletId": "laexcites"
-        },
-        {
-          "url": "https://www.latimes.com/entertainment-arts/story/2019-07-28/into-the-woods-sutton-foster-skylar-astin-hollywood-bowl-review",
-          "host": "latimes.com",
-          "outletId": "latimes"
-        },
-        {
-          "url": "https://southpasadenan.com/enchanting-evening-at-hollywood-bowls-into-the-woods/",
-          "host": "southpasadenan.com",
-          "outletId": "southpasadenan"
-        },
-        {
-          "url": "https://stageandcinema.com/2019/07/27/into-the-woods-hollywood-bowl/",
-          "host": "stageandcinema.com",
-          "outletId": "stageandcinema"
-        },
-        {
-          "url": "https://nypost.com/2022/07/10/into-the-woods-broadway-review-high-octane-unfiltered-sondheim/",
+          "url": "https://nypost.com/2025/04/14/entertainment/john-proctor-is-the-villain-review-stranger-things-star-sadie-sink-leads-likable-long-metoo-drama/",
           "host": "nypost.com",
           "outletId": "nypost"
         },
         {
-          "url": "https://www.theatrely.com/post/a-sublime-into-the-woods-kicks-off-a-new-season-review",
-          "host": "theatrely.com",
-          "outletId": "theatrely"
+          "url": "https://nystagereview.com/2025/04/14/john-proctor-is-the-villain-a-metoo-conversation-with-the-crucible/",
+          "host": "nystagereview.com",
+          "outletId": "nysr"
         },
         {
-          "url": "https://www.newyorktheatreguide.com/reviews/into-the-woods-broadway-review-sara-bareilles-brian-darcy-james",
+          "url": "https://nystagereview.com/2025/04/14/john-proctor-is-the-villain-a-fearless-gen-z-look-at-the-crucible/",
+          "host": "nystagereview.com",
+          "outletId": "nysr"
+        },
+        {
+          "url": "https://newyorktheater.me/2025/04/14/john-proctor-is-the-villain-broadway-review/",
+          "host": "newyorktheater.me",
+          "outletId": "nyt-theater"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/john-proctor-is-the-villain-broadway-review-sadie-sink",
           "host": "newyorktheatreguide.com",
           "outletId": "nytg"
         },
         {
-          "url": "https://www.washingtonpost.com/theater-dance/2023/02/26/into-the-woods-sondheim-kennedy/",
-          "host": "washingtonpost.com",
-          "outletId": "washpost"
-        },
-        {
-          "url": "https://dailyfreepress.com/2023/03/22/review-emerson-colonial-theatres-into-the-the-woods-a-refreshing-take-on-a-sondheim-classic-but-doesnt-pack-an-emotional-punch/",
-          "host": "dailyfreepress.com",
-          "outletId": "dailyfreepress"
-        },
-        {
-          "url": "https://www.newcitystage.com/2023/05/02/the-time-is-now-a-review-of-into-the-woods-at-broadway-in-chicago/",
-          "host": "newcitystage.com",
-          "outletId": "newcitystage"
-        },
-        {
-          "url": "https://www.orlandoweekly.com/arts/broadway-in-orlando-a-wondrous-journey-back-into-the-woods-that-no-theater-fan-should-miss-34363986",
-          "host": "orlandoweekly.com",
-          "outletId": "orlandoweekly"
-        },
-        {
-          "url": "https://attractionsmagazine.com/theater-review-into-the-woods-broadway/",
-          "host": "attractionsmagazine.com",
-          "outletId": "attractionsmagazine"
-        },
-        {
-          "url": "https://datebook.sfchronicle.com/theater/broadway-sf-into-the-woods-curran-review-18126656",
-          "host": "datebook.sfchronicle.com",
-          "outletId": "sfchronicle"
-        },
-        {
-          "url": "https://www.latimes.com/entertainment-arts/story/2023-07-03/review-tony-nominated-into-the-woods-revival-ahmanson-best-of-lifetime",
-          "host": "latimes.com",
-          "outletId": "latimes"
-        },
-        {
-          "url": "https://variety.com/2023/legit/news/into-the-woods-review-ahmanson-theater-stephen-sondheim-broadway-tour-1235660010/",
-          "host": "variety.com",
-          "outletId": "variety"
-        },
-        {
-          "url": "http://theater.nytimes.com/2012/08/10/theater/reviews/into-the-woods-by-stephen-sondheim-and-james-lapine.html",
-          "host": "theater.nytimes.com",
+          "url": "https://www.nytimes.com/2025/04/14/theater/john-proctor-is-the-villain-review-sink.html",
+          "host": "nytimes.com",
           "outletId": "nytimes"
         },
         {
-          "url": "http://www.usatoday.com/life/theater/reviews/story/2012-08-09/into-the-woods-amy-adams/56922288/1",
-          "host": "usatoday.com",
-          "outletId": "usatoday"
+          "url": "https://observer.com/2025/04/review-high-schoolers-tell-truth-and-shame-the-devil-in-john-proctor-is-the-villain/",
+          "host": "observer.com",
+          "outletId": "observer"
         },
         {
-          "url": "http://www.bloomberg.com/news/2012-08-10/sex-crazed-wolf-moody-cow-spark-into-the-woods-review.html",
-          "host": "bloomberg.com",
-          "outletId": "bloomberg"
+          "url": "https://www.theatermania.com/news/review-john-proctor-is-the-villain-is-a-broadway-stunner_1770362/",
+          "host": "theatermania.com",
+          "outletId": "theatermania"
         },
         {
-          "url": "http://blogs.villagevoice.com/dailymusto/2012/08/into_the_woods.php",
-          "host": "blogs.villagevoice.com",
-          "outletId": "villagevoice"
+          "url": "https://www.theatrely.com/post/a-heady-sex-education-in-john-proctor-is-the-villain-review",
+          "host": "theatrely.com",
+          "outletId": "theatrely"
         },
         {
-          "url": "http://www.boston.com/ae/theater-arts/2012/08/09/review-into-the-woods-thrilling-and-inventive/wfIqOPLrHUrIc3mrf9vZTK/story.html",
-          "host": "boston.com",
-          "outletId": "boston"
-        },
-        {
-          "url": "http://www.amny.com/urbanite-1.812039/theater-review-into-the-woods-2-stars-1.3894398",
-          "host": "amny.com",
-          "outletId": "amny"
-        },
-        {
-          "url": "http://www.hollywoodreporter.com/review/into-the-woods-theater-amy-adams-360420",
-          "host": "hollywoodreporter.com",
-          "outletId": "hollywood-reporter"
-        },
-        {
-          "url": "http://www.philly.com/philly/entertainment/20120809_N_Y__review___lsquo_Into_the_Woods_.html",
-          "host": "philly.com",
-          "outletId": "philly"
-        },
-        {
-          "url": "http://www.newsday.com/entertainment/theater/review-into-the-woods-1.3890348",
-          "host": "newsday.com",
-          "outletId": "newsday"
-        },
-        {
-          "url": "http://www.washingtonpost.com/lifestyle/style/sondheim-in-the-park-into-the-woods-with-amy-adams-and-donna-murphy/2012/08/09/1e118310-e25e-11e1-89f7-76e23a982d06_story.html",
-          "host": "washingtonpost.com",
-          "outletId": "washpost"
-        },
-        {
-          "url": "http://www.huffingtonpost.com/wilborn-hampton/into-the-woods-review_b_1752641.html",
-          "host": "huffingtonpost.com",
-          "outletId": "huffingtonpost"
-        },
-        {
-          "url": "http://www.timeout.com/newyork/theater/into-the-woods-1",
+          "url": "https://www.timeout.com/newyork/theater/john-proctor-is-the-villain-broadway-review-sadie-sink-crucible-metoo",
           "host": "timeout.com",
           "outletId": "timeout-london"
         },
         {
-          "url": "http://www.backstage.com/bso/reviews-ny-theatre-off-broadway/ny-review-into-the-woods-1007795162.story",
-          "host": "backstage.com",
-          "outletId": "backstage"
+          "url": "https://variety.com/2025/legit/reviews/john-proctor-is-the-villain-review-broadway-sadie-sink-1236368941/",
+          "host": "variety.com",
+          "outletId": "variety"
         },
         {
-          "url": "https://www.hollywoodreporter.com/review/into-the-woods-theater-1227473",
-          "host": "hollywoodreporter.com",
-          "outletId": "hollywood-reporter"
+          "url": "https://www.washingtonpost.com/entertainment/theater/2025/04/14/john-proctor-is-the-villain-broadway-review/",
+          "host": "washingtonpost.com",
+          "outletId": "washpost"
         },
         {
-          "url": "https://www.stageandcinema.com/2019/07/27/into-the-woods-hollywood-bowl/",
-          "host": "stageandcinema.com",
-          "outletId": "stageandcinema"
+          "url": "https://www.thewrap.com/john-proctor-is-the-villain-broadway-review-sadie-sink/",
+          "host": "thewrap.com",
+          "outletId": "thewrap"
         },
         {
-          "url": "https://onstageandscreen.com/2019/07/27/theater-review-into-the-woods-at-the-hollywood-bowl/",
-          "host": "onstageandscreen.com",
-          "outletId": "on-stage-and-screen"
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/into-the-woods-review-bridge-theatre",
-          "host": "londontheatre.co.uk",
-          "outletId": "co"
-        },
-        {
-          "url": "https://www.standard.co.uk/culture/theatre/into-the-woods-review-bridge-theatre-b1262271.html",
-          "host": "standard.co.uk",
-          "outletId": "standard"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2025/dec/12/into-the-woods-review-bridge-theatre-london",
+          "url": "https://www.theguardian.com/stage/2026/mar/27/john-proctor-is-the-villain-review-royal-court-theatre",
           "host": "theguardian.com",
           "outletId": "guardian"
         },
         {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/into-the-woods-review-bridge-theatre/",
-          "host": "telegraph.co.uk",
-          "outletId": "sunday-telegraph"
+          "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/john-proctor-is-the-villain-review-royal-court-b2946888.html",
+          "host": "the-independent.com",
+          "outletId": "the-independent"
         },
         {
-          "url": "https://www.whatsonstage.com/news/into-the-woods-at-the-bridge-theatre-review-magical-moments-in-the-woods_1706187/",
-          "host": "whatsonstage.com",
-          "outletId": "whatsonstage"
+          "url": "https://www.newstatesman.com/culture/2026/03/john-proctor-is-the-villain-is-a-thrilling-teenage-girl-take-on-the-crucible",
+          "host": "newstatesman.com",
+          "outletId": "new-statesman"
         },
         {
-          "url": "https://www.thestage.co.uk/reviews/into-the-woods-review-bridge-theatre-london-stephen-sondheim-jordan-fein",
+          "url": "https://therecs.co.uk/john-proctor-is-the-villain/",
+          "host": "therecs.co.uk",
+          "outletId": "the-recs"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/john-proctor-is-the-villain-review-jerwood-theatre-downstairs-royal-court-london",
           "host": "thestage.co.uk",
           "outletId": "thestage"
         },
         {
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/into-the-woods-bridge-theatre-sondheim-review-b2883199.html",
-          "host": "independent.co.uk",
-          "outletId": "independent"
+          "url": "https://www.standard.co.uk/culture/theatre/john-proctor-is-the-villain-royal-court-theatre-review-b1276711.html",
+          "host": "standard.co.uk",
+          "outletId": "standard"
         },
         {
-          "url": "https://www.londontheatre.co.uk/theatre-news/news/learn-about-the-production-history-of-into-the-woods",
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/royal-court-theatre-john-proctor-is-the-villain-review/",
+          "host": "telegraph.co.uk",
+          "outletId": "sunday-telegraph"
+        },
+        {
+          "url": "https://www.timeout.com/london/news/review-john-proctor-is-the-villain-at-the-royal-court-theatre-in-london-032626",
+          "host": "timeout.com",
+          "outletId": "timeout-london"
+        },
+        {
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/john-proctor-is-the-villain-review-arthur-miller-for-the-metoo-era-kx3bcrjbl",
+          "host": "thetimes.com",
+          "outletId": "thetimes"
+        },
+        {
+          "url": "https://theatreandtonic.co.uk/blog/john-proctor-is-the-villain-royal-court-theatre-review",
+          "host": "theatreandtonic.co.uk",
+          "outletId": "co"
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/john-proctor-is-the-villain-review-the-crucible-on-trial-at-the-royal-court_1716579/",
+          "host": "whatsonstage.com",
+          "outletId": "whatsonstage"
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/john-proctor-is-the-villain-review-royal-court",
           "host": "londontheatre.co.uk",
           "outletId": "co"
-        }
-      ]
-    },
-    {
-      "showId": "manic-street-creature-west-end-2026",
-      "title": "Manic Street Creature",
-      "openingDate": "2026-03-05",
-      "status": "closed",
-      "category": "off-west-end",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.londontheatre.co.uk/reviews/manic-street-creature-review-kiln-theatre",
-        "https://www.standard.co.uk/culture/theatre/manic-street-creature-review-kiln-theatre-b1274426.html",
-        "https://www.timeout.com/london/theatre/manic-street-creature-review",
-        "https://www.thestage.co.uk/reviews/manic-street-creature-review-kiln-theatre-london-maimuna-memon",
-        "https://www.whatsonstage.com/news/manic-street-creature-at-kiln-theatre-review_1715513/",
-        "https://theartsdesk.com/theatre/manic-street-creature-southwark-playhouse-review-songs-key-traumatised-life",
-        "https://www.westendbestfriend.co.uk/news/review-manic-street-creature-southwark-playhouse-borough"
-      ],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 12,
-      "missing": [
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/manic-street-creature-review-kiln-theatre",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": null
         },
         {
-          "url": "https://www.standard.co.uk/culture/theatre/manic-street-creature-review-kiln-theatre-b1274426.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard"
+          "url": "https://www.broadwayworld.com/westend/article/Review-JOHN-PROCTOR-IS-THE-VILLAIN-Royal-Court-Theatre-20260327",
+          "host": "broadwayworld.com",
+          "outletId": "broadwayworld"
         },
         {
-          "url": "https://www.timeout.com/london/theatre/manic-street-creature-review",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london"
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/manic-street-creature-review-kiln-theatre-london-maimuna-memon",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage"
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/manic-street-creature-at-kiln-theatre-review_1715513/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage"
-        },
-        {
-          "url": "https://theartsdesk.com/theatre/manic-street-creature-southwark-playhouse-review-songs-key-traumatised-life",
-          "host": "theartsdesk.com",
-          "knownOutletId": "artsdesk"
-        },
-        {
-          "url": "https://www.westendbestfriend.co.uk/news/review-manic-street-creature-southwark-playhouse-borough",
-          "host": "westendbestfriend.co.uk",
-          "knownOutletId": "west-end-best-friend"
-        }
-      ],
-      "dirOnly": [],
-      "flaggedMisses": [],
-      "ingestResults": [
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/manic-street-creature-review-kiln-theatre",
-          "host": "londontheatre.co.uk",
-          "outletId": "co",
-          "provisional": true,
-          "ok": false,
-          "reason": "spawnSync node ETIMEDOUT"
-        },
-        {
-          "url": "https://www.standard.co.uk/culture/theatre/manic-street-creature-review-kiln-theatre-b1274426.html",
-          "host": "standard.co.uk",
-          "outletId": "standard",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/manic-street-creature-review",
-          "host": "timeout.com",
-          "outletId": "timeout-london",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/manic-street-creature-review-kiln-theatre-london-maimuna-memon",
-          "host": "thestage.co.uk",
-          "outletId": "thestage",
-          "provisional": false,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=manic-street-creature-west-end-2026 --"
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/manic-street-creature-at-kiln-theatre-review_1715513/",
-          "host": "whatsonstage.com",
-          "outletId": "whatsonstage",
-          "provisional": false,
-          "ok": false,
-          "reason": "spawnSync node ETIMEDOUT"
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://theartsdesk.com/theatre/manic-street-creature-southwark-playhouse-review-songs-key-traumatised-life",
-          "host": "theartsdesk.com",
-          "outletId": "artsdesk"
-        },
-        {
-          "url": "https://www.westendbestfriend.co.uk/news/review-manic-street-creature-southwark-playhouse-borough",
-          "host": "westendbestfriend.co.uk",
-          "outletId": "west-end-best-friend"
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/john-proctor-is-the-villain-review-royal-court-b2946888.html",
+          "host": "independent.co.uk",
+          "outletId": "independent"
         }
       ]
     }
