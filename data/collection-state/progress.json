@@ -333,7 +333,10 @@
     "what-the-constitution-means-to-me-2019/front-row-center--stanford-friedman.json",
     "what-the-constitution-means-to-me-2019/thestage--nicole-serratore.json",
     "kiss-me-kate-2019/wsj--terry-teachout.json",
-    "be-more-chill-2019/wsj--terry-teachout.json"
+    "be-more-chill-2019/wsj--terry-teachout.json",
+    "network-2018/ny1--roma-torre.json",
+    "network-2018/thestage--mark-shenton.json",
+    "the-cher-show-2018/medium--christian-lewis.json"
   ],
   "failed": [
     "a-woman-among-women-off-broadway-2026/playbill--unknown.json",
@@ -884,7 +887,14 @@
     "kiss-me-kate-2019/talkinbroadway--matthew-murray.json",
     "true-west-2019/vulture--jesse-green.json",
     "true-west-2019/theater-news-online--jeremy-gerard.json",
-    "choir-boy-2019/scribicide--aaron-botwick.json"
+    "choir-boy-2019/scribicide--aaron-botwick.json",
+    "choir-boy-2019/thestage--nicole-serratore.json",
+    "to-kill-a-mockingbird-2018/vulture--jesse-green.json",
+    "network-2018/vulture--jesse-green.json",
+    "network-2018/wsj--terry-teachout.json",
+    "network-2018/dailybeast--tim-teeman.json",
+    "network-2018/washpost--peter-marks.json",
+    "the-cher-show-2018/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1033,7 +1043,9 @@
       "gary-a-sequel-to-titus-andronicus-2019/thestage--nicole-serratore.json",
       "burn-this-2019/nyt-theater--unknown.json",
       "burn-this-2019/theatermania--jesse-green.json",
-      "what-the-constitution-means-to-me-2019/thestage--nicole-serratore.json"
+      "what-the-constitution-means-to-me-2019/thestage--nicole-serratore.json",
+      "network-2018/ny1--roma-torre.json",
+      "network-2018/thestage--mark-shenton.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1213,7 +1225,8 @@
       "oklahoma-2019/medium--christian-lewis.json",
       "what-the-constitution-means-to-me-2019/wsj--terry-teachout.json",
       "kiss-me-kate-2019/wsj--terry-teachout.json",
-      "be-more-chill-2019/wsj--terry-teachout.json"
+      "be-more-chill-2019/wsj--terry-teachout.json",
+      "the-cher-show-2018/medium--christian-lewis.json"
     ],
     "archiveToday": [
       "data/review-texts/fallen-angels-2026/talkinbroadway--unknown.json",
@@ -1273,7 +1286,13 @@
       "data/review-texts/aint-too-proud-2019/talkinbroadway--matthew-murray.json",
       "data/review-texts/kiss-me-kate-2019/washpost--peter-marks.json",
       "data/review-texts/kiss-me-kate-2019/talkinbroadway--matthew-murray.json",
-      "data/review-texts/true-west-2019/vulture--jesse-green.json"
+      "data/review-texts/true-west-2019/vulture--jesse-green.json",
+      "data/review-texts/to-kill-a-mockingbird-2018/vulture--jesse-green.json",
+      "data/review-texts/network-2018/vulture--jesse-green.json",
+      "data/review-texts/network-2018/wsj--terry-teachout.json",
+      "data/review-texts/network-2018/dailybeast--tim-teeman.json",
+      "data/review-texts/network-2018/washpost--peter-marks.json",
+      "data/review-texts/the-cher-show-2018/wsj--terry-teachout.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -1342,7 +1361,7 @@
     ]
   },
   "startTime": "2026-06-08T06:16:07.453Z",
-  "lastProcessed": "choir-boy-2019/scribicide--aaron-botwick.json",
+  "lastProcessed": "the-cher-show-2018/medium--christian-lewis.json",
   "log": [
     {
       "t": "2026-06-08T06:27:00.120Z",
@@ -1930,6 +1949,23 @@
       "t": "2026-06-08T17:03:18.620Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-08T17:08:22.672Z",
+      "event": "bb-session",
+      "session": "1734a846",
+      "url": "https://www.thedailybeast.com/network-on-broadway-bryan-cranston-is-mad-as-hell-"
+    },
+    {
+      "t": "2026-06-08T17:09:01.206Z",
+      "event": "bb-session",
+      "session": "6acfdef1",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-bryan-cranston"
+    },
+    {
+      "t": "2026-06-08T17:09:01.657Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
