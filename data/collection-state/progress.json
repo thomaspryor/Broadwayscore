@@ -25,7 +25,8 @@
     "beetlejuice-west-end-2026/guardian-uk--unknown.json",
     "beetlejuice-west-end-2026/british-theatre--unknown.json",
     "all-my-sons-west-end-2025/independent--unknown.json",
-    "grease-2007/whatsonstage--unknown.json"
+    "grease-2007/whatsonstage--unknown.json",
+    "a-woman-among-women-off-broadway-2026/playbill--unknown.json"
   ],
   "failed": [
     "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
@@ -2105,7 +2106,16 @@
     "small-off-broadway-2026/the-recs--unknown.json",
     "small-off-broadway-2026/theater-pizzazz--unknown.json",
     "small-off-broadway-2026/washpost--unknown.json",
-    "indian-princesses-off-broadway-2025/pages-on-stages--mason-pilevsky.json"
+    "indian-princesses-off-broadway-2025/pages-on-stages--mason-pilevsky.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "girl-interrupted-off-broadway-2026/playbill--unknown.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
+    "small-off-broadway-2026/guardian--arifa-akbar.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2129,7 +2139,8 @@
       "beetlejuice-west-end-2026/guardian-uk--unknown.json",
       "beetlejuice-west-end-2026/british-theatre--unknown.json",
       "all-my-sons-west-end-2025/independent--unknown.json",
-      "grease-2007/whatsonstage--unknown.json"
+      "grease-2007/whatsonstage--unknown.json",
+      "a-woman-among-women-off-broadway-2026/playbill--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -2174,7 +2185,9 @@
       "data/review-texts/small-off-broadway-2026/theater-pizzazz--unknown.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
-      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json"
+      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -2203,7 +2216,7 @@
     ]
   },
   "startTime": "2026-06-07T05:20:43.951Z",
-  "lastProcessed": "indian-princesses-off-broadway-2025/pages-on-stages--mason-pilevsky.json",
+  "lastProcessed": "small-off-broadway-2026/guardian--arifa-akbar.json",
   "log": [
     {
       "t": "2026-06-07T05:21:08.825Z",
@@ -2732,6 +2745,28 @@
       "t": "2026-06-08T02:39:19.203Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-08T03:33:30.443Z",
+      "event": "bb-session",
+      "session": "19b3af30",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-08T03:33:31.324Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-08T03:33:43.619Z",
+      "event": "bb-session",
+      "session": "45516f1d",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-08T03:33:44.300Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
