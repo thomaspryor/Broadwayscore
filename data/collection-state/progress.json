@@ -207,7 +207,16 @@
     "here-lies-love-2023/broadwaynews--brittani-samuel.json",
     "just-for-us-2023/timeout--adam-feldman.json",
     "just-for-us-2023/timeout--raven-snook.json",
-    "just-for-us-2023/theater-life--barry-gordin.json"
+    "just-for-us-2023/theater-life--barry-gordin.json",
+    "once-upon-a-one-more-time-2023/wsj--charles-isherwood.json",
+    "grey-house-2023/newyorker--conde-nast.json",
+    "grey-house-2023/newyorker--dan-stahl.json",
+    "the-sign-in-sidney-brusteins-window-2023/broadwaynews--brittani-samuel.json",
+    "the-sign-in-sidney-brusteins-window-2023/cititour--brian-scott-lipton.json",
+    "new-york-new-york-2023/washpost--peter-marks.json",
+    "summer-1976-2023/ew--dalton-ross.json",
+    "good-night-oscar-2023/nytimes--jesse-green.json",
+    "good-night-oscar-2023/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
     "a-woman-among-women-off-broadway-2026/playbill--unknown.json",
@@ -451,7 +460,8 @@
     "stereophonic-2024/usatoday--charles-isherwood.json",
     "orlando-off-broadway-2026/guardian--unknown.json",
     "the-whos-tommy-2024/broadwaynews--brittani-samuel.json",
-    "here-lies-love-2023/aaartsalliance--rohan-zhou-lee.json"
+    "here-lies-love-2023/aaartsalliance--rohan-zhou-lee.json",
+    "prima-facie-2023/newyorker--conde-nast.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -555,7 +565,9 @@
       "lempicka-2024/broadway-and-me--janice-c-simpson.json",
       "purlie-victorious-2023/thestage--lane-williamson.json",
       "the-cottage-2023/theater-life--paulanne-simmons.json",
-      "just-for-us-2023/theater-life--barry-gordin.json"
+      "just-for-us-2023/theater-life--barry-gordin.json",
+      "new-york-new-york-2023/washpost--peter-marks.json",
+      "summer-1976-2023/ew--dalton-ross.json"
     ],
     "amp": [],
     "browserbase": [
@@ -569,7 +581,11 @@
       "data/review-texts/gloria-2026/amny--unknown.json",
       "data/review-texts/gloria-2026/billboard--unknown.json",
       "data/review-texts/the-cottage-2023/wsj--charles-isherwood.json",
-      "the-cottage-2023/wsj--charles-isherwood.json"
+      "the-cottage-2023/wsj--charles-isherwood.json",
+      "data/review-texts/once-upon-a-one-more-time-2023/wsj--charles-isherwood.json",
+      "once-upon-a-one-more-time-2023/wsj--charles-isherwood.json",
+      "data/review-texts/good-night-oscar-2023/nytimes--jesse-green.json",
+      "good-night-oscar-2023/nytimes--jesse-green.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -635,7 +651,10 @@
       "jajas-african-hair-braiding-2023/broadwaynews--brittani-samuel.json",
       "here-lies-love-2023/broadwaynews--brittani-samuel.json",
       "just-for-us-2023/timeout--adam-feldman.json",
-      "just-for-us-2023/timeout--raven-snook.json"
+      "just-for-us-2023/timeout--raven-snook.json",
+      "grey-house-2023/newyorker--dan-stahl.json",
+      "the-sign-in-sidney-brusteins-window-2023/broadwaynews--brittani-samuel.json",
+      "good-night-oscar-2023/broadwaynews--brittani-samuel.json"
     ],
     "brightdata": [
       "the-balusters-2026/broadwayworld--unknown.json",
@@ -646,7 +665,9 @@
       "art-2025/thewrap--robert-hofler.json",
       "the-picture-of-dorian-gray-2025/showbiz411--roger-friedman.json",
       "the-lost-boys-2026/broadwayworld--nicole-rosky.json",
-      "fallen-angels-2026/talkinbroadway--unknown.json"
+      "fallen-angels-2026/talkinbroadway--unknown.json",
+      "grey-house-2023/newyorker--conde-nast.json",
+      "the-sign-in-sidney-brusteins-window-2023/cititour--brian-scott-lipton.json"
     ],
     "archiveToday": [
       "data/review-texts/fallen-angels-2026/talkinbroadway--unknown.json",
@@ -694,7 +715,7 @@
     ]
   },
   "startTime": "2026-06-08T06:16:07.453Z",
-  "lastProcessed": "just-for-us-2023/theater-life--barry-gordin.json",
+  "lastProcessed": "prima-facie-2023/newyorker--conde-nast.json",
   "log": [
     {
       "t": "2026-06-08T06:27:00.120Z",
@@ -785,6 +806,28 @@
       "t": "2026-06-08T08:07:02.246Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-08T08:08:58.473Z",
+      "event": "bb-session",
+      "session": "79c4c201",
+      "url": "https://www.wsj.com/articles/once-upon-a-one-more-time-review-princesses-with-br"
+    },
+    {
+      "t": "2026-06-08T08:08:59.368Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-08T08:11:19.293Z",
+      "event": "bb-session",
+      "session": "a6a88b70",
+      "url": "https://www.nytimes.com/2023/04/24/theater/good-night-oscar-review-sean-hayes-wi"
+    },
+    {
+      "t": "2026-06-08T08:11:20.106Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

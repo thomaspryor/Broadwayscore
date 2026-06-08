@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-08T08:08:52.416Z",
-  "processed": 208,
-  "failed": 242,
-  "successRate": "46.2%",
+  "updatedAt": "2026-06-08T08:12:16.467Z",
+  "processed": 217,
+  "failed": 243,
+  "successRate": "47.2%",
   "tierBreakdown": {
-    "playwright": 100,
+    "playwright": 102,
     "amp": 0,
-    "browserbase": 11,
+    "browserbase": 15,
     "directCookies": 0,
-    "scrapingbee": 63,
-    "brightdata": 9,
+    "scrapingbee": 66,
+    "brightdata": 11,
     "archiveToday": 4,
     "archive": 36
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-06-08T07:05:29.035Z",
@@ -65,6 +65,28 @@
       "t": "2026-06-08T08:07:02.246Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-08T08:08:58.473Z",
+      "event": "bb-session",
+      "session": "79c4c201",
+      "url": "https://www.wsj.com/articles/once-upon-a-one-more-time-review-princesses-with-br"
+    },
+    {
+      "t": "2026-06-08T08:08:59.368Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-08T08:11:19.293Z",
+      "event": "bb-session",
+      "session": "a6a88b70",
+      "url": "https://www.nytimes.com/2023/04/24/theater/good-night-oscar-review-sean-hayes-wi"
+    },
+    {
+      "t": "2026-06-08T08:11:20.106Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
