@@ -314,7 +314,8 @@
     "kpop-2022/broadway-and-me--janice-c-simpson.json",
     "hangmen-2022/wsj--charles-isherwood.json",
     "american-buffalo-2022/wsj--charles-isherwood.json",
-    "plaza-suite-2022/wsj--charles-isherwood.json"
+    "plaza-suite-2022/wsj--charles-isherwood.json",
+    "pass-over-2021/broadway-and-me--janice-c-simpson.json"
   ],
   "failed": [
     "a-woman-among-women-off-broadway-2026/playbill--unknown.json",
@@ -804,7 +805,16 @@
     "a-dolls-house-2023/broadway-and-me--janice-c-simpson.json",
     "into-the-woods-2022/newyorker--conde-nast.json",
     "slave-play-2021/standard--nick-curtis.json",
-    "trouble-in-mind-2021/broadwayworld--unknown.json"
+    "trouble-in-mind-2021/broadwayworld--unknown.json",
+    "trouble-in-mind-2021/broadwaynews--charles-isherwood.json",
+    "diana-the-musical-2021/nbcnews--liz-shannon-miller.json",
+    "the-lehman-trilogy-2021/thestage--nicole-serratore.json",
+    "is-this-a-room-2021/washpost--peter-marks.json",
+    "back-to-the-future-west-end-2021/timeout--unknown.json",
+    "grand-horizons-2020/theater-news-online--brian-scott-lipton.json",
+    "a-soldiers-play-2020/talkinbroadway--matthew-murray.json",
+    "jagged-little-pill-2019/wsj--charles-isherwood.json",
+    "jagged-little-pill-2019/theater-news-online--joe-dziemianowicz.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -945,7 +955,8 @@
       "hamlet-off-broadway-2026/dc-theater-arts--deb-miller.json",
       "hamlet-off-broadway-2026/nysr--unknown.json",
       "all-my-sons-west-end-2025/independent--unknown.json",
-      "kpop-2022/broadway-and-me--janice-c-simpson.json"
+      "kpop-2022/broadway-and-me--janice-c-simpson.json",
+      "pass-over-2021/broadway-and-me--janice-c-simpson.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1076,7 +1087,8 @@
       "linda-vista-2019/broadwaynews--charles-isherwood.json",
       "joe-turners-come-and-gone-2026/broadwaynews--unknown.json",
       "mexodus-off-broadway-2026/chicagotribune--unknown.json",
-      "masquerade-off-broadway-2025/nytimes--unknown.json"
+      "masquerade-off-broadway-2025/nytimes--unknown.json",
+      "trouble-in-mind-2021/broadwayworld--unknown.json"
     ],
     "brightdata": [
       "the-balusters-2026/broadwayworld--unknown.json",
@@ -1149,7 +1161,8 @@
       "data/review-texts/frankie-and-johnny-in-the-clair-de-lune-2019/vulture--jesse-green.json",
       "data/review-texts/frankie-and-johnny-in-the-clair-de-lune-2019/theatres-leiter-side--samuel-l-leiter.json",
       "data/review-texts/small-off-broadway-2026/the-recs--unknown.json",
-      "data/review-texts/avenue-q-west-end-2026/the-recs--eric-muldoon.json"
+      "data/review-texts/avenue-q-west-end-2026/the-recs--eric-muldoon.json",
+      "data/review-texts/jagged-little-pill-2019/wsj--charles-isherwood.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -1215,7 +1228,7 @@
     ]
   },
   "startTime": "2026-06-08T06:16:07.453Z",
-  "lastProcessed": "trouble-in-mind-2021/broadwayworld--unknown.json",
+  "lastProcessed": "jagged-little-pill-2019/theater-news-online--joe-dziemianowicz.json",
   "log": [
     {
       "t": "2026-06-08T06:27:00.120Z",
@@ -1610,6 +1623,28 @@
       "t": "2026-06-08T16:21:16.134Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-08T16:25:21.333Z",
+      "event": "bb-session",
+      "session": "e8543fc2",
+      "url": "https://www.wsj.com/articles/jagged-little-pill-review-alanis-morissettes-songs-"
+    },
+    {
+      "t": "2026-06-08T16:25:21.896Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-08T16:26:21.446Z",
+      "event": "bb-session",
+      "session": "73a8e621",
+      "url": "https://www.talkinbroadway.com/page/world/ASoldiersPlay.html"
+    },
+    {
+      "t": "2026-06-08T16:26:22.012Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
