@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-08T02:37:42.773Z",
+  "updatedAt": "2026-06-08T02:40:46.231Z",
   "processed": 26,
   "failed": 2078,
   "successRate": "1.2%",
   "tierBreakdown": {
     "playwright": 20,
     "amp": 0,
-    "browserbase": 41,
+    "browserbase": 42,
     "directCookies": 0,
     "scrapingbee": 3,
     "brightdata": 1,
     "archiveToday": 11,
     "archive": 1
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-06-08T01:23:25.997Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-08T01:24:39.542Z",
-      "event": "bb-session",
-      "session": "71ec2315",
-      "url": "https://www.nytimes.com/2026/06/01/arts/andy-halliday-dead.html"
-    },
     {
       "t": "2026-06-08T01:24:40.891Z",
       "event": "bb-cookie-inject",
@@ -104,26 +93,37 @@
       "url": "https://theaterpizzazz.com/small-a-jockeys-indestructible-passion/"
     },
     {
-      "t": "2026-06-08T02:35:19.593Z",
+      "t": "2026-06-08T02:37:40.590Z",
       "event": "bb-session",
-      "session": "1590a4ab",
+      "session": "dc30762d",
       "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
     },
     {
-      "t": "2026-06-08T02:35:20.235Z",
+      "t": "2026-06-08T02:37:41.618Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     },
     {
-      "t": "2026-06-08T02:35:31.213Z",
+      "t": "2026-06-08T02:37:52.952Z",
       "event": "bb-session",
-      "session": "e73f91d1",
+      "session": "d2320349",
       "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
     },
     {
-      "t": "2026-06-08T02:35:31.801Z",
+      "t": "2026-06-08T02:37:53.957Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-08T02:39:18.199Z",
+      "event": "bb-session",
+      "session": "af90c610",
+      "url": "https://www.nytimes.com/2026/06/01/arts/andy-halliday-dead.html"
+    },
+    {
+      "t": "2026-06-08T02:39:19.203Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
