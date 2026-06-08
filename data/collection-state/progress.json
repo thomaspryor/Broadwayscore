@@ -216,7 +216,16 @@
     "new-york-new-york-2023/washpost--peter-marks.json",
     "summer-1976-2023/ew--dalton-ross.json",
     "good-night-oscar-2023/nytimes--jesse-green.json",
-    "good-night-oscar-2023/broadwaynews--brittani-samuel.json"
+    "good-night-oscar-2023/broadwaynews--brittani-samuel.json",
+    "the-thanksgiving-play-2023/wsj--charles-isherwood.json",
+    "camelot-2023/broadway-and-me--janice-c-simpson.json",
+    "fat-ham-2023/newyorker--conde-nast.json",
+    "fat-ham-2023/newyorker--vinson-cunningham.json",
+    "fat-ham-2023/broadwaynews--brittani-samuel.json",
+    "fat-ham-2023/timeout--adam-feldman.json",
+    "fat-ham-2023/timeout--raven-snook.json",
+    "life-of-pi-2023/wsj--charles-isherwood.json",
+    "sweeney-todd-2023/broadway-and-me--janice-c-simpson.json"
   ],
   "failed": [
     "a-woman-among-women-off-broadway-2026/playbill--unknown.json",
@@ -461,7 +470,8 @@
     "orlando-off-broadway-2026/guardian--unknown.json",
     "the-whos-tommy-2024/broadwaynews--brittani-samuel.json",
     "here-lies-love-2023/aaartsalliance--rohan-zhou-lee.json",
-    "prima-facie-2023/newyorker--conde-nast.json"
+    "prima-facie-2023/newyorker--conde-nast.json",
+    "sweeney-todd-2023/nbcnews--variety-referenced-by-nbc.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -567,7 +577,10 @@
       "the-cottage-2023/theater-life--paulanne-simmons.json",
       "just-for-us-2023/theater-life--barry-gordin.json",
       "new-york-new-york-2023/washpost--peter-marks.json",
-      "summer-1976-2023/ew--dalton-ross.json"
+      "summer-1976-2023/ew--dalton-ross.json",
+      "fat-ham-2023/timeout--adam-feldman.json",
+      "fat-ham-2023/timeout--raven-snook.json",
+      "sweeney-todd-2023/broadway-and-me--janice-c-simpson.json"
     ],
     "amp": [],
     "browserbase": [
@@ -585,7 +598,11 @@
       "data/review-texts/once-upon-a-one-more-time-2023/wsj--charles-isherwood.json",
       "once-upon-a-one-more-time-2023/wsj--charles-isherwood.json",
       "data/review-texts/good-night-oscar-2023/nytimes--jesse-green.json",
-      "good-night-oscar-2023/nytimes--jesse-green.json"
+      "good-night-oscar-2023/nytimes--jesse-green.json",
+      "data/review-texts/the-thanksgiving-play-2023/wsj--charles-isherwood.json",
+      "the-thanksgiving-play-2023/wsj--charles-isherwood.json",
+      "data/review-texts/life-of-pi-2023/wsj--charles-isherwood.json",
+      "life-of-pi-2023/wsj--charles-isherwood.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -654,7 +671,8 @@
       "just-for-us-2023/timeout--raven-snook.json",
       "grey-house-2023/newyorker--dan-stahl.json",
       "the-sign-in-sidney-brusteins-window-2023/broadwaynews--brittani-samuel.json",
-      "good-night-oscar-2023/broadwaynews--brittani-samuel.json"
+      "good-night-oscar-2023/broadwaynews--brittani-samuel.json",
+      "fat-ham-2023/broadwaynews--brittani-samuel.json"
     ],
     "brightdata": [
       "the-balusters-2026/broadwayworld--unknown.json",
@@ -667,7 +685,9 @@
       "the-lost-boys-2026/broadwayworld--nicole-rosky.json",
       "fallen-angels-2026/talkinbroadway--unknown.json",
       "grey-house-2023/newyorker--conde-nast.json",
-      "the-sign-in-sidney-brusteins-window-2023/cititour--brian-scott-lipton.json"
+      "the-sign-in-sidney-brusteins-window-2023/cititour--brian-scott-lipton.json",
+      "fat-ham-2023/newyorker--conde-nast.json",
+      "fat-ham-2023/newyorker--vinson-cunningham.json"
     ],
     "archiveToday": [
       "data/review-texts/fallen-angels-2026/talkinbroadway--unknown.json",
@@ -711,11 +731,12 @@
       "suffs-2024/broadway-and-me--janice-c-simpson.json",
       "suffs-2024/times-uk--nancy-durrant.json",
       "water-for-elephants-2024/broadway-and-me--janice-c-simpson.json",
-      "the-notebook-2024/broadway-and-me--janice-c-simpson.json"
+      "the-notebook-2024/broadway-and-me--janice-c-simpson.json",
+      "camelot-2023/broadway-and-me--janice-c-simpson.json"
     ]
   },
   "startTime": "2026-06-08T06:16:07.453Z",
-  "lastProcessed": "prima-facie-2023/newyorker--conde-nast.json",
+  "lastProcessed": "sweeney-todd-2023/nbcnews--variety-referenced-by-nbc.json",
   "log": [
     {
       "t": "2026-06-08T06:27:00.120Z",
@@ -828,6 +849,28 @@
       "t": "2026-06-08T08:11:20.106Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-08T08:12:17.602Z",
+      "event": "bb-session",
+      "session": "c0f73fb7",
+      "url": "https://www.wsj.com/articles/the-thanksgiving-play-review-rehearsing-a-holiday-h"
+    },
+    {
+      "t": "2026-06-08T08:12:18.362Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-08T08:15:00.462Z",
+      "event": "bb-session",
+      "session": "e7833792",
+      "url": "https://www.wsj.com/articles/life-of-pi-review-bringing-the-sea-to-broadway-2f84"
+    },
+    {
+      "t": "2026-06-08T08:15:01.257Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

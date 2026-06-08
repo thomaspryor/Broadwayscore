@@ -1,20 +1,37 @@
 {
-  "updatedAt": "2026-06-08T08:12:16.467Z",
-  "processed": 217,
-  "failed": 243,
-  "successRate": "47.2%",
+  "updatedAt": "2026-06-08T08:16:33.600Z",
+  "processed": 226,
+  "failed": 244,
+  "successRate": "48.1%",
   "tierBreakdown": {
-    "playwright": 102,
+    "playwright": 105,
     "amp": 0,
-    "browserbase": 15,
+    "browserbase": 19,
     "directCookies": 0,
-    "scrapingbee": 66,
-    "brightdata": 11,
+    "scrapingbee": 67,
+    "brightdata": 13,
     "archiveToday": 4,
-    "archive": 36
+    "archive": 37
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 8,
   "recentActivity": [
+    {
+      "t": "2026-06-08T06:39:15.980Z",
+      "event": "bb-session",
+      "session": "4712180c",
+      "url": "https://parade.com/news/kelly-ripa-son-joaquin-consuelos-broadway-debut-death-of"
+    },
+    {
+      "t": "2026-06-08T06:50:05.252Z",
+      "event": "bb-session",
+      "session": "d31cb8b6",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
+    },
+    {
+      "t": "2026-06-08T06:50:07.578Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
     {
       "t": "2026-06-08T07:05:29.035Z",
       "event": "bb-session",
@@ -87,6 +104,28 @@
       "t": "2026-06-08T08:11:20.106Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-08T08:12:17.602Z",
+      "event": "bb-session",
+      "session": "c0f73fb7",
+      "url": "https://www.wsj.com/articles/the-thanksgiving-play-review-rehearsing-a-holiday-h"
+    },
+    {
+      "t": "2026-06-08T08:12:18.362Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-08T08:15:00.462Z",
+      "event": "bb-session",
+      "session": "e7833792",
+      "url": "https://www.wsj.com/articles/life-of-pi-review-bringing-the-sea-to-broadway-2f84"
+    },
+    {
+      "t": "2026-06-08T08:15:01.257Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
