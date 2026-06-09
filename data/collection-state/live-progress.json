@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-09T09:47:07.264Z",
+  "updatedAt": "2026-06-09T10:30:29.452Z",
   "processed": 11,
-  "failed": 32,
-  "successRate": "25.6%",
+  "failed": 42,
+  "successRate": "20.8%",
   "tierBreakdown": {
     "playwright": 10,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 5,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 1,
     "archiveToday": 1,
     "archive": 0
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-06-09T08:56:23.399Z",
@@ -42,6 +42,39 @@
       "t": "2026-06-09T09:43:56.930Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-09T10:28:24.098Z",
+      "event": "bb-session",
+      "session": "1815a3b8",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-09T10:28:24.910Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-09T10:28:39.203Z",
+      "event": "bb-session",
+      "session": "34bd58ba",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-09T10:28:39.901Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-09T10:29:51.604Z",
+      "event": "bb-session",
+      "session": "00f8d9db",
+      "url": "https://www.nytimes.com/2026/05/31/theater/othello-review-wendell-pierce.html"
+    },
+    {
+      "t": "2026-06-09T10:29:52.333Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
