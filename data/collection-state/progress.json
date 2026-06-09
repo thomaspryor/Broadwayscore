@@ -1069,7 +1069,17 @@
     "care-west-end-2026/times-uk--clive-davis.json",
     "care-west-end-2026/times-uk--mark-fisher.json",
     "care-west-end-2026/times-uk--unknown.json",
-    "care-west-end-2026/whatsonstage--judi-herman.json"
+    "care-west-end-2026/whatsonstage--judi-herman.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
+    "small-off-broadway-2026/guardian--arifa-akbar.json",
+    "small-off-broadway-2026/pages-on-stages--unknown.json",
+    "small-off-broadway-2026/the-recs--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1290,7 +1300,10 @@
       "frankie-and-johnny-in-the-clair-de-lune-2019/wsj--terry-teachout.json",
       "data/review-texts/ink-2019/wsj--terry-teachout.json",
       "ink-2019/wsj--terry-teachout.json",
-      "data/review-texts/equus-west-end-2026/thereviewshub--unknown.json"
+      "data/review-texts/equus-west-end-2026/thereviewshub--unknown.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1589,7 +1602,7 @@
     ]
   },
   "startTime": "2026-06-08T06:16:07.453Z",
-  "lastProcessed": "care-west-end-2026/whatsonstage--judi-herman.json",
+  "lastProcessed": "small-off-broadway-2026/the-recs--unknown.json",
   "log": [
     {
       "t": "2026-06-08T06:27:00.120Z",
@@ -2307,6 +2320,39 @@
       "event": "bb-session",
       "session": "fd21f1e6",
       "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
+    },
+    {
+      "t": "2026-06-09T00:48:04.621Z",
+      "event": "bb-session",
+      "session": "6f163c7a",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-09T00:48:05.918Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-09T00:48:20.012Z",
+      "event": "bb-session",
+      "session": "da224117",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-09T00:48:20.689Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-09T00:49:16.000Z",
+      "event": "bb-session",
+      "session": "508943f6",
+      "url": "https://www.nytimes.com/2026/06/01/arts/andy-halliday-dead.html"
+    },
+    {
+      "t": "2026-06-09T00:49:16.811Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
