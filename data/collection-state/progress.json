@@ -1079,7 +1079,9 @@
     "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
     "small-off-broadway-2026/guardian--arifa-akbar.json",
     "small-off-broadway-2026/pages-on-stages--unknown.json",
-    "small-off-broadway-2026/the-recs--unknown.json"
+    "small-off-broadway-2026/the-recs--unknown.json",
+    "small-off-broadway-2026/theater-pizzazz--unknown.json",
+    "small-off-broadway-2026/washpost--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1303,7 +1305,8 @@
       "data/review-texts/equus-west-end-2026/thereviewshub--unknown.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
-      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json"
+      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+      "data/review-texts/small-off-broadway-2026/theater-pizzazz--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1602,7 +1605,7 @@
     ]
   },
   "startTime": "2026-06-08T06:16:07.453Z",
-  "lastProcessed": "small-off-broadway-2026/the-recs--unknown.json",
+  "lastProcessed": "small-off-broadway-2026/washpost--unknown.json",
   "log": [
     {
       "t": "2026-06-08T06:27:00.120Z",
@@ -2353,6 +2356,12 @@
       "t": "2026-06-09T00:49:16.811Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-09T00:51:05.849Z",
+      "event": "bb-session",
+      "session": "dc7bb4da",
+      "url": "https://theaterpizzazz.com/small-a-jockeys-indestructible-passion/"
     }
   ]
 }
