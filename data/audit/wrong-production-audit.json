@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-09T03:46:31.158Z",
+  "timestamp": "2026-06-09T05:26:16.371Z",
   "stats": {
-    "totalReviews": 38207,
-    "alreadyFlagged": 16756,
+    "totalReviews": 38208,
+    "alreadyFlagged": 16758,
     "dateGuardCatches": 106,
     "directorMismatch": 853,
     "tvFilmSignals": 1051,
-    "londonSignals": 623,
+    "londonSignals": 622,
     "offBroadwaySignals": 457,
     "yearMismatch": 81,
-    "noPublishDate": 3988
+    "noPublishDate": 3986
   },
   "findings": [
     {
@@ -7559,7 +7559,7 @@
     {
       "showId": "giant-royal-court-off-west-end-2024",
       "file": "daily-mail--patrick-marmion.json",
-      "score": null,
+      "score": 78,
       "publishDate": "2024-09-27",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-13897381/Giant-review-Roald-Dahls-uncomfortable-views-royal-court.html",
       "findings": [
@@ -7583,6 +7583,7 @@
     {
       "showId": "giant-royal-court-off-west-end-2024",
       "file": "guardian--arifa-akbar.json",
+      "score": 78,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2024/sep/27/giant-review-royal-court-theatre-mark-rosenblatt-london",
       "findings": [
@@ -7601,6 +7602,7 @@
     {
       "showId": "giant-royal-court-off-west-end-2024",
       "file": "independent--alice-saville.json",
+      "score": 78,
       "publishDate": "2024-09-27",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/giant-review-roald-dahl-john-lithgow-b2619923.html",
       "findings": [
@@ -7614,7 +7616,7 @@
     {
       "showId": "giant-royal-court-off-west-end-2024",
       "file": "london-theatre--julia-rank.json",
-      "score": null,
+      "score": 72,
       "publishDate": "2024-09-27",
       "url": "https://www.londontheatre.co.uk/reviews/giant-review-royal-court",
       "findings": [
@@ -7628,7 +7630,7 @@
     {
       "showId": "giant-royal-court-off-west-end-2024",
       "file": "nytimes--houman-barekat.json",
-      "score": null,
+      "score": 78,
       "publishDate": "2024-09-27",
       "url": "https://www.nytimes.com/2024/09/27/theater/giant-royal-court-roald-dahl-antisemitism.html",
       "findings": [
@@ -7652,6 +7654,7 @@
     {
       "showId": "giant-royal-court-off-west-end-2024",
       "file": "standard--tim-bano.json",
+      "score": 95,
       "publishDate": "2024-09-27",
       "url": "https://www.standard.co.uk/culture/theatre/giant-royal-court-review-john-lithgow-romola-garai-b1184513.html",
       "findings": [
@@ -7670,6 +7673,7 @@
     {
       "showId": "giant-royal-court-off-west-end-2024",
       "file": "times-uk--clive-davis.json",
+      "score": 96,
       "publishDate": "2024-09-26",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/giant-review-john-lithgow-roald-dahl-kmzqshndc",
       "findings": [
@@ -7701,6 +7705,7 @@
     {
       "showId": "giant-west-end-2025",
       "file": "standard--nick-curtis.json",
+      "score": 88,
       "publishDate": "2025-05-02",
       "url": "https://www.standard.co.uk/culture/theatre/giant-harold-pinter-roald-dahl-b1225660.html",
       "findings": [
@@ -7719,6 +7724,7 @@
     {
       "showId": "giant-west-end-2025",
       "file": "sunday-telegraph--dominic-cavendish.json",
+      "score": 82,
       "publishDate": "2025-05-02",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/giant-harold-pinter-theatre-review-john-lithgow/",
       "findings": [
@@ -7737,6 +7743,7 @@
     {
       "showId": "giant-west-end-2025",
       "file": "timeout-london--tim-bano.json",
+      "score": 92,
       "publishDate": "2025-05-02",
       "url": "https://www.timeout.com/london/theatre/giant-review-3",
       "findings": [
@@ -40152,20 +40159,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"brooklyn academy\""
-        }
-      ]
-    },
-    {
-      "showId": "the-price-2017",
-      "file": "wsj--terry-teachout.json",
-      "score": 78,
-      "publishDate": "March 2, 2017",
-      "url": "https://www.wsj.com/articles/the-price-review-a-major-miller-back-on-broadway-1489710601",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
