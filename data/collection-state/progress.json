@@ -1175,7 +1175,17 @@
     "the-lion-king-1997/familyvacationcritic--unknown.json",
     "the-lion-king-1997/maryland-theatre-guide--susan-brall.json",
     "gloria-2026/amny--unknown.json",
-    "gloria-2026/billboard--unknown.json"
+    "gloria-2026/billboard--unknown.json",
+    "gloria-2026/financialtimes--unknown.json",
+    "gloria-2026/huffpost--unknown.json",
+    "as-you-like-it-globe-west-end-2026/london-box-office--nicky-allpress.json",
+    "cats-west-end-2026/new-york-city-theatre--unknown.json",
+    "to-kill-a-mockingbird-west-end-2026/broadwayworld--michael-dale.json",
+    "to-kill-a-mockingbird-west-end-2026/chicagotribune--chris-jones.json",
+    "a-midsummer-nights-dream-west-end-2026/newsday--updated-november.json",
+    "spamalot-off-broadway-2026/nytimes--jesse-green.json",
+    "spamalot-off-broadway-2026/vulture--jackson-mchenry.json",
+    "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1407,7 +1417,9 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
       "data/review-texts/death-of-a-salesman-2026/parade--janice-kaplan.json",
-      "data/review-texts/gloria-2026/amny--unknown.json"
+      "data/review-texts/gloria-2026/amny--unknown.json",
+      "data/review-texts/gloria-2026/billboard--unknown.json",
+      "data/review-texts/gloria-2026/huffpost--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1707,7 +1719,7 @@
     ]
   },
   "startTime": "2026-06-08T06:16:07.453Z",
-  "lastProcessed": "gloria-2026/billboard--unknown.json",
+  "lastProcessed": "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
   "log": [
     {
       "t": "2026-06-08T06:27:00.120Z",
@@ -2519,6 +2531,23 @@
       "t": "2026-06-09T02:10:12.502Z",
       "event": "bb-cookie-inject",
       "domain": "amny.com"
+    },
+    {
+      "t": "2026-06-09T02:13:38.649Z",
+      "event": "bb-session",
+      "session": "2f183943",
+      "url": "http://www.billboard.com/articles/review/6753841/on-your-feet-theater-review-glo"
+    },
+    {
+      "t": "2026-06-09T02:15:30.505Z",
+      "event": "bb-session",
+      "session": "d2374fc3",
+      "url": "http://www.huffingtonpost.com/fern-siegel/stage-door-on-your-feet-s_b_8485892.ht"
+    },
+    {
+      "t": "2026-06-09T02:15:31.532Z",
+      "event": "bb-cookie-inject",
+      "domain": "huffingtonpost.com"
     }
   ]
 }
