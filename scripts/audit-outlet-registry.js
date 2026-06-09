@@ -21,6 +21,7 @@
 const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 // Paths
 const REGISTRY_PATH = path.join(__dirname, '../data/outlet-registry.json');
@@ -50,7 +51,6 @@ function loadRegistry() {
 function loadNormalization() {
   try {
     return require(NORMALIZATION_PATH);
-const { listShowDirs } = require('./lib/list-show-dirs');
   } catch (e) {
     if (!JSON_OUTPUT) {
       console.warn('Warning: Could not load review-normalization.js, some checks will be limited');

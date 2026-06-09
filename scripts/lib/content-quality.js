@@ -1190,6 +1190,11 @@ const TRUNCATION_SIGNALS = {
     // for the corresponding detectPaywall() entry and the audit-regex-patterns.js
     // PAYWALL_PATTERNS::15 allow-listing entry.
     /trouble\s+retrieving\s+the\s+article\s+content/i,
+    // NYT second bot-stub variant: access-verification page served instead of article.
+    // Distinct from the JS-loader stub above; appears in files where NYT served a
+    // "verify access" interstitial mid-scrape. Observed in 6 complete-classified files
+    // on 2026-06-09 audit — all short (<4k chars), all end with this chrome.
+    /thank\s+you\s+for\s+your\s+patience\s+while\s+we\s+verify\s+access/i,
   ],
   // Moderate signals - likely truncated
   moderate: [
