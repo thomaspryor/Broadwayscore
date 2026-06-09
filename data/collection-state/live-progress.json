@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-06-09T12:44:36.809Z",
-  "processed": 14,
-  "failed": 100,
-  "successRate": "12.3%",
+  "updatedAt": "2026-06-09T13:25:36.115Z",
+  "processed": 15,
+  "failed": 109,
+  "successRate": "12.1%",
   "tierBreakdown": {
-    "playwright": 12,
+    "playwright": 13,
     "amp": 0,
-    "browserbase": 11,
+    "browserbase": 13,
     "directCookies": 0,
     "scrapingbee": 1,
     "brightdata": 1,
@@ -15,28 +15,6 @@
   },
   "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-06-09T10:28:39.203Z",
-      "event": "bb-session",
-      "session": "34bd58ba",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
-    {
-      "t": "2026-06-09T10:28:39.901Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-09T10:29:51.604Z",
-      "event": "bb-session",
-      "session": "00f8d9db",
-      "url": "https://www.nytimes.com/2026/05/31/theater/othello-review-wendell-pierce.html"
-    },
-    {
-      "t": "2026-06-09T10:29:52.333Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-06-09T10:50:18.307Z",
       "event": "bb-session",
@@ -123,6 +101,28 @@
     },
     {
       "t": "2026-06-09T12:42:30.661Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-09T13:23:57.528Z",
+      "event": "bb-session",
+      "session": "58a94354",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-09T13:23:58.373Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-09T13:24:12.305Z",
+      "event": "bb-session",
+      "session": "8442f508",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-09T13:24:13.092Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
