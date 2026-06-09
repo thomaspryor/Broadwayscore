@@ -1125,7 +1125,17 @@
     "titanique-2026/frontmezzjunkies--unknown.json",
     "titanique-2026/stageandcinema--unknown.json",
     "titanique-2026/theater-scene--deirdre-donovan.json",
-    "titanique-2026/theater-scene--victor-gluck.json"
+    "titanique-2026/theater-scene--victor-gluck.json",
+    "titanique-2026/wsj--charles-isherwood.json",
+    "death-of-a-salesman-2026/dailybeast--tim-teeman.json",
+    "death-of-a-salesman-2026/ny1--unknown.json",
+    "death-of-a-salesman-2026/pages-on-stages--mason-pilevsky.json",
+    "death-of-a-salesman-2026/parade--janice-kaplan.json",
+    "romeo-and-juliet-west-end-2026/hollywood-reporter--unknown.json",
+    "romeo-and-juliet-west-end-2026/ew--unknown.json",
+    "romeo-and-juliet-west-end-2026/newsday--unknown.json",
+    "romeo-and-juliet-west-end-2026/nydailynews--unknown.json",
+    "romeo-and-juliet-west-end-2026/timeout--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1355,7 +1365,8 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+      "data/review-texts/death-of-a-salesman-2026/parade--janice-kaplan.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1655,7 +1666,7 @@
     ]
   },
   "startTime": "2026-06-08T06:16:07.453Z",
-  "lastProcessed": "titanique-2026/theater-scene--victor-gluck.json",
+  "lastProcessed": "romeo-and-juliet-west-end-2026/timeout--unknown.json",
   "log": [
     {
       "t": "2026-06-08T06:27:00.120Z",
@@ -2450,6 +2461,12 @@
       "t": "2026-06-09T01:31:11.227Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-09T02:05:33.226Z",
+      "event": "bb-session",
+      "session": "3b636633",
+      "url": "https://parade.com/news/kelly-ripa-son-joaquin-consuelos-broadway-debut-death-of"
     }
   ]
 }
