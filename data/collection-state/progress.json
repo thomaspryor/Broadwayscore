@@ -178,7 +178,9 @@
     "fat-ham-2023/broadwaynews--brittani-samuel.json",
     "bad-cinderella-2023/bloomberg--chris-rovzar.json",
     "pictures-from-home-2023/newyorker--conde-nast.json",
-    "pictures-from-home-2023/newyorker--helen-shaw.json"
+    "pictures-from-home-2023/newyorker--helen-shaw.json",
+    "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
+    "small-off-broadway-2026/culturesauce--thom-geier.json"
   ],
   "failed": [
     "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
@@ -304,7 +306,15 @@
     "prima-facie-2023/newyorker--conde-nast.json",
     "sweeney-todd-2023/broadway-and-me--janice-c-simpson.json",
     "sweeney-todd-2023/nbcnews--variety-referenced-by-nbc.json",
-    "pictures-from-home-2023/broadway-and-me--janice-c-simpson.json"
+    "pictures-from-home-2023/broadway-and-me--janice-c-simpson.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
+    "small-off-broadway-2026/guardian--arifa-akbar.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -397,12 +407,17 @@
       "new-york-new-york-2023/washpost--peter-marks.json",
       "summer-1976-2023/ew--dalton-ross.json",
       "good-night-oscar-2023/broadwaynews--brittani-samuel.json",
-      "fat-ham-2023/broadwaynews--brittani-samuel.json"
+      "fat-ham-2023/broadwaynews--brittani-samuel.json",
+      "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
+      "small-off-broadway-2026/culturesauce--thom-geier.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/maybe-happy-ending-2024/variety--unknown.json",
-      "maybe-happy-ending-2024/variety--unknown.json"
+      "maybe-happy-ending-2024/variety--unknown.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -514,7 +529,7 @@
     ]
   },
   "startTime": "2026-06-09T08:53:47.441Z",
-  "lastProcessed": "pictures-from-home-2023/broadway-and-me--janice-c-simpson.json",
+  "lastProcessed": "small-off-broadway-2026/culturesauce--thom-geier.json",
   "log": [
     {
       "t": "2026-06-09T09:14:48.461Z",
@@ -537,6 +552,39 @@
       "t": "2026-06-09T09:37:51.720Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-09T14:24:33.391Z",
+      "event": "bb-session",
+      "session": "7e78dd7f",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-09T14:24:34.395Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-09T14:24:47.410Z",
+      "event": "bb-session",
+      "session": "c4aecbb1",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-09T14:24:48.403Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-09T14:26:04.990Z",
+      "event": "bb-session",
+      "session": "ac898d28",
+      "url": "https://www.nytimes.com/2026/05/31/theater/othello-review-wendell-pierce.html"
+    },
+    {
+      "t": "2026-06-09T14:26:05.905Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
