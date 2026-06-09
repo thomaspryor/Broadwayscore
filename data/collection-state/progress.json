@@ -1275,7 +1275,17 @@
     "king-kong-2018/theatre-reviews-limited--joseph-verlezza.json",
     "king-kong-2018/phindie--kathryn-osenlund.json",
     "torch-song-2018/guardian--jesse-green.json",
-    "torch-song-2018/theater-news-online--jeremy-gerard.json"
+    "torch-song-2018/theater-news-online--jeremy-gerard.json",
+    "torch-song-2018/cititour--brian-scott-lipton.json",
+    "the-waverly-gallery-2018/theater-news-online--matt-windman.json",
+    "the-waverly-gallery-2018/journal-inquirer--tim-leininger.json",
+    "the-ferryman-2018/theater-news-online--jessica-branch.json",
+    "the-nap-2018/theater-news-online--jeremy-gerard.json",
+    "bernhardthamlet-2018/theater-news-online--jeremy-gerard.json",
+    "bernhardthamlet-2018/theater-news-online--joe-dziemianowicz.json",
+    "bernhardthamlet-2018/wsj--terry-teachout.json",
+    "pretty-woman-the-musical-2018/nypost--joe-dziemianowicz.json",
+    "gettin-the-band-back-together-2018/theater-news-online--jeremy-gerard.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1511,7 +1521,8 @@
       "data/review-texts/death-of-a-salesman-2026/parade--janice-kaplan.json",
       "data/review-texts/gloria-2026/amny--unknown.json",
       "data/review-texts/gloria-2026/billboard--unknown.json",
-      "data/review-texts/gloria-2026/huffpost--unknown.json"
+      "data/review-texts/gloria-2026/huffpost--unknown.json",
+      "data/review-texts/bernhardthamlet-2018/wsj--terry-teachout.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1822,7 +1833,7 @@
     ]
   },
   "startTime": "2026-06-08T06:16:07.453Z",
-  "lastProcessed": "torch-song-2018/theater-news-online--jeremy-gerard.json",
+  "lastProcessed": "gettin-the-band-back-together-2018/theater-news-online--jeremy-gerard.json",
   "log": [
     {
       "t": "2026-06-08T06:27:00.120Z",
@@ -2690,6 +2701,17 @@
       "t": "2026-06-09T02:35:52.296Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-06-09T02:38:55.799Z",
+      "event": "bb-session",
+      "session": "534e9b55",
+      "url": "https://www.wsj.com/articles/brooklyn-playwright-cooks-up-dinner-theater-1532629"
+    },
+    {
+      "t": "2026-06-09T02:38:56.899Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

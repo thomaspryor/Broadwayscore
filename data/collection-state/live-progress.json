@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-09T02:37:04.944Z",
+  "updatedAt": "2026-06-09T02:39:22.915Z",
   "processed": 366,
-  "failed": 908,
-  "successRate": "28.7%",
+  "failed": 918,
+  "successRate": "28.5%",
   "tierBreakdown": {
     "playwright": 162,
     "amp": 0,
-    "browserbase": 67,
+    "browserbase": 68,
     "directCookies": 0,
     "scrapingbee": 81,
     "brightdata": 48,
     "archiveToday": 102,
     "archive": 67
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 9,
   "recentActivity": [
-    {
-      "t": "2026-06-09T01:21:46.508Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-09T01:22:00.853Z",
-      "event": "bb-session",
-      "session": "f765888e",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
     {
       "t": "2026-06-09T01:22:01.657Z",
       "event": "bb-cookie-inject",
@@ -125,6 +114,17 @@
       "t": "2026-06-09T02:35:52.296Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-06-09T02:38:55.799Z",
+      "event": "bb-session",
+      "session": "534e9b55",
+      "url": "https://www.wsj.com/articles/brooklyn-playwright-cooks-up-dinner-theater-1532629"
+    },
+    {
+      "t": "2026-06-09T02:38:56.899Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
