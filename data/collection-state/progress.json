@@ -1245,7 +1245,17 @@
     "betrayal-2019/independent--paul-taylor.json",
     "sea-wall-a-life-2019/nyt-theater--jonathan-mandell.json",
     "sea-wall-a-life-2019/talkinbroadway--matthew-murray.json",
-    "sea-wall-a-life-2019/washpost--peter-marks.json"
+    "sea-wall-a-life-2019/washpost--peter-marks.json",
+    "frankie-and-johnny-in-the-clair-de-lune-2019/gotham-playgoer--robert-sholiton.json",
+    "frankie-and-johnny-in-the-clair-de-lune-2019/theatres-leiter-side--samuel-l-leiter.json",
+    "frankie-and-johnny-in-the-clair-de-lune-2019/theater-news-online--jeremy-gerard.json",
+    "ink-2019/theater-news-online--joe-dziemianowicz.json",
+    "ink-2019/ny1--ny1-roma-torre.json",
+    "tootsie-2019/theatre-reviews-limited--joseph-verlezza.json",
+    "tootsie-2019/theater-news-online--joe-dziemianowicz.json",
+    "tootsie-2019/thestage--nicole-serratore.json",
+    "all-my-sons-2019/ny1--roma-torre.json",
+    "gary-a-sequel-to-titus-andronicus-2019/medium--christian-lewis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1712,7 +1722,9 @@
       "data/review-texts/dark-of-the-moon-west-end-2026/thestage--unknown.json",
       "data/review-texts/equus-west-end-2026/thestage--holly-o.json",
       "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
-      "data/review-texts/avenue-q-west-end-2026/the-recs--eric-muldoon.json"
+      "data/review-texts/avenue-q-west-end-2026/the-recs--eric-muldoon.json",
+      "data/review-texts/sea-wall-a-life-2019/talkinbroadway--matthew-murray.json",
+      "data/review-texts/frankie-and-johnny-in-the-clair-de-lune-2019/theatres-leiter-side--samuel-l-leiter.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -1784,7 +1796,7 @@
     ]
   },
   "startTime": "2026-06-08T06:16:07.453Z",
-  "lastProcessed": "sea-wall-a-life-2019/washpost--peter-marks.json",
+  "lastProcessed": "gary-a-sequel-to-titus-andronicus-2019/medium--christian-lewis.json",
   "log": [
     {
       "t": "2026-06-08T06:27:00.120Z",
@@ -2613,6 +2625,17 @@
       "t": "2026-06-09T02:15:31.532Z",
       "event": "bb-cookie-inject",
       "domain": "huffingtonpost.com"
+    },
+    {
+      "t": "2026-06-09T02:26:53.504Z",
+      "event": "bb-session",
+      "session": "2c0e06e8",
+      "url": "https://www.talkinbroadway.com/world/SeaWall.html"
+    },
+    {
+      "t": "2026-06-09T02:26:54.626Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
