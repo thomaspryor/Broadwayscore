@@ -1021,7 +1021,17 @@
     "equus-west-end-2026/artsdesk--unknown.json",
     "equus-west-end-2026/thestage--holly-o.json",
     "equus-west-end-2026/times-uk--clive-davis.json",
-    "equus-west-end-2026/whatsonstage--alun-hood.json"
+    "equus-west-end-2026/whatsonstage--alun-hood.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
+    "small-off-broadway-2026/guardian--arifa-akbar.json",
+    "small-off-broadway-2026/pages-on-stages--unknown.json",
+    "small-off-broadway-2026/the-recs--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1241,7 +1251,9 @@
       "data/review-texts/frankie-and-johnny-in-the-clair-de-lune-2019/wsj--terry-teachout.json",
       "frankie-and-johnny-in-the-clair-de-lune-2019/wsj--terry-teachout.json",
       "data/review-texts/ink-2019/wsj--terry-teachout.json",
-      "ink-2019/wsj--terry-teachout.json"
+      "ink-2019/wsj--terry-teachout.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1536,7 +1548,7 @@
     ]
   },
   "startTime": "2026-06-08T06:16:07.453Z",
-  "lastProcessed": "equus-west-end-2026/whatsonstage--alun-hood.json",
+  "lastProcessed": "small-off-broadway-2026/the-recs--unknown.json",
   "log": [
     {
       "t": "2026-06-08T06:27:00.120Z",
@@ -2230,6 +2242,28 @@
       "t": "2026-06-08T23:11:37.534Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-06-09T00:06:30.742Z",
+      "event": "bb-session",
+      "session": "cc31bdab",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-09T00:06:31.772Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-09T00:06:46.184Z",
+      "event": "bb-session",
+      "session": "ac21fe51",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-09T00:06:47.109Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
