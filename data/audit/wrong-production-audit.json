@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-09T08:21:37.185Z",
+  "timestamp": "2026-06-09T12:10:42.895Z",
   "stats": {
-    "totalReviews": 38220,
-    "alreadyFlagged": 16760,
+    "totalReviews": 38230,
+    "alreadyFlagged": 16763,
     "dateGuardCatches": 106,
     "directorMismatch": 853,
     "tvFilmSignals": 1050,
     "londonSignals": 622,
     "offBroadwaySignals": 457,
     "yearMismatch": 81,
-    "noPublishDate": 3994
+    "noPublishDate": 3989
   },
   "findings": [
     {
@@ -11072,7 +11072,7 @@
       "showId": "into-the-woods-west-end-2025",
       "file": "thestage--sam-marlowe.json",
       "score": 63,
-      "publishDate": null,
+      "publishDate": "December 12th, 2025",
       "url": "https://www.thestage.co.uk/reviews/into-the-woods-review-bridge-theatre-london-stephen-sondheim-jordan-fein",
       "findings": [
         {
@@ -32455,20 +32455,6 @@
     },
     {
       "showId": "inter-alia-west-end-2026",
-      "file": "lbc--johnny-jenkins.json",
-      "score": 91,
-      "publishDate": "2026-04-08",
-      "url": "https://www.lbc.co.uk/article/inter-alia-review-best-plays-ever-seen-5HjdXRZ_2/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"wyndham\""
-        }
-      ]
-    },
-    {
-      "showId": "inter-alia-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 82,
       "publishDate": "2026-04-14",
@@ -41187,6 +41173,20 @@
       "showId": "war-horse-west-end-2026",
       "file": "broadwayworld--aliya-al-hassan.json",
       "score": 91,
+      "publishDate": "2026-06-03",
+      "url": "https://www.broadwayworld.com/westend/article/Review-WAR-HORSE-National-Theatre-20260603",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "war-horse-west-end-2026",
+      "file": "broadwayworld--aliya-al-hussan.json",
+      "score": 96,
       "publishDate": "2026-06-03",
       "url": "https://www.broadwayworld.com/westend/article/Review-WAR-HORSE-National-Theatre-20260603",
       "findings": [
