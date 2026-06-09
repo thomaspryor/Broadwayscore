@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-09T02:09:06.870Z",
+  "updatedAt": "2026-06-09T02:11:54.702Z",
   "processed": 360,
-  "failed": 804,
-  "successRate": "30.9%",
+  "failed": 814,
+  "successRate": "30.7%",
   "tierBreakdown": {
     "playwright": 160,
     "amp": 0,
-    "browserbase": 64,
+    "browserbase": 65,
     "directCookies": 0,
     "scrapingbee": 80,
     "brightdata": 46,
     "archiveToday": 96,
     "archive": 65
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-06-08T23:11:37.534Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
-    {
-      "t": "2026-06-08T23:44:54.678Z",
-      "event": "bb-session",
-      "session": "8d45e0d5",
-      "url": "https://charingcrosstheatre.co.uk/theatre/dark-of-the-moon"
-    },
     {
       "t": "2026-06-08T23:46:17.149Z",
       "event": "bb-session",
@@ -126,6 +115,17 @@
       "event": "bb-session",
       "session": "3b636633",
       "url": "https://parade.com/news/kelly-ripa-son-joaquin-consuelos-broadway-debut-death-of"
+    },
+    {
+      "t": "2026-06-09T02:10:11.549Z",
+      "event": "bb-session",
+      "session": "2620273b",
+      "url": "http://www.amny.com/entertainment/on-your-feet-review-this-rhythm-will-barely-ge"
+    },
+    {
+      "t": "2026-06-09T02:10:12.502Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }

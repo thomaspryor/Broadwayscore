@@ -1165,7 +1165,17 @@
     "the-play-that-goes-wrong-west-end-2021/chicagotribune--chris-jones.json",
     "the-book-of-mormon-west-end-2024/talkinbroadway--unknown.json",
     "the-book-of-mormon-west-end-2024/telegraph--claire-allfree.json",
-    "matilda-the-musical-west-end-2021/ew--unknown.json"
+    "matilda-the-musical-west-end-2021/ew--unknown.json",
+    "book-of-mormon-2011/deadline--unknown.json",
+    "book-of-mormon-2011/new-jersey-newsroom--michael-sommers.json",
+    "book-of-mormon-2011/ap--mark-kennedy.json",
+    "book-of-mormon-2011/backstage--david-sheward.json",
+    "wicked-2003/standard--unknown.json",
+    "the-lion-king-1997/calgary-herald--louis-b-hobson.json",
+    "the-lion-king-1997/familyvacationcritic--unknown.json",
+    "the-lion-king-1997/maryland-theatre-guide--susan-brall.json",
+    "gloria-2026/amny--unknown.json",
+    "gloria-2026/billboard--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1396,7 +1406,8 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
-      "data/review-texts/death-of-a-salesman-2026/parade--janice-kaplan.json"
+      "data/review-texts/death-of-a-salesman-2026/parade--janice-kaplan.json",
+      "data/review-texts/gloria-2026/amny--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1696,7 +1707,7 @@
     ]
   },
   "startTime": "2026-06-08T06:16:07.453Z",
-  "lastProcessed": "matilda-the-musical-west-end-2021/ew--unknown.json",
+  "lastProcessed": "gloria-2026/billboard--unknown.json",
   "log": [
     {
       "t": "2026-06-08T06:27:00.120Z",
@@ -2497,6 +2508,17 @@
       "event": "bb-session",
       "session": "3b636633",
       "url": "https://parade.com/news/kelly-ripa-son-joaquin-consuelos-broadway-debut-death-of"
+    },
+    {
+      "t": "2026-06-09T02:10:11.549Z",
+      "event": "bb-session",
+      "session": "2620273b",
+      "url": "http://www.amny.com/entertainment/on-your-feet-review-this-rhythm-will-barely-ge"
+    },
+    {
+      "t": "2026-06-09T02:10:12.502Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
