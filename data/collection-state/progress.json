@@ -3,7 +3,11 @@
     "a-woman-among-women-off-broadway-2026/playbill--unknown.json",
     "girl-interrupted-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "jerome-off-broadway-2025/off-off-online--edward-karam.json",
-    "jerome-off-broadway-2025/one-minute-critic--jerry-portwood.json"
+    "jerome-off-broadway-2025/one-minute-critic--jerry-portwood.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
+    "small-off-broadway-2026/culturesauce--thom-geier.json",
+    "animal-wisdom-off-broadway-2022/nytg--christian-lewis.json"
   ],
   "failed": [
     "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
@@ -11,7 +15,13 @@
     "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
     "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
     "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
-    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json"
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
+    "small-off-broadway-2026/guardian--arifa-akbar.json",
+    "small-off-broadway-2026/pages-on-stages--unknown.json",
+    "small-off-broadway-2026/the-recs--unknown.json",
+    "small-off-broadway-2026/theater-pizzazz--unknown.json",
+    "small-off-broadway-2026/washpost--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -19,21 +29,27 @@
       "a-woman-among-women-off-broadway-2026/playbill--unknown.json",
       "girl-interrupted-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "jerome-off-broadway-2025/off-off-online--edward-karam.json",
-      "jerome-off-broadway-2025/one-minute-critic--jerry-portwood.json"
+      "jerome-off-broadway-2025/one-minute-critic--jerry-portwood.json",
+      "and-then-the-rodeo-burned-down-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
+      "animal-wisdom-off-broadway-2022/nytg--christian-lewis.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+      "data/review-texts/small-off-broadway-2026/theater-pizzazz--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "small-off-broadway-2026/culturesauce--thom-geier.json"
+    ]
   },
   "startTime": "2026-06-09T06:38:43.159Z",
-  "lastProcessed": "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+  "lastProcessed": "animal-wisdom-off-broadway-2022/nytg--christian-lewis.json",
   "log": [
     {
       "t": "2026-06-09T06:39:10.237Z",
@@ -56,6 +72,12 @@
       "t": "2026-06-09T06:39:23.769Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-09T06:42:47.120Z",
+      "event": "bb-session",
+      "session": "2ddc8999",
+      "url": "https://theaterpizzazz.com/small-a-jockeys-indestructible-passion/"
     }
   ]
 }
