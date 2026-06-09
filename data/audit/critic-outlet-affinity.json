@@ -1,13 +1,13 @@
 {
   "_meta": {
     "description": "Critic-outlet affinity audit report",
-    "lastUpdated": "2026-06-09T09:52:27.790Z",
+    "lastUpdated": "2026-06-09T10:06:40.689Z",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 38975,
-    "skippedFiles": 17633,
-    "totalCritics": 1458,
+    "totalFilesScanned": 38907,
+    "skippedFiles": 17637,
+    "totalCritics": 1455,
     "registryCritics": 522,
-    "flaggedReviews": 14
+    "flaggedReviews": 18
   },
   "flaggedReviews": [
     {
@@ -52,7 +52,7 @@
       "outletShare": 3,
       "primaryOutlet": "times-uk",
       "primaryShare": 97,
-      "totalReviews": 32
+      "totalReviews": 31
     },
     {
       "critic": "Michael Dale",
@@ -97,6 +97,50 @@
       "primaryOutlet": "the-komisar-scoop",
       "primaryShare": 99,
       "totalReviews": 155
+    },
+    {
+      "critic": "Andrzej Lukowski",
+      "criticSlug": "andrzej-lukowski",
+      "outlet": "timeout",
+      "showId": "machinal-2014",
+      "file": "timeout--andrzej-lukowski.json",
+      "outletShare": 7,
+      "primaryOutlet": "timeout-london",
+      "primaryShare": 93,
+      "totalReviews": 57
+    },
+    {
+      "critic": "Andrzej Lukowski",
+      "criticSlug": "andrzej-lukowski",
+      "outlet": "timeout",
+      "showId": "mj-the-musical-west-end-2024",
+      "file": "timeout--andrzej-lukowski.json",
+      "outletShare": 7,
+      "primaryOutlet": "timeout-london",
+      "primaryShare": 93,
+      "totalReviews": 57
+    },
+    {
+      "critic": "Andrzej Lukowski",
+      "criticSlug": "andrzej-lukowski",
+      "outlet": "timeout",
+      "showId": "much-ado-about-nothing-globe-west-end-2026",
+      "file": "timeout--andrzej-lukowski.json",
+      "outletShare": 7,
+      "primaryOutlet": "timeout-london",
+      "primaryShare": 93,
+      "totalReviews": 57
+    },
+    {
+      "critic": "Andrzej Lukowski",
+      "criticSlug": "andrzej-lukowski",
+      "outlet": "timeout",
+      "showId": "skylight-2015",
+      "file": "timeout--andrzej-lukowski.json",
+      "outletShare": 7,
+      "primaryOutlet": "timeout-london",
+      "primaryShare": 93,
+      "totalReviews": 57
     },
     {
       "critic": "Pete Hempstead",
@@ -267,16 +311,15 @@
       "slug": "unknown",
       "outlets": [
         "talkinbroadway",
-        "thestage",
         "theatermania",
+        "thestage",
         "wsj",
         "frontmezzjunkies",
-        "timeout",
         "playbill",
         "nyt-theater",
         "ap",
         "broadwayworld",
-        "whatsonstage",
+        "timeout",
         "nytimes",
         "the-recs",
         "guardian",
@@ -284,11 +327,9 @@
         "nytg",
         "artsdesk",
         "all-that-dazzles-uk",
-        "times-uk",
+        "whatsonstage",
         "backstage",
         "london-theatre",
-        "standard",
-        "telegraph",
         "ny1",
         "theater-life",
         "musical-theatre-review",
@@ -297,14 +338,14 @@
         "nydailynews",
         "washpost",
         "variety",
-        "independent",
+        "times-uk",
+        "telegraph",
         "plays-international",
         "chicagotribune",
-        "i-paper",
         "theatre-weekly",
-        "financialtimes",
         "exeunt-magazine",
         "hollywood-reporter",
+        "standard",
         "theatrely",
         "stageandcinema",
         "theupcoming",
@@ -314,11 +355,14 @@
         "ew",
         "huffpost",
         "new-york-city-theatre",
+        "financialtimes",
         "stagebuddy",
         "curtainup",
         "cititour",
+        "independent",
         "amny",
         "vulture",
+        "i-paper",
         "theatre-reviews-limited",
         "the-upcoming-uk",
         "broadwaynews",
@@ -336,7 +380,6 @@
         "one-minute-critic",
         "thewrap",
         "billboard",
-        "timeout-london",
         "newyorker",
         "parterre-box",
         "theatreandtonic",
@@ -344,9 +387,7 @@
         "usatoday",
         "city-am",
         "pages-on-stages",
-        "daily-mail",
         "dctheatrescene",
-        "metro-uk",
         "click-liverpool",
         "sierz-co-uk",
         "telegraph-uk",
@@ -369,6 +410,7 @@
         "ricky-martin",
         "burlington-free-press",
         "perez-hilton",
+        "timeout-london",
         "cnn",
         "here",
         "seattlereporg",
@@ -389,6 +431,7 @@
         "publictheaterorg",
         "theater-news-online",
         "schoolofrockthemusicalcomtickets",
+        "daily-mail",
         "abc-news",
         "by-clicking-here",
         "time",
@@ -398,6 +441,7 @@
         "hypable",
         "familyvacationcritic",
         "streetdirectory",
+        "metro-uk",
         "manhattantheatreclubcom",
         "bamorg",
         "london-box-office",
@@ -405,7 +449,7 @@
         "everything-theatre",
         "radio-times"
       ],
-      "totalReviews": 825
+      "totalReviews": 782
     },
     {
       "critic": "Rachel Halliburton",
@@ -1311,7 +1355,7 @@
         "standard",
         "independent"
       ],
-      "totalReviews": 31
+      "totalReviews": 30
     },
     {
       "critic": "Kevin Filipski",
@@ -1409,10 +1453,9 @@
         "timeout-london",
         "thestage",
         "telegraph",
-        "timeout",
         "exeunt-magazine"
       ],
-      "totalReviews": 15
+      "totalReviews": 14
     },
     {
       "critic": "Donna Herman",
@@ -1735,7 +1778,7 @@
         "metro-uk",
         "sunday-telegraph"
       ],
-      "totalReviews": 19
+      "totalReviews": 18
     },
     {
       "critic": "Quentin Letts",
