@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-06-08T14:39:30.083Z",
+  "lastRunAt": "2026-06-09T14:06:34.690Z",
   "seenIds": {
     "hn:47523414": true,
     "google:eafa90cb9c27e2e6": true,
@@ -55,7 +55,10 @@
     "google:2d9c3ddc8b57ed67": true,
     "google:fcc76556142854bd": true,
     "google:b3d4ed9d0ec98669": true,
-    "google:195014d28db9ad9f": true
+    "google:195014d28db9ad9f": true,
+    "reddit:t3_1tyi6m2": true,
+    "google:d11f58ce7a755e41": true,
+    "google:71198ac739e652c3": true
   },
   "mentions": [
     {
@@ -1140,10 +1143,73 @@
       "draftReason": "google is a no-reply source (article or search result)",
       "draftResponse": null,
       "dispatched": "2026-06-08T14:39:30.083Z"
+    },
+    {
+      "id": "reddit:t3_1tyi6m2",
+      "source": "reddit",
+      "subreddit": "Broadway",
+      "url": "https://www.reddit.com/r/Broadway/comments/1tyi6m2/my_tony_pick_for_best_musical_may_blow_up_and_im/",
+      "title": "My Tony pick for Best Musical may blow up. And I’m weirdly OK with it",
+      "excerpt": "I’m afraid my Tony predictions may have gone off the rails. Bad for me, good for you. 1 Minute Critic participated in[ Broadway Scorecard’s Beat the Critics](https://broadwayscorecard.com/beat-the-critics) content, where participants have a chance to win a $200 gift card from TodayTix. **Pick the Tonys, beat a critic, win a prize** — one winner will be drawn randomly from all entries that outscore at least one of our featured critics. (Full rules [here](https://broadwayscorecard.com/beat-the-cri",
+      "author": "1mincritic",
+      "publishedAt": "2026-06-06T14:06:12.000Z",
+      "detectedAt": "2026-06-09T14:06:02.466Z",
+      "score": 0,
+      "numComments": 2,
+      "raw": {
+        "matchedKeyword": "broadwayscorecard"
+      },
+      "status": "new",
+      "sentiment": "positive",
+      "shouldRespond": false,
+      "confidence": "high",
+      "draftReason": "This is promotional content written by a participant in the Beat the Critics contest — a self-referential post about their own predictions, not a conversational opening directed at BroadwayScorecard.",
+      "draftResponse": null,
+      "dispatched": "2026-06-09T14:06:34.690Z"
+    },
+    {
+      "id": "google:d11f58ce7a755e41",
+      "source": "google",
+      "url": "https://www.threads.com/@officialbroadwayworld/post/DZTXa0ImMm1/cinco-paul-cincopedia-has-just-won-the-tony-award-for-best-original-score-for/",
+      "title": "Cinco Paul @cincopedia has just won the Tony Award ...",
+      "excerpt": "2 days ago — ... will go down alongside 78 years of Broadway history? Find more stats to impress your Tony parties at broadwayscorecard.com/tony….",
+      "author": null,
+      "publishedAt": null,
+      "detectedAt": "2026-06-09T14:06:02.539Z",
+      "raw": {
+        "matchedKeyword": "broadwayscorecard.com"
+      },
+      "status": "new",
+      "sentiment": "neutral",
+      "shouldRespond": false,
+      "confidence": "high",
+      "draftReason": "google is a no-reply source (article or search result)",
+      "draftResponse": null,
+      "dispatched": "2026-06-09T14:06:34.690Z"
+    },
+    {
+      "id": "google:71198ac739e652c3",
+      "source": "google",
+      "url": "https://www.threads.com/@jasmineperillo/post/DZTzE2Wja0i/me-with-close-personal-friend-alex-brightman-of-the-tony-award-winning-best",
+      "title": "me with close personal friend, Alex Brightman, of the TONY ...",
+      "excerpt": "1 day ago — ... will go down alongside 78 years of Broadway history? Find more stats to impress your Tony parties at broadwayscorecard.com/tony….",
+      "author": null,
+      "publishedAt": null,
+      "detectedAt": "2026-06-09T14:06:02.539Z",
+      "raw": {
+        "matchedKeyword": "broadwayscorecard.com"
+      },
+      "status": "new",
+      "sentiment": "neutral",
+      "shouldRespond": false,
+      "confidence": "high",
+      "draftReason": "google is a no-reply source (article or search result)",
+      "draftResponse": null,
+      "dispatched": "2026-06-09T14:06:34.690Z"
     }
   ],
   "stats": {
-    "totalSeen": 55,
+    "totalSeen": 58,
     "totalDispatched": 0,
     "lastCalibration": null
   },
@@ -1201,6 +1267,9 @@
     "https://www.threads.com/@bwayscorecard/post/DZF-lb-FXVe": true,
     "https://www.threads.com/@officialbroadwayworld/post/DYA5q5PiYrG/video-joshua-henry-and-ragtime-cast-celebrate-tony-award-nominations-with": true,
     "https://www.threads.com/@apnews/post/DZT13tojtSq/schmigadoon-an-adaptation-of-an-apple-tv-series-that-gently-mocks-big-brassy": true,
-    "https://www.threads.com/@geffenplayhouse/post/DZTpFv4GqCq": true
+    "https://www.threads.com/@geffenplayhouse/post/DZTpFv4GqCq": true,
+    "https://www.reddit.com/r/Broadway/comments/1tyi6m2/my_tony_pick_for_best_musical_may_blow_up_and_im": true,
+    "https://www.threads.com/@officialbroadwayworld/post/DZTXa0ImMm1/cinco-paul-cincopedia-has-just-won-the-tony-award-for-best-original-score-for": true,
+    "https://www.threads.com/@jasmineperillo/post/DZTzE2Wja0i/me-with-close-personal-friend-alex-brightman-of-the-tony-award-winning-best": true
   }
 }
