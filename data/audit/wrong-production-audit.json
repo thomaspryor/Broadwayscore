@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-09T12:10:42.895Z",
+  "timestamp": "2026-06-09T23:48:21.793Z",
   "stats": {
-    "totalReviews": 38230,
-    "alreadyFlagged": 16763,
-    "dateGuardCatches": 106,
-    "directorMismatch": 853,
-    "tvFilmSignals": 1050,
-    "londonSignals": 622,
-    "offBroadwaySignals": 457,
+    "totalReviews": 38228,
+    "alreadyFlagged": 16775,
+    "dateGuardCatches": 104,
+    "directorMismatch": 854,
+    "tvFilmSignals": 1053,
+    "londonSignals": 624,
+    "offBroadwaySignals": 458,
     "yearMismatch": 81,
-    "noPublishDate": 3989
+    "noPublishDate": 3978
   },
   "findings": [
     {
@@ -443,6 +443,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2004 (2x) more than 2014 (0x). 2004 matches production: a-raisin-in-the-sun-2004"
+        }
+      ]
+    },
+    {
+      "showId": "a-strange-loop-2022",
+      "file": "wsj--charles-isherwood.json",
+      "score": 88,
+      "publishDate": "April 28, 2022",
+      "url": "https://www.wsj.com/arts-culture/theater/a-strange-loop-mr-saturday-night-review-broadway-opposites-attract-11651788064?gaa_at=eafs&gaa_n=AWEtsqfA81a3yDkxrV-jNV8WJKzsG5pza-ZpJqw1il9rTt9_jjbNKctg7WD2&gaa_ts=698c3742&gaa_sig=mSXMNFdfK9bgLhg3N3Vr29jMHTNBNetljE302V9TxzBVyt4yTWXdWCw-jc_Jp5moE3B2ChPG1vjezUIgVwqUug%3D%3D",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -1659,6 +1673,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "avenue-q-west-end-2026",
+      "file": "telegraph--marianka-swain.json",
+      "score": 82,
+      "publishDate": "2026-04-17",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/avenue-qs-bawdy-puppets-gleefully-outrageous/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -7704,6 +7732,24 @@
     },
     {
       "showId": "giant-west-end-2025",
+      "file": "london-box-office--stuart-king.json",
+      "publishDate": "2025-05-03",
+      "url": "https://www.londonboxoffice.co.uk/news/post/giant-harold-pinter-theatre-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"nicholas hytner\" from giant-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "giant-west-end-2025",
       "file": "standard--nick-curtis.json",
       "score": 88,
       "publishDate": "2025-05-02",
@@ -9412,20 +9458,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"web series\""
-        }
-      ]
-    },
-    {
-      "showId": "heisenberg-2016",
-      "file": "theatermania--jesse-david-fox.json",
-      "score": 83,
-      "publishDate": "June 4, 2015",
-      "url": "https://www.theatermania.com/news/heisenberg-opens-on-broadway-at-manhattan-theatre-clubs-samuel-j-friedman-theatre_78754/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 474d before show (June 4, 2015 vs 2016-09-20)"
         }
       ]
     },
@@ -23275,7 +23307,7 @@
       "file": "thestage--mark-shenton.json",
       "score": 65,
       "publishDate": "November 30th, 2017",
-      "url": "https://www.thestage.co.uk/reviews/2017/parisian-woman-uma-thurman-review-hudson-theatre-new-york/",
+      "url": "https://www.thestage.co.uk/reviews/reviews/the-parisian-woman-review-at-hudson-theatre-new-york--classy-but-shallow",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -24777,6 +24809,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "trouble-in-mind-2021",
+      "file": "wsj--terry-teachout.json",
+      "score": 81,
+      "publishDate": "November 18th, 2021",
+      "url": "https://www.wsj.com/articles/trouble-in-mind-alice-childress-roundabout-theater-company-lachanze-chuck-cooper-diana-princess-of-wales-david-bryan-joe-di-pietr-jeanne-de-waal-11637272134",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -35904,6 +35950,20 @@
       ]
     },
     {
+      "showId": "saint-joan-2018",
+      "file": "wsj--terry-teachout.json",
+      "score": 75,
+      "publishDate": "2018-04-27",
+      "url": "https://www.wsj.com/articles/the-iceman-cometh-and-saint-joan-reviews-stars-in-the-wrong-skies-1524789001",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"brooklyn academy\""
+        }
+      ]
+    },
+    {
       "showId": "schmigadoon-2026",
       "file": "chicagotribune--chris-jones.json",
       "score": 76,
@@ -39572,6 +39632,20 @@
     },
     {
       "showId": "the-lion-king-west-end-2021",
+      "file": "standard--alexander-games.json",
+      "score": 72,
+      "publishDate": "1999-10-14",
+      "url": "https://standard.co.uk/culture/theatre/the-lion-king-new-leads-posi-morakinyo-asha-parkerwallace-b1277912.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-west-end-2021",
       "file": "telegraph--claire-allfree.json",
       "score": 79,
       "publishDate": null,
@@ -41110,20 +41184,6 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 358d before show (2024-09-20 vs 2025-09-13)"
-        }
-      ]
-    },
-    {
-      "showId": "waitress-2016",
-      "file": "npr--andrea-shea.json",
-      "score": 60,
-      "publishDate": "2015-08-19",
-      "url": "https://www.npr.org/2015/08/19/432724883/waitress-serves-dark-funny-fare-with-a-musical-twist-and-a-side-of-pie",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 219d before show (2015-08-19 vs 2016-03-25)"
         }
       ]
     },
