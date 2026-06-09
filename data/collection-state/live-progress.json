@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-06-09T10:30:58.152Z",
+  "updatedAt": "2026-06-09T10:50:45.550Z",
   "processed": 11,
-  "failed": 44,
-  "successRate": "20.0%",
+  "failed": 54,
+  "successRate": "16.9%",
   "tierBreakdown": {
     "playwright": 10,
     "amp": 0,
@@ -13,7 +13,7 @@
     "archiveToday": 1,
     "archive": 0
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-06-09T08:56:23.399Z",
@@ -75,6 +75,12 @@
       "t": "2026-06-09T10:29:52.333Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-09T10:50:18.307Z",
+      "event": "bb-session",
+      "session": "d52b973a",
+      "url": "https://charingcrosstheatre.co.uk/theatre/dark-of-the-moon"
     }
   ]
 }
