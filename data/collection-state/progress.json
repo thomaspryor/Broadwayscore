@@ -10,7 +10,10 @@
     "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
     "small-off-broadway-2026/culturesauce--thom-geier.json",
     "animal-wisdom-off-broadway-2022/nytg--christian-lewis.json",
-    "animal-wisdom-off-broadway-2022/one-minute-critic--lindsay-b-davis.json"
+    "animal-wisdom-off-broadway-2022/one-minute-critic--lindsay-b-davis.json",
+    "henry-vi-a-trilogy-in-two-parts-off-broadway-2026/nytimes--rachel-sherman.json",
+    "girl-interrupted-off-broadway-2026/theater-scene--unknown.json",
+    "david-copperfield-59e59-theaters-off-broadway-2026/theatermania--unknown.json"
   ],
   "failed": [
     "are-you-watching-west-end-2026/all-that-dazzles-uk--unknown.json",
@@ -100,7 +103,14 @@
     "small-off-broadway-2026/pages-on-stages--unknown.json",
     "small-off-broadway-2026/the-recs--unknown.json",
     "small-off-broadway-2026/theater-pizzazz--unknown.json",
-    "small-off-broadway-2026/washpost--unknown.json"
+    "small-off-broadway-2026/washpost--unknown.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -114,7 +124,9 @@
       "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
       "small-off-broadway-2026/culturesauce--thom-geier.json",
       "animal-wisdom-off-broadway-2022/nytg--christian-lewis.json",
-      "animal-wisdom-off-broadway-2022/one-minute-critic--lindsay-b-davis.json"
+      "animal-wisdom-off-broadway-2022/one-minute-critic--lindsay-b-davis.json",
+      "girl-interrupted-off-broadway-2026/theater-scene--unknown.json",
+      "david-copperfield-59e59-theaters-off-broadway-2026/theatermania--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -126,10 +138,14 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
     ],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "henry-vi-a-trilogy-in-two-parts-off-broadway-2026/nytimes--rachel-sherman.json"
+    ],
     "brightdata": [
       "dark-of-the-moon-west-end-2026/guardian--arifa-akbar.json"
     ],
@@ -141,7 +157,7 @@
     "archive": []
   },
   "startTime": "2026-06-09T08:52:32.257Z",
-  "lastProcessed": "small-off-broadway-2026/washpost--unknown.json",
+  "lastProcessed": "david-copperfield-59e59-theaters-off-broadway-2026/theatermania--unknown.json",
   "log": [
     {
       "t": "2026-06-09T08:56:23.399Z",
@@ -268,6 +284,28 @@
     },
     {
       "t": "2026-06-09T12:01:00.052Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-09T12:42:16.006Z",
+      "event": "bb-session",
+      "session": "3f38cb46",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-09T12:42:16.947Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-09T12:42:29.677Z",
+      "event": "bb-session",
+      "session": "baa00cd9",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-09T12:42:30.661Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }

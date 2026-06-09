@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-06-09T12:02:38.771Z",
-  "processed": 11,
-  "failed": 88,
-  "successRate": "11.1%",
+  "updatedAt": "2026-06-09T12:43:46.649Z",
+  "processed": 14,
+  "failed": 95,
+  "successRate": "12.8%",
   "tierBreakdown": {
-    "playwright": 10,
+    "playwright": 12,
     "amp": 0,
-    "browserbase": 9,
+    "browserbase": 11,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 1,
     "archiveToday": 3,
     "archive": 0
   },
   "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-06-09T09:43:56.126Z",
-      "event": "bb-session",
-      "session": "1c997b1a",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
-    {
-      "t": "2026-06-09T09:43:56.930Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-09T10:28:24.098Z",
-      "event": "bb-session",
-      "session": "1815a3b8",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-09T10:28:24.910Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-06-09T10:28:39.203Z",
       "event": "bb-session",
@@ -123,6 +101,28 @@
     },
     {
       "t": "2026-06-09T12:01:00.052Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-09T12:42:16.006Z",
+      "event": "bb-session",
+      "session": "3f38cb46",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-09T12:42:16.947Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-09T12:42:29.677Z",
+      "event": "bb-session",
+      "session": "baa00cd9",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-09T12:42:30.661Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
