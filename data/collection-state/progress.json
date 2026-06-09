@@ -2,7 +2,10 @@
   "processed": [
     "war-horse-west-end-2026/click-liverpool--carie-schneider.json",
     "beetlejuice-west-end-2026/guardian-uk--unknown.json",
-    "dark-of-the-moon-west-end-2026/guardian--arifa-akbar.json"
+    "dark-of-the-moon-west-end-2026/guardian--arifa-akbar.json",
+    "girl-interrupted-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "jerome-off-broadway-2025/off-off-online--edward-karam.json",
+    "jerome-off-broadway-2025/one-minute-critic--jerry-portwood.json"
   ],
   "failed": [
     "are-you-watching-west-end-2026/all-that-dazzles-uk--unknown.json",
@@ -24,16 +27,29 @@
     "care-west-end-2026/times-uk--clive-davis.json",
     "care-west-end-2026/times-uk--mark-fisher.json",
     "care-west-end-2026/times-uk--unknown.json",
-    "care-west-end-2026/whatsonstage--judi-herman.json"
+    "care-west-end-2026/whatsonstage--judi-herman.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "war-horse-west-end-2026/click-liverpool--carie-schneider.json",
-      "beetlejuice-west-end-2026/guardian-uk--unknown.json"
+      "beetlejuice-west-end-2026/guardian-uk--unknown.json",
+      "girl-interrupted-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "jerome-off-broadway-2025/off-off-online--edward-karam.json",
+      "jerome-off-broadway-2025/one-minute-critic--jerry-portwood.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [
@@ -45,13 +61,35 @@
     "archive": []
   },
   "startTime": "2026-06-09T08:52:32.257Z",
-  "lastProcessed": "care-west-end-2026/whatsonstage--judi-herman.json",
+  "lastProcessed": "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
   "log": [
     {
       "t": "2026-06-09T08:56:23.399Z",
       "event": "bb-session",
       "session": "676d8679",
       "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
+    },
+    {
+      "t": "2026-06-09T09:43:42.849Z",
+      "event": "bb-session",
+      "session": "64d524b9",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-09T09:43:43.670Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-09T09:43:56.126Z",
+      "event": "bb-session",
+      "session": "1c997b1a",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-09T09:43:56.930Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
