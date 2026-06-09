@@ -1,22 +1,72 @@
 {
-  "updatedAt": "2026-06-09T06:43:23.050Z",
-  "processed": 9,
-  "failed": 12,
-  "successRate": "42.9%",
+  "updatedAt": "2026-06-09T05:40:03.399Z",
+  "processed": 473,
+  "failed": 1231,
+  "successRate": "27.8%",
   "tierBreakdown": {
-    "playwright": 8,
+    "playwright": 216,
     "amp": 0,
-    "browserbase": 3,
+    "browserbase": 74,
     "directCookies": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
-    "archiveToday": 0,
-    "archive": 1
+    "scrapingbee": 96,
+    "brightdata": 66,
+    "archiveToday": 198,
+    "archive": 89
   },
   "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-06-09T06:39:10.237Z",
+      "t": "2026-06-09T02:32:52.103Z",
+      "event": "bb-session",
+      "session": "1f3bbb60",
+      "url": "https://www.wsj.com/articles/network-review-mad-as-hell-and-magnificent-15448320"
+    },
+    {
+      "t": "2026-06-09T02:32:53.244Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-09T02:34:52.736Z",
+      "event": "bb-session",
+      "session": "9d3d3c1a",
+      "url": "https://www.thedailybeast.com/network-on-broadway-bryan-cranston-is-mad-as-hell-"
+    },
+    {
+      "t": "2026-06-09T02:35:51.332Z",
+      "event": "bb-session",
+      "session": "b32fe3f0",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-bryan-cranston"
+    },
+    {
+      "t": "2026-06-09T02:35:52.296Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-06-09T02:38:55.799Z",
+      "event": "bb-session",
+      "session": "534e9b55",
+      "url": "https://www.wsj.com/articles/brooklyn-playwright-cooks-up-dinner-theater-1532629"
+    },
+    {
+      "t": "2026-06-09T02:38:56.899Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-09T02:39:46.207Z",
+      "event": "bb-session",
+      "session": "0813ae50",
+      "url": "https://www.wsj.com/articles/travesties-review-tom-stoppards-dada-esque-comedy-1"
+    },
+    {
+      "t": "2026-06-09T02:39:47.224Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-09T02:57:39.366Z",
       "event": "bb-session",
       "session": "156dba38",
       "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
