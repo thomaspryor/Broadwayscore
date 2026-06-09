@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-09T05:26:16.371Z",
+  "timestamp": "2026-06-09T06:42:29.814Z",
   "stats": {
-    "totalReviews": 38208,
+    "totalReviews": 38209,
     "alreadyFlagged": 16758,
     "dateGuardCatches": 106,
     "directorMismatch": 853,
-    "tvFilmSignals": 1051,
+    "tvFilmSignals": 1050,
     "londonSignals": 622,
     "offBroadwaySignals": 457,
     "yearMismatch": 81,
-    "noPublishDate": 3986
+    "noPublishDate": 3984
   },
   "findings": [
     {
@@ -23562,20 +23562,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"lyttelton\""
-        }
-      ]
-    },
-    {
-      "showId": "the-present-2017",
-      "file": "wsj--terry-teachout.json",
-      "score": 45,
-      "publishDate": "January 19, 2017",
-      "url": "https://www.wsj.com/articles/the-present-review-chekhovs-gun-takes-center-stage-1484082175?gaa_at=eafs&gaa_n=AWEtsqe2-1xX3aA2VcCO0Ene569KaJqFr-PVFBsNAiAkgvEO77s9T93GUnPF&gaa_ts=698b9b93&gaa_sig=6sgvFXgxwwtxTwhFUlBkTZjfBanYRK4v1AMx9rJ0CcIZtNoU2_HxM_Vrs0M_UwagcuRwUE3So2c9iwWpzmuEZg%3D%3D",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 4\""
         }
       ]
     },
