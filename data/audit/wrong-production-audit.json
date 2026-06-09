@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-08T14:43:01.846Z",
+  "timestamp": "2026-06-08T23:44:47.706Z",
   "stats": {
-    "totalReviews": 38199,
-    "alreadyFlagged": 16768,
+    "totalReviews": 38207,
+    "alreadyFlagged": 16755,
     "dateGuardCatches": 106,
-    "directorMismatch": 842,
-    "tvFilmSignals": 1050,
-    "londonSignals": 616,
-    "offBroadwaySignals": 460,
-    "yearMismatch": 80,
-    "noPublishDate": 3988
+    "directorMismatch": 852,
+    "tvFilmSignals": 1051,
+    "londonSignals": 622,
+    "offBroadwaySignals": 457,
+    "yearMismatch": 81,
+    "noPublishDate": 3990
   },
   "findings": [
     {
@@ -4128,20 +4128,6 @@
     },
     {
       "showId": "children-of-a-lesser-god-2018",
-      "file": "diandra-reviews-it-all--diandra-rivera.json",
-      "score": 78,
-      "publishDate": "2018-04-17",
-      "url": "https://diandrareviewsitall.com/theatre-review-children-of-a-lesser-god-challenges-the-worth-of-social-pity/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "children-of-a-lesser-god-2018",
       "file": "gq--mark-burka.json",
       "score": 82,
       "publishDate": null,
@@ -7567,6 +7553,184 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "giant-royal-court-off-west-end-2024",
+      "file": "daily-mail--patrick-marmion.json",
+      "score": null,
+      "publishDate": "2024-09-27",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-13897381/Giant-review-Roald-Dahls-uncomfortable-views-royal-court.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"nicholas hytner\" from giant-2026"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "giant-royal-court-off-west-end-2024",
+      "file": "guardian--arifa-akbar.json",
+      "publishDate": null,
+      "url": "https://www.theguardian.com/stage/2024/sep/27/giant-review-royal-court-theatre-mark-rosenblatt-london",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"nicholas hytner\" from giant-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "giant-royal-court-off-west-end-2024",
+      "file": "independent--alice-saville.json",
+      "publishDate": "2024-09-27",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/giant-review-roald-dahl-john-lithgow-b2619923.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"nicholas hytner\" from giant-2026"
+        }
+      ]
+    },
+    {
+      "showId": "giant-royal-court-off-west-end-2024",
+      "file": "london-theatre--julia-rank.json",
+      "score": null,
+      "publishDate": "2024-09-27",
+      "url": "https://www.londontheatre.co.uk/reviews/giant-review-royal-court",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"nicholas hytner\" from giant-2026"
+        }
+      ]
+    },
+    {
+      "showId": "giant-royal-court-off-west-end-2024",
+      "file": "nytimes--houman-barekat.json",
+      "score": null,
+      "publishDate": "2024-09-27",
+      "url": "https://www.nytimes.com/2024/09/27/theater/giant-royal-court-roald-dahl-antisemitism.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"nicholas hytner\" from giant-2026"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "giant-royal-court-off-west-end-2024",
+      "file": "times-uk--clive-davis.json",
+      "publishDate": "2024-09-26",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/giant-review-john-lithgow-roald-dahl-kmzqshndc",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"nicholas hytner\" from giant-2026"
+        }
+      ]
+    },
+    {
+      "showId": "giant-royal-court-off-west-end-2024",
+      "file": "whatsonstage--sarah-crompton.json",
+      "publishDate": "2024-09-27",
+      "url": "https://www.whatsonstage.com/news/giant-with-john-lithgow-to-be-shown-in-cinemas_1721213/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"nicholas hytner\" from giant-2026"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (2x) more than 2024 (0x). 2026 matches production: giant-2026"
+        }
+      ]
+    },
+    {
+      "showId": "giant-west-end-2025",
+      "file": "standard--nick-curtis.json",
+      "publishDate": "2025-05-02",
+      "url": "https://www.standard.co.uk/culture/theatre/giant-harold-pinter-roald-dahl-b1225660.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"nicholas hytner\" from giant-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "giant-west-end-2025",
+      "file": "sunday-telegraph--dominic-cavendish.json",
+      "publishDate": "2025-05-02",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/giant-harold-pinter-theatre-review-john-lithgow/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"nicholas hytner\" from giant-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "giant-west-end-2025",
+      "file": "timeout-london--tim-bano.json",
+      "publishDate": "2025-05-02",
+      "url": "https://www.timeout.com/london/theatre/giant-review-3",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"nicholas hytner\" from giant-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -23071,7 +23235,7 @@
       "showId": "the-parisian-woman-2017",
       "file": "theatre-reviews-limited--david-roberts.json",
       "score": 25,
-      "publishDate": null,
+      "publishDate": "2017-12-07",
       "url": "https://www.theatrereviews.com/broadway-review-the-parisian-woman-at-the-hudson-theatre/",
       "findings": [
         {
@@ -29095,20 +29259,6 @@
       ]
     },
     {
-      "showId": "children-of-a-lesser-god-2018",
-      "file": "theatre-reviews-limited--joseph-verlezza.json",
-      "score": 58,
-      "publishDate": "2018-04-20",
-      "url": "https://www.theatrereviews.com/broadway-review-children-of-a-lesser-god-at-studio-54/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"cherry lane\""
-        }
-      ]
-    },
-    {
       "showId": "chinese-republicans-off-broadway-2026",
       "file": "the-interested-bystander--cary-wong.json",
       "score": 77,
@@ -32924,20 +33074,6 @@
     },
     {
       "showId": "latin-history-for-morons-2017",
-      "file": "diandra-reviews-it-all--diandra-rivera.json",
-      "score": 88,
-      "publishDate": null,
-      "url": "https://diandrareviewsitall.com/theatre-review-latin-history-morons-hilarious-educational-upsetting/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"bam\""
-        }
-      ]
-    },
-    {
-      "showId": "latin-history-for-morons-2017",
       "file": "newsday--barbara-schuler.json",
       "score": 66,
       "publishDate": "November 15, 2017",
@@ -35295,20 +35431,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"bam\""
-        }
-      ]
-    },
-    {
-      "showId": "present-laughter-2017",
-      "file": "frontmezzjunkies--steven-ross.json",
-      "score": 72,
-      "publishDate": "April 5th, 2017",
-      "url": "https://frontmezzjunkies.com/2017/04/05/present-laughter-2/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
