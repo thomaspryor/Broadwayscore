@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-08T23:44:47.706Z",
+  "timestamp": "2026-06-09T03:46:31.158Z",
   "stats": {
     "totalReviews": 38207,
-    "alreadyFlagged": 16755,
+    "alreadyFlagged": 16756,
     "dateGuardCatches": 106,
-    "directorMismatch": 852,
+    "directorMismatch": 853,
     "tvFilmSignals": 1051,
-    "londonSignals": 622,
+    "londonSignals": 623,
     "offBroadwaySignals": 457,
     "yearMismatch": 81,
-    "noPublishDate": 3990
+    "noPublishDate": 3988
   },
   "findings": [
     {
@@ -7641,6 +7641,24 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "giant-royal-court-off-west-end-2024",
+      "file": "standard--tim-bano.json",
+      "publishDate": "2024-09-27",
+      "url": "https://www.standard.co.uk/culture/theatre/giant-royal-court-review-john-lithgow-romola-garai-b1184513.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"nicholas hytner\" from giant-2026"
         },
         {
           "type": "LONDON_SIGNAL",
@@ -33077,7 +33095,7 @@
       "file": "newsday--barbara-schuler.json",
       "score": 66,
       "publishDate": "November 15, 2017",
-      "url": "https://www.newsday.com/entertainment/theater/latin-history-for-morons-review-1.14991144",
+      "url": "https://www.newsday.com/entertainment/theater/latin-history-for-morons-review-w56325",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
