@@ -216,7 +216,14 @@
     "on-your-feet-2015/wsj--terry-teachout.json",
     "king-charles-iii-2015/nydailynews--joe-dziemianowicz.json",
     "king-charles-iii-2015/amny--matt-windman.json",
-    "king-charles-iii-2015/washpost--peter-marks.json"
+    "king-charles-iii-2015/washpost--peter-marks.json",
+    "therese-raquin-2015/timeout--adam-feldman.json",
+    "therese-raquin-2015/deadline--jeremy-gerard.json",
+    "sylvia-2015/nydailynews--joe-dziemianowicz.json",
+    "sylvia-2015/timeout--adam-feldman.json",
+    "sylvia-2015/timeout--david-cote.json",
+    "sylvia-2015/huffpost--rob-taub.json",
+    "dames-at-sea-2015/timeout--adam-feldman.json"
   ],
   "failed": [
     "are-you-watching-west-end-2026/all-that-dazzles-uk--unknown.json",
@@ -383,7 +390,10 @@
     "allegiance-2015/wsj--terry-teachout.json",
     "allegiance-2015/washpost--peter-marks.json",
     "on-your-feet-2015/backstage-barbie--backstage-barbie.json",
-    "on-your-feet-2015/broadway-and-me--janice-c-simpson.json"
+    "on-your-feet-2015/broadway-and-me--janice-c-simpson.json",
+    "sylvia-2015/wsj--terry-teachout.json",
+    "sylvia-2015/washpost--peter-marks.json",
+    "sylvia-2015/talkinbroadway--matthew-murray.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -488,7 +498,8 @@
       "fiddler-on-the-roof-2015/broadway-and-me--janice-c-simpson.json",
       "the-color-purple-2015/broadway-and-me--janice-c-simpson.json",
       "misery-2015/broadway-and-me--janice-c-simpson.json",
-      "king-charles-iii-2015/washpost--peter-marks.json"
+      "king-charles-iii-2015/washpost--peter-marks.json",
+      "sylvia-2015/huffpost--rob-taub.json"
     ],
     "amp": [],
     "browserbase": [
@@ -526,7 +537,9 @@
       "data/review-texts/long-days-journey-into-night-2016/wsj--terry-teachout.json",
       "long-days-journey-into-night-2016/wsj--terry-teachout.json",
       "data/review-texts/fully-committed-2016/wsj--terry-teachout.json",
-      "fully-committed-2016/wsj--terry-teachout.json"
+      "fully-committed-2016/wsj--terry-teachout.json",
+      "data/review-texts/therese-raquin-2015/deadline--jeremy-gerard.json",
+      "therese-raquin-2015/deadline--jeremy-gerard.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -603,7 +616,10 @@
       "heisenberg-2016/nydailynews--joe-dziemianowicz.json",
       "the-encounter-2016/nydailynews--joe-dziemianowicz.json",
       "fully-committed-2016/timeout--adam-feldman.json",
-      "she-loves-me-2016/theater-life--eric-march.json"
+      "she-loves-me-2016/theater-life--eric-march.json",
+      "sylvia-2015/timeout--adam-feldman.json",
+      "sylvia-2015/timeout--david-cote.json",
+      "dames-at-sea-2015/timeout--adam-feldman.json"
     ],
     "brightdata": [
       "a-woman-among-women-off-broadway-2026/playbill--unknown.json",
@@ -687,7 +703,10 @@
       "data/review-texts/school-of-rock-the-musical-2015/wsj--terry-teachout.json",
       "data/review-texts/china-doll-2015/washpost--peter-marks.json",
       "data/review-texts/allegiance-2015/wsj--terry-teachout.json",
-      "data/review-texts/allegiance-2015/washpost--peter-marks.json"
+      "data/review-texts/allegiance-2015/washpost--peter-marks.json",
+      "data/review-texts/sylvia-2015/wsj--terry-teachout.json",
+      "data/review-texts/sylvia-2015/washpost--peter-marks.json",
+      "data/review-texts/sylvia-2015/talkinbroadway--matthew-murray.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -789,11 +808,13 @@
       "a-view-from-the-bridge-2015/wsj--terry-teachout.json",
       "on-your-feet-2015/timeout--adam-feldman.json",
       "king-charles-iii-2015/nydailynews--joe-dziemianowicz.json",
-      "king-charles-iii-2015/amny--matt-windman.json"
+      "king-charles-iii-2015/amny--matt-windman.json",
+      "therese-raquin-2015/timeout--adam-feldman.json",
+      "sylvia-2015/nydailynews--joe-dziemianowicz.json"
     ]
   },
   "startTime": "2026-06-09T08:53:47.441Z",
-  "lastProcessed": "king-charles-iii-2015/washpost--peter-marks.json",
+  "lastProcessed": "dames-at-sea-2015/timeout--adam-feldman.json",
   "log": [
     {
       "t": "2026-06-10T09:12:22.293Z",
@@ -1506,6 +1527,39 @@
       "t": "2026-06-10T09:43:02.676Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-06-10T09:46:10.702Z",
+      "event": "bb-session",
+      "session": "cd273613",
+      "url": "https://deadline.com/2015/10/keira-knightley-therese-raquin-broadway-debut-12015"
+    },
+    {
+      "t": "2026-06-10T09:46:11.321Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-06-10T09:47:30.849Z",
+      "event": "bb-session",
+      "session": "53b9110e",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/sylvia-review-matthew"
+    },
+    {
+      "t": "2026-06-10T09:47:31.412Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-06-10T09:50:52.139Z",
+      "event": "bb-session",
+      "session": "47032bda",
+      "url": "http://www.talkinbroadway.com/world/Sylvia.html"
+    },
+    {
+      "t": "2026-06-10T09:50:52.738Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
