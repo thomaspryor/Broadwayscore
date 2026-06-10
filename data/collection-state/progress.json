@@ -90,7 +90,17 @@
     "dark-of-the-moon-west-end-2026/artsdesk--unknown.json",
     "dark-of-the-moon-west-end-2026/cambridge--unknown.json",
     "dark-of-the-moon-west-end-2026/standard--dominic-cavendish.json",
-    "dark-of-the-moon-west-end-2026/thestage--unknown.json"
+    "dark-of-the-moon-west-end-2026/thestage--unknown.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
+    "small-off-broadway-2026/guardian--arifa-akbar.json",
+    "small-off-broadway-2026/pages-on-stages--unknown.json",
+    "small-off-broadway-2026/the-recs--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -114,6 +124,9 @@
       "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
     ],
     "directCookies": [],
@@ -134,7 +147,7 @@
     ]
   },
   "startTime": "2026-06-10T09:07:08.446Z",
-  "lastProcessed": "dark-of-the-moon-west-end-2026/thestage--unknown.json",
+  "lastProcessed": "small-off-broadway-2026/the-recs--unknown.json",
   "log": [
     {
       "t": "2026-06-10T09:12:22.293Z",
@@ -258,6 +271,39 @@
       "event": "bb-session",
       "session": "de8e97fd",
       "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
+    },
+    {
+      "t": "2026-06-10T11:51:19.518Z",
+      "event": "bb-session",
+      "session": "1eb4d0e5",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-10T11:51:20.597Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-10T11:51:51.676Z",
+      "event": "bb-session",
+      "session": "d73f3a39",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-10T11:51:52.683Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-10T11:52:05.953Z",
+      "event": "bb-session",
+      "session": "affca70d",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-10T11:52:06.944Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
