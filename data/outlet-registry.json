@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-06-05T15:34:09.434Z",
+    "lastUpdated": "2026-06-10",
     "version": "2.1.0",
     "lastChange": "T3->T4 demotion of 38 long-tail/stale outlets"
   },
@@ -9762,6 +9762,39 @@
         "ctvoice"
       ],
       "domain": "ctvoice.com"
+    },
+    "loureviews": {
+      "displayName": "LouReviews",
+      "tier": 3,
+      "aliases": [
+        "loureviews",
+        "lou reviews",
+        "loureviews.blog",
+        "loureviews-blog",
+        "loureviews blog"
+      ],
+      "domain": "loureviews.blog",
+      "region": "london",
+      "accessModel": "free",
+      "defaultCritic": "Louise Penn",
+      "multiAuthor": false,
+      "starScale": 5
+    },
+    "north-west-end": {
+      "displayName": "North West End",
+      "tier": 3,
+      "aliases": [
+        "north west end",
+        "north-west-end",
+        "northwestend",
+        "north west end uk",
+        "nwend"
+      ],
+      "domain": "northwestend.com",
+      "region": "london",
+      "accessModel": "free",
+      "multiAuthor": true,
+      "starScale": 5
     }
   },
   "_aliasIndex": {
