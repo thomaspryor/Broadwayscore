@@ -223,7 +223,14 @@
     "sylvia-2015/timeout--adam-feldman.json",
     "sylvia-2015/timeout--david-cote.json",
     "sylvia-2015/huffpost--rob-taub.json",
-    "dames-at-sea-2015/timeout--adam-feldman.json"
+    "dames-at-sea-2015/timeout--adam-feldman.json",
+    "dames-at-sea-2015/village-voice--elizabeth-zimmer.json",
+    "the-gin-game-2015/nyt-theater--jonathan-mandell.json",
+    "the-gin-game-2015/deadline--jeremy-gerard.json",
+    "the-gin-game-2015/nydailynews--joe-dziemianowicz.json",
+    "the-gin-game-2015/timeout--adam-feldman.json",
+    "the-gin-game-2015/wsj--terry-teachout.json",
+    "the-gin-game-2015/amny--matt-windman.json"
   ],
   "failed": [
     "are-you-watching-west-end-2026/all-that-dazzles-uk--unknown.json",
@@ -393,7 +400,10 @@
     "on-your-feet-2015/broadway-and-me--janice-c-simpson.json",
     "sylvia-2015/wsj--terry-teachout.json",
     "sylvia-2015/washpost--peter-marks.json",
-    "sylvia-2015/talkinbroadway--matthew-murray.json"
+    "sylvia-2015/talkinbroadway--matthew-murray.json",
+    "dames-at-sea-2015/wsj--terry-teachout.json",
+    "the-gin-game-2015/vulture--jesse-green.json",
+    "the-gin-game-2015/ap--mark-kennedy.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -539,7 +549,9 @@
       "data/review-texts/fully-committed-2016/wsj--terry-teachout.json",
       "fully-committed-2016/wsj--terry-teachout.json",
       "data/review-texts/therese-raquin-2015/deadline--jeremy-gerard.json",
-      "therese-raquin-2015/deadline--jeremy-gerard.json"
+      "therese-raquin-2015/deadline--jeremy-gerard.json",
+      "data/review-texts/the-gin-game-2015/deadline--jeremy-gerard.json",
+      "the-gin-game-2015/deadline--jeremy-gerard.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -706,7 +718,8 @@
       "data/review-texts/allegiance-2015/washpost--peter-marks.json",
       "data/review-texts/sylvia-2015/wsj--terry-teachout.json",
       "data/review-texts/sylvia-2015/washpost--peter-marks.json",
-      "data/review-texts/sylvia-2015/talkinbroadway--matthew-murray.json"
+      "data/review-texts/sylvia-2015/talkinbroadway--matthew-murray.json",
+      "data/review-texts/dames-at-sea-2015/wsj--terry-teachout.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -810,11 +823,17 @@
       "king-charles-iii-2015/nydailynews--joe-dziemianowicz.json",
       "king-charles-iii-2015/amny--matt-windman.json",
       "therese-raquin-2015/timeout--adam-feldman.json",
-      "sylvia-2015/nydailynews--joe-dziemianowicz.json"
+      "sylvia-2015/nydailynews--joe-dziemianowicz.json",
+      "dames-at-sea-2015/village-voice--elizabeth-zimmer.json",
+      "the-gin-game-2015/nyt-theater--jonathan-mandell.json",
+      "the-gin-game-2015/nydailynews--joe-dziemianowicz.json",
+      "the-gin-game-2015/timeout--adam-feldman.json",
+      "the-gin-game-2015/wsj--terry-teachout.json",
+      "the-gin-game-2015/amny--matt-windman.json"
     ]
   },
   "startTime": "2026-06-09T08:53:47.441Z",
-  "lastProcessed": "dames-at-sea-2015/timeout--adam-feldman.json",
+  "lastProcessed": "the-gin-game-2015/ap--mark-kennedy.json",
   "log": [
     {
       "t": "2026-06-10T09:12:22.293Z",
@@ -1560,6 +1579,17 @@
       "t": "2026-06-10T09:50:52.738Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-10T09:53:41.441Z",
+      "event": "bb-session",
+      "session": "09d9af8c",
+      "url": "http://deadline.com/2015/10/gin-game-fool-for-love-perfect-arrangement-reviews-1"
+    },
+    {
+      "t": "2026-06-10T09:53:42.015Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
