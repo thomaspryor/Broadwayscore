@@ -1,66 +1,22 @@
 {
-  "updatedAt": "2026-06-10T03:02:55.243Z",
-  "processed": 298,
-  "failed": 471,
-  "successRate": "38.8%",
+  "updatedAt": "2026-06-10T03:06:06.525Z",
+  "processed": 306,
+  "failed": 473,
+  "successRate": "39.3%",
   "tierBreakdown": {
-    "playwright": 145,
+    "playwright": 151,
     "amp": 0,
-    "browserbase": 26,
+    "browserbase": 28,
     "directCookies": 0,
     "scrapingbee": 66,
     "brightdata": 31,
     "archiveToday": 19,
-    "archive": 63
+    "archive": 64
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
-      "t": "2026-06-10T00:59:25.240Z",
-      "event": "bb-session",
-      "session": "73128144",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
-    {
-      "t": "2026-06-10T02:28:00.210Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-10T02:28:31.257Z",
-      "event": "bb-session",
-      "session": "72b8e553",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-10T02:28:31.755Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-10T02:28:45.062Z",
-      "event": "bb-session",
-      "session": "d7f46549",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
-    {
-      "t": "2026-06-10T02:28:45.592Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-10T02:29:46.307Z",
-      "event": "bb-session",
-      "session": "b3021cb5",
-      "url": "https://www.nytimes.com/2026/06/01/arts/andy-halliday-dead.html"
-    },
-    {
-      "t": "2026-06-10T02:29:46.836Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-10T03:19:05.456Z",
+      "t": "2026-06-10T01:34:02.608Z",
       "event": "bb-session",
       "session": "f229397b",
       "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
@@ -122,6 +78,17 @@
     },
     {
       "t": "2026-06-10T02:47:21.325Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-10T03:04:36.170Z",
+      "event": "bb-session",
+      "session": "4b859b18",
+      "url": "http://www.wsj.com/articles/junk-review-bankrupting-entertainment-1509669000"
+    },
+    {
+      "t": "2026-06-10T03:04:36.783Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
