@@ -1,39 +1,50 @@
 {
-  "updatedAt": "2026-06-10T03:16:09.923Z",
-  "processed": 317,
-  "failed": 482,
+  "updatedAt": "2026-06-10T03:19:46.583Z",
+  "processed": 321,
+  "failed": 488,
   "successRate": "39.7%",
   "tierBreakdown": {
-    "playwright": 160,
+    "playwright": 162,
     "amp": 0,
-    "browserbase": 29,
+    "browserbase": 31,
     "directCookies": 0,
-    "scrapingbee": 67,
+    "scrapingbee": 68,
     "brightdata": 31,
-    "archiveToday": 19,
+    "archiveToday": 21,
     "archive": 67
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
-      "t": "2026-06-10T01:34:32.341Z",
+      "t": "2026-06-10T01:45:43.180Z",
       "event": "bb-session",
-      "session": "921a0105",
+      "session": "c1850aeb",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-10T01:45:43.586Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-10T01:46:13.493Z",
+      "event": "bb-session",
+      "session": "925cf477",
       "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
     },
     {
-      "t": "2026-06-10T03:19:39.348Z",
+      "t": "2026-06-10T01:46:13.956Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     },
     {
-      "t": "2026-06-10T03:19:52.728Z",
+      "t": "2026-06-10T01:46:25.143Z",
       "event": "bb-session",
-      "session": "2cca2156",
+      "session": "37b8f581",
       "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
     },
     {
-      "t": "2026-06-10T03:19:53.660Z",
+      "t": "2026-06-10T01:46:25.563Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     },
@@ -91,6 +102,28 @@
       "t": "2026-06-10T03:08:34.725Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-10T03:17:12.742Z",
+      "event": "bb-session",
+      "session": "98fabcda",
+      "url": "https://www.wsj.com/articles/the-play-that-goes-wrong-review-perfectly-timed-pra"
+    },
+    {
+      "t": "2026-06-10T03:17:13.422Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-10T03:19:24.974Z",
+      "event": "bb-session",
+      "session": "d135b3cc",
+      "url": "https://www.wsj.com/articles/miss-saigon-review-hard-landing-1490315400"
+    },
+    {
+      "t": "2026-06-10T03:19:25.666Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
