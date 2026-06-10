@@ -822,7 +822,17 @@
     "small-off-broadway-2026/pages-on-stages--unknown.json",
     "small-off-broadway-2026/the-recs--unknown.json",
     "small-off-broadway-2026/theater-pizzazz--unknown.json",
-    "small-off-broadway-2026/washpost--unknown.json"
+    "small-off-broadway-2026/washpost--unknown.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
+    "small-off-broadway-2026/guardian--arifa-akbar.json",
+    "small-off-broadway-2026/pages-on-stages--unknown.json",
+    "small-off-broadway-2026/the-recs--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1026,7 +1036,11 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
-      "data/review-texts/small-off-broadway-2026/theater-pizzazz--unknown.json"
+      "data/review-texts/small-off-broadway-2026/theater-pizzazz--unknown.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1226,7 +1240,7 @@
     ]
   },
   "startTime": "2026-06-09T08:53:47.441Z",
-  "lastProcessed": "small-off-broadway-2026/washpost--unknown.json",
+  "lastProcessed": "small-off-broadway-2026/the-recs--unknown.json",
   "log": [
     {
       "t": "2026-06-09T09:14:48.461Z",
@@ -1644,6 +1658,50 @@
       "event": "bb-session",
       "session": "c0c8457e",
       "url": "https://theaterpizzazz.com/small-a-jockeys-indestructible-passion/"
+    },
+    {
+      "t": "2026-06-10T04:10:31.051Z",
+      "event": "bb-session",
+      "session": "e0fd78b5",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-10T04:10:31.739Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-10T04:11:19.419Z",
+      "event": "bb-session",
+      "session": "6078fa30",
+      "url": "https://www.nytimes.com/2026/06/03/theater/caissie-levy-broadway-tonys-ragtime.h"
+    },
+    {
+      "t": "2026-06-10T04:11:19.940Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-10T04:11:38.674Z",
+      "event": "bb-session",
+      "session": "7c021b54",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-10T04:11:39.201Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-10T04:11:52.172Z",
+      "event": "bb-session",
+      "session": "d0392584",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-10T04:11:52.735Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
