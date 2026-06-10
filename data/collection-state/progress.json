@@ -2,7 +2,14 @@
   "processed": [
     "war-horse-west-end-2026/click-liverpool--carie-schneider.json",
     "beetlejuice-west-end-2026/guardian-uk--unknown.json",
-    "dark-of-the-moon-west-end-2026/guardian--arifa-akbar.json"
+    "dark-of-the-moon-west-end-2026/guardian--arifa-akbar.json",
+    "catch-of-the-day-off-broadway-2026/nytimes--derrick-bryson-taylor.json",
+    "girl-interrupted-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "jerome-off-broadway-2025/off-off-online--edward-karam.json",
+    "jerome-off-broadway-2025/one-minute-critic--jerry-portwood.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
+    "small-off-broadway-2026/culturesauce--thom-geier.json"
   ],
   "failed": [
     "are-you-watching-west-end-2026/all-that-dazzles-uk--unknown.json",
@@ -22,16 +29,40 @@
     "dark-of-the-moon-west-end-2026/artsdesk--unknown.json",
     "dark-of-the-moon-west-end-2026/cambridge--unknown.json",
     "dark-of-the-moon-west-end-2026/standard--dominic-cavendish.json",
-    "dark-of-the-moon-west-end-2026/thestage--unknown.json"
+    "dark-of-the-moon-west-end-2026/thestage--unknown.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
+    "small-off-broadway-2026/guardian--arifa-akbar.json",
+    "small-off-broadway-2026/pages-on-stages--unknown.json",
+    "small-off-broadway-2026/the-recs--unknown.json",
+    "small-off-broadway-2026/theater-pizzazz--unknown.json",
+    "small-off-broadway-2026/washpost--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "war-horse-west-end-2026/click-liverpool--carie-schneider.json",
-      "beetlejuice-west-end-2026/guardian-uk--unknown.json"
+      "beetlejuice-west-end-2026/guardian-uk--unknown.json",
+      "girl-interrupted-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "jerome-off-broadway-2025/off-off-online--edward-karam.json",
+      "jerome-off-broadway-2025/one-minute-critic--jerry-portwood.json",
+      "and-then-the-rodeo-burned-down-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/catch-of-the-day-off-broadway-2026/nytimes--derrick-bryson-taylor.json",
+      "catch-of-the-day-off-broadway-2026/nytimes--derrick-bryson-taylor.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [
@@ -41,16 +72,73 @@
       "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json",
       "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json"
     ],
-    "archive": []
+    "archive": [
+      "small-off-broadway-2026/culturesauce--thom-geier.json"
+    ]
   },
   "startTime": "2026-06-10T09:07:08.446Z",
-  "lastProcessed": "dark-of-the-moon-west-end-2026/thestage--unknown.json",
+  "lastProcessed": "small-off-broadway-2026/washpost--unknown.json",
   "log": [
     {
       "t": "2026-06-10T09:12:22.293Z",
       "event": "bb-session",
       "session": "89a7d6f8",
       "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
+    },
+    {
+      "t": "2026-06-10T10:04:11.087Z",
+      "event": "bb-session",
+      "session": "3f864af3",
+      "url": "https://www.nytimes.com/2026/06/08/theater/tony-awards-saturday-night-live.html"
+    },
+    {
+      "t": "2026-06-10T10:04:12.141Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-10T10:04:58.680Z",
+      "event": "bb-session",
+      "session": "3608b8b8",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-10T10:04:59.558Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-10T10:05:33.122Z",
+      "event": "bb-session",
+      "session": "448e2a23",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-10T10:05:34.054Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-10T10:05:47.760Z",
+      "event": "bb-session",
+      "session": "10cb36e3",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-10T10:05:48.712Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-10T10:07:52.404Z",
+      "event": "bb-session",
+      "session": "8eef1da4",
+      "url": "https://www.nytimes.com/2026/05/31/theater/othello-review-wendell-pierce.html"
+    },
+    {
+      "t": "2026-06-10T10:07:53.441Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
