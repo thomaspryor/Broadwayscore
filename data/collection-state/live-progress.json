@@ -1,22 +1,28 @@
 {
-  "updatedAt": "2026-06-10T12:45:15.484Z",
-  "processed": 11,
-  "failed": 102,
-  "successRate": "9.7%",
+  "updatedAt": "2026-06-10T08:44:20.952Z",
+  "processed": 324,
+  "failed": 543,
+  "successRate": "37.4%",
   "tierBreakdown": {
-    "playwright": 8,
+    "playwright": 163,
     "amp": 0,
-    "browserbase": 16,
+    "browserbase": 46,
     "directCookies": 0,
-    "scrapingbee": 0,
-    "brightdata": 1,
-    "archiveToday": 6,
-    "archive": 1
+    "scrapingbee": 68,
+    "brightdata": 32,
+    "archiveToday": 21,
+    "archive": 69
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-06-10T11:01:50.859Z",
+      "t": "2026-06-10T04:11:29.848Z",
+      "event": "bb-session",
+      "session": "8afa14e7",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-10T04:11:30.778Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
@@ -115,13 +121,13 @@
       "domain": "variety.com"
     },
     {
-      "t": "2026-06-10T12:43:50.496Z",
+      "t": "2026-06-10T08:37:41.492Z",
       "event": "bb-session",
-      "session": "9d865dff",
-      "url": "https://www.nytimes.com/2026/06/01/arts/andy-halliday-dead.html"
+      "session": "8c77b06d",
+      "url": "https://www.nytimes.com/2026/06/08/theater/tony-awards-saturday-night-live.html"
     },
     {
-      "t": "2026-06-10T12:43:51.500Z",
+      "t": "2026-06-10T08:37:42.098Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
