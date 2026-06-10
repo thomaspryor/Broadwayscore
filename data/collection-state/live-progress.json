@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-06-10T10:44:50.710Z",
-  "processed": 10,
-  "failed": 48,
-  "successRate": "17.2%",
+  "updatedAt": "2026-06-10T11:04:05.164Z",
+  "processed": 11,
+  "failed": 57,
+  "successRate": "16.2%",
   "tierBreakdown": {
-    "playwright": 7,
+    "playwright": 8,
     "amp": 0,
-    "browserbase": 6,
+    "browserbase": 9,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 1,
@@ -15,12 +15,6 @@
   },
   "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-06-10T09:12:22.293Z",
-      "event": "bb-session",
-      "session": "89a7d6f8",
-      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
-    },
     {
       "t": "2026-06-10T10:04:11.087Z",
       "event": "bb-session",
@@ -98,6 +92,39 @@
       "t": "2026-06-10T10:44:50.674Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-06-10T11:01:49.800Z",
+      "event": "bb-session",
+      "session": "0a8327c7",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-10T11:01:50.859Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-10T11:02:25.444Z",
+      "event": "bb-session",
+      "session": "b2d8c3dd",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-10T11:02:26.431Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-10T11:02:38.797Z",
+      "event": "bb-session",
+      "session": "292b2a95",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-10T11:02:39.723Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
