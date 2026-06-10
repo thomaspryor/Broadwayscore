@@ -1,7 +1,7 @@
 {
   "system": "sync",
-  "status": "warn",
-  "lastChecked": "2026-06-09T08:14:04.532Z",
+  "status": "pass",
+  "lastChecked": "2026-06-10T08:24:18.165Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -19,7 +19,7 @@
     {
       "name": "Sync: social-pulse per-show freshness",
       "status": "pass",
-      "message": "83 running BW/WE shows — no stale social-pulse files"
+      "message": "84 running BW/WE shows — no stale social-pulse files"
     },
     {
       "name": "Sync: phantom show detection",
@@ -28,18 +28,18 @@
     },
     {
       "name": "Sync: cast coverage",
-      "status": "warn",
-      "message": "2 empty cast: The Balusters, Oh, Mary!"
+      "status": "pass",
+      "message": "39 active Broadway shows all have cast data"
     },
     {
       "name": "Sync: baseline drift",
       "status": "pass",
-      "message": "2654 shows, 144 open, 18253 reviews (all at or above baseline)"
+      "message": "2658 shows, 147 open, 18241 reviews (all at or above baseline)"
     },
     {
       "name": "Sync: grosses weekEnding",
       "status": "pass",
-      "message": "weekEnding 5/31/2026 (9d ago)"
+      "message": "weekEnding 5/31/2026 (10d ago)"
     }
   ]
 }
