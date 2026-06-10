@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-10T15:36:13.398Z",
+  "generatedAt": "2026-06-10T17:27:44.008Z",
   "date": "2026-06-10",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 306066,
+  "entryCount": 307307,
   "shows": [
     {
       "showId": "an-ideal-husband-west-end-2026",
@@ -3911,7 +3911,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 4724040,
+        "collected-to-scored": null,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -5271,7 +5271,7 @@
     },
     {
       "showId": "charlie-and-the-chocolate-factory-2017",
-      "reviewCount": 48,
+      "reviewCount": 49,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -10061,7 +10061,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 3055768,
+        "collected-to-scored": null,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
