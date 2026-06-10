@@ -236,7 +236,14 @@
     "old-times-2015/theater-pizzazz--brian-scott-lipton.json",
     "old-times-2015/bobs-theater-blog--robert-sholiton.json",
     "spring-awakening-2015/nyt-theater--unknown.json",
-    "spring-awakening-2015/wsj--terry-teachout.json"
+    "spring-awakening-2015/wsj--terry-teachout.json",
+    "amazing-grace-2015/timeout--david-cote.json",
+    "amazing-grace-2015/wsj--terry-teachout.json",
+    "the-visit-2015/timeout--david-cote.json",
+    "airline-highway-2015/timeout--adam-feldman.json",
+    "airline-highway-2015/timeout--kris-vire.json",
+    "airline-highway-2015/huffpost--david-finkle.json",
+    "airline-highway-2015/ny1--roma-torre.json"
   ],
   "failed": [
     "are-you-watching-west-end-2026/all-that-dazzles-uk--unknown.json",
@@ -413,7 +420,10 @@
     "the-gin-game-2015/wnyc--jennifer-vanasco.json",
     "fool-for-love-2015/nydailynews--joe-dziemianowicz.json",
     "spring-awakening-2015/guardian--alexis-soloski.json",
-    "spring-awakening-2015/broadway-and-me--janice-c-simpson.json"
+    "spring-awakening-2015/broadway-and-me--janice-c-simpson.json",
+    "amazing-grace-2015/talkinbroadway--matthew-murray.json",
+    "airline-highway-2015/wsj--terry-teachout.json",
+    "airline-highway-2015/huffpost--michael-giltz.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -522,7 +532,11 @@
       "sylvia-2015/huffpost--rob-taub.json",
       "fool-for-love-2015/theatre-reviews-limited--david-roberts.json",
       "old-times-2015/bobs-theater-blog--robert-sholiton.json",
-      "spring-awakening-2015/nyt-theater--unknown.json"
+      "spring-awakening-2015/nyt-theater--unknown.json",
+      "amazing-grace-2015/timeout--david-cote.json",
+      "the-visit-2015/timeout--david-cote.json",
+      "airline-highway-2015/huffpost--david-finkle.json",
+      "airline-highway-2015/ny1--roma-torre.json"
     ],
     "amp": [],
     "browserbase": [
@@ -644,7 +658,8 @@
       "she-loves-me-2016/theater-life--eric-march.json",
       "sylvia-2015/timeout--adam-feldman.json",
       "sylvia-2015/timeout--david-cote.json",
-      "dames-at-sea-2015/timeout--adam-feldman.json"
+      "dames-at-sea-2015/timeout--adam-feldman.json",
+      "airline-highway-2015/timeout--kris-vire.json"
     ],
     "brightdata": [
       "a-woman-among-women-off-broadway-2026/playbill--unknown.json",
@@ -682,7 +697,8 @@
       "the-father-2016/wsj--edward-rothstein.json",
       "the-crucible-2016/wsj--terry-teachout.json",
       "on-your-feet-2015/vulture--jesse-green.json",
-      "on-your-feet-2015/wsj--terry-teachout.json"
+      "on-your-feet-2015/wsj--terry-teachout.json",
+      "amazing-grace-2015/wsj--terry-teachout.json"
     ],
     "archiveToday": [
       "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json",
@@ -732,7 +748,9 @@
       "data/review-texts/sylvia-2015/wsj--terry-teachout.json",
       "data/review-texts/sylvia-2015/washpost--peter-marks.json",
       "data/review-texts/sylvia-2015/talkinbroadway--matthew-murray.json",
-      "data/review-texts/dames-at-sea-2015/wsj--terry-teachout.json"
+      "data/review-texts/dames-at-sea-2015/wsj--terry-teachout.json",
+      "data/review-texts/amazing-grace-2015/talkinbroadway--matthew-murray.json",
+      "data/review-texts/airline-highway-2015/wsj--terry-teachout.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -845,11 +863,12 @@
       "the-gin-game-2015/amny--matt-windman.json",
       "fool-for-love-2015/wsj--terry-teachout.json",
       "old-times-2015/theater-pizzazz--brian-scott-lipton.json",
-      "spring-awakening-2015/wsj--terry-teachout.json"
+      "spring-awakening-2015/wsj--terry-teachout.json",
+      "airline-highway-2015/timeout--adam-feldman.json"
     ]
   },
   "startTime": "2026-06-09T08:53:47.441Z",
-  "lastProcessed": "spring-awakening-2015/broadway-and-me--janice-c-simpson.json",
+  "lastProcessed": "airline-highway-2015/ny1--roma-torre.json",
   "log": [
     {
       "t": "2026-06-10T09:12:22.293Z",
@@ -1606,6 +1625,17 @@
       "t": "2026-06-10T09:53:42.015Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-06-10T09:59:42.280Z",
+      "event": "bb-session",
+      "session": "474c693f",
+      "url": "https://talkinbroadway.com/world/AmazingGrace.html"
+    },
+    {
+      "t": "2026-06-10T09:59:42.903Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
