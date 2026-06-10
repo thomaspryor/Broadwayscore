@@ -210,7 +210,13 @@
     "misery-2015/wsj--terry-teachout.json",
     "misery-2015/towleroad--naveen-kumar.json",
     "misery-2015/broadway-and-me--janice-c-simpson.json",
-    "a-view-from-the-bridge-2015/wsj--terry-teachout.json"
+    "a-view-from-the-bridge-2015/wsj--terry-teachout.json",
+    "on-your-feet-2015/vulture--jesse-green.json",
+    "on-your-feet-2015/timeout--adam-feldman.json",
+    "on-your-feet-2015/wsj--terry-teachout.json",
+    "king-charles-iii-2015/nydailynews--joe-dziemianowicz.json",
+    "king-charles-iii-2015/amny--matt-windman.json",
+    "king-charles-iii-2015/washpost--peter-marks.json"
   ],
   "failed": [
     "are-you-watching-west-end-2026/all-that-dazzles-uk--unknown.json",
@@ -373,7 +379,11 @@
     "school-of-rock-the-musical-2015/usatoday--elysa-gardner.json",
     "china-doll-2015/washpost--peter-marks.json",
     "a-view-from-the-bridge-2015/financialtimes--sarah-hemming.json",
-    "allegiance-2015/timeout--david-cote.json"
+    "allegiance-2015/timeout--david-cote.json",
+    "allegiance-2015/wsj--terry-teachout.json",
+    "allegiance-2015/washpost--peter-marks.json",
+    "on-your-feet-2015/backstage-barbie--backstage-barbie.json",
+    "on-your-feet-2015/broadway-and-me--janice-c-simpson.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -477,7 +487,8 @@
       "the-humans-2016/towleroad--naveen-kumar.json",
       "fiddler-on-the-roof-2015/broadway-and-me--janice-c-simpson.json",
       "the-color-purple-2015/broadway-and-me--janice-c-simpson.json",
-      "misery-2015/broadway-and-me--janice-c-simpson.json"
+      "misery-2015/broadway-and-me--janice-c-simpson.json",
+      "king-charles-iii-2015/washpost--peter-marks.json"
     ],
     "amp": [],
     "browserbase": [
@@ -628,7 +639,9 @@
       "three-tall-women-2018/medium--christian-lewis.json",
       "the-price-2017/theater-life--barry-gordin.json",
       "the-father-2016/wsj--edward-rothstein.json",
-      "the-crucible-2016/wsj--terry-teachout.json"
+      "the-crucible-2016/wsj--terry-teachout.json",
+      "on-your-feet-2015/vulture--jesse-green.json",
+      "on-your-feet-2015/wsj--terry-teachout.json"
     ],
     "archiveToday": [
       "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json",
@@ -672,7 +685,9 @@
       "data/review-texts/the-color-purple-2015/dailybeast--tim-teeman.json",
       "data/review-texts/school-of-rock-the-musical-2015/vulture--jesse-green.json",
       "data/review-texts/school-of-rock-the-musical-2015/wsj--terry-teachout.json",
-      "data/review-texts/china-doll-2015/washpost--peter-marks.json"
+      "data/review-texts/china-doll-2015/washpost--peter-marks.json",
+      "data/review-texts/allegiance-2015/wsj--terry-teachout.json",
+      "data/review-texts/allegiance-2015/washpost--peter-marks.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -771,11 +786,14 @@
       "the-color-purple-2015/wsj--terry-teachout.json",
       "misery-2015/wsj--terry-teachout.json",
       "misery-2015/towleroad--naveen-kumar.json",
-      "a-view-from-the-bridge-2015/wsj--terry-teachout.json"
+      "a-view-from-the-bridge-2015/wsj--terry-teachout.json",
+      "on-your-feet-2015/timeout--adam-feldman.json",
+      "king-charles-iii-2015/nydailynews--joe-dziemianowicz.json",
+      "king-charles-iii-2015/amny--matt-windman.json"
     ]
   },
   "startTime": "2026-06-09T08:53:47.441Z",
-  "lastProcessed": "allegiance-2015/timeout--david-cote.json",
+  "lastProcessed": "king-charles-iii-2015/washpost--peter-marks.json",
   "log": [
     {
       "t": "2026-06-10T09:12:22.293Z",
@@ -1475,6 +1493,17 @@
     },
     {
       "t": "2026-06-10T09:40:51.570Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-06-10T09:43:01.452Z",
+      "event": "bb-session",
+      "session": "afec8587",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/allegiance-review-geo"
+    },
+    {
+      "t": "2026-06-10T09:43:02.676Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
     }

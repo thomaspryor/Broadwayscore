@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-10T09:41:50.399Z",
-  "processed": 382,
-  "failed": 595,
-  "successRate": "39.1%",
+  "updatedAt": "2026-06-10T09:45:56.451Z",
+  "processed": 388,
+  "failed": 599,
+  "successRate": "39.3%",
   "tierBreakdown": {
-    "playwright": 183,
+    "playwright": 184,
     "amp": 0,
     "browserbase": 64,
     "directCookies": 0,
     "scrapingbee": 74,
-    "brightdata": 34,
-    "archiveToday": 45,
-    "archive": 97
+    "brightdata": 36,
+    "archiveToday": 47,
+    "archive": 100
   },
-  "browserbaseSessions": 20,
+  "browserbaseSessions": 21,
   "recentActivity": [
-    {
-      "t": "2026-06-10T09:09:10.840Z",
-      "event": "bb-session",
-      "session": "e0ce7a2c",
-      "url": "http://www.wsj.com/articles/fully-committed-review-jesse-tyler-ferguson-party-of"
-    },
-    {
-      "t": "2026-06-10T09:09:11.400Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-06-10T09:13:26.818Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-06-10T09:40:51.570Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-06-10T09:43:01.452Z",
+      "event": "bb-session",
+      "session": "afec8587",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/allegiance-review-geo"
+    },
+    {
+      "t": "2026-06-10T09:43:02.676Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
     }
