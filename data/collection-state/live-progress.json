@@ -1,33 +1,22 @@
 {
-  "updatedAt": "2026-06-10T03:06:06.525Z",
-  "processed": 306,
-  "failed": 473,
-  "successRate": "39.3%",
+  "updatedAt": "2026-06-10T03:12:10.732Z",
+  "processed": 309,
+  "failed": 480,
+  "successRate": "39.2%",
   "tierBreakdown": {
-    "playwright": 151,
+    "playwright": 153,
     "amp": 0,
-    "browserbase": 28,
+    "browserbase": 29,
     "directCookies": 0,
     "scrapingbee": 66,
     "brightdata": 31,
     "archiveToday": 19,
-    "archive": 64
+    "archive": 65
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-06-10T01:34:02.608Z",
-      "event": "bb-session",
-      "session": "f229397b",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
-    {
-      "t": "2026-06-10T03:19:06.499Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-10T03:19:38.529Z",
+      "t": "2026-06-10T01:34:32.341Z",
       "event": "bb-session",
       "session": "921a0105",
       "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
@@ -91,6 +80,17 @@
       "t": "2026-06-10T03:04:36.783Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-10T03:08:34.053Z",
+      "event": "bb-session",
+      "session": "d425894b",
+      "url": "https://variety.com/2017/legit/reviews/anastasia-review-broadway-musical-1202393"
+    },
+    {
+      "t": "2026-06-10T03:08:34.725Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
