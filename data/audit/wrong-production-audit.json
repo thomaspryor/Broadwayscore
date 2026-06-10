@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-10T09:48:06.403Z",
+  "timestamp": "2026-06-10T10:24:28.634Z",
   "stats": {
     "totalReviews": 38231,
-    "alreadyFlagged": 16782,
+    "alreadyFlagged": 16784,
     "dateGuardCatches": 104,
     "directorMismatch": 854,
-    "tvFilmSignals": 1052,
+    "tvFilmSignals": 1053,
     "londonSignals": 624,
     "offBroadwaySignals": 458,
     "yearMismatch": 81,
-    "noPublishDate": 3971
+    "noPublishDate": 3967
   },
   "findings": [
     {
@@ -23613,6 +23613,25 @@
       ]
     },
     {
+      "showId": "the-price-off-west-end-2026",
+      "file": "british-theatre--susan-novak.json",
+      "score": 82,
+      "publishDate": "2026-04-26",
+      "url": "https://www.britishtheatre.com/posts/the-price-at-marylebone-theatre-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "the-producers-west-end-2025",
       "file": "standard--nick-curtis.json",
       "score": 89,
@@ -40192,20 +40211,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"brooklyn academy\""
-        }
-      ]
-    },
-    {
-      "showId": "the-price-off-west-end-2026",
-      "file": "british-theatre--susan-novak.json",
-      "score": 82,
-      "publishDate": "2026-04-26",
-      "url": "https://www.britishtheatre.com/posts/the-price-at-marylebone-theatre-review",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
