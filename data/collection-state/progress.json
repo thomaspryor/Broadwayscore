@@ -189,7 +189,10 @@
     "fully-committed-2016/wsj--terry-teachout.json",
     "waitress-2016/act-three-the-reviews--doug-marino.json",
     "american-psycho-2016/nyt-theater--jonathan-mandell.json",
-    "american-psycho-2016/timeout--adam-feldman.json"
+    "american-psycho-2016/timeout--adam-feldman.json",
+    "american-psycho-2016/wsj--terry-teachout.json",
+    "the-father-2016/wsj--edward-rothstein.json",
+    "the-father-2016/financialtimes--max-mcguinness.json"
   ],
   "failed": [
     "are-you-watching-west-end-2026/all-that-dazzles-uk--unknown.json",
@@ -323,7 +326,14 @@
     "tuck-everlasting-2016/thestage--mark-shenton.json",
     "waitress-2016/wsj--terry-teachout.json",
     "waitress-2016/thestage--mark-shenton.json",
-    "waitress-2016/talkinbroadway--matthew-murray.json"
+    "waitress-2016/talkinbroadway--matthew-murray.json",
+    "american-psycho-2016/ap--mark-kennedy.json",
+    "american-psycho-2016/talkinbroadway--matthew-murray.json",
+    "the-father-2016/wsj--terry-teachout.json",
+    "the-father-2016/theater-life--paulanne-simmons.json",
+    "the-father-2016/off-script-with-dan-dwyer--dan-dwyer.json",
+    "the-father-2016/talkinbroadway--matthew-murray.json",
+    "the-crucible-2016/theatermania--jesse-green.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -419,7 +429,8 @@
       "tuck-everlasting-2016/ew--melissa-rose-bernardo.json",
       "tuck-everlasting-2016/uinterview--erik-meers.json",
       "waitress-2016/act-three-the-reviews--doug-marino.json",
-      "american-psycho-2016/nyt-theater--jonathan-mandell.json"
+      "american-psycho-2016/nyt-theater--jonathan-mandell.json",
+      "the-father-2016/financialtimes--max-mcguinness.json"
     ],
     "amp": [],
     "browserbase": [
@@ -567,7 +578,8 @@
       "saint-joan-2018/medium--christian-lewis.json",
       "children-of-a-lesser-god-2018/medium--christian-lewis.json",
       "three-tall-women-2018/medium--christian-lewis.json",
-      "the-price-2017/theater-life--barry-gordin.json"
+      "the-price-2017/theater-life--barry-gordin.json",
+      "the-father-2016/wsj--edward-rothstein.json"
     ],
     "archiveToday": [
       "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json",
@@ -595,7 +607,10 @@
       "data/review-texts/tuck-everlasting-2016/thestage--mark-shenton.json",
       "data/review-texts/waitress-2016/wsj--terry-teachout.json",
       "data/review-texts/waitress-2016/thestage--mark-shenton.json",
-      "data/review-texts/waitress-2016/talkinbroadway--matthew-murray.json"
+      "data/review-texts/waitress-2016/talkinbroadway--matthew-murray.json",
+      "data/review-texts/the-father-2016/wsj--terry-teachout.json",
+      "data/review-texts/american-psycho-2016/talkinbroadway--matthew-murray.json",
+      "data/review-texts/the-father-2016/off-script-with-dan-dwyer--dan-dwyer.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -682,11 +697,13 @@
       "oh-hello-on-broadway-2016/nydailynews--joe-dziemianowicz.json",
       "holiday-inn-the-new-irving-berlin-musical-2016/nydailynews--joe-dziemianowicz.json",
       "holiday-inn-the-new-irving-berlin-musical-2016/timeout--david-cote.json",
-      "american-psycho-2016/timeout--adam-feldman.json"
+      "american-psycho-2016/timeout--adam-feldman.json",
+      "american-psycho-2016/wsj--terry-teachout.json",
+      "the-father-2016/theater-life--paulanne-simmons.json"
     ]
   },
   "startTime": "2026-06-09T08:53:47.441Z",
-  "lastProcessed": "american-psycho-2016/timeout--adam-feldman.json",
+  "lastProcessed": "the-crucible-2016/theatermania--jesse-green.json",
   "log": [
     {
       "t": "2026-06-10T09:12:22.293Z",
@@ -1298,6 +1315,17 @@
     },
     {
       "t": "2026-06-10T09:13:27.435Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-10T09:16:14.617Z",
+      "event": "bb-session",
+      "session": "e647b51f",
+      "url": "https://www.talkinbroadway.com/world/AmericanPsycho.html"
+    },
+    {
+      "t": "2026-06-10T09:16:15.222Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }

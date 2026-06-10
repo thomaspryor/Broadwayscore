@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-10T09:13:48.286Z",
-  "processed": 361,
-  "failed": 566,
-  "successRate": "38.9%",
+  "updatedAt": "2026-06-10T09:20:29.288Z",
+  "processed": 364,
+  "failed": 573,
+  "successRate": "38.8%",
   "tierBreakdown": {
-    "playwright": 175,
+    "playwright": 176,
     "amp": 0,
     "browserbase": 64,
     "directCookies": 0,
     "scrapingbee": 73,
-    "brightdata": 32,
-    "archiveToday": 29,
-    "archive": 85
+    "brightdata": 33,
+    "archiveToday": 32,
+    "archive": 87
   },
-  "browserbaseSessions": 12,
+  "browserbaseSessions": 13,
   "recentActivity": [
-    {
-      "t": "2026-06-10T08:51:13.284Z",
-      "event": "bb-session",
-      "session": "074780be",
-      "url": "https://www.wsj.com/articles/the-present-review-chekhovs-gun-takes-center-stage-"
-    },
-    {
-      "t": "2026-06-10T08:51:13.856Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-06-10T08:51:33.862Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-06-10T09:13:27.435Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-10T09:16:14.617Z",
+      "event": "bb-session",
+      "session": "e647b51f",
+      "url": "https://www.talkinbroadway.com/world/AmericanPsycho.html"
+    },
+    {
+      "t": "2026-06-10T09:16:15.222Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }
