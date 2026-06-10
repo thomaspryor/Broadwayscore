@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-06-10T09:06:33.866Z",
-  "processed": 355,
-  "failed": 562,
-  "successRate": "38.7%",
+  "updatedAt": "2026-06-10T09:13:48.286Z",
+  "processed": 361,
+  "failed": 566,
+  "successRate": "38.9%",
   "tierBreakdown": {
-    "playwright": 172,
+    "playwright": 175,
     "amp": 0,
-    "browserbase": 62,
+    "browserbase": 64,
     "directCookies": 0,
-    "scrapingbee": 72,
+    "scrapingbee": 73,
     "brightdata": 32,
-    "archiveToday": 25,
-    "archive": 84
+    "archiveToday": 29,
+    "archive": 85
   },
-  "browserbaseSessions": 10,
+  "browserbaseSessions": 12,
   "recentActivity": [
-    {
-      "t": "2026-06-10T08:37:41.492Z",
-      "event": "bb-session",
-      "session": "8c77b06d",
-      "url": "https://www.nytimes.com/2026/06/08/theater/tony-awards-saturday-night-live.html"
-    },
-    {
-      "t": "2026-06-10T08:37:42.098Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-10T08:50:37.841Z",
-      "event": "bb-session",
-      "session": "659e4650",
-      "url": "http://www.wsj.com/articles/jitney-review-august-wilsons-authenticity-1484868767"
-    },
-    {
-      "t": "2026-06-10T08:50:38.492Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-06-10T08:51:13.284Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-06-10T09:05:06.688Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-10T09:09:10.840Z",
+      "event": "bb-session",
+      "session": "e0ce7a2c",
+      "url": "http://www.wsj.com/articles/fully-committed-review-jesse-tyler-ferguson-party-of"
+    },
+    {
+      "t": "2026-06-10T09:09:11.400Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-10T09:13:26.818Z",
+      "event": "bb-session",
+      "session": "5dfed701",
+      "url": "http://www.talkinbroadway.com/page/regional/boston/bo106.html"
+    },
+    {
+      "t": "2026-06-10T09:13:27.435Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
