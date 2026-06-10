@@ -155,7 +155,15 @@
     "the-price-2017/frontmezzjunkies--steven-ross.json",
     "come-from-away-2017/times-uk--dominic-maxwell.json",
     "come-from-away-2017/wnyc--jennifer-vanasco.json",
-    "significant-other-2017/nydailynews--joe-dziemianowicz.json"
+    "significant-other-2017/nydailynews--joe-dziemianowicz.json",
+    "sunday-in-the-park-with-george-2017/wnyc--jennifer-vanasco.json",
+    "sunset-boulevard-2017/newyorker--conde-nast.json",
+    "jitney-2017/nydailynews--joe-dziemianowicz.json",
+    "jitney-2017/wsj--edward-rothstein.json",
+    "jitney-2017/wnyc--jennifer-vanasco.json",
+    "the-present-2017/wsj--edward-rothstein.json",
+    "the-present-2017/wsj--terry-teachout.json",
+    "in-transit-2016/wsj--terry-teachout.json"
   ],
   "failed": [
     "are-you-watching-west-end-2026/all-that-dazzles-uk--unknown.json",
@@ -273,7 +281,9 @@
     "come-from-away-2017/off-script-with-dan-dwyer--dan-dwyer.json",
     "come-from-away-2017/st-louis-post-dispatch--bruce-r-miller.json",
     "come-from-away-2017/the-cultural-critic--corey-cohen.json",
-    "the-glass-menagerie-2017/chicagotribune--chris-jones.json"
+    "the-glass-menagerie-2017/chicagotribune--chris-jones.json",
+    "sunday-in-the-park-with-george-2017/theater-life--isa-goldberg.json",
+    "the-present-2017/thestage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -358,7 +368,9 @@
       "present-laughter-2017/theater-life--isa-goldberg.json",
       "present-laughter-2017/thestage--mark-shenton.json",
       "the-price-2017/wnyc--jennifer-vanasco.json",
-      "come-from-away-2017/wnyc--jennifer-vanasco.json"
+      "come-from-away-2017/wnyc--jennifer-vanasco.json",
+      "sunday-in-the-park-with-george-2017/wnyc--jennifer-vanasco.json",
+      "jitney-2017/wnyc--jennifer-vanasco.json"
     ],
     "amp": [],
     "browserbase": [
@@ -378,10 +390,88 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
       "data/review-texts/catch-of-the-day-off-broadway-2026/nytimes--derrick-bryson-taylor.json",
-      "catch-of-the-day-off-broadway-2026/nytimes--derrick-bryson-taylor.json"
+      "catch-of-the-day-off-broadway-2026/nytimes--derrick-bryson-taylor.json",
+      "data/review-texts/jitney-2017/wsj--edward-rothstein.json",
+      "jitney-2017/wsj--edward-rothstein.json",
+      "data/review-texts/the-present-2017/wsj--edward-rothstein.json",
+      "the-present-2017/wsj--edward-rothstein.json",
+      "data/review-texts/the-present-2017/wsj--terry-teachout.json",
+      "the-present-2017/wsj--terry-teachout.json",
+      "data/review-texts/in-transit-2016/wsj--terry-teachout.json",
+      "in-transit-2016/wsj--terry-teachout.json"
     ],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
+      "becky-shaw-2026/cote-notices--david-cote.json",
+      "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+      "just-in-time-2025/newyorker--conde-nast.json",
+      "maybe-happy-ending-2024/newyorker--conde-nast.json",
+      "oh-mary-2024/broadwaynews--brittani-samuel.json",
+      "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
+      "and-juliet-2022/newyorker--conde-nast.json",
+      "hadestown-2019/broadwaynews--charles-isherwood.json",
+      "hadestown-2019/theater-life--barry-gordin.json",
+      "magic-mike-live-west-end-2021/independent--hugh-montgomery.json",
+      "the-book-of-mormon-west-end-2024/nydailynews--unknown.json",
+      "the-lion-king-1997/timeout--adam-feldman.json",
+      "amaze-off-broadway-2026/timeout--adam-feldman.json",
+      "the-adding-machine-off-broadway-2026/timeout--raven-snook.json",
+      "teeth-n-smiles-west-end-2026/broadwayworld--alexander-cohen.json",
+      "public-charge-off-broadway-2026/theater-life--barry-gordin.json",
+      "giant-west-end-2025/daily-mail--patrick-marmion.json",
+      "call-me-izzy-2025/theater-life--barry-gordin.json",
+      "smash-2025/broadwaynews--brittani-samuel.json",
+      "the-last-five-years-2025/broadwaynews--brittani-samuel.json",
+      "redwood-2025/broadwaynews--brittani-samuel.json",
+      "english-2025/broadwaynews--brittani-samuel.json",
+      "all-in-comedy-about-love-2024/broadwaynews--brittani-samuel.json",
+      "gypsy-2024/broadwaynews--brittani-samuel.json",
+      "cult-of-love-2024/broadwaynews--brittani-samuel.json",
+      "swept-away-2024/broadwaynews--brittani-samuel.json",
+      "pen-pals-off-broadway-2025/theater-life--barry-gordin.json",
+      "elf-2024/broadwaynews--brittani-samuel.json",
+      "tammy-faye-2024/broadwaynews--brittani-samuel.json",
+      "bad-krey-l-off-broadway-2026/timeout--raven-snook.json",
+      "romeo-juliet-2024/broadwaynews--brittani-samuel.json",
+      "left-on-tenth-2024/broadwaynews--brittani-samuel.json",
+      "our-town-2024/broadwaynews--brittani-samuel.json",
+      "mcneal-2024/broadwaynews--brittani-samuel.json",
+      "the-hills-of-california-2024/broadwaynews--brittani-samuel.json",
+      "the-roommate-2024/broadwaynews--brittani-samuel.json",
+      "job-2024/broadwaynews--brittani-samuel.json",
+      "mother-play-2024/broadwaynews--brittani-samuel.json",
+      "illinoise-2024/broadwaynews--brittani-samuel.json",
+      "uncle-vanya-2024/broadwaynews--brittani-samuel.json",
+      "mary-jane-2024/broadwaynews--brittani-samuel.json",
+      "heart-of-rock-and-roll-2024/broadwaynews--brittani-samuel.json",
+      "patriots-2024/broadwaynews--brittani-samuel.json",
+      "cabaret-2024/broadwaynews--brittani-samuel.json",
+      "stereophonic-2024/broadwaynews--brittani-samuel.json",
+      "suffs-2024/broadwaynews--brittani-samuel.json",
+      "the-wiz-2024/broadwaynews--brittani-samuel.json",
+      "lempicka-2024/broadwaynews--brittani-samuel.json",
+      "the-maids-off-broadway-2026/nytimes--roslyn-sulcas.json",
+      "avenue-q-west-end-2026/telegraph--marianka-swain.json",
+      "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
+      "a-beautiful-noise-the-neil-diamond-musical-2022/dtli--juan-michael-porter-ii.json",
+      "macbeth-2022/timeout--adam-feldman.json",
+      "american-buffalo-2022/timeout--adam-feldman.json",
+      "company-2021/theatrely--andrew-martini.json",
+      "trouble-in-mind-2021/broadwayworld--unknown.json",
+      "grand-horizons-2020/broadwaynews--charles-isherwood.json",
+      "tina-2019/newyorker--conde-nast.json",
+      "linda-vista-2019/broadwaynews--charles-isherwood.json",
+      "king-kong-2018/limelight-magazine-au--clive-paget.json",
+      "travesties-2018/timeout--adam-feldman.json",
+      "lobby-hero-2018/timeout--adam-feldman.json",
+      "angels-in-america-2018/broadwaynews--charles-isherwood.json",
+      "escape-to-margaritaville-2018/broadwaynews--caitlin-huston.json",
+      "latin-history-for-morons-2017/front-row-center--casey-curtis.json",
+      "charlie-and-the-chocolate-factory-2017/billboard--curtis-m-wong.json",
+      "sweat-2017/nydailynews--joe-dziemianowicz.json",
+      "sunset-boulevard-2017/newyorker--conde-nast.json"
+    ],
     "brightdata": [
       "a-woman-among-women-off-broadway-2026/playbill--unknown.json",
       "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
@@ -498,11 +588,13 @@
       "come-from-away-2017/theater-life--isa-goldberg.json",
       "come-from-away-2017/times-uk--dominic-maxwell.json",
       "come-from-away-2017/theater-life--paulanne-simmons.json",
-      "significant-other-2017/nydailynews--joe-dziemianowicz.json"
+      "significant-other-2017/nydailynews--joe-dziemianowicz.json",
+      "sunday-in-the-park-with-george-2017/theater-life--isa-goldberg.json",
+      "jitney-2017/nydailynews--joe-dziemianowicz.json"
     ]
   },
   "startTime": "2026-06-09T08:53:47.441Z",
-  "lastProcessed": "significant-other-2017/nydailynews--joe-dziemianowicz.json",
+  "lastProcessed": "in-transit-2016/wsj--terry-teachout.json",
   "log": [
     {
       "t": "2026-06-10T09:12:22.293Z",
@@ -995,6 +1087,50 @@
       "t": "2026-06-10T08:37:42.098Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-10T08:50:37.841Z",
+      "event": "bb-session",
+      "session": "659e4650",
+      "url": "http://www.wsj.com/articles/jitney-review-august-wilsons-authenticity-1484868767"
+    },
+    {
+      "t": "2026-06-10T08:50:38.492Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-10T08:51:13.284Z",
+      "event": "bb-session",
+      "session": "074780be",
+      "url": "https://www.wsj.com/articles/the-present-review-chekhovs-gun-takes-center-stage-"
+    },
+    {
+      "t": "2026-06-10T08:51:13.856Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-10T08:51:33.862Z",
+      "event": "bb-session",
+      "session": "967f0c51",
+      "url": "https://www.wsj.com/articles/the-present-review-chekhovs-gun-takes-center-stage-"
+    },
+    {
+      "t": "2026-06-10T08:51:34.471Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-10T08:51:57.798Z",
+      "event": "bb-session",
+      "session": "a7fe076e",
+      "url": "https://www.wsj.com/articles/in-transit-been-there-seen-that-1481835794"
+    },
+    {
+      "t": "2026-06-10T08:51:58.370Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
