@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-09T23:48:21.793Z",
+  "timestamp": "2026-06-10T09:48:06.403Z",
   "stats": {
-    "totalReviews": 38228,
-    "alreadyFlagged": 16775,
+    "totalReviews": 38231,
+    "alreadyFlagged": 16782,
     "dateGuardCatches": 104,
     "directorMismatch": 854,
-    "tvFilmSignals": 1053,
+    "tvFilmSignals": 1052,
     "londonSignals": 624,
     "offBroadwaySignals": 458,
     "yearMismatch": 81,
-    "noPublishDate": 3978
+    "noPublishDate": 3971
   },
   "findings": [
     {
@@ -1673,20 +1673,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "avenue-q-west-end-2026",
-      "file": "telegraph--marianka-swain.json",
-      "score": 82,
-      "publishDate": "2026-04-17",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/avenue-qs-bawdy-puppets-gleefully-outrageous/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -7733,6 +7719,7 @@
     {
       "showId": "giant-west-end-2025",
       "file": "london-box-office--stuart-king.json",
+      "score": 96,
       "publishDate": "2025-05-03",
       "url": "https://www.londonboxoffice.co.uk/news/post/giant-harold-pinter-theatre-review",
       "findings": [
@@ -34180,6 +34167,20 @@
       ]
     },
     {
+      "showId": "miss-saigon-2017",
+      "file": "wsj--terry-teachout.json",
+      "score": 22,
+      "publishDate": "2017-03-24",
+      "url": "https://www.wsj.com/articles/miss-saigon-review-hard-landing-1490315400",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "mj-the-musical-west-end-2024",
       "file": "guardian--anya-ryan.json",
       "score": 39,
@@ -34339,20 +34340,6 @@
       "score": 72,
       "publishDate": "2025-11-01",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/wendy-and-peter-pan-review-a-jumble-of-good-ideas-sntv0grd3",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "my-neighbour-totoro-west-end-2025",
-      "file": "whatsonstage--tom-millward.json",
-      "score": null,
-      "publishDate": "2025-03-21",
-      "url": "https://www.whatsonstage.com/news/my-neighbour-totoro-celebrates-its-official-west-end-opening-night_1670554/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
