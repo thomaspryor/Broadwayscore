@@ -1,18 +1,31 @@
 {
-  "updatedAt": "2026-06-10T19:05:22.959Z",
-  "processed": 2,
-  "failed": 8,
+  "updatedAt": "2026-06-10T19:09:31.487Z",
+  "processed": 4,
+  "failed": 16,
   "successRate": "20.0%",
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 3,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
+    "brightdata": 1,
     "archiveToday": 1,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-06-10T19:07:25.036Z",
+      "event": "bb-session",
+      "session": "a394944a",
+      "url": "https://charingcrosstheatre.co.uk/theatre/dark-of-the-moon"
+    },
+    {
+      "t": "2026-06-10T19:08:53.133Z",
+      "event": "bb-session",
+      "session": "90358657",
+      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
+    }
+  ]
 }

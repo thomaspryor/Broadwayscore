@@ -1,7 +1,9 @@
 {
   "processed": [
     "driftwood-west-end-2026/timeout-london--unknown.json",
-    "war-horse-west-end-2026/click-liverpool--carie-schneider.json"
+    "war-horse-west-end-2026/click-liverpool--carie-schneider.json",
+    "beetlejuice-west-end-2026/guardian-uk--unknown.json",
+    "dark-of-the-moon-west-end-2026/guardian--arifa-akbar.json"
   ],
   "failed": [
     "are-you-watching-west-end-2026/all-that-dazzles-uk--unknown.json",
@@ -11,25 +13,49 @@
     "driftwood-west-end-2026/times-uk--clive-davis.json",
     "war-horse-west-end-2026/all-that-dazzles-uk--unknown.json",
     "war-horse-west-end-2026/plays-international--maryam-philpott.json",
-    "war-horse-west-end-2026/times-uk--chris-bennion.json"
+    "war-horse-west-end-2026/times-uk--chris-bennion.json",
+    "war-horse-west-end-2026/times-uk--clive-davis.json",
+    "beetlejuice-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "beetlejuice-west-end-2026/amny--matt-windman.json",
+    "the-p-word-off-west-end-2026/whatsonstage--frey-kwa-hawking.json",
+    "dark-of-the-moon-west-end-2026/guardian-uk--unknown.json",
+    "dark-of-the-moon-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "dark-of-the-moon-west-end-2026/artsdesk--unknown.json",
+    "dark-of-the-moon-west-end-2026/cambridge--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "driftwood-west-end-2026/timeout-london--unknown.json",
-      "war-horse-west-end-2026/click-liverpool--carie-schneider.json"
+      "war-horse-west-end-2026/click-liverpool--carie-schneider.json",
+      "beetlejuice-west-end-2026/guardian-uk--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "dark-of-the-moon-west-end-2026/guardian--arifa-akbar.json"
+    ],
     "archiveToday": [
       "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json"
     ],
     "archive": []
   },
   "startTime": "2026-06-10T19:02:19.411Z",
-  "lastProcessed": "war-horse-west-end-2026/times-uk--chris-bennion.json",
-  "log": []
+  "lastProcessed": "dark-of-the-moon-west-end-2026/cambridge--unknown.json",
+  "log": [
+    {
+      "t": "2026-06-10T19:07:25.036Z",
+      "event": "bb-session",
+      "session": "a394944a",
+      "url": "https://charingcrosstheatre.co.uk/theatre/dark-of-the-moon"
+    },
+    {
+      "t": "2026-06-10T19:08:53.133Z",
+      "event": "bb-session",
+      "session": "90358657",
+      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
+    }
+  ]
 }
