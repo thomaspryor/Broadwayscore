@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-06-10T11:29:57.537Z",
+  "updatedAt": "2026-06-10T11:32:31.237Z",
   "processed": 11,
-  "failed": 70,
-  "successRate": "13.6%",
+  "failed": 78,
+  "successRate": "12.4%",
   "tierBreakdown": {
     "playwright": 8,
     "amp": 0,
@@ -10,17 +10,11 @@
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 1,
-    "archiveToday": 5,
+    "archiveToday": 6,
     "archive": 1
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-06-10T10:04:11.087Z",
-      "event": "bb-session",
-      "session": "3f864af3",
-      "url": "https://www.nytimes.com/2026/06/08/theater/tony-awards-saturday-night-live.html"
-    },
     {
       "t": "2026-06-10T10:04:12.141Z",
       "event": "bb-cookie-inject",
@@ -125,6 +119,12 @@
       "t": "2026-06-10T11:02:39.723Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-10T11:31:28.549Z",
+      "event": "bb-session",
+      "session": "de8e97fd",
+      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
     }
   ]
 }
