@@ -1,53 +1,20 @@
 {
-  "updatedAt": "2026-06-10T09:00:54.535Z",
-  "processed": 348,
-  "failed": 559,
-  "successRate": "38.4%",
+  "updatedAt": "2026-06-10T09:06:33.866Z",
+  "processed": 355,
+  "failed": 562,
+  "successRate": "38.7%",
   "tierBreakdown": {
-    "playwright": 170,
+    "playwright": 172,
     "amp": 0,
-    "browserbase": 58,
+    "browserbase": 62,
     "directCookies": 0,
-    "scrapingbee": 71,
+    "scrapingbee": 72,
     "brightdata": 32,
-    "archiveToday": 23,
-    "archive": 82
+    "archiveToday": 25,
+    "archive": 84
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-06-10T05:25:36.268Z",
-      "event": "bb-session",
-      "session": "a31d663a",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
-    {
-      "t": "2026-06-10T12:42:20.204Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-10T12:42:52.251Z",
-      "event": "bb-session",
-      "session": "99d37c63",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-10T12:42:53.263Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-10T12:43:06.307Z",
-      "event": "bb-session",
-      "session": "7a3b08cc",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
-    {
-      "t": "2026-06-10T12:43:07.226Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-06-10T08:37:41.492Z",
       "event": "bb-session",
@@ -122,6 +89,39 @@
     },
     {
       "t": "2026-06-10T08:58:47.169Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-10T09:02:51.915Z",
+      "event": "bb-session",
+      "session": "48e41afd",
+      "url": "http://www.wsj.com/articles/holiday-inn-the-new-irving-berlin-musical-review-147"
+    },
+    {
+      "t": "2026-06-10T09:02:52.506Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-10T09:03:59.215Z",
+      "event": "bb-session",
+      "session": "ad41e599",
+      "url": "https://www.wsj.com/articles/cats-review-a-new-life-for-a-musical-with-nine-live"
+    },
+    {
+      "t": "2026-06-10T09:03:59.836Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-10T09:05:06.045Z",
+      "event": "bb-session",
+      "session": "99d21b9e",
+      "url": "http://www.wsj.com/articles/long-days-journey-into-night-review-the-dying-of-the"
+    },
+    {
+      "t": "2026-06-10T09:05:06.688Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
