@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-06-10T10:10:02.590Z",
+  "updatedAt": "2026-06-10T10:44:50.710Z",
   "processed": 10,
-  "failed": 30,
-  "successRate": "25.0%",
+  "failed": 48,
+  "successRate": "17.2%",
   "tierBreakdown": {
     "playwright": 7,
     "amp": 0,
@@ -10,10 +10,10 @@
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 1,
-    "archiveToday": 2,
+    "archiveToday": 4,
     "archive": 1
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-06-10T09:12:22.293Z",
@@ -75,6 +75,29 @@
       "t": "2026-06-10T10:07:53.441Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-10T10:41:07.801Z",
+      "event": "bb-session",
+      "session": "157ae0da",
+      "url": "https://charingcrosstheatre.co.uk/theatre/dark-of-the-moon"
+    },
+    {
+      "t": "2026-06-10T10:42:34.386Z",
+      "event": "bb-session",
+      "session": "438791ee",
+      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
+    },
+    {
+      "t": "2026-06-10T10:44:49.401Z",
+      "event": "bb-session",
+      "session": "897efe78",
+      "url": "https://thestage.co.uk/reviews/dark-of-the-moon-review-charing-cross-theatre-lon"
+    },
+    {
+      "t": "2026-06-10T10:44:50.674Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
