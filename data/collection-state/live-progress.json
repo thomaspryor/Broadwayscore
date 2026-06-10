@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-10T14:10:01.853Z",
-  "processed": 3,
-  "failed": 7,
-  "successRate": "30.0%",
+  "updatedAt": "2026-06-10T14:14:00.654Z",
+  "processed": 5,
+  "failed": 13,
+  "successRate": "27.8%",
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 4,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 1
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-06-10T14:07:15.186Z",
@@ -47,6 +47,12 @@
       "t": "2026-06-10T14:08:17.033Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-10T14:13:49.510Z",
+      "event": "bb-session",
+      "session": "59744294",
+      "url": "https://pagesonstages.com/2026/05/28/small/"
     }
   ]
 }
