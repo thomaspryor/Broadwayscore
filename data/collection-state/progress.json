@@ -254,7 +254,13 @@
     "fun-home-2015/timeout--adam-feldman.json",
     "the-king-and-i-2015/timeout--david-cote.json",
     "the-king-and-i-2015/thewrap--robert-hofler.json",
-    "the-king-and-i-2015/wsj--terry-teachout.json"
+    "the-king-and-i-2015/wsj--terry-teachout.json",
+    "finding-neverland-2015/theatermania--jesse-green.json",
+    "finding-neverland-2015/timeout--adam-feldman.json",
+    "finding-neverland-2015/financialtimes--brendan-lemon.json",
+    "an-american-in-paris-2015/timeout--david-cote.json",
+    "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
+    "an-american-in-paris-2015/timeout--adam-feldman.json"
   ],
   "failed": [
     "are-you-watching-west-end-2026/all-that-dazzles-uk--unknown.json",
@@ -443,7 +449,11 @@
     "living-on-love-2015/berkshire-eagle--jeffrey-borak.json",
     "fun-home-2015/wsj--terry-teachout.json",
     "fun-home-2015/talkinbroadway--matthew-murray.json",
-    "the-king-and-i-2015/talkinbroadway--matthew-murray.json"
+    "the-king-and-i-2015/talkinbroadway--matthew-murray.json",
+    "it-shoulda-been-you-2015/hollywood-reporter--david-rooney.json",
+    "an-american-in-paris-2015/off-script-with-dan-dwyer--dan-dwyer.json",
+    "an-american-in-paris-2015/talkinbroadway--matthew-murray.json",
+    "wolf-hall-parts-one-and-two-2015/variety--marilyn-stasio.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -559,7 +569,9 @@
       "airline-highway-2015/ny1--roma-torre.json",
       "something-rotten-2015/timeout--adam-feldman.json",
       "doctor-zhivago-2015/ew--jessica-shaw.json",
-      "the-king-and-i-2015/timeout--david-cote.json"
+      "the-king-and-i-2015/timeout--david-cote.json",
+      "finding-neverland-2015/theatermania--jesse-green.json",
+      "finding-neverland-2015/financialtimes--brendan-lemon.json"
     ],
     "amp": [],
     "browserbase": [
@@ -780,7 +792,8 @@
       "data/review-texts/something-rotten-2015/talkinbroadway--matthew-murray.json",
       "data/review-texts/living-on-love-2015/wsj--terry-teachout.json",
       "data/review-texts/fun-home-2015/wsj--terry-teachout.json",
-      "data/review-texts/fun-home-2015/talkinbroadway--matthew-murray.json"
+      "data/review-texts/fun-home-2015/talkinbroadway--matthew-murray.json",
+      "data/review-texts/the-king-and-i-2015/talkinbroadway--matthew-murray.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -901,11 +914,15 @@
       "living-on-love-2015/nydailynews--joe-dziemianowicz.json",
       "living-on-love-2015/timeout--adam-feldman.json",
       "the-king-and-i-2015/thewrap--robert-hofler.json",
-      "the-king-and-i-2015/wsj--terry-teachout.json"
+      "the-king-and-i-2015/wsj--terry-teachout.json",
+      "finding-neverland-2015/timeout--adam-feldman.json",
+      "an-american-in-paris-2015/timeout--david-cote.json",
+      "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
+      "an-american-in-paris-2015/timeout--adam-feldman.json"
     ]
   },
   "startTime": "2026-06-09T08:53:47.441Z",
-  "lastProcessed": "the-king-and-i-2015/talkinbroadway--matthew-murray.json",
+  "lastProcessed": "wolf-hall-parts-one-and-two-2015/variety--marilyn-stasio.json",
   "log": [
     {
       "t": "2026-06-10T09:12:22.293Z",
@@ -1704,6 +1721,17 @@
     },
     {
       "t": "2026-06-10T10:11:57.113Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-10T10:14:01.866Z",
+      "event": "bb-session",
+      "session": "25b80291",
+      "url": "https://www.talkinbroadway.com/world/KingandI.html"
+    },
+    {
+      "t": "2026-06-10T10:14:02.662Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }
