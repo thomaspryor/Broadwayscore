@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-10T13:32:59.974Z",
+  "generatedAt": "2026-06-10T15:36:13.398Z",
   "date": "2026-06-10",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 304768,
+  "entryCount": 306066,
   "shows": [
     {
       "showId": "an-ideal-husband-west-end-2026",
@@ -21,7 +21,7 @@
     },
     {
       "showId": "grace-pervades-west-end-2026",
-      "reviewCount": 17,
+      "reviewCount": 18,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -126,7 +126,7 @@
     },
     {
       "showId": "an-american-in-paris-2015",
-      "reviewCount": 40,
+      "reviewCount": 39,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2841,7 +2841,7 @@
     },
     {
       "showId": "showstopper-the-improvised-musical-west-end-2023",
-      "reviewCount": 5,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -3906,12 +3906,12 @@
     },
     {
       "showId": "animal-wisdom-off-broadway-2022",
-      "reviewCount": 15,
+      "reviewCount": 16,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 4724040,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -4356,7 +4356,7 @@
     },
     {
       "showId": "driftwood-west-end-2026",
-      "reviewCount": 4,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4401,7 +4401,7 @@
     },
     {
       "showId": "a-woman-among-women-off-broadway-2026",
-      "reviewCount": 10,
+      "reviewCount": 11,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -5271,7 +5271,7 @@
     },
     {
       "showId": "charlie-and-the-chocolate-factory-2017",
-      "reviewCount": 49,
+      "reviewCount": 48,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -5466,7 +5466,7 @@
     },
     {
       "showId": "she-loves-me-2016",
-      "reviewCount": 40,
+      "reviewCount": 39,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -5571,7 +5571,7 @@
     },
     {
       "showId": "sylvia-2015",
-      "reviewCount": 37,
+      "reviewCount": 35,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -5616,7 +5616,7 @@
     },
     {
       "showId": "airline-highway-2015",
-      "reviewCount": 24,
+      "reviewCount": 25,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -5676,7 +5676,7 @@
     },
     {
       "showId": "skylight-2015",
-      "reviewCount": 26,
+      "reviewCount": 25,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -6546,7 +6546,7 @@
     },
     {
       "showId": "hamilton-2015",
-      "reviewCount": 43,
+      "reviewCount": 42,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -7401,7 +7401,7 @@
     },
     {
       "showId": "are-you-watching-west-end-2026",
-      "reviewCount": 13,
+      "reviewCount": 14,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -9426,7 +9426,7 @@
     },
     {
       "showId": "long-days-journey-into-night-2016",
-      "reviewCount": 36,
+      "reviewCount": 35,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -9711,7 +9711,7 @@
     },
     {
       "showId": "something-rotten-2015",
-      "reviewCount": 41,
+      "reviewCount": 40,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -9741,7 +9741,7 @@
     },
     {
       "showId": "fun-home-2015",
-      "reviewCount": 28,
+      "reviewCount": 29,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -9771,7 +9771,7 @@
     },
     {
       "showId": "finding-neverland-2015",
-      "reviewCount": 27,
+      "reviewCount": 26,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -10011,7 +10011,7 @@
     },
     {
       "showId": "betrayal-2013",
-      "reviewCount": 14,
+      "reviewCount": 15,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -10047,6 +10047,21 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "white-rabbit-red-rabbit-west-end-2026",
+      "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 3055768,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
