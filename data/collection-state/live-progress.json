@@ -1,58 +1,30 @@
 {
-  "updatedAt": "2026-06-10T14:14:00.654Z",
-  "processed": 5,
-  "failed": 13,
-  "successRate": "27.8%",
+  "updatedAt": "2026-06-10T14:45:09.517Z",
+  "processed": 202,
+  "failed": 98,
+  "successRate": "67.3%",
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 100,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 0,
-    "brightdata": 1,
+    "scrapingbee": 48,
+    "brightdata": 14,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 40
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-06-10T14:07:15.186Z",
+      "t": "2026-06-10T13:54:32.910Z",
       "event": "bb-session",
-      "session": "dba30c75",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+      "session": "baa06226",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
     },
     {
-      "t": "2026-06-10T14:07:15.657Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-10T14:08:04.484Z",
-      "event": "bb-session",
-      "session": "67407a93",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-10T14:08:04.981Z",
+      "t": "2026-06-10T13:54:33.736Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-10T14:08:16.587Z",
-      "event": "bb-session",
-      "session": "94c7c4e0",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
-    {
-      "t": "2026-06-10T14:08:17.033Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-10T14:13:49.510Z",
-      "event": "bb-session",
-      "session": "59744294",
-      "url": "https://pagesonstages.com/2026/05/28/small/"
     }
   ]
 }
