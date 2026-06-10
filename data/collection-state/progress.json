@@ -6,7 +6,10 @@
     "catch-of-the-day-off-broadway-2026/nytimes--derrick-bryson-taylor.json",
     "girl-interrupted-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "jerome-off-broadway-2025/off-off-online--edward-karam.json",
-    "jerome-off-broadway-2025/one-minute-critic--jerry-portwood.json"
+    "jerome-off-broadway-2025/one-minute-critic--jerry-portwood.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
+    "small-off-broadway-2026/culturesauce--thom-geier.json"
   ],
   "failed": [
     "are-you-watching-west-end-2026/all-that-dazzles-uk--unknown.json",
@@ -32,7 +35,13 @@
     "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
     "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
     "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
-    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json"
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
+    "small-off-broadway-2026/guardian--arifa-akbar.json",
+    "small-off-broadway-2026/pages-on-stages--unknown.json",
+    "small-off-broadway-2026/the-recs--unknown.json",
+    "small-off-broadway-2026/theater-pizzazz--unknown.json",
+    "small-off-broadway-2026/washpost--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -41,7 +50,9 @@
       "beetlejuice-west-end-2026/guardian-uk--unknown.json",
       "girl-interrupted-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "jerome-off-broadway-2025/off-off-online--edward-karam.json",
-      "jerome-off-broadway-2025/one-minute-critic--jerry-portwood.json"
+      "jerome-off-broadway-2025/one-minute-critic--jerry-portwood.json",
+      "and-then-the-rodeo-burned-down-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -49,7 +60,8 @@
       "catch-of-the-day-off-broadway-2026/nytimes--derrick-bryson-taylor.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -60,10 +72,12 @@
       "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json",
       "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json"
     ],
-    "archive": []
+    "archive": [
+      "small-off-broadway-2026/culturesauce--thom-geier.json"
+    ]
   },
   "startTime": "2026-06-10T09:07:08.446Z",
-  "lastProcessed": "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+  "lastProcessed": "small-off-broadway-2026/washpost--unknown.json",
   "log": [
     {
       "t": "2026-06-10T09:12:22.293Z",
@@ -114,6 +128,17 @@
       "t": "2026-06-10T10:05:48.712Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-10T10:07:52.404Z",
+      "event": "bb-session",
+      "session": "8eef1da4",
+      "url": "https://www.nytimes.com/2026/05/31/theater/othello-review-wendell-pierce.html"
+    },
+    {
+      "t": "2026-06-10T10:07:53.441Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
