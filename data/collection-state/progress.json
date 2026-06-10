@@ -192,7 +192,10 @@
     "american-psycho-2016/timeout--adam-feldman.json",
     "american-psycho-2016/wsj--terry-teachout.json",
     "the-father-2016/wsj--edward-rothstein.json",
-    "the-father-2016/financialtimes--max-mcguinness.json"
+    "the-father-2016/financialtimes--max-mcguinness.json",
+    "the-crucible-2016/wsj--terry-teachout.json",
+    "bright-star-2016/wsj--terry-teachout.json",
+    "bright-star-2016/stu-on-broadway--stu-brown.json"
   ],
   "failed": [
     "are-you-watching-west-end-2026/all-that-dazzles-uk--unknown.json",
@@ -333,7 +336,14 @@
     "the-father-2016/theater-life--paulanne-simmons.json",
     "the-father-2016/off-script-with-dan-dwyer--dan-dwyer.json",
     "the-father-2016/talkinbroadway--matthew-murray.json",
-    "the-crucible-2016/theatermania--jesse-green.json"
+    "the-crucible-2016/theatermania--jesse-green.json",
+    "the-crucible-2016/washpost--peter-marks.json",
+    "the-crucible-2016/thestage--unknown.json",
+    "bright-star-2016/drama-queen-nyc--jonathan-warman.json",
+    "bright-star-2016/talkinbroadway--matthew-murray.json",
+    "she-loves-me-2016/backstage-barbie--backstage-barbie.json",
+    "she-loves-me-2016/theater-life--eric-march.json",
+    "she-loves-me-2016/usatoday--elysa-gardner.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -579,7 +589,8 @@
       "children-of-a-lesser-god-2018/medium--christian-lewis.json",
       "three-tall-women-2018/medium--christian-lewis.json",
       "the-price-2017/theater-life--barry-gordin.json",
-      "the-father-2016/wsj--edward-rothstein.json"
+      "the-father-2016/wsj--edward-rothstein.json",
+      "the-crucible-2016/wsj--terry-teachout.json"
     ],
     "archiveToday": [
       "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json",
@@ -610,7 +621,12 @@
       "data/review-texts/waitress-2016/talkinbroadway--matthew-murray.json",
       "data/review-texts/the-father-2016/wsj--terry-teachout.json",
       "data/review-texts/american-psycho-2016/talkinbroadway--matthew-murray.json",
-      "data/review-texts/the-father-2016/off-script-with-dan-dwyer--dan-dwyer.json"
+      "data/review-texts/the-father-2016/off-script-with-dan-dwyer--dan-dwyer.json",
+      "data/review-texts/the-crucible-2016/washpost--peter-marks.json",
+      "data/review-texts/the-father-2016/talkinbroadway--matthew-murray.json",
+      "data/review-texts/the-crucible-2016/thestage--unknown.json",
+      "data/review-texts/bright-star-2016/talkinbroadway--matthew-murray.json",
+      "data/review-texts/she-loves-me-2016/backstage-barbie--backstage-barbie.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -699,11 +715,13 @@
       "holiday-inn-the-new-irving-berlin-musical-2016/timeout--david-cote.json",
       "american-psycho-2016/timeout--adam-feldman.json",
       "american-psycho-2016/wsj--terry-teachout.json",
-      "the-father-2016/theater-life--paulanne-simmons.json"
+      "the-father-2016/theater-life--paulanne-simmons.json",
+      "bright-star-2016/wsj--terry-teachout.json",
+      "bright-star-2016/stu-on-broadway--stu-brown.json"
     ]
   },
   "startTime": "2026-06-09T08:53:47.441Z",
-  "lastProcessed": "the-crucible-2016/theatermania--jesse-green.json",
+  "lastProcessed": "she-loves-me-2016/usatoday--elysa-gardner.json",
   "log": [
     {
       "t": "2026-06-10T09:12:22.293Z",
@@ -1326,6 +1344,39 @@
     },
     {
       "t": "2026-06-10T09:16:15.222Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-10T09:20:50.234Z",
+      "event": "bb-session",
+      "session": "2c38f482",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-the-crucible-o"
+    },
+    {
+      "t": "2026-06-10T09:20:50.867Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-06-10T09:21:17.053Z",
+      "event": "bb-session",
+      "session": "538ee0dd",
+      "url": "https://talkinbroadway.com/world/TheFather.html"
+    },
+    {
+      "t": "2026-06-10T09:21:17.659Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-10T09:25:31.030Z",
+      "event": "bb-session",
+      "session": "59b41290",
+      "url": "https://www.talkinbroadway.com/world/BrightStar.html"
+    },
+    {
+      "t": "2026-06-10T09:25:31.595Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }
