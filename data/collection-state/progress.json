@@ -410,7 +410,8 @@
     "the-color-purple-2015/wsj--terry-teachout.json",
     "the-color-purple-2015/broadway-and-me--janice-c-simpson.json",
     "misery-2015/broadway-and-me--janice-c-simpson.json",
-    "on-your-feet-2015/wsj--terry-teachout.json"
+    "on-your-feet-2015/wsj--terry-teachout.json",
+    "dames-at-sea-2015/village-voice--elizabeth-zimmer.json"
   ],
   "failed": [
     "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
@@ -831,7 +832,16 @@
     "disaster-2016/timeout--adam-feldman.json",
     "eclipsed-2016/nydailynews--joe-dziemianowicz.json",
     "a-view-from-the-bridge-2015/financialtimes--sarah-hemming.json",
-    "allegiance-2015/timeout--david-cote.json"
+    "allegiance-2015/timeout--david-cote.json",
+    "on-your-feet-2015/backstage-barbie--backstage-barbie.json",
+    "on-your-feet-2015/broadway-and-me--janice-c-simpson.json",
+    "sylvia-2015/wsj--terry-teachout.json",
+    "sylvia-2015/talkinbroadway--matthew-murray.json",
+    "the-gin-game-2015/nyt-theater--jonathan-mandell.json",
+    "the-gin-game-2015/vulture--jesse-green.json",
+    "the-gin-game-2015/ap--mark-kennedy.json",
+    "the-gin-game-2015/wnyc--jennifer-vanasco.json",
+    "fool-for-love-2015/nydailynews--joe-dziemianowicz.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1354,11 +1364,12 @@
       "just-for-us-2023/theater-life--barry-gordin.json",
       "kpop-2022/broadway-and-me--janice-c-simpson.json",
       "lackawanna-blues-2021/broadway-and-me--janice-c-simpson.json",
-      "she-loves-me-2016/ap--mark-kennedy.json"
+      "she-loves-me-2016/ap--mark-kennedy.json",
+      "dames-at-sea-2015/village-voice--elizabeth-zimmer.json"
     ]
   },
   "startTime": "2026-06-10T19:02:19.411Z",
-  "lastProcessed": "on-your-feet-2015/wsj--terry-teachout.json",
+  "lastProcessed": "fool-for-love-2015/nydailynews--joe-dziemianowicz.json",
   "log": [
     {
       "t": "2026-06-11T19:17:57.544Z",
@@ -2088,6 +2099,34 @@
       "t": "2026-06-11T16:49:42.374Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-11T16:50:58.409Z",
+      "event": "bb-session",
+      "session": "1a67a130",
+      "url": "https://backstagebarbie.blogspot.com/2016/02/on-your-feet.html"
+    },
+    {
+      "t": "2026-06-11T16:51:55.344Z",
+      "event": "bb-session",
+      "session": "de977f0a",
+      "url": "https://www.wsj.com/articles/sylvia-review-a-dog-gone-good-time-1445547066"
+    },
+    {
+      "t": "2026-06-11T16:51:57.098Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-11T16:54:19.226Z",
+      "event": "bb-session",
+      "session": "b3375b2a",
+      "url": "http://www.talkinbroadway.com/world/Sylvia.html"
+    },
+    {
+      "t": "2026-06-11T16:54:20.235Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
