@@ -6,6 +6,7 @@ import Link from 'next/link';
 import type Fuse from 'fuse.js';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import { useCurrentMarket } from '@/hooks/useCurrentMarket';
+import { captureEvent } from '@/lib/posthog-events';
 
 interface Show {
   id: string;
@@ -96,6 +97,19 @@ export default function HeaderSearch() {
   const closeSearch = useCallback(() => { setIsOpen(false); setIsMobileOpen(false); }, []);
   useClickOutside(containerRef, closeSearch);
 
+  // Fire search_performed after 1s of no typing (≥2 chars).
+  // No raw query text captured — only result counts (privacy).
+  useEffect(() => {
+    if (query.length < 2) return;
+    const timer = setTimeout(() => {
+      captureEvent('search_performed', {
+        results_count: filteredShows.length,
+        has_results: filteredShows.length > 0,
+      });
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [query, filteredShows.length]);
+
   // Handle keyboard navigation — guard Enter against stale deferred results
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (!isOpen || filteredShows.length === 0) {
@@ -144,6 +158,10 @@ export default function HeaderSearch() {
   // selectedIndex is reset inline in onChange handlers to avoid a second render per keystroke
 
   const handleResultClick = (slug: string) => {
+    captureEvent('search_selected', {
+      show_id: slug,
+      results_count: filteredShows.length,
+    });
     router.push(`/show/${slug}`);
     setIsOpen(false);
     setIsMobileOpen(false);

@@ -1,0 +1,64 @@
+name: PostHog Monday Analysis
+# Unified Monday PostHog pipeline.
+# Routing policy:
+#   - Weekly Insights  → GitHub issue (what happened this week — metrics/trends)
+#   - Friction Analyzer → Notion cards (what to fix — actionable backlog)
+# These are different questions for different audiences.
+#
+# Replaced posthog-weekly-insights.yml (Mon 14:00 UTC) — that workflow's schedule
+# has been disabled; workflow_dispatch is preserved for manual runs.
+on:
+  schedule:
+    - cron: '0 8 * * 1'  # Monday 8 AM UTC (4 AM EST)
+  workflow_dispatch: {}
+
+jobs:
+  weekly-insights:
+    name: Weekly Insights → GitHub Issue
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+      - name: Query PostHog and create GitHub issue
+        env:
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/posthog-weekly-insights.js
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'PostHog Weekly Insights Failed'
+          severity: 'warning'
+
+  friction-analyzer:
+    name: Friction Analyzer → Notion Cards
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    # Run after insights, but don't block on its failure
+    needs: weekly-insights
+    if: always()
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+      - name: Analyze friction and create Notion cards
+        env:
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+        run: node scripts/posthog-friction-analyzer.js
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'PostHog Friction Analyzer Failed'
+          severity: 'warning'
