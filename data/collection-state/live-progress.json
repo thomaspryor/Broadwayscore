@@ -1,29 +1,40 @@
 {
-  "updatedAt": "2026-06-11T11:32:04.668Z",
-  "processed": 311,
-  "failed": 313,
-  "successRate": "49.8%",
+  "updatedAt": "2026-06-11T11:35:21.126Z",
+  "processed": 320,
+  "failed": 314,
+  "successRate": "50.5%",
   "tierBreakdown": {
-    "playwright": 164,
+    "playwright": 169,
     "amp": 0,
-    "browserbase": 39,
+    "browserbase": 41,
     "directCookies": 0,
-    "scrapingbee": 62,
+    "scrapingbee": 64,
     "brightdata": 32,
     "archiveToday": 13,
-    "archive": 65
+    "archive": 66
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-06-11T04:57:19.083Z",
+      "t": "2026-06-11T04:58:11.547Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "variety.com"
     },
     {
-      "t": "2026-06-11T14:07:39.187Z",
+      "t": "2026-06-11T04:58:22.445Z",
       "event": "bb-session",
-      "session": "a21a139f",
+      "session": "92ced973",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-11T04:58:22.830Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-11T05:18:52.313Z",
+      "event": "bb-session",
+      "session": "1e156697",
       "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
     },
     {
@@ -100,6 +111,17 @@
     },
     {
       "t": "2026-06-11T11:31:38.564Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-11T11:33:54.721Z",
+      "event": "bb-session",
+      "session": "cbebffb1",
+      "url": "http://www.wsj.com/articles/heisenberg-review-masculine-wish-fulfillment-on-stag"
+    },
+    {
+      "t": "2026-06-11T11:33:55.548Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
