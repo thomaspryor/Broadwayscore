@@ -1,33 +1,22 @@
 {
-  "updatedAt": "2026-06-11T11:28:23.914Z",
-  "processed": 304,
-  "failed": 310,
-  "successRate": "49.5%",
+  "updatedAt": "2026-06-11T11:32:04.668Z",
+  "processed": 311,
+  "failed": 313,
+  "successRate": "49.8%",
   "tierBreakdown": {
-    "playwright": 162,
+    "playwright": 164,
     "amp": 0,
-    "browserbase": 37,
+    "browserbase": 39,
     "directCookies": 0,
-    "scrapingbee": 61,
+    "scrapingbee": 62,
     "brightdata": 32,
     "archiveToday": 13,
-    "archive": 62
+    "archive": 65
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
-      "t": "2026-06-11T04:29:17.238Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-11T13:24:29.203Z",
-      "event": "bb-session",
-      "session": "78afd172",
-      "url": "https://www.nytimes.com/2026/06/01/arts/andy-halliday-dead.html"
-    },
-    {
-      "t": "2026-06-11T13:24:30.109Z",
+      "t": "2026-06-11T04:57:19.083Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
@@ -100,6 +89,17 @@
     },
     {
       "t": "2026-06-11T11:17:42.558Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-11T11:31:37.682Z",
+      "event": "bb-session",
+      "session": "e533b1d4",
+      "url": "https://www.wsj.com/articles/les-liaisons-dangereuses-review-fallen-archness-147"
+    },
+    {
+      "t": "2026-06-11T11:31:38.564Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
