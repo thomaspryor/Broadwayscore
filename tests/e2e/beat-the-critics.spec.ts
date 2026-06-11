@@ -16,6 +16,15 @@ const BTC_URL = '/beat-the-critics';
 const RULES_URL = '/beat-the-critics/rules';
 const PICKS_API = '**/api/beat-the-critics/send-picks';
 
+// Mirrors PICKS_REVEAL_DATE in BeatTheCriticsClient.tsx. These tests run against
+// PRODUCTION, so they must assert whichever phase is actually live: PRE-reveal
+// shows a live countdown + "Revealed <date>" badges; POST-reveal hides the
+// countdown and shows the critics' real picks. Hardcoding the pre-reveal state
+// turned both tests into time-bombs that went red the moment the date passed
+// (2026-06-08). Branch on PICKS_REVEALED instead.
+const PICKS_REVEAL_DATE = new Date('2026-06-08T00:00:00Z');
+const PICKS_REVEALED = Date.now() >= PICKS_REVEAL_DATE.getTime();
+
 /** Mock the send-picks API so no real submission is made. */
 async function mockPicksApi(page: Page, response: Record<string, unknown> = { success: true }, status = 200) {
   await page.route(PICKS_API, route => {
@@ -65,11 +74,14 @@ test.describe('landing page', () => {
     // Title
     await expect(page.getByRole('heading', { level: 1 })).toContainText(/Beat.*the Critics/i);
 
-    // Countdown — four time-unit blocks
-    await expect(page.getByText(/Days/i).first()).toBeVisible();
-    await expect(page.getByText(/Hrs/i).first()).toBeVisible();
-    await expect(page.getByText(/Min/i).first()).toBeVisible();
-    await expect(page.getByText(/Sec/i).first()).toBeVisible();
+    // Countdown — four time-unit blocks. Only rendered PRE-reveal; after the
+    // reveal date the component hides the countdown (countdownExpired).
+    if (!PICKS_REVEALED) {
+      await expect(page.getByText(/Days/i).first()).toBeVisible();
+      await expect(page.getByText(/Hrs/i).first()).toBeVisible();
+      await expect(page.getByText(/Min/i).first()).toBeVisible();
+      await expect(page.getByText(/Sec/i).first()).toBeVisible();
+    }
 
     // Prize pill — match any $N TodayTix mention so the test survives prize
     // amount tweaks (2026-05-26: prize bumped from $100 to $200 in ec149566f6
@@ -180,20 +192,24 @@ test.describe('picking flow — Tier 1 (The Big Four)', () => {
     await expect(page.getByText("Here's what the experts picked")).toBeVisible({ timeout: 10000 });
   });
 
-  test('reveal screen shows a "Revealed <date>" badge for all 3 critics (PICKS_REVEALED=false)', async ({ page }) => {
+  test('reveal screen shows critic picks (post-reveal) or "Revealed <date>" badges (pre-reveal)', async ({ page }) => {
     await gotoLanding(page);
     await startPicking(page);
     await pickFirstNominee(page);
     await lockIn(page);
 
-    // Before the reveal date each critic row shows a "Revealed <date>" badge.
-    // Match on the stable "Revealed " prefix, NOT a hardcoded date — the reveal
-    // date is config-driven (PICKS_REVEAL_DATE in BeatTheCriticsClient.tsx) and
-    // has already moved June 7 → June 8 once, silently breaking this test.
-    const revealBadges = page.getByText(/^Revealed /);
-    const count = await revealBadges.count();
-    // 3 critics in the CRITICS panel → 3 badges.
-    expect(count).toBeGreaterThanOrEqual(3);
+    if (!PICKS_REVEALED) {
+      // PRE-reveal: each critic row shows a "Revealed <date>" badge. Match on the
+      // stable "Revealed " prefix, NOT a hardcoded date — the reveal date is
+      // config-driven and has already moved June 7 → June 8 once.
+      const revealBadges = page.getByText(/^Revealed /);
+      expect(await revealBadges.count()).toBeGreaterThanOrEqual(3);
+    } else {
+      // POST-reveal: the experts' real picks are shown instead of badges. Assert
+      // the reveal header is present and NO "Revealed <date>" placeholder remains.
+      await expect(page.getByText("Here's what the experts picked")).toBeVisible({ timeout: 10000 });
+      expect(await page.getByText(/^Revealed /).count()).toBe(0);
+    }
   });
 
   test('Keep Going advances to next category', async ({ page }) => {
