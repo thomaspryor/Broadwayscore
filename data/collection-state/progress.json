@@ -246,7 +246,17 @@
     "heisenberg-2016/wsj--terry-teachout.json",
     "heisenberg-2016/thestage--tom-wicker.json",
     "heisenberg-2016/wnyc--jennifer-vanasco.json",
-    "oh-hello-on-broadway-2016/nydailynews--joe-dziemianowicz.json"
+    "oh-hello-on-broadway-2016/nydailynews--joe-dziemianowicz.json",
+    "holiday-inn-the-new-irving-berlin-musical-2016/nydailynews--joe-dziemianowicz.json",
+    "holiday-inn-the-new-irving-berlin-musical-2016/timeout--david-cote.json",
+    "holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json",
+    "holiday-inn-the-new-irving-berlin-musical-2016/thestage--mark-shenton.json",
+    "the-encounter-2016/nydailynews--joe-dziemianowicz.json",
+    "the-encounter-2016/times-square-chronicles--suzanna-bowling.json",
+    "tuck-everlasting-2016/ew--melissa-rose-bernardo.json",
+    "tuck-everlasting-2016/uinterview--erik-meers.json",
+    "tuck-everlasting-2016/thestage--mark-shenton.json",
+    "fully-committed-2016/timeout--adam-feldman.json"
   ],
   "failed": [
     "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
@@ -581,7 +591,11 @@
       "falsettos-2016/theatermania--jesse-green.json",
       "falsettos-2016/theater-life--eric-march.json",
       "heisenberg-2016/thestage--tom-wicker.json",
-      "heisenberg-2016/wnyc--jennifer-vanasco.json"
+      "heisenberg-2016/wnyc--jennifer-vanasco.json",
+      "the-encounter-2016/times-square-chronicles--suzanna-bowling.json",
+      "tuck-everlasting-2016/ew--melissa-rose-bernardo.json",
+      "tuck-everlasting-2016/uinterview--erik-meers.json",
+      "tuck-everlasting-2016/thestage--mark-shenton.json"
     ],
     "amp": [],
     "browserbase": [
@@ -628,7 +642,9 @@
       "data/review-texts/les-liaisons-dangereuses-2016/wsj--terry-teachout.json",
       "les-liaisons-dangereuses-2016/wsj--terry-teachout.json",
       "data/review-texts/heisenberg-2016/wsj--terry-teachout.json",
-      "heisenberg-2016/wsj--terry-teachout.json"
+      "heisenberg-2016/wsj--terry-teachout.json",
+      "data/review-texts/holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json",
+      "holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -682,7 +698,8 @@
       "significant-other-2017/nydailynews--joe-dziemianowicz.json",
       "a-bronx-tale-the-musical-2016/timeout--adam-feldman.json",
       "heisenberg-2016/nydailynews--joe-dziemianowicz.json",
-      "oh-hello-on-broadway-2016/nydailynews--joe-dziemianowicz.json"
+      "oh-hello-on-broadway-2016/nydailynews--joe-dziemianowicz.json",
+      "the-encounter-2016/nydailynews--joe-dziemianowicz.json"
     ],
     "brightdata": [
       "dark-of-the-moon-west-end-2026/guardian--arifa-akbar.json",
@@ -799,11 +816,15 @@
       "in-transit-2016/the-cultural-critic--steve-cohen.json",
       "dear-evan-hansen-2016/times-uk--clive-davis.json",
       "natasha-pierre-and-the-great-comet-of-1812-2016/newyorker--conde-nast.json",
-      "heisenberg-2016/timeout--adam-feldman.json"
+      "heisenberg-2016/timeout--adam-feldman.json",
+      "holiday-inn-the-new-irving-berlin-musical-2016/nydailynews--joe-dziemianowicz.json",
+      "holiday-inn-the-new-irving-berlin-musical-2016/timeout--david-cote.json",
+      "holiday-inn-the-new-irving-berlin-musical-2016/thestage--mark-shenton.json",
+      "fully-committed-2016/timeout--adam-feldman.json"
     ]
   },
   "startTime": "2026-06-10T19:02:19.411Z",
-  "lastProcessed": "oh-hello-on-broadway-2016/nydailynews--joe-dziemianowicz.json",
+  "lastProcessed": "fully-committed-2016/timeout--adam-feldman.json",
   "log": [
     {
       "t": "2026-06-11T09:55:33.147Z",
@@ -1360,6 +1381,17 @@
     },
     {
       "t": "2026-06-11T11:33:55.548Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-11T11:35:40.426Z",
+      "event": "bb-session",
+      "session": "6ebc1dd2",
+      "url": "http://www.wsj.com/articles/holiday-inn-the-new-irving-berlin-musical-review-147"
+    },
+    {
+      "t": "2026-06-11T11:35:41.301Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
