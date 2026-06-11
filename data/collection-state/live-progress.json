@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-11T11:52:05.787Z",
-  "processed": 341,
-  "failed": 323,
-  "successRate": "51.4%",
+  "updatedAt": "2026-06-11T11:58:02.232Z",
+  "processed": 346,
+  "failed": 328,
+  "successRate": "51.3%",
   "tierBreakdown": {
-    "playwright": 178,
+    "playwright": 180,
     "amp": 0,
     "browserbase": 49,
     "directCookies": 0,
     "scrapingbee": 67,
-    "brightdata": 32,
-    "archiveToday": 17,
-    "archive": 71
+    "brightdata": 34,
+    "archiveToday": 20,
+    "archive": 72
   },
   "browserbaseSessions": 13,
   "recentActivity": [
-    {
-      "t": "2026-06-11T11:17:41.567Z",
-      "event": "bb-session",
-      "session": "00838959",
-      "url": "http://www.wsj.com/articles/junk-review-bankrupting-entertainment-1509669000"
-    },
-    {
-      "t": "2026-06-11T11:17:42.558Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-06-11T11:31:37.682Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-06-11T11:47:31.782Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-11T11:52:05.994Z",
+      "event": "bb-session",
+      "session": "098a457f",
+      "url": "https://www.talkinbroadway.com/world/BrightStar.html"
+    },
+    {
+      "t": "2026-06-11T11:52:07.208Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }
