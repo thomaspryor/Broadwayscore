@@ -256,7 +256,14 @@
     "tuck-everlasting-2016/ew--melissa-rose-bernardo.json",
     "tuck-everlasting-2016/uinterview--erik-meers.json",
     "tuck-everlasting-2016/thestage--mark-shenton.json",
-    "fully-committed-2016/timeout--adam-feldman.json"
+    "fully-committed-2016/timeout--adam-feldman.json",
+    "fully-committed-2016/wsj--terry-teachout.json",
+    "waitress-2016/act-three-the-reviews--doug-marino.json",
+    "waitress-2016/thestage--mark-shenton.json",
+    "american-psycho-2016/nyt-theater--jonathan-mandell.json",
+    "american-psycho-2016/timeout--adam-feldman.json",
+    "american-psycho-2016/wsj--terry-teachout.json",
+    "the-father-2016/wsj--edward-rothstein.json"
   ],
   "failed": [
     "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
@@ -461,7 +468,10 @@
     "the-present-2017/thestage--unknown.json",
     "in-transit-2016/nydailynews--joe-dziemianowicz.json",
     "a-bronx-tale-the-musical-2016/njcom--patrick-maley.json",
-    "heisenberg-2016/abc-news--mark-kennedy.json"
+    "heisenberg-2016/abc-news--mark-kennedy.json",
+    "american-psycho-2016/ap--mark-kennedy.json",
+    "american-psycho-2016/talkinbroadway--matthew-murray.json",
+    "the-father-2016/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -595,7 +605,10 @@
       "the-encounter-2016/times-square-chronicles--suzanna-bowling.json",
       "tuck-everlasting-2016/ew--melissa-rose-bernardo.json",
       "tuck-everlasting-2016/uinterview--erik-meers.json",
-      "tuck-everlasting-2016/thestage--mark-shenton.json"
+      "tuck-everlasting-2016/thestage--mark-shenton.json",
+      "waitress-2016/act-three-the-reviews--doug-marino.json",
+      "waitress-2016/thestage--mark-shenton.json",
+      "american-psycho-2016/nyt-theater--jonathan-mandell.json"
     ],
     "amp": [],
     "browserbase": [
@@ -644,7 +657,13 @@
       "data/review-texts/heisenberg-2016/wsj--terry-teachout.json",
       "heisenberg-2016/wsj--terry-teachout.json",
       "data/review-texts/holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json",
-      "holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json"
+      "holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json",
+      "data/review-texts/fully-committed-2016/wsj--terry-teachout.json",
+      "fully-committed-2016/wsj--terry-teachout.json",
+      "data/review-texts/american-psycho-2016/wsj--terry-teachout.json",
+      "american-psycho-2016/wsj--terry-teachout.json",
+      "data/review-texts/the-father-2016/wsj--edward-rothstein.json",
+      "the-father-2016/wsj--edward-rothstein.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -699,7 +718,8 @@
       "a-bronx-tale-the-musical-2016/timeout--adam-feldman.json",
       "heisenberg-2016/nydailynews--joe-dziemianowicz.json",
       "oh-hello-on-broadway-2016/nydailynews--joe-dziemianowicz.json",
-      "the-encounter-2016/nydailynews--joe-dziemianowicz.json"
+      "the-encounter-2016/nydailynews--joe-dziemianowicz.json",
+      "american-psycho-2016/timeout--adam-feldman.json"
     ],
     "brightdata": [
       "dark-of-the-moon-west-end-2026/guardian--arifa-akbar.json",
@@ -748,7 +768,9 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
-      "data/review-texts/saint-joan-2018/medium--christian-lewis.json"
+      "data/review-texts/saint-joan-2018/medium--christian-lewis.json",
+      "data/review-texts/american-psycho-2016/talkinbroadway--matthew-murray.json",
+      "data/review-texts/the-father-2016/wsj--terry-teachout.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -824,7 +846,7 @@
     ]
   },
   "startTime": "2026-06-10T19:02:19.411Z",
-  "lastProcessed": "fully-committed-2016/timeout--adam-feldman.json",
+  "lastProcessed": "the-father-2016/wsj--terry-teachout.json",
   "log": [
     {
       "t": "2026-06-11T09:55:33.147Z",
@@ -1394,6 +1416,61 @@
       "t": "2026-06-11T11:35:41.301Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-11T11:38:33.582Z",
+      "event": "bb-session",
+      "session": "7800a003",
+      "url": "http://www.wsj.com/articles/fully-committed-review-jesse-tyler-ferguson-party-of"
+    },
+    {
+      "t": "2026-06-11T11:38:34.558Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-11T11:40:14.161Z",
+      "event": "bb-session",
+      "session": "5a8107a3",
+      "url": "http://www.wsj.com/articles/american-psycho-the-musical-review-serial-killer-chi"
+    },
+    {
+      "t": "2026-06-11T11:40:15.070Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-11T11:42:16.501Z",
+      "event": "bb-session",
+      "session": "aecae93a",
+      "url": "https://www.wsj.com/articles/the-father-review-a-parents-dark-descent-1461796183"
+    },
+    {
+      "t": "2026-06-11T11:42:17.459Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-11T11:42:39.512Z",
+      "event": "bb-session",
+      "session": "0451d460",
+      "url": "https://www.wsj.com/articles/the-father-review-frank-langella-gives-a-devastatin"
+    },
+    {
+      "t": "2026-06-11T11:42:40.349Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-11T11:42:56.270Z",
+      "event": "bb-session",
+      "session": "d1d5c253",
+      "url": "https://www.talkinbroadway.com/world/AmericanPsycho.html"
+    },
+    {
+      "t": "2026-06-11T11:42:57.060Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
