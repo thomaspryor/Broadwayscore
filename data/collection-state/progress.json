@@ -208,7 +208,8 @@
     "jitney-2017/nydailynews--joe-dziemianowicz.json",
     "war-horse-west-end-2026/click-liverpool--carie-schneider.json",
     "beetlejuice-west-end-2026/guardian-uk--unknown.json",
-    "dark-of-the-moon-west-end-2026/guardian--arifa-akbar.json"
+    "dark-of-the-moon-west-end-2026/guardian--arifa-akbar.json",
+    "silverback-mountain-off-broadway-2026/theatermania--unknown.json"
   ],
   "failed": [
     "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
@@ -600,7 +601,19 @@
     "dark-of-the-moon-west-end-2026/artsdesk--unknown.json",
     "dark-of-the-moon-west-end-2026/cambridge--unknown.json",
     "dark-of-the-moon-west-end-2026/standard--dominic-cavendish.json",
-    "dark-of-the-moon-west-end-2026/thestage--unknown.json"
+    "dark-of-the-moon-west-end-2026/thestage--unknown.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
+    "small-off-broadway-2026/guardian--arifa-akbar.json",
+    "small-off-broadway-2026/pages-on-stages--unknown.json",
+    "small-off-broadway-2026/the-recs--unknown.json",
+    "small-off-broadway-2026/theater-pizzazz--unknown.json",
+    "small-off-broadway-2026/washpost--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -690,7 +703,8 @@
       "come-from-away-2017/wnyc--jennifer-vanasco.json",
       "sunday-in-the-park-with-george-2017/wnyc--jennifer-vanasco.json",
       "war-horse-west-end-2026/click-liverpool--carie-schneider.json",
-      "beetlejuice-west-end-2026/guardian-uk--unknown.json"
+      "beetlejuice-west-end-2026/guardian-uk--unknown.json",
+      "silverback-mountain-off-broadway-2026/theatermania--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -699,7 +713,10 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
-      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json"
+      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -932,7 +949,7 @@
     ]
   },
   "startTime": "2026-06-10T19:02:19.411Z",
-  "lastProcessed": "dark-of-the-moon-west-end-2026/thestage--unknown.json",
+  "lastProcessed": "small-off-broadway-2026/washpost--unknown.json",
   "log": [
     {
       "t": "2026-06-11T09:55:33.147Z",
@@ -994,6 +1011,39 @@
       "event": "bb-session",
       "session": "4dbe07d3",
       "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
+    },
+    {
+      "t": "2026-06-11T12:29:31.722Z",
+      "event": "bb-session",
+      "session": "934fb692",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-11T12:29:32.252Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-11T12:30:02.537Z",
+      "event": "bb-session",
+      "session": "b17cd515",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-11T12:30:02.996Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-11T12:30:14.328Z",
+      "event": "bb-session",
+      "session": "da8c6427",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-11T12:30:15.517Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
