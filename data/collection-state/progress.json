@@ -403,7 +403,8 @@
     "the-piano-lesson-2022/cititour--brian-scott-lipton.json",
     "lackawanna-blues-2021/broadway-and-me--janice-c-simpson.json",
     "saint-joan-2018/medium--christian-lewis.json",
-    "angels-in-america-2018/frontmezzjunkies--steven-ross.json"
+    "angels-in-america-2018/frontmezzjunkies--steven-ross.json",
+    "bright-star-2016/wsj--terry-teachout.json"
   ],
   "failed": [
     "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
@@ -811,7 +812,16 @@
     "war-paint-2017/theater-news-online--brian-scott-lipton.json",
     "amelie-a-new-musical-2017/theatermania--adam-feldman.json",
     "the-price-2017/theater-in-the-now--michael-block.json",
-    "come-from-away-2017/off-script-with-dan-dwyer--dan-dwyer.json"
+    "come-from-away-2017/off-script-with-dan-dwyer--dan-dwyer.json",
+    "come-from-away-2017/st-louis-post-dispatch--bruce-r-miller.json",
+    "the-glass-menagerie-2017/chicagotribune--chris-jones.json",
+    "the-present-2017/thestage--unknown.json",
+    "in-transit-2016/nydailynews--joe-dziemianowicz.json",
+    "a-bronx-tale-the-musical-2016/njcom--patrick-maley.json",
+    "heisenberg-2016/abc-news--mark-kennedy.json",
+    "american-psycho-2016/ap--mark-kennedy.json",
+    "the-crucible-2016/thestage--unknown.json",
+    "bright-star-2016/drama-queen-nyc--jonathan-warman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1065,7 +1075,9 @@
       "the-father-2016/wsj--edward-rothstein.json",
       "data/review-texts/oh-mary-west-end-2025/variety--unknown.json",
       "oh-mary-west-end-2025/variety--unknown.json",
-      "data/review-texts/are-you-now-or-have-you-ever-been-off-broadway-2026/theater-pizzazz--unknown.json"
+      "data/review-texts/are-you-now-or-have-you-ever-been-off-broadway-2026/theater-pizzazz--unknown.json",
+      "data/review-texts/bright-star-2016/wsj--terry-teachout.json",
+      "bright-star-2016/wsj--terry-teachout.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1328,7 +1340,7 @@
     ]
   },
   "startTime": "2026-06-10T19:02:19.411Z",
-  "lastProcessed": "come-from-away-2017/off-script-with-dan-dwyer--dan-dwyer.json",
+  "lastProcessed": "bright-star-2016/drama-queen-nyc--jonathan-warman.json",
   "log": [
     {
       "t": "2026-06-11T19:17:57.544Z",
@@ -2014,6 +2026,28 @@
       "event": "bb-session",
       "session": "b70757c1",
       "url": "https://theaterpizzazz.com/are-you-now-or-have-you-ever-been-holds-a-chilling-mi"
+    },
+    {
+      "t": "2026-06-11T16:46:28.198Z",
+      "event": "bb-session",
+      "session": "7dbfa5c3",
+      "url": "https://www.thestage.co.uk/reviews/the-crucible-review-london-shakespeares-globe"
+    },
+    {
+      "t": "2026-06-11T16:46:29.285Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-06-11T16:46:42.316Z",
+      "event": "bb-session",
+      "session": "1070e434",
+      "url": "http://www.wsj.com/articles/bright-star-review-banjo-boondoggle-1458865800"
+    },
+    {
+      "t": "2026-06-11T16:46:43.203Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-06-11T16:44:41.724Z",
-  "processed": 404,
-  "failed": 406,
-  "successRate": "49.9%",
+  "updatedAt": "2026-06-11T16:47:26.723Z",
+  "processed": 405,
+  "failed": 415,
+  "successRate": "49.4%",
   "tierBreakdown": {
     "playwright": 192,
     "amp": 0,
-    "browserbase": 55,
+    "browserbase": 57,
     "directCookies": 0,
     "scrapingbee": 77,
     "brightdata": 53,
     "archiveToday": 35,
     "archive": 118
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-06-11T11:47:31.782Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-06-11T11:52:05.994Z",
-      "event": "bb-session",
-      "session": "098a457f",
-      "url": "https://www.talkinbroadway.com/world/BrightStar.html"
-    },
-    {
-      "t": "2026-06-11T11:52:07.208Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-06-11T12:09:15.914Z",
-      "event": "bb-session",
-      "session": "26134a54",
-      "url": "https://www.washingtonpost.com/entertainment/theater_dance/sylvia-review-matthew"
-    },
     {
       "t": "2026-06-11T12:09:16.785Z",
       "event": "bb-cookie-inject",
@@ -124,6 +102,28 @@
       "event": "bb-session",
       "session": "b70757c1",
       "url": "https://theaterpizzazz.com/are-you-now-or-have-you-ever-been-holds-a-chilling-mi"
+    },
+    {
+      "t": "2026-06-11T16:46:28.198Z",
+      "event": "bb-session",
+      "session": "7dbfa5c3",
+      "url": "https://www.thestage.co.uk/reviews/the-crucible-review-london-shakespeares-globe"
+    },
+    {
+      "t": "2026-06-11T16:46:29.285Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-06-11T16:46:42.316Z",
+      "event": "bb-session",
+      "session": "1070e434",
+      "url": "http://www.wsj.com/articles/bright-star-review-banjo-boondoggle-1458865800"
+    },
+    {
+      "t": "2026-06-11T16:46:43.203Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
