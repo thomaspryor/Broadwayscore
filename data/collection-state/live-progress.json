@@ -1,26 +1,20 @@
 {
-  "updatedAt": "2026-06-11T01:00:38.154Z",
+  "updatedAt": "2026-06-11T01:02:14.117Z",
   "processed": 184,
-  "failed": 148,
-  "successRate": "55.4%",
+  "failed": 152,
+  "successRate": "54.8%",
   "tierBreakdown": {
     "playwright": 92,
     "amp": 0,
-    "browserbase": 5,
+    "browserbase": 6,
     "directCookies": 0,
     "scrapingbee": 48,
     "brightdata": 25,
     "archiveToday": 7,
     "archive": 33
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-06-10T19:07:25.036Z",
-      "event": "bb-session",
-      "session": "a394944a",
-      "url": "https://charingcrosstheatre.co.uk/theatre/dark-of-the-moon"
-    },
     {
       "t": "2026-06-10T19:08:53.133Z",
       "event": "bb-session",
@@ -128,6 +122,12 @@
       "t": "2026-06-11T00:59:40.624Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-11T01:01:57.492Z",
+      "event": "bb-session",
+      "session": "fc1d1432",
+      "url": "https://theaterpizzazz.com/small-a-jockeys-indestructible-passion/"
     }
   ]
 }
