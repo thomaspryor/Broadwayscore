@@ -1,0 +1,81 @@
+# Poll LouReviews (loureviews.blog) for new Louise Penn reviews of DB shows.
+# Single-critic WordPress blog → wp-json feed matched against shows.json via the
+# unit-tested scripts/lib/loureviews-match.js. New full-text reviews are ingested
+# into review-texts; scoring + rebuild + deploy run downstream (same as every
+# other source), and the ensemble wrong-production check is the final safety net.
+name: Poll LouReviews
+
+on:
+  schedule:
+    - cron: '0 7 * * *'  # Daily 07:00 UTC — after the 04:00 rebuild / 05:00 score, catches prior-day UK reviews
+  workflow_dispatch:
+    inputs:
+      days:
+        description: 'Lookback window in days (use a large value to backfill)'
+        required: false
+        default: '14'
+
+permissions:
+  contents: read   # only READS shows.json (checkout-core-data); review-texts push uses REVIEW_TEXTS_TOKEN PAT
+  actions: write   # dispatch llm-ensemble-score when new reviews land
+
+concurrency:
+  group: poll-loureviews-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  poll:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts from private repo
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Poll LouReviews
+        id: poll
+        run: |
+          DAYS="${{ inputs.days || '14' }}"
+          echo "Polling loureviews.blog (last $DAYS days)..."
+          node scripts/poll-loureviews.js --days="$DAYS" | tee /tmp/poll.out
+          NEW=$(grep -oE '__LOUREVIEWS_NEW__=[0-9]+' /tmp/poll.out | tail -1 | cut -d= -f2)
+          echo "new=${NEW:-0}" >> "$GITHUB_OUTPUT"
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: LouReviews poll (Louise Penn)'
+
+      - name: Score new reviews (rebuild + deploy downstream)
+        if: steps.poll.outputs.new != '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Dispatching LLM Ensemble Score for ${{ steps.poll.outputs.new }} new review(s)..."
+          gh workflow run "LLM Ensemble Score Reviews" -f fast_rebuild=true
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'LouReviews Poller Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
