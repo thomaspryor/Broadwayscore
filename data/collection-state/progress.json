@@ -369,7 +369,11 @@
     "wicked-west-end-2021/thestage--paul-vale.json",
     "the-lion-king-west-end-2021/shy-strange-manic--kariss-ainsworth.json",
     "mamma-mia-west-end-2021/west-end-wilma--west-end-wilma.json",
-    "the-lion-king-1997/timeout--adam-feldman.json"
+    "the-lion-king-1997/timeout--adam-feldman.json",
+    "the-mousetrap-west-end-2021/standard--jessie-thompson.json",
+    "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
+    "return-of-the-godz-west-end-2026/londontheatre1--unknown.json",
+    "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json"
   ],
   "failed": [
     "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
@@ -681,7 +685,13 @@
     "book-of-mormon-2011/backstage--david-sheward.json",
     "wicked-2003/standard--unknown.json",
     "the-lion-king-1997/calgary-herald--louis-b-hobson.json",
-    "the-lion-king-1997/familyvacationcritic--unknown.json"
+    "the-lion-king-1997/familyvacationcritic--unknown.json",
+    "the-lion-king-1997/maryland-theatre-guide--susan-brall.json",
+    "les-miserables-west-end-2021/times-uk--clive-davis.json",
+    "are-you-now-or-have-you-ever-been-off-broadway-2026/theater-pizzazz--unknown.json",
+    "as-you-like-it-globe-west-end-2026/london-box-office--nicky-allpress.json",
+    "to-kill-a-mockingbird-west-end-2026/broadwayworld--michael-dale.json",
+    "to-kill-a-mockingbird-west-end-2026/chicagotribune--chris-jones.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -862,7 +872,9 @@
       "witness-for-the-prosecution-west-end-2022/london-box-office--phil-willmott.json",
       "witness-for-the-prosecution-west-end-2022/london-box-office--stuart-king.json",
       "the-book-of-mormon-west-end-2024/musical-theatre-review--unknown.json",
-      "book-of-mormon-2011/financialtimes--brendan-lemon.json"
+      "book-of-mormon-2011/financialtimes--brendan-lemon.json",
+      "the-mousetrap-west-end-2021/standard--jessie-thompson.json",
+      "return-of-the-godz-west-end-2026/londontheatre1--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -919,7 +931,8 @@
       "data/review-texts/the-father-2016/wsj--edward-rothstein.json",
       "the-father-2016/wsj--edward-rothstein.json",
       "data/review-texts/oh-mary-west-end-2025/variety--unknown.json",
-      "oh-mary-west-end-2025/variety--unknown.json"
+      "oh-mary-west-end-2025/variety--unknown.json",
+      "data/review-texts/are-you-now-or-have-you-ever-been-off-broadway-2026/theater-pizzazz--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -992,7 +1005,8 @@
       "moulin-rouge-2019/billboard--mary-j-dimeglio.json",
       "hadestown-2019/musical-theatre-review--angela-thomas.json",
       "magic-mike-live-west-end-2021/independent--hugh-montgomery.json",
-      "the-book-of-mormon-west-end-2024/nydailynews--unknown.json"
+      "the-book-of-mormon-west-end-2024/nydailynews--unknown.json",
+      "the-mousetrap-west-end-2021/theatre-weekly--unknown.json"
     ],
     "brightdata": [
       "dark-of-the-moon-west-end-2026/guardian--arifa-akbar.json",
@@ -1152,11 +1166,12 @@
       "wicked-west-end-2021/thestage--paul-vale.json",
       "the-lion-king-west-end-2021/shy-strange-manic--kariss-ainsworth.json",
       "mamma-mia-west-end-2021/west-end-wilma--west-end-wilma.json",
-      "the-lion-king-1997/timeout--adam-feldman.json"
+      "the-lion-king-1997/timeout--adam-feldman.json",
+      "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json"
     ]
   },
   "startTime": "2026-06-10T19:02:19.411Z",
-  "lastProcessed": "the-lion-king-1997/familyvacationcritic--unknown.json",
+  "lastProcessed": "to-kill-a-mockingbird-west-end-2026/chicagotribune--chris-jones.json",
   "log": [
     {
       "t": "2026-06-11T19:17:57.544Z",
@@ -1836,6 +1851,12 @@
       "t": "2026-06-11T15:54:02.374Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-11T16:13:01.430Z",
+      "event": "bb-session",
+      "session": "b70757c1",
+      "url": "https://theaterpizzazz.com/are-you-now-or-have-you-ever-been-holds-a-chilling-mi"
     }
   ]
 }
