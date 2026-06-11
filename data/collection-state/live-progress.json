@@ -1,26 +1,20 @@
 {
-  "updatedAt": "2026-06-11T03:51:55.297Z",
+  "updatedAt": "2026-06-11T03:53:02.249Z",
   "processed": 184,
-  "failed": 222,
-  "successRate": "45.3%",
+  "failed": 224,
+  "successRate": "45.1%",
   "tierBreakdown": {
     "playwright": 92,
     "amp": 0,
-    "browserbase": 23,
+    "browserbase": 24,
     "directCookies": 0,
     "scrapingbee": 48,
     "brightdata": 25,
     "archiveToday": 10,
     "archive": 33
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-06-11T02:44:35.086Z",
-      "event": "bb-session",
-      "session": "16aba572",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
     {
       "t": "2026-06-11T02:44:36.052Z",
       "event": "bb-cookie-inject",
@@ -124,6 +118,12 @@
       "t": "2026-06-11T03:50:41.300Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-11T03:52:46.012Z",
+      "event": "bb-session",
+      "session": "7dd5b61e",
+      "url": "https://theaterpizzazz.com/small-a-jockeys-indestructible-passion/"
     }
   ]
 }
