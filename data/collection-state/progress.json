@@ -404,7 +404,13 @@
     "lackawanna-blues-2021/broadway-and-me--janice-c-simpson.json",
     "saint-joan-2018/medium--christian-lewis.json",
     "angels-in-america-2018/frontmezzjunkies--steven-ross.json",
-    "bright-star-2016/wsj--terry-teachout.json"
+    "bright-star-2016/wsj--terry-teachout.json",
+    "she-loves-me-2016/ap--mark-kennedy.json",
+    "fiddler-on-the-roof-2015/broadway-and-me--janice-c-simpson.json",
+    "the-color-purple-2015/wsj--terry-teachout.json",
+    "the-color-purple-2015/broadway-and-me--janice-c-simpson.json",
+    "misery-2015/broadway-and-me--janice-c-simpson.json",
+    "on-your-feet-2015/wsj--terry-teachout.json"
   ],
   "failed": [
     "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
@@ -821,7 +827,11 @@
     "heisenberg-2016/abc-news--mark-kennedy.json",
     "american-psycho-2016/ap--mark-kennedy.json",
     "the-crucible-2016/thestage--unknown.json",
-    "bright-star-2016/drama-queen-nyc--jonathan-warman.json"
+    "bright-star-2016/drama-queen-nyc--jonathan-warman.json",
+    "disaster-2016/timeout--adam-feldman.json",
+    "eclipsed-2016/nydailynews--joe-dziemianowicz.json",
+    "a-view-from-the-bridge-2015/financialtimes--sarah-hemming.json",
+    "allegiance-2015/timeout--david-cote.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1017,7 +1027,10 @@
       "suffs-2024/times-uk--nancy-durrant.json",
       "lempicka-2024/broadway-and-me--janice-c-simpson.json",
       "saint-joan-2018/medium--christian-lewis.json",
-      "angels-in-america-2018/frontmezzjunkies--steven-ross.json"
+      "angels-in-america-2018/frontmezzjunkies--steven-ross.json",
+      "fiddler-on-the-roof-2015/broadway-and-me--janice-c-simpson.json",
+      "the-color-purple-2015/broadway-and-me--janice-c-simpson.json",
+      "misery-2015/broadway-and-me--janice-c-simpson.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1077,7 +1090,11 @@
       "oh-mary-west-end-2025/variety--unknown.json",
       "data/review-texts/are-you-now-or-have-you-ever-been-off-broadway-2026/theater-pizzazz--unknown.json",
       "data/review-texts/bright-star-2016/wsj--terry-teachout.json",
-      "bright-star-2016/wsj--terry-teachout.json"
+      "bright-star-2016/wsj--terry-teachout.json",
+      "data/review-texts/the-color-purple-2015/wsj--terry-teachout.json",
+      "the-color-purple-2015/wsj--terry-teachout.json",
+      "data/review-texts/on-your-feet-2015/wsj--terry-teachout.json",
+      "on-your-feet-2015/wsj--terry-teachout.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1336,11 +1353,12 @@
       "sweeney-todd-2023/broadway-and-me--janice-c-simpson.json",
       "just-for-us-2023/theater-life--barry-gordin.json",
       "kpop-2022/broadway-and-me--janice-c-simpson.json",
-      "lackawanna-blues-2021/broadway-and-me--janice-c-simpson.json"
+      "lackawanna-blues-2021/broadway-and-me--janice-c-simpson.json",
+      "she-loves-me-2016/ap--mark-kennedy.json"
     ]
   },
   "startTime": "2026-06-10T19:02:19.411Z",
-  "lastProcessed": "bright-star-2016/drama-queen-nyc--jonathan-warman.json",
+  "lastProcessed": "on-your-feet-2015/wsj--terry-teachout.json",
   "log": [
     {
       "t": "2026-06-11T19:17:57.544Z",
@@ -2046,6 +2064,28 @@
     },
     {
       "t": "2026-06-11T16:46:43.203Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-11T16:48:13.590Z",
+      "event": "bb-session",
+      "session": "7d59410a",
+      "url": "http://www.wsj.com/articles/the-color-purple-review-new-star-in-the-broadway-sky"
+    },
+    {
+      "t": "2026-06-11T16:48:14.680Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-11T16:49:41.406Z",
+      "event": "bb-session",
+      "session": "d9ed386e",
+      "url": "http://www.wsj.com/articles/on-your-feet-the-story-of-emilio-and-gloria-estefan-"
+    },
+    {
+      "t": "2026-06-11T16:49:42.374Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
