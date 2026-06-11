@@ -190,7 +190,16 @@
     "john-lithgow-stories-by-heart-2018/financialtimes--max-mcguinness.json",
     "spongebob-squarepants-2017/thestage--mark-shenton.json",
     "the-parisian-woman-2017/thestage--mark-shenton.json",
-    "meteor-shower-2017/frontmezzjunkies--steven-ross.json"
+    "meteor-shower-2017/frontmezzjunkies--steven-ross.json",
+    "meteor-shower-2017/thestage--mark-shenton.json",
+    "latin-history-for-morons-2017/front-row-center--casey-curtis.json",
+    "the-bands-visit-2017/show-showdown--wendy-caster.json",
+    "the-bands-visit-2017/susangrangercom--susan-granger.json",
+    "the-bands-visit-2017/theater-life--barry-gordin.json",
+    "the-bands-visit-2017/theater-life--isa-goldberg.json",
+    "junk-2017/wsj--terry-teachout.json",
+    "m-butterfly-2017/theatermania--jesse-green.json",
+    "prince-of-broadway-2017/broadway-and-me--janice-c-simpson.json"
   ],
   "failed": [
     "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
@@ -381,7 +390,8 @@
     "three-tall-women-2018/usatoday--charles-isherwood.json",
     "angels-in-america-2018/frontmezzjunkies--steven-ross.json",
     "escape-to-margaritaville-2018/journal-inquirer--tim-leininger.json",
-    "once-on-this-island-2017/theater-news-online--brian-scott-lipton.json"
+    "once-on-this-island-2017/theater-news-online--brian-scott-lipton.json",
+    "the-bands-visit-2017/wnyc--jennifer-vanasco.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -477,7 +487,14 @@
       "john-lithgow-stories-by-heart-2018/financialtimes--max-mcguinness.json",
       "spongebob-squarepants-2017/thestage--mark-shenton.json",
       "the-parisian-woman-2017/thestage--mark-shenton.json",
-      "meteor-shower-2017/frontmezzjunkies--steven-ross.json"
+      "meteor-shower-2017/frontmezzjunkies--steven-ross.json",
+      "meteor-shower-2017/thestage--mark-shenton.json",
+      "the-bands-visit-2017/show-showdown--wendy-caster.json",
+      "the-bands-visit-2017/susangrangercom--susan-granger.json",
+      "the-bands-visit-2017/theater-life--barry-gordin.json",
+      "the-bands-visit-2017/theater-life--isa-goldberg.json",
+      "m-butterfly-2017/theatermania--jesse-green.json",
+      "prince-of-broadway-2017/broadway-and-me--janice-c-simpson.json"
     ],
     "amp": [],
     "browserbase": [
@@ -518,7 +535,9 @@
       "data/review-texts/kiss-me-kate-2019/wsj--terry-teachout.json",
       "kiss-me-kate-2019/wsj--terry-teachout.json",
       "data/review-texts/the-ferryman-2018/wsj--terry-teachout.json",
-      "the-ferryman-2018/wsj--terry-teachout.json"
+      "the-ferryman-2018/wsj--terry-teachout.json",
+      "data/review-texts/junk-2017/wsj--terry-teachout.json",
+      "junk-2017/wsj--terry-teachout.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -670,11 +689,12 @@
       "travesties-2018/timeout--adam-feldman.json",
       "three-tall-women-2018/theater-scene--david-a-rosenberg.json",
       "escape-to-margaritaville-2018/playbill--gabriel-agosto.json",
-      "john-lithgow-stories-by-heart-2018/nydailynews--joe-dziemianowicz.json"
+      "john-lithgow-stories-by-heart-2018/nydailynews--joe-dziemianowicz.json",
+      "latin-history-for-morons-2017/front-row-center--casey-curtis.json"
     ]
   },
   "startTime": "2026-06-10T19:02:19.411Z",
-  "lastProcessed": "meteor-shower-2017/frontmezzjunkies--steven-ross.json",
+  "lastProcessed": "prince-of-broadway-2017/broadway-and-me--janice-c-simpson.json",
   "log": [
     {
       "t": "2026-06-11T09:55:33.147Z",
@@ -1198,6 +1218,17 @@
     },
     {
       "t": "2026-06-11T10:59:35.885Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-11T11:17:41.567Z",
+      "event": "bb-session",
+      "session": "00838959",
+      "url": "http://www.wsj.com/articles/junk-review-bankrupting-entertainment-1509669000"
+    },
+    {
+      "t": "2026-06-11T11:17:42.558Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
