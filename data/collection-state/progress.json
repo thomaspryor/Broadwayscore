@@ -44,7 +44,13 @@
     "the-other-place-off-broadway-2026/one-minute-critic--lindsay-b-davis.json",
     "ulysses-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "an-ark-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-    "the-disappear-off-broadway-2026/timeout--adam-feldman.json"
+    "the-disappear-off-broadway-2026/timeout--adam-feldman.json",
+    "the-disappear-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "grangeville-off-broadway-2026/theatre-reviews-limited--david-roberts.json",
+    "cats-the-jellicle-ball-off-broadway-2024/culturesauce--thom-geier.json",
+    "msblackforpresident-off-broadway-2026/variety--brent-lang.json",
+    "making-a-show-of-myself-off-broadway-2026/timeout--raven-snook.json",
+    "the-loved-ones-off-broadway-2026/theatermania--david-gordon.json"
   ],
   "failed": [
     "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
@@ -61,7 +67,11 @@
     "public-charge-off-broadway-2026/theater-life--barry-gordin.json",
     "night-side-songs-off-broadway-2026/timeout--unknown.json",
     "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
-    "silver-manhattan-off-broadway-2026/theatermania--unknown.json"
+    "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
+    "pen-pals-off-broadway-2025/theater-life--barry-gordin.json",
+    "orlando-off-broadway-2026/guardian--unknown.json",
+    "giant-public-theater-off-broadway-2012/bloomberg--philip-boroff.json",
+    "bigfoot-off-broadway/theater-life--barry-gordin.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -99,19 +109,27 @@
       "the-unknown-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "the-other-place-off-broadway-2026/one-minute-critic--lindsay-b-davis.json",
       "ulysses-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-      "an-ark-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+      "an-ark-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "the-disappear-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "grangeville-off-broadway-2026/theatre-reviews-limited--david-roberts.json",
+      "the-loved-ones-off-broadway-2026/theatermania--david-gordon.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/msblackforpresident-off-broadway-2026/variety--brent-lang.json",
+      "msblackforpresident-off-broadway-2026/variety--brent-lang.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
       "the-maids-off-broadway-2026/nytimes--roslyn-sulcas.json",
       "amaze-off-broadway-2026/timeout--adam-feldman.json",
-      "public-charge-off-broadway-2026/theater-life--barry-gordin.json"
+      "public-charge-off-broadway-2026/theater-life--barry-gordin.json",
+      "making-a-show-of-myself-off-broadway-2026/timeout--raven-snook.json"
     ],
     "brightdata": [
-      "the-unknown-off-broadway-2026/thewrap--robert-hofler.json"
+      "the-unknown-off-broadway-2026/thewrap--robert-hofler.json",
+      "pen-pals-off-broadway-2025/theater-life--barry-gordin.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -124,10 +142,23 @@
       "bigfoot-off-broadway-2026/thewrap--robert-hofler.json",
       "night-side-songs-off-broadway-2026/timeout--unknown.json",
       "cold-war-choir-practice-off-broadway-2026/broadway-and-me--janice-c-simpson.json",
-      "the-disappear-off-broadway-2026/timeout--adam-feldman.json"
+      "the-disappear-off-broadway-2026/timeout--adam-feldman.json",
+      "cats-the-jellicle-ball-off-broadway-2024/culturesauce--thom-geier.json"
     ]
   },
   "startTime": "2026-06-11T09:34:29.359Z",
-  "lastProcessed": "the-disappear-off-broadway-2026/timeout--adam-feldman.json",
-  "log": []
+  "lastProcessed": "bigfoot-off-broadway/theater-life--barry-gordin.json",
+  "log": [
+    {
+      "t": "2026-06-11T09:55:33.147Z",
+      "event": "bb-session",
+      "session": "7ed7935f",
+      "url": "https://variety.com/2026/legit/news/wayne-brady-starring-tina-landau-tarell-alvi"
+    },
+    {
+      "t": "2026-06-11T09:55:33.852Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }
