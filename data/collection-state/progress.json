@@ -206,7 +206,9 @@
     "significant-other-2017/nydailynews--joe-dziemianowicz.json",
     "sunset-boulevard-2017/newyorker--conde-nast.json",
     "jitney-2017/nydailynews--joe-dziemianowicz.json",
-    "war-horse-west-end-2026/click-liverpool--carie-schneider.json"
+    "war-horse-west-end-2026/click-liverpool--carie-schneider.json",
+    "beetlejuice-west-end-2026/guardian-uk--unknown.json",
+    "dark-of-the-moon-west-end-2026/guardian--arifa-akbar.json"
   ],
   "failed": [
     "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
@@ -589,7 +591,15 @@
     "war-horse-west-end-2026/all-that-dazzles-uk--unknown.json",
     "war-horse-west-end-2026/plays-international--maryam-philpott.json",
     "war-horse-west-end-2026/times-uk--chris-bennion.json",
-    "war-horse-west-end-2026/times-uk--clive-davis.json"
+    "war-horse-west-end-2026/times-uk--clive-davis.json",
+    "beetlejuice-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "beetlejuice-west-end-2026/amny--matt-windman.json",
+    "the-p-word-off-west-end-2026/whatsonstage--frey-kwa-hawking.json",
+    "dark-of-the-moon-west-end-2026/guardian-uk--unknown.json",
+    "dark-of-the-moon-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "dark-of-the-moon-west-end-2026/artsdesk--unknown.json",
+    "dark-of-the-moon-west-end-2026/cambridge--unknown.json",
+    "dark-of-the-moon-west-end-2026/standard--dominic-cavendish.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -678,7 +688,8 @@
       "war-paint-2017/wnyc--jennifer-vanasco.json",
       "come-from-away-2017/wnyc--jennifer-vanasco.json",
       "sunday-in-the-park-with-george-2017/wnyc--jennifer-vanasco.json",
-      "war-horse-west-end-2026/click-liverpool--carie-schneider.json"
+      "war-horse-west-end-2026/click-liverpool--carie-schneider.json",
+      "beetlejuice-west-end-2026/guardian-uk--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -786,7 +797,8 @@
       "children-of-a-lesser-god-2018/medium--christian-lewis.json",
       "three-tall-women-2018/medium--christian-lewis.json",
       "lobby-hero-2018/timeout--adam-feldman.json",
-      "sunset-boulevard-2017/newyorker--conde-nast.json"
+      "sunset-boulevard-2017/newyorker--conde-nast.json",
+      "dark-of-the-moon-west-end-2026/guardian--arifa-akbar.json"
     ],
     "archiveToday": [
       "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json",
@@ -919,7 +931,7 @@
     ]
   },
   "startTime": "2026-06-10T19:02:19.411Z",
-  "lastProcessed": "war-horse-west-end-2026/times-uk--clive-davis.json",
+  "lastProcessed": "dark-of-the-moon-west-end-2026/standard--dominic-cavendish.json",
   "log": [
     {
       "t": "2026-06-11T09:55:33.147Z",
@@ -975,6 +987,12 @@
       "t": "2026-06-11T11:14:40.312Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-11T11:36:49.172Z",
+      "event": "bb-session",
+      "session": "4dbe07d3",
+      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
     }
   ]
 }
