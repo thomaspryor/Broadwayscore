@@ -288,7 +288,12 @@
     "sylvia-2015/nydailynews--joe-dziemianowicz.json",
     "sylvia-2015/timeout--adam-feldman.json",
     "sylvia-2015/timeout--david-cote.json",
-    "dames-at-sea-2015/timeout--adam-feldman.json"
+    "dames-at-sea-2015/timeout--adam-feldman.json",
+    "dames-at-sea-2015/wsj--terry-teachout.json",
+    "the-gin-game-2015/nydailynews--joe-dziemianowicz.json",
+    "the-gin-game-2015/timeout--adam-feldman.json",
+    "the-gin-game-2015/wsj--terry-teachout.json",
+    "the-gin-game-2015/amny--matt-windman.json"
   ],
   "failed": [
     "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
@@ -521,7 +526,12 @@
     "on-your-feet-2015/broadway-and-me--janice-c-simpson.json",
     "sylvia-2015/wsj--terry-teachout.json",
     "sylvia-2015/washpost--peter-marks.json",
-    "sylvia-2015/talkinbroadway--matthew-murray.json"
+    "sylvia-2015/talkinbroadway--matthew-murray.json",
+    "dames-at-sea-2015/village-voice--elizabeth-zimmer.json",
+    "the-gin-game-2015/nyt-theater--jonathan-mandell.json",
+    "the-gin-game-2015/vulture--jesse-green.json",
+    "the-gin-game-2015/ap--mark-kennedy.json",
+    "the-gin-game-2015/wnyc--jennifer-vanasco.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -846,7 +856,9 @@
       "data/review-texts/school-of-rock-the-musical-2015/wsj--terry-teachout.json",
       "data/review-texts/allegiance-2015/wsj--terry-teachout.json",
       "data/review-texts/sylvia-2015/wsj--terry-teachout.json",
-      "data/review-texts/sylvia-2015/washpost--peter-marks.json"
+      "data/review-texts/sylvia-2015/washpost--peter-marks.json",
+      "data/review-texts/sylvia-2015/talkinbroadway--matthew-murray.json",
+      "data/review-texts/the-gin-game-2015/nyt-theater--jonathan-mandell.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -928,11 +940,16 @@
       "a-view-from-the-bridge-2015/wsj--terry-teachout.json",
       "therese-raquin-2015/timeout--adam-feldman.json",
       "sylvia-2015/timeout--adam-feldman.json",
-      "dames-at-sea-2015/timeout--adam-feldman.json"
+      "dames-at-sea-2015/timeout--adam-feldman.json",
+      "dames-at-sea-2015/wsj--terry-teachout.json",
+      "the-gin-game-2015/nydailynews--joe-dziemianowicz.json",
+      "the-gin-game-2015/timeout--adam-feldman.json",
+      "the-gin-game-2015/wsj--terry-teachout.json",
+      "the-gin-game-2015/amny--matt-windman.json"
     ]
   },
   "startTime": "2026-06-10T19:02:19.411Z",
-  "lastProcessed": "dames-at-sea-2015/timeout--adam-feldman.json",
+  "lastProcessed": "the-gin-game-2015/wnyc--jennifer-vanasco.json",
   "log": [
     {
       "t": "2026-06-11T09:55:33.147Z",
@@ -1590,6 +1607,17 @@
       "t": "2026-06-11T12:09:16.785Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-06-11T12:11:40.124Z",
+      "event": "bb-session",
+      "session": "fe31f740",
+      "url": "http://www.talkinbroadway.com/world/Sylvia.html"
+    },
+    {
+      "t": "2026-06-11T12:11:40.941Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
