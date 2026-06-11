@@ -2,8 +2,10 @@ name: Process Review Submissions (Formspree)
 
 on:
   schedule:
-    # Run daily at 6 AM UTC (1 AM EST) — after adjudication, before rebuild
-    - cron: '0 6 * * *'
+    # Weekly safety net — primary path is now the /api/submit-review Vercel function
+    # which creates the issue + dispatches instantly. This catches any submissions
+    # that slipped through (e.g. form submitted before the API route was deployed).
+    - cron: '0 6 * * 1'
   workflow_dispatch: # Manual trigger
 
 jobs:
