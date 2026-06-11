@@ -263,7 +263,11 @@
     "american-psycho-2016/nyt-theater--jonathan-mandell.json",
     "american-psycho-2016/timeout--adam-feldman.json",
     "american-psycho-2016/wsj--terry-teachout.json",
-    "the-father-2016/wsj--edward-rothstein.json"
+    "the-father-2016/wsj--edward-rothstein.json",
+    "the-father-2016/financialtimes--max-mcguinness.json",
+    "the-father-2016/theater-life--paulanne-simmons.json",
+    "the-crucible-2016/wsj--terry-teachout.json",
+    "bright-star-2016/stu-on-broadway--stu-brown.json"
   ],
   "failed": [
     "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
@@ -471,7 +475,13 @@
     "heisenberg-2016/abc-news--mark-kennedy.json",
     "american-psycho-2016/ap--mark-kennedy.json",
     "american-psycho-2016/talkinbroadway--matthew-murray.json",
-    "the-father-2016/wsj--terry-teachout.json"
+    "the-father-2016/wsj--terry-teachout.json",
+    "the-father-2016/off-script-with-dan-dwyer--dan-dwyer.json",
+    "the-father-2016/talkinbroadway--matthew-murray.json",
+    "the-crucible-2016/thestage--unknown.json",
+    "bright-star-2016/wsj--terry-teachout.json",
+    "bright-star-2016/drama-queen-nyc--jonathan-warman.json",
+    "bright-star-2016/talkinbroadway--matthew-murray.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -608,7 +618,9 @@
       "tuck-everlasting-2016/thestage--mark-shenton.json",
       "waitress-2016/act-three-the-reviews--doug-marino.json",
       "waitress-2016/thestage--mark-shenton.json",
-      "american-psycho-2016/nyt-theater--jonathan-mandell.json"
+      "american-psycho-2016/nyt-theater--jonathan-mandell.json",
+      "the-father-2016/financialtimes--max-mcguinness.json",
+      "the-father-2016/theater-life--paulanne-simmons.json"
     ],
     "amp": [],
     "browserbase": [
@@ -719,7 +731,8 @@
       "heisenberg-2016/nydailynews--joe-dziemianowicz.json",
       "oh-hello-on-broadway-2016/nydailynews--joe-dziemianowicz.json",
       "the-encounter-2016/nydailynews--joe-dziemianowicz.json",
-      "american-psycho-2016/timeout--adam-feldman.json"
+      "american-psycho-2016/timeout--adam-feldman.json",
+      "bright-star-2016/stu-on-broadway--stu-brown.json"
     ],
     "brightdata": [
       "dark-of-the-moon-west-end-2026/guardian--arifa-akbar.json",
@@ -770,7 +783,9 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
       "data/review-texts/saint-joan-2018/medium--christian-lewis.json",
       "data/review-texts/american-psycho-2016/talkinbroadway--matthew-murray.json",
-      "data/review-texts/the-father-2016/wsj--terry-teachout.json"
+      "data/review-texts/the-father-2016/wsj--terry-teachout.json",
+      "data/review-texts/the-father-2016/off-script-with-dan-dwyer--dan-dwyer.json",
+      "data/review-texts/the-father-2016/talkinbroadway--matthew-murray.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -842,11 +857,12 @@
       "holiday-inn-the-new-irving-berlin-musical-2016/nydailynews--joe-dziemianowicz.json",
       "holiday-inn-the-new-irving-berlin-musical-2016/timeout--david-cote.json",
       "holiday-inn-the-new-irving-berlin-musical-2016/thestage--mark-shenton.json",
-      "fully-committed-2016/timeout--adam-feldman.json"
+      "fully-committed-2016/timeout--adam-feldman.json",
+      "the-crucible-2016/wsj--terry-teachout.json"
     ]
   },
   "startTime": "2026-06-10T19:02:19.411Z",
-  "lastProcessed": "the-father-2016/wsj--terry-teachout.json",
+  "lastProcessed": "bright-star-2016/talkinbroadway--matthew-murray.json",
   "log": [
     {
       "t": "2026-06-11T09:55:33.147Z",
@@ -1469,6 +1485,17 @@
     },
     {
       "t": "2026-06-11T11:42:57.060Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-11T11:47:30.392Z",
+      "event": "bb-session",
+      "session": "3441f1cd",
+      "url": "https://talkinbroadway.com/world/TheFather.html"
+    },
+    {
+      "t": "2026-06-11T11:47:31.782Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }

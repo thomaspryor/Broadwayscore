@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-11T11:43:48.545Z",
-  "processed": 337,
-  "failed": 317,
-  "successRate": "51.5%",
+  "updatedAt": "2026-06-11T11:52:05.787Z",
+  "processed": 341,
+  "failed": 323,
+  "successRate": "51.4%",
   "tierBreakdown": {
-    "playwright": 176,
+    "playwright": 178,
     "amp": 0,
     "browserbase": 49,
     "directCookies": 0,
-    "scrapingbee": 66,
+    "scrapingbee": 67,
     "brightdata": 32,
-    "archiveToday": 15,
-    "archive": 70
+    "archiveToday": 17,
+    "archive": 71
   },
-  "browserbaseSessions": 11,
+  "browserbaseSessions": 13,
   "recentActivity": [
-    {
-      "t": "2026-06-11T10:59:34.969Z",
-      "event": "bb-session",
-      "session": "572c57f3",
-      "url": "https://www.wsj.com/articles/the-ferryman-review-a-house-divided-1540500470?gaa_"
-    },
-    {
-      "t": "2026-06-11T10:59:35.885Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-06-11T11:17:41.567Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-06-11T11:42:57.060Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-11T11:47:30.392Z",
+      "event": "bb-session",
+      "session": "3441f1cd",
+      "url": "https://talkinbroadway.com/world/TheFather.html"
+    },
+    {
+      "t": "2026-06-11T11:47:31.782Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }
