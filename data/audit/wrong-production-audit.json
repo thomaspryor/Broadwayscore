@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-11T05:38:15.259Z",
+  "timestamp": "2026-06-11T11:30:42.436Z",
   "stats": {
-    "totalReviews": 38274,
-    "alreadyFlagged": 16792,
+    "totalReviews": 38276,
+    "alreadyFlagged": 16797,
     "dateGuardCatches": 105,
     "directorMismatch": 856,
     "tvFilmSignals": 1054,
     "londonSignals": 626,
-    "offBroadwaySignals": 458,
+    "offBroadwaySignals": 459,
     "yearMismatch": 81,
-    "noPublishDate": 3964
+    "noPublishDate": 3962
   },
   "findings": [
     {
@@ -37949,6 +37949,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"minetta lane\""
+        }
+      ]
+    },
+    {
+      "showId": "the-adding-machine-off-broadway-2026",
+      "file": "timeout--raven-snook.json",
+      "score": 65,
+      "publishDate": "2026-04-15",
+      "url": "https://www.timeout.com/newyork/news/theater-review-the-adding-machine-gets-a-miscalculated-revival-041526",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"park avenue armory\""
         }
       ]
     },
