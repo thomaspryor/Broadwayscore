@@ -1,33 +1,22 @@
 {
-  "updatedAt": "2026-06-11T10:58:17.591Z",
-  "processed": 231,
-  "failed": 283,
-  "successRate": "44.9%",
+  "updatedAt": "2026-06-11T11:01:13.610Z",
+  "processed": 238,
+  "failed": 286,
+  "successRate": "45.4%",
   "tierBreakdown": {
-    "playwright": 115,
+    "playwright": 118,
     "amp": 0,
-    "browserbase": 33,
+    "browserbase": 35,
     "directCookies": 0,
     "scrapingbee": 56,
-    "brightdata": 27,
+    "brightdata": 29,
     "archiveToday": 12,
-    "archive": 48
+    "archive": 49
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-06-11T04:27:47.472Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-11T13:23:12.061Z",
-      "event": "bb-session",
-      "session": "9bbb3153",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-11T13:23:13.039Z",
+      "t": "2026-06-11T04:29:03.213Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     },
@@ -100,6 +89,17 @@
     },
     {
       "t": "2026-06-11T10:54:25.164Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-11T10:59:34.969Z",
+      "event": "bb-session",
+      "session": "572c57f3",
+      "url": "https://www.wsj.com/articles/the-ferryman-review-a-house-divided-1540500470?gaa_"
+    },
+    {
+      "t": "2026-06-11T10:59:35.885Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
