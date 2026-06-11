@@ -411,7 +411,8 @@
     "the-color-purple-2015/broadway-and-me--janice-c-simpson.json",
     "misery-2015/broadway-and-me--janice-c-simpson.json",
     "on-your-feet-2015/wsj--terry-teachout.json",
-    "dames-at-sea-2015/village-voice--elizabeth-zimmer.json"
+    "dames-at-sea-2015/village-voice--elizabeth-zimmer.json",
+    "amazing-grace-2015/wsj--terry-teachout.json"
   ],
   "failed": [
     "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
@@ -841,7 +842,16 @@
     "the-gin-game-2015/vulture--jesse-green.json",
     "the-gin-game-2015/ap--mark-kennedy.json",
     "the-gin-game-2015/wnyc--jennifer-vanasco.json",
-    "fool-for-love-2015/nydailynews--joe-dziemianowicz.json"
+    "fool-for-love-2015/nydailynews--joe-dziemianowicz.json",
+    "spring-awakening-2015/guardian--alexis-soloski.json",
+    "amazing-grace-2015/talkinbroadway--matthew-murray.json",
+    "airline-highway-2015/huffpost--michael-giltz.json",
+    "something-rotten-2015/ap--mark-kennedy.json",
+    "something-rotten-2015/talkinbroadway--matthew-murray.json",
+    "doctor-zhivago-2015/timeout--adam-feldman.json",
+    "living-on-love-2015/berkshire-eagle--jeffrey-borak.json",
+    "fun-home-2015/wsj--terry-teachout.json",
+    "fun-home-2015/talkinbroadway--matthew-murray.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1104,7 +1114,9 @@
       "data/review-texts/the-color-purple-2015/wsj--terry-teachout.json",
       "the-color-purple-2015/wsj--terry-teachout.json",
       "data/review-texts/on-your-feet-2015/wsj--terry-teachout.json",
-      "on-your-feet-2015/wsj--terry-teachout.json"
+      "on-your-feet-2015/wsj--terry-teachout.json",
+      "data/review-texts/amazing-grace-2015/wsj--terry-teachout.json",
+      "amazing-grace-2015/wsj--terry-teachout.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1369,7 +1381,7 @@
     ]
   },
   "startTime": "2026-06-10T19:02:19.411Z",
-  "lastProcessed": "fool-for-love-2015/nydailynews--joe-dziemianowicz.json",
+  "lastProcessed": "fun-home-2015/talkinbroadway--matthew-murray.json",
   "log": [
     {
       "t": "2026-06-11T19:17:57.544Z",
@@ -2127,6 +2139,17 @@
       "t": "2026-06-11T16:54:20.235Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-11T16:56:12.720Z",
+      "event": "bb-session",
+      "session": "64b1f9a6",
+      "url": "http://www.wsj.com/articles/amazing-grace-review-how-sweet-the-set-1437093002"
+    },
+    {
+      "t": "2026-06-11T16:56:14.188Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
