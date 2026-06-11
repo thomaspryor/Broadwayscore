@@ -561,7 +561,25 @@
     "come-from-away-2017/st-louis-post-dispatch--bruce-r-miller.json",
     "the-glass-menagerie-2017/chicagotribune--chris-jones.json",
     "sunday-in-the-park-with-george-2017/theater-life--isa-goldberg.json",
-    "sunday-in-the-park-with-george-2017/wnyc--jennifer-vanasco.json"
+    "sunday-in-the-park-with-george-2017/wnyc--jennifer-vanasco.json",
+    "are-you-watching-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "are-you-watching-west-end-2026/the-recs--unknown.json",
+    "driftwood-west-end-2026/guardian--arifa-akbar.json",
+    "driftwood-west-end-2026/standard--nick-curtis.json",
+    "driftwood-west-end-2026/times-uk--clive-davis.json",
+    "war-horse-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "war-horse-west-end-2026/plays-international--maryam-philpott.json",
+    "war-horse-west-end-2026/times-uk--chris-bennion.json",
+    "war-horse-west-end-2026/times-uk--clive-davis.json",
+    "beetlejuice-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "beetlejuice-west-end-2026/amny--matt-windman.json",
+    "the-p-word-off-west-end-2026/whatsonstage--frey-kwa-hawking.json",
+    "dark-of-the-moon-west-end-2026/guardian-uk--unknown.json",
+    "dark-of-the-moon-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "dark-of-the-moon-west-end-2026/artsdesk--unknown.json",
+    "dark-of-the-moon-west-end-2026/cambridge--unknown.json",
+    "dark-of-the-moon-west-end-2026/standard--dominic-cavendish.json",
+    "dark-of-the-moon-west-end-2026/thestage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -654,7 +672,11 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/msblackforpresident-off-broadway-2026/variety--brent-lang.json",
-      "msblackforpresident-off-broadway-2026/variety--brent-lang.json"
+      "msblackforpresident-off-broadway-2026/variety--brent-lang.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -794,7 +816,9 @@
       "data/review-texts/anastasia-2017/thestage--mark-shenton.json",
       "data/review-texts/the-little-foxes-2017/thestage--mark-shenton.json",
       "data/review-texts/groundhog-day-2017/thestage--mark-shenton.json",
-      "data/review-texts/present-laughter-2017/thestage--mark-shenton.json"
+      "data/review-texts/present-laughter-2017/thestage--mark-shenton.json",
+      "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json",
+      "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -883,7 +907,7 @@
     ]
   },
   "startTime": "2026-06-10T19:02:19.411Z",
-  "lastProcessed": "jitney-2017/nydailynews--joe-dziemianowicz.json",
+  "lastProcessed": "dark-of-the-moon-west-end-2026/thestage--unknown.json",
   "log": [
     {
       "t": "2026-06-11T09:55:33.147Z",
@@ -895,6 +919,50 @@
       "t": "2026-06-11T09:55:33.852Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-11T11:12:41.468Z",
+      "event": "bb-session",
+      "session": "8b1d25a5",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-11T11:12:42.491Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-11T11:13:20.460Z",
+      "event": "bb-session",
+      "session": "2a777219",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-11T11:13:21.459Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-11T11:13:34.906Z",
+      "event": "bb-session",
+      "session": "b29bc3a9",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-11T11:13:35.894Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-11T11:14:39.426Z",
+      "event": "bb-session",
+      "session": "f262dc56",
+      "url": "https://www.nytimes.com/2026/05/31/theater/othello-review-wendell-pierce.html"
+    },
+    {
+      "t": "2026-06-11T11:14:40.312Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
