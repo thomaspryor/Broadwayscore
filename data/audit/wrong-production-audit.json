@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-10T18:02:43.471Z",
+  "timestamp": "2026-06-11T05:38:15.259Z",
   "stats": {
-    "totalReviews": 38248,
-    "alreadyFlagged": 16789,
-    "dateGuardCatches": 104,
-    "directorMismatch": 854,
-    "tvFilmSignals": 1053,
-    "londonSignals": 625,
+    "totalReviews": 38274,
+    "alreadyFlagged": 16792,
+    "dateGuardCatches": 105,
+    "directorMismatch": 856,
+    "tvFilmSignals": 1054,
+    "londonSignals": 626,
     "offBroadwaySignals": 458,
     "yearMismatch": 81,
-    "noPublishDate": 3971
+    "noPublishDate": 3964
   },
   "findings": [
     {
@@ -10948,6 +10948,20 @@
     },
     {
       "showId": "into-the-woods-west-end-2025",
+      "file": "loureviews--louise-penn.json",
+      "score": 87,
+      "publishDate": "2026-01-08",
+      "url": "https://loureviews.blog/2026/01/08/musical-review-into-the-woods-at-bridge-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
       "file": "musical-theatre-review--ian-bowkett.json",
       "score": 92,
       "publishDate": null,
@@ -11730,6 +11744,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
+        }
+      ]
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
+      "file": "loureviews--louise-penn.json",
+      "score": 93,
+      "publishDate": "2026-04-08",
+      "url": "https://loureviews.blog/2026/04/08/play-review-john-proctor-is-the-villain-royal-court/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -17385,6 +17418,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "redcliffe-off-west-end-2026",
+      "file": "loureviews--louise-penn.json",
+      "score": 78,
+      "publishDate": "2026-05-29",
+      "url": "https://loureviews.blog/2026/05/29/musical-review-redcliffe-at-southwark-playhouse-borough/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -32507,20 +32554,6 @@
     },
     {
       "showId": "inter-alia-west-end-2026",
-      "file": "lbc--johnny-jenkins.json",
-      "score": 91,
-      "publishDate": "2026-04-08",
-      "url": "https://www.lbc.co.uk/article/inter-alia-review-best-plays-ever-seen-5HjdXRZ_2/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"wyndham\""
-        }
-      ]
-    },
-    {
-      "showId": "inter-alia-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 82,
       "publishDate": "2026-04-14",
@@ -33421,6 +33454,20 @@
       "score": 96,
       "publishDate": "2026-04-02",
       "url": "https://www.londontheatre1.com/reviews/les-liaisons-dangereuses-national-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "les-liaisons-dangereuses-west-end-2026",
+      "file": "loureviews--louise-penn.json",
+      "score": 78,
+      "publishDate": "2026-04-21",
+      "url": "https://loureviews.blog/2026/04/21/play-review-les-liaisons-dangereuses-at-national-theatre/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -37846,6 +37893,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "tender-off-west-end-2026",
+      "file": "loureviews--louise-penn.json",
+      "score": 78,
+      "publishDate": "2026-05-05",
+      "url": "https://loureviews.blog/2026/05/05/play-review-tender-at-soho-theatre/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 65d before show (2026-05-05 vs 2026-07-09)"
         }
       ]
     },
