@@ -299,7 +299,12 @@
     "spring-awakening-2015/nyt-theater--unknown.json",
     "spring-awakening-2015/wsj--terry-teachout.json",
     "spring-awakening-2015/broadway-and-me--janice-c-simpson.json",
-    "airline-highway-2015/timeout--kris-vire.json"
+    "airline-highway-2015/timeout--kris-vire.json",
+    "airline-highway-2015/ny1--roma-torre.json",
+    "airline-highway-2015/wsj--terry-teachout.json",
+    "doctor-zhivago-2015/ew--jessica-shaw.json",
+    "doctor-zhivago-2015/timeout--david-cote.json",
+    "living-on-love-2015/nydailynews--joe-dziemianowicz.json"
   ],
   "failed": [
     "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
@@ -541,7 +546,12 @@
     "fool-for-love-2015/nydailynews--joe-dziemianowicz.json",
     "spring-awakening-2015/guardian--alexis-soloski.json",
     "amazing-grace-2015/wsj--terry-teachout.json",
-    "amazing-grace-2015/talkinbroadway--matthew-murray.json"
+    "amazing-grace-2015/talkinbroadway--matthew-murray.json",
+    "airline-highway-2015/huffpost--michael-giltz.json",
+    "something-rotten-2015/washpost--peter-marks.json",
+    "something-rotten-2015/ap--mark-kennedy.json",
+    "something-rotten-2015/talkinbroadway--matthew-murray.json",
+    "doctor-zhivago-2015/timeout--adam-feldman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -688,7 +698,9 @@
       "noises-off-2016/thestage--mark-shenton.json",
       "old-times-2015/theater-pizzazz--brian-scott-lipton.json",
       "spring-awakening-2015/nyt-theater--unknown.json",
-      "spring-awakening-2015/broadway-and-me--janice-c-simpson.json"
+      "spring-awakening-2015/broadway-and-me--janice-c-simpson.json",
+      "airline-highway-2015/ny1--roma-torre.json",
+      "doctor-zhivago-2015/ew--jessica-shaw.json"
     ],
     "amp": [],
     "browserbase": [
@@ -844,7 +856,8 @@
       "sylvia-2015/nydailynews--joe-dziemianowicz.json",
       "sylvia-2015/timeout--david-cote.json",
       "spring-awakening-2015/wsj--terry-teachout.json",
-      "airline-highway-2015/timeout--kris-vire.json"
+      "airline-highway-2015/timeout--kris-vire.json",
+      "airline-highway-2015/wsj--terry-teachout.json"
     ],
     "archiveToday": [
       "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json",
@@ -875,7 +888,10 @@
       "data/review-texts/sylvia-2015/talkinbroadway--matthew-murray.json",
       "data/review-texts/the-gin-game-2015/nyt-theater--jonathan-mandell.json",
       "data/review-texts/amazing-grace-2015/wsj--terry-teachout.json",
-      "data/review-texts/amazing-grace-2015/talkinbroadway--matthew-murray.json"
+      "data/review-texts/amazing-grace-2015/talkinbroadway--matthew-murray.json",
+      "data/review-texts/something-rotten-2015/washpost--peter-marks.json",
+      "data/review-texts/airline-highway-2015/huffpost--michael-giltz.json",
+      "data/review-texts/something-rotten-2015/talkinbroadway--matthew-murray.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -963,11 +979,13 @@
       "the-gin-game-2015/timeout--adam-feldman.json",
       "the-gin-game-2015/wsj--terry-teachout.json",
       "the-gin-game-2015/amny--matt-windman.json",
-      "fool-for-love-2015/wsj--terry-teachout.json"
+      "fool-for-love-2015/wsj--terry-teachout.json",
+      "doctor-zhivago-2015/timeout--david-cote.json",
+      "living-on-love-2015/nydailynews--joe-dziemianowicz.json"
     ]
   },
   "startTime": "2026-06-10T19:02:19.411Z",
-  "lastProcessed": "airline-highway-2015/timeout--kris-vire.json",
+  "lastProcessed": "living-on-love-2015/nydailynews--joe-dziemianowicz.json",
   "log": [
     {
       "t": "2026-06-11T09:55:33.147Z",
@@ -1645,6 +1663,28 @@
     },
     {
       "t": "2026-06-11T12:19:44.911Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-11T12:24:18.559Z",
+      "event": "bb-session",
+      "session": "d1f82a93",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/something-rotten-on-b"
+    },
+    {
+      "t": "2026-06-11T12:24:19.289Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-06-11T12:26:41.106Z",
+      "event": "bb-session",
+      "session": "08a7aba4",
+      "url": "https://talkinbroadway.com/world/SomethingRotten.html"
+    },
+    {
+      "t": "2026-06-11T12:26:42.495Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }
