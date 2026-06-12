@@ -33,6 +33,10 @@ jobs:
             "audit-closing-dates.yml|36|Audit Closing Dates"
             "audit-opening-dates.yml|36|Audit Opening Dates"
             "recover-explicit-ratings.yml|200|Recover Explicit Ratings"
+            # Weekly Sun 14 UTC. Catches dead-token failure streaks AND weekly
+            # sweeps silently cancelled while pending in the shared `theatr`
+            # concurrency group (cancelled runs never alert via notify-failure).
+            "update-theatr.yml|200|Update Theatr"
             "collect-we-ob-reviews.yml|50|Collect WE/OB Reviews"
             "sweep-we-aggregators.yml|192|Sweep WE Aggregators"
             # Real cadence: Mon 7 UTC + Thu 8 UTC → Thu→Mon gap is 95h.

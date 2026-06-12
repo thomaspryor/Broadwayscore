@@ -94,8 +94,8 @@ jobs:
                 console.log('Theatr auth succeeded — new refresh token captured (' + newRefresh.length + ' chars)');
               });
             });
-            req.on('error', e => { console.error('::error::Request failed:', e.message); process.exit(1); });
-            req.setTimeout(15000, () => { req.destroy(); console.error('::error::Timeout'); process.exit(1); });
+            req.on('error', e => { console.error('::error::Request failed:', e.message, '— Theatr may have already burned the pasted token. Re-capture from the iOS app before retrying.'); process.exit(1); });
+            req.setTimeout(15000, () => { req.destroy(); console.error('::error::Timeout — Theatr may have already burned the pasted token. Re-capture from the iOS app before retrying.'); process.exit(1); });
             req.write(body);
             req.end();
           "
@@ -118,7 +118,7 @@ jobs:
               exit 0
             fi
             echo "::warning::gh secret set failed (attempt $attempt/5), retrying..."
-            sleep $((attempt * 10))
+            [ "$attempt" -lt 5 ] && sleep $((attempt * 10))
           done
           echo "::error::Failed to persist rotated token after 5 attempts — the pasted token is burned. Re-capture from the iOS app and run this workflow again."
           exit 1

@@ -249,3 +249,38 @@ describe('WET title → show match (full pipeline)', () => {
     });
   }
 });
+
+describe('isCachedNoRatings — negative-result cache invalidation', () => {
+  const { isCachedNoRatings, NO_RATINGS_RECHECK_DAYS } =
+    require('../../scripts/scrape-westendtheatre-roundups.js');
+
+  const NOW = new Date('2026-06-11T00:00:00Z').getTime();
+  const clock = () => NOW;
+  const daysAgo = (d) => new Date(NOW - d * 86_400_000).toISOString();
+  const post = { id: 123, modified: '2026-05-01T10:00:00', date: '2026-04-01T10:00:00' };
+
+  test('fresh entry with matching modified stamp → skip (true)', () => {
+    const cache = { posts: { 123: { modified: post.modified, checkedAt: daysAgo(5) } } };
+    assert.strictEqual(isCachedNoRatings(cache, post, clock), true);
+  });
+
+  test('no entry → recheck (false)', () => {
+    assert.strictEqual(isCachedNoRatings({ posts: {} }, post, clock), false);
+  });
+
+  test('post updated since cached (modified differs) → recheck (false)', () => {
+    const cache = { posts: { 123: { modified: '2026-04-15T09:00:00', checkedAt: daysAgo(5) } } };
+    assert.strictEqual(isCachedNoRatings(cache, post, clock), false);
+  });
+
+  test('entry older than recheck window → recheck (false, self-heals cached transient failures)', () => {
+    const cache = { posts: { 123: { modified: post.modified, checkedAt: daysAgo(NO_RATINGS_RECHECK_DAYS + 1) } } };
+    assert.strictEqual(isCachedNoRatings(cache, post, clock), false);
+  });
+
+  test('falls back to post.date when post.modified absent', () => {
+    const noModPost = { id: 123, date: '2026-04-01T10:00:00' };
+    const cache = { posts: { 123: { modified: noModPost.date, checkedAt: daysAgo(2) } } };
+    assert.strictEqual(isCachedNoRatings(cache, noModPost, clock), true);
+  });
+});

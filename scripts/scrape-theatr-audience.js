@@ -114,6 +114,15 @@ async function refreshAccessToken() {
     throw new Error(`Auth refresh failed: ${JSON.stringify(data)}`);
   }
 
+  // A success response without a new refreshToken means the old token is
+  // burned with nothing to persist — writeFileSync(path, undefined) would
+  // throw an opaque TypeError. Fail with the full response instead so the
+  // operator knows a re-capture is needed (rotate-theatr-token.yml has the
+  // same guard).
+  if (!data.content || !data.content.accessToken || !data.content.refreshToken) {
+    throw new Error(`Auth succeeded but response is missing accessToken/refreshToken — old token is burned, re-capture required. Response: ${JSON.stringify(data)}`);
+  }
+
   accessToken = data.content.accessToken;
   latestRefreshToken = data.content.refreshToken;
   console.log('  Access token refreshed successfully');

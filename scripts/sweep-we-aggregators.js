@@ -29,7 +29,7 @@ const { isLondonMarket } = require('./lib/venue-classification');
 const { serpQuery } = require('./lib/url-discovery');
 
 // Reuse extraction functions from existing scrapers
-const { extractStarRatings, extractSectionReviews, extractShowTitle, fetchRenderedPage } = require('./scrape-westendtheatre-roundups');
+const { extractStarRatings, extractSectionReviews, extractShowTitle, fetchRenderedPageHtml } = require('./scrape-westendtheatre-roundups');
 const { extractReviews: extractTheatreReviews } = require('./scrape-theatre-reviews');
 const { extractReviews: extractStageReviews } = require('./scrape-thestage-roundups');
 
@@ -532,7 +532,7 @@ async function sweepWET(show) {
 
     // Fallback: section format from rendered page
     if (reviews.length === 0 && post.link) {
-      const pageHtml = fetchRenderedPage(post.link);
+      const pageHtml = await fetchRenderedPageHtml(post.link);
       if (pageHtml) {
         reviews = extractSectionReviews(pageHtml).map(r => ({
           outlet: r.outlet, outletId: normalizeOutlet(r.outlet),
