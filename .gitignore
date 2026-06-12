@@ -147,6 +147,10 @@ data/outlet-registry.json
 # credential that must never be committed. The BroadwayScorecard/ line below
 # only covered the iOS-app subdir path, not the actual repo-root location.
 data/theatr-refresh-token.tmp
+# Git-persisted token fallback (lives in the PRIVATE core-data repo; lands in
+# data/ via checkout-core-data). Must never reach the PUBLIC repo — workflows
+# that stage data/ broadly would otherwise commit a live credential.
+data/theatr-refresh-token-fallback.json
 # Mobile app (separate repo)
 BroadwayScorecard/data/theatr-refresh-token.tmp
 

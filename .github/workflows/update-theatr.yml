@@ -60,6 +60,34 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Pre-flight — refuse to burn the token if the PAT cannot persist it
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          # Root cause of the Jun 7 2026 token death (run 27100884711): the
+          # scrape succeeded (old token burned, new one issued) but the
+          # `gh secret set` persist failed with HTTP 403 "API rate limit
+          # exceeded" — the PAT's 5,000/hr REST budget was exhausted by other
+          # workflows (Tonys day). The rotated token was lost and the chain
+          # was dead until manual re-capture. The /rate_limit endpoint itself
+          # is free, so check the budget BEFORE calling Theatr auth: if we
+          # can't persist afterwards, don't burn the token at all — fail now
+          # and let the next dispatch retry with the secret still valid.
+          REMAINING=$(gh api rate_limit --jq .resources.core.remaining 2>/dev/null || echo "")
+          if [ -z "$REMAINING" ]; then
+            sleep 10
+            REMAINING=$(gh api rate_limit --jq .resources.core.remaining 2>/dev/null || echo "")
+          fi
+          if [ -z "$REMAINING" ]; then
+            echo "::error::Could not read PAT rate limit — refusing to burn the Theatr token without persist certainty. Secret unchanged; rerun later."
+            exit 1
+          fi
+          if [ "$REMAINING" -lt 100 ]; then
+            echo "::error::PAT has only $REMAINING REST calls left this hour — gh secret set would likely fail AFTER Theatr burns the token (Jun 7 incident). Aborting BEFORE auth; secret unchanged; rerun after the limit resets."
+            exit 1
+          fi
+          echo "PAT rate limit OK ($REMAINING remaining) — safe to rotate"
+
       - name: Run Theatr scraper
         env:
           THEATR_REFRESH_TOKEN: ${{ secrets.THEATR_REFRESH_TOKEN }}
@@ -106,16 +134,43 @@ jobs:
             echo "No rotated token file — scraper failed before auth, secret unchanged"
             exit 0
           fi
+          FALLBACK="/tmp/core-data-checkout/theatr-refresh-token-fallback.json"
           for attempt in 1 2 3 4 5; do
             if gh secret set THEATR_REFRESH_TOKEN < "$TOKEN_FILE"; then
               rm "$TOKEN_FILE"
+              # Secret persisted — remove any stale git fallback from a prior
+              # rate-limited run so it can't linger in the private repo.
+              # push-core-data does `git add -A`, so the deletion is committed.
+              if [ -f "$FALLBACK" ]; then
+                rm "$FALLBACK"
+                echo "Cleaned up git fallback token (secret is authoritative again)"
+              fi
               echo "Refresh token rotated (attempt $attempt)"
               exit 0
             fi
             echo "::warning::gh secret set failed (attempt $attempt/5), retrying..."
             [ "$attempt" -lt 5 ] && sleep $((attempt * 10))
           done
-          echo "::error::Failed to persist rotated THEATR_REFRESH_TOKEN after 5 attempts — token is BURNED and LOST. Re-capture from the iOS app and run rotate-theatr-token.yml."
+          # Last resort: the REST API is unavailable (e.g. hour-long rate-limit
+          # exhaustion — the Jun 7 incident), but git pushes are NOT REST-rate-
+          # limited. Persist the token into the private core-data checkout; the
+          # always() push-core-data step commits it. The next run's scraper
+          # reads this fallback when the secret's token fails auth, recovers,
+          # and the cleanup branch above removes the file.
+          if [ -d "/tmp/core-data-checkout/.git" ]; then
+            node -e "
+              const fs = require('fs');
+              const token = fs.readFileSync('$TOKEN_FILE', 'utf8').trim();
+              fs.writeFileSync('$FALLBACK', JSON.stringify({
+                refreshToken: token,
+                savedAt: new Date().toISOString(),
+                reason: 'gh secret set failed after 5 attempts (likely PAT rate limit) — run $GITHUB_RUN_ID'
+              }, null, 2) + '\n');
+            "
+            echo "::error::gh secret set failed 5x — rotated token persisted to PRIVATE repo fallback (theatr-refresh-token-fallback.json) instead. Next run auto-recovers; no re-capture needed."
+          else
+            echo "::error::Failed to persist rotated THEATR_REFRESH_TOKEN after 5 attempts AND no core-data checkout for git fallback — token is BURNED and LOST. Re-capture from the iOS app and run rotate-theatr-token.yml."
+          fi
           exit 1
 
       - name: Push core data to private repo

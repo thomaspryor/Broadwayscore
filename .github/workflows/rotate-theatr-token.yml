@@ -38,6 +38,26 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
 
+      - name: Pre-flight — refuse to burn the pasted token if the PAT cannot persist
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          # The validation step burns the hand-captured token (Theatr rotates
+          # on every auth call). If the PAT is REST-rate-limited, the persist
+          # step would fail AFTER the burn and the user's painful mitmproxy
+          # capture is wasted (Jun 7 2026 incident in update-theatr.yml).
+          # /rate_limit is free — check BEFORE touching Theatr.
+          REMAINING=$(gh api rate_limit --jq .resources.core.remaining 2>/dev/null || echo "")
+          if [ -z "$REMAINING" ]; then
+            sleep 10
+            REMAINING=$(gh api rate_limit --jq .resources.core.remaining 2>/dev/null || echo "")
+          fi
+          if [ -z "$REMAINING" ] || [ "$REMAINING" -lt 100 ]; then
+            echo "::error::PAT rate limit too low or unreadable (remaining: '${REMAINING:-unknown}') — aborting BEFORE the pasted token is burned. Your captured token is still valid; rerun this workflow after the limit resets (top of the hour)."
+            exit 1
+          fi
+          echo "PAT rate limit OK ($REMAINING remaining) — safe to rotate"
+
       - name: Set secret to pasted token
         env:
           GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}

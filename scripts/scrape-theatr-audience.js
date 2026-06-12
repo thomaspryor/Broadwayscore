@@ -92,6 +92,25 @@ function sleep(ms) {
 let accessToken = null;
 let latestRefreshToken = null;
 
+/**
+ * Read the git-persisted fallback token, if any. Written by update-theatr.yml
+ * into the private core-data repo when `gh secret set` was rate-limited after
+ * the old token was already burned (Jun 7 2026 incident, run 27100884711) —
+ * git pushes are not REST-rate-limited, so the rotated token survives there.
+ * checkout-core-data copies it into data/ at job start.
+ */
+function readFallbackRefreshToken() {
+  try {
+    const fbPath = path.join(__dirname, '../data/theatr-refresh-token-fallback.json');
+    if (!fs.existsSync(fbPath)) return null;
+    const parsed = JSON.parse(fs.readFileSync(fbPath, 'utf8'));
+    return (parsed && typeof parsed.refreshToken === 'string' && parsed.refreshToken) || null;
+  } catch (e) {
+    console.warn(`  Could not read fallback token file: ${e.message}`);
+    return null;
+  }
+}
+
 async function refreshAccessToken() {
   // Allow direct access token for local testing
   if (process.env.THEATR_ACCESS_TOKEN) {
@@ -105,10 +124,24 @@ async function refreshAccessToken() {
     throw new Error('THEATR_REFRESH_TOKEN or THEATR_ACCESS_TOKEN environment variable must be set');
   }
 
-  const { status, data } = await httpsRequest('https://appapi.theatr-app.com/v1/auth/access-tokens', {
+  let { status, data } = await httpsRequest('https://appapi.theatr-app.com/v1/auth/access-tokens', {
     method: 'POST',
     body: { refreshToken },
   });
+
+  // Primary (secret) token rejected on FIRST auth: the previous run may have
+  // rotated successfully but failed to persist the secret (rate-limited
+  // gh secret set). Its rotated token lives in the git fallback — try it.
+  if (!data.success && !latestRefreshToken) {
+    const fallback = readFallbackRefreshToken();
+    if (fallback && fallback !== refreshToken) {
+      console.log('  Secret token rejected — retrying with git-persisted fallback (data/theatr-refresh-token-fallback.json)');
+      ({ status, data } = await httpsRequest('https://appapi.theatr-app.com/v1/auth/access-tokens', {
+        method: 'POST',
+        body: { refreshToken: fallback },
+      }));
+    }
+  }
 
   if (!data.success) {
     throw new Error(`Auth refresh failed: ${JSON.stringify(data)}`);
@@ -508,4 +541,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { matchTheatrToShows, THEATR_SKIP_SHOWS };
+module.exports = { matchTheatrToShows, THEATR_SKIP_SHOWS, refreshAccessToken, readFallbackRefreshToken };
