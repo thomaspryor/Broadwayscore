@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-11T12:31:42.610Z",
+  "timestamp": "2026-06-12T05:38:47.989Z",
   "stats": {
     "totalReviews": 38289,
-    "alreadyFlagged": 16799,
+    "alreadyFlagged": 16801,
     "dateGuardCatches": 105,
     "directorMismatch": 856,
-    "tvFilmSignals": 1054,
+    "tvFilmSignals": 1056,
     "londonSignals": 626,
     "offBroadwaySignals": 459,
     "yearMismatch": 81,
-    "noPublishDate": 3967
+    "noPublishDate": 3964
   },
   "findings": [
     {
@@ -1673,6 +1673,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "avenue-q-west-end-2026",
+      "file": "telegraph--marianka-swain.json",
+      "score": 82,
+      "publishDate": "2026-04-17",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/avenue-qs-bawdy-puppets-gleefully-outrageous/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -17502,6 +17516,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "return-of-the-godz-west-end-2026",
+      "file": "londontheatre1--ben-ross.json",
+      "publishDate": "2026-06-11",
+      "url": "https://www.londontheatre1.com/reviews/return-of-the-godz-peacock-theatre-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
