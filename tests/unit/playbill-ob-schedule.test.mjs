@@ -48,3 +48,38 @@ test('parsePlaybillOBSchedule fixture contains the 4 target companies (where lis
   const matches = recognizableProductions.filter(p => titles.includes(p));
   assert.ok(matches.length >= 1, `expected at least one of ${recognizableProductions.join(', ')} in titles: ${titles.slice(0, 500)}`);
 });
+
+test('parsePlaybillOBSchedule extracts venue from the first bullet line', () => {
+  const entries = parsePlaybillOBSchedule(FIXTURE);
+  const withVenue = entries.filter(e => e.venue);
+  assert.ok(withVenue.length >= 1, `expected at least one entry with venue, got 0 of ${entries.length}`);
+  for (const e of withVenue) {
+    assert.ok(!/^(First Preview|Opening|Open|Writers?|Playwright|Director|Cast|Music|Book|Lyrics)s?:/i.test(e.venue),
+      `venue should not be a labeled field: ${JSON.stringify(e)}`);
+  }
+  const emporium = entries.find(e => /emporium/i.test(e.title));
+  if (emporium) {
+    assert.equal(emporium.venue, 'Classic Stage Company/Lynn F. Angelson Theater');
+  }
+});
+
+test('extractVenue skips labeled fields and returns null when absent', () => {
+  const { extractVenue } = require('../../scripts/lib/playbill-ob-schedule.js');
+  assert.equal(
+    extractVenue('TITLE\n• The Public Theater/Delacorte Theater\n• First Preview: May 22, 2026\n• Opening: June 11, 2026'),
+    'The Public Theater/Delacorte Theater'
+  );
+  assert.equal(extractVenue('TITLE\n• First Preview: May 22, 2026\n• Opening: June 11, 2026'), null);
+  assert.equal(extractVenue(''), null);
+});
+
+test('extractVenue rejects slash/comma labels and survives merged bullet lines', () => {
+  const { extractVenue } = require('../../scripts/lib/playbill-ob-schedule.js');
+  // Labels containing / , & must not be mistaken for venues
+  assert.equal(extractVenue('TITLE\n• Director/Choreographer: Casey Nicholaw\n• Venue Name Here\n• Opening: June 1, 2026'), 'Venue Name Here');
+  assert.equal(extractVenue('TITLE\n• Book, Music, and Lyrics: Someone\n• Opening: June 1, 2026'), null);
+  // A missed <br> merging fields onto one line keeps only the venue
+  assert.equal(extractVenue('TITLE\n• The Public Theater • First Preview: May 22, 2026 • Opening: June 11, 2026'), 'The Public Theater');
+  // Entity decoding
+  assert.equal(extractVenue('TITLE\n• St. Ann&rsquo;s Warehouse\n• Opening: June 1, 2026'), 'St. Ann’s Warehouse');
+});
