@@ -59,8 +59,32 @@ function validatePageTitle(html, expectedTitleSubstring) {
 }
 
 /**
+ * Extract the venue from a tag-stripped, newline-split show block.
+ * Playbill's format puts the venue as the first bullet line after the title:
+ *   TITLE
+ *   • Classic Stage Company/Lynn F. Angelson Theater
+ *   • First Preview: April 30, 2026
+ *   • Opening: May 18, 2026
+ * Labeled lines (First Preview:, Director:, Cast: …) are skipped; if no
+ * unlabeled bullet line exists, returns null and the caller falls back to TBA.
+ */
+function extractVenue(plain) {
+  for (const raw of plain.split('\n')) {
+    const line = raw.trim();
+    if (!line.startsWith('•')) continue;
+    const text = line.replace(/^•\s*/, '')
+      .replace(/&nbsp;/gi, ' ').replace(/&amp;/gi, '&')
+      .replace(/\s+/g, ' ').trim();
+    if (!text || /^[A-Za-z'’ .()]{1,30}:/.test(text)) continue; // labeled field
+    if (text.length < 3 || text.length > 120) continue;
+    return text;
+  }
+  return null;
+}
+
+/**
  * Parse Playbill's OB schedule article into entries:
- *   [{ title, firstPreview, opening, source: 'playbill' }, ...]
+ *   [{ title, venue, firstPreview, opening, source: 'playbill' }, ...]
  *
  * Structure: each show block lives inside one <p>, with <br>-separated lines.
  * Splitting on <strong>...<a>TITLE</a>...</strong> chunks the document.
@@ -88,6 +112,7 @@ function parsePlaybillOBSchedule(html) {
     if (!fpMatch && !openMatch) continue;
     entries.push({
       title,
+      venue: extractVenue(plain),
       firstPreview: fpMatch ? parseUSDate(fpMatch[1]) : null,
       opening: openMatch ? parseUSDate(openMatch[1]) : null,
       source: 'playbill',
@@ -164,6 +189,7 @@ function checkSilentRot({ entries, html }) {
 
 module.exports = {
   PLAYBILL_OB_URL,
+  extractVenue,
   parsePlaybillOBSchedule,
   scrapePlaybillOBData,
   checkSilentRot,

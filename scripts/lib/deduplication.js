@@ -228,6 +228,29 @@ function checkKnownDuplicates(newTitleNormalized, existingTitleNormalized) {
 }
 
 /**
+ * Slug containment is only duplicate-evidence when the extra portion of the
+ * longer slug carries no content: a market/year suffix ("-off-broadway-2026")
+ * or a subtitle filler ("-the-musical"). A content-word remainder means a
+ * different work sharing a title prefix — e.g. "romeo-and-juliet" vs
+ * "romeo-and-juliet-suite" (SitP 2026 incident: the Delacorte Romeo and
+ * Juliet was dropped as a duplicate of the Park Avenue Armory dance piece),
+ * or "hamlet" vs "hamlet-hail-to-the-thief".
+ *
+ * Requiring the remainder to start at a hyphen boundary also stops
+ * mid-word prefix hits like "anne" vs "annette".
+ */
+// Bare "play"/"musical" are included because listing sources append them as
+// format disambiguators (TodayTix "A Doll's House (Play)" → slug …-play).
+const NON_CONTENT_SLUG_REMAINDER_RE = /^(?:-(?:off-broadway|broadway|off-west-end|west-end|on-broadway|the-musical|a-new-musical|a-musical|musical|the-play|a-new-play|a-play|play|in-concert|\d{4}))+$/;
+
+function isSlugContainmentDuplicate(slugA, slugB) {
+  if (slugA === slugB) return true;
+  const [shorter, longer] = slugA.length <= slugB.length ? [slugA, slugB] : [slugB, slugA];
+  if (!longer.startsWith(shorter)) return false;
+  return NON_CONTENT_SLUG_REMAINDER_RE.test(longer.slice(shorter.length));
+}
+
+/**
  * Check if two shows are different productions of the same title.
  * Returns true if both have year info and opening years differ by >2 years.
  */
@@ -451,9 +474,10 @@ function checkForDuplicate(newShow, existingShows) {
       };
     }
 
-    // Check 6: Slug prefix/containment match
+    // Check 6: Slug prefix/containment match — only when the longer slug's
+    // remainder is non-content (market/year suffix or subtitle filler).
     if (newSlug.length > 4 && existing.slug.length > 4) {
-      if (existing.slug.startsWith(newSlug) || newSlug.startsWith(existing.slug)) {
+      if (isSlugContainmentDuplicate(newSlug, existing.slug)) {
         if (isMultiProduction(newShow, existing)) continue;
         return {
           isDuplicate: true,
@@ -581,6 +605,7 @@ module.exports = {
   checkKnownDuplicates,
   isCrossMarket,
   getMarketPool,
+  isSlugContainmentDuplicate,
   findSameTitleTwinIfNoOpeningDate,
   KNOWN_DUPLICATES
 };

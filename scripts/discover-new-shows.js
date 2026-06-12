@@ -365,7 +365,7 @@ async function fetchShowsFromPlaybillOB() {
     displayName: e.title,
     name: e.title,
     subcategories: [{ name: 'Off Broadway' }],
-    venue: { name: VENUE_PLACEHOLDER },
+    venue: { name: e.venue || VENUE_PLACEHOLDER },
     description: '',
     startDate: e.firstPreview || null,
     // carry-through for the transform:
@@ -381,7 +381,7 @@ async function fetchShowsFromPlaybillOB() {
     const previewsStart = e.firstPreview || null;
     return {
       title: e.title,
-      venue: VENUE_PLACEHOLDER,
+      venue: e.venue || VENUE_PLACEHOLDER,
       slug: e.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
       openingDate: e.opening || null,
       previewsStartDate: previewsStart,
