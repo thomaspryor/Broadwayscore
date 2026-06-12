@@ -25,6 +25,13 @@ const PICKS_API = '**/api/beat-the-critics/send-picks';
 const PICKS_REVEAL_DATE = new Date('2026-06-08T00:00:00Z');
 const PICKS_REVEALED = Date.now() >= PICKS_REVEAL_DATE.getTime();
 
+// caa65932c1 (post-ceremony close): when countdownExpired — same date as
+// PICKS_REVEAL_DATE — the landing page replaces "Make Your Picks" with a
+// "Submissions are closed." message and the entry flow no longer exists in
+// production. The picking/persist/results suites are skipped in that state;
+// landing tests assert the closed message instead of the CTA.
+const ENTRIES_CLOSED = PICKS_REVEALED;
+
 /** Mock the send-picks API so no real submission is made. */
 async function mockPicksApi(page: Page, response: Record<string, unknown> = { success: true }, status = 200) {
   await page.route(PICKS_API, route => {
@@ -35,8 +42,14 @@ async function mockPicksApi(page: Page, response: Record<string, unknown> = { su
 /** Navigate to BTC landing and wait for the page to be interactive. */
 async function gotoLanding(page: Page) {
   await page.goto(BTC_URL);
-  // Wait for the main CTA — proves React hydration is complete
-  await expect(page.getByRole('button', { name: /Make Your Picks/i })).toBeVisible({ timeout: 20000 });
+  if (ENTRIES_CLOSED) {
+    // Post-ceremony the CTA is replaced by the closed message — wait for that
+    // instead to prove React hydration is complete.
+    await expect(page.getByText(/Submissions are closed/i)).toBeVisible({ timeout: 20000 });
+  } else {
+    // Wait for the main CTA — proves React hydration is complete
+    await expect(page.getByRole('button', { name: /Make Your Picks/i })).toBeVisible({ timeout: 20000 });
+  }
 }
 
 /** Click "Make Your Picks" and wait for the picking screen. */
@@ -88,8 +101,13 @@ test.describe('landing page', () => {
     // without updating this assertion, broke E2E across all PRs).
     await expect(page.getByText(/\$\d+ TodayTix/i).first()).toBeVisible();
 
-    // CTA button
-    await expect(page.getByRole('button', { name: /Make Your Picks/i })).toBeVisible();
+    // CTA button pre-close; closed message after the ceremony
+    if (ENTRIES_CLOSED) {
+      await expect(page.getByText(/Submissions are closed/i)).toBeVisible();
+      await expect(page.getByRole('button', { name: /Make Your Picks/i })).toHaveCount(0);
+    } else {
+      await expect(page.getByRole('button', { name: /Make Your Picks/i })).toBeVisible();
+    }
 
     // 3 critic cards (grid contains 3 buttons)
     const criticGrid = page.locator('.grid.grid-cols-3');
@@ -144,6 +162,8 @@ test.describe('landing page', () => {
 // ─── Picking Flow — Tier 1 (The Big Four) ─────────────────────────────────
 
 test.describe('picking flow — Tier 1 (The Big Four)', () => {
+  test.skip(ENTRIES_CLOSED, 'Entry UI removed post-ceremony (caa65932c1) — no picking flow in production');
+
   test('clicking Make Your Picks shows picking screen with category title', async ({ page }) => {
     await gotoLanding(page);
     await startPicking(page);
@@ -237,6 +257,8 @@ test.describe('picking flow — Tier 1 (The Big Four)', () => {
 // ─── Picks Persist Across Reload ──────────────────────────────────────────
 
 test.describe('picks persist across reload', () => {
+  test.skip(ENTRIES_CLOSED, 'Entry UI removed post-ceremony (caa65932c1) — no picking flow in production');
+
   test('previously picked nominee is still selected after page reload', async ({ page }) => {
     await gotoLanding(page);
     await startPicking(page);
@@ -272,6 +294,8 @@ test.describe('picks persist across reload', () => {
 // ─── Results Ballot ────────────────────────────────────────────────────────
 
 test.describe('results ballot', () => {
+  test.skip(ENTRIES_CLOSED, 'Entry UI removed post-ceremony (caa65932c1) — no picking flow in production');
+
   /**
    * Pick through all 4 Tier 1 categories then navigate to results.
    * Mocks the send-picks API.
