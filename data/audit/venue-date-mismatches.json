@@ -1,190 +1,32 @@
 {
-  "generatedAt": "2026-05-27T16:03:58.087Z",
+  "generatedAt": "2026-06-12T17:33:56.880Z",
   "filter": {
-    "allProvisional": true,
-    "limit": null
+    "show": "romeo-and-juliet-off-broadway-2026"
   },
   "counts": {
-    "total": 9,
-    "match": 8,
+    "total": 1,
+    "match": 1,
     "mismatch": 0,
-    "unresolved": 1
+    "unresolved": 0
   },
   "results": [
     {
-      "id": "lowcountry-off-broadway-pending",
-      "title": "Lowcountry",
-      "venue": "Atlantic Theater",
+      "id": "romeo-and-juliet-off-broadway-2026",
+      "title": "Romeo and Juliet",
+      "venue": "Public Theater/Delacorte Theater",
       "result": "match",
-      "playbillUrl": "https://playbill.com/production/lowcountry-off-broadway-atlantic-theater-company-linda-gross-theater-2025",
+      "playbillUrl": "https://playbill.com/production/romeo-and-juliet-off-broadway-public-theater-delacorte-theater-2026",
       "parsed": {
         "titleParse": {
-          "rawTitle": "Lowcountry",
+          "rawTitle": "Romeo and Juliet",
           "market": "Off-Broadway",
-          "venue": "Atlantic Theater Company/Linda Gross Theater",
-          "year": 2025
+          "venue": "Public Theater/Delacorte Theater",
+          "year": 2026
         },
         "dates": {
-          "firstPreview": "2025-06-04",
-          "openingDate": null,
-          "closingDate": "2025-07-13"
-        }
-      },
-      "mismatches": []
-    },
-    {
-      "id": "grief-camp-off-broadway-pending",
-      "title": "Grief Camp",
-      "venue": "Atlantic Theater",
-      "result": "match",
-      "playbillUrl": "https://playbill.com/production/grief-camp-off-broadway-atlantic-theater-company-linda-gross-theater-2025",
-      "parsed": {
-        "titleParse": {
-          "rawTitle": "Grief Camp",
-          "market": "Off-Broadway",
-          "venue": "Atlantic Theater Company/Linda Gross Theater",
-          "year": 2025
-        },
-        "dates": {
-          "firstPreview": "2025-04-05",
-          "openingDate": "2025-04-22",
-          "closingDate": "2025-05-11"
-        }
-      },
-      "mismatches": []
-    },
-    {
-      "id": "i-m-assuming-you-know-david-greenspan-off-broadway-pending",
-      "title": "I'm Assuming You Know David Greenspan",
-      "venue": "Atlantic Theater",
-      "result": "match",
-      "playbillUrl": "https://playbill.com/production/im-assuming-you-know-david-greenspan-off-broadway-atlantic-theater-company-stage-2-2025",
-      "parsed": {
-        "titleParse": {
-          "rawTitle": "I&#039;m Assuming You Know David Greenspan",
-          "market": "Off-Broadway",
-          "venue": "Atlantic Theater Company/Stage 2",
-          "year": 2025
-        },
-        "dates": {
-          "firstPreview": "2025-03-29",
-          "openingDate": "2025-04-06",
-          "closingDate": "2025-04-30"
-        }
-      },
-      "mismatches": []
-    },
-    {
-      "id": "what-became-of-us-off-broadway-pending",
-      "title": "What Became of Us",
-      "venue": "Atlantic Theater",
-      "result": "match",
-      "playbillUrl": "https://playbill.com/production/what-became-of-us-off-broadway-atlantic-theater-company-stage-2-2024",
-      "parsed": {
-        "titleParse": {
-          "rawTitle": "What Became Of Us",
-          "market": "Off-Broadway",
-          "venue": "Atlantic Theater Company/Stage 2",
-          "year": 2024
-        },
-        "dates": {
-          "firstPreview": "2024-05-17",
-          "openingDate": "2024-06-04",
-          "closingDate": "2024-06-29"
-        }
-      },
-      "mismatches": []
-    },
-    {
-      "id": "the-welkin-off-broadway-pending",
-      "title": "The Welkin",
-      "venue": "Atlantic Theater",
-      "result": "match",
-      "playbillUrl": "https://playbill.com/production/the-welkin-off-broadway-atlantic-theater-company-linda-gross-theater-2024",
-      "parsed": {
-        "titleParse": {
-          "rawTitle": "The Welkin",
-          "market": "Off-Broadway",
-          "venue": "Atlantic Theater Company/Linda Gross Theater",
-          "year": 2024
-        },
-        "dates": {
-          "firstPreview": "2024-05-16",
-          "openingDate": "2024-06-12",
-          "closingDate": "2024-07-07"
-        }
-      },
-      "mismatches": []
-    },
-    {
-      "id": "spiritus-off-broadway-pending",
-      "title": "SPIRITUS",
-      "venue": "Vineyard Theatre",
-      "result": "no-playbill-url",
-      "urlSource": "none",
-      "mismatches": [],
-      "playbillUrl": null,
-      "parsed": null
-    },
-    {
-      "id": "bowl-ep-off-broadway-pending",
-      "title": "BOWL EP",
-      "venue": "Vineyard Theatre",
-      "result": "match",
-      "playbillUrl": "https://playbill.com/production/bowl-ep-off-broadway-vineyard-theatre-2025",
-      "parsed": {
-        "titleParse": {
-          "rawTitle": "Bowl EP",
-          "market": "Off-Broadway",
-          "venue": "Vineyard Theatre",
-          "year": 2025
-        },
-        "dates": {
-          "firstPreview": "2025-05-01",
-          "openingDate": "2025-05-18",
-          "closingDate": "2025-06-22"
-        }
-      },
-      "mismatches": []
-    },
-    {
-      "id": "table-17-off-broadway-pending",
-      "title": "Table 17",
-      "venue": "MCC Theater",
-      "result": "match",
-      "playbillUrl": "https://playbill.com/production/table-17-off-broadway-the-robert-w-wilson-mcc-theater-space-2024",
-      "parsed": {
-        "titleParse": {
-          "rawTitle": "Table 17",
-          "market": "Off-Broadway",
-          "venue": "The Robert W. Wilson MCC Theater Space",
-          "year": 2024
-        },
-        "dates": {
-          "firstPreview": "2024-08-14",
-          "openingDate": "2024-09-06",
-          "closingDate": "2024-09-29"
-        }
-      },
-      "mismatches": []
-    },
-    {
-      "id": "walk-on-through-confessions-of-a-museum-novice-off-broadway-pending",
-      "title": "Walk On Through: Confessions of a Museum Novice",
-      "venue": "MCC Theater",
-      "result": "match",
-      "playbillUrl": "https://playbill.com/production/walk-on-through-confessions-of-a-museum-novice-off-broadway-the-robert-w-wilson-mcc-theater-space-2023",
-      "parsed": {
-        "titleParse": {
-          "rawTitle": "Walk On Through: Confessions of a Museum Novice",
-          "market": "Off-Broadway",
-          "venue": "The Robert W. Wilson MCC Theater Space",
-          "year": 2023
-        },
-        "dates": {
-          "firstPreview": "2023-11-13",
-          "openingDate": "2023-11-13",
-          "closingDate": "2024-01-07"
+          "firstPreview": "2026-05-22",
+          "openingDate": "2026-06-11",
+          "closingDate": "2026-06-28"
         }
       },
       "mismatches": []
