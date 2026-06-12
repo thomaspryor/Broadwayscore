@@ -137,14 +137,16 @@ const VENUE_ALIASES = [
     canonical: 'second stage hayes',
     matches: [/hayes\s*theater/i, /second\s*stage.*hayes/i],
   },
-  // Atlantic Theater Company — two stages
+  // Atlantic Theater Company — two stages. The lookahead must tolerate words
+  // between "Theater" and "Stage 2" ("Atlantic Theater Company Stage 2")
+  // or company-form Stage 2 listings collapse onto the mainstage alias.
   {
     canonical: 'atlantic theater',
-    matches: [/atlantic\s*theater(?!\s*stage\s*2)/i, /linda\s*gross/i],
+    matches: [/atlantic\s*theater(?!.*stage\s*2)/i, /linda\s*gross/i],
   },
   {
     canonical: 'atlantic stage 2',
-    matches: [/atlantic\s*stage\s*2/i],
+    matches: [/atlantic.*stage\s*2/i],
   },
   // MCC at 511 W 52nd St — multiple sub-stages
   {

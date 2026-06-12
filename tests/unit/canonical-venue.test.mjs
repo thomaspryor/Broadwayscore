@@ -73,3 +73,10 @@ test('canonicalVenue: The New Group dedups against Signature (P0 from second-opi
   assert.equal(tngKey, sigKey, 'TNG must dedupe against Pershing Square');
   assert.equal(tngKey, sigKey2, 'TNG must dedupe against Signature Theatre');
 });
+
+test('Atlantic company-form Stage 2 does not collapse onto mainstage alias', () => {
+  assert.equal(canonicalVenue('Atlantic Theater Company Stage 2'), 'atlantic stage 2');
+  assert.equal(canonicalVenue('Atlantic Stage 2'), 'atlantic stage 2');
+  assert.equal(canonicalVenue('Atlantic Theater Company'), 'atlantic theater');
+  assert.equal(canonicalVenue('Linda Gross Theater'), 'atlantic theater');
+});

@@ -83,3 +83,13 @@ test('extractVenue rejects slash/comma labels and survives merged bullet lines',
   // Entity decoding
   assert.equal(extractVenue('TITLE\n• St. Ann&rsquo;s Warehouse\n• Opening: June 1, 2026'), 'St. Ann’s Warehouse');
 });
+
+test('extractVenue accepts colon-bearing venue names, still rejects labels', () => {
+  const { extractVenue } = require('../../scripts/lib/playbill-ob-schedule.js');
+  assert.equal(
+    extractVenue('TITLE\n• A.R.T./New York Theatres: Jeffrey and Paula Gural Theatre\n• Opening: June 1, 2026'),
+    'A.R.T./New York Theatres: Jeffrey and Paula Gural Theatre'
+  );
+  assert.equal(extractVenue('TITLE\n• Book, Music, and Lyrics: Someone\n• Opening: June 1, 2026'), null);
+  assert.equal(extractVenue('TITLE\n• Conceived and Directed by: Someone\n• Opening: June 1, 2026'), null);
+});

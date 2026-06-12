@@ -83,10 +83,11 @@ function extractVenue(plain) {
       .replace(/&(?:rsquo;|#8217;)/gi, '’')
       .replace(/&(?:lsquo;|#8216;)/gi, '‘')
       .replace(/\s+/g, ' ').trim();
-    // Labeled field (First Preview:, Director/Choreographer:, Book, Music, and
-    // Lyrics:, …) — labels are short and end with ": "; venues almost never
-    // contain a colon.
-    if (!text || /^[A-Za-z'’ .,()/&]{1,40}:/.test(text)) continue;
+    // Labeled metadata field — match on known label keywords before the
+    // colon rather than "any colon": real venues can contain colons
+    // ("A.R.T./New York Theatres: Jeffrey and Paula Gural Theatre").
+    const LABEL_RE = /^[^:•]{0,40}\b(preview|opening|opens?|writers?|playwright|book|music|lyrics|director|choreograph\w*|cast|composer|producer|adapt\w*|design\w*|conceived|based on)\b[^:•]{0,20}:/i;
+    if (!text || LABEL_RE.test(text)) continue;
     if (text.length < 3 || text.length > 120) continue;
     return text;
   }
