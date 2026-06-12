@@ -85,7 +85,12 @@ jobs:
           node scripts/scrape-theatr-audience.js $ARGS
 
       - name: Update refresh token secret
-        if: always() && inputs.dry_run != true
+        # NO dry_run gate here, deliberately: the scraper auths (and therefore
+        # burns the old token) even on --dry-run, so the rotated token MUST be
+        # persisted on every run that produced one. The old
+        # `inputs.dry_run != true` gate meant a green dry-run silently killed
+        # the token chain.
+        if: always()
         env:
           GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
@@ -95,7 +100,9 @@ jobs:
           # re-capture via rotate-theatr-token.yml. So: retry, and fail the
           # job loudly rather than silently dropping the token.
           TOKEN_FILE="data/theatr-refresh-token.tmp"
-          if [ ! -f "$TOKEN_FILE" ]; then
+          # -s (non-empty), not -f: an empty file would overwrite the secret
+          # with garbage instead of leaving it alone.
+          if [ ! -s "$TOKEN_FILE" ]; then
             echo "No rotated token file — scraper failed before auth, secret unchanged"
             exit 0
           fi
@@ -106,7 +113,7 @@ jobs:
               exit 0
             fi
             echo "::warning::gh secret set failed (attempt $attempt/5), retrying..."
-            sleep $((attempt * 10))
+            [ "$attempt" -lt 5 ] && sleep $((attempt * 10))
           done
           echo "::error::Failed to persist rotated THEATR_REFRESH_TOKEN after 5 attempts — token is BURNED and LOST. Re-capture from the iOS app and run rotate-theatr-token.yml."
           exit 1
