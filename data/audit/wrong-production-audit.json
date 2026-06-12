@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-12T12:13:52.477Z",
+  "timestamp": "2026-06-12T18:43:43.926Z",
   "stats": {
-    "totalReviews": 38306,
-    "alreadyFlagged": 16810,
+    "totalReviews": 38334,
+    "alreadyFlagged": 16824,
     "dateGuardCatches": 105,
     "directorMismatch": 856,
     "tvFilmSignals": 1055,
     "londonSignals": 627,
-    "offBroadwaySignals": 459,
+    "offBroadwaySignals": 463,
     "yearMismatch": 81,
-    "noPublishDate": 3965
+    "noPublishDate": 3974
   },
   "findings": [
     {
@@ -1673,20 +1673,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "avenue-q-west-end-2026",
-      "file": "telegraph--marianka-swain.json",
-      "score": 82,
-      "publishDate": "2026-04-17",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/avenue-qs-bawdy-puppets-gleefully-outrageous/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -3408,6 +3394,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"nicholas hytner\" from carousel-1994"
+        }
+      ]
+    },
+    {
+      "showId": "casa-valentina-2014",
+      "file": "newsday--linda-winer.json",
+      "score": 82,
+      "publishDate": "2014-04-22",
+      "url": "http://www.newsday.com/entertainment/theater/casa-valentina-review-harvey-fierstein-back-on-broadway-1.7793273",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -11349,7 +11349,7 @@
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
+          "detail": "Contains TV/film keyword: \"hulu\""
         }
       ]
     },
@@ -32076,6 +32076,20 @@
       ]
     },
     {
+      "showId": "honeymoon-in-vegas-2015",
+      "file": "timeout--david-cote.json",
+      "score": 82,
+      "publishDate": "January 15, 2015",
+      "url": "http://www.timeout.com/newyork/theater/honeymoon-in-vegas",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"park avenue armory\""
+        }
+      ]
+    },
+    {
       "showId": "ifthen-2014",
       "file": "washpost--peter-marks.json",
       "score": 68,
@@ -32670,6 +32684,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "jekyll-and-hyde-2013",
+      "file": "timeout--adam-feldman.json",
+      "score": 25,
+      "publishDate": "2013-04-18",
+      "url": "http://www.timeout.com/newyork/theater/jekyll-hyde",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"park avenue armory\""
         }
       ]
     },
@@ -35335,6 +35363,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"ars nova\""
+        }
+      ]
+    },
+    {
+      "showId": "orphans-2013",
+      "file": "timeout--david-cote.json",
+      "score": 42,
+      "publishDate": "2013-04-18",
+      "url": "https://www.timeout.com/newyork/theater/orphans",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"park avenue armory\""
         }
       ]
     },
@@ -40630,6 +40672,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"brooklyn academy\""
+        }
+      ]
+    },
+    {
+      "showId": "the-testament-of-mary-2013",
+      "file": "timeout--david-cote.json",
+      "score": 58,
+      "publishDate": "April 22, 2013",
+      "url": "http://www.timeout.com/newyork/theater/the-testament-of-mary",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"park avenue armory\""
         }
       ]
     },

@@ -1,15 +1,23 @@
 {
-  "timestamp": "2026-06-12T17:42:55.958Z",
-  "totalDrifted": 1,
+  "timestamp": "2026-06-12T17:55:08.951Z",
+  "totalDrifted": 2,
   "threshold": 20,
   "reviews": [
     {
-      "showId": "the-testament-of-mary-2013",
+      "showId": "jekyll-and-hyde-2013",
+      "outlet": "Time Out New York",
+      "critic": "Adam Feldman",
+      "oldScore": 25,
+      "newScore": 100,
+      "delta": 75
+    },
+    {
+      "showId": "orphans-2013",
       "outlet": "Time Out New York",
       "critic": "David Cote",
-      "oldScore": 60,
-      "newScore": 80,
-      "delta": 20
+      "oldScore": 40,
+      "newScore": 100,
+      "delta": 60
     }
   ]
 }
