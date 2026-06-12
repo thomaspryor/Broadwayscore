@@ -385,7 +385,10 @@
     "prince-of-broadway-2017/broadway-and-me--janice-c-simpson.json",
     "a-dolls-house-part-2-2017/theater-pizzazz--sandi-durell.json",
     "dear-evan-hansen-2016/times-uk--clive-davis.json",
-    "natasha-pierre-and-the-great-comet-of-1812-2016/broadway-and-me--janice-c-simpson.json"
+    "natasha-pierre-and-the-great-comet-of-1812-2016/broadway-and-me--janice-c-simpson.json",
+    "fiddler-on-the-roof-2015/broadway-and-me--janice-c-simpson.json",
+    "the-color-purple-2015/wsj--terry-teachout.json",
+    "the-color-purple-2015/broadway-and-me--janice-c-simpson.json"
   ],
   "failed": [
     "pride-west-end-2026/guardian--unknown.json",
@@ -897,7 +900,14 @@
     "tuck-everlasting-2016/thestage--mark-shenton.json",
     "american-psycho-2016/ap--mark-kennedy.json",
     "bright-star-2016/drama-queen-nyc--jonathan-warman.json",
-    "eclipsed-2016/nydailynews--joe-dziemianowicz.json"
+    "eclipsed-2016/nydailynews--joe-dziemianowicz.json",
+    "noises-off-2016/thestage--mark-shenton.json",
+    "a-view-from-the-bridge-2015/financialtimes--sarah-hemming.json",
+    "on-your-feet-2015/broadway-and-me--janice-c-simpson.json",
+    "the-gin-game-2015/vulture--jesse-green.json",
+    "the-gin-game-2015/ap--mark-kennedy.json",
+    "the-gin-game-2015/wnyc--jennifer-vanasco.json",
+    "fool-for-love-2015/nydailynews--joe-dziemianowicz.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1071,7 +1081,9 @@
       "angels-in-america-2018/frontmezzjunkies--steven-ross.json",
       "prince-of-broadway-2017/broadway-and-me--janice-c-simpson.json",
       "dear-evan-hansen-2016/times-uk--clive-davis.json",
-      "natasha-pierre-and-the-great-comet-of-1812-2016/broadway-and-me--janice-c-simpson.json"
+      "natasha-pierre-and-the-great-comet-of-1812-2016/broadway-and-me--janice-c-simpson.json",
+      "fiddler-on-the-roof-2015/broadway-and-me--janice-c-simpson.json",
+      "the-color-purple-2015/broadway-and-me--janice-c-simpson.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1129,7 +1141,9 @@
       "bright-star-2016/wsj--terry-teachout.json",
       "data/review-texts/she-loves-me-2016/wsj--terry-teachout.json",
       "she-loves-me-2016/wsj--terry-teachout.json",
-      "data/review-texts/are-you-now-or-have-you-ever-been-off-broadway-2026/theater-pizzazz--unknown.json"
+      "data/review-texts/are-you-now-or-have-you-ever-been-off-broadway-2026/theater-pizzazz--unknown.json",
+      "data/review-texts/the-color-purple-2015/wsj--terry-teachout.json",
+      "the-color-purple-2015/wsj--terry-teachout.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1309,7 +1323,8 @@
       "data/review-texts/les-liaisons-dangereuses-2016/thestage--mark-shenton.json",
       "data/review-texts/heisenberg-2016/thestage--tom-wicker.json",
       "data/review-texts/holiday-inn-the-new-irving-berlin-musical-2016/thestage--mark-shenton.json",
-      "data/review-texts/tuck-everlasting-2016/thestage--mark-shenton.json"
+      "data/review-texts/tuck-everlasting-2016/thestage--mark-shenton.json",
+      "data/review-texts/noises-off-2016/thestage--mark-shenton.json"
     ],
     "archive": [
       "small-off-broadway-2026/culturesauce--thom-geier.json",
@@ -1427,7 +1442,7 @@
     ]
   },
   "startTime": "2026-06-11T20:39:04.995Z",
-  "lastProcessed": "eclipsed-2016/nydailynews--joe-dziemianowicz.json",
+  "lastProcessed": "fool-for-love-2015/nydailynews--joe-dziemianowicz.json",
   "log": [
     {
       "t": "2026-06-12T02:25:00.252Z",
@@ -1964,6 +1979,17 @@
       "t": "2026-06-12T11:48:20.329Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-06-12T12:20:10.005Z",
+      "event": "bb-session",
+      "session": "3208d2e3",
+      "url": "http://www.wsj.com/articles/the-color-purple-review-new-star-in-the-broadway-sky"
+    },
+    {
+      "t": "2026-06-12T12:20:11.151Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
