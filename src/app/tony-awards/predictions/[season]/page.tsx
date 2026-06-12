@@ -11,6 +11,7 @@ import FeaturedSpot from '@/components/FeaturedSpot';
 import { CategorySection, SHOW_LEVEL_CATEGORIES } from '@/components/tony-noms/CategorySection';
 import { CeremonyCountdown } from '@/components/tony/CeremonyCountdown';
 import { TrackRecord } from '@/components/tony/TrackRecord';
+import { PredictionRetrospective } from '@/components/tony/PredictionRetrospective';
 import { getNomineesByCategory, enrichMajorCategoriesWithOdds, getOddsLastUpdated } from '@/lib/data-tony-nominees';
 import { tonySeasonForCeremonyYear } from '@/lib/tony-cutoffs';
 import {
@@ -385,6 +386,10 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
             <TrackRecord summaries={allSummaries} seasonCount={accuracyStats.seasonCount} />
           </div>
         </details>
+
+        {/* Post-ceremony retrospective — renders only for ceremony years with
+            an entry in data/tony-prediction-retrospectives.json */}
+        <PredictionRetrospective ceremonyYear={season.ceremonyYear} />
 
         {/* Report Card (past seasons only) */}
         {reportCard.length > 0 && (
