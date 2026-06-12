@@ -1,33 +1,22 @@
 {
-  "updatedAt": "2026-06-12T07:36:09.725Z",
-  "processed": 302,
-  "failed": 294,
-  "successRate": "50.7%",
+  "updatedAt": "2026-06-12T07:41:02.382Z",
+  "processed": 310,
+  "failed": 296,
+  "successRate": "51.2%",
   "tierBreakdown": {
-    "playwright": 139,
+    "playwright": 143,
     "amp": 0,
-    "browserbase": 46,
+    "browserbase": 48,
     "directCookies": 0,
     "scrapingbee": 60,
-    "brightdata": 25,
-    "archiveToday": 28,
-    "archive": 74
+    "brightdata": 26,
+    "archiveToday": 29,
+    "archive": 76
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 8,
   "recentActivity": [
     {
-      "t": "2026-06-12T05:25:06.790Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-12T09:54:53.988Z",
-      "event": "bb-session",
-      "session": "24c45aef",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-12T09:54:54.478Z",
+      "t": "2026-06-12T05:25:38.757Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     },
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-06-12T07:33:18.187Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-12T07:38:09.247Z",
+      "event": "bb-session",
+      "session": "b3bc2289",
+      "url": "http://www.wsj.com/articles/fully-committed-review-jesse-tyler-ferguson-party-of"
+    },
+    {
+      "t": "2026-06-12T07:38:10.306Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
