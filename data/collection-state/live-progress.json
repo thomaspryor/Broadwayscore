@@ -1,64 +1,20 @@
 {
-  "updatedAt": "2026-06-12T12:50:33.608Z",
+  "updatedAt": "2026-06-12T13:33:16.408Z",
   "processed": 364,
-  "failed": 345,
-  "successRate": "51.3%",
+  "failed": 355,
+  "successRate": "50.6%",
   "tierBreakdown": {
     "playwright": 154,
     "amp": 0,
-    "browserbase": 57,
+    "browserbase": 61,
     "directCookies": 0,
     "scrapingbee": 61,
     "brightdata": 33,
     "archiveToday": 44,
     "archive": 108
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-06-12T07:42:35.213Z",
-      "event": "bb-session",
-      "session": "9c800077",
-      "url": "http://www.wsj.com/articles/she-loves-me-the-sweet-scent-of-perfection-145826100"
-    },
-    {
-      "t": "2026-06-12T07:42:36.254Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-06-12T07:56:20.703Z",
-      "event": "bb-session",
-      "session": "16dc404b",
-      "url": "http://www.talkinbroadway.com/world/Sylvia.html"
-    },
-    {
-      "t": "2026-06-12T07:56:21.720Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-06-12T08:02:06.991Z",
-      "event": "bb-session",
-      "session": "c8f33a4a",
-      "url": "https://talkinbroadway.com/world/AmazingGrace.html"
-    },
-    {
-      "t": "2026-06-12T08:02:07.994Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-06-12T08:05:18.646Z",
-      "event": "bb-session",
-      "session": "144d82fd",
-      "url": "https://talkinbroadway.com/world/SomethingRotten.html"
-    },
-    {
-      "t": "2026-06-12T08:05:19.694Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
     {
       "t": "2026-06-12T08:09:06.582Z",
       "event": "bb-session",
@@ -122,6 +78,50 @@
     },
     {
       "t": "2026-06-12T12:48:52.144Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-12T13:30:23.256Z",
+      "event": "bb-session",
+      "session": "6b57accd",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-12T13:30:23.882Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-12T13:31:20.396Z",
+      "event": "bb-session",
+      "session": "3121c657",
+      "url": "https://www.nytimes.com/2026/06/03/theater/caissie-levy-broadway-tonys-ragtime.h"
+    },
+    {
+      "t": "2026-06-12T13:31:20.936Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-12T13:31:40.236Z",
+      "event": "bb-session",
+      "session": "b3114568",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-12T13:31:40.778Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-12T13:31:53.916Z",
+      "event": "bb-session",
+      "session": "c1fa861a",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-12T13:31:54.512Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
