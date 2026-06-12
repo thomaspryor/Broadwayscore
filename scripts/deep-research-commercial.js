@@ -634,6 +634,17 @@ async function main() {
   } catch (e) {
     progress = { completed: [], startedAt: new Date().toISOString() };
   }
+  // progress.completed is a within-batch resume checkpoint, not a permanent
+  // done-list. A "batch" = one Saturday run plus any timed-out retries in the
+  // following 48h. Without this expiry the list accumulates forever (89 slugs
+  // by 2026-06-11) and silently blocks the 6-month re-research tier, because
+  // the loop below skips anything in completed.
+  const batchAnchor = progress.lastRunAt || progress.startedAt;
+  if (batchAnchor && Date.now() - new Date(batchAnchor).getTime() > 48 * 3_600_000) {
+    console.log(`Resetting batch progress (last run ${batchAnchor} is >48h old, ${(progress.completed || []).length} completed slugs cleared)`);
+    progress = { completed: [], startedAt: new Date().toISOString() };
+  }
+  if (!Array.isArray(progress.completed)) progress.completed = [];
 
   for (const slug of targetSlugs) {
     // Skip if already completed in this batch

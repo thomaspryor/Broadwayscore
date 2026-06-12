@@ -197,7 +197,11 @@ jobs:
           # At ~$0.09/show average, 80 shows ≈ $7 — well under the $50 cap.
           ARGS="$ARGS --max-shows=${{ inputs.max_shows || '80' }}"
           ARGS="$ARGS --budget=${{ inputs.budget || '50' }}"
-          ARGS="$ARGS --time-budget-min=${{ inputs.time_budget_min || '100' }}"
+          # Default in bash, not a GHA || expression — the expression coerces
+          # a literal 0 (= unlimited) to falsy and would silently turn it into 100.
+          TB="${{ inputs.time_budget_min }}"
+          [ -z "$TB" ] && TB=100
+          ARGS="$ARGS --time-budget-min=$TB"
           ARGS="$ARGS --model=o4-mini-deep"
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             ARGS="$ARGS --dry-run"

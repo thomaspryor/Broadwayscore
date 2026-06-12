@@ -339,6 +339,7 @@ async function phase1ExtractLocal(reviews) {
     // LLM-fallback extraction makes this loop slow at backlog scale
     if (budgetSpent('phase 1', reviews.length - idx)) break;
     idx++;
+    recordAttempt(review);
     const text = [
       review.data.fullText || '',
       review.data.dtliExcerpt || '',
@@ -444,6 +445,7 @@ async function fetchGuardianRatings(reviews) {
   for (let i = 0; i < toProcess.length; i++) {
     const review = toProcess[i];
     if (budgetSpent('phase 2 (Guardian)', toProcess.length - i)) break;
+    recordAttempt(review);
     try {
       const articleId = new URL(review.data.url).pathname.replace(/^\//, '');
       const params = new URLSearchParams({
@@ -506,6 +508,7 @@ async function fetchTheaterLifeRatings(reviews) {
   for (let i = 0; i < toProcess.length; i++) {
     const review = toProcess[i];
     if (budgetSpent('phase 2 (Theater Life)', toProcess.length - i)) break;
+    recordAttempt(review);
     try {
       // Extract slug from URL
       const slug = new URL(review.data.url).pathname.replace(/^\/|\/$/g, '');
@@ -574,6 +577,7 @@ async function fetchNYSRRatings(reviews) {
   for (let i = 0; i < toProcess.length; i++) {
     const review = toProcess[i];
     if (budgetSpent('phase 2 (NYSR)', toProcess.length - i)) break;
+    recordAttempt(review);
     try {
       const slug = new URL(review.data.url).pathname.replace(/^\/|\/$/g, '');
       if (!slug) continue;

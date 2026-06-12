@@ -109,7 +109,11 @@ jobs:
             PHASES="${{ inputs.phases || '0,1,2,3' }}"
             LIMIT="${{ inputs.limit || '0' }}"
             ARGS="--phase=$PHASES --limit=$LIMIT"
-            ARGS="$ARGS --time-budget-min=${{ inputs.time_budget_min || '100' }}"
+            # Default in bash, not a GHA || expression — the expression coerces
+            # a literal 0 (= unlimited) to falsy and would silently turn it into 100.
+            TB="${{ inputs.time_budget_min }}"
+            [ -z "$TB" ] && TB=100
+            ARGS="$ARGS --time-budget-min=$TB"
             if [ -n "${{ inputs.outlet }}" ]; then
               ARGS="$ARGS --outlet=${{ inputs.outlet }}"
             fi

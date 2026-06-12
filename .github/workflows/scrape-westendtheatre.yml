@@ -20,6 +20,11 @@ on:
         required: false
         type: boolean
         default: false
+      time_budget_min:
+        description: 'Wall-clock budget in minutes (0 = unlimited)'
+        required: false
+        type: string
+        default: '25'
 
 concurrency:
   group: westendtheatre-scrape
@@ -91,7 +96,11 @@ jobs:
 
           # Exit cleanly before the 30-min job timeout; deferred posts are
           # picked up next run (archives + no-ratings cache persist progress).
-          ARGS="$ARGS --time-budget-min=25"
+          # Default in bash, not a GHA || expression — the expression coerces
+          # a literal 0 (= unlimited) to falsy.
+          TB="${{ inputs.time_budget_min }}"
+          [ -z "$TB" ] && TB=25
+          ARGS="$ARGS --time-budget-min=$TB"
 
           # shellcheck disable=SC2086
           node scripts/scrape-westendtheatre-roundups.js $ARGS

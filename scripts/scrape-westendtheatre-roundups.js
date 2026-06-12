@@ -521,6 +521,7 @@ async function main() {
     // If still no ratings, the review content is JS-rendered (not in API).
     // Fetch the actual page HTML as last resort — unless a previous run
     // already fetched this exact post version and found nothing.
+    let pageFetchSucceeded = false;
     if (ratings.length === 0 && postUrl) {
       if (!force && isCachedNoRatings(noRatingsCache, post)) {
         stats.skippedCachedNoRatings++;
@@ -530,6 +531,7 @@ async function main() {
       stats.pageFetches++;
       const pageHtml = await fetchRenderedPageHtml(postUrl);
       if (pageHtml) {
+        pageFetchSucceeded = true;
         const pageRatings = extractSectionReviews(pageHtml);
         if (pageRatings.length > 0) {
           ratings = pageRatings;
@@ -542,7 +544,10 @@ async function main() {
 
     if (ratings.length === 0) {
       stats.skippedNoTable++;
-      if (postUrl && !dryRun) {
+      // Cache the negative ONLY when we actually got page HTML and found no
+      // ratings in it. A failed fetch (WAF block, proxy outage) must stay
+      // uncached or one bad week becomes a 45-day blind spot for the backlog.
+      if (postUrl && pageFetchSucceeded && !dryRun) {
         noRatingsCache.posts[post.id] = {
           modified: post.modified || post.date,
           checkedAt: new Date().toISOString(),
