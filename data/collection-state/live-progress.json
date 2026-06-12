@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-06-12T07:24:22.535Z",
+  "updatedAt": "2026-06-12T07:27:06.859Z",
   "processed": 190,
-  "failed": 261,
-  "successRate": "42.1%",
+  "failed": 271,
+  "successRate": "41.2%",
   "tierBreakdown": {
     "playwright": 87,
     "amp": 0,
@@ -10,17 +10,11 @@
     "directCookies": 0,
     "scrapingbee": 49,
     "brightdata": 13,
-    "archiveToday": 3,
+    "archiveToday": 4,
     "archive": 43
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-06-12T05:25:06.092Z",
-      "event": "bb-session",
-      "session": "aabb67bc",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
     {
       "t": "2026-06-12T05:25:06.790Z",
       "event": "bb-cookie-inject",
@@ -125,6 +119,12 @@
       "t": "2026-06-12T07:11:12.917Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-12T07:26:09.695Z",
+      "event": "bb-session",
+      "session": "ce100b2b",
+      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
     }
   ]
 }
