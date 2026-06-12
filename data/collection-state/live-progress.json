@@ -1,33 +1,22 @@
 {
-  "updatedAt": "2026-06-12T06:31:52.266Z",
-  "processed": 225,
-  "failed": 231,
-  "successRate": "49.3%",
+  "updatedAt": "2026-06-12T06:38:30.202Z",
+  "processed": 230,
+  "failed": 236,
+  "successRate": "49.4%",
   "tierBreakdown": {
-    "playwright": 102,
+    "playwright": 104,
     "amp": 0,
-    "browserbase": 34,
+    "browserbase": 36,
     "directCookies": 0,
     "scrapingbee": 57,
     "brightdata": 12,
-    "archiveToday": 4,
-    "archive": 56
+    "archiveToday": 6,
+    "archive": 58
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-06-12T04:41:47.355Z",
-      "event": "bb-session",
-      "session": "6b6b81f1",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-12T06:16:21.186Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-12T06:16:33.557Z",
+      "t": "2026-06-12T04:42:00.647Z",
       "event": "bb-session",
       "session": "2d7ecef1",
       "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
@@ -131,6 +120,17 @@
       "t": "2026-06-12T06:13:41.145Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-12T06:34:16.029Z",
+      "event": "bb-session",
+      "session": "782504af",
+      "url": "http://www.wsj.com/articles/kiss-me-kate-review-so-not-in-love-11552609800"
+    },
+    {
+      "t": "2026-06-12T06:34:17.077Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
