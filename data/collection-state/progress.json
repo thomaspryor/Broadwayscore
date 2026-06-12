@@ -411,7 +411,8 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
-      "data/review-texts/small-off-broadway-2026/theater-pizzazz--unknown.json"
+      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -532,43 +533,59 @@
   "lastProcessed": "small-off-broadway-2026/washpost--unknown.json",
   "log": [
     {
-      "t": "2026-06-12T02:21:31.591Z",
+      "t": "2026-06-12T02:25:00.252Z",
       "event": "bb-session",
-      "session": "bdf6ba4a",
+      "session": "57e725bc",
       "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
     },
     {
-      "t": "2026-06-12T02:21:32.070Z",
+      "t": "2026-06-12T02:25:00.621Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-06-12T02:22:07.272Z",
+      "t": "2026-06-12T02:25:34.341Z",
       "event": "bb-session",
-      "session": "6adbf2bb",
+      "session": "bb96c920",
       "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
     },
     {
-      "t": "2026-06-12T02:22:07.663Z",
+      "t": "2026-06-12T02:25:34.793Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     },
     {
-      "t": "2026-06-12T02:22:18.871Z",
+      "t": "2026-06-12T02:25:46.312Z",
       "event": "bb-session",
-      "session": "32ba9c4a",
+      "session": "75b2692f",
       "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
     },
     {
-      "t": "2026-06-12T02:22:19.272Z",
+      "t": "2026-06-12T02:25:46.799Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     },
     {
-      "t": "2026-06-12T02:24:39.461Z",
+      "t": "2026-06-12T02:26:39.756Z",
       "event": "bb-session",
-      "session": "21010cdd",
-      "url": "https://theaterpizzazz.com/small-a-jockeys-indestructible-passion/"
+      "session": "cf456bda",
+      "url": "https://www.nytimes.com/2026/06/01/arts/andy-halliday-dead.html"
+    },
+    {
+      "t": "2026-06-12T02:26:40.158Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-12T02:27:24.217Z",
+      "event": "bb-session",
+      "session": "52c85f1a",
+      "url": "https://www.nytimes.com/2026/05/31/theater/othello-review-wendell-pierce.html"
+    },
+    {
+      "t": "2026-06-12T02:27:24.620Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
