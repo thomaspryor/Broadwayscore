@@ -328,7 +328,15 @@
     "a-view-from-the-bridge-2015/wsj--terry-teachout.json",
     "on-your-feet-2015/timeout--adam-feldman.json",
     "on-your-feet-2015/wsj--terry-teachout.json",
-    "king-charles-iii-2015/nydailynews--joe-dziemianowicz.json"
+    "king-charles-iii-2015/nydailynews--joe-dziemianowicz.json",
+    "king-charles-iii-2015/amny--matt-windman.json",
+    "therese-raquin-2015/timeout--adam-feldman.json",
+    "sylvia-2015/nydailynews--joe-dziemianowicz.json",
+    "sylvia-2015/timeout--adam-feldman.json",
+    "sylvia-2015/timeout--david-cote.json",
+    "dames-at-sea-2015/timeout--adam-feldman.json",
+    "dames-at-sea-2015/wsj--terry-teachout.json",
+    "dames-at-sea-2015/village-voice--elizabeth-zimmer.json"
   ],
   "failed": [
     "pride-west-end-2026/guardian--unknown.json",
@@ -637,7 +645,9 @@
     "a-view-from-the-bridge-2015/financialtimes--sarah-hemming.json",
     "allegiance-2015/timeout--david-cote.json",
     "on-your-feet-2015/backstage-barbie--backstage-barbie.json",
-    "on-your-feet-2015/broadway-and-me--janice-c-simpson.json"
+    "on-your-feet-2015/broadway-and-me--janice-c-simpson.json",
+    "sylvia-2015/wsj--terry-teachout.json",
+    "sylvia-2015/talkinbroadway--matthew-murray.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -975,7 +985,9 @@
       "data/review-texts/tuck-everlasting-2016/thestage--mark-shenton.json",
       "data/review-texts/noises-off-2016/thestage--mark-shenton.json",
       "data/review-texts/the-color-purple-2015/wsj--terry-teachout.json",
-      "data/review-texts/on-your-feet-2015/backstage-barbie--backstage-barbie.json"
+      "data/review-texts/on-your-feet-2015/backstage-barbie--backstage-barbie.json",
+      "data/review-texts/sylvia-2015/wsj--terry-teachout.json",
+      "data/review-texts/sylvia-2015/talkinbroadway--matthew-murray.json"
     ],
     "archive": [
       "small-off-broadway-2026/culturesauce--thom-geier.json",
@@ -1060,11 +1072,19 @@
       "the-humans-2016/wsj--terry-teachout.json",
       "misery-2015/towleroad--naveen-kumar.json",
       "on-your-feet-2015/timeout--adam-feldman.json",
-      "king-charles-iii-2015/nydailynews--joe-dziemianowicz.json"
+      "king-charles-iii-2015/nydailynews--joe-dziemianowicz.json",
+      "king-charles-iii-2015/amny--matt-windman.json",
+      "therese-raquin-2015/timeout--adam-feldman.json",
+      "sylvia-2015/nydailynews--joe-dziemianowicz.json",
+      "sylvia-2015/timeout--adam-feldman.json",
+      "sylvia-2015/timeout--david-cote.json",
+      "dames-at-sea-2015/timeout--adam-feldman.json",
+      "dames-at-sea-2015/wsj--terry-teachout.json",
+      "dames-at-sea-2015/village-voice--elizabeth-zimmer.json"
     ]
   },
   "startTime": "2026-06-11T20:39:04.995Z",
-  "lastProcessed": "king-charles-iii-2015/nydailynews--joe-dziemianowicz.json",
+  "lastProcessed": "dames-at-sea-2015/village-voice--elizabeth-zimmer.json",
   "log": [
     {
       "t": "2026-06-12T02:25:00.252Z",
@@ -1518,6 +1538,17 @@
       "t": "2026-06-12T07:42:36.254Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-12T07:56:20.703Z",
+      "event": "bb-session",
+      "session": "16dc404b",
+      "url": "http://www.talkinbroadway.com/world/Sylvia.html"
+    },
+    {
+      "t": "2026-06-12T07:56:21.720Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
