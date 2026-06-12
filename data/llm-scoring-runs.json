@@ -1,25 +1,5 @@
 [
   {
-    "startedAt": "2026-06-07T16:31:18.024Z",
-    "completedAt": "2026-06-07T16:31:18.212Z",
-    "totalReviews": 21,
-    "processed": 0,
-    "skipped": 20,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "errorDetails": [
-      {
-        "showId": "jerome-off-broadway-2025",
-        "outletId": "off-off-online",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-06-07T18:14:37.354Z",
     "completedAt": "2026-06-07T18:14:37.539Z",
     "totalReviews": 21,
@@ -918618,5 +918598,19 @@
         "hasDisagreement": false
       }
     ]
+  },
+  {
+    "startedAt": "2026-06-12T23:56:42.792Z",
+    "completedAt": "2026-06-12T23:56:48.099Z",
+    "totalReviews": 31,
+    "processed": 1,
+    "skipped": 30,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 12878,
+      "output": 286,
+      "total": 19706
+    },
+    "errorDetails": []
   }
 ]
