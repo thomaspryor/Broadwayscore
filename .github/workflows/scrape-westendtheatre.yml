@@ -47,6 +47,16 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
+      # Without this, data/aggregator-archive/westendtheatre/ is empty in CI,
+      # the script's existing-archive skip never fires, and every matched post
+      # is re-scraped from scratch each week (the cause of the 30-min timeout
+      # kills, e.g. run 27099733099 on 2026-06-07). Also restores the
+      # _no-ratings-cache.json negative cache.
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
       - name: Setup Node.js
         uses: actions/setup-node@v5
         with:
@@ -79,6 +89,10 @@ jobs:
             ARGS="$ARGS --force"
           fi
 
+          # Exit cleanly before the 30-min job timeout; deferred posts are
+          # picked up next run (archives + no-ratings cache persist progress).
+          ARGS="$ARGS --time-budget-min=25"
+
           # shellcheck disable=SC2086
           node scripts/scrape-westendtheatre-roundups.js $ARGS
 
@@ -98,6 +112,13 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Update from scrape-westendtheatre'
+
+      - name: Push aggregator-archive to private repo
+        if: always() && inputs.dry_run != true
+        uses: ./.github/actions/push-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: WestEndTheatre aggregator archive'
 
       - name: Trigger rebuild
         if: always() && inputs.dry_run != true
