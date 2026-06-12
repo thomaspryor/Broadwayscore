@@ -124,6 +124,18 @@ async function getTicketClicks() {
   `);
 }
 
+// Ticket clicks on closed shows — should be zero; any result = badge shown on closed show.
+async function getClosedShowTicketClicks() {
+  return phQuery(`
+    SELECT properties.show_name AS show, properties.platform AS platform, count() AS clicks
+    FROM events
+    WHERE event = 'ticket_click'
+      AND properties.show_status = 'closed'
+      AND timestamp > now() - interval 7 day
+    GROUP BY show, platform ORDER BY clicks DESC LIMIT 10
+  `);
+}
+
 // Gate modal funnel.
 async function getGateFunnel() {
   return phQuery(`
@@ -166,6 +178,7 @@ module.exports = {
   getRageClickDetails,
   getSearchStats,
   getTicketClicks,
+  getClosedShowTicketClicks,
   getGateFunnel,
   getBtcFunnel,
   getPromoClicks,
