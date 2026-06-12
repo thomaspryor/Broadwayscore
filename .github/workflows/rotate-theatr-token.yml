@@ -108,9 +108,20 @@ jobs:
             echo "::error::No rotated token file — previous step must have failed"
             exit 1
           fi
-          gh secret set THEATR_REFRESH_TOKEN < /tmp/theatr-rotated-token.txt
-          rm /tmp/theatr-rotated-token.txt
-          echo "::notice::Theatr refresh token rotation complete. Next scheduled update-theatr.yml run will succeed."
+          # The pasted token was burned by the validation step — if this set
+          # fails, the rotated token is lost and the user must re-capture.
+          # Retry before giving up.
+          for attempt in 1 2 3 4 5; do
+            if gh secret set THEATR_REFRESH_TOKEN < /tmp/theatr-rotated-token.txt; then
+              rm /tmp/theatr-rotated-token.txt
+              echo "::notice::Theatr refresh token rotation complete (attempt $attempt). Next scheduled update-theatr.yml run will succeed."
+              exit 0
+            fi
+            echo "::warning::gh secret set failed (attempt $attempt/5), retrying..."
+            sleep $((attempt * 10))
+          done
+          echo "::error::Failed to persist rotated token after 5 attempts — the pasted token is burned. Re-capture from the iOS app and run this workflow again."
+          exit 1
 
       - name: Dispatch update-theatr as a smoke test
         env:
