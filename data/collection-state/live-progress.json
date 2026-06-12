@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-12T08:03:47.696Z",
-  "processed": 349,
-  "failed": 317,
-  "successRate": "52.4%",
+  "updatedAt": "2026-06-12T08:07:20.496Z",
+  "processed": 355,
+  "failed": 321,
+  "successRate": "52.5%",
   "tierBreakdown": {
-    "playwright": 150,
+    "playwright": 151,
     "amp": 0,
     "browserbase": 54,
     "directCookies": 0,
     "scrapingbee": 61,
-    "brightdata": 31,
-    "archiveToday": 35,
-    "archive": 99
+    "brightdata": 32,
+    "archiveToday": 37,
+    "archive": 103
   },
-  "browserbaseSessions": 13,
+  "browserbaseSessions": 14,
   "recentActivity": [
-    {
-      "t": "2026-06-12T07:07:37.334Z",
-      "event": "bb-session",
-      "session": "f6a2984a",
-      "url": "http://www.wsj.com/articles/junk-review-bankrupting-entertainment-1509669000"
-    },
-    {
-      "t": "2026-06-12T07:07:38.386Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-06-12T07:25:40.247Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-06-12T08:02:07.994Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-12T08:05:18.646Z",
+      "event": "bb-session",
+      "session": "144d82fd",
+      "url": "https://talkinbroadway.com/world/SomethingRotten.html"
+    },
+    {
+      "t": "2026-06-12T08:05:19.694Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }
