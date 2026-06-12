@@ -143,6 +143,10 @@ data/critic-consensus.json
 data/critic-registry.json
 data/outlet-registry.json
 
+# Theatr rotated refresh token (written by scrape-theatr-audience.js) — a live
+# credential that must never be committed. The BroadwayScorecard/ line below
+# only covered the iOS-app subdir path, not the actual repo-root location.
+data/theatr-refresh-token.tmp
 # Mobile app (separate repo)
 BroadwayScorecard/data/theatr-refresh-token.tmp
 
