@@ -26,10 +26,17 @@ on:
         default: false
 
 concurrency:
-  # Per-run concurrency prevents the orchestrator's back-to-back dispatches from
-  # dropping each other at GitHub's 1-pending-queue limit. See Cats 2026-04-07
-  # poller postmortem — shared groups silently discard the middle runs.
-  group: theatr-${{ github.run_id }}
+  # MUST be a shared group (same group as rotate-theatr-token.yml). Theatr
+  # refresh tokens are single-use and rotate on every auth call — parallel
+  # runs both read THEATR_REFRESH_TOKEN, the first burns it, the second fails
+  # auth and trips Theatr's reuse detection, which can revoke the rotated
+  # token too. Per-run groups (the old theatr-run_id pattern) caused the
+  # Jun 7-11 2026 incident: a freshly rotated token died within days, then 4
+  # consecutive auth failures. Tradeoff vs the Cats 2026-04-07 dropped-dispatch
+  # concern: GitHub keeps only the newest pending run per group, so a queued
+  # dispatch can be superseded — acceptable here because the weekly cron sweeps
+  # all shows. Do NOT revert to per-run groups.
+  group: theatr
   cancel-in-progress: false
 
 permissions:
@@ -82,12 +89,27 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
+          # The old token is already burned by this point (Theatr rotates on
+          # every auth call) — if this step fails, the new token is lost and
+          # the next run dies with "auth refresh failed" until a manual
+          # re-capture via rotate-theatr-token.yml. So: retry, and fail the
+          # job loudly rather than silently dropping the token.
           TOKEN_FILE="data/theatr-refresh-token.tmp"
-          if [ -f "$TOKEN_FILE" ]; then
-            gh secret set THEATR_REFRESH_TOKEN < "$TOKEN_FILE"
-            rm "$TOKEN_FILE"
-            echo "Refresh token rotated"
+          if [ ! -f "$TOKEN_FILE" ]; then
+            echo "No rotated token file — scraper failed before auth, secret unchanged"
+            exit 0
           fi
+          for attempt in 1 2 3 4 5; do
+            if gh secret set THEATR_REFRESH_TOKEN < "$TOKEN_FILE"; then
+              rm "$TOKEN_FILE"
+              echo "Refresh token rotated (attempt $attempt)"
+              exit 0
+            fi
+            echo "::warning::gh secret set failed (attempt $attempt/5), retrying..."
+            sleep $((attempt * 10))
+          done
+          echo "::error::Failed to persist rotated THEATR_REFRESH_TOKEN after 5 attempts — token is BURNED and LOST. Re-capture from the iOS app and run rotate-theatr-token.yml."
+          exit 1
 
       - name: Push core data to private repo
         if: always() && inputs.dry_run != true

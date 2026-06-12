@@ -494,6 +494,17 @@ function selectBestExcerpt(data, showTitle) {
   function validateExcerpt(excerpt, source) {
     if (!excerpt) return null;
 
+    // Layer 0: Fragment guard. Fallback sources (LLM keyPhrases, aggregator
+    // excerpts) can surface mid-sentence fragments that the dedicated
+    // llmPullQuote path would have trimmed. Trim a trailing partial sentence,
+    // then reject anything that still starts lowercase — a lowercase start means
+    // a mid-sentence fragment ("disappointing: poorly directed, oddly paced")
+    // that reads as a broken pull quote on the site. Dropping it lets a cleaner
+    // source (fullText extraction) win instead. 2026-06-12: ~20 displayed quotes
+    // were lowercase-start fragments from the keyPhrase fallback.
+    excerpt = trimToCompleteSentence(excerpt);
+    if (/^[a-z]/.test(excerpt.trim())) return null;
+
     // Layer 1: Internal-note guard — reject editorial notes that leaked into excerpt fields.
     if (isInternalNote(excerpt)) {
       if (!stats.internalNoteExcerptsRejected) stats.internalNoteExcerptsRejected = [];
