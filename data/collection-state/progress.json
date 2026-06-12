@@ -301,7 +301,17 @@
     "sweeney-todd-2023/broadway-and-me--janice-c-simpson.json",
     "sweeney-todd-2023/nbcnews--variety-referenced-by-nbc.json",
     "kpop-2022/broadway-and-me--janice-c-simpson.json",
-    "1776-2022/broadway-and-me--janice-c-simpson.json"
+    "1776-2022/broadway-and-me--janice-c-simpson.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
+    "small-off-broadway-2026/guardian--arifa-akbar.json",
+    "small-off-broadway-2026/pages-on-stages--unknown.json",
+    "small-off-broadway-2026/the-recs--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -395,7 +405,13 @@
       "between-riverside-and-crazy-2022/stagebuddy--elyse-trevers.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "the-maids-off-broadway-2026/nytimes--roslyn-sulcas.json",
@@ -512,6 +528,62 @@
     ]
   },
   "startTime": "2026-06-11T20:39:04.995Z",
-  "lastProcessed": "into-the-woods-2022/newyorker--conde-nast.json",
-  "log": []
+  "lastProcessed": "small-off-broadway-2026/the-recs--unknown.json",
+  "log": [
+    {
+      "t": "2026-06-12T02:25:00.252Z",
+      "event": "bb-session",
+      "session": "57e725bc",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-12T02:25:00.621Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-12T02:25:34.341Z",
+      "event": "bb-session",
+      "session": "bb96c920",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-12T02:25:34.793Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-12T02:25:46.312Z",
+      "event": "bb-session",
+      "session": "75b2692f",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-12T02:25:46.799Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-12T02:26:39.756Z",
+      "event": "bb-session",
+      "session": "cf456bda",
+      "url": "https://www.nytimes.com/2026/06/01/arts/andy-halliday-dead.html"
+    },
+    {
+      "t": "2026-06-12T02:26:40.158Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-12T02:27:24.217Z",
+      "event": "bb-session",
+      "session": "52c85f1a",
+      "url": "https://www.nytimes.com/2026/05/31/theater/othello-review-wendell-pierce.html"
+    },
+    {
+      "t": "2026-06-12T02:27:24.620Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
