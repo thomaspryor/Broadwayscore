@@ -135,7 +135,10 @@ function findMatchingShow(showName) {
 async function validateWithClaude(submissionData) {
   const showsList = shows.map(s => `- ${s.title} (${s.id})`).join('\n');
 
+  const today = new Date().toISOString().split('T')[0];
   const prompt = `You are validating a Broadway review submission for our database. Analyze the following submission and determine if it's valid.
+
+TODAY'S DATE: ${today} — use this when evaluating publication dates in URLs or metadata. Review URLs with dates in 2025 or 2026 are expected and valid.
 
 SUBMISSION DATA:
 - Review URL: ${submissionData.reviewUrl}

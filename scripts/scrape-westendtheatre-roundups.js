@@ -28,14 +28,24 @@ const {
 } = require('./lib/review-normalization');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { fetchJSON: scraperFetchJSON, fetchPage, cleanup } = require('./lib/scraper');
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
 const archiveDir = path.join(__dirname, '../data/aggregator-archive/westendtheatre');
+// Negative-result cache: posts whose ratings required a rendered-page fetch
+// but yielded nothing get NO archive file, so without this they were
+// re-fetched every weekly run — a monotonically growing set that blew the
+// 30-min workflow timeout. Keyed by WP post id; invalidated when the post's
+// `modified` stamp changes or the entry ages past NO_RATINGS_RECHECK_DAYS
+// (slow self-heal for transient fetch failures cached as negatives).
+const noRatingsCachePath = path.join(archiveDir, '_no-ratings-cache.json');
+const NO_RATINGS_RECHECK_DAYS = 45;
 
 const args = process.argv.slice(2);
 const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
 const dryRun = args.includes('--dry-run');
 const force = args.includes('--force');
+const timeBudget = createRunBudget(parseTimeBudgetMin(args));
 
 const RATE_LIMIT_MS = 1500;
 const API_PAGE_DELAY_MS = 3000;
@@ -53,8 +63,39 @@ const stats = {
   skippedLowConfidence: 0,
   skippedContentMismatch: 0,
   skippedNoTable: 0,
+  skippedCachedNoRatings: 0,
+  pageFetches: 0,
+  unprocessedPosts: 0,
   errors: [],
 };
+
+function loadNoRatingsCache() {
+  try {
+    const c = JSON.parse(fs.readFileSync(noRatingsCachePath, 'utf8'));
+    return { posts: c.posts || {} };
+  } catch { return { posts: {} }; }
+}
+
+function saveNoRatingsCache(cache) {
+  if (dryRun) return;
+  try {
+    fs.mkdirSync(archiveDir, { recursive: true });
+    fs.writeFileSync(noRatingsCachePath, JSON.stringify({
+      updatedAt: new Date().toISOString(),
+      posts: cache.posts,
+    }, null, 2) + '\n');
+  } catch (e) {
+    console.log(`  ⚠️  Could not save no-ratings cache: ${e.message}`);
+  }
+}
+
+function isCachedNoRatings(cache, post, now = Date.now) {
+  const entry = cache.posts[post.id];
+  if (!entry) return false;
+  if (entry.modified !== (post.modified || post.date)) return false; // post updated → recheck
+  const ageDays = (now() - new Date(entry.checkedAt).getTime()) / 86_400_000;
+  return ageDays < NO_RATINGS_RECHECK_DAYS;
+}
 
 // --- HTTP helpers ---
 
@@ -396,7 +437,13 @@ async function main() {
   }
 
   // Process each post
+  const noRatingsCache = loadNoRatingsCache();
   for (let i = 0; i < allPosts.length; i++) {
+    if (timeBudget.exceeded()) {
+      stats.unprocessedPosts = allPosts.length - i;
+      console.log(`\n⏱ Time budget (${timeBudget.minutes} min) reached — ${stats.unprocessedPosts} posts deferred to next run. If this recurs weekly, the no-ratings cache or archive checkout is not persisting; investigate before raising the budget.`);
+      break;
+    }
     const post = allPosts[i];
     const wpTitle = post.title?.rendered || '';
     const htmlContent = post.content?.rendered || '';
@@ -472,11 +519,19 @@ async function main() {
     }
 
     // If still no ratings, the review content is JS-rendered (not in API).
-    // Fetch the actual page HTML as last resort.
+    // Fetch the actual page HTML as last resort — unless a previous run
+    // already fetched this exact post version and found nothing.
+    let pageFetchSucceeded = false;
     if (ratings.length === 0 && postUrl) {
+      if (!force && isCachedNoRatings(noRatingsCache, post)) {
+        stats.skippedCachedNoRatings++;
+        continue;
+      }
       console.log(`  [FETCH PAGE] ${show.title} — API has no ratings, fetching rendered page...`);
+      stats.pageFetches++;
       const pageHtml = await fetchRenderedPageHtml(postUrl);
       if (pageHtml) {
+        pageFetchSucceeded = true;
         const pageRatings = extractSectionReviews(pageHtml);
         if (pageRatings.length > 0) {
           ratings = pageRatings;
@@ -489,7 +544,22 @@ async function main() {
 
     if (ratings.length === 0) {
       stats.skippedNoTable++;
+      // Cache the negative ONLY when we actually got page HTML and found no
+      // ratings in it. A failed fetch (WAF block, proxy outage) must stay
+      // uncached or one bad week becomes a 45-day blind spot for the backlog.
+      if (postUrl && pageFetchSucceeded && !dryRun) {
+        noRatingsCache.posts[post.id] = {
+          modified: post.modified || post.date,
+          checkedAt: new Date().toISOString(),
+          url: postUrl,
+        };
+        saveNoRatingsCache(noRatingsCache);
+      }
       continue;
+    }
+    if (noRatingsCache.posts[post.id]) {
+      delete noRatingsCache.posts[post.id];
+      saveNoRatingsCache(noRatingsCache);
     }
 
     stats.matchedShows++;
@@ -558,6 +628,11 @@ async function main() {
   console.log(`  Low confidence: ${stats.skippedLowConfidence}`);
   console.log(`  Content mismatch: ${stats.skippedContentMismatch}`);
   console.log(`  No table:       ${stats.skippedNoTable}`);
+  console.log(`  Cached no-ratings skips: ${stats.skippedCachedNoRatings}`);
+  console.log(`  Rendered-page fetches:   ${stats.pageFetches}`);
+  if (stats.unprocessedPosts > 0) {
+    console.log(`  ⏱ Unprocessed (time budget): ${stats.unprocessedPosts}`);
+  }
   if (!dryRun) {
     console.log(`  New reviews:    ${stats.newReviews}`);
     console.log(`  Updated:        ${stats.updatedReviews}`);
@@ -568,7 +643,7 @@ async function main() {
   }
 }
 
-module.exports = { extractStarRatings, extractSectionReviews, extractShowTitle, stripHtml };
+module.exports = { extractStarRatings, extractSectionReviews, extractShowTitle, stripHtml, fetchRenderedPageHtml, isCachedNoRatings, NO_RATINGS_RECHECK_DAYS };
 
 if (require.main === module) {
   main()
