@@ -33,6 +33,10 @@ on:
         description: 'Report only, no file writes'
         required: false
         default: 'false'
+      time_budget_min:
+        description: 'Wall-clock budget in minutes (0 = unlimited)'
+        required: false
+        default: '100'
 
 permissions:
   contents: write
@@ -94,12 +98,18 @@ jobs:
         run: |
           ARGS=""
           if [ "${{ github.event_name }}" = "schedule" ]; then
-            # Weekly cron: all phases, no limit (timeout is the natural cap, cost ~$2/run max)
-            ARGS="--phase=0,1,2,3"
+            # Weekly cron: all phases, 100-min wall-clock budget. The script
+            # exits cleanly at the budget and rotates the backlog via
+            # data/audit/recover-ratings-state.json (least-recently-attempted
+            # first), so successive weeks cover different slices. The 120-min
+            # job timeout is a backstop, not the cap — timeout kills made 5 of
+            # the last 6 weekly runs red before 2026-06-11.
+            ARGS="--phase=0,1,2,3 --time-budget-min=100"
           else
             PHASES="${{ inputs.phases || '0,1,2,3' }}"
             LIMIT="${{ inputs.limit || '0' }}"
             ARGS="--phase=$PHASES --limit=$LIMIT"
+            ARGS="$ARGS --time-budget-min=${{ inputs.time_budget_min || '100' }}"
             if [ -n "${{ inputs.outlet }}" ]; then
               ARGS="$ARGS --outlet=${{ inputs.outlet }}"
             fi
@@ -199,6 +209,9 @@ jobs:
                 '| **Total** | **' + total + '** |',
                 '',
                 'Missing: ' + (r.totalMissing || 0) + ' | Errors: ' + (r.errors || 0),
+                r.timeBudgetExhausted
+                  ? '⏱ **Time budget exhausted** at ' + r.timeBudgetMin + ' min — backlog rotates to next run. If this fires every week while Missing grows, recovery is degrading; investigate instead of raising the budget.'
+                  : '',
               ];
               console.log(lines.join('\n'));
             } catch(e) {
