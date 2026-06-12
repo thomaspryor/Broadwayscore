@@ -1,34 +1,22 @@
 {
-  "updatedAt": "2026-06-12T07:30:37.181Z",
-  "processed": 294,
-  "failed": 292,
-  "successRate": "50.2%",
+  "updatedAt": "2026-06-12T07:36:09.725Z",
+  "processed": 302,
+  "failed": 294,
+  "successRate": "50.7%",
   "tierBreakdown": {
-    "playwright": 136,
+    "playwright": 139,
     "amp": 0,
-    "browserbase": 44,
+    "browserbase": 46,
     "directCookies": 0,
     "scrapingbee": 60,
-    "brightdata": 22,
-    "archiveToday": 27,
-    "archive": 73
+    "brightdata": 25,
+    "archiveToday": 28,
+    "archive": 74
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
-      "t": "2026-06-12T05:01:07.900Z",
-      "event": "bb-session",
-      "session": "ce100b2b",
-      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
-    },
-    {
-      "t": "2026-06-12T09:54:21.526Z",
-      "event": "bb-session",
-      "session": "5b27870f",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
-    {
-      "t": "2026-06-12T09:54:22.613Z",
+      "t": "2026-06-12T05:25:06.790Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
@@ -123,6 +111,17 @@
     },
     {
       "t": "2026-06-12T07:29:08.364Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-12T07:33:17.149Z",
+      "event": "bb-session",
+      "session": "6b4e4125",
+      "url": "http://www.wsj.com/articles/holiday-inn-the-new-irving-berlin-musical-review-147"
+    },
+    {
+      "t": "2026-06-12T07:33:18.187Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
