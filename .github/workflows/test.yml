@@ -41,6 +41,18 @@ on:
       # these path entries a push to them triggers ZERO CI (allow-list gate).
       - 'scripts/lib/comparative-band.js'
       - 'scripts/lib/comparative-band.test.mjs'
+      # Run-budget helper (cron time budgets) — colocated scripts/lib/*.test.mjs
+      # step covers it; the WET scraper's cache predicate is covered by
+      # tests/unit/wet-title-extraction.test.mjs. The three budget-consuming
+      # cron scripts are listed so solo edits to them still trigger CI
+      # (workflow hygiene + lint + colocated batches), not ZERO coverage.
+      - 'scripts/lib/run-budget.js'
+      - 'scripts/lib/run-budget.test.mjs'
+      - 'scripts/scrape-westendtheatre-roundups.js'
+      - 'scripts/recover-explicit-ratings.js'
+      - 'scripts/deep-research-commercial.js'
+      - 'scripts/sweep-we-aggregators.js'
+      - 'scripts/gather-reviews.js'
       - 'scripts/llm-scoring/comparative-rescore.ts'
       - 'scripts/llm-scoring/config.ts'
       - 'scripts/lib/classify-category.js'

@@ -34,6 +34,7 @@ const { isScoreable } = require('./lib/is-scoreable');
 const { extractScore: extractScoreRuleBased } = require('./lib/score-extractors');
 const { buildCookieHeaderForUrl } = require('./lib/cookie-loader');
 const { setExtractedScore } = require('./lib/score-routing');
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
 // Build showId → { title } map so isScoreable can activate the wrongShow
 // stale-flag override (Notion 34e637c5-416f-8121).
@@ -67,6 +68,12 @@ const LIMIT = (() => {
   const l = args.find(a => a.startsWith('--limit='));
   return l ? parseInt(l.split('=')[1]) : 0;
 })();
+// Wall-clock budget — the backlog (~thousands of candidates × 2-3s sleeps) does
+// not fit in one run. The script exits cleanly when the budget is reached; the
+// attempt-rotation state below makes the next weekly run resume at the items
+// this run didn't reach. 0 = unlimited.
+const TIME_BUDGET_MIN = parseTimeBudgetMin(args);
+const budget = createRunBudget(TIME_BUDGET_MIN);
 
 // ---------------------------------------------------------------------------
 // Known rated outlets and their rating systems
@@ -161,7 +168,63 @@ const stats = {
   phase3ScrapeFailed: 0,
   byOutlet: {},
   errors: 0,
+  timeBudgetMin: TIME_BUDGET_MIN,
+  timeBudgetExhausted: false,
 };
+
+// Returns true (and logs once) when the run budget is spent. Phase loops break
+// on this; main() skips any later phases.
+function budgetSpent(phaseLabel, remainingCount) {
+  if (!budget.exceeded()) return false;
+  if (!stats.timeBudgetExhausted) {
+    stats.timeBudgetExhausted = true;
+    console.log(`\n  ⏱ Time budget (${TIME_BUDGET_MIN} min) reached in ${phaseLabel} — ${remainingCount} items deferred to next run`);
+  }
+  return true;
+}
+
+// ---------------------------------------------------------------------------
+// Attempt rotation state — least-recently-attempted candidates run first.
+// Without this, the deterministic show-directory order means permanently
+// unrecoverable items at the head eat the whole budget every week and the
+// tail never runs. Lives in data/audit/ so the workflow's existing
+// "Commit audit data" step persists it between runs.
+// ---------------------------------------------------------------------------
+const ATTEMPT_STATE_PATH = path.join(__dirname, '../data/audit/recover-ratings-state.json');
+const attemptState = (() => {
+  try {
+    const s = JSON.parse(fs.readFileSync(ATTEMPT_STATE_PATH, 'utf8'));
+    return { attempts: s.attempts || {} };
+  } catch { return { attempts: {} }; }
+})();
+const attemptKey = (r) => `${r.showId}/${r.file}`;
+let attemptsSinceSave = 0;
+
+function recordAttempt(review) {
+  attemptState.attempts[attemptKey(review)] = new Date().toISOString();
+  if (++attemptsSinceSave >= 25) saveAttemptState();
+}
+
+function saveAttemptState(validKeys = null) {
+  if (DRY_RUN) return;
+  // Prune only on unfiltered runs — a filtered run's candidate set is a
+  // subset, and pruning against it would wipe rotation history for
+  // everything outside the filter.
+  if (validKeys) {
+    for (const k of Object.keys(attemptState.attempts)) {
+      if (!validKeys.has(k)) delete attemptState.attempts[k];
+    }
+  }
+  try {
+    fs.writeFileSync(ATTEMPT_STATE_PATH, JSON.stringify({
+      updatedAt: new Date().toISOString(),
+      attempts: attemptState.attempts,
+    }, null, 2));
+    attemptsSinceSave = 0;
+  } catch (e) {
+    console.log(`  ⚠️  Could not save attempt state: ${e.message}`);
+  }
+}
 
 // ---------------------------------------------------------------------------
 // Phase 0: URL discovery for reviews without URLs (e.g., Theatre Record)
@@ -203,6 +266,8 @@ async function phase0DiscoverUrls(reviews) {
 
   for (let i = 0; i < toProcess.length; i++) {
     const review = toProcess[i];
+    if (budgetSpent('phase 0', toProcess.length - i)) break;
+    recordAttempt(review);
     try {
       console.log(`  [${i + 1}/${toProcess.length}] ${review.showId}: ${review.data.outletId} / ${review.data.criticName || 'Unknown'}`);
 
@@ -269,7 +334,12 @@ async function phase1ExtractLocal(reviews) {
   console.log('\n═══ PHASE 1: Local Extraction (existing fullText/excerpts) ═══\n');
   let recovered = 0;
 
+  let idx = 0;
   for (const review of reviews) {
+    // LLM-fallback extraction makes this loop slow at backlog scale
+    if (budgetSpent('phase 1', reviews.length - idx)) break;
+    idx++;
+    recordAttempt(review);
     const text = [
       review.data.fullText || '',
       review.data.dtliExcerpt || '',
@@ -374,6 +444,8 @@ async function fetchGuardianRatings(reviews) {
 
   for (let i = 0; i < toProcess.length; i++) {
     const review = toProcess[i];
+    if (budgetSpent('phase 2 (Guardian)', toProcess.length - i)) break;
+    recordAttempt(review);
     try {
       const articleId = new URL(review.data.url).pathname.replace(/^\//, '');
       const params = new URLSearchParams({
@@ -435,6 +507,8 @@ async function fetchTheaterLifeRatings(reviews) {
 
   for (let i = 0; i < toProcess.length; i++) {
     const review = toProcess[i];
+    if (budgetSpent('phase 2 (Theater Life)', toProcess.length - i)) break;
+    recordAttempt(review);
     try {
       // Extract slug from URL
       const slug = new URL(review.data.url).pathname.replace(/^\/|\/$/g, '');
@@ -502,6 +576,8 @@ async function fetchNYSRRatings(reviews) {
 
   for (let i = 0; i < toProcess.length; i++) {
     const review = toProcess[i];
+    if (budgetSpent('phase 2 (NYSR)', toProcess.length - i)) break;
+    recordAttempt(review);
     try {
       const slug = new URL(review.data.url).pathname.replace(/^\/|\/$/g, '');
       if (!slug) continue;
@@ -637,6 +713,8 @@ async function phase3ScrapeURLs(reviews) {
   for (let i = 0; i < toProcess.length; i++) {
     const review = toProcess[i];
     const url = review.data.url;
+    if (budgetSpent('phase 3', toProcess.length - i)) break;
+    recordAttempt(review);
     try {
       console.log(`  [${i + 1}/${toProcess.length}] ${review.showId}: ${url}`);
 
@@ -855,10 +933,19 @@ async function main() {
   if (SOURCE_FILTER) console.log(`Source filter: ${SOURCE_FILTER}`);
   if (MARKET_FILTER) console.log(`Market filter: ${MARKET_FILTER}`);
   if (LIMIT) console.log(`Limit per phase: ${LIMIT}`);
+  if (TIME_BUDGET_MIN) console.log(`Time budget: ${TIME_BUDGET_MIN} min`);
 
   // Find all reviews missing ratings
   let reviews = findMissingRatings();
   stats.totalMissing = reviews.length;
+
+  // Rotate: least-recently-attempted first (never-attempted sorts to the
+  // front). Stops the same unrecoverable head from eating every weekly run.
+  reviews.sort((a, b) =>
+    (attemptState.attempts[attemptKey(a)] || '').localeCompare(attemptState.attempts[attemptKey(b)] || '')
+  );
+  const isUnfilteredRun = !OUTLET_FILTER && !SOURCE_FILTER && !MARKET_FILTER && !SINCE_FILTER && LIMIT === 0;
+  const allCandidateKeys = new Set(reviews.map(attemptKey));
 
   console.log(`\nFound ${reviews.length} reviews from rated outlets missing originalScore\n`);
 
@@ -876,24 +963,27 @@ async function main() {
   if (sorted.length > 20) console.log(`  ... and ${sorted.length - 20} more outlets`);
 
   // Phase 0: URL discovery (for reviews without URLs, e.g. Theatre Record)
-  if (PHASES.includes(0)) {
+  if (PHASES.includes(0) && !stats.timeBudgetExhausted) {
     reviews = await phase0DiscoverUrls(reviews);
   }
 
   // Phase 1: Local extraction
-  if (PHASES.includes(1)) {
+  if (PHASES.includes(1) && !stats.timeBudgetExhausted) {
     reviews = await phase1ExtractLocal(reviews);
   }
 
   // Phase 2: Free APIs
-  if (PHASES.includes(2)) {
+  if (PHASES.includes(2) && !stats.timeBudgetExhausted) {
     reviews = await phase2FreeAPIs(reviews);
   }
 
   // Phase 3: URL scraping
-  if (PHASES.includes(3)) {
+  if (PHASES.includes(3) && !stats.timeBudgetExhausted) {
     reviews = await phase3ScrapeURLs(reviews);
   }
+
+  // Persist rotation state (prune only when this run saw the full candidate set)
+  saveAttemptState(isUnfilteredRun ? allCandidateKeys : null);
 
   // Final summary
   const totalRecovered = stats.phase1Recovered + stats.phase2Recovered + stats.phase3Recovered;
@@ -908,6 +998,9 @@ async function main() {
   console.log(`Total recovered:             ${totalRecovered}`);
   console.log(`Still missing:               ${stats.totalMissing - totalRecovered}`);
   console.log(`Errors:                      ${stats.errors}`);
+  if (TIME_BUDGET_MIN) {
+    console.log(`Time budget:                 ${stats.timeBudgetExhausted ? `EXHAUSTED at ${TIME_BUDGET_MIN} min — backlog deferred to next run` : `ok (${budget.elapsedMin()}/${TIME_BUDGET_MIN} min used)`}`);
+  }
 
   if (Object.keys(stats.byOutlet).length > 0) {
     console.log('\nRecoveries by outlet:');

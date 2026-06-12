@@ -21,11 +21,15 @@
  *   --dry-run            Preview without writing files
  *   --queue              Also consume data/commercial-research-queue.json
  *   --force              Reset attempt counter and re-research
+ *   --time-budget-min=N  Wall-clock budget in minutes (0 = unlimited). The
+ *                        per-show progress checkpoint means an early exit
+ *                        loses nothing; unfinished targets re-enter next run.
  */
 
 const fs = require('fs');
 const path = require('path');
 const { normalizeSources } = require('./lib/commercial-sources');
+const { createRunBudget } = require('./lib/run-budget');
 
 // ---------------------------------------------------------------------------
 // Paths
@@ -61,6 +65,11 @@ const FORCE = flags['force'] === true;
 const USE_QUEUE = flags['queue'] === true;
 const WEEKLY_SPEND_CAP = 50; // dollars (upgraded for deep research models)
 const MAX_RESEARCH_ATTEMPTS = 3;
+const TIME_BUDGET_MIN = parseFloat(flags['time-budget-min']) > 0 ? parseFloat(flags['time-budget-min']) : 0;
+const timeBudget = createRunBudget(TIME_BUDGET_MIN);
+// A deep-research background job typically polls 5-10 min; don't start a show
+// we can't reasonably finish inside the budget.
+const MIN_REMAINING_MS_TO_START = 10 * 60_000;
 
 // Model mapping: CLI shorthand -> actual API model name
 const MODEL_MAP = {
@@ -221,7 +230,7 @@ async function pollForCompletion(responseId, maxWaitMs = 1800000) {
   return null;
 }
 
-async function researchShowWithOpenAI(show, model) {
+async function researchShowWithOpenAI(show, model, maxPollMs = 1800000) {
   if (!OPENAI_KEY) {
     throw new Error('OPENAI_API_KEY required');
   }
@@ -315,7 +324,7 @@ Write a BRIEF summary (3-5 sentences max) of what you found, then a JSON block:
   // For background/deep research, poll until completion
   if (isDeep && result.status !== 'completed') {
     console.log(`    Background research started (ID: ${result.id})`);
-    result = await pollForCompletion(result.id);
+    result = await pollForCompletion(result.id, maxPollMs);
     if (!result) {
       // Timeout — return special status so caller knows not to count this attempt
       return { analysis: null, usage: {}, cost: 0, searchCount: 0, status: 'timeout' };
@@ -625,6 +634,17 @@ async function main() {
   } catch (e) {
     progress = { completed: [], startedAt: new Date().toISOString() };
   }
+  // progress.completed is a within-batch resume checkpoint, not a permanent
+  // done-list. A "batch" = one Saturday run plus any timed-out retries in the
+  // following 48h. Without this expiry the list accumulates forever (89 slugs
+  // by 2026-06-11) and silently blocks the 6-month re-research tier, because
+  // the loop below skips anything in completed.
+  const batchAnchor = progress.lastRunAt || progress.startedAt;
+  if (batchAnchor && Date.now() - new Date(batchAnchor).getTime() > 48 * 3_600_000) {
+    console.log(`Resetting batch progress (last run ${batchAnchor} is >48h old, ${(progress.completed || []).length} completed slugs cleared)`);
+    progress = { completed: [], startedAt: new Date().toISOString() };
+  }
+  if (!Array.isArray(progress.completed)) progress.completed = [];
 
   for (const slug of targetSlugs) {
     // Skip if already completed in this batch
@@ -640,6 +660,11 @@ async function main() {
     }
     if (weeklySpend >= WEEKLY_SPEND_CAP) {
       console.log(`\nWeekly spend cap reached ($${weeklySpend.toFixed(2)}). Stopping.`);
+      break;
+    }
+    if (timeBudget.enabled && timeBudget.remainingMs() < MIN_REMAINING_MS_TO_START) {
+      const unprocessed = targetSlugs.filter(s => !progress.completed.includes(s)).length;
+      console.log(`\n⏱ Time budget (${TIME_BUDGET_MIN} min) reached after ${timeBudget.elapsedMin()} min — stopping cleanly. ${unprocessed} targets deferred to next run. If this recurs every week while the TBD backlog grows, throughput is degrading; investigate before raising the budget.`);
       break;
     }
 
@@ -675,7 +700,12 @@ async function main() {
     console.log(`${show.title} (${slug}) [${trigger}]`);
 
     try {
-      const { analysis, usage, cost, searchCount, status } = await researchShowWithOpenAI(show, MODEL);
+      // Cap polling at the remaining time budget (floor of 5 min so a nearly-
+      // spent budget still gives an in-flight job a chance to land).
+      const maxPollMs = timeBudget.enabled
+        ? Math.min(1800000, Math.max(300000, timeBudget.remainingMs()))
+        : 1800000;
+      const { analysis, usage, cost, searchCount, status } = await researchShowWithOpenAI(show, MODEL, maxPollMs);
 
       // Handle timeout — don't count as attempt, don't record cost
       if (status === 'timeout') {
@@ -832,6 +862,10 @@ async function main() {
   console.log(`Shows researched: ${researchedCount}`);
   console.log(`Total cost: $${totalCost.toFixed(4)}`);
   console.log(`Weekly spend: $${weeklySpend.toFixed(2)} / $${WEEKLY_SPEND_CAP}`);
+  if (TIME_BUDGET_MIN) {
+    const unprocessed = targetSlugs.filter(s => !progress.completed.includes(s)).length;
+    console.log(`Time budget: ${timeBudget.elapsedMin()}/${TIME_BUDGET_MIN} min used, ${unprocessed} targets unprocessed`);
+  }
   if (!DRY_RUN) {
     console.log(`Pending results: ${Object.keys(pending.shows).length} shows in ${PENDING_PATH}`);
   }

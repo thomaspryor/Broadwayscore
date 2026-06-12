@@ -4200,7 +4200,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
       const openingDate = show.openingDate ? new Date(show.openingDate) : null;
       // Date floor: 7 days before opening (roundups sometimes publish early)
       const dateFloor = openingDate ? new Date(openingDate.getTime() - 7 * 86400000).toISOString() : null;
-      const { extractStarRatings, extractSectionReviews, extractShowTitle, fetchRenderedPage } = require('./scrape-westendtheatre-roundups');
+      const { extractStarRatings, extractSectionReviews, extractShowTitle, fetchRenderedPageHtml } = require('./scrape-westendtheatre-roundups');
 
       // WET live fetch: WP API search with date filter
       try {
@@ -4251,7 +4251,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
               excerpt: r.excerpt || '', stars: r.stars, starsOutOf: 5,
             }));
             if (reviews.length === 0 && post.link) {
-              const pageHtml = fetchRenderedPage(post.link);
+              const pageHtml = await fetchRenderedPageHtml(post.link);
               if (pageHtml) {
                 reviews = extractSectionReviews(pageHtml).map(r => ({
                   outlet: r.outlet, outletId: normalizeOutlet(r.outlet),
