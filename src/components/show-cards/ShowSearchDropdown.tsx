@@ -1,4 +1,7 @@
 'use client';
+// DO NOT add PostHog instrumentation here — this component is used exclusively
+// for /my-shows list management (adding shows to lists), not public browse search.
+// Search analytics belong in HeaderSearch.tsx.
 
 import { useEffect, useRef, type ReactNode } from 'react';
 import { useShowSearch } from '@/hooks/useShowSearch';

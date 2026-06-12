@@ -65,25 +65,6 @@ async function createGitHubIssue(title: string, body: string): Promise<number | 
   return data.number as number;
 }
 
-async function dispatchValidationWorkflow(issueNumber: number): Promise<void> {
-  const [owner, repo] = GITHUB_REPO.split('/');
-  const res = await fetch(
-    `https://api.github.com/repos/${owner}/${repo}/actions/workflows/process-review-submission.yml/dispatches`,
-    {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${GH_DISPATCH_TOKEN}`,
-        Accept: 'application/vnd.github+json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ ref: 'main', inputs: { issue_number: String(issueNumber) } }),
-    }
-  );
-  if (!res.ok) {
-    const err = await res.text();
-    console.error(`Workflow dispatch failed: ${res.status} — ${err}`);
-  }
-}
 
 export async function POST(req: NextRequest) {
   try {
@@ -126,7 +107,9 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    await dispatchValidationWorkflow(issueNumber);
+    // GH_DISPATCH_TOKEN is a PAT, so creating the issue fires the `issues` event
+    // which triggers process-review-submission.yml directly — no manual dispatch needed.
+    // (GITHUB_TOKEN would suppress the event, requiring explicit dispatch; PATs do not.)
 
     return NextResponse.json({ ok: true });
   } catch (err) {

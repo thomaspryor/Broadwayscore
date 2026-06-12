@@ -36,7 +36,10 @@ concurrency:
 jobs:
   update-shows:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    # Raised 25→45: discovery alone is ~21 min now, leaving too little for the
+    # enrichment + push tail under a 25-min cap (every run hit the wall and was
+    # cancelled). The discovery step has its own 30-min cap + continue-on-error.
+    timeout-minutes: 45
     outputs:
       new_shows_count: ${{ steps.discover.outputs.new_shows_count }}
       new_shows: ${{ steps.discover.outputs.new_shows }}
@@ -130,6 +133,14 @@ jobs:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+        # Discovery is best-effort and has grown slow (per-candidate IBDB revival
+        # SERP × the late-May OB-venue expansion pushed it to ~21 min). It must
+        # NOT be able to cancel the critical pipeline (status updates,
+        # opening-night readiness, push) by eating the whole job budget — that
+        # cancellation is what made every run go stale and spammed cron-health.
+        # Cap it and continue-on-error so the run still succeeds if it overruns.
+        timeout-minutes: 30
+        continue-on-error: true
         run: node scripts/discover-new-shows.js --include-off-broadway --include-west-end --consume-show-score-candidates
 
       # Step 3: Enrich new/incomplete shows with metadata from free APIs

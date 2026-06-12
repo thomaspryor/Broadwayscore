@@ -1,7 +1,6 @@
 name: PostHog Weekly Insights
 on:
-  schedule:
-    - cron: '0 14 * * 1'  # Monday 2 PM UTC (9 AM EST)
+  # Schedule disabled — replaced by posthog-monday.yml (Mon 08:00 UTC)
   workflow_dispatch: {}
 
 jobs:
