@@ -72,3 +72,14 @@ test('extractVenue skips labeled fields and returns null when absent', () => {
   assert.equal(extractVenue('TITLE\n• First Preview: May 22, 2026\n• Opening: June 11, 2026'), null);
   assert.equal(extractVenue(''), null);
 });
+
+test('extractVenue rejects slash/comma labels and survives merged bullet lines', () => {
+  const { extractVenue } = require('../../scripts/lib/playbill-ob-schedule.js');
+  // Labels containing / , & must not be mistaken for venues
+  assert.equal(extractVenue('TITLE\n• Director/Choreographer: Casey Nicholaw\n• Venue Name Here\n• Opening: June 1, 2026'), 'Venue Name Here');
+  assert.equal(extractVenue('TITLE\n• Book, Music, and Lyrics: Someone\n• Opening: June 1, 2026'), null);
+  // A missed <br> merging fields onto one line keeps only the venue
+  assert.equal(extractVenue('TITLE\n• The Public Theater • First Preview: May 22, 2026 • Opening: June 11, 2026'), 'The Public Theater');
+  // Entity decoding
+  assert.equal(extractVenue('TITLE\n• St. Ann&rsquo;s Warehouse\n• Opening: June 1, 2026'), 'St. Ann’s Warehouse');
+});

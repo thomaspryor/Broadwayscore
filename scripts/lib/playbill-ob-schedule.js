@@ -12,8 +12,9 @@
  * lists every announced production with first-preview/opening dates and venue.
  *
  * Functions exported:
- *   - parsePlaybillOBSchedule(html) → [{ title, firstPreview, opening, source }]
+ *   - parsePlaybillOBSchedule(html) → [{ title, venue, firstPreview, opening, source }]
  *   - scrapePlaybillOBData()        → same shape; performs the fetch
+ *   - extractVenue(plain)           → venue string from a tag-stripped block, or null
  *   - checkSilentRot(entries, html) → side-effect: process.exitCode=1 if rot detected
  *
  * Logging note: this lib does NOT log on success — callers handle their own
@@ -72,10 +73,20 @@ function extractVenue(plain) {
   for (const raw of plain.split('\n')) {
     const line = raw.trim();
     if (!line.startsWith('•')) continue;
-    const text = line.replace(/^•\s*/, '')
-      .replace(/&nbsp;/gi, ' ').replace(/&amp;/gi, '&')
+    let text = line.replace(/^•\s*/, '');
+    // If a missed <br> merged several bullet fields onto one line, keep only
+    // the first field — the venue is always the first bullet after the title.
+    text = text.split('•')[0];
+    text = text
+      .replace(/&nbsp;/gi, ' ')
+      .replace(/&amp;/gi, '&')
+      .replace(/&(?:rsquo;|#8217;)/gi, '’')
+      .replace(/&(?:lsquo;|#8216;)/gi, '‘')
       .replace(/\s+/g, ' ').trim();
-    if (!text || /^[A-Za-z'’ .()]{1,30}:/.test(text)) continue; // labeled field
+    // Labeled field (First Preview:, Director/Choreographer:, Book, Music, and
+    // Lyrics:, …) — labels are short and end with ": "; venues almost never
+    // contain a colon.
+    if (!text || /^[A-Za-z'’ .,()/&]{1,40}:/.test(text)) continue;
     if (text.length < 3 || text.length > 120) continue;
     return text;
   }
@@ -106,7 +117,7 @@ function parsePlaybillOBSchedule(html) {
     const { title, index } = titleMatches[i];
     const nextIndex = titleMatches[i + 1]?.index ?? Math.min(index + 5000, html.length);
     const segment = html.slice(index, nextIndex);
-    const plain = segment.replace(/<br\s*\/?>(?=)/gi, '\n').replace(/<[^>]+>/g, ' ');
+    const plain = segment.replace(/<br[^>]*>/gi, '\n').replace(/<[^>]+>/g, ' ');
     const fpMatch = plain.match(/First Preview[s]?:?\s*([A-Z][a-z]+\.?\s+\d{1,2}(?:,\s*\d{4})?)/i);
     const openMatch = plain.match(/Open(?:s|ing)?:?\s*([A-Z][a-z]+\.?\s+\d{1,2}(?:,\s*\d{4})?)/i);
     if (!fpMatch && !openMatch) continue;

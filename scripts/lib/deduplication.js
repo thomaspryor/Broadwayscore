@@ -15,6 +15,23 @@
  * Add entries here when new edge cases are discovered.
  */
 const { normalizeVenueName, getMarketPool } = require('./venue-classification');
+const { VENUE_ALIASES } = require('./title-match');
+
+/**
+ * Alias-table canonical for a venue string, or null when the table has no
+ * entry. Unlike title-match's canonicalVenue(), this does NOT fall back to
+ * the lossy first-word key — equality semantics here need a real alias hit
+ * on BOTH sides ("The New Group" ≡ "Pershing Square Signature Center").
+ */
+function aliasCanonical(venue) {
+  if (!venue) return null;
+  for (const { canonical, matches } of VENUE_ALIASES) {
+    for (const re of matches) {
+      if (re.test(venue)) return canonical;
+    }
+  }
+  return null;
+}
 
 const KNOWN_DUPLICATES = {
   // Short titles that need special handling
@@ -305,14 +322,25 @@ function isMultiProduction(newShow, existing) {
   const existingCat = existing.category || 'broadway';
   // normalizeVenueName handles apostrophes, parentheticals, trailing Theatre/Theater.
   // Also strip dash-suffixes (e.g., "The Other Palace - Main Theatre" → "the other palace").
+  // Slash-compound venues ("Classic Stage Company/Lynn F. Angelson Theater" — Playbill's
+  // company/house format) are split into segments; two venues match if ANY segment
+  // matches, so a compound listing never reads as "known different" from the bare
+  // house name a catalog entry carries.
   const stripDash = v => v.replace(/\s*[-–—]\s*.+$/, '');
-  const newVenueNorm = newShow.venue ? stripDash(normalizeVenueName(newShow.venue)) : '';
-  const existVenueNorm = existing.venue ? stripDash(normalizeVenueName(existing.venue)) : '';
   const isUnknown = v => !v || v === 'tba' || v === 'tbd';
+  const venueSegments = (venue) => !venue ? [] : venue.split('/')
+    .map(p => ({ norm: stripDash(normalizeVenueName(p)), alias: aliasCanonical(p) }))
+    .filter(s => !isUnknown(s.norm));
+  const newVenueSegs = venueSegments(newShow.venue);
+  const existVenueSegs = venueSegments(existing.venue);
+  // Segments match on normalized equality OR a shared alias-table canonical
+  // (renter company ≡ host venue, e.g. The New Group ≡ Signature Center).
+  const venuesMatch = newVenueSegs.some(a => existVenueSegs.some(b =>
+    a.norm === b.norm || (a.alias && a.alias === b.alias)));
   const venuesKnownDifferent =
-    !isUnknown(newVenueNorm) &&
-    !isUnknown(existVenueNorm) &&
-    newVenueNorm !== existVenueNorm;
+    newVenueSegs.length > 0 &&
+    existVenueSegs.length > 0 &&
+    !venuesMatch;
   if (newCat !== existingCat && getMarketPool(newCat) === getMarketPool(existingCat)) {
     if (venuesKnownDifferent) {
       return true; // Different confirmed venues = legitimate transfer
@@ -354,7 +382,7 @@ function isMultiProduction(newShow, existing) {
     const newIsClosed = newShow.status === 'closed' ||
       (newShow.closingDate && new Date(newShow.closingDate) < new Date());
     if (!newIsClosed) {
-      if (newVenueNorm && existVenueNorm && newVenueNorm === existVenueNorm) {
+      if (venuesMatch) {
         return false; // Same venue + still running + new show not closed = same production
       }
     }

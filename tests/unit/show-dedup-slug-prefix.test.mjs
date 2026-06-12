@@ -71,3 +71,44 @@ test('checkForDuplicate still flags a true re-listing of the same show', () => {
   );
   assert.equal(r.isDuplicate, true);
 });
+
+test('compound Playbill venue (Company/Theater) still matches bare house name — stays duplicate', () => {
+  // P0 regression (2026-06-12 ship-check): threading real Playbill venues onto
+  // candidates must not flip isMultiProduction's different-venue escape for
+  // catalog twins that store only the house name.
+  const existing = [{
+    id: 'thornton-wilders-the-emporium-off-broadway-2026',
+    title: "Thornton Wilder's The Emporium",
+    slug: 'thornton-wilders-the-emporium-off-broadway',
+    venue: 'Lynn F. Angelson Theater',
+    category: 'off-broadway',
+    status: 'announced',
+    openingDate: '2026-05-18',
+  }];
+  const r = checkForDuplicate({
+    title: "THORNTON WILDER'S THE EMPORIUM",
+    venue: 'Classic Stage Company/Lynn F. Angelson Theater',
+    openingDate: '2026-05-18',
+    category: 'off-broadway',
+  }, existing);
+  assert.equal(r.isDuplicate, true, 'compound venue must not read as a different venue');
+});
+
+test('genuinely different venues still escape as separate productions', () => {
+  const existing = [{
+    id: 'romeo-and-juliet-suite-off-broadway-2026',
+    title: 'Romeo & Juliet Suite',
+    slug: 'romeo-and-juliet-suite-off-broadway',
+    venue: 'Park Avenue Armory',
+    category: 'off-broadway',
+    status: 'closed',
+    openingDate: '2026-03-02',
+  }];
+  const r = checkForDuplicate({
+    title: 'ROMEO AND JULIET',
+    venue: 'The Public Theater/Delacorte Theater',
+    openingDate: '2026-06-11',
+    category: 'off-broadway',
+  }, existing);
+  assert.equal(r.isDuplicate, false);
+});
