@@ -53,7 +53,7 @@ export default function SubmitReviewForm({ endpoint }: { endpoint: string }) {
           Thank you for helping expand our database.
         </p>
         <p className="text-gray-500 text-sm mb-6">
-          Our system will validate and process your submission. If approved, the review will appear on the site automatically.
+          Validation is running now. If approved, the review will be added and the show&apos;s score recalculated automatically within a few minutes.
         </p>
         <button
           onClick={() => setStatus('idle')}

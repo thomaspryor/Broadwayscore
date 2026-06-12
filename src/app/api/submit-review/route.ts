@@ -82,6 +82,14 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
+    try {
+      new URL(reviewUrl);
+    } catch {
+      return NextResponse.json(
+        { errors: [{ message: 'Please enter a valid URL (e.g. https://www.nytimes.com/...).' }] },
+        { status: 400 }
+      );
+    }
 
     if (!GH_DISPATCH_TOKEN) {
       console.error('GH_DISPATCH_TOKEN not configured');
