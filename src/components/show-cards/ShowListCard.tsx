@@ -123,7 +123,7 @@ const ShowListCard = memo(function ShowListCard({
           navigator.sendBeacon('https://us.i.posthog.com/capture/', JSON.stringify({
             api_key: 'phc_xVenlxA1HzyJz0Yjlj3UkF9JVLCPe86Td6vQEK41SF7',
             event: 'ticket_click',
-            properties: { distinct_id: 'browse-click', show_id: show.id, show_name: show.title, platform: primaryTicket.platform, page_type: 'browse', is_affiliate: true, link_position: 0 },
+            properties: { distinct_id: 'browse-click', show_id: show.id, show_name: show.title, show_status: show.status ?? null, platform: primaryTicket.platform, page_type: 'browse', is_affiliate: true, link_position: 0 },
             timestamp: new Date().toISOString(),
           }));
         } catch { /* not critical */ }

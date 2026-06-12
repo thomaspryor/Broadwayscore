@@ -90,6 +90,7 @@ export default function TicketLink({
           distinct_id: distinctId,
           $current_url: window.location.href,
           show_id: showId, show_name: showName, platform,
+          show_status: showStatus ?? null,
           page_type: pageType, is_affiliate: isAffiliate,
           link_position: linkPosition, total_links: totalLinks,
           ab_variant: abVariant ?? null,
