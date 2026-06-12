@@ -1,27 +1,22 @@
 {
-  "updatedAt": "2026-06-12T10:49:14.602Z",
-  "processed": 190,
-  "failed": 303,
-  "successRate": "38.5%",
+  "updatedAt": "2026-06-12T06:15:42.594Z",
+  "processed": 199,
+  "failed": 207,
+  "successRate": "49.0%",
   "tierBreakdown": {
-    "playwright": 87,
+    "playwright": 91,
     "amp": 0,
-    "browserbase": 41,
+    "browserbase": 34,
     "directCookies": 0,
-    "scrapingbee": 49,
-    "brightdata": 13,
-    "archiveToday": 5,
-    "archive": 43
+    "scrapingbee": 51,
+    "brightdata": 12,
+    "archiveToday": 1,
+    "archive": 46
   },
   "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-06-12T06:15:47.390Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-12T06:16:20.212Z",
+      "t": "2026-06-12T04:41:47.355Z",
       "event": "bb-session",
       "session": "6b6b81f1",
       "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
@@ -123,8 +118,19 @@
     {
       "t": "2026-06-12T10:48:17.208Z",
       "event": "bb-session",
-      "session": "1171bb3f",
-      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
+      "session": "021b2c3b",
+      "url": "https://theaterpizzazz.com/small-a-jockeys-indestructible-passion/"
+    },
+    {
+      "t": "2026-06-12T06:13:40.095Z",
+      "event": "bb-session",
+      "session": "ca08d5b1",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
+    },
+    {
+      "t": "2026-06-12T06:13:41.145Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
