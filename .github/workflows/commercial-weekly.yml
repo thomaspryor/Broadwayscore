@@ -39,6 +39,11 @@ on:
         required: false
         type: number
         default: 5
+      time_budget_min:
+        description: 'Deep-research wall-clock budget in minutes (0 = unlimited)'
+        required: false
+        type: number
+        default: 100
 
 concurrency:
   group: commercial-data-write
@@ -161,9 +166,11 @@ jobs:
     needs: sweep-pending
     if: always() && inputs.skip_deep_research != true
     runs-on: ubuntu-latest
-    # 80 shows × ~50s real-time per show ≈ 67min worst case. Budget headroom
-    # for slow-SERP runs. Bumped from 90→120 alongside max_shows 10→80 so the
-    # full Broadway-open-shows scope fits in one Saturday run.
+    # The ~50s/show estimate proved wrong empirically (~94s+/show: 2026-05-30,
+    # 2026-06-06 runs both killed at the 120-min timeout). The script now takes
+    # --time-budget-min=100 and exits cleanly, deferring unfinished targets to
+    # the next Saturday run (per-show progress checkpoint means nothing is
+    # lost). This timeout is a backstop, not the cap.
     timeout-minutes: 120
     steps:
       - name: Checkout repository
@@ -190,6 +197,11 @@ jobs:
           # At ~$0.09/show average, 80 shows ≈ $7 — well under the $50 cap.
           ARGS="$ARGS --max-shows=${{ inputs.max_shows || '80' }}"
           ARGS="$ARGS --budget=${{ inputs.budget || '50' }}"
+          # Default in bash, not a GHA || expression — the expression coerces
+          # a literal 0 (= unlimited) to falsy and would silently turn it into 100.
+          TB="${{ inputs.time_budget_min }}"
+          [ -z "$TB" ] && TB=100
+          ARGS="$ARGS --time-budget-min=$TB"
           ARGS="$ARGS --model=o4-mini-deep"
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             ARGS="$ARGS --dry-run"
