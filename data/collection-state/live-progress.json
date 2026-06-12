@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-12T07:59:11.323Z",
-  "processed": 343,
-  "failed": 313,
-  "successRate": "52.3%",
+  "updatedAt": "2026-06-12T08:03:47.696Z",
+  "processed": 349,
+  "failed": 317,
+  "successRate": "52.4%",
   "tierBreakdown": {
-    "playwright": 148,
+    "playwright": 150,
     "amp": 0,
     "browserbase": 54,
     "directCookies": 0,
     "scrapingbee": 61,
-    "brightdata": 30,
-    "archiveToday": 34,
-    "archive": 96
+    "brightdata": 31,
+    "archiveToday": 35,
+    "archive": 99
   },
-  "browserbaseSessions": 12,
+  "browserbaseSessions": 13,
   "recentActivity": [
-    {
-      "t": "2026-06-12T06:44:10.702Z",
-      "event": "bb-session",
-      "session": "0bb0cdec",
-      "url": "https://www.wsj.com/articles/the-ferryman-review-a-house-divided-1540500470?gaa_"
-    },
-    {
-      "t": "2026-06-12T06:44:11.815Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-06-12T07:07:37.334Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-06-12T07:56:21.720Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-12T08:02:06.991Z",
+      "event": "bb-session",
+      "session": "c8f33a4a",
+      "url": "https://talkinbroadway.com/world/AmazingGrace.html"
+    },
+    {
+      "t": "2026-06-12T08:02:07.994Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }
