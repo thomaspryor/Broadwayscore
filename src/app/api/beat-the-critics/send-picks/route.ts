@@ -177,8 +177,15 @@ async function logError(event: {
   }
 }
 
+// Submissions closed after 7:59 PM ET on June 7, 2026 (ceremony day = 23:59 UTC).
+const ENTRY_DEADLINE = new Date('2026-06-07T23:59:00Z');
+
 export async function POST(req: NextRequest) {
   try {
+    if (Date.now() > ENTRY_DEADLINE.getTime()) {
+      return NextResponse.json({ error: 'Submissions are closed. The Tony Awards ceremony has passed.' }, { status: 410 });
+    }
+
     const { email, picks, ceremonyYear } = await req.json() as {
       email: string;
       picks: Record<string, string>;

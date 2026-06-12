@@ -499,8 +499,17 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
             </div>
           </div>
 
+          {!countdownExpired && (
           <p className="animate-fade-up text-[13px] text-gray-500 mt-4 max-w-[300px] text-center leading-relaxed" style={{ animationDelay: '0.88s', animationFillMode: 'both' }}>Only 1 round required to enter — do all 4 for your best shot at beating the critics.</p>
+          )}
+          {countdownExpired ? (
+            <div className="animate-fade-up mt-5 text-center" style={{ animationDelay: '0.9s', animationFillMode: 'both' }}>
+              <div className="text-sm font-semibold text-gray-400">Submissions are closed.</div>
+              <div className="text-xs text-gray-600 mt-1">The 2026 Tony Awards have taken place. Results are being emailed to all entrants.</div>
+            </div>
+          ) : (
           <button onClick={() => { ph('btc_started'); setCurrentTierIdx(0); const firstIdx = data.tiers[0]?.categories.findIndex(c => categoryHasNominees(c)) ?? 0; setCurrentCatIdx(firstIdx >= 0 ? firstIdx : 0); goToScreen('picking'); }} className="animate-fade-up mt-4 inline-flex items-center gap-2.5 px-10 py-4 rounded-[14px] bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white text-[17px] font-bold shadow-[0_4px_24px_rgba(255,19,104,0.35)] hover:shadow-[0_8px_32px_rgba(255,19,104,0.45)] hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-200" style={{ animationDelay: '0.9s', animationFillMode: 'both' }}>Make Your Picks &rarr;</button>
+          )}
           {!countdownExpired && (
             <div className="animate-fade-up mt-5 flex flex-col items-center gap-2" style={{ animationDelay: '0.95s', animationFillMode: 'both' }}>
               <div className="text-[10px] font-semibold text-gray-600 uppercase tracking-widest">until the Tonys</div>
