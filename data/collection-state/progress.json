@@ -309,7 +309,14 @@
     "waitress-2016/thestage--mark-shenton.json",
     "american-psycho-2016/nyt-theater--jonathan-mandell.json",
     "american-psycho-2016/timeout--adam-feldman.json",
-    "the-father-2016/financialtimes--max-mcguinness.json"
+    "the-father-2016/financialtimes--max-mcguinness.json",
+    "the-father-2016/theater-life--paulanne-simmons.json",
+    "the-crucible-2016/wsj--terry-teachout.json",
+    "bright-star-2016/wsj--terry-teachout.json",
+    "bright-star-2016/stu-on-broadway--stu-brown.json",
+    "she-loves-me-2016/wsj--terry-teachout.json",
+    "she-loves-me-2016/theater-life--eric-march.json",
+    "blackbird-2016/wsj--terry-teachout.json"
   ],
   "failed": [
     "pride-west-end-2026/guardian--unknown.json",
@@ -607,7 +614,10 @@
     "heisenberg-2016/abc-news--mark-kennedy.json",
     "holiday-inn-the-new-irving-berlin-musical-2016/thestage--mark-shenton.json",
     "tuck-everlasting-2016/thestage--mark-shenton.json",
-    "american-psycho-2016/ap--mark-kennedy.json"
+    "american-psycho-2016/ap--mark-kennedy.json",
+    "bright-star-2016/drama-queen-nyc--jonathan-warman.json",
+    "disaster-2016/timeout--adam-feldman.json",
+    "eclipsed-2016/nydailynews--joe-dziemianowicz.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -754,7 +764,9 @@
       "tuck-everlasting-2016/uinterview--erik-meers.json",
       "waitress-2016/act-three-the-reviews--doug-marino.json",
       "american-psycho-2016/nyt-theater--jonathan-mandell.json",
-      "the-father-2016/financialtimes--max-mcguinness.json"
+      "the-father-2016/financialtimes--max-mcguinness.json",
+      "the-father-2016/theater-life--paulanne-simmons.json",
+      "she-loves-me-2016/theater-life--eric-march.json"
     ],
     "amp": [],
     "browserbase": [
@@ -805,7 +817,13 @@
       "data/review-texts/holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json",
       "holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json",
       "data/review-texts/fully-committed-2016/wsj--terry-teachout.json",
-      "fully-committed-2016/wsj--terry-teachout.json"
+      "fully-committed-2016/wsj--terry-teachout.json",
+      "data/review-texts/the-crucible-2016/wsj--terry-teachout.json",
+      "the-crucible-2016/wsj--terry-teachout.json",
+      "data/review-texts/bright-star-2016/wsj--terry-teachout.json",
+      "bright-star-2016/wsj--terry-teachout.json",
+      "data/review-texts/she-loves-me-2016/wsj--terry-teachout.json",
+      "she-loves-me-2016/wsj--terry-teachout.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1005,11 +1023,13 @@
       "natasha-pierre-and-the-great-comet-of-1812-2016/newyorker--conde-nast.json",
       "oh-hello-on-broadway-2016/nydailynews--joe-dziemianowicz.json",
       "fully-committed-2016/timeout--adam-feldman.json",
-      "waitress-2016/thestage--mark-shenton.json"
+      "waitress-2016/thestage--mark-shenton.json",
+      "bright-star-2016/stu-on-broadway--stu-brown.json",
+      "blackbird-2016/wsj--terry-teachout.json"
     ]
   },
   "startTime": "2026-06-11T20:39:04.995Z",
-  "lastProcessed": "the-father-2016/financialtimes--max-mcguinness.json",
+  "lastProcessed": "eclipsed-2016/nydailynews--joe-dziemianowicz.json",
   "log": [
     {
       "t": "2026-06-12T02:25:00.252Z",
@@ -1428,6 +1448,39 @@
     },
     {
       "t": "2026-06-12T07:38:10.306Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-12T07:41:13.619Z",
+      "event": "bb-session",
+      "session": "4836678b",
+      "url": "http://www.wsj.com/articles/the-crucible-review-even-less-pep-than-the-puritans-"
+    },
+    {
+      "t": "2026-06-12T07:41:14.754Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-12T07:41:37.372Z",
+      "event": "bb-session",
+      "session": "c60bf125",
+      "url": "http://www.wsj.com/articles/bright-star-review-banjo-boondoggle-1458865800"
+    },
+    {
+      "t": "2026-06-12T07:41:38.424Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-12T07:42:35.213Z",
+      "event": "bb-session",
+      "session": "9c800077",
+      "url": "http://www.wsj.com/articles/she-loves-me-the-sweet-scent-of-perfection-145826100"
+    },
+    {
+      "t": "2026-06-12T07:42:36.254Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
