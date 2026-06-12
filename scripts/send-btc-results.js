@@ -201,12 +201,24 @@ async function main() {
   const criticPicksData = loadJson(CRITIC_PICKS_PATH, 'critic picks');
   const allSubmissions = loadSubmissions();
 
-  // De-duplicate by email — keep most recent submission
+  // Ballots submitted at/after ceremony start aren't predictions — score and
+  // email them, but exclude from leaderboard stats and the "beat the critics"
+  // winner pool so post-hoc entries can't claim perfect scores.
+  const CEREMONY_START = '2026-06-08T00:00:00Z'; // 8 PM ET June 7
+  const isLate = (s) => (s.submittedAt ?? '') >= CEREMONY_START;
+
+  // De-duplicate by email — keep most recent submission. Skip malformed rows
+  // with no email (early test entries) rather than crashing.
   const byEmail = new Map();
+  let skippedNoEmail = 0;
   for (const s of allSubmissions) {
+    if (!s.email || typeof s.email !== 'string') { skippedNoEmail++; continue; }
     byEmail.set(s.email.toLowerCase(), s);
   }
   const submissions = Array.from(byEmail.values());
+  const lateCount = submissions.filter(isLate).length;
+  if (skippedNoEmail) console.log(`(skipped ${skippedNoEmail} submission(s) with no email)`);
+  if (lateCount) console.log(`(${lateCount} submission(s) arrived after ceremony start — excluded from winner pool)`);
 
   console.log(`\n=== Beat the Critics Results ${CEREMONY_YEAR} ===`);
   console.log(`${submissions.length} unique submissions`);
@@ -236,15 +248,24 @@ async function main() {
   // Winner selection: random draw from users who beat ≥1 critic.
   // Fallback if no one beats a critic: random draw from top scorers.
   const minCriticScore = Math.min(...Object.values(criticScores).map(c => c.correct));
-  const qualifyingPool = scored.filter(s => s.score.correct > minCriticScore);
-  const fallbackPool = scored.filter(s => s.score.correct === topScore);
+  const eligible = scored.filter(s => !isLate(s));
+  const eligibleTop = eligible[0]?.score.correct ?? 0;
+  const qualifyingPool = eligible.filter(s => s.score.correct > minCriticScore);
+  const fallbackPool = eligible.filter(s => s.score.correct === eligibleTop);
   const prizePool = qualifyingPool.length > 0 ? qualifyingPool : fallbackPool;
 
-  // Deterministic random: seed with submittedAt of earliest qualifier so re-runs are stable
+  // Deterministic draw: FNV-1a hash over the sorted pool emails picks the
+  // index, so re-runs (and --dry-run vs the real send) always select the
+  // same winner. Math.random() here would re-draw a different winner per run.
   const prizePoolSorted = [...prizePool].sort((a, b) =>
     new Date(a.submittedAt ?? 0) - new Date(b.submittedAt ?? 0)
   );
-  const randomIndex = Math.floor(Math.random() * prizePoolSorted.length);
+  let seed = 0x811c9dc5;
+  for (const ch of prizePoolSorted.map(s => s.email.toLowerCase()).sort().join('|')) {
+    seed ^= ch.charCodeAt(0);
+    seed = Math.imul(seed, 0x01000193) >>> 0;
+  }
+  const randomIndex = prizePoolSorted.length ? seed % prizePoolSorted.length : 0;
   const prizeWinner = prizePoolSorted[randomIndex];
 
   console.log(`Qualifying pool (beat ≥1 critic): ${qualifyingPool.length}`);
