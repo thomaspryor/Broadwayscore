@@ -233,7 +233,11 @@
     "smash-2025/broadway-and-me--janice-c-simpson.json",
     "gypsy-2024/billboard--paul-grein.json",
     "job-2024/deadline--greg-evans.json",
-    "the-whos-tommy-2024/rollingstone--emily-zemler.json"
+    "the-whos-tommy-2024/rollingstone--emily-zemler.json",
+    "fat-ham-2023/hollywood-reporter--lovia-gyarkye.json",
+    "death-of-a-salesman-2022/theatrely--andrew-martini.json",
+    "1776-2022/broadway-and-me--janice-c-simpson.json",
+    "paradise-square-2022/broadway-and-me--janice-c-simpson.json"
   ],
   "failed": [
     "are-you-watching-west-end-2026/all-that-dazzles-uk--unknown.json",
@@ -844,7 +848,13 @@
     "the-hills-of-california-2024/times-uk--clive-davis.json",
     "cabaret-2024/observer--jesse-green.json",
     "stereophonic-2024/usatoday--charles-isherwood.json",
-    "orlando-off-broadway-2026/guardian--unknown.json"
+    "orlando-off-broadway-2026/guardian--unknown.json",
+    "the-whos-tommy-2024/broadwaynews--brittani-samuel.json",
+    "the-cottage-2023/theater-life--paulanne-simmons.json",
+    "here-lies-love-2023/aaartsalliance--rohan-zhou-lee.json",
+    "just-for-us-2023/theater-life--barry-gordin.json",
+    "sweeney-todd-2023/nbcnews--variety-referenced-by-nbc.json",
+    "american-buffalo-2022/theater-life--david-sheward.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -958,7 +968,8 @@
       "hamlet-off-broadway-2026/theatermania--zachary-stewart.json",
       "hamlet-off-broadway-2026/dc-theater-arts--deb-miller.json",
       "hamlet-off-broadway-2026/nysr--unknown.json",
-      "all-my-sons-west-end-2025/independent--unknown.json"
+      "all-my-sons-west-end-2025/independent--unknown.json",
+      "1776-2022/broadway-and-me--janice-c-simpson.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1024,7 +1035,9 @@
       "data/review-texts/oh-mary-west-end-2025/variety--unknown.json",
       "oh-mary-west-end-2025/variety--unknown.json",
       "data/review-texts/job-2024/deadline--greg-evans.json",
-      "job-2024/deadline--greg-evans.json"
+      "job-2024/deadline--greg-evans.json",
+      "data/review-texts/fat-ham-2023/hollywood-reporter--lovia-gyarkye.json",
+      "fat-ham-2023/hollywood-reporter--lovia-gyarkye.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1096,7 +1109,8 @@
       "masquerade-off-broadway-2025/nytimes--unknown.json",
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
       "call-me-izzy-2025/theater-life--barry-gordin.json",
-      "pen-pals-off-broadway-2025/theater-life--barry-gordin.json"
+      "pen-pals-off-broadway-2025/theater-life--barry-gordin.json",
+      "death-of-a-salesman-2022/theatrely--andrew-martini.json"
     ],
     "brightdata": [
       "dark-of-the-moon-west-end-2026/guardian--arifa-akbar.json",
@@ -1189,11 +1203,15 @@
       "night-side-songs-off-broadway-2026/timeout--unknown.json",
       "smash-2025/broadway-and-me--janice-c-simpson.json",
       "gypsy-2024/billboard--paul-grein.json",
-      "the-whos-tommy-2024/rollingstone--emily-zemler.json"
+      "the-whos-tommy-2024/rollingstone--emily-zemler.json",
+      "the-cottage-2023/theater-life--paulanne-simmons.json",
+      "just-for-us-2023/theater-life--barry-gordin.json",
+      "american-buffalo-2022/theater-life--david-sheward.json",
+      "paradise-square-2022/broadway-and-me--janice-c-simpson.json"
     ]
   },
   "startTime": "2026-06-12T18:33:39.481Z",
-  "lastProcessed": "the-whos-tommy-2024/rollingstone--emily-zemler.json",
+  "lastProcessed": "paradise-square-2022/broadway-and-me--janice-c-simpson.json",
   "log": [
     {
       "t": "2026-06-13T18:45:57.656Z",
@@ -1887,6 +1905,17 @@
       "t": "2026-06-13T15:52:53.127Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-06-13T15:56:23.904Z",
+      "event": "bb-session",
+      "session": "88e3dc0c",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/fat-ham-broadway-theater-review"
+    },
+    {
+      "t": "2026-06-13T15:56:24.836Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }

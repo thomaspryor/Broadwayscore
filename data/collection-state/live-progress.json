@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-13T15:53:18.694Z",
-  "processed": 239,
-  "failed": 608,
-  "successRate": "28.2%",
+  "updatedAt": "2026-06-13T15:59:07.192Z",
+  "processed": 243,
+  "failed": 614,
+  "successRate": "28.4%",
   "tierBreakdown": {
-    "playwright": 110,
+    "playwright": 111,
     "amp": 0,
-    "browserbase": 63,
+    "browserbase": 65,
     "directCookies": 0,
-    "scrapingbee": 69,
+    "scrapingbee": 70,
     "brightdata": 20,
     "archiveToday": 12,
-    "archive": 55
+    "archive": 59
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-06-13T05:55:41.065Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-13T05:55:53.671Z",
-      "event": "bb-session",
-      "session": "5ea31130",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
     {
       "t": "2026-06-13T05:55:54.509Z",
       "event": "bb-cookie-inject",
@@ -124,6 +113,17 @@
       "t": "2026-06-13T15:52:53.127Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-06-13T15:56:23.904Z",
+      "event": "bb-session",
+      "session": "88e3dc0c",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/fat-ham-broadway-theater-review"
+    },
+    {
+      "t": "2026-06-13T15:56:24.836Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
