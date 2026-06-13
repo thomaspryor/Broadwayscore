@@ -1,25 +1,129 @@
 {
-  "updatedAt": "2026-06-13T18:48:13.182Z",
-  "processed": 2,
-  "failed": 21,
-  "successRate": "8.7%",
+  "updatedAt": "2026-06-13T17:02:33.502Z",
+  "processed": 342,
+  "failed": 685,
+  "successRate": "33.3%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 162,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 73,
     "directCookies": 0,
-    "scrapingbee": 0,
-    "brightdata": 1,
-    "archiveToday": 0,
-    "archive": 0
+    "scrapingbee": 82,
+    "brightdata": 27,
+    "archiveToday": 14,
+    "archive": 99
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 8,
   "recentActivity": [
     {
-      "t": "2026-06-13T18:45:57.656Z",
+      "t": "2026-06-13T10:42:47.803Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-13T10:59:31.172Z",
       "event": "bb-session",
-      "session": "23871f8f",
-      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
+      "session": "a74245d6",
+      "url": "https://www.hollywoodreporter.com/news/general-news/one-flew-cuckoos-nest-review"
+    },
+    {
+      "t": "2026-06-13T10:59:32.127Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-06-13T11:07:22.064Z",
+      "event": "bb-session",
+      "session": "ad0069e5",
+      "url": "https://playbill.com/production/what-we-did-before-our-moth-days-off-broadway-gr"
+    },
+    {
+      "t": "2026-06-13T15:32:57.193Z",
+      "event": "bb-session",
+      "session": "c99b451d",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2648938"
+    },
+    {
+      "t": "2026-06-13T15:32:58.177Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-13T15:35:46.327Z",
+      "event": "bb-session",
+      "session": "ffbafe5e",
+      "url": "https://variety.com/2026/legit/news/maya-rudolph-oh-mary-broadway-debut-12366856"
+    },
+    {
+      "t": "2026-06-13T15:35:47.301Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-13T15:52:52.183Z",
+      "event": "bb-session",
+      "session": "8ba86d72",
+      "url": "https://deadline.com/2024/09/broadway-job-ticket-initiative-1236097441/"
+    },
+    {
+      "t": "2026-06-13T15:52:53.127Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-06-13T15:56:23.904Z",
+      "event": "bb-session",
+      "session": "88e3dc0c",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/fat-ham-broadway-theater-review"
+    },
+    {
+      "t": "2026-06-13T15:56:24.836Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-06-13T16:13:18.398Z",
+      "event": "bb-session",
+      "session": "aae9f989",
+      "url": "http://www.wsj.com/articles/kiss-me-kate-review-so-not-in-love-11552609800"
+    },
+    {
+      "t": "2026-06-13T16:13:19.539Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-13T16:18:06.741Z",
+      "event": "bb-session",
+      "session": "d437dda6",
+      "url": "https://www.wsj.com/articles/the-ferryman-review-a-house-divided-1540500470?gaa_"
+    },
+    {
+      "t": "2026-06-13T16:18:07.779Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-13T16:35:55.775Z",
+      "event": "bb-session",
+      "session": "db2af757",
+      "url": "http://www.wsj.com/articles/junk-review-bankrupting-entertainment-1509669000"
+    },
+    {
+      "t": "2026-06-13T16:35:56.849Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-13T16:59:12.661Z",
+      "event": "bb-session",
+      "session": "abaaa7a3",
+      "url": "https://www.wsj.com/articles/les-liaisons-dangereuses-review-fallen-archness-147"
+    },
+    {
+      "t": "2026-06-13T16:59:13.707Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
