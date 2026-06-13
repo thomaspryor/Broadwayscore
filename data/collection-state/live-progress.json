@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-06-13T06:55:21.512Z",
+  "updatedAt": "2026-06-13T06:59:20.405Z",
   "processed": 20,
-  "failed": 328,
-  "successRate": "5.7%",
+  "failed": 338,
+  "successRate": "5.6%",
   "tierBreakdown": {
     "playwright": 16,
     "amp": 0,
@@ -10,27 +10,11 @@
     "directCookies": 0,
     "scrapingbee": 6,
     "brightdata": 4,
-    "archiveToday": 9,
+    "archiveToday": 10,
     "archive": 0
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-06-13T05:54:22.431Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-13T05:55:40.102Z",
-      "event": "bb-session",
-      "session": "8a49b128",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-13T05:55:41.065Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-06-13T05:55:53.671Z",
       "event": "bb-session",
@@ -124,6 +108,23 @@
       "t": "2026-06-13T06:38:42.568Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-13T06:57:11.507Z",
+      "event": "bb-session",
+      "session": "2fb8a7b6",
+      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
+    },
+    {
+      "t": "2026-06-13T06:59:11.413Z",
+      "event": "bb-session",
+      "session": "19333a5f",
+      "url": "https://thestage.co.uk/reviews/dark-of-the-moon-review-charing-cross-theatre-lon"
+    },
+    {
+      "t": "2026-06-13T06:59:12.045Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
