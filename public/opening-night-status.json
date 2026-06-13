@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-13T11:43:59.782Z",
+  "generatedAt": "2026-06-13T16:24:27.855Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -212,27 +212,26 @@
       "status": "open",
       "slug": "romeo-and-juliet-off-broadway",
       "thumbnail": "/images/shows/romeo-and-juliet-off-broadway-2026/thumbnail.jpg",
-      "siteScore": 50.53,
-      "liveScore": 51,
-      "scoreDrift": 0.46999999999999886,
+      "siteScore": 57.77,
+      "liveScore": 58,
+      "scoreDrift": 0.22999999999999687,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 7,
+      "total": 11,
       "t1": 3,
-      "t2": 3,
-      "t3": 1,
-      "positive": 0,
-      "mixed": 3,
+      "t2": 6,
+      "t3": 2,
+      "positive": 3,
+      "mixed": 4,
       "negative": 4,
       "readiness": {
         "ready": false,
         "reasons": [
-          "7/12 total",
-          "T2:2/3",
-          "hi-conf:4/8"
+          "11/12 total",
+          "hi-conf:7/8"
         ],
-        "highConfidence": 4,
+        "highConfidence": 7,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -570,6 +569,18 @@
           "t3": 1,
           "p": 0,
           "m": 3,
+          "n": 4,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-06-13T16:24:27.855Z",
+          "rc": 11,
+          "s": 57.77,
+          "t1": 3,
+          "t2": 6,
+          "t3": 2,
+          "p": 3,
+          "m": 4,
           "n": 4,
           "bc": "waiting"
         }
