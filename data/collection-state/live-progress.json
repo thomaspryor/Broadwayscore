@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-13T15:35:31.034Z",
-  "processed": 223,
-  "failed": 534,
+  "updatedAt": "2026-06-13T15:36:39.793Z",
+  "processed": 226,
+  "failed": 541,
   "successRate": "29.5%",
   "tierBreakdown": {
     "playwright": 102,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 61,
     "directCookies": 0,
-    "scrapingbee": 65,
+    "scrapingbee": 66,
     "brightdata": 18,
     "archiveToday": 11,
-    "archive": 49
+    "archive": 50
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-06-13T05:34:24.045Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-13T05:54:21.456Z",
-      "event": "bb-session",
-      "session": "d703d8b6",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
     {
       "t": "2026-06-13T05:54:22.431Z",
       "event": "bb-cookie-inject",
@@ -124,6 +113,17 @@
       "t": "2026-06-13T15:32:58.177Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-13T15:35:46.327Z",
+      "event": "bb-session",
+      "session": "ffbafe5e",
+      "url": "https://variety.com/2026/legit/news/maya-rudolph-oh-mary-broadway-debut-12366856"
+    },
+    {
+      "t": "2026-06-13T15:35:47.301Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
