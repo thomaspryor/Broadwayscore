@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-13T16:58:05.929Z",
-  "processed": 335,
-  "failed": 682,
-  "successRate": "32.9%",
+  "updatedAt": "2026-06-13T17:02:28.673Z",
+  "processed": 342,
+  "failed": 685,
+  "successRate": "33.3%",
   "tierBreakdown": {
-    "playwright": 160,
+    "playwright": 162,
     "amp": 0,
-    "browserbase": 71,
+    "browserbase": 73,
     "directCookies": 0,
-    "scrapingbee": 81,
+    "scrapingbee": 82,
     "brightdata": 27,
     "archiveToday": 14,
-    "archive": 95
+    "archive": 99
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 8,
   "recentActivity": [
-    {
-      "t": "2026-06-13T10:41:30.788Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-13T10:42:46.868Z",
-      "event": "bb-session",
-      "session": "919a3678",
-      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
-    },
     {
       "t": "2026-06-13T10:42:47.803Z",
       "event": "bb-cookie-inject",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-06-13T16:35:56.849Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-13T16:59:12.661Z",
+      "event": "bb-session",
+      "session": "abaaa7a3",
+      "url": "https://www.wsj.com/articles/les-liaisons-dangereuses-review-fallen-archness-147"
+    },
+    {
+      "t": "2026-06-13T16:59:13.707Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
