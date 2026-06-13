@@ -1,33 +1,22 @@
 {
-  "updatedAt": "2026-06-13T10:57:32.024Z",
-  "processed": 99,
-  "failed": 352,
-  "successRate": "22.0%",
+  "updatedAt": "2026-06-13T11:00:29.831Z",
+  "processed": 105,
+  "failed": 356,
+  "successRate": "22.8%",
   "tierBreakdown": {
-    "playwright": 57,
+    "playwright": 60,
     "amp": 0,
-    "browserbase": 57,
+    "browserbase": 59,
     "directCookies": 0,
     "scrapingbee": 19,
-    "brightdata": 9,
+    "brightdata": 10,
     "archiveToday": 9,
-    "archive": 17
+    "archive": 18
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-06-13T05:32:48.493Z",
-      "event": "bb-session",
-      "session": "52dcb7a9",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
-    {
-      "t": "2026-06-13T14:13:18.272Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-13T14:13:49.428Z",
+      "t": "2026-06-13T05:34:12.756Z",
       "event": "bb-session",
       "session": "f2b713e7",
       "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
@@ -124,6 +113,17 @@
       "t": "2026-06-13T10:42:47.803Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-13T10:59:31.172Z",
+      "event": "bb-session",
+      "session": "a74245d6",
+      "url": "https://www.hollywoodreporter.com/news/general-news/one-flew-cuckoos-nest-review"
+    },
+    {
+      "t": "2026-06-13T10:59:32.127Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
