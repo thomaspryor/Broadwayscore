@@ -137,6 +137,21 @@
     "small-off-broadway-2026/pages-on-stages--unknown.json",
     "small-off-broadway-2026/the-recs--unknown.json",
     "small-off-broadway-2026/theater-pizzazz--unknown.json",
+    "small-off-broadway-2026/washpost--unknown.json",
+    "romeo-and-juliet-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
+    "small-off-broadway-2026/guardian--arifa-akbar.json",
+    "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
+    "small-off-broadway-2026/culturesauce--thom-geier.json",
+    "small-off-broadway-2026/pages-on-stages--unknown.json",
+    "small-off-broadway-2026/the-recs--unknown.json",
+    "small-off-broadway-2026/theater-pizzazz--unknown.json",
     "small-off-broadway-2026/washpost--unknown.json"
   ],
   "skipped": [],
@@ -163,13 +178,18 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
       "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
       "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
-      "data/review-texts/small-off-broadway-2026/pages-on-stages--unknown.json"
+      "data/review-texts/small-off-broadway-2026/pages-on-stages--unknown.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
     ],
     "directCookies": [],
     "scrapingbee": [
       "romeo-and-juliet-off-broadway-2026/timeout--unknown.json",
       "romeo-and-juliet-off-broadway-2026/exeunt-magazine--lorin-wertheimer.json",
-      "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json"
+      "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
+      "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
+      "small-off-broadway-2026/culturesauce--thom-geier.json"
     ],
     "brightdata": [
       "dark-of-the-moon-west-end-2026/guardian--arifa-akbar.json",
@@ -291,6 +311,39 @@
       "event": "bb-session",
       "session": "f5d0d1f6",
       "url": "https://pagesonstages.com/2026/05/28/small/"
+    },
+    {
+      "t": "2026-06-13T00:54:35.164Z",
+      "event": "bb-session",
+      "session": "62aaa5a6",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-13T00:54:36.118Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-13T00:55:09.084Z",
+      "event": "bb-session",
+      "session": "aab48afa",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-13T00:55:10.034Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-13T00:55:23.016Z",
+      "event": "bb-session",
+      "session": "ed883f06",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-13T00:55:23.897Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
