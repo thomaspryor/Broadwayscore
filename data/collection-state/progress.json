@@ -230,7 +230,10 @@
     "hamlet-off-broadway-2026/dc-theater-arts--deb-miller.json",
     "hamlet-off-broadway-2026/nysr--unknown.json",
     "all-my-sons-west-end-2025/independent--unknown.json",
-    "smash-2025/broadway-and-me--janice-c-simpson.json"
+    "smash-2025/broadway-and-me--janice-c-simpson.json",
+    "gypsy-2024/billboard--paul-grein.json",
+    "job-2024/deadline--greg-evans.json",
+    "the-whos-tommy-2024/rollingstone--emily-zemler.json"
   ],
   "failed": [
     "are-you-watching-west-end-2026/all-that-dazzles-uk--unknown.json",
@@ -834,7 +837,14 @@
     "art-2025/broadwaynews--michael-abourizk.json",
     "call-me-izzy-2025/theater-life--barry-gordin.json",
     "redwood-2025/gmanetwork--stuart-santiago.json",
-    "redwood-2025/juiceph--wanggo-gallaga.json"
+    "redwood-2025/juiceph--wanggo-gallaga.json",
+    "pen-pals-off-broadway-2025/theater-life--barry-gordin.json",
+    "eureka-day-2024/times-uk--clive-davis.json",
+    "the-hills-of-california-2024/thestage--sam-marlowe.json",
+    "the-hills-of-california-2024/times-uk--clive-davis.json",
+    "cabaret-2024/observer--jesse-green.json",
+    "stereophonic-2024/usatoday--charles-isherwood.json",
+    "orlando-off-broadway-2026/guardian--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1012,7 +1022,9 @@
       "data/review-texts/one-flew-over-the-cuckoos-nest-west-end-2026/hollywood-reporter--arthur-knight.json",
       "one-flew-over-the-cuckoos-nest-west-end-2026/hollywood-reporter--arthur-knight.json",
       "data/review-texts/oh-mary-west-end-2025/variety--unknown.json",
-      "oh-mary-west-end-2025/variety--unknown.json"
+      "oh-mary-west-end-2025/variety--unknown.json",
+      "data/review-texts/job-2024/deadline--greg-evans.json",
+      "job-2024/deadline--greg-evans.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1082,7 +1094,9 @@
       "company-2021/theatrely--andrew-martini.json",
       "paradise-square-2022/broadway-and-me--janice-c-simpson.json",
       "masquerade-off-broadway-2025/nytimes--unknown.json",
-      "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json"
+      "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
+      "call-me-izzy-2025/theater-life--barry-gordin.json",
+      "pen-pals-off-broadway-2025/theater-life--barry-gordin.json"
     ],
     "brightdata": [
       "dark-of-the-moon-west-end-2026/guardian--arifa-akbar.json",
@@ -1173,11 +1187,13 @@
       "romeo-and-juliet-west-end-2026/sunday-telegraph--claire-allfree.json",
       "hadestown-2019/theater-life--barry-gordin.json",
       "night-side-songs-off-broadway-2026/timeout--unknown.json",
-      "smash-2025/broadway-and-me--janice-c-simpson.json"
+      "smash-2025/broadway-and-me--janice-c-simpson.json",
+      "gypsy-2024/billboard--paul-grein.json",
+      "the-whos-tommy-2024/rollingstone--emily-zemler.json"
     ]
   },
   "startTime": "2026-06-12T18:33:39.481Z",
-  "lastProcessed": "redwood-2025/juiceph--wanggo-gallaga.json",
+  "lastProcessed": "the-whos-tommy-2024/rollingstone--emily-zemler.json",
   "log": [
     {
       "t": "2026-06-13T18:45:57.656Z",
@@ -1860,6 +1876,17 @@
       "t": "2026-06-13T15:35:47.301Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-13T15:52:52.183Z",
+      "event": "bb-session",
+      "session": "8ba86d72",
+      "url": "https://deadline.com/2024/09/broadway-job-ticket-initiative-1236097441/"
+    },
+    {
+      "t": "2026-06-13T15:52:53.127Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }

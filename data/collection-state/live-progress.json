@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-13T15:51:12.527Z",
-  "processed": 236,
-  "failed": 601,
+  "updatedAt": "2026-06-13T15:53:18.694Z",
+  "processed": 239,
+  "failed": 608,
   "successRate": "28.2%",
   "tierBreakdown": {
     "playwright": 110,
     "amp": 0,
-    "browserbase": 61,
+    "browserbase": 63,
     "directCookies": 0,
-    "scrapingbee": 67,
+    "scrapingbee": 69,
     "brightdata": 20,
     "archiveToday": 12,
-    "archive": 53
+    "archive": 55
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-06-13T05:54:22.431Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-13T05:55:40.102Z",
-      "event": "bb-session",
-      "session": "8a49b128",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
     {
       "t": "2026-06-13T05:55:41.065Z",
       "event": "bb-cookie-inject",
@@ -124,6 +113,17 @@
       "t": "2026-06-13T15:35:47.301Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-13T15:52:52.183Z",
+      "event": "bb-session",
+      "session": "8ba86d72",
+      "url": "https://deadline.com/2024/09/broadway-job-ticket-initiative-1236097441/"
+    },
+    {
+      "t": "2026-06-13T15:52:53.127Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
