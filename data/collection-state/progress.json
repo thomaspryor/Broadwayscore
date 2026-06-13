@@ -586,7 +586,17 @@
     "the-lehman-trilogy-2021/thestage--nicole-serratore.json",
     "is-this-a-room-2021/washpost--peter-marks.json",
     "back-to-the-future-west-end-2021/timeout--unknown.json",
-    "grand-horizons-2020/theater-news-online--brian-scott-lipton.json"
+    "grand-horizons-2020/theater-news-online--brian-scott-lipton.json",
+    "romeo-and-juliet-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
+    "small-off-broadway-2026/guardian--arifa-akbar.json",
+    "small-off-broadway-2026/pages-on-stages--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -749,7 +759,11 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+      "data/review-texts/girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -886,7 +900,7 @@
     ]
   },
   "startTime": "2026-06-12T18:33:39.481Z",
-  "lastProcessed": "a-soldiers-play-2020/theater-life--barry-gordin.json",
+  "lastProcessed": "small-off-broadway-2026/pages-on-stages--unknown.json",
   "log": [
     {
       "t": "2026-06-12T19:06:49.003Z",
@@ -1619,6 +1633,45 @@
       "t": "2026-06-13T09:33:16.412Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-13T10:20:29.798Z",
+      "event": "bb-session",
+      "session": "31b767b8",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-13T10:20:30.229Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-13T10:21:01.488Z",
+      "event": "bb-session",
+      "session": "4b14c025",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-13T10:21:01.892Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-13T10:21:13.215Z",
+      "event": "bb-session",
+      "session": "2e02757a",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-13T10:21:13.672Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-13T10:23:15.829Z",
+      "event": "bb-session",
+      "session": "99e5c329",
+      "url": "https://pagesonstages.com/2026/06/04/girl-interrupted/"
     }
   ]
 }
