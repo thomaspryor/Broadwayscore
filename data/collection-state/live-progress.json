@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-13T16:11:18.713Z",
-  "processed": 262,
-  "failed": 635,
-  "successRate": "29.2%",
+  "updatedAt": "2026-06-13T16:14:29.440Z",
+  "processed": 270,
+  "failed": 637,
+  "successRate": "29.8%",
   "tierBreakdown": {
-    "playwright": 118,
+    "playwright": 125,
     "amp": 0,
-    "browserbase": 65,
+    "browserbase": 67,
     "directCookies": 0,
     "scrapingbee": 74,
     "brightdata": 20,
     "archiveToday": 12,
-    "archive": 69
+    "archive": 70
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
-    {
-      "t": "2026-06-13T05:55:54.509Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-13T10:38:54.529Z",
-      "event": "bb-session",
-      "session": "978d83ec",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mariska-hargitay-to-make-broadw"
-    },
     {
       "t": "2026-06-13T10:38:55.516Z",
       "event": "bb-cookie-inject",
@@ -124,6 +113,17 @@
       "t": "2026-06-13T15:56:24.836Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-06-13T16:13:18.398Z",
+      "event": "bb-session",
+      "session": "aae9f989",
+      "url": "http://www.wsj.com/articles/kiss-me-kate-review-so-not-in-love-11552609800"
+    },
+    {
+      "t": "2026-06-13T16:13:19.539Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
