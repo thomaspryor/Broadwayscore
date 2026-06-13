@@ -1,25 +1,129 @@
 {
-  "updatedAt": "2026-06-13T18:48:13.182Z",
-  "processed": 2,
-  "failed": 21,
-  "successRate": "8.7%",
+  "updatedAt": "2026-06-13T15:33:18.401Z",
+  "processed": 217,
+  "failed": 520,
+  "successRate": "29.4%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 96,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 0,
-    "brightdata": 1,
-    "archiveToday": 0,
-    "archive": 0
+    "scrapingbee": 65,
+    "brightdata": 18,
+    "archiveToday": 11,
+    "archive": 49
   },
   "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-06-13T18:45:57.656Z",
+      "t": "2026-06-13T05:34:24.045Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-13T05:54:21.456Z",
       "event": "bb-session",
-      "session": "23871f8f",
-      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
+      "session": "d703d8b6",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-13T05:54:22.431Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-13T05:55:40.102Z",
+      "event": "bb-session",
+      "session": "8a49b128",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-13T05:55:41.065Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-13T05:55:53.671Z",
+      "event": "bb-session",
+      "session": "5ea31130",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-13T05:55:54.509Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-13T10:38:54.529Z",
+      "event": "bb-session",
+      "session": "978d83ec",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mariska-hargitay-to-make-broadw"
+    },
+    {
+      "t": "2026-06-13T10:38:55.516Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-06-13T10:41:05.007Z",
+      "event": "bb-session",
+      "session": "f1a3d888",
+      "url": "https://www.hollywoodreporter.com/tv/tv-news/netflix-stranger-things-the-first-s"
+    },
+    {
+      "t": "2026-06-13T10:41:05.924Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-06-13T10:41:29.857Z",
+      "event": "bb-session",
+      "session": "45968f0b",
+      "url": "https://variety.com/2025/theater/news/my-neighbour-totoro-puppet-artwork-stage-p"
+    },
+    {
+      "t": "2026-06-13T10:41:30.788Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-13T10:42:46.868Z",
+      "event": "bb-session",
+      "session": "919a3678",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
+    },
+    {
+      "t": "2026-06-13T10:42:47.803Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-13T10:59:31.172Z",
+      "event": "bb-session",
+      "session": "a74245d6",
+      "url": "https://www.hollywoodreporter.com/news/general-news/one-flew-cuckoos-nest-review"
+    },
+    {
+      "t": "2026-06-13T10:59:32.127Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-06-13T11:07:22.064Z",
+      "event": "bb-session",
+      "session": "ad0069e5",
+      "url": "https://playbill.com/production/what-we-did-before-our-moth-days-off-broadway-gr"
+    },
+    {
+      "t": "2026-06-13T15:32:57.193Z",
+      "event": "bb-session",
+      "session": "c99b451d",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2648938"
+    },
+    {
+      "t": "2026-06-13T15:32:58.177Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
