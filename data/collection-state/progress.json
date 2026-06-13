@@ -271,7 +271,10 @@
     "the-prom-2018/thestage--mark-shenton.json",
     "king-kong-2018/limelight-magazine-au--clive-paget.json",
     "american-son-2018/showbiz411--roger-friedman.json",
-    "torch-song-2018/thestage--mark-shenton.json"
+    "torch-song-2018/thestage--mark-shenton.json",
+    "the-waverly-gallery-2018/thestage--mark-shenton.json",
+    "the-ferryman-2018/wsj--terry-teachout.json",
+    "the-ferryman-2018/medium--christian-lewis.json"
   ],
   "failed": [
     "are-you-watching-west-end-2026/all-that-dazzles-uk--unknown.json",
@@ -914,7 +917,14 @@
     "true-west-2019/theater-news-online--jeremy-gerard.json",
     "the-prom-2018/journal-inquirer--tim-leininger.json",
     "king-kong-2018/phindie--kathryn-osenlund.json",
-    "torch-song-2018/theater-news-online--jeremy-gerard.json"
+    "torch-song-2018/theater-news-online--jeremy-gerard.json",
+    "the-waverly-gallery-2018/theater-news-online--matt-windman.json",
+    "the-waverly-gallery-2018/journal-inquirer--tim-leininger.json",
+    "the-nap-2018/theater-life--barry-gordin.json",
+    "the-nap-2018/theater-news-online--jeremy-gerard.json",
+    "bernhardthamlet-2018/theater-news-online--jeremy-gerard.json",
+    "bernhardthamlet-2018/theater-news-online--joe-dziemianowicz.json",
+    "pretty-woman-the-musical-2018/nypost--joe-dziemianowicz.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1047,7 +1057,8 @@
       "network-2018/thestage--mark-shenton.json",
       "the-cher-show-2018/thestage--nicole-serratore.json",
       "the-prom-2018/thestage--mark-shenton.json",
-      "torch-song-2018/thestage--mark-shenton.json"
+      "torch-song-2018/thestage--mark-shenton.json",
+      "the-waverly-gallery-2018/thestage--mark-shenton.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1117,7 +1128,9 @@
       "data/review-texts/fat-ham-2023/hollywood-reporter--lovia-gyarkye.json",
       "fat-ham-2023/hollywood-reporter--lovia-gyarkye.json",
       "data/review-texts/kiss-me-kate-2019/wsj--terry-teachout.json",
-      "kiss-me-kate-2019/wsj--terry-teachout.json"
+      "kiss-me-kate-2019/wsj--terry-teachout.json",
+      "data/review-texts/the-ferryman-2018/wsj--terry-teachout.json",
+      "the-ferryman-2018/wsj--terry-teachout.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1219,7 +1232,8 @@
       "and-juliet-2022/cititour--unknown.json",
       "public-charge-off-broadway-2026/theater-life--barry-gordin.json",
       "the-cher-show-2018/medium--christian-lewis.json",
-      "american-son-2018/showbiz411--roger-friedman.json"
+      "american-son-2018/showbiz411--roger-friedman.json",
+      "the-ferryman-2018/medium--christian-lewis.json"
     ],
     "archiveToday": [
       "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json",
@@ -1305,11 +1319,12 @@
       "the-height-of-the-storm-2019/front-row-center--kathleen-campion.json",
       "frankie-and-johnny-in-the-clair-de-lune-2019/uinterview--erik-meers.json",
       "all-my-sons-2019/theater-life--barry-gordin.json",
-      "what-the-constitution-means-to-me-2019/front-row-center--stanford-friedman.json"
+      "what-the-constitution-means-to-me-2019/front-row-center--stanford-friedman.json",
+      "the-nap-2018/theater-life--barry-gordin.json"
     ]
   },
   "startTime": "2026-06-12T18:33:39.481Z",
-  "lastProcessed": "torch-song-2018/theater-news-online--jeremy-gerard.json",
+  "lastProcessed": "pretty-woman-the-musical-2018/nypost--joe-dziemianowicz.json",
   "log": [
     {
       "t": "2026-06-13T18:45:57.656Z",
@@ -2023,6 +2038,17 @@
     },
     {
       "t": "2026-06-13T16:13:19.539Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-13T16:18:06.741Z",
+      "event": "bb-session",
+      "session": "d437dda6",
+      "url": "https://www.wsj.com/articles/the-ferryman-review-a-house-divided-1540500470?gaa_"
+    },
+    {
+      "t": "2026-06-13T16:18:07.779Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

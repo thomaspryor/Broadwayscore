@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-13T16:17:23.214Z",
-  "processed": 277,
-  "failed": 640,
+  "updatedAt": "2026-06-13T16:21:17.686Z",
+  "processed": 280,
+  "failed": 647,
   "successRate": "30.2%",
   "tierBreakdown": {
-    "playwright": 129,
+    "playwright": 130,
     "amp": 0,
-    "browserbase": 67,
+    "browserbase": 69,
     "directCookies": 0,
     "scrapingbee": 75,
-    "brightdata": 22,
+    "brightdata": 23,
     "archiveToday": 12,
-    "archive": 70
+    "archive": 71
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-06-13T10:38:55.516Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-06-13T10:41:05.007Z",
-      "event": "bb-session",
-      "session": "f1a3d888",
-      "url": "https://www.hollywoodreporter.com/tv/tv-news/netflix-stranger-things-the-first-s"
-    },
     {
       "t": "2026-06-13T10:41:05.924Z",
       "event": "bb-cookie-inject",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-06-13T16:13:19.539Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-13T16:18:06.741Z",
+      "event": "bb-session",
+      "session": "d437dda6",
+      "url": "https://www.wsj.com/articles/the-ferryman-review-a-house-divided-1540500470?gaa_"
+    },
+    {
+      "t": "2026-06-13T16:18:07.779Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
