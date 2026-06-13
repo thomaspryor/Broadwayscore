@@ -9,7 +9,11 @@
     "dark-of-the-moon-west-end-2026/guardian--arifa-akbar.json",
     "romeo-and-juliet-off-broadway-2026/guardian--unknown.json",
     "romeo-and-juliet-off-broadway-2026/culturesauce--thom-geier.json",
-    "romeo-and-juliet-off-broadway-2026/exeunt-magazine--lorin-wertheimer.json"
+    "romeo-and-juliet-off-broadway-2026/exeunt-magazine--lorin-wertheimer.json",
+    "romeo-and-juliet-off-broadway-2026/thewrap--william-bibbiani.json",
+    "romeo-and-juliet-off-broadway-2026/nysr--roma-torre.json",
+    "girl-interrupted-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "girl-interrupted-off-broadway-2026/theater-pizzazz--unknown.json"
   ],
   "failed": [
     "are-you-watching-west-end-2026/all-that-dazzles-uk--unknown.json",
@@ -115,7 +119,13 @@
     "dark-of-the-moon-west-end-2026/artsdesk--unknown.json",
     "dark-of-the-moon-west-end-2026/cambridge--unknown.json",
     "dark-of-the-moon-west-end-2026/standard--dominic-cavendish.json",
-    "dark-of-the-moon-west-end-2026/thestage--unknown.json"
+    "dark-of-the-moon-west-end-2026/thestage--unknown.json",
+    "romeo-and-juliet-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -125,10 +135,17 @@
       "romeo-and-juliet-off-broadway-2026/playbill--unknown.json",
       "war-horse-west-end-2026/click-liverpool--carie-schneider.json",
       "beetlejuice-west-end-2026/guardian-uk--unknown.json",
-      "romeo-and-juliet-off-broadway-2026/culturesauce--thom-geier.json"
+      "romeo-and-juliet-off-broadway-2026/culturesauce--thom-geier.json",
+      "romeo-and-juliet-off-broadway-2026/nysr--roma-torre.json",
+      "girl-interrupted-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "girl-interrupted-off-broadway-2026/theater-pizzazz--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "romeo-and-juliet-off-broadway-2026/timeout--unknown.json",
@@ -136,7 +153,8 @@
     ],
     "brightdata": [
       "dark-of-the-moon-west-end-2026/guardian--arifa-akbar.json",
-      "romeo-and-juliet-off-broadway-2026/guardian--unknown.json"
+      "romeo-and-juliet-off-broadway-2026/guardian--unknown.json",
+      "romeo-and-juliet-off-broadway-2026/thewrap--william-bibbiani.json"
     ],
     "archiveToday": [
       "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json",
@@ -149,7 +167,7 @@
     "archive": []
   },
   "startTime": "2026-06-12T18:33:39.481Z",
-  "lastProcessed": "dark-of-the-moon-west-end-2026/thestage--unknown.json",
+  "lastProcessed": "girl-interrupted-off-broadway-2026/theater-pizzazz--unknown.json",
   "log": [
     {
       "t": "2026-06-12T19:06:49.003Z",
@@ -192,6 +210,39 @@
       "event": "bb-session",
       "session": "435a1f00",
       "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
+    },
+    {
+      "t": "2026-06-13T00:20:21.247Z",
+      "event": "bb-session",
+      "session": "e190cfda",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-13T00:20:22.225Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-13T00:20:54.510Z",
+      "event": "bb-session",
+      "session": "4f54f048",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-13T00:20:55.416Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-13T00:21:10.562Z",
+      "event": "bb-session",
+      "session": "639ac8b8",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-13T00:21:11.475Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
