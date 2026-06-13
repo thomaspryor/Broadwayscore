@@ -1,28 +1,22 @@
 {
-  "updatedAt": "2026-06-13T11:02:41.450Z",
-  "processed": 112,
-  "failed": 359,
-  "successRate": "23.8%",
+  "updatedAt": "2026-06-13T11:08:46.140Z",
+  "processed": 116,
+  "failed": 365,
+  "successRate": "24.1%",
   "tierBreakdown": {
-    "playwright": 65,
+    "playwright": 67,
     "amp": 0,
     "browserbase": 59,
     "directCookies": 0,
-    "scrapingbee": 20,
+    "scrapingbee": 22,
     "brightdata": 10,
     "archiveToday": 10,
-    "archive": 19
+    "archive": 22
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
-      "t": "2026-06-13T05:34:12.756Z",
-      "event": "bb-session",
-      "session": "f2b713e7",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-13T14:13:49.846Z",
+      "t": "2026-06-13T05:34:13.168Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     },
@@ -124,6 +118,12 @@
       "t": "2026-06-13T10:59:32.127Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-06-13T11:07:22.064Z",
+      "event": "bb-session",
+      "session": "ad0069e5",
+      "url": "https://playbill.com/production/what-we-did-before-our-moth-days-off-broadway-gr"
     }
   ]
 }
