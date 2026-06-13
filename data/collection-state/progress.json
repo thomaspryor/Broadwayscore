@@ -57,7 +57,10 @@
     "morgan-bassichis-can-i-be-frank-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
     "just-in-time-2025/newyorker--conde-nast.json",
-    "stranger-things-2024/hollywood-reporter--caitlin-huston.json"
+    "stranger-things-2024/hollywood-reporter--caitlin-huston.json",
+    "my-neighbour-totoro-west-end-2025/variety--naman-ramachandran.json",
+    "maybe-happy-ending-2024/newyorker--conde-nast.json",
+    "maybe-happy-ending-2024/variety--unknown.json"
   ],
   "failed": [
     "are-you-watching-west-end-2026/all-that-dazzles-uk--unknown.json",
@@ -488,7 +491,14 @@
     "romeo-and-juliet-west-end-2026/ny1--unknown.json",
     "romeo-and-juliet-west-end-2026/theater-pizzazz--unknown.json",
     "romeo-and-juliet-west-end-2026/hollywood-reporter--david-rooney.json",
-    "ragtime-2025/bloomberg--chris-rovzar.json"
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "operation-mincemeat-2025/thereviewshub--unknown.json",
+    "my-neighbour-totoro-west-end-2025/london-box-office--miriam-gibson.json",
+    "titanique-west-end-2024/times-uk--clive-davis.json",
+    "oliver-west-end-2024/i-paper--fiona-mountford.json",
+    "oliver-west-end-2024/times-uk--clive-davis.json",
+    "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
+    "death-becomes-her-2024/chicago-reader--kerry-reid.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -588,7 +598,11 @@
       "data/review-texts/every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
       "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
       "data/review-texts/stranger-things-2024/hollywood-reporter--caitlin-huston.json",
-      "stranger-things-2024/hollywood-reporter--caitlin-huston.json"
+      "stranger-things-2024/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/my-neighbour-totoro-west-end-2025/variety--naman-ramachandran.json",
+      "my-neighbour-totoro-west-end-2025/variety--naman-ramachandran.json",
+      "data/review-texts/maybe-happy-ending-2024/variety--unknown.json",
+      "maybe-happy-ending-2024/variety--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -610,7 +624,8 @@
       "the-balusters-2026/broadwayworld--unknown.json",
       "schmigadoon-2026/thewrap--robert-hofler.json",
       "the-fear-of-13-2026/broadwayworld--unknown.json",
-      "just-in-time-2025/newyorker--conde-nast.json"
+      "just-in-time-2025/newyorker--conde-nast.json",
+      "maybe-happy-ending-2024/newyorker--conde-nast.json"
     ],
     "archiveToday": [
       "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json",
@@ -631,7 +646,7 @@
     ]
   },
   "startTime": "2026-06-12T18:33:39.481Z",
-  "lastProcessed": "stranger-things-2024/hollywood-reporter--caitlin-huston.json",
+  "lastProcessed": "maybe-happy-ending-2024/variety--unknown.json",
   "log": [
     {
       "t": "2026-06-12T19:06:49.003Z",
@@ -1253,6 +1268,28 @@
       "t": "2026-06-13T10:41:05.924Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-06-13T10:41:29.857Z",
+      "event": "bb-session",
+      "session": "45968f0b",
+      "url": "https://variety.com/2025/theater/news/my-neighbour-totoro-puppet-artwork-stage-p"
+    },
+    {
+      "t": "2026-06-13T10:41:30.788Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-13T10:42:46.868Z",
+      "event": "bb-session",
+      "session": "919a3678",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
+    },
+    {
+      "t": "2026-06-13T10:42:47.803Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
