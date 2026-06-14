@@ -427,8 +427,10 @@ jobs:
         env:
           GOOGLE_INDEXING_KEY: ${{ secrets.GOOGLE_INDEXING_KEY }}
         run: |
-          # Bing ping (still functional)
-          curl -s "https://www.bing.com/ping?sitemap=https://broadwayscorecard.com/sitemap.xml" || true
+          # Bing ping — sitemap is sharded (/sitemap/0.xml …); /sitemap.xml is a
+          # 404. Bing ping is largely deprecated in favour of IndexNow
+          # (submit-indexnow.js), but ping shard 0 rather than the dead index.
+          curl -s "https://www.bing.com/ping?sitemap=https://broadwayscorecard.com/sitemap/0.xml" || true
           # Google: re-submit sitemap via Search Console Sitemaps API
           if [ -n "$GOOGLE_INDEXING_KEY" ]; then
             node scripts/submit-google-indexing.js --submit-sitemap || true

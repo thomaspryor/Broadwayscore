@@ -23,6 +23,7 @@
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
+const { fetchSitemapIndexUrls } = require('./lib/sitemap-urls');
 
 const SITE_HOST = 'https://broadwayscorecard.com';
 const SITE_URL_GSC = 'sc-domain:broadwayscorecard.com'; // GSC property format
@@ -188,23 +189,37 @@ function getQuotaRemaining() {
 async function submitSitemapToGSC(serviceAccount) {
   const token = await getAccessToken(serviceAccount, SCOPE_WEBMASTERS_WRITE);
   const siteUrl = encodeURIComponent(SITE_URL_GSC);
-  const feedpath = encodeURIComponent('https://broadwayscorecard.com/sitemap.xml');
 
-  const response = await fetch(
-    `https://www.googleapis.com/webmasters/v3/sites/${siteUrl}/sitemaps/${feedpath}`,
-    {
-      method: 'PUT',
-      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-    }
-  );
-
-  if (response.ok || response.status === 204) {
-    console.log('Sitemap re-submitted to Google Search Console.');
-    return true;
+  // The sitemap is sharded (/sitemap/0.xml … /sitemap/N.xml). There is no
+  // /sitemap.xml index, so resolve the real shard URLs from robots.txt rather
+  // than hardcoding the dead /sitemap.xml (which would re-add a 404 sitemap to
+  // GSC on every deploy). robots.txt derives the list from SITEMAP_SHARDS.
+  const sitemapUrls = await fetchSitemapIndexUrls(SITE_HOST);
+  if (sitemapUrls.length === 0) {
+    console.error('No sitemap URLs found in robots.txt — skipping GSC submission (refusing to re-submit a hardcoded URL).');
+    return false;
   }
-  const text = await response.text();
-  console.error(`Sitemap submission failed: ${response.status} ${text}`);
-  return false;
+
+  let allOk = true;
+  for (const sitemapUrl of sitemapUrls) {
+    const feedpath = encodeURIComponent(sitemapUrl);
+    const response = await fetch(
+      `https://www.googleapis.com/webmasters/v3/sites/${siteUrl}/sitemaps/${feedpath}`,
+      {
+        method: 'PUT',
+        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      }
+    );
+
+    if (response.ok || response.status === 204) {
+      console.log(`Sitemap re-submitted to Google Search Console: ${sitemapUrl}`);
+    } else {
+      const text = await response.text();
+      console.error(`Sitemap submission failed for ${sitemapUrl}: ${response.status} ${text}`);
+      allOk = false;
+    }
+  }
+  return allOk;
 }
 
 // --- Auth Test ---

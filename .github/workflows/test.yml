@@ -68,6 +68,11 @@ on:
       # Workflow hygiene guard — enforce notify-failure, setup-playwright, push-with-retry
       # on all 186 workflows. Without this path entry, edits to the guard get ZERO CI.
       - 'scripts/audit-workflow-hygiene.js'
+      # Sitemap shard URL resolver (robots.txt parser) — colocated test runs in the
+      # scripts/lib step, but the job only fires when a push-path matches; without
+      # these entries edits get ZERO CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/sitemap-urls.js'
+      - 'scripts/lib/sitemap-urls.test.mjs'
       # Email generators — so changes to outbound email (incl. UTM tagging via
       # scripts/lib/email-utm.js) run the colocated scripts/lib/*.test.mjs step.
       - 'scripts/lib/email-utm.js'

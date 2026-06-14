@@ -15,8 +15,11 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscore-ayv17ggvd-thomaspryors-projects.vercel.app';
-const SITEMAP_URL = `${BASE_URL}/sitemap.xml`;
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
+// Sitemap is sharded (/sitemap/0.xml …); shard 0 is the canonical entry point
+// for ping endpoints. The dead /sitemap.xml index does not exist. See
+// scripts/lib/sitemap-urls.js + src/app/robots.ts.
+const SITEMAP_URL = `${BASE_URL}/sitemap/0.xml`;
 
 // Colors for console output
 const colors = {
