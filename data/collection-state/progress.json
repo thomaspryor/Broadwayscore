@@ -58,7 +58,9 @@
     "beetlejuice-west-end-2026/guardian-uk--unknown.json",
     "dark-of-the-moon-west-end-2026/guardian--arifa-akbar.json",
     "heartbreak-hotel-off-broadway-2026/broadwayworld--unknown.json",
-    "heartbreak-hotel-off-broadway-2026/chicago-reader--justin-hayford.json"
+    "heartbreak-hotel-off-broadway-2026/chicago-reader--justin-hayford.json",
+    "maybe-happy-ending-2024/variety--unknown.json",
+    "maybe-happy-ending-2024/washpost--unknown.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -1305,7 +1307,8 @@
       "how-the-other-half-loves-west-end-2026/london-box-office--andrew-bewley.json",
       "the-truth-west-end-2026/london-box-office--nastazja-domaradzka.json",
       "beetlejuice-west-end-2026/guardian-uk--unknown.json",
-      "heartbreak-hotel-off-broadway-2026/chicago-reader--justin-hayford.json"
+      "heartbreak-hotel-off-broadway-2026/chicago-reader--justin-hayford.json",
+      "maybe-happy-ending-2024/washpost--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1353,7 +1356,9 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
-      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json"
+      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+      "data/review-texts/maybe-happy-ending-2024/variety--unknown.json",
+      "maybe-happy-ending-2024/variety--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1398,7 +1403,7 @@
     ]
   },
   "startTime": "2026-06-13T20:32:21.470Z",
-  "lastProcessed": "dark-of-the-moon-west-end-2026/thestage--unknown.json",
+  "lastProcessed": "maybe-happy-ending-2024/washpost--unknown.json",
   "log": [
     {
       "t": "2026-06-14T00:02:56.189Z",
@@ -1936,6 +1941,17 @@
       "event": "bb-session",
       "session": "ff99c54c",
       "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
+    },
+    {
+      "t": "2026-06-14T11:28:49.180Z",
+      "event": "bb-session",
+      "session": "4090a0d5",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
+    },
+    {
+      "t": "2026-06-14T11:28:50.133Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
