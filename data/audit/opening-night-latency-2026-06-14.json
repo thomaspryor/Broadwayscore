@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-14T01:30:20.426Z",
+  "generatedAt": "2026-06-14T03:29:55.595Z",
   "date": "2026-06-14",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 316761,
+  "entryCount": 318984,
   "shows": [
     {
       "showId": "an-ideal-husband-west-end-2026",
@@ -291,7 +291,7 @@
     },
     {
       "showId": "grey-house-2023",
-      "reviewCount": 33,
+      "reviewCount": 32,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2286,7 +2286,7 @@
     },
     {
       "showId": "and-juliet-2022",
-      "reviewCount": 30,
+      "reviewCount": 31,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4356,7 +4356,7 @@
     },
     {
       "showId": "driftwood-west-end-2026",
-      "reviewCount": 8,
+      "reviewCount": 9,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4416,7 +4416,7 @@
     },
     {
       "showId": "girl-interrupted-off-broadway-2026",
-      "reviewCount": 20,
+      "reviewCount": 21,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -7326,7 +7326,7 @@
     },
     {
       "showId": "romeo-juliet-2024",
-      "reviewCount": 37,
+      "reviewCount": 36,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -7896,7 +7896,7 @@
     },
     {
       "showId": "pictures-from-home-2023",
-      "reviewCount": 34,
+      "reviewCount": 33,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -8046,7 +8046,7 @@
     },
     {
       "showId": "mr-saturday-night-2022",
-      "reviewCount": 30,
+      "reviewCount": 31,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -10221,12 +10221,42 @@
     },
     {
       "showId": "romeo-and-juliet-off-broadway-2026",
-      "reviewCount": 5,
+      "reviewCount": 11,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 922267,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "how-the-other-half-loves-west-end-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-truth-west-end-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
