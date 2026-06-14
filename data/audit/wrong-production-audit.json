@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-06-14T07:35:58.227Z",
+  "timestamp": "2026-06-14T07:46:13.573Z",
   "stats": {
     "totalReviews": 38364,
     "alreadyFlagged": 16848,
     "dateGuardCatches": 105,
-    "directorMismatch": 856,
+    "directorMismatch": 857,
     "tvFilmSignals": 1056,
     "londonSignals": 625,
     "offBroadwaySignals": 462,
-    "yearMismatch": 81,
+    "yearMismatch": 82,
     "noPublishDate": 3970
   },
   "findings": [
@@ -17619,6 +17619,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"estelle parsons\" from romeo-and-juliet-1986"
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-off-broadway-2026",
+      "file": "broadwayworld--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/reviews/Romeo-and-Juliet",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david leveaux\" from romeo-and-juliet-2013"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2013 (17x) more than 2026 (0x). 2013 matches production: romeo-and-juliet-2013"
         }
       ]
     },
