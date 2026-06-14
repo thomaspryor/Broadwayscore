@@ -181,7 +181,17 @@
     "our-mothers-brief-affair-2016/observer--rex-reed.json",
     "old-times-2015/observer--rex-reed.json",
     "wolf-hall-parts-one-and-two-2015/timeout--adam-feldman.json",
-    "the-elephant-man-2014/observer--rex-reed.json"
+    "the-elephant-man-2014/observer--rex-reed.json",
+    "disgraced-2014/observer--rex-reed.json",
+    "hedwig-and-the-angry-inch-2014/observer--rex-reed.json",
+    "hedwig-and-the-angry-inch-2014/rollingstone--rob-sheffield.json",
+    "all-the-way-2014/observer--rex-reed.json",
+    "romeo-and-juliet-2013/observer--unknown.json",
+    "motown-the-musical-2013/observer--rex-reed.json",
+    "rodgers-hammersteins-cinderella-2013/vulture--jesse-green.json",
+    "rodgers-hammersteins-cinderella-2013/stageandcinema--jonas-schwartz.json",
+    "picnic-2013/observer--rex-reed.json",
+    "ghost-the-musical-2012/timeout--david-cote.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -231,16 +241,6 @@
       "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
-      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
     ],
     "directCookies": [],
@@ -275,7 +275,7 @@
     ]
   },
   "startTime": "2026-06-13T20:32:21.470Z",
-  "lastProcessed": "the-elephant-man-2014/observer--rex-reed.json",
+  "lastProcessed": "ghost-the-musical-2012/timeout--david-cote.json",
   "log": [
     {
       "t": "2026-06-14T00:02:56.189Z",
@@ -357,116 +357,6 @@
     },
     {
       "t": "2026-06-14T00:25:39.111Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-14T00:50:32.347Z",
-      "event": "bb-session",
-      "session": "c8c33fb6",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
-    {
-      "t": "2026-06-14T00:50:32.851Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-14T00:51:03.515Z",
-      "event": "bb-session",
-      "session": "72b89766",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-14T00:51:04.007Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-14T00:51:15.998Z",
-      "event": "bb-session",
-      "session": "639f994b",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
-    {
-      "t": "2026-06-14T00:51:16.502Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-14T01:13:52.587Z",
-      "event": "bb-session",
-      "session": "7de56300",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
-    {
-      "t": "2026-06-14T01:13:53.521Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-14T01:14:24.787Z",
-      "event": "bb-session",
-      "session": "8068c164",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-14T01:14:25.724Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-14T01:14:38.989Z",
-      "event": "bb-session",
-      "session": "0f083f9b",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
-    {
-      "t": "2026-06-14T01:14:39.911Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-14T01:15:43.712Z",
-      "event": "bb-session",
-      "session": "b76efedb",
-      "url": "https://www.nytimes.com/2026/06/01/arts/andy-halliday-dead.html"
-    },
-    {
-      "t": "2026-06-14T01:15:44.649Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-14T01:28:14.836Z",
-      "event": "bb-session",
-      "session": "a78e9007",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
-    {
-      "t": "2026-06-14T01:28:15.792Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-14T01:28:48.412Z",
-      "event": "bb-session",
-      "session": "59ba5345",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-14T01:28:49.377Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-14T01:29:04.432Z",
-      "event": "bb-session",
-      "session": "c0675c19",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
-    {
-      "t": "2026-06-14T01:29:05.364Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
