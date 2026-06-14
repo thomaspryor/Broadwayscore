@@ -1,18 +1,25 @@
 {
-  "updatedAt": "2026-06-14T21:57:27.595Z",
-  "processed": 1,
-  "failed": 165,
-  "successRate": "0.6%",
+  "updatedAt": "2026-06-14T21:59:46.964Z",
+  "processed": 3,
+  "failed": 173,
+  "successRate": "1.7%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 2,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
+    "brightdata": 1,
     "archiveToday": 1,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-06-14T21:59:14.542Z",
+      "event": "bb-session",
+      "session": "1b408323",
+      "url": "https://charingcrosstheatre.co.uk/theatre/dark-of-the-moon"
+    }
+  ]
 }
