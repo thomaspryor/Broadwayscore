@@ -1,19 +1,30 @@
 {
-  "lastChecked": "2026-06-07",
+  "lastChecked": "2026-06-14",
   "performance": {
-    "clicks": 1320,
-    "impressions": 53109,
-    "ctr": 0.0249,
-    "position": 10.7,
-    "priorClicks": 849,
-    "priorImpressions": 40367
+    "clicks": 1553,
+    "impressions": 80780,
+    "ctr": 0.0192,
+    "position": 9.4,
+    "priorClicks": 1501,
+    "priorImpressions": 59207
   },
   "indexCoverage": {
-    "indexed": 50,
-    "notIndexed": 0,
+    "indexed": 48,
+    "notIndexed": 2,
     "total": 50,
-    "rate": 100,
-    "issues": []
+    "rate": 96,
+    "issues": [
+      {
+        "url": "https://broadwayscorecard.com/show/all-the-way-2014",
+        "verdict": "NEUTRAL",
+        "coverageState": "Crawled - currently not indexed"
+      },
+      {
+        "url": "https://broadwayscorecard.com/show/water-for-elephants",
+        "verdict": "NEUTRAL",
+        "coverageState": "URL is unknown to Google"
+      }
+    ]
   },
   "sitemapStatus": {
     "count": 1,
@@ -22,129 +33,149 @@
         "path": "https://broadwayscorecard.com/sitemap.xml",
         "errors": "1",
         "warnings": "0",
-        "lastSubmitted": "2026-06-07T08:59:37.056Z",
+        "lastSubmitted": "2026-06-14T08:59:07.335Z",
         "lastDownloaded": "2026-04-16T21:29:06.792Z"
       }
     ]
   },
   "newPages": {
-    "checked": 7,
-    "indexed": 7,
+    "checked": 9,
+    "indexed": 9,
     "resubmitted": 0
   },
   "stalePages": {
     "sampled": 100,
-    "stale": 38,
-    "resubmitted": 38
+    "stale": 45,
+    "resubmitted": 45
   },
   "targetKeywords": [
     {
       "keyword": "broadway scorecard",
-      "position": 1.4,
-      "clicks": 115,
-      "impressions": 142,
-      "ctr": 0.8099
+      "position": 1,
+      "clicks": 143,
+      "impressions": 175,
+      "ctr": 0.8171
     },
     {
       "keyword": "best broadway musicals 2026",
-      "position": 8,
+      "position": 6.9,
       "clicks": 0,
-      "impressions": 16,
+      "impressions": 10,
       "ctr": 0
     },
     {
       "keyword": "best broadway shows 2026",
-      "position": 8.8,
+      "position": 8.3,
       "clicks": 0,
-      "impressions": 121,
+      "impressions": 103,
       "ctr": 0
     },
     {
-      "keyword": "broadway show ratings",
-      "position": 14.1,
+      "keyword": "broadway ratings",
+      "position": 8.4,
+      "clicks": 1,
+      "impressions": 24,
+      "ctr": 0.0417
+    },
+    {
+      "keyword": "new broadway shows",
+      "position": 11,
+      "clicks": 0,
+      "impressions": 1,
+      "ctr": 0
+    },
+    {
+      "keyword": "broadway box office grosses",
+      "position": 12.1,
       "clicks": 0,
       "impressions": 11,
       "ctr": 0
     },
     {
-      "keyword": "broadway box office grosses",
-      "position": 14.7,
-      "clicks": 0,
-      "impressions": 3,
-      "ctr": 0
-    },
-    {
       "keyword": "new broadway shows 2026",
-      "position": 15.5,
-      "clicks": 0,
-      "impressions": 2,
-      "ctr": 0
-    },
-    {
-      "keyword": "broadway show reviews",
-      "position": 15.9,
-      "clicks": 1,
-      "impressions": 22,
-      "ctr": 0.0455
-    },
-    {
-      "keyword": "new broadway shows",
-      "position": 22.5,
-      "clicks": 0,
-      "impressions": 6,
-      "ctr": 0
-    },
-    {
-      "keyword": "broadway ratings",
-      "position": 22.9,
-      "clicks": 1,
-      "impressions": 33,
-      "ctr": 0.0303
-    },
-    {
-      "keyword": "best broadway shows",
-      "position": 24.2,
-      "clicks": 0,
-      "impressions": 70,
-      "ctr": 0
-    },
-    {
-      "keyword": "broadway musicals ranked",
-      "position": 26,
-      "clicks": 0,
-      "impressions": 3,
-      "ctr": 0
-    },
-    {
-      "keyword": "best broadway musicals",
-      "position": 33.7,
-      "clicks": 0,
-      "impressions": 36,
-      "ctr": 0
-    },
-    {
-      "keyword": "best broadway plays",
-      "position": 43,
-      "clicks": 0,
-      "impressions": 1,
-      "ctr": 0
-    },
-    {
-      "keyword": "broadway shows for kids",
-      "position": 46.2,
+      "position": 12.2,
       "clicks": 0,
       "impressions": 5,
       "ctr": 0
     },
     {
-      "keyword": "broadway lottery shows",
-      "position": 48,
+      "keyword": "broadway musicals ranked",
+      "position": 15.3,
       "clicks": 0,
-      "impressions": 1,
+      "impressions": 3,
+      "ctr": 0
+    },
+    {
+      "keyword": "best broadway plays",
+      "position": 15.8,
+      "clicks": 0,
+      "impressions": 4,
+      "ctr": 0
+    },
+    {
+      "keyword": "broadway show ratings",
+      "position": 16.8,
+      "clicks": 0,
+      "impressions": 31,
+      "ctr": 0
+    },
+    {
+      "keyword": "best broadway shows",
+      "position": 17.9,
+      "clicks": 1,
+      "impressions": 123,
+      "ctr": 0.0081
+    },
+    {
+      "keyword": "best broadway musicals",
+      "position": 21,
+      "clicks": 0,
+      "impressions": 53,
+      "ctr": 0
+    },
+    {
+      "keyword": "broadway show reviews",
+      "position": 22.4,
+      "clicks": 1,
+      "impressions": 38,
+      "ctr": 0.0263
+    },
+    {
+      "keyword": "broadway shows for kids",
+      "position": 34.5,
+      "clicks": 0,
+      "impressions": 10,
       "ctr": 0
     }
   ],
   "coreWebVitals": [],
   "anomalies": [],
-  "quotaUsedToday": 88
+  "quotaUsedToday": 95,
+  "richResults": [
+    {
+      "slug": "schmigadoon",
+      "verdict": "ERROR",
+      "error": "403"
+    },
+    {
+      "slug": "the-lost-boys",
+      "verdict": "ERROR",
+      "error": "403"
+    },
+    {
+      "slug": "cats-the-jellicle-ball",
+      "verdict": "ERROR",
+      "error": "403"
+    },
+    {
+      "slug": "death-of-a-salesman-2024",
+      "verdict": "ERROR",
+      "error": "403"
+    },
+    {
+      "slug": "dog-day-afternoon",
+      "verdict": "ERROR",
+      "error": "403"
+    }
+  ]
 }
