@@ -106,7 +106,11 @@
     "the-lion-king-1997/timeout--adam-feldman.json",
     "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
     "les-miserables-west-end-2021/times-uk--clive-davis.json",
-    "the-mousetrap-west-end-2021/standard--jessie-thompson.json"
+    "the-mousetrap-west-end-2021/standard--jessie-thompson.json",
+    "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
+    "amaze-off-broadway-2026/timeout--adam-feldman.json",
+    "return-of-the-godz-west-end-2026/londontheatre1--ben-ross.json",
+    "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -2041,7 +2045,13 @@
     "wicked-2003/standard--unknown.json",
     "the-lion-king-1997/calgary-herald--louis-b-hobson.json",
     "the-lion-king-1997/familyvacationcritic--unknown.json",
-    "the-lion-king-1997/maryland-theatre-guide--susan-brall.json"
+    "the-lion-king-1997/maryland-theatre-guide--susan-brall.json",
+    "are-you-now-or-have-you-ever-been-off-broadway-2026/theatermania--unknown.json",
+    "gloria-2026/amny--unknown.json",
+    "gloria-2026/billboard--unknown.json",
+    "gloria-2026/financialtimes--unknown.json",
+    "gloria-2026/huffpost--unknown.json",
+    "gloria-2026/perez-hilton--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2113,7 +2123,8 @@
       "the-book-of-mormon-west-end-2024/musical-theatre-review--unknown.json",
       "book-of-mormon-2011/financialtimes--brendan-lemon.json",
       "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
-      "the-mousetrap-west-end-2021/standard--jessie-thompson.json"
+      "the-mousetrap-west-end-2021/standard--jessie-thompson.json",
+      "return-of-the-godz-west-end-2026/londontheatre1--ben-ross.json"
     ],
     "amp": [],
     "browserbase": [
@@ -2179,7 +2190,9 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
       "data/review-texts/oh-mary-west-end-2025/variety--unknown.json",
-      "oh-mary-west-end-2025/variety--unknown.json"
+      "oh-mary-west-end-2025/variety--unknown.json",
+      "data/review-texts/gloria-2026/amny--unknown.json",
+      "data/review-texts/gloria-2026/billboard--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -2192,7 +2205,9 @@
       "hadestown-2019/broadwaynews--charles-isherwood.json",
       "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
       "avenue-q-west-end-2026/thereviewshub--unknown.json",
-      "the-lion-king-1997/timeout--adam-feldman.json"
+      "the-lion-king-1997/timeout--adam-feldman.json",
+      "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
+      "amaze-off-broadway-2026/timeout--adam-feldman.json"
     ],
     "brightdata": [
       "romeo-and-juliet-off-broadway-2026/talkinbroadway--unknown.json",
@@ -2242,11 +2257,12 @@
       "book-of-mormon-2011/village-voice--michael-musto.json",
       "the-lion-king-west-end-2021/shy-strange-manic--kariss-ainsworth.json",
       "mamma-mia-west-end-2021/west-end-wilma--west-end-wilma.json",
-      "les-miserables-west-end-2021/times-uk--clive-davis.json"
+      "les-miserables-west-end-2021/times-uk--clive-davis.json",
+      "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json"
     ]
   },
   "startTime": "2026-06-13T20:32:21.470Z",
-  "lastProcessed": "the-mousetrap-west-end-2021/standard--jessie-thompson.json",
+  "lastProcessed": "gloria-2026/perez-hilton--unknown.json",
   "log": [
     {
       "t": "2026-06-14T00:02:56.189Z",
@@ -2972,6 +2988,23 @@
       "t": "2026-06-14T16:06:06.264Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-14T16:21:07.427Z",
+      "event": "bb-session",
+      "session": "9d0a6e31",
+      "url": "https://www.amny.com/entertainment/on-your-feet-review-this-rhythm-will-barely-g"
+    },
+    {
+      "t": "2026-06-14T16:21:08.349Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
+    },
+    {
+      "t": "2026-06-14T16:24:30.781Z",
+      "event": "bb-session",
+      "session": "3d3b44de",
+      "url": "https://www.billboard.com/articles/review/6753841/on-your-feet-theater-review-gl"
     }
   ]
 }
