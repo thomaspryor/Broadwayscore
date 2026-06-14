@@ -13,6 +13,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { fetchSitemapIndexUrls } = require('./lib/sitemap-urls');
 
 const INDEXNOW_KEY = 'c98817f2581efaac8a239e3dbed189ba';
 const SITE_HOST = 'broadwayscorecard.com';
@@ -78,8 +79,36 @@ async function fetchSitemapXml(url) {
 }
 
 async function getUrlsFromLiveSitemap() {
-  // Fetch the production sitemap-index. If it's a <sitemapindex>, recurse into
-  // each sub-sitemap and union all <loc>. If it's a <urlset>, return URLs directly.
+  // The sitemap is sharded (/sitemap/0.xml … /sitemap/N.xml) — there is no
+  // /sitemap.xml index. Resolve the shard URLs from robots.txt, then union all
+  // <loc> across shards. (Previously fetched the dead /sitemap.xml and fell
+  // through to data-driven generation, which submits a reduced URL set.)
+  const shardUrls = await fetchSitemapIndexUrls(`https://${SITE_HOST}`);
+  if (shardUrls.length > 0) {
+    console.log(`robots.txt lists ${shardUrls.length} sitemap shard(s); fetching each...`);
+    const allUrls = [];
+    for (const shardUrl of shardUrls) {
+      const xml = await fetchSitemapXml(shardUrl);
+      if (xml) {
+        // A shard could itself be an index in future — recurse one level if so.
+        if (xml.includes('<sitemapindex')) {
+          for (const sub of extractLocs(xml)) {
+            const subXml = await fetchSitemapXml(sub);
+            if (subXml) allUrls.push(...extractLocs(subXml));
+          }
+        } else {
+          const locs = extractLocs(xml);
+          console.log(`  ${shardUrl.split('/').pop()}: ${locs.length} URLs`);
+          allUrls.push(...locs);
+        }
+      } else {
+        console.warn(`  failed to fetch ${shardUrl}`);
+      }
+    }
+    return allUrls.length > 0 ? allUrls : null;
+  }
+
+  // Fallback: legacy single sitemap-index at /sitemap.xml (pre-sharding).
   const indexXml = await fetchSitemapXml(`https://${SITE_HOST}/sitemap.xml`);
   if (!indexXml) return null;
 
@@ -117,7 +146,7 @@ async function getUrlsFromSitemap() {
   // Prefer live production sitemap — always reflects what crawlers actually see.
   const liveUrls = await getUrlsFromLiveSitemap();
   if (liveUrls && liveUrls.length > 0) {
-    console.log(`Read ${liveUrls.length} URLs from live sitemap (https://${SITE_HOST}/sitemap.xml)`);
+    console.log(`Read ${liveUrls.length} URLs from live sitemap shards (https://${SITE_HOST}/sitemap/*.xml)`);
     return liveUrls;
   }
 
