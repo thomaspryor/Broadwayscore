@@ -1,26 +1,20 @@
 {
-  "updatedAt": "2026-06-14T06:50:06.629Z",
-  "processed": 55,
-  "failed": 654,
-  "successRate": "7.8%",
+  "updatedAt": "2026-06-14T06:53:05.452Z",
+  "processed": 57,
+  "failed": 662,
+  "successRate": "7.9%",
   "tierBreakdown": {
-    "playwright": 38,
+    "playwright": 39,
     "amp": 0,
     "browserbase": 37,
     "directCookies": 0,
     "scrapingbee": 7,
-    "brightdata": 8,
+    "brightdata": 9,
     "archiveToday": 1,
     "archive": 7
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-06-14T04:40:51.509Z",
-      "event": "bb-session",
-      "session": "c2e84e79",
-      "url": "https://www.nytimes.com/2026/05/31/theater/othello-review-wendell-pierce.html"
-    },
     {
       "t": "2026-06-14T04:40:52.426Z",
       "event": "bb-cookie-inject",
@@ -124,6 +118,12 @@
       "t": "2026-06-14T05:50:18.789Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-14T06:52:26.798Z",
+      "event": "bb-session",
+      "session": "5b398ebf",
+      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
     }
   ]
 }
