@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-06-14T04:10:09.018Z",
+  "updatedAt": "2026-06-14T04:41:11.609Z",
   "processed": 55,
-  "failed": 510,
-  "successRate": "9.7%",
+  "failed": 520,
+  "successRate": "9.6%",
   "tierBreakdown": {
     "playwright": 38,
     "amp": 0,
-    "browserbase": 24,
+    "browserbase": 28,
     "directCookies": 0,
     "scrapingbee": 7,
     "brightdata": 8,
@@ -15,50 +15,6 @@
   },
   "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-06-14T03:21:14.365Z",
-      "event": "bb-session",
-      "session": "881053ee",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
-    {
-      "t": "2026-06-14T03:21:15.438Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-14T03:21:48.496Z",
-      "event": "bb-session",
-      "session": "d5d79b5a",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-14T03:21:49.409Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-14T03:22:04.394Z",
-      "event": "bb-session",
-      "session": "783e43ee",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
-    {
-      "t": "2026-06-14T03:22:05.340Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-14T03:47:26.466Z",
-      "event": "bb-session",
-      "session": "654bb719",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
-    {
-      "t": "2026-06-14T03:47:27.496Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-06-14T03:48:05.454Z",
       "event": "bb-session",
@@ -122,6 +78,50 @@
     },
     {
       "t": "2026-06-14T04:08:55.832Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-14T04:38:46.838Z",
+      "event": "bb-session",
+      "session": "498ee847",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-14T04:38:47.892Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-14T04:39:21.085Z",
+      "event": "bb-session",
+      "session": "53e4322f",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-14T04:39:22.018Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-14T04:39:35.249Z",
+      "event": "bb-session",
+      "session": "fb803895",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-14T04:39:36.172Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-14T04:40:51.509Z",
+      "event": "bb-session",
+      "session": "c2e84e79",
+      "url": "https://www.nytimes.com/2026/05/31/theater/othello-review-wendell-pierce.html"
+    },
+    {
+      "t": "2026-06-14T04:40:52.426Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
