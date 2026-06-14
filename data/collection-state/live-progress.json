@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-14T00:05:21.782Z",
+  "updatedAt": "2026-06-14T00:10:15.384Z",
   "processed": 52,
-  "failed": 58,
-  "successRate": "47.3%",
+  "failed": 63,
+  "successRate": "45.2%",
   "tierBreakdown": {
     "playwright": 35,
     "amp": 0,
     "browserbase": 4,
     "directCookies": 0,
     "scrapingbee": 7,
-    "brightdata": 7,
+    "brightdata": 8,
     "archiveToday": 0,
     "archive": 7
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-06-14T00:02:56.189Z",
@@ -58,6 +58,12 @@
       "t": "2026-06-14T00:04:40.170Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-14T00:10:04.024Z",
+      "event": "bb-session",
+      "session": "28795aa4",
+      "url": "https://pagesonstages.com/2026/05/28/small/"
     }
   ]
 }
