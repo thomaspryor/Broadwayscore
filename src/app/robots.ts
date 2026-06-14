@@ -1,4 +1,5 @@
 import { MetadataRoute } from 'next';
+import { SITEMAP_SHARDS } from '@/config/sitemap-shards';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
@@ -34,6 +35,12 @@ export default function robots(): MetadataRoute.Robots {
       // Default: allow everything else (except admin surface)
       { userAgent: '*', allow: '/', disallow: '/admin/' },
     ],
-    sitemap: `${BASE_URL}/sitemap.xml`,
+    // The sitemap is sharded via generateSitemaps() in src/app/sitemap.ts, which
+    // emits /sitemap/0.xml … /sitemap/N.xml. Next.js does NOT auto-generate a
+    // /sitemap.xml index for static export, so referencing /sitemap.xml here used
+    // to point Google at the 404 page (GSC: errors:1, contents:None since
+    // 2026-04-16). List every shard directly so all are discovered. Derived from
+    // SITEMAP_SHARDS so adding a shard updates robots.txt automatically.
+    sitemap: SITEMAP_SHARDS.map((_, i) => `${BASE_URL}/sitemap/${i}.xml`),
   };
 }
