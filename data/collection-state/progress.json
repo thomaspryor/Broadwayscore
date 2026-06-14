@@ -79,7 +79,11 @@
     "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
     "avenue-q-west-end-2026/thereviewshub--unknown.json",
     "avenue-q-west-end-2026/whatsonstage--alun-hood.json",
-    "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json"
+    "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
+    "giant-2026/daily-mail--patrick-marmion.json",
+    "giant-2026/independent--alice-saville.json",
+    "giant-2026/whatsonstage--sarah-crompton.json",
+    "oh-mary-west-end-2025/variety--unknown.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -1971,7 +1975,13 @@
     "romeo-and-juliet-west-end-2026/ew--unknown.json",
     "romeo-and-juliet-west-end-2026/newsday--unknown.json",
     "romeo-and-juliet-west-end-2026/nydailynews--unknown.json",
-    "romeo-and-juliet-west-end-2026/amny--unknown.json"
+    "romeo-and-juliet-west-end-2026/amny--unknown.json",
+    "romeo-and-juliet-west-end-2026/ap--mark-kennedy.json",
+    "romeo-and-juliet-west-end-2026/exeunt-magazine--unknown.json",
+    "romeo-and-juliet-west-end-2026/nbcny--unknown.json",
+    "romeo-and-juliet-west-end-2026/ny1--unknown.json",
+    "romeo-and-juliet-west-end-2026/theater-pizzazz--unknown.json",
+    "romeo-and-juliet-west-end-2026/hollywood-reporter--david-rooney.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2031,7 +2041,9 @@
       "the-rocky-horror-show-2026/nyt-theater--jonathan-mandell.json",
       "schmigadoon-2026/musical-theatre-review--unknown.json",
       "avenue-q-west-end-2026/whatsonstage--alun-hood.json",
-      "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json"
+      "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
+      "giant-2026/independent--alice-saville.json",
+      "giant-2026/whatsonstage--sarah-crompton.json"
     ],
     "amp": [],
     "browserbase": [
@@ -2095,7 +2107,9 @@
       "data/review-texts/small-off-broadway-2026/theater-pizzazz--unknown.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+      "data/review-texts/oh-mary-west-end-2025/variety--unknown.json",
+      "oh-mary-west-end-2025/variety--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -2144,11 +2158,12 @@
       "six-the-musical-west-end-2021/standard--fiona-mountford.json",
       "hadestown-2019/theater-life--barry-gordin.json",
       "heartbreak-hotel-off-broadway-2026/broadwayworld--unknown.json",
-      "schmigadoon-2026/vulture--unknown.json"
+      "schmigadoon-2026/vulture--unknown.json",
+      "giant-2026/daily-mail--patrick-marmion.json"
     ]
   },
   "startTime": "2026-06-13T20:32:21.470Z",
-  "lastProcessed": "romeo-and-juliet-west-end-2026/amny--unknown.json",
+  "lastProcessed": "oh-mary-west-end-2025/variety--unknown.json",
   "log": [
     {
       "t": "2026-06-14T00:02:56.189Z",
@@ -2865,16 +2880,15 @@
       "domain": "variety.com"
     },
     {
-      "t": "2026-06-14T18:42:25.985Z",
+      "t": "2026-06-14T16:06:05.373Z",
       "event": "bb-session",
-      "session": "b5069430",
-      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
+      "session": "399e5945",
+      "url": "https://variety.com/2026/legit/news/maya-rudolph-oh-mary-broadway-debut-12366856"
     },
     {
-      "t": "2026-06-14T19:12:10.532Z",
-      "event": "bb-session",
-      "session": "92e98342",
-      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
+      "t": "2026-06-14T16:06:06.264Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
