@@ -101,7 +101,17 @@
     "little-shop-of-horrors-off-broadway-2019/wsj--charles-isherwood.json",
     "hadestown-2019/theater-life--barry-gordin.json",
     "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json",
-    "the-play-that-goes-wrong-off-broadway-2019/talkinbroadway--unknown.json"
+    "the-play-that-goes-wrong-off-broadway-2019/talkinbroadway--unknown.json",
+    "romeo-and-juliet-off-broadway-2026/wsj--charles-isherwood.json",
+    "romeo-and-juliet-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
+    "small-off-broadway-2026/guardian--arifa-akbar.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -143,7 +153,12 @@
       "six-the-musical-west-end-2021/west-end-wilma--west-end-wilma.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
@@ -175,6 +190,51 @@
     ]
   },
   "startTime": "2026-06-13T20:32:21.470Z",
-  "lastProcessed": "six-the-musical-west-end-2021/west-end-wilma--west-end-wilma.json",
-  "log": []
+  "lastProcessed": "small-off-broadway-2026/guardian--arifa-akbar.json",
+  "log": [
+    {
+      "t": "2026-06-14T00:02:56.189Z",
+      "event": "bb-session",
+      "session": "e0fa9ea2",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-14T00:02:56.704Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-14T00:03:28.185Z",
+      "event": "bb-session",
+      "session": "8baad1cd",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-14T00:03:28.599Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-14T00:03:38.916Z",
+      "event": "bb-session",
+      "session": "d1813805",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-14T00:03:39.316Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-14T00:04:39.661Z",
+      "event": "bb-session",
+      "session": "5a255e60",
+      "url": "https://www.nytimes.com/2026/06/01/arts/andy-halliday-dead.html"
+    },
+    {
+      "t": "2026-06-14T00:04:40.170Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
