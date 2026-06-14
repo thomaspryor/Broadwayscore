@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-14T08:02:34.743Z",
+  "timestamp": "2026-06-14T09:40:25.636Z",
   "stats": {
-    "totalReviews": 38364,
-    "alreadyFlagged": 16848,
+    "totalReviews": 38367,
+    "alreadyFlagged": 16850,
     "dateGuardCatches": 105,
     "directorMismatch": 857,
-    "tvFilmSignals": 1056,
-    "londonSignals": 625,
+    "tvFilmSignals": 1055,
+    "londonSignals": 627,
     "offBroadwaySignals": 462,
     "yearMismatch": 82,
-    "noPublishDate": 3970
+    "noPublishDate": 3971
   },
   "findings": [
     {
@@ -1673,20 +1673,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "avenue-q-west-end-2026",
-      "file": "telegraph--marianka-swain.json",
-      "score": 82,
-      "publishDate": "2026-04-17",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/avenue-qs-bawdy-puppets-gleefully-outrageous/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -30929,6 +30915,20 @@
     },
     {
       "showId": "grace-pervades-west-end-2026",
+      "file": "broadwayworld--team-bww.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/shows/Grace-Pervades-335731.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "grace-pervades-west-end-2026",
       "file": "london-theatre--marianka-swain.json",
       "score": 60,
       "publishDate": "2026-01-26",
@@ -32591,6 +32591,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "lbc--johnny-jenkins.json",
+      "score": 91,
+      "publishDate": "2026-04-08",
+      "url": "https://www.lbc.co.uk/article/inter-alia-review-best-plays-ever-seen-5HjdXRZ_2/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
