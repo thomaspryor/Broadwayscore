@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-14T11:13:43.857Z",
+  "generatedAt": "2026-06-14T11:59:43.673Z",
   "date": "2026-06-14",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 326761,
+  "entryCount": 327876,
   "shows": [
     {
       "showId": "an-ideal-husband-west-end-2026",
@@ -2751,7 +2751,7 @@
     },
     {
       "showId": "care-west-end-2026",
-      "reviewCount": 23,
+      "reviewCount": 24,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4356,7 +4356,7 @@
     },
     {
       "showId": "driftwood-west-end-2026",
-      "reviewCount": 9,
+      "reviewCount": 10,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -9201,7 +9201,7 @@
     },
     {
       "showId": "come-from-away-2017",
-      "reviewCount": 60,
+      "reviewCount": 61,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -10251,6 +10251,36 @@
     },
     {
       "showId": "the-truth-west-end-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "table-17-off-west-end",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-people-versus-lenny-bruce-off-broadway",
       "reviewCount": 1,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,

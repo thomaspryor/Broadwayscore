@@ -160643,5 +160643,25 @@
         "hasDisagreement": false
       }
     ]
+  },
+  {
+    "startedAt": "2026-06-14T12:00:12.103Z",
+    "completedAt": "2026-06-14T12:00:12.196Z",
+    "totalReviews": 45,
+    "processed": 0,
+    "skipped": 44,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "errorDetails": [
+      {
+        "showId": "romeo-and-juliet-off-broadway-2026",
+        "outletId": "talkinbroadway",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
   }
 ]
