@@ -1,5 +1,58 @@
 {
-  "generatedAt": "2026-06-07T14:41:14.833Z",
-  "totalFindings": 0,
-  "findings": []
+  "generatedAt": "2026-06-14T14:51:14.761Z",
+  "totalFindings": 4,
+  "findings": [
+    {
+      "currentShowId": "oh-mary-2024",
+      "suggestedShowId": "oh-mary-west-end-2025",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:700",
+        "days-from-closer:175",
+        "duplicate-in-suggested-dir"
+      ],
+      "reviewFile": "data/review-texts/oh-mary-2024/variety--unknown.json",
+      "url": "https://variety.com/2026/theater/news/rupauls-drag-race-jinkx-monsoon-west-end-d",
+      "reason": "publish-date"
+    },
+    {
+      "currentShowId": "titanique-west-end-2024",
+      "suggestedShowId": "titanique-2026",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:496",
+        "days-from-closer:37",
+        "duplicate-in-suggested-dir"
+      ],
+      "reviewFile": "data/review-texts/titanique-west-end-2024/british-theatre--susan-novak.json",
+      "url": "https://www.britishtheatre.com/nl/shows/titanique-musical-tickets",
+      "reason": "publish-date"
+    },
+    {
+      "currentShowId": "giant-west-end-2025",
+      "suggestedShowId": "giant-royal-court-off-west-end-2024",
+      "confidence": "medium",
+      "signals": [
+        "venue-slug-match",
+        "duplicate-in-suggested-dir"
+      ],
+      "reviewFile": "data/review-texts/giant-west-end-2025/thestage--dave-fargnoli.json",
+      "url": "https://www.thestage.co.uk/reviews/giant-review-royal-court-theatre-london-roald",
+      "reason": "venue"
+    },
+    {
+      "currentShowId": "giant-west-end-2025",
+      "suggestedShowId": "giant-royal-court-off-west-end-2024",
+      "confidence": "medium",
+      "signals": [
+        "venue-slug-match",
+        "duplicate-in-suggested-dir"
+      ],
+      "reviewFile": "data/review-texts/giant-west-end-2025/times-uk--clive-davis.json",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/giant-review-john-lithgow",
+      "reason": "venue"
+    }
+  ]
 }
