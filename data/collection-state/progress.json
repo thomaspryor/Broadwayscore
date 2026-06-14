@@ -511,34 +511,16 @@
     "old-times-2015/observer--rex-reed.json",
     "wolf-hall-parts-one-and-two-2015/timeout--adam-feldman.json",
     "the-elephant-man-2014/observer--rex-reed.json",
-    "disgraced-2014/observer--rex-reed.json",
-    "hedwig-and-the-angry-inch-2014/observer--rex-reed.json",
-    "hedwig-and-the-angry-inch-2014/rollingstone--rob-sheffield.json",
-    "all-the-way-2014/observer--rex-reed.json",
-    "motown-the-musical-2013/observer--rex-reed.json",
-    "rodgers-hammersteins-cinderella-2013/vulture--jesse-green.json",
-    "rodgers-hammersteins-cinderella-2013/stageandcinema--jonas-schwartz.json",
-    "picnic-2013/observer--rex-reed.json",
-    "ghost-the-musical-2012/timeout--david-cote.json",
-    "clybourne-park-2012/usatoday--elysa-gardner.json",
-    "jesus-christ-superstar-2012/stageandcinema--jonas-schwartz.json",
-    "on-a-clear-day-you-can-see-forever-2011/vulture--jesse-green.json",
-    "bloody-bloody-andrew-jackson-2010/vulture--jesse-green.json",
-    "red-2010/chicagotribune--chris-jones.json",
-    "ragtime-2009/nydailynews--joe-dziemianowicz.json",
-    "hamlet-2009/nydailynews--joe-dziemianowicz.json",
-    "hamlet-2009/usatoday--elysa-gardner.json",
-    "the-norman-conquests-2009/nydailynews--joe-dziemianowicz.json",
-    "the-norman-conquests-2009/observer--rex-reed.json",
-    "reasons-to-be-pretty-2009/usatoday--elysa-gardner.json",
-    "shrek-the-musical-2008/usatoday--elysa-gardner.json",
-    "all-my-sons-2008/usatoday--elysa-gardner.json",
-    "macbeth-2008/usatoday--elysa-gardner.json",
-    "come-back-little-sheba-2008/usatoday--elysa-gardner.json",
-    "the-little-mermaid-2008/nypost--clive-barnes.json",
-    "is-he-dead-2007/nypost--clive-barnes.json",
-    "inherit-the-wind-2007/nypost--clive-barnes.json",
-    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json"
+    "romeo-and-juliet-off-broadway-2026/wsj--charles-isherwood.json",
+    "romeo-and-juliet-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
+    "small-off-broadway-2026/guardian--arifa-akbar.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -594,6 +576,9 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
     ],
     "directCookies": [],
@@ -628,7 +613,7 @@
     ]
   },
   "startTime": "2026-06-13T20:32:21.470Z",
-  "lastProcessed": "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+  "lastProcessed": "small-off-broadway-2026/guardian--arifa-akbar.json",
   "log": [
     {
       "t": "2026-06-14T00:02:56.189Z",
@@ -754,6 +739,39 @@
     },
     {
       "t": "2026-06-14T02:01:12.002Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-14T03:15:14.126Z",
+      "event": "bb-session",
+      "session": "1da1abf3",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-14T03:15:14.960Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-14T03:15:47.109Z",
+      "event": "bb-session",
+      "session": "2f63c6db",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-14T03:15:48.046Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-14T03:16:01.777Z",
+      "event": "bb-session",
+      "session": "01f96808",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-14T03:16:02.631Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
