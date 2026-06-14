@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-14T10:11:07.337Z",
+  "timestamp": "2026-06-14T10:43:49.512Z",
   "stats": {
-    "totalReviews": 38368,
-    "alreadyFlagged": 16851,
+    "totalReviews": 38370,
+    "alreadyFlagged": 16852,
     "dateGuardCatches": 105,
     "directorMismatch": 857,
     "tvFilmSignals": 1055,
-    "londonSignals": 627,
+    "londonSignals": 628,
     "offBroadwaySignals": 462,
     "yearMismatch": 82,
-    "noPublishDate": 3971
+    "noPublishDate": 3970
   },
   "findings": [
     {
@@ -29029,6 +29029,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "care-west-end-2026",
+      "file": "british-theatre--shiroma-silva.json",
+      "publishDate": "2026-06-14",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
