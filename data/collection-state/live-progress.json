@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-06-14T08:12:49.964Z",
+  "updatedAt": "2026-06-14T08:13:48.868Z",
   "processed": 57,
-  "failed": 948,
-  "successRate": "5.7%",
+  "failed": 958,
+  "successRate": "5.6%",
   "tierBreakdown": {
     "playwright": 39,
     "amp": 0,
@@ -13,8 +13,19 @@
     "archiveToday": 2,
     "archive": 7
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 0,
   "recentActivity": [
+    {
+      "t": "2026-06-14T05:00:02.043Z",
+      "event": "bb-session",
+      "session": "f3c7fbb0",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-14T05:00:03.042Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
     {
       "t": "2026-06-14T05:00:36.954Z",
       "event": "bb-session",
@@ -113,18 +124,6 @@
       "t": "2026-06-14T07:35:29.540Z",
       "event": "bb-session",
       "session": "83527060",
-      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
-    },
-    {
-      "t": "2026-06-14T08:01:29.234Z",
-      "event": "bb-session",
-      "session": "bc6dcc09",
-      "url": "https://therecs.co.uk/are-you-watching-royal-court/"
-    },
-    {
-      "t": "2026-06-14T08:05:00.019Z",
-      "event": "bb-session",
-      "session": "c51e8400",
       "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
     }
   ]
