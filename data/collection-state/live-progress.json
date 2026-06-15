@@ -1,28 +1,22 @@
 {
-  "updatedAt": "2026-06-15T07:18:14.627Z",
-  "processed": 36,
-  "failed": 898,
-  "successRate": "3.9%",
+  "updatedAt": "2026-06-15T07:21:19.171Z",
+  "processed": 43,
+  "failed": 901,
+  "successRate": "4.6%",
   "tierBreakdown": {
-    "playwright": 31,
-    "amp": 0,
-    "browserbase": 67,
+    "playwright": 33,
+    "amp": 1,
+    "browserbase": 53,
     "directCookies": 0,
-    "scrapingbee": 13,
+    "scrapingbee": 16,
     "brightdata": 1,
     "archiveToday": 1,
-    "archive": 2
+    "archive": 4
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-06-15T03:59:51.140Z",
-      "event": "bb-session",
-      "session": "861987c3",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
-    {
-      "t": "2026-06-15T07:07:06.576Z",
+      "t": "2026-06-15T03:59:52.112Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     },
@@ -166,6 +160,12 @@
       "event": "bb-session",
       "session": "0ecb5f7c",
       "url": "https://www.newyorker.com/goings-on-about-town/just-in-time"
+    },
+    {
+      "t": "2026-06-15T07:18:38.436Z",
+      "event": "bb-session",
+      "session": "e7c412cf",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
     }
   ]
 }

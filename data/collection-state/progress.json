@@ -35,7 +35,14 @@
     "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json",
     "paddington-the-musical-west-end-2025/musical-theatre-review--unknown.json",
     "my-neighbour-totoro-west-end-2025/standard--unknown.json",
-    "my-neighbour-totoro-west-end-2025/whatsonstage--tom-millward.json"
+    "my-neighbour-totoro-west-end-2025/whatsonstage--tom-millward.json",
+    "maybe-happy-ending-2024/newyorker--conde-nast.json",
+    "maybe-happy-ending-2024/the-contending--frank-j-avella.json",
+    "maybe-happy-ending-2024/washpost--unknown.json",
+    "oh-mary-2024/broadwaynews--brittani-samuel.json",
+    "oh-mary-2024/culturesauce--thom-geier.json",
+    "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
+    "hadestown-west-end-2024/shy-strange-manic--kariss-ainsworth.json"
   ],
   "failed": [
     "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
@@ -935,7 +942,10 @@
     "titanique-west-end-2024/times-uk--clive-davis.json",
     "oliver-west-end-2024/i-paper--fiona-mountford.json",
     "oliver-west-end-2024/times-uk--clive-davis.json",
-    "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json"
+    "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
+    "death-becomes-her-2024/chicago-reader--kerry-reid.json",
+    "maybe-happy-ending-2024/variety--unknown.json",
+    "oh-mary-2024/west-end-best-friend--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -970,9 +980,13 @@
       "paddington-the-musical-west-end-2025/musical-theatre-review--unknown.json",
       "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
       "my-neighbour-totoro-west-end-2025/standard--unknown.json",
-      "my-neighbour-totoro-west-end-2025/whatsonstage--tom-millward.json"
+      "my-neighbour-totoro-west-end-2025/whatsonstage--tom-millward.json",
+      "maybe-happy-ending-2024/washpost--unknown.json",
+      "oh-mary-2024/culturesauce--thom-geier.json"
     ],
-    "amp": [],
+    "amp": [
+      "data/review-texts/maybe-happy-ending-2024/variety--unknown.json"
+    ],
     "browserbase": [
       "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
@@ -1056,7 +1070,10 @@
       "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
       "oh-mary-west-end-2025/nytimes--jesse-green.json",
       "morgan-bassichis-can-i-be-frank-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-      "amaze-magic-off-broadway-2025/theater-pizzazz--alix-cohen.json"
+      "amaze-magic-off-broadway-2025/theater-pizzazz--alix-cohen.json",
+      "maybe-happy-ending-2024/newyorker--conde-nast.json",
+      "oh-mary-2024/broadwaynews--brittani-samuel.json",
+      "the-great-gatsby-2024/broadwaynews--brittani-samuel.json"
     ],
     "brightdata": [
       "romeo-and-juliet-off-broadway-2026/talkinbroadway--unknown.json",
@@ -1073,11 +1090,13 @@
     ],
     "archive": [
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
-      "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json"
+      "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json",
+      "maybe-happy-ending-2024/the-contending--frank-j-avella.json",
+      "hadestown-west-end-2024/shy-strange-manic--kariss-ainsworth.json"
     ]
   },
   "startTime": "2026-06-14T21:23:22.048Z",
-  "lastProcessed": "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
+  "lastProcessed": "hadestown-west-end-2024/shy-strange-manic--kariss-ainsworth.json",
   "log": [
     {
       "t": "2026-06-15T00:06:07.315Z",
@@ -1686,6 +1705,12 @@
       "event": "bb-session",
       "session": "0ecb5f7c",
       "url": "https://www.newyorker.com/goings-on-about-town/just-in-time"
+    },
+    {
+      "t": "2026-06-15T07:18:38.436Z",
+      "event": "bb-session",
+      "session": "e7c412cf",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
     }
   ]
 }
