@@ -294,3 +294,29 @@ describe('validateContentMentionsShow — word boundary correctness', () => {
     assert.strictEqual(r.valid, true);
   });
 });
+
+describe('validateContentMentionsShow — long-title FP (Are You Now Or Have You Ever Been, 2026-06-15)', () => {
+  const TITLE = 'Are You Now or Have You Ever Been?';
+  const ID = 'are-you-now-or-have-you-ever-been-off-broadway-2026';
+
+  test('long title appearing once in body (then "the play") is accepted', () => {
+    const body = "As Americans, we like to think our witch-hunting days are behind us. The off-Broadway revival of Eric Bentley's Are You Now or Have You Ever Been could reinforce that notion. "
+      + 'The play unfolds through transcripts of HUAC hearings. '.repeat(60);
+    const r = validateContentMentionsShow(body, null, TITLE, ID);
+    assert.strictEqual(r.valid, true);
+  });
+
+  test('long title in HTML <title> with 0 body mentions is accepted', () => {
+    const body = 'The production at City Center is a chilling mirror to America. '.repeat(120);
+    const html = '<title>Review: Are You Now or Have You Ever Been, a Red Scare Docudrama - TheaterMania.com</title>';
+    const r = validateContentMentionsShow(body, html, TITLE, ID);
+    assert.strictEqual(r.valid, true);
+  });
+
+  test('wrong-show content with long title still rejected (guard intact)', () => {
+    const body = 'A completely different musical about cats and dogs. '.repeat(80);
+    const html = '<title>Cats Review - SomeSite</title>';
+    const r = validateContentMentionsShow(body, html, TITLE, ID);
+    assert.strictEqual(r.valid, false);
+  });
+});
