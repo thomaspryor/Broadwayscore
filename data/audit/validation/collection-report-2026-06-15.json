@@ -1,48 +1,48 @@
 {
-  "runDate": "2026-06-15T15:05:39.609Z",
+  "runDate": "2026-06-15T16:16:41.952Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 1000,
     "priority": "all",
-    "showFilter": "a-life-in-four-seasons-west-end-2026",
+    "showFilter": "are-you-now-or-have-you-ever-been-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 2,
+    "processed": 0,
+    "failed": 3,
     "skipped": 0,
-    "successRate": "60.0%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 5,
-    "tier1Success": 4,
+    "tier1Attempts": 3,
+    "tier1Success": 3,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
-    "tier2Success": 1,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
     "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 0,
-    "scrapingBeePageCredits": 1,
+    "totalFailed": 3,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -50,28 +50,18 @@
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [
-    "a-life-in-four-seasons-west-end-2026/guardian-uk--unknown.json",
-    "a-life-in-four-seasons-west-end-2026/london-box-office--unknown.json",
-    "a-life-in-four-seasons-west-end-2026/thestage--unknown.json"
-  ],
+  "processed": [],
   "failed": [
-    "a-life-in-four-seasons-west-end-2026/broadwayworld--unknown.json",
-    "a-life-in-four-seasons-west-end-2026/theatre-vibe--unknown.json"
+    "are-you-now-or-have-you-ever-been-off-broadway-2026/theatermania--unknown.json",
+    "are-you-now-or-have-you-ever-been-off-broadway-2026/culturesauce--unknown.json",
+    "are-you-now-or-have-you-ever-been-off-broadway-2026/theater-pizzazz--unknown.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "a-life-in-four-seasons-west-end-2026/guardian-uk--unknown.json",
-      "a-life-in-four-seasons-west-end-2026/london-box-office--unknown.json",
-      "a-life-in-four-seasons-west-end-2026/theatre-vibe--unknown.json",
-      "a-life-in-four-seasons-west-end-2026/thestage--unknown.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [
-      "a-life-in-four-seasons-west-end-2026/broadwayworld--unknown.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
