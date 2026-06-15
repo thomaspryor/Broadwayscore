@@ -314,11 +314,20 @@ describe('validateContentMentionsShow — long-title FP (Are You Now Or Have You
     assert.strictEqual(r.valid, true);
   });
 
-  test('title ONLY in <title>, never in body, is NOT auto-accepted (roundup-FP guard, ship-check 2026-06-15)', () => {
-    // A "shows to see this week" page whose <title> lists this show but whose body
-    // never names it must NOT pass on the <title> alone — that was the unsafe bypass.
+  test('dedicated review whose headline LEADS with the show, 0 body mentions, is accepted (Theater Pizzazz case)', () => {
+    // Long-titled reviews often put the title only in the headline, never in body
+    // prose. A headline that LEADS with the full title is a dedicated review.
     const body = 'The production at City Center is a chilling mirror to America. '.repeat(120);
-    const html = '<title>Review: Are You Now or Have You Ever Been, a Red Scare Docudrama - TheaterMania.com</title>';
+    const html = '<title>“Are You Now or Have You Ever Been” Holds a Chilling Mirror to America | Theater Pizzazz</title>';
+    const r = validateContentMentionsShow(body, html, TITLE, ID);
+    assert.strictEqual(r.valid, true);
+  });
+
+  test('roundup whose <title> lists the show MID-headline, 0 body mentions, is rejected (roundup-FP guard, ship-check 2026-06-15)', () => {
+    // The title appears in the <title> but NOT at the lead — a "shows to see" page.
+    // Must not pass: titleLeadsWithShow=false, 0 body mentions.
+    const body = 'A week of theater offered many options across the city. '.repeat(120);
+    const html = '<title>10 Shows to See This Week: Are You Now or Have You Ever Been and More | Some Site</title>';
     const r = validateContentMentionsShow(body, html, TITLE, ID);
     assert.strictEqual(r.valid, false);
   });
@@ -328,6 +337,15 @@ describe('validateContentMentionsShow — long-title FP (Are You Now Or Have You
     const body = "This week's roundup also covers Are You Now or Have You Ever Been. "
       + 'But the main event is a dazzling new musical about cats and dogs. '.repeat(80);
     const html = '<title>Cats: The Jellicle Ball — Review</title>';
+    const r = validateContentMentionsShow(body, html, TITLE, ID);
+    assert.strictEqual(r.valid, false);
+  });
+
+  test('headline LEADS with show but continues into a roundup list is rejected (ship-check re-review 2026-06-15)', () => {
+    // "Are You Now... and More Shows to See This Week" — leads with the title but is
+    // a comparison/roundup piece. Roundup markers reject it despite the leading match.
+    const body = 'A week of theater offered many options across the city. '.repeat(120);
+    const html = '<title>Are You Now or Have You Ever Been and More Shows to See This Week | Some Site</title>';
     const r = validateContentMentionsShow(body, html, TITLE, ID);
     assert.strictEqual(r.valid, false);
   });
