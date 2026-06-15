@@ -2600,18 +2600,46 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
   }
 
   // Long, distinctive titles (>=4 words) are rarely repeated verbatim in prose —
-  // critics write the full title once, then switch to "the play"/"the production".
-  // The generic >=3-mention threshold therefore false-rejects them (Are You Now Or
-  // Have You Ever Been: TheaterMania/CultureSauce/Theater Pizzazz reviews all
-  // dropped as url_content_mismatch, 2026-06-15). When the exact full-title phrase
-  // appears in the BODY, lower the body-mention threshold to 1.
-  // NOTE (ship-check 2026-06-15): this is a BODY-ONLY signal that only relaxes the
-  // threshold — it does NOT early-return and does NOT bypass the htmlTitleMatch===false
-  // backstop below. A roundup/"shows to see" page whose <title> is about a different
-  // show is still rejected even if it mentions this title once in passing.
+  // critics write the full title once (often only in the headline), then switch to
+  // "the play"/"the production". The generic >=3-mention threshold therefore
+  // false-rejects them (Are You Now Or Have You Ever Been: TheaterMania/CultureSauce/
+  // Theater Pizzazz reviews all dropped as url_content_mismatch, 2026-06-15).
   const strippedTitle = normalize(showTitle || '').toLowerCase().replace(/[?!.,;:'"]+/g, ' ').replace(/\s+/g, ' ').trim();
   const titleWordCount = strippedTitle ? strippedTitle.split(' ').length : 0;
-  const bodyHasLongTitlePhrase = titleWordCount >= 4 && strippedTitle.length >= 12 && lower.includes(strippedTitle);
+  const isLongTitle = titleWordCount >= 4 && strippedTitle.length >= 12;
+  const normHtmlTitle = htmlTitle ? normalize(htmlTitle).toLowerCase() : '';
+
+  // GUARDED <title> signal: a DEDICATED review's headline LEADS with the show title
+  // (after an optional "Review:"/quote prefix). Requiring a LEADING match — not the
+  // title appearing anywhere in the <title> — excludes roundup/"shows to see" pages
+  // that list the show mid-headline (the false-accept Codex flagged in ship-check
+  // 2026-06-15). A leading match means the <title> is unambiguously about THIS show,
+  // so this early-return cannot bypass the htmlTitleMatch===false backstop below —
+  // that condition is false here by construction. This is what recovers long-titled
+  // reviews whose body never repeats the title (Theater Pizzazz: 0 body mentions).
+  const headlineLead = normHtmlTitle.replace(/^["'\s]*(?:review\s*[:\-]?\s*)?["'\s]*/i, '').trim();
+  // Reject even leading matches when the headline carries roundup/multi-show markers
+  // ("...and more", "shows to see", "5 shows", "this week") — handles the "leads with
+  // show A then lists B, C" comparison-piece case Codex raised in re-review.
+  const ROUNDUP_HEADLINE_MARKERS = /\b(roundup|shows? to see|things to do|what to see|best (?:plays|musicals|shows|of)|this week|and more|top \d+|\d+ shows)\b/i;
+  const titleLeadsWithShow = isLongTitle && !!normHtmlTitle
+    && headlineLead.startsWith(strippedTitle)
+    && !ROUNDUP_HEADLINE_MARKERS.test(normHtmlTitle);
+  if (titleLeadsWithShow) {
+    return {
+      valid: true,
+      mentionCount: Math.max(mentionCount, 1),
+      threshold,
+      htmlTitle,
+      htmlTitleMatch: true,
+    };
+  }
+
+  // A long full-title phrase in the BODY lowers the mention threshold to 1. This is
+  // NOT an early return — the htmlTitleMatch===false backstop below still rejects a
+  // page whose <title> is about a DIFFERENT show even if it name-drops this title
+  // once in passing.
+  const bodyHasLongTitlePhrase = isLongTitle && lower.includes(strippedTitle);
 
   // When the HTML <title> matches the show, the URL is provably correct — relax
   // the body-mention threshold by 1 (but require at least 1 body mention so a
