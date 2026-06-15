@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-06-15T10:49:53.274Z",
+  "generatedAt": "2026-06-15T12:23:06.997Z",
   "current": {
-    "totalCritics": 75,
-    "totalGaps": 975,
+    "totalCritics": 76,
+    "totalGaps": 762,
     "gapsByBucket": {
-      "A": 30,
-      "B": 17,
-      "C": 922,
-      "D": 6,
+      "A": 19,
+      "B": 18,
+      "C": 720,
+      "D": 5,
       "E": 0
     },
     "gapsBySource": {
-      "muckrack": 975
+      "muckrack": 762
     }
   },
   "history": [
@@ -293,6 +293,52 @@
         "Andrzej Lukowski": 1,
         "Gillian Russo": 1
       }
+    },
+    {
+      "date": "2026-06-15",
+      "timestamp": "2026-06-15T11:43:06.315Z",
+      "totalCritics": 76,
+      "totalGaps": 762,
+      "gapsByBucket": {
+        "A": 19,
+        "B": 18,
+        "C": 720,
+        "D": 5,
+        "E": 0
+      },
+      "gapsBySource": {
+        "muckrack": 762
+      },
+      "perCritic": {
+        "Chris Jones": 123,
+        "Elysa Gardner": 110,
+        "Jesse Green": 79,
+        "Steven Suskin": 63,
+        "Austin Fimmano": 37,
+        "Alice Saville": 35,
+        "David Rooney": 33,
+        "Roma Torre": 30,
+        "David Finkle": 30,
+        "Dan Rubins": 30,
+        "Tim Bano": 28,
+        "Sarah Hemming": 24,
+        "Bob Verini": 22,
+        "Matt Wolf": 17,
+        "Helen Shaw": 15,
+        "Hayley Levitt": 15,
+        "Pete Hempstead": 14,
+        "Laura Collins-Hughes": 13,
+        "Kyle Turner": 10,
+        "Johnny Oleksinski": 9,
+        "Charles Isherwood": 7,
+        "Matt Windman": 7,
+        "Mark Kennedy": 4,
+        "Jackson McHenry": 2,
+        "Marianka Swain": 2,
+        "David Gordon": 1,
+        "Andrzej Lukowski": 1,
+        "Gillian Russo": 1
+      }
     }
   ],
   "topCriticsByGap": [
@@ -300,7 +346,7 @@
       "name": "Chris Jones",
       "outlet": "chicagotribune",
       "tier": 2,
-      "missingCount": 121,
+      "missingCount": 123,
       "lastDate": "2026-05-19"
     },
     {
@@ -308,63 +354,63 @@
       "outlet": "usatoday",
       "tier": 2,
       "missingCount": 110,
-      "lastDate": "2026-06-03"
+      "lastDate": "2026-06-12"
     },
     {
       "name": "Jesse Green",
       "outlet": "vulture",
       "tier": 1,
-      "missingCount": 82,
+      "missingCount": 79,
       "lastDate": "2025-06-25"
-    },
-    {
-      "name": "David Finkle",
-      "outlet": "nysr",
-      "tier": 2,
-      "missingCount": 66,
-      "lastDate": "2026-05-20"
-    },
-    {
-      "name": "Frank Scheck",
-      "outlet": "nysr",
-      "tier": 2,
-      "missingCount": 54,
-      "lastDate": "2026-05-19"
-    },
-    {
-      "name": "Melissa Rose Bernardo",
-      "outlet": "nysr",
-      "tier": 2,
-      "missingCount": 43,
-      "lastDate": "2026-04-25"
-    },
-    {
-      "name": "Laura Collins-Hughes",
-      "outlet": "nytimes",
-      "tier": 1,
-      "missingCount": 39,
-      "lastDate": "2026-05-15"
-    },
-    {
-      "name": "David Rooney",
-      "outlet": "hollywood-reporter",
-      "tier": 1,
-      "missingCount": 36,
-      "lastDate": "2026-04-15"
-    },
-    {
-      "name": "Alice Saville",
-      "outlet": "independent",
-      "tier": 2,
-      "missingCount": 36,
-      "lastDate": "2026-05-29"
     },
     {
       "name": "Steven Suskin",
       "outlet": "nysr",
       "tier": 2,
-      "missingCount": 34,
+      "missingCount": 63,
       "lastDate": "2026-06-05"
+    },
+    {
+      "name": "Austin Fimmano",
+      "outlet": "nytg",
+      "tier": 2,
+      "missingCount": 37,
+      "lastDate": "2026-06-05"
+    },
+    {
+      "name": "Alice Saville",
+      "outlet": "independent",
+      "tier": 2,
+      "missingCount": 35,
+      "lastDate": "2026-05-29"
+    },
+    {
+      "name": "David Rooney",
+      "outlet": "hollywood-reporter",
+      "tier": 1,
+      "missingCount": 33,
+      "lastDate": "2026-04-15"
+    },
+    {
+      "name": "Roma Torre",
+      "outlet": "ny1",
+      "tier": 2,
+      "missingCount": 30,
+      "lastDate": "2026-06-05"
+    },
+    {
+      "name": "David Finkle",
+      "outlet": "nysr",
+      "tier": 2,
+      "missingCount": 30,
+      "lastDate": "2026-05-20"
+    },
+    {
+      "name": "Dan Rubins",
+      "outlet": "slantmagazine",
+      "tier": 2,
+      "missingCount": 30,
+      "lastDate": "2026-06-12"
     }
   ]
 }
