@@ -210,14 +210,29 @@ jobs:
             const daysSinceOpening = show.openingDate
               ? Math.floor((today - new Date(show.openingDate)) / (1000 * 60 * 60 * 24))
               : null;
+            const daysSinceClosing = show.closingDate
+              ? Math.floor((today - new Date(show.closingDate)) / (1000 * 60 * 60 * 24))
+              : null;
 
             // Market-specific thresholds: OB/WE have fewer aggregator signals and fewer reviews total
             const category = show.category || '';
             const recentThreshold = (category === 'off-broadway' || category === 'west-end' || category === 'off-west-end') ? 3 : 10;
 
-            if (daysSinceOpening !== null && daysSinceOpening >= 0 && daysSinceOpening <= 21
-                && fileCount < recentThreshold && show.status === 'open') {
-              console.log(`  [RECENT] ${show.title}: opened ${daysSinceOpening}d ago, ${fileCount}/${recentThreshold} files (${category || 'broadway'})`);
+            // RECENT (open): reviews trickle in for ~3 weeks after opening.
+            const recentlyOpened = daysSinceOpening !== null && daysSinceOpening >= 0
+              && daysSinceOpening <= 21 && show.status === 'open';
+            // RECENT (closed short-run): short-run shows (e.g. 3-day Open Air runs)
+            // flip to 'closed' before slow-indexing T3 outlets appear on Google, and
+            // the opening-night orchestrator stops polling once closed. Keep sweeping
+            // for 14 days after closing — bounded to short runs (<=45d since opening)
+            // so we don't re-sweep long-runners that already have full coverage.
+            // Closes the closure-window half of the WE discovery gap (2026-06-15).
+            const recentlyClosedShortRun = daysSinceClosing !== null && daysSinceClosing >= 0
+              && daysSinceClosing <= 14 && daysSinceOpening !== null && daysSinceOpening <= 45;
+
+            if ((recentlyOpened || recentlyClosedShortRun) && fileCount < recentThreshold) {
+              const phase = recentlyOpened ? `opened ${daysSinceOpening}d ago` : `closed ${daysSinceClosing}d ago`;
+              console.log(`  [RECENT] ${show.title}: ${phase}, ${fileCount}/${recentThreshold} files (${category || 'broadway'})`);
               recentShows.push(showId);
             }
             // ROUTINE: Awards season low-count
