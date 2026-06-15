@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-15T00:48:26.926Z",
+  "updatedAt": "2026-06-15T00:50:01.653Z",
   "processed": 9,
-  "failed": 649,
+  "failed": 655,
   "successRate": "1.4%",
   "tierBreakdown": {
     "playwright": 8,
     "amp": 0,
-    "browserbase": 7,
+    "browserbase": 8,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 1,
     "archiveToday": 1,
     "archive": 0
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-06-15T00:06:07.315Z",
@@ -102,6 +102,17 @@
       "t": "2026-06-15T00:47:46.603Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-15T00:49:02.811Z",
+      "event": "bb-session",
+      "session": "e390b026",
+      "url": "https://www.nytimes.com/2026/05/31/theater/othello-review-wendell-pierce.html"
+    },
+    {
+      "t": "2026-06-15T00:49:03.751Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
