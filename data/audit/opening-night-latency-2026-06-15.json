@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-15T08:30:58.394Z",
+  "generatedAt": "2026-06-15T14:28:40.407Z",
   "date": "2026-06-15",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 345814,
+  "entryCount": 349432,
   "shows": [
     {
       "showId": "an-ideal-husband-west-end-2026",
@@ -216,7 +216,7 @@
     },
     {
       "showId": "my-neighbour-totoro-west-end-2025",
-      "reviewCount": 5,
+      "reviewCount": 6,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -291,7 +291,7 @@
     },
     {
       "showId": "grey-house-2023",
-      "reviewCount": 33,
+      "reviewCount": 32,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1566,7 +1566,7 @@
     },
     {
       "showId": "paranormal-activity-west-end-2025",
-      "reviewCount": 17,
+      "reviewCount": 18,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1611,7 +1611,7 @@
     },
     {
       "showId": "six-the-musical-west-end-2021",
-      "reviewCount": 17,
+      "reviewCount": 18,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1626,7 +1626,7 @@
     },
     {
       "showId": "mamma-mia-west-end-2021",
-      "reviewCount": 13,
+      "reviewCount": 14,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1746,7 +1746,7 @@
     },
     {
       "showId": "oliver-west-end-2024",
-      "reviewCount": 13,
+      "reviewCount": 14,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1971,7 +1971,7 @@
     },
     {
       "showId": "the-comedy-about-spies-west-end-2026",
-      "reviewCount": 6,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2541,7 +2541,7 @@
     },
     {
       "showId": "moulin-rouge-the-musical-west-end-2021",
-      "reviewCount": 22,
+      "reviewCount": 24,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2841,7 +2841,7 @@
     },
     {
       "showId": "showstopper-the-improvised-musical-west-end-2023",
-      "reviewCount": 5,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4086,7 +4086,7 @@
     },
     {
       "showId": "small-off-broadway-2026",
-      "reviewCount": 8,
+      "reviewCount": 9,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4221,7 +4221,7 @@
     },
     {
       "showId": "grease-2007",
-      "reviewCount": 5,
+      "reviewCount": 6,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4281,7 +4281,7 @@
     },
     {
       "showId": "the-producers-west-end-2025",
-      "reviewCount": 19,
+      "reviewCount": 21,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -6546,7 +6546,7 @@
     },
     {
       "showId": "hamilton-2015",
-      "reviewCount": 43,
+      "reviewCount": 42,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -10071,7 +10071,7 @@
     },
     {
       "showId": "music-city-off-broadway-2026",
-      "reviewCount": 1,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -10327,6 +10327,21 @@
     {
       "showId": "giant-public-theater-off-broadway-2012",
       "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "sting-west-end-2026",
+      "reviewCount": 1,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
