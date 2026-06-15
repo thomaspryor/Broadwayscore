@@ -68,6 +68,7 @@
 const fs = require('fs');
 const path = require('path');
 const { meaningfulTitleTokens } = require('./lib/cast-extraction-guards');
+const { isGenericTitle } = require('./lib/reddit-post-filters');
 
 const ROOT = path.join(__dirname, '..');
 const BUZZ_FILE = path.join(ROOT, 'data', 'audience-buzz.json');
@@ -84,7 +85,19 @@ const WARN_SIGNALS = new Set([
   'BROADWAYCOM_URL_NO_TITLE',
   'OTHER_SOURCE_DIVERGENCE',
   'OTHER_SOURCE_STALE',
+  'REDDIT_GENERIC_VOLUME_INFLATION',
 ]);
+
+// REDDIT_GENERIC_VOLUME_INFLATION blind spot (2026-06-15, music-city-off-broadway-2026):
+// REDDIT_SCORE_DIVERGENCE misses contamination that inflates Reddit's VOLUME
+// without moving its score far from the others. Combined-score weighting is
+// proportional to reviewCount, so a generic/collision-prone title whose
+// bare-phrase search swept up roundup/megathread comments gets an outsized
+// weight (music-city: reddit rc=148 vs showScore 37 / mezzanine 21 → 72%
+// weight → newsletter "Biggest Mover"). Flag generic titles where Reddit
+// volume dwarfs every other source (or is the sole source).
+const REDDIT_INFLATION_MIN_RC = 80;
+const REDDIT_INFLATION_VOLUME_RATIO = 2;
 
 // theatr.com (founded ~2021) and seatplan.com's user-rating product are both
 // post-2020 platforms — they cannot have organic users rating shows that
@@ -190,6 +203,39 @@ function audit({ shows: injectedShows, buzz: injectedBuzz, today } = {}) {
         const diff = Math.abs(src.score - m);
         if (diff >= 35) {
           flags.push(`OTHER_SOURCE_DIVERGENCE:src=${name},score=${src.score},median=${m},diff=${diff},rc=${rc}`);
+        }
+      }
+    }
+
+    // REDDIT_GENERIC_VOLUME_INFLATION — generic title + Reddit volume dwarfs
+    // (or replaces) every other source. Catches the weight-inflation class that
+    // score divergence misses. Restricted to generic/collision-prone titles so
+    // legitimately Reddit-heavy distinctive shows don't false-positive.
+    {
+      const reddit = sources.reddit;
+      const rc = reddit && reddit.reviewCount ? reddit.reviewCount : 0;
+      const titleForGeneric = x.title
+        || (showById && showById.get(resolvedId || id) || {}).title
+        || id.replace(/-(off-)?(broadway|west-end)?-?20\d{2}$/, '').replace(/-/g, ' ');
+      // Scope to score-eligible shows: Reddit is dropped from combined-score
+      // weighting for shows closed >3yr ago (audience-weighting recency gate),
+      // so inflation there can't affect a live score. Mirroring that gate keeps
+      // the warn list to shows where the contamination actually matters.
+      const showForScope = showById && showById.get(resolvedId || id);
+      let scoreEligible = true;
+      if (showForScope && showForScope.status === 'closed' && showForScope.closingDate) {
+        const closedYear = parseInt(showForScope.closingDate.slice(0, 4), 10);
+        if (closedYear && (currentYear - closedYear) > 3) scoreEligible = false;
+      }
+      if (scoreEligible && reddit && rc >= REDDIT_INFLATION_MIN_RC && isGenericTitle(titleForGeneric)) {
+        const otherCounts = SOURCE_NAMES
+          .filter(n => n !== 'reddit')
+          .map(n => sources[n])
+          .filter(s => s && (s.reviewCount || 0) > 0)
+          .map(s => s.reviewCount);
+        const maxOther = otherCounts.length ? Math.max(...otherCounts) : 0;
+        if (maxOther === 0 || rc >= maxOther * REDDIT_INFLATION_VOLUME_RATIO) {
+          flags.push(`REDDIT_GENERIC_VOLUME_INFLATION:rc=${rc},maxOther=${maxOther},title="${titleForGeneric}"`);
         }
       }
     }
