@@ -175,9 +175,17 @@ jobs:
               // Market filter
               if (market === 'broadway' && cat !== 'broadway' && cat !== 'off-broadway') return false;
               if (market === 'west-end' && cat !== 'west-end' && cat !== 'off-west-end') return false;
-              // For WE shows (not OWE), require a trusted openingDateSource
-              // OWE shows often open cold — todaytix source is acceptable
-              if (cat === 'west-end' && !TRUSTED_SOURCES.has(s.openingDateSource)) {
+              // WE shows with an UNTRUSTED openingDateSource (e.g. todaytix) may carry
+              // a preview date rather than a real press night. So we don't poll them
+              // in the previews-anticipation window — but ONCE the show is genuinely
+              // 'open', discovery MUST run: reviews are real regardless of how we
+              // learned the date. Suppressing discovery here previously starved niche /
+              // short-run WE shows (A Life in Four Seasons: 2 of 7+ reviews, 2026-06-15).
+              // Safe to enable: broadcasts are never auto-sent — they only create an
+              // owner-reviewed Resend draft — so the source-quality risk lives on the
+              // broadcast (manual-approval) side, not discovery. Notion: WE discovery gap.
+              if (cat === 'west-end' && !TRUSTED_SOURCES.has(s.openingDateSource)
+                  && s.status !== 'open') {
                 return false;
               }
               const d = new Date(s.openingDate);
