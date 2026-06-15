@@ -306,11 +306,30 @@ describe('validateContentMentionsShow — long-title FP (Are You Now Or Have You
     assert.strictEqual(r.valid, true);
   });
 
-  test('long title in HTML <title> with 0 body mentions is accepted', () => {
-    const body = 'The production at City Center is a chilling mirror to America. '.repeat(120);
+  test('full title in body once + matching HTML <title> is accepted', () => {
+    const body = "The off-Broadway revival of Eric Bentley's Are You Now or Have You Ever Been at City Center is a chilling mirror. "
+      + 'The production unfolds through HUAC transcripts. '.repeat(80);
     const html = '<title>Review: Are You Now or Have You Ever Been, a Red Scare Docudrama - TheaterMania.com</title>';
     const r = validateContentMentionsShow(body, html, TITLE, ID);
     assert.strictEqual(r.valid, true);
+  });
+
+  test('title ONLY in <title>, never in body, is NOT auto-accepted (roundup-FP guard, ship-check 2026-06-15)', () => {
+    // A "shows to see this week" page whose <title> lists this show but whose body
+    // never names it must NOT pass on the <title> alone — that was the unsafe bypass.
+    const body = 'The production at City Center is a chilling mirror to America. '.repeat(120);
+    const html = '<title>Review: Are You Now or Have You Ever Been, a Red Scare Docudrama - TheaterMania.com</title>';
+    const r = validateContentMentionsShow(body, html, TITLE, ID);
+    assert.strictEqual(r.valid, false);
+  });
+
+  test('full title in body once but HTML <title> about a DIFFERENT show is rejected (backstop intact)', () => {
+    // Body mentions our title once in passing, but the page is primarily about another show.
+    const body = "This week's roundup also covers Are You Now or Have You Ever Been. "
+      + 'But the main event is a dazzling new musical about cats and dogs. '.repeat(80);
+    const html = '<title>Cats: The Jellicle Ball — Review</title>';
+    const r = validateContentMentionsShow(body, html, TITLE, ID);
+    assert.strictEqual(r.valid, false);
   });
 
   test('wrong-show content with long title still rejected (guard intact)', () => {

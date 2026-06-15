@@ -2599,37 +2599,30 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
     }
   }
 
-  // Long, distinctive titles (>=4 words) are near-impossible wrong-show
-  // coincidences but are rarely repeated verbatim in prose — critics write the
-  // full title once, then switch to "the play"/"the production". The generic
-  // >=3-mention threshold therefore false-rejects them (Are You Now Or Have You
-  // Ever Been: TheaterMania/CultureSauce/Theater Pizzazz reviews all dropped as
-  // url_content_mismatch, 2026-06-15). Treat a single full-title phrase hit — in
-  // the body OR the HTML <title> — as sufficient proof of the right show.
-  const normTitle = showTitle ? normalize(showTitle).toLowerCase() : '';
-  const strippedTitle = normTitle.replace(/[?!.,;:'"]+/g, ' ').replace(/\s+/g, ' ').trim();
+  // Long, distinctive titles (>=4 words) are rarely repeated verbatim in prose —
+  // critics write the full title once, then switch to "the play"/"the production".
+  // The generic >=3-mention threshold therefore false-rejects them (Are You Now Or
+  // Have You Ever Been: TheaterMania/CultureSauce/Theater Pizzazz reviews all
+  // dropped as url_content_mismatch, 2026-06-15). When the exact full-title phrase
+  // appears in the BODY, lower the body-mention threshold to 1.
+  // NOTE (ship-check 2026-06-15): this is a BODY-ONLY signal that only relaxes the
+  // threshold — it does NOT early-return and does NOT bypass the htmlTitleMatch===false
+  // backstop below. A roundup/"shows to see" page whose <title> is about a different
+  // show is still rejected even if it mentions this title once in passing.
+  const strippedTitle = normalize(showTitle || '').toLowerCase().replace(/[?!.,;:'"]+/g, ' ').replace(/\s+/g, ' ').trim();
   const titleWordCount = strippedTitle ? strippedTitle.split(' ').length : 0;
-  const normHtmlTitle = htmlTitle ? normalize(htmlTitle).toLowerCase() : '';
-  const longTitlePhraseHit = titleWordCount >= 4 && strippedTitle.length >= 12
-    && (lower.includes(strippedTitle) || (normHtmlTitle && normHtmlTitle.includes(strippedTitle)));
-  if (longTitlePhraseHit) {
-    return {
-      valid: true,
-      mentionCount: Math.max(mentionCount, 1),
-      threshold,
-      htmlTitle,
-      htmlTitleMatch: true,
-    };
-  }
+  const bodyHasLongTitlePhrase = titleWordCount >= 4 && strippedTitle.length >= 12 && lower.includes(strippedTitle);
 
   // When the HTML <title> matches the show, the URL is provably correct — relax
   // the body-mention threshold by 1 (but require at least 1 body mention so a
   // title-only page can't sneak through). Beaches NY Sun 2026-04-27: paywalled
   // article with `htmlTitleMatch=true` and 2 body mentions of "Beaches" was
   // being rejected against the 3-mention threshold for >1500-char text.
-  const effectiveThreshold = (htmlTitleMatch === true && mentionCount >= 1)
-    ? Math.max(1, threshold - 1)
-    : threshold;
+  const effectiveThreshold = bodyHasLongTitlePhrase
+    ? 1
+    : (htmlTitleMatch === true && mentionCount >= 1)
+      ? Math.max(1, threshold - 1)
+      : threshold;
 
   if (mentionCount < effectiveThreshold) {
     return {
