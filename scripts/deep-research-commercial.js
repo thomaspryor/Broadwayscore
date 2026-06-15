@@ -639,12 +639,20 @@ async function main() {
   // following 48h. Without this expiry the list accumulates forever (89 slugs
   // by 2026-06-11) and silently blocks the 6-month re-research tier, because
   // the loop below skips anything in completed.
-  const batchAnchor = progress.lastRunAt || progress.startedAt;
+  //
+  // Anchor expiry on startedAt (the batch's ORIGINAL start), never lastRunAt:
+  // lastRunAt is rewritten on every partial run, so anchoring on it lets a
+  // batch that resumes across multiple days slide its own expiry forward and
+  // never reset. startedAt is set once when a fresh batch begins and preserved
+  // across writes below. Legacy files predating startedAt fall back to
+  // lastRunAt for this one decision, then get a startedAt going forward.
+  const batchAnchor = progress.startedAt || progress.lastRunAt;
   if (batchAnchor && Date.now() - new Date(batchAnchor).getTime() > 48 * 3_600_000) {
-    console.log(`Resetting batch progress (last run ${batchAnchor} is >48h old, ${(progress.completed || []).length} completed slugs cleared)`);
+    console.log(`Resetting batch progress (batch started ${batchAnchor}, >48h old, ${(progress.completed || []).length} completed slugs cleared)`);
     progress = { completed: [], startedAt: new Date().toISOString() };
   }
   if (!Array.isArray(progress.completed)) progress.completed = [];
+  if (!progress.startedAt) progress.startedAt = new Date().toISOString();
 
   for (const slug of targetSlugs) {
     // Skip if already completed in this batch
@@ -848,10 +856,14 @@ async function main() {
     fs.writeFileSync(COST_LOG_PATH, JSON.stringify([...existingLog, ...costLog], null, 2) + '\n');
   }
 
-  // Preserve which shows were researched this run (don't wipe progress)
+  // Preserve which shows were researched this run (don't wipe progress).
+  // startedAt MUST be carried through — it anchors the 48h batch-expiry above.
+  // Dropping it (the prior bug) made expiry fall back to lastRunAt, which this
+  // very write refreshes every run, so the batch never expired.
   if (!DRY_RUN && researchedCount > 0) {
     fs.writeFileSync(PROGRESS_PATH, JSON.stringify({
       completed: progress.completed,
+      startedAt: progress.startedAt,
       lastRunAt: new Date().toISOString(),
       lastRunShows: researchedCount,
     }, null, 2) + '\n');
