@@ -1,7 +1,8 @@
 {
   "processed": [
     "all-my-sons-west-end-2025/independent--unknown.json",
-    "grease-2007/whatsonstage--unknown.json"
+    "grease-2007/whatsonstage--unknown.json",
+    "girl-interrupted-off-broadway-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
@@ -627,23 +628,84 @@
     "the-little-mermaid-2008/nypost--clive-barnes.json",
     "is-he-dead-2007/nypost--clive-barnes.json",
     "inherit-the-wind-2007/nypost--clive-barnes.json",
-    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json"
+    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+    "romeo-and-juliet-off-broadway-2026/wsj--charles-isherwood.json",
+    "romeo-and-juliet-off-broadway-2026/wsj--unknown.json",
+    "romeo-and-juliet-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+    "romeo-and-juliet-off-broadway-2026/talkinbroadway--unknown.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "all-my-sons-west-end-2025/independent--unknown.json",
-      "grease-2007/whatsonstage--unknown.json"
+      "grease-2007/whatsonstage--unknown.json",
+      "girl-interrupted-off-broadway-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/romeo-and-juliet-off-broadway-2026/talkinbroadway--unknown.json"
+    ],
     "archive": []
   },
   "startTime": "2026-06-14T21:23:22.048Z",
-  "lastProcessed": "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
-  "log": []
+  "lastProcessed": "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+  "log": [
+    {
+      "t": "2026-06-15T00:06:07.315Z",
+      "event": "bb-session",
+      "session": "c5f0cddb",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-15T00:06:08.319Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-15T00:06:45.097Z",
+      "event": "bb-session",
+      "session": "98f4975b",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2648938"
+    },
+    {
+      "t": "2026-06-15T00:06:46.072Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-15T00:06:47.912Z",
+      "event": "bb-session",
+      "session": "a810c156",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-15T00:06:48.911Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-15T00:07:01.806Z",
+      "event": "bb-session",
+      "session": "78622b76",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-15T00:07:02.801Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }
