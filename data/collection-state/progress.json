@@ -73,7 +73,12 @@
     "broken-snow-off-broadway-2026/culturesauce--thom-geier.json",
     "broken-snow-off-broadway-2026/one-minute-critic--jerry-portwood.json",
     "the-price-off-west-end-2026/british-theatre--susan-novak.json",
-    "the-authenticator-west-end-2026/times-uk--clive-davis.json"
+    "the-authenticator-west-end-2026/times-uk--clive-davis.json",
+    "les-liaisons-dangereuses-west-end-2026/times-uk--clive-davis.json",
+    "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+    "no-singing-in-the-navy-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+    "public-charge-off-broadway-2026/timeout--unknown.json",
+    "public-charge-off-broadway-2026/one-minute-critic--jerry-portwood.json"
   ],
   "failed": [
     "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
@@ -1025,7 +1030,12 @@
     "beaches-2026/chicago-critic--tom-williams.json",
     "fallen-angels-2026/talkinbroadway--unknown.json",
     "one-flew-over-the-cuckoos-nest-west-end-2026/standard--nick-curtis.json",
-    "scorched-earth-off-broadway-2026/variety--pat-saperstein.json"
+    "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
+    "yoah-off-broadway-2026/variety--pat-saperstein.json",
+    "les-liaisons-dangereuses-west-end-2026/telegraph--claire-allfree.json",
+    "seagull-true-story-off-broadway-2026/nysr--frank-scheck.json",
+    "teeth-n-smiles-west-end-2026/broadwayworld--alexander-cohen.json",
+    "public-charge-off-broadway-2026/theater-life--barry-gordin.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1082,7 +1092,12 @@
       "broken-snow-off-broadway-2026/culturesauce--thom-geier.json",
       "broken-snow-off-broadway-2026/one-minute-critic--jerry-portwood.json",
       "the-price-off-west-end-2026/british-theatre--susan-novak.json",
-      "the-authenticator-west-end-2026/times-uk--clive-davis.json"
+      "the-authenticator-west-end-2026/times-uk--clive-davis.json",
+      "les-liaisons-dangereuses-west-end-2026/times-uk--clive-davis.json",
+      "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+      "no-singing-in-the-navy-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+      "public-charge-off-broadway-2026/timeout--unknown.json",
+      "public-charge-off-broadway-2026/one-minute-critic--jerry-portwood.json"
     ],
     "amp": [
       "data/review-texts/maybe-happy-ending-2024/variety--unknown.json"
@@ -1181,7 +1196,8 @@
       "harry-potter-2021/cititour--brian-scott-lipton.json",
       "the-book-of-mormon-west-end-2024/nydailynews--unknown.json",
       "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
-      "broken-snow-off-broadway-2026/theater-scene--darryl-reilly.json"
+      "broken-snow-off-broadway-2026/theater-scene--darryl-reilly.json",
+      "teeth-n-smiles-west-end-2026/broadwayworld--alexander-cohen.json"
     ],
     "brightdata": [
       "romeo-and-juliet-off-broadway-2026/talkinbroadway--unknown.json",
@@ -1211,7 +1227,7 @@
     ]
   },
   "startTime": "2026-06-14T21:23:22.048Z",
-  "lastProcessed": "the-authenticator-west-end-2026/times-uk--clive-davis.json",
+  "lastProcessed": "public-charge-off-broadway-2026/theater-life--barry-gordin.json",
   "log": [
     {
       "t": "2026-06-15T00:06:07.315Z",
@@ -1838,6 +1854,17 @@
       "event": "bb-session",
       "session": "b88d88fe",
       "url": "https://www.billboard.com/articles/review/6753841/on-your-feet-theater-review-gl"
+    },
+    {
+      "t": "2026-06-15T07:48:48.575Z",
+      "event": "bb-session",
+      "session": "3529a7fd",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2645871"
+    },
+    {
+      "t": "2026-06-15T07:48:48.991Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
