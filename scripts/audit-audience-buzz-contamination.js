@@ -227,7 +227,9 @@ function audit({ shows: injectedShows, buzz: injectedBuzz, today } = {}) {
         const closedYear = parseInt(showForScope.closingDate.slice(0, 4), 10);
         if (closedYear && (currentYear - closedYear) > 3) scoreEligible = false;
       }
-      if (scoreEligible && reddit && rc >= REDDIT_INFLATION_MIN_RC && isGenericTitle(titleForGeneric)) {
+      // Already manually suppressed (neutralize-contaminated-reddit-buzz.js) =
+      // handled; don't keep warning until the next scrape clears the flag.
+      if (scoreEligible && reddit && !reddit.suppressed && rc >= REDDIT_INFLATION_MIN_RC && isGenericTitle(titleForGeneric)) {
         const otherCounts = SOURCE_NAMES
           .filter(n => n !== 'reddit')
           .map(n => sources[n])
