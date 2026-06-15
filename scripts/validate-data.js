@@ -4029,7 +4029,11 @@ function validateCrossMarketContamination() {
       if (region) {
         outletRegionMap[id] = region;
         if (info.aliases) {
-          for (const alias of info.aliases) outletRegionMap[alias] = region;
+          // Lowercase alias keys to match the lookup (oid = ...toLowerCase()) and the
+          // dualMarket/tier12Outlets/outletTierMap sets. Uppercase aliases (e.g. "The Times",
+          // "FT") otherwise miss the region lookup → classified 'skip' → the Tier 1/2
+          // London-on-Broadway hard error silently never fires. (ship-check 2026-06-15)
+          for (const alias of info.aliases) outletRegionMap[alias.toLowerCase()] = region;
         }
       }
     }
@@ -4048,7 +4052,12 @@ function validateCrossMarketContamination() {
   // Also allow Tier 1/2 outlets — cross-market guard only targets Tier 3 / untiered regional outlets
   const tier12Outlets = new Set();
   const outletTierMap = {}; // id + aliases -> numeric tier (for advisory/audit reporting)
+  const canonicalOutletId = {}; // id + aliases -> canonical id (so accumulation keys by outlet, not alias fragment)
   for (const [id, info] of Object.entries(reg.outlets)) {
+    canonicalOutletId[id] = id;
+    if (info.aliases) {
+      for (const alias of info.aliases) canonicalOutletId[alias.toLowerCase()] = id;
+    }
     if (typeof info.tier === 'number') {
       outletTierMap[id] = info.tier;
       if (info.aliases) {
@@ -4101,15 +4110,18 @@ function validateCrossMarketContamination() {
   let reverseAdvisories = 0;
   // Per-outlet accumulation, written to an audit file so a London-only outlet
   // creeping toward dual-market is visible BEFORE it would block a build.
-  const accumulation = new Map(); // oid -> { outlet, tier, broadway:Set, offBroadway:Set }
+  // Keyed by CANONICAL outlet id (not the alias fragment the review happened to carry)
+  // so one outlet appearing under two aliases doesn't split into two audit entries.
+  const accumulation = new Map(); // canonId -> { outletId, displayName, tier, broadway:Set, offBroadway:Set }
   const recordAccum = (oid, r, category, bucket) => {
-    let entry = accumulation.get(oid);
+    const canon = canonicalOutletId[oid] || oid;
+    let entry = accumulation.get(canon);
     if (!entry) {
-      entry = { outletId: oid, displayName: r.outlet || oid, tier: outletTierMap[oid] ?? null, broadway: new Set(), offBroadway: new Set() };
-      accumulation.set(oid, entry);
+      entry = { outletId: canon, displayName: r.outlet || canon, tier: outletTierMap[canon] ?? outletTierMap[oid] ?? null, broadway: new Set(), offBroadway: new Set() };
+      accumulation.set(canon, entry);
     }
     entry[bucket].add(r.showId);
-    if (r.outlet && entry.displayName === oid) entry.displayName = r.outlet;
+    if (r.outlet && entry.displayName === canon) entry.displayName = r.outlet;
   };
   const nonWeReviews = reviews.filter(r => !isLondonMarket(showCategoryMap[r.showId]));
   for (const r of nonWeReviews) {
@@ -4188,7 +4200,7 @@ function validateCrossMarketContamination() {
 
   const totalIssues = issues + reverseIssues;
   if (totalIssues === 0) {
-    ok(`No cross-market contamination detected in reviews.json${reverseAdvisories ? ` (${reverseAdvisories} Tier 3 London→Broadway advisory review(s) — see warnings)` : ''}`);
+    ok(`No cross-market contamination detected in reviews.json${reverseAdvisories ? ` (${reverseAdvisories} Tier 3 London→Broadway advisory review(s) across ${advisoryOutlets.length} outlet(s) — see warnings)` : ''}`);
   } else {
     warn(`${totalIssues} cross-market reviews found (${issues} US→WE, ${reverseIssues} London Tier 1/2 → Broadway) — check outlet isDualMarket flags`);
   }
