@@ -1,33 +1,22 @@
 {
-  "updatedAt": "2026-06-15T06:48:35.493Z",
-  "processed": 19,
-  "failed": 855,
-  "successRate": "2.2%",
+  "updatedAt": "2026-06-15T06:57:41.603Z",
+  "processed": 20,
+  "failed": 864,
+  "successRate": "2.3%",
   "tierBreakdown": {
-    "playwright": 16,
+    "playwright": 18,
     "amp": 0,
     "browserbase": 67,
     "directCookies": 0,
-    "scrapingbee": 4,
+    "scrapingbee": 6,
     "brightdata": 1,
     "archiveToday": 1,
     "archive": 1
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-06-15T07:06:17.769Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-15T07:06:53.143Z",
-      "event": "bb-session",
-      "session": "99ae90e7",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-15T07:06:54.030Z",
+      "t": "2026-06-15T03:59:37.474Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     },
@@ -125,6 +114,57 @@
       "t": "2026-06-15T10:37:44.162Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-15T05:29:41.464Z",
+      "event": "bb-session",
+      "session": "a64924a7",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-15T05:29:42.393Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-15T05:30:16.904Z",
+      "event": "bb-session",
+      "session": "e449778b",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-15T05:30:17.856Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-15T05:30:31.500Z",
+      "event": "bb-session",
+      "session": "ca1dcd8e",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-15T05:30:32.456Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-15T06:51:16.676Z",
+      "event": "bb-session",
+      "session": "f4a009cc",
+      "url": "https://exeuntnyc.com/reviews/review-every-brilliant-thing-at-the-hudson-theatre"
+    },
+    {
+      "t": "2026-06-15T06:55:10.198Z",
+      "event": "bb-session",
+      "session": "2efbee3e",
+      "url": "https://nystagereview.com/2026/03/12/every-brilliant-thing-daniel-radcliffe-perf"
+    },
+    {
+      "t": "2026-06-15T06:55:54.841Z",
+      "event": "bb-session",
+      "session": "7ca467ef",
+      "url": "https://nystagereview.com/2026/03/12/every-brilliant-thing-a-lustrous-evening-wi"
     }
   ]
 }
