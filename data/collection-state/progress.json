@@ -1,105 +1,22 @@
 {
-  "processed": [
-    "a-life-in-four-seasons-west-end-2026/guardian-uk--unknown.json",
-    "a-life-in-four-seasons-west-end-2026/london-box-office--unknown.json",
-    "a-life-in-four-seasons-west-end-2026/thestage--unknown.json",
-    "romeo-and-juliet-off-broadway-2026/talkinbroadway--unknown.json",
-    "girl-interrupted-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-    "jerome-off-broadway-2025/off-off-online--edward-karam.json",
-    "jerome-off-broadway-2025/one-minute-critic--jerry-portwood.json",
-    "and-then-the-rodeo-burned-down-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-    "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
-    "small-off-broadway-2026/culturesauce--thom-geier.json"
-  ],
+  "processed": [],
   "failed": [
-    "a-life-in-four-seasons-west-end-2026/broadwayworld--unknown.json",
-    "a-life-in-four-seasons-west-end-2026/theatre-vibe--unknown.json",
-    "romeo-and-juliet-off-broadway-2026/one-minute-critic--emily-chackerian.json",
-    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
-    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
-    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
-    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
-    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
-    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
-    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
-    "small-off-broadway-2026/guardian--arifa-akbar.json",
-    "small-off-broadway-2026/pages-on-stages--unknown.json",
-    "small-off-broadway-2026/the-recs--unknown.json",
-    "small-off-broadway-2026/theater-pizzazz--unknown.json",
-    "small-off-broadway-2026/washpost--unknown.json"
+    "are-you-now-or-have-you-ever-been-off-broadway-2026/theatermania--unknown.json",
+    "are-you-now-or-have-you-ever-been-off-broadway-2026/culturesauce--unknown.json",
+    "are-you-now-or-have-you-ever-been-off-broadway-2026/theater-pizzazz--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "a-life-in-four-seasons-west-end-2026/guardian-uk--unknown.json",
-      "a-life-in-four-seasons-west-end-2026/london-box-office--unknown.json",
-      "a-life-in-four-seasons-west-end-2026/theatre-vibe--unknown.json",
-      "a-life-in-four-seasons-west-end-2026/thestage--unknown.json",
-      "girl-interrupted-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-      "jerome-off-broadway-2025/off-off-online--edward-karam.json",
-      "jerome-off-broadway-2025/one-minute-critic--jerry-portwood.json",
-      "and-then-the-rodeo-burned-down-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-      "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
-      "small-off-broadway-2026/culturesauce--thom-geier.json"
-    ],
+    "playwright": [],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
-      "data/review-texts/small-off-broadway-2026/theater-pizzazz--unknown.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [
-      "a-life-in-four-seasons-west-end-2026/broadwayworld--unknown.json"
-    ],
-    "brightdata": [
-      "romeo-and-juliet-off-broadway-2026/talkinbroadway--unknown.json"
-    ],
+    "scrapingbee": [],
+    "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-06-15T15:01:26.468Z",
-  "lastProcessed": "small-off-broadway-2026/washpost--unknown.json",
-  "log": [
-    {
-      "t": "2026-06-15T15:52:36.970Z",
-      "event": "bb-session",
-      "session": "9c548511",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
-    {
-      "t": "2026-06-15T15:52:37.993Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-15T15:53:13.928Z",
-      "event": "bb-session",
-      "session": "cef17ab8",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-15T15:53:14.864Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-15T15:53:31.095Z",
-      "event": "bb-session",
-      "session": "52588921",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
-    {
-      "t": "2026-06-15T15:53:32.020Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-15T15:56:32.540Z",
-      "event": "bb-session",
-      "session": "bd65163c",
-      "url": "https://theaterpizzazz.com/small-a-jockeys-indestructible-passion/"
-    }
-  ]
+  "startTime": "2026-06-15T16:50:59.059Z",
+  "lastProcessed": "are-you-now-or-have-you-ever-been-off-broadway-2026/theater-pizzazz--unknown.json",
+  "log": []
 }
