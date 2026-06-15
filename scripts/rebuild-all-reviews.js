@@ -502,8 +502,13 @@ function selectBestExcerpt(data, showTitle) {
     // that reads as a broken pull quote on the site. Dropping it lets a cleaner
     // source (fullText extraction) win instead. 2026-06-12: ~20 displayed quotes
     // were lowercase-start fragments from the keyPhrase fallback.
+    // Skip any leading wrapping quote/paren/whitespace before the fragment check:
+    // cleanExcerpt leaves the wrapping quote on (normalizeQuoteWrapping strips it
+    // downstream), so a Show Score excerpt like '"disappointing: poorly directed…'
+    // or '"a mysterious and deeply moving dance-musical"' would slip past a bare
+    // /^[a-z]/ test. (Re-applied 2026-06-15 after a parallel-session merge reverted it.)
     excerpt = trimToCompleteSentence(excerpt);
-    if (/^[a-z]/.test(excerpt.trim())) return null;
+    if (/^[\s"'“‘«(\[]*[a-z]/.test(excerpt)) return null;
 
     // Layer 1: Internal-note guard — reject editorial notes that leaked into excerpt fields.
     if (isInternalNote(excerpt)) {
