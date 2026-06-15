@@ -1,15 +1,15 @@
 {
-  "updatedAt": "2026-06-15T00:10:39.985Z",
-  "processed": 8,
-  "failed": 640,
-  "successRate": "1.2%",
+  "updatedAt": "2026-06-15T00:48:26.926Z",
+  "processed": 9,
+  "failed": 649,
+  "successRate": "1.4%",
   "tierBreakdown": {
     "playwright": 8,
     "amp": 0,
-    "browserbase": 3,
+    "browserbase": 7,
     "directCookies": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
+    "brightdata": 1,
     "archiveToday": 1,
     "archive": 0
   },
@@ -56,6 +56,50 @@
     },
     {
       "t": "2026-06-15T00:07:02.801Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-15T00:46:11.082Z",
+      "event": "bb-session",
+      "session": "f2138b3c",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-15T00:46:12.030Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-15T00:47:07.766Z",
+      "event": "bb-session",
+      "session": "0ec3c637",
+      "url": "https://www.nytimes.com/2026/06/03/theater/caissie-levy-broadway-tonys-ragtime.h"
+    },
+    {
+      "t": "2026-06-15T00:47:08.749Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-15T00:47:32.031Z",
+      "event": "bb-session",
+      "session": "e45b57a2",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-15T00:47:33.009Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-15T00:47:45.693Z",
+      "event": "bb-session",
+      "session": "e96cf397",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-15T00:47:46.603Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
