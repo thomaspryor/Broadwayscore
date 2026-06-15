@@ -116,21 +116,34 @@ function summary() {
   console.error(`  html      : ${htmlPath} (${html.length} bytes)`);
 }
 
-async function postBroadcast() {
-  const res = await fetch(RESEND_BROADCASTS_URL, {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ audience_id: audience.id, from: FROM_EMAIL, subject, html, name }),
-  });
+function apiHeaders() {
+  return { 'Authorization': `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' };
+}
+
+async function apiJSON(method, url, payload) {
+  const opt = { method, headers: apiHeaders() };
+  if (payload !== undefined) opt.body = JSON.stringify(payload);
+  const res = await fetch(url, opt);
   const text = await res.text();
   let body; try { body = JSON.parse(text); } catch { body = text; }
   if (!res.ok) {
-    throw new Error(`Resend ${res.status}: ${typeof body === 'string' ? body : JSON.stringify(body)}`);
+    throw new Error(`Resend ${res.status} on ${method}: ${typeof body === 'string' ? body : JSON.stringify(body)}`);
   }
   return body;
+}
+
+// Idempotency: find an existing DRAFT broadcast with this exact name so a
+// re-run (after a content edit, like this week's mover-rule change) UPDATES the
+// same draft instead of leaving a duplicate behind. SENT broadcasts are never
+// matched (status !== 'draft' is ignored) — this script never touches a send.
+async function findExistingDraft() {
+  const list = await apiJSON('GET', RESEND_BROADCASTS_URL);
+  const all = (list && list.data) || [];
+  const matches = all.filter((b) => b && b.name === name && b.status === 'draft');
+  if (matches.length > 1) {
+    throw new Error(`${matches.length} draft broadcasts named "${name}" exist — refusing to guess which to update. Resolve in the Resend UI.`);
+  }
+  return matches[0] || null;
 }
 
 (async () => {
@@ -164,13 +177,22 @@ async function postBroadcast() {
   console.error(`  lock      : acquired (${(lock.sessionId || '').slice(0, 8)})`);
 
   try {
-    const result = await postBroadcast();
-    const id = result && result.id;
-    console.error(`\n✓ Draft created: ${id}`);
+    const payload = { audience_id: audience.id, from: FROM_EMAIL, subject, html, name };
+    const existing = await findExistingDraft();
+    let id;
+    if (existing) {
+      await apiJSON('PATCH', `${RESEND_BROADCASTS_URL}/${existing.id}`, payload);
+      id = existing.id;
+      console.error(`\n✓ Existing draft updated: ${id}`);
+    } else {
+      const result = await apiJSON('POST', RESEND_BROADCASTS_URL, payload);
+      id = result && result.id;
+      console.error(`\n✓ Draft created: ${id}`);
+    }
     console.error(`  Review & send in Resend: https://resend.com/broadcasts/${id}`);
     console.error('  This script did NOT send. Open the link, review, and hit Send in the Resend UI.');
   } catch (e) {
-    console.error(`\n✗ Draft creation failed: ${e.message}`);
+    console.error(`\n✗ Draft create/update failed: ${e.message}`);
     process.exitCode = 1;
   } finally {
     try { releaseSendLock(lock); } catch { /* best-effort */ }
