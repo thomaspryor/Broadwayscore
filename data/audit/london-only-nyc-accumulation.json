@@ -1,0 +1,18 @@
+{
+  "generatedBy": "scripts/validate-data.js reverse cross-market guard",
+  "description": "London-region, non-isDualMarket outlets carrying NYC reviews. Tier 3/untiered Broadway hits are advisory isDualMarket candidates; Tier 1/2 Broadway hits are CI errors; off-Broadway hits are tolerated warnings.",
+  "outlets": [
+    {
+      "outletId": "artsdesk",
+      "displayName": "The Arts Desk",
+      "tier": 3,
+      "broadwayCount": 0,
+      "offBroadwayCount": 1,
+      "broadwayShows": [],
+      "offBroadwayShows": [
+        "tristan-und-isolde-off-broadway-2026"
+      ],
+      "disposition": "tolerated-off-broadway"
+    }
+  ]
+}
