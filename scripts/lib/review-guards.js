@@ -985,6 +985,86 @@ function isLikelyStaleWrongProduction(data, show) {
 }
 
 /**
+ * Self-heal a stale CV-promoted wrongProduction flag.
+ *
+ * CV promotion (rebuild-all-reviews.js) is one-directional: a pass sets
+ * data.wrongProduction=true from contentVerification, but a LATER re-verification
+ * that flips contentVerification.wrongProduction back to false never clears the
+ * top-level flag. The review then stays excluded even though the current
+ * authoritative CV says it is NOT a wrong production.
+ *
+ * Root cause of the Romeo & Juliet (Shakespeare in the Park) NY Stage Review
+ * drop (2026-06-15): nysr--roma-torre had wrongProduction=true /
+ * "CV-promoted: This is a legitimate review…" while contentVerification.
+ * wrongProduction=false (confidence high, claude-haiku). The periodic
+ * isLikelyStaleWrongProduction sweep missed it (truncated text < 1500 chars,
+ * and it only runs as a separate LLM script — not in the rebuild).
+ *
+ * This predicate is PROVENANCE-GATED: it only clears flags whose reason shows
+ * they were set by CV itself ("CV-promoted:" / "CV-low-but-strong-signal:"),
+ * so it never touches wrongProduction set by the date-vs-opening guard, the
+ * ensemble-rejection path, or tour/cross-market guards — those have their own
+ * (non-CV) reasons and a CV record saying false does not invalidate them.
+ *
+ * It additionally requires INDEPENDENT corroboration — a high/medium-confidence
+ * ensemble score on this review — because CV records can disagree with each
+ * other. The Titus Andronicus OB 2026 case (2026-06-15 probe) is a NYT dual
+ * review of Teatro La Plaza's *Hamlet* misfiled under Titus: an early CV pass
+ * correctly flagged it ("a review of … Hamlet … not Titus"), but a later pass
+ * wrongly set contentVerification.wrongProduction=false. It had NO ensemble
+ * score, so the corroboration gate keeps it excluded. The genuine false
+ * positive (R&J NYSR) carried a confident score of 79.
+ *
+ * The caller passes cvIsStale (text changed after verification) so the single
+ * staleness computation in the rebuild loop is reused rather than duplicated.
+ *
+ * @param {object} data - Review-text JSON
+ * @param {boolean} cvIsStale - true when fullText was fetched/changed after the
+ *   contentVerification ran (caller-computed via timestamp + contentHash)
+ * @returns {boolean} true when the stale CV-promoted flag should be cleared
+ */
+function isStaleCvPromotedWrongProduction(data, cvIsStale) {
+  if (!data || data.wrongProduction !== true) return false;
+  if (cvIsStale) return false;
+
+  // Provenance gate: only self-heal flags CV itself set.
+  const reason = String(data.wrongProductionReason || '');
+  if (!/^CV-promoted:|^CV-low-but-strong-signal:/.test(reason)) return false;
+
+  // Never re-touch a human/manual decision (and avoid no-op churn).
+  if (data.wrongProductionManualClear === true) return false;
+  if (data.wrongProductionOverride === true) return false;
+  if (data.humanReviewedWrongProduction === false) return false;
+
+  // Don't override stronger sibling guards.
+  if (data.wrongShow === true) return false;
+  if (data.rejectionReason && data.rejectionReason !== 'wrong_production') return false;
+
+  // The current authoritative CV must affirm NOT wrong-production AND NOT
+  // wrong-article (wrong show) at HIGH confidence. High-only is deliberate:
+  // the promotion path treats ensemble-confident + medium-CV wrongProduction as
+  // merely "advisory" and requires high confidence to act (rebuild-all-reviews
+  // CV block) — the clear path must be at least as strict, so we never undo a
+  // flag on weaker evidence than it took to set one.
+  const cv = data.contentVerification;
+  if (!cv) return false;
+  if (cv.wrongProduction !== false) return false;
+  if (cv.wrongArticle === true) return false;
+  if (cv.confidence !== 'high') return false;
+
+  // Independent corroboration: the ensemble scored this as a real review at
+  // high/medium confidence. Note this confirms "is a scoreable review", not
+  // "is the right production" — it is a secondary guard, not the primary one;
+  // the primary signal is the high-confidence CV record. Together they guard
+  // against CV-vs-CV disagreement restoring a misfiled wrong-show review that
+  // happens to carry a stale "wrongProduction=false" record (e.g. the Titus
+  // Andronicus / misfiled-Hamlet case, which has no ensemble score).
+  if (!hasHighConfidenceLlmScore(data)) return false;
+
+  return true;
+}
+
+/**
  * Detect a stale suspectedMisattribution flag — a flag that the current
  * critic-registry would no longer set on this file.
  *
@@ -2466,6 +2546,7 @@ module.exports = {
   isLikelyStaleRoundupFlag,
   isLikelyStaleWrongShow,
   isLikelyStaleWrongProduction,
+  isStaleCvPromotedWrongProduction,
   wrongShowCleared,
   isLikelyStaleSuspectedMisattribution,
   getCriticRegistry,
