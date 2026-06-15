@@ -39,7 +39,7 @@ const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTL
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
 const { shouldRejectAsReservation, isInternalNote, hasCopyrightChrome, stripLeadingChrome } = require('./lib/pull-quote-guards');
 const { emitStage } = require('./lib/stage-latency');
-const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipRoundupAudit, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy } = require('./lib/review-guards');
+const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipRoundupAudit, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl } = require('./lib/rebuild-helpers');
@@ -1984,6 +1984,26 @@ showDirs.forEach(showId => {
             stats.contentVerificationPromoted = (stats.contentVerificationPromoted || 0) + 1;
             try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
           }
+        }
+
+        // Self-heal one-directional CV promotion: an earlier pass set
+        // wrongProduction=true from contentVerification, but the CURRENT
+        // (non-stale, high/medium-confidence) CV record says wrongProduction=false.
+        // Provenance-gated to CV-sourced flags only, so date/ensemble/tour flags
+        // are untouched. Root cause of the R&J Shakespeare-in-the-Park NYSR drop
+        // (2026-06-15) — see isStaleCvPromotedWrongProduction in review-guards.js.
+        if (isStaleCvPromotedWrongProduction(data, cvIsStale)) {
+          data.wrongProduction = false;
+          // Deliberately NOT setting wrongProductionManualClear — that is a
+          // human-override-equivalent that bypasses future wrong-production
+          // audits, so a rare bad self-heal would become permanently protected
+          // (codex review 2026-06-15). A plain self-heal marker keeps the file
+          // SELF-CORRECTING: if a later high-confidence CV pass legitimately
+          // flips wrongProduction back to true, promotion re-fires normally.
+          data.wrongProductionSelfHealed = true;
+          data.wrongProductionSelfHealReason = `current CV (${cv.verifiedBy || 'cv'}, ${cv.confidence}) says wrongProduction=false + confident ensemble score — cleared stale CV-promoted flag`;
+          stats.cvStaleWrongProductionSelfHealed = (stats.cvStaleWrongProductionSelfHealed || 0) + 1;
+          try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
         }
       }
 
