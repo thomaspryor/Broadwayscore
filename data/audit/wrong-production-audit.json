@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-15T19:29:00.113Z",
+  "timestamp": "2026-06-15T23:54:33.682Z",
   "stats": {
-    "totalReviews": 38465,
-    "alreadyFlagged": 16888,
+    "totalReviews": 38458,
+    "alreadyFlagged": 16890,
     "dateGuardCatches": 106,
-    "directorMismatch": 857,
-    "tvFilmSignals": 1057,
-    "londonSignals": 627,
+    "directorMismatch": 858,
+    "tvFilmSignals": 1056,
+    "londonSignals": 629,
     "offBroadwaySignals": 463,
     "yearMismatch": 82,
-    "noPublishDate": 4012
+    "noPublishDate": 3999
   },
   "findings": [
     {
@@ -351,6 +351,7 @@
     {
       "showId": "a-life-in-four-seasons-west-end-2026",
       "file": "thereviewshub--the-reviews-hub-london.json",
+      "score": 90,
       "publishDate": "2026-06-13",
       "url": "https://www.thereviewshub.com/a-life-in-four-seasons-regents-park-open-air-theatre-london/",
       "findings": [
@@ -5080,6 +5081,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"joe mantello\" from death-of-a-salesman-2026"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2012",
+      "file": "nytg--unknown.json",
+      "publishDate": null,
+      "url": "https://www.newyorktheatreguide.com/theatre-news/news/the-history-of-death-of-a-salesman-on-broadway",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"george c. scott\" from death-of-a-salesman-1975"
         }
       ]
     },
@@ -11376,7 +11390,7 @@
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"hulu\""
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -23131,20 +23145,6 @@
       ]
     },
     {
-      "showId": "the-other-place-2013",
-      "file": "newsday--linda-winer.json",
-      "score": 88,
-      "publishDate": null,
-      "url": "http://www.newsday.com/entertainment/theater/laurie-metcalf-in-the-other-place-review-1.4425612",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
       "showId": "the-pajama-game-2006",
       "file": "about-entertainment--ben-brantley.json",
       "score": 85,
@@ -27417,6 +27417,20 @@
       "file": "independent--annabel-nugent.json",
       "score": 89,
       "publishDate": "2025-11-27",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/all-my-sons-review-bryan-cranston-paapa-essiedu-b2870394.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "all-my-sons-west-end-2025",
+      "file": "independent--unknown.json",
+      "score": 92,
+      "publishDate": null,
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/all-my-sons-review-bryan-cranston-paapa-essiedu-b2870394.html",
       "findings": [
         {
@@ -34522,6 +34536,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "file": "standard--unknown.json",
+      "score": 61,
+      "publishDate": null,
+      "url": "https://www.standard.co.uk/culture/theatre/my-neighbour-totoro-barbican-studio-ghibli-theatre-review-b1033681.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
