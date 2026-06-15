@@ -1837,7 +1837,13 @@ const outlier = sections.run('outlier-of-the-week', () => outlierSection());
 // Async because GA4 client returns a Promise. If creds missing or API errors,
 // fetchPopularShowPages returns null and the section silently skips.
 const { fetchPopularShowPages } = await import('./popular-pages.mjs');
-const popularList = await fetchPopularShowPages({ repo, days: 7, limit: 8 });
+// Anchor the Trending window to the issue's Saturday draft date (weekStart + 5;
+// weekStartStr is the Monday). The newsletter drafts Saturday / sends Sunday, so
+// a delayed run must still reflect the Saturday window — otherwise the GA growth
+// window slides off the issue's week and the section empties (post-Tony-spike
+// collapse was the trigger). See popular-pages.mjs.
+const _trendingAsOf = (() => { const d = new Date(weekStartStr + 'T12:00:00'); d.setDate(d.getDate() + 5); return d.toISOString().slice(0, 10); })();
+const popularList = await fetchPopularShowPages({ repo, days: 7, limit: 8, asOf: _trendingAsOf });
 const popular = sections.run('most-read-pages', () => mostReadSection(popularList));
 
 // Season standing renders one card per qualifying BW opening (not strictly
