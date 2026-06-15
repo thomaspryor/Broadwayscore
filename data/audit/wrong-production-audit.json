@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-15T13:12:49.558Z",
+  "timestamp": "2026-06-15T14:09:41.273Z",
   "stats": {
-    "totalReviews": 38452,
-    "alreadyFlagged": 16893,
-    "dateGuardCatches": 105,
+    "totalReviews": 38450,
+    "alreadyFlagged": 16889,
+    "dateGuardCatches": 106,
     "directorMismatch": 857,
     "tvFilmSignals": 1056,
     "londonSignals": 627,
     "offBroadwaySignals": 463,
     "yearMismatch": 82,
-    "noPublishDate": 4005
+    "noPublishDate": 4003
   },
   "findings": [
     {
@@ -14642,6 +14642,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "music-city-off-broadway-2026",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "score": 82,
+      "publishDate": "2024-11-18",
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=LUWYAU",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 490d before show (2024-11-18 vs 2026-03-23)"
         }
       ]
     },
