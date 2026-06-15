@@ -36,6 +36,7 @@
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 
@@ -132,6 +133,25 @@ async function apiJSON(method, url, payload) {
   return body;
 }
 
+// Data-freshness gate. The newsletter reads data/reviews.json + data/shows.json,
+// which are usually symlinks into the local broadway-scorecard-data checkout. If
+// that checkout is behind origin, the draft is built on stale data and recent
+// reviews silently go missing — e.g. a show that just opened (Romeo & Juliet)
+// shows zero reviews, so it can't be an Outlier or Mover. CI avoids this by
+// checking out fresh core data every run; a local session has no such guard.
+// This refuses to create/update a draft while the data repo is behind origin.
+function dataRepoStaleness() {
+  let dir;
+  try {
+    dir = path.dirname(fs.realpathSync(path.join(repo, 'data/reviews.json')));
+    execFileSync('git', ['-C', dir, 'fetch', '--quiet'], { stdio: 'ignore', timeout: 30000 });
+    const behind = parseInt(execFileSync('git', ['-C', dir, 'rev-list', '--count', 'HEAD..@{u}'], { encoding: 'utf8' }).trim(), 10);
+    return { dir, behind: Number.isFinite(behind) ? behind : null };
+  } catch (e) {
+    return { dir: dir || null, behind: null, error: e.message };
+  }
+}
+
 // Idempotency: find an existing DRAFT broadcast with this exact name so a
 // re-run (after a content edit, like this week's mover-rule change) UPDATES the
 // same draft instead of leaving a duplicate behind. SENT broadcasts are never
@@ -157,6 +177,24 @@ async function findExistingDraft() {
   if (!process.env.RESEND_API_KEY) {
     console.error('\nRESEND_API_KEY is required for --create.');
     process.exit(1);
+  }
+
+  // Refuse to ship a draft built on stale local data (unless --allow-stale).
+  const fresh = dataRepoStaleness();
+  if (fresh.behind && fresh.behind > 0 && !flags['allow-stale']) {
+    console.error(`\n✗ Local data is ${fresh.behind} commit(s) behind origin: ${fresh.dir}`);
+    console.error('  reviews.json/shows.json are stale — recent reviews (e.g. a just-opened show) would be MISSING from the draft.');
+    console.error('  Fix:');
+    console.error(`    git -C ${fresh.dir} pull --ff-only`);
+    console.error(`    node scripts/newsletter/generate.mjs ${weekStart}    # regenerate on fresh data`);
+    console.error('    (then re-run this command)');
+    console.error('  Override (NOT recommended): add --allow-stale.');
+    process.exit(1);
+  }
+  if (fresh.behind == null) {
+    console.error(`  freshness : could not verify (${fresh.error || 'unknown'}) — proceeding`);
+  } else {
+    console.error('  freshness : data repo up to date with origin');
   }
 
   // Cross-session advisory lock (GitHub-backed; same gate the send wrappers use)
