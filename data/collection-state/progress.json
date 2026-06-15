@@ -147,7 +147,8 @@
     "summer-1976-2023/ew--dalton-ross.json",
     "good-night-oscar-2023/broadwaynews--brittani-samuel.json",
     "fat-ham-2023/newyorker--conde-nast.json",
-    "fat-ham-2023/broadwaynews--brittani-samuel.json"
+    "fat-ham-2023/broadwaynews--brittani-samuel.json",
+    "romeo-and-juliet-off-broadway-2026/wsj--unknown.json"
   ],
   "failed": [
     "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
@@ -1171,7 +1172,16 @@
     "small-off-broadway-2026/pages-on-stages--unknown.json",
     "small-off-broadway-2026/the-recs--unknown.json",
     "small-off-broadway-2026/theater-pizzazz--unknown.json",
-    "small-off-broadway-2026/washpost--unknown.json"
+    "small-off-broadway-2026/washpost--unknown.json",
+    "romeo-and-juliet-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
+    "small-off-broadway-2026/guardian--arifa-akbar.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1335,6 +1345,11 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+      "data/review-texts/romeo-and-juliet-off-broadway-2026/wsj--unknown.json",
+      "romeo-and-juliet-off-broadway-2026/wsj--unknown.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
     ],
     "directCookies": [],
@@ -1449,7 +1464,7 @@
     ]
   },
   "startTime": "2026-06-14T21:23:22.048Z",
-  "lastProcessed": "small-off-broadway-2026/washpost--unknown.json",
+  "lastProcessed": "small-off-broadway-2026/guardian--arifa-akbar.json",
   "log": [
     {
       "t": "2026-06-15T00:06:07.315Z",
@@ -2151,6 +2166,50 @@
     },
     {
       "t": "2026-06-15T12:56:46.971Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-15T13:39:33.033Z",
+      "event": "bb-session",
+      "session": "e4227386",
+      "url": "https://www.wsj.com/articles/romeo-and-juliet-review-no-love-lost-for-shakespear"
+    },
+    {
+      "t": "2026-06-15T13:39:34.217Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-15T13:40:31.160Z",
+      "event": "bb-session",
+      "session": "51c2f16d",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-15T13:40:32.044Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-15T13:41:04.756Z",
+      "event": "bb-session",
+      "session": "4cd3e382",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-15T13:41:05.675Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-15T13:41:20.985Z",
+      "event": "bb-session",
+      "session": "039774a4",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-15T13:41:21.889Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
