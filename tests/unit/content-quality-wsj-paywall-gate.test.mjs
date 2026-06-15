@@ -40,17 +40,27 @@ function loadReview(showId, filename) {
   }
 }
 
-test('1776-2022 WSJ (CTA at 80%) → classifyContentTier returns truncated', () => {
-  const d = loadReview('1776-2022', 'wsj--charles-isherwood.json');
-  if (!d) return; // skip if private repo not present
-  const result = classifyContentTier(d);
+// Synthetic truncation case (was a live-fixture test on 1776-2022/wsj--charles-isherwood,
+// but that review was later re-collected to a COMPLETE version — the live fixture no longer
+// contains the paywall stub, so the assertion became stale and failed wherever the private
+// review-texts checkout exists. A synthetic payload tests the position-gate deterministically,
+// immune to corpus re-collection. See memory/feedback_ci_red_stale_state_and_brittle_assertions.)
+test('WSJ paywall CTA at <90% → classifyContentTier returns truncated', () => {
+  const prose = 'The Broadway revival arrives with ambition and a strong ensemble cast. '.repeat(50);
+  const cta = ' Continue reading your article with a WSJ membership. ';
+  const tail = 'Concluding commentary about the staging and design choices here. '.repeat(10);
+  const text = prose + cta + tail; // CTA lands at ~80%
+  const ctaPct = text.indexOf('Continue reading') / text.length;
+  assert.ok(ctaPct < 0.9, `Expected CTA before 90%, got ${Math.round(ctaPct * 100)}%`);
+
+  const result = classifyContentTier({
+    outlet: 'The Wall Street Journal', outletId: 'wsj',
+    fullText: text, url: 'https://www.wsj.com/articles/test-review',
+  });
   assert.equal(result.contentTier, 'truncated',
     `Expected truncated, got ${result.contentTier} (reason: ${result.tierReason})`);
-  assert.ok(
-    result.truncationSignals.includes('wsj_paywall_cta') ||
-    result.truncationSignals.some(s => s.includes('paywall')),
-    `Expected wsj_paywall_cta or paywall signal, got: ${JSON.stringify(result.truncationSignals)}`
-  );
+  assert.ok(result.truncationSignals.includes('wsj_paywall_cta'),
+    `Expected wsj_paywall_cta, got: ${JSON.stringify(result.truncationSignals)}`);
 });
 
 test('ohio-state-murders-2022 WSJ (CTA at 99%) → classifyContentTier stays complete', () => {
