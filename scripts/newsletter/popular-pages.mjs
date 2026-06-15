@@ -41,7 +41,15 @@ function loadEnv(repo) {
   }
 }
 
-export async function fetchTrendingShowPages({ repo, days = 7, limit = 5 } = {}) {
+// `asOf` (YYYY-MM-DD) anchors the trending window to the issue's draft date
+// rather than the wall-clock run date. The newsletter is drafted Saturday and
+// sent Sunday; if the run is DELAYED to e.g. Monday, a `today`-relative window
+// slides off the issue's week (a major traffic event like the Tony Awards moves
+// from "this week" into the "prior week" baseline, collapsing all growth ratios)
+// and the section silently empties. Anchoring makes a delayed run produce the
+// same Trending list an on-time run would have. When `asOf` is omitted the
+// original run-date-relative window is used.
+export async function fetchTrendingShowPages({ repo, days = 7, limit = 5, asOf = null } = {}) {
   loadEnv(repo);
   const propertyId = process.env.GA4_PROPERTY_ID;
   if (!propertyId) return null;
@@ -68,14 +76,21 @@ export async function fetchTrendingShowPages({ repo, days = 7, limit = 5 } = {})
 
   // Multi-range report. GA4 returns one row per (pagePath × dateRange).
   // The range name lands in dimensionValues[1] when ≥2 dateRanges are passed.
+  const off = (n) => { const d = new Date(asOf + 'T12:00:00'); d.setDate(d.getDate() + n); return d.toISOString().slice(0, 10); };
+  const dateRanges = asOf && /^\d{4}-\d{2}-\d{2}$/.test(asOf)
+    ? [
+        { startDate: off(-days), endDate: asOf, name: 'thisWeek' },
+        { startDate: off(-days * 2), endDate: off(-(days + 1)), name: 'priorWeek' },
+      ]
+    : [
+        { startDate: `${days}daysAgo`, endDate: 'today', name: 'thisWeek' },
+        { startDate: `${days * 2}daysAgo`, endDate: `${days + 1}daysAgo`, name: 'priorWeek' },
+      ];
   let res;
   try {
     [res] = await client.runReport({
       property: `properties/${propertyId}`,
-      dateRanges: [
-        { startDate: `${days}daysAgo`, endDate: 'today', name: 'thisWeek' },
-        { startDate: `${days * 2}daysAgo`, endDate: `${days + 1}daysAgo`, name: 'priorWeek' },
-      ],
+      dateRanges,
       dimensions: [{ name: 'pagePath' }],
       metrics: [{ name: 'screenPageViews' }],
       orderBys: [{ metric: { metricName: 'screenPageViews' }, desc: true }],
