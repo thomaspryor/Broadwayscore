@@ -1,106 +1,22 @@
 {
-  "updatedAt": "2026-06-15T10:39:03.326Z",
-  "processed": 14,
-  "failed": 938,
-  "successRate": "1.5%",
+  "updatedAt": "2026-06-15T08:36:34.501Z",
+  "processed": 148,
+  "failed": 996,
+  "successRate": "12.9%",
   "tierBreakdown": {
-    "playwright": 10,
-    "amp": 0,
-    "browserbase": 67,
+    "playwright": 82,
+    "amp": 1,
+    "browserbase": 53,
     "directCookies": 0,
-    "scrapingbee": 0,
-    "brightdata": 2,
-    "archiveToday": 7,
-    "archive": 0
+    "scrapingbee": 50,
+    "brightdata": 14,
+    "archiveToday": 1,
+    "archive": 30
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 8,
   "recentActivity": [
     {
-      "t": "2026-06-15T07:06:17.769Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-15T07:06:53.143Z",
-      "event": "bb-session",
-      "session": "99ae90e7",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-15T07:06:54.030Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-15T07:07:05.642Z",
-      "event": "bb-session",
-      "session": "861987c3",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
-    {
-      "t": "2026-06-15T07:07:06.576Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-15T08:55:14.122Z",
-      "event": "bb-session",
-      "session": "8cdbf6cf",
-      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
-    },
-    {
-      "t": "2026-06-15T09:44:36.679Z",
-      "event": "bb-session",
-      "session": "c39829c9",
-      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
-    },
-    {
-      "t": "2026-06-15T10:13:52.553Z",
-      "event": "bb-session",
-      "session": "1325bcfb",
-      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
-    },
-    {
-      "t": "2026-06-15T10:34:35.364Z",
-      "event": "bb-session",
-      "session": "7f3e4b3e",
-      "url": "https://www.wsj.com/articles/romeo-and-juliet-review-no-love-lost-for-shakespear"
-    },
-    {
-      "t": "2026-06-15T10:34:36.261Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-06-15T10:34:59.074Z",
-      "event": "bb-session",
-      "session": "2faf3ba3",
-      "url": "https://www.wsj.com/articles/romeo-and-juliet-review-no-love-lost-for-shakespear"
-    },
-    {
-      "t": "2026-06-15T10:34:59.935Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-06-15T10:35:58.801Z",
-      "event": "bb-session",
-      "session": "92163bf4",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
-    {
-      "t": "2026-06-15T10:35:59.694Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-15T10:36:31.027Z",
-      "event": "bb-session",
-      "session": "3bc2863a",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-15T10:36:31.796Z",
+      "t": "2026-06-15T04:04:18.028Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     },
@@ -125,6 +41,92 @@
       "t": "2026-06-15T10:37:44.162Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-15T05:29:41.464Z",
+      "event": "bb-session",
+      "session": "a64924a7",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-15T05:29:42.393Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-15T05:30:16.904Z",
+      "event": "bb-session",
+      "session": "e449778b",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-15T05:30:17.856Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-15T05:30:31.500Z",
+      "event": "bb-session",
+      "session": "ca1dcd8e",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-15T05:30:32.456Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-15T06:51:16.676Z",
+      "event": "bb-session",
+      "session": "f4a009cc",
+      "url": "https://exeuntnyc.com/reviews/review-every-brilliant-thing-at-the-hudson-theatre"
+    },
+    {
+      "t": "2026-06-15T06:55:10.198Z",
+      "event": "bb-session",
+      "session": "2efbee3e",
+      "url": "https://nystagereview.com/2026/03/12/every-brilliant-thing-daniel-radcliffe-perf"
+    },
+    {
+      "t": "2026-06-15T06:55:54.841Z",
+      "event": "bb-session",
+      "session": "7ca467ef",
+      "url": "https://nystagereview.com/2026/03/12/every-brilliant-thing-a-lustrous-evening-wi"
+    },
+    {
+      "t": "2026-06-15T07:17:43.059Z",
+      "event": "bb-session",
+      "session": "0ecb5f7c",
+      "url": "https://www.newyorker.com/goings-on-about-town/just-in-time"
+    },
+    {
+      "t": "2026-06-15T07:18:38.436Z",
+      "event": "bb-session",
+      "session": "e7c412cf",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
+    },
+    {
+      "t": "2026-06-15T07:37:38.074Z",
+      "event": "bb-session",
+      "session": "ae5e553b",
+      "url": "https://www.amny.com/entertainment/on-your-feet-review-this-rhythm-will-barely-g"
+    },
+    {
+      "t": "2026-06-15T07:40:49.377Z",
+      "event": "bb-session",
+      "session": "b88d88fe",
+      "url": "https://www.billboard.com/articles/review/6753841/on-your-feet-theater-review-gl"
+    },
+    {
+      "t": "2026-06-15T07:48:48.575Z",
+      "event": "bb-session",
+      "session": "3529a7fd",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2645871"
+    },
+    {
+      "t": "2026-06-15T07:48:48.991Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
