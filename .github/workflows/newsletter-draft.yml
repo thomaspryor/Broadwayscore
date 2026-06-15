@@ -42,6 +42,20 @@ on:
         description: 'Optional subject-line override (overrides auto-generated subject).'
         required: false
         default: ''
+      audience:
+        description: 'Resend audience for the broadcast DRAFT (never sent automatically).'
+        required: false
+        type: choice
+        default: general
+        options:
+          - general
+          - west-end
+          - test
+      skipBroadcastDraft:
+        description: 'Skip creating the Resend broadcast draft (owner preview only).'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -157,6 +171,22 @@ jobs:
         run: |
           node scripts/newsletter/send-test.mjs
 
+      # Create the Resend BROADCAST DRAFT so the finished newsletter lands in the
+      # Resend dashboard, built on this same fresh CI data (so GA-driven Trending
+      # etc. are present — unlike a local run). create-broadcast-draft.mjs has NO
+      # send path: it only POSTs/PATCHes a draft, never POST /broadcasts/{id}/send.
+      # The newsletter is therefore NEVER sent to subscribers automatically — the
+      # owner reviews the draft and clicks Send in the Resend UI. (The owner
+      # preview above is the only auto-send, and it's single-recipient to the owner.)
+      - name: Create Resend broadcast draft (DRAFT ONLY — never sends to subscribers)
+        if: ${{ github.event.inputs.skipBroadcastDraft != 'true' }}
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NEWSLETTER_OUT_DIR: ${{ github.workspace }}/data/newsletter-drafts
+        run: |
+          node scripts/newsletter/create-broadcast-draft.mjs "${{ steps.week.outputs.weekStart }}" \
+            --audience="${{ github.event.inputs.audience || 'general' }}" --create
+
       # Persist the cross-issue de-dup state (data/newsletter-state.json). The
       # generator UPSERTs this week's mover/announced-closing IDs so next week's
       # run can suppress a slow-moving show (e.g. Fallen Angels) from being
@@ -192,7 +222,7 @@ jobs:
           echo "## Newsletter Draft" >> $GITHUB_STEP_SUMMARY
           echo "Week: ${{ steps.week.outputs.weekStart }}" >> $GITHUB_STEP_SUMMARY
           if [ "${{ job.status }}" = "success" ]; then
-            echo "Status: preview sent to owner inbox." >> $GITHUB_STEP_SUMMARY
+            echo "Status: owner preview sent + Resend broadcast DRAFT created (review & Send in Resend — never auto-sent)." >> $GITHUB_STEP_SUMMARY
           else
             echo "Status: FAILED — see job logs." >> $GITHUB_STEP_SUMMARY
           fi
