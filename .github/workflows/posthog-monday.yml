@@ -62,3 +62,39 @@ jobs:
         with:
           title: 'PostHog Friction Analyzer Failed'
           severity: 'warning'
+
+  friction-fixer:
+    name: Auto-fix Friction Cards → Draft PRs
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    # Only run when analyzer succeeded — don't act on stale Notion backlog from failed runs
+    needs: friction-analyzer
+    if: needs.friction-analyzer.result == 'success'
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Auto-fix friction cards
+        env:
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/auto-fix-friction-card.js
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'PostHog Friction Fixer Failed'
+          severity: 'warning'
