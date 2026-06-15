@@ -2530,6 +2530,14 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
   if (showTitle && showTitle.length > 2) {
     const t = normalize(showTitle).toLowerCase();
     tokens.add(t);
+    // Strip trailing/sentence punctuation so long titles match body + headline
+    // text that omits it — "Are You Now or Have You Ever Been?" is written
+    // "...Are You Now or Have You Ever Been, a Red Scare..." in headlines and
+    // "...Are You Now or Have You Ever Been" in prose. Without this the "?"-laden
+    // token never matches and legit reviews are rejected as url_content_mismatch
+    // (2026-06-15).
+    const tStripped = t.replace(/[?!.,;:'"]+/g, ' ').replace(/\s+/g, ' ').trim();
+    if (tStripped && tStripped !== t && tStripped.length > 2) tokens.add(tStripped);
     const noThe = t.replace(/^the\s+/, '');
     if (noThe.length > 2) tokens.add(noThe);
     // For possessive titles add the prefix before "'s" as a token — body text
@@ -2589,6 +2597,29 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
         }
       }
     }
+  }
+
+  // Long, distinctive titles (>=4 words) are near-impossible wrong-show
+  // coincidences but are rarely repeated verbatim in prose — critics write the
+  // full title once, then switch to "the play"/"the production". The generic
+  // >=3-mention threshold therefore false-rejects them (Are You Now Or Have You
+  // Ever Been: TheaterMania/CultureSauce/Theater Pizzazz reviews all dropped as
+  // url_content_mismatch, 2026-06-15). Treat a single full-title phrase hit — in
+  // the body OR the HTML <title> — as sufficient proof of the right show.
+  const normTitle = showTitle ? normalize(showTitle).toLowerCase() : '';
+  const strippedTitle = normTitle.replace(/[?!.,;:'"]+/g, ' ').replace(/\s+/g, ' ').trim();
+  const titleWordCount = strippedTitle ? strippedTitle.split(' ').length : 0;
+  const normHtmlTitle = htmlTitle ? normalize(htmlTitle).toLowerCase() : '';
+  const longTitlePhraseHit = titleWordCount >= 4 && strippedTitle.length >= 12
+    && (lower.includes(strippedTitle) || (normHtmlTitle && normHtmlTitle.includes(strippedTitle)));
+  if (longTitlePhraseHit) {
+    return {
+      valid: true,
+      mentionCount: Math.max(mentionCount, 1),
+      threshold,
+      htmlTitle,
+      htmlTitleMatch: true,
+    };
   }
 
   // When the HTML <title> matches the show, the URL is provably correct — relax
