@@ -140,6 +140,23 @@ test('normalizeTitle: keeps integral genre words (Slave Play, Goes Wrong)', () =
   );
 });
 
+// Guard: a BARE "a/an <genre>" tail (no "new", no "by <author>") is ambiguous —
+// it may be integral to the title — so it must NOT be stripped. The strip is
+// gated on a marketing signal ("new <genre>" or "<genre> by <Name>"). Regression
+// for "It's Only a Play" → "only" (Terrence McNally), caught in pre-ship review.
+test('normalizeTitle: keeps bare "a <genre>" with no marketing signal', () => {
+  assertEqual(
+    normalizeTitle("It's Only a Play"),
+    'only a play',
+    "It's Only a Play kept as 'only a play' (NOT collapsed to bare 'only')"
+  );
+  assertEqual(
+    normalizeTitle('The Real Thing a Play'),
+    'real thing a play',
+    "bare '... a play' tail kept without 'new'/'by'"
+  );
+});
+
 // The actual dup that shipped: clean catalog entry vs TodayTix verbose listing
 // must now collapse via checkForDuplicate.
 test('checkForDuplicate: TodayTix verbose title matches clean catalog entry', () => {
