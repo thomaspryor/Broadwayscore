@@ -1546,3 +1546,85 @@ jobs:
           else
             echo "All tests passed"
           fi
+
+      # --- Real-time alert: main is red across consecutive pushes ---------------
+      # Why this exists (2026-06-13→06-15 incident): main test.yml failed on 11 of
+      # 19 push runs over three days with no real-time alert. The two existing
+      # surfacing paths both under-escalate push failures on main:
+      #   1. health-check.js getWorkflowRunSummary() lists "Test Suite" in the daily
+      #      digest's "Repeat Workflow Failures (24h)" body section, but that section
+      #      never drives the subject line or an error status, so it reads as noise.
+      #   2. check-cron-health.yml keys staleness off the last *successful* run
+      #      (`--status=success`). test.yml has frequent green push runs interleaved
+      #      with the red ones, so it never trips the 48h staleness gate, and its
+      #      `LAST_CONCLUSION == "failure"` warning branch is dead (the query forces
+      #      success). Direct pushes to main aren't gated by required checks
+      #      (memory/feedback_branch_protection_direct_push.md), so red code lands.
+      # This step pages the owner the moment main goes red two pushes in a row.
+      # It fires ONLY on the transition into the streak (prev failed, the run before
+      # it did not) so it alerts once per streak instead of on every red push.
+      - name: Detect consecutive main test failures
+        id: streak
+        if: failure() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            try {
+              const { data } = await github.rest.actions.listWorkflowRuns({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'test.yml',
+                branch: 'main',
+                event: 'push',
+                status: 'completed',
+                per_page: 20,
+              });
+              // API returns newest-first. Drop this run (still in progress) and any
+              // cancelled/skipped runs — only success/failure conclusions count as a
+              // real test outcome in the consecutive streak.
+              const prior = (data.workflow_runs || [])
+                .filter(r => r.id !== context.runId)
+                .filter(r => r.conclusion === 'success' || r.conclusion === 'failure');
+              const prev = prior[0];
+              const prevPrev = prior[1];
+              // This run failed (we're inside if: failure()). Alert when the most
+              // recent prior completed run also failed (≥2 consecutive) AND the one
+              // before it did not — i.e. this is the second failure of the streak.
+              const shouldAlert = !!prev && prev.conclusion === 'failure'
+                && (!prevPrev || prevPrev.conclusion === 'success');
+              console.log(`[streak] prev=${prev ? prev.conclusion : 'none'} prevPrev=${prevPrev ? prevPrev.conclusion : 'none'} shouldAlert=${shouldAlert}`);
+              core.setOutput('should_alert', shouldAlert ? 'true' : 'false');
+              core.setOutput('prev_failed_url', shouldAlert && prev ? prev.html_url : '');
+            } catch (e) {
+              // Don't spam on transient API errors — the daily digest backstops.
+              console.log(`[streak] run-history lookup failed (${e.message}); skipping alert.`);
+              core.setOutput('should_alert', 'false');
+            }
+
+      - name: Checkout (for alert lib)
+        if: failure() && steps.streak.outputs.should_alert == 'true'
+        uses: actions/checkout@v5
+
+      - name: Page owner — main red 2+ pushes in a row
+        if: failure() && steps.streak.outputs.should_alert == 'true'
+        uses: actions/github-script@v7
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          PREV_FAILED_URL: ${{ steps.streak.outputs.prev_failed_url }}
+        with:
+          script: |
+            const { sendAlert } = require('./scripts/lib/discord-notify.js');
+            const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const prevUrl = process.env.PREV_FAILED_URL || '';
+            await sendAlert({
+              title: 'main test.yml red on 2+ consecutive pushes',
+              description: 'The Test Suite has failed on at least two consecutive pushes to main. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.',
+              severity: 'error',
+              email: true,
+              fields: [
+                { name: 'This failed run', value: `[View logs](${runUrl})` },
+                { name: 'Previous failed run', value: prevUrl ? `[View logs](${prevUrl})` : 'n/a' },
+              ],
+              url: runUrl,
+            }).catch(e => console.error('Consecutive-failure alert failed:', e.message));
