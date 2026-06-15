@@ -38,6 +38,10 @@ on:
         description: 'Optional editorial lede override (overrides auto-generated intro).'
         required: false
         default: ''
+      subjectOverride:
+        description: 'Optional subject-line override (overrides auto-generated subject).'
+        required: false
+        default: ''
 
 permissions:
   contents: write
@@ -115,6 +119,7 @@ jobs:
           GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
           GA_SERVICE_ACCOUNT_KEY: ${{ secrets.GA_SERVICE_ACCOUNT_KEY }}
           LEDE_OVERRIDE: ${{ github.event.inputs.ledeOverride }}
+          SUBJECT_OVERRIDE: ${{ github.event.inputs.subjectOverride }}
         run: |
           mkdir -p "$NEWSLETTER_OUT_DIR"
           node scripts/newsletter/generate.mjs "${{ steps.week.outputs.weekStart }}"
