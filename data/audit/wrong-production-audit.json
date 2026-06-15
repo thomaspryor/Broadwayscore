@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-15T17:48:17.010Z",
+  "timestamp": "2026-06-15T18:29:20.975Z",
   "stats": {
     "totalReviews": 38465,
-    "alreadyFlagged": 16889,
+    "alreadyFlagged": 16888,
     "dateGuardCatches": 106,
     "directorMismatch": 857,
-    "tvFilmSignals": 1056,
+    "tvFilmSignals": 1057,
     "londonSignals": 627,
     "offBroadwaySignals": 463,
     "yearMismatch": 82,
-    "noPublishDate": 4013
+    "noPublishDate": 4012
   },
   "findings": [
     {
@@ -345,6 +345,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "a-life-in-four-seasons-west-end-2026",
+      "file": "thereviewshub--the-reviews-hub-london.json",
+      "publishDate": "2026-06-13",
+      "url": "https://www.thereviewshub.com/a-life-in-four-seasons-regents-park-open-air-theatre-london/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
