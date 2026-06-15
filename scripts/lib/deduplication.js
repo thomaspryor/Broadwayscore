@@ -144,6 +144,23 @@ function normalizeTitle(title) {
     .replace(/\s+the\s+musical$/i, '') // Remove "The Musical"
     .replace(/\s+a\s+new\s+musical$/i, '') // Remove "A New Musical"
     .replace(/\s+a\s+musical$/i, '')  // Remove "A Musical"
+    // Remove a trailing descriptive genre tag that listing sources (esp. TodayTix)
+    // append: "The Truth a comedy by Florian Zeller" → "the truth", "Stereophonic
+    // a new play" → "stereophonic". The WE 2026 dup slipped both the discovery
+    // guard and validate-data's catalog scan because of this tail — see
+    // memory/feedback_dedup_genre_suffix.md.
+    //
+    // GATED on an unambiguous marketing signal — either "new <genre>" OR
+    // "<genre> by <Name>" — so an INTEGRAL trailing genre word is left alone.
+    // A bare "a/an <genre>" is NOT stripped: "It's Only a Play" must stay
+    // "its only a play", not collapse to "only" (the McNally play). The two
+    // signal forms cover every real TodayTix listing tail observed. The author
+    // name is bounded to a NAME shape (not greedy .+) so it can't swallow
+    // arbitrary content; trailing [!?.]* closes the ordering gap with the
+    // punctuation cleanup below (this runs before it). "X: A Tragedy" colon
+    // forms are already collapsed by the colon rule above.
+    .replace(/\s+a\s+new\s+(?:comedy|play|musical|drama|opera|operetta|thriller|farce|tragedy)[!?.]*$/i, '')
+    .replace(/\s+an?\s+(?:comedy|play|musical|drama|opera|operetta|thriller|farce|tragedy)\s+by\s+[a-z0-9][a-z0-9.\-'’ ]*[!?.]*$/i, '')
     // Remove articles at start
     .replace(/^(the|a|an)\s+/i, '')
     // Remove a leading author/brand possessive prefix (1-3 words ending in 's),

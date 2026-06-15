@@ -207,20 +207,29 @@ jobs:
             // RECENT: Recently opened shows — reviews trickle in for ~3 weeks
             // Aggregators lag 1-3 days; proactively check even without signals
             // Separate list: always included (not subject to routine cap)
-            const daysSinceOpening = show.openingDate
-              ? Math.floor((today - new Date(show.openingDate)) / (1000 * 60 * 60 * 24))
+            // OB/OWE shows open "cold" and often have a null openingDate, so anchor
+            // on previewsStartDate for those markets — otherwise null-openingDate
+            // previews shows are invisible to every discovery path (Are You Now Or
+            // Have You Ever Been: 0 reviews despite 3+ published, 2026-06-15).
+            const category = show.category || '';
+            const isColdOpenMarket = category === 'off-broadway' || category === 'off-west-end';
+            const effectiveOpening = show.openingDate || (isColdOpenMarket ? show.previewsStartDate : null);
+            const daysSinceOpening = effectiveOpening
+              ? Math.floor((today - new Date(effectiveOpening)) / (1000 * 60 * 60 * 24))
               : null;
             const daysSinceClosing = show.closingDate
               ? Math.floor((today - new Date(show.closingDate)) / (1000 * 60 * 60 * 24))
               : null;
 
             // Market-specific thresholds: OB/WE have fewer aggregator signals and fewer reviews total
-            const category = show.category || '';
             const recentThreshold = (category === 'off-broadway' || category === 'west-end' || category === 'off-west-end') ? 3 : 10;
 
-            // RECENT (open): reviews trickle in for ~3 weeks after opening.
+            // RECENT (open): reviews trickle in for ~3 weeks after opening. For
+            // cold-open OB/OWE markets, a 'previews' status still counts — they often
+            // never flip to 'open' when openingDate is null.
             const recentlyOpened = daysSinceOpening !== null && daysSinceOpening >= 0
-              && daysSinceOpening <= 21 && show.status === 'open';
+              && daysSinceOpening <= 21
+              && (show.status === 'open' || (isColdOpenMarket && show.status === 'previews'));
             // RECENT (closed short-run): short-run shows (e.g. 3-day Open Air runs)
             // flip to 'closed' before slow-indexing T3 outlets appear on Google, and
             // the opening-night orchestrator stops polling once closed. Keep sweeping

@@ -153,6 +153,8 @@ export default function TicketLink({
         .replace(/hover:text-white/g, 'hover:text-accent-gold')
     : className ?? '';
 
+  if (showStatus === 'closed') return null;
+
   return (
     <a
       href={affiliateUrl}

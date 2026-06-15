@@ -164,14 +164,23 @@ jobs:
             // when we're confident the date is a real press night, not a preview
             const TRUSTED_SOURCES = new Set(['theatremonkey', 'playbill', 'ibdb', 'manual']);
             const opened = shows.filter(s => {
-              if (!s.openingDate) return false;
-              // Include 'previews' shows whose opening date has passed or is within
-              // 6 hours — the 23:00 UTC cron fires before midnight, so we need to
+              const cat = s.category || 'broadway';
+              // OB/OWE shows frequently open "cold" with no formal press night, so
+              // openingDate is often null — which would exclude them from discovery
+              // entirely (Are You Now Or Have You Ever Been: 0 reviews despite 3+
+              // published, 2026-06-15). For those cold-open markets, fall back to
+              // previewsStartDate as the discovery anchor so reviews dropping during/
+              // after previews are still found. Press-night markets (broadway/west-end)
+              // keep requiring a real openingDate. Notion: WE discovery gap.
+              const isColdOpenMarket = cat === 'off-broadway' || cat === 'off-west-end';
+              const effectiveOpening = s.openingDate || (isColdOpenMarket ? s.previewsStartDate : null);
+              if (!effectiveOpening) return false;
+              // Include 'previews' shows whose (effective) opening date has passed or is
+              // within 6 hours — the 23:00 UTC cron fires before midnight, so we need to
               // catch shows opening "tomorrow" in UTC terms.
               const validStatus = s.status === 'open' || s.status === 'upcoming' ||
-                (s.status === 'previews' && s.openingDate && new Date(s.openingDate) <= lookAhead);
+                (s.status === 'previews' && new Date(effectiveOpening) <= lookAhead);
               if (!validStatus) return false;
-              const cat = s.category || 'broadway';
               // Market filter
               if (market === 'broadway' && cat !== 'broadway' && cat !== 'off-broadway') return false;
               if (market === 'west-end' && cat !== 'west-end' && cat !== 'off-west-end') return false;
@@ -188,7 +197,7 @@ jobs:
                   && s.status !== 'open') {
                 return false;
               }
-              const d = new Date(s.openingDate);
+              const d = new Date(effectiveOpening);
               d.setHours(0,0,0,0);
               return d >= cutoff && d <= lookAhead;
             });
