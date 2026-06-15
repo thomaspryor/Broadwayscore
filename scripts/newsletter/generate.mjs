@@ -1512,7 +1512,7 @@ function buzziestSection() {
   const glyphs = activePlatforms.map(([k]) => platformGlyph(k, 1)).join('');
   const sentPct = top.sp.p || 0;
   // Sentiment bar + inline meta (platforms + mentions on one small line)
-  const sentBar = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-top:10px;">
+  const sentBar = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-top:6px;">
     <tr><td style="height:8px;background:rgba(255,255,255,0.05);border-radius:4px;overflow:hidden;">
       <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"><tr>
         <td style="width:${sentPct}%;height:8px;background:linear-gradient(90deg,#6366f1 0%,#3b82f6 50%,#10b981 100%);"></td>
@@ -1538,7 +1538,7 @@ function buzziestSection() {
     return `<tr>
       <td valign="middle" width="56" style="padding:6px 10px 6px 0;${!isLast?'border-bottom:1px solid rgba(255,255,255,0.05);':''}">${thumb(c.show, 40)}</td>
       <td valign="middle" style="padding:6px 0;${!isLast?'border-bottom:1px solid rgba(255,255,255,0.05);':''}">
-        <div style="font-size:14px;font-weight:700;color:#fff;line-height:1.25;">${showLink(c.show, c.show.title)}</div>
+        <div style="font-size:14px;font-weight:700;color:#fff;line-height:1.25;">${showLink(c.show, c.show.title)} ${marketPill(c.show.category)}</div>
         <div style="font-size:11px;color:#9ca3af;margin-top:2px;">${sentP}% positive · ${ment} mentions</div>
       </td>
       ${rc && c.rank ? `<td valign="middle" width="60" align="center" style="padding:6px 0;${!isLast?'border-bottom:1px solid rgba(255,255,255,0.05);':''}">
@@ -1551,21 +1551,21 @@ function buzziestSection() {
   // label + rank box right. Sentiment bar lives below the row so the hero stays
   // visually consistent with the rest of the card stack across the email.
   const heroRow = `<tr>
-      <td valign="middle" width="60" style="padding:10px 10px 10px 0;">${thumb(top.show, 48)}</td>
-      <td valign="middle" style="padding:10px 0;">
+      <td valign="middle" width="60" style="padding:6px 10px 6px 0;">${thumb(top.show, 44)}</td>
+      <td valign="middle" style="padding:6px 0;">
         <div style="font-size:15px;font-weight:700;color:#fff;line-height:1.25;">${showLink(top.show, top.show.title)} ${marketPill(top.show.category)}</div>
         <div style="font-size:11px;color:#9ca3af;margin-top:3px;">${top.rank ? `in <span style="color:#d1d5db;font-weight:600;">${top.rank.market}</span> social buzz` : display.sub}</div>
       </td>
-      ${rankColors && top.rank ? `<td valign="middle" width="60" align="center" style="padding:10px 0;">
-        <div style="font-size:9px;font-weight:700;color:${display.color};letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px;">${display.label}</div>
+      ${rankColors && top.rank ? `<td valign="middle" width="60" align="center" style="padding:6px 0;">
+        <div style="font-size:9px;font-weight:700;color:${display.color};letter-spacing:0.06em;text-transform:uppercase;margin-bottom:2px;">${display.label}</div>
         <div style="display:inline-block;width:40px;height:40px;border-radius:8px;background:${rankColors.bg};color:${rankColors.text};font-size:15px;font-weight:800;line-height:40px;text-align:center;box-shadow:0 2px 6px ${rankColors.bg}55;">#${top.rank.position}</div>
-        <div style="font-size:9px;color:#9ca3af;margin-top:3px;font-weight:500;">of ${top.rank.total}</div>
-      </td>` : `<td valign="middle" width="60" align="center" style="padding:10px 0;">
+        <div style="font-size:9px;color:#9ca3af;margin-top:2px;font-weight:500;">of ${top.rank.total}</div>
+      </td>` : `<td valign="middle" width="60" align="center" style="padding:6px 0;">
         <div style="width:40px;height:40px;border-radius:8px;background:${display.color}22;text-align:center;line-height:40px;font-size:20px;">${display.emoji}</div>
       </td>`}
     </tr>`;
   const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" class="cardbg">
-    <tr><td style="padding:10px 16px 4px;">
+    <tr><td style="padding:8px 16px 4px;">
       <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">${heroRow}</table>
       ${sentBar}
     </td></tr>
