@@ -35,7 +35,7 @@ const { CLAUDE_SONNET } = require('./lib/models');
 const {
   authCheck, tracked,
   getRageClickDetails, getGateFunnel, getBtcFunnel,
-  getTicketClicks, getPromoClicks, getSearchStats, getTrafficSummary,
+  getTicketClicks, getClosedShowTicketClicks, getPromoClicks, getSearchStats, getTrafficSummary,
 } = require('./lib/posthog-query');
 
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -174,8 +174,13 @@ function summarizePromoClicks(rows) {
   ).join('\n');
 }
 
+function summarizeClosedShowTicketClicks(rows) {
+  if (!rows.length) return null;
+  return rows.map(([show, platform, n]) => `  ${show} (${platform}): ${n} click(s)`).join('\n');
+}
+
 function buildContext(data) {
-  const { traffic, rageClicks, gateFunnel, btcFunnel, ticketClicks, promoClicks, searchStats } = data;
+  const { traffic, rageClicks, gateFunnel, btcFunnel, ticketClicks, closedShowTicketClicks, promoClicks, searchStats } = data;
 
   const parts = [];
 
@@ -199,6 +204,11 @@ function buildContext(data) {
 
   if (ticketClicks.length > 0) {
     parts.push(`\nTICKET CLICKS (top shows):\n${summarizeTicketClicks(ticketClicks)}`);
+  }
+
+  const closedTicketSummary = summarizeClosedShowTicketClicks(closedShowTicketClicks || []);
+  if (closedTicketSummary) {
+    parts.push(`\nTICKET CLICKS ON CLOSED SHOWS (should be zero — indicates badge shown on closed show):\n${closedTicketSummary}`);
   }
 
   if (promoClicks.length > 0) {
@@ -305,18 +315,19 @@ async function main() {
   console.log('PostHog auth OK');
 
   console.log('Querying PostHog...');
-  const [traffic, rageClicks, gateFunnel, btcFunnel, ticketClicks, promoClicks, searchStats] =
+  const [traffic, rageClicks, gateFunnel, btcFunnel, ticketClicks, closedShowTicketClicks, promoClicks, searchStats] =
     await Promise.all([
       tracked('Traffic', getTrafficSummary),
       tracked('Rage clicks', getRageClickDetails),
       tracked('Gate funnel', getGateFunnel),
       tracked('BTC funnel', getBtcFunnel),
       tracked('Ticket clicks', getTicketClicks),
+      tracked('Closed-show ticket clicks', getClosedShowTicketClicks),
       tracked('Promo clicks', getPromoClicks),
       tracked('Search stats', getSearchStats),
     ]);
 
-  const context = buildContext({ traffic, rageClicks, gateFunnel, btcFunnel, ticketClicks, promoClicks, searchStats });
+  const context = buildContext({ traffic, rageClicks, gateFunnel, btcFunnel, ticketClicks, closedShowTicketClicks, promoClicks, searchStats });
 
   console.log('\n--- PostHog context sent to Claude ---');
   console.log(context);
