@@ -738,6 +738,11 @@ function biggestMoverSection() {
       // grade is noise, but a 50-review show flipping is signal.
       const minReviewsForMover = show.category === 'broadway' ? 15 : 50;
       if (bReviews < minReviewsForMover || nReviews < minReviewsForMover) return;
+      // Never feature a show whose audience review count went DOWN. A grade
+      // change with no net-new audience input (Mercury: A- → B+ on -7 reviews)
+      // is data churn — reviews removed/recategorized in a snapshot — not a real
+      // audience move. A genuine mover gained reviews and those moved the grade.
+      if (nReviews <= bReviews) return;
       const bg = grade(b.combinedScore);
       const ng = grade(n.combinedScore);
       if (!bg || !ng || bg === ng) return;
