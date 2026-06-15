@@ -30,6 +30,7 @@ const { VALID_TIERS } = require('./lib/outlet-tiers');
 // Canonical Broadway-category predicate. Treats null category as Broadway
 // per historical-import convention; use this instead of raw string compare.
 const { isBroadwayCategory } = require('./lib/venue-classification');
+const { classifyReverseCrossMarket } = require('./lib/cross-market-guard');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { openingDateSourceHint } = require('./lib/opening-date-sources');
 
@@ -4046,7 +4047,14 @@ function validateCrossMarketContamination() {
   }
   // Also allow Tier 1/2 outlets — cross-market guard only targets Tier 3 / untiered regional outlets
   const tier12Outlets = new Set();
+  const outletTierMap = {}; // id + aliases -> numeric tier (for advisory/audit reporting)
   for (const [id, info] of Object.entries(reg.outlets)) {
+    if (typeof info.tier === 'number') {
+      outletTierMap[id] = info.tier;
+      if (info.aliases) {
+        for (const alias of info.aliases) outletTierMap[alias.toLowerCase()] = info.tier;
+      }
+    }
     if (info.tier === 1 || info.tier === 2) {
       tier12Outlets.add(id);
       if (info.aliases) {
@@ -4074,55 +4082,115 @@ function validateCrossMarketContamination() {
   }
 
   // Reverse direction: London outlets on Broadway/off-Broadway shows.
-  // Unlike forward guard, Tier 1/2 exemption does NOT apply for mainstage Broadway —
-  // London Tier 1 outlets (Evening Standard, Times UK) never legitimately cover it.
-  // Only isDualMarket outlets are exempt.
-  //
-  // Off-Broadway carve-out (2026-05-16): off-Broadway productions regularly have
-  // legitimate UK-outlet coverage — Met opera cinema transmissions reviewed by
-  // The Arts Desk, London-to-NYC transfers covered by their UK home outlet,
-  // festival co-productions. Downgrade off-Broadway hits to a warning so the
-  // validator doesn't block CI on legitimate coverage; reserve error-level for
-  // category==='broadway' only.
+  // Classification lives in scripts/lib/cross-market-guard.js (pure, tested):
+  //   error    — Tier 1/2 London prestige paper on a Broadway show (genuine
+  //              contamination; they never legitimately cover Broadway).
+  //   advisory — Tier 3/untiered London outlet on a Broadway show. The plays-to-see /
+  //              The Arts Desk class: niche London aggregators that legitimately cover
+  //              Broadway transfers and slowly accumulate NYC reviews. Surfaced as an
+  //              isDualMarket candidate but NOT build-blocking. Before 2026-06-15 these
+  //              hit the hard error and turned CI red, forcing a reactive isDualMarket
+  //              fix after the build was already broken (memory/feedback_plays_to_see_dual_market.md).
+  //   warning  — London outlet on off-Broadway/other NYC show (opera cinema
+  //              transmissions, London-to-NYC transfers, festival co-productions).
+  //   skip     — isDualMarket outlet, or non-London outlet.
+  // isBroadwayCategory treats null category as Broadway (historical-import convention,
+  // venue-classification.js:48) and routes any new NYC category correctly.
   let reverseIssues = 0;
   let reverseWarnings = 0;
+  let reverseAdvisories = 0;
+  // Per-outlet accumulation, written to an audit file so a London-only outlet
+  // creeping toward dual-market is visible BEFORE it would block a build.
+  const accumulation = new Map(); // oid -> { outlet, tier, broadway:Set, offBroadway:Set }
+  const recordAccum = (oid, r, category, bucket) => {
+    let entry = accumulation.get(oid);
+    if (!entry) {
+      entry = { outletId: oid, displayName: r.outlet || oid, tier: outletTierMap[oid] ?? null, broadway: new Set(), offBroadway: new Set() };
+      accumulation.set(oid, entry);
+    }
+    entry[bucket].add(r.showId);
+    if (r.outlet && entry.displayName === oid) entry.displayName = r.outlet;
+  };
   const nonWeReviews = reviews.filter(r => !isLondonMarket(showCategoryMap[r.showId]));
   for (const r of nonWeReviews) {
     const oid = (r.outletId || r.outlet || '').toLowerCase();
-    if (dualMarket.has(oid)) continue;  // Only dual-market exemption, NOT Tier 1/2
     const region = outletRegionMap[oid];
-    if (region === 'london') {
-      const category = showCategoryMap[r.showId];
-      // Use canonical isBroadwayCategory helper instead of `category === 'broadway'`
-      // (Codex 2026-05-16): treats null category as Broadway per the historical-
-      // import convention in venue-classification.js:48, and any new NYC category
-      // (off-off-broadway, opera, festival) routes correctly without touching here.
-      if (isBroadwayCategory({ category })) {
-        reverseIssues++;
-        if (reverseIssues <= 5) {
-          error(`Cross-market: Broadway show "${r.showId}" has review from London outlet "${r.outlet || oid}"`);
-        }
-      } else {
-        // off-broadway (and any other non-london, non-broadway category)
-        reverseWarnings++;
-        if (reverseWarnings <= 5) {
-          warn(`Cross-market: ${category || 'unknown'} show "${r.showId}" has review from London outlet "${r.outlet || oid}" (allowed — opera cinema transmissions, transfers)`);
-        }
+    const category = showCategoryMap[r.showId];
+    const isBroadway = isBroadwayCategory({ category });
+    const { level, reason } = classifyReverseCrossMarket({
+      region,
+      isDualMarket: dualMarket.has(oid),
+      isTier12: tier12Outlets.has(oid),
+      isBroadway,
+    });
+    if (level === 'skip') continue;
+    if (level === 'error') {
+      recordAccum(oid, r, category, 'broadway');
+      reverseIssues++;
+      if (reverseIssues <= 5) {
+        error(`Cross-market: Broadway show "${r.showId}" has review from London Tier 1/2 outlet "${r.outlet || oid}" (${reason})`);
+      }
+    } else if (level === 'advisory') {
+      recordAccum(oid, r, category, 'broadway');
+      reverseAdvisories++;
+    } else { // warning
+      recordAccum(oid, r, category, 'offBroadway');
+      reverseWarnings++;
+      if (reverseWarnings <= 5) {
+        warn(`Cross-market: ${category || 'unknown'} show "${r.showId}" has review from London outlet "${r.outlet || oid}" (allowed — opera cinema transmissions, transfers)`);
       }
     }
   }
   if (reverseIssues > 5) {
-    error(`... and ${reverseIssues - 5} more London→Broadway cross-market reviews`);
+    error(`... and ${reverseIssues - 5} more London Tier 1/2 → Broadway cross-market reviews`);
   }
   if (reverseWarnings > 5) {
     warn(`... and ${reverseWarnings - 5} more London→off-Broadway/other cross-market reviews`);
   }
 
+  // Advisory: Tier 3/untiered London outlets accumulating Broadway reviews.
+  // One grouped line per outlet with the exact remediation, NOT build-blocking.
+  const advisoryOutlets = [...accumulation.values()].filter(e => e.broadway.size > 0 && !tier12Outlets.has(e.outletId));
+  for (const e of advisoryOutlets) {
+    warn(`Cross-market ADVISORY: London-only outlet "${e.displayName}" (tier ${e.tier ?? '?'}) has ${e.broadway.size} Broadway review(s): ${[...e.broadway].join(', ')}. If this is genuine dual-market coverage, set isDualMarket:true in outlet-registry.json (both repos); if misattribution, set wrongProduction:true on the review(s). Advisory only — not blocking CI.`);
+  }
+
+  // Persist accumulation so growth is trackable across runs (the plays-to-see class
+  // is currently rare — only The Arts Desk — so this is the cheap moment to watch it).
+  try {
+    const accumFile = path.join(DATA_DIR, 'audit', 'london-only-nyc-accumulation.json');
+    const auditDir = path.dirname(accumFile);
+    if (!fs.existsSync(auditDir)) fs.mkdirSync(auditDir, { recursive: true });
+    const payload = {
+      generatedBy: 'scripts/validate-data.js reverse cross-market guard',
+      description: 'London-region, non-isDualMarket outlets carrying NYC reviews. Tier 3/untiered Broadway hits are advisory isDualMarket candidates; Tier 1/2 Broadway hits are CI errors; off-Broadway hits are tolerated warnings.',
+      outlets: [...accumulation.values()]
+        .map(e => ({
+          outletId: e.outletId,
+          displayName: e.displayName,
+          tier: e.tier,
+          broadwayCount: e.broadway.size,
+          offBroadwayCount: e.offBroadway.size,
+          broadwayShows: [...e.broadway].sort(),
+          offBroadwayShows: [...e.offBroadway].sort(),
+          disposition: tier12Outlets.has(e.outletId) && e.broadway.size > 0
+            ? 'error'
+            : e.broadway.size > 0
+              ? 'advisory-isDualMarket-candidate'
+              : 'tolerated-off-broadway',
+        }))
+        .sort((a, b) => (b.broadwayCount - a.broadwayCount) || (b.offBroadwayCount - a.offBroadwayCount) || a.outletId.localeCompare(b.outletId)),
+    };
+    fs.writeFileSync(accumFile, JSON.stringify(payload, null, 2) + '\n');
+  } catch (e) {
+    warn(`Failed to write London-only NYC accumulation audit: ${e.message}`);
+  }
+
   const totalIssues = issues + reverseIssues;
   if (totalIssues === 0) {
-    ok('No cross-market contamination detected in reviews.json');
+    ok(`No cross-market contamination detected in reviews.json${reverseAdvisories ? ` (${reverseAdvisories} Tier 3 London→Broadway advisory review(s) — see warnings)` : ''}`);
   } else {
-    warn(`${totalIssues} cross-market reviews found (${issues} US→WE, ${reverseIssues} London→Broadway) — check outlet isDualMarket flags`);
+    warn(`${totalIssues} cross-market reviews found (${issues} US→WE, ${reverseIssues} London Tier 1/2 → Broadway) — check outlet isDualMarket flags`);
   }
 }
 
