@@ -61,6 +61,7 @@ jobs:
             seo_status=$( [ "$BEST_SEO" -ge 90 ] && echo "🟢" || echo "🔴" )
 
             PAGE=$(echo "$url" | sed 's|https://broadwayscorecard.com||' | sed 's|^$|/|')
+            echo "  → ${PAGE} | Perf ${perf_status} ${BEST_PERF} | A11y ${a11y_status} ${BEST_A11Y} | BP ${bp_status} ${BEST_BP} | SEO ${seo_status} ${BEST_SEO}"
             RESULTS="${RESULTS}| ${PAGE} | ${perf_status} ${BEST_PERF} | ${a11y_status} ${BEST_A11Y} | ${bp_status} ${BEST_BP} | ${seo_status} ${BEST_SEO} |\n"
 
             # Check thresholds
