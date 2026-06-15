@@ -24,6 +24,12 @@ on:
       - 'scripts/lib/review-write-guard.js'
       - 'scripts/lib/show-matching.js'
       - 'scripts/lib/feedback-dedup.js'
+      # Show dedup (title normalization + checkForDuplicate) feeds both the
+      # discover-new-shows creation guard and validate-data's catalog scan.
+      # Without these, an edit to the normalizer pushes with ZERO CI coverage
+      # (WE 2026 "The Truth" dup class — feedback_dedup_genre_suffix.md).
+      - 'scripts/lib/deduplication.js'
+      - 'scripts/test-deduplication.js'
       # SERP/URL discovery + review guards — exercised by the no-data unit batch and
       # scripts/test-opening-night-fixes.js (run in the opening-night step). Without these,
       # changes to core discovery/scoring-guard logic push with ZERO CI coverage.
@@ -884,6 +890,15 @@ jobs:
         # where label rows diverged between the two email template functions.
         if: always()  # independent suite — don't let an earlier red step skip it
         run: node scripts/test-email-broadcast.js
+
+      - name: Run show deduplication tests
+        # Tests scripts/lib/deduplication.js normalizeTitle + checkForDuplicate. Guards the
+        # title-normalization rules that both discover-new-shows.js (creation guard) and
+        # validate-data.js (catalog scan) depend on. The WE 2026 "The Truth" duplicate slipped
+        # both layers because TodayTix's "…a comedy by Florian Zeller" tail wasn't stripped —
+        # see memory/feedback_dedup_genre_suffix.md.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: node scripts/test-deduplication.js
 
       - name: Check image aspect ratios for changed posters/thumbnails/heroes
         # Catches the evita-west-end-2025 class (commit a71c3defe4) where a

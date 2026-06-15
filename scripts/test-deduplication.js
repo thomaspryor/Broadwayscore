@@ -107,6 +107,58 @@ test('normalizeTitle: still strips colon subtitle', () => {
   );
 });
 
+// Regression: TodayTix appends a descriptive genre+author tail with no colon
+// ("THE TRUTH a comedy by Florian Zeller"), which defeated normalized-title
+// dedup against the clean catalog entry "The Truth" — the WE 2026 duplicate.
+// See memory/feedback_dedup_genre_suffix.md.
+test('normalizeTitle: strips trailing "a <genre> by <author>" listing tail', () => {
+  assertEqual(
+    normalizeTitle('THE TRUTH a comedy by Florian Zeller'),
+    'truth',
+    "THE TRUTH a comedy by Florian Zeller → truth"
+  );
+  assertEqual(
+    normalizeTitle('Stereophonic a new play'),
+    'stereophonic',
+    "Stereophonic a new play → stereophonic"
+  );
+  assertEqual(
+    normalizeTitle('The Seagull a play by Anton Chekhov'),
+    'seagull',
+    "The Seagull a play by Anton Chekhov → seagull"
+  );
+});
+
+// Guard: the genre-tail strip must NOT eat real titles where the genre word is
+// integral (no leading "a/an") or mid-title.
+test('normalizeTitle: keeps integral genre words (Slave Play, Goes Wrong)', () => {
+  assertEqual(normalizeTitle('Slave Play'), 'slave play', "Slave Play kept");
+  assertEqual(
+    normalizeTitle('The Play That Goes Wrong'),
+    'play that goes wrong',
+    "The Play That Goes Wrong kept"
+  );
+});
+
+// The actual dup that shipped: clean catalog entry vs TodayTix verbose listing
+// must now collapse via checkForDuplicate.
+test('checkForDuplicate: TodayTix verbose title matches clean catalog entry', () => {
+  const verbose = {
+    id: 'the-truth-a-comedy-by-florian-zeller-west-end-2026',
+    title: 'THE TRUTH a comedy by Florian Zeller',
+    slug: 'the-truth-a-comedy-by-florian-zeller-west-end',
+    venue: 'Apollo Theatre', openingDate: '2026-06-09',
+    status: 'upcoming', category: 'west-end',
+  };
+  const clean = {
+    id: 'the-truth-west-end-2026', title: 'The Truth',
+    slug: 'the-truth-west-end', venue: 'TBA', openingDate: '2026-06-18',
+    status: 'announced', category: 'west-end',
+  };
+  const r = checkForDuplicate(verbose, [clean]);
+  assertEqual(r.isDuplicate, true, "verbose TodayTix title flagged as duplicate of clean entry");
+});
+
 // ---------- checkForDuplicate (the Emporium case) ----------
 
 const emporium2025 = {
