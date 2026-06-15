@@ -11,7 +11,9 @@
     "romeo-and-juliet-off-broadway-2026/talkinbroadway--unknown.json",
     "war-horse-west-end-2026/click-liverpool--carie-schneider.json",
     "beetlejuice-west-end-2026/guardian-uk--unknown.json",
-    "dark-of-the-moon-west-end-2026/guardian--arifa-akbar.json"
+    "dark-of-the-moon-west-end-2026/guardian--arifa-akbar.json",
+    "romeo-and-juliet-off-broadway-2026/wsj--charles-isherwood.json",
+    "romeo-and-juliet-off-broadway-2026/wsj--unknown.json"
   ],
   "failed": [
     "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
@@ -938,7 +940,15 @@
     "dark-of-the-moon-west-end-2026/artsdesk--unknown.json",
     "dark-of-the-moon-west-end-2026/cambridge--unknown.json",
     "dark-of-the-moon-west-end-2026/standard--dominic-cavendish.json",
-    "dark-of-the-moon-west-end-2026/thestage--unknown.json"
+    "dark-of-the-moon-west-end-2026/thestage--unknown.json",
+    "romeo-and-juliet-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1014,7 +1024,15 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+      "data/review-texts/romeo-and-juliet-off-broadway-2026/wsj--charles-isherwood.json",
+      "romeo-and-juliet-off-broadway-2026/wsj--charles-isherwood.json",
+      "data/review-texts/romeo-and-juliet-off-broadway-2026/wsj--unknown.json",
+      "romeo-and-juliet-off-broadway-2026/wsj--unknown.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -1034,7 +1052,7 @@
     "archive": []
   },
   "startTime": "2026-06-14T21:23:22.048Z",
-  "lastProcessed": "dark-of-the-moon-west-end-2026/thestage--unknown.json",
+  "lastProcessed": "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
   "log": [
     {
       "t": "2026-06-15T00:06:07.315Z",
@@ -1703,6 +1721,72 @@
       "event": "bb-session",
       "session": "1325bcfb",
       "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
+    },
+    {
+      "t": "2026-06-15T10:34:35.364Z",
+      "event": "bb-session",
+      "session": "7f3e4b3e",
+      "url": "https://www.wsj.com/articles/romeo-and-juliet-review-no-love-lost-for-shakespear"
+    },
+    {
+      "t": "2026-06-15T10:34:36.261Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-15T10:34:59.074Z",
+      "event": "bb-session",
+      "session": "2faf3ba3",
+      "url": "https://www.wsj.com/articles/romeo-and-juliet-review-no-love-lost-for-shakespear"
+    },
+    {
+      "t": "2026-06-15T10:34:59.935Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-15T10:35:58.801Z",
+      "event": "bb-session",
+      "session": "92163bf4",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-15T10:35:59.694Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-15T10:36:31.027Z",
+      "event": "bb-session",
+      "session": "3bc2863a",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-15T10:36:31.796Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-15T10:36:45.965Z",
+      "event": "bb-session",
+      "session": "735964f4",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-15T10:36:46.767Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-15T10:37:43.332Z",
+      "event": "bb-session",
+      "session": "466f37b6",
+      "url": "https://www.nytimes.com/2026/06/01/arts/andy-halliday-dead.html"
+    },
+    {
+      "t": "2026-06-15T10:37:44.162Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
