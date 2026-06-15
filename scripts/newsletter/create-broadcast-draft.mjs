@@ -38,12 +38,15 @@ import os from 'node:os';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { createRequire } from 'node:module';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repo = path.resolve(__dirname, '..', '..');
-const cjsRequire = createRequire(import.meta.url);
-const { acquireSendLock, releaseSendLock } = cjsRequire(path.join(repo, 'scripts/lib/send-lock.js'));
+// NOTE: deliberately NO send-lock here. The GitHub-backed send-lock (used by the
+// actual SEND wrappers) commits data/email-send.lock to the public repo's main
+// branch on acquire AND release — 2 commits per run, each tripping CI/deploys.
+// This wrapper only ever creates a DRAFT (never sends), so the double-send race
+// the lock guards against cannot happen; duplicate drafts are prevented instead
+// by the idempotent find-by-name update below + the CI concurrency group.
 
 // --- Audiences (verified live 2026-06-14 via GET /audiences) -------------------
 // General is the weekly newsletter list. west-end is the smaller WE list.
@@ -152,18 +155,21 @@ function dataRepoStaleness() {
   }
 }
 
-// Idempotency: find an existing DRAFT broadcast with this exact name so a
-// re-run (after a content edit, like this week's mover-rule change) UPDATES the
-// same draft instead of leaving a duplicate behind. SENT broadcasts are never
-// matched (status !== 'draft' is ignored) — this script never touches a send.
-async function findExistingDraft() {
+// Look up broadcasts with this exact name, split by status. Returns the single
+// existing DRAFT (so a re-run UPDATES it in place rather than duplicating) plus
+// any already-SENT/scheduled broadcasts for the same week (so we can refuse to
+// re-draft an issue that already went out — relevant now that CI auto-creates a
+// draft every week). SENT broadcasts are never modified by this script.
+async function lookupByName() {
   const list = await apiJSON('GET', RESEND_BROADCASTS_URL);
   const all = (list && list.data) || [];
-  const matches = all.filter((b) => b && b.name === name && b.status === 'draft');
-  if (matches.length > 1) {
-    throw new Error(`${matches.length} draft broadcasts named "${name}" exist — refusing to guess which to update. Resolve in the Resend UI.`);
+  const named = all.filter((b) => b && b.name === name);
+  const drafts = named.filter((b) => b.status === 'draft');
+  const sent = named.filter((b) => b.status !== 'draft');
+  if (drafts.length > 1) {
+    throw new Error(`${drafts.length} draft broadcasts named "${name}" exist — refusing to guess which to update. Resolve in the Resend UI.`);
   }
-  return matches[0] || null;
+  return { draft: drafts[0] || null, sent };
 }
 
 (async () => {
@@ -179,48 +185,43 @@ async function findExistingDraft() {
     process.exit(1);
   }
 
-  // Refuse to ship a draft built on stale local data (unless --allow-stale).
-  const fresh = dataRepoStaleness();
-  if (fresh.behind && fresh.behind > 0 && !flags['allow-stale']) {
-    console.error(`\n✗ Local data is ${fresh.behind} commit(s) behind origin: ${fresh.dir}`);
-    console.error('  reviews.json/shows.json are stale — recent reviews (e.g. a just-opened show) would be MISSING from the draft.');
-    console.error('  Fix:');
-    console.error(`    git -C ${fresh.dir} pull --ff-only`);
-    console.error(`    node scripts/newsletter/generate.mjs ${weekStart}    # regenerate on fresh data`);
-    console.error('    (then re-run this command)');
-    console.error('  Override (NOT recommended): add --allow-stale.');
-    process.exit(1);
-  }
-  if (fresh.behind == null) {
-    console.error(`  freshness : could not verify (${fresh.error || 'unknown'}) — proceeding`);
+  // Freshness gate is a LOCAL-dev guard (a developer's data checkout can lag
+  // origin). In CI the core data is freshly checked out every run, so the gate
+  // is both unnecessary and unreliable (no upstream ref to diff against) — skip it.
+  if (process.env.CI) {
+    console.error('  freshness : CI run — core data freshly checked out, gate skipped');
   } else {
-    console.error('  freshness : data repo up to date with origin');
+    const fresh = dataRepoStaleness();
+    if (fresh.behind && fresh.behind > 0 && !flags['allow-stale']) {
+      console.error(`\n✗ Local data is ${fresh.behind} commit(s) behind origin: ${fresh.dir}`);
+      console.error('  reviews.json/shows.json are stale — recent reviews (e.g. a just-opened show) would be MISSING from the draft.');
+      console.error('  Fix:');
+      console.error(`    git -C ${fresh.dir} pull --ff-only`);
+      console.error(`    node scripts/newsletter/generate.mjs ${weekStart}    # regenerate on fresh data`);
+      console.error('    (then re-run this command)');
+      console.error('  Override (NOT recommended): add --allow-stale.');
+      process.exit(1);
+    }
+    if (fresh.behind == null) {
+      console.error(`  freshness : could not verify (${fresh.error || 'unknown'}) — proceeding`);
+    } else {
+      console.error('  freshness : data repo up to date with origin');
+    }
   }
-
-  // Cross-session advisory lock (GitHub-backed; same gate the send wrappers use)
-  // so two sessions can't race a duplicate draft for the same week.
-  let lock;
-  try {
-    lock = acquireSendLock({ purpose: `newsletter-draft-${weekStart}` });
-  } catch (e) {
-    console.error(`\nCould not acquire send lock: ${e.message}`);
-    console.error('Pass nothing to retry, or check data/email-send.lock on origin.');
-    process.exit(1);
-  }
-  if (!lock.acquired) {
-    console.error(`\nSEND LOCK REFUSED: ${lock.reason}`);
-    console.error('Another session is creating a draft right now. Try again shortly.');
-    process.exit(1);
-  }
-  console.error(`  lock      : acquired (${(lock.sessionId || '').slice(0, 8)})`);
 
   try {
     const payload = { audience_id: audience.id, from: FROM_EMAIL, subject, html, name };
-    const existing = await findExistingDraft();
+    const { draft, sent } = await lookupByName();
+    if (sent.length) {
+      // The owner already sent this week's issue — do not create a confusing
+      // post-send draft. (Never modify the sent broadcast.)
+      console.error(`\nA broadcast named "${name}" is already ${sent[0].status} (not a draft). Skipping — refusing to re-draft an issue that already went out.`);
+      return;
+    }
     let id;
-    if (existing) {
-      await apiJSON('PATCH', `${RESEND_BROADCASTS_URL}/${existing.id}`, payload);
-      id = existing.id;
+    if (draft) {
+      await apiJSON('PATCH', `${RESEND_BROADCASTS_URL}/${draft.id}`, payload);
+      id = draft.id;
       console.error(`\n✓ Existing draft updated: ${id}`);
     } else {
       const result = await apiJSON('POST', RESEND_BROADCASTS_URL, payload);
@@ -232,7 +233,5 @@ async function findExistingDraft() {
   } catch (e) {
     console.error(`\n✗ Draft create/update failed: ${e.message}`);
     process.exitCode = 1;
-  } finally {
-    try { releaseSendLock(lock); } catch { /* best-effort */ }
   }
 })();
