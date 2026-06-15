@@ -49,14 +49,23 @@ try { _priorState = JSON.parse(fs.readFileSync(STATE_PATH, 'utf8')) || { issues:
 const _priorIssues = (_priorState.issues || [])
   .filter(i => i && i.weekStart && i.weekStart < weekStartStr)
   .sort((a, b) => b.weekStart.localeCompare(a.weekStart));
-const _lastIssue = _priorIssues[0] || null;
-const lastMoverIds = new Set(_priorIssues.slice(0, 2).flatMap(i => i.moverShowIds || []));
-const recentAnnouncedIds = new Set(_priorIssues.slice(0, 4).flatMap(i => i.announcedClosingShowIds || []));
-// Suppress any show that appeared in last week's email from the OB Openings
-// section. The 14-day grace window causes OB shows to re-surface the following
-// week even though subscribers already saw them. featuredShowIds was always
-// saved; this wires it back up on the read side.
-const lastFeaturedIds = new Set(_lastIssue ? (_lastIssue.featuredShowIds || []) : []);
+// Suppression windows are keyed by DATE, not by "the single most recent issue."
+// A stray mid-week regeneration can leave a second issue row (e.g. a 2026-06-02
+// row sitting next to the real 2026-06-01 one); keying lastFeaturedIds off only
+// _priorIssues[0] then read that stray row, ignored last week's real featured
+// set, and let Jerome / Small re-surface via the OB 14-day grace window. A date
+// window unions every issue in the lookback no matter how many rows exist.
+const _daysBefore = (n) => { const d = new Date(weekStartStr + 'T12:00:00'); d.setDate(d.getDate() - n); return d.toISOString().slice(0, 10); };
+const _featuredCutoff = _daysBefore(16);  // ≥ OB grace window (14d) so a re-surface is always caught
+const _moverCutoff = _daysBefore(35);     // a mover shouldn't headline again within ~5 weeks (Fallen Angels case)
+const _announcedCutoff = _daysBefore(28);
+const lastMoverIds = new Set(_priorIssues.filter(i => i.weekStart >= _moverCutoff).flatMap(i => i.moverShowIds || []));
+const recentAnnouncedIds = new Set(_priorIssues.filter(i => i.weekStart >= _announcedCutoff).flatMap(i => i.announcedClosingShowIds || []));
+// Suppress any show featured in a recent issue from the OB Openings section.
+// The 14-day grace window causes OB shows to re-surface the following week even
+// though subscribers already saw them. featuredShowIds was always saved; this
+// wires it back up on the read side, windowed so multiple prior rows all count.
+const lastFeaturedIds = new Set(_priorIssues.filter(i => i.weekStart >= _featuredCutoff).flatMap(i => i.featuredShowIds || []));
 
 // --- Within-issue cross-section de-dup -----------------------------------------
 // A show featured in a higher section is suppressed from every lower one, so a
@@ -73,6 +82,21 @@ function inWeek(dateStr) { if (!dateStr) return false; return dateStr >= weekSta
 function inWeekDateOnly(d) { if (!d) return false; const s = (typeof d === 'string') ? d.slice(0, 10) : new Date(d).toISOString().slice(0, 10); return s >= weekStartStr && s <= weekEndStr; }
 function fmt(dateStr) { const d = new Date(dateStr + (dateStr.length === 10 ? 'T12:00:00' : '')); return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'America/New_York' }); }
 function fmtFull(dateStr) { const d = (typeof dateStr === 'string') ? new Date(dateStr + 'T12:00:00') : dateStr; return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'America/New_York' }); }
+// Collapse the marketing-length venue names a few houses register under to the
+// theatre subscribers actually recognize, e.g.
+//   "The Laura Pels Theatre at the Harold and Miriam Steinberg Center for Theatre"
+//     → "Laura Pels Theatre"
+//   "The Newman Mills Theatre at the Robert W. Wilson MCC Theatre Space"
+//     → "Newman Mills Theatre"
+// Display-only — never written back to shows.json (the long form is the data of
+// record and is referenced elsewhere). Takes the segment before " at the …",
+// drops a leading "The", and trims the multi-venue " / " tail first.
+function shortVenue(raw) {
+  let v = (raw || '').split(' / ')[0].trim();
+  v = v.split(/\s+at the\s+/i)[0].trim();
+  v = v.replace(/^The\s+/i, '').trim();
+  return v;
+}
 function dayOf(dateStr) { const d = new Date(dateStr + (dateStr.length === 10 ? 'T12:00:00' : '')); return d.toLocaleDateString('en-US', { weekday: 'short', timeZone: 'America/New_York' }); }
 
 // Composite score cache, lazy-loaded from public/data/shows/{id}.json. These
@@ -411,7 +435,7 @@ function showRow(show, opts = {}) {
   const formatPill = show.type ? pill(show.type.toUpperCase(), '#c084fc', 'rgba(168,85,247,0.15)') : '';
   const revivalPill = show.isRevival ? pill('REVIVAL', '#d4a574', 'rgba(212,165,116,0.15)') : '';
   const reopenPill = opts.isReopening ? pill('REOPENED', '#a78bfa', 'rgba(167,139,250,0.18)') : '';
-  const venue = (show.venue || '').split(' / ')[0];
+  const venue = shortVenue(show.venue);
   // Date label flips for reopenings: "Reopened <day> <date>" instead of
   // "Opened…". reopeningDate is used when present, falls back to openingDate.
   const eventDate = opts.isReopening && show.reopeningDate ? show.reopeningDate : show.openingDate;
@@ -572,7 +596,7 @@ function upcomingOpeningsSection() {
     const s = it.show;
     const formatPill = s.type ? pill(s.type.toUpperCase(), '#c084fc', 'rgba(168,85,247,0.15)') : '';
     const revivalPill = s.isRevival ? pill('REVIVAL', '#d4a574', 'rgba(212,165,116,0.15)') : '';
-    const venue = (s.venue || '').split(' / ')[0];
+    const venue = shortVenue(s.venue);
     return `<tr>
       <td valign="middle" width="60" style="padding:${i===0?'14':'10'}px 0 ${isLast?'14':'10'}px 16px;">${thumb(s, 48)}</td>
       <td valign="middle" style="padding:${i===0?'14':'10'}px 8px ${isLast?'14':'10'}px 12px;">
@@ -622,9 +646,19 @@ function findRenderableCriticMovers() {
     if (Math.abs(delta) < 1) continue;
     const show = shows.find(s => s.id === id);
     if (!show) continue;
-    if (lastMoverIds.has(id) || !notFeatured(id)) continue; // no week-over-week repeat; no cross-section dupe
+    // Suppress: prior mover (lastMoverIds), already claimed by a higher section
+    // this issue (notFeatured), OR shown in a recent issue (lastFeaturedIds).
+    // The last guard stops a show we featured as an opening last week (Jerome)
+    // from re-surfacing this week as a "mover" on one trickle-in review.
+    if (lastMoverIds.has(id) || lastFeaturedIds.has(id) || !notFeatured(id)) continue;
     if (show.category !== 'broadway' && show.category !== 'off-broadway') continue;
     if (isOperaShow(show)) continue;
+    // A show that already CLOSED before this week isn't a "mover" in any
+    // meaningful sense — late-trickling reviews/audience entries on a finished
+    // run aren't current discourse (TRU, closed 2026-05-10, surfaced on a +142
+    // audience-review backfill). Shows closing within/after this week stay
+    // eligible (reviews often land as a run ends).
+    if (show.closingDate && show.closingDate < weekStartStr) continue;
     // Don't double-surface a show that's already in an Openings section.
     // Opens-this-week is the long-standing gate; reopens-this-week was missed,
     // so reopening shows (e.g. Can I Be Frank with reopeningDate=2026-05-21)
@@ -635,13 +669,14 @@ function findRenderableCriticMovers() {
     candidates.push({ show, before: Math.round(beforeAvg), after: Math.round(allAvg), delta, newCount: x.thisWeek.length });
   }
   candidates.sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta));
-  // Newsworthiness gate: rounded delta ≥ 3 pts, OR ≥ 2 pts AND ≥ 2 new
-  // reviews. Filters single-review wobbles on small-n shows.
+  // Newsworthiness gate: rounded delta ≥ 3 pts, full stop. Tightened 2026-06-14
+  // (user-flagged): the old "≥ 2 pts AND ≥ 2 new reviews" branch let a 2-pt
+  // wobble headline as a Biggest Mover (The Maids 65 → 67 on two new reviews),
+  // which isn't a substantive enough move to be a story. A genuine swing rounds
+  // to 3+.
   const significant = candidates.filter(c => {
     const pts = Math.max(1, Math.abs(c.after - c.before));
-    if (pts >= 3) return true;
-    if (pts >= 2 && c.newCount >= 2) return true;
-    return false;
+    return pts >= 3;
   });
   _topMoversCache = significant;
   return significant;
@@ -691,7 +726,8 @@ function biggestMoverSection() {
       // hard enough to cross a grade boundary.
       const show = shows.find(s => s.id === id);
       if (!show) return;
-      if (lastMoverIds.has(id) || !notFeatured(id)) return; // no week-over-week repeat; no cross-section dupe
+      if (lastMoverIds.has(id) || lastFeaturedIds.has(id) || !notFeatured(id)) return; // no week-over-week repeat; no recent-feature repeat; no cross-section dupe
+      if (show.closingDate && show.closingDate < weekStartStr) return; // a run that closed before this week isn't a current "mover" (TRU backfill case)
       if (show.category !== 'broadway' && show.category !== 'off-broadway') return;
     if (isOperaShow(show)) return;
       // Off-Broadway threshold lowered 100 → 50 (Gemini final review): 100
@@ -1767,41 +1803,13 @@ const box      = sections.run('box-office', () => boxOfficeSection());
 const commercial = sections.run('recoupment', () => commercialSection());
 const bz   = sections.run('social-buzz', () => buzziestSection());
 const tony = sections.run('tony-predictions', () => tonyWatchSection());
-// SECTION: Beat the Critics promo — mirrors src/components/FeaturedSpotSlim.tsx
-// (btc accent = rose-500). Copy is identical to the on-site homepage shelf:
-// eyebrow + title + description + CTA + $200 stat pill. Email-safe table render.
-function btcPromoSection() {
-  // Campaign date gate — mirror the on-site isBtcPromoActive() window so the
-  // email promo auto-expires exactly like the homepage shelf. The contest is a
-  // $200 TodayTix prize tied to the Tony ceremony; shipping it after the
-  // ceremony would email subscribers an expired offer. Window = 35 days before
-  // the ceremony through ceremony day (src/config/tony-ceremony.ts getBtcWindow).
-  const TONY_CEREMONY = '2026-06-08';
-  const campEnd = new Date(TONY_CEREMONY + 'T23:59:59');
-  const campStart = new Date(campEnd.getTime() - 35 * 24 * 60 * 60 * 1000);
-  const campStartStr = campStart.toISOString().slice(0, 10);
-  // Active if this issue's week overlaps the campaign window.
-  if (weekEndStr < campStartStr || weekStartStr > TONY_CEREMONY) return null;
-  const href = `${SITE}/beat-the-critics`;
-  const ROSE = '#f43f5e';
-  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" class="cardbg" style="border:1px solid rgba(255,255,255,0.06);border-top:2px solid ${ROSE};border-radius:12px;">
-    <tr><td style="padding:20px;">
-      <div style="margin-bottom:8px;"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:${ROSE};vertical-align:middle;margin-right:7px;"></span><span style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:${ROSE};vertical-align:middle;">Beat the Critics</span></div>
-      <div style="font-size:18px;font-weight:800;color:#ffffff;line-height:1.25;margin-bottom:8px;">Think you know Broadway better than the critics?</div>
-      <div style="font-size:14px;color:#c8c8d0;line-height:1.5;margin-bottom:16px;">Pick the Tony winners against our model and the top critics. One entry wins a $200 TodayTix gift card.</div>
-      <table role="presentation" cellspacing="0" cellpadding="0" border="0"><tr>
-        <td valign="middle" style="padding-right:14px;"><a href="${href}" style="display:inline-block;background:${ROSE};color:#ffffff;font-size:14px;font-weight:700;text-decoration:none;padding:11px 20px;border-radius:999px;">Make your picks &rarr;</a></td>
-        <td valign="middle"><span style="display:inline-block;background:rgba(244,63,94,0.10);border:1px solid rgba(244,63,94,0.40);color:#fda4af;font-size:12px;font-weight:600;padding:6px 12px;border-radius:999px;">$200 TodayTix gift card</span></td>
-      </tr></table>
-    </td></tr>
-  </table>`;
-  // No sectionHeading — the eyebrow inside the card is the label, matching the
-  // standalone on-site shelf. sectionWrap with empty heading keeps spacing.
-  return sectionWrap('', body);
-}
+// Beat the Critics promo shelf REMOVED 2026-06-14. It was a $200-TodayTix Tony
+// pick-em contest tied to the 2026-06-08 ceremony; the ceremony has happened, so
+// the promo is permanently retired and must never render again. (Was a
+// date-gated section here; deleted outright rather than left dormant so a future
+// ceremony date can't accidentally revive stale copy.)
 
 const cas  = sections.run('casting-updates', () => castingSection());
-const btcPromo = sections.run('btc-promo', () => btcPromoSection());
 
 // Persist this issue's memory (mover + announced closings + everything featured)
 // so next week's run suppresses repeats. Best-effort — never fail the build.
@@ -1882,7 +1890,6 @@ const sectionOrder = [
   _slot('biggest-movers', mover),
   _slot('closing-this-week', clo),
   _slot('announced-closings', announced),
-  _slot('btc-promo', btcPromo),
   _slot('box-office', box),
   _slot('recoupment', commercial),
   _slot('social-buzz', bz),
@@ -2002,7 +2009,11 @@ const newsworthyInputs = {
 };
 
 const newsworthyCandidates = scoreCandidates(newsworthyInputs);
-const subjectLine = buildSubjectFromCandidates(newsworthyCandidates);
+// SUBJECT_OVERRIDE / LEDE_OVERRIDE let an editor hand-set the subject and lede
+// for a special issue the auto-scorer can't rank well — e.g. a marquee opening
+// that has no critic score yet (Shakespeare in the Park), or a post-ceremony
+// note. When unset, the newsworthiness scorer drives both.
+const subjectLine = process.env.SUBJECT_OVERRIDE || buildSubjectFromCandidates(newsworthyCandidates);
 const ledeText = process.env.LEDE_OVERRIDE || buildLedeFromCandidates(newsworthyCandidates) || '';
 
 const yearForFooter = weekEndDate.getFullYear();
