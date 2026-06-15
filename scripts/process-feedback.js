@@ -31,6 +31,22 @@ const anthropic = new Anthropic({
 });
 
 /**
+ * Resolve a stable dedup identifier for a Formspree submission.
+ *
+ * SINGLE SOURCE OF TRUTH — both the de-dup filter and the tracking-save loop
+ * MUST use this. They previously diverged: the filter read `_id||id||createdAt`
+ * while the save read `_id||id||createdAt||_date`. The Formspree submissions API
+ * returns NEITHER `_id`/`id`/`createdAt` — the identifier field is `_date`
+ * (an ISO timestamp). So the filter computed `undefined` and never matched,
+ * re-sending the thank-you email every run (Louise Penn got 15+ identical
+ * "Re: your feedback" emails over ~17h, 2026-06-10/11). Keeping the fallbacks
+ * for `_id`/`id`/`createdAt` is harmless future-proofing if the API changes.
+ */
+function submissionId(sub) {
+  return sub._id || sub.id || sub.createdAt || sub._date;
+}
+
+/**
  * Load dedup tracking data
  */
 function loadTracking() {
@@ -112,7 +128,7 @@ function filterSubmissions(submissions, tracking) {
   const processedSet = new Set(tracking.processedIds);
 
   return submissions.filter(sub => {
-    const id = sub._id || sub.id || sub.createdAt;
+    const id = submissionId(sub);
 
     // Already processed
     if (processedSet.has(id)) return false;
@@ -147,7 +163,7 @@ SUBMISSION ${idx + 1}:
 - Email: ${sub.email || 'Not provided'}
 - Show: ${sub.show || 'N/A'}
 - Message: ${sub.message}
-- Submitted: ${new Date(sub.createdAt).toLocaleDateString()}
+- Submitted: ${new Date(sub._date || sub.createdAt).toLocaleDateString()}
 `;
   }).join('\n---\n');
 
@@ -455,7 +471,7 @@ async function main() {
     // Mark all processed submissions (inbox + spam-flagged) in tracking
     // so we don't re-surface the same spam-flagged items every run.
     for (const sub of [...submissions, ...spamFlagged]) {
-      const id = sub._id || sub.id || sub.createdAt || sub._date;
+      const id = submissionId(sub);
       if (id && !tracking.processedIds.includes(id)) {
         tracking.processedIds.push(id);
       }
