@@ -14,7 +14,7 @@ This skill contains everything you need to know about scraping in this project. 
 
 - `references/gotchas.md` — Documented failure modes and fixes (READ FIRST)
 - `references/fallback-chain.md` — The BD → SB → Playwright → Browserbase tier chain
-- `references/cookies.md` — Paywall cookie setup and management
+- `references/cookies.md` — Paywall cookie setup and management (local-only / gitignored; cloud sessions won't have it — ask the user if needed)
 
 ## The One Rule
 
@@ -32,6 +32,6 @@ Exception: WP API JSON calls use `fetchJSON()` from the same file. Google SERP u
 | Playwright renders 404 as success | Validate content markers, not just length |
 | Cloudflare "Just a moment..." | Only Browserbase works — see fallback-chain.md |
 | Missing credits / 402 | Check SB_CREDIT_BUDGET env var. Override to 1000 for bulk runs. |
-| The Stage breaking | Cookie-only auth — refresh via Safari export, never email/password |
+| Paywall outlet breaking | Cookie-only auth — refresh via Safari export, never email/password (host + cookie set in cookies.md, local-only) |
 
 Read `references/gotchas.md` for the full documented list.
