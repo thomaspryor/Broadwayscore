@@ -1,4 +1,55 @@
 {
+  "runDate": "2026-06-16T02:50:19.079Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 300,
+    "priority": "all",
+    "showFilter": "",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 373,
+    "failed": 530,
+    "skipped": 0,
+    "successRate": "41.3%"
+  },
+  "tierBreakdown": {
+    "playwright": 182,
+    "amp": 1,
+    "browserbase": 88,
+    "directCookies": 0,
+    "scrapingbee": 80,
+    "brightdata": 51,
+    "archiveToday": 11,
+    "archive": 127
+  },
+  "statistics": {
+    "tier1Attempts": 99,
+    "tier1Success": 57,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 10,
+    "tier1_5Success": 10,
+    "tier2Attempts": 30,
+    "tier2Success": 25,
+    "tier3Attempts": 30,
+    "tier3Success": 21,
+    "tier3_6Attempts": 9,
+    "tier3_6Success": 0,
+    "tier4Attempts": 91,
+    "tier4Success": 46,
+    "totalFailed": 175,
+    "scrapingBeePageCredits": 197,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 10,
+    "browserbaseMinutesUsed": 3.1,
+    "urlDiscoveryAttempts": 145,
+    "urlDiscoverySuccess": 2,
+    "urlDiscoveryCapped": 0
+  },
   "processed": [
     "all-my-sons-west-end-2025/independent--unknown.json",
     "grease-2007/whatsonstage--unknown.json",
@@ -906,8 +957,7 @@
     "airline-highway-2015/wsj--terry-teachout.json",
     "something-rotten-2015/ap--mark-kennedy.json"
   ],
-  "skipped": [],
-  "tierBreakdown": {
+  "tierDetails": {
     "playwright": [
       "all-my-sons-west-end-2025/independent--unknown.json",
       "grease-2007/whatsonstage--unknown.json",
@@ -1332,10 +1382,7 @@
       "data/review-texts/kiss-me-kate-2019/wsj--terry-teachout.json",
       "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json",
       "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
-      "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json"
+      "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json"
     ],
     "archive": [
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
@@ -1467,148 +1514,32 @@
       "doctor-zhivago-2015/timeout--david-cote.json"
     ]
   },
-  "startTime": "2026-06-15T17:52:29.115Z",
-  "lastProcessed": "doctor-zhivago-2015/timeout--david-cote.json",
-  "log": [
+  "failuresByOutlet": {
+    "Broadway & Me": {
+      "count": 1,
+      "domain": "broadwayandme.blogspot.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Stage": {
+      "count": 1,
+      "domain": "thestage.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
+  "urlDiscoveries": [
     {
-      "t": "2026-06-15T19:32:37.188Z",
-      "event": "bb-session",
-      "session": "9ba0bf1c",
-      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
+      "reviewId": "oh-mary-west-end-2025/variety--naman-ramachandran.json",
+      "oldUrl": "https://variety.com/2026/theater/news/rupauls-drag-race-jinkx-monsoon-west-end-debut-oh-mary-1236772265/",
+      "newUrl": "https://variety.com/2025/legit/news/simu-liu-broadway-debut-oh-mary-cole-escola-1236609831/"
     },
     {
-      "t": "2026-06-15T19:34:52.256Z",
-      "event": "bb-session",
-      "session": "599d7f5c",
-      "url": "https://thestage.co.uk/reviews/dark-of-the-moon-review-charing-cross-theatre-lon"
-    },
-    {
-      "t": "2026-06-15T19:34:53.324Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
-    {
-      "t": "2026-06-15T20:16:17.540Z",
-      "event": "bb-session",
-      "session": "6f2dee72",
-      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
-    },
-    {
-      "t": "2026-06-15T20:58:30.859Z",
-      "event": "bb-session",
-      "session": "1550ccfa",
-      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
-    },
-    {
-      "t": "2026-06-15T23:56:24.318Z",
-      "event": "bb-session",
-      "session": "4036706e",
-      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
-    },
-    {
-      "t": "2026-06-16T01:01:19.378Z",
-      "event": "bb-session",
-      "session": "d159847a",
-      "url": "https://exeuntnyc.com/reviews/review-every-brilliant-thing-at-the-hudson-theatre"
-    },
-    {
-      "t": "2026-06-16T01:02:58.094Z",
-      "event": "bb-session",
-      "session": "2b3def06",
-      "url": "https://variety.com/2025/legit/news/simu-liu-broadway-debut-oh-mary-cole-escola-"
-    },
-    {
-      "t": "2026-06-16T01:02:58.688Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-16T01:08:05.035Z",
-      "event": "bb-session",
-      "session": "879ed1f4",
-      "url": "https://www.amny.com/entertainment/on-your-feet-review-this-rhythm-will-barely-g"
-    },
-    {
-      "t": "2026-06-16T01:08:05.674Z",
-      "event": "bb-cookie-inject",
-      "domain": "amny.com"
-    },
-    {
-      "t": "2026-06-16T01:33:29.208Z",
-      "event": "bb-session",
-      "session": "6a4a785c",
-      "url": "http://www.wsj.com/articles/kiss-me-kate-review-so-not-in-love-11552609800"
-    },
-    {
-      "t": "2026-06-16T01:33:29.853Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-06-16T02:10:03.302Z",
-      "event": "bb-session",
-      "session": "7eb60832",
-      "url": "https://www.wsj.com/articles/les-liaisons-dangereuses-review-fallen-archness-147"
-    },
-    {
-      "t": "2026-06-16T02:10:03.966Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-06-16T02:13:49.161Z",
-      "event": "bb-session",
-      "session": "edecfa38",
-      "url": "http://www.wsj.com/articles/heisenberg-review-masculine-wish-fulfillment-on-stag"
-    },
-    {
-      "t": "2026-06-16T02:13:49.771Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-06-16T02:16:10.446Z",
-      "event": "bb-session",
-      "session": "5a8ae17a",
-      "url": "http://www.wsj.com/articles/holiday-inn-the-new-irving-berlin-musical-review-147"
-    },
-    {
-      "t": "2026-06-16T02:16:11.130Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-06-16T02:21:54.384Z",
-      "event": "bb-session",
-      "session": "16a1ea52",
-      "url": "http://www.wsj.com/articles/fully-committed-review-jesse-tyler-ferguson-party-of"
-    },
-    {
-      "t": "2026-06-16T02:21:55.066Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-06-16T02:25:22.830Z",
-      "event": "bb-session",
-      "session": "d3235496",
-      "url": "http://www.wsj.com/articles/bright-star-review-banjo-boondoggle-1458865800"
-    },
-    {
-      "t": "2026-06-16T02:25:23.502Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-06-16T02:26:12.918Z",
-      "event": "bb-session",
-      "session": "ab5cfb83",
-      "url": "http://www.wsj.com/articles/she-loves-me-the-sweet-scent-of-perfection-145826100"
-    },
-    {
-      "t": "2026-06-16T02:26:13.547Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "reviewId": "hamlet-off-broadway-2026/dc-theater-arts--deb-miller.json",
+      "oldUrl": "https://dctheaterarts.org/2024/02/11/eddie-izzards-one-person-hamlet-suits-the-action-to-the-word-at-off-broadways-greenwich-house/",
+      "newUrl": "https://dctheaterarts.org/2026/04/15/a-fun-exuberant-i-hate-hamlet-from-lumina-studio-theatre/"
     }
   ]
 }
