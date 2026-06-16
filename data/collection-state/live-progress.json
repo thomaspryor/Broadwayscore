@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-06-16T20:07:03.445Z",
-  "processed": 29,
-  "failed": 21,
-  "successRate": "58.0%",
+  "updatedAt": "2026-06-16T20:16:29.020Z",
+  "processed": 54,
+  "failed": 46,
+  "successRate": "54.0%",
   "tierBreakdown": {
-    "playwright": 24,
+    "playwright": 37,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 1,
-    "brightdata": 4,
+    "scrapingbee": 5,
+    "brightdata": 6,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 7
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-06-16T20:08:35.686Z",
+      "event": "bb-session",
+      "session": "a12864b9",
+      "url": "https://variety.com/2025/legit/news/simu-liu-broadway-debut-oh-mary-cole-escola-"
+    },
+    {
+      "t": "2026-06-16T20:08:36.622Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }
