@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-16T12:43:55.904Z",
+  "timestamp": "2026-06-16T16:57:57.184Z",
   "stats": {
-    "totalReviews": 38470,
-    "alreadyFlagged": 16898,
+    "totalReviews": 38476,
+    "alreadyFlagged": 16899,
     "dateGuardCatches": 106,
-    "directorMismatch": 860,
+    "directorMismatch": 861,
     "tvFilmSignals": 1057,
     "londonSignals": 629,
     "offBroadwaySignals": 463,
     "yearMismatch": 82,
-    "noPublishDate": 4000
+    "noPublishDate": 4003
   },
   "findings": [
     {
@@ -555,6 +555,20 @@
       "score": 92,
       "publishDate": "November 13, 2015",
       "url": "https://www.washingtonpost.com/entertainment/theater_dance/a-view-from-the-bridge-review-ivo-van-hoves-bold-take-on-arthur-millers-tragedy/2015/11/13/8b8c8c7e-8a0f-11e5-be39-0034bb576eee_story.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"gregory mosher\" from a-view-from-the-bridge-2010"
+        }
+      ]
+    },
+    {
+      "showId": "a-view-from-the-bridge-2015",
+      "file": "wsj--terry-teachout.json",
+      "score": 42,
+      "publishDate": "2015-11-13",
+      "url": "http://www.wsj.com/articles/a-view-from-the-bridge-review-troubled-waters-of-self-regard-1447378200",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
