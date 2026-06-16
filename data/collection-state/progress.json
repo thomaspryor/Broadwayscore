@@ -430,7 +430,8 @@
     "cyrano-de-bergerac-2012/newsday--linda-winer.json",
     "cyrano-de-bergerac-2012/newsday--matt-windman.json",
     "cyrano-de-bergerac-2012/northjerseycom--robert-feldberg.json",
-    "chaplin-2012/newsday--matt-windman.json"
+    "chaplin-2012/newsday--matt-windman.json",
+    "fela-2012/newsday--linda-winer.json"
   ],
   "failed": [
     "are-you-now-or-have-you-ever-been-off-broadway-2026/theatermania--unknown.json",
@@ -1024,7 +1025,16 @@
     "the-heiress-2012/wsj--terry-teachout.json",
     "the-heiress-2012/village-voice--michael-musto.json",
     "cyrano-de-bergerac-2012/theatermania--david-finkle.json",
-    "chaplin-2012/ew--thom-geier.json"
+    "chaplin-2012/ew--thom-geier.json",
+    "chaplin-2012/timeout--david-cote.json",
+    "chaplin-2012/wsj--terry-teachout.json",
+    "chaplin-2012/usatoday--elysa-gardner.json",
+    "bring-it-on-the-musical-2012/washpost--peter-marks.json",
+    "bring-it-on-the-musical-2012/theatermania--charles-isherwood.json",
+    "bring-it-on-the-musical-2012/timeout--adam-feldman.json",
+    "bring-it-on-the-musical-2012/backstage--erik-haagensen.json",
+    "bring-it-on-the-musical-2012/village-voice--michael-musto.json",
+    "fela-2012/backstage--david-sheward.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1478,7 +1488,9 @@
       "cat-on-a-hot-tin-roof-2013/boston-globe--don-aucoin.json",
       "cyrano-de-bergerac-2012/newsday--linda-winer.json",
       "cyrano-de-bergerac-2012/newsday--matt-windman.json",
-      "chaplin-2012/newsday--matt-windman.json"
+      "chaplin-2012/newsday--matt-windman.json",
+      "chaplin-2012/timeout--david-cote.json",
+      "bring-it-on-the-musical-2012/timeout--adam-feldman.json"
     ],
     "archiveToday": [
       "data/review-texts/romeo-and-juliet-off-broadway-2026/talkinbroadway--unknown.json",
@@ -1654,11 +1666,12 @@
       "the-performers-2012/northjerseycom--robert-feldberg.json",
       "the-mystery-of-edwin-drood-2012/timeout--david-cote.json",
       "the-heiress-2012/ew--thom-geier.json",
-      "cyrano-de-bergerac-2012/northjerseycom--robert-feldberg.json"
+      "cyrano-de-bergerac-2012/northjerseycom--robert-feldberg.json",
+      "fela-2012/newsday--linda-winer.json"
     ]
   },
   "startTime": "2026-06-15T17:52:29.115Z",
-  "lastProcessed": "chaplin-2012/newsday--matt-windman.json",
+  "lastProcessed": "fela-2012/backstage--david-sheward.json",
   "log": [
     {
       "t": "2026-06-15T19:32:37.188Z",
@@ -2085,6 +2098,28 @@
       "t": "2026-06-16T09:16:33.302Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-06-16T09:22:07.848Z",
+      "event": "bb-session",
+      "session": "5691b256",
+      "url": "https://www.usatoday.com/story/life/theater/2012/09/11/chaplin-broadway-review/1"
+    },
+    {
+      "t": "2026-06-16T09:22:08.281Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-06-16T09:22:59.344Z",
+      "event": "bb-session",
+      "session": "613248eb",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/bring-it-on-the-music"
+    },
+    {
+      "t": "2026-06-16T09:22:59.762Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
