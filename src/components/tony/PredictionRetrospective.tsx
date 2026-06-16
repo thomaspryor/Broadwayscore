@@ -10,11 +10,13 @@
  * (markets settling to 99¢) can never leak into the displayed numbers.
  * Renders nothing for seasons without an entry.
  */
+import { Fragment } from 'react';
 import retrospectives from '../../../data/tony-prediction-retrospectives.json';
 
 interface BigFourRow {
   name: string;
   org: string | null;
+  group?: string;
   picks: (string | null)[];
   hits: (boolean | null)[];
 }
@@ -98,25 +100,36 @@ export function PredictionRetrospective({ ceremonyYear }: { ceremonyYear: number
             </tr>
           </thead>
           <tbody>
-            {retro.bigFour.rows.map(row => {
+            {retro.bigFour.rows.map((row, idx) => {
               const score = row.hits.filter(h => h === true).length;
               const attempted = row.hits.filter(h => h !== null).length;
               const perfect = score === attempted && attempted >= 4;
+              const showGroup = !!row.group && row.group !== retro.bigFour.rows[idx - 1]?.group;
+              const colSpan = retro.bigFour.categories.length + 2;
               return (
-                <tr key={row.name} className={`border-b border-white/5 last:border-b-0 ${perfect ? 'bg-brand/[0.04]' : ''}`}>
-                  <td className="py-2 pr-2">
-                    <span className="text-sm font-medium text-white whitespace-nowrap">{row.name}</span>
-                    {row.org && <span className="block text-[11px] text-gray-500">{row.org}</span>}
-                  </td>
-                  {row.picks.map((pick, i) => (
-                    <td key={i} className="py-2 px-2 text-center">
-                      <HitPill pick={pick} hit={row.hits[i]} />
+                <Fragment key={row.name}>
+                  {showGroup && (
+                    <tr>
+                      <td colSpan={colSpan} className="pt-3 pb-1">
+                        <span className="text-[10px] font-bold text-brand/80 uppercase tracking-[0.14em]">{row.group}</span>
+                      </td>
+                    </tr>
+                  )}
+                  <tr className={`border-b border-white/5 ${perfect ? 'bg-brand/[0.04]' : ''}`}>
+                    <td className="py-2 pr-2 pl-2">
+                      <span className="text-sm font-medium text-white whitespace-nowrap">{row.name}</span>
+                      {row.org && <span className="block text-[11px] text-gray-500">{row.org}</span>}
                     </td>
-                  ))}
-                  <td className={`py-2 pl-2 text-center text-sm font-bold tabular-nums ${perfect ? 'text-brand' : 'text-gray-200'}`}>
-                    {score}/{attempted}
-                  </td>
-                </tr>
+                    {row.picks.map((pick, i) => (
+                      <td key={i} className="py-2 px-2 text-center">
+                        <HitPill pick={pick} hit={row.hits[i]} />
+                      </td>
+                    ))}
+                    <td className={`py-2 pl-2 text-center text-sm font-bold tabular-nums ${perfect ? 'text-brand' : 'text-gray-200'}`}>
+                      {score}/{attempted}
+                    </td>
+                  </tr>
+                </Fragment>
               );
             })}
           </tbody>
