@@ -31,7 +31,14 @@
     "inter-alia-west-end-2026/west-end-best-friend--cara-brazier.json",
     "romeo-and-juliet-west-end-2026/west-end-best-friend--livvy-perrett.json",
     "dog-day-afternoon-2026/one-minute-critic--matthew-wexler.json",
-    "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
+    "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
+    "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+    "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json",
+    "oh-mary-west-end-2025/variety--naman-ramachandran.json",
+    "morgan-bassichis-can-i-be-frank-off-broadway-2026/nysr--michael-sommers.json",
+    "morgan-bassichis-can-i-be-frank-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
+    "just-in-time-2025/newyorker--conde-nast.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -61,7 +68,10 @@
     "romeo-and-juliet-west-end-2026/nbcny--unknown.json",
     "romeo-and-juliet-west-end-2026/ny1--unknown.json",
     "romeo-and-juliet-west-end-2026/theater-pizzazz--unknown.json",
-    "romeo-and-juliet-west-end-2026/hollywood-reporter--david-rooney.json"
+    "romeo-and-juliet-west-end-2026/hollywood-reporter--david-rooney.json",
+    "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "operation-mincemeat-2025/thereviewshub--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -92,26 +102,48 @@
       "inter-alia-west-end-2026/west-end-best-friend--cara-brazier.json",
       "romeo-and-juliet-west-end-2026/west-end-best-friend--livvy-perrett.json",
       "dog-day-afternoon-2026/one-minute-critic--matthew-wexler.json",
-      "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
+      "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
+      "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json",
+      "morgan-bassichis-can-i-be-frank-off-broadway-2026/nysr--michael-sommers.json",
+      "morgan-bassichis-can-i-be-frank-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/oh-mary-west-end-2025/variety--naman-ramachandran.json",
+      "oh-mary-west-end-2025/variety--naman-ramachandran.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
-      "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
+      "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
+      "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json"
     ],
     "brightdata": [
       "romeo-and-juliet-off-broadway-2026/talkinbroadway--unknown.json",
       "the-balusters-2026/broadwayworld--unknown.json",
       "schmigadoon-2026/thewrap--robert-hofler.json",
-      "the-fear-of-13-2026/broadwayworld--unknown.json"
+      "the-fear-of-13-2026/broadwayworld--unknown.json",
+      "just-in-time-2025/newyorker--conde-nast.json"
     ],
     "archiveToday": [],
     "archive": [
-      "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json"
+      "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
+      "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
     ]
   },
   "startTime": "2026-06-16T19:54:03.478Z",
-  "lastProcessed": "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
-  "log": []
+  "lastProcessed": "operation-mincemeat-2025/thereviewshub--unknown.json",
+  "log": [
+    {
+      "t": "2026-06-16T20:08:35.686Z",
+      "event": "bb-session",
+      "session": "a12864b9",
+      "url": "https://variety.com/2025/legit/news/simu-liu-broadway-debut-oh-mary-cole-escola-"
+    },
+    {
+      "t": "2026-06-16T20:08:36.622Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }
