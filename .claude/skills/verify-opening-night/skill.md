@@ -1,6 +1,6 @@
 ---
 name: verify-opening-night
-version: "1.1.0"
+version: "1.2.0"
 description: "TRIGGER when: user asks 'is everything ready for opening night', user says 'check opening night readiness', session is an opening-night session for a Broadway or West End show. Runs the full 9-point readiness checklist (CLAUDE.md rule 14) and reports PASS/FAIL per check. Takes show_id as argument (e.g. /verify-opening-night giant-2026)."
 argument-hint: "<show_id> [--market=broadway|westend] [--post-opening]"
 allowed-tools: Bash, Read
@@ -238,6 +238,29 @@ FAIL if: `Drift` > 0 with status `watch` or `ALERT`. Fix: `node scripts/verify-r
 
 ---
 
+## Check 11: Mobile Shows JSON Currency
+
+**Purpose:** Confirm `public/data/mobile-shows.json` reflects the current show status and review count. This file is what the iOS app reads — it can go stale while the web side updates correctly, leaving the app blind to new reviews after opening.
+
+```bash
+node -e "
+const fs = require('fs');
+const mobileFile = 'public/data/mobile-shows.json';
+if (!fs.existsSync(mobileFile)) { console.log('NOT_FOUND'); process.exit(0); }
+const data = JSON.parse(fs.readFileSync(mobileFile));
+const shows = Array.isArray(data) ? data : (data.shows || []);
+const s = shows.find(x => x.id === '$SHOW_ID');
+if (!s) { console.log('SHOW_MISSING_FROM_MOBILE'); process.exit(0); }
+console.log('status:', s.status, '| reviewCount:', s.reviewCount ?? s.reviews?.length ?? 'unknown');
+"
+```
+
+PASS if: show exists in mobile-shows.json AND `status` matches expected (e.g. `open` post-opening) AND reviewCount > 0 post-opening.
+SKIP (pre-opening): if show hasn't opened yet, reviewCount of 0 is expected — mark `⏭ SKIP (pre-opening)`.
+FAIL (post-opening): show is missing, status is still `upcoming`, or reviewCount is 0. Fix: `node scripts/generate-mobile-data.js && git add public/data/mobile-shows.json && git commit -m "chore: refresh mobile-shows.json for $SHOW_ID"`
+
+---
+
 ## Summary Output Format
 
 ```
@@ -253,8 +276,10 @@ Market: Broadway | Opening: [DATE]
 ⏭  Check 7: BWW Review Roundup (pre-opening)
 ⏭  Check 8: Talkin' Broadway (pre-opening)
 ✅ Check 9: Orchestrator run for show
+✅ Check 10: Pipeline stage drift (0)
+⏭  Check 11: Mobile shows JSON (pre-opening)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Result: 5 PASS, 1 FAIL, 3 SKIP
+Result: 6 PASS, 1 FAIL, 4 SKIP
 
 ⚠️  FIX REQUIRED:
 Check 6: Bright Data zone disabled. Go to Bright Data UI → Configuration tab → Recover → enable toggle.
