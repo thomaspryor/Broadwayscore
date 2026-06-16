@@ -83,7 +83,10 @@ export async function POST(req: NextRequest) {
       );
     }
     try {
-      new URL(reviewUrl);
+      const parsed = new URL(reviewUrl);
+      if (parsed.protocol !== 'https:' && parsed.protocol !== 'http:') {
+        throw new Error('Non-HTTP URL');
+      }
     } catch {
       return NextResponse.json(
         { errors: [{ message: 'Please enter a valid URL (e.g. https://www.nytimes.com/...).' }] },

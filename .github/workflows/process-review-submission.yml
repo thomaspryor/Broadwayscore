@@ -2,7 +2,7 @@ name: Process Review Submission
 
 on:
   issues:
-    types: [opened, edited]
+    types: [opened]
   workflow_dispatch:
     inputs:
       issue_number:
@@ -12,7 +12,8 @@ on:
 
 jobs:
   validate:
-    # Run for workflow_dispatch (bridge trigger) or issues with review-submission label
+    # Run for workflow_dispatch or new issues with review-submission label
+    # (opened only — edited excluded to prevent re-runs on already-processed issues)
     if: |
       github.event_name == 'workflow_dispatch' ||
       contains(github.event.issue.labels.*.name, 'review-submission')

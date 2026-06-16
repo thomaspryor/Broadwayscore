@@ -11,6 +11,19 @@ const CUSHION_HOURS = 12;
 const WORKFLOWS_DIR = path.join(__dirname, '..', '.github', 'workflows');
 const CHECK_FILE = path.join(WORKFLOWS_DIR, 'check-cron-health.yml');
 
+// Entries whose max_hours is intentionally tighter than worst-gap + CUSHION_HOURS.
+// These trade the standard cron-lag cushion for SAME-DAY detection and are exempt
+// from the cushion warning (the false-positive risk is accepted by design).
+// DO NOT "fix" these by raising max_hours — doing so silently defeats the detection
+// they exist for. Map: workflow filename → { maxHours, why }.
+const TIGHT_BY_DESIGN = {
+  // Digest carrier: a single cancelled run blacks out all non-critical alerting.
+  // 26h (vs the generic 36h for a daily cron) is required so the noon-UTC check
+  // catches a cancel SAME day before the next day's success resets the clock.
+  // See Notion 381637c5-416f-81af and the comment on this entry in check-cron-health.yml.
+  'data-health-check.yml': { maxHours: 26, why: 'same-day digest-carrier cancel detection' },
+};
+
 function parseField(field, min, max) {
   if (field === '*') return null; // wildcard
   const out = new Set();
@@ -103,11 +116,15 @@ function main() {
       continue;
     }
     const required = gap + CUSHION_HOURS;
+    const tight = TIGHT_BY_DESIGN[wf];
     if (maxHours < gap) {
       console.log(`  🔴 ${name.padEnd(42)} max=${maxHours}h < worst-gap=${gap}h — WILL alert on every long-leg cycle`);
       console.log(`     cron: ${crons.join(', ')}`);
       console.log(`     fix:  raise max_hours to ≥${required}h`);
       failures++;
+    } else if (tight && tight.maxHours === maxHours) {
+      // Intentionally tighter than the standard cushion — see TIGHT_BY_DESIGN.
+      console.log(`  🛡  ${name.padEnd(42)} max=${maxHours}h (tight by design: ${tight.why})`);
     } else if (maxHours < required) {
       console.log(`  🟡 ${name.padEnd(42)} max=${maxHours}h, gap=${gap}h, cushion=${maxHours - gap}h (need ≥${CUSHION_HOURS}h for cron lag)`);
       warnings++;
