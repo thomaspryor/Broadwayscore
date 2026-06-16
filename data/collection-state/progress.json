@@ -425,7 +425,12 @@
     "a-christmas-story-the-musical-2012/timeout--david-cote.json",
     "the-performers-2012/northjerseycom--robert-feldberg.json",
     "the-mystery-of-edwin-drood-2012/newsday--linda-winer.json",
-    "the-mystery-of-edwin-drood-2012/timeout--david-cote.json"
+    "the-mystery-of-edwin-drood-2012/timeout--david-cote.json",
+    "the-heiress-2012/ew--thom-geier.json",
+    "cyrano-de-bergerac-2012/newsday--linda-winer.json",
+    "cyrano-de-bergerac-2012/newsday--matt-windman.json",
+    "cyrano-de-bergerac-2012/northjerseycom--robert-feldberg.json",
+    "chaplin-2012/newsday--matt-windman.json"
   ],
   "failed": [
     "are-you-now-or-have-you-ever-been-off-broadway-2026/theatermania--unknown.json",
@@ -1014,7 +1019,12 @@
     "a-christmas-story-the-musical-2012/amny--matt-windman.json",
     "a-christmas-story-the-musical-2012/talkinbroadway--matthew-murray.json",
     "elf-2012/variety--marilyn-stasio.json",
-    "elf-2012/new-jersey-newsroom--michael-sommers.json"
+    "elf-2012/new-jersey-newsroom--michael-sommers.json",
+    "annie-2012/wsj--terry-teachout.json",
+    "the-heiress-2012/wsj--terry-teachout.json",
+    "the-heiress-2012/village-voice--michael-musto.json",
+    "cyrano-de-bergerac-2012/theatermania--david-finkle.json",
+    "chaplin-2012/ew--thom-geier.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1465,7 +1475,10 @@
       "all-the-way-2014/amny--matt-windman.json",
       "jekyll-and-hyde-2013/newsday--matt-windman.json",
       "ann-2013/newsday--matt-windman.json",
-      "cat-on-a-hot-tin-roof-2013/boston-globe--don-aucoin.json"
+      "cat-on-a-hot-tin-roof-2013/boston-globe--don-aucoin.json",
+      "cyrano-de-bergerac-2012/newsday--linda-winer.json",
+      "cyrano-de-bergerac-2012/newsday--matt-windman.json",
+      "chaplin-2012/newsday--matt-windman.json"
     ],
     "archiveToday": [
       "data/review-texts/romeo-and-juliet-off-broadway-2026/talkinbroadway--unknown.json",
@@ -1639,11 +1652,13 @@
       "a-christmas-story-the-musical-2012/newsday--linda-winer.json",
       "a-christmas-story-the-musical-2012/timeout--david-cote.json",
       "the-performers-2012/northjerseycom--robert-feldberg.json",
-      "the-mystery-of-edwin-drood-2012/timeout--david-cote.json"
+      "the-mystery-of-edwin-drood-2012/timeout--david-cote.json",
+      "the-heiress-2012/ew--thom-geier.json",
+      "cyrano-de-bergerac-2012/northjerseycom--robert-feldberg.json"
     ]
   },
   "startTime": "2026-06-15T17:52:29.115Z",
-  "lastProcessed": "elf-2012/new-jersey-newsroom--michael-sommers.json",
+  "lastProcessed": "chaplin-2012/newsday--matt-windman.json",
   "log": [
     {
       "t": "2026-06-15T19:32:37.188Z",
@@ -2048,6 +2063,28 @@
       "t": "2026-06-16T09:09:52.929Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-16T09:10:18.659Z",
+      "event": "bb-session",
+      "session": "c801d85c",
+      "url": "https://www.wsj.com/articles/SB10001424127887324735104578147043471091112"
+    },
+    {
+      "t": "2026-06-16T09:10:19.094Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-16T09:16:32.854Z",
+      "event": "bb-session",
+      "session": "9293fcd2",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/173838871_Broadway_review"
+    },
+    {
+      "t": "2026-06-16T09:16:33.302Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }

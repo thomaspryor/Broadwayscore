@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-06-16T09:10:17.677Z",
-  "processed": 426,
-  "failed": 587,
+  "updatedAt": "2026-06-16T09:18:42.577Z",
+  "processed": 431,
+  "failed": 592,
   "successRate": "42.1%",
   "tierBreakdown": {
     "playwright": 189,
@@ -9,34 +9,12 @@
     "browserbase": 96,
     "directCookies": 0,
     "scrapingbee": 96,
-    "brightdata": 56,
+    "brightdata": 59,
     "archiveToday": 14,
-    "archive": 154
+    "archive": 156
   },
-  "browserbaseSessions": 24,
+  "browserbaseSessions": 26,
   "recentActivity": [
-    {
-      "t": "2026-06-16T08:44:27.755Z",
-      "event": "bb-session",
-      "session": "6b2eb0c8",
-      "url": "https://www.wsj.com/articles/SB10001424127887324503204578353343071539398"
-    },
-    {
-      "t": "2026-06-16T08:44:28.179Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-06-16T08:44:58.777Z",
-      "event": "bb-session",
-      "session": "42c00970",
-      "url": "http://www.talkinbroadway.com/world/HandsHardbody.html"
-    },
-    {
-      "t": "2026-06-16T08:44:59.190Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
     {
       "t": "2026-06-16T08:48:02.728Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-06-16T09:09:52.929Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-16T09:10:18.659Z",
+      "event": "bb-session",
+      "session": "c801d85c",
+      "url": "https://www.wsj.com/articles/SB10001424127887324735104578147043471091112"
+    },
+    {
+      "t": "2026-06-16T09:10:19.094Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-16T09:16:32.854Z",
+      "event": "bb-session",
+      "session": "9293fcd2",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/173838871_Broadway_review"
+    },
+    {
+      "t": "2026-06-16T09:16:33.302Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
