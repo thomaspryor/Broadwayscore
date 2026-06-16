@@ -422,7 +422,10 @@
     "the-anarchist-2012/newsday--linda-winer.json",
     "dead-accounts-2012/newsday--linda-winer.json",
     "a-christmas-story-the-musical-2012/newsday--linda-winer.json",
-    "a-christmas-story-the-musical-2012/timeout--david-cote.json"
+    "a-christmas-story-the-musical-2012/timeout--david-cote.json",
+    "the-performers-2012/northjerseycom--robert-feldberg.json",
+    "the-mystery-of-edwin-drood-2012/newsday--linda-winer.json",
+    "the-mystery-of-edwin-drood-2012/timeout--david-cote.json"
   ],
   "failed": [
     "are-you-now-or-have-you-ever-been-off-broadway-2026/theatermania--unknown.json",
@@ -1004,7 +1007,14 @@
     "the-other-place-2013/newsday--linda-winer.json",
     "glengarry-glen-ross-2012/talkinbroadway--matthew-murray.json",
     "golden-boy-2012/theatermania--charles-isherwood.json",
-    "the-anarchist-2012/wsj--terry-teachout.json"
+    "the-anarchist-2012/wsj--terry-teachout.json",
+    "a-christmas-story-the-musical-2012/wsj--terry-teachout.json",
+    "a-christmas-story-the-musical-2012/stageandcinema--lynn-nichols.json",
+    "a-christmas-story-the-musical-2012/usatoday--elysa-gardner.json",
+    "a-christmas-story-the-musical-2012/amny--matt-windman.json",
+    "a-christmas-story-the-musical-2012/talkinbroadway--matthew-murray.json",
+    "elf-2012/variety--marilyn-stasio.json",
+    "elf-2012/new-jersey-newsroom--michael-sommers.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1297,7 +1307,8 @@
       "fish-in-the-dark-2015/wsj--terry-teachout.json",
       "data/review-texts/honeymoon-in-vegas-2015/wsj--terry-teachout.json",
       "honeymoon-in-vegas-2015/wsj--terry-teachout.json",
-      "data/review-texts/romeo-and-juliet-2013/observer--unknown.json"
+      "data/review-texts/romeo-and-juliet-2013/observer--unknown.json",
+      "data/review-texts/elf-2012/variety--marilyn-stasio.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1395,7 +1406,8 @@
       "hands-on-a-hardbody-2013/newsday--linda-winer.json",
       "hands-on-a-hardbody-2013/timeout--david-cote.json",
       "cat-on-a-hot-tin-roof-2013/timeout--david-cote.json",
-      "glengarry-glen-ross-2012/timeout--david-cote.json"
+      "glengarry-glen-ross-2012/timeout--david-cote.json",
+      "the-mystery-of-edwin-drood-2012/newsday--linda-winer.json"
     ],
     "brightdata": [
       "romeo-and-juliet-off-broadway-2026/talkinbroadway--unknown.json",
@@ -1625,11 +1637,13 @@
       "the-anarchist-2012/newsday--linda-winer.json",
       "dead-accounts-2012/newsday--linda-winer.json",
       "a-christmas-story-the-musical-2012/newsday--linda-winer.json",
-      "a-christmas-story-the-musical-2012/timeout--david-cote.json"
+      "a-christmas-story-the-musical-2012/timeout--david-cote.json",
+      "the-performers-2012/northjerseycom--robert-feldberg.json",
+      "the-mystery-of-edwin-drood-2012/timeout--david-cote.json"
     ]
   },
   "startTime": "2026-06-15T17:52:29.115Z",
-  "lastProcessed": "a-christmas-story-the-musical-2012/timeout--david-cote.json",
+  "lastProcessed": "elf-2012/new-jersey-newsroom--michael-sommers.json",
   "log": [
     {
       "t": "2026-06-15T19:32:37.188Z",
@@ -1979,6 +1993,61 @@
       "t": "2026-06-16T08:57:48.175Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-16T09:00:56.528Z",
+      "event": "bb-session",
+      "session": "0ff4a1e6",
+      "url": "https://www.wsj.com/articles/SB10001424127887323316804578165161669177646"
+    },
+    {
+      "t": "2026-06-16T09:00:56.983Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-16T09:04:20.380Z",
+      "event": "bb-session",
+      "session": "d405d702",
+      "url": "https://www.usatoday.com/story/life/theater/2012/12/13/a-christmas-story-musical"
+    },
+    {
+      "t": "2026-06-16T09:04:20.854Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-06-16T09:07:18.086Z",
+      "event": "bb-session",
+      "session": "6f496efb",
+      "url": "https://www.talkinbroadway.com/world/ChristmasStory.html"
+    },
+    {
+      "t": "2026-06-16T09:07:18.532Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-16T09:07:32.114Z",
+      "event": "bb-session",
+      "session": "e4489c08",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/179429511_Theater_review_"
+    },
+    {
+      "t": "2026-06-16T09:07:32.528Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-06-16T09:09:52.507Z",
+      "event": "bb-session",
+      "session": "311d3e19",
+      "url": "https://variety.com/2012/film/reviews/the-mongrel-1117948809/"
+    },
+    {
+      "t": "2026-06-16T09:09:52.929Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
