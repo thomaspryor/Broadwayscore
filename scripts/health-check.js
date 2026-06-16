@@ -1803,17 +1803,20 @@ async function main() {
 
   // Workflow run summary (last 24h) \u2014 fetched here, before the alerting block,
   // so repeat failures can be promoted into allResults and escalate like any
-  // other check (subject line, consecutive-error days, auto-triage). The raw
-  // summary is still passed to the digest for the detailed per-workflow link
-  // section. getWorkflowRunSummary() returns { skipped:true } fast when no GH
-  // token is present, so local runs stay cheap and produce no synthetic entries.
-  const workflowSummary = await getWorkflowRunSummary();
-  if (workflowSummary.skipped) {
-    console.log('[Workflows] Skipped \u2014 no GH_TOKEN available');
-  } else {
-    console.log(`[Workflows] ${workflowSummary.succeeded} succeeded, ${workflowSummary.failed} failed (${workflowSummary.total} total in last 24h)`);
+  // other check (subject line, consecutive-error days, auto-triage). CI-only:
+  // the summary is only ever consumed by the alerting/digest path (which the
+  // !isCI early return below skips), and gating the fetch keeps local runs from
+  // making live GitHub API calls / burning rate limit on every invocation.
+  let workflowSummary = null;
+  if (isCI) {
+    workflowSummary = await getWorkflowRunSummary();
+    if (workflowSummary.skipped) {
+      console.log('[Workflows] Skipped \u2014 no GH_TOKEN available');
+    } else {
+      console.log(`[Workflows] ${workflowSummary.succeeded} succeeded, ${workflowSummary.failed} failed (${workflowSummary.total} total in last 24h)`);
+    }
+    allResults.push(...repeatFailureResults(workflowSummary));
   }
-  allResults.push(...repeatFailureResults(workflowSummary));
 
   // Print console summary
   const icons = { pass: '\u2705', warn: '\u26A0\uFE0F', error: '\u274C' };
