@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-16T02:14:13.830Z",
-  "processed": 324,
-  "failed": 509,
-  "successRate": "38.9%",
+  "updatedAt": "2026-06-16T02:18:49.632Z",
+  "processed": 331,
+  "failed": 512,
+  "successRate": "39.3%",
   "tierBreakdown": {
-    "playwright": 167,
+    "playwright": 169,
     "amp": 1,
-    "browserbase": 80,
+    "browserbase": 82,
     "directCookies": 0,
-    "scrapingbee": 77,
+    "scrapingbee": 78,
     "brightdata": 43,
     "archiveToday": 11,
-    "archive": 102
+    "archive": 105
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
       "t": "2026-06-16T04:26:05.684Z",
@@ -61,6 +61,17 @@
     },
     {
       "t": "2026-06-16T02:13:49.771Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-16T02:16:10.446Z",
+      "event": "bb-session",
+      "session": "5a8ae17a",
+      "url": "http://www.wsj.com/articles/holiday-inn-the-new-irving-berlin-musical-review-147"
+    },
+    {
+      "t": "2026-06-16T02:16:11.130Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

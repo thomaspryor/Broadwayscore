@@ -323,7 +323,14 @@
     "falsettos-2016/theatermania--jesse-green.json",
     "heisenberg-2016/nydailynews--joe-dziemianowicz.json",
     "heisenberg-2016/timeout--adam-feldman.json",
-    "heisenberg-2016/wsj--terry-teachout.json"
+    "heisenberg-2016/wsj--terry-teachout.json",
+    "heisenberg-2016/wnyc--jennifer-vanasco.json",
+    "oh-hello-on-broadway-2016/nydailynews--joe-dziemianowicz.json",
+    "holiday-inn-the-new-irving-berlin-musical-2016/nydailynews--joe-dziemianowicz.json",
+    "holiday-inn-the-new-irving-berlin-musical-2016/timeout--david-cote.json",
+    "holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json",
+    "the-encounter-2016/nydailynews--joe-dziemianowicz.json",
+    "the-encounter-2016/times-square-chronicles--suzanna-bowling.json"
   ],
   "failed": [
     "are-you-now-or-have-you-ever-been-off-broadway-2026/theatermania--unknown.json",
@@ -834,7 +841,10 @@
     "a-bronx-tale-the-musical-2016/njcom--patrick-maley.json",
     "natasha-pierre-and-the-great-comet-of-1812-2016/broadway-and-me--janice-c-simpson.json",
     "les-liaisons-dangereuses-2016/thestage--mark-shenton.json",
-    "falsettos-2016/theater-life--eric-march.json"
+    "falsettos-2016/theater-life--eric-march.json",
+    "heisenberg-2016/thestage--tom-wicker.json",
+    "heisenberg-2016/abc-news--mark-kennedy.json",
+    "holiday-inn-the-new-irving-berlin-musical-2016/thestage--mark-shenton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1005,7 +1015,9 @@
       "come-from-away-2017/wnyc--jennifer-vanasco.json",
       "sunday-in-the-park-with-george-2017/wnyc--jennifer-vanasco.json",
       "jitney-2017/wnyc--jennifer-vanasco.json",
-      "falsettos-2016/theatermania--jesse-green.json"
+      "falsettos-2016/theatermania--jesse-green.json",
+      "heisenberg-2016/wnyc--jennifer-vanasco.json",
+      "the-encounter-2016/times-square-chronicles--suzanna-bowling.json"
     ],
     "amp": [
       "data/review-texts/maybe-happy-ending-2024/variety--unknown.json"
@@ -1090,7 +1102,9 @@
       "data/review-texts/les-liaisons-dangereuses-2016/wsj--terry-teachout.json",
       "les-liaisons-dangereuses-2016/wsj--terry-teachout.json",
       "data/review-texts/heisenberg-2016/wsj--terry-teachout.json",
-      "heisenberg-2016/wsj--terry-teachout.json"
+      "heisenberg-2016/wsj--terry-teachout.json",
+      "data/review-texts/holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json",
+      "holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1170,7 +1184,8 @@
       "tammy-faye-2024/theatre-reviews-limited--david-roberts.json",
       "trouble-in-mind-2021/broadwayworld--unknown.json",
       "oslo-2017/timeout--adam-feldman.json",
-      "a-bronx-tale-the-musical-2016/timeout--adam-feldman.json"
+      "a-bronx-tale-the-musical-2016/timeout--adam-feldman.json",
+      "the-encounter-2016/nydailynews--joe-dziemianowicz.json"
     ],
     "brightdata": [
       "romeo-and-juliet-off-broadway-2026/talkinbroadway--unknown.json",
@@ -1335,11 +1350,14 @@
       "dear-evan-hansen-2016/times-uk--clive-davis.json",
       "heisenberg-2016/nydailynews--joe-dziemianowicz.json",
       "falsettos-2016/theater-life--eric-march.json",
-      "heisenberg-2016/timeout--adam-feldman.json"
+      "heisenberg-2016/timeout--adam-feldman.json",
+      "oh-hello-on-broadway-2016/nydailynews--joe-dziemianowicz.json",
+      "holiday-inn-the-new-irving-berlin-musical-2016/nydailynews--joe-dziemianowicz.json",
+      "holiday-inn-the-new-irving-berlin-musical-2016/timeout--david-cote.json"
     ]
   },
   "startTime": "2026-06-15T17:52:29.115Z",
-  "lastProcessed": "heisenberg-2016/wsj--terry-teachout.json",
+  "lastProcessed": "the-encounter-2016/times-square-chronicles--suzanna-bowling.json",
   "log": [
     {
       "t": "2026-06-15T19:32:37.188Z",
@@ -1434,6 +1452,17 @@
     },
     {
       "t": "2026-06-16T02:13:49.771Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-16T02:16:10.446Z",
+      "event": "bb-session",
+      "session": "5a8ae17a",
+      "url": "http://www.wsj.com/articles/holiday-inn-the-new-irving-berlin-musical-review-147"
+    },
+    {
+      "t": "2026-06-16T02:16:11.130Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
