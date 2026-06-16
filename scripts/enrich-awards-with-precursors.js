@@ -111,7 +111,7 @@ const HISTORIC_PULITZER = loadPrecursor('pulitzer-historic');
 
 const TONY_CATS = ['Best Musical','Best Play','Best Revival of a Musical','Best Revival of a Play'];
 const CAT_SET = new Set(TONY_CATS);
-const PREDICTIONS_ERA = ['2013-14','2014-15','2015-16','2016-17','2017-18','2018-19','2019-20','2021-22','2022-23','2023-24','2024-25','2025-26'];
+const PREDICTIONS_ERA = ['2013-14','2014-15','2015-16','2016-17','2017-18','2018-19','2019-20','2021-22','2022-23','2023-24','2024-25','2025-26','2026-27'];
 // Latest entry — used by the matcher to relax the "must have Tony noms"
 // gate while Tony nominations for the active season haven't been announced yet.
 const ACTIVE_SEASON = PREDICTIONS_ERA[PREDICTIONS_ERA.length - 1];
