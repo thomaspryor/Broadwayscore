@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-16T09:40:13.792Z",
-  "processed": 435,
-  "failed": 618,
-  "successRate": "41.3%",
+  "updatedAt": "2026-06-16T09:48:53.512Z",
+  "processed": 438,
+  "failed": 625,
+  "successRate": "41.2%",
   "tierBreakdown": {
-    "playwright": 190,
+    "playwright": 193,
     "amp": 1,
     "browserbase": 96,
     "directCookies": 0,
     "scrapingbee": 96,
-    "brightdata": 63,
+    "brightdata": 64,
     "archiveToday": 14,
     "archive": 158
   },
-  "browserbaseSessions": 28,
+  "browserbaseSessions": 29,
   "recentActivity": [
-    {
-      "t": "2026-06-16T08:57:47.712Z",
-      "event": "bb-session",
-      "session": "1ef4364f",
-      "url": "https://www.wsj.com/articles/SB10001424127887324894104578112441914851592"
-    },
-    {
-      "t": "2026-06-16T08:57:48.175Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-06-16T09:00:56.528Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-06-16T09:22:59.762Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-06-16T09:42:15.811Z",
+      "event": "bb-session",
+      "session": "f748a0dc",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/one-man-two-guvnors-a"
+    },
+    {
+      "t": "2026-06-16T09:42:16.228Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
     }

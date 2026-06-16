@@ -434,7 +434,10 @@
     "fela-2012/newsday--linda-winer.json",
     "the-columnist-2012/amny--matt-windman.json",
     "the-lyons-2012/theatermania--dan-bacalzo.json",
-    "clybourne-park-2012/latimes--david-ng.json"
+    "clybourne-park-2012/latimes--david-ng.json",
+    "clybourne-park-2012/theatermania--dan-bacalzo.json",
+    "evita-2012/ew--thom-geier.json",
+    "evita-2012/observer--rex-reed.json"
   ],
   "failed": [
     "are-you-now-or-have-you-ever-been-off-broadway-2026/theatermania--unknown.json",
@@ -1054,7 +1057,14 @@
     "a-streetcar-named-desire-2012/wsj--terry-teachout.json",
     "a-streetcar-named-desire-2012/stageandcinema--jonas-schwartz.json",
     "clybourne-park-2012/newsday--linda-winer.json",
-    "clybourne-park-2012/theatermania--charles-isherwood.json"
+    "clybourne-park-2012/theatermania--charles-isherwood.json",
+    "one-man-two-guvnors-2012/wsj--terry-teachout.json",
+    "one-man-two-guvnors-2012/washpost--peter-marks.json",
+    "one-man-two-guvnors-2012/newsday--linda-winer.json",
+    "one-man-two-guvnors-2012/timeout--adam-feldman.json",
+    "peter-and-the-starcatcher-2012/talkinbroadway--matthew-murray.json",
+    "magicbird-2012/backstage--suzy-evans.json",
+    "evita-2012/talkinbroadway--matthew-murray.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1248,7 +1258,10 @@
       "ifthen-2014/theatermania--adam-hetrick.json",
       "a-gentlemans-guide-to-love-and-murder-2013/theatermania--david-gordon.json",
       "golden-boy-2012/ew--adam-markovitz.json",
-      "the-lyons-2012/theatermania--dan-bacalzo.json"
+      "the-lyons-2012/theatermania--dan-bacalzo.json",
+      "clybourne-park-2012/theatermania--dan-bacalzo.json",
+      "evita-2012/ew--thom-geier.json",
+      "evita-2012/observer--rex-reed.json"
     ],
     "amp": [
       "data/review-texts/maybe-happy-ending-2024/variety--unknown.json"
@@ -1513,7 +1526,8 @@
       "chaplin-2012/timeout--david-cote.json",
       "bring-it-on-the-musical-2012/timeout--adam-feldman.json",
       "leap-of-faith-2012/timeout--david-cote.json",
-      "clybourne-park-2012/latimes--david-ng.json"
+      "clybourne-park-2012/latimes--david-ng.json",
+      "one-man-two-guvnors-2012/timeout--adam-feldman.json"
     ],
     "archiveToday": [
       "data/review-texts/romeo-and-juliet-off-broadway-2026/talkinbroadway--unknown.json",
@@ -1695,7 +1709,7 @@
     ]
   },
   "startTime": "2026-06-15T17:52:29.115Z",
-  "lastProcessed": "clybourne-park-2012/theatermania--charles-isherwood.json",
+  "lastProcessed": "evita-2012/talkinbroadway--matthew-murray.json",
   "log": [
     {
       "t": "2026-06-15T19:32:37.188Z",
@@ -2142,6 +2156,17 @@
     },
     {
       "t": "2026-06-16T09:22:59.762Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-06-16T09:42:15.811Z",
+      "event": "bb-session",
+      "session": "f748a0dc",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/one-man-two-guvnors-a"
+    },
+    {
+      "t": "2026-06-16T09:42:16.228Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
     }
