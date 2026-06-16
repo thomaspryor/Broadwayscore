@@ -330,7 +330,15 @@
     "holiday-inn-the-new-irving-berlin-musical-2016/timeout--david-cote.json",
     "holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json",
     "the-encounter-2016/nydailynews--joe-dziemianowicz.json",
-    "the-encounter-2016/times-square-chronicles--suzanna-bowling.json"
+    "the-encounter-2016/times-square-chronicles--suzanna-bowling.json",
+    "tuck-everlasting-2016/ew--melissa-rose-bernardo.json",
+    "tuck-everlasting-2016/uinterview--erik-meers.json",
+    "fully-committed-2016/timeout--adam-feldman.json",
+    "fully-committed-2016/wsj--terry-teachout.json",
+    "waitress-2016/act-three-the-reviews--doug-marino.json",
+    "american-psycho-2016/nyt-theater--jonathan-mandell.json",
+    "american-psycho-2016/timeout--adam-feldman.json",
+    "the-father-2016/financialtimes--max-mcguinness.json"
   ],
   "failed": [
     "are-you-now-or-have-you-ever-been-off-broadway-2026/theatermania--unknown.json",
@@ -844,7 +852,9 @@
     "falsettos-2016/theater-life--eric-march.json",
     "heisenberg-2016/thestage--tom-wicker.json",
     "heisenberg-2016/abc-news--mark-kennedy.json",
-    "holiday-inn-the-new-irving-berlin-musical-2016/thestage--mark-shenton.json"
+    "holiday-inn-the-new-irving-berlin-musical-2016/thestage--mark-shenton.json",
+    "tuck-everlasting-2016/thestage--mark-shenton.json",
+    "american-psycho-2016/ap--mark-kennedy.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1017,7 +1027,12 @@
       "jitney-2017/wnyc--jennifer-vanasco.json",
       "falsettos-2016/theatermania--jesse-green.json",
       "heisenberg-2016/wnyc--jennifer-vanasco.json",
-      "the-encounter-2016/times-square-chronicles--suzanna-bowling.json"
+      "the-encounter-2016/times-square-chronicles--suzanna-bowling.json",
+      "tuck-everlasting-2016/ew--melissa-rose-bernardo.json",
+      "tuck-everlasting-2016/uinterview--erik-meers.json",
+      "waitress-2016/act-three-the-reviews--doug-marino.json",
+      "american-psycho-2016/nyt-theater--jonathan-mandell.json",
+      "the-father-2016/financialtimes--max-mcguinness.json"
     ],
     "amp": [
       "data/review-texts/maybe-happy-ending-2024/variety--unknown.json"
@@ -1104,7 +1119,9 @@
       "data/review-texts/heisenberg-2016/wsj--terry-teachout.json",
       "heisenberg-2016/wsj--terry-teachout.json",
       "data/review-texts/holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json",
-      "holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json"
+      "holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json",
+      "data/review-texts/fully-committed-2016/wsj--terry-teachout.json",
+      "fully-committed-2016/wsj--terry-teachout.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1185,7 +1202,8 @@
       "trouble-in-mind-2021/broadwayworld--unknown.json",
       "oslo-2017/timeout--adam-feldman.json",
       "a-bronx-tale-the-musical-2016/timeout--adam-feldman.json",
-      "the-encounter-2016/nydailynews--joe-dziemianowicz.json"
+      "the-encounter-2016/nydailynews--joe-dziemianowicz.json",
+      "fully-committed-2016/timeout--adam-feldman.json"
     ],
     "brightdata": [
       "romeo-and-juliet-off-broadway-2026/talkinbroadway--unknown.json",
@@ -1353,11 +1371,12 @@
       "heisenberg-2016/timeout--adam-feldman.json",
       "oh-hello-on-broadway-2016/nydailynews--joe-dziemianowicz.json",
       "holiday-inn-the-new-irving-berlin-musical-2016/nydailynews--joe-dziemianowicz.json",
-      "holiday-inn-the-new-irving-berlin-musical-2016/timeout--david-cote.json"
+      "holiday-inn-the-new-irving-berlin-musical-2016/timeout--david-cote.json",
+      "american-psycho-2016/timeout--adam-feldman.json"
     ]
   },
   "startTime": "2026-06-15T17:52:29.115Z",
-  "lastProcessed": "the-encounter-2016/times-square-chronicles--suzanna-bowling.json",
+  "lastProcessed": "the-father-2016/financialtimes--max-mcguinness.json",
   "log": [
     {
       "t": "2026-06-15T19:32:37.188Z",
@@ -1463,6 +1482,17 @@
     },
     {
       "t": "2026-06-16T02:16:11.130Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-16T02:21:54.384Z",
+      "event": "bb-session",
+      "session": "16a1ea52",
+      "url": "http://www.wsj.com/articles/fully-committed-review-jesse-tyler-ferguson-party-of"
+    },
+    {
+      "t": "2026-06-16T02:21:55.066Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
