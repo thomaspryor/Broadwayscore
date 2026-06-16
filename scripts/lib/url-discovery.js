@@ -53,6 +53,26 @@ function buildOutletDomains() {
 
 const { map: OUTLET_DOMAINS, aliasMap: REGISTRY_DOMAIN_ALIASES } = buildOutletDomains();
 
+// Build a Google `site:` clause covering a domain AND its registry domainAliases.
+// Outlets often publish on an alias TLD (theatreandtonic.com primary vs .co.uk live;
+// londontheatrereviews.co.uk primary vs londontheatre.co.uk live); a single-domain
+// query returns 0 and the review is silently missed (A Life in Four Seasons,
+// 2026-06-16). Pure + exported so it's unit-testable. aliasOverride lets tests inject.
+function buildSiteClause(domain, aliasOverride) {
+  // Sanitize: a domain must be a non-empty token with no whitespace (a space would
+  // emit malformed `site:foo bar`). Dedupe so alias===primary can't yield
+  // `(site:a OR site:a)`. Returns '' for an unusable primary domain.
+  const clean = (s) => (typeof s === 'string' ? s.trim() : '');
+  const primary = clean(domain);
+  if (!primary || /\s/.test(primary)) return '';
+  const aliases = aliasOverride || REGISTRY_DOMAIN_ALIASES[domain];
+  const aliasArr = aliases instanceof Set ? [...aliases] : (aliases || []);
+  const domains = [...new Set([primary, ...aliasArr.map(clean)].filter(d => d && !/\s/.test(d)))];
+  return domains.length > 1
+    ? `(${domains.map(x => `site:${x}`).join(' OR ')})`
+    : `site:${domains[0]}`;
+}
+
 // Inject registry domain aliases into scraper.js for domainMatchesExpected()
 setRegistryDomainAliases(REGISTRY_DOMAIN_ALIASES);
 
@@ -560,7 +580,7 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
 
   let query;
   if (domain) {
-    query = `site:${domain} "${serpTitle}"${leadActorClause} ${marketTerm}${yearClause}${criticClause}`;
+    query = `${buildSiteClause(domain)} "${serpTitle}"${leadActorClause} ${marketTerm}${yearClause}${criticClause}`;
   } else {
     query = `"${serpTitle}"${leadActorClause} ${marketTerm}${yearClause} "${outletName}"${criticClause}`;
   }
@@ -588,7 +608,7 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
     if (primaryTitle && primaryTitle.length >= 3) {
       let strippedQuery;
       if (domain) {
-        strippedQuery = `site:${domain} "${primaryTitle}" ${marketTerm}${yearClause}${criticClause}`;
+        strippedQuery = `${buildSiteClause(domain)} "${primaryTitle}" ${marketTerm}${yearClause}${criticClause}`;
       } else {
         strippedQuery = `"${primaryTitle}" ${marketTerm}${yearClause} "${outletName}"${criticClause}`;
       }
@@ -625,7 +645,7 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
       const isHistorical = closingDate && (Date.now() - closingDate.getTime()) > 3 * 365 * 24 * 3600 * 1000;
       if (isHistorical && dateRange) {
         const noDateQuery = domain
-          ? `site:${domain} "${serpTitle}" ${marketTerm}${yearClause}${criticClause}`
+          ? `${buildSiteClause(domain)} "${serpTitle}" ${marketTerm}${yearClause}${criticClause}`
           : `"${serpTitle}" ${marketTerm}${yearClause} "${outletName}"${criticClause}`;
         log(`    Fallback 3 (no date filter, historical show): ${noDateQuery}`);
         ({ results, provider } = await _serpWithChain(noDateQuery, scrapingBeeKey, brightDataKey, log, null, preferSpeed));
@@ -891,6 +911,7 @@ module.exports = {
   OUTLET_DOMAINS,
   REGISTRY_DOMAIN_ALIASES,
   DOMAIN_REDIRECTS,
+  buildSiteClause,
   discoverCorrectUrl,
   serpQuery,
   getShowInfo,
