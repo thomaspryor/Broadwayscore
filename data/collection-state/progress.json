@@ -281,7 +281,10 @@
     "dark-of-the-moon-west-end-2026/thestage--unknown.json",
     "the-people-versus-lenny-bruce-off-broadway-2026/theater-pizzazz--unknown.json",
     "schmigadoon-2026/nytg--austin-fimmano.json",
-    "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json"
+    "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
+    "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
+    "oh-mary-west-end-2025/variety--naman-ramachandran.json",
+    "masquerade-off-broadway-2025/off-off-online--james-wilson.json"
   ],
   "failed": [
     "are-you-now-or-have-you-ever-been-off-broadway-2026/theatermania--unknown.json",
@@ -634,7 +637,14 @@
     "romeo-and-juliet-west-end-2026/nydailynews--unknown.json",
     "romeo-and-juliet-west-end-2026/amny--unknown.json",
     "romeo-and-juliet-west-end-2026/ap--mark-kennedy.json",
-    "romeo-and-juliet-west-end-2026/exeunt-magazine--unknown.json"
+    "romeo-and-juliet-west-end-2026/exeunt-magazine--unknown.json",
+    "romeo-and-juliet-west-end-2026/nbcny--unknown.json",
+    "romeo-and-juliet-west-end-2026/ny1--unknown.json",
+    "romeo-and-juliet-west-end-2026/theater-pizzazz--unknown.json",
+    "romeo-and-juliet-west-end-2026/hollywood-reporter--david-rooney.json",
+    "chess-2025/times-uk--unknown.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "hercules-west-end-2025/telegraph--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -786,7 +796,9 @@
       "dark-of-the-moon-west-end-2026/artsdesk--unknown.json",
       "dark-of-the-moon-west-end-2026/thestage--unknown.json",
       "schmigadoon-2026/nytg--austin-fimmano.json",
-      "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json"
+      "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
+      "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
+      "masquerade-off-broadway-2025/off-off-online--james-wilson.json"
     ],
     "amp": [
       "data/review-texts/maybe-happy-ending-2024/variety--unknown.json"
@@ -862,7 +874,9 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
-      "data/review-texts/schmigadoon-2026/exeunt-magazine--lane-williamson.json"
+      "data/review-texts/schmigadoon-2026/exeunt-magazine--lane-williamson.json",
+      "data/review-texts/oh-mary-west-end-2025/variety--naman-ramachandran.json",
+      "oh-mary-west-end-2025/variety--naman-ramachandran.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1065,7 +1079,7 @@
     ]
   },
   "startTime": "2026-06-15T17:52:29.115Z",
-  "lastProcessed": "romeo-and-juliet-west-end-2026/exeunt-magazine--unknown.json",
+  "lastProcessed": "hercules-west-end-2025/telegraph--unknown.json",
   "log": [
     {
       "t": "2026-06-15T19:32:37.188Z",
@@ -1107,6 +1121,17 @@
       "event": "bb-session",
       "session": "d159847a",
       "url": "https://exeuntnyc.com/reviews/review-every-brilliant-thing-at-the-hudson-theatre"
+    },
+    {
+      "t": "2026-06-16T01:02:58.094Z",
+      "event": "bb-session",
+      "session": "2b3def06",
+      "url": "https://variety.com/2025/legit/news/simu-liu-broadway-debut-oh-mary-cole-escola-"
+    },
+    {
+      "t": "2026-06-16T01:02:58.688Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
