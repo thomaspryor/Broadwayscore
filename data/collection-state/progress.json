@@ -1294,7 +1294,17 @@
     "dracula-west-end-2025/talkinbroadway--unknown.json",
     "the-tempest-globe-west-end-2026/express-uk--neil-norman.json",
     "into-the-woods-west-end-2025/variety--naveen-kumar.json",
-    "all-my-sons-west-end-2025/newsday--barbara-schuler.json"
+    "all-my-sons-west-end-2025/newsday--barbara-schuler.json",
+    "all-my-sons-west-end-2025/thewrap--robert-hofler.json",
+    "all-my-sons-west-end-2025/amny--matt-windman.json",
+    "all-my-sons-west-end-2025/dailybeast--tim-teeman.json",
+    "beetlejuice-2025/dailybeast--tim-teeman.json",
+    "art-2025/financialtimes--unknown.json",
+    "art-2025/thestage--unknown.json",
+    "art-2025/broadwaynews--michael-abourizk.json",
+    "call-me-izzy-2025/theater-life--barry-gordin.json",
+    "grangeville-off-broadway-2026/theatre-reviews-limited--david-roberts.json",
+    "redwood-2025/gmanetwork--stuart-santiago.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1709,7 +1719,8 @@
       "hands-on-a-hardbody-2013/timeout--david-cote.json",
       "cat-on-a-hot-tin-roof-2013/timeout--david-cote.json",
       "glengarry-glen-ross-2012/timeout--david-cote.json",
-      "the-mystery-of-edwin-drood-2012/newsday--linda-winer.json"
+      "the-mystery-of-edwin-drood-2012/newsday--linda-winer.json",
+      "public-charge-off-broadway-2026/theater-life--barry-gordin.json"
     ],
     "brightdata": [
       "romeo-and-juliet-off-broadway-2026/talkinbroadway--unknown.json",
@@ -1992,7 +2003,7 @@
     ]
   },
   "startTime": "2026-06-15T17:52:29.115Z",
-  "lastProcessed": "all-my-sons-west-end-2025/newsday--barbara-schuler.json",
+  "lastProcessed": "redwood-2025/gmanetwork--stuart-santiago.json",
   "log": [
     {
       "t": "2026-06-15T19:32:37.188Z",
@@ -2474,6 +2485,17 @@
       "t": "2026-06-16T12:51:21.954Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-16T13:00:57.274Z",
+      "event": "bb-session",
+      "session": "3f795a3d",
+      "url": "https://www.ft.com/content/a93d7ba1-cbfc-4d5c-b438-7cc2a7982796?syn-25a6b1a6=1"
+    },
+    {
+      "t": "2026-06-16T13:00:57.739Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
     }
   ]
 }
