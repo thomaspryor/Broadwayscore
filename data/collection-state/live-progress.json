@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-06-16T04:27:35.035Z",
+  "updatedAt": "2026-06-16T05:02:27.569Z",
   "processed": 287,
-  "failed": 559,
-  "successRate": "33.9%",
+  "failed": 569,
+  "successRate": "33.5%",
   "tierBreakdown": {
     "playwright": 152,
     "amp": 1,
-    "browserbase": 108,
+    "browserbase": 110,
     "directCookies": 0,
     "scrapingbee": 70,
     "brightdata": 38,
     "archiveToday": 14,
     "archive": 72
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-06-16T03:38:24.154Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-16T04:00:16.471Z",
-      "event": "bb-session",
-      "session": "c89467a1",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
-    {
-      "t": "2026-06-16T04:00:17.252Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-16T04:00:49.892Z",
-      "event": "bb-session",
-      "session": "23ea3c41",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
     {
       "t": "2026-06-16T04:00:50.617Z",
       "event": "bb-cookie-inject",
@@ -122,6 +100,28 @@
     },
     {
       "t": "2026-06-16T04:26:05.684Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-16T05:00:56.576Z",
+      "event": "bb-session",
+      "session": "6fcc2a55",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-16T05:00:57.610Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-16T05:01:10.165Z",
+      "event": "bb-session",
+      "session": "a3e5c9e7",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-16T05:01:11.033Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
