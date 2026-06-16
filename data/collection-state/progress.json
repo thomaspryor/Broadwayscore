@@ -964,7 +964,17 @@
     "pippin-2013/talkinbroadway--matthew-murray.json",
     "ill-eat-you-last-a-chat-with-sue-mengers-2013/timeout--adam-feldman.json",
     "the-trip-to-bountiful-2013/village-voice--michael-musto.json",
-    "jekyll-and-hyde-2013/bloomberg--philip-boroff.json"
+    "jekyll-and-hyde-2013/bloomberg--philip-boroff.json",
+    "jekyll-and-hyde-2013/talkinbroadway--matthew-murray.json",
+    "orphans-2013/bloomberg--jeremy-gerard.json",
+    "the-assembled-parties-2013/talkinbroadway--matthew-murray.json",
+    "the-big-knife-2013/nydailynews--joe-dziemianowicz.json",
+    "the-nance-2013/timeout--david-cote.json",
+    "the-nance-2013/northjerseycom--robert-feldberg.json",
+    "the-nance-2013/new-jersey-newsroom--michael-sommers.json",
+    "the-nance-2013/talkinbroadway--matthew-murray.json",
+    "motown-the-musical-2013/wsj--terry-teachout.json",
+    "motown-the-musical-2013/new-jersey-newsroom--michael-sommers.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1349,7 +1359,8 @@
       "all-the-way-2014/ew--thom-geier.json",
       "700-sundays-2013/ew--jessica-shaw.json",
       "after-midnight-2013/timeout--adam-feldman.json",
-      "ill-eat-you-last-a-chat-with-sue-mengers-2013/timeout--adam-feldman.json"
+      "ill-eat-you-last-a-chat-with-sue-mengers-2013/timeout--adam-feldman.json",
+      "the-nance-2013/timeout--david-cote.json"
     ],
     "brightdata": [
       "romeo-and-juliet-off-broadway-2026/talkinbroadway--unknown.json",
@@ -1574,7 +1585,7 @@
     ]
   },
   "startTime": "2026-06-15T17:52:29.115Z",
-  "lastProcessed": "jekyll-and-hyde-2013/bloomberg--philip-boroff.json",
+  "lastProcessed": "motown-the-musical-2013/new-jersey-newsroom--michael-sommers.json",
   "log": [
     {
       "t": "2026-06-15T19:32:37.188Z",
@@ -1770,6 +1781,61 @@
       "t": "2026-06-16T08:20:23.873Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-16T08:26:07.915Z",
+      "event": "bb-session",
+      "session": "70657b7d",
+      "url": "https://www.talkinbroadway.com/world/JekyllHyde.html"
+    },
+    {
+      "t": "2026-06-16T08:26:08.327Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-16T08:28:06.176Z",
+      "event": "bb-session",
+      "session": "8655c5f9",
+      "url": "https://www.talkinbroadway.com/world/AssembledParties.html"
+    },
+    {
+      "t": "2026-06-16T08:28:06.650Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-16T08:30:30.516Z",
+      "event": "bb-session",
+      "session": "c221114e",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/203140641_Theater_review_"
+    },
+    {
+      "t": "2026-06-16T08:30:30.983Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-06-16T08:32:43.716Z",
+      "event": "bb-session",
+      "session": "c4ceec62",
+      "url": "https://www.talkinbroadway.com/world/TheNance.html"
+    },
+    {
+      "t": "2026-06-16T08:32:44.137Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-16T08:32:44.439Z",
+      "event": "bb-session",
+      "session": "6f212de4",
+      "url": "https://www.wsj.com/articles/SB10001424052702304402104579509770825649320"
+    },
+    {
+      "t": "2026-06-16T08:32:44.884Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
