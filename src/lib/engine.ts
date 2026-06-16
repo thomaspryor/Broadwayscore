@@ -84,6 +84,10 @@ export interface RawShow {
   originalProductionId?: string | null; // ID of the original production (e.g., "cabaret-1966")
   productionNumber?: number;            // 1 for original, 2 for first revival, etc.
   season?: string;                      // Broadway season (e.g., "2024-2025")
+  // Homepage curation overrides (off-Broadway shows surfaced on the Broadway grid).
+  // See src/lib/homepage-notability.ts. Editorial escape hatches over the auto rule.
+  homepageInclude?: boolean;           // force onto homepage grid (e.g. star-driven previews)
+  homepageExclude?: boolean;           // veto from homepage grid
 }
 
 export interface RawReview {
@@ -228,6 +232,9 @@ export interface ComputedShow {
   originalProductionId?: string | null;
   productionNumber?: number;
   season?: string;
+  // Homepage curation overrides (see RawShow above / homepage-notability.ts)
+  homepageInclude?: boolean;
+  homepageExclude?: boolean;
   // Scores
   criticScore: CriticScoreResult | null;
   audienceScore: AudienceScoreResult | null;
@@ -758,6 +765,8 @@ export function computeShowData(
     originalProductionId: show.originalProductionId,
     productionNumber: show.productionNumber,
     season: show.season,
+    homepageInclude: show.homepageInclude,
+    homepageExclude: show.homepageExclude,
     // Scores
     criticScore,
     audienceScore: null,
