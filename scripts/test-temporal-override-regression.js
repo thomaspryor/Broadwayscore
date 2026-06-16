@@ -28,7 +28,12 @@
 
 const fs = require('fs');
 const path = require('path');
-const { applyTemporalOverrides } = require('./lib/review-guards');
+const {
+  applyTemporalOverrides,
+  isReviewWithinOwnProductionWindow,
+  isSameTitleDifferentYearFalsePositive,
+  applyVenueClassificationCarveout,
+} = require('./lib/review-guards');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const REVIEW_TEXTS_DIR = path.join(DATA_DIR, 'review-texts');
@@ -168,7 +173,7 @@ function main() {
   if (eligible.length === 0) {
     // Should never happen — synthetic fixtures always match isEligible.
     console.log('\n❌ FAIL — not even the synthetic fixtures were eligible. isEligible() may be broken.');
-    process.exit(1);
+    return false;
   }
 
   // Run the real applyTemporalOverrides. Count how many retain 'high' confidence.
@@ -222,15 +227,156 @@ function main() {
     console.log('');
     console.log('See: memory/feedback_llm_wrongprod_false_positives.md');
     console.log('     memory/feedback_scoring_delta_required.md');
-    process.exit(1);
+    return false;
   }
 
   console.log('\n✅ PASS — all eligible high-confidence wrongProduction flags correctly downgraded to low within 30-day window.');
-  process.exit(0);
+  return true;
+}
+
+// ───────────────────────────────────────────────────────────────────────────
+// Same-title / different-year + festival-venue regression (R&J Delacorte 2026)
+//
+// On 2026-06-15 the 2026 Shakespeare-in-the-Park "Romeo and Juliet" (Delacorte,
+// opening 2026-06-11) had its in-window reviews flagged wrongProduction as the
+// 2024 Connor/Zegler Broadway "Romeo + Juliet" — same title, different year —
+// and the show rendered scoreless. These fixtures lock in the two guards added
+// to prevent recurrence on the next classic revival (Hamlet, A Doll's House…).
+// ───────────────────────────────────────────────────────────────────────────
+
+const RJ_2026 = {
+  id: 'romeo-and-juliet-off-broadway-2026-fixture',
+  title: 'Romeo and Juliet',
+  category: 'off-broadway',
+  previewsStartDate: '2026-05-22',
+  openingDate: '2026-06-11',
+  closingDate: '2026-06-28',
+  venue: 'Public Theater/Delacorte Theater',
+};
+const RJ_2024_BROADWAY = {
+  id: 'romeo-juliet-2024-fixture',
+  title: 'Romeo + Juliet',
+  category: 'broadway',
+  previewsStartDate: '2024-09-26',
+  openingDate: '2024-10-24',
+  closingDate: '2025-02-16',
+  venue: 'Circle in the Square Theatre',
+};
+
+function assert(cond, label, failures) {
+  if (cond) {
+    console.log(`  ✓ ${label}`);
+  } else {
+    console.log(`  ✗ ${label}`);
+    failures.push(label);
+  }
+}
+
+function runSameTitleAndVenueFixtures() {
+  console.log('\n[same-title-venue-regression] Running same-title/different-year + festival-venue fixtures…');
+  const failures = [];
+
+  // 1. In-window reviews of the NEW production are recognized as in-window.
+  assert(
+    isReviewWithinOwnProductionWindow(RJ_2026, '2026-06-12T06:57:12-04:00') === true,
+    'opening-day review (2026-06-12) is inside R&J 2026 own window',
+    failures,
+  );
+  assert(
+    isReviewWithinOwnProductionWindow(RJ_2026, '2026-05-25') === true,
+    'preview-week review (2026-05-25) is inside R&J 2026 own window',
+    failures,
+  );
+  // A 2024 Broadway review is NOT inside the 2026 production's window.
+  assert(
+    isReviewWithinOwnProductionWindow(RJ_2026, '2024-10-25') === false,
+    '2024 Broadway-era review is NOT inside R&J 2026 own window',
+    failures,
+  );
+
+  // 2. Same-title/different-year false positive: an in-window 2026 review that
+  //    the classifier wrongly attributes to the 2024 Broadway production is
+  //    recognized as a false positive (forced CORRECT).
+  assert(
+    isSameTitleDifferentYearFalsePositive(RJ_2026, '2026-06-12', RJ_2024_BROADWAY) === true,
+    'in-window 2026 review mis-attributed to 2024 Broadway → flagged as false positive',
+    failures,
+  );
+  //    A genuinely 2024-era review is NOT exempted (out of the 2026 window).
+  assert(
+    isSameTitleDifferentYearFalsePositive(RJ_2026, '2024-10-25', RJ_2024_BROADWAY) === false,
+    '2024-era review (out of 2026 window) is NOT exempted',
+    failures,
+  );
+  //    A truly concurrent same-title production near publish time is NOT exempted.
+  const CONCURRENT = { ...RJ_2024_BROADWAY, previewsStartDate: '2026-06-01', openingDate: '2026-06-10', closingDate: '2026-07-30' };
+  assert(
+    isSameTitleDifferentYearFalsePositive(RJ_2026, '2026-06-12', CONCURRENT) === false,
+    'concurrent same-title production near publish time is NOT exempted',
+    failures,
+  );
+
+  // 3. Festival-venue carve-out: a Delacorte review flagged wrongProduction purely
+  //    on the "not an Off-Broadway venue" objection has the flag cleared.
+  const venueCv = applyVenueClassificationCarveout(
+    {
+      wrongProduction: true,
+      isValid: false,
+      issues: ['Review describes Shakespeare in the Park production at Delacorte Theater, which is NOT an Off-Broadway venue'],
+      reasoning: 'This is a legitimate review of a contemporary-set Romeo and Juliet at the Delacorte Theater in Central Park, not an Off-Broadway indoor production.',
+    },
+    RJ_2026,
+  );
+  assert(venueCv.clearedWrongProduction === true, 'venue-only objection clears wrongProduction', failures);
+  assert(venueCv.restoredValidity === true, 'venue-only objection restores isValid=true', failures);
+
+  //    But a Delacorte review with a REAL non-venue problem (truncation) keeps
+  //    isValid=false — the carve-out only neutralizes the venue-only case.
+  const venueCvTruncated = applyVenueClassificationCarveout(
+    {
+      wrongProduction: true,
+      isValid: false,
+      issues: [
+        'Delacorte Theater is NOT an Off-Broadway venue',
+        'Text is truncated mid-sentence at end',
+        'Known excerpt does not appear in scraped content',
+      ],
+      reasoning: 'Legitimate Romeo and Juliet review at the Delacorte / Shakespeare in the Park, but truncated.',
+    },
+    RJ_2026,
+  );
+  assert(venueCvTruncated.clearedWrongProduction === true, 'venue objection clears wrongProduction even with truncation', failures);
+  assert(venueCvTruncated.restoredValidity === false, 'truncated Delacorte review stays isValid=false (not venue-only)', failures);
+
+  //    An ordinary (non-festival) show is unaffected by the carve-out.
+  const ordinaryCv = applyVenueClassificationCarveout(
+    {
+      wrongProduction: true,
+      isValid: false,
+      issues: ['Review describes the Kennedy Center tryout, not the Broadway production'],
+      reasoning: 'This review evaluates the pre-Broadway Kennedy Center run.',
+    },
+    { venue: 'Shubert Theatre', category: 'broadway' },
+  );
+  assert(ordinaryCv.clearedWrongProduction === false, 'ordinary-venue wrongProduction is NOT cleared by festival carve-out', failures);
+
+  if (failures.length > 0) {
+    console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    console.log(`❌ FAIL — same-title/venue regression (${failures.length} assertion(s))`);
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    console.log('These guards prevent same-title revivals (R&J Delacorte 2026) from being');
+    console.log('false-flagged as a different-year production and dropped from reviews.json.');
+    console.log('See: memory/feedback_llm_wrongprod_false_positives.md');
+    return false;
+  }
+  console.log('✅ PASS — same-title/different-year + festival-venue guards intact.');
+  return true;
 }
 
 try {
-  main();
+  const temporalOk = main();
+  const sameTitleOk = runSameTitleAndVenueFixtures();
+  process.exit(temporalOk && sameTitleOk ? 0 : 1);
 } catch (e) {
   console.error(`[temporal-regression] fatal: ${e.message}`);
   console.error(e.stack);
