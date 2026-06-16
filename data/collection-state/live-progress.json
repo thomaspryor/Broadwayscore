@@ -1,44 +1,22 @@
 {
-  "updatedAt": "2026-06-16T08:16:18.118Z",
-  "processed": 407,
-  "failed": 546,
-  "successRate": "42.7%",
+  "updatedAt": "2026-06-16T08:23:51.185Z",
+  "processed": 410,
+  "failed": 553,
+  "successRate": "42.6%",
   "tierBreakdown": {
     "playwright": 188,
     "amp": 1,
-    "browserbase": 94,
+    "browserbase": 95,
     "directCookies": 0,
-    "scrapingbee": 89,
-    "brightdata": 53,
+    "scrapingbee": 90,
+    "brightdata": 54,
     "archiveToday": 14,
-    "archive": 143
+    "archive": 145
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-06-16T01:33:29.208Z",
-      "event": "bb-session",
-      "session": "3f08bbbb",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
-    {
-      "t": "2026-06-16T10:47:25.824Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-16T10:48:30.929Z",
-      "event": "bb-session",
-      "session": "868f84f4",
-      "url": "https://www.nytimes.com/2026/06/01/arts/andy-halliday-dead.html"
-    },
-    {
-      "t": "2026-06-16T10:48:31.874Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-16T11:19:22.476Z",
+      "t": "2026-06-16T02:13:49.161Z",
       "event": "bb-session",
       "session": "4d8e8ced",
       "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
@@ -124,6 +102,28 @@
       "t": "2026-06-16T08:01:18.398Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-16T08:16:48.917Z",
+      "event": "bb-session",
+      "session": "1a1da122",
+      "url": "https://observer.com/2017/01/romeo-and-juliet-opera-review-met/"
+    },
+    {
+      "t": "2026-06-16T08:16:49.329Z",
+      "event": "bb-cookie-inject",
+      "domain": "observer.com"
+    },
+    {
+      "t": "2026-06-16T08:20:22.740Z",
+      "event": "bb-session",
+      "session": "791ebf77",
+      "url": "http://www.talkinbroadway.com/page/regional/boston/b622.html"
+    },
+    {
+      "t": "2026-06-16T08:20:23.873Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
