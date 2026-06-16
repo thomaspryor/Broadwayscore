@@ -313,13 +313,41 @@ function isSameTitleDifferentYearFalsePositive(show, publishDate, targetShow = n
  * venues, so a genuine wrong-venue / tour review on an ordinary show is
  * unaffected.
  */
-const FESTIVAL_VENUE_SHOW_RE = /delacorte|shakespeare in the park|public theat(?:er|re)/i;
+// Scoped to the OUTDOOR festival stage only (Delacorte / Free Shakespeare in the
+// Park). Deliberately does NOT match the broader "Public Theater" family — the
+// Public's indoor Newman / Anspacher / LuEsther / Joe's Pub stages are
+// unambiguously off-broadway and carry no "is this Off-Broadway?" taxonomy
+// quibble, so the carve-out must not widen to them (ship-check P0, 2026-06-16).
+const FESTIVAL_VENUE_SHOW_RE = /delacorte|shakespeare in the park/i;
 
 // An issue / reasoning fragment is a "venue-classification objection" when it
 // argues the venue isn't Off-Broadway / is an outdoor festival stage, rather
 // than identifying wrong content. Anchored to festival-venue vocabulary so
 // truncation / byline / excerpt-mismatch issues are NOT swept up.
 const VENUE_CLASSIFICATION_OBJECTION_RE = /(?:not\b[^.]*\boff-?broadway|off-?broadway[^.]*\bnot\b|shakespeare in the park|delacorte|outdoor (?:summer )?festival|central park)/i;
+
+// A fragment that asserts a genuinely DIFFERENT production (not a venue-taxonomy
+// quibble): a comparative production reference, an explicit wrong-show/wrong-
+// production phrase, or the SHOW (not an excerpt) being absent from the text.
+// A year-mismatch check is layered on in reasoningAssertsDifferentProduction().
+// Used to veto the venue carve-out so a real different-year/different-cast review
+// at the SAME festival stage (e.g. "the 2023 Delacorte staging, not the 2026
+// one") is NOT cleared.
+//
+// Deliberately precise — does NOT reuse hasStrongDifferentShowSignal here because
+// its broad `/does not appear in/i` marker collides with the legitimate
+// excerpt-mismatch phrasing ("the known excerpt does not appear in the scraped
+// text") that the real R&J/NYSR venue-objection CV carries. The show-absence
+// alternative below is subject-anchored to show/production/play/musical/title so
+// "the excerpt does not appear" does NOT trip it.
+const DIFFERENT_PRODUCTION_ASSERTION_RE = new RegExp([
+  '\\b(?:different|another|separate|earlier|prior|previous|original|other)\\s+(?:cast|director|production|staging|show|mounting|revival|version|season|run|engagement|company)\\b',
+  '\\breviews?\\s+(?:a|an|the)?\\s*different\\s+show\\b',
+  '\\bwrong\\s+production\\b',
+  '\\b(?:completely|entirely)\\s+different\\s+(?:show|production)\\b',
+  '\\bdifferent\\s+(?:show|production)\\s+entirely\\b',
+  '\\b(?:expected\\s+show|the\\s+show|the\\s+production|the\\s+play|the\\s+musical|the\\s+title)\\b[^.]*\\bdoes(?:n.?t| not)\\s+appear\\b',
+].join('|'), 'i');
 
 function isVenueClassificationObjection(text) {
   if (!text) return false;
@@ -328,6 +356,18 @@ function isVenueClassificationObjection(text) {
 
 function showHasFestivalVenue(show) {
   return !!(show && show.venue && FESTIVAL_VENUE_SHOW_RE.test(show.venue));
+}
+
+function reasoningAssertsDifferentProduction(text, show) {
+  const t = String(text || '');
+  if (DIFFERENT_PRODUCTION_ASSERTION_RE.test(t)) return true;
+  // Any 20xx year that differs from this show's own year → different-year staging.
+  const showYear = String((show && (show.openingDate || show.previewsStartDate)) || '').slice(0, 4);
+  if (/^\d{4}$/.test(showYear)) {
+    const years = t.match(/\b20\d{2}\b/g) || [];
+    if (years.some(y => y !== showYear)) return true;
+  }
+  return false;
 }
 
 /**
@@ -363,13 +403,17 @@ function applyVenueClassificationCarveout(cv, show) {
   const otherIssues = issues.filter(i => !isVenueClassificationObjection(i));
   const reasoningIsVenue = isVenueClassificationObjection(reasoning);
 
-  // wrongProduction driven by the venue objection → clear. Belt-and-suspenders:
-  // never clear when the LLM's own REASONING carries a strong "different show"
-  // marker (that is real wrong content, not a venue-taxonomy quibble). We check
-  // the reasoning only — the issues array is noisy (truncation/excerpt-mismatch
-  // complaints like "excerpt does not appear in scraped content" match the
-  // over-broad wrong-show markers and would otherwise veto a legit carve-out).
-  if (out.wrongProduction && reasoningIsVenue && !hasStrongDifferentShowSignal([], reasoning)) {
+  // wrongProduction driven by the venue objection → clear, UNLESS a
+  // different-production assertion (comparative cast/director/staging, an
+  // explicit wrong-show/wrong-production phrase, the SHOW being absent, or a
+  // year ≠ this show's) appears anywhere in the reasoning OR issues. This
+  // catches "the 2023 Delacorte staging, not the 2026 one" and "Reviews a
+  // different show" without colliding with the excerpt-mismatch phrasing the
+  // legit R&J/NYSR venue objection carries. (ship-check P0, 2026-06-16.)
+  const venueClearText = [reasoning, ...issues].join(' | ');
+  if (out.wrongProduction
+      && reasoningIsVenue
+      && !reasoningAssertsDifferentProduction(venueClearText, show)) {
     out.wrongProduction = false;
     out.clearedWrongProduction = true;
     out.venueCarveoutApplied = true;
@@ -2698,6 +2742,7 @@ module.exports = {
   applyVenueClassificationCarveout,
   isVenueClassificationObjection,
   showHasFestivalVenue,
+  reasoningAssertsDifferentProduction,
   hasStrongDifferentShowSignal,
   hasNamedDifferentDirectorSignal,
   STRONG_DIFFERENT_SHOW_MARKERS,

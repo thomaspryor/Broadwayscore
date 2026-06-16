@@ -39,7 +39,7 @@ const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTL
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
 const { shouldRejectAsReservation, isInternalNote, hasCopyrightChrome, stripLeadingChrome } = require('./lib/pull-quote-guards');
 const { emitStage } = require('./lib/stage-latency');
-const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipRoundupAudit, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, applyVenueClassificationCarveout } = require('./lib/review-guards');
+const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipRoundupAudit, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl } = require('./lib/rebuild-helpers');
@@ -1380,7 +1380,13 @@ const crossShowFingerprints = new Map();
         // wrongProduction is purely a "Delacorte/Shakespeare-in-the-Park is not an
         // Off-Broadway venue" objection must not be promoted. New CV writes already
         // clear it at verify time; this protects rows verified before the fix.
-        const ppVenueCarveout = applyVenueClassificationCarveout(cv, showById[sid]).clearedWrongProduction;
+        // Gated (ship-check P0, 2026-06-16): only suppress (a) when the review is
+        // in THIS show's own run window — never on reasoning text alone — and (b)
+        // when it is NOT the cvLowButStrong path, so the Schmigadoon EBT "different
+        // show" strong-signal promotion is preserved.
+        const ppVenueCarveout = !cvLowButStrong
+          && applyVenueClassificationCarveout(cv, showById[sid]).clearedWrongProduction
+          && isReviewWithinOwnProductionWindow(showById[sid], d.publishDate);
         if (cv.wrongProduction === true && d.wrongProduction !== true
             && !shouldSkipWrongProductionAudit(d) && !d.allowEarlyDate && !d.allowCrossMarket
             && !ppCvWpAdvisory && !ppInPriorRun && !ppVenueCarveout) {

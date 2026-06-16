@@ -30,6 +30,7 @@ const {
   applyVenueClassificationCarveout,
   isVenueClassificationObjection,
   showHasFestivalVenue,
+  reasoningAssertsDifferentProduction,
 } = require('../../scripts/lib/review-guards.js');
 
 const RJ_2026 = {
@@ -92,15 +93,33 @@ describe('isSameTitleDifferentYearFalsePositive', () => {
 });
 
 describe('festival-venue helpers', () => {
-  test('Delacorte / Public Theater venue is recognized as festival venue', () => {
+  test('Delacorte venue is recognized as festival venue', () => {
     assert.strictEqual(showHasFestivalVenue(RJ_2026), true);
     assert.strictEqual(showHasFestivalVenue({ venue: 'Shubert Theatre' }), false);
+  });
+  test('indoor Public Theater stages are NOT festival venues (ship-check P0)', () => {
+    // The carve-out must not widen to the Public's indoor off-broadway stages.
+    assert.strictEqual(showHasFestivalVenue({ venue: 'The Public Theater / Newman Theater' }), false);
+    assert.strictEqual(showHasFestivalVenue({ venue: "Joe's Pub at the Public Theater" }), false);
+    assert.strictEqual(showHasFestivalVenue({ venue: 'Public Theater - Anspacher Theater' }), false);
   });
   test('venue-classification objection detector', () => {
     assert.strictEqual(isVenueClassificationObjection('Delacorte Theater is NOT an Off-Broadway venue'), true);
     assert.strictEqual(isVenueClassificationObjection('an outdoor summer festival production in Central Park'), true);
     assert.strictEqual(isVenueClassificationObjection('Text is truncated mid-sentence at end'), false);
     assert.strictEqual(isVenueClassificationObjection('Known excerpt does not appear in scraped content'), false);
+  });
+  test('reasoningAssertsDifferentProduction — year-aware different-production detector', () => {
+    // Different year than the show → different production.
+    assert.strictEqual(reasoningAssertsDifferentProduction('the 2023 Delacorte staging, not the 2026 one', RJ_2026), true);
+    // Comparative production reference.
+    assert.strictEqual(reasoningAssertsDifferentProduction('different cast and director', RJ_2026), true);
+    assert.strictEqual(reasoningAssertsDifferentProduction('Reviews a different show', RJ_2026), true);
+    // Legit R&J reasoning: correct present-tense production, no other year → false.
+    assert.strictEqual(reasoningAssertsDifferentProduction(
+      'reviewing the Shakespeare in the Park production at the Delacorte Theater in Central Park, not an Off-Broadway indoor production', RJ_2026), false);
+    // The show's own year is not a different-production signal.
+    assert.strictEqual(reasoningAssertsDifferentProduction('the 2026 Shakespeare in the Park production', RJ_2026), false);
   });
 });
 
@@ -153,6 +172,26 @@ describe('applyVenueClassificationCarveout', () => {
       reasoning: 'The expected show does not appear in the text — this reviews a different show entirely about an outdoor festival.',
     }, RJ_2026);
     assert.strictEqual(r.clearedWrongProduction, false, 'strong wrong-show signal in reasoning must veto the carve-out');
+  });
+
+  test('does NOT clear a genuine different-YEAR review at the same festival stage (ship-check P0)', () => {
+    const r = applyVenueClassificationCarveout({
+      wrongProduction: true,
+      isValid: false,
+      issues: ['Delacorte / Central Park venue'],
+      reasoning: 'This reviews the 2023 Delacorte Shakespeare in the Park production, not the 2026 staging filed here. Different cast and director.',
+    }, RJ_2026);
+    assert.strictEqual(r.clearedWrongProduction, false, 'a real prior-year Delacorte review must not be cleared');
+  });
+
+  test('does NOT clear when an ISSUE asserts a different show (ship-check P0)', () => {
+    const r = applyVenueClassificationCarveout({
+      wrongProduction: true,
+      isValid: false,
+      issues: ['Reviews a different show', 'Delacorte is not an Off-Broadway venue'],
+      reasoning: 'This is the Delacorte production in Central Park, not an Off-Broadway house.',
+    }, RJ_2026);
+    assert.strictEqual(r.clearedWrongProduction, false, 'a wrong-show issue must veto the carve-out even if reasoning is venue-only');
   });
 
   test('input is not mutated', () => {
