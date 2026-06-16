@@ -412,7 +412,11 @@
     "jekyll-and-hyde-2013/newsday--matt-windman.json",
     "hands-on-a-hardbody-2013/newsday--linda-winer.json",
     "hands-on-a-hardbody-2013/timeout--david-cote.json",
-    "hands-on-a-hardbody-2013/amny--matt-windman.json"
+    "hands-on-a-hardbody-2013/amny--matt-windman.json",
+    "vanya-and-sonia-and-masha-and-spike-2013/village-voice--michael-musto.json",
+    "ann-2013/newsday--matt-windman.json",
+    "ann-2013/village-voice--michael-musto.json",
+    "cat-on-a-hot-tin-roof-2013/boston-globe--don-aucoin.json"
   ],
   "failed": [
     "are-you-now-or-have-you-ever-been-off-broadway-2026/theatermania--unknown.json",
@@ -984,7 +988,13 @@
     "kinky-boots-2013/cititour--brian-scott-lipton.json",
     "kinky-boots-2013/talkinbroadway--matthew-murray.json",
     "lucky-guy-2013/backstage--erik-haagensen.json",
-    "hands-on-a-hardbody-2013/wsj--terry-teachout.json"
+    "hands-on-a-hardbody-2013/wsj--terry-teachout.json",
+    "hands-on-a-hardbody-2013/talkinbroadway--matthew-murray.json",
+    "breakfast-at-tiffanys-2013/wsj--terry-teachout.json",
+    "vanya-and-sonia-and-masha-and-spike-2013/new-jersey-newsroom--michael-sommers.json",
+    "vanya-and-sonia-and-masha-and-spike-2013/talkinbroadway--matthew-murray.json",
+    "cat-on-a-hot-tin-roof-2013/timeout--david-cote.json",
+    "picnic-2013/theatermania--david-rooney.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1372,7 +1382,8 @@
       "ill-eat-you-last-a-chat-with-sue-mengers-2013/timeout--adam-feldman.json",
       "the-nance-2013/timeout--david-cote.json",
       "hands-on-a-hardbody-2013/newsday--linda-winer.json",
-      "hands-on-a-hardbody-2013/timeout--david-cote.json"
+      "hands-on-a-hardbody-2013/timeout--david-cote.json",
+      "cat-on-a-hot-tin-roof-2013/timeout--david-cote.json"
     ],
     "brightdata": [
       "romeo-and-juliet-off-broadway-2026/talkinbroadway--unknown.json",
@@ -1428,7 +1439,9 @@
       "amazing-grace-2015/wsj--terry-teachout.json",
       "the-river-2014/amny--matt-windman.json",
       "all-the-way-2014/amny--matt-windman.json",
-      "jekyll-and-hyde-2013/newsday--matt-windman.json"
+      "jekyll-and-hyde-2013/newsday--matt-windman.json",
+      "ann-2013/newsday--matt-windman.json",
+      "cat-on-a-hot-tin-roof-2013/boston-globe--don-aucoin.json"
     ],
     "archiveToday": [
       "data/review-texts/romeo-and-juliet-off-broadway-2026/talkinbroadway--unknown.json",
@@ -1594,11 +1607,13 @@
       "ifthen-2014/northjerseycom--robert-feldberg.json",
       "big-fish-2013/ew--thom-geier.json",
       "romeo-and-juliet-2013/timeout--david-cote.json",
-      "hands-on-a-hardbody-2013/amny--matt-windman.json"
+      "hands-on-a-hardbody-2013/amny--matt-windman.json",
+      "vanya-and-sonia-and-masha-and-spike-2013/village-voice--michael-musto.json",
+      "ann-2013/village-voice--michael-musto.json"
     ]
   },
   "startTime": "2026-06-15T17:52:29.115Z",
-  "lastProcessed": "hands-on-a-hardbody-2013/amny--matt-windman.json",
+  "lastProcessed": "picnic-2013/theatermania--david-rooney.json",
   "log": [
     {
       "t": "2026-06-15T19:32:37.188Z",
@@ -1893,6 +1908,39 @@
       "t": "2026-06-16T08:41:18.637Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-16T08:44:27.755Z",
+      "event": "bb-session",
+      "session": "6b2eb0c8",
+      "url": "https://www.wsj.com/articles/SB10001424127887324503204578353343071539398"
+    },
+    {
+      "t": "2026-06-16T08:44:28.179Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-16T08:44:58.777Z",
+      "event": "bb-session",
+      "session": "42c00970",
+      "url": "http://www.talkinbroadway.com/world/HandsHardbody.html"
+    },
+    {
+      "t": "2026-06-16T08:44:59.190Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-16T08:48:02.728Z",
+      "event": "bb-session",
+      "session": "264bbcc3",
+      "url": "https://www.talkinbroadway.com/world/VanyaSoniaMashaSpike.html"
+    },
+    {
+      "t": "2026-06-16T08:48:03.229Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
