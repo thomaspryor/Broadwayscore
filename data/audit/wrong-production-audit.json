@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-16T07:40:34.533Z",
+  "timestamp": "2026-06-16T11:00:13.873Z",
   "stats": {
-    "totalReviews": 38456,
-    "alreadyFlagged": 16892,
+    "totalReviews": 38464,
+    "alreadyFlagged": 16897,
     "dateGuardCatches": 106,
-    "directorMismatch": 858,
-    "tvFilmSignals": 1056,
-    "londonSignals": 629,
+    "directorMismatch": 859,
+    "tvFilmSignals": 1057,
+    "londonSignals": 630,
     "offBroadwaySignals": 463,
     "yearMismatch": 82,
-    "noPublishDate": 3995
+    "noPublishDate": 3997
   },
   "findings": [
     {
@@ -5197,6 +5197,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2012",
+      "file": "wsj--terry-teachout.json",
+      "score": 76,
+      "publishDate": "2012-03-15T20:42:51-04:00",
+      "url": "http://online.wsj.com/article/SB10001424052702304692804577281333864897356.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"george c. scott\" from death-of-a-salesman-1975"
         }
       ]
     },
@@ -13383,6 +13397,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "lysistrata-jones-2011",
+      "file": "variety--steven-suskin.json",
+      "score": 80,
+      "publishDate": "December 14, 2011",
+      "url": "http://www.variety.com/review/VE1117946753?refCatId=33",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hulu\""
         }
       ]
     },
@@ -32660,6 +32688,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "lbc--johnny-jenkins.json",
+      "score": 91,
+      "publishDate": "2026-04-08",
+      "url": "https://www.lbc.co.uk/article/inter-alia-review-best-plays-ever-seen-5HjdXRZ_2/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
