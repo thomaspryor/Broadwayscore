@@ -1,6 +1,8 @@
 {
   "processed": [
-    "war-horse-west-end-2026/click-liverpool--carie-schneider.json"
+    "war-horse-west-end-2026/click-liverpool--carie-schneider.json",
+    "beetlejuice-west-end-2026/guardian-uk--unknown.json",
+    "dark-of-the-moon-west-end-2026/guardian--arifa-akbar.json"
   ],
   "failed": [
     "are-you-watching-west-end-2026/all-that-dazzles-uk--unknown.json",
@@ -11,22 +13,40 @@
     "driftwood-west-end-2026/standard--nick-curtis.json",
     "driftwood-west-end-2026/times-uk--clive-davis.json",
     "war-horse-west-end-2026/all-that-dazzles-uk--unknown.json",
-    "war-horse-west-end-2026/plays-international--maryam-philpott.json"
+    "war-horse-west-end-2026/plays-international--maryam-philpott.json",
+    "war-horse-west-end-2026/times-uk--chris-bennion.json",
+    "war-horse-west-end-2026/times-uk--clive-davis.json",
+    "beetlejuice-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "beetlejuice-west-end-2026/amny--matt-windman.json",
+    "the-p-word-off-west-end-2026/whatsonstage--frey-kwa-hawking.json",
+    "dark-of-the-moon-west-end-2026/guardian-uk--unknown.json",
+    "dark-of-the-moon-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "dark-of-the-moon-west-end-2026/cambridge--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "war-horse-west-end-2026/click-liverpool--carie-schneider.json"
+      "war-horse-west-end-2026/click-liverpool--carie-schneider.json",
+      "beetlejuice-west-end-2026/guardian-uk--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "dark-of-the-moon-west-end-2026/guardian--arifa-akbar.json"
+    ],
     "archiveToday": [],
     "archive": []
   },
   "startTime": "2026-06-16T19:53:17.747Z",
-  "lastProcessed": "war-horse-west-end-2026/plays-international--maryam-philpott.json",
-  "log": []
+  "lastProcessed": "dark-of-the-moon-west-end-2026/cambridge--unknown.json",
+  "log": [
+    {
+      "t": "2026-06-16T19:57:34.456Z",
+      "event": "bb-session",
+      "session": "dd4786fb",
+      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
+    }
+  ]
 }
