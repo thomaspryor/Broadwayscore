@@ -24,6 +24,7 @@ interface BigFourRow {
 interface LeaderboardEntry {
   name: string;
   org: string | null;
+  group?: string;
   correct: number;
   attempted: number;
   highlight?: boolean;
@@ -67,10 +68,6 @@ function HitPill({ pick, hit }: { pick: string | null; hit: boolean | null }) {
 export function PredictionRetrospective({ ceremonyYear }: { ceremonyYear: number }) {
   const retro = getRetrospective(ceremonyYear);
   if (!retro) return null;
-
-  const sortedLeaderboard = [...retro.leaderboard].sort(
-    (a, b) => b.correct / b.attempted - a.correct / a.attempted
-  );
 
   return (
     <section className="mb-10">
@@ -141,25 +138,33 @@ export function PredictionRetrospective({ ceremonyYear }: { ceremonyYear: number
         <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Full-Ballot Leaderboard</h3>
         <p className="text-[11px] text-gray-500 mb-3">Share of predicted categories called correctly.</p>
         <div className="space-y-1.5">
-          {sortedLeaderboard.map(entry => {
+          {retro.leaderboard.map((entry, idx) => {
             const pct = Math.round((entry.correct / entry.attempted) * 100);
+            const showGroup = !!entry.group && entry.group !== retro.leaderboard[idx - 1]?.group;
             return (
-              <div key={entry.name} className="flex items-center gap-3">
-                <div className="w-44 sm:w-56 flex-shrink-0 text-[13px] font-medium text-white truncate">
-                  {entry.name}
-                  {entry.org && <span className="text-gray-500 font-normal"> · {entry.org}</span>}
+              <Fragment key={entry.name}>
+                {showGroup && (
+                  <div className="pt-2.5 pb-0.5">
+                    <span className="text-[10px] font-bold text-brand/80 uppercase tracking-[0.14em]">{entry.group}</span>
+                  </div>
+                )}
+                <div className="flex items-center gap-3">
+                  <div className="w-44 sm:w-56 flex-shrink-0 text-[13px] font-medium text-white truncate">
+                    {entry.name}
+                    {entry.org && <span className="text-gray-500 font-normal"> · {entry.org}</span>}
+                  </div>
+                  <div className="flex-1 h-4 rounded bg-white/5 overflow-hidden">
+                    <div
+                      className={`h-full rounded ${entry.highlight ? 'bg-emerald-500/70' : 'bg-brand/60'}`}
+                      style={{ width: `${pct}%` }}
+                    />
+                  </div>
+                  <div className="w-10 text-right text-[13px] font-bold text-white tabular-nums">{pct}%</div>
+                  <div className="w-12 text-right text-[11px] text-gray-500 tabular-nums">
+                    {entry.correct}/{entry.attempted}
+                  </div>
                 </div>
-                <div className="flex-1 h-4 rounded bg-white/5 overflow-hidden">
-                  <div
-                    className={`h-full rounded ${entry.highlight ? 'bg-emerald-500/70' : 'bg-brand/60'}`}
-                    style={{ width: `${pct}%` }}
-                  />
-                </div>
-                <div className="w-10 text-right text-[13px] font-bold text-white tabular-nums">{pct}%</div>
-                <div className="w-12 text-right text-[11px] text-gray-500 tabular-nums">
-                  {entry.correct}/{entry.attempted}
-                </div>
-              </div>
+              </Fragment>
             );
           })}
         </div>
