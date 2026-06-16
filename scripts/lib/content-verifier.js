@@ -17,7 +17,7 @@ const https = require('https');
 const crypto = require('crypto');
 const { GEMINI_FLASH, GPT4O_MINI, CLAUDE_HAIKU, CLAUDE_SONNET } = require('./models');
 const { isLondonMarket } = require('./venue-classification');
-const { applyTemporalOverrides } = require('./review-guards');
+const { applyTemporalOverrides, applyVenueClassificationCarveout } = require('./review-guards');
 const { buildVenueContext: _expandVenueContext } = require('./venue-aliases');
 const { getCvStyle } = require('./outlet-canonicalize');
 const { hasOpinionLanguage } = require('./content-quality');
@@ -490,6 +490,8 @@ ${wrongProdList}
 
 - **American Airlines Theatre / Todd Haimes Theatre** is on Broadway at 227 W 42nd Street (Roundabout's venue). It is NOT in Washington DC even if the review is in the Washington Post. Do not confuse it with the name.
 
+- **Venue TAXONOMY is never wrongProduction.** Whether a venue "counts as" Off-Broadway / Broadway / a festival stage is a classification question, NOT evidence about which production the review is of. The Public Theater's Delacorte Theater (Free Shakespeare in the Park) and similar NYC not-for-profit / outdoor festival stages are filed here under the expected category — a review correctly describing that staging is the RIGHT production. Do NOT set wrongProduction=true, and do NOT set isValid=false, merely because a venue is "not technically Off-Broadway," is "an outdoor summer festival," or is "in Central Park." Only flag when the OPINION-bearing content evaluates a genuinely different staging (different cast/director/season).
+
 ${effectiveMarket === 'broadway' ? `- **Touring company playing AT a Broadway venue (CRITICAL EDGE CASE):** Sometimes a Broadway show entry IS a touring company doing a limited engagement at a Broadway venue (e.g., Mamma Mia 2025 at Winter Garden, The Wiz 2024 at Marquis). Critics may write "the national tour has settled into the [Broadway theatre]" or "this is a touring production playing on Broadway." This is CORRECT (not wrongProduction) — the Broadway show entry represents that specific limited engagement. The KEY signal: if the venue named in the review is a known Broadway theatre (Winter Garden, Marquis, Imperial, Booth, Shubert, Music Box, Majestic, Palace, St. James, etc.), lean CORRECT regardless of whether the production is described as "touring." Only flag wrongProduction when the venue is explicitly non-NYC (Curran SF, Ahmanson LA, Kennedy Center DC, Goodman Chicago, Cadillac Palace Chicago, etc.).` : ''}
 
 ${effectiveMarket === 'west-end' || effectiveMarket === 'off-west-end' ? `- **Touring company playing AT a West End venue:** Sometimes a West End show entry IS a touring company doing a limited run at a West End theatre. If the venue named is a West End theatre (Palace, Apollo, Lyceum London, Savoy, Dominion, etc.), lean CORRECT regardless of whether the production is described as "touring."
@@ -541,8 +543,27 @@ Set isValid=true only if the content is a review of the ${mc.label} production a
       wpConfidence = temporalOverrides.wpConfidence;
       filmTvFlag = temporalOverrides.filmTvFlag;
 
+      // Festival-venue carve-out (R&J Delacorte 2026-06-15): the Public
+      // Theater's Delacorte / Shakespeare-in-the-Park stage is filed off-broadway
+      // here. The LLM keeps treating "not an Off-Broadway venue" as wrongProduction
+      // and/or isValid=false on correctly-attributed reviews. Neutralize a
+      // venue-only objection deterministically so it can't drop a legit review.
+      let isValid = parsed.isValid ?? true;
+      const venueCarve = applyVenueClassificationCarveout(
+        { wrongProduction: wpFlag, isValid, issues: parsed.issues || [], reasoning: parsed.reasoning || '' },
+        show
+      );
+      if (venueCarve.venueCarveoutApplied) {
+        const parts = [];
+        if (venueCarve.clearedWrongProduction) parts.push('wrongProduction→false');
+        if (venueCarve.restoredValidity) parts.push('isValid→true');
+        console.log(`    ✓ Festival-venue carve-out (${show && show.venue}): ${parts.join(', ')} — venue classification is not wrong-production`);
+        wpFlag = venueCarve.wrongProduction;
+        isValid = venueCarve.isValid;
+      }
+
       return {
-        isValid: parsed.isValid ?? true,
+        isValid,
         confidence: wpFlag ? wpConfidence : filmTvFlag ? filmTvConfidence : (parsed.confidence || 'medium'),
         issues: parsed.issues || [],
         truncated: parsed.truncated || false,
