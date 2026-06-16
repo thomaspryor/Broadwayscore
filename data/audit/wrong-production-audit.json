@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-16T05:53:30.376Z",
+  "timestamp": "2026-06-16T07:40:34.533Z",
   "stats": {
-    "totalReviews": 38458,
-    "alreadyFlagged": 16891,
+    "totalReviews": 38456,
+    "alreadyFlagged": 16892,
     "dateGuardCatches": 106,
     "directorMismatch": 858,
     "tvFilmSignals": 1056,
     "londonSignals": 629,
     "offBroadwaySignals": 463,
     "yearMismatch": 82,
-    "noPublishDate": 3998
+    "noPublishDate": 3995
   },
   "findings": [
     {
@@ -11377,20 +11377,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"amazon prime\""
-        }
-      ]
-    },
-    {
-      "showId": "jekyll-and-hyde-2013",
-      "file": "newsday--linda-winer.json",
-      "score": 88,
-      "publishDate": "2013-04-18",
-      "url": "http://www.newsday.com/entertainment/theater/jekyll-hyde-review-schlock-opera-1.5092189",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -23141,6 +23127,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "the-other-place-2013",
+      "file": "newsday--linda-winer.json",
+      "score": 88,
+      "publishDate": "2013-01-09",
+      "url": "http://www.newsday.com/entertainment/theater/laurie-metcalf-in-the-other-place-review-1.4425612",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
