@@ -437,7 +437,8 @@
     "clybourne-park-2012/latimes--david-ng.json",
     "clybourne-park-2012/theatermania--dan-bacalzo.json",
     "evita-2012/ew--thom-geier.json",
-    "evita-2012/observer--rex-reed.json"
+    "evita-2012/observer--rex-reed.json",
+    "end-of-the-rainbow-2012/variety--marilyn-stasio.json"
   ],
   "failed": [
     "are-you-now-or-have-you-ever-been-off-broadway-2026/theatermania--unknown.json",
@@ -1064,7 +1065,16 @@
     "one-man-two-guvnors-2012/timeout--adam-feldman.json",
     "peter-and-the-starcatcher-2012/talkinbroadway--matthew-murray.json",
     "magicbird-2012/backstage--suzy-evans.json",
-    "evita-2012/talkinbroadway--matthew-murray.json"
+    "evita-2012/talkinbroadway--matthew-murray.json",
+    "end-of-the-rainbow-2012/wsj--terry-teachout.json",
+    "end-of-the-rainbow-2012/new-jersey-newsroom--michael-sommers.json",
+    "end-of-the-rainbow-2012/theatermania--david-rooney.json",
+    "end-of-the-rainbow-2012/talkinbroadway--matthew-murray.json",
+    "gore-vidals-the-best-man-2012/guardian--alexis-soloski.json",
+    "gore-vidals-the-best-man-2012/wsj--terry-teachout.json",
+    "newsies-the-musical-2012/wsj--terry-teachout.json",
+    "newsies-the-musical-2012/forward--jesse-green.json",
+    "newsies-the-musical-2012/ew--thom-geier.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1362,7 +1372,9 @@
       "data/review-texts/honeymoon-in-vegas-2015/wsj--terry-teachout.json",
       "honeymoon-in-vegas-2015/wsj--terry-teachout.json",
       "data/review-texts/romeo-and-juliet-2013/observer--unknown.json",
-      "data/review-texts/elf-2012/variety--marilyn-stasio.json"
+      "data/review-texts/elf-2012/variety--marilyn-stasio.json",
+      "data/review-texts/end-of-the-rainbow-2012/variety--marilyn-stasio.json",
+      "end-of-the-rainbow-2012/variety--marilyn-stasio.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1709,7 +1721,7 @@
     ]
   },
   "startTime": "2026-06-15T17:52:29.115Z",
-  "lastProcessed": "evita-2012/talkinbroadway--matthew-murray.json",
+  "lastProcessed": "newsies-the-musical-2012/ew--thom-geier.json",
   "log": [
     {
       "t": "2026-06-15T19:32:37.188Z",
@@ -2169,6 +2181,17 @@
       "t": "2026-06-16T09:42:16.228Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-06-16T09:49:54.429Z",
+      "event": "bb-session",
+      "session": "2e6f4942",
+      "url": "https://variety.com/2012/legit/reviews/end-of-the-rainbow-2-1117947353/"
+    },
+    {
+      "t": "2026-06-16T09:49:54.891Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

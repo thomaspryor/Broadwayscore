@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-16T09:48:53.512Z",
-  "processed": 438,
-  "failed": 625,
-  "successRate": "41.2%",
+  "updatedAt": "2026-06-16T09:56:29.263Z",
+  "processed": 439,
+  "failed": 634,
+  "successRate": "40.9%",
   "tierBreakdown": {
     "playwright": 193,
     "amp": 1,
-    "browserbase": 96,
+    "browserbase": 98,
     "directCookies": 0,
     "scrapingbee": 96,
     "brightdata": 64,
     "archiveToday": 14,
     "archive": 158
   },
-  "browserbaseSessions": 29,
+  "browserbaseSessions": 30,
   "recentActivity": [
-    {
-      "t": "2026-06-16T09:00:56.528Z",
-      "event": "bb-session",
-      "session": "0ff4a1e6",
-      "url": "https://www.wsj.com/articles/SB10001424127887323316804578165161669177646"
-    },
-    {
-      "t": "2026-06-16T09:00:56.983Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-06-16T09:04:20.380Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-06-16T09:42:16.228Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-06-16T09:49:54.429Z",
+      "event": "bb-session",
+      "session": "2e6f4942",
+      "url": "https://variety.com/2012/legit/reviews/end-of-the-rainbow-2-1117947353/"
+    },
+    {
+      "t": "2026-06-16T09:49:54.891Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
