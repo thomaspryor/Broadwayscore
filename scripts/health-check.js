@@ -131,6 +131,15 @@ const AUTO_FIX_PLAYBOOK = [
   { match: /^Cron failed:/, urgency: 'fix-now',
     humanAction: 'A critical scheduled workflow failed its most recent run. Open Claude Code and say: "Check what broke in {workflow} and fix it."' },
 
+  // Repeat workflow failures — promoted from a passive digest body section to a
+  // first-class check (2026-06-16, Notion 381637c5) so a workflow failing 2+
+  // times in 24h escalates (subject line, error count, auto-triage) instead of
+  // sitting silently. The check name carries the workflow, e.g.
+  // "Workflow repeat-failure: update-lottery-rush.yml". Self-resolves once the
+  // workflow stops failing.
+  { match: /^Workflow repeat-failure:/, urgency: 'fix-now',
+    humanAction: 'A workflow failed repeatedly in the last 24 hours — likely broken, not a transient blip. Open Claude Code and say: "Check what broke in this workflow and fix it." The Repeat Workflow Failures section below links each failing run.' },
+
   // Secrets — needs manual rotation
   { match: /^Secrets:/, urgency: 'fix-now',
     humanAction: 'A secret or API key may be expiring. On your Mac, open Claude Code and say: "Check which secrets need rotation and rotate them."' },
@@ -1061,6 +1070,26 @@ async function getWorkflowRunSummary() {
   }
 }
 
+// Promote repeat workflow failures into first-class check results so they flow
+// through the same subject-line / escalation / auto-triage machinery as every
+// other check, instead of sitting passively in a digest body section (the very
+// failure mode that let main test.yml fail 11/19 push runs over 2026-06-13→15
+// without bumping the digest off "All clear"). One result per offending
+// workflow: 'error' at 3+ failures (clearly broken), 'warn' at exactly 2 (could
+// still be a flaky double). Returns [] when there's nothing to surface — clean
+// window, or summary skipped (no GH token / API error). Pure (no IO) — unit-
+// tested in tests/unit/health-check-repeat-failures.test.mjs.
+function repeatFailureResults(workflowSummary) {
+  if (!workflowSummary || workflowSummary.skipped) return [];
+  const repeats = workflowSummary.repeatFailures || [];
+  return repeats.map(r => ({
+    name: `Workflow repeat-failure: ${r.name}`,
+    status: r.count >= 3 ? 'error' : 'warn',
+    message: `${r.name} failed ${r.count} times in the last 24h — likely broken, not transient.`,
+    hint: 'Open the latest run from the Repeat Workflow Failures section of the digest and fix the root cause.',
+  }));
+}
+
 // Simple HTTPS GET that returns parsed JSON
 function fetchJSON(url, headers) {
   return new Promise((resolve, reject) => {
@@ -1772,6 +1801,23 @@ async function main() {
     ...checkAPICredits(),
   ];
 
+  // Workflow run summary (last 24h) \u2014 fetched here, before the alerting block,
+  // so repeat failures can be promoted into allResults and escalate like any
+  // other check (subject line, consecutive-error days, auto-triage). CI-only:
+  // the summary is only ever consumed by the alerting/digest path (which the
+  // !isCI early return below skips), and gating the fetch keeps local runs from
+  // making live GitHub API calls / burning rate limit on every invocation.
+  let workflowSummary = null;
+  if (isCI) {
+    workflowSummary = await getWorkflowRunSummary();
+    if (workflowSummary.skipped) {
+      console.log('[Workflows] Skipped \u2014 no GH_TOKEN available');
+    } else {
+      console.log(`[Workflows] ${workflowSummary.succeeded} succeeded, ${workflowSummary.failed} failed (${workflowSummary.total} total in last 24h)`);
+    }
+    allResults.push(...repeatFailureResults(workflowSummary));
+  }
+
   // Print console summary
   const icons = { pass: '\u2705', warn: '\u26A0\uFE0F', error: '\u274C' };
   for (const r of allResults) {
@@ -1830,13 +1876,8 @@ async function main() {
     console.log(`[Auto-Fix] Fixed ${autoFixedCount} issue(s) automatically`);
   }
 
-  // Get workflow run summary for the digest
-  const workflowSummary = await getWorkflowRunSummary();
-  if (workflowSummary.skipped) {
-    console.log('[Workflows] Skipped — no GH_TOKEN available');
-  } else {
-    console.log(`[Workflows] ${workflowSummary.succeeded} succeeded, ${workflowSummary.failed} failed (${workflowSummary.total} total in last 24h)`);
-  }
+  // workflowSummary was fetched earlier (before the alerting block) so repeat
+  // failures could be promoted into allResults; reuse it for the digest body.
 
   // Send email digest (throws on failure → triggers notify-failure)
   await sendEmailDigest(allResults, history, workflowSummary, autoFixResults);
@@ -1862,4 +1903,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { buildObCandidatesHtml };
+module.exports = { buildObCandidatesHtml, repeatFailureResults, getDigestSubject, getPlaybookEntry };
