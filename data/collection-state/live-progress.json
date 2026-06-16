@@ -1,20 +1,26 @@
 {
-  "updatedAt": "2026-06-16T02:42:50.470Z",
+  "updatedAt": "2026-06-16T02:42:54.037Z",
   "processed": 287,
-  "failed": 468,
-  "successRate": "38.0%",
+  "failed": 465,
+  "successRate": "38.2%",
   "tierBreakdown": {
     "playwright": 152,
     "amp": 1,
-    "browserbase": 89,
+    "browserbase": 88,
     "directCookies": 0,
     "scrapingbee": 70,
     "brightdata": 38,
     "archiveToday": 11,
     "archive": 72
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 3,
   "recentActivity": [
+    {
+      "t": "2026-06-16T01:37:13.004Z",
+      "event": "bb-session",
+      "session": "b7d504c4",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
     {
       "t": "2026-06-16T01:37:13.577Z",
       "event": "bb-cookie-inject",
@@ -87,43 +93,37 @@
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-06-16T02:39:25.065Z",
+      "t": "2026-06-16T02:41:00.787Z",
       "event": "bb-session",
-      "session": "48abb67f",
+      "session": "a06ab6ff",
       "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
     },
     {
-      "t": "2026-06-16T02:39:26.165Z",
+      "t": "2026-06-16T02:41:01.411Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-06-16T02:40:00.084Z",
+      "t": "2026-06-16T02:41:33.796Z",
       "event": "bb-session",
-      "session": "322efb73",
+      "session": "42b94721",
       "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
     },
     {
-      "t": "2026-06-16T02:40:00.982Z",
+      "t": "2026-06-16T02:41:34.383Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     },
     {
-      "t": "2026-06-16T02:40:14.827Z",
+      "t": "2026-06-16T02:41:47.011Z",
       "event": "bb-session",
-      "session": "2e051f78",
+      "session": "986d5314",
       "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
     },
     {
-      "t": "2026-06-16T02:40:15.801Z",
+      "t": "2026-06-16T02:41:47.588Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-16T02:42:34.378Z",
-      "event": "bb-session",
-      "session": "20b50bd7",
-      "url": "https://theaterpizzazz.com/small-a-jockeys-indestructible-passion/"
     }
   ]
 }
