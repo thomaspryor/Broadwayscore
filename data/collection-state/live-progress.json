@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-06-16T11:55:10.329Z",
+  "updatedAt": "2026-06-16T11:55:13.958Z",
   "processed": 462,
-  "failed": 829,
-  "successRate": "35.8%",
+  "failed": 834,
+  "successRate": "35.6%",
   "tierBreakdown": {
     "playwright": 218,
     "amp": 1,
@@ -10,11 +10,38 @@
     "directCookies": 0,
     "scrapingbee": 98,
     "brightdata": 61,
-    "archiveToday": 15,
+    "archiveToday": 16,
     "archive": 157
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 1,
   "recentActivity": [
+    {
+      "t": "2026-06-16T10:18:21.932Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-16T10:18:54.623Z",
+      "event": "bb-session",
+      "session": "ceb71e46",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-16T10:18:55.580Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-16T10:19:08.748Z",
+      "event": "bb-session",
+      "session": "46122dda",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-16T10:19:09.733Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
     {
       "t": "2026-06-16T10:46:27.566Z",
       "event": "bb-session",
@@ -93,37 +120,10 @@
       "domain": "variety.com"
     },
     {
-      "t": "2026-06-16T11:52:50.587Z",
+      "t": "2026-06-16T11:54:32.652Z",
       "event": "bb-session",
-      "session": "9ef5e935",
-      "url": "https://www.nytimes.com/2026/06/03/theater/caissie-levy-broadway-tonys-ragtime.h"
-    },
-    {
-      "t": "2026-06-16T11:52:51.090Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-16T11:53:12.272Z",
-      "event": "bb-session",
-      "session": "e6cca7de",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-16T11:53:12.689Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-16T11:53:23.078Z",
-      "event": "bb-session",
-      "session": "177b0bc6",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
-    {
-      "t": "2026-06-16T11:53:23.500Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
+      "session": "08f30822",
+      "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-"
     }
   ]
 }
