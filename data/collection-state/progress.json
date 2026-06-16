@@ -491,7 +491,12 @@
     "the-little-foxes-2017/thestage--mark-shenton.json",
     "groundhog-day-2017/thestage--mark-shenton.json",
     "les-liaisons-dangereuses-2016/thestage--mark-shenton.json",
-    "tuck-everlasting-2016/thestage--mark-shenton.json"
+    "tuck-everlasting-2016/thestage--mark-shenton.json",
+    "blackbird-2016/wsj--terry-teachout.json",
+    "the-humans-2016/wsj--terry-teachout.json",
+    "noises-off-2016/thestage--mark-shenton.json",
+    "the-color-purple-2015/wsj--terry-teachout.json",
+    "a-view-from-the-bridge-2015/wsj--terry-teachout.json"
   ],
   "failed": [
     "are-you-now-or-have-you-ever-been-off-broadway-2026/theatermania--unknown.json",
@@ -1394,7 +1399,12 @@
     "heisenberg-2016/abc-news--mark-kennedy.json",
     "american-psycho-2016/ap--mark-kennedy.json",
     "the-father-2016/theater-life--paulanne-simmons.json",
-    "bright-star-2016/drama-queen-nyc--jonathan-warman.json"
+    "bright-star-2016/drama-queen-nyc--jonathan-warman.json",
+    "she-loves-me-2016/theater-life--eric-march.json",
+    "eclipsed-2016/nydailynews--joe-dziemianowicz.json",
+    "a-view-from-the-bridge-2015/financialtimes--sarah-hemming.json",
+    "the-gin-game-2015/vulture--jesse-green.json",
+    "the-gin-game-2015/ap--mark-kennedy.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1611,7 +1621,8 @@
       "groundhog-day-2017/thestage--mark-shenton.json",
       "sunday-in-the-park-with-george-2017/wnyc--jennifer-vanasco.json",
       "les-liaisons-dangereuses-2016/thestage--mark-shenton.json",
-      "tuck-everlasting-2016/thestage--mark-shenton.json"
+      "tuck-everlasting-2016/thestage--mark-shenton.json",
+      "noises-off-2016/thestage--mark-shenton.json"
     ],
     "amp": [
       "data/review-texts/maybe-happy-ending-2024/variety--unknown.json"
@@ -1716,7 +1727,15 @@
       "data/review-texts/end-of-the-rainbow-2012/variety--marilyn-stasio.json",
       "end-of-the-rainbow-2012/variety--marilyn-stasio.json",
       "data/review-texts/oh-mary-west-end-2025/variety--unknown.json",
-      "oh-mary-west-end-2025/variety--unknown.json"
+      "oh-mary-west-end-2025/variety--unknown.json",
+      "data/review-texts/blackbird-2016/wsj--terry-teachout.json",
+      "blackbird-2016/wsj--terry-teachout.json",
+      "data/review-texts/the-humans-2016/wsj--terry-teachout.json",
+      "the-humans-2016/wsj--terry-teachout.json",
+      "data/review-texts/the-color-purple-2015/wsj--terry-teachout.json",
+      "the-color-purple-2015/wsj--terry-teachout.json",
+      "data/review-texts/a-view-from-the-bridge-2015/wsj--terry-teachout.json",
+      "a-view-from-the-bridge-2015/wsj--terry-teachout.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1826,7 +1845,8 @@
       "all-my-sons-2019/theater-life--barry-gordin.json",
       "the-nap-2018/theater-life--barry-gordin.json",
       "come-from-away-2017/theater-life--paulanne-simmons.json",
-      "falsettos-2016/theater-life--eric-march.json"
+      "falsettos-2016/theater-life--eric-march.json",
+      "the-father-2016/theater-life--paulanne-simmons.json"
     ],
     "brightdata": [
       "romeo-and-juliet-off-broadway-2026/talkinbroadway--unknown.json",
@@ -2116,11 +2136,12 @@
       "present-laughter-2017/theater-life--isa-goldberg.json",
       "the-price-2017/theater-life--barry-gordin.json",
       "come-from-away-2017/theater-life--isa-goldberg.json",
-      "sunday-in-the-park-with-george-2017/theater-life--isa-goldberg.json"
+      "sunday-in-the-park-with-george-2017/theater-life--isa-goldberg.json",
+      "she-loves-me-2016/theater-life--eric-march.json"
     ]
   },
   "startTime": "2026-06-15T17:52:29.115Z",
-  "lastProcessed": "bright-star-2016/drama-queen-nyc--jonathan-warman.json",
+  "lastProcessed": "the-gin-game-2015/ap--mark-kennedy.json",
   "log": [
     {
       "t": "2026-06-15T19:32:37.188Z",
@@ -2624,6 +2645,50 @@
       "t": "2026-06-16T13:46:20.293Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-06-16T13:50:14.814Z",
+      "event": "bb-session",
+      "session": "4d63908f",
+      "url": "http://www.wsj.com/articles/blackbird-review-the-past-comes-back-to-haunt-you-14"
+    },
+    {
+      "t": "2026-06-16T13:50:15.271Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-16T13:50:41.753Z",
+      "event": "bb-session",
+      "session": "44f203b4",
+      "url": "http://www.wsj.com/articles/the-humans-review-dated-drama-kitchen-sink-and-all-1"
+    },
+    {
+      "t": "2026-06-16T13:50:42.243Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-16T13:51:38.531Z",
+      "event": "bb-session",
+      "session": "ccddb1f4",
+      "url": "http://www.wsj.com/articles/the-color-purple-review-new-star-in-the-broadway-sky"
+    },
+    {
+      "t": "2026-06-16T13:51:38.968Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-16T13:52:02.051Z",
+      "event": "bb-session",
+      "session": "70a57ca9",
+      "url": "http://www.wsj.com/articles/a-view-from-the-bridge-review-troubled-waters-of-sel"
+    },
+    {
+      "t": "2026-06-16T13:52:02.517Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
