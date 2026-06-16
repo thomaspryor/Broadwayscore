@@ -33,7 +33,7 @@
 const fs = require('fs');
 const path = require('path');
 const { searchAllPosts, collectCommentsFromPosts, getStats } = require('./lib/reddit-api');
-const { isRoundupOrMegathread, isGenericTitle, buildAudienceSearchQueries } = require('./lib/reddit-post-filters');
+const { isRoundupOrMegathread, buildAudienceSearchQueries } = require('./lib/reddit-post-filters');
 
 // A single roundup/megathread can hold hundreds of comments about dozens of
 // shows. Even after excluding such posts by title, cap how many comments any
@@ -251,13 +251,10 @@ async function searchAudiencePosts(subreddit, showTitle, maxPosts = 10000, { cat
   // r/opera and r/classicalmusic return decades of unrelated discussion (Met
   // 1985 Tristan, La Scala Traviata, etc.). Anchor every query to "Met" or
   // "Metropolitan Opera" so we get audience reactions to THIS production.
-  // Generic / collision-prone titles ("Music City", "Mercury", "Proof") pull
-  // unrelated chatter on a bare-phrase search. For them the weakest queries are
-  // market-anchored, and NO show ever runs a bare `"<title>"` query — the
-  // widest query is always anchored to the market. See reddit-post-filters.js.
-  const generic = isGenericTitle(showTitle);
-  const searches = buildAudienceSearchQueries({ cleanTitle, marketName, isWestEnd, isOpera, generic });
-  if (verbose && generic) console.log(`    (generic/collision-prone title — using market-anchored queries)`);
+  // The bare `"<title>"` query (the contamination vector for generic /
+  // collision-prone titles like "Music City"/"Mercury") is replaced by a
+  // market-anchored query for every show. See reddit-post-filters.js.
+  const searches = buildAudienceSearchQueries({ cleanTitle, marketName, isWestEnd, isOpera });
 
   const audiencePosts = [];  // Definitely audience
   const neutralPosts = [];   // Not clearly industry or audience

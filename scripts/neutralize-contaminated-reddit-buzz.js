@@ -46,7 +46,6 @@ function main() {
   const buzz = JSON.parse(fs.readFileSync(BUZZ_FILE, 'utf-8'));
   const shows = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf-8')).shows || [];
   const showById = new Map(shows.map((s) => [s.id, s]));
-  const currentYear = new Date().getFullYear();
   const shows_ = buzz.shows || {};
 
   const acted = [];
@@ -63,10 +62,13 @@ function main() {
     const title = x.title || (show && show.title) || id.replace(/-(off-)?(broadway|west-end)?-?20\d{2}$/, '').replace(/-/g, ' ');
     if (!isGenericTitle(title)) continue;
 
-    // Score-eligibility (mirror audience-weighting recency gate)
+    // Score-eligibility — same date-precise cutoff as audience-weighting.js
+    // isRedditEligible (closed < now-3yr); don't suppress Reddit the live score
+    // already drops.
     if (show && show.status === 'closed' && show.closingDate) {
-      const closedYear = parseInt(show.closingDate.slice(0, 4), 10);
-      if (closedYear && (currentYear - closedYear) > 3) continue;
+      const cutoff = new Date();
+      cutoff.setFullYear(cutoff.getFullYear() - 3);
+      if (new Date(show.closingDate) < cutoff) continue;
     }
 
     const otherCounts = SOURCE_NAMES.filter((n) => n !== 'reddit')

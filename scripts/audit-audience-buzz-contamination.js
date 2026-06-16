@@ -222,10 +222,14 @@ function audit({ shows: injectedShows, buzz: injectedBuzz, today } = {}) {
       // so inflation there can't affect a live score. Mirroring that gate keeps
       // the warn list to shows where the contamination actually matters.
       const showForScope = showById && showById.get(resolvedId || id);
+      // Use the SAME date-precise cutoff as audience-weighting.js isRedditEligible
+      // (closed < now-3yr) so we never flag a show whose Reddit the live score
+      // already drops — a year-only comparison diverged at the boundary.
       let scoreEligible = true;
       if (showForScope && showForScope.status === 'closed' && showForScope.closingDate) {
-        const closedYear = parseInt(showForScope.closingDate.slice(0, 4), 10);
-        if (closedYear && (currentYear - closedYear) > 3) scoreEligible = false;
+        const cutoff = today ? new Date(today) : new Date();
+        cutoff.setFullYear(cutoff.getFullYear() - 3);
+        if (new Date(showForScope.closingDate) < cutoff) scoreEligible = false;
       }
       // Already manually suppressed (neutralize-contaminated-reddit-buzz.js) =
       // handled; don't keep warning until the next scrape clears the flag.

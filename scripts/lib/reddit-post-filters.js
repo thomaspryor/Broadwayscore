@@ -69,20 +69,20 @@ const TITLE_STOPWORDS = new Set([
 ]);
 
 // Multi-word titles that are NOT single-word but still collide hard with famous
-// films / common phrases. Bare-phrase searches for these pull movie/news
-// chatter. Keyed by normalized title (lowercased, punctuation→space, stopwords
-// kept here so callers compare against normalizeForGenericCheck output).
+// films / common phrases. Each entry MUST equal normalizeForGenericCheck(<the
+// stored title>) exactly — it's compared with Set.has() against that output, so
+// a colloquial short form (e.g. "two strangers" for the full "Two Strangers
+// (Carry a Cake Across New York)") would silently never match. The test
+// asserts each entry round-trips.
 const KNOWN_GENERIC_TITLES = new Set([
   'music city',          // CMT reality show + Nashville nickname + roundup magnet
   'dog day afternoon',   // 1975 Al Pacino film
   'the lost boys',       // 1987 film
   'every brilliant thing',
-  'fear wonder',
+  'fear wonder',         // normalized "Fear & Wonder"
   'chamber magic',
-  'lean to',
-  'two strangers',
+  'lean to',             // normalized "Lean-To"
   'la llamada',
-  'paradise club',
 ]);
 
 function normalizeForGenericCheck(title) {
@@ -117,16 +117,19 @@ function isGenericTitle(title) {
 /**
  * Build the ordered Reddit search query list for a show.
  *
- * Strong audience queries ("just saw X", "X review") stay unanchored to
- * preserve recall. The widest queries (bare phrase + single-keyword neutral
- * fills) are the contamination vector, so:
- *   - The bare `"<title>"` query is ALWAYS market-anchored (never run bare).
- *   - For generic titles the weak `"<title>" thoughts/loved/recommend` queries
- *     are also market-anchored.
+ * The bare `"<title>"` neutral-fill query was the contamination vector — it
+ * pulled any post that merely mentions the phrase. It is replaced by a
+ * market-anchored `"<title>" "<market>"` query for EVERY show (the
+ * Broadway-qualified search the pipeline always intended for collision-prone
+ * titles, applied universally because it's strictly safer). The other queries
+ * (flair:Review, "just saw X", "X saw", "X review", "X thoughts/loved/
+ * recommend") stay unanchored to preserve recall — including for distinctive
+ * single-word shows (Hadestown, Wicked) that isGenericTitle flags but whose
+ * real audience posts ("Hadestown destroyed me") omit a market word.
  *
  * @returns {string[]} reddit search query strings
  */
-function buildAudienceSearchQueries({ cleanTitle, marketName, isWestEnd, isOpera = false, generic = false }) {
+function buildAudienceSearchQueries({ cleanTitle, marketName, isWestEnd, isOpera = false }) {
   if (isOpera) {
     // Opera anchoring is handled by the caller (Met-specific); unchanged.
     return [
@@ -144,7 +147,6 @@ function buildAudienceSearchQueries({ cleanTitle, marketName, isWestEnd, isOpera
   }
 
   const marketPhrase = isWestEnd ? 'in the West End' : 'on Broadway';
-  const anchor = (q) => `${q} "${marketName}"`;
 
   return [
     `flair:Review "${cleanTitle}"`,           // Review-tagged posts (highest signal)
@@ -152,9 +154,9 @@ function buildAudienceSearchQueries({ cleanTitle, marketName, isWestEnd, isOpera
     `"just saw ${cleanTitle}"`,               // "just saw Wicked"
     `"${cleanTitle}" saw`,                    // "I saw Wicked"
     `"${cleanTitle}" review`,                 // Reviews
-    generic ? anchor(`"${cleanTitle}" thoughts`) : `"${cleanTitle}" thoughts`,
-    generic ? anchor(`"${cleanTitle}" loved`) : `"${cleanTitle}" loved`,
-    generic ? anchor(`"${cleanTitle}" recommend`) : `"${cleanTitle}" recommend`,
+    `"${cleanTitle}" thoughts`,               // Discussion
+    `"${cleanTitle}" loved`,                  // Positive reactions
+    `"${cleanTitle}" recommend`,              // Recommendations
     `"${cleanTitle}" "${marketPhrase}"`,      // Market-specific phrasing
     `"${cleanTitle}" "${marketName}"`,        // Market-anchored phrase (replaces bare `"<title>"`)
   ];

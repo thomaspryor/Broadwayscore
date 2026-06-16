@@ -51,29 +51,34 @@ test('distinctive multi-word titles are NOT generic', () => {
   }
 });
 
-test('no show ever runs a bare-phrase Reddit query', () => {
-  for (const generic of [true, false]) {
-    const qs = buildAudienceSearchQueries({
-      cleanTitle: 'Music City', marketName: 'Off-Broadway', isWestEnd: false, generic,
-    });
-    assert.ok(!qs.includes('"Music City"'), 'bare phrase query must not appear');
-    // widest query is market-anchored
-    assert.ok(qs.includes('"Music City" "Off-Broadway"'));
+test('no show runs a bare-phrase Reddit query; widest query is market-anchored', () => {
+  const qs = buildAudienceSearchQueries({
+    cleanTitle: 'Music City', marketName: 'Off-Broadway', isWestEnd: false,
+  });
+  assert.ok(!qs.includes('"Music City"'), 'bare phrase query must not appear');
+  assert.ok(qs.includes('"Music City" "Off-Broadway"'), 'market-anchored phrase present');
+});
+
+test('weak queries stay unanchored for ALL shows (recall — distinctive single-word shows too)', () => {
+  // Generic flag no longer changes query anchoring; the universal bare-phrase
+  // removal is the qualification. Weak queries unanchored preserves recall for
+  // distinctive one-word shows (Hadestown/Wicked) that isGenericTitle flags.
+  for (const cleanTitle of ['Mercury', 'Hadestown']) {
+    const qs = buildAudienceSearchQueries({ cleanTitle, marketName: 'Broadway', isWestEnd: false });
+    assert.ok(qs.includes(`"${cleanTitle}" thoughts`), `${cleanTitle} thoughts unanchored`);
+    assert.ok(qs.includes(`"${cleanTitle}" loved`), `${cleanTitle} loved unanchored`);
+    assert.ok(qs.includes(`"${cleanTitle}" recommend`), `${cleanTitle} recommend unanchored`);
   }
 });
 
-test('generic titles market-anchor the weak thoughts/loved/recommend queries', () => {
-  const generic = buildAudienceSearchQueries({
-    cleanTitle: 'Mercury', marketName: 'Off-Broadway', isWestEnd: false, generic: true,
-  });
-  assert.ok(generic.includes('"Mercury" thoughts "Off-Broadway"'));
-  assert.ok(generic.includes('"Mercury" loved "Off-Broadway"'));
-
-  const distinctive = buildAudienceSearchQueries({
-    cleanTitle: 'Maybe Happy Ending', marketName: 'Broadway', isWestEnd: false, generic: false,
-  });
-  // distinctive keeps the weak queries unanchored (recall)
-  assert.ok(distinctive.includes('"Maybe Happy Ending" thoughts'));
+test('every KNOWN_GENERIC_TITLES entry round-trips through normalizeForGenericCheck', () => {
+  // A dead key (short form that never equals the normalized stored title)
+  // silently no-ops. Guard against that class of bug.
+  const { KNOWN_GENERIC_TITLES, normalizeForGenericCheck } = require('./reddit-post-filters.js');
+  for (const key of KNOWN_GENERIC_TITLES) {
+    assert.equal(normalizeForGenericCheck(key), key, `KNOWN key "${key}" must be its own normalized form`);
+    assert.equal(isGenericTitle(key), true, `KNOWN key "${key}" must be generic`);
+  }
 });
 
 test('opera queries keep their Met anchoring unchanged', () => {

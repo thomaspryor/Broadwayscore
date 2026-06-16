@@ -274,8 +274,10 @@ for (const [showId, entry] of Object.entries(buzzShows)) {
     }
   }
 
-  // combinedScore null but valid sources exist
-  const activeSources = Object.entries(sources).filter(([_, s]) => s && s.score != null && s.reviewCount > 0);
+  // combinedScore null but valid sources exist. A `suppressed` source (Reddit
+  // contamination neutralization — see neutralize-contaminated-reddit-buzz.js)
+  // is intentionally dropped from the score, so it does NOT count as active.
+  const activeSources = Object.entries(sources).filter(([_, s]) => s && s.score != null && s.reviewCount > 0 && !s.suppressed);
   if (activeSources.length > 0 && entry.combinedScore == null) {
     addIssue('source-consistency', 'high', showId,
       `Has ${activeSources.length} active source(s) but combinedScore is null`);
@@ -299,7 +301,7 @@ for (const [showId, entry] of Object.entries(buzzShows)) {
   // Source count tracking
   const hasShowScore = sources.showScore?.score != null && sources.showScore.reviewCount > 0;
   const hasMezzanine = sources.mezzanine?.score != null && sources.mezzanine.reviewCount > 0;
-  const hasReddit = sources.reddit?.score != null && sources.reddit.reviewCount > 0;
+  const hasReddit = sources.reddit?.score != null && sources.reddit.reviewCount > 0 && !sources.reddit.suppressed;
 
   if (hasShowScore) stats.sourceBreakdown.showScore++;
   if (hasMezzanine) stats.sourceBreakdown.mezzanine++;
