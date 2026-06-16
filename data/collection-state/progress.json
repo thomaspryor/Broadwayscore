@@ -489,7 +489,9 @@
     "the-adding-machine-off-broadway-2026/latimes--charles-mcnulty.json",
     "anastasia-2017/thestage--mark-shenton.json",
     "the-little-foxes-2017/thestage--mark-shenton.json",
-    "groundhog-day-2017/thestage--mark-shenton.json"
+    "groundhog-day-2017/thestage--mark-shenton.json",
+    "les-liaisons-dangereuses-2016/thestage--mark-shenton.json",
+    "tuck-everlasting-2016/thestage--mark-shenton.json"
   ],
   "failed": [
     "are-you-now-or-have-you-ever-been-off-broadway-2026/theatermania--unknown.json",
@@ -1384,7 +1386,15 @@
     "sunday-in-the-park-with-george-2017/theater-life--isa-goldberg.json",
     "sunday-in-the-park-with-george-2017/wnyc--jennifer-vanasco.json",
     "the-present-2017/thestage--unknown.json",
-    "in-transit-2016/nydailynews--joe-dziemianowicz.json"
+    "in-transit-2016/nydailynews--joe-dziemianowicz.json",
+    "a-bronx-tale-the-musical-2016/njcom--patrick-maley.json",
+    "natasha-pierre-and-the-great-comet-of-1812-2016/broadway-and-me--janice-c-simpson.json",
+    "falsettos-2016/theater-life--eric-march.json",
+    "heisenberg-2016/thestage--tom-wicker.json",
+    "heisenberg-2016/abc-news--mark-kennedy.json",
+    "american-psycho-2016/ap--mark-kennedy.json",
+    "the-father-2016/theater-life--paulanne-simmons.json",
+    "bright-star-2016/drama-queen-nyc--jonathan-warman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1598,7 +1608,10 @@
       "matilda-the-musical-west-end-2021/londontheatre1--london-theatre-1.json",
       "anastasia-2017/thestage--mark-shenton.json",
       "the-little-foxes-2017/thestage--mark-shenton.json",
-      "groundhog-day-2017/thestage--mark-shenton.json"
+      "groundhog-day-2017/thestage--mark-shenton.json",
+      "sunday-in-the-park-with-george-2017/wnyc--jennifer-vanasco.json",
+      "les-liaisons-dangereuses-2016/thestage--mark-shenton.json",
+      "tuck-everlasting-2016/thestage--mark-shenton.json"
     ],
     "amp": [
       "data/review-texts/maybe-happy-ending-2024/variety--unknown.json"
@@ -1812,7 +1825,8 @@
       "a-soldiers-play-2020/theater-life--barry-gordin.json",
       "all-my-sons-2019/theater-life--barry-gordin.json",
       "the-nap-2018/theater-life--barry-gordin.json",
-      "come-from-away-2017/theater-life--paulanne-simmons.json"
+      "come-from-away-2017/theater-life--paulanne-simmons.json",
+      "falsettos-2016/theater-life--eric-march.json"
     ],
     "brightdata": [
       "romeo-and-juliet-off-broadway-2026/talkinbroadway--unknown.json",
@@ -1906,7 +1920,8 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
       "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json",
-      "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json"
+      "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json",
+      "data/review-texts/heisenberg-2016/thestage--tom-wicker.json"
     ],
     "archive": [
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
@@ -2105,7 +2120,7 @@
     ]
   },
   "startTime": "2026-06-15T17:52:29.115Z",
-  "lastProcessed": "in-transit-2016/nydailynews--joe-dziemianowicz.json",
+  "lastProcessed": "bright-star-2016/drama-queen-nyc--jonathan-warman.json",
   "log": [
     {
       "t": "2026-06-15T19:32:37.188Z",
@@ -2598,6 +2613,17 @@
       "t": "2026-06-16T13:00:57.739Z",
       "event": "bb-cookie-inject",
       "domain": "ft.com"
+    },
+    {
+      "t": "2026-06-16T13:46:19.829Z",
+      "event": "bb-session",
+      "session": "2c109161",
+      "url": "https://www.thestage.co.uk/reviews/simon-stephens-heisenberg-review-at-samuel-j-"
+    },
+    {
+      "t": "2026-06-16T13:46:20.293Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
