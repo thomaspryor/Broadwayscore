@@ -416,7 +416,13 @@
     "vanya-and-sonia-and-masha-and-spike-2013/village-voice--michael-musto.json",
     "ann-2013/newsday--matt-windman.json",
     "ann-2013/village-voice--michael-musto.json",
-    "cat-on-a-hot-tin-roof-2013/boston-globe--don-aucoin.json"
+    "cat-on-a-hot-tin-roof-2013/boston-globe--don-aucoin.json",
+    "glengarry-glen-ross-2012/timeout--david-cote.json",
+    "golden-boy-2012/ew--adam-markovitz.json",
+    "the-anarchist-2012/newsday--linda-winer.json",
+    "dead-accounts-2012/newsday--linda-winer.json",
+    "a-christmas-story-the-musical-2012/newsday--linda-winer.json",
+    "a-christmas-story-the-musical-2012/timeout--david-cote.json"
   ],
   "failed": [
     "are-you-now-or-have-you-ever-been-off-broadway-2026/theatermania--unknown.json",
@@ -994,7 +1000,11 @@
     "vanya-and-sonia-and-masha-and-spike-2013/new-jersey-newsroom--michael-sommers.json",
     "vanya-and-sonia-and-masha-and-spike-2013/talkinbroadway--matthew-murray.json",
     "cat-on-a-hot-tin-roof-2013/timeout--david-cote.json",
-    "picnic-2013/theatermania--david-rooney.json"
+    "picnic-2013/theatermania--david-rooney.json",
+    "the-other-place-2013/newsday--linda-winer.json",
+    "glengarry-glen-ross-2012/talkinbroadway--matthew-murray.json",
+    "golden-boy-2012/theatermania--charles-isherwood.json",
+    "the-anarchist-2012/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1186,7 +1196,8 @@
       "fish-in-the-dark-2015/financialtimes--brendan-lemon.json",
       "of-mice-and-men-2014/theatermania--jesse-green.json",
       "ifthen-2014/theatermania--adam-hetrick.json",
-      "a-gentlemans-guide-to-love-and-murder-2013/theatermania--david-gordon.json"
+      "a-gentlemans-guide-to-love-and-murder-2013/theatermania--david-gordon.json",
+      "golden-boy-2012/ew--adam-markovitz.json"
     ],
     "amp": [
       "data/review-texts/maybe-happy-ending-2024/variety--unknown.json"
@@ -1383,7 +1394,8 @@
       "the-nance-2013/timeout--david-cote.json",
       "hands-on-a-hardbody-2013/newsday--linda-winer.json",
       "hands-on-a-hardbody-2013/timeout--david-cote.json",
-      "cat-on-a-hot-tin-roof-2013/timeout--david-cote.json"
+      "cat-on-a-hot-tin-roof-2013/timeout--david-cote.json",
+      "glengarry-glen-ross-2012/timeout--david-cote.json"
     ],
     "brightdata": [
       "romeo-and-juliet-off-broadway-2026/talkinbroadway--unknown.json",
@@ -1609,11 +1621,15 @@
       "romeo-and-juliet-2013/timeout--david-cote.json",
       "hands-on-a-hardbody-2013/amny--matt-windman.json",
       "vanya-and-sonia-and-masha-and-spike-2013/village-voice--michael-musto.json",
-      "ann-2013/village-voice--michael-musto.json"
+      "ann-2013/village-voice--michael-musto.json",
+      "the-anarchist-2012/newsday--linda-winer.json",
+      "dead-accounts-2012/newsday--linda-winer.json",
+      "a-christmas-story-the-musical-2012/newsday--linda-winer.json",
+      "a-christmas-story-the-musical-2012/timeout--david-cote.json"
     ]
   },
   "startTime": "2026-06-15T17:52:29.115Z",
-  "lastProcessed": "picnic-2013/theatermania--david-rooney.json",
+  "lastProcessed": "a-christmas-story-the-musical-2012/timeout--david-cote.json",
   "log": [
     {
       "t": "2026-06-15T19:32:37.188Z",
@@ -1941,6 +1957,28 @@
       "t": "2026-06-16T08:48:03.229Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-16T08:56:15.825Z",
+      "event": "bb-session",
+      "session": "f8f244f8",
+      "url": "https://www.talkinbroadway.com/page/regional/boston/bo107.html"
+    },
+    {
+      "t": "2026-06-16T08:56:16.240Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-16T08:57:47.712Z",
+      "event": "bb-session",
+      "session": "1ef4364f",
+      "url": "https://www.wsj.com/articles/SB10001424127887324894104578112441914851592"
+    },
+    {
+      "t": "2026-06-16T08:57:48.175Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
