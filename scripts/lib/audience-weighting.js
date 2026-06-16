@@ -41,6 +41,13 @@ const REDDIT_CALIBRATION_CAP = 95;
  */
 function isRedditEligible(reddit, showInfo) {
   if (!reddit || reddit.score == null) return false;
+  // Manual contamination suppression: a generic/collision-prone title whose
+  // Reddit sample was poisoned by roundup/megathread chatter can be flagged
+  // `suppressed:true` to drop it from the combined score without deleting the
+  // data. Self-clears on the next scrape (the scraper writes a fresh reddit
+  // object). See scripts/audit-audience-buzz-contamination.js
+  // REDDIT_GENERIC_VOLUME_INFLATION + scripts/neutralize-contaminated-reddit-buzz.js.
+  if (reddit.suppressed) return false;
   if (reddit.reviewCount < MIN_REDDIT_ITEMS) return false;
 
   // Recency gate: exclude closed shows >3 years ago
