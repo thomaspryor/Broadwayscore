@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-16T01:07:46.048Z",
+  "updatedAt": "2026-06-16T01:10:27.961Z",
   "processed": 285,
-  "failed": 388,
-  "successRate": "42.3%",
+  "failed": 398,
+  "successRate": "41.7%",
   "tierBreakdown": {
     "playwright": 150,
     "amp": 1,
-    "browserbase": 73,
+    "browserbase": 74,
     "directCookies": 0,
     "scrapingbee": 70,
     "brightdata": 38,
     "archiveToday": 11,
     "archive": 72
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-06-15T19:32:37.188Z",
@@ -66,6 +66,17 @@
       "t": "2026-06-16T01:02:58.688Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-16T01:08:05.035Z",
+      "event": "bb-session",
+      "session": "879ed1f4",
+      "url": "https://www.amny.com/entertainment/on-your-feet-review-this-rhythm-will-barely-g"
+    },
+    {
+      "t": "2026-06-16T01:08:05.674Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }

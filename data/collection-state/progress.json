@@ -674,7 +674,17 @@
     "book-of-mormon-2011/deadline--unknown.json",
     "book-of-mormon-2011/new-jersey-newsroom--michael-sommers.json",
     "book-of-mormon-2011/ap--mark-kennedy.json",
-    "book-of-mormon-2011/backstage--david-sheward.json"
+    "book-of-mormon-2011/backstage--david-sheward.json",
+    "wicked-2003/standard--unknown.json",
+    "the-lion-king-1997/calgary-herald--louis-b-hobson.json",
+    "the-lion-king-1997/familyvacationcritic--unknown.json",
+    "the-lion-king-1997/maryland-theatre-guide--susan-brall.json",
+    "gloria-2026/amny--unknown.json",
+    "gloria-2026/billboard--unknown.json",
+    "gloria-2026/financialtimes--unknown.json",
+    "gloria-2026/perez-hilton--unknown.json",
+    "evita-2026/times-uk--clive-davis.json",
+    "as-you-like-it-globe-west-end-2026/london-box-office--nicky-allpress.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -906,7 +916,8 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
       "data/review-texts/schmigadoon-2026/exeunt-magazine--lane-williamson.json",
       "data/review-texts/oh-mary-west-end-2025/variety--naman-ramachandran.json",
-      "oh-mary-west-end-2025/variety--naman-ramachandran.json"
+      "oh-mary-west-end-2025/variety--naman-ramachandran.json",
+      "data/review-texts/gloria-2026/amny--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1110,7 +1121,7 @@
     ]
   },
   "startTime": "2026-06-15T17:52:29.115Z",
-  "lastProcessed": "book-of-mormon-2011/backstage--david-sheward.json",
+  "lastProcessed": "as-you-like-it-globe-west-end-2026/london-box-office--nicky-allpress.json",
   "log": [
     {
       "t": "2026-06-15T19:32:37.188Z",
@@ -1163,6 +1174,17 @@
       "t": "2026-06-16T01:02:58.688Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-16T01:08:05.035Z",
+      "event": "bb-session",
+      "session": "879ed1f4",
+      "url": "https://www.amny.com/entertainment/on-your-feet-review-this-rhythm-will-barely-g"
+    },
+    {
+      "t": "2026-06-16T01:08:05.674Z",
+      "event": "bb-cookie-inject",
+      "domain": "amny.com"
     }
   ]
 }
