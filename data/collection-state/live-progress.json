@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-16T22:30:52.437Z",
-  "processed": 225,
-  "failed": 225,
-  "successRate": "50.0%",
+  "updatedAt": "2026-06-16T22:36:50.994Z",
+  "processed": 228,
+  "failed": 232,
+  "successRate": "49.6%",
   "tierBreakdown": {
-    "playwright": 100,
+    "playwright": 101,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 6,
     "directCookies": 0,
     "scrapingbee": 58,
-    "brightdata": 24,
-    "archiveToday": 7,
+    "brightdata": 25,
+    "archiveToday": 9,
     "archive": 52
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-06-17T00:53:08.913Z",
@@ -56,6 +56,17 @@
     },
     {
       "t": "2026-06-16T22:23:45.721Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-16T22:34:38.848Z",
+      "event": "bb-session",
+      "session": "e72e302f",
+      "url": "https://www.wsj.com/articles/the-ferryman-review-a-house-divided-1540500470?gaa_"
+    },
+    {
+      "t": "2026-06-16T22:34:39.241Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
