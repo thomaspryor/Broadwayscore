@@ -36,12 +36,21 @@ interface Upset {
   body: string;
 }
 
+interface MarketMove {
+  category: string;
+  from: string;
+  to: string;
+  verdict: 'right' | 'wrong';
+  note: string;
+}
+
 interface Retrospective {
   asOf: string;
   bigFour: { categories: string[]; winners: string[]; rows: BigFourRow[] };
   leaderboard: LeaderboardEntry[];
   leaderboardNote: string;
   upsets: Upset[];
+  marketMoves?: { title: string; subtitle: string; rows: MarketMove[] };
   btc: { players: number; avgScore: number; totalCategories: number; beatAllThreePct: number; topScore: number };
 }
 
@@ -170,6 +179,31 @@ export function PredictionRetrospective({ ceremonyYear }: { ceremonyYear: number
         </div>
         <p className="text-[11px] text-gray-500 mt-3">{retro.leaderboardNote}</p>
       </div>
+
+      {/* How the markets moved */}
+      {retro.marketMoves && (
+        <div className="rounded-xl border border-white/5 bg-surface-overlay p-4 sm:p-5 mb-4">
+          <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">{retro.marketMoves.title}</h3>
+          <p className="text-[11px] text-gray-500 mb-3">{retro.marketMoves.subtitle}</p>
+          <div className="space-y-2">
+            {retro.marketMoves.rows.map(m => (
+              <div key={m.category} className="flex items-start gap-3 text-[13px]">
+                <span
+                  className={`mt-1.5 h-2 w-2 flex-shrink-0 rounded-full ${m.verdict === 'right' ? 'bg-emerald-400' : 'bg-red-400'}`}
+                  aria-hidden="true"
+                />
+                <div className="min-w-0">
+                  <span className="font-medium text-white">{m.category.replace('Best ', '')}</span>
+                  <span className="text-gray-400">
+                    {' '}— {m.from} <span className="text-gray-600">→</span> {m.to}
+                  </span>
+                  <span className="text-gray-500"> · {m.note}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Upsets */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-3">
