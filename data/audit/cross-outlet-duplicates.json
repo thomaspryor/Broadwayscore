@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "generatedAt": "2026-06-09T06:32:57.317Z",
+    "generatedAt": "2026-06-16T06:58:05.814Z",
     "threshold": 40,
-    "showsScanned": 1731,
-    "reviewsScanned": 33055,
-    "duplicatesFound": 82,
+    "showsScanned": 1741,
+    "reviewsScanned": 33141,
+    "duplicatesFound": 78,
     "byMethod": {
       "similarity": [
         {
@@ -50,21 +50,6 @@
           "primaryScore": 79,
           "secondaryScore": 70,
           "scoreDiff": 9,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "ann-2013",
-          "method": "similarity",
-          "similarity": 72,
-          "primaryFile": "newsday--linda-winer.json",
-          "primaryOutlet": "Newsday",
-          "primaryCritic": "Linda Winer",
-          "secondaryFile": "amny--matt-windman.json",
-          "secondaryOutlet": "amNewYork",
-          "secondaryCritic": "Matt Windman",
-          "primaryScore": 48,
-          "secondaryScore": 64,
-          "scoreDiff": 16,
           "textSource": "fullText"
         },
         {
@@ -608,36 +593,6 @@
           "textSource": "fullText"
         },
         {
-          "showId": "on-your-feet-2015",
-          "method": "similarity",
-          "similarity": 76,
-          "primaryFile": "huffpost--david-finkle.json",
-          "primaryOutlet": "HuffPost",
-          "primaryCritic": "David Finkle",
-          "secondaryFile": "nbcny--robert-kahn.json",
-          "secondaryOutlet": "NBC New York",
-          "secondaryCritic": "Robert Kahn",
-          "primaryScore": 81,
-          "secondaryScore": 81,
-          "scoreDiff": 0,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "on-your-feet-2015",
-          "method": "similarity",
-          "similarity": 79,
-          "primaryFile": "huffpost--fern-siegel.json",
-          "primaryOutlet": "HuffPost",
-          "primaryCritic": "Fern Siegel",
-          "secondaryFile": "nbcny--robert-kahn.json",
-          "secondaryOutlet": "NBC New York",
-          "secondaryCritic": "Robert Kahn",
-          "primaryScore": 77,
-          "secondaryScore": 81,
-          "scoreDiff": 4,
-          "textSource": "fullText"
-        },
-        {
           "showId": "once-upon-a-one-more-time-2023",
           "method": "similarity",
           "similarity": 76,
@@ -1015,18 +970,18 @@
           "textSource": "fullText"
         },
         {
-          "showId": "cyrano-de-bergerac-2012",
+          "showId": "betrayal-2019",
           "method": "similarity+llm",
-          "similarity": 68,
-          "primaryFile": "newsday--linda-winer.json",
-          "primaryOutlet": "Newsday",
-          "primaryCritic": "Linda Winer",
-          "secondaryFile": "amny--matt-windman.json",
-          "secondaryOutlet": "amNY",
-          "secondaryCritic": "Matt Windman",
-          "primaryScore": 46,
-          "secondaryScore": 44,
-          "scoreDiff": 2,
+          "similarity": 62,
+          "primaryFile": "standard--henry-hitchings.json",
+          "primaryOutlet": "Evening Standard",
+          "primaryCritic": "Henry Hitchings",
+          "secondaryFile": "broadwayworld--michael-dale.json",
+          "secondaryOutlet": "BroadwayWorld",
+          "secondaryCritic": "Michael Dale",
+          "primaryScore": 83,
+          "secondaryScore": 83,
+          "scoreDiff": 0,
           "textSource": "fullText"
         },
         {
@@ -1086,21 +1041,6 @@
           "secondaryCritic": "Kathleen Campion",
           "primaryScore": 79,
           "secondaryScore": 78,
-          "scoreDiff": 1,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "oklahoma-2019",
-          "method": "similarity+llm",
-          "similarity": 69,
-          "primaryFile": "chicagotribune--chris-jones.json",
-          "primaryOutlet": "Chicago Tribune",
-          "primaryCritic": "Chris Jones",
-          "secondaryFile": "nydailynews--broadway-news.json",
-          "secondaryOutlet": "New York Daily News",
-          "secondaryCritic": "Broadway News",
-          "primaryScore": 63,
-          "secondaryScore": 64,
           "scoreDiff": 1,
           "textSource": "fullText"
         },
@@ -1321,21 +1261,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "ann-2013",
-      "method": "similarity",
-      "similarity": 72,
-      "primaryFile": "newsday--linda-winer.json",
-      "primaryOutlet": "Newsday",
-      "primaryCritic": "Linda Winer",
-      "secondaryFile": "amny--matt-windman.json",
-      "secondaryOutlet": "amNewYork",
-      "secondaryCritic": "Matt Windman",
-      "primaryScore": 48,
-      "secondaryScore": 64,
-      "scoreDiff": 16,
-      "textSource": "fullText"
-    },
-    {
       "showId": "appropriate-2023",
       "method": "similarity",
       "similarity": 83,
@@ -1381,6 +1306,21 @@
       "textSource": "fullText"
     },
     {
+      "showId": "betrayal-2019",
+      "method": "similarity+llm",
+      "similarity": 62,
+      "primaryFile": "standard--henry-hitchings.json",
+      "primaryOutlet": "Evening Standard",
+      "primaryCritic": "Henry Hitchings",
+      "secondaryFile": "broadwayworld--michael-dale.json",
+      "secondaryOutlet": "BroadwayWorld",
+      "secondaryCritic": "Michael Dale",
+      "primaryScore": 83,
+      "secondaryScore": 83,
+      "scoreDiff": 0,
+      "textSource": "fullText"
+    },
+    {
       "showId": "cats-the-jellicle-ball-2026",
       "method": "similarity",
       "similarity": 74,
@@ -1423,21 +1363,6 @@
       "primaryScore": 70,
       "secondaryScore": 67,
       "scoreDiff": 3,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "cyrano-de-bergerac-2012",
-      "method": "similarity+llm",
-      "similarity": 68,
-      "primaryFile": "newsday--linda-winer.json",
-      "primaryOutlet": "Newsday",
-      "primaryCritic": "Linda Winer",
-      "secondaryFile": "amny--matt-windman.json",
-      "secondaryOutlet": "amNY",
-      "secondaryCritic": "Matt Windman",
-      "primaryScore": 46,
-      "secondaryScore": 44,
-      "scoreDiff": 2,
       "textSource": "fullText"
     },
     {
@@ -1996,21 +1921,6 @@
       "textSource": "excerpts"
     },
     {
-      "showId": "oklahoma-2019",
-      "method": "similarity+llm",
-      "similarity": 69,
-      "primaryFile": "chicagotribune--chris-jones.json",
-      "primaryOutlet": "Chicago Tribune",
-      "primaryCritic": "Chris Jones",
-      "secondaryFile": "nydailynews--broadway-news.json",
-      "secondaryOutlet": "New York Daily News",
-      "secondaryCritic": "Broadway News",
-      "primaryScore": 63,
-      "secondaryScore": 64,
-      "scoreDiff": 1,
-      "textSource": "fullText"
-    },
-    {
       "showId": "on-the-twentieth-century-2015",
       "method": "similarity",
       "similarity": 58,
@@ -2023,36 +1933,6 @@
       "primaryScore": 93,
       "secondaryScore": 91,
       "scoreDiff": 2,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "on-your-feet-2015",
-      "method": "similarity",
-      "similarity": 76,
-      "primaryFile": "huffpost--david-finkle.json",
-      "primaryOutlet": "HuffPost",
-      "primaryCritic": "David Finkle",
-      "secondaryFile": "nbcny--robert-kahn.json",
-      "secondaryOutlet": "NBC New York",
-      "secondaryCritic": "Robert Kahn",
-      "primaryScore": 81,
-      "secondaryScore": 81,
-      "scoreDiff": 0,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "on-your-feet-2015",
-      "method": "similarity",
-      "similarity": 79,
-      "primaryFile": "huffpost--fern-siegel.json",
-      "primaryOutlet": "HuffPost",
-      "primaryCritic": "Fern Siegel",
-      "secondaryFile": "nbcny--robert-kahn.json",
-      "secondaryOutlet": "NBC New York",
-      "secondaryCritic": "Robert Kahn",
-      "primaryScore": 77,
-      "secondaryScore": 81,
-      "scoreDiff": 4,
       "textSource": "fullText"
     },
     {
