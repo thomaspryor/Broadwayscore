@@ -1,64 +1,20 @@
 {
-  "updatedAt": "2026-06-16T08:34:22.606Z",
-  "processed": 410,
-  "failed": 563,
-  "successRate": "42.1%",
+  "updatedAt": "2026-06-16T08:42:56.019Z",
+  "processed": 413,
+  "failed": 570,
+  "successRate": "42.0%",
   "tierBreakdown": {
     "playwright": 188,
     "amp": 1,
     "browserbase": 95,
     "directCookies": 0,
-    "scrapingbee": 91,
+    "scrapingbee": 93,
     "brightdata": 54,
     "archiveToday": 14,
-    "archive": 145
+    "archive": 146
   },
-  "browserbaseSessions": 10,
+  "browserbaseSessions": 14,
   "recentActivity": [
-    {
-      "t": "2026-06-16T07:48:03.365Z",
-      "event": "bb-session",
-      "session": "77007530",
-      "url": "http://www.wsj.com/articles/living-on-love-review-discomfort-zone-1429576201"
-    },
-    {
-      "t": "2026-06-16T07:48:03.784Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-06-16T08:00:39.442Z",
-      "event": "bb-session",
-      "session": "0fdebc09",
-      "url": "http://www.wsj.com/articles/fish-in-the-dark-review-enthusiasm-curbed-1425612431"
-    },
-    {
-      "t": "2026-06-16T08:00:39.865Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-06-16T08:01:17.938Z",
-      "event": "bb-session",
-      "session": "77260fda",
-      "url": "https://www.wsj.com/articles/high-jinks-and-hold-ups-theater-review-of-honeymoon"
-    },
-    {
-      "t": "2026-06-16T08:01:18.398Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-06-16T08:16:48.917Z",
-      "event": "bb-session",
-      "session": "1a1da122",
-      "url": "https://observer.com/2017/01/romeo-and-juliet-opera-review-met/"
-    },
-    {
-      "t": "2026-06-16T08:16:49.329Z",
-      "event": "bb-cookie-inject",
-      "domain": "observer.com"
-    },
     {
       "t": "2026-06-16T08:20:22.740Z",
       "event": "bb-session",
@@ -122,6 +78,50 @@
     },
     {
       "t": "2026-06-16T08:32:44.884Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-16T08:35:59.997Z",
+      "event": "bb-session",
+      "session": "0fb759cc",
+      "url": "https://www.wsj.com/articles/SB10001424127887323628004578346663017443658"
+    },
+    {
+      "t": "2026-06-16T08:36:00.481Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-16T08:36:16.822Z",
+      "event": "bb-session",
+      "session": "35ba7316",
+      "url": "https://talkinbroadway.com/world/MotownMusical.html"
+    },
+    {
+      "t": "2026-06-16T08:36:17.220Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-16T08:39:54.323Z",
+      "event": "bb-session",
+      "session": "965a3003",
+      "url": "https://www.talkinbroadway.com/world/KinkyBoots.html"
+    },
+    {
+      "t": "2026-06-16T08:39:54.732Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-16T08:41:18.227Z",
+      "event": "bb-session",
+      "session": "8ad99444",
+      "url": "https://www.wsj.com/articles/SB10001424127887324789504578433133243583054"
+    },
+    {
+      "t": "2026-06-16T08:41:18.637Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
