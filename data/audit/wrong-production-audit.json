@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-06-16T21:21:38.503Z",
+  "timestamp": "2026-06-16T23:50:05.800Z",
   "stats": {
     "totalReviews": 38478,
     "alreadyFlagged": 16902,
@@ -1701,20 +1701,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "avenue-q-west-end-2026",
-      "file": "telegraph--marianka-swain.json",
-      "score": 82,
-      "publishDate": "2026-04-17",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/avenue-qs-bawdy-puppets-gleefully-outrageous/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -6429,6 +6415,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 3\""
+        }
+      ]
+    },
+    {
+      "showId": "falsettos-1992",
+      "file": "sfgate--lily-janiak.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.sfgate.com/performance/article/Dolly-Falsettos-and-Come-From-12555712.php",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
