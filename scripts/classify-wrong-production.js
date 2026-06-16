@@ -36,6 +36,7 @@ const path = require('path');
 const https = require('https');
 const { safeWriteReview, safeRenameReview } = require('./lib/review-write-guard');
 const { CLAUDE_HAIKU, CLAUDE_OPUS, GEMINI_FLASH } = require('./lib/models');
+const { isSameTitleDifferentYearFalsePositive } = require('./lib/review-guards');
 
 let lockedSkipCount = 0;
 
@@ -411,6 +412,23 @@ async function main() {
           stats.errors++;
           if (VERBOSE) console.log(`  ERROR: Could not parse response for ${key}`);
           return;
+        }
+
+        // Same-title / different-year false-positive guard (R&J Delacorte 2026).
+        // A review published inside THIS production's own preview→opening window
+        // is overwhelmingly about THIS production, even if a same-title staging
+        // exists in another year. Override a WRONG_PRODUCTION verdict to CORRECT
+        // unless the alleged target production is itself running near publish time.
+        if (parsed.verdict === 'WRONG_PRODUCTION') {
+          const reviewPublishDate = reviewData.publishDate || item.publishDate;
+          const targetShow = parsed.targetShowId ? showById.get(parsed.targetShowId) : null;
+          if (isSameTitleDifferentYearFalsePositive(show, reviewPublishDate, targetShow)) {
+            console.log(`  IN-WINDOW OVERRIDE: ${key} — published ${reviewPublishDate} inside own window (previews ${show?.previewsStartDate || '?'} → opening ${show?.openingDate || '?'}); same-title/different-year false positive, forcing CORRECT`);
+            parsed.verdict = 'CORRECT';
+            parsed.targetShowId = null;
+            parsed.reasoning = `[IN-WINDOW GUARD: review dated ${reviewPublishDate} is inside this production's own opening window; same-title sibling in another year does not make it wrong] ${parsed.reasoning}`;
+            stats.inWindowOverrides = (stats.inWindowOverrides || 0) + 1;
+          }
         }
 
         const result = {

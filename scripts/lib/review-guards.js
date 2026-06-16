@@ -225,6 +225,167 @@ function applyTemporalOverrides(wpFlag, filmTvFlag, wpConfidence, openingDate, p
 }
 
 /**
+ * Same-title / different-year false-positive guard (R&J Delacorte 2026 incident).
+ *
+ * Returns true when a review's publishDate falls inside THIS production's own
+ * run window — from previewsStartDate (or openingDate) minus a lead grace,
+ * through the later of openingDate/closingDate plus a lag grace.
+ *
+ * A review published inside its own production's window is overwhelmingly about
+ * THAT production, even when a same-title production exists in another year.
+ * On 2026-06-15 the LLM flagged in-window Shakespeare-in-the-Park reviews of
+ * romeo-and-juliet-off-broadway-2026 (opening 2026-06-11) as the 2024
+ * Connor/Zegler Broadway "Romeo + Juliet" because the titles collide — the
+ * show went scoreless on the live site and the newsletter.
+ *
+ * Used as a hard exemption against same-title/different-year wrongProduction
+ * flags in classify-wrong-production.js. NOT wired into applyTemporalOverrides
+ * or the rebuild CV pre-pass, which protect genuine concurrent-different-
+ * production flags (e.g. Hamlet 2026 FRC named-director bypass) via other paths.
+ *
+ * Pure — no I/O. leadDays defaults to 21 (critics attend previews ahead of
+ * opening); lagDays defaults to 30 (a review can post weeks after opening),
+ * matching the existing applyTemporalOverrides 30-day trailing window.
+ *
+ * @param {{ previewsStartDate?: string, openingDate?: string, closingDate?: string }} show
+ * @param {string|null} publishDate
+ * @param {{ leadDays?: number, lagDays?: number }} [opts]
+ * @returns {boolean}
+ */
+function isReviewWithinOwnProductionWindow(show, publishDate, opts = {}) {
+  if (!show || !publishDate) return false;
+  const leadDays = Number.isFinite(opts.leadDays) ? opts.leadDays : 21;
+  const lagDays = Number.isFinite(opts.lagDays) ? opts.lagDays : 30;
+  const start = show.previewsStartDate || show.openingDate;
+  const openOrStart = show.openingDate || show.previewsStartDate;
+  if (!start || !openOrStart) return false;
+  const startMs = new Date(start).getTime();
+  let upperMs = new Date(openOrStart).getTime();
+  const publishMs = new Date(publishDate).getTime();
+  if (isNaN(startMs) || isNaN(upperMs) || isNaN(publishMs)) return false;
+  // Upper bound = the later of opening / closing, plus the lag grace.
+  if (show.closingDate) {
+    const closeMs = new Date(show.closingDate).getTime();
+    if (!isNaN(closeMs) && closeMs > upperMs) upperMs = closeMs;
+  }
+  const lowerBound = startMs - leadDays * 86400000;
+  const upperBound = upperMs + lagDays * 86400000;
+  return publishMs >= lowerBound && publishMs <= upperBound;
+}
+
+/**
+ * Decide whether a wrongProduction verdict is a same-title/different-year false
+ * positive: the review is in-window of THIS production AND the alleged target
+ * production (if known) is NOT itself active at publish time. A concurrent
+ * same-title production (two stagings in the same weeks) is NOT exempted — that
+ * could genuinely be the review's subject, so real cross-attribution detection
+ * is preserved.
+ *
+ * @param {object} show - the production the review is filed under
+ * @param {string|null} publishDate
+ * @param {object|null} [targetShow] - the production the classifier thinks the review belongs to
+ * @returns {boolean}
+ */
+function isSameTitleDifferentYearFalsePositive(show, publishDate, targetShow = null) {
+  if (!isReviewWithinOwnProductionWindow(show, publishDate)) return false;
+  // If the alleged target production is itself running near publish time, the
+  // flag could be a real concurrent cross-attribution — don't exempt.
+  if (targetShow && isReviewWithinOwnProductionWindow(targetShow, publishDate, { leadDays: 21, lagDays: 60 })) {
+    return false;
+  }
+  return true;
+}
+
+/**
+ * Festival / public-theater venue carve-out (R&J Delacorte 2026 incident).
+ *
+ * The Public Theater's Delacorte Theater (Free Shakespeare in the Park) is a
+ * legitimate NYC not-for-profit venue that this dataset files under the
+ * `off-broadway` category. The contentVerification LLM repeatedly objects that
+ * "Delacorte / Shakespeare in the Park is NOT an Off-Broadway venue" and turns
+ * that venue-taxonomy quibble into BOTH a wrongProduction flag and isValid=false
+ * — dropping legitimate, correctly-attributed reviews. On 2026-06-15 this made
+ * romeo-and-juliet-off-broadway-2026 render scoreless.
+ *
+ * Venue classification is never grounds for wrongProduction (the review is about
+ * the right show at the right venue) and is not, by itself, grounds for
+ * isValid=false. Scoped to shows whose OWN venue is one of the exempt festival
+ * venues, so a genuine wrong-venue / tour review on an ordinary show is
+ * unaffected.
+ */
+const FESTIVAL_VENUE_SHOW_RE = /delacorte|shakespeare in the park|public theat(?:er|re)/i;
+
+// An issue / reasoning fragment is a "venue-classification objection" when it
+// argues the venue isn't Off-Broadway / is an outdoor festival stage, rather
+// than identifying wrong content. Anchored to festival-venue vocabulary so
+// truncation / byline / excerpt-mismatch issues are NOT swept up.
+const VENUE_CLASSIFICATION_OBJECTION_RE = /(?:not\b[^.]*\boff-?broadway|off-?broadway[^.]*\bnot\b|shakespeare in the park|delacorte|outdoor (?:summer )?festival|central park)/i;
+
+function isVenueClassificationObjection(text) {
+  if (!text) return false;
+  return VENUE_CLASSIFICATION_OBJECTION_RE.test(String(text));
+}
+
+function showHasFestivalVenue(show) {
+  return !!(show && show.venue && FESTIVAL_VENUE_SHOW_RE.test(show.venue));
+}
+
+/**
+ * Apply the festival-venue carve-out to a parsed contentVerification result.
+ * Pure — returns a NEW object plus flags; never mutates input.
+ *
+ *   - wrongProduction is cleared when the LLM's primary reasoning is a venue
+ *     objection AND there is no strong "different show" signal.
+ *   - isValid=false is restored to true ONLY when the venue objection is the
+ *     SOLE issue (no truncation / byline / garbage issue remaining) — so a
+ *     genuinely truncated Delacorte review stays isValid=false.
+ *
+ * @param {{ wrongProduction?: boolean, isValid?: boolean, issues?: string[], reasoning?: string }} cv
+ * @param {{ venue?: string }} show
+ * @returns {{ wrongProduction: boolean, isValid: boolean, issues: string[], reasoning: string,
+ *   venueCarveoutApplied: boolean, clearedWrongProduction: boolean, restoredValidity: boolean }}
+ */
+function applyVenueClassificationCarveout(cv, show) {
+  const issues = Array.isArray(cv && cv.issues) ? cv.issues.slice() : [];
+  const reasoning = (cv && cv.reasoning) || '';
+  const out = {
+    wrongProduction: !!(cv && cv.wrongProduction),
+    isValid: cv && cv.isValid !== undefined ? cv.isValid : true,
+    issues,
+    reasoning,
+    venueCarveoutApplied: false,
+    clearedWrongProduction: false,
+    restoredValidity: false,
+  };
+  if (!showHasFestivalVenue(show)) return out;
+
+  const venueIssues = issues.filter(isVenueClassificationObjection);
+  const otherIssues = issues.filter(i => !isVenueClassificationObjection(i));
+  const reasoningIsVenue = isVenueClassificationObjection(reasoning);
+
+  // wrongProduction driven by the venue objection → clear. Belt-and-suspenders:
+  // never clear when the LLM's own REASONING carries a strong "different show"
+  // marker (that is real wrong content, not a venue-taxonomy quibble). We check
+  // the reasoning only — the issues array is noisy (truncation/excerpt-mismatch
+  // complaints like "excerpt does not appear in scraped content" match the
+  // over-broad wrong-show markers and would otherwise veto a legit carve-out).
+  if (out.wrongProduction && reasoningIsVenue && !hasStrongDifferentShowSignal([], reasoning)) {
+    out.wrongProduction = false;
+    out.clearedWrongProduction = true;
+    out.venueCarveoutApplied = true;
+  }
+
+  // isValid=false driven ONLY by the venue objection → restore validity.
+  if (out.isValid === false && venueIssues.length > 0 && otherIssues.length === 0) {
+    out.isValid = true;
+    out.restoredValidity = true;
+    out.venueCarveoutApplied = true;
+  }
+
+  return out;
+}
+
+/**
  * URL-path date fallback for wrongProduction detection.
  *
  * When a review lacks publishDate (common on SERP ingests with Unknown bylines),
@@ -2532,6 +2693,11 @@ module.exports = {
   shouldSkipScoredReview,
   pickBestDtliSlug,
   applyTemporalOverrides,
+  isReviewWithinOwnProductionWindow,
+  isSameTitleDifferentYearFalsePositive,
+  applyVenueClassificationCarveout,
+  isVenueClassificationObjection,
+  showHasFestivalVenue,
   hasStrongDifferentShowSignal,
   hasNamedDifferentDirectorSignal,
   STRONG_DIFFERENT_SHOW_MARKERS,

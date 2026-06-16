@@ -39,7 +39,7 @@ const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTL
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
 const { shouldRejectAsReservation, isInternalNote, hasCopyrightChrome, stripLeadingChrome } = require('./lib/pull-quote-guards');
 const { emitStage } = require('./lib/stage-latency');
-const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipRoundupAudit, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction } = require('./lib/review-guards');
+const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipRoundupAudit, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, applyVenueClassificationCarveout } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl } = require('./lib/rebuild-helpers');
@@ -1376,9 +1376,14 @@ const crossShowFingerprints = new Map();
         // CV's wrongProduction (CV identifies a different venue/run, which is
         // exactly what priorRuns IS for). Skip promotion — operator-trust over CV.
         const ppInPriorRun = isWithinPriorRun(d.publishDate, showById[sid]?.priorRuns);
+        // Festival-venue carve-out (R&J Delacorte 2026-06-15): a stale CV row whose
+        // wrongProduction is purely a "Delacorte/Shakespeare-in-the-Park is not an
+        // Off-Broadway venue" objection must not be promoted. New CV writes already
+        // clear it at verify time; this protects rows verified before the fix.
+        const ppVenueCarveout = applyVenueClassificationCarveout(cv, showById[sid]).clearedWrongProduction;
         if (cv.wrongProduction === true && d.wrongProduction !== true
             && !shouldSkipWrongProductionAudit(d) && !d.allowEarlyDate && !d.allowCrossMarket
-            && !ppCvWpAdvisory && !ppInPriorRun) {
+            && !ppCvWpAdvisory && !ppInPriorRun && !ppVenueCarveout) {
           // [GUARD:CV-PRE-PASS] DoaS Apr 9-10 #10: was the source of the bug.
           d.wrongProduction = true;
           const promotionPath = cvLowButStrong ? 'CV-low-but-strong-signal' : 'CV-promoted';
@@ -1387,6 +1392,8 @@ const crossShowFingerprints = new Map();
           if (cvLowButStrong) {
             stats.cvLowStrongSignalPromoted = (stats.cvLowStrongSignalPromoted || 0) + 1;
           }
+        } else if (cv.wrongProduction === true && ppVenueCarveout) {
+          stats.cvWrongProductionVenueCarveout = (stats.cvWrongProductionVenueCarveout || 0) + 1;
         } else if (cv.wrongProduction === true && ppInPriorRun) {
           stats.cvWrongProductionPriorRunSuppressed = (stats.cvWrongProductionPriorRunSuppressed || 0) + 1;
         } else if (cv.wrongProduction === true && ppCvWpAdvisory) {
