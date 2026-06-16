@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-06-16T11:00:13.873Z",
+  "timestamp": "2026-06-16T11:32:22.095Z",
   "stats": {
     "totalReviews": 38464,
-    "alreadyFlagged": 16897,
+    "alreadyFlagged": 16898,
     "dateGuardCatches": 106,
-    "directorMismatch": 859,
+    "directorMismatch": 860,
     "tvFilmSignals": 1057,
-    "londonSignals": 630,
+    "londonSignals": 629,
     "offBroadwaySignals": 463,
     "yearMismatch": 82,
     "noPublishDate": 3997
@@ -9752,6 +9752,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
+      "showId": "how-to-succeed-in-business-without-really-trying-2011",
+      "file": "wsj--terry-teachout.json",
+      "score": 80,
+      "publishDate": "2011-03-29",
+      "url": "https://online.wsj.com/article/SB10001424052748704396904576227513617027464.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"des mcanuff\" from how-to-succeed-in-business-without-really-trying-1995"
         }
       ]
     },
@@ -32688,20 +32702,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "inter-alia-west-end-2026",
-      "file": "lbc--johnny-jenkins.json",
-      "score": 91,
-      "publishDate": "2026-04-08",
-      "url": "https://www.lbc.co.uk/article/inter-alia-review-best-plays-ever-seen-5HjdXRZ_2/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
