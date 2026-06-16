@@ -85,6 +85,7 @@ const PATTERN_ALLOWLIST = {
   // leading/trailing-junk mitigation absorbs them in isGarbageContent
   'NEWSLETTER_PATTERNS::0': 150,  // /thanks?\s+for\s+subscribing/
   'NEWSLETTER_PATTERNS::1': 150,  // /enter\s+your\s+email/
+  'NEWSLETTER_PATTERNS::4': 12,   // /get\s+(the\s+)?latest\s+(news|updates)/i — raw 9 (Newsday footer + Cleveland.com CTA bleed)
   'NEWSLETTER_PATTERNS::5': 15,   // /newsletter\s+sign[-\s]?up/ — raw 10 (HuffPost/TheaterMania footer)
   'NEWSLETTER_PATTERNS::6': 60,   // /join\s+(our\s+)?(mailing\s+)?list/
   // Navigation: scraped pages have real nav/footer bleed; the 5+ threshold in
@@ -180,6 +181,19 @@ const PATTERN_CALIBRATION = {
     note: '/trending (now|stories|articles)/ — recent-articles widget bleed. '
         + 'Sized to default-+30%; widget appears on most modern outlet '
         + 'review pages.',
+  },
+  'NEWSLETTER_PATTERNS::4': {
+    commit: 'ee76cc8307',
+    date: '2026-06-16',
+    rawHits: 9,
+    headroom: 1.33,
+    note: '"Get the latest news/updates" CTA. Newsday footer boilerplate bleeds '
+        + 'into 2 archived Newsday reviews (ann-2013, chaplin-2012), plus '
+        + 'Cleveland.com CTA in a-beautiful-noise-2022. All 9 hits are scraped '
+        + 'footer chrome, not newsletter signup overlays. Runtime unaffected: '
+        + 'detectNewsletterSignup requires 2+ pattern hits to reject. '
+        + 'Next bump: probe by-outlet — Newsday expansion or a new Cleveland outlet '
+        + 'archive batch are the expected growth drivers.',
   },
   'NEWSLETTER_PATTERNS::5': {
     commit: '07bfb0c497',
