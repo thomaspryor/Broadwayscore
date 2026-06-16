@@ -50,7 +50,7 @@ const path = require('path');
 const cheerio = require('cheerio');
 const { execSync, execFileSync } = require('child_process');
 
-const { fetchPage } = require('./lib/scraper');
+const { fetchPage, cleanup: scraperCleanup } = require('./lib/scraper');
 const { serpQuery } = require('./lib/url-discovery');
 const { provisionalOutletIdFromHost } = require('./lib/outlet-canonicalize');
 
@@ -805,11 +805,18 @@ if (require.main === module) (async () => {
     console.log(`Expected-vs-captured: ${residualShows.length} show(s) with residual review gaps after auto-ingest.`);
   }
 
-  if (failOnGap && audit.counts.withGap > 0) {
-    process.exit(1);
-  }
-})().catch(e => {
+  // Force a clean exit. fetchPage can leave a Playwright/Browserbase browser or
+  // socket handle open, so without an explicit exit Node lingers on the event loop
+  // after the audit finishes (especially after a soft-budget break) until the
+  // 40-min job HARD-cancel — which then starves the commit/push step of its window
+  // and the run shows 'cancelled' with the checkpoint+ingests un-pushed (the
+  // steady-state maintenance-cancel bug, 2026-06-16). Close the scraper and exit.
+  const exitCode = (failOnGap && audit.counts.withGap > 0) ? 1 : 0;
+  try { await scraperCleanup(); } catch { /* best-effort */ }
+  process.exit(exitCode);
+})().catch(async (e) => {
   console.error('Fatal:', e.message);
+  try { await scraperCleanup(); } catch { /* best-effort */ }
   process.exit(1);
 });
 
