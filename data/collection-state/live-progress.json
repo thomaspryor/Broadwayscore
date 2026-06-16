@@ -1,28 +1,50 @@
 {
-  "updatedAt": "2026-06-16T12:51:16.374Z",
-  "processed": 484,
-  "failed": 749,
-  "successRate": "39.3%",
+  "updatedAt": "2026-06-16T12:52:06.436Z",
+  "processed": 485,
+  "failed": 758,
+  "successRate": "39.0%",
   "tierBreakdown": {
     "playwright": 206,
     "amp": 1,
-    "browserbase": 112,
+    "browserbase": 100,
     "directCookies": 0,
     "scrapingbee": 96,
     "brightdata": 72,
     "archiveToday": 16,
     "archive": 183
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-06-16T14:09:58.422Z",
+      "t": "2026-06-16T09:07:18.086Z",
       "event": "bb-session",
-      "session": "d0cdac5e",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+      "session": "6f496efb",
+      "url": "https://www.talkinbroadway.com/world/ChristmasStory.html"
     },
     {
-      "t": "2026-06-16T14:09:58.891Z",
+      "t": "2026-06-16T09:07:18.532Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-16T09:07:32.114Z",
+      "event": "bb-session",
+      "session": "e4489c08",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/179429511_Theater_review_"
+    },
+    {
+      "t": "2026-06-16T09:07:32.528Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-06-16T09:09:52.507Z",
+      "event": "bb-session",
+      "session": "311d3e19",
+      "url": "https://variety.com/2012/film/reviews/the-mongrel-1117948809/"
+    },
+    {
+      "t": "2026-06-16T09:09:52.929Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     },
@@ -122,6 +144,17 @@
     },
     {
       "t": "2026-06-16T15:46:30.510Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-16T12:51:21.496Z",
+      "event": "bb-session",
+      "session": "257bbd6f",
+      "url": "https://variety.com/2026/theater/news/rupauls-drag-race-jinkx-monsoon-west-end-d"
+    },
+    {
+      "t": "2026-06-16T12:51:21.954Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }

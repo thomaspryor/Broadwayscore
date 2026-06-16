@@ -483,7 +483,8 @@
     "celebrity-autobiography-2026/playbill--unknown.json",
     "the-boy-who-harnessed-the-wind-west-end-2026/timeout-london--unknown.json",
     "the-boy-who-harnessed-the-wind-west-end-2026/artsdesk--unknown.json",
-    "schmigadoon-2026/nytg--unknown.json"
+    "schmigadoon-2026/nytg--unknown.json",
+    "oh-mary-west-end-2025/variety--unknown.json"
   ],
   "failed": [
     "are-you-now-or-have-you-ever-been-off-broadway-2026/theatermania--unknown.json",
@@ -1234,7 +1235,16 @@
     "romeo-and-juliet-west-end-2026/exeunt-magazine--unknown.json",
     "romeo-and-juliet-west-end-2026/nbcny--unknown.json",
     "romeo-and-juliet-west-end-2026/ny1--unknown.json",
-    "romeo-and-juliet-west-end-2026/theater-life--unknown.json"
+    "romeo-and-juliet-west-end-2026/theater-life--unknown.json",
+    "romeo-and-juliet-west-end-2026/theater-pizzazz--unknown.json",
+    "romeo-and-juliet-west-end-2026/hollywood-reporter--david-rooney.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "operation-mincemeat-2025/thereviewshub--unknown.json",
+    "buena-vista-social-club-2025/nysr--unknown.json",
+    "my-neighbour-totoro-west-end-2025/london-box-office--miriam-gibson.json",
+    "titanique-west-end-2024/times-uk--clive-davis.json",
+    "oliver-west-end-2024/i-paper--fiona-mountford.json",
+    "oliver-west-end-2024/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1548,20 +1558,8 @@
       "data/review-texts/elf-2012/variety--marilyn-stasio.json",
       "data/review-texts/end-of-the-rainbow-2012/variety--marilyn-stasio.json",
       "end-of-the-rainbow-2012/variety--marilyn-stasio.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
-      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
-      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
+      "data/review-texts/oh-mary-west-end-2025/variety--unknown.json",
+      "oh-mary-west-end-2025/variety--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1941,7 +1939,7 @@
     ]
   },
   "startTime": "2026-06-15T17:52:29.115Z",
-  "lastProcessed": "romeo-and-juliet-west-end-2026/theater-life--unknown.json",
+  "lastProcessed": "oliver-west-end-2024/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-06-15T19:32:37.188Z",
@@ -2414,156 +2412,13 @@
       "domain": "variety.com"
     },
     {
-      "t": "2026-06-16T13:23:46.898Z",
+      "t": "2026-06-16T12:51:21.496Z",
       "event": "bb-session",
-      "session": "24309963",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+      "session": "257bbd6f",
+      "url": "https://variety.com/2026/theater/news/rupauls-drag-race-jinkx-monsoon-west-end-d"
     },
     {
-      "t": "2026-06-16T13:23:47.336Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-16T13:24:18.967Z",
-      "event": "bb-session",
-      "session": "ac49ef5a",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-16T13:24:19.404Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-16T13:24:31.211Z",
-      "event": "bb-session",
-      "session": "24810425",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
-    {
-      "t": "2026-06-16T13:24:31.639Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-16T14:09:26.854Z",
-      "event": "bb-session",
-      "session": "0e0f3f8a",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
-    {
-      "t": "2026-06-16T14:09:27.329Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-16T14:09:58.422Z",
-      "event": "bb-session",
-      "session": "d0cdac5e",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-16T14:09:58.891Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-16T14:10:09.843Z",
-      "event": "bb-session",
-      "session": "982f31f5",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
-    {
-      "t": "2026-06-16T14:10:10.299Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-16T14:11:10.243Z",
-      "event": "bb-session",
-      "session": "19669251",
-      "url": "https://www.nytimes.com/2026/06/01/arts/andy-halliday-dead.html"
-    },
-    {
-      "t": "2026-06-16T14:11:10.721Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-16T15:11:14.299Z",
-      "event": "bb-session",
-      "session": "34a9f7a5",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
-    {
-      "t": "2026-06-16T15:11:15.557Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-16T15:11:51.197Z",
-      "event": "bb-session",
-      "session": "a5024bd4",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-16T15:11:52.109Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-16T15:12:05.816Z",
-      "event": "bb-session",
-      "session": "9540a8d3",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
-    {
-      "t": "2026-06-16T15:12:06.724Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-16T15:13:04.451Z",
-      "event": "bb-session",
-      "session": "5fadf4b1",
-      "url": "https://www.nytimes.com/2026/06/01/arts/andy-halliday-dead.html"
-    },
-    {
-      "t": "2026-06-16T15:13:05.433Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-16T15:45:41.701Z",
-      "event": "bb-session",
-      "session": "b6ecea6d",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
-    {
-      "t": "2026-06-16T15:45:42.519Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-16T15:46:14.550Z",
-      "event": "bb-session",
-      "session": "9afc2662",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-16T15:46:15.813Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-16T15:46:29.782Z",
-      "event": "bb-session",
-      "session": "769eb206",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
-    {
-      "t": "2026-06-16T15:46:30.510Z",
+      "t": "2026-06-16T12:51:21.954Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
