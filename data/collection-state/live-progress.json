@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-16T02:08:55.647Z",
-  "processed": 318,
-  "failed": 505,
-  "successRate": "38.6%",
+  "updatedAt": "2026-06-16T02:14:13.830Z",
+  "processed": 324,
+  "failed": 509,
+  "successRate": "38.9%",
   "tierBreakdown": {
-    "playwright": 166,
+    "playwright": 167,
     "amp": 1,
-    "browserbase": 76,
+    "browserbase": 80,
     "directCookies": 0,
     "scrapingbee": 77,
-    "brightdata": 42,
+    "brightdata": 43,
     "archiveToday": 11,
-    "archive": 99
+    "archive": 102
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-06-16T04:26:05.684Z",
@@ -39,6 +39,28 @@
     },
     {
       "t": "2026-06-16T01:33:29.853Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-16T02:10:03.302Z",
+      "event": "bb-session",
+      "session": "7eb60832",
+      "url": "https://www.wsj.com/articles/les-liaisons-dangereuses-review-fallen-archness-147"
+    },
+    {
+      "t": "2026-06-16T02:10:03.966Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-16T02:13:49.161Z",
+      "event": "bb-session",
+      "session": "edecfa38",
+      "url": "http://www.wsj.com/articles/heisenberg-review-masculine-wish-fulfillment-on-stag"
+    },
+    {
+      "t": "2026-06-16T02:13:49.771Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
