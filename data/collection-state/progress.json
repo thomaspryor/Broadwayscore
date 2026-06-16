@@ -386,7 +386,15 @@
     "hand-to-god-2015/timeout--adam-feldman.json",
     "the-heidi-chronicles-2015/newsday--linda-winer.json",
     "the-heidi-chronicles-2015/timeout--adam-feldman.json",
-    "the-audience-2015/timeout--david-cote.json"
+    "the-audience-2015/timeout--david-cote.json",
+    "fish-in-the-dark-2015/wsj--terry-teachout.json",
+    "fish-in-the-dark-2015/financialtimes--brendan-lemon.json",
+    "honeymoon-in-vegas-2015/wsj--terry-teachout.json",
+    "constellations-2015/timeout--adam-feldman.json",
+    "the-river-2014/amny--matt-windman.json",
+    "the-real-thing-2014/ew--thom-geier.json",
+    "the-last-ship-2014/newsday--linda-winer.json",
+    "the-country-house-2014/timeout--adam-feldman.json"
   ],
   "failed": [
     "are-you-now-or-have-you-ever-been-off-broadway-2026/theatermania--unknown.json",
@@ -924,7 +932,9 @@
     "it-shoulda-been-you-2015/hollywood-reporter--david-rooney.json",
     "an-american-in-paris-2015/timeout--adam-feldman.json",
     "an-american-in-paris-2015/off-script-with-dan-dwyer--dan-dwyer.json",
-    "on-the-twentieth-century-2015/nytg--tulis-mccall.json"
+    "on-the-twentieth-century-2015/nytg--tulis-mccall.json",
+    "constellations-2015/ap--jennifer-farrar.json",
+    "constellations-2015/financialtimes--brendan-lemon.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1112,7 +1122,8 @@
       "spring-awakening-2015/broadway-and-me--janice-c-simpson.json",
       "airline-highway-2015/ny1--roma-torre.json",
       "finding-neverland-2015/theatermania--jesse-green.json",
-      "finding-neverland-2015/financialtimes--brendan-lemon.json"
+      "finding-neverland-2015/financialtimes--brendan-lemon.json",
+      "fish-in-the-dark-2015/financialtimes--brendan-lemon.json"
     ],
     "amp": [
       "data/review-texts/maybe-happy-ending-2024/variety--unknown.json"
@@ -1207,7 +1218,11 @@
       "data/review-texts/she-loves-me-2016/wsj--terry-teachout.json",
       "she-loves-me-2016/wsj--terry-teachout.json",
       "data/review-texts/living-on-love-2015/wsj--terry-teachout.json",
-      "living-on-love-2015/wsj--terry-teachout.json"
+      "living-on-love-2015/wsj--terry-teachout.json",
+      "data/review-texts/fish-in-the-dark-2015/wsj--terry-teachout.json",
+      "fish-in-the-dark-2015/wsj--terry-teachout.json",
+      "data/review-texts/honeymoon-in-vegas-2015/wsj--terry-teachout.json",
+      "honeymoon-in-vegas-2015/wsj--terry-teachout.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1294,7 +1309,8 @@
       "fun-home-2015/timeout--adam-feldman.json",
       "finding-neverland-2015/timeout--adam-feldman.json",
       "an-american-in-paris-2015/timeout--adam-feldman.json",
-      "the-heidi-chronicles-2015/newsday--linda-winer.json"
+      "the-heidi-chronicles-2015/newsday--linda-winer.json",
+      "the-last-ship-2014/newsday--linda-winer.json"
     ],
     "brightdata": [
       "romeo-and-juliet-off-broadway-2026/talkinbroadway--unknown.json",
@@ -1348,16 +1364,7 @@
       "the-gin-game-2015/wsj--terry-teachout.json",
       "spring-awakening-2015/wsj--terry-teachout.json",
       "amazing-grace-2015/wsj--terry-teachout.json",
-      "maybe-happy-ending-2024/variety--unknown.json",
-      "head-over-heels-2018/vulture--jackson-mchenry.json",
-      "the-humans-2016/wsj--terry-teachout.json",
-      "the-color-purple-2015/wsj--terry-teachout.json",
-      "fool-for-love-2015/wsj--terry-teachout.json",
-      "airline-highway-2015/wsj--terry-teachout.json",
-      "living-on-love-2015/wsj--terry-teachout.json",
-      "honeymoon-in-vegas-2015/wsj--terry-teachout.json",
-      "jekyll-and-hyde-2013/newsday--linda-winer.json",
-      "golden-boy-2012/ew--adam-markovitz.json"
+      "the-river-2014/amny--matt-windman.json"
     ],
     "archiveToday": [
       "data/review-texts/romeo-and-juliet-off-broadway-2026/talkinbroadway--unknown.json",
@@ -1513,11 +1520,14 @@
       "hand-to-god-2015/newsday--linda-winer.json",
       "hand-to-god-2015/timeout--adam-feldman.json",
       "the-heidi-chronicles-2015/timeout--adam-feldman.json",
-      "the-audience-2015/timeout--david-cote.json"
+      "the-audience-2015/timeout--david-cote.json",
+      "constellations-2015/timeout--adam-feldman.json",
+      "the-real-thing-2014/ew--thom-geier.json",
+      "the-country-house-2014/timeout--adam-feldman.json"
     ]
   },
   "startTime": "2026-06-15T17:52:29.115Z",
-  "lastProcessed": "the-audience-2015/timeout--david-cote.json",
+  "lastProcessed": "the-country-house-2014/timeout--adam-feldman.json",
   "log": [
     {
       "t": "2026-06-15T19:32:37.188Z",
@@ -1667,6 +1677,28 @@
     },
     {
       "t": "2026-06-16T07:48:03.784Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-16T08:00:39.442Z",
+      "event": "bb-session",
+      "session": "0fdebc09",
+      "url": "http://www.wsj.com/articles/fish-in-the-dark-review-enthusiasm-curbed-1425612431"
+    },
+    {
+      "t": "2026-06-16T08:00:39.865Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-16T08:01:17.938Z",
+      "event": "bb-session",
+      "session": "77260fda",
+      "url": "https://www.wsj.com/articles/high-jinks-and-hold-ups-theater-review-of-honeymoon"
+    },
+    {
+      "t": "2026-06-16T08:01:18.398Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
