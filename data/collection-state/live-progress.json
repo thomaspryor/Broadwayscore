@@ -1,53 +1,20 @@
 {
-  "updatedAt": "2026-06-16T11:08:13.641Z",
+  "updatedAt": "2026-06-16T13:25:30.287Z",
   "processed": 477,
-  "failed": 726,
-  "successRate": "39.7%",
+  "failed": 736,
+  "successRate": "39.3%",
   "tierBreakdown": {
     "playwright": 199,
     "amp": 1,
-    "browserbase": 98,
+    "browserbase": 101,
     "directCookies": 0,
     "scrapingbee": 96,
     "brightdata": 72,
-    "archiveToday": 14,
+    "archiveToday": 16,
     "archive": 183
   },
-  "browserbaseSessions": 30,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-06-16T09:04:20.380Z",
-      "event": "bb-session",
-      "session": "d405d702",
-      "url": "https://www.usatoday.com/story/life/theater/2012/12/13/a-christmas-story-musical"
-    },
-    {
-      "t": "2026-06-16T09:04:20.854Z",
-      "event": "bb-cookie-inject",
-      "domain": "usatoday.com"
-    },
-    {
-      "t": "2026-06-16T09:07:18.086Z",
-      "event": "bb-session",
-      "session": "6f496efb",
-      "url": "https://www.talkinbroadway.com/world/ChristmasStory.html"
-    },
-    {
-      "t": "2026-06-16T09:07:18.532Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-06-16T09:07:32.114Z",
-      "event": "bb-session",
-      "session": "e4489c08",
-      "url": "https://www.northjersey.com/arts_entertainment/theater/179429511_Theater_review_"
-    },
-    {
-      "t": "2026-06-16T09:07:32.528Z",
-      "event": "bb-cookie-inject",
-      "domain": "northjersey.com"
-    },
     {
       "t": "2026-06-16T09:09:52.507Z",
       "event": "bb-session",
@@ -122,6 +89,39 @@
     },
     {
       "t": "2026-06-16T09:49:54.891Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-16T13:23:46.898Z",
+      "event": "bb-session",
+      "session": "24309963",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-16T13:23:47.336Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-16T13:24:18.967Z",
+      "event": "bb-session",
+      "session": "ac49ef5a",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-16T13:24:19.404Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-16T13:24:31.211Z",
+      "event": "bb-session",
+      "session": "24810425",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-16T13:24:31.639Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
