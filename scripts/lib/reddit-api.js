@@ -442,7 +442,7 @@ async function searchAllPosts(subreddit, query, maxResults = 500) {
 /**
  * Collect comments from multiple posts
  */
-async function collectCommentsFromPosts(subreddit, posts, maxComments = 1000) {
+async function collectCommentsFromPosts(subreddit, posts, maxComments = 1000, perPostMax = Infinity) {
   const allComments = [];
 
   for (const post of posts) {
@@ -451,7 +451,9 @@ async function collectCommentsFromPosts(subreddit, posts, maxComments = 1000) {
     try {
       const response = await getPostComments(subreddit, post.id);
       const comments = flattenComments(response);
-      allComments.push(...comments);
+      // Cap any single post's contribution — a high-comment roundup/megathread
+      // that slips past the title guard can't dominate the sentiment sample.
+      allComments.push(...(Number.isFinite(perPostMax) ? comments.slice(0, perPostMax) : comments));
 
       if (allComments.length % 200 === 0) {
         console.log(`    Collected ${allComments.length} comments...`);

@@ -33,6 +33,12 @@
 const fs = require('fs');
 const path = require('path');
 const { searchAllPosts, collectCommentsFromPosts, getStats } = require('./lib/reddit-api');
+const { isRoundupOrMegathread, buildAudienceSearchQueries } = require('./lib/reddit-post-filters');
+
+// A single roundup/megathread can hold hundreds of comments about dozens of
+// shows. Even after excluding such posts by title, cap how many comments any
+// ONE post can contribute so no thread can dominate a show's sentiment sample.
+const MAX_COMMENTS_PER_POST = 40;
 const { classifyAllComments } = require('./lib/buzz-classifier');
 const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
 const { isLondonMarket } = require('./lib/venue-classification');
@@ -168,8 +174,15 @@ function calculateBuzzScore(classifications, totalPosts = 0, totalComments = 0) 
  * Returns: true (definitely audience), false (definitely industry), or null (neutral - include but don't prioritize)
  */
 function classifyPost(post, showTitle) {
-  const title = (post.title || '').toLowerCase();
+  const rawTitle = post.title || '';
+  const title = rawTitle.toLowerCase();
   const flair = (post.link_flair_text || '').toLowerCase();
+
+  // ZEROTH: Roundup / awards / recurring-megathread posts discuss many shows at
+  // once. Their comments must never be attributed to whichever show happened to
+  // match the search (e.g. "Drama Desk Awards 2025" mentioning "Music City").
+  // Exclude outright — overrides review flair.
+  if (isRoundupOrMegathread(rawTitle)) return false;
 
   // FIRST: Check exclusion keywords - these override everything including flair
   // Industry keywords to EXCLUDE
@@ -238,29 +251,10 @@ async function searchAudiencePosts(subreddit, showTitle, maxPosts = 10000, { cat
   // r/opera and r/classicalmusic return decades of unrelated discussion (Met
   // 1985 Tristan, La Scala Traviata, etc.). Anchor every query to "Met" or
   // "Metropolitan Opera" so we get audience reactions to THIS production.
-  const searches = isOpera ? [
-    `flair:Review "${cleanTitle}" Met`,
-    `"${cleanTitle}" "Metropolitan Opera" saw`,
-    `"just saw ${cleanTitle}" Met`,
-    `"${cleanTitle}" Met saw`,
-    `"${cleanTitle}" Met review`,
-    `"${cleanTitle}" Metropolitan thoughts`,
-    `"${cleanTitle}" Met loved`,
-    `"${cleanTitle}" Met recommend`,
-    `"${cleanTitle}" "at the Met"`,
-    `"${cleanTitle}" Metropolitan Opera`,
-  ] : [
-    `flair:Review "${cleanTitle}"`,           // Review-tagged posts (highest signal)
-    `"${cleanTitle}" "${marketName}" saw`,    // Market-specific
-    `"just saw ${cleanTitle}"`,               // "just saw Wicked"
-    `"${cleanTitle}" saw`,                    // "I saw Wicked"
-    `"${cleanTitle}" review`,                 // Reviews
-    `"${cleanTitle}" thoughts`,               // Discussion
-    `"${cleanTitle}" loved`,                  // Positive reactions
-    `"${cleanTitle}" recommend`,              // Recommendations
-    `"${cleanTitle}" "${isWestEnd ? 'in the West End' : 'on Broadway'}"`, // Market-specific phrasing
-    `"${cleanTitle}"`,                        // Basic search (for neutral posts)
-  ];
+  // The bare `"<title>"` query (the contamination vector for generic /
+  // collision-prone titles like "Music City"/"Mercury") is replaced by a
+  // market-anchored query for every show. See reddit-post-filters.js.
+  const searches = buildAudienceSearchQueries({ cleanTitle, marketName, isWestEnd, isOpera });
 
   const audiencePosts = [];  // Definitely audience
   const neutralPosts = [];   // Not clearly industry or audience
@@ -421,7 +415,7 @@ async function processShow(show) {
   let comments = [];
   for (const [sr, srPosts] of postsBySubreddit) {
     try {
-      const srComments = await collectCommentsFromPosts(sr, srPosts, 10000);
+      const srComments = await collectCommentsFromPosts(sr, srPosts, 10000, MAX_COMMENTS_PER_POST);
       comments.push(...srComments);
     } catch (e) {
       console.error(`  Comment collection failed in r/${sr}: ${e.message}`);

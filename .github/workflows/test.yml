@@ -54,6 +54,15 @@ on:
       # (workflow hygiene + lint + colocated batches), not ZERO coverage.
       - 'scripts/lib/run-budget.js'
       - 'scripts/lib/run-budget.test.mjs'
+      # Reddit audience-buzz contamination filters (generic-title / roundup guard).
+      # Colocated scripts/lib/*.test.mjs step covers reddit-post-filters.test.mjs;
+      # without these entries a solo edit triggers ZERO CI (allow-list gate).
+      - 'scripts/lib/reddit-post-filters.js'
+      - 'scripts/lib/reddit-post-filters.test.mjs'
+      - 'scripts/scrape-reddit-sentiment.js'
+      - 'scripts/lib/reddit-api.js'
+      - 'scripts/lib/audience-weighting.js'
+      - 'scripts/neutralize-contaminated-reddit-buzz.js'
       - 'scripts/scrape-westendtheatre-roundups.js'
       - 'scripts/recover-explicit-ratings.js'
       - 'scripts/deep-research-commercial.js'
