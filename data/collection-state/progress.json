@@ -338,7 +338,12 @@
     "waitress-2016/act-three-the-reviews--doug-marino.json",
     "american-psycho-2016/nyt-theater--jonathan-mandell.json",
     "american-psycho-2016/timeout--adam-feldman.json",
-    "the-father-2016/financialtimes--max-mcguinness.json"
+    "the-father-2016/financialtimes--max-mcguinness.json",
+    "bright-star-2016/wsj--terry-teachout.json",
+    "bright-star-2016/stu-on-broadway--stu-brown.json",
+    "she-loves-me-2016/wsj--terry-teachout.json",
+    "hughie-2016/act-three-the-reviews--doug-marino.json",
+    "hughie-2016/financialtimes--max-mcguinness.json"
   ],
   "failed": [
     "are-you-now-or-have-you-ever-been-off-broadway-2026/theatermania--unknown.json",
@@ -854,7 +859,12 @@
     "heisenberg-2016/abc-news--mark-kennedy.json",
     "holiday-inn-the-new-irving-berlin-musical-2016/thestage--mark-shenton.json",
     "tuck-everlasting-2016/thestage--mark-shenton.json",
-    "american-psycho-2016/ap--mark-kennedy.json"
+    "american-psycho-2016/ap--mark-kennedy.json",
+    "the-father-2016/theater-life--paulanne-simmons.json",
+    "bright-star-2016/drama-queen-nyc--jonathan-warman.json",
+    "she-loves-me-2016/theater-life--eric-march.json",
+    "blackbird-2016/wsj--terry-teachout.json",
+    "eclipsed-2016/nydailynews--joe-dziemianowicz.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1032,7 +1042,9 @@
       "tuck-everlasting-2016/uinterview--erik-meers.json",
       "waitress-2016/act-three-the-reviews--doug-marino.json",
       "american-psycho-2016/nyt-theater--jonathan-mandell.json",
-      "the-father-2016/financialtimes--max-mcguinness.json"
+      "the-father-2016/financialtimes--max-mcguinness.json",
+      "hughie-2016/act-three-the-reviews--doug-marino.json",
+      "hughie-2016/financialtimes--max-mcguinness.json"
     ],
     "amp": [
       "data/review-texts/maybe-happy-ending-2024/variety--unknown.json"
@@ -1121,7 +1133,11 @@
       "data/review-texts/holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json",
       "holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json",
       "data/review-texts/fully-committed-2016/wsj--terry-teachout.json",
-      "fully-committed-2016/wsj--terry-teachout.json"
+      "fully-committed-2016/wsj--terry-teachout.json",
+      "data/review-texts/bright-star-2016/wsj--terry-teachout.json",
+      "bright-star-2016/wsj--terry-teachout.json",
+      "data/review-texts/she-loves-me-2016/wsj--terry-teachout.json",
+      "she-loves-me-2016/wsj--terry-teachout.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1372,11 +1388,15 @@
       "oh-hello-on-broadway-2016/nydailynews--joe-dziemianowicz.json",
       "holiday-inn-the-new-irving-berlin-musical-2016/nydailynews--joe-dziemianowicz.json",
       "holiday-inn-the-new-irving-berlin-musical-2016/timeout--david-cote.json",
-      "american-psycho-2016/timeout--adam-feldman.json"
+      "american-psycho-2016/timeout--adam-feldman.json",
+      "bright-star-2016/stu-on-broadway--stu-brown.json",
+      "the-father-2016/theater-life--paulanne-simmons.json",
+      "she-loves-me-2016/theater-life--eric-march.json",
+      "blackbird-2016/wsj--terry-teachout.json"
     ]
   },
   "startTime": "2026-06-15T17:52:29.115Z",
-  "lastProcessed": "the-father-2016/financialtimes--max-mcguinness.json",
+  "lastProcessed": "hughie-2016/financialtimes--max-mcguinness.json",
   "log": [
     {
       "t": "2026-06-15T19:32:37.188Z",
@@ -1493,6 +1513,28 @@
     },
     {
       "t": "2026-06-16T02:21:55.066Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-16T02:25:22.830Z",
+      "event": "bb-session",
+      "session": "d3235496",
+      "url": "http://www.wsj.com/articles/bright-star-review-banjo-boondoggle-1458865800"
+    },
+    {
+      "t": "2026-06-16T02:25:23.502Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-16T02:26:12.918Z",
+      "event": "bb-session",
+      "session": "ab5cfb83",
+      "url": "http://www.wsj.com/articles/she-loves-me-the-sweet-scent-of-perfection-145826100"
+    },
+    {
+      "t": "2026-06-16T02:26:13.547Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
