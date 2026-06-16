@@ -51,7 +51,7 @@ interface Retrospective {
   leaderboardNote: string;
   upsets: Upset[];
   marketMoves?: { title: string; subtitle: string; rows: MarketMove[] };
-  btc: { players: number; avgScore: number; totalCategories: number; beatAllThreePct: number; topScore: number };
+  btc: { players?: number; avgScore: number; totalCategories: number; beatAllThreePct: number; topScore: number };
 }
 
 export function getRetrospective(ceremonyYear: number): Retrospective | null {
@@ -216,14 +216,14 @@ export function PredictionRetrospective({ ceremonyYear }: { ceremonyYear: number
         ))}
       </div>
 
-      {/* BTC players summary */}
+      {/* Beat the Critics summary — branded wordmark + stats (no entry count) */}
       <div className="rounded-xl border border-white/5 bg-surface-overlay p-4 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
-        <span className="text-gray-300">
-          <span className="font-bold text-white tabular-nums">{retro.btc.players}</span> players entered{' '}
-          <a href="/beat-the-critics" className="text-brand hover:text-brand-light font-medium">Beat the Critics</a>
-        </span>
+        <a href="/beat-the-critics" className="text-base font-black tracking-tighter text-white hover:opacity-90 transition-opacity">
+          Beat <span className="bg-gradient-to-br from-brand to-[#ff1368] bg-clip-text text-transparent">the Critics</span>
+          <sup className="text-[9px] font-bold text-gray-500 align-super ml-0.5">&trade;</sup>
+        </a>
         <span className="text-gray-400 text-[13px]">
-          average <span className="text-gray-200 font-semibold tabular-nums">{retro.btc.avgScore}/{retro.btc.totalCategories}</span>
+          players averaged <span className="text-gray-200 font-semibold tabular-nums">{retro.btc.avgScore}/{retro.btc.totalCategories}</span>
         </span>
         <span className="text-gray-400 text-[13px]">
           top score <span className="text-gray-200 font-semibold tabular-nums">{retro.btc.topScore}/{retro.btc.totalCategories}</span>
