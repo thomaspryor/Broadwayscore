@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-16T20:42:58.049Z",
+  "updatedAt": "2026-06-17T00:20:57.410Z",
   "processed": 115,
-  "failed": 85,
-  "successRate": "57.5%",
+  "failed": 95,
+  "successRate": "54.8%",
   "tierBreakdown": {
     "playwright": 74,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 6,
     "directCookies": 0,
     "scrapingbee": 10,
     "brightdata": 9,
     "archiveToday": 0,
     "archive": 23
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-06-16T20:08:35.686Z",
@@ -25,6 +25,50 @@
       "t": "2026-06-16T20:08:36.622Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-17T00:18:38.731Z",
+      "event": "bb-session",
+      "session": "236f778b",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-17T00:18:39.126Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-17T00:19:11.091Z",
+      "event": "bb-session",
+      "session": "cbd2c2e2",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-17T00:19:11.501Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-17T00:19:21.873Z",
+      "event": "bb-session",
+      "session": "f4d7024a",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-17T00:19:22.361Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-17T00:20:12.436Z",
+      "event": "bb-session",
+      "session": "aaa142ce",
+      "url": "https://www.nytimes.com/2026/06/01/arts/andy-halliday-dead.html"
+    },
+    {
+      "t": "2026-06-17T00:20:12.898Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

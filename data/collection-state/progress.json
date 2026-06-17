@@ -201,7 +201,17 @@
     "all-my-sons-west-end-2025/newsday--barbara-schuler.json",
     "all-my-sons-west-end-2025/thewrap--robert-hofler.json",
     "all-my-sons-west-end-2025/amny--matt-windman.json",
-    "all-my-sons-west-end-2025/dailybeast--tim-teeman.json"
+    "all-my-sons-west-end-2025/dailybeast--tim-teeman.json",
+    "romeo-and-juliet-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
+    "small-off-broadway-2026/guardian--arifa-akbar.json",
+    "small-off-broadway-2026/pages-on-stages--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -284,7 +294,11 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/oh-mary-west-end-2025/variety--naman-ramachandran.json",
-      "oh-mary-west-end-2025/variety--naman-ramachandran.json"
+      "oh-mary-west-end-2025/variety--naman-ramachandran.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -338,7 +352,7 @@
     ]
   },
   "startTime": "2026-06-16T19:54:03.478Z",
-  "lastProcessed": "all-my-sons-west-end-2025/dailybeast--tim-teeman.json",
+  "lastProcessed": "small-off-broadway-2026/pages-on-stages--unknown.json",
   "log": [
     {
       "t": "2026-06-16T20:08:35.686Z",
@@ -350,6 +364,50 @@
       "t": "2026-06-16T20:08:36.622Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-17T00:18:38.731Z",
+      "event": "bb-session",
+      "session": "236f778b",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-17T00:18:39.126Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-17T00:19:11.091Z",
+      "event": "bb-session",
+      "session": "cbd2c2e2",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-17T00:19:11.501Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-17T00:19:21.873Z",
+      "event": "bb-session",
+      "session": "f4d7024a",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-17T00:19:22.361Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-17T00:20:12.436Z",
+      "event": "bb-session",
+      "session": "aaa142ce",
+      "url": "https://www.nytimes.com/2026/06/01/arts/andy-halliday-dead.html"
+    },
+    {
+      "t": "2026-06-17T00:20:12.898Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
