@@ -1130,7 +1130,17 @@
     "war-horse-west-end-2026/times-uk--clive-davis.json",
     "beetlejuice-west-end-2026/all-that-dazzles-uk--unknown.json",
     "beetlejuice-west-end-2026/amny--matt-windman.json",
-    "the-p-word-off-west-end-2026/whatsonstage--frey-kwa-hawking.json"
+    "the-p-word-off-west-end-2026/whatsonstage--frey-kwa-hawking.json",
+    "romeo-and-juliet-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+    "are-you-now-or-have-you-ever-been-off-broadway-2026/nytimes--laura-collins-hughes.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
+    "small-off-broadway-2026/guardian--arifa-akbar.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1432,7 +1442,12 @@
       "dames-at-sea-2015/wsj--terry-teachout.json",
       "data/review-texts/fish-in-the-dark-2015/wsj--terry-teachout.json",
       "fish-in-the-dark-2015/wsj--terry-teachout.json",
-      "data/review-texts/elf-2012/variety--marilyn-stasio.json"
+      "data/review-texts/elf-2012/variety--marilyn-stasio.json",
+      "data/review-texts/are-you-now-or-have-you-ever-been-off-broadway-2026/nytimes--laura-collins-hughes.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1771,7 +1786,7 @@
     ]
   },
   "startTime": "2026-06-16T19:54:03.478Z",
-  "lastProcessed": "the-p-word-off-west-end-2026/whatsonstage--frey-kwa-hawking.json",
+  "lastProcessed": "small-off-broadway-2026/guardian--arifa-akbar.json",
   "log": [
     {
       "t": "2026-06-16T20:08:35.686Z",
@@ -2588,6 +2603,61 @@
       "t": "2026-06-17T10:51:46.732Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-17T11:43:11.418Z",
+      "event": "bb-session",
+      "session": "a771a3d4",
+      "url": "https://www.nytimes.com/2026/06/16/theater/are-you-now-or-have-you-ever-been-rev"
+    },
+    {
+      "t": "2026-06-17T11:43:12.317Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-17T11:43:58.431Z",
+      "event": "bb-session",
+      "session": "142b588c",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-17T11:43:59.314Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-17T11:44:37.340Z",
+      "event": "bb-session",
+      "session": "8f517bc8",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-17T11:44:38.370Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-17T11:44:51.924Z",
+      "event": "bb-session",
+      "session": "161821bb",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-17T11:44:52.873Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-17T11:45:59.724Z",
+      "event": "bb-session",
+      "session": "66534d79",
+      "url": "https://www.nytimes.com/2026/06/01/arts/andy-halliday-dead.html"
+    },
+    {
+      "t": "2026-06-17T11:46:00.712Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
