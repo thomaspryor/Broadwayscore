@@ -243,7 +243,13 @@
     "escape-to-margaritaville-2018/playbill--gabriel-agosto.json",
     "john-lithgow-stories-by-heart-2018/nydailynews--joe-dziemianowicz.json",
     "john-lithgow-stories-by-heart-2018/financialtimes--max-mcguinness.json",
-    "meteor-shower-2017/frontmezzjunkies--steven-ross.json"
+    "meteor-shower-2017/frontmezzjunkies--steven-ross.json",
+    "glengarry-glen-ross-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "glengarry-glen-ross-west-end-2026/artsdesk--aleks-sierz.json",
+    "glengarry-glen-ross-west-end-2026/independent--holly-williams.json",
+    "glengarry-glen-ross-west-end-2026/london-theatre--mark-shenton.json",
+    "glengarry-glen-ross-west-end-2026/times-uk--ann-treneman.json",
+    "glengarry-glen-ross-west-end-2026/whatsonstage--sarah-crompton.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -525,7 +531,25 @@
     "small-off-broadway-2026/pages-on-stages--unknown.json",
     "small-off-broadway-2026/the-recs--unknown.json",
     "small-off-broadway-2026/theater-pizzazz--unknown.json",
-    "small-off-broadway-2026/washpost--unknown.json"
+    "small-off-broadway-2026/washpost--unknown.json",
+    "glengarry-glen-ross-west-end-2026/guardian--susan-sheahan.json",
+    "glengarry-glen-ross-west-end-2026/standard--henry-hitchings.json",
+    "glengarry-glen-ross-west-end-2026/telegraph--dominic-cavendish.json",
+    "glengarry-glen-ross-west-end-2026/thestage--natasha-tripney.json",
+    "are-you-watching-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "are-you-watching-west-end-2026/the-recs--unknown.json",
+    "driftwood-west-end-2026/guardian--arifa-akbar.json",
+    "driftwood-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "driftwood-west-end-2026/artsdesk--unknown.json",
+    "driftwood-west-end-2026/standard--nick-curtis.json",
+    "driftwood-west-end-2026/times-uk--clive-davis.json",
+    "war-horse-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "war-horse-west-end-2026/plays-international--maryam-philpott.json",
+    "war-horse-west-end-2026/times-uk--chris-bennion.json",
+    "war-horse-west-end-2026/times-uk--clive-davis.json",
+    "beetlejuice-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "beetlejuice-west-end-2026/amny--matt-windman.json",
+    "the-p-word-off-west-end-2026/whatsonstage--frey-kwa-hawking.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -638,7 +662,11 @@
       "angels-in-america-2018/broadwaynews--charles-isherwood.json",
       "escape-to-margaritaville-2018/broadwaynews--caitlin-huston.json",
       "john-lithgow-stories-by-heart-2018/financialtimes--max-mcguinness.json",
-      "meteor-shower-2017/frontmezzjunkies--steven-ross.json"
+      "meteor-shower-2017/frontmezzjunkies--steven-ross.json",
+      "glengarry-glen-ross-west-end-2026/timeout-london--andrzej-lukowski.json",
+      "glengarry-glen-ross-west-end-2026/artsdesk--aleks-sierz.json",
+      "glengarry-glen-ross-west-end-2026/london-theatre--mark-shenton.json",
+      "glengarry-glen-ross-west-end-2026/whatsonstage--sarah-crompton.json"
     ],
     "amp": [],
     "browserbase": [
@@ -814,7 +842,9 @@
       "data/review-texts/frozen-2018/thestage--mark-shenton.json",
       "data/review-texts/spongebob-squarepants-2017/thestage--mark-shenton.json",
       "data/review-texts/the-parisian-woman-2017/thestage--mark-shenton.json",
-      "data/review-texts/meteor-shower-2017/thestage--mark-shenton.json"
+      "data/review-texts/meteor-shower-2017/thestage--mark-shenton.json",
+      "data/review-texts/glengarry-glen-ross-west-end-2026/thestage--natasha-tripney.json",
+      "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -872,11 +902,13 @@
       "the-nap-2018/theater-life--barry-gordin.json",
       "lobby-hero-2018/thestage--mark-shenton.json",
       "angels-in-america-2018/frontmezzjunkies--steven-ross.json",
-      "escape-to-margaritaville-2018/playbill--gabriel-agosto.json"
+      "escape-to-margaritaville-2018/playbill--gabriel-agosto.json",
+      "glengarry-glen-ross-west-end-2026/independent--holly-williams.json",
+      "glengarry-glen-ross-west-end-2026/times-uk--ann-treneman.json"
     ]
   },
   "startTime": "2026-06-16T19:54:03.478Z",
-  "lastProcessed": "small-off-broadway-2026/washpost--unknown.json",
+  "lastProcessed": "the-p-word-off-west-end-2026/whatsonstage--frey-kwa-hawking.json",
   "log": [
     {
       "t": "2026-06-16T20:08:35.686Z",
@@ -1490,6 +1522,12 @@
       "event": "bb-session",
       "session": "5fcf8767",
       "url": "https://theaterpizzazz.com/small-a-jockeys-indestructible-passion/"
+    },
+    {
+      "t": "2026-06-17T07:01:57.349Z",
+      "event": "bb-session",
+      "session": "2a3a41e7",
+      "url": "https://therecs.co.uk/are-you-watching-royal-court/"
     }
   ]
 }
