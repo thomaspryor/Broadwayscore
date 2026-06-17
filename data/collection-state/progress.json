@@ -434,7 +434,9 @@
     "les-liaisons-dangereuses-2016/thestage--mark-shenton.json",
     "tuck-everlasting-2016/thestage--mark-shenton.json",
     "noises-off-2016/thestage--mark-shenton.json",
-    "dames-at-sea-2015/wsj--terry-teachout.json"
+    "dames-at-sea-2015/wsj--terry-teachout.json",
+    "hand-to-god-2015/newsday--linda-winer.json",
+    "fish-in-the-dark-2015/wsj--terry-teachout.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -992,7 +994,15 @@
     "bright-star-2016/drama-queen-nyc--jonathan-warman.json",
     "eclipsed-2016/nydailynews--joe-dziemianowicz.json",
     "a-view-from-the-bridge-2015/financialtimes--sarah-hemming.json",
-    "the-gin-game-2015/vulture--jesse-green.json"
+    "the-gin-game-2015/vulture--jesse-green.json",
+    "the-gin-game-2015/ap--mark-kennedy.json",
+    "something-rotten-2015/ap--mark-kennedy.json",
+    "doctor-zhivago-2015/timeout--adam-feldman.json",
+    "it-shoulda-been-you-2015/hollywood-reporter--david-rooney.json",
+    "an-american-in-paris-2015/off-script-with-dan-dwyer--dan-dwyer.json",
+    "on-the-twentieth-century-2015/nytg--tulis-mccall.json",
+    "constellations-2015/ap--jennifer-farrar.json",
+    "constellations-2015/financialtimes--brendan-lemon.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1282,7 +1292,9 @@
       "data/review-texts/the-color-purple-2015/wsj--terry-teachout.json",
       "the-color-purple-2015/wsj--terry-teachout.json",
       "data/review-texts/dames-at-sea-2015/wsj--terry-teachout.json",
-      "dames-at-sea-2015/wsj--terry-teachout.json"
+      "dames-at-sea-2015/wsj--terry-teachout.json",
+      "data/review-texts/fish-in-the-dark-2015/wsj--terry-teachout.json",
+      "fish-in-the-dark-2015/wsj--terry-teachout.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1568,11 +1580,12 @@
       "the-nance-2013/timeout--david-cote.json",
       "vanya-and-sonia-and-masha-and-spike-2013/village-voice--michael-musto.json",
       "cat-on-a-hot-tin-roof-2013/timeout--david-cote.json",
-      "come-from-away-2017/times-uk--dominic-maxwell.json"
+      "come-from-away-2017/times-uk--dominic-maxwell.json",
+      "hand-to-god-2015/newsday--linda-winer.json"
     ]
   },
   "startTime": "2026-06-16T19:54:03.478Z",
-  "lastProcessed": "the-gin-game-2015/vulture--jesse-green.json",
+  "lastProcessed": "constellations-2015/financialtimes--brendan-lemon.json",
   "log": [
     {
       "t": "2026-06-16T20:08:35.686Z",
@@ -2288,6 +2301,17 @@
     },
     {
       "t": "2026-06-17T10:08:38.592Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-17T10:09:49.613Z",
+      "event": "bb-session",
+      "session": "8fdc6de6",
+      "url": "http://www.wsj.com/articles/fish-in-the-dark-review-enthusiasm-curbed-1425612431"
+    },
+    {
+      "t": "2026-06-17T10:09:50.437Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
