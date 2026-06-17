@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-17T08:30:13.907Z",
-  "processed": 303,
-  "failed": 368,
-  "successRate": "45.2%",
+  "updatedAt": "2026-06-17T08:32:47.212Z",
+  "processed": 312,
+  "failed": 369,
+  "successRate": "45.8%",
   "tierBreakdown": {
-    "playwright": 147,
+    "playwright": 150,
     "amp": 0,
-    "browserbase": 61,
+    "browserbase": 63,
     "directCookies": 0,
     "scrapingbee": 60,
-    "brightdata": 35,
+    "brightdata": 37,
     "archiveToday": 43,
-    "archive": 68
+    "archive": 71
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-06-17T05:06:10.928Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-17T05:06:42.943Z",
-      "event": "bb-session",
-      "session": "52ddf161",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
     {
       "t": "2026-06-17T05:06:43.433Z",
       "event": "bb-cookie-inject",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-06-17T08:28:32.806Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-17T08:30:53.783Z",
+      "event": "bb-session",
+      "session": "58b39f71",
+      "url": "http://www.wsj.com/articles/heisenberg-review-masculine-wish-fulfillment-on-stag"
+    },
+    {
+      "t": "2026-06-17T08:30:54.270Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

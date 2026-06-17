@@ -302,7 +302,16 @@
     "a-bronx-tale-the-musical-2016/timeout--adam-feldman.json",
     "natasha-pierre-and-the-great-comet-of-1812-2016/newyorker--conde-nast.json",
     "natasha-pierre-and-the-great-comet-of-1812-2016/broadway-and-me--janice-c-simpson.json",
-    "les-liaisons-dangereuses-2016/wsj--terry-teachout.json"
+    "les-liaisons-dangereuses-2016/wsj--terry-teachout.json",
+    "falsettos-2016/theatermania--jesse-green.json",
+    "falsettos-2016/theater-life--eric-march.json",
+    "heisenberg-2016/nydailynews--joe-dziemianowicz.json",
+    "heisenberg-2016/timeout--adam-feldman.json",
+    "heisenberg-2016/wsj--terry-teachout.json",
+    "heisenberg-2016/wnyc--jennifer-vanasco.json",
+    "oh-hello-on-broadway-2016/nydailynews--joe-dziemianowicz.json",
+    "holiday-inn-the-new-irving-berlin-musical-2016/nydailynews--joe-dziemianowicz.json",
+    "holiday-inn-the-new-irving-berlin-musical-2016/timeout--david-cote.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -672,7 +681,8 @@
     "the-present-2017/thestage--unknown.json",
     "in-transit-2016/nydailynews--joe-dziemianowicz.json",
     "a-bronx-tale-the-musical-2016/njcom--patrick-maley.json",
-    "les-liaisons-dangereuses-2016/thestage--mark-shenton.json"
+    "les-liaisons-dangereuses-2016/thestage--mark-shenton.json",
+    "heisenberg-2016/abc-news--mark-kennedy.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -823,7 +833,10 @@
       "sunday-in-the-park-with-george-2017/theater-life--isa-goldberg.json",
       "sunday-in-the-park-with-george-2017/wnyc--jennifer-vanasco.json",
       "jitney-2017/wnyc--jennifer-vanasco.json",
-      "natasha-pierre-and-the-great-comet-of-1812-2016/broadway-and-me--janice-c-simpson.json"
+      "natasha-pierre-and-the-great-comet-of-1812-2016/broadway-and-me--janice-c-simpson.json",
+      "falsettos-2016/theatermania--jesse-green.json",
+      "falsettos-2016/theater-life--eric-march.json",
+      "heisenberg-2016/wnyc--jennifer-vanasco.json"
     ],
     "amp": [],
     "browserbase": [
@@ -887,7 +900,9 @@
       "data/review-texts/junk-2017/wsj--terry-teachout.json",
       "junk-2017/wsj--terry-teachout.json",
       "data/review-texts/les-liaisons-dangereuses-2016/wsj--terry-teachout.json",
-      "les-liaisons-dangereuses-2016/wsj--terry-teachout.json"
+      "les-liaisons-dangereuses-2016/wsj--terry-teachout.json",
+      "data/review-texts/heisenberg-2016/wsj--terry-teachout.json",
+      "heisenberg-2016/wsj--terry-teachout.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -987,7 +1002,9 @@
       "oslo-2017/timeout--adam-feldman.json",
       "sweat-2017/nydailynews--joe-dziemianowicz.json",
       "sunset-boulevard-2017/newyorker--conde-nast.json",
-      "natasha-pierre-and-the-great-comet-of-1812-2016/newyorker--conde-nast.json"
+      "natasha-pierre-and-the-great-comet-of-1812-2016/newyorker--conde-nast.json",
+      "heisenberg-2016/nydailynews--joe-dziemianowicz.json",
+      "holiday-inn-the-new-irving-berlin-musical-2016/timeout--david-cote.json"
     ],
     "archiveToday": [
       "data/review-texts/for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/thestage--loren-noveck.json",
@@ -1102,11 +1119,14 @@
       "in-transit-2016/the-cultural-critic--steve-cohen.json",
       "dear-evan-hansen-2016/frontmezzjunkies--steven-ross.json",
       "dear-evan-hansen-2016/times-uk--clive-davis.json",
-      "a-bronx-tale-the-musical-2016/timeout--adam-feldman.json"
+      "a-bronx-tale-the-musical-2016/timeout--adam-feldman.json",
+      "heisenberg-2016/timeout--adam-feldman.json",
+      "oh-hello-on-broadway-2016/nydailynews--joe-dziemianowicz.json",
+      "holiday-inn-the-new-irving-berlin-musical-2016/nydailynews--joe-dziemianowicz.json"
     ]
   },
   "startTime": "2026-06-16T19:54:03.478Z",
-  "lastProcessed": "les-liaisons-dangereuses-2016/thestage--mark-shenton.json",
+  "lastProcessed": "holiday-inn-the-new-irving-berlin-musical-2016/timeout--david-cote.json",
   "log": [
     {
       "t": "2026-06-16T20:08:35.686Z",
@@ -1712,6 +1732,17 @@
     },
     {
       "t": "2026-06-17T08:28:32.806Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-17T08:30:53.783Z",
+      "event": "bb-session",
+      "session": "58b39f71",
+      "url": "http://www.wsj.com/articles/heisenberg-review-masculine-wish-fulfillment-on-stag"
+    },
+    {
+      "t": "2026-06-17T08:30:54.270Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
