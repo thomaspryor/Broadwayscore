@@ -17,6 +17,25 @@ const DAYS_BEFORE_PREVIEW = 21;
 const DAYS_AFTER_CLOSE = 7;
 const UK_DAYS_BEFORE_PREVIEW = 35;
 
+/**
+ * Earliest plausible start of a production's run — the window anchor for the
+ * pre-opening/date guard. Returns the MIN (not first-non-null) of previewDate /
+ * previewsStartDate / openingDate so an out-of-order date (e.g. a stale
+ * previewsStartDate recorded AFTER openingDate) can never push the window start
+ * later than opening and mis-flag a genuine review filed around opening.
+ * Defends against the inverted-date data bug surfaced 2026-06-17 (Three Houses:
+ * previewsStartDate 2024-12-04 vs openingDate 2024-05-22). Pure; returns a
+ * YYYY-MM-DD string or null.
+ */
+function earliestShowDate(show) {
+  if (!show) return null;
+  const cands = [show.previewDate, show.previewsStartDate, show.openingDate]
+    .filter(Boolean)
+    .map(String);
+  if (cands.length === 0) return null;
+  return cands.reduce((min, d) => (d < min ? d : min));
+}
+
 function evaluateDateGuard({ pubDate, show, outletId }) {
   // NOTE: 'observer' deliberately excluded. observer.com is flagged
   // isDualMarket:true in outlet-registry.json — both NY Observer (US/Broadway
@@ -30,7 +49,7 @@ function evaluateDateGuard({ pubDate, show, outletId }) {
   ]);
   const UK_MARKETS = new Set(['west-end', 'off-west-end']);
 
-  const earliestStr = show.previewDate || show.previewsStartDate || show.openingDate;
+  const earliestStr = earliestShowDate(show);
   if (!earliestStr) return { flag: false, issue: null, diffDays: 0, daysAllowedBefore: DAYS_BEFORE_PREVIEW };
 
   const isUkMarket = UK_MARKETS.has(show.category) || UK_MARKETS.has(show.market);
@@ -135,6 +154,7 @@ function evaluateDatelessRevivalGuard({ hasUsableDate, isMultiProductionTitle, s
 module.exports = {
   evaluateDateGuard,
   evaluateDatelessRevivalGuard,
+  earliestShowDate,
   DAYS_BEFORE_PREVIEW,
   DAYS_AFTER_CLOSE,
   UK_DAYS_BEFORE_PREVIEW,

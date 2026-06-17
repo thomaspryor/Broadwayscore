@@ -18,7 +18,7 @@ const fs = require('fs');
 const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { isWithinPriorRun } = require('./lib/wrong-production-autoclear');
-const { evaluateDateGuard, evaluateDatelessRevivalGuard, DAYS_AFTER_CLOSE } = require('./lib/date-guard');
+const { evaluateDateGuard, evaluateDatelessRevivalGuard, earliestShowDate, DAYS_AFTER_CLOSE } = require('./lib/date-guard');
 
 // Multi-production (revival) title index: a show id whose base title has ≥2
 // productions in shows.json. Used by the dateless-revival guard below to decide
@@ -56,6 +56,7 @@ function loadShows() {
 }
 
 const { parseDate } = require('./lib/date-utils');
+const { extractDateFromUrl } = require('./lib/rebuild-helpers');
 
 function run() {
   const showMap = loadShows();
@@ -76,7 +77,7 @@ function run() {
     if (!show) continue;
 
     // Determine date window
-    const earliestStr = show.previewDate || show.previewsStartDate || show.openingDate;
+    const earliestStr = earliestShowDate(show);
     if (!earliestStr) { noWindow++; continue; }
 
     const dirPath = path.join(REVIEW_TEXTS_DIR, showDir);
@@ -95,11 +96,14 @@ function run() {
 
       let pubDate = parseDate(data.publishDate);
       if (!pubDate && data.url) {
-        // Same precise YYYYMMDD URL-date fallback the rebuild uses.
-        const ymd = data.url.match(/(?:[\/\-_.])((?:19|20)\d\d)(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])(?:\D|$)/);
-        if (ymd) {
-          const d = new Date(`${ymd[1]}-${ymd[2]}-${ymd[3]}`);
-          if (!isNaN(d.getTime())) pubDate = d;
+        // Same URL-date resolution the rebuild uses: extractDateFromUrl handles
+        // /YYYY/MM/DD/, Guardian /YYYY/mon/DD/, compact YYYYMMDD and YYYY-MM-DD.
+        // Require a FULL YYYY-MM-DD — a month-only/year-only date defaults to the
+        // 1st and trips the window on genuine near-boundary reviews (Class B FPs).
+        const urlDate = extractDateFromUrl(data.url);
+        if (urlDate && urlDate.date && /^\d{4}-\d{2}-\d{2}$/.test(urlDate.date)) {
+          const d = parseDate(urlDate.date);
+          if (d && !isNaN(d.getTime())) pubDate = d;
         }
       }
       if (!pubDate) {

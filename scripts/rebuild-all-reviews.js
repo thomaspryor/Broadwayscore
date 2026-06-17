@@ -55,7 +55,7 @@ const {
   shouldAutoClearWrongProductionPriorRun,
   shouldAutoClearDatelessRevival,
 } = require('./lib/wrong-production-autoclear');
-const { evaluateDatelessRevivalGuard } = require('./lib/date-guard');
+const { evaluateDatelessRevivalGuard, earliestShowDate } = require('./lib/date-guard');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { KNOWN_SYNDICATION_PAIRS } = require('./lib/syndication-pairs');
 const { logExclusion: _sharedLogExclusion } = require('./lib/exclusion-logger');
@@ -833,7 +833,10 @@ for (const s of showsData.shows) {
   showById[s.id] = s;
 }
 for (const s of showsData.shows) {
-  const earliest = s.previewsStartDate || s.openingDate;
+  // MIN of preview/previews/opening (see earliestShowDate) so an out-of-order
+  // stale date can't push the date-guard window later than opening and mis-flag
+  // a genuine review filed around opening (Three Houses inverted-date bug).
+  const earliest = earliestShowDate(s);
   if (earliest) showDateMap[s.id] = new Date(earliest);
   if (s.openingDate) showOpeningDateMap[s.id] = new Date(s.openingDate);
   if (s.closingDate && s.status === 'closed') showClosingDateMap[s.id] = new Date(s.closingDate);
@@ -1111,15 +1114,24 @@ const crossShowFingerprints = new Map();
         const d = JSON.parse(fs.readFileSync(fp, 'utf8'));
 
         // Resolve a usable review date once (parsed publishDate, else a precise
-        // YYYYMMDD URL date — a bare year is too imprecise, see note below).
+        // date in the URL). extractDateFromUrl handles /YYYY/MM/DD/, Guardian
+        // /YYYY/mon/DD/, compact YYYYMMDD and YYYY-MM-DD — a superset of the old
+        // contiguous-only match, so date-bearing URLs like
+        // theguardian.com/stage/2017/nov/12/ now resolve and the dated guards
+        // below can flag them even post-opening. We require a FULL YYYY-MM-DD
+        // (never the bare year or a month-only YYYY-MM): a year defaults to
+        // July 1st and a month to the 1st, and that imprecision tripped the
+        // 90-day window on genuine reviews near a month boundary (74 FPs in the
+        // Class B audit 2026-04-12; a month-only blogspot date mis-flagged a
+        // real Bright Star review 2026-06-17).
         // Shared by the dateless-revival auto-clear/guard and the dated
         // pre-opening guard further down.
         let reviewDate = parseDate(d.publishDate);
         if (!reviewDate && d.url) {
-          const ymd = d.url.match(/(?:[\/\-_.])((?:19|20)\d\d)(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])(?:\D|$)/);
-          if (ymd) {
-            reviewDate = new Date(`${ymd[1]}-${ymd[2]}-${ymd[3]}`);
-            if (isNaN(reviewDate.getTime())) reviewDate = null;
+          const urlDate = extractDateFromUrl(d.url);
+          if (urlDate && urlDate.date && /^\d{4}-\d{2}-\d{2}$/.test(urlDate.date)) {
+            const parsed = parseDate(urlDate.date);
+            if (parsed && !isNaN(parsed.getTime())) reviewDate = parsed;
           }
         }
 
