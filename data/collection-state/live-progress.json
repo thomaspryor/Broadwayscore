@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-17T08:26:21.915Z",
-  "processed": 296,
-  "failed": 365,
-  "successRate": "44.8%",
+  "updatedAt": "2026-06-17T08:30:13.907Z",
+  "processed": 303,
+  "failed": 368,
+  "successRate": "45.2%",
   "tierBreakdown": {
-    "playwright": 146,
+    "playwright": 147,
     "amp": 0,
-    "browserbase": 59,
+    "browserbase": 61,
     "directCookies": 0,
     "scrapingbee": 60,
-    "brightdata": 34,
-    "archiveToday": 42,
-    "archive": 64
+    "brightdata": 35,
+    "archiveToday": 43,
+    "archive": 68
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-06-17T04:51:55.586Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-17T05:06:10.442Z",
-      "event": "bb-session",
-      "session": "47665853",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
     {
       "t": "2026-06-17T05:06:10.928Z",
       "event": "bb-cookie-inject",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-06-17T08:11:31.330Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-17T08:28:32.372Z",
+      "event": "bb-session",
+      "session": "49e2dad8",
+      "url": "https://www.wsj.com/articles/les-liaisons-dangereuses-review-fallen-archness-147"
+    },
+    {
+      "t": "2026-06-17T08:28:32.806Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
