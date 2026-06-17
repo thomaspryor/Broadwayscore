@@ -348,7 +348,12 @@
     "spring-awakening-2015/wsj--terry-teachout.json",
     "amazing-grace-2015/wsj--terry-teachout.json",
     "airline-highway-2015/timeout--kris-vire.json",
-    "airline-highway-2015/ny1--roma-torre.json"
+    "airline-highway-2015/ny1--roma-torre.json",
+    "glengarry-glen-ross-west-end-2026/artsdesk--aleks-sierz.json",
+    "glengarry-glen-ross-west-end-2026/independent--holly-williams.json",
+    "glengarry-glen-ross-west-end-2026/london-theatre--mark-shenton.json",
+    "glengarry-glen-ross-west-end-2026/thestage--natasha-tripney.json",
+    "glengarry-glen-ross-west-end-2026/times-uk--ann-treneman.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -1006,7 +1011,23 @@
     "the-gin-game-2015/ap--mark-kennedy.json",
     "spring-awakening-2015/broadway-and-me--janice-c-simpson.json",
     "airline-highway-2015/wsj--terry-teachout.json",
-    "something-rotten-2015/ap--mark-kennedy.json"
+    "something-rotten-2015/ap--mark-kennedy.json",
+    "glengarry-glen-ross-west-end-2026/standard--henry-hitchings.json",
+    "glengarry-glen-ross-west-end-2026/telegraph--dominic-cavendish.json",
+    "are-you-watching-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "are-you-watching-west-end-2026/the-recs--unknown.json",
+    "driftwood-west-end-2026/guardian--arifa-akbar.json",
+    "driftwood-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "driftwood-west-end-2026/artsdesk--unknown.json",
+    "driftwood-west-end-2026/standard--nick-curtis.json",
+    "driftwood-west-end-2026/times-uk--clive-davis.json",
+    "war-horse-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "war-horse-west-end-2026/plays-international--maryam-philpott.json",
+    "war-horse-west-end-2026/times-uk--chris-bennion.json",
+    "war-horse-west-end-2026/times-uk--clive-davis.json",
+    "beetlejuice-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "beetlejuice-west-end-2026/amny--matt-windman.json",
+    "the-p-word-off-west-end-2026/whatsonstage--frey-kwa-hawking.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1178,7 +1199,10 @@
       "noises-off-2016/thestage--mark-shenton.json",
       "misery-2015/towleroad--naveen-kumar.json",
       "spring-awakening-2015/nyt-theater--unknown.json",
-      "airline-highway-2015/ny1--roma-torre.json"
+      "airline-highway-2015/ny1--roma-torre.json",
+      "glengarry-glen-ross-west-end-2026/artsdesk--aleks-sierz.json",
+      "glengarry-glen-ross-west-end-2026/london-theatre--mark-shenton.json",
+      "glengarry-glen-ross-west-end-2026/thestage--natasha-tripney.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1388,7 +1412,8 @@
       "data/review-texts/she-loves-me-2016/wsj--terry-teachout.json",
       "data/review-texts/the-humans-2016/wsj--terry-teachout.json",
       "data/review-texts/the-color-purple-2015/wsj--terry-teachout.json",
-      "data/review-texts/dames-at-sea-2015/wsj--terry-teachout.json"
+      "data/review-texts/dames-at-sea-2015/wsj--terry-teachout.json",
+      "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -1491,11 +1516,13 @@
       "the-gin-game-2015/nyt-theater--jonathan-mandell.json",
       "the-gin-game-2015/nydailynews--joe-dziemianowicz.json",
       "the-gin-game-2015/timeout--adam-feldman.json",
-      "the-gin-game-2015/amny--matt-windman.json"
+      "the-gin-game-2015/amny--matt-windman.json",
+      "glengarry-glen-ross-west-end-2026/independent--holly-williams.json",
+      "glengarry-glen-ross-west-end-2026/times-uk--ann-treneman.json"
     ]
   },
   "startTime": "2026-06-16T19:54:03.478Z",
-  "lastProcessed": "something-rotten-2015/ap--mark-kennedy.json",
+  "lastProcessed": "the-p-word-off-west-end-2026/whatsonstage--frey-kwa-hawking.json",
   "log": [
     {
       "t": "2026-06-16T20:08:35.686Z",
@@ -2114,6 +2141,12 @@
       "t": "2026-06-17T07:01:57.349Z",
       "event": "bb-session",
       "session": "2a3a41e7",
+      "url": "https://therecs.co.uk/are-you-watching-royal-court/"
+    },
+    {
+      "t": "2026-06-17T08:27:40.511Z",
+      "event": "bb-session",
+      "session": "5366851c",
       "url": "https://therecs.co.uk/are-you-watching-royal-court/"
     }
   ]
