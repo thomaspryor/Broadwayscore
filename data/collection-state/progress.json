@@ -478,7 +478,13 @@
     "godspell-2011/northjerseycom--robert-feldberg.json",
     "the-mountaintop-2011/new-jersey-newsroom--michael-sommers.json",
     "glengarry-glen-ross-west-end-2026/times-uk--unknown.json",
-    "glengarry-glen-ross-west-end-2026/theatrely--juan-a-ramirez.json"
+    "glengarry-glen-ross-west-end-2026/theatrely--juan-a-ramirez.json",
+    "romeo-and-juliet-off-broadway-2026/theater-scene--unknown.json",
+    "catch-of-the-day-off-broadway-2026/off-off-online--unknown.json",
+    "im-almost-there-off-broadway-2026/theatermania--unknown.json",
+    "im-almost-there-off-broadway-2026/exeunt-magazine--unknown.json",
+    "silverback-mountain-off-broadway-2026/theater-scene--unknown.json",
+    "silverback-mountain-off-broadway-2026/theater-scene--victor-gluck.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -1162,7 +1168,11 @@
     "war-horse-west-end-2026/times-uk--clive-davis.json",
     "beetlejuice-west-end-2026/all-that-dazzles-uk--unknown.json",
     "beetlejuice-west-end-2026/amny--matt-windman.json",
-    "the-p-word-off-west-end-2026/whatsonstage--frey-kwa-hawking.json"
+    "the-p-word-off-west-end-2026/whatsonstage--frey-kwa-hawking.json",
+    "romeo-and-juliet-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+    "are-you-now-or-have-you-ever-been-off-broadway-2026/nytimes--laura-collins-hughes.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1379,7 +1389,13 @@
       "death-of-a-salesman-2012/nytg--gillian-russo.json",
       "death-of-a-salesman-2012/ew--thom-geier.json",
       "death-of-a-salesman-2012/theatermania--charles-isherwood.json",
-      "glengarry-glen-ross-west-end-2026/times-uk--unknown.json"
+      "glengarry-glen-ross-west-end-2026/times-uk--unknown.json",
+      "romeo-and-juliet-off-broadway-2026/theater-scene--unknown.json",
+      "catch-of-the-day-off-broadway-2026/off-off-online--unknown.json",
+      "im-almost-there-off-broadway-2026/theatermania--unknown.json",
+      "im-almost-there-off-broadway-2026/exeunt-magazine--unknown.json",
+      "silverback-mountain-off-broadway-2026/theater-scene--unknown.json",
+      "silverback-mountain-off-broadway-2026/theater-scene--victor-gluck.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1469,7 +1485,8 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
-      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json"
+      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1809,7 +1826,7 @@
     ]
   },
   "startTime": "2026-06-16T19:54:03.478Z",
-  "lastProcessed": "the-p-word-off-west-end-2026/whatsonstage--frey-kwa-hawking.json",
+  "lastProcessed": "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
   "log": [
     {
       "t": "2026-06-16T20:08:35.686Z",
@@ -2679,6 +2696,17 @@
     },
     {
       "t": "2026-06-17T11:46:00.712Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-17T12:38:45.504Z",
+      "event": "bb-session",
+      "session": "0982ec15",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-17T12:38:46.008Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

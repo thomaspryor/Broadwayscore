@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-17T12:06:06.138Z",
-  "processed": 479,
-  "failed": 682,
-  "successRate": "41.3%",
+  "updatedAt": "2026-06-17T12:39:18.574Z",
+  "processed": 485,
+  "failed": 686,
+  "successRate": "41.4%",
   "tierBreakdown": {
-    "playwright": 213,
+    "playwright": 219,
     "amp": 0,
-    "browserbase": 87,
+    "browserbase": 88,
     "directCookies": 0,
     "scrapingbee": 70,
     "brightdata": 64,
     "archiveToday": 62,
     "archive": 131
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-06-17T10:35:39.206Z",
-      "event": "bb-session",
-      "session": "446ca370",
-      "url": "https://www.wsj.com/articles/SB10001424052702304459804577281372846072462"
-    },
-    {
-      "t": "2026-06-17T10:35:40.069Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-06-17T10:37:09.924Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-06-17T11:46:00.712Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-17T12:38:45.504Z",
+      "event": "bb-session",
+      "session": "0982ec15",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-17T12:38:46.008Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
