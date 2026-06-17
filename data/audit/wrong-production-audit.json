@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-16T23:50:05.800Z",
+  "timestamp": "2026-06-17T05:42:12.598Z",
   "stats": {
     "totalReviews": 38478,
-    "alreadyFlagged": 16902,
+    "alreadyFlagged": 16903,
     "dateGuardCatches": 106,
     "directorMismatch": 861,
-    "tvFilmSignals": 1057,
+    "tvFilmSignals": 1056,
     "londonSignals": 629,
     "offBroadwaySignals": 463,
     "yearMismatch": 82,
-    "noPublishDate": 3989
+    "noPublishDate": 3988
   },
   "findings": [
     {
@@ -6415,20 +6415,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 3\""
-        }
-      ]
-    },
-    {
-      "showId": "falsettos-1992",
-      "file": "sfgate--lily-janiak.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.sfgate.com/performance/article/Dolly-Falsettos-and-Come-From-12555712.php",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
