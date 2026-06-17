@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-17T12:34:15.186Z",
+  "timestamp": "2026-06-17T15:22:38.148Z",
   "stats": {
-    "totalReviews": 38505,
-    "alreadyFlagged": 16914,
+    "totalReviews": 38508,
+    "alreadyFlagged": 16953,
     "dateGuardCatches": 106,
-    "directorMismatch": 863,
-    "tvFilmSignals": 1057,
+    "directorMismatch": 858,
+    "tvFilmSignals": 1056,
     "londonSignals": 630,
-    "offBroadwaySignals": 463,
-    "yearMismatch": 82,
-    "noPublishDate": 3999
+    "offBroadwaySignals": 464,
+    "yearMismatch": 81,
+    "noPublishDate": 3959
   },
   "findings": [
     {
@@ -1695,7 +1695,7 @@
       "file": "independent--louis-chilton.json",
       "score": 40,
       "publishDate": "2026-04-17",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
+      "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -3567,30 +3567,6 @@
     },
     {
       "showId": "cats-2016",
-      "file": "queerty--matthew-wexler.json",
-      "score": 76,
-      "publishDate": null,
-      "url": "https://www.queerty.com/cats-the-jellicle-ball-spins-dips-and-yes-catwalks-in-a-fierce-reimagining-of-the-80s-megahit-20240620",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"zhailon levingston\" from cats-the-jellicle-ball-2026"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"bill rauch\" from cats-the-jellicle-ball-2026"
-        },
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2024 (4x) more than 2016 (0x). 2024 matches production: cats-the-jellicle-ball-off-broadway-2024"
-        }
-      ]
-    },
-    {
-      "showId": "cats-2016",
       "file": "thewrap--jason-clark.json",
       "score": 38,
       "publishDate": "2016-07-31",
@@ -4824,20 +4800,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2026 (2x) more than 2012 (0x). 2026 matches production: cyrano-de-bergerac-west-end-2026"
-        }
-      ]
-    },
-    {
-      "showId": "cyrano-de-bergerac-west-end-2026",
-      "file": "artsdesk--aleks-sierz.json",
-      "score": 99,
-      "publishDate": null,
-      "url": "https://theartsdesk.com/theatre/cyrano-de-bergerac-playhouse-theatre-review-james-mcavoy-triumphant",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from cyrano-de-bergerac-2012"
         }
       ]
     },
@@ -8090,19 +8052,6 @@
       ]
     },
     {
-      "showId": "glengarry-glen-ross-west-end-2026",
-      "file": "theatrely--juan-a-ramirez.json",
-      "publishDate": null,
-      "url": "https://www.theatrely.com/post/a-curiously-beta-glengarry-glen-ross-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
-        }
-      ]
-    },
-    {
       "showId": "going-bacharach-the-songs-of-an-icon-off-broadway-2026",
       "file": "times-square-chronicles--suzanna-bowling.json",
       "score": 77,
@@ -10249,6 +10198,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"park avenue armory\""
+        }
+      ]
+    },
+    {
+      "showId": "im-almost-there-off-broadway-2026",
+      "file": "exeunt-magazine--unknown.json",
+      "publishDate": "2026-06-17",
+      "url": "https://exeuntnyc.com/reviews/review-im-almost-there-at-bam-fisher/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -23583,20 +23545,6 @@
     },
     {
       "showId": "the-peewee-herman-show-2010",
-      "file": "ew--lisa-schwarzbaum.json",
-      "score": 88,
-      "publishDate": null,
-      "url": "http://www.ew.com/ew/article/0,,20364394_20440910,00.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "the-peewee-herman-show-2010",
       "file": "new-jersey-newsroom--michael-sommers.json",
       "score": 79,
       "publishDate": "2010-11-12T09:41:38-05:00",
@@ -24774,25 +24722,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"tye blue\" from titanique-2026"
-        }
-      ]
-    },
-    {
-      "showId": "to-kill-a-mockingbird-west-end-2026",
-      "file": "thestage--unknown.json",
-      "score": 62,
-      "publishDate": null,
-      "url": "https://www.thestage.co.uk/reviews/to-kill-a-mockingbird-review-leeds-playhouse-leeds-aaron-sorkin-richard-coyle",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"bartlett sher\" from to-kill-a-mockingbird-2018"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -32406,6 +32335,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"park avenue armory\""
+        }
+      ]
+    },
+    {
+      "showId": "im-almost-there-off-broadway-2026",
+      "file": "theatermania--kenji-fujishima.json",
+      "publishDate": "2026-06-17",
+      "url": "https://www.theatermania.com/news/review-todd-almond-embarks-on-an-odyssey-of-self-reckoning-in-im-almost-there_1842134/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"brooklyn academy\""
         }
       ]
     },
