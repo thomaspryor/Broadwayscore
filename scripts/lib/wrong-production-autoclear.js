@@ -226,6 +226,33 @@ function shouldAutoClearWrongShowUkUrl(data, { isLondonMarketShow, isUkOutletUrl
   return !isWrongArticle && !hasManualReason;
 }
 
+/**
+ * Decide whether a "Dateless revival guard" wrongProduction flag should be
+ * auto-cleared. That guard (scripts/lib/date-guard.js → evaluateDatelessRevivalGuard)
+ * holds a review that has NO usable date on a recent revival title. It is a
+ * provisional HOLD, not a verdict: the moment the review gains a usable date
+ * (backfill / re-scrape) the proper dated guard should own the decision, and an
+ * explicit human override must always win. This strips only our own flag —
+ * recognised by its note prefix or reason — never a manual/CV/cross-market flag.
+ *
+ * @param {object} data - the review JSON object
+ * @param {object} ctx
+ * @param {boolean} ctx.hasUsableDate - true if the review now has a usable date
+ *   (parsed publishDate or YYYYMMDD URL date)
+ * @returns {boolean}
+ */
+function shouldAutoClearDatelessRevival(data, { hasUsableDate } = {}) {
+  if (!data || data.wrongProduction !== true) return false;
+  const note = data.wrongProductionNote || '';
+  const reason = data.wrongProductionReason || '';
+  const isOurs = note.startsWith('Dateless revival guard') || reason === 'dateless-revival';
+  if (!isOurs) return false;
+  const humanOverride = !!data.allowEarlyDate
+    || !!data.wrongProductionManualClear
+    || data.humanReviewedWrongProduction === true;
+  return !!hasUsableDate || humanOverride;
+}
+
 module.exports = {
   shouldAutoClearWrongProduction,
   shouldAutoClearWrongShow,
@@ -233,4 +260,5 @@ module.exports = {
   shouldAutoClearWrongShowUkUrl,
   isWithinPriorRun,
   shouldAutoClearWrongProductionPriorRun,
+  shouldAutoClearDatelessRevival,
 };

@@ -18,7 +18,24 @@ const fs = require('fs');
 const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { isWithinPriorRun } = require('./lib/wrong-production-autoclear');
-const { evaluateDateGuard, DAYS_AFTER_CLOSE } = require('./lib/date-guard');
+const { evaluateDateGuard, evaluateDatelessRevivalGuard, DAYS_AFTER_CLOSE } = require('./lib/date-guard');
+
+// Multi-production (revival) title index: a show id whose base title has ≥2
+// productions in shows.json. Used by the dateless-revival guard below to decide
+// whether a review LACKING any usable date should be held as suspect prior-
+// production contamination. Same base-title normalization as rebuild-all-reviews.js.
+function buildMultiProductionTitleIds(showMap) {
+  const baseTitle = (t) => String(t || '').replace(/\s*\(.*?\)/g, '').replace(/:\s.*$/, '').trim().toLowerCase();
+  const groups = {};
+  for (const s of Object.values(showMap)) {
+    const base = baseTitle(s.title);
+    if (!base) continue;
+    (groups[base] = groups[base] || []).push(s.id);
+  }
+  const ids = new Set();
+  for (const g of Object.values(groups)) if (g.length >= 2) g.forEach(id => ids.add(id));
+  return ids;
+}
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -47,8 +64,10 @@ function run() {
     fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory()
   );
 
+  const multiProductionTitleIds = buildMultiProductionTitleIds(showMap);
+
   let flaggedEarly = 0, flaggedLate = 0, skipped = 0, noDate = 0, noWindow = 0, ok = 0;
-  let priorRunSkipped = 0;
+  let priorRunSkipped = 0, datelessRevivalFlagged = 0;
   let lockedSkipCount = 0;
   const flaggedDetails = [];
 
@@ -74,8 +93,39 @@ function run() {
         continue;
       }
 
-      const pubDate = parseDate(data.publishDate);
-      if (!pubDate) { noDate++; continue; }
+      let pubDate = parseDate(data.publishDate);
+      if (!pubDate && data.url) {
+        // Same precise YYYYMMDD URL-date fallback the rebuild uses.
+        const ymd = data.url.match(/(?:[\/\-_.])((?:19|20)\d\d)(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])(?:\D|$)/);
+        if (ymd) {
+          const d = new Date(`${ymd[1]}-${ymd[2]}-${ymd[3]}`);
+          if (!isNaN(d.getTime())) pubDate = d;
+        }
+      }
+      if (!pubDate) {
+        // Dateless-revival guard: a review with no usable date on a multi-
+        // production title that has NOT yet opened is held as suspect prior-
+        // production contamination (mirrors rebuild-all-reviews.js).
+        const verdict = evaluateDatelessRevivalGuard({
+          hasUsableDate: false,
+          isMultiProductionTitle: multiProductionTitleIds.has(showDir),
+          show,
+        });
+        if (verdict.flag && data.humanReviewedWrongProduction !== false) {
+          datelessRevivalFlagged++;
+          flaggedDetails.push({ showId: showDir, title: show.title, file, date: '(none)', issue: 'dateless_revival', diffDays: 0, outlet: data.outlet || '?' });
+          if (!DRY_RUN) {
+            data.wrongProduction = true;
+            data.wrongProductionReason = 'dateless-revival';
+            data.wrongProductionNote = `Dateless revival guard: no publishDate on multi-production title that has not yet opened — unverified production (show starts ${earliestStr})`;
+            const r = safeWriteReview(filePath, data);
+            if (r.lockedSkipped) lockedSkipCount++;
+          }
+        } else {
+          noDate++;
+        }
+        continue;
+      }
 
       const decision = evaluateDateGuard({ pubDate, show, outletId: data.outletId });
       const issue = decision.issue;
@@ -131,7 +181,7 @@ function run() {
     for (const [showId, { title, items }] of sorted.slice(0, 30)) {
       console.log(`\n  ${title} (${showId}): ${items.length} reviews`);
       items.slice(0, 5).forEach(d => {
-        const tag = d.issue === 'before_preview' ? 'EARLY' : 'LATE';
+        const tag = d.issue === 'before_preview' ? 'EARLY' : d.issue === 'dateless_revival' ? 'DATELESS' : 'LATE';
         console.log(`    ${tag} ${d.diffDays}d  ${d.outlet.padEnd(25)} ${d.date}`);
       });
       if (items.length > 5) console.log(`    ... and ${items.length - 5} more`);
@@ -143,6 +193,7 @@ function run() {
   console.log(`Skipped (priorRuns):   ${priorRunSkipped}`);
   console.log(`Already flagged:       ${skipped}`);
   console.log(`No publishDate:        ${noDate}`);
+  console.log(`${DRY_RUN ? 'Would hold' : 'Held'} (dateless revival): ${datelessRevivalFlagged}`);
   console.log(`No show date window:   ${noWindow}`);
   console.log(`${DRY_RUN ? 'Would flag' : 'Flagged'} (early): ${flaggedEarly}`);
   console.log(`${DRY_RUN ? 'Would flag' : 'Flagged'} (late):  ${flaggedLate}`);

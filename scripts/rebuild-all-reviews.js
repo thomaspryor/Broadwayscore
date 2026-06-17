@@ -53,7 +53,9 @@ const {
   shouldAutoClearWrongShow,
   isWithinPriorRun,
   shouldAutoClearWrongProductionPriorRun,
+  shouldAutoClearDatelessRevival,
 } = require('./lib/wrong-production-autoclear');
+const { evaluateDatelessRevivalGuard } = require('./lib/date-guard');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { KNOWN_SYNDICATION_PAIRS } = require('./lib/syndication-pairs');
 const { logExclusion: _sharedLogExclusion } = require('./lib/exclusion-logger');
@@ -911,6 +913,26 @@ const multiProdDirectorGuard = {};
   }
 }
 
+// Multi-production (revival) title index for the dateless-revival guard.
+// A show id is "multi-production" when its base title (same normalization as
+// the director cross-check guard above) has ≥2 productions in shows.json — the
+// regime where a prior production's reviews can be mis-linked to this dir. The
+// dateless-revival guard (pre-opening pass below) uses this to decide whether a
+// review LACKING any usable date should be held as suspect contamination.
+const multiProductionTitleIds = new Set();
+{
+  const baseTitle = (t) => String(t || '').replace(/\s*\(.*?\)/g, '').replace(/:\s.*$/, '').trim().toLowerCase();
+  const titleGroups = {};
+  for (const s of showsData.shows) {
+    const base = baseTitle(s.title);
+    if (!base) continue;
+    (titleGroups[base] = titleGroups[base] || []).push(s.id);
+  }
+  for (const ids of Object.values(titleGroups)) {
+    if (ids.length >= 2) ids.forEach(id => multiProductionTitleIds.add(id));
+  }
+}
+
 // Get all show directories (filter out orphan dirs that don't match any show in shows.json)
 const validShowIds = new Set(showsData.shows.map(s => s.id));
 const showDirs = listShowDirs(reviewTextsDir)
@@ -1073,6 +1095,8 @@ const crossShowFingerprints = new Map();
   let preOpenFlagged = 0;
   let priorRunSkipped = 0;
   let priorRunAutoCleared = 0;
+  let datelessRevivalFlagged = 0;
+  let datelessRevivalAutoCleared = 0;
   for (const sid of showDirs) {
     const showEarliest = showDateMap[sid];
     if (!showEarliest) continue;
@@ -1085,6 +1109,35 @@ const crossShowFingerprints = new Map();
       try {
         const fp = path.join(sDir, f);
         const d = JSON.parse(fs.readFileSync(fp, 'utf8'));
+
+        // Resolve a usable review date once (parsed publishDate, else a precise
+        // YYYYMMDD URL date — a bare year is too imprecise, see note below).
+        // Shared by the dateless-revival auto-clear/guard and the dated
+        // pre-opening guard further down.
+        let reviewDate = parseDate(d.publishDate);
+        if (!reviewDate && d.url) {
+          const ymd = d.url.match(/(?:[\/\-_.])((?:19|20)\d\d)(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])(?:\D|$)/);
+          if (ymd) {
+            reviewDate = new Date(`${ymd[1]}-${ymd[2]}-${ymd[3]}`);
+            if (isNaN(reviewDate.getTime())) reviewDate = null;
+          }
+        }
+
+        // Dateless-revival auto-clear: our HOLD (set below) is provisional —
+        // strip it the moment the review gains a usable date (the dated guard
+        // then re-decides) or a human overrides. Runs before the wrongProduction
+        // short-circuit so a held file can recover.
+        if (shouldAutoClearDatelessRevival(d, { hasUsableDate: !!reviewDate })) {
+          const wasNote = d.wrongProductionNote || d.wrongProductionReason || '(no marker)';
+          d.wrongProduction = false;
+          d.wrongProductionAutoCleared = `rebuild: dateless-revival hold released (was: ${wasNote})`;
+          d.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
+          delete d.wrongProductionNote;
+          if (d.wrongProductionReason === 'dateless-revival') delete d.wrongProductionReason;
+          safeWriteReview(fp, d, { force: true });
+          datelessRevivalAutoCleared++;
+          // Fall through — file may still need the dated pre-opening guard.
+        }
 
         // Production-continuity auto-clear: strip stale Pre-opening/Date guard
         // flags on files whose publishDate now falls inside a priorRuns window.
@@ -1132,18 +1185,10 @@ const crossShowFingerprints = new Map();
           if (!mcReviewDate || (showEarliest - mcReviewDate) <= 365 * 86400000) continue;
           // Extreme date mismatch (>1 year with reliable publishDate) — override manual clear
         }
-        let reviewDate = parseDate(d.publishDate);
-        if (!reviewDate && d.url) {
-          // Try YYYYMMDD pattern (e.g. chicagotribune URLs: 20231117)
-          const ymd = d.url.match(/(?:[\/\-_.])((?:19|20)\d\d)(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])(?:\D|$)/);
-          if (ymd) {
-            reviewDate = new Date(`${ymd[1]}-${ymd[2]}-${ymd[3]}`);
-            if (isNaN(reviewDate.getTime())) reviewDate = null;
-          }
-          // YYYY-only URL fallback removed: a year alone defaults to July 1st,
-          // which is too imprecise for a 90-day guard. This caused 74 false positives
-          // in the Class B audit (2026-04-12). Only YYYYMMDD is specific enough.
-        }
+        // (reviewDate resolved above, shared with the dateless-revival auto-clear.
+        // YYYY-only URL fallback intentionally omitted: a year alone defaults to
+        // July 1st — too imprecise for a 90-day guard, caused 74 false positives
+        // in the Class B audit 2026-04-12. Only YYYYMMDD is specific enough.)
         if (reviewDate && (showEarliest - reviewDate) > 90 * 86400000 && !d.wrongProductionCleared && d.humanReviewedWrongProduction !== false && !shouldSkipWrongProductionAudit(d)) {
           // Production-continuity skip: review falls inside a declared priorRuns window
           if (showRecord && isWithinPriorRun(reviewDate, showRecord.priorRuns)) {
@@ -1155,12 +1200,41 @@ const crossShowFingerprints = new Map();
           d.wrongProductionNote = `Pre-opening guard: review dated ${reviewDate.toISOString().split('T')[0]} is 90+ days before show starts ${showEarliest.toISOString().split('T')[0]}`;
           safeWriteReview(fp, d);
           preOpenFlagged++;
+        } else if (!reviewDate && !d.wrongProductionCleared && d.humanReviewedWrongProduction !== false && !shouldSkipWrongProductionAudit(d)) {
+          // Dateless-revival guard: a review with NO usable date escapes every
+          // dated guard above and defaults to includable. On a multi-production
+          // (revival) title that has NOT yet opened, that is necessarily a
+          // mis-linked prior-production review — critics have not filed for the
+          // current production yet (CV cannot rescue — it false-confirms same-
+          // title prior productions; see feedback_llm_verifier_hallucinates).
+          // HOLD it as wrongProduction; the flag persists past the open flip and
+          // the auto-clear above releases it the moment a usable date or human
+          // override arrives.
+          const verdict = evaluateDatelessRevivalGuard({
+            hasUsableDate: false,
+            isMultiProductionTitle: multiProductionTitleIds.has(sid),
+            show: showRecord,
+          });
+          if (verdict.flag) {
+            console.log(`  [DATELESS-REVIVAL] ${sid}/${f}: no usable date on not-yet-opened multi-production title`);
+            d.wrongProduction = true;
+            d.wrongProductionReason = 'dateless-revival';
+            d.wrongProductionNote = `Dateless revival guard: no publishDate on multi-production title that has not yet opened — unverified production (show starts ${showEarliest.toISOString().split('T')[0]})`;
+            safeWriteReview(fp, d);
+            datelessRevivalFlagged++;
+          }
         }
       } catch { /* skip unreadable */ }
     }
   }
   if (preOpenFlagged > 0) {
     console.log(`Pre-opening guard: flagged ${preOpenFlagged} reviews as wrongProduction\n`);
+  }
+  if (datelessRevivalFlagged > 0) {
+    console.log(`Dateless-revival guard: held ${datelessRevivalFlagged} dateless reviews on recent revival titles\n`);
+  }
+  if (datelessRevivalAutoCleared > 0) {
+    console.log(`Dateless-revival guard: auto-cleared ${datelessRevivalAutoCleared} reviews (date/override arrived)\n`);
   }
   if (priorRunAutoCleared > 0) {
     console.log(`Pre-opening guard: auto-cleared ${priorRunAutoCleared} reviews via priorRuns window\n`);
@@ -1171,6 +1245,8 @@ const crossShowFingerprints = new Map();
   stats.preOpeningFlagged = preOpenFlagged;
   stats.priorRunAutoCleared = priorRunAutoCleared;
   stats.priorRunSkipped = priorRunSkipped;
+  stats.datelessRevivalFlagged = datelessRevivalFlagged;
+  stats.datelessRevivalAutoCleared = datelessRevivalAutoCleared;
 }
 
 // Stale --unknown filename cleanup: when a file is named --unknown but its critic was enriched,
