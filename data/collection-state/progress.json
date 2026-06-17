@@ -463,7 +463,11 @@
     "one-man-two-guvnors-2012/newsday--linda-winer.json",
     "one-man-two-guvnors-2012/timeout--adam-feldman.json",
     "evita-2012/ew--thom-geier.json",
-    "end-of-the-rainbow-2012/new-jersey-newsroom--michael-sommers.json"
+    "end-of-the-rainbow-2012/new-jersey-newsroom--michael-sommers.json",
+    "newsies-the-musical-2012/new-jersey-newsroom--michael-musto.json",
+    "once-2012/newsday--linda-winer.json",
+    "once-2012/nydailynews--joe-dziemianowicz.json",
+    "once-2012/theatermania--dan-bacalzo.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -1062,7 +1066,13 @@
     "ghost-the-musical-2012/talkinbroadway--matthew-murray.json",
     "the-lyons-2012/backstage--david-sheward.json",
     "magicbird-2012/backstage--suzy-evans.json",
-    "end-of-the-rainbow-2012/talkinbroadway--matthew-murray.json"
+    "end-of-the-rainbow-2012/talkinbroadway--matthew-murray.json",
+    "gore-vidals-the-best-man-2012/wsj--terry-teachout.json",
+    "newsies-the-musical-2012/wsj--terry-teachout.json",
+    "jesus-christ-superstar-2012/wsj--terry-teachout.json",
+    "jesus-christ-superstar-2012/backstage--david-sheward.json",
+    "once-2012/wsj--terry-teachout.json",
+    "once-2012/backstage--david-sheward.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1274,7 +1284,8 @@
       "golden-boy-2012/ew--adam-markovitz.json",
       "the-lyons-2012/theatermania--dan-bacalzo.json",
       "clybourne-park-2012/theatermania--dan-bacalzo.json",
-      "evita-2012/ew--thom-geier.json"
+      "evita-2012/ew--thom-geier.json",
+      "once-2012/theatermania--dan-bacalzo.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1428,7 +1439,8 @@
       "the-mystery-of-edwin-drood-2012/timeout--david-cote.json",
       "bring-it-on-the-musical-2012/timeout--adam-feldman.json",
       "leap-of-faith-2012/timeout--david-cote.json",
-      "one-man-two-guvnors-2012/timeout--adam-feldman.json"
+      "one-man-two-guvnors-2012/timeout--adam-feldman.json",
+      "newsies-the-musical-2012/new-jersey-newsroom--michael-musto.json"
     ],
     "brightdata": [
       "romeo-and-juliet-off-broadway-2026/talkinbroadway--unknown.json",
@@ -1544,7 +1556,11 @@
       "data/review-texts/noises-off-2016/thestage--mark-shenton.json",
       "data/review-texts/the-nance-2013/northjerseycom--robert-feldberg.json",
       "data/review-texts/prince-of-broadway-2017/broadway-blog--ryan-leeds.json",
-      "data/review-texts/the-heiress-2012/ew--thom-geier.json"
+      "data/review-texts/the-heiress-2012/ew--thom-geier.json",
+      "data/review-texts/end-of-the-rainbow-2012/talkinbroadway--matthew-murray.json",
+      "data/review-texts/gore-vidals-the-best-man-2012/wsj--terry-teachout.json",
+      "data/review-texts/newsies-the-musical-2012/wsj--terry-teachout.json",
+      "data/review-texts/jesus-christ-superstar-2012/wsj--terry-teachout.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -1670,11 +1686,13 @@
       "the-columnist-2012/amny--matt-windman.json",
       "clybourne-park-2012/newsday--linda-winer.json",
       "one-man-two-guvnors-2012/newsday--linda-winer.json",
-      "end-of-the-rainbow-2012/new-jersey-newsroom--michael-sommers.json"
+      "end-of-the-rainbow-2012/new-jersey-newsroom--michael-sommers.json",
+      "once-2012/newsday--linda-winer.json",
+      "once-2012/nydailynews--joe-dziemianowicz.json"
     ]
   },
   "startTime": "2026-06-16T19:54:03.478Z",
-  "lastProcessed": "end-of-the-rainbow-2012/talkinbroadway--matthew-murray.json",
+  "lastProcessed": "once-2012/backstage--david-sheward.json",
   "log": [
     {
       "t": "2026-06-16T20:08:35.686Z",
@@ -2414,6 +2432,61 @@
       "t": "2026-06-17T10:17:13.117Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-17T10:34:10.365Z",
+      "event": "bb-session",
+      "session": "f28dc809",
+      "url": "https://www.talkinbroadway.com/world/EndoftheRainbow.html"
+    },
+    {
+      "t": "2026-06-17T10:34:11.189Z",
+      "event": "bb-session",
+      "session": "a0555eb5",
+      "url": "https://www.wsj.com/articles/SB10001424052702304724404577293052208474594"
+    },
+    {
+      "t": "2026-06-17T10:34:11.190Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-17T10:34:12.034Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-17T10:35:39.206Z",
+      "event": "bb-session",
+      "session": "446ca370",
+      "url": "https://www.wsj.com/articles/SB10001424052702304459804577281372846072462"
+    },
+    {
+      "t": "2026-06-17T10:35:40.069Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-17T10:37:09.924Z",
+      "event": "bb-session",
+      "session": "2193f463",
+      "url": "https://www.wsj.com/articles/SB10001424052702304072004577327323264404346"
+    },
+    {
+      "t": "2026-06-17T10:37:10.686Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-17T10:39:17.714Z",
+      "event": "bb-session",
+      "session": "15e375b2",
+      "url": "https://www.wsj.com/articles/SB10001424052702304299304577349593017819316"
+    },
+    {
+      "t": "2026-06-17T10:39:18.585Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
