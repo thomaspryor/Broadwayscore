@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-06-17T09:33:29.753Z",
+  "timestamp": "2026-06-17T10:22:24.622Z",
   "stats": {
     "totalReviews": 38488,
     "alreadyFlagged": 16908,
     "dateGuardCatches": 106,
     "directorMismatch": 861,
-    "tvFilmSignals": 1056,
-    "londonSignals": 629,
+    "tvFilmSignals": 1057,
+    "londonSignals": 630,
     "offBroadwaySignals": 463,
     "yearMismatch": 82,
     "noPublishDate": 3991
@@ -9066,6 +9066,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"apple tv\""
+        }
+      ]
+    },
+    {
+      "showId": "hand-to-god-2015",
+      "file": "newsday--linda-winer.json",
+      "score": 78,
+      "publishDate": "2015-04-07",
+      "url": "http://www.newsday.com/entertainment/theater/hand-to-god-review-a-devilish-sock-puppet-and-sex-1.10206908",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -35745,6 +35759,19 @@
       "score": 88,
       "publishDate": "2019-07-25",
       "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "pride-west-end-2026",
+      "file": "guardian--unknown.json",
+      "publishDate": "2026-06-11",
+      "url": "https://www.theguardian.com/stage/2026/jun/11/pride-musical-national-theatre-lesbians-gays-support-miners",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
