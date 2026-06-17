@@ -1,20 +1,58 @@
 {
-  "updatedAt": "2026-06-17T09:13:34.313Z",
-  "processed": 354,
-  "failed": 688,
-  "successRate": "34.0%",
+  "updatedAt": "2026-06-17T07:28:21.652Z",
+  "processed": 249,
+  "failed": 272,
+  "successRate": "47.8%",
   "tierBreakdown": {
-    "playwright": 171,
+    "playwright": 113,
     "amp": 0,
-    "browserbase": 59,
+    "browserbase": 57,
     "directCookies": 0,
-    "scrapingbee": 76,
-    "brightdata": 39,
-    "archiveToday": 28,
-    "archive": 103
+    "scrapingbee": 58,
+    "brightdata": 30,
+    "archiveToday": 20,
+    "archive": 56
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
+    {
+      "t": "2026-06-17T04:51:40.213Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-17T04:51:54.613Z",
+      "event": "bb-session",
+      "session": "5928ffe4",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-17T04:51:55.586Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-17T05:06:10.442Z",
+      "event": "bb-session",
+      "session": "47665853",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-17T05:06:10.928Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-17T05:06:42.943Z",
+      "event": "bb-session",
+      "session": "52ddf161",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-17T05:06:43.433Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
     {
       "t": "2026-06-17T05:06:54.619Z",
       "event": "bb-session",
@@ -77,55 +115,15 @@
       "url": "https://theaterpizzazz.com/small-a-jockeys-indestructible-passion/"
     },
     {
-      "t": "2026-06-17T06:21:55.540Z",
+      "t": "2026-06-17T07:27:52.956Z",
       "event": "bb-session",
-      "session": "1745adc0",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+      "session": "e620cdba",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
     },
     {
-      "t": "2026-06-17T06:21:56.381Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-17T06:22:27.987Z",
-      "event": "bb-session",
-      "session": "febeffd7",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-17T06:22:28.701Z",
+      "t": "2026-06-17T07:27:53.367Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-17T06:22:40.389Z",
-      "event": "bb-session",
-      "session": "d554c314",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
-    {
-      "t": "2026-06-17T06:22:41.131Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-17T06:24:49.648Z",
-      "event": "bb-session",
-      "session": "5fcf8767",
-      "url": "https://theaterpizzazz.com/small-a-jockeys-indestructible-passion/"
-    },
-    {
-      "t": "2026-06-17T07:01:57.349Z",
-      "event": "bb-session",
-      "session": "2a3a41e7",
-      "url": "https://therecs.co.uk/are-you-watching-royal-court/"
-    },
-    {
-      "t": "2026-06-17T08:27:40.511Z",
-      "event": "bb-session",
-      "session": "5366851c",
-      "url": "https://therecs.co.uk/are-you-watching-royal-court/"
     }
   ]
 }
