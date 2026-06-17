@@ -263,7 +263,14 @@
     "a-soldiers-play-2020/theater-life--barry-gordin.json",
     "the-lightning-thief-2019/front-row-center--sarah-downs.json",
     "all-my-sons-2019/theater-life--barry-gordin.json",
-    "the-nap-2018/theater-life--barry-gordin.json"
+    "the-nap-2018/theater-life--barry-gordin.json",
+    "latin-history-for-morons-2017/front-row-center--casey-curtis.json",
+    "the-bands-visit-2017/show-showdown--wendy-caster.json",
+    "the-bands-visit-2017/susangrangercom--susan-granger.json",
+    "the-bands-visit-2017/theater-life--barry-gordin.json",
+    "the-bands-visit-2017/theater-life--isa-goldberg.json",
+    "junk-2017/wsj--terry-teachout.json",
+    "m-butterfly-2017/theatermania--jesse-green.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -612,7 +619,10 @@
     "frozen-2018/thestage--mark-shenton.json",
     "escape-to-margaritaville-2018/journal-inquirer--tim-leininger.json",
     "spongebob-squarepants-2017/thestage--mark-shenton.json",
-    "once-on-this-island-2017/theater-news-online--brian-scott-lipton.json"
+    "once-on-this-island-2017/theater-news-online--brian-scott-lipton.json",
+    "the-parisian-woman-2017/thestage--mark-shenton.json",
+    "meteor-shower-2017/thestage--mark-shenton.json",
+    "the-bands-visit-2017/wnyc--jennifer-vanasco.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -740,7 +750,13 @@
       "a-soldiers-play-2020/theater-life--barry-gordin.json",
       "the-lightning-thief-2019/front-row-center--sarah-downs.json",
       "all-my-sons-2019/theater-life--barry-gordin.json",
-      "the-nap-2018/theater-life--barry-gordin.json"
+      "the-nap-2018/theater-life--barry-gordin.json",
+      "latin-history-for-morons-2017/front-row-center--casey-curtis.json",
+      "the-bands-visit-2017/show-showdown--wendy-caster.json",
+      "the-bands-visit-2017/susangrangercom--susan-granger.json",
+      "the-bands-visit-2017/theater-life--barry-gordin.json",
+      "the-bands-visit-2017/theater-life--isa-goldberg.json",
+      "m-butterfly-2017/theatermania--jesse-green.json"
     ],
     "amp": [],
     "browserbase": [
@@ -800,7 +816,9 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
       "data/review-texts/small-off-broadway-2026/theater-pizzazz--unknown.json",
       "data/review-texts/maybe-happy-ending-2024/variety--unknown.json",
-      "maybe-happy-ending-2024/variety--unknown.json"
+      "maybe-happy-ending-2024/variety--unknown.json",
+      "data/review-texts/junk-2017/wsj--terry-teachout.json",
+      "junk-2017/wsj--terry-teachout.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -941,7 +959,9 @@
       "data/review-texts/children-of-a-lesser-god-2018/thestage--mark-shenton.json",
       "data/review-texts/three-tall-women-2018/theater-scene--david-a-rosenberg.json",
       "data/review-texts/three-tall-women-2018/thestage--mark-shenton.json",
-      "data/review-texts/spongebob-squarepants-2017/thestage--mark-shenton.json"
+      "data/review-texts/spongebob-squarepants-2017/thestage--mark-shenton.json",
+      "data/review-texts/the-parisian-woman-2017/thestage--mark-shenton.json",
+      "data/review-texts/meteor-shower-2017/thestage--mark-shenton.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -1007,7 +1027,7 @@
     ]
   },
   "startTime": "2026-06-16T19:54:03.478Z",
-  "lastProcessed": "once-on-this-island-2017/theater-news-online--brian-scott-lipton.json",
+  "lastProcessed": "m-butterfly-2017/theatermania--jesse-green.json",
   "log": [
     {
       "t": "2026-06-16T20:08:35.686Z",
@@ -1593,6 +1613,17 @@
       "t": "2026-06-17T07:27:53.367Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-17T08:11:30.904Z",
+      "event": "bb-session",
+      "session": "f4272754",
+      "url": "http://www.wsj.com/articles/junk-review-bankrupting-entertainment-1509669000"
+    },
+    {
+      "t": "2026-06-17T08:11:31.330Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

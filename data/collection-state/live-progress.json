@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-17T08:06:44.464Z",
-  "processed": 264,
-  "failed": 347,
-  "successRate": "43.2%",
+  "updatedAt": "2026-06-17T08:12:08.780Z",
+  "processed": 271,
+  "failed": 350,
+  "successRate": "43.6%",
   "tierBreakdown": {
-    "playwright": 124,
+    "playwright": 130,
     "amp": 0,
-    "browserbase": 57,
+    "browserbase": 59,
     "directCookies": 0,
     "scrapingbee": 59,
     "brightdata": 30,
-    "archiveToday": 36,
+    "archiveToday": 38,
     "archive": 60
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-06-17T04:51:40.213Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-17T04:51:54.613Z",
-      "event": "bb-session",
-      "session": "5928ffe4",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
     {
       "t": "2026-06-17T04:51:55.586Z",
       "event": "bb-cookie-inject",
@@ -124,6 +113,17 @@
       "t": "2026-06-17T07:27:53.367Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-17T08:11:30.904Z",
+      "event": "bb-session",
+      "session": "f4272754",
+      "url": "http://www.wsj.com/articles/junk-review-bankrupting-entertainment-1509669000"
+    },
+    {
+      "t": "2026-06-17T08:11:31.330Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
