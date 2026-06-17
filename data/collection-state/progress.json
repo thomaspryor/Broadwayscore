@@ -311,7 +311,16 @@
     "heisenberg-2016/wnyc--jennifer-vanasco.json",
     "oh-hello-on-broadway-2016/nydailynews--joe-dziemianowicz.json",
     "holiday-inn-the-new-irving-berlin-musical-2016/nydailynews--joe-dziemianowicz.json",
-    "holiday-inn-the-new-irving-berlin-musical-2016/timeout--david-cote.json"
+    "holiday-inn-the-new-irving-berlin-musical-2016/timeout--david-cote.json",
+    "holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json",
+    "the-encounter-2016/nydailynews--joe-dziemianowicz.json",
+    "the-encounter-2016/times-square-chronicles--suzanna-bowling.json",
+    "tuck-everlasting-2016/ew--melissa-rose-bernardo.json",
+    "tuck-everlasting-2016/uinterview--erik-meers.json",
+    "fully-committed-2016/timeout--adam-feldman.json",
+    "fully-committed-2016/wsj--terry-teachout.json",
+    "waitress-2016/act-three-the-reviews--doug-marino.json",
+    "american-psycho-2016/nyt-theater--jonathan-mandell.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -682,7 +691,8 @@
     "in-transit-2016/nydailynews--joe-dziemianowicz.json",
     "a-bronx-tale-the-musical-2016/njcom--patrick-maley.json",
     "les-liaisons-dangereuses-2016/thestage--mark-shenton.json",
-    "heisenberg-2016/abc-news--mark-kennedy.json"
+    "heisenberg-2016/abc-news--mark-kennedy.json",
+    "tuck-everlasting-2016/thestage--mark-shenton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -836,7 +846,12 @@
       "natasha-pierre-and-the-great-comet-of-1812-2016/broadway-and-me--janice-c-simpson.json",
       "falsettos-2016/theatermania--jesse-green.json",
       "falsettos-2016/theater-life--eric-march.json",
-      "heisenberg-2016/wnyc--jennifer-vanasco.json"
+      "heisenberg-2016/wnyc--jennifer-vanasco.json",
+      "the-encounter-2016/times-square-chronicles--suzanna-bowling.json",
+      "tuck-everlasting-2016/ew--melissa-rose-bernardo.json",
+      "tuck-everlasting-2016/uinterview--erik-meers.json",
+      "waitress-2016/act-three-the-reviews--doug-marino.json",
+      "american-psycho-2016/nyt-theater--jonathan-mandell.json"
     ],
     "amp": [],
     "browserbase": [
@@ -902,7 +917,11 @@
       "data/review-texts/les-liaisons-dangereuses-2016/wsj--terry-teachout.json",
       "les-liaisons-dangereuses-2016/wsj--terry-teachout.json",
       "data/review-texts/heisenberg-2016/wsj--terry-teachout.json",
-      "heisenberg-2016/wsj--terry-teachout.json"
+      "heisenberg-2016/wsj--terry-teachout.json",
+      "data/review-texts/holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json",
+      "holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json",
+      "data/review-texts/fully-committed-2016/wsj--terry-teachout.json",
+      "fully-committed-2016/wsj--terry-teachout.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1004,7 +1023,8 @@
       "sunset-boulevard-2017/newyorker--conde-nast.json",
       "natasha-pierre-and-the-great-comet-of-1812-2016/newyorker--conde-nast.json",
       "heisenberg-2016/nydailynews--joe-dziemianowicz.json",
-      "holiday-inn-the-new-irving-berlin-musical-2016/timeout--david-cote.json"
+      "holiday-inn-the-new-irving-berlin-musical-2016/timeout--david-cote.json",
+      "the-encounter-2016/nydailynews--joe-dziemianowicz.json"
     ],
     "archiveToday": [
       "data/review-texts/for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/thestage--loren-noveck.json",
@@ -1049,7 +1069,8 @@
       "data/review-texts/anastasia-2017/thestage--mark-shenton.json",
       "data/review-texts/the-little-foxes-2017/thestage--mark-shenton.json",
       "data/review-texts/groundhog-day-2017/thestage--mark-shenton.json",
-      "data/review-texts/les-liaisons-dangereuses-2016/thestage--mark-shenton.json"
+      "data/review-texts/les-liaisons-dangereuses-2016/thestage--mark-shenton.json",
+      "data/review-texts/tuck-everlasting-2016/thestage--mark-shenton.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -1122,11 +1143,12 @@
       "a-bronx-tale-the-musical-2016/timeout--adam-feldman.json",
       "heisenberg-2016/timeout--adam-feldman.json",
       "oh-hello-on-broadway-2016/nydailynews--joe-dziemianowicz.json",
-      "holiday-inn-the-new-irving-berlin-musical-2016/nydailynews--joe-dziemianowicz.json"
+      "holiday-inn-the-new-irving-berlin-musical-2016/nydailynews--joe-dziemianowicz.json",
+      "fully-committed-2016/timeout--adam-feldman.json"
     ]
   },
   "startTime": "2026-06-16T19:54:03.478Z",
-  "lastProcessed": "holiday-inn-the-new-irving-berlin-musical-2016/timeout--david-cote.json",
+  "lastProcessed": "american-psycho-2016/nyt-theater--jonathan-mandell.json",
   "log": [
     {
       "t": "2026-06-16T20:08:35.686Z",
@@ -1743,6 +1765,28 @@
     },
     {
       "t": "2026-06-17T08:30:54.270Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-17T08:32:48.294Z",
+      "event": "bb-session",
+      "session": "9df9d325",
+      "url": "http://www.wsj.com/articles/holiday-inn-the-new-irving-berlin-musical-review-147"
+    },
+    {
+      "t": "2026-06-17T08:32:48.734Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-17T08:36:31.568Z",
+      "event": "bb-session",
+      "session": "776ac310",
+      "url": "http://www.wsj.com/articles/fully-committed-review-jesse-tyler-ferguson-party-of"
+    },
+    {
+      "t": "2026-06-17T08:36:32.044Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
