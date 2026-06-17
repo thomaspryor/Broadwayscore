@@ -473,7 +473,9 @@
     "death-of-a-salesman-2012/theatermania--charles-isherwood.json",
     "death-of-a-salesman-2012/telegraph--unknown.json",
     "the-road-to-mecca-2012/newsday--linda-winer.json",
-    "bonnie-and-clyde-2011/northjerseycom--robert-feldberg.json"
+    "bonnie-and-clyde-2011/northjerseycom--robert-feldberg.json",
+    "venus-in-fur-2011/timeout--david-cote.json",
+    "godspell-2011/northjerseycom--robert-feldberg.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -1092,7 +1094,15 @@
     "on-a-clear-day-you-can-see-forever-2011/chicagotribune--chris-jones.json",
     "stick-fly-2011/backstage--erik-haagensen.json",
     "seminar-2011/theatermania--david-rooney.json",
-    "seminar-2011/backstage--david-sheward.json"
+    "seminar-2011/backstage--david-sheward.json",
+    "private-lives-2011/newsday--linda-winer.json",
+    "private-lives-2011/wsj--terry-teachout.json",
+    "private-lives-2011/backstage--erik-haagensen.json",
+    "venus-in-fur-2011/wsj--terry-teachout.json",
+    "godspell-2011/variety--david-rooney.json",
+    "godspell-2011/backstage--david-sheward.json",
+    "godspell-2011/talkinbroadway--matthew-murray.json",
+    "other-desert-cities-2011/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1587,7 +1597,10 @@
       "data/review-texts/jesus-christ-superstar-2012/wsj--terry-teachout.json",
       "data/review-texts/once-2012/wsj--terry-teachout.json",
       "data/review-texts/wit-2012/wsj--terry-teachout.json",
-      "data/review-texts/seminar-2011/theatermania--david-rooney.json"
+      "data/review-texts/seminar-2011/theatermania--david-rooney.json",
+      "data/review-texts/private-lives-2011/wsj--terry-teachout.json",
+      "data/review-texts/venus-in-fur-2011/wsj--terry-teachout.json",
+      "data/review-texts/godspell-2011/talkinbroadway--matthew-murray.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -1718,11 +1731,13 @@
       "once-2012/nydailynews--joe-dziemianowicz.json",
       "death-of-a-salesman-2012/newsday--linda-winer.json",
       "the-road-to-mecca-2012/newsday--linda-winer.json",
-      "bonnie-and-clyde-2011/northjerseycom--robert-feldberg.json"
+      "bonnie-and-clyde-2011/northjerseycom--robert-feldberg.json",
+      "venus-in-fur-2011/timeout--david-cote.json",
+      "godspell-2011/northjerseycom--robert-feldberg.json"
     ]
   },
   "startTime": "2026-06-16T19:54:03.478Z",
-  "lastProcessed": "seminar-2011/backstage--david-sheward.json",
+  "lastProcessed": "other-desert-cities-2011/wsj--terry-teachout.json",
   "log": [
     {
       "t": "2026-06-16T20:08:35.686Z",
@@ -2526,6 +2541,17 @@
     },
     {
       "t": "2026-06-17T10:43:36.505Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-17T10:51:45.792Z",
+      "event": "bb-session",
+      "session": "5673ce3c",
+      "url": "https://www.wsj.com/articles/SB10001424052970204517204577008923044393024"
+    },
+    {
+      "t": "2026-06-17T10:51:46.732Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

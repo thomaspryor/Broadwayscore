@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-06-17T10:50:13.972Z",
-  "processed": 474,
-  "failed": 617,
-  "successRate": "43.4%",
+  "updatedAt": "2026-06-17T10:58:39.074Z",
+  "processed": 476,
+  "failed": 625,
+  "successRate": "43.2%",
   "tierBreakdown": {
     "playwright": 212,
     "amp": 0,
@@ -10,22 +10,11 @@
     "directCookies": 0,
     "scrapingbee": 68,
     "brightdata": 64,
-    "archiveToday": 55,
-    "archive": 129
+    "archiveToday": 58,
+    "archive": 131
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-06-17T09:14:55.490Z",
-      "event": "bb-session",
-      "session": "eb8adea0",
-      "url": "https://www.northjersey.com/arts_entertainment/theater/203140641_Theater_review_"
-    },
-    {
-      "t": "2026-06-17T09:14:55.938Z",
-      "event": "bb-cookie-inject",
-      "domain": "northjersey.com"
-    },
     {
       "t": "2026-06-17T10:08:37.700Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-06-17T10:43:36.505Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-17T10:51:45.792Z",
+      "event": "bb-session",
+      "session": "5673ce3c",
+      "url": "https://www.wsj.com/articles/SB10001424052970204517204577008923044393024"
+    },
+    {
+      "t": "2026-06-17T10:51:46.732Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
