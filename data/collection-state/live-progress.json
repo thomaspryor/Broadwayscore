@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-17T10:13:53.795Z",
-  "processed": 440,
-  "failed": 581,
-  "successRate": "43.1%",
+  "updatedAt": "2026-06-17T10:17:35.998Z",
+  "processed": 448,
+  "failed": 583,
+  "successRate": "43.5%",
   "tierBreakdown": {
-    "playwright": 204,
+    "playwright": 205,
     "amp": 0,
-    "browserbase": 81,
+    "browserbase": 82,
     "directCookies": 0,
-    "scrapingbee": 61,
+    "scrapingbee": 63,
     "brightdata": 61,
     "archiveToday": 47,
-    "archive": 112
+    "archive": 117
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-06-17T08:32:48.294Z",
-      "event": "bb-session",
-      "session": "9df9d325",
-      "url": "http://www.wsj.com/articles/holiday-inn-the-new-irving-berlin-musical-review-147"
-    },
-    {
-      "t": "2026-06-17T08:32:48.734Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-06-17T08:36:31.568Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-06-17T10:09:50.437Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-17T10:17:12.229Z",
+      "event": "bb-session",
+      "session": "56df6ece",
+      "url": "https://variety.com/2012/film/reviews/the-mongrel-1117948809/"
+    },
+    {
+      "t": "2026-06-17T10:17:13.117Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

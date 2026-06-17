@@ -439,7 +439,15 @@
     "fish-in-the-dark-2015/wsj--terry-teachout.json",
     "the-nance-2013/northjerseycom--robert-feldberg.json",
     "hands-on-a-hardbody-2013/amny--matt-windman.json",
-    "ann-2013/village-voice--michael-musto.json"
+    "ann-2013/village-voice--michael-musto.json",
+    "glengarry-glen-ross-2012/timeout--david-cote.json",
+    "golden-boy-2012/ew--adam-markovitz.json",
+    "the-anarchist-2012/newsday--linda-winer.json",
+    "dead-accounts-2012/newsday--linda-winer.json",
+    "a-christmas-story-the-musical-2012/newsday--linda-winer.json",
+    "a-christmas-story-the-musical-2012/timeout--david-cote.json",
+    "the-performers-2012/northjerseycom--robert-feldberg.json",
+    "the-mystery-of-edwin-drood-2012/timeout--david-cote.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -1022,7 +1030,9 @@
     "motown-the-musical-2013/new-jersey-newsroom--michael-sommers.json",
     "matilda-the-musical-2013/village-voice--michael-musto.json",
     "lucky-guy-2013/backstage--erik-haagensen.json",
-    "vanya-and-sonia-and-masha-and-spike-2013/new-jersey-newsroom--michael-sommers.json"
+    "vanya-and-sonia-and-masha-and-spike-2013/new-jersey-newsroom--michael-sommers.json",
+    "elf-2012/variety--marilyn-stasio.json",
+    "elf-2012/new-jersey-newsroom--michael-sommers.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1230,7 +1240,8 @@
       "groundhog-day-2017/thestage--mark-shenton.json",
       "les-liaisons-dangereuses-2016/thestage--mark-shenton.json",
       "tuck-everlasting-2016/thestage--mark-shenton.json",
-      "noises-off-2016/thestage--mark-shenton.json"
+      "noises-off-2016/thestage--mark-shenton.json",
+      "golden-boy-2012/ew--adam-markovitz.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1314,7 +1325,8 @@
       "data/review-texts/dames-at-sea-2015/wsj--terry-teachout.json",
       "dames-at-sea-2015/wsj--terry-teachout.json",
       "data/review-texts/fish-in-the-dark-2015/wsj--terry-teachout.json",
-      "fish-in-the-dark-2015/wsj--terry-teachout.json"
+      "fish-in-the-dark-2015/wsj--terry-teachout.json",
+      "data/review-texts/elf-2012/variety--marilyn-stasio.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1378,7 +1390,9 @@
       "company-2021/theatrely--andrew-martini.json",
       "matilda-the-musical-west-end-2021/daily-mail--patrick-marmion.json",
       "charlie-and-the-chocolate-factory-2017/billboard--curtis-m-wong.json",
-      "bright-star-2016/stu-on-broadway--stu-brown.json"
+      "bright-star-2016/stu-on-broadway--stu-brown.json",
+      "a-christmas-story-the-musical-2012/timeout--david-cote.json",
+      "the-mystery-of-edwin-drood-2012/timeout--david-cote.json"
     ],
     "brightdata": [
       "romeo-and-juliet-off-broadway-2026/talkinbroadway--unknown.json",
@@ -1604,11 +1618,16 @@
       "hand-to-god-2015/newsday--linda-winer.json",
       "the-nance-2013/northjerseycom--robert-feldberg.json",
       "hands-on-a-hardbody-2013/amny--matt-windman.json",
-      "ann-2013/village-voice--michael-musto.json"
+      "ann-2013/village-voice--michael-musto.json",
+      "glengarry-glen-ross-2012/timeout--david-cote.json",
+      "the-anarchist-2012/newsday--linda-winer.json",
+      "dead-accounts-2012/newsday--linda-winer.json",
+      "a-christmas-story-the-musical-2012/newsday--linda-winer.json",
+      "the-performers-2012/northjerseycom--robert-feldberg.json"
     ]
   },
   "startTime": "2026-06-16T19:54:03.478Z",
-  "lastProcessed": "ann-2013/village-voice--michael-musto.json",
+  "lastProcessed": "elf-2012/new-jersey-newsroom--michael-sommers.json",
   "log": [
     {
       "t": "2026-06-16T20:08:35.686Z",
@@ -2337,6 +2356,17 @@
       "t": "2026-06-17T10:09:50.437Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-17T10:17:12.229Z",
+      "event": "bb-session",
+      "session": "56df6ece",
+      "url": "https://variety.com/2012/film/reviews/the-mongrel-1117948809/"
+    },
+    {
+      "t": "2026-06-17T10:17:13.117Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
