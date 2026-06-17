@@ -393,7 +393,11 @@
     "700-sundays-2013/ew--jessica-shaw.json",
     "after-midnight-2013/timeout--adam-feldman.json",
     "big-fish-2013/ew--thom-geier.json",
-    "romeo-and-juliet-2013/timeout--david-cote.json"
+    "romeo-and-juliet-2013/timeout--david-cote.json",
+    "ill-eat-you-last-a-chat-with-sue-mengers-2013/timeout--adam-feldman.json",
+    "jekyll-and-hyde-2013/newsday--matt-windman.json",
+    "the-big-knife-2013/nydailynews--joe-dziemianowicz.json",
+    "the-nance-2013/timeout--david-cote.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -792,7 +796,13 @@
     "the-winslow-boy-2013/bloomberg--jeremy-gerard.json",
     "the-winslow-boy-2013/bloomberg--unknown.json",
     "the-glass-menagerie-2013/bloomberg--jeremy-gerard.json",
-    "soul-doctor-2013/new-jersey-newsroom--michael-sommers.json"
+    "soul-doctor-2013/new-jersey-newsroom--michael-sommers.json",
+    "jekyll-and-hyde-2013/bloomberg--philip-boroff.json",
+    "orphans-2013/bloomberg--jeremy-gerard.json",
+    "the-nance-2013/northjerseycom--robert-feldberg.json",
+    "the-nance-2013/new-jersey-newsroom--michael-sommers.json",
+    "motown-the-musical-2013/new-jersey-newsroom--michael-sommers.json",
+    "matilda-the-musical-2013/village-voice--michael-musto.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1173,7 +1183,8 @@
       "hand-to-god-2015/timeout--adam-feldman.json",
       "all-the-way-2014/ew--thom-geier.json",
       "all-the-way-2014/amny--matt-windman.json",
-      "700-sundays-2013/ew--jessica-shaw.json"
+      "700-sundays-2013/ew--jessica-shaw.json",
+      "jekyll-and-hyde-2013/newsday--matt-windman.json"
     ],
     "archiveToday": [
       "data/review-texts/for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/thestage--loren-noveck.json",
@@ -1220,7 +1231,8 @@
       "data/review-texts/groundhog-day-2017/thestage--mark-shenton.json",
       "data/review-texts/les-liaisons-dangereuses-2016/thestage--mark-shenton.json",
       "data/review-texts/tuck-everlasting-2016/thestage--mark-shenton.json",
-      "data/review-texts/noises-off-2016/thestage--mark-shenton.json"
+      "data/review-texts/noises-off-2016/thestage--mark-shenton.json",
+      "data/review-texts/the-nance-2013/northjerseycom--robert-feldberg.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -1324,11 +1336,14 @@
       "the-cripple-of-inishmaan-2014/amny--matt-windman.json",
       "ifthen-2014/northjerseycom--robert-feldberg.json",
       "after-midnight-2013/timeout--adam-feldman.json",
-      "big-fish-2013/ew--thom-geier.json"
+      "big-fish-2013/ew--thom-geier.json",
+      "ill-eat-you-last-a-chat-with-sue-mengers-2013/timeout--adam-feldman.json",
+      "the-big-knife-2013/nydailynews--joe-dziemianowicz.json",
+      "the-nance-2013/timeout--david-cote.json"
     ]
   },
   "startTime": "2026-06-16T19:54:03.478Z",
-  "lastProcessed": "soul-doctor-2013/new-jersey-newsroom--michael-sommers.json",
+  "lastProcessed": "matilda-the-musical-2013/village-voice--michael-musto.json",
   "log": [
     {
       "t": "2026-06-16T20:08:35.686Z",
@@ -2024,6 +2039,17 @@
       "t": "2026-06-17T08:44:17.313Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-17T09:14:55.490Z",
+      "event": "bb-session",
+      "session": "eb8adea0",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/203140641_Theater_review_"
+    },
+    {
+      "t": "2026-06-17T09:14:55.938Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }

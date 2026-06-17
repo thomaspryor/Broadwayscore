@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-17T09:12:15.156Z",
-  "processed": 394,
-  "failed": 397,
-  "successRate": "49.8%",
+  "updatedAt": "2026-06-17T09:15:44.642Z",
+  "processed": 398,
+  "failed": 403,
+  "successRate": "49.7%",
   "tierBreakdown": {
     "playwright": 175,
     "amp": 0,
     "browserbase": 77,
     "directCookies": 0,
     "scrapingbee": 61,
-    "brightdata": 56,
-    "archiveToday": 45,
-    "archive": 102
+    "brightdata": 57,
+    "archiveToday": 46,
+    "archive": 105
   },
-  "browserbaseSessions": 11,
+  "browserbaseSessions": 12,
   "recentActivity": [
-    {
-      "t": "2026-06-17T08:11:30.904Z",
-      "event": "bb-session",
-      "session": "f4272754",
-      "url": "http://www.wsj.com/articles/junk-review-bankrupting-entertainment-1509669000"
-    },
-    {
-      "t": "2026-06-17T08:11:31.330Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-06-17T08:28:32.372Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-06-17T08:44:17.313Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-17T09:14:55.490Z",
+      "event": "bb-session",
+      "session": "eb8adea0",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/203140641_Theater_review_"
+    },
+    {
+      "t": "2026-06-17T09:14:55.938Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
