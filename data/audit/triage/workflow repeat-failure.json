@@ -1,0 +1,15 @@
+{
+  "system": "workflow repeat-failure",
+  "status": "warn",
+  "lastChecked": "2026-06-17T08:45:19.367Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "monitoring",
+  "details": [
+    {
+      "name": "Workflow repeat-failure: Update Theatr Data",
+      "status": "warn",
+      "message": "Update Theatr Data failed 2 times in the last 24h — likely broken, not transient."
+    }
+  ]
+}
