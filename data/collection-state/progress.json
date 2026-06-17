@@ -328,7 +328,15 @@
     "bright-star-2016/stu-on-broadway--stu-brown.json",
     "she-loves-me-2016/wsj--terry-teachout.json",
     "she-loves-me-2016/theater-life--eric-march.json",
-    "blackbird-2016/wsj--terry-teachout.json"
+    "blackbird-2016/wsj--terry-teachout.json",
+    "hughie-2016/act-three-the-reviews--doug-marino.json",
+    "hughie-2016/financialtimes--max-mcguinness.json",
+    "hughie-2016/wnyc--jennifer-vanasco.json",
+    "the-humans-2016/wsj--terry-teachout.json",
+    "the-humans-2016/towleroad--naveen-kumar.json",
+    "fiddler-on-the-roof-2015/broadway-and-me--janice-c-simpson.json",
+    "the-color-purple-2015/wsj--terry-teachout.json",
+    "the-color-purple-2015/broadway-and-me--janice-c-simpson.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -702,7 +710,9 @@
     "heisenberg-2016/abc-news--mark-kennedy.json",
     "tuck-everlasting-2016/thestage--mark-shenton.json",
     "american-psycho-2016/ap--mark-kennedy.json",
-    "bright-star-2016/drama-queen-nyc--jonathan-warman.json"
+    "bright-star-2016/drama-queen-nyc--jonathan-warman.json",
+    "eclipsed-2016/nydailynews--joe-dziemianowicz.json",
+    "noises-off-2016/thestage--mark-shenton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -864,7 +874,12 @@
       "american-psycho-2016/nyt-theater--jonathan-mandell.json",
       "the-father-2016/financialtimes--max-mcguinness.json",
       "the-father-2016/theater-life--paulanne-simmons.json",
-      "she-loves-me-2016/theater-life--eric-march.json"
+      "she-loves-me-2016/theater-life--eric-march.json",
+      "hughie-2016/act-three-the-reviews--doug-marino.json",
+      "hughie-2016/financialtimes--max-mcguinness.json",
+      "hughie-2016/wnyc--jennifer-vanasco.json",
+      "fiddler-on-the-roof-2015/broadway-and-me--janice-c-simpson.json",
+      "the-color-purple-2015/broadway-and-me--janice-c-simpson.json"
     ],
     "amp": [],
     "browserbase": [
@@ -940,7 +955,11 @@
       "data/review-texts/she-loves-me-2016/wsj--terry-teachout.json",
       "she-loves-me-2016/wsj--terry-teachout.json",
       "data/review-texts/blackbird-2016/wsj--terry-teachout.json",
-      "blackbird-2016/wsj--terry-teachout.json"
+      "blackbird-2016/wsj--terry-teachout.json",
+      "data/review-texts/the-humans-2016/wsj--terry-teachout.json",
+      "the-humans-2016/wsj--terry-teachout.json",
+      "data/review-texts/the-color-purple-2015/wsj--terry-teachout.json",
+      "the-color-purple-2015/wsj--terry-teachout.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1090,7 +1109,8 @@
       "data/review-texts/the-little-foxes-2017/thestage--mark-shenton.json",
       "data/review-texts/groundhog-day-2017/thestage--mark-shenton.json",
       "data/review-texts/les-liaisons-dangereuses-2016/thestage--mark-shenton.json",
-      "data/review-texts/tuck-everlasting-2016/thestage--mark-shenton.json"
+      "data/review-texts/tuck-everlasting-2016/thestage--mark-shenton.json",
+      "data/review-texts/noises-off-2016/thestage--mark-shenton.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -1165,11 +1185,12 @@
       "oh-hello-on-broadway-2016/nydailynews--joe-dziemianowicz.json",
       "holiday-inn-the-new-irving-berlin-musical-2016/nydailynews--joe-dziemianowicz.json",
       "fully-committed-2016/timeout--adam-feldman.json",
-      "american-psycho-2016/timeout--adam-feldman.json"
+      "american-psycho-2016/timeout--adam-feldman.json",
+      "the-humans-2016/towleroad--naveen-kumar.json"
     ]
   },
   "startTime": "2026-06-16T19:54:03.478Z",
-  "lastProcessed": "blackbird-2016/wsj--terry-teachout.json",
+  "lastProcessed": "the-color-purple-2015/broadway-and-me--janice-c-simpson.json",
   "log": [
     {
       "t": "2026-06-16T20:08:35.686Z",
@@ -1841,6 +1862,28 @@
     },
     {
       "t": "2026-06-17T08:40:47.426Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-17T08:42:02.460Z",
+      "event": "bb-session",
+      "session": "c4295bfd",
+      "url": "http://www.wsj.com/articles/the-humans-review-dated-drama-kitchen-sink-and-all-1"
+    },
+    {
+      "t": "2026-06-17T08:42:02.894Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-17T08:44:16.835Z",
+      "event": "bb-session",
+      "session": "35f50e11",
+      "url": "http://www.wsj.com/articles/the-color-purple-review-new-star-in-the-broadway-sky"
+    },
+    {
+      "t": "2026-06-17T08:44:17.313Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
