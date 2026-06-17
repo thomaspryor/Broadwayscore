@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-17T18:09:11.995Z",
+  "timestamp": "2026-06-17T23:46:57.686Z",
   "stats": {
-    "totalReviews": 38506,
-    "alreadyFlagged": 16970,
-    "dateGuardCatches": 106,
+    "totalReviews": 38505,
+    "alreadyFlagged": 16979,
+    "dateGuardCatches": 105,
     "directorMismatch": 858,
     "tvFilmSignals": 1055,
     "londonSignals": 630,
     "offBroadwaySignals": 464,
     "yearMismatch": 81,
-    "noPublishDate": 3936
+    "noPublishDate": 3927
   },
   "findings": [
     {
@@ -25545,7 +25545,7 @@
     },
     {
       "showId": "west-side-story-2009",
-      "file": "variety--david-rooney.json",
+      "file": "variety--paul-harris.json",
       "score": 80,
       "publishDate": "March 19, 2009",
       "url": "https://variety.com/2009/legit/reviews/west-side-story-7-1200473395/",
@@ -26991,20 +26991,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
-        }
-      ]
-    },
-    {
-      "showId": "a-man-for-all-seasons-2008",
-      "file": "theatermania--david-finkle.json",
-      "score": 50,
-      "publishDate": "March 14, 2008",
-      "url": "https://www.theatermania.com/news/broadways-a-man-for-all-seasons-to-extend-through-december-14_15730/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 182d before show (March 14, 2008 vs 2008-09-12)"
         }
       ]
     },
@@ -29166,20 +29152,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"gielgud\""
-        }
-      ]
-    },
-    {
-      "showId": "care-west-end-2026",
-      "file": "guardian--unknown.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.theguardian.com/books/2024/nov/02/alan-bennett-at-90-what-will-people-think-i-dont-care-any-more",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -32672,6 +32644,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "lbc--johnny-jenkins.json",
+      "score": 91,
+      "publishDate": "2026-04-08",
+      "url": "https://www.lbc.co.uk/article/inter-alia-review-best-plays-ever-seen-5HjdXRZ_2/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
