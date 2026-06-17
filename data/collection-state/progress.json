@@ -430,7 +430,11 @@
     "anastasia-2017/thestage--mark-shenton.json",
     "the-little-foxes-2017/thestage--mark-shenton.json",
     "groundhog-day-2017/thestage--mark-shenton.json",
-    "come-from-away-2017/times-uk--dominic-maxwell.json"
+    "come-from-away-2017/times-uk--dominic-maxwell.json",
+    "les-liaisons-dangereuses-2016/thestage--mark-shenton.json",
+    "tuck-everlasting-2016/thestage--mark-shenton.json",
+    "noises-off-2016/thestage--mark-shenton.json",
+    "dames-at-sea-2015/wsj--terry-teachout.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -982,7 +986,13 @@
     "the-glass-menagerie-2017/chicagotribune--chris-jones.json",
     "the-present-2017/thestage--unknown.json",
     "in-transit-2016/nydailynews--joe-dziemianowicz.json",
-    "a-bronx-tale-the-musical-2016/njcom--patrick-maley.json"
+    "a-bronx-tale-the-musical-2016/njcom--patrick-maley.json",
+    "heisenberg-2016/abc-news--mark-kennedy.json",
+    "american-psycho-2016/ap--mark-kennedy.json",
+    "bright-star-2016/drama-queen-nyc--jonathan-warman.json",
+    "eclipsed-2016/nydailynews--joe-dziemianowicz.json",
+    "a-view-from-the-bridge-2015/financialtimes--sarah-hemming.json",
+    "the-gin-game-2015/vulture--jesse-green.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1187,7 +1197,10 @@
       "meteor-shower-2017/thestage--mark-shenton.json",
       "anastasia-2017/thestage--mark-shenton.json",
       "the-little-foxes-2017/thestage--mark-shenton.json",
-      "groundhog-day-2017/thestage--mark-shenton.json"
+      "groundhog-day-2017/thestage--mark-shenton.json",
+      "les-liaisons-dangereuses-2016/thestage--mark-shenton.json",
+      "tuck-everlasting-2016/thestage--mark-shenton.json",
+      "noises-off-2016/thestage--mark-shenton.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1268,14 +1281,8 @@
       "the-humans-2016/wsj--terry-teachout.json",
       "data/review-texts/the-color-purple-2015/wsj--terry-teachout.json",
       "the-color-purple-2015/wsj--terry-teachout.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
-      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
-      "data/review-texts/small-off-broadway-2026/theater-pizzazz--unknown.json"
+      "data/review-texts/dames-at-sea-2015/wsj--terry-teachout.json",
+      "dames-at-sea-2015/wsj--terry-teachout.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1565,7 +1572,7 @@
     ]
   },
   "startTime": "2026-06-16T19:54:03.478Z",
-  "lastProcessed": "a-bronx-tale-the-musical-2016/njcom--patrick-maley.json",
+  "lastProcessed": "the-gin-game-2015/vulture--jesse-green.json",
   "log": [
     {
       "t": "2026-06-16T20:08:35.686Z",
@@ -2274,93 +2281,15 @@
       "domain": "northjersey.com"
     },
     {
-      "t": "2026-06-17T10:20:09.247Z",
+      "t": "2026-06-17T10:08:37.700Z",
       "event": "bb-session",
-      "session": "6d0882fa",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+      "session": "361dbf84",
+      "url": "http://www.wsj.com/articles/dames-at-sea-review-not-quite-clever-enough-14455602"
     },
     {
-      "t": "2026-06-17T10:20:10.090Z",
+      "t": "2026-06-17T10:08:38.592Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-17T10:20:44.260Z",
-      "event": "bb-session",
-      "session": "f87a6dbd",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-17T10:20:45.113Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-17T10:20:57.605Z",
-      "event": "bb-session",
-      "session": "290a0dbf",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
-    {
-      "t": "2026-06-17T10:20:58.363Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-17T10:22:00.764Z",
-      "event": "bb-session",
-      "session": "2eb29b92",
-      "url": "https://www.nytimes.com/2026/06/01/arts/andy-halliday-dead.html"
-    },
-    {
-      "t": "2026-06-17T10:22:01.505Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-17T10:34:10.543Z",
-      "event": "bb-session",
-      "session": "6fe278ce",
-      "url": "https://therecs.co.uk/are-you-watching-royal-court/"
-    },
-    {
-      "t": "2026-06-17T10:55:21.114Z",
-      "event": "bb-session",
-      "session": "9aec315f",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
-    {
-      "t": "2026-06-17T10:55:21.998Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-17T10:55:57.451Z",
-      "event": "bb-session",
-      "session": "8f573b54",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-17T10:55:58.417Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-17T10:56:15.667Z",
-      "event": "bb-session",
-      "session": "0ab44aae",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
-    {
-      "t": "2026-06-17T10:56:16.675Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-17T10:58:30.847Z",
-      "event": "bb-session",
-      "session": "6ccc249c",
-      "url": "https://theaterpizzazz.com/small-a-jockeys-indestructible-passion/"
+      "domain": "wsj.com"
     }
   ]
 }
