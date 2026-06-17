@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-17T10:40:55.158Z",
-  "processed": 468,
-  "failed": 603,
+  "updatedAt": "2026-06-17T10:45:58.712Z",
+  "processed": 472,
+  "failed": 609,
   "successRate": "43.7%",
   "tierBreakdown": {
-    "playwright": 209,
+    "playwright": 212,
     "amp": 0,
     "browserbase": 82,
     "directCookies": 0,
-    "scrapingbee": 67,
+    "scrapingbee": 68,
     "brightdata": 64,
-    "archiveToday": 52,
-    "archive": 126
+    "archiveToday": 54,
+    "archive": 127
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 9,
   "recentActivity": [
-    {
-      "t": "2026-06-17T08:44:16.835Z",
-      "event": "bb-session",
-      "session": "35f50e11",
-      "url": "http://www.wsj.com/articles/the-color-purple-review-new-star-in-the-broadway-sky"
-    },
-    {
-      "t": "2026-06-17T08:44:17.313Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-06-17T09:14:55.490Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-06-17T10:39:18.585Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-17T10:43:35.612Z",
+      "event": "bb-session",
+      "session": "5ae434b8",
+      "url": "https://www.wsj.com/articles/SB10001424052970203315804577207312073674502"
+    },
+    {
+      "t": "2026-06-17T10:43:36.505Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

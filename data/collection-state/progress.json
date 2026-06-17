@@ -467,7 +467,11 @@
     "newsies-the-musical-2012/new-jersey-newsroom--michael-musto.json",
     "once-2012/newsday--linda-winer.json",
     "once-2012/nydailynews--joe-dziemianowicz.json",
-    "once-2012/theatermania--dan-bacalzo.json"
+    "once-2012/theatermania--dan-bacalzo.json",
+    "death-of-a-salesman-2012/nytg--gillian-russo.json",
+    "death-of-a-salesman-2012/newsday--linda-winer.json",
+    "death-of-a-salesman-2012/theatermania--charles-isherwood.json",
+    "death-of-a-salesman-2012/telegraph--unknown.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -1072,7 +1076,13 @@
     "jesus-christ-superstar-2012/wsj--terry-teachout.json",
     "jesus-christ-superstar-2012/backstage--david-sheward.json",
     "once-2012/wsj--terry-teachout.json",
-    "once-2012/backstage--david-sheward.json"
+    "once-2012/backstage--david-sheward.json",
+    "death-of-a-salesman-2012/ew--thom-geier.json",
+    "death-of-a-salesman-2012/northjerseycom--robert-feldberg.json",
+    "wit-2012/wsj--terry-teachout.json",
+    "wit-2012/ap--mark-kennedy.json",
+    "wit-2012/backstage--david-sheward.json",
+    "wit-2012/bloomberg--jeremy-gerard.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1285,7 +1295,10 @@
       "the-lyons-2012/theatermania--dan-bacalzo.json",
       "clybourne-park-2012/theatermania--dan-bacalzo.json",
       "evita-2012/ew--thom-geier.json",
-      "once-2012/theatermania--dan-bacalzo.json"
+      "once-2012/theatermania--dan-bacalzo.json",
+      "death-of-a-salesman-2012/nytg--gillian-russo.json",
+      "death-of-a-salesman-2012/ew--thom-geier.json",
+      "death-of-a-salesman-2012/theatermania--charles-isherwood.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1440,7 +1453,8 @@
       "bring-it-on-the-musical-2012/timeout--adam-feldman.json",
       "leap-of-faith-2012/timeout--david-cote.json",
       "one-man-two-guvnors-2012/timeout--adam-feldman.json",
-      "newsies-the-musical-2012/new-jersey-newsroom--michael-musto.json"
+      "newsies-the-musical-2012/new-jersey-newsroom--michael-musto.json",
+      "death-of-a-salesman-2012/telegraph--unknown.json"
     ],
     "brightdata": [
       "romeo-and-juliet-off-broadway-2026/talkinbroadway--unknown.json",
@@ -1560,7 +1574,9 @@
       "data/review-texts/end-of-the-rainbow-2012/talkinbroadway--matthew-murray.json",
       "data/review-texts/gore-vidals-the-best-man-2012/wsj--terry-teachout.json",
       "data/review-texts/newsies-the-musical-2012/wsj--terry-teachout.json",
-      "data/review-texts/jesus-christ-superstar-2012/wsj--terry-teachout.json"
+      "data/review-texts/jesus-christ-superstar-2012/wsj--terry-teachout.json",
+      "data/review-texts/once-2012/wsj--terry-teachout.json",
+      "data/review-texts/wit-2012/wsj--terry-teachout.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -1688,11 +1704,12 @@
       "one-man-two-guvnors-2012/newsday--linda-winer.json",
       "end-of-the-rainbow-2012/new-jersey-newsroom--michael-sommers.json",
       "once-2012/newsday--linda-winer.json",
-      "once-2012/nydailynews--joe-dziemianowicz.json"
+      "once-2012/nydailynews--joe-dziemianowicz.json",
+      "death-of-a-salesman-2012/newsday--linda-winer.json"
     ]
   },
   "startTime": "2026-06-16T19:54:03.478Z",
-  "lastProcessed": "once-2012/backstage--david-sheward.json",
+  "lastProcessed": "wit-2012/bloomberg--jeremy-gerard.json",
   "log": [
     {
       "t": "2026-06-16T20:08:35.686Z",
@@ -2485,6 +2502,17 @@
     },
     {
       "t": "2026-06-17T10:39:18.585Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-17T10:43:35.612Z",
+      "event": "bb-session",
+      "session": "5ae434b8",
+      "url": "https://www.wsj.com/articles/SB10001424052970203315804577207312073674502"
+    },
+    {
+      "t": "2026-06-17T10:43:36.505Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
