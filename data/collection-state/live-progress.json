@@ -1,53 +1,20 @@
 {
-  "updatedAt": "2026-06-17T12:48:58.329Z",
+  "updatedAt": "2026-06-17T13:24:21.801Z",
   "processed": 487,
-  "failed": 713,
-  "successRate": "40.6%",
+  "failed": 723,
+  "successRate": "40.2%",
   "tierBreakdown": {
     "playwright": 221,
     "amp": 0,
-    "browserbase": 90,
+    "browserbase": 93,
     "directCookies": 0,
     "scrapingbee": 70,
     "brightdata": 64,
     "archiveToday": 63,
     "archive": 131
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-06-17T10:43:35.612Z",
-      "event": "bb-session",
-      "session": "5ae434b8",
-      "url": "https://www.wsj.com/articles/SB10001424052970203315804577207312073674502"
-    },
-    {
-      "t": "2026-06-17T10:43:36.505Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-06-17T10:51:45.792Z",
-      "event": "bb-session",
-      "session": "5673ce3c",
-      "url": "https://www.wsj.com/articles/SB10001424052970204517204577008923044393024"
-    },
-    {
-      "t": "2026-06-17T10:51:46.732Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-06-17T11:43:11.418Z",
-      "event": "bb-session",
-      "session": "a771a3d4",
-      "url": "https://www.nytimes.com/2026/06/16/theater/are-you-now-or-have-you-ever-been-rev"
-    },
-    {
-      "t": "2026-06-17T11:43:12.317Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-06-17T11:43:58.431Z",
       "event": "bb-session",
@@ -122,6 +89,39 @@
     },
     {
       "t": "2026-06-17T12:39:30.906Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-17T13:22:32.162Z",
+      "event": "bb-session",
+      "session": "5b447204",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-17T13:22:33.167Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-17T13:23:06.822Z",
+      "event": "bb-session",
+      "session": "63f6a92d",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-17T13:23:07.809Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-17T13:23:20.832Z",
+      "event": "bb-session",
+      "session": "b0a2b34d",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-17T13:23:21.770Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
