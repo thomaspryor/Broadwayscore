@@ -320,7 +320,15 @@
     "fully-committed-2016/timeout--adam-feldman.json",
     "fully-committed-2016/wsj--terry-teachout.json",
     "waitress-2016/act-three-the-reviews--doug-marino.json",
-    "american-psycho-2016/nyt-theater--jonathan-mandell.json"
+    "american-psycho-2016/nyt-theater--jonathan-mandell.json",
+    "american-psycho-2016/timeout--adam-feldman.json",
+    "the-father-2016/financialtimes--max-mcguinness.json",
+    "the-father-2016/theater-life--paulanne-simmons.json",
+    "bright-star-2016/wsj--terry-teachout.json",
+    "bright-star-2016/stu-on-broadway--stu-brown.json",
+    "she-loves-me-2016/wsj--terry-teachout.json",
+    "she-loves-me-2016/theater-life--eric-march.json",
+    "blackbird-2016/wsj--terry-teachout.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -692,7 +700,9 @@
     "a-bronx-tale-the-musical-2016/njcom--patrick-maley.json",
     "les-liaisons-dangereuses-2016/thestage--mark-shenton.json",
     "heisenberg-2016/abc-news--mark-kennedy.json",
-    "tuck-everlasting-2016/thestage--mark-shenton.json"
+    "tuck-everlasting-2016/thestage--mark-shenton.json",
+    "american-psycho-2016/ap--mark-kennedy.json",
+    "bright-star-2016/drama-queen-nyc--jonathan-warman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -851,7 +861,10 @@
       "tuck-everlasting-2016/ew--melissa-rose-bernardo.json",
       "tuck-everlasting-2016/uinterview--erik-meers.json",
       "waitress-2016/act-three-the-reviews--doug-marino.json",
-      "american-psycho-2016/nyt-theater--jonathan-mandell.json"
+      "american-psycho-2016/nyt-theater--jonathan-mandell.json",
+      "the-father-2016/financialtimes--max-mcguinness.json",
+      "the-father-2016/theater-life--paulanne-simmons.json",
+      "she-loves-me-2016/theater-life--eric-march.json"
     ],
     "amp": [],
     "browserbase": [
@@ -921,7 +934,13 @@
       "data/review-texts/holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json",
       "holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json",
       "data/review-texts/fully-committed-2016/wsj--terry-teachout.json",
-      "fully-committed-2016/wsj--terry-teachout.json"
+      "fully-committed-2016/wsj--terry-teachout.json",
+      "data/review-texts/bright-star-2016/wsj--terry-teachout.json",
+      "bright-star-2016/wsj--terry-teachout.json",
+      "data/review-texts/she-loves-me-2016/wsj--terry-teachout.json",
+      "she-loves-me-2016/wsj--terry-teachout.json",
+      "data/review-texts/blackbird-2016/wsj--terry-teachout.json",
+      "blackbird-2016/wsj--terry-teachout.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -984,7 +1003,8 @@
       "a-beautiful-noise-the-neil-diamond-musical-2022/dtli--juan-michael-porter-ii.json",
       "company-2021/theatrely--andrew-martini.json",
       "matilda-the-musical-west-end-2021/daily-mail--patrick-marmion.json",
-      "charlie-and-the-chocolate-factory-2017/billboard--curtis-m-wong.json"
+      "charlie-and-the-chocolate-factory-2017/billboard--curtis-m-wong.json",
+      "bright-star-2016/stu-on-broadway--stu-brown.json"
     ],
     "brightdata": [
       "romeo-and-juliet-off-broadway-2026/talkinbroadway--unknown.json",
@@ -1144,11 +1164,12 @@
       "heisenberg-2016/timeout--adam-feldman.json",
       "oh-hello-on-broadway-2016/nydailynews--joe-dziemianowicz.json",
       "holiday-inn-the-new-irving-berlin-musical-2016/nydailynews--joe-dziemianowicz.json",
-      "fully-committed-2016/timeout--adam-feldman.json"
+      "fully-committed-2016/timeout--adam-feldman.json",
+      "american-psycho-2016/timeout--adam-feldman.json"
     ]
   },
   "startTime": "2026-06-16T19:54:03.478Z",
-  "lastProcessed": "american-psycho-2016/nyt-theater--jonathan-mandell.json",
+  "lastProcessed": "blackbird-2016/wsj--terry-teachout.json",
   "log": [
     {
       "t": "2026-06-16T20:08:35.686Z",
@@ -1787,6 +1808,39 @@
     },
     {
       "t": "2026-06-17T08:36:32.044Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-17T08:38:26.391Z",
+      "event": "bb-session",
+      "session": "88f898f1",
+      "url": "http://www.wsj.com/articles/bright-star-review-banjo-boondoggle-1458865800"
+    },
+    {
+      "t": "2026-06-17T08:38:26.874Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-17T08:40:10.364Z",
+      "event": "bb-session",
+      "session": "8d176f06",
+      "url": "http://www.wsj.com/articles/she-loves-me-the-sweet-scent-of-perfection-145826100"
+    },
+    {
+      "t": "2026-06-17T08:40:10.824Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-17T08:40:46.976Z",
+      "event": "bb-session",
+      "session": "34170bc1",
+      "url": "http://www.wsj.com/articles/blackbird-review-the-past-comes-back-to-haunt-you-14"
+    },
+    {
+      "t": "2026-06-17T08:40:47.426Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
