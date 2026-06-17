@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-06-17T11:11:59.244Z",
+  "timestamp": "2026-06-17T11:39:18.120Z",
   "stats": {
-    "totalReviews": 38491,
-    "alreadyFlagged": 16910,
+    "totalReviews": 38496,
+    "alreadyFlagged": 16913,
     "dateGuardCatches": 106,
-    "directorMismatch": 861,
+    "directorMismatch": 862,
     "tvFilmSignals": 1057,
     "londonSignals": 630,
     "offBroadwaySignals": 463,
@@ -7991,8 +7991,8 @@
       "showId": "glengarry-glen-ross-2012",
       "file": "nytimes--ben-brantley.json",
       "score": 41,
-      "publishDate": "December 8, 2012",
-      "url": "https://www.nytimes.com/2012/12/10/theater/reviews/glengarry-glen-ross-by-david-mamet-with-al-pacino.html",
+      "publishDate": "December 9, 2012",
+      "url": "http://theater.nytimes.com/2012/12/10/theater/reviews/glengarry-glen-ross-by-david-mamet-with-al-pacino.html?ref=theater&_r=0",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -8073,6 +8073,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "glengarry-glen-ross-west-end-2026",
+      "file": "british-theatre--unknown.json",
+      "publishDate": null,
+      "url": "https://www.britishtheatre.com/fr/posts/glengarry-glen-ross-gets-all-female-revival-at-the-old-vic-plus-more-must-see-lo",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
         }
       ]
     },
