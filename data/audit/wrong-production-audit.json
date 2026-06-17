@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-17T11:39:18.120Z",
+  "timestamp": "2026-06-17T12:34:15.186Z",
   "stats": {
-    "totalReviews": 38496,
-    "alreadyFlagged": 16913,
+    "totalReviews": 38505,
+    "alreadyFlagged": 16914,
     "dateGuardCatches": 106,
-    "directorMismatch": 862,
+    "directorMismatch": 863,
     "tvFilmSignals": 1057,
     "londonSignals": 630,
     "offBroadwaySignals": 463,
     "yearMismatch": 82,
-    "noPublishDate": 3991
+    "noPublishDate": 3999
   },
   "findings": [
     {
@@ -8081,6 +8081,19 @@
       "file": "british-theatre--unknown.json",
       "publishDate": null,
       "url": "https://www.britishtheatre.com/fr/posts/glengarry-glen-ross-gets-all-female-revival-at-the-old-vic-plus-more-must-see-lo",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
+        }
+      ]
+    },
+    {
+      "showId": "glengarry-glen-ross-west-end-2026",
+      "file": "theatrely--juan-a-ramirez.json",
+      "publishDate": null,
+      "url": "https://www.theatrely.com/post/a-curiously-beta-glengarry-glen-ross-review",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
