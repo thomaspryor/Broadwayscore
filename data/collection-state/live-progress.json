@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-06-17T10:23:53.705Z",
+  "updatedAt": "2026-06-17T10:35:05.748Z",
   "processed": 406,
-  "failed": 427,
-  "successRate": "48.7%",
+  "failed": 437,
+  "successRate": "48.2%",
   "tierBreakdown": {
     "playwright": 177,
     "amp": 0,
@@ -10,17 +10,11 @@
     "directCookies": 0,
     "scrapingbee": 61,
     "brightdata": 61,
-    "archiveToday": 46,
+    "archiveToday": 47,
     "archive": 107
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-06-17T08:38:26.391Z",
-      "event": "bb-session",
-      "session": "88f898f1",
-      "url": "http://www.wsj.com/articles/bright-star-review-banjo-boondoggle-1458865800"
-    },
     {
       "t": "2026-06-17T08:38:26.874Z",
       "event": "bb-cookie-inject",
@@ -124,6 +118,12 @@
       "t": "2026-06-17T10:22:01.505Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-17T10:34:10.543Z",
+      "event": "bb-session",
+      "session": "6fe278ce",
+      "url": "https://therecs.co.uk/are-you-watching-royal-court/"
     }
   ]
 }
