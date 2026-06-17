@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-17T15:22:38.148Z",
+  "timestamp": "2026-06-17T18:09:11.995Z",
   "stats": {
-    "totalReviews": 38508,
-    "alreadyFlagged": 16953,
+    "totalReviews": 38506,
+    "alreadyFlagged": 16970,
     "dateGuardCatches": 106,
     "directorMismatch": 858,
-    "tvFilmSignals": 1056,
+    "tvFilmSignals": 1055,
     "londonSignals": 630,
     "offBroadwaySignals": 464,
     "yearMismatch": 81,
-    "noPublishDate": 3959
+    "noPublishDate": 3936
   },
   "findings": [
     {
@@ -1695,7 +1695,7 @@
       "file": "independent--louis-chilton.json",
       "score": 40,
       "publishDate": "2026-04-17",
-      "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -10204,6 +10204,7 @@
     {
       "showId": "im-almost-there-off-broadway-2026",
       "file": "exeunt-magazine--unknown.json",
+      "score": 87,
       "publishDate": "2026-06-17",
       "url": "https://exeuntnyc.com/reviews/review-im-almost-there-at-bam-fisher/",
       "findings": [
@@ -18673,20 +18674,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"richard eyre\" from skylight-1996"
-        }
-      ]
-    },
-    {
-      "showId": "small-off-broadway-2026",
-      "file": "guardian--arifa-akbar.json",
-      "score": 56,
-      "publishDate": null,
-      "url": "https://www.theguardian.com/stage/2025/oct/10/small-hotel-review-theatre-royal-bath",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -28641,8 +28628,8 @@
       "showId": "bloody-bloody-andrew-jackson-2010",
       "file": "time--richard-zoglin.json",
       "score": 25,
-      "publishDate": null,
-      "url": "https://content.time.com/time/specials/packages/article/0,28804,2023893_2023892_2025849,00.html#:~:text=Bloody%20Bloody%20Andrew%20Jackson,Richard%20ZoglinTuesday%2C%20Nov.%2009%2C%202010&amp;text=See%20TIME's%20fall%20entertainment%20preview,Email",
+      "publishDate": "2010-11-09",
+      "url": "https://content.time.com/time/specials/packages/article/0,28804,2023893_2023892_2025849,00.html",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
@@ -32341,6 +32328,7 @@
     {
       "showId": "im-almost-there-off-broadway-2026",
       "file": "theatermania--kenji-fujishima.json",
+      "score": 79,
       "publishDate": "2026-06-17",
       "url": "https://www.theatermania.com/news/review-todd-almond-embarks-on-an-odyssey-of-self-reckoning-in-im-almost-there_1842134/",
       "findings": [
