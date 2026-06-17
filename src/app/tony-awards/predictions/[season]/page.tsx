@@ -102,6 +102,10 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
   );
   const seasonRecord = tonySeasonForCeremonyYear(season.ceremonyYear);
   const ceremonyDate = seasonRecord?.ceremonyDate ?? null;
+  // Once the ceremony has happened, the forward-looking "predicted winners"
+  // CTA is moot — winners are known and the retrospective covers them.
+  // Evaluated at build time (static export), same as the May-23 gate below.
+  const ceremonyHasPassed = !!ceremonyDate && Date.now() >= new Date(`${ceremonyDate}T00:00:00Z`).getTime();
   const eligible = isCurrent
     ? getEligibleShows(allShows, season)
     : getEligibleShowsForPastSeason(allShows, season);
@@ -358,8 +362,10 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
           )}
         </div>
 
-        {/* Link to winners page — visible for current season near ceremony */}
-        {isCurrent && new Date() >= new Date('2026-05-23T00:00:00Z') && (
+        {/* Link to winners page — visible for current season in the run-up to
+            the ceremony only. After the ceremony the retrospective below
+            replaces this forward-looking CTA. */}
+        {isCurrent && !ceremonyHasPassed && new Date() >= new Date('2026-05-23T00:00:00Z') && (
           <div className="mb-4 px-4 py-3 rounded-xl border border-amber-500/20 bg-amber-500/5 text-sm flex items-center justify-between gap-3">
             <span className="text-gray-300">See our #1 pick for all 26 categories on one page.</span>
             <Link href="/tony-awards/winners-2026" className="text-amber-400 font-semibold whitespace-nowrap hover:text-amber-300 transition-colors">
