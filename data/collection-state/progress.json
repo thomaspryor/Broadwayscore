@@ -294,7 +294,9 @@
     "bright-star-2016/stu-on-broadway--stu-brown.json",
     "she-loves-me-2016/wsj--terry-teachout.json",
     "hughie-2016/act-three-the-reviews--doug-marino.json",
-    "hughie-2016/financialtimes--max-mcguinness.json"
+    "hughie-2016/financialtimes--max-mcguinness.json",
+    "glengarry-glen-ross-west-end-2026/independent--unknown.json",
+    "glengarry-glen-ross-west-end-2026/times-uk--unknown.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -631,7 +633,15 @@
     "bright-star-2016/drama-queen-nyc--jonathan-warman.json",
     "she-loves-me-2016/theater-life--eric-march.json",
     "blackbird-2016/wsj--terry-teachout.json",
-    "eclipsed-2016/nydailynews--joe-dziemianowicz.json"
+    "eclipsed-2016/nydailynews--joe-dziemianowicz.json",
+    "glengarry-glen-ross-west-end-2026/thestage--unknown.json",
+    "are-you-watching-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "are-you-watching-west-end-2026/the-recs--unknown.json",
+    "driftwood-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "driftwood-west-end-2026/artsdesk--unknown.json",
+    "driftwood-west-end-2026/standard--nick-curtis.json",
+    "driftwood-west-end-2026/times-uk--clive-davis.json",
+    "war-horse-west-end-2026/all-that-dazzles-uk--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -768,7 +778,9 @@
       "american-psycho-2016/nyt-theater--jonathan-mandell.json",
       "the-father-2016/financialtimes--max-mcguinness.json",
       "hughie-2016/act-three-the-reviews--doug-marino.json",
-      "hughie-2016/financialtimes--max-mcguinness.json"
+      "hughie-2016/financialtimes--max-mcguinness.json",
+      "glengarry-glen-ross-west-end-2026/independent--unknown.json",
+      "glengarry-glen-ross-west-end-2026/times-uk--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -920,7 +932,8 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json"
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+      "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -1029,7 +1042,7 @@
     ]
   },
   "startTime": "2026-06-17T21:21:03.989Z",
-  "lastProcessed": "hughie-2016/financialtimes--max-mcguinness.json",
+  "lastProcessed": "war-horse-west-end-2026/all-that-dazzles-uk--unknown.json",
   "log": [
     {
       "t": "2026-06-18T00:51:32.292Z",
@@ -1539,6 +1552,12 @@
       "t": "2026-06-18T07:07:38.739Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-18T07:42:17.885Z",
+      "event": "bb-session",
+      "session": "d3c922b7",
+      "url": "https://therecs.co.uk/are-you-watching-royal-court/"
     }
   ]
 }
