@@ -67,7 +67,16 @@
     "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
     "amaze-off-broadway-2026/timeout--adam-feldman.json",
     "return-of-the-godz-west-end-2026/londontheatre1--ben-ross.json",
-    "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json"
+    "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json",
+    "animal-wisdom-off-broadway-2022/nytg--christian-lewis.json",
+    "animal-wisdom-off-broadway-2022/timeout--raven-snook.json",
+    "animal-wisdom-off-broadway-2022/one-minute-critic--lindsay-b-davis.json",
+    "the-maids-off-broadway-2026/nytimes--roslyn-sulcas.json",
+    "the-maids-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "new-born-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+    "the-receptionist-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "hamlet-off-broadway-2026/dc-theater-arts--deb-miller.json",
+    "broken-snow-off-broadway-2026/culturesauce--thom-geier.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -133,7 +142,8 @@
     "as-you-like-it-globe-west-end-2026/london-box-office--nicky-allpress.json",
     "to-kill-a-mockingbird-west-end-2026/broadwayworld--michael-dale.json",
     "to-kill-a-mockingbird-west-end-2026/chicagotribune--chris-jones.json",
-    "spamalot-off-broadway-2026/nytimes--jesse-green.json"
+    "spamalot-off-broadway-2026/nytimes--jesse-green.json",
+    "spamalot-off-broadway-2026/vulture--jackson-mchenry.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -180,10 +190,21 @@
       "the-mousetrap-west-end-2021/standard--jessie-thompson.json",
       "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
       "return-of-the-godz-west-end-2026/londontheatre1--ben-ross.json",
-      "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json"
+      "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json",
+      "animal-wisdom-off-broadway-2022/nytg--christian-lewis.json",
+      "animal-wisdom-off-broadway-2022/timeout--raven-snook.json",
+      "animal-wisdom-off-broadway-2022/one-minute-critic--lindsay-b-davis.json",
+      "the-maids-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "new-born-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+      "the-receptionist-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "hamlet-off-broadway-2026/dc-theater-arts--deb-miller.json",
+      "broken-snow-off-broadway-2026/culturesauce--thom-geier.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-maids-off-broadway-2026/nytimes--roslyn-sulcas.json",
+      "the-maids-off-broadway-2026/nytimes--roslyn-sulcas.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -221,6 +242,18 @@
     ]
   },
   "startTime": "2026-06-18T22:39:22.801Z",
-  "lastProcessed": "spamalot-off-broadway-2026/nytimes--jesse-green.json",
-  "log": []
+  "lastProcessed": "broken-snow-off-broadway-2026/culturesauce--thom-geier.json",
+  "log": [
+    {
+      "t": "2026-06-18T23:10:42.792Z",
+      "event": "bb-session",
+      "session": "a7048e49",
+      "url": "https://www.nytimes.com/2026/05/26/theater/the-maids-play-nyc-genet-yerin-ha-kip"
+    },
+    {
+      "t": "2026-06-18T23:10:43.598Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }

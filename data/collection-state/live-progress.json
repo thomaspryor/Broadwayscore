@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-06-18T23:09:38.884Z",
-  "processed": 66,
-  "failed": 64,
-  "successRate": "50.8%",
+  "updatedAt": "2026-06-18T23:12:20.575Z",
+  "processed": 75,
+  "failed": 65,
+  "successRate": "53.6%",
   "tierBreakdown": {
-    "playwright": 43,
+    "playwright": 51,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 13,
     "brightdata": 6,
     "archiveToday": 0,
     "archive": 8
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-06-18T23:10:42.792Z",
+      "event": "bb-session",
+      "session": "a7048e49",
+      "url": "https://www.nytimes.com/2026/05/26/theater/the-maids-play-nyc-genet-yerin-ha-kip"
+    },
+    {
+      "t": "2026-06-18T23:10:43.598Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
