@@ -502,7 +502,9 @@
     "million-dollar-quartet-2010/theatermania--unknown.json",
     "the-addams-family-2010/newsday--linda-winer.json",
     "lend-me-a-tenor-2010/newsday--linda-winer.json",
-    "come-fly-away-2010/hollywood-reporter--frank-scheck.json"
+    "come-fly-away-2010/hollywood-reporter--frank-scheck.json",
+    "time-stands-still-2010/ew--melissa-rose-bernardo.json",
+    "time-stands-still-2010/newsday--linda-winer.json"
   ],
   "failed": [
     "sting-west-end-2026/ew--unknown.json",
@@ -841,7 +843,15 @@
     "red-2010/village-voice--michael-feingold.json",
     "red-2010/washpost--peter-marks.json",
     "come-fly-away-2010/staten-island-advance--michael-kuchwara.json",
-    "come-fly-away-2010/nytheatre--martin-denton.json"
+    "come-fly-away-2010/nytheatre--martin-denton.json",
+    "come-fly-away-2010/backstage--david-sheward.json",
+    "looped-2010/wsj--terry-teachout.json",
+    "next-fall-2010/backstage--david-sheward.json",
+    "a-behanding-in-spokane-2010/hollywood-reporter--frank-scheck.json",
+    "a-behanding-in-spokane-2010/nytheatre--martin-denton.json",
+    "a-behanding-in-spokane-2010/wsj--terry-teachout.json",
+    "time-stands-still-2010/wsj--terry-teachout.json",
+    "time-stands-still-2010/chicagotribune--chris-jones.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1443,11 +1453,13 @@
       "sondheim-on-sondheim-2010/wsj--terry-teachout.json",
       "the-addams-family-2010/newsday--linda-winer.json",
       "lend-me-a-tenor-2010/newsday--linda-winer.json",
-      "come-fly-away-2010/hollywood-reporter--frank-scheck.json"
+      "come-fly-away-2010/hollywood-reporter--frank-scheck.json",
+      "time-stands-still-2010/ew--melissa-rose-bernardo.json",
+      "time-stands-still-2010/newsday--linda-winer.json"
     ]
   },
   "startTime": "2026-06-17T21:21:03.989Z",
-  "lastProcessed": "come-fly-away-2010/nytheatre--martin-denton.json",
+  "lastProcessed": "time-stands-still-2010/chicagotribune--chris-jones.json",
   "log": [
     {
       "t": "2026-06-18T22:22:57.406Z",
@@ -2402,6 +2414,28 @@
     },
     {
       "t": "2026-06-18T20:44:42.366Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-06-18T20:46:49.763Z",
+      "event": "bb-session",
+      "session": "c0067f14",
+      "url": "https://www.wsj.com/articles/SB10001424052748704541004575110463158737430"
+    },
+    {
+      "t": "2026-06-18T20:46:50.742Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-18T20:48:52.863Z",
+      "event": "bb-session",
+      "session": "10550f95",
+      "url": "http://www.hollywoodreporter.com/hr/film-reviews/a-behanding-in-spokane-theater-"
+    },
+    {
+      "t": "2026-06-18T20:48:53.724Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }

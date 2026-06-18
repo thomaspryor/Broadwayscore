@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-06-18T20:46:05.980Z",
-  "processed": 504,
-  "failed": 917,
-  "successRate": "35.5%",
+  "updatedAt": "2026-06-18T20:55:11.549Z",
+  "processed": 506,
+  "failed": 925,
+  "successRate": "35.4%",
   "tierBreakdown": {
     "playwright": 207,
     "amp": 1,
@@ -11,32 +11,10 @@
     "scrapingbee": 93,
     "brightdata": 63,
     "archiveToday": 12,
-    "archive": 162
+    "archive": 164
   },
-  "browserbaseSessions": 28,
+  "browserbaseSessions": 30,
   "recentActivity": [
-    {
-      "t": "2026-06-18T20:26:41.647Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-06-18T20:27:51.036Z",
-      "event": "bb-session",
-      "session": "258212f4",
-      "url": "https://www.usatoday.com/story/life/theater/2010/04/26/promises-promises-broadwa"
-    },
-    {
-      "t": "2026-06-18T20:27:52.034Z",
-      "event": "bb-cookie-inject",
-      "domain": "usatoday.com"
-    },
-    {
-      "t": "2026-06-18T20:30:20.165Z",
-      "event": "bb-session",
-      "session": "02579da6",
-      "url": "https://www.washingtonpost.com/wp-dyn/content/article/2010/04/21/AR2010042105369"
-    },
     {
       "t": "2026-06-18T20:30:21.109Z",
       "event": "bb-cookie-inject",
@@ -122,6 +100,28 @@
     },
     {
       "t": "2026-06-18T20:44:42.366Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-06-18T20:46:49.763Z",
+      "event": "bb-session",
+      "session": "c0067f14",
+      "url": "https://www.wsj.com/articles/SB10001424052748704541004575110463158737430"
+    },
+    {
+      "t": "2026-06-18T20:46:50.742Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-18T20:48:52.863Z",
+      "event": "bb-session",
+      "session": "10550f95",
+      "url": "http://www.hollywoodreporter.com/hr/film-reviews/a-behanding-in-spokane-theater-"
+    },
+    {
+      "t": "2026-06-18T20:48:53.724Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
