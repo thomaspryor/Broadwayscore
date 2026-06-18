@@ -1,25 +1,129 @@
 {
-  "updatedAt": "2026-06-18T22:25:46.678Z",
-  "processed": 2,
-  "failed": 47,
-  "successRate": "4.1%",
+  "updatedAt": "2026-06-18T19:40:01.260Z",
+  "processed": 467,
+  "failed": 814,
+  "successRate": "36.5%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 199,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 0,
-    "brightdata": 1,
-    "archiveToday": 1,
-    "archive": 0
+    "scrapingbee": 92,
+    "brightdata": 62,
+    "archiveToday": 12,
+    "archive": 134
   },
   "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-06-18T22:22:57.406Z",
+      "t": "2026-06-18T08:25:52.141Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-18T08:26:29.994Z",
       "event": "bb-session",
-      "session": "52212dc2",
-      "url": "https://therecs.co.uk/are-you-watching-royal-court/"
+      "session": "9c23bdc7",
+      "url": "http://www.wsj.com/articles/blackbird-review-the-past-comes-back-to-haunt-you-14"
+    },
+    {
+      "t": "2026-06-18T08:26:31.013Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-18T08:59:26.035Z",
+      "event": "bb-session",
+      "session": "639057a1",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/203140641_Theater_review_"
+    },
+    {
+      "t": "2026-06-18T08:59:27.050Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-06-18T12:27:29.707Z",
+      "event": "bb-session",
+      "session": "30fa1dd2",
+      "url": "https://www.hollywoodreporter.com/tv/tv-reviews/vida-season-2-1213158/"
+    },
+    {
+      "t": "2026-06-18T12:27:30.120Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-06-18T12:27:45.703Z",
+      "event": "bb-session",
+      "session": "a6613541",
+      "url": "https://www.hollywoodreporter.com/tv/tv-reviews/vida-season-3-review-1291640/"
+    },
+    {
+      "t": "2026-06-18T12:27:46.142Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-06-18T13:19:25.426Z",
+      "event": "bb-session",
+      "session": "20c85e34",
+      "url": "http://www.wsj.com/articles/dames-at-sea-review-not-quite-clever-enough-14455602"
+    },
+    {
+      "t": "2026-06-18T13:19:25.839Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-18T13:21:07.641Z",
+      "event": "bb-session",
+      "session": "adf04dd9",
+      "url": "http://www.wsj.com/articles/airline-highway-review-a-young-playwrights-visit-to-"
+    },
+    {
+      "t": "2026-06-18T13:21:08.083Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-18T13:23:44.214Z",
+      "event": "bb-session",
+      "session": "78f5ce60",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/203140641_Theater_review_"
+    },
+    {
+      "t": "2026-06-18T13:23:44.638Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-06-18T13:31:54.625Z",
+      "event": "bb-session",
+      "session": "96a76ca7",
+      "url": "https://blogs.villagevoice.com/dailymusto/2012/11/jessica_chastai.php"
+    },
+    {
+      "t": "2026-06-18T13:39:00.800Z",
+      "event": "bb-session",
+      "session": "b8ac8646",
+      "url": "https://variety.com/2012/legit/reviews/clybourne-park-2-1117946930/"
+    },
+    {
+      "t": "2026-06-18T13:39:01.230Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-18T19:39:20.755Z",
+      "event": "bb-session",
+      "session": "3965252f",
+      "url": "https://www.northjersey.com/arts_entertainment/134889028_Romeo_and_Juliet__with_"
+    },
+    {
+      "t": "2026-06-18T19:39:21.763Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
