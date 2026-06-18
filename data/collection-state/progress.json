@@ -494,7 +494,11 @@
     "everyday-rapture-2010/newsday--linda-winer.json",
     "collected-stories-2010/ew--melissa-rose-bernardo.json",
     "collected-stories-2010/newsday--linda-winer.json",
-    "fences-2010/nytg--unknown.json"
+    "fences-2010/nytg--unknown.json",
+    "fences-2010/wsj--christopher-john-farley.json",
+    "promises-promises-2010/wsj--terry-teachout.json",
+    "sondheim-on-sondheim-2010/newsday--linda-winer.json",
+    "sondheim-on-sondheim-2010/wsj--terry-teachout.json"
   ],
   "failed": [
     "sting-west-end-2026/ew--unknown.json",
@@ -811,7 +815,13 @@
     "enron-2010/new-jersey-newsroom--michael-sommers.json",
     "enron-2010/newsday--linda-winer.json",
     "enron-2010/backstage--erik-haagensen.json",
-    "fences-2010/hollywood-reporter--frank-scheck.json"
+    "fences-2010/hollywood-reporter--frank-scheck.json",
+    "promises-promises-2010/usatoday--elysa-gardner.json",
+    "promises-promises-2010/toronto-star--richard-ouzounian.json",
+    "promises-promises-2010/village-voice--michael-fiengold.json",
+    "sondheim-on-sondheim-2010/washpost--peter-marks.json",
+    "la-cage-aux-folles-2010/wsj--terry-teachout.json",
+    "la-cage-aux-folles-2010/newsday--linda-winer.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1082,7 +1092,9 @@
       "data/review-texts/clybourne-park-2012/variety--unknown.json",
       "clybourne-park-2012/variety--unknown.json",
       "data/review-texts/godspell-2011/variety--david-rooney.json",
-      "data/review-texts/catch-me-if-you-can-2011/variety--marilyn-stasio.json"
+      "data/review-texts/catch-me-if-you-can-2011/variety--marilyn-stasio.json",
+      "data/review-texts/fences-2010/wsj--christopher-john-farley.json",
+      "fences-2010/wsj--christopher-john-farley.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1404,11 +1416,14 @@
       "everyday-rapture-2010/ew--thom-geier.json",
       "everyday-rapture-2010/newsday--linda-winer.json",
       "collected-stories-2010/ew--melissa-rose-bernardo.json",
-      "collected-stories-2010/newsday--linda-winer.json"
+      "collected-stories-2010/newsday--linda-winer.json",
+      "promises-promises-2010/wsj--terry-teachout.json",
+      "sondheim-on-sondheim-2010/newsday--linda-winer.json",
+      "sondheim-on-sondheim-2010/wsj--terry-teachout.json"
     ]
   },
   "startTime": "2026-06-17T21:21:03.989Z",
-  "lastProcessed": "fences-2010/hollywood-reporter--frank-scheck.json",
+  "lastProcessed": "la-cage-aux-folles-2010/newsday--linda-winer.json",
   "log": [
     {
       "t": "2026-06-18T22:22:57.406Z",
@@ -2249,6 +2264,50 @@
       "t": "2026-06-18T20:25:40.553Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-06-18T20:26:40.561Z",
+      "event": "bb-session",
+      "session": "98764c2e",
+      "url": "https://www.wsj.com/articles/BL-SEB-31268?gaa_at=eafs&gaa_n=AWEtsqcuKiIxNc3JV2LC"
+    },
+    {
+      "t": "2026-06-18T20:26:41.647Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-18T20:27:51.036Z",
+      "event": "bb-session",
+      "session": "258212f4",
+      "url": "https://www.usatoday.com/story/life/theater/2010/04/26/promises-promises-broadwa"
+    },
+    {
+      "t": "2026-06-18T20:27:52.034Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-06-18T20:30:20.165Z",
+      "event": "bb-session",
+      "session": "02579da6",
+      "url": "https://www.washingtonpost.com/wp-dyn/content/article/2010/04/21/AR2010042105369"
+    },
+    {
+      "t": "2026-06-18T20:30:21.109Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-06-18T20:30:32.748Z",
+      "event": "bb-session",
+      "session": "2501b42d",
+      "url": "https://www.wsj.com/articles/SB10001424052748704364004575518832280052044"
+    },
+    {
+      "t": "2026-06-18T20:30:33.670Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
