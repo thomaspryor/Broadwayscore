@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-18T11:32:54.544Z",
+  "generatedAt": "2026-06-18T14:11:39.853Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -113,23 +113,23 @@
       "slug": "sting-west-end",
       "thumbnail": "/images/shows/sting-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 51,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 5,
+      "reviewsNeeded": 1,
       "siteFileExists": true,
-      "total": 0,
-      "t1": 0,
+      "total": 2,
+      "t1": 2,
       "t2": 0,
       "t3": 0,
       "positive": 0,
-      "mixed": 0,
-      "negative": 0,
+      "mixed": 1,
+      "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/8 total",
-          "T1:0/3",
+          "2/8 total",
+          "T1:2/3",
           "T2:0/2",
           "hi-conf:0/6"
         ],
@@ -146,10 +146,6 @@
         "detail": "Not yet broadcast-ready"
       },
       "missingT1": [
-        {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
         {
           "name": "Observer",
           "isDualMarket": true
@@ -168,10 +164,6 @@
         },
         {
           "name": "The Independent",
-          "isDualMarket": true
-        },
-        {
-          "name": "Daily Mail",
           "isDualMarket": true
         },
         {
@@ -199,6 +191,20 @@
         {
           "name": "WhatsOnStage",
           "isDualMarket": true
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-06-18T14:11:39.853Z",
+          "rc": 2,
+          "s": 51,
+          "t1": 2,
+          "t2": 0,
+          "t3": 0,
+          "p": 0,
+          "m": 1,
+          "n": 1,
+          "bc": "waiting"
         }
       ]
     },
@@ -1012,10 +1018,6 @@
         },
         {
           "name": "The Telegraph",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Times (UK)",
           "isDualMarket": true
         },
         {

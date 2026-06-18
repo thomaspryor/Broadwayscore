@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-18T11:32:50.009Z",
+  "timestamp": "2026-06-18T14:11:35.285Z",
   "stats": {
-    "totalReviews": 38523,
-    "alreadyFlagged": 16989,
+    "totalReviews": 38534,
+    "alreadyFlagged": 16999,
     "dateGuardCatches": 105,
     "directorMismatch": 860,
-    "tvFilmSignals": 1056,
-    "londonSignals": 631,
+    "tvFilmSignals": 1057,
+    "londonSignals": 632,
     "offBroadwaySignals": 464,
     "yearMismatch": 81,
-    "noPublishDate": 3934
+    "noPublishDate": 3935
   },
   "findings": [
     {
@@ -6167,7 +6167,7 @@
     {
       "showId": "end-of-the-rainbow-west-end-2026",
       "file": "radio-times--joanna-magill.json",
-      "score": null,
+      "score": 84,
       "publishDate": "2026-05-22",
       "url": "https://www.radiotimes.com/going-out/going-out-reviews/end-of-the-rainbow-review-jinkx-monsoon/",
       "findings": [
@@ -8093,8 +8093,8 @@
       "showId": "glengarry-glen-ross-west-end-2026",
       "file": "independent--alice-saville.json",
       "score": 58,
-      "publishDate": "2026-06-17",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html",
+      "publishDate": "2026-06-18",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html?loginSuccessful=true",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -15599,6 +15599,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "one-man-two-guvnors-2012",
+      "file": "newsday--linda-winer.json",
+      "score": 63,
+      "publishDate": "April 18, 2012",
+      "url": "https://www.newsday.com/entertainment/theater/one-man-two-guvnors-is-pure-slapstick-1.3667079",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -32687,6 +32701,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "lbc--johnny-jenkins.json",
+      "score": 91,
+      "publishDate": "2026-04-08",
+      "url": "https://www.lbc.co.uk/article/inter-alia-review-best-plays-ever-seen-5HjdXRZ_2/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
