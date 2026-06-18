@@ -425,7 +425,9 @@
     "dames-at-sea-2015/wsj--terry-teachout.json",
     "the-gin-game-2015/nyt-theater--jonathan-mandell.json",
     "spring-awakening-2015/broadway-and-me--janice-c-simpson.json",
-    "airline-highway-2015/wsj--terry-teachout.json"
+    "airline-highway-2015/wsj--terry-teachout.json",
+    "vanya-and-sonia-and-masha-and-spike-2013/village-voice--michael-musto.json",
+    "ann-2013/newsday--matt-windman.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -1202,7 +1204,15 @@
     "the-winslow-boy-2013/bloomberg--jeremy-gerard.json",
     "the-winslow-boy-2013/bloomberg--unknown.json",
     "the-glass-menagerie-2013/bloomberg--jeremy-gerard.json",
-    "soul-doctor-2013/new-jersey-newsroom--michael-sommers.json"
+    "soul-doctor-2013/new-jersey-newsroom--michael-sommers.json",
+    "jekyll-and-hyde-2013/bloomberg--philip-boroff.json",
+    "orphans-2013/bloomberg--jeremy-gerard.json",
+    "the-nance-2013/northjerseycom--robert-feldberg.json",
+    "the-nance-2013/new-jersey-newsroom--michael-sommers.json",
+    "motown-the-musical-2013/new-jersey-newsroom--michael-sommers.json",
+    "matilda-the-musical-2013/village-voice--michael-musto.json",
+    "lucky-guy-2013/backstage--erik-haagensen.json",
+    "vanya-and-sonia-and-masha-and-spike-2013/new-jersey-newsroom--michael-sommers.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1595,7 +1605,8 @@
       "hands-on-a-hardbody-2013/newsday--linda-winer.json",
       "romeo-and-juliet-west-end-2026/theater-life--unknown.json",
       "hadestown-2019/theater-life--barry-gordin.json",
-      "public-charge-off-broadway-2026/theater-life--barry-gordin.json"
+      "public-charge-off-broadway-2026/theater-life--barry-gordin.json",
+      "ann-2013/newsday--matt-windman.json"
     ],
     "archiveToday": [
       "data/review-texts/hadestown-west-end-2024/shy-strange-manic--kariss-ainsworth.json",
@@ -1607,7 +1618,8 @@
       "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json",
       "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json",
       "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json",
-      "data/review-texts/end-of-the-rainbow-west-end-2026/north-west-end--unknown.json"
+      "data/review-texts/end-of-the-rainbow-west-end-2026/north-west-end--unknown.json",
+      "data/review-texts/the-nance-2013/northjerseycom--robert-feldberg.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -1725,11 +1737,12 @@
       "american-buffalo-2022/theater-life--david-sheward.json",
       "the-prom-2018/thestage--mark-shenton.json",
       "the-humans-2016/towleroad--naveen-kumar.json",
-      "the-gin-game-2015/nyt-theater--jonathan-mandell.json"
+      "the-gin-game-2015/nyt-theater--jonathan-mandell.json",
+      "vanya-and-sonia-and-masha-and-spike-2013/village-voice--michael-musto.json"
     ]
   },
   "startTime": "2026-06-17T21:21:03.989Z",
-  "lastProcessed": "soul-doctor-2013/new-jersey-newsroom--michael-sommers.json",
+  "lastProcessed": "ann-2013/newsday--matt-windman.json",
   "log": [
     {
       "t": "2026-06-18T00:51:32.292Z",
@@ -2360,6 +2373,17 @@
       "t": "2026-06-18T13:21:08.083Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-18T13:23:44.214Z",
+      "event": "bb-session",
+      "session": "78f5ce60",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/203140641_Theater_review_"
+    },
+    {
+      "t": "2026-06-18T13:23:44.638Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }

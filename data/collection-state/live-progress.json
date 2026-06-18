@@ -1,33 +1,22 @@
 {
-  "updatedAt": "2026-06-18T13:22:55.538Z",
-  "processed": 426,
-  "failed": 775,
-  "successRate": "35.5%",
+  "updatedAt": "2026-06-18T13:26:08.136Z",
+  "processed": 428,
+  "failed": 783,
+  "successRate": "35.3%",
   "tierBreakdown": {
     "playwright": 192,
     "amp": 0,
     "browserbase": 52,
     "directCookies": 0,
     "scrapingbee": 81,
-    "brightdata": 56,
-    "archiveToday": 10,
-    "archive": 116
+    "brightdata": 57,
+    "archiveToday": 11,
+    "archive": 117
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-06-18T08:20:11.527Z",
-      "event": "bb-session",
-      "session": "a8dd619b",
-      "url": "https://www.nytimes.com/2026/06/01/arts/andy-halliday-dead.html"
-    },
-    {
-      "t": "2026-06-18T14:31:47.960Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-18T14:34:04.853Z",
+      "t": "2026-06-18T08:22:44.083Z",
       "event": "bb-session",
       "session": "9b57e7c0",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-15906913/Emily-Ratajkowski-returns"
@@ -114,6 +103,17 @@
       "t": "2026-06-18T13:21:08.083Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-18T13:23:44.214Z",
+      "event": "bb-session",
+      "session": "78f5ce60",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/203140641_Theater_review_"
+    },
+    {
+      "t": "2026-06-18T13:23:44.638Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
