@@ -492,7 +492,9 @@
     "brief-encounter-2010/time--richard-zoglin.json",
     "everyday-rapture-2010/ew--thom-geier.json",
     "everyday-rapture-2010/newsday--linda-winer.json",
-    "collected-stories-2010/ew--melissa-rose-bernardo.json"
+    "collected-stories-2010/ew--melissa-rose-bernardo.json",
+    "collected-stories-2010/newsday--linda-winer.json",
+    "fences-2010/nytg--unknown.json"
   ],
   "failed": [
     "sting-west-end-2026/ew--unknown.json",
@@ -801,7 +803,15 @@
     "everyday-rapture-2010/hollywood-reporter--frank-scheck.json",
     "everyday-rapture-2010/nydailynews--joe-dziemianowicz.json",
     "everyday-rapture-2010/backstage--david-sheward.json",
-    "collected-stories-2010/wsj--terry-teachout.json"
+    "collected-stories-2010/wsj--terry-teachout.json",
+    "collected-stories-2010/ap--unknown.json",
+    "collected-stories-2010/backstage--david-sheward.json",
+    "enron-2010/wsj--terry-teachout.json",
+    "enron-2010/washpost--peter-marks.json",
+    "enron-2010/new-jersey-newsroom--michael-sommers.json",
+    "enron-2010/newsday--linda-winer.json",
+    "enron-2010/backstage--erik-haagensen.json",
+    "fences-2010/hollywood-reporter--frank-scheck.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1010,7 +1020,8 @@
       "the-importance-of-being-earnest-2011/theater-life--eric-march.json",
       "the-peewee-herman-show-2010/theatermania--unknown.json",
       "driving-miss-daisy-2010/ew--melissa-rose-bernardo.json",
-      "bloody-bloody-andrew-jackson-2010/theatermania--andy-propst.json"
+      "bloody-bloody-andrew-jackson-2010/theatermania--andy-propst.json",
+      "fences-2010/nytg--unknown.json"
     ],
     "amp": [
       "data/review-texts/lombardi-2010/hollywood-reporter--david-rooney.json"
@@ -1392,11 +1403,12 @@
       "brief-encounter-2010/time--richard-zoglin.json",
       "everyday-rapture-2010/ew--thom-geier.json",
       "everyday-rapture-2010/newsday--linda-winer.json",
-      "collected-stories-2010/ew--melissa-rose-bernardo.json"
+      "collected-stories-2010/ew--melissa-rose-bernardo.json",
+      "collected-stories-2010/newsday--linda-winer.json"
     ]
   },
   "startTime": "2026-06-17T21:21:03.989Z",
-  "lastProcessed": "collected-stories-2010/wsj--terry-teachout.json",
+  "lastProcessed": "fences-2010/hollywood-reporter--frank-scheck.json",
   "log": [
     {
       "t": "2026-06-18T22:22:57.406Z",
@@ -2204,6 +2216,39 @@
       "t": "2026-06-18T20:19:58.994Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-18T20:21:44.388Z",
+      "event": "bb-session",
+      "session": "9b1f0039",
+      "url": "https://www.wsj.com/articles/SB10001424052748704335904575214330917805684"
+    },
+    {
+      "t": "2026-06-18T20:21:45.512Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-18T20:24:11.328Z",
+      "event": "bb-session",
+      "session": "c645d7f3",
+      "url": "https://www.washingtonpost.com/wp-dyn/content/article/2010/04/27/AR2010042703647"
+    },
+    {
+      "t": "2026-06-18T20:24:12.240Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-06-18T20:25:39.529Z",
+      "event": "bb-session",
+      "session": "2bfe84c5",
+      "url": "https://www.hollywoodreporter.com/hr/film-reviews/fences-theater-review-10040864"
+    },
+    {
+      "t": "2026-06-18T20:25:40.553Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }

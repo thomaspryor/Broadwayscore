@@ -1,53 +1,20 @@
 {
-  "updatedAt": "2026-06-18T20:21:12.742Z",
-  "processed": 494,
-  "failed": 887,
-  "successRate": "35.8%",
+  "updatedAt": "2026-06-18T20:26:39.331Z",
+  "processed": 496,
+  "failed": 895,
+  "successRate": "35.7%",
   "tierBreakdown": {
-    "playwright": 205,
+    "playwright": 206,
     "amp": 1,
     "browserbase": 56,
     "directCookies": 0,
     "scrapingbee": 93,
     "brightdata": 63,
     "archiveToday": 12,
-    "archive": 155
+    "archive": 156
   },
-  "browserbaseSessions": 14,
+  "browserbaseSessions": 17,
   "recentActivity": [
-    {
-      "t": "2026-06-18T19:45:22.595Z",
-      "event": "bb-cookie-inject",
-      "domain": "timeout.com"
-    },
-    {
-      "t": "2026-06-18T19:52:07.741Z",
-      "event": "bb-session",
-      "session": "4fdf4f56",
-      "url": "https://variety.com/2011/legit/reviews/catch-me-if-you-can-1117945108/"
-    },
-    {
-      "t": "2026-06-18T19:52:08.786Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-18T19:57:33.168Z",
-      "event": "bb-session",
-      "session": "a2a5e7b4",
-      "url": "https://newyork.timeout.com/arts-culture/theater/529719/the-scottsboro-boys"
-    },
-    {
-      "t": "2026-06-18T19:57:34.219Z",
-      "event": "bb-cookie-inject",
-      "domain": "timeout.com"
-    },
-    {
-      "t": "2026-06-18T19:59:52.868Z",
-      "event": "bb-session",
-      "session": "c669607e",
-      "url": "https://www.hollywoodreporter.com/news/lombardi-broadway-review-34987/"
-    },
     {
       "t": "2026-06-18T19:59:53.835Z",
       "event": "bb-cookie-inject",
@@ -124,6 +91,39 @@
       "t": "2026-06-18T20:19:58.994Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-18T20:21:44.388Z",
+      "event": "bb-session",
+      "session": "9b1f0039",
+      "url": "https://www.wsj.com/articles/SB10001424052748704335904575214330917805684"
+    },
+    {
+      "t": "2026-06-18T20:21:45.512Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-18T20:24:11.328Z",
+      "event": "bb-session",
+      "session": "c645d7f3",
+      "url": "https://www.washingtonpost.com/wp-dyn/content/article/2010/04/27/AR2010042703647"
+    },
+    {
+      "t": "2026-06-18T20:24:12.240Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-06-18T20:25:39.529Z",
+      "event": "bb-session",
+      "session": "2bfe84c5",
+      "url": "https://www.hollywoodreporter.com/hr/film-reviews/fences-theater-review-10040864"
+    },
+    {
+      "t": "2026-06-18T20:25:40.553Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
