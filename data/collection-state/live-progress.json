@@ -1,33 +1,22 @@
 {
-  "updatedAt": "2026-06-18T07:37:01.682Z",
-  "processed": 215,
-  "failed": 251,
-  "successRate": "46.1%",
+  "updatedAt": "2026-06-18T07:41:24.514Z",
+  "processed": 223,
+  "failed": 253,
+  "successRate": "46.8%",
   "tierBreakdown": {
-    "playwright": 101,
+    "playwright": 105,
     "amp": 0,
-    "browserbase": 24,
+    "browserbase": 26,
     "directCookies": 0,
     "scrapingbee": 61,
     "brightdata": 20,
     "archiveToday": 6,
-    "archive": 52
+    "archive": 55
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-06-18T04:43:14.482Z",
-      "event": "bb-session",
-      "session": "e2f665c8",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
-    {
-      "t": "2026-06-18T09:59:24.236Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-18T10:00:18.611Z",
+      "t": "2026-06-18T04:44:52.790Z",
       "event": "bb-session",
       "session": "415313be",
       "url": "https://www.nytimes.com/2026/06/03/theater/caissie-levy-broadway-tonys-ragtime.h"
@@ -91,6 +80,17 @@
       "t": "2026-06-18T07:26:48.240Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-18T07:41:01.152Z",
+      "event": "bb-session",
+      "session": "3e14e84e",
+      "url": "http://www.wsj.com/articles/kiss-me-kate-review-so-not-in-love-11552609800"
+    },
+    {
+      "t": "2026-06-18T07:41:02.233Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

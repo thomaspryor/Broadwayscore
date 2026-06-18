@@ -214,7 +214,15 @@
     "sea-wall-a-life-2019/theatermania--adam-feldman.json",
     "frankie-and-johnny-in-the-clair-de-lune-2019/timeout--adam-feldman.json",
     "frankie-and-johnny-in-the-clair-de-lune-2019/uinterview--erik-meers.json",
-    "frankie-and-johnny-in-the-clair-de-lune-2019/broadway-and-me--janice-c-simpson.json"
+    "frankie-and-johnny-in-the-clair-de-lune-2019/broadway-and-me--janice-c-simpson.json",
+    "all-my-sons-2019/theater-life--barry-gordin.json",
+    "gary-a-sequel-to-titus-andronicus-2019/thestage--nicole-serratore.json",
+    "burn-this-2019/nyt-theater--unknown.json",
+    "burn-this-2019/theatermania--jesse-green.json",
+    "oklahoma-2019/front-row-center--tulis-mccall.json",
+    "oklahoma-2019/medium--christian-lewis.json",
+    "what-the-constitution-means-to-me-2019/front-row-center--stanford-friedman.json",
+    "kiss-me-kate-2019/wsj--terry-teachout.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -712,7 +720,9 @@
     "betrayal-2019/thestage--natasha-tripney.json",
     "betrayal-2019/independent--paul-taylor.json",
     "frankie-and-johnny-in-the-clair-de-lune-2019/thestage--naveen-kumar.json",
-    "frankie-and-johnny-in-the-clair-de-lune-2019/theater-news-online--jeremy-gerard.json"
+    "frankie-and-johnny-in-the-clair-de-lune-2019/theater-news-online--jeremy-gerard.json",
+    "ink-2019/theater-news-online--joe-dziemianowicz.json",
+    "ink-2019/ny1--ny1-roma-torre.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -817,7 +827,11 @@
       "linda-vista-2019/nyt-theater--jonathan-mandell.json",
       "the-height-of-the-storm-2019/nyt-theater--jonathan-mandell.json",
       "sea-wall-a-life-2019/theatermania--adam-feldman.json",
-      "frankie-and-johnny-in-the-clair-de-lune-2019/broadway-and-me--janice-c-simpson.json"
+      "frankie-and-johnny-in-the-clair-de-lune-2019/broadway-and-me--janice-c-simpson.json",
+      "all-my-sons-2019/theater-life--barry-gordin.json",
+      "burn-this-2019/nyt-theater--unknown.json",
+      "burn-this-2019/theatermania--jesse-green.json",
+      "oklahoma-2019/medium--christian-lewis.json"
     ],
     "amp": [],
     "browserbase": [
@@ -844,7 +858,9 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
       "data/review-texts/maybe-happy-ending-2024/variety--unknown.json",
-      "maybe-happy-ending-2024/variety--unknown.json"
+      "maybe-happy-ending-2024/variety--unknown.json",
+      "data/review-texts/kiss-me-kate-2019/wsj--terry-teachout.json",
+      "kiss-me-kate-2019/wsj--terry-teachout.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1011,11 +1027,14 @@
       "plaza-suite-2022/broadway-and-me--janice-c-simpson.json",
       "small-off-broadway-2026/culturesauce--thom-geier.json",
       "the-sound-inside-2019/theater-scene--joel-benjamin.json",
-      "frankie-and-johnny-in-the-clair-de-lune-2019/uinterview--erik-meers.json"
+      "frankie-and-johnny-in-the-clair-de-lune-2019/uinterview--erik-meers.json",
+      "gary-a-sequel-to-titus-andronicus-2019/thestage--nicole-serratore.json",
+      "oklahoma-2019/front-row-center--tulis-mccall.json",
+      "what-the-constitution-means-to-me-2019/front-row-center--stanford-friedman.json"
     ]
   },
   "startTime": "2026-06-17T21:21:03.989Z",
-  "lastProcessed": "frankie-and-johnny-in-the-clair-de-lune-2019/theater-news-online--jeremy-gerard.json",
+  "lastProcessed": "kiss-me-kate-2019/wsj--terry-teachout.json",
   "log": [
     {
       "t": "2026-06-18T00:51:32.292Z",
@@ -1481,6 +1500,17 @@
       "t": "2026-06-18T07:26:48.240Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-18T07:41:01.152Z",
+      "event": "bb-session",
+      "session": "3e14e84e",
+      "url": "http://www.wsj.com/articles/kiss-me-kate-review-so-not-in-love-11552609800"
+    },
+    {
+      "t": "2026-06-18T07:41:02.233Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
