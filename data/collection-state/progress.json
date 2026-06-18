@@ -423,7 +423,9 @@
     "fiddler-on-the-roof-2015/broadway-and-me--janice-c-simpson.json",
     "the-color-purple-2015/broadway-and-me--janice-c-simpson.json",
     "dames-at-sea-2015/wsj--terry-teachout.json",
-    "the-gin-game-2015/nyt-theater--jonathan-mandell.json"
+    "the-gin-game-2015/nyt-theater--jonathan-mandell.json",
+    "spring-awakening-2015/broadway-and-me--janice-c-simpson.json",
+    "airline-highway-2015/wsj--terry-teachout.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -1182,7 +1184,15 @@
     "eclipsed-2016/nydailynews--joe-dziemianowicz.json",
     "noises-off-2016/thestage--mark-shenton.json",
     "a-view-from-the-bridge-2015/financialtimes--sarah-hemming.json",
-    "the-gin-game-2015/vulture--jesse-green.json"
+    "the-gin-game-2015/vulture--jesse-green.json",
+    "the-gin-game-2015/ap--mark-kennedy.json",
+    "something-rotten-2015/ap--mark-kennedy.json",
+    "doctor-zhivago-2015/timeout--adam-feldman.json",
+    "it-shoulda-been-you-2015/hollywood-reporter--david-rooney.json",
+    "an-american-in-paris-2015/off-script-with-dan-dwyer--dan-dwyer.json",
+    "on-the-twentieth-century-2015/nytg--tulis-mccall.json",
+    "constellations-2015/ap--jennifer-farrar.json",
+    "constellations-2015/financialtimes--brendan-lemon.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1377,7 +1387,8 @@
       "les-liaisons-dangereuses-2016/thestage--mark-shenton.json",
       "tuck-everlasting-2016/thestage--mark-shenton.json",
       "fiddler-on-the-roof-2015/broadway-and-me--janice-c-simpson.json",
-      "the-color-purple-2015/broadway-and-me--janice-c-simpson.json"
+      "the-color-purple-2015/broadway-and-me--janice-c-simpson.json",
+      "spring-awakening-2015/broadway-and-me--janice-c-simpson.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1430,7 +1441,9 @@
       "data/review-texts/vida-off-broadway-2026/hollywood-reporter--inkoo-kang.json",
       "vida-off-broadway-2026/hollywood-reporter--inkoo-kang.json",
       "data/review-texts/dames-at-sea-2015/wsj--terry-teachout.json",
-      "dames-at-sea-2015/wsj--terry-teachout.json"
+      "dames-at-sea-2015/wsj--terry-teachout.json",
+      "data/review-texts/airline-highway-2015/wsj--terry-teachout.json",
+      "airline-highway-2015/wsj--terry-teachout.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1706,7 +1719,7 @@
     ]
   },
   "startTime": "2026-06-17T21:21:03.989Z",
-  "lastProcessed": "the-gin-game-2015/vulture--jesse-green.json",
+  "lastProcessed": "constellations-2015/financialtimes--brendan-lemon.json",
   "log": [
     {
       "t": "2026-06-18T00:51:32.292Z",
@@ -2324,6 +2337,17 @@
     },
     {
       "t": "2026-06-18T13:19:25.839Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-18T13:21:07.641Z",
+      "event": "bb-session",
+      "session": "adf04dd9",
+      "url": "http://www.wsj.com/articles/airline-highway-review-a-young-playwrights-visit-to-"
+    },
+    {
+      "t": "2026-06-18T13:21:08.083Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
