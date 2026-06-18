@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-06-18T20:39:26.132Z",
-  "processed": 502,
-  "failed": 909,
-  "successRate": "35.6%",
+  "updatedAt": "2026-06-18T20:46:05.980Z",
+  "processed": 504,
+  "failed": 917,
+  "successRate": "35.5%",
   "tierBreakdown": {
     "playwright": 207,
     "amp": 1,
@@ -11,49 +11,10 @@
     "scrapingbee": 93,
     "brightdata": 63,
     "archiveToday": 12,
-    "archive": 160
+    "archive": 162
   },
-  "browserbaseSessions": 24,
+  "browserbaseSessions": 28,
   "recentActivity": [
-    {
-      "t": "2026-06-18T20:21:44.388Z",
-      "event": "bb-session",
-      "session": "9b1f0039",
-      "url": "https://www.wsj.com/articles/SB10001424052748704335904575214330917805684"
-    },
-    {
-      "t": "2026-06-18T20:21:45.512Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-06-18T20:24:11.328Z",
-      "event": "bb-session",
-      "session": "c645d7f3",
-      "url": "https://www.washingtonpost.com/wp-dyn/content/article/2010/04/27/AR2010042703647"
-    },
-    {
-      "t": "2026-06-18T20:24:12.240Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
-    {
-      "t": "2026-06-18T20:25:39.529Z",
-      "event": "bb-session",
-      "session": "2bfe84c5",
-      "url": "https://www.hollywoodreporter.com/hr/film-reviews/fences-theater-review-10040864"
-    },
-    {
-      "t": "2026-06-18T20:25:40.553Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-06-18T20:26:40.561Z",
-      "event": "bb-session",
-      "session": "98764c2e",
-      "url": "https://www.wsj.com/articles/BL-SEB-31268?gaa_at=eafs&gaa_n=AWEtsqcuKiIxNc3JV2LC"
-    },
     {
       "t": "2026-06-18T20:26:41.647Z",
       "event": "bb-cookie-inject",
@@ -124,6 +85,45 @@
       "t": "2026-06-18T20:38:59.893Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-06-18T20:39:49.076Z",
+      "event": "bb-session",
+      "session": "23c58954",
+      "url": "https://www.wsj.com/articles/SB10001424052702303960604575157744105208812?gaa_at="
+    },
+    {
+      "t": "2026-06-18T20:39:50.000Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-18T20:42:49.541Z",
+      "event": "bb-session",
+      "session": "5465f42d",
+      "url": "https://www.talkinbroadway.com/world/Red.html"
+    },
+    {
+      "t": "2026-06-18T20:42:50.553Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-18T20:44:21.637Z",
+      "event": "bb-session",
+      "session": "ab696a9b",
+      "url": "http://www.silive.com/entertainment/arts/index.ssf/2010/03/broadway_review_come_"
+    },
+    {
+      "t": "2026-06-18T20:44:41.549Z",
+      "event": "bb-session",
+      "session": "effe1d13",
+      "url": "http://www.hollywoodreporter.com/hr/film-reviews/come-fly-away-theater-review-10"
+    },
+    {
+      "t": "2026-06-18T20:44:42.366Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }

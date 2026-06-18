@@ -500,7 +500,9 @@
     "sondheim-on-sondheim-2010/newsday--linda-winer.json",
     "sondheim-on-sondheim-2010/wsj--terry-teachout.json",
     "million-dollar-quartet-2010/theatermania--unknown.json",
-    "the-addams-family-2010/newsday--linda-winer.json"
+    "the-addams-family-2010/newsday--linda-winer.json",
+    "lend-me-a-tenor-2010/newsday--linda-winer.json",
+    "come-fly-away-2010/hollywood-reporter--frank-scheck.json"
   ],
   "failed": [
     "sting-west-end-2026/ew--unknown.json",
@@ -831,7 +833,15 @@
     "the-addams-family-2010/wsj--terry-teachout.json",
     "the-addams-family-2010/village-voice--michael-feingold.json",
     "the-addams-family-2010/washpost--peter-marks.json",
-    "the-addams-family-2010/backstage--erik-haagensen.json"
+    "the-addams-family-2010/backstage--erik-haagensen.json",
+    "red-2010/wsj--terry-teachout.json",
+    "red-2010/backstage--erik-haagensen.json",
+    "red-2010/on-off-broadway--matt-windman.json",
+    "red-2010/talkinbroadway--matthew-murray.json",
+    "red-2010/village-voice--michael-feingold.json",
+    "red-2010/washpost--peter-marks.json",
+    "come-fly-away-2010/staten-island-advance--michael-kuchwara.json",
+    "come-fly-away-2010/nytheatre--martin-denton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1431,11 +1441,13 @@
       "promises-promises-2010/wsj--terry-teachout.json",
       "sondheim-on-sondheim-2010/newsday--linda-winer.json",
       "sondheim-on-sondheim-2010/wsj--terry-teachout.json",
-      "the-addams-family-2010/newsday--linda-winer.json"
+      "the-addams-family-2010/newsday--linda-winer.json",
+      "lend-me-a-tenor-2010/newsday--linda-winer.json",
+      "come-fly-away-2010/hollywood-reporter--frank-scheck.json"
     ]
   },
   "startTime": "2026-06-17T21:21:03.989Z",
-  "lastProcessed": "the-addams-family-2010/backstage--erik-haagensen.json",
+  "lastProcessed": "come-fly-away-2010/nytheatre--martin-denton.json",
   "log": [
     {
       "t": "2026-06-18T22:22:57.406Z",
@@ -2353,6 +2365,45 @@
       "t": "2026-06-18T20:38:59.893Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-06-18T20:39:49.076Z",
+      "event": "bb-session",
+      "session": "23c58954",
+      "url": "https://www.wsj.com/articles/SB10001424052702303960604575157744105208812?gaa_at="
+    },
+    {
+      "t": "2026-06-18T20:39:50.000Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-18T20:42:49.541Z",
+      "event": "bb-session",
+      "session": "5465f42d",
+      "url": "https://www.talkinbroadway.com/world/Red.html"
+    },
+    {
+      "t": "2026-06-18T20:42:50.553Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-18T20:44:21.637Z",
+      "event": "bb-session",
+      "session": "ab696a9b",
+      "url": "http://www.silive.com/entertainment/arts/index.ssf/2010/03/broadway_review_come_"
+    },
+    {
+      "t": "2026-06-18T20:44:41.549Z",
+      "event": "bb-session",
+      "session": "effe1d13",
+      "url": "http://www.hollywoodreporter.com/hr/film-reviews/come-fly-away-theater-review-10"
+    },
+    {
+      "t": "2026-06-18T20:44:42.366Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
