@@ -447,7 +447,13 @@
     "bring-it-on-the-musical-2012/timeout--adam-feldman.json",
     "fela-2012/newsday--linda-winer.json",
     "leap-of-faith-2012/timeout--david-cote.json",
-    "the-columnist-2012/amny--matt-windman.json"
+    "the-columnist-2012/amny--matt-windman.json",
+    "the-lyons-2012/theatermania--dan-bacalzo.json",
+    "clybourne-park-2012/variety--unknown.json",
+    "clybourne-park-2012/newsday--linda-winer.json",
+    "clybourne-park-2012/theatermania--dan-bacalzo.json",
+    "clybourne-park-2012/theatermania--unknown.json",
+    "clybourne-park-2012/philadelphia-inquirer--unknown.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -1242,7 +1248,11 @@
     "leap-of-faith-2012/variety--marilyn-stasio.json",
     "dont-dress-for-dinner-2012/backstage--david-sheward.json",
     "leap-of-faith-2012/backstage--erik-haagensen.json",
-    "the-columnist-2012/backstage--erik-haagensen.json"
+    "the-columnist-2012/backstage--erik-haagensen.json",
+    "ghost-the-musical-2012/variety--steven-suskin.json",
+    "ghost-the-musical-2012/talkinbroadway--matthew-murray.json",
+    "the-lyons-2012/backstage--david-sheward.json",
+    "clybourne-park-2012/broadwayworld--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1439,7 +1449,10 @@
       "fiddler-on-the-roof-2015/broadway-and-me--janice-c-simpson.json",
       "the-color-purple-2015/broadway-and-me--janice-c-simpson.json",
       "spring-awakening-2015/broadway-and-me--janice-c-simpson.json",
-      "golden-boy-2012/ew--adam-markovitz.json"
+      "golden-boy-2012/ew--adam-markovitz.json",
+      "the-lyons-2012/theatermania--dan-bacalzo.json",
+      "clybourne-park-2012/theatermania--dan-bacalzo.json",
+      "clybourne-park-2012/theatermania--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1494,7 +1507,9 @@
       "data/review-texts/dames-at-sea-2015/wsj--terry-teachout.json",
       "dames-at-sea-2015/wsj--terry-teachout.json",
       "data/review-texts/airline-highway-2015/wsj--terry-teachout.json",
-      "airline-highway-2015/wsj--terry-teachout.json"
+      "airline-highway-2015/wsj--terry-teachout.json",
+      "data/review-texts/clybourne-park-2012/variety--unknown.json",
+      "clybourne-park-2012/variety--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1645,7 +1660,8 @@
       "ann-2013/newsday--matt-windman.json",
       "cat-on-a-hot-tin-roof-2013/boston-globe--don-aucoin.json",
       "cyrano-de-bergerac-2012/newsday--matt-windman.json",
-      "cyrano-de-bergerac-2012/newsday--unknown.json"
+      "cyrano-de-bergerac-2012/newsday--unknown.json",
+      "clybourne-park-2012/philadelphia-inquirer--unknown.json"
     ],
     "archiveToday": [
       "data/review-texts/hadestown-west-end-2024/shy-strange-manic--kariss-ainsworth.json",
@@ -1789,11 +1805,12 @@
       "chaplin-2012/timeout--david-cote.json",
       "bring-it-on-the-musical-2012/timeout--adam-feldman.json",
       "fela-2012/newsday--linda-winer.json",
-      "the-columnist-2012/amny--matt-windman.json"
+      "the-columnist-2012/amny--matt-windman.json",
+      "clybourne-park-2012/newsday--linda-winer.json"
     ]
   },
   "startTime": "2026-06-17T21:21:03.989Z",
-  "lastProcessed": "the-columnist-2012/backstage--erik-haagensen.json",
+  "lastProcessed": "clybourne-park-2012/philadelphia-inquirer--unknown.json",
   "log": [
     {
       "t": "2026-06-18T00:51:32.292Z",
@@ -2441,6 +2458,17 @@
       "event": "bb-session",
       "session": "96a76ca7",
       "url": "https://blogs.villagevoice.com/dailymusto/2012/11/jessica_chastai.php"
+    },
+    {
+      "t": "2026-06-18T13:39:00.800Z",
+      "event": "bb-session",
+      "session": "b8ac8646",
+      "url": "https://variety.com/2012/legit/reviews/clybourne-park-2-1117946930/"
+    },
+    {
+      "t": "2026-06-18T13:39:01.230Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
