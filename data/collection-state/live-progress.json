@@ -1,24 +1,35 @@
 {
-  "updatedAt": "2026-06-18T08:18:46.471Z",
-  "processed": 293,
-  "failed": 303,
-  "successRate": "49.2%",
+  "updatedAt": "2026-06-18T08:21:09.857Z",
+  "processed": 302,
+  "failed": 304,
+  "successRate": "49.8%",
   "tierBreakdown": {
-    "playwright": 140,
+    "playwright": 143,
     "amp": 0,
-    "browserbase": 32,
+    "browserbase": 36,
     "directCookies": 0,
     "scrapingbee": 74,
-    "brightdata": 27,
+    "brightdata": 31,
     "archiveToday": 6,
     "archive": 67
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 8,
   "recentActivity": [
     {
-      "t": "2026-06-18T05:20:23.666Z",
+      "t": "2026-06-18T05:21:42.827Z",
       "event": "bb-session",
-      "session": "37e4cba3",
+      "session": "57cc0651",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-18T05:21:43.246Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-18T05:22:45.495Z",
+      "event": "bb-session",
+      "session": "534128e4",
       "url": "https://www.nytimes.com/2026/06/01/arts/andy-halliday-dead.html"
     },
     {
@@ -89,6 +100,28 @@
     },
     {
       "t": "2026-06-18T08:16:58.158Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-18T08:18:47.519Z",
+      "event": "bb-session",
+      "session": "3905c682",
+      "url": "http://www.wsj.com/articles/heisenberg-review-masculine-wish-fulfillment-on-stag"
+    },
+    {
+      "t": "2026-06-18T08:18:48.735Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-18T08:20:11.527Z",
+      "event": "bb-session",
+      "session": "a6683a36",
+      "url": "http://www.wsj.com/articles/holiday-inn-the-new-irving-berlin-musical-review-147"
+    },
+    {
+      "t": "2026-06-18T08:20:12.559Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
