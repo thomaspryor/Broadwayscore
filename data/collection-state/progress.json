@@ -972,7 +972,17 @@
     "the-nance-2013/new-jersey-newsroom--michael-sommers.json",
     "motown-the-musical-2013/new-jersey-newsroom--michael-sommers.json",
     "matilda-the-musical-2013/village-voice--michael-musto.json",
-    "lucky-guy-2013/backstage--erik-haagensen.json"
+    "lucky-guy-2013/backstage--erik-haagensen.json",
+    "vida-off-broadway-2026/hollywood-reporter--daniel-fienberg.json",
+    "vida-off-broadway-2026/hollywood-reporter--inkoo-kang.json",
+    "romeo-and-juliet-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+    "are-you-now-or-have-you-ever-been-off-broadway-2026/nytimes--laura-collins-hughes.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1186,7 +1196,12 @@
       "data/review-texts/she-loves-me-2016/wsj--terry-teachout.json",
       "she-loves-me-2016/wsj--terry-teachout.json",
       "data/review-texts/blackbird-2016/wsj--terry-teachout.json",
-      "blackbird-2016/wsj--terry-teachout.json"
+      "blackbird-2016/wsj--terry-teachout.json",
+      "data/review-texts/vida-off-broadway-2026/hollywood-reporter--daniel-fienberg.json",
+      "data/review-texts/vida-off-broadway-2026/hollywood-reporter--inkoo-kang.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1439,7 +1454,7 @@
     ]
   },
   "startTime": "2026-06-17T21:21:03.989Z",
-  "lastProcessed": "hands-on-a-hardbody-2013/amny--matt-windman.json",
+  "lastProcessed": "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
   "log": [
     {
       "t": "2026-06-18T00:51:32.292Z",
@@ -2026,6 +2041,61 @@
       "t": "2026-06-18T08:59:27.050Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-06-18T12:16:20.170Z",
+      "event": "bb-session",
+      "session": "a4e38758",
+      "url": "https://www.hollywoodreporter.com/tv/tv-reviews/vida-season-2-1213158/"
+    },
+    {
+      "t": "2026-06-18T12:16:21.156Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-06-18T12:16:33.802Z",
+      "event": "bb-session",
+      "session": "486cc453",
+      "url": "https://www.hollywoodreporter.com/tv/tv-reviews/vida-season-3-review-1291640/"
+    },
+    {
+      "t": "2026-06-18T12:16:34.694Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-06-18T12:17:17.403Z",
+      "event": "bb-session",
+      "session": "18fc2a08",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-18T12:17:18.299Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-18T12:17:49.248Z",
+      "event": "bb-session",
+      "session": "af7891b9",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-18T12:17:50.908Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-18T12:18:03.745Z",
+      "event": "bb-session",
+      "session": "798c377a",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-18T12:18:04.599Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
