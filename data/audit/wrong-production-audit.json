@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-18T05:39:16.165Z",
+  "timestamp": "2026-06-18T10:18:18.482Z",
   "stats": {
-    "totalReviews": 38505,
-    "alreadyFlagged": 16979,
+    "totalReviews": 38519,
+    "alreadyFlagged": 16985,
     "dateGuardCatches": 105,
-    "directorMismatch": 859,
+    "directorMismatch": 860,
     "tvFilmSignals": 1056,
-    "londonSignals": 630,
+    "londonSignals": 631,
     "offBroadwaySignals": 464,
     "yearMismatch": 81,
-    "noPublishDate": 3927
+    "noPublishDate": 3935
   },
   "findings": [
     {
@@ -1945,7 +1945,7 @@
     {
       "showId": "beetlejuice-west-end-2026",
       "file": "guardian-uk--unknown.json",
-      "score": null,
+      "score": 78,
       "publishDate": "2026-05-28",
       "url": "https://www.inkl.com/news/beetlejuice-review-tim-burtons-super-creep-reanimated-as-a-shock-jock-in-ghoulish-musical",
       "findings": [
@@ -6165,6 +6165,25 @@
       ]
     },
     {
+      "showId": "end-of-the-rainbow-west-end-2026",
+      "file": "radio-times--joanna-magill.json",
+      "score": null,
+      "publishDate": "2026-05-22",
+      "url": "https://www.radiotimes.com/going-out/going-out-reviews/end-of-the-rainbow-review-jinkx-monsoon/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 7\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "english-2025",
       "file": "variety--christian-lewis.json",
       "score": 95,
@@ -8071,6 +8090,25 @@
       ]
     },
     {
+      "showId": "glengarry-glen-ross-west-end-2026",
+      "file": "independent--alice-saville.json",
+      "score": 58,
+      "publishDate": "2026-06-17",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
       "showId": "going-bacharach-the-songs-of-an-icon-off-broadway-2026",
       "file": "times-square-chronicles--suzanna-bowling.json",
       "score": 77,
@@ -9060,20 +9098,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"apple tv\""
-        }
-      ]
-    },
-    {
-      "showId": "hand-to-god-2015",
-      "file": "newsday--linda-winer.json",
-      "score": 78,
-      "publishDate": "2015-04-07",
-      "url": "http://www.newsday.com/entertainment/theater/hand-to-god-review-a-devilish-sock-puppet-and-sex-1.10206908",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -32663,20 +32687,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "inter-alia-west-end-2026",
-      "file": "lbc--johnny-jenkins.json",
-      "score": 91,
-      "publishDate": "2026-04-08",
-      "url": "https://www.lbc.co.uk/article/inter-alia-review-best-plays-ever-seen-5HjdXRZ_2/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
