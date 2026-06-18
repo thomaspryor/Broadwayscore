@@ -475,7 +475,10 @@
     "the-house-of-blue-leaves-2011/newsday--linda-winer.json",
     "high-2011/timeout--david-cote.json",
     "good-people-2011/newsday--linda-winer.json",
-    "good-people-2011/theatermania--david-rooney.json"
+    "good-people-2011/theatermania--david-rooney.json",
+    "the-importance-of-being-earnest-2011/theater-life--eric-march.json",
+    "the-peewee-herman-show-2010/theatermania--unknown.json",
+    "women-on-the-verge-of-a-nervous-breakdown-2010/amny--matt-windman.json"
   ],
   "failed": [
     "sting-west-end-2026/ew--unknown.json",
@@ -751,7 +754,14 @@
     "that-championship-season-2011/newsday--linda-winer.json",
     "that-championship-season-2011/ap--jocelyn-noveck.json",
     "good-people-2011/backstage--erik-haagensen.json",
-    "the-importance-of-being-earnest-2011/nydailynews--joe-dziemianowicz.json"
+    "the-importance-of-being-earnest-2011/nydailynews--joe-dziemianowicz.json",
+    "the-importance-of-being-earnest-2011/bloomberg--jeremy-gerard.json",
+    "a-free-man-of-color-2010/backstage--erik-haagensen.json",
+    "the-merchant-of-venice-2010/variety--charles-isherwood.json",
+    "women-on-the-verge-of-a-nervous-breakdown-2010/variety--charles-isherwood.json",
+    "women-on-the-verge-of-a-nervous-breakdown-2010/backstage--erik-haagensen.json",
+    "the-scottsboro-boys-2010/timeout--david-cote.json",
+    "the-scottsboro-boys-2010/backstage--erik-haagensen.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -956,7 +966,9 @@
       "death-of-a-salesman-2012/theatermania--charles-isherwood.json",
       "hadestown-west-end-2024/thereviewshub--the-reviews-hub.json",
       "master-class-2011/theatermania--david-finkle.json",
-      "good-people-2011/theatermania--david-rooney.json"
+      "good-people-2011/theatermania--david-rooney.json",
+      "the-importance-of-being-earnest-2011/theater-life--eric-march.json",
+      "the-peewee-herman-show-2010/theatermania--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1260,11 +1272,12 @@
       "the-normal-heart-2011/newsday--linda-winer.json",
       "the-house-of-blue-leaves-2011/newsday--linda-winer.json",
       "high-2011/timeout--david-cote.json",
-      "good-people-2011/newsday--linda-winer.json"
+      "good-people-2011/newsday--linda-winer.json",
+      "women-on-the-verge-of-a-nervous-breakdown-2010/amny--matt-windman.json"
     ]
   },
   "startTime": "2026-06-17T21:21:03.989Z",
-  "lastProcessed": "the-importance-of-being-earnest-2011/nydailynews--joe-dziemianowicz.json",
+  "lastProcessed": "the-scottsboro-boys-2010/backstage--erik-haagensen.json",
   "log": [
     {
       "t": "2026-06-18T22:22:57.406Z",
@@ -1978,6 +1991,17 @@
       "t": "2026-06-18T19:52:08.786Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-18T19:57:33.168Z",
+      "event": "bb-session",
+      "session": "a2a5e7b4",
+      "url": "https://newyork.timeout.com/arts-culture/theater/529719/the-scottsboro-boys"
+    },
+    {
+      "t": "2026-06-18T19:57:34.219Z",
+      "event": "bb-cookie-inject",
+      "domain": "timeout.com"
     }
   ]
 }

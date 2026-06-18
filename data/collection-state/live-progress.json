@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-18T19:55:50.810Z",
-  "processed": 477,
-  "failed": 854,
+  "updatedAt": "2026-06-18T19:57:51.253Z",
+  "processed": 480,
+  "failed": 861,
   "successRate": "35.8%",
   "tierBreakdown": {
-    "playwright": 201,
+    "playwright": 203,
     "amp": 0,
     "browserbase": 56,
     "directCookies": 0,
     "scrapingbee": 93,
     "brightdata": 62,
     "archiveToday": 12,
-    "archive": 141
+    "archive": 142
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-06-18T12:27:46.142Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-06-18T13:19:25.426Z",
-      "event": "bb-session",
-      "session": "20c85e34",
-      "url": "http://www.wsj.com/articles/dames-at-sea-review-not-quite-clever-enough-14455602"
-    },
     {
       "t": "2026-06-18T13:19:25.839Z",
       "event": "bb-cookie-inject",
@@ -124,6 +113,17 @@
       "t": "2026-06-18T19:52:08.786Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-18T19:57:33.168Z",
+      "event": "bb-session",
+      "session": "a2a5e7b4",
+      "url": "https://newyork.timeout.com/arts-culture/theater/529719/the-scottsboro-boys"
+    },
+    {
+      "t": "2026-06-18T19:57:34.219Z",
+      "event": "bb-cookie-inject",
+      "domain": "timeout.com"
     }
   ]
 }
