@@ -464,7 +464,8 @@
     "death-of-a-salesman-2012/ew--thom-geier.json",
     "death-of-a-salesman-2012/newsday--linda-winer.json",
     "death-of-a-salesman-2012/theatermania--charles-isherwood.json",
-    "the-road-to-mecca-2012/newsday--linda-winer.json"
+    "the-road-to-mecca-2012/newsday--linda-winer.json",
+    "glengarry-glen-ross-west-end-2026/sunday-telegraph--dominic-cavendish.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -1272,7 +1273,16 @@
     "wit-2012/ap--mark-kennedy.json",
     "wit-2012/backstage--david-sheward.json",
     "wit-2012/bloomberg--jeremy-gerard.json",
-    "wit-2012/usatoday--elysa-gardner.json"
+    "wit-2012/usatoday--elysa-gardner.json",
+    "sting-west-end-2026/ew--unknown.json",
+    "sting-west-end-2026/timeout-london--unknown.json",
+    "sting-west-end-2026/daily-mail--unknown.json",
+    "sting-west-end-2026/standard--unknown.json",
+    "sting-west-end-2026/west-end-best-friend--unknown.json",
+    "glengarry-glen-ross-west-end-2026/guardian--arifa-akbar.json",
+    "glengarry-glen-ross-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "glengarry-glen-ross-west-end-2026/standard--nick-curtis.json",
+    "glengarry-glen-ross-west-end-2026/thestage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1624,7 +1634,8 @@
       "clybourne-park-2012/broadwayworld--unknown.json",
       "end-of-the-rainbow-2012/new-jersey-newsroom--michael-sommers.json",
       "newsies-the-musical-2012/new-jersey-newsroom--michael-musto.json",
-      "death-of-a-salesman-2012/ew--thom-geier.json"
+      "death-of-a-salesman-2012/ew--thom-geier.json",
+      "glengarry-glen-ross-west-end-2026/sunday-telegraph--dominic-cavendish.json"
     ],
     "brightdata": [
       "the-balusters-2026/broadwayworld--unknown.json",
@@ -1842,7 +1853,7 @@
     ]
   },
   "startTime": "2026-06-17T21:21:03.989Z",
-  "lastProcessed": "the-road-to-mecca-2012/newsday--linda-winer.json",
+  "lastProcessed": "glengarry-glen-ross-west-end-2026/thestage--unknown.json",
   "log": [
     {
       "t": "2026-06-18T00:51:32.292Z",
@@ -2501,6 +2512,17 @@
       "t": "2026-06-18T13:39:01.230Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-18T20:55:08.536Z",
+      "event": "bb-session",
+      "session": "e85d04e0",
+      "url": "https://www.thestage.co.uk/reviews/glengarry-glen-ross-review-old-vic-theatre-lo"
+    },
+    {
+      "t": "2026-06-18T20:55:08.998Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
