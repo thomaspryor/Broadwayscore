@@ -498,7 +498,9 @@
     "fences-2010/wsj--christopher-john-farley.json",
     "promises-promises-2010/wsj--terry-teachout.json",
     "sondheim-on-sondheim-2010/newsday--linda-winer.json",
-    "sondheim-on-sondheim-2010/wsj--terry-teachout.json"
+    "sondheim-on-sondheim-2010/wsj--terry-teachout.json",
+    "million-dollar-quartet-2010/theatermania--unknown.json",
+    "the-addams-family-2010/newsday--linda-winer.json"
   ],
   "failed": [
     "sting-west-end-2026/ew--unknown.json",
@@ -821,7 +823,15 @@
     "promises-promises-2010/village-voice--michael-fiengold.json",
     "sondheim-on-sondheim-2010/washpost--peter-marks.json",
     "la-cage-aux-folles-2010/wsj--terry-teachout.json",
-    "la-cage-aux-folles-2010/newsday--linda-winer.json"
+    "la-cage-aux-folles-2010/newsday--linda-winer.json",
+    "la-cage-aux-folles-2010/backstage--david-sheward.json",
+    "la-cage-aux-folles-2010/times-uk--clive-davis.json",
+    "million-dollar-quartet-2010/wsj--terry-teachout.json",
+    "million-dollar-quartet-2010/backstage--david-sheward.json",
+    "the-addams-family-2010/wsj--terry-teachout.json",
+    "the-addams-family-2010/village-voice--michael-feingold.json",
+    "the-addams-family-2010/washpost--peter-marks.json",
+    "the-addams-family-2010/backstage--erik-haagensen.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1031,7 +1041,8 @@
       "the-peewee-herman-show-2010/theatermania--unknown.json",
       "driving-miss-daisy-2010/ew--melissa-rose-bernardo.json",
       "bloody-bloody-andrew-jackson-2010/theatermania--andy-propst.json",
-      "fences-2010/nytg--unknown.json"
+      "fences-2010/nytg--unknown.json",
+      "million-dollar-quartet-2010/theatermania--unknown.json"
     ],
     "amp": [
       "data/review-texts/lombardi-2010/hollywood-reporter--david-rooney.json"
@@ -1419,11 +1430,12 @@
       "collected-stories-2010/newsday--linda-winer.json",
       "promises-promises-2010/wsj--terry-teachout.json",
       "sondheim-on-sondheim-2010/newsday--linda-winer.json",
-      "sondheim-on-sondheim-2010/wsj--terry-teachout.json"
+      "sondheim-on-sondheim-2010/wsj--terry-teachout.json",
+      "the-addams-family-2010/newsday--linda-winer.json"
     ]
   },
   "startTime": "2026-06-17T21:21:03.989Z",
-  "lastProcessed": "la-cage-aux-folles-2010/newsday--linda-winer.json",
+  "lastProcessed": "the-addams-family-2010/backstage--erik-haagensen.json",
   "log": [
     {
       "t": "2026-06-18T22:22:57.406Z",
@@ -2308,6 +2320,39 @@
       "t": "2026-06-18T20:30:33.670Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-18T20:33:19.307Z",
+      "event": "bb-session",
+      "session": "5f3f6ca4",
+      "url": "https://www.wsj.com/articles/SB10001424052748704541004575267730118345518"
+    },
+    {
+      "t": "2026-06-18T20:33:20.297Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-18T20:35:21.980Z",
+      "event": "bb-session",
+      "session": "7b5780e6",
+      "url": "https://www.wsj.com/articles/SB10001424052702304222504575172743926926460"
+    },
+    {
+      "t": "2026-06-18T20:35:22.980Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-18T20:38:58.836Z",
+      "event": "bb-session",
+      "session": "0c8df093",
+      "url": "https://www.washingtonpost.com/wp-dyn/content/article/2010/04/08/AR2010040805326"
+    },
+    {
+      "t": "2026-06-18T20:38:59.893Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
