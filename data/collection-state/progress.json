@@ -464,7 +464,9 @@
     "death-of-a-salesman-2012/ew--thom-geier.json",
     "death-of-a-salesman-2012/newsday--linda-winer.json",
     "death-of-a-salesman-2012/theatermania--charles-isherwood.json",
-    "the-road-to-mecca-2012/newsday--linda-winer.json"
+    "the-road-to-mecca-2012/newsday--linda-winer.json",
+    "glengarry-glen-ross-west-end-2026/sunday-telegraph--dominic-cavendish.json",
+    "war-horse-west-end-2026/whatsonstage--maygan-forbes.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -1272,7 +1274,30 @@
     "wit-2012/ap--mark-kennedy.json",
     "wit-2012/backstage--david-sheward.json",
     "wit-2012/bloomberg--jeremy-gerard.json",
-    "wit-2012/usatoday--elysa-gardner.json"
+    "wit-2012/usatoday--elysa-gardner.json",
+    "sting-west-end-2026/ew--unknown.json",
+    "sting-west-end-2026/timeout-london--unknown.json",
+    "sting-west-end-2026/daily-mail--unknown.json",
+    "sting-west-end-2026/standard--unknown.json",
+    "sting-west-end-2026/west-end-best-friend--unknown.json",
+    "glengarry-glen-ross-west-end-2026/guardian--arifa-akbar.json",
+    "glengarry-glen-ross-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "glengarry-glen-ross-west-end-2026/standard--nick-curtis.json",
+    "glengarry-glen-ross-west-end-2026/thestage--unknown.json",
+    "glengarry-glen-ross-west-end-2026/times-uk--clive-davis.json",
+    "are-you-watching-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "are-you-watching-west-end-2026/the-recs--unknown.json",
+    "driftwood-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "driftwood-west-end-2026/artsdesk--unknown.json",
+    "driftwood-west-end-2026/standard--nick-curtis.json",
+    "driftwood-west-end-2026/times-uk--clive-davis.json",
+    "war-horse-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "war-horse-west-end-2026/plays-international--maryam-philpott.json",
+    "war-horse-west-end-2026/times-uk--chris-bennion.json",
+    "war-horse-west-end-2026/times-uk--clive-davis.json",
+    "beetlejuice-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "beetlejuice-west-end-2026/amny--matt-windman.json",
+    "the-p-word-off-west-end-2026/whatsonstage--frey-kwa-hawking.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1474,7 +1499,8 @@
       "clybourne-park-2012/theatermania--dan-bacalzo.json",
       "clybourne-park-2012/theatermania--unknown.json",
       "evita-2012/ew--thom-geier.json",
-      "death-of-a-salesman-2012/theatermania--charles-isherwood.json"
+      "death-of-a-salesman-2012/theatermania--charles-isherwood.json",
+      "war-horse-west-end-2026/whatsonstage--maygan-forbes.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1624,7 +1650,8 @@
       "clybourne-park-2012/broadwayworld--unknown.json",
       "end-of-the-rainbow-2012/new-jersey-newsroom--michael-sommers.json",
       "newsies-the-musical-2012/new-jersey-newsroom--michael-musto.json",
-      "death-of-a-salesman-2012/ew--thom-geier.json"
+      "death-of-a-salesman-2012/ew--thom-geier.json",
+      "glengarry-glen-ross-west-end-2026/sunday-telegraph--dominic-cavendish.json"
     ],
     "brightdata": [
       "the-balusters-2026/broadwayworld--unknown.json",
@@ -1702,7 +1729,9 @@
       "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json",
       "data/review-texts/end-of-the-rainbow-west-end-2026/north-west-end--unknown.json",
       "data/review-texts/the-nance-2013/northjerseycom--robert-feldberg.json",
-      "data/review-texts/the-heiress-2012/ew--thom-geier.json"
+      "data/review-texts/the-heiress-2012/ew--thom-geier.json",
+      "data/review-texts/glengarry-glen-ross-west-end-2026/thestage--unknown.json",
+      "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -1842,7 +1871,7 @@
     ]
   },
   "startTime": "2026-06-17T21:21:03.989Z",
-  "lastProcessed": "the-road-to-mecca-2012/newsday--linda-winer.json",
+  "lastProcessed": "the-p-word-off-west-end-2026/whatsonstage--frey-kwa-hawking.json",
   "log": [
     {
       "t": "2026-06-18T00:51:32.292Z",
@@ -2501,6 +2530,17 @@
       "t": "2026-06-18T13:39:01.230Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-18T20:55:08.536Z",
+      "event": "bb-session",
+      "session": "e85d04e0",
+      "url": "https://www.thestage.co.uk/reviews/glengarry-glen-ross-review-old-vic-theatre-lo"
+    },
+    {
+      "t": "2026-06-18T20:55:08.998Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
