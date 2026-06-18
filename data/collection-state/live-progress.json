@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-06-18T20:14:31.000Z",
-  "processed": 491,
-  "failed": 880,
+  "updatedAt": "2026-06-18T20:21:12.742Z",
+  "processed": 494,
+  "failed": 887,
   "successRate": "35.8%",
   "tierBreakdown": {
     "playwright": 205,
@@ -11,32 +11,10 @@
     "scrapingbee": 93,
     "brightdata": 63,
     "archiveToday": 12,
-    "archive": 152
+    "archive": 155
   },
-  "browserbaseSessions": 12,
+  "browserbaseSessions": 14,
   "recentActivity": [
-    {
-      "t": "2026-06-18T19:42:26.937Z",
-      "event": "bb-cookie-inject",
-      "domain": "timeout.com"
-    },
-    {
-      "t": "2026-06-18T19:42:59.130Z",
-      "event": "bb-session",
-      "session": "54402ee5",
-      "url": "https://variety.com/2011/legit/reviews/godspell-1117946484/"
-    },
-    {
-      "t": "2026-06-18T19:43:00.044Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-18T19:45:21.597Z",
-      "event": "bb-session",
-      "session": "d892acb1",
-      "url": "http://newyork.timeout.com/arts-culture/theater/1667433/review-master-class"
-    },
     {
       "t": "2026-06-18T19:45:22.595Z",
       "event": "bb-cookie-inject",
@@ -124,6 +102,28 @@
       "t": "2026-06-18T20:09:06.877Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-06-18T20:15:35.328Z",
+      "event": "bb-session",
+      "session": "78961ed8",
+      "url": "http://www.hollywoodreporter.com/hr/film-reviews/everyday-rapture-theater-review"
+    },
+    {
+      "t": "2026-06-18T20:15:36.351Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-06-18T20:19:57.969Z",
+      "event": "bb-session",
+      "session": "7122b5a0",
+      "url": "https://www.wsj.com/articles/SB10001424052748703954004575089840667452906"
+    },
+    {
+      "t": "2026-06-18T20:19:58.994Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

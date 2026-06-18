@@ -489,7 +489,10 @@
     "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
     "a-life-in-the-theatre-2010/hollywood-reporter--frank-scheck.json",
     "the-pitmen-painters-2010/on-off-broadway--matt-windman.json",
-    "brief-encounter-2010/time--richard-zoglin.json"
+    "brief-encounter-2010/time--richard-zoglin.json",
+    "everyday-rapture-2010/ew--thom-geier.json",
+    "everyday-rapture-2010/newsday--linda-winer.json",
+    "collected-stories-2010/ew--melissa-rose-bernardo.json"
   ],
   "failed": [
     "sting-west-end-2026/ew--unknown.json",
@@ -791,7 +794,14 @@
     "a-life-in-the-theatre-2010/backstage--david-sheward.json",
     "a-life-in-the-theatre-2010/bloomberg--john-simon.json",
     "the-pitmen-painters-2010/backstage--erik-haagensen.json",
-    "the-pitmen-painters-2010/bloomberg--john-simon.json"
+    "the-pitmen-painters-2010/bloomberg--john-simon.json",
+    "brief-encounter-2010/newyorker--uncredited.json",
+    "brief-encounter-2010/nytheatre--martin-denton.json",
+    "brief-encounter-2010/newsday--linda-winer.json",
+    "everyday-rapture-2010/hollywood-reporter--frank-scheck.json",
+    "everyday-rapture-2010/nydailynews--joe-dziemianowicz.json",
+    "everyday-rapture-2010/backstage--david-sheward.json",
+    "collected-stories-2010/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1379,11 +1389,14 @@
       "a-life-in-the-theatre-2010/hollywood-reporter--frank-scheck.json",
       "a-life-in-the-theatre-2010/backstage--david-sheward.json",
       "the-pitmen-painters-2010/on-off-broadway--matt-windman.json",
-      "brief-encounter-2010/time--richard-zoglin.json"
+      "brief-encounter-2010/time--richard-zoglin.json",
+      "everyday-rapture-2010/ew--thom-geier.json",
+      "everyday-rapture-2010/newsday--linda-winer.json",
+      "collected-stories-2010/ew--melissa-rose-bernardo.json"
     ]
   },
   "startTime": "2026-06-17T21:21:03.989Z",
-  "lastProcessed": "brief-encounter-2010/time--richard-zoglin.json",
+  "lastProcessed": "collected-stories-2010/wsj--terry-teachout.json",
   "log": [
     {
       "t": "2026-06-18T22:22:57.406Z",
@@ -2169,6 +2182,28 @@
       "t": "2026-06-18T20:09:06.877Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-06-18T20:15:35.328Z",
+      "event": "bb-session",
+      "session": "78961ed8",
+      "url": "http://www.hollywoodreporter.com/hr/film-reviews/everyday-rapture-theater-review"
+    },
+    {
+      "t": "2026-06-18T20:15:36.351Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-06-18T20:19:57.969Z",
+      "event": "bb-session",
+      "session": "7122b5a0",
+      "url": "https://www.wsj.com/articles/SB10001424052748703954004575089840667452906"
+    },
+    {
+      "t": "2026-06-18T20:19:58.994Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
