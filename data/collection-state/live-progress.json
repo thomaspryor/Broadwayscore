@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-06-18T19:57:51.253Z",
-  "processed": 480,
-  "failed": 861,
-  "successRate": "35.8%",
+  "updatedAt": "2026-06-18T20:04:01.234Z",
+  "processed": 485,
+  "failed": 866,
+  "successRate": "35.9%",
   "tierBreakdown": {
-    "playwright": 203,
-    "amp": 0,
+    "playwright": 204,
+    "amp": 1,
     "browserbase": 56,
     "directCookies": 0,
     "scrapingbee": 93,
-    "brightdata": 62,
+    "brightdata": 63,
     "archiveToday": 12,
-    "archive": 142
+    "archive": 146
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 8,
   "recentActivity": [
-    {
-      "t": "2026-06-18T13:19:25.839Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-06-18T13:21:07.641Z",
-      "event": "bb-session",
-      "session": "adf04dd9",
-      "url": "http://www.wsj.com/articles/airline-highway-review-a-young-playwrights-visit-to-"
-    },
-    {
-      "t": "2026-06-18T13:21:08.083Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-06-18T13:23:44.214Z",
-      "event": "bb-session",
-      "session": "78f5ce60",
-      "url": "https://www.northjersey.com/arts_entertainment/theater/203140641_Theater_review_"
-    },
     {
       "t": "2026-06-18T13:23:44.638Z",
       "event": "bb-cookie-inject",
@@ -124,6 +102,28 @@
       "t": "2026-06-18T19:57:34.219Z",
       "event": "bb-cookie-inject",
       "domain": "timeout.com"
+    },
+    {
+      "t": "2026-06-18T19:59:52.868Z",
+      "event": "bb-session",
+      "session": "c669607e",
+      "url": "https://www.hollywoodreporter.com/news/lombardi-broadway-review-34987/"
+    },
+    {
+      "t": "2026-06-18T19:59:53.835Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-06-18T20:03:52.528Z",
+      "event": "bb-session",
+      "session": "a687cec8",
+      "url": "https://www.washingtonpost.com/wp-dyn/content/article/2010/10/21/AR2010102106342"
+    },
+    {
+      "t": "2026-06-18T20:03:53.579Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
