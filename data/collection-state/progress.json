@@ -418,7 +418,12 @@
     "the-little-foxes-2017/thestage--mark-shenton.json",
     "groundhog-day-2017/thestage--mark-shenton.json",
     "les-liaisons-dangereuses-2016/thestage--mark-shenton.json",
-    "tuck-everlasting-2016/thestage--mark-shenton.json"
+    "tuck-everlasting-2016/thestage--mark-shenton.json",
+    "the-humans-2016/towleroad--naveen-kumar.json",
+    "fiddler-on-the-roof-2015/broadway-and-me--janice-c-simpson.json",
+    "the-color-purple-2015/broadway-and-me--janice-c-simpson.json",
+    "dames-at-sea-2015/wsj--terry-teachout.json",
+    "the-gin-game-2015/nyt-theater--jonathan-mandell.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -1172,7 +1177,12 @@
     "in-transit-2016/nydailynews--joe-dziemianowicz.json",
     "a-bronx-tale-the-musical-2016/njcom--patrick-maley.json",
     "heisenberg-2016/abc-news--mark-kennedy.json",
-    "american-psycho-2016/ap--mark-kennedy.json"
+    "american-psycho-2016/ap--mark-kennedy.json",
+    "bright-star-2016/drama-queen-nyc--jonathan-warman.json",
+    "eclipsed-2016/nydailynews--joe-dziemianowicz.json",
+    "noises-off-2016/thestage--mark-shenton.json",
+    "a-view-from-the-bridge-2015/financialtimes--sarah-hemming.json",
+    "the-gin-game-2015/vulture--jesse-green.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1365,7 +1375,9 @@
       "the-little-foxes-2017/thestage--mark-shenton.json",
       "groundhog-day-2017/thestage--mark-shenton.json",
       "les-liaisons-dangereuses-2016/thestage--mark-shenton.json",
-      "tuck-everlasting-2016/thestage--mark-shenton.json"
+      "tuck-everlasting-2016/thestage--mark-shenton.json",
+      "fiddler-on-the-roof-2015/broadway-and-me--janice-c-simpson.json",
+      "the-color-purple-2015/broadway-and-me--janice-c-simpson.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1416,7 +1428,9 @@
       "data/review-texts/vida-off-broadway-2026/hollywood-reporter--daniel-fienberg.json",
       "vida-off-broadway-2026/hollywood-reporter--daniel-fienberg.json",
       "data/review-texts/vida-off-broadway-2026/hollywood-reporter--inkoo-kang.json",
-      "vida-off-broadway-2026/hollywood-reporter--inkoo-kang.json"
+      "vida-off-broadway-2026/hollywood-reporter--inkoo-kang.json",
+      "data/review-texts/dames-at-sea-2015/wsj--terry-teachout.json",
+      "dames-at-sea-2015/wsj--terry-teachout.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1686,11 +1700,13 @@
       "just-for-us-2023/theater-life--barry-gordin.json",
       "1776-2022/broadway-and-me--janice-c-simpson.json",
       "american-buffalo-2022/theater-life--david-sheward.json",
-      "the-prom-2018/thestage--mark-shenton.json"
+      "the-prom-2018/thestage--mark-shenton.json",
+      "the-humans-2016/towleroad--naveen-kumar.json",
+      "the-gin-game-2015/nyt-theater--jonathan-mandell.json"
     ]
   },
   "startTime": "2026-06-17T21:21:03.989Z",
-  "lastProcessed": "american-psycho-2016/ap--mark-kennedy.json",
+  "lastProcessed": "the-gin-game-2015/vulture--jesse-green.json",
   "log": [
     {
       "t": "2026-06-18T00:51:32.292Z",
@@ -2299,6 +2315,17 @@
       "t": "2026-06-18T12:27:46.142Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-06-18T13:19:25.426Z",
+      "event": "bb-session",
+      "session": "20c85e34",
+      "url": "http://www.wsj.com/articles/dames-at-sea-review-not-quite-clever-enough-14455602"
+    },
+    {
+      "t": "2026-06-18T13:19:25.839Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
