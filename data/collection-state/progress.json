@@ -284,7 +284,15 @@
     "jitney-2017/wnyc--jennifer-vanasco.json",
     "in-transit-2016/the-cultural-critic--steve-cohen.json",
     "dear-evan-hansen-2016/frontmezzjunkies--steven-ross.json",
-    "dear-evan-hansen-2016/times-uk--clive-davis.json"
+    "dear-evan-hansen-2016/times-uk--clive-davis.json",
+    "a-bronx-tale-the-musical-2016/timeout--adam-feldman.json",
+    "natasha-pierre-and-the-great-comet-of-1812-2016/newyorker--conde-nast.json",
+    "natasha-pierre-and-the-great-comet-of-1812-2016/broadway-and-me--janice-c-simpson.json",
+    "les-liaisons-dangereuses-2016/wsj--terry-teachout.json",
+    "falsettos-2016/theatermania--jesse-green.json",
+    "falsettos-2016/theater-life--eric-march.json",
+    "heisenberg-2016/nydailynews--joe-dziemianowicz.json",
+    "heisenberg-2016/timeout--adam-feldman.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -832,7 +840,9 @@
     "come-from-away-2017/st-louis-post-dispatch--bruce-r-miller.json",
     "the-glass-menagerie-2017/chicagotribune--chris-jones.json",
     "the-present-2017/thestage--unknown.json",
-    "in-transit-2016/nydailynews--joe-dziemianowicz.json"
+    "in-transit-2016/nydailynews--joe-dziemianowicz.json",
+    "a-bronx-tale-the-musical-2016/njcom--patrick-maley.json",
+    "les-liaisons-dangereuses-2016/thestage--mark-shenton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -973,7 +983,10 @@
       "sunday-in-the-park-with-george-2017/theater-life--isa-goldberg.json",
       "sunday-in-the-park-with-george-2017/wnyc--jennifer-vanasco.json",
       "jitney-2017/wnyc--jennifer-vanasco.json",
-      "dear-evan-hansen-2016/times-uk--clive-davis.json"
+      "dear-evan-hansen-2016/times-uk--clive-davis.json",
+      "natasha-pierre-and-the-great-comet-of-1812-2016/broadway-and-me--janice-c-simpson.json",
+      "falsettos-2016/theatermania--jesse-green.json",
+      "falsettos-2016/theater-life--eric-march.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1006,7 +1019,9 @@
       "data/review-texts/the-ferryman-2018/wsj--terry-teachout.json",
       "the-ferryman-2018/wsj--terry-teachout.json",
       "data/review-texts/junk-2017/wsj--terry-teachout.json",
-      "junk-2017/wsj--terry-teachout.json"
+      "junk-2017/wsj--terry-teachout.json",
+      "data/review-texts/les-liaisons-dangereuses-2016/wsj--terry-teachout.json",
+      "les-liaisons-dangereuses-2016/wsj--terry-teachout.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1081,7 +1096,9 @@
       "sweat-2017/nydailynews--joe-dziemianowicz.json",
       "significant-other-2017/nydailynews--joe-dziemianowicz.json",
       "sunset-boulevard-2017/newyorker--conde-nast.json",
-      "jitney-2017/nydailynews--joe-dziemianowicz.json"
+      "jitney-2017/nydailynews--joe-dziemianowicz.json",
+      "a-bronx-tale-the-musical-2016/timeout--adam-feldman.json",
+      "heisenberg-2016/nydailynews--joe-dziemianowicz.json"
     ],
     "brightdata": [
       "the-balusters-2026/broadwayworld--unknown.json",
@@ -1109,7 +1126,8 @@
       "the-ferryman-2018/medium--christian-lewis.json",
       "saint-joan-2018/medium--christian-lewis.json",
       "children-of-a-lesser-god-2018/medium--christian-lewis.json",
-      "three-tall-women-2018/medium--christian-lewis.json"
+      "three-tall-women-2018/medium--christian-lewis.json",
+      "heisenberg-2016/timeout--adam-feldman.json"
     ],
     "archiveToday": [
       "data/review-texts/hadestown-west-end-2024/shy-strange-manic--kariss-ainsworth.json",
@@ -1188,11 +1206,12 @@
       "charlie-and-the-chocolate-factory-2017/billboard--curtis-m-wong.json",
       "come-from-away-2017/times-uk--dominic-maxwell.json",
       "in-transit-2016/the-cultural-critic--steve-cohen.json",
-      "dear-evan-hansen-2016/frontmezzjunkies--steven-ross.json"
+      "dear-evan-hansen-2016/frontmezzjunkies--steven-ross.json",
+      "natasha-pierre-and-the-great-comet-of-1812-2016/newyorker--conde-nast.json"
     ]
   },
   "startTime": "2026-06-17T21:21:03.989Z",
-  "lastProcessed": "dear-evan-hansen-2016/times-uk--clive-davis.json",
+  "lastProcessed": "heisenberg-2016/timeout--adam-feldman.json",
   "log": [
     {
       "t": "2026-06-18T00:51:32.292Z",
@@ -1689,6 +1708,17 @@
     },
     {
       "t": "2026-06-18T08:04:24.931Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-18T08:16:57.039Z",
+      "event": "bb-session",
+      "session": "4edabb9b",
+      "url": "https://www.wsj.com/articles/les-liaisons-dangereuses-review-fallen-archness-147"
+    },
+    {
+      "t": "2026-06-18T08:16:58.158Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
