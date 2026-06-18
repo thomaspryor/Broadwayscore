@@ -1,83 +1,27 @@
 {
-  "updatedAt": "2026-06-18T15:12:29.486Z",
-  "processed": 383,
-  "failed": 660,
-  "successRate": "36.7%",
+  "updatedAt": "2026-06-18T13:47:34.207Z",
+  "processed": 465,
+  "failed": 806,
+  "successRate": "36.6%",
   "tierBreakdown": {
-    "playwright": 163,
+    "playwright": 198,
     "amp": 0,
-    "browserbase": 67,
+    "browserbase": 54,
     "directCookies": 0,
-    "scrapingbee": 75,
-    "brightdata": 53,
-    "archiveToday": 10,
-    "archive": 103
+    "scrapingbee": 90,
+    "brightdata": 62,
+    "archiveToday": 12,
+    "archive": 134
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
-      "t": "2026-06-18T13:30:22.061Z",
+      "t": "2026-06-18T08:25:05.323Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-06-18T14:29:55.952Z",
-      "event": "bb-session",
-      "session": "771d83e8",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
-    {
-      "t": "2026-06-18T14:29:57.017Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-18T14:30:29.885Z",
-      "event": "bb-session",
-      "session": "3bf04572",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-18T14:30:30.831Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-18T14:30:42.167Z",
-      "event": "bb-session",
-      "session": "c4e72bad",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
-    {
-      "t": "2026-06-18T14:30:43.907Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-18T14:31:46.978Z",
-      "event": "bb-session",
-      "session": "a8dd619b",
-      "url": "https://www.nytimes.com/2026/06/01/arts/andy-halliday-dead.html"
-    },
-    {
-      "t": "2026-06-18T14:31:47.960Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-18T14:34:04.853Z",
-      "event": "bb-session",
-      "session": "9b57e7c0",
-      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15906913/Emily-Ratajkowski-returns"
-    },
-    {
-      "t": "2026-06-18T14:35:24.923Z",
-      "event": "bb-session",
-      "session": "0544c831",
-      "url": "https://theaterpizzazz.com/small-a-jockeys-indestructible-passion/"
-    },
-    {
-      "t": "2026-06-18T15:08:34.471Z",
+      "t": "2026-06-18T08:25:51.106Z",
       "event": "bb-session",
       "session": "f7d9ee78",
       "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
@@ -107,24 +51,79 @@
     {
       "t": "2026-06-18T15:09:45.564Z",
       "event": "bb-cookie-inject",
-      "domain": "variety.com"
+      "domain": "northjersey.com"
     },
     {
-      "t": "2026-06-18T15:09:57.434Z",
+      "t": "2026-06-18T12:27:29.707Z",
       "event": "bb-session",
-      "session": "ef454da5",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+      "session": "30fa1dd2",
+      "url": "https://www.hollywoodreporter.com/tv/tv-reviews/vida-season-2-1213158/"
     },
     {
-      "t": "2026-06-18T15:09:58.361Z",
+      "t": "2026-06-18T12:27:30.120Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-06-18T12:27:45.703Z",
+      "event": "bb-session",
+      "session": "a6613541",
+      "url": "https://www.hollywoodreporter.com/tv/tv-reviews/vida-season-3-review-1291640/"
+    },
+    {
+      "t": "2026-06-18T12:27:46.142Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-06-18T13:19:25.426Z",
+      "event": "bb-session",
+      "session": "20c85e34",
+      "url": "http://www.wsj.com/articles/dames-at-sea-review-not-quite-clever-enough-14455602"
+    },
+    {
+      "t": "2026-06-18T13:19:25.839Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-18T13:21:07.641Z",
+      "event": "bb-session",
+      "session": "adf04dd9",
+      "url": "http://www.wsj.com/articles/airline-highway-review-a-young-playwrights-visit-to-"
+    },
+    {
+      "t": "2026-06-18T13:21:08.083Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-18T13:23:44.214Z",
+      "event": "bb-session",
+      "session": "78f5ce60",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/203140641_Theater_review_"
+    },
+    {
+      "t": "2026-06-18T13:23:44.638Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-06-18T13:31:54.625Z",
+      "event": "bb-session",
+      "session": "96a76ca7",
+      "url": "https://blogs.villagevoice.com/dailymusto/2012/11/jessica_chastai.php"
+    },
+    {
+      "t": "2026-06-18T13:39:00.800Z",
+      "event": "bb-session",
+      "session": "b8ac8646",
+      "url": "https://variety.com/2012/legit/reviews/clybourne-park-2-1117946930/"
+    },
+    {
+      "t": "2026-06-18T13:39:01.230Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-18T15:12:12.676Z",
-      "event": "bb-session",
-      "session": "e8963f37",
-      "url": "https://theaterpizzazz.com/small-a-jockeys-indestructible-passion/"
     }
   ]
 }
