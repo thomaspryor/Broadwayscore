@@ -309,7 +309,15 @@
     "american-psycho-2016/nyt-theater--jonathan-mandell.json",
     "american-psycho-2016/timeout--adam-feldman.json",
     "the-father-2016/financialtimes--max-mcguinness.json",
-    "the-father-2016/theater-life--paulanne-simmons.json"
+    "the-father-2016/theater-life--paulanne-simmons.json",
+    "bright-star-2016/wsj--terry-teachout.json",
+    "bright-star-2016/stu-on-broadway--stu-brown.json",
+    "she-loves-me-2016/wsj--terry-teachout.json",
+    "she-loves-me-2016/theater-life--eric-march.json",
+    "blackbird-2016/wsj--terry-teachout.json",
+    "hughie-2016/act-three-the-reviews--doug-marino.json",
+    "hughie-2016/financialtimes--max-mcguinness.json",
+    "hughie-2016/wnyc--jennifer-vanasco.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -862,7 +870,9 @@
     "les-liaisons-dangereuses-2016/thestage--mark-shenton.json",
     "heisenberg-2016/abc-news--mark-kennedy.json",
     "tuck-everlasting-2016/thestage--mark-shenton.json",
-    "american-psycho-2016/ap--mark-kennedy.json"
+    "american-psycho-2016/ap--mark-kennedy.json",
+    "bright-star-2016/drama-queen-nyc--jonathan-warman.json",
+    "eclipsed-2016/nydailynews--joe-dziemianowicz.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1014,7 +1024,11 @@
       "waitress-2016/act-three-the-reviews--doug-marino.json",
       "american-psycho-2016/nyt-theater--jonathan-mandell.json",
       "the-father-2016/financialtimes--max-mcguinness.json",
-      "the-father-2016/theater-life--paulanne-simmons.json"
+      "the-father-2016/theater-life--paulanne-simmons.json",
+      "she-loves-me-2016/theater-life--eric-march.json",
+      "hughie-2016/act-three-the-reviews--doug-marino.json",
+      "hughie-2016/financialtimes--max-mcguinness.json",
+      "hughie-2016/wnyc--jennifer-vanasco.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1055,7 +1069,13 @@
       "data/review-texts/holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json",
       "holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json",
       "data/review-texts/fully-committed-2016/wsj--terry-teachout.json",
-      "fully-committed-2016/wsj--terry-teachout.json"
+      "fully-committed-2016/wsj--terry-teachout.json",
+      "data/review-texts/bright-star-2016/wsj--terry-teachout.json",
+      "bright-star-2016/wsj--terry-teachout.json",
+      "data/review-texts/she-loves-me-2016/wsj--terry-teachout.json",
+      "she-loves-me-2016/wsj--terry-teachout.json",
+      "data/review-texts/blackbird-2016/wsj--terry-teachout.json",
+      "blackbird-2016/wsj--terry-teachout.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1247,11 +1267,12 @@
       "come-from-away-2017/times-uk--dominic-maxwell.json",
       "in-transit-2016/the-cultural-critic--steve-cohen.json",
       "dear-evan-hansen-2016/frontmezzjunkies--steven-ross.json",
-      "natasha-pierre-and-the-great-comet-of-1812-2016/newyorker--conde-nast.json"
+      "natasha-pierre-and-the-great-comet-of-1812-2016/newyorker--conde-nast.json",
+      "bright-star-2016/stu-on-broadway--stu-brown.json"
     ]
   },
   "startTime": "2026-06-17T21:21:03.989Z",
-  "lastProcessed": "the-father-2016/theater-life--paulanne-simmons.json",
+  "lastProcessed": "hughie-2016/wnyc--jennifer-vanasco.json",
   "log": [
     {
       "t": "2026-06-18T00:51:32.292Z",
@@ -1792,6 +1813,39 @@
     },
     {
       "t": "2026-06-18T08:22:45.134Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-18T08:25:04.314Z",
+      "event": "bb-session",
+      "session": "ef354fc2",
+      "url": "http://www.wsj.com/articles/bright-star-review-banjo-boondoggle-1458865800"
+    },
+    {
+      "t": "2026-06-18T08:25:05.323Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-18T08:25:51.106Z",
+      "event": "bb-session",
+      "session": "ae71363b",
+      "url": "http://www.wsj.com/articles/she-loves-me-the-sweet-scent-of-perfection-145826100"
+    },
+    {
+      "t": "2026-06-18T08:25:52.141Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-18T08:26:29.994Z",
+      "event": "bb-session",
+      "session": "9c23bdc7",
+      "url": "http://www.wsj.com/articles/blackbird-review-the-past-comes-back-to-haunt-you-14"
+    },
+    {
+      "t": "2026-06-18T08:26:31.013Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
