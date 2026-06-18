@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-06-18T08:56:55.723Z",
-  "processed": 378,
-  "failed": 338,
+  "updatedAt": "2026-06-18T09:00:23.264Z",
+  "processed": 383,
+  "failed": 343,
   "successRate": "52.8%",
   "tierBreakdown": {
     "playwright": 163,
@@ -9,23 +9,12 @@
     "browserbase": 44,
     "directCookies": 0,
     "scrapingbee": 75,
-    "brightdata": 52,
+    "brightdata": 53,
     "archiveToday": 6,
-    "archive": 99
+    "archive": 103
   },
-  "browserbaseSessions": 12,
+  "browserbaseSessions": 13,
   "recentActivity": [
-    {
-      "t": "2026-06-18T07:41:01.152Z",
-      "event": "bb-session",
-      "session": "3e14e84e",
-      "url": "http://www.wsj.com/articles/kiss-me-kate-review-so-not-in-love-11552609800"
-    },
-    {
-      "t": "2026-06-18T07:41:02.233Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-06-18T07:48:53.543Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-06-18T08:26:31.013Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-18T08:59:26.035Z",
+      "event": "bb-session",
+      "session": "639057a1",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/203140641_Theater_review_"
+    },
+    {
+      "t": "2026-06-18T08:59:27.050Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }

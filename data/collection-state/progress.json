@@ -377,7 +377,12 @@
     "big-fish-2013/ew--thom-geier.json",
     "romeo-and-juliet-2013/timeout--david-cote.json",
     "ill-eat-you-last-a-chat-with-sue-mengers-2013/timeout--adam-feldman.json",
-    "jekyll-and-hyde-2013/newsday--matt-windman.json"
+    "jekyll-and-hyde-2013/newsday--matt-windman.json",
+    "the-big-knife-2013/nydailynews--joe-dziemianowicz.json",
+    "the-nance-2013/timeout--david-cote.json",
+    "hands-on-a-hardbody-2013/newsday--linda-winer.json",
+    "hands-on-a-hardbody-2013/timeout--david-cote.json",
+    "hands-on-a-hardbody-2013/amny--matt-windman.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -962,7 +967,12 @@
     "the-glass-menagerie-2013/bloomberg--jeremy-gerard.json",
     "soul-doctor-2013/new-jersey-newsroom--michael-sommers.json",
     "jekyll-and-hyde-2013/bloomberg--philip-boroff.json",
-    "orphans-2013/bloomberg--jeremy-gerard.json"
+    "orphans-2013/bloomberg--jeremy-gerard.json",
+    "the-nance-2013/northjerseycom--robert-feldberg.json",
+    "the-nance-2013/new-jersey-newsroom--michael-sommers.json",
+    "motown-the-musical-2013/new-jersey-newsroom--michael-sommers.json",
+    "matilda-the-musical-2013/village-voice--michael-musto.json",
+    "lucky-guy-2013/backstage--erik-haagensen.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1308,7 +1318,8 @@
       "fish-in-the-dark-2015/wsj--terry-teachout.json",
       "all-the-way-2014/ew--thom-geier.json",
       "700-sundays-2013/ew--jessica-shaw.json",
-      "jekyll-and-hyde-2013/newsday--matt-windman.json"
+      "jekyll-and-hyde-2013/newsday--matt-windman.json",
+      "hands-on-a-hardbody-2013/newsday--linda-winer.json"
     ],
     "archiveToday": [
       "data/review-texts/hadestown-west-end-2024/shy-strange-manic--kariss-ainsworth.json",
@@ -1420,11 +1431,15 @@
       "all-the-way-2014/amny--matt-windman.json",
       "after-midnight-2013/timeout--adam-feldman.json",
       "big-fish-2013/ew--thom-geier.json",
-      "ill-eat-you-last-a-chat-with-sue-mengers-2013/timeout--adam-feldman.json"
+      "ill-eat-you-last-a-chat-with-sue-mengers-2013/timeout--adam-feldman.json",
+      "the-big-knife-2013/nydailynews--joe-dziemianowicz.json",
+      "the-nance-2013/timeout--david-cote.json",
+      "hands-on-a-hardbody-2013/timeout--david-cote.json",
+      "hands-on-a-hardbody-2013/amny--matt-windman.json"
     ]
   },
   "startTime": "2026-06-17T21:21:03.989Z",
-  "lastProcessed": "orphans-2013/bloomberg--jeremy-gerard.json",
+  "lastProcessed": "hands-on-a-hardbody-2013/amny--matt-windman.json",
   "log": [
     {
       "t": "2026-06-18T00:51:32.292Z",
@@ -2000,6 +2015,17 @@
       "t": "2026-06-18T08:26:31.013Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-18T08:59:26.035Z",
+      "event": "bb-session",
+      "session": "639057a1",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/203140641_Theater_review_"
+    },
+    {
+      "t": "2026-06-18T08:59:27.050Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
