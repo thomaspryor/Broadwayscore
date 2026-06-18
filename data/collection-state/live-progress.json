@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-06-18T08:29:45.832Z",
+  "updatedAt": "2026-06-18T10:04:43.693Z",
   "processed": 297,
-  "failed": 365,
-  "successRate": "44.9%",
+  "failed": 395,
+  "successRate": "42.9%",
   "tierBreakdown": {
     "playwright": 135,
     "amp": 0,
@@ -10,22 +10,11 @@
     "directCookies": 0,
     "scrapingbee": 72,
     "brightdata": 36,
-    "archiveToday": 7,
+    "archiveToday": 8,
     "archive": 103
   },
   "browserbaseSessions": 0,
   "recentActivity": [
-    {
-      "t": "2026-06-18T05:20:24.100Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-18T05:21:31.015Z",
-      "event": "bb-session",
-      "session": "41e582eb",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
     {
       "t": "2026-06-18T05:21:31.445Z",
       "event": "bb-cookie-inject",
@@ -124,6 +113,17 @@
       "event": "bb-session",
       "session": "d3c922b7",
       "url": "https://therecs.co.uk/are-you-watching-royal-court/"
+    },
+    {
+      "t": "2026-06-18T09:29:31.594Z",
+      "event": "bb-session",
+      "session": "6542d2df",
+      "url": "https://www.thestage.co.uk/reviews/glengarry-glen-ross-review-old-vic-theatre-lo"
+    },
+    {
+      "t": "2026-06-18T09:29:32.622Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
