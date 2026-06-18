@@ -483,7 +483,11 @@
     "driving-miss-daisy-2010/newsday--linda-winer.json",
     "lombardi-2010/newyorker--uncredited.json",
     "lombardi-2010/wsj--terry-teachout.json",
-    "lombardi-2010/time--richard-zoglin.json"
+    "lombardi-2010/time--richard-zoglin.json",
+    "bloody-bloody-andrew-jackson-2010/theatermania--andy-propst.json",
+    "bloody-bloody-andrew-jackson-2010/time--richard-zoglin.json",
+    "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
+    "a-life-in-the-theatre-2010/hollywood-reporter--frank-scheck.json"
   ],
   "failed": [
     "sting-west-end-2026/ew--unknown.json",
@@ -771,7 +775,13 @@
     "driving-miss-daisy-2010/nytheatre--martin-denton.json",
     "lombardi-2010/hollywood-reporter--david-rooney.json",
     "lombardi-2010/timeout--david-cote.json",
-    "lombardi-2010/washpost--peter-marks.json"
+    "lombardi-2010/washpost--peter-marks.json",
+    "la-bete-2010/wsj--terry-teachout.json",
+    "la-bete-2010/chicagotribune--chris-jones.json",
+    "la-bete-2010/newsday--linda-winer.json",
+    "la-bete-2010/timeout--david-cote.json",
+    "la-bete-2010/chicagotribune--ben-brantley.json",
+    "bloody-bloody-andrew-jackson-2010/bloomberg--john-simon.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -979,7 +989,8 @@
       "good-people-2011/theatermania--david-rooney.json",
       "the-importance-of-being-earnest-2011/theater-life--eric-march.json",
       "the-peewee-herman-show-2010/theatermania--unknown.json",
-      "driving-miss-daisy-2010/ew--melissa-rose-bernardo.json"
+      "driving-miss-daisy-2010/ew--melissa-rose-bernardo.json",
+      "bloody-bloody-andrew-jackson-2010/theatermania--andy-propst.json"
     ],
     "amp": [
       "data/review-texts/lombardi-2010/hollywood-reporter--david-rooney.json"
@@ -1352,11 +1363,14 @@
       "rain-2010/newsday--linda-winer.json",
       "driving-miss-daisy-2010/newsday--linda-winer.json",
       "lombardi-2010/newyorker--uncredited.json",
-      "lombardi-2010/time--richard-zoglin.json"
+      "lombardi-2010/time--richard-zoglin.json",
+      "bloody-bloody-andrew-jackson-2010/time--richard-zoglin.json",
+      "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
+      "a-life-in-the-theatre-2010/hollywood-reporter--frank-scheck.json"
     ]
   },
   "startTime": "2026-06-17T21:21:03.989Z",
-  "lastProcessed": "lombardi-2010/washpost--peter-marks.json",
+  "lastProcessed": "a-life-in-the-theatre-2010/hollywood-reporter--frank-scheck.json",
   "log": [
     {
       "t": "2026-06-18T22:22:57.406Z",
@@ -2103,6 +2117,45 @@
       "t": "2026-06-18T20:03:53.579Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-06-18T20:04:02.249Z",
+      "event": "bb-session",
+      "session": "d15f7a06",
+      "url": "https://www.wsj.com/articles/SB10001424052748704358904575477868191553298"
+    },
+    {
+      "t": "2026-06-18T20:04:03.287Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-18T20:05:39.263Z",
+      "event": "bb-session",
+      "session": "58733150",
+      "url": "https://leisureblogs.chicagotribune.com/the_theater_loop/2010/10/theater-review-"
+    },
+    {
+      "t": "2026-06-18T20:06:32.697Z",
+      "event": "bb-session",
+      "session": "d9114b99",
+      "url": "https://www.newsday.com/entertainment/theater/bete-a-tour-de-force-for-a-gross-m"
+    },
+    {
+      "t": "2026-06-18T20:06:33.643Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
+    },
+    {
+      "t": "2026-06-18T20:09:05.819Z",
+      "event": "bb-session",
+      "session": "0f05231a",
+      "url": "http://www.hollywoodreporter.com/hr/film-reviews/a-life-in-the-theatre-theater-r"
+    },
+    {
+      "t": "2026-06-18T20:09:06.877Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
