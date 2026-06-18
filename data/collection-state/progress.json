@@ -472,7 +472,8 @@
     "master-class-2011/theatermania--david-finkle.json",
     "master-class-2011/timeout--rossilynne-skena-culgan.json",
     "the-normal-heart-2011/newsday--linda-winer.json",
-    "the-house-of-blue-leaves-2011/newsday--linda-winer.json"
+    "the-house-of-blue-leaves-2011/newsday--linda-winer.json",
+    "high-2011/timeout--david-cote.json"
   ],
   "failed": [
     "sting-west-end-2026/ew--unknown.json",
@@ -731,7 +732,16 @@
     "born-yesterday-2011/theatermania--andy-propst.json",
     "jerusalem-2011/newsday--linda-winer.json",
     "jerusalem-2011/village-voice--michael-musto.json",
-    "jerusalem-2011/backstage--erik-haagensen.json"
+    "jerusalem-2011/backstage--erik-haagensen.json",
+    "high-2011/bloomberg--jeremy-gerard.json",
+    "wonderland-2011/the-tampa-tribune--walt-belcher.json",
+    "wonderland-2011/nytheatre--jo-ann-rosen.json",
+    "war-horse-2011/ew--thom-geier.json",
+    "war-horse-2011/backstage--erik-haagensen.json",
+    "catch-me-if-you-can-2011/variety--marilyn-stasio.json",
+    "catch-me-if-you-can-2011/ap--mark-kennedy.json",
+    "catch-me-if-you-can-2011/backstage--erik-haagensen.json",
+    "bengal-tiger-at-the-baghdad-zoo-2011/nytheatre--martin-denton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -993,7 +1003,8 @@
       "airline-highway-2015/wsj--terry-teachout.json",
       "data/review-texts/clybourne-park-2012/variety--unknown.json",
       "clybourne-park-2012/variety--unknown.json",
-      "data/review-texts/godspell-2011/variety--david-rooney.json"
+      "data/review-texts/godspell-2011/variety--david-rooney.json",
+      "data/review-texts/catch-me-if-you-can-2011/variety--marilyn-stasio.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1236,11 +1247,12 @@
       "relatively-speaking-2011/wsj--terry-teachout.json",
       "master-class-2011/timeout--rossilynne-skena-culgan.json",
       "the-normal-heart-2011/newsday--linda-winer.json",
-      "the-house-of-blue-leaves-2011/newsday--linda-winer.json"
+      "the-house-of-blue-leaves-2011/newsday--linda-winer.json",
+      "high-2011/timeout--david-cote.json"
     ]
   },
   "startTime": "2026-06-17T21:21:03.989Z",
-  "lastProcessed": "jerusalem-2011/backstage--erik-haagensen.json",
+  "lastProcessed": "bengal-tiger-at-the-baghdad-zoo-2011/nytheatre--martin-denton.json",
   "log": [
     {
       "t": "2026-06-18T22:22:57.406Z",
@@ -1943,6 +1955,17 @@
       "t": "2026-06-18T19:45:22.595Z",
       "event": "bb-cookie-inject",
       "domain": "timeout.com"
+    },
+    {
+      "t": "2026-06-18T19:52:07.741Z",
+      "event": "bb-session",
+      "session": "4fdf4f56",
+      "url": "https://variety.com/2011/legit/reviews/catch-me-if-you-can-1117945108/"
+    },
+    {
+      "t": "2026-06-18T19:52:08.786Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
