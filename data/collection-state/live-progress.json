@@ -1,28 +1,27 @@
 {
-  "updatedAt": "2026-06-18T13:30:03.621Z",
-  "processed": 437,
-  "failed": 784,
-  "successRate": "35.8%",
+  "updatedAt": "2026-06-18T13:36:40.632Z",
+  "processed": 444,
+  "failed": 787,
+  "successRate": "36.1%",
   "tierBreakdown": {
     "playwright": 193,
     "amp": 0,
     "browserbase": 52,
     "directCookies": 0,
-    "scrapingbee": 83,
-    "brightdata": 58,
-    "archiveToday": 11,
-    "archive": 122
+    "scrapingbee": 85,
+    "brightdata": 60,
+    "archiveToday": 12,
+    "archive": 125
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
-      "t": "2026-06-18T08:22:44.083Z",
-      "event": "bb-session",
-      "session": "9b57e7c0",
-      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15906913/Emily-Ratajkowski-returns"
+      "t": "2026-06-18T08:22:45.134Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-06-18T14:35:24.923Z",
+      "t": "2026-06-18T08:25:04.314Z",
       "event": "bb-session",
       "session": "0544c831",
       "url": "https://theaterpizzazz.com/small-a-jockeys-indestructible-passion/"
@@ -114,6 +113,12 @@
       "t": "2026-06-18T13:23:44.638Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-06-18T13:31:54.625Z",
+      "event": "bb-session",
+      "session": "96a76ca7",
+      "url": "https://blogs.villagevoice.com/dailymusto/2012/11/jessica_chastai.php"
     }
   ]
 }

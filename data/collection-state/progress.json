@@ -436,7 +436,14 @@
     "the-anarchist-2012/newsday--linda-winer.json",
     "a-christmas-story-the-musical-2012/newsday--linda-winer.json",
     "a-christmas-story-the-musical-2012/timeout--david-cote.json",
-    "the-performers-2012/northjerseycom--robert-feldberg.json"
+    "the-performers-2012/northjerseycom--robert-feldberg.json",
+    "the-mystery-of-edwin-drood-2012/timeout--david-cote.json",
+    "cyrano-de-bergerac-2012/newsday--linda-winer.json",
+    "cyrano-de-bergerac-2012/newsday--matt-windman.json",
+    "cyrano-de-bergerac-2012/newsday--unknown.json",
+    "cyrano-de-bergerac-2012/northjerseycom--robert-feldberg.json",
+    "chaplin-2012/newsday--matt-windman.json",
+    "chaplin-2012/timeout--david-cote.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -1222,7 +1229,10 @@
     "matilda-the-musical-2013/village-voice--michael-musto.json",
     "lucky-guy-2013/backstage--erik-haagensen.json",
     "vanya-and-sonia-and-masha-and-spike-2013/new-jersey-newsroom--michael-sommers.json",
-    "dead-accounts-2012/newsday--linda-winer.json"
+    "dead-accounts-2012/newsday--linda-winer.json",
+    "elf-2012/new-jersey-newsroom--michael-sommers.json",
+    "the-heiress-2012/ew--thom-geier.json",
+    "the-heiress-2012/village-voice--michael-musto.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1560,7 +1570,9 @@
       "company-2021/backstage--unknown.json",
       "trouble-in-mind-2021/broadwayworld--unknown.json",
       "cat-on-a-hot-tin-roof-2013/timeout--david-cote.json",
-      "a-christmas-story-the-musical-2012/timeout--david-cote.json"
+      "a-christmas-story-the-musical-2012/timeout--david-cote.json",
+      "cyrano-de-bergerac-2012/newsday--linda-winer.json",
+      "chaplin-2012/newsday--matt-windman.json"
     ],
     "brightdata": [
       "the-balusters-2026/broadwayworld--unknown.json",
@@ -1620,7 +1632,9 @@
       "hadestown-2019/theater-life--barry-gordin.json",
       "public-charge-off-broadway-2026/theater-life--barry-gordin.json",
       "ann-2013/newsday--matt-windman.json",
-      "cat-on-a-hot-tin-roof-2013/boston-globe--don-aucoin.json"
+      "cat-on-a-hot-tin-roof-2013/boston-globe--don-aucoin.json",
+      "cyrano-de-bergerac-2012/newsday--matt-windman.json",
+      "cyrano-de-bergerac-2012/newsday--unknown.json"
     ],
     "archiveToday": [
       "data/review-texts/hadestown-west-end-2024/shy-strange-manic--kariss-ainsworth.json",
@@ -1633,7 +1647,8 @@
       "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json",
       "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json",
       "data/review-texts/end-of-the-rainbow-west-end-2026/north-west-end--unknown.json",
-      "data/review-texts/the-nance-2013/northjerseycom--robert-feldberg.json"
+      "data/review-texts/the-nance-2013/northjerseycom--robert-feldberg.json",
+      "data/review-texts/the-heiress-2012/ew--thom-geier.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -1757,11 +1772,14 @@
       "glengarry-glen-ross-2012/timeout--david-cote.json",
       "the-anarchist-2012/newsday--linda-winer.json",
       "a-christmas-story-the-musical-2012/newsday--linda-winer.json",
-      "the-performers-2012/northjerseycom--robert-feldberg.json"
+      "the-performers-2012/northjerseycom--robert-feldberg.json",
+      "the-mystery-of-edwin-drood-2012/timeout--david-cote.json",
+      "cyrano-de-bergerac-2012/northjerseycom--robert-feldberg.json",
+      "chaplin-2012/timeout--david-cote.json"
     ]
   },
   "startTime": "2026-06-17T21:21:03.989Z",
-  "lastProcessed": "the-performers-2012/northjerseycom--robert-feldberg.json",
+  "lastProcessed": "chaplin-2012/timeout--david-cote.json",
   "log": [
     {
       "t": "2026-06-18T00:51:32.292Z",
@@ -2403,6 +2421,12 @@
       "t": "2026-06-18T13:23:44.638Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-06-18T13:31:54.625Z",
+      "event": "bb-session",
+      "session": "96a76ca7",
+      "url": "https://blogs.villagevoice.com/dailymusto/2012/11/jessica_chastai.php"
     }
   ]
 }
