@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-18T14:11:39.853Z",
+  "generatedAt": "2026-06-18T17:28:06.803Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -971,22 +971,22 @@
       "slug": "glengarry-glen-ross-west-end",
       "thumbnail": "/images/shows/glengarry-glen-ross-west-end-2026/thumbnail.jpg",
       "siteScore": null,
-      "liveScore": 58,
+      "liveScore": 53,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 4,
+      "reviewsNeeded": 3,
       "siteFileExists": true,
-      "total": 1,
+      "total": 2,
       "t1": 1,
-      "t2": 0,
+      "t2": 1,
       "t3": 0,
       "positive": 0,
       "mixed": 1,
-      "negative": 0,
+      "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/8 total",
+          "2/8 total",
           "T1:0/3",
           "T2:1/2",
           "hi-conf:0/6"
@@ -1004,10 +1004,6 @@
         "detail": "Not yet broadcast-ready"
       },
       "missingT1": [
-        {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
         {
           "name": "Observer",
           "isDualMarket": true
@@ -1130,6 +1126,18 @@
           "p": 0,
           "m": 1,
           "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-06-18T17:28:06.803Z",
+          "rc": 2,
+          "s": 53,
+          "t1": 1,
+          "t2": 1,
+          "t3": 0,
+          "p": 0,
+          "m": 1,
+          "n": 1,
           "bc": "waiting"
         }
       ]

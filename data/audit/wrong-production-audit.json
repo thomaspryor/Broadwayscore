@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-18T14:11:35.285Z",
+  "timestamp": "2026-06-18T17:28:00.086Z",
   "stats": {
-    "totalReviews": 38534,
-    "alreadyFlagged": 16999,
+    "totalReviews": 38551,
+    "alreadyFlagged": 17005,
     "dateGuardCatches": 105,
-    "directorMismatch": 860,
+    "directorMismatch": 861,
     "tvFilmSignals": 1057,
     "londonSignals": 632,
     "offBroadwaySignals": 464,
     "yearMismatch": 81,
-    "noPublishDate": 3935
+    "noPublishDate": 3945
   },
   "findings": [
     {
@@ -8073,6 +8073,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "glengarry-glen-ross-west-end-2026",
+      "file": "all-that-dazzles-uk--unknown.json",
+      "publishDate": null,
+      "url": "https://www.allthatdazzles.co.uk/post/review-glengarry-glen-ross-the-old-vic",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
         }
       ]
     },
