@@ -1,26 +1,20 @@
 {
-  "updatedAt": "2026-06-18T04:36:18.345Z",
-  "processed": 295,
-  "failed": 335,
-  "successRate": "46.8%",
+  "updatedAt": "2026-06-18T07:44:59.821Z",
+  "processed": 297,
+  "failed": 350,
+  "successRate": "45.9%",
   "tierBreakdown": {
-    "playwright": 133,
+    "playwright": 135,
     "amp": 0,
     "browserbase": 28,
     "directCookies": 0,
     "scrapingbee": 72,
     "brightdata": 36,
-    "archiveToday": 1,
+    "archiveToday": 7,
     "archive": 103
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-06-18T05:20:23.666Z",
-      "event": "bb-session",
-      "session": "99bcef83",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
     {
       "t": "2026-06-18T05:20:24.100Z",
       "event": "bb-cookie-inject",
@@ -124,6 +118,12 @@
       "t": "2026-06-18T07:07:38.739Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-18T07:42:17.885Z",
+      "event": "bb-session",
+      "session": "d3c922b7",
+      "url": "https://therecs.co.uk/are-you-watching-royal-court/"
     }
   ]
 }
