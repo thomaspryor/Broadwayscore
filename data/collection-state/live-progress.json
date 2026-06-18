@@ -1,33 +1,22 @@
 {
-  "updatedAt": "2026-06-18T07:47:09.365Z",
-  "processed": 226,
-  "failed": 260,
-  "successRate": "46.5%",
+  "updatedAt": "2026-06-18T07:50:19.135Z",
+  "processed": 230,
+  "failed": 266,
+  "successRate": "46.4%",
   "tierBreakdown": {
-    "playwright": 106,
+    "playwright": 107,
     "amp": 0,
-    "browserbase": 26,
+    "browserbase": 28,
     "directCookies": 0,
     "scrapingbee": 62,
-    "brightdata": 21,
+    "brightdata": 23,
     "archiveToday": 6,
     "archive": 55
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
-      "t": "2026-06-18T04:44:52.790Z",
-      "event": "bb-session",
-      "session": "415313be",
-      "url": "https://www.nytimes.com/2026/06/03/theater/caissie-levy-broadway-tonys-ragtime.h"
-    },
-    {
-      "t": "2026-06-18T10:00:19.525Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-18T10:00:41.632Z",
+      "t": "2026-06-18T04:45:48.401Z",
       "event": "bb-session",
       "session": "2cb9a683",
       "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
@@ -89,6 +78,17 @@
     },
     {
       "t": "2026-06-18T07:41:02.233Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-18T07:48:53.543Z",
+      "event": "bb-session",
+      "session": "2d81aa89",
+      "url": "https://www.wsj.com/articles/the-ferryman-review-a-house-divided-1540500470?gaa_"
+    },
+    {
+      "t": "2026-06-18T07:48:54.589Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
