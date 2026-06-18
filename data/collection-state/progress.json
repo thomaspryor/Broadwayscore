@@ -193,7 +193,8 @@
     "american-buffalo-2022/timeout--adam-feldman.json",
     "paradise-square-2022/broadway-and-me--janice-c-simpson.json",
     "plaza-suite-2022/broadway-and-me--janice-c-simpson.json",
-    "company-2021/theatrely--andrew-martini.json"
+    "company-2021/theatrely--andrew-martini.json",
+    "small-off-broadway-2026/culturesauce--thom-geier.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -326,7 +327,11 @@
     "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
     "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
     "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
-    "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json"
+    "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
+    "small-off-broadway-2026/pages-on-stages--unknown.json",
+    "small-off-broadway-2026/the-recs--unknown.json",
+    "small-off-broadway-2026/theater-pizzazz--unknown.json",
+    "small-off-broadway-2026/washpost--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -505,7 +510,8 @@
       "into-the-woods-2022/newyorker--conde-nast.json",
       "the-kite-runner-2022/newyorker--conde-nast.json",
       "the-kite-runner-2022/newyorker--elisabeth-vincentelli.json",
-      "mr-saturday-night-2022/newyorker--vinson-cunningham.json"
+      "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
+      "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json"
     ],
     "archiveToday": [
       "data/review-texts/hadestown-west-end-2024/shy-strange-manic--kariss-ainsworth.json"
@@ -559,11 +565,12 @@
       "american-buffalo-2022/timeout--adam-feldman.json",
       "paradise-square-2022/broadway-and-me--janice-c-simpson.json",
       "american-buffalo-2022/theater-life--david-sheward.json",
-      "plaza-suite-2022/broadway-and-me--janice-c-simpson.json"
+      "plaza-suite-2022/broadway-and-me--janice-c-simpson.json",
+      "small-off-broadway-2026/culturesauce--thom-geier.json"
     ]
   },
   "startTime": "2026-06-17T21:21:03.989Z",
-  "lastProcessed": "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
+  "lastProcessed": "small-off-broadway-2026/washpost--unknown.json",
   "log": [
     {
       "t": "2026-06-18T00:51:32.292Z",
@@ -647,6 +654,12 @@
       "t": "2026-06-18T01:25:21.985Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-18T01:29:50.537Z",
+      "event": "bb-session",
+      "session": "9b63a0e8",
+      "url": "https://pagesonstages.com/2026/05/28/small/"
     }
   ]
 }
