@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-18T19:16:16.006Z",
+  "timestamp": "2026-06-18T22:34:04.757Z",
   "stats": {
     "totalReviews": 38547,
-    "alreadyFlagged": 17004,
-    "dateGuardCatches": 105,
+    "alreadyFlagged": 17008,
+    "dateGuardCatches": 104,
     "directorMismatch": 862,
     "tvFilmSignals": 1057,
-    "londonSignals": 633,
+    "londonSignals": 634,
     "offBroadwaySignals": 464,
     "yearMismatch": 82,
-    "noPublishDate": 3941
+    "noPublishDate": 3936
   },
   "findings": [
     {
@@ -8141,6 +8141,25 @@
       "score": 40,
       "publishDate": "2026-06-18",
       "url": "https://www.londonboxoffice.co.uk/news/post/review-glengarry-glen-ross-old-vic",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "glengarry-glen-ross-west-end-2026",
+      "file": "sunday-telegraph--dominic-cavendish.json",
+      "score": 64,
+      "publishDate": "2026-06-18",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/glengarry-glen-ross-at-the-old-vic-review-3-stars/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -21760,20 +21779,6 @@
     },
     {
       "showId": "the-color-purple-2005",
-      "file": "ap--unknown.json",
-      "score": 80,
-      "publishDate": null,
-      "url": "http://abcnews.go.com/Entertainment/wireStory/review-cynthia-erivo-amazing-color-purple-revival-35706471",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john doyle\" from the-color-purple-2015"
-        }
-      ]
-    },
-    {
-      "showId": "the-color-purple-2005",
       "file": "nytimes--alissa-wilkinson.json",
       "score": 92,
       "publishDate": "2007-05-18",
@@ -34889,20 +34894,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
-        }
-      ]
-    },
-    {
-      "showId": "next-to-normal-2009",
-      "file": "theater-life--eric-march.json",
-      "score": 86,
-      "publishDate": "2008-05-05T01:01:00",
-      "url": "https://theaterlife.com/next-to-normal/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 326d before show (2008-05-05T01:01:00 vs 2009-03-27)"
         }
       ]
     },

@@ -1,18 +1,129 @@
 {
-  "updatedAt": "2026-06-18T21:38:19.967Z",
-  "processed": 1,
-  "failed": 24,
-  "successRate": "4.0%",
+  "updatedAt": "2026-06-18T22:24:24.148Z",
+  "processed": 535,
+  "failed": 1036,
+  "successRate": "34.1%",
   "tierBreakdown": {
-    "playwright": 1,
-    "amp": 0,
-    "browserbase": 0,
+    "playwright": 223,
+    "amp": 1,
+    "browserbase": 58,
     "directCookies": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
-    "archiveToday": 0,
-    "archive": 0
+    "scrapingbee": 97,
+    "brightdata": 66,
+    "archiveToday": 12,
+    "archive": 171
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 30,
+  "recentActivity": [
+    {
+      "t": "2026-06-18T20:30:21.109Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-06-18T20:30:32.748Z",
+      "event": "bb-session",
+      "session": "2501b42d",
+      "url": "https://www.wsj.com/articles/SB10001424052748704364004575518832280052044"
+    },
+    {
+      "t": "2026-06-18T20:30:33.670Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-18T20:33:19.307Z",
+      "event": "bb-session",
+      "session": "5f3f6ca4",
+      "url": "https://www.wsj.com/articles/SB10001424052748704541004575267730118345518"
+    },
+    {
+      "t": "2026-06-18T20:33:20.297Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-18T20:35:21.980Z",
+      "event": "bb-session",
+      "session": "7b5780e6",
+      "url": "https://www.wsj.com/articles/SB10001424052702304222504575172743926926460"
+    },
+    {
+      "t": "2026-06-18T20:35:22.980Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-18T20:38:58.836Z",
+      "event": "bb-session",
+      "session": "0c8df093",
+      "url": "https://www.washingtonpost.com/wp-dyn/content/article/2010/04/08/AR2010040805326"
+    },
+    {
+      "t": "2026-06-18T20:38:59.893Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-06-18T20:39:49.076Z",
+      "event": "bb-session",
+      "session": "23c58954",
+      "url": "https://www.wsj.com/articles/SB10001424052702303960604575157744105208812?gaa_at="
+    },
+    {
+      "t": "2026-06-18T20:39:50.000Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-18T20:42:49.541Z",
+      "event": "bb-session",
+      "session": "5465f42d",
+      "url": "https://www.talkinbroadway.com/world/Red.html"
+    },
+    {
+      "t": "2026-06-18T20:42:50.553Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-18T20:44:21.637Z",
+      "event": "bb-session",
+      "session": "ab696a9b",
+      "url": "http://www.silive.com/entertainment/arts/index.ssf/2010/03/broadway_review_come_"
+    },
+    {
+      "t": "2026-06-18T20:44:41.549Z",
+      "event": "bb-session",
+      "session": "effe1d13",
+      "url": "http://www.hollywoodreporter.com/hr/film-reviews/come-fly-away-theater-review-10"
+    },
+    {
+      "t": "2026-06-18T20:44:42.366Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-06-18T20:46:49.763Z",
+      "event": "bb-session",
+      "session": "c0067f14",
+      "url": "https://www.wsj.com/articles/SB10001424052748704541004575110463158737430"
+    },
+    {
+      "t": "2026-06-18T20:46:50.742Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-18T20:48:52.863Z",
+      "event": "bb-session",
+      "session": "10550f95",
+      "url": "http://www.hollywoodreporter.com/hr/film-reviews/a-behanding-in-spokane-theater-"
+    },
+    {
+      "t": "2026-06-18T20:48:53.724Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    }
+  ]
 }
