@@ -231,7 +231,11 @@
     "the-cher-show-2018/medium--christian-lewis.json",
     "the-prom-2018/thestage--mark-shenton.json",
     "king-kong-2018/limelight-magazine-au--clive-paget.json",
-    "american-son-2018/showbiz411--roger-friedman.json"
+    "american-son-2018/showbiz411--roger-friedman.json",
+    "the-ferryman-2018/wsj--terry-teachout.json",
+    "the-ferryman-2018/medium--christian-lewis.json",
+    "the-nap-2018/theater-life--barry-gordin.json",
+    "gettin-the-band-back-together-2018/broadway-and-me--janice-c-simpson.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -671,7 +675,13 @@
     "torch-song-2018/thestage--mark-shenton.json",
     "torch-song-2018/theater-news-online--jeremy-gerard.json",
     "the-waverly-gallery-2018/thestage--mark-shenton.json",
-    "the-waverly-gallery-2018/theater-news-online--matt-windman.json"
+    "the-waverly-gallery-2018/theater-news-online--matt-windman.json",
+    "the-waverly-gallery-2018/journal-inquirer--tim-leininger.json",
+    "the-nap-2018/theater-news-online--jeremy-gerard.json",
+    "bernhardthamlet-2018/theater-news-online--jeremy-gerard.json",
+    "bernhardthamlet-2018/theater-news-online--joe-dziemianowicz.json",
+    "pretty-woman-the-musical-2018/nypost--joe-dziemianowicz.json",
+    "gettin-the-band-back-together-2018/theater-news-online--jeremy-gerard.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -783,7 +793,9 @@
       "burn-this-2019/nyt-theater--unknown.json",
       "burn-this-2019/theatermania--jesse-green.json",
       "oklahoma-2019/front-row-center--tulis-mccall.json",
-      "network-2018/ny1--roma-torre.json"
+      "network-2018/ny1--roma-torre.json",
+      "the-nap-2018/theater-life--barry-gordin.json",
+      "gettin-the-band-back-together-2018/broadway-and-me--janice-c-simpson.json"
     ],
     "amp": [],
     "browserbase": [
@@ -903,7 +915,9 @@
       "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
       "oklahoma-2019/medium--christian-lewis.json",
       "the-cher-show-2018/medium--christian-lewis.json",
-      "american-son-2018/showbiz411--roger-friedman.json"
+      "american-son-2018/showbiz411--roger-friedman.json",
+      "the-ferryman-2018/wsj--terry-teachout.json",
+      "the-ferryman-2018/medium--christian-lewis.json"
     ],
     "archiveToday": [
       "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
@@ -959,7 +973,7 @@
     ]
   },
   "startTime": "2026-06-18T22:39:22.801Z",
-  "lastProcessed": "the-waverly-gallery-2018/theater-news-online--matt-windman.json",
+  "lastProcessed": "gettin-the-band-back-together-2018/theater-news-online--jeremy-gerard.json",
   "log": [
     {
       "t": "2026-06-18T23:10:42.792Z",
@@ -1268,6 +1282,17 @@
       "t": "2026-06-19T09:04:39.138Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-06-19T09:11:56.508Z",
+      "event": "bb-session",
+      "session": "cadd99fb",
+      "url": "https://www.wsj.com/articles/the-ferryman-review-a-house-divided-1540500470?gaa_"
+    },
+    {
+      "t": "2026-06-19T09:11:57.215Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

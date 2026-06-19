@@ -1,33 +1,22 @@
 {
-  "updatedAt": "2026-06-19T09:11:47.930Z",
-  "processed": 232,
-  "failed": 238,
-  "successRate": "49.4%",
+  "updatedAt": "2026-06-19T09:14:15.304Z",
+  "processed": 236,
+  "failed": 244,
+  "successRate": "49.2%",
   "tierBreakdown": {
-    "playwright": 108,
+    "playwright": 110,
     "amp": 0,
     "browserbase": 27,
     "directCookies": 0,
     "scrapingbee": 63,
-    "brightdata": 22,
+    "brightdata": 24,
     "archiveToday": 9,
     "archive": 39
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-06-19T05:34:03.151Z",
-      "event": "bb-session",
-      "session": "2eced626",
-      "url": "https://www.nytimes.com/2026/05/31/theater/othello-review-wendell-pierce.html"
-    },
-    {
-      "t": "2026-06-19T07:08:00.751Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-19T07:19:21.196Z",
+      "t": "2026-06-19T05:34:42.052Z",
       "event": "bb-session",
       "session": "03704a2a",
       "url": "https://www.thestage.co.uk/reviews/glengarry-glen-ross-review-old-vic-theatre-lo"
@@ -141,6 +130,17 @@
       "t": "2026-06-19T09:04:39.138Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-06-19T09:11:56.508Z",
+      "event": "bb-session",
+      "session": "cadd99fb",
+      "url": "https://www.wsj.com/articles/the-ferryman-review-a-house-divided-1540500470?gaa_"
+    },
+    {
+      "t": "2026-06-19T09:11:57.215Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
