@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-19T11:02:01.599Z",
+  "timestamp": "2026-06-19T12:29:25.586Z",
   "stats": {
-    "totalReviews": 38559,
-    "alreadyFlagged": 17016,
+    "totalReviews": 38571,
+    "alreadyFlagged": 17015,
     "dateGuardCatches": 104,
     "directorMismatch": 866,
     "tvFilmSignals": 1058,
-    "londonSignals": 633,
+    "londonSignals": 634,
     "offBroadwaySignals": 464,
     "yearMismatch": 82,
-    "noPublishDate": 3933
+    "noPublishDate": 3944
   },
   "findings": [
     {
@@ -8133,6 +8133,7 @@
     {
       "showId": "glengarry-glen-ross-west-end-2026",
       "file": "broadwayworld--alexander-cohen.json",
+      "score": 59,
       "publishDate": "2026-06-18",
       "url": "https://www.broadwayworld.com/westend/article/Review-GLENGARRY-GLEN-ROSS-The-Old-Vic-20260618",
       "findings": [
@@ -8140,12 +8141,18 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
     {
       "showId": "glengarry-glen-ross-west-end-2026",
       "file": "financialtimes--sarah-hemming.json",
+      "score": 78,
       "publishDate": "2026-06-18",
       "url": null,
       "findings": [
@@ -8197,6 +8204,7 @@
     {
       "showId": "glengarry-glen-ross-west-end-2026",
       "file": "london-theatre--marianka-swain.json",
+      "score": 78,
       "publishDate": "2026-06-18",
       "url": null,
       "findings": [
@@ -8210,7 +8218,7 @@
     {
       "showId": "glengarry-glen-ross-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": null,
+      "score": 79,
       "publishDate": "2026-06-18",
       "url": "https://www.standard.co.uk/culture/theatre/glengarry-glen-ross-at-the-old-vic-review-b1286630.html",
       "findings": [
