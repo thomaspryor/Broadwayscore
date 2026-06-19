@@ -1,7 +1,207 @@
 {
-  "generatedAt": "2026-06-18T22:34:09.356Z",
+  "generatedAt": "2026-06-19T08:53:36.245Z",
   "lookbackDays": 3,
   "shows": [
+    {
+      "id": "springwood-west-end-2026",
+      "title": "Springwood",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-06-19",
+      "status": "upcoming",
+      "slug": "springwood-west-end",
+      "thumbnail": "/images/shows/springwood-west-end-2026/thumbnail.webp",
+      "siteScore": null,
+      "liveScore": null,
+      "scoreDrift": null,
+      "belowThreshold": true,
+      "reviewsNeeded": 5,
+      "siteFileExists": true,
+      "total": 0,
+      "t1": 0,
+      "t2": 0,
+      "t3": 0,
+      "positive": 0,
+      "mixed": 0,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "0/8 total",
+          "T1:0/3",
+          "T2:0/2",
+          "hi-conf:0/6"
+        ],
+        "highConfidence": 0,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        }
+      ]
+    },
+    {
+      "id": "ride-the-cyclone-off-west-end-2026",
+      "title": "Ride The Cyclone",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-06-19",
+      "status": "announced",
+      "slug": "ride-the-cyclone-off-west-end",
+      "thumbnail": "/images/shows/ride-the-cyclone-off-west-end-2026/thumbnail.jpg",
+      "siteScore": null,
+      "liveScore": null,
+      "scoreDrift": null,
+      "belowThreshold": true,
+      "reviewsNeeded": 5,
+      "siteFileExists": true,
+      "total": 0,
+      "t1": 0,
+      "t2": 0,
+      "t3": 0,
+      "positive": 0,
+      "mixed": 0,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "0/8 total",
+          "T1:0/3",
+          "T2:0/2",
+          "hi-conf:0/6"
+        ],
+        "highConfidence": 0,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        }
+      ]
+    },
     {
       "id": "relics-west-end-2026",
       "title": "Relics",
@@ -699,10 +899,6 @@
           "isDualMarket": false
         },
         {
-          "name": "TheaterMania",
-          "isDualMarket": false
-        },
-        {
           "name": "BroadwayWorld",
           "isDualMarket": true
         },
@@ -745,10 +941,6 @@
         {
           "name": "New York Theatre Guide",
           "isDualMarket": true
-        },
-        {
-          "name": "New York Theater",
-          "isDualMarket": false
         },
         {
           "name": "Theatrely",
@@ -915,10 +1107,6 @@
           "isDualMarket": true
         },
         {
-          "name": "Evening Standard",
-          "isDualMarket": false
-        },
-        {
           "name": "The Independent",
           "isDualMarket": true
         },
@@ -971,24 +1159,23 @@
       "slug": "glengarry-glen-ross-west-end",
       "thumbnail": "/images/shows/glengarry-glen-ross-west-end-2026/thumbnail.jpg",
       "siteScore": null,
-      "liveScore": 53,
+      "liveScore": 56,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 2,
+      "reviewsNeeded": 1,
       "siteFileExists": true,
-      "total": 3,
-      "t1": 1,
+      "total": 4,
+      "t1": 2,
       "t2": 1,
       "t3": 1,
       "positive": 0,
-      "mixed": 2,
+      "mixed": 3,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "3/8 total",
+          "4/8 total",
           "T1:0/3",
-          "T2:1/2",
           "hi-conf:1/6"
         ],
         "highConfidence": 1,
@@ -1004,6 +1191,10 @@
         "detail": "Not yet broadcast-ready"
       },
       "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
         {
           "name": "Observer",
           "isDualMarket": true
@@ -1163,61 +1354,23 @@
           "m": 2,
           "n": 1,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-06-19T08:53:36.245Z",
+          "rc": 4,
+          "s": 56,
+          "t1": 2,
+          "t2": 1,
+          "t3": 1,
+          "p": 0,
+          "m": 3,
+          "n": 1,
+          "bc": "waiting"
         }
       ]
     }
   ],
   "upcoming": [
-    {
-      "id": "springwood-west-end-2026",
-      "title": "Springwood",
-      "market": "west-end",
-      "category": "off-west-end",
-      "type": "play",
-      "openingDate": "2026-06-19",
-      "status": "upcoming",
-      "slug": "springwood-west-end",
-      "thumbnail": "/images/shows/springwood-west-end-2026/thumbnail.webp",
-      "daysUntil": 1,
-      "readinessChecks": {
-        "wrongProduction": {
-          "pass": true,
-          "detail": "No pre-existing score files"
-        }
-      },
-      "readinessSummary": {
-        "failures": 1,
-        "warnings": 0,
-        "unknowns": 2,
-        "total": 4
-      },
-      "preflight": false
-    },
-    {
-      "id": "ride-the-cyclone-off-west-end-2026",
-      "title": "Ride The Cyclone",
-      "market": "west-end",
-      "category": "off-west-end",
-      "type": "play",
-      "openingDate": "2026-06-19",
-      "status": "announced",
-      "slug": "ride-the-cyclone-off-west-end",
-      "thumbnail": "/images/shows/ride-the-cyclone-off-west-end-2026/thumbnail.jpg",
-      "daysUntil": 1,
-      "readinessChecks": {
-        "wrongProduction": {
-          "pass": true,
-          "detail": "No pre-existing score files"
-        }
-      },
-      "readinessSummary": {
-        "failures": 1,
-        "warnings": 0,
-        "unknowns": 2,
-        "total": 4
-      },
-      "preflight": false
-    },
     {
       "id": "the-misanthrope-west-end-2026",
       "title": "The Misanthrope",
@@ -1228,7 +1381,7 @@
       "status": "previews",
       "slug": "the-misanthrope-west-end",
       "thumbnail": "/images/shows/the-misanthrope-west-end-2026/thumbnail.webp",
-      "daysUntil": 5,
+      "daysUntil": 4,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1253,7 +1406,7 @@
       "status": "previews",
       "slug": "birthright-off-broadway",
       "thumbnail": "/images/shows/birthright-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 6,
+      "daysUntil": 5,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1292,7 +1445,7 @@
       "status": "previews",
       "slug": "sinatra-the-musical-west-end",
       "thumbnail": "/images/shows/sinatra-the-musical-west-end-2026/thumbnail.webp",
-      "daysUntil": 6,
+      "daysUntil": 5,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1317,7 +1470,7 @@
       "status": "previews",
       "slug": "the-truth-a-comedy-by-florian-zeller-west-end",
       "thumbnail": "/images/shows/the-truth-a-comedy-by-florian-zeller-west-end-2026/thumbnail.webp",
-      "daysUntil": 6,
+      "daysUntil": 5,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1342,7 +1495,7 @@
       "status": "previews",
       "slug": "cyrano-de-bergerac-west-end",
       "thumbnail": "/images/shows/cyrano-de-bergerac-west-end-2026/thumbnail.webp",
-      "daysUntil": 7,
+      "daysUntil": 6,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1367,6 +1520,31 @@
       "status": "previews",
       "slug": "pride-west-end",
       "thumbnail": "/images/shows/pride-west-end-2026/thumbnail.webp",
+      "daysUntil": 6,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        }
+      },
+      "readinessSummary": {
+        "failures": 1,
+        "warnings": 0,
+        "unknowns": 2,
+        "total": 4
+      },
+      "preflight": false
+    },
+    {
+      "id": "archduke-west-end-2026",
+      "title": "Archduke",
+      "market": "west-end",
+      "category": "west-end",
+      "type": "play",
+      "openingDate": "2026-06-26",
+      "status": "upcoming",
+      "slug": "archduke-west-end",
+      "thumbnail": "/images/shows/archduke-west-end-2026/thumbnail.webp",
       "daysUntil": 7,
       "readinessChecks": {
         "wrongProduction": {
