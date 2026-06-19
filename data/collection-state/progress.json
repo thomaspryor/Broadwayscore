@@ -1,6 +1,14 @@
 {
   "processed": [
-    "war-horse-west-end-2026/click-liverpool--carie-schneider.json"
+    "war-horse-west-end-2026/click-liverpool--carie-schneider.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--derrick-bryson-taylor.json",
+    "girl-interrupted-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "jerome-off-broadway-2025/off-off-online--edward-karam.json",
+    "jerome-off-broadway-2025/one-minute-critic--jerry-portwood.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/variety--haley-kluge.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
+    "small-off-broadway-2026/culturesauce--thom-geier.json"
   ],
   "failed": [
     "sting-west-end-2026/ew--unknown.json",
@@ -45,17 +53,45 @@
     "war-horse-west-end-2026/all-that-dazzles-uk--unknown.json",
     "war-horse-west-end-2026/plays-international--maryam-philpott.json",
     "war-horse-west-end-2026/times-uk--chris-bennion.json",
-    "war-horse-west-end-2026/times-uk--clive-davis.json"
+    "war-horse-west-end-2026/times-uk--clive-davis.json",
+    "romeo-and-juliet-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+    "are-you-now-or-have-you-ever-been-off-broadway-2026/nytimes--laura-collins-hughes.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
+    "small-off-broadway-2026/daily-mail--unknown.json",
+    "small-off-broadway-2026/pages-on-stages--unknown.json",
+    "small-off-broadway-2026/the-recs--unknown.json",
+    "small-off-broadway-2026/theater-pizzazz--unknown.json",
+    "small-off-broadway-2026/washpost--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "war-horse-west-end-2026/click-liverpool--carie-schneider.json"
+      "war-horse-west-end-2026/click-liverpool--carie-schneider.json",
+      "girl-interrupted-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "jerome-off-broadway-2025/off-off-online--edward-karam.json",
+      "jerome-off-broadway-2025/one-minute-critic--jerry-portwood.json",
+      "and-then-the-rodeo-burned-down-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
+      "small-off-broadway-2026/culturesauce--thom-geier.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/variety--haley-kluge.json",
+      "and-then-the-rodeo-burned-down-off-broadway-2026/variety--haley-kluge.json"
+    ],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "a-woman-among-women-off-broadway-2026/nytimes--derrick-bryson-taylor.json"
+    ],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/glengarry-glen-ross-west-end-2026/thestage--unknown.json",
@@ -64,7 +100,7 @@
     "archive": []
   },
   "startTime": "2026-06-18T23:41:13.525Z",
-  "lastProcessed": "war-horse-west-end-2026/times-uk--clive-davis.json",
+  "lastProcessed": "small-off-broadway-2026/washpost--unknown.json",
   "log": [
     {
       "t": "2026-06-18T23:43:39.480Z",
@@ -76,6 +112,50 @@
       "t": "2026-06-18T23:43:40.674Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-06-19T00:22:52.583Z",
+      "event": "bb-session",
+      "session": "665ba3d8",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-19T00:22:53.353Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-19T00:23:28.952Z",
+      "event": "bb-session",
+      "session": "4e0f63bc",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-19T00:23:29.737Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-19T00:23:42.518Z",
+      "event": "bb-session",
+      "session": "22649f52",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-19T00:23:43.275Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-19T00:25:34.570Z",
+      "event": "bb-session",
+      "session": "2c411b3f",
+      "url": "https://variety.com/2026/legit/awards/michael-arden-lost-boys-happy-feet-anthrop"
+    },
+    {
+      "t": "2026-06-19T00:25:35.425Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
