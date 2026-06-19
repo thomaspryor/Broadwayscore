@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-19T12:37:40.938Z",
+  "generatedAt": "2026-06-19T15:42:21.249Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1172,26 +1172,26 @@
       "status": "open",
       "slug": "glengarry-glen-ross-west-end",
       "thumbnail": "/images/shows/glengarry-glen-ross-west-end-2026/thumbnail.jpg",
-      "siteScore": 66.37,
-      "liveScore": 66,
-      "scoreDrift": -0.37000000000000455,
+      "siteScore": 66.82,
+      "liveScore": 67,
+      "scoreDrift": 0.18000000000000682,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 8,
+      "total": 10,
       "t1": 4,
-      "t2": 3,
-      "t3": 1,
+      "t2": 4,
+      "t3": 2,
       "positive": 3,
-      "mixed": 4,
+      "mixed": 6,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
           "T1:2/3",
-          "hi-conf:4/6"
+          "hi-conf:5/6"
         ],
-        "highConfidence": 4,
+        "highConfidence": 5,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1381,6 +1381,18 @@
           "t3": 1,
           "p": 3,
           "m": 4,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-06-19T15:42:21.249Z",
+          "rc": 10,
+          "s": 66.82,
+          "t1": 4,
+          "t2": 4,
+          "t3": 2,
+          "p": 3,
+          "m": 6,
           "n": 1,
           "bc": "waiting"
         }

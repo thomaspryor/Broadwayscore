@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-19T12:37:36.424Z",
+  "timestamp": "2026-06-19T15:42:16.715Z",
   "stats": {
-    "totalReviews": 38571,
-    "alreadyFlagged": 17015,
+    "totalReviews": 38577,
+    "alreadyFlagged": 17017,
     "dateGuardCatches": 104,
-    "directorMismatch": 866,
+    "directorMismatch": 868,
     "tvFilmSignals": 1057,
-    "londonSignals": 634,
+    "londonSignals": 636,
     "offBroadwaySignals": 464,
     "yearMismatch": 82,
-    "noPublishDate": 3943
+    "noPublishDate": 3942
   },
   "findings": [
     {
@@ -8133,7 +8133,7 @@
     {
       "showId": "glengarry-glen-ross-west-end-2026",
       "file": "broadwayworld--alexander-cohen.json",
-      "score": 59,
+      "score": 56,
       "publishDate": "2026-06-18",
       "url": "https://www.broadwayworld.com/westend/article/Review-GLENGARRY-GLEN-ROSS-The-Old-Vic-20260618",
       "findings": [
@@ -8152,7 +8152,7 @@
     {
       "showId": "glengarry-glen-ross-west-end-2026",
       "file": "financialtimes--sarah-hemming.json",
-      "score": 78,
+      "score": 79,
       "publishDate": "2026-06-18",
       "url": null,
       "findings": [
@@ -8204,7 +8204,7 @@
     {
       "showId": "glengarry-glen-ross-west-end-2026",
       "file": "london-theatre--marianka-swain.json",
-      "score": 78,
+      "score": 79,
       "publishDate": "2026-06-18",
       "url": null,
       "findings": [
@@ -8235,6 +8235,39 @@
       "score": 64,
       "publishDate": "2026-06-18",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/glengarry-glen-ross-at-the-old-vic-review-3-stars/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "glengarry-glen-ross-west-end-2026",
+      "file": "thereviewshub--the-reviews-hub-london.json",
+      "score": 70,
+      "publishDate": "2026-06-18",
+      "url": "https://www.thereviewshub.com/glengarry-glen-ross-old-vic-london/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
+        }
+      ]
+    },
+    {
+      "showId": "glengarry-glen-ross-west-end-2026",
+      "file": "west-end-best-friend--cara-brazier.json",
+      "score": 68,
+      "publishDate": "2026-06-18",
+      "url": "https://www.westendbestfriend.co.uk/news/review-glengarry-glen-ross-old-vic-theatre",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -35667,6 +35700,19 @@
       "showId": "paddington-the-musical-west-end-2025",
       "file": "musical-theatre-review--lisa-martlandbr.json",
       "score": 96,
+      "publishDate": null,
+      "url": "https://musicaltheatrereview.com/paddington-the-musical-savoy-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "paddington-the-musical-west-end-2025",
+      "file": "musical-theatre-review--unknown.json",
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/paddington-the-musical-savoy-theatre/",
       "findings": [
