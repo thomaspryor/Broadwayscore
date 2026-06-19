@@ -289,7 +289,14 @@
     "dear-evan-hansen-2016/frontmezzjunkies--steven-ross.json",
     "a-bronx-tale-the-musical-2016/timeout--adam-feldman.json",
     "natasha-pierre-and-the-great-comet-of-1812-2016/newyorker--conde-nast.json",
-    "natasha-pierre-and-the-great-comet-of-1812-2016/broadway-and-me--janice-c-simpson.json"
+    "natasha-pierre-and-the-great-comet-of-1812-2016/broadway-and-me--janice-c-simpson.json",
+    "les-liaisons-dangereuses-2016/wsj--terry-teachout.json",
+    "falsettos-2016/theatermania--jesse-green.json",
+    "falsettos-2016/theater-life--eric-march.json",
+    "heisenberg-2016/nydailynews--joe-dziemianowicz.json",
+    "heisenberg-2016/timeout--adam-feldman.json",
+    "heisenberg-2016/wnyc--jennifer-vanasco.json",
+    "oh-hello-on-broadway-2016/nydailynews--joe-dziemianowicz.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -771,7 +778,10 @@
     "the-glass-menagerie-2017/chicagotribune--chris-jones.json",
     "the-present-2017/thestage--unknown.json",
     "in-transit-2016/nydailynews--joe-dziemianowicz.json",
-    "a-bronx-tale-the-musical-2016/njcom--patrick-maley.json"
+    "a-bronx-tale-the-musical-2016/njcom--patrick-maley.json",
+    "les-liaisons-dangereuses-2016/thestage--mark-shenton.json",
+    "heisenberg-2016/wsj--terry-teachout.json",
+    "heisenberg-2016/abc-news--mark-kennedy.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -915,7 +925,10 @@
       "sunday-in-the-park-with-george-2017/theater-life--isa-goldberg.json",
       "sunday-in-the-park-with-george-2017/wnyc--jennifer-vanasco.json",
       "jitney-2017/wnyc--jennifer-vanasco.json",
-      "natasha-pierre-and-the-great-comet-of-1812-2016/broadway-and-me--janice-c-simpson.json"
+      "natasha-pierre-and-the-great-comet-of-1812-2016/broadway-and-me--janice-c-simpson.json",
+      "falsettos-2016/theatermania--jesse-green.json",
+      "falsettos-2016/theater-life--eric-march.json",
+      "heisenberg-2016/wnyc--jennifer-vanasco.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1049,7 +1062,9 @@
       "oslo-2017/timeout--adam-feldman.json",
       "significant-other-2017/nydailynews--joe-dziemianowicz.json",
       "sunset-boulevard-2017/newyorker--conde-nast.json",
-      "jitney-2017/nydailynews--joe-dziemianowicz.json"
+      "jitney-2017/nydailynews--joe-dziemianowicz.json",
+      "les-liaisons-dangereuses-2016/wsj--terry-teachout.json",
+      "heisenberg-2016/timeout--adam-feldman.json"
     ],
     "archiveToday": [
       "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
@@ -1070,7 +1085,8 @@
       "data/review-texts/meteor-shower-2017/thestage--mark-shenton.json",
       "data/review-texts/anastasia-2017/thestage--mark-shenton.json",
       "data/review-texts/the-little-foxes-2017/thestage--mark-shenton.json",
-      "data/review-texts/groundhog-day-2017/thestage--mark-shenton.json"
+      "data/review-texts/groundhog-day-2017/thestage--mark-shenton.json",
+      "data/review-texts/les-liaisons-dangereuses-2016/thestage--mark-shenton.json"
     ],
     "archive": [
       "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
@@ -1125,11 +1141,13 @@
       "in-transit-2016/the-cultural-critic--steve-cohen.json",
       "dear-evan-hansen-2016/frontmezzjunkies--steven-ross.json",
       "a-bronx-tale-the-musical-2016/timeout--adam-feldman.json",
-      "natasha-pierre-and-the-great-comet-of-1812-2016/newyorker--conde-nast.json"
+      "natasha-pierre-and-the-great-comet-of-1812-2016/newyorker--conde-nast.json",
+      "heisenberg-2016/nydailynews--joe-dziemianowicz.json",
+      "oh-hello-on-broadway-2016/nydailynews--joe-dziemianowicz.json"
     ]
   },
   "startTime": "2026-06-18T22:39:22.801Z",
-  "lastProcessed": "natasha-pierre-and-the-great-comet-of-1812-2016/broadway-and-me--janice-c-simpson.json",
+  "lastProcessed": "oh-hello-on-broadway-2016/nydailynews--joe-dziemianowicz.json",
   "log": [
     {
       "t": "2026-06-18T23:10:42.792Z",
@@ -1458,6 +1476,28 @@
     },
     {
       "t": "2026-06-19T09:36:57.526Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-19T09:54:10.058Z",
+      "event": "bb-session",
+      "session": "76e2559b",
+      "url": "https://www.wsj.com/articles/les-liaisons-dangereuses-review-fallen-archness-147"
+    },
+    {
+      "t": "2026-06-19T09:54:11.334Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-19T09:56:46.871Z",
+      "event": "bb-session",
+      "session": "aa685e6f",
+      "url": "http://www.wsj.com/articles/heisenberg-review-masculine-wish-fulfillment-on-stag"
+    },
+    {
+      "t": "2026-06-19T09:56:47.467Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
