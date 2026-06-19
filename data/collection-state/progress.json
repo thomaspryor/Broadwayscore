@@ -377,7 +377,8 @@
     "jekyll-and-hyde-2013/newsday--matt-windman.json",
     "the-nance-2013/timeout--david-cote.json",
     "the-nance-2013/northjerseycom--robert-feldberg.json",
-    "youth-in-flames-off-broadway-2026/off-off-online--unknown.json"
+    "youth-in-flames-off-broadway-2026/off-off-online--unknown.json",
+    "youth-in-flames-off-broadway-2026/off-off-online--deirdre-donovan.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -990,7 +991,16 @@
     "small-off-broadway-2026/pages-on-stages--unknown.json",
     "small-off-broadway-2026/the-recs--unknown.json",
     "small-off-broadway-2026/theater-pizzazz--unknown.json",
-    "small-off-broadway-2026/washpost--unknown.json"
+    "small-off-broadway-2026/washpost--unknown.json",
+    "encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
+    "romeo-and-juliet-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+    "are-you-now-or-have-you-ever-been-off-broadway-2026/nytimes--laura-collins-hughes.json",
+    "are-you-now-or-have-you-ever-been-off-broadway-2026/wsj--charles-isherwood.json",
+    "are-you-now-or-have-you-ever-been-off-broadway-2026/wsj--unknown.json",
+    "are-you-now-or-have-you-ever-been-off-broadway-2026/off-off-online--unknown.json",
+    "are-you-now-or-have-you-ever-been-off-broadway-2026/off-off-online--walter-murphy.json",
+    "are-you-now-or-have-you-ever-been-off-broadway-2026/talkinbroadway--unknown.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1158,7 +1168,8 @@
       "ifthen-2014/theatermania--adam-hetrick.json",
       "a-gentlemans-guide-to-love-and-murder-2013/theatermania--david-gordon.json",
       "romeo-and-juliet-2013/timeout--david-cote.json",
-      "youth-in-flames-off-broadway-2026/off-off-online--unknown.json"
+      "youth-in-flames-off-broadway-2026/off-off-online--unknown.json",
+      "youth-in-flames-off-broadway-2026/off-off-online--deirdre-donovan.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1201,7 +1212,10 @@
       "data/review-texts/are-you-now-or-have-you-ever-been-off-broadway-2026/wsj--unknown.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+      "data/review-texts/are-you-now-or-have-you-ever-been-off-broadway-2026/wsj--charles-isherwood.json",
+      "data/review-texts/are-you-now-or-have-you-ever-been-off-broadway-2026/wsj--unknown.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1369,7 +1383,8 @@
       "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
       "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json",
       "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
-      "data/review-texts/are-you-now-or-have-you-ever-been-off-broadway-2026/talkinbroadway--unknown.json"
+      "data/review-texts/are-you-now-or-have-you-ever-been-off-broadway-2026/talkinbroadway--unknown.json",
+      "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json"
     ],
     "archive": [
       "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
@@ -1466,7 +1481,7 @@
     ]
   },
   "startTime": "2026-06-18T22:39:22.801Z",
-  "lastProcessed": "small-off-broadway-2026/washpost--unknown.json",
+  "lastProcessed": "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
   "log": [
     {
       "t": "2026-06-18T23:10:42.792Z",
@@ -2039,6 +2054,39 @@
       "t": "2026-06-19T12:43:59.129Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-19T13:26:18.854Z",
+      "event": "bb-session",
+      "session": "16d006fc",
+      "url": "https://www.wsj.com/articles/are-you-now-or-have-you-ever-been-review-a-red-scar"
+    },
+    {
+      "t": "2026-06-19T13:26:19.837Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-19T13:26:40.197Z",
+      "event": "bb-session",
+      "session": "a0af991a",
+      "url": "https://www.wsj.com/articles/are-you-now-or-have-you-ever-been-review-a-red-scar"
+    },
+    {
+      "t": "2026-06-19T13:26:41.054Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-19T13:28:37.799Z",
+      "event": "bb-session",
+      "session": "ef274ea0",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-19T13:28:38.604Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
