@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-06-19T13:32:13.677Z",
-  "processed": 379,
-  "failed": 631,
-  "successRate": "37.5%",
+  "updatedAt": "2026-06-19T14:06:39.488Z",
+  "processed": 380,
+  "failed": 640,
+  "successRate": "37.3%",
   "tierBreakdown": {
     "playwright": 165,
     "amp": 0,
-    "browserbase": 46,
+    "browserbase": 48,
     "directCookies": 0,
     "scrapingbee": 70,
-    "brightdata": 59,
-    "archiveToday": 33,
+    "brightdata": 60,
+    "archiveToday": 34,
     "archive": 91
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-06-19T12:42:19.178Z",
-      "event": "bb-session",
-      "session": "504ddb13",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2649295"
-    },
-    {
-      "t": "2026-06-19T12:42:20.231Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-06-19T12:43:08.012Z",
-      "event": "bb-session",
-      "session": "fca819f7",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
-    {
-      "t": "2026-06-19T12:43:08.998Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-06-19T12:43:43.166Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-06-19T13:30:33.562Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-19T14:04:15.712Z",
+      "event": "bb-session",
+      "session": "e8768576",
+      "url": "https://www.wsj.com/articles/are-you-now-or-have-you-ever-been-review-a-red-scar"
+    },
+    {
+      "t": "2026-06-19T14:04:16.198Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-19T14:04:37.843Z",
+      "event": "bb-session",
+      "session": "941bf906",
+      "url": "https://www.wsj.com/articles/are-you-now-or-have-you-ever-been-review-a-red-scar"
+    },
+    {
+      "t": "2026-06-19T14:04:38.303Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
