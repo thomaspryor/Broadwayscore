@@ -1,24 +1,24 @@
 {
-  "updatedAt": "2026-06-19T10:27:01.802Z",
-  "processed": 314,
-  "failed": 345,
-  "successRate": "47.6%",
+  "updatedAt": "2026-06-19T08:45:10.315Z",
+  "processed": 200,
+  "failed": 210,
+  "successRate": "48.8%",
   "tierBreakdown": {
-    "playwright": 146,
+    "playwright": 93,
     "amp": 0,
-    "browserbase": 36,
+    "browserbase": 27,
     "directCookies": 0,
-    "scrapingbee": 65,
-    "brightdata": 31,
-    "archiveToday": 25,
-    "archive": 76
+    "scrapingbee": 57,
+    "brightdata": 19,
+    "archiveToday": 1,
+    "archive": 31
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-06-19T07:06:38.966Z",
+      "t": "2026-06-19T05:14:57.582Z",
       "event": "bb-session",
-      "session": "c9c09314",
+      "session": "96ba2060",
       "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
     },
     {
@@ -121,10 +121,26 @@
       "domain": "variety.com"
     },
     {
-      "t": "2026-06-19T10:24:21.882Z",
+      "t": "2026-06-19T08:43:06.030Z",
       "event": "bb-session",
-      "session": "a470bec3",
-      "url": "https://therecs.co.uk/are-you-watching-royal-court/"
+      "session": "a1200bce",
+      "url": "https://www.nytimes.com/2026/05/12/theater/broadway-scene-stealers-tonys.html"
+    },
+    {
+      "t": "2026-06-19T08:43:07.173Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-19T08:44:22.937Z",
+      "event": "bb-session",
+      "session": "6ed86143",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
+    },
+    {
+      "t": "2026-06-19T08:44:23.564Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
