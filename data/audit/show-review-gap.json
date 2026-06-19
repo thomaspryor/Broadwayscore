@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-06-19T22:07:31.860Z",
+  "generatedAt": "2026-06-19T23:18:09.213Z",
   "windowDays": 1095,
-  "targets": 3,
+  "targets": 12,
   "counts": {
-    "withGap": 2,
-    "totalMissing": 8,
+    "withGap": 10,
+    "totalMissing": 138,
     "totalFlaggedMisses": 0
   },
   "results": [
     {
-      "showId": "black-is-the-color-of-my-voice-west-end-2026",
-      "title": "Black Is The Color Of My Voice",
-      "openingDate": "2026-01-12",
+      "showId": "deep-azure-globe-west-end-2026",
+      "title": "Deep Azure - Globe",
+      "openingDate": "2026-02-17",
       "status": "open",
-      "category": "west-end",
+      "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css",
@@ -21,7 +21,7 @@
       ],
       "dirFiles": 0,
       "dirClean": 0,
-      "inReviewsJson": 4,
+      "inReviewsJson": 14,
       "missing": [
         {
           "url": "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css",
@@ -43,7 +43,7 @@
           "outletId": "bootstrapcdn",
           "provisional": true,
           "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=black-is-the-color-of-my-voice-west-en"
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=deep-azure-globe-west-end-2026 --url=h"
         },
         {
           "url": "https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css",
@@ -51,15 +51,111 @@
           "outletId": "bootstrapcdn",
           "provisional": true,
           "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=black-is-the-color-of-my-voice-west-en"
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=deep-azure-globe-west-end-2026 --url=h"
         }
       ],
       "ingestSkippedByCap": []
     },
     {
-      "showId": "driftwood-west-end-2026",
-      "title": "Driftwood",
-      "openingDate": "2026-06-03",
+      "showId": "mother-courage-and-her-children-globe-west-end-2026",
+      "title": "Mother Courage and Her Children - Globe",
+      "openingDate": "2026-05-15",
+      "status": "open",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css",
+        "https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"
+      ],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 20,
+      "missing": [
+        {
+          "url": "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css",
+          "host": "maxcdn.bootstrapcdn.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css",
+          "host": "maxcdn.bootstrapcdn.com",
+          "knownOutletId": null
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "ingestResults": [
+        {
+          "url": "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css",
+          "host": "maxcdn.bootstrapcdn.com",
+          "outletId": "bootstrapcdn",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=mother-courage-and-her-children-globe-"
+        },
+        {
+          "url": "https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css",
+          "host": "maxcdn.bootstrapcdn.com",
+          "outletId": "bootstrapcdn",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=mother-courage-and-her-children-globe-"
+        }
+      ],
+      "ingestSkippedByCap": []
+    },
+    {
+      "showId": "a-midsummer-nights-dream-globe-west-end-2026",
+      "title": "A Midsummer Night's Dream - Globe",
+      "openingDate": "2026-04-23",
+      "status": "open",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css",
+        "https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"
+      ],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 9,
+      "missing": [
+        {
+          "url": "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css",
+          "host": "maxcdn.bootstrapcdn.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css",
+          "host": "maxcdn.bootstrapcdn.com",
+          "knownOutletId": null
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "ingestResults": [
+        {
+          "url": "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css",
+          "host": "maxcdn.bootstrapcdn.com",
+          "outletId": "bootstrapcdn",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=a-midsummer-nights-dream-globe-west-en"
+        },
+        {
+          "url": "https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css",
+          "host": "maxcdn.bootstrapcdn.com",
+          "outletId": "bootstrapcdn",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=a-midsummer-nights-dream-globe-west-en"
+        }
+      ],
+      "ingestSkippedByCap": []
+    },
+    {
+      "showId": "much-ado-about-nothing-globe-west-end-2026",
+      "title": "Much Ado About Nothing - Globe",
+      "openingDate": "2026-06-11",
       "status": "open",
       "category": "off-west-end",
       "aggregatorArticles": [],
@@ -72,51 +168,810 @@
       "flaggedMisses": []
     },
     {
-      "showId": "care-west-end-2026",
-      "title": "CARE",
-      "openingDate": "2026-05-19",
+      "showId": "are-you-watching-west-end-2026",
+      "title": "Are You Watching?",
+      "openingDate": "2026-06-04",
+      "status": "open",
+      "category": "west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "end-of-the-rainbow-west-end-2026",
+      "title": "End of the Rainbow",
+      "openingDate": "2026-05-15",
       "status": "open",
       "category": "off-west-end",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-END-OF-THE-RAINBOW-Opens-on-Broadway-All-the-Reviews-20120403"
+      ],
       "aggregatorListedUrls": [
-        "https://www.londontheatre.co.uk/reviews/care-review-young-vic",
-        "https://www.standard.co.uk/culture/theatre/care-at-young-vic-review-b1283041.html",
-        "https://www.timeout.com/london/theatre/care-1-review",
-        "https://www.telegraph.co.uk/theatre/what-to-see/care-young-vic-review/",
-        "https://www.whatsonstage.com/news/alexander-zeldins-care-at-the-young-vic-review_1722077/",
-        "https://www.thestage.co.uk/reviews/care-review-young-vic-london-alexander-zeldin"
+        "http://theater.nytimes.com/2012/04/03/theater/reviews/end-of-the-rainbow-on-judy-garland-at-belasco-theater.html",
+        "http://www.huffingtonpost.com/huff-wires/20120402/us-theater-review-end-of-the-rainbow/",
+        "http://www.hollywoodreporter.com/review/end-of-the-rainbow-theater-review-306891",
+        "http://www.timeout.com/newyork/theater/end-of-the-rainbow-belasco-theatre-march-24-2012-1",
+        "http://www.backstage.com/bso/reviews-ny-theatre-broadway/ny-review-end-of-the-rainbow-1006650352.story",
+        "http://www.amny.com/urbanite-1.812039/theater-review-end-of-the-rainbow-2-5-stars-1.3639008",
+        "http://www.newjerseynewsroom.com/new-york-theater/review-end-of-the-rainbow-reveals-trash",
+        "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css",
+        "https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"
       ],
       "dirFiles": 0,
       "dirClean": 0,
-      "inReviewsJson": 23,
+      "inReviewsJson": 15,
       "missing": [
         {
-          "url": "https://www.londontheatre.co.uk/reviews/care-review-young-vic",
-          "host": "londontheatre.co.uk",
+          "url": "http://theater.nytimes.com/2012/04/03/theater/reviews/end-of-the-rainbow-on-judy-garland-at-belasco-theater.html",
+          "host": "theater.nytimes.com",
           "knownOutletId": null
         },
         {
-          "url": "https://www.standard.co.uk/culture/theatre/care-at-young-vic-review-b1283041.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard"
+          "url": "http://www.huffingtonpost.com/huff-wires/20120402/us-theater-review-end-of-the-rainbow/",
+          "host": "huffingtonpost.com",
+          "knownOutletId": null
         },
         {
-          "url": "https://www.timeout.com/london/theatre/care-1-review",
+          "url": "http://www.hollywoodreporter.com/review/end-of-the-rainbow-theater-review-306891",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter"
+        },
+        {
+          "url": "http://www.timeout.com/newyork/theater/end-of-the-rainbow-belasco-theatre-march-24-2012-1",
           "host": "timeout.com",
           "knownOutletId": "timeout-london"
         },
         {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/care-young-vic-review/",
+          "url": "http://www.backstage.com/bso/reviews-ny-theatre-broadway/ny-review-end-of-the-rainbow-1006650352.story",
+          "host": "backstage.com",
+          "knownOutletId": "backstage"
+        },
+        {
+          "url": "http://www.amny.com/urbanite-1.812039/theater-review-end-of-the-rainbow-2-5-stars-1.3639008",
+          "host": "amny.com",
+          "knownOutletId": "amny"
+        },
+        {
+          "url": "http://www.newjerseynewsroom.com/new-york-theater/review-end-of-the-rainbow-reveals-trash",
+          "host": "newjerseynewsroom.com",
+          "knownOutletId": "new-jersey-newsroom"
+        },
+        {
+          "url": "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css",
+          "host": "maxcdn.bootstrapcdn.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css",
+          "host": "maxcdn.bootstrapcdn.com",
+          "knownOutletId": null
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "ingestResults": [
+        {
+          "url": "http://theater.nytimes.com/2012/04/03/theater/reviews/end-of-the-rainbow-on-judy-garland-at-belasco-theater.html",
+          "host": "theater.nytimes.com",
+          "outletId": "nytimes",
+          "provisional": true,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "http://www.huffingtonpost.com/huff-wires/20120402/us-theater-review-end-of-the-rainbow/",
+          "host": "huffingtonpost.com",
+          "outletId": "huffingtonpost",
+          "provisional": true,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/end-of-the-rainbow-theater-review-306891",
+          "host": "hollywoodreporter.com",
+          "outletId": "hollywood-reporter",
+          "provisional": false,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=end-of-the-rainbow-west-end-2026 --url"
+        },
+        {
+          "url": "http://www.timeout.com/newyork/theater/end-of-the-rainbow-belasco-theatre-march-24-2012-1",
+          "host": "timeout.com",
+          "outletId": "timeout-london",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "http://www.backstage.com/bso/reviews-ny-theatre-broadway/ny-review-end-of-the-rainbow-1006650352.story",
+          "host": "backstage.com",
+          "outletId": "backstage",
+          "provisional": false,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=end-of-the-rainbow-west-end-2026 --url"
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "http://www.amny.com/urbanite-1.812039/theater-review-end-of-the-rainbow-2-5-stars-1.3639008",
+          "host": "amny.com",
+          "outletId": "amny"
+        },
+        {
+          "url": "http://www.newjerseynewsroom.com/new-york-theater/review-end-of-the-rainbow-reveals-trash",
+          "host": "newjerseynewsroom.com",
+          "outletId": "new-jersey-newsroom"
+        },
+        {
+          "url": "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css",
+          "host": "maxcdn.bootstrapcdn.com",
+          "outletId": "bootstrapcdn"
+        },
+        {
+          "url": "https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css",
+          "host": "maxcdn.bootstrapcdn.com",
+          "outletId": "bootstrapcdn"
+        }
+      ]
+    },
+    {
+      "showId": "hercules-west-end-2025",
+      "title": "Hercules",
+      "openingDate": "2025-07-10",
+      "status": "open",
+      "category": "west-end",
+      "aggregatorArticles": [
+        "https://playbill.com/article/what-do-the-reviews-say-about-disneys-hercules-in-londons-west-end-watch-luke-bradys-go-the-distance",
+        "https://playbill.com/article/reviews-what-did-critics-think-of-hercules-at-paper-mill-playhouse",
+        "https://playbill.com/article/what-do-critics-think-of-hercules-in-central-park",
+        "https://www.broadwayworld.com/article/Review-Roundup-HERCULES-Opens-at-Theatre-Royal-Drury-Lane-20250624",
+        "https://www.broadwayworld.com/article/Review-Roundup-Disneys-HERCULES-Musical-Opens-at-Paper-Mill-Playhouse-20230302",
+        "https://www.broadwayworld.com/article/Review-Roundup-Public-Works-HERCULES-in-Central-Park-20190902"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.afridiziak.com/reviews/disneys-hercules-theatre-royal-drury-lane/",
+        "https://www.dailymail.co.uk/tvshowbiz/article-14844061/Hercules-theatre-review-Musical-lacks-punch-new-Disney-classic-writes-PATRICK-MARMION.html",
+        "https://www.digitalspy.com/movies/a65152308/hercules-review-buy-tickets/",
+        "https://www.express.co.uk/entertainment/theatre/2073053/disney-hercules-musical-london-review",
+        "https://www.theguardian.com/stage/2025/jun/24/hercules-review-disney-musical-theatre-royal-drury-lane",
+        "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/hercules-musical-review-disney-west-end-b2776526.html",
+        "https://www.londontheatre.co.uk/reviews/hercules-review-disney-theatre-royal-drury-lane-alan-menken",
+        "https://www.londontheatredirect.com/news/hercules-review-2025",
+        "https://www.nytimes.com/2025/06/25/theater/hercules-disney-theatre-royal-drury-lane.html",
+        "https://www.thestage.co.uk/reviews/hercules-review-theatre-royal-drury-lane-london-disney-casey-nicholaw",
+        "https://www.standard.co.uk/culture/theatre/hercules-at-theatre-royal-drury-lane-b1234755.html",
+        "https://www.telegraph.co.uk/art/reviews/hercules-disney-review-theatre-royal-drury-lane/",
+        "https://theatreweekly.com/review-disneys-hercules-at-theatre-royal-drury-lane-london/",
+        "https://www.timeout.com/london/news/review-disneys-hercules-at-theatre-royal-drury-lane-062425",
+        "https://www.thetimes.com/culture/theatre-dance/article/hercules-review-mighty-muses-save-disneys-musclebound-musical-wp3rcgnz6",
+        "https://variety.com/2025/legit/reviews/hercules-review-musical-west-end-1236439211/",
+        "https://www.whatsonstage.com/news/disneys-hercules-in-the-west-end-review-bursting-with-energy-but-lacking-in-heart_1684149/",
+        "https://www.nj.com/entertainment/2023/03/hercules-nj-play-review-even-muscles-cant-lift-paper-mills-new-musical.html",
+        "https://nystagereview.com/2023/03/02/disneys-hercules-olympian-musical-takes-the-stage-at-paper-mill/",
+        "https://www.nytimes.com/2023/03/03/theater/hercules-review-paper-mill-playhouse.html",
+        "https://www.theatrely.com/post/hercules-has-just-enough-strength-to-match-its-heart-review",
+        "https://www.theaterpizzazz.com/hercules-paper-mill-playhouse/",
+        "https://www.amny.com/entertainment/hercules-public-theater-review-1.35791376",
+        "https://deadline.com/2019/09/hercules-off-broadway-review-disney-public-works-central-park-1202709466/",
+        "https://ew.com/theater-reviews/2019/09/02/hercules-musical-review/",
+        "https://www.hollywoodreporter.com/review/hercules-1236066",
+        "https://www.vulture.com/2019/09/theater-review-the-strengths-of-a-free-public-hercules.html",
+        "http://nystagereview.com/2019/09/02/hercules-the-strong-man-and-huge-cast-sing-lustily-on-stage/",
+        "https://www.nytimes.com/2019/09/02/theater/hercules-review-public-works-delacorte.html",
+        "https://www.thewrap.com/hercules-theater-review-can-disneys-animated-hero-go-the-distance-to-broadway/",
+        "https://inews.co.uk/culture/hercules-musical-awful-review-3767364",
+        "https://www.slashfilm.com/1209464/disneys-hercules-musical-review-i-wont-say-im-in-love-but-theres-potential/",
+        "http://nystagereview.com/2019/09/03/hercules-a-heroic-new-musical-and-thats-the-gospel-truth/",
+        "https://variety.com/2019/legit/reviews/hercules-review-musical-public-works-central-park-1203321731/"
+      ],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 21,
+      "missing": [
+        {
+          "url": "https://www.afridiziak.com/reviews/disneys-hercules-theatre-royal-drury-lane/",
+          "host": "afridiziak.com",
+          "knownOutletId": "afridiziak-theatre-news"
+        },
+        {
+          "url": "https://www.dailymail.co.uk/tvshowbiz/article-14844061/Hercules-theatre-review-Musical-lacks-punch-new-Disney-classic-writes-PATRICK-MARMION.html",
+          "host": "dailymail.co.uk",
+          "knownOutletId": "daily-mail"
+        },
+        {
+          "url": "https://www.digitalspy.com/movies/a65152308/hercules-review-buy-tickets/",
+          "host": "digitalspy.com",
+          "knownOutletId": "digital-spy"
+        },
+        {
+          "url": "https://www.express.co.uk/entertainment/theatre/2073053/disney-hercules-musical-london-review",
+          "host": "express.co.uk",
+          "knownOutletId": "sunday-express"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2025/jun/24/hercules-review-disney-musical-theatre-royal-drury-lane",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian"
+        },
+        {
+          "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/hercules-musical-review-disney-west-end-b2776526.html",
+          "host": "the-independent.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/hercules-review-disney-theatre-royal-drury-lane-alan-menken",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.londontheatredirect.com/news/hercules-review-2025",
+          "host": "londontheatredirect.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.nytimes.com/2025/06/25/theater/hercules-disney-theatre-royal-drury-lane.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/hercules-review-theatre-royal-drury-lane-london-disney-casey-nicholaw",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage"
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/hercules-at-theatre-royal-drury-lane-b1234755.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard"
+        },
+        {
+          "url": "https://www.telegraph.co.uk/art/reviews/hercules-disney-review-theatre-royal-drury-lane/",
           "host": "telegraph.co.uk",
           "knownOutletId": "sunday-telegraph"
         },
         {
-          "url": "https://www.whatsonstage.com/news/alexander-zeldins-care-at-the-young-vic-review_1722077/",
+          "url": "https://theatreweekly.com/review-disneys-hercules-at-theatre-royal-drury-lane-london/",
+          "host": "theatreweekly.com",
+          "knownOutletId": "theatre-weekly"
+        },
+        {
+          "url": "https://www.timeout.com/london/news/review-disneys-hercules-at-theatre-royal-drury-lane-062425",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london"
+        },
+        {
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/hercules-review-mighty-muses-save-disneys-musclebound-musical-wp3rcgnz6",
+          "host": "thetimes.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://variety.com/2025/legit/reviews/hercules-review-musical-west-end-1236439211/",
+          "host": "variety.com",
+          "knownOutletId": "variety"
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/disneys-hercules-in-the-west-end-review-bursting-with-energy-but-lacking-in-heart_1684149/",
           "host": "whatsonstage.com",
           "knownOutletId": "whatsonstage"
         },
         {
-          "url": "https://www.thestage.co.uk/reviews/care-review-young-vic-london-alexander-zeldin",
+          "url": "https://www.nj.com/entertainment/2023/03/hercules-nj-play-review-even-muscles-cant-lift-paper-mills-new-musical.html",
+          "host": "nj.com",
+          "knownOutletId": "njcom"
+        },
+        {
+          "url": "https://nystagereview.com/2023/03/02/disneys-hercules-olympian-musical-takes-the-stage-at-paper-mill/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr"
+        },
+        {
+          "url": "https://www.nytimes.com/2023/03/03/theater/hercules-review-paper-mill-playhouse.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes"
+        },
+        {
+          "url": "https://www.theatrely.com/post/hercules-has-just-enough-strength-to-match-its-heart-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely"
+        },
+        {
+          "url": "https://www.theaterpizzazz.com/hercules-paper-mill-playhouse/",
+          "host": "theaterpizzazz.com",
+          "knownOutletId": "theater-pizzazz"
+        },
+        {
+          "url": "https://www.amny.com/entertainment/hercules-public-theater-review-1.35791376",
+          "host": "amny.com",
+          "knownOutletId": "amny"
+        },
+        {
+          "url": "https://deadline.com/2019/09/hercules-off-broadway-review-disney-public-works-central-park-1202709466/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline"
+        },
+        {
+          "url": "https://ew.com/theater-reviews/2019/09/02/hercules-musical-review/",
+          "host": "ew.com",
+          "knownOutletId": "ew"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/hercules-1236066",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter"
+        },
+        {
+          "url": "https://www.vulture.com/2019/09/theater-review-the-strengths-of-a-free-public-hercules.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture"
+        },
+        {
+          "url": "http://nystagereview.com/2019/09/02/hercules-the-strong-man-and-huge-cast-sing-lustily-on-stage/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr"
+        },
+        {
+          "url": "https://www.nytimes.com/2019/09/02/theater/hercules-review-public-works-delacorte.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes"
+        },
+        {
+          "url": "https://www.thewrap.com/hercules-theater-review-can-disneys-animated-hero-go-the-distance-to-broadway/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap"
+        },
+        {
+          "url": "https://inews.co.uk/culture/hercules-musical-awful-review-3767364",
+          "host": "inews.co.uk",
+          "knownOutletId": "i-paper"
+        },
+        {
+          "url": "https://www.slashfilm.com/1209464/disneys-hercules-musical-review-i-wont-say-im-in-love-but-theres-potential/",
+          "host": "slashfilm.com",
+          "knownOutletId": "slash-film"
+        },
+        {
+          "url": "http://nystagereview.com/2019/09/03/hercules-a-heroic-new-musical-and-thats-the-gospel-truth/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr"
+        },
+        {
+          "url": "https://variety.com/2019/legit/reviews/hercules-review-musical-public-works-central-park-1203321731/",
+          "host": "variety.com",
+          "knownOutletId": "variety"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "ingestResults": [
+        {
+          "url": "https://www.afridiziak.com/reviews/disneys-hercules-theatre-royal-drury-lane/",
+          "host": "afridiziak.com",
+          "outletId": "afridiziak-theatre-news",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://www.dailymail.co.uk/tvshowbiz/article-14844061/Hercules-theatre-review-Musical-lacks-punch-new-Disney-classic-writes-PATRICK-MARMION.html",
+          "host": "dailymail.co.uk",
+          "outletId": "daily-mail",
+          "provisional": false,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=hercules-west-end-2025 --url=https://w"
+        },
+        {
+          "url": "https://www.digitalspy.com/movies/a65152308/hercules-review-buy-tickets/",
+          "host": "digitalspy.com",
+          "outletId": "digital-spy",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://www.express.co.uk/entertainment/theatre/2073053/disney-hercules-musical-london-review",
+          "host": "express.co.uk",
+          "outletId": "sunday-express",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2025/jun/24/hercules-review-disney-musical-theatre-royal-drury-lane",
+          "host": "theguardian.com",
+          "outletId": "guardian",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/hercules-musical-review-disney-west-end-b2776526.html",
+          "host": "the-independent.com",
+          "outletId": "the-independent"
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/hercules-review-disney-theatre-royal-drury-lane-alan-menken",
+          "host": "londontheatre.co.uk",
+          "outletId": "co"
+        },
+        {
+          "url": "https://www.londontheatredirect.com/news/hercules-review-2025",
+          "host": "londontheatredirect.com",
+          "outletId": "londontheatredirect"
+        },
+        {
+          "url": "https://www.nytimes.com/2025/06/25/theater/hercules-disney-theatre-royal-drury-lane.html",
+          "host": "nytimes.com",
+          "outletId": "nytimes"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/hercules-review-theatre-royal-drury-lane-london-disney-casey-nicholaw",
+          "host": "thestage.co.uk",
+          "outletId": "thestage"
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/hercules-at-theatre-royal-drury-lane-b1234755.html",
+          "host": "standard.co.uk",
+          "outletId": "standard"
+        },
+        {
+          "url": "https://www.telegraph.co.uk/art/reviews/hercules-disney-review-theatre-royal-drury-lane/",
+          "host": "telegraph.co.uk",
+          "outletId": "sunday-telegraph"
+        },
+        {
+          "url": "https://theatreweekly.com/review-disneys-hercules-at-theatre-royal-drury-lane-london/",
+          "host": "theatreweekly.com",
+          "outletId": "theatre-weekly"
+        },
+        {
+          "url": "https://www.timeout.com/london/news/review-disneys-hercules-at-theatre-royal-drury-lane-062425",
+          "host": "timeout.com",
+          "outletId": "timeout-london"
+        },
+        {
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/hercules-review-mighty-muses-save-disneys-musclebound-musical-wp3rcgnz6",
+          "host": "thetimes.com",
+          "outletId": "thetimes"
+        },
+        {
+          "url": "https://variety.com/2025/legit/reviews/hercules-review-musical-west-end-1236439211/",
+          "host": "variety.com",
+          "outletId": "variety"
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/disneys-hercules-in-the-west-end-review-bursting-with-energy-but-lacking-in-heart_1684149/",
+          "host": "whatsonstage.com",
+          "outletId": "whatsonstage"
+        },
+        {
+          "url": "https://www.nj.com/entertainment/2023/03/hercules-nj-play-review-even-muscles-cant-lift-paper-mills-new-musical.html",
+          "host": "nj.com",
+          "outletId": "njcom"
+        },
+        {
+          "url": "https://nystagereview.com/2023/03/02/disneys-hercules-olympian-musical-takes-the-stage-at-paper-mill/",
+          "host": "nystagereview.com",
+          "outletId": "nysr"
+        },
+        {
+          "url": "https://www.nytimes.com/2023/03/03/theater/hercules-review-paper-mill-playhouse.html",
+          "host": "nytimes.com",
+          "outletId": "nytimes"
+        },
+        {
+          "url": "https://www.theatrely.com/post/hercules-has-just-enough-strength-to-match-its-heart-review",
+          "host": "theatrely.com",
+          "outletId": "theatrely"
+        },
+        {
+          "url": "https://www.theaterpizzazz.com/hercules-paper-mill-playhouse/",
+          "host": "theaterpizzazz.com",
+          "outletId": "theater-pizzazz"
+        },
+        {
+          "url": "https://www.amny.com/entertainment/hercules-public-theater-review-1.35791376",
+          "host": "amny.com",
+          "outletId": "amny"
+        },
+        {
+          "url": "https://deadline.com/2019/09/hercules-off-broadway-review-disney-public-works-central-park-1202709466/",
+          "host": "deadline.com",
+          "outletId": "deadline"
+        },
+        {
+          "url": "https://ew.com/theater-reviews/2019/09/02/hercules-musical-review/",
+          "host": "ew.com",
+          "outletId": "ew"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/hercules-1236066",
+          "host": "hollywoodreporter.com",
+          "outletId": "hollywood-reporter"
+        },
+        {
+          "url": "https://www.vulture.com/2019/09/theater-review-the-strengths-of-a-free-public-hercules.html",
+          "host": "vulture.com",
+          "outletId": "vulture"
+        },
+        {
+          "url": "http://nystagereview.com/2019/09/02/hercules-the-strong-man-and-huge-cast-sing-lustily-on-stage/",
+          "host": "nystagereview.com",
+          "outletId": "nysr"
+        },
+        {
+          "url": "https://www.nytimes.com/2019/09/02/theater/hercules-review-public-works-delacorte.html",
+          "host": "nytimes.com",
+          "outletId": "nytimes"
+        },
+        {
+          "url": "https://www.thewrap.com/hercules-theater-review-can-disneys-animated-hero-go-the-distance-to-broadway/",
+          "host": "thewrap.com",
+          "outletId": "thewrap"
+        },
+        {
+          "url": "https://inews.co.uk/culture/hercules-musical-awful-review-3767364",
+          "host": "inews.co.uk",
+          "outletId": "i-paper"
+        },
+        {
+          "url": "https://www.slashfilm.com/1209464/disneys-hercules-musical-review-i-wont-say-im-in-love-but-theres-potential/",
+          "host": "slashfilm.com",
+          "outletId": "slash-film"
+        },
+        {
+          "url": "http://nystagereview.com/2019/09/03/hercules-a-heroic-new-musical-and-thats-the-gospel-truth/",
+          "host": "nystagereview.com",
+          "outletId": "nysr"
+        },
+        {
+          "url": "https://variety.com/2019/legit/reviews/hercules-review-musical-public-works-central-park-1203321731/",
+          "host": "variety.com",
+          "outletId": "variety"
+        }
+      ]
+    },
+    {
+      "showId": "titanique-west-end-2024",
+      "title": "Titanique",
+      "openingDate": "2025-01-08",
+      "status": "open",
+      "category": "west-end",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-what-are-critics-saying-about-musical-parody-titanique",
+        "https://www.broadwayworld.com/article/Review-Roundup-TITANIQUE-20240311",
+        "https://www.broadwayworld.com/article/Review-Roundup-TITANIQUE-Sets-Sail-on-Broadway-20260412"
+      ],
+      "aggregatorListedUrls": [
+        "https://cititour.com/NYC_News/Review-Titanique-Floats-a-Fun-lovers-Boat/6520",
+        "https://www.newyorktheatreguide.com/reviews/titanique-off-broadway-review",
+        "https://www.nytimes.com/2022/06/28/theater/titanique-review.html",
+        "https://nypost.com/2022/08/05/titanique-the-musical-review-titanic-parody-hits-the-mark/",
+        "https://www.wsj.com/articles/titanique-little-shop-of-horrors-reviews-off-broadway-celine-dion-ashman-menken-11673567675",
+        "https://www.thewrap.com/titanique-off-broadway-review-celine-dion-titanic/",
+        "https://thequeerreview.com/2023/01/17/musical-theatre-review-titanique-daryl-roth-theatre-new-york-off-broadway/",
+        "https://www.nytimes.com/2026/04/12/theater/titanique-review-broadway-dion.html",
+        "https://www.amny.com/news/titanique-hits-broadway-runs-aground/",
+        "https://culturesauce.com/2026/04/12/titanique-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/titanique-broadway-review",
+        "https://www.theatrely.com/post/oh-ship-a-fabulous-titanique-sets-sail-for-broadway-review",
+        "https://newyorktheater.me/2026/04/12/titanique-broadway-review/",
+        "https://therecs.co.uk/titanique-on-broadway/",
+        "https://nystagereview.com/2026/04/12/titanique-movie-spoof-unfortunately-hits-musical-iceberg/",
+        "https://nystagereview.com/2026/04/12/titanique-what-did-i-miss/",
+        "https://cititour.com/NYC_Broadway/Titanique/1369",
+        "https://variety.com/2026/legit/reviews/titanique-broadway-review-musical-campy-fun-marla-mindelle-1236715253/",
+        "https://people.com/titanique-broadway-review-11948233",
+        "https://nypost.com/2026/04/12/entertainment/titanique-review-silly-titanic-celine-dion-spoof-finally-sets-sail-on-broadway/",
+        "https://www.chicagotribune.com/2026/04/12/review-titanique-broadway/",
+        "https://ew.com/titanique-review-campy-celine-dion-musical-sets-sail-on-broadway-11948178",
+        "https://www.theguardian.com/stage/2026/apr/12/titanique-review-broadway-celine-dion-musical",
+        "https://deadline.com/2026/04/titanique-celine-dion-broadway-review-1236786429/",
+        "https://www.yahoo.com/entertainment/tv/articles/titanique-broadway-review-jim-parsons-135633377.html",
+        "https://1minutecritic.com/titanique-broadway-review/",
+        "https://thecontending.com/titanique-a-fabulous-lunatic-camp-triumph/",
+        "https://www.londontheatre.co.uk/reviews/titanique-review-criterion-theatre-layton-williams-lauren-drew-jordan-luke-gage-rob-houchen",
+        "https://www.theguardian.com/stage/2025/jan/09/titanique-review-criterion-theatre-london",
+        "https://www.timeout.com/london/theatre/titanique-review",
+        "https://www.telegraph.co.uk/theatre/what-to-see/titanique-criterion-review/",
+        "https://www.whatsonstage.com/news/titanique-in-the-west-end-review-a-riotous-voyage-with-celine-dion_1659577/",
+        "https://www.allthatdazzles.co.uk/post/review-titanique-criterion-theatre",
+        "https://www.londontheatre.co.uk/theatre-news/news/a-guide-to-west-end-shows-playing-on-sundays-and-mondays",
+        "https://theatreweekly.com/review-titanique-at-the-criterion-theatre-london/",
+        "https://theartsdesk.com/theatre/titanique-criterion-theatre-review-musical-parody-sinks-despite-super-singing",
+        "https://www.thestage.co.uk/reviews/titanique-review-criterion-theatre-london-titanic-celine-dion-marla-mindelle-constantine-rousouli-tye-blues-lauren-drew-jordan-luke-gage-rob-houchen-kat-ronney"
+      ],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 17,
+      "missing": [
+        {
+          "url": "https://cititour.com/NYC_News/Review-Titanique-Floats-a-Fun-lovers-Boat/6520",
+          "host": "cititour.com",
+          "knownOutletId": "cititour"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/titanique-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg"
+        },
+        {
+          "url": "https://www.nytimes.com/2022/06/28/theater/titanique-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes"
+        },
+        {
+          "url": "https://nypost.com/2022/08/05/titanique-the-musical-review-titanic-parody-hits-the-mark/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost"
+        },
+        {
+          "url": "https://www.wsj.com/articles/titanique-little-shop-of-horrors-reviews-off-broadway-celine-dion-ashman-menken-11673567675",
+          "host": "wsj.com",
+          "knownOutletId": "wsj"
+        },
+        {
+          "url": "https://www.thewrap.com/titanique-off-broadway-review-celine-dion-titanic/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap"
+        },
+        {
+          "url": "https://thequeerreview.com/2023/01/17/musical-theatre-review-titanique-daryl-roth-theatre-new-york-off-broadway/",
+          "host": "thequeerreview.com",
+          "knownOutletId": "the-queer-review"
+        },
+        {
+          "url": "https://www.nytimes.com/2026/04/12/theater/titanique-review-broadway-dion.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes"
+        },
+        {
+          "url": "https://www.amny.com/news/titanique-hits-broadway-runs-aground/",
+          "host": "amny.com",
+          "knownOutletId": "amny"
+        },
+        {
+          "url": "https://culturesauce.com/2026/04/12/titanique-broadway-review/",
+          "host": "culturesauce.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/titanique-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg"
+        },
+        {
+          "url": "https://www.theatrely.com/post/oh-ship-a-fabulous-titanique-sets-sail-for-broadway-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely"
+        },
+        {
+          "url": "https://newyorktheater.me/2026/04/12/titanique-broadway-review/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater"
+        },
+        {
+          "url": "https://therecs.co.uk/titanique-on-broadway/",
+          "host": "therecs.co.uk",
+          "knownOutletId": "the-recs"
+        },
+        {
+          "url": "https://nystagereview.com/2026/04/12/titanique-movie-spoof-unfortunately-hits-musical-iceberg/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr"
+        },
+        {
+          "url": "https://nystagereview.com/2026/04/12/titanique-what-did-i-miss/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr"
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/Titanique/1369",
+          "host": "cititour.com",
+          "knownOutletId": "cititour"
+        },
+        {
+          "url": "https://variety.com/2026/legit/reviews/titanique-broadway-review-musical-campy-fun-marla-mindelle-1236715253/",
+          "host": "variety.com",
+          "knownOutletId": "variety"
+        },
+        {
+          "url": "https://people.com/titanique-broadway-review-11948233",
+          "host": "people.com",
+          "knownOutletId": "people"
+        },
+        {
+          "url": "https://nypost.com/2026/04/12/entertainment/titanique-review-silly-titanic-celine-dion-spoof-finally-sets-sail-on-broadway/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost"
+        },
+        {
+          "url": "https://www.chicagotribune.com/2026/04/12/review-titanique-broadway/",
+          "host": "chicagotribune.com",
+          "knownOutletId": "chicagotribune"
+        },
+        {
+          "url": "https://ew.com/titanique-review-campy-celine-dion-musical-sets-sail-on-broadway-11948178",
+          "host": "ew.com",
+          "knownOutletId": "ew"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2026/apr/12/titanique-review-broadway-celine-dion-musical",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian"
+        },
+        {
+          "url": "https://deadline.com/2026/04/titanique-celine-dion-broadway-review-1236786429/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline"
+        },
+        {
+          "url": "https://www.yahoo.com/entertainment/tv/articles/titanique-broadway-review-jim-parsons-135633377.html",
+          "host": "yahoo.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://1minutecritic.com/titanique-broadway-review/",
+          "host": "1minutecritic.com",
+          "knownOutletId": "one-minute-critic"
+        },
+        {
+          "url": "https://thecontending.com/titanique-a-fabulous-lunatic-camp-triumph/",
+          "host": "thecontending.com",
+          "knownOutletId": "the-contending"
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/titanique-review-criterion-theatre-layton-williams-lauren-drew-jordan-luke-gage-rob-houchen",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2025/jan/09/titanique-review-criterion-theatre-london",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian"
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/titanique-review",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london"
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/titanique-criterion-review/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph"
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/titanique-in-the-west-end-review-a-riotous-voyage-with-celine-dion_1659577/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage"
+        },
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-titanique-criterion-theatre",
+          "host": "allthatdazzles.co.uk",
+          "knownOutletId": "all-that-dazzles-uk"
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/theatre-news/news/a-guide-to-west-end-shows-playing-on-sundays-and-mondays",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://theatreweekly.com/review-titanique-at-the-criterion-theatre-london/",
+          "host": "theatreweekly.com",
+          "knownOutletId": "theatre-weekly"
+        },
+        {
+          "url": "https://theartsdesk.com/theatre/titanique-criterion-theatre-review-musical-parody-sinks-despite-super-singing",
+          "host": "theartsdesk.com",
+          "knownOutletId": "artsdesk"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/titanique-review-criterion-theatre-london-titanic-celine-dion-marla-mindelle-constantine-rousouli-tye-blues-lauren-drew-jordan-luke-gage-rob-houchen-kat-ronney",
           "host": "thestage.co.uk",
           "knownOutletId": "thestage"
         }
@@ -125,31 +980,823 @@
       "flaggedMisses": [],
       "ingestResults": [
         {
-          "url": "https://www.londontheatre.co.uk/reviews/care-review-young-vic",
+          "url": "https://cititour.com/NYC_News/Review-Titanique-Floats-a-Fun-lovers-Boat/6520",
+          "host": "cititour.com",
+          "outletId": "cititour",
+          "provisional": false,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=titanique-west-end-2024 --url=https://"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/titanique-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "outletId": "nytg",
+          "provisional": false,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=titanique-west-end-2024 --url=https://"
+        },
+        {
+          "url": "https://www.nytimes.com/2022/06/28/theater/titanique-review.html",
+          "host": "nytimes.com",
+          "outletId": "nytimes",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://nypost.com/2022/08/05/titanique-the-musical-review-titanic-parody-hits-the-mark/",
+          "host": "nypost.com",
+          "outletId": "nypost",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://www.wsj.com/articles/titanique-little-shop-of-horrors-reviews-off-broadway-celine-dion-ashman-menken-11673567675",
+          "host": "wsj.com",
+          "outletId": "wsj",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.thewrap.com/titanique-off-broadway-review-celine-dion-titanic/",
+          "host": "thewrap.com",
+          "outletId": "thewrap"
+        },
+        {
+          "url": "https://thequeerreview.com/2023/01/17/musical-theatre-review-titanique-daryl-roth-theatre-new-york-off-broadway/",
+          "host": "thequeerreview.com",
+          "outletId": "the-queer-review"
+        },
+        {
+          "url": "https://www.nytimes.com/2026/04/12/theater/titanique-review-broadway-dion.html",
+          "host": "nytimes.com",
+          "outletId": "nytimes"
+        },
+        {
+          "url": "https://www.amny.com/news/titanique-hits-broadway-runs-aground/",
+          "host": "amny.com",
+          "outletId": "amny"
+        },
+        {
+          "url": "https://culturesauce.com/2026/04/12/titanique-broadway-review/",
+          "host": "culturesauce.com",
+          "outletId": "culturesauce"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/titanique-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "outletId": "nytg"
+        },
+        {
+          "url": "https://www.theatrely.com/post/oh-ship-a-fabulous-titanique-sets-sail-for-broadway-review",
+          "host": "theatrely.com",
+          "outletId": "theatrely"
+        },
+        {
+          "url": "https://newyorktheater.me/2026/04/12/titanique-broadway-review/",
+          "host": "newyorktheater.me",
+          "outletId": "nyt-theater"
+        },
+        {
+          "url": "https://therecs.co.uk/titanique-on-broadway/",
+          "host": "therecs.co.uk",
+          "outletId": "the-recs"
+        },
+        {
+          "url": "https://nystagereview.com/2026/04/12/titanique-movie-spoof-unfortunately-hits-musical-iceberg/",
+          "host": "nystagereview.com",
+          "outletId": "nysr"
+        },
+        {
+          "url": "https://nystagereview.com/2026/04/12/titanique-what-did-i-miss/",
+          "host": "nystagereview.com",
+          "outletId": "nysr"
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/Titanique/1369",
+          "host": "cititour.com",
+          "outletId": "cititour"
+        },
+        {
+          "url": "https://variety.com/2026/legit/reviews/titanique-broadway-review-musical-campy-fun-marla-mindelle-1236715253/",
+          "host": "variety.com",
+          "outletId": "variety"
+        },
+        {
+          "url": "https://people.com/titanique-broadway-review-11948233",
+          "host": "people.com",
+          "outletId": "people"
+        },
+        {
+          "url": "https://nypost.com/2026/04/12/entertainment/titanique-review-silly-titanic-celine-dion-spoof-finally-sets-sail-on-broadway/",
+          "host": "nypost.com",
+          "outletId": "nypost"
+        },
+        {
+          "url": "https://www.chicagotribune.com/2026/04/12/review-titanique-broadway/",
+          "host": "chicagotribune.com",
+          "outletId": "chicagotribune"
+        },
+        {
+          "url": "https://ew.com/titanique-review-campy-celine-dion-musical-sets-sail-on-broadway-11948178",
+          "host": "ew.com",
+          "outletId": "ew"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2026/apr/12/titanique-review-broadway-celine-dion-musical",
+          "host": "theguardian.com",
+          "outletId": "guardian"
+        },
+        {
+          "url": "https://deadline.com/2026/04/titanique-celine-dion-broadway-review-1236786429/",
+          "host": "deadline.com",
+          "outletId": "deadline"
+        },
+        {
+          "url": "https://www.yahoo.com/entertainment/tv/articles/titanique-broadway-review-jim-parsons-135633377.html",
+          "host": "yahoo.com",
+          "outletId": "yahoo"
+        },
+        {
+          "url": "https://1minutecritic.com/titanique-broadway-review/",
+          "host": "1minutecritic.com",
+          "outletId": "one-minute-critic"
+        },
+        {
+          "url": "https://thecontending.com/titanique-a-fabulous-lunatic-camp-triumph/",
+          "host": "thecontending.com",
+          "outletId": "the-contending"
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/titanique-review-criterion-theatre-layton-williams-lauren-drew-jordan-luke-gage-rob-houchen",
           "host": "londontheatre.co.uk",
-          "outletId": "co",
+          "outletId": "co"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2025/jan/09/titanique-review-criterion-theatre-london",
+          "host": "theguardian.com",
+          "outletId": "guardian"
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/titanique-review",
+          "host": "timeout.com",
+          "outletId": "timeout-london"
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/titanique-criterion-review/",
+          "host": "telegraph.co.uk",
+          "outletId": "sunday-telegraph"
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/titanique-in-the-west-end-review-a-riotous-voyage-with-celine-dion_1659577/",
+          "host": "whatsonstage.com",
+          "outletId": "whatsonstage"
+        },
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-titanique-criterion-theatre",
+          "host": "allthatdazzles.co.uk",
+          "outletId": "all-that-dazzles-uk"
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/theatre-news/news/a-guide-to-west-end-shows-playing-on-sundays-and-mondays",
+          "host": "londontheatre.co.uk",
+          "outletId": "co"
+        },
+        {
+          "url": "https://theatreweekly.com/review-titanique-at-the-criterion-theatre-london/",
+          "host": "theatreweekly.com",
+          "outletId": "theatre-weekly"
+        },
+        {
+          "url": "https://theartsdesk.com/theatre/titanique-criterion-theatre-review-musical-parody-sinks-despite-super-singing",
+          "host": "theartsdesk.com",
+          "outletId": "artsdesk"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/titanique-review-criterion-theatre-london-titanic-celine-dion-marla-mindelle-constantine-rousouli-tye-blues-lauren-drew-jordan-luke-gage-rob-houchen-kat-ronney",
+          "host": "thestage.co.uk",
+          "outletId": "thestage"
+        }
+      ]
+    },
+    {
+      "showId": "amaze-magic-off-broadway-2025",
+      "title": "AMAZE Magic",
+      "openingDate": "2025-07-20",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.newyorktheatreguide.com/reviews/amaze-off-broadway-review-jamie-allan",
+        "https://www.theatermania.com/news/review-jamie-allans-amaze-will-wow-kids-and-their-gen-xer-parents-too_1795840/",
+        "https://nystagereview.com/2025/08/13/amaze-magic-magical-storytelling/",
+        "https://www.theaterscene.net/plays/offbway-plays/amaze/victor-gluck/",
+        "https://theaterlife.com/jamie-allans-amaze/",
+        "https://www.hollywoodsoapbox.com/review-come-for-the-magic-stay-for-jamie-allans-story/",
+        "https://stageandcinema.com/2025/08/13/amaze-jamie-allan/",
+        "https://luxuryexperience.com/featured/jamie-allans-amaze-new-world-stages-nyc-ny-usa/"
+      ],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 8,
+      "missing": [
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/amaze-off-broadway-review-jamie-allan",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-jamie-allans-amaze-will-wow-kids-and-their-gen-xer-parents-too_1795840/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania"
+        },
+        {
+          "url": "https://nystagereview.com/2025/08/13/amaze-magic-magical-storytelling/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr"
+        },
+        {
+          "url": "https://www.theaterscene.net/plays/offbway-plays/amaze/victor-gluck/",
+          "host": "theaterscene.net",
+          "knownOutletId": "theater-scene"
+        },
+        {
+          "url": "https://theaterlife.com/jamie-allans-amaze/",
+          "host": "theaterlife.com",
+          "knownOutletId": "theater-life"
+        },
+        {
+          "url": "https://www.hollywoodsoapbox.com/review-come-for-the-magic-stay-for-jamie-allans-story/",
+          "host": "hollywoodsoapbox.com",
+          "knownOutletId": "hollywood-soapbox"
+        },
+        {
+          "url": "https://stageandcinema.com/2025/08/13/amaze-jamie-allan/",
+          "host": "stageandcinema.com",
+          "knownOutletId": "stageandcinema"
+        },
+        {
+          "url": "https://luxuryexperience.com/featured/jamie-allans-amaze-new-world-stages-nyc-ny-usa/",
+          "host": "luxuryexperience.com",
+          "knownOutletId": "luxury-experience"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "ingestResults": [
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/amaze-off-broadway-review-jamie-allan",
+          "host": "newyorktheatreguide.com",
+          "outletId": "nytg",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-jamie-allans-amaze-will-wow-kids-and-their-gen-xer-parents-too_1795840/",
+          "host": "theatermania.com",
+          "outletId": "theatermania",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://nystagereview.com/2025/08/13/amaze-magic-magical-storytelling/",
+          "host": "nystagereview.com",
+          "outletId": "nysr",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://www.theaterscene.net/plays/offbway-plays/amaze/victor-gluck/",
+          "host": "theaterscene.net",
+          "outletId": "theater-scene",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://theaterlife.com/jamie-allans-amaze/",
+          "host": "theaterlife.com",
+          "outletId": "theater-life",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.hollywoodsoapbox.com/review-come-for-the-magic-stay-for-jamie-allans-story/",
+          "host": "hollywoodsoapbox.com",
+          "outletId": "hollywood-soapbox"
+        },
+        {
+          "url": "https://stageandcinema.com/2025/08/13/amaze-jamie-allan/",
+          "host": "stageandcinema.com",
+          "outletId": "stageandcinema"
+        },
+        {
+          "url": "https://luxuryexperience.com/featured/jamie-allans-amaze-new-world-stages-nyc-ny-usa/",
+          "host": "luxuryexperience.com",
+          "outletId": "luxury-experience"
+        }
+      ]
+    },
+    {
+      "showId": "a-woman-among-women-off-broadway-2026",
+      "title": "A Woman Among Women",
+      "openingDate": "2026-06-04",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/what-are-reviews-for-a-woman-among-women-at-lincoln-center-theater",
+        "https://www.broadwayworld.com/article/Review-Roundup-A-WOMAN-AMONG-WOMEN-at-Lincoln-Center-Theater-20260605"
+      ],
+      "aggregatorListedUrls": [
+        "https://culturesauce.com/woman-among-women-off-broadway-review/",
+        "https://newyorktheater.me/2026/06/04/theater-reviews-girl-interrupted-a-woman-among-women/",
+        "https://www.newyorktheatreguide.com/reviews/a-woman-among-women-off-broadway-review",
+        "https://nystagereview.com/2026/06/04/a-woman-among-women-hubris-and-you/",
+        "https://nystagereview.com/2026/06/04/a-woman-among-women-a-female-all-my-sons-without-the-tragedy/",
+        "https://therecs.co.uk/a-woman-among-women/",
+        "https://www.theatermania.com/news/review-a-woman-among-women-is-a-frustrating-experience-at-lct3_1840772/",
+        "http://www.lightingandsoundamerica.com/news/story.asp",
+        "https://exeuntnyc.com/reviews/review-a-woman-among-women-at-lct3/",
+        "https://pagesonstages.com/2026/06/04/a-woman-among-women/",
+        "https://www.theatermania.com/news/review-a-woman-among-women-breaks-in-the-new-bushwick-starr_1753294/",
+        "https://exeuntnyc.com/reviews/review-a-woman-among-women-at-the-bushwick-starr/",
+        "https://newyorktheater.me/2024/10/19/a-woman-among-women-review-arthur-miller-male-to-female-in-bushwick/"
+      ],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 11,
+      "missing": [
+        {
+          "url": "https://culturesauce.com/woman-among-women-off-broadway-review/",
+          "host": "culturesauce.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://newyorktheater.me/2026/06/04/theater-reviews-girl-interrupted-a-woman-among-women/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/a-woman-among-women-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg"
+        },
+        {
+          "url": "https://nystagereview.com/2026/06/04/a-woman-among-women-hubris-and-you/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr"
+        },
+        {
+          "url": "https://nystagereview.com/2026/06/04/a-woman-among-women-a-female-all-my-sons-without-the-tragedy/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr"
+        },
+        {
+          "url": "https://therecs.co.uk/a-woman-among-women/",
+          "host": "therecs.co.uk",
+          "knownOutletId": "the-recs"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-a-woman-among-women-is-a-frustrating-experience-at-lct3_1840772/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania"
+        },
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp",
+          "host": "lightingandsoundamerica.com",
+          "knownOutletId": "lighting-and-sound-america"
+        },
+        {
+          "url": "https://exeuntnyc.com/reviews/review-a-woman-among-women-at-lct3/",
+          "host": "exeuntnyc.com",
+          "knownOutletId": "exeunt-magazine"
+        },
+        {
+          "url": "https://pagesonstages.com/2026/06/04/a-woman-among-women/",
+          "host": "pagesonstages.com",
+          "knownOutletId": "pages-on-stages"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-a-woman-among-women-breaks-in-the-new-bushwick-starr_1753294/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania"
+        },
+        {
+          "url": "https://exeuntnyc.com/reviews/review-a-woman-among-women-at-the-bushwick-starr/",
+          "host": "exeuntnyc.com",
+          "knownOutletId": "exeunt-magazine"
+        },
+        {
+          "url": "https://newyorktheater.me/2024/10/19/a-woman-among-women-review-arthur-miller-male-to-female-in-bushwick/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "ingestResults": [
+        {
+          "url": "https://culturesauce.com/woman-among-women-off-broadway-review/",
+          "host": "culturesauce.com",
+          "outletId": "culturesauce",
           "provisional": true,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://newyorktheater.me/2026/06/04/theater-reviews-girl-interrupted-a-woman-among-women/",
+          "host": "newyorktheater.me",
+          "outletId": "nyt-theater",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/a-woman-among-women-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "outletId": "nytg",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://nystagereview.com/2026/06/04/a-woman-among-women-hubris-and-you/",
+          "host": "nystagereview.com",
+          "outletId": "nysr",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://nystagereview.com/2026/06/04/a-woman-among-women-a-female-all-my-sons-without-the-tragedy/",
+          "host": "nystagereview.com",
+          "outletId": "nysr",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://therecs.co.uk/a-woman-among-women/",
+          "host": "therecs.co.uk",
+          "outletId": "the-recs"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-a-woman-among-women-is-a-frustrating-experience-at-lct3_1840772/",
+          "host": "theatermania.com",
+          "outletId": "theatermania"
+        },
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp",
+          "host": "lightingandsoundamerica.com",
+          "outletId": "lighting-and-sound-america"
+        },
+        {
+          "url": "https://exeuntnyc.com/reviews/review-a-woman-among-women-at-lct3/",
+          "host": "exeuntnyc.com",
+          "outletId": "exeunt-magazine"
+        },
+        {
+          "url": "https://pagesonstages.com/2026/06/04/a-woman-among-women/",
+          "host": "pagesonstages.com",
+          "outletId": "pages-on-stages"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-a-woman-among-women-breaks-in-the-new-bushwick-starr_1753294/",
+          "host": "theatermania.com",
+          "outletId": "theatermania"
+        },
+        {
+          "url": "https://exeuntnyc.com/reviews/review-a-woman-among-women-at-the-bushwick-starr/",
+          "host": "exeuntnyc.com",
+          "outletId": "exeunt-magazine"
+        },
+        {
+          "url": "https://newyorktheater.me/2024/10/19/a-woman-among-women-review-arthur-miller-male-to-female-in-bushwick/",
+          "host": "newyorktheater.me",
+          "outletId": "nyt-theater"
+        }
+      ]
+    },
+    {
+      "showId": "burlesque-west-end-2026",
+      "title": "Burlesque",
+      "openingDate": "2025-07-22",
+      "status": "open",
+      "category": "off-west-end",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-BURLESQUE-THE-MUSICAL-Opens-in-London-20250722"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-review-explosive-energy-and-powerhouse-vocals-ctrrm7cbk",
+        "https://www.theguardian.com/stage/2025/jul/22/burlesque-the-musical-review-christina-aguilera",
+        "https://www.whatsonstage.com/news/burlesque-review-west-end-musical-is-a-frivolous-and-flimsy-frolic_1687704/",
+        "https://www.dailymail.co.uk/tvshowbiz/article-14930715/PATRICK-MARMION-reviews-Burlesque-Savoy-Theatre-laborious-theatrical-rehash-lamentable-film.html",
+        "https://www.cityam.com/burlesque-musical-review-christina-aquilera-show-is-quality-trash/",
+        "https://www.westendbestfriend.co.uk/news/review-burlesque-the-musical-savoy-theatre",
+        "https://www.londontheatre.co.uk/reviews/burlesque-the-musical-review-savoy-theatre",
+        "https://www.standard.co.uk/culture/theatre/burlesque-savoy-theatre-review-b1239600.html",
+        "https://www.timeout.com/london/news/review-burlesque-the-musical-savoy-theatre-072325",
+        "https://www.thestage.co.uk/reviews/burlesque-review-savoy-theatre-london-christina-aguilera",
+        "https://theatreandtonic.co.uk/blog/burlesque-the-musical-savoy-theatre-review",
+        "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css",
+        "https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"
+      ],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 16,
+      "missing": [
+        {
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-review-explosive-energy-and-powerhouse-vocals-ctrrm7cbk",
+          "host": "thetimes.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2025/jul/22/burlesque-the-musical-review-christina-aguilera",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian"
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/burlesque-review-west-end-musical-is-a-frivolous-and-flimsy-frolic_1687704/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage"
+        },
+        {
+          "url": "https://www.dailymail.co.uk/tvshowbiz/article-14930715/PATRICK-MARMION-reviews-Burlesque-Savoy-Theatre-laborious-theatrical-rehash-lamentable-film.html",
+          "host": "dailymail.co.uk",
+          "knownOutletId": "daily-mail"
+        },
+        {
+          "url": "https://www.cityam.com/burlesque-musical-review-christina-aquilera-show-is-quality-trash/",
+          "host": "cityam.com",
+          "knownOutletId": "city-am"
+        },
+        {
+          "url": "https://www.westendbestfriend.co.uk/news/review-burlesque-the-musical-savoy-theatre",
+          "host": "westendbestfriend.co.uk",
+          "knownOutletId": "west-end-best-friend"
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/burlesque-the-musical-review-savoy-theatre",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/burlesque-savoy-theatre-review-b1239600.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard"
+        },
+        {
+          "url": "https://www.timeout.com/london/news/review-burlesque-the-musical-savoy-theatre-072325",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/burlesque-review-savoy-theatre-london-christina-aguilera",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage"
+        },
+        {
+          "url": "https://theatreandtonic.co.uk/blog/burlesque-the-musical-savoy-theatre-review",
+          "host": "theatreandtonic.co.uk",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css",
+          "host": "maxcdn.bootstrapcdn.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css",
+          "host": "maxcdn.bootstrapcdn.com",
+          "knownOutletId": null
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "ingestResults": [
+        {
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-review-explosive-energy-and-powerhouse-vocals-ctrrm7cbk",
+          "host": "thetimes.com",
+          "outletId": "thetimes",
+          "provisional": true,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2025/jul/22/burlesque-the-musical-review-christina-aguilera",
+          "host": "theguardian.com",
+          "outletId": "guardian",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/burlesque-review-west-end-musical-is-a-frivolous-and-flimsy-frolic_1687704/",
+          "host": "whatsonstage.com",
+          "outletId": "whatsonstage",
+          "provisional": false,
           "ok": false,
           "reason": "spawnSync node ETIMEDOUT"
         },
         {
-          "url": "https://www.standard.co.uk/culture/theatre/care-at-young-vic-review-b1283041.html",
+          "url": "https://www.dailymail.co.uk/tvshowbiz/article-14930715/PATRICK-MARMION-reviews-Burlesque-Savoy-Theatre-laborious-theatrical-rehash-lamentable-film.html",
+          "host": "dailymail.co.uk",
+          "outletId": "daily-mail",
+          "provisional": false,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=burlesque-west-end-2026 --url=https://"
+        },
+        {
+          "url": "https://www.cityam.com/burlesque-musical-review-christina-aquilera-show-is-quality-trash/",
+          "host": "cityam.com",
+          "outletId": "city-am",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.westendbestfriend.co.uk/news/review-burlesque-the-musical-savoy-theatre",
+          "host": "westendbestfriend.co.uk",
+          "outletId": "west-end-best-friend"
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/burlesque-the-musical-review-savoy-theatre",
+          "host": "londontheatre.co.uk",
+          "outletId": "co"
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/burlesque-savoy-theatre-review-b1239600.html",
           "host": "standard.co.uk",
-          "outletId": "standard",
-          "provisional": false,
-          "ok": true,
-          "reason": null
+          "outletId": "standard"
         },
         {
-          "url": "https://www.timeout.com/london/theatre/care-1-review",
+          "url": "https://www.timeout.com/london/news/review-burlesque-the-musical-savoy-theatre-072325",
           "host": "timeout.com",
-          "outletId": "timeout-london",
-          "provisional": false,
-          "ok": true,
-          "reason": null
+          "outletId": "timeout-london"
         },
         {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/care-young-vic-review/",
+          "url": "https://www.thestage.co.uk/reviews/burlesque-review-savoy-theatre-london-christina-aguilera",
+          "host": "thestage.co.uk",
+          "outletId": "thestage"
+        },
+        {
+          "url": "https://theatreandtonic.co.uk/blog/burlesque-the-musical-savoy-theatre-review",
+          "host": "theatreandtonic.co.uk",
+          "outletId": "co"
+        },
+        {
+          "url": "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css",
+          "host": "maxcdn.bootstrapcdn.com",
+          "outletId": "bootstrapcdn"
+        },
+        {
+          "url": "https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css",
+          "host": "maxcdn.bootstrapcdn.com",
+          "outletId": "bootstrapcdn"
+        }
+      ]
+    },
+    {
+      "showId": "dear-england-new-wimbledon-theatre-west-end-2026",
+      "title": "Dear England (New Wimbledon Theatre)",
+      "openingDate": "2026-02-24",
+      "status": "announced",
+      "category": "west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.telegraph.co.uk/theatre/what-to-see/the-ladies-football-club-sheffield-crucible-review/",
+        "https://www.allthatdazzles.co.uk/post/review-dear-england-new-wimbledon-theatre---uk-tour",
+        "https://www.londontheatre.co.uk/reviews/dear-england-review-national-theatre",
+        "https://www.londontheatre.co.uk/reviews/dear-england-review-olivier-theatre",
+        "https://www.standard.co.uk/culture/theatre/dear-england-national-theatre-review-james-graham-gareth-southgate-harry-kane-b1089139.html",
+        "https://www.standard.co.uk/culture/theatre/dear-england-national-theatre-olivier-review-b1217522.html",
+        "https://www.theguardian.com/stage/2023/jun/20/dear-england-review-touching-funny-retelling-of-gareth-southgates-quiet-revolution",
+        "https://www.timeout.com/london/theatre/dear-england-review",
+        "https://www.timeout.com/london/theatre/dear-england-review-2",
+        "https://www.telegraph.co.uk/theatre/what-to-see/dear-england-olivier-review-joseph-fiennes-gareth-southgate/",
+        "https://www.telegraph.co.uk/theatre/what-to-see/dear-england-2025-national-theatre-review-gareth-southgate/",
+        "https://www.whatsonstage.com/news/dear-england-review-the-revised-play-includes-the-2024-euros-and-gareth-southgates-retirement-and-still-hits-the-back-of-the-net_1669877/",
+        "https://theartsdesk.com/theatre/dear-england-national-theatre-review-filtering-national-narrative-through-sport",
+        "https://www.allthatdazzles.co.uk/post/review-dear-england-olivier-theatre",
+        "https://theartsdesk.com/theatre/dear-england-national-theatre-review-extra-time-stirring-soccer-classic",
+        "https://www.theguardian.com/stage/2025/mar/19/dear-england-review-reboot-james-graham-gareth-southgate-national-theatre",
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/dear-england-review-national-theatre-b2361490.html",
+        "https://www.thestage.co.uk/long-reviews/dear-england-review-olivier-theatre-national-theatre-london-joseph-fiennes-james-graham-rupert-goold-gareth-southgate"
+      ],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 2,
+      "missing": [
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-ladies-football-club-sheffield-crucible-review/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph"
+        },
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-dear-england-new-wimbledon-theatre---uk-tour",
+          "host": "allthatdazzles.co.uk",
+          "knownOutletId": "all-that-dazzles-uk"
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/dear-england-review-national-theatre",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/dear-england-review-olivier-theatre",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/dear-england-national-theatre-review-james-graham-gareth-southgate-harry-kane-b1089139.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard"
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/dear-england-national-theatre-olivier-review-b1217522.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2023/jun/20/dear-england-review-touching-funny-retelling-of-gareth-southgates-quiet-revolution",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian"
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/dear-england-review",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london"
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/dear-england-review-2",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london"
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/dear-england-olivier-review-joseph-fiennes-gareth-southgate/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph"
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/dear-england-2025-national-theatre-review-gareth-southgate/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph"
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/dear-england-review-the-revised-play-includes-the-2024-euros-and-gareth-southgates-retirement-and-still-hits-the-back-of-the-net_1669877/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage"
+        },
+        {
+          "url": "https://theartsdesk.com/theatre/dear-england-national-theatre-review-filtering-national-narrative-through-sport",
+          "host": "theartsdesk.com",
+          "knownOutletId": "artsdesk"
+        },
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-dear-england-olivier-theatre",
+          "host": "allthatdazzles.co.uk",
+          "knownOutletId": "all-that-dazzles-uk"
+        },
+        {
+          "url": "https://theartsdesk.com/theatre/dear-england-national-theatre-review-extra-time-stirring-soccer-classic",
+          "host": "theartsdesk.com",
+          "knownOutletId": "artsdesk"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2025/mar/19/dear-england-review-reboot-james-graham-gareth-southgate-national-theatre",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian"
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/dear-england-review-national-theatre-b2361490.html",
+          "host": "independent.co.uk",
+          "knownOutletId": "independent"
+        },
+        {
+          "url": "https://www.thestage.co.uk/long-reviews/dear-england-review-olivier-theatre-national-theatre-london-joseph-fiennes-james-graham-rupert-goold-gareth-southgate",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "ingestResults": [
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-ladies-football-club-sheffield-crucible-review/",
           "host": "telegraph.co.uk",
           "outletId": "sunday-telegraph",
           "provisional": false,
@@ -157,17 +1804,101 @@
           "reason": null
         },
         {
-          "url": "https://www.whatsonstage.com/news/alexander-zeldins-care-at-the-young-vic-review_1722077/",
-          "host": "whatsonstage.com",
-          "outletId": "whatsonstage",
+          "url": "https://www.allthatdazzles.co.uk/post/review-dear-england-new-wimbledon-theatre---uk-tour",
+          "host": "allthatdazzles.co.uk",
+          "outletId": "all-that-dazzles-uk",
           "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/dear-england-review-national-theatre",
+          "host": "londontheatre.co.uk",
+          "outletId": "co",
+          "provisional": true,
           "ok": false,
           "reason": "spawnSync node ETIMEDOUT"
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/dear-england-review-olivier-theatre",
+          "host": "londontheatre.co.uk",
+          "outletId": "co",
+          "provisional": true,
+          "ok": false,
+          "reason": "spawnSync node ETIMEDOUT"
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/dear-england-national-theatre-review-james-graham-gareth-southgate-harry-kane-b1089139.html",
+          "host": "standard.co.uk",
+          "outletId": "standard",
+          "provisional": false,
+          "ok": true,
+          "reason": null
         }
       ],
       "ingestSkippedByCap": [
         {
-          "url": "https://www.thestage.co.uk/reviews/care-review-young-vic-london-alexander-zeldin",
+          "url": "https://www.standard.co.uk/culture/theatre/dear-england-national-theatre-olivier-review-b1217522.html",
+          "host": "standard.co.uk",
+          "outletId": "standard"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2023/jun/20/dear-england-review-touching-funny-retelling-of-gareth-southgates-quiet-revolution",
+          "host": "theguardian.com",
+          "outletId": "guardian"
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/dear-england-review",
+          "host": "timeout.com",
+          "outletId": "timeout-london"
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/dear-england-review-2",
+          "host": "timeout.com",
+          "outletId": "timeout-london"
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/dear-england-olivier-review-joseph-fiennes-gareth-southgate/",
+          "host": "telegraph.co.uk",
+          "outletId": "sunday-telegraph"
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/dear-england-2025-national-theatre-review-gareth-southgate/",
+          "host": "telegraph.co.uk",
+          "outletId": "sunday-telegraph"
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/dear-england-review-the-revised-play-includes-the-2024-euros-and-gareth-southgates-retirement-and-still-hits-the-back-of-the-net_1669877/",
+          "host": "whatsonstage.com",
+          "outletId": "whatsonstage"
+        },
+        {
+          "url": "https://theartsdesk.com/theatre/dear-england-national-theatre-review-filtering-national-narrative-through-sport",
+          "host": "theartsdesk.com",
+          "outletId": "artsdesk"
+        },
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-dear-england-olivier-theatre",
+          "host": "allthatdazzles.co.uk",
+          "outletId": "all-that-dazzles-uk"
+        },
+        {
+          "url": "https://theartsdesk.com/theatre/dear-england-national-theatre-review-extra-time-stirring-soccer-classic",
+          "host": "theartsdesk.com",
+          "outletId": "artsdesk"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2025/mar/19/dear-england-review-reboot-james-graham-gareth-southgate-national-theatre",
+          "host": "theguardian.com",
+          "outletId": "guardian"
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/dear-england-review-national-theatre-b2361490.html",
+          "host": "independent.co.uk",
+          "outletId": "independent"
+        },
+        {
+          "url": "https://www.thestage.co.uk/long-reviews/dear-england-review-olivier-theatre-national-theatre-london-joseph-fiennes-james-graham-rupert-goold-gareth-southgate",
           "host": "thestage.co.uk",
           "outletId": "thestage"
         }
