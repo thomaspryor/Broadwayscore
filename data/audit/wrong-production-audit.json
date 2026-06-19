@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-19T08:53:31.681Z",
+  "timestamp": "2026-06-19T10:56:01.742Z",
   "stats": {
     "totalReviews": 38555,
-    "alreadyFlagged": 17014,
+    "alreadyFlagged": 17015,
     "dateGuardCatches": 104,
     "directorMismatch": 862,
-    "tvFilmSignals": 1057,
+    "tvFilmSignals": 1058,
     "londonSignals": 633,
     "offBroadwaySignals": 464,
     "yearMismatch": 82,
-    "noPublishDate": 3938
+    "noPublishDate": 3934
   },
   "findings": [
     {
@@ -6161,6 +6161,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "encores-la-cage-aux-folles-off-broadway-2026",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "publishDate": "2026-06-18",
+      "url": "https://newyorktheater.me/2026/06/18/la-cage-aux-folles-encores-review-billy-porter-and-wayne-brady-lead-an-all-black-cast/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"amazon prime\""
         }
       ]
     },
