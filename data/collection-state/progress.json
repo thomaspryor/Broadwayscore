@@ -257,7 +257,13 @@
     "the-bands-visit-2017/show-showdown--wendy-caster.json",
     "the-bands-visit-2017/susangrangercom--susan-granger.json",
     "the-bands-visit-2017/theater-life--barry-gordin.json",
-    "the-bands-visit-2017/theater-life--isa-goldberg.json"
+    "the-bands-visit-2017/theater-life--isa-goldberg.json",
+    "m-butterfly-2017/theatermania--jesse-green.json",
+    "prince-of-broadway-2017/broadway-and-me--janice-c-simpson.json",
+    "prince-of-broadway-2017/broadway-blog--ryan-leeds.json",
+    "prince-of-broadway-2017/theater-life--paulanne-simmons.json",
+    "a-dolls-house-part-2-2017/timeout--adam-feldman.json",
+    "a-dolls-house-part-2-2017/show-showdown--wendy-caster.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -721,7 +727,11 @@
     "the-parisian-woman-2017/thestage--mark-shenton.json",
     "meteor-shower-2017/thestage--mark-shenton.json",
     "the-bands-visit-2017/theater-pizzazz--alix-cohen.json",
-    "the-bands-visit-2017/wnyc--jennifer-vanasco.json"
+    "the-bands-visit-2017/wnyc--jennifer-vanasco.json",
+    "junk-2017/wsj--terry-teachout.json",
+    "prince-of-broadway-2017/theater-news-online--david-cote.json",
+    "the-terms-of-my-surrender-2017/theater-news-online--david-cote.json",
+    "marvins-room-2017/thestage--nicole-serratore.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -847,7 +857,11 @@
       "the-bands-visit-2017/show-showdown--wendy-caster.json",
       "the-bands-visit-2017/susangrangercom--susan-granger.json",
       "the-bands-visit-2017/theater-life--barry-gordin.json",
-      "the-bands-visit-2017/theater-life--isa-goldberg.json"
+      "the-bands-visit-2017/theater-life--isa-goldberg.json",
+      "m-butterfly-2017/theatermania--jesse-green.json",
+      "prince-of-broadway-2017/broadway-and-me--janice-c-simpson.json",
+      "prince-of-broadway-2017/theater-life--paulanne-simmons.json",
+      "a-dolls-house-part-2-2017/show-showdown--wendy-caster.json"
     ],
     "amp": [],
     "browserbase": [
@@ -974,7 +988,8 @@
       "the-ferryman-2018/wsj--terry-teachout.json",
       "the-ferryman-2018/medium--christian-lewis.json",
       "children-of-a-lesser-god-2018/medium--christian-lewis.json",
-      "three-tall-women-2018/medium--christian-lewis.json"
+      "three-tall-women-2018/medium--christian-lewis.json",
+      "a-dolls-house-part-2-2017/timeout--adam-feldman.json"
     ],
     "archiveToday": [
       "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
@@ -1038,11 +1053,13 @@
       "lobby-hero-2018/thestage--mark-shenton.json",
       "frozen-2018/thestage--mark-shenton.json",
       "john-lithgow-stories-by-heart-2018/nydailynews--joe-dziemianowicz.json",
-      "latin-history-for-morons-2017/front-row-center--casey-curtis.json"
+      "latin-history-for-morons-2017/front-row-center--casey-curtis.json",
+      "junk-2017/wsj--terry-teachout.json",
+      "prince-of-broadway-2017/broadway-blog--ryan-leeds.json"
     ]
   },
   "startTime": "2026-06-18T22:39:22.801Z",
-  "lastProcessed": "the-bands-visit-2017/wnyc--jennifer-vanasco.json",
+  "lastProcessed": "a-dolls-house-part-2-2017/show-showdown--wendy-caster.json",
   "log": [
     {
       "t": "2026-06-18T23:10:42.792Z",
@@ -1360,6 +1377,17 @@
     },
     {
       "t": "2026-06-19T09:11:57.215Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-19T09:36:56.863Z",
+      "event": "bb-session",
+      "session": "b48241a1",
+      "url": "http://www.wsj.com/articles/junk-review-bankrupting-entertainment-1509669000"
+    },
+    {
+      "t": "2026-06-19T09:36:57.526Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
