@@ -1,26 +1,20 @@
 {
-  "updatedAt": "2026-06-19T01:00:27.635Z",
+  "updatedAt": "2026-06-19T01:18:43.847Z",
   "processed": 9,
-  "failed": 77,
-  "successRate": "10.5%",
+  "failed": 91,
+  "successRate": "9.0%",
   "tierBreakdown": {
     "playwright": 7,
     "amp": 0,
-    "browserbase": 5,
+    "browserbase": 10,
     "directCookies": 0,
     "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 3,
     "archive": 0
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-06-18T23:43:39.480Z",
-      "event": "bb-session",
-      "session": "cdd617d8",
-      "url": "https://www.thestage.co.uk/reviews/glengarry-glen-ross-review-old-vic-theatre-lo"
-    },
     {
       "t": "2026-06-18T23:43:40.674Z",
       "event": "bb-cookie-inject",
@@ -69,6 +63,67 @@
       "t": "2026-06-19T00:25:35.425Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-19T01:13:04.624Z",
+      "event": "bb-session",
+      "session": "02a6c058",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-19T01:13:05.034Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-19T01:14:00.048Z",
+      "event": "bb-session",
+      "session": "f01942d0",
+      "url": "https://www.nytimes.com/2026/06/03/theater/caissie-levy-broadway-tonys-ragtime.h"
+    },
+    {
+      "t": "2026-06-19T01:14:00.545Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-19T01:14:18.343Z",
+      "event": "bb-session",
+      "session": "8bafd55b",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-19T01:14:18.815Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-19T01:14:30.001Z",
+      "event": "bb-session",
+      "session": "3daf1fff",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-19T01:14:30.412Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-19T01:15:45.436Z",
+      "event": "bb-session",
+      "session": "28b0bb5a",
+      "url": "https://www.nytimes.com/2026/05/31/theater/othello-review-wendell-pierce.html"
+    },
+    {
+      "t": "2026-06-19T01:15:45.867Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-19T01:18:00.219Z",
+      "event": "bb-session",
+      "session": "a3945b18",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15906913/Emily-Ratajkowski-returns"
     }
   ]
 }
