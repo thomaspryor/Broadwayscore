@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-19T12:29:25.586Z",
+  "timestamp": "2026-06-19T12:37:36.424Z",
   "stats": {
     "totalReviews": 38571,
     "alreadyFlagged": 17015,
     "dateGuardCatches": 104,
     "directorMismatch": 866,
-    "tvFilmSignals": 1058,
+    "tvFilmSignals": 1057,
     "londonSignals": 634,
     "offBroadwaySignals": 464,
     "yearMismatch": 82,
-    "noPublishDate": 3944
+    "noPublishDate": 3943
   },
   "findings": [
     {
@@ -15739,20 +15739,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "one-man-two-guvnors-2012",
-      "file": "newsday--linda-winer.json",
-      "score": 63,
-      "publishDate": "April 18, 2012",
-      "url": "https://www.newsday.com/entertainment/theater/one-man-two-guvnors-is-pure-slapstick-1.3667079",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
