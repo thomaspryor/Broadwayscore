@@ -303,7 +303,14 @@
     "the-encounter-2016/times-square-chronicles--suzanna-bowling.json",
     "tuck-everlasting-2016/ew--melissa-rose-bernardo.json",
     "tuck-everlasting-2016/uinterview--erik-meers.json",
-    "fully-committed-2016/timeout--adam-feldman.json"
+    "fully-committed-2016/timeout--adam-feldman.json",
+    "fully-committed-2016/wsj--terry-teachout.json",
+    "waitress-2016/act-three-the-reviews--doug-marino.json",
+    "american-psycho-2016/nyt-theater--jonathan-mandell.json",
+    "american-psycho-2016/timeout--adam-feldman.json",
+    "the-father-2016/financialtimes--max-mcguinness.json",
+    "the-father-2016/theater-life--paulanne-simmons.json",
+    "bright-star-2016/stu-on-broadway--stu-brown.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -791,7 +798,10 @@
     "heisenberg-2016/abc-news--mark-kennedy.json",
     "holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json",
     "long-days-journey-into-night-2016/theater-pizzazz--alix-cohen.json",
-    "tuck-everlasting-2016/thestage--mark-shenton.json"
+    "tuck-everlasting-2016/thestage--mark-shenton.json",
+    "american-psycho-2016/ap--mark-kennedy.json",
+    "bright-star-2016/wsj--terry-teachout.json",
+    "bright-star-2016/drama-queen-nyc--jonathan-warman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -941,7 +951,11 @@
       "heisenberg-2016/wnyc--jennifer-vanasco.json",
       "the-encounter-2016/times-square-chronicles--suzanna-bowling.json",
       "tuck-everlasting-2016/ew--melissa-rose-bernardo.json",
-      "tuck-everlasting-2016/uinterview--erik-meers.json"
+      "tuck-everlasting-2016/uinterview--erik-meers.json",
+      "waitress-2016/act-three-the-reviews--doug-marino.json",
+      "american-psycho-2016/nyt-theater--jonathan-mandell.json",
+      "the-father-2016/financialtimes--max-mcguinness.json",
+      "the-father-2016/theater-life--paulanne-simmons.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1041,7 +1055,8 @@
       "lobby-hero-2018/timeout--adam-feldman.json",
       "angels-in-america-2018/broadwaynews--charles-isherwood.json",
       "escape-to-margaritaville-2018/broadwaynews--caitlin-huston.json",
-      "charlie-and-the-chocolate-factory-2017/billboard--curtis-m-wong.json"
+      "charlie-and-the-chocolate-factory-2017/billboard--curtis-m-wong.json",
+      "bright-star-2016/stu-on-broadway--stu-brown.json"
     ],
     "brightdata": [
       "the-balusters-2026/broadwayworld--unknown.json",
@@ -1079,7 +1094,9 @@
       "les-liaisons-dangereuses-2016/wsj--terry-teachout.json",
       "heisenberg-2016/timeout--adam-feldman.json",
       "holiday-inn-the-new-irving-berlin-musical-2016/timeout--david-cote.json",
-      "fully-committed-2016/timeout--adam-feldman.json"
+      "fully-committed-2016/timeout--adam-feldman.json",
+      "fully-committed-2016/wsj--terry-teachout.json",
+      "bright-star-2016/wsj--terry-teachout.json"
     ],
     "archiveToday": [
       "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
@@ -1163,11 +1180,12 @@
       "heisenberg-2016/nydailynews--joe-dziemianowicz.json",
       "oh-hello-on-broadway-2016/nydailynews--joe-dziemianowicz.json",
       "holiday-inn-the-new-irving-berlin-musical-2016/nydailynews--joe-dziemianowicz.json",
-      "the-encounter-2016/nydailynews--joe-dziemianowicz.json"
+      "the-encounter-2016/nydailynews--joe-dziemianowicz.json",
+      "american-psycho-2016/timeout--adam-feldman.json"
     ]
   },
   "startTime": "2026-06-18T22:39:22.801Z",
-  "lastProcessed": "fully-committed-2016/timeout--adam-feldman.json",
+  "lastProcessed": "bright-star-2016/drama-queen-nyc--jonathan-warman.json",
   "log": [
     {
       "t": "2026-06-18T23:10:42.792Z",
@@ -1529,6 +1547,28 @@
     },
     {
       "t": "2026-06-19T09:59:21.654Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-19T10:04:29.181Z",
+      "event": "bb-session",
+      "session": "7bc32f2e",
+      "url": "http://www.wsj.com/articles/fully-committed-review-jesse-tyler-ferguson-party-of"
+    },
+    {
+      "t": "2026-06-19T10:04:29.914Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-19T10:07:03.772Z",
+      "event": "bb-session",
+      "session": "b626afdd",
+      "url": "http://www.wsj.com/articles/bright-star-review-banjo-boondoggle-1458865800"
+    },
+    {
+      "t": "2026-06-19T10:07:04.470Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
