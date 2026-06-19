@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-19T00:24:42.130Z",
-  "processed": 4,
-  "failed": 50,
-  "successRate": "7.4%",
+  "updatedAt": "2026-06-19T00:26:43.739Z",
+  "processed": 9,
+  "failed": 55,
+  "successRate": "14.1%",
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 7,
     "amp": 0,
-    "browserbase": 3,
+    "browserbase": 5,
     "directCookies": 0,
     "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 2,
     "archive": 0
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-06-18T23:43:39.480Z",
@@ -56,6 +56,17 @@
     },
     {
       "t": "2026-06-19T00:23:43.275Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-19T00:25:34.570Z",
+      "event": "bb-session",
+      "session": "2c411b3f",
+      "url": "https://variety.com/2026/legit/awards/michael-arden-lost-boys-happy-feet-anthrop"
+    },
+    {
+      "t": "2026-06-19T00:25:35.425Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
