@@ -901,7 +901,17 @@
     "jekyll-and-hyde-2013/bloomberg--philip-boroff.json",
     "orphans-2013/bloomberg--jeremy-gerard.json",
     "the-big-knife-2013/nydailynews--joe-dziemianowicz.json",
-    "the-nance-2013/new-jersey-newsroom--michael-sommers.json"
+    "the-nance-2013/new-jersey-newsroom--michael-sommers.json",
+    "encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
+    "romeo-and-juliet-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+    "are-you-now-or-have-you-ever-been-off-broadway-2026/nytimes--laura-collins-hughes.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1098,7 +1108,12 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
       "data/review-texts/maybe-happy-ending-2024/variety--unknown.json",
-      "maybe-happy-ending-2024/variety--unknown.json"
+      "maybe-happy-ending-2024/variety--unknown.json",
+      "data/review-texts/are-you-now-or-have-you-ever-been-off-broadway-2026/nytimes--laura-collins-hughes.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1258,7 +1273,8 @@
       "data/review-texts/tuck-everlasting-2016/thestage--mark-shenton.json",
       "data/review-texts/noises-off-2016/thestage--mark-shenton.json",
       "data/review-texts/the-gin-game-2015/nyt-theater--jonathan-mandell.json",
-      "data/review-texts/ifthen-2014/northjerseycom--robert-feldberg.json"
+      "data/review-texts/ifthen-2014/northjerseycom--robert-feldberg.json",
+      "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json"
     ],
     "archive": [
       "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
@@ -1355,7 +1371,7 @@
     ]
   },
   "startTime": "2026-06-18T22:39:22.801Z",
-  "lastProcessed": "the-nance-2013/new-jersey-newsroom--michael-sommers.json",
+  "lastProcessed": "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
   "log": [
     {
       "t": "2026-06-18T23:10:42.792Z",
@@ -1774,6 +1790,61 @@
       "t": "2026-06-19T10:38:24.843Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-06-19T11:02:14.150Z",
+      "event": "bb-session",
+      "session": "af35ea40",
+      "url": "https://www.nytimes.com/2026/06/16/theater/are-you-now-or-have-you-ever-been-rev"
+    },
+    {
+      "t": "2026-06-19T11:02:14.517Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-19T11:02:58.490Z",
+      "event": "bb-session",
+      "session": "d5e550bf",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-19T11:02:58.907Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-19T11:03:53.141Z",
+      "event": "bb-session",
+      "session": "4d16271a",
+      "url": "https://www.nytimes.com/2026/06/03/theater/caissie-levy-broadway-tonys-ragtime.h"
+    },
+    {
+      "t": "2026-06-19T11:03:53.523Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-19T11:04:13.591Z",
+      "event": "bb-session",
+      "session": "f116c3dc",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-19T11:04:14.011Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-19T11:04:25.276Z",
+      "event": "bb-session",
+      "session": "844dc1cf",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-19T11:04:25.691Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
