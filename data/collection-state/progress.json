@@ -981,7 +981,16 @@
     "are-you-now-or-have-you-ever-been-off-broadway-2026/talkinbroadway--unknown.json",
     "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
     "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
-    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json"
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
+    "small-off-broadway-2026/daily-mail--unknown.json",
+    "small-off-broadway-2026/pages-on-stages--unknown.json",
+    "small-off-broadway-2026/the-recs--unknown.json",
+    "small-off-broadway-2026/theater-pizzazz--unknown.json",
+    "small-off-broadway-2026/washpost--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1191,7 +1200,8 @@
       "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
       "data/review-texts/are-you-now-or-have-you-ever-been-off-broadway-2026/wsj--unknown.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json"
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1456,7 +1466,7 @@
     ]
   },
   "startTime": "2026-06-18T22:39:22.801Z",
-  "lastProcessed": "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+  "lastProcessed": "small-off-broadway-2026/washpost--unknown.json",
   "log": [
     {
       "t": "2026-06-18T23:10:42.792Z",
@@ -2016,6 +2026,17 @@
     },
     {
       "t": "2026-06-19T12:43:44.219Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-19T12:43:58.220Z",
+      "event": "bb-session",
+      "session": "9ebf5187",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-19T12:43:59.129Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
