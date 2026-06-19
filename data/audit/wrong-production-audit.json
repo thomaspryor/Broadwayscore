@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-19T10:56:01.742Z",
+  "timestamp": "2026-06-19T11:02:01.599Z",
   "stats": {
-    "totalReviews": 38555,
-    "alreadyFlagged": 17015,
+    "totalReviews": 38559,
+    "alreadyFlagged": 17016,
     "dateGuardCatches": 104,
-    "directorMismatch": 862,
+    "directorMismatch": 866,
     "tvFilmSignals": 1058,
     "londonSignals": 633,
     "offBroadwaySignals": 464,
     "yearMismatch": 82,
-    "noPublishDate": 3934
+    "noPublishDate": 3933
   },
   "findings": [
     {
@@ -6167,6 +6167,7 @@
     {
       "showId": "encores-la-cage-aux-folles-off-broadway-2026",
       "file": "nyt-theater--jonathan-mandell.json",
+      "score": 64,
       "publishDate": "2026-06-18",
       "url": "https://newyorktheater.me/2026/06/18/la-cage-aux-folles-encores-review-billy-porter-and-wayne-brady-lead-an-all-black-cast/",
       "findings": [
@@ -8131,6 +8132,32 @@
     },
     {
       "showId": "glengarry-glen-ross-west-end-2026",
+      "file": "broadwayworld--alexander-cohen.json",
+      "publishDate": "2026-06-18",
+      "url": "https://www.broadwayworld.com/westend/article/Review-GLENGARRY-GLEN-ROSS-The-Old-Vic-20260618",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
+        }
+      ]
+    },
+    {
+      "showId": "glengarry-glen-ross-west-end-2026",
+      "file": "financialtimes--sarah-hemming.json",
+      "publishDate": "2026-06-18",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
+        }
+      ]
+    },
+    {
+      "showId": "glengarry-glen-ross-west-end-2026",
       "file": "independent--alice-saville.json",
       "score": 58,
       "publishDate": "2026-06-18",
@@ -8164,6 +8191,33 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "glengarry-glen-ross-west-end-2026",
+      "file": "london-theatre--marianka-swain.json",
+      "publishDate": "2026-06-18",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
+        }
+      ]
+    },
+    {
+      "showId": "glengarry-glen-ross-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "score": null,
+      "publishDate": "2026-06-18",
+      "url": "https://www.standard.co.uk/culture/theatre/glengarry-glen-ross-at-the-old-vic-review-b1286630.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
         }
       ]
     },

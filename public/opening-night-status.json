@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-19T10:56:06.243Z",
+  "generatedAt": "2026-06-19T11:02:06.145Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -795,24 +795,24 @@
       "slug": "encores-la-cage-aux-folles-off-broadway",
       "thumbnail": "/images/shows/encores-la-cage-aux-folles-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 68,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 5,
+      "reviewsNeeded": 1,
       "siteFileExists": true,
-      "total": 0,
+      "total": 2,
       "t1": 0,
-      "t2": 0,
+      "t2": 2,
       "t3": 0,
       "positive": 0,
-      "mixed": 0,
+      "mixed": 2,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/12 total",
+          "2/12 total",
           "T1:0/3",
-          "T2:0/3",
+          "T2:2/3",
           "hi-conf:0/8"
         ],
         "highConfidence": 0,
@@ -1146,6 +1146,20 @@
           "name": "London Box Office",
           "isDualMarket": false
         }
+      ],
+      "timeline": [
+        {
+          "t": "2026-06-19T11:02:06.145Z",
+          "rc": 2,
+          "s": 68,
+          "t1": 0,
+          "t2": 2,
+          "t3": 0,
+          "p": 0,
+          "m": 2,
+          "n": 0,
+          "bc": "waiting"
+        }
       ]
     },
     {
@@ -1200,10 +1214,6 @@
           "isDualMarket": true
         },
         {
-          "name": "Financial Times",
-          "isDualMarket": true
-        },
-        {
           "name": "The Telegraph",
           "isDualMarket": true
         },
@@ -1219,10 +1229,6 @@
         },
         {
           "name": "Variety",
-          "isDualMarket": true
-        },
-        {
-          "name": "BroadwayWorld",
           "isDualMarket": true
         },
         {
