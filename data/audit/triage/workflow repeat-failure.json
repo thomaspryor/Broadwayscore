@@ -1,11 +1,16 @@
 {
   "system": "workflow repeat-failure",
   "status": "warn",
-  "lastChecked": "2026-06-18T08:34:08.141Z",
+  "lastChecked": "2026-06-19T08:47:47.521Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
+    {
+      "name": "Workflow repeat-failure: Audit Aggregator Review Gap",
+      "status": "warn",
+      "message": "Audit Aggregator Review Gap failed 2 times in the last 24h — likely broken, not transient."
+    },
     {
       "name": "Workflow repeat-failure: Update Theatr Data",
       "status": "warn",
