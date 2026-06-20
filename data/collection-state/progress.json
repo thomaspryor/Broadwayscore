@@ -292,7 +292,13 @@
     "sunset-boulevard-2017/newyorker--conde-nast.json",
     "jitney-2017/nydailynews--joe-dziemianowicz.json",
     "jitney-2017/wnyc--jennifer-vanasco.json",
-    "in-transit-2016/the-cultural-critic--steve-cohen.json"
+    "in-transit-2016/the-cultural-critic--steve-cohen.json",
+    "dear-evan-hansen-2016/frontmezzjunkies--steven-ross.json",
+    "a-bronx-tale-the-musical-2016/timeout--adam-feldman.json",
+    "natasha-pierre-and-the-great-comet-of-1812-2016/newyorker--conde-nast.json",
+    "les-liaisons-dangereuses-2016/wsj--terry-teachout.json",
+    "falsettos-2016/theatermania--jesse-green.json",
+    "falsettos-2016/theater-life--eric-march.json"
   ],
   "failed": [
     "encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
@@ -927,7 +933,11 @@
     "come-from-away-2017/off-script-with-dan-dwyer--dan-dwyer.json",
     "come-from-away-2017/st-louis-post-dispatch--bruce-r-miller.json",
     "the-glass-menagerie-2017/chicagotribune--chris-jones.json",
-    "the-present-2017/thestage--unknown.json"
+    "the-present-2017/thestage--unknown.json",
+    "in-transit-2016/nydailynews--joe-dziemianowicz.json",
+    "a-bronx-tale-the-musical-2016/njcom--patrick-maley.json",
+    "natasha-pierre-and-the-great-comet-of-1812-2016/broadway-and-me--janice-c-simpson.json",
+    "les-liaisons-dangereuses-2016/thestage--mark-shenton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1078,7 +1088,9 @@
       "come-from-away-2017/wnyc--jennifer-vanasco.json",
       "sunday-in-the-park-with-george-2017/theater-life--isa-goldberg.json",
       "sunday-in-the-park-with-george-2017/wnyc--jennifer-vanasco.json",
-      "jitney-2017/wnyc--jennifer-vanasco.json"
+      "jitney-2017/wnyc--jennifer-vanasco.json",
+      "falsettos-2016/theatermania--jesse-green.json",
+      "falsettos-2016/theater-life--eric-march.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1216,7 +1228,8 @@
       "john-lithgow-stories-by-heart-2018/nydailynews--joe-dziemianowicz.json",
       "the-little-foxes-2017/timeout--david-cote.json",
       "oslo-2017/timeout--adam-feldman.json",
-      "sunset-boulevard-2017/newyorker--conde-nast.json"
+      "sunset-boulevard-2017/newyorker--conde-nast.json",
+      "les-liaisons-dangereuses-2016/wsj--terry-teachout.json"
     ],
     "archiveToday": [
       "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
@@ -1253,7 +1266,8 @@
       "data/review-texts/meteor-shower-2017/thestage--mark-shenton.json",
       "data/review-texts/anastasia-2017/thestage--mark-shenton.json",
       "data/review-texts/the-little-foxes-2017/thestage--mark-shenton.json",
-      "data/review-texts/groundhog-day-2017/thestage--mark-shenton.json"
+      "data/review-texts/groundhog-day-2017/thestage--mark-shenton.json",
+      "data/review-texts/les-liaisons-dangereuses-2016/thestage--mark-shenton.json"
     ],
     "archive": [
       "small-off-broadway-2026/culturesauce--thom-geier.json",
@@ -1358,11 +1372,14 @@
       "come-from-away-2017/times-uk--dominic-maxwell.json",
       "significant-other-2017/nydailynews--joe-dziemianowicz.json",
       "jitney-2017/nydailynews--joe-dziemianowicz.json",
-      "in-transit-2016/the-cultural-critic--steve-cohen.json"
+      "in-transit-2016/the-cultural-critic--steve-cohen.json",
+      "dear-evan-hansen-2016/frontmezzjunkies--steven-ross.json",
+      "a-bronx-tale-the-musical-2016/timeout--adam-feldman.json",
+      "natasha-pierre-and-the-great-comet-of-1812-2016/newyorker--conde-nast.json"
     ]
   },
   "startTime": "2026-06-19T23:54:19.453Z",
-  "lastProcessed": "in-transit-2016/the-cultural-critic--steve-cohen.json",
+  "lastProcessed": "falsettos-2016/theater-life--eric-march.json",
   "log": [
     {
       "t": "2026-06-19T23:54:56.069Z",
@@ -2435,6 +2452,17 @@
     },
     {
       "t": "2026-06-20T16:26:48.752Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-20T16:41:32.639Z",
+      "event": "bb-session",
+      "session": "d7fa6d1c",
+      "url": "https://www.wsj.com/articles/les-liaisons-dangereuses-review-fallen-archness-147"
+    },
+    {
+      "t": "2026-06-20T16:41:33.207Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

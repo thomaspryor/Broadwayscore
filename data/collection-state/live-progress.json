@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-20T16:40:37.150Z",
-  "processed": 293,
-  "failed": 633,
-  "successRate": "31.6%",
+  "updatedAt": "2026-06-20T16:43:21.743Z",
+  "processed": 299,
+  "failed": 637,
+  "successRate": "31.9%",
   "tierBreakdown": {
-    "playwright": 147,
+    "playwright": 149,
     "amp": 0,
     "browserbase": 73,
     "directCookies": 0,
     "scrapingbee": 0,
-    "brightdata": 58,
-    "archiveToday": 35,
-    "archive": 103
+    "brightdata": 59,
+    "archiveToday": 36,
+    "archive": 106
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
-    {
-      "t": "2026-06-20T05:40:41.832Z",
-      "event": "bb-session",
-      "session": "b7408371",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-20T05:40:42.720Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-06-20T05:40:56.035Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-06-20T16:26:48.752Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-20T16:41:32.639Z",
+      "event": "bb-session",
+      "session": "d7fa6d1c",
+      "url": "https://www.wsj.com/articles/les-liaisons-dangereuses-review-fallen-archness-147"
+    },
+    {
+      "t": "2026-06-20T16:41:33.207Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
