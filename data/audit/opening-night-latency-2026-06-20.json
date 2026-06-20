@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-20T07:38:12.419Z",
+  "generatedAt": "2026-06-20T09:27:46.728Z",
   "date": "2026-06-20",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 380529,
+  "entryCount": 379417,
   "shows": [
     {
       "showId": "an-ideal-husband-west-end-2026",
@@ -3921,7 +3921,7 @@
     },
     {
       "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
-      "reviewCount": 8,
+      "reviewCount": 9,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4356,7 +4356,7 @@
     },
     {
       "showId": "driftwood-west-end-2026",
-      "reviewCount": 12,
+      "reviewCount": 13,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4371,7 +4371,7 @@
     },
     {
       "showId": "glengarry-glen-ross-west-end-2026",
-      "reviewCount": 11,
+      "reviewCount": 10,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -10911,12 +10911,12 @@
     },
     {
       "showId": "are-you-now-or-have-you-ever-been-off-broadway-2026",
-      "reviewCount": 7,
+      "reviewCount": 6,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 20075126,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
