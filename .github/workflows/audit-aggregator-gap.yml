@@ -71,6 +71,24 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
+      # --ingest-missing writes new review-text files into data/review-texts/.
+      # That directory MUST be a real checkout of the private review-texts repo,
+      # otherwise the downstream `cd data/review-texts && git …` block falls
+      # through to the MAIN repo's .git, re-points origin at broadway-review-texts,
+      # and a failed `git pull --rebase` checks out the review-texts tree over the
+      # workspace — wiping .github/actions/ and failing every post-step
+      # (the recurring "Post Setup Playwright: Can't find action.yml", 2026-06-20).
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      # Record the review-texts HEAD before the audit ingests anything, so the
+      # rebuild trigger below fires only when --ingest-missing actually added files.
+      - name: Record review-texts SHA (pre-ingest)
+        id: rt_before
+        run: echo "sha=$(git -C data/review-texts rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
       - name: Run gap audit
         env:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
@@ -109,17 +127,16 @@ jobs:
           fi
           node scripts/audit-show-review-gap.js $ARGS
 
-      - name: Commit audit + push ingested review-texts
+      - name: Commit audit JSON (public repo)
         if: always()
         env:
-          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          # Audit JSON lives in the public repo
-          # Commit the checkpoint too — it's what lets consecutive runs resume
-          # instead of re-auditing the same first shows (the 25-min-timeout fix).
+          # Audit JSON lives in the public repo. Commit the checkpoint too — it's
+          # what lets consecutive runs resume instead of re-auditing the same
+          # first shows (the 25-min-timeout fix).
           git add data/audit/show-review-gap.json data/audit/unknown-aggregator-outlets.json data/audit/gap-audit-checkpoint.json || true
           if git diff --cached --quiet; then
             echo "No audit changes to commit"
@@ -127,35 +144,29 @@ jobs:
             git commit -m "audit: show-review-gap [skip ci]"
             bash scripts/lib/push-with-retry.sh 5 main
           fi
-          # Any new review-text files written by --ingest-missing land in
-          # data/review-texts/ (the private review-texts checkout). Push them
-          # back so the next rebuild picks them up.
-          # P0 fix 2026-05-27 (ship-check): use credential helper via stdin so
-          # REVIEW_TEXTS_TOKEN never appears in the push URL. The previous
-          # inline `https://x-access-token:${REVIEW_TEXTS_TOKEN}@...` pattern
-          # leaks an empty `x-access-token:@github.com` URL to GitHub Actions
-          # logs when the secret is unset/rotated (GitHub Actions only masks
-          # NON-EMPTY values).
-          if [ -d data/review-texts ]; then
-            (
-              cd data/review-texts
-              if [ -n "$(git status --porcelain)" ]; then
-                git add -A
-                git commit -m "ingest: audit-aggregator-gap auto-ingested $(git status --porcelain | wc -l | tr -d ' ') file(s)" || true
-                # Configure once via extraheader; tokenless URL stays in logs.
-                git config --local http.https://github.com/.extraheader "AUTHORIZATION: basic $(printf "x-access-token:${REVIEW_TEXTS_TOKEN}" | base64 -w0)"
-                git remote set-url origin https://github.com/thomaspryor/broadway-review-texts.git
-                git push origin HEAD:main \
-                  || (git pull --rebase origin main && git push origin HEAD:main) \
-                  || echo "::warning::review-texts push failed; next cron will retry"
-                # Unset header so it doesn't persist if the workspace is cached
-                git config --local --unset-all http.https://github.com/.extraheader || true
-              fi
-            )
-          fi
-          # Trigger rebuild so newly-ingested reviews land in reviews.json
-          if [ -d data/review-texts ] && [ -n "$(cd data/review-texts && git log -1 --format=%s | grep -F 'audit-aggregator-gap auto-ingested')" ]; then
+
+      # Push review-text files written by --ingest-missing back to the private
+      # repo via the shared action (content-aware conflict resolution, symlink
+      # guard, protected-field restore). Replaces the old hand-rolled push block
+      # that corrupted the workspace when data/review-texts wasn't a real checkout.
+      - name: Push ingested review-texts
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "ingest: audit-aggregator-gap auto-ingested review-texts"
+
+      - name: Trigger rebuild if review-texts changed
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          AFTER="$(git -C data/review-texts rev-parse HEAD)"
+          if [ "$AFTER" != "${{ steps.rt_before.outputs.sha }}" ]; then
+            echo "review-texts advanced ${{ steps.rt_before.outputs.sha }} -> $AFTER — triggering rebuild"
             gh workflow run "Rebuild Reviews Data" -f reason="audit-aggregator-gap ingested new reviews" || true
+          else
+            echo "No new review-texts ingested — skipping rebuild trigger"
           fi
 
       - name: Notify on failure
