@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-20T06:51:09.220Z",
+  "timestamp": "2026-06-20T09:53:41.807Z",
   "stats": {
     "totalReviews": 38572,
-    "alreadyFlagged": 17020,
+    "alreadyFlagged": 17021,
     "dateGuardCatches": 104,
     "directorMismatch": 868,
     "tvFilmSignals": 1057,
-    "londonSignals": 637,
+    "londonSignals": 638,
     "offBroadwaySignals": 464,
     "yearMismatch": 82,
-    "noPublishDate": 3936
+    "noPublishDate": 3932
   },
   "findings": [
     {
@@ -8120,14 +8120,20 @@
     },
     {
       "showId": "glengarry-glen-ross-west-end-2026",
-      "file": "all-that-dazzles-uk--unknown.json",
-      "publishDate": null,
+      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "score": 39,
+      "publishDate": "2026-06-17",
       "url": "https://www.allthatdazzles.co.uk/post/review-glengarry-glen-ross-the-old-vic",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -32851,20 +32857,6 @@
     },
     {
       "showId": "inter-alia-west-end-2026",
-      "file": "lbc--johnny-jenkins.json",
-      "score": 91,
-      "publishDate": "2026-04-08",
-      "url": "https://www.lbc.co.uk/article/inter-alia-review-best-plays-ever-seen-5HjdXRZ_2/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"wyndham\""
-        }
-      ]
-    },
-    {
-      "showId": "inter-alia-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 82,
       "publishDate": "2026-04-14",
@@ -41687,6 +41679,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "war-horse-west-end-2026",
+      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "score": 99,
+      "publishDate": "2026-06-07",
+      "url": "https://www.allthatdazzles.co.uk/post/review-war-horse-olivier-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
