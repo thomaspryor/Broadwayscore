@@ -10,7 +10,8 @@
     "are-you-watching-west-end-2026/all-that-dazzles-uk--unknown.json",
     "driftwood-west-end-2026/all-that-dazzles-uk--unknown.json",
     "war-horse-west-end-2026/all-that-dazzles-uk--unknown.json",
-    "war-horse-west-end-2026/click-liverpool--carie-schneider.json"
+    "war-horse-west-end-2026/click-liverpool--carie-schneider.json",
+    "glengarry-glen-ross-west-end-2026/whatsonstage--sarah-crompton.json"
   ],
   "failed": [
     "encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
@@ -186,7 +187,16 @@
     "driftwood-west-end-2026/times-uk--clive-davis.json",
     "war-horse-west-end-2026/plays-international--maryam-philpott.json",
     "war-horse-west-end-2026/times-uk--chris-bennion.json",
-    "war-horse-west-end-2026/times-uk--clive-davis.json"
+    "war-horse-west-end-2026/times-uk--clive-davis.json",
+    "sting-west-end-2026/ew--unknown.json",
+    "sting-west-end-2026/newsday--unknown.json",
+    "sting-west-end-2026/timeout-london--unknown.json",
+    "sting-west-end-2026/daily-mail--unknown.json",
+    "sting-west-end-2026/standard--unknown.json",
+    "sting-west-end-2026/west-end-best-friend--unknown.json",
+    "glengarry-glen-ross-west-end-2026/guardian--arifa-akbar.json",
+    "glengarry-glen-ross-west-end-2026/thestage--unknown.json",
+    "glengarry-glen-ross-west-end-2026/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -199,7 +209,8 @@
       "are-you-watching-west-end-2026/all-that-dazzles-uk--unknown.json",
       "driftwood-west-end-2026/all-that-dazzles-uk--unknown.json",
       "war-horse-west-end-2026/all-that-dazzles-uk--unknown.json",
-      "war-horse-west-end-2026/click-liverpool--carie-schneider.json"
+      "war-horse-west-end-2026/click-liverpool--carie-schneider.json",
+      "glengarry-glen-ross-west-end-2026/whatsonstage--sarah-crompton.json"
     ],
     "amp": [],
     "browserbase": [
@@ -305,7 +316,7 @@
     ]
   },
   "startTime": "2026-06-19T23:54:19.453Z",
-  "lastProcessed": "war-horse-west-end-2026/times-uk--clive-davis.json",
+  "lastProcessed": "glengarry-glen-ross-west-end-2026/whatsonstage--sarah-crompton.json",
   "log": [
     {
       "t": "2026-06-19T23:54:56.069Z",
@@ -1391,6 +1402,23 @@
       "t": "2026-06-20T06:23:44.553Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-20T07:35:47.453Z",
+      "event": "bb-session",
+      "session": "ac529c98",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15885925/Gareth-Southgate-drama-De"
+    },
+    {
+      "t": "2026-06-20T07:37:19.655Z",
+      "event": "bb-session",
+      "session": "ccb46b8a",
+      "url": "https://www.thestage.co.uk/reviews/glengarry-glen-ross-review-old-vic-theatre-lo"
+    },
+    {
+      "t": "2026-06-20T07:37:20.363Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
