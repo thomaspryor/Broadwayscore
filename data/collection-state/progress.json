@@ -307,7 +307,15 @@
     "holiday-inn-the-new-irving-berlin-musical-2016/nydailynews--joe-dziemianowicz.json",
     "holiday-inn-the-new-irving-berlin-musical-2016/timeout--david-cote.json",
     "holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json",
-    "the-encounter-2016/nydailynews--joe-dziemianowicz.json"
+    "the-encounter-2016/nydailynews--joe-dziemianowicz.json",
+    "the-encounter-2016/times-square-chronicles--suzanna-bowling.json",
+    "tuck-everlasting-2016/ew--melissa-rose-bernardo.json",
+    "tuck-everlasting-2016/uinterview--erik-meers.json",
+    "fully-committed-2016/timeout--adam-feldman.json",
+    "fully-committed-2016/wsj--terry-teachout.json",
+    "waitress-2016/act-three-the-reviews--doug-marino.json",
+    "american-psycho-2016/nyt-theater--jonathan-mandell.json",
+    "american-psycho-2016/timeout--adam-feldman.json"
   ],
   "failed": [
     "encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
@@ -947,7 +955,9 @@
     "a-bronx-tale-the-musical-2016/njcom--patrick-maley.json",
     "natasha-pierre-and-the-great-comet-of-1812-2016/broadway-and-me--janice-c-simpson.json",
     "les-liaisons-dangereuses-2016/thestage--mark-shenton.json",
-    "heisenberg-2016/abc-news--mark-kennedy.json"
+    "heisenberg-2016/abc-news--mark-kennedy.json",
+    "tuck-everlasting-2016/thestage--mark-shenton.json",
+    "american-psycho-2016/ap--mark-kennedy.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1101,7 +1111,12 @@
       "jitney-2017/wnyc--jennifer-vanasco.json",
       "falsettos-2016/theatermania--jesse-green.json",
       "falsettos-2016/theater-life--eric-march.json",
-      "heisenberg-2016/wnyc--jennifer-vanasco.json"
+      "heisenberg-2016/wnyc--jennifer-vanasco.json",
+      "the-encounter-2016/times-square-chronicles--suzanna-bowling.json",
+      "tuck-everlasting-2016/ew--melissa-rose-bernardo.json",
+      "tuck-everlasting-2016/uinterview--erik-meers.json",
+      "waitress-2016/act-three-the-reviews--doug-marino.json",
+      "american-psycho-2016/nyt-theater--jonathan-mandell.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1242,7 +1257,10 @@
       "sunset-boulevard-2017/newyorker--conde-nast.json",
       "les-liaisons-dangereuses-2016/wsj--terry-teachout.json",
       "heisenberg-2016/wsj--terry-teachout.json",
-      "holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json"
+      "holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json",
+      "fully-committed-2016/timeout--adam-feldman.json",
+      "fully-committed-2016/wsj--terry-teachout.json",
+      "american-psycho-2016/timeout--adam-feldman.json"
     ],
     "archiveToday": [
       "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
@@ -1280,7 +1298,8 @@
       "data/review-texts/anastasia-2017/thestage--mark-shenton.json",
       "data/review-texts/the-little-foxes-2017/thestage--mark-shenton.json",
       "data/review-texts/groundhog-day-2017/thestage--mark-shenton.json",
-      "data/review-texts/les-liaisons-dangereuses-2016/thestage--mark-shenton.json"
+      "data/review-texts/les-liaisons-dangereuses-2016/thestage--mark-shenton.json",
+      "data/review-texts/tuck-everlasting-2016/thestage--mark-shenton.json"
     ],
     "archive": [
       "small-off-broadway-2026/culturesauce--thom-geier.json",
@@ -1398,7 +1417,7 @@
     ]
   },
   "startTime": "2026-06-19T23:54:19.453Z",
-  "lastProcessed": "the-encounter-2016/nydailynews--joe-dziemianowicz.json",
+  "lastProcessed": "american-psycho-2016/ap--mark-kennedy.json",
   "log": [
     {
       "t": "2026-06-19T23:54:56.069Z",
@@ -2504,6 +2523,17 @@
     },
     {
       "t": "2026-06-20T16:45:57.253Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-20T16:50:51.599Z",
+      "event": "bb-session",
+      "session": "4862066d",
+      "url": "http://www.wsj.com/articles/fully-committed-review-jesse-tyler-ferguson-party-of"
+    },
+    {
+      "t": "2026-06-20T16:50:52.164Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

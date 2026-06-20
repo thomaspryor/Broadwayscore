@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-20T16:47:27.191Z",
-  "processed": 308,
-  "failed": 638,
-  "successRate": "32.6%",
+  "updatedAt": "2026-06-20T16:54:03.209Z",
+  "processed": 316,
+  "failed": 640,
+  "successRate": "33.1%",
   "tierBreakdown": {
-    "playwright": 150,
+    "playwright": 155,
     "amp": 0,
     "browserbase": 73,
     "directCookies": 0,
     "scrapingbee": 0,
-    "brightdata": 61,
-    "archiveToday": 36,
+    "brightdata": 64,
+    "archiveToday": 37,
     "archive": 112
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 8,
   "recentActivity": [
-    {
-      "t": "2026-06-20T05:42:19.934Z",
-      "event": "bb-session",
-      "session": "72e23b5f",
-      "url": "https://www.nytimes.com/2026/05/31/theater/othello-review-wendell-pierce.html"
-    },
-    {
-      "t": "2026-06-20T05:42:20.844Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-06-20T10:52:07.990Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-06-20T16:45:57.253Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-20T16:50:51.599Z",
+      "event": "bb-session",
+      "session": "4862066d",
+      "url": "http://www.wsj.com/articles/fully-committed-review-jesse-tyler-ferguson-party-of"
+    },
+    {
+      "t": "2026-06-20T16:50:52.164Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
