@@ -26,7 +26,21 @@
     "small-off-broadway-2026/pages-on-stages--unknown.json",
     "small-off-broadway-2026/the-recs--unknown.json",
     "small-off-broadway-2026/theater-pizzazz--unknown.json",
-    "small-off-broadway-2026/washpost--unknown.json"
+    "small-off-broadway-2026/washpost--unknown.json",
+    "encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
+    "romeo-and-juliet-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+    "are-you-now-or-have-you-ever-been-off-broadway-2026/nytimes--laura-collins-hughes.json",
+    "are-you-now-or-have-you-ever-been-off-broadway-2026/wsj--charles-isherwood.json",
+    "are-you-now-or-have-you-ever-been-off-broadway-2026/wsj--unknown.json",
+    "are-you-now-or-have-you-ever-been-off-broadway-2026/off-off-online--unknown.json",
+    "are-you-now-or-have-you-ever-been-off-broadway-2026/off-off-online--walter-murphy.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -38,6 +52,15 @@
     ],
     "amp": [],
     "browserbase": [
+      "data/review-texts/are-you-now-or-have-you-ever-been-off-broadway-2026/nytimes--laura-collins-hughes.json",
+      "data/review-texts/are-you-now-or-have-you-ever-been-off-broadway-2026/wsj--charles-isherwood.json",
+      "data/review-texts/are-you-now-or-have-you-ever-been-off-broadway-2026/wsj--unknown.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
       "data/review-texts/are-you-now-or-have-you-ever-been-off-broadway-2026/nytimes--laura-collins-hughes.json",
       "data/review-texts/are-you-now-or-have-you-ever-been-off-broadway-2026/wsj--charles-isherwood.json",
       "data/review-texts/are-you-now-or-have-you-ever-been-off-broadway-2026/wsj--unknown.json",
@@ -61,7 +84,7 @@
     ]
   },
   "startTime": "2026-06-19T23:54:19.453Z",
-  "lastProcessed": "small-off-broadway-2026/washpost--unknown.json",
+  "lastProcessed": "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
   "log": [
     {
       "t": "2026-06-19T23:54:56.069Z",
@@ -167,6 +190,105 @@
       "event": "bb-session",
       "session": "9fe9e78c",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-15906913/Emily-Ratajkowski-returns"
+    },
+    {
+      "t": "2026-06-20T00:30:40.551Z",
+      "event": "bb-session",
+      "session": "01ad377d",
+      "url": "https://www.nytimes.com/2026/06/16/theater/are-you-now-or-have-you-ever-been-rev"
+    },
+    {
+      "t": "2026-06-20T00:30:41.349Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-20T00:31:05.510Z",
+      "event": "bb-session",
+      "session": "d0b3672f",
+      "url": "https://www.wsj.com/articles/are-you-now-or-have-you-ever-been-review-a-red-scar"
+    },
+    {
+      "t": "2026-06-20T00:31:06.425Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-20T00:31:23.465Z",
+      "event": "bb-session",
+      "session": "476aa401",
+      "url": "https://www.wsj.com/articles/are-you-now-or-have-you-ever-been-review-a-red-scar"
+    },
+    {
+      "t": "2026-06-20T00:31:24.323Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-20T00:31:56.685Z",
+      "event": "bb-session",
+      "session": "57cdb81a",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-20T00:31:57.474Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-20T00:32:32.078Z",
+      "event": "bb-session",
+      "session": "8a2962ba",
+      "url": "https://www.nytimes.com/2026/06/03/theater/caissie-levy-broadway-tonys-ragtime.h"
+    },
+    {
+      "t": "2026-06-20T00:32:32.827Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-20T00:32:52.868Z",
+      "event": "bb-session",
+      "session": "df0a3746",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-20T00:32:54.182Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-20T00:33:06.167Z",
+      "event": "bb-session",
+      "session": "1f7455f5",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-20T00:33:06.904Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-20T00:33:54.106Z",
+      "event": "bb-session",
+      "session": "fffdf56a",
+      "url": "https://www.nytimes.com/2026/06/01/arts/andy-halliday-dead.html"
+    },
+    {
+      "t": "2026-06-20T00:33:54.902Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-20T00:34:30.787Z",
+      "event": "bb-session",
+      "session": "6c274442",
+      "url": "https://www.nytimes.com/2026/05/31/theater/othello-review-wendell-pierce.html"
+    },
+    {
+      "t": "2026-06-20T00:34:31.604Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
