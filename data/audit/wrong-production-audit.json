@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-20T16:44:30.732Z",
+  "timestamp": "2026-06-20T17:41:14.440Z",
   "stats": {
-    "totalReviews": 38581,
-    "alreadyFlagged": 17025,
-    "dateGuardCatches": 104,
-    "directorMismatch": 870,
+    "totalReviews": 38589,
+    "alreadyFlagged": 17024,
+    "dateGuardCatches": 108,
+    "directorMismatch": 875,
     "tvFilmSignals": 1058,
-    "londonSignals": 639,
-    "offBroadwaySignals": 464,
+    "londonSignals": 642,
+    "offBroadwaySignals": 465,
     "yearMismatch": 82,
-    "noPublishDate": 3933
+    "noPublishDate": 3934
   },
   "findings": [
     {
@@ -3730,6 +3730,19 @@
       ]
     },
     {
+      "showId": "cats-the-jellicle-ball-2026",
+      "file": "the-recs--the-recs-rdc-randall-david-cook.json",
+      "publishDate": "2026-04-19",
+      "url": "https://therecs.co.uk/cats-the-jellicle-ball/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from cats-2016"
+        }
+      ]
+    },
+    {
       "showId": "cats-the-jellicle-ball-off-broadway-2024",
       "file": "newyorker--helen-shaw.json",
       "score": 90,
@@ -5376,6 +5389,47 @@
     },
     {
       "showId": "death-of-a-salesman-2026",
+      "file": "independent--unknown.json",
+      "publishDate": "2019-05-12",
+      "url": "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/death-of-a-salesman-review-young-vic-london-tickets-cast-a8907661.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 2490d before show (2019-05-12 vs 2026-03-06)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"miranda cromwell\" from death-of-a-salesman-2022"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2026",
+      "file": "latimes--httpswwwlatimescompeoplecharles-mcnulty.json",
+      "publishDate": "2022-10-10",
+      "url": "https://www.latimes.com/entertainment-arts/story/2022-10-09/death-of-a-salesman-broadway-2022-review-wendell-pierce",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1243d before show (2022-10-10 vs 2026-03-06)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"miranda cromwell\" from death-of-a-salesman-2022"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2026",
       "file": "new-york-sun--elysa-gardner.json",
       "score": 81,
       "publishDate": "2026-04-10",
@@ -5413,6 +5467,29 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"george c. scott\" from death-of-a-salesman-1975"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2026",
+      "file": "sunday-telegraph--dominic-cavendish.json",
+      "publishDate": "2019-05-10",
+      "url": "http://www.telegraph.co.uk/theatre/what-to-see/death-salesman-review-young-vic-wendell-pierce-fits-reinvention/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 2492d before show (2019-05-10 vs 2026-03-06)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"miranda cromwell\" from death-of-a-salesman-2022"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -8331,6 +8408,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "glengarry-glen-ross-west-end-2026",
+      "file": "whatsonstage--sarah-crompton.json",
+      "publishDate": "2026-06-15",
+      "url": "https://www.whatsonstage.com/news/go-behind-the-scenes-at-the-all-female-glengarry-glen-ross-revival_1724994/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
         }
       ]
     },
@@ -30479,6 +30569,19 @@
       ]
     },
     {
+      "showId": "every-brilliant-thing-2026",
+      "file": "the-recs--the-recs-rdc-randall-david-cook.json",
+      "publishDate": "2026-03-19",
+      "url": "https://therecs.co.uk/every-brilliant-thing/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
       "showId": "evita-1979",
       "file": "nytimes--walter-kerr.json",
       "score": 88,
@@ -31087,6 +31190,24 @@
       "publishDate": "March 23, 2026",
       "url": "https://www.amny.com/entertainment/giant-performance-divisive-play/",
       "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "giant-2026",
+      "file": "broadwayworld--httpswwwbroadwayworldcomauthorcindy-marcolina.json",
+      "publishDate": "2025-05-02",
+      "url": "https://www.broadwayworld.com/westend/article/Review-GIANT-Harold-Pinter-Theatre-Starring-John-Lithgow-20250502",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 313d before show (2025-05-02 vs 2026-03-11)"
+        },
         {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
