@@ -434,7 +434,10 @@
     "a-christmas-story-the-musical-2012/timeout--david-cote.json",
     "the-performers-2012/northjerseycom--robert-feldberg.json",
     "the-mystery-of-edwin-drood-2012/timeout--david-cote.json",
-    "cyrano-de-bergerac-2012/newsday--linda-winer.json"
+    "cyrano-de-bergerac-2012/newsday--linda-winer.json",
+    "encores-la-cage-aux-folles-off-broadway-2026/nytimes--httpswwwnytimescombylaura-collins-hughes.json",
+    "are-you-now-or-have-you-ever-been-off-broadway-2026/nytimes--laura-collins-hughes.json",
+    "are-you-now-or-have-you-ever-been-off-broadway-2026/off-off-online--walter-murphy.json"
   ],
   "failed": [
     "encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
@@ -1273,7 +1276,14 @@
     "driftwood-west-end-2026/times-uk--clive-davis.json",
     "war-horse-west-end-2026/plays-international--maryam-philpott.json",
     "war-horse-west-end-2026/times-uk--chris-bennion.json",
-    "war-horse-west-end-2026/times-uk--clive-davis.json"
+    "war-horse-west-end-2026/times-uk--clive-davis.json",
+    "encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
+    "romeo-and-juliet-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1481,7 +1491,8 @@
       "ifthen-2014/theatermania--adam-hetrick.json",
       "a-gentlemans-guide-to-love-and-murder-2013/theatermania--david-gordon.json",
       "romeo-and-juliet-2013/timeout--david-cote.json",
-      "cat-on-a-hot-tin-roof-2013/boston-globe--don-aucoin.json"
+      "cat-on-a-hot-tin-roof-2013/boston-globe--don-aucoin.json",
+      "are-you-now-or-have-you-ever-been-off-broadway-2026/off-off-online--walter-murphy.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1558,7 +1569,15 @@
       "masquerade-off-broadway-2025/nytimes--unknown.json",
       "data/review-texts/kiss-me-kate-2019/wsj--terry-teachout.json",
       "kiss-me-kate-2019/wsj--terry-teachout.json",
-      "data/review-texts/war-horse-west-end-2026/plays-international--maryam-philpott.json"
+      "data/review-texts/war-horse-west-end-2026/plays-international--maryam-philpott.json",
+      "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/nytimes--httpswwwnytimescombylaura-collins-hughes.json",
+      "encores-la-cage-aux-folles-off-broadway-2026/nytimes--httpswwwnytimescombylaura-collins-hughes.json",
+      "data/review-texts/are-you-now-or-have-you-ever-been-off-broadway-2026/nytimes--laura-collins-hughes.json",
+      "are-you-now-or-have-you-ever-been-off-broadway-2026/nytimes--laura-collins-hughes.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -1693,7 +1712,8 @@
       "data/review-texts/camping-off-broadway-2026/exeunt-magazine--unknown.json",
       "data/review-texts/the-gin-game-2015/nyt-theater--jonathan-mandell.json",
       "data/review-texts/sting-west-end-2026/daily-mail--unknown.json",
-      "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json"
+      "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json",
+      "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json"
     ],
     "archive": [
       "small-off-broadway-2026/culturesauce--thom-geier.json",
@@ -1864,7 +1884,7 @@
     ]
   },
   "startTime": "2026-06-19T23:54:19.453Z",
-  "lastProcessed": "war-horse-west-end-2026/times-uk--clive-davis.json",
+  "lastProcessed": "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
   "log": [
     {
       "t": "2026-06-19T23:54:56.069Z",
@@ -3030,6 +3050,72 @@
       "event": "bb-session",
       "session": "30bdf11f",
       "url": "https://playsinternational.org.uk/war-horse-olivier-national-theatre/"
+    },
+    {
+      "t": "2026-06-20T23:50:33.146Z",
+      "event": "bb-session",
+      "session": "e90106e6",
+      "url": "https://www.nytimes.com/2026/06/19/theater/la-cage-aux-folles-review-porter-brad"
+    },
+    {
+      "t": "2026-06-20T23:50:33.549Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-20T23:51:28.974Z",
+      "event": "bb-session",
+      "session": "ceb68e26",
+      "url": "https://www.nytimes.com/2026/06/16/theater/are-you-now-or-have-you-ever-been-rev"
+    },
+    {
+      "t": "2026-06-20T23:51:29.336Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-20T23:52:09.975Z",
+      "event": "bb-session",
+      "session": "44c68f9b",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-20T23:52:10.397Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-20T23:52:43.930Z",
+      "event": "bb-session",
+      "session": "ca494ca3",
+      "url": "https://www.nytimes.com/2026/06/03/theater/caissie-levy-broadway-tonys-ragtime.h"
+    },
+    {
+      "t": "2026-06-20T23:52:44.322Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-20T23:53:02.437Z",
+      "event": "bb-session",
+      "session": "5d374d0c",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-20T23:53:02.848Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-20T23:53:15.086Z",
+      "event": "bb-session",
+      "session": "dc2e4e16",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-20T23:53:15.537Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
