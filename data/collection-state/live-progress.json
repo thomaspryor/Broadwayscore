@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-20T00:01:39.580Z",
+  "updatedAt": "2026-06-20T00:05:23.407Z",
   "processed": 5,
-  "failed": 15,
-  "successRate": "25.0%",
+  "failed": 20,
+  "successRate": "20.0%",
   "tierBreakdown": {
     "playwright": 4,
     "amp": 0,
     "browserbase": 9,
     "directCookies": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
+    "brightdata": 1,
     "archiveToday": 1,
     "archive": 1
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 10,
   "recentActivity": [
     {
       "t": "2026-06-19T23:54:56.069Z",
@@ -113,6 +113,12 @@
       "t": "2026-06-19T23:59:26.927Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-20T00:04:41.264Z",
+      "event": "bb-session",
+      "session": "9fe9e78c",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15906913/Emily-Ratajkowski-returns"
     }
   ]
 }
