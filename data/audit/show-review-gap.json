@@ -1,11 +1,1797 @@
 {
-  "generatedAt": "2026-06-20T16:36:28.151Z",
-  "windowDays": 21,
-  "targets": 0,
+  "generatedAt": "2026-06-20T17:22:09.690Z",
+  "windowDays": 1095,
+  "targets": 6,
   "counts": {
-    "withGap": 0,
-    "totalMissing": 0,
-    "totalFlaggedMisses": 0
+    "withGap": 6,
+    "totalMissing": 26,
+    "totalFlaggedMisses": 63
   },
-  "results": []
+  "results": [
+    {
+      "showId": "titanique-2026",
+      "title": "Titanique",
+      "openingDate": "2026-04-12",
+      "status": "open",
+      "category": "broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-what-are-critics-saying-about-musical-parody-titanique",
+        "https://www.broadwayworld.com/article/Review-Roundup-TITANIQUE-20240311",
+        "https://www.broadwayworld.com/article/Review-Roundup-TITANIQUE-Sets-Sail-on-Broadway-20260412"
+      ],
+      "aggregatorListedUrls": [
+        "https://cititour.com/NYC_News/Review-Titanique-Floats-a-Fun-lovers-Boat/6520",
+        "https://www.newyorktheatreguide.com/reviews/titanique-off-broadway-review",
+        "https://www.nytimes.com/2022/06/28/theater/titanique-review.html",
+        "https://nypost.com/2022/08/05/titanique-the-musical-review-titanic-parody-hits-the-mark/",
+        "https://www.wsj.com/articles/titanique-little-shop-of-horrors-reviews-off-broadway-celine-dion-ashman-menken-11673567675",
+        "https://www.thewrap.com/titanique-off-broadway-review-celine-dion-titanic/",
+        "https://thequeerreview.com/2023/01/17/musical-theatre-review-titanique-daryl-roth-theatre-new-york-off-broadway/",
+        "https://www.nytimes.com/2026/04/12/theater/titanique-review-broadway-dion.html",
+        "https://www.amny.com/news/titanique-hits-broadway-runs-aground/",
+        "https://culturesauce.com/2026/04/12/titanique-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/titanique-broadway-review",
+        "https://www.theatrely.com/post/oh-ship-a-fabulous-titanique-sets-sail-for-broadway-review",
+        "https://newyorktheater.me/2026/04/12/titanique-broadway-review/",
+        "https://therecs.co.uk/titanique-on-broadway/",
+        "https://nystagereview.com/2026/04/12/titanique-movie-spoof-unfortunately-hits-musical-iceberg/",
+        "https://nystagereview.com/2026/04/12/titanique-what-did-i-miss/",
+        "https://cititour.com/NYC_Broadway/Titanique/1369",
+        "https://variety.com/2026/legit/reviews/titanique-broadway-review-musical-campy-fun-marla-mindelle-1236715253/",
+        "https://people.com/titanique-broadway-review-11948233",
+        "https://nypost.com/2026/04/12/entertainment/titanique-review-silly-titanic-celine-dion-spoof-finally-sets-sail-on-broadway/",
+        "https://www.chicagotribune.com/2026/04/12/review-titanique-broadway/",
+        "https://ew.com/titanique-review-campy-celine-dion-musical-sets-sail-on-broadway-11948178",
+        "https://www.theguardian.com/stage/2026/apr/12/titanique-review-broadway-celine-dion-musical",
+        "https://deadline.com/2026/04/titanique-celine-dion-broadway-review-1236786429/",
+        "https://www.yahoo.com/entertainment/tv/articles/titanique-broadway-review-jim-parsons-135633377.html",
+        "https://1minutecritic.com/titanique-broadway-review/",
+        "https://thecontending.com/titanique-a-fabulous-lunatic-camp-triumph/"
+      ],
+      "dirFiles": 55,
+      "dirClean": 31,
+      "inReviewsJson": 24,
+      "missing": [
+        {
+          "url": "https://www.yahoo.com/entertainment/tv/articles/titanique-broadway-review-jim-parsons-135633377.html",
+          "host": "yahoo.com",
+          "knownOutletId": null
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "frontmezzjunkies.com",
+          "count": 1
+        },
+        {
+          "host": "lavocedinewyork.com",
+          "count": 1
+        },
+        {
+          "host": "latimes.com",
+          "count": 1
+        },
+        {
+          "host": "mashable.com",
+          "count": 1
+        },
+        {
+          "host": "nydailynews.com",
+          "count": 1
+        },
+        {
+          "host": "pagesonstages.com",
+          "count": 1
+        },
+        {
+          "host": "stageandcinema.com",
+          "count": 1
+        },
+        {
+          "host": "talkinbroadway.com",
+          "count": 1
+        },
+        {
+          "host": "theaterlife.com",
+          "count": 1
+        },
+        {
+          "host": "theaterscene.com",
+          "count": 1
+        },
+        {
+          "host": "theaterscene.net",
+          "count": 1
+        },
+        {
+          "host": "theatrereviews.com",
+          "count": 1
+        },
+        {
+          "host": "vulture.com",
+          "count": 1
+        },
+        {
+          "host": "w42st.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://cititour.com/NYC_News/Review-Titanique-Floats-a-Fun-lovers-Boat/6520",
+          "host": "cititour.com",
+          "dirFlags": [
+            {
+              "file": "cititour--brian-scott-lipton.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://cititour.com/NYC_News/Review-Titanique-Floats-a-Fun-lovers-Boat/6520"
+            }
+          ]
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/titanique-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "dirFlags": [
+            {
+              "file": "nytg--gillian-russo.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newyorktheatreguide.com/reviews/titanique-off-broadway-review"
+            },
+            {
+              "file": "nytg--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newyorktheatreguide.com/reviews/titanique-off-broadway-review"
+            }
+          ]
+        },
+        {
+          "url": "https://www.wsj.com/articles/titanique-little-shop-of-horrors-reviews-off-broadway-celine-dion-ashman-menken-11673567675",
+          "host": "wsj.com",
+          "dirFlags": [
+            {
+              "file": "wsj--charles-isherwood.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.wsj.com/articles/titanique-little-shop-of-horrors-reviews-off-broadway-celine-dion-ashman-menken-11673567675"
+            }
+          ]
+        },
+        {
+          "url": "https://www.thewrap.com/titanique-off-broadway-review-celine-dion-titanic/",
+          "host": "thewrap.com",
+          "dirFlags": [
+            {
+              "file": "thewrap--robert-hofler.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thewrap.com/titanique-off-broadway-review-celine-dion-titanic/"
+            }
+          ]
+        },
+        {
+          "url": "https://thequeerreview.com/2023/01/17/musical-theatre-review-titanique-daryl-roth-theatre-new-york-off-broadway/",
+          "host": "thequeerreview.com",
+          "dirFlags": [
+            {
+              "file": "the-queer-review--james-kleinmann.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://thequeerreview.com/2023/01/17/musical-theatre-review-titanique-daryl-roth-theatre-new-york-off-broadway/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/titanique-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "dirFlags": [
+            {
+              "file": "nytg--gillian-russo.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newyorktheatreguide.com/reviews/titanique-off-broadway-review"
+            },
+            {
+              "file": "nytg--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newyorktheatreguide.com/reviews/titanique-off-broadway-review"
+            }
+          ]
+        },
+        {
+          "url": "https://newyorktheater.me/2026/04/12/titanique-broadway-review/",
+          "host": "newyorktheater.me",
+          "dirFlags": [
+            {
+              "file": "nyt-theater--jonathan-mandell.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://newyorktheater.me/2026/04/12/titanique-broadway-review/"
+            },
+            {
+              "file": "nyt-theater--unknown.json",
+              "flag": "duplicate",
+              "urlInDir": "https://newyorktheater.me/2026/04/12/titanique-broadway-review/"
+            }
+          ]
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/Titanique/1369",
+          "host": "cititour.com",
+          "dirFlags": [
+            {
+              "file": "cititour--brian-scott-lipton.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://cititour.com/NYC_News/Review-Titanique-Floats-a-Fun-lovers-Boat/6520"
+            }
+          ]
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://www.yahoo.com/entertainment/tv/articles/titanique-broadway-review-jim-parsons-135633377.html",
+          "host": "yahoo.com",
+          "outletId": "yahoo",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=titanique-2026 --url=https://www.yahoo"
+        }
+      ],
+      "ingestSkippedByCap": []
+    },
+    {
+      "showId": "death-of-a-salesman-2026",
+      "title": "Death of a Salesman",
+      "openingDate": "2026-04-09",
+      "status": "open",
+      "category": "broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-what-do-the-critics-think-of-broadways-death-of-a-salesman-starring-nathan-lane-laurie-metcalf-and-christopher-abbott",
+        "https://playbill.com/article/reviews-what-are-critics-saying-about-the-broadway-revival-of-death-of-a-salesman",
+        "https://playbill.com/article/read-reviews-for-young-vics-death-of-a-salesman-in-london",
+        "https://www.broadwayworld.com/article/Review-Roundup-DEATH-OF-A-SALESMAN-Starring-Nathan-Lane-and-Laurie-Metcalf-20260409",
+        "https://www.broadwayworld.com/article/Review-Roundup-DEATH-OF-A-SALESMAN-Opens-on-Broadway--Updating-Live-20221009",
+        "https://www.broadwayworld.com/article/Review-Roundup-Death-of-a-Salesman-in-the-West-End-Read-the-Reviews-20191105"
+      ],
+      "aggregatorListedUrls": [
+        "https://1minutecritic.com/death-of-a-salesman-broadway-review-nathan-lane/",
+        "https://cititour.com/NYC_Broadway/Death-of-a-Salesman/1368",
+        "https://culturesauce.com/2026/04/09/death-of-a-salesman-nathan-lane-laurie-metcalf-broadway-review/",
+        "https://davidcote1.substack.com/p/death-of-a-salesman-on-broadway-attention",
+        "https://deadline.com/2026/04/death-of-a-salesman-broadway-review-nathan-lane-1236784788/",
+        "https://ew.com/death-of-a-salesman-review-timely-broadway-revival-feels-urgent-as-ever-11943371",
+        "https://www.theguardian.com/stage/2026/apr/10/death-of-a-salesman-broadway-review",
+        "https://www.hollywoodreporter.com/lifestyle/arts/death-of-a-salesman-theater-review-nathan-lane-broadway-1236560881/",
+        "https://nypost.com/2026/04/09/entertainment/death-of-a-salesman-review-nathan-lane-and-laurie-metcalf-star-in-a-triumphant-broadway-revival/",
+        "https://newyorktheater.me/2026/04/09/death-of-a-salesman-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/death-of-a-salesman-broadway-review-nathan-lane-laurie-metcalf",
+        "https://www.nytimes.com/2026/04/09/theater/death-of-a-salesman-review-broadway-lane-metcalf.html",
+        "https://nystagereview.com/2026/04/09/death-of-a-salesman-more-relevant-than-ever/",
+        "https://nystagereview.com/2026/04/09/death-of-a-salesman-nathan-lane-makes-big-deal-in-miller-classic/",
+        "https://www.slantmagazine.com/theater/death-of-a-salesman-broadway-review-nathan-lane-laurie-metcalf-christopher-abbott/",
+        "https://www.theatrely.com/post/a-bold-new-death-of-a-salesman-filled-with-talent-review",
+        "https://www.timeout.com/newyork/news/broadway-review-death-of-a-salesman-to-die-for-041426",
+        "https://www.townandcountrymag.com/leisure/arts-and-culture/a70941492/death-of-a-salesman-broadway-revival-relevance/",
+        "https://variety.com/2026/legit/news/death-of-a-salesman-broadway-review-nathan-lane-laurie-metcalf-lead-disappointing-revival-1236711360/",
+        "https://www.wsj.com/articles/death-of-a-salesman-review-a-shattering-broadway-revival-7da101d1",
+        "https://www.thewrap.com/creative-content/reviews/death-of-a-salesman-broadway-review-nathan-lane-laurie-metcalf/",
+        "https://www.amny.com/entertainment/broadway/review-death-of-a-salesman-2022/",
+        "https://broadwaynews.com/2022/10/09/director-miranda-cromwell-breathes-stunning-black-life-into-death-of-a-salesman/",
+        "https://cititour.com/NYC_Broadway/Death-of-a-Salesman/1100",
+        "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-broadway-review-death-salesman-20221010-ggdxdb4ia5ecbgbkats54zlhze-story.html",
+        "https://www.thedailybeast.com/sharon-d-clarke-shines-in-death-of-a-salesman-on-broadway",
+        "https://deadline.com/2022/10/death-of-a-salesman-broadway-review-wendell-pierce-sharon-d-clarke-1235138627/",
+        "https://ew.com/theater/death-of-a-salesman-broadway-revival-review-wendell-pierce/",
+        "https://www.latimes.com/entertainment-arts/story/2022-10-09/death-of-a-salesman-broadway-2022-review-wendell-pierce",
+        "https://www.msn.com/en-us/entertainment/news/death-of-a-salesman-cast-delivers-in-soaring-new-broadway-production/ar-AA12MvFD",
+        "https://www.nydailynews.com/entertainment/broadway/ny-death-of-a-salesman-broadway-chris-jones-review-20221010-7nckjd3wczfczgboqsbrr3dzjq-story.html",
+        "https://nypost.com/2022/10/09/death-of-a-salesman-broadway-review-so-so-revival-lacks-fire/",
+        "https://nystagereview.com/2022/10/09/death-of-a-salesman-wendell-pierce-and-sharon-d-clarke-bring-classic-to-broadway/",
+        "https://nystagereview.com/2022/10/09/death-of-a-salesman-arthur-millers-classic-drama-needlessly-embellished/",
+        "https://www.nytimes.com/2022/10/09/theater/review-death-of-a-salesman.html",
+        "https://newyorktheater.me/2022/10/09/death-of-a-salesman-review/",
+        "https://www.newyorktheatreguide.com/reviews/death-of-a-salesman-broadway-review-wendell-pierce-sharon-d-clarke",
+        "https://www.queerty.com/great-migration-informs-stark-stunning-death-salesman-20221010",
+        "https://www.theatrely.com/post/american-dreams-reviewed-death-of-a-salesman-and-1776",
+        "https://www.theaterpizzazz.com/death-of-a-salesman/",
+        "https://variety.com/2022/legit/reviews/death-of-a-salesman-review-broadway-wendell-pierce-1235397256/",
+        "https://www.vulture.com/2022/10/theater-review-wendell-pierce-death-salesman-broadway.html",
+        "https://www.wsj.com/articles/death-of-a-salesman-review-arthur-miller-wendell-pierce-sharon-d-clarke-khris-davis-mckinley-belcher-iii-andre-de-shields-delaney-williams-stephen-stocking-blake-delong-lynn-hawley-charles-s-dutton-miranda-cromwell-11665172217",
+        "https://www.thewrap.com/death-of-a-salesman-broadway-review-wendell-pierce/",
+        "http://www.standard.co.uk/go/london/theatre/death-of-a-salesman-young-vic-pictures-a4137076.html",
+        "http://www.theguardian.com/stage/2019/may/10/death-of-a-salesman-review-young-vic-wendell-pierce-sharon-d-clarke",
+        "https://www.hollywoodreporter.com/review/death-of-a-salesman-theater-1209546",
+        "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/death-of-a-salesman-review-young-vic-london-tickets-cast-a8907661.html",
+        "https://www.nytimes.com/2019/05/30/theater/london-theater-death-of-a-salesman-.html",
+        "http://www.telegraph.co.uk/theatre/what-to-see/death-salesman-review-young-vic-wendell-pierce-fits-reinvention/",
+        "http://www.timeout.com/london/theatre/death-of-a-salesman-review",
+        "https://variety.com/2019/legit/reviews/death-of-a-salesman-review-london-wendell-pierce-1203213082/",
+        "http://www.whatsonstage.com/london-theatre/reviews/death-of-a-salesman-young-vic-pierce-clarke_49041.html",
+        "https://www.chicagotribune.com/2026/04/09/review-death-salesman-broadway/",
+        "https://www.amny.com/entertainment/nathan-lane-electrifies-in-death-of-a-salesman/",
+        "https://www.washingtonpost.com/entertainment/theater/2026/04/15/death-of-a-salesman-cats-jellicle-ball-broadway-review/",
+        "https://www.nytimes.com/2020/01/02/theater/death-of-a-salesman-review-wendell-pierce.html",
+        "https://www.thedailybeast.com/rebecca-miller-on-broadways-death-of-a-salesman-revival",
+        "https://deadline.com/tag/death-of-a-salesman/",
+        "https://theartsdesk.com/theatre/death-salesman-piccadilly-theatre-review-galvanising-reinvention-arthur-millers-classic",
+        "https://www.culturewhisper.com/r/theatre/death_of_a_salesman_young_vic_theatre/12635",
+        "https://www.thestage.co.uk/reviews/2019/death-of-a-salesman-review-at-piccadilly-theatre-london-riveting-devastating-stunning/",
+        "https://www.timeout.com/london/theatre/death-of-a-salesman-review",
+        "https://www.theupcoming.co.uk/2019/11/05/death-of-a-salesman-at-piccadilly-theatre-theatre-review/",
+        "https://www.theatermania.com/news/review-nathan-lane-and-laurie-metcalf-star-in-a-death-of-a-salesman-for-the-ages_1832181/",
+        "http://www.lightingandsoundamerica.com/news/story.asp",
+        "https://www.talkinbroadway.com/page/world/DeathofaSalesman26.html",
+        "https://www.theaterscene.net/plays/broadway-plays/death-of-a-salesman-2/samuel-l-leiter/",
+        "https://www.theatrereviews.com/broadway-review-death-of-a-salesman-at-the-winter-garden-theatre-extended-through-sunday-august-8-2026/",
+        "https://pagesonstages.com/2026/05/04/death-of-a-salesman/",
+        "https://mail.google.com/mail/u/0/"
+      ],
+      "dirFiles": 82,
+      "dirClean": 33,
+      "inReviewsJson": 29,
+      "missing": [
+        {
+          "url": "https://www.townandcountrymag.com/leisure/arts-and-culture/a70941492/death-of-a-salesman-broadway-revival-relevance/",
+          "host": "townandcountrymag.com",
+          "knownOutletId": "towncountry"
+        },
+        {
+          "url": "https://www.latimes.com/entertainment-arts/story/2022-10-09/death-of-a-salesman-broadway-2022-review-wendell-pierce",
+          "host": "latimes.com",
+          "knownOutletId": "latimes"
+        },
+        {
+          "url": "http://www.standard.co.uk/go/london/theatre/death-of-a-salesman-young-vic-pictures-a4137076.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard"
+        },
+        {
+          "url": "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/death-of-a-salesman-review-young-vic-london-tickets-cast-a8907661.html",
+          "host": "independent.co.uk",
+          "knownOutletId": "independent"
+        },
+        {
+          "url": "http://www.telegraph.co.uk/theatre/what-to-see/death-salesman-review-young-vic-wendell-pierce-fits-reinvention/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph"
+        },
+        {
+          "url": "http://www.whatsonstage.com/london-theatre/reviews/death-of-a-salesman-young-vic-pierce-clarke_49041.html",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage"
+        },
+        {
+          "url": "https://theartsdesk.com/theatre/death-salesman-piccadilly-theatre-review-galvanising-reinvention-arthur-millers-classic",
+          "host": "theartsdesk.com",
+          "knownOutletId": "artsdesk"
+        },
+        {
+          "url": "https://www.culturewhisper.com/r/theatre/death_of_a_salesman_young_vic_theatre/12635",
+          "host": "culturewhisper.com",
+          "knownOutletId": "culture-whisper"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/2019/death-of-a-salesman-review-at-piccadilly-theatre-london-riveting-devastating-stunning/",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage"
+        },
+        {
+          "url": "https://www.theupcoming.co.uk/2019/11/05/death-of-a-salesman-at-piccadilly-theatre-theatre-review/",
+          "host": "theupcoming.co.uk",
+          "knownOutletId": "theupcoming"
+        },
+        {
+          "url": "https://mail.google.com/mail/u/0/",
+          "host": "mail.google.com",
+          "knownOutletId": null
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "broadwayandme.blogspot.com",
+          "count": 1
+        },
+        {
+          "host": "frontmezzjunkies.com",
+          "count": 1
+        },
+        {
+          "host": "nysun.com",
+          "count": 1
+        },
+        {
+          "host": "ny1.com",
+          "count": 1
+        },
+        {
+          "host": "parade.com",
+          "count": 1
+        },
+        {
+          "host": "people.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://1minutecritic.com/death-of-a-salesman-broadway-review-nathan-lane/",
+          "host": "1minutecritic.com",
+          "dirFlags": [
+            {
+              "file": "one-minute-critic--matthew-wexler.json",
+              "flag": "duplicate",
+              "urlInDir": "https://1minutecritic.com/death-of-a-salesman-broadway-review-nathan-lane/"
+            }
+          ]
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/Death-of-a-Salesman/1368",
+          "host": "cititour.com",
+          "dirFlags": [
+            {
+              "file": "cititour--brian-scott-lipton.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://cititour.com/NYC_Broadway/Death-of-a-Salesman/1100"
+            },
+            {
+              "file": "cititour--scott-lipman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://cititour.com/NYC_Broadway/Death-of-a-Salesman/1100"
+            },
+            {
+              "file": "cititour--unknown.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://cititour.com/NYC_News/Schmigadoon-Wins-Best-Musical-as-Death-of-a-Salesman-Dominates-Tony-Awards/10764"
+            }
+          ]
+        },
+        {
+          "url": "https://newyorktheater.me/2026/04/09/death-of-a-salesman-broadway-review/",
+          "host": "newyorktheater.me",
+          "dirFlags": [
+            {
+              "file": "nyt-theater--jonathan-mandell.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://newyorktheater.me/2026/04/09/death-of-a-salesman-broadway-review/"
+            },
+            {
+              "file": "nyt-theater--unknown.json",
+              "flag": "duplicate",
+              "urlInDir": "https://newyorktheater.me/2026/04/09/death-of-a-salesman-broadway-review/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.wsj.com/articles/death-of-a-salesman-review-a-shattering-broadway-revival-7da101d1",
+          "host": "wsj.com",
+          "dirFlags": [
+            {
+              "file": "wsj--charles-isherwood.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.wsj.com/articles/death-of-a-salesman-review-arthur-miller-wendell-pierce-sharon-d-clarke-khris-davis-mckinley-belcher-iii-andre-de-shields-delaney-williams-stephen-stocking-blake-delong-lynn-hawley-charles-s-dutton-miranda-cromwell-11665172217"
+            }
+          ]
+        },
+        {
+          "url": "https://broadwaynews.com/2022/10/09/director-miranda-cromwell-breathes-stunning-black-life-into-death-of-a-salesman/",
+          "host": "broadwaynews.com",
+          "dirFlags": [
+            {
+              "file": "broadwaynews--brittani-samuel.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://broadwaynews.com/2022/10/09/director-miranda-cromwell-breathes-stunning-black-life-into-death-of-a-salesman/"
+            }
+          ]
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/Death-of-a-Salesman/1100",
+          "host": "cititour.com",
+          "dirFlags": [
+            {
+              "file": "cititour--brian-scott-lipton.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://cititour.com/NYC_Broadway/Death-of-a-Salesman/1100"
+            },
+            {
+              "file": "cititour--scott-lipman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://cititour.com/NYC_Broadway/Death-of-a-Salesman/1100"
+            },
+            {
+              "file": "cititour--unknown.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://cititour.com/NYC_News/Schmigadoon-Wins-Best-Musical-as-Death-of-a-Salesman-Dominates-Tony-Awards/10764"
+            }
+          ]
+        },
+        {
+          "url": "https://www.thedailybeast.com/sharon-d-clarke-shines-in-death-of-a-salesman-on-broadway",
+          "host": "thedailybeast.com",
+          "dirFlags": [
+            {
+              "file": "dailybeast--tim-teeman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thedailybeast.com/sharon-d-clarke-shines-in-death-of-a-salesman-on-broadway"
+            }
+          ]
+        },
+        {
+          "url": "https://www.msn.com/en-us/entertainment/news/death-of-a-salesman-cast-delivers-in-soaring-new-broadway-production/ar-AA12MvFD",
+          "host": "msn.com",
+          "dirFlags": [
+            {
+              "file": "newsweek--joe-westerfield.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.msn.com/en-us/entertainment/news/death-of-a-salesman-cast-delivers-in-soaring-new-broadway-production/ar-AA12MvFD"
+            }
+          ]
+        },
+        {
+          "url": "https://www.nydailynews.com/entertainment/broadway/ny-death-of-a-salesman-broadway-chris-jones-review-20221010-7nckjd3wczfczgboqsbrr3dzjq-story.html",
+          "host": "nydailynews.com",
+          "dirFlags": [
+            {
+              "file": "nydailynews--chris-jones.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nydailynews.com/entertainment/broadway/ny-death-of-a-salesman-broadway-chris-jones-review-20221010-7nckjd3wczfczgboqsbrr3dzjq-story.html"
+            },
+            {
+              "file": "nydailynews--joe-dziemianowicz.json",
+              "flag": "duplicate",
+              "urlInDir": "https://www.nydailynews.com/2026/04/09/broadway-review-nathan-lane-led-death-of-a-salesman-is-relevant-and-sad-as-ever/"
+            },
+            {
+              "file": "nydailynews--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nydailynews.com/2026/04/09/broadway-review-nathan-lane-led-death-of-a-salesman-is-relevant-and-sad-as-ever/"
+            }
+          ]
+        },
+        {
+          "url": "https://newyorktheater.me/2022/10/09/death-of-a-salesman-review/",
+          "host": "newyorktheater.me",
+          "dirFlags": [
+            {
+              "file": "nyt-theater--jonathan-mandell.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://newyorktheater.me/2026/04/09/death-of-a-salesman-broadway-review/"
+            },
+            {
+              "file": "nyt-theater--unknown.json",
+              "flag": "duplicate",
+              "urlInDir": "https://newyorktheater.me/2026/04/09/death-of-a-salesman-broadway-review/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.queerty.com/great-migration-informs-stark-stunning-death-salesman-20221010",
+          "host": "queerty.com",
+          "dirFlags": [
+            {
+              "file": "queerty--matthew-wexler.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.queerty.com/great-migration-informs-stark-stunning-death-salesman-20221010"
+            }
+          ]
+        },
+        {
+          "url": "https://www.wsj.com/articles/death-of-a-salesman-review-arthur-miller-wendell-pierce-sharon-d-clarke-khris-davis-mckinley-belcher-iii-andre-de-shields-delaney-williams-stephen-stocking-blake-delong-lynn-hawley-charles-s-dutton-miranda-cromwell-11665172217",
+          "host": "wsj.com",
+          "dirFlags": [
+            {
+              "file": "wsj--charles-isherwood.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.wsj.com/articles/death-of-a-salesman-review-arthur-miller-wendell-pierce-sharon-d-clarke-khris-davis-mckinley-belcher-iii-andre-de-shields-delaney-williams-stephen-stocking-blake-delong-lynn-hawley-charles-s-dutton-miranda-cromwell-11665172217"
+            }
+          ]
+        },
+        {
+          "url": "https://www.thedailybeast.com/rebecca-miller-on-broadways-death-of-a-salesman-revival",
+          "host": "thedailybeast.com",
+          "dirFlags": [
+            {
+              "file": "dailybeast--tim-teeman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thedailybeast.com/sharon-d-clarke-shines-in-death-of-a-salesman-on-broadway"
+            }
+          ]
+        },
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp",
+          "host": "lightingandsoundamerica.com",
+          "dirFlags": [
+            {
+              "file": "lighting-and-sound-america--david-barbour.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=I2055B"
+            }
+          ]
+        },
+        {
+          "url": "https://www.theatrereviews.com/broadway-review-death-of-a-salesman-at-the-winter-garden-theatre-extended-through-sunday-august-8-2026/",
+          "host": "theatrereviews.com",
+          "dirFlags": [
+            {
+              "file": "theatre-reviews-limited--joseph-verlezza.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.theatrereviews.com/broadway-review-death-of-a-salesman-at-the-winter-garden-theatre-extended-through-sunday-august-8-2026/"
+            }
+          ]
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://www.townandcountrymag.com/leisure/arts-and-culture/a70941492/death-of-a-salesman-broadway-revival-relevance/",
+          "host": "townandcountrymag.com",
+          "outletId": "towncountry",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://www.latimes.com/entertainment-arts/story/2022-10-09/death-of-a-salesman-broadway-2022-review-wendell-pierce",
+          "host": "latimes.com",
+          "outletId": "latimes",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "http://www.standard.co.uk/go/london/theatre/death-of-a-salesman-young-vic-pictures-a4137076.html",
+          "host": "standard.co.uk",
+          "outletId": "standard",
+          "provisional": false,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=death-of-a-salesman-2026 --url=http://"
+        },
+        {
+          "url": "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/death-of-a-salesman-review-young-vic-london-tickets-cast-a8907661.html",
+          "host": "independent.co.uk",
+          "outletId": "independent",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "http://www.telegraph.co.uk/theatre/what-to-see/death-salesman-review-young-vic-wendell-pierce-fits-reinvention/",
+          "host": "telegraph.co.uk",
+          "outletId": "sunday-telegraph",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "http://www.whatsonstage.com/london-theatre/reviews/death-of-a-salesman-young-vic-pierce-clarke_49041.html",
+          "host": "whatsonstage.com",
+          "outletId": "whatsonstage"
+        },
+        {
+          "url": "https://theartsdesk.com/theatre/death-salesman-piccadilly-theatre-review-galvanising-reinvention-arthur-millers-classic",
+          "host": "theartsdesk.com",
+          "outletId": "artsdesk"
+        },
+        {
+          "url": "https://www.culturewhisper.com/r/theatre/death_of_a_salesman_young_vic_theatre/12635",
+          "host": "culturewhisper.com",
+          "outletId": "culture-whisper"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/2019/death-of-a-salesman-review-at-piccadilly-theatre-london-riveting-devastating-stunning/",
+          "host": "thestage.co.uk",
+          "outletId": "thestage"
+        },
+        {
+          "url": "https://www.theupcoming.co.uk/2019/11/05/death-of-a-salesman-at-piccadilly-theatre-theatre-review/",
+          "host": "theupcoming.co.uk",
+          "outletId": "theupcoming"
+        },
+        {
+          "url": "https://mail.google.com/mail/u/0/",
+          "host": "mail.google.com",
+          "outletId": "google"
+        }
+      ]
+    },
+    {
+      "showId": "cats-the-jellicle-ball-2026",
+      "title": "CATS: The Jellicle Ball",
+      "openingDate": "2026-04-07",
+      "status": "open",
+      "category": "broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-what-do-the-critics-think-of-cats-the-jellicle-ball-on-broadway",
+        "https://playbill.com/article/reviews-what-do-critics-think-of-cats-the-jellicle-ball-at-perelman-performing-arts-center",
+        "https://www.broadwayworld.com/article/Review-Roundup-CATS-THE-JELLICLE-BALL-Opens-Off-Broadway-20240620"
+      ],
+      "aggregatorListedUrls": [
+        "https://1minutecritic.com/cats-jellicle-ball-broadway-review/",
+        "https://cititour.com/NYC_Broadway/CATS-The-Jellicle-Ball/1367",
+        "https://www.theatermania.com/news/review-cats-the-jellicle-ball-is-the-party-of-the-broadway-season_1831978/",
+        "https://culturesauce.com/2026/04/07/cats-jellicle-ball-broadway-andrew-lloyd-webber-review/",
+        "https://www.chicagotribune.com/2026/04/07/review-cats-jellicle-ball-broadway/",
+        "https://deadline.com/2026/04/cats-the-jellicle-ball-broadway-review-1236773077/",
+        "https://ew.com/cats-the-jellicle-ball-review-broadway-11944334",
+        "https://www.theguardian.com/stage/2026/apr/07/cats-the-jellicle-ball-musical-review",
+        "https://nypost.com/2026/04/07/entertainment/cats-the-jellicle-ball-review-a-euphoric-nyc-reinvention-of-a-broadway-classic/",
+        "https://nystagereview.com/2026/04/07/cats-the-jellicle-ball-welcome-to-the-glitter-box/",
+        "https://nystagereview.com/2026/04/07/cats-the-jellicle-ball-a-disco-tastic-revival-of-lloyd-webbers-musical/",
+        "https://newyorktheater.me/2026/04/07/cats-the-jellicle-ball-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/cats-the-jellicle-ball-broadway-review",
+        "https://www.nytimes.com/2026/04/07/theater/cats-jellicle-ball-review-broadway.html",
+        "https://therecs.co.uk/cats-the-jellicle-ball/",
+        "https://www.slantmagazine.com/theater/cats-the-jellicle-ball-broadway-review/",
+        "https://www.theatrely.com/post/cats-the-jellicle-ball-pushes-us-towards-a-more-fabulous-future-review",
+        "https://www.timeout.com/newyork/news/broadway-review-paris-is-purring-in-cats-the-jellicle-ball-040826",
+        "https://www.usatoday.com/story/entertainment/music/2026/04/07/cats-jellicle-ball-broadway-review/89488390007/",
+        "https://variety.com/2026/legit/reviews/cats-the-jellicle-ball-broadway-review-andrew-lloyd-webber-musical-ballroom-culture-1236709562/",
+        "https://www.thewrap.com/creative-content/theater/cats-the-jellicle-ball-broadway-review-andrew-lloyd-webber/",
+        "https://www.chicagotribune.com/2024/06/20/review-cats-the-jellicle-ball-in-new-york-gives-this-musical-a-whole-new-ballroom-life/",
+        "https://cititour.com/NYC_News/Cats-The-Jellice-Ball-is-Practically-Purrfect/8448",
+        "https://exeuntnyc.com/reviews/review-cats-the-jellicle-ball-at-perelman-performing-arts-center/",
+        "https://www.nydailynews.com/2024/06/20/theater-review-cats-the-jellicle-ball-is-an-inspired-reimagining-of-the-broadway-classic/",
+        "https://nypost.com/2024/06/20/entertainment/cats-the-jellicle-ball-review-the-most-fun-youll-have-this-summer/",
+        "https://nystagereview.com/2024/06/20/cats-the-jellicle-ball-alw-in-the-house/",
+        "https://www.newyorktheatreguide.com/reviews/cats-the-jellicle-ball-off-broadway-review-andrew-lloyd-webber",
+        "https://www.nytimes.com/2024/06/20/theater/cats-the-jellicle-ball-review.html",
+        "https://www.queerty.com/cats-the-jellicle-ball-spins-dips-and-yes-catwalks-in-a-fierce-reimagining-of-the-80s-megahit-20240620",
+        "https://www.theatermania.com/news/review-cats-the-jellicle-ball-is-the-most-fun-ive-ever-had-at-an-andrew-lloyd-webber-musical_1743514/",
+        "https://www.timeout.com/newyork/theater/cats-the-jellicle-ball-musical-review-andrew-lloyd-webber-ballroom",
+        "https://www.thewrap.com/cats-jellicle-ball-off-broadway-review-andrew-lloyd-webber/",
+        "https://www.whatsonstage.com/news/cats-the-jellicle-ball-review-the-most-fun-ive-ever-had-at-an-andrew-lloyd-webber-musical_1608111/",
+        "https://www.newyorker.com/magazine/2024/07/08/cats-the-jellicle-ball-theatre-review",
+        "https://www.nydailynews.com/2026/04/07/broadway-review-cats-jellicle-ball/",
+        "http://www.lightingandsoundamerica.com/news/story.asp",
+        "https://talkinbroadway.com/page/world/CATSTheJellicleBall.html",
+        "https://www.theaterscene.net/musicals/broadway/cats-the-jellicle-ball-2/victor-gluck/",
+        "https://www.theatrereviews.com/broadway-mini-review-cats-the-jellicle-ball-at-the-broadhurst-theatre-currently-on/",
+        "https://pagesonstages.com/2026/04/08/cats-the-jellicle-ball/",
+        "https://www.interestedbystander.com/2026/04/broadway-reviews-ips-on-broadway-get.html",
+        "https://lavocedinewyork.com/en/new-york/2026/04/17/the-jellicle-ball-reimagines-cats-through-ballroom-culture/"
+      ],
+      "dirFiles": 66,
+      "dirClean": 24,
+      "inReviewsJson": 25,
+      "missing": [
+        {
+          "url": "https://therecs.co.uk/cats-the-jellicle-ball/",
+          "host": "therecs.co.uk",
+          "knownOutletId": "the-recs"
+        },
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp",
+          "host": "lightingandsoundamerica.com",
+          "knownOutletId": "lighting-and-sound-america"
+        },
+        {
+          "url": "https://www.interestedbystander.com/2026/04/broadway-reviews-ips-on-broadway-get.html",
+          "host": "interestedbystander.com",
+          "knownOutletId": "the-interested-bystander"
+        },
+        {
+          "url": "https://lavocedinewyork.com/en/new-york/2026/04/17/the-jellicle-ball-reimagines-cats-through-ballroom-culture/",
+          "host": "lavocedinewyork.com",
+          "knownOutletId": "la-voce-di-new-york"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "latimes.com",
+          "count": 1
+        },
+        {
+          "host": "nysun.com",
+          "count": 1
+        },
+        {
+          "host": "thecontending.com",
+          "count": 1
+        },
+        {
+          "host": "theaterpizzazz.com",
+          "count": 1
+        },
+        {
+          "host": "vulture.com",
+          "count": 1
+        },
+        {
+          "host": "washingtonpost.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.chicagotribune.com/2026/04/07/review-cats-jellicle-ball-broadway/",
+          "host": "chicagotribune.com",
+          "dirFlags": [
+            {
+              "file": "chicagotribune--chris-jones.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.chicagotribune.com/2024/06/20/review-cats-the-jellicle-ball-in-new-york-gives-this-musical-a-whole-new-ballroom-life/"
+            }
+          ]
+        },
+        {
+          "url": "https://nypost.com/2026/04/07/entertainment/cats-the-jellicle-ball-review-a-euphoric-nyc-reinvention-of-a-broadway-classic/",
+          "host": "nypost.com",
+          "dirFlags": [
+            {
+              "file": "nypost--johnny-oleksinski.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nypost.com/2026/04/07/entertainment/cats-the-jellicle-ball-review-a-euphoric-nyc-reinvention-of-a-broadway-classic/"
+            }
+          ]
+        },
+        {
+          "url": "https://nystagereview.com/2026/04/07/cats-the-jellicle-ball-welcome-to-the-glitter-box/",
+          "host": "nystagereview.com",
+          "dirFlags": [
+            {
+              "file": "nysr--melissa-rose-bernardo.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2026/04/07/cats-the-jellicle-ball-a-disco-tastic-revival-of-lloyd-webbers-musical/"
+            },
+            {
+              "file": "nysr--michael-sommers.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2026/04/07/cats-the-jellicle-ball-welcome-to-the-glitter-box/"
+            },
+            {
+              "file": "nysr--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2024/06/20/cats-the-jellicle-ball-alw-in-the-house/"
+            }
+          ]
+        },
+        {
+          "url": "https://nystagereview.com/2026/04/07/cats-the-jellicle-ball-a-disco-tastic-revival-of-lloyd-webbers-musical/",
+          "host": "nystagereview.com",
+          "dirFlags": [
+            {
+              "file": "nysr--melissa-rose-bernardo.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2026/04/07/cats-the-jellicle-ball-a-disco-tastic-revival-of-lloyd-webbers-musical/"
+            },
+            {
+              "file": "nysr--michael-sommers.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2026/04/07/cats-the-jellicle-ball-welcome-to-the-glitter-box/"
+            },
+            {
+              "file": "nysr--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2024/06/20/cats-the-jellicle-ball-alw-in-the-house/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/cats-the-jellicle-ball-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "dirFlags": [
+            {
+              "file": "nytg--kyle-turner.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newyorktheatreguide.com/reviews/cats-the-jellicle-ball-broadway-review"
+            },
+            {
+              "file": "nytg--unknown.json",
+              "flag": "duplicate",
+              "urlInDir": "https://www.newyorktheatreguide.com/reviews/cats-the-jellicle-ball-broadway-review"
+            }
+          ]
+        },
+        {
+          "url": "https://www.slantmagazine.com/theater/cats-the-jellicle-ball-broadway-review/",
+          "host": "slantmagazine.com",
+          "dirFlags": [
+            {
+              "file": "slantmagazine--dan-rubins.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.slantmagazine.com/theater/cats-the-jellicle-ball-broadway-review/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.theatrely.com/post/cats-the-jellicle-ball-pushes-us-towards-a-more-fabulous-future-review",
+          "host": "theatrely.com",
+          "dirFlags": [
+            {
+              "file": "theatrely--joey-sims.json",
+              "flag": "duplicate",
+              "urlInDir": "https://www.theatrely.com/post/cats-the-jellicle-ball-pushes-us-towards-a-more-fabulous-future-review"
+            },
+            {
+              "file": "theatrely--unknown.json",
+              "flag": "duplicate",
+              "urlInDir": "https://www.theatrely.com/post/cats-the-jellicle-ball-pushes-us-towards-a-more-fabulous-future-review"
+            }
+          ]
+        },
+        {
+          "url": "https://www.timeout.com/newyork/news/broadway-review-paris-is-purring-in-cats-the-jellicle-ball-040826",
+          "host": "timeout.com",
+          "dirFlags": [
+            {
+              "file": "timeout--adam-feldman.json",
+              "flag": "duplicate",
+              "urlInDir": "https://www.timeout.com/newyork/news/broadway-review-paris-is-purring-in-cats-the-jellicle-ball-040826"
+            },
+            {
+              "file": "timeout--david-cote.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.timeout.com/newyork/news/broadway-review-paris-is-purring-in-cats-the-jellicle-ball-040826"
+            }
+          ]
+        },
+        {
+          "url": "https://www.chicagotribune.com/2024/06/20/review-cats-the-jellicle-ball-in-new-york-gives-this-musical-a-whole-new-ballroom-life/",
+          "host": "chicagotribune.com",
+          "dirFlags": [
+            {
+              "file": "chicagotribune--chris-jones.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.chicagotribune.com/2024/06/20/review-cats-the-jellicle-ball-in-new-york-gives-this-musical-a-whole-new-ballroom-life/"
+            }
+          ]
+        },
+        {
+          "url": "https://exeuntnyc.com/reviews/review-cats-the-jellicle-ball-at-perelman-performing-arts-center/",
+          "host": "exeuntnyc.com",
+          "dirFlags": [
+            {
+              "file": "exeunt-magazine--lane-williamson.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://exeuntnyc.com/reviews/review-cats-the-jellicle-ball-at-perelman-performing-arts-center/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.nydailynews.com/2024/06/20/theater-review-cats-the-jellicle-ball-is-an-inspired-reimagining-of-the-broadway-classic/",
+          "host": "nydailynews.com",
+          "dirFlags": [
+            {
+              "file": "nydailynews--chris-jones.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nydailynews.com/2026/04/07/broadway-review-cats-jellicle-ball/"
+            },
+            {
+              "file": "nydailynews--joe-dziemianowicz.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.nydailynews.com/entertainment/theater-arts/cats-impurr-fect-revival-leona-lewis-opens-broadway-article-1.2731394"
+            },
+            {
+              "file": "nydailynews--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nydailynews.com/2024/06/20/theater-review-cats-the-jellicle-ball-is-an-inspired-reimagining-of-the-broadway-classic/"
+            }
+          ]
+        },
+        {
+          "url": "https://nypost.com/2024/06/20/entertainment/cats-the-jellicle-ball-review-the-most-fun-youll-have-this-summer/",
+          "host": "nypost.com",
+          "dirFlags": [
+            {
+              "file": "nypost--johnny-oleksinski.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nypost.com/2026/04/07/entertainment/cats-the-jellicle-ball-review-a-euphoric-nyc-reinvention-of-a-broadway-classic/"
+            }
+          ]
+        },
+        {
+          "url": "https://nystagereview.com/2024/06/20/cats-the-jellicle-ball-alw-in-the-house/",
+          "host": "nystagereview.com",
+          "dirFlags": [
+            {
+              "file": "nysr--melissa-rose-bernardo.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2026/04/07/cats-the-jellicle-ball-a-disco-tastic-revival-of-lloyd-webbers-musical/"
+            },
+            {
+              "file": "nysr--michael-sommers.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2026/04/07/cats-the-jellicle-ball-welcome-to-the-glitter-box/"
+            },
+            {
+              "file": "nysr--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2024/06/20/cats-the-jellicle-ball-alw-in-the-house/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/cats-the-jellicle-ball-off-broadway-review-andrew-lloyd-webber",
+          "host": "newyorktheatreguide.com",
+          "dirFlags": [
+            {
+              "file": "nytg--kyle-turner.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newyorktheatreguide.com/reviews/cats-the-jellicle-ball-broadway-review"
+            },
+            {
+              "file": "nytg--unknown.json",
+              "flag": "duplicate",
+              "urlInDir": "https://www.newyorktheatreguide.com/reviews/cats-the-jellicle-ball-broadway-review"
+            }
+          ]
+        },
+        {
+          "url": "https://www.queerty.com/cats-the-jellicle-ball-spins-dips-and-yes-catwalks-in-a-fierce-reimagining-of-the-80s-megahit-20240620",
+          "host": "queerty.com",
+          "dirFlags": [
+            {
+              "file": "queerty--matthew-wexler.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.queerty.com/cats-the-jellicle-ball-spins-dips-and-yes-catwalks-in-a-fierce-reimagining-of-the-80s-megahit-20240620"
+            }
+          ]
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/cats-the-jellicle-ball-musical-review-andrew-lloyd-webber-ballroom",
+          "host": "timeout.com",
+          "dirFlags": [
+            {
+              "file": "timeout--adam-feldman.json",
+              "flag": "duplicate",
+              "urlInDir": "https://www.timeout.com/newyork/news/broadway-review-paris-is-purring-in-cats-the-jellicle-ball-040826"
+            },
+            {
+              "file": "timeout--david-cote.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.timeout.com/newyork/news/broadway-review-paris-is-purring-in-cats-the-jellicle-ball-040826"
+            }
+          ]
+        },
+        {
+          "url": "https://www.newyorker.com/magazine/2024/07/08/cats-the-jellicle-ball-theatre-review",
+          "host": "newyorker.com",
+          "dirFlags": [
+            {
+              "file": "newyorker--emily-nussbaum.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newyorker.com/magazine/2026/04/27/becky-shaw-theatre-review-cats-the-jellicle-ball"
+            },
+            {
+              "file": "newyorker--helen-shaw-2024-bway.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newyorker.com/magazine/2024/07/08/cats-the-jellicle-ball-theatre-review"
+            },
+            {
+              "file": "newyorker--helen-shaw.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newyorker.com/magazine/2024/07/08/cats-the-jellicle-ball-theatre-review"
+            }
+          ]
+        },
+        {
+          "url": "https://www.nydailynews.com/2026/04/07/broadway-review-cats-jellicle-ball/",
+          "host": "nydailynews.com",
+          "dirFlags": [
+            {
+              "file": "nydailynews--chris-jones.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nydailynews.com/2026/04/07/broadway-review-cats-jellicle-ball/"
+            },
+            {
+              "file": "nydailynews--joe-dziemianowicz.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.nydailynews.com/entertainment/theater-arts/cats-impurr-fect-revival-leona-lewis-opens-broadway-article-1.2731394"
+            },
+            {
+              "file": "nydailynews--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nydailynews.com/2024/06/20/theater-review-cats-the-jellicle-ball-is-an-inspired-reimagining-of-the-broadway-classic/"
+            }
+          ]
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://therecs.co.uk/cats-the-jellicle-ball/",
+          "host": "therecs.co.uk",
+          "outletId": "the-recs",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp",
+          "host": "lightingandsoundamerica.com",
+          "outletId": "lighting-and-sound-america",
+          "provisional": false,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=cats-the-jellicle-ball-2026 --url=http"
+        },
+        {
+          "url": "https://www.interestedbystander.com/2026/04/broadway-reviews-ips-on-broadway-get.html",
+          "host": "interestedbystander.com",
+          "outletId": "the-interested-bystander",
+          "provisional": false,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=cats-the-jellicle-ball-2026 --url=http"
+        },
+        {
+          "url": "https://lavocedinewyork.com/en/new-york/2026/04/17/the-jellicle-ball-reimagines-cats-through-ballroom-culture/",
+          "host": "lavocedinewyork.com",
+          "outletId": "la-voce-di-new-york",
+          "provisional": false,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=cats-the-jellicle-ball-2026 --url=http"
+        }
+      ],
+      "ingestSkippedByCap": []
+    },
+    {
+      "showId": "dog-day-afternoon-2026",
+      "title": "Dog Day Afternoon",
+      "openingDate": "2026-03-30",
+      "status": "open",
+      "category": "broadway",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-DOG-DAY-AFTERNOON-Starring-Jon-Bernthal-and-Ebon-Moss-Bachrach-20260330"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.nytimes.com/2026/03/30/theater/dog-day-afternoon-review-bernthal-moss-bachrach.html",
+        "https://www.amny.com/entertainment/review-dog-day-afternoon/",
+        "https://www.timeout.com/newyork/news/broadway-review-a-heist-and-a-play-go-wrong-in-dog-day-afternoon-033126",
+        "https://culturesauce.com/2026/03/31/dog-day-afternoon-jon-bernthal-broadway-review/",
+        "https://newyorktheater.me/2026/03/30/dog-day-afternoon-broadway-review/",
+        "https://www.usatoday.com/story/entertainment/movies/2026/03/31/dog-day-afternoon-broadway-review/89360614007/",
+        "https://nypost.com/2026/03/31/entertainment/dog-day-afternoon-review-jon-bernthals-broadway-play-turns-classic-ny-movie-into-a-silly-sitcom/",
+        "https://ew.com/dog-day-afternoon-review-jon-bernthal-takes-on-famous-al-pacino-role-11937173",
+        "https://nystagereview.com/2026/03/31/dog-day-afternoon-now-you-too-can-chant-attica-attica/",
+        "https://nystagereview.com/2026/03/31/dog-day-afternoon-more-punchlines-than-peril/",
+        "https://variety.com/2026/legit/reviews/dog-day-afternoon-broadway-review-jon-bernthal-1236702501/",
+        "https://www.newyorktheatreguide.com/reviews/dog-day-afternoon-broadway-review-jon-bernthal-ebon-moss-bachrach",
+        "https://www.hollywoodreporter.com/lifestyle/arts/dog-day-afternoon-review-theater-jon-bernthal-broadway-1236551286/",
+        "https://www.wsj.com/articles/dog-day-afternoon-review-a-robbery-revisited-on-broadway-28341eb0",
+        "https://www.theatrely.com/post/dog-day-afternoon-does-disney-for-dads-review",
+        "https://www.thewrap.com/creative-content/theater/dog-day-afternoon-broadway-review-jon-bernthal-ebon-moss-bachrach/",
+        "https://cititour.com/NYC_Broadway/Dog-Day-Afternoon/1365",
+        "https://yaledailynews.com/articles/lend-me-your-ears-broadway-s-dog-day-afternoon-is-a-doggone-mess",
+        "https://www.nydailynews.com/2026/03/31/broadway-review-dog-day-afternoon-struggles-to-stand-apart-from-film/",
+        "https://www.slantmagazine.com/theater/dog-day-afternoon-broadway-review-jon-bernthal-ebon-moss-bachrach/",
+        "https://www.theguardian.com/stage/2026/mar/31/dog-day-afternoon-review-jon-bernthal-ebon-moss-bachrach",
+        "https://thecontending.com/dog-day-afternoon-not-your-fathers-take-but-thats-not-a-bad-thing/",
+        "http://www.lightingandsoundamerica.com/news/story.asp",
+        "https://www.talkinbroadway.com/page/world/DogDayAfternoon.html",
+        "https://www.theatrereviews.com/broadway-mini-review-dog-day-afternoon-at-the-august-wilson-theatre-through-sunday-july-12-2026/",
+        "https://pagesonstages.com/2026/04/12/dog-day-afternoon/",
+        "https://www.interestedbystander.com/2026/04/broadway-reviews-ips-on-broadway-get.html"
+      ],
+      "dirFiles": 45,
+      "dirClean": 35,
+      "inReviewsJson": 33,
+      "missing": [
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp",
+          "host": "lightingandsoundamerica.com",
+          "knownOutletId": "lighting-and-sound-america"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "broadwayandme.blogspot.com",
+          "count": 1
+        },
+        {
+          "host": "chicagotribune.com",
+          "count": 1
+        },
+        {
+          "host": "frontmezzjunkies.com",
+          "count": 1
+        },
+        {
+          "host": "independent.co.uk",
+          "count": 2
+        },
+        {
+          "host": "nysun.com",
+          "count": 1
+        },
+        {
+          "host": "newyorker.com",
+          "count": 1
+        },
+        {
+          "host": "1minutecritic.com",
+          "count": 1
+        },
+        {
+          "host": "thekomisarscoop.com",
+          "count": 1
+        },
+        {
+          "host": "theaterpizzazz.com",
+          "count": 1
+        },
+        {
+          "host": "theatermania.com",
+          "count": 1
+        },
+        {
+          "host": "vulture.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.nytimes.com/2026/03/30/theater/dog-day-afternoon-review-bernthal-moss-bachrach.html",
+          "host": "nytimes.com",
+          "dirFlags": [
+            {
+              "file": "nytimes--jason-zinoman.json",
+              "flag": "duplicate",
+              "urlInDir": "https://www.nytimes.com/2026/03/30/theater/dog-day-afternoon-review-bernthal-moss-bachrach.html"
+            },
+            {
+              "file": "nytimes--michael-paulson.json",
+              "flag": "duplicate",
+              "urlInDir": "https://www.nytimes.com/2026/03/30/theater/dog-day-afternoon-review-bernthal-moss-bachrach.html"
+            }
+          ]
+        },
+        {
+          "url": "https://variety.com/2026/legit/reviews/dog-day-afternoon-broadway-review-jon-bernthal-1236702501/",
+          "host": "variety.com",
+          "dirFlags": [
+            {
+              "file": "variety--owen-gleiberman.json",
+              "flag": "duplicate",
+              "urlInDir": "https://variety.com/2026/legit/reviews/dog-day-afternoon-broadway-review-jon-bernthal-1236702501/"
+            },
+            {
+              "file": "variety--rebecca-rubin.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://variety.com/2026/legit/reviews/dog-day-afternoon-broadway-review-jon-bernthal-1236702501/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.talkinbroadway.com/page/world/DogDayAfternoon.html",
+          "host": "talkinbroadway.com",
+          "dirFlags": [
+            {
+              "file": "talkinbroadway--howard-miller.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.talkinbroadway.com/page/world/DogDayAfternoon.html"
+            }
+          ]
+        },
+        {
+          "url": "https://www.interestedbystander.com/2026/04/broadway-reviews-ips-on-broadway-get.html",
+          "host": "interestedbystander.com",
+          "dirFlags": [
+            {
+              "file": "the-interested-bystander--cary-wong.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.interestedbystander.com/2026/04/broadway-reviews-ips-on-broadway-get.html"
+            }
+          ]
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp",
+          "host": "lightingandsoundamerica.com",
+          "outletId": "lighting-and-sound-america",
+          "provisional": false,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=dog-day-afternoon-2026 --url=http://ww"
+        }
+      ],
+      "ingestSkippedByCap": []
+    },
+    {
+      "showId": "giant-2026",
+      "title": "Giant",
+      "openingDate": "2026-03-23",
+      "status": "open",
+      "category": "broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-sound-off-on-broadways-giant-starring-john-lithgow",
+        "https://playbill.com/article/read-the-reviews-for-john-lithgow-led-roald-dahl-play-giant-in-the-west-end",
+        "https://www.broadwayworld.com/article/Review-Roundup-GIANT-Opens-On-Broadway-Starring-John-Lithgow-As-Roald-Dahl-20260323",
+        "https://www.broadwayworld.com/article/Review-Roundup-The-Public-Theaters-GIANT-All-the-Reviews-20121116"
+      ],
+      "aggregatorListedUrls": [
+        "https://1minutecritic.com/giant-john-lithgow-broadway-review/",
+        "https://www.amny.com/entertainment/giant-performance-divisive-play/",
+        "https://www.chicagotribune.com/2026/03/23/review-giant-broadway-john-lithgow/",
+        "https://cititour.com/NYC_Broadway/Giant/1363",
+        "https://culturesauce.com/2026/03/23/giant-john-lithgow-roald-dahl-broadway-review/",
+        "https://deadline.com/2026/03/john-lithgow-giant-broadway-review-1236761578/",
+        "https://forward.com/culture/theater/814387/giant-review-broadway-john-lithgow-roald-dahl-play-antisemitism/",
+        "https://nypost.com/2026/03/23/entertainment/giant-review-john-lithgow-is-superb-as-roald-dahl-in-broadway-show-about-his-revolting-anti-semitism/",
+        "https://newyorktheater.me/2026/03/23/giant-review-john-lithgow-as-roald-dahl-antisemite/",
+        "https://www.newyorktheatreguide.com/reviews/giant-broadway-review-john-lithgow-roald-dahl",
+        "https://www.nytimes.com/2026/03/23/theater/giant-review-broadway-lithgow-dahl.html",
+        "https://www.theatermania.com/news/review-giant-on-broadway-how-roald-dahl-accepted-his-antisemitism_1829455/",
+        "https://www.theatrely.com/post/giant-john-lithgows-uneasy-dahl-review",
+        "https://www.timeout.com/newyork/theater/giant-broadway-play-review-john-lithgow-roald-dahl",
+        "https://variety.com/2026/legit/reviews/giant-broadway-review-john-lithgow-roald-dahl-1236696703/",
+        "https://www.thewrap.com/creative-content/theater/giant-broadway-review-john-lithgow/",
+        "https://www.broadwayworld.com/westend/article/Review-GIANT-Harold-Pinter-Theatre-Starring-John-Lithgow-20250502",
+        "https://www.dailymail.co.uk/tvshowbiz/article-14670075/Funny-shocking-thought-provoking-John-Lithgows-towering-performance-brings-big-unfriendly-giant-Roald-Dahl-life-West-End.html",
+        "https://www.londontheatre.co.uk/reviews/giant-review-harold-pinter-theatre",
+        "https://www.thestage.co.uk/reviews/giant-review-harold-pinter-theatre-london-john-lithgow-mark-rosenblatt-nicholas-hytner",
+        "https://www.standard.co.uk/culture/theatre/giant-harold-pinter-roald-dahl-b1225660.html",
+        "https://www.telegraph.co.uk/theatre/what-to-see/giant-harold-pinter-theatre-review-john-lithgow/",
+        "https://www.timeout.com/london/theatre/giant-review-3",
+        "https://www.thetimes.com/culture/theatre-dance/article/giant-review-john-lithgow-roald-dahl-kmzqshndc",
+        "https://nystagereview.com/2026/03/23/giant-antisemitism-laid-bare/",
+        "https://nystagereview.com/2026/03/23/giant-author-antisemite-roald-dahl/",
+        "http://theater.nytimes.com/2012/11/16/theater/reviews/giant-with-brian-darcy-james-at-the-public-theater.html",
+        "http://www.businessweek.com/news/2012-11-15/musical-giant-overflows-with-plot-songs-theater",
+        "http://www.westport-news.com/entertainment/article/Review-Giant-is-sprawling-eloquent-new-musical-4042256.php",
+        "https://www.timeout.com/newyork/news/review-john-lithgow-wrestles-with-roald-dahls-demons-in-giant-032426",
+        "https://www.nydailynews.com/2026/03/23/broadway-review-giant-john-lithgow-music-box-theatre/",
+        "http://www.lightingandsoundamerica.com/news/story.asp",
+        "https://www.talkinbroadway.com/page/world/Giant.html",
+        "https://www.theatrereviews.com/broadway-review-giant-at-the-music-box-theatre-through-sunday-june-28-2026/",
+        "https://pagesonstages.com/2026/04/03/giant/",
+        "https://www.interestedbystander.com/2026/03/harry-potter-adjacent-broadway-reviews.html"
+      ],
+      "dirFiles": 47,
+      "dirClean": 26,
+      "inReviewsJson": 24,
+      "missing": [
+        {
+          "url": "https://www.broadwayworld.com/westend/article/Review-GIANT-Harold-Pinter-Theatre-Starring-John-Lithgow-20250502",
+          "host": "broadwayworld.com",
+          "knownOutletId": "broadwayworld"
+        },
+        {
+          "url": "http://theater.nytimes.com/2012/11/16/theater/reviews/giant-with-brian-darcy-james-at-the-public-theater.html",
+          "host": "theater.nytimes.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "http://www.businessweek.com/news/2012-11-15/musical-giant-overflows-with-plot-songs-theater",
+          "host": "businessweek.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "http://www.westport-news.com/entertainment/article/Review-Giant-is-sprawling-eloquent-new-musical-4042256.php",
+          "host": "westport-news.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp",
+          "host": "lightingandsoundamerica.com",
+          "knownOutletId": "lighting-and-sound-america"
+        },
+        {
+          "url": "https://www.interestedbystander.com/2026/03/harry-potter-adjacent-broadway-reviews.html",
+          "host": "interestedbystander.com",
+          "knownOutletId": "the-interested-bystander"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "artsfuse.org",
+          "count": 1
+        },
+        {
+          "host": "nysun.com",
+          "count": 1
+        },
+        {
+          "host": "nj.com",
+          "count": 1
+        },
+        {
+          "host": "theaterlife.com",
+          "count": 1
+        },
+        {
+          "host": "vulture.com",
+          "count": 1
+        },
+        {
+          "host": "wsj.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://cititour.com/NYC_Broadway/Giant/1363",
+          "host": "cititour.com",
+          "dirFlags": [
+            {
+              "file": "cititour--brian-scott-lipton.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://cititour.com/NYC_Broadway/Giant/1363"
+            }
+          ]
+        },
+        {
+          "url": "https://www.dailymail.co.uk/tvshowbiz/article-14670075/Funny-shocking-thought-provoking-John-Lithgows-towering-performance-brings-big-unfriendly-giant-Roald-Dahl-life-West-End.html",
+          "host": "dailymail.co.uk",
+          "dirFlags": [
+            {
+              "file": "daily-mail--patrick-marmion.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.dailymail.co.uk/tvshowbiz/article-13897381/Giant-review-Roald-Dahls-uncomfortable-views-royal-court.html"
+            }
+          ]
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/giant-review-harold-pinter-theatre",
+          "host": "londontheatre.co.uk",
+          "dirFlags": [
+            {
+              "file": "london-theatre--julia-rank.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.londontheatre.co.uk/reviews/giant-review-royal-court"
+            }
+          ]
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/giant-review-harold-pinter-theatre-london-john-lithgow-mark-rosenblatt-nicholas-hytner",
+          "host": "thestage.co.uk",
+          "dirFlags": [
+            {
+              "file": "thestage--dave-fargnoli.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thestage.co.uk/reviews/giant-review-royal-court-theatre-london-roald-dahl-antisemitism-john-lithgow-mark-rosenblatt"
+            }
+          ]
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/giant-harold-pinter-roald-dahl-b1225660.html",
+          "host": "standard.co.uk",
+          "dirFlags": [
+            {
+              "file": "standard--tim-bano.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.standard.co.uk/culture/theatre/giant-royal-court-review-john-lithgow-romola-garai-b1184513.html"
+            }
+          ]
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/giant-harold-pinter-theatre-review-john-lithgow/",
+          "host": "telegraph.co.uk",
+          "dirFlags": [
+            {
+              "file": "sunday-telegraph--claire-allfree.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/giant-royal-court-review-roald-dahl-anti-semitism/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.talkinbroadway.com/page/world/Giant.html",
+          "host": "talkinbroadway.com",
+          "dirFlags": [
+            {
+              "file": "talkinbroadway--howard-miller.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.talkinbroadway.com/page/world/index.html"
+            },
+            {
+              "file": "talkinbroadway--unknown.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2643845"
+            }
+          ]
+        },
+        {
+          "url": "https://pagesonstages.com/2026/04/03/giant/",
+          "host": "pagesonstages.com",
+          "dirFlags": [
+            {
+              "file": "pages-on-stages--mason-pilevsky.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://pagesonstages.com/2026/04/03/giant/"
+            }
+          ]
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://www.broadwayworld.com/westend/article/Review-GIANT-Harold-Pinter-Theatre-Starring-John-Lithgow-20250502",
+          "host": "broadwayworld.com",
+          "outletId": "broadwayworld",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "http://theater.nytimes.com/2012/11/16/theater/reviews/giant-with-brian-darcy-james-at-the-public-theater.html",
+          "host": "theater.nytimes.com",
+          "outletId": "nytimes",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=giant-2026 --url=http://theater.nytime"
+        },
+        {
+          "url": "http://www.businessweek.com/news/2012-11-15/musical-giant-overflows-with-plot-songs-theater",
+          "host": "businessweek.com",
+          "outletId": "businessweek",
+          "provisional": true,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "http://www.westport-news.com/entertainment/article/Review-Giant-is-sprawling-eloquent-new-musical-4042256.php",
+          "host": "westport-news.com",
+          "outletId": "westport-news",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=giant-2026 --url=http://www.westport-n"
+        },
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp",
+          "host": "lightingandsoundamerica.com",
+          "outletId": "lighting-and-sound-america",
+          "provisional": false,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=giant-2026 --url=http://www.lightingan"
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.interestedbystander.com/2026/03/harry-potter-adjacent-broadway-reviews.html",
+          "host": "interestedbystander.com",
+          "outletId": "the-interested-bystander"
+        }
+      ]
+    },
+    {
+      "showId": "every-brilliant-thing-2026",
+      "title": "Every Brilliant Thing",
+      "openingDate": "2026-03-12",
+      "status": "open",
+      "category": "broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-what-do-the-critics-think-of-every-brilliant-thing-starring-daniel-radcliffe",
+        "https://www.broadwayworld.com/article/Review-Roundup-Tony-Winner-Daniel-Radcliffe-Stars-in-EVERY-BRILLIANT-THING-on-Broadway-20260312"
+      ],
+      "aggregatorListedUrls": [
+        "https://1minutecritic.com/every-brilliant-thing-review-daniel-radcliffe/",
+        "https://www.amny.com/entertainment/review-daniel-radcliffe-every-brilliant-thing/",
+        "https://cititour.com/NYC_Broadway/Every-Brilliant-Thing/1359",
+        "https://culturesauce.com/2026/03/12/daniel-radcliffe-every-brilliant-thing-broadway-review/",
+        "https://www.nydailynews.com/2026/03/12/broadway-review-radcliffe-brilliantly-cast-in-every-brilliant-thing/",
+        "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcliffe-1236750131/",
+        "https://ew.com/every-brilliant-thing-review-daniel-radcliffe-casts-spell-on-broadway-11921829",
+        "https://exeuntnyc.com/reviews/review-every-brilliant-thing-at-the-hudson-theatre/",
+        "https://www.theguardian.com/stage/2026/mar/12/every-brilliant-thing-daniel-radcliffe-broadway",
+        "https://www.latimes.com/entertainment-arts/story/2026-03-12/every-brilliant-thing-review-daniel-radcliffe-broadway-theater",
+        "https://open.substack.com/pub/newyorknotebook/p/every-brilliant-thing",
+        "https://nypost.com/2026/03/12/entertainment/every-brilliant-thing-review-daniel-radcliffe-schmoozes-with-the-audience-in-sweet-one-man-show/",
+        "https://nystagereview.com/2026/03/12/every-brilliant-thing-a-lustrous-evening-with-daniel-radcliffe/",
+        "https://nystagereview.com/2026/03/12/every-brilliant-thing-daniel-radcliffe-performs-magic-of-an-emotional-kind/",
+        "https://newyorktheater.me/2026/03/12/every-brilliant-thing-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/every-brilliant-thing-broadway-review-daniel-radcliffe",
+        "https://www.nytimes.com/2026/03/12/theater/every-brilliant-thing-review-daniel-radcliffe.html",
+        "https://therecs.co.uk/every-brilliant-thing/",
+        "https://www.theatermania.com/news/review-daniel-radcliffe-invites-us-to-cherish-every-brilliant-thing_1827748/",
+        "https://www.theatrely.com/post/daniel-radcliffe-crowd-sources-community-in-every-brilliant-thing-review",
+        "https://theaterpizzazz.com/daniel-radcliffe-shines-brightly-in-every-brilliant-thing/",
+        "https://www.timeout.com/newyork/news/broadway-review-daniel-radcliffe-brings-his-shine-to-every-brilliant-thing-031326",
+        "https://variety.com/2026/legit/reviews/daniel-radcliffe-every-brilliant-thing-broadway-review-1236685975/",
+        "https://www.wsj.com/articles/every-brilliant-thing-review-daniel-radcliffes-spirited-solo-show-107f4d40",
+        "https://www.thewrap.com/creative-content/theater/every-brilliant-thing-broadway-review-daniel-radcliffe/",
+        "https://variety.com/2026/tv/reviews/daniel-radcliffe-every-brilliant-thing-broadway-review-1236685975/",
+        "https://www.chicagotribune.com/2026/03/12/review-every-brilliant-thing-daniel-radcliffe/",
+        "https://thecontending.com/a-breathless-daniel-radcliffe-enchants-in-every-brilliant-thing-on-broadway/",
+        "http://www.lightingandsoundamerica.com/news/story.asp",
+        "https://www.theaterscene.net/plays/broadway-plays/every-brilliant-thing-2/joseph-pisano/",
+        "https://www.theatrereviews.com/broadway-review-every-brilliant-thing-at-the-hudson-theatre-through-sunday-may-24-2026/",
+        "https://theaterlife.com/every-brilliant-thing-1-2/",
+        "https://pagesonstages.com/2026/03/19/every-brilliant-thing/",
+        "https://lavocedinewyork.com/en/new-york/2026/04/14/two-new-broadway-productions-confront-grief-and-its-aftermath-in-divergent-ways/",
+        "https://www.interestedbystander.com/2026/03/harry-potter-adjacent-broadway-reviews.html"
+      ],
+      "dirFiles": 58,
+      "dirClean": 27,
+      "inReviewsJson": 28,
+      "missing": [
+        {
+          "url": "https://open.substack.com/pub/newyorknotebook/p/every-brilliant-thing",
+          "host": "open.substack.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://therecs.co.uk/every-brilliant-thing/",
+          "host": "therecs.co.uk",
+          "knownOutletId": "the-recs"
+        },
+        {
+          "url": "https://lavocedinewyork.com/en/new-york/2026/04/14/two-new-broadway-productions-confront-grief-and-its-aftermath-in-divergent-ways/",
+          "host": "lavocedinewyork.com",
+          "knownOutletId": "la-voce-di-new-york"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "frontmezzjunkies.com",
+          "count": 1
+        },
+        {
+          "host": "independent.co.uk",
+          "count": 1
+        },
+        {
+          "host": "nysun.com",
+          "count": 1
+        },
+        {
+          "host": "theaterscene.org",
+          "count": 1
+        },
+        {
+          "host": "vulture.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.amny.com/entertainment/review-daniel-radcliffe-every-brilliant-thing/",
+          "host": "amny.com",
+          "dirFlags": [
+            {
+              "file": "amny--matt-windman.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.amny.com/entertainment/review-daniel-radcliffe-every-brilliant-thing/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.nydailynews.com/2026/03/12/broadway-review-radcliffe-brilliantly-cast-in-every-brilliant-thing/",
+          "host": "nydailynews.com",
+          "dirFlags": [
+            {
+              "file": "nydailynews--chris-jones.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nydailynews.com/2026/03/12/broadway-review-radcliffe-brilliantly-cast-in-every-brilliant-thing/"
+            },
+            {
+              "file": "nydailynews--joe-dziemianowicz.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.nydailynews.com/entertainment/theater-arts/brilliant-shines-off-broadway-article-1.2043507"
+            }
+          ]
+        },
+        {
+          "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcliffe-1236750131/",
+          "host": "deadline.com",
+          "dirFlags": [
+            {
+              "file": "deadline--greg-evans.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcliffe-1236750131/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.latimes.com/entertainment-arts/story/2026-03-12/every-brilliant-thing-review-daniel-radcliffe-broadway-theater",
+          "host": "latimes.com",
+          "dirFlags": [
+            {
+              "file": "latimes--charles-mcnulty.json",
+              "flag": "duplicate",
+              "urlInDir": "https://www.latimes.com/entertainment-arts/story/2026-03-12/every-brilliant-thing-review-daniel-radcliffe-broadway-theater"
+            },
+            {
+              "file": "latimes--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.latimes.com/entertainment-arts/story/2026-03-12/every-brilliant-thing-review-daniel-radcliffe-broadway-theater"
+            }
+          ]
+        },
+        {
+          "url": "https://newyorktheater.me/2026/03/12/every-brilliant-thing-broadway-review/",
+          "host": "newyorktheater.me",
+          "dirFlags": [
+            {
+              "file": "nyt-theater--jonathan-mandell.json",
+              "flag": "duplicate",
+              "urlInDir": "https://newyorktheater.me/2026/03/12/every-brilliant-thing-broadway-review/"
+            },
+            {
+              "file": "nyt-theater--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://newyorktheater.me/2026/03/12/every-brilliant-thing-broadway-review/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-daniel-radcliffe-invites-us-to-cherish-every-brilliant-thing_1827748/",
+          "host": "theatermania.com",
+          "dirFlags": [
+            {
+              "file": "theatermania--hayley-levitt.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.theatermania.com/new-york-city-theater/reviews/every-brilliant-thing-barrow-street-review_70976.html"
+            },
+            {
+              "file": "theatermania--kenji-fujishima.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.theatermania.com/news/review-daniel-radcliffe-invites-us-to-cherish-every-brilliant-thing_1827748/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.theatrely.com/post/daniel-radcliffe-crowd-sources-community-in-every-brilliant-thing-review",
+          "host": "theatrely.com",
+          "dirFlags": [
+            {
+              "file": "theatrely--emily-wyrwa.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatrely.com/post/daniel-radcliffe-crowd-sources-community-in-every-brilliant-thing-review"
+            },
+            {
+              "file": "theatrely--juan-a-ramirez.json",
+              "flag": "duplicate",
+              "urlInDir": "https://www.theatrely.com/post/daniel-radcliffe-crowd-sources-community-in-every-brilliant-thing-review"
+            },
+            {
+              "file": "theatrely--rachel-hsu.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatrely.com/post/every-brilliant-thing-is-well-brilliant-review"
+            }
+          ]
+        },
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp",
+          "host": "lightingandsoundamerica.com",
+          "dirFlags": [
+            {
+              "file": "lighting-and-sound-america--david-barbour.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.lightingandsoundamerica.com/news/story.asp?ID=TXVWEL"
+            }
+          ]
+        },
+        {
+          "url": "https://www.theatrereviews.com/broadway-review-every-brilliant-thing-at-the-hudson-theatre-through-sunday-may-24-2026/",
+          "host": "theatrereviews.com",
+          "dirFlags": [
+            {
+              "file": "theatre-reviews-limited--david-roberts.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatrereviews.com/broadway-review-every-brilliant-thing-at-the-hudson-theatre-through-sunday-may-24-2026/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.interestedbystander.com/2026/03/harry-potter-adjacent-broadway-reviews.html",
+          "host": "interestedbystander.com",
+          "dirFlags": [
+            {
+              "file": "the-interested-bystander--cary-wong.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.interestedbystander.com/2026/03/harry-potter-adjacent-broadway-reviews.html"
+            }
+          ]
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://open.substack.com/pub/newyorknotebook/p/every-brilliant-thing",
+          "host": "open.substack.com",
+          "outletId": "open",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=every-brilliant-thing-2026 --url=https"
+        },
+        {
+          "url": "https://therecs.co.uk/every-brilliant-thing/",
+          "host": "therecs.co.uk",
+          "outletId": "the-recs",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://lavocedinewyork.com/en/new-york/2026/04/14/two-new-broadway-productions-confront-grief-and-its-aftermath-in-divergent-ways/",
+          "host": "lavocedinewyork.com",
+          "outletId": "la-voce-di-new-york",
+          "provisional": false,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=every-brilliant-thing-2026 --url=https"
+        }
+      ],
+      "ingestSkippedByCap": []
+    }
+  ]
 }
