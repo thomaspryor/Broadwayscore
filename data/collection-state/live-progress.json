@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-06-20T07:38:03.227Z",
-  "processed": 12,
-  "failed": 183,
-  "successRate": "6.2%",
+  "updatedAt": "2026-06-20T07:39:24.918Z",
+  "processed": 13,
+  "failed": 190,
+  "successRate": "6.4%",
   "tierBreakdown": {
-    "playwright": 10,
+    "playwright": 11,
     "amp": 0,
     "browserbase": 74,
     "directCookies": 0,
@@ -13,13 +13,8 @@
     "archiveToday": 14,
     "archive": 2
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-06-20T05:41:43.294Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-06-20T05:42:19.934Z",
       "event": "bb-session",
@@ -124,6 +119,12 @@
       "t": "2026-06-20T07:37:20.363Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-06-20T07:38:24.056Z",
+      "event": "bb-session",
+      "session": "41db4f5a",
+      "url": "https://therecs.co.uk/are-you-watching-royal-court/"
     }
   ]
 }
