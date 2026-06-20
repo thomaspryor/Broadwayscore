@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-20T05:33:27.642Z",
+  "timestamp": "2026-06-20T06:51:09.220Z",
   "stats": {
     "totalReviews": 38572,
-    "alreadyFlagged": 17017,
+    "alreadyFlagged": 17020,
     "dateGuardCatches": 104,
     "directorMismatch": 868,
     "tvFilmSignals": 1057,
-    "londonSignals": 636,
+    "londonSignals": 637,
     "offBroadwaySignals": 464,
     "yearMismatch": 82,
-    "noPublishDate": 3937
+    "noPublishDate": 3936
   },
   "findings": [
     {
@@ -1701,6 +1701,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "avenue-q-west-end-2026",
+      "file": "telegraph--marianka-swain.json",
+      "score": 82,
+      "publishDate": "2026-04-17",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/avenue-qs-bawdy-puppets-gleefully-outrageous/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -9537,20 +9551,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 2\""
-        }
-      ]
-    },
-    {
-      "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
-      "file": "front-row-center--nicole-itkin.json",
-      "score": 79,
-      "publishDate": "2026-05-29",
-      "url": "https://thefrontrowcenter.com/2026/05/heated-rivalry-the-unauthorized-musical-parody/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -32846,6 +32846,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "lbc--johnny-jenkins.json",
+      "score": 91,
+      "publishDate": "2026-04-08",
+      "url": "https://www.lbc.co.uk/article/inter-alia-review-best-plays-ever-seen-5HjdXRZ_2/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
