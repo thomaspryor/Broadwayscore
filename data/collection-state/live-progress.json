@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-20T15:51:12.560Z",
-  "processed": 235,
-  "failed": 581,
-  "successRate": "28.8%",
+  "updatedAt": "2026-06-20T15:58:45.761Z",
+  "processed": 239,
+  "failed": 587,
+  "successRate": "28.9%",
   "tierBreakdown": {
     "playwright": 119,
     "amp": 0,
-    "browserbase": 71,
+    "browserbase": 73,
     "directCookies": 0,
     "scrapingbee": 0,
-    "brightdata": 46,
-    "archiveToday": 18,
-    "archive": 85
+    "brightdata": 47,
+    "archiveToday": 20,
+    "archive": 87
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-06-20T05:39:00.825Z",
-      "event": "bb-session",
-      "session": "b670a771",
-      "url": "https://www.nytimes.com/2026/06/16/theater/are-you-now-or-have-you-ever-been-rev"
-    },
-    {
-      "t": "2026-06-20T05:39:01.742Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-06-20T05:39:42.735Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-06-20T15:27:58.432Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-20T15:52:25.515Z",
+      "event": "bb-session",
+      "session": "377553bb",
+      "url": "http://www.wsj.com/articles/kiss-me-kate-review-so-not-in-love-11552609800"
+    },
+    {
+      "t": "2026-06-20T15:52:26.120Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
