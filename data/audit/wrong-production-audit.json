@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-20T17:41:14.440Z",
+  "timestamp": "2026-06-20T20:29:00.269Z",
   "stats": {
-    "totalReviews": 38589,
-    "alreadyFlagged": 17024,
-    "dateGuardCatches": 108,
-    "directorMismatch": 875,
-    "tvFilmSignals": 1058,
-    "londonSignals": 642,
-    "offBroadwaySignals": 465,
-    "yearMismatch": 82,
-    "noPublishDate": 3934
+    "totalReviews": 38613,
+    "alreadyFlagged": 17025,
+    "dateGuardCatches": 120,
+    "directorMismatch": 880,
+    "tvFilmSignals": 1060,
+    "londonSignals": 643,
+    "offBroadwaySignals": 466,
+    "yearMismatch": 83,
+    "noPublishDate": 3937
   },
   "findings": [
     {
@@ -3732,6 +3732,7 @@
     {
       "showId": "cats-the-jellicle-ball-2026",
       "file": "the-recs--the-recs-rdc-randall-david-cook.json",
+      "score": 95,
       "publishDate": "2026-04-19",
       "url": "https://therecs.co.uk/cats-the-jellicle-ball/",
       "findings": [
@@ -5390,6 +5391,7 @@
     {
       "showId": "death-of-a-salesman-2026",
       "file": "independent--unknown.json",
+      "score": 72,
       "publishDate": "2019-05-12",
       "url": "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/death-of-a-salesman-review-young-vic-london-tickets-cast-a8907661.html",
       "findings": [
@@ -5413,6 +5415,7 @@
     {
       "showId": "death-of-a-salesman-2026",
       "file": "latimes--httpswwwlatimescompeoplecharles-mcnulty.json",
+      "score": 79,
       "publishDate": "2022-10-10",
       "url": "https://www.latimes.com/entertainment-arts/story/2022-10-09/death-of-a-salesman-broadway-2022-review-wendell-pierce",
       "findings": [
@@ -5473,6 +5476,7 @@
     {
       "showId": "death-of-a-salesman-2026",
       "file": "sunday-telegraph--dominic-cavendish.json",
+      "score": 92,
       "publishDate": "2019-05-10",
       "url": "http://www.telegraph.co.uk/theatre/what-to-see/death-salesman-review-young-vic-wendell-pierce-fits-reinvention/",
       "findings": [
@@ -14197,6 +14201,19 @@
       ]
     },
     {
+      "showId": "maybe-happy-ending-2024",
+      "file": "showbiz411--httpswwwfacebookcomshowbiz411.json",
+      "publishDate": "2024-11-12",
+      "url": "https://www.showbiz411.com/2024/11/12/broadway-glee-star-darren-criss-opens-in-charming-original-musical-maybe-happy-ending",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
       "showId": "mcneal-2024",
       "file": "thewrap--robert-hofler.json",
       "score": 32,
@@ -17838,6 +17855,19 @@
       ]
     },
     {
+      "showId": "ragtime-2025",
+      "file": "theater-pizzazz--unknown.json",
+      "publishDate": null,
+      "url": "http://theaterpizzazz.com/ragtime-meets-the-moment-in-a-thrilling-revival/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"frank galati\" from ragtime-1998"
+        }
+      ]
+    },
+    {
       "showId": "real-women-have-curves-2025",
       "file": "nyt-theater--jonathan-mandell.json",
       "score": 65,
@@ -18068,6 +18098,78 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2013 (17x) more than 2026 (0x). 2013 matches production: romeo-and-juliet-2013"
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-off-broadway-2026",
+      "file": "independent--unknown.json",
+      "publishDate": "2026-04-01",
+      "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/romeo-and-juliet-sadie-sink-review-noah-jupe-harold-pinter-b2949856.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 51d before show (2026-04-01 vs 2026-05-22)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from romeo-and-juliet-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-off-broadway-2026",
+      "file": "standard--nick-curtis.json",
+      "publishDate": "2026-04-01",
+      "url": "https://www.standard.co.uk/culture/theatre/romeo-and-juliet-b1277295.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 51d before show (2026-04-01 vs 2026-05-22)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from romeo-and-juliet-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-off-broadway-2026",
+      "file": "sunday-telegraph--claire-allfree.json",
+      "publishDate": "2026-03-31",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/romeo-and-juliet-review-sadie-sink-noah-jupe/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 52d before show (2026-03-31 vs 2026-05-22)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from romeo-and-juliet-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-off-broadway-2026",
+      "file": "times-uk--clive-davis-chief-theatre-critic.json",
+      "publishDate": "2026-03-31",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/romeo-juliet-review-sadie-sink-noah-jupe-hfr8798f2",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 52d before show (2026-03-31 vs 2026-05-22)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from romeo-and-juliet-west-end-2026"
         }
       ]
     },
@@ -20116,6 +20218,19 @@
       ]
     },
     {
+      "showId": "sting-west-end-2026",
+      "file": "northjerseycom--unknown.json",
+      "publishDate": "2018-04-09",
+      "url": "https://northjersey.com/story/entertainment/2018/04/09/harry-connick-jr-sting-paper-mill-playhouse/491585002/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 2992d before show (2018-04-09 vs 2026-06-18)"
+        }
+      ]
+    },
+    {
       "showId": "straight-white-men-2018",
       "file": "njcom--christopher-kelly.json",
       "score": 38,
@@ -20140,6 +20255,68 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-2024",
+      "file": "city-am--adam-bloodworth.json",
+      "publishDate": "2023-12-15",
+      "url": "https://www.cityam.com/stranger-things-the-first-shadow-review-gorgeous-shocking-thrillfest/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 469d before show (2023-12-15 vs 2025-03-28)"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Contains TV/film keyword: \"season 4\""
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2023 (2x) more than 2025 (0x). 2023 matches production: stranger-things-the-first-shadow-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-2024",
+      "file": "i-paper--emily-baker.json",
+      "publishDate": "2023-12-14",
+      "url": "https://inews.co.uk/culture/television/stranger-things-the-first-shadow-review-a-cash-cow-but-a-mesmerising-one-2809768",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 470d before show (2023-12-14 vs 2025-03-28)"
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-2024",
+      "file": "independent--unknown.json",
+      "publishDate": "2023-12-15",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/stranger-things-the-first-shadow-review-b2464017.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 469d before show (2023-12-15 vs 2025-03-28)"
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-2024",
+      "file": "standard--nick-curtis.json",
+      "publishDate": "2023-12-14",
+      "url": "https://www.standard.co.uk/culture/theatre/stranger-things-the-first-shadow-review-west-end-netflix-phoenix-theatre-b1127020.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 470d before show (2023-12-14 vs 2025-03-28)"
         }
       ]
     },
@@ -30571,6 +30748,7 @@
     {
       "showId": "every-brilliant-thing-2026",
       "file": "the-recs--the-recs-rdc-randall-david-cook.json",
+      "score": 95,
       "publishDate": "2026-03-19",
       "url": "https://therecs.co.uk/every-brilliant-thing/",
       "findings": [
@@ -31200,6 +31378,7 @@
     {
       "showId": "giant-2026",
       "file": "broadwayworld--httpswwwbroadwayworldcomauthorcindy-marcolina.json",
+      "score": 89,
       "publishDate": "2025-05-02",
       "url": "https://www.broadwayworld.com/westend/article/Review-GIANT-Harold-Pinter-Theatre-Starring-John-Lithgow-20250502",
       "findings": [
@@ -35222,6 +35401,19 @@
     },
     {
       "showId": "oh-mary-2024",
+      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "publishDate": "2025-12-19",
+      "url": "https://www.allthatdazzles.co.uk/post/review-oh-mary-trafalgar-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-2024",
       "file": "dailybeast--tim-teeman.json",
       "score": 90,
       "publishDate": "July 11, 2024",
@@ -35316,6 +35508,24 @@
       "publishDate": "July 11, 2024",
       "url": "https://observer.com/2024/07/oh-mary-is-a-splendidly-nasty-farce-you-will-not-want-to-miss/",
       "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-2024",
+      "file": "queerty--jude-cramer.json",
+      "publishDate": "2024-02-08",
+      "url": "https://www.queerty.com/in-oh-mary-cole-escola-conrad-ricamora-deliver-a-raucous-romp-through-history-20240208",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 139d before show (2024-02-08 vs 2024-06-26)"
+        },
         {
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
@@ -39743,6 +39953,19 @@
     },
     {
       "showId": "the-great-gatsby-2024",
+      "file": "broadwayworld--httpswwwbroadwayworldcomauthormarina-kennedy.json",
+      "publishDate": "2023-10-24",
+      "url": "https://www.broadwayworld.com/new-jersey/article/Review-THE-GREAT-GATSBY-at-Paper-Mill-Playhouse-The-Exceptional-World-Premiere-20231024",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 157d before show (2023-10-24 vs 2024-03-29)"
+        }
+      ]
+    },
+    {
+      "showId": "the-great-gatsby-2024",
       "file": "front-row-center--margret-echeverria.json",
       "score": 78,
       "publishDate": "2023-06-27T10:20:35",
@@ -41664,6 +41887,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "two-strangers-bway-2025",
+      "file": "boston-globe--unknown.json",
+      "publishDate": "2025-05-30",
+      "url": "https://www.bostonglobe.com/2025/05/30/arts/two-strangers-carry-a-cake/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 155d before show (2025-05-30 vs 2025-11-01)"
         }
       ]
     },
