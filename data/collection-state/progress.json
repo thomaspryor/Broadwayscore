@@ -79,7 +79,12 @@
     "the-receptionist-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "broken-snow-off-broadway-2026/culturesauce--thom-geier.json",
     "broken-snow-off-broadway-2026/one-minute-critic--jerry-portwood.json",
-    "broken-snow-off-broadway-2026/theater-scene--darryl-reilly.json"
+    "broken-snow-off-broadway-2026/theater-scene--darryl-reilly.json",
+    "the-price-off-west-end-2026/british-theatre--susan-novak.json",
+    "becky-shaw-2026/cote-notices--david-cote.json",
+    "the-authenticator-west-end-2026/times-uk--clive-davis.json",
+    "les-liaisons-dangereuses-west-end-2026/telegraph--claire-allfree.json",
+    "les-liaisons-dangereuses-west-end-2026/times-uk--clive-davis.json"
   ],
   "failed": [
     "encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
@@ -497,7 +502,12 @@
     "to-kill-a-mockingbird-west-end-2026/chicagotribune--chris-jones.json",
     "spamalot-off-broadway-2026/nytimes--jesse-green.json",
     "spamalot-off-broadway-2026/vulture--jackson-mchenry.json",
-    "the-price-off-west-end-2026/wsj--unknown.json"
+    "the-price-off-west-end-2026/wsj--unknown.json",
+    "beaches-2026/chicago-critic--tom-williams.json",
+    "fallen-angels-2026/talkinbroadway--unknown.json",
+    "one-flew-over-the-cuckoos-nest-west-end-2026/standard--nick-curtis.json",
+    "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
+    "yoah-off-broadway-2026/variety--pat-saperstein.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -549,7 +559,10 @@
       "new-born-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
       "the-receptionist-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "broken-snow-off-broadway-2026/culturesauce--thom-geier.json",
-      "broken-snow-off-broadway-2026/one-minute-critic--jerry-portwood.json"
+      "broken-snow-off-broadway-2026/one-minute-critic--jerry-portwood.json",
+      "the-price-off-west-end-2026/british-theatre--susan-novak.json",
+      "the-authenticator-west-end-2026/times-uk--clive-davis.json",
+      "les-liaisons-dangereuses-west-end-2026/times-uk--clive-davis.json"
     ],
     "amp": [],
     "browserbase": [
@@ -639,7 +652,8 @@
       "magic-mike-live-west-end-2021/independent--hugh-montgomery.json",
       "harry-potter-2021/cititour--brian-scott-lipton.json",
       "the-book-of-mormon-west-end-2024/nydailynews--unknown.json",
-      "amaze-off-broadway-2026/timeout--adam-feldman.json"
+      "amaze-off-broadway-2026/timeout--adam-feldman.json",
+      "becky-shaw-2026/cote-notices--david-cote.json"
     ],
     "archiveToday": [
       "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
@@ -655,17 +669,7 @@
       "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
       "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
       "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
-      "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
-      "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json",
-      "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
-      "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
-      "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json",
-      "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json",
-      "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
-      "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
-      "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
-      "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
-      "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json"
+      "data/review-texts/fallen-angels-2026/talkinbroadway--unknown.json"
     ],
     "archive": [
       "small-off-broadway-2026/culturesauce--thom-geier.json",
@@ -687,11 +691,12 @@
       "wicked-west-end-2021/thestage--paul-vale.json",
       "the-lion-king-west-end-2021/shy-strange-manic--kariss-ainsworth.json",
       "the-lion-king-1997/timeout--adam-feldman.json",
-      "broken-snow-off-broadway-2026/theater-scene--darryl-reilly.json"
+      "broken-snow-off-broadway-2026/theater-scene--darryl-reilly.json",
+      "les-liaisons-dangereuses-west-end-2026/telegraph--claire-allfree.json"
     ]
   },
   "startTime": "2026-06-19T23:54:19.453Z",
-  "lastProcessed": "the-price-off-west-end-2026/wsj--unknown.json",
+  "lastProcessed": "les-liaisons-dangereuses-west-end-2026/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-06-19T23:54:56.069Z",
@@ -1711,6 +1716,17 @@
       "t": "2026-06-20T10:52:08.818Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-20T10:56:02.542Z",
+      "event": "bb-session",
+      "session": "d55504e7",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2645871"
+    },
+    {
+      "t": "2026-06-20T10:56:03.289Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
