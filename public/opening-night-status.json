@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-19T17:21:00.659Z",
+  "generatedAt": "2026-06-20T05:33:32.137Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1172,9 +1172,9 @@
       "status": "open",
       "slug": "glengarry-glen-ross-west-end",
       "thumbnail": "/images/shows/glengarry-glen-ross-west-end-2026/thumbnail.jpg",
-      "siteScore": 66.87,
+      "siteScore": 67.23,
       "liveScore": 67,
-      "scoreDrift": 0.12999999999999545,
+      "scoreDrift": -0.23000000000000398,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -1407,6 +1407,18 @@
           "m": 6,
           "n": 1,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-06-20T05:33:32.137Z",
+          "rc": 10,
+          "s": 67.23,
+          "t1": 4,
+          "t2": 4,
+          "t3": 2,
+          "p": 3,
+          "m": 6,
+          "n": 1,
+          "bc": "waiting"
         }
       ]
     }
@@ -1422,7 +1434,7 @@
       "status": "previews",
       "slug": "the-misanthrope-west-end",
       "thumbnail": "/images/shows/the-misanthrope-west-end-2026/thumbnail.webp",
-      "daysUntil": 4,
+      "daysUntil": 3,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1447,7 +1459,7 @@
       "status": "previews",
       "slug": "birthright-off-broadway",
       "thumbnail": "/images/shows/birthright-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 5,
+      "daysUntil": 4,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1486,7 +1498,7 @@
       "status": "previews",
       "slug": "sinatra-the-musical-west-end",
       "thumbnail": "/images/shows/sinatra-the-musical-west-end-2026/thumbnail.webp",
-      "daysUntil": 5,
+      "daysUntil": 4,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1511,7 +1523,7 @@
       "status": "previews",
       "slug": "the-truth-a-comedy-by-florian-zeller-west-end",
       "thumbnail": "/images/shows/the-truth-a-comedy-by-florian-zeller-west-end-2026/thumbnail.webp",
-      "daysUntil": 5,
+      "daysUntil": 4,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1536,7 +1548,7 @@
       "status": "previews",
       "slug": "cyrano-de-bergerac-west-end",
       "thumbnail": "/images/shows/cyrano-de-bergerac-west-end-2026/thumbnail.webp",
-      "daysUntil": 6,
+      "daysUntil": 5,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1561,7 +1573,7 @@
       "status": "previews",
       "slug": "pride-west-end",
       "thumbnail": "/images/shows/pride-west-end-2026/thumbnail.webp",
-      "daysUntil": 6,
+      "daysUntil": 5,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1586,7 +1598,7 @@
       "status": "upcoming",
       "slug": "archduke-west-end",
       "thumbnail": "/images/shows/archduke-west-end-2026/thumbnail.webp",
-      "daysUntil": 7,
+      "daysUntil": 6,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1598,6 +1610,45 @@
         "warnings": 0,
         "unknowns": 2,
         "total": 4
+      },
+      "preflight": false
+    },
+    {
+      "id": "spamalot-off-broadway-2026",
+      "title": "Spamalot",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "musical",
+      "openingDate": "2026-06-27",
+      "status": "upcoming",
+      "slug": "spamalot-off-broadway",
+      "thumbnail": "/images/shows/spamalot-off-broadway-2026/thumbnail.webp",
+      "daysUntil": 7,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": false,
+          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived — bww-rr-discover.js will auto-fetch within minutes of publication",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Not yet archived — tb-direct-url.js will discover at poll time",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
       },
       "preflight": false
     }
