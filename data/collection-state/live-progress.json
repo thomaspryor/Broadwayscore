@@ -1,86 +1,20 @@
 {
-  "updatedAt": "2026-06-20T00:34:50.061Z",
+  "updatedAt": "2026-06-20T00:42:40.034Z",
   "processed": 5,
-  "failed": 34,
-  "successRate": "12.8%",
+  "failed": 44,
+  "successRate": "10.2%",
   "tierBreakdown": {
     "playwright": 4,
     "amp": 0,
-    "browserbase": 18,
+    "browserbase": 24,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 1,
-    "archiveToday": 1,
+    "archiveToday": 2,
     "archive": 1
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-06-19T23:59:26.927Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-20T00:04:41.264Z",
-      "event": "bb-session",
-      "session": "9fe9e78c",
-      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15906913/Emily-Ratajkowski-returns"
-    },
-    {
-      "t": "2026-06-20T00:30:40.551Z",
-      "event": "bb-session",
-      "session": "01ad377d",
-      "url": "https://www.nytimes.com/2026/06/16/theater/are-you-now-or-have-you-ever-been-rev"
-    },
-    {
-      "t": "2026-06-20T00:30:41.349Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-20T00:31:05.510Z",
-      "event": "bb-session",
-      "session": "d0b3672f",
-      "url": "https://www.wsj.com/articles/are-you-now-or-have-you-ever-been-review-a-red-scar"
-    },
-    {
-      "t": "2026-06-20T00:31:06.425Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-06-20T00:31:23.465Z",
-      "event": "bb-session",
-      "session": "476aa401",
-      "url": "https://www.wsj.com/articles/are-you-now-or-have-you-ever-been-review-a-red-scar"
-    },
-    {
-      "t": "2026-06-20T00:31:24.323Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-06-20T00:31:56.685Z",
-      "event": "bb-session",
-      "session": "57cdb81a",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
-    {
-      "t": "2026-06-20T00:31:57.474Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-20T00:32:32.078Z",
-      "event": "bb-session",
-      "session": "8a2962ba",
-      "url": "https://www.nytimes.com/2026/06/03/theater/caissie-levy-broadway-tonys-ragtime.h"
-    },
-    {
-      "t": "2026-06-20T00:32:32.827Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-06-20T00:32:52.868Z",
       "event": "bb-session",
@@ -124,6 +58,72 @@
       "t": "2026-06-20T00:34:31.604Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-20T00:40:18.163Z",
+      "event": "bb-session",
+      "session": "eac5fc96",
+      "url": "https://www.nytimes.com/2026/06/16/theater/are-you-now-or-have-you-ever-been-rev"
+    },
+    {
+      "t": "2026-06-20T00:40:18.604Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-20T00:40:36.989Z",
+      "event": "bb-session",
+      "session": "a17c5e55",
+      "url": "https://www.wsj.com/articles/are-you-now-or-have-you-ever-been-review-a-red-scar"
+    },
+    {
+      "t": "2026-06-20T00:40:37.405Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-20T00:40:54.772Z",
+      "event": "bb-session",
+      "session": "8c45fccc",
+      "url": "https://www.wsj.com/articles/are-you-now-or-have-you-ever-been-review-a-red-scar"
+    },
+    {
+      "t": "2026-06-20T00:40:55.265Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-20T00:41:31.084Z",
+      "event": "bb-session",
+      "session": "75ec21e2",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-20T00:41:31.513Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-20T00:42:06.468Z",
+      "event": "bb-session",
+      "session": "ac1c242c",
+      "url": "https://www.nytimes.com/2026/06/03/theater/caissie-levy-broadway-tonys-ragtime.h"
+    },
+    {
+      "t": "2026-06-20T00:42:06.879Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-20T00:42:25.424Z",
+      "event": "bb-session",
+      "session": "92e647b4",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-20T00:42:25.842Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
