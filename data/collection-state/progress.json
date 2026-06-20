@@ -230,7 +230,8 @@
     "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
     "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
     "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
-    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json"
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -328,7 +329,8 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
-      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json"
+      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -358,7 +360,7 @@
     ]
   },
   "startTime": "2026-06-19T23:54:19.453Z",
-  "lastProcessed": "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+  "lastProcessed": "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
   "log": [
     {
       "t": "2026-06-19T23:54:56.069Z",
@@ -1543,6 +1545,17 @@
     },
     {
       "t": "2026-06-20T09:26:59.375Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-20T09:27:26.010Z",
+      "event": "bb-session",
+      "session": "029aab8c",
+      "url": "https://www.nytimes.com/2026/05/31/theater/othello-review-wendell-pierce.html"
+    },
+    {
+      "t": "2026-06-20T09:27:26.854Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
