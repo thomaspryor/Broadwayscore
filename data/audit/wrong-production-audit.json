@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-20T10:28:16.696Z",
+  "timestamp": "2026-06-20T16:44:30.732Z",
   "stats": {
-    "totalReviews": 38574,
-    "alreadyFlagged": 17022,
+    "totalReviews": 38581,
+    "alreadyFlagged": 17025,
     "dateGuardCatches": 104,
-    "directorMismatch": 869,
-    "tvFilmSignals": 1057,
+    "directorMismatch": 870,
+    "tvFilmSignals": 1058,
     "londonSignals": 639,
     "offBroadwaySignals": 464,
     "yearMismatch": 82,
-    "noPublishDate": 3931
+    "noPublishDate": 3933
   },
   "findings": [
     {
@@ -8172,6 +8172,7 @@
     {
       "showId": "glengarry-glen-ross-west-end-2026",
       "file": "daily-mail--patrick-marmion.json",
+      "score": 57,
       "publishDate": "2026-06-19",
       "url": null,
       "findings": [
@@ -8245,6 +8246,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
+        }
+      ]
+    },
+    {
+      "showId": "glengarry-glen-ross-west-end-2026",
+      "file": "plays-international--unknown.json",
+      "score": 79,
+      "publishDate": "2026-06-19",
+      "url": "https://playsinternational.org.uk/glengarry-glen-ross-old-vic/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -9612,6 +9632,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
+      "file": "off-off-online--edward-karam.json",
+      "publishDate": "2026-06-20",
+      "url": "https://www.offoffonline.com/offoffonline/tag/Heated+Rivalry%3A+The+Unauthorized+Musical+Parody",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hbo max\""
         }
       ]
     },
@@ -32865,20 +32898,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "inter-alia-west-end-2026",
-      "file": "lbc--johnny-jenkins.json",
-      "score": 91,
-      "publishDate": "2026-04-08",
-      "url": "https://www.lbc.co.uk/article/inter-alia-review-best-plays-ever-seen-5HjdXRZ_2/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
