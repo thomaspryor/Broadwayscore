@@ -1,86 +1,20 @@
 {
-  "updatedAt": "2026-06-20T02:12:21.538Z",
+  "updatedAt": "2026-06-20T02:34:43.148Z",
   "processed": 5,
-  "failed": 81,
-  "successRate": "5.8%",
+  "failed": 91,
+  "successRate": "5.2%",
   "tierBreakdown": {
     "playwright": 4,
     "amp": 0,
-    "browserbase": 40,
+    "browserbase": 42,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 1,
-    "archiveToday": 4,
+    "archiveToday": 6,
     "archive": 1
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-06-20T01:25:00.310Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-20T01:25:45.310Z",
-      "event": "bb-session",
-      "session": "c72b8991",
-      "url": "https://www.nytimes.com/2026/06/01/arts/andy-halliday-dead.html"
-    },
-    {
-      "t": "2026-06-20T01:25:46.209Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-20T01:26:50.495Z",
-      "event": "bb-session",
-      "session": "0f320e0d",
-      "url": "https://www.nytimes.com/2026/05/31/theater/othello-review-wendell-pierce.html"
-    },
-    {
-      "t": "2026-06-20T01:26:51.424Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-20T02:07:30.649Z",
-      "event": "bb-session",
-      "session": "06ada203",
-      "url": "/people/Nick-Curtis/"
-    },
-    {
-      "t": "2026-06-20T02:07:58.291Z",
-      "event": "bb-session",
-      "session": "9c6cfa9d",
-      "url": "https://www.nytimes.com/2026/06/16/theater/are-you-now-or-have-you-ever-been-rev"
-    },
-    {
-      "t": "2026-06-20T02:07:58.716Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-20T02:08:38.075Z",
-      "event": "bb-session",
-      "session": "7b98cded",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
-    {
-      "t": "2026-06-20T02:08:38.508Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-20T02:09:33.053Z",
-      "event": "bb-session",
-      "session": "b0ddedb0",
-      "url": "https://www.nytimes.com/2026/06/03/theater/caissie-levy-broadway-tonys-ragtime.h"
-    },
-    {
-      "t": "2026-06-20T02:09:33.482Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-06-20T02:10:23.386Z",
       "event": "bb-session",
@@ -122,6 +56,72 @@
     },
     {
       "t": "2026-06-20T02:12:05.131Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-20T02:30:15.966Z",
+      "event": "bb-session",
+      "session": "1bc3a10b",
+      "url": "https://www.nytimes.com/2026/06/16/theater/are-you-now-or-have-you-ever-been-rev"
+    },
+    {
+      "t": "2026-06-20T02:30:16.980Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-20T02:31:12.227Z",
+      "event": "bb-session",
+      "session": "0fabd4fc",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-20T02:31:13.118Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-20T02:32:41.081Z",
+      "event": "bb-session",
+      "session": "b31fe22d",
+      "url": "https://www.nytimes.com/2026/06/03/theater/caissie-levy-broadway-tonys-ragtime.h"
+    },
+    {
+      "t": "2026-06-20T02:32:41.971Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-20T02:33:23.071Z",
+      "event": "bb-session",
+      "session": "3df6f9a5",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-20T02:33:24.450Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-20T02:33:36.517Z",
+      "event": "bb-session",
+      "session": "9cd24a01",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-20T02:33:37.425Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-20T02:34:13.168Z",
+      "event": "bb-session",
+      "session": "787b4ee0",
+      "url": "https://www.nytimes.com/2026/06/01/arts/andy-halliday-dead.html"
+    },
+    {
+      "t": "2026-06-20T02:34:14.052Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
