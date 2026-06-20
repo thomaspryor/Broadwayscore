@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-20T02:11:58.283Z",
+  "updatedAt": "2026-06-20T02:12:21.538Z",
   "processed": 5,
-  "failed": 80,
-  "successRate": "5.9%",
+  "failed": 81,
+  "successRate": "5.8%",
   "tierBreakdown": {
     "playwright": 4,
     "amp": 0,
-    "browserbase": 39,
+    "browserbase": 40,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 1,
     "archiveToday": 4,
     "archive": 1
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 8,
   "recentActivity": [
-    {
-      "t": "2026-06-20T01:24:44.533Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-20T01:24:59.377Z",
-      "event": "bb-session",
-      "session": "835a85aa",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
     {
       "t": "2026-06-20T01:25:00.310Z",
       "event": "bb-cookie-inject",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-06-20T02:11:18.192Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-20T02:12:04.749Z",
+      "event": "bb-session",
+      "session": "a15857ba",
+      "url": "https://www.nytimes.com/2026/05/31/theater/othello-review-wendell-pierce.html"
+    },
+    {
+      "t": "2026-06-20T02:12:05.131Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
