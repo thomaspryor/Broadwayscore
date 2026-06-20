@@ -199,7 +199,10 @@
     "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
     "schmigadoon-2026/nytg--unknown.json",
     "avenue-q-west-end-2026/whatsonstage--alun-hood.json",
-    "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json"
+    "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
+    "romeo-and-juliet-west-end-2026/sunday-telegraph--claire-allfree.json",
+    "romeo-and-juliet-west-end-2026/theater-life--unknown.json",
+    "masquerade-off-broadway-2025/nytimes--unknown.json"
   ],
   "failed": [
     "encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
@@ -687,7 +690,14 @@
     "romeo-and-juliet-west-end-2026/nydailynews--unknown.json",
     "romeo-and-juliet-west-end-2026/amny--unknown.json",
     "romeo-and-juliet-west-end-2026/ap--mark-kennedy.json",
-    "romeo-and-juliet-west-end-2026/exeunt-magazine--unknown.json"
+    "romeo-and-juliet-west-end-2026/exeunt-magazine--unknown.json",
+    "romeo-and-juliet-west-end-2026/nbcny--unknown.json",
+    "romeo-and-juliet-west-end-2026/ny1--unknown.json",
+    "romeo-and-juliet-west-end-2026/theater-pizzazz--unknown.json",
+    "romeo-and-juliet-west-end-2026/hollywood-reporter--david-rooney.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "operation-mincemeat-2025/thereviewshub--unknown.json",
+    "buena-vista-social-club-2025/nysr--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -790,7 +800,8 @@
       "the-boy-who-harnessed-the-wind-west-end-2026/timeout-london--unknown.json",
       "schmigadoon-2026/nytg--unknown.json",
       "avenue-q-west-end-2026/whatsonstage--alun-hood.json",
-      "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json"
+      "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
+      "romeo-and-juliet-west-end-2026/theater-life--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -862,7 +873,9 @@
       "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
       "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
       "data/review-texts/the-maids-off-broadway-2026/nytimes--roslyn-sulcas.json",
-      "the-maids-off-broadway-2026/nytimes--roslyn-sulcas.json"
+      "the-maids-off-broadway-2026/nytimes--roslyn-sulcas.json",
+      "data/review-texts/masquerade-off-broadway-2025/nytimes--unknown.json",
+      "masquerade-off-broadway-2025/nytimes--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -998,11 +1011,12 @@
       "plaza-suite-2022/broadway-and-me--janice-c-simpson.json",
       "lackawanna-blues-2021/broadway-and-me--janice-c-simpson.json",
       "glengarry-glen-ross-west-end-2026/timeout-london--andrzej-lukowski.json",
-      "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
+      "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
+      "romeo-and-juliet-west-end-2026/sunday-telegraph--claire-allfree.json"
     ]
   },
   "startTime": "2026-06-19T23:54:19.453Z",
-  "lastProcessed": "romeo-and-juliet-west-end-2026/exeunt-magazine--unknown.json",
+  "lastProcessed": "buena-vista-social-club-2025/nysr--unknown.json",
   "log": [
     {
       "t": "2026-06-19T23:54:56.069Z",
@@ -2033,6 +2047,17 @@
       "t": "2026-06-20T10:56:03.289Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-20T15:27:57.897Z",
+      "event": "bb-session",
+      "session": "b1669eab",
+      "url": "https://www.nytimes.com/2025/09/29/theater/masquerade-review-phantom-of-the-oper"
+    },
+    {
+      "t": "2026-06-20T15:27:58.432Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

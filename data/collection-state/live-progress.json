@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-20T15:27:19.657Z",
-  "processed": 200,
-  "failed": 486,
+  "updatedAt": "2026-06-20T15:28:37.482Z",
+  "processed": 203,
+  "failed": 493,
   "successRate": "29.2%",
   "tierBreakdown": {
-    "playwright": 99,
+    "playwright": 100,
     "amp": 0,
-    "browserbase": 69,
+    "browserbase": 71,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 41,
     "archiveToday": 14,
-    "archive": 73
+    "archive": 74
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-06-20T04:58:50.339Z",
-      "event": "bb-session",
-      "session": "323b673c",
-      "url": "https://www.nytimes.com/2026/05/31/theater/othello-review-wendell-pierce.html"
-    },
-    {
-      "t": "2026-06-20T04:58:51.321Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-06-20T05:39:00.825Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-06-20T10:56:03.289Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-20T15:27:57.897Z",
+      "event": "bb-session",
+      "session": "b1669eab",
+      "url": "https://www.nytimes.com/2025/09/29/theater/masquerade-review-phantom-of-the-oper"
+    },
+    {
+      "t": "2026-06-20T15:27:58.432Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
