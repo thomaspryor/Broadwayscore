@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-20T05:41:22.092Z",
+  "updatedAt": "2026-06-20T05:41:57.787Z",
   "processed": 5,
-  "failed": 146,
+  "failed": 147,
   "successRate": "3.3%",
   "tierBreakdown": {
     "playwright": 4,
     "amp": 0,
-    "browserbase": 66,
+    "browserbase": 67,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 1,
     "archiveToday": 12,
     "archive": 1
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
-    {
-      "t": "2026-06-20T04:57:16.110Z",
-      "event": "bb-session",
-      "session": "9f1f49f4",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-20T04:57:17.051Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-06-20T04:57:29.661Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-06-20T05:41:00.267Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-20T05:41:38.273Z",
+      "event": "bb-session",
+      "session": "99e65c30",
+      "url": "https://www.nytimes.com/2026/05/31/theater/othello-review-wendell-pierce.html"
+    },
+    {
+      "t": "2026-06-20T05:41:39.189Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
