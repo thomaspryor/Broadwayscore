@@ -1,33 +1,22 @@
 {
-  "updatedAt": "2026-06-20T10:51:26.258Z",
-  "processed": 71,
-  "failed": 211,
-  "successRate": "25.2%",
+  "updatedAt": "2026-06-20T10:53:57.641Z",
+  "processed": 80,
+  "failed": 212,
+  "successRate": "27.4%",
   "tierBreakdown": {
-    "playwright": 41,
+    "playwright": 48,
     "amp": 0,
-    "browserbase": 137,
+    "browserbase": 69,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 14,
     "archiveToday": 13,
-    "archive": 19
+    "archive": 20
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-06-20T14:31:00.410Z",
-      "event": "bb-session",
-      "session": "66847b16",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
-    {
-      "t": "2026-06-20T14:31:00.779Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-20T14:31:41.186Z",
+      "t": "2026-06-20T04:58:13.263Z",
       "event": "bb-session",
       "session": "05959f4d",
       "url": "https://www.nytimes.com/2026/06/01/arts/andy-halliday-dead.html"
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-06-20T15:06:32.301Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-20T10:52:07.990Z",
+      "event": "bb-session",
+      "session": "1fca8aa9",
+      "url": "https://www.nytimes.com/2026/05/26/theater/the-maids-play-nyc-genet-yerin-ha-kip"
+    },
+    {
+      "t": "2026-06-20T10:52:08.818Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
