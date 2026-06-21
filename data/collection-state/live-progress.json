@@ -1,87 +1,20 @@
 {
-  "updatedAt": "2026-06-21T10:18:11.193Z",
+  "updatedAt": "2026-06-21T10:36:02.335Z",
   "processed": 9,
-  "failed": 165,
-  "successRate": "5.2%",
+  "failed": 174,
+  "successRate": "4.9%",
   "tierBreakdown": {
     "playwright": 7,
     "amp": 0,
-    "browserbase": 79,
+    "browserbase": 85,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 14,
     "archive": 1
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-06-21T06:42:12.838Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-21T06:42:46.881Z",
-      "event": "bb-session",
-      "session": "2a798db7",
-      "url": "https://www.nytimes.com/2026/05/31/theater/othello-review-wendell-pierce.html"
-    },
-    {
-      "t": "2026-06-21T06:42:47.406Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-21T07:43:19.589Z",
-      "event": "bb-session",
-      "session": "9db78460",
-      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15885925/Gareth-Southgate-drama-De"
-    },
-    {
-      "t": "2026-06-21T08:54:03.067Z",
-      "event": "bb-session",
-      "session": "dd622185",
-      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15885925/Gareth-Southgate-drama-De"
-    },
-    {
-      "t": "2026-06-21T08:55:33.034Z",
-      "event": "bb-session",
-      "session": "ab13a719",
-      "url": "https://www.thestage.co.uk/reviews/glengarry-glen-ross-review-old-vic-theatre-lo"
-    },
-    {
-      "t": "2026-06-21T08:55:33.976Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
-    {
-      "t": "2026-06-21T09:34:25.731Z",
-      "event": "bb-session",
-      "session": "b3fc374e",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
-    {
-      "t": "2026-06-21T09:34:26.350Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-21T09:35:03.629Z",
-      "event": "bb-session",
-      "session": "f1b37ceb",
-      "url": "https://www.nytimes.com/2026/06/03/theater/caissie-levy-broadway-tonys-ragtime.h"
-    },
-    {
-      "t": "2026-06-21T09:35:04.209Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-21T09:35:24.054Z",
-      "event": "bb-session",
-      "session": "2874d6bb",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
     {
       "t": "2026-06-21T09:35:24.560Z",
       "event": "bb-cookie-inject",
@@ -125,6 +58,72 @@
       "event": "bb-session",
       "session": "ac3c6cf7",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-15885925/Gareth-Southgate-drama-De"
+    },
+    {
+      "t": "2026-06-21T10:33:08.324Z",
+      "event": "bb-session",
+      "session": "27218588",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-21T10:33:09.354Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-21T10:33:46.823Z",
+      "event": "bb-session",
+      "session": "c4126f10",
+      "url": "https://www.nytimes.com/2026/06/03/theater/caissie-levy-broadway-tonys-ragtime.h"
+    },
+    {
+      "t": "2026-06-21T10:33:47.674Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-21T10:34:08.451Z",
+      "event": "bb-session",
+      "session": "c6fb8b76",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-21T10:34:09.394Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-21T10:34:20.566Z",
+      "event": "bb-session",
+      "session": "d2b54284",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-21T10:34:21.511Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-21T10:35:04.887Z",
+      "event": "bb-session",
+      "session": "f5e10572",
+      "url": "https://www.nytimes.com/2026/06/01/arts/andy-halliday-dead.html"
+    },
+    {
+      "t": "2026-06-21T10:35:05.875Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-21T10:35:40.959Z",
+      "event": "bb-session",
+      "session": "88eb08f9",
+      "url": "https://www.nytimes.com/2026/05/31/theater/othello-review-wendell-pierce.html"
+    },
+    {
+      "t": "2026-06-21T10:35:41.928Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
