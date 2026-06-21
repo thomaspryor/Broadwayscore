@@ -185,22 +185,15 @@
     "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
     "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
     "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
-    "sting-west-end-2026/ew--unknown.json",
-    "sting-west-end-2026/newsday--unknown.json",
-    "sting-west-end-2026/timeout-london--unknown.json",
-    "sting-west-end-2026/daily-mail--unknown.json",
-    "sting-west-end-2026/standard--unknown.json",
-    "sting-west-end-2026/west-end-best-friend--unknown.json",
-    "glengarry-glen-ross-west-end-2026/guardian--arifa-akbar.json",
-    "glengarry-glen-ross-west-end-2026/thestage--unknown.json",
-    "glengarry-glen-ross-west-end-2026/times-uk--clive-davis.json",
-    "are-you-watching-west-end-2026/the-recs--unknown.json",
-    "driftwood-west-end-2026/artsdesk--unknown.json",
-    "driftwood-west-end-2026/standard--nick-curtis.json",
-    "driftwood-west-end-2026/times-uk--clive-davis.json",
-    "war-horse-west-end-2026/plays-international--maryam-philpott.json",
-    "war-horse-west-end-2026/times-uk--chris-bennion.json",
-    "war-horse-west-end-2026/times-uk--clive-davis.json"
+    "encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
+    "romeo-and-juliet-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -299,6 +292,12 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
       "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
       "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json"
     ],
     "directCookies": [],
@@ -318,7 +317,8 @@
       "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
       "data/review-texts/sting-west-end-2026/daily-mail--unknown.json",
       "data/review-texts/glengarry-glen-ross-west-end-2026/thestage--unknown.json",
-      "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json"
+      "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json",
+      "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json"
     ],
     "archive": [
       "glengarry-glen-ross-west-end-2026/broadwayworld--alexander-cohen.json"
@@ -1300,6 +1300,78 @@
     },
     {
       "t": "2026-06-21T10:35:41.928Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-21T10:58:34.078Z",
+      "event": "bb-session",
+      "session": "5857f103",
+      "url": "/people/Nick-Curtis/"
+    },
+    {
+      "t": "2026-06-21T10:59:14.583Z",
+      "event": "bb-session",
+      "session": "d87999e0",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-21T10:59:15.524Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-21T10:59:42.103Z",
+      "event": "bb-session",
+      "session": "c89ee200",
+      "url": "https://www.nytimes.com/2026/06/03/theater/caissie-levy-broadway-tonys-ragtime.h"
+    },
+    {
+      "t": "2026-06-21T10:59:43.049Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-21T11:00:02.868Z",
+      "event": "bb-session",
+      "session": "4acab16d",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-21T11:00:03.813Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-21T11:00:17.512Z",
+      "event": "bb-session",
+      "session": "f98244b3",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-21T11:00:18.462Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-21T11:01:03.963Z",
+      "event": "bb-session",
+      "session": "49eda878",
+      "url": "https://www.nytimes.com/2026/06/01/arts/andy-halliday-dead.html"
+    },
+    {
+      "t": "2026-06-21T11:01:04.938Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-21T11:01:40.350Z",
+      "event": "bb-session",
+      "session": "bcdb3617",
+      "url": "https://www.nytimes.com/2026/05/31/theater/othello-review-wendell-pierce.html"
+    },
+    {
+      "t": "2026-06-21T11:01:41.255Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
