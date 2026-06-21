@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-21T17:02:03.815Z",
+  "timestamp": "2026-06-21T17:39:38.844Z",
   "stats": {
-    "totalReviews": 38860,
-    "alreadyFlagged": 17050,
-    "dateGuardCatches": 194,
+    "totalReviews": 38856,
+    "alreadyFlagged": 17054,
+    "dateGuardCatches": 190,
     "directorMismatch": 900,
-    "tvFilmSignals": 1069,
-    "londonSignals": 654,
+    "tvFilmSignals": 1070,
+    "londonSignals": 657,
     "offBroadwaySignals": 474,
     "yearMismatch": 92,
-    "noPublishDate": 3955
+    "noPublishDate": 3949
   },
   "findings": [
     {
@@ -8577,25 +8577,6 @@
     },
     {
       "showId": "glengarry-glen-ross-west-end-2026",
-      "file": "ew--httpswwwfacebookcomentertainmentweekly.json",
-      "score": 78,
-      "publishDate": "2025-03-31",
-      "url": "https://ew.com/glengarry-glen-ross-review-kieran-culkin-seals-deal-broadway-revival-11705926",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 430d before show (2025-03-31 vs 2026-06-04)"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
-        }
-      ]
-    },
-    {
-      "showId": "glengarry-glen-ross-west-end-2026",
       "file": "financialtimes--sarah-hemming.json",
       "score": 79,
       "publishDate": "2026-06-18",
@@ -8605,6 +8586,29 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
+        }
+      ]
+    },
+    {
+      "showId": "glengarry-glen-ross-west-end-2026",
+      "file": "guardian--arifa-akbar.json",
+      "publishDate": "2026-06-17",
+      "url": "https://www.theguardian.com/stage/2026/jun/18/glengarry-glen-ross-review-old-vic-theatre-david-mamet-patrick-marber",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -8653,25 +8657,6 @@
       "publishDate": "2026-06-18",
       "url": null,
       "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
-        }
-      ]
-    },
-    {
-      "showId": "glengarry-glen-ross-west-end-2026",
-      "file": "nydailynews--chris-jones.json",
-      "score": 75,
-      "publishDate": "2025-04-01",
-      "url": "https://www.nydailynews.com/2025/03/31/broadway-review-glengarry-glen-ross-still-masterful-drama-despite-some-casting-choices/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 429d before show (2025-04-01 vs 2026-06-04)"
-        },
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
@@ -8747,6 +8732,42 @@
     },
     {
       "showId": "glengarry-glen-ross-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": "2026-06-17",
+      "url": "https://www.timeout.com/london/news/review-glengarry-glen-ross-old-vic-061726",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "glengarry-glen-ross-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "publishDate": "2026-06-18",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "glengarry-glen-ross-west-end-2026",
       "file": "west-end-best-friend--cara-brazier.json",
       "score": 69,
       "publishDate": "2026-06-18",
@@ -8767,28 +8788,9 @@
     {
       "showId": "glengarry-glen-ross-west-end-2026",
       "file": "whatsonstage--sarah-crompton.json",
-      "publishDate": "2026-06-15",
-      "url": "https://www.whatsonstage.com/news/go-behind-the-scenes-at-the-all-female-glengarry-glen-ross-revival_1724994/",
+      "publishDate": "2026-06-18",
+      "url": "https://www.whatsonstage.com/news/glengarry-glen-ross-review-all-female-revival-in-the-round-at-the-old-vic_1725353/",
       "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
-        }
-      ]
-    },
-    {
-      "showId": "glengarry-glen-ross-west-end-2026",
-      "file": "yahoo--unknown.json",
-      "score": 82,
-      "publishDate": "2025-04-01",
-      "url": "https://www.yahoo.com/entertainment/theater-review-broadway-glengarry-glen-033424902.html",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 429d before show (2025-04-01 vs 2026-06-04)"
-        },
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
@@ -21117,20 +21119,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"daniel aukin\" from stereophonic-2024"
-        }
-      ]
-    },
-    {
-      "showId": "sting-west-end-2026",
-      "file": "northjerseycom--unknown.json",
-      "score": 76,
-      "publishDate": "2018-04-09",
-      "url": "https://northjersey.com/story/entertainment/2018/04/09/harry-connick-jr-sting-paper-mill-playhouse/491585002/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 2992d before show (2018-04-09 vs 2026-06-18)"
         }
       ]
     },

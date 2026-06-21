@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-21T17:02:08.295Z",
+  "generatedAt": "2026-06-21T17:39:43.417Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -312,28 +312,28 @@
       "status": "open",
       "slug": "sting-west-end",
       "thumbnail": "/images/shows/sting-west-end-2026/thumbnail.webp",
-      "siteScore": 62.09,
-      "liveScore": 62,
-      "scoreDrift": -0.09000000000000341,
-      "belowThreshold": false,
-      "reviewsNeeded": 0,
+      "siteScore": null,
+      "liveScore": null,
+      "scoreDrift": null,
+      "belowThreshold": true,
+      "reviewsNeeded": 5,
       "siteFileExists": true,
-      "total": 3,
-      "t1": 2,
-      "t2": 1,
+      "total": 0,
+      "t1": 0,
+      "t2": 0,
       "t3": 0,
-      "positive": 1,
-      "mixed": 1,
-      "negative": 1,
+      "positive": 0,
+      "mixed": 0,
+      "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "3/8 total",
-          "T1:2/3",
-          "T2:1/2",
-          "hi-conf:1/6"
+          "0/8 total",
+          "T1:0/3",
+          "T2:0/2",
+          "hi-conf:0/6"
         ],
-        "highConfidence": 1,
+        "highConfidence": 0,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -346,6 +346,10 @@
         "detail": "Not yet broadcast-ready"
       },
       "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
         {
           "name": "Observer",
           "isDualMarket": true
@@ -364,6 +368,10 @@
         },
         {
           "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "Daily Mail",
           "isDualMarket": true
         },
         {
