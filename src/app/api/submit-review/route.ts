@@ -3,6 +3,31 @@ import { NextRequest, NextResponse } from 'next/server';
 const GITHUB_REPO = process.env.GITHUB_REPO || 'thomaspryor/Broadwayscore';
 const GH_DISPATCH_TOKEN = process.env.GH_DISPATCH_TOKEN || '';
 
+// In-memory rate limiting: 5 requests per minute per IP
+const rateLimitMap = new Map<string, { count: number; windowStart: number }>();
+const RATE_LIMIT = 5;
+const RATE_WINDOW_MS = 60_000;
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip);
+  if (!entry || now - entry.windowStart > RATE_WINDOW_MS) {
+    rateLimitMap.set(ip, { count: 1, windowStart: now });
+    return true;
+  }
+  if (entry.count >= RATE_LIMIT) return false;
+  entry.count++;
+  return true;
+}
+
+function getClientIp(req: NextRequest): string {
+  return (
+    req.headers.get('x-forwarded-for')?.split(',')[0].trim() ||
+    req.headers.get('x-real-ip') ||
+    'unknown'
+  );
+}
+
 function extractDomain(url: string): string {
   try {
     return new URL(url).hostname.replace(/^www\./, '');
@@ -22,7 +47,8 @@ function formatIssueBody(
   showName: string,
   outletName: string,
   criticName: string,
-  notes: string
+  notes: string,
+  submitterEmail: string
 ): string {
   return [
     '### Review URL',
@@ -40,9 +66,29 @@ function formatIssueBody(
     '### Additional Notes',
     notes || '_No response_',
     '',
+    '### Submitter Email',
+    submitterEmail || '_No response_',
+    '',
     '---',
     '*Submitted via [broadwayscorecard.com/submit-review](https://broadwayscorecard.com/submit-review)*',
   ].join('\n');
+}
+
+async function isDuplicate(reviewUrl: string): Promise<boolean> {
+  const [owner, repo] = GITHUB_REPO.split('/');
+  const query = `repo:${owner}/${repo} label:review-submission "${reviewUrl}" in:body`;
+  const res = await fetch(
+    `https://api.github.com/search/issues?q=${encodeURIComponent(query)}`,
+    {
+      headers: {
+        Authorization: `Bearer ${GH_DISPATCH_TOKEN}`,
+        Accept: 'application/vnd.github+json',
+      },
+    }
+  );
+  if (!res.ok) return false; // fail open — let the issue be created
+  const data = await res.json();
+  return (data.total_count ?? 0) > 0;
 }
 
 async function createGitHubIssue(title: string, body: string): Promise<number | null> {
@@ -75,6 +121,14 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: true }); // Silent for bots
     }
 
+    const ip = getClientIp(req);
+    if (!checkRateLimit(ip)) {
+      return NextResponse.json(
+        { errors: [{ message: 'Too many submissions. Please wait a minute and try again.' }] },
+        { status: 429, headers: { 'Retry-After': '60' } }
+      );
+    }
+
     const reviewUrl = ((formData.get('review_url') as string) || '').trim();
     if (!reviewUrl) {
       return NextResponse.json(
@@ -102,13 +156,20 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Silently deduplicate — same URL already queued, no need to create another issue
+    const duplicate = await isDuplicate(reviewUrl);
+    if (duplicate) {
+      return NextResponse.json({ ok: true });
+    }
+
     const showName = ((formData.get('show_name') as string) || '').trim();
     const outletName = ((formData.get('outlet_name') as string) || '').trim();
     const criticName = ((formData.get('critic_name') as string) || '').trim();
     const notes = ((formData.get('notes') as string) || '').trim();
+    const submitterEmail = ((formData.get('submitter_email') as string) || '').trim();
 
     const title = formatIssueTitle(reviewUrl, showName, outletName);
-    const body = formatIssueBody(reviewUrl, showName, outletName, criticName, notes);
+    const body = formatIssueBody(reviewUrl, showName, outletName, criticName, notes, submitterEmail);
 
     const issueNumber = await createGitHubIssue(title, body);
     if (!issueNumber) {
