@@ -15,7 +15,8 @@ import assert from 'node:assert';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { detectAnomalies } = require('../../scripts/check-seo-health.js');
+const { detectAnomalies, detectCWVAnomalies } = require('../../scripts/check-seo-health.js');
+const HOST = 'https://broadwayscorecard.com';
 
 // recent4 = last 4 entries before the new snapshot is pushed
 function makeHistory(weeks) {
@@ -134,5 +135,42 @@ describe('detectAnomalies — clicks drop event-recede guard', () => {
 
     const clicksAlert = issues.find(i => i.type === 'clicks_drop');
     assert.ok(clicksAlert, 'clicks_drop should fire when position worsened despite high impressions');
+  });
+});
+
+/**
+ * CWV lab-Lighthouse severity guard.
+ *
+ * Background: once Core Web Vitals monitoring was repaired (PageSpeed API key
+ * added 2026-06-21), the first working run flagged homepage (lab Lighthouse 69)
+ * and /show/hamilton (68) under the 70 floor and emailed a CRITICAL alert — even
+ * though field/CrUX data was healthy (LCP 797–1077ms, INP 112–118ms, CLS 0). Lab
+ * Lighthouse is a synthetic slow-4G + 4x-CPU score; a low value with healthy field
+ * data does not hurt real users.
+ *
+ * Fix: cwv_lighthouse_low is 'error' (CRITICAL email) only when field LCP also
+ * breaches Good (>2500ms); otherwise 'warning' (digest only).
+ */
+describe('detectCWVAnomalies — lab Lighthouse severity', () => {
+  test('low lab Lighthouse + healthy field LCP → warning (no CRITICAL email)', () => {
+    const cwv = [{ url: `${HOST}/`, performanceScore: 69, lcp: 797, inp: 112, cls: 0 }];
+    const issues = detectCWVAnomalies(cwv, []);
+    const lh = issues.find(i => i.type === 'cwv_lighthouse_low');
+    assert.ok(lh, 'should still flag the low Lighthouse score');
+    assert.strictEqual(lh.severity, 'warning', 'healthy field data → warning, not error');
+  });
+
+  test('low lab Lighthouse + bad field LCP → error (real users hurt)', () => {
+    const cwv = [{ url: `${HOST}/show/hamilton`, performanceScore: 68, lcp: 4200, inp: 118, cls: 0 }];
+    const issues = detectCWVAnomalies(cwv, []);
+    const lh = issues.find(i => i.type === 'cwv_lighthouse_low');
+    assert.ok(lh, 'should flag the low Lighthouse score');
+    assert.strictEqual(lh.severity, 'error', 'field LCP over Good → escalate to error');
+  });
+
+  test('healthy Lighthouse → no anomaly', () => {
+    const cwv = [{ url: `${HOST}/off-broadway`, performanceScore: 92, lcp: 1077, inp: 118, cls: 0 }];
+    const issues = detectCWVAnomalies(cwv, []);
+    assert.strictEqual(issues.find(i => i.type === 'cwv_lighthouse_low'), undefined);
   });
 });
