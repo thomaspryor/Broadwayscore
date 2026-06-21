@@ -103,10 +103,10 @@ function run() {
       let data;
       try { data = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { continue; }
 
-      // Already excluded — nothing to do.
-      if (data.wrongProduction === true || data.wrongShow === true) { skippedFlagged++; continue; }
       // Genuine operator entry with a typed score — never touch.
       if (data.humanReviewScore != null) { skippedOperator++; continue; }
+      // wrongShow is a different (stronger) classification — leave it alone.
+      if (data.wrongShow === true) { skippedFlagged++; continue; }
 
       const pub = bestDate(data);
       if (!pub) { skippedNoDate++; continue; }
@@ -118,6 +118,17 @@ function run() {
 
       const outOfWindow = daysBefore > THRESHOLD_DAYS || daysAfter > THRESHOLD_DAYS;
       if (!outOfWindow) { skippedInWindow++; continue; }
+
+      // A wrongProduction flag is only DURABLE if it carries a manual reason AND
+      // no poison override fields. Operator-trust overrides (allowEarlyDate/
+      // allowCrossMarket) make shouldAutoClearWrongProduction STRIP the flag on
+      // the next rebuild — so an already-flagged review that still carries them is
+      // a ticking re-admit. If the flag is already durable, skip; otherwise flag
+      // AND harden (set a manual reason + strip the overrides).
+      const hasPoisonOverride = OVERRIDE_FIELDS.some(f => data[f] != null);
+      const reason = data.wrongProductionReason || '';
+      const hasDurableReason = !!reason && reason !== 'anticipatory_pre_opening_post' && !/^CV-/.test(reason);
+      if (data.wrongProduction === true && hasDurableReason && !hasPoisonOverride) { skippedFlagged++; continue; }
 
       const dir = daysBefore > THRESHOLD_DAYS ? 'EARLY' : 'LATE';
       const diff = dir === 'EARLY' ? Math.round(daysBefore) : Math.round(daysAfter);
