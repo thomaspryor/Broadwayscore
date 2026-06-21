@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-21T15:16:56.388Z",
+  "timestamp": "2026-06-21T15:38:13.492Z",
   "stats": {
-    "totalReviews": 38770,
+    "totalReviews": 38764,
     "alreadyFlagged": 17042,
     "dateGuardCatches": 189,
     "directorMismatch": 898,
-    "tvFilmSignals": 1068,
+    "tvFilmSignals": 1069,
     "londonSignals": 654,
     "offBroadwaySignals": 472,
     "yearMismatch": 90,
-    "noPublishDate": 3962
+    "noPublishDate": 3955
   },
   "findings": [
     {
@@ -13222,6 +13222,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"jerry zaks\" from la-cage-aux-folles-2004"
+        }
+      ]
+    },
+    {
+      "showId": "la-cage-aux-folles-2010",
+      "file": "nydailynews--joe-dziemianowicz.json",
+      "publishDate": "2010-04-19",
+      "url": "http://www.nydailynews.com/entertainment/music/2010/04/19/2010-04-19_kelsey_grammer_brings_warmth_with_and_respectable_singing_to_fun_la_cage_aux_fol.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
