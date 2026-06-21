@@ -15,7 +15,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-const { isValidSynopsis } = require('./lib/synopsis-validation');
+const { isValidSynopsis, classifyBadSynopsis } = require('./lib/synopsis-validation');
 const { isValidCreativeTeamName, lookupIBDBDates } = require('./lib/ibdb-dates');
 const { serpQuery } = require('./lib/url-discovery');
 const { CLAUDE_HAIKU } = require('./lib/models');
@@ -301,11 +301,14 @@ function callClaudeAPI(prompt, maxTokens) {
 
 // Fix synopsis - fetch from TodayTix or generate
 async function fixSynopsis(show, todayTixIds) {
-  if (show.synopsis && show.synopsis.length >= 50) {
-    return null; // Already has synopsis
+  // Regenerate if the synopsis is missing OR bad (refusal / generic
+  // production-history placeholder / stale future-tense / invalid). A 50-char
+  // length check alone let the 1536 placeholder survive (2026-06-21).
+  if (!classifyBadSynopsis(show).bad) {
+    return null; // Already has a good synopsis
   }
 
-  console.log(`  📝 Missing synopsis, attempting to fetch...`);
+  console.log(`  📝 Synopsis missing or low-quality, attempting to fetch...`);
 
   // Try TodayTix first
   const todayTixInfo = todayTixIds.shows[show.id] || todayTixIds.shows[show.slug];
@@ -539,6 +542,8 @@ async function main() {
   const backfillHistorical = args.includes('--backfill-historical');
   const limitArg = args.find(a => a.startsWith('--limit='));
   const limit = limitArg ? parseInt(limitArg.split('=')[1], 10) : 0;
+  const showArg = args.find(a => a.startsWith('--show='));
+  const showIds = showArg ? new Set(showArg.split('=')[1].split(',').map(s => s.trim())) : null;
 
   console.log('='.repeat(60));
   console.log('AUTO-FIX SHOW DATA');
@@ -553,13 +558,17 @@ async function main() {
 
   // Select which shows to process
   let targetShows;
-  if (backfillHistorical) {
-    // All shows missing synopsis, regardless of status
-    targetShows = data.shows.filter(s => !s.synopsis || s.synopsis.length < 50);
+  if (showIds) {
+    // Targeted backfill of specific show IDs (e.g. re-fixing known placeholders)
+    targetShows = data.shows.filter(s => showIds.has(s.id));
+    console.log(`Targeting ${targetShows.length} show(s) by id...\n`);
+  } else if (backfillHistorical) {
+    // All shows with a missing OR bad synopsis, regardless of status
+    targetShows = data.shows.filter(s => classifyBadSynopsis(s).bad);
     if (limit > 0) {
       targetShows = targetShows.slice(0, limit);
     }
-    console.log(`Found ${targetShows.length} shows missing synopsis${limit > 0 ? ` (limited to ${limit})` : ''}...\n`);
+    console.log(`Found ${targetShows.length} shows with missing/bad synopsis${limit > 0 ? ` (limited to ${limit})` : ''}...\n`);
   } else {
     targetShows = data.shows.filter(s => s.status === 'open' || s.status === 'previews');
     console.log(`Checking ${targetShows.length} open/preview shows...\n`);
@@ -595,8 +604,8 @@ async function main() {
       await sleep(1000); // Rate limit
     }
 
-    // 3. Fix ticket links (skip for historical backfill — closed shows have no tickets)
-    if (!backfillHistorical) {
+    // 3. Fix ticket links (skip for historical/targeted backfill — focus on synopsis)
+    if (!backfillHistorical && !showIds) {
       const ticketFix = fixTicketLinks(show);
       if (ticketFix) {
         results.fixed.push(ticketFix);
