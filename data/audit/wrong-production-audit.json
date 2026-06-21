@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-21T18:45:51.515Z",
+  "timestamp": "2026-06-21T19:18:06.033Z",
   "stats": {
-    "totalReviews": 38870,
-    "alreadyFlagged": 17306,
+    "totalReviews": 38872,
+    "alreadyFlagged": 17312,
     "dateGuardCatches": 34,
-    "directorMismatch": 862,
+    "directorMismatch": 861,
     "tvFilmSignals": 1057,
     "londonSignals": 641,
     "offBroadwaySignals": 463,
     "yearMismatch": 80,
-    "noPublishDate": 3903
+    "noPublishDate": 3899
   },
   "findings": [
     {
@@ -7986,21 +7986,9 @@
     {
       "showId": "glengarry-glen-ross-west-end-2026",
       "file": "artsdesk--unknown.json",
+      "score": 57,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/glengarry-glen-ross-old-vic-review-ladies-night-odds-mamets-machismo",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
-        }
-      ]
-    },
-    {
-      "showId": "glengarry-glen-ross-west-end-2026",
-      "file": "british-theatre--unknown.json",
-      "publishDate": null,
-      "url": "https://www.britishtheatre.com/fr/posts/glengarry-glen-ross-gets-all-female-revival-at-the-old-vic-plus-more-must-see-lo",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -8078,6 +8066,7 @@
     {
       "showId": "glengarry-glen-ross-west-end-2026",
       "file": "guardian--arifa-akbar.json",
+      "score": 61,
       "publishDate": "2026-06-17",
       "url": "https://www.theguardian.com/stage/2026/jun/18/glengarry-glen-ross-review-old-vic-theatre-david-mamet-patrick-marber",
       "findings": [
@@ -8219,6 +8208,7 @@
     {
       "showId": "glengarry-glen-ross-west-end-2026",
       "file": "timeout-london--andrzej-lukowski.json",
+      "score": 79,
       "publishDate": "2026-06-17",
       "url": "https://www.timeout.com/london/news/review-glengarry-glen-ross-old-vic-061726",
       "findings": [
@@ -8237,6 +8227,7 @@
     {
       "showId": "glengarry-glen-ross-west-end-2026",
       "file": "times-uk--clive-davis.json",
+      "score": 64,
       "publishDate": "2026-06-18",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0",
       "findings": [
@@ -8274,6 +8265,7 @@
     {
       "showId": "glengarry-glen-ross-west-end-2026",
       "file": "whatsonstage--sarah-crompton.json",
+      "score": 76,
       "publishDate": "2026-06-18",
       "url": "https://www.whatsonstage.com/news/glengarry-glen-ross-review-all-female-revival-in-the-round-at-the-old-vic_1725353/",
       "findings": [
