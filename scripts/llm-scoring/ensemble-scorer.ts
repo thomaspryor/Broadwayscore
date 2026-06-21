@@ -21,7 +21,7 @@ import { ensembleScore, toModelScore } from './ensemble';
 // ========================================
 
 export interface EnsembleScoringOptions {
-  claudeModel: 'claude-sonnet-4-20250514' | 'claude-3-5-haiku-20241022';
+  claudeModel: 'claude-sonnet-4-6' | 'claude-3-5-haiku-20241022';
   openaiModel: 'gpt-4o-mini' | 'gpt-4o';
   geminiModel: 'gemini-2.5-flash' | 'gemini-2.5-flash' | 'gemini-1.5-flash';
   kimiModel: string;
@@ -59,7 +59,7 @@ export class EnsembleReviewScorer {
     options: Partial<EnsembleScoringOptions> = {}
   ) {
     this.options = {
-      claudeModel: options.claudeModel || 'claude-sonnet-4-20250514',
+      claudeModel: options.claudeModel || 'claude-sonnet-4-6',
       openaiModel: options.openaiModel || 'gpt-4o',
       geminiModel: options.geminiModel || 'gemini-2.5-flash',
       kimiModel: options.kimiModel || 'moonshotai/kimi-k2.5',

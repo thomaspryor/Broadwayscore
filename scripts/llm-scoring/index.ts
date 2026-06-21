@@ -535,7 +535,7 @@ function parseArgs(): ScoringPipelineOptions & {
   const modelChoice = modelArg ? modelArg.split('=')[1] : 'sonnet';
   const model = modelChoice === 'haiku'
     ? 'claude-3-5-haiku-20241022' as const
-    : 'claude-sonnet-4-20250514' as const;
+    : 'claude-sonnet-4-6' as const;
 
   const outdated = args.includes('--outdated');
 
