@@ -194,7 +194,53 @@ function callGemini(systemPrompt, userPrompt) {
   });
 }
 
+// Direct Opus call — no advisor tool. The advisor-tool path in callClaude
+// (Haiku-fronted) returns prose for these classification prompts, which the
+// verdict parser can't read; Opus-direct returns clean JSON and is the
+// memory-recommended model for classification (Gemini over-accepts garbage —
+// memory/feedback_llm_verifier_hallucinates.md). Used by --provider=opus.
+function callOpus(systemPrompt, userPrompt) {
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (!apiKey) throw new Error('ANTHROPIC_API_KEY not set');
+  const body = JSON.stringify({
+    model: CLAUDE_OPUS,
+    max_tokens: 400,
+    temperature: 0.1,
+    system: systemPrompt,
+    messages: [{ role: 'user', content: userPrompt }],
+  });
+  return new Promise((resolve, reject) => {
+    const req = https.request('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+      }
+    }, (res) => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        if (res.statusCode === 200) {
+          try {
+            const json = JSON.parse(data);
+            resolve(json.content?.find(c => c.type === 'text')?.text || '');
+          } catch (e) { reject(new Error(`Opus parse error: ${e.message}`)); }
+        } else if (res.statusCode === 429) {
+          reject(new Error('RATE_LIMIT'));
+        } else {
+          reject(new Error(`Opus HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
+        }
+      });
+    });
+    req.on('error', reject);
+    req.write(body);
+    req.end();
+  });
+}
+
 function callLLM(systemPrompt, userPrompt) {
+  if (PROVIDER === 'opus') return callOpus(systemPrompt, userPrompt);
   if (PROVIDER === 'claude') return callClaude(systemPrompt, userPrompt);
   return callGemini(systemPrompt, userPrompt);
 }
