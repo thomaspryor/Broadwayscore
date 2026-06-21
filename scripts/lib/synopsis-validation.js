@@ -42,7 +42,20 @@ const REFUSAL_PATTERNS = [
 // 1536 sat live with one of these for weeks (fixed 2026-06-21) because the only
 // gate was length. Anchored on "is a … written by" so plot text that merely
 // mentions a play-within-a-play ("a play written by his late wife") is safe.
-const PLACEHOLDER_RE = /\bis (a|an) (stage play|musical|play|new play|new musical|production)\b[^.]*\bwritten by\b/i;
+//
+// IMPORTANT: the "is a play written by X" opener ALSO appears in perfectly good
+// synopses ("X is a play written by Y about [plot]..."), so the opener alone is
+// NOT enough — that over-flagged real synopses and made the LLM backfill reject
+// its own good output (2026-06-21). A synopsis is a placeholder only when the
+// opener is paired with production-history sentences (premiere/transfer dates)
+// OR the whole thing is just the bare attribution (no room for a plot).
+const PLACEHOLDER_OPENER_RE = /\bis (a|an) (stage play|musical|play|new play|new musical|production)\b[^.]*\bwritten by\b/i;
+
+// Production-history sentences that mark a placeholder when no plot is present.
+const PRODUCTION_HISTORY_RE = /\b(had its world premiere|world[- ]?premiered?|premiered (at|in|on)|opened (at|on|in)|scheduled to (transfer|open|begin)|will transfer|transferred (to|from)|is set to (open|transfer|premiere)|made its [^.]{0,30}(debut|premiere)|originally (ran|opened|premiered|produced))\b/i;
+
+// A synopsis this short with the bare attribution opener has no room for a plot.
+const BARE_ATTRIBUTION_MAX = 130;
 
 // Future-tense transfer/open/premiere language that goes stale the moment a show
 // actually opens ("scheduled to transfer to the West End in 2026" on a show
@@ -72,7 +85,12 @@ function detectRefusalPattern(text) {
  */
 function isPlaceholderSynopsis(text) {
   if (!text || typeof text !== 'string') return false;
-  return PLACEHOLDER_RE.test(text);
+  if (!PLACEHOLDER_OPENER_RE.test(text)) return false;
+  // Opener + production history (premiere/transfer) → placeholder.
+  if (PRODUCTION_HISTORY_RE.test(text)) return true;
+  // Opener + nothing else of substance → bare attribution placeholder.
+  if (text.trim().length < BARE_ATTRIBUTION_MAX) return true;
+  return false;
 }
 
 /**
@@ -154,7 +172,8 @@ function isValidSynopsis(text) {
 
 module.exports = {
   REFUSAL_PATTERNS,
-  PLACEHOLDER_RE,
+  PLACEHOLDER_OPENER_RE,
+  PRODUCTION_HISTORY_RE,
   STALE_FUTURE_RE,
   detectRefusalPattern,
   isLlmRefusal,
