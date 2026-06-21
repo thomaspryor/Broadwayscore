@@ -64,6 +64,7 @@ const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview, isWro
 const { isWithinPriorRun } = require('./lib/wrong-production-autoclear');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isBroadwayUrl } = require('./lib/venue-classification');
+const { isAggregatorUrlMismatch } = require('./lib/aggregator-domains');
 const { classifyMarketRouting, buildSiblingIndex } = require('./lib/market-routing');
 const { isBWWRoundupContent, validateBWWRoundupUrlMatchesShow, isCloudflareChallenge } = require('./lib/bww-roundup-validator');
 const { parseArticleBodyReviews } = require('./lib/bww-roundup-parser');
@@ -3136,6 +3137,21 @@ function createReviewFile(showId, reviewData, options = {}) {
     }
   }
 
+  // AGGREGATOR-URL MISMATCH CHECK: refuse to write a stub whose url is on a known
+  // aggregator domain (theatre.reviews, show-score.com, stagedoor.com, …) but whose
+  // outletId is a real outlet (chichester-observer, guardian-uk, …). That is exactly
+  // the aggregator_url_mismatch ERROR class validate-review-texts.js flags — serp-discovery
+  // kept recreating it and held main red for 2 days (one instance deleted 2026-06-15,
+  // 3d54cb4797). Legit aggregator star-stubs (outletId IS an aggregator) are unaffected.
+  // This guard is unconditional — unlike the OUTLET_DOMAINS check below it does NOT have an
+  // aggregator-source exception, because there is no legitimate case where a real outlet's
+  // review URL lives on an aggregator domain. Shared predicate keeps it in lockstep with
+  // the validator (scripts/lib/aggregator-domains.js).
+  if (isAggregatorUrlMismatch(reviewData.url, normalizedOutletId)) {
+    console.log(`    ✗ Skipping ${filename}: aggregator-domain URL (${reviewData.url}) for non-aggregator outlet "${normalizedOutletId}" — would create an aggregator_url_mismatch contamination file`);
+    return 'aggregatorUrlMismatch';
+  }
+
   // URL-DOMAIN MISMATCH CHECK: reject URLs that don't match the outlet's registered domain
   // This catches bad SERP results, aggregator URLs (BWW roundup for a broadwaynews review), etc.
   // EXCEPTION: Aggregator-sourced reviews use the aggregator's roundup URL, not the outlet's URL.
@@ -3759,7 +3775,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     lbo: { found: false, extracted: 0, skipped: false },
     serp: { calls: 0, hits: 0, skipped: false },
     wrongUrlRetry: { found: 0, retried: 0, fixed: 0, skipped: false },
-    rejections: { junkOutlet: 0, suspiciousOutlet: 0, nonBroadway: 0, tourReview: 0, crossMarketBroadway: 0, nonReviewPath: 0, wrongProduction: 0, duplicate: 0, crossShow: 0, crossShowUrl: 0, domainMismatch: 0, nullUrl: 0 },
+    rejections: { junkOutlet: 0, suspiciousOutlet: 0, nonBroadway: 0, tourReview: 0, crossMarketBroadway: 0, nonReviewPath: 0, wrongProduction: 0, duplicate: 0, crossShow: 0, crossShowUrl: 0, domainMismatch: 0, aggregatorUrlMismatch: 0, nullUrl: 0 },
     urlValidation: { checked: 0, nulled: 0 },
   };
 
@@ -5014,9 +5030,9 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     console.log(`  SERP: skipped`);
   }
   const rej = health.rejections;
-  const totalRej = rej.junkOutlet + rej.nonBroadway + rej.wrongProduction + rej.duplicate + rej.crossShow + rej.domainMismatch;
+  const totalRej = rej.junkOutlet + rej.nonBroadway + rej.wrongProduction + rej.duplicate + rej.crossShow + rej.domainMismatch + rej.aggregatorUrlMismatch;
   if (totalRej > 0) {
-    console.log(`  Rejections: ${totalRej} (${rej.junkOutlet} junk, ${rej.nonBroadway} non-Broadway, ${rej.wrongProduction} wrongProd, ${rej.duplicate} dupes, ${rej.crossShow} crossShow, ${rej.domainMismatch} domainMismatch)`);
+    console.log(`  Rejections: ${totalRej} (${rej.junkOutlet} junk, ${rej.nonBroadway} non-Broadway, ${rej.wrongProduction} wrongProd, ${rej.duplicate} dupes, ${rej.crossShow} crossShow, ${rej.domainMismatch} domainMismatch, ${rej.aggregatorUrlMismatch} aggregatorUrlMismatch)`);
   }
   console.log(`  Total found: ${foundReviews.length} → Created: ${created} files`);
 

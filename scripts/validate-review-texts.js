@@ -24,29 +24,18 @@
 const fs = require('fs');
 const path = require('path');
 const { normalizeOutlet, AGGREGATOR_SCORE_SOURCES } = require('./lib/review-normalization');
+// Aggregator domain/outlet sets are the single source of truth in lib/aggregator-domains.js,
+// shared with the ingest-side guard in gather-reviews.js so the validator and the writer
+// agree by construction. See that file for the contamination-class rationale.
+const { AGGREGATOR_DOMAINS, AGGREGATOR_OUTLET_IDS } = require('./lib/aggregator-domains');
 
 // Startup assertion — prevent silent no-ops if import breaks
 if (!AGGREGATOR_SCORE_SOURCES || AGGREGATOR_SCORE_SOURCES.size === 0) {
   throw new Error('AGGREGATOR_SCORE_SOURCES failed to load from review-normalization.js');
 }
-
-// Known aggregator domains — kept near AGGREGATOR_SCORE_SOURCES import for co-maintenance
-const AGGREGATOR_DOMAINS = new Set([
-  'show-score.com', 'showscore.com',
-  'westendtheatre.co.uk',
-  'theatrereviews.wordpress.com', 'theatre.reviews',
-  'didtheylikeit.com',
-  'londonboxoffice.co.uk',
-  'nyctheatre.com',
-  'stagedoor.com',
-]);
-
-// Outlet IDs that ARE aggregators (not contamination if url matches their domain)
-const AGGREGATOR_OUTLET_IDS = new Set([
-  'show-score', 'showscore', 'westendtheatre', 'theatre-reviews',
-  'dtli', 'london-box-office', 'lbo', 'nyc-theatre', 'stagedoor',
-  'playbill-verdict', 'bww-roundup',
-]);
+if (!AGGREGATOR_DOMAINS || AGGREGATOR_DOMAINS.size === 0 || !AGGREGATOR_OUTLET_IDS || AGGREGATOR_OUTLET_IDS.size === 0) {
+  throw new Error('AGGREGATOR_DOMAINS/AGGREGATOR_OUTLET_IDS failed to load from aggregator-domains.js');
+}
 
 // Parse command line arguments
 const args = process.argv.slice(2);
