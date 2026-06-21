@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-06-21T13:40:45.920Z",
+  "timestamp": "2026-06-21T13:46:35.625Z",
   "stats": {
-    "totalReviews": 38736,
+    "totalReviews": 38749,
     "alreadyFlagged": 17041,
-    "dateGuardCatches": 179,
-    "directorMismatch": 894,
-    "tvFilmSignals": 1066,
-    "londonSignals": 653,
-    "offBroadwaySignals": 470,
+    "dateGuardCatches": 185,
+    "directorMismatch": 897,
+    "tvFilmSignals": 1068,
+    "londonSignals": 654,
+    "offBroadwaySignals": 472,
     "yearMismatch": 89,
     "noPublishDate": 3951
   },
@@ -3932,6 +3932,30 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"trevor nunn\" from cats-2016"
+        }
+      ]
+    },
+    {
+      "showId": "cats-the-jellicle-ball-off-broadway-2024",
+      "file": "culturesauce--thom-geier.json",
+      "score": 78,
+      "publishDate": "2024-06-24",
+      "url": "https://culturesauce.com/2024/06/24/cats-the-jellicle-ball-off-broadway-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"zhailon levingston\" from cats-the-jellicle-ball-2026"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bill rauch\" from cats-the-jellicle-ball-2026"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -10036,6 +10060,19 @@
     },
     {
       "showId": "heart-of-rock-and-roll-2024",
+      "file": "latimes--httpswwwlatimescompeoplecharles-mcnulty.json",
+      "publishDate": "2018-09-18",
+      "url": "http://www.latimes.com/entertainment/arts/theater/reviews/la-et-cm-heart-of-rock-and-roll-review-20180918-story.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 2019d before show (2018-09-18 vs 2024-03-29)"
+        }
+      ]
+    },
+    {
+      "showId": "heart-of-rock-and-roll-2024",
       "file": "nytimes--elisabeth-vincentelli.json",
       "score": 76,
       "publishDate": "April 22, 2024",
@@ -13228,6 +13265,32 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"episode 5\""
+        }
+      ]
+    },
+    {
+      "showId": "lempicka-2024",
+      "file": "san-diego-union-tribune--pam-kragen.json",
+      "publishDate": "2022-06-27",
+      "url": "https://www.sandiegouniontribune.com/entertainment/theater/story/2022-06-27/review-la-jolla-playhouses-lempicka-an-eye-popping-study-of-enigmatic-baroness-with-a-brush",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 631d before show (2022-06-27 vs 2024-03-19)"
+        }
+      ]
+    },
+    {
+      "showId": "lempicka-2024",
+      "file": "timesofsandiego--pat-launer.json",
+      "publishDate": "2022-06-29",
+      "url": "https://timesofsandiego.com/arts/2022/06/28/the-whirlwind-life-of-a-subversive-art-deco-icon-in-lempicka-at-la-jolla-playhouse/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 629d before show (2022-06-29 vs 2024-03-19)"
         }
       ]
     },
@@ -21039,6 +21102,55 @@
     },
     {
       "showId": "suffs-2024",
+      "file": "dailybeast--tim-teeman.json",
+      "publishDate": "2022-04-07",
+      "url": "https://www.thedailybeast.com/how-suffs-makes-a-musical-out-of-womens-right-to-vote",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 719d before show (2022-04-07 vs 2024-03-26)"
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "suffs-2024",
+      "file": "ew--httpswwwfacebookcomentertainmentweekly.json",
+      "publishDate": "2022-04-06",
+      "url": "https://ew.com/theater/suffs-review-shaina-taub/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 720d before show (2022-04-06 vs 2024-03-26)"
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "suffs-2024",
+      "file": "seattle-times--by.json",
+      "publishDate": "2025-09-22",
+      "url": "https://www.seattletimes.com/entertainment/theater/suffs-crackles-with-energy-at-5th-avenue-theatre/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 3\""
+        }
+      ]
+    },
+    {
+      "showId": "suffs-2024",
       "file": "variety--frank-rizzo.json",
       "score": 86,
       "publishDate": "April 18th, 2024",
@@ -25788,6 +25900,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "the-wiz-2024",
+      "file": "masslive--mark-auerbach.json",
+      "publishDate": "2025-03-14",
+      "url": "https://www.masslive.com/westfieldnews/2025/03/review-the-wiz-eases-on-into-the-bushnell.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"geoffrey holder\" from the-wiz-1975"
         }
       ]
     },
@@ -38611,6 +38736,19 @@
     },
     {
       "showId": "stereophonic-2024",
+      "file": "theatreandtonic--emmie-newitt.json",
+      "publishDate": "2025-06-16",
+      "url": "https://theatreandtonic.co.uk/blog/stereophonic-duke-of-yorks-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "stereophonic-2024",
       "file": "theatrely--joey-sims.json",
       "score": 92,
       "publishDate": "April 19, 2024",
@@ -42610,6 +42748,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-wiz-2024",
+      "file": "clevescene--christine-howey.json",
+      "publishDate": "2023-10-10",
+      "url": "https://www.clevescene.com/arts/touring-revival-of-the-wiz-now-at-playhouse-square-is-a-feast-of-voices-42903887",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 171d before show (2023-10-10 vs 2024-03-29)"
         }
       ]
     },
