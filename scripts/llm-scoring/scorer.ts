@@ -20,7 +20,7 @@ const { getBestTextForScoring } = require('../lib/text-quality');
 // ========================================
 
 interface ScoringOptions {
-  model: 'claude-sonnet-4-20250514' | 'claude-3-5-haiku-20241022' | 'claude-haiku-4-5-20251001';
+  model: 'claude-sonnet-4-6' | 'claude-3-5-haiku-20241022' | 'claude-haiku-4-5-20251001';
   maxRetries: number;
   verbose: boolean;
 }
@@ -157,7 +157,7 @@ export class ReviewScorer {
   constructor(apiKey: string, options: Partial<ScoringOptions> = {}) {
     this.client = new Anthropic({ apiKey });
     this.options = {
-      model: options.model || 'claude-sonnet-4-20250514',
+      model: options.model || 'claude-sonnet-4-6',
       maxRetries: options.maxRetries ?? 5,
       verbose: options.verbose ?? false
     };
