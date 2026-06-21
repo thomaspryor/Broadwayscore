@@ -76,9 +76,14 @@ const PROVIDER = (args.find(a => a.startsWith('--provider=')) || '').split('=')[
 // --- Paths ---
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const REVIEW_TEXTS_DIR = path.join(DATA_DIR, 'review-texts');
-const AUDIT_PATH = path.join(DATA_DIR, 'audit', 'pre2005-wrong-production.json');
-const OUTPUT_PATH = path.join(DATA_DIR, 'audit', 'wrong-production-classified.json');
-const CHECKPOINT_PATH = path.join(DATA_DIR, 'audit', '.classify-wp-checkpoint.json');
+const argVal = (name, dflt) => (args.find(a => a.startsWith(name + '=')) || '').split('=')[1] || dflt;
+// --audit/--output/--checkpoint let the same classifier run over a different
+// audit's results[] (e.g. the cross-production ambiguous bucket via
+// build-cross-production-classify-input.js) without colliding with the pre-2005
+// output/checkpoint. All default to the pre-2005 paths.
+const AUDIT_PATH = argVal('--audit', path.join(DATA_DIR, 'audit', 'pre2005-wrong-production.json'));
+const OUTPUT_PATH = argVal('--output', path.join(DATA_DIR, 'audit', 'wrong-production-classified.json'));
+const CHECKPOINT_PATH = argVal('--checkpoint', path.join(DATA_DIR, 'audit', '.classify-wp-checkpoint.json'));
 const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
 
 // --- Load shows for context ---
