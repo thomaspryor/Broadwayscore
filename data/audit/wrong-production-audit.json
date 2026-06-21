@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-21T00:34:20.659Z",
+  "timestamp": "2026-06-21T02:04:32.276Z",
   "stats": {
-    "totalReviews": 38638,
+    "totalReviews": 38648,
     "alreadyFlagged": 17026,
-    "dateGuardCatches": 134,
-    "directorMismatch": 888,
-    "tvFilmSignals": 1061,
+    "dateGuardCatches": 139,
+    "directorMismatch": 889,
+    "tvFilmSignals": 1062,
     "londonSignals": 644,
     "offBroadwaySignals": 468,
     "yearMismatch": 86,
-    "noPublishDate": 3937
+    "noPublishDate": 3938
   },
   "findings": [
     {
@@ -8354,6 +8354,7 @@
     {
       "showId": "glengarry-glen-ross-west-end-2026",
       "file": "ew--httpswwwfacebookcomentertainmentweekly.json",
+      "score": 78,
       "publishDate": "2025-03-31",
       "url": "https://ew.com/glengarry-glen-ross-review-kieran-culkin-seals-deal-broadway-revival-11705926",
       "findings": [
@@ -8438,6 +8439,7 @@
     {
       "showId": "glengarry-glen-ross-west-end-2026",
       "file": "nydailynews--chris-jones.json",
+      "score": 75,
       "publishDate": "2025-04-01",
       "url": "https://www.nydailynews.com/2025/03/31/broadway-review-glengarry-glen-ross-still-masterful-drama-despite-some-casting-choices/",
       "findings": [
@@ -8554,6 +8556,7 @@
     {
       "showId": "glengarry-glen-ross-west-end-2026",
       "file": "yahoo--unknown.json",
+      "score": 82,
       "publishDate": "2025-04-01",
       "url": "https://www.yahoo.com/entertainment/theater-review-broadway-glengarry-glen-033424902.html",
       "findings": [
@@ -14271,6 +14274,32 @@
     },
     {
       "showId": "marjorie-prime-2025",
+      "file": "city-am--adam-bloodworth.json",
+      "publishDate": "2023-03-16",
+      "url": "https://www.cityam.com/marjorie-prime-menier-chocolate-factory-review-a-memory-play-with-astonishing-scope/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 980d before show (2023-03-16 vs 2025-11-20)"
+        }
+      ]
+    },
+    {
+      "showId": "marjorie-prime-2025",
+      "file": "london-theatre--unknown.json",
+      "publishDate": "2023-03-16",
+      "url": "https://www.londontheatre.co.uk/reviews/marjorie-prime-review-menier-chocolate-factory",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 980d before show (2023-03-16 vs 2025-11-20)"
+        }
+      ]
+    },
+    {
+      "showId": "marjorie-prime-2025",
       "file": "thewrap--robert-hofler.json",
       "score": 45,
       "publishDate": "December 8, 2025",
@@ -18392,6 +18421,37 @@
     },
     {
       "showId": "romeo-and-juliet-west-end-2026",
+      "file": "bbc-news--hugh-montgomery.json",
+      "publishDate": "2024-05-23",
+      "url": "https://www.bbc.com/culture/article/20240523-tom-holland-in-romeo-and-juliet-review-the-star-is-not-to-blame-but-this-production-cum-global-event-is-lifeless",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 662d before show (2024-05-23 vs 2026-03-16)"
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2026",
+      "file": "boston-globe--william-shakespeare-directed-by-diane.json",
+      "publishDate": "2024-09-06",
+      "url": "https://www.bostonglobe.com/2024/09/06/arts/american-repertory-theater-art-shakespeare-romeo-and-juliet-diane-paulus/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 556d before show (2024-09-06 vs 2026-03-16)"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2026",
       "file": "british-theatre--anita-marguerite-butler.json",
       "score": 84,
       "publishDate": "2026-04-02",
@@ -18448,6 +18508,32 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2026",
+      "file": "one-minute-critic--emily-chackerian.json",
+      "publishDate": "2026-06-12",
+      "url": "https://1minutecritic.com/romeo-juliet-free-shakespeare-in-the-park-2026-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"saheem ali\" from romeo-and-juliet-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2026",
+      "file": "sunday-express--neil-norman.json",
+      "publishDate": "2024-05-23",
+      "url": "https://www.express.co.uk/entertainment/theatre/1902976/Romeo-Juliet-review-Tom-Holland-Jamie-Lloyd",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 662d before show (2024-05-23 vs 2026-03-16)"
         }
       ]
     },
