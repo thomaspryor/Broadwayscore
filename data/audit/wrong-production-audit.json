@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-06-21T15:38:13.492Z",
+  "timestamp": "2026-06-21T15:58:23.079Z",
   "stats": {
-    "totalReviews": 38764,
-    "alreadyFlagged": 17042,
+    "totalReviews": 38850,
+    "alreadyFlagged": 17052,
     "dateGuardCatches": 189,
-    "directorMismatch": 898,
+    "directorMismatch": 900,
     "tvFilmSignals": 1069,
     "londonSignals": 654,
-    "offBroadwaySignals": 472,
-    "yearMismatch": 90,
+    "offBroadwaySignals": 473,
+    "yearMismatch": 92,
     "noPublishDate": 3955
   },
   "findings": [
@@ -6336,6 +6336,24 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2005 (2x) more than 2024 (0x). 2005 matches production: doubt-2005"
+        }
+      ]
+    },
+    {
+      "showId": "doubt-2024",
+      "file": "this-week-in-new-york--unknown.json",
+      "publishDate": null,
+      "url": "https://twi-ny.com/2024/03/07/john-patrick-shanley-doubt-a-parable-brooklyn-laundry/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"doug hughes\" from doubt-2005"
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
         }
       ]
     },
@@ -14774,6 +14792,20 @@
       ]
     },
     {
+      "showId": "master-haroldand-the-boys-2003",
+      "file": "about-entertainment--ben-brantley.json",
+      "score": null,
+      "publishDate": "June 2, 2003",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"athol fugard\" from master-haroldand-the-boys-1982"
+        }
+      ]
+    },
+    {
       "showId": "matilda-the-musical-2013",
       "file": "ap--unknown.json",
       "score": 78,
@@ -20486,6 +20518,32 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2005 (2x) more than 2023 (0x). 2005 matches production: spamalot-2005"
+        }
+      ]
+    },
+    {
+      "showId": "spamalot-2023",
+      "file": "oc-register--christopher-smith.json",
+      "publishDate": "2026-02-18",
+      "url": "https://www.ocregister.com/2026/02/18/review-monty-pythons-spamalot-is-clearly-not-dead-yet-in-costa-mesa/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (2x) more than 2023 (0x). 2026 matches production: spamalot-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "spamalot-2023",
+      "file": "san-jose-mercury-news--jim-harrington.json",
+      "publishDate": "2026-03-07",
+      "url": "https://www.mercurynews.com/2026/03/06/review-new-spamalot-broadway-tour-proves-to-be-a-huge-winner/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (2x) more than 2023 (1x). 2026 matches production: spamalot-off-broadway-2026"
         }
       ]
     },
