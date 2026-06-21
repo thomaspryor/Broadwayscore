@@ -152,6 +152,24 @@ export default function SubmitReviewForm({ endpoint }: { endpoint: string }) {
         />
       </div>
 
+      {/* Optional email for outcome notification */}
+      <div>
+        <label htmlFor="submitter_email" className="block text-sm font-semibold text-gray-200 mb-2">
+          Your Email <span className="text-gray-500 font-normal">(optional)</span>
+        </label>
+        <input
+          type="email"
+          id="submitter_email"
+          name="submitter_email"
+          className={inputClasses}
+          placeholder="you@example.com"
+          autoComplete="email"
+        />
+        <p className="mt-1 text-xs text-gray-500/70">
+          We&apos;ll let you know if the review is approved or rejected
+        </p>
+      </div>
+
       {/* Honeypot */}
       <input type="text" name="_gotcha" style={{ display: 'none' }} tabIndex={-1} autoComplete="off" />
 
