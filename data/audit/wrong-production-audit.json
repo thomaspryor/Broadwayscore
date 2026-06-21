@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-21T14:19:02.941Z",
+  "timestamp": "2026-06-21T15:38:13.492Z",
   "stats": {
-    "totalReviews": 38749,
-    "alreadyFlagged": 17041,
-    "dateGuardCatches": 185,
-    "directorMismatch": 897,
-    "tvFilmSignals": 1068,
+    "totalReviews": 38764,
+    "alreadyFlagged": 17042,
+    "dateGuardCatches": 189,
+    "directorMismatch": 898,
+    "tvFilmSignals": 1069,
     "londonSignals": 654,
     "offBroadwaySignals": 472,
-    "yearMismatch": 89,
-    "noPublishDate": 3951
+    "yearMismatch": 90,
+    "noPublishDate": 3955
   },
   "findings": [
     {
@@ -1695,7 +1695,7 @@
       "file": "independent--louis-chilton.json",
       "score": 40,
       "publishDate": "2026-04-17",
-      "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -9892,6 +9892,19 @@
     },
     {
       "showId": "harmony-2023",
+      "file": "queerty--httpswwwfacebookcomwexlerwrites.json",
+      "publishDate": "2022-04-13",
+      "url": "https://www.queerty.com/barry-manilow-strikes-chord-harmony-premieres-off-broadway-20220413",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 553d before show (2022-04-13 vs 2023-10-18)"
+        }
+      ]
+    },
+    {
+      "showId": "harmony-2023",
       "file": "times-square-chronicles--suzanna-bowling.json",
       "score": 85,
       "publishDate": null,
@@ -13209,6 +13222,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"jerry zaks\" from la-cage-aux-folles-2004"
+        }
+      ]
+    },
+    {
+      "showId": "la-cage-aux-folles-2010",
+      "file": "nydailynews--joe-dziemianowicz.json",
+      "publishDate": "2010-04-19",
+      "url": "http://www.nydailynews.com/entertainment/music/2010/04/19/2010-04-19_kelsey_grammer_brings_warmth_with_and_respectable_singing_to_fun_la_cage_aux_fol.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -17766,6 +17792,19 @@
       ]
     },
     {
+      "showId": "prayer-for-the-french-republic-2024",
+      "file": "thewrap--by-robert-hofler.json",
+      "publishDate": "2022-02-02",
+      "url": "https://www.thewrap.com/prayer-for-the-french-republic-off-broadway-review/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 685d before show (2022-02-02 vs 2023-12-19)"
+        }
+      ]
+    },
+    {
       "showId": "present-laughter-2010",
       "file": "nytimes--ben-brantley.json",
       "score": 78,
@@ -20377,6 +20416,24 @@
       "score": 82,
       "publishDate": "November 17, 2023",
       "url": "https://www.broadwaynews.com/the-broadway-review-monty-pythons-spamalot-broad-hilarity-at-breakneck-speed/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mike nichols\" from spamalot-2005"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2005 (2x) more than 2023 (1x). 2005 matches production: spamalot-2005"
+        }
+      ]
+    },
+    {
+      "showId": "spamalot-2023",
+      "file": "hartford-courant--christopher-arnott.json",
+      "publishDate": "2025-12-11",
+      "url": "https://www.courant.com/2025/12/11/theater-review-overstuffed-spamalot-at-the-bushnell-tries-anything-to-make-you-laugh/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -24594,6 +24651,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "the-notebook-2024",
+      "file": "suntimes--httpschicagosuntimescomsteven-oxman.json",
+      "publishDate": "2022-10-07",
+      "url": "https://chicago.suntimes.com/2022/10/7/23392910/the-notebook-review-chicago-shakespeare-theater-superb-romance",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 491d before show (2022-10-07 vs 2024-02-10)"
         }
       ]
     },
@@ -31246,6 +31316,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
+        }
+      ]
+    },
+    {
+      "showId": "days-of-wine-and-roses-2024",
+      "file": "observer--httpsobservercomauthorrex-reed.json",
+      "publishDate": "2023-06-06",
+      "url": "https://observer.com/2023/06/the-days-of-wine-and-roses-review-love-on-the-rocks-with-an-iffy-musical-twist/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 214d before show (2023-06-06 vs 2024-01-06)"
         }
       ]
     },

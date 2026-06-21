@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-06-21T15:09:31.810Z",
+  "runDate": "2026-06-21T15:30:23.288Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,36 +11,36 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 197,
-    "failed": 554,
+    "processed": 204,
+    "failed": 563,
     "skipped": 0,
-    "successRate": "26.2%"
+    "successRate": "26.6%"
   },
   "tierBreakdown": {
-    "playwright": 114,
+    "playwright": 117,
     "amp": 0,
-    "browserbase": 121,
+    "browserbase": 127,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 49,
-    "archiveToday": 14,
-    "archive": 49
+    "archiveToday": 15,
+    "archive": 53
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 3,
+    "tier1Success": 3,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 4,
     "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 0,
-    "tier4Success": 0,
+    "tier4Attempts": 3,
+    "tier4Success": 3,
     "totalFailed": 77,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
@@ -247,7 +247,14 @@
     "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
     "american-buffalo-2022/theatermania--kenji-fujishima.json",
     "american-buffalo-2022/timeout--adam-feldman.json",
-    "almost-famous-2022/timeout--adam-feldman.json"
+    "almost-famous-2022/timeout--adam-feldman.json",
+    "ragtime-2025/nytimes--unknown.json",
+    "masquerade-off-broadway-2025/nytimes--unknown.json",
+    "burlesque-west-end-2026/theatreandtonic--unknown.json",
+    "heathers-the-musical-off-broadway-2025/theatrely--unknown.json",
+    "my-neighbour-totoro-west-end-2025/london-theatre--unknown.json",
+    "the-great-gatsby-2024/nytimes--unknown.json",
+    "la-cage-aux-folles-2010/nydailynews--joe-dziemianowicz.json"
   ],
   "failed": [
     "encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
@@ -727,6 +734,15 @@
     "is-he-dead-2007/nypost--clive-barnes.json",
     "inherit-the-wind-2007/nypost--clive-barnes.json",
     "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+    "encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
+    "romeo-and-juliet-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
     "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
     "matilda-the-musical-west-end-2021/whatsonstage--meriel-patrick.json",
     "tammy-faye-2024/stageandcinema--mike-mineo.json",
@@ -920,7 +936,10 @@
       "between-riverside-and-crazy-2022/stagebuddy--elyse-trevers.json",
       "death-of-a-salesman-2022/independent--sophie-thompson.json",
       "1776-2022/broadway-and-me--janice-c-simpson.json",
-      "american-buffalo-2022/theatermania--kenji-fujishima.json"
+      "american-buffalo-2022/theatermania--kenji-fujishima.json",
+      "burlesque-west-end-2026/theatreandtonic--unknown.json",
+      "heathers-the-musical-off-broadway-2025/theatrely--unknown.json",
+      "my-neighbour-totoro-west-end-2025/london-theatre--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -939,6 +958,12 @@
       "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
       "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
+      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
       "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
@@ -1113,6 +1138,7 @@
       "data/review-texts/waiting-for-godot-2025/northjerseycom--unknown.json",
       "data/review-texts/for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/thestage--loren-noveck.json",
       "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
+      "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
       "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json"
     ],
     "archive": [
@@ -1164,7 +1190,11 @@
       "macbeth-2022/timeout--adam-feldman.json",
       "mr-saturday-night-2022/newyorker--conde-nast.json",
       "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
-      "american-buffalo-2022/theater-life--david-sheward.json"
+      "american-buffalo-2022/theater-life--david-sheward.json",
+      "ragtime-2025/nytimes--unknown.json",
+      "masquerade-off-broadway-2025/nytimes--unknown.json",
+      "the-great-gatsby-2024/nytimes--unknown.json",
+      "la-cage-aux-folles-2010/nydailynews--joe-dziemianowicz.json"
     ]
   },
   "failuresByOutlet": {},
