@@ -183,6 +183,9 @@ const ShowListCard = memo(function ShowListCard({
   ) : (
     // Default variant (Home, OB, WE): formatOpeningDate style
     <div className="flex-1 min-w-0">
+      {showCategoryBadge && category === 'off-broadway' && !isOpera && (
+        <span className="inline-block mb-1 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-purple-300 bg-purple-500/15 border border-purple-500/20 rounded whitespace-nowrap">Off-Broadway</span>
+      )}
       <h3 className="font-bold text-white text-lg group-hover:text-brand transition-colors line-clamp-2">
         {show.title}
       </h3>
@@ -190,9 +193,6 @@ const ShowListCard = memo(function ShowListCard({
         <FormatPill type={show.type} />
         <ProductionPill isRevival={isRevival} />
         {show.isOffWestEnd && <CategoryBadge category="off-west-end" />}
-        {showCategoryBadge && category === 'off-broadway' && !isOpera && (
-          <span className="px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-purple-300 bg-purple-500/15 border border-purple-500/20 rounded">Off-Bway</span>
-        )}
         {!hideStatus && <StatusBadge status={show.status} />}
       </div>
       <p className="text-sm text-gray-400 mt-2.5 truncate">

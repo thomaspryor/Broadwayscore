@@ -185,23 +185,30 @@ try {
     ok(`Auto-removed ${toRemove.size} duplicate London show(s): ${[...toRemove].join(', ')}`);
   }
 
-  // LLM refusal synopsis guard: strip any synopsis that looks like a Claude
-  // refusal ("I do not have enough information...") before the UI renders it.
-  // The UI at src/app/show/[slug]/page.tsx:126 leaks show.synopsis into the SEO
-  // meta description, so a refusal on prod is a double hit: bad show page +
-  // bad Google snippet. Shared detector lives in lib/synopsis-validation.js.
-  const { detectRefusalPattern } = require('./lib/synopsis-validation');
+  // Bad-synopsis self-heal: strip any synopsis that's an LLM refusal, a generic
+  // production-history placeholder ("X is a stage play written by Y"), or stale
+  // future-tense transfer copy on an already-open show, before the UI renders
+  // it. The UI at src/app/show/[slug]/page.tsx:126 leaks show.synopsis into the
+  // SEO meta description, so a bad synopsis on prod is a double hit: bad show
+  // page + bad Google snippet. Stripping to null makes the freshness gate flag
+  // it as missing, so enrich-wikipedia-synopsis.js refills it on the next run.
+  // Shared detector lives in lib/synopsis-validation.js (1536 incident, 2026-06-21).
+  // Only strip clear-cut garbage at deploy time. 'invalid' (truncated /
+  // marketing) may still be partially useful to a reader, so leave it visible
+  // and let enrich-wikipedia-synopsis.js replace it on the next run.
+  const { classifyBadSynopsis } = require('./lib/synopsis-validation');
+  const HEALABLE = new Set(['refusal', 'placeholder', 'stale']);
   let refusalStripped = 0;
   for (const show of shows) {
     if (!show || typeof show.synopsis !== 'string') continue;
-    const hit = detectRefusalPattern(show.synopsis);
-    if (hit) {
-      console.log(`   Stripped refusal synopsis from "${show.title}" (${show.id}) — matched ${hit}`);
+    const { bad, reason } = classifyBadSynopsis(show);
+    if (bad && HEALABLE.has(reason)) {
+      console.log(`   Stripped ${reason} synopsis from "${show.title}" (${show.id})`);
       show.synopsis = null;
       refusalStripped++;
     }
   }
-  if (refusalStripped > 0) ok(`Auto-stripped ${refusalStripped} LLM refusal synopsis(es)`);
+  if (refusalStripped > 0) ok(`Auto-stripped ${refusalStripped} bad synopsis(es)`);
 
   // Write shows.json if any fixes were applied
   if (orphansFixed > 0 || jpgUpgraded > 0 || categoryFixed > 0 || toRemove.size > 0 || refusalStripped > 0) {

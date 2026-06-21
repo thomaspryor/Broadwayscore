@@ -15,6 +15,7 @@ import type { Director, Theater, TheaterStructuredTips, TheaterVenueScores, Thea
 import { getShowGrosses } from './data-grosses';
 import { getAudienceBuzz } from './data-audience';
 import { isOperaShow } from './show-market';
+import { isHomepageNotable, notabilityRank, NOTABILITY_THRESHOLDS, type NotabilitySignals } from './homepage-notability';
 import { getShowCommercial } from './data-commercial';
 import { getShowAwards } from './data-awards';
 import { BROWSE_PAGES, BrowsePageConfig, BrowseFilterContext, getAllBrowseSlugs as getBrowseSlugsFromConfig } from '@/config/browse-pages';
@@ -110,6 +111,58 @@ export function getWestEndShows(): ComputedShow[] {
  */
 export function getOffBroadwayShows(): ComputedShow[] {
   return getAllShows().filter(show => show.category === 'off-broadway');
+}
+
+// Ticket-buyer platforms that count toward a show's "curated audience footprint"
+// for homepage notability (Path B). Reddit is excluded — see homepage-notability.ts.
+const CURATED_AUDIENCE_SOURCES = ['showScore', 'mezzanine', 'theatr', 'broadwayCom'] as const;
+
+function curatedAudienceFootprint(showId: string): number {
+  const buzz = getAudienceBuzz(showId);
+  if (!buzz?.sources) return 0;
+  let total = 0;
+  for (const key of CURATED_AUDIENCE_SOURCES) {
+    const src = buzz.sources[key];
+    if (src && typeof src.reviewCount === 'number') total += src.reviewCount;
+  }
+  return total;
+}
+
+function notabilitySignalsFor(show: ComputedShow): NotabilitySignals {
+  return {
+    status: show.status,
+    type: show.type,
+    isRevival: show.isRevival,
+    tags: show.tags,
+    t1Count: show.criticScore?.tier1Count ?? 0,
+    reviewCount: show.criticScore?.reviewCount ?? 0,
+    curatedAudience: curatedAudienceFootprint(show.id),
+    homepageInclude: show.homepageInclude,
+    homepageExclude: show.homepageExclude,
+  };
+}
+
+/**
+ * Off-Broadway shows notable enough to surface on the Broadway homepage grid.
+ * The default homepage is Broadway-only; when Broadway openings are sparse the
+ * grid goes stale, so we mix in a capped, high-signal set of OB shows. The rule
+ * (two auto paths + manual override) lives in src/lib/homepage-notability.ts.
+ *
+ * Manual homepageInclude picks are always kept (never cut by the cap); the
+ * remaining slots are filled by auto-qualifying shows ranked by notability.
+ */
+export function getNotableOffBroadwayShows(limit = NOTABILITY_THRESHOLDS.cap): ComputedShow[] {
+  const eligible = getOffBroadwayShows()
+    .map(show => ({ show, signals: notabilitySignalsFor(show) }))
+    .filter(({ signals }) => isHomepageNotable(signals));
+
+  const forced = eligible.filter(({ signals }) => signals.homepageInclude);
+  const auto = eligible
+    .filter(({ signals }) => !signals.homepageInclude)
+    .sort((a, b) => notabilityRank(b.signals) - notabilityRank(a.signals));
+
+  const remaining = Math.max(0, limit - forced.length);
+  return [...forced, ...auto.slice(0, remaining)].map(e => e.show);
 }
 
 /**

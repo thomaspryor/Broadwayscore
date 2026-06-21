@@ -14,6 +14,7 @@ const path = require('path');
 const https = require('https');
 const { stripWikiMarkup, hasWikiMarkup, stripLeadingJunk } = require('./lib/wiki-utils');
 const { cleanSearchTitle } = require('./lib/title-normalization');
+const { classifyBadSynopsis } = require('./lib/synopsis-validation');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -169,7 +170,11 @@ async function main() {
   const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
   const shows = showsData.shows;
 
-  let targets = shows.filter(s => !s.synopsis || s.synopsis.trim() === '');
+  // Target any show whose synopsis is missing OR bad (refusal, generic
+  // production-history placeholder, stale future-tense, or otherwise invalid).
+  // Previously only empty synopses were re-enriched, so placeholders written
+  // pre-opening sat live forever (1536 incident, 2026-06-21).
+  let targets = shows.filter(s => classifyBadSynopsis(s).bad);
 
   if (CATEGORY_FILTER) {
     targets = targets.filter(s => (s.category || 'broadway') === CATEGORY_FILTER);

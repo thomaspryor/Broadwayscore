@@ -286,6 +286,25 @@ async function checkPrivateRepoPAT() {
   return { name: 'Private Repo PAT', status: 'pass', message: 'Token valid, both private repos accessible, contents readable' };
 }
 
+async function checkDispatchPAT() {
+  const token = process.env.GH_DISPATCH_TOKEN;
+  if (!token) return { name: 'Dispatch PAT (submit-review)', status: 'fail', message: 'GH_DISPATCH_TOKEN not set — /api/submit-review will return 503' };
+
+  const headers = {
+    'Authorization': `token ${token}`,
+    'User-Agent': 'broadway-scorecard-health-check',
+    'Accept': 'application/vnd.github+json',
+  };
+
+  // Test that the PAT can list issues on the public repo (issues:write required)
+  const res = await httpsGet('https://api.github.com/repos/thomaspryor/Broadwayscore/issues?state=open&per_page=1', headers);
+  if (res.status === 401) return { name: 'Dispatch PAT (submit-review)', status: 'fail', message: 'Token invalid or expired — /api/submit-review will silently 500' };
+  if (res.status === 403) return { name: 'Dispatch PAT (submit-review)', status: 'fail', message: 'Token lacks issues:write permission — submissions will fail' };
+  if (res.status !== 200) return { name: 'Dispatch PAT (submit-review)', status: 'fail', message: `Unexpected status ${res.status}` };
+
+  return { name: 'Dispatch PAT (submit-review)', status: 'pass', message: 'Token valid, issues:read confirmed' };
+}
+
 async function checkVercel() {
   const token = process.env.VERCEL_TOKEN;
   if (!token) return { name: 'Vercel', status: 'skip', message: 'Token not set' };
@@ -429,6 +448,7 @@ async function main() {
     checkScrapingBee,
     checkBrightData,
     checkPrivateRepoPAT,
+    checkDispatchPAT,
     checkVercel,
     checkSentry,
     checkResend,
