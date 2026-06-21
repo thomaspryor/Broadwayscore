@@ -1,25 +1,5 @@
 [
   {
-    "startedAt": "2026-06-14T18:14:00.475Z",
-    "completedAt": "2026-06-14T18:14:00.565Z",
-    "totalReviews": 45,
-    "processed": 0,
-    "skipped": 44,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "errorDetails": [
-      {
-        "showId": "romeo-and-juliet-off-broadway-2026",
-        "outletId": "talkinbroadway",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-06-14T21:03:31.266Z",
     "completedAt": "2026-06-14T21:03:31.344Z",
     "totalReviews": 45,
@@ -879204,6 +879184,20 @@
       "input": 3705,
       "output": 138,
       "total": 7881
+    },
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-06-21T17:50:00.263Z",
+    "completedAt": "2026-06-21T19:07:36.731Z",
+    "totalReviews": 58,
+    "processed": 5,
+    "skipped": 53,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 21686,
+      "output": 710,
+      "total": 45771
     },
     "errorDetails": []
   }
