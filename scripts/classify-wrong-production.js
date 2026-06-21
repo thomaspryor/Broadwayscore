@@ -205,7 +205,7 @@ function callOpus(systemPrompt, userPrompt) {
   const body = JSON.stringify({
     model: CLAUDE_OPUS,
     max_tokens: 400,
-    temperature: 0.1,
+    // NB: temperature is deprecated/rejected for opus-4-7 — do not send it.
     system: systemPrompt,
     messages: [{ role: 'user', content: userPrompt }],
   });
