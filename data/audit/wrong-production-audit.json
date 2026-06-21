@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-21T17:39:38.844Z",
+  "timestamp": "2026-06-21T17:58:34.516Z",
   "stats": {
-    "totalReviews": 38856,
-    "alreadyFlagged": 17054,
-    "dateGuardCatches": 190,
-    "directorMismatch": 900,
+    "totalReviews": 38876,
+    "alreadyFlagged": 17093,
+    "dateGuardCatches": 194,
+    "directorMismatch": 876,
     "tvFilmSignals": 1070,
-    "londonSignals": 657,
-    "offBroadwaySignals": 474,
-    "yearMismatch": 92,
-    "noPublishDate": 3949
+    "londonSignals": 658,
+    "offBroadwaySignals": 473,
+    "yearMismatch": 89,
+    "noPublishDate": 3914
   },
   "findings": [
     {
@@ -718,39 +718,6 @@
       ]
     },
     {
-      "showId": "all-my-sons-2008",
-      "file": "city-cabaret--elizabeth-ahlfors.json",
-      "score": 82,
-      "publishDate": null,
-      "url": "https://www.citycabaret.com/all-my-sons.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jack o'brien\" from all-my-sons-2019"
-        },
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2019 (4x) more than 2008 (0x). 2019 matches production: all-my-sons-2019"
-        }
-      ]
-    },
-    {
-      "showId": "all-my-sons-2008",
-      "file": "curtainup--elyse-sommer.json",
-      "score": 82,
-      "publishDate": null,
-      "url": "https://www.curtainup.com/allmysons19.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jack o'brien\" from all-my-sons-2019"
-        }
-      ]
-    },
-    {
       "showId": "all-my-sons-2019",
       "file": "broadwaynews--elizabeth-bradley.json",
       "score": 88,
@@ -1177,20 +1144,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "an-enemy-of-the-people-1971",
-      "file": "backstage--suzy-evans.json",
-      "score": 87,
-      "publishDate": null,
-      "url": "http://www.backstage.com/review/ny-theater/broadway/enemy-people-broadway-boyd-gaines-richard-thomas-manhattan-theatre-club/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"doug hughes\" from an-enemy-of-the-people-2012"
         }
       ]
     },
@@ -3666,20 +3619,6 @@
     },
     {
       "showId": "cat-on-a-hot-tin-roof-2008",
-      "file": "nydailynews--joe-dziemianowicz.json",
-      "score": 25,
-      "publishDate": null,
-      "url": "https://www.nydailynews.com/entertainment/music-arts/theater-review-cat-hot-tin-roof-article-1.1241257?localLinksEnabled=false",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"rob ashford\" from cat-on-a-hot-tin-roof-2013"
-        }
-      ]
-    },
-    {
-      "showId": "cat-on-a-hot-tin-roof-2008",
       "file": "nytimes--ben-brantley.json",
       "score": 64,
       "publishDate": "March 7, 2008",
@@ -5020,25 +4959,6 @@
       ]
     },
     {
-      "showId": "cyrano-de-bergerac-2007",
-      "file": "wsj--terry-teachout.json",
-      "score": 72,
-      "publishDate": null,
-      "url": "https://online.wsj.com/article/SB10000872396390444799904578048520562125036.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        },
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2026 (6x) more than 2007 (0x). 2026 matches production: cyrano-de-bergerac-west-end-2026"
-        }
-      ]
-    },
-    {
       "showId": "cyrano-de-bergerac-2012",
       "file": "ap--mark-kennedy.json",
       "score": 68,
@@ -5325,19 +5245,6 @@
     },
     {
       "showId": "death-of-a-salesman-2012",
-      "file": "nytg--unknown.json",
-      "publishDate": null,
-      "url": "https://www.newyorktheatreguide.com/theatre-news/news/the-history-of-death-of-a-salesman-on-broadway",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"george c. scott\" from death-of-a-salesman-1975"
-        }
-      ]
-    },
-    {
-      "showId": "death-of-a-salesman-2012",
       "file": "nytimes--jesse-green.json",
       "score": 62,
       "publishDate": "March 15, 2012",
@@ -5361,20 +5268,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"george c. scott\" from death-of-a-salesman-1975"
-        }
-      ]
-    },
-    {
-      "showId": "death-of-a-salesman-2012",
-      "file": "theatrely--andrew-martini.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.theatrely.com/post/death-of-a-salesman-wendell-pierce-sharon-d-clarke-coming-broadway",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"miranda cromwell\" from death-of-a-salesman-2022"
         }
       ]
     },
@@ -6947,20 +6840,6 @@
       ]
     },
     {
-      "showId": "fences-1987",
-      "file": "ew--melissa-rose-bernardo.json",
-      "score": 75,
-      "publishDate": null,
-      "url": "http://www.ew.com/ew/article/0,,20364137,00.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"kenny leon\" from fences-2010"
-        }
-      ]
-    },
-    {
       "showId": "fiddler-on-the-roof-2015",
       "file": "amny--matt-windman.json",
       "score": 82,
@@ -7841,20 +7720,6 @@
       ]
     },
     {
-      "showId": "frankie-and-johnny-in-the-clair-de-lune-2002",
-      "file": "cultural-weekly--david-sheward.json",
-      "score": 85,
-      "publishDate": null,
-      "url": "https://www.culturalweekly.com/making-missing-connections-frankie-johnny-long-lost-happy-talk/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"arin arbus\" from frankie-and-johnny-in-the-clair-de-lune-2019"
-        }
-      ]
-    },
-    {
       "showId": "frankie-and-johnny-in-the-clair-de-lune-2019",
       "file": "broadwayworld--michael-dale.json",
       "score": 85,
@@ -7884,20 +7749,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"donmar warehouse\""
-        }
-      ]
-    },
-    {
-      "showId": "frozen-2004",
-      "file": "epoch-times--judd-hollander.json",
-      "score": 45,
-      "publishDate": null,
-      "url": "https://www.theepochtimes.com/theater-review-frozen_2481489.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"michael grandage\" from frozen-2018"
         }
       ]
     },
@@ -8559,7 +8410,7 @@
     {
       "showId": "glengarry-glen-ross-west-end-2026",
       "file": "daily-mail--robert-gore-langton.json",
-      "score": 63,
+      "score": 57,
       "publishDate": "2026-06-21",
       "url": null,
       "findings": [
@@ -9698,6 +9549,7 @@
     {
       "showId": "hadestown-west-end-2024",
       "file": "boston-globe--unknown.json",
+      "score": 86,
       "publishDate": "2021-11-04",
       "url": "https://www.bostonglobe.com/2021/11/04/arts/top-world-hadestown/",
       "findings": [
@@ -13189,62 +13041,6 @@
       ]
     },
     {
-      "showId": "la-bete-1991",
-      "file": "new-jersey-newsroom--michael-sommers.json",
-      "score": 74,
-      "publishDate": null,
-      "url": "https://www.newjerseynewsroom.com/movies/populist-and-elitist-views-clash-in-la-bete",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"matthew warchus\" from la-bete-2010"
-        }
-      ]
-    },
-    {
-      "showId": "la-bete-1991",
-      "file": "northjerseycom--robert-feldberg.json",
-      "score": 36,
-      "publishDate": null,
-      "url": "http://www.northjersey.com/arts_entertainment/105010344_Rhyming_couplets__going_nowhere.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"matthew warchus\" from la-bete-2010"
-        }
-      ]
-    },
-    {
-      "showId": "la-cage-aux-folles-1983",
-      "file": "hollywood-reporter--frank-scheck.json",
-      "score": 87,
-      "publishDate": null,
-      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/la-cage-aux-folles-theater-29498/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"terry johnson\" from la-cage-aux-folles-2010"
-        }
-      ]
-    },
-    {
-      "showId": "la-cage-aux-folles-1983",
-      "file": "ny1--roma-torre.json",
-      "score": 87,
-      "publishDate": null,
-      "url": "http://www.ny1.com/7-brooklyn-news-content/ny1_living/117282/ny1-theater-review--la-cage-aux-folles",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"terry johnson\" from la-cage-aux-folles-2010"
-        }
-      ]
-    },
-    {
       "showId": "la-cage-aux-folles-2010",
       "file": "broadwayworld--michael-dale.json",
       "score": 71,
@@ -13510,25 +13306,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"lyttelton\""
-        }
-      ]
-    },
-    {
-      "showId": "les-miserables-2006",
-      "file": "nydailynews--unknown.json",
-      "score": 67,
-      "publishDate": null,
-      "url": "http://www.nydailynews.com/entertainment/music-arts/les-miserables-theater-review-article-1.1729631",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"laurence connor\" from les-miserables-2014"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james powell\" from les-miserables-2014"
         }
       ]
     },
@@ -14164,6 +13941,7 @@
     {
       "showId": "little-bear-ridge-road-2025",
       "file": "suntimes--httpschicagosuntimescomsteven-oxman.json",
+      "score": 76,
       "publishDate": "2024-06-24",
       "url": "https://chicago.suntimes.com/theater/2024/06/24/little-bear-ridge-road-review-steppenwolf-theatre-laurie-metcalf-joe-mantello-micah-stock-in-world-premiere-chicago",
       "findings": [
@@ -14446,34 +14224,6 @@
       ]
     },
     {
-      "showId": "macbeth-1981",
-      "file": "theater-pizzazz--jk-clarke.json",
-      "score": 47,
-      "publishDate": null,
-      "url": "https://www.theaterpizzazz.com/macbeth-2/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam gold\" from macbeth-2022"
-        }
-      ]
-    },
-    {
-      "showId": "macbeth-2008",
-      "file": "ap--jennifer-farrar.json",
-      "score": 81,
-      "publishDate": null,
-      "url": "http://abcnews.go.com/Entertainment/wireStory/review-hawke-broody-monarch-macbeth-20974301",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jack o'brien\" from macbeth-2013"
-        }
-      ]
-    },
-    {
       "showId": "macbeth-2013",
       "file": "variety--mark-fisher.json",
       "score": 87,
@@ -14484,20 +14234,6 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 494d before show (2012-06-18 vs 2013-10-25)"
-        }
-      ]
-    },
-    {
-      "showId": "macbeth-2022",
-      "file": "amny--john-carucci.json",
-      "score": 16,
-      "publishDate": "April 30th, 2022",
-      "url": "http://www.amny.com/urbanite-1.812039/theater-review-macbeth-1-star-1.6476856",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jack o'brien\" from macbeth-2013"
         }
       ]
     },
@@ -14685,6 +14421,7 @@
     {
       "showId": "marjorie-prime-2025",
       "file": "city-am--adam-bloodworth.json",
+      "score": 79,
       "publishDate": "2023-03-16",
       "url": "https://www.cityam.com/marjorie-prime-menier-chocolate-factory-review-a-memory-play-with-astonishing-scope/",
       "findings": [
@@ -14698,6 +14435,7 @@
     {
       "showId": "marjorie-prime-2025",
       "file": "london-theatre--unknown.json",
+      "score": 86,
       "publishDate": "2023-03-16",
       "url": "https://www.londontheatre.co.uk/reviews/marjorie-prime-review-menier-chocolate-factory",
       "findings": [
@@ -16039,6 +15777,7 @@
     {
       "showId": "oedipus-2025",
       "file": "times-square-chronicles--ross.json",
+      "score": 82,
       "publishDate": "2017-10-25",
       "url": "http://t2conline.com/oedipus-el-rey-an-exciting-bare-assed-re-focusing-of-greek-destino-y-amor-maternal/",
       "findings": [
@@ -18443,6 +18182,7 @@
     {
       "showId": "queen-versailles-2025",
       "file": "boston-globe--unknown.json",
+      "score": 76,
       "publishDate": "2024-08-02",
       "url": "https://www.bostonglobe.com/2024/08/02/arts/the-queen-of-versailles-broadway-bound-world-premiere-at-the-colonial/",
       "findings": [
@@ -18456,6 +18196,7 @@
     {
       "showId": "queen-versailles-2025",
       "file": "boston-herald--jed-gottlieb.json",
+      "score": 75,
       "publishDate": "2024-08-05",
       "url": "https://www.bostonherald.com/2024/08/05/chenoweth-goes-for-gold-in-queen-of-versailles/",
       "findings": [
@@ -18828,25 +18569,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"estelle parsons\" from romeo-and-juliet-1986"
-        }
-      ]
-    },
-    {
-      "showId": "romeo-and-juliet-off-broadway-2026",
-      "file": "broadwayworld--unknown.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/reviews/Romeo-and-Juliet",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"david leveaux\" from romeo-and-juliet-2013"
-        },
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2013 (17x) more than 2026 (0x). 2013 matches production: romeo-and-juliet-2013"
         }
       ]
     },
@@ -22589,25 +22311,6 @@
     },
     {
       "showId": "the-book-of-mormon-west-end-2024",
-      "file": "artsdesk--unknown.json",
-      "score": 95,
-      "publishDate": null,
-      "url": "http://www.theartsdesk.com/theatre/book-mormon-prince-wales-theatre",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"casey nicholaw\" from book-of-mormon-2011"
-        }
-      ]
-    },
-    {
-      "showId": "the-book-of-mormon-west-end-2024",
       "file": "financialtimes--ian-shuttleworth.json",
       "score": 78,
       "publishDate": "2013-03-24",
@@ -23008,20 +22711,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "the-cherry-orchard-1977",
-      "file": "northjerseycom--robert-feldberg.json",
-      "score": 44,
-      "publishDate": null,
-      "url": "http://www.northjersey.com/arts-and-entertainment/theater-review-the-cherry-orchard-with-diane-lane-1.1677715",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"simon godwin\" from the-cherry-orchard-2016"
         }
       ]
     },
@@ -23864,34 +23553,6 @@
       "score": 45,
       "publishDate": "2017-03-09",
       "url": "https://www.northjersey.com/story/entertainment/theater/2017/03/09/theater-review-looking-new-glass/98906896/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john tiffany\" from the-glass-menagerie-2013"
-        }
-      ]
-    },
-    {
-      "showId": "the-glass-menagerie-2017",
-      "file": "ny1--unknown.json",
-      "score": 92,
-      "publishDate": null,
-      "url": "https://www.ny1.com/content/lifestyles/theater_reviews/189511/ny1-theater-review---the-glass-menagerie-",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john tiffany\" from the-glass-menagerie-2013"
-        }
-      ]
-    },
-    {
-      "showId": "the-glass-menagerie-2017",
-      "file": "nydailynews--joe-dziemianowicz.json",
-      "score": 92,
-      "publishDate": null,
-      "url": "https://www.nydailynews.com/entertainment/music-arts/glass-menagerie-theater-review-article-1.1467392",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -24755,6 +24416,24 @@
       ]
     },
     {
+      "showId": "the-other-place-off-broadway-2026",
+      "file": "theater-pizzazz--ron.json",
+      "publishDate": null,
+      "url": "https://theaterpizzazz.com/the-secrets-of-the-other-place/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "the-outsiders-2024",
       "file": "latimes--httpswwwlatimescompeoplecharles-mcnulty.json",
       "publishDate": "2023-03-07",
@@ -24770,6 +24449,7 @@
     {
       "showId": "the-outsiders-2024",
       "file": "san-diego-union-tribune--pam-kragen.json",
+      "score": 78,
       "publishDate": "2023-03-06",
       "url": "https://www.sandiegouniontribune.com/entertainment/theater/story/2023-03-06/review-la-jolla-playhouses-the-outsiders-a-faithful-tuneful-and-muscular-homage-to-classic-60s-tale",
       "findings": [
@@ -26379,6 +26059,45 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"tye blue\" from titanique-2026"
+        }
+      ]
+    },
+    {
+      "showId": "titus-andronicus-off-broadway-2026",
+      "file": "dailybeast--tim-teeman.json",
+      "publishDate": "2019-04-22",
+      "url": "http://www.thedailybeast.com/gary-a-sequel-to-titus-andronicus-nathan-lane-cleans-up-broadways-biggest-pile-of-dead-bodies",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 2521d before show (2019-04-22 vs 2026-03-17)"
+        }
+      ]
+    },
+    {
+      "showId": "titus-andronicus-off-broadway-2026",
+      "file": "dctheatrescene--jonathan-mandell.json",
+      "publishDate": "2019-04-21",
+      "url": "http://dctheatrescene.com/2019/04/21/review-of-gary-a-sequel-to-titus-andronicus-with-nathan-lane/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 2522d before show (2019-04-21 vs 2026-03-17)"
+        }
+      ]
+    },
+    {
+      "showId": "titus-andronicus-off-broadway-2026",
+      "file": "deadline--greg-evans.json",
+      "publishDate": "2019-04-22",
+      "url": "http://deadline.com/2019/04/nathan-lane-broadway-review-gary-sequel-titus-andronicus-1202599319/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 2521d before show (2019-04-22 vs 2026-03-17)"
         }
       ]
     },
@@ -35439,6 +35158,20 @@
       ]
     },
     {
+      "showId": "liberation-2025",
+      "file": "theater-pizzazz--unknown.json",
+      "score": 89,
+      "publishDate": "2025-02-20",
+      "url": "https://theaterpizzazz.com/liberate-yourself-and-see-liberation/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 230d before show (2025-02-20 vs 2025-10-08)"
+        }
+      ]
+    },
+    {
       "showId": "life-of-pi-2023",
       "file": "variety--aramide-tinubu.json",
       "score": 89,
@@ -36796,20 +36529,6 @@
       "file": "variety--aramide-tinubu.json",
       "score": 91,
       "publishDate": "July 10, 2024",
-      "url": "https://variety.com/2024/legit/reviews/oh-mary-review-broadway-cole-escola-1236067236/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"lortel\""
-        }
-      ]
-    },
-    {
-      "showId": "oh-mary-2024",
-      "file": "variety--christian-lewis.json",
-      "score": 90,
-      "publishDate": "July 11th, 2024",
       "url": "https://variety.com/2024/legit/reviews/oh-mary-review-broadway-cole-escola-1236067236/",
       "findings": [
         {
