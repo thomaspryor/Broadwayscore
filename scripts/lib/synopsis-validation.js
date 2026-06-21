@@ -67,8 +67,13 @@ const PLOT_SIGNAL_RE = /\b(about|set in|set during|set on|takes place|follows?|f
 // Future-tense theatrical-transfer/premiere language that goes stale the moment a
 // show actually opens ("scheduled to transfer to the West End in 2026" on a show
 // that's now playing). MUST be anchored to a production context (a market, a
-// theatre, or a year) so ordinary plot verbs ("they will run away", "the show
-// will open in Chicago") are NOT misread as stale (ship-check, 2026-06-21).
+// theatre, or a year) WITHIN 40 chars of the verb, so ordinary plot verbs
+// ("they will run away", "the show will open in Chicago") are NOT misread as
+// stale (ship-check, 2026-06-21). The 40-char window is deliberately tight: a
+// very verbose stale sentence (anchor >40 chars after the verb) is a tolerated
+// FALSE NEGATIVE — it just leaves the synopsis as-is. Widening the window is the
+// wrong trade because "theatre"/"Broadway" appearing in PLOT text within range
+// would become a false positive, and stale ones strip the synopsis at deploy.
 // Only stale when paired with an open/closed status.
 const STALE_FUTURE_RE = /\b(scheduled to|set to|is set to|will|due to|expected to|slated to)\s+(transfer|open|begin previews|begin its run|premiere|return|run|play)\b[^.]{0,40}\b(west end|broadway|off-?broadway|theatre|theater|in \d{4})\b/i;
 
