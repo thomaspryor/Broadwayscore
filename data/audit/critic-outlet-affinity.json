@@ -1,12 +1,12 @@
 {
   "_meta": {
     "description": "Critic-outlet affinity audit report",
-    "lastUpdated": "2026-06-21T05:06:35.822Z",
+    "lastUpdated": "2026-06-21T05:29:34.115Z",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 39368,
-    "skippedFiles": 17918,
+    "totalFilesScanned": 39392,
+    "skippedFiles": 17925,
     "totalCritics": 1483,
-    "registryCritics": 528,
+    "registryCritics": 529,
     "flaggedReviews": 18
   },
   "flaggedReviews": [
@@ -107,7 +107,7 @@
       "outletShare": 5,
       "primaryOutlet": "timeout-london",
       "primaryShare": 95,
-      "totalReviews": 57
+      "totalReviews": 58
     },
     {
       "critic": "Andrzej Lukowski",
@@ -118,7 +118,7 @@
       "outletShare": 5,
       "primaryOutlet": "timeout-london",
       "primaryShare": 95,
-      "totalReviews": 57
+      "totalReviews": 58
     },
     {
       "critic": "Andrzej Lukowski",
@@ -129,7 +129,7 @@
       "outletShare": 5,
       "primaryOutlet": "timeout-london",
       "primaryShare": 95,
-      "totalReviews": 57
+      "totalReviews": 58
     },
     {
       "critic": "Pete Hempstead",
@@ -725,9 +725,11 @@
         "nytimes",
         "newsday",
         "washpost",
-        "broadwayworld"
+        "timeout",
+        "broadwayworld",
+        "newyorker"
       ],
-      "totalReviews": 219
+      "totalReviews": 221
     },
     {
       "critic": "Christopher Kelly",
@@ -760,7 +762,7 @@
         "thewrap",
         "nytg"
       ],
-      "totalReviews": 241
+      "totalReviews": 246
     },
     {
       "critic": "Marilyn Stasio.",
@@ -849,9 +851,10 @@
         "scheckontheater",
         "reuters",
         "nypost",
+        "nytg",
         "dtli"
       ],
-      "totalReviews": 189
+      "totalReviews": 190
     },
     {
       "critic": "Melissa Rose Bernardo",
@@ -874,7 +877,7 @@
         "the-queens-courier",
         "talkinbroadway"
       ],
-      "totalReviews": 45
+      "totalReviews": 46
     },
     {
       "critic": "Samuel L. Leiter",
@@ -1094,6 +1097,16 @@
         "stageandcinema"
       ],
       "totalReviews": 66
+    },
+    {
+      "critic": "Alix Cohen",
+      "slug": "alix-cohen",
+      "outlets": [
+        "theater-pizzazz",
+        "woman-around-town",
+        "theater-life"
+      ],
+      "totalReviews": 14
     },
     {
       "critic": "Ron Cohen",
@@ -1406,16 +1419,6 @@
         "stagebiz"
       ],
       "totalReviews": 3
-    },
-    {
-      "critic": "Alix Cohen",
-      "slug": "alix-cohen",
-      "outlets": [
-        "theater-pizzazz",
-        "woman-around-town",
-        "theater-life"
-      ],
-      "totalReviews": 9
     },
     {
       "critic": "Michall Jeffers",
@@ -1770,7 +1773,7 @@
         "theater-pizzazz",
         "la-voce-di-new-york"
       ],
-      "totalReviews": 21
+      "totalReviews": 23
     },
     {
       "critic": "Philip Dorian",
@@ -1943,6 +1946,15 @@
         "newsday"
       ],
       "totalReviews": 5
+    },
+    {
+      "critic": "Roy Berko",
+      "slug": "roy-berko",
+      "outlets": [
+        "royberkinfo",
+        "broadwayworld"
+      ],
+      "totalReviews": 3
     },
     {
       "critic": "Scott Mitchell",
