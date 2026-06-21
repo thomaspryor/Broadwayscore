@@ -3,6 +3,21 @@
   "description": "London-region, non-isDualMarket outlets carrying NYC reviews. Tier 3/untiered Broadway hits are advisory isDualMarket candidates; Tier 1/2 Broadway hits are CI errors; off-Broadway hits are tolerated warnings.",
   "outlets": [
     {
+      "outletId": "artsdesk",
+      "displayName": "The Arts Desk",
+      "tier": 3,
+      "broadwayCount": 2,
+      "offBroadwayCount": 1,
+      "broadwayShows": [
+        "stephen-sondheims-old-friends-2025",
+        "tammy-faye-2024"
+      ],
+      "offBroadwayShows": [
+        "tristan-und-isolde-off-broadway-2026"
+      ],
+      "disposition": "advisory-isDualMarket-candidate"
+    },
+    {
       "outletId": "all-that-dazzles-uk",
       "displayName": "All That Dazzles (UK)",
       "tier": 3,
@@ -25,18 +40,6 @@
       ],
       "offBroadwayShows": [],
       "disposition": "advisory-isDualMarket-candidate"
-    },
-    {
-      "outletId": "artsdesk",
-      "displayName": "The Arts Desk",
-      "tier": 3,
-      "broadwayCount": 0,
-      "offBroadwayCount": 1,
-      "broadwayShows": [],
-      "offBroadwayShows": [
-        "tristan-und-isolde-off-broadway-2026"
-      ],
-      "disposition": "tolerated-off-broadway"
     },
     {
       "outletId": "bachtrack",
