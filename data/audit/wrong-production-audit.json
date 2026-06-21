@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-21T09:44:29.791Z",
+  "timestamp": "2026-06-21T10:23:14.894Z",
   "stats": {
-    "totalReviews": 38704,
+    "totalReviews": 38711,
     "alreadyFlagged": 17027,
-    "dateGuardCatches": 162,
-    "directorMismatch": 889,
-    "tvFilmSignals": 1064,
+    "dateGuardCatches": 164,
+    "directorMismatch": 892,
+    "tvFilmSignals": 1066,
     "londonSignals": 649,
     "offBroadwaySignals": 470,
-    "yearMismatch": 88,
-    "noPublishDate": 3960
+    "yearMismatch": 89,
+    "noPublishDate": 3961
   },
   "findings": [
     {
@@ -9249,6 +9249,19 @@
     },
     {
       "showId": "gypsy-2024",
+      "file": "njcom--httpswwwfacebookcomseptimushodge.json",
+      "publishDate": "2024-12-20",
+      "url": "https://www.nj.com/entertainment/2024/12/gypsy-on-broadway-review-audra-macdonald-gives-a-performance-for-the-ages.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from gypsy-2008"
+        }
+      ]
+    },
+    {
+      "showId": "gypsy-2024",
       "file": "nypost--johnny-oleksinski.json",
       "score": 43,
       "publishDate": "December 20, 2024",
@@ -9445,6 +9458,29 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"arthur laurents\" from gypsy-2008"
+        }
+      ]
+    },
+    {
+      "showId": "gypsy-2024",
+      "file": "thewrap--robert-hofler.json",
+      "publishDate": "2024-12-20",
+      "url": "https://www.thewrap.com/gypsy-broadway-review-audra-mcdonald-george-c-wolfe/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from gypsy-2008"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam mendes\" from gypsy-2003"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2003 (2x) more than 2024 (1x). 2003 matches production: gypsy-2003"
         }
       ]
     },
@@ -21811,6 +21847,24 @@
     },
     {
       "showId": "swept-away-2024",
+      "file": "broadwayworld--httpswwwbroadwayworldcomauthorjake-bridges.json",
+      "publishDate": "2023-12-08",
+      "url": "https://www.broadwayworld.com/washington-dc/article/Review-SWEPT-AWAY-at-Arena-Stage-20231208",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 326d before show (2023-12-08 vs 2024-10-29)"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 6\""
+        }
+      ]
+    },
+    {
+      "showId": "swept-away-2024",
       "file": "deadline--greg-evans.json",
       "score": 85,
       "publishDate": "November 19, 2024",
@@ -21862,6 +21916,24 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "swept-away-2024",
+      "file": "sfist--unknown.json",
+      "publishDate": "2022-01-29",
+      "url": "https://sfist.com/2022/01/28/long-awaited-avett-brothers-scored-musical-swept-away/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1004d before show (2022-01-29 vs 2024-10-29)"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"apple tv\""
         }
       ]
     },
