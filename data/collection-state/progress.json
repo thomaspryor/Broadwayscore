@@ -204,7 +204,9 @@
     "my-neighbour-totoro-west-end-2025/london-theatre--unknown.json",
     "the-great-gatsby-2024/nytimes--unknown.json",
     "la-cage-aux-folles-2010/nydailynews--joe-dziemianowicz.json",
-    "cyrano-de-bergerac-2012/newsday--unknown.json"
+    "cyrano-de-bergerac-2012/newsday--unknown.json",
+    "glengarry-glen-ross-west-end-2026/guardian--susan-sheahan.json",
+    "glengarry-glen-ross-west-end-2026/british-theatre--unknown.json"
   ],
   "failed": [
     "encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
@@ -924,7 +926,15 @@
     "the-little-mermaid-2008/nypost--clive-barnes.json",
     "is-he-dead-2007/nypost--clive-barnes.json",
     "inherit-the-wind-2007/nypost--clive-barnes.json",
-    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json"
+    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+    "sting-west-end-2026/ew--unknown.json",
+    "sting-west-end-2026/newsday--unknown.json",
+    "sting-west-end-2026/west-end-best-friend--unknown.json",
+    "glengarry-glen-ross-west-end-2026/thestage--unknown.json",
+    "are-you-watching-west-end-2026/the-recs--unknown.json",
+    "driftwood-west-end-2026/artsdesk--unknown.json",
+    "driftwood-west-end-2026/standard--nick-curtis.json",
+    "driftwood-west-end-2026/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1045,7 +1055,8 @@
       "american-buffalo-2022/theatermania--kenji-fujishima.json",
       "burlesque-west-end-2026/theatreandtonic--unknown.json",
       "heathers-the-musical-off-broadway-2025/theatrely--unknown.json",
-      "my-neighbour-totoro-west-end-2025/london-theatre--unknown.json"
+      "my-neighbour-totoro-west-end-2025/london-theatre--unknown.json",
+      "glengarry-glen-ross-west-end-2026/british-theatre--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1229,7 +1240,8 @@
       "the-kite-runner-2022/newyorker--elisabeth-vincentelli.json",
       "american-buffalo-2022/timeout--adam-feldman.json",
       "almost-famous-2022/timeout--adam-feldman.json",
-      "cyrano-de-bergerac-2012/newsday--unknown.json"
+      "cyrano-de-bergerac-2012/newsday--unknown.json",
+      "glengarry-glen-ross-west-end-2026/guardian--susan-sheahan.json"
     ],
     "archiveToday": [
       "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
@@ -1246,7 +1258,9 @@
       "data/review-texts/for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/thestage--loren-noveck.json",
       "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
       "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
-      "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json"
+      "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
+      "data/review-texts/glengarry-glen-ross-west-end-2026/thestage--unknown.json",
+      "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json"
     ],
     "archive": [
       "glengarry-glen-ross-west-end-2026/broadwayworld--alexander-cohen.json",
@@ -1305,7 +1319,7 @@
     ]
   },
   "startTime": "2026-06-21T00:42:05.228Z",
-  "lastProcessed": "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+  "lastProcessed": "driftwood-west-end-2026/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-06-21T00:42:21.584Z",
@@ -2762,6 +2776,17 @@
       "t": "2026-06-21T15:02:43.601Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-21T18:51:48.329Z",
+      "event": "bb-session",
+      "session": "02c7fb85",
+      "url": "https://www.thestage.co.uk/reviews/glengarry-glen-ross-review-old-vic-theatre-lo"
+    },
+    {
+      "t": "2026-06-21T18:51:48.755Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
