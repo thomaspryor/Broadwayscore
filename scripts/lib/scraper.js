@@ -27,7 +27,7 @@ const {
   hasCookiesForUrl,
 } = require('./cookie-loader');
 const { fetchWithCookiesPlain } = require('./fetch-plain');
-const { recordBdCall } = require('./bd-telemetry');
+const { recordBdCall, recordSbCall } = require('./bd-telemetry');
 
 // --- Domain-tier-skip: skip providers known to fail for specific domains ---
 // Sourced from collect-review-texts.js empirical data (30K+ collection results).
@@ -328,6 +328,7 @@ async function fetchWithScrapingBee(url, options = {}) {
       }).on('error', reject);
     });
 
+    recordSbCall({ url, fn: renderJs ? 'render' : 'page', success: true, status: 200, credits: creditCost });
     return {
       content: response,
       format: 'html',
@@ -335,6 +336,7 @@ async function fetchWithScrapingBee(url, options = {}) {
     };
   } catch (error) {
     const hostname = (() => { try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return 'unknown'; } })();
+    recordSbCall({ host: hostname, fn: renderJs ? 'render' : 'page', success: false, status: error.message?.slice(0, 80) || 'error', credits: creditCost });
     console.error(`⚠️  ScrapingBee failed (render_js=${renderJs}, domain=${hostname}): ${error.message}`);
     return null;
   }
