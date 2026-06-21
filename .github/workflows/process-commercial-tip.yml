@@ -2,7 +2,7 @@ name: Process Commercial Tip
 
 on:
   issues:
-    types: [opened, edited]
+    types: [opened]
 
 jobs:
   process-tip:
