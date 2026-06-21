@@ -20,7 +20,13 @@
 const https = require('https');
 const path = require('path');
 const fs = require('fs');
-const { chromium } = require('playwright');
+// playwright is lazy-loaded inside fetchWithPlaywright() so that merely
+// requiring this module never needs the package. Several lightweight scraper
+// workflows (update-lbo/seatplan/ltd) run without `npm ci` and only ever use
+// the Bright Data / ScrapingBee HTTP paths — a top-level require('playwright')
+// crashed them with MODULE_NOT_FOUND the moment they imported scraper.js,
+// even though they never reach the browser fallback. See feedback memory.
+let chromium = null;
 const {
   loadCookiesForDomain,
   buildCookieHeaderForUrl,
@@ -437,6 +443,20 @@ async function fetchWithPlaywright(url, options = {}) {
   _scraperStats.pwAttempts++;
   let context = null;
   try {
+    if (!chromium) {
+      try {
+        ({ chromium } = require('playwright'));
+      } catch (e) {
+        // No browser fallback available in this environment (workflow ran
+        // without devDeps installed). Surface a clear, catchable error rather
+        // than a raw MODULE_NOT_FOUND so callers degrade gracefully.
+        throw new Error(
+          'Playwright fallback unavailable — playwright package not installed. ' +
+          'Run `npm ci` (includes devDeps) or add `npx playwright install chromium`. ' +
+          `Underlying: ${e.message}`
+        );
+      }
+    }
     if (!playwright) {
       playwright = await chromium.launch({
         headless: true
