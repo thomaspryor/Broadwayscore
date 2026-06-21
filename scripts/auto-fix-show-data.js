@@ -208,6 +208,7 @@ ${castInfo}
 ${creativeInfo}
 Write in present tense. Focus on the SPECIFIC plot/premise of this show — what is it actually about?
 Do not write generic descriptions that could apply to any show.
+Do NOT open with production history ("X is a play written by Y", "had its world premiere", "transferred to"). Start with the story, setting, or central premise.
 Do not include marketing language or ticket information.
 If you don't know the specific plot, say so rather than writing something vague.
 Just return the synopsis text, nothing else.`;

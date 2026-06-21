@@ -19,8 +19,28 @@ test('isPlaceholderSynopsis flags the 1536-style production-history placeholder'
   assert.equal(isPlaceholderSynopsis(PLACEHOLDER_1536), true);
 });
 
-test('isPlaceholderSynopsis flags "is a musical written by"', () => {
-  assert.equal(isPlaceholderSynopsis('Hamilton is a musical written by Lin-Manuel Miranda.'), true);
+test('isPlaceholderSynopsis flags bare attribution ("is a play written by X.")', () => {
+  assert.equal(
+    isPlaceholderSynopsis('The Hills of California is a play written by British playwright Jez Butterworth.'),
+    true
+  );
+});
+
+test('isPlaceholderSynopsis flags opener + production history (dana-h shape)', () => {
+  assert.equal(
+    isPlaceholderSynopsis('Dana H. is a play written by Lucas Hnath. It premiered on Broadway in 2021, winning two Tony Awards.'),
+    true
+  );
+});
+
+// The critical false-positive guard: a GOOD synopsis that happens to open with
+// "is a play written by X about [plot]" must NOT be flagged (this is what made
+// the LLM backfill reject its own output, 2026-06-21).
+test('isPlaceholderSynopsis does NOT flag "is a play written by X about [plot]"', () => {
+  const good =
+    'John Proctor Is the Villain is a stage play written by Kimberly Belflower, a revisionist take on The Crucible centering on a group of modern-day high school students in rural Georgia who reckon with the play as a #MeToo reckoning unfolds in their own classroom.';
+  assert.equal(isPlaceholderSynopsis(good), false);
+  assert.equal(isValidSynopsis(good), true);
 });
 
 test('isPlaceholderSynopsis does not flag plot text mentioning a play-within', () => {
