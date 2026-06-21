@@ -1,13 +1,119 @@
 {
-  "totalMissing": 374,
-  "phase0UrlsFound": 0,
-  "phase1Recovered": 0,
-  "phase2Recovered": 0,
-  "phase3Recovered": 0,
-  "phase3Scraped": 0,
-  "phase3ScrapeFailed": 0,
-  "byOutlet": {},
-  "errors": 0,
-  "timeBudgetMin": 0,
-  "timeBudgetExhausted": false
+  "totalMissing": 1015,
+  "phase0UrlsFound": 1,
+  "phase1Recovered": 13,
+  "phase2Recovered": 7,
+  "phase3Recovered": 60,
+  "phase3Scraped": 295,
+  "phase3ScrapeFailed": 28,
+  "byOutlet": {
+    "ew": {
+      "phase1": 2,
+      "phase2": 0,
+      "phase3": 2
+    },
+    "nysr": {
+      "phase1": 6,
+      "phase2": 0,
+      "phase3": 0
+    },
+    "times-uk": {
+      "phase1": 3,
+      "phase2": 0,
+      "phase3": 7
+    },
+    "timeout": {
+      "phase1": 1,
+      "phase2": 0,
+      "phase3": 0
+    },
+    "timeout-london": {
+      "phase1": 1,
+      "phase2": 0,
+      "phase3": 2
+    },
+    "guardian": {
+      "phase1": 0,
+      "phase2": 4,
+      "phase3": 0
+    },
+    "theater-life": {
+      "phase1": 0,
+      "phase2": 3,
+      "phase3": 0
+    },
+    "artsdesk": {
+      "phase1": 0,
+      "phase2": 0,
+      "phase3": 5
+    },
+    "i-paper": {
+      "phase1": 0,
+      "phase2": 0,
+      "phase3": 6
+    },
+    "independent": {
+      "phase1": 0,
+      "phase2": 0,
+      "phase3": 6
+    },
+    "broadwayworld": {
+      "phase1": 0,
+      "phase2": 0,
+      "phase3": 1
+    },
+    "standard": {
+      "phase1": 0,
+      "phase2": 0,
+      "phase3": 5
+    },
+    "thestage": {
+      "phase1": 0,
+      "phase2": 0,
+      "phase3": 4
+    },
+    "nypost": {
+      "phase1": 0,
+      "phase2": 0,
+      "phase3": 1
+    },
+    "all-that-dazzles-uk": {
+      "phase1": 0,
+      "phase2": 0,
+      "phase3": 5
+    },
+    "whatsonstage": {
+      "phase1": 0,
+      "phase2": 0,
+      "phase3": 1
+    },
+    "everything-theatre": {
+      "phase1": 0,
+      "phase2": 0,
+      "phase3": 4
+    },
+    "telegraph": {
+      "phase1": 0,
+      "phase2": 0,
+      "phase3": 4
+    },
+    "the-sun": {
+      "phase1": 0,
+      "phase2": 0,
+      "phase3": 2
+    },
+    "thereviewshub": {
+      "phase1": 0,
+      "phase2": 0,
+      "phase3": 3
+    },
+    "theatre-weekly": {
+      "phase1": 0,
+      "phase2": 0,
+      "phase3": 2
+    }
+  },
+  "errors": 20,
+  "timeBudgetMin": 100,
+  "timeBudgetExhausted": true
 }
