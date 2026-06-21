@@ -101,9 +101,14 @@ jobs:
 
       - name: Classify medium-confidence wrong-production flags
         if: inputs.skip_classify_wrong_production != 'true'
+        # Opus, not the Gemini default: Gemini over-accepts garbage for
+        # classification (memory/feedback_llm_verifier_hallucinates.md, ~48% on
+        # garbage); this step --apply's wrongProduction flags, so accuracy wins.
+        # --resume + already-flagged skip means steady-state only NEW reviews hit
+        # the model, so recurring cost tracks review inflow, not 200/run.
         env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: node scripts/classify-wrong-production.js --apply --resume --limit=200 2>&1 | tee -a /tmp/locked-skip.log
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: node scripts/classify-wrong-production.js --apply --resume --limit=200 --provider=opus 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
 
       - name: Classify wrong-show flags (LLM)
