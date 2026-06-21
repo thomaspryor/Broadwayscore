@@ -1,19 +1,21 @@
 {
-  "totalCandidates": 2,
-  "cdxFound": 0,
+  "totalCandidates": 5,
+  "cdxFound": 2,
   "cdxNotFound": 1,
-  "recovered": 0,
+  "recovered": 1,
   "recoveredByTier": {
-    "1": 0,
+    "1": 1,
     "2": 0,
     "3": 0
   },
-  "recoveredByDomain": {},
+  "recoveredByDomain": {
+    "washingtonpost.com": 1
+  },
   "tooShort": 0,
   "garbage": 0,
   "wrongShow": 0,
   "archiveTodayRecovered": 0,
-  "errors": 1,
+  "errors": 2,
   "notInArchive": 1,
   "domainSkipped": 0,
   "circuitBrokenDomains": []
