@@ -75,8 +75,39 @@ function loadJson(p) {
   return JSON.parse(fs.readFileSync(p, 'utf8'));
 }
 
-const report = loadJson(REPORT_PATH);
+// Plausible publish-date window per show (from shows.json), used as a temporal
+// sanity guard so a URL-derived date that's years outside a show's run isn't
+// written (a likely wrong-production/misattributed review or a URL false
+// positive). Generous ±2yr band keeps legitimate out-of-town tryout/transfer
+// dates while rejecting gross mismatches. Missing shows.json → guard is a no-op.
+function buildShowWindowMap() {
+  const showsPath = path.join(REPO_ROOT, 'data', 'shows.json');
+  const map = {};
+  if (!fs.existsSync(showsPath)) return map;
+  let shows;
+  try { shows = loadJson(showsPath).shows || []; } catch { return map; }
+  const yearOf = (d) => { const y = d && new Date(d).getUTCFullYear(); return Number.isFinite(y) ? y : null; };
+  for (const s of shows) {
+    const start = yearOf(s.previewsStartDate) || yearOf(s.openingDate);
+    const end = yearOf(s.closingDate) || yearOf(s.openingDate) || start;
+    if (start == null && end == null) continue;
+    const lo = (start != null ? start : end) - 2;
+    const hi = (end != null ? end : start) + 2;
+    map[s.id] = { lo, hi };
+  }
+  return map;
+}
+
+let report;
+try {
+  report = loadJson(REPORT_PATH);
+} catch (err) {
+  console.error(`ERROR: could not read audit report at ${REPORT_PATH}: ${err.message}`);
+  console.error('(this is a gitignored audit artifact — generate it before running, or check the path)');
+  process.exit(1);
+}
 const entries = (report.categories && report.categories.recoverable_from_url) || [];
+const showWindow = buildShowWindowMap();
 
 console.log(write ? '=== WRITING NULL-DATE FIXES ===' : '=== DRY RUN (pass --write to persist) ===');
 console.log(`Report:        ${REPORT_PATH}`);
@@ -90,10 +121,12 @@ const stats = {
   writtenFullDate: 0,
   writtenYearMonth: 0,
   stillNullUnrecoverable: 0,
+  skippedOutOfWindow: 0,
 };
 const missing = [];
 const unrecoverable = [];
 const written = [];
+const outOfWindow = [];
 
 for (const e of entries) {
   const filePath = path.join(REVIEW_TEXTS_DIR, e.showId, e.filename);
@@ -131,6 +164,19 @@ for (const e of entries) {
     continue;
   }
 
+  // Temporal sanity guard: don't write a date years outside the show's run —
+  // it's most likely a misattributed/wrong-production review or a URL false
+  // positive. Leave null (the pre-script status quo) for human review.
+  const win = showWindow[e.showId];
+  if (win) {
+    const yr = parseInt(date.slice(0, 4), 10);
+    if (yr < win.lo || yr > win.hi) {
+      stats.skippedOutOfWindow++;
+      outOfWindow.push(`${e.showId}/${e.filename}  ->  ${date}  (window ${win.lo}-${win.hi}; left null)`);
+      continue;
+    }
+  }
+
   if (date.length === 7) stats.writtenYearMonth++;
   else stats.writtenFullDate++;
   written.push(`${e.showId}/${e.filename}  ->  ${date}  (${via})`);
@@ -155,6 +201,10 @@ if (missing.length) {
   console.log('\n--- Missing files (review deleted since report) ---');
   for (const m of missing) console.log('  ' + m);
 }
+if (outOfWindow.length) {
+  console.log('\n--- Skipped: date outside show window (left null for human review) ---');
+  for (const o of outOfWindow) console.log('  ' + o);
+}
 
 console.log('\n=== Summary ===');
 console.log(`  total flagged:            ${stats.total}`);
@@ -162,6 +212,7 @@ console.log(`  already had a date:       ${stats.alreadyHadDate}`);
 console.log(`  missing file:             ${stats.missingFile}`);
 console.log(`  written full date:        ${stats.writtenFullDate}`);
 console.log(`  written year-month:       ${stats.writtenYearMonth}`);
+console.log(`  skipped out-of-window:    ${stats.skippedOutOfWindow}`);
 console.log(`  still null (unrecoverable):${stats.stillNullUnrecoverable}`);
 
 const remainingRecoverable = stats.stillNullUnrecoverable;
