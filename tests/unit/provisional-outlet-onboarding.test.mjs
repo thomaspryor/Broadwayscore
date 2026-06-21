@@ -27,20 +27,24 @@ describe('provisionalOutletIdFromHost', () => {
     assert.strictEqual(provisionalOutletIdFromHost('www.ctvoice.com'), 'ctvoice');
   });
 
-  it('uses the publication subdomain for Substack', () => {
-    // The mismap that motivated this: "new-york-notebook" fuzzy-resolved to
+  it('uses the publication subdomain for blog platforms (Substack, WordPress, etc.)', () => {
+    // The mismap that motivated Substack: "new-york-notebook" fuzzy-resolved to
     // vulture (New York Magazine) and the substack domain check then dropped it.
-    assert.strictEqual(
-      provisionalOutletIdFromHost('newyorknotebook.substack.com'),
-      'newyorknotebook'
-    );
+    assert.strictEqual(provisionalOutletIdFromHost('newyorknotebook.substack.com'), 'newyorknotebook');
+    // wordpress.com etc. were producing the junk slug "wordpress" before 2026-06-21.
+    assert.strictEqual(provisionalOutletIdFromHost('pagesonstages.wordpress.com'), 'pagesonstages');
+    assert.strictEqual(provisionalOutletIdFromHost('someblog.blogspot.com'), 'someblog');
   });
 
-  it('handles multi-part TLDs by taking the registrable label', () => {
-    // theatreweekly.co.uk -> "co" is not ideal, but the SLD label here is "co";
-    // we accept the second-to-last label. Document the known limitation: ccTLDs
-    // with a second-level registry yield the registry label. Most outlets in
-    // practice are .com / .org / .substack.com, covered above.
+  it('takes the registrable label before a multi-part ccTLD (not "co")', () => {
+    // Regression: .co.uk hosts produced the junk slug "co" (girl-interrupted
+    // backfill 2026-06-21) — multiple UK shows got an outlet literally named "co".
+    assert.strictEqual(provisionalOutletIdFromHost('londontheatre.co.uk'), 'londontheatre');
+    assert.strictEqual(provisionalOutletIdFromHost('chorley-guardian.co.uk'), 'chorley-guardian');
+    assert.strictEqual(provisionalOutletIdFromHost('example.com.au'), 'example');
+  });
+
+  it('takes the SLD label for plain TLDs', () => {
     assert.strictEqual(provisionalOutletIdFromHost('example.org'), 'example');
   });
 

@@ -166,21 +166,46 @@ function getCvStyle(outletId) {
  * (no fuzzy alias resolution, which would mis-map e.g. "new-york-notebook" to
  * "vulture" via a New York Magazine fuzzy match).
  *
- * Substack publications live on a subdomain (newyorknotebook.substack.com ->
- * "newyorknotebook"); everything else uses the second-level domain label
+ * Blog-platform publications live on a subdomain, so we take the subdomain label
+ * (newyorknotebook.substack.com -> "newyorknotebook", pagesonstages.wordpress.com
+ * -> "pagesonstages"). For everything else we take the registrable label — the
+ * part BEFORE the public suffix — which for a multi-part ccTLD is parts[-3], not
+ * parts[-2] (londontheatre.co.uk -> "londontheatre", NOT "co"; the naive
+ * parts[-2] produced junk outlets literally named "co" and "wordpress",
+ * girl-interrupted backfill 2026-06-21). Plain TLDs use parts[-2]
  * (ctvoice.com -> "ctvoice", 1minutecritic.com -> "1minutecritic").
  *
  * @param {string} host - hostname (with or without leading www.)
  * @returns {string|null} provisional slug, or null if no usable label
  */
+// Blog/newsletter platforms where the publication identity is the SUBDOMAIN, not
+// the platform domain. host "pub.wordpress.com" -> "pub".
+const PROVISIONAL_BLOG_PLATFORMS = [
+  'substack.com', 'wordpress.com', 'blogspot.com', 'medium.com',
+  'tumblr.com', 'squarespace.com', 'wixsite.com', 'ghost.io',
+];
+// Multi-part public suffixes where the registrable label sits one level deeper
+// (so .co.uk/.org.uk/.com.au/etc. don't collapse to "co"/"org"/"com").
+const PROVISIONAL_MULTIPART_SUFFIXES = [
+  'co.uk', 'org.uk', 'me.uk', 'ac.uk', 'gov.uk',
+  'com.au', 'net.au', 'org.au', 'co.nz', 'co.za', 'com.br',
+];
 function provisionalOutletIdFromHost(host) {
   if (!host || typeof host !== 'string') return null;
   const h = host.replace(/^www\./, '').toLowerCase().trim();
   const parts = h.split('.').filter(Boolean);
   if (parts.length < 2) return null;
-  const label = (h.endsWith('.substack.com') && parts.length >= 3)
-    ? parts[0]
-    : parts[parts.length - 2];
+  let label;
+  const platform = PROVISIONAL_BLOG_PLATFORMS.find((p) => h.endsWith('.' + p));
+  if (platform && parts.length >= 3) {
+    // pub.<platform> -> the publication subdomain
+    label = parts[0];
+  } else if (PROVISIONAL_MULTIPART_SUFFIXES.some((s) => h.endsWith('.' + s)) && parts.length >= 3) {
+    // <label>.co.uk -> the label before the 2-part suffix
+    label = parts[parts.length - 3];
+  } else {
+    label = parts[parts.length - 2];
+  }
   const slug = label.replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
   return slug || null;
 }
