@@ -58,6 +58,17 @@ const argv = process.argv.slice(2);
 const DRY_RUN = argv.includes('--dry-run');
 const SHOWS_FILTER = (argv.find(a => a.startsWith('--shows=')) || '').replace('--shows=', '').split(',').filter(Boolean);
 const AMBIGUOUS_DELTA_THRESHOLD_DAYS = 30;
+// "Possibly closed early" signal: broadway.com page matched the show by title
+// but lists ZERO future performances, while the stored closingDate claims the
+// show still runs for at least this many more days. A genuinely-running show
+// would have those near-term performances on its calendar — their total absence
+// means it almost certainly closed earlier than stored. This is the Burnout
+// Paradise class (stored 2026-06-28, actually closed 2026-05-23): an OB show
+// that was never audited AND whose empty calendar was silently dropped to
+// `errors`. Flag for human review instead. Threshold of 5 days avoids
+// false-positives on shows in their final days (calendars can legitimately go
+// empty when the last performances sell out / drop off the on-sale window).
+const POSSIBLY_CLOSED_MIN_DAYS = 5;
 // Cap auto-applied extensions per run. Broadway.com calendar windows
 // expand in ~3-month chunks, so any single observed jump > 180d is more
 // likely a parseScheduleDates() false-positive (e.g. promo banner showing
@@ -217,6 +228,12 @@ async function notifyNotion(ambiguous, todayStr) {
   // the discovered date AND its sources so the human reviewer doesn't repeat
   // the same SERP search the audit just did.
   const rows = ambiguous.map(a => {
+    if (a.action === 'POSSIBLY_CLOSED_NEEDS_REVIEW') {
+      // Empty calendar while stored date is still days/weeks out → likely
+      // already closed (no latestScheduled to report). |delta| = days the
+      // stored date is still in the future.
+      return `- **${a.id}** (POSSIBLY-CLOSED): stored=${a.stored} (${Math.abs(a.delta)}d out) but broadway.com lists NO future performances — likely closed earlier than stored. ${a.url}`;
+    }
     const action = a.action === 'EXTENSION_EXCEEDS_CAP_NEEDS_REVIEW' ? 'EXTENSION-CAP' : 'EARLIER';
     let line = `- **${a.id}** (${action}): stored=${a.stored}, broadway.com schedule ends ${a.latestScheduled} (${a.delta}d). ${a.url}`;
     if (a.tripleSignalConflict) {
@@ -277,6 +294,16 @@ async function main() {
   console.log(`Mode: ${DRY_RUN ? 'DRY RUN' : 'LIVE'}`);
 
   const data = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
+  // Broadway only. broadway.com reliably lists the full performance calendar
+  // for Broadway shows, but NOT for Off-Broadway: empirically (2026-06-21
+  // probe) 4/5 running OB shows returned zero future dates and the OB slug
+  // pattern often doesn't resolve (broadway.com uses /shows/heathers-the-musical/
+  // not /heathers-the-musical-off-broadway/). Extending this audit to OB
+  // therefore produces false "possibly closed" flags on shows that are running
+  // (Heathers, stored 2026-09-30, is open and extended — it got falsely flagged
+  // in that probe). OB/WE closing-date verification needs a different source
+  // (Playbill / TodayTix production pages) — tracked as a separate gap; do NOT
+  // shoehorn it onto broadway.com. See memory/feedback_closing_date_audit_gaps.md.
   const candidates = data.shows.filter(s => {
     if (s.status !== 'open' || s.category !== 'broadway') return false;
     if (OPEN_RUN_SKIP.has(s.id)) return false;
@@ -302,7 +329,24 @@ async function main() {
         continue;
       }
       if (!r.latest) {
-        errors.push({ id: show.id, reason: 'no_future_dates_on_schedule', url: r.url });
+        // Title matched the broadway.com page but it lists ZERO future
+        // performances. If the show claims to still be running for a clear
+        // stretch (stored close is a future date >= POSSIBLY_CLOSED_MIN_DAYS
+        // out), it almost certainly closed earlier than stored — the Burnout
+        // Paradise class. Flag for human review rather than dropping silently
+        // to errors. Allowlisted human-verified dates short-circuit.
+        const daysUntilStored = show.closingDate
+          ? Math.round((new Date(show.closingDate) - new Date(TODAY)) / 86400000)
+          : null;
+        if (show.closingDate && daysUntilStored >= POSSIBLY_CLOSED_MIN_DAYS && !isAllowlisted(show.id, show.closingDate)) {
+          ambiguous.push({
+            id: show.id, name: show.name, stored: show.closingDate,
+            latestScheduled: null, url: r.url, delta: -daysUntilStored,
+            action: 'POSSIBLY_CLOSED_NEEDS_REVIEW',
+          });
+        } else {
+          errors.push({ id: show.id, reason: 'no_future_dates_on_schedule', url: r.url });
+        }
         continue;
       }
 
