@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-21T00:45:45.527Z",
-  "processed": 3,
-  "failed": 7,
-  "successRate": "30.0%",
+  "updatedAt": "2026-06-21T00:47:23.562Z",
+  "processed": 6,
+  "failed": 9,
+  "successRate": "40.0%",
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 5,
     "amp": 0,
-    "browserbase": 6,
+    "browserbase": 8,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 1,
     "archive": 0
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
       "t": "2026-06-21T00:42:21.584Z",
@@ -69,6 +69,28 @@
       "t": "2026-06-21T00:45:04.220Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-21T00:46:15.715Z",
+      "event": "bb-session",
+      "session": "dc696d26",
+      "url": "https://www.nytimes.com/2026/06/01/arts/andy-halliday-dead.html"
+    },
+    {
+      "t": "2026-06-21T00:46:16.700Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-21T00:46:54.097Z",
+      "event": "bb-session",
+      "session": "32cd6c1f",
+      "url": "https://www.nytimes.com/2026/05/31/theater/othello-review-wendell-pierce.html"
+    },
+    {
+      "t": "2026-06-21T00:46:55.048Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
