@@ -86,7 +86,7 @@ function run() {
   const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR).filter(d =>
     fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory());
 
-  let flagged = 0, skippedFlagged = 0, skippedOperator = 0, skippedNoDate = 0, skippedInWindow = 0, skippedPriorRun = 0, noShow = 0, noWindow = 0;
+  let flagged = 0, hardened = 0, skippedFlagged = 0, skippedOperator = 0, skippedNoDate = 0, skippedInWindow = 0, skippedPriorRun = 0, noShow = 0, noWindow = 0;
   const details = [];
 
   for (const showDir of showDirs) {
@@ -103,10 +103,10 @@ function run() {
       let data;
       try { data = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { continue; }
 
-      // Already excluded — nothing to do.
-      if (data.wrongProduction === true || data.wrongShow === true) { skippedFlagged++; continue; }
       // Genuine operator entry with a typed score — never touch.
       if (data.humanReviewScore != null) { skippedOperator++; continue; }
+      // wrongShow is a different (stronger) classification — leave it alone.
+      if (data.wrongShow === true) { skippedFlagged++; continue; }
 
       const pub = bestDate(data);
       if (!pub) { skippedNoDate++; continue; }
@@ -119,18 +119,32 @@ function run() {
       const outOfWindow = daysBefore > THRESHOLD_DAYS || daysAfter > THRESHOLD_DAYS;
       if (!outOfWindow) { skippedInWindow++; continue; }
 
+      // Durability key: a wrongProductionReason makes shouldAutoClearWrongProduction
+      // a no-op (hasManualReason short-circuits it) EVEN WHEN poison override fields
+      // are present. So we do NOT strip the override fields — they are in the
+      // per-file protectedFields lock and rebuild's write-back just restores them,
+      // an unwinnable fight. Setting a durable reason is sufficient and rebuild-proof.
+      // A review already flagged WITH a durable reason needs nothing — skip it
+      // (don't clobber legit historical / CV / pre-opening-guard provenance).
+      const r = data.wrongProductionReason || '';
+      const hasDurableReason = !!r && r !== 'anticipatory_pre_opening_post' && !/^CV-/.test(r);
+      const alreadyFlagged = data.wrongProduction === true;
+      if (alreadyFlagged && hasDurableReason) { skippedFlagged++; continue; }
+
+      // Reaches here = out-of-window contamination that is unflagged, or flagged
+      // but not yet durable (would be auto-cleared by a poison override on rebuild).
       const dir = daysBefore > THRESHOLD_DAYS ? 'EARLY' : 'LATE';
       const diff = dir === 'EARLY' ? Math.round(daysBefore) : Math.round(daysAfter);
-      details.push({ showDir, file, date: data.publishDate || pub.toISOString().slice(0, 10), dir, diff, outlet: data.outlet || '?', score: data.assignedScore });
+      details.push({ showDir, file, date: data.publishDate || pub.toISOString().slice(0, 10), dir, diff, outlet: data.outlet || '?', score: data.assignedScore, action: alreadyFlagged ? 'make-durable' : 'flag' });
       flagged++;
+      if (alreadyFlagged) hardened++;
 
       if (!DRY_RUN) {
         data.wrongProduction = true;
         data.wrongProductionReason = 'audit-2026-06-21-prior-production-contamination';
-        data.wrongProductionNote = `Operator-trust contamination remediation (Notion 386637c5): review dated ${data.publishDate || pub.toISOString().slice(0, 10)} is ${diff}d ${dir === 'EARLY' ? 'before show window start' : 'after show close'} ${earliestStr} and not within any declared priorRun — different production leaked onto this entry by automated ingest stamping operator override fields.`;
-        for (const f of OVERRIDE_FIELDS) delete data[f];
-        if (Array.isArray(data.protectedFields)) {
-          data.protectedFields = data.protectedFields.filter(f => !OVERRIDE_FIELDS.includes(f));
+        // Preserve an existing note (e.g. a date-guard / CV note); only add ours when absent.
+        if (!data.wrongProductionNote) {
+          data.wrongProductionNote = `Operator-trust contamination remediation (Notion 386637c5): review dated ${data.publishDate || pub.toISOString().slice(0, 10)} is ${diff}d ${dir === 'EARLY' ? 'before show window start' : 'after show close'} ${earliestStr} and not within any declared priorRun — different production leaked onto this entry by automated ingest stamping operator override fields.`;
         }
         fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
       }
@@ -150,7 +164,7 @@ function run() {
 
   console.log(`\n--- Summary (threshold ${THRESHOLD_DAYS}d outside [earliest-14d, close+${DAYS_AFTER_CLOSE}d]) ---`);
   console.log(`Shows affected:                 ${sorted.length}`);
-  console.log(`${DRY_RUN ? 'Would flag' : 'Flagged'} (contamination):       ${flagged}`);
+  console.log(`${DRY_RUN ? 'Would flag' : 'Flagged'} (contamination):       ${flagged}  (new flag: ${flagged - hardened}, harden existing: ${hardened})`);
   console.log(`Skipped — already flagged:      ${skippedFlagged}`);
   console.log(`Skipped — operator humanScore:  ${skippedOperator}`);
   console.log(`Skipped — within priorRun:      ${skippedPriorRun}`);
