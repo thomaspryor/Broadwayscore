@@ -76,8 +76,23 @@ const testAuthOnly = args.includes('--test-auth');
 
 // --- HTTP helpers ---
 
+// Node's fetch has NO default timeout: a stalled external API (PageSpeed, GSC) would
+// otherwise hang the entire weekly run until GitHub's 360-min job ceiling — the check
+// silently never completes and never alerts. Wrap every outbound call with an
+// AbortController so one dead connection can't stall the whole run. (Observed
+// 2026-06-21: a run sat 20+ min on the script step before being cancelled.)
+async function fetchT(url, options = {}, timeoutMs = 30000) {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+  try {
+    return await globalThis.fetch(url, { ...options, signal: ctrl.signal });
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 async function gscFetch(url, token, options = {}) {
-  const response = await fetch(url, {
+  const response = await fetchT(url, {
     ...options,
     headers: {
       Authorization: `Bearer ${token}`,
@@ -111,7 +126,7 @@ async function testAuth(serviceAccount) {
   try {
     const token = await getAccessToken(serviceAccount, SCOPE_WEBMASTERS);
     const siteUrl = encodeURIComponent(SITE_URL_GSC);
-    const res = await fetch(
+    const res = await fetchT(
       `https://www.googleapis.com/webmasters/v3/sites/${siteUrl}/sitemaps`,
       { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -224,7 +239,7 @@ async function checkIndexCoverage(token, sampleUrls) {
 
   for (const url of sampleUrls) {
     try {
-      const result = await fetch(
+      const result = await fetchT(
         'https://searchconsole.googleapis.com/v1/urlInspection/index:inspect',
         {
           method: 'POST',
@@ -353,7 +368,7 @@ async function checkNewPages(token) {
   for (const show of newShows) {
     const url = `${SITE_HOST}/show/${show.slug}`;
     try {
-      const result = await fetch(
+      const result = await fetchT(
         'https://searchconsole.googleapis.com/v1/urlInspection/index:inspect',
         {
           method: 'POST',
@@ -376,7 +391,7 @@ async function checkNewPages(token) {
           if (remaining > 0) {
             try {
               const indexToken = await getAccessToken(loadServiceAccount(), SCOPE_INDEXING);
-              const submitRes = await fetch(
+              const submitRes = await fetchT(
                 'https://indexing.googleapis.com/v3/urlNotifications:publish',
                 {
                   method: 'POST',
@@ -434,7 +449,7 @@ async function checkStalePages(token) {
 
   for (const url of sample) {
     try {
-      const result = await fetch(
+      const result = await fetchT(
         'https://searchconsole.googleapis.com/v1/urlInspection/index:inspect',
         {
           method: 'POST',
@@ -469,7 +484,7 @@ async function checkStalePages(token) {
       try {
         const indexToken = await getAccessToken(loadServiceAccount(), SCOPE_INDEXING);
         for (let i = 0; i < budget; i++) {
-          const res = await fetch(
+          const res = await fetchT(
             'https://indexing.googleapis.com/v3/urlNotifications:publish',
             {
               method: 'POST',
@@ -557,7 +572,7 @@ async function submitHighValuePages(token) {
   try {
     const indexToken = await getAccessToken(loadServiceAccount(), SCOPE_INDEXING);
     for (let i = 0; i < budget; i++) {
-      const res = await fetch(
+      const res = await fetchT(
         'https://indexing.googleapis.com/v3/urlNotifications:publish',
         {
           method: 'POST',
@@ -670,7 +685,9 @@ async function checkCoreWebVitals() {
   for (const url of CWV_PAGES) {
     try {
       const apiUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(url)}&category=PERFORMANCE&strategy=MOBILE${psKey ? `&key=${psKey}` : ''}`;
-      const response = await fetch(apiUrl);
+      // PageSpeed runs a full Lighthouse audit server-side; legitimately slow. Give it
+      // 60s (vs the 30s default) before aborting so we don't false-timeout a real result.
+      const response = await fetchT(apiUrl, {}, 60000);
 
       if (!response.ok) {
         if (response.status === 429) {
@@ -944,7 +961,7 @@ async function checkRichResults(token) {
   for (const slug of RICH_RESULTS_SLUGS) {
     const inspectionUrl = `${SITE_HOST}/show/${slug}`;
     try {
-      const res = await fetch('https://searchconsole.googleapis.com/v1/urlInspection/index:inspect', {
+      const res = await fetchT('https://searchconsole.googleapis.com/v1/urlInspection/index:inspect', {
         method: 'POST',
         // NO X-Goog-User-Project header: service-account JWT auth bills quota to the
         // SA's own project. Pointing the header at a different project (cowriter-27499)
@@ -1004,7 +1021,7 @@ async function main() {
 
   try {
     const siteUrl = encodeURIComponent(SITE_URL_GSC);
-    const testRes = await fetch(
+    const testRes = await fetchT(
       `https://www.googleapis.com/webmasters/v3/sites/${siteUrl}/sitemaps`,
       { headers: { Authorization: `Bearer ${wmToken}` } }
     );
