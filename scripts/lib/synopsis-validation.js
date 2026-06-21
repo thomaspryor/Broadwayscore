@@ -54,13 +54,23 @@ const PLACEHOLDER_OPENER_RE = /\bis (a|an) (stage play|musical|play|new play|new
 // Production-history sentences that mark a placeholder when no plot is present.
 const PRODUCTION_HISTORY_RE = /\b(had its world premiere|world[- ]?premiered?|premiered (at|in|on)|opened (at|on|in)|scheduled to (transfer|open|begin)|will transfer|transferred (to|from)|is set to (open|transfer|premiere)|made its [^.]{0,30}(debut|premiere)|originally (ran|opened|premiered|produced))\b/i;
 
-// A synopsis this short with the bare attribution opener has no room for a plot.
+// A synopsis this short with the bare attribution opener AND no plot signal has
+// no room for a plot. The plot-signal guard is essential: "The Guest is a play
+// written by Jane Doe about a grieving son..." is a GOOD short synopsis and must
+// not be flagged just for being under the length bound (ship-check, 2026-06-21).
 const BARE_ATTRIBUTION_MAX = 130;
 
-// Future-tense transfer/open/premiere language that goes stale the moment a show
-// actually opens ("scheduled to transfer to the West End in 2026" on a show
-// that's now playing). Only stale when paired with an open/closed status.
-const STALE_FUTURE_RE = /\b(scheduled to|set to|is set to|will|due to|expected to|slated to)\s+(transfer|open|begin|premiere|run|play)\b/i;
+// Phrases that signal a synopsis actually describes the plot (setting, premise,
+// characters, conflict). If any are present, the text is not a bare placeholder.
+const PLOT_SIGNAL_RE = /\b(about|set in|set during|set on|takes place|follows?|following|centers? on|centres? on|tells the (story|tale)|story of|tale of|in which|when |after |during |explores?|chronicles?|depicts?|portrays?|examines?|recounts?|charts?|traces?|where )\b/i;
+
+// Future-tense theatrical-transfer/premiere language that goes stale the moment a
+// show actually opens ("scheduled to transfer to the West End in 2026" on a show
+// that's now playing). MUST be anchored to a production context (a market, a
+// theatre, or a year) so ordinary plot verbs ("they will run away", "the show
+// will open in Chicago") are NOT misread as stale (ship-check, 2026-06-21).
+// Only stale when paired with an open/closed status.
+const STALE_FUTURE_RE = /\b(scheduled to|set to|is set to|will|due to|expected to|slated to)\s+(transfer|open|begin previews|begin its run|premiere|return|run|play)\b[^.]{0,40}\b(west end|broadway|off-?broadway|theatre|theater|in \d{4})\b/i;
 
 const LIVE_STATUSES = new Set(['open', 'now-playing', 'closed']);
 
@@ -88,8 +98,10 @@ function isPlaceholderSynopsis(text) {
   if (!PLACEHOLDER_OPENER_RE.test(text)) return false;
   // Opener + production history (premiere/transfer) → placeholder.
   if (PRODUCTION_HISTORY_RE.test(text)) return true;
-  // Opener + nothing else of substance → bare attribution placeholder.
-  if (text.trim().length < BARE_ATTRIBUTION_MAX) return true;
+  // Opener + short + NO plot signal → bare attribution placeholder. The plot
+  // signal guard prevents nulling good short synopses like "X is a play written
+  // by Y about [premise]".
+  if (text.trim().length < BARE_ATTRIBUTION_MAX && !PLOT_SIGNAL_RE.test(text)) return true;
   return false;
 }
 
