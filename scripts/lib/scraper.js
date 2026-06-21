@@ -20,7 +20,13 @@
 const https = require('https');
 const path = require('path');
 const fs = require('fs');
-const { chromium } = require('playwright');
+// playwright is lazy-loaded inside fetchWithPlaywright() so that merely
+// requiring this module never needs the package. Several lightweight scraper
+// workflows (update-lbo/seatplan/ltd) run without `npm ci` and only ever use
+// the Bright Data / ScrapingBee HTTP paths — a top-level require('playwright')
+// crashed them with MODULE_NOT_FOUND the moment they imported scraper.js,
+// even though they never reach the browser fallback. See feedback memory.
+let chromium = null;
 const {
   loadCookiesForDomain,
   buildCookieHeaderForUrl,
@@ -437,6 +443,20 @@ async function fetchWithPlaywright(url, options = {}) {
   _scraperStats.pwAttempts++;
   let context = null;
   try {
+    if (!chromium) {
+      try {
+        ({ chromium } = require('playwright'));
+      } catch (e) {
+        // No browser fallback available in this environment (workflow ran
+        // without devDeps installed). Surface a clear, catchable error rather
+        // than a raw MODULE_NOT_FOUND so callers degrade gracefully.
+        throw new Error(
+          'Playwright fallback unavailable — playwright package not installed. ' +
+          'Run `npm ci` (includes devDeps) or add `npx playwright install chromium`. ' +
+          `Underlying: ${e.message}`
+        );
+      }
+    }
     if (!playwright) {
       playwright = await chromium.launch({
         headless: true
@@ -510,27 +530,6 @@ async function fetchWithPlaywright(url, options = {}) {
 }
 
 /**
- * Unwrap Google redirect wrappers (e.g. `https://www.google.com/url?q=<real>&sa=D&...`),
- * which appear when a URL is scraped from Google Docs/Sheets/editors exports or a SERP
- * link that escaped the discovery-time unwrap in url-discovery.js. Such a URL fetches the
- * Google chrome rather than the article (→ scraper_garbage), silently dropping a real
- * review (e.g. grace-pervades / The Stage, 2026-06). Idempotent and no-op for normal URLs.
- *
- * @param {string} url
- * @returns {string} the unwrapped target URL, or the input unchanged
- */
-function unwrapRedirectUrl(url) {
-  if (typeof url !== 'string') return url;
-  if (!/\/\/(www\.)?google\.[^/]+\/url\?/.test(url)) return url;
-  try {
-    const params = new URL(url).searchParams;
-    const target = params.get('q') || params.get('url');
-    if (target && /^https?:\/\//.test(target)) return target;
-  } catch (_) { /* malformed URL — fall through */ }
-  return url;
-}
-
-/**
  * Fetch a page with automatic fallback
  *
  * @param {string} url - URL to fetch
@@ -540,7 +539,6 @@ function unwrapRedirectUrl(url) {
  * @returns {Promise<{content: string, format: 'html'|'markdown', source: string}>}
  */
 async function fetchPage(url, options = {}) {
-  url = unwrapRedirectUrl(url);
   const preferPlaywright = options.preferPlaywright || false;
   const isPublicSite = _isPlaywrightFirstDomain(url);
   const skips = _getDomainSkips(url);
@@ -914,6 +912,5 @@ module.exports = {
   getScraperStats,
   verifyFetchedUrl,
   recordUrlMismatch,
-  unwrapRedirectUrl,
   get sbCreditsLow() { return _sbCreditsLow; },
 };
