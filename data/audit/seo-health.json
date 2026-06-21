@@ -9,74 +9,69 @@
     "priorImpressions": 81441
   },
   "indexCoverage": {
-    "indexed": 49,
-    "notIndexed": 1,
+    "indexed": 50,
+    "notIndexed": 0,
     "total": 50,
-    "rate": 98,
-    "issues": [
-      {
-        "url": "https://broadwayscorecard.com/show/fun-home-2015",
-        "verdict": "NEUTRAL",
-        "coverageState": "Crawled - currently not indexed"
-      }
-    ]
+    "rate": 100,
+    "issues": []
   },
   "sitemapStatus": {
+    "orphanDeleted": false,
     "count": 10,
     "sitemaps": [
       {
         "path": "https://broadwayscorecard.com/sitemap/8.xml",
         "errors": "0",
         "warnings": "0",
-        "lastSubmitted": "2026-06-21T08:52:24.811Z"
+        "lastSubmitted": "2026-06-21T17:40:55.516Z"
       },
       {
         "path": "https://broadwayscorecard.com/sitemap/7.xml",
         "errors": "0",
         "warnings": "0",
-        "lastSubmitted": "2026-06-21T08:52:24.605Z"
+        "lastSubmitted": "2026-06-21T17:40:55.449Z"
       },
       {
         "path": "https://broadwayscorecard.com/sitemap/6.xml",
         "errors": "0",
         "warnings": "0",
-        "lastSubmitted": "2026-06-21T08:52:24.195Z"
+        "lastSubmitted": "2026-06-21T17:40:55.383Z"
       },
       {
         "path": "https://broadwayscorecard.com/sitemap/5.xml",
         "errors": "0",
         "warnings": "0",
-        "lastSubmitted": "2026-06-21T08:52:23.856Z"
+        "lastSubmitted": "2026-06-21T17:40:55.320Z"
       },
       {
         "path": "https://broadwayscorecard.com/sitemap/4.xml",
         "errors": "0",
         "warnings": "0",
-        "lastSubmitted": "2026-06-21T08:52:23.536Z"
+        "lastSubmitted": "2026-06-21T17:40:55.135Z"
       },
       {
         "path": "https://broadwayscorecard.com/sitemap/3.xml",
         "errors": "0",
         "warnings": "0",
-        "lastSubmitted": "2026-06-21T08:52:23.335Z"
+        "lastSubmitted": "2026-06-21T17:40:55.050Z"
       },
       {
         "path": "https://broadwayscorecard.com/sitemap/2.xml",
         "errors": "0",
         "warnings": "0",
-        "lastSubmitted": "2026-06-21T08:52:23.129Z"
+        "lastSubmitted": "2026-06-21T17:40:54.989Z"
       },
       {
         "path": "https://broadwayscorecard.com/sitemap/1.xml",
         "errors": "0",
         "warnings": "0",
-        "lastSubmitted": "2026-06-21T08:52:22.752Z"
+        "lastSubmitted": "2026-06-21T17:40:54.921Z"
       },
       {
         "path": "https://broadwayscorecard.com/sitemap/0.xml",
         "errors": "0",
         "warnings": "0",
-        "lastSubmitted": "2026-06-21T08:52:22.286Z"
+        "lastSubmitted": "2026-06-21T17:40:54.838Z"
       },
       {
         "path": "https://broadwayscorecard.com/sitemap.xml",
@@ -94,8 +89,8 @@
   },
   "stalePages": {
     "sampled": 100,
-    "stale": 30,
-    "resubmitted": 30
+    "stale": 27,
+    "resubmitted": 27
   },
   "targetKeywords": [
     {
@@ -204,40 +199,101 @@
       "ctr": 0
     }
   ],
-  "coreWebVitals": [],
-  "anomalies": [
+  "coreWebVitals": [
     {
-      "type": "clicks_drop",
-      "severity": "error",
-      "message": "Clicks down 26% vs 4-week avg (853 vs avg 1152)"
+      "url": "https://broadwayscorecard.com/",
+      "lcp": 797,
+      "fid": null,
+      "cls": 0,
+      "inp": 112,
+      "performanceScore": 69,
+      "lcpLab": 8525,
+      "clsLab": 0,
+      "tbt": 197
+    },
+    {
+      "url": "https://broadwayscorecard.com/browse/best-broadway-musicals",
+      "lcp": 1077,
+      "fid": null,
+      "cls": 0,
+      "inp": 118,
+      "performanceScore": 87,
+      "lcpLab": 3408,
+      "clsLab": 0,
+      "tbt": 173
+    },
+    {
+      "url": "https://broadwayscorecard.com/show/hamilton",
+      "lcp": 1077,
+      "fid": null,
+      "cls": 0,
+      "inp": 118,
+      "performanceScore": 68,
+      "lcpLab": 9451,
+      "clsLab": 0.000019,
+      "tbt": 131
+    },
+    {
+      "url": "https://broadwayscorecard.com/west-end",
+      "lcp": 1077,
+      "fid": null,
+      "cls": 0,
+      "inp": 118,
+      "performanceScore": 80,
+      "lcpLab": 4242,
+      "clsLab": 0.13612400000000002,
+      "tbt": 109
+    },
+    {
+      "url": "https://broadwayscorecard.com/off-broadway",
+      "lcp": 1077,
+      "fid": null,
+      "cls": 0,
+      "inp": 118,
+      "performanceScore": 92,
+      "lcpLab": 2851,
+      "clsLab": 0.059638000000000004,
+      "tbt": 190
     }
   ],
-  "quotaUsedToday": 80,
+  "anomalies": [
+    {
+      "type": "cwv_lighthouse_low",
+      "severity": "error",
+      "message": "Lighthouse score below 70 on /: 69/100"
+    },
+    {
+      "type": "cwv_lighthouse_low",
+      "severity": "error",
+      "message": "Lighthouse score below 70 on /show/hamilton: 68/100"
+    }
+  ],
+  "quotaUsedToday": 157,
   "richResults": [
     {
       "slug": "schmigadoon",
-      "verdict": "ERROR",
-      "error": "403"
+      "verdict": "PASS",
+      "types": "Breadcrumbs, Events, Review snippets"
     },
     {
       "slug": "the-lost-boys",
-      "verdict": "ERROR",
-      "error": "403"
+      "verdict": "PASS",
+      "types": "Breadcrumbs, Events, Review snippets"
     },
     {
       "slug": "cats-the-jellicle-ball",
-      "verdict": "ERROR",
-      "error": "403"
+      "verdict": "PASS",
+      "types": "Breadcrumbs, Events, Review snippets"
     },
     {
       "slug": "death-of-a-salesman-2024",
-      "verdict": "ERROR",
-      "error": "403"
+      "verdict": "UNKNOWN",
+      "types": "none"
     },
     {
       "slug": "dog-day-afternoon",
-      "verdict": "ERROR",
-      "error": "403"
+      "verdict": "PASS",
+      "types": "Breadcrumbs, Events, Review snippets"
     }
   ]
 }
