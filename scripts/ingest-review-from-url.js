@@ -230,6 +230,13 @@ function extractByline(html) {
     process.exit(1);
   }
 
+  // operatorTrust:false — a URL ingest (automated audit-aggregator-gap, or the
+  // public submit-review-form) is NOT an operator vouching for the review. It must
+  // stay subject to wrong-production / cross-market / date guards. Stamping the
+  // operator override set here made machine-ingested aggregator URLs immune to
+  // every guard (2026-06-21 contamination; Notion 386637c5). Genuine operator
+  // entry with a typed score goes through ingest-manual-review.js (operatorTrust
+  // default true).
   const fields = buildManualReviewFields({
     humanScore: null,
     provisional: false,
@@ -237,6 +244,7 @@ function extractByline(html) {
     originalScore: null,
     originalScoreSource: null,
     publishDate: publishDate,
+    operatorTrust: false,
   });
 
   const result = createOrMergeReviewFile(showId, {

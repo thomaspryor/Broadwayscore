@@ -103,7 +103,9 @@ async function main() {
       const collision = detectIngestCollision({ showDir, outletId: 'loureviews', criticName: 'Louise Penn', url: p.link, publishDate, forceClearStale: false });
       if (!collision.ok) { summary.collisions++; console.log(`  collision ${m.showId}: ${collision.reason}`); continue; }
       if (dryRun) { summary.ingested++; console.log(`  [dry] would ingest ${m.showId} <- ${parsed.showTitle} (${text.length}c, ${publishDate})`); continue; }
-      const fields = buildManualReviewFields({ humanScore: null, provisional: false, fullText: text, originalScore: null, originalScoreSource: null, publishDate });
+      // operatorTrust:false — automated poller, not an operator vouching for the
+      // review. Stays subject to all guards (see manual-review-fields.js; Notion 386637c5).
+      const fields = buildManualReviewFields({ humanScore: null, provisional: false, fullText: text, originalScore: null, originalScoreSource: null, publishDate, operatorTrust: false });
       const result = createOrMergeReviewFile(m.showId, {
         outletId: 'loureviews', outlet: 'LouReviews', criticName: 'Louise Penn',
         url: p.link, source: 'loureviews-poller', fields,
