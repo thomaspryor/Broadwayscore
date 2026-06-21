@@ -164,6 +164,7 @@ function getShowInfo(showId) {
 
 let _scrapingBeeSerpExhausted = false;
 let _brightDataConsecutiveFailures = 0;
+let _scrapingdogSerpFailures = 0;
 const MAX_CONSECUTIVE_FAILURES = 5;
 
 // Rolling window health tracking for ScrapingBee SERP
@@ -203,7 +204,11 @@ function _resolveGeo(query, override) {
  * falls through to BD/SB). Bake-off 2026-06-21 confirmed clean organic results.
  */
 async function _serpViaScrapingdog(query, log, dateRange, geo) {
-  if (!USE_SCRAPINGDOG || !SCRAPINGDOG_API_KEY) return null;
+  // Circuit breaker (mirrors BD/SB SERP): once Scrapingdog SERP has failed
+  // MAX_CONSECUTIVE_FAILURES times in a row this run, stop trying it first so a
+  // degraded provider doesn't burn a credit + latency on every query before the
+  // BD/SB fallback runs. Resets to 0 on any success.
+  if (!USE_SCRAPINGDOG || !SCRAPINGDOG_API_KEY || _scrapingdogSerpFailures >= MAX_CONSECUTIVE_FAILURES) return null;
   const axios = require('axios');
   let q = query;
   if (dateRange) {
@@ -217,6 +222,7 @@ async function _serpViaScrapingdog(query, log, dateRange, geo) {
     });
     const data = response.data || {};
     const organic = data.organic_results || data.organic_data || [];
+    _scrapingdogSerpFailures = 0;
     recordSdCall({ host: 'serp.scrapingdog', fn: 'serp', success: true, status: 200, credits: 5 });
     return organic.slice(0, 10).map(r => ({
       url: r.link || r.url || '',
@@ -224,8 +230,9 @@ async function _serpViaScrapingdog(query, log, dateRange, geo) {
       snippet: r.description || r.snippet || '',
     })).filter(r => r.url);
   } catch (error) {
+    _scrapingdogSerpFailures++;
     recordSdCall({ host: 'serp.scrapingdog', fn: 'serp', success: false, status: error.response?.status || (error.message || 'error').slice(0, 80), credits: 5 });
-    log(`    ✗ Scrapingdog SERP error: ${error.message} — falling back to BD/SB`);
+    log(`    ✗ Scrapingdog SERP error (${_scrapingdogSerpFailures}/${MAX_CONSECUTIVE_FAILURES}): ${error.message} — falling back to BD/SB`);
     return null;
   }
 }
