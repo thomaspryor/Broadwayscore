@@ -33,6 +33,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const { extractDateFromUrl } = require('./lib/rebuild-helpers');
+const { safeWriteReview } = require('./lib/review-write-guard');
 
 const REPO_ROOT = path.join(__dirname, '..');
 const REPORT_PATH = path.join(REPO_ROOT, 'data', 'audit', 'null-dates-report.json');
@@ -138,7 +139,9 @@ for (const e of entries) {
     data.publishDate = date;
     data.publishDateRecoveredVia = via;
     data.publishDateRecoveredFrom = 'null-dates-report';
-    fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
+    // Route through the guard (preserves PROTECTED_FIELDS) — direct
+    // fs.writeFileSync to review-texts is blocked by the lint-workflows gate.
+    safeWriteReview(filePath, data);
   }
 }
 
