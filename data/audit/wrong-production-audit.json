@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-21T19:18:06.033Z",
+  "timestamp": "2026-06-21T19:56:30.882Z",
   "stats": {
-    "totalReviews": 38872,
-    "alreadyFlagged": 17312,
+    "totalReviews": 38891,
+    "alreadyFlagged": 17317,
     "dateGuardCatches": 34,
     "directorMismatch": 861,
     "tvFilmSignals": 1057,
     "londonSignals": 641,
     "offBroadwaySignals": 463,
     "yearMismatch": 80,
-    "noPublishDate": 3899
+    "noPublishDate": 3900
   },
   "findings": [
     {
@@ -5929,7 +5929,8 @@
     {
       "showId": "doubt-2024",
       "file": "this-week-in-new-york--unknown.json",
-      "publishDate": null,
+      "score": 81,
+      "publishDate": "2024-03-07",
       "url": "https://twi-ny.com/2024/03/07/john-patrick-shanley-doubt-a-parable-brooklyn-laundry/",
       "findings": [
         {
@@ -8092,7 +8093,7 @@
       "file": "independent--alice-saville.json",
       "score": 58,
       "publishDate": "2026-06-18",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html?loginSuccessful=true",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -8267,7 +8268,7 @@
       "file": "whatsonstage--sarah-crompton.json",
       "score": 76,
       "publishDate": "2026-06-18",
-      "url": "https://www.whatsonstage.com/news/glengarry-glen-ross-review-all-female-revival-in-the-round-at-the-old-vic_1725353/",
+      "url": "https://www.whatsonstage.com/london-theatre/reviews/glengarry-glen-ross-playhouse-christian-slater_45105.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -8808,6 +8809,7 @@
     {
       "showId": "gypsy-2024",
       "file": "njcom--httpswwwfacebookcomseptimushodge.json",
+      "score": 95,
       "publishDate": "2024-12-20",
       "url": "https://www.nj.com/entertainment/2024/12/gypsy-on-broadway-review-audra-macdonald-gives-a-performance-for-the-ages.html",
       "findings": [
@@ -9022,6 +9024,7 @@
     {
       "showId": "gypsy-2024",
       "file": "thewrap--robert-hofler.json",
+      "score": 80,
       "publishDate": "2024-12-20",
       "url": "https://www.thewrap.com/gypsy-broadway-review-audra-mcdonald-george-c-wolfe/",
       "findings": [
@@ -12526,6 +12529,7 @@
     {
       "showId": "la-cage-aux-folles-2010",
       "file": "nydailynews--joe-dziemianowicz.json",
+      "score": 78,
       "publishDate": "2010-04-19",
       "url": "http://www.nydailynews.com/entertainment/music/2010/04/19/2010-04-19_kelsey_grammer_brings_warmth_with_and_respectable_singing_to_fun_la_cage_aux_fol.html",
       "findings": [
@@ -23022,7 +23026,8 @@
     {
       "showId": "the-other-place-off-broadway-2026",
       "file": "theater-pizzazz--ron.json",
-      "publishDate": null,
+      "score": 80,
+      "publishDate": "2026-02-11",
       "url": "https://theaterpizzazz.com/the-secrets-of-the-other-place/",
       "findings": [
         {
@@ -33762,6 +33767,7 @@
     {
       "showId": "merrily-we-roll-along-2023",
       "file": "forbes--darryn-king.json",
+      "score": 92,
       "publishDate": "2023-10-10",
       "url": "https://www.forbes.com/sites/darrynking/2023/10/10/merrily-we-roll-along-breaks-the-heart-and-fills-it-up-on-broadway/",
       "findings": [
@@ -36351,6 +36357,7 @@
     {
       "showId": "stephen-sondheims-old-friends-2025",
       "file": "artsdesk--unknown.json",
+      "score": 92,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/stephen-sondheims-old-friends-gielgud-theatre-review-exuberant-gala-nonstop-virtuosity",
       "findings": [
@@ -37334,6 +37341,7 @@
     {
       "showId": "tammy-faye-2024",
       "file": "artsdesk--unknown.json",
+      "score": 78,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/tammy-faye-almeida-theatre-review-elton-johns-often-dazzling-new-musical",
       "findings": [
