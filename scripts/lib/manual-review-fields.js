@@ -50,6 +50,17 @@ function buildManualReviewFields(opts = {}) {
     originalScore = null,
     originalScoreSource = null,
     publishDate = null,
+    // operatorTrust=true (default) → a human operator vouched for this review
+    // (interactive ingest-manual-review.js): apply the full override set that
+    // exempts it from wrong-production / cross-market / date guards.
+    // operatorTrust=false → AUTOMATED / public-form ingest (audit-aggregator-gap
+    // → ingest-review-from-url, poll-loureviews): build a NORMAL review subject
+    // to every guard. Stamping operator trust on machine-ingested aggregator URLs
+    // made them immune to wrong-production detection and re-admitted prior-
+    // production / cross-market contamination on every rebuild (2026-06-21:
+    // 335 reviews / 160 shows — Stranger Things West End reviews on the Broadway
+    // entry, Devil Wears Prada Chicago tryout on the WE entry). Notion 386637c5.
+    operatorTrust = true,
   } = opts;
 
   const fields = {};
@@ -57,10 +68,11 @@ function buildManualReviewFields(opts = {}) {
   if (fullText) {
     fields.fullText = fullText;
     fields.textFetchedAt = new Date().toISOString();
-    fields.fetchMethod = 'manual-entry';
-    // Lock content tier so rebuild doesn't reclassify.
-    // Skip when there's no text — "complete" would be a lie.
-    fields.manualContentTier = 'complete';
+    // Operator manual entry records 'manual-entry' + locks the content tier so
+    // rebuild doesn't reclassify. Automated URL ingest must NOT lie about either:
+    // it is subject to normal content classification and all inclusion guards.
+    fields.fetchMethod = operatorTrust ? 'manual-entry' : 'url-ingest';
+    if (operatorTrust) fields.manualContentTier = 'complete';
   }
 
   if (humanScore) {
@@ -72,57 +84,62 @@ function buildManualReviewFields(opts = {}) {
     fields.humanReviewScoreProvisional = !!provisional;
   }
 
-  // Full protection field set — missing any one means a different guard re-flags the review.
-  // These survive rebuild scoring, content reclassification, wrong-production flagging,
-  // wrong-show classification, pre-opening date guards, tour/film-signal guards, and
-  // cross-market re-routing. The Beaches 2026-04-22 opening silently dropped 4 reviews
-  // because this block only set 3 of the needed fields.
-  fields.wrongProduction = false;
-  fields.wrongProductionManualClear = true;
-  fields.wrongProductionOverride = true;
-  fields.wrongShow = false;
-  fields.wrongShowManualClear = true;
-  fields.wrongArticleManualClear = true;
-  fields.humanReviewedWrongProduction = false;
-  fields.humanReviewedWrongArticle = false;
-  fields.allowEarlyDate = true;
-  fields.allowLateDate = true;
-  fields.allowCrossMarket = true;
-  fields.allowTourSignal = true;
-  fields.allowFilmSignal = true;
-  fields.contentVerification = {
-    wrongProduction: false,
-    wrongArticle: false,
-  };
+  // OPERATOR-TRUST OVERRIDE SET — applied ONLY when a human operator vouched for
+  // this review (operatorTrust=true, the default). Missing any one means a
+  // different guard re-flags the review. These survive rebuild scoring, content
+  // reclassification, wrong-production flagging, wrong-show classification,
+  // pre-opening date guards, tour/film-signal guards, and cross-market re-routing.
+  // The Beaches 2026-04-22 opening silently dropped 4 reviews because this block
+  // only set 3 of the needed fields. Automated callers pass operatorTrust=false
+  // and skip this entirely so the review stays subject to every guard.
+  if (operatorTrust) {
+    fields.wrongProduction = false;
+    fields.wrongProductionManualClear = true;
+    fields.wrongProductionOverride = true;
+    fields.wrongShow = false;
+    fields.wrongShowManualClear = true;
+    fields.wrongArticleManualClear = true;
+    fields.humanReviewedWrongProduction = false;
+    fields.humanReviewedWrongArticle = false;
+    fields.allowEarlyDate = true;
+    fields.allowLateDate = true;
+    fields.allowCrossMarket = true;
+    fields.allowTourSignal = true;
+    fields.allowFilmSignal = true;
+    fields.contentVerification = {
+      wrongProduction: false,
+      wrongArticle: false,
+    };
 
-  // Per-file protection lock — unions with global PROTECTED_FIELDS in
-  // review-write-guard.js so these exact fields can't be silently dropped
-  // on rebase even if one of them is later removed from the global list.
-  // See memory/feedback_per_file_protected_fields_lock.md (Beaches 2026-04-22).
-  fields.protectedFields = [
-    'humanReviewScore',
-    'humanReviewScoreProvisional',
-    'manualContentTier',
-    'wrongProduction',
-    'wrongProductionManualClear',
-    'wrongProductionOverride',
-    'wrongShow',
-    'wrongShowManualClear',
-    'wrongArticleManualClear',
-    'humanReviewedWrongProduction',
-    'humanReviewedWrongArticle',
-    'allowEarlyDate',
-    'allowLateDate',
-    'allowCrossMarket',
-    'allowTourSignal',
-    'allowFilmSignal',
-    'contentVerification',
-    'fullText',
-    'textFetchedAt',
-    'originalScore',
-    'originalScoreSource',
-    'originalScoreNormalized',
-  ];
+    // Per-file protection lock — unions with global PROTECTED_FIELDS in
+    // review-write-guard.js so these exact fields can't be silently dropped
+    // on rebase even if one of them is later removed from the global list.
+    // See memory/feedback_per_file_protected_fields_lock.md (Beaches 2026-04-22).
+    fields.protectedFields = [
+      'humanReviewScore',
+      'humanReviewScoreProvisional',
+      'manualContentTier',
+      'wrongProduction',
+      'wrongProductionManualClear',
+      'wrongProductionOverride',
+      'wrongShow',
+      'wrongShowManualClear',
+      'wrongArticleManualClear',
+      'humanReviewedWrongProduction',
+      'humanReviewedWrongArticle',
+      'allowEarlyDate',
+      'allowLateDate',
+      'allowCrossMarket',
+      'allowTourSignal',
+      'allowFilmSignal',
+      'contentVerification',
+      'fullText',
+      'textFetchedAt',
+      'originalScore',
+      'originalScoreSource',
+      'originalScoreNormalized',
+    ];
+  }
 
   if (originalScore) {
     fields.originalScore = originalScore;

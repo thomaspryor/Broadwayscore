@@ -3118,6 +3118,13 @@ function validateReviewTextQuality(shows) {
   const PLACEHOLDER_NAMES = new Set(['unknown', 'tba', 'tbd', 'tbc', 'n/a', 'na', 'anonymous']);
   const showCreativeTeam = {};  // showId -> Set of lowercase names
   const showCast = {};          // showId -> Set of lowercase names
+
+  // Show lookup + date helpers for the prior-production-by-date backstop (CHECK 0).
+  const showById = {};
+  for (const show of shows) if (show && show.id) showById[show.id] = show;
+  const { earliestShowDate } = require('./lib/date-guard');
+  const { isWithinPriorRun } = require('./lib/wrong-production-autoclear');
+  const { parseDate: parseReviewDate } = require('./lib/date-utils');
   for (const show of shows) {
     showCreativeTeam[show.id] = new Set();
     showCast[show.id] = new Set();
@@ -3167,6 +3174,30 @@ function validateReviewTextQuality(shows) {
 
       // Skip already-flagged reviews
       if (data.wrongShow || data.wrongProduction || data.wrongUrl || data.duplicateOf || data.isRoundupArticle || data.isNotReview) continue;
+
+      // CHECK 0: prior/other-production contamination by date. A review whose
+      // publishDate predates the show's earliest date by >180 days, is not within
+      // a declared priorRuns window, and has no genuine operator humanReviewScore,
+      // is almost always a review of a DIFFERENT production of the same title that
+      // leaked onto this entry. This is the backstop for the 2026-06-21
+      // audit-aggregator-gap / operator-trust contamination (Notion 386637c5):
+      // operator-trust override fields (allowEarlyDate/allowCrossMarket) used to
+      // hide these from every guard, so this check deliberately ignores them.
+      // Escape hatch: declare a priorRun, or it's a genuine operator entry.
+      const wfShow = showById[showDir];
+      if (wfShow && data.publishDate && !data.humanReviewScore) {
+        const pub = parseReviewDate(data.publishDate);
+        const earliestStr = earliestShowDate(wfShow);
+        const earliestD = earliestStr ? parseReviewDate(earliestStr) : null;
+        if (pub && earliestD && !isNaN(pub.getTime()) && !isNaN(earliestD.getTime())) {
+          const daysBefore = (earliestD.getTime() - pub.getTime()) / 86400000;
+          if (daysBefore > 180 && !isWithinPriorRun(pub, wfShow.priorRuns)) {
+            error(`[wrong-production-by-date] ${showDir}/${file}: review dated ${data.publishDate} is ${Math.round(daysBefore)}d before the show's earliest date ${earliestStr} and not within any declared priorRun — likely a different production leaked onto this entry (set wrongProduction:true, or declare a priorRun)`);
+            issues++;
+            continue;
+          }
+        }
+      }
 
       const critic = (data.criticName || '').trim();
       const outlet = (data.outlet || '').trim();

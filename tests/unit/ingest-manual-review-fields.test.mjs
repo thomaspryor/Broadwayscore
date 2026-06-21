@@ -113,3 +113,52 @@ test('publishDate is passed through when supplied', () => {
   const fields = buildManualReviewFields({ humanScore: 80, publishDate: '2026-04-22' });
   assert.equal(fields.publishDate, '2026-04-22');
 });
+
+// --- operatorTrust gate (2026-06-21, Notion 386637c5) ---------------------
+// Automated callers (audit-aggregator-gap → ingest-review-from-url,
+// poll-loureviews) must NOT stamp the operator override set. Doing so made
+// machine-ingested aggregator URLs immune to wrong-production / cross-market /
+// date guards and re-admitted 335 contaminated reviews across 160 shows.
+
+// Every override field that exempts a review from a downstream guard.
+const OVERRIDE_FIELDS = [
+  'wrongProduction', 'wrongProductionManualClear', 'wrongProductionOverride',
+  'wrongShow', 'wrongShowManualClear', 'wrongArticleManualClear',
+  'humanReviewedWrongProduction', 'humanReviewedWrongArticle',
+  'allowEarlyDate', 'allowLateDate', 'allowCrossMarket',
+  'allowTourSignal', 'allowFilmSignal', 'contentVerification',
+];
+
+test('operatorTrust defaults to true (genuine manual path keeps full override set)', () => {
+  const fields = buildManualReviewFields({ fullText: 'x'.repeat(500) });
+  assertCore8(fields, { expectManualContentTier: true });
+  assert.equal(fields.fetchMethod, 'manual-entry');
+  assert.ok(Array.isArray(fields.protectedFields));
+});
+
+test('operatorTrust:false omits EVERY override field — review stays subject to guards', () => {
+  const fields = buildManualReviewFields({
+    fullText: 'An automated aggregator-gap ingest of a review URL. '.repeat(20),
+    publishDate: '2023-12-14',
+    operatorTrust: false,
+  });
+  for (const f of OVERRIDE_FIELDS) {
+    assert.equal(fields[f], undefined, `operatorTrust:false must NOT set ${f}`);
+  }
+  // No per-file protection lock either — nothing to protect; it's a normal review.
+  assert.equal(fields.protectedFields, undefined, 'operatorTrust:false must not write a protectedFields lock');
+  // And it must not lie about being a manual entry / content-complete.
+  assert.equal(fields.fetchMethod, 'url-ingest', 'automated ingest records url-ingest, not manual-entry');
+  assert.equal(fields.manualContentTier, undefined, 'automated ingest must not lock content tier');
+});
+
+test('operatorTrust:false still records the real review payload', () => {
+  const fields = buildManualReviewFields({
+    fullText: 'y'.repeat(500),
+    publishDate: '2024-05-01',
+    operatorTrust: false,
+  });
+  assert.ok(fields.fullText, 'fullText preserved');
+  assert.ok(fields.textFetchedAt, 'textFetchedAt preserved');
+  assert.equal(fields.publishDate, '2024-05-01', 'publishDate preserved');
+});
