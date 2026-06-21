@@ -1,5 +1,3 @@
-# hygiene-push-ok: commits to the PRIVATE core-data repo checkout (/tmp/core-data-checkout),
-# not the public origin; new dated file per week so a simple fetch+rebase retry is sufficient.
 name: Snapshot Audience History
 
 # Year-round weekly snapshot of the FULL audience-buzz corpus (all shows, all
@@ -10,8 +8,9 @@ name: Snapshot Audience History
 # PRIVACY: audience-buzz is competitive data — it is gitignored in the public
 # repo and lives only in the PRIVATE core-data repo (purge-archives-history.yml
 # scrubbed it from public history). These snapshots are the same data, so they
-# are written into the PRIVATE repo (thomaspryor/broadway-scorecard-data), NOT
-# committed to the public repo like the Tony-only data/audience-snapshots/.
+# are written into the PRIVATE repo (thomaspryor/broadway-scorecard-data) via
+# the canonical push-core-data action, NOT committed to the public repo like
+# the Tony-only data/audience-snapshots/.
 
 on:
   schedule:
@@ -51,17 +50,19 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Snapshot full audience history into the private repo
-        env:
-          CORE_DATA_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Write snapshot into the core-data checkout
+        id: snap
         run: |
           set -euo pipefail
 
           SNAP_DATE="${{ inputs.date }}"
           if [ -z "$SNAP_DATE" ]; then SNAP_DATE="$(date -u +%Y-%m-%d)"; fi
 
-          # checkout-core-data cloned the private repo to /tmp/core-data-checkout
-          # with an authenticated origin. Write the snapshot straight into it.
+          # checkout-core-data cloned the private repo to /tmp/core-data-checkout.
+          # Write the snapshot there; the push-core-data action below does
+          # `git add -A` in that dir, so it commits + pushes this new file
+          # through the canonical reconciliation-aware path (handles concurrent
+          # pushers from the other ~60 workflows that write the private repo).
           CHECKOUT=/tmp/core-data-checkout
           if [ ! -d "$CHECKOUT/.git" ]; then
             echo "::error::private core-data checkout missing — checkout-core-data must run first"
@@ -75,30 +76,13 @@ jobs:
           # checkout-core-data); freshness-guarded inside the script.
           node scripts/snapshot-audience-full.js $DATE_ARG --out="$CHECKOUT/audience-history/${SNAP_DATE}.json"
 
-          cd "$CHECKOUT"
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add "audience-history/${SNAP_DATE}.json"
-          if git diff --cached --quiet; then
-            echo "No change for ${SNAP_DATE} — snapshot already current"
-            exit 0
-          fi
-          git commit -m "snapshot: audience history ${SNAP_DATE}"
+          echo "date=$SNAP_DATE" >> "$GITHUB_OUTPUT"
 
-          # Push to the PRIVATE repo. Each weekly file is new, so the only
-          # conflict is unrelated commits landing first — fetch + rebase keeps
-          # both. Retry with jitter for the concurrent-pusher case.
-          for attempt in 1 2 3 4 5; do
-            if git push origin HEAD:main; then
-              echo "Pushed audience-history/${SNAP_DATE}.json to private repo (attempt $attempt)"
-              exit 0
-            fi
-            echo "::warning::push failed (attempt $attempt/5) — rebasing on remote and retrying"
-            git fetch origin main && git rebase origin/main || git rebase --abort || true
-            sleep $((RANDOM % 8 + 3))
-          done
-          echo "::error::Failed to push audience-history snapshot after 5 attempts"
-          exit 1
+      - name: Push snapshot to the private core-data repo
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Audience history snapshot ${{ steps.snap.outputs.date }}"
 
       - name: Notify on failure
         if: failure()
