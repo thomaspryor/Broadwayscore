@@ -13,6 +13,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { classifyBadSynopsis } = require('./lib/synopsis-validation');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const GROSSES_FILE = path.join(__dirname, '..', 'data', 'grosses.json');
@@ -120,9 +121,15 @@ function checkShowCompleteness(show) {
     issues.push({ type: 'missing_thumbnail', severity: 'low' });
   }
 
-  // Synopsis
-  if (!show.synopsis || show.synopsis.length < 50) {
-    issues.push({ type: 'missing_synopsis', severity: 'high' });
+  // Synopsis — absent, refusal, generic placeholder, stale future-tense, or
+  // otherwise invalid (accessibility/marketing/truncated). Length alone is not
+  // enough — see classifyBadSynopsis in lib/synopsis-validation.js.
+  const syn = classifyBadSynopsis(show);
+  if (syn.bad) {
+    const type = syn.reason === 'placeholder' ? 'placeholder_synopsis'
+      : syn.reason === 'stale' ? 'stale_synopsis'
+      : 'missing_synopsis';
+    issues.push({ type, severity: 'high' });
   }
 
   // Ticket links (only for open shows)
@@ -318,7 +325,7 @@ function printReport(report) {
     console.log('DATA QUALITY ISSUES (open shows):');
     console.log('-'.repeat(40));
 
-    const severityOrder = ['missing_poster', 'missing_synopsis', 'missing_tickets', 'missing_hero', 'missing_cast', 'missing_creative', 'missing_thumbnail', 'missing_runtime', 'missing_age_rec', 'no_closing_date'];
+    const severityOrder = ['missing_poster', 'missing_synopsis', 'placeholder_synopsis', 'stale_synopsis', 'missing_tickets', 'missing_hero', 'missing_cast', 'missing_creative', 'missing_thumbnail', 'missing_runtime', 'missing_age_rec', 'no_closing_date'];
     const sortedTypes = issueTypes.sort((a, b) => severityOrder.indexOf(a) - severityOrder.indexOf(b));
 
     for (const type of sortedTypes) {
