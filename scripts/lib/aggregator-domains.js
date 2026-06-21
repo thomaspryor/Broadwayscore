@@ -76,9 +76,50 @@ function isAggregatorUrlMismatch(url, outletId) {
   return AGGREGATOR_DOMAINS.has(hostname) && !AGGREGATOR_OUTLET_IDS.has(normId);
 }
 
+// `source` values that mean a review was discovered via an aggregator roundup.
+// These legitimately carry the aggregator's URL at ingest (they get the outlet's
+// own URL later, or are stored as aggregatorStars star-stubs). Single source of
+// truth shared by both URL guards in gather-reviews.js createReviewFile.
+function isAggregatorReviewSource(source) {
+  if (!source || typeof source !== 'string') return false;
+  return (
+    source.startsWith('westendtheatre') ||
+    source.startsWith('theatre-reviews') ||
+    source.startsWith('stagedoor') ||
+    source.startsWith('thestage-roundup') ||
+    source.startsWith('lbo') ||
+    source === 'show-score' ||
+    source === 'dtli'
+  );
+}
+
+/**
+ * Should createReviewFile REFUSE to write this review because it would create an
+ * aggregator_url_mismatch contamination file?
+ *
+ * Block ONLY the contamination class: a non-aggregator-source path (serp-discovery,
+ * generic/manual) attaching an aggregator-domain URL to a real outlet with NO score
+ * to preserve. We must NOT block:
+ *   - aggregator-source writes (they legitimately carry the aggregator URL), nor
+ *   - any write carrying a real star/score (blocking would drop a legit aggregator
+ *     star-stub — the regression caught in review 2026-06-21).
+ *
+ * @param {object} reviewData - {source, originalScore, aggregatorStars, url}
+ * @param {string} normalizedOutletId
+ */
+function shouldSkipAggregatorUrlWrite(reviewData, normalizedOutletId) {
+  if (!reviewData) return false;
+  if (isAggregatorReviewSource(reviewData.source)) return false;
+  const hasScore = reviewData.originalScore != null || reviewData.aggregatorStars != null;
+  if (hasScore) return false;
+  return isAggregatorUrlMismatch(reviewData.url, normalizedOutletId);
+}
+
 module.exports = {
   AGGREGATOR_DOMAINS,
   AGGREGATOR_OUTLET_IDS,
+  isAggregatorReviewSource,
+  shouldSkipAggregatorUrlWrite,
   hostnameOf,
   isAggregatorUrlMismatch,
 };

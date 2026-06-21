@@ -64,7 +64,7 @@ const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview, isWro
 const { isWithinPriorRun } = require('./lib/wrong-production-autoclear');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isBroadwayUrl } = require('./lib/venue-classification');
-const { isAggregatorUrlMismatch } = require('./lib/aggregator-domains');
+const { isAggregatorUrlMismatch, isAggregatorReviewSource, shouldSkipAggregatorUrlWrite } = require('./lib/aggregator-domains');
 const { classifyMarketRouting, buildSiblingIndex } = require('./lib/market-routing');
 const { isBWWRoundupContent, validateBWWRoundupUrlMatchesShow, isCloudflareChallenge } = require('./lib/bww-roundup-validator');
 const { parseArticleBodyReviews } = require('./lib/bww-roundup-parser');
@@ -3137,18 +3137,25 @@ function createReviewFile(showId, reviewData, options = {}) {
     }
   }
 
+  // EXCEPTION shared by the two URL guards below: aggregator-sourced reviews
+  // legitimately carry the aggregator's roundup URL (not the outlet's own URL) at
+  // ingest — they get their real outlet URL later via text collection / SERP
+  // discovery, or are stored as aggregatorStars star-stubs and tagged
+  // isRoundupArticle/wrongShow/wrongProduction by downstream enrichment (which is
+  // why the validator skips them). Those skip-flags are NOT set yet at write time,
+  // so the guards must not block these or we drop legitimate WE star ratings.
+  const isAggregatorSource = isAggregatorReviewSource(reviewData.source);
+
   // AGGREGATOR-URL MISMATCH CHECK: refuse to write a stub whose url is on a known
   // aggregator domain (theatre.reviews, show-score.com, stagedoor.com, …) but whose
-  // outletId is a real outlet (chichester-observer, guardian-uk, …). That is exactly
-  // the aggregator_url_mismatch ERROR class validate-review-texts.js flags — serp-discovery
+  // outletId is a real outlet (chichester-observer, guardian-uk, …) — the
+  // aggregator_url_mismatch ERROR class validate-review-texts.js flags. serp-discovery
   // kept recreating it and held main red for 2 days (one instance deleted 2026-06-15,
-  // 3d54cb4797). Legit aggregator star-stubs (outletId IS an aggregator) are unaffected.
-  // This guard is unconditional — unlike the OUTLET_DOMAINS check below it does NOT have an
-  // aggregator-source exception, because there is no legitimate case where a real outlet's
-  // review URL lives on an aggregator domain. Shared predicate keeps it in lockstep with
-  // the validator (scripts/lib/aggregator-domains.js).
-  if (isAggregatorUrlMismatch(reviewData.url, normalizedOutletId)) {
-    console.log(`    ✗ Skipping ${filename}: aggregator-domain URL (${reviewData.url}) for non-aggregator outlet "${normalizedOutletId}" — would create an aggregator_url_mismatch contamination file`);
+  // 3d54cb4797). shouldSkipAggregatorUrlWrite is value-first + source-aware: it blocks
+  // ONLY contentless, non-aggregator-source writes (serp-discovery), never an
+  // aggregator-source write or one carrying a real star/score.
+  if (shouldSkipAggregatorUrlWrite(reviewData, normalizedOutletId)) {
+    console.log(`    ✗ Skipping ${filename}: aggregator-domain URL (${reviewData.url}) for non-aggregator outlet "${normalizedOutletId}" (source=${reviewData.source || 'none'}, no score) — would create an aggregator_url_mismatch contamination file`);
     return 'aggregatorUrlMismatch';
   }
 
@@ -3156,15 +3163,6 @@ function createReviewFile(showId, reviewData, options = {}) {
   // This catches bad SERP results, aggregator URLs (BWW roundup for a broadwaynews review), etc.
   // EXCEPTION: Aggregator-sourced reviews use the aggregator's roundup URL, not the outlet's URL.
   // These get their real outlet URL later via text collection / SERP discovery.
-  const isAggregatorSource = reviewData.source && (
-    reviewData.source.startsWith('westendtheatre') ||
-    reviewData.source.startsWith('theatre-reviews') ||
-    reviewData.source.startsWith('stagedoor') ||
-    reviewData.source.startsWith('thestage-roundup') ||
-    reviewData.source.startsWith('lbo') ||
-    reviewData.source === 'show-score' ||
-    reviewData.source === 'dtli'
-  );
   if (reviewData.url && normalizedOutletId && !isAggregatorSource) {
     const expectedDomain = OUTLET_DOMAINS[normalizedOutletId];
     if (expectedDomain) {
