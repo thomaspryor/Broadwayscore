@@ -35,6 +35,22 @@ const REFUSAL_PATTERNS = [
   /\bas a (large )?language model\b/i,
 ];
 
+// Generic "production-history placeholder" — describes who wrote it / where it
+// premiered / that it's transferring, with no actual plot. The canonical shape
+// is "<title> is a (stage) play/musical written by <name>." These pass the
+// length/refusal/marketing checks but tell a reader nothing about the show.
+// 1536 sat live with one of these for weeks (fixed 2026-06-21) because the only
+// gate was length. Anchored on "is a … written by" so plot text that merely
+// mentions a play-within-a-play ("a play written by his late wife") is safe.
+const PLACEHOLDER_RE = /\bis (a|an) (stage play|musical|play|new play|new musical|production)\b[^.]*\bwritten by\b/i;
+
+// Future-tense transfer/open/premiere language that goes stale the moment a show
+// actually opens ("scheduled to transfer to the West End in 2026" on a show
+// that's now playing). Only stale when paired with an open/closed status.
+const STALE_FUTURE_RE = /\b(scheduled to|set to|is set to|will|due to|expected to|slated to)\s+(transfer|open|begin|premiere|run|play)\b/i;
+
+const LIVE_STATUSES = new Set(['open', 'now-playing', 'closed']);
+
 /**
  * Returns the first matching refusal pattern, or null.
  * @param {string} text
@@ -46,6 +62,50 @@ function detectRefusalPattern(text) {
     if (pattern.test(text)) return pattern;
   }
   return null;
+}
+
+/**
+ * True if the text is a generic production-history placeholder rather than a
+ * plot synopsis.
+ * @param {string} text
+ * @returns {boolean}
+ */
+function isPlaceholderSynopsis(text) {
+  if (!text || typeof text !== 'string') return false;
+  return PLACEHOLDER_RE.test(text);
+}
+
+/**
+ * True if a show's synopsis uses future-tense transfer/open language while the
+ * show is already open or closed (stale pre-opening copy).
+ * @param {{ synopsis?: string, status?: string }} show
+ * @returns {boolean}
+ */
+function isStaleSynopsis(show) {
+  const text = show && show.synopsis;
+  if (!text || typeof text !== 'string') return false;
+  const status = (show.status || '').toLowerCase();
+  if (!LIVE_STATUSES.has(status)) return false;
+  return STALE_FUTURE_RE.test(text);
+}
+
+/**
+ * Classify why a show's synopsis is bad, or null if it's fine. Single source of
+ * truth for the freshness gate (check-show-freshness.js) and the deploy-time
+ * self-heal (pre-deploy-check.js).
+ * @param {{ synopsis?: string, status?: string }} show
+ * @returns {{ bad: boolean, reason: 'missing'|'refusal'|'placeholder'|'stale'|'invalid'|null }}
+ */
+function classifyBadSynopsis(show) {
+  const text = show && show.synopsis;
+  if (!text || typeof text !== 'string' || text.trim().length < 50) {
+    return { bad: true, reason: 'missing' };
+  }
+  if (detectRefusalPattern(text)) return { bad: true, reason: 'refusal' };
+  if (isPlaceholderSynopsis(text)) return { bad: true, reason: 'placeholder' };
+  if (isStaleSynopsis(show)) return { bad: true, reason: 'stale' };
+  if (!isValidSynopsis(text)) return { bad: true, reason: 'invalid' };
+  return { bad: false, reason: null };
 }
 
 /**
@@ -75,6 +135,9 @@ function isValidSynopsis(text) {
   // Reject LLM refusals
   if (isLlmRefusal(trimmed)) return false;
 
+  // Reject generic production-history placeholders (no plot)
+  if (isPlaceholderSynopsis(trimmed)) return false;
+
   // Reject accessibility keywords (word-boundary to avoid "adaptation" matching "ada")
   const accessibilityPattern = /\bwheelchair\b|\bhearing assist\b|\belevator access\b|\baccessible seating\b|\bada seating\b|\brestrooms\b|\bclosed captioning\b|\bassistive listening\b/i;
   if (accessibilityPattern.test(trimmed)) return false;
@@ -91,7 +154,12 @@ function isValidSynopsis(text) {
 
 module.exports = {
   REFUSAL_PATTERNS,
+  PLACEHOLDER_RE,
+  STALE_FUTURE_RE,
   detectRefusalPattern,
   isLlmRefusal,
+  isPlaceholderSynopsis,
+  isStaleSynopsis,
   isValidSynopsis,
+  classifyBadSynopsis,
 };
