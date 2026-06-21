@@ -187,11 +187,40 @@ function hostOf(u) {
 // provisionalOutletIdFromHost lives in scripts/lib/outlet-canonicalize.js so the
 // gap audit and its unit test share one implementation (CLAUDE.md §15).
 
+// Normalize an aggregator review URL for dedupe/storage: drop tracking query +
+// fragment. EXCEPTION: Lighting & Sound America's per-review identity lives
+// entirely in story.asp?ID=… (the path carries no title). Blanket-stripping the
+// query collapses every LSA link to the bare /news/story.asp, which then looks
+// like the SAME uncaptured URL in every show AND feeds --ingest-missing an
+// un-ingestable bare URL — so genuine LSA reviews were never recovered across
+// the whole catalogue (2026-06-21). Preserve the ID so a real LSA review keeps a
+// distinct, ingestable URL. Discovery-layer cousin of the LSA extractor fix.
+function normalizeReviewUrl(href) {
+  try {
+    const u = new URL(href);
+    if (u.hostname.includes('lightingandsoundamerica.com')) {
+      const id = u.searchParams.get('ID');
+      if (id) return `${u.origin}${u.pathname}?ID=${id}`;
+    }
+  } catch { /* fall through to plain strip */ }
+  return href.split('?')[0].split('#')[0];
+}
+
 function isReviewUrl(href) {
   if (!href || !href.startsWith('http')) return false;
   const h = hostOf(href);
   if (!h) return false;
   if (NON_REVIEW_HOST_PATTERNS.some(rx => rx.test(h)) && !ALLOWED_ORG_HOSTS.has(h)) return false;
+  // Lighting & Sound America: the bare /news/story.asp (no ?ID=) is the news
+  // index, not a review. Show Score links it as a generic "more from LSA" promo
+  // on many show pages; without this guard it surfaces as an uncaptured gap in
+  // every audited show (2026-06-21). A real LSA review always carries ?ID=.
+  if (h === 'lightingandsoundamerica.com') {
+    try {
+      const u = new URL(href);
+      if (/\/news\/story\.asp$/i.test(u.pathname) && !u.searchParams.get('ID')) return false;
+    } catch { return false; }
+  }
   // Skip Playbill/BWW internal navigation (we WANT outlet URLs, not aggregator URLs)
   if ((h === 'playbill.com' || h === 'broadwayworld.com') && !/\/(review|reviews|theater|theatre|news|stage|culture|arts)/i.test(href)) return false;
   try {
@@ -425,7 +454,7 @@ async function extractAggregatorReviewUrls(articleUrl, show) {
     const href = $(el).attr('href') || '';
     if (!isReviewUrl(href)) return;
     if (!urlMatchesShow(href, tokens)) return;
-    urls.add(href.split('?')[0].split('#')[0]);
+    urls.add(normalizeReviewUrl(href));
   });
   return [...urls];
 }
@@ -496,7 +525,7 @@ async function auditShow(show) {
         return (typeof r === 'string') ? r : ((r && (r.content || r.html || r.body)) || '');
       };
       for (const u of await fetchAllShowScoreReviewUrls(ssUrl, fetchHtml)) {
-        if (isReviewUrl(u)) aggUrls.add(u.split('?')[0].split('#')[0]);
+        if (isReviewUrl(u)) aggUrls.add(normalizeReviewUrl(u));
       }
     }
   } catch (e) {
@@ -859,4 +888,4 @@ if (require.main === module) (async () => {
   process.exit(1);
 });
 
-module.exports = { urlMatchesShow, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap };
+module.exports = { urlMatchesShow, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl };
