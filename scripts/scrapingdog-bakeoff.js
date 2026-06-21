@@ -26,6 +26,9 @@
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
+// Reuse the production success bar so the bake-off can't mark a homepage soft-404
+// or wrong-article redirect as "OK" (BWW returns its homepage with 200 on a miss).
+const { verifyFetchedUrl } = require('./lib/scraper');
 
 const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
 const BRIGHTDATA_ZONE = process.env.BRIGHTDATA_ZONE || 'web_unlocker2';
@@ -56,9 +59,17 @@ const BLOCK_MARKERS = [
   /<title>\s*403/i, /request blocked/i,
 ];
 
-function looksBlocked(html) {
-  if (!html || html.length < MIN_BODY) return true;
-  return BLOCK_MARKERS.some((re) => re.test(html.slice(0, 4000)));
+// A response counts as a real success only if it: returned 200, isn't a block
+// page, AND verifyFetchedUrl confirms it's the requested article (not a homepage
+// or a redirect to a different page). This mirrors what fetchPage() accepts in
+// production, so a "Scrapingdog OK" here means it would actually be usable.
+function classify(html, status, url) {
+  if (status !== 200) return { ok: false, reason: `http_${status}` };
+  if (!html || html.length < MIN_BODY) return { ok: false, reason: 'too_short' };
+  if (BLOCK_MARKERS.some((re) => re.test(html.slice(0, 4000)))) return { ok: false, reason: 'block_page' };
+  const v = verifyFetchedUrl(html, url);
+  if (!v.verified) return { ok: false, reason: v.reason || 'wrong_page' };
+  return { ok: true };
 }
 
 function hostOf(u) { try { return new URL(u).hostname.replace(/^www\./, ''); } catch { return u; } }
@@ -80,12 +91,14 @@ async function fetchBrightData(url) {
       signal,
     }));
     const body = await res.text();
-    const blocked = res.status !== 200 || looksBlocked(body);
-    return { ok: !blocked, status: res.status, len: body.length, ms: Date.now() - start };
+    const c = classify(body, res.status, url);
+    return { ok: c.ok, reason: c.reason, status: res.status, len: body.length, ms: Date.now() - start };
   } catch (e) {
-    return { ok: false, status: e.name === 'AbortError' ? 'timeout' : (e.message || 'error').slice(0, 60), len: 0, ms: Date.now() - start };
+    return { ok: false, reason: 'fetch_error', status: e.name === 'AbortError' ? 'timeout' : (e.message || 'error').slice(0, 60), len: 0, ms: Date.now() - start };
   }
 }
+
+const SD_CREDITS = { standard: 1, render: 5, premium: 10 };
 
 // mode: 'standard' (1cr), 'render' (dynamic=true, 5cr), 'premium' (premium=true, 10cr)
 async function fetchScrapingdog(url, mode) {
@@ -96,10 +109,10 @@ async function fetchScrapingdog(url, mode) {
   try {
     const res = await withTimeout((signal) => fetch(`https://api.scrapingdog.com/scrape?${params}`, { signal }));
     const body = await res.text();
-    const blocked = res.status !== 200 || looksBlocked(body);
-    return { ok: !blocked, status: res.status, len: body.length, ms: Date.now() - start, mode };
+    const c = classify(body, res.status, url);
+    return { ok: c.ok, reason: c.reason, status: res.status, len: body.length, ms: Date.now() - start, mode, credits: SD_CREDITS[mode] };
   } catch (e) {
-    return { ok: false, status: e.name === 'AbortError' ? 'timeout' : (e.message || 'error').slice(0, 60), len: 0, ms: Date.now() - start, mode };
+    return { ok: false, reason: 'fetch_error', status: e.name === 'AbortError' ? 'timeout' : (e.message || 'error').slice(0, 60), len: 0, ms: Date.now() - start, mode, credits: SD_CREDITS[mode] };
   }
 }
 
@@ -124,14 +137,20 @@ async function fetchScrapingdog(url, mode) {
     let sd = null;
     if (haveSD) {
       // Try cheapest first; escalate only on failure to mirror a real reroute policy.
-      sd = await fetchScrapingdog(url, 'standard');
-      if (!sd.ok) sd = await fetchScrapingdog(url, 'render');
-      if (!sd.ok) sd = await fetchScrapingdog(url, 'premium');
+      // creditsSpent accumulates EVERY attempt (incl. failed cheaper ones) — that's
+      // the true cost of a reroute, so the projection can't understate spend.
+      let creditsSpent = 0;
+      for (const mode of ['standard', 'render', 'premium']) {
+        sd = await fetchScrapingdog(url, mode);
+        creditsSpent += sd.credits;
+        if (sd.ok) break;
+      }
+      sd.creditsSpent = creditsSpent;
     }
 
     results.push({ url, host, bd, sd });
-    const bdTag = `BD ${bd.ok ? 'OK' : 'FAIL'} (${bd.status}, ${bd.len}b, ${bd.ms}ms)`;
-    const sdTag = haveSD ? ` | SD ${sd.ok ? 'OK' : 'FAIL'} [${sd.mode}] (${sd.status}, ${sd.len}b, ${sd.ms}ms)` : '';
+    const bdTag = `BD ${bd.ok ? 'OK' : 'FAIL'} (${bd.status}, ${bd.len}b${bd.ok ? '' : ', ' + bd.reason}, ${bd.ms}ms)`;
+    const sdTag = haveSD ? ` | SD ${sd.ok ? 'OK' : 'FAIL'} [${sd.mode}, ${sd.creditsSpent}cr] (${sd.status}, ${sd.len}b${sd.ok ? '' : ', ' + sd.reason}, ${sd.ms}ms)` : '';
     console.log(`${(bd.ok && (!haveSD || sd.ok)) ? '✓' : '⚠'} ${host}\n    ${bdTag}${sdTag}`);
   }
 
@@ -148,18 +167,27 @@ async function fetchScrapingdog(url, mode) {
     console.log(`Both ok:      ${matched}/${n}`);
     if (sdLost.length) console.log(`BD-only (keep on BD): ${sdLost.join(', ')}`);
 
-    // Projected monthly savings if rerouteable share moves to Scrapingdog.
-    // Use this batch's success rate as the rerouteable fraction; BD baseline
-    // ~100k req/mo at $0.0015.
-    const BD_MONTHLY_REQ = 100000;
-    const rerouteFrac = bdOk ? matched / bdOk : 0;
-    const sdMode = results.find((r) => r.sd && r.sd.ok)?.sd.mode || 'standard';
-    const sdUnit = sdMode === 'premium' ? COST.sd_premium : sdMode === 'render' ? COST.sd_render : COST.sd_standard;
+    // Projected monthly savings if the rerouteable share moves to Scrapingdog.
+    // rerouteFrac = of BD's current successes, the fraction Scrapingdog also nails.
+    // Cost per rerouted req uses the ACTUAL credits each matched URL burned
+    // (including failed cheaper attempts), priced at $90 / 1M credits — so a URL
+    // that only worked on premium, or wasted standard+render first, is counted
+    // at its true cost, not the optimistic 1-credit rate.
+    const BD_MONTHLY_REQ = 100000; // ≈ this account's BD Web Unlocker volume/mo
+    const CREDIT_USD = 0.00009;    // Scrapingdog Standard plan: $90 / 1,000,000
+    const matchedRows = results.filter((r) => r.bd.ok && r.sd && r.sd.ok);
+    const rerouteFrac = bdOk ? matchedRows.length / bdOk : 0;
+    const avgCredits = matchedRows.length
+      ? matchedRows.reduce((s, r) => s + (r.sd.creditsSpent || 0), 0) / matchedRows.length
+      : 0;
+    const sdCostPerReq = avgCredits * CREDIT_USD;
     const movedReq = Math.round(BD_MONTHLY_REQ * rerouteFrac);
-    const savings = movedReq * (COST.bd - sdUnit);
+    const savings = movedReq * (COST.bd - sdCostPerReq);
     console.log(`\nProjection (at ~${BD_MONTHLY_REQ.toLocaleString()} BD req/mo):`);
-    console.log(`  Rerouteable: ${(rerouteFrac * 100).toFixed(0)}% → ${movedReq.toLocaleString()} req/mo to Scrapingdog (${sdMode})`);
+    console.log(`  Rerouteable: ${(rerouteFrac * 100).toFixed(0)}% → ${movedReq.toLocaleString()} req/mo to Scrapingdog`);
+    console.log(`  Avg Scrapingdog credits per rerouted req: ${avgCredits.toFixed(1)} ($${sdCostPerReq.toFixed(5)} vs BD $${COST.bd})`);
     console.log(`  Est. savings: ~$${savings.toFixed(0)}/mo (~$${(savings * 12).toFixed(0)}/yr)`);
+    if (sdCostPerReq >= COST.bd) console.log(`  ⚠ No saving at this mode mix — Scrapingdog per-req cost ≥ Bright Data.`);
   } else {
     console.log(`\nTo run the comparison: sign up at https://www.scrapingdog.com (1,000 free credits, no card),`);
     console.log(`then: SCRAPINGDOG_API_KEY=xxx node scripts/scrapingdog-bakeoff.js`);

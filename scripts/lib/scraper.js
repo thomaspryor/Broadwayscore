@@ -604,8 +604,10 @@ async function fetchJSON(url, options = {}) {
       });
       _scraperStats.sbRequests++;
       _scraperStats.sbCredits += 1; // render_js=false = 1 credit
+      recordSbCall({ url, fn: 'json', success: true, status: 200, credits: 1 });
       return JSON.parse(response);
     } catch (err) {
+      recordSbCall({ url, fn: 'json', success: false, status: (err.message || 'error').slice(0, 80), credits: 1 });
       console.log(`  fetchJSON ScrapingBee failed: ${err.message}`);
     }
   }
