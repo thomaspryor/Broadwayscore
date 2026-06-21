@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-20T23:13:27.446Z",
+  "timestamp": "2026-06-21T00:34:20.659Z",
   "stats": {
-    "totalReviews": 38630,
+    "totalReviews": 38638,
     "alreadyFlagged": 17026,
-    "dateGuardCatches": 127,
-    "directorMismatch": 881,
+    "dateGuardCatches": 134,
+    "directorMismatch": 888,
     "tvFilmSignals": 1061,
     "londonSignals": 644,
     "offBroadwaySignals": 468,
-    "yearMismatch": 83,
-    "noPublishDate": 3938
+    "yearMismatch": 86,
+    "noPublishDate": 3937
   },
   "findings": [
     {
@@ -1695,7 +1695,7 @@
       "file": "independent--louis-chilton.json",
       "score": 40,
       "publishDate": "2026-04-17",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
+      "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -1930,6 +1930,24 @@
     },
     {
       "showId": "beetlejuice-west-end-2026",
+      "file": "dailybeast--tim-teeman.json",
+      "publishDate": "2019-04-26",
+      "url": "https://www.thedailybeast.com/beetlejuice-on-broadway-it-was-a-horror-show-now-it-feels-like-a-hit",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 2581d before show (2019-04-26 vs 2026-05-20)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"alex timbers\" from beetlejuice-2025"
+        }
+      ]
+    },
+    {
+      "showId": "beetlejuice-west-end-2026",
       "file": "financialtimes--sarah-hemming.json",
       "score": 65,
       "publishDate": "2026-05-29",
@@ -2029,6 +2047,75 @@
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/beetlejuice-the-musical-prince-edward-theatre/",
       "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"alex timbers\" from beetlejuice-2025"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2019 (2x) more than 2026 (0x). 2019 matches production: beetlejuice-2019"
+        }
+      ]
+    },
+    {
+      "showId": "beetlejuice-west-end-2026",
+      "file": "nypost--unknown.json",
+      "publishDate": "2019-04-26",
+      "url": "https://nypost.com/2019/04/25/beetlejuice-review-musical-is-a-coke-snorting-f-bombing-disaster/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 2581d before show (2019-04-26 vs 2026-05-20)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"alex timbers\" from beetlejuice-2025"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2019 (2x) more than 2026 (0x). 2019 matches production: beetlejuice-2019"
+        }
+      ]
+    },
+    {
+      "showId": "beetlejuice-west-end-2026",
+      "file": "nysr--david-finkle.json",
+      "publishDate": "2019-04-26",
+      "url": "http://nystagereview.com/2019/04/25/beetlejuice-tim-burtons-1988-cult-film-kinda-musicalized/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 2581d before show (2019-04-26 vs 2026-05-20)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"alex timbers\" from beetlejuice-2025"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2019 (2x) more than 2026 (0x). 2019 matches production: beetlejuice-2019"
+        }
+      ]
+    },
+    {
+      "showId": "beetlejuice-west-end-2026",
+      "file": "nysr--jesse-oxfeld.json",
+      "publishDate": "2019-04-26",
+      "url": "http://nystagereview.com/2019/04/25/beetlejuice-these-ghosts-are-gonna-live-forever/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 2581d before show (2019-04-26 vs 2026-05-20)"
+        },
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
@@ -8266,6 +8353,24 @@
     },
     {
       "showId": "glengarry-glen-ross-west-end-2026",
+      "file": "ew--httpswwwfacebookcomentertainmentweekly.json",
+      "publishDate": "2025-03-31",
+      "url": "https://ew.com/glengarry-glen-ross-review-kieran-culkin-seals-deal-broadway-revival-11705926",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 430d before show (2025-03-31 vs 2026-06-04)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
+        }
+      ]
+    },
+    {
+      "showId": "glengarry-glen-ross-west-end-2026",
       "file": "financialtimes--sarah-hemming.json",
       "score": 79,
       "publishDate": "2026-06-18",
@@ -8323,6 +8428,24 @@
       "publishDate": "2026-06-18",
       "url": null,
       "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
+        }
+      ]
+    },
+    {
+      "showId": "glengarry-glen-ross-west-end-2026",
+      "file": "nydailynews--chris-jones.json",
+      "publishDate": "2025-04-01",
+      "url": "https://www.nydailynews.com/2025/03/31/broadway-review-glengarry-glen-ross-still-masterful-drama-despite-some-casting-choices/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 429d before show (2025-04-01 vs 2026-06-04)"
+        },
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
@@ -8421,6 +8544,24 @@
       "publishDate": "2026-06-15",
       "url": "https://www.whatsonstage.com/news/go-behind-the-scenes-at-the-all-female-glengarry-glen-ross-revival_1724994/",
       "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
+        }
+      ]
+    },
+    {
+      "showId": "glengarry-glen-ross-west-end-2026",
+      "file": "yahoo--unknown.json",
+      "publishDate": "2025-04-01",
+      "url": "https://www.yahoo.com/entertainment/theater-review-broadway-glengarry-glen-033424902.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 429d before show (2025-04-01 vs 2026-06-04)"
+        },
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
