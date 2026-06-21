@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-21T05:39:38.767Z",
+  "timestamp": "2026-06-21T06:45:42.775Z",
   "stats": {
-    "totalReviews": 38663,
+    "totalReviews": 38672,
     "alreadyFlagged": 17026,
-    "dateGuardCatches": 148,
+    "dateGuardCatches": 153,
     "directorMismatch": 889,
     "tvFilmSignals": 1064,
-    "londonSignals": 644,
+    "londonSignals": 648,
     "offBroadwaySignals": 469,
     "yearMismatch": 88,
-    "noPublishDate": 3942
+    "noPublishDate": 3943
   },
   "findings": [
     {
@@ -14270,6 +14270,19 @@
     },
     {
       "showId": "mamma-mia-2025",
+      "file": "forbes--scott-mendelson.json",
+      "publishDate": "2018-07-17",
+      "url": "https://www.forbes.com/sites/scottmendelson/2018/07/17/review-lily-james-rocks-in-enjoyable-mamma-mia-here-we-go-again/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 2573d before show (2018-07-17 vs 2025-08-02)"
+        }
+      ]
+    },
+    {
+      "showId": "mamma-mia-2025",
       "file": "nyt-theater--jonathan-mandell.json",
       "score": 62,
       "publishDate": "August 14, 2025",
@@ -14279,6 +14292,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "mamma-mia-2025",
+      "file": "theatlantic--david-sims.json",
+      "publishDate": "2018-07-17",
+      "url": "https://www.theatlantic.com/entertainment/archive/2018/07/mamma-mia-here-we-go-again-review/565358/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 2573d before show (2018-07-17 vs 2025-08-02)"
         }
       ]
     },
@@ -20511,6 +20537,55 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"trevor nunn\" from starlight-express-1987"
+        }
+      ]
+    },
+    {
+      "showId": "stephen-sondheims-old-friends-2025",
+      "file": "deadline--baz-bamigboye.json",
+      "publishDate": "2022-05-04",
+      "url": "https://deadline.com/2022/05/review-old-friends-including-judi-denchimelda-staunton-bernadette-peters-and-damian-lewis-knock-it-out-of-the-park-for-stephen-sondheim-1235015820/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1056d before show (2022-05-04 vs 2025-03-25)"
+        }
+      ]
+    },
+    {
+      "showId": "stephen-sondheims-old-friends-2025",
+      "file": "london-theatre--unknown.json",
+      "publishDate": "2023-10-04",
+      "url": "https://www.londontheatre.co.uk/reviews/stephen-sondheims-old-friends-review-gielgud-theatre",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 538d before show (2023-10-04 vs 2025-03-25)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "stephen-sondheims-old-friends-2025",
+      "file": "west-end-best-friend--unknown.json",
+      "publishDate": "2023-10-04",
+      "url": "https://www.westendbestfriend.co.uk/news/review-stephen-sondheims-old-friends-gielgud-theatre",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 538d before show (2023-10-04 vs 2025-03-25)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
         }
       ]
     },
@@ -33964,6 +34039,19 @@
       ]
     },
     {
+      "showId": "john-proctor-is-the-villain-2025",
+      "file": "new-statesman--emily-lawford.json",
+      "publishDate": "2026-03-27",
+      "url": "https://www.newstatesman.com/culture/2026/03/john-proctor-is-the-villain-is-a-thrilling-teenage-girl-take-on-the-crucible",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "jumpers-2004",
       "file": "financialtimes--alastair-macaulay.json",
       "score": 66,
@@ -37987,6 +38075,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
+        }
+      ]
+    },
+    {
+      "showId": "stephen-sondheims-old-friends-2025",
+      "file": "artsdesk--unknown.json",
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/stephen-sondheims-old-friends-gielgud-theatre-review-exuberant-gala-nonstop-virtuosity",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
         }
       ]
     },
