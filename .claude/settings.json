@@ -17,6 +17,10 @@
           {
             "type": "command",
             "command": "bash .claude/hooks/pre-push-visual-gate.sh"
+          },
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/check-skill-redaction.sh"
           }
         ]
       }

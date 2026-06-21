@@ -165,6 +165,9 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 /.claude/settings.local.json
 /.claude/worktrees/
 /.claude/skills/scraper-reference/references/cookies.md
+# - skills/.redaction-denylist.txt — sensitive strings the pre-push guard blocks
+#   from committed skills; local-only so the denylist itself doesn't re-leak them.
+/.claude/skills/.redaction-denylist.txt
 /.core-data-checkout/
 
 # Agent memory (self-updating, may contain operational details — local only)
