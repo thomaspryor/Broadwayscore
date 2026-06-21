@@ -26,7 +26,7 @@ const SCRAPINGBEE_COOLDOWN = 5 * 60 * 1000; // 5 min — then retry Reddit direc
 
 // State
 let useScrapingBee = false;
-let scrapingBeeDown = false; // Set true on 401 (invalid/expired API key) — stops retrying
+let scrapingBeeDown = false; // Set true on 401/402 (invalid key OR no credits) — stops retrying
 let scrapingBeeSwitchTime = 0;
 let rateLimitCount = 0;
 let lastRequestTime = 0;
@@ -98,16 +98,20 @@ async function fetchViaScrapingBee(url) {
           } catch (e) {
             reject(new Error(`ScrapingBee JSON parse failed: ${data.slice(0, 100)}`));
           }
-        } else if (res.statusCode === 401) {
-          // 401 from ScrapingBee = invalid/expired API key, NOT credit exhaustion.
-          // (Credit exhaustion returns 402.) A stale SCRAPINGBEE_API_KEY secret
-          // silently broke Reddit for months because this said "credits exhausted"
-          // — check the GitHub secret matches a key from app.scrapingbee.com/usage.
+        } else if (res.statusCode === 401 || res.statusCode === 402) {
+          // ScrapingBee uses these for auth/billing problems. DON'T guess which:
+          // a 401 can mean an invalid/expired key ("Invalid api key: ...") OR a
+          // depleted account, and we have more than one SB account/key. Echo the
+          // literal SB message + point at BOTH checks so the cause is never
+          // misdiagnosed again (2026-06-21: a "credits exhausted (401)" label
+          // sent debugging toward top-ups/OAuth when CI just had a stale key).
           scrapingBeeDown = true;
-          reject(new Error('ScrapingBee 401 — invalid/expired API key (check SCRAPINGBEE_API_KEY secret); disabling ScrapingBee'));
-        } else if (res.statusCode === 402) {
-          scrapingBeeDown = true;
-          reject(new Error('ScrapingBee 402 — credits exhausted; disabling ScrapingBee'));
+          let sbMsg = data.slice(0, 200);
+          try { sbMsg = JSON.parse(data).message || sbMsg; } catch (_) {}
+          reject(new Error(
+            `ScrapingBee ${res.statusCode}: ${sbMsg} — verify SCRAPINGBEE_API_KEY is current AND ` +
+            `the account has credits (app.scrapingbee.com/api/v1/usage); disabling ScrapingBee`
+          ));
         } else {
           reject(new Error(`ScrapingBee HTTP ${res.statusCode}`));
         }
