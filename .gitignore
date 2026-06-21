@@ -118,6 +118,12 @@ data/bug-reviews.json
 # Individual audience review data (private analysis only — not for site display)
 data/audience-reviews/
 
+# Full audience-score history snapshots — SAME competitive data as audience-buzz.json
+# (which is private/gitignored). snapshot-audience-history.yml writes these into the
+# PRIVATE core-data repo; this rule stops a stray local/manual run from leaking them
+# into the public repo. (NOTE: the Tony-only data/audience-snapshots/ IS public by design.)
+data/audience-history/
+
 # Audience review scrapers (private — expose API endpoints and auth patterns)
 scripts/scrape-mezzanine-reviews.js
 scripts/scrape-theatr-reviews.js

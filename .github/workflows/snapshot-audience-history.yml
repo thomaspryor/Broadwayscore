@@ -1,11 +1,17 @@
+# hygiene-push-ok: commits to the PRIVATE core-data repo checkout (/tmp/core-data-checkout),
+# not the public origin; new dated file per week so a simple fetch+rebase retry is sufficient.
 name: Snapshot Audience History
 
 # Year-round weekly snapshot of the FULL audience-buzz corpus (all shows, all
 # sources). Complements snapshot-audience-grades.yml, which is Tony-season-only
-# (~161 shows, Apr-Jun). This one builds the longitudinal record we use to
-# analyse how each source's audience scores move over time. Writes one file per
-# week to data/audience-history/{YYYY-MM-DD}.json (committed to the public repo,
-# same as the Tony snapshots — derived numeric aggregates, no copyrighted text).
+# (~161 shows, Apr-Jun). This builds the longitudinal record we use to analyse
+# how each source's audience scores move over time.
+#
+# PRIVACY: audience-buzz is competitive data — it is gitignored in the public
+# repo and lives only in the PRIVATE core-data repo (purge-archives-history.yml
+# scrubbed it from public history). These snapshots are the same data, so they
+# are written into the PRIVATE repo (thomaspryor/broadway-scorecard-data), NOT
+# committed to the public repo like the Tony-only data/audience-snapshots/.
 
 on:
   schedule:
@@ -25,7 +31,7 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   snapshot:
@@ -45,24 +51,54 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Take full audience-history snapshot
+      - name: Snapshot full audience history into the private repo
+        env:
+          CORE_DATA_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
-          ARGS=""
-          if [ -n "${{ inputs.date }}" ]; then ARGS="--date=${{ inputs.date }}"; fi
-          echo "Running: node scripts/snapshot-audience-full.js $ARGS"
-          node scripts/snapshot-audience-full.js $ARGS
+          set -euo pipefail
 
-      - name: Commit snapshot
-        run: |
+          SNAP_DATE="${{ inputs.date }}"
+          if [ -z "$SNAP_DATE" ]; then SNAP_DATE="$(date -u +%Y-%m-%d)"; fi
+
+          # checkout-core-data cloned the private repo to /tmp/core-data-checkout
+          # with an authenticated origin. Write the snapshot straight into it.
+          CHECKOUT=/tmp/core-data-checkout
+          if [ ! -d "$CHECKOUT/.git" ]; then
+            echo "::error::private core-data checkout missing — checkout-core-data must run first"
+            exit 1
+          fi
+          mkdir -p "$CHECKOUT/audience-history"
+
+          DATE_ARG=""
+          if [ -n "${{ inputs.date }}" ]; then DATE_ARG="--date=${{ inputs.date }}"; fi
+          # Reads data/audience-buzz.json (the private copy materialised by
+          # checkout-core-data); freshness-guarded inside the script.
+          node scripts/snapshot-audience-full.js $DATE_ARG --out="$CHECKOUT/audience-history/${SNAP_DATE}.json"
+
+          cd "$CHECKOUT"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/audience-history/
+          git add "audience-history/${SNAP_DATE}.json"
           if git diff --cached --quiet; then
-            echo "No new snapshot to commit (already ran for this date)"
+            echo "No change for ${SNAP_DATE} — snapshot already current"
             exit 0
           fi
-          git commit -m "snapshot: audience history $(date -u +%Y-%m-%d)"
-          bash scripts/lib/push-with-retry.sh
+          git commit -m "snapshot: audience history ${SNAP_DATE}"
+
+          # Push to the PRIVATE repo. Each weekly file is new, so the only
+          # conflict is unrelated commits landing first — fetch + rebase keeps
+          # both. Retry with jitter for the concurrent-pusher case.
+          for attempt in 1 2 3 4 5; do
+            if git push origin HEAD:main; then
+              echo "Pushed audience-history/${SNAP_DATE}.json to private repo (attempt $attempt)"
+              exit 0
+            fi
+            echo "::warning::push failed (attempt $attempt/5) — rebasing on remote and retrying"
+            git fetch origin main && git rebase origin/main || git rebase --abort || true
+            sleep $((RANDOM % 8 + 3))
+          done
+          echo "::error::Failed to push audience-history snapshot after 5 attempts"
+          exit 1
 
       - name: Notify on failure
         if: failure()

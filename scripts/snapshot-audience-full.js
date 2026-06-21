@@ -11,6 +11,13 @@
  * only; without this, history is only reconstructable by walking private-repo
  * git commits.
  *
+ * PRIVACY: audience-buzz is competitive data — it is gitignored in the public
+ * repo and lives only in the private core-data repo (purge-archives-history.yml
+ * scrubbed it from public history). These snapshots are the SAME data, so the
+ * workflow writes them into the PRIVATE repo too (via --out into the core-data
+ * checkout). The default output path under data/audience-history/ is gitignored
+ * in the public repo so a stray local/manual run can never leak it.
+ *
  * Per source we keep every NUMERIC signal field (score, reviewCount, starRating,
  * sentiment, positiveRate, numLikes, numWatched, totalPosts, ...). Non-numeric
  * fields (url, lastUpdated, prodIds, ratingDistribution, suppressed flags) are
@@ -107,6 +114,27 @@ function main() {
   if (!buzz.shows || Object.keys(buzz.shows).length === 0) {
     console.error('audience-buzz.json has no shows — refusing to write an empty snapshot.');
     process.exit(1);
+  }
+
+  // Freshness guard. checkout-core-data only hard-fails on missing
+  // shows.json/reviews.json — NOT audience-buzz.json — so a run where the
+  // private copy didn't materialise could silently snapshot a stale public
+  // copy (the action itself warns tracked public copies can be stale). The
+  // weekly scrapers keep _meta.lastUpdated within days; refuse if it's older
+  // than STALE_DAYS so we never archive a wrong corpus. --allow-stale to
+  // override (e.g. intentional backfill from an old buzz file via --input).
+  const STALE_DAYS = 14;
+  const lastUpdated = buzz._meta && buzz._meta.lastUpdated;
+  if (!argMap['allow-stale']) {
+    const ageDays = lastUpdated ? (Date.now() - new Date(lastUpdated).getTime()) / 86400000 : NaN;
+    if (!Number.isFinite(ageDays) || ageDays > STALE_DAYS) {
+      console.error(
+        `Refusing to snapshot: audience-buzz.json _meta.lastUpdated is ${lastUpdated || 'missing'} ` +
+        `(${Number.isFinite(ageDays) ? Math.round(ageDays) + 'd' : 'unknown'} old, limit ${STALE_DAYS}d). ` +
+        `Likely checkout-core-data did not populate the private copy. Pass --allow-stale to override.`
+      );
+      process.exit(1);
+    }
   }
 
   const snapshot = buildSnapshot(buzz, snapshotDate);
