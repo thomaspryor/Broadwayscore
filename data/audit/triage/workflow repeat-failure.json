@@ -1,7 +1,7 @@
 {
   "system": "workflow repeat-failure",
   "status": "error",
-  "lastChecked": "2026-06-20T08:10:42.271Z",
+  "lastChecked": "2026-06-21T08:31:45.241Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -10,11 +10,6 @@
       "name": "Workflow repeat-failure: Update Reddit Sentiment",
       "status": "error",
       "message": "Update Reddit Sentiment failed 4 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Audit Aggregator Review Gap",
-      "status": "warn",
-      "message": "Audit Aggregator Review Gap failed 2 times in the last 24h — likely broken, not transient."
     },
     {
       "name": "Workflow repeat-failure: Update Theatr Data",
