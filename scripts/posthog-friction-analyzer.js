@@ -36,12 +36,13 @@ const {
   authCheck, tracked,
   getRageClickDetails, getGateFunnel, getBtcFunnel,
   getTicketClicks, getClosedShowTicketClicks, getPromoClicks, getSearchStats, getTrafficSummary,
+  getZeroResultsSearches,
 } = require('./lib/posthog-query');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const CARDS_PER_RUN_CAP = 5;
 const NOTION_DATABASE_ID = 'fa7b3ff2-c073-4097-b54c-0a78e56e06b6';
-const TOKEN_BUDGET_CHARS = 3000;
+const TOKEN_BUDGET_CHARS = 4500;
 
 // ── Notion helpers ───────────────────────────────────────────────────────
 
@@ -132,6 +133,44 @@ async function createNotionCard(notion, issue, hash) {
   return page.url;
 }
 
+// Missing-show card: a real production users searched for but the site doesn't
+// cover. P1 Next, NOT auto-committed — CLAUDE.md Rule 3 requires
+// validate-show-venue.js to confirm venue/date before any shows.json entry.
+async function createMissingShowCard(notion, show, hash) {
+  const tags = ['friction', 'missing-show', `fhash:${hash}`];
+
+  const notes = [
+    `## Missing production (from zero-results search)`,
+    `Users searched for **"${show.search_term}"** ${show.search_count}x in the last 7 days and got zero results.`,
+    `Likely production: **${show.canonical_title}** (${show.market}).`,
+    ``,
+    `## Why flagged`,
+    show.reasoning || '(LLM-classified as a real missing production)',
+    ``,
+    `## Next step (manual — do NOT auto-add)`,
+    `1. Confirm the production exists and its venue/opening date via Playbill.`,
+    `2. Run \`node scripts/validate-show-venue.js\` before adding any shows.json entry (CLAUDE.md Rule 3).`,
+    `3. If valid, add the show and let discovery/scraping pick up reviews.`,
+    ``,
+    `## Evidence`,
+    `PostHog search_performed, has_results=false, query="${show.search_term}", ${show.search_count} searches (7d).`,
+  ].join('\n');
+
+  const page = await notion.pages.create({
+    parent: { type: 'data_source_id', data_source_id: NOTION_DATABASE_ID },
+    properties: {
+      Name: { title: [{ text: { content: `Missing show: ${show.canonical_title}`.slice(0, 100) } }] },
+      Status: { status: { name: 'Not started' } },
+      Priority: { select: { name: 'P1 Next' } },
+      Category: { select: { name: 'Product' } },
+      Type: { select: { name: 'Data Quality' } },
+      Tags: { multi_select: tags.map(t => ({ name: t })) },
+      Notes: { rich_text: [{ text: { content: notes.slice(0, 2000) } }] },
+    },
+  });
+  return page.url;
+}
+
 // ── Data compilation ─────────────────────────────────────────────────────
 
 function summarizeGateFunnel(rows) {
@@ -179,8 +218,16 @@ function summarizeClosedShowTicketClicks(rows) {
   return rows.map(([show, platform, n]) => `  ${show} (${platform}): ${n} click(s)`).join('\n');
 }
 
+function summarizeZeroResultsSearches(rows) {
+  if (!rows.length) return null;
+  return rows
+    .slice(0, 30)
+    .map(([query, cnt]) => `  "${query}" — ${Number(cnt)} search(es)`)
+    .join('\n');
+}
+
 function buildContext(data) {
-  const { traffic, rageClicks, gateFunnel, btcFunnel, ticketClicks, closedShowTicketClicks, promoClicks, searchStats } = data;
+  const { traffic, rageClicks, gateFunnel, btcFunnel, ticketClicks, closedShowTicketClicks, promoClicks, searchStats, zeroResultsSearches } = data;
 
   const parts = [];
 
@@ -223,6 +270,11 @@ function buildContext(data) {
     }
   }
 
+  const zeroResultsSummary = summarizeZeroResultsSearches(zeroResultsSearches || []);
+  if (zeroResultsSummary) {
+    parts.push(`\nZERO-RESULTS SEARCH TERMS (queries that returned nothing — candidate missing shows):\n${zeroResultsSummary}`);
+  }
+
   const full = parts.join('\n');
   // Truncate to budget
   if (full.length > TOKEN_BUDGET_CHARS) {
@@ -253,6 +305,21 @@ const ISSUE_SCHEMA = {
         },
       },
     },
+    missing_shows: {
+      type: 'array',
+      description: 'Zero-results search terms that you are confident refer to a REAL Broadway/West End/Off-Broadway production the site is likely missing. EXCLUDE typos, partial/duplicate spellings of shows we probably already have, generic words, non-theatre queries, performer-only names, and anything you are unsure about. Empty array if none qualify.',
+      items: {
+        type: 'object',
+        required: ['search_term', 'canonical_title', 'market', 'search_count', 'reasoning'],
+        properties: {
+          search_term: { type: 'string', description: 'The raw zero-results query as typed by users' },
+          canonical_title: { type: 'string', description: 'The production\'s proper title, corrected for spelling/casing' },
+          market: { type: 'string', enum: ['broadway', 'west-end', 'off-broadway', 'unknown'] },
+          search_count: { type: 'integer', description: 'Number of zero-results searches for this term in the window' },
+          reasoning: { type: 'string', description: 'Why you are confident this is a real production we are missing (1-2 sentences)' },
+        },
+      },
+    },
   },
   required: ['issues'],
 };
@@ -276,6 +343,8 @@ Only surface issues that are:
 
 Return 3-5 issues maximum, ordered by priority.${existingSection}
 
+SEPARATELY, examine the ZERO-RESULTS SEARCH TERMS section (if present). These are queries that returned no results — each is a candidate for a show we don't yet cover. Classify them: most will be typos, partial spellings of shows we likely already have, generic words, performer names, or non-theatre noise. Only a few (if any) will be REAL productions (Broadway, West End, or Off-Broadway) that we are genuinely missing. Return ONLY the confident real-missing-production matches in the "missing_shows" array — when in doubt, leave it out. Do NOT propose adding shows yourself; a human must validate the venue/date before any show is created.
+
 ANALYTICS DATA:
 ${context}`;
 
@@ -295,8 +364,9 @@ ${context}`;
   const toolUse = response.content.find(b => b.type === 'tool_use');
   if (!toolUse) throw new Error('Claude did not call report_friction_issues tool');
   const issues = toolUse.input.issues || [];
-  console.log(`Claude tool call returned ${issues.length} issues (stop_reason: ${response.stop_reason})`);
-  return issues;
+  const missingShows = toolUse.input.missing_shows || [];
+  console.log(`Claude tool call returned ${issues.length} issues, ${missingShows.length} missing shows (stop_reason: ${response.stop_reason})`);
+  return { issues, missingShows };
 }
 
 // ── Main ─────────────────────────────────────────────────────────────────
@@ -315,7 +385,7 @@ async function main() {
   console.log('PostHog auth OK');
 
   console.log('Querying PostHog...');
-  const [traffic, rageClicks, gateFunnel, btcFunnel, ticketClicks, closedShowTicketClicks, promoClicks, searchStats] =
+  const [traffic, rageClicks, gateFunnel, btcFunnel, ticketClicks, closedShowTicketClicks, promoClicks, searchStats, zeroResultsSearches] =
     await Promise.all([
       tracked('Traffic', getTrafficSummary),
       tracked('Rage clicks', getRageClickDetails),
@@ -325,9 +395,10 @@ async function main() {
       tracked('Closed-show ticket clicks', getClosedShowTicketClicks),
       tracked('Promo clicks', getPromoClicks),
       tracked('Search stats', getSearchStats),
+      tracked('Zero-results searches', getZeroResultsSearches),
     ]);
 
-  const context = buildContext({ traffic, rageClicks, gateFunnel, btcFunnel, ticketClicks, closedShowTicketClicks, promoClicks, searchStats });
+  const context = buildContext({ traffic, rageClicks, gateFunnel, btcFunnel, ticketClicks, closedShowTicketClicks, promoClicks, searchStats, zeroResultsSearches });
 
   console.log('\n--- PostHog context sent to Claude ---');
   console.log(context);
@@ -342,8 +413,8 @@ async function main() {
   console.log(`Found ${existingCards.length} existing open friction cards`);
 
   console.log('Calling Claude for friction analysis...');
-  const issues = await analyzeWithClaude(context, existingTitles);
-  console.log(`Claude identified ${issues.length} issues\n`);
+  const { issues, missingShows } = await analyzeWithClaude(context, existingTitles);
+  console.log(`Claude identified ${issues.length} issues, ${missingShows.length} missing shows\n`);
 
   const created = [];
   const skipped = [];
@@ -373,6 +444,33 @@ async function main() {
     } else {
       created.push({ title: issue.title, url: '(dry-run)', hash });
     }
+  }
+
+  // Missing-show cards from zero-results searches (separate cap so they don't
+  // crowd out friction issues). Deduped by the same fhash mechanism.
+  const MISSING_SHOW_CAP = 3;
+  let missingCreated = 0;
+  for (const show of missingShows) {
+    if (missingCreated >= MISSING_SHOW_CAP) {
+      skipped.push(`[cap] missing show: ${show.canonical_title}`);
+      continue;
+    }
+    const evidenceKey = `missing_show:search:${(show.canonical_title || show.search_term || '').toLowerCase().trim()}`;
+    const hash = computeHash(evidenceKey);
+    if (existingHashes.has(hash)) {
+      skipped.push(`[duplicate hash ${hash}] missing show: ${show.canonical_title}`);
+      continue;
+    }
+    console.log(`\n${DRY_RUN ? '[dry-run] Would create' : 'Creating'} missing-show card: ${show.canonical_title} (${show.market}, "${show.search_term}" ×${show.search_count})`);
+    console.log(`  Hash: ${hash}`);
+    if (!DRY_RUN) {
+      const url = await createMissingShowCard(notion, show, hash);
+      created.push({ title: `Missing show: ${show.canonical_title}`, url, hash });
+      console.log(`  Created: ${url}`);
+    } else {
+      created.push({ title: `Missing show: ${show.canonical_title}`, url: '(dry-run)', hash });
+    }
+    missingCreated++;
   }
 
   console.log(`\n=== Summary ===`);
