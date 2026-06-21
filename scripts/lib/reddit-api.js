@@ -26,7 +26,7 @@ const SCRAPINGBEE_COOLDOWN = 5 * 60 * 1000; // 5 min — then retry Reddit direc
 
 // State
 let useScrapingBee = false;
-let scrapingBeeDown = false; // Set true on 401 (credits exhausted) — stops retrying
+let scrapingBeeDown = false; // Set true on 401 (invalid/expired API key) — stops retrying
 let scrapingBeeSwitchTime = 0;
 let rateLimitCount = 0;
 let lastRequestTime = 0;
@@ -99,8 +99,15 @@ async function fetchViaScrapingBee(url) {
             reject(new Error(`ScrapingBee JSON parse failed: ${data.slice(0, 100)}`));
           }
         } else if (res.statusCode === 401) {
+          // 401 from ScrapingBee = invalid/expired API key, NOT credit exhaustion.
+          // (Credit exhaustion returns 402.) A stale SCRAPINGBEE_API_KEY secret
+          // silently broke Reddit for months because this said "credits exhausted"
+          // — check the GitHub secret matches a key from app.scrapingbee.com/usage.
           scrapingBeeDown = true;
-          reject(new Error('ScrapingBee credits exhausted (401) — disabling ScrapingBee'));
+          reject(new Error('ScrapingBee 401 — invalid/expired API key (check SCRAPINGBEE_API_KEY secret); disabling ScrapingBee'));
+        } else if (res.statusCode === 402) {
+          scrapingBeeDown = true;
+          reject(new Error('ScrapingBee 402 — credits exhausted; disabling ScrapingBee'));
         } else {
           reject(new Error(`ScrapingBee HTTP ${res.statusCode}`));
         }
@@ -288,7 +295,7 @@ async function _fetchWithFallbackInner(url, retryCount = 0) {
   // All proxy sources down — fail fast instead of looping
   if (useScrapingBee && scrapingBeeDown && brightDataDown) {
     stats.errors++;
-    throw new Error('All sources unavailable: Reddit (403), Bright Data (down), ScrapingBee (credits exhausted)');
+    throw new Error('All sources unavailable: Reddit (403), Bright Data (down), ScrapingBee (down — see prior 401/402 reason)');
   }
 
   // Try Reddit direct
@@ -350,7 +357,7 @@ async function switchToProxy(url) {
   stats.errors++;
   const reasons = [];
   if (brightDataDown) reasons.push('Bright Data (auth/quota)');
-  if (scrapingBeeDown) reasons.push('ScrapingBee (credits exhausted)');
+  if (scrapingBeeDown) reasons.push('ScrapingBee (down — invalid key or credits; see prior 401/402)');
   if (!process.env.BRIGHTDATA_TOKEN) reasons.push('Bright Data (no token)');
   if (!process.env.SCRAPINGBEE_API_KEY) reasons.push('ScrapingBee (no key)');
   throw new Error(`Reddit blocked and all proxies unavailable: ${reasons.join(', ')}`);
