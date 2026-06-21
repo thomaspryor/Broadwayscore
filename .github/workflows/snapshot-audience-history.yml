@@ -1,0 +1,72 @@
+name: Snapshot Audience History
+
+# Year-round weekly snapshot of the FULL audience-buzz corpus (all shows, all
+# sources). Complements snapshot-audience-grades.yml, which is Tony-season-only
+# (~161 shows, Apr-Jun). This one builds the longitudinal record we use to
+# analyse how each source's audience scores move over time. Writes one file per
+# week to data/audience-history/{YYYY-MM-DD}.json (committed to the public repo,
+# same as the Tony snapshots — derived numeric aggregates, no copyrighted text).
+
+on:
+  schedule:
+    # Mondays 09:00 UTC — after the Sunday audience scrapers land (Show Score
+    # 12:00, Mezzanine 13:00, Theatr 14:00 UTC), so each snapshot captures a
+    # stable post-weekend state of every source.
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 'Snapshot date YYYY-MM-DD (default: today UTC). Use to label a backfill.'
+        required: false
+        type: string
+
+concurrency:
+  group: snapshot-audience-history
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Take full audience-history snapshot
+        run: |
+          ARGS=""
+          if [ -n "${{ inputs.date }}" ]; then ARGS="--date=${{ inputs.date }}"; fi
+          echo "Running: node scripts/snapshot-audience-full.js $ARGS"
+          node scripts/snapshot-audience-full.js $ARGS
+
+      - name: Commit snapshot
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/audience-history/
+          if git diff --cached --quiet; then
+            echo "No new snapshot to commit (already ran for this date)"
+            exit 0
+          fi
+          git commit -m "snapshot: audience history $(date -u +%Y-%m-%d)"
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Snapshot Audience History Failed'
+          severity: 'warning'
