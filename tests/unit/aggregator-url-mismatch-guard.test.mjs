@@ -25,6 +25,8 @@ const {
   AGGREGATOR_OUTLET_IDS,
   hostnameOf,
   isAggregatorUrlMismatch,
+  isAggregatorReviewSource,
+  shouldSkipAggregatorUrlWrite,
 } = require('../../scripts/lib/aggregator-domains');
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -85,16 +87,53 @@ describe('lockstep — validator and writer share the same canonical sets', () =
       'validate-review-texts.js must import the shared sets, not redefine them');
   });
 
-  test('gather-reviews.js wires the guard into createReviewFile', () => {
+  test('gather-reviews.js wires the guard into createReviewFile (source + value aware)', () => {
     const src = fs.readFileSync(path.join(REPO, 'scripts', 'gather-reviews.js'), 'utf8');
     assert.match(src, /require\(['"]\.\/lib\/aggregator-domains['"]\)/,
       'gather-reviews.js must import the shared predicate');
-    assert.match(src, /isAggregatorUrlMismatch\(reviewData\.url, normalizedOutletId\)/,
-      'createReviewFile must call the guard');
     assert.match(src, /return 'aggregatorUrlMismatch'/,
       'the guard must short-circuit the write with a rejection code');
+    // Regression: the guard must route through the value-first + source-aware
+    // decision (not the raw predicate) so it never drops a real star rating.
+    assert.match(src, /shouldSkipAggregatorUrlWrite\(reviewData, normalizedOutletId\)/,
+      'the guard must use the source/value-aware decision function');
   });
+});
 
+describe('shouldSkipAggregatorUrlWrite — value-first + source-aware (the regression fix)', () => {
+  const aggUrl = 'https://stagedoor.com/musicals/15640-six/critic-reviews';
+  test('BLOCKS the contamination class: serp-discovery, aggregator URL, real outlet, no score', () => {
+    assert.equal(shouldSkipAggregatorUrlWrite(
+      { source: 'serp-discovery', url: 'https://theatre.reviews/roundup' }, 'chichester-observer'), true);
+  });
+  test('does NOT block an aggregator-source write (legit roundup URL at ingest)', () => {
+    assert.equal(shouldSkipAggregatorUrlWrite(
+      { source: 'stagedoor', url: aggUrl }, 'guardian'), false);
+    assert.equal(shouldSkipAggregatorUrlWrite(
+      { source: 'show-score', url: 'https://show-score.com/x' }, 'guardian-uk'), false);
+    assert.equal(shouldSkipAggregatorUrlWrite(
+      { source: 'westendtheatre-roundup', url: 'https://theatre.reviews/x' }, 'standard'), false);
+  });
+  test('does NOT block a write carrying a real star/score (would drop the rating)', () => {
+    assert.equal(shouldSkipAggregatorUrlWrite(
+      { source: 'serp-discovery', url: aggUrl, originalScore: '3/5 stars' }, 'guardian'), false);
+    assert.equal(shouldSkipAggregatorUrlWrite(
+      { source: 'serp-discovery', url: aggUrl, aggregatorStars: '4/5' }, 'guardian'), false);
+  });
+  test('does NOT block a normal outlet URL', () => {
+    assert.equal(shouldSkipAggregatorUrlWrite(
+      { source: 'serp-discovery', url: 'https://www.theguardian.com/x' }, 'guardian'), false);
+  });
+  test('isAggregatorReviewSource recognizes the aggregator sources', () => {
+    for (const s of ['stagedoor', 'show-score', 'dtli', 'westendtheatre-roundup', 'theatre-reviews', 'lbo-individual', 'thestage-roundup']) {
+      assert.equal(isAggregatorReviewSource(s), true, s);
+    }
+    assert.equal(isAggregatorReviewSource('serp-discovery'), false);
+    assert.equal(isAggregatorReviewSource(null), false);
+  });
+});
+
+describe('canonical sets sanity', () => {
   test('the canonical sets are non-empty (import did not silently fail)', () => {
     assert.ok(AGGREGATOR_DOMAINS.size > 0);
     assert.ok(AGGREGATOR_OUTLET_IDS.size > 0);
