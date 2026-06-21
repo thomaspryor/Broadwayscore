@@ -46,6 +46,18 @@ function buildWrongProductionUserPrompt({ show, result, reviewData, revivals }) 
     truncated = text.substring(0, 2000) + '\n\n[...truncated...]\n\n' + text.substring(text.length - 1000);
   }
 
+  // Market-aware framing. Labelling a West End / Off-Broadway production as a
+  // "Broadway opening" makes the LLM read the correctly-filed local-market
+  // review as a mismatch (the Phantom 1986 West End premiere FP, 2026-06-21).
+  // Derive the market label from show.market so the FILED-UNDER line names the
+  // right house, and keep the candidate header market-neutral since revivals
+  // span markets (Broadway revival, West End transfer, tour).
+  const market = (show && show.market) || 'broadway';
+  const marketLabel = market === 'west-end' ? 'West End'
+    : market === 'off-broadway' ? 'Off-Broadway'
+    : market === 'off-west-end' ? 'Off-West-End'
+    : 'Broadway';
+
   // Opera-aware framing — see scripts/lib/opera-prompt-context.js for the
   // rationale. WRONG_PRODUCTION for opera means a different Met run, not
   // that the work has been performed at other opera houses.
@@ -53,7 +65,7 @@ function buildWrongProductionUserPrompt({ show, result, reviewData, revivals }) 
     ? `FILED UNDER PRODUCTION: ${result.showId} (Metropolitan Opera run opening: ${showYear})
 
 ${getOperaWrongProductionContext()}`
-    : `FILED UNDER PRODUCTION: ${result.showId} (Broadway opening: ${showYear})`;
+    : `FILED UNDER PRODUCTION: ${result.showId} (${marketLabel} opening: ${showYear})`;
 
   return `SHOW: "${showTitle}"
 ${filedUnderLabel}
@@ -61,7 +73,7 @@ OUTLET: ${result.outlet || 'Unknown'}
 CRITIC: ${result.criticName || 'Unknown'}
 PUBLISH DATE: ${result.publishDate || 'Unknown'}
 
-${isOpera ? 'PRIOR MET PRODUCTIONS OF THIS WORK:' : 'OTHER BROADWAY PRODUCTIONS OF THIS SHOW:'}
+${isOpera ? 'PRIOR MET PRODUCTIONS OF THIS WORK:' : 'OTHER PRODUCTIONS OF THIS SHOW (any market — other Broadway/West End mountings, transfers, tours):'}
 ${revivalLines || '  (none known)'}
 
 AUDIT SIGNALS THAT FLAGGED THIS REVIEW:

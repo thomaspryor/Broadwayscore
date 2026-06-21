@@ -65,7 +65,26 @@ test('wrong-production: non-opera Broadway show does NOT inject opera context', 
   assert.doesNotMatch(prompt, /OPERA CONTEXT/);
   assert.doesNotMatch(prompt, /Metropolitan Opera/);
   assert.match(prompt, /Broadway opening: 2015/);
-  assert.match(prompt, /OTHER BROADWAY PRODUCTIONS OF THIS SHOW/);
+  assert.match(prompt, /OTHER PRODUCTIONS OF THIS SHOW/);
+});
+
+test('wrong-production: West End show is labelled West End, not Broadway (Phantom 1986 FP fix)', () => {
+  const prompt = buildWrongProductionUserPrompt({
+    show: { type: 'musical', title: 'The Phantom of the Opera', market: 'west-end' },
+    result: {
+      showId: 'the-phantom-of-the-opera-west-end-1986',
+      showYear: 1986,
+      outlet: 'The Guardian',
+      criticName: 'Michael Billington',
+      publishDate: '1986-10-10',
+      signals: [],
+    },
+    reviewData: { fullText: 'The original West End premiere at Her Majesty\'s Theatre...' },
+    revivals: [],
+  });
+  // Must name the correct market so a correctly-filed WE review is not read as a mismatch
+  assert.match(prompt, /West End opening: 1986/);
+  assert.doesNotMatch(prompt, /Broadway opening:/);
 });
 
 test('wrong-production: opera context retains year-mismatch WRONG_PRODUCTION signal (the Waleson 2018 case)', () => {
