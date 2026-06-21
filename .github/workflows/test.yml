@@ -42,6 +42,12 @@ on:
       - 'scripts/backfill-cast-web.js'
       - 'data/cast/**'
       - 'scripts/lib/content-quality.js'
+      # Synopsis quality detector (refusal/placeholder/stale/invalid). Shared by
+      # the freshness gate, deploy-time self-heal, and Wikipedia re-enrichment.
+      # Colocated scripts/lib/*.test.mjs step covers the test; without these path
+      # entries a push to them triggers ZERO CI (1536 incident, 2026-06-21).
+      - 'scripts/lib/synopsis-validation.js'
+      - 'scripts/lib/synopsis-validation.test.mjs'
       # Comparative within-band scoring (anchored-v6 cluster fix). The colocated
       # scripts/lib/*.test.mjs step covers comparative-band.test.mjs; without
       # these path entries a push to them triggers ZERO CI (allow-list gate).
