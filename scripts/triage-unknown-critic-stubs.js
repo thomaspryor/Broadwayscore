@@ -32,7 +32,7 @@
  */
 const fs = require('fs');
 const path = require('path');
-const { isAggregatorUrlMismatch } = require('./lib/aggregator-domains');
+const { isAggregatorUrlMismatch, hostnameOf } = require('./lib/aggregator-domains');
 
 function arg(name, def) {
   const hit = process.argv.find(a => a.startsWith(`--${name}=`));
@@ -50,17 +50,35 @@ const MIN_EXCERPT = 40;   // chars — an aggregator excerpt worth keeping
 
 // Any value signal that makes a stub worth keeping: a score of any kind, an
 // aggregator rating/thumb, an excerpt, or a real review body. A stub with ANY of
-// these is contributing to (or feeding) scoring and must NOT be deleted.
+// these is contributing to (or feeding) scoring and must NOT be deleted —
+// including when it ALSO has an aggregator-URL mismatch (those need the URL
+// nulled, not the whole review deleted).
 const SCORE_SIGNALS = [
   'originalScore', 'assignedScore', 'llmScore', 'humanReviewScore',
   'aggregatorStars', 'westEndTheatreScore', 'showScoreStars', 'stagedoorStars',
   'dtliThumb', 'bwwThumb',
 ];
-const EXCERPT_FIELDS = ['dtliExcerpt', 'nycTheatreExcerpt', 'bwwExcerpt', 'excerpt', 'pullQuote'];
+// Mirror the excerpt fields treated as scoreable signal elsewhere in the repo
+// (review-text-scoreable.js, content-quality.js). Missing any of these makes the
+// triage mislabel a real aggregator excerpt-stub as contentless. (2026-06-21:
+// showScoreExcerpt/stagedoorExcerpt/lboRoundupExcerpt were missing and caused a
+// real scored review to be deleted — see ship-check.)
+const EXCERPT_FIELDS = [
+  'dtliExcerpt', 'nycTheatreExcerpt', 'bwwExcerpt',
+  'showScoreExcerpt', 'stagedoorExcerpt', 'lboRoundupExcerpt',
+  'westEndTheatreExcerpt', 'theatreReviewsExcerpt', 'theStageExcerpt',
+  'excerpt', 'pullQuote',
+];
 
-// URLs that are clearly NOT reviews — social posts, closing/cast news, listicles.
-// A stub on one of these is a discovery miss, not a collectable review.
-const NON_REVIEW_URL = /facebook\.com|twitter\.com|x\.com\/|instagram\.com|youtube\.com|\/news\/|final-performance|to-close|will-close|closing|announce|cast-change|in-photos|first-look|\/tickets/i;
+// URLs that are UNAMBIGUOUSLY not reviews: social/video hosts only. We
+// deliberately do NOT pattern-match on slug words like "closing"/"announce"/
+// "/news/" — WhatsOnStage and others publish real reviews under /news/, and real
+// review slugs contain those words. Over-matching there deletes collectable
+// reviews. A contentless husk on a non-social host is KEPT for collection.
+const SOCIAL_HOSTS = new Set([
+  'facebook.com', 'twitter.com', 'x.com', 'instagram.com',
+  'youtube.com', 'youtu.be', 'tiktok.com', 'threads.net',
+]);
 
 function isUnknownCritic(d) {
   const c = (d.criticName || '').trim().toLowerCase();
@@ -90,7 +108,8 @@ function isContentless(d) {
 }
 
 function isNonReviewUrl(url) {
-  return typeof url === 'string' && NON_REVIEW_URL.test(url);
+  const host = hostnameOf(url);
+  return !!host && SOCIAL_HOSTS.has(host);
 }
 
 function main() {
@@ -112,13 +131,16 @@ function main() {
       contentless: 0,
     },
     protectedStarStubs: 0,
+    // Files that HAVE value (score/stars/excerpt/text) AND an aggregator-URL
+    // mismatch. These are NOT deletion candidates — the remediation is to null the
+    // aggregator URL, keeping the scored review. Reported so they can be fixed.
+    valueWithUrlMismatch: [],
     // Husk = contentless (no score/stars/excerpt/text). Split by recoverability:
-    huskNonReviewUrl: 0,       // url is social/news/listicle — not a collectable review
+    huskNonReviewUrl: 0,       // url is a social/video host — not a collectable review
     huskCollectableUrl: 0,     // url is a plausible review awaiting text collection (KEEP — collect, don't delete)
     huskNoUrl: 0,              // nothing to collect
     deletionCandidates: [],    // {file, outletId, url, reasons}
     candidatesByReason: { contentless: 0, aggregatorUrlMismatch: 0, both: 0 },
-    // Deletion candidates by reason, broken down for transparency
     keepForCollection: [],     // contentless husks with a plausible review URL — flagged, NOT deleted
   };
 
@@ -147,26 +169,40 @@ function main() {
       if (mismatch) report.buckets.aggregatorUrlMismatch++;
       if (contentless) report.buckets.contentless++;
 
-      // Protected: a legit aggregator star-stub (has a rating, url is NOT a mismatch).
-      const protectedStarStub = stars && !mismatch;
-      if (protectedStarStub) report.protectedStarStubs++;
-
-      const reasons = [];
-      // (1) aggregator_url_mismatch is contamination — always a candidate (the class
-      //     the gather-reviews.js guard now prevents). Never protected.
-      if (mismatch) reasons.push('aggregatorUrlMismatch');
-
-      // (2) contentless husks: SAFE to delete only when there is nothing to recover.
-      //     A husk whose url is a plausible review is pending text collection — deleting
-      //     it loses a discovered review, so we KEEP it (route to collection instead).
-      if (contentless && !protectedStarStub) {
-        const url = d.url;
-        if (!url) { report.huskNoUrl++; reasons.push('contentless'); }
-        else if (isNonReviewUrl(url)) { report.huskNonReviewUrl++; reasons.push('contentless'); }
-        else { report.huskCollectableUrl++; /* KEEP — do not add 'contentless' reason */ if (!mismatch) report.keepForCollection.push({ file: rel, outletId: d.outletId || null, url }); }
+      // VALUE-FIRST RULE: any file with a score/stars/excerpt/text is KEPT — never
+      // deleted — even when it has an aggregator-URL mismatch. (2026-06-21: deleting
+      // such files removed real scored West End reviews. The fix for those is to
+      // null the aggregator URL, not delete the review.)
+      const hasValue = !contentless; // isContentless already checks score/stars/excerpt/text
+      if (hasValue) {
+        if (stars && !mismatch) report.protectedStarStubs++;
+        if (mismatch) {
+          report.valueWithUrlMismatch.push({ file: rel, outletId: d.outletId || null, url: d.url || null });
+        }
+        continue; // not a deletion candidate
       }
 
-      if (reasons.length && !protectedStarStub) {
+      // From here: the file is genuinely contentless (a husk).
+      const reasons = [];
+      // (1) contentless AND aggregator-URL mismatch → contamination husk, delete.
+      if (mismatch) reasons.push('aggregatorUrlMismatch');
+
+      // (2) otherwise classify by recoverability. A husk whose url is a plausible
+      //     review is pending text collection — KEEP it (route to collection).
+      //     Only no-url or social/video-host husks are safe to delete.
+      const url = d.url;
+      if (!mismatch) {
+        if (!url) { report.huskNoUrl++; reasons.push('contentless'); }
+        else if (isNonReviewUrl(url)) { report.huskNonReviewUrl++; reasons.push('contentless'); }
+        else { report.huskCollectableUrl++; report.keepForCollection.push({ file: rel, outletId: d.outletId || null, url }); }
+      } else {
+        // mismatch husk: tally its recoverability bucket for transparency too
+        if (!url) report.huskNoUrl++;
+        else if (isNonReviewUrl(url)) report.huskNonReviewUrl++;
+        else report.huskCollectableUrl++;
+      }
+
+      if (reasons.length) {
         report.deletionCandidates.push({ file: rel, outletId: d.outletId || null, url: d.url || null, reasons });
         const key = reasons.length === 2 ? 'both' : reasons[0];
         report.candidatesByReason[key] = (report.candidatesByReason[key] || 0) + 1;
@@ -188,9 +224,10 @@ function main() {
   console.log(`  aggregatorUrlMismatch:  ${report.buckets.aggregatorUrlMismatch}`);
   console.log(`  contentless (husks):    ${report.buckets.contentless}`);
   console.log(`  protected star-stubs:   ${report.protectedStarStubs}`);
+  console.log(`  value + url-mismatch:   ${report.valueWithUrlMismatch.length}        (KEEP — null the URL, don't delete)`);
   console.log(`  --- husk recoverability ---`);
   console.log(`  husk no-url:            ${report.huskNoUrl}        (delete — nothing to collect)`);
-  console.log(`  husk non-review url:    ${report.huskNonReviewUrl}        (delete — social/news/listicle)`);
+  console.log(`  husk social/video url:  ${report.huskNonReviewUrl}        (delete — social/video host)`);
   console.log(`  husk collectable url:   ${report.huskCollectableUrl}        (KEEP — pending text collection)`);
   console.log(`  --- deletion candidates ---`);
   console.log(`  total:                  ${report.deletionCandidates.length}`);
@@ -200,4 +237,11 @@ function main() {
   console.log(`  report → ${OUT}`);
 }
 
-main();
+// Export pure predicates for unit testing (the regression that bit on 2026-06-21
+// was in the classification logic, not the I/O).
+module.exports = {
+  isUnknownCritic, hasMeaningfulText, hasStars, hasExcerpt,
+  isContentless, isNonReviewUrl, SCORE_SIGNALS, EXCERPT_FIELDS, SOCIAL_HOSTS,
+};
+
+if (require.main === module) main();

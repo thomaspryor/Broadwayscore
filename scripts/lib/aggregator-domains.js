@@ -12,7 +12,16 @@
  * write the file in the first place — see isAggregatorUrlMismatch().
  *
  * Co-maintain these sets with AGGREGATOR_SCORE_SOURCES in review-normalization.js.
+ *
+ * NOTE (2026-06-21): the live West End aggregator is westendtheatre.COM, but this
+ * set carries westendtheatre.co.uk to stay byte-identical with the historical
+ * validate-review-texts.js sets (parity). Adding .com here would make the
+ * validator flag existing WET star-stubs (real outletId + westendtheatre.com url
+ * + stored stars) as aggregator_url_mismatch ERRORs and could turn main red — a
+ * separate decision, deliberately out of scope for this guard.
  */
+
+const { normalizeOutlet } = require('./review-normalization');
 
 // Known aggregator domains (hostname with leading www. stripped, lowercased).
 const AGGREGATOR_DOMAINS = new Set([
@@ -58,7 +67,13 @@ function isAggregatorUrlMismatch(url, outletId) {
   if (!outletId) return false;
   const hostname = hostnameOf(url);
   if (!hostname) return false;
-  return AGGREGATOR_DOMAINS.has(hostname) && !AGGREGATOR_OUTLET_IDS.has(outletId);
+  // Normalize the outletId the same way the validator does (normalizeOutletId →
+  // normalizeOutlet). Callers may pass a raw, capitalized, or aliased outletId
+  // (e.g. "Show-Score") — without this, a legit aggregator outlet would look like
+  // a real outlet and be mis-flagged as a mismatch. The ingest guard already
+  // passes a normalized id, so this is idempotent there.
+  const normId = normalizeOutlet(outletId) || outletId;
+  return AGGREGATOR_DOMAINS.has(hostname) && !AGGREGATOR_OUTLET_IDS.has(normId);
 }
 
 module.exports = {

@@ -1,28 +1,62 @@
 {
   "dir": "/Users/tompryor/Broadwayscore/data/review-texts",
-  "totalFiles": 39582,
+  "totalFiles": 39583,
   "unknownStubs": 1811,
   "buckets": {
     "hasOriginalScore": 208,
     "hasAggregatorStars": 505,
     "hasFullText": 795,
-    "hasExcerpt": 438,
+    "hasExcerpt": 645,
     "aggregatorUrlMismatch": 8,
-    "contentless": 529
+    "contentless": 526
   },
   "protectedStarStubs": 504,
-  "huskNonReviewUrl": 82,
-  "huskCollectableUrl": 447,
+  "valueWithUrlMismatch": [
+    {
+      "file": "avenue-q-west-end-2026/guardian-uk--unknown.json",
+      "outletId": "guardian-uk",
+      "url": "https://www.show-score.com/uk/london/west-end-shows/avenue-q-west-end"
+    },
+    {
+      "file": "back-to-the-future-west-end-2021/metro-uk--unknown.json",
+      "outletId": "metro-uk",
+      "url": "https://stagedoor.com/musicals/9787-back-to-the-future-the-musical/critic-reviews"
+    },
+    {
+      "file": "marie-and-rosetta-west-end-2026/standard--unknown.json",
+      "outletId": "standard",
+      "url": "https://stagedoor.com/plays/18706-marie-rosetta/critic-reviews"
+    },
+    {
+      "file": "oliver-west-end-2024/all-that-dazzles-uk--unknown.json",
+      "outletId": "all-that-dazzles-uk",
+      "url": "https://stagedoor.com/musicals/18281-oliver/critic-reviews"
+    },
+    {
+      "file": "six-the-musical-west-end-2021/guardian--unknown.json",
+      "outletId": "guardian",
+      "url": "https://stagedoor.com/musicals/15640-six/critic-reviews"
+    },
+    {
+      "file": "the-mousetrap-west-end-2021/west-end-wilma--unknown.json",
+      "outletId": "west-end-wilma",
+      "url": "https://stagedoor.com/plays/89-the-mousetrap/critic-reviews"
+    },
+    {
+      "file": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/all-that-dazzles-uk--unknown.json",
+      "outletId": "all-that-dazzles-uk",
+      "url": "https://stagedoor.com/musicals/18897-the-unlikely-pilgrimage-of-harold-fry/critic-reviews"
+    },
+    {
+      "file": "witness-for-the-prosecution-west-end-2022/artsdesk--unknown.json",
+      "outletId": "artsdesk",
+      "url": "https://stagedoor.com/plays/3615-witness-for-the-prosecution/critic-reviews"
+    }
+  ],
+  "huskNonReviewUrl": 10,
+  "huskCollectableUrl": 516,
   "huskNoUrl": 0,
   "deletionCandidates": [
-    {
-      "file": "13-2008/nytg--unknown.json",
-      "outletId": "nytg",
-      "url": "https://www.newyorktheatreguide.com/theatre-news/news/13-plays-final-performance-on-broadway",
-      "reasons": [
-        "contentless"
-      ]
-    },
     {
       "file": "1536-west-end-2026/click-liverpool--unknown.json",
       "outletId": "click-liverpool",
@@ -40,201 +74,9 @@
       ]
     },
     {
-      "file": "a-little-night-music-2009/nytg--unknown.json",
-      "outletId": "nytg",
-      "url": "https://www.newyorktheatreguide.com/theatre-news/news/a-little-night-music-to-close-on-20-jun",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "a-midsummer-nights-dream-west-end-2026/bloomberg--unknown.json",
-      "outletId": "bloomberg",
-      "url": "http://www.bloomberg.com/news/2013-11-04/taymor-s-dream-broadway-s-harlem-renaissance-review.html",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "and-juliet-2022/standard--unknown.json",
-      "outletId": "standard",
-      "url": "https://standard.co.uk/culture/theatre/sadie-sink-noah-jupe-romeo-juliet-harold-pinter-theatre-first-look-b1277030.html",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "and-then-the-rodeo-burned-down-off-broadway-2026/lighting-and-sound-america--unknown.json",
-      "outletId": "lighting-and-sound-america",
-      "url": "https://www.lightingandsoundamerica.com/news/story.asp?ID=-WW21VA",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "angela-s-mixtape-off-broadway-2026/theatermania--unknown.json",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/eisa-davis-and-linda-powell-to-star-in-angelas-mixtape_18052/",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "avenue-q-west-end-2026/guardian-uk--unknown.json",
-      "outletId": "guardian-uk",
-      "url": "https://www.show-score.com/uk/london/west-end-shows/avenue-q-west-end",
-      "reasons": [
-        "aggregatorUrlMismatch"
-      ]
-    },
-    {
-      "file": "back-to-the-future-west-end-2021/metro-uk--unknown.json",
-      "outletId": "metro-uk",
-      "url": "https://stagedoor.com/musicals/9787-back-to-the-future-the-musical/critic-reviews",
-      "reasons": [
-        "aggregatorUrlMismatch"
-      ]
-    },
-    {
-      "file": "back-to-the-future-west-end-2021/whatsonstage--unknown.json",
-      "outletId": "whatsonstage",
-      "url": "https://www.whatsonstage.com/news/roots-and-look-back-in-anger-at-the-almeida-theatre-angry-and-young-season-review_1636059/",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
-      "outletId": "whatsonstage",
-      "url": "https://www.whatsonstage.com/news/?market=nationwide",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "billy-elliot-the-musical-west-end-2027/nytg--unknown.json",
-      "outletId": "nytg",
-      "url": "https://www.newyorktheatreguide.com/theatre-news/news/billy-elliot-the-musical-to-close-on-8-jan-2012",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "carrie-1988/nytg--unknown.json",
-      "outletId": "nytg",
-      "url": "https://www.newyorktheatreguide.com/theatre-news/news/carrie-is-to-have-a-private-reading-in-nov-could-a-re-worked-script-see-the-musical",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "carrie-1988/thestage--unknown.json",
-      "outletId": "thestage",
-      "url": "https://www.thestage.co.uk/news/book-exploring-broadway-flop-carrie-scoops-theatre-literary-prize",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "carrie-1988/whatsonstage--unknown.json",
-      "outletId": "whatsonstage",
-      "url": "https://www.whatsonstage.com/news/mellencamp-puts-stephen-kings-ghosts-of-carrie-to-rest_19822/",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "cats-the-jellicle-ball-2026/variety--unknown.json",
-      "outletId": "variety",
-      "url": "https://variety.com/2026/legit/news/tom-felton-extends-broadway-harry-potter-cursed-child-1236709765/",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "chat-noir-off-west-end-2026/sunday-telegraph--unknown.json",
-      "outletId": "sunday-telegraph",
-      "url": "https://www.telegraph.co.uk/theatre/tickets/london/chat-noir/",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "chess-2025/west-end-best-friend--unknown.json",
-      "outletId": "west-end-best-friend",
-      "url": "https://www.westendbestfriend.co.uk/news/chess-sets-final-performance-date-on-broadway",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "chess-2025/whatsonstage--unknown.json",
-      "outletId": "whatsonstage",
-      "url": "https://www.whatsonstage.com/news/white-rabbit-red-rabbit-at-the-duchess-theatre-review_1724158/",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "company-2021/whatsonstage--unknown.json",
-      "outletId": "whatsonstage",
-      "url": "https://www.whatsonstage.com/news/annie-get-your-gun-outdoor-revival-full-company-announced_54364/",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "cymbeline-2007/nytg--unknown.json",
-      "outletId": "nytg",
-      "url": "https://www.newyorktheatreguide.com/theatre-news/news/cymbeline-plays-its-final-performance-on-broadway",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
       "file": "dark-of-the-moon-west-end-2026/cambridge--unknown.json",
       "outletId": "cambridge",
       "url": "https://www.facebook.com/whatsonstage/videos/dark-of-the-moon-is-a-spellbinding-new-musical-based-on-the-classic-play-feature/1303413291932329/",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "death-of-a-salesman-2012/indiewire--unknown.json",
-      "outletId": "indiewire",
-      "url": "https://www.indiewire.com/news/general-news/andrew-garfield-death-of-a-salesman-review-roundup-and-whats-at-stake-for-spiderman-at-wondercon-182288/",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "deathtrap-1978/theatermania--unknown.json",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/deathtrap_30197/",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "deuce-2007/nytg--unknown.json",
-      "outletId": "nytg",
-      "url": "https://www.newyorktheatreguide.com/theatre-news/news/deuce-plays-final-performance-on-broadway",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "deuce-2007/theatermania--unknown.json",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/deuce-coup_10701/",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "dracula-1977/theatermania--unknown.json",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/sinking-their-teeth-into-dracula_32901/",
       "reasons": [
         "contentless"
       ]
@@ -248,377 +90,9 @@
       ]
     },
     {
-      "file": "falsettos-1992/theatermania--unknown.json",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/falsettos_6105/",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "fences-2010/nytg--unknown.json",
-      "outletId": "nytg",
-      "url": "https://www.newyorktheatreguide.com/theatre-news/news/fences-plays-final-performance-on-broadway",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "fences-2010/theatermania--unknown.json",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/denzel-washington-and-viola-davis-led-fences-film-to-begin-shooting_76700/",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "fences-2010/whatsonstage--unknown.json",
-      "outletId": "whatsonstage",
-      "url": "https://www.whatsonstage.com/west-end-theatre/news/denzel-washington-erects-fences-in-london_13543.html/",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "follies-2011/theatermania--unknown.json",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/follies_42576/",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "hadestown-west-end-2024/nytg--unknown.json",
-      "outletId": "nytg",
-      "url": "https://www.newyorktheatreguide.com/theatre-news/news/maia-reficco-to-star-in-hadestown-on-broadway",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "hadestown-west-end-2024/whatsonstage--unknown.json",
-      "outletId": "whatsonstage",
-      "url": "https://www.whatsonstage.com/news/hadestown-extends-west-end-run-into-2027_1721706/",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "hairspray-2002/latimes--unknown.json",
-      "outletId": "latimes",
-      "url": "https://www.latimes.com/socal/la-canada-valley-sun/news/tn-vsl-xpm-2007-07-26-lap-hairspray0726-story.html",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "hairspray-2002/nytg--unknown.json",
-      "outletId": "nytg",
-      "url": "https://www.newyorktheatreguide.com/theatre-news/news/hairspray-george-wendt-is-broadways-new-edna-turnblad",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "head-over-heels-2018/billboard--unknown.json",
-      "outletId": "billboard",
-      "url": "https://www.billboard.com/music/pop/go-gos-musical-head-over-heels-to-close-broadway-8486474/",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "heathers-the-musical-off-broadway-2025/west-end-best-friend--unknown.json",
-      "outletId": "west-end-best-friend",
-      "url": "https://www.westendbestfriend.co.uk/news/heathers-announces-casting-for-london-and-uk-tour",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "in-the-heights-2008/nytg--unknown.json",
-      "outletId": "nytg",
-      "url": "https://www.newyorktheatreguide.com/theatre-news/news/in-the-heights-plays-final-performance",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "inter-alia-west-end-2026/sunday-telegraph--unknown.json",
-      "outletId": "sunday-telegraph",
-      "url": "https://www.telegraph.co.uk/theatre/tickets/london/inter-alia/",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "into-the-woods-west-end-2025/variety--unknown.json",
-      "outletId": "variety",
-      "url": "https://variety.com/2026/theater/news/paddington-into-the-woods-2026-olivier-awards-nominations-1236680111/",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "joe-turners-come-and-gone-2009/nytg--unknown.json",
-      "outletId": "nytg",
-      "url": "https://www.newyorktheatreguide.com/theatre-news/news/joe-turners-come-and-gone-concludes-its-limited-engagement-on-broadway",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "kenrex-off-broadway-2026/thestage--unknown.json",
-      "outletId": "thestage",
-      "url": "https://www.thestage.co.uk/news/jack-holden-im-slightly-anxious-about-bringing-kenrex-to-the-us",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "kiss-of-the-spider-woman-1993/theatermania--unknown.json",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/audra-mcdonald-and-alan-cumming-lead-reading-of-kiss-of-the-spider-woman_71298/",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "les-miserables-2006/theatermania--unknown.json",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/les-miserables_9437/",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "lucky-guy-2013/nytg--unknown.json",
-      "outletId": "nytg",
-      "url": "https://www.newyorktheatreguide.com/theatre-news/news/lucky-guy-recoups-its-capitalization",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "marie-and-rosetta-west-end-2026/standard--unknown.json",
-      "outletId": "standard",
-      "url": "https://stagedoor.com/plays/18706-marie-rosetta/critic-reviews",
-      "reasons": [
-        "aggregatorUrlMismatch"
-      ]
-    },
-    {
-      "file": "matilda-the-musical-west-end-2021/operawire--unknown.json",
-      "outletId": "operawire",
-      "url": "https://operawire.com/volksoper-wien-announces-2026-27-season-featuring-wallis-giunta-misha-kiria-annette-dasch-matilda-sterby/",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "memphis-2009/chicagotribune--unknown.json",
-      "outletId": "chicagotribune",
-      "url": "https://www.chicagotribune.com/2012/07/30/broadways-memphis-recoups-musical-breaks-even-just-before-closing/",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "moulin-rouge-the-musical-west-end-2021/nytg--unknown.json",
-      "outletId": "nytg",
-      "url": "https://www.newyorktheatreguide.com/theatre-news/news/moulin-rouge-the-musical-sets-new-broadway-casting",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "oh-mary-2024/variety--unknown.json",
-      "outletId": "variety",
-      "url": "https://variety.com/2026/theater/news/rupauls-drag-race-jinkx-monsoon-west-end-debut-oh-mary-1236772265/",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "oh-mary-2024/west-end-best-friend--unknown.json",
-      "outletId": "west-end-best-friend",
-      "url": "https://www.westendbestfriend.co.uk/news/jinkx-monsoon-west-end-debut-oh-mary",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "oh-mary-west-end-2025/nytg--unknown.json",
-      "outletId": "nytg",
-      "url": "https://www.newyorktheatreguide.com/theatre-news/news/maya-rudolph-extends-run-in-oh-mary-on-broadway",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "oh-mary-west-end-2025/variety--unknown.json",
-      "outletId": "variety",
-      "url": "https://variety.com/2026/legit/news/maya-rudolph-oh-mary-broadway-debut-1236685691/",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "oh-mary-west-end-2025/west-end-best-friend--unknown.json",
-      "outletId": "west-end-best-friend",
-      "url": "https://www.westendbestfriend.co.uk/news/jinkx-monsoon-west-end-debut-oh-mary",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "oliver-west-end-2024/all-that-dazzles-uk--unknown.json",
-      "outletId": "all-that-dazzles-uk",
-      "url": "https://stagedoor.com/musicals/18281-oliver/critic-reviews",
-      "reasons": [
-        "aggregatorUrlMismatch"
-      ]
-    },
-    {
-      "file": "operation-mincemeat-2025/west-end-best-friend--unknown.json",
-      "outletId": "west-end-best-friend",
-      "url": "https://www.westendbestfriend.co.uk/news/review-operation-mincemeat-theatre-royal-bath-tour",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "orlando-off-broadway-2026/daily-herald--unknown.json",
-      "outletId": "daily-herald",
-      "url": "https://www.dailyherald.com/20131026/entertainment/orlando-bloom-and-miranda-kerr-announce-split/",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
       "file": "paddington-the-musical-west-end-2025/jitney--unknown.json",
       "outletId": "jitney",
       "url": "https://www.facebook.com/BroadwayWorld/posts/evita-the-musical-oh-mary-into-the-woods-paddington-the-musical-corbin-bleu-and-/1495453282197952/",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "paddington-the-musical-west-end-2025/nytg--unknown.json",
-      "outletId": "nytg",
-      "url": "https://www.newyorktheatreguide.com/theatre-news/news/paddington-the-musical-eyes-broadway-run",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "paranormal-activity-west-end-2025/nytg--unknown.json",
-      "outletId": "nytg",
-      "url": "https://www.newyorktheatreguide.com/theatre-news/news/paranormal-activity-play-to-open-on-broadway-in-august",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "romeo-and-juliet-off-broadway-2026/bloomberg--unknown.json",
-      "outletId": "bloomberg",
-      "url": "http://www.bloomberg.com/news/2013-09-20/orland-bloom-goes-hog-wild-in-tame-romeo-jeremy-gerard.html",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "romeo-and-juliet-off-broadway-2026/lighting-and-sound-america--unknown.json",
-      "outletId": "lighting-and-sound-america",
-      "url": "https://www.lightingandsoundamerica.com/news/story.asp?ID=-U2GS6P",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "romeo-and-juliet-west-end-2026/bloomberg--unknown.json",
-      "outletId": "bloomberg",
-      "url": "http://www.bloomberg.com/news/2013-09-20/orland-bloom-goes-hog-wild-in-tame-romeo-jeremy-gerard.html",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "romeo-and-juliet-west-end-2026/lighting-and-sound-america--unknown.json",
-      "outletId": "lighting-and-sound-america",
-      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-U2GS6P",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "romeo-and-juliet-west-end-2026/theatermania--unknown.json",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-free-shakespeare-in-the-parks-romeo-and-juliet-on-ice_1841577/",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "runaways-1978/theatermania--unknown.json",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/runaways_77688/",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "sinatra-the-musical-west-end-2026/telegraph--unknown.json",
-      "outletId": "telegraph",
-      "url": "https://www.telegraph.co.uk/theatre/tickets/london/sinatra-the-musical/",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "sinatra-the-musical-west-end-2026/variety--unknown.json",
-      "outletId": "variety",
-      "url": "https://variety.com/2023/music/news/sinatra-musical-casts-tony-winner-matt-doyle-frank-england-1235666711/",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "six-the-musical-west-end-2021/guardian--unknown.json",
-      "outletId": "guardian",
-      "url": "https://stagedoor.com/musicals/15640-six/critic-reviews",
-      "reasons": [
-        "aggregatorUrlMismatch"
-      ]
-    },
-    {
-      "file": "spring-awakening-2006/theatrely--unknown.json",
-      "outletId": "theatrely",
-      "url": "https://www.theatrely.com/post/initial-casting-announced-for-londons-spring-awakening-15th-anniversary-reunion-concert-in-2024",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "sting-west-end-2026/variety--unknown.json",
-      "outletId": "variety",
-      "url": "https://au.variety.com/2025/music/news/sting-australia-qpac-last-ship-musical-26483/",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "sting-west-end-2026/west-end-best-friend--unknown.json",
-      "outletId": "west-end-best-friend",
-      "url": "https://www.westendbestfriend.co.uk/news/casting-return-paranormal-activity-west-end",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "talleys-folly-1980/theatermania--unknown.json",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/michael-wilson-to-direct-roundabout-revival-of-lanford-wilsons-talleys-folly_61049/",
       "reasons": [
         "contentless"
       ]
@@ -635,70 +109,6 @@
       "file": "the-car-man-west-end-2026/oxfordshire-guardian--unknown.json",
       "outletId": "oxfordshire-guardian",
       "url": "https://www.facebook.com/NewcastleTheatreRoyal/posts/matthew-bournes-award-winning-production-the-car-man-is-back-fuelled-by-heat-and/1405905271565414/",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "the-car-man-west-end-2026/the-list--unknown.json",
-      "outletId": "the-list",
-      "url": "https://list.co.uk/news/12302/dance-review-matthew-bournes-the-car-man",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "the-maids-off-broadway-2026/british-theatre--unknown.json",
-      "outletId": "british-theatre",
-      "url": "https://www.britishtheatre.com/posts/the-housemaid-stage-adaptation-announced-by-lionsgate-following-400-million-film",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "the-mousetrap-west-end-2021/variety--unknown.json",
-      "outletId": "variety",
-      "url": "https://variety.com/2022/legit/news/agatha-christie-the-mousetrap-broadway-1235441984/",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "the-mousetrap-west-end-2021/west-end-wilma--unknown.json",
-      "outletId": "west-end-wilma",
-      "url": "https://stagedoor.com/plays/89-the-mousetrap/critic-reviews",
-      "reasons": [
-        "aggregatorUrlMismatch"
-      ]
-    },
-    {
-      "file": "the-phantom-of-the-opera-west-end-1986/variety--unknown.json",
-      "outletId": "variety",
-      "url": "https://variety.com/2021/scene/news/the-phantom-of-the-opera-andrew-lloyd-webber-hal-prince-broadway-1235096203/",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "the-ritz-2007/theatermania--unknown.json",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/ashlie-atkinson-joins-the-ritz-first-preview-cancelled_11589/",
-      "reasons": [
-        "contentless"
-      ]
-    },
-    {
-      "file": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/all-that-dazzles-uk--unknown.json",
-      "outletId": "all-that-dazzles-uk",
-      "url": "https://stagedoor.com/musicals/18897-the-unlikely-pilgrimage-of-harold-fry/critic-reviews",
-      "reasons": [
-        "aggregatorUrlMismatch"
-      ]
-    },
-    {
-      "file": "time-stands-still-2010/theatermania--unknown.json",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/photo-flash-laura-linney-lily-rabe-lou-reed-christina-ricci-and-more-at-broadways-time-stands-still-opening_31176/",
       "reasons": [
         "contentless"
       ]
@@ -726,22 +136,19 @@
       "reasons": [
         "contentless"
       ]
-    },
-    {
-      "file": "witness-for-the-prosecution-west-end-2022/artsdesk--unknown.json",
-      "outletId": "artsdesk",
-      "url": "https://stagedoor.com/plays/3615-witness-for-the-prosecution/critic-reviews",
-      "reasons": [
-        "aggregatorUrlMismatch"
-      ]
     }
   ],
   "candidatesByReason": {
-    "contentless": 82,
-    "aggregatorUrlMismatch": 8,
+    "contentless": 10,
+    "aggregatorUrlMismatch": 0,
     "both": 0
   },
   "keepForCollection": [
+    {
+      "file": "13-2008/nytg--unknown.json",
+      "outletId": "nytg",
+      "url": "https://www.newyorktheatreguide.com/theatre-news/news/13-plays-final-performance-on-broadway"
+    },
     {
       "file": "1536-west-end-2026/theatrecat--unknown.json",
       "outletId": "theatrecat",
@@ -751,6 +158,11 @@
       "file": "a-little-night-music-2009/nydailynews--unknown.json",
       "outletId": "nydailynews",
       "url": "https://www.nydailynews.com/2009/12/18/ramona-mallory-in-a-little-night-music-was-a-broadway-baby-her-parents-starred-in-show-too/"
+    },
+    {
+      "file": "a-little-night-music-2009/nytg--unknown.json",
+      "outletId": "nytg",
+      "url": "https://www.newyorktheatreguide.com/theatre-news/news/a-little-night-music-to-close-on-20-jun"
     },
     {
       "file": "a-midsummer-nights-dream-globe-west-end-2026/ew--unknown.json",
@@ -766,6 +178,11 @@
       "file": "a-midsummer-nights-dream-globe-west-end-2026/newsday--unknown.json",
       "outletId": "newsday",
       "url": "http://www.newsday.com/entertainment/theater/a-midsummer-night-s-dream-review-julie-taymor-brings-magic-to-brooklyn-1.6364071"
+    },
+    {
+      "file": "a-midsummer-nights-dream-west-end-2026/bloomberg--unknown.json",
+      "outletId": "bloomberg",
+      "url": "http://www.bloomberg.com/news/2013-11-04/taymor-s-dream-broadway-s-harlem-renaissance-review.html"
     },
     {
       "file": "a-midsummer-nights-dream-west-end-2026/nydailynews--unknown.json",
@@ -838,9 +255,24 @@
       "url": "https://www.theguardian.com/lifeandstyle/video/2026/jun/15/o-romeow-cat-steals-the-show-during-final-scene-at-romeo-and-juliet-ballet-video"
     },
     {
+      "file": "and-juliet-2022/standard--unknown.json",
+      "outletId": "standard",
+      "url": "https://standard.co.uk/culture/theatre/sadie-sink-noah-jupe-romeo-juliet-harold-pinter-theatre-first-look-b1277030.html"
+    },
+    {
       "file": "and-juliet-2022/theater-pizzazz--unknown.json",
       "outletId": "theater-pizzazz",
       "url": "https://theaterpizzazz.com/romeo-and-juliet-romeo-y-julieta/"
+    },
+    {
+      "file": "and-then-the-rodeo-burned-down-off-broadway-2026/lighting-and-sound-america--unknown.json",
+      "outletId": "lighting-and-sound-america",
+      "url": "https://www.lightingandsoundamerica.com/news/story.asp?ID=-WW21VA"
+    },
+    {
+      "file": "angela-s-mixtape-off-broadway-2026/theatermania--unknown.json",
+      "outletId": "theatermania",
+      "url": "https://www.theatermania.com/news/eisa-davis-and-linda-powell-to-star-in-angelas-mixtape_18052/"
     },
     {
       "file": "angels-in-america-2018/nytg--unknown.json",
@@ -896,6 +328,11 @@
       "file": "back-to-the-future-west-end-2021/british-theatre--unknown.json",
       "outletId": "british-theatre",
       "url": "https://www.britishtheatre.com/cs/posts/back-to-the-future-the-musical-review-round-up"
+    },
+    {
+      "file": "back-to-the-future-west-end-2021/whatsonstage--unknown.json",
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/roots-and-look-back-in-anger-at-the-almeida-theatre-angry-and-young-season-review_1636059/"
     },
     {
       "file": "bad-krey-l-off-broadway-2026/playbill--unknown.json",
@@ -986,6 +423,16 @@
       "file": "bigfoot-off-broadway-2026/new-york-city-theatre--unknown.json",
       "outletId": "new-york-city-theatre",
       "url": "https://www.newyorkcitytheatre.com/shows/new-york-city-center/bigfoot"
+    },
+    {
+      "file": "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/?market=nationwide"
+    },
+    {
+      "file": "billy-elliot-the-musical-west-end-2027/nytg--unknown.json",
+      "outletId": "nytg",
+      "url": "https://www.newyorktheatreguide.com/theatre-news/news/billy-elliot-the-musical-to-close-on-8-jan-2012"
     },
     {
       "file": "blood-of-my-blood-west-end-2026/afridiziak-theatre-news--unknown.json",
@@ -1123,9 +570,24 @@
       "url": "https://www.newyorker.com/culture/culture-desk/is-carrie-the-worst-musical-of-all-time"
     },
     {
+      "file": "carrie-1988/nytg--unknown.json",
+      "outletId": "nytg",
+      "url": "https://www.newyorktheatreguide.com/theatre-news/news/carrie-is-to-have-a-private-reading-in-nov-could-a-re-worked-script-see-the-musical"
+    },
+    {
       "file": "carrie-1988/telegraph--unknown.json",
       "outletId": "telegraph",
       "url": "https://www.telegraph.co.uk/culture/theatre/theatre-reviews/11583038/Carrie-the-Musical-Southwark-Playhouse-review-unsettlingly-immersive.html"
+    },
+    {
+      "file": "carrie-1988/thestage--unknown.json",
+      "outletId": "thestage",
+      "url": "https://www.thestage.co.uk/news/book-exploring-broadway-flop-carrie-scoops-theatre-literary-prize"
+    },
+    {
+      "file": "carrie-1988/whatsonstage--unknown.json",
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/mellencamp-puts-stephen-kings-ghosts-of-carrie-to-rest_19822/"
     },
     {
       "file": "cats-the-jellicle-ball-2026/billboard--unknown.json",
@@ -1151,6 +613,11 @@
       "file": "cats-the-jellicle-ball-2026/theatrely--unknown.json",
       "outletId": "theatrely",
       "url": "https://www.theatrely.com/post/cats-the-jellicle-ball-pushes-us-towards-a-more-fabulous-future-review"
+    },
+    {
+      "file": "cats-the-jellicle-ball-2026/variety--unknown.json",
+      "outletId": "variety",
+      "url": "https://variety.com/2026/legit/news/tom-felton-extends-broadway-harry-potter-cursed-child-1236709765/"
     },
     {
       "file": "cats-the-jellicle-ball-2026/west-end-wilma--unknown.json",
@@ -1181,6 +648,11 @@
       "file": "celebrity-autobiography-2026/theater-life--unknown.json",
       "outletId": "theater-life",
       "url": "https://theaterlife.com/animal-wisdom-the-emporium-celebrity-autobiography/"
+    },
+    {
+      "file": "chat-noir-off-west-end-2026/sunday-telegraph--unknown.json",
+      "outletId": "sunday-telegraph",
+      "url": "https://www.telegraph.co.uk/theatre/tickets/london/chat-noir/"
     },
     {
       "file": "chess-2025/all-that-dazzles-uk--unknown.json",
@@ -1228,6 +700,16 @@
       "url": "https://www.thetimes.com/article/theatre-and-dance-review-nine-night-windrush-movement-of-the-people-present-laughter-absolute-hell-chess-zgqr5d9kf?shareToken=9ada00cc7b840ca715b0d246329885c1&srsltid=AfmBOorFkcrkQp3LXYfM9vZOfgvQte12dNtTGdl9awjkYBrgsBJzaEKW"
     },
     {
+      "file": "chess-2025/west-end-best-friend--unknown.json",
+      "outletId": "west-end-best-friend",
+      "url": "https://www.westendbestfriend.co.uk/news/chess-sets-final-performance-date-on-broadway"
+    },
+    {
+      "file": "chess-2025/whatsonstage--unknown.json",
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/white-rabbit-red-rabbit-at-the-duchess-theatre-review_1724158/"
+    },
+    {
       "file": "company-2021/newsday--unknown.json",
       "outletId": "newsday",
       "url": "https://www.newsday.com/entertainment/theater/company-patti-lupone-review-m27798"
@@ -1236,6 +718,11 @@
       "file": "company-2021/philadelphia-inquirer--unknown.json",
       "outletId": "philadelphia-inquirer",
       "url": "https://www.inquirer.com/arts/garbologists-trash-philadelphia-theatre-company-lindsay-joelle-20211122.html"
+    },
+    {
+      "file": "company-2021/whatsonstage--unknown.json",
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/annie-get-your-gun-outdoor-revival-full-company-announced_54364/"
     },
     {
       "file": "consumed-west-end-2026/londontheatre1--unknown.json",
@@ -1256,6 +743,11 @@
       "file": "cost-of-living-2022/nycitycenterorg--unknown.json",
       "outletId": "nycitycenterorg",
       "url": "http://boneaubryanbrown1.pr-optout.com/Tracking.aspx?Data=HHL%3d8%2c43A%26JDG%3c%3b39-45%3f%26SDG%3c90%3a.&RE=MC&RI=5214503&Preview=False&DistributionActionID=4909&Action=Follow+Link"
+    },
+    {
+      "file": "cymbeline-2007/nytg--unknown.json",
+      "outletId": "nytg",
+      "url": "https://www.newyorktheatreguide.com/theatre-news/news/cymbeline-plays-its-final-performance-on-broadway"
     },
     {
       "file": "dark-of-the-moon-west-end-2026/guardian-uk--unknown.json",
@@ -1283,6 +775,11 @@
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/death-of-a-salesman-review-young-vic-london-tickets-cast-a8907661.html"
     },
     {
+      "file": "death-of-a-salesman-2012/indiewire--unknown.json",
+      "outletId": "indiewire",
+      "url": "https://www.indiewire.com/news/general-news/andrew-garfield-death-of-a-salesman-review-roundup-and-whats-at-stake-for-spiderman-at-wondercon-182288/"
+    },
+    {
       "file": "death-of-a-salesman-2012/talkinbroadway--unknown.json",
       "outletId": "talkinbroadway",
       "url": "https://www.talkinbroadway.com/world/Salesman2012.html"
@@ -1303,9 +800,24 @@
       "url": "https://www.latimes.com/archives/blogs/culture-monster-blog/story/2012-04-03/theater-review-deathtrap-at-the-davidson-valentini-theatre"
     },
     {
+      "file": "deathtrap-1978/theatermania--unknown.json",
+      "outletId": "theatermania",
+      "url": "https://www.theatermania.com/news/deathtrap_30197/"
+    },
+    {
       "file": "deathtrap-1978/variety--unknown.json",
       "outletId": "variety",
       "url": "https://variety.com/1981/film/reviews/deathtrap-2-1200425230/"
+    },
+    {
+      "file": "deuce-2007/nytg--unknown.json",
+      "outletId": "nytg",
+      "url": "https://www.newyorktheatreguide.com/theatre-news/news/deuce-plays-final-performance-on-broadway"
+    },
+    {
+      "file": "deuce-2007/theatermania--unknown.json",
+      "outletId": "theatermania",
+      "url": "https://www.theatermania.com/news/deuce-coup_10701/"
     },
     {
       "file": "dog-day-afternoon-2026/independent--unknown.json",
@@ -1321,6 +833,11 @@
       "file": "dracula-1977/latimes--unknown.json",
       "outletId": "latimes",
       "url": "https://www.latimes.com/archives/blogs/culture-monster-blog/story/2009-02-19/review-dracula-at-noho-arts-center"
+    },
+    {
+      "file": "dracula-1977/theatermania--unknown.json",
+      "outletId": "theatermania",
+      "url": "https://www.theatermania.com/news/sinking-their-teeth-into-dracula_32901/"
     },
     {
       "file": "dracula-west-end-2025/draculawestendcom--unknown.json",
@@ -1403,9 +920,19 @@
       "url": "https://theatrecat.com/2025/12/03/fallen-angels-menier-se1/"
     },
     {
+      "file": "falsettos-1992/theatermania--unknown.json",
+      "outletId": "theatermania",
+      "url": "https://www.theatermania.com/news/falsettos_6105/"
+    },
+    {
       "file": "falsettos-1992/thestage--unknown.json",
       "outletId": "thestage",
       "url": "https://www.thestage.co.uk/reviews/falsettos-review-at-the-other-palace-london--an-effortful-staging"
+    },
+    {
+      "file": "fences-2010/nytg--unknown.json",
+      "outletId": "nytg",
+      "url": "https://www.newyorktheatreguide.com/theatre-news/news/fences-plays-final-performance-on-broadway"
     },
     {
       "file": "fences-2010/slantmagazine--unknown.json",
@@ -1413,9 +940,19 @@
       "url": "https://www.slantmagazine.com/theater/fences-at-the-cort-theatre/"
     },
     {
+      "file": "fences-2010/theatermania--unknown.json",
+      "outletId": "theatermania",
+      "url": "https://www.theatermania.com/news/denzel-washington-and-viola-davis-led-fences-film-to-begin-shooting_76700/"
+    },
+    {
       "file": "fences-2010/thestage--unknown.json",
       "outletId": "thestage",
       "url": "https://www.thestage.co.uk/features/watch-now-fences-director-and-star-denzel-washington-talks-to-the-stage"
+    },
+    {
+      "file": "fences-2010/whatsonstage--unknown.json",
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/west-end-theatre/news/denzel-washington-erects-fences-in-london_13543.html/"
     },
     {
       "file": "fences-2010/wsj--unknown.json",
@@ -1436,6 +973,11 @@
       "file": "flyby-off-west-end-2026/monstagigz--unknown.json",
       "outletId": "monstagigz",
       "url": "https://monstagigz.com/2026/04/05/theatre-review-flyby-starring-stuart-thompson-poppy-gilbert-at-the-southwark-playhouse/comment-page-1/"
+    },
+    {
+      "file": "follies-2011/theatermania--unknown.json",
+      "outletId": "theatermania",
+      "url": "https://www.theatermania.com/news/follies_42576/"
     },
     {
       "file": "follies-2011/wsj--unknown.json",
@@ -1533,14 +1075,29 @@
       "url": "https://newyorktheater.me/2026/06/10/hadestown-on-screen/"
     },
     {
+      "file": "hadestown-west-end-2024/nytg--unknown.json",
+      "outletId": "nytg",
+      "url": "https://www.newyorktheatreguide.com/theatre-news/news/maia-reficco-to-star-in-hadestown-on-broadway"
+    },
+    {
       "file": "hadestown-west-end-2024/west-end-wilma--unknown.json",
       "outletId": "west-end-wilma",
       "url": "https://westendwilma.com/hadestown-tour/"
     },
     {
+      "file": "hadestown-west-end-2024/whatsonstage--unknown.json",
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/hadestown-extends-west-end-run-into-2027_1721706/"
+    },
+    {
       "file": "hairspray-2002/independent--unknown.json",
       "outletId": "independent",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/preview-hairspray-shaftesbury-theatre-london-395250.html"
+    },
+    {
+      "file": "hairspray-2002/latimes--unknown.json",
+      "outletId": "latimes",
+      "url": "https://www.latimes.com/socal/la-canada-valley-sun/news/tn-vsl-xpm-2007-07-26-lap-hairspray0726-story.html"
     },
     {
       "file": "hairspray-2002/musical-theatre-review--unknown.json",
@@ -1551,6 +1108,11 @@
       "file": "hairspray-2002/njcom--unknown.json",
       "outletId": "njcom",
       "url": "https://www.nj.com/entertainment/arts/2010/09/hairspray_review_triumphant_op.html"
+    },
+    {
+      "file": "hairspray-2002/nytg--unknown.json",
+      "outletId": "nytg",
+      "url": "https://www.newyorktheatreguide.com/theatre-news/news/hairspray-george-wendt-is-broadways-new-edna-turnblad"
     },
     {
       "file": "hamilton-west-end-2021/variety--unknown.json",
@@ -1583,6 +1145,11 @@
       "url": "https://www.britishtheatre.com/posts/harry-potter-and-the-cursed-child-becomes-one-part-show-tickets-on-sale-from-oct"
     },
     {
+      "file": "head-over-heels-2018/billboard--unknown.json",
+      "outletId": "billboard",
+      "url": "https://www.billboard.com/music/pop/go-gos-musical-head-over-heels-to-close-broadway-8486474/"
+    },
+    {
       "file": "head-over-heels-2018/stageandcinema--unknown.json",
       "outletId": "stageandcinema",
       "url": "https://stageandcinema.com/2018/04/19/head-over-heels-sf/"
@@ -1603,6 +1170,11 @@
       "url": "https://www.newyorkcitytheatre.com/shows/newworldstages1/heathers-the-musical"
     },
     {
+      "file": "heathers-the-musical-off-broadway-2025/west-end-best-friend--unknown.json",
+      "outletId": "west-end-best-friend",
+      "url": "https://www.westendbestfriend.co.uk/news/heathers-announces-casting-for-london-and-uk-tour"
+    },
+    {
       "file": "here-lies-love-2023/seattlereporg--unknown.json",
       "outletId": "seattlereporg",
       "url": "http://r20.rs6.net/tn.jsp?f=001ihoAcEIt75sMrN5_H4MIKp6c6cgwYalF2KSUMBOZOZBp4tYdXxdxfVKFUqoGV2-ZNVdsBdAkqVM4h--8NQD1aEiHVXqfSJqiuDsN487oo_cz2HPpeigJuWvwQpX0Tk6oI7lvsHAh9BRkGFwaP5bxJP5weo5W-S-UdRCGNungxsA=&c=TXIJlaNB3UyGVxP04wg_yZwAWFCrYDhP7s4U8XlSkuLUJVmQ8Qzf1g==&ch=pfA4pPcywyS8W9KYVJAvzb0a8CQ8zaApNvJhI21qKDABs1NoM0rZdw=="
@@ -1621,6 +1193,11 @@
       "file": "in-the-heights-2008/huffpost--unknown.json",
       "outletId": "huffpost",
       "url": "https://www.huffpost.com/entry/in-the-heights-movie_n_574eeb5ae4b0757eaeb11fef"
+    },
+    {
+      "file": "in-the-heights-2008/nytg--unknown.json",
+      "outletId": "nytg",
+      "url": "https://www.newyorktheatreguide.com/theatre-news/news/in-the-heights-plays-final-performance"
     },
     {
       "file": "indecent-2017/ap--unknown.json",
@@ -1658,9 +1235,19 @@
       "url": "https://www.newstatesman.com/culture/theatre/2026/04/does-inter-alia-understand-the-manosphere"
     },
     {
+      "file": "inter-alia-west-end-2026/sunday-telegraph--unknown.json",
+      "outletId": "sunday-telegraph",
+      "url": "https://www.telegraph.co.uk/theatre/tickets/london/inter-alia/"
+    },
+    {
       "file": "into-the-woods-west-end-2025/nytimes--unknown.json",
       "outletId": "nytimes",
       "url": "https://www.nytimes.com/2025/12/12/theater/into-the-woods-bridge-theater.html"
+    },
+    {
+      "file": "into-the-woods-west-end-2025/variety--unknown.json",
+      "outletId": "variety",
+      "url": "https://variety.com/2026/theater/news/paddington-into-the-woods-2026-olivier-awards-nominations-1236680111/"
     },
     {
       "file": "irving-berlins-white-christmas-2009/wsj--unknown.json",
@@ -1718,6 +1305,11 @@
       "url": "https://playbill.com/article/reviews-what-do-critics-think-of-jesa-off-broadway"
     },
     {
+      "file": "joe-turners-come-and-gone-2009/nytg--unknown.json",
+      "outletId": "nytg",
+      "url": "https://www.newyorktheatreguide.com/theatre-news/news/joe-turners-come-and-gone-concludes-its-limited-engagement-on-broadway"
+    },
+    {
       "file": "joe-turners-come-and-gone-2026/playbill--unknown.json",
       "outletId": "playbill",
       "url": "https://playbill.com/article/reviews-what-do-the-critics-think-of-joe-turners-come-and-gone-on-broadway"
@@ -1733,6 +1325,11 @@
       "url": "https://therecs.co.uk/august-wilsons-joe-turners-come-and-gone/"
     },
     {
+      "file": "kenrex-off-broadway-2026/thestage--unknown.json",
+      "outletId": "thestage",
+      "url": "https://www.thestage.co.uk/news/jack-holden-im-slightly-anxious-about-bringing-kenrex-to-the-us"
+    },
+    {
       "file": "king-kong-2018/herald-sun--unknown.json",
       "outletId": "herald-sun",
       "url": "http://www.heraldsun.com.au/entertainment/arts/audiences-awed-by-king-kong-spectacle/story-fni0fcgk-1226664308340"
@@ -1746,6 +1343,11 @@
       "file": "kiss-of-the-spider-woman-1993/hollywood-reporter--unknown.json",
       "outletId": "hollywood-reporter",
       "url": "https://www.hollywoodreporter.com/movies/movie-news/jennifer-lopez-movie-musical-kiss-of-the-spider-woman-audition-lost-roles-1236118898/"
+    },
+    {
+      "file": "kiss-of-the-spider-woman-1993/theatermania--unknown.json",
+      "outletId": "theatermania",
+      "url": "https://www.theatermania.com/news/audra-mcdonald-and-alan-cumming-lead-reading-of-kiss-of-the-spider-woman_71298/"
     },
     {
       "file": "la-traviata-off-broadway-2026/broadwayworld--unknown.json",
@@ -1791,6 +1393,11 @@
       "file": "les-miserables-2006/playbill--unknown.json",
       "outletId": "playbill",
       "url": "https://playbill.com/article/playbill-archives-les-miserables-1987-com-119301"
+    },
+    {
+      "file": "les-miserables-2006/theatermania--unknown.json",
+      "outletId": "theatermania",
+      "url": "https://www.theatermania.com/news/les-miserables_9437/"
     },
     {
       "file": "les-miserables-2006/thestage--unknown.json",
@@ -1863,6 +1470,11 @@
       "url": "https://www.broadwayworld.com/shows/Lucky-Guy-330346/videos"
     },
     {
+      "file": "lucky-guy-2013/nytg--unknown.json",
+      "outletId": "nytg",
+      "url": "https://www.newyorktheatreguide.com/theatre-news/news/lucky-guy-recoups-its-capitalization"
+    },
+    {
       "file": "macbeth-off-broadway-2026/abc-news--unknown.json",
       "outletId": "abc-news",
       "url": "http://abcnews.go.com/Entertainment/wireStory/review-hawke-broody-monarch-macbeth-20974301"
@@ -1933,6 +1545,11 @@
       "url": "https://ew.com/matilda-mara-wilson-what-keeps-her-from-returning-to-hollywood-11984065?srsltid=AfmBOor79kvxmvP6ebovuQquZLXU_J_l6vu6Pzc2YnFZDQ9WnDyY0Wxd"
     },
     {
+      "file": "matilda-the-musical-west-end-2021/operawire--unknown.json",
+      "outletId": "operawire",
+      "url": "https://operawire.com/volksoper-wien-announces-2026-27-season-featuring-wallis-giunta-misha-kiria-annette-dasch-matilda-sterby/"
+    },
+    {
       "file": "matilda-the-musical-west-end-2021/times-square-chronicles--unknown.json",
       "outletId": "times-square-chronicles",
       "url": "https://t2conline.com/matilda-or-miss-trunchbull/"
@@ -1941,6 +1558,11 @@
       "file": "maybe-happy-ending-2024/wsj--unknown.json",
       "outletId": "wsj",
       "url": "https://www.wsj.com/articles/maybe-happy-ending-review-a-robotic-romance-of-real-feeling-3df63689?gaa_at=eafs&gaa_n=AWEtsqd0pzQUDZj4_Oe9MQqtZVG3iH9Qm1KCGyFtHqUhGTEcdzZG2RYGr8QH&gaa_ts=69bf6e71&gaa_sig=6OZlNhE7c_wh1RoDZlRWZJ61AdxIsOr3UBFn39SxqrmIUWyrN5pHPNLc3x812SkRhyUwlZpKJ7zELjvEcdCQ9w%3D%3D"
+    },
+    {
+      "file": "memphis-2009/chicagotribune--unknown.json",
+      "outletId": "chicagotribune",
+      "url": "https://www.chicagotribune.com/2012/07/30/broadways-memphis-recoups-musical-breaks-even-just-before-closing/"
     },
     {
       "file": "memphis-2009/latimes--unknown.json",
@@ -1988,6 +1610,11 @@
       "url": "https://www.thereviewshub.com/moulin-rouge-the-musical-sunderland-empire/"
     },
     {
+      "file": "moulin-rouge-the-musical-west-end-2021/nytg--unknown.json",
+      "outletId": "nytg",
+      "url": "https://www.newyorktheatreguide.com/theatre-news/news/moulin-rouge-the-musical-sets-new-broadway-casting"
+    },
+    {
       "file": "msblackforpresident-off-broadway-2026/broadwayworld--unknown.json",
       "outletId": "broadwayworld",
       "url": "https://www.broadwayworld.com/article/Wayne-Brady-to-Star-in-MS-BLAKK-FOR-PRESIDENT-Off-Broadway-20260504"
@@ -2028,19 +1655,34 @@
       "url": "https://playbill.com/article/what-are-reviews-for-night-side-songs-off-broadway"
     },
     {
-      "file": "no-singing-in-the-navy-off-broadway-2026/talkinbroadway--unknown.json",
-      "outletId": "talkinbroadway",
-      "url": "https://www.talkinbroadway.com/page/ob/03_29_26.html"
-    },
-    {
       "file": "oh-mary-2024/british-theatre--unknown.json",
       "outletId": "british-theatre",
       "url": "https://www.britishtheatre.com/posts/cole-escola-to-make-west-end-debut-in-oh-mary-this-summer-for-limited-four-week"
     },
     {
+      "file": "oh-mary-2024/west-end-best-friend--unknown.json",
+      "outletId": "west-end-best-friend",
+      "url": "https://www.westendbestfriend.co.uk/news/jinkx-monsoon-west-end-debut-oh-mary"
+    },
+    {
       "file": "oh-mary-west-end-2025/daily-mail--unknown.json",
       "outletId": "daily-mail",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-15399549/PATRICK-MARMION-reviews-Oh-Mary-Trafalgar-Studios-London-fatuous-travesty-proves-not-glitters-Broadway-gold-mugging-Manhattan-bringing-infantile-comedy-West-End.html"
+    },
+    {
+      "file": "oh-mary-west-end-2025/nytg--unknown.json",
+      "outletId": "nytg",
+      "url": "https://www.newyorktheatreguide.com/theatre-news/news/maya-rudolph-extends-run-in-oh-mary-on-broadway"
+    },
+    {
+      "file": "oh-mary-west-end-2025/variety--unknown.json",
+      "outletId": "variety",
+      "url": "https://variety.com/2026/legit/news/maya-rudolph-oh-mary-broadway-debut-1236685691/"
+    },
+    {
+      "file": "oh-mary-west-end-2025/west-end-best-friend--unknown.json",
+      "outletId": "west-end-best-friend",
+      "url": "https://www.westendbestfriend.co.uk/news/jinkx-monsoon-west-end-debut-oh-mary"
     },
     {
       "file": "old-times-2015/wsj--unknown.json",
@@ -2073,9 +1715,19 @@
       "url": "https://www.thereviewshub.com/operation-mincemeat-grand-opera-house-york/"
     },
     {
+      "file": "operation-mincemeat-2025/west-end-best-friend--unknown.json",
+      "outletId": "west-end-best-friend",
+      "url": "https://www.westendbestfriend.co.uk/news/review-operation-mincemeat-theatre-royal-bath-tour"
+    },
+    {
       "file": "oratorio-for-living-things-off-broadway-2026/broadwayworld--unknown.json",
       "outletId": "broadwayworld",
       "url": "https://forum.broadwayworld.com/thread/Oratorio-for-Living-Things-returns-at-Signature/2"
+    },
+    {
+      "file": "orlando-off-broadway-2026/daily-herald--unknown.json",
+      "outletId": "daily-herald",
+      "url": "https://www.dailyherald.com/20131026/entertainment/orlando-bloom-and-miranda-kerr-announce-split/"
     },
     {
       "file": "orlando-off-broadway-2026/latimes--unknown.json",
@@ -2088,9 +1740,19 @@
       "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2647879"
     },
     {
+      "file": "paddington-the-musical-west-end-2025/nytg--unknown.json",
+      "outletId": "nytg",
+      "url": "https://www.newyorktheatreguide.com/theatre-news/news/paddington-the-musical-eyes-broadway-run"
+    },
+    {
       "file": "paranormal-activity-west-end-2025/newyorker--unknown.json",
       "outletId": "newyorker",
       "url": "https://www.newyorker.com/magazine/2026/06/22/jackie-gleasons-paranormal-activity"
+    },
+    {
+      "file": "paranormal-activity-west-end-2025/nytg--unknown.json",
+      "outletId": "nytg",
+      "url": "https://www.newyorktheatreguide.com/theatre-news/news/paranormal-activity-play-to-open-on-broadway-in-august"
     },
     {
       "file": "paranormal-activity-west-end-2025/theatrely--unknown.json",
@@ -2183,11 +1845,6 @@
       "url": "https://www.nytimes.com/2025/02/04/theater/the-antiquities-review-ai.html"
     },
     {
-      "file": "rodgers-hammersteins-cinderella-2013/tap-into--unknown.json",
-      "outletId": "tap-into",
-      "url": "https://www.tapinto.net/towns/warren/columns/liz-on-theatre/articles/cinderella-shimmers-at-paper-mill-playhouse"
-    },
-    {
       "file": "romeo-and-juliet-off-broadway-2026/abc-news--unknown.json",
       "outletId": "abc-news",
       "url": "http://abcnews.go.com/Entertainment/wireStory/review-bloom-hard-cool-romeo-juliet-20313103"
@@ -2198,6 +1855,11 @@
       "url": "http://www.amny.com/urbanite-1.812039/theater-review-romeo-and-juliet-2-stars-1.6106386"
     },
     {
+      "file": "romeo-and-juliet-off-broadway-2026/bloomberg--unknown.json",
+      "outletId": "bloomberg",
+      "url": "http://www.bloomberg.com/news/2013-09-20/orland-bloom-goes-hog-wild-in-tame-romeo-jeremy-gerard.html"
+    },
+    {
       "file": "romeo-and-juliet-off-broadway-2026/frontmezzjunkies--unknown.json",
       "outletId": "frontmezzjunkies",
       "url": "https://frontmezzjunkies.com/2026/06/09/every-journey-needs-one-moment-where-we-believe-fate-can-change-in-romeo-and-juliet/"
@@ -2206,6 +1868,11 @@
       "file": "romeo-and-juliet-off-broadway-2026/huffpost--unknown.json",
       "outletId": "huffpost",
       "url": "http://www.huffingtonpost.com/steven-suskin/aisle-view-romeo-without-_b_3954794.html"
+    },
+    {
+      "file": "romeo-and-juliet-off-broadway-2026/lighting-and-sound-america--unknown.json",
+      "outletId": "lighting-and-sound-america",
+      "url": "https://www.lightingandsoundamerica.com/news/story.asp?ID=-U2GS6P"
     },
     {
       "file": "romeo-and-juliet-off-broadway-2026/nbcny--unknown.json",
@@ -2243,6 +1910,11 @@
       "url": "http://abcnews.go.com/Entertainment/wireStory/review-bloom-hard-cool-romeo-juliet-20313103"
     },
     {
+      "file": "romeo-and-juliet-west-end-2026/bloomberg--unknown.json",
+      "outletId": "bloomberg",
+      "url": "http://www.bloomberg.com/news/2013-09-20/orland-bloom-goes-hog-wild-in-tame-romeo-jeremy-gerard.html"
+    },
+    {
       "file": "romeo-and-juliet-west-end-2026/exeunt-magazine--unknown.json",
       "outletId": "exeunt-magazine",
       "url": "https://exeuntnyc.com/reviews/review-romeo-juliet-at-the-delacorte-theater/attachment/09_romeojuliet_0286r/"
@@ -2256,6 +1928,11 @@
       "file": "romeo-and-juliet-west-end-2026/huffpost--unknown.json",
       "outletId": "huffpost",
       "url": "http://www.huffingtonpost.com/steven-suskin/aisle-view-romeo-without-_b_3954794.html"
+    },
+    {
+      "file": "romeo-and-juliet-west-end-2026/lighting-and-sound-america--unknown.json",
+      "outletId": "lighting-and-sound-america",
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-U2GS6P"
     },
     {
       "file": "romeo-and-juliet-west-end-2026/monstagigz--unknown.json",
@@ -2313,9 +1990,19 @@
       "url": "https://www.theaterscene.net/plays/offbway-plays/romeo-and-juliet-free-shakespeare-in-the-park/victor-gluck/"
     },
     {
+      "file": "romeo-and-juliet-west-end-2026/theatermania--unknown.json",
+      "outletId": "theatermania",
+      "url": "https://www.theatermania.com/news/review-free-shakespeare-in-the-parks-romeo-and-juliet-on-ice_1841577/"
+    },
+    {
       "file": "romeo-and-juliet-west-end-2026/wsj--unknown.json",
       "outletId": "wsj",
       "url": "https://www.wsj.com/articles/romeo-and-juliet-review-no-love-lost-for-shakespeare-in-the-park-c066ffdf"
+    },
+    {
+      "file": "runaways-1978/theatermania--unknown.json",
+      "outletId": "theatermania",
+      "url": "https://www.theatermania.com/news/runaways_77688/"
     },
     {
       "file": "schmigadoon-2026/musical-theatre-review--unknown.json",
@@ -2373,6 +2060,16 @@
       "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=26729"
     },
     {
+      "file": "sinatra-the-musical-west-end-2026/telegraph--unknown.json",
+      "outletId": "telegraph",
+      "url": "https://www.telegraph.co.uk/theatre/tickets/london/sinatra-the-musical/"
+    },
+    {
+      "file": "sinatra-the-musical-west-end-2026/variety--unknown.json",
+      "outletId": "variety",
+      "url": "https://variety.com/2023/music/news/sinatra-musical-casts-tony-winner-matt-doyle-frank-england-1235666711/"
+    },
+    {
       "file": "six-2021/usatoday--unknown.json",
       "outletId": "usatoday",
       "url": "https://prosoccerwire.usatoday.com/story/entertainment/theater/2022/03/22/broadway-columbus-2022-23-season-frozen-six-beetlejuice-musicals/7074729001/"
@@ -2428,6 +2125,11 @@
       "url": "https://musicaltheatrereview.com/concert-to-mark-15th-anniversary-of-london-debut-of-spring-awakening/"
     },
     {
+      "file": "spring-awakening-2006/theatrely--unknown.json",
+      "outletId": "theatrely",
+      "url": "https://www.theatrely.com/post/initial-casting-announced-for-londons-spring-awakening-15th-anniversary-reunion-concert-in-2024"
+    },
+    {
       "file": "spring-awakening-2006/time--unknown.json",
       "outletId": "time",
       "url": "https://time.com/archive/6679078/the-battle-for-broadway-poppins-vs-dylan-plus-grey-gardens-and-spring-awakening/"
@@ -2478,9 +2180,24 @@
       "url": "https://www.timeout.com/london/get-listed-add-venue"
     },
     {
+      "file": "sting-west-end-2026/variety--unknown.json",
+      "outletId": "variety",
+      "url": "https://au.variety.com/2025/music/news/sting-australia-qpac-last-ship-musical-26483/"
+    },
+    {
+      "file": "sting-west-end-2026/west-end-best-friend--unknown.json",
+      "outletId": "west-end-best-friend",
+      "url": "https://www.westendbestfriend.co.uk/news/casting-return-paranormal-activity-west-end"
+    },
+    {
       "file": "swept-away-2024/arenastageorg--unknown.json",
       "outletId": "arenastageorg",
       "url": "https://arenastage.org/sweptaway"
+    },
+    {
+      "file": "talleys-folly-1980/theatermania--unknown.json",
+      "outletId": "theatermania",
+      "url": "https://www.theatermania.com/news/michael-wilson-to-direct-roundabout-revival-of-lanford-wilsons-talleys-folly_61049/"
     },
     {
       "file": "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/talkinbroadway--unknown.json",
@@ -2541,6 +2258,11 @@
       "file": "the-car-man-west-end-2026/nytimes--unknown.json",
       "outletId": "nytimes",
       "url": "https://www.nytimes.com/2015/07/24/arts/international/review-suspense-and-charisma-in-the-car-man-in-london.html"
+    },
+    {
+      "file": "the-car-man-west-end-2026/the-list--unknown.json",
+      "outletId": "the-list",
+      "url": "https://list.co.uk/news/12302/dance-review-matthew-bournes-the-car-man"
     },
     {
       "file": "the-car-man-west-end-2026/the-upcoming-uk--unknown.json",
@@ -2703,6 +2425,11 @@
       "url": "https://www.allthatdazzles.co.uk/post/review-the-magician-s-table-the-vaults"
     },
     {
+      "file": "the-maids-off-broadway-2026/british-theatre--unknown.json",
+      "outletId": "british-theatre",
+      "url": "https://www.britishtheatre.com/posts/the-housemaid-stage-adaptation-announced-by-lionsgate-following-400-million-film"
+    },
+    {
       "file": "the-maids-off-broadway-2026/ew--unknown.json",
       "outletId": "ew",
       "url": "http://www.ew.com/ew/article/0,,20364394_20842180,00.html"
@@ -2711,6 +2438,11 @@
       "file": "the-maids-off-broadway-2026/timeout--unknown.json",
       "outletId": "timeout",
       "url": "http://www.timeout.com/newyork/theater/the-maids-2"
+    },
+    {
+      "file": "the-mousetrap-west-end-2021/variety--unknown.json",
+      "outletId": "variety",
+      "url": "https://variety.com/2022/legit/news/agatha-christie-the-mousetrap-broadway-1235441984/"
     },
     {
       "file": "the-music-man-off-broadway-2026/broadwayworld--unknown.json",
@@ -2758,6 +2490,11 @@
       "url": "https://www.talkinbroadway.com/page/regional/seattle/index.html"
     },
     {
+      "file": "the-phantom-of-the-opera-west-end-1986/variety--unknown.json",
+      "outletId": "variety",
+      "url": "https://variety.com/2021/scene/news/the-phantom-of-the-opera-andrew-lloyd-webber-hal-prince-broadway-1235096203/"
+    },
+    {
       "file": "the-play-that-goes-wrong-west-end-2021/talkinbroadway--unknown.json",
       "outletId": "talkinbroadway",
       "url": "https://www.talkinbroadway.com/page/regional/sanjose/index.html"
@@ -2791,6 +2528,11 @@
       "file": "the-ritz-2007/playbill--unknown.json",
       "outletId": "playbill",
       "url": "https://playbill.vo.llnwd.net/o15/podcasts/FallPreviewPodcast.mp3"
+    },
+    {
+      "file": "the-ritz-2007/theatermania--unknown.json",
+      "outletId": "theatermania",
+      "url": "https://www.theatermania.com/news/ashlie-atkinson-joins-the-ritz-first-preview-cancelled_11589/"
     },
     {
       "file": "the-rocky-horror-show-2026/british-theatre--unknown.json",
@@ -2836,6 +2578,11 @@
       "file": "time-stands-still-2010/nytg--unknown.json",
       "outletId": "nytg",
       "url": "https://www.newyorktheatreguide.com/reviews/time-stands-still-0"
+    },
+    {
+      "file": "time-stands-still-2010/theatermania--unknown.json",
+      "outletId": "theatermania",
+      "url": "https://www.theatermania.com/news/photo-flash-laura-linney-lily-rabe-lou-reed-christina-ricci-and-more-at-broadways-time-stands-still-opening_31176/"
     },
     {
       "file": "titanique-2026/frontmezzjunkies--unknown.json",

@@ -54,6 +54,16 @@ describe('isAggregatorUrlMismatch — pure predicate', () => {
     assert.equal(isAggregatorUrlMismatch('https://WWW.Theatre.Reviews/X', 'chichester-observer'), true);
   });
 
+  test('outletId is normalized (raw/capitalized aggregator id is still legit)', () => {
+    // Regression: triage passed raw d.outletId; a legit star-stub with a
+    // capitalized/aliased aggregator outletId was mis-flagged as a mismatch and
+    // deleted (2026-06-21). The lib now normalizes internally.
+    assert.equal(isAggregatorUrlMismatch('https://show-score.com/x', 'Show-Score'), false);
+    assert.equal(isAggregatorUrlMismatch('https://stagedoor.com/x', 'Stagedoor'), false);
+    // a real outlet stays a mismatch regardless of casing
+    assert.equal(isAggregatorUrlMismatch('https://show-score.com/x', 'Guardian-UK'), true);
+  });
+
   test('missing/blank/unparseable inputs are not mismatches (innocent until provable)', () => {
     assert.equal(isAggregatorUrlMismatch(null, 'chichester-observer'), false);
     assert.equal(isAggregatorUrlMismatch('https://theatre.reviews/x', null), false);
