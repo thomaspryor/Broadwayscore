@@ -1,201 +1,95 @@
 {
-  "generatedAt": "2026-06-21T10:17:21.792Z",
+  "generatedAt": "2026-06-21T11:55:15.507Z",
   "windowDays": 1095,
-  "targets": 97,
+  "targets": 120,
   "counts": {
     "withGap": 6,
-    "totalMissing": 40,
-    "totalFlaggedMisses": 26
+    "totalMissing": 47,
+    "totalFlaggedMisses": 28
   },
   "results": [
     {
-      "showId": "all-in-comedy-about-love-2024",
-      "title": "All In: Comedy About Love",
-      "openingDate": "2024-12-22",
+      "showId": "tammy-faye-2024",
+      "title": "Tammy Faye",
+      "openingDate": "2024-11-14",
       "status": "closed",
       "category": "broadway",
       "aggregatorArticles": [
-        "https://playbill.com/article/read-the-reviews-for-all-in-comedy-about-love-by-simon-rich-on-broadway",
-        "https://www.broadwayworld.com/article/Review-Roundup-ALL-IN-COMEDY-ABOUT-LOVE-on-Broadway-20241222"
+        "https://playbill.com/article/reviews-what-do-critics-think-of-elton-johns-new-tammy-faye-musical",
+        "https://www.broadwayworld.com/article/Review-Roundup-TAMMY-FAYE-Opens-On-Broadway-20241114",
+        "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-the-TAMMY-FAYE-From-Elton-John-and-Jake-Shears-At-Almeida-Theatre-20221026"
       ],
       "aggregatorListedUrls": [
-        "https://deadline.com/2024/12/all-in-comedy-about-love-broadway-review-1236238030/",
-        "https://nypost.com/2024/12/22/entertainment/all-in-comedy-about-love-review-starry-broadway-shows-a-big-waste-of-money/",
-        "https://nystagereview.com/2024/12/22/all-in-comedy-about-love-by-simon-rich-hit-miss-revue/",
-        "https://nystagereview.com/2024/12/22/all-in-comedy-about-love-by-simon-rich-story-hour-with-broadway-prices/",
-        "https://www.newyorktheatreguide.com/reviews/all-in-comedy-about-love-by-simon-rich-broadway-review",
-        "https://www.theatermania.com/news/review-john-mulaney-and-friends-read-us-stories-by-simon-rich-in-all-in-comedy-about-love_1759021/",
-        "https://www.timeout.com/newyork/theater/all-in-comedy-about-love-broadway-review-simon-rich-john-mulaney",
-        "https://variety.com/2024/legit/reviews/all-in-comedy-about-love-review-broadway-1236257604/",
-        "https://www.nytimes.com/2024/12/22/theater/all-in-review.html",
-        "https://www.wsj.com/articles/all-in-review-love-laughs-and-absurdity-on-broadway-5627b742",
-        "http://www.lightingandsoundamerica.com/news/story.asp",
-        "https://culturesauce.com/2024/12/22/all-in-broadway-review-simon-rich-john-mulaney/"
-      ],
-      "dirFiles": 16,
-      "dirClean": 15,
-      "inReviewsJson": 16,
-      "missing": [
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp",
-          "host": "lightingandsoundamerica.com",
-          "knownOutletId": "lighting-and-sound-america"
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "broadwaynews.com",
-          "count": 1
-        },
-        {
-          "host": "thedailybeast.com",
-          "count": 1
-        },
-        {
-          "host": "nysun.com",
-          "count": 1
-        },
-        {
-          "host": "vulture.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [],
-      "ingestResults": [
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp",
-          "host": "lightingandsoundamerica.com",
-          "outletId": "lighting-and-sound-america",
-          "provisional": false,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=all-in-comedy-about-love-2024 --url=ht"
-        }
-      ],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "gypsy-2024",
-      "title": "Gypsy",
-      "openingDate": "2024-12-19",
-      "status": "closed",
-      "category": "broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/read-the-reviews-gypsy-on-broadway-starring-audra-mcdonald",
-        "https://www.broadwayworld.com/article/Review-Roundup-GYPSY-Opens-On-Broadway-Starring-Audra-McDonald-20241219",
-        "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-In-On-Beth-Leavel-In-GYPSY-at-The-Muny-20180730",
-        "https://www.broadwayworld.com/article/Review-Roundup-West-Ends-GYPSY-NY-Times-Calls-Imelda-Staunton-Scorching-Brilliant-as-Mama-Rose-20150904"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.amny.com/entertainment/broadway/review-audra-mcdonald-stuns-and-soars-in-gypsy/",
-        "https://www.chicagotribune.com/2024/12/19/review-gypsy-on-broadway/",
-        "https://cititour.com/NYC_Broadway/Gypsy/1271",
-        "https://culturesauce.com/2024/12/20/gypsy-audra-mcdonald-broadway-review/",
-        "https://www.thedailybeast.com/broadway-review-audra-mcdonald-excels-in-mixed-gypsy-revival/",
-        "https://ew.com/gypsy-review-audra-mcdonald-comes-up-roses-broadway-revival-8764592",
-        "https://www.theguardian.com/stage/2024/dec/20/gypsy-broadway-play-review-audra-mcdonald",
-        "https://www.hollywoodreporter.com/lifestyle/arts/gypsy-theater-review-audra-mcdonald-broadway-1236091036/",
-        "https://www.intomore.com/entertainment/theater/audra-mcdonald-gypsy-and-six-degrees-of-mama-rose/",
-        "https://nypost.com/2024/12/20/entertainment/gypsy-review-audra-mcdonalds-broadway-revival-is-a-bad-letdown/",
-        "https://nystagereview.com/2024/12/19/gypsy-hold-your-hats-and-hallelujah/",
-        "https://nystagereview.com/2024/12/19/gypsy-everythings-coming-up-audra/",
-        "https://newyorktheater.me/2024/12/19/gypsy-broadway-review/",
-        "https://www.newyorktheatreguide.com/reviews/gypsy-broadway-review-audra-mcdonald",
-        "https://www.nytimes.com/2024/12/20/theater/gypsy-review-audra-mcdonald.html",
-        "https://www.nj.com/entertainment/2024/12/gypsy-on-broadway-review-audra-macdonald-gives-a-performance-for-the-ages.html",
-        "https://observer.com/2024/12/review-audra-mcdonald-is-one-mother-of-a-rose-in-a-stupendous-gypsy/",
-        "https://www.theatermania.com/news/review-an-extraordinary-audra-mcdonald-in-a-gripping-new-gypsy_1758736/",
-        "https://www.theatrely.com/post/audras-spellbinding-turn-in-gypsy-review",
-        "https://www.timeout.com/newyork/theater/gypsy-broadway-revival-review-audra-mcdonald-rose",
-        "https://www.usatoday.com/story/entertainment/music/2024/12/20/gypsy-review-audra-mcdonald/77016921007/",
-        "https://variety.com/2024/legit/reviews/gypsy-review-broadway-audra-mcdonald-1236255433/",
-        "https://www.wsj.com/articles/gypsy-review-audra-mcdonalds-turn-on-broadway-ff528df3",
-        "https://www.washingtonpost.com/entertainment/theater/2024/12/20/gypsy-audra-mcdonald-review-broadway/",
-        "https://www.thewrap.com/gypsy-broadway-review-audra-mcdonald-george-c-wolfe/",
-        "https://deadline.com/2024/12/gypsy-broadway-review-audra-mcdonald-1236206662/",
-        "https://www.aol.com/gypsy-review-audra-mcdonald-gives-225224127.html",
-        "https://www.villagevoice.com/review-once-again-the-diva-of-the-moment-gets-to-revel-in-gypsy/",
-        "http://maxstl.com/gypsy-overwhelms-at-the-muny/",
-        "https://www.stltoday.com/entertainment/arts-and-theatre/reviews/beth-leavel-delivers-powerhouse-performance-in-gypsy/article_38c5a5c2-a766-5242-8cdb-11cc08d36796.html",
-        "http://www.flovalleynews.com/gypsy-review",
-        "https://stllimelight.com/2018/07/29/gypsy-hits-new-heights-at-the-muny/",
-        "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/11539554/Gypsy-Savoy-Theatre-review-a-once-in-a-lifetime-opportunity.html",
-        "http://www.theartsdesk.com/theatre/gypsy-savoy-theatre",
-        "https://www.londontheatre1.com/news/105667/review-gypsy-savoy-theatre-london/",
-        "https://www.nydailynews.com/2024/12/19/broadway-review-gypsy-revival-coming-up-roses-thanks-to-audra-mcdonald/",
-        "https://www.newyorktheatreguide.com/theatre-news/news/audra-mcdonald-becomes-most-tony-award-nominated-performer-in-history",
-        "https://people.com/joy-woods-on-pressures-of-being-broadways-first-black-gypsy-exclusive-11732653",
-        "http://www.lightingandsoundamerica.com/news/story.asp",
-        "https://www.talkinbroadway.com/page/world/Gypsy24.html",
-        "https://www.theaterscene.net/musicals/broadway/gypsy-2/victor-gluck/",
-        "https://www.theatrereviews.com/broadway-review-gypsy-at-the-majestic-theatre-currently-on/",
-        "https://theaterscene.com/Gypsy-DD.html",
-        "https://pagesonstages.com/2025/01/01/gypsy/",
-        "https://www.interestedbystander.com/2025/01/theater-review-gypsy-triumphs-again-on.html"
+        "https://www.allthatdazzles.co.uk/post/review-tammy-faye-almeida-theatre",
+        "https://theartsdesk.com/theatre/tammy-faye-almeida-theatre-review-elton-johns-often-dazzling-new-musical",
+        "https://www.standard.co.uk/culture/theatre/tammy-faye-at-almeida-theatre-review-a-religious-riot-elton-john-james-graham-b1035566.html",
+        "https://www.theguardian.com/stage/2022/oct/27/tammy-faye-a-new-musical-review-elton-john-almeida-theatre-bakker-televangelists",
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/tammy-faye-show-review-almeida-b2211640.html",
+        "https://inews.co.uk/culture/arts/tammy-faye-almeida-review-elton-john-musical-1937059",
+        "https://www.londontheatre.co.uk/reviews/tammy-faye-review-almeida-theatre-elton-john",
+        "https://nypost.com/2022/10/26/elton-johns-lacking-tammy-faye-musical-needs-a-prayer/",
+        "https://www.thestage.co.uk/long-reviews/tammy-faye-review-at-the-almeida-theatre-london-from-james-graham-elton-john-and-jake-shears",
+        "https://www.telegraph.co.uk/theatre/what-to-see/tammy-faye-almeida-theatre-review-elton-johns-new-musical-famous/",
+        "https://www.timeout.com/london/theatre/tammy-faye-review",
+        "https://www.whatsonstage.com/london-theatre/reviews/tammy-faye-review-elton-john-jake-shears-and-james_57692.html",
+        "https://almeida.co.uk/whats-on/tammy-faye/11-oct-2022-3-dec-2022",
+        "https://www.nytimes.com/2024/11/14/theater/tammy-faye-review.html",
+        "https://www.chicagotribune.com/2024/11/14/review-tammy-faye-musical-on-broadway-pokes-fun-of-some-all-too-easy-targets/",
+        "https://ew.com/tammy-faye-review-broadway-musical-elton-john-8743171",
+        "https://variety.com/2024/legit/reviews/tammy-faye-review-broadway-musical-elton-john-1236210176/",
+        "https://www.timeout.com/newyork/theater/tammy-faye-broadway-musical-review-elton-john-tammy-faye-bakker",
+        "https://www.thedailybeast.com/broadway-review-elton-johns-tammy-faye-musical-is-far-from-heaven/",
+        "https://www.villagevoice.com/review-the-eyes-of-tammy-faye-sparkle-and-cry-through-her-rise-and-fall/",
+        "https://www.thewrap.com/tammy-faye-broadway-review-elton-john/",
+        "https://deadline.com/2024/11/tammy-faye-broadway-review-1236174460/",
+        "https://nystagereview.com/2024/11/14/tammy-faye-praise-the-lord-and-pump-up-the-video/",
+        "https://nystagereview.com/2024/11/14/tammy-faye-brit-tuner-sings-the-red-white-and-boo-hoo-blues/",
+        "https://nypost.com/2024/11/14/entertainment/tammy-faye-review-elton-johns-broadway-show-is-a-disaster-of-biblical-proportions/",
+        "https://www.nytimes.com/2022/10/27/theater/tammy-faye-review-almeida.html",
+        "https://www.newyorktheatreguide.com/reviews/tammy-faye-broadway-review-elton-john",
+        "https://www.nydailynews.com/2024/11/14/broadway-review-tammy-faye-musical-elton-john-tv-evangelist/",
+        "https://www.washingtonpost.com/entertainment/theater/2024/11/14/tammy-faye-a-wonderful-world-review/",
+        "https://www.theatermania.com/news/review-tammy-faye-a-broadway-musical-about-the-televangelist-turned-gay-icon_1755638/",
+        "https://www.talkinbroadway.com/page/world/TammyFaye.html",
+        "https://www.theaterscene.net/musicals/broadway/tammy-faye/victor-gluck/",
+        "https://www.theatrereviews.com/broadway-review-tammy-faye-at-the-palace-theatre-currently-on/",
+        "https://newyorktheater.me/2024/11/14/tammy-faye-broadway-review/",
+        "https://culturesauce.com/2024/11/14/tammy-faye-musical-elton-john-broadway-review/",
+        "https://twi-ny.com/2024/12/06/the-wrong-kind-of-faith-tammy-faye-on-broadway/",
+        "https://pagesonstages.com/2024/11/14/tammy-faye/",
+        "https://www.interestedbystander.com/2024/11/broadway-reviews-death-becomes-her-is.html"
       ],
       "dirFiles": 51,
-      "dirClean": 44,
-      "inReviewsJson": 41,
+      "dirClean": 38,
+      "inReviewsJson": 30,
       "missing": [
         {
-          "url": "https://www.nj.com/entertainment/2024/12/gypsy-on-broadway-review-audra-macdonald-gives-a-performance-for-the-ages.html",
-          "host": "nj.com",
-          "knownOutletId": "njcom"
-        },
-        {
-          "url": "https://www.thewrap.com/gypsy-broadway-review-audra-mcdonald-george-c-wolfe/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap"
-        },
-        {
-          "url": "http://maxstl.com/gypsy-overwhelms-at-the-muny/",
-          "host": "maxstl.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://www.stltoday.com/entertainment/arts-and-theatre/reviews/beth-leavel-delivers-powerhouse-performance-in-gypsy/article_38c5a5c2-a766-5242-8cdb-11cc08d36796.html",
-          "host": "stltoday.com",
-          "knownOutletId": "st-louis-post-dispatch"
-        },
-        {
-          "url": "http://www.flovalleynews.com/gypsy-review",
-          "host": "flovalleynews.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://stllimelight.com/2018/07/29/gypsy-hits-new-heights-at-the-muny/",
-          "host": "stllimelight.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/11539554/Gypsy-Savoy-Theatre-review-a-once-in-a-lifetime-opportunity.html",
-          "host": "telegraph.co.uk",
-          "knownOutletId": "sunday-telegraph"
-        },
-        {
-          "url": "http://www.theartsdesk.com/theatre/gypsy-savoy-theatre",
+          "url": "https://theartsdesk.com/theatre/tammy-faye-almeida-theatre-review-elton-johns-often-dazzling-new-musical",
           "host": "theartsdesk.com",
           "knownOutletId": "artsdesk"
         },
         {
-          "url": "https://www.londontheatre1.com/news/105667/review-gypsy-savoy-theatre-london/",
-          "host": "londontheatre1.com",
-          "knownOutletId": "londontheatre1"
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/tammy-faye-show-review-almeida-b2211640.html",
+          "host": "independent.co.uk",
+          "knownOutletId": "independent"
         },
         {
-          "url": "https://people.com/joy-woods-on-pressures-of-being-broadways-first-black-gypsy-exclusive-11732653",
-          "host": "people.com",
-          "knownOutletId": "people"
+          "url": "https://inews.co.uk/culture/arts/tammy-faye-almeida-review-elton-john-musical-1937059",
+          "host": "inews.co.uk",
+          "knownOutletId": "i-paper"
+        },
+        {
+          "url": "https://www.whatsonstage.com/london-theatre/reviews/tammy-faye-review-elton-john-jake-shears-and-james_57692.html",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage"
+        },
+        {
+          "url": "https://www.interestedbystander.com/2024/11/broadway-reviews-death-becomes-her-is.html",
+          "host": "interestedbystander.com",
+          "knownOutletId": "the-interested-bystander"
         }
       ],
       "dirOnly": [
-        {
-          "host": "apnews.com",
-          "count": 1
-        },
-        {
-          "host": "artsfuse.org",
-          "count": 1
-        },
         {
           "host": "broadwaynews.com",
           "count": 1
@@ -205,15 +99,7 @@
           "count": 1
         },
         {
-          "host": "frontmezzjunkies.com",
-          "count": 1
-        },
-        {
-          "host": "latimes.com",
-          "count": 1
-        },
-        {
-          "host": "nysun.com",
+          "host": "newyorkcitytheatre.com",
           "count": 1
         },
         {
@@ -225,494 +111,187 @@
           "count": 1
         },
         {
-          "host": "theaterlife.com",
+          "host": "theatrely.com",
+          "count": 1
+        },
+        {
+          "host": "thetimes.com",
           "count": 1
         },
         {
           "host": "vulture.com",
-          "count": 2
+          "count": 1
+        },
+        {
+          "host": "wsj.com",
+          "count": 1
         }
       ],
       "flaggedMisses": [
         {
-          "url": "https://culturesauce.com/2024/12/20/gypsy-audra-mcdonald-broadway-review/",
-          "host": "culturesauce.com",
+          "url": "https://www.allthatdazzles.co.uk/post/review-tammy-faye-almeida-theatre",
+          "host": "allthatdazzles.co.uk",
           "dirFlags": [
             {
-              "file": "culturesauce--thom-geier.json",
+              "file": "all-that-dazzles-uk--daz-gale.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://culturesauce.com/2024/12/20/gypsy-audra-mcdonald-broadway-review/"
+              "urlInDir": "https://www.allthatdazzles.co.uk/post/review-tammy-faye-almeida-theatre"
             }
           ]
         },
         {
-          "url": "https://www.intomore.com/entertainment/theater/audra-mcdonald-gypsy-and-six-degrees-of-mama-rose/",
-          "host": "intomore.com",
-          "dirFlags": [
-            {
-              "file": "into--matthew-wexler.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.intomore.com/entertainment/theater/audra-mcdonald-gypsy-and-six-degrees-of-mama-rose/"
-            }
-          ]
-        },
-        {
-          "url": "https://www.nydailynews.com/2024/12/19/broadway-review-gypsy-revival-coming-up-roses-thanks-to-audra-mcdonald/",
-          "host": "nydailynews.com",
-          "dirFlags": [
-            {
-              "file": "nydailynews--chris-jones.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.nydailynews.com/2024/12/19/broadway-review-gypsy-revival-coming-up-roses-thanks-to-audra-mcdonald/"
-            }
-          ]
-        },
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp",
-          "host": "lightingandsoundamerica.com",
-          "dirFlags": [
-            {
-              "file": "lighting-and-sound-america--david-barbour.json",
-              "flag": "wrongShow",
-              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=P5EF8W"
-            }
-          ]
-        }
-      ],
-      "ingestResults": [
-        {
-          "url": "https://www.nj.com/entertainment/2024/12/gypsy-on-broadway-review-audra-macdonald-gives-a-performance-for-the-ages.html",
-          "host": "nj.com",
-          "outletId": "njcom",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.thewrap.com/gypsy-broadway-review-audra-mcdonald-george-c-wolfe/",
-          "host": "thewrap.com",
-          "outletId": "thewrap",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "http://maxstl.com/gypsy-overwhelms-at-the-muny/",
-          "host": "maxstl.com",
-          "outletId": "maxstl",
-          "provisional": true,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=gypsy-2024 --url=http://maxstl.com/gyp"
-        },
-        {
-          "url": "https://www.stltoday.com/entertainment/arts-and-theatre/reviews/beth-leavel-delivers-powerhouse-performance-in-gypsy/article_38c5a5c2-a766-5242-8cdb-11cc08d36796.html",
-          "host": "stltoday.com",
-          "outletId": "st-louis-post-dispatch",
-          "provisional": false,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=gypsy-2024 --url=https://www.stltoday."
-        },
-        {
-          "url": "http://www.flovalleynews.com/gypsy-review",
-          "host": "flovalleynews.com",
-          "outletId": "flovalleynews",
-          "provisional": true,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=gypsy-2024 --url=http://www.flovalleyn"
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://stllimelight.com/2018/07/29/gypsy-hits-new-heights-at-the-muny/",
-          "host": "stllimelight.com",
-          "outletId": "stllimelight"
-        },
-        {
-          "url": "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/11539554/Gypsy-Savoy-Theatre-review-a-once-in-a-lifetime-opportunity.html",
-          "host": "telegraph.co.uk",
-          "outletId": "sunday-telegraph"
-        },
-        {
-          "url": "http://www.theartsdesk.com/theatre/gypsy-savoy-theatre",
-          "host": "theartsdesk.com",
-          "outletId": "artsdesk"
-        },
-        {
-          "url": "https://www.londontheatre1.com/news/105667/review-gypsy-savoy-theatre-london/",
-          "host": "londontheatre1.com",
-          "outletId": "londontheatre1"
-        },
-        {
-          "url": "https://people.com/joy-woods-on-pressures-of-being-broadways-first-black-gypsy-exclusive-11732653",
-          "host": "people.com",
-          "outletId": "people"
-        }
-      ]
-    },
-    {
-      "showId": "eureka-day-2024",
-      "title": "Eureka Day",
-      "openingDate": "2024-12-16",
-      "status": "closed",
-      "category": "broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/read-the-reviews-for-eureka-day-on-broadway",
-        "https://playbill.com/article/read-reviews-for-jonathan-spectors-eureka-day-off-broadway",
-        "https://playbill.com/article/reviews-what-do-critics-think-of-eureka-day-starring-helen-hunt",
-        "https://www.broadwayworld.com/article/Review-Roundup-EUREKA-DAY-Opens-On-Broadway-20241216",
-        "https://www.broadwayworld.com/article/Review-Roundup-What-Did-Critics-Think-of-EUREKA-DAY-20190830"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.chicagotribune.com/2024/12/16/review-in-eureka-day-on-broadway-idealism-only-goes-so-far-at-a-private-elementary-school/",
-        "https://cititour.com/NYC_Broadway/Eureka-Day/1270",
-        "https://culturesauce.com/2024/12/16/eureka-day-broadway-review/",
-        "https://www.thedailybeast.com/review-eureka-day-on-broadway-explodes-the-kids-vaccination-debate/",
-        "https://deadline.com/2024/12/eureka-day-broadway-review-1236202814/",
-        "https://www.theguardian.com/stage/2024/dec/16/eureka-day-review-broadway-play-school-vaccination",
-        "https://nystagereview.com/2024/12/16/eureka-day-wokes-the-word-in-jonathan-spectors-timely-comedy/",
-        "https://nystagereview.com/2024/12/16/eureka-day-to-vax-or-not-to-vax/",
-        "https://newyorktheater.me/2024/12/16/eureka-day-broadway-review/",
-        "https://www.newyorktheatreguide.com/reviews/eureka-day-broadway-review-jessica-hecht-thomas-middleditch-bill-irwin",
-        "https://www.nytimes.com/2024/12/16/theater/eureka-day-review-broadway.html",
-        "https://observer.com/2024/12/review-libs-own-themselves-in-the-sharp-and-infectiously-funny-eureka-day/",
-        "https://www.theatermania.com/news/review-in-eureka-day-on-broadway-rich-liberals-debate-about-vaccines_1758572/",
-        "https://www.theatrely.com/post/the-perils-of-parenting-eureka-day-annie-and-racecar-racecar-racecar-review",
-        "https://www.timeout.com/newyork/theater/eureka-day-broadway-review-vaccines-antivax-jonathan-spector-jessica-hecht",
-        "https://variety.com/2024/legit/reviews/eureka-day-review-broadway-1236250966/",
-        "https://www.washingtonpost.com/entertainment/theater/2024/12/16/eureka-day-broadway-review/",
-        "https://www.thewrap.com/eureka-day-broadway-review-jonathan-spector/",
-        "http://nystagereview.com/2019/08/29/eureka-day-a-comical-clash-from-the-current-culture-wars/",
-        "http://www.nytimes.com/2019/08/29/theater/review-opinions-collide-in-the-explosive-comedy-eureka-day.html",
-        "https://www.culturewhisper.com/r/theatre/eureka_day_old_vic_theatre_review/17162",
-        "https://www.standard.co.uk/culture/theatre/eureka-day-old-vic-helen-hunt-london-review-b1028045.html",
-        "https://www.gaytimes.co.uk/originals/helen-hunt-leads-a-brilliant-cast-in-hilarious-new-satire-eureka-day-review/",
-        "https://www.theguardian.com/stage/2022/sep/25/eureka-day-review-helen-hunt-is-an-anti-vaxxer-on-the-attack-in-anti-woke-satire",
-        "https://www.londontheatre.co.uk/reviews/eureka-day-review-old-vic-helen-hunt",
-        "https://www.thestage.co.uk/reviews/eureka-day-review-at-the-old-vic-london-starring-helen-hunt",
-        "https://www.telegraph.co.uk/theatre/what-to-see/eureka-day-review-anti-woke-satire-exactly-what-old-vic-needed/",
-        "https://www.timeout.com/london/theatre/eureka-day-review",
-        "https://variety.com/2022/legit/reviews/eureka-day-review-helen-hunt-1235383580/",
-        "https://www.oldvictheatre.com/stage/event/eureka-day",
-        "https://www.nytimes.com/2019/08/29/theater/review-opinions-collide-in-the-explosive-comedy-eureka-day.html",
-        "https://www.nydailynews.com/2024/12/17/broadway-review-eureka-day-is-sharp-amusing-comedy-on-sanctimonious-school-boards/",
-        "https://observer.com/2024/12/to-v-or-not-to-v-eureka-day-brings-the-vax-debate-to-the-broadway-stage/",
-        "https://www.newyorktheatreguide.com/theatre-news/news/jessica-hecht-theatre-roles-we-love",
-        "http://www.lightingandsoundamerica.com/news/story.asp",
-        "https://www.talkinbroadway.com/page/world/EurekaDay.html",
-        "https://www.theaterscene.net/plays/broadway-plays/eureka-day-2/joseph-pisano/",
-        "https://www.theatrereviews.com/broadway-review-eureka-day-at-manhattan-theatre-clubs-samuel-j-friedman-theatre-currently-on/",
-        "https://slleiter.blogspot.com/2024/12/41-eureka-day-seen-december-14-2024.html",
-        "https://twi-ny.com/2024/12/31/eureka-day-broadway/",
-        "https://www.interestedbystander.com/2024/12/theater-reviews-eureka-day-hysterically.html",
-        "https://pagesonstages.com/2024/12/16/eureka-day/"
-      ],
-      "dirFiles": 51,
-      "dirClean": 25,
-      "inReviewsJson": 25,
-      "missing": [
-        {
-          "url": "https://www.culturewhisper.com/r/theatre/eureka_day_old_vic_theatre_review/17162",
-          "host": "culturewhisper.com",
-          "knownOutletId": "culture-whisper"
-        },
-        {
-          "url": "https://www.gaytimes.co.uk/originals/helen-hunt-leads-a-brilliant-cast-in-hilarious-new-satire-eureka-day-review/",
-          "host": "gaytimes.co.uk",
-          "knownOutletId": "gay-times"
-        },
-        {
-          "url": "https://www.oldvictheatre.com/stage/event/eureka-day",
-          "host": "oldvictheatre.com",
-          "knownOutletId": "oldvictheatrecom"
-        },
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp",
-          "host": "lightingandsoundamerica.com",
-          "knownOutletId": "lighting-and-sound-america"
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "broadwaynews.com",
-          "count": 1
-        },
-        {
-          "host": "thefrontrowcenter.com",
-          "count": 1
-        },
-        {
-          "host": "nysun.com",
-          "count": 1
-        },
-        {
-          "host": "vulture.com",
-          "count": 2
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.theguardian.com/stage/2024/dec/16/eureka-day-review-broadway-play-school-vaccination",
-          "host": "theguardian.com",
-          "dirFlags": [
-            {
-              "file": "guardian--adrian-horton.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theguardian.com/stage/2024/jun/19/eureka-day-review-broadway-jonathan-spector"
-            },
-            {
-              "file": "guardian--arifa-akbar.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theguardian.com/stage/2022/sep/25/eureka-day-review-helen-hunt-is-an-anti-vaxxer-on-the-attack-in-anti-woke-satire"
-            },
-            {
-              "file": "guardian--susannah-clapp.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theguardian.com/stage/2022/oct/02/the-week-in-theatre-john-gabriel-borkman-eureka-day-review?CMP=Share_iOSApp_Other"
-            }
-          ]
-        },
-        {
-          "url": "https://observer.com/2024/12/review-libs-own-themselves-in-the-sharp-and-infectiously-funny-eureka-day/",
-          "host": "observer.com",
-          "dirFlags": [
-            {
-              "file": "observer--david-cote.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://observer.com/2024/12/review-libs-own-themselves-in-the-sharp-and-infectiously-funny-eureka-day/"
-            },
-            {
-              "file": "observer--harry-haun.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://observer.com/2024/12/to-v-or-not-to-v-eureka-day-brings-the-vax-debate-to-the-broadway-stage/"
-            }
-          ]
-        },
-        {
-          "url": "https://www.theatermania.com/news/review-in-eureka-day-on-broadway-rich-liberals-debate-about-vaccines_1758572/",
-          "host": "theatermania.com",
-          "dirFlags": [
-            {
-              "file": "theatermania--zachary-stewart.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.theatermania.com/news/review-in-eureka-day-on-broadway-rich-liberals-debate-about-vaccines_1758572/"
-            }
-          ]
-        },
-        {
-          "url": "https://www.washingtonpost.com/entertainment/theater/2024/12/16/eureka-day-broadway-review/",
-          "host": "washingtonpost.com",
-          "dirFlags": [
-            {
-              "file": "washpost--naveen-kumar.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.washingtonpost.com/entertainment/theater/2024/12/16/eureka-day-broadway-review/"
-            },
-            {
-              "file": "washpost--peter-marks.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.washingtonpost.com/theater-dance/2024/06/19/eureka-day-review-broadway/"
-            }
-          ]
-        },
-        {
-          "url": "https://www.standard.co.uk/culture/theatre/eureka-day-old-vic-helen-hunt-london-review-b1028045.html",
+          "url": "https://www.standard.co.uk/culture/theatre/tammy-faye-at-almeida-theatre-review-a-religious-riot-elton-john-james-graham-b1035566.html",
           "host": "standard.co.uk",
           "dirFlags": [
             {
               "file": "standard--nick-curtis.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.standard.co.uk/culture/theatre/eureka-day-old-vic-helen-hunt-london-review-b1028045.html"
+              "urlInDir": "https://www.standard.co.uk/culture/theatre/tammy-faye-at-almeida-theatre-review-a-religious-riot-elton-john-james-graham-b1035566.html"
             }
           ]
         },
         {
-          "url": "https://www.theguardian.com/stage/2022/sep/25/eureka-day-review-helen-hunt-is-an-anti-vaxxer-on-the-attack-in-anti-woke-satire",
-          "host": "theguardian.com",
-          "dirFlags": [
-            {
-              "file": "guardian--adrian-horton.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theguardian.com/stage/2024/jun/19/eureka-day-review-broadway-jonathan-spector"
-            },
-            {
-              "file": "guardian--arifa-akbar.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theguardian.com/stage/2022/sep/25/eureka-day-review-helen-hunt-is-an-anti-vaxxer-on-the-attack-in-anti-woke-satire"
-            },
-            {
-              "file": "guardian--susannah-clapp.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theguardian.com/stage/2022/oct/02/the-week-in-theatre-john-gabriel-borkman-eureka-day-review?CMP=Share_iOSApp_Other"
-            }
-          ]
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/eureka-day-review-old-vic-helen-hunt",
+          "url": "https://www.londontheatre.co.uk/reviews/tammy-faye-review-almeida-theatre-elton-john",
           "host": "londontheatre.co.uk",
           "dirFlags": [
             {
               "file": "london-theatre--marianka-swain.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.londontheatre.co.uk/reviews/eureka-day-review-old-vic-helen-hunt"
+              "urlInDir": "https://www.londontheatre.co.uk/reviews/tammy-faye-review-almeida-theatre-elton-john"
             }
           ]
         },
         {
-          "url": "https://www.thestage.co.uk/reviews/eureka-day-review-at-the-old-vic-london-starring-helen-hunt",
+          "url": "https://www.thestage.co.uk/long-reviews/tammy-faye-review-at-the-almeida-theatre-london-from-james-graham-elton-john-and-jake-shears",
           "host": "thestage.co.uk",
           "dirFlags": [
             {
               "file": "thestage--sam-marlowe.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.thestage.co.uk/reviews/eureka-day-review-at-the-old-vic-london-starring-helen-hunt"
+              "urlInDir": "https://www.thestage.co.uk/long-reviews/tammy-faye-review-at-the-almeida-theatre-london-from-james-graham-elton-john-and-jake-shears"
             }
           ]
         },
         {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/eureka-day-review-anti-woke-satire-exactly-what-old-vic-needed/",
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/tammy-faye-almeida-theatre-review-elton-johns-new-musical-famous/",
           "host": "telegraph.co.uk",
           "dirFlags": [
             {
               "file": "telegraph--dominic-cavendish.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/eureka-day-review-anti-woke-satire-exactly-what-old-vic-needed/"
+              "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/tammy-faye-almeida-theatre-review-elton-johns-new-musical-famous/"
             }
           ]
         },
         {
-          "url": "https://observer.com/2024/12/to-v-or-not-to-v-eureka-day-brings-the-vax-debate-to-the-broadway-stage/",
-          "host": "observer.com",
+          "url": "https://almeida.co.uk/whats-on/tammy-faye/11-oct-2022-3-dec-2022",
+          "host": "almeida.co.uk",
           "dirFlags": [
             {
-              "file": "observer--david-cote.json",
+              "file": "almeidacouk--unknown.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://observer.com/2024/12/review-libs-own-themselves-in-the-sharp-and-infectiously-funny-eureka-day/"
-            },
-            {
-              "file": "observer--harry-haun.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://observer.com/2024/12/to-v-or-not-to-v-eureka-day-brings-the-vax-debate-to-the-broadway-stage/"
+              "urlInDir": "https://almeida.co.uk/whats-on/tammy-faye/"
             }
           ]
         },
         {
-          "url": "https://slleiter.blogspot.com/2024/12/41-eureka-day-seen-december-14-2024.html",
-          "host": "slleiter.blogspot.com",
-          "dirFlags": [
-            {
-              "file": "theatres-leiter-side--samuel-l-leiter.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://slleiter.blogspot.com/2024/12/41-eureka-day-seen-december-14-2024.html"
-            }
-          ]
-        },
-        {
-          "url": "https://www.interestedbystander.com/2024/12/theater-reviews-eureka-day-hysterically.html",
-          "host": "interestedbystander.com",
-          "dirFlags": [
-            {
-              "file": "the-interested-bystander--cary-wong.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.interestedbystander.com/2024/12/theater-reviews-eureka-day-hysterically.html"
-            }
-          ]
-        },
-        {
-          "url": "https://pagesonstages.com/2024/12/16/eureka-day/",
+          "url": "https://pagesonstages.com/2024/11/14/tammy-faye/",
           "host": "pagesonstages.com",
           "dirFlags": [
             {
               "file": "pages-on-stages--mason-pilevsky.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://pagesonstages.com/2024/12/16/eureka-day/"
+              "urlInDir": "https://pagesonstages.com/2024/11/14/tammy-faye/"
             }
           ]
         }
       ],
       "ingestResults": [
         {
-          "url": "https://www.culturewhisper.com/r/theatre/eureka_day_old_vic_theatre_review/17162",
-          "host": "culturewhisper.com",
-          "outletId": "culture-whisper",
+          "url": "https://theartsdesk.com/theatre/tammy-faye-almeida-theatre-review-elton-johns-often-dazzling-new-musical",
+          "host": "theartsdesk.com",
+          "outletId": "artsdesk",
           "provisional": false,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=eureka-day-2024 --url=https://www.cult"
+          "ok": true,
+          "reason": null
         },
         {
-          "url": "https://www.gaytimes.co.uk/originals/helen-hunt-leads-a-brilliant-cast-in-hilarious-new-satire-eureka-day-review/",
-          "host": "gaytimes.co.uk",
-          "outletId": "gay-times",
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/tammy-faye-show-review-almeida-b2211640.html",
+          "host": "independent.co.uk",
+          "outletId": "independent",
           "provisional": false,
           "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=eureka-day-2024 --url=https://www.gayt"
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=tammy-faye-2024 --url=https://www.inde"
         },
         {
-          "url": "https://www.oldvictheatre.com/stage/event/eureka-day",
-          "host": "oldvictheatre.com",
-          "outletId": "oldvictheatrecom",
+          "url": "https://inews.co.uk/culture/arts/tammy-faye-almeida-review-elton-john-musical-1937059",
+          "host": "inews.co.uk",
+          "outletId": "i-paper",
           "provisional": false,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=eureka-day-2024 --url=https://www.oldv"
+          "ok": true,
+          "reason": null
         },
         {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp",
-          "host": "lightingandsoundamerica.com",
-          "outletId": "lighting-and-sound-america",
+          "url": "https://www.whatsonstage.com/london-theatre/reviews/tammy-faye-review-elton-john-jake-shears-and-james_57692.html",
+          "host": "whatsonstage.com",
+          "outletId": "whatsonstage",
           "provisional": false,
           "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=eureka-day-2024 --url=http://www.light"
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=tammy-faye-2024 --url=https://www.what"
+        },
+        {
+          "url": "https://www.interestedbystander.com/2024/11/broadway-reviews-death-becomes-her-is.html",
+          "host": "interestedbystander.com",
+          "outletId": "the-interested-bystander",
+          "provisional": false,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=tammy-faye-2024 --url=https://www.inte"
         }
       ],
       "ingestSkippedByCap": []
     },
     {
-      "showId": "cult-of-love-2024",
-      "title": "Cult of Love",
-      "openingDate": "2024-12-12",
+      "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
+      "title": "A Wonderful World: The Louis Armstrong Musical",
+      "openingDate": "2024-11-11",
       "status": "closed",
       "category": "broadway",
-      "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-CULT-OF-LOVE-Opens-On-Broadway-Starring-Zachary-Quinto-Shailene-Woodley-and-More-20241212"
-      ],
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.nytimes.com/2024/12/12/theater/cult-of-love-broadway-review.html",
-        "https://variety.com/2024/legit/reviews/cult-of-love-review-shailene-woodley-zachary-quinto-leslye-headland-1236247528/",
-        "https://www.theguardian.com/stage/2024/dec/12/cult-of-love-review-broadway-play",
-        "https://www.thedailybeast.com/broadway-review-cult-of-love-wishes-you-a-not-so-merry-christmas/",
-        "https://deadline.com/2024/12/cult-of-love-broadway-review-1236200703/",
-        "https://www.nydailynews.com/2024/12/12/broadway-review-shailene-woodly-leads-strong-cast-of-intense-family-dysfunction-play-cult-of-love/",
-        "https://ew.com/cult-of-love-review-broadway-laugh-cry-harsh-family-truths-8759444",
-        "https://www.timeout.com/newyork/theater/cult-of-love-broadway-review-leslye-headland-christmas",
-        "https://nystagereview.com/2024/12/12/cult-of-love-theyll-be-home-for-christmas-if-not-so-dreamily/",
-        "https://nystagereview.com/2024/12/12/cult-of-love-leslye-headland-takes-on-and-takes-down-family-and-religion/",
-        "https://culturesauce.com/2024/12/12/cult-of-love-broadway-review/",
-        "https://www.newyorktheatreguide.com/reviews/cult-of-love-broadway-review-shailene-woodley-zachary-quinto",
-        "https://newyorktheater.me/2024/12/12/cult-of-love-broadway-review/",
-        "https://www.theatrely.com/post/cult-of-love-american-dahlhouse-review",
-        "https://www.newyorker.com/magazine/2024/12/23/the-cult-of-love-theatre-review-broadway",
-        "https://www.washingtonpost.com/entertainment/theater/2024/12/12/cult-of-love-broadway-shailene-woodley-zachary-quinto/",
-        "https://www.theatermania.com/news/review-another-christmas-another-family-meltdown-in-cult-of-love-on-broadway_1758393/",
-        "https://www.talkinbroadway.com/page/world/CultofLove.html",
-        "https://www.theaterscene.net/plays/broadway-plays/cult-of-love/victor-gluck/",
-        "https://www.theatrereviews.com/broadway-review-cult-of-love-at-the-helen-hayes-currently-on/",
-        "https://pagesonstages.com/2025/01/09/cult-of-love/",
-        "https://www.interestedbystander.com/2025/01/theater-review-gypsy-triumphs-again-on.html"
+        "https://www.nytimes.com/2024/11/11/theater/a-wonderful-world-review-louis-armstrong.html",
+        "https://www.newyorktheatreguide.com/reviews/a-wonderful-world-the-louis-armstrong-musical-broadway-review",
+        "https://www.timeout.com/newyork/theater/a-wonderful-world-broadway-review-louis-armstrong-james-monroe-iglehart",
+        "https://variety.com/2024/legit/reviews/a-wonderful-world-the-louis-armstrong-musical-review-broadway-1236206674/",
+        "https://nypost.com/2024/11/11/entertainment/a-wonderful-world-the-louis-armstrong-musical-review/",
+        "https://www.theatermania.com/news/review-a-wonderful-world-asks-what-if-six-was-about-louis-armstrongs-wives_1755256/",
+        "http://www.lightingandsoundamerica.com/news/story.asp",
+        "https://www.newyorktheatreguide.com/theatre-news/news/all-the-songs-in-a-wonderful-world-the-louis-armstrong-musical-on-broadway",
+        "https://www.newyorktheatreguide.com/theatre-news/interviews/in-a-wonderful-world-on-broadway-two-jameses-make-a-louis",
+        "https://www.newyorktheatreguide.com/theatre-news/news/the-wonderful-world-broadway-casts-favorite-live-music-venues-in-new-york",
+        "https://talkinbroadway.com/page/world/AWonderfulWorld.html",
+        "https://www.theaterscene.net/musicals/broadway/a-wonderful-world-the-louis-armstrong-musical/joseph-pisano/",
+        "https://newyorktheater.me/2024/11/11/a-wonderful-world-the-louis-armstrong-musical-review/",
+        "https://culturesauce.com/2024/11/11/wonderful-world-louis-armstrong-broadway-review/",
+        "https://www.interestedbystander.com/2024/11/theater-reviews-capsule-reviews-of-drag.html",
+        "https://slleiter.blogspot.com/2024/11/34-wonderful-world-louis-armstrong.html",
+        "https://pagesonstages.wordpress.com/2024/11/11/wonderful-world/"
       ],
-      "dirFiles": 38,
-      "dirClean": 37,
-      "inReviewsJson": 33,
+      "dirFiles": 26,
+      "dirClean": 22,
+      "inReviewsJson": 22,
       "missing": [
         {
-          "url": "https://www.interestedbystander.com/2025/01/theater-review-gypsy-triumphs-again-on.html",
+          "url": "https://www.interestedbystander.com/2024/11/theater-reviews-capsule-reviews-of-drag.html",
           "host": "interestedbystander.com",
           "knownOutletId": "the-interested-bystander"
+        },
+        {
+          "url": "https://pagesonstages.wordpress.com/2024/11/11/wonderful-world/",
+          "host": "pagesonstages.wordpress.com",
+          "knownOutletId": null
         }
       ],
       "dirOnly": [
-        {
-          "host": "broadwayandme.blogspot.com",
-          "count": 1
-        },
         {
           "host": "broadwaynews.com",
           "count": 1
@@ -726,7 +305,11 @@
           "count": 1
         },
         {
-          "host": "exeuntnyc.com",
+          "host": "thedailybeast.com",
+          "count": 1
+        },
+        {
+          "host": "deadline.com",
           "count": 1
         },
         {
@@ -734,19 +317,19 @@
           "count": 1
         },
         {
-          "host": "hollywoodreporter.com",
-          "count": 1
-        },
-        {
           "host": "nysun.com",
           "count": 1
         },
         {
-          "host": "nypost.com",
+          "host": "nystagereview.com",
+          "count": 2
+        },
+        {
+          "host": "thekomisarscoop.com",
           "count": 1
         },
         {
-          "host": "thecontending.com",
+          "host": "thestage.co.uk",
           "count": 1
         },
         {
@@ -756,439 +339,17 @@
         {
           "host": "vulture.com",
           "count": 1
-        },
-        {
-          "host": "wsj.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [],
-      "ingestResults": [
-        {
-          "url": "https://www.interestedbystander.com/2025/01/theater-review-gypsy-triumphs-again-on.html",
-          "host": "interestedbystander.com",
-          "outletId": "the-interested-bystander",
-          "provisional": false,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=cult-of-love-2024 --url=https://www.in"
-        }
-      ],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "swept-away-2024",
-      "title": "Swept Away",
-      "openingDate": "2024-11-19",
-      "status": "closed",
-      "category": "broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/reviews-what-do-critics-think-of-the-avett-brothers-musical-swept-away-at-arena-stage",
-        "https://www.broadwayworld.com/article/Review-Roundup-SWEPT-AWAY-Opens-On-Broadway-Featuring-the-Music-of-The-Avett-Brothers-20241119",
-        "https://www.broadwayworld.com/article/Review-Roundup-SWEPT-AWAY-Opens-at-Arena-Stage-20231208",
-        "https://www.broadwayworld.com/article/Review-Roundup-SWEPT-AWAY-at-Berkeley-Rep-20220130"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.broadwayworld.com/washington-dc/article/Review-SWEPT-AWAY-at-Arena-Stage-20231208",
-        "https://www.washingtonpost.com/entertainment/theater/2023/12/08/swept-away-review-avett-brothers-musical/",
-        "https://mdtheatreguide.com/2023/12/theatre-review-swept-away-at-arena-stage/",
-        "https://www.nytimes.com/2024/11/19/arts/swept-away-review-avett-brothers.html",
-        "https://deadline.com/2024/11/swept-away-broadway-review-1236180210/",
-        "https://nypost.com/2024/11/19/entertainment/swept-away-review-broadway-shipwreck-has-folk-songs-and-cannibalism/",
-        "https://www.chicagotribune.com/2024/11/19/review-swept-away-on-broadway-has-songs-of-the-avett-brothers-in-a-very-different-kind-of-musical/",
-        "https://www.thedailybeast.com/broadway-review-swept-away-is-tunefully-lost-at-sea/",
-        "https://ew.com/swept-away-review-riveting-avett-brothers-musical-broadway-8746821",
-        "https://www.theatrely.com/post/swept-away-is-lost-at-sea-review",
-        "https://nystagereview.com/2024/11/19/swept-away-a-haunting-musical-tale-of-survival/",
-        "https://nystagereview.com/2024/11/19/swept-away-adrift-on-a-dark-dark-sea/",
-        "https://www.thewrap.com/swept-away-broadway-review-avett-brothers-musical/",
-        "https://cititour.com/NYC_Broadway/Swept-Away/1267",
-        "https://culturesauce.com/2024/11/19/swept-away-avett-brothers-broadway-review/",
-        "https://www.digitaljournal.com/entertainment/review-swept-away-musical-takes-broadway-by-storm-this-fall-season/article",
-        "https://newyorktheater.me/2024/11/19/swept-away-broadway-review/",
-        "https://www.newyorktheatreguide.com/reviews/swept-away-broadway-review-avett-brothers",
-        "https://www.timeout.com/newyork/theater/swept-away-broadway-musical-review-avett-brothers",
-        "https://www.metroweekly.com/2023/12/swept-away-at-arena-stage-see-worthy/",
-        "https://datebook.sfchronicle.com/theater/review-when-waters-get-choppy-berkeley-reps-swept-away-rights-itself",
-        "https://sfist.com/2022/01/28/long-awaited-avett-brothers-scored-musical-swept-away/",
-        "https://www.eastbaytimes.com/2022/01/21/curtain-calls-drama-explodes-in-musical-swept-away-at-berkeley-rep/",
-        "https://www.wsj.com/articles/swept-away-review-the-avett-brothers-set-sail-on-broadway-b36ba07d",
-        "https://www.nydailynews.com/2024/11/19/broadway-review-avett-brothers-musical-swept-away/",
-        "https://variety.com/2024/legit/reviews/swept-away-review-broadway-musical-the-avett-brothers-1236208635/",
-        "https://www.washingtonpost.com/entertainment/theater/2024/11/19/swept-away-avett-brothers-musical-broadway-review/",
-        "https://www.newyorktheatreguide.com/theatre-news/news/all-the-songs-in-swept-away-on-broadway",
-        "https://www.theatermania.com/news/review-on-sea-shanties-shipwrecks-and-stark-sands-swept-away-comes-to-broadway_1756079/",
-        "http://www.lightingandsoundamerica.com/news/story.asp",
-        "https://www.talkinbroadway.com/page/world/SweptAway.html",
-        "https://www.theaterscene.net/musicals/broadway/swept-away/victor-gluck/",
-        "https://www.theatrereviews.com/broadway-review-swept-away-at-the-longacre-theatre-currently-on/",
-        "https://twi-ny.com/2024/12/12/the-light-and-the-dark-artemisia-gentileschi-babe/",
-        "https://pagesonstages.com/2024/11/19/swept-away/"
-      ],
-      "dirFiles": 40,
-      "dirClean": 31,
-      "inReviewsJson": 28,
-      "missing": [
-        {
-          "url": "https://www.broadwayworld.com/washington-dc/article/Review-SWEPT-AWAY-at-Arena-Stage-20231208",
-          "host": "broadwayworld.com",
-          "knownOutletId": "broadwayworld"
-        },
-        {
-          "url": "https://mdtheatreguide.com/2023/12/theatre-review-swept-away-at-arena-stage/",
-          "host": "mdtheatreguide.com",
-          "knownOutletId": "maryland-theatre-guide"
-        },
-        {
-          "url": "https://www.metroweekly.com/2023/12/swept-away-at-arena-stage-see-worthy/",
-          "host": "metroweekly.com",
-          "knownOutletId": "metro-weekly"
-        },
-        {
-          "url": "https://datebook.sfchronicle.com/theater/review-when-waters-get-choppy-berkeley-reps-swept-away-rights-itself",
-          "host": "datebook.sfchronicle.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://sfist.com/2022/01/28/long-awaited-avett-brothers-scored-musical-swept-away/",
-          "host": "sfist.com",
-          "knownOutletId": "sfist"
-        },
-        {
-          "url": "https://www.eastbaytimes.com/2022/01/21/curtain-calls-drama-explodes-in-musical-swept-away-at-berkeley-rep/",
-          "host": "eastbaytimes.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp",
-          "host": "lightingandsoundamerica.com",
-          "knownOutletId": "lighting-and-sound-america"
-        },
-        {
-          "url": "https://twi-ny.com/2024/12/12/the-light-and-the-dark-artemisia-gentileschi-babe/",
-          "host": "twi-ny.com",
-          "knownOutletId": "this-week-in-new-york"
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "arenastage.org",
-          "count": 1
-        },
-        {
-          "host": "broadwaynews.com",
-          "count": 1
-        },
-        {
-          "host": "nysun.com",
-          "count": 1
-        },
-        {
-          "host": "observer.com",
-          "count": 1
-        },
-        {
-          "host": "thecontending.com",
-          "count": 1
-        },
-        {
-          "host": "vulture.com",
-          "count": 1
         }
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.newyorktheatreguide.com/reviews/swept-away-broadway-review-avett-brothers",
-          "host": "newyorktheatreguide.com",
+          "url": "https://www.theatermania.com/news/review-a-wonderful-world-asks-what-if-six-was-about-louis-armstrongs-wives_1755256/",
+          "host": "theatermania.com",
           "dirFlags": [
             {
-              "file": "nytg--allison-considine.json",
+              "file": "theatermania--david-gordon.json",
               "flag": "nonReview",
-              "urlInDir": "https://www.newyorktheatreguide.com/reviews/swept-away-broadway-review-avett-brothers"
-            }
-          ]
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/swept-away-broadway-musical-review-avett-brothers",
-          "host": "timeout.com",
-          "dirFlags": [
-            {
-              "file": "timeout--adam-feldman.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.timeout.com/newyork/theater/swept-away-broadway-musical-review-avett-brothers"
-            }
-          ]
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/theatre-news/news/all-the-songs-in-swept-away-on-broadway",
-          "host": "newyorktheatreguide.com",
-          "dirFlags": [
-            {
-              "file": "nytg--allison-considine.json",
-              "flag": "nonReview",
-              "urlInDir": "https://www.newyorktheatreguide.com/reviews/swept-away-broadway-review-avett-brothers"
-            }
-          ]
-        },
-        {
-          "url": "https://pagesonstages.com/2024/11/19/swept-away/",
-          "host": "pagesonstages.com",
-          "dirFlags": [
-            {
-              "file": "pages-on-stages--mason-pilevsky.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://pagesonstages.com/2024/11/19/swept-away/"
-            }
-          ]
-        }
-      ],
-      "ingestResults": [
-        {
-          "url": "https://www.broadwayworld.com/washington-dc/article/Review-SWEPT-AWAY-at-Arena-Stage-20231208",
-          "host": "broadwayworld.com",
-          "outletId": "broadwayworld",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://mdtheatreguide.com/2023/12/theatre-review-swept-away-at-arena-stage/",
-          "host": "mdtheatreguide.com",
-          "outletId": "maryland-theatre-guide",
-          "provisional": false,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=swept-away-2024 --url=https://mdtheatr"
-        },
-        {
-          "url": "https://www.metroweekly.com/2023/12/swept-away-at-arena-stage-see-worthy/",
-          "host": "metroweekly.com",
-          "outletId": "metro-weekly",
-          "provisional": false,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=swept-away-2024 --url=https://www.metr"
-        },
-        {
-          "url": "https://datebook.sfchronicle.com/theater/review-when-waters-get-choppy-berkeley-reps-swept-away-rights-itself",
-          "host": "datebook.sfchronicle.com",
-          "outletId": "sfchronicle",
-          "provisional": true,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=swept-away-2024 --url=https://datebook"
-        },
-        {
-          "url": "https://sfist.com/2022/01/28/long-awaited-avett-brothers-scored-musical-swept-away/",
-          "host": "sfist.com",
-          "outletId": "sfist",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://www.eastbaytimes.com/2022/01/21/curtain-calls-drama-explodes-in-musical-swept-away-at-berkeley-rep/",
-          "host": "eastbaytimes.com",
-          "outletId": "eastbaytimes"
-        },
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp",
-          "host": "lightingandsoundamerica.com",
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "url": "https://twi-ny.com/2024/12/12/the-light-and-the-dark-artemisia-gentileschi-babe/",
-          "host": "twi-ny.com",
-          "outletId": "this-week-in-new-york"
-        }
-      ]
-    },
-    {
-      "showId": "elf-2024",
-      "title": "Elf",
-      "openingDate": "2024-11-17",
-      "status": "closed",
-      "category": "broadway",
-      "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-ELF-THE-MUSICAL-Opens-on-Broadway-Updating-Live-20241117",
-        "https://www.broadwayworld.com/article/Review-Roundup-ELF-THE-MUSICAL-Embarks-on-Holiday-Season-Tour-20251210",
-        "https://www.broadwayworld.com/article/Review-Roundup-ELF-Opens-at-Paper-Mill-Playhouse-20141214",
-        "https://www.broadwayworld.com/article/Review-Roundup-ELF-on-Broadway-20101114",
-        "https://www.broadwayworld.com/article/Review-Roundup-NBCs-Animated-Special-ELF-BUDDYS-MUSICAL-CHRISTMAS-Updating-Live-20141215",
-        "https://www.broadwayworld.com/article/Review-Roundup-ELF-20121119"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.nytimes.com/2024/11/17/theater/elf-review-broadway.html",
-        "https://www.amny.com/entertainment/arts-entertainment/review-elf-revival-holidays-broadway-2024/",
-        "https://www.timeout.com/newyork/theater/elf-the-musical-broadway-review-christmas-grey-henson",
-        "https://www.thedailybeast.com/review-elf-the-musical-brings-will-ferrells-merry-movie-to-broadway/",
-        "https://deadline.com/2024/11/elf-the-musical-broadway-review-ho-ho-etc-1236178027/",
-        "https://www.newyorktheatreguide.com/reviews/elf-the-musical-broadway-review",
-        "https://nystagereview.com/2024/11/17/elf-irrepressible-holiday-hijinks-for-adults-and-kids-too/",
-        "https://nystagereview.com/2024/11/17/elf-ho-ho-hokum-done-with-flair/",
-        "https://newyorktheater.me/2024/11/17/elf-broadway-review",
-        "https://www.oklahoman.com/story/entertainment/2025/11/22/elf-the-musical-okc-oklahoma-city-review/87332223007/",
-        "https://www.chicagotribune.com/2025/12/05/review-elf-auditorium-theatre/",
-        "http://www.nytimes.com/2014/12/14/nyregion/a-review-of-elf-in-millburn.html",
-        "http://www.nj.com/entertainment/index.ssf/2014/12/elf_opens_at_the_paper_mill_playhouse.html",
-        "http://www.northjersey.com/arts-and-entertainment/theater/a-musical-elf-full-of-holiday-sparkle-and-snark-1.1144550",
-        "http://www.hollywoodreporter.com/review/elf-theater-review-45233",
-        "http://www.newjerseynewsroom.com/movies/review-elf-musical-tunes-up-a-christmas-comedy",
-        "http://www.bloomberg.com/news/2010-11-15/high-spirited-elf-finds-grumpy-pa-first-love-in-new-york-jeremy-gerard.html",
-        "http://www.nydailynews.com/entertainment/arts/2010/11/15/2010-11-15_elf_review_broadways_adaptation_of_will_ferrell_film_is_unfinished_and_unready_f.html",
-        "http://www.nypost.com/p/entertainment/theater/onstage_not_his_old_elf_YoX4PTLg2T0FZw899eSxFO",
-        "http://www.backstage.com/bso/reviews-ny-theatre-broadway/ny-review-elf-1004126698.story",
-        "http://www.amny.com/urbanite-1.812039/elf-a-lump-of-coal-for-broadway-1.2461159",
-        "http://variety.com/2014/tv/reviews/tv-review-elf-buddys-musical-christmas-1201376770/",
-        "http://siouxcityjournal.com/entertainment/television/review-new-elf-isn-t-as-snarky-as-the-will/article_90e58a65-a8d1-505b-8d6d-158eebe8c263.html",
-        "http://www.mercurynews.com/entertainment/ci_27131213/review-broadway-musical-elf-decks-hall-time-christmas",
-        "http://theater.nytimes.com/2012/11/19/theater/reviews/elf-starring-jordan-gelber-at-al-hirschfeld-theater.html",
-        "http://www.nypost.com/p/entertainment/theater/to_better_one_elf_0fHhZZA2D13Fc7X01via4M",
-        "http://www.newjerseynewsroom.com/new-york-theater/review-elf-merrily-skates-back-to-broadway",
-        "http://www.sfgate.com/entertainment/article/Review-Elf-returns-to-Broadway-with-same-charm-4048615.php",
-        "https://www.theatermania.com/news/review-elf-on-broadway-is-a-holiday-delight-even-the-scrooges-will-enjoy_1755816/",
-        "http://www.lightingandsoundamerica.com/news/story.asp",
-        "https://www.talkinbroadway.com/page/world/Elf2024.html",
-        "https://www.theaterscene.net/musicals/broadway/elf-the-musical/joseph-pisano/",
-        "https://newyorktheater.me/2024/11/17/elf-broadway-review/",
-        "https://culturesauce.com/2024/11/17/elf-broadway-review-grey-henson/",
-        "https://pagesonstages.com/2024/11/23/elf/"
-      ],
-      "dirFiles": 26,
-      "dirClean": 14,
-      "inReviewsJson": 13,
-      "missing": [
-        {
-          "url": "https://www.oklahoman.com/story/entertainment/2025/11/22/elf-the-musical-okc-oklahoma-city-review/87332223007/",
-          "host": "oklahoman.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://www.chicagotribune.com/2025/12/05/review-elf-auditorium-theatre/",
-          "host": "chicagotribune.com",
-          "knownOutletId": "chicagotribune"
-        },
-        {
-          "url": "http://www.nj.com/entertainment/index.ssf/2014/12/elf_opens_at_the_paper_mill_playhouse.html",
-          "host": "nj.com",
-          "knownOutletId": "njcom"
-        },
-        {
-          "url": "http://www.northjersey.com/arts-and-entertainment/theater/a-musical-elf-full-of-holiday-sparkle-and-snark-1.1144550",
-          "host": "northjersey.com",
-          "knownOutletId": "northjerseycom"
-        },
-        {
-          "url": "http://www.hollywoodreporter.com/review/elf-theater-review-45233",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter"
-        },
-        {
-          "url": "http://www.newjerseynewsroom.com/movies/review-elf-musical-tunes-up-a-christmas-comedy",
-          "host": "newjerseynewsroom.com",
-          "knownOutletId": "new-jersey-newsroom"
-        },
-        {
-          "url": "http://www.bloomberg.com/news/2010-11-15/high-spirited-elf-finds-grumpy-pa-first-love-in-new-york-jeremy-gerard.html",
-          "host": "bloomberg.com",
-          "knownOutletId": "bloomberg"
-        },
-        {
-          "url": "http://www.nydailynews.com/entertainment/arts/2010/11/15/2010-11-15_elf_review_broadways_adaptation_of_will_ferrell_film_is_unfinished_and_unready_f.html",
-          "host": "nydailynews.com",
-          "knownOutletId": "nydailynews"
-        },
-        {
-          "url": "http://www.nypost.com/p/entertainment/theater/onstage_not_his_old_elf_YoX4PTLg2T0FZw899eSxFO",
-          "host": "nypost.com",
-          "knownOutletId": "nypost"
-        },
-        {
-          "url": "http://www.backstage.com/bso/reviews-ny-theatre-broadway/ny-review-elf-1004126698.story",
-          "host": "backstage.com",
-          "knownOutletId": "backstage"
-        },
-        {
-          "url": "http://variety.com/2014/tv/reviews/tv-review-elf-buddys-musical-christmas-1201376770/",
-          "host": "variety.com",
-          "knownOutletId": "variety"
-        },
-        {
-          "url": "http://siouxcityjournal.com/entertainment/television/review-new-elf-isn-t-as-snarky-as-the-will/article_90e58a65-a8d1-505b-8d6d-158eebe8c263.html",
-          "host": "siouxcityjournal.com",
-          "knownOutletId": "sioux-city-journal"
-        },
-        {
-          "url": "http://theater.nytimes.com/2012/11/19/theater/reviews/elf-starring-jordan-gelber-at-al-hirschfeld-theater.html",
-          "host": "theater.nytimes.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "http://www.nypost.com/p/entertainment/theater/to_better_one_elf_0fHhZZA2D13Fc7X01via4M",
-          "host": "nypost.com",
-          "knownOutletId": "nypost"
-        },
-        {
-          "url": "http://www.newjerseynewsroom.com/new-york-theater/review-elf-merrily-skates-back-to-broadway",
-          "host": "newjerseynewsroom.com",
-          "knownOutletId": "new-jersey-newsroom"
-        },
-        {
-          "url": "http://www.sfgate.com/entertainment/article/Review-Elf-returns-to-Broadway-with-same-charm-4048615.php",
-          "host": "sfgate.com",
-          "knownOutletId": "sfgate"
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "broadwaynews.com",
-          "count": 1
-        },
-        {
-          "host": "nysun.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.amny.com/entertainment/arts-entertainment/review-elf-revival-holidays-broadway-2024/",
-          "host": "amny.com",
-          "dirFlags": [
-            {
-              "file": "amny--matt-windman.json",
-              "flag": "nonReview",
-              "urlInDir": "https://www.amny.com/entertainment/"
-            }
-          ]
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/elf-the-musical-broadway-review",
-          "host": "newyorktheatreguide.com",
-          "dirFlags": [
-            {
-              "file": "nytg--caroline-cao.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.newyorktheatreguide.com/reviews/elf-the-musical-broadway-review"
-            }
-          ]
-        },
-        {
-          "url": "http://www.amny.com/urbanite-1.812039/elf-a-lump-of-coal-for-broadway-1.2461159",
-          "host": "amny.com",
-          "dirFlags": [
-            {
-              "file": "amny--matt-windman.json",
-              "flag": "nonReview",
-              "urlInDir": "https://www.amny.com/entertainment/"
-            }
-          ]
-        },
-        {
-          "url": "http://www.mercurynews.com/entertainment/ci_27131213/review-broadway-musical-elf-decks-hall-time-christmas",
-          "host": "mercurynews.com",
-          "dirFlags": [
-            {
-              "file": "san-jose-mercury-news--mercury-news.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.mercurynews.com/entertainment/ci_27131213/review-broadway-musical-elf-decks-hall-time-christmas"
+              "urlInDir": "https://www.theatermania.com/new-york-city-theater/news/a-wonderful-world-the-louis-armstrong-musical_96847.html"
             }
           ]
         },
@@ -1199,110 +360,1127 @@
             {
               "file": "lighting-and-sound-america--david-barbour.json",
               "flag": "wrongShow",
-              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=LF4NK7"
+              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-F7YMXX"
+            }
+          ]
+        },
+        {
+          "url": "https://slleiter.blogspot.com/2024/11/34-wonderful-world-louis-armstrong.html",
+          "host": "slleiter.blogspot.com",
+          "dirFlags": [
+            {
+              "file": "theatres-leiter-side--samuel-l-leiter.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://slleiter.blogspot.com/2024/11/34-wonderful-world-louis-armstrong.html?fbclid=IwY2xjawGgrDFleHRuA2FlbQIxMQABHUSjVMk1LSDmJdilvUFXzLQHTXMk4eOPCDw4i2UhdoDyfwBgpNQIdlvvNQ_aem_ds5PWizNNXQJh1mmwR98lg"
             }
           ]
         }
       ],
       "ingestResults": [
         {
-          "url": "https://www.oklahoman.com/story/entertainment/2025/11/22/elf-the-musical-okc-oklahoma-city-review/87332223007/",
-          "host": "oklahoman.com",
-          "outletId": "oklahoman",
+          "url": "https://www.interestedbystander.com/2024/11/theater-reviews-capsule-reviews-of-drag.html",
+          "host": "interestedbystander.com",
+          "outletId": "the-interested-bystander",
+          "provisional": false,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=a-wonderful-world-the-louis-armstrong-"
+        },
+        {
+          "url": "https://pagesonstages.wordpress.com/2024/11/11/wonderful-world/",
+          "host": "pagesonstages.wordpress.com",
+          "outletId": "wordpress",
           "provisional": true,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.chicagotribune.com/2025/12/05/review-elf-auditorium-theatre/",
-          "host": "chicagotribune.com",
-          "outletId": "chicagotribune",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "http://www.nj.com/entertainment/index.ssf/2014/12/elf_opens_at_the_paper_mill_playhouse.html",
-          "host": "nj.com",
-          "outletId": "njcom",
-          "provisional": false,
           "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=elf-2024 --url=http://www.nj.com/enter"
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=a-wonderful-world-the-louis-armstrong-"
+        }
+      ],
+      "ingestSkippedByCap": []
+    },
+    {
+      "showId": "romeo-juliet-2024",
+      "title": "Romeo + Juliet",
+      "openingDate": "2024-10-24",
+      "status": "closed",
+      "category": "broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-did-critics-love-the-tom-holland-led-romeo-juliet-in-the-west-end",
+        "https://www.broadwayworld.com/article/Review-Roundup-ROMEO-JULIET-Starring-Rachel-Zegler-and-Kit-Connor-Opens-On-Broadway-20241024",
+        "https://www.broadwayworld.com/article/Review-Roundup-The-Public-Theaters-Free-Shakespeare-in-the-Park-Production-of-ROMEO-JULIET-20260612",
+        "https://www.broadwayworld.com/article/Review-Roundup-ROMEO-JULIET-at-ART-20240914",
+        "https://www.broadwayworld.com/article/Review-Roundup-ROMEO-JULIET-Starring-Tom-Holland-Francesca-Amewudah-Rivers-20240523",
+        "https://www.broadwayworld.com/article/Review-Roundup-CSCs-ROMEO-JULIET-20131017"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.bbc.com/culture/article/20240523-tom-holland-in-romeo-and-juliet-review-the-star-is-not-to-blame-but-this-production-cum-global-event-is-lifeless",
+        "https://www.express.co.uk/entertainment/theatre/1902976/Romeo-Juliet-review-Tom-Holland-Jamie-Lloyd",
+        "https://www.londontheatre.co.uk/reviews/romeo-and-juliet-review-tom-holland-stars-in-a-sexy-and-haunting-show-jamie-lloyd",
+        "https://www.nytimes.com/2024/05/24/theater/tom-holland-romeo-and-juliet.html",
+        "https://www.telegraph.co.uk/theatre/what-to-see/romeo-and-juliet-duke-of-yorks-review-tom-holland/",
+        "https://variety.com/2024/legit/reviews/romeo-and-juliet-review-tom-holland-1236014743/",
+        "https://www.whatsonstage.com/news/romeo-and-juliet-review-tom-holland-and-francesca-amewudah-rivers-shine-in-stripped-back-shakespeare_1603000/",
+        "https://www.nytimes.com/2024/10/24/theater/romeo-juliet-kit-carson-rachel-zegler.html",
+        "https://variety.com/2024/legit/reviews/romeo-and-juliet-review-kit-connor-rachel-zegler-broadway-1236189568/",
+        "https://www.theatrely.com/post/an-astonishing-romeo-juliet-for-a-new-age-review",
+        "https://nypost.com/2024/10/24/entertainment/romeo-juliet-review-kit-connor-shines-in-hollow-broadway-show/",
+        "https://www.hollywoodreporter.com/lifestyle/arts/romeo-and-juliet-theater-review-kit-connor-rachel-zegler-shakespeare-jack-antonoff-1236043115/",
+        "https://deadline.com/2024/10/romeo-juliet-broadway-review-kit-connor-rachel-zegler-1236145764/",
+        "https://ew.com/romeo-juliet-review-kit-connor-rachel-zegler-shakespeare-broadway-8732243",
+        "https://observer.com/2024/10/review-juliet-is-fire-romeo-got-mad-rizz-in-this-shakespeare-glowup/",
+        "https://www.theguardian.com/stage/2024/oct/24/romeo-juliet-broadway-review",
+        "https://www.wsj.com/articles/romeo-juliet-review-romance-on-broadway-rachel-zegler-kit-connor-sam-gold-6b43d781",
+        "https://www.slantmagazine.com/theater/romeo-and-juliet-review-rachel-zegler-kit-connor/",
+        "https://www.timeout.com/newyork/theater/romeo-juliet-broadway-review-kit-connor-rachel-zegler",
+        "https://www.chicagotribune.com/2024/10/24/review-in-romeo-juliet-on-broadway-its-hard-to-hear-the-young-love-amid-all-the-excitement/",
+        "https://www.washingtonpost.com/entertainment/theater/2024/10/24/romeo-juliet-left-tenth/",
+        "https://www.usatoday.com/story/entertainment/music/2024/10/24/kit-connor-rachel-zegler-romeo-juliet-review/75775741007/",
+        "https://newyorktheater.me/2024/10/24/romeo-juliet-broadway-review/",
+        "https://nystagereview.com/2024/10/24/romeo-juliet-star-crossd-lovers-in-star-crossd-for-our-time-production/",
+        "https://nystagereview.com/2024/10/24/romeo-juliet-shakespeare-for-the-tiktok-generation/",
+        "https://www.newyorktheatreguide.com/reviews/romeo-and-juliet-broadway-review-kit-connor-rachel-zegler",
+        "https://culturesauce.com/2024/10/24/romeo-juliet-broadway-review-kit-connor-rachel-zegler/",
+        "https://cititour.com/NYC_Broadway/Romeo-Juliet/1260",
+        "https://www.nytimes.com/2026/06/11/theater/review-romeo-juliet-shakespeare-in-the-park.html",
+        "https://1minutecritic.com/romeo-juliet-free-shakespeare-in-the-park-2026-review/",
+        "https://nystagereview.com/2026/06/11/romeo-juliet-star-crossed-and-border-bound/",
+        "https://www.timeout.com/newyork/news/review-romeo-and-juliet-are-border-crossed-lovers-at-shakespeare-in-the-park-061226",
+        "https://www.newyorktheatreguide.com/reviews/romeo-and-juliet-off-broadway-review-shakespeare-in-the-park",
+        "https://exeuntnyc.com/reviews/review-romeo-juliet-at-the-delacorte-theater/",
+        "https://culturesauce.com/romeo-juliet-border-wall-off-broadway-review/",
+        "https://www.wsj.com/articles/romeo-and-juliet-review-no-love-lost-for-shakespeare-in-the-park-c066ffdf",
+        "https://www.bostonglobe.com/2024/09/06/arts/american-repertory-theater-art-shakespeare-romeo-and-juliet-diane-paulus/",
+        "https://artsfuse.org/297731/theater-review-a-r-t-s-romeo-and-juliet-whats-love-got-to-do-with-it/",
+        "https://www.cambridgeday.com/2024/09/13/romeo-and-juliet-review-a-r-t-changes-little-from-the-classic-tale-but-makes-you-feel-the-love/",
+        "https://www.harvardmagazine.com/2024/09/romeo-and-juliet",
+        "https://www.timeout.com/london/theatre/romeo-juliet-13-review",
+        "https://www.theguardian.com/stage/article/2024/may/23/romeo-juliet-review-tom-holland-spider-man-francesca-amewudah-rivers",
+        "https://www.dailymail.co.uk/tvshowbiz/article-13453543/Romeo-Juliet-review-Spider-Man-PATRICK-MARMION.html",
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/romeo-and-juliet-review-tom-holland-london-b2550337.html",
+        "https://www.thestage.co.uk/reviews/romeo-and-juliet-review-at-duke-of-yorks-theatre-london-jamie-lloyd-tom-holland-and-francesca-amewudah-rivers",
+        "http://www.nytimes.com/2013/10/17/theater/reviews/romeo-and-juliet-with-a-twist-at-classic-stage-company.html",
+        "http://www.newsday.com/entertainment/theater/romeo-and-juliet-review-playful-streak-1.6260499",
+        "http://www.nbcnewyork.com/entertainment/the-scene/csc-romeo-juliet-review-227860751.html",
+        "http://www.nydailynews.com/entertainment/music-arts/theater-review-romeo-juliet-julius-caesar-article-1.1487478",
+        "http://www.amny.com/urbanite-1.812039/theater-review-romeo-and-juliet-2-5-stars-1.6267214",
+        "http://www.northjersey.com/arts_entertainment/theater/228131781_Theater_review___Romeo_and_Juliet_.html",
+        "http://newyorktheater.me/2013/10/16/romeo-and-juliet-off-broadway-review-elizabeth-olsen-as-juliet-at-csc/",
+        "https://www.nytimes.com/2024/10/24/theater/romeo-juliet-broadway-kit-connor-rachel-zegler.html",
+        "https://www.theatermania.com/news/review-kit-connor-flexes-and-rachel-zegler-belts-in-a-lit-romeo-and-juliet_1753873/",
+        "http://www.lightingandsoundamerica.com/news/story.asp",
+        "https://www.talkinbroadway.com/page/world/RomeoandJuliet2024.html",
+        "https://www.theaterscene.net/plays/broadway-plays/romeo-and-juliet/victor-gluck/",
+        "https://www.theatrereviews.com/broadway-review-romeo-juliet-at-circle-in-the-square-through-sunday-february-16-2025/",
+        "https://theaterlife.com/romeo-juliet-1-2-2/",
+        "https://theaterscene.com/RomeoJuliet_DD.html",
+        "https://pagesonstages.com/2024/12/24/romeo-and-juliet/",
+        "https://www.interestedbystander.com/2024/10/theater-review-romeo-juliet-jellicle.html"
+      ],
+      "dirFiles": 48,
+      "dirClean": 38,
+      "inReviewsJson": 37,
+      "missing": [
+        {
+          "url": "https://www.bbc.com/culture/article/20240523-tom-holland-in-romeo-and-juliet-review-the-star-is-not-to-blame-but-this-production-cum-global-event-is-lifeless",
+          "host": "bbc.com",
+          "knownOutletId": "bbc-news"
         },
         {
-          "url": "http://www.northjersey.com/arts-and-entertainment/theater/a-musical-elf-full-of-holiday-sparkle-and-snark-1.1144550",
+          "url": "https://www.express.co.uk/entertainment/theatre/1902976/Romeo-Juliet-review-Tom-Holland-Jamie-Lloyd",
+          "host": "express.co.uk",
+          "knownOutletId": "sunday-express"
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/romeo-and-juliet-review-tom-holland-stars-in-a-sexy-and-haunting-show-jamie-lloyd",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/romeo-and-juliet-review-tom-holland-and-francesca-amewudah-rivers-shine-in-stripped-back-shakespeare_1603000/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage"
+        },
+        {
+          "url": "https://1minutecritic.com/romeo-juliet-free-shakespeare-in-the-park-2026-review/",
+          "host": "1minutecritic.com",
+          "knownOutletId": "one-minute-critic"
+        },
+        {
+          "url": "https://exeuntnyc.com/reviews/review-romeo-juliet-at-the-delacorte-theater/",
+          "host": "exeuntnyc.com",
+          "knownOutletId": "exeunt-magazine"
+        },
+        {
+          "url": "https://www.bostonglobe.com/2024/09/06/arts/american-repertory-theater-art-shakespeare-romeo-and-juliet-diane-paulus/",
+          "host": "bostonglobe.com",
+          "knownOutletId": "boston-globe"
+        },
+        {
+          "url": "https://artsfuse.org/297731/theater-review-a-r-t-s-romeo-and-juliet-whats-love-got-to-do-with-it/",
+          "host": "artsfuse.org",
+          "knownOutletId": "artsfuse"
+        },
+        {
+          "url": "https://www.cambridgeday.com/2024/09/13/romeo-and-juliet-review-a-r-t-changes-little-from-the-classic-tale-but-makes-you-feel-the-love/",
+          "host": "cambridgeday.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.harvardmagazine.com/2024/09/romeo-and-juliet",
+          "host": "harvardmagazine.com",
+          "knownOutletId": "harvard-magazine"
+        },
+        {
+          "url": "https://www.dailymail.co.uk/tvshowbiz/article-13453543/Romeo-Juliet-review-Spider-Man-PATRICK-MARMION.html",
+          "host": "dailymail.co.uk",
+          "knownOutletId": "daily-mail"
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/romeo-and-juliet-review-tom-holland-london-b2550337.html",
+          "host": "independent.co.uk",
+          "knownOutletId": "independent"
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/romeo-and-juliet-review-playful-streak-1.6260499",
+          "host": "newsday.com",
+          "knownOutletId": "newsday"
+        },
+        {
+          "url": "http://www.nbcnewyork.com/entertainment/the-scene/csc-romeo-juliet-review-227860751.html",
+          "host": "nbcnewyork.com",
+          "knownOutletId": "nbcny"
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/music-arts/theater-review-romeo-juliet-julius-caesar-article-1.1487478",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews"
+        },
+        {
+          "url": "http://www.amny.com/urbanite-1.812039/theater-review-romeo-and-juliet-2-5-stars-1.6267214",
+          "host": "amny.com",
+          "knownOutletId": "amny"
+        },
+        {
+          "url": "http://www.northjersey.com/arts_entertainment/theater/228131781_Theater_review___Romeo_and_Juliet_.html",
           "host": "northjersey.com",
-          "outletId": "northjerseycom",
+          "knownOutletId": "northjerseycom"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "broadwaynews.com",
+          "count": 1
+        },
+        {
+          "host": "thefrontrowcenter.com",
+          "count": 1
+        },
+        {
+          "host": "intomore.com",
+          "count": 1
+        },
+        {
+          "host": "nysun.com",
+          "count": 1
+        },
+        {
+          "host": "newyorker.com",
+          "count": 1
+        },
+        {
+          "host": "thewrap.com",
+          "count": 1
+        },
+        {
+          "host": "vulture.com",
+          "count": 2
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.theatrely.com/post/an-astonishing-romeo-juliet-for-a-new-age-review",
+          "host": "theatrely.com",
+          "dirFlags": [
+            {
+              "file": "theatrely--juan-a-ramirez.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatrely.com/post/an-astonishing-romeo-juliet-for-a-new-age-review"
+            }
+          ]
+        },
+        {
+          "url": "https://www.slantmagazine.com/theater/romeo-and-juliet-review-rachel-zegler-kit-connor/",
+          "host": "slantmagazine.com",
+          "dirFlags": [
+            {
+              "file": "slantmagazine--dan-rubins.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.slantmagazine.com/theater/romeo-and-juliet-review-rachel-zegler-kit-connor/"
+            }
+          ]
+        },
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp",
+          "host": "lightingandsoundamerica.com",
+          "dirFlags": [
+            {
+              "file": "lighting-and-sound-america--david-barbour.json",
+              "flag": "wrongShow",
+              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-5F6HMP"
+            }
+          ]
+        },
+        {
+          "url": "https://www.theatrereviews.com/broadway-review-romeo-juliet-at-circle-in-the-square-through-sunday-february-16-2025/",
+          "host": "theatrereviews.com",
+          "dirFlags": [
+            {
+              "file": "theatre-reviews-limited--david-roberts.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatrereviews.com/broadway-review-romeo-juliet-at-circle-in-the-square-through-sunday-february-16-2025/"
+            }
+          ]
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://www.bbc.com/culture/article/20240523-tom-holland-in-romeo-and-juliet-review-the-star-is-not-to-blame-but-this-production-cum-global-event-is-lifeless",
+          "host": "bbc.com",
+          "outletId": "bbc-news",
           "provisional": false,
           "ok": true,
           "reason": null
         },
         {
-          "url": "http://www.hollywoodreporter.com/review/elf-theater-review-45233",
-          "host": "hollywoodreporter.com",
-          "outletId": "hollywood-reporter",
+          "url": "https://www.express.co.uk/entertainment/theatre/1902976/Romeo-Juliet-review-Tom-Holland-Jamie-Lloyd",
+          "host": "express.co.uk",
+          "outletId": "sunday-express",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/romeo-and-juliet-review-tom-holland-stars-in-a-sexy-and-haunting-show-jamie-lloyd",
+          "host": "londontheatre.co.uk",
+          "outletId": "co",
+          "provisional": true,
+          "ok": false,
+          "reason": "spawnSync node ETIMEDOUT"
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/romeo-and-juliet-review-tom-holland-and-francesca-amewudah-rivers-shine-in-stripped-back-shakespeare_1603000/",
+          "host": "whatsonstage.com",
+          "outletId": "whatsonstage",
           "provisional": false,
           "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=elf-2024 --url=http://www.hollywoodrep"
+          "reason": "spawnSync node ETIMEDOUT"
+        },
+        {
+          "url": "https://1minutecritic.com/romeo-juliet-free-shakespeare-in-the-park-2026-review/",
+          "host": "1minutecritic.com",
+          "outletId": "one-minute-critic",
+          "provisional": false,
+          "ok": true,
+          "reason": null
         }
       ],
       "ingestSkippedByCap": [
         {
-          "url": "http://www.newjerseynewsroom.com/movies/review-elf-musical-tunes-up-a-christmas-comedy",
-          "host": "newjerseynewsroom.com",
-          "outletId": "new-jersey-newsroom"
+          "url": "https://exeuntnyc.com/reviews/review-romeo-juliet-at-the-delacorte-theater/",
+          "host": "exeuntnyc.com",
+          "outletId": "exeunt-magazine"
         },
         {
-          "url": "http://www.bloomberg.com/news/2010-11-15/high-spirited-elf-finds-grumpy-pa-first-love-in-new-york-jeremy-gerard.html",
-          "host": "bloomberg.com",
-          "outletId": "bloomberg"
+          "url": "https://www.bostonglobe.com/2024/09/06/arts/american-repertory-theater-art-shakespeare-romeo-and-juliet-diane-paulus/",
+          "host": "bostonglobe.com",
+          "outletId": "boston-globe"
         },
         {
-          "url": "http://www.nydailynews.com/entertainment/arts/2010/11/15/2010-11-15_elf_review_broadways_adaptation_of_will_ferrell_film_is_unfinished_and_unready_f.html",
+          "url": "https://artsfuse.org/297731/theater-review-a-r-t-s-romeo-and-juliet-whats-love-got-to-do-with-it/",
+          "host": "artsfuse.org",
+          "outletId": "artsfuse"
+        },
+        {
+          "url": "https://www.cambridgeday.com/2024/09/13/romeo-and-juliet-review-a-r-t-changes-little-from-the-classic-tale-but-makes-you-feel-the-love/",
+          "host": "cambridgeday.com",
+          "outletId": "cambridgeday"
+        },
+        {
+          "url": "https://www.harvardmagazine.com/2024/09/romeo-and-juliet",
+          "host": "harvardmagazine.com",
+          "outletId": "harvard-magazine"
+        },
+        {
+          "url": "https://www.dailymail.co.uk/tvshowbiz/article-13453543/Romeo-Juliet-review-Spider-Man-PATRICK-MARMION.html",
+          "host": "dailymail.co.uk",
+          "outletId": "daily-mail"
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/romeo-and-juliet-review-tom-holland-london-b2550337.html",
+          "host": "independent.co.uk",
+          "outletId": "independent"
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/romeo-and-juliet-review-playful-streak-1.6260499",
+          "host": "newsday.com",
+          "outletId": "newsday"
+        },
+        {
+          "url": "http://www.nbcnewyork.com/entertainment/the-scene/csc-romeo-juliet-review-227860751.html",
+          "host": "nbcnewyork.com",
+          "outletId": "nbcny"
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/music-arts/theater-review-romeo-juliet-julius-caesar-article-1.1487478",
           "host": "nydailynews.com",
           "outletId": "nydailynews"
         },
         {
-          "url": "http://www.nypost.com/p/entertainment/theater/onstage_not_his_old_elf_YoX4PTLg2T0FZw899eSxFO",
-          "host": "nypost.com",
-          "outletId": "nypost"
+          "url": "http://www.amny.com/urbanite-1.812039/theater-review-romeo-and-juliet-2-5-stars-1.6267214",
+          "host": "amny.com",
+          "outletId": "amny"
         },
         {
-          "url": "http://www.backstage.com/bso/reviews-ny-theatre-broadway/ny-review-elf-1004126698.story",
-          "host": "backstage.com",
-          "outletId": "backstage"
-        },
-        {
-          "url": "http://variety.com/2014/tv/reviews/tv-review-elf-buddys-musical-christmas-1201376770/",
-          "host": "variety.com",
-          "outletId": "variety"
-        },
-        {
-          "url": "http://siouxcityjournal.com/entertainment/television/review-new-elf-isn-t-as-snarky-as-the-will/article_90e58a65-a8d1-505b-8d6d-158eebe8c263.html",
-          "host": "siouxcityjournal.com",
-          "outletId": "sioux-city-journal"
-        },
-        {
-          "url": "http://theater.nytimes.com/2012/11/19/theater/reviews/elf-starring-jordan-gelber-at-al-hirschfeld-theater.html",
-          "host": "theater.nytimes.com",
-          "outletId": "nytimes"
-        },
-        {
-          "url": "http://www.nypost.com/p/entertainment/theater/to_better_one_elf_0fHhZZA2D13Fc7X01via4M",
-          "host": "nypost.com",
-          "outletId": "nypost"
-        },
-        {
-          "url": "http://www.newjerseynewsroom.com/new-york-theater/review-elf-merrily-skates-back-to-broadway",
-          "host": "newjerseynewsroom.com",
-          "outletId": "new-jersey-newsroom"
-        },
-        {
-          "url": "http://www.sfgate.com/entertainment/article/Review-Elf-returns-to-Broadway-with-same-charm-4048615.php",
-          "host": "sfgate.com",
-          "outletId": "sfgate"
+          "url": "http://www.northjersey.com/arts_entertainment/theater/228131781_Theater_review___Romeo_and_Juliet_.html",
+          "host": "northjersey.com",
+          "outletId": "northjerseycom"
         }
       ]
+    },
+    {
+      "showId": "left-on-tenth-2024",
+      "title": "Left on Tenth",
+      "openingDate": "2024-10-23",
+      "status": "closed",
+      "category": "broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-the-reviews-for-broadways-left-on-tenth",
+        "https://www.broadwayworld.com/article/Review-Roundup-LEFT-ON-TENTH-Starring-Julianna-Margulies-and-Peter-Gallagher-Opens-On-Broadway-20241023"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.chicagotribune.com/2024/10/23/review-left-on-tenth-on-broadway-is-a-simple-story-about-late-in-life-romance/",
+        "https://cititour.com/NYC_Broadway/Left-on-Tenth/1259",
+        "https://culturesauce.com/2024/10/23/left-on-tenth-broadway-review-julianna-margulies-delia-ephron/",
+        "https://www.thedailybeast.com/broadway-review-julianna-margulies-faces-love-and-cancer-in-left-on-tenth/",
+        "https://deadline.com/2024/10/left-on-tenth-broadway-review-julianna-margulies-1236121975/",
+        "https://www.nydailynews.com/2024/10/23/broadway-review-delia-ephron-drama-left-on-tenth-is-deeply-personal-memoir-as-play/",
+        "https://nypost.com/2024/10/23/entertainment/left-on-tenth-review-julianna-margulies-broadway-show-is-a-sappy-slog/",
+        "https://nystagereview.com/2024/10/23/left-on-tenth-delia-ephrons-memoir-gets-lost-in-translation/",
+        "https://nystagereview.com/2024/10/23/left-on-tenth-romantic-comedy-takes-a-wrong-turn/",
+        "https://www.newyorktheatreguide.com/reviews/left-on-tenth-broadway-review-julianna-margulies-peter-gallagher",
+        "https://newyorktheater.me/2024/10/23/left-on-tenth-broadway-review/",
+        "https://www.nytimes.com/2024/10/23/theater/review-left-on-tenth-delia-ephron.html",
+        "https://www.timeout.com/newyork/theater/left-on-tenth-review-broadway-delia-ephron-juliana-margulies",
+        "https://www.usatoday.com/story/entertainment/music/2024/10/23/left-on-tenth-broadway-review/75775737007/",
+        "https://www.thewrap.com/left-on-tenth-broadway-review-julianna-margulies/",
+        "http://www.lightingandsoundamerica.com/news/story.asp",
+        "https://www.theaterscene.net/plays/broadway-plays/left-on-tenth/victor-gluck/",
+        "https://theaterpizzazz.com/left-on-tenth/",
+        "https://pagesonstages.wordpress.com/2024/10/28/left-on-tenth/"
+      ],
+      "dirFiles": 31,
+      "dirClean": 28,
+      "inReviewsJson": 24,
+      "missing": [
+        {
+          "url": "https://www.nydailynews.com/2024/10/23/broadway-review-delia-ephron-drama-left-on-tenth-is-deeply-personal-memoir-as-play/",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "broadwaynews.com",
+          "count": 1
+        },
+        {
+          "host": "thefrontrowcenter.com",
+          "count": 1
+        },
+        {
+          "host": "frontmezzjunkies.com",
+          "count": 1
+        },
+        {
+          "host": "hollywoodreporter.com",
+          "count": 1
+        },
+        {
+          "host": "newyorker.com",
+          "count": 1
+        },
+        {
+          "host": "theatermania.com",
+          "count": 1
+        },
+        {
+          "host": "theatrely.com",
+          "count": 1
+        },
+        {
+          "host": "variety.com",
+          "count": 1
+        },
+        {
+          "host": "vulture.com",
+          "count": 1
+        },
+        {
+          "host": "washingtonpost.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp",
+          "host": "lightingandsoundamerica.com",
+          "dirFlags": [
+            {
+              "file": "lighting-and-sound-america--david-barbour.json",
+              "flag": "wrongShow",
+              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-4KL7GF"
+            }
+          ]
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://www.nydailynews.com/2024/10/23/broadway-review-delia-ephron-drama-left-on-tenth-is-deeply-personal-memoir-as-play/",
+          "host": "nydailynews.com",
+          "outletId": "nydailynews",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": []
+    },
+    {
+      "showId": "sunset-boulevard-2024",
+      "title": "Sunset Boulevard",
+      "openingDate": "2024-10-20",
+      "status": "closed",
+      "category": "broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-read-what-critics-think-of-jamie-lloyds-minimalist-west-end-sunset-boulevard",
+        "https://playbill.com/article/reviews-do-critics-think-australias-sarah-brightman-led-sunset-boulevard-is-ready-for-its-close-up",
+        "https://playbill.com/article/reviews-what-did-critics-think-of-sunset-boulevard-at-the-kennedy-center",
+        "https://www.broadwayworld.com/article/Review-Roundup-SUNSET-BOULEVARD-Opens-On-Broadway-Updating-Live-20241020",
+        "https://www.broadwayworld.com/article/Review-Roundup-Nicole-Schezinger-Stars-In-SUNSET-BOULEVARD-20231012",
+        "https://www.broadwayworld.com/article/Review-Roundup-Glenn-Close-Returns-to-SUNSET-BOULEVARD--Updating-Live-20170209",
+        "https://www.broadwayworld.com/article/Review-Roundup-SUNSET-BOULEVARD-Starring-Stephanie-J-Block-Derek-Klena-and-Aulii-Cravalho-Opens-At-The-Kennedy-Center-20230203",
+        "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-in-on-SUNSET-BOULEVARD-at-North-Shore-Music-Theatre-Starring-Alice-Ripley-20191004",
+        "https://www.broadwayworld.com/article/Review-Roundup-Sarah-Brightman-Stars-in-SUNSET-BOULEVARD-in-Sydney-20240901"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.allthatdazzles.co.uk/post/review-sunset-boulevard-savoy-theatre",
+        "https://theartsdesk.com/theatre/sunset-boulevard-savoy-theatre-review-nicole-scherzinger-stuns-exceptional-production",
+        "https://www.attitude.co.uk/culture/sunset-boulevard-review-449951/",
+        "https://bnn.network/arts/nicole-scherzinger-soars-in-sunset-boulevard-revival/",
+        "https://www.cityam.com/sunset-boulevard-review-nicole-scherzinger-roars-but-its-more-star-than-substance/",
+        "https://www.dailymail.co.uk/tvshowbiz/article-12625643/pop-star-Nicole-Scherzinger-LUKE-JONES-Sunset-Boulevard.html",
+        "https://www.standard.co.uk/culture/theatre/sunset-boulevard-at-the-savoy-theatre-review-ready-for-her-close-up-nicole-scherzinger-smashes-it-b1113277.html",
+        "https://www.express.co.uk/entertainment/theatre/1823096/sunset-boulevard-savoy-theatre-review",
+        "https://www.theguardian.com/stage/2023/oct/12/sunset-boulevard-review-nicole-scherzinger-jamie-lloyd-savoy-theatre",
+        "https://www.telegraph.co.uk/theatre/what-to-see/sunset-boulevard-savoy-theatre-review-nicole-scherzinger/",
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/sunset-boulevard-review-nicole-scherzinger-jamie-lloyd-b2429138.html",
+        "https://www.huffingtonpost.co.uk/entry/nicole-scherzinger-sunset-boulevard-norma-desmond-reviews_uk_652932abe4b0a304ff6fd15f",
+        "https://inews.co.uk/culture/arts/sunset-boulevard-savoy-theatre-review-nicole-scherzinger-2684877",
+        "https://www.londontheatre.co.uk/reviews/sunset-boulevard-review-savoy-theatre",
+        "https://www.nytimes.com/2023/10/13/theater/nicole-scherzinger-sunset-boulevard.html",
+        "https://www.thestage.co.uk/long-reviews/sunset-boulevard-review-savoy-theatre-london-nicole-scherzinger-andrew-lloyd-webber-jamie-lloyd",
+        "https://theatreweekly.com/review-sunset-boulevard-at-the-savoy-theatre/",
+        "https://www.timeout.com/london/theatre/sunset-boulevard-1-review",
+        "https://www.whatsonstage.com/news/sunset-boulevard-review-nicole-scherzinger-stars-in-a-revival-like-no-other_1536217/",
+        "https://www.theguardian.com/stage/article/2024/may/30/sunset-boulevard-review-sarah-brightman-disappoints-in-andrew-lloyd-webbers-mawkish-musical",
+        "https://www.jwire.com.au/sunset-boulevard/",
+        "https://limelight-arts.com.au/reviews/sunset-boulevard-opera-australia-gwb-entertainment/",
+        "https://www.noise11.com/news/sarah-brightman-makes-a-stunning-return-to-stage-in-melbourne-for-sunset-boulevard-review-20240530",
+        "https://scenestr.com.au/arts/review-sunset-boulevard-princess-theatre-melbourne-20240530",
+        "https://www.washingtonpost.com/theater-dance/2023/02/03/sunset-boulevard-webber-kennedy-center/",
+        "https://www.nytimes.com/2024/10/20/theater/sunset-boulevard-review.html",
+        "https://variety.com/2024/legit/reviews/sunset-boulevard-review-nicole-scherzinger-broadway-1236181291/",
+        "https://www.usatoday.com/story/entertainment/music/2024/10/20/sunset-boulevard-broadway-review/75554784007/",
+        "https://nypost.com/2024/10/20/entertainment/sunset-boulevard-review-nicole-scherzinger-stuns-in-scorching-brilliant-broadway-revival/",
+        "https://ew.com/sunset-boulevard-review-nicole-scherzinger-leads-stunning-2024-revival-8731170",
+        "https://observer.com/2024/10/review-andrew-lloyd-webbers-sunset-boulevard-ready-for-its-uhd-4k-close-up/",
+        "https://www.timeout.com/newyork/theater/sunset-boulevard-broadway-review-revival-nicole-scherzinger-andrew-lloyd-webber",
+        "https://www.amny.com/entertainment/broadway/sunset-boulevard-revival-nicole-scherzinger-review/",
+        "https://www.newyorktheatreguide.com/reviews/sunset-boulevard-broadway-review-nicole-scherzinger",
+        "https://culturesauce.com/2024/10/20/sunset-boulevard-broadway-review-nicole-scherzinger-jamie-lloyd/",
+        "https://cititour.com/NYC_Broadway/Sunset-Boulevard/1258",
+        "https://www.washingtonpost.com/entertainment/theater/2023/11/30/sunset-boulevard-scherzinger-jamie-lloyd/",
+        "https://www.gaytimes.co.uk/originals/nicole-scherzinger-stars-in-radical-revival-of-sunset-boulevard-review/",
+        "https://www.nytimes.com/2017/02/09/theater/sunset-boulevard-review.html",
+        "http://variety.com/2017/legit/reviews/sunset-boulevard-review-glenn-close-broadway-1201983033/",
+        "http://www.nbcnewyork.com/entertainment/the-scene/Review-Glenn-Close-Sunset-Boulevard-413313023.html",
+        "http://www.amny.com/entertainment/sunset-boulevard-review-glenn-close-shines-in-revival-1.13097437",
+        "http://www.hollywoodreporter.com/review/sunset-boulevard-theater-974020",
+        "http://deadline.com/2017/02/review-glenn-close-in-sunset-boulevard-1201907285/",
+        "http://deadline.com/tag/sunset-boulevard/",
+        "https://www.wsj.com/articles/sunset-boulevard-review-the-picture-got-small-1486690200",
+        "http://www.thewrap.com/sunset-boulevard-broadway-review-glenn-close-leads-awkward-comeback/",
+        "http://www.newsday.com/entertainment/theater/sunset-boulevard-review-glenn-close-ready-for-a-less-grandiose-close-up-1.13084270",
+        "http://www.nydailynews.com/entertainment/theater-arts/glenn-close-commands-sunset-boulevard-return-theater-review-article-1.2968626",
+        "http://ew.com/theater/2017/02/09/sunset-boulevard-ew-stage-review/",
+        "https://www.timeout.com/newyork/blog/broadway-review-glenn-close-returns-in-demented-triumph-to-sunset-boulevard-020917",
+        "http://www.vulture.com/2017/02/glenn-closes-new-sunset-boulevard-is-facedown-in-the-pool.html",
+        "https://www.thestage.co.uk/reviews/2017/sunset-boulevard-review/",
+        "http://www.nj.com/entertainment/index.ssf/2017/02/sunset_boulevard_broadway_review_glenn_close_goes.html",
+        "https://patch.com/massachusetts/beverly/hollywood-comes-beverly-sunset-boulevard-nsmt",
+        "https://limelight-arts.com.au/reviews/sunset-boulevard-opera-australia-gwb-productions/"
+      ],
+      "dirFiles": 67,
+      "dirClean": 38,
+      "inReviewsJson": 35,
+      "missing": [
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-sunset-boulevard-savoy-theatre",
+          "host": "allthatdazzles.co.uk",
+          "knownOutletId": "all-that-dazzles-uk"
+        },
+        {
+          "url": "https://theartsdesk.com/theatre/sunset-boulevard-savoy-theatre-review-nicole-scherzinger-stuns-exceptional-production",
+          "host": "theartsdesk.com",
+          "knownOutletId": "artsdesk"
+        },
+        {
+          "url": "https://www.attitude.co.uk/culture/sunset-boulevard-review-449951/",
+          "host": "attitude.co.uk",
+          "knownOutletId": "attitude"
+        },
+        {
+          "url": "https://bnn.network/arts/nicole-scherzinger-soars-in-sunset-boulevard-revival/",
+          "host": "bnn.network",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.cityam.com/sunset-boulevard-review-nicole-scherzinger-roars-but-its-more-star-than-substance/",
+          "host": "cityam.com",
+          "knownOutletId": "city-am"
+        },
+        {
+          "url": "https://www.huffingtonpost.co.uk/entry/nicole-scherzinger-sunset-boulevard-norma-desmond-reviews_uk_652932abe4b0a304ff6fd15f",
+          "host": "huffingtonpost.co.uk",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/sunset-boulevard-review-savoy-theatre",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://theatreweekly.com/review-sunset-boulevard-at-the-savoy-theatre/",
+          "host": "theatreweekly.com",
+          "knownOutletId": "theatre-weekly"
+        },
+        {
+          "url": "https://www.jwire.com.au/sunset-boulevard/",
+          "host": "jwire.com.au",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://limelight-arts.com.au/reviews/sunset-boulevard-opera-australia-gwb-entertainment/",
+          "host": "limelight-arts.com.au",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.noise11.com/news/sarah-brightman-makes-a-stunning-return-to-stage-in-melbourne-for-sunset-boulevard-review-20240530",
+          "host": "noise11.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://scenestr.com.au/arts/review-sunset-boulevard-princess-theatre-melbourne-20240530",
+          "host": "scenestr.com.au",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.gaytimes.co.uk/originals/nicole-scherzinger-stars-in-radical-revival-of-sunset-boulevard-review/",
+          "host": "gaytimes.co.uk",
+          "knownOutletId": "gay-times"
+        },
+        {
+          "url": "http://www.nbcnewyork.com/entertainment/the-scene/Review-Glenn-Close-Sunset-Boulevard-413313023.html",
+          "host": "nbcnewyork.com",
+          "knownOutletId": "nbcny"
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/sunset-boulevard-review-glenn-close-ready-for-a-less-grandiose-close-up-1.13084270",
+          "host": "newsday.com",
+          "knownOutletId": "newsday"
+        },
+        {
+          "url": "http://www.nj.com/entertainment/index.ssf/2017/02/sunset_boulevard_broadway_review_glenn_close_goes.html",
+          "host": "nj.com",
+          "knownOutletId": "njcom"
+        },
+        {
+          "url": "https://patch.com/massachusetts/beverly/hollywood-comes-beverly-sunset-boulevard-nsmt",
+          "host": "patch.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://limelight-arts.com.au/reviews/sunset-boulevard-opera-australia-gwb-productions/",
+          "host": "limelight-arts.com.au",
+          "knownOutletId": null
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "broadwaynews.com",
+          "count": 1
+        },
+        {
+          "host": "chicagotribune.com",
+          "count": 1
+        },
+        {
+          "host": "thedailybeast.com",
+          "count": 1
+        },
+        {
+          "host": "digitaljournal.com",
+          "count": 1
+        },
+        {
+          "host": "hollywoodsoapbox.com",
+          "count": 1
+        },
+        {
+          "host": "nysun.com",
+          "count": 1
+        },
+        {
+          "host": "nystagereview.com",
+          "count": 2
+        },
+        {
+          "host": "newyorktheater.me",
+          "count": 1
+        },
+        {
+          "host": "pagesonstages.com",
+          "count": 1
+        },
+        {
+          "host": "slantmagazine.com",
+          "count": 1
+        },
+        {
+          "host": "talkinbroadway.com",
+          "count": 1
+        },
+        {
+          "host": "thekomisarscoop.com",
+          "count": 1
+        },
+        {
+          "host": "theaterlife.com",
+          "count": 2
+        },
+        {
+          "host": "theaterscene.net",
+          "count": 1
+        },
+        {
+          "host": "theatermania.com",
+          "count": 1
+        },
+        {
+          "host": "theatrereviews.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.dailymail.co.uk/tvshowbiz/article-12625643/pop-star-Nicole-Scherzinger-LUKE-JONES-Sunset-Boulevard.html",
+          "host": "dailymail.co.uk",
+          "dirFlags": [
+            {
+              "file": "daily-mail--brian-gallagher.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.dailymail.co.uk/tvshowbiz/article-13982111/Nicole-Scherzinger-Sunset-Boulevard-6-minute-standing-ovation-Broadway.html"
+            },
+            {
+              "file": "daily-mail--luke-jones.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.dailymail.co.uk/tvshowbiz/article-12625643/pop-star-Nicole-Scherzinger-LUKE-JONES-Sunset-Boulevard.html"
+            }
+          ]
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/sunset-boulevard-at-the-savoy-theatre-review-ready-for-her-close-up-nicole-scherzinger-smashes-it-b1113277.html",
+          "host": "standard.co.uk",
+          "dirFlags": [
+            {
+              "file": "standard--nick-curtis.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.standard.co.uk/culture/theatre/sunset-boulevard-at-the-savoy-theatre-review-ready-for-her-close-up-nicole-scherzinger-smashes-it-b1113277.html"
+            }
+          ]
+        },
+        {
+          "url": "https://www.express.co.uk/entertainment/theatre/1823096/sunset-boulevard-savoy-theatre-review",
+          "host": "express.co.uk",
+          "dirFlags": [
+            {
+              "file": "sunday-express--neil-norman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.express.co.uk/entertainment/theatre/1823096/sunset-boulevard-savoy-theatre-review"
+            }
+          ]
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/sunset-boulevard-savoy-theatre-review-nicole-scherzinger/",
+          "host": "telegraph.co.uk",
+          "dirFlags": [
+            {
+              "file": "sunday-telegraph--dominic-cavendish.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/sunset-boulevard-savoy-theatre-review-nicole-scherzinger/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/sunset-boulevard-review-nicole-scherzinger-jamie-lloyd-b2429138.html",
+          "host": "independent.co.uk",
+          "dirFlags": [
+            {
+              "file": "independent--alice-saville.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/sunset-boulevard-review-nicole-scherzinger-jamie-lloyd-b2429138.html"
+            }
+          ]
+        },
+        {
+          "url": "https://inews.co.uk/culture/arts/sunset-boulevard-savoy-theatre-review-nicole-scherzinger-2684877",
+          "host": "inews.co.uk",
+          "dirFlags": [
+            {
+              "file": "i-paper--fiona-mountford.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://inews.co.uk/culture/arts/sunset-boulevard-savoy-theatre-review-nicole-scherzinger-2684877"
+            }
+          ]
+        },
+        {
+          "url": "https://www.nytimes.com/2023/10/13/theater/nicole-scherzinger-sunset-boulevard.html",
+          "host": "nytimes.com",
+          "dirFlags": [
+            {
+              "file": "nytimes--jesse-green.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nytimes.com/2024/10/20/theater/sunset-boulevard-review.html"
+            }
+          ]
+        },
+        {
+          "url": "https://www.thestage.co.uk/long-reviews/sunset-boulevard-review-savoy-theatre-london-nicole-scherzinger-andrew-lloyd-webber-jamie-lloyd",
+          "host": "thestage.co.uk",
+          "dirFlags": [
+            {
+              "file": "thestage--sam-marlowe.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thestage.co.uk/long-reviews/sunset-boulevard-review-savoy-theatre-london-nicole-scherzinger-andrew-lloyd-webber-jamie-lloyd"
+            }
+          ]
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/sunset-boulevard-review-nicole-scherzinger-stars-in-a-revival-like-no-other_1536217/",
+          "host": "whatsonstage.com",
+          "dirFlags": [
+            {
+              "file": "whatsonstage--sarah-crompton.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.whatsonstage.com/news/sunset-boulevard-review-nicole-scherzinger-stars-in-a-revival-like-no-other_1536217/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.nytimes.com/2024/10/20/theater/sunset-boulevard-review.html",
+          "host": "nytimes.com",
+          "dirFlags": [
+            {
+              "file": "nytimes--jesse-green.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nytimes.com/2024/10/20/theater/sunset-boulevard-review.html"
+            }
+          ]
+        },
+        {
+          "url": "https://observer.com/2024/10/review-andrew-lloyd-webbers-sunset-boulevard-ready-for-its-uhd-4k-close-up/",
+          "host": "observer.com",
+          "dirFlags": [
+            {
+              "file": "observer--david-cote.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://observer.com/2024/10/review-andrew-lloyd-webbers-sunset-boulevard-ready-for-its-uhd-4k-close-up/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.nytimes.com/2017/02/09/theater/sunset-boulevard-review.html",
+          "host": "nytimes.com",
+          "dirFlags": [
+            {
+              "file": "nytimes--jesse-green.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nytimes.com/2024/10/20/theater/sunset-boulevard-review.html"
+            }
+          ]
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/2017/sunset-boulevard-review/",
+          "host": "thestage.co.uk",
+          "dirFlags": [
+            {
+              "file": "thestage--sam-marlowe.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thestage.co.uk/long-reviews/sunset-boulevard-review-savoy-theatre-london-nicole-scherzinger-andrew-lloyd-webber-jamie-lloyd"
+            }
+          ]
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-sunset-boulevard-savoy-theatre",
+          "host": "allthatdazzles.co.uk",
+          "outletId": "all-that-dazzles-uk",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://theartsdesk.com/theatre/sunset-boulevard-savoy-theatre-review-nicole-scherzinger-stuns-exceptional-production",
+          "host": "theartsdesk.com",
+          "outletId": "artsdesk",
+          "provisional": false,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=sunset-boulevard-2024 --url=https://th"
+        },
+        {
+          "url": "https://www.attitude.co.uk/culture/sunset-boulevard-review-449951/",
+          "host": "attitude.co.uk",
+          "outletId": "attitude",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://bnn.network/arts/nicole-scherzinger-soars-in-sunset-boulevard-revival/",
+          "host": "bnn.network",
+          "outletId": "bnn",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=sunset-boulevard-2024 --url=https://bn"
+        },
+        {
+          "url": "https://www.cityam.com/sunset-boulevard-review-nicole-scherzinger-roars-but-its-more-star-than-substance/",
+          "host": "cityam.com",
+          "outletId": "city-am",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.huffingtonpost.co.uk/entry/nicole-scherzinger-sunset-boulevard-norma-desmond-reviews_uk_652932abe4b0a304ff6fd15f",
+          "host": "huffingtonpost.co.uk",
+          "outletId": "co"
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/sunset-boulevard-review-savoy-theatre",
+          "host": "londontheatre.co.uk",
+          "outletId": "co"
+        },
+        {
+          "url": "https://theatreweekly.com/review-sunset-boulevard-at-the-savoy-theatre/",
+          "host": "theatreweekly.com",
+          "outletId": "theatre-weekly"
+        },
+        {
+          "url": "https://www.jwire.com.au/sunset-boulevard/",
+          "host": "jwire.com.au",
+          "outletId": "com"
+        },
+        {
+          "url": "https://limelight-arts.com.au/reviews/sunset-boulevard-opera-australia-gwb-entertainment/",
+          "host": "limelight-arts.com.au",
+          "outletId": "com"
+        },
+        {
+          "url": "https://www.noise11.com/news/sarah-brightman-makes-a-stunning-return-to-stage-in-melbourne-for-sunset-boulevard-review-20240530",
+          "host": "noise11.com",
+          "outletId": "noise11"
+        },
+        {
+          "url": "https://scenestr.com.au/arts/review-sunset-boulevard-princess-theatre-melbourne-20240530",
+          "host": "scenestr.com.au",
+          "outletId": "com"
+        },
+        {
+          "url": "https://www.gaytimes.co.uk/originals/nicole-scherzinger-stars-in-radical-revival-of-sunset-boulevard-review/",
+          "host": "gaytimes.co.uk",
+          "outletId": "gay-times"
+        },
+        {
+          "url": "http://www.nbcnewyork.com/entertainment/the-scene/Review-Glenn-Close-Sunset-Boulevard-413313023.html",
+          "host": "nbcnewyork.com",
+          "outletId": "nbcny"
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/sunset-boulevard-review-glenn-close-ready-for-a-less-grandiose-close-up-1.13084270",
+          "host": "newsday.com",
+          "outletId": "newsday"
+        },
+        {
+          "url": "http://www.nj.com/entertainment/index.ssf/2017/02/sunset_boulevard_broadway_review_glenn_close_goes.html",
+          "host": "nj.com",
+          "outletId": "njcom"
+        },
+        {
+          "url": "https://patch.com/massachusetts/beverly/hollywood-comes-beverly-sunset-boulevard-nsmt",
+          "host": "patch.com",
+          "outletId": "patch"
+        },
+        {
+          "url": "https://limelight-arts.com.au/reviews/sunset-boulevard-opera-australia-gwb-productions/",
+          "host": "limelight-arts.com.au",
+          "outletId": "com"
+        }
+      ]
+    },
+    {
+      "showId": "our-town-2024",
+      "title": "Our Town",
+      "openingDate": "2024-10-10",
+      "status": "closed",
+      "category": "broadway",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-Jim-Parsons-More-Star-In-OUR-TOWN-On-Broadway-20241010"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.nytimes.com/2024/10/10/theater/our-town-review-jim-parsons.html",
+        "https://www.wsj.com/articles/our-town-review-thornton-wilder-back-on-broadway-23333989",
+        "https://www.nydailynews.com/2024/10/10/broadway-review-revival-of-thornton-wilders-our-town-is-moving-emotionally-stirring-production/",
+        "https://www.timeout.com/newyork/theater/our-town-broadway-review-thornton-wilder-jim-parsons",
+        "https://www.washingtonpost.com/entertainment/theater/2024/10/10/our-town-broadway-katie-holmes-jim-parsons/",
+        "https://ew.com/our-town-review-jim-parsons-broadway-8726106",
+        "https://variety.com/2024/legit/reviews/our-town-review-broadway-1236171471/",
+        "https://deadline.com/2024/10/our-town-broadway-review-1236109200/",
+        "https://www.thewrap.com/our-town-broadway-review-jim-parsons-katie-holmes/",
+        "https://nypost.com/2024/10/10/entertainment/our-town-review-revival-starring-jim-parsons-and-katie-holmes-doesnt-hit-home/",
+        "https://nystagereview.com/2024/10/10/our-town-thornton-wilders-classic-in-functional-but-less-than-gripping-revival/",
+        "https://nystagereview.com/2024/10/10/our-town-kenny-leon-smartly-repopulates-thornton-wilder-for-2024/",
+        "https://www.theatrely.com/post/a-haunting-jim-parsons-leads-our-town-review",
+        "https://www.slantmagazine.com/theater/the-hills-of-california-our-town-review/",
+        "https://www.newyorktheatreguide.com/reviews/our-town-broadway-review-jim-parsons-zoey-deutch-katie-holmes",
+        "https://www.theatermania.com/news/review-our-town-returns-to-broadway-with-jim-parsons-a-diverse-cast-and-onstage-seating_1752331/",
+        "http://www.lightingandsoundamerica.com/news/story.asp",
+        "https://www.talkinbroadway.com/page/world/OurTown24.html",
+        "https://www.theaterscene.net/plays/broadway-plays/our-town/victor-gluck/",
+        "https://thefrontrowcenter.com/2024/10/our-town/",
+        "https://www.theatrereviews.com/broadway-review-our-town-at-the-barrymore-theatre-currently-on/",
+        "https://newyorktheater.me/2024/10/17/our-town-broadway-review/",
+        "https://theaterlife.com/our-town-3/",
+        "https://culturesauce.com/2024/10/10/our-town-broadway-review-2024-jim-parsons/",
+        "https://pagesonstages.com/2024/11/23/our-town/",
+        "https://www.interestedbystander.com/2024/10/theater-review-romeo-juliet-jellicle.html"
+      ],
+      "dirFiles": 40,
+      "dirClean": 36,
+      "inReviewsJson": 33,
+      "missing": [
+        {
+          "url": "https://www.nydailynews.com/2024/10/10/broadway-review-revival-of-thornton-wilders-our-town-is-moving-emotionally-stirring-production/",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews"
+        },
+        {
+          "url": "https://www.slantmagazine.com/theater/the-hills-of-california-our-town-review/",
+          "host": "slantmagazine.com",
+          "knownOutletId": "slantmagazine"
+        },
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp",
+          "host": "lightingandsoundamerica.com",
+          "knownOutletId": "lighting-and-sound-america"
+        },
+        {
+          "url": "https://www.interestedbystander.com/2024/10/theater-review-romeo-juliet-jellicle.html",
+          "host": "interestedbystander.com",
+          "knownOutletId": "the-interested-bystander"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "apnews.com",
+          "count": 1
+        },
+        {
+          "host": "broadwaynews.com",
+          "count": 1
+        },
+        {
+          "host": "cititour.com",
+          "count": 1
+        },
+        {
+          "host": "thedailybeast.com",
+          "count": 1
+        },
+        {
+          "host": "nysun.com",
+          "count": 1
+        },
+        {
+          "host": "newyorker.com",
+          "count": 1
+        },
+        {
+          "host": "usatoday.com",
+          "count": 1
+        },
+        {
+          "host": "vulture.com",
+          "count": 2
+        }
+      ],
+      "flaggedMisses": [],
+      "ingestResults": [
+        {
+          "url": "https://www.nydailynews.com/2024/10/10/broadway-review-revival-of-thornton-wilders-our-town-is-moving-emotionally-stirring-production/",
+          "host": "nydailynews.com",
+          "outletId": "nydailynews",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://www.slantmagazine.com/theater/the-hills-of-california-our-town-review/",
+          "host": "slantmagazine.com",
+          "outletId": "slantmagazine",
+          "provisional": false,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=our-town-2024 --url=https://www.slantm"
+        },
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp",
+          "host": "lightingandsoundamerica.com",
+          "outletId": "lighting-and-sound-america",
+          "provisional": false,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=our-town-2024 --url=http://www.lightin"
+        },
+        {
+          "url": "https://www.interestedbystander.com/2024/10/theater-review-romeo-juliet-jellicle.html",
+          "host": "interestedbystander.com",
+          "outletId": "the-interested-bystander",
+          "provisional": false,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=our-town-2024 --url=https://www.intere"
+        }
+      ],
+      "ingestSkippedByCap": []
     }
   ]
 }
