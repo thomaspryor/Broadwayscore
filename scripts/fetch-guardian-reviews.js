@@ -33,6 +33,24 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { setExtractedScore } = require('./lib/score-routing');
+const { isArticleOutsideProductionWindow } = require('./lib/date-guard');
+
+// Lazy show lookup so the Guardian fetcher can reject a prior-production article
+// the API returns for a revival's stale slug (see updateReviewFile date guard).
+let _showMap = null;
+function getShow(showId) {
+  if (!_showMap) {
+    _showMap = {};
+    try {
+      const raw = JSON.parse(fs.readFileSync(path.join(CONFIG.reviewTextsDir, '..', 'shows.json'), 'utf8'));
+      const shows = Array.isArray(raw) ? raw : (raw.shows || []);
+      for (const s of shows) if (s && s.id) _showMap[s.id] = s;
+    } catch (e) {
+      console.warn(`  ⚠️  Could not load shows.json for date guard: ${e.message}`);
+    }
+  }
+  return _showMap[showId] || null;
+}
 
 // Configuration
 const CONFIG = {
@@ -129,6 +147,7 @@ async function fetchArticleFromAPI(articleId) {
               starRating: fields.starRating != null ? parseInt(fields.starRating) : null,
               webUrl: content.webUrl,
               apiUrl: content.apiUrl,
+              webPublicationDate: content.webPublicationDate || null,
             });
           } else if (json.response?.status === 'error') {
             resolve({
@@ -261,6 +280,37 @@ function findGuardianReviews() {
  */
 function updateReviewFile(review, apiResult) {
   const data = review.existingData;
+
+  // Revival slug guard (Notion 386637c5-416f-81ca): the API returns whatever the
+  // stored URL's slug points at. On a revival whose stored URL is an earlier
+  // production's slug, that's a prior-production body — storing it as fullText makes
+  // it masquerade as the current review (Glengarry WE 2026 was served the 2017
+  // Christian Slater article this way). If the fetched article's publication date is
+  // outside this production's window (and not within a priorRun), refuse to store the
+  // body, flag wrongProduction, and mark needsRefetch so discovery re-runs for the
+  // correct current-production URL. Honors manual clears.
+  const show = getShow(review.showId);
+  if (
+    show &&
+    apiResult.webPublicationDate &&
+    data.wrongProductionManualClear !== true &&
+    data.humanReviewedWrongProduction !== false &&
+    isArticleOutsideProductionWindow(show, apiResult.webPublicationDate)
+  ) {
+    data.wrongProduction = true;
+    data.wrongProductionReason = 'guardian-api-stale-slug';
+    data.wrongProductionNote =
+      `Guardian API returned an article published ${apiResult.webPublicationDate} — outside this production's window. ` +
+      `Stored URL slug likely points at a prior production; body not stored. Needs current-production URL.`;
+    data.needsRefetch = true;
+    data.guardianApiStaleSlug = { webUrl: apiResult.webUrl, webPublicationDate: apiResult.webPublicationDate };
+    stats.failed++;
+    console.log(`  ⛔ Stale-slug guard: ${review.showId}/${review.file} — article dated ${apiResult.webPublicationDate} outside window; not storing body`);
+    if (!CLI.dryRun) {
+      fs.writeFileSync(review.filePath, JSON.stringify(data, null, 2));
+    }
+    return;
+  }
 
   // Only update fullText if we don't already have it
   if (!data.fullText || data.fullText.length < CONFIG.minTextLength) {

@@ -20,14 +20,20 @@
 const https = require('https');
 const path = require('path');
 const fs = require('fs');
-const { chromium } = require('playwright');
+// playwright is lazy-loaded inside fetchWithPlaywright() so that merely
+// requiring this module never needs the package. Several lightweight scraper
+// workflows (update-lbo/seatplan/ltd) run without `npm ci` and only ever use
+// the Bright Data / ScrapingBee HTTP paths — a top-level require('playwright')
+// crashed them with MODULE_NOT_FOUND the moment they imported scraper.js,
+// even though they never reach the browser fallback. See feedback memory.
+let chromium = null;
 const {
   loadCookiesForDomain,
   buildCookieHeaderForUrl,
   hasCookiesForUrl,
 } = require('./cookie-loader');
 const { fetchWithCookiesPlain } = require('./fetch-plain');
-const { recordBdCall, recordSbCall } = require('./bd-telemetry');
+const { recordBdCall, recordSbCall, recordSdCall } = require('./bd-telemetry');
 
 // --- Domain-tier-skip: skip providers known to fail for specific domains ---
 // Sourced from collect-review-texts.js empirical data (30K+ collection results).
@@ -141,6 +147,15 @@ const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
 const BRIGHTDATA_ZONE = process.env.BRIGHTDATA_ZONE || 'web_unlocker2';
 const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
 
+// Scrapingdog — flag-gated cheap tier inserted AHEAD of Bright Data. BD Web
+// Unlocker is ~$1.50/1k req; Scrapingdog plain HTML is ~$0.09/1k (1 credit),
+// dynamic ~$0.45/1k (5cr). Bake-off (2026-06-21) confirmed content-identical
+// results on the dominant BD hosts (DTLI/Playbill/BWW) + working Google SERP.
+// Default OFF — set SCRAPER_USE_SCRAPINGDOG=1 to enable. Bright Data stays in
+// the chain as the fallback for the hard sites Scrapingdog can't unblock.
+const SCRAPINGDOG_API_KEY = process.env.SCRAPINGDOG_API_KEY;
+const USE_SCRAPINGDOG = process.env.SCRAPER_USE_SCRAPINGDOG === '1';
+
 // --- SB credit pre-check ---
 let _sbCreditCheckDone = false;
 let _sbCreditsLow = false;
@@ -200,12 +215,20 @@ let playwright = null; // Lazy load only if needed
 // or in a workflow step:  env: { SB_CREDIT_BUDGET: '1000' }
 const SB_CREDIT_BUDGET = parseInt(process.env.SB_CREDIT_BUDGET || '250', 10);
 
+// Scrapingdog per-run credit budget. Unlike SB (a fixed monthly plan we ration
+// per run), Scrapingdog is the new cheap primary, so default to no cap (0 =
+// unlimited). Set SD_CREDIT_BUDGET=N to ration bulk runs.
+const SD_CREDIT_BUDGET = parseInt(process.env.SD_CREDIT_BUDGET || '0', 10);
+
 // --- Per-run cost tracking ---
 const _scraperStats = {
   bdRequests: 0,
   sbRequests: 0,
   sbCredits: 0,
   sbBudgetExceeded: false,
+  sdRequests: 0,
+  sdCredits: 0,
+  sdBudgetExceeded: false,
   pwAttempts: 0,
   pwSuccess: 0,
 };
@@ -272,6 +295,74 @@ async function fetchWithBrightData(url) {
   } catch (error) {
     console.error(`⚠️  Bright Data failed: ${error.message}`);
     recordBdCall({ url, fn: 'web-unlocker', success: false, status: error.bdStatus || error.message?.slice(0, 80) || 'error' });
+    return null;
+  }
+}
+
+/**
+ * Fetch page using Scrapingdog API (HTML output).
+ * Credit model mirrors ScrapingBee: plain=1, dynamic(JS)=5, premium proxy=10.
+ * render/dynamic default is domain-aware (same JS_REQUIRED_DOMAINS as SB) unless
+ * options.renderJs is explicitly set. premium proxy only when options.premium.
+ */
+async function fetchWithScrapingdog(url, options = {}) {
+  if (!SCRAPINGDOG_API_KEY) {
+    return null;
+  }
+
+  const renderJs = options.renderJs === true ? true :
+                   options.renderJs === false ? false :
+                   _isJsRequiredDomain(url);
+  const premium = options.premium === true;
+  // premium implies a residential proxy (10cr); dynamic/JS is 5cr; plain is 1cr.
+  const creditCost = premium ? 10 : (renderJs ? 5 : 1);
+
+  // Per-run budget guard (0 = unlimited).
+  if (SD_CREDIT_BUDGET > 0 && _scraperStats.sdCredits + creditCost > SD_CREDIT_BUDGET) {
+    if (!_scraperStats.sdBudgetExceeded) {
+      console.log(`  ⚠️  Scrapingdog credit budget exhausted (${_scraperStats.sdCredits}/${SD_CREDIT_BUDGET}) — skipping SD for remaining requests`);
+    }
+    _scraperStats.sdBudgetExceeded = true;
+    return null;
+  }
+
+  // Count credit spend before the call — like SB, the provider charges on error too.
+  _scraperStats.sdRequests++;
+  _scraperStats.sdCredits += creditCost;
+
+  try {
+    const params = new URLSearchParams({
+      api_key: SCRAPINGDOG_API_KEY,
+      url,
+      dynamic: renderJs ? 'true' : 'false',
+    });
+    if (premium) params.set('premium', 'true');
+    // Attach subscriber cookies so the proxied request carries them (same as SB/BD).
+    const cookieHeader = buildCookieHeaderForUrl(url);
+    if (cookieHeader) params.set('cookies', cookieHeader);
+    const apiUrl = `https://api.scrapingdog.com/scrape?${params}`;
+
+    const response = await new Promise((resolve, reject) => {
+      https.get(apiUrl, (res) => {
+        let data = '';
+        res.on('data', chunk => data += chunk);
+        res.on('end', () => {
+          if (res.statusCode === 200) resolve(data);
+          else reject(new Error(`Scrapingdog HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
+        });
+      }).on('error', reject);
+    });
+
+    recordSdCall({ url, fn: premium ? 'premium' : (renderJs ? 'render' : 'page'), success: true, status: 200, credits: creditCost });
+    return {
+      content: response,
+      format: 'html',
+      source: 'scrapingdog'
+    };
+  } catch (error) {
+    const hostname = (() => { try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return 'unknown'; } })();
+    recordSdCall({ host: hostname, fn: premium ? 'premium' : (renderJs ? 'render' : 'page'), success: false, status: error.message?.slice(0, 80) || 'error', credits: creditCost });
+    console.error(`⚠️  Scrapingdog failed (dynamic=${renderJs}${premium ? ', premium' : ''}, domain=${hostname}): ${error.message}`);
     return null;
   }
 }
@@ -352,6 +443,20 @@ async function fetchWithPlaywright(url, options = {}) {
   _scraperStats.pwAttempts++;
   let context = null;
   try {
+    if (!chromium) {
+      try {
+        ({ chromium } = require('playwright'));
+      } catch (e) {
+        // No browser fallback available in this environment (workflow ran
+        // without devDeps installed). Surface a clear, catchable error rather
+        // than a raw MODULE_NOT_FOUND so callers degrade gracefully.
+        throw new Error(
+          'Playwright fallback unavailable — playwright package not installed. ' +
+          'Run `npm ci` (includes devDeps) or add `npx playwright install chromium`. ' +
+          `Underlying: ${e.message}`
+        );
+      }
+    }
     if (!playwright) {
       playwright = await chromium.launch({
         headless: true
@@ -504,6 +609,29 @@ async function fetchPage(url, options = {}) {
     }
   }
 
+  // Scrapingdog (flag-gated cheap tier — tried BEFORE Bright Data to avoid BD's
+  // ~$1.50/1k cost on the many hosts Scrapingdog handles for ~$0.09-0.45/1k).
+  // A challenge/short response falls through to Bright Data, which keeps its role
+  // as the strong unblocker for the hard sites Scrapingdog can't crack.
+  if (USE_SCRAPINGDOG && SCRAPINGDOG_API_KEY && !_scraperStats.sdBudgetExceeded && !skips.has('scrapingdog')) {
+    console.log('  → Trying Scrapingdog...');
+    const raw = await fetchWithScrapingdog(url, options);
+    if (raw && raw.content && raw.content.length > 0) {
+      const isChallengeOrGarbage = raw.content.length < 10000 && (
+        raw.content.includes('Just a moment...') ||
+        raw.content.includes('cf_chl_opt') ||
+        raw.content.includes('challenge-platform') ||
+        raw.content.includes('Enable JavaScript and cookies to continue')
+      );
+      if (isChallengeOrGarbage) {
+        console.log(`  ⚠️  Scrapingdog returned challenge/garbage (${raw.content.length} bytes), trying next provider...`);
+      } else {
+        const checked = _checkAndReturn(raw, 'Scrapingdog');
+        if (checked) return checked;
+      }
+    }
+  }
+
   // Try Bright Data (primary for non-public sites, fallback for public)
   if (BRIGHTDATA_TOKEN && !skips.has('brightdata')) {
     console.log('  → Trying Bright Data...');
@@ -560,10 +688,11 @@ async function fetchPage(url, options = {}) {
 async function cleanup() {
   // Print cost summary if any scraping happened
   const s = _scraperStats;
-  const total = s.pwAttempts + s.bdRequests + s.sbRequests;
+  const total = s.pwAttempts + s.bdRequests + s.sbRequests + s.sdRequests;
   if (total > 0) {
     const parts = [];
     if (s.pwSuccess > 0 || s.pwAttempts > 0) parts.push(`${s.pwSuccess}/${s.pwAttempts} Playwright (free)`);
+    if (s.sdRequests > 0) parts.push(`${s.sdRequests} SD (${s.sdCredits} credits${s.sdBudgetExceeded ? ', BUDGET HIT' : ''})`);
     if (s.bdRequests > 0) parts.push(`${s.bdRequests} BD (~$${(s.bdRequests * 0.0015).toFixed(3)})`);
     if (s.sbRequests > 0) parts.push(`${s.sbRequests} SB (${s.sbCredits} credits${s.sbBudgetExceeded ? ', BUDGET HIT' : ''})`);
     console.log(`[Scraper Summary] ${parts.join(', ')}`);
@@ -773,6 +902,7 @@ module.exports = {
   fetchWithCookiesPlain,
   fetchWithBrightData,
   fetchWithScrapingBee,
+  fetchWithScrapingdog,
   fetchWithPlaywright,
   cleanup,
   domainMatchesExpected,

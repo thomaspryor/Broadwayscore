@@ -50,6 +50,18 @@ test('isPlaceholderSynopsis does not flag plot text mentioning a play-within', (
   );
 });
 
+// ship-check 2026-06-21: a GOOD short synopsis with the opener + a plot signal
+// must NOT be flagged (bare-attribution length rule was too aggressive).
+test('isPlaceholderSynopsis does NOT flag short "written by X about [plot]"', () => {
+  const good = 'The Guest is a play written by Jane Doe about a grieving son who returns home to confront his father.';
+  assert.equal(isPlaceholderSynopsis(good), false);
+  assert.equal(isValidSynopsis(good), true);
+});
+
+test('isPlaceholderSynopsis does NOT flag short "written by X, set in [place]"', () => {
+  assert.equal(isPlaceholderSynopsis('Tiny is a musical written by Y, set in 1920s Paris.'), false);
+});
+
 test('isValidSynopsis rejects placeholders', () => {
   assert.equal(isValidSynopsis(PLACEHOLDER_1536), false);
 });
@@ -71,6 +83,14 @@ test('isStaleSynopsis does NOT flag the same copy on an upcoming show', () => {
     isStaleSynopsis({ status: 'upcoming', synopsis: 'A new drama that is scheduled to transfer to the West End this year.' }),
     false
   );
+});
+
+// ship-check 2026-06-21: plot verbs must not trip stale — only true theatrical
+// transfer/premiere language anchored to a market/theatre/year does.
+test('isStaleSynopsis does NOT flag plot-verb future tense on an open show', () => {
+  assert.equal(isStaleSynopsis({ status: 'open', synopsis: 'Two lovers decide they will run away together before dawn.' }), false);
+  assert.equal(isStaleSynopsis({ status: 'open', synopsis: 'A producer insists the show will open in Chicago before coming home.' }), false);
+  assert.equal(isStaleSynopsis({ status: 'closed', synopsis: 'A chorus girl dreams she will play the lead one day.' }), false);
 });
 
 // --- classifyBadSynopsis (single source of truth) ---
