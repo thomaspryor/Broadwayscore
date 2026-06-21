@@ -26,6 +26,13 @@ test('isPlaceholderSynopsis flags bare attribution ("is a play written by X.")',
   );
 });
 
+// ship-check follow-up 2026-06-21: assert the exact stale cases the tightened
+// anchor MUST still catch (Codex flagged missing coverage of the boundary).
+test('isStaleSynopsis catches the canonical "transfer to the West End in YYYY" stale form', () => {
+  assert.equal(isStaleSynopsis({ status: 'open', synopsis: "It's scheduled to transfer to the West End in 2026." }), true);
+  assert.equal(isStaleSynopsis({ status: 'now-playing', synopsis: 'The production will open at the Lyttelton Theatre next month.' }), true);
+});
+
 test('isPlaceholderSynopsis flags opener + production history (dana-h shape)', () => {
   assert.equal(
     isPlaceholderSynopsis('Dana H. is a play written by Lucas Hnath. It premiered on Broadway in 2021, winning two Tony Awards.'),
