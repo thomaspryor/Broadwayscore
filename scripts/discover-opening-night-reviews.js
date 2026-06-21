@@ -301,43 +301,7 @@ function isReviewUrl(url, title) {
  * Uses word-boundary matching so "Bug" doesn't match "debug", "Six" doesn't match "sixth".
  * Also checks URL slug and primary title (before : or -) for subtitled shows.
  */
-function serpResultMentionsShow(resultTitle, resultUrl, showTitle) {
-  const title = (resultTitle || '').toLowerCase();
-  const url = (resultUrl || '').toLowerCase();
-
-  // Build list of title variants to check
-  const variants = [];
-  const mainTitle = showTitle.replace(/^The\s+/i, '').trim();
-  if (mainTitle.length >= 2) variants.push(mainTitle.toLowerCase());
-
-  // Primary title before : or - (e.g., "CATS: The Jellicle Ball" → "CATS")
-  if (showTitle.includes(':')) {
-    const pre = showTitle.split(':')[0].replace(/^The\s+/i, '').trim();
-    if (pre.length >= 2) variants.push(pre.toLowerCase());
-  }
-  if (showTitle.includes(' - ')) {
-    const pre = showTitle.split(' - ')[0].replace(/^The\s+/i, '').trim();
-    if (pre.length >= 2) variants.push(pre.toLowerCase());
-  }
-
-  // Check title with word boundaries
-  for (const v of variants) {
-    const escaped = v.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    if (new RegExp(`\\b${escaped}\\b`, 'i').test(title)) return true;
-  }
-
-  // Check URL slug with boundary matching (delimiters: / and -)
-  // Prevents "bug" matching "debugging", "six" matching "sixth"
-  for (const v of variants) {
-    const slug = v.replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-    if (slug.length >= 3) {
-      const slugEscaped = slug.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      if (new RegExp(`(?:^|[/\\-])${slugEscaped}(?:$|[/\\-])`, 'i').test(url)) return true;
-    }
-  }
-
-  return false;
-}
+const { serpResultMentionsShow } = require('./lib/serp-show-match');
 
 async function main() {
   if (!SCRAPINGBEE_KEY && !BRIGHTDATA_TOKEN) {
