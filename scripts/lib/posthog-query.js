@@ -119,13 +119,15 @@ async function getSearchStats() {
 // returns the query text: search terms are show-title lookups, not PII, and the
 // raw term is what lets the friction analyzer flag missing productions.
 async function getZeroResultsSearches() {
+  // Group on lower(trim(query)) so case/whitespace variants of the same term
+  // don't fragment the count (and under-rank a real missing show).
   return phQuery(`
-    SELECT properties.query AS query, count() AS cnt
+    SELECT lower(trim(properties.query)) AS query, count() AS cnt
     FROM events
     WHERE event = 'search_performed'
       AND properties.has_results = false
       AND properties.query IS NOT NULL
-      AND properties.query != ''
+      AND trim(properties.query) != ''
       AND timestamp > now() - interval 7 day
     GROUP BY query ORDER BY cnt DESC LIMIT 50
   `);

@@ -363,8 +363,11 @@ ${context}`;
 
   const toolUse = response.content.find(b => b.type === 'tool_use');
   if (!toolUse) throw new Error('Claude did not call report_friction_issues tool');
-  const issues = toolUse.input.issues || [];
-  const missingShows = toolUse.input.missing_shows || [];
+  // Harden against malformed tool output: models can violate the schema and
+  // return a non-array (object/string) — Array.isArray avoids iterating a string
+  // char-by-char or crashing the for...of below.
+  const issues = Array.isArray(toolUse.input.issues) ? toolUse.input.issues : [];
+  const missingShows = Array.isArray(toolUse.input.missing_shows) ? toolUse.input.missing_shows : [];
   console.log(`Claude tool call returned ${issues.length} issues, ${missingShows.length} missing shows (stop_reason: ${response.stop_reason})`);
   return { issues, missingShows };
 }
@@ -455,12 +458,19 @@ async function main() {
       skipped.push(`[cap] missing show: ${show.canonical_title}`);
       continue;
     }
-    const evidenceKey = `missing_show:search:${(show.canonical_title || show.search_term || '').toLowerCase().trim()}`;
+    // Include market in the dedup key so same-title productions in different
+    // markets (e.g. Othello Broadway vs West End) don't collapse to one card.
+    const titleKey = (show.canonical_title || show.search_term || '').toLowerCase().trim();
+    const marketKey = (show.market || 'unknown').toLowerCase().trim();
+    const evidenceKey = `missing_show:search:${titleKey}|${marketKey}`;
     const hash = computeHash(evidenceKey);
     if (existingHashes.has(hash)) {
       skipped.push(`[duplicate hash ${hash}] missing show: ${show.canonical_title}`);
       continue;
     }
+    // Add to the live set immediately so duplicate missingShows entries in THIS
+    // run (the LLM can repeat a term) don't create two cards.
+    existingHashes.add(hash);
     console.log(`\n${DRY_RUN ? '[dry-run] Would create' : 'Creating'} missing-show card: ${show.canonical_title} (${show.market}, "${show.search_term}" ×${show.search_count})`);
     console.log(`  Hash: ${hash}`);
     if (!DRY_RUN) {

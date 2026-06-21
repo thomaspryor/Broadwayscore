@@ -98,22 +98,27 @@ export default function HeaderSearch() {
   useClickOutside(containerRef, closeSearch);
 
   // Fire search_performed after 1s of no typing (≥2 chars).
-  // Query text is captured ONLY on zero-results searches — these reveal shows we
-  // may be missing (surfaced as Notion cards by posthog-friction-analyzer.js).
-  // Searches that match real shows stay term-less (privacy: don't log what users
-  // browse, only what we failed to return).
+  // Query text is captured ONLY on TRUE zero-results searches — these reveal
+  // shows we may be missing (surfaced as Notion cards by
+  // posthog-friction-analyzer.js). Searches that match real shows stay term-less
+  // (privacy: don't log what users browse, only what we failed to return).
+  // "True" zero-result requires the search index to be loaded (dataReady) AND
+  // results to reflect the CURRENT query (query === deferredQuery) — otherwise a
+  // not-yet-loaded or lagging index would report a real show as zero-results and
+  // leak its term. has_results stays raw for the existing result-rate metric.
   useEffect(() => {
     if (query.length < 2) return;
     const timer = setTimeout(() => {
       const hasResults = filteredShows.length > 0;
+      const trueZeroResult = dataReady && query === deferredQuery && !hasResults;
       captureEvent('search_performed', {
         results_count: filteredShows.length,
         has_results: hasResults,
-        ...(hasResults ? {} : { query: query.trim().slice(0, 120) }),
+        ...(trueZeroResult ? { query: query.trim().slice(0, 120) } : {}),
       });
     }, 1000);
     return () => clearTimeout(timer);
-  }, [query, filteredShows.length]);
+  }, [query, deferredQuery, filteredShows.length, dataReady]);
 
   // Handle keyboard navigation — guard Enter against stale deferred results
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {

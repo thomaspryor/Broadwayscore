@@ -125,58 +125,10 @@ function daysBetween(d1, d2) {
   return Math.abs((d1 - d2) / (1000 * 60 * 60 * 24));
 }
 
-/**
- * Evergreen / listing / tickets pages are NOT dated critic reviews — their
- * publishDate is a re-scrape/listing timestamp, so the date-proximity heuristic
- * mis-fires and points the review at whichever production happens to be opening
- * near the scrape date. (e.g. britishtheatre.com/.../titanique-musical-tickets
- * scraped 2026 → mis-attributed to the 2026 Broadway run while the text plainly
- * describes the West End Criterion staging it is correctly filed under.)
- * These are skipped for cross-production attribution entirely.
- *
- * @param {string|null|undefined} url
- * @returns {boolean}
- */
-function isEvergreenListingUrl(url) {
-  if (!url || typeof url !== 'string') return false;
-  const u = url.toLowerCase();
-  return (
-    /(?:^|[\/-])tickets(?:[\/?#-]|$)/.test(u) ||  // .../titanique-musical-tickets, /tickets/
-    /\/buy-tickets?\b/.test(u) ||
-    /\/box-office\b/.test(u) ||
-    /\/whats-on\//.test(u) ||
-    /\/listings?\//.test(u) ||                     // nymag.com/listings/theater/...
-    /\/shows?\/[^\/?#]*-tickets\b/.test(u)
-  );
-}
-
-/**
- * True when the review BODY clearly names the venue of the production it is
- * filed under. When the prose says "...sails into the Criterion Theatre..." and
- * that IS the filed-under production's venue, the review is correctly filed
- * regardless of any date-proximity to another production — so we must never flag
- * it as cross-production. Uses the same slug normalisation as venueSlug() so
- * "Criterion Theatre" → "criterion" matches "...the Criterion Theatre...".
- *
- * IMPORTANT: matches fullText ONLY — never review.venue. The venue metadata
- * field is auto-populated from the filed-under show at ingestion, so including
- * it would make this a tautology that suppresses EVERY review (incl. genuine
- * cross-production misfiles whose body never mentions the venue). Verified
- * 2026-06-21: 2019 NY Post Broadway reviews misfiled under beetlejuice-west-end
- * -2026 carry venue="Prince Edward Theatre" but their bodies don't — body-only
- * preserves those legitimate detections.
- *
- * @param {object} review - parsed review-text JSON
- * @param {string|null} ownVenueSlug - venueSlug(prod.venue)
- * @returns {boolean}
- */
-function contentMatchesFiledUnderVenue(review, ownVenueSlug) {
-  if (!ownVenueSlug) return false;
-  const hay = String(review.fullText || '')
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-');
-  return hay.includes(ownVenueSlug);
-}
+// FP guards extracted to scripts/lib/cross-production-guards.js so the two
+// false-positive classes (evergreen-URL date mis-fire; venue-field tautology)
+// are locked by tests/unit/cross-production-guards.test.mjs (CLAUDE.md rule 15).
+const { isEvergreenListingUrl, contentMatchesFiledUnderVenue } = require('./lib/cross-production-guards');
 
 const issues = [];
 let totalFilesScanned = 0;

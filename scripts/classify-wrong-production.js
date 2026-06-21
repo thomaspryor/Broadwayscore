@@ -118,46 +118,17 @@ const stats = {
 // LLM Providers (same pattern as classify-non-reviews.js)
 // ============================================================
 
-function callClaude(systemPrompt, userPrompt) {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) throw new Error('ANTHROPIC_API_KEY not set');
-  const body = JSON.stringify({
-    model: CLAUDE_HAIKU,
-    max_tokens: 300,
-    temperature: 0.1,
-    system: systemPrompt,
-    messages: [{ role: 'user', content: userPrompt }],
-    tools: [{ type: 'advisor_20260301', name: 'advisor', model: CLAUDE_OPUS, max_uses: 1 }]
-  });
-  return new Promise((resolve, reject) => {
-    const req = https.request('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-        'anthropic-beta': 'advisor-tool-2026-03-01'
-      }
-    }, (res) => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        if (res.statusCode === 200) {
-          try {
-            const json = JSON.parse(data);
-            resolve(json.content?.find(c => c.type === 'text')?.text || '');
-          } catch (e) { reject(new Error(`Claude parse error: ${e.message}`)); }
-        } else if (res.statusCode === 429) {
-          reject(new Error('RATE_LIMIT'));
-        } else {
-          reject(new Error(`Claude HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
-        }
-      });
-    });
-    req.on('error', reject);
-    req.write(body);
-    req.end();
-  });
+// DEPRECATED — the Haiku-fronted advisor-tool path returned PROSE (not the
+// verdict JSON) for every classification prompt, so --provider=claude silently
+// produced 100% parse errors (2026-06-21). It is no longer wired up: callLLM
+// routes 'claude' to callOpus (direct Opus, the memory-recommended model for
+// classification). This stub stays only so a future caller fails LOUD instead
+// of silently resurrecting the broken advisor path.
+function callClaude() {
+  throw new Error(
+    'callClaude (Haiku advisor-tool path) is deprecated — it returns prose, not JSON. ' +
+    'Use --provider=opus (or =gemini). Routing of --provider=claude → callOpus is in callLLM.'
+  );
 }
 
 function callGemini(systemPrompt, userPrompt) {
@@ -241,7 +212,9 @@ function callOpus(systemPrompt, userPrompt) {
 
 function callLLM(systemPrompt, userPrompt) {
   if (PROVIDER === 'opus') return callOpus(systemPrompt, userPrompt);
-  if (PROVIDER === 'claude') return callClaude(systemPrompt, userPrompt);
+  // 'claude' historically meant the Haiku advisor-tool path, which is broken
+  // (returns prose). Route it to direct Opus so it is not a silent trap.
+  if (PROVIDER === 'claude') return callOpus(systemPrompt, userPrompt);
   return callGemini(systemPrompt, userPrompt);
 }
 
