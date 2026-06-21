@@ -128,22 +128,29 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         run: |
-          EMAIL=$(grep -A1 '### Submitter Email' .issue-body.txt | tail -1 | tr -d '[:space:]')
-          if [[ -z "$EMAIL" || "$EMAIL" == "_Noresponse_" ]]; then
+          EMAIL=$(grep -A1 '### Submitter Email' .issue-body.txt | tail -1 | xargs)
+          if [[ -z "$EMAIL" || "$EMAIL" == "_No response_" ]]; then
             echo "No submitter email — skipping notification"
             exit 0
           fi
-          REVIEW_URL=$(grep -A1 '### Review URL' .issue-body.txt | tail -1 | tr -d '[:space:]')
-          curl -s -o /dev/null -w "%{http_code}" -X POST https://api.resend.com/emails \
+          REVIEW_URL=$(grep -A1 '### Review URL' .issue-body.txt | tail -1 | xargs)
+          PAYLOAD=$(jq -n \
+            --arg from "Broadway Scorecard <noreply@broadwayscorecard.com>" \
+            --arg to "$EMAIL" \
+            --arg reply_to "$OWNER_EMAIL" \
+            --arg subject "Your review submission was approved" \
+            --arg text "Great news — the review you submitted to Broadway Scorecard has been approved and will be added to our database shortly.
+
+URL: $REVIEW_URL
+
+Thank you for helping expand our database!" \
+            '{from: $from, to: [$to], reply_to: $reply_to, subject: $subject, text: $text}')
+          HTTP=$(curl -s -o /dev/null -w "%{http_code}" -X POST https://api.resend.com/emails \
             -H "Authorization: Bearer $RESEND_API_KEY" \
             -H "Content-Type: application/json" \
-            -d "{
-              \"from\": \"Broadway Scorecard <noreply@broadwayscorecard.com>\",
-              \"to\": [\"$EMAIL\"],
-              \"reply_to\": \"$OWNER_EMAIL\",
-              \"subject\": \"Your review submission was approved\",
-              \"text\": \"Great news — the review you submitted to Broadway Scorecard has been approved and will be added to our database shortly.\n\nURL: $REVIEW_URL\n\nThank you for helping expand our database!\"
-            }" | grep -qE '^2' || echo "::warning::Resend approved notification failed"
+            -d "$PAYLOAD")
+          echo "Resend approved response: $HTTP"
+          [[ "$HTTP" =~ ^2 ]] || echo "::warning::Resend approved notification failed (HTTP $HTTP)"
 
       - name: Add label - Rejected
         if: steps.validate.outputs.recommendation == 'reject'
@@ -180,22 +187,31 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         run: |
-          EMAIL=$(grep -A1 '### Submitter Email' .issue-body.txt | tail -1 | tr -d '[:space:]')
-          if [[ -z "$EMAIL" || "$EMAIL" == "_Noresponse_" ]]; then
+          EMAIL=$(grep -A1 '### Submitter Email' .issue-body.txt | tail -1 | xargs)
+          if [[ -z "$EMAIL" || "$EMAIL" == "_No response_" ]]; then
             echo "No submitter email — skipping notification"
             exit 0
           fi
-          REVIEW_URL=$(grep -A1 '### Review URL' .issue-body.txt | tail -1 | tr -d '[:space:]')
-          curl -s -o /dev/null -w "%{http_code}" -X POST https://api.resend.com/emails \
+          REVIEW_URL=$(grep -A1 '### Review URL' .issue-body.txt | tail -1 | xargs)
+          PAYLOAD=$(jq -n \
+            --arg from "Broadway Scorecard <noreply@broadwayscorecard.com>" \
+            --arg to "$EMAIL" \
+            --arg reply_to "$OWNER_EMAIL" \
+            --arg subject "Your review submission was not approved" \
+            --arg text "We reviewed the URL you submitted to Broadway Scorecard but were unable to add it to our database.
+
+URL: $REVIEW_URL
+
+Common reasons: the review is from an outlet we don't currently track, the URL didn't resolve to a review of a Broadway or West End production, or the content didn't meet our scoring criteria. If you think this is an error, you can reply to this email.
+
+Thanks for your submission." \
+            '{from: $from, to: [$to], reply_to: $reply_to, subject: $subject, text: $text}')
+          HTTP=$(curl -s -o /dev/null -w "%{http_code}" -X POST https://api.resend.com/emails \
             -H "Authorization: Bearer $RESEND_API_KEY" \
             -H "Content-Type: application/json" \
-            -d "{
-              \"from\": \"Broadway Scorecard <noreply@broadwayscorecard.com>\",
-              \"to\": [\"$EMAIL\"],
-              \"reply_to\": \"$OWNER_EMAIL\",
-              \"subject\": \"Your review submission was not approved\",
-              \"text\": \"We reviewed the URL you submitted to Broadway Scorecard but were unable to add it to our database.\n\nURL: $REVIEW_URL\n\nCommon reasons: the review is from an outlet we don't currently track, the URL didn't resolve to a review of a Broadway or West End production, or the content didn't meet our scoring criteria. If you think this is an error, you can reply to this email.\n\nThanks for your submission.\"
-            }" | grep -qE '^2' || echo "::warning::Resend rejected notification failed"
+            -d "$PAYLOAD")
+          echo "Resend rejected response: $HTTP"
+          [[ "$HTTP" =~ ^2 ]] || echo "::warning::Resend rejected notification failed (HTTP $HTTP)"
 
       - name: Add label - Needs Manual Review
         if: steps.validate.outputs.recommendation == 'needs-manual-review'
