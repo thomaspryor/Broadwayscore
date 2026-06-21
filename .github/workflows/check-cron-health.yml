@@ -28,6 +28,18 @@ jobs:
             "collect-review-texts.yml|36|Collect Review Texts"
             "llm-ensemble-score.yml|48|LLM Ensemble Score"
             "test.yml|48|Test Suite"
+            # Daily 7 UTC. The BSC Daily digest carrier — the ONLY surface for all
+            # non-critical alerting (cron staleness, cookie health, repeat-failures,
+            # OB candidates). A *cancelled* run sends no digest and pages nothing, so
+            # alerting goes dark with nobody to flag it (2/14 runs cancelled ~14% incl.
+            # 2026-06-14). notify-failure ignores conclusion=cancelled. 26h (NOT the
+            # generic daily 36h) is deliberate: this check runs at 12 UTC, 5h after the
+            # 7 UTC digest, so on a cancel day the last SUCCESS is ~29h old at noon →
+            # caught SAME day. 36h would let the next day's success reset the clock
+            # before the next noon check, making a single cancel invisible — the exact
+            # gap this entry closes. See Notion 381637c5-416f-81af; audit exemption in
+            # scripts/audit-cron-health-coverage.js (TIGHT_BY_DESIGN).
+            "data-health-check.yml|26|Daily Data Health Check (digest carrier)"
             "commercial-weekly.yml|192|Commercial Weekly Orchestrator"
             "fetch-todaytix-showtimes.yml|36|Fetch TodayTix Showtimes"
             "audit-closing-dates.yml|36|Audit Closing Dates"
@@ -109,24 +121,32 @@ jobs:
             # how a disabled workflow's still-firing schedule events hide a real outage.
             LAST_RUN=$(gh run list --workflow="$workflow" --status=success --limit=1 --json createdAt,conclusion -q '.[0]' 2>/dev/null || echo '{}')
             LAST_DATE=$(echo "$LAST_RUN" | jq -r '.createdAt // empty' 2>/dev/null)
-            LAST_CONCLUSION=$(echo "$LAST_RUN" | jq -r '.conclusion // empty' 2>/dev/null)
 
             if [ -z "$LAST_DATE" ]; then
               FAILURES="${FAILURES}❌ ${name}: No successful runs found at all!\n"
               continue
             fi
 
+            # Latest run of ANY status. The LAST_RUN query above forces
+            # --status=success, so its conclusion is ALWAYS "success" — keying the
+            # "ran recently but the latest run failed" warning off it made that
+            # branch unreachable for EVERY cron. That dead branch is how main
+            # test.yml stayed red across 2026-06-13→06-15 with no warning: a recent
+            # green push kept it un-stale, but the latest run being red never
+            # surfaced. Fetch the most-recent run separately so the warning keys off
+            # its real conclusion.
+            LATEST_ANY=$(gh run list --workflow="$workflow" --limit=1 --json conclusion -q '.[0].conclusion // "missing"' 2>/dev/null || echo "missing")
+
             # Calculate hours since last successful run
             LAST_TS=$(date -d "$LAST_DATE" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$LAST_DATE" +%s 2>/dev/null || echo "0")
             HOURS_AGO=$(( (NOW - LAST_TS) / 3600 ))
 
             if [ "$HOURS_AGO" -gt "$max_hours" ]; then
-              # Surface the *latest* run's conclusion (any status) so the alert tells us
-              # whether recent runs are failing vs cancelled vs simply absent.
-              LATEST_ANY=$(gh run list --workflow="$workflow" --limit=1 --json conclusion -q '.[0].conclusion // "missing"' 2>/dev/null || echo "missing")
+              # Surface the latest run's conclusion so the alert tells us whether
+              # recent runs are failing vs cancelled vs simply absent.
               FAILURES="${FAILURES}❌ ${name}: Last SUCCESS ${HOURS_AGO}h ago (max ${max_hours}h). Latest run conclusion: ${LATEST_ANY}\n"
-            elif [ "$LAST_CONCLUSION" = "failure" ]; then
-              WARNINGS="${WARNINGS}⚠️ ${name}: Last run failed (${HOURS_AGO}h ago)\n"
+            elif [ "$LATEST_ANY" = "failure" ]; then
+              WARNINGS="${WARNINGS}⚠️ ${name}: Latest run failed (last success ${HOURS_AGO}h ago)\n"
             fi
           done
 

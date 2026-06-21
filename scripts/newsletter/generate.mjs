@@ -3,7 +3,6 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 
@@ -895,69 +894,13 @@ function awardsMoversSection() {
   return sectionWrap(sectionHeading('Awards Race Movers', 'Tony odds · last 7 days'), body);
 }
 
-// SECTION: Tony Predictions — OUR pick for each major category.
-// Source: live snapshot via scripts/newsletter/dump-tony-predictions.ts which
-// imports data-tony-predictions.ts. This guarantees the numbers match
-// /tony-awards/predictions/2025-2026 exactly (tier-weighted recipe +
-// best-musical feasibility factor + tonyAudienceGrade, not a 50/50 blend).
-function tonyWatchSection() {
-  let snap;
-  try {
-    const dumpScript = path.join(scriptDir, 'dump-tony-predictions.ts');
-    const json = execFileSync('node_modules/.bin/tsx', [dumpScript], { cwd: repo, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
-    snap = JSON.parse(json);
-  } catch (e) {
-    console.error('tony snapshot failed:', e.message);
-    return null;
-  }
-  const major = ['best-musical', 'best-play', 'best-revival-musical', 'best-revival-play'];
-  const eyebrowLabel = {
-    'best-musical': 'BEST MUSICAL',
-    'best-play': 'BEST PLAY',
-    'best-revival-musical': 'BEST MUSICAL REVIVAL',
-    'best-revival-play': 'BEST PLAY REVIVAL',
-  };
-  const races = [];
-  for (const key of major) {
-    const entries = snap.categories[key] || [];
-    if (entries.length === 0) continue;
-    const top = entries[0]; // already sorted desc by prob in dump script
-    const show = shows.find(s => s.slug === top.slug);
-    if (!show) continue;
-    const pct = Math.round(top.prob * 100);
-    races.push({ key, eyebrow: eyebrowLabel[key], show, pct });
-  }
-  const ceremonyDate = new Date('2026-06-08T00:00:00');
-  const daysOut = Math.max(0, Math.ceil((ceremonyDate - new Date(weekEndStr + 'T12:00:00')) / 86400000));
-  const subtitle = daysOut > 0 ? `ceremony in ${daysOut} days` : 'ceremony this week';
-  // Every row gets the PREDICTED pill — one predicted winner per category.
-  const rows = races.map((r, i, arr) => {
-    const isLast = i === arr.length - 1;
-    // Tightened: thumb 48→40, our-pick box 44→40, row padding 10→7. ~12px saved per row.
-    const thumbHtml = r.show ? thumb(r.show, 40) : `<div style="width:40px;height:40px;border-radius:8px;background:#2a2a38;text-align:center;line-height:40px;font-size:18px;color:#6b7280;">🏆</div>`;
-    // Match site's OurPickBox winner style (CategorySection.tsx winnerClass/winnerStyle)
-    const ourPickBox = `<div style="box-sizing:border-box;display:inline-block;width:44px;height:44px;border-radius:8px;background:linear-gradient(135deg,rgba(245,158,11,0.25),rgba(217,119,6,0.35));border:1px solid rgba(245,158,11,0.5);color:#fcd34d;font-size:13px;font-weight:700;line-height:44px;text-align:center;box-shadow:0 4px 6px rgba(245,158,11,0.2);">${r.pct}%</div>`;
-    const predictedPill = `<span style="display:inline-block;padding:1px 7px;border-radius:999px;background:#1a1a24;border:1px solid #fbbf24;color:#fbbf24;font-size:9px;font-weight:700;letter-spacing:0.08em;vertical-align:2px;margin-left:6px;">★ PREDICTED</span>`;
-    const eyebrow = `<div style="font-size:10px;font-weight:700;color:#d4a574;letter-spacing:0.10em;text-transform:uppercase;margin-bottom:2px;">${r.eyebrow}</div>`;
-    return `<tr>
-      <td valign="middle" width="50" style="padding:7px 10px 7px 0;${!isLast?'border-bottom:1px solid rgba(255,255,255,0.05);':''}">${thumbHtml}</td>
-      <td valign="middle" style="padding:7px 0;${!isLast?'border-bottom:1px solid rgba(255,255,255,0.05);':''}">
-        ${eyebrow}
-        <div style="font-size:14px;font-weight:700;color:#fff;line-height:1.25;">${showLink(r.show, r.show.title)}${predictedPill}</div>
-      </td>
-      <td valign="middle" width="56" align="center" style="padding:7px 0;${!isLast?'border-bottom:1px solid rgba(255,255,255,0.05);':''}">
-        ${ourPickBox}
-      </td>
-    </tr>`;
-  }).join('');
-  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" class="cardbg">
-    <tr><td style="padding:4px 16px;">
-      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">${rows}</table>
-    </td></tr>
-    ${seeAllLink('https://broadwayscorecard.com/tony-awards/predictions', 'See all 26 Tony predictions')}
-  </table>`;
-  return sectionWrap(sectionHeading('Tony Predictions', subtitle, { href: `${SITE}/tony-awards/predictions` }), body);
-}
+// SECTION: Tony Predictions — REMOVED 2026-06-21 (user direction). The
+// 2025-2026 Tony ceremony happened 2026-06-08, so the predictions section is
+// retired permanently — it must never render again, this week or any future
+// week. Deleted outright (rather than left dormant / off-season-gated) so a
+// future ceremony date can't accidentally revive stale predictions copy. If a
+// new season's predictions section is ever wanted, build it fresh.
+// (Was: tonyWatchSection() — live snapshot via dump-tony-predictions.ts.)
 
 // Quote-quality filter: pullQuote is auto-extracted and often starts mid-paragraph
 // ("But for all their..."), references the creative team without context ("Lynn and
@@ -1807,7 +1750,8 @@ const announced = sections.run('announced-closings', () => announcedClosingsSect
 const box      = sections.run('box-office', () => boxOfficeSection());
 const commercial = sections.run('recoupment', () => commercialSection());
 const bz   = sections.run('social-buzz', () => buzziestSection());
-const tony = sections.run('tony-predictions', () => tonyWatchSection());
+// Tony Predictions section REMOVED 2026-06-21 — see retired tonyWatchSection()
+// comment above. The 2026-06-08 ceremony is over; this section never renders again.
 // Beat the Critics promo shelf REMOVED 2026-06-14. It was a $200-TodayTix Tony
 // pick-em contest tied to the 2026-06-08 ceremony; the ceremony has happened, so
 // the promo is permanently retired and must never render again. (Was a
@@ -1896,7 +1840,6 @@ const sectionOrder = [
   _slot('broadway-openings', bwO.html),
   _slot('offbroadway-openings', obO.html),
   _slot('london-openings', londonTop),   // Gold WE openings float up to join NYC openers
-  _slot('tony-predictions', _londonHasGoldOpening ? tony : null), // below Gold London
   _slot('upcoming-openings', upcomingTop),
   _slot('biggest-movers', mover),
   _slot('closing-this-week', clo),
@@ -1906,7 +1849,6 @@ const sectionOrder = [
   _slot('social-buzz', bz),
   _slot('outlier-of-the-week', outlier),
   _slot('london-openings', londonBottom), // Non-gold WE openings stay at bottom
-  _slot('tony-predictions', !_londonHasGoldOpening ? tony : null), // below non-Gold London
   _slot('opera-openings', opera),
   _slot('casting-updates', cas),
   ...(_dropSet.has('season-standing') ? [] : seasonStandings),

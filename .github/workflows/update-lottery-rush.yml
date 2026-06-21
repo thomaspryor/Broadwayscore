@@ -6,6 +6,12 @@ on:
     # Twice-weekly catches mid-week policy changes (new shows launch Tue-Wed)
     - cron: '0 10 * * 1,4'
   workflow_dispatch: # Allow manual trigger
+    inputs:
+      force:
+        description: 'Bypass the >5-added/>3-removed stability guard (--force). Use to absorb legitimate accumulated drift after the cron has been stale a while — without it, a large delta aborts every run and the cron stays red forever (deadlock).'
+        type: boolean
+        required: false
+        default: false
 
 jobs:
   update-lottery-rush:
@@ -34,7 +40,7 @@ jobs:
         run: npm ci
 
       - name: Scrape lottery/rush data
-        run: node scripts/scrape-lottery-rush.js --verbose
+        run: node scripts/scrape-lottery-rush.js --verbose ${{ inputs.force && '--force' || '' }}
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}

@@ -42,6 +42,15 @@ flush() {
     log "SKIP  $(basename "$path") — detached HEAD, leaving alone"
     skipped=$((skipped+1)); path="" branch=""; return
   fi
+  # Leave worktrees owned by notion-action-poll.js alone. It creates
+  # `action-<cardid>` worktrees off origin/main (so they read as "merged" the
+  # instant they're created) and manages their full lifecycle with --force. A
+  # freshly-created one is briefly clean before its agent writes anything — a
+  # narrow window where this GC could remove it out from under an active poll.
+  case "$(basename "$path")" in
+    action-*) log "SKIP  $(basename "$path") — notion-action-poll worktree, owner-managed"
+              skipped=$((skipped+1)); path="" branch=""; return ;;
+  esac
   # Merged iff `git cherry` reports no commit missing from upstream ('+' prefix).
   # Empty output (branch == origin/main) also counts as merged.
   local unmerged

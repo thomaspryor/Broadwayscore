@@ -1,37 +1,67 @@
 {
-  "timestamp": "2026-06-14T04:50:27.076Z",
+  "timestamp": "2026-06-21T04:39:06.978Z",
   "hasIssues": true,
   "current": {
+    "date": "2026-06-21",
+    "totalReviews": 39368,
+    "unknownOutlets": 7,
+    "duplicates": 3,
+    "syncDelta": 20989
+  },
+  "previous": {
     "date": "2026-06-14",
     "totalReviews": 39052,
     "unknownOutlets": 1,
     "duplicates": 2,
     "syncDelta": 20758
   },
-  "previous": {
-    "date": "2026-06-07",
-    "totalReviews": 38761,
-    "unknownOutlets": 1,
-    "duplicates": 2,
-    "syncDelta": 20536
-  },
   "issues": [
     {
       "type": "unknown_outlets",
       "severity": "warning",
-      "message": "1 reviews have unknown outlets",
+      "message": "7 reviews have unknown outlets",
       "examples": [
+        {
+          "file": "data/review-texts/avenue-q-west-end-2026/co--unknown.json",
+          "outletId": "co",
+          "outlet": "co"
+        },
+        {
+          "file": "data/review-texts/heathers-the-musical-off-broadway-2025/recliningstandards--david-fox.json",
+          "outletId": "recliningstandards",
+          "outlet": "recliningstandards"
+        },
         {
           "file": "data/review-texts/la-traviata-off-broadway-2026/was-along-for-the-ride--jonathan-loy.json",
           "outletId": "was-along-for-the-ride",
           "outlet": "was-along-for-the-ride"
+        },
+        {
+          "file": "data/review-texts/little-bear-ridge-road-2025/suntimes--httpschicagosuntimescomsteven-oxman.json",
+          "outletId": "suntimes",
+          "outlet": "suntimes"
+        },
+        {
+          "file": "data/review-texts/maybe-happy-ending-2024/baltimorefishbowl--ed-gunts.json",
+          "outletId": "baltimorefishbowl",
+          "outlet": "baltimorefishbowl"
+        },
+        {
+          "file": "data/review-texts/the-devil-wears-prada-west-end-2024/suntimes--httpschicagosuntimescomcatey-sullivan-for-the-sun-times.json",
+          "outletId": "suntimes",
+          "outlet": "suntimes"
+        },
+        {
+          "file": "data/review-texts/the-outsiders-2024/buffalorising--peter-hall.json",
+          "outletId": "buffalorising",
+          "outlet": "buffalorising"
         }
       ]
     },
     {
       "type": "duplicates",
       "severity": "warning",
-      "message": "2 duplicate reviews detected",
+      "message": "3 duplicate reviews detected",
       "examples": [
         {
           "file": "data/review-texts/american-idiot-2010/variety--steven-suskin.json",
@@ -40,19 +70,33 @@
         {
           "file": "data/review-texts/an-ideal-husband-west-end-2026/financialtimes--tim-bano.json",
           "key": "an-ideal-husband-west-end-2026|financialtimes|tim bano"
+        },
+        {
+          "file": "data/review-texts/anything-goes-2011/variety--steven-suskin.json",
+          "key": "anything-goes-2011|variety|steven suskin"
         }
       ]
     },
     {
       "type": "sync_delta",
       "severity": "critical",
-      "message": "review-texts (39052) and reviews.json (18294) are out of sync by 20758 reviews"
+      "message": "review-texts (39368) and reviews.json (18379) are out of sync by 20989 reviews"
+    },
+    {
+      "type": "unknown_outlets_degradation",
+      "severity": "warning",
+      "message": "Unknown outlets increased from 1 to 7"
+    },
+    {
+      "type": "duplicates_degradation",
+      "severity": "warning",
+      "message": "Duplicates increased from 2 to 3"
     }
   ],
   "summary": {
-    "totalReviews": 39052,
-    "unknownOutlets": 1,
-    "duplicates": 2,
-    "syncDelta": 20758
+    "totalReviews": 39368,
+    "unknownOutlets": 7,
+    "duplicates": 3,
+    "syncDelta": 20989
   }
 }

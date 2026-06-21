@@ -2588,12 +2588,22 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
     const m = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
     if (m) {
       htmlTitle = m[1].replace(/\s+/g, ' ').trim();
-      const titleLower = normalize(htmlTitle).toLowerCase();
-      htmlTitleMatch = false;
-      for (const token of tokens) {
-        if (token && titleLower.includes(token)) {
-          htmlTitleMatch = true;
-          break;
+      // An empty/blank <title> carries NO signal — leave htmlTitleMatch=null
+      // (unknown), never false. Wix/SPA pages (e.g. allthatdazzles.co.uk) ship an
+      // empty raw <title> that JS fills after load. Setting htmlTitleMatch=false
+      // here tripped the mismatch backstop below and false-rejected legitimate
+      // reviews whose body amply mentions the show — Glengarry Glen Ross / All
+      // That Dazzles: 17 body mentions, empty <title>, marked permanently-failed
+      // (2026-06-19). A genuine different-show <title> is non-empty, so this does
+      // not weaken real url_content_mismatch protection.
+      if (htmlTitle) {
+        const titleLower = normalize(htmlTitle).toLowerCase();
+        htmlTitleMatch = false;
+        for (const token of tokens) {
+          if (token && titleLower.includes(token)) {
+            htmlTitleMatch = true;
+            break;
+          }
         }
       }
     }

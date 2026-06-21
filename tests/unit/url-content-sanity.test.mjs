@@ -158,6 +158,38 @@ describe('validateContentMentionsShow — HTML <title> cross-check', () => {
     assert.strictEqual(r.htmlTitle, null);
   });
 
+  test('EMPTY <title></title> → htmlTitleMatch null, passes on body alone (Wix/SPA, Glengarry ATD 2026-06-19)', () => {
+    // allthatdazzles.co.uk (Wix) ships an empty raw <title> filled by JS post-load.
+    // The All That Dazzles Glengarry review had 17 body mentions but was rejected
+    // because an empty <title> set htmlTitleMatch=false and tripped the backstop.
+    const text = ('Schmigadoon is a delight. The Schmigadoon revival sparkles, and '
+      + 'Schmigadoon fans will rejoice. ').repeat(20);
+    const html = '<html><head><title></title></head><body>review body</body></html>';
+    const r = validateContentMentionsShow(text, html, 'Schmigadoon', 'schmigadoon-2026');
+    assert.strictEqual(r.valid, true);
+    assert.strictEqual(r.htmlTitleMatch, null);
+    assert.strictEqual(r.htmlTitle, '');
+  });
+
+  test('whitespace-only <title> → htmlTitleMatch null (no false mismatch)', () => {
+    const text = ('Schmigadoon is a delight. The Schmigadoon revival sparkles, and '
+      + 'Schmigadoon fans will rejoice. ').repeat(20);
+    const html = '<title>   \n  </title>';
+    const r = validateContentMentionsShow(text, html, 'Schmigadoon', 'schmigadoon-2026');
+    assert.strictEqual(r.valid, true);
+    assert.strictEqual(r.htmlTitleMatch, null);
+  });
+
+  test('empty <title> does NOT rescue a wrong-show page (body mentions still required)', () => {
+    // Empty title means "unknown", so rejection must still fall through to the
+    // body-mention check — a page with 0 mentions and an empty title is rejected.
+    const text = 'A completely different musical about cats and dogs. '.repeat(40);
+    const html = '<title></title>';
+    const r = validateContentMentionsShow(text, html, 'Schmigadoon', 'schmigadoon-2026');
+    assert.strictEqual(r.valid, false);
+    assert.strictEqual(r.htmlTitleMatch, null);
+  });
+
   test('no HTML provided → htmlTitleMatch null, pass/fail on body only', () => {
     const text = 'Schmigadoon is great.';
     const r = validateContentMentionsShow(text, null, 'Schmigadoon', 'schmigadoon-2026');

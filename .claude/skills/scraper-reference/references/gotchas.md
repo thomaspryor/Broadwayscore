@@ -69,7 +69,7 @@ const res = await fetch(url, { signal: controller.signal, redirect: 'follow' });
 
 **What fails:** Headless Playwright, cf_clearance cookies, Bright Data web_unlocker, ScrapingBee premium proxy, curl with Safari UA, Node fetch with Chrome UA.
 **What works:** Browserbase (cloud browser with dedicated CF solving). Pass `solveCaptchas: true`.
-**Why cookies don't work:** cf_clearance is TLS-fingerprint-bound to the issuing browser. Node.js/Playwright has different JA3 so the cookie is invalid.
+**Why cookies don't work:** cf_clearance is bound to the issuing browser, so a different client can't reuse it (TLS-fingerprint detail in `references/cookies.md`, local-only).
 **To route a site to Browserbase:** Add hostname to `CONFIG.knownBlockedSites` in `scripts/collect-review-texts.js`. Do NOT add to `PLAYWRIGHT_FIRST_DOMAINS` in scraper.js.
 **Gotcha:** Wait for actual content element (e.g. `section.page`), not `page.title()` — title stays "Just a moment..." even after CF resolves server-side.
 **Cost:** Browserbase sessions count against daily/run/domain caps (200/40/15).
@@ -84,12 +84,12 @@ const res = await fetch(url, { signal: controller.signal, redirect: 'follow' });
 
 ---
 
-## G9: The Stage — cookie-only auth, never email/password
+## G9: Cookie-only paywall outlets — never email/password
 
-**Auth method:** Cookie-only via `cookie-loader.js` (`loadCookiesForDomain('thestage.co.uk')`)
-**Why:** Email/password login creates new CI sessions on each run. 8+ concurrent runners triggered The Stage's session limit warning. `THESTAGE_EMAIL` and `THESTAGE_PASSWORD` secrets have been DELETED.
-**Minimum cookies needed:** VISITOR, USER, USERSECURE, AWSALB, AWSALBCORS (5 cookies)
+**Auth method:** Cookie-only via `cookie-loader.js` (`loadCookiesForDomain(host)`).
+**Why:** Email/password login creates a new session on each CI run; many concurrent runners trip the outlet's session limit. The relevant `*_EMAIL` / `*_PASSWORD` secrets have been DELETED — do not re-add them.
 **If cookies expire:** Refresh via Safari export. Never re-add email/password login.
+**Site host + exact cookie set:** local-only — see `references/cookies.md` (gitignored). A cloud session without that file should ask the user for the host and cookie names rather than guessing.
 
 ---
 

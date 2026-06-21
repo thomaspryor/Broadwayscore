@@ -159,8 +159,12 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 # - /.claude/commands/ + /.claude/settings.json — INTENTIONALLY TRACKED so
 #   cloud Claude Code sessions (iOS/Mac app/web) load them. See .claude/CLOUD.md.
 # - /.claude/worktrees/ — always local
+# - scraper-reference/references/cookies.md — holds paywall site name + exact
+#   cookie names; local-only so it stays out of the PUBLIC repo + skill catalogs.
+#   Do NOT commit it to "fix" the pointer in gotchas.md — that re-publishes it.
 /.claude/settings.local.json
 /.claude/worktrees/
+/.claude/skills/scraper-reference/references/cookies.md
 /.core-data-checkout/
 
 # Agent memory (self-updating, may contain operational details — local only)

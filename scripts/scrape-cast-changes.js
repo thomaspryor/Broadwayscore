@@ -69,6 +69,15 @@ const HIGH_FREQ_SHOWS = new Set([
 // Time budget (in ms) — article scraping gets 45 minutes to cover all open shows
 const ARTICLE_TIME_BUDGET = 45 * 60 * 1000;
 const TOTAL_START_TIME = Date.now();
+// Total wall-clock budget for the whole scrape, measured from TOTAL_START_TIME.
+// The official-sites loop (which runs AFTER articles) previously had no budget,
+// so a few hung sites — each up to ~10 min of ScrapingBee timeouts — pushed the
+// step past its 60-min timeout, which KILLS the job and commits nothing (cast
+// changes went 78h stale this way, 2026-06-16). 48 min leaves headroom: even if
+// the loop enters its guard at 47:59 and the next show is fully hung (~3 min now
+// that official probes don't retry, see maxRetries:0 below), the step still
+// finishes well under 60 min and the downstream commit/push steps run.
+const TOTAL_TIME_BUDGET = 48 * 60 * 1000;
 
 // Today's date string
 const TODAY = new Date().toISOString().split('T')[0];
@@ -151,7 +160,7 @@ function httpsRequest(url, options = {}) {
 async function fetchViaScrapingBee(url, options = {}) {
   if (!SCRAPINGBEE_KEY) throw new Error('SCRAPINGBEE_API_KEY required');
 
-  const maxRetries = options.maxRetries || 2;
+  const maxRetries = options.maxRetries ?? 2;  // nullish: allow an explicit 0 (no retries)
   const premiumProxy = options.premiumProxy ? '&premium_proxy=true' : '';
   const renderJs = options.renderJs ? '&render_js=true' : '&render_js=false';
 
@@ -658,7 +667,17 @@ async function scrapeOfficialSites(targetShows, existing) {
 
   console.log(`[Official] ${eligible.length} shows eligible (have officialUrl + currentCast baseline)`);
 
+  let officialIndex = 0;
   for (const show of eligible) {
+    // Stop before the step timeout so the script exits cleanly and the caller
+    // can commit/push what was found. Without this the loop ran until the 60-min
+    // step timeout killed the job (losing all results).
+    if (Date.now() - TOTAL_START_TIME > TOTAL_TIME_BUDGET) {
+      console.log(`[Budget] Total time budget (${Math.round(TOTAL_TIME_BUDGET / 60000)}min) reached. Skipping ${eligible.length - officialIndex} remaining official sites.`);
+      break;
+    }
+    officialIndex++;
+
     if (verbose) console.log(`\n  [Official] Checking ${show.title}`);
 
     const baseUrl = show.officialUrl.replace(/\/$/, '');
@@ -673,7 +692,10 @@ async function scrapeOfficialSites(targetShows, existing) {
 
     for (const url of urlVariants) {
       try {
-        const html = await fetchViaScrapingBee(url, { renderJs: true });
+        // No retries on official cast-page probes: we already try 3 URL variants
+        // as fallbacks, and a hung/renderJs page retrying 3×60s burns ~10 min on a
+        // single show (e.g. harrypottertheplay.com, 2026-06-16 job-timeout cause).
+        const html = await fetchViaScrapingBee(url, { renderJs: true, maxRetries: 0 });
         if (html && html.length > 500 && !html.includes('Page Not Found') && !html.includes('404')) {
           pageText = sanitizeText(htmlToText(html));
           castUrl = url;
