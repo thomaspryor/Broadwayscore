@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-21T06:45:42.775Z",
+  "timestamp": "2026-06-21T09:44:29.791Z",
   "stats": {
-    "totalReviews": 38672,
-    "alreadyFlagged": 17026,
-    "dateGuardCatches": 153,
+    "totalReviews": 38704,
+    "alreadyFlagged": 17027,
+    "dateGuardCatches": 162,
     "directorMismatch": 889,
     "tvFilmSignals": 1064,
-    "londonSignals": 648,
-    "offBroadwaySignals": 469,
+    "londonSignals": 649,
+    "offBroadwaySignals": 470,
     "yearMismatch": 88,
-    "noPublishDate": 3943
+    "noPublishDate": 3960
   },
   "findings": [
     {
@@ -2745,6 +2745,58 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "boop-2025",
+      "file": "chicagoconcertreviews--andy-argyrakis.json",
+      "publishDate": "2023-12-06",
+      "url": "https://chicagoconcertreviews.com/2023/12/06/boop-cibc-theatre/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 461d before show (2023-12-06 vs 2025-03-11)"
+        }
+      ]
+    },
+    {
+      "showId": "boop-2025",
+      "file": "chicagocultureauthority--frank-sennett.json",
+      "publishDate": "2023-12-07",
+      "url": "https://chicagocultureauthority.com/2023/12/07/boop-the-musical-proves-ready-for-its-colorful-close-up-in-pre-broadway-chicago-premiere/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 460d before show (2023-12-07 vs 2025-03-11)"
+        }
+      ]
+    },
+    {
+      "showId": "boop-2025",
+      "file": "newcitystage--brian-hieggelke.json",
+      "publishDate": "2023-12-08",
+      "url": "https://www.newcitystage.com/2023/12/08/in-living-color-a-review-of-boop-the-betty-boop-musical-at-broadway-in-chicago/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 459d before show (2023-12-08 vs 2025-03-11)"
+        }
+      ]
+    },
+    {
+      "showId": "boop-2025",
+      "file": "suntimes--httpschicagosuntimescomcatey-sullivan-for-the-sun-times.json",
+      "publishDate": "2023-12-07",
+      "url": "https://chicago.suntimes.com/2023/12/7/23992246/boop-review-betty-musical-chicago-cibc-theatre-jasmine-amy-rogers-jerry-mitchell",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 460d before show (2023-12-07 vs 2025-03-11)"
         }
       ]
     },
@@ -6439,6 +6491,37 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "english-2025",
+      "file": "independent--unknown.json",
+      "publishDate": "2017-11-20",
+      "url": "http://www.independent.co.uk/arts-entertainment/classical/reviews/marnie-english-national-opera-review-a8065141.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 2601d before show (2017-11-20 vs 2025-01-03)"
+        }
+      ]
+    },
+    {
+      "showId": "english-2025",
+      "file": "thewrap--robert-hofler.json",
+      "publishDate": "2022-02-23",
+      "url": "https://www.thewrap.com/english-off-broadway-review-sanaz-toossis-play-gets-lost-in-translation/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1045d before show (2022-02-23 vs 2025-01-03)"
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
         }
       ]
     },
@@ -16410,6 +16493,19 @@
       ]
     },
     {
+      "showId": "othello-2025",
+      "file": "theupcoming--unknown.json",
+      "publishDate": "2018-08-02",
+      "url": "https://www.theupcoming.co.uk/2018/08/02/othello-at-shakespeares-globe-theatre-review/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 2398d before show (2018-08-02 vs 2025-02-24)"
+        }
+      ]
+    },
+    {
       "showId": "other-desert-cities-2011",
       "file": "amny--matt-windman.json",
       "score": 82,
@@ -23775,6 +23871,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"christopher renshaw\" from the-king-and-i-1996"
+        }
+      ]
+    },
+    {
+      "showId": "the-last-five-years-2025",
+      "file": "london-theatre--unknown.json",
+      "publishDate": "2020-10-06",
+      "url": "https://www.londontheatre.co.uk/reviews/the-last-five-years-at-southwark-playhouse-soars-even-higher-after-shutdown",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1624d before show (2020-10-06 vs 2025-03-18)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -37043,6 +37157,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
+        }
+      ]
+    },
+    {
+      "showId": "redwood-2025",
+      "file": "san-diego-union-tribune--pam-kragen.json",
+      "publishDate": "2024-02-26",
+      "url": "https://www.sandiegouniontribune.com/entertainment/theater/story/2024-02-26/review-idina-menzel-inhabits-a-magical-world-in-la-jolla-playhouses-moving-redwood",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 333d before show (2024-02-26 vs 2025-01-24)"
         }
       ]
     },
