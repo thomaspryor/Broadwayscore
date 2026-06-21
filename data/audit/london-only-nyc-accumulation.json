@@ -3,48 +3,6 @@
   "description": "London-region, non-isDualMarket outlets carrying NYC reviews. Tier 3/untiered Broadway hits are advisory isDualMarket candidates; Tier 1/2 Broadway hits are CI errors; off-Broadway hits are tolerated warnings.",
   "outlets": [
     {
-      "outletId": "artsdesk",
-      "displayName": "The Arts Desk",
-      "tier": 3,
-      "broadwayCount": 1,
-      "offBroadwayCount": 1,
-      "broadwayShows": [
-        "chess-2025"
-      ],
-      "offBroadwayShows": [
-        "tristan-und-isolde-off-broadway-2026"
-      ],
-      "disposition": "advisory-isDualMarket-candidate"
-    },
-    {
-      "outletId": "standard",
-      "displayName": "Evening Standard",
-      "tier": 1,
-      "broadwayCount": 1,
-      "offBroadwayCount": 1,
-      "broadwayShows": [
-        "stranger-things-2024"
-      ],
-      "offBroadwayShows": [
-        "romeo-and-juliet-off-broadway-2026"
-      ],
-      "disposition": "error"
-    },
-    {
-      "outletId": "sunday-telegraph",
-      "displayName": "Sunday Telegraph",
-      "tier": 3,
-      "broadwayCount": 1,
-      "offBroadwayCount": 1,
-      "broadwayShows": [
-        "death-of-a-salesman-2026"
-      ],
-      "offBroadwayShows": [
-        "romeo-and-juliet-off-broadway-2026"
-      ],
-      "disposition": "advisory-isDualMarket-candidate"
-    },
-    {
       "outletId": "all-that-dazzles-uk",
       "displayName": "All That Dazzles (UK)",
       "tier": 3,
@@ -55,42 +13,6 @@
       ],
       "offBroadwayShows": [],
       "disposition": "advisory-isDualMarket-candidate"
-    },
-    {
-      "outletId": "city-am",
-      "displayName": "City A.M.",
-      "tier": 3,
-      "broadwayCount": 1,
-      "offBroadwayCount": 0,
-      "broadwayShows": [
-        "stranger-things-2024"
-      ],
-      "offBroadwayShows": [],
-      "disposition": "advisory-isDualMarket-candidate"
-    },
-    {
-      "outletId": "i-paper",
-      "displayName": "The i",
-      "tier": 2,
-      "broadwayCount": 1,
-      "offBroadwayCount": 0,
-      "broadwayShows": [
-        "stranger-things-2024"
-      ],
-      "offBroadwayShows": [],
-      "disposition": "error"
-    },
-    {
-      "outletId": "london-theatre",
-      "displayName": "London Theatre",
-      "tier": 2,
-      "broadwayCount": 1,
-      "offBroadwayCount": 0,
-      "broadwayShows": [
-        "the-great-gatsby-2024"
-      ],
-      "offBroadwayShows": [],
-      "disposition": "error"
     },
     {
       "outletId": "theupcoming",
@@ -105,6 +27,18 @@
       "disposition": "advisory-isDualMarket-candidate"
     },
     {
+      "outletId": "artsdesk",
+      "displayName": "The Arts Desk",
+      "tier": 3,
+      "broadwayCount": 0,
+      "offBroadwayCount": 1,
+      "broadwayShows": [],
+      "offBroadwayShows": [
+        "tristan-und-isolde-off-broadway-2026"
+      ],
+      "disposition": "tolerated-off-broadway"
+    },
+    {
       "outletId": "bachtrack",
       "displayName": "Bachtrack",
       "tier": 3,
@@ -113,6 +47,30 @@
       "broadwayShows": [],
       "offBroadwayShows": [
         "tristan-und-isolde-off-broadway-2026"
+      ],
+      "disposition": "tolerated-off-broadway"
+    },
+    {
+      "outletId": "standard",
+      "displayName": "Evening Standard",
+      "tier": 1,
+      "broadwayCount": 0,
+      "offBroadwayCount": 1,
+      "broadwayShows": [],
+      "offBroadwayShows": [
+        "romeo-and-juliet-off-broadway-2026"
+      ],
+      "disposition": "tolerated-off-broadway"
+    },
+    {
+      "outletId": "sunday-telegraph",
+      "displayName": "Sunday Telegraph",
+      "tier": 3,
+      "broadwayCount": 0,
+      "offBroadwayCount": 1,
+      "broadwayShows": [],
+      "offBroadwayShows": [
+        "romeo-and-juliet-off-broadway-2026"
       ],
       "disposition": "tolerated-off-broadway"
     }
