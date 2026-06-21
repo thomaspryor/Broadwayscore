@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-06-21T13:52:28.719Z",
+  "runDate": "2026-06-21T14:11:46.912Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,10 +11,10 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 196,
-    "failed": 324,
+    "processed": 197,
+    "failed": 323,
     "skipped": 0,
-    "successRate": "37.7%"
+    "successRate": "37.9%"
   },
   "tierBreakdown": {
     "playwright": 114,
@@ -22,32 +22,32 @@
     "browserbase": 115,
     "directCookies": 0,
     "scrapingbee": 0,
-    "brightdata": 48,
+    "brightdata": 49,
     "archiveToday": 13,
     "archive": 49
   },
   "statistics": {
-    "tier1Attempts": 0,
+    "tier1Attempts": 1,
     "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 0,
+    "tier4Attempts": 1,
     "tier4Success": 0,
-    "totalFailed": 78,
+    "totalFailed": 77,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 78,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -246,7 +246,8 @@
     "mr-saturday-night-2022/newyorker--conde-nast.json",
     "mr-saturday-night-2022/newyorker--vinson-cunningham.json",
     "american-buffalo-2022/theatermania--kenji-fujishima.json",
-    "american-buffalo-2022/timeout--adam-feldman.json"
+    "american-buffalo-2022/timeout--adam-feldman.json",
+    "almost-famous-2022/timeout--adam-feldman.json"
   ],
   "failed": [
     "encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
@@ -518,7 +519,6 @@
     "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--sara-holdren.json",
     "aint-no-mo-2022/observer--rex-reed.json",
     "aint-no-mo-2022/usatoday--matthew-j-palm.json",
-    "almost-famous-2022/timeout--adam-feldman.json",
     "topdog-underdog-2022/rollingstone--david-fear.json",
     "the-piano-lesson-2022/timeout--adam-feldman.json",
     "american-buffalo-2022/observer--jesse-green.json",
@@ -859,7 +859,8 @@
       "cost-of-living-2022/newyorker--conde-nast.json",
       "into-the-woods-2022/newyorker--alexandra-schwartz.json",
       "the-kite-runner-2022/newyorker--elisabeth-vincentelli.json",
-      "american-buffalo-2022/timeout--adam-feldman.json"
+      "american-buffalo-2022/timeout--adam-feldman.json",
+      "almost-famous-2022/timeout--adam-feldman.json"
     ],
     "archiveToday": [
       "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
@@ -929,5 +930,11 @@
     ]
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "almost-famous-2022/timeout--adam-feldman.json",
+      "oldUrl": "https://www.timeout.com/newyork/theater/almost-famous-review",
+      "newUrl": "https://www.timeout.com/newyork/news/an-almost-famous-musical-is-coming-to-broadway-this-fall-060922"
+    }
+  ]
 }
