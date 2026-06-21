@@ -98,13 +98,18 @@ export default function HeaderSearch() {
   useClickOutside(containerRef, closeSearch);
 
   // Fire search_performed after 1s of no typing (≥2 chars).
-  // No raw query text captured — only result counts (privacy).
+  // Query text is captured ONLY on zero-results searches — these reveal shows we
+  // may be missing (surfaced as Notion cards by posthog-friction-analyzer.js).
+  // Searches that match real shows stay term-less (privacy: don't log what users
+  // browse, only what we failed to return).
   useEffect(() => {
     if (query.length < 2) return;
     const timer = setTimeout(() => {
+      const hasResults = filteredShows.length > 0;
       captureEvent('search_performed', {
         results_count: filteredShows.length,
-        has_results: filteredShows.length > 0,
+        has_results: hasResults,
+        ...(hasResults ? {} : { query: query.trim().slice(0, 120) }),
       });
     }, 1000);
     return () => clearTimeout(timer);
