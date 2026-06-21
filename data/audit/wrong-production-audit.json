@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-21T10:23:14.894Z",
+  "timestamp": "2026-06-21T11:45:36.785Z",
   "stats": {
-    "totalReviews": 38711,
-    "alreadyFlagged": 17027,
+    "totalReviews": 38715,
+    "alreadyFlagged": 17029,
     "dateGuardCatches": 164,
-    "directorMismatch": 892,
+    "directorMismatch": 893,
     "tvFilmSignals": 1066,
-    "londonSignals": 649,
+    "londonSignals": 650,
     "offBroadwaySignals": 470,
     "yearMismatch": 89,
-    "noPublishDate": 3961
+    "noPublishDate": 3960
   },
   "findings": [
     {
@@ -8494,6 +8494,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
+        }
+      ]
+    },
+    {
+      "showId": "glengarry-glen-ross-west-end-2026",
+      "file": "daily-mail--robert-gore-langton.json",
+      "publishDate": "2026-06-21",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
