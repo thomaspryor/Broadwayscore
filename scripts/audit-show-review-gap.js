@@ -145,8 +145,42 @@ const NON_REVIEW_PATH_PATTERNS = [
   /\/tickets?(\/|$|-)/i, // "Get Tickets" / box-office links, not reviews
 ];
 
+// Mirror/format subdomains that are never a distinct outlet — a publisher's AMP
+// or mobile host is the same outlet as its bare domain. Strip so amp.theguardian.com
+// and m.nytimes.com resolve to guardian / nytimes instead of provisional-onboarding
+// as duplicate outlets.
+const MIRROR_SUBDOMAIN_PREFIX = /^(amp|m|mobile)\./;
+// Blog/newsletter platforms where the publication identity IS the subdomain
+// (pub.substack.com). These must NOT collapse — the registrable domain is the
+// platform, not the outlet. Mirrors PROVISIONAL_BLOG_PLATFORMS in
+// outlet-canonicalize.js so provisionalOutletIdFromHost still extracts "pub".
+const COLLAPSE_BLOG_PLATFORMS = [
+  'substack.com', 'wordpress.com', 'blogspot.com', 'medium.com',
+  'tumblr.com', 'squarespace.com', 'wixsite.com', 'ghost.io',
+];
+// Multi-part public suffixes — registrable domain keeps 3 labels (foo.co.uk),
+// not 2 (co.uk). Mirrors PROVISIONAL_MULTIPART_SUFFIXES in outlet-canonicalize.js.
+const COLLAPSE_MULTIPART_SUFFIXES = [
+  'co.uk', 'org.uk', 'me.uk', 'ac.uk', 'gov.uk',
+  'com.au', 'net.au', 'org.au', 'co.nz', 'co.za', 'com.br',
+];
+
+// Collapse a hostname to its registrable domain so section subdomains
+// (theater.nytimes.com) and mirror hosts (amp.theguardian.com) look up the same
+// registry entry as the bare domain. Leaves blog-platform publication subdomains
+// intact so they keep their per-publication provisional identity.
+function registrableHost(host) {
+  if (!host || typeof host !== 'string') return host;
+  let h = host.replace(/^www\./, '').toLowerCase();
+  while (MIRROR_SUBDOMAIN_PREFIX.test(h)) h = h.replace(MIRROR_SUBDOMAIN_PREFIX, '');
+  if (COLLAPSE_BLOG_PLATFORMS.some(p => h.endsWith('.' + p))) return h;
+  const parts = h.split('.').filter(Boolean);
+  const keep = COLLAPSE_MULTIPART_SUFFIXES.some(s => h.endsWith('.' + s)) ? 3 : 2;
+  return parts.length > keep ? parts.slice(-keep).join('.') : h;
+}
+
 function hostOf(u) {
-  try { return new URL(u).hostname.replace(/^www\./, '').toLowerCase(); }
+  try { return registrableHost(new URL(u).hostname); }
   catch { return null; }
 }
 
@@ -189,10 +223,15 @@ function getKnownDomainMap() {
       if (!o || typeof o !== 'object') continue;
       const domains = [];
       if (typeof o.domain === 'string') domains.push(o.domain);
+      // domainAliases is the canonical alternate-domain field in outlet-registry.json
+      // (50 outlets, e.g. huffpost→huffingtonpost.com, guardian→guardian.co.uk).
+      // The legacy domains/alternateDomains keys survive on 1 outlet each; keep
+      // reading them so no entry silently drops out.
+      if (Array.isArray(o.domainAliases)) domains.push(...o.domainAliases);
       if (Array.isArray(o.domains)) domains.push(...o.domains);
       if (Array.isArray(o.alternateDomains)) domains.push(...o.alternateDomains);
       for (const d of domains) {
-        if (typeof d === 'string' && d) map.set(d.replace(/^www\./, '').toLowerCase(), id);
+        if (typeof d === 'string' && d) map.set(registrableHost(d), id);
       }
     }
   } catch (e) {
@@ -820,4 +859,4 @@ if (require.main === module) (async () => {
   process.exit(1);
 });
 
-module.exports = { urlMatchesShow, titleTokens, provisionalOutletIdFromHost, freshnessMsFor };
+module.exports = { urlMatchesShow, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap };
