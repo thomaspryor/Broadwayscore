@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-21T12:00:50.348Z",
+  "timestamp": "2026-06-21T13:40:45.920Z",
   "stats": {
-    "totalReviews": 38721,
-    "alreadyFlagged": 17030,
-    "dateGuardCatches": 164,
-    "directorMismatch": 893,
+    "totalReviews": 38736,
+    "alreadyFlagged": 17041,
+    "dateGuardCatches": 179,
+    "directorMismatch": 894,
     "tvFilmSignals": 1066,
-    "londonSignals": 650,
+    "londonSignals": 653,
     "offBroadwaySignals": 470,
     "yearMismatch": 89,
-    "noPublishDate": 3965
+    "noPublishDate": 3951
   },
   "findings": [
     {
@@ -1876,7 +1876,7 @@
       "showId": "beetlejuice-2025",
       "file": "nysr--david-finkle.json",
       "publishDate": "2019-04-26",
-      "url": "http://nystagereview.com/2019/04/25/beetlejuice-tim-burtons-1988-cult-film-kinda-musicalized/",
+      "url": null,
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -1894,7 +1894,7 @@
       "showId": "beetlejuice-2025",
       "file": "nysr--jesse-oxfeld.json",
       "publishDate": "2019-04-26",
-      "url": "http://nystagereview.com/2019/04/25/beetlejuice-these-ghosts-are-gonna-live-forever/",
+      "url": null,
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -2138,7 +2138,7 @@
       "file": "nysr--david-finkle.json",
       "score": 64,
       "publishDate": "2019-04-26",
-      "url": "http://nystagereview.com/2019/04/25/beetlejuice-tim-burtons-1988-cult-film-kinda-musicalized/",
+      "url": null,
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -2162,7 +2162,7 @@
       "file": "nysr--jesse-oxfeld.json",
       "score": 79,
       "publishDate": "2019-04-26",
-      "url": "http://nystagereview.com/2019/04/25/beetlejuice-these-ghosts-are-gonna-live-forever/",
+      "url": null,
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -8457,6 +8457,19 @@
     },
     {
       "showId": "glengarry-glen-ross-west-end-2026",
+      "file": "artsdesk--unknown.json",
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/glengarry-glen-ross-old-vic-review-ladies-night-odds-mamets-machismo",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
+        }
+      ]
+    },
+    {
+      "showId": "glengarry-glen-ross-west-end-2026",
       "file": "british-theatre--unknown.json",
       "publishDate": null,
       "url": "https://www.britishtheatre.com/fr/posts/glengarry-glen-ross-gets-all-female-revival-at-the-old-vic-plus-more-must-see-lo",
@@ -8504,6 +8517,7 @@
     {
       "showId": "glengarry-glen-ross-west-end-2026",
       "file": "daily-mail--robert-gore-langton.json",
+      "score": 63,
       "publishDate": "2026-06-21",
       "url": null,
       "findings": [
@@ -10371,6 +10385,19 @@
     },
     {
       "showId": "home-2024",
+      "file": "nypost--unknown.json",
+      "publishDate": "2023-02-10",
+      "url": "https://nypost.com/2023/02/09/pictures-from-home-review-nathan-lane-gets-laughs-in-lifeless-play/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 462d before show (2023-02-10 vs 2024-05-17)"
+        }
+      ]
+    },
+    {
+      "showId": "home-2024",
       "file": "nyt-theater--jonathan-mandell.json",
       "score": 50,
       "publishDate": "June 5, 2024",
@@ -10380,6 +10407,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "home-2024",
+      "file": "queerty--httpswwwfacebookcomwexlerwrites.json",
+      "publishDate": "2023-02-09",
+      "url": "https://www.queerty.com/nathan-lane-brings-daddy-issues-to-broadway-in-pictures-from-home-20230209",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 463d before show (2023-02-09 vs 2024-05-17)"
         }
       ]
     },
@@ -22041,6 +22081,24 @@
     },
     {
       "showId": "tammy-faye-2024",
+      "file": "i-paper--fiona-mountford.json",
+      "publishDate": "2022-10-27",
+      "url": "https://inews.co.uk/culture/arts/tammy-faye-almeida-review-elton-john-musical-1937059",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 723d before show (2022-10-27 vs 2024-10-19)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "tammy-faye-2024",
       "file": "new-york-city-theatre--unknown.json",
       "score": 36,
       "publishDate": "2024-11-15",
@@ -26416,6 +26474,32 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "uncle-vanya-2024",
+      "file": "london-theatre--unknown.json",
+      "publishDate": "2020-01-24",
+      "url": "https://www.londontheatre.co.uk/reviews/review-uncle-vanya-starring-richard-armitage-at-the-harold-pinter-theatre",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1531d before show (2020-01-24 vs 2024-04-03)"
+        }
+      ]
+    },
+    {
+      "showId": "uncle-vanya-2024",
+      "file": "theupcoming--unknown.json",
+      "publishDate": "2020-01-24",
+      "url": "https://www.theupcoming.co.uk/2020/01/24/uncle-vanya-at-harold-pinter-theatre-theatre-review/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1531d before show (2020-01-24 vs 2024-04-03)"
         }
       ]
     },
@@ -37496,6 +37580,45 @@
     },
     {
       "showId": "romeo-juliet-2024",
+      "file": "bbc-news--hugh-montgomery.json",
+      "publishDate": "2024-05-23",
+      "url": "https://www.bbc.com/culture/article/20240523-tom-holland-in-romeo-and-juliet-review-the-star-is-not-to-blame-but-this-production-cum-global-event-is-lifeless",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 126d before show (2024-05-23 vs 2024-09-26)"
+        }
+      ]
+    },
+    {
+      "showId": "romeo-juliet-2024",
+      "file": "london-theatre--unknown.json",
+      "publishDate": "2024-05-24",
+      "url": "https://www.londontheatre.co.uk/reviews/romeo-and-juliet-review-tom-holland-stars-in-a-sexy-and-haunting-show-jamie-lloyd",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 125d before show (2024-05-24 vs 2024-09-26)"
+        }
+      ]
+    },
+    {
+      "showId": "romeo-juliet-2024",
+      "file": "sunday-express--neil-norman.json",
+      "publishDate": "2024-05-23",
+      "url": "https://www.express.co.uk/entertainment/theatre/1902976/Romeo-Juliet-review-Tom-Holland-Jamie-Lloyd",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 126d before show (2024-05-23 vs 2024-09-26)"
+        }
+      ]
+    },
+    {
+      "showId": "romeo-juliet-2024",
       "file": "thestage--nicole-serratore.json",
       "score": 79,
       "publishDate": "2024-10-25",
@@ -37547,6 +37670,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new world stages\""
+        }
+      ]
+    },
+    {
+      "showId": "romeo-juliet-2024",
+      "file": "whatsonstage--unknown.json",
+      "publishDate": "2024-05-23",
+      "url": "https://www.whatsonstage.com/news/romeo-and-juliet-review-tom-holland-and-francesca-amewudah-rivers-shine-in-stripped-back-shakespeare_1603000/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 126d before show (2024-05-23 vs 2024-09-26)"
         }
       ]
     },
@@ -39025,6 +39161,19 @@
     },
     {
       "showId": "sunset-boulevard-2024",
+      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "publishDate": "2023-10-12",
+      "url": "https://www.allthatdazzles.co.uk/post/review-sunset-boulevard-savoy-theatre",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 352d before show (2023-10-12 vs 2024-09-28)"
+        }
+      ]
+    },
+    {
+      "showId": "sunset-boulevard-2024",
       "file": "amny--matt-windman.json",
       "score": 78,
       "publishDate": "October 20, 2024",
@@ -39034,6 +39183,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "sunset-boulevard-2024",
+      "file": "attitude--simon-button.json",
+      "publishDate": "2023-10-13",
+      "url": "https://www.attitude.co.uk/culture/sunset-boulevard-review-449951/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 351d before show (2023-10-13 vs 2024-09-28)"
         }
       ]
     },
@@ -39062,6 +39224,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "sunset-boulevard-2024",
+      "file": "city-am--adam-bloodworth.json",
+      "publishDate": "2023-10-13",
+      "url": "https://www.cityam.com/sunset-boulevard-review-nicole-scherzinger-roars-but-its-more-star-than-substance/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 351d before show (2023-10-13 vs 2024-09-28)"
         }
       ]
     },
@@ -39412,6 +39587,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Contains TV/film keyword: \"episode\n\n2\""
+        }
+      ]
+    },
+    {
+      "showId": "tammy-faye-2024",
+      "file": "artsdesk--unknown.json",
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/tammy-faye-almeida-theatre-review-elton-johns-often-dazzling-new-musical",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -40900,6 +41088,50 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-hills-of-california-2024",
+      "file": "london-theatre--unknown.json",
+      "publishDate": "2024-02-08",
+      "url": "https://www.londontheatre.co.uk/reviews/the-hills-of-california-review-harold-pinter-theatre",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 216d before show (2024-02-08 vs 2024-09-11)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-hills-of-california-2024",
+      "file": "radio-times--olivia-garrett.json",
+      "publishDate": "2024-02-08",
+      "url": "https://www.radiotimes.com/going-out/going-out-reviews/the-hills-of-california-review/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 216d before show (2024-02-08 vs 2024-09-11)"
+        }
+      ]
+    },
+    {
+      "showId": "the-hills-of-california-2024",
+      "file": "sunday-express--george-simpson.json",
+      "publishDate": "2024-02-08",
+      "url": "https://www.express.co.uk/entertainment/theatre/1864762/The-Hills-of-California-review-Jez-Butterworth-Laura-Donnelly",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 216d before show (2024-02-08 vs 2024-09-11)"
         }
       ]
     },
