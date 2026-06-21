@@ -98,4 +98,30 @@ function recordSbCall(opts) {
   }
 }
 
-module.exports = { recordBdCall, recordSbCall };
+/**
+ * Record a Scrapingdog API call. Same shape as recordSbCall (Scrapingdog uses an
+ * identical credit model: 1 plain / 5 dynamic / 10 premium / 5 google). Emits
+ * `[SD Call] {...}` lines so the cost report can attribute Scrapingdog spend by
+ * host once it's live as the cheap tier ahead of Bright Data.
+ * @param {Object} opts — { url|host, fn, success, status, credits }
+ */
+function recordSdCall(opts) {
+  if (process.env.BD_TELEMETRY_DISABLED === '1') return;
+  try {
+    const record = {
+      ts: new Date().toISOString(),
+      script: _scriptName(),
+      workflow: process.env.GITHUB_WORKFLOW || null,
+      host: opts.host || _hostOf(opts.url),
+      fn: opts.fn || 'page',
+      success: opts.success === true,
+      status: opts.status ?? null,
+      credits: opts.credits ?? null,
+    };
+    console.log(`[SD Call] ${JSON.stringify(record)}`);
+  } catch {
+    // Telemetry must never break scraping.
+  }
+}
+
+module.exports = { recordBdCall, recordSbCall, recordSdCall };
