@@ -1,595 +1,563 @@
 {
-  "generatedAt": "2026-06-21T17:29:26.613Z",
+  "generatedAt": "2026-06-21T18:28:42.079Z",
   "windowDays": 1095,
-  "targets": 161,
+  "targets": 150,
   "counts": {
-    "withGap": 21,
-    "totalMissing": 68,
-    "totalFlaggedMisses": 36
+    "withGap": 14,
+    "totalMissing": 65,
+    "totalFlaggedMisses": 49
   },
   "results": [
     {
-      "showId": "titus-andronicus-off-broadway-2026",
-      "title": "Titus Andronicus",
-      "openingDate": "2026-03-29",
-      "status": "closed",
-      "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/what-are-the-reviews-for-titus-andronicus-starring-patrick-page-off-broadway",
-        "https://playbill.com/article/read-reviews-for-gary-a-sequel-to-titus-andronicus-on-broadway",
-        "https://www.broadwayworld.com/article/Review-Roundup-Red-Bull-Theaters-TITUS-ANDRONICUS-Off-Broadway-Starring-Patrick-Page-20260329"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.amny.com/news/titus-andronicus-theater-review-nyc/",
-        "https://cititour.com/NYC_Broadway/Titus-Andronicus/1364",
-        "https://culturesauce.com/2026/03/29/titus-andronicus-patrick-page-off-broadway-review/",
-        "https://nystagereview.com/2026/03/29/titus-andronicus-bloody-all-right/",
-        "https://nystagereview.com/2026/03/29/titus-andronicus-goths-romans-countrymen-lend-me-your-spears/",
-        "https://www.theatermania.com/news/review-patrick-page-stars-in-titus-andronicus-shakespeares-campiest-tragedy_1830649/",
-        "https://www.timeout.com/newyork/news/theater-review-titus-andronicus-shakespeares-nastiest-tragedy-033026",
-        "https://www.redbulltheater.com/titus-andronicus-off-broadway",
-        "http://www.amny.com/entertainment/gary-a-sequel-to-titus-andronicus-review-1.30083394",
-        "http://www.thedailybeast.com/gary-a-sequel-to-titus-andronicus-nathan-lane-cleans-up-broadways-biggest-pile-of-dead-bodies",
-        "http://dctheatrescene.com/2019/04/21/review-of-gary-a-sequel-to-titus-andronicus-with-nathan-lane/",
-        "http://deadline.com/2019/04/nathan-lane-broadway-review-gary-sequel-titus-andronicus-1202599319/",
-        "http://www.hollywoodreporter.com/review/gary-a-sequel-titus-andronicus-theater-review-1203525",
-        "http://nystagereview.com/2019/04/21/gary-a-sequel-to-titus-andronicus-bloody-brilliant/",
-        "http://nystagereview.com/2019/04/21/gary-a-sequel-to-titus-andronicus-cleaning-up-and-moving-on-after-disaster/",
-        "http://www.nytimes.com/2019/04/21/theater/gary-a-sequel-to-titus-andronicus-review.html",
-        "http://www.timeout.com/newyork/theater/gary-sequel-to-titus-andronicus-review-nathan-lane-taylor-mac"
-      ],
-      "dirFiles": 15,
-      "dirClean": 10,
-      "inReviewsJson": 10,
-      "missing": [
-        {
-          "url": "https://cititour.com/NYC_Broadway/Titus-Andronicus/1364",
-          "host": "cititour.com",
-          "knownOutletId": "cititour"
-        },
-        {
-          "url": "https://www.redbulltheater.com/titus-andronicus-off-broadway",
-          "host": "redbulltheater.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "http://www.thedailybeast.com/gary-a-sequel-to-titus-andronicus-nathan-lane-cleans-up-broadways-biggest-pile-of-dead-bodies",
-          "host": "thedailybeast.com",
-          "knownOutletId": "dailybeast"
-        },
-        {
-          "url": "http://dctheatrescene.com/2019/04/21/review-of-gary-a-sequel-to-titus-andronicus-with-nathan-lane/",
-          "host": "dctheatrescene.com",
-          "knownOutletId": "dctheatrescene"
-        },
-        {
-          "url": "http://deadline.com/2019/04/nathan-lane-broadway-review-gary-sequel-titus-andronicus-1202599319/",
-          "host": "deadline.com",
-          "knownOutletId": "deadline"
-        },
-        {
-          "url": "http://www.hollywoodreporter.com/review/gary-a-sequel-titus-andronicus-theater-review-1203525",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter"
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "lavocedinewyork.com",
-          "count": 1
-        },
-        {
-          "host": "newyorktheatreguide.com",
-          "count": 1
-        },
-        {
-          "host": "theaterscene.net",
-          "count": 1
-        },
-        {
-          "host": "wsj.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "http://www.nytimes.com/2019/04/21/theater/gary-a-sequel-to-titus-andronicus-review.html",
-          "host": "nytimes.com",
-          "dirFlags": [
-            {
-              "file": "nytimes--anita-gates.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.nytimes.com/2015/02/03/theater/titus-andronicus-from-new-york-shakespeare-exchange.html"
-            },
-            {
-              "file": "nytimes--laura-collins-hughes.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.nytimes.com/2026/04/01/theater/hamlet-titus-andronicus-review-shakespeare.html"
-            }
-          ]
-        }
-      ],
-      "ingestResults": [
-        {
-          "url": "https://cititour.com/NYC_Broadway/Titus-Andronicus/1364",
-          "host": "cititour.com",
-          "outletId": "cititour",
-          "provisional": false,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=titus-andronicus-off-broadway-2026 --u"
-        },
-        {
-          "url": "https://www.redbulltheater.com/titus-andronicus-off-broadway",
-          "host": "redbulltheater.com",
-          "outletId": "redbulltheater",
-          "provisional": true,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "http://www.thedailybeast.com/gary-a-sequel-to-titus-andronicus-nathan-lane-cleans-up-broadways-biggest-pile-of-dead-bodies",
-          "host": "thedailybeast.com",
-          "outletId": "dailybeast",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "http://dctheatrescene.com/2019/04/21/review-of-gary-a-sequel-to-titus-andronicus-with-nathan-lane/",
-          "host": "dctheatrescene.com",
-          "outletId": "dctheatrescene",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "http://deadline.com/2019/04/nathan-lane-broadway-review-gary-sequel-titus-andronicus-1202599319/",
-          "host": "deadline.com",
-          "outletId": "deadline",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
-          "url": "http://www.hollywoodreporter.com/review/gary-a-sequel-titus-andronicus-theater-review-1203525",
-          "host": "hollywoodreporter.com",
-          "outletId": "hollywood-reporter"
-        }
-      ]
-    },
-    {
-      "showId": "the-other-place-off-broadway-2026",
-      "title": "The Other Place",
-      "openingDate": "2026-01-30",
-      "status": "closed",
-      "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/what-are-the-reviews-for-the-other-place-off-broadway-starring-house-of-the-dragons-emma-darcy"
-      ],
-      "aggregatorListedUrls": [
-        "https://1minutecritic.com/the-other-place-review-emma-darcy-tobias-menzies-shed/",
-        "https://nystagereview.com/2026/02/11/the-other-place-ancient-greek-tragedy-meets-modern-family-drama/",
-        "https://newyorktheater.me/2026/02/11/the-other-place-review/",
-        "https://www.newyorktheatreguide.com/reviews/the-other-place-off-broadway-review",
-        "https://www.theatermania.com/news/review-the-other-place-rises-from-the-ashes-of-antigone_1824072/",
-        "https://theaterpizzazz.com/the-secrets-of-the-other-place/",
-        "https://www.timeout.com/newyork/theater/the-other-place-review-off-broadway-antigone-emma-darcy-tobias-menzies",
-        "https://www.thewrap.com/creative-content/theater/the-other-place-review-off-broadway-tobias-menzies-emma-darcy/"
-      ],
-      "dirFiles": 31,
-      "dirClean": 3,
-      "inReviewsJson": 2,
-      "missing": [
-        {
-          "url": "https://nystagereview.com/2026/02/11/the-other-place-ancient-greek-tragedy-meets-modern-family-drama/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr"
-        },
-        {
-          "url": "https://newyorktheater.me/2026/02/11/the-other-place-review/",
-          "host": "newyorktheater.me",
-          "knownOutletId": "nyt-theater"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/the-other-place-off-broadway-review",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg"
-        },
-        {
-          "url": "https://www.theatermania.com/news/review-the-other-place-rises-from-the-ashes-of-antigone_1824072/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania"
-        },
-        {
-          "url": "https://theaterpizzazz.com/the-secrets-of-the-other-place/",
-          "host": "theaterpizzazz.com",
-          "knownOutletId": "theater-pizzazz"
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "wsj.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.thewrap.com/creative-content/theater/the-other-place-review-off-broadway-tobias-menzies-emma-darcy/",
-          "host": "thewrap.com",
-          "dirFlags": [
-            {
-              "file": "thewrap--robert-hofler.json",
-              "flag": "roundup",
-              "urlInDir": "https://www.thewrap.com/creative-content/theater/the-other-place-review-off-broadway-tobias-menzies-emma-darcy/"
-            }
-          ]
-        }
-      ],
-      "ingestResults": [
-        {
-          "url": "https://nystagereview.com/2026/02/11/the-other-place-ancient-greek-tragedy-meets-modern-family-drama/",
-          "host": "nystagereview.com",
-          "outletId": "nysr",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://newyorktheater.me/2026/02/11/the-other-place-review/",
-          "host": "newyorktheater.me",
-          "outletId": "nyt-theater",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/the-other-place-off-broadway-review",
-          "host": "newyorktheatreguide.com",
-          "outletId": "nytg",
-          "provisional": false,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=the-other-place-off-broadway-2026 --ur"
-        },
-        {
-          "url": "https://www.theatermania.com/news/review-the-other-place-rises-from-the-ashes-of-antigone_1824072/",
-          "host": "theatermania.com",
-          "outletId": "theatermania",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://theaterpizzazz.com/the-secrets-of-the-other-place/",
-          "host": "theaterpizzazz.com",
-          "outletId": "theater-pizzazz",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "the-unknown-off-broadway-2026",
-      "title": "The Unknown",
-      "openingDate": "2026-01-31",
+      "showId": "hate-radio-off-broadway-2026",
+      "title": "Hate Radio",
+      "openingDate": "2026-02-12",
       "status": "closed",
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.nytimes.com/2026/02/12/theater/the-unknown-review-sean-hayes.html",
-        "https://www.newyorktheatreguide.com/reviews/the-unknown-off-broadway-review-sean-hayes",
-        "https://www.timeout.com/newyork/theater/the-unknown-review-sean-hayes-david-cale",
-        "https://www.wsj.com/articles/the-unknown-review-sean-hayes-blocked-and-stalked-35bbd88f",
-        "https://nypost.com/2026/02/12/entertainment/the-unknown-review-sean-hayes-stars-in-a-lazy-off-broadway-thriller/",
-        "https://www.theatermania.com/news/review-the-unknown-sean-hayes-in-a-one-man-thriller_1823731/",
-        "http://www.lightingandsoundamerica.com/news/story.asp",
-        "https://www.theaterscene.net/plays/solo-plays/the-unknown/tony-marinelli/",
-        "https://www.theatrereviews.com/off-broadway-review-the-unknown-at-studio-seaview-through-sunday-april-12-2026/",
-        "https://newyorktheater.me/2026/02/12/the-unknown-review-sean-hayes-stalked/"
+        "https://www.theatermania.com/news/review-hate-radio-the-rwandan-genocide-podcast_1824526/",
+        "https://www.theaterscene.net/plays/offbway-plays/hate-radio/tony-marinelli/",
+        "https://thefrontrowcenter.com/2026/02/hate-radio/",
+        "https://www.offoffonline.com/offoffonline/2026/2/15/hate-radio",
+        "https://lavocedinewyork.com/en/new-york/2026/02/21/two-plays-in-brooklyn-examine-the-horrors-of-war-and-politics/"
       ],
-      "dirFiles": 19,
-      "dirClean": 14,
-      "inReviewsJson": 13,
-      "missing": [
-        {
-          "url": "https://www.theaterscene.net/plays/solo-plays/the-unknown/tony-marinelli/",
-          "host": "theaterscene.net",
-          "knownOutletId": "theater-scene"
-        }
-      ],
+      "dirFiles": 8,
+      "dirClean": 3,
+      "inReviewsJson": 3,
+      "missing": [],
       "dirOnly": [
         {
-          "host": "amny.com",
-          "count": 1
-        },
-        {
-          "host": "cititour.com",
-          "count": 1
-        },
-        {
-          "host": "culturesauce.com",
-          "count": 1
-        },
-        {
-          "host": "nystagereview.com",
-          "count": 1
-        },
-        {
-          "host": "1minutecritic.com",
-          "count": 1
-        },
-        {
-          "host": "theatrely.com",
-          "count": 1
-        },
-        {
-          "host": "thewrap.com",
-          "count": 1
-        },
-        {
-          "host": "vulture.com",
+          "host": "newyorker.com",
           "count": 1
         }
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.nytimes.com/2026/02/12/theater/the-unknown-review-sean-hayes.html",
-          "host": "nytimes.com",
-          "dirFlags": [
-            {
-              "file": "nytimes--alexis-soloski.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.nytimes.com/2026/02/12/theater/the-unknown-review-sean-hayes.html"
-            },
-            {
-              "file": "nytimes--helen-shaw.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.nytimes.com/2026/02/12/theater/the-unknown-review-sean-hayes.html"
-            }
-          ]
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/the-unknown-off-broadway-review-sean-hayes",
-          "host": "newyorktheatreguide.com",
-          "dirFlags": [
-            {
-              "file": "nytg--joe-dziemianowicz.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.newyorktheatreguide.com/reviews/the-unknown-off-broadway-review-sean-hayes"
-            }
-          ]
-        },
-        {
-          "url": "https://www.theatermania.com/news/review-the-unknown-sean-hayes-in-a-one-man-thriller_1823731/",
+          "url": "https://www.theatermania.com/news/review-hate-radio-the-rwandan-genocide-podcast_1824526/",
           "host": "theatermania.com",
           "dirFlags": [
             {
               "file": "theatermania--zachary-stewart.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theatermania.com/news/review-the-unknown-sean-hayes-in-a-one-man-thriller_1823731/"
-            }
-          ]
-        },
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp",
-          "host": "lightingandsoundamerica.com",
-          "dirFlags": [
-            {
-              "file": "lighting-and-sound-america--david-barbour.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=H17N28"
-            }
-          ]
-        }
-      ],
-      "ingestResults": [
-        {
-          "url": "https://www.theaterscene.net/plays/solo-plays/the-unknown/tony-marinelli/",
-          "host": "theaterscene.net",
-          "outletId": "theater-scene",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "the-waterfall-off-broadway-2026",
-      "title": "The Waterfall",
-      "openingDate": "2026-01-31",
-      "status": "closed",
-      "category": "off-broadway",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.theatermania.com/news/review-the-waterfall-a-haitian-american-mother-daughter-drama_1824358/",
-        "http://www.lightingandsoundamerica.com/news/story.asp",
-        "https://www.theaterscene.net/plays/offbway-plays/the-waterfall/victor-gluck/",
-        "https://thefrontrowcenter.com/2026/02/the-waterfall/",
-        "https://www.offoffonline.com/offoffonline/2026/2/13/the-waterfall",
-        "https://pagesonstages.com/2026/02/15/the-waterfall/"
-      ],
-      "dirFiles": 6,
-      "dirClean": 4,
-      "inReviewsJson": 4,
-      "missing": [],
-      "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp",
-          "host": "lightingandsoundamerica.com",
-          "dirFlags": [
-            {
-              "file": "lighting-and-sound-america--david-barbour.json",
               "flag": "wrongShow",
-              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=Y50N1V"
+              "urlInDir": "https://www.theatermania.com/news/review-hate-radio-the-rwandan-genocide-podcast_1824526/"
             }
           ]
         },
         {
-          "url": "https://www.offoffonline.com/offoffonline/2026/2/13/the-waterfall",
+          "url": "https://thefrontrowcenter.com/2026/02/hate-radio/",
+          "host": "thefrontrowcenter.com",
+          "dirFlags": [
+            {
+              "file": "front-row-center--brittany-crowell.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://thefrontrowcenter.com/2026/02/hate-radio/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.offoffonline.com/offoffonline/2026/2/15/hate-radio",
           "host": "offoffonline.com",
           "dirFlags": [
             {
-              "file": "off-off-online--adrienne-onofri.json",
+              "file": "off-off-online--deirdre-donovan.json",
               "flag": "wrongShow",
-              "urlInDir": "https://www.offoffonline.com/offoffonline/2026/2/13/the-waterfall"
+              "urlInDir": "https://www.offoffonline.com/offoffonline/2026/2/15/hate-radio"
             }
           ]
         }
       ]
     },
     {
-      "showId": "the-disappear-off-broadway-2026",
-      "title": "The Disappear",
-      "openingDate": "2026-01-08",
-      "status": "closed",
-      "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/what-are-the-reviews-for-the-disappear-with-hamish-linklater-miriam-silverman-dylan-baker",
-        "https://www.broadwayworld.com/article/Review-Roundup-THE-DISAPPEAR-Off-Broadway-at-Audible-Theater-20260116"
-      ],
-      "aggregatorListedUrls": [
-        "https://culturesauce.com/2026/01/15/the-disappear-off-broadway-review/",
-        "https://1minutecritic.com/the-disappear-off-broadway-review-erica-schmidt/",
-        "https://www.newyorktheatreguide.com/reviews/the-disappear-off-broadway-review",
-        "https://nystagereview.com/2026/01/15/the-disappear-art-isnt-easy/",
-        "https://nystagereview.com/2026/01/15/the-disappear-fun-while-it-lasts/",
-        "https://www.wsj.com/articles/the-disappear-review-a-frustrated-filmmaker-off-broadway-d7641fd7",
-        "https://www.timeout.com/newyork/theater/the-disappear",
-        "https://www.nytimes.com/2026/01/16/theater/the-disappear-review-erica-schmidt.html",
-        "https://www.theatermania.com/news/review-the-disappear-a-comedy-of-cringe_1819123/",
-        "https://www.talkinbroadway.com/page/ob/01_15_26.html",
-        "https://www.theaterscene.net/plays/offbway-plays/the-disappear/victor-gluck/",
-        "https://theaterlife.com/the-disappear-2/",
-        "https://twi-ny.com/2026/01/16/the-disappear-erica-schmidt-audible-minetta-lane/",
-        "https://www.offoffonline.com/offoffonline/2026/1/15/the-disappear"
-      ],
-      "dirFiles": 16,
-      "dirClean": 15,
-      "inReviewsJson": 15,
-      "missing": [],
-      "dirOnly": [
-        {
-          "host": "thefrontrowcenter.com",
-          "count": 1
-        },
-        {
-          "host": "vulture.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://twi-ny.com/2026/01/16/the-disappear-erica-schmidt-audible-minetta-lane/",
-          "host": "twi-ny.com",
-          "dirFlags": [
-            {
-              "file": "this-week-in-new-york--mark-rifkin.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://twi-ny.com/2026/01/16/the-disappear-erica-schmidt-audible-minetta-lane/"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "showId": "spread-off-broadway-2026",
-      "title": "Spread",
+      "showId": "the-amazing-sex-life-of-rabbits-off-broadway-2026",
+      "title": "The Amazing Sex Life of Rabbits",
       "openingDate": "2026-03-02",
       "status": "closed",
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.talkinbroadway.com/page/ob/03_04_26.html"
+        "https://www.theatermania.com/news/review-laughs-multiply-slowly-in-the-amazing-sex-life-of-rabbits_1826549/",
+        "https://newyorktheater.me/2026/03/05/fringe-the-amazing-sex-life-of-rabbits/",
+        "https://www.offoffonline.com/offoffonline/2026/3/6/the-amazing-sex-life-of-rabbits"
       ],
-      "dirFiles": 5,
-      "dirClean": 2,
+      "dirFiles": 4,
+      "dirClean": 3,
       "inReviewsJson": 2,
       "missing": [],
       "dirOnly": [
         {
-          "host": "newyorktheater.me",
-          "count": 1
-        },
-        {
-          "host": "theatermania.com",
+          "host": "newyorktheatreguide.com",
           "count": 1
         }
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.talkinbroadway.com/page/ob/03_04_26.html",
-          "host": "talkinbroadway.com",
+          "url": "https://www.offoffonline.com/offoffonline/2026/3/6/the-amazing-sex-life-of-rabbits",
+          "host": "offoffonline.com",
           "dirFlags": [
             {
-              "file": "talkinbroadway--michael-dale.json",
-              "flag": "duplicate",
-              "urlInDir": "https://www.talkinbroadway.com/page/ob/03_04_26.html"
-            },
-            {
-              "file": "talkinbroadway--unknown.json",
-              "flag": "duplicate",
-              "urlInDir": "https://www.talkinbroadway.com/page/ob/03_04_26.html"
+              "file": "off-off-online--walter-murphy.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.offoffonline.com/offoffonline/2026/3/6/the-amazing-sex-life-of-rabbits"
             }
           ]
         }
       ]
     },
     {
-      "showId": "the-reservoir-off-broadway-2026",
-      "title": "The Reservoir",
-      "openingDate": "2026-02-05",
+      "showId": "blackout-songs-off-broadway-2026",
+      "title": "Blackout Songs",
+      "openingDate": "2026-01-15",
       "status": "closed",
       "category": "off-broadway",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.newyorktheatreguide.com/reviews/the-reservoir-off-broadway-review",
-        "https://www.theatermania.com/news/review-the-reservoir-a-young-mans-struggle-with-alcoholism_1825463/",
-        "http://www.lightingandsoundamerica.com/news/story.asp",
-        "https://www.talkinbroadway.com/page/ob/02_24_26b.html",
-        "https://nystagereview.com/2026/02/24/the-reservoir-comic-play-about-addiction-doesnt-go-deep-enough/",
-        "https://www.theaterscene.net/plays/offbway-plays/the-reservoir/victor-gluck/",
-        "https://www.theatrereviews.com/off-broadway-review-the-reservoir-at-atlantic-theaters-linda-gross-theater-through-sunday-march-15-2026/",
-        "https://newyorktheater.me/2026/02/24/the-reservoir-review/",
-        "https://www.thewrap.com/creative-content/theater/the-reservoir-off-broadway-review-noah-galvin/",
-        "https://culturesauce.com/2026/03/01/reservoir-noah-galvin-off-broadway-review/",
-        "https://www.offoffonline.com/offoffonline/2026/2/21/the-reservoir"
+      "aggregatorArticles": [
+        "https://playbill.com/article/what-are-the-reviews-for-blackout-songs-off-broadway",
+        "https://www.broadwayworld.com/article/Review-Roundup-BLACKOUT-SONGS-Opens-Off-Broadway-20260128"
       ],
-      "dirFiles": 22,
-      "dirClean": 15,
-      "inReviewsJson": 14,
+      "aggregatorListedUrls": [
+        "https://1minutecritic.com/blackout-songs-off-broadway-review/",
+        "https://culturesauce.com/2026/01/27/blackout-songs-off-broadway-review/",
+        "https://thefrontrowcenter.com/2026/01/blackout-songs/",
+        "https://joshatthemovies.com/2026/01/27/theater-review-blackout-songs/amp/",
+        "https://nystagereview.com/2026/01/27/blackout-songs-a-hazy-pas-de-deux/",
+        "https://www.newyorktheatreguide.com/reviews/blackout-songs-off-broadway-review",
+        "https://www.theatermania.com/news/review-blackout-songs-when-your-life-is-one-long-night-out_1822273/",
+        "https://joshatthemovies.com/2026/01/27/theater-review-blackout-songs/",
+        "https://culturesauce.com/2026/01/27/blackout-songs-is-both-drunk-and-disorderly-off-broadway-review/",
+        "http://www.lightingandsoundamerica.com/news/story.asp",
+        "https://www.theaterscene.net/plays/offbway-plays/blackout-songs/victor-gluck/",
+        "https://twi-ny.com/2026/01/27/blackout-songs-joe-white-abbey-lee-owen-teague/",
+        "https://www.offoffonline.com/offoffonline/2026/1/23/blackout-songs",
+        "https://lavocedinewyork.com/en/new-york/2026/02/09/blackout-songs-a-moving-portrait-of-a-menage-a-trois-him-her-and-alcohol/"
+      ],
+      "dirFiles": 23,
+      "dirClean": 11,
+      "inReviewsJson": 12,
       "missing": [],
       "dirOnly": [
-        {
-          "host": "broadwayandme.blogspot.com",
-          "count": 1
-        },
-        {
-          "host": "cititour.com",
-          "count": 1
-        },
-        {
-          "host": "thefrontrowcenter.com",
-          "count": 1
-        },
-        {
-          "host": "frontmezzjunkies.com",
-          "count": 1
-        },
         {
           "host": "nysun.com",
           "count": 1
         },
         {
+          "host": "vulture.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://1minutecritic.com/blackout-songs-off-broadway-review/",
           "host": "1minutecritic.com",
+          "dirFlags": [
+            {
+              "file": "one-minute-critic--emily-chackerian.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://1minutecritic.com/blackout-songs-off-broadway-review/"
+            }
+          ]
+        },
+        {
+          "url": "https://thefrontrowcenter.com/2026/01/blackout-songs/",
+          "host": "thefrontrowcenter.com",
+          "dirFlags": [
+            {
+              "file": "front-row-center--stan-friedman.json",
+              "flag": "duplicate",
+              "urlInDir": "https://thefrontrowcenter.com/2026/01/blackout-songs/"
+            },
+            {
+              "file": "front-row-center--stanford-friedman.json",
+              "flag": "duplicate",
+              "urlInDir": "https://thefrontrowcenter.com/2026/01/blackout-songs/"
+            }
+          ]
+        },
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp",
+          "host": "lightingandsoundamerica.com",
+          "dirFlags": [
+            {
+              "file": "lighting-and-sound-america--david-barbour.json",
+              "flag": "wrongShow",
+              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=61E8ZR"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "showId": "spare-parts-off-broadway-2026",
+      "title": "Spare Parts",
+      "openingDate": "2026-03-08",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.theatermania.com/news/review-spare-parts-asks-can-you-buy-immortality_1826985/",
+        "http://www.lightingandsoundamerica.com/news/story.asp",
+        "https://www.theaterscene.net/plays/offbway-plays/spare-parts/tony-marinelli/",
+        "https://www.interestedbystander.com/2026/03/theater-reviews-mint-theater-presents.html"
+      ],
+      "dirFiles": 7,
+      "dirClean": 3,
+      "inReviewsJson": 2,
+      "missing": [
+        {
+          "url": "https://www.interestedbystander.com/2026/03/theater-reviews-mint-theater-presents.html",
+          "host": "interestedbystander.com",
+          "knownOutletId": "the-interested-bystander"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "stageandcinema.com",
           "count": 1
         },
         {
-          "host": "stageandcinema.com",
+          "host": "wsj.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.theatermania.com/news/review-spare-parts-asks-can-you-buy-immortality_1826985/",
+          "host": "theatermania.com",
+          "dirFlags": [
+            {
+              "file": "theatermania--zachary-stewart.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatermania.com/news/review-spare-parts-asks-can-you-buy-immortality_1826985/"
+            }
+          ]
+        },
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp",
+          "host": "lightingandsoundamerica.com",
+          "dirFlags": [
+            {
+              "file": "lighting-and-sound-america--david-barbour.json",
+              "flag": "wrongShow",
+              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-CYJ9FN"
+            }
+          ]
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://www.interestedbystander.com/2026/03/theater-reviews-mint-theater-presents.html",
+          "host": "interestedbystander.com",
+          "outletId": "the-interested-bystander",
+          "provisional": false,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=spare-parts-off-broadway-2026 --url=ht"
+        }
+      ],
+      "ingestSkippedByCap": []
+    },
+    {
+      "showId": "not-nobody-off-broadway-2026",
+      "title": "Not Nobody",
+      "openingDate": "2026-02-05",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://d4ov6iqsvotvt.cloudfront.net",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-regular-400-27da0e58c35276629aa3a2da60f2dba2d1e149bda7991346de3676fcbd3db989.woff2",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-light-300-6069894d8e39d47ebbb6723d869f4e8302f63980d403369fcb556a08b2a43f05.woff2",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-brands-400-84abb92e6b70b787c333540b97f08e758e7fc5b1627963cd7c045eaabb8cfcef.woff2",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Regular-7b5dc1aeba33f724aa530071bc99c336e8cb8aef02c4d8ece0b2c2f18b468aec.woff2",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Medium-699f505963eb3e5205fcb7c294cfd0aa26bf2a018aa383d07f9543ea48ed0a24.woff2",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-SemiBold-1305d4570afa31aad3e616ee40ef22be4c836b9c7f852b18fda655e45ad1830e.woff2",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Bold-9ca97ade87ab582e4550f60c328e0dacf939d7ff14a23cbf53908dd694ab308d.woff2",
+        "https://fonts.gstatic.com",
+        "https://fonts.googleapis.com/css2",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/vendors_v3-6bbc36c3e4135cb2b2f7560b7e0902cd03221d9908f49e6c6aada52242c7c9fc.css",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/application_v3-f002ea47f6f850c02c6b8e3aeeed92bb324e6b03136430d264becc38698b6196.css",
+        "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/vendor-fde82a95.chunk.css",
+        "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/membership_bundle~promo_ticket_bundle-afbed0f9.chunk.css",
+        "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/membership_bundle-75917b78.chunk.css",
+        "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/common-484225fd.chunk.css",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/apple-touch-icon-c6200c9822af8a301654011794a1de37ce659cb4037dd73a2b327c64db42f1f9.png",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/icon-f88d83923107c58a348dbc6f102e89c31f3824cded9fd45f5437786d7cfeb062.svg",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/favicon-b48fd9122981448f30ed8879033467df30d423d872503455ab4e53e62f8808d0.ico",
+        "https://maps.google.com/",
+        "https://www.todaytixgroup.com/careers",
+        "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform"
+      ],
+      "dirFiles": 1,
+      "dirClean": 1,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "https://d4ov6iqsvotvt.cloudfront.net",
+          "host": "cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-regular-400-27da0e58c35276629aa3a2da60f2dba2d1e149bda7991346de3676fcbd3db989.woff2",
+          "host": "cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-light-300-6069894d8e39d47ebbb6723d869f4e8302f63980d403369fcb556a08b2a43f05.woff2",
+          "host": "cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-brands-400-84abb92e6b70b787c333540b97f08e758e7fc5b1627963cd7c045eaabb8cfcef.woff2",
+          "host": "cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Regular-7b5dc1aeba33f724aa530071bc99c336e8cb8aef02c4d8ece0b2c2f18b468aec.woff2",
+          "host": "cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Medium-699f505963eb3e5205fcb7c294cfd0aa26bf2a018aa383d07f9543ea48ed0a24.woff2",
+          "host": "cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-SemiBold-1305d4570afa31aad3e616ee40ef22be4c836b9c7f852b18fda655e45ad1830e.woff2",
+          "host": "cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Bold-9ca97ade87ab582e4550f60c328e0dacf939d7ff14a23cbf53908dd694ab308d.woff2",
+          "host": "cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://fonts.gstatic.com",
+          "host": "gstatic.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "host": "googleapis.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/vendors_v3-6bbc36c3e4135cb2b2f7560b7e0902cd03221d9908f49e6c6aada52242c7c9fc.css",
+          "host": "cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/application_v3-f002ea47f6f850c02c6b8e3aeeed92bb324e6b03136430d264becc38698b6196.css",
+          "host": "cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/vendor-fde82a95.chunk.css",
+          "host": "cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/membership_bundle~promo_ticket_bundle-afbed0f9.chunk.css",
+          "host": "cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/membership_bundle-75917b78.chunk.css",
+          "host": "cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/common-484225fd.chunk.css",
+          "host": "cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/apple-touch-icon-c6200c9822af8a301654011794a1de37ce659cb4037dd73a2b327c64db42f1f9.png",
+          "host": "cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/icon-f88d83923107c58a348dbc6f102e89c31f3824cded9fd45f5437786d7cfeb062.svg",
+          "host": "cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/favicon-b48fd9122981448f30ed8879033467df30d423d872503455ab4e53e62f8808d0.ico",
+          "host": "cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://maps.google.com/",
+          "host": "google.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.todaytixgroup.com/careers",
+          "host": "todaytixgroup.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
+          "host": "google.com",
+          "knownOutletId": null
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "newyorktheatreguide.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "ingestResults": [
+        {
+          "url": "https://d4ov6iqsvotvt.cloudfront.net",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=not-nobody-off-broadway-2026 --url=htt"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-regular-400-27da0e58c35276629aa3a2da60f2dba2d1e149bda7991346de3676fcbd3db989.woff2",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=not-nobody-off-broadway-2026 --url=htt"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-light-300-6069894d8e39d47ebbb6723d869f4e8302f63980d403369fcb556a08b2a43f05.woff2",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=not-nobody-off-broadway-2026 --url=htt"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-brands-400-84abb92e6b70b787c333540b97f08e758e7fc5b1627963cd7c045eaabb8cfcef.woff2",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=not-nobody-off-broadway-2026 --url=htt"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Regular-7b5dc1aeba33f724aa530071bc99c336e8cb8aef02c4d8ece0b2c2f18b468aec.woff2",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=not-nobody-off-broadway-2026 --url=htt"
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Medium-699f505963eb3e5205fcb7c294cfd0aa26bf2a018aa383d07f9543ea48ed0a24.woff2",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-SemiBold-1305d4570afa31aad3e616ee40ef22be4c836b9c7f852b18fda655e45ad1830e.woff2",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Bold-9ca97ade87ab582e4550f60c328e0dacf939d7ff14a23cbf53908dd694ab308d.woff2",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://fonts.gstatic.com",
+          "host": "gstatic.com",
+          "outletId": "gstatic"
+        },
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "host": "googleapis.com",
+          "outletId": "googleapis"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/vendors_v3-6bbc36c3e4135cb2b2f7560b7e0902cd03221d9908f49e6c6aada52242c7c9fc.css",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/application_v3-f002ea47f6f850c02c6b8e3aeeed92bb324e6b03136430d264becc38698b6196.css",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/vendor-fde82a95.chunk.css",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/membership_bundle~promo_ticket_bundle-afbed0f9.chunk.css",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/membership_bundle-75917b78.chunk.css",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/common-484225fd.chunk.css",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/apple-touch-icon-c6200c9822af8a301654011794a1de37ce659cb4037dd73a2b327c64db42f1f9.png",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/icon-f88d83923107c58a348dbc6f102e89c31f3824cded9fd45f5437786d7cfeb062.svg",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/favicon-b48fd9122981448f30ed8879033467df30d423d872503455ab4e53e62f8808d0.ico",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://maps.google.com/",
+          "host": "google.com",
+          "outletId": "google"
+        },
+        {
+          "url": "https://www.todaytixgroup.com/careers",
+          "host": "todaytixgroup.com",
+          "outletId": "todaytixgroup"
+        },
+        {
+          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
+          "host": "google.com",
+          "outletId": "google"
+        }
+      ]
+    },
+    {
+      "showId": "pen-pals-off-broadway-2025",
+      "title": "Pen Pals",
+      "openingDate": "2025-01-06",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.interestedbystander.com/2024/12/theater-reviews-eureka-day-hysterically.html",
+        "https://www.theatermania.com/news/review-pen-pals-a-sweetly-predictable-friendship-drama-about-two-ordinary-women_1760343/",
+        "http://www.lightingandsoundamerica.com/news/story.asp",
+        "https://www.theaterscene.net/plays/offbway-plays/pen-pals/lydia-singer/",
+        "https://www.offoffonline.com/offoffonline/2024/12/9/pen-pals-yeD8F"
+      ],
+      "dirFiles": 9,
+      "dirClean": 3,
+      "inReviewsJson": 3,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "thefrontrowcenter.com",
           "count": 1
         },
         {
@@ -599,18 +567,13 @@
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.theatermania.com/news/review-the-reservoir-a-young-mans-struggle-with-alcoholism_1825463/",
-          "host": "theatermania.com",
+          "url": "https://www.interestedbystander.com/2024/12/theater-reviews-eureka-day-hysterically.html",
+          "host": "interestedbystander.com",
           "dirFlags": [
             {
-              "file": "theatermania--jonas-schwartz.json",
+              "file": "the-interested-bystander--cary-wong.json",
               "flag": "wrongShow",
-              "urlInDir": "https://www.theatermania.com/news/review-the-reservoir-a-young-mans-struggle-with-alcoholism_1825463/"
-            },
-            {
-              "file": "theatermania--zachary-stewart.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.theatermania.com/news/review-the-reservoir-a-young-mans-struggle-with-alcoholism_1825463/"
+              "urlInDir": "https://www.interestedbystander.com/2024/12/theater-reviews-eureka-day-hysterically.html"
             }
           ]
         },
@@ -621,59 +584,231 @@
             {
               "file": "lighting-and-sound-america--david-barbour.json",
               "flag": "wrongShow",
-              "urlInDir": "https://www.lightingandsoundamerica.com/news/story.asp?ID=-GOG550"
+              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-YLW7OA"
             }
           ]
         },
         {
-          "url": "https://newyorktheater.me/2026/02/24/the-reservoir-review/",
-          "host": "newyorktheater.me",
+          "url": "https://www.theaterscene.net/plays/offbway-plays/pen-pals/lydia-singer/",
+          "host": "theaterscene.net",
           "dirFlags": [
             {
-              "file": "nyt-theater--jonathan-mandell.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://newyorktheater.me/2026/02/24/the-reservoir-review/"
+              "file": "theater-scene--lydia-singer.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theaterscene.net/plays/offbway-plays/pen-pals/lydia-singer/"
             }
           ]
         },
         {
-          "url": "https://www.offoffonline.com/offoffonline/2026/2/21/the-reservoir",
+          "url": "https://www.offoffonline.com/offoffonline/2024/12/9/pen-pals-yeD8F",
           "host": "offoffonline.com",
           "dirFlags": [
             {
-              "file": "off-off-online--charles-wright.json",
+              "file": "off-off-online--marc-miller.json",
               "flag": "wrongShow",
-              "urlInDir": "https://www.offoffonline.com/offoffonline/2026/2/21/the-reservoir"
+              "urlInDir": "https://www.offoffonline.com/offoffonline/2024/12/9/pen-pals-yeD8F"
             }
           ]
         }
       ]
     },
     {
-      "showId": "night-side-songs-off-broadway-2026",
-      "title": "Night Side Songs",
-      "openingDate": "2026-03-02",
+      "showId": "marcel-on-the-train-off-broadway-2026",
+      "title": "Marcel on the Train",
+      "openingDate": "2026-02-05",
       "status": "closed",
       "category": "off-broadway",
       "aggregatorArticles": [
-        "https://playbill.com/article/what-are-reviews-for-night-side-songs-off-broadway",
-        "https://www.broadwayworld.com/article/Review-Roundup-NIGHT-SIDE-SONGS-Opens-Off-Broadway-20260302"
+        "https://playbill.com/article/what-are-reviews-saying-about-marcel-on-the-train-starring-ethan-slater",
+        "https://www.broadwayworld.com/article/Review-Roundup-Ethan-Slater-Leads-MARCEL-ON-THE-TRAIN-atClassic-Stage-Company-20260223"
       ],
       "aggregatorListedUrls": [
-        "https://www.newyorktheatreguide.com/reviews/night-side-songs-off-broadway-review",
-        "https://1minutecritic.com/night-side-songs-review-lincoln-center-theater/",
-        "https://culturesauce.com/2026/03/06/night-side-songs-off-broadway-review/",
-        "https://nystagereview.com/2026/03/01/night-side-songs-illness-musicalized-showing-worrisome-symptoms/",
-        "https://newyorktheater.me/2026/03/02/night-side-songs-review/",
-        "https://www.nytimes.com/2026/03/03/theater/night-side-songs-review.html",
-        "https://therecs.co.uk/night-side-songs/",
-        "https://www.theatermania.com/news/review-night-side-songs-the-sing-along-cancer-musical_1826273/",
-        "https://www.timeout.com/newyork/theater/night-side-songs-musical-review-cancer-lazour-brothers",
-        "https://pagesonstages.com/2026/03/01/night-side-songs-lct/"
+        "https://www.amny.com/news/review-marcel-on-the-train-finds-bravery/",
+        "https://cititour.com/NYC_Broadway/Marcel-on-the-Train/1353",
+        "https://newyorktheater.me/2026/02/23/marcel-on-the-train-review/",
+        "https://www.newyorktheatreguide.com/reviews/marcel-on-the-train-off-broadway-review-ethan-slater",
+        "https://www.nytimes.com/2026/02/22/theater/marcel-on-the-train-review-marceau-ethan-slater.html",
+        "https://www.theatermania.com/news/review-marcel-on-the-train-ethan-slater-land-mimes-the-nazis_1824970/",
+        "https://www.timeout.com/newyork/theater/marcel-on-the-train-pla-review-ethan-slater-marcel-marceau",
+        "https://www.thewrap.com/creative-content/reviews/marcel-on-the-train-off-broadway-review-ethan-slater/",
+        "https://forward.com/culture/theater/806722/marcel-on-the-train-ethan-slater-review-marceau-mime-holocaust/",
+        "http://www.lightingandsoundamerica.com/news/story.asp",
+        "https://www.talkinbroadway.com/page/ob/02_22_26.html",
+        "https://www.theaterscene.net/plays/offbway-plays/marcel-on-the-train/tony-marinelli/",
+        "https://www.theatrereviews.com/off-broadway-review-marcel-on-the-train-at-classic-stage-company-through-sunday-march-22-2026/"
       ],
-      "dirFiles": 13,
+      "dirFiles": 17,
+      "dirClean": 12,
+      "inReviewsJson": 12,
+      "missing": [
+        {
+          "url": "https://www.thewrap.com/creative-content/reviews/marcel-on-the-train-off-broadway-review-ethan-slater/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "thefrontrowcenter.com",
+          "count": 1
+        },
+        {
+          "host": "nysun.com",
+          "count": 1
+        },
+        {
+          "host": "stageandcinema.com",
+          "count": 1
+        },
+        {
+          "host": "vulture.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.amny.com/news/review-marcel-on-the-train-finds-bravery/",
+          "host": "amny.com",
+          "dirFlags": [
+            {
+              "file": "amny--matt-windman.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.amny.com/news/review-marcel-on-the-train-finds-bravery/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-marcel-on-the-train-ethan-slater-land-mimes-the-nazis_1824970/",
+          "host": "theatermania.com",
+          "dirFlags": [
+            {
+              "file": "theatermania--zachary-stewart.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.theatermania.com/news/review-marcel-on-the-train-ethan-slater-land-mimes-the-nazis_1824970/"
+            }
+          ]
+        },
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp",
+          "host": "lightingandsoundamerica.com",
+          "dirFlags": [
+            {
+              "file": "lighting-and-sound-america--david-barbour.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.lightingandsoundamerica.com/news/story.asp?ID=TBI2X8"
+            }
+          ]
+        },
+        {
+          "url": "https://www.talkinbroadway.com/page/ob/02_22_26.html",
+          "host": "talkinbroadway.com",
+          "dirFlags": [
+            {
+              "file": "talkinbroadway--james-wilson.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.talkinbroadway.com/page/ob/02_22_26.html"
+            }
+          ]
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://www.thewrap.com/creative-content/reviews/marcel-on-the-train-off-broadway-review-ethan-slater/",
+          "host": "thewrap.com",
+          "outletId": "thewrap",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": []
+    },
+    {
+      "showId": "no-singing-in-the-navy-off-broadway-2026",
+      "title": "No Singing in the Navy",
+      "openingDate": "2026-03-18",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-are-out-for-on-the-town-inspired-no-singing-in-the-navy"
+      ],
+      "aggregatorListedUrls": [
+        "https://1minutecritic.com/no-singing-in-the-navy-playwrights-horizons-review/",
+        "https://culturesauce.com/2026/03/29/no-singing-in-the-navy-off-broadway-review/",
+        "https://newyorktheater.me/2026/03/29/no-singing-in-the-navy-review/",
+        "https://www.newyorktheatreguide.com/reviews/no-singing-in-the-navy-off-broadway-review",
+        "https://therecs.co.uk/no-singing-in-the-navy/",
+        "https://www.theatermania.com/news/review-milo-cramers-musical-satire-no-singing-in-the-navy-suddenly-strikes-a-timely-note_1830375/",
+        "http://www.lightingandsoundamerica.com/news/story.asp",
+        "https://www.talkinbroadway.com/page/ob/03_29_26.html",
+        "https://www.theaterscene.net/musicals/offbway/no-singing-in-the-navy/victor-gluck/",
+        "https://www.offoffonline.com/offoffonline/2026/3/23/no-singing-in-the-navy"
+      ],
+      "dirFiles": 10,
+      "dirClean": 9,
+      "inReviewsJson": 8,
+      "missing": [
+        {
+          "url": "https://therecs.co.uk/no-singing-in-the-navy/",
+          "host": "therecs.co.uk",
+          "knownOutletId": "the-recs"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "vulture.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp",
+          "host": "lightingandsoundamerica.com",
+          "dirFlags": [
+            {
+              "file": "lighting-and-sound-america--david-barbour.json",
+              "flag": "wrongShow",
+              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TCQCQ9"
+            }
+          ]
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://therecs.co.uk/no-singing-in-the-navy/",
+          "host": "therecs.co.uk",
+          "outletId": "the-recs",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": []
+    },
+    {
+      "showId": "jesa-off-broadway-2026",
+      "title": "Jesa",
+      "openingDate": "2026-03-10",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-what-do-critics-think-of-jesa-off-broadway"
+      ],
+      "aggregatorListedUrls": [
+        "https://culturesauce.com/2026/03/20/jesa-jeena-yi-off-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/jesa-off-broadway-review",
+        "https://nystagereview.com/2026/03/20/jesa-honoring-the-ancestors-or-maybe-not/",
+        "https://www.timeout.com/newyork/news/theater-review-korean-american-sisters-try-to-do-a-rite-right-in-jesa-032126",
+        "https://www.theatermania.com/news/review-jesa-a-family-reunion-ghost-story-by-jeena-yi_1828783/",
+        "http://www.lightingandsoundamerica.com/news/story.asp",
+        "https://www.theaterscene.net/plays/offbway-plays/jesa/victor-gluck/",
+        "https://www.interestedbystander.com/2026/03/theater-reviews-jesa-uniquely-focuses.html",
+        "https://www.offoffonline.com/offoffonline/2026/3/18/jesa",
+        "https://lavocedinewyork.com/en/new-york/2026/03/20/in-jesa-a-familys-fractures-start-to-show-as-secrets-are-bared-by-four-sisters/"
+      ],
+      "dirFiles": 12,
       "dirClean": 10,
-      "inReviewsJson": 9,
+      "inReviewsJson": 7,
       "missing": [],
       "dirOnly": [
         {
@@ -687,67 +822,363 @@
       ],
       "flaggedMisses": [
         {
-          "url": "https://therecs.co.uk/night-side-songs/",
-          "host": "therecs.co.uk",
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp",
+          "host": "lightingandsoundamerica.com",
           "dirFlags": [
             {
-              "file": "the-recs--randall-david-cook.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://therecs.co.uk/night-side-songs/"
+              "file": "lighting-and-sound-america--david-barbour.json",
+              "flag": "wrongShow",
+              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TCDCLE"
             }
           ]
         },
         {
-          "url": "https://www.theatermania.com/news/review-night-side-songs-the-sing-along-cancer-musical_1826273/",
-          "host": "theatermania.com",
+          "url": "https://www.theaterscene.net/plays/offbway-plays/jesa/victor-gluck/",
+          "host": "theaterscene.net",
           "dirFlags": [
             {
-              "file": "theatermania--zachary-stewart.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theatermania.com/news/review-night-side-songs-the-sing-along-cancer-musical_1826273/"
+              "file": "theater-scene--victor-gluck.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.theaterscene.net/plays/offbway-plays/jesa/victor-gluck/"
             }
           ]
         }
       ]
     },
     {
-      "showId": "mother-russia-off-broadway-2026",
-      "title": "Mother Russia",
-      "openingDate": "2026-03-03",
+      "showId": "innocence-off-broadway-2026",
+      "title": "Innocence",
+      "openingDate": "2026-04-06",
       "status": "closed",
       "category": "off-broadway",
       "aggregatorArticles": [
-        "https://playbill.com/article/reviews-are-out-for-lauren-yees-mother-russia",
-        "https://www.broadwayworld.com/article/Review-Roundup-MOTHER-RUSSIA-Opens-At-Signature-Theatre-20260223"
+        "https://playbill.com/article/what-did-reviews-say-about-innocence-at-the-metropolitan-opera"
       ],
       "aggregatorListedUrls": [
-        "https://cititour.com/NYC_Broadway/Mother-Russia/1354",
-        "https://nystagereview.com/2026/02/23/mother-russia-finding-comedy-in-a-countrys-dark-history/",
-        "https://newyorktheater.me/2026/02/23/mother-russia-review/",
-        "https://www.newyorktheatreguide.com/reviews/mother-russia-off-broadway-review",
-        "https://www.nytimes.com/2026/02/23/theater/mother-russia-review.html",
-        "https://www.theatermania.com/news/review-mother-russia-a-comedy-adventure-of-gangster-capitalism_1824988/",
-        "https://www.theatrely.com/post/lauren-yees-back-with-mother-russia-review",
-        "https://www.thewrap.com/creative-content/theater/mother-russia-off-broadway-review/",
-        "https://theaterpizzazz.com/mother-russia-an-unsuccessful-notch-in-the-borscht-belt/",
-        "http://www.lightingandsoundamerica.com/news/story.asp",
-        "https://www.theaterscene.net/plays/offbway-plays/mother-russia/tony-marinelli/",
-        "https://exeuntnyc.com/reviews/review-mother-russia-at-signature-theatre/",
-        "https://theaterlife.com/mother-russia-1-2/",
-        "https://pagesonstages.com/2026/02/28/mother-russia/",
-        "https://www.interestedbystander.com/2026/02/theater-reviews-off-broadway-explores.html"
+        "https://www.broadwayworld.com/bwwopera/article/Review-Kaija-Saariahos-INNOCENCE-An-Opera-About-a-Killing-Spree-Doesnt-Let-Up-in-Met-Premiere-20260407",
+        "https://newyorkclassicalreview.com/2026/04/a-tragedy-haunts-the-past-and-present-in-mets-innocence/",
+        "https://www.nytimes.com/2026/04/07/arts/music/innocence-met-opera-review.html",
+        "https://operawire.com/metropolitan-opera-2025-26-review-innocence/",
+        "https://www.wsj.com/arts-culture/theater/innocence-review-an-attacks-aftermath-at-the-metropolitan-opera-85656a33",
+        "https://d4ov6iqsvotvt.cloudfront.net",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-regular-400-27da0e58c35276629aa3a2da60f2dba2d1e149bda7991346de3676fcbd3db989.woff2",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-light-300-6069894d8e39d47ebbb6723d869f4e8302f63980d403369fcb556a08b2a43f05.woff2",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-brands-400-84abb92e6b70b787c333540b97f08e758e7fc5b1627963cd7c045eaabb8cfcef.woff2",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Regular-7b5dc1aeba33f724aa530071bc99c336e8cb8aef02c4d8ece0b2c2f18b468aec.woff2",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Medium-699f505963eb3e5205fcb7c294cfd0aa26bf2a018aa383d07f9543ea48ed0a24.woff2",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-SemiBold-1305d4570afa31aad3e616ee40ef22be4c836b9c7f852b18fda655e45ad1830e.woff2",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Bold-9ca97ade87ab582e4550f60c328e0dacf939d7ff14a23cbf53908dd694ab308d.woff2",
+        "https://fonts.gstatic.com",
+        "https://fonts.googleapis.com/css2",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/vendors_v3-6bbc36c3e4135cb2b2f7560b7e0902cd03221d9908f49e6c6aada52242c7c9fc.css",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/application_v3-f002ea47f6f850c02c6b8e3aeeed92bb324e6b03136430d264becc38698b6196.css",
+        "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/vendor-fde82a95.chunk.css",
+        "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/membership_bundle~promo_ticket_bundle-afbed0f9.chunk.css",
+        "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/membership_bundle-75917b78.chunk.css",
+        "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/common-484225fd.chunk.css",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/apple-touch-icon-c6200c9822af8a301654011794a1de37ce659cb4037dd73a2b327c64db42f1f9.png",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/icon-f88d83923107c58a348dbc6f102e89c31f3824cded9fd45f5437786d7cfeb062.svg",
+        "https://d2kbhv4d9rykxy.cloudfront.net/assets/favicon-b48fd9122981448f30ed8879033467df30d423d872503455ab4e53e62f8808d0.ico",
+        "https://maps.google.com/",
+        "https://www.todaytixgroup.com/careers",
+        "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform"
       ],
-      "dirFiles": 24,
-      "dirClean": 16,
-      "inReviewsJson": 15,
-      "missing": [],
+      "dirFiles": 11,
+      "dirClean": 10,
+      "inReviewsJson": 9,
+      "missing": [
+        {
+          "url": "https://d4ov6iqsvotvt.cloudfront.net",
+          "host": "cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-regular-400-27da0e58c35276629aa3a2da60f2dba2d1e149bda7991346de3676fcbd3db989.woff2",
+          "host": "cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-light-300-6069894d8e39d47ebbb6723d869f4e8302f63980d403369fcb556a08b2a43f05.woff2",
+          "host": "cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-brands-400-84abb92e6b70b787c333540b97f08e758e7fc5b1627963cd7c045eaabb8cfcef.woff2",
+          "host": "cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Regular-7b5dc1aeba33f724aa530071bc99c336e8cb8aef02c4d8ece0b2c2f18b468aec.woff2",
+          "host": "cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Medium-699f505963eb3e5205fcb7c294cfd0aa26bf2a018aa383d07f9543ea48ed0a24.woff2",
+          "host": "cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-SemiBold-1305d4570afa31aad3e616ee40ef22be4c836b9c7f852b18fda655e45ad1830e.woff2",
+          "host": "cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Bold-9ca97ade87ab582e4550f60c328e0dacf939d7ff14a23cbf53908dd694ab308d.woff2",
+          "host": "cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://fonts.gstatic.com",
+          "host": "gstatic.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "host": "googleapis.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/vendors_v3-6bbc36c3e4135cb2b2f7560b7e0902cd03221d9908f49e6c6aada52242c7c9fc.css",
+          "host": "cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/application_v3-f002ea47f6f850c02c6b8e3aeeed92bb324e6b03136430d264becc38698b6196.css",
+          "host": "cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/vendor-fde82a95.chunk.css",
+          "host": "cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/membership_bundle~promo_ticket_bundle-afbed0f9.chunk.css",
+          "host": "cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/membership_bundle-75917b78.chunk.css",
+          "host": "cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/common-484225fd.chunk.css",
+          "host": "cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/apple-touch-icon-c6200c9822af8a301654011794a1de37ce659cb4037dd73a2b327c64db42f1f9.png",
+          "host": "cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/icon-f88d83923107c58a348dbc6f102e89c31f3824cded9fd45f5437786d7cfeb062.svg",
+          "host": "cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/favicon-b48fd9122981448f30ed8879033467df30d423d872503455ab4e53e62f8808d0.ico",
+          "host": "cloudfront.net",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://maps.google.com/",
+          "host": "google.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.todaytixgroup.com/careers",
+          "host": "todaytixgroup.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
+          "host": "google.com",
+          "knownOutletId": null
+        }
+      ],
       "dirOnly": [
         {
-          "host": "culturesauce.com",
+          "host": "classicalvoiceamerica.org",
           "count": 1
         },
         {
-          "host": "nysun.com",
+          "host": "nystagereview.com",
+          "count": 1
+        },
+        {
+          "host": "parterre.com",
+          "count": 1
+        },
+        {
+          "host": "playbill.com",
+          "count": 1
+        },
+        {
+          "host": "vulture.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "ingestResults": [
+        {
+          "url": "https://d4ov6iqsvotvt.cloudfront.net",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=innocence-off-broadway-2026 --url=http"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-regular-400-27da0e58c35276629aa3a2da60f2dba2d1e149bda7991346de3676fcbd3db989.woff2",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=innocence-off-broadway-2026 --url=http"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-light-300-6069894d8e39d47ebbb6723d869f4e8302f63980d403369fcb556a08b2a43f05.woff2",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=innocence-off-broadway-2026 --url=http"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-brands-400-84abb92e6b70b787c333540b97f08e758e7fc5b1627963cd7c045eaabb8cfcef.woff2",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=innocence-off-broadway-2026 --url=http"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Regular-7b5dc1aeba33f724aa530071bc99c336e8cb8aef02c4d8ece0b2c2f18b468aec.woff2",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=innocence-off-broadway-2026 --url=http"
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Medium-699f505963eb3e5205fcb7c294cfd0aa26bf2a018aa383d07f9543ea48ed0a24.woff2",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-SemiBold-1305d4570afa31aad3e616ee40ef22be4c836b9c7f852b18fda655e45ad1830e.woff2",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Bold-9ca97ade87ab582e4550f60c328e0dacf939d7ff14a23cbf53908dd694ab308d.woff2",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://fonts.gstatic.com",
+          "host": "gstatic.com",
+          "outletId": "gstatic"
+        },
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "host": "googleapis.com",
+          "outletId": "googleapis"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/vendors_v3-6bbc36c3e4135cb2b2f7560b7e0902cd03221d9908f49e6c6aada52242c7c9fc.css",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/application_v3-f002ea47f6f850c02c6b8e3aeeed92bb324e6b03136430d264becc38698b6196.css",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/vendor-fde82a95.chunk.css",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/membership_bundle~promo_ticket_bundle-afbed0f9.chunk.css",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/membership_bundle-75917b78.chunk.css",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/common-484225fd.chunk.css",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/apple-touch-icon-c6200c9822af8a301654011794a1de37ce659cb4037dd73a2b327c64db42f1f9.png",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/icon-f88d83923107c58a348dbc6f102e89c31f3824cded9fd45f5437786d7cfeb062.svg",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/favicon-b48fd9122981448f30ed8879033467df30d423d872503455ab4e53e62f8808d0.ico",
+          "host": "cloudfront.net",
+          "outletId": "cloudfront"
+        },
+        {
+          "url": "https://maps.google.com/",
+          "host": "google.com",
+          "outletId": "google"
+        },
+        {
+          "url": "https://www.todaytixgroup.com/careers",
+          "host": "todaytixgroup.com",
+          "outletId": "todaytixgroup"
+        },
+        {
+          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
+          "host": "google.com",
+          "outletId": "google"
+        }
+      ]
+    },
+    {
+      "showId": "cold-war-choir-practice-off-broadway-2026",
+      "title": "Cold War Choir Practice",
+      "openingDate": "2026-02-21",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-COLD-WAR-CHOIR-PRACTICE-at-MCC-Theater-20260311"
+      ],
+      "aggregatorListedUrls": [
+        "https://exeuntnyc.com/reviews/review-cold-war-choir-practice-at-robert-w-wilson-mcc-theater-space/",
+        "https://culturesauce.com/2026/03/10/cold-war-choir-practice-off-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/cold-war-choir-practice-off-broadway-review",
+        "https://www.thewrap.com/creative-content/theater/cold-war-choir-practice-off-broadway-review-david-lynch-lives-in-this-wild-reagan-era-comedy/",
+        "https://newyorktheater.me/2026/03/08/cold-war-choir-practice-review/",
+        "https://nystagereview.com/2026/03/10/cold-war-choir-practice-nuclear-fears-played-for-laughs-and-songs/",
+        "https://nystagereview.com/2026/03/10/cold-war-choir-practice-choirs-under-rehearsed-over-rehearsed/",
+        "https://www.timeout.com/newyork/theater/cold-war-choir-practice-play-review-ro-reddick",
+        "https://1minutecritic.com/cold-war-choir-practice-review-ro-reddick/",
+        "https://www.nytimes.com/2025/06/24/theater/cold-war-choir-practice-review.html"
+      ],
+      "dirFiles": 14,
+      "dirClean": 9,
+      "inReviewsJson": 8,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "broadwayandme.blogspot.com",
           "count": 1
         },
         {
@@ -757,1372 +1188,867 @@
         {
           "host": "vulture.com",
           "count": 1
-        },
-        {
-          "host": "wsj.com",
-          "count": 1
         }
       ],
       "flaggedMisses": [
         {
-          "url": "https://newyorktheater.me/2026/02/23/mother-russia-review/",
-          "host": "newyorktheater.me",
-          "dirFlags": [
-            {
-              "file": "nyt-theater--jonathan-mandell.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://newyorktheater.me/2026/02/23/mother-russia-review/"
-            }
-          ]
-        },
-        {
-          "url": "https://theaterpizzazz.com/mother-russia-an-unsuccessful-notch-in-the-borscht-belt/",
-          "host": "theaterpizzazz.com",
-          "dirFlags": [
-            {
-              "file": "theater-pizzazz--ron-fassler.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://theaterpizzazz.com/mother-russia-an-unsuccessful-notch-in-the-borscht-belt/"
-            }
-          ]
-        },
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp",
-          "host": "lightingandsoundamerica.com",
-          "dirFlags": [
-            {
-              "file": "lighting-and-sound-america--david-barbour.json",
-              "flag": "wrongShow",
-              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-30XRX"
-            }
-          ]
-        },
-        {
-          "url": "https://www.interestedbystander.com/2026/02/theater-reviews-off-broadway-explores.html",
-          "host": "interestedbystander.com",
-          "dirFlags": [
-            {
-              "file": "the-interested-bystander--cary-wong.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.interestedbystander.com/2026/02/theater-reviews-off-broadway-explores.html"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "showId": "ulysses-off-broadway-2026",
-      "title": "Ulysses",
-      "openingDate": "2026-01-13",
-      "status": "closed",
-      "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/what-are-the-reviews-for-elevator-repair-services-ulysses"
-      ],
-      "aggregatorListedUrls": [
-        "https://culturesauce.com/2026/01/25/elevator-repair-service-deconstructs-joyces-ulysses-off-broadway-review/",
-        "https://1minutecritic.com/elevator-repair-service-ulysses-public-theater-review/",
-        "https://thefrontrowcenter.com/2026/01/ulysses/",
-        "https://nystagereview.com/2026/01/25/from-under-the-radar-ulysses/",
-        "https://www.newyorktheatreguide.com/reviews/ulysses-off-broadway-review",
-        "https://www.theatermania.com/news/review-leopold-bloom-for-rookies-and-pros-in-a-hilarious-ulysses_1821592/",
-        "http://www.lightingandsoundamerica.com/news/story.asp",
-        "https://www.talkinbroadway.com/page/ob/01_25_26.html",
-        "https://www.theaterscene.net/plays/offbway-plays/ulysses/victor-gluck/",
-        "https://www.theatrereviews.com/off-broadway-review-ulysses-at-the-public-theaters-martinson-hall-through-sunday-march-1-2026/",
-        "https://twi-ny.com/2026/02/09/ulysses-james-joyce-elevator-repair-service-public-theater/",
-        "https://www.offoffonline.com/offoffonline/2026/1/24/ulysses",
-        "https://pagesonstages.com/2026/01/25/ulysses/"
-      ],
-      "dirFiles": 15,
-      "dirClean": 9,
-      "inReviewsJson": 11,
-      "missing": [],
-      "dirOnly": [
-        {
-          "host": "theaterlife.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://culturesauce.com/2026/01/25/elevator-repair-service-deconstructs-joyces-ulysses-off-broadway-review/",
+          "url": "https://culturesauce.com/2026/03/10/cold-war-choir-practice-off-broadway-review/",
           "host": "culturesauce.com",
           "dirFlags": [
             {
               "file": "culturesauce--thom-geier.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://culturesauce.com/2026/01/25/elevator-repair-service-deconstructs-joyces-ulysses-off-broadway-review/"
-            }
-          ]
-        },
-        {
-          "url": "https://1minutecritic.com/elevator-repair-service-ulysses-public-theater-review/",
-          "host": "1minutecritic.com",
-          "dirFlags": [
-            {
-              "file": "one-minute-critic--matthew-wexler.json",
-              "flag": "duplicate",
-              "urlInDir": "https://1minutecritic.com/elevator-repair-service-ulysses-public-theater-review/"
-            }
-          ]
-        },
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp",
-          "host": "lightingandsoundamerica.com",
-          "dirFlags": [
-            {
-              "file": "lighting-and-sound-america--david-barbour.json",
               "flag": "wrongShow",
-              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=L0HOZ0"
+              "urlInDir": "https://culturesauce.com/2026/03/10/cold-war-choir-practice-off-broadway-review/"
             }
           ]
         },
         {
-          "url": "https://www.theatrereviews.com/off-broadway-review-ulysses-at-the-public-theaters-martinson-hall-through-sunday-march-1-2026/",
-          "host": "theatrereviews.com",
+          "url": "https://www.timeout.com/newyork/theater/cold-war-choir-practice-play-review-ro-reddick",
+          "host": "timeout.com",
           "dirFlags": [
             {
-              "file": "theatre-reviews-limited--david-roberts.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theatrereviews.com/off-broadway-review-ulysses-at-the-public-theaters-martinson-hall-through-sunday-march-1-2026/"
-            }
-          ]
-        },
-        {
-          "url": "https://www.offoffonline.com/offoffonline/2026/1/24/ulysses",
-          "host": "offoffonline.com",
-          "dirFlags": [
-            {
-              "file": "off-off-online--charles-wright.json",
+              "file": "timeout--adam-feldman.json",
               "flag": "wrongShow",
-              "urlInDir": "https://www.offoffonline.com/offoffonline/2026/1/24/ulysses"
+              "urlInDir": "https://www.timeout.com/newyork/theater/cold-war-choir-practice-play-review-ro-reddick"
+            }
+          ]
+        },
+        {
+          "url": "https://www.nytimes.com/2025/06/24/theater/cold-war-choir-practice-review.html",
+          "host": "nytimes.com",
+          "dirFlags": [
+            {
+              "file": "nytimes--laura-collins-hughes.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nytimes.com/2025/06/24/theater/cold-war-choir-practice-review.html"
             }
           ]
         }
       ]
     },
     {
-      "showId": "public-charge-off-broadway-2026",
-      "title": "Public Charge",
-      "openingDate": "2026-03-12",
+      "showId": "11-to-midnight-off-broadway-2026",
+      "title": "11 to Midnight",
+      "openingDate": "2026-02-11",
       "status": "closed",
       "category": "off-broadway",
       "aggregatorArticles": [
-        "https://playbill.com/article/read-the-reviews-for-public-charge-by-former-u-s-ambassador-julissa-reynoso",
-        "https://www.broadwayworld.com/article/Review-Roundup-PUBLIC-CHARGE-World-Premiere-Opens-at-The-Public-Theater-20260325"
+        "https://www.broadwayworld.com/article/Review-Roundup-11-TO-MIDNIGHT-Opens-at-the-Orpheum-Theatre-20260211"
       ],
       "aggregatorListedUrls": [
-        "https://1minutecritic.com/public-charge-review-public-theater/",
-        "https://culturesauce.com/2026/03/25/public-charge-off-broadway-review/",
-        "https://thefrontrowcenter.com/2026/03/public-charge/",
-        "https://nystagereview.com/2026/03/25/public-charge-mixed-grades-translating-textbook-history-to-the-stage/",
-        "https://www.newyorktheatreguide.com/reviews/public-charge-off-broadway-review",
-        "https://www.nytimes.com/2026/03/26/theater/public-charge-review-julissa-reynoso.html",
-        "https://stageandcinema.com/2026/03/25/public-charge-public-theater-review/",
-        "https://www.theatermania.com/news/review-public-charge-a-diplomat-recalls-hillary-clintons-state-department_1829739/",
-        "https://www.timeout.com/newyork/theater/public-charge-theater-review-julissa-reynoso",
-        "http://www.lightingandsoundamerica.com/news/story.asp",
-        "https://www.theaterscene.net/plays/offbway-plays/public-charge/victor-gluck/",
-        "https://www.theatrereviews.com/off-broadway-review-public-charge-at-the-publics-newman-theater-through-sunday-april-12-2026/",
-        "https://www.offoffonline.com/offoffonline/2026/3/26/public-charge"
+        "https://www.newyorktheatreguide.com/reviews/11-to-midnight-off-broadway-review-cost-n-mayor",
+        "https://1minutecritic.com/11-to-midnight-review-cost-n-mayor/",
+        "https://www.theatermania.com/news/review-in-11-to-midnight-cost-n-mayor-bring-new-years-resolutions-to-viral-tiktok-trends_1823729/"
       ],
-      "dirFiles": 12,
-      "dirClean": 10,
-      "inReviewsJson": 8,
-      "missing": [
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp",
-          "host": "lightingandsoundamerica.com",
-          "knownOutletId": "lighting-and-sound-america"
-        },
-        {
-          "url": "https://www.theaterscene.net/plays/offbway-plays/public-charge/victor-gluck/",
-          "host": "theaterscene.net",
-          "knownOutletId": "theater-scene"
-        },
-        {
-          "url": "https://www.theatrereviews.com/off-broadway-review-public-charge-at-the-publics-newman-theater-through-sunday-april-12-2026/",
-          "host": "theatrereviews.com",
-          "knownOutletId": "theatre-reviews-limited"
-        },
-        {
-          "url": "https://www.offoffonline.com/offoffonline/2026/3/26/public-charge",
-          "host": "offoffonline.com",
-          "knownOutletId": "off-off-online"
-        }
-      ],
+      "dirFiles": 4,
+      "dirClean": 3,
+      "inReviewsJson": 1,
+      "missing": [],
       "dirOnly": [
         {
-          "host": "us.cisionone.cision.com",
-          "count": 1
-        },
-        {
-          "host": "theaterlife.com",
+          "host": "thefrontrowcenter.com",
           "count": 1
         }
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.theatermania.com/news/review-public-charge-a-diplomat-recalls-hillary-clintons-state-department_1829739/",
-          "host": "theatermania.com",
+          "url": "https://1minutecritic.com/11-to-midnight-review-cost-n-mayor/",
+          "host": "1minutecritic.com",
           "dirFlags": [
             {
-              "file": "theatermania--zachary-stewart.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.theatermania.com/news/review-public-charge-a-diplomat-recalls-hillary-clintons-state-department_1829739/"
+              "file": "broadway-blog--ryan-leeds.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://1minutecritic.com/11-to-midnight-review-cost-n-mayor/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "showId": "what-we-did-before-our-moth-days-off-broadway-2026",
+      "title": "What We Did Before Our Moth Days",
+      "openingDate": "2026-03-05",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-Wallace-Shawns-WHAT-WE-DID-BEFORE-OUR-MOTH-DAYS-Opens-Off-Broadway-20260305"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.nytimes.com/2026/03/05/theater/what-we-did-before-our-moth-days-review.html",
+        "https://www.wsj.com/articles/what-we-did-before-our-moth-days-review-wallace-shawns-misbegotten-monologues-6f8defac",
+        "https://exeuntnyc.com/reviews/review-what-we-did-before-our-moth-days-at-the-greenwich-house-theater/",
+        "https://www.newyorktheatreguide.com/reviews/what-we-did-before-our-moth-days-off-broadway-review",
+        "https://nystagereview.com/2026/03/05/what-we-did-before-our-moth-days-four-people-live-love-and-die/",
+        "https://nystagereview.com/2026/03/05/what-we-did-before-our-moth-days-quiet-delivery-masks-emotional-turbulence/",
+        "https://www.theatermania.com/news/review-what-we-did-before-our-moth-days-wallace-shawn-on-death-and-sex_1826595/",
+        "https://culturesauce.com/2026/03/05/wallace-shawn-moth-days-off-broadway-review/"
+      ],
+      "dirFiles": 18,
+      "dirClean": 12,
+      "inReviewsJson": 10,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "mothdays.com",
+          "count": 1
+        },
+        {
+          "host": "theaterlife.com",
+          "count": 1
+        },
+        {
+          "host": "thewrap.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "hamlet-off-broadway-2026",
+      "title": "Hamlet",
+      "openingDate": "2026-05-04",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-the-reviews-for-hamlet-at-brooklyn-academy-of-music",
+        "https://playbill.com/article/reviews-critics-weigh-in-on-kenny-leon-helmed-hamlet-at-central-parks-delacorte-theater",
+        "https://playbill.com/article/reviews-what-do-critics-think-of-eddie-izzard-in-solo-hamlet-off-broadway",
+        "https://playbill.com/article/read-reviews-for-hamlet-starring-ruth-negga-at-st-anns-warehouse",
+        "https://playbill.com/article/read-reviews-for-shakespeare-theatre-companys-hamlet-starring-michael-urie",
+        "https://playbill.com/article/reviews-what-do-critics-have-to-say-about-robert-ickes-hamlet",
+        "https://www.broadwayworld.com/article/Review-Roundup-HAMLET-Opens-At-Brooklyn-Academy-of-Music-20260504",
+        "https://www.broadwayworld.com/article/Review-Roundup-Teatro-La-Plazas-HAMLET-Off-Broadway-20260403",
+        "https://www.broadwayworld.com/article/Review-Roundup-Ato-Blankson-Wood-More-Star-In-HAMLET-At-Free-Shakespeare-in-the-Park-20230628",
+        "https://www.broadwayworld.com/article/Review-Roundup-HAMLET-at-Park-Avenue-Armory-What-Did-the-Critics-Think-20220630",
+        "https://www.broadwayworld.com/article/Review-Roundup-Michael-Urie-in-Shakespeare-Theatre-Companys-HAMLET-20180125",
+        "https://www.broadwayworld.com/article/Review-Roundup-Sam-Gold-Brings-HAMLET-to-Shakespeare-in-the-Park-20170713",
+        "https://www.broadwayworld.com/article/Review-Roundup-HAMLET-Starring-Ruth-Negga-at-St-Anns-Warehouse--What-Did-the-Critics-Think-20200211"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.thewrap.com/creative-content/theater/hamlet-off-broadway-review-hiran-abeysekera/",
+        "https://www.newyorktheatreguide.com/reviews/hamlet-off-broadway-review-bam",
+        "https://culturesauce.com/hamlet-2026-hiran-abeysekera-robert-hastie-off-broadway-review/",
+        "https://thefrontrowcenter.com/2026/05/hamlet-4/",
+        "https://lavocedinewyork.com/en/new-york/2026/05/05/uk-national-theatres-hamlet-delivers-standout-shakespeare-at-brooklyns-bam/",
+        "https://nystagereview.com/2026/05/04/hamlet-to-be-or-not-to-be-seen-definitely-to-be/",
+        "https://nystagereview.com/2026/05/04/hamlet-cool-and-clear/",
+        "https://www.theatermania.com/news/review-ophelia-steals-the-show-in-the-national-theatres-out-of-joint-hamlet_1835514/",
+        "https://cititour.com/NYC_Broadway/Hamlet/1156",
+        "https://www.thedailybeast.com/review-thrilling-hamlet-in-central-park-is-hiding-a-hollywood-star",
+        "https://nystagereview.com/2023/06/28/hamlet-to-see-or-not-to-see/",
+        "https://newyorktheater.me/2023/06/28/hamlet-at-shakespeare-in-the-park-review/",
+        "https://www.newyorktheatreguide.com/reviews/hamlet-off-broadway-review-shakespeare-in-the-park",
+        "https://www.nytimes.com/2023/06/28/theater/review-this-hamlet-under-the-stars-is-no-walk-in-the-park.html",
+        "https://observer.com/2023/06/review-to-be-or-not-to-be-at-the-publics-hamlet-in-central-park/",
+        "https://www.theatermania.com/news/review-a-hamlet-brought-into-the-present-in-theory-at-least_1707027/",
+        "https://www.timeout.com/newyork/theater/hamlet-shakespeare-in-the-park",
+        "https://www.thewrap.com/hamlet-shakespeare-in-the-park-off-broadway-review/",
+        "https://nystagereview.com/2024/02/11/hamlet-oh-what-a-noble-prince-plus-everyone-else-is-eddie-izzard/",
+        "https://bnnbreaking.com/world/uk/eddie-izzards-solo-hamlet-adaptation-a-mixed-legacy-of-commercial-success-and-artistic-debate",
+        "https://cititour.com/NYC_News/REVIEW-EDDIE-IZZARD-PLAYS-IT-STRAIGHT-IN-ONE-PERSON-HAMLET/8075",
+        "https://www.newyorktheatreguide.com/reviews/hamlet-off-broadway-review-eddie-izzard",
+        "https://nystagereview.com/2024/02/11/hamlet-a-tour-de-force-that-fails-to-lift-off/",
+        "https://www.telegraph.co.uk/us/culture/eddie-izzard-greenwich-theater-new-york-hamlet-review/",
+        "https://www.timeout.com/newyork/theater/hamlet-eddie-izzard-review",
+        "https://www.theatermania.com/news/review-eddie-izzard-finds-humanity-and-humor-in-hamlet_1729717/",
+        "https://www.amny.com/news/arts-entertainment/theater/review-provocative-production-of-hamlet-gives-noir-feel-to-the-classic-text/",
+        "https://ew.com/theater-reviews/2020/02/10/hamlet-review-ruth-negga/",
+        "https://www.hollywoodreporter.com/review/hamlet-theater-review-1278009",
+        "https://nystagereview.com/2020/02/10/hamlet-the-stars-the-thing/",
+        "https://nystagereview.com/2020/02/10/hamlet-ruth-negga-to-be-or-not-to-be-in-title-role/",
+        "https://www.nytimes.com/2020/02/10/theater/hamlet-review-ruth-negga.html",
+        "https://observer.com/2020/02/ruth-negga-hamlet-review/",
+        "https://www.vulture.com/2020/02/ruth-neggas-hamlet-is-a-sweet-prince-but-not-a-good-night.html",
+        "https://www.thewrap.com/hamlet-theater-review-ruth-negga-shakespeare/",
+        "http://dctheatrescene.com/2018/01/23/hamlet-shakespeare-theatre-cue-comedy-review/",
+        "http://www.nytimes.com/2018/01/23/theater/review-michael-urie-hamlet.html",
+        "http://www.washingtonpost.com/entertainment/theater_dance/kahns-final-hamlet-at-shakespeare-theatre-is-off-key/2018/01/23/c5899bf6-fff8-11e7-93f5-53a3a47824e8_story.html",
+        "https://cititour.com/NYC_News/Review-Hamlet-at-the-Armory/6537",
+        "https://www.thedailybeast.com/this-four-hour-hamlet-is-compelling-just-lose-the-tv-screens",
+        "http://nystagereview.com/2022/06/29/hamlet-the-william-shakespeare-classic-declassified-and-the-rest-is-silence/",
+        "https://observer.com/2022/06/review-robert-ickes-production-of-hamlet-misguidedly-embraces-the-princes-incel-nature/",
+        "https://www.thestage.co.uk/reviews/hamlet-review-at-park-avenue-armory-new-york-robert-icke-alex-lawther",
+        "https://www.thewrap.com/hamlet-off-broadway-review-alex-lawther-leads-a-brilliant-modern-take-on-the-bard/",
+        "https://www.nytimes.com/2026/04/01/theater/hamlet-titus-andronicus-review-shakespeare.html",
+        "https://thefrontrowcenter.com/2026/03/teatro-la-plazas-hamlet/",
+        "https://www.timeout.com/newyork/theater/hamlet-3",
+        "https://www.nytimes.com/2018/01/23/theater/review-michael-urie-hamlet.html",
+        "https://www.washingtonpost.com/entertainment/theater_dance/kahns-final-hamlet-at-shakespeare-theatre-is-off-key/2018/01/23/c5899bf6-fff8-11e7-93f5-53a3a47824e8_story.html",
+        "https://dctheatrescene.com/2018/01/23/hamlet-shakespeare-theatre-cue-comedy-review/",
+        "https://dcmetrotheaterarts.com/2018/01/25/review-hamlet-shakespeare-theatre-company/",
+        "https://www.nytimes.com/2017/07/13/theater/hamlet-review-oscar-isaac-public-theater.html",
+        "http://variety.com/2017/legit/reviews/hamlet-review-oscar-isaac-1202493640/",
+        "http://www.hollywoodreporter.com/review/oscar-isaac-hamlet-theater-1020612",
+        "http://deadline.com/2017/07/review-oscar-isaac-hamlet-encores-sondheim-assassins-1202128215/",
+        "http://deadline.com/tag/hamlet/",
+        "http://www.nydailynews.com/entertainment/theater-arts/oscar-isaac-stars-taxing-hamlet-public-theater-article-1.3323672",
+        "http://www.newsday.com/entertainment/theater/hamlet-review-oscar-isaac-stars-in-playful-sam-gold-staging-1.13797231",
+        "http://www.thedailybeast.com/oscar-isaac-owns-the-public-thearers-new-dirty-sexy-funny-hamlet",
+        "https://www.nytimes.com/2017/07/06/theater/oscar-isaacs-mom-died-now-hes-working-out-his-grief-in-hamlet.html",
+        "https://theaterscene.com/reviews/hamlet/",
+        "https://www.nytimes.com/2022/10/28/theater/hamlet-review-bam.html",
+        "http://exeuntnyc.com/reviews/review-hamlet-at-the-bam-harvey-theater/"
+      ],
+      "dirFiles": 61,
+      "dirClean": 11,
+      "inReviewsJson": 9,
+      "missing": [
+        {
+          "url": "https://www.thedailybeast.com/review-thrilling-hamlet-in-central-park-is-hiding-a-hollywood-star",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast"
+        },
+        {
+          "url": "https://newyorktheater.me/2023/06/28/hamlet-at-shakespeare-in-the-park-review/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater"
+        },
+        {
+          "url": "https://observer.com/2023/06/review-to-be-or-not-to-be-at-the-publics-hamlet-in-central-park/",
+          "host": "observer.com",
+          "knownOutletId": "observer"
+        },
+        {
+          "url": "https://www.amny.com/news/arts-entertainment/theater/review-provocative-production-of-hamlet-gives-noir-feel-to-the-classic-text/",
+          "host": "amny.com",
+          "knownOutletId": "amny"
+        },
+        {
+          "url": "https://ew.com/theater-reviews/2020/02/10/hamlet-review-ruth-negga/",
+          "host": "ew.com",
+          "knownOutletId": "ew"
+        },
+        {
+          "url": "https://observer.com/2020/02/ruth-negga-hamlet-review/",
+          "host": "observer.com",
+          "knownOutletId": "observer"
+        },
+        {
+          "url": "http://dctheatrescene.com/2018/01/23/hamlet-shakespeare-theatre-cue-comedy-review/",
+          "host": "dctheatrescene.com",
+          "knownOutletId": "dctheatrescene"
+        },
+        {
+          "url": "http://www.washingtonpost.com/entertainment/theater_dance/kahns-final-hamlet-at-shakespeare-theatre-is-off-key/2018/01/23/c5899bf6-fff8-11e7-93f5-53a3a47824e8_story.html",
+          "host": "washingtonpost.com",
+          "knownOutletId": "washpost"
+        },
+        {
+          "url": "https://www.thedailybeast.com/this-four-hour-hamlet-is-compelling-just-lose-the-tv-screens",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast"
+        },
+        {
+          "url": "https://observer.com/2022/06/review-robert-ickes-production-of-hamlet-misguidedly-embraces-the-princes-incel-nature/",
+          "host": "observer.com",
+          "knownOutletId": "observer"
+        },
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater_dance/kahns-final-hamlet-at-shakespeare-theatre-is-off-key/2018/01/23/c5899bf6-fff8-11e7-93f5-53a3a47824e8_story.html",
+          "host": "washingtonpost.com",
+          "knownOutletId": "washpost"
+        },
+        {
+          "url": "https://dctheatrescene.com/2018/01/23/hamlet-shakespeare-theatre-cue-comedy-review/",
+          "host": "dctheatrescene.com",
+          "knownOutletId": "dctheatrescene"
+        },
+        {
+          "url": "https://dcmetrotheaterarts.com/2018/01/25/review-hamlet-shakespeare-theatre-company/",
+          "host": "dcmetrotheaterarts.com",
+          "knownOutletId": "dc-metro-theater-arts"
+        },
+        {
+          "url": "http://variety.com/2017/legit/reviews/hamlet-review-oscar-isaac-1202493640/",
+          "host": "variety.com",
+          "knownOutletId": "variety"
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/hamlet-review-oscar-isaac-stars-in-playful-sam-gold-staging-1.13797231",
+          "host": "newsday.com",
+          "knownOutletId": "newsday"
+        },
+        {
+          "url": "http://www.thedailybeast.com/oscar-isaac-owns-the-public-thearers-new-dirty-sexy-funny-hamlet",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "salesforce-sites.com",
+          "count": 1
+        },
+        {
+          "host": "nysun.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://nystagereview.com/2026/05/04/hamlet-to-be-or-not-to-be-seen-definitely-to-be/",
+          "host": "nystagereview.com",
+          "dirFlags": [
+            {
+              "file": "nysr--david-finkle.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2024/02/11/hamlet-oh-what-a-noble-prince-plus-everyone-else-is-eddie-izzard/"
+            },
+            {
+              "file": "nysr--michael-sommers.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2026/05/04/hamlet-cool-and-clear/"
+            },
+            {
+              "file": "nysr--sandy-macdonald.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2024/02/11/hamlet-a-tour-de-force-that-fails-to-lift-off/"
+            },
+            {
+              "file": "nysr--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2024/02/11/hamlet-a-tour-de-force-that-fails-to-lift-off/"
+            }
+          ]
+        },
+        {
+          "url": "https://nystagereview.com/2026/05/04/hamlet-cool-and-clear/",
+          "host": "nystagereview.com",
+          "dirFlags": [
+            {
+              "file": "nysr--david-finkle.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2024/02/11/hamlet-oh-what-a-noble-prince-plus-everyone-else-is-eddie-izzard/"
+            },
+            {
+              "file": "nysr--michael-sommers.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2026/05/04/hamlet-cool-and-clear/"
+            },
+            {
+              "file": "nysr--sandy-macdonald.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2024/02/11/hamlet-a-tour-de-force-that-fails-to-lift-off/"
+            },
+            {
+              "file": "nysr--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2024/02/11/hamlet-a-tour-de-force-that-fails-to-lift-off/"
+            }
+          ]
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/Hamlet/1156",
+          "host": "cititour.com",
+          "dirFlags": [
+            {
+              "file": "cititour--brian-scott-lipton.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://cititour.com/NYC_News/REVIEW-EDDIE-IZZARD-PLAYS-IT-STRAIGHT-IN-ONE-PERSON-HAMLET/8075"
+            }
+          ]
+        },
+        {
+          "url": "https://nystagereview.com/2023/06/28/hamlet-to-see-or-not-to-see/",
+          "host": "nystagereview.com",
+          "dirFlags": [
+            {
+              "file": "nysr--david-finkle.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2024/02/11/hamlet-oh-what-a-noble-prince-plus-everyone-else-is-eddie-izzard/"
+            },
+            {
+              "file": "nysr--michael-sommers.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2026/05/04/hamlet-cool-and-clear/"
+            },
+            {
+              "file": "nysr--sandy-macdonald.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2024/02/11/hamlet-a-tour-de-force-that-fails-to-lift-off/"
+            },
+            {
+              "file": "nysr--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2024/02/11/hamlet-a-tour-de-force-that-fails-to-lift-off/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/hamlet-shakespeare-in-the-park",
+          "host": "timeout.com",
+          "dirFlags": [
+            {
+              "file": "timeout--raven-snook.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.timeout.com/newyork/theater/hamlet-eddie-izzard-review"
+            }
+          ]
+        },
+        {
+          "url": "https://nystagereview.com/2024/02/11/hamlet-oh-what-a-noble-prince-plus-everyone-else-is-eddie-izzard/",
+          "host": "nystagereview.com",
+          "dirFlags": [
+            {
+              "file": "nysr--david-finkle.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2024/02/11/hamlet-oh-what-a-noble-prince-plus-everyone-else-is-eddie-izzard/"
+            },
+            {
+              "file": "nysr--michael-sommers.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2026/05/04/hamlet-cool-and-clear/"
+            },
+            {
+              "file": "nysr--sandy-macdonald.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2024/02/11/hamlet-a-tour-de-force-that-fails-to-lift-off/"
+            },
+            {
+              "file": "nysr--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2024/02/11/hamlet-a-tour-de-force-that-fails-to-lift-off/"
+            }
+          ]
+        },
+        {
+          "url": "https://bnnbreaking.com/world/uk/eddie-izzards-solo-hamlet-adaptation-a-mixed-legacy-of-commercial-success-and-artistic-debate",
+          "host": "bnnbreaking.com",
+          "dirFlags": [
+            {
+              "file": "bnn-breaking--hadeel-hashem.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://bnnbreaking.com/world/uk/eddie-izzards-solo-hamlet-adaptation-a-mixed-legacy-of-commercial-success-and-artistic-debate"
+            }
+          ]
+        },
+        {
+          "url": "https://cititour.com/NYC_News/REVIEW-EDDIE-IZZARD-PLAYS-IT-STRAIGHT-IN-ONE-PERSON-HAMLET/8075",
+          "host": "cititour.com",
+          "dirFlags": [
+            {
+              "file": "cititour--brian-scott-lipton.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://cititour.com/NYC_News/REVIEW-EDDIE-IZZARD-PLAYS-IT-STRAIGHT-IN-ONE-PERSON-HAMLET/8075"
+            }
+          ]
+        },
+        {
+          "url": "https://nystagereview.com/2024/02/11/hamlet-a-tour-de-force-that-fails-to-lift-off/",
+          "host": "nystagereview.com",
+          "dirFlags": [
+            {
+              "file": "nysr--david-finkle.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2024/02/11/hamlet-oh-what-a-noble-prince-plus-everyone-else-is-eddie-izzard/"
+            },
+            {
+              "file": "nysr--michael-sommers.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2026/05/04/hamlet-cool-and-clear/"
+            },
+            {
+              "file": "nysr--sandy-macdonald.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2024/02/11/hamlet-a-tour-de-force-that-fails-to-lift-off/"
+            },
+            {
+              "file": "nysr--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2024/02/11/hamlet-a-tour-de-force-that-fails-to-lift-off/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.telegraph.co.uk/us/culture/eddie-izzard-greenwich-theater-new-york-hamlet-review/",
+          "host": "telegraph.co.uk",
+          "dirFlags": [
+            {
+              "file": "sunday-telegraph--dominic-cavendish.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/hamlet-riverside-studios-review-eddie-izzard/"
+            },
+            {
+              "file": "telegraph--diane-snyder.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.telegraph.co.uk/us/culture/eddie-izzard-greenwich-theater-new-york-hamlet-review/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/hamlet-eddie-izzard-review",
+          "host": "timeout.com",
+          "dirFlags": [
+            {
+              "file": "timeout--raven-snook.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.timeout.com/newyork/theater/hamlet-eddie-izzard-review"
+            }
+          ]
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/hamlet-theater-review-1278009",
+          "host": "hollywoodreporter.com",
+          "dirFlags": [
+            {
+              "file": "hollywood-reporter--david-rooney.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.hollywoodreporter.com/news/general-news/hamlet-theater-review-1278009/"
+            }
+          ]
+        },
+        {
+          "url": "https://nystagereview.com/2020/02/10/hamlet-the-stars-the-thing/",
+          "host": "nystagereview.com",
+          "dirFlags": [
+            {
+              "file": "nysr--david-finkle.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2024/02/11/hamlet-oh-what-a-noble-prince-plus-everyone-else-is-eddie-izzard/"
+            },
+            {
+              "file": "nysr--michael-sommers.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2026/05/04/hamlet-cool-and-clear/"
+            },
+            {
+              "file": "nysr--sandy-macdonald.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2024/02/11/hamlet-a-tour-de-force-that-fails-to-lift-off/"
+            },
+            {
+              "file": "nysr--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2024/02/11/hamlet-a-tour-de-force-that-fails-to-lift-off/"
+            }
+          ]
+        },
+        {
+          "url": "https://nystagereview.com/2020/02/10/hamlet-ruth-negga-to-be-or-not-to-be-in-title-role/",
+          "host": "nystagereview.com",
+          "dirFlags": [
+            {
+              "file": "nysr--david-finkle.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2024/02/11/hamlet-oh-what-a-noble-prince-plus-everyone-else-is-eddie-izzard/"
+            },
+            {
+              "file": "nysr--michael-sommers.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2026/05/04/hamlet-cool-and-clear/"
+            },
+            {
+              "file": "nysr--sandy-macdonald.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2024/02/11/hamlet-a-tour-de-force-that-fails-to-lift-off/"
+            },
+            {
+              "file": "nysr--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2024/02/11/hamlet-a-tour-de-force-that-fails-to-lift-off/"
+            }
+          ]
+        },
+        {
+          "url": "https://cititour.com/NYC_News/Review-Hamlet-at-the-Armory/6537",
+          "host": "cititour.com",
+          "dirFlags": [
+            {
+              "file": "cititour--brian-scott-lipton.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://cititour.com/NYC_News/REVIEW-EDDIE-IZZARD-PLAYS-IT-STRAIGHT-IN-ONE-PERSON-HAMLET/8075"
+            }
+          ]
+        },
+        {
+          "url": "http://nystagereview.com/2022/06/29/hamlet-the-william-shakespeare-classic-declassified-and-the-rest-is-silence/",
+          "host": "nystagereview.com",
+          "dirFlags": [
+            {
+              "file": "nysr--david-finkle.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2024/02/11/hamlet-oh-what-a-noble-prince-plus-everyone-else-is-eddie-izzard/"
+            },
+            {
+              "file": "nysr--michael-sommers.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2026/05/04/hamlet-cool-and-clear/"
+            },
+            {
+              "file": "nysr--sandy-macdonald.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2024/02/11/hamlet-a-tour-de-force-that-fails-to-lift-off/"
+            },
+            {
+              "file": "nysr--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2024/02/11/hamlet-a-tour-de-force-that-fails-to-lift-off/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/hamlet-review-at-park-avenue-armory-new-york-robert-icke-alex-lawther",
+          "host": "thestage.co.uk",
+          "dirFlags": [
+            {
+              "file": "thestage--georgia-luckhurst.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thestage.co.uk/reviews/eddie-izzard-hamlet-review-riverside-studios-london"
+            }
+          ]
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/hamlet-3",
+          "host": "timeout.com",
+          "dirFlags": [
+            {
+              "file": "timeout--raven-snook.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.timeout.com/newyork/theater/hamlet-eddie-izzard-review"
+            }
+          ]
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/oscar-isaac-hamlet-theater-1020612",
+          "host": "hollywoodreporter.com",
+          "dirFlags": [
+            {
+              "file": "hollywood-reporter--david-rooney.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.hollywoodreporter.com/news/general-news/hamlet-theater-review-1278009/"
+            }
+          ]
+        },
+        {
+          "url": "http://deadline.com/2017/07/review-oscar-isaac-hamlet-encores-sondheim-assassins-1202128215/",
+          "host": "deadline.com",
+          "dirFlags": [
+            {
+              "file": "deadline--jeremy-gerard.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://deadline.com/2015/04/ken-watanabe-king-and-i-peter-sarsgaard-hamlet-opening-review-1201411292/"
+            }
+          ]
+        },
+        {
+          "url": "http://deadline.com/tag/hamlet/",
+          "host": "deadline.com",
+          "dirFlags": [
+            {
+              "file": "deadline--jeremy-gerard.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://deadline.com/2015/04/ken-watanabe-king-and-i-peter-sarsgaard-hamlet-opening-review-1201411292/"
+            }
+          ]
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/theater-arts/oscar-isaac-stars-taxing-hamlet-public-theater-article-1.3323672",
+          "host": "nydailynews.com",
+          "dirFlags": [
+            {
+              "file": "nydailynews--joe-dziemianowicz.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.nydailynews.com/entertainment/theater-arts/peter-sarsgaard-delivers-not-so-great-dane-hamlet-article-1.2186659"
+            }
+          ]
+        },
+        {
+          "url": "http://exeuntnyc.com/reviews/review-hamlet-at-the-bam-harvey-theater/",
+          "host": "exeuntnyc.com",
+          "dirFlags": [
+            {
+              "file": "exeunt-magazine--lane-williamson.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://exeuntnyc.com/reviews/review-hamlet-at-the-bam-harvey-theater/"
             }
           ]
         }
       ],
       "ingestResults": [
+        {
+          "url": "https://www.thedailybeast.com/review-thrilling-hamlet-in-central-park-is-hiding-a-hollywood-star",
+          "host": "thedailybeast.com",
+          "outletId": "dailybeast",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://newyorktheater.me/2023/06/28/hamlet-at-shakespeare-in-the-park-review/",
+          "host": "newyorktheater.me",
+          "outletId": "nyt-theater",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://observer.com/2023/06/review-to-be-or-not-to-be-at-the-publics-hamlet-in-central-park/",
+          "host": "observer.com",
+          "outletId": "observer",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://www.amny.com/news/arts-entertainment/theater/review-provocative-production-of-hamlet-gives-noir-feel-to-the-classic-text/",
+          "host": "amny.com",
+          "outletId": "amny",
+          "provisional": false,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=hamlet-off-broadway-2026 --url=https:/"
+        },
+        {
+          "url": "https://ew.com/theater-reviews/2020/02/10/hamlet-review-ruth-negga/",
+          "host": "ew.com",
+          "outletId": "ew",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://observer.com/2020/02/ruth-negga-hamlet-review/",
+          "host": "observer.com",
+          "outletId": "observer"
+        },
+        {
+          "url": "http://dctheatrescene.com/2018/01/23/hamlet-shakespeare-theatre-cue-comedy-review/",
+          "host": "dctheatrescene.com",
+          "outletId": "dctheatrescene"
+        },
+        {
+          "url": "http://www.washingtonpost.com/entertainment/theater_dance/kahns-final-hamlet-at-shakespeare-theatre-is-off-key/2018/01/23/c5899bf6-fff8-11e7-93f5-53a3a47824e8_story.html",
+          "host": "washingtonpost.com",
+          "outletId": "washpost"
+        },
+        {
+          "url": "https://www.thedailybeast.com/this-four-hour-hamlet-is-compelling-just-lose-the-tv-screens",
+          "host": "thedailybeast.com",
+          "outletId": "dailybeast"
+        },
+        {
+          "url": "https://observer.com/2022/06/review-robert-ickes-production-of-hamlet-misguidedly-embraces-the-princes-incel-nature/",
+          "host": "observer.com",
+          "outletId": "observer"
+        },
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater_dance/kahns-final-hamlet-at-shakespeare-theatre-is-off-key/2018/01/23/c5899bf6-fff8-11e7-93f5-53a3a47824e8_story.html",
+          "host": "washingtonpost.com",
+          "outletId": "washpost"
+        },
+        {
+          "url": "https://dctheatrescene.com/2018/01/23/hamlet-shakespeare-theatre-cue-comedy-review/",
+          "host": "dctheatrescene.com",
+          "outletId": "dctheatrescene"
+        },
+        {
+          "url": "https://dcmetrotheaterarts.com/2018/01/25/review-hamlet-shakespeare-theatre-company/",
+          "host": "dcmetrotheaterarts.com",
+          "outletId": "dc-metro-theater-arts"
+        },
+        {
+          "url": "http://variety.com/2017/legit/reviews/hamlet-review-oscar-isaac-1202493640/",
+          "host": "variety.com",
+          "outletId": "variety"
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/hamlet-review-oscar-isaac-stars-in-playful-sam-gold-staging-1.13797231",
+          "host": "newsday.com",
+          "outletId": "newsday"
+        },
+        {
+          "url": "http://www.thedailybeast.com/oscar-isaac-owns-the-public-thearers-new-dirty-sexy-funny-hamlet",
+          "host": "thedailybeast.com",
+          "outletId": "dailybeast"
+        }
+      ]
+    },
+    {
+      "showId": "seagull-true-story-off-broadway-2026",
+      "title": "Seagull: True Story",
+      "openingDate": "2026-03-30",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-SEAGULL-TRUE-STORY-at-the-Public-Theater-20260331"
+      ],
+      "aggregatorListedUrls": [
+        "https://1minutecritic.com/seagull-true-story-review/",
+        "https://www.newyorktheatreguide.com/reviews/seagull-true-story-off-broadway-review",
+        "https://culturesauce.com/2026/03/31/seagull-true-story-off-broadway-review/",
+        "https://thefrontrowcenter.com/2026/04/seagull-true-story/",
+        "https://stageandcinema.com/2026/03/31/seagull-true-story-review-public-theater/",
+        "https://stagezine.com/seagull-true-story-war-art-censorship/",
+        "https://www.timeout.com/newyork/theater/seagull-true-story-review-off-broadway",
+        "https://www.theatermania.com/news/review-seagull-true-story-measures-the-distance-between-moscow-and-brooklyn_1830988/",
+        "http://www.lightingandsoundamerica.com/news/story.asp",
+        "https://newyorktheater.me/2026/04/04/seagull-true-story-review/"
+      ],
+      "dirFiles": 25,
+      "dirClean": 7,
+      "inReviewsJson": 7,
+      "missing": [
+        {
+          "url": "https://www.timeout.com/newyork/theater/seagull-true-story-review-off-broadway",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london"
+        },
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp",
+          "host": "lightingandsoundamerica.com",
+          "knownOutletId": "lighting-and-sound-america"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "brianeugenioherrera.substack.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://culturesauce.com/2026/03/31/seagull-true-story-off-broadway-review/",
+          "host": "culturesauce.com",
+          "dirFlags": [
+            {
+              "file": "culturesauce--thom-geier.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://culturesauce.com/2026/03/31/seagull-true-story-off-broadway-review/"
+            }
+          ]
+        },
+        {
+          "url": "https://stagezine.com/seagull-true-story-war-art-censorship/",
+          "host": "stagezine.com",
+          "dirFlags": [
+            {
+              "file": "stagezine--scott-harrah.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://stagezine.com/seagull-true-story-war-art-censorship/"
+            }
+          ]
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://www.timeout.com/newyork/theater/seagull-true-story-review-off-broadway",
+          "host": "timeout.com",
+          "outletId": "timeout-london",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
         {
           "url": "http://www.lightingandsoundamerica.com/news/story.asp",
           "host": "lightingandsoundamerica.com",
           "outletId": "lighting-and-sound-america",
           "provisional": false,
           "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=public-charge-off-broadway-2026 --url="
-        },
-        {
-          "url": "https://www.theaterscene.net/plays/offbway-plays/public-charge/victor-gluck/",
-          "host": "theaterscene.net",
-          "outletId": "theater-scene",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.theatrereviews.com/off-broadway-review-public-charge-at-the-publics-newman-theater-through-sunday-april-12-2026/",
-          "host": "theatrereviews.com",
-          "outletId": "theatre-reviews-limited",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.offoffonline.com/offoffonline/2026/3/26/public-charge",
-          "host": "offoffonline.com",
-          "outletId": "off-off-online",
-          "provisional": false,
-          "ok": true,
-          "reason": null
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=seagull-true-story-off-broadway-2026 -"
         }
       ],
       "ingestSkippedByCap": []
-    },
-    {
-      "showId": "encores-the-wild-party-off-broadway-2026",
-      "title": "Encores! The Wild Party",
-      "openingDate": "2026-03-18",
-      "status": "closed",
-      "category": "off-broadway",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.nytimes.com/2026/03/19/theater/the-wild-party-review-warren-rogers-pinkins-donica.html",
-        "https://www.theatermania.com/news/review-michael-john-lachiusas-the-wild-party-at-encores_1828703/",
-        "https://www.talkinbroadway.com/page/ob/03_19_26.html",
-        "https://www.theaterscene.net/musicals/offbway/the-wild-party-encores/tony-marinelli/",
-        "https://newyorktheater.me/2026/03/20/the-wild-party-encores-review/",
-        "https://culturesauce.com/2026/03/19/the-wild-party-lachiusa-musical-2026-off-broadway-review/",
-        "https://www.interestedbystander.com/2026/03/theater-reviews-jesa-uniquely-focuses.html"
-      ],
-      "dirFiles": 13,
-      "dirClean": 10,
-      "inReviewsJson": 10,
-      "missing": [
-        {
-          "url": "https://www.interestedbystander.com/2026/03/theater-reviews-jesa-uniquely-focuses.html",
-          "host": "interestedbystander.com",
-          "knownOutletId": "the-interested-bystander"
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "cititour.com",
-          "count": 1
-        },
-        {
-          "host": "1minutecritic.com",
-          "count": 1
-        },
-        {
-          "host": "theatrely.com",
-          "count": 1
-        },
-        {
-          "host": "vulture.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [],
-      "ingestResults": [
-        {
-          "url": "https://www.interestedbystander.com/2026/03/theater-reviews-jesa-uniquely-focuses.html",
-          "host": "interestedbystander.com",
-          "outletId": "the-interested-bystander",
-          "provisional": false,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=encores-the-wild-party-off-broadway-20"
-        }
-      ],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "the-adding-machine-off-broadway-2026",
-      "title": "The Adding Machine",
-      "openingDate": "2026-04-14",
-      "status": "closed",
-      "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/reviews-sum-up-the-adding-machine-off-broadway",
-        "https://www.broadwayworld.com/article/Review-Roundup-THE-ADDING-MACHINE-Opens-At-The-New-Group-20260414"
-      ],
-      "aggregatorListedUrls": [
-        "https://donshewey.substack.com/p/culture-vulture-the-adding-machine",
-        "https://culturesauce.com/2026/04/14/the-adding-machine-off-broadway-review/",
-        "https://frontmezzjunkies.com/2026/04/14/counting-the-cost-the-adding-machine-and-the-machinery-of-living/",
-        "https://nystagereview.com/2026/04/14/the-adding-machine-a-1920s-flashback-zeroes-into-fears-of-a-mechanical-world/",
-        "https://www.newyorktheatreguide.com/reviews/the-adding-machine-off-broadway-review",
-        "https://www.nytimes.com/2026/04/15/theater/the-adding-machine-review-daphne-rubin-vega.html",
-        "https://therecs.co.uk/the-adding-machine/",
-        "https://www.slantmagazine.com/theater/the-adding-machine-review-jennifer-tilly/",
-        "https://stageandcinema.com/2026/04/14/the-adding-machine-the-new-group-review/",
-        "https://www.theatermania.com/news/review-the-adding-machine-the-right-play-in-the-wrong-production_1832785/",
-        "https://theaterpizzazz.com/the-adding-machine-is-back-after-more-than-100-years/",
-        "https://www.timeout.com/newyork/news/theater-review-the-adding-machine-gets-a-miscalculated-revival-041526",
-        "https://www.thewrap.com/creative-content/reviews/the-adding-machine-off-broadway-review-jennifer-tilly-daphne-rubin-vega/",
-        "http://www.lightingandsoundamerica.com/news/story.asp",
-        "https://www.talkinbroadway.com/page/ob/04_14_26.html",
-        "https://www.theaterscene.net/plays/offbway-plays/the-adding-machine/victor-gluck/",
-        "https://theaterlife.com/the-adding-machine-1-2/"
-      ],
-      "dirFiles": 24,
-      "dirClean": 14,
-      "inReviewsJson": 13,
-      "missing": [
-        {
-          "url": "https://www.theaterscene.net/plays/offbway-plays/the-adding-machine/victor-gluck/",
-          "host": "theaterscene.net",
-          "knownOutletId": "theater-scene"
-        },
-        {
-          "url": "https://theaterlife.com/the-adding-machine-1-2/",
-          "host": "theaterlife.com",
-          "knownOutletId": "theater-life"
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "nysun.com",
-          "count": 1
-        },
-        {
-          "host": "theaterscene.org",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://nystagereview.com/2026/04/14/the-adding-machine-a-1920s-flashback-zeroes-into-fears-of-a-mechanical-world/",
-          "host": "nystagereview.com",
-          "dirFlags": [
-            {
-              "file": "nysr--michael-sommers.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://nystagereview.com/2026/04/14/the-adding-machine-a-1920s-flashback-zeroes-into-fears-of-a-mechanical-world/"
-            }
-          ]
-        },
-        {
-          "url": "https://theaterpizzazz.com/the-adding-machine-is-back-after-more-than-100-years/",
-          "host": "theaterpizzazz.com",
-          "dirFlags": [
-            {
-              "file": "theater-pizzazz--ron-fassler.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://theaterpizzazz.com/the-adding-machine-is-back-after-more-than-100-years/"
-            }
-          ]
-        },
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp",
-          "host": "lightingandsoundamerica.com",
-          "dirFlags": [
-            {
-              "file": "lighting-and-sound-america--david-barbour.json",
-              "flag": "wrongShow",
-              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-B7FU5"
-            }
-          ]
-        }
-      ],
-      "ingestResults": [
-        {
-          "url": "https://www.theaterscene.net/plays/offbway-plays/the-adding-machine/victor-gluck/",
-          "host": "theaterscene.net",
-          "outletId": "theater-scene",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://theaterlife.com/the-adding-machine-1-2/",
-          "host": "theaterlife.com",
-          "outletId": "theater-life",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "body-count-off-broadway-2026",
-      "title": "BODY COUNT",
-      "openingDate": "2026-03-03",
-      "status": "closed",
-      "category": "off-broadway",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.theaterscene.net/plays/solo-plays/body-count/tony-marinelli/"
-      ],
-      "dirFiles": 1,
-      "dirClean": 1,
-      "inReviewsJson": 1,
-      "missing": [],
-      "dirOnly": [],
-      "flaggedMisses": []
-    },
-    {
-      "showId": "bloodlove-off-broadway-2026",
-      "title": "Blood/Love",
-      "openingDate": "2026-03-03",
-      "status": "closed",
-      "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/read-the-reviews-for-vampire-pop-opera-blood-love-off-broadway"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.newyorktheatreguide.com/reviews/blood-love-off-broadway-review",
-        "https://1minutecritic.com/blood-love-vampire-musical-review/",
-        "https://www.theatermania.com/news/review-blood-love-a-surprisingly-enjoyable-vampire-pop-opera_1826531/",
-        "https://www.theaterscene.net/musicals/offbway/blood-love/victor-gluck/",
-        "https://thefrontrowcenter.com/2026/03/blood-love/"
-      ],
-      "dirFiles": 6,
-      "dirClean": 5,
-      "inReviewsJson": 3,
-      "missing": [
-        {
-          "url": "https://www.theaterscene.net/musicals/offbway/blood-love/victor-gluck/",
-          "host": "theaterscene.net",
-          "knownOutletId": "theater-scene"
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "theatrely.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [],
-      "ingestResults": [
-        {
-          "url": "https://www.theaterscene.net/musicals/offbway/blood-love/victor-gluck/",
-          "host": "theaterscene.net",
-          "outletId": "theater-scene",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "chicka-chicka-boom-boom-the-musical-off-broadway-2026",
-      "title": "Chicka Chicka Boom Boom: The Musical",
-      "openingDate": "2026-02-14",
-      "status": "closed",
-      "category": "off-broadway",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://d4ov6iqsvotvt.cloudfront.net",
-        "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-regular-400-27da0e58c35276629aa3a2da60f2dba2d1e149bda7991346de3676fcbd3db989.woff2",
-        "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-light-300-6069894d8e39d47ebbb6723d869f4e8302f63980d403369fcb556a08b2a43f05.woff2",
-        "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-brands-400-84abb92e6b70b787c333540b97f08e758e7fc5b1627963cd7c045eaabb8cfcef.woff2",
-        "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Regular-7b5dc1aeba33f724aa530071bc99c336e8cb8aef02c4d8ece0b2c2f18b468aec.woff2",
-        "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Medium-699f505963eb3e5205fcb7c294cfd0aa26bf2a018aa383d07f9543ea48ed0a24.woff2",
-        "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-SemiBold-1305d4570afa31aad3e616ee40ef22be4c836b9c7f852b18fda655e45ad1830e.woff2",
-        "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Bold-9ca97ade87ab582e4550f60c328e0dacf939d7ff14a23cbf53908dd694ab308d.woff2",
-        "https://fonts.gstatic.com",
-        "https://fonts.googleapis.com/css2",
-        "https://d2kbhv4d9rykxy.cloudfront.net/assets/vendors_v3-6bbc36c3e4135cb2b2f7560b7e0902cd03221d9908f49e6c6aada52242c7c9fc.css",
-        "https://d2kbhv4d9rykxy.cloudfront.net/assets/application_v3-f002ea47f6f850c02c6b8e3aeeed92bb324e6b03136430d264becc38698b6196.css",
-        "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/vendor-fde82a95.chunk.css",
-        "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/membership_bundle~promo_ticket_bundle-afbed0f9.chunk.css",
-        "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/membership_bundle-75917b78.chunk.css",
-        "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/common-484225fd.chunk.css",
-        "https://d2kbhv4d9rykxy.cloudfront.net/assets/apple-touch-icon-c6200c9822af8a301654011794a1de37ce659cb4037dd73a2b327c64db42f1f9.png",
-        "https://d2kbhv4d9rykxy.cloudfront.net/assets/icon-f88d83923107c58a348dbc6f102e89c31f3824cded9fd45f5437786d7cfeb062.svg",
-        "https://d2kbhv4d9rykxy.cloudfront.net/assets/favicon-b48fd9122981448f30ed8879033467df30d423d872503455ab4e53e62f8808d0.ico",
-        "https://maps.google.com/",
-        "https://www.todaytixgroup.com/careers",
-        "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform"
-      ],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [
-        {
-          "url": "https://d4ov6iqsvotvt.cloudfront.net",
-          "host": "d4ov6iqsvotvt.cloudfront.net",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-regular-400-27da0e58c35276629aa3a2da60f2dba2d1e149bda7991346de3676fcbd3db989.woff2",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-light-300-6069894d8e39d47ebbb6723d869f4e8302f63980d403369fcb556a08b2a43f05.woff2",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-brands-400-84abb92e6b70b787c333540b97f08e758e7fc5b1627963cd7c045eaabb8cfcef.woff2",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Regular-7b5dc1aeba33f724aa530071bc99c336e8cb8aef02c4d8ece0b2c2f18b468aec.woff2",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Medium-699f505963eb3e5205fcb7c294cfd0aa26bf2a018aa383d07f9543ea48ed0a24.woff2",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-SemiBold-1305d4570afa31aad3e616ee40ef22be4c836b9c7f852b18fda655e45ad1830e.woff2",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Bold-9ca97ade87ab582e4550f60c328e0dacf939d7ff14a23cbf53908dd694ab308d.woff2",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://fonts.gstatic.com",
-          "host": "fonts.gstatic.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://fonts.googleapis.com/css2",
-          "host": "fonts.googleapis.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/vendors_v3-6bbc36c3e4135cb2b2f7560b7e0902cd03221d9908f49e6c6aada52242c7c9fc.css",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/application_v3-f002ea47f6f850c02c6b8e3aeeed92bb324e6b03136430d264becc38698b6196.css",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/vendor-fde82a95.chunk.css",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/membership_bundle~promo_ticket_bundle-afbed0f9.chunk.css",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/membership_bundle-75917b78.chunk.css",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/common-484225fd.chunk.css",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/apple-touch-icon-c6200c9822af8a301654011794a1de37ce659cb4037dd73a2b327c64db42f1f9.png",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/icon-f88d83923107c58a348dbc6f102e89c31f3824cded9fd45f5437786d7cfeb062.svg",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/favicon-b48fd9122981448f30ed8879033467df30d423d872503455ab4e53e62f8808d0.ico",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://maps.google.com/",
-          "host": "maps.google.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://www.todaytixgroup.com/careers",
-          "host": "todaytixgroup.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
-          "host": "docs.google.com",
-          "knownOutletId": null
-        }
-      ],
-      "dirOnly": [],
-      "flaggedMisses": [],
-      "ingestResults": [
-        {
-          "url": "https://d4ov6iqsvotvt.cloudfront.net",
-          "host": "d4ov6iqsvotvt.cloudfront.net",
-          "outletId": "cloudfront",
-          "provisional": true,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=chicka-chicka-boom-boom-the-musical-of"
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-regular-400-27da0e58c35276629aa3a2da60f2dba2d1e149bda7991346de3676fcbd3db989.woff2",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "outletId": "cloudfront",
-          "provisional": true,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=chicka-chicka-boom-boom-the-musical-of"
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-light-300-6069894d8e39d47ebbb6723d869f4e8302f63980d403369fcb556a08b2a43f05.woff2",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "outletId": "cloudfront",
-          "provisional": true,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=chicka-chicka-boom-boom-the-musical-of"
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-brands-400-84abb92e6b70b787c333540b97f08e758e7fc5b1627963cd7c045eaabb8cfcef.woff2",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "outletId": "cloudfront",
-          "provisional": true,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=chicka-chicka-boom-boom-the-musical-of"
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Regular-7b5dc1aeba33f724aa530071bc99c336e8cb8aef02c4d8ece0b2c2f18b468aec.woff2",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "outletId": "cloudfront",
-          "provisional": true,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=chicka-chicka-boom-boom-the-musical-of"
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Medium-699f505963eb3e5205fcb7c294cfd0aa26bf2a018aa383d07f9543ea48ed0a24.woff2",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "outletId": "cloudfront"
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-SemiBold-1305d4570afa31aad3e616ee40ef22be4c836b9c7f852b18fda655e45ad1830e.woff2",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "outletId": "cloudfront"
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Bold-9ca97ade87ab582e4550f60c328e0dacf939d7ff14a23cbf53908dd694ab308d.woff2",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "outletId": "cloudfront"
-        },
-        {
-          "url": "https://fonts.gstatic.com",
-          "host": "fonts.gstatic.com",
-          "outletId": "gstatic"
-        },
-        {
-          "url": "https://fonts.googleapis.com/css2",
-          "host": "fonts.googleapis.com",
-          "outletId": "googleapis"
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/vendors_v3-6bbc36c3e4135cb2b2f7560b7e0902cd03221d9908f49e6c6aada52242c7c9fc.css",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "outletId": "cloudfront"
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/application_v3-f002ea47f6f850c02c6b8e3aeeed92bb324e6b03136430d264becc38698b6196.css",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "outletId": "cloudfront"
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/vendor-fde82a95.chunk.css",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "outletId": "cloudfront"
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/membership_bundle~promo_ticket_bundle-afbed0f9.chunk.css",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "outletId": "cloudfront"
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/membership_bundle-75917b78.chunk.css",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "outletId": "cloudfront"
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/common-484225fd.chunk.css",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "outletId": "cloudfront"
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/apple-touch-icon-c6200c9822af8a301654011794a1de37ce659cb4037dd73a2b327c64db42f1f9.png",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "outletId": "cloudfront"
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/icon-f88d83923107c58a348dbc6f102e89c31f3824cded9fd45f5437786d7cfeb062.svg",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "outletId": "cloudfront"
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/favicon-b48fd9122981448f30ed8879033467df30d423d872503455ab4e53e62f8808d0.ico",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "outletId": "cloudfront"
-        },
-        {
-          "url": "https://maps.google.com/",
-          "host": "maps.google.com",
-          "outletId": "google"
-        },
-        {
-          "url": "https://www.todaytixgroup.com/careers",
-          "host": "todaytixgroup.com",
-          "outletId": "todaytixgroup"
-        },
-        {
-          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
-          "host": "docs.google.com",
-          "outletId": "google"
-        }
-      ]
-    },
-    {
-      "showId": "trash-off-broadway-2026",
-      "title": "Trash",
-      "openingDate": "2026-03-07",
-      "status": "closed",
-      "category": "off-broadway",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.nytimes.com/2026/03/15/theater/trash-review-perelman.html",
-        "https://www.newyorktheatreguide.com/reviews/trash-off-broadway-review",
-        "https://www.theatermania.com/news/review-trash-a-pungent-comedy-drama-about-deaf-roomies_1827772/",
-        "https://www.theaterscene.net/plays/offbway-plays/trash/victor-gluck/",
-        "https://newyorktheater.me/2026/03/13/trash-review-asl-play-for-hearing-and-deaf-alike/",
-        "https://www.offoffonline.com/offoffonline/2026/3/13/trash"
-      ],
-      "dirFiles": 4,
-      "dirClean": 4,
-      "inReviewsJson": 4,
-      "missing": [
-        {
-          "url": "https://www.theaterscene.net/plays/offbway-plays/trash/victor-gluck/",
-          "host": "theaterscene.net",
-          "knownOutletId": "theater-scene"
-        },
-        {
-          "url": "https://www.offoffonline.com/offoffonline/2026/3/13/trash",
-          "host": "offoffonline.com",
-          "knownOutletId": "off-off-online"
-        }
-      ],
-      "dirOnly": [],
-      "flaggedMisses": [],
-      "ingestResults": [
-        {
-          "url": "https://www.theaterscene.net/plays/offbway-plays/trash/victor-gluck/",
-          "host": "theaterscene.net",
-          "outletId": "theater-scene",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.offoffonline.com/offoffonline/2026/3/13/trash",
-          "host": "offoffonline.com",
-          "outletId": "off-off-online",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "anonymous-off-broadway-2026",
-      "title": "Anonymous",
-      "openingDate": "2026-01-29",
-      "status": "closed",
-      "category": "off-broadway",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.offoffonline.com/offoffonline/2026/1/31/anonymous"
-      ],
-      "dirFiles": 2,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [],
-      "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://www.offoffonline.com/offoffonline/2026/1/31/anonymous",
-          "host": "offoffonline.com",
-          "dirFlags": [
-            {
-              "file": "off-off-online--walter-murphy.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.offoffonline.com/offoffonline/2026/1/31/anonymous"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "showId": "antigone-this-play-i-read-in-high-school-off-broadway-2026",
-      "title": "Antigone (This Play I Read in High School)",
-      "openingDate": "2026-02-26",
-      "status": "closed",
-      "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-ANTIGONE-THIS-PLAY-I-READ-IN-HIGH-SCHOOL-Opens-At-The-Public-Theater-20260311"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.wsj.com/articles/antigone-this-play-i-read-in-high-school-review-inherited-roles-tyrannical-rules-a2d78233",
-        "https://1minutecritic.com/antigone-this-play-i-read-in-high-school-review-public-theater/",
-        "https://www.newyorktheatreguide.com/reviews/antigone-this-play-i-read-in-high-school-off-broadway-review",
-        "https://www.timeout.com/newyork/theater/antigone-this-play-i-read-in-high-school-review-susannah-perkins-tony-shalhoub",
-        "http://www.lightingandsoundamerica.com/news/story.asp",
-        "https://www.talkinbroadway.com/page/ob/03_11_26b.html",
-        "https://www.theaterscene.net/plays/offbway-plays/antigone-this-play-i-read-in-high-school/victor-gluck/",
-        "https://exeuntnyc.com/reviews/review-antigone-this-play-i-read-in-high-school-at-the-public-theater/",
-        "https://www.theatrereviews.com/off-broadway-review-antigone-this-play-i-read-in-high-school-at-the-public-theaters-barbaralee-theater-extended-through-saturday-april-4-2026/",
-        "https://newyorktheater.me/2026/03/21/antigone-this-play-i-read-in-high-school-review/",
-        "https://culturesauce.com/2026/03/11/antigone-this-play-off-broadway-review/",
-        "https://theaterscene.com/reviews/antigone-this-play-i-read-in-high-school/",
-        "https://lavocedinewyork.com/en/new-york/2026/03/28/a-reimagined-antigone-challenges-classical-and-modern-morals/"
-      ],
-      "dirFiles": 22,
-      "dirClean": 18,
-      "inReviewsJson": 17,
-      "missing": [],
-      "dirOnly": [
-        {
-          "host": "cititour.com",
-          "count": 1
-        },
-        {
-          "host": "nytimes.com",
-          "count": 1
-        },
-        {
-          "host": "stageandcinema.com",
-          "count": 1
-        },
-        {
-          "host": "thewrap.com",
-          "count": 1
-        },
-        {
-          "host": "vulture.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp",
-          "host": "lightingandsoundamerica.com",
-          "dirFlags": [
-            {
-              "file": "lighting-and-sound-america--david-barbour.json",
-              "flag": "wrongShow",
-              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-7E6L0"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "showId": "chinese-republicans-off-broadway-2026",
-      "title": "Chinese Republicans",
-      "openingDate": "2026-02-05",
-      "status": "closed",
-      "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/read-the-reviews-for-chinese-republicans-off-broadway",
-        "https://www.broadwayworld.com/article/Review-Roundup-CHINESE-REPUBLICANS-Opens-at-Roundabout-Theatre-Company-20260226"
-      ],
-      "aggregatorListedUrls": [
-        "https://1minutecritic.com/chinese-republicans-review-off-broadway/",
-        "https://cititour.com/NYC_Broadway/Chinese-Republicans/1356",
-        "https://culturesauce.com/2026/02/26/chinese-republicans-off-broadway-review/",
-        "https://nystagereview.com/2026/02/26/chinese-republicans-clever-venom-tipped-arrows-ineffectively-aimed/",
-        "https://newyorktheater.me/2026/02/26/chinese-republicans-review/",
-        "https://www.newyorktheatreguide.com/reviews/chinese-republicans-off-broadway-review",
-        "https://www.nytimes.com/2026/02/27/theater/chinese-republicans-review-alex-lin.html",
-        "https://www.theatermania.com/news/review-a-hard-look-at-how-chinese-republicans-survive-in-corporate-america_1825857/",
-        "https://theaterpizzazz.com/chinese-republicans-is-a-decisive-win/",
-        "http://www.lightingandsoundamerica.com/news/story.asp",
-        "https://www.talkinbroadway.com/page/ob/02_26_26.html",
-        "https://www.theaterscene.net/plays/offbway-plays/chinese-republicans/victor-gluck/",
-        "https://www.theatrereviews.com/off-broadway-review-chinese-republicans-at-roundabout-theatre-companys-laura-pels-theatre-through-sunday-april-5-2026/",
-        "https://www.interestedbystander.com/2026/02/theater-reviews-off-broadway-explores.html",
-        "https://www.offoffonline.com/offoffonline/2026/2/27/chinese-republicans",
-        "https://lavocedinewyork.com/en/new-york/2026/03/01/chinese-republicans-tackles-the-sexist-and-racist-world-of-corporate-finance/",
-        "https://pagesonstages.com/2026/02/26/chinese-republicans/"
-      ],
-      "dirFiles": 19,
-      "dirClean": 15,
-      "inReviewsJson": 15,
-      "missing": [
-        {
-          "url": "https://www.theatermania.com/news/review-a-hard-look-at-how-chinese-republicans-survive-in-corporate-america_1825857/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania"
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "thekomisarscoop.com",
-          "count": 1
-        },
-        {
-          "host": "theaterlife.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.nytimes.com/2026/02/27/theater/chinese-republicans-review-alex-lin.html",
-          "host": "nytimes.com",
-          "dirFlags": [
-            {
-              "file": "nytimes--tim-teeman.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.nytimes.com/2026/02/27/theater/chinese-republicans-review-alex-lin.html"
-            }
-          ]
-        },
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp",
-          "host": "lightingandsoundamerica.com",
-          "dirFlags": [
-            {
-              "file": "lighting-and-sound-america--david-barbour.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.lightingandsoundamerica.com/news/story.asp?ID=TB51II"
-            }
-          ]
-        },
-        {
-          "url": "https://www.theatrereviews.com/off-broadway-review-chinese-republicans-at-roundabout-theatre-companys-laura-pels-theatre-through-sunday-april-5-2026/",
-          "host": "theatrereviews.com",
-          "dirFlags": [
-            {
-              "file": "theatre-reviews-limited--david-roberts.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theatrereviews.com/off-broadway-review-chinese-republicans-at-roundabout-theatre-companys-laura-pels-theatre-through-sunday-april-5-2026/"
-            }
-          ]
-        }
-      ],
-      "ingestResults": [
-        {
-          "url": "https://www.theatermania.com/news/review-a-hard-look-at-how-chinese-republicans-survive-in-corporate-america_1825857/",
-          "host": "theatermania.com",
-          "outletId": "theatermania",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "the-amazing-adventures-of-kavalier-and-clay-off-broadway-2025",
-      "title": "The Amazing Adventures of Kavalier & Clay",
-      "openingDate": "2025-09-21",
-      "status": "closed",
-      "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/reviews-what-did-critics-think-of-the-amazing-adventures-of-kavalier-clay-at-the-metropolitan-opera"
-      ],
-      "aggregatorListedUrls": [
-        "https://operawire.com/metropolitan-opera-2025-26-review-the-amazing-adventures-of-kavalier-and-clay/",
-        "https://www.thetimes.com/culture/classical-opera/article/the-amazing-adventures-of-kavalier-and-clay-review-the-met-is-back-with-a-bang-0vk2sdc5j",
-        "https://www.theatermania.com/news/review-the-amazing-adventures-of-kavalier-clay-a-symphonic-opera-based-on-michael-chabons-great-american-novel_1804352/",
-        "https://www.wsj.com/arts-culture/theater/the-amazing-adventures-of-kavalier-clay-review-the-met-operas-simplistic-superhero-story-314a1842",
-        "https://d4ov6iqsvotvt.cloudfront.net",
-        "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-regular-400-27da0e58c35276629aa3a2da60f2dba2d1e149bda7991346de3676fcbd3db989.woff2",
-        "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-light-300-6069894d8e39d47ebbb6723d869f4e8302f63980d403369fcb556a08b2a43f05.woff2",
-        "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-brands-400-84abb92e6b70b787c333540b97f08e758e7fc5b1627963cd7c045eaabb8cfcef.woff2",
-        "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Regular-7b5dc1aeba33f724aa530071bc99c336e8cb8aef02c4d8ece0b2c2f18b468aec.woff2",
-        "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Medium-699f505963eb3e5205fcb7c294cfd0aa26bf2a018aa383d07f9543ea48ed0a24.woff2",
-        "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-SemiBold-1305d4570afa31aad3e616ee40ef22be4c836b9c7f852b18fda655e45ad1830e.woff2",
-        "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Bold-9ca97ade87ab582e4550f60c328e0dacf939d7ff14a23cbf53908dd694ab308d.woff2",
-        "https://fonts.gstatic.com",
-        "https://fonts.googleapis.com/css2",
-        "https://d2kbhv4d9rykxy.cloudfront.net/assets/vendors_v3-6bbc36c3e4135cb2b2f7560b7e0902cd03221d9908f49e6c6aada52242c7c9fc.css",
-        "https://d2kbhv4d9rykxy.cloudfront.net/assets/application_v3-f002ea47f6f850c02c6b8e3aeeed92bb324e6b03136430d264becc38698b6196.css",
-        "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/vendor-fde82a95.chunk.css",
-        "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/membership_bundle~promo_ticket_bundle-afbed0f9.chunk.css",
-        "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/membership_bundle-75917b78.chunk.css",
-        "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/common-484225fd.chunk.css",
-        "https://d2kbhv4d9rykxy.cloudfront.net/assets/apple-touch-icon-c6200c9822af8a301654011794a1de37ce659cb4037dd73a2b327c64db42f1f9.png",
-        "https://d2kbhv4d9rykxy.cloudfront.net/assets/icon-f88d83923107c58a348dbc6f102e89c31f3824cded9fd45f5437786d7cfeb062.svg",
-        "https://d2kbhv4d9rykxy.cloudfront.net/assets/favicon-b48fd9122981448f30ed8879033467df30d423d872503455ab4e53e62f8808d0.ico",
-        "https://maps.google.com/",
-        "https://www.todaytixgroup.com/careers",
-        "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform"
-      ],
-      "dirFiles": 8,
-      "dirClean": 8,
-      "inReviewsJson": 7,
-      "missing": [
-        {
-          "url": "https://www.thetimes.com/culture/classical-opera/article/the-amazing-adventures-of-kavalier-and-clay-review-the-met-is-back-with-a-bang-0vk2sdc5j",
-          "host": "thetimes.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://d4ov6iqsvotvt.cloudfront.net",
-          "host": "d4ov6iqsvotvt.cloudfront.net",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-regular-400-27da0e58c35276629aa3a2da60f2dba2d1e149bda7991346de3676fcbd3db989.woff2",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-light-300-6069894d8e39d47ebbb6723d869f4e8302f63980d403369fcb556a08b2a43f05.woff2",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-brands-400-84abb92e6b70b787c333540b97f08e758e7fc5b1627963cd7c045eaabb8cfcef.woff2",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Regular-7b5dc1aeba33f724aa530071bc99c336e8cb8aef02c4d8ece0b2c2f18b468aec.woff2",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Medium-699f505963eb3e5205fcb7c294cfd0aa26bf2a018aa383d07f9543ea48ed0a24.woff2",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-SemiBold-1305d4570afa31aad3e616ee40ef22be4c836b9c7f852b18fda655e45ad1830e.woff2",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Bold-9ca97ade87ab582e4550f60c328e0dacf939d7ff14a23cbf53908dd694ab308d.woff2",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://fonts.gstatic.com",
-          "host": "fonts.gstatic.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://fonts.googleapis.com/css2",
-          "host": "fonts.googleapis.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/vendors_v3-6bbc36c3e4135cb2b2f7560b7e0902cd03221d9908f49e6c6aada52242c7c9fc.css",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/application_v3-f002ea47f6f850c02c6b8e3aeeed92bb324e6b03136430d264becc38698b6196.css",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/vendor-fde82a95.chunk.css",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/membership_bundle~promo_ticket_bundle-afbed0f9.chunk.css",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/membership_bundle-75917b78.chunk.css",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/common-484225fd.chunk.css",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/apple-touch-icon-c6200c9822af8a301654011794a1de37ce659cb4037dd73a2b327c64db42f1f9.png",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/icon-f88d83923107c58a348dbc6f102e89c31f3824cded9fd45f5437786d7cfeb062.svg",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/favicon-b48fd9122981448f30ed8879033467df30d423d872503455ab4e53e62f8808d0.ico",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://maps.google.com/",
-          "host": "maps.google.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://www.todaytixgroup.com/careers",
-          "host": "todaytixgroup.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
-          "host": "docs.google.com",
-          "knownOutletId": null
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "newyorkclassicalreview.com",
-          "count": 1
-        },
-        {
-          "host": "nytimes.com",
-          "count": 1
-        },
-        {
-          "host": "observer.com",
-          "count": 1
-        },
-        {
-          "host": "parterre.com",
-          "count": 1
-        },
-        {
-          "host": "vulture.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [],
-      "ingestResults": [
-        {
-          "url": "https://www.thetimes.com/culture/classical-opera/article/the-amazing-adventures-of-kavalier-and-clay-review-the-met-is-back-with-a-bang-0vk2sdc5j",
-          "host": "thetimes.com",
-          "outletId": "thetimes",
-          "provisional": true,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://d4ov6iqsvotvt.cloudfront.net",
-          "host": "d4ov6iqsvotvt.cloudfront.net",
-          "outletId": "cloudfront",
-          "provisional": true,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=the-amazing-adventures-of-kavalier-and"
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-regular-400-27da0e58c35276629aa3a2da60f2dba2d1e149bda7991346de3676fcbd3db989.woff2",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "outletId": "cloudfront",
-          "provisional": true,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=the-amazing-adventures-of-kavalier-and"
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-light-300-6069894d8e39d47ebbb6723d869f4e8302f63980d403369fcb556a08b2a43f05.woff2",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "outletId": "cloudfront",
-          "provisional": true,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=the-amazing-adventures-of-kavalier-and"
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/font-awesome/webfonts/fa-brands-400-84abb92e6b70b787c333540b97f08e758e7fc5b1627963cd7c045eaabb8cfcef.woff2",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "outletId": "cloudfront",
-          "provisional": true,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=the-amazing-adventures-of-kavalier-and"
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Regular-7b5dc1aeba33f724aa530071bc99c336e8cb8aef02c4d8ece0b2c2f18b468aec.woff2",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "outletId": "cloudfront"
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Medium-699f505963eb3e5205fcb7c294cfd0aa26bf2a018aa383d07f9543ea48ed0a24.woff2",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "outletId": "cloudfront"
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-SemiBold-1305d4570afa31aad3e616ee40ef22be4c836b9c7f852b18fda655e45ad1830e.woff2",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "outletId": "cloudfront"
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/gellix/Gellix-Bold-9ca97ade87ab582e4550f60c328e0dacf939d7ff14a23cbf53908dd694ab308d.woff2",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "outletId": "cloudfront"
-        },
-        {
-          "url": "https://fonts.gstatic.com",
-          "host": "fonts.gstatic.com",
-          "outletId": "gstatic"
-        },
-        {
-          "url": "https://fonts.googleapis.com/css2",
-          "host": "fonts.googleapis.com",
-          "outletId": "googleapis"
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/vendors_v3-6bbc36c3e4135cb2b2f7560b7e0902cd03221d9908f49e6c6aada52242c7c9fc.css",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "outletId": "cloudfront"
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/application_v3-f002ea47f6f850c02c6b8e3aeeed92bb324e6b03136430d264becc38698b6196.css",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "outletId": "cloudfront"
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/vendor-fde82a95.chunk.css",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "outletId": "cloudfront"
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/membership_bundle~promo_ticket_bundle-afbed0f9.chunk.css",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "outletId": "cloudfront"
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/membership_bundle-75917b78.chunk.css",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "outletId": "cloudfront"
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/packs/css/common-484225fd.chunk.css",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "outletId": "cloudfront"
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/apple-touch-icon-c6200c9822af8a301654011794a1de37ce659cb4037dd73a2b327c64db42f1f9.png",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "outletId": "cloudfront"
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/icon-f88d83923107c58a348dbc6f102e89c31f3824cded9fd45f5437786d7cfeb062.svg",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "outletId": "cloudfront"
-        },
-        {
-          "url": "https://d2kbhv4d9rykxy.cloudfront.net/assets/favicon-b48fd9122981448f30ed8879033467df30d423d872503455ab4e53e62f8808d0.ico",
-          "host": "d2kbhv4d9rykxy.cloudfront.net",
-          "outletId": "cloudfront"
-        },
-        {
-          "url": "https://maps.google.com/",
-          "host": "maps.google.com",
-          "outletId": "google"
-        },
-        {
-          "url": "https://www.todaytixgroup.com/careers",
-          "host": "todaytixgroup.com",
-          "outletId": "todaytixgroup"
-        },
-        {
-          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
-          "host": "docs.google.com",
-          "outletId": "google"
-        }
-      ]
-    },
-    {
-      "showId": "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026",
-      "title": "Meat Suit, or the s**tshow of motherhood",
-      "openingDate": "2026-02-11",
-      "status": "closed",
-      "category": "off-broadway",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.nytimes.com/2026/02/26/theater/meat-suit-review-motherhood-aya-ogawa.html",
-        "https://www.newyorktheatreguide.com/reviews/meat-suit-or-the-shitshow-of-motherhood-off-broadway-review",
-        "https://www.timeout.com/newyork/theater/meat-suit-or-the-shitshow-of-motherhood-review-aya-ogawa",
-        "https://www.theatermania.com/news/review-meat-suit-and-the-body-horrors-of-motherhood_1825398/",
-        "http://www.lightingandsoundamerica.com/news/story.asp",
-        "https://nystagereview.com/2026/02/25/meat-suit-or-the-shitshow-of-motherhood-an-overcooked-satire/",
-        "https://www.offoffonline.com/offoffonline/2026/2/24/meat-suit-or-the-shitshow-of-motherhood"
-      ],
-      "dirFiles": 8,
-      "dirClean": 6,
-      "inReviewsJson": 6,
-      "missing": [],
-      "dirOnly": [
-        {
-          "host": "vulture.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/meat-suit-or-the-shitshow-of-motherhood-off-broadway-review",
-          "host": "newyorktheatreguide.com",
-          "dirFlags": [
-            {
-              "file": "nytg--kyle-turner.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.newyorktheatreguide.com/reviews/meat-suit-or-the-shitshow-of-motherhood-off-broadway-review"
-            }
-          ]
-        },
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp",
-          "host": "lightingandsoundamerica.com",
-          "dirFlags": [
-            {
-              "file": "lighting-and-sound-america--david-barbour.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.lightingandsoundamerica.com/news/story.asp?ID=-SRUKAB"
-            }
-          ]
-        }
-      ]
     }
   ]
 }
