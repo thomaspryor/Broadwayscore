@@ -114,6 +114,23 @@ async function getSearchStats() {
   `);
 }
 
+// Zero-results search terms (raw query text) — surfaces shows users look for
+// but can't find. Unlike getSearchStats (counts only), this intentionally
+// returns the query text: search terms are show-title lookups, not PII, and the
+// raw term is what lets the friction analyzer flag missing productions.
+async function getZeroResultsSearches() {
+  return phQuery(`
+    SELECT properties.query AS query, count() AS cnt
+    FROM events
+    WHERE event = 'search_performed'
+      AND properties.has_results = false
+      AND properties.query IS NOT NULL
+      AND properties.query != ''
+      AND timestamp > now() - interval 7 day
+    GROUP BY query ORDER BY cnt DESC LIMIT 50
+  `);
+}
+
 // Ticket clicks — correct event name (ticket_click, not ticket_link_click).
 async function getTicketClicks() {
   return phQuery(`
@@ -177,6 +194,7 @@ module.exports = {
   getRageClicks,
   getRageClickDetails,
   getSearchStats,
+  getZeroResultsSearches,
   getTicketClicks,
   getClosedShowTicketClicks,
   getGateFunnel,

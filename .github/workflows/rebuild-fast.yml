@@ -63,6 +63,18 @@ jobs:
 
       - uses: ./.github/actions/setup-node
 
+      # Opening-night contamination guard (Notion 386637c5-416f-81b9): during
+      # opening-night windows the rapid fast-rebuilds (and the post-scoring
+      # rebuild-fast dispatched by llm-ensemble-score) skipped flag-wrong-production-by-date,
+      # which only ran in the daily full rebuild. Freshly SERP-discovered prior-production
+      # reviews (e.g. Glengarry WE 2026 counting Broadway-2025 Culkin/Odenkirk reviews from
+      # EW/NYDaily/Yahoo) therefore stayed wrongProduction:false and inflated the live count
+      # for days until a full rebuild — which is itself a cancellation magnet. The flagger is
+      # pure-local (no API/secrets), respects priorRuns + manual-clear, and its flags are
+      # persisted by the "Push review-texts" step below.
+      - name: Flag wrong-production by date
+        run: node scripts/flag-wrong-production-by-date.js
+
       - name: Get current review count
         id: before
         run: |

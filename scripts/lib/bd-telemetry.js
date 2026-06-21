@@ -63,4 +63,65 @@ function recordBdCall(opts) {
   }
 }
 
-module.exports = { recordBdCall };
+/**
+ * Record a ScrapingBee API call. Mirrors recordBdCall so the cost report can
+ * attribute SB spend by host (BD already had per-host attribution; SB only had
+ * an aggregate per-run total). Emits `[SB Call] {...}` lines on stdout.
+ *
+ * Per-host SB data is what lets us decide reroute targets: a host that's cheap on
+ * SB (1 credit, no render) shouldn't move; a host burning render_js/premium is a
+ * candidate for a cheaper provider. Added 2026-06-21 for the BD/SB cost-cut.
+ * @param {Object} opts
+ * @param {string} [opts.url] - target URL (host extracted automatically)
+ * @param {string} [opts.host] - explicit host (overrides url-derived host)
+ * @param {string} opts.fn - e.g. 'page', 'serp', 'premium'
+ * @param {boolean} opts.success - whether the call returned usable content
+ * @param {number|string|null} [opts.status] - HTTP status code or error string
+ * @param {number} [opts.credits] - credit cost charged for this call (1/5/10/25)
+ */
+function recordSbCall(opts) {
+  if (process.env.BD_TELEMETRY_DISABLED === '1') return;
+  try {
+    const record = {
+      ts: new Date().toISOString(),
+      script: _scriptName(),
+      workflow: process.env.GITHUB_WORKFLOW || null,
+      host: opts.host || _hostOf(opts.url),
+      fn: opts.fn || 'page',
+      success: opts.success === true,
+      status: opts.status ?? null,
+      credits: opts.credits ?? null,
+    };
+    console.log(`[SB Call] ${JSON.stringify(record)}`);
+  } catch {
+    // Telemetry must never break scraping.
+  }
+}
+
+/**
+ * Record a Scrapingdog API call. Same shape as recordSbCall (Scrapingdog uses an
+ * identical credit model: 1 plain / 5 dynamic / 10 premium / 5 google). Emits
+ * `[SD Call] {...}` lines so the cost report can attribute Scrapingdog spend by
+ * host once it's live as the cheap tier ahead of Bright Data.
+ * @param {Object} opts — { url|host, fn, success, status, credits }
+ */
+function recordSdCall(opts) {
+  if (process.env.BD_TELEMETRY_DISABLED === '1') return;
+  try {
+    const record = {
+      ts: new Date().toISOString(),
+      script: _scriptName(),
+      workflow: process.env.GITHUB_WORKFLOW || null,
+      host: opts.host || _hostOf(opts.url),
+      fn: opts.fn || 'page',
+      success: opts.success === true,
+      status: opts.status ?? null,
+      credits: opts.credits ?? null,
+    };
+    console.log(`[SD Call] ${JSON.stringify(record)}`);
+  } catch {
+    // Telemetry must never break scraping.
+  }
+}
+
+module.exports = { recordBdCall, recordSbCall, recordSdCall };

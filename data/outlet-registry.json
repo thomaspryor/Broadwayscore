@@ -5160,7 +5160,8 @@
         "reclining-standards"
       ],
       "accessModel": "defunct",
-      "defaultCritic": "David Fox"
+      "defaultCritic": "David Fox",
+      "domain": "recliningstandards.com"
     },
     "american-theater-web": {
       "displayName": "American Theater Web",
@@ -8045,7 +8046,10 @@
         "lost-in-theatreland-uk"
       ],
       "accessModel": "free",
-      "domain": "lostintheatreland.com"
+      "domain": "lostintheatreland.com",
+      "domainAliases": [
+        "lostintheatreland.co.uk"
+      ]
     },
     "shy-strange-manic": {
       "displayName": "Shy Strange Manic",
@@ -9308,7 +9312,7 @@
       "aliases": [
         "theatrecat"
       ],
-      "domain": null,
+      "domain": "theatrecat.com",
       "region": "london"
     },
     "bachtrack": {
@@ -9550,7 +9554,8 @@
       "aliases": [
         "lbc"
       ],
-      "domain": null
+      "domain": "lbc.co.uk",
+      "region": "london"
     },
     "dress-circle-antics": {
       "displayName": "Dress Circle Antics",
@@ -9566,7 +9571,8 @@
       "aliases": [
         "theatre-south-east"
       ],
-      "domain": null
+      "domain": "theatresoutheast.com",
+      "region": "london"
     },
     "aislesay": {
       "displayName": "Aisle Say",
@@ -9861,6 +9867,77 @@
         "suntimes"
       ],
       "domain": "chicago.suntimes.com"
+    },
+    "seeing-dance": {
+      "displayName": "Seeing Dance",
+      "tier": 3,
+      "aliases": [
+        "seeing-dance"
+      ],
+      "domain": "seeingdance.com",
+      "region": "london"
+    },
+    "dancetabs": {
+      "displayName": "DanceTabs",
+      "tier": 3,
+      "aliases": [
+        "dancetabs"
+      ],
+      "domain": "dancetabs.com",
+      "region": "london"
+    },
+    "gramilano": {
+      "displayName": "Gramilano",
+      "tier": 3,
+      "aliases": [
+        "gramilano"
+      ],
+      "domain": "gramilano.com",
+      "region": "london"
+    },
+    "dance-europe": {
+      "displayName": "Dance Europe",
+      "tier": 3,
+      "aliases": [
+        "dance-europe"
+      ],
+      "domain": "danceeurope.net",
+      "region": "london"
+    },
+    "reviewsgate": {
+      "displayName": "ReviewsGate",
+      "tier": 4,
+      "aliases": [
+        "reviewsgate"
+      ],
+      "domain": "reviewsgate.com",
+      "region": "london"
+    },
+    "fjord-review": {
+      "displayName": "Fjord Review",
+      "tier": 3,
+      "aliases": [
+        "fjord-review"
+      ],
+      "domain": "fjordreview.com"
+    },
+    "dance-magazine": {
+      "displayName": "Dance Magazine",
+      "tier": 3,
+      "aliases": [
+        "dance-magazine"
+      ],
+      "domain": "dancemagazine.com",
+      "region": "us"
+    },
+    "pointe-magazine": {
+      "displayName": "Pointe Magazine",
+      "tier": 4,
+      "aliases": [
+        "pointe-magazine"
+      ],
+      "domain": "pointemagazine.com",
+      "region": "us"
     }
   },
   "_aliasIndex": {
