@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-21T18:51:11.607Z",
+  "generatedAt": "2026-06-21T19:56:38.046Z",
   "date": "2026-06-21",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 404890,
+  "entryCount": 386663,
   "shows": [
     {
       "showId": "an-ideal-husband-west-end-2026",
@@ -4011,7 +4011,7 @@
     },
     {
       "showId": "sticks-and-bones-1972",
-      "reviewCount": 3,
+      "reviewCount": 1,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4371,12 +4371,12 @@
     },
     {
       "showId": "glengarry-glen-ross-west-end-2026",
-      "reviewCount": 17,
+      "reviewCount": 19,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 97917898,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -6741,7 +6741,7 @@
     },
     {
       "showId": "no-singing-in-the-navy-off-broadway-2026",
-      "reviewCount": 8,
+      "reviewCount": 9,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -11465,8 +11465,8 @@
       "slowest_reviews": []
     },
     {
-      "showId": "the-play-that-goes-wrong-off-broadway-2019",
-      "reviewCount": 5,
+      "showId": "the-outsiders-2024",
+      "reviewCount": 31,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -11480,8 +11480,23 @@
       "slowest_reviews": []
     },
     {
-      "showId": "falsettos-1992",
-      "reviewCount": 3,
+      "showId": "queen-versailles-2025",
+      "reviewCount": 32,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "liberation-2025",
+      "reviewCount": 33,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
