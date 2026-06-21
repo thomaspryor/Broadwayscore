@@ -5,7 +5,8 @@
     "girl-interrupted-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "jerome-off-broadway-2025/off-off-online--edward-karam.json",
     "jerome-off-broadway-2025/one-minute-critic--jerry-portwood.json",
-    "and-then-the-rodeo-burned-down-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+    "and-then-the-rodeo-burned-down-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "glengarry-glen-ross-west-end-2026/broadwayworld--alexander-cohen.json"
   ],
   "failed": [
     "encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
@@ -115,7 +116,16 @@
     "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
     "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
     "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--penelope-green.json",
-    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json"
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
+    "sting-west-end-2026/ew--unknown.json",
+    "sting-west-end-2026/newsday--unknown.json",
+    "sting-west-end-2026/timeout-london--unknown.json",
+    "sting-west-end-2026/daily-mail--unknown.json",
+    "sting-west-end-2026/standard--unknown.json",
+    "sting-west-end-2026/west-end-best-friend--unknown.json",
+    "glengarry-glen-ross-west-end-2026/guardian--arifa-akbar.json",
+    "glengarry-glen-ross-west-end-2026/thestage--unknown.json",
+    "glengarry-glen-ross-west-end-2026/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -217,10 +227,12 @@
       "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
       "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json"
     ],
-    "archive": []
+    "archive": [
+      "glengarry-glen-ross-west-end-2026/broadwayworld--alexander-cohen.json"
+    ]
   },
   "startTime": "2026-06-21T00:42:05.228Z",
-  "lastProcessed": "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--rhoda-feng.json",
+  "lastProcessed": "glengarry-glen-ross-west-end-2026/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-06-21T00:42:21.584Z",
@@ -1036,6 +1048,12 @@
       "t": "2026-06-21T06:42:47.406Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-21T07:43:19.589Z",
+      "event": "bb-session",
+      "session": "9db78460",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15885925/Gareth-Southgate-drama-De"
     }
   ]
 }
