@@ -11,6 +11,8 @@
  * @param {string|null} args.outletId - outletId on the review
  * @returns {{ flag: boolean, issue: 'before_preview'|'after_close'|null, diffDays: number, daysAllowedBefore: number }}
  */
+const { isWithinPriorRun } = require('./wrong-production-autoclear');
+
 // Exported so the calling script can use the same constants in log messages
 // without drift. See scripts/flag-wrong-production-by-date.js.
 const DAYS_BEFORE_PREVIEW = 21;
@@ -151,10 +153,38 @@ function evaluateDatelessRevivalGuard({ hasUsableDate, isMultiProductionTitle, s
   return { flag: true, reason: 'dateless_pre_opening_revival' };
 }
 
+/**
+ * True when an externally-fetched article's publication date falls outside THIS
+ * production's window (before previews − grace, or after close + grace) and is NOT
+ * within any declared priorRun.
+ *
+ * fetch-guardian-reviews.js uses this to refuse storing a prior-production article
+ * body that the Guardian Open Platform API returns when a revival's stored URL still
+ * points at an earlier production's slug — the 2026 Glengarry WE entry was served the
+ * 2017 Christian Slater review this way, which then masqueraded as the current review
+ * (correctly flagged wrongProduction, but the real 2026 review was never fetched).
+ * Pure + deterministic (no I/O).
+ *
+ * @param {object} show - show record (previewsStartDate/openingDate/closingDate/category/priorRuns)
+ * @param {string} dateStr - article publication date (YYYY-MM-DD or ISO 8601)
+ * @returns {boolean}
+ */
+function isArticleOutsideProductionWindow(show, dateStr) {
+  if (!show || !dateStr) return false;
+  const pubDate = new Date(dateStr);
+  if (isNaN(pubDate.getTime())) return false;
+  const decision = evaluateDateGuard({ pubDate, show, outletId: 'guardian' });
+  if (!decision.flag) return false;
+  // priorRun coverage is legitimate same-production history, not contamination.
+  if (isWithinPriorRun(pubDate, show.priorRuns)) return false;
+  return true;
+}
+
 module.exports = {
   evaluateDateGuard,
   evaluateDatelessRevivalGuard,
   earliestShowDate,
+  isArticleOutsideProductionWindow,
   DAYS_BEFORE_PREVIEW,
   DAYS_AFTER_CLOSE,
   UK_DAYS_BEFORE_PREVIEW,
