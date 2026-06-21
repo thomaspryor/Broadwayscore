@@ -12,6 +12,9 @@ concurrency:
 jobs:
   check:
     runs-on: ubuntu-latest
+    # Backstop: the script wraps every external call in a 30-60s timeout, but cap the
+    # whole job too so a pathological stall can never burn the 360-min default ceiling.
+    timeout-minutes: 25
     steps:
       - name: Checkout
         uses: actions/checkout@v5
