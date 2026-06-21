@@ -435,7 +435,11 @@ async function checkStalePages(token) {
     `${SITE_HOST}/lotteries`, `${SITE_HOST}/box-office`, `${SITE_HOST}/biz`,
   );
 
-  const sampleSize = Math.min(100, urls.length);
+  // 30, not 100: each URL is a sequential urlInspection call (~200ms gap + API
+  // latency). On slow-API days 100 stale + 50 index samples pushed the whole run to
+  // ~25 min (against the 25-min job cap). 30 random samples still surfaces systemic
+  // staleness while keeping the weekly run comfortably under budget.
+  const sampleSize = Math.min(30, urls.length);
   const shuffled = urls.sort(() => Math.random() - 0.5);
   const sample = shuffled.slice(0, sampleSize);
 
@@ -1047,7 +1051,7 @@ async function main() {
     const shows = data.shows || data;
     const showUrls = shows.map(s => `${SITE_HOST}/show/${s.slug}`);
     const shuffled = showUrls.sort(() => Math.random() - 0.5);
-    sampleUrls = shuffled.slice(0, 50);
+    sampleUrls = shuffled.slice(0, 30); // 30, not 50 — each is a sequential urlInspection call; keeps runtime under the job cap
   } catch {
     sampleUrls = [`${SITE_HOST}/`, `${SITE_HOST}/show/hamilton`];
   }
