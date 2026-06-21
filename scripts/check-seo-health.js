@@ -731,8 +731,20 @@ function detectAnomalies(currentMetrics, history) {
   }
 
   if (clicksDrop > 0.25) {
+    // Event-recede guard: a clicks drop while impressions are at/above the 4-week
+    // avg and position is stable/improving is a CTR/query-mix effect, not a ranking
+    // loss. This is what happens the week after a traffic spike recedes (Tony Awards,
+    // Oliviers, big opening nights inflate the baseline with high-CTR event queries;
+    // the next normal week then reads as a "drop"). A real SEO regression — deindexing,
+    // a penalty, lost rankings — moves impressions DOWN and/or position WORSE, so this
+    // guard never suppresses those. The seasonal (YoY) check above only fires at 52+
+    // weeks of history; this covers the gap before then.
+    const impressionsHealthy = avgImpressions > 0 && currentMetrics.impressions >= avgImpressions;
+    const positionHealthy = positionIncrease <= 2;
     if (seasonallyExpected) {
       console.log(`  Clicks down ${Math.round(clicksDrop * 100)}% vs 4-week avg, but matches seasonal pattern — suppressed`);
+    } else if (impressionsHealthy && positionHealthy) {
+      console.log(`  Clicks down ${Math.round(clicksDrop * 100)}% vs 4-week avg, but impressions (${currentMetrics.impressions} vs avg ${Math.round(avgImpressions)}) and position (${currentMetrics.position} vs avg ${avgPosition.toFixed(1)}) are healthy — CTR/query-mix shift, suppressed`);
     } else {
       issues.push({ type: 'clicks_drop', severity: 'error', message: `Clicks down ${Math.round(clicksDrop * 100)}% vs 4-week avg (${currentMetrics.clicks} vs avg ${Math.round(avgClicks)})` });
       console.log(`  ALERT: ${issues[issues.length - 1].message}`);
