@@ -18,7 +18,12 @@ const { isUrlYearOutsideWindow, hasTryoutUrlMarker } = require('./content-filter
 const { isLondonMarket } = require('./venue-classification');
 const { urlLooksLikeReview, isSluglessReviewUrl } = require('./review-guards');
 const { validateSerpCandidate } = require('./serp-candidate-validator');
-const { recordBdCall } = require('./bd-telemetry');
+const { recordBdCall, recordSdCall } = require('./bd-telemetry');
+
+// Scrapingdog SERP — flag-gated cheap primary ahead of BD/SB SERP. Google Light
+// Search = 5 credits (~$0.45/1k) vs BD SERP (~$1.50/1k). Default OFF.
+const SCRAPINGDOG_API_KEY = process.env.SCRAPINGDOG_API_KEY;
+const USE_SCRAPINGDOG = process.env.SCRAPER_USE_SCRAPINGDOG === '1';
 
 // Derive outlet-to-domain mapping from outlet-registry.json (single source of truth)
 // Maps outlet IDs + aliases → primary domain for SERP URL discovery
@@ -190,6 +195,39 @@ function _recordSerpResult(success) {
 function _resolveGeo(query, override) {
   if (override) return override;
   return query.includes('West End') ? 'gb' : 'us';
+}
+
+/**
+ * Search via Scrapingdog's Google endpoint (structured JSON, synchronous).
+ * Returns [{url, title, snippet}] or null if unavailable/failed (so the chain
+ * falls through to BD/SB). Bake-off 2026-06-21 confirmed clean organic results.
+ */
+async function _serpViaScrapingdog(query, log, dateRange, geo) {
+  if (!USE_SCRAPINGDOG || !SCRAPINGDOG_API_KEY) return null;
+  const axios = require('axios');
+  let q = query;
+  if (dateRange) {
+    const fmtD = d => d.toISOString().split('T')[0];
+    q += ` after:${fmtD(dateRange.dateMin)} before:${fmtD(dateRange.dateMax)}`;
+  }
+  try {
+    const response = await axios.get('https://api.scrapingdog.com/google/', {
+      params: { api_key: SCRAPINGDOG_API_KEY, query: q, results: 10, country: geo || 'us' },
+      timeout: 30000,
+    });
+    const data = response.data || {};
+    const organic = data.organic_results || data.organic_data || [];
+    recordSdCall({ host: 'serp.scrapingdog', fn: 'serp', success: true, status: 200, credits: 5 });
+    return organic.slice(0, 10).map(r => ({
+      url: r.link || r.url || '',
+      title: r.title || '',
+      snippet: r.description || r.snippet || '',
+    })).filter(r => r.url);
+  } catch (error) {
+    recordSdCall({ host: 'serp.scrapingdog', fn: 'serp', success: false, status: error.response?.status || (error.message || 'error').slice(0, 80), credits: 5 });
+    log(`    ✗ Scrapingdog SERP error: ${error.message} — falling back to BD/SB`);
+    return null;
+  }
 }
 
 async function _serpViaScrapingBee(query, apiKey, log, dateRange) {
@@ -462,6 +500,18 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
   if (cached) {
     log(`    📦 SERP cache hit: "${query.slice(0, 60)}..."`);
     return { results: cached.results, provider: `${cached.provider}-cached` };
+  }
+
+  // Scrapingdog first (flag-gated, ~3x cheaper than BD SERP). On null/empty it
+  // falls through to the existing BD/SB chain, which stays as the safety net.
+  if (USE_SCRAPINGDOG && SCRAPINGDOG_API_KEY) {
+    const sdResults = await _serpViaScrapingdog(query, log, dateRange, resolvedGeo);
+    if (sdResults && sdResults.length > 0) {
+      if (!(preferSpeed && sdResults.length === 0)) {
+        _serpCache.set(query, cacheOpts, { results: sdResults, provider: 'scrapingdog' });
+      }
+      return { results: sdResults, provider: 'scrapingdog' };
+    }
   }
 
   const primary = preferSpeed
