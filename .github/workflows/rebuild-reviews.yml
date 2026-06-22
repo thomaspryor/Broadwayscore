@@ -259,6 +259,16 @@ jobs:
         run: node scripts/generate-mobile-show-details.js
         continue-on-error: true
 
+      # Regenerate the committed mobile INDEX in lockstep with the detail JSONs.
+      # The index (public/data/mobile-shows.json) is git-tracked and served to the
+      # iOS app on SKIP_HEAVY_PREBUILD deploys; it was previously only refreshed by
+      # prebuild full-builds / hand commits, so it drifted from reviews.json and
+      # accumulated closed-no-score entries that reddened validate-mobile-shows.js.
+      # See cloud-memory/feedback_mobile_index_committed_artifact.md.
+      - name: Regenerate mobile index (mobile-shows.json)
+        run: node scripts/generate-mobile-data.js
+        continue-on-error: true
+
       - name: Generate opening night status page
         run: node scripts/generate-status-page.js
         continue-on-error: true
@@ -362,6 +372,10 @@ jobs:
           git add -u data/audit/ 2>/dev/null || true
           bash scripts/lib/git-add-existing.sh public/opening-night-status.json public/status.html
           git add public/data/shows/ 2>/dev/null || true
+          # Mobile index — committed in lockstep with the detail JSONs (regenerated
+          # from this run's reviews.json). Staged only inside this has_changes==true
+          # commit so no-op rebuilds don't churn it on the _ts timestamp alone.
+          git add public/data/mobile-shows.json 2>/dev/null || true
           # Lock audit-trail snapshot (Lost Boys 2026-04-27 Gap #6).
           git add public/data/admin/locks.json 2>/dev/null || true
           # Critic-coverage admin digest (S4 — drives /admin/critic-coverage page).
