@@ -1062,10 +1062,23 @@ jobs:
       - name: Auto-close expired shows
         run: node scripts/auto-close-expired-shows.js
 
+      # --- Independent data-check steps below all carry `if: always()` ---------
+      # Each is a SEPARATE assertion (validation, contamination, integrity).
+      # Without always(), the first failing check fail-fasts and masks every
+      # check after it, so a red run reports one problem, you fix it, the next
+      # surfaces, repeat — turning a few failures into days of serialized
+      # whack-a-mole (2026-06-19→22: main red ~2 days, failures surfacing one at
+      # a time). With always() every check runs and any failure still fails the
+      # job, so one run reports ALL failing gates. Matches the pre-existing
+      # pattern on the contamination/text-quality/provisional-venue steps.
+      # Setup steps (checkout, npm ci, freshness canary) and the auto-close
+      # MUTATION stay fail-fast above — downstream is meaningless if they break.
       - name: Run data validation
+        if: always()
         run: node scripts/validate-data.js
 
       - name: Audit cast-changes.json
+        if: always()
         # Catches the bugs surfaced 2026-05-23 in the casting newsletter:
         # per-actor "Production closes" departures masquerading as voluntary
         # exits, closure events contradicted by later arrivals, ended absences
@@ -1075,6 +1088,7 @@ jobs:
         run: node scripts/audit-cast-changes.js --strict
 
       - name: Audit review contamination
+        if: always()
         run: node scripts/audit-review-contamination.js --strict
         # Catches cross-market contamination (WE/OB reviews in BW folders),
         # domain/outlet mismatches, unflagged roundup pages, and junk --unknown files.
@@ -1158,6 +1172,7 @@ jobs:
         # private-repo state. Tracked in Notion 34e637c5-416f-812c follow-up.
 
       - name: Validate market expansion
+        if: always()
         run: node scripts/validate-market-expansion.js
         # Catches slug, threshold, display, and copy issues for WE/OB markets
 
@@ -1166,6 +1181,7 @@ jobs:
         continue-on-error: true  # Don't fail build, just warn - archives need manual refetch
 
       - name: Test star rating extractors
+        if: always()
         run: node tests/star-rating-extractors.test.js
         # Verifies all outlet-specific star extractors against saved HTML fixtures
 
@@ -1190,6 +1206,7 @@ jobs:
         continue-on-error: true  # Informational only
 
       - name: Audit WE sweep verifier wiring
+        if: always()
         # S3-T5 — asserts every extractor call in sweep-we-aggregators.js is
         # preceded by a verifyPage/verifyAggregatorUrl call in the same fn
         # body. Stops the Stage Cuckoo-trap from re-entering after a
@@ -1204,11 +1221,13 @@ jobs:
         # while we work through the backlog. Promote to failure once count is <5.
 
       - name: Validate mobile-shows.json integrity
+        if: always()
         run: node scripts/validate-mobile-shows.js
         # Catches stale build artifacts from worktree merges:
         # closed shows without scores should be filtered out by generate-mobile-data.js
 
       - name: Audit stale duplicateOf flags
+        if: always()
         run: node scripts/audit-duplicate-of-url-mismatch.js
         # Fails when A.duplicateOf=B but their URLs differ. Catches the Sommers
         # case (2026-05-24) where a transient URL correction left a stale dupe
@@ -1218,6 +1237,7 @@ jobs:
         # locally to clear stale flags. See memory/feedback_duplicate_of_url_mismatch.md.
 
       - name: Audit orphan slim show files
+        if: always()
         run: node scripts/audit-orphan-show-ids.js
         # Fails when public/data/shows/{id}.json exists for an id that isn't
         # in shows.json. Catches drift after show renames (Can I Be Frank,
@@ -1265,6 +1285,7 @@ jobs:
       # the edit itself, which is the case that actually matters).
 
       - name: Validate review-text files
+        if: always()
         run: |
           echo "Validating individual review-text files..."
           node scripts/validate-review-texts.js
