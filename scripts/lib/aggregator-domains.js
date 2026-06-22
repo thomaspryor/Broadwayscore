@@ -115,11 +115,42 @@ function shouldSkipAggregatorUrlWrite(reviewData, normalizedOutletId) {
   return isAggregatorUrlMismatch(reviewData.url, normalizedOutletId);
 }
 
+/**
+ * Decision for audit-review-contamination.js class C: is a review's `outletId` a
+ * genuine domain mismatch vs the outlet its URL's domain maps to?
+ *
+ * `expected` is the outlet the URL's domain resolves to (domainToOutlet[domain]);
+ * `internalOutlet` is the review's normalized outletId.
+ *
+ * Returns false (NOT a mismatch) when:
+ *  - the domain doesn't resolve to a known outlet (expected falsy),
+ *  - it resolves to the same outlet (expected === internalOutlet),
+ *  - internalOutlet is a wire service (AP/Reuters/UPI syndicate across domains),
+ *  - the domain resolves to an AGGREGATOR outlet — aggregator ROUNDUP URLs
+ *    (westendtheatre.com, show-score.com, stagedoor.com, …) are shared across
+ *    every real outlet the roundup covers, so a real-outlet star-stub carrying
+ *    the roundup URL is expected, not a misattribution. (2026-06-22: this was the
+ *    12 WET false-positives.) Genuine aggregator-URL contamination (real outlet,
+ *    no score) is the aggregator_url_mismatch class, blocked at write time.
+ *
+ * @param {string|undefined} expected - outlet the URL domain maps to
+ * @param {string|undefined} internalOutlet - normalized review outletId
+ * @param {{wireOutlets?: Set<string>}} [opts]
+ */
+function isOutletDomainMismatch(expected, internalOutlet, opts = {}) {
+  if (!expected) return false;
+  if (expected === internalOutlet) return false;
+  if (opts.wireOutlets && opts.wireOutlets.has(internalOutlet)) return false;
+  if (AGGREGATOR_OUTLET_IDS.has(expected)) return false;
+  return true;
+}
+
 module.exports = {
   AGGREGATOR_DOMAINS,
   AGGREGATOR_OUTLET_IDS,
   isAggregatorReviewSource,
   shouldSkipAggregatorUrlWrite,
+  isOutletDomainMismatch,
   hostnameOf,
   isAggregatorUrlMismatch,
 };
