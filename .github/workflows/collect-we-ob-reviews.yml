@@ -117,6 +117,8 @@ jobs:
           COOKIES_BUNDLE_10: ${{ secrets.COOKIES_BUNDLE_10 }}
           COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}

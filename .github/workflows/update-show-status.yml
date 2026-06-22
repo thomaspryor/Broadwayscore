@@ -87,6 +87,8 @@ jobs:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
         run: |
           SS_FLAG=""
           # Auto-enable ShowScore on Wednesday schedule (cron index 1)
@@ -133,6 +135,8 @@ jobs:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
         # Discovery is best-effort and has grown slow (per-candidate IBDB revival
         # SERP × the late-May OB-venue expansion pushed it to ~21 min). It must
         # NOT be able to cancel the critical pipeline (status updates,
@@ -163,6 +167,8 @@ jobs:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
         run: node scripts/enrich-stubhub-prices.js
         continue-on-error: true
         timeout-minutes: 5
@@ -171,6 +177,8 @@ jobs:
         if: ${{ inputs.skip_discovery != 'true' }}
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
         run: node scripts/enrich-ticket-platform-links.js
         continue-on-error: true
 
@@ -978,6 +986,8 @@ jobs:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
         run: |
           for slug in $(echo "${{ steps.filter.outputs.cast_shows }}" | tr ',' '\n'); do
             echo "Discovering Playbill URL for: $slug"

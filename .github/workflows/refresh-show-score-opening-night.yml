@@ -114,6 +114,8 @@ jobs:
         if: steps.window.outputs.has_shows == 'true'
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
         run: |
           npx tsx scripts/fetch-aggregator-pages.ts \
