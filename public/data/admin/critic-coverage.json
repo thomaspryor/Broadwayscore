@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-06-22T10:42:38.807Z",
+  "generatedAt": "2026-06-22T11:14:32.076Z",
   "current": {
     "totalCritics": 76,
-    "totalGaps": 762,
+    "totalGaps": 1333,
     "gapsByBucket": {
-      "A": 19,
-      "B": 18,
-      "C": 720,
-      "D": 5,
+      "A": 37,
+      "B": 22,
+      "C": 1267,
+      "D": 7,
       "E": 0
     },
     "gapsBySource": {
-      "muckrack": 762
+      "muckrack": 1333
     }
   },
   "history": [
@@ -339,6 +339,67 @@
         "Andrzej Lukowski": 1,
         "Gillian Russo": 1
       }
+    },
+    {
+      "date": "2026-06-22",
+      "timestamp": "2026-06-22T11:04:37.305Z",
+      "totalCritics": 76,
+      "totalGaps": 1333,
+      "gapsByBucket": {
+        "A": 37,
+        "B": 22,
+        "C": 1267,
+        "D": 7,
+        "E": 0
+      },
+      "gapsBySource": {
+        "muckrack": 1333
+      },
+      "perCritic": {
+        "Chris Jones": 125,
+        "Elysa Gardner": 110,
+        "Jesse Green": 86,
+        "David Finkle": 64,
+        "Steven Suskin": 64,
+        "David Rooney": 57,
+        "Dan Rubins": 53,
+        "Frank Scheck": 50,
+        "Sarah Hemming": 50,
+        "Roma Torre": 49,
+        "Juan A. Ramirez": 49,
+        "Pete Hempstead": 47,
+        "Melissa Rose Bernardo": 45,
+        "Laura Collins-Hughes": 40,
+        "Andrzej Lukowski": 39,
+        "Bob Verini": 39,
+        "Austin Fimmano": 38,
+        "Tim Bano": 35,
+        "Matt Wolf": 33,
+        "Joey Sims": 32,
+        "Brittani Samuel": 26,
+        "Helen Shaw": 25,
+        "Matt Windman": 20,
+        "Charles Isherwood": 19,
+        "Kyle Turner": 18,
+        "Sara Holdren": 17,
+        "Patrick Marmion": 17,
+        "Jackson McHenry": 15,
+        "Hayley Levitt": 15,
+        "Johnny Oleksinski": 14,
+        "Tim Teeman": 10,
+        "Sam Marlowe": 8,
+        "Mark Kennedy": 5,
+        "Frank Rizzo": 5,
+        "Alice Saville": 4,
+        "David Gordon": 2,
+        "Marianka Swain": 2,
+        "Joe Dziemianowicz": 1,
+        "Alexis Soloski": 1,
+        "Charles McNulty": 1,
+        "Michael Musto": 1,
+        "Gillian Russo": 1,
+        "Dominic Maxwell": 1
+      }
     }
   ],
   "topCriticsByGap": [
@@ -346,7 +407,7 @@
       "name": "Chris Jones",
       "outlet": "chicagotribune",
       "tier": 2,
-      "missingCount": 123,
+      "missingCount": 125,
       "lastDate": "2026-05-19"
     },
     {
@@ -360,56 +421,56 @@
       "name": "Jesse Green",
       "outlet": "vulture",
       "tier": 1,
-      "missingCount": 79,
+      "missingCount": 86,
       "lastDate": "2025-06-25"
-    },
-    {
-      "name": "Steven Suskin",
-      "outlet": "nysr",
-      "tier": 2,
-      "missingCount": 63,
-      "lastDate": "2026-06-05"
-    },
-    {
-      "name": "Austin Fimmano",
-      "outlet": "nytg",
-      "tier": 2,
-      "missingCount": 37,
-      "lastDate": "2026-06-05"
-    },
-    {
-      "name": "Alice Saville",
-      "outlet": "independent",
-      "tier": 2,
-      "missingCount": 35,
-      "lastDate": "2026-05-29"
-    },
-    {
-      "name": "David Rooney",
-      "outlet": "hollywood-reporter",
-      "tier": 1,
-      "missingCount": 33,
-      "lastDate": "2026-04-15"
-    },
-    {
-      "name": "Roma Torre",
-      "outlet": "ny1",
-      "tier": 2,
-      "missingCount": 30,
-      "lastDate": "2026-06-05"
     },
     {
       "name": "David Finkle",
       "outlet": "nysr",
       "tier": 2,
-      "missingCount": 30,
-      "lastDate": "2026-05-20"
+      "missingCount": 64,
+      "lastDate": "2026-06-19"
+    },
+    {
+      "name": "Steven Suskin",
+      "outlet": "nysr",
+      "tier": 2,
+      "missingCount": 64,
+      "lastDate": "2026-06-05"
+    },
+    {
+      "name": "David Rooney",
+      "outlet": "hollywood-reporter",
+      "tier": 1,
+      "missingCount": 57,
+      "lastDate": "2026-04-15"
     },
     {
       "name": "Dan Rubins",
       "outlet": "slantmagazine",
       "tier": 2,
-      "missingCount": 30,
+      "missingCount": 53,
+      "lastDate": "2026-06-12"
+    },
+    {
+      "name": "Frank Scheck",
+      "outlet": "nysr",
+      "tier": 2,
+      "missingCount": 50,
+      "lastDate": "2026-06-16"
+    },
+    {
+      "name": "Sarah Hemming",
+      "outlet": "financialtimes",
+      "tier": 1,
+      "missingCount": 50,
+      "lastDate": "2026-06-18"
+    },
+    {
+      "name": "Roma Torre",
+      "outlet": "ny1",
+      "tier": 2,
+      "missingCount": 49,
       "lastDate": "2026-06-12"
     }
   ]
