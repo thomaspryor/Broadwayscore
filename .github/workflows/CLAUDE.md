@@ -574,9 +574,17 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 
 ## `test.yml`
 - **Runs:** On push to `main`, daily at 6 AM UTC, manually
-- **Tests:** Data validation (duplicates, required fields, dates, status), **text quality audit** (35% full, <40% truncated, <5% unknown), E2E tests (homepage, show pages, navigation, filters, mobile)
-- **Quality thresholds:** Fails if review text quality drops below standards
+- **Tests:** Data validation (duplicates, required fields, dates, status), contamination audits (`--strict`), absolute floors (500 shows / 15k reviews), topology/write guards, unit tests, tsc, lint, E2E (homepage, show pages, navigation, filters, mobile)
+- **Quality gate (2026-06-21 split):** Blocks only on a **catastrophe floor** — `audit-text-quality.js --gate` (wide bands: <10% full / >85% truncated / >25% unknown). The tight drift bands (text-quality %, aggregator count ratios, regex FP counts) MOVED to the non-blocking `check-corpus-drift.yml` because they flapped main red as the rebuild bots drift the corpus every ~30 min. See that workflow + `health-check.js` "Quality: corpus drift".
 - **On Failure:** Auto-creates GitHub issue (Discord alerts removed Feb 20, 2026)
+
+## `check-corpus-drift.yml`
+- **Runs:** Daily at 6:20 AM UTC + `workflow_run` after "Rebuild Reviews Data" + manual
+- **Does:** Runs the three corpus-statistics audits — `audit-text-quality.js` (MONITOR band), `validate-aggregator-truth.js`, `audit-regex-patterns.js --full` — via `scripts/check-corpus-drift.js`, writes `data/audit/corpus-drift.json`, commits it. **Non-blocking by design:** drift is not a job failure (exit 0); only an audit that *cannot run* (scan failed/crashed) fails the job. Surfaced in the daily digest by `health-check.js` ("Quality: corpus drift") — that's the channel that keeps the moved signals visible, since a non-blocking job reports conclusion=success and `getWorkflowRunSummary()` would otherwise never see it.
+- **Why it exists:** these audits assert on live-corpus properties that drift continuously; in `test.yml` they reddened main for non-code reasons every few hours (root cause: `memory/feedback_test_yml_data_gates_flap_and_shortcircuit.md`). The catastrophe FLOOR stays blocking in `test.yml` via `--gate`.
+- **Script:** `scripts/check-corpus-drift.js` (`--strict` to escalate drift to job failure; `--audit-out=PATH`)
+- **Requires:** `REVIEW_TEXTS_TOKEN` (core-data + review-texts checkout)
+- **Manual trigger:** `gh workflow run "Check Corpus Drift"`
 
 ## `check-secrets-health.yml`
 - **Runs:** Weekly on Mondays at 12 PM UTC (7 AM EST), or manually

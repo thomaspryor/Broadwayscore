@@ -96,6 +96,10 @@ const AUTO_FIX_PLAYBOOK = [
   { match: /^Pipeline:/, urgency: 'low',
     humanAction: "A scheduled pipeline hasn't run recently. It may just be delayed — check again tomorrow." },
 
+  // Corpus drift — specific entry BEFORE the generic ^Quality: catch-all.
+  { match: /^Quality: corpus drift$/, urgency: 'this-week',
+    humanAction: 'A corpus-statistics audit (text-quality %, aggregator ratios, or regex FP) is over threshold. Open Claude Code and say: "Triage data/audit/corpus-drift.json — decide per audit whether it is harmless drift (adjust the threshold) or a real data regression (fix the data)."' },
+
   // Quality — needs investigation
   { match: /^Quality:/, urgency: 'this-week',
     humanAction: 'The percentage of scored reviews has dropped. Open Claude Code and say: "Check why the scored review percentage dropped and fix it."' },
@@ -842,6 +846,41 @@ function checkSEO() {
         }
       }
       return { name: 'SEO: health', status: 'pass', message: `Healthy (${formatAge(age)} ago)` };
+    }),
+  ];
+}
+
+// --- Category G2: Corpus-statistics drift ---
+// Surfaces the three corpus-statistics audits (text-quality %, aggregator
+// ratios, regex FP) that were moved OUT of the blocking test.yml gate into the
+// non-blocking check-corpus-drift.yml workflow (2026-06-21). Without this, that
+// move would silently delete those signals — `continue-on-error`/non-blocking
+// jobs report conclusion=success, so getWorkflowRunSummary() never sees them.
+// This is the digest channel that keeps drift visible (and drives repeat-failure
+// escalation if it stays red). Mirrors the SEO: health audit-JSON pattern above.
+function checkCorpusDrift() {
+  return [
+    runCheck('Quality: corpus drift', () => {
+      const file = path.join(AUDIT_DIR, 'corpus-drift.json');
+      if (!fs.existsSync(file)) {
+        return { name: 'Quality: corpus drift', status: 'warn', message: 'No corpus-drift data (check-corpus-drift may not have run yet)', hint: 'Trigger check-corpus-drift workflow manually' };
+      }
+      const data = readJSON(file);
+      const age = data._meta?.generatedAt ? hoursAgo(data._meta.generatedAt) : Infinity;
+      if (age > 72) {
+        return { name: 'Quality: corpus drift', status: 'warn', message: `Last corpus-drift check ${formatAge(age)} ago (>3d)`, hint: 'Trigger check-corpus-drift workflow manually' };
+      }
+      const s = data.summary || {};
+      // A crashed audit (couldn't run) is a real error — the monitor is blind.
+      if (s.crashCount > 0) {
+        const crashed = (data.audits || []).filter(a => a.crashed).map(a => a.name).join(', ');
+        return { name: 'Quality: corpus drift', status: 'error', message: `${s.crashCount} audit(s) could not run: ${crashed}`, hint: 'Check data/audit/corpus-drift.json — scan failed or crashed' };
+      }
+      if (s.driftCount > 0) {
+        const drifted = (data.audits || []).filter(a => !a.ok && !a.crashed).map(a => a.name).join(', ');
+        return { name: 'Quality: corpus drift', status: 'warn', message: `${s.driftCount} audit(s) over threshold: ${drifted}`, hint: 'Triage data/audit/corpus-drift.json — adjust threshold (drift) or fix data (real)' };
+      }
+      return { name: 'Quality: corpus drift', status: 'pass', message: `All ${s.auditsRun} corpus audits clean (${formatAge(age)} ago)` };
     }),
   ];
 }
@@ -1796,6 +1835,7 @@ async function main() {
     ...checkCookieExpiration(),
     ...checkCWV(),
     ...checkSEO(),
+    ...checkCorpusDrift(),
     ...checkCronHealth(),
     ...checkSecretsHealth(),
     ...checkAPICredits(),
