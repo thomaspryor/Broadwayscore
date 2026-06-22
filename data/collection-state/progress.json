@@ -87,7 +87,14 @@
     "my-neighbour-totoro-west-end-2025/west-end-best-friend--unknown.json",
     "my-neighbour-totoro-west-end-2025/whatsonstage--tom-millward.json",
     "los-soles-truncos-off-broadway-2025/broadwayworld--chloe-rabinowitz.json",
-    "oliver-west-end-2024/i-paper--unknown.json"
+    "oliver-west-end-2024/i-paper--unknown.json",
+    "oliver-west-end-2024/theatre-weekly--unknown.json",
+    "oliver-west-end-2024/times-uk--unknown.json",
+    "the-devil-wears-prada-west-end-2024/londontheatre1--unknown.json",
+    "the-devil-wears-prada-west-end-2024/times-uk--dominic-maxwell.json",
+    "maybe-happy-ending-2024/newyorker--conde-nast.json",
+    "maybe-happy-ending-2024/variety--unknown.json",
+    "maybe-happy-ending-2024/the-contending--frank-j-avella.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -183,7 +190,10 @@
     "my-neighbour-totoro-west-end-2025/london-box-office--miriam-gibson.json",
     "my-neighbour-totoro-west-end-2025/the-morning-star--unknown.json",
     "my-neighbour-totoro-west-end-2025/the-upcoming-uk--unknown.json",
-    "oliver-west-end-2024/i-paper--fiona-mountford.json"
+    "oliver-west-end-2024/i-paper--fiona-mountford.json",
+    "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
+    "the-devil-wears-prada-west-end-2024/express-uk--neil-norman.json",
+    "death-becomes-her-2024/chicago-reader--kerry-reid.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -252,7 +262,10 @@
       "my-neighbour-totoro-west-end-2025/west-end-best-friend--unknown.json",
       "my-neighbour-totoro-west-end-2025/whatsonstage--tom-millward.json",
       "los-soles-truncos-off-broadway-2025/broadwayworld--chloe-rabinowitz.json",
-      "oliver-west-end-2024/i-paper--unknown.json"
+      "oliver-west-end-2024/i-paper--unknown.json",
+      "oliver-west-end-2024/theatre-weekly--unknown.json",
+      "oliver-west-end-2024/times-uk--unknown.json",
+      "the-devil-wears-prada-west-end-2024/londontheatre1--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -270,15 +283,8 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
+      "data/review-texts/maybe-happy-ending-2024/variety--unknown.json",
+      "maybe-happy-ending-2024/variety--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -290,7 +296,9 @@
       "a-midsummer-nights-dream-globe-west-end-2026/telegraph--unknown.json",
       "romeo-and-juliet-west-end-2026/ew--unknown.json",
       "just-in-time-2025/newyorker--conde-nast.json",
-      "my-neighbour-totoro-west-end-2025/nottingham-confidential--unknown.json"
+      "my-neighbour-totoro-west-end-2025/nottingham-confidential--unknown.json",
+      "the-devil-wears-prada-west-end-2024/times-uk--dominic-maxwell.json",
+      "maybe-happy-ending-2024/newyorker--conde-nast.json"
     ],
     "brightdata": [
       "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
@@ -329,11 +337,12 @@
       "inter-alia-west-end-2026/lbc--johnny-jenkins.json",
       "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
       "chess-2025/i-paper--unknown.json",
-      "hercules-west-end-2025/telegraph--unknown.json"
+      "hercules-west-end-2025/telegraph--unknown.json",
+      "maybe-happy-ending-2024/the-contending--frank-j-avella.json"
     ]
   },
   "startTime": "2026-06-22T03:17:14.820Z",
-  "lastProcessed": "oliver-west-end-2024/i-paper--unknown.json",
+  "lastProcessed": "maybe-happy-ending-2024/the-contending--frank-j-avella.json",
   "log": [
     {
       "t": "2026-06-22T03:47:12.616Z",
@@ -567,118 +576,13 @@
       "domain": "variety.com"
     },
     {
-      "t": "2026-06-22T06:44:42.447Z",
+      "t": "2026-06-22T07:01:32.957Z",
       "event": "bb-session",
-      "session": "5d5f68c6",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+      "session": "619f22ec",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
     },
     {
-      "t": "2026-06-22T06:44:43.361Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-22T06:45:59.819Z",
-      "event": "bb-session",
-      "session": "722a4e30",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-22T06:46:00.828Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-22T06:46:14.031Z",
-      "event": "bb-session",
-      "session": "f70df74c",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
-    {
-      "t": "2026-06-22T06:46:14.976Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-22T09:52:25.007Z",
-      "event": "bb-session",
-      "session": "9842686e",
-      "url": "https://www.facebook.com/thestage/posts/icymi-review-glengarry-glen-ross-at-the-"
-    },
-    {
-      "t": "2026-06-22T10:26:30.256Z",
-      "event": "bb-session",
-      "session": "00b74118",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
-    {
-      "t": "2026-06-22T10:26:31.241Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-22T10:27:26.689Z",
-      "event": "bb-session",
-      "session": "cc024490",
-      "url": "https://www.nytimes.com/2026/06/03/theater/caissie-levy-broadway-tonys-ragtime.h"
-    },
-    {
-      "t": "2026-06-22T10:27:27.607Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-22T10:27:47.667Z",
-      "event": "bb-session",
-      "session": "080d0d86",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-22T10:27:48.648Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-22T10:28:00.887Z",
-      "event": "bb-session",
-      "session": "02645bc2",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
-    {
-      "t": "2026-06-22T10:28:01.791Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-22T10:57:24.251Z",
-      "event": "bb-session",
-      "session": "92ad7f17",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
-    {
-      "t": "2026-06-22T10:57:24.763Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-22T10:57:57.798Z",
-      "event": "bb-session",
-      "session": "2f01370e",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-22T10:57:58.221Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-22T10:58:09.070Z",
-      "event": "bb-session",
-      "session": "2fa3f6ac",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
-    {
-      "t": "2026-06-22T10:58:09.536Z",
+      "t": "2026-06-22T07:01:34.037Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }

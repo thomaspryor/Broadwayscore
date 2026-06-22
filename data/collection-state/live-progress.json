@@ -1,22 +1,28 @@
 {
-  "updatedAt": "2026-06-22T06:59:53.627Z",
-  "processed": 88,
-  "failed": 94,
-  "successRate": "48.4%",
+  "updatedAt": "2026-06-22T07:02:02.390Z",
+  "processed": 95,
+  "failed": 97,
+  "successRate": "49.5%",
   "tierBreakdown": {
-    "playwright": 65,
+    "playwright": 68,
     "amp": 0,
-    "browserbase": 23,
+    "browserbase": 16,
     "directCookies": 0,
-    "scrapingbee": 9,
+    "scrapingbee": 11,
     "brightdata": 5,
     "archiveToday": 17,
-    "archive": 11
+    "archive": 12
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-06-22T06:44:43.361Z",
+      "t": "2026-06-22T05:00:40.176Z",
+      "event": "bb-session",
+      "session": "f8ac55a2",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-22T05:00:41.275Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
@@ -122,6 +128,17 @@
     },
     {
       "t": "2026-06-22T10:58:09.536Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-22T07:01:32.957Z",
+      "event": "bb-session",
+      "session": "619f22ec",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
+    },
+    {
+      "t": "2026-06-22T07:01:34.037Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
