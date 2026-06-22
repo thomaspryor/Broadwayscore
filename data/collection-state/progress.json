@@ -15,7 +15,10 @@
     "beetlejuice-west-end-2026/all-that-dazzles-uk--unknown.json",
     "beetlejuice-west-end-2026/theatre-south-east--unknown.json",
     "beetlejuice-west-end-2026/theatre-vibe--unknown.json",
-    "beetlejuice-west-end-2026/theatreandtonic--unknown.json"
+    "beetlejuice-west-end-2026/theatreandtonic--unknown.json",
+    "encores-la-cage-aux-folles-off-broadway-2026/nytimes--httpswwwnytimescombylaura-collins-hughes.json",
+    "are-you-now-or-have-you-ever-been-off-broadway-2026/off-off-online--walter-murphy.json",
+    "girl-interrupted-off-broadway-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -28,7 +31,14 @@
     "glengarry-glen-ross-west-end-2026/western-mail--unknown.json",
     "glengarry-glen-ross-west-end-2026/whatsonstage--lucinda-everett.json",
     "beetlejuice-west-end-2026/amny--matt-windman.json",
-    "beetlejuice-west-end-2026/the-upcoming-uk--unknown.json"
+    "beetlejuice-west-end-2026/the-upcoming-uk--unknown.json",
+    "encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
+    "romeo-and-juliet-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -44,18 +54,26 @@
       "beetlejuice-west-end-2026/all-that-dazzles-uk--unknown.json",
       "beetlejuice-west-end-2026/theatre-south-east--unknown.json",
       "beetlejuice-west-end-2026/theatre-vibe--unknown.json",
-      "beetlejuice-west-end-2026/theatreandtonic--unknown.json"
+      "beetlejuice-west-end-2026/theatreandtonic--unknown.json",
+      "are-you-now-or-have-you-ever-been-off-broadway-2026/off-off-online--walter-murphy.json",
+      "girl-interrupted-off-broadway-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "glengarry-glen-ross-west-end-2026/telegraph--unknown.json",
-      "glengarry-glen-ross-west-end-2026/westendtheatre--unknown.json"
+      "glengarry-glen-ross-west-end-2026/westendtheatre--unknown.json",
+      "encores-la-cage-aux-folles-off-broadway-2026/nytimes--httpswwwnytimescombylaura-collins-hughes.json"
     ],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/glengarry-glen-ross-west-end-2026/thestage--sam-marlowe.json"
+      "data/review-texts/glengarry-glen-ross-west-end-2026/thestage--sam-marlowe.json",
+      "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json"
     ],
     "archive": [
       "a-midsummer-nights-dream-west-end-2026/newsday--updated-november.json",
@@ -63,6 +81,40 @@
     ]
   },
   "startTime": "2026-06-22T03:17:14.820Z",
-  "lastProcessed": "beetlejuice-west-end-2026/theatreandtonic--unknown.json",
-  "log": []
+  "lastProcessed": "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+  "log": [
+    {
+      "t": "2026-06-22T03:47:12.616Z",
+      "event": "bb-session",
+      "session": "d4afe9a9",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-22T03:47:13.014Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-22T03:48:33.902Z",
+      "event": "bb-session",
+      "session": "e26ae977",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-22T03:48:34.306Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-22T03:48:45.637Z",
+      "event": "bb-session",
+      "session": "c2ad1417",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-22T03:48:46.061Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }
