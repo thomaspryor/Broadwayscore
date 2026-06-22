@@ -211,6 +211,12 @@ describe('WET title → show match (full pipeline)', () => {
     ['Mary Poppins review round-up at the Prince Edward Theatre in London ★★★★', 'Mary Poppins'],
     ["Reviews round-up of The Unlikely Pilgrimage of Harold Fry at the West End's Theatre Royal Haymarket", 'The Unlikely Pilgrimage of Harold Fry'],
     ['Reviews of The Devil Wears Prada at the Dominion', 'The Devil Wears Prada'],
+    // Mischief Theatre's "Christmas Carol Goes Wrong" entered the dataset as a
+    // real West End show (christmas-carol-goes-wrong-west-end-2026). It is a
+    // genuine title, not a parody fuzzy-match — must resolve to itself, not to
+    // "A Christmas Carol". (Was previously a mustNotMatchHigh case; flipped when
+    // the real show was added — 2026-06-22.)
+    ['Christmas Carol Goes Wrong', 'Christmas Carol Goes Wrong'],
   ];
 
   for (const [wpTitle, expectedShow] of highConfidenceExpected) {
@@ -226,7 +232,6 @@ describe('WET title → show match (full pipeline)', () => {
     'Best West End Shows This Week',
     'Reviews Round Up',
     'Review: A Brand New Show Nobody Knows',
-    'Christmas Carol Goes Wrong',
   ];
 
   for (const wpTitle of mustNotMatchHigh) {
