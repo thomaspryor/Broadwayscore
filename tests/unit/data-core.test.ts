@@ -164,7 +164,8 @@ describe('market partitioning', () => {
     // We check the partition by IDs, not just counts: if any non-hidden show
     // is missing from all three market filters the assertion message says
     // exactly which one, so a future regression is debuggable in one read.
-    const allIds = new Set(getAllShows().map(s => s.id));
+    const allShows = getAllShows();
+    const allIds = new Set(allShows.map(s => s.id));
     const partitioned = new Set<string>();
     for (const s of getBroadwayShows()) partitioned.add(s.id);
     for (const s of getWestEndShows()) partitioned.add(s.id);
@@ -172,7 +173,14 @@ describe('market partitioning', () => {
     const missing = Array.from(allIds).filter(id => !partitioned.has(id));
     // Known hidden IDs the public hubs deliberately exclude.
     const HIDDEN = new Set(['abba-voyage-off-west-end-2026']);
-    const unexpected = missing.filter(id => !HIDDEN.has(id));
+    // 'regional' shows (non-NYC/London US tryouts) are a feature-flagged bucket
+    // of their own — see regionalSlugAllowed() in src/lib/data-core.ts. They
+    // never belong to the broadway/west-end/off-broadway hubs by design, so a
+    // regional-category show legitimately falls outside this partition.
+    const regionalIds = new Set(
+      allShows.filter(s => s.category === 'regional').map(s => s.id)
+    );
+    const unexpected = missing.filter(id => !HIDDEN.has(id) && !regionalIds.has(id));
     assert.deepStrictEqual(
       unexpected, [],
       `Shows missing from every market partition (and not in the known-hidden list): ${unexpected.join(', ')}`
