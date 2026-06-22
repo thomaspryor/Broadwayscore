@@ -23,6 +23,7 @@
  * --soft           include SOFT findings (default: STRICT only — high precision)
  * --review-mode    include REVIEW findings (even more relaxed — for periodic manual review)
  * --limit=N        cap output to top N findings by suspiciousness (default: no cap)
+ * --fail-on-strict exit 1 when STRICT findings exist (default off — advisory)
  * --min-reviews=N  only audit shows with at least N reviews (default: 8). 8 was chosen
  *                  after observing that mostly-flagged shows like beetlejuice-2022 (90/96
  *                  flagged) leave a tiny unflagged sample that produces unreliable signals.
@@ -34,6 +35,13 @@ const path = require('path');
 const argv = process.argv.slice(2);
 const SOFT = argv.includes('--soft') || argv.includes('--review-mode');
 const REVIEW_MODE = argv.includes('--review-mode'); // even-more-relaxed thresholds for periodic manual review
+// --fail-on-strict: exit 1 when STRICT findings exist (for ad-hoc CLI gating).
+// Default OFF: this audit is advisory ("Advisory v1" per the workflow). A pending
+// proposed correction is not a pipeline failure — exiting 1 by default kept the
+// cron permanently red (stuck on the Diyan Zora proposal for ~30 days, 2026-06).
+// Findings still surface via the JSON output → workflow step summary, ::warning::
+// annotations, artifact, and the notice step, regardless of exit code.
+const FAIL_ON_STRICT = argv.includes('--fail-on-strict');
 const LIMIT = (() => {
   const a = argv.find(x => x.startsWith('--limit='));
   return a ? parseInt(a.split('=')[1], 10) : Infinity;
@@ -227,7 +235,11 @@ const out = {
 };
 
 console.log(JSON.stringify(out, null, 2));
-// Exit non-zero on STRICT findings (high-confidence misattributions). ZERO findings
-// are surfaced for review but not blocking — large sample with 0 mentions is
+// Advisory by default: a successful run exits 0 even with STRICT findings — they're
+// surfaced (not silenced) via the JSON output, workflow annotations, summary, and
+// artifact, but they don't fail the pipeline. Pass --fail-on-strict for ad-hoc CLI
+// gating. A genuine crash (e.g. unreadable shows.json) still exits non-zero via an
+// uncaught exception, so the workflow's `exit $AUDIT_EXIT` still catches real breakage.
+// ZERO findings were already non-blocking — large sample with 0 mentions is
 // suggestive but not always conclusive (e.g. devised theatre with no named director).
-process.exit(strictCount > 0 ? 1 : 0);
+process.exit(FAIL_ON_STRICT && strictCount > 0 ? 1 : 0);
