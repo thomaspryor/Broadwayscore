@@ -1,59 +1,20 @@
 {
-  "updatedAt": "2026-06-22T01:34:28.663Z",
+  "updatedAt": "2026-06-22T02:44:49.648Z",
   "processed": 6,
-  "failed": 21,
-  "successRate": "22.2%",
+  "failed": 28,
+  "successRate": "17.6%",
   "tierBreakdown": {
     "playwright": 5,
     "amp": 0,
-    "browserbase": 7,
+    "browserbase": 9,
     "directCookies": 0,
     "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 4,
+    "archiveToday": 6,
     "archive": 0
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-06-22T00:45:56.340Z",
-      "event": "bb-session",
-      "session": "69925224",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
-    {
-      "t": "2026-06-22T00:45:56.755Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-22T00:47:29.463Z",
-      "event": "bb-session",
-      "session": "ee0c4243",
-      "url": "https://www.nytimes.com/2026/06/03/theater/caissie-levy-broadway-tonys-ragtime.h"
-    },
-    {
-      "t": "2026-06-22T00:47:29.862Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-22T00:48:18.614Z",
-      "event": "bb-session",
-      "session": "c5081100",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-22T00:48:19.022Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-22T00:48:29.097Z",
-      "event": "bb-session",
-      "session": "097e33de",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
     {
       "t": "2026-06-22T00:48:29.483Z",
       "event": "bb-cookie-inject",
@@ -122,6 +83,45 @@
     },
     {
       "t": "2026-06-22T01:33:57.805Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-22T02:42:09.816Z",
+      "event": "bb-session",
+      "session": "15f7daed",
+      "url": "/people/Nick-Curtis/"
+    },
+    {
+      "t": "2026-06-22T02:42:35.501Z",
+      "event": "bb-session",
+      "session": "16476e01",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-22T02:42:36.102Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-22T02:44:10.109Z",
+      "event": "bb-session",
+      "session": "5ca450e3",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-22T02:44:11.341Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-22T02:44:24.426Z",
+      "event": "bb-session",
+      "session": "e7a65525",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-22T02:44:24.955Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
