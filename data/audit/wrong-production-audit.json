@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-22T16:18:04.996Z",
+  "timestamp": "2026-06-22T17:42:52.451Z",
   "stats": {
-    "totalReviews": 39017,
-    "alreadyFlagged": 17398,
+    "totalReviews": 39019,
+    "alreadyFlagged": 17402,
     "dateGuardCatches": 35,
-    "directorMismatch": 869,
-    "tvFilmSignals": 1061,
+    "directorMismatch": 870,
+    "tvFilmSignals": 1063,
     "londonSignals": 647,
     "offBroadwaySignals": 463,
     "yearMismatch": 81,
-    "noPublishDate": 3950
+    "noPublishDate": 3942
   },
   "findings": [
     {
@@ -7808,6 +7808,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "giant-west-end-2025",
+      "file": "times-uk--clive-davis.json",
+      "score": 96,
+      "publishDate": "2025-05-02",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/giant-review-john-lithgow-roald-dahl-kmzqshndc",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"nicholas hytner\" from giant-2026"
         }
       ]
     },
@@ -18524,6 +18538,32 @@
       ]
     },
     {
+      "showId": "shit-meet-fan-off-broadway-2024",
+      "file": "exeunt-magazine--read-more-articles-by-nicole-serratore.json",
+      "publishDate": "2024-11-19",
+      "url": "https://exeuntnyc.com/reviews/shit-meet-fan-at-mcc-theater/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "shit-meet-fan-off-broadway-2024",
+      "file": "nysr--melissa-rose-bernardo.json",
+      "publishDate": "2024-11-19",
+      "url": "https://nystagereview.com/2024/11/18/shit-meet-fan-satire-and-secrets-on-the-rocks/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"apple tv\""
+        }
+      ]
+    },
+    {
       "showId": "shucked-2023",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 66,
@@ -24896,6 +24936,7 @@
     {
       "showId": "trophy-boys-off-broadway-2025",
       "file": "nysr--melissa-rose-bernardo.json",
+      "score": 86,
       "publishDate": "2025-06-25",
       "url": "https://nystagereview.com/2025/06/25/trophy-boys-skewering-indicting-and-side-eyeing-male-privilege/",
       "findings": [
@@ -40484,6 +40525,7 @@
     {
       "showId": "three-houses-off-broadway-2026",
       "file": "slantmagazine--dan-rubins.json",
+      "score": 60,
       "publishDate": "2024-05-21",
       "url": "https://www.slantmagazine.com/theater/three-houses-review/",
       "findings": [
