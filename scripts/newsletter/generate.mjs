@@ -545,6 +545,15 @@ function offBroadwayOpenings() {
     .map(s => ({ s, agg: aggregateScore(s.id) }))
     .filter(x => x.agg && x.agg.count >= minReviews('off-broadway'))
     .sort((a, b) => ((b.agg.raw ?? b.agg.avg) - (a.agg.raw ?? a.agg.avg)));
+  // Editorial lead override: NEWSLETTER_OB_LEAD=<showId> floats one opening to
+  // the top of this section regardless of score (e.g. a marquee revival the
+  // editor wants leading even if a higher-scored show also opened). Off by
+  // default — the scheduled cron sets nothing, so ordering stays score-desc.
+  const obLead = (process.env.NEWSLETTER_OB_LEAD || '').trim();
+  if (obLead) {
+    const i = withScore.findIndex(x => x.s.id === obLead);
+    if (i > 0) withScore.unshift(withScore.splice(i, 1)[0]);
+  }
   if (!withScore.length) return { html: null, list: [] };
   const list = withScore.slice(0, 8).map(x => x.s); // cap the recent-openings list
   markFeatured(...list.map(s => s.id));
@@ -2046,8 +2055,11 @@ const html = `<!DOCTYPE html>
 <div style="display:none !important;max-height:0;overflow:hidden;visibility:hidden;mso-hide:all;font-size:1px;line-height:1px;color:transparent;opacity:0;">${ledeText || 'This week on Broadway and beyond.'}<span style="display:none !important;color:transparent;">${'&zwnj; &nbsp; '.repeat(40)}</span></div>
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#0f0f14" class="gmail-dark-bg"><tr><td align="center" bgcolor="#0f0f14" style="padding:24px 16px;background-color:#0f0f14;">
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width:560px;">
-<tr><td align="left" style="padding:0 4px 8px;">
+<tr><td align="left" style="padding:0 4px 4px;">
   <a href="https://broadwayscorecard.com" style="text-decoration:none;color:inherit;display:inline-block;"><span style="font-size:22px;font-weight:700;color:#fff;letter-spacing:-0.02em;">Broadway</span><span style="font-size:22px;font-weight:700;background:linear-gradient(135deg,#d4a574 0%,#b8956a 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;color:#d4a574;letter-spacing:-0.02em;">Scorecard</span><span style="font-size:9px;color:#6b7280;font-weight:400;vertical-align:super;margin-left:1px;">™</span></a>
+</td></tr>
+<tr><td align="left" style="padding:0 4px 10px;">
+  <div style="font-size:13px;color:#9ca3af;letter-spacing:0.01em;">Every show. Every review. One score.</div>
 </td></tr>
 <tr><td style="padding:0 4px 8px;">
   <div style="font-size:13px;color:#9ca3af;">Weekly Round-up · ${fmt(weekStartStr)} – ${fmt(weekEndStr)}, ${yearForFooter}</div>
