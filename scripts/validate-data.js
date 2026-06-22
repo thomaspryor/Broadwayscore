@@ -4581,11 +4581,8 @@ function validateLotteryRushData(shows) {
     'todaytix': 'https://www.todaytix.com',
     'broadway direct': 'https://lottery.broadwaydirect.com',
   };
-  // Platforms that are show-specific or app-based — no standard URL to require.
-  // 'inyougo' is the InYouGo London lottery (app-based draw entry, no reliable
-  // per-show web URL — the scraper records the platform from "enter via InYouGo"
-  // instructions). Treat like other app-based platforms: warn, don't error.
-  const CUSTOM_PLATFORM_PATTERNS = ['show website', 'app', 'website', 'inyougo'];
+  // Platforms that are show-specific or app-based — no standard URL to require
+  const CUSTOM_PLATFORM_PATTERNS = ['show website', 'app', 'website'];
   let missingUrlErrors = 0;
   let missingUrlWarnings = 0;
 
