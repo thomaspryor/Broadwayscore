@@ -79,7 +79,7 @@ function normalizeTitle(t) {
 
 const { parseDate } = require('./lib/date-utils');
 const { normalizeOutlet } = require('./lib/review-normalization');
-const { AGGREGATOR_OUTLET_IDS } = require('./lib/aggregator-domains');
+const { isOutletDomainMismatch } = require('./lib/aggregator-domains');
 
 function parseDomain(url) {
   if (!url || typeof url !== 'string') return null;
@@ -273,17 +273,11 @@ for (const showId of showDirs) {
         const expected = domainToOutlet[domain];
         const rawInternalOutlet = d.outletId || f.split('--')[0];
         const internalOutlet = normalizeOutlet(rawInternalOutlet);
-        // Aggregator roundup URLs (westendtheatre.com, show-score.com, stagedoor.com,
-        // …) are SHARED across every real outlet the roundup covers — a star-stub for
-        // The Telegraph discovered via the WET roundup legitimately carries the WET
-        // URL until the outlet's own URL is resolved. So when the URL's domain maps to
-        // an aggregator outlet, domain→outlet matching doesn't apply; skip rather than
-        // flag a false C_domain_mismatch. (Genuine aggregator-URL contamination — a
-        // real outlet with no score — is the aggregator_url_mismatch class, blocked at
-        // write time by gather-reviews.js + validate-review-texts.js.) Mirrors the
-        // isAggregatorSource exception in gather-reviews.js's domainMismatch guard.
-        const urlIsAggregatorRoundup = expected && AGGREGATOR_OUTLET_IDS.has(expected);
-        if (expected && expected !== internalOutlet && !WIRE_OUTLETS.has(internalOutlet) && !urlIsAggregatorRoundup) {
+        // isOutletDomainMismatch (lib/aggregator-domains.js) returns false for
+        // wire-service syndication and aggregator ROUNDUP URLs (shared across every
+        // real outlet the roundup covers — e.g. a Telegraph star-stub carrying the
+        // westendtheatre.com WET roundup URL). See that helper for full rationale.
+        if (isOutletDomainMismatch(expected, internalOutlet, { wireOutlets: WIRE_OUTLETS })) {
           hits.C_domain_mismatch.push({
             showId, file: f, internalOutlet, rawInternalOutlet, expected, domain,
           });
