@@ -65,10 +65,11 @@ function HitPill({ pick, hit }: { pick: string | null; hit: boolean | null }) {
   }
   return (
     <span
-      className={`inline-block px-2 py-0.5 rounded-full text-[11px] font-semibold whitespace-nowrap ${
+      className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold whitespace-nowrap ${
         hit ? 'bg-emerald-500/15 text-emerald-400' : 'bg-red-500/15 text-red-400'
       }`}
     >
+      <span aria-hidden="true" className="font-bold">{hit ? '✓' : '✗'}</span>
       {pick}
     </span>
   );
