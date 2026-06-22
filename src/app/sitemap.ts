@@ -478,6 +478,23 @@ async function buildCoreShard(ctx: DateContext): Promise<MetadataRoute.Sitemap> 
       changeFrequency: 'monthly' as const,
       priority: 0.4,
     },
+    // Citation/attribution pages — these teach journalists, bloggers, and Wikipedia
+    // editors how to cite our score and embed the auto-updating badge/iframe. They
+    // were missing from the sitemap (while /about, /methodology, /rankings were
+    // present), so Google couldn't surface the one path that drives the backlinks +
+    // "cited as the score" authority loop. The feature was built but undiscoverable.
+    {
+      url: `${BASE_URL}/partners`,
+      lastModified: ctx.showsDate,
+      changeFrequency: 'monthly' as const,
+      priority: 0.5,
+    },
+    {
+      url: `${BASE_URL}/brand`,
+      lastModified: ctx.showsDate,
+      changeFrequency: 'monthly' as const,
+      priority: 0.4,
+    },
     {
       url: `${BASE_URL}/compare`,
       lastModified: ctx.latestDate,
