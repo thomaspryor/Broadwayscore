@@ -2,23 +2,9 @@
   "version": 1,
   "showId": "glengarry-glen-ross-west-end-2026",
   "openingDate": "2026-06-17",
-  "detectedAt": "2026-06-22T01:54:34.772Z",
+  "detectedAt": "2026-06-22T03:38:56.292Z",
   "windowDays": 7,
   "orphans": [
-    {
-      "file": "telegraph--unknown.json",
-      "outletId": "telegraph",
-      "criticName": "Unknown",
-      "url": "https://www.westendtheatre.com/358451/news/reviews/glengarry-glen-ross-reviews/",
-      "fullTextLen": 0,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "stub",
-      "eligibilityReason": null
-    },
     {
       "file": "whatsonstage--lucinda-everett.json",
       "outletId": "whatsonstage",
@@ -34,8 +20,8 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
+  "orphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "failed:403 {\n\t\"message\": \"API rate limit exceeded for installation. If you reach out to GitHub Support for help, please include the request ID 8400:1E0C3B:8F713E:20848DF:6A3895DA and timestamp 2026-06-22 01:54:34 UTC. For more on scraping GitHub and how it may affect your rights, please review our Terms of Service (https:\\/\\/docs.github.com\\/en\\/site-policy\\/github-terms\\/github-terms-of-service)\",\n\t\"documentation_url\": \"https://docs.github.com/en/rest/using-the-rest-api/getting-started-with-the-rest-api#rate-limiting\",\n\t\"status\": \"403\"\n}\n",
-  "lastDispatchAt": null
+  "lastDispatch": "ok",
+  "lastDispatchAt": "2026-06-22T03:38:56.292Z"
 }
