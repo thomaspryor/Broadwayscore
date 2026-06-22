@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-22T11:51:11.074Z",
+  "timestamp": "2026-06-22T15:53:51.396Z",
   "stats": {
-    "totalReviews": 38959,
-    "alreadyFlagged": 17380,
-    "dateGuardCatches": 34,
+    "totalReviews": 39001,
+    "alreadyFlagged": 17397,
+    "dateGuardCatches": 35,
     "directorMismatch": 869,
-    "tvFilmSignals": 1060,
+    "tvFilmSignals": 1061,
     "londonSignals": 647,
     "offBroadwaySignals": 463,
     "yearMismatch": 81,
-    "noPublishDate": 3925
+    "noPublishDate": 3935
   },
   "findings": [
     {
@@ -24894,6 +24894,19 @@
       ]
     },
     {
+      "showId": "trophy-boys-off-broadway-2025",
+      "file": "nysr--melissa-rose-bernardo.json",
+      "publishDate": "2025-06-25",
+      "url": "https://nystagereview.com/2025/06/25/trophy-boys-skewering-indicting-and-side-eyeing-male-privilege/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "trouble-in-mind-2021",
       "file": "deadline--greg-evans.json",
       "score": 78,
@@ -40460,6 +40473,19 @@
       "score": 63,
       "publishDate": "2024-05-21",
       "url": "https://newyorktheater.me/2024/05/20/three-houses-theater-review/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 197d before show (2024-05-21 vs 2024-12-04)"
+        }
+      ]
+    },
+    {
+      "showId": "three-houses-off-broadway-2026",
+      "file": "slantmagazine--dan-rubins.json",
+      "publishDate": "2024-05-21",
+      "url": "https://www.slantmagazine.com/theater/three-houses-review/",
       "findings": [
         {
           "type": "DATE_GUARD",
