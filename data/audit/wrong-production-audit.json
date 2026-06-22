@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-22T08:32:04.298Z",
+  "timestamp": "2026-06-22T09:14:17.663Z",
   "stats": {
-    "totalReviews": 39022,
-    "alreadyFlagged": 17384,
+    "totalReviews": 39028,
+    "alreadyFlagged": 17385,
     "dateGuardCatches": 34,
     "directorMismatch": 870,
-    "tvFilmSignals": 1058,
+    "tvFilmSignals": 1059,
     "londonSignals": 648,
     "offBroadwaySignals": 463,
     "yearMismatch": 81,
-    "noPublishDate": 3933
+    "noPublishDate": 3936
   },
   "findings": [
     {
@@ -574,6 +574,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"gregory mosher\" from a-view-from-the-bridge-2010"
+        }
+      ]
+    },
+    {
+      "showId": "a-woman-among-women-off-broadway-2026",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "publishDate": null,
+      "url": "https://www.lightingandsoundamerica.com/news/story.asp?ID=TG6FPP",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"streaming series\""
         }
       ]
     },
@@ -8159,7 +8172,7 @@
       "file": "independent--alice-saville.json",
       "score": 58,
       "publishDate": "2026-06-18",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html?loginSuccessful=true",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
