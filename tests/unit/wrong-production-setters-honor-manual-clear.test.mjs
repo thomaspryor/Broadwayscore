@@ -54,6 +54,11 @@ const KNOWN_SETTERS = [
   'cleanup-review-sources.js',          // BWW tour-review tagger, line 245/261
   'collect-review-texts.js',            // anticipatory_pre_opening_post gate, line 4280
   'gather-reviews.js',                  // existingData re-flag at line 3149
+  // Cross-production auto-flaggers (added 2026-06-21): each honors manual-clear via
+  // shouldSkipWrongProductionAudit before writing wrongProduction=true.
+  'apply-cross-production-llm-flags.js', // conservative apply of Opus WRONG verdicts
+  'auto-triage-cross-production.js',     // conservative flagging from cross-prod audit
+  'fetch-guardian-reviews.js',           // guardian-api stale-slug flag
 ];
 
 describe('wrongProduction setter scripts honor manual-clear breadcrumb', () => {
@@ -117,6 +122,13 @@ describe('wrongProduction setter scripts honor manual-clear breadcrumb', () => {
       // to stdout. Doesn't touch existing on-disk files; no manual-clear breadcrumb
       // to honor. (Verified: only writes via console.log JSON.stringify on line 248.)
       'extract-bww-reviews.js',
+      // fix-aggregator-gap-override-contamination.js — by design OVERRIDES poison
+      // wrongProductionOverride/manualClear breadcrumbs that automated ingest stamped
+      // onto cross-production-contaminated files (it sets a durable wrongProductionReason
+      // rather than fighting the per-file protected-fields restore). Honoring the
+      // manual-clear breadcrumb here would defeat its purpose, so it's exempt — same
+      // category as the other intentional override/by-id utilities above. (2026-06-21)
+      'fix-aggregator-gap-override-contamination.js',
     ]);
 
     const allFiles = fs.readdirSync(SCRIPTS_DIR)

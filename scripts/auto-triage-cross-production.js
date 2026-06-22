@@ -49,6 +49,7 @@
 const fs = require('fs');
 const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
+const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 
 const ARGS = process.argv.slice(2);
 const APPLY = ARGS.includes('--apply');
@@ -112,14 +113,10 @@ for (const issue of candidates) {
     continue;
   }
 
-  // NEVER override an explicit human approval / clear.
-  if (
-    data.wrongProductionManualClear === true ||
-    data.wrongProductionOverride === true ||
-    data.humanReviewedWrongProduction === false ||
-    data.allowEarlyDate === true ||
-    data.allowCrossMarket === true
-  ) {
+  // NEVER override an explicit human approval / clear. Canonical helper covers
+  // manualClear / wrongProductionOverride / humanReviewedWrongProduction=false /
+  // allowCrossMarket; allowEarlyDate is checked separately (helper omits it).
+  if (shouldSkipWrongProductionAudit(data) || data.allowEarlyDate === true) {
     skipped.push({ file: issue.file, reason: 'human-approved/cleared' });
     continue;
   }

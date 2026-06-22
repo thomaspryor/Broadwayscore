@@ -35,6 +35,7 @@
 const fs = require('fs');
 const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
+const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 
 const ARGS = process.argv.slice(2);
 const APPLY = ARGS.includes('--apply');
@@ -70,10 +71,12 @@ for (const r of applicable) {
   catch (e) { skipped.push({ file: `${r.showId}/${r.file}`, reason: `parse-error` }); continue; }
 
   if (data.wrongProduction === true) { skipped.push({ file: `${r.showId}/${r.file}`, reason: 'already-wrongProduction' }); continue; }
-  if (
-    data.wrongProductionManualClear === true || data.wrongProductionOverride === true ||
-    data.humanReviewedWrongProduction === false || data.allowEarlyDate === true || data.allowCrossMarket === true
-  ) { skipped.push({ file: `${r.showId}/${r.file}`, reason: 'human-approved/cleared' }); continue; }
+  // Honor manual-clear breadcrumbs via the canonical helper (manualClear /
+  // wrongProductionOverride / humanReviewedWrongProduction=false / allowCrossMarket),
+  // plus allowEarlyDate which the helper does not cover.
+  if (shouldSkipWrongProductionAudit(data) || data.allowEarlyDate === true) {
+    skipped.push({ file: `${r.showId}/${r.file}`, reason: 'human-approved/cleared' }); continue;
+  }
 
   data.wrongProduction = true;
   data.wrongProductionReason = 'cross-production-llm-verified';
