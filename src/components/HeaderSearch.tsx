@@ -279,11 +279,13 @@ export default function HeaderSearch() {
                       show.category === 'west-end' ? 'bg-teal-500/20 text-teal-400' :
                       show.category === 'off-west-end' ? 'bg-violet-500/20 text-violet-400' :
                       show.category === 'off-broadway' ? 'bg-indigo-500/20 text-indigo-400' :
+                      show.category === 'regional' ? 'bg-emerald-500/20 text-emerald-400' :
                       'bg-blue-500/20 text-blue-400'
                     }`}>
                       {show.category === 'west-end' ? 'West End' :
                        show.category === 'off-west-end' ? 'Off-West End' :
-                       show.category === 'off-broadway' ? 'Off-Bway' : 'Broadway'}
+                       show.category === 'off-broadway' ? 'Off-Bway' :
+                       show.category === 'regional' ? 'Regional' : 'Broadway'}
                     </span>
                     {show.venue && <span className="truncate">{show.venue}</span>}
                   </div>

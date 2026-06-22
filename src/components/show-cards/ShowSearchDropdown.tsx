@@ -108,11 +108,13 @@ export default function ShowSearchDropdown({
                       show.category === 'west-end' ? 'bg-purple-500/20 text-purple-400' :
                       show.category === 'off-west-end' ? 'bg-purple-500/20 text-purple-400' :
                       show.category === 'off-broadway' ? 'bg-indigo-500/20 text-indigo-400' :
+                      show.category === 'regional' ? 'bg-emerald-500/20 text-emerald-400' :
                       'bg-blue-500/20 text-blue-400'
                     }`}>
                       {show.category === 'west-end' ? 'West End' :
                        show.category === 'off-west-end' ? 'Off-West End' :
-                       show.category === 'off-broadway' ? 'Off-Bway' : 'Broadway'}
+                       show.category === 'off-broadway' ? 'Off-Bway' :
+                       show.category === 'regional' ? 'Regional' : 'Broadway'}
                     </span>
                     {show.od && <span className="text-gray-500">{show.od.slice(0, 4)}</span>}
                   </div>

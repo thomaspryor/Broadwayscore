@@ -554,7 +554,12 @@ async function main() {
   // 2. Filter productions by market
   const nycProductions = filterNYCProductions(allProductions);
   const londonProductions = filterLondonProductions(allProductions);
-  console.log(`Filtered to ${nycProductions.length} NYC/Broadway + ${londonProductions.length} London/West End productions\n`);
+  // Regional (non-NYC US) pool: everything Mezzanine has that isn't NYC or London.
+  // Mezzanine is global (e.g. A.R.T. Cambridge), so regional shows match here.
+  const _nycSet = new Set(nycProductions);
+  const _londonSet = new Set(londonProductions);
+  const regionalProductions = allProductions.filter(p => !_nycSet.has(p) && !_londonSet.has(p));
+  console.log(`Filtered to ${nycProductions.length} NYC/Broadway + ${londonProductions.length} London/West End + ${regionalProductions.length} other (regional) productions\n`);
   if (allProductions.length > 50 && nycProductions.length === 0) {
     console.error('⚠️  WARNING: 0 NYC productions from ' + allProductions.length + ' total — location filter may be broken');
   }
@@ -593,16 +598,21 @@ async function main() {
   }
 
   // Split shows by market for correct pool matching
-  const nycShows = shows.filter(s => !isLondonMarket(s.category));
+  const nycShows = shows.filter(s => !isLondonMarket(s.category) && s.category !== 'regional');
   const weShows = shows.filter(s => isLondonMarket(s.category));
-  console.log(`Matching ${nycShows.length} NYC shows + ${weShows.length} WE shows against their market pools...\n`);
+  const regionalShows = shows.filter(s => s.category === 'regional');
+  console.log(`Matching ${nycShows.length} NYC shows + ${weShows.length} WE shows + ${regionalShows.length} regional shows against their market pools...\n`);
 
   // 4. Match productions to shows (each market against its own pool)
   const nycMatches = matchProductions(nycProductions, nycShows);
   const weMatches = matchProductions(londonProductions, weShows);
-  const matches = [...nycMatches, ...weMatches];
+  const regionalMatches = matchProductions(regionalProductions, regionalShows);
+  const matches = [...nycMatches, ...weMatches, ...regionalMatches];
   if (weMatches.length > 0) {
     console.log(`  West End matches: ${weMatches.length}`);
+  }
+  if (regionalMatches.length > 0) {
+    console.log(`  Regional matches: ${regionalMatches.length}`);
   }
 
   console.log(`Found ${matches.length} matches\n`);
