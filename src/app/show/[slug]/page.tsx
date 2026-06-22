@@ -118,6 +118,15 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     'Critical Miss': 'Poor Reviews',
   };
   const sentimentLabel = tier ? (SEO_SENTIMENT[tier.label] ?? null) : null;
+  // For the <title> tag we front-load the exact-match "[Show] Reviews" keyword
+  // (the query users actually type), then append the sentiment WORD with its
+  // redundant "Reviews" suffix stripped so we don't print "Reviews — … Reviews".
+  // Before this, the 'Worth Seeing' tier produced a title with NO "review(s)"
+  // keyword at all (e.g. "Glengarry Glen Ross — Worth Seeing (65/100)"), making a
+  // whole tier of shows invisible to "[show] reviews" searches. Front-loading also
+  // matches the title pattern our aggregator competitor (Show-Score) outranks us
+  // with: "[Show] (Broadway) NYC Reviews". 2026-06-21 SERP audit.
+  const titleSentimentWord = sentimentLabel ? sentimentLabel.replace(/\s*reviews?$/i, '').trim() : null;
 
   // OG/Twitter titles are seen on social shares (FB, Twitter, iMessage, Slack
   // previews) where a "Mixed Reviews" or "Poor Reviews" label would actively
@@ -161,8 +170,8 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
 
   return {
     title: {
-      absolute: roundedScore && sentimentLabel
-        ? `${show.title} — ${sentimentLabel} (${roundedScore}/100) | ${siteName}`
+      absolute: roundedScore && titleSentimentWord
+        ? `${show.title} Reviews — ${titleSentimentWord} ${roundedScore}/100 | ${siteName}`
         : `${show.title} Reviews ${marketLabel} — ${siteName}`,
     },
     description: truncatedDescription,

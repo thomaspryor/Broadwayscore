@@ -600,6 +600,89 @@ async function submitHighValuePages(token) {
   return { submitted, skipped: highValueUrls.length - candidates.length };
 }
 
+// --- Check: Review-Intent Query Rankings (the de-branded truth) ---
+
+// Position buckets — competition-rank semantics, lower = better.
+function rankBucketOf(pos) {
+  if (pos <= 3) return 'top3';
+  if (pos <= 10) return 'page1';   // 4-10
+  if (pos <= 20) return 'page2';   // 11-20
+  return 'beyond';                  // 21+
+}
+
+// The site-wide average position is brand-skewed and misleading: "broadway
+// scorecard" ranks #1 and is ~19% of all clicks, dragging the mean to ~9.6 while
+// real "[show] reviews" queries actually sit at ~14.7 (71% on page 2 or worse).
+// Reporting the headline number as "strong" is exactly the false-confidence trap
+// this check exists to prevent — so we track the de-branded review-intent
+// distribution explicitly. No NEW alert (avoids more false positives); this is a
+// tracked metric surfaced in the summary + snapshot so the honest number is always
+// in front of whoever reads the report.
+async function checkReviewIntentRankings(token) {
+  console.log('\n--- Review-Intent Query Rankings (de-branded) ---');
+  const siteUrl = encodeURIComponent(SITE_URL_GSC);
+
+  const endDate = new Date();
+  endDate.setDate(endDate.getDate() - 3);
+  const startDate = new Date(endDate);
+  startDate.setDate(startDate.getDate() - 28); // 28d for a stable sample of long-tail show queries
+  const fmt = d => d.toISOString().slice(0, 10);
+
+  let rows = [];
+  try {
+    const data = await gscFetch(
+      `https://www.googleapis.com/webmasters/v3/sites/${siteUrl}/searchAnalytics/query`,
+      token,
+      { method: 'POST', body: JSON.stringify({ startDate: fmt(startDate), endDate: fmt(endDate), dimensions: ['query'], rowLimit: 25000 }) }
+    );
+    rows = data.rows || [];
+  } catch (err) {
+    console.log(`  Error fetching queries: ${err.message}`);
+    return null;
+  }
+
+  const reviewRows = rows
+    .filter(r => /\breviews?\b/i.test(r.keys[0]))
+    .map(r => ({ query: r.keys[0], clicks: r.clicks, impressions: r.impressions, position: r.position }));
+
+  if (reviewRows.length === 0) {
+    console.log('  No review-intent queries found');
+    return { queries: 0 };
+  }
+
+  const buckets = { top3: 0, page1: 0, page2: 0, beyond: 0 };
+  let totImp = 0, wPos = 0, totClicks = 0;
+  for (const r of reviewRows) {
+    buckets[rankBucketOf(r.position)]++;
+    totImp += r.impressions;
+    wPos += r.position * r.impressions;
+    totClicks += r.clicks;
+  }
+  const avgPosition = totImp > 0 ? Math.round((wPos / totImp) * 10) / 10 : 0;
+  const page1Share = Math.round(((buckets.top3 + buckets.page1) / reviewRows.length) * 100);
+
+  // Top page-2+ opportunities with real demand — the actionable fix list.
+  const opportunities = reviewRows
+    .filter(r => r.position > 10 && r.impressions >= 20)
+    .sort((a, b) => b.impressions - a.impressions)
+    .slice(0, 15)
+    .map(r => ({ query: r.query, position: Math.round(r.position * 10) / 10, impressions: r.impressions, clicks: r.clicks }));
+
+  console.log(`  ${reviewRows.length} review-intent queries | impression-weighted avg position ${avgPosition} | ${page1Share}% on page 1`);
+  console.log(`  Buckets: top3 ${buckets.top3} | page1(4-10) ${buckets.page1} | page2(11-20) ${buckets.page2} | beyond(21+) ${buckets.beyond}`);
+  console.log(`  ${opportunities.length} page-2+ opportunities with real demand (≥20 imp)`);
+
+  return {
+    queries: reviewRows.length,
+    avgPosition,
+    page1Share,
+    buckets,
+    clicks: totClicks,
+    impressions: totImp,
+    topOpportunities: opportunities,
+  };
+}
+
 // --- Check: Target Keyword Rankings ---
 
 async function checkTargetKeywords(token) {
@@ -906,6 +989,10 @@ function saveSnapshot(healthData, performanceData) {
     topPages: performanceData.topPages.slice(0, 10),
     targetKeywords: healthData.targetKeywords || [],
     coreWebVitals: healthData.coreWebVitals || [],
+    // De-branded review-intent ranking — tracked over time so a real ranking decline
+    // is visible even while the brand-skewed site avg stays flat.
+    reviewIntentAvgPosition: healthData.reviewIntentRankings?.avgPosition ?? null,
+    reviewIntentPage1Share: healthData.reviewIntentRankings?.page1Share ?? null,
   });
   while (history.length > 52) history.shift();
   fs.writeFileSync(HISTORY_PATH, JSON.stringify(history, null, 2) + '\n');
@@ -1060,6 +1147,7 @@ async function main() {
   const newPages = await checkNewPages(wmToken);
   const stalePages = await checkStalePages(wmToken);
   const highValuePages = await submitHighValuePages(wmToken);
+  const reviewIntentRankings = await checkReviewIntentRankings(wmToken);
   const targetKeywords = await checkTargetKeywords(wmToken);
   const coreWebVitals = await checkCoreWebVitals();
   const richResults = await checkRichResults(wmToken);
@@ -1087,6 +1175,7 @@ async function main() {
     newPages,
     stalePages,
     targetKeywords: targetKeywords.filter(r => r.position !== null).slice(0, 20),
+    reviewIntentRankings,
     coreWebVitals,
     anomalies,
     quotaUsedToday: readQuotaLedger().used,
@@ -1113,7 +1202,10 @@ async function main() {
 
   // Summary
   console.log('\n=== Summary ===');
-  console.log(`  Performance: ${performance.clicks} clicks, ${performance.impressions} impressions`);
+  console.log(`  Performance: ${performance.clicks} clicks, ${performance.impressions} impressions (avg position ${performance.position} — BRAND-SKEWED, not a ranking-quality signal)`);
+  if (reviewIntentRankings && reviewIntentRankings.queries > 0) {
+    console.log(`  Review-Intent Rankings (the real signal): avg position ${reviewIntentRankings.avgPosition}, ${reviewIntentRankings.page1Share}% on page 1 across ${reviewIntentRankings.queries} "[show] reviews" queries`);
+  }
   console.log(`  Index Coverage: ${indexCoverage.rate}% (${indexCoverage.indexed}/${indexCoverage.total})`);
   console.log(`  Sitemaps: ${sitemapStatus.count}`);
   console.log(`  New Pages: ${newPages.checked} checked, ${newPages.indexed} indexed`);
