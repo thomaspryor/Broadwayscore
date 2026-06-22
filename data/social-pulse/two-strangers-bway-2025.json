@@ -3,49 +3,54 @@
   "showId": "two-strangers-bway-2025",
   "showTitle": "Two Strangers (Carry a Cake Across New York)",
   "market": "Broadway",
-  "fetchedAt": "2026-06-15T09:11:20.864Z",
+  "fetchedAt": "2026-06-22T08:54:22.099Z",
   "tier": "Steady",
-  "volume": 111,
-  "positivePct": 82,
-  "weekOverWeekPct": 5,
-  "baselineMultiple": 0.8,
+  "volume": 34,
+  "positivePct": 93,
+  "weekOverWeekPct": -69,
+  "baselineMultiple": 0.25,
   "platformBreakdown": {
-    "x": 76,
+    "x": 0,
     "tiktok": 20,
-    "instagram": 15,
+    "instagram": 14,
     "reddit": 0
   },
   "topQuotes": [
     {
-      "text": "Tony Sunday ✨ Words cannot even begin to describe how proud I am of Austin and the entire company of Two Strangers.…",
+      "text": "Big shoutout right back, @samtutty! Thank you to our student Rafa who got this sweet video on her recent trip to NYC.…",
       "platform": "instagram",
-      "author": "@bern_babie_bern",
-      "url": "https://www.instagram.com/p/DZVm6nMIoKu/"
+      "author": "@charlestonstageedu",
+      "url": "https://www.instagram.com/p/DZxbt7Jjopf/"
     },
     {
-      "text": "go see two strangers rn #fyp #twostrangerscarryacakeacrossnewyork #musical #theatre #broadwaymusicals",
+      "text": "Tonight we highlight a simple rom-com of a musical! wo Strangers (Carry a Cake Across New York) is one of this…",
       "platform": "tiktok",
-      "author": "@ur.my.thirteenth.reason",
-      "url": "https://www.tiktok.com/@ur.my.thirteenth.reason/video/7589453031427542302"
+      "author": "@broadway_memories",
+      "url": "https://www.tiktok.com/@broadway_memories/video/7638958006134213919"
     }
   ],
-  "xTrueVolume": 5,
+  "xTrueVolume": 0,
   "baseline": {
-    "mean": 135.9209976196289,
+    "mean": 123.1808729171753,
     "weeksOfHistory": 8
   },
-  "costUsd": 0.11288000000000001,
+  "costUsd": 0.094,
   "rawCounts": {
     "reddit": 0,
-    "twitter": 79,
+    "twitter": 0,
     "tiktok": 20,
     "instagram": 15
   },
-  "errors": [],
+  "errors": [
+    {
+      "platform": "x",
+      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 502 <html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n</body>\r\n</html>\r\n"
+    }
+  ],
   "rank": {
-    "position": 36,
+    "position": 43,
     "total": 44,
-    "text": "36/44 Broadway"
+    "text": "43/44 Broadway"
   },
-  "compositeScore": 91.02
+  "compositeScore": 31.62
 }

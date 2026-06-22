@@ -3,49 +3,54 @@
   "showId": "mj-2022",
   "showTitle": "MJ The Musical",
   "market": "Broadway",
-  "fetchedAt": "2026-06-15T08:37:32.593Z",
-  "tier": "Buzzing",
-  "volume": 172,
-  "positivePct": 96,
-  "weekOverWeekPct": 10,
-  "baselineMultiple": 1.02,
+  "fetchedAt": "2026-06-22T08:28:19.082Z",
+  "tier": "Steady",
+  "volume": 32,
+  "positivePct": 93,
+  "weekOverWeekPct": -81,
+  "baselineMultiple": 0.19,
   "platformBreakdown": {
-    "x": 140,
-    "tiktok": 19,
-    "instagram": 13,
+    "x": 0,
+    "tiktok": 18,
+    "instagram": 14,
     "reddit": 0
   },
   "topQuotes": [
     {
-      "text": "I’m so excited to watch MJ, The Musical! As a Michael Jackson fan and music fan, it’s great that there a musical that…",
+      "text": "❤️❤️❤️500 SHOWS!!❤️❤️❤️ #mjthemusical #mjthemusicalau #mj #500 #blessed",
       "platform": "instagram",
-      "author": "@jerwumbo",
-      "url": "https://www.instagram.com/p/DZiRQRqjloK/"
+      "author": "@murraydavidjr",
+      "url": "https://www.instagram.com/p/DZ2Ezu4E2Q5/"
     },
     {
-      "text": "#LISA with MATTE MARTINEZ (as MJ) 🎪MJ The Musical (broadway) 📍Neil Simon Theatre, NYC @wearelloud…",
-      "platform": "x",
-      "author": "@LaliceUpdates",
-      "url": "https://x.com/LaliceUpdates/status/2052760034967478575"
+      "text": "MJ musical was heat// #michaeljackson #kingofpop #musical #mjmusical #fyp",
+      "platform": "tiktok",
+      "author": "@mjzve",
+      "url": "https://www.tiktok.com/@mjzve/video/7641625974932606226"
     }
   ],
-  "xTrueVolume": 10,
+  "xTrueVolume": 13,
   "baseline": {
-    "mean": 168.54246425628662,
+    "mean": 151.4746562242508,
     "weeksOfHistory": 8
   },
-  "costUsd": 0.11750000000000001,
+  "costUsd": 0.12190000000000001,
   "rawCounts": {
     "reddit": 0,
-    "twitter": 160,
+    "twitter": 0,
     "tiktok": 20,
     "instagram": 15
   },
-  "errors": [],
+  "errors": [
+    {
+      "platform": "x",
+      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 502 <html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n</body>\r\n</html>\r\n"
+    }
+  ],
   "rank": {
-    "position": 5,
+    "position": 44,
     "total": 44,
-    "text": "5/44 Broadway"
+    "text": "44/44 Broadway"
   },
-  "compositeScore": 165.12
+  "compositeScore": 29.76
 }
