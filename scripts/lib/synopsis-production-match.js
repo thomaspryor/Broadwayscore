@@ -36,8 +36,8 @@ PRODUCTION RECORD (the ground truth):
 CANDIDATE SYNOPSIS:
 "${synopsis}"
 
-Does the candidate synopsis describe THIS EXACT production (the one in the record above)? It is a MISMATCH if the synopsis is about a different show that merely shares the title, names different people/venue/year, or describes a plot inconsistent with this cast/era. If you are not confident it is the same production, answer NO.
-Answer on the first line with exactly MATCH or MISMATCH, then one sentence why.`;
+Does the candidate synopsis describe THIS EXACT production (the one in the record above)? It is a MISMATCH if the synopsis is about a different show that merely shares the title, names different people/venue/year, or describes a plot inconsistent with this cast/era. If the record is too sparse to identify the production (e.g. cast, venue, and year are all unknown and the title is shared by multiple shows) so that you cannot confirm it, answer MISMATCH. If you are not fully confident it is the same production, answer MISMATCH.
+Reply with ONLY one word on the FIRST line — either MATCH or MISMATCH (nothing else on that line). Put your one-sentence reason on the SECOND line.`;
 }
 
 /**
@@ -58,11 +58,16 @@ async function verifyProductionMatch(show, synopsis, callLLM) {
   }
 
   const text = (raw || '').trim();
-  // Reject-on-doubt: only an explicit, unambiguous MATCH passes.
-  if (/^\s*MISMATCH\b/i.test(text)) return { match: false, reason: text.split('\n')[0] };
-  if (/^\s*MATCH\b/i.test(text)) return { match: true, reason: text.split('\n')[0] };
-  // Unparseable / empty / hedged → treat as mismatch (fail-safe).
-  return { match: false, reason: `unparseable verdict: ${text.slice(0, 80)}` };
+  const firstLine = (text.split('\n')[0] || '').trim();
+  // Reject-on-doubt, fail-closed:
+  // 1. ANY mention of MISMATCH anywhere wins (covers "MATCH... actually MISMATCH").
+  if (/\bMISMATCH\b/i.test(text)) return { match: false, reason: firstLine || 'mismatch' };
+  // 2. MATCH passes ONLY if the verdict stands ALONE on the first line. A line
+  //    like "MATCH - but the venue doesn't line up" is a hedge → fail closed
+  //    (it does not match the anchored pattern). Trailing period/punct allowed.
+  if (/^MATCH[.!]?$/i.test(firstLine)) return { match: true, reason: text.split('\n')[1]?.trim() || 'match' };
+  // 3. Anything else (hedged "MATCH - ...", "Verdict: MATCH", empty, prose) → mismatch.
+  return { match: false, reason: `unparseable/hedged verdict: ${firstLine.slice(0, 80)}` };
 }
 
 module.exports = { verifyProductionMatch, buildVerificationPrompt };
