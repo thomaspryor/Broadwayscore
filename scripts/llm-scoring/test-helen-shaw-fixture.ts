@@ -112,7 +112,7 @@ async function main() {
   const fixture: Fixture = JSON.parse(fs.readFileSync(FIXTURE_PATH, 'utf-8'));
 
   const scorers = {
-    claude: new ReviewScorer(claudeKey, { model: 'claude-sonnet-4-20250514', verbose: false }),
+    claude: new ReviewScorer(claudeKey, { model: 'claude-sonnet-4-6', verbose: false }),
     openai: new OpenAIReviewScorer(openaiKey, { model: 'gpt-4o', verbose: false }),
     // gemini-2.5-flash for separate quota pool — see test-prompt-structural-ab.ts
     gemini: new GeminiScorer(geminiKey, { model: 'gemini-2.5-flash' as any, verbose: false }),

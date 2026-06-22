@@ -133,7 +133,7 @@ async function runTests() {
     use2ModelMode ? undefined : geminiKey,
     undefined, // openrouterApiKey (Kimi K2.5)
     {
-      claudeModel: 'claude-sonnet-4-20250514',
+      claudeModel: 'claude-sonnet-4-6',
       openaiModel: 'gpt-4o',
       geminiModel: 'gemini-2.5-flash',
       verbose: true

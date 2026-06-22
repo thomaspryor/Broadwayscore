@@ -48,6 +48,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { safeWriteReview } = require('./lib/review-write-guard');
 
 const ARGS = process.argv.slice(2);
 const APPLY = ARGS.includes('--apply');
@@ -139,7 +140,7 @@ for (const issue of candidates) {
   data.wrongProductionDetectedAt = nowIso;
 
   if (APPLY) {
-    fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
+    safeWriteReview(filePath, data);
   }
 
   flagged.push({

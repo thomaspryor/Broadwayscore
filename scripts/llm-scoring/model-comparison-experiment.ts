@@ -113,7 +113,7 @@ async function scoreWithOpenAI(client: OpenAI, text: string, maxRetries = 3): Pr
 async function scoreWithClaude(client: Anthropic, text: string): Promise<number | null> {
   try {
     const response = await client.messages.create({
-      model: 'claude-sonnet-4-20250514',
+      model: 'claude-sonnet-4-6',
       max_tokens: 50,
       messages: [{ role: 'user', content: ANCHORED_PROMPT + text.slice(0, 4000) }]
     });

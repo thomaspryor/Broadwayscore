@@ -402,7 +402,7 @@ async function main() {
   console.log('='.repeat(60));
   console.log(`\nStarted: ${new Date().toISOString()}\n`);
 
-  const claudeScorer = new ReviewScorer(claudeKey, { model: 'claude-sonnet-4-20250514', verbose: false });
+  const claudeScorer = new ReviewScorer(claudeKey, { model: 'claude-sonnet-4-6', verbose: false });
   const openaiScorer = new OpenAIReviewScorer(openaiKey, { model: 'gpt-4o', verbose: false });
   const geminiScorer = geminiKey ? new GeminiScorer(geminiKey, { model: 'gemini-2.5-flash', verbose: false }) : null;
 
