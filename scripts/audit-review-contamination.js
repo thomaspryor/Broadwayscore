@@ -144,6 +144,28 @@ const WIRE_OUTLETS = new Set(['ap', 'reuters', 'upi']);
 // it in EXEMPT_URL_DOMAINS (rebuild-all-reviews.js) — this gives the audit parity.
 const ARCHIVE_MIRROR_DOMAINS = new Set(['jasonraize.net', 'theatrevibe.co.uk', 'newspapers.com']);
 
+// Aggregator roundup domains — sites whose review/verdict ROUNDUP pages
+// republish many *other* outlets' star ratings and excerpts. When we source a
+// review's stars/excerpt from one of these roundups, the stored URL is the
+// aggregator page while the internal outletId is the real reviewing outlet
+// (e.g. a Telegraph review sourced from westendtheatre.com → outletId=telegraph,
+// url=westendtheatre.com). The URL domain therefore maps to the aggregator's own
+// outlet entry and tripped class C as a false positive (12 WET-sourced West End
+// reviews, 2026-06-22). Same rationale as ARCHIVE_MIRROR_DOMAINS: the URL domain
+// is the aggregator, not the true outlet; the internal outletId is ground truth.
+// Only roundup aggregators that carry OTHER outlets' reviews belong here — NOT
+// first-party outlets that merely happen to publish a roundup column. List is
+// the documented roundup aggregators (CLAUDE.md §Web Scraping) whose domain
+// resolves to a unique outlet entry: WET, BWW Roundups, Playbill Verdict, LBO,
+// The Stage roundups.
+const AGGREGATOR_ROUNDUP_DOMAINS = new Set([
+  'westendtheatre.com',    // WET — West End star-rating roundups
+  'broadwayworld.com',     // BWW Review Roundups
+  'playbill.com',          // Playbill Verdict
+  'londonboxoffice.co.uk', // LBO roundups
+  'thestage.co.uk',        // The Stage roundups
+]);
+
 // ─────────────────────────────────────────────────
 // Detectors
 // ─────────────────────────────────────────────────
@@ -246,7 +268,8 @@ for (const showId of showDirs) {
     // though the registry already knows the canonical mapping.
     if (shouldRunClass('C') && !alreadyFlagged && d.url) {
       const domain = parseDomain(d.url);
-      if (domain && !AMBIGUOUS_DOMAINS.has(domain) && !ARCHIVE_MIRROR_DOMAINS.has(domain)) {
+      if (domain && !AMBIGUOUS_DOMAINS.has(domain) && !ARCHIVE_MIRROR_DOMAINS.has(domain)
+          && !AGGREGATOR_ROUNDUP_DOMAINS.has(domain)) {
         const expected = domainToOutlet[domain];
         const rawInternalOutlet = d.outletId || f.split('--')[0];
         const internalOutlet = normalizeOutlet(rawInternalOutlet);
