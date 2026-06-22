@@ -53,6 +53,7 @@ const { execSync, execFileSync } = require('child_process');
 const { fetchPage, cleanup: scraperCleanup } = require('./lib/scraper');
 const { serpQuery } = require('./lib/url-discovery');
 const { provisionalOutletIdFromHost } = require('./lib/outlet-canonicalize');
+const { isIncludableForRebuild } = require('./lib/review-guards');
 
 const ROOT = path.join(__dirname, '..');
 const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
@@ -459,13 +460,33 @@ async function extractAggregatorReviewUrls(articleUrl, show) {
   return [...urls];
 }
 
+// Coarse label for reporting WHY a file is excluded (shown in flaggedMisses detail).
 function classifyShowFile(d) {
   if (d.wrongProduction) return 'wrongProduction';
   if (d.wrongShow) return 'wrongShow';
   if (d.isNonReview) return 'nonReview';
   if (d.duplicateOf) return 'duplicate';
   if (d.isRoundupArticle) return 'roundup';
+  if (!(d.fullText && d.fullText.length >= 400) && !d.aggregatorStars && d.assignedScore == null) {
+    return 'emptyBody';
+  }
   return 'clean';
+}
+
+// Canonical coverage test: a dir file "covers" an aggregator-listed review only if
+// the rebuild would actually INCLUDE it. classifyShowFile()==='clean' previously
+// counted empty-body / url_content_mismatch / stub files as covered (they carry no
+// wrong* flag) even though rebuild drops them for low content-tier — that blind spot
+// let Glengarry WE's empty Times review read as "covered" while it was excluded from
+// reviews.json. Delegating to isIncludableForRebuild keeps the gap audit's notion of
+// "covered" identical to the rebuild's notion of "included" by definition.
+function isCoveredFile(d, show) {
+  try {
+    const filePath = d._file ? path.join(REVIEW_TEXTS_DIR, show.id, d._file) : null;
+    return isIncludableForRebuild(d, show, filePath) === true;
+  } catch (_) {
+    return classifyShowFile(d) === 'clean';
+  }
 }
 
 function isShowEligible(show) {
@@ -545,7 +566,7 @@ async function auditShow(show) {
     if (!h) continue;
     if (!dirByHost.has(h)) dirByHost.set(h, []);
     dirByHost.get(h).push(d);
-    if (classifyShowFile(d) === 'clean') result.dirClean++;
+    if (isCoveredFile(d, show)) result.dirClean++;
   }
 
   const reviewsJson = loadReviews();
@@ -561,7 +582,7 @@ async function auditShow(show) {
     if (dirFiles.length === 0) {
       result.missing.push({ url: aggUrl, host: aggHost, knownOutletId });
     } else {
-      const clean = dirFiles.filter(d => classifyShowFile(d) === 'clean');
+      const clean = dirFiles.filter(d => isCoveredFile(d, show));
       if (clean.length === 0) {
         result.flaggedMisses.push({
           url: aggUrl,
@@ -576,7 +597,7 @@ async function auditShow(show) {
   const aggHosts = new Set([...aggUrls].map(hostOf));
   for (const [h, files] of dirByHost) {
     if (aggHosts.has(h)) continue;
-    const clean = files.filter(d => classifyShowFile(d) === 'clean');
+    const clean = files.filter(d => isCoveredFile(d, show));
     if (clean.length > 0) {
       result.dirOnly.push({ host: h, count: clean.length });
     }
@@ -888,4 +909,4 @@ if (require.main === module) (async () => {
   process.exit(1);
 });
 
-module.exports = { urlMatchesShow, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl };
+module.exports = { urlMatchesShow, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, classifyShowFile, isCoveredFile };

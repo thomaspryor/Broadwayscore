@@ -16,9 +16,10 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { isValidSynopsis, classifyBadSynopsis } = require('./lib/synopsis-validation');
+const { verifyProductionMatch } = require('./lib/synopsis-production-match');
 const { isValidCreativeTeamName, lookupIBDBDates } = require('./lib/ibdb-dates');
 const { serpQuery } = require('./lib/url-discovery');
-const { CLAUDE_HAIKU } = require('./lib/models');
+const { CLAUDE_HAIKU, CLAUDE_OPUS } = require('./lib/models');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const TODAYTIX_IDS_PATH = path.join(__dirname, '..', 'data', 'todaytix-ids.json');
@@ -194,26 +195,37 @@ async function fetchCreativeTeamFromTodayTix(show, todayTixInfo) {
   }
 }
 
-// Generate synopsis via Claude API (fallback)
+// Generate synopsis via Claude API. Haiku first (cheap); on a null/refusal/
+// invalid result, escalate to Opus, which knows the long tail (operas, older +
+// regional plays). The wrong-show verification gate is applied by the caller
+// (fixSynopsis) so it covers BOTH this and the TodayTix scrape path — see the
+// note there. Here we only return a well-formed, non-refusal candidate.
 async function generateSynopsisWithLLM(show) {
   if (!ANTHROPIC_API_KEY) return null;
 
+  const year = show.openingDate?.slice(0, 4) || '';
   const castInfo = show.cast && show.cast.length > 0
-    ? `Starring: ${show.cast.map(c => c.name).join(', ')}.` : '';
+    ? `Cast: ${show.cast.map(c => c.name).join(', ')}.` : '';
   const creativeInfo = show.creativeTeam && show.creativeTeam.length > 0
     ? `Creative team: ${show.creativeTeam.map(c => `${c.name} (${c.role})`).join(', ')}.` : '';
-  const prompt = `Write a brief, factual synopsis (2-3 sentences, ~100 words) for the Broadway show "${show.title}".
-It's a ${show.type || 'play'} playing at ${show.venue || 'a Broadway theater'}.
+  const prompt = `Write a brief, factual synopsis (2-3 sentences, ~100 words) for this SPECIFIC theatrical production:
+Title: "${show.title}"${year ? ` (${year})` : ''}
+Type: ${show.type || 'play'}
+Venue: ${show.venue || 'a Broadway theater'}
 ${castInfo}
 ${creativeInfo}
-Write in present tense. Focus on the SPECIFIC plot/premise of this show — what is it actually about?
-Do not write generic descriptions that could apply to any show.
+The cast, year, and venue identify the exact production — titles are often shared by unrelated shows, so use them to pin down WHICH show this is.
+If you are not certain about the plot of THIS specific production, reply with exactly: UNKNOWN
+Do NOT guess or describe a different same-titled show.
+Write in present tense. Focus on the SPECIFIC plot/premise — what is it actually about?
 Do NOT open with production history ("X is a play written by Y", "had its world premiere", "transferred to"). Start with the story, setting, or central premise.
-Do not include marketing language or ticket information.
-If you don't know the specific plot, say so rather than writing something vague.
-Just return the synopsis text, nothing else.`;
+No generic descriptions, marketing language, or ticket information.
+Return only the synopsis text (or exactly UNKNOWN), nothing else.`;
 
-  return callClaudeAPI(prompt, 200);
+  const usable = (t) => t && !/^\s*UNKNOWN\s*$/i.test(t.trim()) && isValidSynopsis(t) ? t : null;
+  const haiku = usable(await callClaudeAPI(prompt, 200, CLAUDE_HAIKU));
+  if (haiku) return haiku;
+  return usable(await callClaudeAPI(prompt, 200, CLAUDE_OPUS));
 }
 
 // Generate creative team via Claude API (fallback)
@@ -260,10 +272,10 @@ Return ONLY the JSON array, no other text.`;
 }
 
 // Helper function to call Claude API
-function callClaudeAPI(prompt, maxTokens) {
+function callClaudeAPI(prompt, maxTokens, model = CLAUDE_HAIKU) {
   return new Promise((resolve) => {
     const postData = JSON.stringify({
-      model: CLAUDE_HAIKU,
+      model,
       max_tokens: maxTokens,
       messages: [{ role: 'user', content: prompt }]
     });
@@ -311,21 +323,43 @@ async function fixSynopsis(show, todayTixIds) {
 
   console.log(`  📝 Synopsis missing or low-quality, attempting to fetch...`);
 
+  // Wrong-show gate for EVERY candidate before it can be saved. Both sources
+  // emit confident wrong-show content that isValidSynopsis can't catch:
+  //   - TodayTix recycles numeric IDs, so a stale ID serves a DIFFERENT show
+  //     (rabbit-hole-2006's ID → a "Radiolab/Selected Shorts" event, 2026-06-21).
+  //   - LLMs write a same-titled show's plot ("All About Me" 2010 → "All of Me"
+  //     2024). Verifier (Opus) validated 4/4 on that golden set.
+  // No API key → no verifier → DON'T persist anything. TodayTix recycles IDs
+  // (serves a different show), so an unverified TodayTix synopsis is exactly the
+  // wrong-show risk; "never fake data" beats filling it. Without a key the LLM
+  // path is moot anyway (generateSynopsisWithLLM returns null), so this just
+  // leaves the field null in keyless local runs. The cron always has the key.
+  const verifier = ANTHROPIC_API_KEY ? (p => callClaudeAPI(p, 200, CLAUDE_OPUS)) : null;
+  const accept = async (text, source) => {
+    if (!text || !isValidSynopsis(text)) return false;
+    if (!verifier) {
+      console.log(`    ✗ skipped ${source} synopsis — no verifier (ANTHROPIC_API_KEY) to confirm right show`);
+      return false;
+    }
+    const { match, reason } = await verifyProductionMatch(show, text, verifier);
+    if (!match) {
+      console.log(`    ✗ rejected ${source} synopsis (wrong show): ${reason}`);
+      return false;
+    }
+    show.synopsis = text;
+    return true;
+  };
+
   // Try TodayTix first
   const todayTixInfo = todayTixIds.shows[show.id] || todayTixIds.shows[show.slug];
-  let synopsis = await fetchSynopsisFromTodayTix(show, todayTixInfo);
-
-  if (synopsis) {
-    show.synopsis = synopsis;
+  if (await accept(await fetchSynopsisFromTodayTix(show, todayTixInfo), 'TodayTix')) {
     return `Fetched synopsis from TodayTix for ${show.title}`;
   }
 
   // Try LLM generation
   if (ANTHROPIC_API_KEY) {
     console.log(`    Generating via Claude...`);
-    synopsis = await generateSynopsisWithLLM(show);
-    if (synopsis && isValidSynopsis(synopsis)) {
-      show.synopsis = synopsis;
+    if (await accept(await generateSynopsisWithLLM(show), 'LLM')) {
       return `Generated synopsis via Claude for ${show.title}`;
     }
   }
