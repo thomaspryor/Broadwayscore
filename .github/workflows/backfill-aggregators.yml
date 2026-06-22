@@ -158,6 +158,8 @@ jobs:
         if: ${{ inputs.aggregator == 'all' || inputs.aggregator == 'playbill-verdict' }}
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
         run: |
@@ -172,6 +174,8 @@ jobs:
         if: ${{ inputs.aggregator == 'all' || inputs.aggregator == 'nyc-theatre' }}
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
         run: |
           echo "Batch ${{ matrix.batch_id }}: NYC Theatre for ${{ matrix.size }} shows (2023+ only)"
           node scripts/scrape-nyc-theatre-roundups.js --shows=${{ matrix.shows }}

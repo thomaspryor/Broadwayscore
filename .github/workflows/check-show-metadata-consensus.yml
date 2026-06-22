@@ -64,7 +64,10 @@ jobs:
           ARGS="--min-reviews=8 $FLAGS"
           echo "Running: node scripts/audit-show-director-consensus.js $ARGS"
 
-          # Run audit, capture output. Audit exits non-zero on STRICT findings.
+          # Run audit, capture output. The audit is advisory: it exits 0 even with
+          # STRICT findings (they surface via summary/annotations/artifact below).
+          # AUDIT_EXIT is non-zero only on a genuine script crash, which we still
+          # propagate via `exit $AUDIT_EXIT` so real breakage fails the workflow.
           set +e
           node scripts/audit-show-director-consensus.js $ARGS > /tmp/audit-output.json 2> /tmp/audit-stderr.log
           AUDIT_EXIT=$?
@@ -127,7 +130,10 @@ jobs:
           retention-days: 30
 
       - name: Surface STRICT findings as workflow notice
-        if: failure() && steps.audit.outputs.strict != '0'
+        # Advisory: the audit runs non-blocking (the script no longer exits 1 on
+        # STRICT findings — see --fail-on-strict). So this notice must run on
+        # success too, not just failure, or findings would go unannounced.
+        if: always() && steps.audit.outputs.strict != '0' && steps.audit.outputs.strict != ''
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |

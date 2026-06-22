@@ -166,6 +166,17 @@ function extractLsaBody(html) {
   return body.length >= 300 ? body : null;
 }
 
+// L&SA signs every review with a trailing "--David Barbour" sign-off. Its
+// <meta name="author"> is the publisher ("PLASA Media Inc - Lighting & Sound
+// America"), so a meta-first byline extractor mis-attributes every L&SA review
+// to the publisher. Pull the real critic from the body's trailing "--Name".
+// Pass the extracted body text (extractLsaBody output) or raw prose.
+function extractLsaByline(text) {
+  if (!text || typeof text !== 'string') return null;
+  const m = text.trim().match(/[—–-]{1,2}\s*([A-Z][A-Za-z.'-]+(?:\s+[A-Z][A-Za-z.'-]+){1,2})\s*$/);
+  return m ? m[1].trim() : null;
+}
+
 /**
  * Per-outlet patterns. Order matters: most specific first.
  * Each entry: [hostnameMatch, regex, minLength].
@@ -269,6 +280,20 @@ const PATTERNS = [
   // avoid pulling related-post titles into the article body.
   ['frontmezzjunkies.com', /<div[^>]+class="[^"]*entry-content[^"]*"[^>]*>([\s\S]*?)<div[^>]+(?:id="jp-post-flair"|class="[^"]*(?:sharedaddy|jp-relatedposts|wpcnt|sd-sharing|sd-like)[^"]*")/, 300],
   ['frontmezzjunkies.com', /<div[^>]+class="[^"]*entry-content[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<\/article>/, 300],
+
+  // Theatrely (theatrely.com) — Webflow CMS. Review body is the Finsweet
+  // rich-text block: <div fs-richtext-element="rich-text" class="rich-text-block
+  // w-richtext">. Author/meta sit in a separate "post-content-text" box, and a
+  // "div-block-34 w-condition-invisible" tickets/related block follows the body.
+  // Inline images are <figure><div><img></div></figure>, so a naive "first
+  // </div>" boundary truncates mid-article (stopped at 3063 of 5631 chars). The
+  // figure's inner </div> is followed by <figcaption>, never <div>, so bounding
+  // at "</div> <div" lands exactly on the block's own close — template-agnostic
+  // (doesn't depend on the Webflow-numbered div-block-34 class). Before this,
+  // theatrely.com returned 0 chars and reviews saved as un-scoreable stubs
+  // (Encores! La Cage / Juan A. Ramirez 2026-06-21 — had to be ingested
+  // manually). Verified against the La Cage review → 5631 chars clean.
+  ['theatrely.com', /<div[^>]+class="[^"]*rich-text-block[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<div/, 300],
 
   // WhatsOnStage (whatsonstage.com) — major West End outlet. Review body lives
   // in <div class="news-content">. Trailing social-share icons, the
@@ -386,6 +411,10 @@ function extractPublishDate(html) {
     html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']article:published_time["']/i),
     html.match(/["']datePublished["']\s*:\s*["']([^"']+)["']/),
     html.match(/<time[^>]+datetime=["']([^"']+)["']/i),
+    // Theatrely (Webflow) exposes no date meta/time tag — only a visible
+    // <div class="publish-date">June 19, 2026 11:15 AM</div>. Last-resort
+    // fallback; harmless to other outlets (only fires when all tags above miss).
+    html.match(/<div[^>]+class=["'][^"']*publish-date[^"']*["'][^>]*>([^<]+)</i),
   ];
   for (const m of candidates) {
     if (!m || !m[1]) continue;
@@ -425,4 +454,4 @@ function extractWsjNextData(html) {
   return text.trim() || null;
 }
 
-module.exports = { extractArticleText, extractArticleTextFromUrl, extractPublishDate, stripHtml };
+module.exports = { extractArticleText, extractArticleTextFromUrl, extractPublishDate, stripHtml, extractLsaByline };

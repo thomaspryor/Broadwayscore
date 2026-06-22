@@ -15,7 +15,7 @@
 
 import { test, describe } from 'node:test';
 import assert from 'node:assert';
-import { extractArticleText } from '../../scripts/lib/article-extractor.js';
+import { extractArticleText, extractLsaByline } from '../../scripts/lib/article-extractor.js';
 
 const FONT = 'Arial,Helvetica,Geneva,Swiss,SunSans-Regular';
 
@@ -43,5 +43,22 @@ describe('article-extractor: lightingandsoundamerica.com', () => {
   test('returns null when there is no Arial-font review prose', () => {
     const html = '<html><body><td><p><font face="Verdana">Just navigation here</font></p></td></body></html>';
     assert.strictEqual(extractArticleText(html, 'lightingandsoundamerica.com'), null);
+  });
+});
+
+describe('extractLsaByline — critic from trailing sign-off (not publisher meta)', () => {
+  test('pulls "David Barbour" from a "--David Barbour" sign-off', () => {
+    assert.strictEqual(
+      extractLsaByline('The show is taut and unsettling, a real triumph. --David Barbour'),
+      'David Barbour'
+    );
+  });
+  test('handles an em-dash sign-off', () => {
+    assert.strictEqual(extractLsaByline('A glorious night at the theatre. —Jane Doe'), 'Jane Doe');
+  });
+  test('returns null when there is no trailing byline', () => {
+    assert.strictEqual(extractLsaByline('Just a review with no sign-off at the end here.'), null);
+    assert.strictEqual(extractLsaByline(''), null);
+    assert.strictEqual(extractLsaByline(null), null);
   });
 });

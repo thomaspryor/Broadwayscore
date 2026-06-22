@@ -77,6 +77,8 @@ jobs:
         env:
           NODE_ENV: production
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
 
       - name: Scrape BroadwayWorld all-time stats
         if: steps.check.outputs.skip != 'true'
@@ -84,6 +86,8 @@ jobs:
         env:
           NODE_ENV: production
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
         continue-on-error: true  # Don't fail the whole job if BWW cumulative page is unavailable
 
       - name: Check for changes

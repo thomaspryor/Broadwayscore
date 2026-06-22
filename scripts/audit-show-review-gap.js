@@ -489,6 +489,29 @@ function isCoveredFile(d, show) {
   }
 }
 
+// Max auto-recovery re-fetches per file before we stop retrying (prevents an
+// hourly re-fetch loop on a paywall/dead URL that never heals).
+const FLAGGED_RECOVERY_CAP = 3;
+
+// A flagged-out file is auto-recoverable ONLY in the merge-safe empty-body case:
+// it has no usable fullText, no stars, no score, and no wrong-production/wrong-show
+// flag. Re-fetching the aggregator's current-production URL then just FILLS IN the
+// missing text (createOrMergeReviewFile merges, never clobbers). Stale-slug
+// wrongProduction recovery needs a destructive clear-then-reingest and is
+// deliberately NOT automated here (too risky for an hourly unattended job — the
+// Guardian guard already prevents storing the wrong body; those surface as
+// flaggedMisses for dispatch-gather / manual handling). Human-protected files are
+// never touched, and we stop after FLAGGED_RECOVERY_CAP tries.
+function isRecoverableFlaggedFile(d) {
+  if (!d) return false;
+  if (d.humanReviewScore != null) return false;             // human-set — never clobber
+  if (d.wrongProduction === true || d.wrongShow === true) return false; // not merge-safe
+  if (d.wrongProductionManualClear === true || d.wrongShowManualClear === true) return false;
+  if ((d.aggUrlRecoveryCount || 0) >= FLAGGED_RECOVERY_CAP) return false;
+  const emptyBody = !(d.fullText && d.fullText.length >= 400) && !d.aggregatorStars && d.assignedScore == null;
+  return emptyBody;
+}
+
 function isShowEligible(show) {
   if (!show.openingDate) return false;
   // --include-closed: also audit closed shows (one-time back-catalogue backfill).
@@ -584,9 +607,17 @@ async function auditShow(show) {
     } else {
       const clean = dirFiles.filter(d => isCoveredFile(d, show));
       if (clean.length === 0) {
+        // recoverable = at least one excluded file for this host is empty-body or
+        // explicitly marked needsRefetch (Guardian stale-slug guard). Those can be
+        // healed by re-fetching the aggregator's CURRENT-production URL. Genuine
+        // wrong-show / manually-protected exclusions are NOT recoverable.
+        const recoverableFile = dirFiles.find(d => isRecoverableFlaggedFile(d));
         result.flaggedMisses.push({
           url: aggUrl,
           host: aggHost,
+          knownOutletId,
+          recoverable: !!recoverableFile,
+          recoverableFile: recoverableFile ? recoverableFile._file : null,
           dirFlags: dirFiles.map(d => ({ file: d._file, flag: classifyShowFile(d), urlInDir: d.url })),
         });
       }

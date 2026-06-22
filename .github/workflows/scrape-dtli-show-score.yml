@@ -143,6 +143,8 @@ jobs:
       - name: Fetch DTLI pages
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
         run: |
           SHOWS_ARG="${{ inputs.shows || 'missing' }}"
           FORCE_FLAG=""
@@ -199,6 +201,8 @@ jobs:
       - name: Fetch Show Score pages
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
         run: |
           SHOWS_ARG="${{ inputs.shows || 'missing' }}"
           FORCE_FLAG=""
