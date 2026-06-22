@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 
-export type MarketId = 'nyc' | 'west-end' | 'off-west-end' | 'off-broadway';
+export type MarketId = 'nyc' | 'west-end' | 'off-west-end' | 'off-broadway' | 'regional';
 
 /**
  * Detects the current market from the URL pathname.
@@ -30,6 +30,7 @@ export function getMarketFromPath(pathname: string): MarketId {
     if (slug.includes('-off-west-end')) return 'off-west-end';
     if (slug.includes('-west-end')) return 'west-end';
     if (slug.includes('-off-broadway')) return 'off-broadway';
+    if (slug.includes('-regional')) return 'regional';
   }
 
   return 'nyc';

@@ -101,9 +101,12 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   const isLondonMeta = isLondonMarket(show.category);
   const isOffWestEndMeta = show.category === 'off-west-end';
   const isOffBroadwayMeta = show.category === 'off-broadway';
+  const isRegionalMeta = show.category === 'regional';
   const isOperaMeta = isOperaShow(show);
+  // Regional shows roll up under the Broadway Scorecard brand (site name), but must NOT be
+  // labelled "on Broadway" — use a neutral, honest market label in titles/meta.
   const siteName = isOperaMeta ? 'Opera Scorecard' : isOffWestEndMeta ? 'Off-West End Scorecard' : isLondonMeta ? 'West End Scorecard' : isOffBroadwayMeta ? 'Off-Broadway Scorecard' : 'Broadway Scorecard';
-  const marketLabel = isOperaMeta ? 'at the Met' : isOffWestEndMeta ? 'Off-West End' : isLondonMeta ? 'in the West End' : isOffBroadwayMeta ? 'Off-Broadway' : 'on Broadway';
+  const marketLabel = isOperaMeta ? 'at the Met' : isOffWestEndMeta ? 'Off-West End' : isLondonMeta ? 'in the West End' : isOffBroadwayMeta ? 'Off-Broadway' : isRegionalMeta ? 'in a regional production' : 'on Broadway';
   const statusLabel = show.status === 'open' ? 'Now Playing' : show.status === 'previews' ? 'In Previews' : show.status === 'upcoming' ? 'Upcoming' : '';
 
   // Sentiment label maps tier → SEO-friendly phrase used in title + description.
@@ -259,10 +262,11 @@ export default async function ShowPage({ params }: { params: { slug: string } })
   const isWestEnd = isLondonMarket(show.category);
   const isOffWestEnd = show.category === 'off-west-end';
   const isOffBroadway = show.category === 'off-broadway';
+  const isRegional = show.category === 'regional';
   const isOpera = isOperaShow(show);
 
-  // Theater scorecard lookup (Broadway only)
-  const theater = !isWestEnd && !isOffBroadway && show.venue ? getTheaterBySlug(slugify(show.venue)) : undefined;
+  // Theater scorecard lookup (Broadway only) — regional/off-broadway venues aren't Broadway houses
+  const theater = !isWestEnd && !isOffBroadway && !isRegional && show.venue ? getTheaterBySlug(slugify(show.venue)) : undefined;
 
   const breadcrumbSchema = isOpera
     ? generateBreadcrumbSchema([
@@ -437,7 +441,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
                     show.images?.thumbnail ? getOptimizedImageUrl(show.images.thumbnail, 'poster') : null,
                     show.images?.hero ? getOptimizedImageUrl(show.images.hero, 'poster') : null,
                   ]}
-                  alt={`${show.title} ${isOpera ? 'Met Opera' : isWestEnd ? 'West End' : isOffBroadway ? 'Off-Broadway' : 'Broadway'} ${show.type} poster`}
+                  alt={`${show.title} ${isOpera ? 'Met Opera' : isWestEnd ? 'West End' : isOffBroadway ? 'Off-Broadway' : isRegional ? 'Regional' : 'Broadway'} ${show.type} poster`}
                   width={176}
                   height={264}
                   decoding="async"
@@ -455,7 +459,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
               {/* Compact pill labels under poster — mobile only */}
               <div className="flex sm:hidden flex-wrap justify-center gap-x-1.5 gap-y-0.5 text-[9px] font-semibold uppercase tracking-wide leading-none" data-testid="show-pills-poster">
                 {show.category && show.category !== 'broadway' && !isOpera && (
-                  <span className={show.category === 'west-end' ? 'text-teal-400' : show.category === 'off-west-end' ? 'text-violet-400' : 'text-indigo-400'}>{show.category === 'west-end' ? 'West End' : show.category === 'off-west-end' ? 'Off-West End' : 'Off-Bway'}</span>
+                  <span className={show.category === 'west-end' ? 'text-teal-400' : show.category === 'off-west-end' ? 'text-violet-400' : show.category === 'regional' ? 'text-emerald-400' : 'text-indigo-400'}>{show.category === 'west-end' ? 'West End' : show.category === 'off-west-end' ? 'Off-West End' : show.category === 'regional' ? 'Regional' : 'Off-Bway'}</span>
                 )}
                 <span className={isOpera ? 'text-indigo-400' : show.type === 'musical' ? 'text-purple-400' : 'text-blue-400'}>{isOpera ? 'Opera' : show.type === 'musical' ? 'Musical' : 'Play'}</span>
                 <span className={show.isRevival ? 'text-gray-400' : 'text-amber-400'}>{show.isRevival ? 'Revival' : 'Original'}</span>
@@ -483,7 +487,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
               <p className="text-gray-400 text-xs sm:text-sm mb-4 leading-relaxed" data-testid="show-meta-line">
                 {isWestEnd ? (
                   <Link href={`/west-end/theater/${slugify(show.venue)}`} className="text-gray-300 hover:text-brand transition-colors">{show.venue}</Link>
-                ) : isOffBroadway ? (
+                ) : isOffBroadway || isRegional ? (
                   <span className="text-gray-300">{show.venue}</span>
                 ) : (
                   <Link href={`/theater/${slugify(show.venue)}`} className="text-gray-300 hover:text-brand transition-colors">{show.venue}</Link>
@@ -506,13 +510,23 @@ export default async function ShowPage({ params }: { params: { slug: string } })
                   <>
                     <span> <span className="text-gray-500">·</span> Opened {formatDate(show.openingDate)}</span>
                     {(() => {
-                      const durationSuffix = isOpera ? 'at the Met' : isOffWestEnd ? 'Off-West End' : isWestEnd ? 'in the West End' : isOffBroadway ? 'Off-Broadway' : 'on Broadway';
-                      const dur = getBroadwayDuration(show.openingDate, durationSuffix);
+                      const durationSuffix = isOpera ? 'at the Met' : isOffWestEnd ? 'Off-West End' : isWestEnd ? 'in the West End' : isOffBroadway ? 'Off-Broadway' : isRegional ? null : 'on Broadway';
+                      const dur = durationSuffix ? getBroadwayDuration(show.openingDate, durationSuffix) : null;
                       return dur ? <span> <span className="text-gray-500">·</span> {dur}</span> : null;
                     })()}
                   </>
                 ) : null}
               </p>
+
+              {/* Regional trust line — keyed on category (renders even if the market flag is off,
+                  since the detail page is reachable directly). Explains why a non-Broadway show
+                  lives on Broadway Scorecard so first-time search arrivals don't bounce. */}
+              {isRegional && (
+                <p className="text-xs sm:text-sm mb-4 -mt-1 leading-relaxed text-emerald-300/90" data-testid="regional-trust-line">
+                  <span className="font-semibold">Regional production</span>
+                  <span className="text-gray-400"> — tracked as a buzzy, well-reviewed show that could transfer to Broadway.</span>
+                </p>
+              )}
 
               {/* Score Box + Sentiment + Review Count - Metacritic style */}
               {(() => {

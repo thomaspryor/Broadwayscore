@@ -247,8 +247,10 @@ function findRecentlyOpenedShows(shows, lookbackDays) {
     if (isLondonMarket(MARKET)) {
       if (!isLondonMarket(s.category)) return false;
     } else {
-      // Broadway: exclude off-broadway and London markets
-      if (s.category === 'off-broadway' || isLondonMarket(s.category)) return false;
+      // Broadway: exclude off-broadway, regional (non-NYC US tryouts), and London markets.
+      // Regional already carries market:'regional' so it fails the broadway-only gates,
+      // but exclude by category here too — Broadway subscribers did not opt into regional.
+      if (s.category === 'off-broadway' || s.category === 'regional' || isLondonMarket(s.category)) return false;
     }
     const d = new Date(s.openingDate);
     d.setHours(0, 0, 0, 0);

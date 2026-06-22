@@ -34,12 +34,14 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
   // Treat opera show pages as NOT off-broadway for the pill label, even though
   // the URL-derived marketId is 'off-broadway' (shared routing convention).
   const isOffBroadway = marketId === 'off-broadway' && !isOperaShowPage;
+  // Regional (non-NYC US) shows: distinct pill label, no dropdown entry yet (hub deferred).
+  const isRegional = marketId === 'regional';
   // Don't apply opera domain branding when user has explicitly navigated to
-  // another market (off-broadway, west-end, off-west-end). The opera domain
-  // flag only matters on opera-specific pages.
-  const isExplicitNonOperaMarket = isWestEnd || isOffWestEnd || isOffBroadway;
+  // another market (off-broadway, west-end, off-west-end, regional). The opera
+  // domain flag only matters on opera-specific pages.
+  const isExplicitNonOperaMarket = isWestEnd || isOffWestEnd || isOffBroadway || isRegional;
   const isOpera = (isOperaDomain || isOperaShowPage || isOperaPage) && !isExplicitNonOperaMarket;
-  const isBroadway = !isWestEnd && !isOffWestEnd && !isOffBroadway && !isOpera;
+  const isBroadway = !isWestEnd && !isOffWestEnd && !isOffBroadway && !isRegional && !isOpera;
   const currentMarket = isWestEnd || isOffWestEnd ? 'west-end' : 'nyc';
 
   const closeDropdown = useCallback(() => setIsOpen(false), []);
@@ -81,14 +83,16 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
                 ? 'bg-purple-500/[0.12] border-purple-500/25 text-purple-300 hover:bg-purple-500/20'
                 : isOffWestEnd
                   ? 'bg-violet-500/[0.12] border-violet-500/25 text-violet-300 hover:bg-violet-500/20'
-                  : 'bg-white/[0.06] border-white/[0.12] text-gray-300 hover:bg-white/10 hover:text-white'
+                  : isRegional
+                    ? 'bg-emerald-500/[0.12] border-emerald-500/25 text-emerald-300 hover:bg-emerald-500/20'
+                    : 'bg-white/[0.06] border-white/[0.12] text-gray-300 hover:bg-white/10 hover:text-white'
           }
         `}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
         aria-label="Switch market"
       >
-        {isOpera ? 'Opera' : isOffBroadway ? 'Off-Bway' : isOffWestEnd ? 'Off-WE' : currentMarket === 'nyc' ? 'Broadway' : 'West End'}
+        {isOpera ? 'Opera' : isOffBroadway ? 'Off-Bway' : isOffWestEnd ? 'Off-WE' : isRegional ? 'Regional' : currentMarket === 'nyc' ? 'Broadway' : 'West End'}
         <svg className={`w-3 h-3 transition-transform ${isOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
         </svg>

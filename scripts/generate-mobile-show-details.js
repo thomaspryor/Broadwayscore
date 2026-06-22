@@ -480,6 +480,7 @@ for (const show of visibleShows) {
   let minReviews = show.category === 'off-broadway' ? MIN_REVIEWS_OFF_BROADWAY
     : show.category === 'off-west-end' ? MIN_REVIEWS_OFF_WEST_END
     : show.category === 'west-end' ? MIN_REVIEWS_WEST_END
+    : show.category === 'regional' ? MIN_REVIEWS_OFF_BROADWAY
     : MIN_REVIEWS;
   // T3-only shows need extra reviews
   if (scoreResult && scoreResult.t1 === 0) {
