@@ -74,6 +74,10 @@ export function CategoryBadge({ category, isOpera = false }: { category?: string
       label: 'Off-WE',
       colorClass: 'bg-white/5 text-gray-400 border border-white/10',
     },
+    'regional': {
+      label: 'REGIONAL',
+      colorClass: 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30',
+    },
   };
 
   const cfg = config[category];

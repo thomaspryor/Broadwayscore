@@ -299,7 +299,7 @@ function validateRequiredFields(shows) {
 function validateStatus(shows) {
   info('Checking status values...');
   const validStatuses = ['open', 'closed', 'previews', 'upcoming', 'announced'];
-  const validCategories = ['broadway', 'off-broadway', 'west-end', 'off-west-end'];
+  const validCategories = ['broadway', 'off-broadway', 'west-end', 'off-west-end', 'regional'];
   let invalid = 0;
 
   for (const show of shows) {

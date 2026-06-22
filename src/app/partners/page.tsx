@@ -3,6 +3,7 @@ import { BASE_URL } from '@/lib/seo';
 import PartnersPageClient from './PartnersPageClient';
 import { getAllShows } from '@/lib/data-core';
 import type { ComputedShow } from '@/lib/data-types';
+import { featureFlags } from '@/config/feature-flags';
 
 export const metadata: Metadata = {
   title: 'Partner Embeds — Broadway Scorecard',
@@ -32,6 +33,9 @@ export default function PartnersPage() {
   // Only show currently embeddable shows (open/previews + recently closed).
   const sixMonthsAgo = new Date(Date.now() - 180 * 86400000);
   const shows = (getAllShows() as ComputedShow[])
+    // Regional (non-NYC US) shows are gated until the `regional` flag is on — keep them
+    // out of the public, indexable partner-embed dropdown (they aren't Broadway).
+    .filter(s => featureFlags.regional || s.category !== 'regional')
     .filter(s =>
       s.status === 'open' || s.status === 'previews' ||
       (s.closingDate != null && new Date(s.closingDate) > sixMonthsAgo)

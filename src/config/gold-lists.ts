@@ -249,6 +249,7 @@ export function marketLabelFromListType(listType: GoldListType): string {
     case 'off-broadway': return 'Off-Broadway';
     case 'west-end': return 'West End';
     case 'off-west-end': return 'Off-West End';
+    case 'regional': return 'Regional';
     case 'broadway':
     case undefined:
       return 'Broadway';
