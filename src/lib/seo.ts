@@ -440,7 +440,7 @@ export function generateItemListSchema(items: {
 
 // FAQPage Schema - For show pages and other FAQ content
 // FAQ schema increases AI citations by 28% and makes pages 3.2x more likely to appear in AI Overviews
-export function generateShowFAQSchema(show: ComputedShow) {
+export function generateShowFAQSchema(show: ComputedShow, consensusText?: string | null) {
   const score = show.criticScore?.score ? Math.round(show.criticScore.score) : null;
   const reviewCount = show.criticScore?.reviewCount || 0;
   const isLondon = isLondonMarket(show.category);
@@ -451,6 +451,20 @@ export function generateShowFAQSchema(show: ComputedShow) {
   const faqs: { question: string; answer: string }[] = [];
 
   const minReviewsForFAQ = getMarketMinReviews(show.category);
+
+  // Q: What do critics say? — the exact review-intent query ("[show] reviews").
+  // Surfaces our unique consensus prose into the FAQ/People-Also-Ask slot, which is
+  // where an aggregator can win SERP real estate even when outlet pages outrank the
+  // blue link. Falls back to a score-derived summary when no consensus exists yet.
+  if (score && reviewCount >= minReviewsForFAQ) {
+    const consensusAnswer = consensusText && consensusText.trim().length > 0
+      ? `${consensusText.trim()} (CriticScore ${score}/100 from ${reviewCount} reviews.)`
+      : `Critics give ${show.title} a CriticScore of ${score}/100 based on ${reviewCount} professional reviews aggregated from leading theater critics.`;
+    faqs.push({
+      question: `What do critics say about ${show.title}?`,
+      answer: consensusAnswer,
+    });
+  }
 
   // Q: Is it worth seeing? (highest-intent query — placed first for AI Overview targeting)
   if (score && reviewCount >= minReviewsForFAQ) {

@@ -275,7 +275,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
         { name: show.type === 'musical' ? 'Musicals' : 'Plays', url: `${BASE_URL}/browse/${getBrowseSlug(show.category, show.type)}` },
         { name: show.title, url: `${BASE_URL}/show/${show.slug}` },
       ]);
-  const faqSchema = generateShowFAQSchema(show);
+  const faqSchema = generateShowFAQSchema(show, getCriticConsensus(show.id)?.text ?? null);
   // Top-level Review objects with itemReviewed → TheaterEvent. Eligible for
   // Google's review snippet rich result; safer than nesting reviews inside Event
   // (which GSC rejected — see seo.ts comment + commit de1f2cba09).
