@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-21T23:47:30.767Z",
+  "timestamp": "2026-06-22T01:20:50.357Z",
   "stats": {
-    "totalReviews": 38926,
-    "alreadyFlagged": 17337,
+    "totalReviews": 38939,
+    "alreadyFlagged": 17348,
     "dateGuardCatches": 34,
     "directorMismatch": 861,
     "tvFilmSignals": 1058,
-    "londonSignals": 641,
+    "londonSignals": 640,
     "offBroadwaySignals": 463,
     "yearMismatch": 82,
-    "noPublishDate": 3906
+    "noPublishDate": 3908
   },
   "findings": [
     {
@@ -34409,20 +34409,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"cherry lane\""
-        }
-      ]
-    },
-    {
-      "showId": "oh-mary-2024",
-      "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": 92,
-      "publishDate": "2025-12-19",
-      "url": "https://www.allthatdazzles.co.uk/post/review-oh-mary-trafalgar-theatre",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
