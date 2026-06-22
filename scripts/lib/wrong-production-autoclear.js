@@ -66,6 +66,30 @@ function isWithinPriorRun(reviewDate, priorRuns) {
 }
 
 /**
+ * True when a show declares at least one usable priorRuns window (a previous
+ * run of the same artistic production: workshop→mainstage, return engagement,
+ * or a venue transfer). "Usable" means at least one entry has an openingDate.
+ *
+ * Discovery callers use this to widen review-gathering for a show that is
+ * technically still in `previews` for its CURRENT engagement but was already
+ * reviewed during a declared prior run — otherwise the previews-skip drops
+ * legitimate transfer reviews on the floor (the off-Broadway transfer blind
+ * spot: a hit at a small house moves to a bigger one and the original-run
+ * reviews are never inherited). Per-review date gating still happens downstream
+ * via isWithinPriorRun().
+ *
+ * @param {{ priorRuns?: Array<{openingDate?: string}> }} show
+ * @returns {boolean}
+ */
+function hasDeclaredPriorRuns(show) {
+  return !!(
+    show &&
+    Array.isArray(show.priorRuns) &&
+    show.priorRuns.some((r) => r && r.openingDate)
+  );
+}
+
+/**
  * Decide whether an existing wrongProduction flag — set by the date-only
  * Pre-opening guard or Date guard — should be auto-cleared because the
  * show now declares a priorRuns window that covers the review's date.
@@ -259,6 +283,7 @@ module.exports = {
   shouldAutoClearWrongProductionUrlYear,
   shouldAutoClearWrongShowUkUrl,
   isWithinPriorRun,
+  hasDeclaredPriorRuns,
   shouldAutoClearWrongProductionPriorRun,
   shouldAutoClearDatelessRevival,
 };
