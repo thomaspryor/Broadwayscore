@@ -51,7 +51,7 @@ interface Retrospective {
   leaderboardNote: string;
   upsets: Upset[];
   marketMoves?: { title: string; subtitle: string; rows: MarketMove[] };
-  btc: { players?: number; avgScore: number; totalCategories: number; beatAllThreePct: number; topScore: number };
+  btc: { players?: number; avgScore: number; totalCategories: number; beatAllThreePct: number; topScore: number; consensusScore?: number };
 }
 
 export function getRetrospective(ceremonyYear: number): Retrospective | null {
@@ -223,11 +223,13 @@ export function PredictionRetrospective({ ceremonyYear }: { ceremonyYear: number
           <sup className="text-[9px] font-bold text-gray-500 align-super ml-0.5">&trade;</sup>
         </a>
         <span className="text-gray-400 text-[13px]">
-          players averaged <span className="text-gray-200 font-semibold tabular-nums">{retro.btc.avgScore}/{retro.btc.totalCategories}</span>
+          players averaged <span className="text-gray-200 font-semibold tabular-nums">{retro.btc.avgScore}/{retro.btc.totalCategories}</span> each
         </span>
-        <span className="text-gray-400 text-[13px]">
-          top score <span className="text-gray-200 font-semibold tabular-nums">{retro.btc.topScore}/{retro.btc.totalCategories}</span>
-        </span>
+        {retro.btc.consensusScore != null && (
+          <span className="text-gray-400 text-[13px]">
+            their consensus ballot hit <span className="text-gray-200 font-semibold tabular-nums">{retro.btc.consensusScore}/{retro.btc.totalCategories}</span>
+          </span>
+        )}
         <span className="text-gray-400 text-[13px]">
           <span className="text-emerald-400 font-semibold tabular-nums">{retro.btc.beatAllThreePct}%</span> beat all three critics
         </span>

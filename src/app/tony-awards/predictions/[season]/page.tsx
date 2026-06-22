@@ -11,7 +11,7 @@ import FeaturedSpot from '@/components/FeaturedSpot';
 import { CategorySection, SHOW_LEVEL_CATEGORIES } from '@/components/tony-noms/CategorySection';
 import { CeremonyCountdown } from '@/components/tony/CeremonyCountdown';
 import { TrackRecord } from '@/components/tony/TrackRecord';
-import { PredictionRetrospective } from '@/components/tony/PredictionRetrospective';
+import { PredictionRetrospective, getRetrospective } from '@/components/tony/PredictionRetrospective';
 import { getNomineesByCategory, enrichMajorCategoriesWithOdds, getOddsLastUpdated } from '@/lib/data-tony-nominees';
 import { tonySeasonForCeremonyYear } from '@/lib/tony-cutoffs';
 import {
@@ -397,8 +397,11 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
             an entry in data/tony-prediction-retrospectives.json */}
         <PredictionRetrospective ceremonyYear={season.ceremonyYear} />
 
-        {/* Report Card (past seasons only) */}
-        {reportCard.length > 0 && (
+        {/* Report Card (past seasons only) — suppressed when a full
+            multi-predictor retrospective exists for this ceremony, since the
+            retrospective's Big Four grid covers our model's per-category
+            result and more. Falls back to the report card for older seasons. */}
+        {reportCard.length > 0 && !getRetrospective(season.ceremonyYear) && (
           <div className="mb-10">
             <div className="flex items-center gap-3 mb-4">
               <h2 className="text-lg font-bold text-white">Prediction Report Card</h2>
