@@ -166,6 +166,17 @@ function extractLsaBody(html) {
   return body.length >= 300 ? body : null;
 }
 
+// L&SA signs every review with a trailing "--David Barbour" sign-off. Its
+// <meta name="author"> is the publisher ("PLASA Media Inc - Lighting & Sound
+// America"), so a meta-first byline extractor mis-attributes every L&SA review
+// to the publisher. Pull the real critic from the body's trailing "--Name".
+// Pass the extracted body text (extractLsaBody output) or raw prose.
+function extractLsaByline(text) {
+  if (!text || typeof text !== 'string') return null;
+  const m = text.trim().match(/[—–-]{1,2}\s*([A-Z][A-Za-z.'-]+(?:\s+[A-Z][A-Za-z.'-]+){1,2})\s*$/);
+  return m ? m[1].trim() : null;
+}
+
 /**
  * Per-outlet patterns. Order matters: most specific first.
  * Each entry: [hostnameMatch, regex, minLength].
@@ -425,4 +436,4 @@ function extractWsjNextData(html) {
   return text.trim() || null;
 }
 
-module.exports = { extractArticleText, extractArticleTextFromUrl, extractPublishDate, stripHtml };
+module.exports = { extractArticleText, extractArticleTextFromUrl, extractPublishDate, stripHtml, extractLsaByline };

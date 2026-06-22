@@ -40,7 +40,7 @@
 const fs = require('fs');
 const path = require('path');
 const { fetchPage } = require('./lib/scraper');
-const { extractArticleTextFromUrl, extractPublishDate } = require('./lib/article-extractor');
+const { extractArticleTextFromUrl, extractPublishDate, extractLsaByline } = require('./lib/article-extractor');
 const { resolveCanonicalOutletId, _parseDomain, _buildDomainMap } = require('./lib/outlet-canonicalize');
 const { getOutletDisplayName } = require('./lib/review-normalization');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
@@ -151,7 +151,9 @@ function extractByline(html) {
     process.exit(1);
   }
 
-  const critic = criticArg || extractByline(html) || 'Unknown';
+  // For LSA, prefer the in-body "--Name" sign-off over the publisher meta tag.
+  const lsaCritic = /lightingandsoundamerica\.com/i.test(url) ? extractLsaByline(text) : null;
+  const critic = criticArg || lsaCritic || extractByline(html) || 'Unknown';
 
   // Page-date extraction: when --publish-date wasn't supplied, pull it from
   // standard CMS metadata (article:published_time / JSON-LD / <time>). Without
