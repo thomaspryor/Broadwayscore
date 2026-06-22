@@ -43,6 +43,7 @@ const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribu
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl } = require('./lib/rebuild-helpers');
+const { normalizeCriticName } = require('./lib/byline-normalization');
 const { isLondonMarket, isUkOutletUrl } = require('./lib/venue-classification');
 const { isLongRunningProduction } = require('./lib/long-runner-registry');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
@@ -3537,7 +3538,10 @@ showDirs.forEach(showId => {
         scoreSource: source,
         bucket: scoreToBucket(score),
         thumb: scoreToThumb(score),
-        criticName: data.criticName || null,
+        // Normalize URL-as-critic-name (scraper captured the byline href, not
+        // the text — e.g. "https://www.nytimes.com/by/laura-collins-hughes").
+        // Derives a clean name from the slug, or null when unresolvable.
+        criticName: normalizeCriticName(data.criticName) || null,
         url: data.url || null,
         publishDate: normalizePublishDate(data.publishDate) || (() => {
           // Backfill: extract date from URL when source file has no publishDate

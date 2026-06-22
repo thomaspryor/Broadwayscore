@@ -50,4 +50,53 @@ function normalizeBylineCapture(raw) {
   return cleaned;
 }
 
-module.exports = { normalizeBylineCapture };
+/**
+ * URL-as-critic-name cleanup. Some scrapers (NYT, Observer, LA Times, Guardian,
+ * SunTimes, BroadwayWorld, Londonist, Facebook) captured the byline LINK href
+ * instead of the byline TEXT, so `criticName` ended up as e.g.
+ * "https://www.nytimes.com/by/laura-collins-hughes". That URL then renders as
+ * the critic name (surfaced in the newsletter Outlier of the Week, 2026-06-21).
+ *
+ * This derives a clean name from known byline-URL slug patterns:
+ *   nytimes.com/by/<slug>, /author/<slug>, /people/<slug>, /profile/<slug>,
+ *   /contributors/<slug>, chicagosuntimes.com/<slug>[-for-the-sun-times],
+ *   facebook.com/<first.last>.
+ *
+ * Conservative by design: only derives when the slug splits into 2+ word
+ * tokens on a separator (-, ., _). A single concatenated token
+ * (guardian profile "ryangilbey") or an org page handle
+ * (facebook.com/entertainmentweekly, /peoplemag, /showbiz411) is NOT a usable
+ * personal name, so it returns null — the review then shows the outlet with no
+ * bogus critic line, which is strictly better than printing a URL.
+ *
+ * @param {*} raw - stored criticName (may be a real name, a URL, or falsy).
+ * @returns {string|null} cleaned name, the original (if already a clean name),
+ *   or null when a URL can't yield a usable personal name.
+ */
+function normalizeCriticName(raw) {
+  if (!raw || typeof raw !== 'string') return raw;
+  const s = raw.trim();
+  // Not URL-shaped → leave as-is (still run the standard byline cleanup).
+  if (!/https?:\/\/|\bwww\.|\.com\b/i.test(s)) return normalizeBylineCapture(s);
+
+  // Extract the name-bearing slug from a known byline-URL pattern.
+  let slug = null;
+  let m = s.match(/\/(?:by|author|people|profile|contributors)\/([a-z0-9._-]+)/i);
+  if (m) slug = m[1];
+  if (!slug) {
+    const su = s.match(/chicagosuntimes\.com\/([a-z0-9-]+)/i);
+    if (su) slug = su[1].replace(/-for-the-sun-times$/i, '');
+  }
+  if (!slug) {
+    const fb = s.match(/facebook\.com\/([a-z0-9._-]+)/i);
+    if (fb && fb[1].includes('.')) slug = fb[1]; // first.last handle only
+  }
+  if (!slug) return null; // URL we can't resolve to a person → drop the name
+
+  const words = slug.replace(/[._-]+/g, ' ').trim().split(/\s+/).filter(Boolean);
+  if (words.length < 2 || words.length > 4) return null; // need a real multi-token name
+  const name = words.map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  return /^[A-Za-z][A-Za-z'’ .-]+$/.test(name) ? name : null;
+}
+
+module.exports = { normalizeBylineCapture, normalizeCriticName };
