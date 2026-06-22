@@ -56,6 +56,13 @@ const MEZZANINE_OVERRIDES = {
   // Short title (<8 chars) where Mezzanine has parenthesized disambiguator —
   // prefix-match guard requires shorter≥8 chars; explicit override needed.
   'trash-off-broadway-2026': 'Trash (Comedy, Caverly/Morrill)',
+  // Our title carries a concert-series prefix ("Encores!") that Mezzanine omits,
+  // AND the bare title "La Cage aux Folles" has many NYC productions (Marquis
+  // 2010, Longacre 1983, Palace) that Mezzanine can't separate by year (its
+  // Production records carry no opening-date field — mYear is always NaN). A
+  // name-only override would merge all of them. The {name, venue} form pins the
+  // match to a single venue so only the City Center Encores run is attached.
+  'encores-la-cage-aux-folles-off-broadway-2026': { name: 'La Cage aux Folles', venue: 'City Center' },
 };
 
 // Paths
@@ -335,7 +342,9 @@ function matchProductions(productions, shows) {
     const title = show.title;
     const openYear = parseInt((show.openingDate || '').substring(0, 4));
     const normTitle = normalize(title);
-    const overrideName = MEZZANINE_OVERRIDES[show.id];
+    const override = MEZZANINE_OVERRIDES[show.id];
+    const overrideName = typeof override === 'string' ? override : (override && override.name);
+    const overrideVenue = (override && typeof override === 'object') ? override.venue : null;
     const normOverride = overrideName ? normalize(overrideName) : null;
     const siblings = siblingsByNormTitle.get(normTitle) || [];
     const hasSiblings = siblings.length > 1;
@@ -348,9 +357,17 @@ function matchProductions(productions, shows) {
       const mYear = parseInt(parseDate(p.opened || p.firstPreview).substring(0, 4));
       let confidence = 'none';
 
-      // Strategy 0: Manual override match
+      // Strategy 0: Manual override match. When the override pins a venue,
+      // require the production's theater name to contain it — this is how a
+      // bare-title override (e.g. "La Cage aux Folles") selects ONE of several
+      // same-named NYC productions that Mezzanine can't separate by year.
       if (normOverride && mName === normOverride) {
-        confidence = 'high';
+        if (overrideVenue) {
+          const tName = (p.theater?.name || '').toLowerCase();
+          if (tName.includes(overrideVenue.toLowerCase())) confidence = 'high';
+        } else {
+          confidence = 'high';
+        }
       }
 
       // Strategy 1: Normalized exact match

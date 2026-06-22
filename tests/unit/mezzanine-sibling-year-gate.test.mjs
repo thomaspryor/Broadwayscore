@@ -80,3 +80,31 @@ describe('Mezzanine sibling-aware year gate', () => {
     assert.strictEqual(hamilton.prodIds.length, 3, `expected 3 prodIds merged for Hamilton, got ${hamilton.prodIds.length}`);
   });
 });
+
+// Venue-aware override ({name, venue}) — for shows whose title can only match
+// Mezzanine via override (concert-series prefix like "Encores!") AND where the
+// bare title has multiple same-named NYC productions Mezzanine cannot separate
+// by year (no opening-date field). The venue pins the match to one.
+// Reproduces encores-la-cage-aux-folles-off-broadway-2026 (2026-06-22): a
+// name-only override merged Marquis/Longacre/City Center (~178 ratings) into
+// one blended score; {name, venue:'City Center'} attaches only City Center
+// (85 ratings, score 67).
+describe('Mezzanine venue-aware override', () => {
+  const encoresShow = [
+    { id: 'encores-la-cage-aux-folles-off-broadway-2026', title: 'Encores! La Cage Aux Folles', category: 'broadway', openingDate: '2026-06-17', status: 'open' },
+  ];
+  const nycLaCageProds = [
+    { objectId: 'marquis', show: { name: 'La Cage aux Folles' }, ratingsCount: 25, averageRating: 3.82, theater: { name: 'Marquis Theatre', isBroadway: true } },
+    { objectId: 'longacre', show: { name: 'La Cage aux Folles' }, ratingsCount: 68, averageRating: 3.95, theater: { name: 'Longacre Theatre', isBroadway: true } },
+    { objectId: 'citycenter', show: { name: 'La Cage aux Folles' }, ratingsCount: 85, averageRating: 3.36, theater: { name: 'New York City Center - Mainstage', geocodedCity: 'New York' } },
+  ];
+
+  test('venue override attaches ONLY the City Center production, not the merged Broadway revivals', () => {
+    const matches = matchProductions(nycLaCageProds, encoresShow);
+    assert.strictEqual(matches.length, 1, 'expected exactly one match');
+    const m = matches[0];
+    assert.deepStrictEqual(m.prodIds, ['citycenter'], `expected only City Center prodId, got ${JSON.stringify(m.prodIds)}`);
+    assert.strictEqual(m.ratingsCount, 85, `expected 85 ratings (City Center only), got ${m.ratingsCount} (merge bug if ~178)`);
+    assert.strictEqual(m.score, 67, `expected score 67, got ${m.score}`);
+  });
+});

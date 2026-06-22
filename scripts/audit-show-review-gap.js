@@ -54,6 +54,7 @@ const { fetchPage, cleanup: scraperCleanup } = require('./lib/scraper');
 const { serpQuery } = require('./lib/url-discovery');
 const { provisionalOutletIdFromHost } = require('./lib/outlet-canonicalize');
 const { isIncludableForRebuild } = require('./lib/review-guards');
+const { safeWriteReview } = require('./lib/review-write-guard');
 const {
   FLAGGED_RECOVERY_CAP,
   isEmptyBodyFile,
@@ -743,7 +744,9 @@ function bumpRecoveryCount(showId, file, value) {
     const data = JSON.parse(fs.readFileSync(fp, 'utf8'));
     data.aggUrlRecoveryCount = value;
     data.aggUrlRecoveryAt = new Date().toISOString();
-    fs.writeFileSync(fp, JSON.stringify(data, null, 2));
+    // Route through safeWriteReview so this metadata bump preserves protected
+    // fields / manual clears (CI lint enforces all review-texts writes go through it).
+    safeWriteReview(fp, data);
     return true;
   } catch (e) {
     console.log(`::warning::failed to persist aggUrlRecoveryCount for ${showId}/${file}: ${e.message.split('\n')[0].slice(0, 100)}`);
