@@ -188,7 +188,13 @@
     "the-picture-of-dorian-gray-2025/showbiz411--roger-friedman.json",
     "othello-2025/newsday--unknown.json",
     "grangeville-off-broadway-2026/theatre-reviews-limited--david-roberts.json",
-    "redwood-2025/broadwaynews--brittani-samuel.json"
+    "redwood-2025/broadwaynews--brittani-samuel.json",
+    "english-2025/broadwaynews--brittani-samuel.json",
+    "all-in-comedy-about-love-2024/broadwaynews--brittani-samuel.json",
+    "gypsy-2024/broadwaynews--brittani-samuel.json",
+    "cult-of-love-2024/broadwaynews--brittani-samuel.json",
+    "swept-away-2024/broadwaynews--brittani-samuel.json",
+    "elf-2024/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -353,7 +359,11 @@
     "call-me-izzy-2025/theater-life--barry-gordin.json",
     "dead-outlaw-2025/ap--mark-kennedy.json",
     "glengarry-glen-ross-2025/northjerseycom--unknown.json",
-    "redwood-2025/gmanetwork--stuart-santiago.json"
+    "redwood-2025/gmanetwork--stuart-santiago.json",
+    "redwood-2025/juiceph--wanggo-gallaga.json",
+    "pen-pals-off-broadway-2025/theater-life--barry-gordin.json",
+    "eureka-day-2024/times-uk--clive-davis.json",
+    "elf-2024/northjerseycom--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -479,7 +489,8 @@
       "waiting-for-godot-2025/west-end-best-friend--unknown.json",
       "dead-outlaw-2025/ap--mark-kennedy.json",
       "john-proctor-is-the-villain-2025/new-statesman--emily-lawford.json",
-      "grangeville-off-broadway-2026/theatre-reviews-limited--david-roberts.json"
+      "grangeville-off-broadway-2026/theatre-reviews-limited--david-roberts.json",
+      "english-2025/broadwaynews--brittani-samuel.json"
     ],
     "amp": [],
     "browserbase": [
@@ -525,7 +536,13 @@
       "call-me-izzy-2025/theater-life--barry-gordin.json",
       "smash-2025/broadwaynews--brittani-samuel.json",
       "the-last-five-years-2025/broadwaynews--brittani-samuel.json",
-      "redwood-2025/broadwaynews--brittani-samuel.json"
+      "redwood-2025/broadwaynews--brittani-samuel.json",
+      "all-in-comedy-about-love-2024/broadwaynews--brittani-samuel.json",
+      "gypsy-2024/broadwaynews--brittani-samuel.json",
+      "cult-of-love-2024/broadwaynews--brittani-samuel.json",
+      "swept-away-2024/broadwaynews--brittani-samuel.json",
+      "elf-2024/broadwaynews--brittani-samuel.json",
+      "pen-pals-off-broadway-2025/theater-life--barry-gordin.json"
     ],
     "brightdata": [
       "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
@@ -561,7 +578,8 @@
       "data/review-texts/fallen-angels-2026/talkinbroadway--unknown.json",
       "data/review-texts/les-liaisons-dangereuses-west-end-2026/oxfordshire-guardian--unknown.json",
       "data/review-texts/waiting-for-godot-2025/northjerseycom--unknown.json",
-      "data/review-texts/glengarry-glen-ross-2025/northjerseycom--unknown.json"
+      "data/review-texts/glengarry-glen-ross-2025/northjerseycom--unknown.json",
+      "data/review-texts/elf-2024/northjerseycom--unknown.json"
     ],
     "archive": [
       "a-midsummer-nights-dream-west-end-2026/newsday--updated-november.json",
@@ -605,7 +623,7 @@
     ]
   },
   "startTime": "2026-06-22T03:17:14.820Z",
-  "lastProcessed": "redwood-2025/gmanetwork--stuart-santiago.json",
+  "lastProcessed": "elf-2024/northjerseycom--unknown.json",
   "log": [
     {
       "t": "2026-06-22T03:47:12.616Z",
@@ -879,6 +897,17 @@
     },
     {
       "t": "2026-06-22T07:43:35.705Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-06-22T07:48:42.567Z",
+      "event": "bb-session",
+      "session": "7aad5219",
+      "url": "http://www.northjersey.com/arts-and-entertainment/theater/a-musical-elf-full-of-"
+    },
+    {
+      "t": "2026-06-22T07:48:43.522Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
     }
