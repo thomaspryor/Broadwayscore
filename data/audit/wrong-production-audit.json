@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-22T09:14:17.663Z",
+  "timestamp": "2026-06-22T10:40:44.591Z",
   "stats": {
-    "totalReviews": 39028,
+    "totalReviews": 39025,
     "alreadyFlagged": 17385,
     "dateGuardCatches": 34,
     "directorMismatch": 870,
-    "tvFilmSignals": 1059,
+    "tvFilmSignals": 1058,
     "londonSignals": 648,
     "offBroadwaySignals": 463,
     "yearMismatch": 81,
-    "noPublishDate": 3936
+    "noPublishDate": 3931
   },
   "findings": [
     {
@@ -580,6 +580,7 @@
     {
       "showId": "a-woman-among-women-off-broadway-2026",
       "file": "lighting-and-sound-america--david-barbour.json",
+      "score": 44,
       "publishDate": null,
       "url": "https://www.lightingandsoundamerica.com/news/story.asp?ID=TG6FPP",
       "findings": [
@@ -1667,20 +1668,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "avenue-q-west-end-2026",
-      "file": "telegraph--marianka-swain.json",
-      "score": 82,
-      "publishDate": "2026-04-17",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/avenue-qs-bawdy-puppets-gleefully-outrageous/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
