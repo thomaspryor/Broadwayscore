@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-22T07:14:19.452Z",
+  "timestamp": "2026-06-22T08:32:04.298Z",
   "stats": {
-    "totalReviews": 39000,
-    "alreadyFlagged": 17368,
+    "totalReviews": 39022,
+    "alreadyFlagged": 17384,
     "dateGuardCatches": 34,
     "directorMismatch": 870,
     "tvFilmSignals": 1058,
     "londonSignals": 648,
     "offBroadwaySignals": 463,
     "yearMismatch": 81,
-    "noPublishDate": 3932
+    "noPublishDate": 3933
   },
   "findings": [
     {
@@ -8159,7 +8159,7 @@
       "file": "independent--alice-saville.json",
       "score": 58,
       "publishDate": "2026-06-18",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html?loginSuccessful=true",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -15381,6 +15381,7 @@
     {
       "showId": "oh-mary-off-broadway-2024",
       "file": "theatermania--unknown.json",
+      "score": 91,
       "publishDate": "2024-02-09",
       "url": "https://www.theatermania.com/news/review-cole-escola-drags-mary-todd-lincoln-in-oh-mary_1729241/",
       "findings": [
@@ -30726,20 +30727,6 @@
       ]
     },
     {
-      "showId": "glengarry-glen-ross-west-end-2026",
-      "file": "daily-echo--matthew-baker.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.facebook.com/thestage/posts/-review-glengarry-glen-ross-crack-all-female-cast-make-scintillating-work-of-dav/1506033354889642/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
-        }
-      ]
-    },
-    {
       "showId": "golden-boy-2012",
       "file": "bloomberg--jeremy-gerard.json",
       "score": 42,
@@ -33402,6 +33389,20 @@
     },
     {
       "showId": "les-liaisons-dangereuses-west-end-2026",
+      "file": "theatre-vibe--unknown.json",
+      "score": 76,
+      "publishDate": "2026-04-06",
+      "url": "https://theatrevibe.co.uk/2026/04/06/review-les-liaisons-dangereuses-lyttelton-national-theatre-2026/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "les-liaisons-dangereuses-west-end-2026",
       "file": "thereviewshub--maryam-philpott.json",
       "score": 90,
       "publishDate": "2026-04-02",
@@ -34259,7 +34260,7 @@
       "file": "standard--unknown.json",
       "score": 61,
       "publishDate": null,
-      "url": "https://www.standard.co.uk/culture/theatre/my-neighbour-totoro-barbican-studio-ghibli-theatre-review-b1033681.html",
+      "url": null,
       "findings": [
         {
           "type": "LONDON_SIGNAL",
