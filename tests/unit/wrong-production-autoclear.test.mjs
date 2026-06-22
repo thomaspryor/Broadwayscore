@@ -23,8 +23,37 @@ const {
   shouldAutoClearWrongProductionUrlYear,
   shouldAutoClearWrongShowUkUrl,
   isWithinPriorRun,
+  hasDeclaredPriorRuns,
   shouldAutoClearWrongProductionPriorRun,
 } = require('../../scripts/lib/wrong-production-autoclear');
+
+describe('hasDeclaredPriorRuns (transfer discovery gate)', () => {
+  it('true when a priorRuns entry has an openingDate', () => {
+    assert.strictEqual(
+      hasDeclaredPriorRuns({
+        priorRuns: [{ venue: "St. Luke's Theatre", openingDate: '2026-05-11', closingDate: '2026-05-24' }],
+      }),
+      true
+    );
+  });
+
+  it('false when priorRuns is missing or empty', () => {
+    assert.strictEqual(hasDeclaredPriorRuns({}), false);
+    assert.strictEqual(hasDeclaredPriorRuns({ priorRuns: [] }), false);
+  });
+
+  it('false when no priorRuns entry carries an openingDate', () => {
+    assert.strictEqual(
+      hasDeclaredPriorRuns({ priorRuns: [{ venue: 'Somewhere' }] }),
+      false
+    );
+  });
+
+  it('false for null/undefined show', () => {
+    assert.strictEqual(hasDeclaredPriorRuns(null), false);
+    assert.strictEqual(hasDeclaredPriorRuns(undefined), false);
+  });
+});
 
 describe('shouldAutoClearWrongProduction', () => {
   it('returns false when wrongProduction is not set', () => {

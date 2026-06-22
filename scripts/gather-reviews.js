@@ -61,7 +61,7 @@ const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway } = require('./lib/content-filters');
 const { hasOnlyForwardTenseTourMention } = require('./lib/excerpt-validation');
 const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview, isWrongShowUnknownLocked, getWrongProductionReasonForUnknownCritic, shouldRouteUnknownCriticToPending, shouldSkipWrongProductionAudit } = require('./lib/review-guards');
-const { isWithinPriorRun } = require('./lib/wrong-production-autoclear');
+const { isWithinPriorRun, hasDeclaredPriorRuns } = require('./lib/wrong-production-autoclear');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isBroadwayUrl } = require('./lib/venue-classification');
 const { isAggregatorUrlMismatch, isAggregatorReviewSource, shouldSkipAggregatorUrlWrite } = require('./lib/aggregator-domains');
@@ -3747,10 +3747,17 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     return { success: false, error: 'Show not found' };
   }
 
-  // Skip shows in previews — they haven't opened yet, any scraped reviews are wrong-production
-  if (show.status === 'previews') {
+  // Skip shows in previews — they haven't opened yet, any scraped reviews are
+  // wrong-production. EXCEPTION: a show that declares a priorRuns window was
+  // already reviewed during an earlier run (venue transfer / return engagement);
+  // those reviews are legitimate and must still be discovered. Per-review date
+  // gating downstream (isWithinPriorRun) keeps the window honest.
+  if (show.status === 'previews' && !hasDeclaredPriorRuns(show)) {
     console.log(`[SKIP] ${showId}: Show is in previews (opens ${show.openingDate}) — skipping to avoid wrong-production contamination`);
     return { success: true, skipped: true, reason: 'previews' };
+  }
+  if (show.status === 'previews' && hasDeclaredPriorRuns(show)) {
+    console.log(`[PRIOR-RUN] ${showId}: in previews but declares priorRuns — discovering reviews from the earlier run`);
   }
 
   const year = new Date(show.openingDate).getFullYear();
