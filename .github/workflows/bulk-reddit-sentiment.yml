@@ -143,6 +143,8 @@ jobs:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
         run: |
           ARGS="--shows=missing --all --shard=${{ matrix.shard }} --total-shards=${{ needs.prepare.outputs.total_shards }}"
           LIMIT=${{ github.event.inputs.limit_per_shard || 0 }}

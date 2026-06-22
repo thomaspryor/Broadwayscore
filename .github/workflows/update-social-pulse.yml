@@ -58,6 +58,8 @@ jobs:
           # datacenter IPs are blocked by reddit.com). Without this,
           # Reddit silently returns 0 mentions for every show.
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           # Free X API for uncapped tweet volume counts (no Apify cost)
           X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}

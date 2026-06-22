@@ -222,6 +222,8 @@ jobs:
         if: steps.find.outputs.has_shows == 'true'
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
         run: |
           if [ -z "$SCRAPINGBEE_API_KEY" ]; then
             echo "skip_serp=false" >> $GITHUB_OUTPUT
@@ -245,6 +247,8 @@ jobs:
         env:
           SHOWS: ${{ steps.find.outputs.shows }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
           # GHA_BILLING_PAT (optional): PAT with read:user + billing scope.
           # GITHUB_TOKEN can't read /users/{owner}/settings/billing/actions —
           # without GHA_BILLING_PAT, the GHA-minutes pre-flight is cap-based only.
