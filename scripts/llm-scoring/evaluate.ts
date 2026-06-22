@@ -340,7 +340,7 @@ function analyzeResults(results: EvaluationResult[]): EvaluationSummary {
   return {
     testSetSize: n,
     promptVersion: PROMPT_VERSION,
-    model: 'claude-sonnet-4-20250514',
+    model: 'claude-sonnet-4-6',
     timestamp: new Date().toISOString(),
     mae: Math.round(mae * 100) / 100,
     rmse: Math.round(rmse * 100) / 100,
@@ -395,7 +395,7 @@ async function main(): Promise<void> {
 
   // Score each example
   const client = new Anthropic({ apiKey });
-  const model = 'claude-sonnet-4-20250514';
+  const model = 'claude-sonnet-4-6';
   const results: EvaluationResult[] = [];
 
   for (let i = 0; i < testSet.length; i++) {

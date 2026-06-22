@@ -41,6 +41,7 @@ const fs = require('fs');
 const path = require('path');
 const { parseDate } = require('./lib/date-utils');
 const { extractDateFromUrl } = require('./lib/rebuild-helpers');
+const { safeWriteReview } = require('./lib/review-write-guard');
 const { earliestShowDate, DAYS_AFTER_CLOSE } = require('./lib/date-guard');
 const { isWithinPriorRun } = require('./lib/wrong-production-autoclear');
 
@@ -146,7 +147,7 @@ function run() {
         if (!data.wrongProductionNote) {
           data.wrongProductionNote = `Operator-trust contamination remediation (Notion 386637c5): review dated ${data.publishDate || pub.toISOString().slice(0, 10)} is ${diff}d ${dir === 'EARLY' ? 'before show window start' : 'after show close'} ${earliestStr} and not within any declared priorRun — different production leaked onto this entry by automated ingest stamping operator override fields.`;
         }
-        fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
+        safeWriteReview(filePath, data);
       }
     }
   }

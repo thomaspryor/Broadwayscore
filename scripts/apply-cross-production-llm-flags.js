@@ -34,6 +34,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { safeWriteReview } = require('./lib/review-write-guard');
 
 const ARGS = process.argv.slice(2);
 const APPLY = ARGS.includes('--apply');
@@ -81,7 +82,7 @@ for (const r of applicable) {
   data.wrongProductionDetectedBy = 'classify-wrong-production:opus';
   data.wrongProductionDetectedAt = nowIso;
 
-  if (APPLY) fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
+  if (APPLY) safeWriteReview(filePath, data);
   flagged.push({ file: `${r.showId}/${r.file}`, target: r.targetShowId, reasoning: r.reasoning });
 }
 
