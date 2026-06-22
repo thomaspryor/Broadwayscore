@@ -1,11 +1,26 @@
 #!/usr/bin/env node
 /**
  * Audit text quality across all reviews
- * Used by CI to ensure data quality standards
+ *
+ * Two threshold bands:
+ *   - MONITOR (default): tight bands. Flaps as the corpus drifts every ~30 min
+ *     via the rebuild bots, so this is MONITORING — it runs in the non-blocking
+ *     check-corpus-drift.yml workflow and surfaces in the daily digest. It must
+ *     NOT live in the blocking test.yml gate (that's what made main red every
+ *     couple hours for non-code reasons).
+ *   - GATE (--gate): wide catastrophe bands (~5x looser). Trips ONLY on a
+ *     genuine quality collapse — e.g. a scraper-cookie expiry that floods the
+ *     corpus with truncated/unknown bodies (the failure the row-count floors in
+ *     test.yml structurally cannot catch, since they count rows not quality).
+ *     This is the one quality check that STAYS blocking in test.yml.
+ *
+ * Usage:
+ *   node scripts/audit-text-quality.js           # MONITOR band (digest)
+ *   node scripts/audit-text-quality.js --gate    # GATE band (blocking catastrophe floor)
  *
  * Exit codes:
- *   0 = Pass (all thresholds met)
- *   1 = Fail (thresholds not met)
+ *   0 = Pass (active band's thresholds met)
+ *   1 = Fail (active band's thresholds not met)
  */
 
 const fs = require('fs');
@@ -13,12 +28,25 @@ const path = require('path');
 
 const REVIEW_TEXTS_DIR = 'data/review-texts';
 
-// Quality thresholds (can be adjusted)
+// MONITOR band — tight, drift-sensitive. Surfaced via digest, never blocks main.
 const THRESHOLDS = {
   minFullPercent: 25,       // At least 25% should be "full" quality (lowered for historical expansion)
   maxTruncatedPercent: 65,  // No more than 65% should be truncated (raised for historical expansion)
   maxUnknownPercent: 5,     // No more than 5% should have unknown quality
 };
+
+// GATE band — wide catastrophe floor. Stays blocking in test.yml. Drift-tolerant
+// (won't flap on normal corpus movement) but trips on a real collapse: a
+// truncation/unknown flood from a broken scraper. Numbers are ~5x looser than
+// MONITOR so normal drift never reds the trunk.
+const GATE_THRESHOLDS = {
+  minFullPercent: 10,       // catastrophe if <10% full (monitor warns at 25%)
+  maxTruncatedPercent: 85,  // catastrophe if >85% truncated (monitor warns at 65%)
+  maxUnknownPercent: 25,    // catastrophe if >25% unknown (monitor warns at 5%)
+};
+
+const GATE_MODE = process.argv.includes('--gate');
+const ACTIVE = GATE_MODE ? GATE_THRESHOLDS : THRESHOLDS;
 
 // Map contentTier values to textQuality equivalents
 function resolveQuality(data) {
@@ -46,11 +74,23 @@ function auditTextQuality() {
     truncationSignals: {},
   };
 
-  const shows = fs.readdirSync(REVIEW_TEXTS_DIR)
-    .filter(f => {
-      const stat = fs.lstatSync(path.join(REVIEW_TEXTS_DIR, f));
-      return stat.isDirectory() && !stat.isSymbolicLink();
-    });
+  // Exit 2 = "could not run" (matches audit-regex-patterns.js convention), so
+  // check-corpus-drift.js classifies a missing/empty corpus as a CRASH (blind
+  // monitor) rather than harmless "drift". Without this, a failed review-texts
+  // checkout would readdir-throw → exit 1 → be misread as a threshold breach
+  // and silently swallowed by the non-blocking monitor.
+  let shows;
+  try {
+    shows = fs.readdirSync(REVIEW_TEXTS_DIR)
+      .filter(f => {
+        const stat = fs.lstatSync(path.join(REVIEW_TEXTS_DIR, f));
+        return stat.isDirectory() && !stat.isSymbolicLink();
+      });
+  } catch (e) {
+    console.error(`❌ Cannot read ${REVIEW_TEXTS_DIR}: ${e.message}`);
+    console.error('   (review-texts not checked out, or path wrong) — cannot audit.');
+    process.exit(2);
+  }
 
   for (const show of shows) {
     const showDir = path.join(REVIEW_TEXTS_DIR, show);
@@ -77,6 +117,14 @@ function auditTextQuality() {
         // Skip invalid files
       }
     }
+  }
+
+  // Zero reviews with fullText = the corpus is missing/empty, not a quality
+  // failure. Exit 2 ("could not run") so the monitor flags a CRASH, not drift —
+  // otherwise an empty checkout reads as 0% full → exit 1 → swallowed as drift.
+  if (stats.hasFullText === 0) {
+    console.error(`❌ No reviews with fullText found under ${REVIEW_TEXTS_DIR} (scanned ${stats.total} files) — cannot audit quality.`);
+    process.exit(2);
   }
 
   // Calculate percentages
@@ -111,28 +159,28 @@ function auditTextQuality() {
     });
 
   // Check thresholds
-  console.log('\n--- Threshold Checks ---');
+  console.log(`\n--- Threshold Checks (${GATE_MODE ? 'GATE / catastrophe floor' : 'MONITOR / drift'} band) ---`);
   const failures = [];
 
-  if (parseFloat(fullPercent) < THRESHOLDS.minFullPercent) {
-    failures.push(`Full reviews ${fullPercent}% < ${THRESHOLDS.minFullPercent}% threshold`);
-    console.log(`  ❌ Full: ${fullPercent}% (min: ${THRESHOLDS.minFullPercent}%)`);
+  if (parseFloat(fullPercent) < ACTIVE.minFullPercent) {
+    failures.push(`Full reviews ${fullPercent}% < ${ACTIVE.minFullPercent}% threshold`);
+    console.log(`  ❌ Full: ${fullPercent}% (min: ${ACTIVE.minFullPercent}%)`);
   } else {
-    console.log(`  ✅ Full: ${fullPercent}% (min: ${THRESHOLDS.minFullPercent}%)`);
+    console.log(`  ✅ Full: ${fullPercent}% (min: ${ACTIVE.minFullPercent}%)`);
   }
 
-  if (parseFloat(truncatedPercent) > THRESHOLDS.maxTruncatedPercent) {
-    failures.push(`Truncated reviews ${truncatedPercent}% > ${THRESHOLDS.maxTruncatedPercent}% threshold`);
-    console.log(`  ❌ Truncated: ${truncatedPercent}% (max: ${THRESHOLDS.maxTruncatedPercent}%)`);
+  if (parseFloat(truncatedPercent) > ACTIVE.maxTruncatedPercent) {
+    failures.push(`Truncated reviews ${truncatedPercent}% > ${ACTIVE.maxTruncatedPercent}% threshold`);
+    console.log(`  ❌ Truncated: ${truncatedPercent}% (max: ${ACTIVE.maxTruncatedPercent}%)`);
   } else {
-    console.log(`  ✅ Truncated: ${truncatedPercent}% (max: ${THRESHOLDS.maxTruncatedPercent}%)`);
+    console.log(`  ✅ Truncated: ${truncatedPercent}% (max: ${ACTIVE.maxTruncatedPercent}%)`);
   }
 
-  if (parseFloat(unknownPercent) > THRESHOLDS.maxUnknownPercent) {
-    failures.push(`Unknown quality ${unknownPercent}% > ${THRESHOLDS.maxUnknownPercent}% threshold`);
-    console.log(`  ❌ Unknown: ${unknownPercent}% (max: ${THRESHOLDS.maxUnknownPercent}%)`);
+  if (parseFloat(unknownPercent) > ACTIVE.maxUnknownPercent) {
+    failures.push(`Unknown quality ${unknownPercent}% > ${ACTIVE.maxUnknownPercent}% threshold`);
+    console.log(`  ❌ Unknown: ${unknownPercent}% (max: ${ACTIVE.maxUnknownPercent}%)`);
   } else {
-    console.log(`  ✅ Unknown: ${unknownPercent}% (max: ${THRESHOLDS.maxUnknownPercent}%)`);
+    console.log(`  ✅ Unknown: ${unknownPercent}% (max: ${ACTIVE.maxUnknownPercent}%)`);
   }
 
   // Exit with appropriate code

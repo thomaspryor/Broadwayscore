@@ -1,0 +1,123 @@
+# Corpus-statistics drift monitor — runs the three audits that assert on live
+# corpus properties (review text-quality %, local-vs-aggregator count ratios,
+# content-quality regex false-positive counts). These drift continuously as the
+# rebuild bots commit reviews.json / review-texts every ~30 min, so they are
+# MONITORING, not code-correctness gates. They used to live in test.yml's
+# blocking data-validation job and reddened main for non-code reasons every few
+# hours. Moved here (non-blocking) 2026-06-21: writes data/audit/corpus-drift.json,
+# surfaced in the daily digest by scripts/health-check.js. The catastrophe FLOOR
+# (a genuine quality collapse) stays blocking in test.yml via
+# `audit-text-quality.js --gate`. READ-ONLY: never triggers rebuild or scraping.
+name: Check Corpus Drift
+
+on:
+  schedule:
+    # Daily at 6:20 AM UTC — after the 4 AM rebuild + 5 AM scoring crons, so the
+    # audits see the freshly-rebuilt corpus. Offset from check-review-count-drift
+    # (6:00) to avoid a checkout-core-data stampede.
+    - cron: '20 6 * * *'
+  workflow_run:
+    # Re-check right after each rebuild — drift is caused by the rebuild, not by
+    # code pushes, so this is the cadence that matters.
+    workflows: ['Rebuild Reviews Data']
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      strict:
+        description: 'Fail the job if any audit reports drift (default: monitor only)'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+concurrency:
+  group: check-corpus-drift
+  cancel-in-progress: false
+
+jobs:
+  drift:
+    name: Run corpus-statistics audits (non-blocking)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Run corpus-drift monitor
+        run: |
+          ARGS=""
+          if [ "${{ inputs.strict }}" = "true" ]; then
+            ARGS="$ARGS --strict"
+          fi
+          node scripts/check-corpus-drift.js $ARGS
+
+      - name: Check for changes
+        id: changes
+        if: always()
+        run: |
+          if [ ! -f data/audit/corpus-drift.json ]; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          elif git diff --quiet data/audit/corpus-drift.json 2>/dev/null \
+            && git ls-files --error-unmatch data/audit/corpus-drift.json >/dev/null 2>&1; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push audit
+        if: always() && steps.changes.outputs.has_changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/audit/corpus-drift.json
+          SUMMARY=$(node -e "const d=require('./data/audit/corpus-drift.json'); console.log(d.summary.driftCount + ' drift, ' + d.summary.crashCount + ' crashed')")
+          git commit -m "audit: corpus-drift monitor ($SUMMARY) [skip ci]
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Summary
+        if: always()
+        run: |
+          if [ -f data/audit/corpus-drift.json ]; then
+            echo "## Corpus Drift" >> $GITHUB_STEP_SUMMARY
+            node -e "
+              const d = require('./data/audit/corpus-drift.json');
+              console.log('**Audits run:** ' + d.summary.auditsRun);
+              console.log('**Drift:** ' + d.summary.driftCount + ' | **Crashed:** ' + d.summary.crashCount);
+              console.log('');
+              console.log('| Audit | Status | Exit |');
+              console.log('|-------|--------|------|');
+              for (const a of d.audits) {
+                const s = a.crashed ? 'CRASHED' : a.ok ? 'ok' : 'drift';
+                console.log('| ' + a.name + ' | ' + s + ' | ' + a.exitCode + ' |');
+              }
+            " >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Corpus Drift Monitor Failed (audit could not run)'
+          severity: 'warning'
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

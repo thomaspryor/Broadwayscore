@@ -173,6 +173,32 @@ jobs:
           fi
           exit 1
 
+      - name: Commit coverage audit to public repo
+        # theatr-coverage.json lives in the PUBLIC repo's data/audit/ and feeds
+        # health-check.js's "Audience coverage: open-show gaps" check. push-core-
+        # data (below) only handles the PRIVATE core-data repo, so without this
+        # step the audit is written in CI but never committed — the check would
+        # never see Theatr gaps. Mirrors update-mezzanine.yml's staging of
+        # mezzanine-coverage.json.
+        if: always() && inputs.dry_run != true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if [ -f data/audit/theatr-coverage.json ]; then
+            git add data/audit/theatr-coverage.json
+          fi
+          if git diff --staged --quiet; then
+            echo "No coverage-audit changes to commit"
+            exit 0
+          fi
+          git commit -m "data: Update Theatr coverage audit"
+          if bash scripts/lib/push-with-retry.sh; then
+            exit 0
+          else
+            echo "Failed to push coverage audit after retries"
+            exit 1
+          fi
+
       - name: Push core data to private repo
         if: always() && inputs.dry_run != true
         uses: ./.github/actions/push-core-data
