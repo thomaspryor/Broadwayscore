@@ -26,8 +26,8 @@
 - [Test pure function at I/O boundary](feedback_test_pure_function_at_io_boundary.md) — also test wrapper against real data
 - [Anti-AI-slop writing](feedback_anti_ai_slop_writing.md) — strip em dashes, "not X it's Y", "delve/robust", hedges, fake comparisons in external copy ([[feedback_email_drafting.md]])
 - [Ask with recommendation](feedback_ask_with_recommendation.md) — lead with (Recommended) option 1 + why
-- [Multi-model review](feedback_two_model_ui_review.md) — GPT-4o+Gemini parallel on screenshots; pair vision w/ code-reader subagent for data audits ([[feedback_three_model_audit_modality.md]]); Gemini thinkingBudget=0 ([[feedback_gemini_thinking_token_budget.md]])
-- [GitHub polling rate limit](feedback_github_polling_rate_limit.md) — never gh run list in loop; use gh run watch
+- [Multi-model review](feedback_two_model_ui_review.md) — GPT-4o+Gemini parallel on screenshots; vision+code-reader subagent for audits ([[feedback_three_model_audit_modality.md]])
+- [GitHub polling rate limit](feedback_github_polling_rate_limit.md) — no gh run list loops; gh run watch
 
 ## 📇 Notion / brain
 - [Notion brain workflow](notion-brain-workflow.md) — IDs, schema, lifecycle. Read first.
@@ -53,13 +53,13 @@
 
 ## ⚙️ CI / GitHub Actions / workflows
 - [Workflow cascade prevention](feedback_workflow_cascade_prevention.md) — trace dispatch graph; circular chains → 1000+ runs/day
+- [Cron timeout = script budget](feedback_cron_timeout_needs_script_budget.md) — cancelled-at-timeout crons need --time-budget-min + rotation; check skip-cache checkout wiring
 - [test.yml push path allow-list](feedback_test_yml_push_path_allowlist.md) — non-listed scripts/ pushes trigger ZERO CI; add new paths
 - [push-review-texts reverts intentional clears](feedback_push_review_texts_reverts_intentional_clears.md) — duplicateOf in PROTECTED_FIELDS; needs duplicateClearReason exception
-- [test.yml data gates flap + short-circuit](feedback_test_yml_data_gates_flap_and_shortcircuit.md) — corpus drift trips gates; first failure masks rest; triage drift-bump vs real-fix; classify fail-vs-cancelled ([[feedback_ci_red_stale_state_and_brittle_assertions.md]])
+- [test.yml data gates flap + short-circuit](feedback_test_yml_data_gates_flap_and_shortcircuit.md) — corpus drift trips gates; first failure masks rest; triage drift vs real-fix ([[feedback_ci_red_stale_state_and_brittle_assertions.md]])
 - [vercel build env block required](feedback_vercel_env_block_required.md) — NEXT_PUBLIC_* must go in build step env: block
 - [Vercel NFT dynamic paths + excludes](feedback_vercel_nft_dynamic_paths.md) — no dynamic paths in server code; grep src/ before outputFileTracingExcludes; CI guard enforces
 - [Conservative default = common case](feedback_conservative_default_can_be_common_case.md) — "unknown → assume X" breaks when unknown IS common
-- [Cancelled main CI = concurrency](feedback_test_yml_cancel_in_progress.md) — cancelled+jsdom/shows.json ≠ real fail; cancel PRs only
 - [GitHub auto-disables stale workflows](feedback_github_auto_disable_workflows.md) — ~60 days inactive → silently disabled; HTTP 422
 - [GHA secrets not usable in if:](feedback_gha_secrets_in_if.md) — step-level if conditions can't read secrets
 - [GHA cron delays](feedback_github_cron_delays.md) — fire 30min-3h late; shift earlier + launchd backup
@@ -86,7 +86,7 @@
 - [Manual stubs bypass venue/date validation](feedback_manual_stub_bypasses_validation.md) — NEVER stub shows.json from memory; look up Playbill first
 
 ## 🎯 Opening night pipeline
-- [_pending no-byline strand](feedback_pending_no_byline_strand_drain.md) — multi-critic outlets (Times/Standard/Guardian) w/o byline strand in _pending/; drain was opera-only; 511 reviews lost across 72 shows; CHECK _pending FIRST when reviews missing; drain rejects must KEEP-not-delete
+- [_pending no-byline strand](feedback_pending_no_byline_strand_drain.md) — multi-critic outlets w/o byline strand in _pending/; CHECK _pending FIRST when reviews missing; drain rejects KEEP-not-delete
 - [Stuck previews suppresses score](feedback_previews_open_flip_needs_review_signal.md) — flip gated on openingDate; null strands OB/OWE; 2d review-driven backstop
 - [Opening-night runbooks](feedback_admin_ingest_opening_night_2026-04-26.md) — Joe Turner master log (~42 issues, read FIRST) + 25-item failure-mode checklist ([[feedback_manual_ingest_opening_night_runbook.md]])
 - [Aggregator pages post-opening only](feedback_aggregator_pages_post_opening.md) — BWW RR/DTLI/TB don't exist pre-opening
@@ -109,10 +109,10 @@
 - [Freeze Tony audience grades](feedback_freeze_tony_audience_grades.md) — historical metrics must freeze inputs; live cron drift re-ranks closed seasons
 
 ## 📊 Data pipeline & scraping
-- [Scraper architecture](feedback_scraper_architecture.md) — must use fetchPage(); CI enforces BD+SB both present; BD empty 200s, Playwright renders 404s as success ([[feedback_fetchpage_gotchas.md]])
+- [Scraper architecture](feedback_scraper_architecture.md) — use fetchPage(); CI enforces BD+SB; BD empty 200s, Playwright 404s as success ([[feedback_fetchpage_gotchas.md]])
 - [Closing-date automation gaps](feedback_closing_date_audit_gaps.md) — 4 silent gaps; broadway.org/TodayTix lag; WE=0 automation
-- [BD zone migrated: web_unlocker2](feedback_brightdata_zone_migration.md) — mcp_unlocker obsolete; active zone via $BRIGHTDATA_ZONE
-- [SB credit budget](feedback_sb_credit_budget.md) — SB_CREDIT_BUDGET=250, SB_PAGE_CREDIT_BUDGET=200
+- [SEO site-avg position brand-skewed](feedback_seo_site_avg_position_is_brand_skewed.md) — never cite GSC avg as ranking quality; use de-branded review-intent (~pos 14.7, 28% page-1)
+- [BD zone migrated: web_unlocker2](feedback_brightdata_zone_migration.md) — mcp_unlocker obsolete; active zone via $BRIGHTDATA_ZONE. SB budget ([[feedback_sb_credit_budget.md]]): SB_CREDIT_BUDGET=250, SB_PAGE_CREDIT_BUDGET=200
 - [Cloudflare/DataDome blocks](feedback_cloudflare_bypass_hierarchy.md) — managed challenge + WSJ/NewYorker CI IP block defeat all; Browserbase only ([[feedback_wsj_newyorker_ci_ip_block.md]])
 - [Aggregator soft 404](feedback_aggregator_soft_404.md) — BWW returns 200 homepage; check <title> tag
 - [Cookie auth set](feedback_stage_cookie_minimal_set.md) — Stage = 5 cookies, cookie-only; Mac Studio Tahoe path changed, Terminal needs FDA ([[feedback_mac_studio_cookies.md]])

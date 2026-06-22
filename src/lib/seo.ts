@@ -5,6 +5,7 @@ import { isLondonMarket, getMarketCountry, getMarketCurrency, getMarketMinReview
 import { isOperaShow } from './show-market';
 import { getGoldThreshold } from '@/config/score-buckets';
 import { isPlatformHidden } from './ticket-utils';
+import { SOCIAL_ACCOUNTS } from '@/config/branding';
 
 export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
@@ -49,7 +50,12 @@ function toFiveStarScale(score: number): number {
   return Math.round((score / 100) * 4 * 10) / 10 + 1; // 0→1.0, 50→3.0, 100→5.0
 }
 
-// Organization Schema - Site identity
+// Organization Schema - Site identity.
+// sameAs links our official profiles to the entity so Google can resolve
+// "Broadway Scorecard" as a recognized organization (Knowledge Graph) rather than
+// a generic site — the entity-recognition signal review aggregators like
+// Metacritic/Rotten Tomatoes carry. Sourced from the single SOCIAL_ACCOUNTS config
+// so it never drifts from the footer links.
 export function generateOrganizationSchema() {
   return {
     '@context': 'https://schema.org',
@@ -58,6 +64,7 @@ export function generateOrganizationSchema() {
     url: BASE_URL,
     logo: `${BASE_URL}/og/home.png`,
     description: 'Aggregated Broadway show ratings from professional critics',
+    sameAs: SOCIAL_ACCOUNTS.map(a => a.url),
     inLanguage: 'en',
   };
 }

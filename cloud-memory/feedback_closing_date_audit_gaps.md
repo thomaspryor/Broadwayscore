@@ -25,3 +25,11 @@ Both `update-show-status.js` (daily 8 AM UTC) and `check-closing-dates.js` (week
 **Manual fix log (2026-05-14):** 12 corrections committed via b375c273 (8 BW) + b48cac77 (4 WE). Notion card 360637c5-416f-81f3-bba7-d77cfc7dea6e.
 
 **Don't rebuild atop check-closing-dates.js** — its monotonic-extension assumption is baked into the data flow, not just one regex. Build a new bidirectional audit (`audit-closing-dates.js`) that compares stored vs broadway.com schedule for BW and a WE-specific source for WE, and flags BOTH directions for human review.
+
+---
+
+**UPDATE 2026-06-21 — `audit-closing-dates.js` exists but is BROADWAY-ONLY; OB+WE still have the gap.** Burnout Paradise (OB) was stored `status=open, closingDate=2026-06-28` but had actually closed 2026-05-23 — surfaced in the weekly newsletter's "Closing this Week." Root cause: `audit-closing-dates.js` candidate filter is `s.category !== 'broadway'` (line ~290), so no OB/WE show is ever cross-checked.
+
+**Tried and rejected: extending the audit to off-broadway.** broadway.com does NOT reliably carry OB calendars. 2026-06-21 dry-run probe of 5 running OB shows: 4/5 returned ZERO future dates, and the slug pattern mismatches (broadway.com uses `/shows/heathers-the-musical/`, not `/heathers-the-musical-off-broadway/`). Heathers (open, extended to ~Sept 2026) got a false "possibly closed" flag. So broadway.com cannot distinguish a running OB show from a closed one — extending the existing audit to OB just floods false positives. **OB/WE closing-date verification needs a different source (Playbill production pages carry "Closing: <date>"; TodayTix; venue sites). That audit does not exist yet — it's the open follow-up.**
+
+**What WAS shipped 2026-06-21:** a `POSSIBLY_CLOSED_NEEDS_REVIEW` signal in `audit-closing-dates.js`, scoped to Broadway. When a Broadway show's broadway.com schedule shows zero future performances but stored close is ≥5 days out, it's flagged for review instead of silently dropped to `errors` (validated: 5 running BW shows = clean matches, no false positives). This closes the BW retraction gap but does NOT cover OB — Burnout's exact class remains unautomated. Manual Playbill cross-check is still the only OB/WE safety net; run it on the newsletter closing window each week.

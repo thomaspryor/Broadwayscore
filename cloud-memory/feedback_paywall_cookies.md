@@ -1,6 +1,6 @@
 ---
 name: Paywall Cookie Access
-description: "Subscriber cookies for paywalled outlets live in GH secrets — check before assuming inaccessible. CI or Safari."
+description: "GH secrets have cookies for FT/Telegraph/Standard/NYT/WSJ — CI or Safari."
 type: feedback
 originSessionId: 3548d82c-4d8f-4ce3-8b16-044161f84602
 archived: true
@@ -11,14 +11,23 @@ When scraping paywalled UK/US outlets, check for subscriber cookies before assum
 
 **How to apply:**
 
-## Cookie Secrets (GitHub Actions)
-The domain → `*_COOKIES` secret-name routing table is the single source of truth in
-`scripts/lib/cookie-loader.js` (`COOKIE_DOMAIN_MAP`). Don't duplicate the outlet list here —
-read it from that file. Each entry resolves a domain to its env var / file key.
+## Cookie Secrets Available (GitHub Actions)
+- `FT_COOKIES` — Financial Times (FTSession/FTSession_s)
+- `TELEGRAPH_COOKIES` — The Telegraph
+- `STANDARD_COOKIES` — Evening Standard
+- `NYT_COOKIES` — New York Times (NYT-S/nyt-a)
+- `WSJ_COOKIES` — Wall Street Journal
+- `WAPO_COOKIES` — Washington Post
+- `NEWYORKER_COOKIES` — New Yorker
+- `VULTURE_COOKIES` — Vulture (soft paywall)
+- `TIMEOUT_COOKIES` — Time Out (GDPR wall)
+- `NYPOST_COOKIES` — New York Post
+- `NYDAILYNEWS_COOKIES` — NY Daily News
+- `THESTAGE_COOKIES` — The Stage
 
 ## CI Workflows That Use Cookies
-- `collect-review-texts.yml` — main collection
-- `recollect-for-scores.yml` — score extraction
+- `collect-review-texts.yml` — main collection, has FT/Telegraph/Standard
+- `recollect-for-scores.yml` — score extraction, has Telegraph/Stage
 - `collect-hard-paywall.yml` / `collect-soft-paywall.yml` — specialized collection
 
 ## Local Cookie Extraction
@@ -29,8 +38,8 @@ read it from that file. Each entry resolves a domain to its env var / file key.
 - `scripts/paywall-browser-extract.js` — extracts articles using persistent profile
 
 ## When to Use
-- Scraping a paywalled outlet? → Trigger a CI collection workflow with cookies (the workflow passes `COOKIES_BUNDLE_*`)
-- Need to verify star ratings on paywalled pages? → `recollect-for-scores.yml` carries the relevant cookies
+- Scraping FT/Telegraph/Standard/Stage/Independent? → Trigger CI workflow with cookies
+- Need to verify star ratings on paywalled pages? → `recollect-for-scores.yml` has Telegraph/Stage cookies
 - Local scraping? → Extract Safari cookies first, or use `paywall-browser-login.js` to create a profile
 
 ## 2026-04-22 WSJ audit findings
