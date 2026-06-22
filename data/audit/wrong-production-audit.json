@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-06-22T20:58:22.672Z",
+  "timestamp": "2026-06-22T21:31:48.040Z",
   "stats": {
     "totalReviews": 39028,
-    "alreadyFlagged": 17404,
+    "alreadyFlagged": 17402,
     "dateGuardCatches": 35,
     "directorMismatch": 870,
-    "tvFilmSignals": 1064,
+    "tvFilmSignals": 1065,
     "londonSignals": 647,
     "offBroadwaySignals": 463,
-    "yearMismatch": 81,
+    "yearMismatch": 82,
     "noPublishDate": 3941
   },
   "findings": [
@@ -8186,7 +8186,7 @@
       "file": "independent--alice-saville.json",
       "score": 58,
       "publishDate": "2026-06-18",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html?loginSuccessful=true",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -12879,6 +12879,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"howard davies\" from les-liaisons-dangereuses-1987"
+        }
+      ]
+    },
+    {
+      "showId": "les-liaisons-dangereuses-2016",
+      "file": "times-square-chronicles--suzanna-bowling.json",
+      "score": 25,
+      "publishDate": "November 3, 2016",
+      "url": "https://t2conline.com/liev-schrieber-in-les-liaisons-dangereuses-is-anemic/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (5x) more than 2016 (0x). 2026 matches production: les-liaisons-dangereuses-west-end-2026"
         }
       ]
     },
