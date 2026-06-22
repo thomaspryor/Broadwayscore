@@ -2661,7 +2661,17 @@ showDirs.forEach(showId => {
       // Broadway reviews are embargoed until opening night; anything earlier is likely wrong-production
       // Reviews with allowEarlyDate: true bypass this (e.g., out-of-town tryouts, transfers)
       // WE shows are exempt: many are long-running transfers with reviews from the original run
-      if (data.publishDate && showDateMap[showId] && !data.allowEarlyDate && !isLondonMarket(showCategory)) {
+      // priorRuns exemption: a review inside an operator-declared prior-run window is legitimate
+      // coverage of an earlier run (venue transfer / return engagement) — the structured form of
+      // the "transfers" bypass named above. Without this, a transfer record's original-run reviews
+      // (published weeks before the transfer's opening) are wrongly dropped as date-mismatched.
+      if (
+        data.publishDate &&
+        showDateMap[showId] &&
+        !data.allowEarlyDate &&
+        !isLondonMarket(showCategory) &&
+        !isWithinPriorRun(new Date(data.publishDate), showById[showId]?.priorRuns)
+      ) {
         const pubDate = new Date(data.publishDate);
         if (!isNaN(pubDate.getTime())) {
           const showDate = showDateMap[showId];
