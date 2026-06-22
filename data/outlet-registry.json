@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-06-21T23:46:56.695Z",
+    "lastUpdated": "2026-06-22T20:57:49.219Z",
     "version": "2.1.0",
     "lastChange": "T3->T4 demotion of 38 long-tail/stale outlets"
   },
@@ -10042,6 +10042,14 @@
         "theater-mirror"
       ],
       "accessModel": "free"
+    },
+    "dallasvoice": {
+      "displayName": "Dallasvoice",
+      "tier": 3,
+      "aliases": [
+        "dallasvoice"
+      ],
+      "domain": "dallasvoice.com"
     }
   },
   "_aliasIndex": {
