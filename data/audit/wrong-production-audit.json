@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-22T21:31:48.040Z",
+  "timestamp": "2026-06-22T22:02:39.677Z",
   "stats": {
-    "totalReviews": 39028,
-    "alreadyFlagged": 17402,
-    "dateGuardCatches": 35,
-    "directorMismatch": 870,
+    "totalReviews": 39031,
+    "alreadyFlagged": 17404,
+    "dateGuardCatches": 38,
+    "directorMismatch": 869,
     "tvFilmSignals": 1065,
-    "londonSignals": 647,
-    "offBroadwaySignals": 463,
+    "londonSignals": 645,
+    "offBroadwaySignals": 464,
     "yearMismatch": 82,
-    "noPublishDate": 3941
+    "noPublishDate": 3939
   },
   "findings": [
     {
@@ -22393,20 +22393,6 @@
       ]
     },
     {
-      "showId": "the-gin-game-2015",
-      "file": "wsj--terry-teachout.json",
-      "score": 65,
-      "publishDate": "2015-10-15",
-      "url": "https://www.wsj.com/articles/the-gin-game-review-a-sugar-coated-pill-1444947066",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"mike nichols\" from the-gin-game-1977"
-        }
-      ]
-    },
-    {
       "showId": "the-glass-menagerie-1975",
       "file": "dailybeast--tim-teeman.json",
       "score": 88,
@@ -29695,6 +29681,53 @@
       ]
     },
     {
+      "showId": "dad-dont-read-this-off-broadway-2026",
+      "file": "exeunt-magazine--loren-noveck.json",
+      "score": 84,
+      "publishDate": "2026-05-14",
+      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 34d before show (2026-05-14 vs 2026-06-17)"
+        }
+      ]
+    },
+    {
+      "showId": "dad-dont-read-this-off-broadway-2026",
+      "file": "nytimes--helen-shaw.json",
+      "score": 88,
+      "publishDate": "2026-05-17",
+      "url": "https://www.nytimes.com/2026/05/17/theater/dad-dont-read-this-review.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 31d before show (2026-05-17 vs 2026-06-17)"
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
+        }
+      ]
+    },
+    {
+      "showId": "dad-dont-read-this-off-broadway-2026",
+      "file": "vulture--jackson-mchenry.json",
+      "score": 78,
+      "publishDate": "2026-05-13",
+      "url": "https://www.vulture.com/article/teen-angst-online-and-irl-in-dad-dont-read-this.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 35d before show (2026-05-13 vs 2026-06-17)"
+        }
+      ]
+    },
+    {
       "showId": "dana-h-2021",
       "file": "amny--matt-windman.json",
       "score": 78,
@@ -36641,20 +36674,6 @@
     },
     {
       "showId": "stephen-sondheims-old-friends-2025",
-      "file": "artsdesk--unknown.json",
-      "score": 92,
-      "publishDate": null,
-      "url": "https://theartsdesk.com/theatre/stephen-sondheims-old-friends-gielgud-theatre-review-exuberant-gala-nonstop-virtuosity",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"gielgud\""
-        }
-      ]
-    },
-    {
-      "showId": "stephen-sondheims-old-friends-2025",
       "file": "frontmezzjunkies--unknown.json",
       "score": 86,
       "publishDate": "2025-04-13",
@@ -37620,20 +37639,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Contains TV/film keyword: \"episode\n\n2\""
-        }
-      ]
-    },
-    {
-      "showId": "tammy-faye-2024",
-      "file": "artsdesk--unknown.json",
-      "score": 78,
-      "publishDate": null,
-      "url": "https://theartsdesk.com/theatre/tammy-faye-almeida-theatre-review-elton-johns-often-dazzling-new-musical",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },

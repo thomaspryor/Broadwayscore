@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-22T21:31:52.552Z",
+  "generatedAt": "2026-06-22T22:02:44.324Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -226,6 +226,45 @@
         "warnings": 0,
         "unknowns": 2,
         "total": 4
+      },
+      "preflight": false
+    },
+    {
+      "id": "dad-dont-read-this-off-broadway-2026",
+      "title": "Dad Don't Read This",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "play",
+      "openingDate": "2026-06-23",
+      "status": "previews",
+      "slug": "dad-dont-read-this-off-broadway",
+      "thumbnail": "/images/shows/dad-dont-read-this-off-broadway-2026/thumbnail.png",
+      "daysUntil": 1,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": false,
+          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived — bww-rr-discover.js will auto-fetch within minutes of publication",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Not yet archived — tb-direct-url.js will discover at poll time",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
       },
       "preflight": false
     },
