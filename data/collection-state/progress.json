@@ -20,7 +20,8 @@
     "are-you-now-or-have-you-ever-been-off-broadway-2026/off-off-online--walter-murphy.json",
     "girl-interrupted-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "jerome-off-broadway-2025/off-off-online--edward-karam.json",
-    "jerome-off-broadway-2025/one-minute-critic--jerry-portwood.json"
+    "jerome-off-broadway-2025/one-minute-critic--jerry-portwood.json",
+    "henry-vi-a-trilogy-in-two-parts-off-broadway-2026/nyt-theater--jonathan-mandell.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -34,6 +35,13 @@
     "glengarry-glen-ross-west-end-2026/whatsonstage--lucinda-everett.json",
     "beetlejuice-west-end-2026/amny--matt-windman.json",
     "beetlejuice-west-end-2026/the-upcoming-uk--unknown.json",
+    "encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
+    "romeo-and-juliet-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
     "encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
     "romeo-and-juliet-off-broadway-2026/one-minute-critic--emily-chackerian.json",
     "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
@@ -81,10 +89,13 @@
       "are-you-now-or-have-you-ever-been-off-broadway-2026/off-off-online--walter-murphy.json",
       "girl-interrupted-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "jerome-off-broadway-2025/off-off-online--edward-karam.json",
-      "jerome-off-broadway-2025/one-minute-critic--jerry-portwood.json"
+      "jerome-off-broadway-2025/one-minute-critic--jerry-portwood.json",
+      "henry-vi-a-trilogy-in-two-parts-off-broadway-2026/nyt-theater--jonathan-mandell.json"
     ],
     "amp": [],
     "browserbase": [
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
@@ -248,6 +259,39 @@
     },
     {
       "t": "2026-06-22T04:31:26.179Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-22T05:00:03.749Z",
+      "event": "bb-session",
+      "session": "5261088c",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-22T05:00:04.653Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-22T05:01:22.322Z",
+      "event": "bb-session",
+      "session": "d45061db",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-22T05:01:23.205Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-22T05:01:37.096Z",
+      "event": "bb-session",
+      "session": "27ebdd83",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-22T05:01:38.003Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
