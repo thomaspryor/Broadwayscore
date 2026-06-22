@@ -75,7 +75,7 @@ Before EVERY commit touching `src/`, `scripts/`, or config:
    - Inclusion: `scripts/lib/review-guards.js`, `scripts/rebuild-all-reviews.js`, `src/lib/scoring.ts`, `src/lib/engine.ts`, `src/lib/data-core.ts`.
    - Score-source: `scripts/lib/rebuild-helpers.js`, `scripts/lib/score-extractors.js`, `scripts/lib/score-parsers.js`, `scripts/lib/review-normalization.js`, `scripts/lib/score-routing.js`.
    Unit tests are NOT sufficient. **MUST run** `node scripts/scoring-delta.js` AND `node scripts/test-temporal-override-regression.js`. Paste summary to user before pushing. Stop hook enforces. See `memory/feedback_scoring_delta_required.md`.
-8. **Content-quality regex edits** (`scripts/lib/content-quality.js` pattern arrays) — MUST run `node scripts/audit-regex-patterns.js --full` before pushing. Catches bare-keyword FPs that unit tests miss. CI gate in `test.yml` enforces. See `memory/feedback_content_quality_regex_fps.md`.
+8. **Content-quality regex edits** (`scripts/lib/content-quality.js` pattern arrays) — MUST run `node scripts/audit-regex-patterns.js --full` before pushing. Catches bare-keyword FPs that unit tests miss. The pre-push run is the blocking gate for edits (Stop hook enforces); the `--full` audit also runs non-blocking in `check-corpus-drift.yml` for ongoing corpus drift (moved out of `test.yml` 2026-06-21 — it flapped on corpus growth). See `memory/feedback_content_quality_regex_fps.md`.
 **If any check fails, fix before committing.** Never push broken code.
 
 ### 13. Prompt Changes Require A/B Check (MANDATORY)
