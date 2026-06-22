@@ -79,6 +79,7 @@ function normalizeTitle(t) {
 
 const { parseDate } = require('./lib/date-utils');
 const { normalizeOutlet } = require('./lib/review-normalization');
+const { AGGREGATOR_OUTLET_IDS } = require('./lib/aggregator-domains');
 
 function parseDomain(url) {
   if (!url || typeof url !== 'string') return null;
@@ -142,6 +143,28 @@ const WIRE_OUTLETS = new Set(['ap', 'reuters', 'upi']);
 // the archive; the internal outletId is ground truth. Rebuild already exempts
 // it in EXEMPT_URL_DOMAINS (rebuild-all-reviews.js) — this gives the audit parity.
 const ARCHIVE_MIRROR_DOMAINS = new Set(['jasonraize.net', 'theatrevibe.co.uk', 'newspapers.com']);
+
+// Aggregator roundup domains — sites whose review/verdict ROUNDUP pages
+// republish many *other* outlets' star ratings and excerpts. When we source a
+// review's stars/excerpt from one of these roundups, the stored URL is the
+// aggregator page while the internal outletId is the real reviewing outlet
+// (e.g. a Telegraph review sourced from westendtheatre.com → outletId=telegraph,
+// url=westendtheatre.com). The URL domain therefore maps to the aggregator's own
+// outlet entry and tripped class C as a false positive (12 WET-sourced West End
+// reviews, 2026-06-22). Same rationale as ARCHIVE_MIRROR_DOMAINS: the URL domain
+// is the aggregator, not the true outlet; the internal outletId is ground truth.
+// Only roundup aggregators that carry OTHER outlets' reviews belong here — NOT
+// first-party outlets that merely happen to publish a roundup column. List is
+// the documented roundup aggregators (CLAUDE.md §Web Scraping) whose domain
+// resolves to a unique outlet entry: WET, BWW Roundups, Playbill Verdict, LBO,
+// The Stage roundups.
+const AGGREGATOR_ROUNDUP_DOMAINS = new Set([
+  'westendtheatre.com',    // WET — West End star-rating roundups
+  'broadwayworld.com',     // BWW Review Roundups
+  'playbill.com',          // Playbill Verdict
+  'londonboxoffice.co.uk', // LBO roundups
+  'thestage.co.uk',        // The Stage roundups
+]);
 
 // ─────────────────────────────────────────────────
 // Detectors
@@ -245,11 +268,22 @@ for (const showId of showDirs) {
     // though the registry already knows the canonical mapping.
     if (shouldRunClass('C') && !alreadyFlagged && d.url) {
       const domain = parseDomain(d.url);
-      if (domain && !AMBIGUOUS_DOMAINS.has(domain) && !ARCHIVE_MIRROR_DOMAINS.has(domain)) {
+      if (domain && !AMBIGUOUS_DOMAINS.has(domain) && !ARCHIVE_MIRROR_DOMAINS.has(domain)
+          && !AGGREGATOR_ROUNDUP_DOMAINS.has(domain)) {
         const expected = domainToOutlet[domain];
         const rawInternalOutlet = d.outletId || f.split('--')[0];
         const internalOutlet = normalizeOutlet(rawInternalOutlet);
-        if (expected && expected !== internalOutlet && !WIRE_OUTLETS.has(internalOutlet)) {
+        // Aggregator roundup URLs (westendtheatre.com, show-score.com, stagedoor.com,
+        // …) are SHARED across every real outlet the roundup covers — a star-stub for
+        // The Telegraph discovered via the WET roundup legitimately carries the WET
+        // URL until the outlet's own URL is resolved. So when the URL's domain maps to
+        // an aggregator outlet, domain→outlet matching doesn't apply; skip rather than
+        // flag a false C_domain_mismatch. (Genuine aggregator-URL contamination — a
+        // real outlet with no score — is the aggregator_url_mismatch class, blocked at
+        // write time by gather-reviews.js + validate-review-texts.js.) Mirrors the
+        // isAggregatorSource exception in gather-reviews.js's domainMismatch guard.
+        const urlIsAggregatorRoundup = expected && AGGREGATOR_OUTLET_IDS.has(expected);
+        if (expected && expected !== internalOutlet && !WIRE_OUTLETS.has(internalOutlet) && !urlIsAggregatorRoundup) {
           hits.C_domain_mismatch.push({
             showId, file: f, internalOutlet, rawInternalOutlet, expected, domain,
           });
