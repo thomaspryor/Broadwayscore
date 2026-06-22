@@ -107,11 +107,19 @@ else
     # main -> main (fetch first)") contains that exact string and falsely reads as
     # success. The ancestor check is ground truth. (2026-06-21: the grep version
     # silently "succeeded" while Phase 2 never reached origin.)
-    g fetch origin "$DEFAULT_BRANCH" -q 2>/dev/null
-    if g merge-base --is-ancestor HEAD "origin/$DEFAULT_BRANCH" 2>/dev/null; then
+    # Only trust the ancestor check against a FRESHLY-fetched ref. If the fetch
+    # itself fails, the remote-tracking ref is stale and the ancestor test would
+    # falsely report failure on an otherwise-successful push — so retry the fetch
+    # a few times before concluding anything.
+    FETCHED=0
+    for fa in 1 2 3; do
+      if g fetch origin "$DEFAULT_BRANCH" -q 2>/dev/null; then FETCHED=1; break; fi
+      sleep 2
+    done
+    if [ "$FETCHED" = 1 ] && g merge-base --is-ancestor HEAD "origin/$DEFAULT_BRANCH" 2>/dev/null; then
       PUSHED=1; break
     fi
-    if echo "$OUT" | grep -qiE "could not resolve host|failed to connect|timed out"; then
+    if echo "$OUT" | grep -qiE "could not resolve host|failed to connect|timed out" || [ "$FETCHED" = 0 ]; then
       restore_stash; die "GitHub unreachable (network) — re-run when connectivity returns. Local merge is intact."
     fi
     log "push rejected (attempt $attempt) — merging remote and retrying"
