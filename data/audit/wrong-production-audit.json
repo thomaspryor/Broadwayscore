@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-22T06:55:19.236Z",
+  "timestamp": "2026-06-22T07:14:19.452Z",
   "stats": {
-    "totalReviews": 39007,
-    "alreadyFlagged": 17364,
+    "totalReviews": 39000,
+    "alreadyFlagged": 17368,
     "dateGuardCatches": 34,
     "directorMismatch": 870,
     "tvFilmSignals": 1058,
-    "londonSignals": 647,
+    "londonSignals": 648,
     "offBroadwaySignals": 463,
     "yearMismatch": 81,
-    "noPublishDate": 3945
+    "noPublishDate": 3932
   },
   "findings": [
     {
@@ -34274,6 +34274,20 @@
       "score": 72,
       "publishDate": "2025-11-01",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/wendy-and-peter-pan-review-a-jumble-of-good-ideas-sntv0grd3",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "file": "whatsonstage--tom-millward.json",
+      "score": null,
+      "publishDate": "2025-03-21",
+      "url": "https://www.whatsonstage.com/news/my-neighbour-totoro-celebrates-its-official-west-end-opening-night_1670554/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
