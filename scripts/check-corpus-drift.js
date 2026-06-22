@@ -58,7 +58,7 @@ const AUDITS = [
     label: 'Review text quality (full/truncated/unknown %)',
     script: 'audit-text-quality.js',
     args: [],
-    crashCodes: [],            // 0 pass / 1 drift; no distinct crash code
+    crashCodes: [2],           // 0 pass / 1 drift / 2 = corpus missing or empty (couldn't run)
   },
   {
     name: 'aggregator-truth',

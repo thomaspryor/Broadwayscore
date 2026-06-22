@@ -74,11 +74,23 @@ function auditTextQuality() {
     truncationSignals: {},
   };
 
-  const shows = fs.readdirSync(REVIEW_TEXTS_DIR)
-    .filter(f => {
-      const stat = fs.lstatSync(path.join(REVIEW_TEXTS_DIR, f));
-      return stat.isDirectory() && !stat.isSymbolicLink();
-    });
+  // Exit 2 = "could not run" (matches audit-regex-patterns.js convention), so
+  // check-corpus-drift.js classifies a missing/empty corpus as a CRASH (blind
+  // monitor) rather than harmless "drift". Without this, a failed review-texts
+  // checkout would readdir-throw → exit 1 → be misread as a threshold breach
+  // and silently swallowed by the non-blocking monitor.
+  let shows;
+  try {
+    shows = fs.readdirSync(REVIEW_TEXTS_DIR)
+      .filter(f => {
+        const stat = fs.lstatSync(path.join(REVIEW_TEXTS_DIR, f));
+        return stat.isDirectory() && !stat.isSymbolicLink();
+      });
+  } catch (e) {
+    console.error(`❌ Cannot read ${REVIEW_TEXTS_DIR}: ${e.message}`);
+    console.error('   (review-texts not checked out, or path wrong) — cannot audit.');
+    process.exit(2);
+  }
 
   for (const show of shows) {
     const showDir = path.join(REVIEW_TEXTS_DIR, show);
@@ -105,6 +117,14 @@ function auditTextQuality() {
         // Skip invalid files
       }
     }
+  }
+
+  // Zero reviews with fullText = the corpus is missing/empty, not a quality
+  // failure. Exit 2 ("could not run") so the monitor flags a CRASH, not drift —
+  // otherwise an empty checkout reads as 0% full → exit 1 → swallowed as drift.
+  if (stats.hasFullText === 0) {
+    console.error(`❌ No reviews with fullText found under ${REVIEW_TEXTS_DIR} (scanned ${stats.total} files) — cannot audit quality.`);
+    process.exit(2);
   }
 
   // Calculate percentages
