@@ -134,4 +134,44 @@ if echo "$ALL_CHANGED_FILES" | grep -qE "^tests/e2e/.*\.(ts|tsx|mjs|js)$|^script
   run_audit "playwright-evaluate-click" "scripts/audit-playwright-evaluate-click.js"
 fi
 
+# TypeScript typecheck — the one diff-local code-correctness gate worth running
+# on push. Runs only when this push touches .ts/.tsx. tsc is project-wide (types
+# interconnect, so it can't be scoped to changed files), but CI keeps main green,
+# so a local failure almost always means THIS change broke types — catch it
+# before it lands on the ungated trunk (direct-push to main has no required
+# checks) instead of burning a CI cycle and reddening main for everyone.
+#
+# DATA GUARD: src/lib/data-*.ts import the gitignored data JSON as modules
+# (`import reviews from '../../data/reviews.json'`). A bare worktree doesn't have
+# those files (they're symlinked only in the primary checkout / fetched in CI),
+# so tsc would fail with TS2307 module-not-found for reasons unrelated to the
+# push — a false-block on the worktree workflow this repo runs on. So we run tsc
+# ONLY when the data is actually present: it gates real type errors from
+# data-equipped checkouts and safely no-ops in bare worktrees (never false-block).
+#
+# Deliberately NOT added here: `next lint` and the ~240-file no-data unit-test
+# batch. Both are whole-project gates that would block EVERY session's push the
+# moment main has any pre-existing lint/test failure (the same shared-red problem
+# as the corpus gates, just for code) and are slow enough (~1-2 min) to drive a
+# `--no-verify` habit that defeats the hook. tsc is the sweet spot: ~30-60s,
+# exit-code-clean, and near-zero false-blocks because CI already keeps main green.
+if echo "$ALL_CHANGED_FILES" | grep -qE "\.(ts|tsx)$"; then
+  if [ -f data/reviews.json ] && [ -f data/shows.json ]; then
+    echo "pre-push: tsc --noEmit (push touches TypeScript)…"
+    if ! npx tsc --noEmit >/tmp/pre-push-tsc.out 2>&1; then
+      echo ""
+      echo "=== PRE-PUSH BLOCKED: tsc --noEmit failed ==="
+      echo ""
+      cat /tmp/pre-push-tsc.out
+      echo ""
+      echo "(Bypass for emergencies: git push --no-verify)"
+      rm -f /tmp/pre-push-tsc.out
+      exit 1
+    fi
+    rm -f /tmp/pre-push-tsc.out
+  else
+    echo "pre-push: skipping tsc (data/*.json absent — bare worktree; tsc needs them)"
+  fi
+fi
+
 exit 0

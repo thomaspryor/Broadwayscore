@@ -736,6 +736,41 @@ function checkQuality() {
       }
       return { name: 'Quality: scored review ratio', status: 'pass', message: `${pct}% scored (${scored}/${total})` };
     }),
+
+    // Surfaces the corpus-statistics drift monitor (check-corpus-drift.yml) in
+    // the digest. Those audits (text-quality %, aggregator-truth ratios, regex
+    // FP counts) were moved OUT of test.yml to non-blocking on 2026-06-21 so
+    // they'd stop redding main as the rebuild bots drift the corpus every ~30
+    // min. The workflow + workflows/CLAUDE.md both claimed they were "surfaced
+    // in the daily digest by health-check.js" — but that wiring never existed,
+    // so the signals were silently swallowed (advisory ≠ invisible). This is
+    // that wiring: a drift audit that CANNOT RUN is an error (the monitor is
+    // broken); drift itself is a `this-week` warn (via the /^Quality:/ playbook
+    // route) so it shows in the digest without paging. Added 2026-06-22.
+    runCheck('Quality: corpus drift', () => {
+      const driftFile = path.join(AUDIT_DIR, 'corpus-drift.json');
+      if (!fs.existsSync(driftFile)) {
+        return { name: 'Quality: corpus drift', status: 'warn', message: 'No corpus-drift data (check-corpus-drift.yml may not have run)', hint: 'Trigger the "Check Corpus Drift" workflow' };
+      }
+      const data = readJSON(driftFile);
+      const ts = data?._meta?.generatedAt;
+      const age = ts ? hoursAgo(ts) : Infinity;
+      // Daily cron + post-rebuild; 36h means it's missed a day of runs.
+      if (age > 36) {
+        return { name: 'Quality: corpus drift', status: 'warn', message: `Drift monitor last ran ${formatAge(age)} ago (>36h)`, hint: 'check-corpus-drift.yml may be stale/disabled' };
+      }
+      const audits = Array.isArray(data?.audits) ? data.audits : [];
+      const crashed = audits.filter(a => a.crashed);
+      if (crashed.length > 0) {
+        // A drift audit that can't even run is a real problem, not drift.
+        return { name: 'Quality: corpus drift', status: 'error', message: `${crashed.length} drift audit(s) crashed: ${crashed.map(a => a.name).join(', ')}`, hint: 'A corpus-statistics audit cannot scan — see data/audit/corpus-drift.json' };
+      }
+      const drifted = audits.filter(a => !a.ok && !a.crashed);
+      if (drifted.length > 0) {
+        return { name: 'Quality: corpus drift', status: 'warn', message: `${drifted.length} audit(s) drifting: ${drifted.map(a => a.label || a.name).join(', ')}`, hint: 'Non-blocking corpus drift — review data/audit/corpus-drift.json' };
+      }
+      return { name: 'Quality: corpus drift', status: 'pass', message: `${audits.length} audits within thresholds (${formatAge(age)} ago)` };
+    }),
   ];
 }
 
