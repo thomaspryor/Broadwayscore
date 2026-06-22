@@ -67,6 +67,19 @@ export default function OffBroadwayPage() {
   // Count reviews across active OB shows only
   const totalReviews = activeShows.reduce((sum, s) => sum + (s.criticScore?.reviewCount ?? 0), 0);
 
+  // Starting Soon — upcoming OB shows (not yet in previews), soonest first.
+  // Mirrors the Broadway homepage shelf (src/app/page.tsx). Computed here rather
+  // than in the client so it stays out of the search/filter inventory, which is
+  // active shows only.
+  const shortDate = (d: string) => new Date(d + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  const startingSoonShows = shows
+    .filter(s => s.status === 'upcoming' && (s.previewsStartDate || s.openingDate))
+    .sort((a, b) => new Date(a.previewsStartDate || a.openingDate).getTime() - new Date(b.previewsStartDate || b.openingDate).getTime())
+    .map(s => {
+      const startDate = s.previewsStartDate || s.openingDate;
+      return { ...serializeShow(s), subtitle: startDate ? `Starts ${shortDate(startDate)}` : undefined, subtitleColor: 'text-gray-400' };
+    });
+
   return (
     <>
       <script
@@ -77,6 +90,7 @@ export default function OffBroadwayPage() {
       <Suspense>
         <OffBroadwayPageClient
           shows={serializedShows}
+          startingSoonShows={startingSoonShows}
           totalShows={activeShows.length}
           totalReviews={totalReviews}
           marketOpenCounts={{

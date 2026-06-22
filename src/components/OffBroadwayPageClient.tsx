@@ -36,6 +36,8 @@ export interface OffBroadwayShow {
   audienceGrade: { grade: string; label: string; color: string; textColor: string; tooltip: string } | null;
   creativeTeam?: Array<{ name: string; role: string }>;
   category?: string;
+  subtitle?: string; // e.g. "Starts Jul 8" — shown below title on shelf cards
+  subtitleColor?: string; // Tailwind text color class (default: emerald-400)
 }
 
 interface OffBroadwayPageClientProps {
@@ -45,6 +47,8 @@ interface OffBroadwayPageClientProps {
   /** Open-show counts for the market pills */
   marketOpenCounts: { broadway: number; offBroadway: number };
   awardWinnerSets?: AwardWinnerSets;
+  /** Upcoming OB shows for the "Starting Soon" shelf (computed server-side). */
+  startingSoonShows?: OffBroadwayShow[];
 }
 
 // URL parameter values
@@ -111,7 +115,7 @@ function FeaturedRow({ title, shows }: { title: string; shows: OffBroadwayShow[]
 }
 
 // Inner component that uses searchParams
-function OffBroadwayPageInner({ shows, totalShows, totalReviews, marketOpenCounts, awardWinnerSets }: OffBroadwayPageClientProps) {
+function OffBroadwayPageInner({ shows, totalShows, totalReviews, marketOpenCounts, awardWinnerSets, startingSoonShows = [] }: OffBroadwayPageClientProps) {
   const initialSearchParams = useSearchParams();
   const router = useRouter();
 
@@ -589,6 +593,7 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews, marketOpenCount
       <div className="mt-8 pt-8 border-t border-white/5">
         <FeaturedRow title="Top Plays" shows={topPlays} />
         <FeaturedRow title="Closing Soon" shows={closingSoonShows} />
+        <FeaturedRow title="Starting Soon" shows={startingSoonShows} />
       </div>
     </div>
   );
