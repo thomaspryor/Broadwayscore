@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-22T11:15:05.629Z",
+  "timestamp": "2026-06-22T11:51:11.074Z",
   "stats": {
-    "totalReviews": 39025,
-    "alreadyFlagged": 17385,
+    "totalReviews": 38959,
+    "alreadyFlagged": 17380,
     "dateGuardCatches": 34,
-    "directorMismatch": 870,
-    "tvFilmSignals": 1058,
-    "londonSignals": 648,
+    "directorMismatch": 869,
+    "tvFilmSignals": 1060,
+    "londonSignals": 647,
     "offBroadwaySignals": 463,
     "yearMismatch": 81,
-    "noPublishDate": 3931
+    "noPublishDate": 3925
   },
   "findings": [
     {
@@ -8159,7 +8159,7 @@
       "file": "independent--alice-saville.json",
       "score": 58,
       "publishDate": "2026-06-18",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html?loginSuccessful=true",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -14042,20 +14042,6 @@
       ]
     },
     {
-      "showId": "master-haroldand-the-boys-2003",
-      "file": "about-entertainment--ben-brantley.json",
-      "score": null,
-      "publishDate": "June 2, 2003",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"athol fugard\" from master-haroldand-the-boys-1982"
-        }
-      ]
-    },
-    {
       "showId": "matilda-the-musical-2013",
       "file": "ap--unknown.json",
       "score": 78,
@@ -14907,6 +14893,34 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-globe-off-west-end-2026",
+      "file": "thereviewshub--phoebe-taplin.json",
+      "score": 93,
+      "publishDate": "2026-06-21",
+      "url": "https://www.thereviewshub.com/26-much-ado-about-nothing-shakespeares-globe-london/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-globe-west-end-2026",
+      "file": "thereviewshub--phoebe-taplin.json",
+      "score": 93,
+      "publishDate": "2026-06-21",
+      "url": "https://www.thereviewshub.com/26-much-ado-about-nothing-shakespeares-globe-london/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -32460,20 +32474,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "inter-alia-west-end-2026",
-      "file": "lbc--johnny-jenkins.json",
-      "score": 91,
-      "publishDate": "2026-04-08",
-      "url": "https://www.lbc.co.uk/article/inter-alia-review-best-plays-ever-seen-5HjdXRZ_2/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
