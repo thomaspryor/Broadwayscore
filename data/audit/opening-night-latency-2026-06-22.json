@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-22T03:29:56.638Z",
+  "generatedAt": "2026-06-22T06:09:51.589Z",
   "date": "2026-06-22",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 393730,
+  "entryCount": 394894,
   "shows": [
     {
       "showId": "an-ideal-husband-west-end-2026",
@@ -2736,7 +2736,7 @@
     },
     {
       "showId": "beetlejuice-west-end-2026",
-      "reviewCount": 26,
+      "reviewCount": 27,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4371,7 +4371,7 @@
     },
     {
       "showId": "glengarry-glen-ross-west-end-2026",
-      "reviewCount": 20,
+      "reviewCount": 25,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -6546,7 +6546,7 @@
     },
     {
       "showId": "hamilton-2015",
-      "reviewCount": 42,
+      "reviewCount": 43,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -11662,6 +11662,21 @@
     {
       "showId": "abba-voyage-off-west-end-2026",
       "reviewCount": 15,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "man-and-boy-west-end-2026",
+      "reviewCount": 9,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
