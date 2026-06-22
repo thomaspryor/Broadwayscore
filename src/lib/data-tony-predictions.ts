@@ -2091,36 +2091,53 @@ export function getGoldDerbyComparison(): GoldDerbyComparison {
 // --- Promo sunset ---
 
 /**
- * Whether to surface the homepage Tony-predictions promo. Active until
- * (current season's ceremonyDate + sunsetDays). After that the promo hides
- * itself — no manual takedown needed. Vercel cron rebuilds every 5 min so the
- * transition lands within minutes of the threshold. Falls back to "active"
- * if the ceremony date is unknown for the current season.
+ * Pure sunset decision shared by both homepage Tony promos. A promo is active
+ * from now until (ceremonyDate 23:59:59 UTC + sunsetDays).
+ *
+ * Falls back to INACTIVE when `ceremonyDate` is undefined. This is the crux:
+ * once the season window rolls past a ceremony, the *next* season has no date
+ * record yet, and the promos hardcode last season's predictions URL. An
+ * active-by-default fallback here is exactly what left the 2025-2026 Tony +
+ * BTC promos live on the homepage through the 2026-2027 rollover (the sunset
+ * was computed against a season whose date was already gone). No date record
+ * ⇒ nothing current to promote ⇒ stay hidden until a new date is set.
+ *
+ * `now` is compared against a fixed UTC instant, so this function is fully
+ * deterministic given its args — see promo-sunset-fallback.test.ts.
  */
-export function isTonyPromoActive(now: Date = new Date(), sunsetDays = 2): boolean {
-  const current = getTonySeasonWindow();
-  const record = tonySeasonForCeremonyYear(current.ceremonyYear);
-  const ceremonyDate = record?.ceremonyDate;
-  if (!ceremonyDate) return true;
+export function isPromoActiveForCeremony(
+  ceremonyDate: string | undefined,
+  now: Date,
+  sunsetDays: number,
+): boolean {
+  if (!ceremonyDate) return false;
   const sunsetMs = new Date(`${ceremonyDate}T23:59:59Z`).getTime() + sunsetDays * 24 * 60 * 60 * 1000;
   return now.getTime() <= sunsetMs;
+}
+
+function currentSeasonCeremonyDate(): string | undefined {
+  return tonySeasonForCeremonyYear(getTonySeasonWindow().ceremonyYear)?.ceremonyDate;
+}
+
+/**
+ * Whether to surface the homepage Tony-predictions promo. Active until the
+ * current season's ceremonyDate + sunsetDays; hides itself after — no manual
+ * takedown needed (Vercel cron rebuilds every 5 min). See
+ * isPromoActiveForCeremony for the unknown-date fallback rationale.
+ */
+export function isTonyPromoActive(now: Date = new Date(), sunsetDays = 2): boolean {
+  return isPromoActiveForCeremony(currentSeasonCeremonyDate(), now, sunsetDays);
 }
 
 /**
  * Beat the Critics promo activity gate. BTC entries close per official rules
  * at 7:59 PM Eastern Time on the ceremony date — one minute before the Tony
  * Awards broadcast begins (≈ ceremony day 23:59 UTC, since EDT = UTC-4 in
- * June). Returns true only while entries are still being accepted. Falls back
- * to "active" if ceremony date is unknown.
+ * June). sunsetDays = 0 ⇒ the gate closes exactly at that deadline. Same
+ * unknown-date fallback (inactive) as the Tony promo.
  */
 export function isBtcPromoActive(now: Date = new Date()): boolean {
-  const current = getTonySeasonWindow();
-  const record = tonySeasonForCeremonyYear(current.ceremonyYear);
-  const ceremonyDate = record?.ceremonyDate;
-  if (!ceremonyDate) return true;
-  // 7:59 PM Eastern (EDT = UTC-4 in June) = ceremony day 23:59 UTC
-  const deadlineMs = new Date(`${ceremonyDate}T23:59:59Z`).getTime();
-  return now.getTime() <= deadlineMs;
+  return isPromoActiveForCeremony(currentSeasonCeremonyDate(), now, 0);
 }
 
 // --- Historical Winners ---
