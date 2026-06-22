@@ -155,7 +155,14 @@
     "driftwood-west-end-2026/times-uk--clive-davis.json",
     "war-horse-west-end-2026/plays-international--maryam-philpott.json",
     "war-horse-west-end-2026/times-uk--chris-bennion.json",
-    "war-horse-west-end-2026/times-uk--clive-davis.json"
+    "war-horse-west-end-2026/times-uk--clive-davis.json",
+    "encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
+    "romeo-and-juliet-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -196,6 +203,10 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
     ],
     "directCookies": [],
@@ -234,7 +245,8 @@
       "data/review-texts/glengarry-glen-ross-west-end-2026/thestage--sam-marlowe.json",
       "data/review-texts/glengarry-glen-ross-west-end-2026/western-mail--unknown.json",
       "data/review-texts/much-ado-about-nothing-globe-west-end-2026/thestage--holly-o.json",
-      "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json"
+      "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json",
+      "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json"
     ],
     "archive": [
       "a-midsummer-nights-dream-west-end-2026/newsday--updated-november.json",
@@ -242,7 +254,7 @@
     ]
   },
   "startTime": "2026-06-22T03:17:14.820Z",
-  "lastProcessed": "war-horse-west-end-2026/times-uk--clive-davis.json",
+  "lastProcessed": "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
   "log": [
     {
       "t": "2026-06-22T03:47:12.616Z",
@@ -513,6 +525,50 @@
       "event": "bb-session",
       "session": "9842686e",
       "url": "https://www.facebook.com/thestage/posts/icymi-review-glengarry-glen-ross-at-the-"
+    },
+    {
+      "t": "2026-06-22T10:26:30.256Z",
+      "event": "bb-session",
+      "session": "00b74118",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-22T10:26:31.241Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-22T10:27:26.689Z",
+      "event": "bb-session",
+      "session": "cc024490",
+      "url": "https://www.nytimes.com/2026/06/03/theater/caissie-levy-broadway-tonys-ragtime.h"
+    },
+    {
+      "t": "2026-06-22T10:27:27.607Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-22T10:27:47.667Z",
+      "event": "bb-session",
+      "session": "080d0d86",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-22T10:27:48.648Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-22T10:28:00.887Z",
+      "event": "bb-session",
+      "session": "02645bc2",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-22T10:28:01.791Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
