@@ -170,6 +170,22 @@ const AGGREGATOR_ROUNDUP_DOMAINS = new Set([
 // Detectors
 // ─────────────────────────────────────────────────
 // Classes included in strict mode (CI gate).
+// STRICT = "wrong data SHOWN to users" (integrity): A cross-market, C domain
+// mismatch, E unflagged roundup, F empty junk. Report-only = "needs judgment
+// or inherently flappy": B, C2, D.
+//
+// B (false-positive wrongProduction) is report-only as of 2026-06-22. It is a
+// fundamentally different signal from A/C/E/F: it flags a review wrongly
+// EXCLUDED (a coverage MISS), not wrong data shown on the site. And it is
+// inherently flappy — it surfaces whenever ANY of the continuously-running
+// guards (date, cross-market, cross-production-URL, venue) over-flags ANY of
+// 39k files, so it never stays at 0. Empirically: clearing the 2 real
+// les-liaisons-dangereuses-2016 false positives immediately surfaced a fresh
+// one (my-neighbour-totoro-west-end-2025) in the next run — whack-a-mole that
+// reddens the trunk for a non-integrity reason. It now joins C2/D as a
+// report-only guard-regression MONITOR (triage the list, fix the data or the
+// guard), not a trunk blocker. Genuine false positives are still fixed at the
+// data layer (manual-clear protocol) — they just don't block ship.
 // C2 and D are intentionally report-only:
 //   - C2: multi-critic-at-same-URL cases. Reduced from 161 (2026-04-14) → ~7
 //     after the cross-show URL cleanup. Remaining cases are ambiguous (same
@@ -185,7 +201,7 @@ const AGGREGATOR_ROUNDUP_DOMAINS = new Set([
 //     excludes files flagged isNonReview/nonReviewFlag/nonReviewContent
 //     via alreadyFlagged above, so the hit count trends down as the
 //     classifier chews through the backlog.
-const STRICT_CLASSES = new Set(['A', 'B', 'C', 'E', 'F']);
+const STRICT_CLASSES = new Set(['A', 'C', 'E', 'F']);
 
 const hits = {
   A_cross_market: [],
