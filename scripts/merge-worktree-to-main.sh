@@ -102,14 +102,19 @@ else
   PUSHED=0
   for attempt in 1 2 3 4 5; do
     OUT=$(g push origin "$DEFAULT_BRANCH" 2>&1)
-    if echo "$OUT" | grep -q "$DEFAULT_BRANCH -> $DEFAULT_BRANCH" || echo "$OUT" | grep -qi "up-to-date"; then
+    # Authoritative success check: is local HEAD now an ancestor of origin? NEVER
+    # grep the push output for "main -> main" — the REJECTION line ("! [rejected]
+    # main -> main (fetch first)") contains that exact string and falsely reads as
+    # success. The ancestor check is ground truth. (2026-06-21: the grep version
+    # silently "succeeded" while Phase 2 never reached origin.)
+    g fetch origin "$DEFAULT_BRANCH" -q 2>/dev/null
+    if g merge-base --is-ancestor HEAD "origin/$DEFAULT_BRANCH" 2>/dev/null; then
       PUSHED=1; break
     fi
     if echo "$OUT" | grep -qiE "could not resolve host|failed to connect|timed out"; then
       restore_stash; die "GitHub unreachable (network) — re-run when connectivity returns. Local merge is intact."
     fi
     log "push rejected (attempt $attempt) — merging remote and retrying"
-    g fetch origin "$DEFAULT_BRANCH" -q 2>/dev/null
     g merge "origin/$DEFAULT_BRANCH" --no-edit >/dev/null 2>&1 || { restore_stash; die "could not merge remote changes on retry"; }
   done
   [ "$PUSHED" = 1 ] || { restore_stash; die "push failed after retries"; }
