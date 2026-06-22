@@ -54,6 +54,13 @@ const { fetchPage, cleanup: scraperCleanup } = require('./lib/scraper');
 const { serpQuery } = require('./lib/url-discovery');
 const { provisionalOutletIdFromHost } = require('./lib/outlet-canonicalize');
 const { isIncludableForRebuild } = require('./lib/review-guards');
+const {
+  FLAGGED_RECOVERY_CAP,
+  isEmptyBodyFile,
+  isRecoverableFlaggedFile,
+  decideEmptyBodyRecovery,
+  nextRecoveryCount,
+} = require('./lib/flagged-recovery');
 
 const ROOT = path.join(__dirname, '..');
 const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
@@ -489,28 +496,14 @@ function isCoveredFile(d, show) {
   }
 }
 
-// Max auto-recovery re-fetches per file before we stop retrying (prevents an
-// hourly re-fetch loop on a paywall/dead URL that never heals).
-const FLAGGED_RECOVERY_CAP = 3;
-
-// A flagged-out file is auto-recoverable ONLY in the merge-safe empty-body case:
-// it has no usable fullText, no stars, no score, and no wrong-production/wrong-show
-// flag. Re-fetching the aggregator's current-production URL then just FILLS IN the
-// missing text (createOrMergeReviewFile merges, never clobbers). Stale-slug
-// wrongProduction recovery needs a destructive clear-then-reingest and is
-// deliberately NOT automated here (too risky for an hourly unattended job — the
-// Guardian guard already prevents storing the wrong body; those surface as
-// flaggedMisses for dispatch-gather / manual handling). Human-protected files are
-// never touched, and we stop after FLAGGED_RECOVERY_CAP tries.
-function isRecoverableFlaggedFile(d) {
-  if (!d) return false;
-  if (d.humanReviewScore != null) return false;             // human-set — never clobber
-  if (d.wrongProduction === true || d.wrongShow === true) return false; // not merge-safe
-  if (d.wrongProductionManualClear === true || d.wrongShowManualClear === true) return false;
-  if ((d.aggUrlRecoveryCount || 0) >= FLAGGED_RECOVERY_CAP) return false;
-  const emptyBody = !(d.fullText && d.fullText.length >= 400) && !d.aggregatorStars && d.assignedScore == null;
-  return emptyBody;
-}
+// FLAGGED_RECOVERY_CAP + isRecoverableFlaggedFile moved to scripts/lib/flagged-recovery.js
+// (CLAUDE.md §15) so the self-healing write-loop below and its unit test share one
+// implementation. A flagged-out file is auto-recoverable ONLY in the merge-safe
+// empty-body case (no usable fullText/stars/score, no wrong-production/wrong-show
+// flag, not human-protected, under the cap). Re-fetching the aggregator's
+// current-production URL then just FILLS the missing text (createOrMergeReviewFile
+// merges, never clobbers). Stale-slug wrongProduction recovery is deliberately NOT
+// automated — see the deferral note on the recovery loop in main().
 
 function isShowEligible(show) {
   if (!show.openingDate) return false;
@@ -618,6 +611,14 @@ async function auditShow(show) {
           knownOutletId,
           recoverable: !!recoverableFile,
           recoverableFile: recoverableFile ? recoverableFile._file : null,
+          // Carry the EXISTING file's outletId + criticName so the recovery
+          // re-ingest writes back into the SAME slug (createOrMergeReviewFile
+          // resolves by outletId+criticName) instead of spawning a sibling file.
+          // Fall back to the aggregator-derived knownOutletId if the stored file
+          // has no outletId.
+          recoverableOutletId: recoverableFile ? (recoverableFile.outletId || knownOutletId) : null,
+          recoverableCritic: recoverableFile ? (recoverableFile.criticName || null) : null,
+          recoverableCount: recoverableFile ? (recoverableFile.aggUrlRecoveryCount || 0) : 0,
           dirFlags: dirFiles.map(d => ({ file: d._file, flag: classifyShowFile(d), urlInDir: d.url })),
         });
       }
@@ -720,6 +721,107 @@ function ingestMissingUrl(showId, url, knownOutletId) {
   }
 }
 
+// Persist aggUrlRecoveryCount onto the existing dir file. Called after a recovery
+// attempt that did NOT actually fill the file (fetch failure OR a no-op/misrouted
+// ingest), so a dead / permanently-paywalled / misrouted URL stops after
+// FLAGGED_RECOVERY_CAP tries instead of being re-fetched every hour forever (the
+// credit-burn failure mode the cap exists to prevent). Writes to REVIEW_TEXTS_DIR
+// (where the audit detected the file).
+//
+// Concurrency bound (known, accepted): the counter is NOT a PROTECTED_FIELD, and
+// push-review-texts resolves same-file conflicts whole-file by fullText length —
+// so if another workflow modifies this empty file in the same window and pushes
+// first, this bump can be dropped on rebase. That is bounded, not unbounded: the
+// audit cron is single-instance (queued), so it simply re-bumps next hour; the
+// worst case is a few extra retries on one file, never an infinite loop. Adding it
+// to PROTECTED_FIELDS would not help — the restore step only re-adds MISSING fields,
+// it does not reconcile a stale-lower value. Best-effort: a write failure must not
+// crash the run.
+function bumpRecoveryCount(showId, file, value) {
+  try {
+    const fp = path.join(REVIEW_TEXTS_DIR, showId, file);
+    const data = JSON.parse(fs.readFileSync(fp, 'utf8'));
+    data.aggUrlRecoveryCount = value;
+    data.aggUrlRecoveryAt = new Date().toISOString();
+    fs.writeFileSync(fp, JSON.stringify(data, null, 2));
+    return true;
+  } catch (e) {
+    console.log(`::warning::failed to persist aggUrlRecoveryCount for ${showId}/${file}: ${e.message.split('\n')[0].slice(0, 100)}`);
+    return false;
+  }
+}
+
+// Self-healing recovery for ONE empty-body flaggedMiss. Re-ingests the
+// aggregator's current-production URL under the existing file's outletId +
+// criticName so createOrMergeReviewFile MERGES the fetched text into the empty
+// file (a fill, not a sibling). The retry counter is bumped regardless of fetch
+// outcome (see bumpRecoveryCount) so the cap actually halts retries. Returns the
+// per-flaggedMiss outcome for logging + the audit JSON.
+function recoverEmptyBodyFlaggedMiss(showId, m) {
+  // Re-run the cap/url decision from the carried flaggedMiss metadata. The full
+  // merge-safety check (human-protected / wrongProduction / empty-body) was already
+  // applied in auditShow via isRecoverableFlaggedFile — only recoverable misses
+  // reach here. This second pass re-checks the retry cap (the audit JSON could be a
+  // few minutes stale) and that an aggregator URL is present. fullText is absent on
+  // this reconstructed view, which reads as empty-body — correct, since recovery
+  // only ever targets empty-body files.
+  const file = { aggUrlRecoveryCount: m.recoverableCount || 0 };
+  const decision = decideEmptyBodyRecovery({
+    file,
+    outletId: m.recoverableOutletId || m.knownOutletId || null,
+    critic: m.recoverableCritic || null,
+    url: m.url,
+  });
+  if (decision.action !== 'recover') {
+    return { url: m.url, host: m.host, file: m.recoverableFile, recovered: false, skipped: true, reason: decision.reason };
+  }
+  // Re-ingest under the existing slug. For a registry-known outlet pass --outlet
+  // directly (canonical resolution); only fall back to provisional onboarding when
+  // the host isn't in the registry. Force the critic so the slug matches the
+  // empty file (else a re-extracted byline could spawn a sibling).
+  const iargs = ['scripts/ingest-review-from-url.js', `--show=${showId}`, `--url=${m.url}`];
+  let provisional = false;
+  if (decision.outletId) {
+    iargs.push(`--outlet=${decision.outletId}`);
+  } else {
+    const provId = provisionalOutletIdFromHost(m.host);
+    if (provId) { iargs.push(`--outlet=${provId}`, '--provisional'); provisional = true; }
+  }
+  if (decision.critic && decision.critic.toLowerCase() !== 'unknown') {
+    iargs.push(`--critic=${decision.critic}`);
+  }
+  let ingestExit = false; let reason = null;
+  try {
+    execFileSync('node', iargs, { stdio: 'pipe', timeout: 120000 });
+    ingestExit = true;
+  } catch (e) {
+    reason = e.message.split('\n')[0].slice(0, 100);
+  }
+  // "recovered" = the empty file is now ACTUALLY filled — NOT merely that the child
+  // exited 0. ingest-review-from-url.js exits 0 on a no-op skip ("already exists",
+  // "no-changes") too, and a URL-refined / cross-market merge can land the text in a
+  // DIFFERENT file while THIS one stays empty (ship-check 2026-06-22, both reviewers).
+  // Re-reading the file is the only honest signal: it keeps totalRecovered + the
+  // residual-gap warning accurate and lets the counter keep climbing toward the cap
+  // when the heal didn't actually land here.
+  let recovered = false;
+  try {
+    const fp = path.join(REVIEW_TEXTS_DIR, showId, m.recoverableFile);
+    const after = JSON.parse(fs.readFileSync(fp, 'utf8'));
+    recovered = !isEmptyBodyFile(after);
+  } catch { /* file unreadable/missing → treat as not recovered */ }
+  if (ingestExit && !recovered && !reason) reason = 'ingest no-op (text landed elsewhere or unchanged)';
+  // Bump the counter EVERY time the heal didn't land here (failure OR no-op) so a
+  // dead/misrouted URL halts at the cap. A genuinely-healed file is no longer
+  // empty-body, so it won't be re-selected and doesn't need the bump.
+  let nextCount = m.recoverableCount || 0;
+  if (!recovered) {
+    nextCount = nextRecoveryCount(file);
+    bumpRecoveryCount(showId, m.recoverableFile, nextCount);
+  }
+  return { url: m.url, host: m.host, file: m.recoverableFile, recovered, skipped: false, provisional, reason, recoveryCount: nextCount };
+}
+
 // CLI entry — guarded so the module can be require()'d by unit tests without
 // running the audit (CLAUDE.md §15: test the real urlMatchesShow/titleTokens).
 if (require.main === module) (async () => {
@@ -799,6 +901,10 @@ if (require.main === module) (async () => {
     // running gather's SERP+RSS discovery (which already failed). Unknown
     // outlets are skipped (see data/audit/unknown-aggregator-outlets.json for
     // registry-onboarding queue).
+    // Per-show fetch budget shared across missing-URL ingest AND empty-body
+    // recovery, so a fresh opening with both kinds of gap can't burn 2×
+    // INGEST_PER_SHOW_CAP scraper credits in a single hourly run.
+    let perShowFetches = 0;
     if (ingestMissing && r.missing.length > 0) {
       // Auto-onboard 2026-06-05: ingest ALL missing URLs, not just registry-known
       // outlets. Unknown outlets are captured under a domain-derived provisional
@@ -814,6 +920,7 @@ if (require.main === module) (async () => {
       r.ingestSkippedByCap = cappedSkipped.map(m => ({ url: m.url, host: m.host, outletId: m.knownOutletId || provisionalOutletIdFromHost(m.host) }));
       for (const m of ingestable) {
         const res = ingestMissingUrl(r.showId, m.url, m.knownOutletId);
+        perShowFetches++;
         const outletId = m.knownOutletId || provisionalOutletIdFromHost(m.host);
         r.ingestResults.push({ url: m.url, host: m.host, outletId, provisional: !!res.provisional, ok: res.ok, reason: res.reason });
         const tag = res.ok ? (res.provisional ? `✅ ingested (provisional outlet "${outletId}")` : '✅ ingested') : `✗ ingest failed (${res.reason || 'unknown'})`;
@@ -821,6 +928,56 @@ if (require.main === module) (async () => {
       }
       if (cappedSkipped.length > 0) {
         console.log(`  ⏸  skipped ${cappedSkipped.length} URL(s) over per-show cap (--ingest-cap=${INGEST_PER_SHOW_CAP}) — recorded in audit JSON for next run`);
+      }
+    }
+
+    // --ingest-missing: ALSO self-heal recoverable flaggedMisses — reviews whose
+    // file EXISTS but is empty-body (paywalled empty fetch, etc.). The block above
+    // only handles URLs with NO file; this is the other half of the gap that made
+    // new openings land "short" (Glengarry WE empty Times review). Re-ingest the
+    // aggregator's current-production URL under the existing slug so the fetched
+    // text MERGES into the empty file (a fill, never a clobber). isRecoverableFlaggedFile
+    // already excluded wrong-production / wrong-show / human-protected / over-cap
+    // files in auditShow, so only the merge-safe subset carries recoverable:true.
+    //
+    // STALE-SLUG wrongProduction recovery is deliberately NOT done here — no clean
+    // unattended path exists yet (verified ship-check 2026-06-22):
+    //   • --force-clear-stale-flag only bypasses detectIngestCollision's PRE-CHECK
+    //     (manual-review-fields.js:210); it does NOT clear wrongProduction.
+    //   • createOrMergeReviewFile merges only into FALSY fields (review-file-writer.js:503),
+    //     so an existing wrongProduction:true (and any stale body) survives the merge —
+    //     the re-ingested review stays excluded.
+    //   • the generic ingest path has no Guardian-style date guard, so re-fetching a
+    //     stale slug can re-store the prior-production body.
+    // Net: an unattended force-clear would churn (re-flag every rebuild), not heal.
+    // Those flaggedMisses stay visible for --dispatch-gather and manual
+    // `ingest-review-from-url.js --force-clear-stale-flag` (operator clears the flag).
+    if (ingestMissing) {
+      const recoverables = r.flaggedMisses.filter(m => m.recoverable);
+      // Recovery draws from whatever the missing-URL ingest left of the shared
+      // per-show fetch budget (INGEST_PER_SHOW_CAP). Anything beyond rolls to the
+      // next hourly run via the audit JSON.
+      const recBudget = Math.max(0, INGEST_PER_SHOW_CAP - perShowFetches);
+      if (recoverables.length > 0) {
+        const budget = recoverables.slice(0, recBudget);
+        const recCapped = recoverables.slice(recBudget);
+        r.recoveryResults = [];
+        for (const m of budget) {
+          const res = recoverEmptyBodyFlaggedMiss(r.showId, m);
+          if (!res.skipped) perShowFetches++;
+          r.recoveryResults.push(res);
+          if (res.skipped) {
+            console.log(`  ⏭  recovery skip (${res.reason}): ${m.recoverableFile} ${m.url}`);
+          } else if (res.recovered) {
+            console.log(`  ♻️  recovered empty-body review → ${m.recoverableFile} from ${m.url}`);
+          } else {
+            console.log(`  ✗ recovery did not land (try ${res.recoveryCount}/${FLAGGED_RECOVERY_CAP}; ${res.reason || 'still empty body'}): ${m.recoverableFile} ${m.url}`);
+          }
+        }
+        if (recCapped.length > 0) {
+          r.recoverySkippedByCap = recCapped.map(m => ({ url: m.url, host: m.host, file: m.recoverableFile }));
+          console.log(`  ⏸  ${recCapped.length} recoverable flaggedMiss(es) over shared per-show fetch budget (--ingest-cap=${INGEST_PER_SHOW_CAP}) — next run`);
+        }
       }
     }
   }
@@ -833,6 +990,8 @@ if (require.main === module) (async () => {
       withGap: results.filter(r => r.missing.length + r.flaggedMisses.length > 0).length,
       totalMissing: results.reduce((a, r) => a + r.missing.length, 0),
       totalFlaggedMisses: results.reduce((a, r) => a + r.flaggedMisses.length, 0),
+      totalRecoverable: results.reduce((a, r) => a + r.flaggedMisses.filter(m => m.recoverable).length, 0),
+      totalRecovered: results.reduce((a, r) => a + (r.recoveryResults || []).filter(x => x.recovered).length, 0),
     },
     results,
   };
@@ -870,7 +1029,7 @@ if (require.main === module) (async () => {
     }, null, 2));
     console.log(`Wrote unknown-outlets: ${UNKNOWN_OUTLETS_PATH} (${unknownOutlets.length} hosts)`);
   }
-  console.log(`Summary: ${audit.counts.withGap}/${results.length} shows audited with gaps | ${audit.counts.totalMissing} URLs not in dir | ${audit.counts.totalFlaggedMisses} URLs in dir but flagged out | ${unknownOutlets.length} unknown outlets`);
+  console.log(`Summary: ${audit.counts.withGap}/${results.length} shows audited with gaps | ${audit.counts.totalMissing} URLs not in dir | ${audit.counts.totalFlaggedMisses} URLs in dir but flagged out (${audit.counts.totalRecoverable} recoverable, ${audit.counts.totalRecovered} self-healed this run) | ${unknownOutlets.length} unknown outlets`);
   if (useCheckpoint) {
     console.log(`Checkpoint: ${results.length} shows audited this run${budgetHit ? ' (time-budget partial — remaining shows resume next run)' : ' (full eligible set complete)'}. State: ${CHECKPOINT_PATH}`);
   }
@@ -913,14 +1072,19 @@ if (require.main === module) (async () => {
     const capped = (r.ingestSkippedByCap || []).length;
     // When --ingest-missing wasn't run, every missing URL is still residual.
     const uningested = ingestMissing ? 0 : r.missing.length;
-    const residual = failedIngest + capped + uningested + r.flaggedMisses.length;
+    // flaggedMisses that the recovery loop just HEALED this run are no longer a
+    // residual gap — count only the ones that stayed flagged out (recovery skipped,
+    // fetch failed, or not recoverable in the first place).
+    const recovered = (r.recoveryResults || []).filter(x => x.recovered).length;
+    const flaggedOut = Math.max(0, r.flaggedMisses.length - recovered);
+    const residual = failedIngest + capped + uningested + flaggedOut;
     if (residual > 0) {
-      residualShows.push({ showId: r.showId, title: r.title, residual, failedIngest, capped, uningested, flaggedOut: r.flaggedMisses.length });
+      residualShows.push({ showId: r.showId, title: r.title, residual, failedIngest, capped, uningested, flaggedOut, recovered });
     }
   }
   if (residualShows.length > 0) {
     for (const s of residualShows) {
-      console.log(`::warning::review gap — ${s.showId} (${s.title}): ${s.residual} roundup-cited review(s) still uncaptured after auto-ingest (failed=${s.failedIngest} capped=${s.capped} uningested=${s.uningested} flaggedOut=${s.flaggedOut})`);
+      console.log(`::warning::review gap — ${s.showId} (${s.title}): ${s.residual} roundup-cited review(s) still uncaptured after auto-ingest (failed=${s.failedIngest} capped=${s.capped} uningested=${s.uningested} flaggedOut=${s.flaggedOut} recovered=${s.recovered})`);
     }
     console.log(`Expected-vs-captured: ${residualShows.length} show(s) with residual review gaps after auto-ingest.`);
   }
@@ -940,4 +1104,8 @@ if (require.main === module) (async () => {
   process.exit(1);
 });
 
-module.exports = { urlMatchesShow, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, classifyShowFile, isCoveredFile };
+// bumpRecoveryCount is exported for the integration test that proves the retry
+// cap actually persists to disk (acceptance: "retry cap proven"). It writes to
+// the module-level REVIEW_TEXTS_DIR captured at require time, so the test sets
+// REVIEW_TEXTS_DIR before requiring this module.
+module.exports = { urlMatchesShow, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, classifyShowFile, isCoveredFile, bumpRecoveryCount };
