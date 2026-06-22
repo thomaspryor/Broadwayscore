@@ -48,6 +48,10 @@ on:
       # entries a push to them triggers ZERO CI (1536 incident, 2026-06-21).
       - 'scripts/lib/synopsis-validation.js'
       - 'scripts/lib/synopsis-validation.test.mjs'
+      # Wrong-show verification gate — blocks TodayTix ID-recycling + LLM
+      # same-title hallucinations from being saved as synopses. Colocated test.
+      - 'scripts/lib/synopsis-production-match.js'
+      - 'scripts/lib/synopsis-production-match.test.mjs'
       # Comparative within-band scoring (anchored-v6 cluster fix). The colocated
       # scripts/lib/*.test.mjs step covers comparative-band.test.mjs; without
       # these path entries a push to them triggers ZERO CI (allow-list gate).
