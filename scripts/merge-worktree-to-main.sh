@@ -112,7 +112,7 @@ else
     # falsely report failure on an otherwise-successful push — so retry the fetch
     # a few times before concluding anything.
     FETCHED=0
-    for fa in 1 2 3; do
+    for _fa in 1 2 3; do
       if g fetch origin "$DEFAULT_BRANCH" -q 2>/dev/null; then FETCHED=1; break; fi
       sleep 2
     done
