@@ -176,7 +176,11 @@
     "bug-2026/broadway-and-me--janice-c-simpson.json",
     "the-disappear-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "beetlejuice-2025/newsday--unknown.json",
-    "beetlejuice-2025/observer--httpsobservercomauthorrex-reed.json"
+    "beetlejuice-2025/observer--httpsobservercomauthorrex-reed.json",
+    "punch-2025/nytg--joe-dziemianowicz.json",
+    "waiting-for-godot-2025/west-end-best-friend--unknown.json",
+    "art-2025/thewrap--robert-hofler.json",
+    "john-proctor-is-the-villain-2025/new-statesman--emily-lawford.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -333,7 +337,13 @@
     "all-my-sons-west-end-2025/thewrap--robert-hofler.json",
     "all-my-sons-west-end-2025/amny--matt-windman.json",
     "all-my-sons-west-end-2025/dailybeast--tim-teeman.json",
-    "oedipus-2025/times-square-chronicles--ross.json"
+    "oedipus-2025/times-square-chronicles--ross.json",
+    "beetlejuice-2025/dailybeast--tim-teeman.json",
+    "waiting-for-godot-2025/newsday--unknown.json",
+    "waiting-for-godot-2025/northjerseycom--unknown.json",
+    "art-2025/broadwaynews--michael-abourizk.json",
+    "call-me-izzy-2025/theater-life--barry-gordin.json",
+    "dead-outlaw-2025/ap--mark-kennedy.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -454,7 +464,11 @@
       "the-other-place-off-broadway-2026/one-minute-critic--lindsay-b-davis.json",
       "ulysses-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "the-disappear-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-      "beetlejuice-2025/observer--httpsobservercomauthorrex-reed.json"
+      "beetlejuice-2025/observer--httpsobservercomauthorrex-reed.json",
+      "punch-2025/nytg--joe-dziemianowicz.json",
+      "waiting-for-godot-2025/west-end-best-friend--unknown.json",
+      "dead-outlaw-2025/ap--mark-kennedy.json",
+      "john-proctor-is-the-villain-2025/new-statesman--emily-lawford.json"
     ],
     "amp": [],
     "browserbase": [
@@ -496,7 +510,8 @@
       "the-lion-king-1997/timeout--adam-feldman.json",
       "amaze-off-broadway-2026/timeout--adam-feldman.json",
       "the-maids-off-broadway-2026/nytimes--roslyn-sulcas.json",
-      "becky-shaw-2026/cote-notices--david-cote.json"
+      "becky-shaw-2026/cote-notices--david-cote.json",
+      "call-me-izzy-2025/theater-life--barry-gordin.json"
     ],
     "brightdata": [
       "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
@@ -507,7 +522,8 @@
       "the-play-that-goes-wrong-off-broadway-2019/latimes--unknown.json",
       "harry-potter-2021/cititour--brian-scott-lipton.json",
       "wicked-2003/cititour--unknown.json",
-      "public-charge-off-broadway-2026/theater-life--barry-gordin.json"
+      "public-charge-off-broadway-2026/theater-life--barry-gordin.json",
+      "art-2025/thewrap--robert-hofler.json"
     ],
     "archiveToday": [
       "data/review-texts/glengarry-glen-ross-west-end-2026/thestage--sam-marlowe.json",
@@ -528,7 +544,8 @@
       "data/review-texts/much-ado-about-nothing-globe-west-end-2026/thestage--holly-o.json",
       "data/review-texts/war-horse-west-end-2026/click-liverpool--carie-schneider.json",
       "data/review-texts/fallen-angels-2026/talkinbroadway--unknown.json",
-      "data/review-texts/les-liaisons-dangereuses-west-end-2026/oxfordshire-guardian--unknown.json"
+      "data/review-texts/les-liaisons-dangereuses-west-end-2026/oxfordshire-guardian--unknown.json",
+      "data/review-texts/waiting-for-godot-2025/northjerseycom--unknown.json"
     ],
     "archive": [
       "a-midsummer-nights-dream-west-end-2026/newsday--updated-november.json",
@@ -569,7 +586,7 @@
     ]
   },
   "startTime": "2026-06-22T03:17:14.820Z",
-  "lastProcessed": "beetlejuice-2025/observer--httpsobservercomauthorrex-reed.json",
+  "lastProcessed": "john-proctor-is-the-villain-2025/new-statesman--emily-lawford.json",
   "log": [
     {
       "t": "2026-06-22T03:47:12.616Z",
@@ -823,6 +840,17 @@
       "t": "2026-06-22T07:24:22.872Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-22T07:37:46.291Z",
+      "event": "bb-session",
+      "session": "53ba306a",
+      "url": "http://www.northjersey.com/arts_entertainment/theater/233265591_Theater_review__"
+    },
+    {
+      "t": "2026-06-22T07:37:47.248Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
