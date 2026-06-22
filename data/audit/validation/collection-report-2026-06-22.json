@@ -1,0 +1,117 @@
+{
+  "runDate": "2026-06-22T03:25:26.967Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 100,
+    "priority": "all",
+    "showFilter": "glengarry-glen-ross-west-end-2026,beetlejuice-west-end-2026,jesus-christ-superstar-west-end-2026,cyrano-de-bergerac-west-end-2026,a-midsummer-nights-dream-west-end-2026,archduke-west-end-2026,pride-west-end-2026",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 16,
+    "failed": 11,
+    "skipped": 0,
+    "successRate": "59.3%"
+  },
+  "tierBreakdown": {
+    "playwright": 12,
+    "amp": 0,
+    "browserbase": 0,
+    "directCookies": 0,
+    "scrapingbee": 2,
+    "brightdata": 0,
+    "archiveToday": 1,
+    "archive": 2
+  },
+  "statistics": {
+    "tier1Attempts": 20,
+    "tier1Success": 17,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 3,
+    "tier2Success": 3,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
+    "tier4Attempts": 1,
+    "tier4Success": 0,
+    "totalFailed": 11,
+    "scrapingBeePageCredits": 12,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 6,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
+  "processed": [
+    "a-midsummer-nights-dream-west-end-2026/newsday--updated-november.json",
+    "glengarry-glen-ross-west-end-2026/afridiziak-theatre-news--unknown.json",
+    "glengarry-glen-ross-west-end-2026/observer--unknown.json",
+    "glengarry-glen-ross-west-end-2026/broadwayworld--alexander-cohen.json",
+    "glengarry-glen-ross-west-end-2026/daily-echo--unknown.json",
+    "glengarry-glen-ross-west-end-2026/london-unattached--unknown.json",
+    "glengarry-glen-ross-west-end-2026/south-london--michael-holland.json",
+    "glengarry-glen-ross-west-end-2026/telegraph--unknown.json",
+    "glengarry-glen-ross-west-end-2026/theatre-vibe--unknown.json",
+    "glengarry-glen-ross-west-end-2026/theatreandtonic--unknown.json",
+    "glengarry-glen-ross-west-end-2026/westendtheatre--unknown.json",
+    "beetlejuice-west-end-2026/timeout-london--unknown.json",
+    "beetlejuice-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "beetlejuice-west-end-2026/theatre-south-east--unknown.json",
+    "beetlejuice-west-end-2026/theatre-vibe--unknown.json",
+    "beetlejuice-west-end-2026/theatreandtonic--unknown.json"
+  ],
+  "failed": [
+    "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
+    "cyrano-de-bergerac-west-end-2026/northjerseycom--robert-feldberg.json",
+    "cyrano-de-bergerac-west-end-2026/variety--marilyn-stasio.json",
+    "cyrano-de-bergerac-west-end-2026/newsday--linda-winer.json",
+    "glengarry-glen-ross-west-end-2026/guardian-uk--unknown.json",
+    "glengarry-glen-ross-west-end-2026/oxfordshire-guardian--unknown.json",
+    "glengarry-glen-ross-west-end-2026/thestage--sam-marlowe.json",
+    "glengarry-glen-ross-west-end-2026/western-mail--unknown.json",
+    "glengarry-glen-ross-west-end-2026/whatsonstage--lucinda-everett.json",
+    "beetlejuice-west-end-2026/amny--matt-windman.json",
+    "beetlejuice-west-end-2026/the-upcoming-uk--unknown.json"
+  ],
+  "tierDetails": {
+    "playwright": [
+      "glengarry-glen-ross-west-end-2026/afridiziak-theatre-news--unknown.json",
+      "glengarry-glen-ross-west-end-2026/observer--unknown.json",
+      "glengarry-glen-ross-west-end-2026/daily-echo--unknown.json",
+      "glengarry-glen-ross-west-end-2026/london-unattached--unknown.json",
+      "glengarry-glen-ross-west-end-2026/south-london--michael-holland.json",
+      "glengarry-glen-ross-west-end-2026/theatre-vibe--unknown.json",
+      "glengarry-glen-ross-west-end-2026/theatreandtonic--unknown.json",
+      "beetlejuice-west-end-2026/timeout-london--unknown.json",
+      "beetlejuice-west-end-2026/all-that-dazzles-uk--unknown.json",
+      "beetlejuice-west-end-2026/theatre-south-east--unknown.json",
+      "beetlejuice-west-end-2026/theatre-vibe--unknown.json",
+      "beetlejuice-west-end-2026/theatreandtonic--unknown.json"
+    ],
+    "amp": [],
+    "browserbase": [],
+    "directCookies": [],
+    "scrapingbee": [
+      "glengarry-glen-ross-west-end-2026/telegraph--unknown.json",
+      "glengarry-glen-ross-west-end-2026/westendtheatre--unknown.json"
+    ],
+    "brightdata": [],
+    "archiveToday": [
+      "data/review-texts/glengarry-glen-ross-west-end-2026/thestage--sam-marlowe.json"
+    ],
+    "archive": [
+      "a-midsummer-nights-dream-west-end-2026/newsday--updated-november.json",
+      "glengarry-glen-ross-west-end-2026/broadwayworld--alexander-cohen.json"
+    ]
+  },
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
+}
