@@ -1,53 +1,20 @@
 {
-  "updatedAt": "2026-06-22T13:12:05.679Z",
+  "updatedAt": "2026-06-22T13:40:42.977Z",
   "processed": 213,
-  "failed": 223,
-  "successRate": "48.9%",
+  "failed": 230,
+  "successRate": "48.1%",
   "tierBreakdown": {
     "playwright": 130,
     "amp": 0,
-    "browserbase": 28,
+    "browserbase": 31,
     "directCookies": 0,
     "scrapingbee": 37,
     "brightdata": 11,
-    "archiveToday": 31,
+    "archiveToday": 32,
     "archive": 42
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-06-22T11:26:16.843Z",
-      "event": "bb-session",
-      "session": "3e35495f",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
-    {
-      "t": "2026-06-22T11:26:17.878Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-22T11:54:36.451Z",
-      "event": "bb-session",
-      "session": "c0925b0f",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
-    {
-      "t": "2026-06-22T11:54:37.251Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-22T11:55:12.539Z",
-      "event": "bb-session",
-      "session": "5d424395",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-22T11:55:13.276Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-06-22T11:55:27.904Z",
       "event": "bb-session",
@@ -122,6 +89,39 @@
     },
     {
       "t": "2026-06-22T13:09:17.942Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-22T13:39:29.671Z",
+      "event": "bb-session",
+      "session": "68c8bb25",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-22T13:39:30.170Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-22T13:40:06.900Z",
+      "event": "bb-session",
+      "session": "1669aa60",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-22T13:40:07.393Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-22T13:40:18.044Z",
+      "event": "bb-session",
+      "session": "4e9ebdd0",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-22T13:40:18.600Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
