@@ -145,12 +145,7 @@ function fetchViaScrapingBeeSingle(url) {
       return;
     }
 
-    // premium_proxy dropped 2026-06-21: it costs 25 credits (~$2.48/1k) — MORE than
-    // Bright Data ($1.50/1k) — and render_js alone fetches Show Score fine (verified
-    // live: page returns full content + title without premium). render_js=true is
-    // still required (Show Score is a React SPA). Bright Data remains the fallback
-    // in fetchWithFallback() below for the rare case render-only is blocked.
-    const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=true&wait=3000`;
+    const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=true&premium_proxy=true&wait=3000`;
 
     https.get(apiUrl, { timeout: 60000 }, (res) => {
       let data = '';
