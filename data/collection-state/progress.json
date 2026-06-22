@@ -144,7 +144,13 @@
     "broken-snow-off-broadway-2026/culturesauce--thom-geier.json",
     "broken-snow-off-broadway-2026/one-minute-critic--jerry-portwood.json",
     "broken-snow-off-broadway-2026/theater-scene--darryl-reilly.json",
-    "the-price-off-west-end-2026/british-theatre--susan-novak.json"
+    "the-price-off-west-end-2026/british-theatre--susan-novak.json",
+    "becky-shaw-2026/cote-notices--david-cote.json",
+    "the-authenticator-west-end-2026/times-uk--clive-davis.json",
+    "les-liaisons-dangereuses-west-end-2026/telegraph--claire-allfree.json",
+    "les-liaisons-dangereuses-west-end-2026/theatre-vibe--unknown.json",
+    "les-liaisons-dangereuses-west-end-2026/theatreandtonic--unknown.json",
+    "les-liaisons-dangereuses-west-end-2026/times-uk--clive-davis.json"
   ],
   "failed": [
     "cyrano-de-bergerac-west-end-2026/amny--matt-windman.json",
@@ -283,7 +289,11 @@
     "spamalot-off-broadway-2026/vulture--jackson-mchenry.json",
     "the-price-off-west-end-2026/wsj--unknown.json",
     "beaches-2026/chicago-critic--tom-williams.json",
-    "fallen-angels-2026/talkinbroadway--unknown.json"
+    "fallen-angels-2026/talkinbroadway--unknown.json",
+    "one-flew-over-the-cuckoos-nest-west-end-2026/standard--nick-curtis.json",
+    "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
+    "yoah-off-broadway-2026/variety--pat-saperstein.json",
+    "les-liaisons-dangereuses-west-end-2026/oxfordshire-guardian--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -383,7 +393,11 @@
       "the-receptionist-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "broken-snow-off-broadway-2026/culturesauce--thom-geier.json",
       "broken-snow-off-broadway-2026/one-minute-critic--jerry-portwood.json",
-      "the-price-off-west-end-2026/british-theatre--susan-novak.json"
+      "the-price-off-west-end-2026/british-theatre--susan-novak.json",
+      "the-authenticator-west-end-2026/times-uk--clive-davis.json",
+      "les-liaisons-dangereuses-west-end-2026/theatre-vibe--unknown.json",
+      "les-liaisons-dangereuses-west-end-2026/theatreandtonic--unknown.json",
+      "les-liaisons-dangereuses-west-end-2026/times-uk--clive-davis.json"
     ],
     "amp": [],
     "browserbase": [
@@ -424,7 +438,8 @@
       "the-book-of-mormon-west-end-2024/nydailynews--unknown.json",
       "the-lion-king-1997/timeout--adam-feldman.json",
       "amaze-off-broadway-2026/timeout--adam-feldman.json",
-      "the-maids-off-broadway-2026/nytimes--roslyn-sulcas.json"
+      "the-maids-off-broadway-2026/nytimes--roslyn-sulcas.json",
+      "becky-shaw-2026/cote-notices--david-cote.json"
     ],
     "brightdata": [
       "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
@@ -453,7 +468,9 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
       "data/review-texts/glengarry-glen-ross-west-end-2026/daily-echo--matthew-baker.json",
       "data/review-texts/much-ado-about-nothing-globe-west-end-2026/thestage--holly-o.json",
-      "data/review-texts/war-horse-west-end-2026/click-liverpool--carie-schneider.json"
+      "data/review-texts/war-horse-west-end-2026/click-liverpool--carie-schneider.json",
+      "data/review-texts/fallen-angels-2026/talkinbroadway--unknown.json",
+      "data/review-texts/les-liaisons-dangereuses-west-end-2026/oxfordshire-guardian--unknown.json"
     ],
     "archive": [
       "a-midsummer-nights-dream-west-end-2026/newsday--updated-november.json",
@@ -479,11 +496,12 @@
       "book-of-mormon-2011/village-voice--michael-musto.json",
       "wicked-west-end-2021/thestage--paul-vale.json",
       "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json",
-      "broken-snow-off-broadway-2026/theater-scene--darryl-reilly.json"
+      "broken-snow-off-broadway-2026/theater-scene--darryl-reilly.json",
+      "les-liaisons-dangereuses-west-end-2026/telegraph--claire-allfree.json"
     ]
   },
   "startTime": "2026-06-22T03:17:14.820Z",
-  "lastProcessed": "fallen-angels-2026/talkinbroadway--unknown.json",
+  "lastProcessed": "les-liaisons-dangereuses-west-end-2026/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-06-22T03:47:12.616Z",
@@ -726,6 +744,17 @@
       "t": "2026-06-22T07:01:34.037Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-22T07:24:21.866Z",
+      "event": "bb-session",
+      "session": "6555a463",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2645871"
+    },
+    {
+      "t": "2026-06-22T07:24:22.872Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }

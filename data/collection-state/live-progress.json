@@ -1,33 +1,22 @@
 {
-  "updatedAt": "2026-06-22T07:23:18.740Z",
-  "processed": 145,
-  "failed": 137,
-  "successRate": "51.4%",
+  "updatedAt": "2026-06-22T07:27:21.244Z",
+  "processed": 151,
+  "failed": 141,
+  "successRate": "51.7%",
   "tierBreakdown": {
-    "playwright": 96,
+    "playwright": 100,
     "amp": 0,
     "browserbase": 16,
     "directCookies": 0,
-    "scrapingbee": 19,
+    "scrapingbee": 20,
     "brightdata": 8,
-    "archiveToday": 17,
-    "archive": 24
+    "archiveToday": 19,
+    "archive": 25
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-06-22T05:00:40.176Z",
-      "event": "bb-session",
-      "session": "f8ac55a2",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
-    {
-      "t": "2026-06-22T05:00:41.275Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-22T06:45:59.819Z",
+      "t": "2026-06-22T05:02:01.491Z",
       "event": "bb-session",
       "session": "722a4e30",
       "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
@@ -141,6 +130,17 @@
       "t": "2026-06-22T07:01:34.037Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-22T07:24:21.866Z",
+      "event": "bb-session",
+      "session": "6555a463",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2645871"
+    },
+    {
+      "t": "2026-06-22T07:24:22.872Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
