@@ -67,6 +67,8 @@ const AUTO_FIX_PLAYBOOK = [
     humanFallback: 'Box office data is out of date. Updated weekly — may just be a slow week.' },
   { match: /^Freshness: audience-buzz\.json$/, urgency: 'this-week', workflow: 'update-show-score.yml',
     humanFallback: 'Audience scores are out of date.' },
+  { match: /^Audience coverage: open-show gaps$/, urgency: 'this-week',
+    humanAction: 'A currently-running show has audience ratings on a source that never linked — usually a title/venue mismatch. The check message names the source(s) and the correct override knob (MEZZANINE_OVERRIDES in scrape-mezzanine-audience.js, or THEATR_OVERRIDES in scrape-theatr-audience.js — they are separate). Open Claude Code and say: "Add the override for the flagged show and re-run that source’s scraper." Details in data/audit/mezzanine-coverage.json / theatr-coverage.json.' },
   { match: /^Freshness: commercial\.json$/, urgency: 'low', workflow: 'commercial-weekly.yml',
     humanFallback: 'Commercial data is out of date.' },
   { match: /^Freshness: critic-consensus\.json$/, urgency: 'low', workflow: 'update-critic-consensus.yml',
@@ -95,10 +97,6 @@ const AUTO_FIX_PLAYBOOK = [
   // Pipeline — warn-only, no auto-fix needed (they run on schedule)
   { match: /^Pipeline:/, urgency: 'low',
     humanAction: "A scheduled pipeline hasn't run recently. It may just be delayed — check again tomorrow." },
-
-  // Corpus drift — specific entry BEFORE the generic ^Quality: catch-all.
-  { match: /^Quality: corpus drift$/, urgency: 'this-week',
-    humanAction: 'A corpus-statistics audit (text-quality %, aggregator ratios, or regex FP) is over threshold. Open Claude Code and say: "Triage data/audit/corpus-drift.json — decide per audit whether it is harmless drift (adjust the threshold) or a real data regression (fix the data)."' },
 
   // Quality — needs investigation
   { match: /^Quality:/, urgency: 'this-week',
@@ -436,6 +434,65 @@ function checkSync() {
       return { name: 'Sync: open show coverage', status: 'pass', message: `${openShows.length} open shows all have reviews and grosses` };
     }
     return { name: 'Sync: open show coverage', status: worstStatus, message: parts.join('; '), hint: 'Check gather-reviews and weekly-grosses workflows' };
+  }));
+
+  // Audience source coverage gaps — promotes the per-source coverage audits
+  // (mezzanine-coverage.json / theatr-coverage.json) from a passive digest
+  // section into a CHECK, narrowed to CURRENTLY OPEN shows. Each audit flags
+  // an unmatched high-volume source-catalog entry that fuzzy-matches one of our
+  // shows lacking that source — data the source has but our matcher didn't link
+  // (title-drift / missing override). The 2026-06-22 Encores La Cage miss (85
+  // Mezzanine ratings never linked, an "Encores!" prefix + venue-ambiguity gap)
+  // WAS flagged in mezzanine-coverage.json but sat unseen among ~36 closed-
+  // revival flags in the passive section. Filtering to open shows + making it a
+  // check means a running show missing a source now drives the subject line.
+  results.push(runCheck('Audience coverage: open-show gaps', () => {
+    const { openShowCoverageGaps } = require('./lib/audience-coverage-gaps');
+    const shows = readJSON(path.join(DATA_DIR, 'shows.json'));
+    const showList = shows.shows || Object.values(shows).filter(s => s && s.id);
+    const openIds = new Set(showList.filter(s => s.status === 'open').map(s => s.id));
+
+    const reports = [];
+    const unreadable = [];
+    for (const [source, file] of [['Mezzanine', 'mezzanine-coverage.json'], ['Theatr', 'theatr-coverage.json']]) {
+      const p = path.join(DATA_DIR, 'audit', file);
+      if (!fs.existsSync(p)) continue;
+      try {
+        const audit = JSON.parse(fs.readFileSync(p, 'utf8'));
+        reports.push({ source, flagged: audit.flagged || [] });
+      } catch (_) {
+        // An audit file that EXISTS but won't parse is a broken input, not a
+        // clean bill of health — track it so we don't report 'ok' on a file we
+        // couldn't actually read (that would silently re-hide the La Cage class).
+        unreadable.push(file);
+      }
+    }
+
+    const gaps = openShowCoverageGaps(reports, openIds);
+    if (gaps.length === 0) {
+      if (unreadable.length > 0) {
+        return { name: 'Audience coverage: open-show gaps', status: 'warn', message: `Could not read coverage audit: ${unreadable.join(', ')} — gap detection blind for ${unreadable.length} source(s)`, hint: 'The scraper wrote a malformed audit file. Re-run the scraper to regenerate it.' };
+      }
+      return { name: 'Audience coverage: open-show gaps', status: 'ok', message: 'No open shows with unlinked audience sources' };
+    }
+    const top = gaps.slice(0, 5)
+      .map(g => `${g.source}: ${g.ourTitle} (${g.ratingsCount} ratings ↔ ${g.sourceName || '?'})`)
+      .join('; ');
+    // Name the override knob per source — Mezzanine and Theatr have SEPARATE
+    // override tables in different scrapers; sending a Theatr-only gap to
+    // MEZZANINE_OVERRIDES is the wrong fix.
+    const sources = [...new Set(gaps.map(g => g.source))];
+    const knob = sources.map(s => s === 'Theatr'
+      ? 'THEATR_OVERRIDES in scrape-theatr-audience.js'
+      : 'MEZZANINE_OVERRIDES ({name} or {name,venue}) in scrape-mezzanine-audience.js').join(' / ');
+    // ≥3 open-show gaps is a systematic matcher problem (error); 1-2 is a warn.
+    const status = gaps.length >= 3 ? 'error' : 'warn';
+    return {
+      name: 'Audience coverage: open-show gaps',
+      status,
+      message: `${gaps.length} open show(s) have audience data on a source that didn't link — ${top}`,
+      hint: `Add an override for the flagged show: ${knob}; then re-run that source's scraper.`,
+    };
   }));
 
   // B2b: Per-show social-pulse freshness. The `Freshness: social-pulse/_budget.json`
@@ -846,41 +903,6 @@ function checkSEO() {
         }
       }
       return { name: 'SEO: health', status: 'pass', message: `Healthy (${formatAge(age)} ago)` };
-    }),
-  ];
-}
-
-// --- Category G2: Corpus-statistics drift ---
-// Surfaces the three corpus-statistics audits (text-quality %, aggregator
-// ratios, regex FP) that were moved OUT of the blocking test.yml gate into the
-// non-blocking check-corpus-drift.yml workflow (2026-06-21). Without this, that
-// move would silently delete those signals — `continue-on-error`/non-blocking
-// jobs report conclusion=success, so getWorkflowRunSummary() never sees them.
-// This is the digest channel that keeps drift visible (and drives repeat-failure
-// escalation if it stays red). Mirrors the SEO: health audit-JSON pattern above.
-function checkCorpusDrift() {
-  return [
-    runCheck('Quality: corpus drift', () => {
-      const file = path.join(AUDIT_DIR, 'corpus-drift.json');
-      if (!fs.existsSync(file)) {
-        return { name: 'Quality: corpus drift', status: 'warn', message: 'No corpus-drift data (check-corpus-drift may not have run yet)', hint: 'Trigger check-corpus-drift workflow manually' };
-      }
-      const data = readJSON(file);
-      const age = data._meta?.generatedAt ? hoursAgo(data._meta.generatedAt) : Infinity;
-      if (age > 72) {
-        return { name: 'Quality: corpus drift', status: 'warn', message: `Last corpus-drift check ${formatAge(age)} ago (>3d)`, hint: 'Trigger check-corpus-drift workflow manually' };
-      }
-      const s = data.summary || {};
-      // A crashed audit (couldn't run) is a real error — the monitor is blind.
-      if (s.crashCount > 0) {
-        const crashed = (data.audits || []).filter(a => a.crashed).map(a => a.name).join(', ');
-        return { name: 'Quality: corpus drift', status: 'error', message: `${s.crashCount} audit(s) could not run: ${crashed}`, hint: 'Check data/audit/corpus-drift.json — scan failed or crashed' };
-      }
-      if (s.driftCount > 0) {
-        const drifted = (data.audits || []).filter(a => !a.ok && !a.crashed).map(a => a.name).join(', ');
-        return { name: 'Quality: corpus drift', status: 'warn', message: `${s.driftCount} audit(s) over threshold: ${drifted}`, hint: 'Triage data/audit/corpus-drift.json — adjust threshold (drift) or fix data (real)' };
-      }
-      return { name: 'Quality: corpus drift', status: 'pass', message: `All ${s.auditsRun} corpus audits clean (${formatAge(age)} ago)` };
     }),
   ];
 }
@@ -1835,7 +1857,6 @@ async function main() {
     ...checkCookieExpiration(),
     ...checkCWV(),
     ...checkSEO(),
-    ...checkCorpusDrift(),
     ...checkCronHealth(),
     ...checkSecretsHealth(),
     ...checkAPICredits(),
