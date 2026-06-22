@@ -42,6 +42,10 @@ on:
         description: 'Optional subject-line override (overrides auto-generated subject).'
         required: false
         default: ''
+      obLead:
+        description: 'Optional show id to float to the top of the Opened Off-Broadway section (editorial lead override).'
+        required: false
+        default: ''
       audience:
         description: 'Resend audience for the broadcast DRAFT (never sent automatically).'
         required: false
@@ -134,6 +138,7 @@ jobs:
           GA_SERVICE_ACCOUNT_KEY: ${{ secrets.GA_SERVICE_ACCOUNT_KEY }}
           LEDE_OVERRIDE: ${{ github.event.inputs.ledeOverride }}
           SUBJECT_OVERRIDE: ${{ github.event.inputs.subjectOverride }}
+          NEWSLETTER_OB_LEAD: ${{ github.event.inputs.obLead }}
         run: |
           mkdir -p "$NEWSLETTER_OUT_DIR"
           node scripts/newsletter/generate.mjs "${{ steps.week.outputs.weekStart }}"
@@ -147,12 +152,16 @@ jobs:
       - name: Regression test (catches silent section drops)
         env:
           NEWSLETTER_OUT_DIR: ${{ github.workspace }}/data/newsletter-drafts
-          # Subprocess re-runs generate.mjs — pass the same GA creds so the
-          # regenerated meta matches the just-sent draft. Without these the
-          # regression step would overwrite a Trending-less meta on top of
-          # the freshly-written one and corrupt the audit trail.
+          # Subprocess re-runs generate.mjs — pass the same GA creds AND the
+          # editorial overrides so the regenerated meta matches the just-sent
+          # draft. Without these the regression step would overwrite the
+          # override-driven subject/lede/ordering (and Trending-less meta) on
+          # top of the freshly-written one and corrupt the audit trail.
           GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
           GA_SERVICE_ACCOUNT_KEY: ${{ secrets.GA_SERVICE_ACCOUNT_KEY }}
+          LEDE_OVERRIDE: ${{ github.event.inputs.ledeOverride }}
+          SUBJECT_OVERRIDE: ${{ github.event.inputs.subjectOverride }}
+          NEWSLETTER_OB_LEAD: ${{ github.event.inputs.obLead }}
         run: |
           # Skip regression test if no fixture exists for this week yet —
           # the fixture system is per-week and a fresh weekly run is the
