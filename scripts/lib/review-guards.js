@@ -1577,6 +1577,30 @@ function shouldSkipWrongProductionAudit(data) {
 }
 
 /**
+ * Should a CROSS-SHOW-URL-COLLISION flagger skip flagging this review wrongProduction?
+ *
+ * Cross-show URL collision flaggers (gather-reviews.js ingest + rebuild-all-reviews.js
+ * rebuild) decide which of N sibling productions owns a SHARED review URL using a weak
+ * year-distance heuristic (review-year closer to production-year wins). That heuristic
+ * must not override the STRONG signal: content verification. When CV read the review
+ * text and affirmed it belongs to THIS production
+ * (contentVerification.wrongProduction === false), the heuristic is wrong to flag it —
+ * and the B_false_positive_wp audit will (correctly) fail on it every rebuild. Honoring
+ * CV at the flagging site kills that whac-a-mole class at the source. Also honors the
+ * usual manual-clear / override breadcrumbs via shouldSkipWrongProductionAudit.
+ *
+ * Scoped to the cross-show-URL heuristic only — other wrongProduction setters
+ * (date-guard, pre-opening) have different semantics and intentionally do NOT defer
+ * to CV here.
+ */
+function shouldSkipCrossShowUrlFlag(data) {
+  if (!data || typeof data !== 'object') return false;
+  if (shouldSkipWrongProductionAudit(data)) return true;
+  if (data.contentVerification && data.contentVerification.wrongProduction === false) return true;
+  return false;
+}
+
+/**
  * Returns true if an isRoundupArticle setter should skip this file because
  * a human has manually cleared the flag (clear-stale-roundup-flags.js sets
  * isRoundupArticle=false and roundupArticleClearedNote). Without this guard,
@@ -2765,6 +2789,7 @@ module.exports = {
   isVenueMismatch,
   isUrlTitleMismatch,
   shouldSkipWrongProductionAudit,
+  shouldSkipCrossShowUrlFlag,
   shouldSkipRoundupAudit,
   isRevivalByCanonicalTitle,
   urlOrTitleLooksLikeReview,
