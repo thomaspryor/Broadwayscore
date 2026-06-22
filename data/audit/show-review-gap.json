@@ -1,759 +1,118 @@
 {
-  "generatedAt": "2026-06-22T15:48:03.297Z",
+  "generatedAt": "2026-06-22T17:36:43.818Z",
   "windowDays": 1095,
-  "targets": 79,
+  "targets": 72,
   "counts": {
     "withGap": 10,
-    "totalMissing": 25,
-    "totalFlaggedMisses": 46,
-    "totalRecoverable": 4,
-    "totalRecovered": 1
+    "totalMissing": 28,
+    "totalFlaggedMisses": 40,
+    "totalRecoverable": 3,
+    "totalRecovered": 0
   },
   "results": [
     {
-      "showId": "turandot-off-broadway-2025",
-      "title": "Turandot",
-      "openingDate": "2025-09-23",
-      "status": "closed",
-      "category": "off-broadway",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://newyorkclassicalreview.com/2025/09/mets-sumptuous-turandot-opens-strongly-with-an-auspicious-soprano-debut/",
-        "https://www.nytimes.com/2021/10/13/arts/music/met-opera-turandot-puccini.html",
-        "https://www.nytimes.com/2024/02/29/arts/music/turandot-met-opera-review.html",
-        "https://operawire.com/metropolitan-opera-2023-2024-review-turandot/"
-      ],
-      "dirFiles": 7,
-      "dirClean": 2,
-      "inReviewsJson": 2,
-      "missing": [],
-      "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://www.nytimes.com/2021/10/13/arts/music/met-opera-turandot-puccini.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--anthony-tommasini.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.nytimes.com/2021/10/13/arts/music/met-opera-turandot-puccini.html"
-            },
-            {
-              "file": "nytimes--oussama-zahr.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.nytimes.com/2024/02/29/arts/music/turandot-met-opera-review.html#:~:text=Taut%20strings%20and%20slinky%20woodwinds,the%20princess%20had%20been%20humbled."
-            }
-          ]
-        },
-        {
-          "url": "https://www.nytimes.com/2024/02/29/arts/music/turandot-met-opera-review.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--anthony-tommasini.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.nytimes.com/2021/10/13/arts/music/met-opera-turandot-puccini.html"
-            },
-            {
-              "file": "nytimes--oussama-zahr.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.nytimes.com/2024/02/29/arts/music/turandot-met-opera-review.html#:~:text=Taut%20strings%20and%20slinky%20woodwinds,the%20princess%20had%20been%20humbled."
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "showId": "sunset-baby-off-broadway-2026",
-      "title": "Sunset Baby",
-      "openingDate": "2024-02-22",
+      "showId": "the-lonely-few-off-broadway-2024",
+      "title": "The Lonely Few",
+      "openingDate": "2024-05-21",
       "status": "closed",
       "category": "off-broadway",
       "aggregatorArticles": [
-        "https://playbill.com/article/reviews-what-are-critics-saying-about-sunset-baby-off-broadway"
+        "https://playbill.com/article/reviews-heres-what-critics-think-of-the-world-premiere-of-the-lonely-few-at-los-angeles-the-geffen-playhouse",
+        "https://playbill.com/article/reviews-did-critics-rock-out-to-the-lonely-few"
       ],
       "aggregatorListedUrls": [
-        "https://cititour.com/NYC_Broadway/Sunset-Baby/1207",
-        "https://nystagereview.com/2024/02/20/sunset-baby-dominique-morisseau-unflinchingly-scrutinizes-freedom/",
-        "https://newyorktheater.me/2024/02/20/sunset-baby-review/",
-        "https://www.newyorktheatreguide.com/reviews/sunset-baby-off-broadway-review",
-        "https://www.nytimes.com/2024/02/21/theater/sunset-baby-review.html",
-        "https://www.theatermania.com/news/review-sunset-baby-a-drama-ahead-of-its-time-gets-a-revival_1730789/",
-        "http://www.theaterscene.net/plays/offbway-plays/sunset-baby/joseph-pisano/",
-        "https://theunforgettableline.com/2024/02/20/sunset-baby/",
-        "https://www.newyorker.com/magazine/2024/03/04/sunset-baby-theatre-review",
-        "https://www.wsj.com/articles/sunset-baby-review-dominique-morisseau-signature-theatre-1e320ab4",
-        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-IQ5SFM",
-        "https://www.talkinbroadway.com/page/ob/02_20_24.html"
+        "https://2urbangirls.com/2023/03/theater-review-the-lonely-few/",
+        "https://www.broadwayworld.com/los-angeles/article/Review-THE-LONELY-FEW-at-The-Geffen-Playhouse-20230318",
+        "https://ew.com/theater/the-lonely-few-review/",
+        "https://larchmontbuzz.com/featured-stories-larchmont-village/theater-review-the-lonely-few/",
+        "https://www.latimes.com/entertainment-arts/story/2023-03-19/the-lonely-few-musical-geffen-playhouse-los-angeles",
+        "https://www.queerty.com/lauren-patten-and-ciara-renee-bring-lesbian-rock-excellence-in-the-lonely-few-20230322",
+        "https://www.theatermania.com/los-angeles-theater/reviews/review-the-lonely-few-cranks-out-its-story-like-a_95005.html",
+        "https://www.theatrely.com/post/the-lonely-few-welcomes-you-in-review",
+        "https://nystagereview.com/2024/05/20/the-lonely-few-a-promising-and-predictable-rock-musical/",
+        "https://www.nytimes.com/2024/05/21/theater/the-lonely-few-review.html",
+        "https://www.newyorktheatreguide.com/reviews/the-lonely-few-off-broadway-review",
+        "https://observer.com/2024/05/review-the-lonely-few-mixes-bona-fide-rock-concert-with-angsty-love-story/",
+        "https://www.theatermania.com/news/review-the-lonely-few-presents-a-rocking-yet-generic-queer-love-story_1740866/",
+        "https://www.theatrely.com/post/the-lonely-few-the-many-songs-review",
+        "https://madiereneewinningh.wixsite.com/winninghamwrites/post/the-lonely-few-full-heart",
+        "https://www.timeout.com/newyork/theater/the-lonely-few",
+        "https://www.wsj.com/articles/the-lonely-few-review-a-rock-n-roll-romance-musical-mcc-theater-lauren-patten-f1ffa98e",
+        "https://www.talkinbroadway.com/page/ob/05_20_24.html",
+        "https://thefrontrowcenter.com/2024/05/the-lonely-few/"
       ],
-      "dirFiles": 18,
-      "dirClean": 9,
-      "inReviewsJson": 9,
+      "dirFiles": 11,
+      "dirClean": 10,
+      "inReviewsJson": 10,
       "missing": [
         {
-          "url": "https://theunforgettableline.com/2024/02/20/sunset-baby/",
-          "host": "theunforgettableline.com",
+          "url": "https://2urbangirls.com/2023/03/theater-review-the-lonely-few/",
+          "host": "2urbangirls.com",
           "knownOutletId": null
+        },
+        {
+          "url": "https://www.broadwayworld.com/los-angeles/article/Review-THE-LONELY-FEW-at-The-Geffen-Playhouse-20230318",
+          "host": "broadwayworld.com",
+          "knownOutletId": "broadwayworld"
+        },
+        {
+          "url": "https://ew.com/theater/the-lonely-few-review/",
+          "host": "ew.com",
+          "knownOutletId": "ew"
+        },
+        {
+          "url": "https://larchmontbuzz.com/featured-stories-larchmont-village/theater-review-the-lonely-few/",
+          "host": "larchmontbuzz.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.latimes.com/entertainment-arts/story/2023-03-19/the-lonely-few-musical-geffen-playhouse-los-angeles",
+          "host": "latimes.com",
+          "knownOutletId": "latimes"
+        },
+        {
+          "url": "https://www.queerty.com/lauren-patten-and-ciara-renee-bring-lesbian-rock-excellence-in-the-lonely-few-20230322",
+          "host": "queerty.com",
+          "knownOutletId": "queerty"
+        },
+        {
+          "url": "https://www.theatrely.com/post/the-lonely-few-welcomes-you-in-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely"
+        },
+        {
+          "url": "https://nystagereview.com/2024/05/20/the-lonely-few-a-promising-and-predictable-rock-musical/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr"
+        },
+        {
+          "url": "https://www.theatrely.com/post/the-lonely-few-the-many-songs-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely"
+        },
+        {
+          "url": "https://madiereneewinningh.wixsite.com/winninghamwrites/post/the-lonely-few-full-heart",
+          "host": "madiereneewinningh.wixsite.com",
+          "knownOutletId": "winningham-writes"
         }
       ],
       "dirOnly": [
-        {
-          "host": "broadwayworld.com",
-          "count": 1
-        },
         {
           "host": "culturesauce.com",
           "count": 1
         },
         {
-          "host": "vulture.com",
+          "host": "pagesonstages.wordpress.com",
+          "count": 1
+        },
+        {
+          "host": "theatrereviews.com",
           "count": 1
         }
       ],
       "flaggedMisses": [
         {
-          "url": "https://cititour.com/NYC_Broadway/Sunset-Baby/1207",
-          "host": "cititour.com",
-          "knownOutletId": "cititour",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "cititour--brian-scott-lipton.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://cititour.com/NYC_News/Review-Sunset-Baby-Gets-a-Shining-Revival/8099"
-            }
-          ]
-        },
-        {
-          "url": "https://nystagereview.com/2024/02/20/sunset-baby-dominique-morisseau-unflinchingly-scrutinizes-freedom/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nysr--david-finkle.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://nystagereview.com/2024/02/20/sunset-baby-dominique-morisseau-unflinchingly-scrutinizes-freedom/"
-            }
-          ]
-        },
-        {
-          "url": "http://www.theaterscene.net/plays/offbway-plays/sunset-baby/joseph-pisano/",
-          "host": "theaterscene.net",
-          "knownOutletId": "theater-scene",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theater-scene--joseph-pisano.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.theaterscene.net/plays/offbway-plays/sunset-baby/joseph-pisano/"
-            }
-          ]
-        },
-        {
-          "url": "https://www.newyorker.com/magazine/2024/03/04/sunset-baby-theatre-review",
-          "host": "newyorker.com",
-          "knownOutletId": "newyorker",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "newyorker--helen-shaw.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.newyorker.com/magazine/2024/03/04/sunset-baby-theatre-review"
-            }
-          ]
-        },
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-IQ5SFM",
-          "host": "lightingandsoundamerica.com",
-          "knownOutletId": "lighting-and-sound-america",
-          "recoverable": true,
-          "recoverableFile": "lighting-and-sound-america--david-barbour.json",
-          "recoverableOutletId": "lighting-and-sound-america",
-          "recoverableCritic": "David Barbour",
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "lighting-and-sound-america--david-barbour.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://www.lightingandsoundamerica.com/news/story.asp?ID=-IQ5SFM"
-            }
-          ]
-        }
-      ],
-      "ingestResults": [
-        {
-          "url": "https://theunforgettableline.com/2024/02/20/sunset-baby/",
-          "host": "theunforgettableline.com",
-          "outletId": "theunforgettableline",
-          "provisional": true,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=sunset-baby-off-broadway-2026 --url=ht"
-        }
-      ],
-      "ingestSkippedByCap": [],
-      "recoveryResults": [
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-IQ5SFM",
-          "host": "lightingandsoundamerica.com",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "recovered": true,
-          "skipped": false,
-          "provisional": false,
-          "reason": null,
-          "recoveryCount": 0
-        }
-      ]
-    },
-    {
-      "showId": "orlando-off-broadway-2026",
-      "title": "Orlando",
-      "openingDate": "2024-04-15",
-      "status": "closed",
-      "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/reviews-what-do-critics-think-of-sarah-ruhls-orlando-off-broadway",
-        "https://playbill.com/article/reviews-what-are-critics-saying-about-orlando-starring-emma-corrin-in-londons-west-end",
-        "https://playbill.com/article/read-reviews-for-killer-joe-starring-orlando-bloom",
-        "https://www.broadwayworld.com/article/Review-Roundup-ORLANDO-Opens-at-Signature-Theatre-20240422"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.newyorktheatreguide.com/reviews/orlando-off-broadway-review-taylor-mac-sarah-ruhl",
-        "https://newyorktheater.me/2024/04/21/orlando-review/",
-        "https://www.nytimes.com/2024/04/24/theater/orlando-review-sarah-ruhl.html",
-        "https://theartsdesk.com/theatre/orlando-garrick-theatre-review-emma-corrin-incandescent-underwhelming-adaptation",
-        "https://britishtheatre.com/review-orlando-garrick-theatre-london/",
-        "https://www.broadwayworld.com/westend/article/Review-ORLANDO-Garrick-Theatre-20221206",
-        "https://www.cityam.com/orlando-garrick-theatre-review-emma-corrin-stuns-in-poetic-gender-play/",
-        "https://www.culturewhisper.com/r/theatre/emma_corrin_orlando_garrick_theatre_review/17274",
-        "https://www.dailymail.co.uk/tvshowbiz/article-11505711/Emma-Corrin-wears-brown-dress-Orlando-press-night.html",
-        "https://www.standard.co.uk/culture/theatre/orlando-garrick-theatre-review-emma-corrin-west-end-b1044944.html",
-        "https://www.theguardian.com/stage/2022/dec/05/orlando-review-emma-corrin-garrick-theatre-virginia-woolf",
-        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/orlando-review-emma-corrin-b2239076.html",
-        "https://www.indiependent.co.uk/of-rainbow-and-granite-orlando-review/",
-        "https://inews.co.uk/culture/arts/orlando-garrick-theatre-review-emma-corrin-plays-gender-sexy-spirited-show-2012026",
-        "https://www.londontheatre.co.uk/reviews/orlando-review-garrick-theatre-emma-corrin",
-        "https://www.londontheatre1.com/reviews/orlando-at-the-garrick-theatre/",
-        "https://lovelondonloveculture.com/2022/12/06/review-orlando-garrick-theatre/",
-        "https://www.nytimes.com/2022/12/06/theater/orlando-emma-corrin.html",
-        "https://www.thestage.co.uk/reviews/orlando-review-garrick-theatre-london-emma-corrin-deborah-findlay-neil-bartlett-michael-grandage-virginia-woolf",
-        "https://www.telegraph.co.uk/theatre/what-to-see/orlando-garrick-theatre-review-emma-corrin-has-naked-star-quality/",
-        "https://theatreweekly.com/review-orlando-at-the-garrick-theatre/",
-        "https://www.timeout.com/london/theatre/orlando-review-1",
-        "https://ukdaily.news/london/orlando-at-the-garrick-theater-review-emma-corrin-is-captivating-in-this-bold-mind-bending-experiment-100356.html",
-        "https://www.whatsonstage.com/london-theatre/reviews/orlando-in-the-west-end-emma-corrin_57947.html",
-        "https://www.standard.co.uk/go/london/theatre/killer-joe-review-orlando-bloom-stays-cool-in-shallow-revival-a3855346.html",
-        "https://www.theguardian.com/stage/2018/jun/04/killer-joe-review-orlando-bloom-tracy-letts-trafalgar-studios-london",
-        "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/killer-joe-orlando-bloom-review-theatre-tracy-letts-trafalgar-studios-a8383846.html",
-        "http://www.thestage.co.uk/reviews/2018/killer-joe-review-starring-orlando-bloom-trafalgar-studios-london-unpleasant-revival-nasty-play/",
-        "http://www.telegraph.co.uk/theatre/what-to-see/killer-joe-review-trafalgar-studios-orlando-bloom-bares-shallow/"
-      ],
-      "dirFiles": 30,
-      "dirClean": 4,
-      "inReviewsJson": 4,
-      "missing": [
-        {
-          "url": "https://britishtheatre.com/review-orlando-garrick-theatre-london/",
-          "host": "britishtheatre.com",
-          "knownOutletId": "british-theatre"
-        },
-        {
-          "url": "https://www.cityam.com/orlando-garrick-theatre-review-emma-corrin-stuns-in-poetic-gender-play/",
-          "host": "cityam.com",
-          "knownOutletId": "city-am"
-        },
-        {
-          "url": "https://www.culturewhisper.com/r/theatre/emma_corrin_orlando_garrick_theatre_review/17274",
-          "host": "culturewhisper.com",
-          "knownOutletId": "culture-whisper"
-        },
-        {
-          "url": "https://www.indiependent.co.uk/of-rainbow-and-granite-orlando-review/",
-          "host": "indiependent.co.uk",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://inews.co.uk/culture/arts/orlando-garrick-theatre-review-emma-corrin-plays-gender-sexy-spirited-show-2012026",
-          "host": "inews.co.uk",
-          "knownOutletId": "i-paper"
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/orlando-review-garrick-theatre-emma-corrin",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre"
-        },
-        {
-          "url": "https://www.londontheatre1.com/reviews/orlando-at-the-garrick-theatre/",
-          "host": "londontheatre1.com",
-          "knownOutletId": "londontheatre1"
-        },
-        {
-          "url": "https://lovelondonloveculture.com/2022/12/06/review-orlando-garrick-theatre/",
-          "host": "lovelondonloveculture.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://ukdaily.news/london/orlando-at-the-garrick-theater-review-emma-corrin-is-captivating-in-this-bold-mind-bending-experiment-100356.html",
-          "host": "ukdaily.news",
-          "knownOutletId": null
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "theatrely.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://newyorktheater.me/2024/04/21/orlando-review/",
-          "host": "newyorktheater.me",
-          "knownOutletId": "nyt-theater",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nyt-theater--jonathan-mandell.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://newyorktheater.me/2013/09/19/romeo-and-juliet-review-does-orlando-bloom-on-broadway/"
-            }
-          ]
-        },
-        {
-          "url": "https://theartsdesk.com/theatre/orlando-garrick-theatre-review-emma-corrin-incandescent-underwhelming-adaptation",
-          "host": "theartsdesk.com",
-          "knownOutletId": "artsdesk",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "artsdesk--mert-dilek.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://theartsdesk.com/theatre/orlando-garrick-theatre-review-emma-corrin-incandescent-underwhelming-adaptation"
-            }
-          ]
-        },
-        {
-          "url": "https://www.broadwayworld.com/westend/article/Review-ORLANDO-Garrick-Theatre-20221206",
-          "host": "broadwayworld.com",
-          "knownOutletId": "broadwayworld",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "broadwayworld--aliya-al-hassan.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.broadwayworld.com/westend/article/Review-ORLANDO-Garrick-Theatre-20221206"
-            }
-          ]
-        },
-        {
-          "url": "https://www.dailymail.co.uk/tvshowbiz/article-11505711/Emma-Corrin-wears-brown-dress-Orlando-press-night.html",
-          "host": "dailymail.co.uk",
-          "knownOutletId": "daily-mail",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "daily-mail--georgina-brown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.dailymail.co.uk/tvshowbiz/article-11510075/Emma-Corrin-perfect-frisky-ode-freedom-GEORGINA-BROWNs-four-star-review-Orlando.html"
-            }
-          ]
-        },
-        {
-          "url": "https://www.standard.co.uk/culture/theatre/orlando-garrick-theatre-review-emma-corrin-west-end-b1044944.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "standard--nick-curtis.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.standard.co.uk/culture/theatre/orlando-garrick-theatre-review-emma-corrin-west-end-b1044944.html"
-            }
-          ]
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2022/dec/05/orlando-review-emma-corrin-garrick-theatre-virginia-woolf",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "guardian--david-jays.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theguardian.com/stage/2022/dec/05/orlando-review-emma-corrin-garrick-theatre-virginia-woolf"
-            },
-            {
-              "file": "guardian--unknown.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.theguardian.com/stage/2022/dec/11/orlando-review-garrick-emma-corrin-neil-bartlett-michael-grandage-deborah-findlay-hex-olivier-national-rufus-norris"
-            }
-          ]
-        },
-        {
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/orlando-review-emma-corrin-b2239076.html",
-          "host": "independent.co.uk",
-          "knownOutletId": "independent",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "independent--jessie-thompson.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/orlando-review-emma-corrin-b2239076.html"
-            }
-          ]
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/orlando-review-garrick-theatre-london-emma-corrin-deborah-findlay-neil-bartlett-michael-grandage-virginia-woolf",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "thestage--sam-marlowe.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thestage.co.uk/reviews/orlando-review-garrick-theatre-london-emma-corrin-deborah-findlay-neil-bartlett-michael-grandage-virginia-woolf"
-            },
-            {
-              "file": "thestage--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thestage.co.uk/reviews/orlando-review-at-signature-theatre-new-york-city-starring-taylor-mac"
-            }
-          ]
-        },
-        {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/orlando-garrick-theatre-review-emma-corrin-has-naked-star-quality/",
-          "host": "telegraph.co.uk",
-          "knownOutletId": "sunday-telegraph",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "telegraph--dominic-cavendish.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/orlando-garrick-theatre-review-emma-corrin-has-naked-star-quality/"
-            }
-          ]
-        },
-        {
-          "url": "https://theatreweekly.com/review-orlando-at-the-garrick-theatre/",
-          "host": "theatreweekly.com",
-          "knownOutletId": "theatre-weekly",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatre-weekly--greg-stewart.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://theatreweekly.com/review-orlando-at-the-garrick-theatre/"
-            }
-          ]
-        },
-        {
-          "url": "https://www.whatsonstage.com/london-theatre/reviews/orlando-in-the-west-end-emma-corrin_57947.html",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "whatsonstage--sarah-crompton.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.whatsonstage.com/london-theatre/reviews/orlando-in-the-west-end-emma-corrin_57947.html"
-            }
-          ]
-        },
-        {
-          "url": "https://www.standard.co.uk/go/london/theatre/killer-joe-review-orlando-bloom-stays-cool-in-shallow-revival-a3855346.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "standard--nick-curtis.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.standard.co.uk/culture/theatre/orlando-garrick-theatre-review-emma-corrin-west-end-b1044944.html"
-            }
-          ]
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2018/jun/04/killer-joe-review-orlando-bloom-tracy-letts-trafalgar-studios-london",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "guardian--david-jays.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theguardian.com/stage/2022/dec/05/orlando-review-emma-corrin-garrick-theatre-virginia-woolf"
-            },
-            {
-              "file": "guardian--unknown.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.theguardian.com/stage/2022/dec/11/orlando-review-garrick-emma-corrin-neil-bartlett-michael-grandage-deborah-findlay-hex-olivier-national-rufus-norris"
-            }
-          ]
-        },
-        {
-          "url": "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/killer-joe-orlando-bloom-review-theatre-tracy-letts-trafalgar-studios-a8383846.html",
-          "host": "independent.co.uk",
-          "knownOutletId": "independent",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "independent--jessie-thompson.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/orlando-review-emma-corrin-b2239076.html"
-            }
-          ]
-        },
-        {
-          "url": "http://www.thestage.co.uk/reviews/2018/killer-joe-review-starring-orlando-bloom-trafalgar-studios-london-unpleasant-revival-nasty-play/",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "thestage--sam-marlowe.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thestage.co.uk/reviews/orlando-review-garrick-theatre-london-emma-corrin-deborah-findlay-neil-bartlett-michael-grandage-virginia-woolf"
-            },
-            {
-              "file": "thestage--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thestage.co.uk/reviews/orlando-review-at-signature-theatre-new-york-city-starring-taylor-mac"
-            }
-          ]
-        },
-        {
-          "url": "http://www.telegraph.co.uk/theatre/what-to-see/killer-joe-review-trafalgar-studios-orlando-bloom-bares-shallow/",
-          "host": "telegraph.co.uk",
-          "knownOutletId": "sunday-telegraph",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "telegraph--dominic-cavendish.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/orlando-garrick-theatre-review-emma-corrin-has-naked-star-quality/"
-            }
-          ]
-        }
-      ],
-      "ingestResults": [
-        {
-          "url": "https://britishtheatre.com/review-orlando-garrick-theatre-london/",
-          "host": "britishtheatre.com",
-          "outletId": "british-theatre",
-          "provisional": false,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=orlando-off-broadway-2026 --url=https:"
-        },
-        {
-          "url": "https://www.cityam.com/orlando-garrick-theatre-review-emma-corrin-stuns-in-poetic-gender-play/",
-          "host": "cityam.com",
-          "outletId": "city-am",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.culturewhisper.com/r/theatre/emma_corrin_orlando_garrick_theatre_review/17274",
-          "host": "culturewhisper.com",
-          "outletId": "culture-whisper",
-          "provisional": false,
-          "ok": false,
-          "reason": "spawnSync node ETIMEDOUT"
-        },
-        {
-          "url": "https://www.indiependent.co.uk/of-rainbow-and-granite-orlando-review/",
-          "host": "indiependent.co.uk",
-          "outletId": "indiependent",
-          "provisional": true,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://inews.co.uk/culture/arts/orlando-garrick-theatre-review-emma-corrin-plays-gender-sexy-spirited-show-2012026",
-          "host": "inews.co.uk",
-          "outletId": "i-paper",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/orlando-review-garrick-theatre-emma-corrin",
-          "host": "londontheatre.co.uk",
-          "outletId": "london-theatre"
-        },
-        {
-          "url": "https://www.londontheatre1.com/reviews/orlando-at-the-garrick-theatre/",
-          "host": "londontheatre1.com",
-          "outletId": "londontheatre1"
-        },
-        {
-          "url": "https://lovelondonloveculture.com/2022/12/06/review-orlando-garrick-theatre/",
-          "host": "lovelondonloveculture.com",
-          "outletId": "lovelondonloveculture"
-        },
-        {
-          "url": "https://ukdaily.news/london/orlando-at-the-garrick-theater-review-emma-corrin-is-captivating-in-this-bold-mind-bending-experiment-100356.html",
-          "host": "ukdaily.news",
-          "outletId": "ukdaily"
-        }
-      ]
-    },
-    {
-      "showId": "three-houses-off-broadway-2026",
-      "title": "Three Houses",
-      "openingDate": "2024-05-22",
-      "status": "closed",
-      "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/reviews-were-critics-transported-by-dave-malloys-new-musical-three-houses",
-        "https://www.broadwayworld.com/article/Review-Roundup-Dave-Malloys-THREE-HOUSES-Opens-Off-Broadway-20240521"
-      ],
-      "aggregatorListedUrls": [
-        "https://nystagereview.com/2024/05/20/three-houses-dave-malloys-new-sometimes-haunting-musical/",
-        "https://newyorktheater.me/2024/05/20/three-houses-theater-review/",
-        "https://www.newyorktheatreguide.com/reviews/three-houses-off-broadway-review",
-        "https://www.nytimes.com/2024/05/20/theater/three-houses-review-dave-malloy.html",
-        "https://observer.com/2024/05/review-pandemic-meltdown-musical-three-houses-finds-song-in-solitude/",
-        "https://www.theatermania.com/news/review-three-houses-a-covid-cabaret-from-composer-dave-malloy_1740834/",
-        "https://www.slantmagazine.com/theater/three-houses-review/",
-        "http://www.lightingandsoundamerica.com/news/story.asp?ID=WFV927",
-        "https://www.talkinbroadway.com/page/ob/05_20_24b.html",
-        "https://www.theaterscene.net/musicals/offbway/three-houses/tony-marinelli/",
-        "https://www.theatrereviews.com/off-broadway-review-three-houses-at-signature-theatres-linney-theatre-through-sunday-june-9-2024/"
-      ],
-      "dirFiles": 16,
-      "dirClean": 9,
-      "inReviewsJson": 9,
-      "missing": [
-        {
-          "url": "https://www.slantmagazine.com/theater/three-houses-review/",
-          "host": "slantmagazine.com",
-          "knownOutletId": "slantmagazine"
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "theatrely.com",
-          "count": 1
-        },
-        {
-          "host": "vulture.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=WFV927",
-          "host": "lightingandsoundamerica.com",
-          "knownOutletId": "lighting-and-sound-america",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "lighting-and-sound-america--david-barbour.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=WFV927"
-            }
-          ]
-        },
-        {
-          "url": "https://www.talkinbroadway.com/page/ob/05_20_24b.html",
+          "url": "https://www.talkinbroadway.com/page/ob/05_20_24.html",
           "host": "talkinbroadway.com",
           "knownOutletId": "talkinbroadway",
           "recoverable": false,
@@ -763,82 +122,447 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "talkinbroadway--james-wilson.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.talkinbroadway.com/page/ob/05_20_24b.html"
-            }
-          ]
-        },
-        {
-          "url": "https://www.theaterscene.net/musicals/offbway/three-houses/tony-marinelli/",
-          "host": "theaterscene.net",
-          "knownOutletId": "theater-scene",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theater-scene--tony-marinelli.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theaterscene.net/musicals/offbway/three-houses/tony-marinelli/"
+              "file": "talkinbroadway--kimberly-ramirez.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.talkinbroadway.com/page/ob/05_20_24.html"
             }
           ]
         }
       ],
       "ingestResults": [
         {
-          "url": "https://www.slantmagazine.com/theater/three-houses-review/",
-          "host": "slantmagazine.com",
-          "outletId": "slantmagazine",
+          "url": "https://2urbangirls.com/2023/03/theater-review-the-lonely-few/",
+          "host": "2urbangirls.com",
+          "outletId": "2urbangirls",
+          "provisional": true,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://www.broadwayworld.com/los-angeles/article/Review-THE-LONELY-FEW-at-The-Geffen-Playhouse-20230318",
+          "host": "broadwayworld.com",
+          "outletId": "broadwayworld",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://ew.com/theater/the-lonely-few-review/",
+          "host": "ew.com",
+          "outletId": "ew",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://larchmontbuzz.com/featured-stories-larchmont-village/theater-review-the-lonely-few/",
+          "host": "larchmontbuzz.com",
+          "outletId": "larchmontbuzz",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=the-lonely-few-off-broadway-2024 --url"
+        },
+        {
+          "url": "https://www.latimes.com/entertainment-arts/story/2023-03-19/the-lonely-few-musical-geffen-playhouse-los-angeles",
+          "host": "latimes.com",
+          "outletId": "latimes",
           "provisional": false,
           "ok": true,
           "reason": null
         }
       ],
-      "ingestSkippedByCap": []
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.queerty.com/lauren-patten-and-ciara-renee-bring-lesbian-rock-excellence-in-the-lonely-few-20230322",
+          "host": "queerty.com",
+          "outletId": "queerty"
+        },
+        {
+          "url": "https://www.theatrely.com/post/the-lonely-few-welcomes-you-in-review",
+          "host": "theatrely.com",
+          "outletId": "theatrely"
+        },
+        {
+          "url": "https://nystagereview.com/2024/05/20/the-lonely-few-a-promising-and-predictable-rock-musical/",
+          "host": "nystagereview.com",
+          "outletId": "nysr"
+        },
+        {
+          "url": "https://www.theatrely.com/post/the-lonely-few-the-many-songs-review",
+          "host": "theatrely.com",
+          "outletId": "theatrely"
+        },
+        {
+          "url": "https://madiereneewinningh.wixsite.com/winninghamwrites/post/the-lonely-few-full-heart",
+          "host": "madiereneewinningh.wixsite.com",
+          "outletId": "winningham-writes"
+        }
+      ]
     },
     {
-      "showId": "grangeville-off-broadway-2026",
-      "title": "GRANGEVILLE",
-      "openingDate": "2025-02-24",
+      "showId": "shit-meet-fan-off-broadway-2024",
+      "title": "Shit. Meet. Fan.",
+      "openingDate": "2024-11-18",
       "status": "closed",
       "category": "off-broadway",
       "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-GRANGEVILLE-Opens-at-Signature-Theatre-20250225"
+        "https://playbill.com/article/reviews-are-in-for-shit-meet-fan-at-mcc-theater",
+        "https://www.broadwayworld.com/article/Review-Roundup-SHIT-MEET-FAN-Opens-at-MCC-20241119"
       ],
       "aggregatorListedUrls": [
-        "https://www.nytimes.com/2025/02/24/theater/grangeville-review-samuel-d-hunter.html",
-        "https://newyorktheater.me/2025/02/24/grangeville-review/",
-        "https://nystagereview.com/2025/02/24/grangeville-no-thanks-for-the-memories/",
-        "https://nystagereview.com/2025/02/24/grangeville-art-anguish-and-wonder-from-samuel-d-hunter/",
-        "https://observer.com/2025/02/review-half-brotherly-love-is-a-struggle-against-darkness-in-grangeville/",
-        "https://www.newyorktheatreguide.com/reviews/grangeville-off-broadway-review",
-        "https://www.timeout.com/newyork/theater/grangeville-review-off-broadway",
-        "https://www.wsj.com/articles/grangeville-review-samuel-d-hunters-play-of-quiet-power-936eea53",
-        "https://www.theatermania.com/news/review-samuel-d-hunters-grangeville-asks-what-makes-a-family_1765280/",
-        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-2KMFUO"
+        "https://culturesauce.com/2024/11/18/shit-meets-fan-off-broadway-review-nph-krakowski-messing/",
+        "https://www.thedailybeast.com/review-st-meet-fan-is-the-drinks-party-from-hell/",
+        "https://deadline.com/2024/11/shit-meet-fan-off-broadway-review-1236176901/",
+        "https://exeuntnyc.com/reviews/shit-meet-fan-at-mcc-theater/",
+        "https://www.intomore.com/entertainment/theater/in-shit-meet-fan-a-starry-cast-serves-chaos-cocktails-conflict/",
+        "https://nystagereview.com/2024/11/18/shit-meet-fan-satire-and-secrets-on-the-rocks/",
+        "https://nystagereview.com/2024/11/18/shit-meet-fan-play-meet-speed-bumps/",
+        "https://www.newyorktheatreguide.com/reviews/shit-meet-fan-off-broadway-review-jane-krakowski-debra-messing-neil-patrick-harris-constance-wu",
+        "https://www.nytimes.com/2024/11/18/theater/shit-meets-fan-review.html",
+        "https://www.thestage.co.uk/reviews/shit-meet-fan-review-newman-mills-theater-mcc-theater-new-york-robert-ohara-neil-patrick-harris-jane-krakowski-constance-wu-debra-messing",
+        "https://www.theatrely.com/post/drugs-alcohol-miserable-marriages-shit-meet-fan----review",
+        "https://www.theatermania.com/news/review-neil-patrick-harris-and-debra-messings-cellphones-reveal-secrets-in-shit-meet-fan_1755928/",
+        "https://www.thewrap.com/shit-meet-fan-off-broadway-review-debra-messing-neil-patrick-harris/",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=852X2O",
+        "https://www.talkinbroadway.com/page/ob/11_18_24.html",
+        "https://www.theatrereviews.com/off-broadway-review-shit-meet-fan-at-mcc-theaters-new-mills-theater-through-sunday-september-15-2024/"
       ],
-      "dirFiles": 21,
-      "dirClean": 16,
-      "inReviewsJson": 16,
+      "dirFiles": 7,
+      "dirClean": 4,
+      "inReviewsJson": 4,
+      "missing": [
+        {
+          "url": "https://www.thedailybeast.com/review-st-meet-fan-is-the-drinks-party-from-hell/",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast"
+        },
+        {
+          "url": "https://deadline.com/2024/11/shit-meet-fan-off-broadway-review-1236176901/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline"
+        },
+        {
+          "url": "https://exeuntnyc.com/reviews/shit-meet-fan-at-mcc-theater/",
+          "host": "exeuntnyc.com",
+          "knownOutletId": "exeunt-magazine"
+        },
+        {
+          "url": "https://www.intomore.com/entertainment/theater/in-shit-meet-fan-a-starry-cast-serves-chaos-cocktails-conflict/",
+          "host": "intomore.com",
+          "knownOutletId": "into"
+        },
+        {
+          "url": "https://nystagereview.com/2024/11/18/shit-meet-fan-satire-and-secrets-on-the-rocks/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr"
+        },
+        {
+          "url": "https://nystagereview.com/2024/11/18/shit-meet-fan-play-meet-speed-bumps/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr"
+        },
+        {
+          "url": "https://www.nytimes.com/2024/11/18/theater/shit-meets-fan-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/shit-meet-fan-review-newman-mills-theater-mcc-theater-new-york-robert-ohara-neil-patrick-harris-jane-krakowski-constance-wu-debra-messing",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage"
+        },
+        {
+          "url": "https://www.theatrely.com/post/drugs-alcohol-miserable-marriages-shit-meet-fan----review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely"
+        },
+        {
+          "url": "https://www.thewrap.com/shit-meet-fan-off-broadway-review-debra-messing-neil-patrick-harris/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.theatermania.com/news/review-neil-patrick-harris-and-debra-messings-cellphones-reveal-secrets-in-shit-meet-fan_1755928/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "recoverable": true,
+          "recoverableFile": "theatermania--pete-hempstead.json",
+          "recoverableOutletId": "theatermania",
+          "recoverableCritic": "Pete Hempstead",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatermania--pete-hempstead.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.theatermania.com/news/review-neil-patrick-harris-and-debra-messings-cellphones-reveal-secrets-in-shit-meet-fan_1755928/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.theatrereviews.com/off-broadway-review-shit-meet-fan-at-mcc-theaters-new-mills-theater-through-sunday-september-15-2024/",
+          "host": "theatrereviews.com",
+          "knownOutletId": "theatre-reviews-limited",
+          "recoverable": true,
+          "recoverableFile": "theatre-reviews-limited--joseph-verlezza.json",
+          "recoverableOutletId": "theatre-reviews-limited",
+          "recoverableCritic": "Joseph Verlezza",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatre-reviews-limited--joseph-verlezza.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.theatrereviews.com/off-broadway-review-shit-meet-fan-at-mcc-theaters-new-mills-theater-through-sunday-september-15-2024/"
+            }
+          ]
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://www.thedailybeast.com/review-st-meet-fan-is-the-drinks-party-from-hell/",
+          "host": "thedailybeast.com",
+          "outletId": "dailybeast",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://deadline.com/2024/11/shit-meet-fan-off-broadway-review-1236176901/",
+          "host": "deadline.com",
+          "outletId": "deadline",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://exeuntnyc.com/reviews/shit-meet-fan-at-mcc-theater/",
+          "host": "exeuntnyc.com",
+          "outletId": "exeunt-magazine",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://www.intomore.com/entertainment/theater/in-shit-meet-fan-a-starry-cast-serves-chaos-cocktails-conflict/",
+          "host": "intomore.com",
+          "outletId": "into",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        },
+        {
+          "url": "https://nystagereview.com/2024/11/18/shit-meet-fan-satire-and-secrets-on-the-rocks/",
+          "host": "nystagereview.com",
+          "outletId": "nysr",
+          "provisional": false,
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://nystagereview.com/2024/11/18/shit-meet-fan-play-meet-speed-bumps/",
+          "host": "nystagereview.com",
+          "outletId": "nysr"
+        },
+        {
+          "url": "https://www.nytimes.com/2024/11/18/theater/shit-meets-fan-review.html",
+          "host": "nytimes.com",
+          "outletId": "nytimes"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/shit-meet-fan-review-newman-mills-theater-mcc-theater-new-york-robert-ohara-neil-patrick-harris-jane-krakowski-constance-wu-debra-messing",
+          "host": "thestage.co.uk",
+          "outletId": "thestage"
+        },
+        {
+          "url": "https://www.theatrely.com/post/drugs-alcohol-miserable-marriages-shit-meet-fan----review",
+          "host": "theatrely.com",
+          "outletId": "theatrely"
+        },
+        {
+          "url": "https://www.thewrap.com/shit-meet-fan-off-broadway-review-debra-messing-neil-patrick-harris/",
+          "host": "thewrap.com",
+          "outletId": "thewrap"
+        }
+      ],
+      "recoveryResults": [],
+      "recoverySkippedByCap": [
+        {
+          "url": "https://www.theatermania.com/news/review-neil-patrick-harris-and-debra-messings-cellphones-reveal-secrets-in-shit-meet-fan_1755928/",
+          "host": "theatermania.com",
+          "file": "theatermania--pete-hempstead.json"
+        },
+        {
+          "url": "https://www.theatrereviews.com/off-broadway-review-shit-meet-fan-at-mcc-theaters-new-mills-theater-through-sunday-september-15-2024/",
+          "host": "theatrereviews.com",
+          "file": "theatre-reviews-limited--joseph-verlezza.json"
+        }
+      ]
+    },
+    {
+      "showId": "broken-snow-off-broadway-2026",
+      "title": "Broken Snow",
+      "openingDate": "2026-04-30",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/what-are-reviews-for-broken-snow-starring-tom-cavanagh-tony-danza-and-michael-longfellow"
+      ],
+      "aggregatorListedUrls": [
+        "https://1minutecritic.com/broken-snow-review-tony-danza/",
+        "https://culturesauce.com/2026/04/30/tony-danza-broken-snow-off-broadway-review/",
+        "https://stageandcinema.com/2026/04/28/broken-snow-theatre-71-review/",
+        "https://thefrontrowcenter.com/2026/04/broken-snow/",
+        "https://theknockturnal.com/broken-snow-a-psychological-thriller-at-theatre-71/",
+        "https://www.theatermania.com/news/review-in-broken-snow-tony-danza-plays-a-bad-dad_1834915/"
+      ],
+      "dirFiles": 13,
+      "dirClean": 10,
+      "inReviewsJson": 10,
       "missing": [],
       "dirOnly": [
         {
-          "host": "culturesauce.com",
+          "host": "talkinbroadway.com",
           "count": 1
         },
+        {
+          "host": "therecs.co.uk",
+          "count": 1
+        },
+        {
+          "host": "theaterscene.org",
+          "count": 1
+        },
+        {
+          "host": "theaterscene.net",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "bedlams-othello-off-broadway-2026",
+      "title": "Bedlam's Othello",
+      "openingDate": "2026-05-10",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-Four-Person-OTHELLO-Opens-at-Bedlam-20260508"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.nytimes.com/2026/05/06/theater/othello-bedlam-hamlet-bam.html",
+        "https://culturesauce.com/bedlam-othello-off-broadway-review/"
+      ],
+      "dirFiles": 7,
+      "dirClean": 7,
+      "inReviewsJson": 7,
+      "missing": [],
+      "dirOnly": [
         {
           "host": "exeuntnyc.com",
           "count": 1
         },
         {
-          "host": "offoffonline.com",
+          "host": "thefrontrowcenter.com",
           "count": 1
         },
         {
-          "host": "stageandcinema.com",
+          "host": "nystagereview.com",
+          "count": 1
+        },
+        {
+          "host": "theatermania.com",
+          "count": 1
+        },
+        {
+          "host": "wsj.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "cats-the-jellicle-ball-2026",
+      "title": "CATS: The Jellicle Ball",
+      "openingDate": "2026-04-07",
+      "status": "open",
+      "category": "broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-what-do-the-critics-think-of-cats-the-jellicle-ball-on-broadway",
+        "https://playbill.com/article/reviews-what-do-critics-think-of-cats-the-jellicle-ball-at-perelman-performing-arts-center",
+        "https://www.broadwayworld.com/article/Review-Roundup-CATS-THE-JELLICLE-BALL-Opens-Off-Broadway-20240620"
+      ],
+      "aggregatorListedUrls": [
+        "https://1minutecritic.com/cats-jellicle-ball-broadway-review/",
+        "https://cititour.com/NYC_Broadway/CATS-The-Jellicle-Ball/1367",
+        "https://www.theatermania.com/news/review-cats-the-jellicle-ball-is-the-party-of-the-broadway-season_1831978/",
+        "https://culturesauce.com/2026/04/07/cats-jellicle-ball-broadway-andrew-lloyd-webber-review/",
+        "https://www.chicagotribune.com/2026/04/07/review-cats-jellicle-ball-broadway/",
+        "https://deadline.com/2026/04/cats-the-jellicle-ball-broadway-review-1236773077/",
+        "https://ew.com/cats-the-jellicle-ball-review-broadway-11944334",
+        "https://www.theguardian.com/stage/2026/apr/07/cats-the-jellicle-ball-musical-review",
+        "https://nypost.com/2026/04/07/entertainment/cats-the-jellicle-ball-review-a-euphoric-nyc-reinvention-of-a-broadway-classic/",
+        "https://nystagereview.com/2026/04/07/cats-the-jellicle-ball-welcome-to-the-glitter-box/",
+        "https://nystagereview.com/2026/04/07/cats-the-jellicle-ball-a-disco-tastic-revival-of-lloyd-webbers-musical/",
+        "https://newyorktheater.me/2026/04/07/cats-the-jellicle-ball-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/cats-the-jellicle-ball-broadway-review",
+        "https://www.nytimes.com/2026/04/07/theater/cats-jellicle-ball-review-broadway.html",
+        "https://therecs.co.uk/cats-the-jellicle-ball/",
+        "https://www.slantmagazine.com/theater/cats-the-jellicle-ball-broadway-review/",
+        "https://www.theatrely.com/post/cats-the-jellicle-ball-pushes-us-towards-a-more-fabulous-future-review",
+        "https://www.timeout.com/newyork/news/broadway-review-paris-is-purring-in-cats-the-jellicle-ball-040826",
+        "https://www.usatoday.com/story/entertainment/music/2026/04/07/cats-jellicle-ball-broadway-review/89488390007/",
+        "https://variety.com/2026/legit/reviews/cats-the-jellicle-ball-broadway-review-andrew-lloyd-webber-musical-ballroom-culture-1236709562/",
+        "https://www.thewrap.com/creative-content/theater/cats-the-jellicle-ball-broadway-review-andrew-lloyd-webber/",
+        "https://www.chicagotribune.com/2024/06/20/review-cats-the-jellicle-ball-in-new-york-gives-this-musical-a-whole-new-ballroom-life/",
+        "https://cititour.com/NYC_News/Cats-The-Jellice-Ball-is-Practically-Purrfect/8448",
+        "https://exeuntnyc.com/reviews/review-cats-the-jellicle-ball-at-perelman-performing-arts-center/",
+        "https://www.nydailynews.com/2024/06/20/theater-review-cats-the-jellicle-ball-is-an-inspired-reimagining-of-the-broadway-classic/",
+        "https://nypost.com/2024/06/20/entertainment/cats-the-jellicle-ball-review-the-most-fun-youll-have-this-summer/",
+        "https://nystagereview.com/2024/06/20/cats-the-jellicle-ball-alw-in-the-house/",
+        "https://www.newyorktheatreguide.com/reviews/cats-the-jellicle-ball-off-broadway-review-andrew-lloyd-webber",
+        "https://www.nytimes.com/2024/06/20/theater/cats-the-jellicle-ball-review.html",
+        "https://www.queerty.com/cats-the-jellicle-ball-spins-dips-and-yes-catwalks-in-a-fierce-reimagining-of-the-80s-megahit-20240620",
+        "https://www.theatermania.com/news/review-cats-the-jellicle-ball-is-the-most-fun-ive-ever-had-at-an-andrew-lloyd-webber-musical_1743514/",
+        "https://www.timeout.com/newyork/theater/cats-the-jellicle-ball-musical-review-andrew-lloyd-webber-ballroom",
+        "https://www.thewrap.com/cats-jellicle-ball-off-broadway-review-andrew-lloyd-webber/",
+        "https://www.whatsonstage.com/news/cats-the-jellicle-ball-review-the-most-fun-ive-ever-had-at-an-andrew-lloyd-webber-musical_1608111/",
+        "https://www.newyorker.com/magazine/2024/07/08/cats-the-jellicle-ball-theatre-review"
+      ],
+      "dirFiles": 71,
+      "dirClean": 28,
+      "inReviewsJson": 27,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "latimes.com",
+          "count": 1
+        },
+        {
+          "host": "nysun.com",
+          "count": 1
+        },
+        {
+          "host": "pagesonstages.com",
+          "count": 1
+        },
+        {
+          "host": "talkinbroadway.com",
+          "count": 1
+        },
+        {
+          "host": "thecontending.com",
+          "count": 1
+        },
+        {
+          "host": "theaterpizzazz.com",
+          "count": 1
+        },
+        {
+          "host": "theaterscene.net",
           "count": 1
         },
         {
@@ -846,21 +570,122 @@
           "count": 1
         },
         {
-          "host": "theatrely.com",
-          "count": 1
-        },
-        {
-          "host": "thewrap.com",
-          "count": 1
-        },
-        {
           "host": "vulture.com",
+          "count": 1
+        },
+        {
+          "host": "washingtonpost.com",
           "count": 1
         }
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.timeout.com/newyork/theater/grangeville-review-off-broadway",
+          "url": "https://www.chicagotribune.com/2026/04/07/review-cats-jellicle-ball-broadway/",
+          "host": "chicagotribune.com",
+          "knownOutletId": "chicagotribune",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "chicagotribune--chris-jones.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.chicagotribune.com/2024/06/20/review-cats-the-jellicle-ball-in-new-york-gives-this-musical-a-whole-new-ballroom-life/"
+            }
+          ]
+        },
+        {
+          "url": "https://nypost.com/2026/04/07/entertainment/cats-the-jellicle-ball-review-a-euphoric-nyc-reinvention-of-a-broadway-classic/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nypost--johnny-oleksinski.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nypost.com/2026/04/07/entertainment/cats-the-jellicle-ball-review-a-euphoric-nyc-reinvention-of-a-broadway-classic/"
+            }
+          ]
+        },
+        {
+          "url": "https://nystagereview.com/2026/04/07/cats-the-jellicle-ball-welcome-to-the-glitter-box/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nysr--melissa-rose-bernardo.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2026/04/07/cats-the-jellicle-ball-a-disco-tastic-revival-of-lloyd-webbers-musical/"
+            },
+            {
+              "file": "nysr--michael-sommers.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2026/04/07/cats-the-jellicle-ball-welcome-to-the-glitter-box/"
+            },
+            {
+              "file": "nysr--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2024/06/20/cats-the-jellicle-ball-alw-in-the-house/"
+            }
+          ]
+        },
+        {
+          "url": "https://nystagereview.com/2026/04/07/cats-the-jellicle-ball-a-disco-tastic-revival-of-lloyd-webbers-musical/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nysr--melissa-rose-bernardo.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2026/04/07/cats-the-jellicle-ball-a-disco-tastic-revival-of-lloyd-webbers-musical/"
+            },
+            {
+              "file": "nysr--michael-sommers.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2026/04/07/cats-the-jellicle-ball-welcome-to-the-glitter-box/"
+            },
+            {
+              "file": "nysr--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2024/06/20/cats-the-jellicle-ball-alw-in-the-house/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.slantmagazine.com/theater/cats-the-jellicle-ball-broadway-review/",
+          "host": "slantmagazine.com",
+          "knownOutletId": "slantmagazine",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "slantmagazine--dan-rubins.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.slantmagazine.com/theater/cats-the-jellicle-ball-broadway-review/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.timeout.com/newyork/news/broadway-review-paris-is-purring-in-cats-the-jellicle-ball-040826",
           "host": "timeout.com",
           "knownOutletId": "timeout-london",
           "recoverable": false,
@@ -871,54 +696,20 @@
           "dirFlags": [
             {
               "file": "timeout--adam-feldman.json",
+              "flag": "duplicate",
+              "urlInDir": "https://www.timeout.com/newyork/news/broadway-review-paris-is-purring-in-cats-the-jellicle-ball-040826"
+            },
+            {
+              "file": "timeout--david-cote.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.timeout.com/newyork/theater/grangeville-review-off-broadway"
+              "urlInDir": "https://www.timeout.com/newyork/news/broadway-review-paris-is-purring-in-cats-the-jellicle-ball-040826"
             }
           ]
-        }
-      ]
-    },
-    {
-      "showId": "eurydice-off-broadway-2026",
-      "title": "EURYDICE",
-      "openingDate": "2025-06-02",
-      "status": "closed",
-      "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-Maya-Hawke-Stars-In-EURYDICE-Off-Broadway-20250602"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.nytimes.com/2025/06/02/theater/eurydice-review-maya-hawke-in-the-underworld.html",
-        "https://www.newyorktheatreguide.com/reviews/eurydice-off-broadway-review-maya-hawke",
-        "https://www.timeout.com/newyork/theater/eurydice-review-maya-hawke-sarah-ruhl"
-      ],
-      "dirFiles": 22,
-      "dirClean": 6,
-      "inReviewsJson": 6,
-      "missing": [],
-      "dirOnly": [
-        {
-          "host": "newyorktheater.me",
-          "count": 1
         },
         {
-          "host": "theatermania.com",
-          "count": 1
-        },
-        {
-          "host": "variety.com",
-          "count": 1
-        },
-        {
-          "host": "vulture.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.timeout.com/newyork/theater/eurydice-review-maya-hawke-sarah-ruhl",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
+          "url": "https://www.chicagotribune.com/2024/06/20/review-cats-the-jellicle-ball-in-new-york-gives-this-musical-a-whole-new-ballroom-life/",
+          "host": "chicagotribune.com",
+          "knownOutletId": "chicagotribune",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -926,56 +717,14 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "timeout--unknown.json",
+              "file": "chicagotribune--chris-jones.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.timeout.com/newyork/theater/eurydice-review-maya-hawke-sarah-ruhl"
+              "urlInDir": "https://www.chicagotribune.com/2024/06/20/review-cats-the-jellicle-ball-in-new-york-gives-this-musical-a-whole-new-ballroom-life/"
             }
           ]
-        }
-      ]
-    },
-    {
-      "showId": "oratorio-for-living-things-off-broadway-2026",
-      "title": "ORATORIO FOR LIVING THINGS",
-      "openingDate": "2025-10-16",
-      "status": "closed",
-      "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/what-do-reviews-think-of-oratorio-for-living-thingss-off-broadway-return",
-        "https://playbill.com/article/read-the-reviews-for-the-off-broadway-premiere-of-heather-christians-oratorio-for-living-things",
-        "https://www.broadwayworld.com/article/Review-Roundup-ORATORIO-FOR-LIVING-THINGS-Opens-at-Ars-Nova-What-Are-the-Critics-Saying-20220331",
-        "https://www.broadwayworld.com/article/Review-Roundup-ORATORIO-FOR-LIVING-THINGS-Opens-at-Signature-Theatre-20251017"
-      ],
-      "aggregatorListedUrls": [
-        "https://nystagereview.com/2025/10/16/oratorio-for-living-things-musically-captivating-text-effect-not-so/",
-        "https://www.newyorktheatreguide.com/reviews/oratorio-for-living-things-off-broadway-review",
-        "https://www.theatermania.com/news/review-oratorio-for-living-things-returns-as-glorious-as-ever_1807728/",
-        "http://exeuntnyc.com/reviews/review-oratorio-for-living-things-at-ars-nova-at-greenwich-house/",
-        "https://newyorktheater.me/2022/03/30/oratorio-for-living-things-review/",
-        "https://www.vulture.com/2022/03/theater-review-oratorio-for-living-things.html",
-        "https://www.nytimes.com/2022/03/30/theater/oratorio-for-living-things-review.html",
-        "https://www.timeout.com/newyork/theater/oratorio-for-living-things",
-        "https://www.theatermania.com/off-broadway/reviews/review-heather-christian-oratorio-for-living-things_93579.html",
-        "https://thefrontrowcenter.com/2022/04/oratorio-for-living-things/",
-        "https://thebroadwayblog.com/heather-christian-oratorio/"
-      ],
-      "dirFiles": 15,
-      "dirClean": 8,
-      "inReviewsJson": 8,
-      "missing": [],
-      "dirOnly": [
-        {
-          "host": "newyorker.com",
-          "count": 1
         },
         {
-          "host": "offoffonline.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "http://exeuntnyc.com/reviews/review-oratorio-for-living-things-at-ars-nova-at-greenwich-house/",
+          "url": "https://exeuntnyc.com/reviews/review-cats-the-jellicle-ball-at-perelman-performing-arts-center/",
           "host": "exeuntnyc.com",
           "knownOutletId": "exeunt-magazine",
           "recoverable": false,
@@ -987,146 +736,56 @@
             {
               "file": "exeunt-magazine--lane-williamson.json",
               "flag": "wrongProduction",
-              "urlInDir": "http://exeuntnyc.com/reviews/review-oratorio-for-living-things-at-ars-nova-at-greenwich-house/"
+              "urlInDir": "https://exeuntnyc.com/reviews/review-cats-the-jellicle-ball-at-perelman-performing-arts-center/"
             }
           ]
         },
         {
-          "url": "https://newyorktheater.me/2022/03/30/oratorio-for-living-things-review/",
-          "host": "newyorktheater.me",
-          "knownOutletId": "nyt-theater",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nyt-theater--jonathan-mandell.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://newyorktheater.me/2022/03/30/oratorio-for-living-things-review/"
-            }
-          ]
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/oratorio-for-living-things",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "timeout--raven-snook.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.timeout.com/newyork/theater/oratorio-for-living-things"
-            }
-          ]
-        },
-        {
-          "url": "https://thefrontrowcenter.com/2022/04/oratorio-for-living-things/",
-          "host": "thefrontrowcenter.com",
-          "knownOutletId": "front-row-center",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "front-row-center--edward-kliszus.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://thefrontrowcenter.com/2022/04/oratorio-for-living-things/"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "showId": "caroline-off-broadway-2026",
-      "title": "Caroline",
-      "openingDate": "2025-10-01",
-      "status": "closed",
-      "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/what-do-the-critics-think-of-chloe-grace-moretz-amy-landecker-river-lipe-smith-led-caroline",
-        "https://playbill.com/article/read-the-reviews-for-broadway-revival-of-caroline-or-change",
-        "https://www.broadwayworld.com/article/Review-Roundup-CAROLINE-Opens-At-MCC-Theater-Starring-Chlo-Grace-Moretz-Amy-Landecker-and-River-Lipe-Smith-20250930",
-        "https://www.broadwayworld.com/article/Review-Roundup-CAROLINE-OR-CHANGE-Opens-On-Broadway-See-What-the-Critics-Are-Saying-20211027",
-        "https://www.broadwayworld.com/article/Review-Roundup-CONVERSATIONS-WITH-MOTHER-Starring-Matt-Doyle-and-Caroline-Aaron-20250224"
-      ],
-      "aggregatorListedUrls": [
-        "https://1minutecritic.com/chloe-grace-moretz-caroline-off-broadway-review/",
-        "https://culturesauce.com/2025/09/30/chloe-grace-moretz-caroline-off-broadway-review/",
-        "https://nystagereview.com/2025/09/30/caroline-a-quiet-gem/",
-        "https://www.newyorktheatreguide.com/reviews/caroline-off-broadway-review-chloe-grace-moretz",
-        "https://www.nytimes.com/2025/10/01/theater/caroline-review-chloe-grace-moretz-as-a-mother-starting-over.html",
-        "https://www.timeout.com/newyork/theater/caroline-play-review-chloe-grace-moretz-amy-landecker-river-lipe-smith-transgender",
-        "https://www.theatermania.com/news/review-chloe-grace-moretz-and-river-lipe-smith-play-a-family-in-transition-in-caroline_1805482/",
-        "https://www.thewrap.com/caroline-off-broadway-review-chloe-grace-moretz/",
-        "https://www.amny.com/entertainment/broadway/review-caroline-or-change-makes-timely-return-to-broadway/",
-        "https://broadwaynews.com/2021/10/27/review-sharon-d-clarke-is-electrifying-in-caroline-or-change/",
-        "https://cititour.com/NYC_Broadway/Caroline-or-Change/1023",
-        "https://www.thedailybeast.com/how-caroline-or-change-rewrites-the-broadway-musical",
-        "https://deadline.com/2021/10/caroline-or-change-broadway-review-sharon-d-clark-tony-kushner-jeanine-tesori-1234861998/",
-        "https://didtheylikeit.com/shows/caroline-or-change-2/caroline-or-change-inertia-buries-a-musical-masterpiece/",
-        "https://www.hollywoodreporter.com/lifestyle/arts/caroline-or-change-broadway-review-1235038296/",
-        "https://www.nydailynews.com/entertainment/broadway/ny-caroline-or-change-broadway-review-20211028-pdvcx2n2anezbf3z64hnkk5liy-story.html",
-        "http://nystagereview.com/2021/10/27/caroline-or-change-of-despair-and-hope-and-singing-washing-machines/",
-        "http://nystagereview.com/2021/10/27/caroline-or-change-sharon-d-clarke-offers-a-bracing-performance-in-tesori-kushner-musical/",
-        "https://newyorktheater.me/2021/10/27/caroline-or-change-on-broadway-review/",
-        "https://www.nytimes.com/2021/10/27/theater/caroline-or-change-review.html",
-        "https://observer.com/2021/10/time-to-properly-value-the-great-wealth-of-caroline-or-change/",
-        "https://www.theatrely.com/post/a-searing-caroline-or-change-finds-pain-in-hope-review",
-        "https://www.timeout.com/newyork/theater/caroline-or-change-broadway-review-revival-musical",
-        "https://variety.com/2021/legit/reviews/caroline-or-change-review-broadway-sharon-d-clarke-1235098905/",
-        "https://www.thewrap.com/caroline-or-change-broadway-review-kushner-tesori/",
-        "https://www.vulture.com/2021/10/theater-review-caroline-change-roundabout-studio-54-kushner-tesori.html",
-        "https://www.newyorktheatreguide.com/reviews/conversations-with-mother-off-broadway-review-caroline-aaron-matt-doyle",
-        "http://www.lightingandsoundamerica.com/news/story.asp?ID=6L57CN",
-        "https://www.talkinbroadway.com/page/ob/09_30_25.html"
-      ],
-      "dirFiles": 38,
-      "dirClean": 12,
-      "inReviewsJson": 12,
-      "missing": [
-        {
-          "url": "https://cititour.com/NYC_Broadway/Caroline-or-Change/1023",
-          "host": "cititour.com",
-          "knownOutletId": "cititour"
-        },
-        {
-          "url": "https://www.thedailybeast.com/how-caroline-or-change-rewrites-the-broadway-musical",
-          "host": "thedailybeast.com",
-          "knownOutletId": "dailybeast"
-        },
-        {
-          "url": "https://didtheylikeit.com/shows/caroline-or-change-2/caroline-or-change-inertia-buries-a-musical-masterpiece/",
-          "host": "didtheylikeit.com",
-          "knownOutletId": "dtli"
-        },
-        {
-          "url": "https://www.nydailynews.com/entertainment/broadway/ny-caroline-or-change-broadway-review-20211028-pdvcx2n2anezbf3z64hnkk5liy-story.html",
+          "url": "https://www.nydailynews.com/2024/06/20/theater-review-cats-the-jellicle-ball-is-an-inspired-reimagining-of-the-broadway-classic/",
           "host": "nydailynews.com",
-          "knownOutletId": "nydailynews"
+          "knownOutletId": "nydailynews",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nydailynews--chris-jones.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nydailynews.com/2026/04/07/broadway-review-cats-jellicle-ball/"
+            },
+            {
+              "file": "nydailynews--joe-dziemianowicz.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.nydailynews.com/entertainment/theater-arts/cats-impurr-fect-revival-leona-lewis-opens-broadway-article-1.2731394"
+            },
+            {
+              "file": "nydailynews--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nydailynews.com/2024/06/20/theater-review-cats-the-jellicle-ball-is-an-inspired-reimagining-of-the-broadway-classic/"
+            }
+          ]
         },
         {
-          "url": "https://observer.com/2021/10/time-to-properly-value-the-great-wealth-of-caroline-or-change/",
-          "host": "observer.com",
-          "knownOutletId": "observer"
-        }
-      ],
-      "dirOnly": [
+          "url": "https://nypost.com/2024/06/20/entertainment/cats-the-jellicle-ball-review-the-most-fun-youll-have-this-summer/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nypost--johnny-oleksinski.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nypost.com/2026/04/07/entertainment/cats-the-jellicle-ball-review-a-euphoric-nyc-reinvention-of-a-broadway-classic/"
+            }
+          ]
+        },
         {
-          "host": "offoffonline.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://nystagereview.com/2025/09/30/caroline-a-quiet-gem/",
+          "url": "https://nystagereview.com/2024/06/20/cats-the-jellicle-ball-alw-in-the-house/",
           "host": "nystagereview.com",
           "knownOutletId": "nysr",
           "recoverable": false,
@@ -1136,14 +795,515 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "nysr--frank-scheck.json",
+              "file": "nysr--melissa-rose-bernardo.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://nystagereview.com/2025/09/30/caroline-a-quiet-gem/"
+              "urlInDir": "https://nystagereview.com/2026/04/07/cats-the-jellicle-ball-a-disco-tastic-revival-of-lloyd-webbers-musical/"
+            },
+            {
+              "file": "nysr--michael-sommers.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2026/04/07/cats-the-jellicle-ball-welcome-to-the-glitter-box/"
+            },
+            {
+              "file": "nysr--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2024/06/20/cats-the-jellicle-ball-alw-in-the-house/"
             }
           ]
         },
         {
-          "url": "https://www.amny.com/entertainment/broadway/review-caroline-or-change-makes-timely-return-to-broadway/",
+          "url": "https://www.queerty.com/cats-the-jellicle-ball-spins-dips-and-yes-catwalks-in-a-fierce-reimagining-of-the-80s-megahit-20240620",
+          "host": "queerty.com",
+          "knownOutletId": "queerty",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "queerty--matthew-wexler.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.queerty.com/cats-the-jellicle-ball-spins-dips-and-yes-catwalks-in-a-fierce-reimagining-of-the-80s-megahit-20240620"
+            }
+          ]
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/cats-the-jellicle-ball-musical-review-andrew-lloyd-webber-ballroom",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout--adam-feldman.json",
+              "flag": "duplicate",
+              "urlInDir": "https://www.timeout.com/newyork/news/broadway-review-paris-is-purring-in-cats-the-jellicle-ball-040826"
+            },
+            {
+              "file": "timeout--david-cote.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.timeout.com/newyork/news/broadway-review-paris-is-purring-in-cats-the-jellicle-ball-040826"
+            }
+          ]
+        },
+        {
+          "url": "https://www.newyorker.com/magazine/2024/07/08/cats-the-jellicle-ball-theatre-review",
+          "host": "newyorker.com",
+          "knownOutletId": "newyorker",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "newyorker--emily-nussbaum.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newyorker.com/magazine/2026/04/27/becky-shaw-theatre-review-cats-the-jellicle-ball"
+            },
+            {
+              "file": "newyorker--helen-shaw-2024-bway.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newyorker.com/magazine/2024/07/08/cats-the-jellicle-ball-theatre-review"
+            },
+            {
+              "file": "newyorker--helen-shaw.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newyorker.com/magazine/2024/07/08/cats-the-jellicle-ball-theatre-review"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "showId": "dog-day-afternoon-2026",
+      "title": "Dog Day Afternoon",
+      "openingDate": "2026-03-30",
+      "status": "open",
+      "category": "broadway",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-DOG-DAY-AFTERNOON-Starring-Jon-Bernthal-and-Ebon-Moss-Bachrach-20260330"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.nytimes.com/2026/03/30/theater/dog-day-afternoon-review-bernthal-moss-bachrach.html",
+        "https://www.amny.com/entertainment/review-dog-day-afternoon/",
+        "https://www.timeout.com/newyork/news/broadway-review-a-heist-and-a-play-go-wrong-in-dog-day-afternoon-033126",
+        "https://culturesauce.com/2026/03/31/dog-day-afternoon-jon-bernthal-broadway-review/",
+        "https://newyorktheater.me/2026/03/30/dog-day-afternoon-broadway-review/",
+        "https://www.usatoday.com/story/entertainment/movies/2026/03/31/dog-day-afternoon-broadway-review/89360614007/",
+        "https://nypost.com/2026/03/31/entertainment/dog-day-afternoon-review-jon-bernthals-broadway-play-turns-classic-ny-movie-into-a-silly-sitcom/",
+        "https://ew.com/dog-day-afternoon-review-jon-bernthal-takes-on-famous-al-pacino-role-11937173",
+        "https://nystagereview.com/2026/03/31/dog-day-afternoon-now-you-too-can-chant-attica-attica/",
+        "https://nystagereview.com/2026/03/31/dog-day-afternoon-more-punchlines-than-peril/",
+        "https://variety.com/2026/legit/reviews/dog-day-afternoon-broadway-review-jon-bernthal-1236702501/",
+        "https://www.newyorktheatreguide.com/reviews/dog-day-afternoon-broadway-review-jon-bernthal-ebon-moss-bachrach",
+        "https://www.hollywoodreporter.com/lifestyle/arts/dog-day-afternoon-review-theater-jon-bernthal-broadway-1236551286/",
+        "https://www.wsj.com/articles/dog-day-afternoon-review-a-robbery-revisited-on-broadway-28341eb0",
+        "https://www.theatrely.com/post/dog-day-afternoon-does-disney-for-dads-review",
+        "https://www.thewrap.com/creative-content/theater/dog-day-afternoon-broadway-review-jon-bernthal-ebon-moss-bachrach/",
+        "https://cititour.com/NYC_Broadway/Dog-Day-Afternoon/1365",
+        "https://yaledailynews.com/articles/lend-me-your-ears-broadway-s-dog-day-afternoon-is-a-doggone-mess",
+        "https://www.nydailynews.com/2026/03/31/broadway-review-dog-day-afternoon-struggles-to-stand-apart-from-film/",
+        "https://www.slantmagazine.com/theater/dog-day-afternoon-broadway-review-jon-bernthal-ebon-moss-bachrach/",
+        "https://www.theguardian.com/stage/2026/mar/31/dog-day-afternoon-review-jon-bernthal-ebon-moss-bachrach",
+        "https://thecontending.com/dog-day-afternoon-not-your-fathers-take-but-thats-not-a-bad-thing/"
+      ],
+      "dirFiles": 46,
+      "dirClean": 34,
+      "inReviewsJson": 34,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "broadwayandme.blogspot.com",
+          "count": 1
+        },
+        {
+          "host": "chicagotribune.com",
+          "count": 1
+        },
+        {
+          "host": "independent.co.uk",
+          "count": 1
+        },
+        {
+          "host": "nysun.com",
+          "count": 1
+        },
+        {
+          "host": "newyorker.com",
+          "count": 1
+        },
+        {
+          "host": "1minutecritic.com",
+          "count": 1
+        },
+        {
+          "host": "pagesonstages.com",
+          "count": 1
+        },
+        {
+          "host": "thekomisarscoop.com",
+          "count": 1
+        },
+        {
+          "host": "theaterpizzazz.com",
+          "count": 1
+        },
+        {
+          "host": "theatermania.com",
+          "count": 1
+        },
+        {
+          "host": "theatrereviews.com",
+          "count": 1
+        },
+        {
+          "host": "vulture.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.nydailynews.com/2026/03/31/broadway-review-dog-day-afternoon-struggles-to-stand-apart-from-film/",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nydailynews--chris-jones.json",
+              "flag": "clean",
+              "urlInDir": "https://www.nydailynews.com/2026/03/31/broadway-review-dog-day-afternoon-struggles-to-stand-apart-from-film/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "showId": "giant-2026",
+      "title": "Giant",
+      "openingDate": "2026-03-23",
+      "status": "open",
+      "category": "broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-sound-off-on-broadways-giant-starring-john-lithgow",
+        "https://playbill.com/article/read-the-reviews-for-john-lithgow-led-roald-dahl-play-giant-in-the-west-end",
+        "https://www.broadwayworld.com/article/Review-Roundup-GIANT-Opens-On-Broadway-Starring-John-Lithgow-As-Roald-Dahl-20260323",
+        "https://www.broadwayworld.com/article/Review-Roundup-The-Public-Theaters-GIANT-All-the-Reviews-20121116"
+      ],
+      "aggregatorListedUrls": [
+        "https://1minutecritic.com/giant-john-lithgow-broadway-review/",
+        "https://www.amny.com/entertainment/giant-performance-divisive-play/",
+        "https://www.chicagotribune.com/2026/03/23/review-giant-broadway-john-lithgow/",
+        "https://cititour.com/NYC_Broadway/Giant/1363",
+        "https://culturesauce.com/2026/03/23/giant-john-lithgow-roald-dahl-broadway-review/",
+        "https://deadline.com/2026/03/john-lithgow-giant-broadway-review-1236761578/",
+        "https://forward.com/culture/theater/814387/giant-review-broadway-john-lithgow-roald-dahl-play-antisemitism/",
+        "https://nypost.com/2026/03/23/entertainment/giant-review-john-lithgow-is-superb-as-roald-dahl-in-broadway-show-about-his-revolting-anti-semitism/",
+        "https://newyorktheater.me/2026/03/23/giant-review-john-lithgow-as-roald-dahl-antisemite/",
+        "https://www.newyorktheatreguide.com/reviews/giant-broadway-review-john-lithgow-roald-dahl",
+        "https://www.nytimes.com/2026/03/23/theater/giant-review-broadway-lithgow-dahl.html",
+        "https://www.theatermania.com/news/review-giant-on-broadway-how-roald-dahl-accepted-his-antisemitism_1829455/",
+        "https://www.theatrely.com/post/giant-john-lithgows-uneasy-dahl-review",
+        "https://www.timeout.com/newyork/theater/giant-broadway-play-review-john-lithgow-roald-dahl",
+        "https://variety.com/2026/legit/reviews/giant-broadway-review-john-lithgow-roald-dahl-1236696703/",
+        "https://www.thewrap.com/creative-content/theater/giant-broadway-review-john-lithgow/",
+        "https://www.broadwayworld.com/westend/article/Review-GIANT-Harold-Pinter-Theatre-Starring-John-Lithgow-20250502",
+        "https://www.dailymail.co.uk/tvshowbiz/article-14670075/Funny-shocking-thought-provoking-John-Lithgows-towering-performance-brings-big-unfriendly-giant-Roald-Dahl-life-West-End.html",
+        "https://www.londontheatre.co.uk/reviews/giant-review-harold-pinter-theatre",
+        "https://www.thestage.co.uk/reviews/giant-review-harold-pinter-theatre-london-john-lithgow-mark-rosenblatt-nicholas-hytner",
+        "https://www.standard.co.uk/culture/theatre/giant-harold-pinter-roald-dahl-b1225660.html",
+        "https://www.telegraph.co.uk/theatre/what-to-see/giant-harold-pinter-theatre-review-john-lithgow/",
+        "https://www.timeout.com/london/theatre/giant-review-3",
+        "https://www.thetimes.com/culture/theatre-dance/article/giant-review-john-lithgow-roald-dahl-kmzqshndc",
+        "https://nystagereview.com/2026/03/23/giant-antisemitism-laid-bare/",
+        "https://nystagereview.com/2026/03/23/giant-author-antisemite-roald-dahl/",
+        "http://theater.nytimes.com/2012/11/16/theater/reviews/giant-with-brian-darcy-james-at-the-public-theater.html",
+        "http://www.businessweek.com/news/2012-11-15/musical-giant-overflows-with-plot-songs-theater",
+        "http://www.westport-news.com/entertainment/article/Review-Giant-is-sprawling-eloquent-new-musical-4042256.php",
+        "https://www.timeout.com/newyork/news/review-john-lithgow-wrestles-with-roald-dahls-demons-in-giant-032426",
+        "https://www.nydailynews.com/2026/03/23/broadway-review-giant-john-lithgow-music-box-theatre/"
+      ],
+      "dirFiles": 50,
+      "dirClean": 26,
+      "inReviewsJson": 25,
+      "missing": [
+        {
+          "url": "http://www.westport-news.com/entertainment/article/Review-Giant-is-sprawling-eloquent-new-musical-4042256.php",
+          "host": "westport-news.com",
+          "knownOutletId": null
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "artsfuse.org",
+          "count": 1
+        },
+        {
+          "host": "nysun.com",
+          "count": 1
+        },
+        {
+          "host": "nj.com",
+          "count": 1
+        },
+        {
+          "host": "theaterlife.com",
+          "count": 1
+        },
+        {
+          "host": "vulture.com",
+          "count": 1
+        },
+        {
+          "host": "wsj.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://cititour.com/NYC_Broadway/Giant/1363",
+          "host": "cititour.com",
+          "knownOutletId": "cititour",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "cititour--brian-scott-lipton.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://cititour.com/NYC_Broadway/Giant/1363"
+            }
+          ]
+        },
+        {
+          "url": "https://www.dailymail.co.uk/tvshowbiz/article-14670075/Funny-shocking-thought-provoking-John-Lithgows-towering-performance-brings-big-unfriendly-giant-Roald-Dahl-life-West-End.html",
+          "host": "dailymail.co.uk",
+          "knownOutletId": "daily-mail",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "daily-mail--patrick-marmion.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.dailymail.co.uk/tvshowbiz/article-13897381/Giant-review-Roald-Dahls-uncomfortable-views-royal-court.html"
+            }
+          ]
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/giant-review-harold-pinter-theatre",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "london-theatre--julia-rank.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.londontheatre.co.uk/reviews/giant-review-royal-court"
+            }
+          ]
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/giant-review-harold-pinter-theatre-london-john-lithgow-mark-rosenblatt-nicholas-hytner",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thestage--dave-fargnoli.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thestage.co.uk/reviews/giant-review-royal-court-theatre-london-roald-dahl-antisemitism-john-lithgow-mark-rosenblatt"
+            }
+          ]
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/giant-harold-pinter-roald-dahl-b1225660.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "standard--tim-bano.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.standard.co.uk/culture/theatre/giant-royal-court-review-john-lithgow-romola-garai-b1184513.html"
+            }
+          ]
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/giant-harold-pinter-theatre-review-john-lithgow/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "sunday-telegraph--claire-allfree.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/giant-royal-court-review-roald-dahl-anti-semitism/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/giant-review-john-lithgow-roald-dahl-kmzqshndc",
+          "host": "thetimes.com",
+          "knownOutletId": "times-uk",
+          "recoverable": true,
+          "recoverableFile": "times-uk--clive-davis.json",
+          "recoverableOutletId": "times-uk",
+          "recoverableCritic": "Clive Davis",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "times-uk--clive-davis.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.thetimes.com/culture/theatre-dance/article/giant-review-john-lithgow-roald-dahl-royal-court-s8jwhttpv"
+            }
+          ]
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "http://www.westport-news.com/entertainment/article/Review-Giant-is-sprawling-eloquent-new-musical-4042256.php",
+          "host": "westport-news.com",
+          "outletId": "westport-news",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=giant-2026 --url=http://www.westport-n"
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/giant-review-john-lithgow-roald-dahl-kmzqshndc",
+          "host": "thetimes.com",
+          "file": "times-uk--clive-davis.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "reason": "ingest no-op (text landed elsewhere or unchanged)",
+          "recoveryCount": 1
+        }
+      ]
+    },
+    {
+      "showId": "every-brilliant-thing-2026",
+      "title": "Every Brilliant Thing",
+      "openingDate": "2026-03-12",
+      "status": "open",
+      "category": "broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-what-do-the-critics-think-of-every-brilliant-thing-starring-daniel-radcliffe",
+        "https://www.broadwayworld.com/article/Review-Roundup-Tony-Winner-Daniel-Radcliffe-Stars-in-EVERY-BRILLIANT-THING-on-Broadway-20260312"
+      ],
+      "aggregatorListedUrls": [
+        "https://1minutecritic.com/every-brilliant-thing-review-daniel-radcliffe/",
+        "https://www.amny.com/entertainment/review-daniel-radcliffe-every-brilliant-thing/",
+        "https://cititour.com/NYC_Broadway/Every-Brilliant-Thing/1359",
+        "https://culturesauce.com/2026/03/12/daniel-radcliffe-every-brilliant-thing-broadway-review/",
+        "https://www.nydailynews.com/2026/03/12/broadway-review-radcliffe-brilliantly-cast-in-every-brilliant-thing/",
+        "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcliffe-1236750131/",
+        "https://ew.com/every-brilliant-thing-review-daniel-radcliffe-casts-spell-on-broadway-11921829",
+        "https://exeuntnyc.com/reviews/review-every-brilliant-thing-at-the-hudson-theatre/",
+        "https://www.theguardian.com/stage/2026/mar/12/every-brilliant-thing-daniel-radcliffe-broadway",
+        "https://www.latimes.com/entertainment-arts/story/2026-03-12/every-brilliant-thing-review-daniel-radcliffe-broadway-theater",
+        "https://open.substack.com/pub/newyorknotebook/p/every-brilliant-thing",
+        "https://nypost.com/2026/03/12/entertainment/every-brilliant-thing-review-daniel-radcliffe-schmoozes-with-the-audience-in-sweet-one-man-show/",
+        "https://nystagereview.com/2026/03/12/every-brilliant-thing-a-lustrous-evening-with-daniel-radcliffe/",
+        "https://nystagereview.com/2026/03/12/every-brilliant-thing-daniel-radcliffe-performs-magic-of-an-emotional-kind/",
+        "https://newyorktheater.me/2026/03/12/every-brilliant-thing-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/every-brilliant-thing-broadway-review-daniel-radcliffe",
+        "https://www.nytimes.com/2026/03/12/theater/every-brilliant-thing-review-daniel-radcliffe.html",
+        "https://therecs.co.uk/every-brilliant-thing/",
+        "https://www.theatermania.com/news/review-daniel-radcliffe-invites-us-to-cherish-every-brilliant-thing_1827748/",
+        "https://www.theatrely.com/post/daniel-radcliffe-crowd-sources-community-in-every-brilliant-thing-review",
+        "https://theaterpizzazz.com/daniel-radcliffe-shines-brightly-in-every-brilliant-thing/",
+        "https://www.timeout.com/newyork/news/broadway-review-daniel-radcliffe-brings-his-shine-to-every-brilliant-thing-031326",
+        "https://variety.com/2026/legit/reviews/daniel-radcliffe-every-brilliant-thing-broadway-review-1236685975/",
+        "https://www.wsj.com/articles/every-brilliant-thing-review-daniel-radcliffes-spirited-solo-show-107f4d40",
+        "https://www.thewrap.com/creative-content/theater/every-brilliant-thing-broadway-review-daniel-radcliffe/",
+        "https://variety.com/2026/tv/reviews/daniel-radcliffe-every-brilliant-thing-broadway-review-1236685975/",
+        "https://www.chicagotribune.com/2026/03/12/review-every-brilliant-thing-daniel-radcliffe/",
+        "https://thecontending.com/a-breathless-daniel-radcliffe-enchants-in-every-brilliant-thing-on-broadway/",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=TXVWEL"
+      ],
+      "dirFiles": 59,
+      "dirClean": 31,
+      "inReviewsJson": 29,
+      "missing": [
+        {
+          "url": "https://open.substack.com/pub/newyorknotebook/p/every-brilliant-thing",
+          "host": "open.substack.com",
+          "knownOutletId": null
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "frontmezzjunkies.com",
+          "count": 1
+        },
+        {
+          "host": "independent.co.uk",
+          "count": 1
+        },
+        {
+          "host": "nysun.com",
+          "count": 1
+        },
+        {
+          "host": "pagesonstages.com",
+          "count": 1
+        },
+        {
+          "host": "slantmagazine.com",
+          "count": 1
+        },
+        {
+          "host": "theaterlife.com",
+          "count": 1
+        },
+        {
+          "host": "theaterscene.org",
+          "count": 1
+        },
+        {
+          "host": "theaterscene.net",
+          "count": 1
+        },
+        {
+          "host": "vulture.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.amny.com/entertainment/review-daniel-radcliffe-every-brilliant-thing/",
           "host": "amny.com",
           "knownOutletId": "amny",
           "recoverable": false,
@@ -1154,15 +1314,15 @@
           "dirFlags": [
             {
               "file": "amny--matt-windman.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.amny.com/entertainment/broadway/review-caroline-or-change-makes-timely-return-to-broadway/"
+              "flag": "wrongShow",
+              "urlInDir": "https://www.amny.com/entertainment/review-daniel-radcliffe-every-brilliant-thing/"
             }
           ]
         },
         {
-          "url": "https://broadwaynews.com/2021/10/27/review-sharon-d-clarke-is-electrifying-in-caroline-or-change/",
-          "host": "broadwaynews.com",
-          "knownOutletId": "broadwaynews",
+          "url": "https://www.nydailynews.com/2026/03/12/broadway-review-radcliffe-brilliantly-cast-in-every-brilliant-thing/",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -1170,14 +1330,19 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "broadwaynews--michael-abourizk.json",
+              "file": "nydailynews--chris-jones.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.broadwaynews.com/adam-kantor-caroline-aaron-and-more-will-be-featured-in-industry-reading-of-the-rosenbergs/"
+              "urlInDir": "https://www.nydailynews.com/2026/03/12/broadway-review-radcliffe-brilliantly-cast-in-every-brilliant-thing/"
+            },
+            {
+              "file": "nydailynews--joe-dziemianowicz.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.nydailynews.com/entertainment/theater-arts/brilliant-shines-off-broadway-article-1.2043507"
             }
           ]
         },
         {
-          "url": "https://deadline.com/2021/10/caroline-or-change-broadway-review-sharon-d-clark-tony-kushner-jeanine-tesori-1234861998/",
+          "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcliffe-1236750131/",
           "host": "deadline.com",
           "knownOutletId": "deadline",
           "recoverable": false,
@@ -1187,16 +1352,16 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "deadline--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://deadline.com/2021/10/caroline-or-change-broadway-review-sharon-d-clark-tony-kushner-jeanine-tesori-1234861998/"
+              "file": "deadline--greg-evans.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcliffe-1236750131/"
             }
           ]
         },
         {
-          "url": "http://nystagereview.com/2021/10/27/caroline-or-change-of-despair-and-hope-and-singing-washing-machines/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
+          "url": "https://www.theatermania.com/news/review-daniel-radcliffe-invites-us-to-cherish-every-brilliant-thing_1827748/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -1204,193 +1369,166 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "nysr--frank-scheck.json",
+              "file": "theatermania--hayley-levitt.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://nystagereview.com/2025/09/30/caroline-a-quiet-gem/"
-            }
-          ]
-        },
-        {
-          "url": "http://nystagereview.com/2021/10/27/caroline-or-change-sharon-d-clarke-offers-a-bracing-performance-in-tesori-kushner-musical/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nysr--frank-scheck.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://nystagereview.com/2025/09/30/caroline-a-quiet-gem/"
-            }
-          ]
-        },
-        {
-          "url": "https://newyorktheater.me/2021/10/27/caroline-or-change-on-broadway-review/",
-          "host": "newyorktheater.me",
-          "knownOutletId": "nyt-theater",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nyt-theater--jonathan-mandell.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://newyorktheater.me/2021/10/27/caroline-or-change-on-broadway-review/"
-            }
-          ]
-        },
-        {
-          "url": "https://variety.com/2021/legit/reviews/caroline-or-change-review-broadway-sharon-d-clarke-1235098905/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "variety--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://variety.com/2021/legit/reviews/caroline-or-change-review-broadway-sharon-d-clarke-1235098905/"
-            }
-          ]
-        },
-        {
-          "url": "https://www.talkinbroadway.com/page/ob/09_30_25.html",
-          "host": "talkinbroadway.com",
-          "knownOutletId": "talkinbroadway",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "talkinbroadway--kimberly-ramirez.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.talkinbroadway.com/page/ob/09_30_25.html"
+              "urlInDir": "http://www.theatermania.com/new-york-city-theater/reviews/every-brilliant-thing-barrow-street-review_70976.html"
             },
             {
-              "file": "talkinbroadway--unknown.json",
+              "file": "theatermania--kenji-fujishima.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.theatermania.com/news/review-daniel-radcliffe-invites-us-to-cherish-every-brilliant-thing_1827748/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.theatrely.com/post/daniel-radcliffe-crowd-sources-community-in-every-brilliant-thing-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatrely--emily-wyrwa.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.talkinbroadway.com/page/world/CarolineorChange.html"
+              "urlInDir": "https://www.theatrely.com/post/daniel-radcliffe-crowd-sources-community-in-every-brilliant-thing-review"
+            },
+            {
+              "file": "theatrely--juan-a-ramirez.json",
+              "flag": "duplicate",
+              "urlInDir": "https://www.theatrely.com/post/daniel-radcliffe-crowd-sources-community-in-every-brilliant-thing-review"
+            },
+            {
+              "file": "theatrely--rachel-hsu.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatrely.com/post/every-brilliant-thing-is-well-brilliant-review"
+            }
+          ]
+        },
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TXVWEL",
+          "host": "lightingandsoundamerica.com",
+          "knownOutletId": "lighting-and-sound-america",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "lighting-and-sound-america--david-barbour.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.lightingandsoundamerica.com/news/story.asp?ID=TXVWEL"
             }
           ]
         }
       ],
       "ingestResults": [
         {
-          "url": "https://cititour.com/NYC_Broadway/Caroline-or-Change/1023",
-          "host": "cititour.com",
-          "outletId": "cititour",
-          "provisional": false,
+          "url": "https://open.substack.com/pub/newyorknotebook/p/every-brilliant-thing",
+          "host": "open.substack.com",
+          "outletId": "open",
+          "provisional": true,
           "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=caroline-off-broadway-2026 --url=https"
-        },
-        {
-          "url": "https://www.thedailybeast.com/how-caroline-or-change-rewrites-the-broadway-musical",
-          "host": "thedailybeast.com",
-          "outletId": "dailybeast",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://didtheylikeit.com/shows/caroline-or-change-2/caroline-or-change-inertia-buries-a-musical-masterpiece/",
-          "host": "didtheylikeit.com",
-          "outletId": "dtli",
-          "provisional": false,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=caroline-off-broadway-2026 --url=https"
-        },
-        {
-          "url": "https://www.nydailynews.com/entertainment/broadway/ny-caroline-or-change-broadway-review-20211028-pdvcx2n2anezbf3z64hnkk5liy-story.html",
-          "host": "nydailynews.com",
-          "outletId": "nydailynews",
-          "provisional": false,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=caroline-off-broadway-2026 --url=https"
-        },
-        {
-          "url": "https://observer.com/2021/10/time-to-properly-value-the-great-wealth-of-caroline-or-change/",
-          "host": "observer.com",
-          "outletId": "observer",
-          "provisional": false,
-          "ok": true,
-          "reason": null
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=every-brilliant-thing-2026 --url=https"
         }
       ],
       "ingestSkippedByCap": []
     },
     {
-      "showId": "all-nighter-off-broadway-2025",
-      "title": "All Nighter",
-      "openingDate": "2025-03-10",
-      "status": "closed",
-      "category": "off-broadway",
+      "showId": "two-strangers-bway-2025",
+      "title": "Two Strangers (Carry a Cake Across New York)",
+      "openingDate": "2025-11-20",
+      "status": "open",
+      "category": "broadway",
       "aggregatorArticles": [
-        "https://playbill.com/article/what-do-the-critics-think-of-all-nighter-off-broadway",
-        "https://www.broadwayworld.com/article/Review-Roundup-ALL-NIGHTER-Opens-Off-Broadway-20250310"
+        "https://playbill.com/article/what-are-the-reviews-of-broadways-two-strangers-carry-a-cake-across-new-york",
+        "https://www.broadwayworld.com/article/Review-Roundup-TWO-STRANGERS-CARRY-A-CAKE-ACROSS-NEW-YORK-Opens-On-Broadway-20251120",
+        "https://www.broadwayworld.com/article/Review-Roundup-TWO-STRANGERS-CARRY-A-CAKE-ACROSS-NEW-YORK-at-ART-20250602"
       ],
       "aggregatorListedUrls": [
-        "https://culturesauce.com/2025/03/09/all-nighter-off-broadway-review/",
-        "https://nystagereview.com/2025/03/09/all-nighter-five-college-seniors-face-graduation-and-each-other/",
-        "https://www.newyorktheatreguide.com/reviews/all-nighter-off-broadway-review",
-        "https://www.theatrely.com/post/up-all-night-with-the-girls-in-all-nighter-review",
-        "https://www.theatermania.com/news/review-julia-lester-kathryn-gallagher-and-solid-cast-make-all-nighter-worth-staying-up-for_1766852/",
-        "https://www.thewrap.com/all-nighter-off-broadway-review-when-college-ends-with-a-bang-not-a-whimper/",
-        "https://www.nytimes.com/2025/03/10/theater/all-nighter-play-review-lester.html",
-        "http://www.lightingandsoundamerica.com/news/story.asp?ID=7H2J0O",
-        "https://www.talkinbroadway.com/page/ob/03_09_25.html",
-        "https://www.theaterscene.net/plays/offbway-plays/all-nighter/victor-gluck/",
-        "https://twi-ny.com/2025/05/15/all-nighter-natalie-margolin-robert-w-wilson-mcc-theater-space/"
+        "https://1minutecritic.com/two-strangers-carry-cake-broadway-review/",
+        "https://therecs.co.uk/two-strangers-carry-a-cake-across-new-york/",
+        "https://cititour.com/NYC_Broadway/Two-Strangers-Carry-a-Cake-Across-New-York/1344",
+        "https://culturesauce.com/2025/11/20/two-strangers-carry-a-cake-across-new-york-broadway-review/",
+        "https://www.thedailybeast.com/obsessed/two-strangers-carry-a-cake-across-new-yorkand-onto-broadway/",
+        "https://ew.com/two-strangers-carry-a-cake-across-new-york-review-delightful-rom-com-musical-broadway-11850800",
+        "https://frontmezzjunkies.com/2025/11/20/two-strangers-carry-a-cake-across-new-york/",
+        "https://www.nydailynews.com/2025/11/20/broadway-review-two-strangers-carry-a-cake-across-ny-is-cute-but-too-long/",
+        "https://nypost.com/2025/11/20/entertainment/two-strangers-carry-a-cake-across-new-york-review-a-hilarious-new-star-bursts-onto-broadway/",
+        "https://nystagereview.com/2025/11/20/two-strangers-carry-a-cake-across-new-york-charming-musical-rom-com-isnt-heavy-lifting/",
+        "https://nystagereview.com/2025/11/20/two-strangers-carry-a-cake-across-new-york-a-tasty-slice-of-cake/",
+        "https://www.newyorktheatreguide.com/reviews/two-strangers-carry-a-cake-across-new-york-broadway-review",
+        "https://newyorktheater.me/2025/11/20/two-strangers-carry-a-cake-across-new-york-broadway-review/",
+        "https://www.nytimes.com/2025/11/20/theater/two-strangers-carry-cake-review.html",
+        "https://www.theatrely.com/post/two-strangers-carry-a-cake-across-new-york-the-great-british-millennial-off-review",
+        "https://www.bostonglobe.com/2025/05/30/arts/two-strangers-carry-a-cake/",
+        "https://www.theatermania.com/news/review-broadway-transfer-of-west-end-hit-two-strangers-doesnt-quite-take-the-cake_1812663/",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=T634J3"
       ],
-      "dirFiles": 10,
-      "dirClean": 7,
-      "inReviewsJson": 7,
+      "dirFiles": 48,
+      "dirClean": 29,
+      "inReviewsJson": 26,
       "missing": [
         {
-          "url": "https://nystagereview.com/2025/03/09/all-nighter-five-college-seniors-face-graduation-and-each-other/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr"
-        },
-        {
-          "url": "https://www.theatrely.com/post/up-all-night-with-the-girls-in-all-nighter-review",
-          "host": "theatrely.com",
-          "knownOutletId": "theatrely"
-        },
-        {
-          "url": "https://www.theatermania.com/news/review-julia-lester-kathryn-gallagher-and-solid-cast-make-all-nighter-worth-staying-up-for_1766852/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania"
-        },
-        {
-          "url": "https://www.thewrap.com/all-nighter-off-broadway-review-when-college-ends-with-a-bang-not-a-whimper/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap"
+          "url": "https://www.nydailynews.com/2025/11/20/broadway-review-two-strangers-carry-a-cake-across-ny-is-cute-but-too-long/",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews"
         }
       ],
       "dirOnly": [
         {
-          "host": "offoffonline.com",
+          "host": "chicagotribune.com",
+          "count": 1
+        },
+        {
+          "host": "thefrontrowcenter.com",
+          "count": 1
+        },
+        {
+          "host": "jitneybooks.com",
+          "count": 1
+        },
+        {
+          "host": "talkinbroadway.com",
+          "count": 1
+        },
+        {
+          "host": "theaterlife.com",
+          "count": 1
+        },
+        {
+          "host": "theaterscene.net",
+          "count": 1
+        },
+        {
+          "host": "theatrereviews.com",
+          "count": 1
+        },
+        {
+          "host": "thewrap.com",
+          "count": 1
+        },
+        {
+          "host": "twi-ny.com",
           "count": 1
         },
         {
           "host": "vulture.com",
           "count": 1
+        },
+        {
+          "host": "wsj.com",
+          "count": 2
         }
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.talkinbroadway.com/page/ob/03_09_25.html",
-          "host": "talkinbroadway.com",
-          "knownOutletId": "talkinbroadway",
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=T634J3",
+          "host": "lightingandsoundamerica.com",
+          "knownOutletId": "lighting-and-sound-america",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -1398,244 +1536,596 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "talkinbroadway--kimberly-ramirez.json",
+              "file": "lighting-and-sound-america--david-barbour.json",
               "flag": "wrongShow",
-              "urlInDir": "https://www.talkinbroadway.com/page/ob/03_09_25.html"
-            }
-          ]
-        },
-        {
-          "url": "https://twi-ny.com/2025/05/15/all-nighter-natalie-margolin-robert-w-wilson-mcc-theater-space/",
-          "host": "twi-ny.com",
-          "knownOutletId": "this-week-in-new-york",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "this-week-in-new-york--mark-rifkin.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://twi-ny.com/2025/05/15/all-nighter-natalie-margolin-robert-w-wilson-mcc-theater-space/"
+              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=T634J3"
             }
           ]
         }
       ],
       "ingestResults": [
         {
-          "url": "https://nystagereview.com/2025/03/09/all-nighter-five-college-seniors-face-graduation-and-each-other/",
-          "host": "nystagereview.com",
-          "outletId": "nysr",
+          "url": "https://www.nydailynews.com/2025/11/20/broadway-review-two-strangers-carry-a-cake-across-ny-is-cute-but-too-long/",
+          "host": "nydailynews.com",
+          "outletId": "nydailynews",
           "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.theatrely.com/post/up-all-night-with-the-girls-in-all-nighter-review",
-          "host": "theatrely.com",
-          "outletId": "theatrely",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.theatermania.com/news/review-julia-lester-kathryn-gallagher-and-solid-cast-make-all-nighter-worth-staying-up-for_1766852/",
-          "host": "theatermania.com",
-          "outletId": "theatermania",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://www.thewrap.com/all-nighter-off-broadway-review-when-college-ends-with-a-bang-not-a-whimper/",
-          "host": "thewrap.com",
-          "outletId": "thewrap",
-          "provisional": false,
-          "ok": true,
-          "reason": null
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=two-strangers-bway-2025 --url=https://"
         }
       ],
       "ingestSkippedByCap": []
     },
     {
-      "showId": "trophy-boys-off-broadway-2025",
-      "title": "Trophy Boys",
-      "openingDate": "2025-06-25",
-      "status": "closed",
+      "showId": "are-you-now-or-have-you-ever-been-off-broadway-2026",
+      "title": "Are You Now or Have You Ever Been?",
+      "openingDate": "2026-06-10",
+      "status": "open",
       "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.nytimes.com/2026/06/16/theater/are-you-now-or-have-you-ever-been-review.html",
+        "https://culturesauce.com/are-you-now-or-have-you-ever-been-off-broadway-review/",
+        "https://www.offoffonline.com/offoffonline/2026/6/11/are-you-now-or-have-you-ever-been-an-american-docudrama-DqUQv"
+      ],
+      "dirFiles": 11,
+      "dirClean": 9,
+      "inReviewsJson": 8,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "nystagereview.com",
+          "count": 2
+        },
+        {
+          "host": "newyorktheatreguide.com",
+          "count": 1
+        },
+        {
+          "host": "theaterpizzazz.com",
+          "count": 1
+        },
+        {
+          "host": "theatermania.com",
+          "count": 1
+        },
+        {
+          "host": "wsj.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": []
+    },
+    {
+      "showId": "ragtime-2025",
+      "title": "Ragtime",
+      "openingDate": "2025-10-16",
+      "status": "open",
+      "category": "broadway",
       "aggregatorArticles": [
-        "https://playbill.com/article/read-the-reviews-for-trophy-boys-off-broadway-at-mcc-theater",
-        "https://www.broadwayworld.com/article/Review-Roundup-TROPHY-BOYS-Opens-at-MCC-Theater-20250625"
+        "https://playbill.com/article/read-the-reviews-for-the-ragtime-revival-on-broadway",
+        "https://playbill.com/article/critics-sound-off-on-city-center-ragtime-get-a-1st-look-at-the-gala-staging",
+        "https://www.broadwayworld.com/article/Review-Roundup-RAGTIME-Returns-to-Broadway-20251016",
+        "https://www.broadwayworld.com/article/Review-Roundup-RAGTIME-at-New-York-City-Center-20241031"
       ],
       "aggregatorListedUrls": [
-        "https://culturesauce.com/2025/06/25/trophy-boys-off-broadway-review/",
-        "https://exeuntnyc.com/reviews/review-trophy-boys-at-robert-w-wilson-mcc-theater-space/",
-        "https://thefrontrowcenter.com/2025/06/trophy-boys/",
-        "https://nystagereview.com/2025/06/25/trophy-boys-skewering-indicting-and-side-eyeing-male-privilege/",
-        "https://nystagereview.com/2025/06/25/trophy-boys-the-guilted-age/",
-        "https://www.newyorktheatreguide.com/reviews/trophy-boys-off-broadway-review",
-        "https://www.nytimes.com/2025/06/25/theater/trophy-boys-review-emmanuelle-mattana.html",
-        "https://www.theatermania.com/news/review-trophy-boys-off-broadways-introduction-to-our-future-rulers_1786909/",
-        "https://theunforgettableline.com/2025/06/25/trophy-boys/",
-        "https://www.wsj.com/articles/trophy-boys-and-lowcountry-review-off-broadway-debates-and-bad-dates-242fd27e",
-        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-1TRF7Z",
-        "https://www.talkinbroadway.com/page/ob/06_25_25.html",
-        "https://twi-ny.com/2025/07/01/trophy-boys-mcc-theater-emmanuelle-mattana/",
-        "https://theaterscene.com/Trophy-Boys-DD.html",
-        "https://www.offoffonline.com/offoffonline/2025/6/21/trophy-boys",
-        "https://pagesonstages.com/2025/06/25/trophy-boys/"
+        "https://1minutecritic.com/ragtime-broadway-revival-review-2025/",
+        "https://www.amny.com/entertainment/broadway/review-divided-america-ragtime-strikes-defiant-chord/",
+        "https://cititour.com/NYC_Broadway/Ragtime/1330",
+        "https://culturesauce.com/2025/10/16/ragtime-musical-broadway-review/",
+        "https://www.thedailybeast.com/obsessed/broadways-ragtime-revival-is-a-staggering-stunning-triumph/",
+        "https://deadline.com/2025/10/ragtime-broadway-review-1236583715/",
+        "https://ew.com/ragtime-review-broadway-musical-revival-joshua-henry-11830751",
+        "https://exeuntnyc.com/reviews/review-ragtime-at-the-vivian-beaumont-theater/",
+        "https://open.substack.com/pub/newyorknotebook/p/ragtime",
+        "https://nystagereview.com/2025/10/16/ragtime-breaking-our-hearts-opening-a-door/",
+        "https://nystagereview.com/2025/10/16/ragtime-a-triumphant-revival-for-our-time/",
+        "https://newyorktheater.me/2025/10/16/ragtime-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/ragtime-broadway-review",
+        "https://www.nytimes.com/2025/10/16/theater/ragtime-review-henry-debessonet.html",
+        "https://www.nydailynews.com/2025/10/16/broadway-review-ragtime-joshua-henry-caissie-levy/",
+        "https://www.theatermania.com/news/review-ragtime-revival-is-broadway-at-its-best_1807685/",
+        "http://theaterpizzazz.com/ragtime-meets-the-moment-in-a-thrilling-revival/",
+        "http://www.theatrely.com/post/a-glorious-ragtime-is-finally-back-on-broadway-review",
+        "https://www.timeout.com/newyork/theater/ragtime-broadway-revival-review-lincoln-center-doctorow-joshua-henry",
+        "https://variety.com/2025/legit/reviews/ragtime-review-broadway-lincoln-center-theater-1236554453/",
+        "https://www.wsj.com/articles/ragtime-review-a-stirring-american-panorama-on-broadway-7fc41113",
+        "https://www.washingtonpost.com/entertainment/theater/2025/10/16/ragtime-broadway-review/",
+        "https://www.thewrap.com/ragtime-broadway-review/",
+        "https://theaterpizzazz.com/make-time-to-see-this-ragtime/",
+        "https://culturesauce.com/2024/11/01/ragtime-musical-2024-off-broadway-review/",
+        "https://nystagereview.com/2024/11/01/ragtime-simple-and-somehow-sublime/",
+        "https://nystagereview.com/2024/11/01/ragtime-e-l-doctorows-musicalized-masterpiece-masterfully-revived/",
+        "https://www.nytimes.com/2024/10/31/theater/ragtime-review-city-center.html",
+        "https://www.theatermania.com/news/review-ragtime-at-new-york-city-center-shows-us-america_1754497/",
+        "https://www.chicagotribune.com/2025/10/16/review-ragtime-broadway/",
+        "https://nypost.com/2025/10/16/entertainment/ragtime-review-broadway-revival-still-misses-but-has-sensational-singing/"
       ],
-      "dirFiles": 12,
-      "dirClean": 9,
-      "inReviewsJson": 9,
+      "dirFiles": 49,
+      "dirClean": 34,
+      "inReviewsJson": 33,
       "missing": [
         {
-          "url": "https://exeuntnyc.com/reviews/review-trophy-boys-at-robert-w-wilson-mcc-theater-space/",
-          "host": "exeuntnyc.com",
-          "knownOutletId": "exeunt-magazine"
-        },
-        {
-          "url": "https://thefrontrowcenter.com/2025/06/trophy-boys/",
-          "host": "thefrontrowcenter.com",
-          "knownOutletId": "front-row-center"
-        },
-        {
-          "url": "https://nystagereview.com/2025/06/25/trophy-boys-skewering-indicting-and-side-eyeing-male-privilege/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr"
-        },
-        {
-          "url": "https://nystagereview.com/2025/06/25/trophy-boys-the-guilted-age/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr"
-        },
-        {
-          "url": "https://theunforgettableline.com/2025/06/25/trophy-boys/",
-          "host": "theunforgettableline.com",
+          "url": "https://open.substack.com/pub/newyorknotebook/p/ragtime",
+          "host": "open.substack.com",
           "knownOutletId": null
         }
       ],
       "dirOnly": [
         {
+          "host": "americamagazine.org",
+          "count": 1
+        },
+        {
+          "host": "dctheaterarts.org",
+          "count": 1
+        },
+        {
+          "host": "thefrontrowcenter.com",
+          "count": 1
+        },
+        {
+          "host": "frontmezzjunkies.com",
+          "count": 1
+        },
+        {
+          "host": "lavocedinewyork.com",
+          "count": 1
+        },
+        {
+          "host": "stageandcinema.com",
+          "count": 1
+        },
+        {
+          "host": "talkinbroadway.com",
+          "count": 1
+        },
+        {
+          "host": "theaterlife.com",
+          "count": 2
+        },
+        {
+          "host": "theatrereviews.com",
+          "count": 1
+        },
+        {
           "host": "vulture.com",
           "count": 1
         }
       ],
       "flaggedMisses": [
         {
-          "url": "https://twi-ny.com/2025/07/01/trophy-boys-mcc-theater-emmanuelle-mattana/",
-          "host": "twi-ny.com",
-          "knownOutletId": "this-week-in-new-york",
-          "recoverable": true,
-          "recoverableFile": "this-week-in-new-york--mark-rifkin.json",
-          "recoverableOutletId": "this-week-in-new-york",
-          "recoverableCritic": "Mark Rifkin",
+          "url": "https://www.nydailynews.com/2025/10/16/broadway-review-ragtime-joshua-henry-caissie-levy/",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "this-week-in-new-york--mark-rifkin.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://twi-ny.com/2025/07/01/trophy-boys-mcc-theater-emmanuelle-mattana/"
-            }
-          ]
-        },
-        {
-          "url": "https://theaterscene.com/Trophy-Boys-DD.html",
-          "host": "theaterscene.com",
-          "knownOutletId": "theater-scene",
-          "recoverable": true,
-          "recoverableFile": "theater-scene--deirdre-donovan.json",
-          "recoverableOutletId": "theater-scene",
-          "recoverableCritic": "Deirdre Donovan",
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theater-scene--deirdre-donovan.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://theaterscene.com/Trophy-Boys-DD.html"
-            }
-          ]
-        },
-        {
-          "url": "https://pagesonstages.com/2025/06/25/trophy-boys/",
-          "host": "pagesonstages.com",
-          "knownOutletId": "pages-on-stages",
-          "recoverable": true,
-          "recoverableFile": "pages-on-stages--mason-pilevsky.json",
-          "recoverableOutletId": "pages-on-stages",
-          "recoverableCritic": "Mason Pilevsky",
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "pages-on-stages--mason-pilevsky.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://pagesonstages.com/2025/06/25/trophy-boys/"
+              "file": "nydailynews--chris-jones.json",
+              "flag": "clean",
+              "urlInDir": "https://www.nydailynews.com/2025/10/16/broadway-review-ragtime-joshua-henry-caissie-levy/"
             }
           ]
         }
       ],
       "ingestResults": [
         {
-          "url": "https://exeuntnyc.com/reviews/review-trophy-boys-at-robert-w-wilson-mcc-theater-space/",
-          "host": "exeuntnyc.com",
-          "outletId": "exeunt-magazine",
-          "provisional": false,
-          "ok": true,
-          "reason": null
+          "url": "https://open.substack.com/pub/newyorknotebook/p/ragtime",
+          "host": "open.substack.com",
+          "outletId": "open",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=ragtime-2025 --url=https://open.substa"
+        }
+      ],
+      "ingestSkippedByCap": []
+    },
+    {
+      "showId": "just-in-time-2025",
+      "title": "Just in Time",
+      "openingDate": "2025-04-26",
+      "status": "open",
+      "category": "broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-the-reviews-for-just-in-time-on-broadway-starring-jonathan-groff",
+        "https://www.broadwayworld.com/article/Review-Roundup-JUST-IN-TIME-Opens-on-Broadway-Starring-Jonathan-Groff-20250426"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.chicagotribune.com/2025/04/26/review-in-just-in-time-on-broadway-bobby-darins-story-gives-jonathan-groff-a-chance-to-shine/",
+        "https://cititour.com/NYC_Broadway/Just-in-Time/1300",
+        "https://culturesauce.com/2025/04/26/just-in-time-jonathan-groff-broadway-review/",
+        "https://www.thedailybeast.com/just-in-time-review-jonathan-groff-is-a-wildly-entertaining-bobby-darin/",
+        "https://deadline.com/2025/04/just-in-time-broadway-review-jonathan-groff-1236377062/",
+        "https://www.digitaljournal.com/entertainment/review-jonathan-groff-is-bobby-darin-in-just-in-time-musical-on-broadway/article",
+        "https://ew.com/just-in-time-review-jonathan-groff-irresistible-bobby-darin-11721853",
+        "https://thefrontrowcenter.com/2025/04/just-in-time/",
+        "https://www.theguardian.com/stage/2025/apr/26/just-in-time-broadway-play-review",
+        "https://nypost.com/2025/04/26/entertainment/just-in-time-review-jonathan-groff-parties-like-its-1965-in-stellar-bobby-darin-musical/",
+        "https://nystagereview.com/2025/04/26/just-in-time-hello-bobby-darin-gets-a-splashy-broadway-tribute/",
+        "https://nystagereview.com/2025/04/26/just-in-time-a-bio-musical-blast/",
+        "https://newyorktheater.me/2025/04/26/just-in-time-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/just-in-time-broadway-review-jonathan-groff-bobby-darin",
+        "https://www.nytimes.com/2025/04/26/theater/just-in-time-review-darin-groff.html",
+        "https://www.theatermania.com/news/review-jonathan-groffs-passion-fires-up-the-bobby-darin-musical-just-in-time_1773974/",
+        "https://www.theatrely.com/post/a-superb-jonathan-groff-brings-bobby-darin-to-life-in-just-in-time-review",
+        "https://www.timeout.com/newyork/theater/just-in-time-broadway-review-bobby-darin-jonathan-groff",
+        "https://variety.com/2025/legit/reviews/just-in-time-review-jonathan-groff-broadway-musical-1236379177/",
+        "https://www.washingtonpost.com/entertainment/theater/2025/04/26/just-in-time-jonathan-groff-bobby-darin-broadway/",
+        "https://www.thewrap.com/just-in-time-broadway-review-jonathan-groff/",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-ECYTB4",
+        "https://www.newyorktheatreguide.com/theatre-news/news/how-two-broadway-musicals-embrace-immersive-designs",
+        "https://www.newyorktheatreguide.com/theatre-news/news/our-favorite-jonathan-groff-theatre-roles"
+      ],
+      "dirFiles": 39,
+      "dirClean": 33,
+      "inReviewsJson": 32,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "frontmezzjunkies.com",
+          "count": 1
         },
         {
-          "url": "https://thefrontrowcenter.com/2025/06/trophy-boys/",
-          "host": "thefrontrowcenter.com",
-          "outletId": "front-row-center",
+          "host": "nysun.com",
+          "count": 1
+        },
+        {
+          "host": "newyorker.com",
+          "count": 1
+        },
+        {
+          "host": "observer.com",
+          "count": 1
+        },
+        {
+          "host": "1minutecritic.com",
+          "count": 1
+        },
+        {
+          "host": "pagesonstages.com",
+          "count": 1
+        },
+        {
+          "host": "stageandcinema.com",
+          "count": 1
+        },
+        {
+          "host": "talkinbroadway.com",
+          "count": 1
+        },
+        {
+          "host": "theaterlife.com",
+          "count": 1
+        },
+        {
+          "host": "theaterscene.net",
+          "count": 1
+        },
+        {
+          "host": "vulture.com",
+          "count": 1
+        },
+        {
+          "host": "wsj.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-ECYTB4",
+          "host": "lightingandsoundamerica.com",
+          "knownOutletId": "lighting-and-sound-america",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "lighting-and-sound-america--david-barbour.json",
+              "flag": "wrongShow",
+              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-ECYTB4"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-2024",
+      "title": "Stranger Things: The First Shadow",
+      "openingDate": "2025-04-22",
+      "status": "open",
+      "category": "broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-the-reviews-for-stranger-things-the-first-shadow",
+        "https://playbill.com/article/reviews-what-do-critics-think-of-stranger-things-the-first-shadow-in-the-west-end",
+        "https://www.broadwayworld.com/article/Review-Roundup-STRANGER-THINGS-THE-FIRST-SHADOW-Opens-On-Broadway-20250422",
+        "https://www.broadwayworld.com/article/Review-Roundup-STRANGER-THINGS-THE-FIRST-SHADOW-Opens-On-Londons-West-End-20231214"
+      ],
+      "aggregatorListedUrls": [
+        "https://1minutecritic.com/stanger-things-first-shadow-broadway-review/",
+        "https://www.amny.com/entertainment/broadway/review-stranger-things-the-first-shadow/",
+        "https://www.thedailybeast.com/stranger-things-the-first-shadow-review-coolest-special-effects-on-broadway/",
+        "https://nypost.com/2025/04/23/entertainment/stranger-things-the-first-shadow-review-netflixs-broadway-play-is-an-assault-on-the-senses/",
+        "https://www.newyorktheatreguide.com/reviews/stranger-things-the-first-shadow-broadway-review",
+        "https://www.nytimes.com/2025/04/22/theater/stranger-things-first-shadow-review-broadway.html",
+        "https://nystagereview.com/2025/04/22/stranger-things-the-first-shadow-stage-version-of-series-maybe-not-strange-enough/",
+        "https://nystagereview.com/2025/04/22/stranger-things-the-first-shadow-we-will-control-the-horizontal/",
+        "https://www.slantmagazine.com/theater/stranger-things-the-first-shadow-review/",
+        "https://www.theatermania.com/news/review-stranger-things-the-first-shadow-turns-broadway-upside-down_1771274/",
+        "https://www.timeout.com/newyork/theater/stranger-things-the-first-shadow-broadway-review-prequel-louis-mccartney",
+        "https://variety.com/2025/legit/reviews/stranger-things-the-first-shadow-review-broadway-1236375485/",
+        "https://www.washingtonpost.com/entertainment/theater/2025/04/22/stranger-things-first-shadow-broadway/",
+        "https://www.wsj.com/articles/stranger-things-the-first-shadow-review-a-streaming-series-takes-the-broadway-stage-b1ec7e77",
+        "https://www.bbc.com/culture/article/20231214-stranger-things-the-first-shadow-review-the-theatrical-spin-off-from-the-netflix-mega-hit-is-funny-and-thrilling",
+        "https://www.cityam.com/stranger-things-the-first-shadow-review-gorgeous-shocking-thrillfest/",
+        "https://www.dailymail.co.uk/tvshowbiz/article-12865895/stranger-things-shadow-review.html",
+        "https://www.theguardian.com/stage/2023/dec/14/stranger-things-the-first-shadow-review-phoenix-theatre-duffer-brothers",
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/stranger-things-the-first-shadow-review-b2464017.html",
+        "https://inews.co.uk/culture/television/stranger-things-the-first-shadow-review-a-cash-cow-but-a-mesmerising-one-2809768",
+        "https://nypost.com/2023/12/14/entertainment/stranger-things-the-first-shadow-review-netflix-stage-play-is-a-disaster/",
+        "https://www.nytimes.com/2023/12/14/theater/stranger-things-the-first-shadow-london.html",
+        "https://www.standard.co.uk/culture/theatre/stranger-things-the-first-shadow-review-west-end-netflix-phoenix-theatre-b1127020.html",
+        "https://ustimespost.com/stranger-things-the-first-shadow-review-netflix-conquers-the-west-end-with-plenty-of-thrills/",
+        "https://variety.com/2023/legit/reviews/stranger-things-play-the-first-shadow-review-west-end-1235838159/",
+        "https://www.whatsonstage.com/news/stranger-things-the-first-shadow-review-west-end-sci-fi-prequel-dials-the-visual-spectacle-up-to-11_1558176/",
+        "https://www.timeout.com/newyork/theater/stranger-things-the-first-shadow-broadway-review-prequel-louis-mccarthy",
+        "https://ew.com/stranger-things-the-first-shadow-review-11715935",
+        "https://www.newyorktheatreguide.com/reviews/stranger-things-the-first-shadow-broadway-review-hit-netflix-show-becomes-an",
+        "https://www.theatrely.com/post/stranger-things-the-first-shadow-is-a-triumph-on-broadway-review",
+        "https://www.thestage.co.uk/long-reviews/stranger-things-the-first-shadow-review-phoenix-theatre-london-duffer-brothers-jack-thorne-stephen-daldry-sonia-friedman",
+        "https://www.londontheatre.co.uk/reviews/stranger-things-the-first-shadow-review-phoenix-theatre",
+        "https://ticker.tv/news/stranger-things-the-first-shadow-review-west-end-play-brings-netflix-series-thrillingly-to-life/335089/",
+        "https://www.nydailynews.com/2025/04/22/broadway-review-stranger-things-is-peak-fusion-of-streaming-tv-and-theater/",
+        "https://people.com/broadway-stranger-things-cast-side-by-side-with-the-tv-actors-who-originated-the-roles-11732981",
+        "https://www.newyorktheatreguide.com/theatre-news/news/a-guide-to-the-stranger-things-tv-characters-on-stage-in-the-first-shadow"
+      ],
+      "dirFiles": 56,
+      "dirClean": 38,
+      "inReviewsJson": 33,
+      "missing": [
+        {
+          "url": "https://www.dailymail.co.uk/tvshowbiz/article-12865895/stranger-things-shadow-review.html",
+          "host": "dailymail.co.uk",
+          "knownOutletId": "daily-mail"
+        },
+        {
+          "url": "https://ustimespost.com/stranger-things-the-first-shadow-review-netflix-conquers-the-west-end-with-plenty-of-thrills/",
+          "host": "ustimespost.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/stranger-things-the-first-shadow-review-west-end-sci-fi-prequel-dials-the-visual-spectacle-up-to-11_1558176/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage"
+        },
+        {
+          "url": "https://ticker.tv/news/stranger-things-the-first-shadow-review-west-end-play-brings-netflix-series-thrillingly-to-life/335089/",
+          "host": "ticker.tv",
+          "knownOutletId": null
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "broadwaynews.com",
+          "count": 1
+        },
+        {
+          "host": "chicagotribune.com",
+          "count": 1
+        },
+        {
+          "host": "cititour.com",
+          "count": 1
+        },
+        {
+          "host": "culturesauce.com",
+          "count": 1
+        },
+        {
+          "host": "deadline.com",
+          "count": 1
+        },
+        {
+          "host": "frontmezzjunkies.com",
+          "count": 1
+        },
+        {
+          "host": "latimes.com",
+          "count": 1
+        },
+        {
+          "host": "nysun.com",
+          "count": 1
+        },
+        {
+          "host": "northjersey.com",
+          "count": 1
+        },
+        {
+          "host": "newyorktheater.me",
+          "count": 1
+        },
+        {
+          "host": "pagesonstages.com",
+          "count": 1
+        },
+        {
+          "host": "interestedbystander.com",
+          "count": 1
+        },
+        {
+          "host": "thekomisarscoop.com",
+          "count": 1
+        },
+        {
+          "host": "theaterlife.com",
+          "count": 1
+        },
+        {
+          "host": "theaterscene.net",
+          "count": 1
+        },
+        {
+          "host": "thewrap.com",
+          "count": 1
+        },
+        {
+          "host": "usatoday.com",
+          "count": 1
+        },
+        {
+          "host": "vulture.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.bbc.com/culture/article/20231214-stranger-things-the-first-shadow-review-the-theatrical-spin-off-from-the-netflix-mega-hit-is-funny-and-thrilling",
+          "host": "bbc.com",
+          "knownOutletId": "bbc-news",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "bbc-news--neil-armstrong.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.bbc.com/culture/article/20231214-stranger-things-the-first-shadow-review-the-theatrical-spin-off-from-the-netflix-mega-hit-is-funny-and-thrilling"
+            }
+          ]
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2023/dec/14/stranger-things-the-first-shadow-review-phoenix-theatre-duffer-brothers",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "guardian--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theguardian.com/stage/2026/jun/09/stranger-things-the-first-shadow-closing-london-new-york-this-winter"
+            }
+          ]
+        },
+        {
+          "url": "https://www.thestage.co.uk/long-reviews/stranger-things-the-first-shadow-review-phoenix-theatre-london-duffer-brothers-jack-thorne-stephen-daldry-sonia-friedman",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thestage--dave-fargnoli.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thestage.co.uk/long-reviews/stranger-things-the-first-shadow-review-phoenix-theatre-london-duffer-brothers-jack-thorne-stephen-daldry-sonia-friedman"
+            },
+            {
+              "file": "thestage--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thestage.co.uk/news/netflix-documentary-to-go-behind-the-scenes-of-stranger-things-the-first-shadow"
+            }
+          ]
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/stranger-things-the-first-shadow-review-phoenix-theatre",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "london-theatre--marianka-swain.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.londontheatre.co.uk/reviews/stranger-things-the-first-shadow-review-phoenix-theatre"
+            }
+          ]
+        },
+        {
+          "url": "https://www.nydailynews.com/2025/04/22/broadway-review-stranger-things-is-peak-fusion-of-streaming-tv-and-theater/",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nydailynews--chris-jones.json",
+              "flag": "clean",
+              "urlInDir": "https://www.nydailynews.com/2025/04/22/broadway-review-stranger-things-is-peak-fusion-of-streaming-tv-and-theater/"
+            }
+          ]
+        },
+        {
+          "url": "https://people.com/broadway-stranger-things-cast-side-by-side-with-the-tv-actors-who-originated-the-roles-11732981",
+          "host": "people.com",
+          "knownOutletId": "people",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "people--httpswwwfacebookcompeoplemag.json",
+              "flag": "clean",
+              "urlInDir": "https://people.com/broadway-stranger-things-cast-side-by-side-with-the-tv-actors-who-originated-the-roles-11732981"
+            }
+          ]
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://www.dailymail.co.uk/tvshowbiz/article-12865895/stranger-things-shadow-review.html",
+          "host": "dailymail.co.uk",
+          "outletId": "daily-mail",
+          "provisional": false,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=stranger-things-2024 --url=https://www"
+        },
+        {
+          "url": "https://ustimespost.com/stranger-things-the-first-shadow-review-netflix-conquers-the-west-end-with-plenty-of-thrills/",
+          "host": "ustimespost.com",
+          "outletId": "ustimespost",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=stranger-things-2024 --url=https://ust"
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/stranger-things-the-first-shadow-review-west-end-sci-fi-prequel-dials-the-visual-spectacle-up-to-11_1558176/",
+          "host": "whatsonstage.com",
+          "outletId": "whatsonstage",
           "provisional": false,
           "ok": false,
           "reason": "spawnSync node ETIMEDOUT"
         },
         {
-          "url": "https://nystagereview.com/2025/06/25/trophy-boys-skewering-indicting-and-side-eyeing-male-privilege/",
-          "host": "nystagereview.com",
-          "outletId": "nysr",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://nystagereview.com/2025/06/25/trophy-boys-the-guilted-age/",
-          "host": "nystagereview.com",
-          "outletId": "nysr",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        },
-        {
-          "url": "https://theunforgettableline.com/2025/06/25/trophy-boys/",
-          "host": "theunforgettableline.com",
-          "outletId": "theunforgettableline",
+          "url": "https://ticker.tv/news/stranger-things-the-first-shadow-review-west-end-play-brings-netflix-series-thrillingly-to-life/335089/",
+          "host": "ticker.tv",
+          "outletId": "ticker",
           "provisional": true,
           "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=trophy-boys-off-broadway-2025 --url=ht"
+          "reason": "spawnSync node ETIMEDOUT"
         }
       ],
-      "ingestSkippedByCap": [],
-      "recoveryResults": [],
-      "recoverySkippedByCap": [
-        {
-          "url": "https://twi-ny.com/2025/07/01/trophy-boys-mcc-theater-emmanuelle-mattana/",
-          "host": "twi-ny.com",
-          "file": "this-week-in-new-york--mark-rifkin.json"
-        },
-        {
-          "url": "https://theaterscene.com/Trophy-Boys-DD.html",
-          "host": "theaterscene.com",
-          "file": "theater-scene--deirdre-donovan.json"
-        },
-        {
-          "url": "https://pagesonstages.com/2025/06/25/trophy-boys/",
-          "host": "pagesonstages.com",
-          "file": "pages-on-stages--mason-pilevsky.json"
-        }
-      ]
+      "ingestSkippedByCap": []
     }
   ]
 }
