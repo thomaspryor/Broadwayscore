@@ -171,10 +171,18 @@ function extractLsaBody(html) {
 // America"), so a meta-first byline extractor mis-attributes every L&SA review
 // to the publisher. Pull the real critic from the body's trailing "--Name".
 // Pass the extracted body text (extractLsaBody output) or raw prose.
+// Title-Case tails that fit the "Firstname Lastname" shape but are not critics
+// (place names, venue/section labels). A false byline is worse than the publisher
+// fallback, so reject these — ingest then falls back to extractByline/Unknown.
+const LSA_NON_NAME_TAIL = /\b(?:New York|Los Angeles|City|Street|Avenue|Road|Theatre|Theater|Broadway|Off Broadway|The End|Curtain Call|Company|Center|Centre|Hall|Square|Park|Press|Media|Productions?|Inc|LLC|USA|America)\b/i;
+
 function extractLsaByline(text) {
   if (!text || typeof text !== 'string') return null;
   const m = text.trim().match(/[—–-]{1,2}\s*([A-Z][A-Za-z.'-]+(?:\s+[A-Z][A-Za-z.'-]+){1,2})\s*$/);
-  return m ? m[1].trim() : null;
+  if (!m) return null;
+  const name = m[1].trim();
+  if (LSA_NON_NAME_TAIL.test(name)) return null;
+  return name;
 }
 
 /**

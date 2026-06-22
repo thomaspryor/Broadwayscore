@@ -30,6 +30,15 @@ test.describe('Tony nominees row heights @mobile', () => {
     await page.goto('/tony-awards/nominees', { waitUntil: 'networkidle' });
   });
 
+  // Season note: the page derives its season from getTonySeasonWindow(), which rolls
+  // to the upcoming season the day after each ceremony (~late April). Early in a
+  // season only the categories with announced nominees render — e.g. in the 2026-2027
+  // window (verified 2026-06) only "Best Revival of a Play" had a nominee, so Best
+  // Musical / performer / craft sections were absent. Each test below SKIPS when its
+  // specific category section isn't present (nothing to measure) and re-arms once
+  // that category's nominees are announced. A missing section is therefore not a
+  // failure here — this guard only polices ROW HEIGHT when rows actually render.
+
   test('Best Musical (MajorNomineeRow) rows stay compact', async ({ page }) => {
     // MajorNomineeRow renders as an <a href="/show/..."> inside the Best Musical
     // section. Page restructure 2026-05-23 wrapped the section in
@@ -46,7 +55,7 @@ test.describe('Tony nominees row heights @mobile', () => {
       return rows.map((r) => Math.round((r as HTMLElement).getBoundingClientRect().height));
     });
 
-    expect(heights, 'Best Musical section not found').not.toBeNull();
+    test.skip(heights === null, 'Best Musical section not present this season — nothing to measure');
     expect(heights!.length, 'expected ≥1 Best Musical nominee row').toBeGreaterThan(0);
     for (const h of heights!) {
       expect(h, `MajorNomineeRow height ${h}px exceeds ${MAX_HEIGHTS.major}px limit`).toBeLessThanOrEqual(MAX_HEIGHTS.major);
@@ -68,7 +77,7 @@ test.describe('Tony nominees row heights @mobile', () => {
       return rows.map((r) => Math.round((r as HTMLElement).getBoundingClientRect().height));
     });
 
-    expect(heights, 'Best Actor in a Musical section not found').not.toBeNull();
+    test.skip(heights === null, 'Best Actor in a Musical section not present this season — nothing to measure');
     expect(heights!.length, 'expected ≥1 performer row').toBeGreaterThan(0);
     for (const h of heights!) {
       expect(h, `PerformerRow height ${h}px exceeds ${MAX_HEIGHTS.performer}px limit`).toBeLessThanOrEqual(MAX_HEIGHTS.performer);
@@ -88,7 +97,7 @@ test.describe('Tony nominees row heights @mobile', () => {
       return rows.map((r) => Math.round((r as HTMLElement).getBoundingClientRect().height));
     });
 
-    expect(heights, 'Best Original Score section not found').not.toBeNull();
+    test.skip(heights === null, 'Best Original Score section not present this season — nothing to measure');
     expect(heights!.length, 'expected ≥1 craft row').toBeGreaterThan(0);
     for (const h of heights!) {
       expect(h, `CraftRow height ${h}px exceeds ${MAX_HEIGHTS.craft}px limit`).toBeLessThanOrEqual(MAX_HEIGHTS.craft);
