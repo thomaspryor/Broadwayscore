@@ -69,6 +69,11 @@ export const featureFlags = {
   get castPages() { return has('castPages'); },
   get westEnd() { return has('westEnd'); },
   get offBroadway() { return has('offBroadway'); },
+  /** Regional (non-NYC US) shows, e.g. pre-Broadway tryouts at A.R.T. Gates the
+   *  detail page static params, OG, sitemap, and search index (see data-core
+   *  regionalSlugAllowed + generate-search-shows.js). Enable via
+   *  NEXT_PUBLIC_FEATURES=regional. */
+  get regional() { return has('regional'); },
   get tonyPeople() { return has('tonyPeople'); },
   get sectionJumpLinks() { return has('sectionJumpLinks'); },
   get userAccounts() { return has('userAccounts'); },

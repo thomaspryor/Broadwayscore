@@ -15,7 +15,8 @@ export type EffectiveMarket =
   | 'off-broadway'
   | 'opera'
   | 'west-end'
-  | 'off-west-end';
+  | 'off-west-end'
+  | 'regional';
 
 /** Subline suffix for opera shows, interpolated by getBroadwayDuration. */
 export const OPERA_DURATION_SUFFIX = 'at the Met';
@@ -45,6 +46,7 @@ export function getEffectiveMarket(show: ShowLike | null | undefined): Effective
   if (category === 'west-end') return 'west-end';
   if (category === 'off-west-end') return 'off-west-end';
   if (category === 'off-broadway') return 'off-broadway';
+  if (category === 'regional') return 'regional';
   return 'broadway';
 }
 
@@ -63,6 +65,8 @@ export function getEffectiveMarketLabel(show: ShowLike | null | undefined): stri
       return 'Off-West End';
     case 'off-broadway':
       return 'Off-Broadway';
+    case 'regional':
+      return 'Regional';
     case 'broadway':
     default:
       return 'Broadway';

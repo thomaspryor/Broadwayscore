@@ -69,7 +69,7 @@ const MARKET_OUTLETS_FALLBACK = {
   },
 };
 
-const VALID_MARKETS = ['broadway', 'off-broadway', 'west-end', 'off-west-end'];
+const VALID_MARKETS = ['broadway', 'off-broadway', 'west-end', 'off-west-end', 'regional'];
 
 // Domain filtering removed — was dead code (defined but never referenced).
 // If needed in the future, import from scripts/lib/domain-filters.js.

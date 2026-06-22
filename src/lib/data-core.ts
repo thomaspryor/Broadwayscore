@@ -15,6 +15,7 @@ import type { Director, Theater, TheaterStructuredTips, TheaterVenueScores, Thea
 import { getShowGrosses } from './data-grosses';
 import { getAudienceBuzz } from './data-audience';
 import { isOperaShow } from './show-market';
+import { featureFlags } from '@/config/feature-flags';
 import { isHomepageNotable, notabilityRank, NOTABILITY_THRESHOLDS, type NotabilitySignals } from './homepage-notability';
 import { getShowCommercial } from './data-commercial';
 import { getShowAwards } from './data-awards';
@@ -256,8 +257,21 @@ export function getShowById(id: string): ComputedShow | undefined {
 /**
  * Get all show slugs (for static generation)
  */
+/**
+ * Regional (non-NYC US) shows are hidden from EVERY pre-rendered/indexed surface
+ * (detail page static params, OG, sitemap, search index) until the `regional`
+ * feature flag is on. They are a distinct category, so listing getters already
+ * exclude them; this gate covers the build-time slug sets so a flag-off push can
+ * never publish an orphaned, Google-indexed regional page.
+ */
+function regionalSlugAllowed(show: any): boolean {
+  return featureFlags.regional || show.category !== 'regional';
+}
+
 export function getAllShowSlugs(): string[] {
-  return shows.filter((show: any) => !show._devOnly).map(show => show.slug);
+  return shows
+    .filter((show: any) => !show._devOnly && regionalSlugAllowed(show))
+    .map(show => show.slug);
 }
 
 // Pinned at module init so parallel build workers agree on the cutoff.
@@ -285,7 +299,7 @@ export function getRecentShowSlugs(windowDays = 180): string[] {
   const cutoff = BUILD_TIME_NOW - windowDays * 86400000;
   return shows
     .filter((s: any) =>
-      !s._devOnly && (
+      !s._devOnly && regionalSlugAllowed(s) && (
         s.status === 'open' || s.status === 'previews' ||
         (s.closingDate != null && new Date(s.closingDate).getTime() > cutoff)
       )
@@ -307,7 +321,7 @@ export function getRecentShowSlugs(windowDays = 180): string[] {
 export function getHotShowSlugs(): string[] {
   return shows
     .filter((s: any) =>
-      !s._devOnly && (s.status === 'open' || s.status === 'previews')
+      !s._devOnly && regionalSlugAllowed(s) && (s.status === 'open' || s.status === 'previews')
     )
     .map(s => s.slug as string);
 }
@@ -886,6 +900,8 @@ function getCity(category: string | undefined): string {
   const cat = category || 'broadway';
   if (cat === 'broadway' || cat === 'off-broadway') return 'nyc';
   if (cat === 'west-end' || cat === 'off-west-end') return 'london';
+  // 'regional' (non-NYC US tryouts) intentionally returns its own bucket ('regional'),
+  // so related-shows only pull other regional shows — never NYC/London productions.
   return cat;
 }
 
@@ -931,7 +947,9 @@ export function getRelatedShowsClosed(show: ComputedShow, limit = 6): ComputedSh
 export function getOtherProductions(show: ComputedShow): ComputedShow[] {
   const normalize = (t: string) => t.toLowerCase().replace(/[\u2018\u2019\u2032'']/g, "'").replace(/[^\w\s']/g, '').trim();
   const baseTitle = normalize(show.title);
-  const marketOrder: Record<string, number> = { broadway: 0, 'west-end': 1, 'off-west-end': 2, 'off-broadway': 3 };
+  // 'regional' last (4): when a regional tryout later transfers to Broadway, the
+  // Broadway production (0) leads the cross-production list and the tryout trails it.
+  const marketOrder: Record<string, number> = { broadway: 0, 'west-end': 1, 'off-west-end': 2, 'off-broadway': 3, regional: 4 };
   return getAllShows()
     .filter(s => s.id !== show.id && normalize(s.title) === baseTitle)
     .sort((a, b) => {

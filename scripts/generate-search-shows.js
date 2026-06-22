@@ -36,9 +36,18 @@ for (const review of reviews) {
   }
 }
 
+// Regional (non-NYC US) shows are hidden from the search index until the `regional`
+// feature flag is enabled — mirrors data-core regionalSlugAllowed() so search,
+// detail page, sitemap, and OG all light up together (never an orphaned indexed page).
+const regionalEnabled = (process.env.NEXT_PUBLIC_FEATURES || '')
+  .split(',').map(s => s.trim()).includes('regional');
+
 // Filter out unscored closed shows (historical shows without reviews)
 // These are hidden in HeaderSearch anyway — no point shipping them to every user
-const visibleShows = shows.filter(show => showsWithScores.has(show.id) || show.status !== 'closed');
+const visibleShows = shows.filter(show =>
+  (regionalEnabled || show.category !== 'regional') &&
+  (showsWithScores.has(show.id) || show.status !== 'closed')
+);
 
 // Map shows to search-friendly format (matching HeaderSearch's Show interface)
 const searchShows = visibleShows.map(show => {

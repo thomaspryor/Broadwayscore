@@ -35,6 +35,7 @@ const SHOWS_PATH = process.env.SHOWS_JSON_PATH
 function deriveMarket(category) {
   if (category === 'broadway' || category === 'off-broadway') return 'broadway';
   if (category === 'west-end' || category === 'off-west-end') return 'west-end';
+  if (category === 'regional') return 'regional';
   return null;
 }
 
