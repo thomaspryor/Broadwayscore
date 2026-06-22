@@ -207,7 +207,9 @@ function hostOf(u) {
 function normalizeReviewUrl(href) {
   try {
     const u = new URL(href);
-    if (u.hostname.includes('lightingandsoundamerica.com')) {
+    // Registrable-host equality (matches the isReviewUrl LSA guard) so a lookalike
+    // like notlightingandsoundamerica.com can't trip the special-case.
+    if (hostOf(href) === 'lightingandsoundamerica.com') {
       const id = u.searchParams.get('ID');
       if (id) return `${u.origin}${u.pathname}?ID=${id}`;
     }

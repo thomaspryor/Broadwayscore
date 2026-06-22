@@ -61,4 +61,9 @@ describe('extractLsaByline — critic from trailing sign-off (not publisher meta
     assert.strictEqual(extractLsaByline(''), null);
     assert.strictEqual(extractLsaByline(null), null);
   });
+  test('rejects non-name tails that fit the Title-Case shape (avoid mis-credit)', () => {
+    assert.strictEqual(extractLsaByline('A dazzling night out. --New York City'), null);
+    assert.strictEqual(extractLsaByline('The story ends in tragedy. --The End'), null);
+    assert.strictEqual(extractLsaByline('Reviewed at the Booth Theatre. —Booth Theatre'), null);
+  });
 });
