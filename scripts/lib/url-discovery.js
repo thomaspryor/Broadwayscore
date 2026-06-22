@@ -78,6 +78,65 @@ function buildSiteClause(domain, aliasOverride) {
     : `site:${domains[0]}`;
 }
 
+// Generic / ambiguous show titles ("Sting", "Pride", "Mass", "Consumed") collide
+// with unrelated content in SERP — a bare-title substring match accepts wrong-show
+// results (Sting 2026 pulled Sting-the-musician's "The Last Ship" + "The Sting"/
+// Harry Connick reviews, producing a fake live score). Definition: the title, minus
+// a leading article, is a SINGLE word — that's where collisions are worst. Two-word
+// titles ("War Horse", "Inter Alia") are specific enough; we deliberately don't
+// flag them, to avoid tightening discovery on shows that don't need it.
+// Pure + exported for unit testing.
+function isGenericShowTitle(title) {
+  if (!title || typeof title !== 'string') return false;
+  const stripped = title.toLowerCase()
+    .replace(/[^a-z0-9\s]/g, ' ')      // drop punctuation (e.g. "CARE!" -> "care")
+    .replace(/^\s*(the|a|an)\s+/, '')  // drop leading article
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (!stripped) return false;
+  return stripped.split(' ').length === 1;
+}
+
+// For a generic-titled show, does a SERP candidate carry a disambiguator proving
+// it's THIS production — a venue token or a cast/creative surname — somewhere in its
+// title/url/snippet? Used as an extra acceptance gate so a bare-title match alone
+// can't let wrong-show content through. Pure + exported for unit testing.
+function hasDisambiguator(haystack, showInfo) {
+  const h = (haystack || '').toLowerCase();
+  if (!h) return false;
+  // Venue tokens (significant words from the venue name). Common venue words are
+  // excluded so "...at the theatre" can't pass.
+  const venueTokens = (showInfo.venue || '').toLowerCase()
+    .replace(/[^a-z0-9\s]/g, ' ').split(/\s+/)
+    .filter(w => w.length > 3 && !['theatre', 'theater', 'royal', 'open', 'house', 'main', 'park'].includes(w));
+  if (venueTokens.some(t => h.includes(t))) return true;
+  // Cast + creative surnames (last word of each name, length > 3).
+  // NOTE: year was deliberately removed as a standalone signal — a wrong-show page
+  // dated in the same year would defeat the gate (ship-check 2026-06-22). Venue +
+  // people are the real disambiguators.
+  const people = [
+    ...(Array.isArray(showInfo.cast) ? showInfo.cast.map(c => (c && (c.name || c)) || '') : []),
+    ...(Array.isArray(showInfo.creativeNames) ? showInfo.creativeNames : []),
+    showInfo.leadActor || '',
+  ].filter(Boolean);
+  for (const p of people) {
+    const surname = String(p).toLowerCase().trim().split(/\s+/).pop();
+    if (surname && surname.length > 3 && h.includes(surname)) return true;
+  }
+  return false;
+}
+
+// Whether we have ENOUGH metadata to fairly disambiguate a generic-titled show.
+// If a show has no cast and no creative names, we can't reliably tell its reviews
+// from wrong-show content, so we DON'T enforce the gate (accept the small
+// contamination risk rather than silently under-collect — the session-long
+// priority). Venue alone is too weak to gate on. Pure + exported.
+function canDisambiguateGenericTitle(showInfo) {
+  const castN = Array.isArray(showInfo.cast) ? showInfo.cast.length : 0;
+  const creativeN = Array.isArray(showInfo.creativeNames) ? showInfo.creativeNames.length : 0;
+  return castN > 0 || creativeN > 0;
+}
+
 // Inject registry domain aliases into scraper.js for domainMatchesExpected()
 setRegistryDomainAliases(REGISTRY_DOMAIN_ALIASES);
 
@@ -123,6 +182,11 @@ function getShowInfo(showId) {
     if (showEntry) {
       const leadActor = Array.isArray(showEntry.cast) && showEntry.cast.length > 0
         ? showEntry.cast[0].name : null;
+      // Creative-team names (playwright/director/composer) used to disambiguate
+      // generic one-word titles at SERP-acceptance time (Sting 2026 incident).
+      const creativeNames = Array.isArray(showEntry.creativeTeam)
+        ? showEntry.creativeTeam.map(c => (c && (c.name || c)) || '').filter(Boolean)
+        : [];
       return {
         id: showEntry.id,
         title: showEntry.title,
@@ -133,6 +197,7 @@ function getShowInfo(showId) {
         previewsStartDate: showEntry.previewsStartDate || null,
         venue: showEntry.venue || showEntry.theater || null,
         cast: Array.isArray(showEntry.cast) ? showEntry.cast : [],
+        creativeNames,
         leadActor,
       };
     }
@@ -810,6 +875,20 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
     const isTimeoutListing = urlDomain.includes('timeout.com') && urlLower.includes('/theater/');
     if (!titleHasReview && !urlHasReview && !isTimeoutListing) continue;
 
+    // Generic-title disambiguation gate (Sting 2026 incident). For a single-word /
+    // ambiguous title, a bare-title substring match isn't enough proof — the result
+    // must also carry a disambiguator (venue / cast / creative surname / opening year)
+    // in its title, URL, or snippet. Without one, it's likely wrong-show contamination
+    // (Sting-the-musician's "The Last Ship", "The Sting" Harry Connick, etc.). Scoped
+    // to generic titles only, so normal-title discovery is byte-identical.
+    if (isGenericShowTitle(showInfo.title) && canDisambiguateGenericTitle(showInfo)) {
+      const hay = `${title} ${urlLower} ${(result.snippet || '').toLowerCase()}`;
+      if (!hasDisambiguator(hay, showInfo)) {
+        log(`    ✗ Generic title "${showInfo.title}" without disambiguator (venue/cast/creative): ${url.substring(0, 80)}`);
+        continue;
+      }
+    }
+
     // Cross-show URL slug guard: verify URL path contains show title words.
     // Catches SERP results where Google returns the right domain but wrong show
     // (e.g., Monte Cristo review when searching for Becky Shaw).
@@ -969,6 +1048,9 @@ module.exports = {
   REGISTRY_DOMAIN_ALIASES,
   DOMAIN_REDIRECTS,
   buildSiteClause,
+  isGenericShowTitle,
+  hasDisambiguator,
+  canDisambiguateGenericTitle,
   discoverCorrectUrl,
   serpQuery,
   getShowInfo,
