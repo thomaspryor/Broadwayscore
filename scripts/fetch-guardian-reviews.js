@@ -34,6 +34,7 @@ const path = require('path');
 const https = require('https');
 const { setExtractedScore } = require('./lib/score-routing');
 const { isArticleOutsideProductionWindow } = require('./lib/date-guard');
+const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 
 // Lazy show lookup so the Guardian fetcher can reject a prior-production article
 // the API returns for a revival's stale slug (see updateReviewFile date guard).
@@ -293,8 +294,7 @@ function updateReviewFile(review, apiResult) {
   if (
     show &&
     apiResult.webPublicationDate &&
-    data.wrongProductionManualClear !== true &&
-    data.humanReviewedWrongProduction !== false &&
+    !shouldSkipWrongProductionAudit(data) &&
     isArticleOutsideProductionWindow(show, apiResult.webPublicationDate)
   ) {
     data.wrongProduction = true;
