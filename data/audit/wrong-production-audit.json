@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-22T05:52:53.993Z",
+  "timestamp": "2026-06-22T06:55:19.236Z",
   "stats": {
-    "totalReviews": 38994,
-    "alreadyFlagged": 17352,
+    "totalReviews": 39007,
+    "alreadyFlagged": 17364,
     "dateGuardCatches": 34,
-    "directorMismatch": 869,
+    "directorMismatch": 870,
     "tvFilmSignals": 1058,
-    "londonSignals": 646,
+    "londonSignals": 647,
     "offBroadwaySignals": 463,
     "yearMismatch": 81,
-    "noPublishDate": 3951
+    "noPublishDate": 3945
   },
   "findings": [
     {
@@ -2039,7 +2039,7 @@
     {
       "showId": "beetlejuice-west-end-2026",
       "file": "theatre-south-east--unknown.json",
-      "score": null,
+      "score": 30,
       "publishDate": "2026-05-31",
       "url": "https://theatresoutheast.com/beetlejuice-the-musical-prince-edward-theatre-review/",
       "findings": [
@@ -2053,7 +2053,7 @@
     {
       "showId": "beetlejuice-west-end-2026",
       "file": "theatreandtonic--emmie-newitt.json",
-      "score": null,
+      "score": 88,
       "publishDate": "2026-05-28",
       "url": "https://theatreandtonic.co.uk/blog/beetlejuice-the-musical-prince-edward-theatre-review",
       "findings": [
@@ -15375,6 +15375,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-off-broadway-2024",
+      "file": "theatermania--unknown.json",
+      "publishDate": "2024-02-09",
+      "url": "https://www.theatermania.com/news/review-cole-escola-drags-mary-todd-lincoln-in-oh-mary_1729241/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
         }
       ]
     },
@@ -32460,6 +32473,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "lbc--johnny-jenkins.json",
+      "score": 91,
+      "publishDate": "2026-04-08",
+      "url": "https://www.lbc.co.uk/article/inter-alia-review-best-plays-ever-seen-5HjdXRZ_2/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
