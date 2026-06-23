@@ -1,10 +1,10 @@
 {
   "_meta": {
     "description": "Critic-outlet affinity audit report",
-    "lastUpdated": "2026-06-23T09:23:41.458Z",
+    "lastUpdated": "2026-06-23T09:50:14.439Z",
     "generatedBy": "scripts/audit-critic-outlets.js",
     "totalFilesScanned": 39777,
-    "skippedFiles": 18310,
+    "skippedFiles": 18302,
     "totalCritics": 1493,
     "registryCritics": 534,
     "flaggedReviews": 20
@@ -52,7 +52,7 @@
       "outletShare": 3,
       "primaryOutlet": "times-uk",
       "primaryShare": 97,
-      "totalReviews": 32
+      "totalReviews": 31
     },
     {
       "critic": "Michael Dale",
@@ -118,7 +118,7 @@
       "outletShare": 5,
       "primaryOutlet": "timeout-london",
       "primaryShare": 95,
-      "totalReviews": 57
+      "totalReviews": 59
     },
     {
       "critic": "Andrzej Lukowski",
@@ -129,7 +129,7 @@
       "outletShare": 5,
       "primaryOutlet": "timeout-london",
       "primaryShare": 95,
-      "totalReviews": 57
+      "totalReviews": 59
     },
     {
       "critic": "Andrzej Lukowski",
@@ -140,7 +140,7 @@
       "outletShare": 5,
       "primaryOutlet": "timeout-london",
       "primaryShare": 95,
-      "totalReviews": 57
+      "totalReviews": 59
     },
     {
       "critic": "Pete Hempstead",
@@ -170,10 +170,10 @@
       "outlet": "guardian",
       "showId": "an-enemy-of-the-people-2024",
       "file": "guardian--susannah-clapp.json",
-      "outletShare": 8,
+      "outletShare": 9,
       "primaryOutlet": "observer",
-      "primaryShare": 92,
-      "totalReviews": 24
+      "primaryShare": 91,
+      "totalReviews": 23
     },
     {
       "critic": "Susannah Clapp",
@@ -181,10 +181,10 @@
       "outlet": "guardian",
       "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "guardian--susannah-clapp.json",
-      "outletShare": 8,
+      "outletShare": 9,
       "primaryOutlet": "observer",
-      "primaryShare": 92,
-      "totalReviews": 24
+      "primaryShare": 91,
+      "totalReviews": 23
     },
     {
       "critic": "David Kaufman",
@@ -333,8 +333,8 @@
       "slug": "unknown",
       "outlets": [
         "talkinbroadway",
-        "theatermania",
         "thestage",
+        "theatermania",
         "wsj",
         "frontmezzjunkies",
         "playbill",
@@ -346,33 +346,36 @@
         "nytg",
         "guardian",
         "newsday",
-        "artsdesk",
         "whatsonstage",
+        "artsdesk",
+        "timeout",
         "nytimes",
+        "london-theatre",
         "musical-theatre-review",
         "backstage",
-        "london-theatre",
-        "timeout",
         "theater-life",
         "all-that-dazzles-uk",
+        "financialtimes",
         "west-end-wilma",
         "nydailynews",
+        "times-uk",
         "ny1",
         "plays-international",
         "exeunt-magazine",
-        "financialtimes",
+        "telegraph",
         "chicagotribune",
-        "times-uk",
         "washpost",
         "theupcoming",
         "theatre-reviews-limited",
-        "hollywood-reporter",
         "standard",
+        "theatre-weekly",
+        "hollywood-reporter",
         "theatrely",
         "stageandcinema",
         "variety",
+        "independent",
         "philadelphia-edge",
-        "theatre-weekly",
+        "i-paper",
         "cititour",
         "british-theatre",
         "nysr",
@@ -381,13 +384,10 @@
         "new-york-city-theatre",
         "stagebuddy",
         "curtainup",
-        "telegraph",
         "daily-mail",
-        "independent",
         "amny",
         "vulture",
         "ew",
-        "i-paper",
         "latimes",
         "observer",
         "west-end-best-friend",
@@ -417,6 +417,7 @@
         "nbcny",
         "the-herald",
         "usatoday",
+        "london-box-office",
         "pages-on-stages",
         "dctheatrescene",
         "village-voice",
@@ -482,11 +483,11 @@
         "bamorg",
         "redbulltheater",
         "metrmag",
-        "london-box-office",
         "theater-mirror",
-        "everything-theatre"
+        "everything-theatre",
+        "radio-times"
       ],
-      "totalReviews": 864
+      "totalReviews": 889
     },
     {
       "critic": "Rachel Halliburton",
@@ -1336,6 +1337,19 @@
       "totalReviews": 20
     },
     {
+      "critic": "Paul Raven",
+      "slug": "paul-raven",
+      "outlets": [
+        "financialtimes",
+        "westendtheatre",
+        "guardian",
+        "telegraph",
+        "timeout-london",
+        "standard"
+      ],
+      "totalReviews": 7
+    },
+    {
       "critic": "David Roberts",
       "slug": "david-roberts",
       "outlets": [
@@ -1683,18 +1697,6 @@
         "broadwayworld"
       ],
       "totalReviews": 21
-    },
-    {
-      "critic": "Paul Raven",
-      "slug": "paul-raven",
-      "outlets": [
-        "financialtimes",
-        "guardian",
-        "telegraph",
-        "timeout-london",
-        "standard"
-      ],
-      "totalReviews": 6
     },
     {
       "critic": "Holly O’Mahony",

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-23T08:33:19.329Z",
+  "generatedAt": "2026-06-23T09:50:15.962Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -9,7 +9,7 @@
       "category": "west-end",
       "type": "play",
       "openingDate": "2026-06-23",
-      "status": "previews",
+      "status": "open",
       "slug": "the-misanthrope-west-end",
       "thumbnail": "/images/shows/the-misanthrope-west-end-2026/thumbnail.webp",
       "siteScore": null,
@@ -109,7 +109,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-06-23",
-      "status": "previews",
+      "status": "open",
       "slug": "dad-dont-read-this-off-broadway",
       "thumbnail": "/images/shows/dad-dont-read-this-off-broadway-2026/thumbnail.png",
       "siteScore": 83.64,
@@ -479,6 +479,108 @@
           "t3": 0,
           "p": 3,
           "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        }
+      ]
+    },
+    {
+      "id": "much-ado-about-nothing-globe-off-west-end-2026",
+      "title": "Much Ado About Nothing - Globe",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-06-20",
+      "status": "open",
+      "slug": "much-ado-about-nothing-globe-off-west-end",
+      "thumbnail": "/images/shows/much-ado-about-nothing-globe-off-west-end-2026/thumbnail.webp",
+      "siteScore": 80.96,
+      "liveScore": 81,
+      "scoreDrift": 0.04000000000000625,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
+      "siteFileExists": true,
+      "total": 7,
+      "t1": 2,
+      "t2": 5,
+      "t3": 0,
+      "positive": 5,
+      "mixed": 2,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "7/8 total",
+          "T1:2/3",
+          "T2:1/2",
+          "hi-conf:5/6"
+        ],
+        "highConfidence": 5,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-06-23T09:50:15.962Z",
+          "rc": 7,
+          "s": 80.96,
+          "t1": 2,
+          "t2": 5,
+          "t3": 0,
+          "p": 5,
+          "m": 2,
           "n": 0,
           "bc": "waiting"
         }
