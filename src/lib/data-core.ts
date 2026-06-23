@@ -137,6 +137,7 @@ function notabilitySignalsFor(show: ComputedShow): NotabilitySignals {
     tags: show.tags,
     t1Count: show.criticScore?.tier1Count ?? 0,
     reviewCount: show.criticScore?.reviewCount ?? 0,
+    criticScore: show.criticScore?.score ?? 0,
     curatedAudience: curatedAudienceFootprint(show.id),
     homepageInclude: show.homepageInclude,
     homepageExclude: show.homepageExclude,
