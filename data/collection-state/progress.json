@@ -616,23 +616,13 @@
     "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
     "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
     "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
-    "sting-west-end-2026/ew--unknown.json",
-    "sting-west-end-2026/newsday--unknown.json",
-    "sting-west-end-2026/west-end-best-friend--unknown.json",
-    "sting-west-end-2026/westendtheatre--unknown.json",
-    "glengarry-glen-ross-west-end-2026/guardian-uk--unknown.json",
-    "glengarry-glen-ross-west-end-2026/oxfordshire-guardian--unknown.json",
-    "glengarry-glen-ross-west-end-2026/thestage--sam-marlowe.json",
-    "glengarry-glen-ross-west-end-2026/western-mail--unknown.json",
-    "glengarry-glen-ross-west-end-2026/whatsonstage--lucinda-everett.json",
-    "much-ado-about-nothing-globe-west-end-2026/thestage--holly-o.json",
-    "are-you-watching-west-end-2026/the-recs--unknown.json",
-    "driftwood-west-end-2026/artsdesk--unknown.json",
-    "driftwood-west-end-2026/standard--nick-curtis.json",
-    "driftwood-west-end-2026/times-uk--clive-davis.json",
-    "war-horse-west-end-2026/plays-international--maryam-philpott.json",
-    "war-horse-west-end-2026/times-uk--chris-bennion.json",
-    "war-horse-west-end-2026/times-uk--clive-davis.json"
+    "encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
+    "romeo-and-juliet-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -819,6 +809,10 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
     ],
     "directCookies": [],
@@ -929,9 +923,7 @@
       "data/review-texts/much-ado-about-nothing-globe-west-end-2026/thestage--holly-o.json",
       "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json",
       "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
-      "data/review-texts/glengarry-glen-ross-west-end-2026/western-mail--unknown.json",
-      "data/review-texts/much-ado-about-nothing-globe-west-end-2026/thestage--holly-o.json",
-      "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json"
+      "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json"
     ],
     "archive": [
       "a-midsummer-nights-dream-west-end-2026/newsday--updated-november.json",
@@ -1612,6 +1604,50 @@
     },
     {
       "t": "2026-06-23T00:59:30.090Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-23T01:25:12.771Z",
+      "event": "bb-session",
+      "session": "2965ef9f",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-23T01:25:13.454Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-23T01:26:09.631Z",
+      "event": "bb-session",
+      "session": "b8bfdf57",
+      "url": "https://www.nytimes.com/2026/06/03/theater/caissie-levy-broadway-tonys-ragtime.h"
+    },
+    {
+      "t": "2026-06-23T01:26:10.267Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-23T01:26:30.758Z",
+      "event": "bb-session",
+      "session": "110fd48a",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-23T01:26:31.545Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-23T01:26:45.176Z",
+      "event": "bb-session",
+      "session": "b18d5ca0",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-23T01:26:45.843Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
