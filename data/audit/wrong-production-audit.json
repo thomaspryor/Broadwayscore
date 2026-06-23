@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-23T12:22:16.590Z",
+  "timestamp": "2026-06-23T14:55:24.850Z",
   "stats": {
-    "totalReviews": 39110,
-    "alreadyFlagged": 17426,
+    "totalReviews": 39096,
+    "alreadyFlagged": 17442,
     "dateGuardCatches": 38,
-    "directorMismatch": 869,
-    "tvFilmSignals": 1065,
-    "londonSignals": 646,
+    "directorMismatch": 870,
+    "tvFilmSignals": 1066,
+    "londonSignals": 647,
     "offBroadwaySignals": 464,
     "yearMismatch": 83,
-    "noPublishDate": 3979
+    "noPublishDate": 3950
   },
   "findings": [
     {
@@ -8111,6 +8111,25 @@
       "score": 56,
       "publishDate": "2026-06-18",
       "url": "https://www.broadwayworld.com/westend/article/Review-GLENGARRY-GLEN-ROSS-The-Old-Vic-20260618",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "glengarry-glen-ross-west-end-2026",
+      "file": "city-am--steve-dinneen.json",
+      "score": 39,
+      "publishDate": "2026-06-22",
+      "url": "https://www.cityam.com/glengarry-glen-ross-at-the-old-vic-falls-flat/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -21258,6 +21277,19 @@
       "score": 68,
       "publishDate": "April 17, 2013",
       "url": "http://www.hollywoodreporter.com/review/big-knife-theater-review-440453",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-black-mirror-experience-off-broadway-2026",
+      "file": "culturesauce--thom-geier.json",
+      "publishDate": "2026-06-22",
+      "url": "https://culturesauce.com/black-mirror-experience-off-broadway-review/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
