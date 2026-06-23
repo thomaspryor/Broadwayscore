@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-06-23T00:37:00.316Z",
+  "updatedAt": "2026-06-23T00:38:46.629Z",
   "processed": 214,
-  "failed": 383,
-  "successRate": "35.8%",
+  "failed": 393,
+  "successRate": "35.3%",
   "tierBreakdown": {
     "playwright": 131,
     "amp": 0,
@@ -10,11 +10,33 @@
     "directCookies": 0,
     "scrapingbee": 37,
     "brightdata": 11,
-    "archiveToday": 50,
+    "archiveToday": 53,
     "archive": 42
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 2,
   "recentActivity": [
+    {
+      "t": "2026-06-22T14:54:22.517Z",
+      "event": "bb-session",
+      "session": "585f7ed6",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-22T14:54:24.043Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-22T14:54:58.607Z",
+      "event": "bb-session",
+      "session": "bf8db1fa",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-22T14:54:59.342Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
     {
       "t": "2026-06-22T14:55:12.140Z",
       "event": "bb-session",
@@ -93,37 +115,16 @@
       "domain": "variety.com"
     },
     {
-      "t": "2026-06-23T00:35:34.251Z",
+      "t": "2026-06-23T00:31:56.701Z",
       "event": "bb-session",
-      "session": "3cdd5b8b",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+      "session": "560e9e94",
+      "url": "https://www.facebook.com/pinkprincetheatre/posts/tonight-im-a-plus-one-at-the-pr"
     },
     {
-      "t": "2026-06-23T00:35:35.180Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-23T00:36:12.868Z",
+      "t": "2026-06-23T00:33:49.908Z",
       "event": "bb-session",
-      "session": "eeacbe5c",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-23T00:36:13.739Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-23T00:36:26.483Z",
-      "event": "bb-session",
-      "session": "5e97d884",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
-    {
-      "t": "2026-06-23T00:36:27.416Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
+      "session": "5bf875f4",
+      "url": "https://www.facebook.com/thestage/posts/icymi-review-glengarry-glen-ross-at-the-"
     }
   ]
 }
