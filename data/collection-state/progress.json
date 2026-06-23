@@ -33,7 +33,15 @@
     "morgan-bassichis-can-i-be-frank-off-broadway-2026/nysr--michael-sommers.json",
     "morgan-bassichis-can-i-be-frank-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
-    "just-in-time-2025/newyorker--conde-nast.json"
+    "just-in-time-2025/newyorker--conde-nast.json",
+    "oliver-west-end-2024/theatre-weekly--unknown.json",
+    "oliver-west-end-2024/times-uk--unknown.json",
+    "the-devil-wears-prada-west-end-2024/times-uk--dominic-maxwell.json",
+    "maybe-happy-ending-2024/newyorker--conde-nast.json",
+    "maybe-happy-ending-2024/variety--unknown.json",
+    "maybe-happy-ending-2024/the-contending--frank-j-avella.json",
+    "maybe-happy-ending-2024/washpost--unknown.json",
+    "oh-mary-2024/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
     "encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
@@ -103,7 +111,9 @@
     "ragtime-2025/bloomberg--chris-rovzar.json",
     "operation-mincemeat-2025/thereviewshub--unknown.json",
     "my-neighbour-totoro-west-end-2025/london-box-office--miriam-gibson.json",
-    "oliver-west-end-2024/i-paper--fiona-mountford.json"
+    "oliver-west-end-2024/i-paper--fiona-mountford.json",
+    "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
+    "death-becomes-her-2024/chicago-reader--kerry-reid.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -132,7 +142,10 @@
       "the-producers-west-end-2025/west-end-best-friend--unknown.json",
       "morgan-bassichis-can-i-be-frank-off-broadway-2026/nysr--michael-sommers.json",
       "morgan-bassichis-can-i-be-frank-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-      "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json"
+      "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
+      "oliver-west-end-2024/theatre-weekly--unknown.json",
+      "oliver-west-end-2024/times-uk--unknown.json",
+      "maybe-happy-ending-2024/washpost--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -160,24 +173,25 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
+      "data/review-texts/maybe-happy-ending-2024/variety--unknown.json",
+      "maybe-happy-ending-2024/variety--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
       "encores-la-cage-aux-folles-off-broadway-2026/nytimes--httpswwwnytimescombylaura-collins-hughes.json",
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
-      "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
+      "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+      "the-devil-wears-prada-west-end-2024/times-uk--dominic-maxwell.json",
+      "oh-mary-2024/broadwaynews--brittani-samuel.json"
     ],
     "brightdata": [
       "the-balusters-2026/broadwayworld--unknown.json",
       "schmigadoon-2026/thewrap--robert-hofler.json",
       "the-fear-of-13-2026/broadwayworld--unknown.json",
-      "just-in-time-2025/newyorker--conde-nast.json"
+      "just-in-time-2025/newyorker--conde-nast.json",
+      "maybe-happy-ending-2024/newyorker--conde-nast.json"
     ],
     "archiveToday": [
-      "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
       "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
       "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
       "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
@@ -189,11 +203,12 @@
       "glengarry-glen-ross-west-end-2026/broadwayworld--alexander-cohen.json",
       "small-off-broadway-2026/culturesauce--thom-geier.json",
       "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json",
-      "oh-mary-west-end-2025/londonist--httpslondonistcomcontributorswill-noble.json"
+      "oh-mary-west-end-2025/londonist--httpslondonistcomcontributorswill-noble.json",
+      "maybe-happy-ending-2024/the-contending--frank-j-avella.json"
     ]
   },
   "startTime": "2026-06-23T03:28:41.031Z",
-  "lastProcessed": "oliver-west-end-2024/i-paper--fiona-mountford.json",
+  "lastProcessed": "oh-mary-2024/broadwaynews--brittani-samuel.json",
   "log": [
     {
       "t": "2026-06-23T03:29:56.031Z",
@@ -460,41 +475,13 @@
       "domain": "variety.com"
     },
     {
-      "t": "2026-06-23T06:11:14.526Z",
+      "t": "2026-06-23T06:19:53.073Z",
       "event": "bb-session",
-      "session": "db15365a",
-      "url": "/people/Nick-Curtis/"
+      "session": "1cf0b5c9",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
     },
     {
-      "t": "2026-06-23T06:11:48.079Z",
-      "event": "bb-session",
-      "session": "d3eb6732",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
-    {
-      "t": "2026-06-23T06:11:48.663Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-23T06:12:22.142Z",
-      "event": "bb-session",
-      "session": "279b87d3",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-23T06:12:22.683Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-23T06:12:35.160Z",
-      "event": "bb-session",
-      "session": "1624000e",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
-    {
-      "t": "2026-06-23T06:12:35.698Z",
+      "t": "2026-06-23T06:19:53.847Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
