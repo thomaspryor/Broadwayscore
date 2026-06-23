@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-06-23T08:31:16.633Z",
+    "generatedAt": "2026-06-23T09:53:22.285Z",
     "note": "Corpus-statistics drift monitor. Non-blocking; surfaced via health-check.js digest. Not a code-correctness gate."
   },
   "summary": {
@@ -18,7 +18,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "=== TEXT QUALITY AUDIT ===\n\nTotal reviews: 39749\nHas fullText: 31525\n\n--- Quality Breakdown ---\n  full: 21447 (68.0%)\n  truncated: 9393 (29.8%)\n  excerpt: 319 (1.0%)\n  partial: 313 (1.0%)\n  stub: 35 (0.1%)\n  complete: 13 (0.0%)\n  unknown: 5 (0.0%)\n\n--- Truncation Signals ---\n  no_ending_punctuation: 6453\n  has_footer_junk: 1456\n  ends_with_ellipsis: 133\n  has_footer_text: 109\n  paywall_or_login_prompt: 76\n\n--- Threshold Checks (MONITOR / drift band) ---\n  ✅ Full: 68.0% (min: 25%)\n  ✅ Truncated: 29.8% (max: 65%)\n  ✅ Unknown: 0.0% (max: 5%)\n\n✅ AUDIT PASSED"
+      "detail": "=== TEXT QUALITY AUDIT ===\n\nTotal reviews: 39777\nHas fullText: 31520\n\n--- Quality Breakdown ---\n  full: 21442 (68.0%)\n  truncated: 9392 (29.8%)\n  excerpt: 320 (1.0%)\n  partial: 313 (1.0%)\n  stub: 35 (0.1%)\n  complete: 13 (0.0%)\n  unknown: 5 (0.0%)\n\n--- Truncation Signals ---\n  no_ending_punctuation: 6452\n  has_footer_junk: 1456\n  ends_with_ellipsis: 131\n  has_footer_text: 109\n  paywall_or_login_prompt: 77\n\n--- Threshold Checks (MONITOR / drift band) ---\n  ✅ Full: 68.0% (min: 25%)\n  ✅ Truncated: 29.8% (max: 65%)\n  ✅ Unknown: 0.0% (max: 5%)\n\n✅ AUDIT PASSED"
     },
     {
       "name": "aggregator-truth",
