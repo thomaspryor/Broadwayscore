@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-23T16:09:04.018Z",
+  "timestamp": "2026-06-23T20:58:54.508Z",
   "stats": {
-    "totalReviews": 39107,
-    "alreadyFlagged": 17442,
+    "totalReviews": 39106,
+    "alreadyFlagged": 17450,
     "dateGuardCatches": 38,
     "directorMismatch": 870,
-    "tvFilmSignals": 1066,
-    "londonSignals": 647,
+    "tvFilmSignals": 1067,
+    "londonSignals": 646,
     "offBroadwaySignals": 464,
     "yearMismatch": 83,
-    "noPublishDate": 3961
+    "noPublishDate": 3946
   },
   "findings": [
     {
@@ -272,6 +272,7 @@
     {
       "showId": "a-dolls-house-off-west-end-2026",
       "file": "guardian--gloria-oladipo.json",
+      "score": 79,
       "publishDate": "2023-03-13",
       "url": "https://www.theguardian.com/stage/2023/mar/09/a-dolls-house-review-jessica-chastain-broadway",
       "findings": [
@@ -8219,7 +8220,7 @@
       "file": "independent--alice-saville.json",
       "score": 58,
       "publishDate": "2026-06-18",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html?loginSuccessful=true",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -15827,6 +15828,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "one-man-two-guvnors-2012",
+      "file": "newsday--linda-winer.json",
+      "score": 63,
+      "publishDate": "April 18, 2012",
+      "url": "https://www.newsday.com/entertainment/theater/one-man-two-guvnors-is-pure-slapstick-1.3667079",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -26508,20 +26523,6 @@
     },
     {
       "showId": "whos-afraid-of-virginia-woolf-2012",
-      "file": "nydailynews--joe-dziemianowicz.json",
-      "score": 89,
-      "publishDate": "2012-10-16",
-      "url": "https://www.newspapers.com/image/575154843/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"edward albee\" from whos-afraid-of-virginia-woolf-1976"
-        }
-      ]
-    },
-    {
-      "showId": "whos-afraid-of-virginia-woolf-2012",
       "file": "nytimes--ben-brantley.json",
       "score": 92,
       "publishDate": "October 13, 2012",
@@ -26564,6 +26565,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "whos-afraid-of-virginia-woolf-2012",
+      "file": "talkinbroadway--matthew-murray.json",
+      "score": null,
+      "publishDate": "2012-10-13",
+      "url": "https://www.talkinbroadway.com/world/VirginiaWoolf2012.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"edward albee\" from whos-afraid-of-virginia-woolf-1976"
         }
       ]
     },
@@ -29187,20 +29202,6 @@
       "score": 84,
       "publishDate": "2026-05-21",
       "url": "https://www.theguardian.com/stage/2026/may/21/care-review-young-vic-london-dementia",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
-        }
-      ]
-    },
-    {
-      "showId": "care-west-end-2026",
-      "file": "guardian--david-jays.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.theguardian.com/stage/2026/may/15/linda-bassett-call-the-midwife-caryl-churchill-alexander-zeldin-care",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
