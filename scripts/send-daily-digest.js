@@ -184,16 +184,21 @@ function diffSnapshots(prev, curr) {
     }
   }
 
-  // Flag suspicious changes: >24 reviews added in a single day is abnormal
-  changes.suspiciousChanges = changes.newReviews.filter(r => r.added > 24);
-  // Also flag shows with >10 new reviews — likely tour contamination
-  const spikeShows = changes.newReviews.filter(r => r.added > 10 && r.added <= 24);
+  // Flag suspicious changes: >24 reviews added in a single day is abnormal.
+  // BUT only when there was a REAL prior count to spike from (prevCount > 0).
+  // A 0→N jump is a newly-tracked show's backfill landing at once, not a daily
+  // spike — those produced ~18 of the 20 false-alarm warnings on 2026-06-22.
+  const isRealSpike = r => r.added > 24 && (r.prevCount ?? 0) > 0;
+  changes.suspiciousChanges = changes.newReviews.filter(isRealSpike);
+  // Also flag shows with >10 new reviews — likely tour / wrong-show contamination
+  const spikeShows = changes.newReviews.filter(r => r.added > 10 && r.added <= 24 && (r.prevCount ?? 0) > 0);
   if (spikeShows.length > 0) {
     changes.reviewSpikes = spikeShows;
   }
   // Remove suspicious entries from newReviews so they aren't double-counted
   if (changes.suspiciousChanges.length > 0) {
-    changes.newReviews = changes.newReviews.filter(r => r.added <= 24);
+    const flagged = new Set(changes.suspiciousChanges.map(r => r.id));
+    changes.newReviews = changes.newReviews.filter(r => !flagged.has(r.id));
   }
 
   return changes;
