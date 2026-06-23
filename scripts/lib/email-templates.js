@@ -768,27 +768,30 @@ function buildDailyDigestHtml(changes, date) {
     sections.push(html);
   }
 
-  // New Reviews
-  if (changes.newReviews.length > 0) {
-    const totalAdded = changes.newReviews.reduce((sum, r) => sum + r.added, 0);
-    let html = sectionHeader(`New Reviews (${totalAdded} across ${changes.newReviews.length} show${changes.newReviews.length !== 1 ? 's' : ''})`);
-    const sorted = [...changes.newReviews].sort((a, b) => b.added - a.added);
-    for (const r of sorted) {
-      html += row(`${showLink(r.title, r.slug, r)} &mdash; +${r.added} review${r.added !== 1 ? 's' : ''} (${r.total} total)`);
-    }
-    sections.push(html);
-  }
-
-  // Score Changes
+  // Score Changes — only round-number flips (e.g. 82 → 83). Each line carries
+  // the review delta that drove the move + the new total, so we don't repeat
+  // the show list in a separate New Reviews section. Sub-integer wobble is
+  // filtered out upstream in diffSnapshots.
   if (changes.scoreChanges.length > 0) {
+    const sorted = [...changes.scoreChanges].sort((a, b) =>
+      Math.abs((b.to ?? 0) - (b.from ?? b.to ?? 0)) - Math.abs((a.to ?? 0) - (a.from ?? a.to ?? 0)));
     let html = sectionHeader(`Score Changes (${changes.scoreChanges.length})`);
-    for (const s of changes.scoreChanges) {
+    for (const s of sorted) {
       const { bg: fromBg } = s.from != null ? getScoreColor(s.from) : { bg: '#6b7280' };
       const { bg: toBg } = getScoreColor(s.to);
       const arrow = s.direction === 'up' ? '&#9650;' : s.direction === 'down' ? '&#9660;' : '&#9733;';
       const arrowColor = s.direction === 'up' ? '#22c55e' : s.direction === 'down' ? '#ef4444' : brandColor;
       const fromLabel = s.from != null ? `<span style="color:${fromBg};font-weight:700;">${s.from}</span>` : '<span style="color:#6b7280;">—</span>';
-      html += row(`${showLink(s.title, s.slug, s)} &mdash; ${fromLabel} <span style="color:${arrowColor};font-size:10px;">${arrow}</span> <span style="color:${toBg};font-weight:700;">${s.to}</span>`);
+      const added = s.reviewsAdded || 0;
+      let reviewNote = '';
+      if (added !== 0) {
+        const n = Math.abs(added);
+        const sign = added > 0 ? '+' : '&minus;';
+        reviewNote = ` <span style="color:rgba(255,255,255,0.45);">(${sign}${n} review${n !== 1 ? 's' : ''}, ${s.reviewTotal} total)</span>`;
+      } else if (s.reviewTotal != null) {
+        reviewNote = ` <span style="color:rgba(255,255,255,0.45);">(${s.reviewTotal} review${s.reviewTotal !== 1 ? 's' : ''} total)</span>`;
+      }
+      html += row(`${showLink(s.title, s.slug, s)} &mdash; ${fromLabel} <span style="color:${arrowColor};font-size:10px;">${arrow}</span> <span style="color:${toBg};font-weight:700;">${s.to}</span>${reviewNote}`);
     }
     sections.push(html);
   }
