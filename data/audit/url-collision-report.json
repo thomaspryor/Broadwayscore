@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-06-23T07:22:46.779Z",
+  "generatedAt": "2026-06-23T09:55:54.780Z",
   "summary": {
-    "total": 6,
-    "high": 5,
-    "medium": 0,
-    "low": 1
+    "total": 9,
+    "high": 2,
+    "medium": 3,
+    "low": 4
   },
   "collisions": [
     {
@@ -15,7 +15,7 @@
           "showId": "much-ado-about-nothing-globe-off-west-end-2026",
           "file": "broadwayworld--clementine-scott.json",
           "publishDate": "2026-06-19",
-          "openingDate": null,
+          "openingDate": "2026-06-20",
           "hasScore": true,
           "hasFullText": true,
           "outletId": "broadwayworld"
@@ -30,9 +30,9 @@
           "outletId": "broadwayworld"
         }
       ],
-      "suggestedWinner": "much-ado-about-nothing-globe-west-end-2026",
-      "reason": "publishDate 2026-06-19 is 8 days from much-ado-about-nothing-globe-west-end-2026 opening (2026-06-11)",
-      "confidence": "high"
+      "suggestedWinner": "much-ado-about-nothing-globe-off-west-end-2026",
+      "reason": "publishDate 2026-06-19 is 1 days from much-ado-about-nothing-globe-off-west-end-2026 but also 8 days from much-ado-about-nothing-globe-west-end-2026",
+      "confidence": "medium"
     },
     {
       "url": "https://theatreweekly.com/review-much-ado-about-nothing-at-globe-theatre/",
@@ -42,7 +42,7 @@
           "showId": "much-ado-about-nothing-globe-off-west-end-2026",
           "file": "theatre-weekly--oliver-valentine.json",
           "publishDate": "2026-06-19",
-          "openingDate": null,
+          "openingDate": "2026-06-20",
           "hasScore": true,
           "hasFullText": true,
           "outletId": "theatre-weekly"
@@ -57,9 +57,9 @@
           "outletId": "theatre-weekly"
         }
       ],
-      "suggestedWinner": "much-ado-about-nothing-globe-west-end-2026",
-      "reason": "publishDate 2026-06-19 is 8 days from much-ado-about-nothing-globe-west-end-2026 opening (2026-06-11)",
-      "confidence": "high"
+      "suggestedWinner": "much-ado-about-nothing-globe-off-west-end-2026",
+      "reason": "publishDate 2026-06-19 is 1 days from much-ado-about-nothing-globe-off-west-end-2026 but also 8 days from much-ado-about-nothing-globe-west-end-2026",
+      "confidence": "medium"
     },
     {
       "url": "https://www.thereviewshub.com/26-much-ado-about-nothing-shakespeares-globe-london/",
@@ -69,7 +69,7 @@
           "showId": "much-ado-about-nothing-globe-off-west-end-2026",
           "file": "thereviewshub--phoebe-taplin.json",
           "publishDate": "2026-06-21",
-          "openingDate": null,
+          "openingDate": "2026-06-20",
           "hasScore": true,
           "hasFullText": true,
           "outletId": "thereviewshub"
@@ -84,9 +84,9 @@
           "outletId": "thereviewshub"
         }
       ],
-      "suggestedWinner": "much-ado-about-nothing-globe-west-end-2026",
-      "reason": "publishDate 2026-06-21 is 10 days from much-ado-about-nothing-globe-west-end-2026 opening (2026-06-11)",
-      "confidence": "high"
+      "suggestedWinner": "much-ado-about-nothing-globe-off-west-end-2026",
+      "reason": "publishDate 2026-06-21 is 1 days from much-ado-about-nothing-globe-off-west-end-2026 but also 10 days from much-ado-about-nothing-globe-west-end-2026",
+      "confidence": "medium"
     },
     {
       "url": "https://www.standard.co.uk/culture/theatre/romeo-and-juliet-b1277295.html",
@@ -167,6 +167,87 @@
       ],
       "suggestedWinner": "the-phantom-of-the-opera-west-end-1986",
       "reason": "publishDate June 1st, 2004 is 6445+ days from all openings; defaulting to most recent production",
+      "confidence": "low"
+    },
+    {
+      "url": "https://www.ft.com/content/2ac154de-1781-11e2-8cbe-00144feabdc0",
+      "normalizedUrl": "https://ft.com/content/2ac154de-1781-11e2-8cbe-00144feabdc0",
+      "candidates": [
+        {
+          "showId": "whos-afraid-of-virginia-woolf-2012",
+          "file": "financialtimes--unknown.json",
+          "publishDate": null,
+          "openingDate": "2012-10-13",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "financialtimes"
+        },
+        {
+          "showId": "whos-afraid-of-virginia-woolf-2020",
+          "file": "financialtimes--unknown.json",
+          "publishDate": null,
+          "openingDate": null,
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "financialtimes"
+        }
+      ],
+      "suggestedWinner": "whos-afraid-of-virginia-woolf-2012",
+      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
+      "confidence": "low"
+    },
+    {
+      "url": "https://www.newsday.com/news/new-york/theater-review-who-s-afraid-of-virginia-woolf-2-5-stars-m92773",
+      "normalizedUrl": "https://newsday.com/news/new-york/theater-review-who-s-afraid-of-virginia-woolf-2-5-stars-m92773",
+      "candidates": [
+        {
+          "showId": "whos-afraid-of-virginia-woolf-2012",
+          "file": "newsday--unknown.json",
+          "publishDate": null,
+          "openingDate": "2012-10-13",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "newsday"
+        },
+        {
+          "showId": "whos-afraid-of-virginia-woolf-2020",
+          "file": "newsday--unknown.json",
+          "publishDate": null,
+          "openingDate": null,
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "newsday"
+        }
+      ],
+      "suggestedWinner": "whos-afraid-of-virginia-woolf-2012",
+      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
+      "confidence": "low"
+    },
+    {
+      "url": "https://www.villagevoice.com/whos-afraid-of-virginia-woolf-is-back-my-review/",
+      "normalizedUrl": "https://villagevoice.com/whos-afraid-of-virginia-woolf-is-back-my-review",
+      "candidates": [
+        {
+          "showId": "whos-afraid-of-virginia-woolf-2012",
+          "file": "village-voice--unknown.json",
+          "publishDate": null,
+          "openingDate": "2012-10-13",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "village-voice"
+        },
+        {
+          "showId": "whos-afraid-of-virginia-woolf-2020",
+          "file": "village-voice--unknown.json",
+          "publishDate": null,
+          "openingDate": null,
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "village-voice"
+        }
+      ],
+      "suggestedWinner": "whos-afraid-of-virginia-woolf-2012",
+      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
       "confidence": "low"
     }
   ]
