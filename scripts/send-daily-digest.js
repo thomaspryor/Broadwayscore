@@ -150,16 +150,24 @@ function diffSnapshots(prev, curr) {
       });
     }
 
-    // Score changes (only when both have scores — skip undefined→defined on first scoring)
-    if (currShow.cs != null && prevShow.cs != null && currShow.cs !== prevShow.cs) {
+    // Score changes — only surface when the *displayed* (rounded) score flips.
+    // cs is stored as a float but the site rounds to a whole number, so
+    // sub-integer wobble (78.17 → 78.57) is noise, not a real move. Each flip
+    // carries the review delta that drove it, so we don't repeat the show list
+    // in a separate New Reviews section.
+    if (currShow.cs != null && prevShow.cs != null && Math.round(currShow.cs) !== Math.round(prevShow.cs)) {
+      const from = Math.round(prevShow.cs);
+      const to = Math.round(currShow.cs);
       changes.scoreChanges.push({
-        id, slug: currShow.s, title: currShow.t, from: prevShow.cs, to: currShow.cs,
-        direction: currShow.cs > prevShow.cs ? 'up' : 'down', market,
+        id, slug: currShow.s, title: currShow.t, from, to,
+        direction: to > from ? 'up' : 'down',
+        reviewsAdded: currRc - prevRc, reviewTotal: currRc, market,
       });
     } else if (currShow.cs != null && prevShow.cs == null) {
       // First score assigned
       changes.scoreChanges.push({
-        id, slug: currShow.s, title: currShow.t, from: null, to: currShow.cs, direction: 'new', market,
+        id, slug: currShow.s, title: currShow.t, from: null, to: Math.round(currShow.cs),
+        direction: 'new', reviewsAdded: currRc - prevRc, reviewTotal: currRc, market,
       });
     }
 
