@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-23T06:40:59.359Z",
+  "timestamp": "2026-06-23T07:27:56.636Z",
   "stats": {
-    "totalReviews": 39040,
+    "totalReviews": 39041,
     "alreadyFlagged": 17413,
     "dateGuardCatches": 38,
     "directorMismatch": 869,
     "tvFilmSignals": 1065,
-    "londonSignals": 645,
+    "londonSignals": 646,
     "offBroadwaySignals": 464,
-    "yearMismatch": 82,
-    "noPublishDate": 3933
+    "yearMismatch": 83,
+    "noPublishDate": 3934
   },
   "findings": [
     {
@@ -3623,6 +3623,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "cats-the-jellicle-ball-2026",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "publishDate": null,
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TDLPLA",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2024 (2x) more than 2026 (0x). 2024 matches production: cats-the-jellicle-ball-off-broadway-2024"
         }
       ]
     },
@@ -8186,7 +8199,7 @@
       "file": "independent--alice-saville.json",
       "score": 58,
       "publishDate": "2026-06-18",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html?loginSuccessful=true",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -32595,6 +32608,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "lbc--johnny-jenkins.json",
+      "score": 91,
+      "publishDate": "2026-04-08",
+      "url": "https://www.lbc.co.uk/article/inter-alia-review-best-plays-ever-seen-5HjdXRZ_2/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
