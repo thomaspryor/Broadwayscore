@@ -1,13 +1,13 @@
 {
   "_meta": {
     "description": "Critic-outlet affinity audit report",
-    "lastUpdated": "2026-06-23T11:35:52.375Z",
+    "lastUpdated": "2026-06-23T12:07:18.344Z",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 39791,
-    "skippedFiles": 18311,
-    "totalCritics": 1494,
-    "registryCritics": 536,
-    "flaggedReviews": 20
+    "totalFilesScanned": 39799,
+    "skippedFiles": 18310,
+    "totalCritics": 1497,
+    "registryCritics": 538,
+    "flaggedReviews": 18
   },
   "flaggedReviews": [
     {
@@ -52,7 +52,7 @@
       "outletShare": 3,
       "primaryOutlet": "times-uk",
       "primaryShare": 97,
-      "totalReviews": 32
+      "totalReviews": 33
     },
     {
       "critic": "Michael Dale",
@@ -163,28 +163,6 @@
       "primaryOutlet": "timeout",
       "primaryShare": 95,
       "totalReviews": 21
-    },
-    {
-      "critic": "Susannah Clapp",
-      "criticSlug": "susannah-clapp",
-      "outlet": "guardian",
-      "showId": "an-enemy-of-the-people-2024",
-      "file": "guardian--susannah-clapp.json",
-      "outletShare": 8,
-      "primaryOutlet": "observer",
-      "primaryShare": 92,
-      "totalReviews": 24
-    },
-    {
-      "critic": "Susannah Clapp",
-      "criticSlug": "susannah-clapp",
-      "outlet": "guardian",
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "guardian--susannah-clapp.json",
-      "outletShare": 8,
-      "primaryOutlet": "observer",
-      "primaryShare": 92,
-      "totalReviews": 24
     },
     {
       "critic": "David Kaufman",
@@ -362,21 +340,21 @@
         "ny1",
         "plays-international",
         "exeunt-magazine",
-        "telegraph",
         "chicagotribune",
         "washpost",
         "theupcoming",
         "theatre-reviews-limited",
         "standard",
         "theatre-weekly",
+        "telegraph",
         "hollywood-reporter",
         "theatrely",
         "stageandcinema",
         "variety",
-        "independent",
         "philadelphia-edge",
         "i-paper",
         "cititour",
+        "independent",
         "british-theatre",
         "nysr",
         "the-upcoming-uk",
@@ -487,7 +465,7 @@
         "everything-theatre",
         "radio-times"
       ],
-      "totalReviews": 888
+      "totalReviews": 886
     },
     {
       "critic": "Rachel Halliburton",
@@ -496,7 +474,7 @@
         "artsdesk",
         "times-uk"
       ],
-      "totalReviews": 9
+      "totalReviews": 10
     },
     {
       "critic": "Mary Beer",
@@ -1405,9 +1383,10 @@
         "thestage",
         "i-paper",
         "timeout",
-        "london-theatre"
+        "london-theatre",
+        "times-uk"
       ],
-      "totalReviews": 24
+      "totalReviews": 25
     },
     {
       "critic": "Tim Bano",
@@ -1961,6 +1940,15 @@
       "outlets": [
         "artsdesk",
         "thestage"
+      ],
+      "totalReviews": 3
+    },
+    {
+      "critic": "Matt Trueman",
+      "slug": "matt-trueman",
+      "outlets": [
+        "variety",
+        "whatsonstage"
       ],
       "totalReviews": 3
     },
