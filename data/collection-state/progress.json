@@ -313,7 +313,9 @@
     "natasha-pierre-and-the-great-comet-of-1812-2016/newyorker--conde-nast.json",
     "les-liaisons-dangereuses-2016/uinterview--erik-meers.json",
     "les-liaisons-dangereuses-2016/wsj--terry-teachout.json",
-    "falsettos-2016/theatermania--jesse-green.json"
+    "falsettos-2016/theatermania--jesse-green.json",
+    "much-ado-about-nothing-globe-off-west-end-2026/london-theatre--globe-theatre.json",
+    "glengarry-glen-ross-west-end-2026/city-am--steve-dinneen.json"
   ],
   "failed": [
     "encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
@@ -753,7 +755,15 @@
     "a-bronx-tale-the-musical-2016/njcom--patrick-maley.json",
     "natasha-pierre-and-the-great-comet-of-1812-2016/broadway-and-me--janice-c-simpson.json",
     "les-liaisons-dangereuses-2016/thestage--mark-shenton.json",
-    "falsettos-2016/theater-life--eric-march.json"
+    "falsettos-2016/theater-life--eric-march.json",
+    "the-misanthrope-west-end-2026/times-uk--sam-marlowe.json",
+    "sting-west-end-2026/ew--unknown.json",
+    "sting-west-end-2026/newsday--unknown.json",
+    "sting-west-end-2026/west-end-best-friend--unknown.json",
+    "sting-west-end-2026/westendtheatre--unknown.json",
+    "glengarry-glen-ross-west-end-2026/guardian-uk--unknown.json",
+    "glengarry-glen-ross-west-end-2026/oxfordshire-guardian--unknown.json",
+    "glengarry-glen-ross-west-end-2026/thestage--sam-marlowe.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -918,7 +928,8 @@
       "jitney-2017/wnyc--jennifer-vanasco.json",
       "dear-evan-hansen-2016/frontmezzjunkies--steven-ross.json",
       "les-liaisons-dangereuses-2016/uinterview--erik-meers.json",
-      "falsettos-2016/theatermania--jesse-green.json"
+      "falsettos-2016/theatermania--jesse-green.json",
+      "much-ado-about-nothing-globe-off-west-end-2026/london-theatre--globe-theatre.json"
     ],
     "amp": [],
     "browserbase": [
@@ -972,7 +983,9 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+      "data/review-texts/glengarry-glen-ross-west-end-2026/city-am--steve-dinneen.json",
+      "glengarry-glen-ross-west-end-2026/city-am--steve-dinneen.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1194,7 +1207,7 @@
     ]
   },
   "startTime": "2026-06-23T03:28:41.031Z",
-  "lastProcessed": "falsettos-2016/theater-life--eric-march.json",
+  "lastProcessed": "glengarry-glen-ross-west-end-2026/thestage--sam-marlowe.json",
   "log": [
     {
       "t": "2026-06-23T03:29:56.031Z",
@@ -1757,6 +1770,12 @@
       "t": "2026-06-23T14:19:42.131Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-23T19:49:33.018Z",
+      "event": "bb-session",
+      "session": "269808de",
+      "url": "https://www.cityam.com/glengarry-glen-ross-at-the-old-vic-falls-flat/"
     }
   ]
 }

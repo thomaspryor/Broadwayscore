@@ -1,26 +1,20 @@
 {
-  "updatedAt": "2026-06-23T14:21:29.630Z",
-  "processed": 314,
-  "failed": 438,
-  "successRate": "41.8%",
+  "updatedAt": "2026-06-23T19:50:21.490Z",
+  "processed": 316,
+  "failed": 446,
+  "successRate": "41.5%",
   "tierBreakdown": {
-    "playwright": 161,
+    "playwright": 162,
     "amp": 0,
-    "browserbase": 51,
+    "browserbase": 53,
     "directCookies": 0,
     "scrapingbee": 68,
     "brightdata": 37,
     "archiveToday": 26,
     "archive": 78
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-06-23T12:45:52.873Z",
-      "event": "bb-session",
-      "session": "059fc19c",
-      "url": "https://www.nytimes.com/2026/06/03/theater/caissie-levy-broadway-tonys-ragtime.h"
-    },
     {
       "t": "2026-06-23T12:45:53.837Z",
       "event": "bb-cookie-inject",
@@ -124,6 +118,12 @@
       "t": "2026-06-23T14:19:42.131Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-23T19:49:33.018Z",
+      "event": "bb-session",
+      "session": "269808de",
+      "url": "https://www.cityam.com/glengarry-glen-ross-at-the-old-vic-falls-flat/"
     }
   ]
 }
