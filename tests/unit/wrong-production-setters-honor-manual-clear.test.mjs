@@ -68,23 +68,30 @@ describe('wrongProduction setter scripts honor manual-clear breadcrumb', () => {
       assert.ok(fs.existsSync(filePath), `${setter} not found at ${filePath}`);
       const src = fs.readFileSync(filePath, 'utf8');
 
-      // Must import the helper (any of these forms count).
+      // The guard may be shouldSkipWrongProductionAudit OR the stronger
+      // shouldSkipCrossShowUrlFlag — the latter calls the former internally and
+      // adds a CV check (review-guards.js), so it honors the manual-clear
+      // breadcrumb too. A setter that calls either is protected.
+      const GUARD = /(shouldSkipWrongProductionAudit|shouldSkipCrossShowUrlFlag)/;
+
+      // Must import a guard helper (any of these forms count).
       const hasImport =
-        /shouldSkipWrongProductionAudit/.test(src) &&
+        GUARD.test(src) &&
         /require\(['"]\.\/lib\/review-guards['"]\)/.test(src);
       assert.ok(
         hasImport,
-        `${setter} must require shouldSkipWrongProductionAudit from ./lib/review-guards. ` +
-        `Without this guard, every cleared wrongProductionManualClear file gets re-flagged ` +
-        `on the next CI run. See Notion 34e637c5-416f-811d / commit 1916416cf1.`
+        `${setter} must require shouldSkipWrongProductionAudit (or shouldSkipCrossShowUrlFlag) ` +
+        `from ./lib/review-guards. Without this guard, every cleared wrongProductionManualClear ` +
+        `file gets re-flagged on the next CI run. See Notion 34e637c5-416f-811d / commit 1916416cf1.`
       );
 
-      // Must actually CALL the helper (not just import).
-      const callCount = (src.match(/shouldSkipWrongProductionAudit\s*\(/g) || []).length;
+      // Must actually CALL a guard helper (not just import).
+      const callCount = (src.match(/(shouldSkipWrongProductionAudit|shouldSkipCrossShowUrlFlag)\s*\(/g) || []).length;
       assert.ok(
         callCount >= 1,
-        `${setter} imports shouldSkipWrongProductionAudit but never calls it. ` +
-        `Add a guard before each \`data.wrongProduction = true\` write.`
+        `${setter} imports a wrongProduction guard but never calls it. ` +
+        `Add shouldSkipWrongProductionAudit() or shouldSkipCrossShowUrlFlag() before each ` +
+        `\`data.wrongProduction = true\` write.`
       );
     });
   }
