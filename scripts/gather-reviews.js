@@ -3156,18 +3156,22 @@ function createReviewFile(showId, reviewData, options = {}) {
           try {
             const existingPath = path.join(REVIEW_TEXTS_DIR, existing.showId, existing.file);
             const existingData = JSON.parse(fs.readFileSync(existingPath, 'utf8'));
-            // Honor manual clears AND content-verification: a weak year-distance
-            // heuristic must not override CV that affirmed this is the correct
-            // production (prevents the recurring B_false_positive_wp class).
+            // Honor manual clears AND a real content-verification verdict: a weak
+            // year-distance heuristic must not override CV that affirmed the existing
+            // copy is the correct production (the recurring B_false_positive_wp class).
             if (shouldSkipCrossShowUrlFlag(existingData)) {
-              console.log(`    ⏭️  Existing ${existing.showId}/${existing.file} has manual-clear/CV-verified breadcrumb — leaving alone`);
-            } else {
-              existingData.wrongProduction = true;
-              existingData.wrongProductionNote = `Same URL correctly belongs in ${showId}`;
-              fs.writeFileSync(existingPath, JSON.stringify(existingData, null, 2) + '\n');
-              console.log(`    ⟳ Flagged ${existing.showId}/${existing.file} as wrongProduction — URL belongs in ${showId}`);
+              // Existing copy is CV-verified-correct / human-cleared — it OWNS this
+              // shared URL. Don't flag it, don't re-home the URL index, and REJECT the
+              // incoming review as a cross-show dupe. Without the reject both copies
+              // would survive on the same URL (ship-check 2026-06-23).
+              console.log(`    ⏭️  Existing ${existing.showId}/${existing.file} is CV-verified/cleared — it keeps the URL; rejecting incoming ${showId}/${filename}`);
+              return 'crossShow';
             }
-            // Update the URL index to point to this show
+            existingData.wrongProduction = true;
+            existingData.wrongProductionNote = `Same URL correctly belongs in ${showId}`;
+            fs.writeFileSync(existingPath, JSON.stringify(existingData, null, 2) + '\n');
+            console.log(`    ⟳ Flagged ${existing.showId}/${existing.file} as wrongProduction — URL belongs in ${showId}`);
+            // Update the URL index to point to this show (only now that we took ownership)
             urlIndex.set(normalizeUrl(reviewData.url), { showId, file: filename });
           } catch (e) {
             console.log(`    ⚠ Could not flag ${existing.showId}/${existing.file}: ${e.message}`);

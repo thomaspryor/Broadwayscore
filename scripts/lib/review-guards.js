@@ -1593,10 +1593,19 @@ function shouldSkipWrongProductionAudit(data) {
  * (date-guard, pre-opening) have different semantics and intentionally do NOT defer
  * to CV here.
  */
+// `contentVerification.wrongProduction === false` is only an affirmative verdict when a
+// PRODUCTION-AWARE verifier wrote it. content-verifier.js's heuristic/skip-short paths
+// default it to false ("Heuristics can't reliably detect this") — those must NOT count.
+function isProductionAwareCvVerdict(cv) {
+  if (!cv || cv.wrongProduction !== false) return false;
+  const v = cv.verifiedBy;
+  return typeof v === 'string' && (v.startsWith('llm:') || v.startsWith('human') || v === 'manual');
+}
+
 function shouldSkipCrossShowUrlFlag(data) {
   if (!data || typeof data !== 'object') return false;
   if (shouldSkipWrongProductionAudit(data)) return true;
-  if (data.contentVerification && data.contentVerification.wrongProduction === false) return true;
+  if (isProductionAwareCvVerdict(data.contentVerification)) return true;
   return false;
 }
 
@@ -2790,6 +2799,7 @@ module.exports = {
   isUrlTitleMismatch,
   shouldSkipWrongProductionAudit,
   shouldSkipCrossShowUrlFlag,
+  isProductionAwareCvVerdict,
   shouldSkipRoundupAudit,
   isRevivalByCanonicalTitle,
   urlOrTitleLooksLikeReview,
