@@ -1,55 +1,22 @@
 {
-  "updatedAt": "2026-06-23T21:59:16.977Z",
-  "processed": 342,
-  "failed": 638,
-  "successRate": "34.9%",
+  "updatedAt": "2026-06-23T22:03:58.344Z",
+  "processed": 351,
+  "failed": 639,
+  "successRate": "35.5%",
   "tierBreakdown": {
-    "playwright": 174,
+    "playwright": 178,
     "amp": 0,
-    "browserbase": 57,
+    "browserbase": 61,
     "directCookies": 0,
     "scrapingbee": 75,
     "brightdata": 38,
-    "archiveToday": 34,
-    "archive": 97
+    "archiveToday": 35,
+    "archive": 100
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-06-23T13:33:38.936Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-24T00:44:58.798Z",
-      "event": "bb-session",
-      "session": "f3d7d676",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-24T00:44:59.650Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-24T00:45:14.967Z",
-      "event": "bb-session",
-      "session": "fbf15f20",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
-    {
-      "t": "2026-06-24T00:45:15.869Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-24T01:16:29.805Z",
-      "event": "bb-session",
-      "session": "7c3b928d",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
-    {
-      "t": "2026-06-24T01:16:30.895Z",
+      "t": "2026-06-23T14:18:18.155Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
@@ -111,6 +78,39 @@
     },
     {
       "t": "2026-06-23T21:58:02.584Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-23T21:59:33.682Z",
+      "event": "bb-session",
+      "session": "e1f160b2",
+      "url": "http://www.wsj.com/articles/holiday-inn-the-new-irving-berlin-musical-review-147"
+    },
+    {
+      "t": "2026-06-23T21:59:34.122Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-23T22:02:44.753Z",
+      "event": "bb-session",
+      "session": "26b9d86d",
+      "url": "https://www.thestage.co.uk/reviews/tuck-everlasting-review-at-broadhurst-theatre"
+    },
+    {
+      "t": "2026-06-23T22:02:45.179Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-06-23T22:02:46.409Z",
+      "event": "bb-session",
+      "session": "1c4f8e12",
+      "url": "http://www.wsj.com/articles/fully-committed-review-jesse-tyler-ferguson-party-of"
+    },
+    {
+      "t": "2026-06-23T22:02:46.831Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
