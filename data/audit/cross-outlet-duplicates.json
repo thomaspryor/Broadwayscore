@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "generatedAt": "2026-06-16T06:58:05.814Z",
+    "generatedAt": "2026-06-23T06:34:48.138Z",
     "threshold": 40,
-    "showsScanned": 1741,
-    "reviewsScanned": 33141,
-    "duplicatesFound": 78,
+    "showsScanned": 1758,
+    "reviewsScanned": 33600,
+    "duplicatesFound": 80,
     "byMethod": {
       "similarity": [
         {
@@ -260,6 +260,21 @@
           "primaryScore": 55,
           "secondaryScore": 38,
           "scoreDiff": 17,
+          "textSource": "fullText"
+        },
+        {
+          "showId": "glengarry-glen-ross-2025",
+          "method": "similarity",
+          "similarity": 73,
+          "primaryFile": "ap--mark-kennedy.json",
+          "primaryOutlet": "Associated Press",
+          "primaryCritic": "Mark Kennedy",
+          "secondaryFile": "yahoo--unknown.json",
+          "secondaryOutlet": "Yahoo",
+          "secondaryCritic": "Unknown",
+          "primaryScore": 85,
+          "secondaryScore": 87,
+          "scoreDiff": 2,
           "textSource": "fullText"
         },
         {
@@ -1180,6 +1195,21 @@
           "secondaryScore": null,
           "scoreDiff": 0,
           "textSource": "excerpts"
+        },
+        {
+          "showId": "the-devil-wears-prada-west-end-2024",
+          "method": "fingerprint",
+          "similarity": 100,
+          "primaryFile": "guardian--susannah-clapp.json",
+          "primaryOutlet": "The Guardian",
+          "primaryCritic": "Susannah Clapp",
+          "secondaryFile": "observer--susannah-clapp.json",
+          "secondaryOutlet": "Observer",
+          "secondaryCritic": "Susannah Clapp",
+          "primaryScore": 45,
+          "secondaryScore": 40,
+          "scoreDiff": 5,
+          "textSource": "fullText"
         }
       ]
     }
@@ -1543,6 +1573,21 @@
       "primaryScore": 86,
       "secondaryScore": 87,
       "scoreDiff": 1,
+      "textSource": "fullText"
+    },
+    {
+      "showId": "glengarry-glen-ross-2025",
+      "method": "similarity",
+      "similarity": 73,
+      "primaryFile": "ap--mark-kennedy.json",
+      "primaryOutlet": "Associated Press",
+      "primaryCritic": "Mark Kennedy",
+      "secondaryFile": "yahoo--unknown.json",
+      "secondaryOutlet": "Yahoo",
+      "secondaryCritic": "Unknown",
+      "primaryScore": 85,
+      "secondaryScore": 87,
+      "scoreDiff": 2,
       "textSource": "fullText"
     },
     {
@@ -2248,6 +2293,21 @@
       "primaryScore": 42,
       "secondaryScore": 56,
       "scoreDiff": 14,
+      "textSource": "fullText"
+    },
+    {
+      "showId": "the-devil-wears-prada-west-end-2024",
+      "method": "fingerprint",
+      "similarity": 100,
+      "primaryFile": "guardian--susannah-clapp.json",
+      "primaryOutlet": "The Guardian",
+      "primaryCritic": "Susannah Clapp",
+      "secondaryFile": "observer--susannah-clapp.json",
+      "secondaryOutlet": "Observer",
+      "secondaryCritic": "Susannah Clapp",
+      "primaryScore": 45,
+      "secondaryScore": 40,
+      "scoreDiff": 5,
       "textSource": "fullText"
     },
     {
