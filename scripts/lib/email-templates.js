@@ -832,8 +832,11 @@ function buildDailyDigestHtml(changes, date) {
     sections.push(html);
   }
 
-  const totalChanges = changes.newShows.length + changes.newReviews.length +
-    changes.scoreChanges.length + changes.audienceChanges.length;
+  // Match the subject line: count only rendered sections (new-review-only
+  // activity has no section, so it must not inflate the headline count).
+  const totalChanges = changes.newShows.length +
+    changes.scoreChanges.length + changes.audienceChanges.length +
+    (changes.suspiciousChanges || []).length + (changes.reviewSpikes || []).length;
 
   return `<!DOCTYPE html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="color-scheme" content="light dark"><meta name="supported-color-schemes" content="light dark"></head>

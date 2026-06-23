@@ -153,8 +153,9 @@ function diffSnapshots(prev, curr) {
     // Score changes — only surface when the *displayed* (rounded) score flips.
     // cs is stored as a float but the site rounds to a whole number, so
     // sub-integer wobble (78.17 → 78.57) is noise, not a real move. Each flip
-    // carries the review delta that drove it, so we don't repeat the show list
-    // in a separate New Reviews section.
+    // carries the net review change since yesterday (a flip can also come from
+    // a removal/reclassification, so this may be 0 or negative), which lets us
+    // drop the separate New Reviews section instead of repeating the show list.
     if (currShow.cs != null && prevShow.cs != null && Math.round(currShow.cs) !== Math.round(prevShow.cs)) {
       const from = Math.round(prevShow.cs);
       const to = Math.round(currShow.cs);
@@ -198,10 +199,16 @@ function diffSnapshots(prev, curr) {
   return changes;
 }
 
+// Count only the sections the digest actually renders. Plain new-review
+// activity (review count up but no round-number score flip) is intentionally
+// not a standalone section anymore, so it must not trigger or size the digest
+// on its own — otherwise we'd send a "N changes" email with nothing to show.
+// Review spikes (>10/day) DO render their own warning section, so they count.
 function hasChanges(changes) {
-  return changes.newShows.length + changes.newReviews.length +
+  return changes.newShows.length +
     changes.scoreChanges.length + changes.audienceChanges.length +
-    (changes.suspiciousChanges || []).length > 0;
+    (changes.suspiciousChanges || []).length +
+    (changes.reviewSpikes || []).length > 0;
 }
 
 async function sendEmail(html, subject) {
@@ -253,8 +260,8 @@ async function main() {
   // Build and send email
   const suspiciousCount = (changes.suspiciousChanges || []).length;
   const spikeCount = (changes.reviewSpikes || []).length;
-  const totalChanges = changes.newShows.length + changes.newReviews.length +
-    changes.scoreChanges.length + changes.audienceChanges.length + suspiciousCount;
+  const totalChanges = changes.newShows.length +
+    changes.scoreChanges.length + changes.audienceChanges.length + suspiciousCount + spikeCount;
   const warnings = suspiciousCount + spikeCount;
   const subject = warnings > 0
     ? `⚠️ Daily Digest: ${totalChanges} changes (${warnings} warning${warnings !== 1 ? 's' : ''}) on ${today}`
