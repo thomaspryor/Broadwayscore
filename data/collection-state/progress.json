@@ -72,7 +72,14 @@
     "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
     "amaze-off-broadway-2026/timeout--adam-feldman.json",
     "return-of-the-godz-west-end-2026/londontheatre1--ben-ross.json",
-    "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json"
+    "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json",
+    "jerome-off-broadway-2025/off-off-online--edward-karam.json",
+    "jerome-off-broadway-2025/one-minute-critic--jerry-portwood.json",
+    "animal-wisdom-off-broadway-2022/nytg--christian-lewis.json",
+    "animal-wisdom-off-broadway-2022/timeout--raven-snook.json",
+    "animal-wisdom-off-broadway-2022/one-minute-critic--lindsay-b-davis.json",
+    "the-maids-off-broadway-2026/nytimes--roslyn-sulcas.json",
+    "the-maids-off-broadway-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
@@ -173,7 +180,10 @@
     "to-kill-a-mockingbird-west-end-2026/broadwayworld--michael-dale.json",
     "to-kill-a-mockingbird-west-end-2026/chicagotribune--chris-jones.json",
     "spamalot-off-broadway-2026/nytimes--jesse-green.json",
-    "spamalot-off-broadway-2026/vulture--jackson-mchenry.json"
+    "spamalot-off-broadway-2026/vulture--jackson-mchenry.json",
+    "end-of-the-rainbow-west-end-2026/new-jersey-newsroom--michael-sommers.json",
+    "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
+    "end-of-the-rainbow-west-end-2026/philadelphia-inquirer--howard-shapiro.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -219,7 +229,13 @@
       "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
       "the-mousetrap-west-end-2021/standard--jessie-thompson.json",
       "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
-      "return-of-the-godz-west-end-2026/londontheatre1--ben-ross.json"
+      "return-of-the-godz-west-end-2026/londontheatre1--ben-ross.json",
+      "jerome-off-broadway-2025/off-off-online--edward-karam.json",
+      "jerome-off-broadway-2025/one-minute-critic--jerry-portwood.json",
+      "animal-wisdom-off-broadway-2022/nytg--christian-lewis.json",
+      "animal-wisdom-off-broadway-2022/timeout--raven-snook.json",
+      "animal-wisdom-off-broadway-2022/one-minute-critic--lindsay-b-davis.json",
+      "the-maids-off-broadway-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
     "browserbase": [
@@ -249,9 +265,8 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
       "data/review-texts/maybe-happy-ending-2024/variety--unknown.json",
       "maybe-happy-ending-2024/variety--unknown.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
+      "data/review-texts/the-maids-off-broadway-2026/nytimes--roslyn-sulcas.json",
+      "the-maids-off-broadway-2026/nytimes--roslyn-sulcas.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -306,7 +321,7 @@
     ]
   },
   "startTime": "2026-06-23T03:28:41.031Z",
-  "lastProcessed": "spamalot-off-broadway-2026/vulture--jackson-mchenry.json",
+  "lastProcessed": "end-of-the-rainbow-west-end-2026/philadelphia-inquirer--howard-shapiro.json",
   "log": [
     {
       "t": "2026-06-23T03:29:56.031Z",
@@ -584,37 +599,15 @@
       "domain": "variety.com"
     },
     {
-      "t": "2026-06-23T06:49:31.334Z",
+      "t": "2026-06-23T06:35:35.639Z",
       "event": "bb-session",
-      "session": "d7673a52",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+      "session": "3e15bcfc",
+      "url": "https://www.nytimes.com/2026/05/26/theater/the-maids-play-nyc-genet-yerin-ha-kip"
     },
     {
-      "t": "2026-06-23T06:49:32.437Z",
+      "t": "2026-06-23T06:35:36.328Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-23T06:50:04.876Z",
-      "event": "bb-session",
-      "session": "c09c1995",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-23T06:50:05.855Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-23T06:50:19.023Z",
-      "event": "bb-session",
-      "session": "04b6b0cf",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
-    {
-      "t": "2026-06-23T06:50:19.975Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
     }
   ]
 }
