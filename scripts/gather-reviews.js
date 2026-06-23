@@ -59,6 +59,7 @@ const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway } = require('./lib/content-filters');
+const { shouldTakeUrlOwnership } = require('./lib/url-cross-production');
 const { hasOnlyForwardTenseTourMention } = require('./lib/excerpt-validation');
 const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview, isWrongShowUnknownLocked, getWrongProductionReasonForUnknownCritic, shouldRouteUnknownCriticToPending, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag } = require('./lib/review-guards');
 const { isWithinPriorRun, hasDeclaredPriorRuns } = require('./lib/wrong-production-autoclear');
@@ -3140,17 +3141,15 @@ function createReviewFile(showId, reviewData, options = {}) {
           if (m) reviewYear = parseInt(m[1]);
         }
 
-        let thisShowIsCorrect = false;
-        if (reviewYear && myYear && existingYear) {
-          const myDist = Math.abs(myYear - reviewYear);
-          const existingDist = Math.abs(existingYear - reviewYear);
-          // This show wins if strictly closer, or same distance but more recent
-          thisShowIsCorrect = myDist < existingDist || (myDist === existingDist && myYear > existingYear);
-        } else if (!reviewYear && myYear && existingYear) {
-          // No review year — more recent production wins
-          thisShowIsCorrect = myYear > existingYear;
-        }
-        // else: no year info — fall through to first-writer-wins (skip)
+        // Re-home the URL to this show ONLY when the review's own year is
+        // strictly closer to it than to the incumbent. Unknown review year or a
+        // tie → first-writer-wins (no re-home). Previously an unknown year (or
+        // tie) handed the URL to the *newer* production and flagged the older
+        // copy wrongProduction — silently suppressing legitimate older reviews
+        // when a same-title revival appeared. See scripts/lib/url-cross-production.js.
+        const thisShowIsCorrect = shouldTakeUrlOwnership({
+          reviewYear, thisYear: myYear, existingYear,
+        });
 
         if (thisShowIsCorrect) {
           // Flag the existing file as wrong production and save this one
