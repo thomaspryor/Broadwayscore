@@ -591,6 +591,13 @@
     "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
     "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
     "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
+    "romeo-and-juliet-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
     "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json"
   ],
   "skipped": [],
@@ -772,6 +779,9 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
     ],
     "directCookies": [],
@@ -876,6 +886,7 @@
       "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json",
       "data/review-texts/much-ado-about-nothing-globe-west-end-2026/thestage--holly-o.json",
       "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json",
+      "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
       "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json"
     ],
     "archive": [
@@ -1512,6 +1523,39 @@
     },
     {
       "t": "2026-06-23T00:01:44.463Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-23T00:35:34.251Z",
+      "event": "bb-session",
+      "session": "3cdd5b8b",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-23T00:35:35.180Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-23T00:36:12.868Z",
+      "event": "bb-session",
+      "session": "eeacbe5c",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-23T00:36:13.739Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-23T00:36:26.483Z",
+      "event": "bb-session",
+      "session": "5e97d884",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-23T00:36:27.416Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
