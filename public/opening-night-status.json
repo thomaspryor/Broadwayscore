@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-23T10:23:42.176Z",
+  "generatedAt": "2026-06-23T11:08:25.836Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -494,28 +494,23 @@
       "status": "open",
       "slug": "much-ado-about-nothing-globe-off-west-end",
       "thumbnail": "/images/shows/much-ado-about-nothing-globe-off-west-end-2026/thumbnail.webp",
-      "siteScore": 80.96,
-      "liveScore": 81,
-      "scoreDrift": 0.04000000000000625,
+      "siteScore": 81.71,
+      "liveScore": 82,
+      "scoreDrift": 0.29000000000000625,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 7,
-      "t1": 2,
-      "t2": 5,
+      "total": 10,
+      "t1": 4,
+      "t2": 6,
       "t3": 0,
-      "positive": 5,
+      "positive": 8,
       "mixed": 2,
       "negative": 0,
       "readiness": {
-        "ready": false,
-        "reasons": [
-          "7/8 total",
-          "T1:2/3",
-          "T2:1/2",
-          "hi-conf:5/6"
-        ],
-        "highConfidence": 5,
+        "ready": true,
+        "reasons": [],
+        "highConfidence": 8,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -525,7 +520,7 @@
       },
       "broadcast": {
         "state": "waiting",
-        "detail": "Not yet broadcast-ready"
+        "detail": "Ready — awaiting send"
       },
       "missingT1": [
         {
@@ -537,19 +532,11 @@
           "isDualMarket": true
         },
         {
-          "name": "The Times (UK)",
-          "isDualMarket": true
-        },
-        {
           "name": "The Independent",
           "isDualMarket": true
         },
         {
           "name": "Daily Mail",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Stage",
           "isDualMarket": true
         }
       ],
@@ -580,6 +567,18 @@
           "t2": 5,
           "t3": 0,
           "p": 5,
+          "m": 2,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-06-23T11:08:25.836Z",
+          "rc": 10,
+          "s": 81.71,
+          "t1": 4,
+          "t2": 6,
+          "t3": 0,
+          "p": 8,
           "m": 2,
           "n": 0,
           "bc": "waiting"
