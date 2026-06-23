@@ -16,7 +16,7 @@ import { getShowGrosses } from './data-grosses';
 import { getAudienceBuzz } from './data-audience';
 import { isOperaShow } from './show-market';
 import { featureFlags } from '@/config/feature-flags';
-import { isHomepageNotable, notabilityRank, NOTABILITY_THRESHOLDS, type NotabilitySignals } from './homepage-notability';
+import { isHomepageNotable, isAcclaimedKnownPropertyRevival, notabilityRank, NOTABILITY_THRESHOLDS, type NotabilitySignals } from './homepage-notability';
 import { getShowCommercial } from './data-commercial';
 import { getShowAwards } from './data-awards';
 import { BROWSE_PAGES, BrowsePageConfig, BrowseFilterContext, getAllBrowseSlugs as getBrowseSlugsFromConfig } from '@/config/browse-pages';
@@ -137,6 +137,7 @@ function notabilitySignalsFor(show: ComputedShow): NotabilitySignals {
     tags: show.tags,
     t1Count: show.criticScore?.tier1Count ?? 0,
     reviewCount: show.criticScore?.reviewCount ?? 0,
+    criticScore: show.criticScore?.score ?? 0,
     curatedAudience: curatedAudienceFootprint(show.id),
     homepageInclude: show.homepageInclude,
     homepageExclude: show.homepageExclude,
@@ -157,9 +158,18 @@ export function getNotableOffBroadwayShows(limit = NOTABILITY_THRESHOLDS.cap): C
     .map(show => ({ show, signals: notabilitySignalsFor(show) }))
     .filter(({ signals }) => isHomepageNotable(signals));
 
-  const forced = eligible.filter(({ signals }) => signals.homepageInclude);
+  // Protected picks bypass the volume-ranked cap race: manual homepageInclude,
+  // plus acclaimed known-property revivals (Path C). The latter rank low on
+  // review volume (few ticket-platform/T1 reviews) and would always lose the cap
+  // to higher-volume but lower-quality shows — exactly the burial Path C exists
+  // to prevent. These are rare (open known-property revivals with cs >= 80), so
+  // the grid stays near the cap.
+  const isProtected = (s: NotabilitySignals) =>
+    s.homepageInclude || isAcclaimedKnownPropertyRevival(s);
+  const forced = eligible.filter(({ signals }) => isProtected(signals));
+  const forcedIds = new Set(forced.map(e => e.show.id));
   const auto = eligible
-    .filter(({ signals }) => !signals.homepageInclude)
+    .filter(({ show }) => !forcedIds.has(show.id))
     .sort((a, b) => notabilityRank(b.signals) - notabilityRank(a.signals));
 
   const remaining = Math.max(0, limit - forced.length);

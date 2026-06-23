@@ -78,6 +78,37 @@ test('Path B — known property below the audience floor does NOT qualify', () =
   );
 });
 
+test('Path C — Henry VI (revival, rc=5, cs=86, thin audience) qualifies without buzz', () => {
+  // NAATCO Shakespeare at the Public: 0 T1, 5 reviews, ~15 audience, but a
+  // recognizable revival critics praised. Path B (250 audience) buries it; C saves it.
+  assert.equal(
+    isHomepageNotable(base({ isRevival: true, t1Count: 0, reviewCount: 5, criticScore: 86, curatedAudience: 15 })),
+    true,
+  );
+});
+
+test('Path C — strong score but NOT a known property does NOT qualify', () => {
+  // A new play with cs=86, rc=5 is exactly the "critics darling but small" case
+  // the homepage deliberately excludes — Path C is gated on known-property.
+  assert.equal(
+    isHomepageNotable(base({ isRevival: false, tags: [], reviewCount: 5, criticScore: 86, curatedAudience: 15 })),
+    false,
+  );
+});
+
+test('Path C — known property below score or review floor does NOT qualify', () => {
+  // Weak score → out.
+  assert.equal(
+    isHomepageNotable(base({ isRevival: true, reviewCount: 5, criticScore: NOTABILITY_THRESHOLDS.minKnownPropertyScore - 1, curatedAudience: 15 })),
+    false,
+  );
+  // Too few reviews → out (one rave can't carry it).
+  assert.equal(
+    isHomepageNotable(base({ isRevival: true, reviewCount: NOTABILITY_THRESHOLDS.minKnownPropertyReviews - 1, criticScore: 95, curatedAudience: 15 })),
+    false,
+  );
+});
+
 test('Gate — opera is excluded even with heavy critic turnout', () => {
   assert.equal(isHomepageNotable(base({ type: 'opera', t1Count: 20, reviewCount: 50 })), false);
 });

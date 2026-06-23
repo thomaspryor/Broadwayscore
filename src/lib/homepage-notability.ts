@@ -28,6 +28,8 @@ export interface NotabilitySignals {
   t1Count: number;
   /** Total scored critic reviews. */
   reviewCount: number;
+  /** Composite CriticScore (0–100), 0 when not yet scored. */
+  criticScore?: number;
   /**
    * Curated audience footprint: sum of reviewCounts across ticket-buyer
    * platforms (Show Score + Mezzanine + Theatr + BroadwayBox). Reddit is
@@ -47,6 +49,12 @@ export const NOTABILITY_THRESHOLDS = {
   minReviews: 18,
   /** Path B — curated audience footprint for a known property. */
   minCuratedAudience: 250,
+  /** Path C — a critically-praised known-property revival, even with thin
+   *  audience tracking (small nonprofit revivals get few ticket-platform
+   *  reviews). Requires a real critic sample + a strong score, so a lone rave
+   *  can't game it. */
+  minKnownPropertyReviews: 4,
+  minKnownPropertyScore: 80,
   /** Cap on how many notable OB shows reach the homepage grid. */
   cap: 8,
 } as const;
@@ -77,7 +85,30 @@ export function isHomepageNotable(s: NotabilitySignals): boolean {
   if (s.reviewCount >= NOTABILITY_THRESHOLDS.minReviews) return true;
   // Path B — known property with real audience buzz.
   if (isKnownProperty(s) && s.curatedAudience >= NOTABILITY_THRESHOLDS.minCuratedAudience) return true;
+  // Path C — known property critics praised, even with thin audience tracking.
+  if (isAcclaimedKnownPropertyRevival(s)) return true;
   return false;
+}
+
+/**
+ * Path C predicate: a recognizable revival/classic that critics praised, even
+ * with thin audience tracking. Small nonprofit revivals (e.g. a NAATCO
+ * Shakespeare at the Public) draw few ticket-platform reviews, so Path B's
+ * audience gate wrongly buries them; a strong critic score over a real review
+ * sample is enough on its own. Exposed separately because these shows also earn
+ * a PROTECTED homepage slot (see getNotableOffBroadwayShows) — their low
+ * review-volume rank would otherwise lose the cap race to higher-volume but
+ * lower-quality shows, which defeats the whole point of the path.
+ */
+export function isAcclaimedKnownPropertyRevival(s: NotabilitySignals): boolean {
+  if (s.homepageExclude) return false;
+  if (s.status !== 'open' && s.status !== 'previews') return false;
+  if (s.type === 'opera') return false;
+  return (
+    isKnownProperty(s) &&
+    s.reviewCount >= NOTABILITY_THRESHOLDS.minKnownPropertyReviews &&
+    (s.criticScore ?? 0) >= NOTABILITY_THRESHOLDS.minKnownPropertyScore
+  );
 }
 
 /**
