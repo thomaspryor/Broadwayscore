@@ -60,7 +60,7 @@ const { cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway } = require('./lib/content-filters');
 const { hasOnlyForwardTenseTourMention } = require('./lib/excerpt-validation');
-const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview, isWrongShowUnknownLocked, getWrongProductionReasonForUnknownCritic, shouldRouteUnknownCriticToPending, shouldSkipWrongProductionAudit } = require('./lib/review-guards');
+const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview, isWrongShowUnknownLocked, getWrongProductionReasonForUnknownCritic, shouldRouteUnknownCriticToPending, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag } = require('./lib/review-guards');
 const { isWithinPriorRun, hasDeclaredPriorRuns } = require('./lib/wrong-production-autoclear');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isBroadwayUrl } = require('./lib/venue-classification');
@@ -3238,9 +3238,11 @@ function createReviewFile(showId, reviewData, options = {}) {
           try {
             const existingPath = path.join(REVIEW_TEXTS_DIR, existing.showId, existing.file);
             const existingData = JSON.parse(fs.readFileSync(existingPath, 'utf8'));
-            // Honor manual clears — don't re-flag a human-verified review.
-            if (shouldSkipWrongProductionAudit(existingData)) {
-              console.log(`    ⏭️  Existing ${existing.showId}/${existing.file} has manual-clear breadcrumb — leaving alone`);
+            // Honor manual clears AND content-verification: a weak year-distance
+            // heuristic must not override CV that affirmed this is the correct
+            // production (prevents the recurring B_false_positive_wp class).
+            if (shouldSkipCrossShowUrlFlag(existingData)) {
+              console.log(`    ⏭️  Existing ${existing.showId}/${existing.file} has manual-clear/CV-verified breadcrumb — leaving alone`);
             } else {
               existingData.wrongProduction = true;
               existingData.wrongProductionNote = `Same URL correctly belongs in ${showId}`;

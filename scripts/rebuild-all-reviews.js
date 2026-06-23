@@ -39,7 +39,7 @@ const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTL
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
 const { shouldRejectAsReservation, isInternalNote, hasCopyrightChrome, stripLeadingChrome } = require('./lib/pull-quote-guards');
 const { emitStage } = require('./lib/stage-latency');
-const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipRoundupAudit, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow } = require('./lib/review-guards');
+const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl } = require('./lib/rebuild-helpers');
@@ -2313,7 +2313,7 @@ showDirs.forEach(showId => {
             for (const other of allCopies) {
               if (other.showId === showId || !other.showYear) continue;
               if (Math.abs(other.showYear - reviewYear) < myDist) {
-                if (shouldSkipWrongProductionAudit(data)) continue; // [GUARD:CROSS-SHOW-URL-DATED]
+                if (shouldSkipCrossShowUrlFlag(data)) continue; // [GUARD:CROSS-SHOW-URL-DATED] honors manual-clear + CV-verified-correct
                 console.log(`  [CROSS-SHOW URL] ${showId}/${file}: URL year ${reviewYear} closer to ${other.showId} (${other.showYear}) than ${showId} (${myYear})`);
                 logExclusion("skippedCrossShowUrl", showId, file, data);
                 stats.skippedCrossShowUrl = (stats.skippedCrossShowUrl || 0) + 1;
@@ -2329,7 +2329,7 @@ showDirs.forEach(showId => {
           if (!myYear && reviewYear) {
             for (const other of allCopies) {
               if (other.showId === showId || !other.showYear) continue;
-              if (shouldSkipWrongProductionAudit(data)) continue; // [GUARD:CROSS-SHOW-URL-DATELESS]
+              if (shouldSkipCrossShowUrlFlag(data)) continue; // [GUARD:CROSS-SHOW-URL-DATELESS] honors manual-clear + CV-verified-correct
               console.log(`  [CROSS-SHOW URL] ${showId}/${file}: dateless show loses to ${other.showId} (${other.showYear}) for URL year ${reviewYear}`);
               logExclusion("skippedCrossShowUrl", showId, file, data);
               stats.skippedCrossShowUrl = (stats.skippedCrossShowUrl || 0) + 1;
