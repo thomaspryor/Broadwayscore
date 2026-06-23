@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-23T06:40:07.115Z",
-  "processed": 88,
-  "failed": 104,
-  "successRate": "45.8%",
+  "updatedAt": "2026-06-23T06:44:31.462Z",
+  "processed": 93,
+  "failed": 109,
+  "successRate": "46.0%",
   "tierBreakdown": {
-    "playwright": 55,
+    "playwright": 57,
     "amp": 0,
     "browserbase": 28,
     "directCookies": 0,
-    "scrapingbee": 13,
-    "brightdata": 6,
-    "archiveToday": 6,
-    "archive": 15
+    "scrapingbee": 14,
+    "brightdata": 7,
+    "archiveToday": 7,
+    "archive": 16
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-06-23T04:43:10.996Z",
-      "event": "bb-session",
-      "session": "dd7894ab",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
-    {
-      "t": "2026-06-23T04:43:11.937Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-06-23T04:46:24.515Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-06-23T06:35:36.328Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-23T06:41:49.137Z",
+      "event": "bb-session",
+      "session": "f47e50e3",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2645871"
+    },
+    {
+      "t": "2026-06-23T06:41:49.866Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
