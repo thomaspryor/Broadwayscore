@@ -1,33 +1,22 @@
 {
-  "updatedAt": "2026-06-23T21:54:12.366Z",
-  "processed": 335,
-  "failed": 635,
-  "successRate": "34.5%",
+  "updatedAt": "2026-06-23T21:59:16.977Z",
+  "processed": 342,
+  "failed": 638,
+  "successRate": "34.9%",
   "tierBreakdown": {
-    "playwright": 172,
+    "playwright": 174,
     "amp": 0,
-    "browserbase": 55,
+    "browserbase": 57,
     "directCookies": 0,
-    "scrapingbee": 72,
+    "scrapingbee": 75,
     "brightdata": 38,
-    "archiveToday": 33,
-    "archive": 94
+    "archiveToday": 34,
+    "archive": 97
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-06-23T12:46:33.687Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-24T00:44:24.302Z",
-      "event": "bb-session",
-      "session": "ef386a05",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
-    {
-      "t": "2026-06-24T00:44:25.247Z",
+      "t": "2026-06-23T13:33:38.936Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
@@ -111,6 +100,17 @@
     },
     {
       "t": "2026-06-23T21:41:15.838Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-23T21:58:02.153Z",
+      "event": "bb-session",
+      "session": "8a322b3b",
+      "url": "http://www.wsj.com/articles/heisenberg-review-masculine-wish-fulfillment-on-stag"
+    },
+    {
+      "t": "2026-06-23T21:58:02.584Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
