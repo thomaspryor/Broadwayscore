@@ -350,7 +350,13 @@
     "tuck-everlasting-2016/uinterview--erik-meers.json",
     "fully-committed-2016/timeout--adam-feldman.json",
     "fully-committed-2016/wsj--terry-teachout.json",
-    "waitress-2016/act-three-the-reviews--doug-marino.json"
+    "waitress-2016/act-three-the-reviews--doug-marino.json",
+    "american-psycho-2016/nyt-theater--jonathan-mandell.json",
+    "american-psycho-2016/timeout--adam-feldman.json",
+    "the-father-2016/financialtimes--max-mcguinness.json",
+    "bright-star-2016/wsj--terry-teachout.json",
+    "bright-star-2016/stu-on-broadway--stu-brown.json",
+    "she-loves-me-2016/wsj--terry-teachout.json"
   ],
   "failed": [
     "encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
@@ -991,7 +997,11 @@
     "les-liaisons-dangereuses-2016/thestage--mark-shenton.json",
     "falsettos-2016/theater-life--eric-march.json",
     "heisenberg-2016/abc-news--mark-kennedy.json",
-    "tuck-everlasting-2016/thestage--mark-shenton.json"
+    "tuck-everlasting-2016/thestage--mark-shenton.json",
+    "american-psycho-2016/ap--mark-kennedy.json",
+    "the-father-2016/theater-life--paulanne-simmons.json",
+    "bright-star-2016/drama-queen-nyc--jonathan-warman.json",
+    "she-loves-me-2016/theater-life--eric-march.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1173,7 +1183,9 @@
       "the-encounter-2016/times-square-chronicles--suzanna-bowling.json",
       "tuck-everlasting-2016/ew--melissa-rose-bernardo.json",
       "tuck-everlasting-2016/uinterview--erik-meers.json",
-      "waitress-2016/act-three-the-reviews--doug-marino.json"
+      "waitress-2016/act-three-the-reviews--doug-marino.json",
+      "american-psycho-2016/nyt-theater--jonathan-mandell.json",
+      "the-father-2016/financialtimes--max-mcguinness.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1237,7 +1249,11 @@
       "data/review-texts/holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json",
       "holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json",
       "data/review-texts/fully-committed-2016/wsj--terry-teachout.json",
-      "fully-committed-2016/wsj--terry-teachout.json"
+      "fully-committed-2016/wsj--terry-teachout.json",
+      "data/review-texts/bright-star-2016/wsj--terry-teachout.json",
+      "bright-star-2016/wsj--terry-teachout.json",
+      "data/review-texts/she-loves-me-2016/wsj--terry-teachout.json",
+      "she-loves-me-2016/wsj--terry-teachout.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1315,7 +1331,8 @@
       "come-from-away-2017/theater-life--isa-goldberg.json",
       "sunday-in-the-park-with-george-2017/wnyc--jennifer-vanasco.json",
       "heisenberg-2016/nydailynews--joe-dziemianowicz.json",
-      "oh-hello-on-broadway-2016/nydailynews--joe-dziemianowicz.json"
+      "oh-hello-on-broadway-2016/nydailynews--joe-dziemianowicz.json",
+      "the-father-2016/theater-life--paulanne-simmons.json"
     ],
     "brightdata": [
       "the-balusters-2026/broadwayworld--unknown.json",
@@ -1494,11 +1511,13 @@
       "holiday-inn-the-new-irving-berlin-musical-2016/nydailynews--joe-dziemianowicz.json",
       "holiday-inn-the-new-irving-berlin-musical-2016/timeout--david-cote.json",
       "the-encounter-2016/nydailynews--joe-dziemianowicz.json",
-      "fully-committed-2016/timeout--adam-feldman.json"
+      "fully-committed-2016/timeout--adam-feldman.json",
+      "american-psycho-2016/timeout--adam-feldman.json",
+      "bright-star-2016/stu-on-broadway--stu-brown.json"
     ]
   },
   "startTime": "2026-06-23T03:28:41.031Z",
-  "lastProcessed": "waitress-2016/act-three-the-reviews--doug-marino.json",
+  "lastProcessed": "she-loves-me-2016/theater-life--eric-march.json",
   "log": [
     {
       "t": "2026-06-23T03:29:56.031Z",
@@ -2132,6 +2151,28 @@
     },
     {
       "t": "2026-06-23T22:02:46.831Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-23T22:06:40.511Z",
+      "event": "bb-session",
+      "session": "918b4434",
+      "url": "http://www.wsj.com/articles/bright-star-review-banjo-boondoggle-1458865800"
+    },
+    {
+      "t": "2026-06-23T22:06:40.940Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-23T22:07:36.456Z",
+      "event": "bb-session",
+      "session": "9be79f9b",
+      "url": "http://www.wsj.com/articles/she-loves-me-the-sweet-scent-of-perfection-145826100"
+    },
+    {
+      "t": "2026-06-23T22:07:36.916Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
