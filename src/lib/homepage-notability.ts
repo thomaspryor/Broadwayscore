@@ -86,15 +86,29 @@ export function isHomepageNotable(s: NotabilitySignals): boolean {
   // Path B — known property with real audience buzz.
   if (isKnownProperty(s) && s.curatedAudience >= NOTABILITY_THRESHOLDS.minCuratedAudience) return true;
   // Path C — known property critics praised, even with thin audience tracking.
-  // Small nonprofit revivals (e.g. a NAATCO Shakespeare at the Public) draw few
-  // ticket-platform reviews, so Path B's audience gate wrongly buries them. A
-  // strong critic score over a real review sample is enough on its own.
-  if (
+  if (isAcclaimedKnownPropertyRevival(s)) return true;
+  return false;
+}
+
+/**
+ * Path C predicate: a recognizable revival/classic that critics praised, even
+ * with thin audience tracking. Small nonprofit revivals (e.g. a NAATCO
+ * Shakespeare at the Public) draw few ticket-platform reviews, so Path B's
+ * audience gate wrongly buries them; a strong critic score over a real review
+ * sample is enough on its own. Exposed separately because these shows also earn
+ * a PROTECTED homepage slot (see getNotableOffBroadwayShows) — their low
+ * review-volume rank would otherwise lose the cap race to higher-volume but
+ * lower-quality shows, which defeats the whole point of the path.
+ */
+export function isAcclaimedKnownPropertyRevival(s: NotabilitySignals): boolean {
+  if (s.homepageExclude) return false;
+  if (s.status !== 'open' && s.status !== 'previews') return false;
+  if (s.type === 'opera') return false;
+  return (
     isKnownProperty(s) &&
     s.reviewCount >= NOTABILITY_THRESHOLDS.minKnownPropertyReviews &&
     (s.criticScore ?? 0) >= NOTABILITY_THRESHOLDS.minKnownPropertyScore
-  ) return true;
-  return false;
+  );
 }
 
 /**
