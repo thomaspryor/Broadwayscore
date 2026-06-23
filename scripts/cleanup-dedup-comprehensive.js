@@ -15,7 +15,7 @@
 const fs = require('fs');
 const path = require('path');
 const { normalizeUrl } = require('./lib/review-normalization');
-const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
+const { shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag } = require('./lib/review-guards');
 const { cascadeClearDuplicateRefs } = require('./lib/cascade-clear-duplicate-refs');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
@@ -287,7 +287,7 @@ function cleanupCrossShowUrlDupes() {
       if (entry.showId === bestShow) continue;
       const fp = path.join(entry.dir, entry.file); const data = readJsonFile(fp);
       if (!data || data.wrongProduction) continue;
-      if (shouldSkipWrongProductionAudit(data)) continue;
+      if (shouldSkipCrossShowUrlFlag(data)) continue; // same cross-show-URL class: honor CV verdict + manual-clear
       console.log(`  ${entry.showId}/${entry.file} → wrongProduction (belongs to ${bestShow})`);
       data.wrongProduction = true; data._wrongProductionReason = `URL matches ${bestShow} (year-based)`;
       data._wrongProductionDetectedBy = 'cleanup-dedup-comprehensive';
