@@ -57,7 +57,6 @@
 - [test.yml push path allow-list](feedback_test_yml_push_path_allowlist.md) — non-listed scripts/ pushes trigger ZERO CI; add new paths
 - [push-review-texts reverts intentional clears](feedback_push_review_texts_reverts_intentional_clears.md) — duplicateOf in PROTECTED_FIELDS; needs duplicateClearReason exception
 - [test.yml data gates flap + short-circuit](feedback_test_yml_data_gates_flap_and_shortcircuit.md) — corpus drift trips gates; first failure masks rest; triage drift vs real-fix ([[feedback_ci_red_stale_state_and_brittle_assertions.md]])
-- [mobile-shows.json index is a committed served artifact](feedback_mobile_index_committed_artifact.md) — regenerate index in rebuild pipeline (lockstep w/ detail JSONs) or it drifts + reds validate-mobile-shows.js; stage only in has_changes (single-line JSON + _ts)
 - [vercel build env block required](feedback_vercel_env_block_required.md) — NEXT_PUBLIC_* must go in build step env: block
 - [Vercel NFT dynamic paths + excludes](feedback_vercel_nft_dynamic_paths.md) — no dynamic paths in server code; grep src/ before outputFileTracingExcludes; CI guard enforces
 - [Conservative default = common case](feedback_conservative_default_can_be_common_case.md) — "unknown → assume X" breaks when unknown IS common
