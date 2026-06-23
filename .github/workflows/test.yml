@@ -70,6 +70,14 @@ on:
       - 'scripts/lib/reddit-post-filters.js'
       - 'scripts/lib/reddit-post-filters.test.mjs'
       - 'scripts/scrape-reddit-sentiment.js'
+      # Cross-show URL contamination guard — shared by the ingest-time guard
+      # (gather-reviews.js) and the corpus audit. Colocated .test.mjs is covered
+      # by the lib test step; list both so solo edits trigger CI (1536 incident).
+      - 'scripts/lib/cross-show-url.js'
+      - 'scripts/lib/cross-show-url.test.mjs'
+      - 'scripts/audit-cross-show-url.js'
+      # Daily digest spike/suspicious thresholds (prevCount>0 false-alarm filter).
+      - 'scripts/send-daily-digest.js'
       - 'scripts/lib/reddit-api.js'
       - 'scripts/lib/audience-weighting.js'
       - 'scripts/neutralize-contaminated-reddit-buzz.js'

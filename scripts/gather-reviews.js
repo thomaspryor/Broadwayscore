@@ -71,6 +71,7 @@ const { parseArticleBodyReviews } = require('./lib/bww-roundup-parser');
 const { findBWWRoundupLinkOnHomepage } = require('./lib/bww-homepage-scan');
 const { LETTER_GRADES, extractScore } = require('./lib/score-extractors');
 const { discoverCorrectUrl, serpQuery, OUTLET_DOMAINS } = require('./lib/url-discovery');
+const { detectCrossShowUrlMismatch, getShowSlugIndex } = require('./lib/cross-show-url');
 const { emitStage } = require('./lib/stage-latency');
 const {
   llmFallbackExtract,
@@ -298,92 +299,10 @@ function sanitizeCriticName(name) {
   return name;
 }
 
-// Cross-show URL slug detection: lazy-loaded index of show title slugs.
-// Used to catch URLs that clearly belong to a different show.
-// Exclude titles that are common URL path words (cause false positives).
-const CROSS_SHOW_SLUG_EXCLUDE = new Set([
-  'broadway', 'west-end', 'the-story', 'romantic-comedy', 'the-red-shoes',
-  'les-miserables', 'once-in-a-lifetime', 'body-count', 'the-car-man',
-  'good-night-oscar', 'the-visit', 'the-outsiders', 'the-notebook',
-]);
-let _showSlugIndex = null;
-function getShowSlugIndex() {
-  if (_showSlugIndex) return _showSlugIndex;
-  _showSlugIndex = [];
-  try {
-    const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
-    const shows = showsData.shows || showsData;
-    for (const s of shows) {
-      const slug = slugify(s.title);
-      if (slug.length >= 8 && !CROSS_SHOW_SLUG_EXCLUDE.has(slug)) {
-        _showSlugIndex.push({ id: s.id, title: s.title, slug });
-      }
-    }
-  } catch {}
-  return _showSlugIndex;
-}
-
-/**
- * Detect if a URL's path clearly belongs to a different show.
- * Returns { matchedShowId, matchedTitle, showTitle } if mismatch found, null otherwise.
- * matchedShowId enables the caller to re-route the file to the correct show
- * instead of discarding it (see BUG 2 fix at the cross-show guard call site).
- */
-function detectCrossShowUrlMismatch(showId, url) {
-  if (!url) return null;
-  try {
-    const urlPath = new URL(url).pathname.toLowerCase();
-    const index = getShowSlugIndex();
-    const thisShow = index.find(s => s.id === showId);
-    if (!thisShow) return null;
-
-    // Check if URL contains this show's slug — if yes, no mismatch
-    if (urlPath.includes(thisShow.slug)) return null;
-
-    // Also check the show ID slug (without year/market suffix) for partial matches
-    const idSlug = showId.replace(/-(?:west-end|off-west-end|off-broadway)(?:-\d{4})?$/, '').replace(/-\d{4}$/, '');
-    if (idSlug.length >= 8 && urlPath.includes(idSlug)) return null;
-
-    // Normalize connectors (and/&/+) so "romeo-and-juliet" ≈ "romeo-juliet"
-    const stripConnectors = s => s.replace(/-(?:and|the)-/g, '-');
-    const idSlugNorm = stripConnectors(idSlug);
-    // Also match if URL contains the connector-stripped slug (e.g., URL has "romeo-juliet" for "romeo-and-juliet")
-    if (idSlugNorm !== idSlug && idSlugNorm.length >= 8 && urlPath.includes(idSlugNorm)) return null;
-
-    // Check if URL contains a different show's slug
-    for (const other of index) {
-      if (other.id === showId) continue;
-      // Skip shows that share a base title with this show (same slug or prefix relationship)
-      const otherIdSlug = other.id.replace(/-(?:west-end|off-west-end|off-broadway)(?:-\d{4})?$/, '').replace(/-\d{4}$/, '');
-      if (otherIdSlug === idSlug) continue;
-      // Skip if connector-normalized slugs match (e.g., "romeo-and-juliet" ≈ "romeo-juliet")
-      const otherIdSlugNorm = stripConnectors(otherIdSlug);
-      if (otherIdSlugNorm === idSlugNorm) continue;
-      // Skip if one show's slug is a prefix of the other (e.g., "kinky-boots" vs "kinky-boots-the-musical")
-      if (thisShow.slug.startsWith(other.slug) || other.slug.startsWith(thisShow.slug)) continue;
-      if (idSlug.startsWith(otherIdSlug) || otherIdSlug.startsWith(idSlug)) continue;
-      if (urlPath.includes(other.slug)) {
-        return { matchedShowId: other.id, matchedTitle: other.title, showTitle: thisShow.title };
-      }
-      // Also check a base-title slug (first significant words of the title, without
-      // parentheticals or subtitles). Catches shows with long qualified slugs like
-      // "monte-cristo-the-york-theatre-company-off-broadway" where a URL containing
-      // just "monte-cristo" wouldn't match the full slug.
-      const baseTitle = (other.title || '').replace(/\s*\(.*?\)/g, '').replace(/:\s.*$/, '')
-        .trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-      // Skip common URL-path words that would false-positive on nearly every URL
-      // (e.g., the show "Broadway" has baseTitle "broadway" which appears in ~90% of review URLs)
-      const URL_PATH_STOPWORDS = new Set(['broadway', 'musical', 'theater', 'theatre', 'review', 'reviews', 'london', 'west-end', 'off-broadway']);
-      if (baseTitle.length >= 6 && !URL_PATH_STOPWORDS.has(baseTitle)
-          && baseTitle !== idSlug
-          && !idSlug.startsWith(baseTitle) && !baseTitle.startsWith(idSlug)
-          && urlPath.includes(baseTitle)) {
-        return { matchedShowId: other.id, matchedTitle: other.title, showTitle: thisShow.title };
-      }
-    }
-  } catch {}
-  return null;
-}
+// Cross-show URL slug detection moved to scripts/lib/cross-show-url.js so the
+// ingest-time guard (here) and the corpus-wide audit (audit-cross-show-url.js)
+// share ONE implementation. Do not reimplement — see lib header for why.
+// detectCrossShowUrlMismatch + getShowSlugIndex imported at top of file.
 
 /**
  * Load show data
