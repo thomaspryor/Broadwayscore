@@ -366,7 +366,17 @@
     "are-you-watching-west-end-2026/the-recs--unknown.json",
     "driftwood-west-end-2026/artsdesk--unknown.json",
     "driftwood-west-end-2026/standard--nick-curtis.json",
-    "driftwood-west-end-2026/times-uk--clive-davis.json"
+    "driftwood-west-end-2026/times-uk--clive-davis.json",
+    "sinatra-the-musical-west-end-2026/cambridge--unknown.json",
+    "sinatra-the-musical-west-end-2026/westendtheatre--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/daily-mail--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/financialtimes--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/sunday-telegraph--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/whatsonstage--editorial-staff.json",
+    "the-misanthrope-west-end-2026/standard--nick-curtis.json",
+    "the-misanthrope-west-end-2026/thestage--unknown.json",
+    "the-misanthrope-west-end-2026/times-uk--clive-davis.json",
+    "the-misanthrope-west-end-2026/times-uk--sam-marlowe.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -478,7 +488,8 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
       "data/review-texts/sinatra-the-musical-west-end-2026/cambridge--unknown.json",
       "data/review-texts/proof-2026/deadline--unknown.json",
-      "proof-2026/deadline--unknown.json"
+      "proof-2026/deadline--unknown.json",
+      "data/review-texts/sinatra-the-musical-west-end-2026/cambridge--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -563,7 +574,8 @@
       "data/review-texts/the-misanthrope-west-end-2026/thestage--unknown.json",
       "data/review-texts/glengarry-glen-ross-west-end-2026/thestage--sam-marlowe.json",
       "data/review-texts/much-ado-about-nothing-globe-west-end-2026/thestage--holly-o.json",
-      "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json"
+      "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json",
+      "data/review-texts/the-misanthrope-west-end-2026/thestage--unknown.json"
     ],
     "archive": [
       "beetlejuice-west-end-2026/timeout-london--unknown.json",
@@ -611,7 +623,7 @@
     ]
   },
   "startTime": "2026-06-24T10:39:16.417Z",
-  "lastProcessed": "driftwood-west-end-2026/times-uk--clive-davis.json",
+  "lastProcessed": "the-misanthrope-west-end-2026/times-uk--sam-marlowe.json",
   "log": [
     {
       "t": "2026-06-24T10:48:21.673Z",
@@ -707,6 +719,12 @@
       "t": "2026-06-24T18:53:40.666Z",
       "event": "bb-cookie-inject",
       "domain": "telegraph.co.uk"
+    },
+    {
+      "t": "2026-06-24T19:43:49.094Z",
+      "event": "bb-session",
+      "session": "81036d8d",
+      "url": "https://www.groupon.co.uk/deals/ingresso-sinatra-the-musical"
     }
   ]
 }

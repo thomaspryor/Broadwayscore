@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-06-24T19:02:33.021Z",
+  "updatedAt": "2026-06-24T19:47:12.663Z",
   "processed": 193,
-  "failed": 172,
-  "successRate": "52.9%",
+  "failed": 182,
+  "successRate": "51.5%",
   "tierBreakdown": {
     "playwright": 99,
     "amp": 0,
-    "browserbase": 6,
+    "browserbase": 7,
     "directCookies": 0,
     "scrapingbee": 51,
     "brightdata": 13,
-    "archiveToday": 14,
+    "archiveToday": 15,
     "archive": 42
   },
   "browserbaseSessions": 1,
@@ -109,6 +109,12 @@
       "t": "2026-06-24T18:53:40.666Z",
       "event": "bb-cookie-inject",
       "domain": "telegraph.co.uk"
+    },
+    {
+      "t": "2026-06-24T19:43:49.094Z",
+      "event": "bb-session",
+      "session": "81036d8d",
+      "url": "https://www.groupon.co.uk/deals/ingresso-sinatra-the-musical"
     }
   ]
 }
