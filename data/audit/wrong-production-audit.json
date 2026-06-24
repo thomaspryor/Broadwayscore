@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-06-23T22:20:30.367Z",
+  "timestamp": "2026-06-23T23:50:32.722Z",
   "stats": {
-    "totalReviews": 39106,
-    "alreadyFlagged": 17452,
+    "totalReviews": 39107,
+    "alreadyFlagged": 17453,
     "dateGuardCatches": 38,
-    "directorMismatch": 871,
-    "tvFilmSignals": 1067,
-    "londonSignals": 646,
+    "directorMismatch": 874,
+    "tvFilmSignals": 1066,
+    "londonSignals": 648,
     "offBroadwaySignals": 464,
     "yearMismatch": 83,
     "noPublishDate": 3944
@@ -9484,20 +9484,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"apple tv\""
-        }
-      ]
-    },
-    {
-      "showId": "hand-to-god-2015",
-      "file": "newsday--linda-winer.json",
-      "score": 78,
-      "publishDate": "2015-04-07",
-      "url": "http://www.newsday.com/entertainment/theater/hand-to-god-review-a-devilish-sock-puppet-and-sex-1.10206908",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -26672,6 +26658,48 @@
       ]
     },
     {
+      "showId": "whos-afraid-of-virginia-woolf-2020",
+      "file": "backstage--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.backstage.com/magazine/article/austin-pendleton-uta-hagen-afraid-virginia-woolf-58558/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"edward albee\" from whos-afraid-of-virginia-woolf-1976"
+        }
+      ]
+    },
+    {
+      "showId": "whos-afraid-of-virginia-woolf-2020",
+      "file": "playbill--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://playbill.com/article/broadway-revival-of-whos-afraid-of-virginia-woolf-starring-laurie-metcalf-and-rupert-everett-has-closed",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"edward albee\" from whos-afraid-of-virginia-woolf-1976"
+        }
+      ]
+    },
+    {
+      "showId": "whos-afraid-of-virginia-woolf-2020",
+      "file": "timeout--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.timeout.com/melbourne/theatre/whos-afraid-of-virginia-woolf",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"edward albee\" from whos-afraid-of-virginia-woolf-1976"
+        }
+      ]
+    },
+    {
       "showId": "wicked-2003",
       "file": "variety--charles-isherwood.json",
       "score": 62,
@@ -35093,6 +35121,33 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "oliver-west-end-2024",
+      "file": "theatre-weekly--unknown.json",
+      "score": 96,
+      "publishDate": null,
+      "url": "https://theatreweekly.com/review-oliver-at-the-gielgud-theatre-london/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "oliver-west-end-2024",
+      "file": "times-uk--unknown.json",
+      "publishDate": null,
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/oliver-review-consider-yourself-at-home-in-this-warm-revival-tq5v8x8vx",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
         }
       ]
     },
