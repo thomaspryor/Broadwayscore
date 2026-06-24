@@ -2,7 +2,8 @@
   "processed": [
     "sinatra-the-musical-west-end-2026/guardian--unknown.json",
     "sinatra-the-musical-west-end-2026/standard--unknown.json",
-    "sinatra-the-musical-west-end-2026/theatre-weekly--unknown.json"
+    "sinatra-the-musical-west-end-2026/theatre-weekly--unknown.json",
+    "much-ado-about-nothing-globe-off-west-end-2026/london-theatre--globe-theatre.json"
   ],
   "failed": [
     "sinatra-the-musical-west-end-2026/broadwayworld--unknown.json",
@@ -11,13 +12,23 @@
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/financialtimes--unknown.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/sunday-telegraph--unknown.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/whatsonstage--editorial-staff.json",
-    "the-misanthrope-west-end-2026/thestage--unknown.json"
+    "the-misanthrope-west-end-2026/thestage--unknown.json",
+    "the-misanthrope-west-end-2026/times-uk--sam-marlowe.json",
+    "sting-west-end-2026/ew--unknown.json",
+    "sting-west-end-2026/newsday--unknown.json",
+    "sting-west-end-2026/west-end-best-friend--unknown.json",
+    "sting-west-end-2026/westendtheatre--unknown.json",
+    "glengarry-glen-ross-west-end-2026/guardian-uk--unknown.json",
+    "glengarry-glen-ross-west-end-2026/oxfordshire-guardian--unknown.json",
+    "glengarry-glen-ross-west-end-2026/thestage--sam-marlowe.json",
+    "glengarry-glen-ross-west-end-2026/western-mail--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "sinatra-the-musical-west-end-2026/guardian--unknown.json",
-      "sinatra-the-musical-west-end-2026/theatre-weekly--unknown.json"
+      "sinatra-the-musical-west-end-2026/theatre-weekly--unknown.json",
+      "much-ado-about-nothing-globe-off-west-end-2026/london-theatre--globe-theatre.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -28,11 +39,25 @@
     ],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/the-misanthrope-west-end-2026/thestage--unknown.json"
+      "data/review-texts/the-misanthrope-west-end-2026/thestage--unknown.json",
+      "data/review-texts/glengarry-glen-ross-west-end-2026/oxfordshire-guardian--unknown.json"
     ],
     "archive": []
   },
   "startTime": "2026-06-24T10:39:16.417Z",
-  "lastProcessed": "the-misanthrope-west-end-2026/thestage--unknown.json",
-  "log": []
+  "lastProcessed": "glengarry-glen-ross-west-end-2026/western-mail--unknown.json",
+  "log": [
+    {
+      "t": "2026-06-24T10:48:21.673Z",
+      "event": "bb-session",
+      "session": "3c7f4640",
+      "url": "https://www.facebook.com/pinkprincetheatre/posts/tonight-im-a-plus-one-at-the-pr"
+    },
+    {
+      "t": "2026-06-24T10:50:16.065Z",
+      "event": "bb-session",
+      "session": "5c703893",
+      "url": "https://www.facebook.com/thestage/posts/icymi-review-glengarry-glen-ross-at-the-"
+    }
+  ]
 }
