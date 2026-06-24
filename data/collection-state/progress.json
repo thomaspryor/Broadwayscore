@@ -1,7 +1,8 @@
 {
   "processed": [
     "the-misanthrope-west-end-2026/whatsonstage--unknown.json",
-    "much-ado-about-nothing-globe-off-west-end-2026/london-theatre--globe-theatre.json"
+    "much-ado-about-nothing-globe-off-west-end-2026/london-theatre--globe-theatre.json",
+    "glengarry-glen-ross-west-end-2026/broadwayworld--alexander-cohen.json"
   ],
   "failed": [
     "sinatra-the-musical-west-end-2026/guardian--unknown.json",
@@ -11,7 +12,16 @@
     "the-misanthrope-west-end-2026/sunday-telegraph--unknown.json",
     "the-misanthrope-west-end-2026/telegraph--unknown.json",
     "the-misanthrope-west-end-2026/times-uk--sam-marlowe.json",
-    "sting-west-end-2026/ew--unknown.json"
+    "sting-west-end-2026/ew--unknown.json",
+    "sting-west-end-2026/newsday--unknown.json",
+    "sting-west-end-2026/west-end-best-friend--unknown.json",
+    "sting-west-end-2026/westendtheatre--unknown.json",
+    "glengarry-glen-ross-west-end-2026/guardian-uk--unknown.json",
+    "glengarry-glen-ross-west-end-2026/oxfordshire-guardian--unknown.json",
+    "glengarry-glen-ross-west-end-2026/thestage--sam-marlowe.json",
+    "glengarry-glen-ross-west-end-2026/western-mail--unknown.json",
+    "glengarry-glen-ross-west-end-2026/whatsonstage--lucinda-everett.json",
+    "much-ado-about-nothing-globe-west-end-2026/thestage--holly-o.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -25,11 +35,28 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/sinatra-the-musical-west-end-2026/guardian--unknown.json"
+      "data/review-texts/sinatra-the-musical-west-end-2026/guardian--unknown.json",
+      "data/review-texts/glengarry-glen-ross-west-end-2026/oxfordshire-guardian--unknown.json",
+      "data/review-texts/glengarry-glen-ross-west-end-2026/western-mail--unknown.json"
     ],
-    "archive": []
+    "archive": [
+      "glengarry-glen-ross-west-end-2026/broadwayworld--alexander-cohen.json"
+    ]
   },
   "startTime": "2026-06-24T06:59:12.394Z",
-  "lastProcessed": "sting-west-end-2026/ew--unknown.json",
-  "log": []
+  "lastProcessed": "much-ado-about-nothing-globe-west-end-2026/thestage--holly-o.json",
+  "log": [
+    {
+      "t": "2026-06-24T07:03:02.023Z",
+      "event": "bb-session",
+      "session": "b9957d68",
+      "url": "https://www.facebook.com/pinkprincetheatre/posts/tonight-im-a-plus-one-at-the-pr"
+    },
+    {
+      "t": "2026-06-24T07:05:30.342Z",
+      "event": "bb-session",
+      "session": "25f37656",
+      "url": "https://www.facebook.com/thestage/posts/icymi-review-glengarry-glen-ross-at-the-"
+    }
+  ]
 }
