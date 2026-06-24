@@ -1,15 +1,20 @@
 {
   "system": "cron failed",
   "status": "warn",
-  "lastChecked": "2026-06-23T08:13:06.382Z",
+  "lastChecked": "2026-06-24T08:10:27.013Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
+      "name": "Cron failed: Update Show Status",
+      "status": "warn",
+      "message": "Last run failed (1h ago)"
+    },
+    {
       "name": "Cron failed: Update Lottery/Rush",
       "status": "warn",
-      "message": "Last run failed (20h ago)"
+      "message": "Last run failed (2d ago)"
     }
   ]
 }

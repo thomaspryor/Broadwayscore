@@ -1,7 +1,7 @@
 {
   "system": "sync",
   "status": "warn",
-  "lastChecked": "2026-06-23T08:13:06.381Z",
+  "lastChecked": "2026-06-24T08:10:27.012Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -28,18 +28,18 @@
     },
     {
       "name": "Sync: cast coverage",
-      "status": "pass",
-      "message": "37 active Broadway shows all have cast data"
+      "status": "warn",
+      "message": "1 empty cast: Hamilton"
     },
     {
       "name": "Sync: baseline drift",
       "status": "warn",
-      "message": "Reviews dropped: 18469 vs baseline 18474"
+      "message": "Reviews dropped: 18472 vs baseline 18475"
     },
     {
       "name": "Sync: grosses weekEnding",
       "status": "pass",
-      "message": "weekEnding 6/15/2026 (8d ago)"
+      "message": "weekEnding 6/15/2026 (9d ago)"
     }
   ]
 }
