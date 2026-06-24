@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-24T17:10:33.199Z",
+  "generatedAt": "2026-06-24T22:34:42.641Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -463,6 +463,10 @@
         {
           "name": "New York Theatre Guide",
           "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
         }
       ],
       "timeline": [
@@ -578,26 +582,25 @@
       "status": "open",
       "slug": "the-misanthrope-west-end",
       "thumbnail": "/images/shows/the-misanthrope-west-end-2026/thumbnail.webp",
-      "siteScore": 55.74,
-      "liveScore": 56,
-      "scoreDrift": 0.259999999999998,
+      "siteScore": 57,
+      "liveScore": 57,
+      "scoreDrift": 0,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 6,
+      "total": 8,
       "t1": 5,
-      "t2": 1,
+      "t2": 3,
       "t3": 0,
       "positive": 0,
-      "mixed": 5,
+      "mixed": 7,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "6/8 total",
-          "hi-conf:2/6"
+          "hi-conf:4/6"
         ],
-        "highConfidence": 2,
+        "highConfidence": 4,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -638,10 +641,6 @@
         },
         {
           "name": "New York Theatre Guide",
-          "isDualMarket": true
-        },
-        {
-          "name": "WhatsOnStage",
           "isDualMarket": true
         }
       ],
@@ -691,6 +690,18 @@
           "t3": 0,
           "p": 0,
           "m": 5,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-06-24T22:34:42.641Z",
+          "rc": 8,
+          "s": 57,
+          "t1": 5,
+          "t2": 3,
+          "t3": 0,
+          "p": 0,
+          "m": 7,
           "n": 1,
           "bc": "waiting"
         }

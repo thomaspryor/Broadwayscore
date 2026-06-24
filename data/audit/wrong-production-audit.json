@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-24T17:10:28.248Z",
+  "timestamp": "2026-06-24T22:34:37.703Z",
   "stats": {
-    "totalReviews": 39177,
-    "alreadyFlagged": 17469,
-    "dateGuardCatches": 44,
+    "totalReviews": 39174,
+    "alreadyFlagged": 17470,
+    "dateGuardCatches": 42,
     "directorMismatch": 872,
-    "tvFilmSignals": 1067,
-    "londonSignals": 653,
+    "tvFilmSignals": 1068,
+    "londonSignals": 657,
     "offBroadwaySignals": 464,
     "yearMismatch": 83,
-    "noPublishDate": 3968
+    "noPublishDate": 3962
   },
   "findings": [
     {
@@ -15090,20 +15090,6 @@
     },
     {
       "showId": "my-neighbour-totoro-west-end-2025",
-      "file": "broadwayworld--gary-naylor.json",
-      "score": 93,
-      "publishDate": "2022-10-19",
-      "url": "https://www.broadwayworld.com/westend/article/Review-MY-NEIGHBOUR-TOTORO-Barbican-Theatre-20221019",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 576d before show (2022-10-19 vs 2024-05-17)"
-        }
-      ]
-    },
-    {
-      "showId": "my-neighbour-totoro-west-end-2025",
       "file": "financialtimes--financial-times.json",
       "score": 87,
       "publishDate": "2022-10-19",
@@ -15123,12 +15109,15 @@
     },
     {
       "showId": "my-neighbour-totoro-west-end-2025",
-      "file": "financialtimes--sarah-hemming.json",
+      "file": "independent--annabel-nugent.json",
+      "score": 81,
+      "publishDate": "October 26th, 2022",
+      "url": "https://www.independent.co.uk/independentpremium/culture/review-my-neighbour-totoro-rsc-marvellous-sohoplace-b2206988.html?r=72786",
       "findings": [
         {
-          "type": "DATE_GUARD",
+          "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
-          "detail": "Published 576d before show (2022-10-19 vs 2024-05-17)"
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -15136,6 +15125,8 @@
       "showId": "my-neighbour-totoro-west-end-2025",
       "file": "london-box-office--miriam-gibson.json",
       "score": 66,
+      "publishDate": "2022-10-19",
+      "url": "https://www.londonboxoffice.co.uk/news/post/my-neighbour-totoro-review",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -34566,10 +34557,38 @@
     },
     {
       "showId": "my-neighbour-totoro-west-end-2025",
+      "file": "london-theatre--marianka-swain.json",
+      "score": 86,
+      "publishDate": "October 20th, 2022",
+      "url": "https://www.londontheatre.co.uk/reviews/my-neighbour-totoro-review-barbican-rsc-studio-ghibli",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
       "file": "observer--unknown.json",
       "score": 80,
       "publishDate": null,
       "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "file": "standard--nick-curtis.json",
+      "score": 60,
+      "publishDate": "October 20th, 2022",
+      "url": "https://www.standard.co.uk/culture/theatre/my-neighbour-totoro-barbican-studio-ghibli-theatre-review-b1033681.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -39831,6 +39850,33 @@
       "score": 60,
       "publishDate": "2026-06-24",
       "url": "https://www.theguardian.com/stage/2026/jun/23/the-misanthrope-review-reworking-woos-in-its-human-drama",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-misanthrope-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "score": 58,
+      "publishDate": "2026-06-24",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-the-misanthrope-national-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-misanthrope-west-end-2026",
+      "file": "whatsonstage--sarah-crompton.json",
+      "publishDate": "2026-06-24",
+      "url": "https://www.whatsonstage.com/news/the-misanthrope-with-sandra-oh-to-have-cinema-release_1724246/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
