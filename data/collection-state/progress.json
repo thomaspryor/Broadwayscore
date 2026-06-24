@@ -1141,7 +1141,17 @@
     "to-kill-a-mockingbird-west-end-2026/chicagotribune--chris-jones.json",
     "spamalot-off-broadway-2026/nytimes--jesse-green.json",
     "spamalot-off-broadway-2026/vulture--jackson-mchenry.json",
-    "end-of-the-rainbow-west-end-2026/new-jersey-newsroom--michael-sommers.json"
+    "end-of-the-rainbow-west-end-2026/new-jersey-newsroom--michael-sommers.json",
+    "end-of-the-rainbow-west-end-2026/philadelphia-inquirer--howard-shapiro.json",
+    "end-of-the-rainbow-west-end-2026/hollywood-reporter--david-rooney.json",
+    "hamlet-off-broadway-2026/dc-theater-arts--deb-miller.json",
+    "the-price-off-west-end-2026/wsj--unknown.json",
+    "beaches-2026/chicago-critic--tom-williams.json",
+    "one-flew-over-the-cuckoos-nest-west-end-2026/standard--nick-curtis.json",
+    "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
+    "yoah-off-broadway-2026/variety--pat-saperstein.json",
+    "romeo-and-juliet-west-end-2026/hollywood-reporter--unknown.json",
+    "romeo-and-juliet-west-end-2026/newsday--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1416,10 +1426,7 @@
       "data/review-texts/the-humans-2016/wsj--terry-teachout.json",
       "the-humans-2016/wsj--terry-teachout.json",
       "data/review-texts/the-color-purple-2015/wsj--terry-teachout.json",
-      "the-color-purple-2015/wsj--terry-teachout.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
+      "the-color-purple-2015/wsj--terry-teachout.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1732,7 +1739,7 @@
     ]
   },
   "startTime": "2026-06-23T03:28:41.031Z",
-  "lastProcessed": "end-of-the-rainbow-west-end-2026/new-jersey-newsroom--michael-sommers.json",
+  "lastProcessed": "romeo-and-juliet-west-end-2026/newsday--unknown.json",
   "log": [
     {
       "t": "2026-06-23T03:29:56.031Z",
@@ -2423,39 +2430,6 @@
       "t": "2026-06-23T22:13:32.211Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
-    },
-    {
-      "t": "2026-06-24T02:10:28.459Z",
-      "event": "bb-session",
-      "session": "13b87d4b",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
-    {
-      "t": "2026-06-24T02:10:29.007Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-24T02:11:00.232Z",
-      "event": "bb-session",
-      "session": "e62d554d",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-24T02:11:00.709Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-24T02:11:10.710Z",
-      "event": "bb-session",
-      "session": "45d2f14a",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
-    {
-      "t": "2026-06-24T02:11:11.168Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
     }
   ]
 }
