@@ -26,7 +26,15 @@
     "the-balusters-2026/broadwayworld--unknown.json",
     "schmigadoon-2026/nytg--unknown.json",
     "schmigadoon-2026/thewrap--robert-hofler.json",
-    "schmigadoon-2026/theater-pizzazz--eyal-solomon.json"
+    "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
+    "proof-2026/deadline--unknown.json",
+    "avenue-q-west-end-2026/telegraph--marianka-swain.json",
+    "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
+    "the-fear-of-13-2026/broadwayworld--unknown.json",
+    "the-fear-of-13-2026/one-minute-critic--matthew-wexler.json",
+    "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
+    "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json",
+    "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json"
   ],
   "failed": [
     "sinatra-the-musical-west-end-2026/broadwayworld--unknown.json",
@@ -81,7 +89,9 @@
     "small-off-broadway-2026/culturesauce--thom-geier.json",
     "beetlejuice-west-end-2026/timeout-london--unknown.json",
     "beetlejuice-west-end-2026/amny--matt-windman.json",
-    "mercury-off-broadway-2026/theatrecat--unknown.json"
+    "mercury-off-broadway-2026/theatrecat--unknown.json",
+    "titanique-2026/wsj--charles-isherwood.json",
+    "death-of-a-salesman-2026/dailybeast--tim-teeman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -105,14 +115,21 @@
       "joe-turners-come-and-gone-2026/ny1--spectrum-news-staff.json",
       "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
       "schmigadoon-2026/nytg--unknown.json",
-      "schmigadoon-2026/theater-pizzazz--eyal-solomon.json"
+      "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
+      "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
+      "the-fear-of-13-2026/one-minute-critic--matthew-wexler.json",
+      "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
+      "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json",
+      "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
-      "data/review-texts/sinatra-the-musical-west-end-2026/cambridge--unknown.json"
+      "data/review-texts/sinatra-the-musical-west-end-2026/cambridge--unknown.json",
+      "data/review-texts/proof-2026/deadline--unknown.json",
+      "proof-2026/deadline--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -123,11 +140,13 @@
       "the-misanthrope-west-end-2026/independent--annabel-nugent.json",
       "henry-vi-a-trilogy-in-two-parts-off-broadway-2026/theater-life--unknown.json",
       "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
-      "small-off-broadway-2026/culturesauce--thom-geier.json"
+      "small-off-broadway-2026/culturesauce--thom-geier.json",
+      "avenue-q-west-end-2026/telegraph--marianka-swain.json"
     ],
     "brightdata": [
       "the-balusters-2026/broadwayworld--unknown.json",
-      "schmigadoon-2026/thewrap--robert-hofler.json"
+      "schmigadoon-2026/thewrap--robert-hofler.json",
+      "the-fear-of-13-2026/broadwayworld--unknown.json"
     ],
     "archiveToday": [
       "data/review-texts/the-misanthrope-west-end-2026/thestage--unknown.json",
@@ -145,7 +164,7 @@
     ]
   },
   "startTime": "2026-06-24T10:39:16.417Z",
-  "lastProcessed": "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
+  "lastProcessed": "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json",
   "log": [
     {
       "t": "2026-06-24T10:48:21.673Z",
@@ -197,6 +216,17 @@
       "event": "bb-session",
       "session": "6df2d35f",
       "url": "https://www.groupon.co.uk/deals/ingresso-sinatra-the-musical"
+    },
+    {
+      "t": "2026-06-24T12:31:23.807Z",
+      "event": "bb-session",
+      "session": "f59b1dd9",
+      "url": "https://deadline.com/2026/04/proof-broadway-review-ayo-edebiri-don-cheadle-kara-"
+    },
+    {
+      "t": "2026-06-24T12:31:24.526Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
