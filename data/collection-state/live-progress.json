@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-24T10:53:49.150Z",
-  "processed": 4,
-  "failed": 22,
-  "successRate": "15.4%",
+  "updatedAt": "2026-06-24T11:24:56.139Z",
+  "processed": 6,
+  "failed": 30,
+  "successRate": "16.7%",
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 4,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingbee": 2,
+    "scrapingbee": 3,
     "brightdata": 0,
-    "archiveToday": 5,
+    "archiveToday": 7,
     "archive": 0
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-06-24T10:48:21.673Z",
@@ -26,6 +26,17 @@
       "event": "bb-session",
       "session": "5c703893",
       "url": "https://www.facebook.com/thestage/posts/icymi-review-glengarry-glen-ross-at-the-"
+    },
+    {
+      "t": "2026-06-24T11:24:26.281Z",
+      "event": "bb-session",
+      "session": "1261664a",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-24T11:24:26.897Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
