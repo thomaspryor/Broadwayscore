@@ -341,7 +341,17 @@
     "the-whos-tommy-2024/broadwaynews--brittani-samuel.json",
     "the-cottage-2023/theater-life--paulanne-simmons.json",
     "here-lies-love-2023/aaartsalliance--rohan-zhou-lee.json",
-    "just-for-us-2023/theater-life--barry-gordin.json"
+    "just-for-us-2023/theater-life--barry-gordin.json",
+    "sinatra-the-musical-west-end-2026/cambridge--unknown.json",
+    "sinatra-the-musical-west-end-2026/westendtheatre--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/daily-mail--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/financialtimes--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/sunday-telegraph--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/whatsonstage--editorial-staff.json",
+    "the-misanthrope-west-end-2026/standard--nick-curtis.json",
+    "the-misanthrope-west-end-2026/thestage--unknown.json",
+    "the-misanthrope-west-end-2026/times-uk--clive-davis.json",
+    "the-misanthrope-west-end-2026/times-uk--sam-marlowe.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -534,7 +544,8 @@
       "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
       "data/review-texts/birthright-off-broadway-2026/broadwayworld--unknown.json",
       "data/review-texts/fallen-angels-2026/talkinbroadway--unknown.json",
-      "data/review-texts/elf-2024/northjerseycom--unknown.json"
+      "data/review-texts/elf-2024/northjerseycom--unknown.json",
+      "data/review-texts/the-misanthrope-west-end-2026/thestage--unknown.json"
     ],
     "archive": [
       "beetlejuice-west-end-2026/timeout-london--unknown.json",
@@ -582,7 +593,7 @@
     ]
   },
   "startTime": "2026-06-24T10:39:16.417Z",
-  "lastProcessed": "the-sign-in-sidney-brusteins-window-2023/broadwaynews--brittani-samuel.json",
+  "lastProcessed": "the-misanthrope-west-end-2026/times-uk--sam-marlowe.json",
   "log": [
     {
       "t": "2026-06-24T10:48:21.673Z",
@@ -667,6 +678,17 @@
       "t": "2026-06-24T13:24:24.378Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-06-24T18:53:40.249Z",
+      "event": "bb-session",
+      "session": "8670c5b9",
+      "url": "https://www.telegraph.co.uk/music/interviews/when-does-a-band-stop-being-the-ban"
+    },
+    {
+      "t": "2026-06-24T18:53:40.666Z",
+      "event": "bb-cookie-inject",
+      "domain": "telegraph.co.uk"
     }
   ]
 }
