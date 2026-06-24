@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-06-23T23:50:32.722Z",
+  "timestamp": "2026-06-24T00:36:22.744Z",
   "stats": {
-    "totalReviews": 39107,
-    "alreadyFlagged": 17453,
+    "totalReviews": 39111,
+    "alreadyFlagged": 17456,
     "dateGuardCatches": 38,
     "directorMismatch": 874,
     "tvFilmSignals": 1066,
-    "londonSignals": 648,
+    "londonSignals": 649,
     "offBroadwaySignals": 464,
     "yearMismatch": 83,
     "noPublishDate": 3944
@@ -8234,7 +8234,7 @@
       "file": "independent--alice-saville.json",
       "score": 58,
       "publishDate": "2026-06-18",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html?loginSuccessful=true",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -35004,6 +35004,19 @@
       "score": 87,
       "publishDate": "December 19th, 2025",
       "url": "https://www.standard.co.uk/culture/theatre/oh-mary-trafalgar-theatre-review-b1263289.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-west-end-2025",
+      "file": "theatreandtonic--penny-walshe.json",
+      "publishDate": "2025-12-19",
+      "url": "https://theatreandtonic.co.uk/blog/oh-mary-trafalgar-theatre-review",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
