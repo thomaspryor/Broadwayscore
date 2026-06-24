@@ -1091,7 +1091,16 @@
     "the-glass-menagerie-2013/bloomberg--jeremy-gerard.json",
     "soul-doctor-2013/new-jersey-newsroom--michael-sommers.json",
     "jekyll-and-hyde-2013/bloomberg--philip-boroff.json",
-    "orphans-2013/bloomberg--jeremy-gerard.json"
+    "orphans-2013/bloomberg--jeremy-gerard.json",
+    "labelless-off-broadway-2026/one-minute-critic--unknown.json",
+    "encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
+    "romeo-and-juliet-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+    "henry-vi-a-trilogy-in-two-parts-off-broadway-2026/playbill--unknown.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1366,7 +1375,10 @@
       "data/review-texts/the-humans-2016/wsj--terry-teachout.json",
       "the-humans-2016/wsj--terry-teachout.json",
       "data/review-texts/the-color-purple-2015/wsj--terry-teachout.json",
-      "the-color-purple-2015/wsj--terry-teachout.json"
+      "the-color-purple-2015/wsj--terry-teachout.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1678,7 +1690,7 @@
     ]
   },
   "startTime": "2026-06-23T03:28:41.031Z",
-  "lastProcessed": "the-nance-2013/timeout--david-cote.json",
+  "lastProcessed": "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
   "log": [
     {
       "t": "2026-06-23T03:29:56.031Z",
@@ -2369,6 +2381,39 @@
       "t": "2026-06-23T22:13:32.211Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-24T02:10:28.459Z",
+      "event": "bb-session",
+      "session": "13b87d4b",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-24T02:10:29.007Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-24T02:11:00.232Z",
+      "event": "bb-session",
+      "session": "e62d554d",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-24T02:11:00.709Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-24T02:11:10.710Z",
+      "event": "bb-session",
+      "session": "45d2f14a",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-24T02:11:11.168Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
