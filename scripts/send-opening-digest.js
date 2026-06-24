@@ -559,16 +559,21 @@ function renderBroadcastReadyRow(row) {
   });
 }
 
-// Small inline score pill for the compact "other" rows — number only, no tier
-// label or audience chip. Honors the same TBD gate as the full card.
+// Small score badge for the compact "other" rows — number only, no tier label
+// or audience chip. A fixed SQUARE (a mini version of the card's 80×80 badge),
+// not a wide capsule: padding-based pills render ~60×32 (ratio ~1.9) and read
+// as squished next to the square card badges above them. Uses the same
+// email-safe centering as scoreColumnHtml (line-height = height; Gmail ignores
+// inline-flex). The glow border adds to both axes equally, so it stays square.
 function smallScorePill(row) {
   const score = row.criticScore;
+  const square = `display:inline-block;width:40px;height:40px;line-height:40px;border-radius:8px;text-align:center;font-weight:800;letter-spacing:-0.02em;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;`;
   if (score == null) {
-    return `<span style="display:inline-block;min-width:38px;padding:5px 9px;border-radius:8px;background:${TOKENS.surfaceOverlay};border:1px solid ${TOKENS.border};color:#9ca3af;font-size:12px;font-weight:700;text-align:center;line-height:1;">TBD</span>`;
+    return `<span style="${square}background:${TOKENS.surfaceOverlay};border:1px solid ${TOKENS.border};color:#9ca3af;font-size:13px;">TBD</span>`;
   }
   const tier = criticTier(score, row.market);
   const glow = tier.glow ? 'border:2px solid #C8960E;' : '';
-  return `<span style="display:inline-block;min-width:38px;padding:6px 9px;border-radius:8px;background:${tier.bg};color:${tier.fg};font-size:16px;font-weight:800;text-align:center;line-height:1;letter-spacing:-0.02em;${glow}">${score}</span>`;
+  return `<span style="${square}background:${tier.bg};color:${tier.fg};font-size:18px;${glow}">${score}</span>`;
 }
 
 // Small 48×48 square thumbnail for the compact rows — same poster as the full
