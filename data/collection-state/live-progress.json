@@ -1,31 +1,63 @@
 {
-  "updatedAt": "2026-06-24T07:09:04.674Z",
-  "processed": 3,
-  "failed": 21,
-  "successRate": "12.5%",
+  "updatedAt": "2026-06-24T07:09:34.966Z",
+  "processed": 7,
+  "failed": 9,
+  "successRate": "43.8%",
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 6,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 5,
-    "archive": 1
+    "archiveToday": 1,
+    "archive": 0
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
-      "t": "2026-06-24T07:03:02.023Z",
+      "t": "2026-06-24T07:07:21.364Z",
       "event": "bb-session",
-      "session": "b9957d68",
-      "url": "https://www.facebook.com/pinkprincetheatre/posts/tonight-im-a-plus-one-at-the-pr"
+      "session": "03bc8080",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
     },
     {
-      "t": "2026-06-24T07:05:30.342Z",
+      "t": "2026-06-24T07:07:22.410Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-24T07:08:17.387Z",
       "event": "bb-session",
-      "session": "25f37656",
-      "url": "https://www.facebook.com/thestage/posts/icymi-review-glengarry-glen-ross-at-the-"
+      "session": "492247af",
+      "url": "https://www.nytimes.com/2026/06/03/theater/caissie-levy-broadway-tonys-ragtime.h"
+    },
+    {
+      "t": "2026-06-24T07:08:18.359Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-24T07:08:36.286Z",
+      "event": "bb-session",
+      "session": "def5418c",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-24T07:08:37.354Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-24T07:08:50.017Z",
+      "event": "bb-session",
+      "session": "0390b7eb",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-24T07:08:50.984Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
