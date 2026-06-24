@@ -40,13 +40,43 @@ const { parseDate } = require('./lib/date-utils');
 const { normalizeTitle } = require('./lib/title-normalization');
 const { isWithinPriorRun } = require('./lib/wrong-production-autoclear');
 
-let getTier;
-try { ({ getTier } = require('./lib/outlet-tiers')); } catch { getTier = () => 3; }
+let getTier, regionForShowCategory;
+try { ({ getTier, regionForShowCategory } = require('./lib/outlet-tiers')); } catch { getTier = () => 3; }
 
 const ROOT = path.resolve(__dirname, '..');
 const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
 const TEXTS_DIR = path.join(ROOT, 'data', 'review-texts');
+const REGISTRY_PATH = path.join(ROOT, 'data', 'outlet-registry.json');
 const OUT_PATH = path.join(ROOT, 'data', 'audit', 'possible-venue-transfers.json');
+
+// Map an outlet's registry region (or a show's category region) to a coarse
+// MARKET: 'uk' vs 'us'. Used to keep transfers within-market — a London→Broadway
+// move pools two different critic pools and is NOT a within-market transfer
+// (operator policy 2026-06-24): only same-market venue moves get priorRuns.
+function marketOfRegion(region) {
+  if (!region) return null;
+  const r = String(region).toLowerCase();
+  if (r === 'london' || r === 'uk') return 'uk';
+  if (r === 'dual') return null; // ambiguous — don't count
+  return 'us'; // new-york, us, chicago, boston, la, sf, philadelphia, baltimore, (none)
+}
+
+// Build outletId/name → market from the outlet registry (region field).
+function loadOutletMarket() {
+  const map = new Map();
+  try {
+    const reg = JSON.parse(fs.readFileSync(REGISTRY_PATH, 'utf8'));
+    const outlets = reg.outlets || reg;
+    for (const [id, v] of Object.entries(outlets)) {
+      const m = marketOfRegion(v && v.region);
+      if (m) {
+        map.set(id.toLowerCase(), m);
+        if (v.displayName) map.set(String(v.displayName).toLowerCase(), m);
+      }
+    }
+  } catch { /* registry optional — market check degrades to null (treated as match) */ }
+  return map;
+}
 
 const argv = process.argv.slice(2);
 const getOpt = (name, def) => {
@@ -89,18 +119,24 @@ const SPAN_TIGHT_DAYS = 550;
 
 /**
  * Pure classification: given whether a same-title sibling entry already houses
- * the discarded reviews, and how wide the discarded cluster spans, decide what
- * kind of candidate this is.
- *   - 'routed-elsewhere'  → reviews belong to an existing sibling entry (no loss)
- *   - 'likely-transfer'   → tight cluster, no sibling → confirm + add priorRuns
- *   - 'wide-span-review'  → wide cluster → multi-production OR long tour, manual
- * @param {{ sibling: string|null, spanDays: number }} o
+ * the discarded reviews, whether the earlier run was in the SAME market as the
+ * current entry, and how wide the discarded cluster spans, decide the candidate
+ * kind.
+ *   - 'routed-elsewhere'      → reviews belong to an existing sibling entry (no loss)
+ *   - 'cross-market-transfer' → tight cluster but the earlier run is a different
+ *                               market (London↔Broadway) — NOT eligible for
+ *                               priorRuns per operator policy; pools two critic
+ *                               pools. Informational only.
+ *   - 'likely-transfer'       → tight, same-market, no sibling → confirm + add priorRuns
+ *   - 'wide-span-review'      → wide cluster → multi-production OR long tour, manual
+ * @param {{ sibling: string|null, spanDays: number, marketMatch: boolean|null }} o
  * @returns {string}
  */
-function classifyCandidate({ sibling, spanDays }) {
+function classifyCandidate({ sibling, spanDays, marketMatch }) {
   if (sibling) return 'routed-elsewhere';
-  if (spanDays <= SPAN_TIGHT_DAYS) return 'likely-transfer';
-  return 'wide-span-review';
+  if (spanDays > SPAN_TIGHT_DAYS) return 'wide-span-review';
+  if (marketMatch === false) return 'cross-market-transfer';
+  return 'likely-transfer';
 }
 
 // A note/reason that says the review's URL belongs in a named sibling entry is
@@ -113,6 +149,11 @@ function isRoutedToSibling(d) {
 function main() {
   const showsRaw = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
   const shows = Array.isArray(showsRaw) ? showsRaw : showsRaw.shows;
+  const outletMarket = loadOutletMarket();
+  const showMarketOf = (cat) => {
+    if (!regionForShowCategory) return null;
+    return marketOfRegion(regionForShowCategory(cat));
+  };
 
   // Index shows by normalized title for sibling lookup.
   const byTitle = new Map();
@@ -176,7 +217,10 @@ function main() {
 
       const tier = (() => { try { return getTier(d.outletId || d.outlet) || 3; } catch { return 3; } })();
       if (tier <= 2) majorCount++;
-      discarded.push({ file: f.replace('.json', ''), date: eff.toISOString().slice(0, 10), tier, outlet: d.outlet || d.outletId });
+      const om = outletMarket.get(String(d.outletId || '').toLowerCase())
+        || outletMarket.get(String(d.outlet || '').toLowerCase())
+        || null;
+      discarded.push({ file: f.replace('.json', ''), date: eff.toISOString().slice(0, 10), tier, outlet: d.outlet || d.outletId, market: om });
     }
 
     if (discarded.length < MIN_REVIEWS) continue;
@@ -188,7 +232,18 @@ function main() {
     const spanDays = Math.round(
       (parseDate(dates[dates.length - 1]).getTime() - parseDate(dates[0]).getTime()) / DAY_MS
     );
-    const classification = classifyCandidate({ sibling, spanDays });
+
+    // Earlier-run market = the dominant market of the discarded reviews' outlets.
+    // marketMatch compares it to the current entry's market. null on either side
+    // (unknown outlets / uncategorized show) → treated as a match (don't suppress
+    // on missing data).
+    const showMarket = showMarketOf(show.category);
+    const mk = { uk: 0, us: 0 };
+    for (const r of discarded) if (r.market) mk[r.market]++;
+    const earlierMarket = mk.uk === 0 && mk.us === 0 ? null : (mk.uk >= mk.us ? 'uk' : 'us');
+    const marketMatch = (showMarket && earlierMarket) ? showMarket === earlierMarket : null;
+
+    const classification = classifyCandidate({ sibling, spanDays, marketMatch });
 
     candidates.push({
       showId: show.id,
@@ -201,6 +256,9 @@ function main() {
       routedToSibling: routedAway,
       dateRange: `${dates[0]} .. ${dates[dates.length - 1]}`,
       spanDays,
+      showMarket,
+      earlierMarket,
+      marketMatch, // false → cross-market (London↔Broadway); not priorRuns-eligible
       siblingEntryCovers: sibling, // if set → reviews likely belong to that entry, NOT a transfer
       classification,
       // weight: more discarded + more major outlets ranks higher
@@ -212,13 +270,15 @@ function main() {
   candidates.sort((a, b) => b.weight - a.weight);
 
   const likelyTransfers = candidates.filter((c) => c.classification === 'likely-transfer' && !c.hasPriorRuns);
+  const crossMarket = candidates.filter((c) => c.classification === 'cross-market-transfer');
 
   const audit = {
     generatedAt: new Date().toISOString().slice(0, 10),
     params: { minReviews: MIN_REVIEWS, gapDays: GAP_DAYS },
     summary: {
       totalCandidates: candidates.length,
-      likelyTransfersNeedingPriorRuns: likelyTransfers.length,
+      likelyTransfersNeedingPriorRuns: likelyTransfers.length, // within-market only
+      crossMarketTransfers: crossMarket.length, // London↔Broadway — excluded by policy
     },
     candidates,
   };
@@ -228,12 +288,13 @@ function main() {
   } else {
     fs.mkdirSync(path.dirname(OUT_PATH), { recursive: true });
     fs.writeFileSync(OUT_PATH, JSON.stringify(audit, null, 2) + '\n');
-    console.log(`\nVenue-transfer scan — ${candidates.length} candidate show(s), ${likelyTransfers.length} likely transfer(s) needing priorRuns\n`);
+    console.log(`\nVenue-transfer scan — ${candidates.length} candidate show(s), ${likelyTransfers.length} within-market transfer(s) needing priorRuns, ${crossMarket.length} cross-market (excluded by policy)\n`);
     const top = candidates.slice(0, 30);
     for (const c of top) {
       let tag;
       if (c.classification === 'routed-elsewhere') tag = `routed→${c.siblingEntryCovers}`;
       else if (c.classification === 'wide-span-review') tag = 'wide-span (manual: multi-production?)';
+      else if (c.classification === 'cross-market-transfer') tag = `cross-market ${c.earlierMarket}→${c.showMarket} (excluded)`;
       else tag = c.hasPriorRuns ? 'has-priorRuns' : 'NEEDS priorRuns';
       console.log(
         `${String(c.weight).padStart(4)}  ${c.showId}`.padEnd(58) +
@@ -242,9 +303,9 @@ function main() {
     }
     console.log(`\nWrote ${OUT_PATH}`);
     if (likelyTransfers.length) {
-      console.log('\nLikely transfers to confirm + add priorRuns (same production, earlier venue, no sibling entry):');
-      likelyTransfers.slice(0, 15).forEach((c) =>
-        console.log(`  • ${c.showId} — ${c.discardedCount} reviews (${c.majorOutletCount} major), ${c.dateRange}`));
+      console.log('\nWithin-market transfers to confirm + add priorRuns (same production + market, earlier venue, no sibling entry):');
+      likelyTransfers.slice(0, 20).forEach((c) =>
+        console.log(`  • ${c.showId} — ${c.discardedCount} reviews (${c.majorOutletCount} major), ${c.dateRange}, ${c.spanDays}d`));
     }
   }
 
