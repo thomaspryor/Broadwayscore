@@ -5,7 +5,8 @@
     "sinatra-the-musical-west-end-2026/theatre-weekly--unknown.json",
     "much-ado-about-nothing-globe-off-west-end-2026/london-theatre--globe-theatre.json",
     "encores-la-cage-aux-folles-off-broadway-2026/nytimes--httpswwwnytimescombylaura-collins-hughes.json",
-    "are-you-now-or-have-you-ever-been-off-broadway-2026/off-off-online--walter-murphy.json"
+    "are-you-now-or-have-you-ever-been-off-broadway-2026/off-off-online--walter-murphy.json",
+    "girl-interrupted-off-broadway-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "sinatra-the-musical-west-end-2026/broadwayworld--unknown.json",
@@ -37,7 +38,10 @@
     "romeo-and-juliet-off-broadway-2026/one-minute-critic--emily-chackerian.json",
     "henry-vi-a-trilogy-in-two-parts-off-broadway-2026/playbill--unknown.json",
     "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
-    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json"
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -45,11 +49,14 @@
       "sinatra-the-musical-west-end-2026/guardian--unknown.json",
       "sinatra-the-musical-west-end-2026/theatre-weekly--unknown.json",
       "much-ado-about-nothing-globe-off-west-end-2026/london-theatre--globe-theatre.json",
-      "are-you-now-or-have-you-ever-been-off-broadway-2026/off-off-online--walter-murphy.json"
+      "are-you-now-or-have-you-ever-been-off-broadway-2026/off-off-online--walter-murphy.json",
+      "girl-interrupted-off-broadway-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json"
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -70,7 +77,7 @@
     "archive": []
   },
   "startTime": "2026-06-24T10:39:16.417Z",
-  "lastProcessed": "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+  "lastProcessed": "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
   "log": [
     {
       "t": "2026-06-24T10:48:21.673Z",
@@ -94,6 +101,28 @@
       "t": "2026-06-24T11:24:26.897Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-24T11:24:57.094Z",
+      "event": "bb-session",
+      "session": "2275350d",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-24T11:24:57.613Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-24T11:25:08.886Z",
+      "event": "bb-session",
+      "session": "5e744077",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-24T11:25:09.412Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
