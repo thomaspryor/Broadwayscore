@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-24T14:52:12.495Z",
-  "processed": 7,
-  "failed": 78,
-  "successRate": "8.2%",
+  "updatedAt": "2026-06-24T13:38:31.963Z",
+  "processed": 193,
+  "failed": 147,
+  "successRate": "56.8%",
   "tierBreakdown": {
-    "playwright": 5,
+    "playwright": 99,
     "amp": 0,
-    "browserbase": 15,
+    "browserbase": 6,
     "directCookies": 0,
-    "scrapingbee": 4,
-    "brightdata": 0,
-    "archiveToday": 15,
-    "archive": 0
+    "scrapingbee": 51,
+    "brightdata": 13,
+    "archiveToday": 10,
+    "archive": 42
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-06-24T12:37:11.718Z",
@@ -124,6 +124,45 @@
       "t": "2026-06-24T14:51:46.441Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-24T12:16:47.192Z",
+      "event": "bb-session",
+      "session": "6df2d35f",
+      "url": "https://www.groupon.co.uk/deals/ingresso-sinatra-the-musical"
+    },
+    {
+      "t": "2026-06-24T12:31:23.807Z",
+      "event": "bb-session",
+      "session": "f59b1dd9",
+      "url": "https://deadline.com/2026/04/proof-broadway-review-ayo-edebiri-don-cheadle-kara-"
+    },
+    {
+      "t": "2026-06-24T12:31:24.526Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-06-24T13:01:44.516Z",
+      "event": "bb-session",
+      "session": "180aee9c",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2645871"
+    },
+    {
+      "t": "2026-06-24T13:01:45.224Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-24T13:24:23.666Z",
+      "event": "bb-session",
+      "session": "02c3dc57",
+      "url": "http://www.northjersey.com/arts-and-entertainment/theater/a-musical-elf-full-of-"
+    },
+    {
+      "t": "2026-06-24T13:24:24.378Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
