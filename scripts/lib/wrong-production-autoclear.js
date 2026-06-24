@@ -124,31 +124,73 @@ const AUTO_REASON_PREFIXES = [
   'CV-promoted:',
   'CV-low-but-strong-signal:',
 ];
+// Auto-set wrongProductionReason PATTERNS (regex) that priorRuns may override.
+// These are pure date/year-mismatch reverifications — the review is flagged
+// SOLELY because its year doesn't match the current engagement's year, which
+// is exactly the false signal a declared priorRun corrects. Kept narrow (the
+// specific year-gap phrasing) so non-date Haiku verdicts stay protected.
+const AUTO_REASON_REGEXES = [
+  /^Haiku reverify: publishDate \d{4} vs showId year \d{4}/i,
+];
+// Date-only auto-flag NOTE/REASON prefixes that priorRuns is allowed to override:
+//  - "Pre-opening guard" (rebuild-all-reviews.js inclusion + flag pass)
+//  - "Date guard" (flag-wrong-production-by-date.js standalone)
+//  - "Auto-flagged" (gather-reviews.js Broadway-only ingest guard)
+//  - "Review published" (rebuild-all-reviews.js per-review skip-pre-opening writer)
+const DATE_GUARD_PREFIXES = [
+  'Pre-opening guard',
+  'Date guard',
+  'Auto-flagged',
+  'Review published',
+];
+const startsWithAny = (s, prefixes) => prefixes.some((p) => s.startsWith(p));
+
+/**
+ * Best effort to recover the date a date-guard flagger acted on. Premiere-era
+ * review files frequently carry a null or year-less `publishDate` (e.g.
+ * "October 20"), but the guard that flagged them embeds the real ISO date in
+ * its note/reason ("review dated 2022-10-19 is 90+ days before…"). Falling
+ * back to that recorded date lets a declared priorRuns window match.
+ *
+ * @param {object} data - review JSON
+ * @returns {Date|null}
+ */
+function effectiveFlagDate(data) {
+  if (data.publishDate) {
+    const pd = parseDate(data.publishDate);
+    if (pd && !isNaN(pd.getTime())) return pd;
+  }
+  const blob = `${data.wrongProductionNote || ''} ${data.wrongProductionReason || ''}`;
+  const m = blob.match(/\b(\d{4}-\d{2}-\d{2})\b/);
+  if (m) {
+    const d = parseDate(m[1]);
+    if (d && !isNaN(d.getTime())) return d;
+  }
+  return null;
+}
 
 function shouldAutoClearWrongProductionPriorRun(data, show) {
   if (!data || data.wrongProduction !== true) return false;
   if (!show || !Array.isArray(show.priorRuns) || show.priorRuns.length === 0) return false;
   const note = data.wrongProductionNote || '';
-  // Date-only auto-flag prefixes that priorRuns is allowed to override:
-  //  - "Pre-opening guard" (rebuild-all-reviews.js inclusion + flag pass)
-  //  - "Date guard" (flag-wrong-production-by-date.js standalone)
-  //  - "Auto-flagged" (gather-reviews.js Broadway-only ingest guard)
-  //  - "Review published" (rebuild-all-reviews.js per-review skip-pre-opening writer)
-  const isDateOnlyAutoFlag = note.startsWith('Pre-opening guard')
-    || note.startsWith('Date guard')
-    || note.startsWith('Auto-flagged')
-    || note.startsWith('Review published');
-  // The anticipatory ingest gate + CV-promotion paths write ONLY
-  // wrongProductionReason (no Note). Recognize their auto-set values as
-  // override-eligible.
   const reason = data.wrongProductionReason || '';
+  // Date-only auto-flag provenance can live in EITHER field — different setters
+  // write the guard text to wrongProductionNote (rebuild/date-guard) or to
+  // wrongProductionReason (some reverify paths). Honor both.
+  const isDateOnlyAutoFlag = startsWithAny(note, DATE_GUARD_PREFIXES)
+    || startsWithAny(reason, DATE_GUARD_PREFIXES);
+  // The anticipatory ingest gate + CV-promotion + year-gap reverify paths write
+  // ONLY wrongProductionReason. Recognize their auto-set values as override-eligible.
   const isAutoReason = DATE_ONLY_AUTO_REASONS.has(reason)
-    || AUTO_REASON_PREFIXES.some(p => reason.startsWith(p));
+    || AUTO_REASON_PREFIXES.some((p) => reason.startsWith(p))
+    || AUTO_REASON_REGEXES.some((re) => re.test(reason));
   if (!isDateOnlyAutoFlag && !isAutoReason) return false;
-  if (!data.publishDate) return false;
-  if (!isWithinPriorRun(data.publishDate, show.priorRuns)) return false;
-  // Treat reason as "manual" only when it's not in the auto-set allowlist.
-  const hasManualReason = !!reason && !isAutoReason;
+  const effDate = effectiveFlagDate(data);
+  if (!effDate || !isWithinPriorRun(effDate, show.priorRuns)) return false;
+  // Treat reason as "manual" only when it's not a recognized auto signal AND
+  // not a date-guard-prefixed reason. Protects audit/operator reasons.
+  const reasonIsAuto = isAutoReason || startsWithAny(reason, DATE_GUARD_PREFIXES);
+  const hasManualReason = !!reason && !reasonIsAuto;
   // CV-confirmed gate: still respect high-conf CV wrongArticle (entirely
   // different show, not just different production). Phase 1 trusts priorRuns
   // over CV's wrongProduction (venue/date match) but NOT over wrongArticle.

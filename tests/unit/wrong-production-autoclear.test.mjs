@@ -648,12 +648,84 @@ describe('shouldAutoClearWrongProductionPriorRun', () => {
     );
   });
 
-  it('returns false when publishDate is missing', () => {
+  it('date-fallback: recovers the flag date from the note when publishDate is missing', () => {
+    // Premiere-era files often carry a null/year-less publishDate, but the
+    // date-guard note embeds the real ISO date. Fall back to it so a declared
+    // priorRuns window can match.
     assert.strictEqual(
       shouldAutoClearWrongProductionPriorRun(
         {
           wrongProduction: true,
-          wrongProductionNote: 'Pre-opening guard: review dated 2025-04-26',
+          wrongProductionNote: 'Pre-opening guard: review dated 2025-04-26 is 90+ days before show starts',
+          // no publishDate
+        },
+        show
+      ),
+      true
+    );
+  });
+
+  it('returns false when publishDate is missing and no date is recoverable', () => {
+    assert.strictEqual(
+      shouldAutoClearWrongProductionPriorRun(
+        {
+          wrongProduction: true,
+          wrongProductionNote: 'Pre-opening guard: review predates the run',
+        },
+        show
+      ),
+      false
+    );
+  });
+
+  it('returns false when the recovered note date is outside every priorRuns window', () => {
+    assert.strictEqual(
+      shouldAutoClearWrongProductionPriorRun(
+        {
+          wrongProduction: true,
+          wrongProductionNote: 'Pre-opening guard: review dated 2099-01-01 is 90+ days before show starts',
+        },
+        show
+      ),
+      false
+    );
+  });
+
+  it('honors date-guard provenance stored in wrongProductionReason (not just the Note)', () => {
+    assert.strictEqual(
+      shouldAutoClearWrongProductionPriorRun(
+        {
+          wrongProduction: true,
+          wrongProductionReason: 'Date guard: review 2025-04-26 is 555d before (preview/open)',
+          publishDate: '2025-04-26',
+        },
+        show
+      ),
+      true
+    );
+  });
+
+  it('clears a pure year-gap "Haiku reverify" reason inside a priorRuns window', () => {
+    assert.strictEqual(
+      shouldAutoClearWrongProductionPriorRun(
+        {
+          wrongProduction: true,
+          wrongProductionReason: 'Haiku reverify: publishDate 2025 vs showId year 2026 (gap 1yr)',
+          publishDate: '2025-04-26',
+        },
+        show
+      ),
+      true
+    );
+  });
+
+  it('does NOT clear a non-year-gap Haiku reverify reason (content/venue verdict stays protected)', () => {
+    assert.strictEqual(
+      shouldAutoClearWrongProductionPriorRun(
+        {
+          wrongProduction: true,
+          wrongProductionReason: 'Haiku reverify: review describes a different staging at the Old Vic',
+          publishDate: '2025-04-26',
         },
         show
       ),

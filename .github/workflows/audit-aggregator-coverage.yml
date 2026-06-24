@@ -61,10 +61,18 @@ jobs:
           fi
           node scripts/audit-aggregator-coverage.js $ARGS
 
+      # Surface venue-transfer shows whose earlier-run reviews are being dropped
+      # as wrongProduction (the My Neighbour Totoro Barbican→Gillian Lynne case).
+      # Non-blocking: writes data/audit/possible-venue-transfers.json for review.
+      # Confirmed transfers are fixed by adding `priorRuns` to the show entry.
+      - name: Detect venue transfers
+        continue-on-error: true
+        run: node scripts/detect-venue-transfers.js
+
       - name: Check for changes
         id: changes
         run: |
-          if git diff --quiet data/audit/aggregator-coverage.json 2>/dev/null; then
+          if git diff --quiet data/audit/aggregator-coverage.json data/audit/possible-venue-transfers.json 2>/dev/null; then
             if [ ! -f data/audit/aggregator-coverage.json ] || git ls-files --error-unmatch data/audit/aggregator-coverage.json 2>/dev/null; then
               echo "has_changes=false" >> $GITHUB_OUTPUT
               echo "No changes to audit output"
@@ -88,6 +96,7 @@ jobs:
           git config --local user.name "github-actions[bot]"
 
           git add data/audit/aggregator-coverage.json
+          git add data/audit/possible-venue-transfers.json 2>/dev/null || true
 
           if [ -n "${{ inputs.show }}" ]; then
             MSG="audit: Aggregator coverage for ${{ inputs.show }}"
