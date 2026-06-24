@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-24T12:57:29.954Z",
+  "timestamp": "2026-06-24T15:53:21.180Z",
   "stats": {
-    "totalReviews": 39167,
-    "alreadyFlagged": 17483,
-    "dateGuardCatches": 38,
+    "totalReviews": 39176,
+    "alreadyFlagged": 17469,
+    "dateGuardCatches": 44,
     "directorMismatch": 872,
-    "tvFilmSignals": 1066,
-    "londonSignals": 648,
+    "tvFilmSignals": 1067,
+    "londonSignals": 653,
     "offBroadwaySignals": 464,
     "yearMismatch": 83,
-    "noPublishDate": 3961
+    "noPublishDate": 3969
   },
   "findings": [
     {
@@ -15089,6 +15089,95 @@
       ]
     },
     {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "file": "broadwayworld--gary-naylor.json",
+      "score": 93,
+      "publishDate": "2022-10-19",
+      "url": "https://www.broadwayworld.com/westend/article/Review-MY-NEIGHBOUR-TOTORO-Barbican-Theatre-20221019",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 576d before show (2022-10-19 vs 2024-05-17)"
+        }
+      ]
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "file": "financialtimes--financial-times.json",
+      "score": 87,
+      "publishDate": "2022-10-19",
+      "url": "https://www.ft.com/content/a49309dc-bda1-4f26-93cf-274237764e15",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 576d before show (2022-10-19 vs 2024-05-17)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "file": "financialtimes--sarah-hemming.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 576d before show (2022-10-19 vs 2024-05-17)"
+        }
+      ]
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "file": "london-box-office--miriam-gibson.json",
+      "score": 66,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 576d before show (2022-10-19 vs 2024-05-17)"
+        }
+      ]
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "file": "london-box-office--stuart-king.json",
+      "score": 66,
+      "publishDate": "2022-10-14",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-my-neighbour-totoro",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 581d before show (2022-10-14 vs 2024-05-17)"
+        }
+      ]
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "file": "observer--susannah-clapp.json",
+      "score": 90,
+      "publishDate": "2022-10-23",
+      "url": "https://www.theguardian.com/stage/2022/oct/23/my-neighbour-totoro-barbican-rsc-phelim-mcdermott-review-studio-ghibli-local-hero-minerva-chichester-daniel-evans",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 572d before show (2022-10-23 vs 2024-05-17)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
       "showId": "natasha-pierre-and-the-great-comet-of-1812-2016",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 95,
@@ -21287,6 +21376,20 @@
       "score": 79,
       "publishDate": "2026-06-22",
       "url": "https://culturesauce.com/black-mirror-experience-off-broadway-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-black-mirror-experience-off-broadway-2026",
+      "file": "front-row-center--tom-storch.json",
+      "score": 63,
+      "publishDate": "2026-06-23",
+      "url": "https://thefrontrowcenter.com/2026/06/the-black-mirror-experience/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -29742,7 +29845,7 @@
       "file": "exeunt-magazine--loren-noveck.json",
       "score": 80,
       "publishDate": "2026-05-15T11:08:02-04:00",
-      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/#:~:text=Dad%20Don't%20Read%20This%20is%20messy%20and%20raw%20and,will%20keep%20it%20in%20my",
+      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -34430,6 +34533,48 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "file": "all-that-dazzles-uk--daz-gale.json",
+      "score": 89,
+      "publishDate": "October 20th, 2022",
+      "url": "https://www.allthatdazzles.co.uk/post/review-my-neighbour-totoro-barbican",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "file": "guardian--arifa-akbar.json",
+      "score": 82,
+      "publishDate": "October 19th, 2022",
+      "url": "https://www.theguardian.com/stage/2022/oct/19/my-neighbour-totoro-review-barbican-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "file": "observer--unknown.json",
+      "score": 80,
+      "publishDate": null,
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
