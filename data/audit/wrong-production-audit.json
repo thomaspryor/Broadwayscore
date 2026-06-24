@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-06-24T06:28:28.286Z",
+  "timestamp": "2026-06-24T06:39:37.907Z",
   "stats": {
     "totalReviews": 39116,
     "alreadyFlagged": 17461,
     "dateGuardCatches": 38,
     "directorMismatch": 873,
     "tvFilmSignals": 1066,
-    "londonSignals": 649,
+    "londonSignals": 650,
     "offBroadwaySignals": 464,
     "yearMismatch": 83,
     "noPublishDate": 3945
@@ -39710,6 +39710,20 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 88d before show (2010-07-23 vs 2010-10-19)"
+        }
+      ]
+    },
+    {
+      "showId": "the-misanthrope-west-end-2026",
+      "file": "guardian--arifa-akbar.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.theguardian.com/stage/2026/jun/23/the-misanthrope-review-reworking-woos-in-its-human-drama",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
