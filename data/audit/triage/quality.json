@@ -1,7 +1,7 @@
 {
   "system": "quality",
   "status": "warn",
-  "lastChecked": "2026-06-23T08:13:06.381Z",
+  "lastChecked": "2026-06-24T08:10:27.013Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,12 +9,12 @@
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.6% scored (18469/18733)"
+      "message": "98.5% scored (18472/18747)"
     },
     {
       "name": "Quality: corpus drift",
       "status": "warn",
-      "message": "1 audit(s) drifting: content-quality regex false-positive rate"
+      "message": "2 audit(s) drifting: content-quality regex false-positive rate, cross-show URL contamination (review URL slug names a different show)"
     }
   ]
 }
