@@ -1,20 +1,70 @@
 {
-  "updatedAt": "2026-06-24T02:42:16.122Z",
-  "processed": 419,
-  "failed": 821,
-  "successRate": "33.8%",
+  "updatedAt": "2026-06-24T02:58:47.868Z",
+  "processed": 425,
+  "failed": 865,
+  "successRate": "32.9%",
   "tierBreakdown": {
     "playwright": 197,
     "amp": 0,
-    "browserbase": 75,
+    "browserbase": 71,
     "directCookies": 0,
-    "scrapingbee": 87,
-    "brightdata": 40,
-    "archiveToday": 42,
-    "archive": 141
+    "scrapingbee": 90,
+    "brightdata": 42,
+    "archiveToday": 43,
+    "archive": 150
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 0,
   "recentActivity": [
+    {
+      "t": "2026-06-23T21:41:15.430Z",
+      "event": "bb-session",
+      "session": "6c58af36",
+      "url": "http://www.wsj.com/articles/junk-review-bankrupting-entertainment-1509669000"
+    },
+    {
+      "t": "2026-06-23T21:41:15.838Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-23T21:58:02.153Z",
+      "event": "bb-session",
+      "session": "8a322b3b",
+      "url": "http://www.wsj.com/articles/heisenberg-review-masculine-wish-fulfillment-on-stag"
+    },
+    {
+      "t": "2026-06-23T21:58:02.584Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-23T21:59:33.682Z",
+      "event": "bb-session",
+      "session": "e1f160b2",
+      "url": "http://www.wsj.com/articles/holiday-inn-the-new-irving-berlin-musical-review-147"
+    },
+    {
+      "t": "2026-06-23T21:59:34.122Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-23T22:02:44.753Z",
+      "event": "bb-session",
+      "session": "26b9d86d",
+      "url": "https://www.thestage.co.uk/reviews/tuck-everlasting-review-at-broadhurst-theatre"
+    },
+    {
+      "t": "2026-06-23T22:02:45.179Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-06-23T22:02:46.409Z",
+      "event": "bb-session",
+      "session": "1c4f8e12",
+      "url": "http://www.wsj.com/articles/fully-committed-review-jesse-tyler-ferguson-party-of"
+    },
     {
       "t": "2026-06-23T22:02:46.831Z",
       "event": "bb-cookie-inject",
@@ -74,56 +124,6 @@
       "t": "2026-06-23T22:13:32.211Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
-    },
-    {
-      "t": "2026-06-24T02:30:46.655Z",
-      "event": "bb-session",
-      "session": "f47ffc80",
-      "url": "/people/Nick-Curtis/"
-    },
-    {
-      "t": "2026-06-24T02:31:53.252Z",
-      "event": "bb-session",
-      "session": "68ab7e64",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
-    {
-      "t": "2026-06-24T02:31:53.637Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-24T02:32:44.310Z",
-      "event": "bb-session",
-      "session": "e45a501c",
-      "url": "https://www.nytimes.com/2026/06/03/theater/caissie-levy-broadway-tonys-ragtime.h"
-    },
-    {
-      "t": "2026-06-24T02:32:44.680Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-24T02:33:01.536Z",
-      "event": "bb-session",
-      "session": "38de7936",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-24T02:33:01.936Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-24T02:33:12.916Z",
-      "event": "bb-session",
-      "session": "46cedf64",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
-    {
-      "t": "2026-06-24T02:33:13.299Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
     }
   ]
 }
