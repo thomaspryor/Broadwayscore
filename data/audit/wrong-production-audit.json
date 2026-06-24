@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-06-24T23:18:44.737Z",
+  "timestamp": "2026-06-24T23:50:26.018Z",
   "stats": {
-    "totalReviews": 39175,
-    "alreadyFlagged": 17470,
+    "totalReviews": 39177,
+    "alreadyFlagged": 17472,
     "dateGuardCatches": 42,
-    "directorMismatch": 872,
-    "tvFilmSignals": 1068,
-    "londonSignals": 657,
+    "directorMismatch": 874,
+    "tvFilmSignals": 1070,
+    "londonSignals": 659,
     "offBroadwaySignals": 464,
-    "yearMismatch": 83,
+    "yearMismatch": 84,
     "noPublishDate": 3962
   },
   "findings": [
@@ -8215,7 +8215,7 @@
       "file": "independent--alice-saville.json",
       "score": 58,
       "publishDate": "2026-06-18",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html?loginSuccessful=true",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -12697,6 +12697,20 @@
       ]
     },
     {
+      "showId": "kiss-of-the-spider-woman-1993",
+      "file": "parade--janice-kaplan.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://parade.com/entertainment/kiss-of-the-spider-woman-true-story",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "kpop-2022",
       "file": "new-york-sun--elysa-gardner.json",
       "score": 78,
@@ -12805,6 +12819,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "lend-me-a-tenor-1989",
+      "file": "playbill--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://playbill.com/production/lend-me-a-tenor-music-box-theatre-vault-0000002561",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"stanley tucci\" from lend-me-a-tenor-2010"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2010 (5x) more than 1989 (0x). 2010 matches production: lend-me-a-tenor-2010"
         }
       ]
     },
@@ -25258,6 +25291,30 @@
       ]
     },
     {
+      "showId": "true-west-2000",
+      "file": "broadwayworld--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/shows/True-West-311864.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james macdonald\" from true-west-2019"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 2\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "true-west-2019",
       "file": "nysr--jesse-oxfeld.json",
       "score": 78,
@@ -32881,6 +32938,20 @@
       "score": 95,
       "publishDate": "April 21, 2011",
       "url": "http://theater.nytimes.com/2011/04/22/theater/reviews/jerusalem-with-mark-rylance-review.html?ref=theater",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "jerusalem-2011",
+      "file": "artsfuse--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://artsfuse.org/31968/fuse-reviews-broadway-the-importance-of-being-earnest-and-jerusalem/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
