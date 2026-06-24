@@ -1516,7 +1516,11 @@
       "data/review-texts/the-humans-2016/wsj--terry-teachout.json",
       "the-humans-2016/wsj--terry-teachout.json",
       "data/review-texts/the-color-purple-2015/wsj--terry-teachout.json",
-      "the-color-purple-2015/wsj--terry-teachout.json"
+      "the-color-purple-2015/wsj--terry-teachout.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -2530,6 +2534,56 @@
       "t": "2026-06-23T22:13:32.211Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-24T02:30:46.655Z",
+      "event": "bb-session",
+      "session": "f47ffc80",
+      "url": "/people/Nick-Curtis/"
+    },
+    {
+      "t": "2026-06-24T02:31:53.252Z",
+      "event": "bb-session",
+      "session": "68ab7e64",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-24T02:31:53.637Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-24T02:32:44.310Z",
+      "event": "bb-session",
+      "session": "e45a501c",
+      "url": "https://www.nytimes.com/2026/06/03/theater/caissie-levy-broadway-tonys-ragtime.h"
+    },
+    {
+      "t": "2026-06-24T02:32:44.680Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-24T02:33:01.536Z",
+      "event": "bb-session",
+      "session": "38de7936",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-24T02:33:01.936Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-24T02:33:12.916Z",
+      "event": "bb-session",
+      "session": "46cedf64",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-24T02:33:13.299Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
