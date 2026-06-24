@@ -12,16 +12,22 @@ describe('detect-venue-transfers / classifyCandidate', () => {
     assert.equal(classifyCandidate({ sibling: 'waitress-2016', spanDays: 5 }), 'routed-elsewhere');
   });
 
-  it('flags a tight, sibling-less cluster as a likely transfer', () => {
-    assert.equal(classifyCandidate({ sibling: null, spanDays: 9 }), 'likely-transfer');   // Sunset (1 week)
-    assert.equal(classifyCandidate({ sibling: null, spanDays: 320 }), 'likely-transfer'); // Godot (~10 months)
-    assert.equal(classifyCandidate({ sibling: null, spanDays: 520 }), 'likely-transfer'); // Totoro double Barbican run
-    assert.equal(classifyCandidate({ sibling: null, spanDays: SPAN_TIGHT_DAYS }), 'likely-transfer');
+  it('flags a tight, sibling-less, same-market cluster as a likely transfer', () => {
+    assert.equal(classifyCandidate({ sibling: null, spanDays: 22, marketMatch: true }), 'likely-transfer');  // inter-alia (UK→UK)
+    assert.equal(classifyCandidate({ sibling: null, spanDays: 520, marketMatch: true }), 'likely-transfer'); // Totoro double Barbican run
+    assert.equal(classifyCandidate({ sibling: null, spanDays: SPAN_TIGHT_DAYS, marketMatch: true }), 'likely-transfer');
+    // unknown market (null) is NOT suppressed — treated as a candidate
+    assert.equal(classifyCandidate({ sibling: null, spanDays: 9, marketMatch: null }), 'likely-transfer');
+  });
+
+  it('flags a tight cross-market cluster as cross-market-transfer (excluded by policy)', () => {
+    assert.equal(classifyCandidate({ sibling: null, spanDays: 9, marketMatch: false }), 'cross-market-transfer');   // Sunset (London→Broadway)
+    assert.equal(classifyCandidate({ sibling: null, spanDays: 320, marketMatch: false }), 'cross-market-transfer'); // Godot
   });
 
   it('flags a wide, sibling-less cluster as needing manual review (multi-production risk)', () => {
-    assert.equal(classifyCandidate({ sibling: null, spanDays: SPAN_TIGHT_DAYS + 1 }), 'wide-span-review');
-    assert.equal(classifyCandidate({ sibling: null, spanDays: 3650 }), 'wide-span-review'); // Hamlet 2015-2025
+    assert.equal(classifyCandidate({ sibling: null, spanDays: SPAN_TIGHT_DAYS + 1, marketMatch: true }), 'wide-span-review');
+    assert.equal(classifyCandidate({ sibling: null, spanDays: 3650, marketMatch: false }), 'wide-span-review'); // wide span wins over market
   });
 });
 
