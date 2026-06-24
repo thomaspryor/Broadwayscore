@@ -1,48 +1,48 @@
 {
-  "runDate": "2026-06-24T09:58:43.329Z",
+  "runDate": "2026-06-24T10:00:07.272Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "the-truth-a-comedy-by-florian-zeller-west-end-2026",
+    "showFilter": "sinatra-the-musical-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 3,
+    "processed": 3,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "75.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 2,
     "brightdata": 0,
-    "archiveToday": 0,
+    "archiveToday": 1,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 2,
+    "tier1Attempts": 4,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
-    "tier2Success": 1,
-    "tier3Attempts": 0,
+    "tier2Attempts": 3,
+    "tier2Success": 2,
+    "tier3Attempts": 1,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
     "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 3,
-    "scrapingBeePageCredits": 10,
+    "totalFailed": 1,
+    "scrapingBeePageCredits": 3,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -50,20 +50,29 @@
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "sinatra-the-musical-west-end-2026/express-uk--unknown.json",
+    "sinatra-the-musical-west-end-2026/standard--unknown.json",
+    "sinatra-the-musical-west-end-2026/times-uk--unknown.json"
+  ],
   "failed": [
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/financialtimes--unknown.json",
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/sunday-telegraph--unknown.json",
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/whatsonstage--editorial-staff.json"
+    "sinatra-the-musical-west-end-2026/guardian--unknown.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "sinatra-the-musical-west-end-2026/express-uk--unknown.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "sinatra-the-musical-west-end-2026/standard--unknown.json",
+      "sinatra-the-musical-west-end-2026/times-uk--unknown.json"
+    ],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/sinatra-the-musical-west-end-2026/guardian--unknown.json"
+    ],
     "archive": []
   },
   "failuresByOutlet": {},
