@@ -1241,7 +1241,17 @@
     "war-paint-2017/theater-news-online--brian-scott-lipton.json",
     "present-laughter-2017/theater-life--isa-goldberg.json",
     "amelie-a-new-musical-2017/theatermania--adam-feldman.json",
-    "the-price-2017/theater-life--barry-gordin.json"
+    "the-price-2017/theater-life--barry-gordin.json",
+    "the-price-2017/theater-in-the-now--michael-block.json",
+    "come-from-away-2017/theater-life--isa-goldberg.json",
+    "come-from-away-2017/theater-life--paulanne-simmons.json",
+    "come-from-away-2017/off-script-with-dan-dwyer--dan-dwyer.json",
+    "come-from-away-2017/st-louis-post-dispatch--bruce-r-miller.json",
+    "the-glass-menagerie-2017/chicagotribune--chris-jones.json",
+    "sunday-in-the-park-with-george-2017/theater-life--isa-goldberg.json",
+    "the-present-2017/thestage--unknown.json",
+    "in-transit-2016/nydailynews--joe-dziemianowicz.json",
+    "a-bronx-tale-the-musical-2016/njcom--patrick-maley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1516,11 +1526,7 @@
       "data/review-texts/the-humans-2016/wsj--terry-teachout.json",
       "the-humans-2016/wsj--terry-teachout.json",
       "data/review-texts/the-color-purple-2015/wsj--terry-teachout.json",
-      "the-color-purple-2015/wsj--terry-teachout.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
+      "the-color-purple-2015/wsj--terry-teachout.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1610,7 +1616,8 @@
       "after-midnight-2013/timeout--adam-feldman.json",
       "trouble-in-mind-2021/broadwayworld--unknown.json",
       "a-soldiers-play-2020/theater-life--barry-gordin.json",
-      "prince-of-broadway-2017/theater-life--paulanne-simmons.json"
+      "prince-of-broadway-2017/theater-life--paulanne-simmons.json",
+      "the-price-2017/theater-life--barry-gordin.json"
     ],
     "brightdata": [
       "the-balusters-2026/broadwayworld--unknown.json",
@@ -1839,11 +1846,14 @@
       "all-my-sons-2019/theater-life--barry-gordin.json",
       "the-nap-2018/theater-life--barry-gordin.json",
       "the-bands-visit-2017/theater-life--barry-gordin.json",
-      "the-bands-visit-2017/theater-life--isa-goldberg.json"
+      "the-bands-visit-2017/theater-life--isa-goldberg.json",
+      "present-laughter-2017/theater-life--isa-goldberg.json",
+      "come-from-away-2017/theater-life--isa-goldberg.json",
+      "come-from-away-2017/theater-life--paulanne-simmons.json"
     ]
   },
   "startTime": "2026-06-23T03:28:41.031Z",
-  "lastProcessed": "the-price-2017/theater-life--barry-gordin.json",
+  "lastProcessed": "a-bronx-tale-the-musical-2016/njcom--patrick-maley.json",
   "log": [
     {
       "t": "2026-06-23T03:29:56.031Z",
@@ -2534,56 +2544,6 @@
       "t": "2026-06-23T22:13:32.211Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
-    },
-    {
-      "t": "2026-06-24T02:30:46.655Z",
-      "event": "bb-session",
-      "session": "f47ffc80",
-      "url": "/people/Nick-Curtis/"
-    },
-    {
-      "t": "2026-06-24T02:31:53.252Z",
-      "event": "bb-session",
-      "session": "68ab7e64",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
-    {
-      "t": "2026-06-24T02:31:53.637Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-24T02:32:44.310Z",
-      "event": "bb-session",
-      "session": "e45a501c",
-      "url": "https://www.nytimes.com/2026/06/03/theater/caissie-levy-broadway-tonys-ragtime.h"
-    },
-    {
-      "t": "2026-06-24T02:32:44.680Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-24T02:33:01.536Z",
-      "event": "bb-session",
-      "session": "38de7936",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-24T02:33:01.936Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-24T02:33:12.916Z",
-      "event": "bb-session",
-      "session": "46cedf64",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
-    {
-      "t": "2026-06-24T02:33:13.299Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
     }
   ]
 }
