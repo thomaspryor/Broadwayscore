@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-24T06:39:37.907Z",
+  "timestamp": "2026-06-24T09:40:03.218Z",
   "stats": {
-    "totalReviews": 39116,
-    "alreadyFlagged": 17461,
+    "totalReviews": 39133,
+    "alreadyFlagged": 17468,
     "dateGuardCatches": 38,
-    "directorMismatch": 873,
+    "directorMismatch": 872,
     "tvFilmSignals": 1066,
-    "londonSignals": 650,
+    "londonSignals": 649,
     "offBroadwaySignals": 464,
     "yearMismatch": 83,
-    "noPublishDate": 3945
+    "noPublishDate": 3952
   },
   "findings": [
     {
@@ -8117,25 +8117,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
-        }
-      ]
-    },
-    {
-      "showId": "glengarry-glen-ross-west-end-2026",
-      "file": "broadwayworld--alexander-cohen.json",
-      "score": 56,
-      "publishDate": "2026-06-18",
-      "url": "https://www.broadwayworld.com/westend/article/Review-GLENGARRY-GLEN-ROSS-The-Old-Vic-20260618",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -39716,7 +39697,7 @@
     {
       "showId": "the-misanthrope-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": null,
+      "score": 60,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2026/jun/23/the-misanthrope-review-reworking-woos-in-its-human-drama",
       "findings": [
