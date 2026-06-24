@@ -144,7 +144,15 @@
     "grangeville-off-broadway-2026/theatre-reviews-limited--david-roberts.json",
     "redwood-2025/broadwaynews--brittani-samuel.json",
     "english-2025/broadwaynews--brittani-samuel.json",
-    "all-in-comedy-about-love-2024/broadwaynews--brittani-samuel.json"
+    "all-in-comedy-about-love-2024/broadwaynews--brittani-samuel.json",
+    "gypsy-2024/broadwaynews--brittani-samuel.json",
+    "cult-of-love-2024/broadwaynews--brittani-samuel.json",
+    "swept-away-2024/broadwaynews--brittani-samuel.json",
+    "elf-2024/broadwaynews--brittani-samuel.json",
+    "tammy-faye-2024/broadwaynews--brittani-samuel.json",
+    "tammy-faye-2024/theatre-reviews-limited--david-roberts.json",
+    "tammy-faye-2024/culturesauce--thom-geier.json",
+    "romeo-juliet-2024/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
     "sinatra-the-musical-west-end-2026/broadwayworld--unknown.json",
@@ -281,7 +289,9 @@
     "smash-2025/broadway-and-me--janice-c-simpson.json",
     "redwood-2025/gmanetwork--stuart-santiago.json",
     "redwood-2025/juiceph--wanggo-gallaga.json",
-    "pen-pals-off-broadway-2025/theater-life--barry-gordin.json"
+    "pen-pals-off-broadway-2025/theater-life--barry-gordin.json",
+    "eureka-day-2024/times-uk--clive-davis.json",
+    "elf-2024/northjerseycom--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -371,7 +381,9 @@
       "punch-2025/nytg--joe-dziemianowicz.json",
       "waiting-for-godot-2025/west-end-best-friend--unknown.json",
       "john-proctor-is-the-villain-2025/new-statesman--emily-lawford.json",
-      "grangeville-off-broadway-2026/theatre-reviews-limited--david-roberts.json"
+      "grangeville-off-broadway-2026/theatre-reviews-limited--david-roberts.json",
+      "tammy-faye-2024/theatre-reviews-limited--david-roberts.json",
+      "tammy-faye-2024/culturesauce--thom-geier.json"
     ],
     "amp": [],
     "browserbase": [
@@ -411,7 +423,14 @@
       "smash-2025/broadwaynews--brittani-samuel.json",
       "the-last-five-years-2025/broadwaynews--brittani-samuel.json",
       "glengarry-glen-ross-2025/newsday--unknown.json",
-      "redwood-2025/broadwaynews--brittani-samuel.json"
+      "redwood-2025/broadwaynews--brittani-samuel.json",
+      "gypsy-2024/broadwaynews--brittani-samuel.json",
+      "cult-of-love-2024/broadwaynews--brittani-samuel.json",
+      "swept-away-2024/broadwaynews--brittani-samuel.json",
+      "pen-pals-off-broadway-2025/theater-life--barry-gordin.json",
+      "elf-2024/broadwaynews--brittani-samuel.json",
+      "tammy-faye-2024/broadwaynews--brittani-samuel.json",
+      "romeo-juliet-2024/broadwaynews--brittani-samuel.json"
     ],
     "brightdata": [
       "the-balusters-2026/broadwayworld--unknown.json",
@@ -433,7 +452,8 @@
       "data/review-texts/birthright-off-broadway-2026/broadwayworld--unknown.json",
       "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
       "data/review-texts/birthright-off-broadway-2026/broadwayworld--unknown.json",
-      "data/review-texts/fallen-angels-2026/talkinbroadway--unknown.json"
+      "data/review-texts/fallen-angels-2026/talkinbroadway--unknown.json",
+      "data/review-texts/elf-2024/northjerseycom--unknown.json"
     ],
     "archive": [
       "beetlejuice-west-end-2026/timeout-london--unknown.json",
@@ -470,7 +490,7 @@
     ]
   },
   "startTime": "2026-06-24T10:39:16.417Z",
-  "lastProcessed": "all-in-comedy-about-love-2024/broadwaynews--brittani-samuel.json",
+  "lastProcessed": "romeo-juliet-2024/broadwaynews--brittani-samuel.json",
   "log": [
     {
       "t": "2026-06-24T10:48:21.673Z",
@@ -544,6 +564,17 @@
       "t": "2026-06-24T13:01:45.224Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-24T13:24:23.666Z",
+      "event": "bb-session",
+      "session": "02c3dc57",
+      "url": "http://www.northjersey.com/arts-and-entertainment/theater/a-musical-elf-full-of-"
+    },
+    {
+      "t": "2026-06-24T13:24:24.378Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }

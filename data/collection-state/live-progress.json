@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-24T13:23:18.248Z",
-  "processed": 145,
-  "failed": 135,
-  "successRate": "51.8%",
+  "updatedAt": "2026-06-24T13:25:28.060Z",
+  "processed": 153,
+  "failed": 137,
+  "successRate": "52.8%",
   "tierBreakdown": {
-    "playwright": 86,
+    "playwright": 88,
     "amp": 0,
     "browserbase": 6,
     "directCookies": 0,
-    "scrapingbee": 28,
+    "scrapingbee": 35,
     "brightdata": 9,
-    "archiveToday": 9,
+    "archiveToday": 10,
     "archive": 31
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-06-24T12:37:11.718Z",
@@ -152,6 +152,17 @@
       "t": "2026-06-24T13:01:45.224Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-24T13:24:23.666Z",
+      "event": "bb-session",
+      "session": "02c3dc57",
+      "url": "http://www.northjersey.com/arts-and-entertainment/theater/a-musical-elf-full-of-"
+    },
+    {
+      "t": "2026-06-24T13:24:24.378Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
