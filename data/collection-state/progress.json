@@ -1191,7 +1191,16 @@
     "into-the-woods-2022/newyorker--alexandra-schwartz.json",
     "american-buffalo-2022/theater-life--david-sheward.json",
     "slave-play-2021/standard--nick-curtis.json",
-    "trouble-in-mind-2021/broadwayworld--unknown.json"
+    "trouble-in-mind-2021/broadwayworld--unknown.json",
+    "labelless-off-broadway-2026/one-minute-critic--unknown.json",
+    "encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
+    "romeo-and-juliet-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+    "henry-vi-a-trilogy-in-two-parts-off-broadway-2026/playbill--unknown.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1466,7 +1475,10 @@
       "data/review-texts/the-humans-2016/wsj--terry-teachout.json",
       "the-humans-2016/wsj--terry-teachout.json",
       "data/review-texts/the-color-purple-2015/wsj--terry-teachout.json",
-      "the-color-purple-2015/wsj--terry-teachout.json"
+      "the-color-purple-2015/wsj--terry-teachout.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1638,7 +1650,8 @@
       "data/review-texts/the-gin-game-2015/nyt-theater--jonathan-mandell.json",
       "data/review-texts/airline-highway-2015/wsj--terry-teachout.json",
       "data/review-texts/the-devil-wears-prada-west-end-2024/thestage--unknown.json",
-      "data/review-texts/the-whos-tommy-2024/thestage--unknown.json"
+      "data/review-texts/the-whos-tommy-2024/thestage--unknown.json",
+      "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json"
     ],
     "archive": [
       "glengarry-glen-ross-west-end-2026/broadwayworld--alexander-cohen.json",
@@ -1780,7 +1793,7 @@
     ]
   },
   "startTime": "2026-06-23T03:28:41.031Z",
-  "lastProcessed": "trouble-in-mind-2021/broadwayworld--unknown.json",
+  "lastProcessed": "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
   "log": [
     {
       "t": "2026-06-23T03:29:56.031Z",
@@ -2471,6 +2484,45 @@
       "t": "2026-06-23T22:13:32.211Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-24T02:30:04.432Z",
+      "event": "bb-session",
+      "session": "09a7a53d",
+      "url": "/people/Nick-Curtis/"
+    },
+    {
+      "t": "2026-06-24T02:30:59.322Z",
+      "event": "bb-session",
+      "session": "4e0775cc",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-24T02:31:00.244Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-24T02:31:32.591Z",
+      "event": "bb-session",
+      "session": "fe2354b8",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-24T02:31:34.024Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-24T02:31:45.956Z",
+      "event": "bb-session",
+      "session": "a21f3bd1",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-24T02:31:46.872Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
