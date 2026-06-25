@@ -20,7 +20,7 @@ const path = require('path');
 const https = require('https');
 const { extractStatusFromHtml } = require('./lib/show-score-status');
 const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
-const { countByShow, isStuckInPreviews, chooseOpeningDateBackfill } = require('./lib/opening-signal');
+const { countByShow, isStuckInPreviews, openSignalFromReviews, chooseOpeningDateBackfill } = require('./lib/opening-signal');
 const { openingDateSourceHint } = require('./lib/opening-date-sources');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
@@ -698,9 +698,21 @@ async function updateShowStatuses() {
     // Runs only when the earlier date-based checks didn't already change status.
     if (!changes.status) {
       const entry = reviewCounts[show.id];
-      if (isStuckInPreviews(show, entry)) {
+      // Two independent open-signals, in priority order:
+      //  - score-threshold: enough scored reviews to display a score
+      //    (isStuckInPreviews) — the original count-based backstop.
+      //  - open-signal: >=1 clean review dated on/after previews start
+      //    (openSignalFromReviews) — positive proof the show opened even when it
+      //    is below the score gate, so genuinely-open-but-thinly-reviewed shows
+      //    (Label•less: 2 reviews, would NEVER reach the 3-review OB threshold)
+      //    no longer sit in previews forever. Decoupled by design: "open" is a
+      //    status fact a dated review proves; the score stays gated until the
+      //    threshold — the honest "Now Playing, reviews pending" state.
+      const scoreThreshold = isStuckInPreviews(show, entry);
+      const openSignal = scoreThreshold ? null : openSignalFromReviews(show, entry, isDateReached);
+      if (scoreThreshold || openSignal) {
         const from = show.status;
-        const reviewCount = entry.count;
+        const reviewCount = entry ? entry.count : 0;
         changes.status = { from, to: 'open' };
         // Marker: this is a catch-up flip driven by accumulated reviews, NOT a
         // live opening. It MUST be excluded from opened_count/opened_slugs so it
@@ -711,7 +723,9 @@ async function updateShowStatuses() {
         // self-heal on their own weekly schedules, and avoiding a wrong broadcast
         // (email about a weeks-old "opening") is the higher priority (CLAUDE.md §17).
         changes.reviewDriven = true;
-        changes.note = `${reviewCount} scored reviews (${entry.tier1And2} T1/T2) — meets score-display threshold; opened but status never flipped`;
+        changes.note = scoreThreshold
+          ? `${reviewCount} scored reviews (${entry.tier1And2} T1/T2) — meets score-display threshold; opened but status never flipped`
+          : `open-signal: ${reviewCount} review(s) dated on/after previews start — demonstrably opened (below score gate; reviews pending)`;
         if (!dryRun) show.status = 'open';
         // Backfill a missing openingDate from the review cluster (press night).
         // Only when the estimate is in the past — a future/today date would let
