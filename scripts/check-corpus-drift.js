@@ -87,6 +87,16 @@ const AUDITS = [
     args: ['--strict', '--max=60'],
     crashCodes: [2],           // 0 under baseline / 1 grew above baseline / 2 = corpus missing
   },
+  {
+    name: 'unknown-outlets',
+    label: 'resolvable unknown outlets (in reviews, not yet in registry)',
+    script: 'audit-unknown-outlets.js',
+    // Moved off the blocking test.yml gate (was assert.ok(resolvableUnknowns<=5)).
+    // Drifts up whenever a new scraper discovers an outlet not yet registered —
+    // a no-op push could fail it, so it belongs here, surfaced in the digest.
+    args: ['--max=5'],
+    crashCodes: [2],           // 0 under threshold / 1 over (drift) / 2 = corpus/registry missing
+  },
 ];
 
 function runAudit(audit) {
