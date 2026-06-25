@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-06-25T10:00:42.263Z",
+  "updatedAt": "2026-06-25T10:04:54.382Z",
   "processed": 540,
-  "failed": 982,
-  "successRate": "35.5%",
+  "failed": 992,
+  "successRate": "35.2%",
   "tierBreakdown": {
     "playwright": 232,
     "amp": 0,
@@ -10,24 +10,13 @@
     "directCookies": 0,
     "scrapingbee": 117,
     "brightdata": 39,
-    "archiveToday": 84,
+    "archiveToday": 85,
     "archive": 209
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-06-25T07:36:24.499Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-25T06:47:25.981Z",
-      "event": "bb-session",
-      "session": "af60bd30",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
-    {
-      "t": "2026-06-25T06:47:27.085Z",
+      "t": "2026-06-25T07:38:29.603Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
@@ -120,6 +109,17 @@
       "t": "2026-06-25T09:44:28.138Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-06-25T10:01:48.511Z",
+      "event": "bb-session",
+      "session": "83459bc2",
+      "url": "http://newyork.timeout.com/arts-culture/theater/1212165/review-high"
+    },
+    {
+      "t": "2026-06-25T10:01:49.315Z",
+      "event": "bb-cookie-inject",
+      "domain": "timeout.com"
     }
   ]
 }

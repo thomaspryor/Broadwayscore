@@ -1523,7 +1523,17 @@
     "the-normal-heart-2011/backstage--unknown.json",
     "the-normal-heart-2011/bloomberg--jeremy-gerard.json",
     "jerusalem-2011/village-voice--michael-musto.json",
-    "jerusalem-2011/village-voice--unknown.json"
+    "jerusalem-2011/village-voice--unknown.json",
+    "jerusalem-2011/backstage--erik-haagensen.json",
+    "high-2011/timeout--david-cote.json",
+    "wonderland-2011/nytheatre--jo-ann-rosen.json",
+    "war-horse-2011/backstage--erik-haagensen.json",
+    "catch-me-if-you-can-2011/ap--mark-kennedy.json",
+    "catch-me-if-you-can-2011/backstage--erik-haagensen.json",
+    "bengal-tiger-at-the-baghdad-zoo-2011/nytheatre--martin-denton.json",
+    "how-to-succeed-in-business-without-really-trying-2011/nytheatre--david-gordon.json",
+    "ghetto-klown-2011/backstage--david-sheward.json",
+    "priscilla-queen-of-the-desert-2011/chicagotribune--contributed-content.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2047,7 +2057,8 @@
       "data/review-texts/copenhagen-2000/science-magazine--david-voss.json",
       "data/review-texts/true-west-2000/thestage--unknown.json",
       "data/review-texts/the-gin-game-2015/nyt-theater--jonathan-mandell.json",
-      "data/review-texts/cyrano-de-bergerac-2012/northjerseycom--robert-feldberg.json"
+      "data/review-texts/cyrano-de-bergerac-2012/northjerseycom--robert-feldberg.json",
+      "data/review-texts/jerusalem-2011/village-voice--unknown.json"
     ],
     "archive": [
       "beetlejuice-west-end-2026/timeout-london--unknown.json",
@@ -2262,7 +2273,7 @@
     ]
   },
   "startTime": "2026-06-24T10:39:16.417Z",
-  "lastProcessed": "jerusalem-2011/village-voice--unknown.json",
+  "lastProcessed": "priscilla-queen-of-the-desert-2011/chicagotribune--contributed-content.json",
   "log": [
     {
       "t": "2026-06-24T10:48:21.673Z",
@@ -2920,6 +2931,17 @@
       "t": "2026-06-25T09:44:28.138Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-06-25T10:01:48.511Z",
+      "event": "bb-session",
+      "session": "83459bc2",
+      "url": "http://newyork.timeout.com/arts-culture/theater/1212165/review-high"
+    },
+    {
+      "t": "2026-06-25T10:01:49.315Z",
+      "event": "bb-cookie-inject",
+      "domain": "timeout.com"
     }
   ]
 }
