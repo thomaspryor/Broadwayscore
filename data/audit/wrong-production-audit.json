@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-06-25T19:25:21.910Z",
+  "timestamp": "2026-06-25T19:35:55.186Z",
   "stats": {
     "totalReviews": 39236,
     "alreadyFlagged": 17489,
     "dateGuardCatches": 42,
     "directorMismatch": 873,
     "tvFilmSignals": 1071,
-    "londonSignals": 666,
+    "londonSignals": 667,
     "offBroadwaySignals": 464,
     "yearMismatch": 84,
     "noPublishDate": 3969
@@ -36633,6 +36633,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"classic stage\""
+        }
+      ]
+    },
+    {
+      "showId": "sinatra-the-musical-west-end-2026",
+      "file": "telegraph--marianka-swain.json",
+      "score": 60,
+      "publishDate": "2026-06-25",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/sinatra-the-musical-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
