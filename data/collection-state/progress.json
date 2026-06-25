@@ -1143,7 +1143,17 @@
     "time-stands-still-2010/newsday--linda-winer.json",
     "a-view-from-the-bridge-2010/guardian--charles-isherwood.json",
     "a-view-from-the-bridge-2010/theatermania--andy-propst.json",
-    "present-laughter-2010/hollywood-reporter--david-rooney.json"
+    "present-laughter-2010/hollywood-reporter--david-rooney.json",
+    "a-little-night-music-2009/wsj--terry-teachout.json",
+    "a-little-night-music-2009/talkinbroadway--matthew-murray.json",
+    "race-2009/newsday--linda-winer.json",
+    "race-2009/ew--lisa-schwarzbaum.json",
+    "fela-2009/wsj--terry-teachout.json",
+    "irving-berlins-white-christmas-2009/theatermania--david-finkle.json",
+    "finians-rainbow-2009/talkinbroadway--matthew-murray.json",
+    "memphis-2009/nydailynews--joe-dziemianowicz.json",
+    "memphis-2009/wsj--terry-teachout.json",
+    "bye-bye-birdie-2009/timeout--david-cote.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1524,7 +1534,8 @@
       "casa-valentina-2014/nydailynews--joe-dziemianowicz.json",
       "master-class-2011/theatermania--david-finkle.json",
       "the-peewee-herman-show-2010/theatermania--unknown.json",
-      "a-little-night-music-2009/latimes--david-ng.json"
+      "a-little-night-music-2009/latimes--david-ng.json",
+      "fela-2009/wsj--terry-teachout.json"
     ],
     "archiveToday": [
       "data/review-texts/the-misanthrope-west-end-2026/thestage--unknown.json",
@@ -1559,7 +1570,11 @@
       "data/review-texts/red-2010/wsj--terry-teachout.json",
       "data/review-texts/red-2010/talkinbroadway--matthew-murray.json",
       "data/review-texts/a-behanding-in-spokane-2010/wsj--terry-teachout.json",
-      "data/review-texts/a-view-from-the-bridge-2010/theatermania--andy-propst.json"
+      "data/review-texts/a-view-from-the-bridge-2010/theatermania--andy-propst.json",
+      "data/review-texts/a-little-night-music-2009/talkinbroadway--matthew-murray.json",
+      "data/review-texts/irving-berlins-white-christmas-2009/theatermania--david-finkle.json",
+      "data/review-texts/finians-rainbow-2009/talkinbroadway--matthew-murray.json",
+      "data/review-texts/memphis-2009/nydailynews--joe-dziemianowicz.json"
     ],
     "archive": [
       "beetlejuice-west-end-2026/timeout-london--unknown.json",
@@ -1765,7 +1780,7 @@
     ]
   },
   "startTime": "2026-06-24T10:39:16.417Z",
-  "lastProcessed": "a-little-night-music-2009/theater-life--eric-march.json",
+  "lastProcessed": "bye-bye-birdie-2009/timeout--david-cote.json",
   "log": [
     {
       "t": "2026-06-24T10:48:21.673Z",
@@ -2192,6 +2207,50 @@
     },
     {
       "t": "2026-06-25T07:09:27.758Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-25T07:17:49.324Z",
+      "event": "bb-session",
+      "session": "64cc07ad",
+      "url": "https://www.talkinbroadway.com/world/ALittleNightMusic.html"
+    },
+    {
+      "t": "2026-06-25T07:17:50.120Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-25T07:18:56.790Z",
+      "event": "bb-session",
+      "session": "5bc3e299",
+      "url": "https://www.wsj.com/articles/SB10001424052748704013004574517680589230494?gaa_at="
+    },
+    {
+      "t": "2026-06-25T07:18:57.671Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-25T07:22:38.636Z",
+      "event": "bb-session",
+      "session": "4351a9f6",
+      "url": "http://www.talkinbroadway.com/world/FinansRainbow.html"
+    },
+    {
+      "t": "2026-06-25T07:22:39.459Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-25T07:23:39.010Z",
+      "event": "bb-session",
+      "session": "a3447932",
+      "url": "https://www.wsj.com/articles/SB125782678542851645"
+    },
+    {
+      "t": "2026-06-25T07:23:39.932Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
