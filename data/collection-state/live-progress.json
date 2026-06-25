@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-25T13:45:03.735Z",
-  "processed": 182,
-  "failed": 118,
-  "successRate": "60.7%",
+  "updatedAt": "2026-06-25T18:40:14.537Z",
+  "processed": 318,
+  "failed": 282,
+  "successRate": "53.0%",
   "tierBreakdown": {
-    "playwright": 108,
+    "playwright": 174,
     "amp": 0,
-    "browserbase": 8,
+    "browserbase": 14,
     "directCookies": 0,
-    "scrapingbee": 54,
-    "brightdata": 10,
-    "archiveToday": 2,
-    "archive": 22
+    "scrapingbee": 70,
+    "brightdata": 30,
+    "archiveToday": 7,
+    "archive": 57
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-06-25T12:30:22.686Z",
@@ -43,6 +43,39 @@
       "event": "bb-session",
       "session": "d56e6736",
       "url": "https://www.express.co.uk/entertainment/theatre/1864762/The-Hills-of-California-"
+    },
+    {
+      "t": "2026-06-25T18:05:58.442Z",
+      "event": "bb-session",
+      "session": "19b995a0",
+      "url": "http://www.wsj.com/articles/kiss-me-kate-review-so-not-in-love-11552609800"
+    },
+    {
+      "t": "2026-06-25T18:05:59.053Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-25T18:12:32.587Z",
+      "event": "bb-session",
+      "session": "4e03ecf8",
+      "url": "https://www.wsj.com/articles/the-ferryman-review-a-house-divided-1540500470?gaa_"
+    },
+    {
+      "t": "2026-06-25T18:12:33.733Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-25T18:28:59.090Z",
+      "event": "bb-session",
+      "session": "ac41d224",
+      "url": "http://www.wsj.com/articles/junk-review-bankrupting-entertainment-1509669000"
+    },
+    {
+      "t": "2026-06-25T18:28:59.636Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
