@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-06-25T10:08:32.956Z",
-  "processed": 542,
-  "failed": 1000,
+  "updatedAt": "2026-06-25T10:15:13.467Z",
+  "processed": 545,
+  "failed": 1007,
   "successRate": "35.1%",
   "tierBreakdown": {
     "playwright": 232,
@@ -9,25 +9,14 @@
     "browserbase": 44,
     "directCookies": 0,
     "scrapingbee": 117,
-    "brightdata": 39,
-    "archiveToday": 85,
-    "archive": 211
+    "brightdata": 40,
+    "archiveToday": 86,
+    "archive": 213
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-06-25T07:38:29.603Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-25T06:47:57.197Z",
-      "event": "bb-session",
-      "session": "2bfb2a21",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-25T06:47:58.082Z",
+      "t": "2026-06-25T07:42:31.291Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     },
@@ -120,6 +109,17 @@
       "t": "2026-06-25T10:01:49.315Z",
       "event": "bb-cookie-inject",
       "domain": "timeout.com"
+    },
+    {
+      "t": "2026-06-25T10:11:11.826Z",
+      "event": "bb-session",
+      "session": "04877b1a",
+      "url": "http://www.hollywoodreporter.com/hr/film-reviews/a-life-in-the-theatre-theater-r"
+    },
+    {
+      "t": "2026-06-25T10:11:12.712Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
