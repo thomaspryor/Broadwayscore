@@ -475,7 +475,8 @@
     "million-dollar-quartet-2010/theatermania--unknown.json",
     "the-addams-family-2010/newsday--linda-winer.json",
     "a-little-night-music-2009/latimes--david-ng.json",
-    "a-little-night-music-2009/theater-life--eric-march.json"
+    "a-little-night-music-2009/theater-life--eric-march.json",
+    "oleanna-2009/theatermania--unknown.json"
   ],
   "failed": [
     "sinatra-the-musical-west-end-2026/broadwayworld--unknown.json",
@@ -1153,7 +1154,16 @@
     "finians-rainbow-2009/talkinbroadway--matthew-murray.json",
     "memphis-2009/nydailynews--joe-dziemianowicz.json",
     "memphis-2009/wsj--terry-teachout.json",
-    "bye-bye-birdie-2009/timeout--david-cote.json"
+    "bye-bye-birdie-2009/timeout--david-cote.json",
+    "the-royal-family-2009/nydailynews--joe-dziemianowicz.json",
+    "hamlet-2009/wsj--terry-teachout.json",
+    "superior-donuts-2009/chicagotribune--chris-jones.json",
+    "superior-donuts-2009/latimes--charles-mcnulty.json",
+    "burn-the-floor-2009/ew--jennifer-armstrong.json",
+    "burn-the-floor-2009/backstage--jo-sagolla.json",
+    "waiting-for-godot-2009/amny--matt-windman.json",
+    "waiting-for-godot-2009/newsday--linda-winer.json",
+    "waiting-for-godot-2009/backstage--david-sheward.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1345,7 +1355,8 @@
       "bloody-bloody-andrew-jackson-2010/time--richard-zoglin.json",
       "everyday-rapture-2010/ew--thom-geier.json",
       "million-dollar-quartet-2010/theatermania--unknown.json",
-      "a-little-night-music-2009/theater-life--eric-march.json"
+      "a-little-night-music-2009/theater-life--eric-march.json",
+      "oleanna-2009/theatermania--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1574,7 +1585,12 @@
       "data/review-texts/a-little-night-music-2009/talkinbroadway--matthew-murray.json",
       "data/review-texts/irving-berlins-white-christmas-2009/theatermania--david-finkle.json",
       "data/review-texts/finians-rainbow-2009/talkinbroadway--matthew-murray.json",
-      "data/review-texts/memphis-2009/nydailynews--joe-dziemianowicz.json"
+      "data/review-texts/memphis-2009/nydailynews--joe-dziemianowicz.json",
+      "data/review-texts/memphis-2009/wsj--terry-teachout.json",
+      "data/review-texts/the-royal-family-2009/nydailynews--joe-dziemianowicz.json",
+      "data/review-texts/hamlet-2009/wsj--terry-teachout.json",
+      "data/review-texts/superior-donuts-2009/chicagotribune--chris-jones.json",
+      "data/review-texts/superior-donuts-2009/latimes--charles-mcnulty.json"
     ],
     "archive": [
       "beetlejuice-west-end-2026/timeout-london--unknown.json",
@@ -1780,7 +1796,7 @@
     ]
   },
   "startTime": "2026-06-24T10:39:16.417Z",
-  "lastProcessed": "bye-bye-birdie-2009/timeout--david-cote.json",
+  "lastProcessed": "waiting-for-godot-2009/backstage--david-sheward.json",
   "log": [
     {
       "t": "2026-06-24T10:48:21.673Z",
@@ -2253,6 +2269,29 @@
       "t": "2026-06-25T07:23:39.932Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-25T07:26:10.554Z",
+      "event": "bb-session",
+      "session": "8be238d8",
+      "url": "https://www.newspapers.com/image/573860958/"
+    },
+    {
+      "t": "2026-06-25T07:26:48.117Z",
+      "event": "bb-session",
+      "session": "69ae9539",
+      "url": "https://www.wsj.com/articles/SB125363816847903279"
+    },
+    {
+      "t": "2026-06-25T07:26:48.931Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-25T07:29:03.600Z",
+      "event": "bb-session",
+      "session": "2581281d",
+      "url": "https://www.newspapers.com/image/231924056/"
     }
   ]
 }
