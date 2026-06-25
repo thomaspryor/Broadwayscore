@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-25T23:18:29.042Z",
+  "generatedAt": "2026-06-25T23:32:50.857Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -948,23 +948,23 @@
       "status": "open",
       "slug": "sinatra-the-musical-west-end",
       "thumbnail": "/images/shows/sinatra-the-musical-west-end-2026/thumbnail.webp",
-      "siteScore": 60.6,
-      "liveScore": 61,
-      "scoreDrift": 0.3999999999999986,
+      "siteScore": 65.26,
+      "liveScore": 65,
+      "scoreDrift": -0.2600000000000051,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 16,
+      "total": 25,
       "t1": 8,
-      "t2": 3,
-      "t3": 5,
-      "positive": 5,
-      "mixed": 9,
-      "negative": 2,
+      "t2": 7,
+      "t3": 10,
+      "positive": 12,
+      "mixed": 10,
+      "negative": 3,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 6,
+        "highConfidence": 13,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1112,6 +1112,18 @@
           "m": 9,
           "n": 2,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-06-25T23:32:50.857Z",
+          "rc": 25,
+          "s": 65.26,
+          "t1": 8,
+          "t2": 7,
+          "t3": 10,
+          "p": 12,
+          "m": 10,
+          "n": 3,
+          "bc": "waiting"
         }
       ]
     },
@@ -1159,10 +1171,6 @@
         "detail": "Not yet broadcast-ready"
       },
       "missingT1": [
-        {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
         {
           "name": "Observer",
           "isDualMarket": true
