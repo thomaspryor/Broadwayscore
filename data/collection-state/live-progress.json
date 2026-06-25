@@ -1,39 +1,22 @@
 {
-  "updatedAt": "2026-06-25T00:53:11.329Z",
-  "processed": 325,
-  "failed": 495,
-  "successRate": "39.6%",
+  "updatedAt": "2026-06-25T00:57:09.420Z",
+  "processed": 333,
+  "failed": 497,
+  "successRate": "40.1%",
   "tierBreakdown": {
-    "playwright": 149,
+    "playwright": 152,
     "amp": 0,
-    "browserbase": 44,
+    "browserbase": 13,
     "directCookies": 0,
-    "scrapingbee": 88,
+    "scrapingbee": 89,
     "brightdata": 29,
     "archiveToday": 14,
-    "archive": 117
+    "archive": 120
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-06-25T03:43:00.829Z",
-      "event": "bb-session",
-      "session": "945dcd67",
-      "url": "https://www.nytimes.com/2026/06/03/theater/caissie-levy-broadway-tonys-ragtime.h"
-    },
-    {
-      "t": "2026-06-25T03:43:01.532Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-25T03:43:21.418Z",
-      "event": "bb-session",
-      "session": "d756fed8",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-25T03:43:22.214Z",
+      "t": "2026-06-24T11:24:57.613Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     },
@@ -117,13 +100,30 @@
     {
       "t": "2026-06-25T04:43:45.312Z",
       "event": "bb-session",
-      "session": "70c44b53",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+      "session": "38c14a3e",
+      "url": "https://www.groupon.co.uk/deals/ingresso-sinatra-the-musical"
     },
     {
-      "t": "2026-06-25T04:43:46.257Z",
+      "t": "2026-06-25T00:53:42.858Z",
+      "event": "bb-session",
+      "session": "1c2c107a",
+      "url": "https://www.wsj.com/articles/les-liaisons-dangereuses-review-fallen-archness-147"
+    },
+    {
+      "t": "2026-06-25T00:53:43.782Z",
       "event": "bb-cookie-inject",
-      "domain": "variety.com"
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-25T00:56:35.875Z",
+      "event": "bb-session",
+      "session": "bd95204e",
+      "url": "http://www.wsj.com/articles/heisenberg-review-masculine-wish-fulfillment-on-stag"
+    },
+    {
+      "t": "2026-06-25T00:56:36.704Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
