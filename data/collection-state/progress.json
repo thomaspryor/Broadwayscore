@@ -426,7 +426,12 @@
     "golden-boy-2012/ew--adam-markovitz.json",
     "the-anarchist-2012/newsday--linda-winer.json",
     "dead-accounts-2012/newsday--linda-winer.json",
-    "a-christmas-story-the-musical-2012/newsday--linda-winer.json"
+    "a-christmas-story-the-musical-2012/newsday--linda-winer.json",
+    "a-christmas-story-the-musical-2012/timeout--david-cote.json",
+    "the-performers-2012/northjerseycom--robert-feldberg.json",
+    "cyrano-de-bergerac-2012/newsday--linda-winer.json",
+    "chaplin-2012/timeout--david-cote.json",
+    "bring-it-on-the-musical-2012/timeout--adam-feldman.json"
   ],
   "failed": [
     "sinatra-the-musical-west-end-2026/broadwayworld--unknown.json",
@@ -983,7 +988,12 @@
     "matilda-the-musical-2013/village-voice--michael-musto.json",
     "lucky-guy-2013/backstage--erik-haagensen.json",
     "vanya-and-sonia-and-masha-and-spike-2013/new-jersey-newsroom--michael-sommers.json",
-    "ann-2013/village-voice--michael-musto.json"
+    "ann-2013/village-voice--michael-musto.json",
+    "elf-2012/new-jersey-newsroom--michael-sommers.json",
+    "the-heiress-2012/village-voice--michael-musto.json",
+    "cyrano-de-bergerac-2012/newsday--unknown.json",
+    "cyrano-de-bergerac-2012/northjerseycom--robert-feldberg.json",
+    "bring-it-on-the-musical-2012/backstage--erik-haagensen.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1305,7 +1315,11 @@
       "all-the-way-2014/ew--thom-geier.json",
       "700-sundays-2013/ew--jessica-shaw.json",
       "cat-on-a-hot-tin-roof-2013/timeout--david-cote.json",
-      "glengarry-glen-ross-2012/timeout--david-cote.json"
+      "glengarry-glen-ross-2012/timeout--david-cote.json",
+      "cyrano-de-bergerac-2012/newsday--linda-winer.json",
+      "chaplin-2012/timeout--david-cote.json",
+      "cyrano-de-bergerac-2012/newsday--unknown.json",
+      "bring-it-on-the-musical-2012/timeout--adam-feldman.json"
     ],
     "brightdata": [
       "the-balusters-2026/broadwayworld--unknown.json",
@@ -1364,13 +1378,7 @@
       "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
       "data/review-texts/birthright-off-broadway-2026/broadwayworld--unknown.json",
       "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
-      "data/review-texts/birthright-off-broadway-2026/broadwayworld--unknown.json",
-      "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
-      "data/review-texts/the-misanthrope-west-end-2026/thestage--unknown.json",
-      "data/review-texts/sting-west-end-2026/thestage--unknown.json",
-      "data/review-texts/glengarry-glen-ross-west-end-2026/thestage--sam-marlowe.json",
-      "data/review-texts/much-ado-about-nothing-globe-west-end-2026/thestage--holly-o.json",
-      "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json"
+      "data/review-texts/cyrano-de-bergerac-2012/northjerseycom--robert-feldberg.json"
     ],
     "archive": [
       "beetlejuice-west-end-2026/timeout-london--unknown.json",
@@ -1543,11 +1551,13 @@
       "vanya-and-sonia-and-masha-and-spike-2013/village-voice--michael-musto.json",
       "the-anarchist-2012/newsday--linda-winer.json",
       "dead-accounts-2012/newsday--linda-winer.json",
-      "a-christmas-story-the-musical-2012/newsday--linda-winer.json"
+      "a-christmas-story-the-musical-2012/newsday--linda-winer.json",
+      "a-christmas-story-the-musical-2012/timeout--david-cote.json",
+      "the-performers-2012/northjerseycom--robert-feldberg.json"
     ]
   },
   "startTime": "2026-06-24T10:39:16.417Z",
-  "lastProcessed": "a-christmas-story-the-musical-2012/newsday--linda-winer.json",
+  "lastProcessed": "bring-it-on-the-musical-2012/backstage--erik-haagensen.json",
   "log": [
     {
       "t": "2026-06-24T10:48:21.673Z",
@@ -1865,6 +1875,17 @@
       "t": "2026-06-25T06:03:48.992Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-25T06:14:08.570Z",
+      "event": "bb-session",
+      "session": "ddfeaaac",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/173838871_Broadway_review"
+    },
+    {
+      "t": "2026-06-25T06:14:09.446Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }

@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-25T06:09:46.636Z",
-  "processed": 427,
-  "failed": 555,
+  "updatedAt": "2026-06-25T06:15:31.894Z",
+  "processed": 432,
+  "failed": 560,
   "successRate": "43.5%",
   "tierBreakdown": {
     "playwright": 176,
     "amp": 0,
     "browserbase": 38,
     "directCookies": 0,
-    "scrapingbee": 98,
+    "scrapingbee": 102,
     "brightdata": 32,
-    "archiveToday": 21,
-    "archive": 171
+    "archiveToday": 22,
+    "archive": 173
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-06-25T01:09:26.068Z",
-      "event": "bb-session",
-      "session": "a8552178",
-      "url": "http://www.wsj.com/articles/the-color-purple-review-new-star-in-the-broadway-sky"
-    },
-    {
-      "t": "2026-06-25T01:09:26.813Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-06-25T01:10:33.690Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-06-25T06:03:48.992Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-25T06:14:08.570Z",
+      "event": "bb-session",
+      "session": "ddfeaaac",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/173838871_Broadway_review"
+    },
+    {
+      "t": "2026-06-25T06:14:09.446Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
