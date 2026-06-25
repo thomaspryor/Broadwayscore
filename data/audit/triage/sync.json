@@ -1,7 +1,7 @@
 {
   "system": "sync",
   "status": "warn",
-  "lastChecked": "2026-06-24T08:10:27.012Z",
+  "lastChecked": "2026-06-25T08:09:40.767Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -29,17 +29,17 @@
     {
       "name": "Sync: cast coverage",
       "status": "warn",
-      "message": "1 empty cast: Hamilton"
+      "message": "2 empty cast: Hamilton, Awake and Sing!"
     },
     {
       "name": "Sync: baseline drift",
       "status": "warn",
-      "message": "Reviews dropped: 18472 vs baseline 18475"
+      "message": "Reviews dropped: 18500 vs baseline 18501"
     },
     {
       "name": "Sync: grosses weekEnding",
       "status": "pass",
-      "message": "weekEnding 6/15/2026 (9d ago)"
+      "message": "weekEnding 6/22/2026 (3d ago)"
     }
   ]
 }
