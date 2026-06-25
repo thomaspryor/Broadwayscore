@@ -1,20 +1,48 @@
 {
-  "updatedAt": "2026-06-25T07:21:38.627Z",
-  "processed": 422,
-  "failed": 593,
-  "successRate": "41.6%",
+  "updatedAt": "2026-06-25T06:05:45.113Z",
+  "processed": 419,
+  "failed": 553,
+  "successRate": "43.1%",
   "tierBreakdown": {
-    "playwright": 180,
+    "playwright": 174,
     "amp": 0,
-    "browserbase": 40,
+    "browserbase": 38,
     "directCookies": 0,
     "scrapingbee": 96,
-    "brightdata": 33,
-    "archiveToday": 28,
-    "archive": 164
+    "brightdata": 32,
+    "archiveToday": 21,
+    "archive": 167
   },
   "browserbaseSessions": 1,
   "recentActivity": [
+    {
+      "t": "2026-06-25T01:09:26.068Z",
+      "event": "bb-session",
+      "session": "a8552178",
+      "url": "http://www.wsj.com/articles/the-color-purple-review-new-star-in-the-broadway-sky"
+    },
+    {
+      "t": "2026-06-25T01:09:26.813Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-25T01:10:33.690Z",
+      "event": "bb-session",
+      "session": "f720ce79",
+      "url": "http://www.wsj.com/articles/on-your-feet-the-story-of-emilio-and-gloria-estefan-"
+    },
+    {
+      "t": "2026-06-25T01:10:34.518Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-25T05:02:11.466Z",
+      "event": "bb-session",
+      "session": "2ac0ddcd",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
     {
       "t": "2026-06-25T05:02:12.861Z",
       "event": "bb-cookie-inject",
@@ -87,43 +115,15 @@
       "domain": "variety.com"
     },
     {
-      "t": "2026-06-25T06:47:25.981Z",
+      "t": "2026-06-25T06:03:48.097Z",
       "event": "bb-session",
-      "session": "af60bd30",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+      "session": "eca98349",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
     },
     {
-      "t": "2026-06-25T06:47:27.085Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-25T06:47:57.197Z",
-      "event": "bb-session",
-      "session": "2bfb2a21",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-25T06:47:58.082Z",
+      "t": "2026-06-25T06:03:48.992Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-25T06:48:12.427Z",
-      "event": "bb-session",
-      "session": "a7c19c61",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
-    {
-      "t": "2026-06-25T06:48:13.329Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-25T07:09:45.915Z",
-      "event": "bb-session",
-      "session": "17afef85",
-      "url": "https://www.groupon.co.uk/deals/ingresso-sinatra-the-musical"
     }
   ]
 }
