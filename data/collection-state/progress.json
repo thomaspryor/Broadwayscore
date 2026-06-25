@@ -18,7 +18,9 @@
     "much-ado-about-nothing-globe-west-end-2026/london-theatre--globe-theatre.json",
     "much-ado-about-nothing-globe-west-end-2026/sunday-telegraph--dominic-cavendish.json",
     "sting-west-end-2026/all-that-dazzles-uk--unknown.json",
-    "sting-west-end-2026/west-end-best-friend--unknown.json"
+    "sting-west-end-2026/west-end-best-friend--unknown.json",
+    "encores-la-cage-aux-folles-off-broadway-2026/nytimes--httpswwwnytimescombylaura-collins-hughes.json",
+    "girl-interrupted-off-broadway-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "pride-west-end-2026/afridiziak-theatre-news--unknown.json",
@@ -52,7 +54,20 @@
     "glengarry-glen-ross-west-end-2026/thestage--sam-marlowe.json",
     "glengarry-glen-ross-west-end-2026/western-mail--unknown.json",
     "glengarry-glen-ross-west-end-2026/whatsonstage--lucinda-everett.json",
-    "are-you-watching-west-end-2026/the-recs--unknown.json"
+    "are-you-watching-west-end-2026/the-recs--unknown.json",
+    "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+    "birthright-off-broadway-2026/broadwayworld--unknown.json",
+    "birthright-off-broadway-2026/playbill--unknown.json",
+    "dad-dont-read-this-off-broadway-2026/front-row-center--unknown.json",
+    "labelless-off-broadway-2026/one-minute-critic--unknown.json",
+    "encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
+    "romeo-and-juliet-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+    "henry-vi-a-trilogy-in-two-parts-off-broadway-2026/playbill--unknown.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -71,15 +86,21 @@
       "much-ado-about-nothing-globe-off-west-end-2026/london-theatre--globe-theatre.json",
       "much-ado-about-nothing-globe-west-end-2026/london-theatre--globe-theatre.json",
       "sting-west-end-2026/all-that-dazzles-uk--unknown.json",
-      "sting-west-end-2026/west-end-best-friend--unknown.json"
+      "sting-west-end-2026/west-end-best-friend--unknown.json",
+      "girl-interrupted-off-broadway-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "sinatra-the-musical-west-end-2026/daily-mail--unknown.json",
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/telegraph--dominic-cavendish.json",
-      "much-ado-about-nothing-globe-west-end-2026/sunday-telegraph--dominic-cavendish.json"
+      "much-ado-about-nothing-globe-west-end-2026/sunday-telegraph--dominic-cavendish.json",
+      "encores-la-cage-aux-folles-off-broadway-2026/nytimes--httpswwwnytimescombylaura-collins-hughes.json"
     ],
     "brightdata": [
       "sinatra-the-musical-west-end-2026/guardian--unknown.json"
@@ -89,12 +110,14 @@
       "data/review-texts/the-misanthrope-west-end-2026/thestage--unknown.json",
       "data/review-texts/sting-west-end-2026/thestage--unknown.json",
       "data/review-texts/glengarry-glen-ross-west-end-2026/thestage--sam-marlowe.json",
-      "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json"
+      "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json",
+      "data/review-texts/birthright-off-broadway-2026/broadwayworld--unknown.json",
+      "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json"
     ],
     "archive": []
   },
   "startTime": "2026-06-25T12:34:53.020Z",
-  "lastProcessed": "are-you-watching-west-end-2026/the-recs--unknown.json",
+  "lastProcessed": "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
   "log": [
     {
       "t": "2026-06-25T12:40:22.362Z",
@@ -106,6 +129,39 @@
       "t": "2026-06-25T12:40:23.339Z",
       "event": "bb-cookie-inject",
       "domain": "ft.com"
+    },
+    {
+      "t": "2026-06-25T14:42:35.176Z",
+      "event": "bb-session",
+      "session": "db359d4b",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-25T14:42:36.264Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-25T14:43:09.187Z",
+      "event": "bb-session",
+      "session": "8d839914",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-25T14:43:10.686Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-25T14:43:24.347Z",
+      "event": "bb-session",
+      "session": "8a652303",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-25T14:43:25.752Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
