@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-25T06:48:11.537Z",
+  "updatedAt": "2026-06-25T06:48:39.457Z",
   "processed": 414,
-  "failed": 558,
-  "successRate": "42.6%",
+  "failed": 560,
+  "successRate": "42.5%",
   "tierBreakdown": {
     "playwright": 173,
     "amp": 0,
-    "browserbase": 38,
+    "browserbase": 39,
     "directCookies": 0,
     "scrapingbee": 96,
     "brightdata": 32,
     "archiveToday": 23,
     "archive": 164
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-06-25T01:10:33.690Z",
-      "event": "bb-session",
-      "session": "f720ce79",
-      "url": "http://www.wsj.com/articles/on-your-feet-the-story-of-emilio-and-gloria-estefan-"
-    },
-    {
-      "t": "2026-06-25T01:10:34.518Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-06-25T05:02:11.466Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-06-25T06:47:58.082Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-25T06:48:12.427Z",
+      "event": "bb-session",
+      "session": "a7c19c61",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-25T06:48:13.329Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
