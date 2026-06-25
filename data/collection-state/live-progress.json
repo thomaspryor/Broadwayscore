@@ -1,26 +1,20 @@
 {
-  "updatedAt": "2026-06-25T06:48:39.457Z",
-  "processed": 414,
-  "failed": 560,
-  "successRate": "42.5%",
+  "updatedAt": "2026-06-25T07:21:03.128Z",
+  "processed": 422,
+  "failed": 592,
+  "successRate": "41.6%",
   "tierBreakdown": {
-    "playwright": 173,
+    "playwright": 180,
     "amp": 0,
-    "browserbase": 39,
+    "browserbase": 40,
     "directCookies": 0,
     "scrapingbee": 96,
-    "brightdata": 32,
-    "archiveToday": 23,
+    "brightdata": 33,
+    "archiveToday": 27,
     "archive": 164
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-06-25T05:02:11.466Z",
-      "event": "bb-session",
-      "session": "2ac0ddcd",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
     {
       "t": "2026-06-25T05:02:12.861Z",
       "event": "bb-cookie-inject",
@@ -124,6 +118,12 @@
       "t": "2026-06-25T06:48:13.329Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-25T07:09:45.915Z",
+      "event": "bb-session",
+      "session": "17afef85",
+      "url": "https://www.groupon.co.uk/deals/ingresso-sinatra-the-musical"
     }
   ]
 }
