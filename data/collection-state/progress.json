@@ -1,7 +1,8 @@
 {
   "processed": [
     "encores-la-cage-aux-folles-off-broadway-2026/nytimes--httpswwwnytimescombylaura-collins-hughes.json",
-    "henry-vi-a-trilogy-in-two-parts-off-broadway-2026/stageandcinema--unknown.json"
+    "henry-vi-a-trilogy-in-two-parts-off-broadway-2026/stageandcinema--unknown.json",
+    "girl-interrupted-off-broadway-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
@@ -11,15 +12,25 @@
     "labelless-off-broadway-2026/one-minute-critic--unknown.json",
     "encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
     "romeo-and-juliet-off-broadway-2026/one-minute-critic--emily-chackerian.json",
-    "henry-vi-a-trilogy-in-two-parts-off-broadway-2026/playbill--unknown.json"
+    "henry-vi-a-trilogy-in-two-parts-off-broadway-2026/playbill--unknown.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "henry-vi-a-trilogy-in-two-parts-off-broadway-2026/stageandcinema--unknown.json"
+      "henry-vi-a-trilogy-in-two-parts-off-broadway-2026/stageandcinema--unknown.json",
+      "girl-interrupted-off-broadway-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "encores-la-cage-aux-folles-off-broadway-2026/nytimes--httpswwwnytimescombylaura-collins-hughes.json"
@@ -32,6 +43,40 @@
     "archive": []
   },
   "startTime": "2026-06-25T12:38:00.440Z",
-  "lastProcessed": "henry-vi-a-trilogy-in-two-parts-off-broadway-2026/stageandcinema--unknown.json",
-  "log": []
+  "lastProcessed": "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+  "log": [
+    {
+      "t": "2026-06-25T12:41:32.839Z",
+      "event": "bb-session",
+      "session": "c4eaf8aa",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-25T12:41:33.815Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-25T12:42:08.946Z",
+      "event": "bb-session",
+      "session": "1e09297f",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-25T12:42:09.874Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-25T12:42:23.901Z",
+      "event": "bb-session",
+      "session": "bcb96f47",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-25T12:42:24.718Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }
