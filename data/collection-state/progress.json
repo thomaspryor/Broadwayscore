@@ -473,7 +473,9 @@
     "promises-promises-2010/wsj--terry-teachout.json",
     "sondheim-on-sondheim-2010/newsday--linda-winer.json",
     "million-dollar-quartet-2010/theatermania--unknown.json",
-    "the-addams-family-2010/newsday--linda-winer.json"
+    "the-addams-family-2010/newsday--linda-winer.json",
+    "a-little-night-music-2009/latimes--david-ng.json",
+    "a-little-night-music-2009/theater-life--eric-march.json"
   ],
   "failed": [
     "sinatra-the-musical-west-end-2026/broadwayworld--unknown.json",
@@ -1133,7 +1135,15 @@
     "come-fly-away-2010/hollywood-reporter--frank-scheck.json",
     "come-fly-away-2010/staten-island-advance--michael-kuchwara.json",
     "come-fly-away-2010/nytheatre--martin-denton.json",
-    "come-fly-away-2010/backstage--david-sheward.json"
+    "come-fly-away-2010/backstage--david-sheward.json",
+    "next-fall-2010/backstage--david-sheward.json",
+    "a-behanding-in-spokane-2010/wsj--terry-teachout.json",
+    "a-behanding-in-spokane-2010/nytheatre--martin-denton.json",
+    "time-stands-still-2010/ew--melissa-rose-bernardo.json",
+    "time-stands-still-2010/newsday--linda-winer.json",
+    "a-view-from-the-bridge-2010/guardian--charles-isherwood.json",
+    "a-view-from-the-bridge-2010/theatermania--andy-propst.json",
+    "present-laughter-2010/hollywood-reporter--david-rooney.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1324,7 +1334,8 @@
       "bloody-bloody-andrew-jackson-2010/theatermania--andy-propst.json",
       "bloody-bloody-andrew-jackson-2010/time--richard-zoglin.json",
       "everyday-rapture-2010/ew--thom-geier.json",
-      "million-dollar-quartet-2010/theatermania--unknown.json"
+      "million-dollar-quartet-2010/theatermania--unknown.json",
+      "a-little-night-music-2009/theater-life--eric-march.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1512,7 +1523,8 @@
       "amazing-grace-2015/wsj--terry-teachout.json",
       "casa-valentina-2014/nydailynews--joe-dziemianowicz.json",
       "master-class-2011/theatermania--david-finkle.json",
-      "the-peewee-herman-show-2010/theatermania--unknown.json"
+      "the-peewee-herman-show-2010/theatermania--unknown.json",
+      "a-little-night-music-2009/latimes--david-ng.json"
     ],
     "archiveToday": [
       "data/review-texts/the-misanthrope-west-end-2026/thestage--unknown.json",
@@ -1545,7 +1557,9 @@
       "data/review-texts/fences-2010/thestage--unknown.json",
       "data/review-texts/the-addams-family-2010/village-voice--michael-feingold.json",
       "data/review-texts/red-2010/wsj--terry-teachout.json",
-      "data/review-texts/red-2010/talkinbroadway--matthew-murray.json"
+      "data/review-texts/red-2010/talkinbroadway--matthew-murray.json",
+      "data/review-texts/a-behanding-in-spokane-2010/wsj--terry-teachout.json",
+      "data/review-texts/a-view-from-the-bridge-2010/theatermania--andy-propst.json"
     ],
     "archive": [
       "beetlejuice-west-end-2026/timeout-london--unknown.json",
@@ -1751,7 +1765,7 @@
     ]
   },
   "startTime": "2026-06-24T10:39:16.417Z",
-  "lastProcessed": "come-fly-away-2010/backstage--david-sheward.json",
+  "lastProcessed": "a-little-night-music-2009/theater-life--eric-march.json",
   "log": [
     {
       "t": "2026-06-24T10:48:21.673Z",
@@ -2169,6 +2183,17 @@
       "event": "bb-session",
       "session": "5afa7f5f",
       "url": "http://www.silive.com/entertainment/arts/index.ssf/2010/03/broadway_review_come_"
+    },
+    {
+      "t": "2026-06-25T07:09:26.911Z",
+      "event": "bb-session",
+      "session": "d8987247",
+      "url": "https://www.wsj.com/articles/SB10001424052748704187204575101443623615472"
+    },
+    {
+      "t": "2026-06-25T07:09:27.758Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
