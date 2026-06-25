@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-25T11:08:06.061Z",
+  "timestamp": "2026-06-25T13:48:10.622Z",
   "stats": {
-    "totalReviews": 39199,
-    "alreadyFlagged": 17480,
+    "totalReviews": 39221,
+    "alreadyFlagged": 17490,
     "dateGuardCatches": 42,
     "directorMismatch": 873,
-    "tvFilmSignals": 1068,
-    "londonSignals": 661,
+    "tvFilmSignals": 1071,
+    "londonSignals": 665,
     "offBroadwaySignals": 464,
     "yearMismatch": 84,
-    "noPublishDate": 3959
+    "noPublishDate": 3961
   },
   "findings": [
     {
@@ -1571,6 +1571,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "are-you-now-or-have-you-ever-been-off-broadway-2026",
+      "file": "off-off-online--walter-murphy.json",
+      "score": 69,
+      "publishDate": "2026-06-18",
+      "url": "https://www.offoffonline.com/offoffonline/2026/6/11/are-you-now-or-have-you-ever-been-an-american-docudrama-DqUQv",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -7601,6 +7615,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "ghost-the-musical-2012",
+      "file": "variety--steven-suskin.json",
+      "score": 38,
+      "publishDate": "2012-04-24",
+      "url": "https://variety.com/2012/legit/reviews/ghost-the-musical-1117947430/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -24591,6 +24624,20 @@
       ]
     },
     {
+      "showId": "the-truth-a-comedy-by-florian-zeller-west-end-2026",
+      "file": "artsdesk--unknown.json",
+      "score": 78,
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/truth-apollo-theatre-review-how-much-honesty-can-marriage-withstand",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "the-velocity-of-autumn-2014",
       "file": "newsday--linda-winer.json",
       "score": 42,
@@ -37179,10 +37226,38 @@
     },
     {
       "showId": "sting-west-end-2026",
+      "file": "all-that-dazzles-uk--sam-admin.json",
+      "score": 97,
+      "publishDate": "2026-06-24",
+      "url": "https://www.allthatdazzles.co.uk/post/review-sting-the-maria-theatre-young-vic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "sting-west-end-2026",
       "file": "theatre-weekly--greg-stewart.json",
       "score": 79,
       "publishDate": "2026-06-24",
       "url": "https://theatreweekly.com/review-sting-at-young-vic/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "sting-west-end-2026",
+      "file": "west-end-best-friend--ruby-skippings.json",
+      "score": 88,
+      "publishDate": "2026-06-24",
+      "url": "https://www.westendbestfriend.co.uk/news/review-sting-young-vic-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -39921,6 +39996,20 @@
     },
     {
       "showId": "the-misanthrope-west-end-2026",
+      "file": "londontheatre1--fiona-gilbert.json",
+      "score": 56,
+      "publishDate": "2026-06-24",
+      "url": "https://www.londontheatre1.com/reviews/the-misanthrope-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-misanthrope-west-end-2026",
       "file": "times-uk--clive-davis.json",
       "score": 38,
       "publishDate": "2026-06-24",
@@ -39944,19 +40033,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"lyttelton\""
-        }
-      ]
-    },
-    {
-      "showId": "the-misanthrope-west-end-2026",
-      "file": "whatsonstage--sarah-crompton.json",
-      "publishDate": "2026-06-24",
-      "url": "https://www.whatsonstage.com/news/the-misanthrope-with-sandra-oh-at-the-national-theatre-review_1725880/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -40768,6 +40844,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Contains TV/film keyword: \"season 2\""
+        }
+      ]
+    },
+    {
+      "showId": "the-truth-a-comedy-by-florian-zeller-west-end-2026",
+      "file": "theatre-weekly--greg-stewart.json",
+      "score": 96,
+      "publishDate": "2026-06-25",
+      "url": "https://theatreweekly.com/review-the-truth-at-apollo-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
