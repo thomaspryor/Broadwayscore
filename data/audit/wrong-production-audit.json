@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-25T00:40:01.773Z",
+  "timestamp": "2026-06-25T05:24:57.439Z",
   "stats": {
-    "totalReviews": 39177,
+    "totalReviews": 39180,
     "alreadyFlagged": 17473,
     "dateGuardCatches": 42,
     "directorMismatch": 874,
-    "tvFilmSignals": 1070,
-    "londonSignals": 660,
+    "tvFilmSignals": 1071,
+    "londonSignals": 662,
     "offBroadwaySignals": 464,
     "yearMismatch": 84,
-    "noPublishDate": 3961
+    "noPublishDate": 3960
   },
   "findings": [
     {
@@ -8215,7 +8215,7 @@
       "file": "independent--alice-saville.json",
       "score": 58,
       "publishDate": "2026-06-18",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html?loginSuccessful=true",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -9465,6 +9465,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"apple tv\""
+        }
+      ]
+    },
+    {
+      "showId": "hand-to-god-2015",
+      "file": "newsday--linda-winer.json",
+      "score": 78,
+      "publishDate": "2015-04-07",
+      "url": "http://www.newsday.com/entertainment/theater/hand-to-god-review-a-devilish-sock-puppet-and-sex-1.10206908",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -35852,7 +35866,7 @@
       "showId": "pride-west-end-2026",
       "file": "guardian--unknown.json",
       "publishDate": "2026-06-11",
-      "url": "https://www.theguardian.com/stage/2026/jun/11/pride-musical-national-theatre-lesbians-gays-support-miners",
+      "url": "https://www.theguardian.com/film/2026/mar/05/mothers-pride-film-review-martin-clunes-post-brexit",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -39954,6 +39968,34 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-misanthrope-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "score": 38,
+      "publishDate": "2026-06-24",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-misanthrope-review-sandra-oh-what-a-disappointment-sbzvf82b2?t=1782310602034",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "the-misanthrope-west-end-2026",
+      "file": "times-uk--sam-marlowe.json",
+      "score": 38,
+      "publishDate": "2026-06-23",
+      "url": "https://www.thetimes.co.uk/culture/theatre-dance/article/the-misanthrope-review-sandra-oh-what-a-disappointment-sbzvf82b2?srsltid=AfmBOoq2XHjdG2LqP9QQ63oWMxCPtF-U2_bXgsyMcAUWf0N8uLJSA2cD",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
         }
       ]
     },
