@@ -1613,7 +1613,17 @@
     "spamalot-off-broadway-2026/nytimes--jesse-green.json",
     "spamalot-off-broadway-2026/vulture--jackson-mchenry.json",
     "end-of-the-rainbow-west-end-2026/new-jersey-newsroom--michael-sommers.json",
-    "end-of-the-rainbow-west-end-2026/philadelphia-inquirer--howard-shapiro.json"
+    "end-of-the-rainbow-west-end-2026/philadelphia-inquirer--howard-shapiro.json",
+    "end-of-the-rainbow-west-end-2026/hollywood-reporter--david-rooney.json",
+    "hamlet-off-broadway-2026/dc-theater-arts--deb-miller.json",
+    "the-price-off-west-end-2026/wsj--unknown.json",
+    "beaches-2026/chicago-critic--tom-williams.json",
+    "one-flew-over-the-cuckoos-nest-west-end-2026/standard--nick-curtis.json",
+    "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
+    "yoah-off-broadway-2026/variety--pat-saperstein.json",
+    "romeo-and-juliet-west-end-2026/hollywood-reporter--unknown.json",
+    "romeo-and-juliet-west-end-2026/newsday--unknown.json",
+    "romeo-and-juliet-west-end-2026/nydailynews--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1894,9 +1904,6 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
       "data/review-texts/sinatra-the-musical-west-end-2026/cambridge--unknown.json",
       "data/review-texts/sinatra-the-musical-west-end-2026/cambridge--unknown.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
@@ -2369,7 +2376,7 @@
     ]
   },
   "startTime": "2026-06-24T10:39:16.417Z",
-  "lastProcessed": "end-of-the-rainbow-west-end-2026/philadelphia-inquirer--howard-shapiro.json",
+  "lastProcessed": "romeo-and-juliet-west-end-2026/nydailynews--unknown.json",
   "log": [
     {
       "t": "2026-06-24T10:48:21.673Z",
@@ -3049,39 +3056,6 @@
       "t": "2026-06-25T10:11:12.712Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-06-25T10:28:36.410Z",
-      "event": "bb-session",
-      "session": "e66791c1",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
-    {
-      "t": "2026-06-25T10:28:36.999Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-25T10:29:04.950Z",
-      "event": "bb-session",
-      "session": "cd9fa9c2",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-25T10:29:06.050Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-25T10:29:16.746Z",
-      "event": "bb-session",
-      "session": "ac3dc387",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
-    {
-      "t": "2026-06-25T10:29:17.347Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
     }
   ]
 }
