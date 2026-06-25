@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-25T20:58:55.702Z",
+  "generatedAt": "2026-06-25T21:52:52.637Z",
   "date": "2026-06-25",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 432774,
+  "entryCount": 435018,
   "shows": [
     {
       "showId": "an-ideal-husband-west-end-2026",
@@ -2001,7 +2001,7 @@
     },
     {
       "showId": "sinatra-the-musical-west-end-2026",
-      "reviewCount": 9,
+      "reviewCount": 12,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -11887,6 +11887,21 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "relics-west-end-2026",
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
