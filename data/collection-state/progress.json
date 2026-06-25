@@ -479,7 +479,10 @@
     "oleanna-2009/theatermania--unknown.json",
     "next-to-normal-2009/nydailynews--joe-dziemianowicz.json",
     "rock-of-ages-2009/theater-life--eric-march.json",
-    "god-of-carnage-2009/wsj--terry-teachout.json"
+    "god-of-carnage-2009/wsj--terry-teachout.json",
+    "all-my-sons-2008/theater-life--eric-march.json",
+    "the-seagull-2008/timeout--adam-feldman.json",
+    "the-seagull-2008/wsj--terry-teachout.json"
   ],
   "failed": [
     "sinatra-the-musical-west-end-2026/broadwayworld--unknown.json",
@@ -1183,7 +1186,14 @@
     "god-of-carnage-2009/newsday--linda-winer.json",
     "33-variations-2009/newsday--unknown.json",
     "33-variations-2009/talkinbroadway--matthew-murray.json",
-    "the-story-of-my-life-2009/newsday--linda-winer.json"
+    "the-story-of-my-life-2009/newsday--linda-winer.json",
+    "hedda-gabler-2009/newsday--linda-winer.json",
+    "pal-joey-2008/nydailynews--joe-dziemianowicz-bway.json",
+    "dividing-the-estate-2008/newsday--linda-winer.json",
+    "dividing-the-estate-2008/talkinbroadway--matthew-murray.json",
+    "billy-elliot-the-musical-2008/newsday--linda-winer.json",
+    "billy-elliot-the-musical-2008/latimes--charles-mcnulty.json",
+    "13-2008/talkinbroadway--matthew-murray.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1377,7 +1387,8 @@
       "million-dollar-quartet-2010/theatermania--unknown.json",
       "a-little-night-music-2009/theater-life--eric-march.json",
       "oleanna-2009/theatermania--unknown.json",
-      "rock-of-ages-2009/theater-life--eric-march.json"
+      "rock-of-ages-2009/theater-life--eric-march.json",
+      "all-my-sons-2008/theater-life--eric-march.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1420,7 +1431,9 @@
       "data/review-texts/maybe-happy-ending-2024/variety--unknown.json",
       "maybe-happy-ending-2024/variety--unknown.json",
       "data/review-texts/god-of-carnage-2009/wsj--terry-teachout.json",
-      "god-of-carnage-2009/wsj--terry-teachout.json"
+      "god-of-carnage-2009/wsj--terry-teachout.json",
+      "data/review-texts/the-seagull-2008/wsj--terry-teachout.json",
+      "the-seagull-2008/wsj--terry-teachout.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1532,7 +1545,8 @@
       "death-of-a-salesman-2012/ew--thom-geier.json",
       "the-mountaintop-2011/new-jersey-newsroom--michael-sommers.json",
       "lend-me-a-tenor-2010/newsday--linda-winer.json",
-      "next-to-normal-2009/nydailynews--joe-dziemianowicz.json"
+      "next-to-normal-2009/nydailynews--joe-dziemianowicz.json",
+      "the-seagull-2008/timeout--adam-feldman.json"
     ],
     "brightdata": [
       "the-balusters-2026/broadwayworld--unknown.json",
@@ -1617,7 +1631,14 @@
       "data/review-texts/superior-donuts-2009/latimes--charles-mcnulty.json",
       "data/review-texts/accent-on-youth-2009/talkinbroadway--matthew-murray.json",
       "data/review-texts/next-to-normal-2009/wsj--terry-teachout.json",
-      "data/review-texts/rock-of-ages-2009/wsj--terry-teachout.json"
+      "data/review-texts/rock-of-ages-2009/wsj--terry-teachout.json",
+      "data/review-texts/33-variations-2009/talkinbroadway--matthew-murray.json",
+      "data/review-texts/pal-joey-2008/nydailynews--joe-dziemianowicz-bway.json",
+      "data/review-texts/dividing-the-estate-2008/newsday--linda-winer.json",
+      "data/review-texts/dividing-the-estate-2008/talkinbroadway--matthew-murray.json",
+      "data/review-texts/billy-elliot-the-musical-2008/newsday--linda-winer.json",
+      "data/review-texts/billy-elliot-the-musical-2008/latimes--charles-mcnulty.json",
+      "data/review-texts/13-2008/talkinbroadway--matthew-murray.json"
     ],
     "archive": [
       "beetlejuice-west-end-2026/timeout-london--unknown.json",
@@ -1823,7 +1844,7 @@
     ]
   },
   "startTime": "2026-06-24T10:39:16.417Z",
-  "lastProcessed": "the-story-of-my-life-2009/newsday--linda-winer.json",
+  "lastProcessed": "the-seagull-2008/wsj--terry-teachout.json",
   "log": [
     {
       "t": "2026-06-24T10:48:21.673Z",
@@ -2361,6 +2382,56 @@
     },
     {
       "t": "2026-06-25T07:42:31.291Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-25T07:45:21.726Z",
+      "event": "bb-session",
+      "session": "31594df9",
+      "url": "https://www.talkinbroadway.com/page/regional/boston/b647.html"
+    },
+    {
+      "t": "2026-06-25T07:45:22.484Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-25T07:46:19.415Z",
+      "event": "bb-session",
+      "session": "020babcf",
+      "url": "https://www.newspapers.com/image/393103319/"
+    },
+    {
+      "t": "2026-06-25T07:49:45.089Z",
+      "event": "bb-session",
+      "session": "aaa8f6ea",
+      "url": "https://www.talkinbroadway.com/world/DividingtheEstate.html"
+    },
+    {
+      "t": "2026-06-25T07:49:45.911Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-25T07:53:43.859Z",
+      "event": "bb-session",
+      "session": "07d67a2f",
+      "url": "https://www.talkinbroadway.com/world/13.html"
+    },
+    {
+      "t": "2026-06-25T07:53:44.672Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-25T07:54:04.659Z",
+      "event": "bb-session",
+      "session": "0e3362e6",
+      "url": "https://www.wsj.com/articles/theater-review-the-seagull-1408663983?gaa_at=eafs&g"
+    },
+    {
+      "t": "2026-06-25T07:54:05.496Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
