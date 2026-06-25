@@ -342,7 +342,14 @@
     "tuck-everlasting-2016/ew--melissa-rose-bernardo.json",
     "tuck-everlasting-2016/uinterview--erik-meers.json",
     "fully-committed-2016/timeout--adam-feldman.json",
-    "fully-committed-2016/wsj--terry-teachout.json"
+    "fully-committed-2016/wsj--terry-teachout.json",
+    "waitress-2016/act-three-the-reviews--doug-marino.json",
+    "american-psycho-2016/nyt-theater--jonathan-mandell.json",
+    "american-psycho-2016/timeout--adam-feldman.json",
+    "the-father-2016/financialtimes--max-mcguinness.json",
+    "bright-star-2016/wsj--terry-teachout.json",
+    "bright-star-2016/stu-on-broadway--stu-brown.json",
+    "she-loves-me-2016/wsj--terry-teachout.json"
   ],
   "failed": [
     "sinatra-the-musical-west-end-2026/broadwayworld--unknown.json",
@@ -841,7 +848,10 @@
     "in-transit-2016/nydailynews--joe-dziemianowicz.json",
     "a-bronx-tale-the-musical-2016/njcom--patrick-maley.json",
     "falsettos-2016/theater-life--eric-march.json",
-    "heisenberg-2016/abc-news--mark-kennedy.json"
+    "heisenberg-2016/abc-news--mark-kennedy.json",
+    "american-psycho-2016/ap--mark-kennedy.json",
+    "the-father-2016/theater-life--paulanne-simmons.json",
+    "bright-star-2016/drama-queen-nyc--jonathan-warman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1000,7 +1010,10 @@
       "heisenberg-2016/wnyc--jennifer-vanasco.json",
       "the-encounter-2016/times-square-chronicles--suzanna-bowling.json",
       "tuck-everlasting-2016/ew--melissa-rose-bernardo.json",
-      "tuck-everlasting-2016/uinterview--erik-meers.json"
+      "tuck-everlasting-2016/uinterview--erik-meers.json",
+      "waitress-2016/act-three-the-reviews--doug-marino.json",
+      "american-psycho-2016/nyt-theater--jonathan-mandell.json",
+      "the-father-2016/financialtimes--max-mcguinness.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1020,7 +1033,11 @@
       "data/review-texts/holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json",
       "holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json",
       "data/review-texts/fully-committed-2016/wsj--terry-teachout.json",
-      "fully-committed-2016/wsj--terry-teachout.json"
+      "fully-committed-2016/wsj--terry-teachout.json",
+      "data/review-texts/bright-star-2016/wsj--terry-teachout.json",
+      "bright-star-2016/wsj--terry-teachout.json",
+      "data/review-texts/she-loves-me-2016/wsj--terry-teachout.json",
+      "she-loves-me-2016/wsj--terry-teachout.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1112,7 +1129,8 @@
       "present-laughter-2017/theater-life--isa-goldberg.json",
       "a-bronx-tale-the-musical-2016/timeout--adam-feldman.json",
       "natasha-pierre-and-the-great-comet-of-1812-2016/newyorker--conde-nast.json",
-      "heisenberg-2016/nydailynews--joe-dziemianowicz.json"
+      "heisenberg-2016/nydailynews--joe-dziemianowicz.json",
+      "bright-star-2016/stu-on-broadway--stu-brown.json"
     ],
     "brightdata": [
       "the-balusters-2026/broadwayworld--unknown.json",
@@ -1143,7 +1161,8 @@
       "sunset-boulevard-2017/newyorker--conde-nast.json",
       "fallen-angels-2026/talkinbroadway--unknown.json",
       "call-me-izzy-2025/theater-life--barry-gordin.json",
-      "cost-of-living-2022/newyorker--conde-nast.json"
+      "cost-of-living-2022/newyorker--conde-nast.json",
+      "american-psycho-2016/timeout--adam-feldman.json"
     ],
     "archiveToday": [
       "data/review-texts/the-misanthrope-west-end-2026/thestage--unknown.json",
@@ -1286,11 +1305,12 @@
       "holiday-inn-the-new-irving-berlin-musical-2016/nydailynews--joe-dziemianowicz.json",
       "holiday-inn-the-new-irving-berlin-musical-2016/timeout--david-cote.json",
       "the-encounter-2016/nydailynews--joe-dziemianowicz.json",
-      "fully-committed-2016/timeout--adam-feldman.json"
+      "fully-committed-2016/timeout--adam-feldman.json",
+      "the-father-2016/theater-life--paulanne-simmons.json"
     ]
   },
   "startTime": "2026-06-24T10:39:16.417Z",
-  "lastProcessed": "fully-committed-2016/wsj--terry-teachout.json",
+  "lastProcessed": "she-loves-me-2016/wsj--terry-teachout.json",
   "log": [
     {
       "t": "2026-06-24T10:48:21.673Z",
@@ -1452,6 +1472,28 @@
     },
     {
       "t": "2026-06-25T00:59:20.881Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-25T01:03:13.181Z",
+      "event": "bb-session",
+      "session": "839e7888",
+      "url": "http://www.wsj.com/articles/bright-star-review-banjo-boondoggle-1458865800"
+    },
+    {
+      "t": "2026-06-25T01:03:14.133Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-25T01:04:59.401Z",
+      "event": "bb-session",
+      "session": "5c3b1c7d",
+      "url": "http://www.wsj.com/articles/she-loves-me-the-sweet-scent-of-perfection-145826100"
+    },
+    {
+      "t": "2026-06-25T01:05:00.230Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
