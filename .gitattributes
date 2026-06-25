@@ -1,6 +1,22 @@
 *.png binary
 src/config/feature-flags.ts merge=ours
 
+# Bot-churned audit state files. These are rewritten by crons hundreds of
+# times per 3 days. They are READ BACK by the pipeline (pre-deploy-check.js,
+# adjudicate-review-queue.yml, opening-night SLA/completeness) so they MUST
+# stay tracked — but they don't need a real 3-way merge: each writer emits a
+# complete fresh snapshot, latest-wins. Without these drivers a human plain-git
+# merge to main conflicts on them (CI bots already auto-resolve via
+# push-with-retry.sh; humans use bare `git merge`). See Notion 387637c5-416f-8114.
+#   union  → append-only JSONL log: keep both sides' lines, never conflicts.
+#   ours   → single-state JSON object: keep current side; next cron regenerates.
+#            Requires `git config merge.ours.driver true` (set globally by
+#            scripts/setup-local-data.sh; CI relies on push-with-retry.sh).
+data/audit/stage-latency.jsonl merge=union
+data/audit/deploy-watermark.json merge=ours
+data/audit/needs-human-review.json merge=ours
+data/audit/opening-night-completeness-state.json merge=ours
+
 # cloud-memory/ is a mirror of ~/.claude/projects/.../memory/ for cloud Claude
 # Code sessions. Marking it vendored keeps language stats accurate and lets
 # GitHub collapse it in the diff view.
