@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-25T14:44:02.702Z",
-  "processed": 21,
-  "failed": 45,
-  "successRate": "31.8%",
+  "updatedAt": "2026-06-25T15:35:58.041Z",
+  "processed": 22,
+  "failed": 54,
+  "successRate": "28.9%",
   "tierBreakdown": {
-    "playwright": 16,
+    "playwright": 17,
     "amp": 0,
-    "browserbase": 3,
+    "browserbase": 5,
     "directCookies": 0,
     "scrapingbee": 4,
     "brightdata": 1,
-    "archiveToday": 7,
+    "archiveToday": 9,
     "archive": 0
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-06-25T12:40:22.362Z",
@@ -58,6 +58,28 @@
       "t": "2026-06-25T14:43:25.752Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-25T15:34:47.292Z",
+      "event": "bb-session",
+      "session": "8eae6946",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-25T15:34:47.888Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-25T15:35:39.527Z",
+      "event": "bb-session",
+      "session": "0de6709f",
+      "url": "https://www.nytimes.com/2026/06/03/theater/caissie-levy-broadway-tonys-ragtime.h"
+    },
+    {
+      "t": "2026-06-25T15:35:40.043Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
