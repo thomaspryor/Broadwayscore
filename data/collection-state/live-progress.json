@@ -1,32 +1,20 @@
 {
-  "updatedAt": "2026-06-25T01:10:06.054Z",
-  "processed": 359,
-  "failed": 501,
-  "successRate": "41.7%",
+  "updatedAt": "2026-06-25T01:12:33.774Z",
+  "processed": 368,
+  "failed": 502,
+  "successRate": "42.3%",
   "tierBreakdown": {
     "playwright": 164,
     "amp": 0,
-    "browserbase": 27,
+    "browserbase": 29,
     "directCookies": 0,
-    "scrapingbee": 90,
+    "scrapingbee": 91,
     "brightdata": 30,
     "archiveToday": 14,
-    "archive": 127
+    "archive": 134
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-06-24T21:24:21.119Z",
-      "event": "bb-session",
-      "session": "238f46c0",
-      "url": "https://www.facebook.com/pinkprincetheatre/posts/tonight-im-a-plus-one-at-the-pr"
-    },
-    {
-      "t": "2026-06-25T04:43:45.312Z",
-      "event": "bb-session",
-      "session": "38c14a3e",
-      "url": "https://www.groupon.co.uk/deals/ingresso-sinatra-the-musical"
-    },
     {
       "t": "2026-06-25T00:53:42.858Z",
       "event": "bb-session",
@@ -123,6 +111,17 @@
     },
     {
       "t": "2026-06-25T01:09:26.813Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-25T01:10:33.690Z",
+      "event": "bb-session",
+      "session": "f720ce79",
+      "url": "http://www.wsj.com/articles/on-your-feet-the-story-of-emilio-and-gloria-estefan-"
+    },
+    {
+      "t": "2026-06-25T01:10:34.518Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

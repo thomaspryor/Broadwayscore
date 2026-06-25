@@ -358,7 +358,16 @@
     "the-humans-2016/towleroad--naveen-kumar.json",
     "fiddler-on-the-roof-2015/broadway-and-me--janice-c-simpson.json",
     "the-color-purple-2015/wsj--terry-teachout.json",
-    "the-color-purple-2015/broadway-and-me--janice-c-simpson.json"
+    "the-color-purple-2015/broadway-and-me--janice-c-simpson.json",
+    "misery-2015/towleroad--naveen-kumar.json",
+    "on-your-feet-2015/timeout--adam-feldman.json",
+    "on-your-feet-2015/wsj--terry-teachout.json",
+    "king-charles-iii-2015/nydailynews--joe-dziemianowicz.json",
+    "king-charles-iii-2015/amny--matt-windman.json",
+    "therese-raquin-2015/timeout--adam-feldman.json",
+    "sylvia-2015/timeout--adam-feldman.json",
+    "sylvia-2015/timeout--david-cote.json",
+    "dames-at-sea-2015/timeout--adam-feldman.json"
   ],
   "failed": [
     "sinatra-the-musical-west-end-2026/broadwayworld--unknown.json",
@@ -861,7 +870,8 @@
     "american-psycho-2016/ap--mark-kennedy.json",
     "the-father-2016/theater-life--paulanne-simmons.json",
     "bright-star-2016/drama-queen-nyc--jonathan-warman.json",
-    "she-loves-me-2016/theater-life--eric-march.json"
+    "she-loves-me-2016/theater-life--eric-march.json",
+    "a-view-from-the-bridge-2015/financialtimes--sarah-hemming.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1059,7 +1069,9 @@
       "data/review-texts/the-humans-2016/wsj--terry-teachout.json",
       "the-humans-2016/wsj--terry-teachout.json",
       "data/review-texts/the-color-purple-2015/wsj--terry-teachout.json",
-      "the-color-purple-2015/wsj--terry-teachout.json"
+      "the-color-purple-2015/wsj--terry-teachout.json",
+      "data/review-texts/on-your-feet-2015/wsj--terry-teachout.json",
+      "on-your-feet-2015/wsj--terry-teachout.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1152,7 +1164,8 @@
       "a-bronx-tale-the-musical-2016/timeout--adam-feldman.json",
       "natasha-pierre-and-the-great-comet-of-1812-2016/newyorker--conde-nast.json",
       "heisenberg-2016/nydailynews--joe-dziemianowicz.json",
-      "bright-star-2016/stu-on-broadway--stu-brown.json"
+      "bright-star-2016/stu-on-broadway--stu-brown.json",
+      "dames-at-sea-2015/timeout--adam-feldman.json"
     ],
     "brightdata": [
       "the-balusters-2026/broadwayworld--unknown.json",
@@ -1329,11 +1342,18 @@
       "the-encounter-2016/nydailynews--joe-dziemianowicz.json",
       "fully-committed-2016/timeout--adam-feldman.json",
       "the-father-2016/theater-life--paulanne-simmons.json",
-      "she-loves-me-2016/theater-life--eric-march.json"
+      "she-loves-me-2016/theater-life--eric-march.json",
+      "misery-2015/towleroad--naveen-kumar.json",
+      "on-your-feet-2015/timeout--adam-feldman.json",
+      "king-charles-iii-2015/nydailynews--joe-dziemianowicz.json",
+      "king-charles-iii-2015/amny--matt-windman.json",
+      "therese-raquin-2015/timeout--adam-feldman.json",
+      "sylvia-2015/timeout--adam-feldman.json",
+      "sylvia-2015/timeout--david-cote.json"
     ]
   },
   "startTime": "2026-06-24T10:39:16.417Z",
-  "lastProcessed": "the-color-purple-2015/broadway-and-me--janice-c-simpson.json",
+  "lastProcessed": "dames-at-sea-2015/timeout--adam-feldman.json",
   "log": [
     {
       "t": "2026-06-24T10:48:21.673Z",
@@ -1550,6 +1570,17 @@
     },
     {
       "t": "2026-06-25T01:09:26.813Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-25T01:10:33.690Z",
+      "event": "bb-session",
+      "session": "f720ce79",
+      "url": "http://www.wsj.com/articles/on-your-feet-the-story-of-emilio-and-gloria-estefan-"
+    },
+    {
+      "t": "2026-06-25T01:10:34.518Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
