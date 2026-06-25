@@ -1059,7 +1059,9 @@
     "henry-vi-a-trilogy-in-two-parts-off-broadway-2026/playbill--unknown.json",
     "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
     "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
-    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json"
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+    "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1290,7 +1292,8 @@
       "data/review-texts/sinatra-the-musical-west-end-2026/cambridge--unknown.json",
       "data/review-texts/sinatra-the-musical-west-end-2026/cambridge--unknown.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json"
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1628,7 +1631,7 @@
     ]
   },
   "startTime": "2026-06-24T10:39:16.417Z",
-  "lastProcessed": "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+  "lastProcessed": "girl-interrupted-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
   "log": [
     {
       "t": "2026-06-24T10:48:21.673Z",
@@ -2023,6 +2026,17 @@
     },
     {
       "t": "2026-06-25T09:55:30.308Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-25T09:55:43.209Z",
+      "event": "bb-session",
+      "session": "c3b04d71",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-25T09:55:44.450Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
