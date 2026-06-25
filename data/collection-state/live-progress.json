@@ -1,64 +1,20 @@
 {
-  "updatedAt": "2026-06-25T05:03:29.524Z",
+  "updatedAt": "2026-06-25T05:48:59.456Z",
   "processed": 414,
-  "failed": 537,
-  "successRate": "43.5%",
+  "failed": 547,
+  "successRate": "43.1%",
   "tierBreakdown": {
     "playwright": 173,
     "amp": 0,
-    "browserbase": 32,
+    "browserbase": 36,
     "directCookies": 0,
     "scrapingbee": 96,
     "brightdata": 32,
-    "archiveToday": 19,
+    "archiveToday": 21,
     "archive": 164
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-06-25T00:59:19.918Z",
-      "event": "bb-session",
-      "session": "158d36c4",
-      "url": "http://www.wsj.com/articles/fully-committed-review-jesse-tyler-ferguson-party-of"
-    },
-    {
-      "t": "2026-06-25T00:59:20.881Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-06-25T01:03:13.181Z",
-      "event": "bb-session",
-      "session": "839e7888",
-      "url": "http://www.wsj.com/articles/bright-star-review-banjo-boondoggle-1458865800"
-    },
-    {
-      "t": "2026-06-25T01:03:14.133Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-06-25T01:04:59.401Z",
-      "event": "bb-session",
-      "session": "5c3b1c7d",
-      "url": "http://www.wsj.com/articles/she-loves-me-the-sweet-scent-of-perfection-145826100"
-    },
-    {
-      "t": "2026-06-25T01:05:00.230Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-06-25T01:06:53.723Z",
-      "event": "bb-session",
-      "session": "165b194e",
-      "url": "http://www.wsj.com/articles/blackbird-review-the-past-comes-back-to-haunt-you-14"
-    },
-    {
-      "t": "2026-06-25T01:06:54.581Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-06-25T01:08:14.618Z",
       "event": "bb-session",
@@ -122,6 +78,50 @@
     },
     {
       "t": "2026-06-25T05:02:59.849Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-25T05:47:31.375Z",
+      "event": "bb-session",
+      "session": "8c340073",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-25T05:47:32.179Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-25T05:48:15.844Z",
+      "event": "bb-session",
+      "session": "9a1cf776",
+      "url": "https://www.nytimes.com/2026/06/03/theater/caissie-levy-broadway-tonys-ragtime.h"
+    },
+    {
+      "t": "2026-06-25T05:48:16.511Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-25T05:48:34.139Z",
+      "event": "bb-session",
+      "session": "e2be09c5",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-25T05:48:34.858Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-25T05:48:45.857Z",
+      "event": "bb-session",
+      "session": "a3e7ed6c",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-25T05:48:46.515Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
