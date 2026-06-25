@@ -277,7 +277,10 @@
     "network-2018/ny1--roma-torre.json",
     "the-cher-show-2018/medium--christian-lewis.json",
     "king-kong-2018/limelight-magazine-au--clive-paget.json",
-    "american-son-2018/showbiz411--roger-friedman.json"
+    "american-son-2018/showbiz411--roger-friedman.json",
+    "the-ferryman-2018/wsj--terry-teachout.json",
+    "the-ferryman-2018/medium--christian-lewis.json",
+    "the-nap-2018/theater-life--barry-gordin.json"
   ],
   "failed": [
     "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/loureviews--unknown.json",
@@ -531,7 +534,14 @@
     "true-west-2019/theater-news-online--jeremy-gerard.json",
     "the-prom-2018/thestage--mark-shenton.json",
     "the-prom-2018/journal-inquirer--tim-leininger.json",
-    "king-kong-2018/phindie--kathryn-osenlund.json"
+    "king-kong-2018/phindie--kathryn-osenlund.json",
+    "torch-song-2018/theater-news-online--jeremy-gerard.json",
+    "the-waverly-gallery-2018/theater-news-online--matt-windman.json",
+    "the-waverly-gallery-2018/journal-inquirer--tim-leininger.json",
+    "the-nap-2018/theater-news-online--jeremy-gerard.json",
+    "bernhardthamlet-2018/theater-news-online--jeremy-gerard.json",
+    "bernhardthamlet-2018/theater-news-online--joe-dziemianowicz.json",
+    "pretty-woman-the-musical-2018/nypost--joe-dziemianowicz.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -684,7 +694,9 @@
       "sea-wall-a-life-2019/theatermania--adam-feldman.json",
       "frankie-and-johnny-in-the-clair-de-lune-2019/uinterview--erik-meers.json",
       "all-my-sons-2019/theater-life--barry-gordin.json",
-      "burn-this-2019/theatermania--jesse-green.json"
+      "burn-this-2019/theatermania--jesse-green.json",
+      "the-ferryman-2018/medium--christian-lewis.json",
+      "the-nap-2018/theater-life--barry-gordin.json"
     ],
     "amp": [],
     "browserbase": [
@@ -697,7 +709,9 @@
       "data/review-texts/the-hills-of-california-2024/sunday-express--george-simpson.json",
       "the-hills-of-california-2024/sunday-express--george-simpson.json",
       "data/review-texts/kiss-me-kate-2019/wsj--terry-teachout.json",
-      "kiss-me-kate-2019/wsj--terry-teachout.json"
+      "kiss-me-kate-2019/wsj--terry-teachout.json",
+      "data/review-texts/the-ferryman-2018/wsj--terry-teachout.json",
+      "the-ferryman-2018/wsj--terry-teachout.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -858,7 +872,7 @@
     ]
   },
   "startTime": "2026-06-25T12:06:07.642Z",
-  "lastProcessed": "american-son-2018/showbiz411--roger-friedman.json",
+  "lastProcessed": "pretty-woman-the-musical-2018/nypost--joe-dziemianowicz.json",
   "log": [
     {
       "t": "2026-06-25T12:30:22.686Z",
@@ -897,6 +911,17 @@
     },
     {
       "t": "2026-06-25T18:05:59.053Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-25T18:12:32.587Z",
+      "event": "bb-session",
+      "session": "4e03ecf8",
+      "url": "https://www.wsj.com/articles/the-ferryman-review-a-house-divided-1540500470?gaa_"
+    },
+    {
+      "t": "2026-06-25T18:12:33.733Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
