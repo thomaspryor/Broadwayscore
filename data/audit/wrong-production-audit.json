@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-25T23:18:24.058Z",
+  "timestamp": "2026-06-25T23:32:45.983Z",
   "stats": {
     "totalReviews": 39252,
-    "alreadyFlagged": 17490,
+    "alreadyFlagged": 17485,
     "dateGuardCatches": 42,
     "directorMismatch": 873,
     "tvFilmSignals": 1071,
-    "londonSignals": 669,
+    "londonSignals": 670,
     "offBroadwaySignals": 464,
     "yearMismatch": 84,
-    "noPublishDate": 3971
+    "noPublishDate": 3973
   },
   "findings": [
     {
@@ -36638,8 +36638,22 @@
     },
     {
       "showId": "sinatra-the-musical-west-end-2026",
+      "file": "london-theatre--unknown.json",
+      "score": 78,
+      "publishDate": null,
+      "url": "https://www.londontheatre.co.uk/reviews/sinatra-the-musical-review-aldwych-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "sinatra-the-musical-west-end-2026",
       "file": "stagedtheatre--karen-jemison.json",
-      "score": null,
+      "score": 78,
       "publishDate": "2026-06-25",
       "url": "https://stagedtheatre.co.uk/blogs/theatre-reviews/sinatra-the-musical-aldwych-theatre?srsltid=AfmBOooWiEMRDjkSLX0x369dL9zEq7-tU5HJ_Q-AGAg-yun1mSgXekme",
       "findings": [
@@ -36667,7 +36681,7 @@
     {
       "showId": "sinatra-the-musical-west-end-2026",
       "file": "west-end-best-friend--james-edge.json",
-      "score": null,
+      "score": 41,
       "publishDate": "2026-06-25",
       "url": "https://www.westendbestfriend.co.uk/news/review-sinatra-the-musical-aldwych-theatre",
       "findings": [
