@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-25T22:49:18.965Z",
+  "generatedAt": "2026-06-25T23:48:11.037Z",
   "date": "2026-06-25",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 435020,
+  "entryCount": 439643,
   "shows": [
     {
       "showId": "an-ideal-husband-west-end-2026",
@@ -2001,12 +2001,12 @@
     },
     {
       "showId": "sinatra-the-musical-west-end-2026",
-      "reviewCount": 12,
+      "reviewCount": 25,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 1001042,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -2496,7 +2496,7 @@
     },
     {
       "showId": "much-ado-about-nothing-globe-west-end-2026",
-      "reviewCount": 5,
+      "reviewCount": 6,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
