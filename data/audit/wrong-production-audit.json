@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-25T19:35:55.186Z",
+  "timestamp": "2026-06-25T23:12:03.769Z",
   "stats": {
-    "totalReviews": 39236,
+    "totalReviews": 39251,
     "alreadyFlagged": 17489,
     "dateGuardCatches": 42,
     "directorMismatch": 873,
     "tvFilmSignals": 1071,
-    "londonSignals": 667,
+    "londonSignals": 669,
     "offBroadwaySignals": 464,
     "yearMismatch": 84,
-    "noPublishDate": 3969
+    "noPublishDate": 3971
   },
   "findings": [
     {
@@ -36638,10 +36638,38 @@
     },
     {
       "showId": "sinatra-the-musical-west-end-2026",
+      "file": "stagedtheatre--karen-jemison.json",
+      "score": 78,
+      "publishDate": "2026-06-25",
+      "url": "https://stagedtheatre.co.uk/blogs/theatre-reviews/sinatra-the-musical-aldwych-theatre?srsltid=AfmBOooWiEMRDjkSLX0x369dL9zEq7-tU5HJ_Q-AGAg-yun1mSgXekme",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "sinatra-the-musical-west-end-2026",
       "file": "telegraph--marianka-swain.json",
       "score": 60,
       "publishDate": "2026-06-25",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/sinatra-the-musical-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "sinatra-the-musical-west-end-2026",
+      "file": "west-end-best-friend--james-edge.json",
+      "score": 44,
+      "publishDate": "2026-06-25",
+      "url": "https://www.westendbestfriend.co.uk/news/review-sinatra-the-musical-aldwych-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
