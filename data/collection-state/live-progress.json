@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-06-25T05:49:13.707Z",
+  "updatedAt": "2026-06-25T06:48:11.537Z",
   "processed": 414,
-  "failed": 548,
-  "successRate": "43.0%",
+  "failed": 558,
+  "successRate": "42.6%",
   "tierBreakdown": {
     "playwright": 173,
     "amp": 0,
-    "browserbase": 36,
+    "browserbase": 38,
     "directCookies": 0,
     "scrapingbee": 96,
     "brightdata": 32,
-    "archiveToday": 21,
+    "archiveToday": 23,
     "archive": 164
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-06-25T01:08:14.618Z",
-      "event": "bb-session",
-      "session": "34bd08cb",
-      "url": "http://www.wsj.com/articles/the-humans-review-dated-drama-kitchen-sink-and-all-1"
-    },
-    {
-      "t": "2026-06-25T01:08:15.586Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-06-25T01:09:26.068Z",
-      "event": "bb-session",
-      "session": "a8552178",
-      "url": "http://www.wsj.com/articles/the-color-purple-review-new-star-in-the-broadway-sky"
-    },
-    {
-      "t": "2026-06-25T01:09:26.813Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-06-25T01:10:33.690Z",
       "event": "bb-session",
@@ -122,6 +100,28 @@
     },
     {
       "t": "2026-06-25T05:48:46.515Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-25T06:47:25.981Z",
+      "event": "bb-session",
+      "session": "af60bd30",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-25T06:47:27.085Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-25T06:47:57.197Z",
+      "event": "bb-session",
+      "session": "2bfb2a21",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-25T06:47:58.082Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
