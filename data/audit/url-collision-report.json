@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-25T11:52:51.876Z",
+  "generatedAt": "2026-06-25T18:41:58.898Z",
   "summary": {
-    "total": 11,
-    "high": 3,
+    "total": 12,
+    "high": 4,
     "medium": 7,
     "low": 1
   },
@@ -60,6 +60,33 @@
       "suggestedWinner": "much-ado-about-nothing-globe-off-west-end-2026",
       "reason": "publishDate 2026-06-22 is 2 days from much-ado-about-nothing-globe-off-west-end-2026 but also 4 days from much-ado-about-nothing-globe-west-end-2026",
       "confidence": "medium"
+    },
+    {
+      "url": "https://www.theguardian.com/stage/2026/jun/21/much-ado-about-nothing-review-shakespeare-globe-london",
+      "normalizedUrl": "https://theguardian.com/stage/2026/jun/21/much-ado-about-nothing-review-shakespeare-globe-london",
+      "candidates": [
+        {
+          "showId": "much-ado-about-nothing-globe-off-west-end-2026",
+          "file": "guardian--arifa-akbar.json",
+          "publishDate": "2026-06-21",
+          "openingDate": "2026-06-20",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "guardian"
+        },
+        {
+          "showId": "much-ado-about-nothing-globe-west-end-2026",
+          "file": "guardian--unknown.json",
+          "publishDate": null,
+          "openingDate": "2026-06-18",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "guardian"
+        }
+      ],
+      "suggestedWinner": "much-ado-about-nothing-globe-off-west-end-2026",
+      "reason": "publishDate 2026-06-21 is 1 days from much-ado-about-nothing-globe-off-west-end-2026 opening (2026-06-20)",
+      "confidence": "high"
     },
     {
       "url": "https://www.londontheatre.co.uk/reviews/much-ado-about-nothing-review-shakespeares-globe-2026",
