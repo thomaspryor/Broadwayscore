@@ -27,6 +27,24 @@ const MiniShowCard = memo(function MiniShowCard({ show, priority = false }: Mini
   const score = rawScore != null && hasEnoughReviews(reviewCount, category, t1t2, CURATED_HISTORICAL_SHOWS.has(show.id)) ? rawScore : null;
   const marketLabel = getMarketLabel(category);
 
+  // For not-yet-open shows there's no score, so the badge slot would just read
+  // "—". Surface the start date there instead — the most useful fact for an
+  // upcoming show. Everything else keeps the score badge.
+  const startDate = show.previewsStartDate || show.openingDate;
+  const showDateBadge = score == null && (show.status === 'upcoming' || show.status === 'previews') && !!startDate;
+  const dateBadge = showDateBadge
+    ? (() => {
+        const d = new Date(startDate.slice(0, 10) + 'T12:00:00');
+        return Number.isNaN(d.getTime())
+          ? null
+          : {
+              month: d.toLocaleDateString('en-US', { month: 'short' }).toUpperCase(),
+              day: d.getDate(),
+              full: d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+            };
+      })()
+    : null;
+
   return (
     <Link
       href={`/show/${show.slug}`}
@@ -58,24 +76,35 @@ const MiniShowCard = memo(function MiniShowCard({ show, priority = false }: Mini
             }
           />
         </div>
-        {/* Score overlay — outside overflow-hidden so crown can escape */}
+        {/* Score / date overlay — outside overflow-hidden so crown can escape */}
         <div className="absolute bottom-1.5 right-1.5">
           <div className="relative overflow-visible">
             {isCriticalGold(score, category) && (
               <MustSeeCrown size="mini" />
             )}
-            <div className={`w-9 h-9 rounded-lg flex items-center justify-center text-sm font-bold ${
-              score === undefined || score === null ? 'bg-surface-overlay text-gray-400' : getScoreColorClass(score, category)
-            }`}>
-              {score !== undefined && score !== null ? Math.round(score) : '—'}
-            </div>
+            {dateBadge ? (
+              <div
+                className="w-9 h-9 rounded-lg flex flex-col items-center justify-center leading-none bg-surface-elevated ring-1 ring-white/10 shadow-card"
+                title={`Starts ${dateBadge.full}`}
+              >
+                <span className="text-[8px] font-bold uppercase tracking-wide text-brand">{dateBadge.month}</span>
+                <span className="text-sm font-bold text-white">{dateBadge.day}</span>
+              </div>
+            ) : (
+              <div className={`w-9 h-9 rounded-lg flex items-center justify-center text-sm font-bold ${
+                score === undefined || score === null ? 'bg-surface-overlay text-gray-400' : getScoreColorClass(score, category)
+              }`}>
+                {score !== undefined && score !== null ? Math.round(score) : '—'}
+              </div>
+            )}
           </div>
         </div>
       </div>
       <h3 className="font-semibold text-white text-sm group-hover:text-brand transition-colors line-clamp-2 leading-tight">
         {show.title}
       </h3>
-      {show.subtitle && (
+      {/* The date badge already carries "Starts <date>", so drop the duplicate subtitle. */}
+      {show.subtitle && !(dateBadge && /^starts /i.test(show.subtitle)) && (
         <p className={`text-[11px] font-medium mt-0.5 leading-tight ${show.subtitleColor || 'text-emerald-400'}`}>{show.subtitle}</p>
       )}
     </Link>

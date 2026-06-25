@@ -20,6 +20,17 @@ DATA_DIR="$PROJECT_DIR/data"
 echo "=== Broadway Scorecard Local Data Setup ==="
 echo ""
 
+# Register the `ours` merge driver used by .gitattributes for bot-churned audit
+# state files (deploy-watermark.json, needs-human-review.json,
+# opening-night-completeness-state.json) and src/config/feature-flags.ts.
+# Without this, `merge=ours` silently no-ops and human `git merge` to main
+# conflicts on files the crons rewrite hundreds of times/day. The `true`
+# command always exits 0, keeping the current side; the next cron regenerates.
+# Scoped --global so all worktrees/clones on this machine inherit it.
+git config --global merge.ours.driver true 2>/dev/null \
+  && echo "git: registered merge.ours.driver (audit-state conflict auto-resolution)"
+
+
 # Determine auth method (token takes priority if explicitly set)
 TOKEN="${REVIEW_TEXTS_TOKEN:-}"
 if [ -n "$TOKEN" ]; then

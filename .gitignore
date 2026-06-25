@@ -207,6 +207,12 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 # Auto-regenerated audit outputs — local only, not versioned.
 # These rules come AFTER the !negation above so they win (last match wins).
 /data/audit/score-integrity.json
+# Pure-output rebuild reports — written by rebuild-all-reviews.js /
+# audit-critic-outlets.js, never read back by any code (verified 2026-06-25:
+# grep -rn across scripts/ src/ .github/ shows only the writer). Tracking them
+# meant ~150 bot commits/3d EACH that clobbered human merges to main.
+/data/audit/critic-outlet-affinity.json
+/data/audit/rebuild-consistency.json
 /data/audit/touring-contamination-report.json
 /data/audit/touring-contamination-report.*.json
 /data/audit/.touring-contamination-checkpoint.json

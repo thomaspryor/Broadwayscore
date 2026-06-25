@@ -194,7 +194,15 @@ function FeaturedRow({ title, shows, viewAllHref, minCount = 4 }: { title: strin
   return (
     <section className="mb-6">
       <div className="flex items-center justify-between mb-3">
-        <h2 className="text-base font-bold text-white">{title}</h2>
+        <h2 className="text-base font-bold text-white">
+          {viewAllHref ? (
+            <Link href={viewAllHref} prefetch={false} className="hover:text-brand transition-colors">
+              {title}
+            </Link>
+          ) : (
+            title
+          )}
+        </h2>
         {viewAllHref && (
           <Link
             href={viewAllHref}

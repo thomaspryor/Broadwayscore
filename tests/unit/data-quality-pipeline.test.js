@@ -237,9 +237,15 @@ test('current review-texts pass validation', () => {
   }
 
   assert.ok(totalFiles > 1800, `Should have 1800+ review files, got ${totalFiles}`);
-  // Allow small baseline of unknown outlets — new scrapers routinely discover outlets
-  // not yet in registry. Threshold catches regressions without requiring instant registry updates.
-  assert.ok(unknownOutlets <= 5, `Should have ≤5 unknown outlets, got ${unknownOutlets}`);
+  // ADVISORY ONLY — unknown-outlet count is a drifting corpus statistic (new
+  // scrapers routinely discover outlets not yet in the registry), so a no-op
+  // code push could fail it. The blocking gate moved to the non-blocking
+  // check-corpus-drift path (audit-unknown-outlets.js, surfaced in the rebuild
+  // digest). See Notion 387637c5-416f-8138. We keep computing it here only to
+  // exercise the counting path; we do NOT fail the build on it.
+  if (unknownOutlets > 5) {
+    console.warn(`    ⚠️  advisory: ${unknownOutlets} unknown outlets (drift tracked by check-corpus-drift, not blocking)`);
+  }
 });
 
 // ============================================================================
@@ -414,9 +420,13 @@ test('zero resolvable unknown outlets', () => {
     }
   }
 
-  // Allow small baseline — new scrapers discover outlets not yet in registry.
-  // Catches regressions (sudden spike) without requiring instant registry updates.
-  assert.ok(resolvableUnknowns <= 5, `Target: ≤5 resolvable unknown outlets, got ${resolvableUnknowns}`);
+  // ADVISORY ONLY — see the unknown-outlets note above. This count drifts with
+  // corpus growth, so it can't be a blocking gate (a no-op push would fail it).
+  // The threshold check moved to scripts/audit-unknown-outlets.js, run by the
+  // non-blocking check-corpus-drift monitor and surfaced in the rebuild digest.
+  if (resolvableUnknowns > 5) {
+    console.warn(`    ⚠️  advisory: ${resolvableUnknowns} resolvable unknown outlets (drift tracked by check-corpus-drift, not blocking)`);
+  }
 });
 
 test('zero duplicates', () => {

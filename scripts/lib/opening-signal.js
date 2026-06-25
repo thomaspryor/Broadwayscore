@@ -128,6 +128,40 @@ function isStuckInPreviews(show, counts) {
 }
 
 /**
+ * Open-signal: a pre-open show that has demonstrably opened because at least one
+ * clean critic review landed on/after previews start. Critics review at/after
+ * press night, never during previews, so a single dated review in reviews.json
+ * (already the wrongProduction/wrongShow/roundup-free displayed set) is positive
+ * proof the show opened — a stronger, COUNT-INDEPENDENT signal than the
+ * score-display threshold (isStuckInPreviews). This is what unsticks
+ * thinly-reviewed-but-open shows: a 2-review Off-Broadway show is genuinely open
+ * but will never reach the 3-review score gate, so the count-based flip can never
+ * fire for it and it sits in `previews` forever (Label•less, 2026-06).
+ *
+ * Decoupling note: "open" (a status fact a dated review proves) is distinct from
+ * "scoreable" (>= the category score threshold). Flipping here makes the show
+ * read "Now Playing"; the site's score gate still withholds the number until the
+ * threshold is met — the honest "open, reviews pending" state.
+ *
+ * Guards:
+ *  - Only fires for pre-open statuses.
+ *  - Press night (modal review date) must be reached (<= today) — a future date
+ *    yields no signal, so Check 2c can't then revert open→previews (oscillation).
+ *  - When previewsStartDate is known, the press night must be >= it: a review
+ *    predating previews is not press coverage of THIS run (defends against a
+ *    stale dated review leaking onto the record), so it raises no signal.
+ *
+ * @returns {{date: string, source: string}|null} backfill date when signalled.
+ */
+function openSignalFromReviews(show, entry, isDateReached) {
+  if (!show || !PRE_OPEN_STATUSES.has(show.status)) return null;
+  const pressNight = estimatePressNight(entry ? entry.dates : []);
+  if (!pressNight || !isDateReached(pressNight)) return null;
+  if (show.previewsStartDate && pressNight < show.previewsStartDate) return null;
+  return { date: pressNight, source: 'review-open-signal' };
+}
+
+/**
  * Choose the openingDate to backfill when flipping a stuck show to open, derived
  * ONLY from the review cluster (press night = modal review date). Returns
  * { date, source } when a past/today press night is derivable, else null.
@@ -157,13 +191,28 @@ function chooseOpeningDateBackfill(show, dates, isDateReached) {
 
 /**
  * Find every stuck show. `countMap` is the output of countByShow().
- * Returns [{ id, title, category, status, reviewCount, tier1And2, openingDate, pressNight }].
+ *
+ * A show is stuck when EITHER signal fires:
+ *  - 'score-threshold': it already has enough scored reviews to display a score
+ *    (isStuckInPreviews) — the original count-based backstop.
+ *  - 'open-signal': it has >=1 clean review dated on/after previews start
+ *    (openSignalFromReviews) — catches genuinely-open shows below the score gate.
+ *
+ * `isDateReached` is optional for back-compat: when omitted, only the
+ * score-threshold signal is evaluated (open-signal needs the date guard).
+ *
+ * Returns [{ id, title, category, status, reviewCount, tier1And2, openingDate,
+ * pressNight, signal }].
  */
-function findStuckPreviews(shows, countMap) {
+function findStuckPreviews(shows, countMap, isDateReached) {
   const out = [];
   for (const show of shows) {
     const entry = countMap[show.id];
-    if (!isStuckInPreviews(show, entry)) continue;
+    const scoreThreshold = isStuckInPreviews(show, entry);
+    const openSignal = isDateReached
+      ? openSignalFromReviews(show, entry, isDateReached)
+      : null;
+    if (!scoreThreshold && !openSignal) continue;
     out.push({
       id: show.id,
       title: show.title,
@@ -173,6 +222,7 @@ function findStuckPreviews(shows, countMap) {
       tier1And2: entry ? entry.tier1And2 : 0,
       openingDate: show.openingDate ?? null,
       pressNight: entry ? estimatePressNight(entry.dates) : null,
+      signal: scoreThreshold ? 'score-threshold' : 'open-signal',
     });
   }
   return out;
@@ -189,6 +239,7 @@ module.exports = {
   countByShow,
   estimatePressNight,
   isStuckInPreviews,
+  openSignalFromReviews,
   chooseOpeningDateBackfill,
   findStuckPreviews,
 };
