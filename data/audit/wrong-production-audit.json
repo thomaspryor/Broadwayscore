@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-24T23:50:26.018Z",
+  "timestamp": "2026-06-25T00:08:44.796Z",
   "stats": {
     "totalReviews": 39177,
-    "alreadyFlagged": 17472,
+    "alreadyFlagged": 17473,
     "dateGuardCatches": 42,
     "directorMismatch": 874,
     "tvFilmSignals": 1070,
-    "londonSignals": 659,
+    "londonSignals": 660,
     "offBroadwaySignals": 464,
     "yearMismatch": 84,
-    "noPublishDate": 3962
+    "noPublishDate": 3961
   },
   "findings": [
     {
@@ -32949,7 +32949,7 @@
     {
       "showId": "jerusalem-2011",
       "file": "artsfuse--unknown.json",
-      "score": null,
+      "score": 80,
       "publishDate": null,
       "url": "https://artsfuse.org/31968/fuse-reviews-broadway-the-importance-of-being-earnest-and-jerusalem/",
       "findings": [
@@ -37212,6 +37212,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "sting-west-end-2026",
+      "file": "theatre-weekly--greg-stewart.json",
+      "score": 79,
+      "publishDate": "2026-06-24",
+      "url": "https://theatreweekly.com/review-sting-at-young-vic/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
