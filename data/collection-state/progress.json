@@ -332,7 +332,17 @@
     "heisenberg-2016/nydailynews--joe-dziemianowicz.json",
     "heisenberg-2016/timeout--adam-feldman.json",
     "heisenberg-2016/wsj--terry-teachout.json",
-    "heisenberg-2016/wnyc--jennifer-vanasco.json"
+    "heisenberg-2016/wnyc--jennifer-vanasco.json",
+    "oh-hello-on-broadway-2016/nydailynews--joe-dziemianowicz.json",
+    "holiday-inn-the-new-irving-berlin-musical-2016/nydailynews--joe-dziemianowicz.json",
+    "holiday-inn-the-new-irving-berlin-musical-2016/timeout--david-cote.json",
+    "holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json",
+    "the-encounter-2016/nydailynews--joe-dziemianowicz.json",
+    "the-encounter-2016/times-square-chronicles--suzanna-bowling.json",
+    "tuck-everlasting-2016/ew--melissa-rose-bernardo.json",
+    "tuck-everlasting-2016/uinterview--erik-meers.json",
+    "fully-committed-2016/timeout--adam-feldman.json",
+    "fully-committed-2016/wsj--terry-teachout.json"
   ],
   "failed": [
     "sinatra-the-musical-west-end-2026/broadwayworld--unknown.json",
@@ -987,7 +997,10 @@
       "saint-joan-2018/medium--christian-lewis.json",
       "natasha-pierre-and-the-great-comet-of-1812-2016/broadway-and-me--janice-c-simpson.json",
       "falsettos-2016/theatermania--jesse-green.json",
-      "heisenberg-2016/wnyc--jennifer-vanasco.json"
+      "heisenberg-2016/wnyc--jennifer-vanasco.json",
+      "the-encounter-2016/times-square-chronicles--suzanna-bowling.json",
+      "tuck-everlasting-2016/ew--melissa-rose-bernardo.json",
+      "tuck-everlasting-2016/uinterview--erik-meers.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1003,7 +1016,11 @@
       "data/review-texts/les-liaisons-dangereuses-2016/wsj--terry-teachout.json",
       "les-liaisons-dangereuses-2016/wsj--terry-teachout.json",
       "data/review-texts/heisenberg-2016/wsj--terry-teachout.json",
-      "heisenberg-2016/wsj--terry-teachout.json"
+      "heisenberg-2016/wsj--terry-teachout.json",
+      "data/review-texts/holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json",
+      "holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json",
+      "data/review-texts/fully-committed-2016/wsj--terry-teachout.json",
+      "fully-committed-2016/wsj--terry-teachout.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1264,11 +1281,16 @@
       "sunday-in-the-park-with-george-2017/theater-life--isa-goldberg.json",
       "les-liaisons-dangereuses-2016/uinterview--erik-meers.json",
       "falsettos-2016/theater-life--eric-march.json",
-      "heisenberg-2016/timeout--adam-feldman.json"
+      "heisenberg-2016/timeout--adam-feldman.json",
+      "oh-hello-on-broadway-2016/nydailynews--joe-dziemianowicz.json",
+      "holiday-inn-the-new-irving-berlin-musical-2016/nydailynews--joe-dziemianowicz.json",
+      "holiday-inn-the-new-irving-berlin-musical-2016/timeout--david-cote.json",
+      "the-encounter-2016/nydailynews--joe-dziemianowicz.json",
+      "fully-committed-2016/timeout--adam-feldman.json"
     ]
   },
   "startTime": "2026-06-24T10:39:16.417Z",
-  "lastProcessed": "heisenberg-2016/abc-news--mark-kennedy.json",
+  "lastProcessed": "fully-committed-2016/wsj--terry-teachout.json",
   "log": [
     {
       "t": "2026-06-24T10:48:21.673Z",
@@ -1408,6 +1430,28 @@
     },
     {
       "t": "2026-06-25T00:56:36.704Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-25T00:57:32.316Z",
+      "event": "bb-session",
+      "session": "615c1c40",
+      "url": "http://www.wsj.com/articles/holiday-inn-the-new-irving-berlin-musical-review-147"
+    },
+    {
+      "t": "2026-06-25T00:57:33.100Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-25T00:59:19.918Z",
+      "event": "bb-session",
+      "session": "158d36c4",
+      "url": "http://www.wsj.com/articles/fully-committed-review-jesse-tyler-ferguson-party-of"
+    },
+    {
+      "t": "2026-06-25T00:59:20.881Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
