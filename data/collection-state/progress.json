@@ -668,7 +668,17 @@
     "are-you-watching-west-end-2026/the-recs--unknown.json",
     "driftwood-west-end-2026/artsdesk--unknown.json",
     "driftwood-west-end-2026/standard--nick-curtis.json",
-    "driftwood-west-end-2026/times-uk--clive-davis.json"
+    "driftwood-west-end-2026/times-uk--clive-davis.json",
+    "birthright-off-broadway-2026/broadwayworld--unknown.json",
+    "birthright-off-broadway-2026/playbill--unknown.json",
+    "labelless-off-broadway-2026/one-minute-critic--unknown.json",
+    "encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
+    "romeo-and-juliet-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+    "henry-vi-a-trilogy-in-two-parts-off-broadway-2026/playbill--unknown.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+    "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -832,7 +842,11 @@
       "data/review-texts/sinatra-the-musical-west-end-2026/cambridge--unknown.json",
       "data/review-texts/sinatra-the-musical-west-end-2026/cambridge--unknown.json",
       "data/review-texts/sinatra-the-musical-west-end-2026/cambridge--unknown.json",
-      "data/review-texts/sinatra-the-musical-west-end-2026/cambridge--unknown.json"
+      "data/review-texts/sinatra-the-musical-west-end-2026/cambridge--unknown.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -962,7 +976,9 @@
       "data/review-texts/glengarry-glen-ross-west-end-2026/thestage--sam-marlowe.json",
       "data/review-texts/glengarry-glen-ross-west-end-2026/western-mail--unknown.json",
       "data/review-texts/much-ado-about-nothing-globe-west-end-2026/thestage--holly-o.json",
-      "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json"
+      "data/review-texts/are-you-watching-west-end-2026/the-recs--unknown.json",
+      "data/review-texts/birthright-off-broadway-2026/broadwayworld--unknown.json",
+      "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json"
     ],
     "archive": [
       "beetlejuice-west-end-2026/timeout-london--unknown.json",
@@ -1069,7 +1085,7 @@
     ]
   },
   "startTime": "2026-06-24T10:39:16.417Z",
-  "lastProcessed": "driftwood-west-end-2026/times-uk--clive-davis.json",
+  "lastProcessed": "a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
   "log": [
     {
       "t": "2026-06-24T10:48:21.673Z",
@@ -1207,6 +1223,50 @@
       "event": "bb-session",
       "session": "b9c3c62c",
       "url": "https://www.facebook.com/thestage/posts/icymi-review-glengarry-glen-ross-at-the-"
+    },
+    {
+      "t": "2026-06-25T00:26:24.874Z",
+      "event": "bb-session",
+      "session": "31890827",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-25T00:26:25.269Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-25T00:27:16.382Z",
+      "event": "bb-session",
+      "session": "52e24579",
+      "url": "https://www.nytimes.com/2026/06/03/theater/caissie-levy-broadway-tonys-ragtime.h"
+    },
+    {
+      "t": "2026-06-25T00:27:16.749Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-25T00:27:33.543Z",
+      "event": "bb-session",
+      "session": "ea3965e3",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-25T00:27:34.039Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-25T00:27:43.953Z",
+      "event": "bb-session",
+      "session": "ef34480a",
+      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+    },
+    {
+      "t": "2026-06-25T00:27:44.345Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
