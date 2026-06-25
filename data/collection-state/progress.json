@@ -39,7 +39,13 @@
     "joe-turners-come-and-gone-2026/ny1--spectrum-news-staff.json",
     "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
     "the-balusters-2026/broadwayworld--unknown.json",
-    "schmigadoon-2026/thewrap--robert-hofler.json"
+    "schmigadoon-2026/thewrap--robert-hofler.json",
+    "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
+    "proof-2026/deadline--unknown.json",
+    "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
+    "the-fear-of-13-2026/broadwayworld--unknown.json",
+    "the-fear-of-13-2026/one-minute-critic--matthew-wexler.json",
+    "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/loureviews--unknown.json",
@@ -61,7 +67,11 @@
     "beetlejuice-west-end-2026/amny--matt-windman.json",
     "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
     "mercury-off-broadway-2026/theatrecat--unknown.json",
-    "schmigadoon-2026/nytg--unknown.json"
+    "schmigadoon-2026/nytg--unknown.json",
+    "avenue-q-west-end-2026/telegraph--marianka-swain.json",
+    "titanique-2026/wsj--charles-isherwood.json",
+    "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
+    "death-of-a-salesman-2026/dailybeast--tim-teeman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -102,10 +112,17 @@
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
       "the-boy-who-harnessed-the-wind-west-end-2026/artsdesk--unknown.json",
       "joe-turners-come-and-gone-2026/ny1--spectrum-news-staff.json",
-      "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json"
+      "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+      "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
+      "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
+      "the-fear-of-13-2026/one-minute-critic--matthew-wexler.json",
+      "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/proof-2026/deadline--unknown.json",
+      "proof-2026/deadline--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "pride-west-end-2026/theatrely--unknown.json",
@@ -115,12 +132,27 @@
     ],
     "brightdata": [
       "the-balusters-2026/broadwayworld--unknown.json",
-      "schmigadoon-2026/thewrap--robert-hofler.json"
+      "schmigadoon-2026/thewrap--robert-hofler.json",
+      "the-fear-of-13-2026/broadwayworld--unknown.json"
     ],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
+    ]
   },
   "startTime": "2026-06-25T12:06:07.642Z",
-  "lastProcessed": "schmigadoon-2026/thewrap--robert-hofler.json",
-  "log": []
+  "lastProcessed": "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json",
+  "log": [
+    {
+      "t": "2026-06-25T12:30:22.686Z",
+      "event": "bb-session",
+      "session": "fcc48004",
+      "url": "https://deadline.com/2026/04/proof-broadway-review-ayo-edebiri-don-cheadle-kara-"
+    },
+    {
+      "t": "2026-06-25T12:30:23.705Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    }
+  ]
 }
