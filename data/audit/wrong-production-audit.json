@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-06-25T06:22:50.664Z",
+  "timestamp": "2026-06-25T06:41:18.551Z",
   "stats": {
-    "totalReviews": 39180,
-    "alreadyFlagged": 17474,
+    "totalReviews": 39183,
+    "alreadyFlagged": 17476,
     "dateGuardCatches": 42,
-    "directorMismatch": 874,
-    "tvFilmSignals": 1071,
-    "londonSignals": 662,
+    "directorMismatch": 873,
+    "tvFilmSignals": 1068,
+    "londonSignals": 661,
     "offBroadwaySignals": 464,
     "yearMismatch": 84,
     "noPublishDate": 3960
@@ -12711,20 +12711,6 @@
       ]
     },
     {
-      "showId": "kiss-of-the-spider-woman-1993",
-      "file": "parade--janice-kaplan.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://parade.com/entertainment/kiss-of-the-spider-woman-true-story",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
       "showId": "kpop-2022",
       "file": "new-york-sun--elysa-gardner.json",
       "score": 78,
@@ -15936,20 +15922,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "one-man-two-guvnors-2012",
-      "file": "newsday--linda-winer.json",
-      "score": 63,
-      "publishDate": "April 18, 2012",
-      "url": "https://www.newsday.com/entertainment/theater/one-man-two-guvnors-is-pure-slapstick-1.3667079",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -25301,30 +25273,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"jay presson allen\" from tru-1989"
-        }
-      ]
-    },
-    {
-      "showId": "true-west-2000",
-      "file": "broadwayworld--unknown.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/shows/True-West-311864.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james macdonald\" from true-west-2019"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 2\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
