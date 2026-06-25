@@ -1,9 +1,16 @@
 name: Scrape Stagedoor Critics
 
 on:
-  schedule:
-    # Weekly on Mondays at 6 AM UTC (1 AM EST), after WE show status updates
-    - cron: '0 6 * * 1'
+  # RETIRED 2026-06-25: stagedoor.com was shut down and now 302-redirects the
+  # whole domain to a ticketing site (londontheatredirect.com) — there are no
+  # critic-review pages left to scrape. The weekly cron is disabled so it stops
+  # spending Browserbase/SERP credits on a dead host. The scraper itself now
+  # exits early via checkStagedoorAlive(). The 48 frozen archive files under
+  # data/aggregator-archive/stagedoor/ remain available to the opening-night
+  # poller as historical data. workflow_dispatch is kept so the dead-domain
+  # guard can be re-tested, or the cron restored if Stagedoor ever returns.
+  # schedule:
+  #   - cron: '0 6 * * 1'  # Weekly Mondays 6 AM UTC (disabled — domain dead)
   workflow_dispatch:
     inputs:
       show:

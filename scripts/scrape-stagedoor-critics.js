@@ -67,6 +67,34 @@ function sleep(ms) {
 }
 
 /**
+ * Dead-domain guard. Stagedoor (stagedoor.com) was shut down / absorbed and the
+ * whole domain now 302-redirects to a ticketing site (londontheatredirect.com)
+ * — there are no critic-review pages left to scrape (confirmed 2026-06-25).
+ *
+ * This lightweight HEAD-style check runs BEFORE we open a paid Browserbase
+ * session or spend SERP credits. If stagedoor.com redirects off-domain, the
+ * scraper exits cleanly so the (now-disabled) cron and any manual dispatch
+ * don't waste credits hitting a dead host. The 48 frozen archive files under
+ * data/aggregator-archive/stagedoor/ stay intact — the opening-night poller
+ * still reads them as historical data.
+ *
+ * @returns {Promise<{dead: boolean, location: string|null}>}
+ */
+function checkStagedoorAlive() {
+  return new Promise((resolve) => {
+    const req = https.request('https://stagedoor.com/', { method: 'HEAD', timeout: 15000 }, (res) => {
+      const loc = res.headers.location || null;
+      const offDomain = !!(res.statusCode >= 300 && res.statusCode < 400 && loc && !/(^https?:\/\/)?([\w-]+\.)?stagedoor\.com/i.test(loc));
+      res.resume();
+      resolve({ dead: offDomain, location: loc, status: res.statusCode });
+    });
+    req.on('error', () => resolve({ dead: false, location: null, status: null })); // network blip — don't false-retire
+    req.on('timeout', () => { req.destroy(); resolve({ dead: false, location: null, status: null }); });
+    req.end();
+  });
+}
+
+/**
  * Phase A: Discover all shows from Stagedoor category listings
  */
 async function discoverShows(page) {
@@ -271,6 +299,16 @@ async function main() {
   console.log('🎭 Stagedoor Critic Review Scraper');
   console.log(`   Dry run: ${dryRun}`);
   console.log('');
+
+  // Dead-domain guard — stagedoor.com now 302s to a ticketing site (2026-06-25).
+  // Exit before opening a Browserbase session / spending SERP credits.
+  const alive = await checkStagedoorAlive();
+  if (alive.dead) {
+    console.log(`⚠️  stagedoor.com is no longer a review aggregator — it redirects to ${alive.location}`);
+    console.log('   Skipping live scrape (the 48 archived shows remain available to the poller).');
+    console.log('   This scraper has been retired; remove it once the archive is no longer needed.');
+    return;
+  }
 
   // Ensure archive directory exists
   if (!dryRun) {
