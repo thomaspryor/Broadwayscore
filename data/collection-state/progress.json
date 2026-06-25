@@ -482,7 +482,9 @@
     "god-of-carnage-2009/wsj--terry-teachout.json",
     "all-my-sons-2008/theater-life--eric-march.json",
     "the-seagull-2008/timeout--adam-feldman.json",
-    "the-seagull-2008/wsj--terry-teachout.json"
+    "the-seagull-2008/wsj--terry-teachout.json",
+    "a-catered-affair-2008/timeout--adam-feldman.json",
+    "a-catered-affair-2008/theater-life--eric-march.json"
   ],
   "failed": [
     "sinatra-the-musical-west-end-2026/broadwayworld--unknown.json",
@@ -1193,7 +1195,15 @@
     "dividing-the-estate-2008/talkinbroadway--matthew-murray.json",
     "billy-elliot-the-musical-2008/newsday--linda-winer.json",
     "billy-elliot-the-musical-2008/latimes--charles-mcnulty.json",
-    "13-2008/talkinbroadway--matthew-murray.json"
+    "13-2008/talkinbroadway--matthew-murray.json",
+    "the-seagull-2008/times-uk--clive-davis.json",
+    "a-tale-of-two-cities-2008/talkinbroadway--matthew-murray.json",
+    "macbeth-2008/latimes--charles-mcnulty.json",
+    "south-pacific-2008/wsj--terry-teachout.json",
+    "south-pacific-2008/newyorker--john-lahr.json",
+    "in-the-heights-2008/newsday--linda-winer-bway.json",
+    "in-the-heights-2008/theatermania--unknown.json",
+    "come-back-little-sheba-2008/timeout--david-cote.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1388,7 +1398,8 @@
       "a-little-night-music-2009/theater-life--eric-march.json",
       "oleanna-2009/theatermania--unknown.json",
       "rock-of-ages-2009/theater-life--eric-march.json",
-      "all-my-sons-2008/theater-life--eric-march.json"
+      "all-my-sons-2008/theater-life--eric-march.json",
+      "a-catered-affair-2008/theater-life--eric-march.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1546,7 +1557,8 @@
       "the-mountaintop-2011/new-jersey-newsroom--michael-sommers.json",
       "lend-me-a-tenor-2010/newsday--linda-winer.json",
       "next-to-normal-2009/nydailynews--joe-dziemianowicz.json",
-      "the-seagull-2008/timeout--adam-feldman.json"
+      "the-seagull-2008/timeout--adam-feldman.json",
+      "a-catered-affair-2008/timeout--adam-feldman.json"
     ],
     "brightdata": [
       "the-balusters-2026/broadwayworld--unknown.json",
@@ -1638,7 +1650,11 @@
       "data/review-texts/dividing-the-estate-2008/talkinbroadway--matthew-murray.json",
       "data/review-texts/billy-elliot-the-musical-2008/newsday--linda-winer.json",
       "data/review-texts/billy-elliot-the-musical-2008/latimes--charles-mcnulty.json",
-      "data/review-texts/13-2008/talkinbroadway--matthew-murray.json"
+      "data/review-texts/13-2008/talkinbroadway--matthew-murray.json",
+      "data/review-texts/a-tale-of-two-cities-2008/talkinbroadway--matthew-murray.json",
+      "data/review-texts/macbeth-2008/latimes--charles-mcnulty.json",
+      "data/review-texts/south-pacific-2008/wsj--terry-teachout.json",
+      "data/review-texts/in-the-heights-2008/newsday--linda-winer-bway.json"
     ],
     "archive": [
       "beetlejuice-west-end-2026/timeout-london--unknown.json",
@@ -1844,7 +1860,7 @@
     ]
   },
   "startTime": "2026-06-24T10:39:16.417Z",
-  "lastProcessed": "the-seagull-2008/wsj--terry-teachout.json",
+  "lastProcessed": "come-back-little-sheba-2008/timeout--david-cote.json",
   "log": [
     {
       "t": "2026-06-24T10:48:21.673Z",
@@ -2432,6 +2448,28 @@
     },
     {
       "t": "2026-06-25T07:54:05.496Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-25T07:55:58.313Z",
+      "event": "bb-session",
+      "session": "0549db07",
+      "url": "https://www.talkinbroadway.com/world/TaleofTwoCities.html"
+    },
+    {
+      "t": "2026-06-25T07:55:59.150Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-25T07:57:36.066Z",
+      "event": "bb-session",
+      "session": "c967d4ae",
+      "url": "https://www.wsj.com/articles/SB120801896275542179"
+    },
+    {
+      "t": "2026-06-25T07:57:36.921Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

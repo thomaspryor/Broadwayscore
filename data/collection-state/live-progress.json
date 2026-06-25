@@ -1,43 +1,20 @@
 {
-  "updatedAt": "2026-06-25T07:54:26.701Z",
-  "processed": 483,
-  "failed": 709,
-  "successRate": "40.5%",
+  "updatedAt": "2026-06-25T08:00:21.101Z",
+  "processed": 485,
+  "failed": 717,
+  "successRate": "40.3%",
   "tierBreakdown": {
-    "playwright": 191,
+    "playwright": 192,
     "amp": 0,
     "browserbase": 42,
     "directCookies": 0,
-    "scrapingbee": 110,
+    "scrapingbee": 111,
     "brightdata": 36,
-    "archiveToday": 52,
+    "archiveToday": 56,
     "archive": 200
   },
-  "browserbaseSessions": 28,
+  "browserbaseSessions": 30,
   "recentActivity": [
-    {
-      "t": "2026-06-25T07:26:48.117Z",
-      "event": "bb-session",
-      "session": "69ae9539",
-      "url": "https://www.wsj.com/articles/SB125363816847903279"
-    },
-    {
-      "t": "2026-06-25T07:26:48.931Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-06-25T07:29:03.600Z",
-      "event": "bb-session",
-      "session": "2581281d",
-      "url": "https://www.newspapers.com/image/231924056/"
-    },
-    {
-      "t": "2026-06-25T07:33:42.508Z",
-      "event": "bb-session",
-      "session": "a8e2c5e1",
-      "url": "https://www.talkinbroadway.com/world/AccentYouth.html"
-    },
     {
       "t": "2026-06-25T07:33:43.304Z",
       "event": "bb-cookie-inject",
@@ -123,6 +100,28 @@
     },
     {
       "t": "2026-06-25T07:54:05.496Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-25T07:55:58.313Z",
+      "event": "bb-session",
+      "session": "0549db07",
+      "url": "https://www.talkinbroadway.com/world/TaleofTwoCities.html"
+    },
+    {
+      "t": "2026-06-25T07:55:59.150Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-25T07:57:36.066Z",
+      "event": "bb-session",
+      "session": "c967d4ae",
+      "url": "https://www.wsj.com/articles/SB120801896275542179"
+    },
+    {
+      "t": "2026-06-25T07:57:36.921Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
