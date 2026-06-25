@@ -1563,7 +1563,17 @@
     "collected-stories-2010/ap--unknown.json",
     "collected-stories-2010/backstage--david-sheward.json",
     "enron-2010/new-jersey-newsroom--michael-sommers.json",
-    "enron-2010/backstage--erik-haagensen.json"
+    "enron-2010/backstage--erik-haagensen.json",
+    "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+    "birthright-off-broadway-2026/broadwayworld--unknown.json",
+    "birthright-off-broadway-2026/playbill--unknown.json",
+    "labelless-off-broadway-2026/one-minute-critic--unknown.json",
+    "encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
+    "romeo-and-juliet-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+    "henry-vi-a-trilogy-in-two-parts-off-broadway-2026/playbill--unknown.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+    "a-woman-among-women-off-broadway-2026/nytimes--michael-paulson.json",
+    "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1846,7 +1856,9 @@
       "data/review-texts/sinatra-the-musical-west-end-2026/cambridge--unknown.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
-      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json"
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/nytimes--jesse-mckinley.json",
+      "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -2096,7 +2108,9 @@
       "data/review-texts/the-gin-game-2015/nyt-theater--jonathan-mandell.json",
       "data/review-texts/cyrano-de-bergerac-2012/northjerseycom--robert-feldberg.json",
       "data/review-texts/jerusalem-2011/village-voice--unknown.json",
-      "data/review-texts/a-life-in-the-theatre-2010/backstage--david-sheward.json"
+      "data/review-texts/a-life-in-the-theatre-2010/backstage--david-sheward.json",
+      "data/review-texts/birthright-off-broadway-2026/broadwayworld--unknown.json",
+      "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json"
     ],
     "archive": [
       "beetlejuice-west-end-2026/timeout-london--unknown.json",
@@ -2315,7 +2329,7 @@
     ]
   },
   "startTime": "2026-06-24T10:39:16.417Z",
-  "lastProcessed": "enron-2010/backstage--erik-haagensen.json",
+  "lastProcessed": "a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
   "log": [
     {
       "t": "2026-06-24T10:48:21.673Z",
@@ -2995,6 +3009,28 @@
       "t": "2026-06-25T10:11:12.712Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-06-25T10:28:36.410Z",
+      "event": "bb-session",
+      "session": "e66791c1",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-06-25T10:28:36.999Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-25T10:29:04.950Z",
+      "event": "bb-session",
+      "session": "cd9fa9c2",
+      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
+    },
+    {
+      "t": "2026-06-25T10:29:06.050Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
