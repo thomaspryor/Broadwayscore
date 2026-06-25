@@ -463,7 +463,11 @@
     "lombardi-2010/time--richard-zoglin.json",
     "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
     "bloody-bloody-andrew-jackson-2010/theatermania--andy-propst.json",
-    "bloody-bloody-andrew-jackson-2010/time--richard-zoglin.json"
+    "bloody-bloody-andrew-jackson-2010/time--richard-zoglin.json",
+    "brief-encounter-2010/newsday--linda-winer.json",
+    "brief-encounter-2010/time--richard-zoglin.json",
+    "everyday-rapture-2010/ew--thom-geier.json",
+    "everyday-rapture-2010/newsday--linda-winer.json"
   ],
   "failed": [
     "sinatra-the-musical-west-end-2026/broadwayworld--unknown.json",
@@ -1093,7 +1097,13 @@
     "bloody-bloody-andrew-jackson-2010/bloomberg--john-simon.json",
     "a-life-in-the-theatre-2010/hollywood-reporter--frank-scheck.json",
     "a-life-in-the-theatre-2010/backstage--david-sheward.json",
-    "a-life-in-the-theatre-2010/nytheatre--martin-denton.json"
+    "a-life-in-the-theatre-2010/nytheatre--martin-denton.json",
+    "a-life-in-the-theatre-2010/bloomberg--john-simon.json",
+    "the-pitmen-painters-2010/on-off-broadway--matt-windman.json",
+    "the-pitmen-painters-2010/backstage--erik-haagensen.json",
+    "the-pitmen-painters-2010/bloomberg--john-simon.json",
+    "brief-encounter-2010/newyorker--uncredited.json",
+    "brief-encounter-2010/nytheatre--martin-denton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1282,7 +1292,8 @@
       "the-importance-of-being-earnest-2011/theater-life--eric-march.json",
       "driving-miss-daisy-2010/ew--melissa-rose-bernardo.json",
       "bloody-bloody-andrew-jackson-2010/theatermania--andy-propst.json",
-      "bloody-bloody-andrew-jackson-2010/time--richard-zoglin.json"
+      "bloody-bloody-andrew-jackson-2010/time--richard-zoglin.json",
+      "everyday-rapture-2010/ew--thom-geier.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1496,7 +1507,9 @@
       "data/review-texts/cyrano-de-bergerac-2012/northjerseycom--robert-feldberg.json",
       "data/review-texts/jerusalem-2011/village-voice--unknown.json",
       "data/review-texts/lombardi-2010/newyorker--uncredited.json",
-      "data/review-texts/lombardi-2010/wsj--terry-teachout.json"
+      "data/review-texts/lombardi-2010/wsj--terry-teachout.json",
+      "data/review-texts/a-life-in-the-theatre-2010/backstage--david-sheward.json",
+      "data/review-texts/the-pitmen-painters-2010/on-off-broadway--matt-windman.json"
     ],
     "archive": [
       "beetlejuice-west-end-2026/timeout-london--unknown.json",
@@ -1690,11 +1703,14 @@
       "rain-2010/newsday--linda-winer.json",
       "driving-miss-daisy-2010/newsday--linda-winer.json",
       "lombardi-2010/time--richard-zoglin.json",
-      "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json"
+      "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
+      "brief-encounter-2010/newsday--linda-winer.json",
+      "brief-encounter-2010/time--richard-zoglin.json",
+      "everyday-rapture-2010/newsday--linda-winer.json"
     ]
   },
   "startTime": "2026-06-24T10:39:16.417Z",
-  "lastProcessed": "a-life-in-the-theatre-2010/nytheatre--martin-denton.json",
+  "lastProcessed": "everyday-rapture-2010/newsday--linda-winer.json",
   "log": [
     {
       "t": "2026-06-24T10:48:21.673Z",
@@ -2067,6 +2083,12 @@
       "t": "2026-06-25T06:48:27.070Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-06-25T06:51:54.826Z",
+      "event": "bb-session",
+      "session": "d6989563",
+      "url": "https://www.onoffbroadway.com/2010/10/pitmen-painters.html"
     }
   ]
 }
