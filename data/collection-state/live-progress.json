@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-25T07:39:58.581Z",
-  "processed": 478,
-  "failed": 694,
-  "successRate": "40.8%",
+  "updatedAt": "2026-06-25T07:45:03.873Z",
+  "processed": 480,
+  "failed": 702,
+  "successRate": "40.6%",
   "tierBreakdown": {
-    "playwright": 189,
+    "playwright": 190,
     "amp": 0,
-    "browserbase": 38,
+    "browserbase": 40,
     "directCookies": 0,
     "scrapingbee": 109,
     "brightdata": 36,
-    "archiveToday": 44,
+    "archiveToday": 45,
     "archive": 200
   },
-  "browserbaseSessions": 22,
+  "browserbaseSessions": 23,
   "recentActivity": [
-    {
-      "t": "2026-06-25T07:09:26.911Z",
-      "event": "bb-session",
-      "session": "d8987247",
-      "url": "https://www.wsj.com/articles/SB10001424052748704187204575101443623615472"
-    },
-    {
-      "t": "2026-06-25T07:09:27.758Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-06-25T07:17:49.324Z",
       "event": "bb-session",
@@ -123,6 +112,17 @@
     },
     {
       "t": "2026-06-25T07:38:29.603Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-25T07:42:30.410Z",
+      "event": "bb-session",
+      "session": "2cf4542a",
+      "url": "https://www.wsj.com/articles/god-of-carnage-review-grownup-playground-spat-15060"
+    },
+    {
+      "t": "2026-06-25T07:42:31.291Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

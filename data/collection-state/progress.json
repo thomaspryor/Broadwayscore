@@ -477,7 +477,9 @@
     "a-little-night-music-2009/latimes--david-ng.json",
     "a-little-night-music-2009/theater-life--eric-march.json",
     "oleanna-2009/theatermania--unknown.json",
-    "next-to-normal-2009/nydailynews--joe-dziemianowicz.json"
+    "next-to-normal-2009/nydailynews--joe-dziemianowicz.json",
+    "rock-of-ages-2009/theater-life--eric-march.json",
+    "god-of-carnage-2009/wsj--terry-teachout.json"
   ],
   "failed": [
     "sinatra-the-musical-west-end-2026/broadwayworld--unknown.json",
@@ -1173,7 +1175,15 @@
     "next-to-normal-2009/newyorker--john-lahr.json",
     "next-to-normal-2009/ap--unknown.json",
     "next-to-normal-2009/neontommy--jason-kehe.json",
-    "rock-of-ages-2009/wsj--terry-teachout.json"
+    "rock-of-ages-2009/wsj--terry-teachout.json",
+    "rock-of-ages-2009/theater-news-online--unknown.json",
+    "exit-the-king-2009/variety--david-rooney.json",
+    "exit-the-king-2009/newsday--linda-winer.json",
+    "impressionism-2009/newsday--linda-winer.json",
+    "god-of-carnage-2009/newsday--linda-winer.json",
+    "33-variations-2009/newsday--unknown.json",
+    "33-variations-2009/talkinbroadway--matthew-murray.json",
+    "the-story-of-my-life-2009/newsday--linda-winer.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1366,7 +1376,8 @@
       "everyday-rapture-2010/ew--thom-geier.json",
       "million-dollar-quartet-2010/theatermania--unknown.json",
       "a-little-night-music-2009/theater-life--eric-march.json",
-      "oleanna-2009/theatermania--unknown.json"
+      "oleanna-2009/theatermania--unknown.json",
+      "rock-of-ages-2009/theater-life--eric-march.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1407,7 +1418,9 @@
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--hunter-ingram.json",
       "data/review-texts/a-woman-among-women-off-broadway-2026/variety--jem-aswad.json",
       "data/review-texts/maybe-happy-ending-2024/variety--unknown.json",
-      "maybe-happy-ending-2024/variety--unknown.json"
+      "maybe-happy-ending-2024/variety--unknown.json",
+      "data/review-texts/god-of-carnage-2009/wsj--terry-teachout.json",
+      "god-of-carnage-2009/wsj--terry-teachout.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1603,7 +1616,8 @@
       "data/review-texts/superior-donuts-2009/chicagotribune--chris-jones.json",
       "data/review-texts/superior-donuts-2009/latimes--charles-mcnulty.json",
       "data/review-texts/accent-on-youth-2009/talkinbroadway--matthew-murray.json",
-      "data/review-texts/next-to-normal-2009/wsj--terry-teachout.json"
+      "data/review-texts/next-to-normal-2009/wsj--terry-teachout.json",
+      "data/review-texts/rock-of-ages-2009/wsj--terry-teachout.json"
     ],
     "archive": [
       "beetlejuice-west-end-2026/timeout-london--unknown.json",
@@ -1809,7 +1823,7 @@
     ]
   },
   "startTime": "2026-06-24T10:39:16.417Z",
-  "lastProcessed": "rock-of-ages-2009/wsj--terry-teachout.json",
+  "lastProcessed": "the-story-of-my-life-2009/newsday--linda-winer.json",
   "log": [
     {
       "t": "2026-06-24T10:48:21.673Z",
@@ -2336,6 +2350,17 @@
     },
     {
       "t": "2026-06-25T07:38:29.603Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-25T07:42:30.410Z",
+      "event": "bb-session",
+      "session": "2cf4542a",
+      "url": "https://www.wsj.com/articles/god-of-carnage-review-grownup-playground-spat-15060"
+    },
+    {
+      "t": "2026-06-25T07:42:31.291Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
