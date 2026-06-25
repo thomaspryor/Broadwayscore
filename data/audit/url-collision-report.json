@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-24T23:46:40.433Z",
+  "generatedAt": "2026-06-25T08:40:13.649Z",
   "summary": {
-    "total": 9,
-    "high": 2,
+    "total": 11,
+    "high": 4,
     "medium": 6,
     "low": 1
   },
@@ -89,6 +89,33 @@
       "confidence": "medium"
     },
     {
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/much-ado-about-nothing-shakespeare-globe-review/",
+      "normalizedUrl": "https://telegraph.co.uk/theatre/what-to-see/much-ado-about-nothing-shakespeare-globe-review",
+      "candidates": [
+        {
+          "showId": "much-ado-about-nothing-globe-off-west-end-2026",
+          "file": "telegraph--dominic-cavendish.json",
+          "publishDate": "2026-06-20",
+          "openingDate": "2026-06-20",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "telegraph"
+        },
+        {
+          "showId": "much-ado-about-nothing-globe-west-end-2026",
+          "file": "sunday-telegraph--unknown.json",
+          "publishDate": null,
+          "openingDate": "2026-06-11",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "sunday-telegraph"
+        }
+      ],
+      "suggestedWinner": "much-ado-about-nothing-globe-off-west-end-2026",
+      "reason": "publishDate 2026-06-20 is 0 days from much-ado-about-nothing-globe-off-west-end-2026 opening (2026-06-20)",
+      "confidence": "high"
+    },
+    {
       "url": "https://theatreweekly.com/review-much-ado-about-nothing-at-globe-theatre/",
       "normalizedUrl": "https://theatreweekly.com/review-much-ado-about-nothing-at-globe-theatre",
       "candidates": [
@@ -141,6 +168,33 @@
       "suggestedWinner": "much-ado-about-nothing-globe-off-west-end-2026",
       "reason": "publishDate 2026-06-21 is 1 days from much-ado-about-nothing-globe-off-west-end-2026 but also 10 days from much-ado-about-nothing-globe-west-end-2026",
       "confidence": "medium"
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/much-ado-about-nothing-review-shakespeares-globe-london-chelsea-walker",
+      "normalizedUrl": "https://thestage.co.uk/reviews/much-ado-about-nothing-review-shakespeares-globe-london-chelsea-walker",
+      "candidates": [
+        {
+          "showId": "much-ado-about-nothing-globe-off-west-end-2026",
+          "file": "thestage--dave-fargnoli.json",
+          "publishDate": "2026-06-26",
+          "openingDate": "2026-06-20",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "thestage"
+        },
+        {
+          "showId": "much-ado-about-nothing-globe-west-end-2026",
+          "file": "thestage--holly-o.json",
+          "publishDate": null,
+          "openingDate": "2026-06-11",
+          "hasScore": true,
+          "hasFullText": false,
+          "outletId": "thestage"
+        }
+      ],
+      "suggestedWinner": "much-ado-about-nothing-globe-off-west-end-2026",
+      "reason": "publishDate 2026-06-26 is 6 days from much-ado-about-nothing-globe-off-west-end-2026 opening (2026-06-20)",
+      "confidence": "high"
     },
     {
       "url": "https://www.thetimes.com/culture/theatre-dance/article/much-ado-about-nothing-review-shakespeare-mjwhw56rs",
