@@ -272,7 +272,12 @@
     "burn-this-2019/theatermania--jesse-green.json",
     "oklahoma-2019/front-row-center--tulis-mccall.json",
     "oklahoma-2019/medium--christian-lewis.json",
-    "what-the-constitution-means-to-me-2019/front-row-center--stanford-friedman.json"
+    "what-the-constitution-means-to-me-2019/front-row-center--stanford-friedman.json",
+    "kiss-me-kate-2019/wsj--terry-teachout.json",
+    "network-2018/ny1--roma-torre.json",
+    "the-cher-show-2018/medium--christian-lewis.json",
+    "king-kong-2018/limelight-magazine-au--clive-paget.json",
+    "american-son-2018/showbiz411--roger-friedman.json"
   ],
   "failed": [
     "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/loureviews--unknown.json",
@@ -521,7 +526,12 @@
     "frankie-and-johnny-in-the-clair-de-lune-2019/broadway-and-me--janice-c-simpson.json",
     "frankie-and-johnny-in-the-clair-de-lune-2019/theater-news-online--jeremy-gerard.json",
     "ink-2019/theater-news-online--joe-dziemianowicz.json",
-    "ink-2019/ny1--ny1-roma-torre.json"
+    "ink-2019/ny1--ny1-roma-torre.json",
+    "kiss-me-kate-2019/theater-news-online--jeremy-gerard.json",
+    "true-west-2019/theater-news-online--jeremy-gerard.json",
+    "the-prom-2018/thestage--mark-shenton.json",
+    "the-prom-2018/journal-inquirer--tim-leininger.json",
+    "king-kong-2018/phindie--kathryn-osenlund.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -685,7 +695,9 @@
       "data/review-texts/romeo-juliet-2024/sunday-express--neil-norman.json",
       "romeo-juliet-2024/sunday-express--neil-norman.json",
       "data/review-texts/the-hills-of-california-2024/sunday-express--george-simpson.json",
-      "the-hills-of-california-2024/sunday-express--george-simpson.json"
+      "the-hills-of-california-2024/sunday-express--george-simpson.json",
+      "data/review-texts/kiss-me-kate-2019/wsj--terry-teachout.json",
+      "kiss-me-kate-2019/wsj--terry-teachout.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -779,13 +791,16 @@
       "into-the-woods-2022/newyorker--alexandra-schwartz.json",
       "trouble-in-mind-2021/broadwayworld--unknown.json",
       "the-great-society-2019/front-row-center--kathleen-campion.json",
-      "oklahoma-2019/medium--christian-lewis.json"
+      "oklahoma-2019/medium--christian-lewis.json",
+      "the-cher-show-2018/medium--christian-lewis.json",
+      "american-son-2018/showbiz411--roger-friedman.json"
     ],
     "archiveToday": [
       "data/review-texts/six-the-musical-west-end-2021/west-end-wilma--west-end-wilma.json",
       "data/review-texts/mamma-mia-west-end-2021/west-end-wilma--west-end-wilma.json",
       "data/review-texts/sinatra-the-musical-west-end-2026/thestage--unknown.json",
-      "data/review-texts/the-truth-a-comedy-by-florian-zeller-west-end-2026/thestage--unknown.json"
+      "data/review-texts/the-truth-a-comedy-by-florian-zeller-west-end-2026/thestage--unknown.json",
+      "data/review-texts/the-prom-2018/thestage--mark-shenton.json"
     ],
     "archive": [
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
@@ -837,11 +852,13 @@
       "linda-vista-2019/timeout--adam-feldman.json",
       "the-height-of-the-storm-2019/front-row-center--kathleen-campion.json",
       "oklahoma-2019/front-row-center--tulis-mccall.json",
-      "what-the-constitution-means-to-me-2019/front-row-center--stanford-friedman.json"
+      "what-the-constitution-means-to-me-2019/front-row-center--stanford-friedman.json",
+      "network-2018/ny1--roma-torre.json",
+      "king-kong-2018/limelight-magazine-au--clive-paget.json"
     ]
   },
   "startTime": "2026-06-25T12:06:07.642Z",
-  "lastProcessed": "what-the-constitution-means-to-me-2019/front-row-center--stanford-friedman.json",
+  "lastProcessed": "american-son-2018/showbiz411--roger-friedman.json",
   "log": [
     {
       "t": "2026-06-25T12:30:22.686Z",
@@ -871,6 +888,17 @@
       "event": "bb-session",
       "session": "d56e6736",
       "url": "https://www.express.co.uk/entertainment/theatre/1864762/The-Hills-of-California-"
+    },
+    {
+      "t": "2026-06-25T18:05:58.442Z",
+      "event": "bb-session",
+      "session": "19b995a0",
+      "url": "http://www.wsj.com/articles/kiss-me-kate-review-so-not-in-love-11552609800"
+    },
+    {
+      "t": "2026-06-25T18:05:59.053Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
