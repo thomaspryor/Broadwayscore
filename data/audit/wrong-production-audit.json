@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-25T17:29:49.989Z",
+  "timestamp": "2026-06-25T18:47:35.433Z",
   "stats": {
-    "totalReviews": 39235,
-    "alreadyFlagged": 17490,
+    "totalReviews": 39232,
+    "alreadyFlagged": 17488,
     "dateGuardCatches": 42,
     "directorMismatch": 873,
     "tvFilmSignals": 1071,
-    "londonSignals": 665,
+    "londonSignals": 666,
     "offBroadwaySignals": 464,
     "yearMismatch": 84,
-    "noPublishDate": 3966
+    "noPublishDate": 3965
   },
   "findings": [
     {
@@ -34515,6 +34515,19 @@
       "score": 78,
       "publishDate": "2024-09-18",
       "url": "https://www.londonboxoffice.co.uk/news/post/moulin-rouge-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-globe-west-end-2026",
+      "file": "guardian--unknown.json",
+      "publishDate": null,
+      "url": "https://www.theguardian.com/stage/2026/jun/21/much-ado-about-nothing-review-shakespeare-globe-london",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
