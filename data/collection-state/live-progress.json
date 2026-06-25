@@ -1,50 +1,22 @@
 {
-  "updatedAt": "2026-06-25T09:56:10.559Z",
-  "processed": 425,
-  "failed": 635,
-  "successRate": "40.1%",
+  "updatedAt": "2026-06-25T10:20:09.394Z",
+  "processed": 545,
+  "failed": 1017,
+  "successRate": "34.9%",
   "tierBreakdown": {
-    "playwright": 181,
+    "playwright": 232,
     "amp": 0,
     "browserbase": 44,
     "directCookies": 0,
-    "scrapingbee": 97,
-    "brightdata": 33,
-    "archiveToday": 30,
-    "archive": 165
+    "scrapingbee": 117,
+    "brightdata": 40,
+    "archiveToday": 86,
+    "archive": 213
   },
   "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-06-25T05:48:45.857Z",
-      "event": "bb-session",
-      "session": "a3e7ed6c",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
-    },
-    {
-      "t": "2026-06-25T05:48:46.515Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-25T06:47:25.981Z",
-      "event": "bb-session",
-      "session": "af60bd30",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
-    {
-      "t": "2026-06-25T06:47:27.085Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-25T06:47:57.197Z",
-      "event": "bb-session",
-      "session": "2bfb2a21",
-      "url": "https://variety.com/2026/film/focus/keith-david-hollywood-walk-fame-1236766099/"
-    },
-    {
-      "t": "2026-06-25T06:47:58.082Z",
+      "t": "2026-06-25T07:42:31.291Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     },
@@ -114,18 +86,40 @@
     {
       "t": "2026-06-25T09:55:30.308Z",
       "event": "bb-cookie-inject",
-      "domain": "variety.com"
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-06-25T09:55:43.209Z",
+      "t": "2026-06-25T09:44:27.186Z",
       "event": "bb-session",
-      "session": "c3b04d71",
-      "url": "https://variety.com/2026/legit/news/pink-teases-tony-awards-hosting-stunts-12367"
+      "session": "f9623094",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/173838871_Broadway_review"
     },
     {
-      "t": "2026-06-25T09:55:44.450Z",
+      "t": "2026-06-25T09:44:28.138Z",
       "event": "bb-cookie-inject",
-      "domain": "variety.com"
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-06-25T10:01:48.511Z",
+      "event": "bb-session",
+      "session": "83459bc2",
+      "url": "http://newyork.timeout.com/arts-culture/theater/1212165/review-high"
+    },
+    {
+      "t": "2026-06-25T10:01:49.315Z",
+      "event": "bb-cookie-inject",
+      "domain": "timeout.com"
+    },
+    {
+      "t": "2026-06-25T10:11:11.826Z",
+      "event": "bb-session",
+      "session": "04877b1a",
+      "url": "http://www.hollywoodreporter.com/hr/film-reviews/a-life-in-the-theatre-theater-r"
+    },
+    {
+      "t": "2026-06-25T10:11:12.712Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
