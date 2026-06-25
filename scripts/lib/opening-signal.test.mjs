@@ -19,12 +19,15 @@ const {
   countByShow,
   estimatePressNight,
   isStuckInPreviews,
+  openSignalFromReviews,
   chooseOpeningDateBackfill,
   findStuckPreviews,
 } = require('./opening-signal.js');
 
 // Deterministic clock for backfill tests: "today" is 2026-06-03.
 const isReached = (d) => new Date(d) <= new Date('2026-06-03');
+// Later clock for open-signal tests (post-press-night): "today" is 2026-06-22.
+const isReachedLate = (d) => new Date(d) <= new Date('2026-06-22');
 
 test('thresholds mirror src/config/score-buckets.ts MIN_REVIEWS_FOR_SCORE*', () => {
   assert.equal(MIN_REVIEWS_BY_CATEGORY.broadway, 5);
@@ -152,4 +155,55 @@ test('findStuckPreviews surfaces stuck shows with press-night estimate, ignores 
   assert.equal(byId.small.reviewCount, 4);
   assert.ok(!byId['t3-thin'], 'T3-only show below the displayable bar is not flagged');
   assert.ok(!byId['open-show'], 'open show is not stuck');
+});
+
+test('openSignalFromReviews fires on >=1 review dated on/after previews start', () => {
+  // Label•less case: 2 OB reviews (below the 3 score gate) but demonstrably open.
+  const show = { status: 'previews', category: 'off-broadway', previewsStartDate: '2026-06-10' };
+  const entry = { count: 2, tier1And2: 1, dates: ['2026-06-18', '2026-06-19'] };
+  const sig = openSignalFromReviews(show, entry, isReachedLate);
+  assert.deepEqual(sig, { date: '2026-06-18', source: 'review-open-signal' });
+});
+
+test('openSignalFromReviews: single review is enough (the whole point)', () => {
+  const show = { status: 'previews', category: 'off-broadway', previewsStartDate: '2026-06-10' };
+  const sig = openSignalFromReviews(show, { count: 1, tier1And2: 0, dates: ['2026-06-18'] }, isReachedLate);
+  assert.equal(sig.date, '2026-06-18');
+});
+
+test('openSignalFromReviews does NOT fire when no signal applies', () => {
+  // No dated reviews.
+  assert.equal(openSignalFromReviews({ status: 'previews', category: 'off-broadway' }, { count: 1, tier1And2: 0, dates: [] }, isReachedLate), null);
+  // Future press night (not reached) — avoids open→previews oscillation.
+  assert.equal(openSignalFromReviews({ status: 'previews', category: 'off-broadway', previewsStartDate: '2026-06-10' }, { count: 1, tier1And2: 0, dates: ['2026-07-01'] }, isReachedLate), null);
+  // Review predates previews start — not press coverage of this run.
+  assert.equal(openSignalFromReviews({ status: 'previews', category: 'off-broadway', previewsStartDate: '2026-06-10' }, { count: 1, tier1And2: 0, dates: ['2026-06-02'] }, isReachedLate), null);
+  // Already open / closed — not a pre-open status.
+  assert.equal(openSignalFromReviews({ status: 'open', category: 'off-broadway' }, { count: 1, tier1And2: 0, dates: ['2026-06-18'] }, isReachedLate), null);
+  assert.equal(openSignalFromReviews(null, { count: 1, tier1And2: 0, dates: ['2026-06-18'] }, isReachedLate), null);
+});
+
+test('openSignalFromReviews fires with no previewsStartDate (date guard relaxed)', () => {
+  const sig = openSignalFromReviews({ status: 'previews', category: 'off-broadway', previewsStartDate: null }, { count: 1, tier1And2: 0, dates: ['2026-06-18'] }, isReachedLate);
+  assert.equal(sig.date, '2026-06-18');
+});
+
+test('findStuckPreviews with isDateReached also surfaces open-signalled shows below the score gate', () => {
+  const shows = [
+    { id: 'labelless', title: 'Label•less', category: 'off-broadway', status: 'previews', openingDate: null, previewsStartDate: '2026-06-10' },
+    { id: 'rodeo', title: 'Rodeo', category: 'off-broadway', status: 'previews', openingDate: null, previewsStartDate: '2026-05-20' },
+  ];
+  const countMap = {
+    labelless: { count: 2, tier1And2: 1, dates: ['2026-06-18', '2026-06-19'] }, // below 3 gate, but open-signal
+    rodeo: { count: 5, tier1And2: 3, dates: ['2026-06-01', '2026-06-01', '2026-05-31', '2026-06-01', '2026-06-01'] }, // score-threshold
+  };
+  // Without isDateReached: only score-threshold shows (back-compat).
+  const legacy = findStuckPreviews(shows, countMap);
+  assert.deepEqual(legacy.map((s) => s.id).sort(), ['rodeo']);
+  // With isDateReached: both, tagged by which signal fired.
+  const both = findStuckPreviews(shows, countMap, isReachedLate);
+  const byId = Object.fromEntries(both.map((s) => [s.id, s]));
+  assert.equal(byId.labelless.signal, 'open-signal');
+  assert.equal(byId.rodeo.signal, 'score-threshold');
+  assert.equal(byId.labelless.pressNight, '2026-06-18');
 });
