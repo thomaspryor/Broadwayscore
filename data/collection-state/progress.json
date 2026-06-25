@@ -456,7 +456,10 @@
     "good-people-2011/newsday--linda-winer.json",
     "good-people-2011/theatermania--david-rooney.json",
     "the-importance-of-being-earnest-2011/theater-life--eric-march.json",
-    "the-peewee-herman-show-2010/theatermania--unknown.json"
+    "the-peewee-herman-show-2010/theatermania--unknown.json",
+    "the-scottsboro-boys-2010/timeout--david-cote.json",
+    "driving-miss-daisy-2010/ew--melissa-rose-bernardo.json",
+    "driving-miss-daisy-2010/newsday--linda-winer.json"
   ],
   "failed": [
     "sinatra-the-musical-west-end-2026/broadwayworld--unknown.json",
@@ -1073,7 +1076,14 @@
     "the-importance-of-being-earnest-2011/bloomberg--jeremy-gerard.json",
     "a-free-man-of-color-2010/backstage--erik-haagensen.json",
     "the-merchant-of-venice-2010/variety--charles-isherwood.json",
-    "women-on-the-verge-of-a-nervous-breakdown-2010/amny--matt-windman.json"
+    "women-on-the-verge-of-a-nervous-breakdown-2010/amny--matt-windman.json",
+    "women-on-the-verge-of-a-nervous-breakdown-2010/variety--charles-isherwood.json",
+    "women-on-the-verge-of-a-nervous-breakdown-2010/backstage--erik-haagensen.json",
+    "the-scottsboro-boys-2010/backstage--erik-haagensen.json",
+    "rain-2010/newsday--linda-winer.json",
+    "driving-miss-daisy-2010/nytheatre--martin-denton.json",
+    "lombardi-2010/newyorker--uncredited.json",
+    "lombardi-2010/timeout--david-cote.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1259,7 +1269,8 @@
       "evita-2012/ew--thom-geier.json",
       "death-of-a-salesman-2012/theatermania--charles-isherwood.json",
       "good-people-2011/theatermania--david-rooney.json",
-      "the-importance-of-being-earnest-2011/theater-life--eric-march.json"
+      "the-importance-of-being-earnest-2011/theater-life--eric-march.json",
+      "driving-miss-daisy-2010/ew--melissa-rose-bernardo.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1471,7 +1482,8 @@
       "data/review-texts/birthright-off-broadway-2026/broadwayworld--unknown.json",
       "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
       "data/review-texts/cyrano-de-bergerac-2012/northjerseycom--robert-feldberg.json",
-      "data/review-texts/jerusalem-2011/village-voice--unknown.json"
+      "data/review-texts/jerusalem-2011/village-voice--unknown.json",
+      "data/review-texts/lombardi-2010/newyorker--uncredited.json"
     ],
     "archive": [
       "beetlejuice-west-end-2026/timeout-london--unknown.json",
@@ -1660,11 +1672,14 @@
       "wonderland-2011/the-tampa-tribune--walt-belcher.json",
       "war-horse-2011/ew--thom-geier.json",
       "that-championship-season-2011/newsday--linda-winer.json",
-      "good-people-2011/newsday--linda-winer.json"
+      "good-people-2011/newsday--linda-winer.json",
+      "the-scottsboro-boys-2010/timeout--david-cote.json",
+      "rain-2010/newsday--linda-winer.json",
+      "driving-miss-daisy-2010/newsday--linda-winer.json"
     ]
   },
   "startTime": "2026-06-24T10:39:16.417Z",
-  "lastProcessed": "women-on-the-verge-of-a-nervous-breakdown-2010/amny--matt-windman.json",
+  "lastProcessed": "lombardi-2010/timeout--david-cote.json",
   "log": [
     {
       "t": "2026-06-24T10:48:21.673Z",
@@ -1993,6 +2008,28 @@
       "t": "2026-06-25T06:14:09.446Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-06-25T06:43:32.435Z",
+      "event": "bb-session",
+      "session": "588953d2",
+      "url": "http://www.newyorker.com/arts/events/theatre/lombardi-circle-in-the-square"
+    },
+    {
+      "t": "2026-06-25T06:43:33.339Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-06-25T06:44:21.256Z",
+      "event": "bb-session",
+      "session": "8ae26a61",
+      "url": "http://newyork.timeout.com/articles/theater/90120/lombardi-at-circle-in-the-squa"
+    },
+    {
+      "t": "2026-06-25T06:44:22.053Z",
+      "event": "bb-cookie-inject",
+      "domain": "timeout.com"
     }
   ]
 }

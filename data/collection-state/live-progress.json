@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-06-25T06:39:43.115Z",
-  "processed": 457,
-  "failed": 615,
-  "successRate": "42.6%",
+  "updatedAt": "2026-06-25T06:44:36.100Z",
+  "processed": 460,
+  "failed": 622,
+  "successRate": "42.5%",
   "tierBreakdown": {
-    "playwright": 182,
+    "playwright": 183,
     "amp": 0,
     "browserbase": 38,
     "directCookies": 0,
     "scrapingbee": 107,
     "brightdata": 34,
-    "archiveToday": 23,
-    "archive": 187
+    "archiveToday": 24,
+    "archive": 190
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-06-25T01:10:33.690Z",
-      "event": "bb-session",
-      "session": "f720ce79",
-      "url": "http://www.wsj.com/articles/on-your-feet-the-story-of-emilio-and-gloria-estefan-"
-    },
-    {
-      "t": "2026-06-25T01:10:34.518Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-06-25T05:02:11.466Z",
-      "event": "bb-session",
-      "session": "2ac0ddcd",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
-    },
-    {
-      "t": "2026-06-25T05:02:12.861Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-06-25T05:02:44.399Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-06-25T06:14:09.446Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-06-25T06:43:32.435Z",
+      "event": "bb-session",
+      "session": "588953d2",
+      "url": "http://www.newyorker.com/arts/events/theatre/lombardi-circle-in-the-square"
+    },
+    {
+      "t": "2026-06-25T06:43:33.339Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-06-25T06:44:21.256Z",
+      "event": "bb-session",
+      "session": "8ae26a61",
+      "url": "http://newyork.timeout.com/articles/theater/90120/lombardi-at-circle-in-the-squa"
+    },
+    {
+      "t": "2026-06-25T06:44:22.053Z",
+      "event": "bb-cookie-inject",
+      "domain": "timeout.com"
     }
   ]
 }
