@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-26T01:42:10.220Z",
+  "timestamp": "2026-06-26T05:30:37.065Z",
   "stats": {
     "totalReviews": 39264,
-    "alreadyFlagged": 17494,
+    "alreadyFlagged": 17497,
     "dateGuardCatches": 42,
     "directorMismatch": 875,
-    "tvFilmSignals": 1071,
-    "londonSignals": 670,
+    "tvFilmSignals": 1072,
+    "londonSignals": 673,
     "offBroadwaySignals": 464,
     "yearMismatch": 84,
-    "noPublishDate": 3975
+    "noPublishDate": 3967
   },
   "findings": [
     {
@@ -15067,6 +15067,19 @@
     },
     {
       "showId": "music-city-off-broadway-2026",
+      "file": "nytg--unknown.json",
+      "publishDate": "2026-06-24",
+      "url": "https://www.newyorktheatreguide.com/reviews/music-city-off-broadway-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "music-city-off-broadway-2026",
       "file": "theater-scene--christopher-caz-caswell.json",
       "score": 79,
       "publishDate": "November 17th, 2024",
@@ -29917,11 +29930,24 @@
       ]
     },
     {
+      "showId": "cyrano-de-bergerac-west-end-2026",
+      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "publishDate": "2026-06-25",
+      "url": "https://www.allthatdazzles.co.uk/post/review-cyrano-de-bergerac-noel-coward-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
       "showId": "dad-dont-read-this-off-broadway-2026",
       "file": "exeunt-magazine--loren-noveck.json",
       "score": 80,
       "publishDate": "2026-05-15T11:08:02-04:00",
-      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/#:~:text=Dad%20Don't%20Read%20This%20is%20messy%20and%20raw%20and,will%20keep%20it%20in%20my",
+      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -40080,6 +40106,32 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-misanthrope-west-end-2026",
+      "file": "london-theatre--holly-omahony.json",
+      "publishDate": "2026-06-24",
+      "url": "https://www.londontheatre.co.uk/reviews/the-misanthrope-review-national-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "the-misanthrope-west-end-2026",
+      "file": "london-unattached--catherine-anderson.json",
+      "publishDate": "2026-06-24",
+      "url": "https://www.london-unattached.com/the-misanthrope-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
         }
       ]
     },
