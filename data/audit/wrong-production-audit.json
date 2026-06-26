@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-26T10:16:59.097Z",
+  "timestamp": "2026-06-26T11:13:46.005Z",
   "stats": {
-    "totalReviews": 39266,
-    "alreadyFlagged": 17498,
+    "totalReviews": 39280,
+    "alreadyFlagged": 17507,
     "dateGuardCatches": 42,
-    "directorMismatch": 875,
+    "directorMismatch": 876,
     "tvFilmSignals": 1073,
     "londonSignals": 673,
     "offBroadwaySignals": 464,
     "yearMismatch": 84,
-    "noPublishDate": 3966
+    "noPublishDate": 3964
   },
   "findings": [
     {
@@ -8262,7 +8262,7 @@
       "file": "independent--alice-saville.json",
       "score": 58,
       "publishDate": "2026-06-18",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html?loginSuccessful=true",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -8415,6 +8415,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "glengarry-glen-ross-west-end-2026",
+      "file": "the-spectator-uk--lloyd-evans.json",
+      "score": 63,
+      "publishDate": "2026-06-25",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
         }
       ]
     },
@@ -35936,7 +35950,7 @@
       "showId": "pride-west-end-2026",
       "file": "guardian--unknown.json",
       "publishDate": "2026-06-11",
-      "url": "https://www.theguardian.com/film/2026/mar/05/mothers-pride-film-review-martin-clunes-post-brexit",
+      "url": "https://www.theguardian.com/stage/2026/jun/26/pride-review-dorfman-theatre-london",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
