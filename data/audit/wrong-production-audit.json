@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-26T20:41:23.469Z",
+  "timestamp": "2026-06-26T21:32:20.301Z",
   "stats": {
-    "totalReviews": 39281,
-    "alreadyFlagged": 17512,
-    "dateGuardCatches": 38,
-    "directorMismatch": 873,
+    "totalReviews": 39278,
+    "alreadyFlagged": 17511,
+    "dateGuardCatches": 39,
+    "directorMismatch": 872,
     "tvFilmSignals": 1071,
-    "londonSignals": 676,
+    "londonSignals": 677,
     "offBroadwaySignals": 464,
     "yearMismatch": 84,
-    "noPublishDate": 3920
+    "noPublishDate": 3919
   },
   "findings": [
     {
@@ -3035,7 +3035,7 @@
     },
     {
       "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
-      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "file": "all-that-dazzles-uk--daz-gale.json",
       "score": 97,
       "publishDate": "2021-12-13",
       "url": "https://www.allthatdazzles.co.uk/post/review-cabaret-at-the-kit-kat-club",
@@ -4873,6 +4873,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "timeout-london--holly-omahony.json",
+      "score": 95,
       "publishDate": "2026-06-26",
       "url": "https://www.timeout.com/london/theatre/cyrano-de-bergerac-2-review",
       "findings": [
@@ -8154,7 +8155,7 @@
     },
     {
       "showId": "glengarry-glen-ross-west-end-2026",
-      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "file": "all-that-dazzles-uk--daz-gale.json",
       "score": 39,
       "publishDate": "2026-06-17",
       "url": "https://www.allthatdazzles.co.uk/post/review-glengarry-glen-ross-the-old-vic",
@@ -8280,7 +8281,7 @@
       "file": "independent--alice-saville.json",
       "score": 58,
       "publishDate": "2026-06-18",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html?loginSuccessful=true",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -11363,7 +11364,7 @@
     },
     {
       "showId": "into-the-woods-west-end-2025",
-      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "file": "all-that-dazzles-uk--daz-gale.json",
       "score": 58,
       "publishDate": "2025-12-12",
       "url": "https://www.allthatdazzles.co.uk/post/review-into-the-woods-bridge-theatre",
@@ -12215,20 +12216,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "john-proctor-is-the-villain-west-end-2026",
-      "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": 94,
-      "publishDate": "2026-03-28",
-      "url": "https://www.allthatdazzles.co.uk/post/review-john-proctor-is-the-villain-royal-court",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
         }
       ]
     },
@@ -28308,7 +28295,7 @@
     },
     {
       "showId": "back-to-the-future-west-end-2021",
-      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "file": "all-that-dazzles-uk--daz-gale.json",
       "score": 94,
       "publishDate": "2021-08-20",
       "url": "https://www.allthatdazzles.co.uk/post/review-back-to-the-future-adelphi-theatre",
@@ -29875,7 +29862,7 @@
     },
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
-      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "file": "all-that-dazzles-uk--daz-gale.json",
       "score": 100,
       "publishDate": "2026-06-25",
       "url": "https://www.allthatdazzles.co.uk/post/review-cyrano-de-bergerac-noel-coward-theatre",
@@ -30127,6 +30114,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
+        }
+      ]
+    },
+    {
+      "showId": "dracula-west-end-2025",
+      "file": "all-that-dazzles-uk--daz-gale.json",
+      "score": 60,
+      "publishDate": "2026-01-01",
+      "url": "https://www.allthatdazzles.co.uk/post/review-dracula-noel-coward-theatre",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 37d before show (2026-01-01 vs 2026-02-07)"
         }
       ]
     },
@@ -32807,6 +32808,20 @@
     },
     {
       "showId": "inter-alia-west-end-2026",
+      "file": "lbc--johnny-jenkins.json",
+      "score": 91,
+      "publishDate": "2026-04-08",
+      "url": "https://www.lbc.co.uk/article/inter-alia-review-best-plays-ever-seen-5HjdXRZ_2/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 82,
       "publishDate": "2026-04-14",
@@ -35159,7 +35174,7 @@
     },
     {
       "showId": "oh-mary-west-end-2025",
-      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "file": "all-that-dazzles-uk--daz-gale.json",
       "score": 89,
       "publishDate": "2025-12-19",
       "url": "https://www.allthatdazzles.co.uk/post/review-oh-mary-trafalgar-theatre",
@@ -39073,7 +39088,7 @@
     },
     {
       "showId": "the-devil-wears-prada-west-end-2024",
-      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "file": "all-that-dazzles-uk--daz-gale.json",
       "score": 59,
       "publishDate": "2024-12-06",
       "url": "https://www.allthatdazzles.co.uk/post/review-the-devil-wears-prada-dominion-theatre",
@@ -41539,7 +41554,7 @@
     },
     {
       "showId": "war-horse-west-end-2026",
-      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "file": "all-that-dazzles-uk--daz-gale.json",
       "score": 99,
       "publishDate": "2026-06-07",
       "url": "https://www.allthatdazzles.co.uk/post/review-war-horse-olivier-theatre",

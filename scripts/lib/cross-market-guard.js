@@ -97,6 +97,18 @@ function classifyReverseCrossMarket({ region, isDualMarket, isTier12, isBroadway
  * @param {number} [a.margin=45]           - min extra days the review must be farther from this show than the sibling
  * @returns {{ level: 'contamination'|'review'|'clear', confidence: 'high'|null, reason: string, sibId: string|null, thisDiff: number|null, sibDiff: number|null }}
  */
+// A slug token matches a URL only when delimited by non-alphanumerics or string
+// ends — so 'sink' matches '…-sadie-sink-review…' but NOT 'sinking', and 'globe'
+// does not match 'theglobeandmail'. Tokens are already lowercase slugs.
+function tokenInUrl(token, url) {
+  const i = url.indexOf(token);
+  if (i < 0) return false;
+  const before = i === 0 ? '' : url[i - 1];
+  const after = i + token.length >= url.length ? '' : url[i + token.length];
+  const boundary = (ch) => ch === '' || !/[a-z0-9]/.test(ch);
+  return boundary(before) && boundary(after);
+}
+
 function classifyCrossMarketContamination({
   reviewDate, reviewUrl, thisShow, siblings, outletRegion, isDualMarket, margin = 45,
 }) {
@@ -116,8 +128,10 @@ function classifyCrossMarketContamination({
 
   // URL corroboration: does the review URL contain a distinctive cast/venue token of
   // the best (date-closest) sibling? Tokens are precomputed by the caller from shows.json.
+  // Match on SLUG BOUNDARIES (token delimited by non-alphanumeric or string ends), not raw
+  // substring — otherwise 'hall' matches 'marshall', 'globe' matches 'theglobeandmail', etc.
   const url = (reviewUrl || '').toLowerCase();
-  const urlMatchesSibling = !!(url && Array.isArray(best.tokens) && best.tokens.some(t => t && url.includes(t)));
+  const urlMatchesSibling = !!(url && Array.isArray(best.tokens) && best.tokens.some(t => t && tokenInUrl(t, url)));
 
   // Legacy always-on path: tight sibling cluster AND very far from this show.
   // Preserved unchanged (no corroboration required) so existing strict behavior holds.
