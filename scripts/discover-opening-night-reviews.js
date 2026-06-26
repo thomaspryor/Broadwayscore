@@ -100,11 +100,24 @@ const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
 let _scrapingBeeExhausted = false;
 let _loggedNoProviders = false;
 
+// Per-run SERP call budget. searchGoogle() and the inline news/web queries hit
+// ScrapingBee SERP DIRECTLY, bypassing scraper.js's SB_CREDIT_BUDGET guard, so
+// without this a pathological run could spend unbounded credits (plan-review:
+// Codex). Counts every SERP call across Strategy 1 + 2 + 2b. The broad web
+// query (2b) is gated on remaining budget so it can never be the thing that
+// blows the cap. Override via OPENING_NIGHT_SERP_BUDGET.
+const SERP_CALL_BUDGET = parseInt(process.env.OPENING_NIGHT_SERP_BUDGET || '80', 10);
+let _serpCallsUsed = 0;
+function underSerpBudget() {
+  return _serpCallsUsed < SERP_CALL_BUDGET;
+}
+
 /**
  * Search Google via ScrapingBee SERP API, with BrightData SERP fallback.
  * Falls back to BrightData when ScrapingBee returns 401/403/429 (credits exhausted).
  */
 async function searchGoogle(query, apiKey, nbResults = 5) {
+  _serpCallsUsed++;
   // Try ScrapingBee first (unless already exhausted)
   if (!_scrapingBeeExhausted && apiKey) {
     const results = await _serpViaScrapingBee(query, apiKey, nbResults);
@@ -302,6 +315,7 @@ function isReviewUrl(url, title) {
  * Also checks URL slug and primary title (before : or -) for subtitled shows.
  */
 const { serpResultMentionsShow } = require('./lib/serp-show-match');
+const { passesProductionMatch } = require('./lib/production-match-gate');
 
 async function main() {
   if (!SCRAPINGBEE_KEY && !BRIGHTDATA_TOKEN) {
@@ -519,6 +533,7 @@ async function main() {
     console.log('  Skipping news search (ScrapingBee exhausted or unavailable)');
   } else {
   const newsQuery = `"${showTitle}" ${reviewKeyword}${dateFilter}`;
+  _serpCallsUsed++;
   try {
     let newsUrl = `https://app.scrapingbee.com/api/v1/store/google?api_key=${SCRAPINGBEE_KEY}&search=${encodeURIComponent(newsQuery)}&nb_results=10&search_type=news`;
 
@@ -651,7 +666,94 @@ async function main() {
   }
   } // end else (ScrapingBee not exhausted)
 
-  console.log(`\nResults: ${discovered} new reviews discovered, ${skippedDupe} duplicates skipped, ${skippedCovered} outlets skipped (2+ reviews), ${searched} SERP calls made`);
+  // === Strategy 2b: broad WEB search (open-ended) ===
+  // Catches UNREGISTERED outlets that Strategy 1's outlet list and Strategy 2's
+  // Google-News index both miss (e.g. London Theatre Direct + indie blogs).
+  // Gated by passesProductionMatch() because a plain "{title} review" web search
+  // returns OTHER productions of generic-title plays ("The Truth", "Much Ado",
+  // "The Misanthrope") — a wrong-production review on a public page is worse than
+  // a missing one (plan-review: User-Impact + Pre-mortem). Writes are tagged
+  // source:'broad-web-serp' so they're traceable and pass the normal downstream
+  // wrong-production/wrong-show classifier. Notion 38a637c5-416f-81a7.
+  console.log(`\nStrategy 2b: broad web search (unregistered outlets)...`);
+  if (_scrapingBeeExhausted && !BRIGHTDATA_TOKEN) {
+    console.log('  Skipping broad web search (no SERP provider available)');
+  } else if (!underSerpBudget()) {
+    console.log(`  Skipping broad web search (per-run SERP budget ${SERP_CALL_BUDGET} reached, used ${_serpCallsUsed})`);
+  } else {
+    const webQuery = `"${showTitle}" ${reviewKeyword}${dateFilter}`;
+    try {
+      const results = await searchGoogle(webQuery, SCRAPINGBEE_KEY, 10);
+      searched++;
+      let gated = 0;
+      for (const result of results) {
+        const url = result.url || result.link;
+        if (!url) continue;
+        if (isAggregatorUrl(url)) continue;
+        if (existingUrls.has(url.toLowerCase())) { skippedDupe++; continue; }
+        if (!isReviewUrl(url, result.title)) continue;
+        if (!serpResultMentionsShow(result.title, url, showTitle)) {
+          console.log(`    [SKIP] Not about "${showTitle}": "${(result.title || '').slice(0, 70)}"`);
+          continue;
+        }
+        // Stronger production gate — broad search is the wrong-production risk.
+        if (!passesProductionMatch({ title: result.title, url, description: result.description || result.snippet }, show)) {
+          gated++;
+          console.log(`    [SKIP] No production-match signal (broad web): "${(result.title || '').slice(0, 70)}"`);
+          continue;
+        }
+        const openYearWeb = year && year.length === 4 ? parseInt(year) : null;
+        const closeYearWeb = show.closingDate ? new Date(show.closingDate).getFullYear() : null;
+        if (openYearWeb && isUrlYearOutsideWindow(url, openYearWeb, closeYearWeb)) {
+          console.log(`    [SKIP] URL year outside production window for ${showId}`);
+          continue;
+        }
+        const criticName = extractCriticFromTitle(result.title || '');
+        const outletId = domainToOutletId(url) || 'unknown';
+        console.log(`  FOUND (broad web): ${result.title?.slice(0, 80) || url}`);
+        console.log(`         ${url}`);
+        console.log(`         Outlet: ${outletId}, Critic: ${criticName}`);
+        if (!DRY_RUN) {
+          const canonicalOutletId = normalizeOutlet(outletId);
+          const filename = generateReviewFilename(outletId, criticName);
+          const filepath = path.join(showDir, filename);
+          if (fs.existsSync(filepath)) { skippedDupe++; continue; }
+          if (fs.existsSync(showDir)) {
+            const criticSlug = normalizeCritic(criticName);
+            const existingFiles = fs.readdirSync(showDir);
+            const hasDupe = existingFiles.some(f => {
+              const m = f.match(/^(.+?)--(.+)\.json$/);
+              return m && normalizeOutlet(m[1]) === canonicalOutletId && m[2] === criticSlug;
+            });
+            if (hasDupe) { skippedDupe++; continue; }
+          }
+          const writeResult = createOrMergeReviewFile(showId, {
+            outletId: canonicalOutletId,
+            outlet: getOutletDisplayName(canonicalOutletId) || canonicalOutletId,
+            criticName: criticName || 'Unknown',
+            url,
+            source: 'broad-web-serp',
+            fields: {
+              publishDate: null,
+              fullText: null,
+              contentTier: 'excerpt',
+            },
+          });
+          if (writeResult.action === 'skipped') {
+            console.log(`  skipped (${writeResult.reason}): ${url}`);
+            continue;
+          }
+        }
+        existingUrls.add(url.toLowerCase());
+        discovered++;
+      }
+      if (gated > 0) console.log(`  (${gated} result(s) rejected by production-match gate)`);
+    } catch (err) {
+      console.error(`  Error in broad web search: ${err.message}`);
+    }
+  }
+
+  console.log(`\nResults: ${discovered} new reviews discovered, ${skippedDupe} duplicates skipped, ${skippedCovered} outlets skipped (2+ reviews), ${searched} SERP calls made, ${_serpCallsUsed} SERP budget used`);
   if (_scrapingBeeExhausted && BRIGHTDATA_TOKEN) {
     console.log('Note: ScrapingBee credits exhausted — used BrightData SERP as fallback');
   }
