@@ -39,6 +39,34 @@ data/audit/market-misroutes.json merge=ours
 data/audit/unknown-aggregator-outlets.json merge=ours
 data/audit/pipeline-health/rebuild-reviews.last-success merge=ours
 
+# Surfaced by scripts/audit-churn-merge-coverage.js (the churn-coverage monitor),
+# which finds high-churn TRACKED files with no merge driver — the gap the two
+# manual triage passes above kept leaving. Bot-only per-run state (collect-review-
+# texts.js saveState + serp-last-run + browserbase usage), each a full fresh
+# snapshot; collect-review-texts.js documents the intended resolution inline
+# ("always keep the current run's version"). `*.json` is non-recursive — all
+# tracked collection-state files sit directly in the dir.
+data/collection-state/*.json merge=ours
+
+# merge-coverage=exempt — a CUSTOM attribute read ONLY by audit-churn-merge-
+# coverage.js to suppress false "needs a merge driver" flags; git ignores it for
+# merging. These files are high-churn but INTENTIONALLY have no driver, for one
+# of two reasons:
+#   (a) served / human-editable → needs a real 3-way merge, must NOT be `ours`
+#       (ours silently drops the other side). Same rule as the SAFETY note above.
+#   (b) cross-run accumulate-state (append array / seen-set) → neither `ours`
+#       (drops new entries) nor `union` (corrupts JSON) is correct; the bot
+#       re-accumulates next run, so the churn is accepted rather than driven.
+# Adding a real `merge=` driver to any of these later auto-clears the exemption.
+public/** merge-coverage=exempt
+data/tony-win-probabilities.json merge-coverage=exempt
+data/tony-polymarket-odds.json merge-coverage=exempt
+data/tony-kalshi-odds.json merge-coverage=exempt
+data/show-score-urls.json merge-coverage=exempt
+data/llm-scoring-runs.json merge-coverage=exempt
+data/llm-scoring-garbage-skips.json merge-coverage=exempt
+data/commercial-rss-state.json merge-coverage=exempt
+
 # cloud-memory/ is a mirror of ~/.claude/projects/.../memory/ for cloud Claude
 # Code sessions. Marking it vendored keeps language stats accurate and lets
 # GitHub collapse it in the diff view.
