@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-26T21:48:02.896Z",
+  "generatedAt": "2026-06-26T22:17:29.810Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -321,25 +321,24 @@
       "status": "open",
       "slug": "pride-west-end",
       "thumbnail": "/images/shows/pride-west-end-2026/thumbnail.webp",
-      "siteScore": null,
+      "siteScore": 78.41,
       "liveScore": 78,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 1,
+      "scoreDrift": -0.4099999999999966,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 4,
+      "total": 5,
       "t1": 3,
-      "t2": 0,
+      "t2": 1,
       "t3": 1,
-      "positive": 3,
+      "positive": 4,
       "mixed": 0,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "4/8 total",
+          "5/8 total",
           "T1:2/3",
-          "T2:1/2",
           "hi-conf:2/6"
         ],
         "highConfidence": 2,
@@ -384,10 +383,6 @@
         {
           "name": "New York Theatre Guide",
           "isDualMarket": true
-        },
-        {
-          "name": "WhatsOnStage",
-          "isDualMarket": true
         }
       ],
       "timeline": [
@@ -423,6 +418,18 @@
           "t2": 0,
           "t3": 1,
           "p": 3,
+          "m": 0,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-06-26T22:17:29.810Z",
+          "rc": 5,
+          "s": 78.41,
+          "t1": 3,
+          "t2": 1,
+          "t3": 1,
+          "p": 4,
           "m": 0,
           "n": 1,
           "bc": "waiting"
