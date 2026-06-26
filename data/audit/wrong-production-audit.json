@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-25T23:32:45.983Z",
+  "timestamp": "2026-06-26T01:42:10.220Z",
   "stats": {
-    "totalReviews": 39252,
-    "alreadyFlagged": 17485,
+    "totalReviews": 39264,
+    "alreadyFlagged": 17494,
     "dateGuardCatches": 42,
-    "directorMismatch": 873,
+    "directorMismatch": 875,
     "tvFilmSignals": 1071,
     "londonSignals": 670,
     "offBroadwaySignals": 464,
     "yearMismatch": 84,
-    "noPublishDate": 3973
+    "noPublishDate": 3975
   },
   "findings": [
     {
@@ -26809,6 +26809,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"edward albee\" from whos-afraid-of-virginia-woolf-1976"
+        }
+      ]
+    },
+    {
+      "showId": "whos-afraid-of-virginia-woolf-2020",
+      "file": "nytg--unknown.json",
+      "score": 87,
+      "publishDate": null,
+      "url": "https://www.newyorktheatreguide.com/reviews/whos-afraid-of-virginia-woolf",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"edward albee\" from whos-afraid-of-virginia-woolf-1976"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"anthony page\" from whos-afraid-of-virginia-woolf-2005"
         }
       ]
     },

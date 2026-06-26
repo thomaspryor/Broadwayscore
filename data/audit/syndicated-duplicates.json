@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-06-25T23:30:08.675Z",
+  "generatedAt": "2026-06-26T01:39:43.438Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 0,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 1,
+    "newlyFlagged": 1,
     "alreadyFlagged": 0,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
-    "avgScoreDiff": 0
+    "criticsAffected": 1,
+    "showsAffected": 1,
+    "avgSimilarity": 69,
+    "avgScoreDiff": 16
   },
   "syndicationPairs": [
     {
@@ -96,7 +96,20 @@
       "count": 0
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "Matt Windman",
+      "showId": "one-man-two-guvnors-2012",
+      "primaryOutlet": "newsday",
+      "secondaryOutlet": "amny",
+      "primaryFile": "newsday--matt-windman.json",
+      "secondaryFile": "amny--matt-windman.json",
+      "similarity": 69,
+      "primaryScore": 63,
+      "secondaryScore": 79,
+      "scoreDiff": 16
+    }
+  ],
   "authorMismatches": [
     {
       "showId": "birthday-candles-2022",
