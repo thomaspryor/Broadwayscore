@@ -44,6 +44,17 @@ describe('isOutletDomainMismatch', () => {
     assert.equal(isOutletDomainMismatch('washingtonpost', 'reuters', { wireOutlets: WIRE }), false);
   });
 
+  test('outlet publishing on a sister domain → not a mismatch, DIRECTIONALLY (Observer on theguardian.com)', () => {
+    // 2026-06-25 FP: observer--susannah-clapp filed under "observer" but its URL is
+    // theguardian.com → expected "guardian". Observer publishes on theguardian.com.
+    assert.equal(isOutletDomainMismatch('guardian', 'observer', { wireOutlets: WIRE }), false);
+    // REVERSE is still a genuine mismatch: a "guardian" file whose URL is on
+    // observer.com (→ expected "observer") is misattribution, not a sister case.
+    assert.equal(isOutletDomainMismatch('observer', 'guardian', { wireOutlets: WIRE }), true);
+    // and a non-sister real outlet on theguardian.com is still a mismatch
+    assert.equal(isOutletDomainMismatch('guardian', 'nytimes', { wireOutlets: WIRE }), true);
+  });
+
   test('unresolvable domain (expected falsy) → not a mismatch', () => {
     assert.equal(isOutletDomainMismatch(undefined, 'telegraph', { wireOutlets: WIRE }), false);
     assert.equal(isOutletDomainMismatch('', 'telegraph', { wireOutlets: WIRE }), false);

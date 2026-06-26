@@ -126,6 +126,11 @@ function shouldSkipAggregatorUrlWrite(reviewData, normalizedOutletId) {
  *  - the domain doesn't resolve to a known outlet (expected falsy),
  *  - it resolves to the same outlet (expected === internalOutlet),
  *  - internalOutlet is a wire service (AP/Reuters/UPI syndicate across domains),
+ *  - internalOutlet legitimately publishes on the domain owned by `expected`
+ *    (DIRECTIONAL — the Observer publishes on theguardian.com → expected resolves
+ *    to "guardian" but the review is legitimately filed under "observer"; the
+ *    reverse, a guardian file on observer.com, stays flagged). 2026-06-25 FP on
+ *    my-neighbour-totoro-west-end-2025/observer--susannah-clapp,
  *  - the domain resolves to an AGGREGATOR outlet — aggregator ROUNDUP URLs
  *    (westendtheatre.com, show-score.com, stagedoor.com, …) are shared across
  *    every real outlet the roundup covers, so a real-outlet star-stub carrying
@@ -137,10 +142,28 @@ function shouldSkipAggregatorUrlWrite(reviewData, normalizedOutletId) {
  * @param {string|undefined} internalOutlet - normalized review outletId
  * @param {{wireOutlets?: Set<string>}} [opts]
  */
+// Outlets that legitimately publish on ANOTHER outlet's domain. DIRECTIONAL:
+// keyed by the domain-owner outlet (what the URL's domain resolves to, i.e.
+// `expected`) → the set of outlets that may legitimately carry that domain.
+// The Observer publishes on theguardian.com (→ expected 'guardian'), so an
+// "observer" file with a theguardian.com URL is fine. The reverse is NOT exempt:
+// a "guardian" file whose URL is on observer.com (→ expected 'observer') IS a
+// genuine misattribution — `expected` comes from a UNIQUE domain reverse-lookup,
+// so 'observer' can only mean an observer.com URL, never theguardian.com.
+const SHARED_DOMAIN_OUTLETS = new Map([
+  ['guardian', new Set(['observer'])], // theguardian.com hosts Observer reviews
+]);
+
+function isSharedDomainOutlet(expected, internalOutlet) {
+  return SHARED_DOMAIN_OUTLETS.has(expected)
+    && SHARED_DOMAIN_OUTLETS.get(expected).has(internalOutlet);
+}
+
 function isOutletDomainMismatch(expected, internalOutlet, opts = {}) {
   if (!expected) return false;
   if (expected === internalOutlet) return false;
   if (opts.wireOutlets && opts.wireOutlets.has(internalOutlet)) return false;
+  if (isSharedDomainOutlet(expected, internalOutlet)) return false;
   if (AGGREGATOR_OUTLET_IDS.has(expected)) return false;
   return true;
 }
@@ -151,6 +174,8 @@ module.exports = {
   isAggregatorReviewSource,
   shouldSkipAggregatorUrlWrite,
   isOutletDomainMismatch,
+  isSharedDomainOutlet,
+  SHARED_DOMAIN_OUTLETS,
   hostnameOf,
   isAggregatorUrlMismatch,
 };
