@@ -37,7 +37,11 @@ const { filterOwnerAccounts } = require('./lib/owner-accounts');
 const { draftMentions } = require('./lib/brand-mention-drafter');
 const { sendBrandMentionDigest } = require('./lib/brand-mention-email');
 
-const { canonicalizeUrl } = serpInternal;
+const { canonicalizeUrl, normalizeExcerpt } = serpInternal;
+
+// SERP sources recycle snippets across URLs (see normalizeExcerpt); free
+// sources carry genuine per-post text, so excerpt dedup applies to SERP only.
+const SERP_SOURCES = new Set(['google', 'news']);
 
 // ── Config ────────────────────────────────────────────────────────────────
 
@@ -67,8 +71,22 @@ function loadState() {
       seenIds: {},
       seenUrls: {},
       mentions: [],
+      seenExcerpts: {},
       stats: { totalSeen: 0, totalDispatched: 0, lastCalibration: null },
     };
+  }
+  // Migration: older state files may lack seenExcerpts — backfill from existing
+  // SERP mentions so the recycled-snippet dedup works on the first run after
+  // upgrade (otherwise a blurb already alerted on would re-alert once more).
+  if (!state.seenExcerpts) {
+    state.seenExcerpts = {};
+    for (const m of state.mentions) {
+      if (m && SERP_SOURCES.has(m.source)) {
+        const norm = normalizeExcerpt(m.excerpt);
+        if (norm) state.seenExcerpts[norm] = true;
+      }
+    }
+    console.log(`[state] migration: built seenExcerpts with ${Object.keys(state.seenExcerpts).length} SERP snippets`);
   }
   // Migration: older state files may lack seenUrls — backfill from existing
   // mentions so cross-source dedup works immediately on the first run after
@@ -157,8 +175,9 @@ async function main() {
   // (e.g. fetchGoogleWebMentions + fetchGoogleNewsMentions) that both surface
   // the same URL don't produce two entries.
   const newMentions = [];
-  const seenThisRun = new Set();       // canonical URLs
-  const seenTitlesThisRun = new Set(); // normalized titles (within-run dedup only)
+  const seenThisRun = new Set();        // canonical URLs
+  const seenTitlesThisRun = new Set();  // normalized titles (within-run dedup only)
+  const seenExcerptsThisRun = new Set(); // normalized SERP snippets (this run)
   for (const m of organic) {
     if (state.seenIds[m.id]) {
       if (VERBOSE) console.log(`  [seen-id] ${m.id}`);
@@ -181,8 +200,17 @@ async function main() {
       if (VERBOSE) console.log(`  [dup-title] ${m.id} (title: "${normTitle}")`);
       continue;
     }
+    // Excerpt-based dedup (SERP only): a recycled snippet that surfaces under a
+    // new URL+title each day (e.g. a Threads account's sticky brand blurb)
+    // should alert once, not every run. Spans runs via state.seenExcerpts.
+    const normExcerpt = SERP_SOURCES.has(m.source) ? normalizeExcerpt(m.excerpt) : '';
+    if (normExcerpt && (state.seenExcerpts[normExcerpt] || seenExcerptsThisRun.has(normExcerpt))) {
+      if (VERBOSE) console.log(`  [dup-excerpt] ${m.id} (excerpt: "${normExcerpt.slice(0, 60)}")`);
+      continue;
+    }
     if (canonical) seenThisRun.add(canonical);
     if (normTitle) seenTitlesThisRun.add(normTitle);
+    if (normExcerpt) seenExcerptsThisRun.add(normExcerpt);
     newMentions.push(m);
   }
   console.log(`[monitor] dedup: ${newMentions.length} NEW mentions (${organic.length - newMentions.length} already seen or cross-source duplicates)`);
@@ -260,6 +288,10 @@ async function main() {
     state.seenIds[m.id] = true;
     if (m.url) {
       state.seenUrls[canonicalizeUrl(m.url)] = true;
+    }
+    if (SERP_SOURCES.has(m.source)) {
+      const norm = normalizeExcerpt(m.excerpt);
+      if (norm) state.seenExcerpts[norm] = true;
     }
     state.mentions.push({
       ...m,

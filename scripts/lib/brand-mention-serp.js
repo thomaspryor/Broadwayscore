@@ -92,6 +92,23 @@ function canonicalizeUrl(rawUrl) {
   return url.toString();
 }
 
+// Normalize a SERP snippet for cross-run dedup. SERP engines (esp. Google on
+// Threads/social profile pages) attach a single "sticky" snippet to every post
+// URL under an account, so the same brand-mention blurb resurfaces under a new
+// URL+title each day and evades URL/title dedup. Key on the snippet text so the
+// recycled blurb only alerts once. Strips relative-time prefixes ("3 hours ago
+// — "), trailing "Read more"/ellipsis, and collapses whitespace/case.
+function normalizeExcerpt(excerpt) {
+  if (!excerpt) return '';
+  return String(excerpt)
+    .replace(/^\s*\d+\s+(second|minute|hour|day|week|month|year)s?\s+ago\s*[—–-]\s*/i, '')
+    .replace(/\bread more\b\.?\s*$/i, '')
+    .replace(/[…….]+\s*$/, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase();
+}
+
 // Stable hash for Google web URLs (where we have no native ID).
 // Hashes the canonical form so SERP variants of the same resource collapse.
 function urlHash(url) {
@@ -374,5 +391,5 @@ module.exports = {
   fetchGoogleNewsMentions,
   fetchPaidSources,
   // exported for tests
-  _internal: { parseXUrl, buildQuery, urlHash, canonicalizeUrl, isUnattributableSocialUrl, isUnresolvableRedirectUrl },
+  _internal: { parseXUrl, buildQuery, urlHash, canonicalizeUrl, normalizeExcerpt, isUnattributableSocialUrl, isUnresolvableRedirectUrl },
 };
