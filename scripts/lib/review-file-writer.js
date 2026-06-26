@@ -503,6 +503,16 @@ function _mergeIntoExisting(filepath, existing, ctx) {
   const { showId, input, fields, dryRun, onMerge } = ctx;
   let changed = false;
 
+  // Clear a stored JSON-LD pullQuote/excerpt BEFORE the field merge. The merge
+  // below only copies an incoming field when `!existing[key]`; a JSON-LD blob is
+  // truthy, so it would block a clean incoming quote from landing — and then
+  // sanitizeDisplayFields() would drop the blob at write, leaving the field
+  // empty even though a good replacement was available. Clearing it here lets
+  // the real incoming value win.
+  for (const f of ['pullQuote', 'excerpt']) {
+    if (hasJsonLdArtifact(existing[f])) { delete existing[f]; changed = true; }
+  }
+
   // Fields that are FINAL once set by a human — never overwrite regardless of
   // whether the stored value is truthy or falsy. The !existing[key] guard below
   // already protects truthy values, but humanReviewedWrongProduction:false (human

@@ -80,13 +80,15 @@ function decodeHtmlEntities(text) {
 // review-file-writer.js. Detector and write-guard share ONE definition so they
 // can't drift (CLAUDE.md §15), mirroring looksLikeUrlCriticName.
 
-// True when a display string still contains an undecoded HTML entity (named
-// accent, &amp;/&quot;/smart-quote, or numeric). Keep the named-entity list a
-// subset of what decodeHtmlEntities() handles, so a flagged value is always
-// fully cleanable by decoding.
-const UNDECODED_HTML_ENTITY_RE = /&(?:eacute|egrave|euml|oacute|uacute|iacute|aacute|ntilde|ccedil|amp|quot|ldquo|rdquo|lsquo|rsquo|mdash|ndash|hellip|#\d+|#x[0-9a-f]+);/i;
+// True when a display string contains an undecoded HTML entity. Defined as
+// "decodeHtmlEntities() would change this value" so the detector and the
+// save-time guard can NEVER drift: a value is flagged iff the decoder can clean
+// it (symmetry by construction — adding an entity to the decoder automatically
+// extends the detector too). The `&` fast-path skips the decode for the ~99% of
+// values that contain no entity at all.
 function hasUndecodedHtmlEntities(value) {
-  return typeof value === 'string' && UNDECODED_HTML_ENTITY_RE.test(value);
+  if (typeof value !== 'string' || value.indexOf('&') === -1) return false;
+  return decodeHtmlEntities(value) !== value;
 }
 
 // True when a display string carries JSON-LD / structured-data markers — the

@@ -34,6 +34,20 @@ test('hasUndecodedHtmlEntities flags named, smart-quote, and numeric entities', 
   assert.equal(hasUndecodedHtmlEntities(undefined), false);
 });
 
+test('predicate flags EVERY entity the decoder handles (symmetry by construction)', () => {
+  // hasUndecodedHtmlEntities is defined as "decode would change it", so any
+  // entity added to the decoder is automatically flagged — including the
+  // grave/circumflex/tilde set added alongside this guard.
+  for (const e of ['agrave', 'egrave', 'igrave', 'ograve', 'ugrave', 'euml',
+    'iuml', 'acirc', 'ecirc', 'icirc', 'ocirc', 'ucirc', 'atilde', 'otilde',
+    'aring', 'oslash', 'aelig', 'szlig', 'eacute', 'amp', 'ldquo']) {
+    assert.equal(hasUndecodedHtmlEntities(`x&${e};y`), true, `&${e}; not flagged`);
+  }
+  // bare ampersand / clean text → not flagged
+  assert.equal(hasUndecodedHtmlEntities('Tom & Jerry'), false);
+  assert.equal(hasUndecodedHtmlEntities('plain name'), false);
+});
+
 test('decoder fully cleans every named entity the detector flags (symmetry invariant)', () => {
   // Each entity in the detector list must decode to a non-entity value, i.e.
   // hasUndecodedHtmlEntities(decode(x)) === false for any single-entity input.
@@ -85,4 +99,20 @@ test('writer decodes entities and drops JSON-LD at save', () => {
   assert.equal(written.excerpt, 'café society', 'excerpt entity decoded');
   assert.equal(written.pullQuote, undefined, 'JSON-LD pullQuote dropped');
   assert.ok(!hasUndecodedHtmlEntities(written.criticName));
+});
+
+test('merge replaces a stored JSON-LD pullQuote with a clean incoming one (no data loss)', () => {
+  const os = require('os'), fs = require('fs'), path = require('path');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'rfw-merge-'));
+  const { createOrMergeReviewFile } = require('../../scripts/lib/review-file-writer.js');
+  const base = { outlet: 'Variety', outletId: 'variety', criticName: 'Jane Critic',
+    url: 'https://variety.com/2026/legit/reviews/x-1234509876/', source: 'test' };
+
+  // First write lands a JSON-LD pullQuote (simulating an earlier bad scrape).
+  createOrMergeReviewFile('merge-show-2026', { ...base, fields: { fullText: 'body', pullQuote: '{"@type":"Review","reviewBody":"junk"}' } }, { reviewTextsDir: dir });
+  // Second write (merge) brings a clean pullQuote — it must win, not be blocked.
+  const r2 = createOrMergeReviewFile('merge-show-2026', { ...base, fields: { pullQuote: 'A genuinely great show.' } }, { reviewTextsDir: dir });
+
+  const written = JSON.parse(fs.readFileSync(r2.filepath, 'utf8'));
+  assert.equal(written.pullQuote, 'A genuinely great show.', 'clean incoming pullQuote replaced the JSON-LD blob');
 });
