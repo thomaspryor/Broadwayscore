@@ -70,14 +70,24 @@ export default function OffBroadwayPage() {
   // Starting Soon — upcoming OB shows (not yet in previews), soonest first.
   // Mirrors the Broadway homepage shelf (src/app/page.tsx). Computed here rather
   // than in the client so it stays out of the search/filter inventory, which is
-  // active shows only.
-  const shortDate = (d: string) => new Date(d + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  // active shows only. Excludes opera to match the project-wide convention that
+  // opera is kept out of the homepage/OB shelves (see isHomepageNotable in
+  // lib/homepage-notability.ts) — the Broadway shelf is opera-free for the same
+  // reason (opera lives in its own category). Dates are normalized to the date
+  // portion and parsed at local noon so the badge/subtitle never read "Invalid
+  // Date"; anything unparseable is dropped (fail closed) rather than shown.
+  const startMs = (s: typeof shows[number]): number => {
+    const raw = (s.previewsStartDate || s.openingDate)?.slice(0, 10);
+    const t = raw ? new Date(`${raw}T12:00:00`).getTime() : NaN;
+    return Number.isNaN(t) ? Infinity : t;
+  };
+  const shortDate = (d: string) => new Date(`${d.slice(0, 10)}T12:00:00`).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   const startingSoonShows = shows
-    .filter(s => s.status === 'upcoming' && (s.previewsStartDate || s.openingDate))
-    .sort((a, b) => new Date(a.previewsStartDate || a.openingDate).getTime() - new Date(b.previewsStartDate || b.openingDate).getTime())
+    .filter(s => s.status === 'upcoming' && s.type !== 'opera' && Number.isFinite(startMs(s)))
+    .sort((a, b) => startMs(a) - startMs(b))
     .map(s => {
       const startDate = s.previewsStartDate || s.openingDate;
-      return { ...serializeShow(s), subtitle: startDate ? `Starts ${shortDate(startDate)}` : undefined, subtitleColor: 'text-gray-400' };
+      return { ...serializeShow(s), subtitle: `Starts ${shortDate(startDate)}`, subtitleColor: 'text-gray-400' };
     });
 
   return (
