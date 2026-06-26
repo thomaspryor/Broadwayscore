@@ -113,7 +113,10 @@ async function main() {
         console.log(`Production READY deployment: ${shortDeployed}  (age ${fmtAge(dep.ageSec)})  https://${dep.url}`);
         if (commit) {
           let shortTarget = commit;
-          try { shortTarget = execSync(`git rev-parse --short ${commit}`).toString().trim(); } catch {}
+          // stderr silenced: a bogus commit-ish makes git print "fatal: Needed a
+          // single revision" — harmless here (we fall back to the raw arg), so
+          // don't leak it to the user.
+          try { shortTarget = execSync(`git rev-parse --short ${commit}`, { stdio: ['ignore', 'pipe', 'ignore'] }).toString().trim(); } catch {}
           console.log(live ? `✅ ${shortTarget} is LIVE on production.` : `⏳ ${shortTarget} is NOT live yet (production is at ${shortDeployed}).`);
         }
       }
