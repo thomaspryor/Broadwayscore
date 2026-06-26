@@ -18,7 +18,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { normalizeBylineCapture, normalizeCriticName } = require('../../scripts/lib/byline-normalization.js');
+const { normalizeBylineCapture, normalizeCriticName, looksLikeUrlCriticName, sanitizeCriticName } = require('../../scripts/lib/byline-normalization.js');
 
 test('strips trailing "Plus Icon" SVG token (Variety, Lost Boys 2026-04-26)', () => {
   assert.equal(normalizeBylineCapture('Frank Rizzo\n\nPlus Icon'), 'Frank Rizzo');
