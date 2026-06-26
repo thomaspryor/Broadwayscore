@@ -123,7 +123,10 @@
     "becky-shaw-2026/cote-notices--david-cote.json",
     "the-authenticator-west-end-2026/times-uk--clive-davis.json",
     "les-liaisons-dangereuses-west-end-2026/telegraph--claire-allfree.json",
-    "les-liaisons-dangereuses-west-end-2026/times-uk--clive-davis.json"
+    "les-liaisons-dangereuses-west-end-2026/times-uk--clive-davis.json",
+    "romeo-and-juliet-west-end-2026/sunday-express--neil-norman.json",
+    "romeo-and-juliet-west-end-2026/west-end-best-friend--livvy-perrett.json",
+    "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json"
   ],
   "failed": [
     "sinatra-the-musical-west-end-2026/the-upcoming-uk--unknown.json",
@@ -404,7 +407,14 @@
     "romeo-and-juliet-west-end-2026/newsday--unknown.json",
     "romeo-and-juliet-west-end-2026/nydailynews--unknown.json",
     "romeo-and-juliet-west-end-2026/amny--unknown.json",
-    "romeo-and-juliet-west-end-2026/ap--mark-kennedy.json"
+    "romeo-and-juliet-west-end-2026/ap--mark-kennedy.json",
+    "romeo-and-juliet-west-end-2026/exeunt-magazine--unknown.json",
+    "romeo-and-juliet-west-end-2026/nbcny--unknown.json",
+    "romeo-and-juliet-west-end-2026/ny1--unknown.json",
+    "romeo-and-juliet-west-end-2026/theater-pizzazz--unknown.json",
+    "romeo-and-juliet-west-end-2026/hollywood-reporter--david-rooney.json",
+    "seagull-true-story-off-broadway-2026/nysr--frank-scheck.json",
+    "teeth-n-smiles-west-end-2026/broadwayworld--alexander-cohen.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -493,7 +503,9 @@
       "the-price-off-west-end-2026/british-theatre--susan-novak.json",
       "inter-alia-west-end-2026/west-end-best-friend--cara-brazier.json",
       "the-authenticator-west-end-2026/times-uk--clive-davis.json",
-      "les-liaisons-dangereuses-west-end-2026/times-uk--clive-davis.json"
+      "les-liaisons-dangereuses-west-end-2026/times-uk--clive-davis.json",
+      "romeo-and-juliet-west-end-2026/west-end-best-friend--livvy-perrett.json",
+      "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json"
     ],
     "amp": [],
     "browserbase": [
@@ -508,7 +520,9 @@
       "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
       "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
       "data/review-texts/masquerade-off-broadway-2025/nytimes--unknown.json",
-      "masquerade-off-broadway-2025/nytimes--unknown.json"
+      "masquerade-off-broadway-2025/nytimes--unknown.json",
+      "data/review-texts/romeo-and-juliet-west-end-2026/sunday-express--neil-norman.json",
+      "romeo-and-juliet-west-end-2026/sunday-express--neil-norman.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -669,7 +683,7 @@
     ]
   },
   "startTime": "2026-06-25T23:06:09.797Z",
-  "lastProcessed": "romeo-and-juliet-west-end-2026/ap--mark-kennedy.json",
+  "lastProcessed": "teeth-n-smiles-west-end-2026/broadwayworld--alexander-cohen.json",
   "log": [
     {
       "t": "2026-06-26T01:27:24.415Z",
@@ -799,6 +813,12 @@
       "t": "2026-06-26T20:16:51.601Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-26T20:46:22.622Z",
+      "event": "bb-session",
+      "session": "5cc3bb42",
+      "url": "https://www.express.co.uk/entertainment/theatre/1902976/Romeo-Juliet-review-Tom-"
     }
   ]
 }
