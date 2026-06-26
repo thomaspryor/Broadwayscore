@@ -178,7 +178,15 @@
     "romeo-juliet-2024/sunday-express--neil-norman.json",
     "left-on-tenth-2024/broadwaynews--brittani-samuel.json",
     "left-on-tenth-2024/nydailynews--chris-jones.json",
-    "our-town-2024/broadwaynews--brittani-samuel.json"
+    "our-town-2024/broadwaynews--brittani-samuel.json",
+    "yellow-face-2024/nydailynews--chris-jones.json",
+    "mcneal-2024/broadwaynews--brittani-samuel.json",
+    "the-hills-of-california-2024/broadwaynews--brittani-samuel.json",
+    "the-hills-of-california-2024/sunday-express--george-simpson.json",
+    "giant-royal-court-off-west-end-2024/times-uk--clive-davis.json",
+    "the-roommate-2024/broadwaynews--brittani-samuel.json",
+    "job-2024/broadwaynews--brittani-samuel.json",
+    "starlight-express-west-end-2024/thereviewshub--the-reviews-hub-london.json"
   ],
   "failed": [
     "sinatra-the-musical-west-end-2026/the-upcoming-uk--unknown.json",
@@ -484,7 +492,9 @@
     "art-2025/broadwaynews--michael-abourizk.json",
     "redwood-2025/gmanetwork--stuart-santiago.json",
     "redwood-2025/juiceph--wanggo-gallaga.json",
-    "eureka-day-2024/times-uk--clive-davis.json"
+    "eureka-day-2024/times-uk--clive-davis.json",
+    "the-hills-of-california-2024/thestage--sam-marlowe.json",
+    "the-hills-of-california-2024/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -599,7 +609,9 @@
       "pen-pals-off-broadway-2025/theater-life--barry-gordin.json",
       "tammy-faye-2024/theatre-reviews-limited--david-roberts.json",
       "tammy-faye-2024/culturesauce--thom-geier.json",
-      "left-on-tenth-2024/nydailynews--chris-jones.json"
+      "left-on-tenth-2024/nydailynews--chris-jones.json",
+      "yellow-face-2024/nydailynews--chris-jones.json",
+      "giant-royal-court-off-west-end-2024/times-uk--clive-davis.json"
     ],
     "amp": [],
     "browserbase": [
@@ -618,7 +630,9 @@
       "data/review-texts/romeo-and-juliet-west-end-2026/sunday-express--neil-norman.json",
       "romeo-and-juliet-west-end-2026/sunday-express--neil-norman.json",
       "data/review-texts/romeo-juliet-2024/sunday-express--neil-norman.json",
-      "romeo-juliet-2024/sunday-express--neil-norman.json"
+      "romeo-juliet-2024/sunday-express--neil-norman.json",
+      "data/review-texts/the-hills-of-california-2024/sunday-express--george-simpson.json",
+      "the-hills-of-california-2024/sunday-express--george-simpson.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -654,7 +668,11 @@
       "tammy-faye-2024/broadwaynews--brittani-samuel.json",
       "romeo-juliet-2024/broadwaynews--brittani-samuel.json",
       "left-on-tenth-2024/broadwaynews--brittani-samuel.json",
-      "our-town-2024/broadwaynews--brittani-samuel.json"
+      "our-town-2024/broadwaynews--brittani-samuel.json",
+      "mcneal-2024/broadwaynews--brittani-samuel.json",
+      "the-hills-of-california-2024/broadwaynews--brittani-samuel.json",
+      "the-roommate-2024/broadwaynews--brittani-samuel.json",
+      "job-2024/broadwaynews--brittani-samuel.json"
     ],
     "brightdata": [
       "camping-off-broadway-2026/talkinbroadway--unknown.json",
@@ -803,11 +821,12 @@
       "art-2025/thewrap--robert-hofler.json",
       "smash-2025/broadway-and-me--janice-c-simpson.json",
       "glengarry-glen-ross-2025/newsday--unknown.json",
-      "elf-2024/northjerseycom--unknown.json"
+      "elf-2024/northjerseycom--unknown.json",
+      "starlight-express-west-end-2024/thereviewshub--the-reviews-hub-london.json"
     ]
   },
   "startTime": "2026-06-25T23:06:09.797Z",
-  "lastProcessed": "our-town-2024/broadwaynews--brittani-samuel.json",
+  "lastProcessed": "starlight-express-west-end-2024/thereviewshub--the-reviews-hub-london.json",
   "log": [
     {
       "t": "2026-06-26T01:27:24.415Z",
@@ -949,6 +968,12 @@
       "event": "bb-session",
       "session": "9ced5eb0",
       "url": "https://www.express.co.uk/entertainment/theatre/1902976/Romeo-Juliet-review-Tom-"
+    },
+    {
+      "t": "2026-06-26T21:05:41.022Z",
+      "event": "bb-session",
+      "session": "6b32f38e",
+      "url": "https://www.express.co.uk/entertainment/theatre/1864762/The-Hills-of-California-"
     }
   ]
 }
