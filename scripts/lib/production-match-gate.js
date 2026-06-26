@@ -66,9 +66,13 @@ function productionMatchSignals(show = {}) {
     if (w.length >= 4 && !VENUE_STOPWORDS.has(w)) tokens.add(w);
   }
 
-  // Opening year.
+  // Opening year is deliberately NOT a positive signal: nearly every current
+  // review mentions the current year, so a WRONG show that merely shares a title
+  // word + the year would pass (the e2e run wrote a "Pride & Prejudice (*sort
+  // of*)" review onto "Pride" via the year alone). Year is only useful as a
+  // NEGATIVE filter (wrong-year → reject), which isUrlYearOutsideWindow already
+  // does at the call site. Returned for callers but not added to `tokens`.
   const year = (show.openingDate && /^\d{4}/.test(show.openingDate)) ? show.openingDate.slice(0, 4) : null;
-  if (year) tokens.add(year);
 
   // Cast + creative surnames (cap to keep the signal list tight).
   const people = []
