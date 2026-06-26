@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-26T02:15:25.921Z",
-  "processed": 11,
-  "failed": 34,
-  "successRate": "24.4%",
+  "updatedAt": "2026-06-26T02:44:23.970Z",
+  "processed": 14,
+  "failed": 39,
+  "successRate": "26.4%",
   "tierBreakdown": {
-    "playwright": 10,
+    "playwright": 11,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 6,
     "directCookies": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
+    "brightdata": 1,
     "archiveToday": 9,
     "archive": 0
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-06-26T01:27:24.415Z",
@@ -64,6 +64,12 @@
       "t": "2026-06-26T02:14:29.291Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-26T02:43:34.512Z",
+      "event": "bb-session",
+      "session": "faf4291c",
+      "url": "https://thefrontrowcenter.com/2026/06/dad-dont-read/"
     }
   ]
 }
