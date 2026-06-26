@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-26T03:45:52.885Z",
+  "updatedAt": "2026-06-26T03:48:09.007Z",
   "processed": 14,
   "failed": 64,
   "successRate": "17.9%",
   "tierBreakdown": {
     "playwright": 11,
     "amp": 0,
-    "browserbase": 7,
+    "browserbase": 8,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 1,
     "archiveToday": 19,
     "archive": 0
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-06-26T01:27:24.415Z",
@@ -93,6 +93,17 @@
       "event": "bb-session",
       "session": "001c12c4",
       "url": "https://www.broadwayworld.com/reviews/Birthright"
+    },
+    {
+      "t": "2026-06-26T03:46:04.142Z",
+      "event": "bb-session",
+      "session": "4c912c28",
+      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
+    },
+    {
+      "t": "2026-06-26T03:46:04.555Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
