@@ -26,6 +26,7 @@ const { wouldBeIncludedInRebuild, passesFlagFilters, hasValidScore } = require('
 
 // Canonical valid-tier list — propagates when TIER_WEIGHTS changes.
 const { VALID_TIERS } = require('./lib/outlet-tiers');
+const { buildOutletMaps } = require('./lib/outlet-region-map');
 
 // Canonical Broadway-category predicate. Treats null category as Broadway
 // per historical-import convention; use this instead of raw string compare.
@@ -4064,59 +4065,16 @@ function validateCrossMarketContamination() {
     showCategoryMap[s.id] = s.category || 'broadway';
   }
 
-  // Load outlet registry for region info
+  // Load outlet registry for region info. Region / dual-market / tier lookups are
+  // built by the shared scripts/lib/outlet-region-map.js helper (single source of
+  // truth with audit-review-contamination.js) — including the alias-lowercasing
+  // nuance a ship-check had to fix once (ship-check 2026-06-15).
   const registryFile = path.join(DATA_DIR, 'outlet-registry.json');
-  let outletRegionMap = {};
   let reg;
   try {
     reg = JSON.parse(fs.readFileSync(registryFile, 'utf8'));
-    for (const [id, info] of Object.entries(reg.outlets)) {
-      const region = info.region || (info.market === 'west-end' ? 'london' : null);
-      if (region) {
-        outletRegionMap[id] = region;
-        if (info.aliases) {
-          // Lowercase alias keys to match the lookup (oid = ...toLowerCase()) and the
-          // dualMarket/tier12Outlets/outletTierMap sets. Uppercase aliases (e.g. "The Times",
-          // "FT") otherwise miss the region lookup → classified 'skip' → the Tier 1/2
-          // London-on-Broadway hard error silently never fires. (ship-check 2026-06-15)
-          for (const alias of info.aliases) outletRegionMap[alias.toLowerCase()] = region;
-        }
-      }
-    }
   } catch { /* no registry = skip check */ return; }
-
-  // Dual-market outlets — derived from `isDualMarket: true` in outlet-registry.json (single source of truth)
-  const dualMarket = new Set();
-  for (const [id, info] of Object.entries(reg.outlets || {})) {
-    if (info.isDualMarket) {
-      dualMarket.add(id);
-      if (info.aliases) {
-        for (const alias of info.aliases) dualMarket.add(alias.toLowerCase());
-      }
-    }
-  }
-  // Also allow Tier 1/2 outlets — cross-market guard only targets Tier 3 / untiered regional outlets
-  const tier12Outlets = new Set();
-  const outletTierMap = {}; // id + aliases -> numeric tier (for advisory/audit reporting)
-  const canonicalOutletId = {}; // id + aliases -> canonical id (so accumulation keys by outlet, not alias fragment)
-  for (const [id, info] of Object.entries(reg.outlets)) {
-    canonicalOutletId[id] = id;
-    if (info.aliases) {
-      for (const alias of info.aliases) canonicalOutletId[alias.toLowerCase()] = id;
-    }
-    if (typeof info.tier === 'number') {
-      outletTierMap[id] = info.tier;
-      if (info.aliases) {
-        for (const alias of info.aliases) outletTierMap[alias.toLowerCase()] = info.tier;
-      }
-    }
-    if (info.tier === 1 || info.tier === 2) {
-      tier12Outlets.add(id);
-      if (info.aliases) {
-        for (const alias of info.aliases) tier12Outlets.add(alias.toLowerCase());
-      }
-    }
-  }
+  const { outletRegionMap, dualMarket, tier12Outlets, outletTierMap, canonicalOutletId } = buildOutletMaps(reg);
 
   let issues = 0;
   const weReviews = reviews.filter(r => isLondonMarket(showCategoryMap[r.showId]));

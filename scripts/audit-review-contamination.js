@@ -80,6 +80,43 @@ function normalizeTitle(t) {
 const { parseDate } = require('./lib/date-utils');
 const { normalizeOutlet } = require('./lib/review-normalization');
 const { isOutletDomainMismatch } = require('./lib/aggregator-domains');
+const { buildOutletMaps } = require('./lib/outlet-region-map');
+const { classifyCrossMarketContamination } = require('./lib/cross-market-guard');
+
+// Shared outlet → region / dual-market lookups (single source of truth with validate-data.js).
+const { outletRegionMap, dualMarket } = buildOutletMaps(registry);
+
+// Coarse market for cross-market contamination: NYC productions are 'us', London 'uk'.
+// Uses the authoritative shows.json `category` (not an id regex) — see plan-review #5.
+function usUkMarket(show) {
+  const c = show && show.category;
+  if (c === 'west-end' || c === 'off-west-end') return 'uk';
+  return 'us'; // broadway / off-broadway / opera / unknown
+}
+
+// Distinctive cast/venue slug tokens for a production, used to corroborate that a
+// review URL is about THIS production (e.g. .../romeo-juliet-review-sadie-sink-noah-jupe).
+const VENUE_STOPWORDS = new Set(['theatre', 'theater', 'the', 'at', 'club', 'playhouse', 'centre', 'center', 'company', 'kit', 'kat', 'and', 'park', 'royal']);
+function slugify(s) { return (s || '').toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); }
+function productionTokens(show) {
+  const tokens = new Set();
+  // Venue: full slug + individual distinctive words (len>=4, not generic).
+  const vslug = slugify(show.venue);
+  if (vslug) {
+    if (vslug.length >= 5 && vslug.includes('-')) tokens.add(vslug);
+    for (const w of vslug.split('-')) if (w.length >= 4 && !VENUE_STOPWORDS.has(w)) tokens.add(w);
+  }
+  // Cast: full-name slug + last name (len>=4). Cap to first 8 to limit noise.
+  for (const c of (show.cast || []).slice(0, 8)) {
+    const nslug = slugify(c && c.name);
+    if (nslug && nslug.includes('-')) {
+      tokens.add(nslug);
+      const last = nslug.split('-').pop();
+      if (last && last.length >= 4) tokens.add(last);
+    }
+  }
+  return [...tokens];
+}
 
 function parseDomain(url) {
   if (!url || typeof url !== 'string') return null;
@@ -205,6 +242,11 @@ const STRICT_CLASSES = new Set(['A', 'C', 'E', 'F']);
 
 const hits = {
   A_cross_market: [],
+  // A2: same-season cross-market contamination (relative date-cluster + region/url
+  // corroboration). REPORT-ONLY for now (not in STRICT_CLASSES) — promote to strict
+  // after one clean corpus cycle. Added 2026-06-26 after the #382 R&J incident, which
+  // the absolute >180d Category-A threshold missed (siblings only ~72d apart).
+  A2_cross_market_relative: [],
   B_false_positive_wp: [],
   C_domain_mismatch: [],
   C2_url_multi_critic: [],
@@ -231,6 +273,14 @@ for (const showId of showDirs) {
     opening: parseDate(s.openingDate),
   })).filter(s => s.opening);
   const showOpening = parseDate(show.openingDate);
+
+  // A2 inputs: cross-market siblings (us↔uk) enriched with us/uk market + cast/venue tokens.
+  const thisUsUk = usUkMarket(show);
+  const xmarketSibs = (siblingsOf.get(showId) || [])
+    .map(s => showById.get(s.id))
+    .filter(Boolean)
+    .map(s => ({ id: s.id, opening: parseDate(s.openingDate), market: usUkMarket(s), tokens: productionTokens(s) }))
+    .filter(s => s.opening && s.market !== thisUsUk);
 
   const sDir = path.join(REVIEW_DIR, showId);
   let files;
@@ -266,6 +316,37 @@ for (const showId of showDirs) {
           hits.A_cross_market.push({
             showId, file: f, thisMarket: show.market, sibId: best.id, sibMarket: best.market,
             pubDate: d.publishDate, thisDiff: Math.round(thisDiff), sibDiff: Math.round(best.diff),
+          });
+        }
+      }
+    }
+
+    // ─── A2: Same-season cross-market contamination (relative + corroborated) ────
+    // Catches the class the absolute >180d Category-A misses: a review clustering
+    // with a near-in-time cross-market sibling's opening (e.g. West End R&J 03-31 vs
+    // Delacorte R&J 06-11). Requires region OR url-token corroboration so legit
+    // dual-market coverage (Guardian/Times-UK on the Broadway opening) is never
+    // flagged. REPORT-ONLY (A2 not in STRICT_CLASSES) until promoted.
+    if (shouldRunClass('A') && !alreadyFlagged && !d._auditAllowCrossMarket && xmarketSibs.length) {
+      const pubDate = parseDate(d.publishDate);
+      if (pubDate && showOpening) {
+        const oid = normalizeOutlet(d.outletId || f.split('--')[0]).toLowerCase();
+        const verdict = classifyCrossMarketContamination({
+          reviewDate: pubDate,
+          reviewUrl: d.url || null,
+          thisShow: { opening: showOpening, market: thisUsUk },
+          siblings: xmarketSibs,
+          outletRegion: outletRegionMap[oid] || null,
+          isDualMarket: dualMarket.has(oid),
+        });
+        // Only record the NEW relative band here (thisDiff <= 180); the legacy >180d
+        // path is already handled by strict Category A above (no double-count).
+        if ((verdict.level === 'contamination' || verdict.level === 'review') && verdict.thisDiff <= 180) {
+          hits.A2_cross_market_relative.push({
+            showId, file: f, thisMarket: thisUsUk, sibId: verdict.sibId,
+            level: verdict.level, confidence: verdict.confidence, reason: verdict.reason,
+            pubDate: d.publishDate, thisDiff: verdict.thisDiff, sibDiff: verdict.sibDiff,
+            outlet: oid, url: d.url || null,
           });
         }
       }
