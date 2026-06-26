@@ -22,7 +22,7 @@ const path = require('path');
 const { normalizeUrl } = require('./lib/review-normalization');
 const { safeWriteReview } = require('./lib/review-write-guard');
 
-const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
+const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '..', 'data', 'review-texts');
 
 const args = process.argv.slice(2);
 const FIX = args.includes('--fix');
@@ -36,6 +36,15 @@ const FORCE_BULK = args.includes('--force-bulk');
 // Above this count, --fix refuses and reddens CI for manual review unless
 // --force-bulk is passed. See plan-review pre-mortem (SECONDARY) 2026-05-31.
 const FIX_SURGE_THRESHOLD = 25;
+
+// Canonicalize for comparison: drop the query string, then trim trailing
+// encoded-spaces / whitespace / slashes that normalizeUrl leaves intact. A
+// genuinely different article still differs by PATH; only trivially-dirty
+// variants of the SAME url collapse to equal. Exported for the unit test.
+function stripTrivial(u) {
+  if (!u) return u;
+  return u.split('?')[0].replace(/(?:%20|\s|\/)+$/gi, '');
+}
 
 function walkShowDirs(root) {
   if (!fs.existsSync(root)) return [];
@@ -85,9 +94,16 @@ function audit() {
       // a URL corrected to a DIFFERENT article) differs by PATH, so dropping
       // the query keeps that detection while killing tracking-only noise.
       // Done here (not in normalizeUrl, which is on the scoring watchlist).
-      const stripQuery = (u) => u.split('?')[0];
-      const a = stripQuery(normalizeUrl(data.url));
-      const b = stripQuery(normalizeUrl(sibling.url));
+      //
+      // Also strip a trailing encoded-space / whitespace / slash. normalizeUrl
+      // does NOT trim a trailing "%20" (the-maids-off-broadway-2026 thewrap stub
+      // differed from its genuine duplicate only by a trailing %20). Without
+      // this, --fix would read the trivially-dirty URL as a DIFFERENT article,
+      // clear the duplicateOf, and resurface a real duplicate into scoring. The
+      // Sommers/much-ado genuine-stale case still differs by PATH and survives.
+      const canon = (u) => stripTrivial(normalizeUrl(u));
+      const a = canon(data.url);
+      const b = canon(sibling.url);
       if (a && b && a !== b) {
         mismatches.push({
           showId: path.basename(showDir),
@@ -157,4 +173,8 @@ function main() {
   process.exit(1);
 }
 
-main();
+if (require.main === module) {
+  main();
+}
+
+module.exports = { stripTrivial, audit, fix };

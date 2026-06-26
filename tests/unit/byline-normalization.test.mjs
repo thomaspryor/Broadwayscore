@@ -93,6 +93,9 @@ test('derives critic name from known byline-URL slug patterns', () => {
 test('strips SunTimes "-for-the-sun-times" slug suffix', () => {
   assert.equal(normalizeCriticName('https://chicagosuntimes.com/catey-sullivan-for-the-sun-times'), 'Catey Sullivan');
   assert.equal(normalizeCriticName('https://chicagosuntimes.com/steven-oxman'), 'Steven Oxman');
+  // Real stored URLs use the chicago.suntimes.com subdomain form
+  assert.equal(normalizeCriticName('https://chicago.suntimes.com/catey-sullivan-for-the-sun-times'), 'Catey Sullivan');
+  assert.equal(normalizeCriticName('https://chicago.suntimes.com/steven-oxman'), 'Steven Oxman');
 });
 
 test('derives first.last Facebook handles, drops org pages', () => {
@@ -102,6 +105,12 @@ test('derives first.last Facebook handles, drops org pages', () => {
   assert.equal(normalizeCriticName('https://www.facebook.com/peoplemag'), null);
   assert.equal(normalizeCriticName('https://www.facebook.com/showbiz411/'), null);
   assert.equal(normalizeCriticName('https://www.facebook.com/wexlerwrites'), null);
+});
+
+test('recovers personal name from "Name | Outlet.com" attribution suffix', () => {
+  assert.equal(normalizeCriticName('Christopher Kelly | NJ.com'), 'Christopher Kelly');
+  assert.equal(normalizeCriticName('Jane Doe — TheWrap.com'), 'Jane Doe');
+  assert.equal(normalizeCriticName('Jonah de Forest for Broadway.com'), 'Jonah de Forest');
 });
 
 test('drops single-token concatenated slugs (no reliable split)', () => {

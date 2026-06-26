@@ -97,7 +97,10 @@ jobs:
         if: always() && steps.git-check.outputs.changes == 'true'
         run: |
           node scripts/enrich-cast-from-files.js --force
-          node scripts/generate-mobile-show-details.js
+          # Shared wrapper regenerates detail + index together (single source of
+          # truth). Commit step below stages only detail JSONs; the regenerated
+          # index is an unstaged no-op here (cast doesn't change the index).
+          bash scripts/generate-mobile-artifacts.sh
 
       - name: Commit and push
         if: always() && steps.git-check.outputs.changes == 'true'

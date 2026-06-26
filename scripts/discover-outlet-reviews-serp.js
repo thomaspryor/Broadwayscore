@@ -29,6 +29,7 @@ const fs = require('fs');
 const path = require('path');
 const { matchTitleToShow, loadShows, cleanExternalTitle } = require('./lib/show-matching');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile } = require('./lib/review-normalization');
+const { sanitizeCriticName } = require('./lib/byline-normalization');
 const { isUrlYearOutsideWindow } = require('./lib/content-filters');
 const { validateUrlDomain } = require('./lib/url-discovery');
 
@@ -264,7 +265,9 @@ async function discoverForOutlet(outletId, config, shows, opts) {
       stats.matched++;
       const showId = match.id;
       const showDir = path.join(REVIEW_TEXTS_DIR, showId);
-      const criticName = extractCriticFromUrl(result.url, config);
+      // Sanitize: never persist a URL-shaped byline as the critic name. This
+      // writer bypasses the shared review-file-writer, so apply the same guard.
+      const criticName = sanitizeCriticName(extractCriticFromUrl(result.url, config)) || 'Unknown';
       const normOutlet = normalizeOutlet(config.outletName);
       const normCritic = normalizeCritic(criticName);
       const filename = generateReviewFilename(normOutlet, normCritic);

@@ -38,6 +38,7 @@ const { classifyContentTier } = require('./content-quality');
 const { pickRerouteTarget, shouldSkipRoundupAudit } = require('./review-guards');
 const { isBroadwayUrl, isLondonMarket } = require('./venue-classification');
 const { classifyMarketRouting, buildSiblingIndex } = require('./market-routing');
+const { sanitizeCriticName } = require('./byline-normalization');
 
 const DEFAULT_REVIEW_TEXTS_DIR = path.join(__dirname, '..', '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', '..', 'data', 'shows.json');
@@ -373,7 +374,12 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   // --- Guard F: Empty unknown rejection ---
   // Don't create files for unknown critics with no URL and no text content.
   // These are pure scrape garbage that clutter the directory.
-  const criticName = input.criticName || 'Unknown';
+  // Sanitize first: a URL-shaped byline (scraper grabbed the link href, not the
+  // text — e.g. "https://observer.com/author/rex-reed") is coerced to a clean
+  // personal name or 'Unknown' BEFORE filename/dedup/guards run, so a URL can
+  // never be persisted as criticName. Save-time mirror of validate-data's
+  // [headline-critic]/[url-critic] gate. See byline-normalization.js.
+  const criticName = sanitizeCriticName(input.criticName) || 'Unknown';
   if (criticName === 'Unknown' && !input.url && !fields.fullText && !fields.bwwExcerpt
       && !fields.dtliExcerpt && !fields.showScoreExcerpt && !fields.nycTheatreExcerpt
       && !fields.stagedoorExcerpt && !fields.lboRoundupExcerpt) {

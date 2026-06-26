@@ -33,6 +33,7 @@ const { isBroadwayCategory } = require('./lib/venue-classification');
 const { classifyReverseCrossMarket } = require('./lib/cross-market-guard');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { openingDateSourceHint } = require('./lib/opening-date-sources');
+const { looksLikeUrlCriticName } = require('./lib/byline-normalization');
 
 // Notion 362637c5-416f-8174 — sentinel file consumed by .github/actions/push-core-data
 // to refuse pushing when validation failed. The composite action used `if: always()`
@@ -3232,6 +3233,15 @@ function validateReviewTextQuality(shows) {
       // CHECK 3: Critic name is too long (likely a headline)
       if (critic.length > 60) {
         error(`[headline-critic] ${showDir}/${file}: critic name "${critic.substring(0, 60)}..." is too long (${critic.length} chars) — likely a headline`);
+        headlineCritics++;
+        issues++;
+      } else if (looksLikeUrlCriticName(critic)) {
+        // CHECK 3b: Critic name is URL-shaped (scraper grabbed the byline LINK
+        // href, not the text — e.g. "https://observer.com/author/rex-reed").
+        // Length-independent: the old >60 check missed the many sub-60 URL
+        // bylines. The save-time mirror lives in review-file-writer.js via
+        // sanitizeCriticName; both share looksLikeUrlCriticName (CLAUDE.md §15).
+        error(`[url-critic] ${showDir}/${file}: critic name "${critic.substring(0, 60)}" is URL-shaped — scraper captured the byline link, not the name (run scripts/gc-url-critic-names.js --fix)`);
         headlineCritics++;
         issues++;
       }

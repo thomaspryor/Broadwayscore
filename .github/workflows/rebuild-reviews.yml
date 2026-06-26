@@ -152,6 +152,14 @@ jobs:
         run: node scripts/audit-duplicate-of-url-mismatch.js --fix 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
 
+      # Coerce URL-shaped critic names (scraper grabbed the byline link href) to
+      # a clean personal name or Unknown. Save-time guard lives in
+      # review-file-writer.js; this sweeps files that predate it / bypassed it.
+      - name: Sweep URL-shaped critic names
+        if: inputs.skip_enrichment != 'true'
+        run: node scripts/gc-url-critic-names.js --fix
+        continue-on-error: true
+
       - name: Rebuild reviews.json
         env:
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
@@ -255,18 +263,16 @@ jobs:
         run: node scripts/enrich-cast-from-files.js
         continue-on-error: true
 
-      - name: Regenerate mobile detail JSONs
-        run: node scripts/generate-mobile-show-details.js
-        continue-on-error: true
-
-      # Regenerate the committed mobile INDEX in lockstep with the detail JSONs.
-      # The index (public/data/mobile-shows.json) is git-tracked and served to the
-      # iOS app on SKIP_HEAVY_PREBUILD deploys; it was previously only refreshed by
-      # prebuild full-builds / hand commits, so it drifted from reviews.json and
-      # accumulated closed-no-score entries that reddened validate-mobile-shows.js.
+      # Regenerate BOTH mobile artifacts in lockstep via the shared wrapper. The
+      # committed mobile INDEX (public/data/mobile-shows.json) is git-tracked and
+      # served to the iOS app on SKIP_HEAVY_PREBUILD deploys; it was previously
+      # only refreshed by prebuild full-builds / hand commits, so it drifted from
+      # reviews.json and accumulated closed-no-score entries that reddened
+      # validate-mobile-shows.js. The wrapper guarantees detail+index never
+      # regenerate apart again.
       # See cloud-memory/feedback_mobile_index_committed_artifact.md.
-      - name: Regenerate mobile index (mobile-shows.json)
-        run: node scripts/generate-mobile-data.js
+      - name: Regenerate mobile artifacts (detail + index)
+        run: bash scripts/generate-mobile-artifacts.sh
         continue-on-error: true
 
       - name: Generate opening night status page

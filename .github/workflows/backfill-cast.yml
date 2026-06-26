@@ -140,7 +140,10 @@ jobs:
         if: always() && steps.git-check.outputs.changes == 'true'
         run: |
           node scripts/enrich-cast-from-files.js --force
-          node scripts/generate-mobile-show-details.js
+          # Shared wrapper regenerates detail + index together (single source of
+          # truth). This site only stages the detail JSONs (cast doesn't change
+          # the index), so the regenerated index is an unstaged no-op here.
+          bash scripts/generate-mobile-artifacts.sh
           # shows.json syncs via push-core-data; only stage public-repo files here.
           git add public/data/shows/ || true
           if ! git diff --cached --quiet; then
