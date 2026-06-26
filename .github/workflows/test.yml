@@ -1147,6 +1147,16 @@ jobs:
         if: always()
         run: node scripts/validate-data.js
 
+      - name: Audit duplicate shows
+        if: always()
+        # Whole-corpus duplicate-SHOW detector — the discovery-time guard only
+        # fires at add-time and missed the Much Ado 2026 dup (Shakespeare's Globe
+        # vs "Globe Theatre", opening dates 2 days apart). Non-blocking for now
+        # (surfaces clusters + writes data/audit/duplicate-shows.json); promote to
+        # `--gate` once the existing clusters are merged. Notion 38a637c5-416f-81a7.
+        continue-on-error: true
+        run: node scripts/audit-duplicate-shows.js
+
       - name: Audit cast-changes.json
         if: always()
         # Catches the bugs surfaced 2026-05-23 in the casting newsletter:
