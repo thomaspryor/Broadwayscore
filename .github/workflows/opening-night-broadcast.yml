@@ -519,9 +519,7 @@ jobs:
 
       - name: Generate mobile data (pre-computed scores for email)
         if: steps.check.outputs.pending_shows != ''
-        run: |
-          node scripts/generate-mobile-data.js
-          node scripts/generate-mobile-show-details.js
+        run: bash scripts/generate-mobile-artifacts.sh
 
       - name: Create broadcast draft (owner sends manually from Resend)
         if: steps.check.outputs.pending_shows != '' && env.BROADCAST_HOLD_ACTIVE != 'true'

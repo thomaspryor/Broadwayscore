@@ -95,8 +95,12 @@ function normalizeCriticName(raw) {
   let m = s.match(/\/(?:by|author|people|profile|contributors)\/([a-z0-9._-]+)/i);
   if (m) slug = m[1];
   if (!slug) {
-    const su = s.match(/chicagosuntimes\.com\/([a-z0-9-]+)/i);
-    if (su) slug = su[1].replace(/-for-the-sun-times$/i, '');
+    // Matches both chicagosuntimes.com/<slug> and the real chicago.suntimes.com
+    // subdomain form (the stored URLs use the subdomain dot).
+    const su = s.match(/chicago\.?suntimes\.com\/([a-z0-9-]+)/i);
+    // Strip a trailing "-for-<outlet>" attribution slug (…-for-the-sun-times,
+    // …-for-wbez). "for" never appears in a surname, so this is safe.
+    if (su) slug = su[1].replace(/-for-[a-z-]+$/i, '');
   }
   if (!slug) {
     const fb = s.match(/facebook\.com\/([a-z0-9._-]+)/i);
