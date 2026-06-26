@@ -88,6 +88,14 @@ jobs:
             # Advisory v1 (warnings only), but staleness still pages so we re-verify dates before
             # season cutoffs bias the show-page rank pool.
             "check-cutoff-freshness.yml|200|Check Cutoff Freshness"
+            # */10 cron, but the POINT of this entry is the state-check (catches
+            # disabled_manually immediately), not recency — user feedback submissions
+            # silently went unprocessed for 15 days after this workflow was manually
+            # disabled on 2026-06-11 with nothing watching it (no CRITICAL_CRONS entry,
+            # and audit-cron-health-coverage.js only validates LISTED crons). 12h on the
+            # recency band tolerates GitHub's heavy throttling of */10 schedules; the real
+            # alert is the workflow no longer being 'active'.
+            "process-feedback.yml|12|Process Feedback Submissions"
           )
 
           FAILURES=""
