@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-26T13:01:20.255Z",
+  "generatedAt": "2026-06-26T17:26:05.078Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -325,10 +325,6 @@
           "isDualMarket": true
         },
         {
-          "name": "Financial Times",
-          "isDualMarket": true
-        },
-        {
           "name": "The Telegraph",
           "isDualMarket": true
         },
@@ -338,10 +334,6 @@
         },
         {
           "name": "Daily Mail",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Stage",
           "isDualMarket": true
         }
       ],
@@ -389,27 +381,27 @@
       "slug": "misterman-theatre-row-off-broadway",
       "thumbnail": "/images/shows/misterman-theatre-row-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 91,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 5,
+      "reviewsNeeded": 2,
       "siteFileExists": true,
-      "total": 0,
+      "total": 1,
       "t1": 0,
-      "t2": 0,
+      "t2": 1,
       "t3": 0,
-      "positive": 0,
+      "positive": 1,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/12 total",
+          "1/12 total",
           "T1:0/3",
           "T2:0/3",
-          "hi-conf:0/8"
+          "hi-conf:1/8"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -747,6 +739,20 @@
         {
           "name": "London Box Office",
           "isDualMarket": false
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-06-26T17:26:05.078Z",
+          "rc": 1,
+          "s": 91,
+          "t1": 0,
+          "t2": 1,
+          "t3": 0,
+          "p": 1,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },

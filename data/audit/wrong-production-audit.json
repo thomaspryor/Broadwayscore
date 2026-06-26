@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-26T13:01:15.580Z",
+  "timestamp": "2026-06-26T17:26:00.098Z",
   "stats": {
-    "totalReviews": 39303,
-    "alreadyFlagged": 17510,
+    "totalReviews": 39313,
+    "alreadyFlagged": 17512,
     "dateGuardCatches": 42,
     "directorMismatch": 876,
-    "tvFilmSignals": 1073,
+    "tvFilmSignals": 1072,
     "londonSignals": 673,
     "offBroadwaySignals": 464,
     "yearMismatch": 84,
-    "noPublishDate": 3968
+    "noPublishDate": 3978
   },
   "findings": [
     {
@@ -1677,26 +1677,12 @@
       "file": "independent--louis-chilton.json",
       "score": 40,
       "publishDate": "2026-04-17",
-      "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "avenue-q-west-end-2026",
-      "file": "telegraph--marianka-swain.json",
-      "score": 82,
-      "publishDate": "2026-04-17",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/avenue-qs-bawdy-puppets-gleefully-outrageous/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -29977,7 +29963,7 @@
       "file": "exeunt-magazine--loren-noveck.json",
       "score": 80,
       "publishDate": "2026-05-15T11:08:02-04:00",
-      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/#:~:text=Dad%20Don't%20Read%20This%20is%20messy%20and%20raw%20and,will%20keep%20it%20in%20my",
+      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/",
       "findings": [
         {
           "type": "DATE_GUARD",
