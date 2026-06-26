@@ -126,6 +126,11 @@ on:
       - 'scripts/scrape-tony-awards.js'
       - 'data/awards.json'
       - 'data/precursors/**'
+      # Curated outlet registry — domain/outlet/critic mappings the contamination
+      # audit reads. Listed so a stale-tree push that clobbers a curated edit
+      # triggers CI (red) instead of silently reverting it (registry-clobber card
+      # 38b637c5). Detection, not prevention.
+      - 'data/outlet-registry.json'
       - 'tests/fixtures/classify-category-baseline.json'
       - 'public/data/mobile-shows.json'
       - 'package.json'
