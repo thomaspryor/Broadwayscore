@@ -160,6 +160,14 @@ jobs:
         run: node scripts/gc-url-critic-names.js --fix
         continue-on-error: true
 
+      # Decode undecoded HTML entities + drop JSON-LD pull-quotes in display
+      # fields. Save-time guard lives in review-file-writer.js; this sweeps files
+      # that predate it / bypassed it. Shares predicates via text-cleaning.js.
+      - name: Sweep display-field artifacts (html-entity + json-ld)
+        if: inputs.skip_enrichment != 'true'
+        run: node scripts/gc-display-field-artifacts.js --fix
+        continue-on-error: true
+
       - name: Rebuild reviews.json
         env:
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
