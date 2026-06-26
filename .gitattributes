@@ -1,21 +1,43 @@
 *.png binary
 src/config/feature-flags.ts merge=ours
 
-# Bot-churned audit state files. These are rewritten by crons hundreds of
-# times per 3 days. They are READ BACK by the pipeline (pre-deploy-check.js,
-# adjudicate-review-queue.yml, opening-night SLA/completeness) so they MUST
-# stay tracked — but they don't need a real 3-way merge: each writer emits a
-# complete fresh snapshot, latest-wins. Without these drivers a human plain-git
-# merge to main conflicts on them (CI bots already auto-resolve via
-# push-with-retry.sh; humans use bare `git merge`). See Notion 387637c5-416f-8114.
-#   union  → append-only JSONL log: keep both sides' lines, never conflicts.
-#   ours   → single-state JSON object: keep current side; next cron regenerates.
-#            Requires `git config merge.ours.driver true` (set globally by
-#            scripts/setup-local-data.sh; CI relies on push-with-retry.sh).
+# Bot-churned audit state files, rewritten by crons tens-to-hundreds of times
+# per 3 days. Each writer emits a COMPLETE fresh snapshot (latest-wins), so they
+# don't need a real 3-way merge. Without a merge driver a human's plain `git
+# merge` to main conflicts on them. CI bots do NOT use these drivers: push-with-
+# retry.sh resolves with `git rebase -X theirs` / `git merge -X ours` (strategy
+# options, not the per-path attribute). The driver matters ONLY for a human's
+# bare `git merge`. See Notion 387637c5-416f-8114.
+#   union  → append-only JSONL log: keep both sides' lines, never conflicts (git built-in).
+#   ours   → single-state JSON: keep on-branch side; next cron regenerates. Requires
+#            `git config merge.ours.driver true` (registered by setup-local-data.sh;
+#            enforced by test.yml lint-workflows "merge drivers registered" guard).
+# SAFETY: only BOT-WRITTEN, never-hand-edited files belong under `ours` — because
+# `ours` keeps the on-branch side and silently discards the other side's edits.
+# Human-editable/served data (admin locks, tony odds, public/data/shows) must NOT
+# go here; they need real 3-way merges.
 data/audit/stage-latency.jsonl merge=union
 data/audit/deploy-watermark.json merge=ours
 data/audit/needs-human-review.json merge=ours
 data/audit/opening-night-completeness-state.json merge=ours
+
+# Next-tier churn (30–100 commits/3d), triaged 2026-06-25 by per-file read-back
+# grep across scripts/ .github/ src/. All bot-only regenerated audit state.
+data/audit/poller-backoff/*.json merge=ours
+data/audit/orphan-unscored-*.json merge=ours
+data/audit/rebuild-score-drift.json merge=ours
+data/audit/verify-all-scored-state.json merge=ours
+data/audit/gather-collisions.json merge=ours
+data/audit/syndicated-duplicates.json merge=ours
+data/audit/wrong-production-audit.json merge=ours
+data/audit/pre2005-wrong-production.json merge=ours
+data/audit/show-review-gap.json merge=ours
+data/audit/gap-audit-checkpoint.json merge=ours
+data/audit/url-mismatch-suspects.json merge=ours
+data/audit/drift-state.json merge=ours
+data/audit/market-misroutes.json merge=ours
+data/audit/unknown-aggregator-outlets.json merge=ours
+data/audit/pipeline-health/rebuild-reviews.last-success merge=ours
 
 # cloud-memory/ is a mirror of ~/.claude/projects/.../memory/ for cloud Claude
 # Code sessions. Marking it vendored keeps language stats accurate and lets
