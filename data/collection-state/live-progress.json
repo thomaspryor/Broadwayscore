@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-06-26T21:07:06.329Z",
-  "processed": 35,
-  "failed": 274,
-  "successRate": "11.3%",
+  "updatedAt": "2026-06-26T21:24:11.860Z",
+  "processed": 225,
+  "failed": 318,
+  "successRate": "41.4%",
   "tierBreakdown": {
-    "playwright": 28,
+    "playwright": 125,
     "amp": 0,
-    "browserbase": 10,
+    "browserbase": 18,
     "directCookies": 0,
-    "scrapingbee": 3,
-    "brightdata": 15,
-    "archiveToday": 70,
-    "archive": 38
+    "scrapingbee": 43,
+    "brightdata": 28,
+    "archiveToday": 60,
+    "archive": 77
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-06-26T01:53:40.296Z",
-      "event": "bb-session",
-      "session": "e0a1572b",
-      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
-    },
-    {
-      "t": "2026-06-26T01:53:40.928Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-26T01:57:27.497Z",
-      "event": "bb-session",
-      "session": "b7c5e8d2",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2649682"
-    },
-    {
-      "t": "2026-06-26T01:57:28.015Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
     {
       "t": "2026-06-26T02:12:54.966Z",
       "event": "bb-session",
@@ -123,10 +101,33 @@
       "url": "https://www.facebook.com/thestage/posts/icymi-review-glengarry-glen-ross-at-the-"
     },
     {
-      "t": "2026-06-26T21:02:58.951Z",
+      "t": "2026-06-26T20:16:50.629Z",
       "event": "bb-session",
-      "session": "90c33776",
-      "url": "https://www.facebook.com/pinkprincetheatre/posts/tonight-im-a-plus-one-at-the-pr"
+      "session": "8c12ea83",
+      "url": "https://www.nytimes.com/2025/09/29/theater/masquerade-review-phantom-of-the-oper"
+    },
+    {
+      "t": "2026-06-26T20:16:51.601Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-26T20:46:22.622Z",
+      "event": "bb-session",
+      "session": "5cc3bb42",
+      "url": "https://www.express.co.uk/entertainment/theatre/1902976/Romeo-Juliet-review-Tom-"
+    },
+    {
+      "t": "2026-06-26T21:02:32.056Z",
+      "event": "bb-session",
+      "session": "9ced5eb0",
+      "url": "https://www.express.co.uk/entertainment/theatre/1902976/Romeo-Juliet-review-Tom-"
+    },
+    {
+      "t": "2026-06-26T21:05:41.022Z",
+      "event": "bb-session",
+      "session": "6b32f38e",
+      "url": "https://www.express.co.uk/entertainment/theatre/1864762/The-Hills-of-California-"
     }
   ]
 }

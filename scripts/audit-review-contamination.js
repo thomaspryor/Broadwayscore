@@ -91,12 +91,16 @@ const { outletRegionMap, dualMarket } = buildOutletMaps(registry);
 function usUkMarket(show) {
   const c = show && show.category;
   if (c === 'west-end' || c === 'off-west-end') return 'uk';
-  return 'us'; // broadway / off-broadway / opera / unknown
+  if (c === 'broadway' || c === 'off-broadway' || c === 'off-off-broadway' || c === 'opera') return 'us';
+  return null; // regional / null / unknown — can't bucket; skip cross-market A2 (avoids mis-tagging a UK show 'us')
 }
 
 // Distinctive cast/venue slug tokens for a production, used to corroborate that a
 // review URL is about THIS production (e.g. .../romeo-juliet-review-sadie-sink-noah-jupe).
-const VENUE_STOPWORDS = new Set(['theatre', 'theater', 'the', 'at', 'club', 'playhouse', 'centre', 'center', 'company', 'kit', 'kat', 'and', 'park', 'royal']);
+const VENUE_STOPWORDS = new Set(['theatre', 'theater', 'the', 'at', 'club', 'playhouse', 'centre', 'center', 'company', 'kit', 'kat', 'and', 'park', 'royal', 'globe', 'lyric', 'palace', 'apollo', 'garden', 'gardens', 'music', 'hall', 'opera', 'house', 'arts', 'studio', 'stage', 'space', 'circle', 'square', 'bridge', 'court', 'gate', 'old', 'new', 'little']);
+// Bare surnames that are also common English words / URL-slug fragments — never
+// distinctive enough to corroborate on their own (the full-name slug is kept instead).
+const COMMON_WORD_SURNAMES = new Set(['hall', 'park', 'wood', 'young', 'bell', 'hill', 'lane', 'page', 'best', 'love', 'white', 'brown', 'green', 'gray', 'grey', 'ford', 'king', 'hart', 'lake', 'reed', 'rose', 'snow', 'cook', 'fish', 'bird', 'wolf', 'gold', 'price', 'rich', 'cross', 'stone', 'fields', 'rivers', 'banks', 'moore', 'moon', 'star', 'castle', 'church', 'major', 'minor', 'sharp', 'short', 'long', 'small', 'noble', 'french', 'welsh', 'walker', 'baker', 'mason', 'carter', 'turner', 'cooper', 'fisher', 'porter', 'hunter', 'parker', 'taylor', 'wright', 'knight', 'frost', 'winter', 'summers']);
 function slugify(s) { return (s || '').toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); }
 function productionTokens(show) {
   const tokens = new Set();
@@ -106,13 +110,15 @@ function productionTokens(show) {
     if (vslug.length >= 5 && vslug.includes('-')) tokens.add(vslug);
     for (const w of vslug.split('-')) if (w.length >= 4 && !VENUE_STOPWORDS.has(w)) tokens.add(w);
   }
-  // Cast: full-name slug + last name (len>=4). Cap to first 8 to limit noise.
+  // Cast: full-name slug (always — distinctive, e.g. 'sadie-sink') + bare last name
+  // only when it's long (len>=5) AND not a common word. Bare surnames are the FP risk;
+  // the multi-part full-name slug is the reliable signal. Cap to first 8 to limit noise.
   for (const c of (show.cast || []).slice(0, 8)) {
     const nslug = slugify(c && c.name);
     if (nslug && nslug.includes('-')) {
       tokens.add(nslug);
       const last = nslug.split('-').pop();
-      if (last && last.length >= 4) tokens.add(last);
+      if (last && last.length >= 5 && !COMMON_WORD_SURNAMES.has(last)) tokens.add(last);
     }
   }
   return [...tokens];
@@ -275,12 +281,14 @@ for (const showId of showDirs) {
   const showOpening = parseDate(show.openingDate);
 
   // A2 inputs: cross-market siblings (us↔uk) enriched with us/uk market + cast/venue tokens.
+  // Skip entirely when this show's market is indeterminate (null/regional category) —
+  // bucketing it would risk mis-tagging and either FP or a silent miss.
   const thisUsUk = usUkMarket(show);
-  const xmarketSibs = (siblingsOf.get(showId) || [])
+  const xmarketSibs = !thisUsUk ? [] : (siblingsOf.get(showId) || [])
     .map(s => showById.get(s.id))
     .filter(Boolean)
     .map(s => ({ id: s.id, opening: parseDate(s.openingDate), market: usUkMarket(s), tokens: productionTokens(s) }))
-    .filter(s => s.opening && s.market !== thisUsUk);
+    .filter(s => s.opening && s.market && s.market !== thisUsUk);
 
   const sDir = path.join(REVIEW_DIR, showId);
   let files;
@@ -341,7 +349,9 @@ for (const showId of showDirs) {
         });
         // Only record the NEW relative band here (thisDiff <= 180); the legacy >180d
         // path is already handled by strict Category A above (no double-count).
-        if ((verdict.level === 'contamination' || verdict.level === 'review') && verdict.thisDiff <= 180) {
+        // Number.isFinite guards against a future 'clear'-with-null-thisDiff returning
+        // here (null <= 180 would otherwise be true).
+        if ((verdict.level === 'contamination' || verdict.level === 'review') && Number.isFinite(verdict.thisDiff) && verdict.thisDiff <= 180) {
           hits.A2_cross_market_relative.push({
             showId, file: f, thisMarket: thisUsUk, sibId: verdict.sibId,
             level: verdict.level, confidence: verdict.confidence, reason: verdict.reason,

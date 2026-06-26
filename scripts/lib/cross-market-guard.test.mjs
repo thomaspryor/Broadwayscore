@@ -76,7 +76,7 @@ test('#382: London Tier-1 review near WE opening, on the OB show, region-corrobo
   // Evening Standard (region london, NOT dual) review dated 2026-04-01 on the Delacorte show.
   const v = classifyCrossMarketContamination({
     reviewDate: D('2026-04-01'), thisShow: DELACORTE, siblings: SIB_WE,
-    outletRegion: 'london', isDualMarket: false, urlMatchesSibling: false,
+    outletRegion: 'london', isDualMarket: false,
   });
   assert.equal(v.level, 'contamination');
   assert.equal(v.sibId, 'romeo-and-juliet-west-end-2026');
@@ -99,7 +99,7 @@ test('reverse: US blog review near OB opening, on the West End show → contamin
   // one-minute-critic (us) dated 2026-06-12 (Delacorte opening) on the West End show.
   const v = classifyCrossMarketContamination({
     reviewDate: D('2026-06-12'), thisShow: WEST_END, siblings: SIB_OB,
-    outletRegion: 'new-york', isDualMarket: false, urlMatchesSibling: false,
+    outletRegion: 'new-york', isDualMarket: false,
   });
   assert.equal(v.level, 'contamination');
 });
@@ -108,7 +108,7 @@ test('legit: dual-market outlet reviewing the Broadway opening on its actual dat
   // Guardian reviews a Broadway show on opening day; its same-title WE sibling is months/years away.
   const v = classifyCrossMarketContamination({
     reviewDate: D('2026-06-11'), thisShow: DELACORTE, siblings: SIB_WE,
-    outletRegion: 'london', isDualMarket: true, urlMatchesSibling: false,
+    outletRegion: 'london', isDualMarket: true,
   });
   // review is 0d from THIS show, ~72d from sibling → no date cluster with sibling → clear.
   assert.equal(v.level, 'clear');
@@ -118,7 +118,7 @@ test('legit: US blog London-trip review of the ACTUAL West End show → clear', 
   // frontmezzjunkies reviews the WE show near its opening; date clusters with THIS show, not a sibling.
   const v = classifyCrossMarketContamination({
     reviewDate: D('2026-04-02'), thisShow: WEST_END, siblings: SIB_OB,
-    outletRegion: 'new-york', isDualMarket: false, urlMatchesSibling: false,
+    outletRegion: 'new-york', isDualMarket: false,
   });
   assert.equal(v.level, 'clear');
 });
@@ -132,7 +132,7 @@ test('durability: a newly-discovered 3rd same-title sibling does NOT turn a legi
   ];
   const v = classifyCrossMarketContamination({
     reviewDate: D('2026-06-12'), thisShow: DELACORTE, siblings: sibsPlus,
-    outletRegion: 'new-york', isDualMarket: false, urlMatchesSibling: false,
+    outletRegion: 'new-york', isDualMarket: false,
   });
   // best sibling is the regional one (23d away) but thisDiff is only 1d → no cluster-farther-from-this → clear.
   assert.equal(v.level, 'clear');
@@ -141,9 +141,24 @@ test('durability: a newly-discovered 3rd same-title sibling does NOT turn a legi
 test('legacy >180d path preserved: tight sibling cluster + far from this show → contamination without corroboration', () => {
   const v = classifyCrossMarketContamination({
     reviewDate: D('2026-03-31'), thisShow: { opening: D('2027-01-01'), market: 'us' }, siblings: SIB_WE,
-    outletRegion: null, isDualMarket: false, urlMatchesSibling: false,
+    outletRegion: null, isDualMarket: false,
   });
   assert.equal(v.level, 'contamination');
+});
+
+test('url-token match is SLUG-BOUNDED, not substring (no FP on hollywood/marshall/theglobeandmail)', () => {
+  // dual-market outlet, date-clustered with the sibling → only url-token corroboration can flag.
+  const mk = (tokens, reviewUrl) => classifyCrossMarketContamination({
+    reviewDate: D('2026-03-31'), thisShow: DELACORTE,
+    siblings: [{ ...SIB_WE[0], tokens }], outletRegion: 'london', isDualMarket: true, reviewUrl,
+  }).level;
+  // token 'wood' must NOT match 'hollywood'; 'globe' must NOT match 'theglobeandmail'.
+  assert.equal(mk(['wood'], 'https://www.thetimes.com/hollywood-romeo-juliet-review'), 'review');
+  assert.equal(mk(['globe'], 'https://www.theglobeandmail.com/romeo-juliet-review'), 'review');
+  assert.equal(mk(['sink'], 'https://x.com/romeo-juliet-sinking-feeling-review'), 'review');
+  // but a properly slug-delimited token DOES match.
+  assert.equal(mk(['sadie-sink'], 'https://x.com/romeo-juliet-review-sadie-sink'), 'contamination');
+  assert.equal(mk(['sink'], 'https://x.com/romeo-juliet-sink-review'), 'contamination');
 });
 
 test('no siblings or missing dates → clear (never throws)', () => {
