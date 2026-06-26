@@ -84,10 +84,11 @@ const MiniShowCard = memo(function MiniShowCard({ show, priority = false }: Mini
             )}
             {dateBadge ? (
               <div
-                className="w-9 h-9 rounded-lg flex flex-col items-center justify-center leading-none bg-surface-elevated ring-1 ring-white/10 shadow-card"
+                className="w-9 rounded-lg flex flex-col items-center justify-center leading-none bg-surface-elevated ring-1 ring-white/10 shadow-card py-1"
                 title={`Starts ${dateBadge.full}`}
               >
-                <span className="text-[8px] font-bold uppercase tracking-wide text-brand">{dateBadge.month}</span>
+                <span className="text-[7px] font-bold uppercase tracking-wide text-gray-300">Starts</span>
+                <span className="text-[8px] font-bold uppercase tracking-wide text-brand mt-0.5">{dateBadge.month}</span>
                 <span className="text-sm font-bold text-white">{dateBadge.day}</span>
               </div>
             ) : (

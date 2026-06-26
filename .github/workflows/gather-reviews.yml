@@ -1,5 +1,9 @@
 name: Gather Review Data
 
+# Per-show dispatch dedup (scripts/lib/gather-idempotency.js) keys off this
+# run-name's `— {shows}` suffix, mirroring opening-night-poller.yml's run-name.
+run-name: Gather Review Data — ${{ inputs.shows }}
+
 on:
   # Triggered by update-shows workflow when new shows are discovered
   workflow_dispatch:

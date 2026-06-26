@@ -467,6 +467,41 @@ jobs:
           fi
           echo "No tracked symlinks or gitlinks"
 
+      - name: Check .gitattributes merge drivers are registered
+        run: |
+          # A custom `merge=<name>` driver in .gitattributes silently NO-OPS unless
+          # `git config merge.<name>.driver ...` is registered. When unregistered,
+          # git falls back to a normal 3-way merge and CONFLICTS on the very files
+          # the driver was meant to auto-resolve — with zero error (feature-flags.ts
+          # merge=ours sat broken this way until 830c1f5b48). This guard fails the
+          # build if any custom driver lacks a registration in setup-local-data.sh.
+          #
+          # NOTE: this protects the LOCAL/HUMAN bare-`git merge` path only. CI bots
+          # do NOT use these per-path drivers — push-with-retry.sh resolves via
+          # `git rebase -X theirs` / `git merge -X ours` (strategy options). So the
+          # canonical (and sufficient) registration point is setup-local-data.sh.
+          #
+          # Built-in merge drivers need no registration; everything else does.
+          BUILTIN="union text binary"
+          REG_FILE="scripts/setup-local-data.sh"
+          MISSING=""
+          DRIVERS=$(grep -oE 'merge=[A-Za-z0-9_.-]+' .gitattributes | sed 's/^merge=//' | sort -u)
+          for d in $DRIVERS; do
+            if echo "$BUILTIN" | grep -qw "$d"; then continue; fi
+            # Tolerant match: `git config [--global] merge.<d>.driver ...`
+            if ! grep -qE "merge\.$d\.driver" "$REG_FILE"; then
+              MISSING="$MISSING $d"
+            fi
+          done
+          if [ -n "$MISSING" ]; then
+            echo "::error::Custom .gitattributes merge driver(s) not registered in $REG_FILE:$MISSING"
+            echo "::error::Unregistered drivers silently no-op and let these files CONFLICT on a human git merge."
+            echo "Fix: add a line like 'git config --global merge.<name>.driver <command>' to $REG_FILE,"
+            echo "or, if <name> is actually a git built-in, add it to the BUILTIN allowlist in this step."
+            exit 1
+          fi
+          echo "All custom merge drivers registered:${DRIVERS:+ }$DRIVERS"
+
       - name: Check scraping workflows have multi-service fallback
         run: |
           # Any workflow that uses SCRAPINGBEE_API_KEY for actual scraping
