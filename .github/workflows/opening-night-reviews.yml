@@ -62,56 +62,84 @@ jobs:
               return d >= cutoff && d <= now;
             });
 
-            // Partition into SERP-eligible and gather-eligible
+            // Partition into SERP-eligible and gather-eligible.
+            // gatherFull (day 1-3): SERP has indexed opening-night reviews, so run a
+            //   FULL gather (aggregators_only=false) — its all-tier London outlet pass
+            //   is the ONLY automated path that catches the long-tail blogs (Theatre
+            //   and Tonic, The Upcoming, FT, etc.). Notion 38a637c5-416f-81a7.
+            // gatherAgg (day 0): SERP hasn't indexed yet, so stay aggregators-only.
             const serpShows = [];
-            const gatherShows = [];
+            const gatherFull = [];
+            const gatherAgg = [];
 
             for (const s of opened) {
               const daysSinceOpening = Math.floor((now - new Date(s.openingDate)) / (1000 * 60 * 60 * 24));
               const isSearchDay = SEARCH_DAYS.includes(daysSinceOpening);
               if (isSearchDay) serpShows.push(s.id);
-              if (daysSinceOpening <= GATHER_MAX_DAYS) gatherShows.push(s.id);
+              if (daysSinceOpening <= GATHER_MAX_DAYS) {
+                if (daysSinceOpening >= 1) gatherFull.push(s.id);
+                else gatherAgg.push(s.id);
+              }
             }
 
             // Output as JSON for structured parsing
             console.log(JSON.stringify({
               serp: serpShows,
-              gather: gatherShows,
+              gatherFull,
+              gatherAgg,
               all: opened.map(s => s.id)
             }));
           ")
 
-          if [ -z "$RESULT" ] || [ "$RESULT" = '{"serp":[],"gather":[],"all":[]}' ]; then
+          if [ -z "$RESULT" ] || [ "$RESULT" = '{"serp":[],"gatherFull":[],"gatherAgg":[],"all":[]}' ]; then
             echo "No recently opened shows found"
             echo "has_shows=false" >> $GITHUB_OUTPUT
           else
             SERP_SHOWS=$(echo "$RESULT" | node -e "const d=require('fs').readFileSync('/dev/stdin','utf8');const j=JSON.parse(d);console.log(j.serp.join(','))")
-            GATHER_SHOWS=$(echo "$RESULT" | node -e "const d=require('fs').readFileSync('/dev/stdin','utf8');const j=JSON.parse(d);console.log(j.gather.join(','))")
+            GATHER_FULL=$(echo "$RESULT" | node -e "const d=require('fs').readFileSync('/dev/stdin','utf8');const j=JSON.parse(d);console.log(j.gatherFull.join(','))")
+            GATHER_AGG=$(echo "$RESULT" | node -e "const d=require('fs').readFileSync('/dev/stdin','utf8');const j=JSON.parse(d);console.log(j.gatherAgg.join(','))")
             ALL_SHOWS=$(echo "$RESULT" | node -e "const d=require('fs').readFileSync('/dev/stdin','utf8');const j=JSON.parse(d);console.log(j.all.join(','))")
 
             echo "All recently opened shows: $ALL_SHOWS"
             echo "SERP-eligible (scheduled day): $SERP_SHOWS"
-            echo "Gather-eligible (≤3 days): $GATHER_SHOWS"
+            echo "Gather-eligible FULL (day 1-3, SERP): $GATHER_FULL"
+            echo "Gather-eligible AGG (day 0): $GATHER_AGG"
 
             echo "has_shows=true" >> $GITHUB_OUTPUT
             echo "shows=$ALL_SHOWS" >> $GITHUB_OUTPUT
             echo "serp_shows=$SERP_SHOWS" >> $GITHUB_OUTPUT
-            echo "gather_shows=$GATHER_SHOWS" >> $GITHUB_OUTPUT
+            echo "gather_full=$GATHER_FULL" >> $GITHUB_OUTPUT
+            echo "gather_agg=$GATHER_AGG" >> $GITHUB_OUTPUT
           fi
 
-      - name: Check if gather-reviews already running
+      # Per-show dispatch dedup (not a blanket "any gather running → skip").
+      # gather-reviews serializes on its own concurrency group, so the only thing
+      # we must avoid is queuing a SECOND gather for a show that already has one
+      # in-flight. scripts/lib/gather-idempotency.js matches the run-name suffix.
+      # The old blanket guard starved opening shows entirely (it was always busy).
+      - name: Compute per-show gather dispatch
         if: steps.find.outputs.has_shows == 'true'
         id: guard
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          RUNNING=$(gh run list --workflow=gather-reviews.yml --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
-          if [ "$RUNNING" -gt 0 ]; then
-            echo "Gather reviews already running ($RUNNING active). Skipping."
-            echo "should_trigger=false" >> $GITHUB_OUTPUT
-          else
-            echo "should_trigger=true" >> $GITHUB_OUTPUT
-          fi
+          RUNS=$(gh run list --workflow=gather-reviews.yml --json status,displayTitle --limit 50 2>/dev/null || echo '[]')
+          NEEDED_FULL=$(GATHER_RUNS="$RUNS" WANT='${{ steps.find.outputs.gather_full }}' node -e '
+            const { showsNeedingGather } = require("./scripts/lib/gather-idempotency.js");
+            const runs = JSON.parse(process.env.GATHER_RUNS || "[]");
+            const want = (process.env.WANT || "").split(",").filter(Boolean);
+            console.log(showsNeedingGather(runs, want).join(","));
+          ')
+          NEEDED_AGG=$(GATHER_RUNS="$RUNS" WANT='${{ steps.find.outputs.gather_agg }}' node -e '
+            const { showsNeedingGather } = require("./scripts/lib/gather-idempotency.js");
+            const runs = JSON.parse(process.env.GATHER_RUNS || "[]");
+            const want = (process.env.WANT || "").split(",").filter(Boolean);
+            console.log(showsNeedingGather(runs, want).join(","));
+          ')
+          echo "needed_full=$NEEDED_FULL" >> $GITHUB_OUTPUT
+          echo "needed_agg=$NEEDED_AGG" >> $GITHUB_OUTPUT
+          echo "Full-mode dispatch (not already in-flight): ${NEEDED_FULL:-<none>}"
+          echo "Aggregators-only dispatch (not already in-flight): ${NEEDED_AGG:-<none>}"
 
       - name: Setup Node.js
         if: steps.find.outputs.has_shows == 'true'
@@ -161,27 +189,40 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Opening night SERP discoveries'
 
-      - name: Trigger gather-reviews (≤3 days only)
-        if: steps.find.outputs.has_shows == 'true' && steps.guard.outputs.should_trigger == 'true' && steps.find.outputs.gather_shows != ''
+      # Day 1-3: FULL gather (aggregators_only=false). SERP has indexed by now, so
+      # the all-tier London outlet pass runs and catches the long-tail blogs.
+      - name: Trigger gather-reviews — FULL (day 1-3, SERP indexed)
+        if: steps.find.outputs.has_shows == 'true' && steps.guard.outputs.needed_full != ''
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          GATHER_SHOWS="${{ steps.find.outputs.gather_shows }}"
-          if [ -z "$GATHER_SHOWS" ]; then
-            echo "No shows ≤3 days old — skipping gather-reviews dispatch"
-            exit 0
-          fi
-          echo "Triggering gather-reviews for shows ≤3 days old: $GATHER_SHOWS"
-          # Use aggregators-only mode at midnight (5 AM UTC) — SERP hasn't indexed
-          # opening night reviews yet. The orchestrator's poller handles SERP with
-          # its own per-iteration deferral logic.
+          GATHER_SHOWS="${{ steps.guard.outputs.needed_full }}"
+          echo "Triggering FULL gather-reviews (SERP) for: $GATHER_SHOWS"
+          gh workflow run gather-reviews.yml \
+            -f shows="$GATHER_SHOWS" \
+            -f parallel_jobs=1 \
+            -f max_tier=3 \
+            -f aggregators_only=false \
+            -f validate_urls=true
+          echo "Full gather triggered for: $GATHER_SHOWS"
+
+      # Day 0: aggregators-only. SERP hasn't indexed opening-night reviews yet
+      # (the poller handles SERP later with its own deferral). Avoids wrong-URL
+      # SERP hits on the opening morning.
+      - name: Trigger gather-reviews — aggregators-only (day 0)
+        if: steps.find.outputs.has_shows == 'true' && steps.guard.outputs.needed_agg != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          GATHER_SHOWS="${{ steps.guard.outputs.needed_agg }}"
+          echo "Triggering aggregators-only gather-reviews for: $GATHER_SHOWS"
           gh workflow run gather-reviews.yml \
             -f shows="$GATHER_SHOWS" \
             -f parallel_jobs=1 \
             -f max_tier=3 \
             -f aggregators_only=true \
             -f validate_urls=true
-          echo "Gather reviews triggered for: $GATHER_SHOWS"
+          echo "Aggregators-only gather triggered for: $GATHER_SHOWS"
 
       - name: Trigger Reddit sentiment for recently opened shows
         if: steps.find.outputs.has_shows == 'true'
