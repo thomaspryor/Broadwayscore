@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-26T19:51:19.361Z",
+  "timestamp": "2026-06-26T20:41:23.469Z",
   "stats": {
-    "totalReviews": 39283,
-    "alreadyFlagged": 17509,
+    "totalReviews": 39281,
+    "alreadyFlagged": 17512,
     "dateGuardCatches": 38,
     "directorMismatch": 873,
     "tvFilmSignals": 1071,
-    "londonSignals": 674,
+    "londonSignals": 676,
     "offBroadwaySignals": 464,
     "yearMismatch": 84,
-    "noPublishDate": 3926
+    "noPublishDate": 3920
   },
   "findings": [
     {
@@ -4871,6 +4871,24 @@
       ]
     },
     {
+      "showId": "cyrano-de-bergerac-west-end-2026",
+      "file": "timeout-london--holly-omahony.json",
+      "publishDate": "2026-06-26",
+      "url": "https://www.timeout.com/london/theatre/cyrano-de-bergerac-2-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from cyrano-de-bergerac-2012"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "dana-h-2021",
       "file": "variety--frank-rizzo.json",
       "score": 87,
@@ -8262,7 +8280,7 @@
       "file": "independent--alice-saville.json",
       "score": 58,
       "publishDate": "2026-06-18",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html?loginSuccessful=true",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -18179,20 +18197,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "romeo-and-juliet-west-end-2026",
-      "file": "one-minute-critic--emily-chackerian.json",
-      "score": 58,
-      "publishDate": "2026-06-12",
-      "url": "https://1minutecritic.com/romeo-juliet-free-shakespeare-in-the-park-2026-review/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"saheem ali\" from romeo-and-juliet-off-broadway-2026"
         }
       ]
     },
@@ -35867,6 +35871,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "pride-west-end-2026",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 39,
+      "publishDate": "2026-06-26",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/pride-the-national-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
         }
       ]
     },
