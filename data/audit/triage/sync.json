@@ -1,7 +1,7 @@
 {
   "system": "sync",
-  "status": "warn",
-  "lastChecked": "2026-06-25T08:09:40.767Z",
+  "status": "error",
+  "lastChecked": "2026-06-26T08:14:14.765Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -14,12 +14,12 @@
     {
       "name": "Sync: open show coverage",
       "status": "pass",
-      "message": "37 open shows all have reviews and grosses"
+      "message": "40 open shows all have reviews and grosses"
     },
     {
       "name": "Sync: social-pulse per-show freshness",
       "status": "pass",
-      "message": "86 running BW/WE shows — no stale social-pulse files"
+      "message": "90 running BW/WE shows — no stale social-pulse files"
     },
     {
       "name": "Sync: phantom show detection",
@@ -28,18 +28,18 @@
     },
     {
       "name": "Sync: cast coverage",
-      "status": "warn",
-      "message": "2 empty cast: Hamilton, Awake and Sing!"
+      "status": "error",
+      "message": "4 empty cast: Hamilton, Awake and Sing!, A Few Good Men"
     },
     {
       "name": "Sync: baseline drift",
       "status": "warn",
-      "message": "Reviews dropped: 18500 vs baseline 18501"
+      "message": "Reviews dropped: 18548 vs baseline 18553"
     },
     {
       "name": "Sync: grosses weekEnding",
       "status": "pass",
-      "message": "weekEnding 6/22/2026 (3d ago)"
+      "message": "weekEnding 6/22/2026 (4d ago)"
     }
   ]
 }
