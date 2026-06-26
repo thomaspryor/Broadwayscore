@@ -404,6 +404,14 @@ async function main() {
       continue;
     }
 
+    // Hard per-run SERP cap — applies to Strategy 1 too, so the budget actually
+    // bounds total spend (ship-check: Codex + Claude) rather than only gating 2b
+    // after Strategy 1 already overspent.
+    if (!underSerpBudget()) {
+      console.log(`  ⚠ SERP budget ${SERP_CALL_BUDGET} reached — stopping Strategy 1 outlet search (used ${_serpCallsUsed})`);
+      break;
+    }
+
     const query = `site:${domain} "${showTitle}" ${reviewKeyword}${year ? ` ${year}` : ''}${dateFilter}`;
 
     try {
@@ -531,6 +539,8 @@ async function main() {
 
   if (_scrapingBeeExhausted || !SCRAPINGBEE_KEY) {
     console.log('  Skipping news search (ScrapingBee exhausted or unavailable)');
+  } else if (!underSerpBudget()) {
+    console.log(`  Skipping news search (per-run SERP budget ${SERP_CALL_BUDGET} reached, used ${_serpCallsUsed})`);
   } else {
   const newsQuery = `"${showTitle}" ${reviewKeyword}${dateFilter}`;
   _serpCallsUsed++;
@@ -676,8 +686,15 @@ async function main() {
   // source:'broad-web-serp' so they're traceable and pass the normal downstream
   // wrong-production/wrong-show classifier. Notion 38a637c5-416f-81a7.
   console.log(`\nStrategy 2b: broad web search (unregistered outlets)...`);
+  // Day-0 guard: on opening morning SERP hasn't indexed the reviews yet, so a
+  // broad "{title} review" search is most likely to surface OTHER productions —
+  // the highest wrong-production risk for generic titles. Skip until day 1+
+  // (ship-check: Claude). Mirrors the gather-side day-0 aggregators-only rule.
+  const daysSinceOpening = opening ? Math.floor((Date.now() - opening.getTime()) / 86400000) : null;
   if (_scrapingBeeExhausted && !BRIGHTDATA_TOKEN) {
     console.log('  Skipping broad web search (no SERP provider available)');
+  } else if (daysSinceOpening !== null && daysSinceOpening < 1) {
+    console.log('  Skipping broad web search on opening day (SERP not indexed; avoids early wrong-production hits)');
   } else if (!underSerpBudget()) {
     console.log(`  Skipping broad web search (per-run SERP budget ${SERP_CALL_BUDGET} reached, used ${_serpCallsUsed})`);
   } else {
@@ -707,6 +724,22 @@ async function main() {
         if (openYearWeb && isUrlYearOutsideWindow(url, openYearWeb, closeYearWeb)) {
           console.log(`    [SKIP] URL year outside production window for ${showId}`);
           continue;
+        }
+        // Title/snippet year-window (Strategy 1/2 parity, extended to the snippet):
+        // a generic venue token (Lyric, Apollo, National...) can otherwise let a
+        // same-venue review from a DIFFERENT year pass the gate. A year far from
+        // the opening, with no near year present, is a wrong production.
+        if (openYearWeb) {
+          const hay = `${result.title || ''} ${result.description || result.snippet || ''}`;
+          const yrs = hay.match(/\b(19\d{2}|20\d{2})\b/g);
+          if (yrs) {
+            const wrong = yrs.some(y => Math.abs(parseInt(y) - openYearWeb) > 3);
+            const right = yrs.some(y => Math.abs(parseInt(y) - openYearWeb) <= 1);
+            if (wrong && !right) {
+              console.log(`    [SKIP] Year outside window (broad web): "${(result.title || '').slice(0, 70)}"`);
+              continue;
+            }
+          }
         }
         const criticName = extractCriticFromTitle(result.title || '');
         const outletId = domainToOutletId(url) || 'unknown';

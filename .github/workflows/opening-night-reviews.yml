@@ -123,7 +123,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          RUNS=$(gh run list --workflow=gather-reviews.yml --json status,displayTitle --limit 50 2>/dev/null || echo '[]')
+          RUNS=$(gh run list --workflow=gather-reviews.yml --json status,displayTitle --limit 100 2>/dev/null || echo '[]')
           NEEDED_FULL=$(GATHER_RUNS="$RUNS" WANT='${{ steps.find.outputs.gather_full }}' node -e '
             const { showsNeedingGather } = require("./scripts/lib/gather-idempotency.js");
             const runs = JSON.parse(process.env.GATHER_RUNS || "[]");
