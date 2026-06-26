@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-26T08:23:18.140Z",
+  "generatedAt": "2026-06-26T10:17:03.903Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -9,7 +9,7 @@
       "category": "west-end",
       "type": "play",
       "openingDate": "2026-06-26",
-      "status": "previews",
+      "status": "open",
       "slug": "archduke-west-end",
       "thumbnail": "/images/shows/archduke-west-end-2026/thumbnail.webp",
       "siteScore": null,
@@ -113,22 +113,22 @@
       "slug": "cyrano-de-bergerac-west-end",
       "thumbnail": "/images/shows/cyrano-de-bergerac-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 91,
+      "liveScore": 92,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 2,
+      "reviewsNeeded": 1,
       "siteFileExists": true,
-      "total": 3,
+      "total": 4,
       "t1": 0,
       "t2": 2,
-      "t3": 1,
-      "positive": 3,
+      "t3": 2,
+      "positive": 4,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "3/8 total",
+          "4/8 total",
           "T1:0/3",
           "T2:0/2",
           "hi-conf:1/6"
@@ -234,6 +234,18 @@
           "t2": 2,
           "t3": 1,
           "p": 3,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-06-26T10:17:03.903Z",
+          "rc": 4,
+          "s": 92,
+          "t1": 0,
+          "t2": 2,
+          "t3": 2,
+          "p": 4,
           "m": 0,
           "n": 0,
           "bc": "waiting"
@@ -1293,24 +1305,23 @@
       "status": "open",
       "slug": "the-truth-a-comedy-by-florian-zeller-west-end",
       "thumbnail": "/images/shows/the-truth-a-comedy-by-florian-zeller-west-end-2026/thumbnail.webp",
-      "siteScore": 77.49,
-      "liveScore": 77,
-      "scoreDrift": -0.4899999999999949,
+      "siteScore": 72.16,
+      "liveScore": 72,
+      "scoreDrift": -0.1599999999999966,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 8,
-      "t1": 3,
+      "total": 9,
+      "t1": 4,
       "t2": 4,
       "t3": 1,
       "positive": 6,
       "mixed": 2,
-      "negative": 0,
+      "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
           "T1:2/3",
-          "T2:1/2",
           "hi-conf:4/6"
         ],
         "highConfidence": 4,
@@ -1440,6 +1451,18 @@
           "p": 6,
           "m": 2,
           "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-06-26T10:17:03.903Z",
+          "rc": 9,
+          "s": 72.16,
+          "t1": 4,
+          "t2": 4,
+          "t3": 1,
+          "p": 6,
+          "m": 2,
+          "n": 1,
           "bc": "waiting"
         }
       ]
