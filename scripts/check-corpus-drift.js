@@ -97,6 +97,16 @@ const AUDITS = [
     args: ['--max=5'],
     crashCodes: [2],           // 0 under threshold / 1 over (drift) / 2 = corpus/registry missing
   },
+  {
+    name: 'review-key-duplicates',
+    label: 'duplicate reviews (same showDir|outlet|critic)',
+    script: 'audit-review-key-duplicates.js',
+    // Moved off the blocking test.yml gate (was assert.ok(report.current.duplicates<=5)).
+    // WE scrapers create timeout/unknown variant files that accumulate between
+    // dedup passes — a no-op push could fail it, so it belongs here in the digest.
+    args: ['--max=5'],
+    crashCodes: [2],           // 0 under threshold / 1 over (drift) / 2 = corpus missing
+  },
 ];
 
 function runAudit(audit) {
