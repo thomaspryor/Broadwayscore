@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-25T23:32:45.983Z",
+  "timestamp": "2026-06-26T00:28:03.663Z",
   "stats": {
-    "totalReviews": 39252,
-    "alreadyFlagged": 17485,
+    "totalReviews": 39254,
+    "alreadyFlagged": 17492,
     "dateGuardCatches": 42,
-    "directorMismatch": 873,
+    "directorMismatch": 876,
     "tvFilmSignals": 1071,
     "londonSignals": 670,
     "offBroadwaySignals": 464,
     "yearMismatch": 84,
-    "noPublishDate": 3973
+    "noPublishDate": 3968
   },
   "findings": [
     {
@@ -8248,7 +8248,7 @@
       "file": "independent--alice-saville.json",
       "score": 58,
       "publishDate": "2026-06-18",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html?loginSuccessful=true",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -26814,6 +26814,39 @@
     },
     {
       "showId": "whos-afraid-of-virginia-woolf-2020",
+      "file": "daily-mail--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-11654999/PATRICK-MARMION-reviews-Whos-Afraid-Virginia-Woolf.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"edward albee\" from whos-afraid-of-virginia-woolf-1976"
+        }
+      ]
+    },
+    {
+      "showId": "whos-afraid-of-virginia-woolf-2020",
+      "file": "nytg--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.newyorktheatreguide.com/reviews/whos-afraid-of-virginia-woolf",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"edward albee\" from whos-afraid-of-virginia-woolf-1976"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"anthony page\" from whos-afraid-of-virginia-woolf-2005"
+        }
+      ]
+    },
+    {
+      "showId": "whos-afraid-of-virginia-woolf-2020",
       "file": "playbill--unknown.json",
       "score": null,
       "publishDate": null,
@@ -35875,7 +35908,7 @@
       "showId": "pride-west-end-2026",
       "file": "guardian--unknown.json",
       "publishDate": "2026-06-11",
-      "url": "https://www.theguardian.com/film/2026/mar/05/mothers-pride-film-review-martin-clunes-post-brexit",
+      "url": "https://www.theguardian.com/stage/2026/jun/26/pride-review-dorfman-theatre-london",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
