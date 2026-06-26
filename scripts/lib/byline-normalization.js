@@ -76,8 +76,19 @@ function normalizeBylineCapture(raw) {
 function normalizeCriticName(raw) {
   if (!raw || typeof raw !== 'string') return raw;
   const s = raw.trim();
-  // Not URL-shaped → leave as-is (still run the standard byline cleanup).
-  if (!/https?:\/\/|\bwww\.|\.com\b/i.test(s)) return normalizeBylineCapture(s);
+  // Not URL-shaped → leave as-is (still run the standard byline cleanup). TLD
+  // set kept in sync with looksLikeUrlCriticName so a `.org`/`.net` attribution
+  // reaches the recovery paths below instead of returning here unchanged.
+  if (!/https?:\/\/|\bwww\.|\.(?:com|org|net|co\.uk)\b/i.test(s)) return normalizeBylineCapture(s);
+
+  // "Christopher Kelly | NJ.com" / "Name — Outlet.com" — byline text followed by
+  // an outlet attribution. The personal name is the segment before the
+  // separator; return it when it isn't itself URL-shaped.
+  const sep = s.match(/^([^|–—]+?)\s*(?:[|–—]\s*|\bfor\s+)\S*\.(?:com|org|net|co\.uk)\b/i);
+  if (sep) {
+    const cand = normalizeBylineCapture(sep[1].trim());
+    if (cand && !/https?:\/\/|\bwww\.|\.(?:com|org|net)\b/i.test(cand)) return cand;
+  }
 
   // Extract the name-bearing slug from a known byline-URL pattern.
   let slug = null;
@@ -99,4 +110,54 @@ function normalizeCriticName(raw) {
   return /^[A-Za-z][A-Za-z'’ .-]+$/.test(name) ? name : null;
 }
 
-module.exports = { normalizeBylineCapture, normalizeCriticName };
+/**
+ * Detector half of the URL-as-critic-name problem. Returns true when a stored
+ * criticName is URL-shaped (the scraper grabbed the byline LINK href instead of
+ * the byline TEXT) — e.g. "https://observer.com/author/rex-reed" or a slugified
+ * "Christopher Kelly | NJ.com" outlet suffix. Shared by validate-data.js
+ * (post-hoc detector) and sanitizeCriticName (save-time guard) so the detector
+ * and the write-time guard can never drift (CLAUDE.md §15).
+ *
+ * Note: validate-data's older [headline-critic] check only fired on names >60
+ * chars, so the many SUB-60 URL names (e.g. the 36-char Observer author URLs)
+ * slipped through. This predicate is length-independent.
+ *
+ * @param {*} raw - stored criticName.
+ * @returns {boolean}
+ */
+function looksLikeUrlCriticName(raw) {
+  if (!raw || typeof raw !== 'string') return false;
+  const s = raw.trim();
+  // Explicit URL, www., or a bare domain anywhere in the name. The domain TLDs
+  // are intentionally narrow (real critic surnames don't contain ".com").
+  return /https?:\/\/|\bwww\.|\b[a-z0-9-]+\.(?:com|org|net|co\.uk)\b/i.test(s);
+}
+
+/**
+ * Save-time guard: coerce a URL-shaped criticName into a clean personal name
+ * (via normalizeCriticName) or 'Unknown' when the URL yields no usable name.
+ * A clean, non-URL name passes through untouched. This is the write-time mirror
+ * of validate-data's [headline-critic]/[url-critic] detector — wire it into any
+ * writer so a URL byline can never be PERSISTED as the critic name.
+ *
+ * @param {*} raw - incoming criticName.
+ * @returns {string} sanitized critic name (never a URL).
+ */
+function sanitizeCriticName(raw) {
+  if (!raw || typeof raw !== 'string') return raw;
+  if (!looksLikeUrlCriticName(raw)) return raw;
+  const cleaned = normalizeCriticName(raw);
+  // Guarantee the "never a URL" contract: if the recovery path couldn't yield a
+  // clean personal name (null, or a residue that still reads as URL-shaped —
+  // e.g. an unparsed .co.uk attribution), fall back to 'Unknown' rather than
+  // persisting a URL as the critic name.
+  if (!cleaned || looksLikeUrlCriticName(cleaned)) return 'Unknown';
+  return cleaned;
+}
+
+module.exports = {
+  normalizeBylineCapture,
+  normalizeCriticName,
+  looksLikeUrlCriticName,
+  sanitizeCriticName,
+};
