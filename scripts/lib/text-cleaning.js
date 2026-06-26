@@ -48,7 +48,52 @@ function decodeHtmlEntities(text) {
     .replace(/&aacute;/g, 'á')
     .replace(/&uacute;/g, 'ú')
     .replace(/&ntilde;/g, 'ñ')
-    .replace(/&ccedil;/g, 'ç');
+    .replace(/&ccedil;/g, 'ç')
+    // Grave + remaining diaeresis/circumflex accents. egrave/euml were missing,
+    // so a value like "M&egrave;re" survived decode and kept tripping the
+    // validate-data [html-entity] detector. Completed so the save-time guard in
+    // review-file-writer.js can fully clean every entity that detector flags.
+    .replace(/&agrave;/g, 'à')
+    .replace(/&egrave;/g, 'è')
+    .replace(/&igrave;/g, 'ì')
+    .replace(/&ograve;/g, 'ò')
+    .replace(/&ugrave;/g, 'ù')
+    .replace(/&euml;/g, 'ë')
+    .replace(/&iuml;/g, 'ï')
+    .replace(/&yuml;/g, 'ÿ')
+    .replace(/&acirc;/g, 'â')
+    .replace(/&ecirc;/g, 'ê')
+    .replace(/&icirc;/g, 'î')
+    .replace(/&ocirc;/g, 'ô')
+    .replace(/&ucirc;/g, 'û')
+    .replace(/&atilde;/g, 'ã')
+    .replace(/&otilde;/g, 'õ')
+    .replace(/&aring;/g, 'å')
+    .replace(/&oslash;/g, 'ø')
+    .replace(/&aelig;/g, 'æ')
+    .replace(/&szlig;/g, 'ß');
+}
+
+// ─── Shared display-field artifact detectors ─────────────────────────────────
+// These are the canonical predicates for validate-data's [html-entity] (CHECK 5)
+// and [jsonld-artifact] (CHECK 4) gates AND the save-time guards in
+// review-file-writer.js. Detector and write-guard share ONE definition so they
+// can't drift (CLAUDE.md §15), mirroring looksLikeUrlCriticName.
+
+// True when a display string still contains an undecoded HTML entity (named
+// accent, &amp;/&quot;/smart-quote, or numeric). Keep the named-entity list a
+// subset of what decodeHtmlEntities() handles, so a flagged value is always
+// fully cleanable by decoding.
+const UNDECODED_HTML_ENTITY_RE = /&(?:eacute|egrave|euml|oacute|uacute|iacute|aacute|ntilde|ccedil|amp|quot|ldquo|rdquo|lsquo|rsquo|mdash|ndash|hellip|#\d+|#x[0-9a-f]+);/i;
+function hasUndecodedHtmlEntities(value) {
+  return typeof value === 'string' && UNDECODED_HTML_ENTITY_RE.test(value);
+}
+
+// True when a display string carries JSON-LD / structured-data markers — the
+// scraper grabbed schema.org markup instead of a real pull-quote/excerpt.
+const JSONLD_ARTIFACT_RE = /@type|@context|schema\.org|"@id"|itemReviewed|reviewBody/i;
+function hasJsonLdArtifact(value) {
+  return typeof value === 'string' && JSONLD_ARTIFACT_RE.test(value);
 }
 
 // Junk patterns to strip from end of reviews (newsletter promos, login prompts, site footers)
@@ -399,4 +444,6 @@ module.exports = {
   stripCrossReferences,
   cleanText,
   TRAILING_JUNK_PATTERNS,
+  hasUndecodedHtmlEntities,
+  hasJsonLdArtifact,
 };

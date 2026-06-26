@@ -39,6 +39,30 @@ const { pickRerouteTarget, shouldSkipRoundupAudit } = require('./review-guards')
 const { isBroadwayUrl, isLondonMarket } = require('./venue-classification');
 const { classifyMarketRouting, buildSiblingIndex } = require('./market-routing');
 const { sanitizeCriticName } = require('./byline-normalization');
+const { decodeHtmlEntities, hasUndecodedHtmlEntities, hasJsonLdArtifact } = require('./text-cleaning');
+
+// Save-time mirror of validate-data's [html-entity] (CHECK 5) and
+// [jsonld-artifact] (CHECK 4) detectors. Mutates the review object in place:
+//   • decodes undecoded HTML entities in the four display fields
+//     (criticName, outlet, pullQuote, excerpt) — they're salvageable values
+//     that just arrived encoded;
+//   • drops a pullQuote/excerpt that is JSON-LD markup — the scraper grabbed
+//     structured data instead of a real quote, so the field is garbage.
+// Shares the predicates with validate-data via text-cleaning.js (CLAUDE.md §15)
+// so the gate and the guard can't drift. Returns the same object for chaining.
+function sanitizeDisplayFields(review) {
+  if (!review) return review;
+  for (const f of ['criticName', 'outlet', 'pullQuote', 'excerpt']) {
+    if (hasUndecodedHtmlEntities(review[f])) review[f] = decodeHtmlEntities(review[f]);
+  }
+  for (const f of ['pullQuote', 'excerpt']) {
+    if (hasJsonLdArtifact(review[f])) {
+      console.warn(`  ⚠️  Dropping JSON-LD ${f} for ${review.showId || ''}/${review.outletId || ''} (scraper captured structured data, not a quote)`);
+      delete review[f];
+    }
+  }
+  return review;
+}
 
 const DEFAULT_REVIEW_TEXTS_DIR = path.join(__dirname, '..', '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', '..', 'data', 'shows.json');
@@ -464,6 +488,7 @@ function createOrMergeReviewFile(showId, input, options = {}) {
     if (!fs.existsSync(showDir)) {
       fs.mkdirSync(showDir, { recursive: true });
     }
+    sanitizeDisplayFields(newReview);
     safeWriteReview(filepath, newReview, { merge: false });
   }
 
@@ -549,6 +574,7 @@ function _mergeIntoExisting(filepath, existing, ctx) {
   }
 
   if (!dryRun) {
+    sanitizeDisplayFields(existing);
     safeWriteReview(filepath, existing, { merge: false });
   }
 

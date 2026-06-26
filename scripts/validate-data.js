@@ -34,6 +34,7 @@ const { classifyReverseCrossMarket } = require('./lib/cross-market-guard');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { openingDateSourceHint } = require('./lib/opening-date-sources');
 const { looksLikeUrlCriticName } = require('./lib/byline-normalization');
+const { hasUndecodedHtmlEntities, hasJsonLdArtifact } = require('./lib/text-cleaning');
 
 // Notion 362637c5-416f-8174 — sentinel file consumed by .github/actions/push-core-data
 // to refuse pushing when validation failed. The composite action used `if: always()`
@@ -3246,22 +3247,26 @@ function validateReviewTextQuality(shows) {
         issues++;
       }
 
-      // CHECK 4: pullQuote or excerpt contains JSON-LD / structured data
+      // CHECK 4: pullQuote or excerpt contains JSON-LD / structured data.
+      // Shares hasJsonLdArtifact with the save-time guard in review-file-writer.js
+      // (CLAUDE.md §15) — the writer nulls such fields so they never persist.
       const textFields = [data.pullQuote, data.excerpt].filter(Boolean);
       for (const text of textFields) {
-        if (/@type|@context|schema\.org|"@id"|itemReviewed|reviewBody/i.test(text)) {
-          error(`[jsonld-artifact] ${showDir}/${file}: pullQuote/excerpt contains JSON-LD structured data`);
+        if (hasJsonLdArtifact(text)) {
+          error(`[jsonld-artifact] ${showDir}/${file}: pullQuote/excerpt contains JSON-LD structured data (run scripts/gc-display-field-artifacts.js --fix)`);
           jsonLdPullQuotes++;
           issues++;
           break;
         }
       }
 
-      // CHECK 5: HTML entities in display fields (pullQuote, excerpt, criticName, outlet)
+      // CHECK 5: HTML entities in display fields (pullQuote, excerpt, criticName, outlet).
+      // Shares hasUndecodedHtmlEntities with the save-time guard, which decodes
+      // these fields at write so they never persist (CLAUDE.md §15).
       const displayFields = { pullQuote: data.pullQuote, excerpt: data.excerpt, criticName: data.criticName, outlet: data.outlet };
       for (const [fieldName, value] of Object.entries(displayFields)) {
-        if (value && /&(?:eacute|egrave|euml|oacute|uacute|iacute|aacute|ntilde|ccedil|amp|quot|ldquo|rdquo|lsquo|rsquo|mdash|ndash|hellip|#\d+|#x[0-9a-f]+);/i.test(value)) {
-          warn(`[html-entity] ${showDir}/${file}: ${fieldName} contains undecoded HTML entities`);
+        if (hasUndecodedHtmlEntities(value)) {
+          warn(`[html-entity] ${showDir}/${file}: ${fieldName} contains undecoded HTML entities (run scripts/gc-display-field-artifacts.js --fix)`);
           htmlEntityFiles++;
           issues++;
           break; // Only report once per file
