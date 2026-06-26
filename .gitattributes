@@ -40,15 +40,38 @@ data/audit/unknown-aggregator-outlets.json merge=ours
 data/audit/pipeline-health/rebuild-reviews.last-success merge=ours
 
 # Collection-state checkpoints (500+ commits/3d — the repo's highest-churn tracked
-# files), triaged 2026-06-26. Single-state JSON, bot-only: written by
-# collect-review-texts.js / llm-scoring/index.js as cross-run resume checkpoints
-# (no human/server write path — confirmed nothing in src/ writes them). Must stay
-# TRACKED (a fresh CI checkout needs them to resume), so latest-wins merge=ours,
-# not gitignore.
-data/collection-state/progress.json merge=ours
-data/collection-state/live-progress.json merge=ours
-data/collection-state/scoring-progress.json merge=ours
-data/collection-state/browserbase-usage.json merge=ours
+# files), triaged 2026-06-26. Single-state JSON, bot-only: written by collect-
+# review-texts.js saveState / llm-scoring/index.js / serp-last-run as cross-run
+# resume checkpoints (no human/server write path — confirmed nothing in src/
+# writes them; collect-review-texts.js documents the intended resolution inline:
+# "always keep the current run's version"). Must stay TRACKED (a fresh CI checkout
+# needs them to resume), so latest-wins merge=ours, not gitignore. The `*.json`
+# glob (non-recursive) covers progress/live-progress/scoring-progress/browserbase-
+# usage AND the serp-last-run-* files — all sit directly in the dir.
+#
+# Surfaced by scripts/audit-churn-merge-coverage.js (the churn-coverage monitor),
+# which finds high-churn TRACKED files with no merge driver — the gap the manual
+# triage passes above kept leaving.
+data/collection-state/*.json merge=ours
+
+# merge-coverage=exempt — a CUSTOM attribute read ONLY by audit-churn-merge-
+# coverage.js to suppress false "needs a merge driver" flags; git ignores it for
+# merging. These files are high-churn but INTENTIONALLY have no driver, for one
+# of two reasons:
+#   (a) served / human-editable → needs a real 3-way merge, must NOT be `ours`
+#       (ours silently drops the other side). Same rule as the SAFETY note above.
+#   (b) cross-run accumulate-state (append array / seen-set) → neither `ours`
+#       (drops new entries) nor `union` (corrupts JSON) is correct; the bot
+#       re-accumulates next run, so the churn is accepted rather than driven.
+# Adding a real `merge=` driver to any of these later auto-clears the exemption.
+public/** merge-coverage=exempt
+data/tony-win-probabilities.json merge-coverage=exempt
+data/tony-polymarket-odds.json merge-coverage=exempt
+data/tony-kalshi-odds.json merge-coverage=exempt
+data/show-score-urls.json merge-coverage=exempt
+data/llm-scoring-runs.json merge-coverage=exempt
+data/llm-scoring-garbage-skips.json merge-coverage=exempt
+data/commercial-rss-state.json merge-coverage=exempt
 
 # cloud-memory/ is a mirror of ~/.claude/projects/.../memory/ for cloud Claude
 # Code sessions. Marking it vendored keeps language stats accurate and lets

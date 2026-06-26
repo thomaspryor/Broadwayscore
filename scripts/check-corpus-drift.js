@@ -107,6 +107,17 @@ const AUDITS = [
     args: ['--max=5'],
     crashCodes: [2],           // 0 under threshold / 1 over (drift) / 2 = corpus missing
   },
+  {
+    name: 'churn-merge-coverage',
+    label: 'high-churn tracked files lacking a .gitattributes merge driver',
+    script: 'audit-churn-merge-coverage.js',
+    // Complements the test.yml "merge drivers registered" guard: that checks
+    // every DECLARED driver is registered; this finds files that SHOULD have a
+    // driver but never got one (collection-state/*.json sat uncovered for weeks).
+    // Needs ~3 days of commit history — the workflow deepens the shallow checkout.
+    args: [],
+    crashCodes: [2],           // 0 all covered/exempt / 1 files need a decision (drift) / 2 = not a git repo
+  },
 ];
 
 function runAudit(audit) {

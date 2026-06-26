@@ -19,6 +19,12 @@ on:
       - 'scripts/audit-critic-consensus-contamination.js'
       - 'scripts/audit-regex-patterns.js'
       - 'scripts/audit-duplicate-of-url-mismatch.js'
+      # Churn-vs-merge-attribute coverage monitor + its pure decision lib. The
+      # colocated scripts/lib/churn-merge-coverage.test.mjs runs in the lib-test
+      # step; without these path entries a solo edit triggers ZERO CI.
+      - 'scripts/audit-churn-merge-coverage.js'
+      - 'scripts/lib/churn-merge-coverage.js'
+      - 'scripts/lib/churn-merge-coverage.test.mjs'
       # URL-shaped critic-name GC sweep (byline link href captured as criticName)
       # + the SERP discovery writer that bypasses the shared review-file-writer.
       # Without these entries a solo edit triggers ZERO CI (allow-list gate).

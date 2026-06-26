@@ -61,6 +61,17 @@ jobs:
 
       - uses: ./.github/actions/setup-node
 
+      - name: Deepen history for churn-merge-coverage audit
+        # audit-churn-merge-coverage.js (run by check-corpus-drift.js) measures
+        # per-file commit churn over the last 3 days. The checkout above is shallow
+        # (depth 1), so fetch a 10-day window (margin over the 3-day audit window)
+        # instead of full history (130k+ commits). Best-effort: if the fetch fails,
+        # the audit reports degraded:true and exits 0 — it never fails this job.
+        run: |
+          git fetch --shallow-since="10 days ago" origin main \
+            || git fetch --deepen=4000 origin main \
+            || echo "::warning::history deepen failed — churn-merge-coverage will run degraded"
+
       - name: Run corpus-drift monitor
         run: |
           ARGS=""
@@ -73,13 +84,12 @@ jobs:
         id: changes
         if: always()
         run: |
-          if [ ! -f data/audit/corpus-drift.json ]; then
-            echo "has_changes=false" >> $GITHUB_OUTPUT
-          elif git diff --quiet data/audit/corpus-drift.json 2>/dev/null \
-            && git ls-files --error-unmatch data/audit/corpus-drift.json >/dev/null 2>&1; then
-            echo "has_changes=false" >> $GITHUB_OUTPUT
-          else
+          # Fires on a new or modified verdict for EITHER monitor file (porcelain
+          # prints "?? path" for untracked, "M path" for modified, nothing if clean).
+          if git status --porcelain data/audit/corpus-drift.json data/audit/churn-merge-coverage.json | grep -q .; then
             echo "has_changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Commit and push audit
@@ -88,6 +98,7 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add data/audit/corpus-drift.json
+          [ -f data/audit/churn-merge-coverage.json ] && git add data/audit/churn-merge-coverage.json
           SUMMARY=$(node -e "const d=require('./data/audit/corpus-drift.json'); console.log(d.summary.driftCount + ' drift, ' + d.summary.crashCount + ' crashed')")
           git commit -m "audit: corpus-drift monitor ($SUMMARY) [skip ci]
 
