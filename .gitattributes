@@ -39,6 +39,14 @@ data/audit/market-misroutes.json merge=ours
 data/audit/unknown-aggregator-outlets.json merge=ours
 data/audit/pipeline-health/rebuild-reviews.last-success merge=ours
 
+# The two non-blocking monitor verdicts, committed by check-corpus-drift.yml
+# after every rebuild (each embeds a fresh generatedAt, so they churn ~16+/3d
+# and climbing). Bot-written full snapshots, latest-wins — same nature as
+# deploy-watermark.json above. Covering them keeps the churn-coverage monitor
+# from flagging its OWN output (the audit dogfoods its own rule).
+data/audit/corpus-drift.json merge=ours
+data/audit/churn-merge-coverage.json merge=ours
+
 # Collection-state checkpoints (500+ commits/3d — the repo's highest-churn tracked
 # files), triaged 2026-06-26. Single-state JSON, bot-only: written by collect-
 # review-texts.js saveState / llm-scoring/index.js / serp-last-run as cross-run

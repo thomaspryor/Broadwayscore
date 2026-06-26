@@ -53,7 +53,12 @@ const DEFAULT_MIN_CHURN = 30; // the lowest hand-triaged tier ("30–100 commits
 const AUDIT_OUT_DEFAULT = path.join(process.cwd(), 'data', 'audit', 'churn-merge-coverage.json');
 
 function git(args, opts = {}) {
-  return execFileSync('git', args, {
+  // -c core.quotepath=false: emit raw UTF-8 paths (not octal-escaped) so churn
+  // (git log), trackedSet (ls-files) and readMergeAttrs (check-attr) all key on
+  // identical byte strings — otherwise a non-ASCII filename would parse as one
+  // string in `git log` and a different quoted string in `check-attr`, miss its
+  // attribute lookup, and get falsely flagged.
+  return execFileSync('git', ['-c', 'core.quotepath=false', ...args], {
     cwd: process.cwd(),
     encoding: 'utf8',
     maxBuffer: 64 * 1024 * 1024,
@@ -127,8 +132,11 @@ function historyComplete(days) {
 
 function parseArgs(argv) {
   const get = (name, dflt) => {
-    const hit = argv.find((a) => a.startsWith(`--${name}=`));
-    return hit ? hit.split('=')[1] : dflt;
+    const prefix = `--${name}=`;
+    const hit = argv.find((a) => a.startsWith(prefix));
+    // slice (not split('=')[1]) so values containing '=' survive, e.g.
+    // --audit-out=/tmp/a=b/x.json.
+    return hit ? hit.slice(prefix.length) : dflt;
   };
   return {
     days: Math.max(1, parseInt(get('days', String(DEFAULT_DAYS)), 10) || DEFAULT_DAYS),
@@ -156,15 +164,28 @@ function main() {
     degraded = true; // can't prove completeness → flag, don't crash
   }
 
-  const churn = computeChurn(opts.days);
-  const tracked = trackedSet();
+  // A git failure HERE (corrupt graft after a bad deepen, check-attr error, …)
+  // means the audit could not run — that is exit 2 (crash), not a false "drift".
+  // Without this guard an uncaught throw exits 1, which check-corpus-drift's
+  // crashCodes:[2] would misclassify as drift and report phantom flagged files.
+  let churn;
+  let tracked;
+  let attrs;
+  let candidates;
+  try {
+    churn = computeChurn(opts.days);
+    tracked = trackedSet();
 
-  // Candidates: tracked files at/above the churn floor. Cap attr lookups to these.
-  const candidates = [];
-  for (const [file, count] of churn) {
-    if (count >= opts.minChurn && tracked.has(file)) candidates.push(file);
+    // Candidates: tracked files at/above the churn floor. Cap attr lookups to these.
+    candidates = [];
+    for (const [file, count] of churn) {
+      if (count >= opts.minChurn && tracked.has(file)) candidates.push(file);
+    }
+    attrs = readMergeAttrs(candidates);
+  } catch (err) {
+    console.error(`[churn-merge-coverage] git read failed — cannot run: ${err.message}`);
+    process.exit(2);
   }
-  const attrs = readMergeAttrs(candidates);
 
   const files = candidates.map((p) => ({
     path: p,

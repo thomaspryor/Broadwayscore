@@ -4,6 +4,8 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { classifyChurnCoverage, hasMergeDriver, isExempt } = require('./churn-merge-coverage.js');
+// Requiring the CLI is side-effect-free (main() is guarded by require.main===module).
+const { parseArgs } = require('../audit-churn-merge-coverage.js');
 
 const f = (path, churn, mergeAttr = 'unspecified', coverageAttr = 'unspecified') => ({
   path,
@@ -95,6 +97,22 @@ test('mixed realistic set partitions correctly', () => {
   assert.equal(r.summary.exemptCount, 2);
   assert.equal(r.summary.flaggedCount, 1);
   assert.equal(r.flagged[0].path, 'data/new-bot-state.json');
+});
+
+test('parseArgs: defaults, numeric coercion, and =-containing values survive', () => {
+  const d = parseArgs([]);
+  assert.equal(d.days, 3);
+  assert.equal(d.minChurn, 30);
+  assert.equal(d.json, false);
+
+  const c = parseArgs(['--days=7', '--min-churn=20', '--json']);
+  assert.equal(c.days, 7);
+  assert.equal(c.minChurn, 20);
+  assert.equal(c.json, true);
+
+  // The regression this guards: split('=')[1] would truncate at the 2nd '='.
+  const o = parseArgs(['--audit-out=/tmp/a=b/x.json']);
+  assert.ok(o.auditOut.endsWith('/tmp/a=b/x.json'));
 });
 
 test('throws on bad inputs (programmer error, not data)', () => {
