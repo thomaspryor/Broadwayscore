@@ -116,3 +116,57 @@ test('leaves real names untouched (and still applies byline cleanup)', () => {
   assert.equal(normalizeCriticName(null), null);
   assert.equal(normalizeCriticName(''), '');
 });
+
+// ── looksLikeUrlCriticName: detector shared with validate-data [url-critic] ───
+// Length-independent — the older validate-data check only fired on >60 chars,
+// so the many sub-60 URL bylines (e.g. 36-char Observer author URLs) leaked.
+
+test('looksLikeUrlCriticName flags URL-shaped critic names of any length', () => {
+  assert.equal(looksLikeUrlCriticName('https://observer.com/author/rex-reed'), true); // 36 chars, sub-60
+  assert.equal(looksLikeUrlCriticName('https://www.nytimes.com/by/laura-collins-hughes'), true);
+  assert.equal(looksLikeUrlCriticName('https://www.facebook.com/entertainmentweekly'), true);
+  assert.equal(looksLikeUrlCriticName('www.theguardian.com/profile/x'), true);
+  assert.equal(looksLikeUrlCriticName('Christopher Kelly | NJ.com'), true); // outlet-suffix junk
+});
+
+test('looksLikeUrlCriticName does not flag real personal names', () => {
+  assert.equal(looksLikeUrlCriticName('Ben Brantley'), false);
+  assert.equal(looksLikeUrlCriticName('Laura Collins-Hughes'), false);
+  assert.equal(looksLikeUrlCriticName("Sara O'Brien"), false);
+  assert.equal(looksLikeUrlCriticName('Jesse Green'), false);
+  assert.equal(looksLikeUrlCriticName(''), false);
+  assert.equal(looksLikeUrlCriticName(null), false);
+});
+
+// ── sanitizeCriticName: save-time guard wired into review-file-writer.js ──────
+
+test('sanitizeCriticName resolves URL bylines to a clean name or Unknown', () => {
+  assert.equal(sanitizeCriticName('https://observer.com/author/rex-reed'), 'Rex Reed');
+  assert.equal(sanitizeCriticName('https://chicagosuntimes.com/catey-sullivan-for-the-sun-times'), 'Catey Sullivan');
+  // Unresolvable org page → Unknown (never persist a URL)
+  assert.equal(sanitizeCriticName('https://www.facebook.com/entertainmentweekly'), 'Unknown');
+  assert.equal(sanitizeCriticName('https://www.theguardian.com/profile/ryangilbey'), 'Unknown');
+});
+
+test('sanitizeCriticName passes real names through untouched', () => {
+  assert.equal(sanitizeCriticName('Ben Brantley'), 'Ben Brantley');
+  assert.equal(sanitizeCriticName("Sara O'Brien"), "Sara O'Brien");
+  assert.equal(sanitizeCriticName(null), null);
+});
+
+test('sanitizeCriticName never returns a URL — .org/.net/.co.uk contract (detector/normalizer parity)', () => {
+  // looksLikeUrlCriticName flags these TLDs; sanitize must never leave one in.
+  for (const v of [
+    'Jane Doe | Outlet.org',
+    'Jane Doe — Outlet.net',
+    'https://outlet.org/author/some-handle',
+    'Reviews | TheStage.co.uk',
+    'Name for Outlet.org',
+  ]) {
+    const out = sanitizeCriticName(v);
+    assert.ok(!looksLikeUrlCriticName(out), `sanitize left a URL-shaped value: "${out}" from "${v}"`);
+  }
+  // Recoverable .org/.net attribution yields the clean name, not Unknown
+  assert.equal(sanitizeCriticName('Jane Doe | Outlet.org'), 'Jane Doe');
+  assert.equal(sanitizeCriticName('Jane Doe — Outlet.net'), 'Jane Doe');
+});
