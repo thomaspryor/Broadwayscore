@@ -402,7 +402,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Chain:** scoring → rebuild → consensus (rebuild dispatches consensus when scoring doesn't fire)
 
 ## `process-feedback.yml`
-- **Runs:** Every Monday at 9 AM UTC
+- **Runs:** Every 10 minutes (`*/10 * * * *`) — GitHub throttles high-frequency schedules, so effective cadence is often ~90 min. Monitored by `check-cron-health.yml` (state-check catches `disabled_manually`; 12h recency band).
 - **Does:** Fetches Formspree submissions, AI-categorizes feedback, auto-diagnoses bugs/content errors, creates GitHub issue digest + separate bug-diagnosis issues
 - **User-facing page:** `/feedback`
 - **Scripts:** `scripts/process-feedback.js`, `scripts/diagnose-feedback-bug.js`
