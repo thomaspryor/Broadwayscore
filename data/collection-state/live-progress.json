@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-06-26T02:14:05.928Z",
-  "processed": 12,
-  "failed": 33,
-  "successRate": "26.7%",
+  "updatedAt": "2026-06-26T02:15:25.921Z",
+  "processed": 11,
+  "failed": 34,
+  "successRate": "24.4%",
   "tierBreakdown": {
     "playwright": 10,
     "amp": 0,
-    "browserbase": 3,
+    "browserbase": 4,
     "directCookies": 0,
     "scrapingbee": 0,
-    "brightdata": 1,
-    "archiveToday": 8,
+    "brightdata": 0,
+    "archiveToday": 9,
     "archive": 0
   },
   "browserbaseSessions": 0,
@@ -45,6 +45,23 @@
     },
     {
       "t": "2026-06-26T01:57:28.015Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-26T02:12:54.966Z",
+      "event": "bb-session",
+      "session": "ffe27d0f",
+      "url": "https://thefrontrowcenter.com/2026/06/dad-dont-read/"
+    },
+    {
+      "t": "2026-06-26T02:14:28.395Z",
+      "event": "bb-session",
+      "session": "525be5f1",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2649682"
+    },
+    {
+      "t": "2026-06-26T02:14:29.291Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }
