@@ -39,6 +39,17 @@ data/audit/market-misroutes.json merge=ours
 data/audit/unknown-aggregator-outlets.json merge=ours
 data/audit/pipeline-health/rebuild-reviews.last-success merge=ours
 
+# Collection-state checkpoints (500+ commits/3d — the repo's highest-churn tracked
+# files), triaged 2026-06-26. Single-state JSON, bot-only: written by
+# collect-review-texts.js / llm-scoring/index.js as cross-run resume checkpoints
+# (no human/server write path — confirmed nothing in src/ writes them). Must stay
+# TRACKED (a fresh CI checkout needs them to resume), so latest-wins merge=ours,
+# not gitignore.
+data/collection-state/progress.json merge=ours
+data/collection-state/live-progress.json merge=ours
+data/collection-state/scoring-progress.json merge=ours
+data/collection-state/browserbase-usage.json merge=ours
+
 # cloud-memory/ is a mirror of ~/.claude/projects/.../memory/ for cloud Claude
 # Code sessions. Marking it vendored keeps language stats accurate and lets
 # GitHub collapse it in the diff view.
