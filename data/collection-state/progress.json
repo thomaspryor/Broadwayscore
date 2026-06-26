@@ -25,7 +25,8 @@
     "much-ado-about-nothing-globe-off-west-end-2026/london-theatre--globe-theatre.json",
     "much-ado-about-nothing-globe-west-end-2026/london-theatre--globe-theatre.json",
     "cyrano-de-bergerac-west-end-2026/telegraph--dominic-cavendish.json",
-    "cyrano-de-bergerac-west-end-2026/times-uk--dominic-maxwell.json"
+    "cyrano-de-bergerac-west-end-2026/times-uk--dominic-maxwell.json",
+    "white-rabbit-red-rabbit-west-end-2026/all-that-dazzles-uk--unknown.json"
   ],
   "failed": [
     "sinatra-the-musical-west-end-2026/the-upcoming-uk--unknown.json",
@@ -137,7 +138,15 @@
     "much-ado-about-nothing-globe-west-end-2026/thestage--holly-o.json",
     "relics-west-end-2026/thestage--unknown.json",
     "sting-west-end-2026/thestage--unknown.json",
-    "sting-west-end-2026/westendtheatre--unknown.json"
+    "sting-west-end-2026/westendtheatre--unknown.json",
+    "sting-west-end-2026/whatsonstage--julia-rank.json",
+    "glengarry-glen-ross-west-end-2026/guardian-uk--unknown.json",
+    "glengarry-glen-ross-west-end-2026/oxfordshire-guardian--unknown.json",
+    "glengarry-glen-ross-west-end-2026/thestage--sam-marlowe.json",
+    "glengarry-glen-ross-west-end-2026/western-mail--unknown.json",
+    "glengarry-glen-ross-west-end-2026/whatsonstage--lucinda-everett.json",
+    "white-rabbit-red-rabbit-west-end-2026/thestage--dave-fargnoli.json",
+    "white-rabbit-red-rabbit-west-end-2026/times-uk--anya-ryan.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -162,7 +171,8 @@
       "the-misanthrope-west-end-2026/times-uk--clive-davis.json",
       "much-ado-about-nothing-globe-off-west-end-2026/london-theatre--globe-theatre.json",
       "much-ado-about-nothing-globe-west-end-2026/london-theatre--globe-theatre.json",
-      "cyrano-de-bergerac-west-end-2026/times-uk--dominic-maxwell.json"
+      "cyrano-de-bergerac-west-end-2026/times-uk--dominic-maxwell.json",
+      "white-rabbit-red-rabbit-west-end-2026/all-that-dazzles-uk--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -233,7 +243,9 @@
       "data/review-texts/the-misanthrope-west-end-2026/thestage--unknown.json",
       "data/review-texts/much-ado-about-nothing-globe-west-end-2026/thestage--holly-o.json",
       "data/review-texts/relics-west-end-2026/thestage--unknown.json",
-      "data/review-texts/sting-west-end-2026/thestage--unknown.json"
+      "data/review-texts/sting-west-end-2026/thestage--unknown.json",
+      "data/review-texts/glengarry-glen-ross-west-end-2026/thestage--sam-marlowe.json",
+      "data/review-texts/glengarry-glen-ross-west-end-2026/western-mail--unknown.json"
     ],
     "archive": [
       "small-off-broadway-2026/culturesauce--thom-geier.json",
@@ -277,7 +289,7 @@
     ]
   },
   "startTime": "2026-06-25T23:06:09.797Z",
-  "lastProcessed": "sting-west-end-2026/westendtheatre--unknown.json",
+  "lastProcessed": "white-rabbit-red-rabbit-west-end-2026/times-uk--anya-ryan.json",
   "log": [
     {
       "t": "2026-06-26T01:27:24.415Z",
@@ -378,7 +390,24 @@
     {
       "t": "2026-06-26T06:02:13.791Z",
       "event": "bb-cookie-inject",
-      "domain": "northjersey.com"
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-26T07:13:14.204Z",
+      "event": "bb-session",
+      "session": "babba8bd",
+      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
+    },
+    {
+      "t": "2026-06-26T07:13:15.000Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-26T09:46:28.597Z",
+      "event": "bb-session",
+      "session": "ad165fc9",
+      "url": "https://www.facebook.com/thestage/posts/icymi-review-glengarry-glen-ross-at-the-"
     }
   ]
 }
