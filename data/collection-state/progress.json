@@ -1,11 +1,11 @@
 {
   "processed": [
-    "camping-off-broadway-2026/talkinbroadway--unknown.json",
     "encores-la-cage-aux-folles-off-broadway-2026/nytimes--httpswwwnytimescombylaura-collins-hughes.json"
   ],
   "failed": [
     "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
     "birthright-off-broadway-2026/broadwayworld--unknown.json",
+    "camping-off-broadway-2026/talkinbroadway--unknown.json",
     "encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
     "romeo-and-juliet-off-broadway-2026/one-minute-critic--emily-chackerian.json",
     "im-almost-there-off-broadway-2026/broadwayworld--team-bww.json",
@@ -16,21 +16,45 @@
   "tierBreakdown": {
     "playwright": [],
     "amp": [],
-    "browserbase": [],
-    "directCookies": [],
-    "scrapingbee": [
+    "browserbase": [
+      "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/nytimes--httpswwwnytimescombylaura-collins-hughes.json",
       "encores-la-cage-aux-folles-off-broadway-2026/nytimes--httpswwwnytimescombylaura-collins-hughes.json"
     ],
-    "brightdata": [
-      "camping-off-broadway-2026/talkinbroadway--unknown.json"
-    ],
+    "directCookies": [],
+    "scrapingbee": [],
+    "brightdata": [],
     "archiveToday": [
       "data/review-texts/birthright-off-broadway-2026/broadwayworld--unknown.json",
-      "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json"
+      "data/review-texts/camping-off-broadway-2026/talkinbroadway--unknown.json",
+      "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
+      "data/review-texts/im-almost-there-off-broadway-2026/broadwayworld--team-bww.json"
     ],
     "archive": []
   },
-  "startTime": "2026-06-27T03:11:04.938Z",
+  "startTime": "2026-06-27T03:12:50.769Z",
   "lastProcessed": "spamalot-off-broadway-2026/vulture--jackson-mchenry.json",
-  "log": []
+  "log": [
+    {
+      "t": "2026-06-27T03:15:54.008Z",
+      "event": "bb-session",
+      "session": "99238b51",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2649682"
+    },
+    {
+      "t": "2026-06-27T03:15:54.926Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-27T03:16:24.995Z",
+      "event": "bb-session",
+      "session": "c89cb726",
+      "url": "https://www.nytimes.com/2026/06/19/theater/la-cage-aux-folles-review-porter-brad"
+    },
+    {
+      "t": "2026-06-27T03:16:25.958Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
