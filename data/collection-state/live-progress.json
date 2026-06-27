@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-06-27T12:22:52.864Z",
-  "processed": 282,
-  "failed": 337,
-  "successRate": "45.6%",
+  "updatedAt": "2026-06-27T12:27:27.242Z",
+  "processed": 289,
+  "failed": 340,
+  "successRate": "45.9%",
   "tierBreakdown": {
-    "playwright": 142,
+    "playwright": 144,
     "amp": 0,
-    "browserbase": 20,
+    "browserbase": 24,
     "directCookies": 0,
     "scrapingbee": 56,
     "brightdata": 29,
     "archiveToday": 39,
-    "archive": 88
+    "archive": 93
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 9,
   "recentActivity": [
-    {
-      "t": "2026-06-27T03:16:25.958Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-27T04:04:00.690Z",
-      "event": "bb-session",
-      "session": "0f215d3c",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2649682"
-    },
-    {
-      "t": "2026-06-27T04:04:01.824Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-06-27T06:21:51.229Z",
-      "event": "bb-session",
-      "session": "291483f0",
-      "url": "https://theaterlife.com/jamie-allans-amaze/"
-    },
     {
       "t": "2026-06-27T06:22:58.249Z",
       "event": "bb-session",
@@ -122,6 +100,28 @@
     },
     {
       "t": "2026-06-27T12:05:03.729Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-27T12:23:25.823Z",
+      "event": "bb-session",
+      "session": "bc1f032a",
+      "url": "https://www.wsj.com/articles/les-liaisons-dangereuses-review-fallen-archness-147"
+    },
+    {
+      "t": "2026-06-27T12:23:26.571Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-27T12:26:57.749Z",
+      "event": "bb-session",
+      "session": "47ab6621",
+      "url": "http://www.wsj.com/articles/heisenberg-review-masculine-wish-fulfillment-on-stag"
+    },
+    {
+      "t": "2026-06-27T12:26:58.539Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

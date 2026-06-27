@@ -281,7 +281,14 @@
     "jitney-2017/nydailynews--joe-dziemianowicz.json",
     "jitney-2017/wnyc--jennifer-vanasco.json",
     "dear-evan-hansen-2016/frontmezzjunkies--steven-ross.json",
-    "a-bronx-tale-the-musical-2016/timeout--adam-feldman.json"
+    "a-bronx-tale-the-musical-2016/timeout--adam-feldman.json",
+    "natasha-pierre-and-the-great-comet-of-1812-2016/newyorker--conde-nast.json",
+    "les-liaisons-dangereuses-2016/uinterview--erik-meers.json",
+    "les-liaisons-dangereuses-2016/wsj--terry-teachout.json",
+    "falsettos-2016/theatermania--jesse-green.json",
+    "heisenberg-2016/nydailynews--joe-dziemianowicz.json",
+    "heisenberg-2016/wsj--terry-teachout.json",
+    "heisenberg-2016/wnyc--jennifer-vanasco.json"
   ],
   "failed": [
     "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
@@ -646,7 +653,10 @@
     "the-present-2017/thestage--unknown.json",
     "in-transit-2016/the-cultural-critic--steve-cohen.json",
     "in-transit-2016/nydailynews--joe-dziemianowicz.json",
-    "a-bronx-tale-the-musical-2016/njcom--patrick-maley.json"
+    "a-bronx-tale-the-musical-2016/njcom--patrick-maley.json",
+    "natasha-pierre-and-the-great-comet-of-1812-2016/broadway-and-me--janice-c-simpson.json",
+    "falsettos-2016/theater-life--eric-march.json",
+    "heisenberg-2016/timeout--adam-feldman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -792,7 +802,9 @@
       "the-little-foxes-2017/wnyc--jennifer-vanasco.json",
       "war-paint-2017/wnyc--jennifer-vanasco.json",
       "come-from-away-2017/wnyc--jennifer-vanasco.json",
-      "jitney-2017/wnyc--jennifer-vanasco.json"
+      "jitney-2017/wnyc--jennifer-vanasco.json",
+      "falsettos-2016/theatermania--jesse-green.json",
+      "heisenberg-2016/wnyc--jennifer-vanasco.json"
     ],
     "amp": [],
     "browserbase": [
@@ -815,7 +827,11 @@
       "data/review-texts/the-ferryman-2018/wsj--terry-teachout.json",
       "the-ferryman-2018/wsj--terry-teachout.json",
       "data/review-texts/junk-2017/wsj--terry-teachout.json",
-      "junk-2017/wsj--terry-teachout.json"
+      "junk-2017/wsj--terry-teachout.json",
+      "data/review-texts/les-liaisons-dangereuses-2016/wsj--terry-teachout.json",
+      "les-liaisons-dangereuses-2016/wsj--terry-teachout.json",
+      "data/review-texts/heisenberg-2016/wsj--terry-teachout.json",
+      "heisenberg-2016/wsj--terry-teachout.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1064,11 +1080,16 @@
       "sunday-in-the-park-with-george-2017/theater-life--isa-goldberg.json",
       "jitney-2017/nydailynews--joe-dziemianowicz.json",
       "dear-evan-hansen-2016/frontmezzjunkies--steven-ross.json",
-      "a-bronx-tale-the-musical-2016/timeout--adam-feldman.json"
+      "a-bronx-tale-the-musical-2016/timeout--adam-feldman.json",
+      "natasha-pierre-and-the-great-comet-of-1812-2016/newyorker--conde-nast.json",
+      "les-liaisons-dangereuses-2016/uinterview--erik-meers.json",
+      "heisenberg-2016/nydailynews--joe-dziemianowicz.json",
+      "falsettos-2016/theater-life--eric-march.json",
+      "heisenberg-2016/timeout--adam-feldman.json"
     ]
   },
   "startTime": "2026-06-27T03:12:50.769Z",
-  "lastProcessed": "a-bronx-tale-the-musical-2016/njcom--patrick-maley.json",
+  "lastProcessed": "heisenberg-2016/wnyc--jennifer-vanasco.json",
   "log": [
     {
       "t": "2026-06-27T03:15:54.008Z",
@@ -1194,6 +1215,28 @@
     },
     {
       "t": "2026-06-27T12:05:03.729Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-27T12:23:25.823Z",
+      "event": "bb-session",
+      "session": "bc1f032a",
+      "url": "https://www.wsj.com/articles/les-liaisons-dangereuses-review-fallen-archness-147"
+    },
+    {
+      "t": "2026-06-27T12:23:26.571Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-27T12:26:57.749Z",
+      "event": "bb-session",
+      "session": "47ab6621",
+      "url": "http://www.wsj.com/articles/heisenberg-review-masculine-wish-fulfillment-on-stag"
+    },
+    {
+      "t": "2026-06-27T12:26:58.539Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
