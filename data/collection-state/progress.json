@@ -501,7 +501,12 @@
     "a-little-night-music-2009/theater-life--eric-march.json",
     "oleanna-2009/theatermania--unknown.json",
     "next-to-normal-2009/nydailynews--joe-dziemianowicz.json",
-    "rock-of-ages-2009/theater-life--eric-march.json"
+    "rock-of-ages-2009/theater-life--eric-march.json",
+    "god-of-carnage-2009/wsj--terry-teachout.json",
+    "all-my-sons-2008/theater-life--eric-march.json",
+    "the-seagull-2008/timeout--adam-feldman.json",
+    "a-catered-affair-2008/timeout--adam-feldman.json",
+    "a-catered-affair-2008/theater-life--eric-march.json"
   ],
   "failed": [
     "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
@@ -1166,7 +1171,12 @@
     "rock-of-ages-2009/theater-news-online--unknown.json",
     "exit-the-king-2009/variety--david-rooney.json",
     "exit-the-king-2009/newsday--linda-winer.json",
-    "impressionism-2009/newsday--linda-winer.json"
+    "impressionism-2009/newsday--linda-winer.json",
+    "33-variations-2009/newsday--unknown.json",
+    "the-story-of-my-life-2009/newsday--linda-winer.json",
+    "hedda-gabler-2009/newsday--linda-winer.json",
+    "speedtheplow-2008/financialtimes--unknown.json",
+    "the-seagull-2008/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1409,7 +1419,9 @@
       "million-dollar-quartet-2010/theatermania--unknown.json",
       "a-little-night-music-2009/theater-life--eric-march.json",
       "oleanna-2009/theatermania--unknown.json",
-      "rock-of-ages-2009/theater-life--eric-march.json"
+      "rock-of-ages-2009/theater-life--eric-march.json",
+      "all-my-sons-2008/theater-life--eric-march.json",
+      "a-catered-affair-2008/theater-life--eric-march.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1438,7 +1450,9 @@
       "data/review-texts/heisenberg-2016/wsj--terry-teachout.json",
       "heisenberg-2016/wsj--terry-teachout.json",
       "data/review-texts/holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json",
-      "holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json"
+      "holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json",
+      "data/review-texts/god-of-carnage-2009/wsj--terry-teachout.json",
+      "god-of-carnage-2009/wsj--terry-teachout.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1533,7 +1547,9 @@
       "the-house-of-blue-leaves-2011/newsday--linda-winer.json",
       "driving-miss-daisy-2010/ew--melissa-rose-bernardo.json",
       "driving-miss-daisy-2010/newsday--linda-winer.json",
-      "next-to-normal-2009/nydailynews--joe-dziemianowicz.json"
+      "next-to-normal-2009/nydailynews--joe-dziemianowicz.json",
+      "the-seagull-2008/timeout--adam-feldman.json",
+      "a-catered-affair-2008/timeout--adam-feldman.json"
     ],
     "brightdata": [
       "camping-off-broadway-2026/talkinbroadway--unknown.json",
@@ -1830,7 +1846,7 @@
     ]
   },
   "startTime": "2026-06-27T03:12:50.769Z",
-  "lastProcessed": "impressionism-2009/newsday--linda-winer.json",
+  "lastProcessed": "a-catered-affair-2008/theater-life--eric-march.json",
   "log": [
     {
       "t": "2026-06-27T03:15:54.008Z",
@@ -2066,6 +2082,17 @@
     },
     {
       "t": "2026-06-27T20:06:53.916Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-27T20:11:31.691Z",
+      "event": "bb-session",
+      "session": "67c4c1e9",
+      "url": "https://www.wsj.com/articles/god-of-carnage-review-grownup-playground-spat-15060"
+    },
+    {
+      "t": "2026-06-27T20:11:32.789Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
