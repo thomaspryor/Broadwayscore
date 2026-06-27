@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-27T15:02:27.566Z",
+  "generatedAt": "2026-06-27T16:54:23.189Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -393,27 +393,27 @@
       "slug": "archduke-west-end",
       "thumbnail": "/images/shows/archduke-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 61,
+      "liveScore": 66,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 4,
+      "reviewsNeeded": 2,
       "siteFileExists": true,
-      "total": 1,
+      "total": 3,
       "t1": 0,
-      "t2": 1,
-      "t3": 0,
-      "positive": 0,
-      "mixed": 1,
+      "t2": 2,
+      "t3": 1,
+      "positive": 1,
+      "mixed": 2,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/8 total",
+          "3/8 total",
           "T1:0/3",
-          "T2:0/2",
-          "hi-conf:0/6"
+          "T2:1/2",
+          "hi-conf:1/6"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -493,6 +493,18 @@
           "m": 1,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-06-27T16:54:23.189Z",
+          "rc": 3,
+          "s": 66,
+          "t1": 0,
+          "t2": 2,
+          "t3": 1,
+          "p": 1,
+          "m": 2,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -506,17 +518,17 @@
       "status": "open",
       "slug": "cyrano-de-bergerac-west-end",
       "thumbnail": "/images/shows/cyrano-de-bergerac-west-end-2026/thumbnail.webp",
-      "siteScore": 91.42,
+      "siteScore": 91.37,
       "liveScore": 91,
-      "scoreDrift": -0.4200000000000017,
+      "scoreDrift": -0.37000000000000455,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 14,
+      "total": 15,
       "t1": 4,
       "t2": 7,
-      "t3": 3,
-      "positive": 14,
+      "t3": 4,
+      "positive": 15,
       "mixed": 0,
       "negative": 0,
       "readiness": {
@@ -717,6 +729,18 @@
           "t2": 7,
           "t3": 3,
           "p": 14,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-06-27T16:54:23.189Z",
+          "rc": 15,
+          "s": 91.37,
+          "t1": 4,
+          "t2": 7,
+          "t3": 4,
+          "p": 15,
           "m": 0,
           "n": 0,
           "bc": "waiting"
@@ -1632,23 +1656,23 @@
       "status": "open",
       "slug": "sinatra-the-musical-west-end",
       "thumbnail": "/images/shows/sinatra-the-musical-west-end-2026/thumbnail.webp",
-      "siteScore": 64.76,
-      "liveScore": 65,
-      "scoreDrift": 0.23999999999999488,
+      "siteScore": 64.02,
+      "liveScore": 64,
+      "scoreDrift": -0.01999999999999602,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 28,
-      "t1": 9,
+      "total": 29,
+      "t1": 10,
       "t2": 8,
       "t3": 11,
       "positive": 13,
       "mixed": 11,
-      "negative": 4,
+      "negative": 5,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 17,
+        "highConfidence": 18,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1671,10 +1695,6 @@
         }
       ],
       "missingT2": [
-        {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
         {
           "name": "Variety",
           "isDualMarket": true
@@ -1828,6 +1848,18 @@
           "m": 11,
           "n": 4,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-06-27T16:54:23.189Z",
+          "rc": 29,
+          "s": 64.02,
+          "t1": 10,
+          "t2": 8,
+          "t3": 11,
+          "p": 13,
+          "m": 11,
+          "n": 5,
+          "bc": "waiting"
         }
       ]
     },
@@ -1841,23 +1873,23 @@
       "status": "open",
       "slug": "the-truth-a-comedy-by-florian-zeller-west-end",
       "thumbnail": "/images/shows/the-truth-a-comedy-by-florian-zeller-west-end-2026/thumbnail.webp",
-      "siteScore": 77.57,
-      "liveScore": 78,
+      "siteScore": 76.57,
+      "liveScore": 77,
       "scoreDrift": 0.4300000000000068,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 19,
+      "total": 21,
       "t1": 7,
-      "t2": 8,
-      "t3": 4,
-      "positive": 15,
-      "mixed": 3,
+      "t2": 9,
+      "t3": 5,
+      "positive": 16,
+      "mixed": 4,
       "negative": 1,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 10,
+        "highConfidence": 11,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1890,10 +1922,6 @@
         },
         {
           "name": "Variety",
-          "isDualMarket": true
-        },
-        {
-          "name": "BroadwayWorld",
           "isDualMarket": true
         },
         {
@@ -2031,6 +2059,18 @@
           "t3": 4,
           "p": 15,
           "m": 3,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-06-27T16:54:23.189Z",
+          "rc": 21,
+          "s": 76.57,
+          "t1": 7,
+          "t2": 9,
+          "t3": 5,
+          "p": 16,
+          "m": 4,
           "n": 1,
           "bc": "waiting"
         }

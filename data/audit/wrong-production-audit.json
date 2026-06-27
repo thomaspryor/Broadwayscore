@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-27T15:02:22.569Z",
+  "timestamp": "2026-06-27T16:54:17.297Z",
   "stats": {
-    "totalReviews": 39323,
-    "alreadyFlagged": 17519,
+    "totalReviews": 39333,
+    "alreadyFlagged": 17522,
     "dateGuardCatches": 39,
     "directorMismatch": 873,
     "tvFilmSignals": 1071,
-    "londonSignals": 679,
+    "londonSignals": 683,
     "offBroadwaySignals": 464,
     "yearMismatch": 84,
-    "noPublishDate": 3928
+    "noPublishDate": 3934
   },
   "findings": [
     {
@@ -1677,7 +1677,7 @@
       "file": "independent--louis-chilton.json",
       "score": 40,
       "publishDate": "2026-04-17",
-      "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -28182,6 +28182,34 @@
       ]
     },
     {
+      "showId": "archduke-west-end-2026",
+      "file": "london-theatre--julia-rank.json",
+      "score": 62,
+      "publishDate": "2026-06-27",
+      "url": "https://www.londontheatre.co.uk/reviews/archduke-review-royal-court",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "archduke-west-end-2026",
+      "file": "london-unattached--dan-paling.json",
+      "score": 97,
+      "publishDate": "2026-06-27",
+      "url": "https://www.london-unattached.com/archduke-royal-court-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "are-you-watching-west-end-2026",
       "file": "british-theatre--keith-mckenna.json",
       "score": 64,
@@ -29889,11 +29917,25 @@
       ]
     },
     {
+      "showId": "cyrano-de-bergerac-west-end-2026",
+      "file": "north-west-end--paul-ackroyd.json",
+      "score": 90,
+      "publishDate": "2026-06-26",
+      "url": "https://northwestend.com/cyrano-de-bergerac-rsc-the-noel-coward-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
       "showId": "dad-dont-read-this-off-broadway-2026",
       "file": "exeunt-magazine--loren-noveck.json",
       "score": 80,
       "publishDate": "2026-05-15T11:08:02-04:00",
-      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/",
+      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/#:~:text=Dad%20Don't%20Read%20This%20is%20messy%20and%20raw%20and,will%20keep%20it%20in%20my",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -41026,6 +41068,20 @@
       "score": 96,
       "publishDate": "2026-06-25",
       "url": "https://theatreweekly.com/review-the-truth-at-apollo-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-truth-a-comedy-by-florian-zeller-west-end-2026",
+      "file": "theatreandtonic--emmie-newitt.json",
+      "score": 78,
+      "publishDate": "2026-06-25",
+      "url": "https://theatreandtonic.co.uk/blog/the-truth-at-apollo-theatre-review",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
