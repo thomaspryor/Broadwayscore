@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-27T06:39:52.836Z",
+  "timestamp": "2026-06-27T10:44:31.478Z",
   "stats": {
-    "totalReviews": 39276,
-    "alreadyFlagged": 17510,
+    "totalReviews": 39298,
+    "alreadyFlagged": 17514,
     "dateGuardCatches": 39,
-    "directorMismatch": 872,
+    "directorMismatch": 873,
     "tvFilmSignals": 1071,
-    "londonSignals": 676,
+    "londonSignals": 677,
     "offBroadwaySignals": 464,
     "yearMismatch": 84,
-    "noPublishDate": 3918
+    "noPublishDate": 3920
   },
   "findings": [
     {
@@ -4862,6 +4862,20 @@
       "score": 91,
       "publishDate": "2026-06-26",
       "url": "https://www.londontheatre.co.uk/reviews/cyrano-de-bergerac-review-noel-coward-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from cyrano-de-bergerac-2012"
+        }
+      ]
+    },
+    {
+      "showId": "cyrano-de-bergerac-west-end-2026",
+      "file": "telegraph--claire-allfree.json",
+      "score": 97,
+      "publishDate": "2026-06-25",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/cyrano-de-bergerac-noel-coward-theatre-review/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -29861,6 +29875,20 @@
       ]
     },
     {
+      "showId": "cyrano-de-bergerac-west-end-2026",
+      "file": "loureviews--louise-penn.json",
+      "score": 89,
+      "publishDate": "2026-06-26",
+      "url": "https://loureviews.blog/2026/06/26/play-review-cyrano-de-bergerac-noel-coward-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
       "showId": "dad-dont-read-this-off-broadway-2026",
       "file": "exeunt-magazine--loren-noveck.json",
       "score": 80,
@@ -32789,20 +32817,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "inter-alia-west-end-2026",
-      "file": "lbc--johnny-jenkins.json",
-      "score": 91,
-      "publishDate": "2026-04-08",
-      "url": "https://www.lbc.co.uk/article/inter-alia-review-best-plays-ever-seen-5HjdXRZ_2/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
@@ -36638,6 +36652,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"classic stage\""
+        }
+      ]
+    },
+    {
+      "showId": "sinatra-the-musical-west-end-2026",
+      "file": "london-theatre--julia-rank.json",
+      "score": 78,
+      "publishDate": "2026-06-25",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
