@@ -193,7 +193,8 @@
     "hadestown-west-end-2024/shy-strange-manic--kariss-ainsworth.json",
     "magic-mike-live-west-end-2021/daily-mail--ali-daher.json",
     "book-of-mormon-2011/village-voice--michael-musto.json",
-    "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json"
+    "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
+    "nicole-travolta-is-doing-alright-off-broadway-2026/variety--rebecca-rubin.json"
   ],
   "failed": [
     "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
@@ -436,7 +437,16 @@
     "the-lion-king-1997/maryland-theatre-guide--susan-brall.json",
     "as-you-like-it-globe-west-end-2026/london-box-office--nicky-allpress.json",
     "end-of-the-rainbow-west-end-2026/new-jersey-newsroom--michael-sommers.json",
-    "end-of-the-rainbow-west-end-2026/philadelphia-inquirer--howard-shapiro.json"
+    "end-of-the-rainbow-west-end-2026/philadelphia-inquirer--howard-shapiro.json",
+    "end-of-the-rainbow-west-end-2026/hollywood-reporter--david-rooney.json",
+    "hamlet-off-broadway-2026/dc-theater-arts--deb-miller.json",
+    "the-price-off-west-end-2026/wsj--unknown.json",
+    "beaches-2026/chicago-critic--tom-williams.json",
+    "one-flew-over-the-cuckoos-nest-west-end-2026/standard--nick-curtis.json",
+    "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
+    "yoah-off-broadway-2026/variety--pat-saperstein.json",
+    "romeo-and-juliet-west-end-2026/hollywood-reporter--unknown.json",
+    "romeo-and-juliet-west-end-2026/newsday--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -564,7 +574,9 @@
       "data/review-texts/stranger-things-2024/hollywood-reporter--caitlin-huston.json",
       "stranger-things-2024/hollywood-reporter--caitlin-huston.json",
       "data/review-texts/my-neighbour-totoro-west-end-2025/variety--naman-ramachandran.json",
-      "my-neighbour-totoro-west-end-2025/variety--naman-ramachandran.json"
+      "my-neighbour-totoro-west-end-2025/variety--naman-ramachandran.json",
+      "data/review-texts/nicole-travolta-is-doing-alright-off-broadway-2026/variety--rebecca-rubin.json",
+      "nicole-travolta-is-doing-alright-off-broadway-2026/variety--rebecca-rubin.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -745,7 +757,7 @@
     ]
   },
   "startTime": "2026-06-27T03:12:50.769Z",
-  "lastProcessed": "end-of-the-rainbow-west-end-2026/philadelphia-inquirer--howard-shapiro.json",
+  "lastProcessed": "romeo-and-juliet-west-end-2026/newsday--unknown.json",
   "log": [
     {
       "t": "2026-06-27T03:15:54.008Z",
@@ -827,6 +839,17 @@
     },
     {
       "t": "2026-06-27T11:04:59.166Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-27T11:11:16.722Z",
+      "event": "bb-session",
+      "session": "2b22f8bd",
+      "url": "https://variety.com/2026/legit/news/heated-rivalry-broadway-musical-parody-12367"
+    },
+    {
+      "t": "2026-06-27T11:11:17.491Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }

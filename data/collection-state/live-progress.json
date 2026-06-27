@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-27T11:10:47.561Z",
-  "processed": 194,
-  "failed": 215,
-  "successRate": "47.4%",
+  "updatedAt": "2026-06-27T11:11:47.697Z",
+  "processed": 195,
+  "failed": 224,
+  "successRate": "46.5%",
   "tierBreakdown": {
     "playwright": 109,
     "amp": 0,
-    "browserbase": 12,
+    "browserbase": 14,
     "directCookies": 0,
     "scrapingbee": 40,
     "brightdata": 19,
     "archiveToday": 39,
     "archive": 42
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-06-27T03:15:54.008Z",
@@ -95,6 +95,17 @@
     },
     {
       "t": "2026-06-27T11:04:59.166Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-27T11:11:16.722Z",
+      "event": "bb-session",
+      "session": "2b22f8bd",
+      "url": "https://variety.com/2026/legit/news/heated-rivalry-broadway-musical-parody-12367"
+    },
+    {
+      "t": "2026-06-27T11:11:17.491Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
