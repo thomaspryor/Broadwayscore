@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-27T19:19:27.568Z",
-  "processed": 440,
-  "failed": 555,
-  "successRate": "44.2%",
+  "updatedAt": "2026-06-27T19:24:50.393Z",
+  "processed": 448,
+  "failed": 557,
+  "successRate": "44.6%",
   "tierBreakdown": {
-    "playwright": 223,
+    "playwright": 225,
     "amp": 0,
     "browserbase": 26,
     "directCookies": 0,
-    "scrapingbee": 79,
+    "scrapingbee": 80,
     "brightdata": 46,
-    "archiveToday": 73,
-    "archive": 125
+    "archiveToday": 74,
+    "archive": 130
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-06-27T11:03:38.057Z",
-      "event": "bb-session",
-      "session": "e939bb79",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/tracee-ellis-ross-broadway-ever"
-    },
-    {
-      "t": "2026-06-27T11:03:38.825Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-06-27T11:04:25.974Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-06-27T12:28:12.047Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-27T19:23:21.585Z",
+      "event": "bb-session",
+      "session": "e3b1851e",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/179429511_Theater_review_"
+    },
+    {
+      "t": "2026-06-27T19:23:22.749Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
