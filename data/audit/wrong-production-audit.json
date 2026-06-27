@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-06-27T16:54:17.297Z",
+  "timestamp": "2026-06-27T17:20:04.731Z",
   "stats": {
     "totalReviews": 39333,
     "alreadyFlagged": 17522,
     "dateGuardCatches": 39,
     "directorMismatch": 873,
-    "tvFilmSignals": 1071,
+    "tvFilmSignals": 1070,
     "londonSignals": 683,
     "offBroadwaySignals": 464,
     "yearMismatch": 84,
@@ -9559,20 +9559,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"apple tv\""
-        }
-      ]
-    },
-    {
-      "showId": "hand-to-god-2015",
-      "file": "newsday--linda-winer.json",
-      "score": 78,
-      "publishDate": "2015-04-07",
-      "url": "http://www.newsday.com/entertainment/theater/hand-to-god-review-a-devilish-sock-puppet-and-sex-1.10206908",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
