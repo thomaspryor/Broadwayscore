@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-06-27T20:14:25.447Z",
-  "processed": 508,
-  "failed": 677,
-  "successRate": "42.9%",
+  "updatedAt": "2026-06-27T20:20:56.664Z",
+  "processed": 510,
+  "failed": 685,
+  "successRate": "42.7%",
   "tierBreakdown": {
     "playwright": 241,
     "amp": 0,
-    "browserbase": 28,
+    "browserbase": 30,
     "directCookies": 0,
     "scrapingbee": 94,
     "brightdata": 51,
-    "archiveToday": 79,
-    "archive": 158
+    "archiveToday": 82,
+    "archive": 159
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-06-27T12:26:57.749Z",
-      "event": "bb-session",
-      "session": "47ab6621",
-      "url": "http://www.wsj.com/articles/heisenberg-review-masculine-wish-fulfillment-on-stag"
-    },
-    {
-      "t": "2026-06-27T12:26:58.539Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-06-27T12:28:11.390Z",
-      "event": "bb-session",
-      "session": "fe0b9539",
-      "url": "http://www.wsj.com/articles/holiday-inn-the-new-irving-berlin-musical-review-147"
-    },
-    {
-      "t": "2026-06-27T12:28:12.047Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-06-27T19:23:21.585Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-06-27T20:11:32.789Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-27T20:20:01.258Z",
+      "event": "bb-session",
+      "session": "ef2392d1",
+      "url": "https://www.talkinbroadway.com/page/regional/boston/b530.html"
+    },
+    {
+      "t": "2026-06-27T20:20:02.251Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-27T20:20:35.925Z",
+      "event": "bb-session",
+      "session": "c7cf1582",
+      "url": "https://variety.com/2005/legit/markets-festivals/little-women-the-musical-2-1200"
+    },
+    {
+      "t": "2026-06-27T20:20:36.845Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

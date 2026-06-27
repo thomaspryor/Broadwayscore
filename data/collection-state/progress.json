@@ -507,7 +507,9 @@
     "the-seagull-2008/timeout--adam-feldman.json",
     "a-catered-affair-2008/timeout--adam-feldman.json",
     "a-catered-affair-2008/theater-life--eric-march.json",
-    "mary-poppins-2006/timeout--david-cote.json"
+    "mary-poppins-2006/timeout--david-cote.json",
+    "shining-city-2006/nytimes--ben-brantley.json",
+    "little-women-2005/variety--david-rooney.json"
   ],
   "failed": [
     "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
@@ -1186,7 +1188,15 @@
     "grease-2007/standard--nick-curtis.json",
     "a-moon-for-the-misbegotten-2007/times-uk--clive-davis.json",
     "journeys-end-2007/variety--david-rooney.json",
-    "mary-poppins-2006/variety--charles-isherwood.json"
+    "mary-poppins-2006/variety--charles-isherwood.json",
+    "mary-poppins-2006/wsj--terry-teachout.json",
+    "butley-2006/northjerseycom--robert-feldberg.json",
+    "tarzan-2006/nydailynews--joe-dziemianowicz-bway.json",
+    "tarzan-2006/variety--charles-isherwood.json",
+    "the-lieutenant-of-inishmore-2006/nydailynews--joe-dziemianowicz-bway.json",
+    "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
+    "the-color-purple-2005/talkinbroadway--matthew-murray.json",
+    "jersey-boys-2005/village-voice--michael-feingold.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1462,7 +1472,9 @@
       "data/review-texts/holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json",
       "holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json",
       "data/review-texts/god-of-carnage-2009/wsj--terry-teachout.json",
-      "god-of-carnage-2009/wsj--terry-teachout.json"
+      "god-of-carnage-2009/wsj--terry-teachout.json",
+      "data/review-texts/little-women-2005/variety--david-rooney.json",
+      "little-women-2005/variety--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1693,7 +1705,10 @@
       "data/review-texts/bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
       "data/review-texts/a-life-in-the-theatre-2010/backstage--david-sheward.json",
       "data/review-texts/collected-stories-2010/ew--melissa-rose-bernardo.json",
-      "data/review-texts/time-stands-still-2010/ew--melissa-rose-bernardo.json"
+      "data/review-texts/time-stands-still-2010/ew--melissa-rose-bernardo.json",
+      "data/review-texts/tarzan-2006/nydailynews--joe-dziemianowicz-bway.json",
+      "data/review-texts/the-lieutenant-of-inishmore-2006/nydailynews--joe-dziemianowicz-bway.json",
+      "data/review-texts/the-color-purple-2005/talkinbroadway--matthew-murray.json"
     ],
     "archive": [
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
@@ -1853,11 +1868,12 @@
       "the-addams-family-2010/newsday--linda-winer.json",
       "a-behanding-in-spokane-2010/wsj--terry-teachout.json",
       "time-stands-still-2010/newsday--linda-winer.json",
-      "mary-poppins-2006/timeout--david-cote.json"
+      "mary-poppins-2006/timeout--david-cote.json",
+      "shining-city-2006/nytimes--ben-brantley.json"
     ]
   },
   "startTime": "2026-06-27T03:12:50.769Z",
-  "lastProcessed": "mary-poppins-2006/variety--charles-isherwood.json",
+  "lastProcessed": "little-women-2005/variety--david-rooney.json",
   "log": [
     {
       "t": "2026-06-27T03:15:54.008Z",
@@ -2106,6 +2122,28 @@
       "t": "2026-06-27T20:11:32.789Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-27T20:20:01.258Z",
+      "event": "bb-session",
+      "session": "ef2392d1",
+      "url": "https://www.talkinbroadway.com/page/regional/boston/b530.html"
+    },
+    {
+      "t": "2026-06-27T20:20:02.251Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-27T20:20:35.925Z",
+      "event": "bb-session",
+      "session": "c7cf1582",
+      "url": "https://variety.com/2005/legit/markets-festivals/little-women-the-musical-2-1200"
+    },
+    {
+      "t": "2026-06-27T20:20:36.845Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
