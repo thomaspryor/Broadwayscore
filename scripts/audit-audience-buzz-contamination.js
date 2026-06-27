@@ -183,6 +183,12 @@ function audit({ shows: injectedShows, buzz: injectedBuzz, today } = {}) {
     for (const name of SOURCE_NAMES) {
       const src = sources[name];
       if (!src || typeof src.score !== 'number') continue;
+      // Suppressed sources are acknowledged contamination already excluded from
+      // weighting (isRedditEligible drops them); they shouldn't keep failing the
+      // audit. The REDDIT_GENERIC_VOLUME_INFLATION check below already honors
+      // `suppressed` — this keeps the divergence check consistent. Self-clearing:
+      // the next clean scrape overwrites the source object and the flag drops.
+      if (src.suppressed) continue;
       const rc = src.reviewCount || 0;
       if (rc < 10) continue;
       const others = credibleOthers(name);
