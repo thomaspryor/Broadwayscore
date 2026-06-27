@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-27T11:59:43.851Z",
-  "processed": 257,
-  "failed": 312,
-  "successRate": "45.2%",
+  "updatedAt": "2026-06-27T12:05:26.331Z",
+  "processed": 263,
+  "failed": 316,
+  "successRate": "45.4%",
   "tierBreakdown": {
-    "playwright": 128,
+    "playwright": 133,
     "amp": 0,
-    "browserbase": 18,
+    "browserbase": 20,
     "directCookies": 0,
     "scrapingbee": 53,
     "brightdata": 28,
     "archiveToday": 39,
-    "archive": 73
+    "archive": 75
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
-    {
-      "t": "2026-06-27T03:15:54.926Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-06-27T03:16:24.995Z",
-      "event": "bb-session",
-      "session": "c89cb726",
-      "url": "https://www.nytimes.com/2026/06/19/theater/la-cage-aux-folles-review-porter-brad"
-    },
     {
       "t": "2026-06-27T03:16:25.958Z",
       "event": "bb-cookie-inject",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-06-27T11:49:58.122Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-27T12:05:03.029Z",
+      "event": "bb-session",
+      "session": "a02e4218",
+      "url": "http://www.wsj.com/articles/junk-review-bankrupting-entertainment-1509669000"
+    },
+    {
+      "t": "2026-06-27T12:05:03.729Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

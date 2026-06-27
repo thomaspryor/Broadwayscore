@@ -256,7 +256,13 @@
     "angels-in-america-2018/frontmezzjunkies--steven-ross.json",
     "escape-to-margaritaville-2018/broadwaynews--caitlin-huston.json",
     "escape-to-margaritaville-2018/playbill--gabriel-agosto.json",
-    "john-lithgow-stories-by-heart-2018/nydailynews--joe-dziemianowicz.json"
+    "john-lithgow-stories-by-heart-2018/nydailynews--joe-dziemianowicz.json",
+    "john-lithgow-stories-by-heart-2018/financialtimes--max-mcguinness.json",
+    "meteor-shower-2017/frontmezzjunkies--steven-ross.json",
+    "latin-history-for-morons-2017/front-row-center--casey-curtis.json",
+    "the-bands-visit-2017/show-showdown--wendy-caster.json",
+    "the-bands-visit-2017/susangrangercom--susan-granger.json",
+    "junk-2017/wsj--terry-teachout.json"
   ],
   "failed": [
     "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
@@ -596,7 +602,11 @@
     "children-of-a-lesser-god-2018/journal-inquirer--tim-leininger.json",
     "three-tall-women-2018/usatoday--charles-isherwood.json",
     "angels-in-america-2018/nytg--tulis-mccall.json",
-    "escape-to-margaritaville-2018/journal-inquirer--tim-leininger.json"
+    "escape-to-margaritaville-2018/journal-inquirer--tim-leininger.json",
+    "once-on-this-island-2017/theater-news-online--brian-scott-lipton.json",
+    "the-bands-visit-2017/theater-life--barry-gordin.json",
+    "the-bands-visit-2017/theater-life--isa-goldberg.json",
+    "the-bands-visit-2017/wnyc--jennifer-vanasco.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -728,7 +738,12 @@
       "saint-joan-2018/film-festival-traveler--kevin-filipski.json",
       "mean-girls-2018/film-festival-traveler--kevin-filipski.json",
       "three-tall-women-2018/financialtimes--max-mcguinness.json",
-      "angels-in-america-2018/frontmezzjunkies--steven-ross.json"
+      "angels-in-america-2018/frontmezzjunkies--steven-ross.json",
+      "john-lithgow-stories-by-heart-2018/financialtimes--max-mcguinness.json",
+      "meteor-shower-2017/frontmezzjunkies--steven-ross.json",
+      "latin-history-for-morons-2017/front-row-center--casey-curtis.json",
+      "the-bands-visit-2017/show-showdown--wendy-caster.json",
+      "the-bands-visit-2017/susangrangercom--susan-granger.json"
     ],
     "amp": [],
     "browserbase": [
@@ -749,7 +764,9 @@
       "data/review-texts/kiss-me-kate-2019/wsj--terry-teachout.json",
       "kiss-me-kate-2019/wsj--terry-teachout.json",
       "data/review-texts/the-ferryman-2018/wsj--terry-teachout.json",
-      "the-ferryman-2018/wsj--terry-teachout.json"
+      "the-ferryman-2018/wsj--terry-teachout.json",
+      "data/review-texts/junk-2017/wsj--terry-teachout.json",
+      "junk-2017/wsj--terry-teachout.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -979,11 +996,13 @@
       "king-kong-2018/limelight-magazine-au--clive-paget.json",
       "the-nap-2018/theater-life--barry-gordin.json",
       "escape-to-margaritaville-2018/playbill--gabriel-agosto.json",
-      "john-lithgow-stories-by-heart-2018/nydailynews--joe-dziemianowicz.json"
+      "john-lithgow-stories-by-heart-2018/nydailynews--joe-dziemianowicz.json",
+      "the-bands-visit-2017/theater-life--barry-gordin.json",
+      "the-bands-visit-2017/theater-life--isa-goldberg.json"
     ]
   },
   "startTime": "2026-06-27T03:12:50.769Z",
-  "lastProcessed": "john-lithgow-stories-by-heart-2018/nydailynews--joe-dziemianowicz.json",
+  "lastProcessed": "junk-2017/wsj--terry-teachout.json",
   "log": [
     {
       "t": "2026-06-27T03:15:54.008Z",
@@ -1098,6 +1117,17 @@
     },
     {
       "t": "2026-06-27T11:49:58.122Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-27T12:05:03.029Z",
+      "event": "bb-session",
+      "session": "a02e4218",
+      "url": "http://www.wsj.com/articles/junk-review-bankrupting-entertainment-1509669000"
+    },
+    {
+      "t": "2026-06-27T12:05:03.729Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
