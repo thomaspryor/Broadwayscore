@@ -1,26 +1,20 @@
 {
-  "updatedAt": "2026-06-27T11:49:32.005Z",
-  "processed": 243,
-  "failed": 296,
-  "successRate": "45.1%",
+  "updatedAt": "2026-06-27T11:53:58.713Z",
+  "processed": 245,
+  "failed": 304,
+  "successRate": "44.6%",
   "tierBreakdown": {
     "playwright": 124,
     "amp": 0,
-    "browserbase": 16,
+    "browserbase": 18,
     "directCookies": 0,
     "scrapingbee": 49,
-    "brightdata": 25,
+    "brightdata": 26,
     "archiveToday": 39,
-    "archive": 70
+    "archive": 71
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-06-27T03:15:54.008Z",
-      "event": "bb-session",
-      "session": "99238b51",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2649682"
-    },
     {
       "t": "2026-06-27T03:15:54.926Z",
       "event": "bb-cookie-inject",
@@ -117,6 +111,17 @@
     },
     {
       "t": "2026-06-27T11:46:13.692Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-27T11:49:57.203Z",
+      "event": "bb-session",
+      "session": "92c67189",
+      "url": "https://www.wsj.com/articles/the-ferryman-review-a-house-divided-1540500470?gaa_"
+    },
+    {
+      "t": "2026-06-27T11:49:58.122Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
