@@ -538,7 +538,16 @@
     "carrie-1988/northjerseycom--robert-feldberg.json",
     "the-phantom-of-the-opera-1988/vulture--john-simon.json",
     "les-miserables-1987/broadwayworld--stage-tube.json",
-    "dracula-1977/theatermania--unknown.json"
+    "dracula-1977/theatermania--unknown.json",
+    "sticks-and-bones-1972/hollywood-reporter--unknown.json",
+    "animal-wisdom-2022/nytimes--ben-brantley.json",
+    "data-2026/nytg--allison-considine.json",
+    "the-reservoir-2026/nytg--allison-considine.json",
+    "burnt-up-love-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+    "the-unknown-2026/theatermania--zachary-stewart.json",
+    "this-is-rambert-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+    "whos-afraid-of-virginia-woolf-2020/deadline--greg-evans.json",
+    "whos-afraid-of-virginia-woolf-2020/wsj--charles-isherwood.json"
   ],
   "failed": [
     "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
@@ -1246,7 +1255,8 @@
     "carrie-1988/telegraph--unknown.json",
     "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
     "sunday-in-the-park-with-george-1984/nypost--clive-barnes.json",
-    "working-1978/theater-news-online--joe-dziemianowicz.json"
+    "working-1978/theater-news-online--joe-dziemianowicz.json",
+    "sticks-and-bones-1972/broadwayworld--walter-mcbride.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1506,7 +1516,11 @@
       "carrie-1988/financialtimes--unknown.json",
       "carrie-1988/nbcny--robert-kahn.json",
       "carrie-1988/times-uk--griffin-dunne.json",
-      "dracula-1977/theatermania--unknown.json"
+      "dracula-1977/theatermania--unknown.json",
+      "data-2026/nytg--allison-considine.json",
+      "the-reservoir-2026/nytg--allison-considine.json",
+      "the-unknown-2026/theatermania--zachary-stewart.json",
+      "this-is-rambert-west-end-2026/thereviewshub--the-reviews-hub-london.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1539,7 +1553,13 @@
       "data/review-texts/god-of-carnage-2009/wsj--terry-teachout.json",
       "god-of-carnage-2009/wsj--terry-teachout.json",
       "data/review-texts/little-women-2005/variety--david-rooney.json",
-      "little-women-2005/variety--david-rooney.json"
+      "little-women-2005/variety--david-rooney.json",
+      "data/review-texts/sticks-and-bones-1972/hollywood-reporter--unknown.json",
+      "sticks-and-bones-1972/hollywood-reporter--unknown.json",
+      "data/review-texts/whos-afraid-of-virginia-woolf-2020/deadline--greg-evans.json",
+      "whos-afraid-of-virginia-woolf-2020/deadline--greg-evans.json",
+      "data/review-texts/whos-afraid-of-virginia-woolf-2020/wsj--charles-isherwood.json",
+      "whos-afraid-of-virginia-woolf-2020/wsj--charles-isherwood.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1697,7 +1717,8 @@
       "fela-2009/wsj--terry-teachout.json",
       "hello-dolly-1995/philadelphia-inquirer--mark-kennedy.json",
       "hello-dolly-1995/rollingstone--jon-blistein.json",
-      "the-phantom-of-the-opera-1988/vulture--john-simon.json"
+      "the-phantom-of-the-opera-1988/vulture--john-simon.json",
+      "sticks-and-bones-1972/broadwayworld--walter-mcbride.json"
     ],
     "archiveToday": [
       "data/review-texts/birthright-off-broadway-2026/broadwayworld--unknown.json",
@@ -1962,11 +1983,13 @@
       "carrie-1988/broadwayworld--unknown.json",
       "carrie-1988/independent--jessie-thompson.json",
       "carrie-1988/northjerseycom--robert-feldberg.json",
-      "les-miserables-1987/broadwayworld--stage-tube.json"
+      "les-miserables-1987/broadwayworld--stage-tube.json",
+      "animal-wisdom-2022/nytimes--ben-brantley.json",
+      "burnt-up-love-off-west-end-2026/thereviewshub--the-reviews-hub-london.json"
     ]
   },
   "startTime": "2026-06-27T03:12:50.769Z",
-  "lastProcessed": "dracula-1977/theatermania--unknown.json",
+  "lastProcessed": "whos-afraid-of-virginia-woolf-2020/wsj--charles-isherwood.json",
   "log": [
     {
       "t": "2026-06-27T03:15:54.008Z",
@@ -2248,6 +2271,39 @@
       "t": "2026-06-27T20:26:01.070Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-27T20:48:16.691Z",
+      "event": "bb-session",
+      "session": "32088cc0",
+      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/sticks-bones-theater-"
+    },
+    {
+      "t": "2026-06-27T20:48:17.671Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-06-27T20:51:22.781Z",
+      "event": "bb-session",
+      "session": "820ffe29",
+      "url": "https://deadline.com/2020/03/whos-afraid-of-virginia-woolf-starring-laurie-metca"
+    },
+    {
+      "t": "2026-06-27T20:51:23.718Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-06-27T20:51:39.536Z",
+      "event": "bb-session",
+      "session": "6f3820df",
+      "url": "https://www.wsj.com/articles/whos-afraid-of-virginia-woolf-a-classic-play-throug"
+    },
+    {
+      "t": "2026-06-27T20:51:40.554Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
