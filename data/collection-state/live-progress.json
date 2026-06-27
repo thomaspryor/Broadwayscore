@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-27T19:45:50.409Z",
-  "processed": 475,
-  "failed": 610,
+  "updatedAt": "2026-06-27T19:49:54.608Z",
+  "processed": 480,
+  "failed": 615,
   "successRate": "43.8%",
   "tierBreakdown": {
     "playwright": 232,
     "amp": 0,
     "browserbase": 26,
     "directCookies": 0,
-    "scrapingbee": 89,
-    "brightdata": 47,
+    "scrapingbee": 91,
+    "brightdata": 48,
     "archiveToday": 75,
-    "archive": 143
+    "archive": 145
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-06-27T11:04:25.974Z",
-      "event": "bb-session",
-      "session": "c0ffa2be",
-      "url": "https://www.hollywoodreporter.com/tv/tv-news/netflix-stranger-things-the-first-s"
-    },
-    {
-      "t": "2026-06-27T11:04:26.599Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-06-27T11:04:58.520Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-06-27T19:23:22.749Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-06-27T19:47:10.299Z",
+      "event": "bb-session",
+      "session": "2940ac3f",
+      "url": "https://newyork.timeout.com/arts-culture/theater/529719/the-scottsboro-boys"
+    },
+    {
+      "t": "2026-06-27T19:47:11.276Z",
+      "event": "bb-cookie-inject",
+      "domain": "timeout.com"
     }
   ]
 }

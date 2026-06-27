@@ -474,7 +474,12 @@
     "that-championship-season-2011/newsday--linda-winer.json",
     "good-people-2011/newsday--linda-winer.json",
     "good-people-2011/theatermania--david-rooney.json",
-    "the-importance-of-being-earnest-2011/theater-life--eric-march.json"
+    "the-importance-of-being-earnest-2011/theater-life--eric-march.json",
+    "the-peewee-herman-show-2010/theatermania--unknown.json",
+    "women-on-the-verge-of-a-nervous-breakdown-2010/amny--matt-windman.json",
+    "rain-2010/newsday--linda-winer.json",
+    "driving-miss-daisy-2010/ew--melissa-rose-bernardo.json",
+    "driving-miss-daisy-2010/newsday--linda-winer.json"
   ],
   "failed": [
     "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
@@ -1086,7 +1091,12 @@
     "good-people-2011/backstage--erik-haagensen.json",
     "the-importance-of-being-earnest-2011/bloomberg--jeremy-gerard.json",
     "a-free-man-of-color-2010/backstage--erik-haagensen.json",
-    "the-merchant-of-venice-2010/variety--charles-isherwood.json"
+    "the-merchant-of-venice-2010/variety--charles-isherwood.json",
+    "women-on-the-verge-of-a-nervous-breakdown-2010/variety--charles-isherwood.json",
+    "women-on-the-verge-of-a-nervous-breakdown-2010/backstage--erik-haagensen.json",
+    "the-scottsboro-boys-2010/timeout--david-cote.json",
+    "the-scottsboro-boys-2010/backstage--erik-haagensen.json",
+    "driving-miss-daisy-2010/nytheatre--martin-denton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1443,7 +1453,9 @@
       "newsies-the-musical-2012/new-jersey-newsroom--michael-musto.json",
       "death-of-a-salesman-2012/ew--thom-geier.json",
       "the-mountaintop-2011/new-jersey-newsroom--michael-sommers.json",
-      "the-house-of-blue-leaves-2011/newsday--linda-winer.json"
+      "the-house-of-blue-leaves-2011/newsday--linda-winer.json",
+      "driving-miss-daisy-2010/ew--melissa-rose-bernardo.json",
+      "driving-miss-daisy-2010/newsday--linda-winer.json"
     ],
     "brightdata": [
       "camping-off-broadway-2026/talkinbroadway--unknown.json",
@@ -1492,7 +1504,8 @@
       "all-the-way-2014/ew--thom-geier.json",
       "all-the-way-2014/amny--matt-windman.json",
       "700-sundays-2013/ew--jessica-shaw.json",
-      "master-class-2011/theatermania--david-finkle.json"
+      "master-class-2011/theatermania--david-finkle.json",
+      "the-peewee-herman-show-2010/theatermania--unknown.json"
     ],
     "archiveToday": [
       "data/review-texts/birthright-off-broadway-2026/broadwayworld--unknown.json",
@@ -1714,11 +1727,13 @@
       "jerusalem-2011/village-voice--michael-musto.json",
       "war-horse-2011/ew--thom-geier.json",
       "that-championship-season-2011/newsday--linda-winer.json",
-      "good-people-2011/newsday--linda-winer.json"
+      "good-people-2011/newsday--linda-winer.json",
+      "women-on-the-verge-of-a-nervous-breakdown-2010/amny--matt-windman.json",
+      "rain-2010/newsday--linda-winer.json"
     ]
   },
   "startTime": "2026-06-27T03:12:50.769Z",
-  "lastProcessed": "the-merchant-of-venice-2010/variety--charles-isherwood.json",
+  "lastProcessed": "driving-miss-daisy-2010/nytheatre--martin-denton.json",
   "log": [
     {
       "t": "2026-06-27T03:15:54.008Z",
@@ -1890,6 +1905,17 @@
       "t": "2026-06-27T19:23:22.749Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-06-27T19:47:10.299Z",
+      "event": "bb-session",
+      "session": "2940ac3f",
+      "url": "https://newyork.timeout.com/arts-culture/theater/529719/the-scottsboro-boys"
+    },
+    {
+      "t": "2026-06-27T19:47:11.276Z",
+      "event": "bb-cookie-inject",
+      "domain": "timeout.com"
     }
   ]
 }
