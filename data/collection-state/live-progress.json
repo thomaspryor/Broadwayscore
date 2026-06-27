@@ -1,52 +1,129 @@
 {
-  "updatedAt": "2026-06-27T15:23:40.481Z",
-  "processed": 27,
-  "failed": 282,
-  "successRate": "8.7%",
+  "updatedAt": "2026-06-27T12:30:00.257Z",
+  "processed": 298,
+  "failed": 341,
+  "successRate": "46.6%",
   "tierBreakdown": {
-    "playwright": 19,
+    "playwright": 147,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 26,
     "directCookies": 0,
-    "scrapingbee": 3,
-    "brightdata": 2,
-    "archiveToday": 67,
-    "archive": 2
+    "scrapingbee": 56,
+    "brightdata": 29,
+    "archiveToday": 39,
+    "archive": 98
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 10,
   "recentActivity": [
     {
-      "t": "2026-06-27T03:15:54.008Z",
+      "t": "2026-06-27T11:03:38.057Z",
       "event": "bb-session",
-      "session": "99238b51",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2649682"
+      "session": "e939bb79",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/tracee-ellis-ross-broadway-ever"
     },
     {
-      "t": "2026-06-27T03:15:54.926Z",
+      "t": "2026-06-27T11:03:38.825Z",
       "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
+      "domain": "hollywoodreporter.com"
     },
     {
-      "t": "2026-06-27T03:16:24.995Z",
+      "t": "2026-06-27T11:04:25.974Z",
       "event": "bb-session",
-      "session": "c89cb726",
-      "url": "https://www.nytimes.com/2026/06/19/theater/la-cage-aux-folles-review-porter-brad"
+      "session": "c0ffa2be",
+      "url": "https://www.hollywoodreporter.com/tv/tv-news/netflix-stranger-things-the-first-s"
     },
     {
-      "t": "2026-06-27T03:16:25.958Z",
+      "t": "2026-06-27T11:04:26.599Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "hollywoodreporter.com"
     },
     {
-      "t": "2026-06-27T04:04:00.690Z",
+      "t": "2026-06-27T11:04:58.520Z",
       "event": "bb-session",
-      "session": "0f215d3c",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2649682"
+      "session": "4ba95f35",
+      "url": "https://variety.com/2025/theater/news/my-neighbour-totoro-puppet-artwork-stage-p"
     },
     {
-      "t": "2026-06-27T04:04:01.824Z",
+      "t": "2026-06-27T11:04:59.166Z",
       "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-27T11:11:16.722Z",
+      "event": "bb-session",
+      "session": "2b22f8bd",
+      "url": "https://variety.com/2026/legit/news/heated-rivalry-broadway-musical-parody-12367"
+    },
+    {
+      "t": "2026-06-27T11:11:17.491Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-27T11:46:12.404Z",
+      "event": "bb-session",
+      "session": "464f0476",
+      "url": "http://www.wsj.com/articles/kiss-me-kate-review-so-not-in-love-11552609800"
+    },
+    {
+      "t": "2026-06-27T11:46:13.692Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-27T11:49:57.203Z",
+      "event": "bb-session",
+      "session": "92c67189",
+      "url": "https://www.wsj.com/articles/the-ferryman-review-a-house-divided-1540500470?gaa_"
+    },
+    {
+      "t": "2026-06-27T11:49:58.122Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-27T12:05:03.029Z",
+      "event": "bb-session",
+      "session": "a02e4218",
+      "url": "http://www.wsj.com/articles/junk-review-bankrupting-entertainment-1509669000"
+    },
+    {
+      "t": "2026-06-27T12:05:03.729Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-27T12:23:25.823Z",
+      "event": "bb-session",
+      "session": "bc1f032a",
+      "url": "https://www.wsj.com/articles/les-liaisons-dangereuses-review-fallen-archness-147"
+    },
+    {
+      "t": "2026-06-27T12:23:26.571Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-27T12:26:57.749Z",
+      "event": "bb-session",
+      "session": "47ab6621",
+      "url": "http://www.wsj.com/articles/heisenberg-review-masculine-wish-fulfillment-on-stag"
+    },
+    {
+      "t": "2026-06-27T12:26:58.539Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-27T12:28:11.390Z",
+      "event": "bb-session",
+      "session": "fe0b9539",
+      "url": "http://www.wsj.com/articles/holiday-inn-the-new-irving-berlin-musical-review-147"
+    },
+    {
+      "t": "2026-06-27T12:28:12.047Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
