@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-27T11:40:31.729Z",
-  "processed": 234,
-  "failed": 285,
-  "successRate": "45.1%",
+  "updatedAt": "2026-06-27T11:46:50.863Z",
+  "processed": 238,
+  "failed": 291,
+  "successRate": "45.0%",
   "tierBreakdown": {
-    "playwright": 122,
+    "playwright": 124,
     "amp": 0,
-    "browserbase": 14,
+    "browserbase": 16,
     "directCookies": 0,
     "scrapingbee": 49,
     "brightdata": 23,
     "archiveToday": 39,
-    "archive": 64
+    "archive": 67
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-06-27T03:15:54.008Z",
@@ -108,6 +108,17 @@
       "t": "2026-06-27T11:11:17.491Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-27T11:46:12.404Z",
+      "event": "bb-session",
+      "session": "464f0476",
+      "url": "http://www.wsj.com/articles/kiss-me-kate-review-so-not-in-love-11552609800"
+    },
+    {
+      "t": "2026-06-27T11:46:13.692Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
