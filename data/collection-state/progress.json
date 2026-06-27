@@ -288,7 +288,16 @@
     "falsettos-2016/theatermania--jesse-green.json",
     "heisenberg-2016/nydailynews--joe-dziemianowicz.json",
     "heisenberg-2016/wsj--terry-teachout.json",
-    "heisenberg-2016/wnyc--jennifer-vanasco.json"
+    "heisenberg-2016/wnyc--jennifer-vanasco.json",
+    "oh-hello-on-broadway-2016/nydailynews--joe-dziemianowicz.json",
+    "holiday-inn-the-new-irving-berlin-musical-2016/nydailynews--joe-dziemianowicz.json",
+    "holiday-inn-the-new-irving-berlin-musical-2016/timeout--david-cote.json",
+    "holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json",
+    "the-encounter-2016/nydailynews--joe-dziemianowicz.json",
+    "the-encounter-2016/times-square-chronicles--suzanna-bowling.json",
+    "tuck-everlasting-2016/ew--melissa-rose-bernardo.json",
+    "tuck-everlasting-2016/uinterview--erik-meers.json",
+    "fully-committed-2016/timeout--adam-feldman.json"
   ],
   "failed": [
     "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
@@ -656,7 +665,8 @@
     "a-bronx-tale-the-musical-2016/njcom--patrick-maley.json",
     "natasha-pierre-and-the-great-comet-of-1812-2016/broadway-and-me--janice-c-simpson.json",
     "falsettos-2016/theater-life--eric-march.json",
-    "heisenberg-2016/timeout--adam-feldman.json"
+    "heisenberg-2016/timeout--adam-feldman.json",
+    "heisenberg-2016/abc-news--mark-kennedy.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -804,7 +814,10 @@
       "come-from-away-2017/wnyc--jennifer-vanasco.json",
       "jitney-2017/wnyc--jennifer-vanasco.json",
       "falsettos-2016/theatermania--jesse-green.json",
-      "heisenberg-2016/wnyc--jennifer-vanasco.json"
+      "heisenberg-2016/wnyc--jennifer-vanasco.json",
+      "the-encounter-2016/times-square-chronicles--suzanna-bowling.json",
+      "tuck-everlasting-2016/ew--melissa-rose-bernardo.json",
+      "tuck-everlasting-2016/uinterview--erik-meers.json"
     ],
     "amp": [],
     "browserbase": [
@@ -831,7 +844,9 @@
       "data/review-texts/les-liaisons-dangereuses-2016/wsj--terry-teachout.json",
       "les-liaisons-dangereuses-2016/wsj--terry-teachout.json",
       "data/review-texts/heisenberg-2016/wsj--terry-teachout.json",
-      "heisenberg-2016/wsj--terry-teachout.json"
+      "heisenberg-2016/wsj--terry-teachout.json",
+      "data/review-texts/holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json",
+      "holiday-inn-the-new-irving-berlin-musical-2016/wsj--terry-teachout.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1085,11 +1100,16 @@
       "les-liaisons-dangereuses-2016/uinterview--erik-meers.json",
       "heisenberg-2016/nydailynews--joe-dziemianowicz.json",
       "falsettos-2016/theater-life--eric-march.json",
-      "heisenberg-2016/timeout--adam-feldman.json"
+      "heisenberg-2016/timeout--adam-feldman.json",
+      "oh-hello-on-broadway-2016/nydailynews--joe-dziemianowicz.json",
+      "holiday-inn-the-new-irving-berlin-musical-2016/nydailynews--joe-dziemianowicz.json",
+      "holiday-inn-the-new-irving-berlin-musical-2016/timeout--david-cote.json",
+      "the-encounter-2016/nydailynews--joe-dziemianowicz.json",
+      "fully-committed-2016/timeout--adam-feldman.json"
     ]
   },
   "startTime": "2026-06-27T03:12:50.769Z",
-  "lastProcessed": "heisenberg-2016/wnyc--jennifer-vanasco.json",
+  "lastProcessed": "fully-committed-2016/timeout--adam-feldman.json",
   "log": [
     {
       "t": "2026-06-27T03:15:54.008Z",
@@ -1237,6 +1257,17 @@
     },
     {
       "t": "2026-06-27T12:26:58.539Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-27T12:28:11.390Z",
+      "event": "bb-session",
+      "session": "fe0b9539",
+      "url": "http://www.wsj.com/articles/holiday-inn-the-new-irving-berlin-musical-review-147"
+    },
+    {
+      "t": "2026-06-27T12:28:12.047Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
