@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-27T06:17:56.626Z",
-  "processed": 27,
-  "failed": 62,
-  "successRate": "30.3%",
+  "updatedAt": "2026-06-27T06:22:27.627Z",
+  "processed": 32,
+  "failed": 67,
+  "successRate": "32.3%",
   "tierBreakdown": {
-    "playwright": 23,
+    "playwright": 27,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingbee": 2,
+    "scrapingbee": 4,
     "brightdata": 4,
     "archiveToday": 15,
     "archive": 2
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-06-27T03:15:54.008Z",
@@ -47,6 +47,12 @@
       "t": "2026-06-27T04:04:01.824Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-27T06:21:51.229Z",
+      "event": "bb-session",
+      "session": "291483f0",
+      "url": "https://theaterlife.com/jamie-allans-amaze/"
     }
   ]
 }

@@ -26,7 +26,12 @@
     "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
     "dog-day-afternoon-2026/one-minute-critic--matthew-wexler.json",
     "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
-    "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json"
+    "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json",
+    "the-producers-west-end-2025/west-end-best-friend--unknown.json",
+    "morgan-bassichis-can-i-be-frank-off-broadway-2026/nysr--michael-sommers.json",
+    "morgan-bassichis-can-i-be-frank-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "just-in-time-2025/newyorker--conde-nast.json",
+    "the-devil-wears-prada-west-end-2024/times-uk--dominic-maxwell.json"
   ],
   "failed": [
     "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
@@ -90,7 +95,12 @@
     "death-of-a-salesman-2026/dailybeast--tim-teeman.json",
     "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
     "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json",
-    "ragtime-2025/bloomberg--chris-rovzar.json"
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "amaze-magic-off-broadway-2025/theater-pizzazz--alix-cohen.json",
+    "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
+    "operation-mincemeat-2025/thereviewshub--unknown.json",
+    "oliver-west-end-2024/i-paper--fiona-mountford.json",
+    "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -117,17 +127,25 @@
       "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
       "dog-day-afternoon-2026/one-minute-critic--matthew-wexler.json",
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
-      "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json"
+      "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json",
+      "the-producers-west-end-2025/west-end-best-friend--unknown.json",
+      "morgan-bassichis-can-i-be-frank-off-broadway-2026/nysr--michael-sommers.json",
+      "morgan-bassichis-can-i-be-frank-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/nytimes--httpswwwnytimescombylaura-collins-hughes.json",
-      "encores-la-cage-aux-folles-off-broadway-2026/nytimes--httpswwwnytimescombylaura-collins-hughes.json"
+      "encores-la-cage-aux-folles-off-broadway-2026/nytimes--httpswwwnytimescombylaura-collins-hughes.json",
+      "data/review-texts/amaze-magic-off-broadway-2025/theater-pizzazz--alix-cohen.json",
+      "amaze-magic-off-broadway-2025/theater-pizzazz--alix-cohen.json"
     ],
     "directCookies": [],
     "scrapingbee": [
       "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
-      "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
+      "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+      "just-in-time-2025/newyorker--conde-nast.json",
+      "the-devil-wears-prada-west-end-2024/times-uk--dominic-maxwell.json"
     ],
     "brightdata": [
       "camping-off-broadway-2026/talkinbroadway--unknown.json",
@@ -182,7 +200,7 @@
     ]
   },
   "startTime": "2026-06-27T03:12:50.769Z",
-  "lastProcessed": "ragtime-2025/bloomberg--chris-rovzar.json",
+  "lastProcessed": "the-devil-wears-prada-west-end-2024/times-uk--dominic-maxwell.json",
   "log": [
     {
       "t": "2026-06-27T03:15:54.008Z",
@@ -216,6 +234,12 @@
       "t": "2026-06-27T04:04:01.824Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-27T06:21:51.229Z",
+      "event": "bb-session",
+      "session": "291483f0",
+      "url": "https://theaterlife.com/jamie-allans-amaze/"
     }
   ]
 }
