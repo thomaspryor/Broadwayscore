@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-27T11:04:24.292Z",
-  "processed": 187,
-  "failed": 182,
-  "successRate": "50.7%",
+  "updatedAt": "2026-06-27T11:05:52.341Z",
+  "processed": 191,
+  "failed": 188,
+  "successRate": "50.4%",
   "tierBreakdown": {
-    "playwright": 108,
+    "playwright": 109,
     "amp": 0,
-    "browserbase": 8,
+    "browserbase": 12,
     "directCookies": 0,
     "scrapingbee": 40,
     "brightdata": 19,
     "archiveToday": 39,
-    "archive": 37
+    "archive": 38
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-06-27T03:15:54.008Z",
@@ -75,6 +75,28 @@
       "t": "2026-06-27T11:03:38.825Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-06-27T11:04:25.974Z",
+      "event": "bb-session",
+      "session": "c0ffa2be",
+      "url": "https://www.hollywoodreporter.com/tv/tv-news/netflix-stranger-things-the-first-s"
+    },
+    {
+      "t": "2026-06-27T11:04:26.599Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-06-27T11:04:58.520Z",
+      "event": "bb-session",
+      "session": "4ba95f35",
+      "url": "https://variety.com/2025/theater/news/my-neighbour-totoro-puppet-artwork-stage-p"
+    },
+    {
+      "t": "2026-06-27T11:04:59.166Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
