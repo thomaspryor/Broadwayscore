@@ -509,7 +509,9 @@
     "a-catered-affair-2008/theater-life--eric-march.json",
     "mary-poppins-2006/timeout--david-cote.json",
     "shining-city-2006/nytimes--ben-brantley.json",
-    "little-women-2005/variety--david-rooney.json"
+    "little-women-2005/variety--david-rooney.json",
+    "the-boy-from-oz-2003/playbill--unknown.json",
+    "proof-2000/aislesay--david-spencer.json"
   ],
   "failed": [
     "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
@@ -1196,7 +1198,15 @@
     "the-lieutenant-of-inishmore-2006/nydailynews--joe-dziemianowicz-bway.json",
     "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
     "the-color-purple-2005/talkinbroadway--matthew-murray.json",
-    "jersey-boys-2005/village-voice--michael-feingold.json"
+    "jersey-boys-2005/village-voice--michael-feingold.json",
+    "avenue-q-2003/ap--michael-kuchwara.json",
+    "hairspray-2002/sioux-city-journal--bruce-miller.json",
+    "the-producers-2001/talkinbroadway--matthew-murray.json",
+    "stones-in-his-pockets-2001/broadwayworld--unknown.json",
+    "the-full-monty-2000/newsday--linda-winer.json",
+    "copenhagen-2000/chronicle-of-higher-education--p-l-rose.json",
+    "copenhagen-2000/commonweal--celia-wren.json",
+    "copenhagen-2000/science-magazine--david-voss.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1441,7 +1451,8 @@
       "oleanna-2009/theatermania--unknown.json",
       "rock-of-ages-2009/theater-life--eric-march.json",
       "all-my-sons-2008/theater-life--eric-march.json",
-      "a-catered-affair-2008/theater-life--eric-march.json"
+      "a-catered-affair-2008/theater-life--eric-march.json",
+      "the-boy-from-oz-2003/playbill--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1708,7 +1719,13 @@
       "data/review-texts/time-stands-still-2010/ew--melissa-rose-bernardo.json",
       "data/review-texts/tarzan-2006/nydailynews--joe-dziemianowicz-bway.json",
       "data/review-texts/the-lieutenant-of-inishmore-2006/nydailynews--joe-dziemianowicz-bway.json",
-      "data/review-texts/the-color-purple-2005/talkinbroadway--matthew-murray.json"
+      "data/review-texts/the-color-purple-2005/talkinbroadway--matthew-murray.json",
+      "data/review-texts/avenue-q-2003/ap--michael-kuchwara.json",
+      "data/review-texts/the-producers-2001/talkinbroadway--matthew-murray.json",
+      "data/review-texts/stones-in-his-pockets-2001/broadwayworld--unknown.json",
+      "data/review-texts/the-full-monty-2000/newsday--linda-winer.json",
+      "data/review-texts/copenhagen-2000/chronicle-of-higher-education--p-l-rose.json",
+      "data/review-texts/copenhagen-2000/science-magazine--david-voss.json"
     ],
     "archive": [
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
@@ -1869,11 +1886,12 @@
       "a-behanding-in-spokane-2010/wsj--terry-teachout.json",
       "time-stands-still-2010/newsday--linda-winer.json",
       "mary-poppins-2006/timeout--david-cote.json",
-      "shining-city-2006/nytimes--ben-brantley.json"
+      "shining-city-2006/nytimes--ben-brantley.json",
+      "proof-2000/aislesay--david-spencer.json"
     ]
   },
   "startTime": "2026-06-27T03:12:50.769Z",
-  "lastProcessed": "little-women-2005/variety--david-rooney.json",
+  "lastProcessed": "copenhagen-2000/science-magazine--david-voss.json",
   "log": [
     {
       "t": "2026-06-27T03:15:54.008Z",
@@ -2144,6 +2162,17 @@
       "t": "2026-06-27T20:20:36.845Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-27T20:26:00.085Z",
+      "event": "bb-session",
+      "session": "0355cf9d",
+      "url": "https://www.talkinbroadway.com/world/Producers.html"
+    },
+    {
+      "t": "2026-06-27T20:26:01.070Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }

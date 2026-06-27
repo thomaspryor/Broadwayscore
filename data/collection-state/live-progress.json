@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-27T20:20:56.664Z",
-  "processed": 510,
-  "failed": 685,
-  "successRate": "42.7%",
+  "updatedAt": "2026-06-27T20:30:36.720Z",
+  "processed": 512,
+  "failed": 693,
+  "successRate": "42.5%",
   "tierBreakdown": {
-    "playwright": 241,
+    "playwright": 242,
     "amp": 0,
     "browserbase": 30,
     "directCookies": 0,
     "scrapingbee": 94,
     "brightdata": 51,
-    "archiveToday": 82,
-    "archive": 159
+    "archiveToday": 88,
+    "archive": 160
   },
-  "browserbaseSessions": 10,
+  "browserbaseSessions": 11,
   "recentActivity": [
-    {
-      "t": "2026-06-27T19:23:21.585Z",
-      "event": "bb-session",
-      "session": "e3b1851e",
-      "url": "https://www.northjersey.com/arts_entertainment/theater/179429511_Theater_review_"
-    },
-    {
-      "t": "2026-06-27T19:23:22.749Z",
-      "event": "bb-cookie-inject",
-      "domain": "northjersey.com"
-    },
     {
       "t": "2026-06-27T19:47:10.299Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-06-27T20:20:36.845Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-27T20:26:00.085Z",
+      "event": "bb-session",
+      "session": "0355cf9d",
+      "url": "https://www.talkinbroadway.com/world/Producers.html"
+    },
+    {
+      "t": "2026-06-27T20:26:01.070Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
