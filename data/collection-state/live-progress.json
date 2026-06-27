@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-27T20:06:42.074Z",
-  "processed": 498,
-  "failed": 647,
-  "successRate": "43.5%",
+  "updatedAt": "2026-06-27T20:09:04.943Z",
+  "processed": 500,
+  "failed": 655,
+  "successRate": "43.3%",
   "tierBreakdown": {
-    "playwright": 236,
+    "playwright": 238,
     "amp": 0,
     "browserbase": 26,
     "directCookies": 0,
     "scrapingbee": 91,
-    "brightdata": 50,
+    "brightdata": 51,
     "archiveToday": 79,
     "archive": 157
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
-    {
-      "t": "2026-06-27T12:05:03.029Z",
-      "event": "bb-session",
-      "session": "a02e4218",
-      "url": "http://www.wsj.com/articles/junk-review-bankrupting-entertainment-1509669000"
-    },
-    {
-      "t": "2026-06-27T12:05:03.729Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-06-27T12:23:25.823Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-06-27T20:04:34.950Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-27T20:06:52.890Z",
+      "event": "bb-session",
+      "session": "efc032b7",
+      "url": "https://www.wsj.com/articles/SB10001424052748704013004574517680589230494?gaa_at="
+    },
+    {
+      "t": "2026-06-27T20:06:53.916Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
