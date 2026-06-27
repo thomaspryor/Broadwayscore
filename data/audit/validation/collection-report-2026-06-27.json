@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-06-27T22:09:37.148Z",
+  "runDate": "2026-06-27T23:12:48.670Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -17,35 +17,35 @@
     "successRate": "36.6%"
   },
   "tierBreakdown": {
-    "playwright": 268,
+    "playwright": 265,
     "amp": 0,
-    "browserbase": 46,
+    "browserbase": 36,
     "directCookies": 0,
-    "scrapingbee": 104,
+    "scrapingbee": 103,
     "brightdata": 57,
-    "archiveToday": 97,
-    "archive": 177
+    "archiveToday": 95,
+    "archive": 186
   },
   "statistics": {
-    "tier1Attempts": 20,
-    "tier1Success": 9,
-    "ampAttempts": 2,
+    "tier1Attempts": 12,
+    "tier1Success": 5,
+    "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 9,
-    "tier1_5Success": 5,
-    "tier2Attempts": 14,
-    "tier2Success": 6,
-    "tier3Attempts": 8,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 9,
+    "tier2Success": 5,
+    "tier3Attempts": 5,
     "tier3Success": 1,
-    "tier3_6Attempts": 3,
-    "tier3_6Success": 3,
-    "tier4Attempts": 16,
-    "tier4Success": 3,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
+    "tier4Attempts": 27,
+    "tier4Success": 13,
     "totalFailed": 281,
-    "scrapingBeePageCredits": 43,
+    "scrapingBeePageCredits": 23,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 9,
-    "browserbaseMinutesUsed": 2.8,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 251,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
@@ -607,22 +607,22 @@
     "whos-afraid-of-virginia-woolf-2020/theater-mirror--unknown.json",
     "whos-afraid-of-virginia-woolf-2020/whatsonstage--unknown.json",
     "the-play-that-goes-wrong-2019/theatre-reviews-limited--david-roberts.json",
-    "jerome-off-broadway-2025/theatre-reviews-limited--unknown.json",
     "camelot-2023/broadway-and-me--janice-c-simpson.json",
     "fully-committed-2016/wsj--terry-teachout.json",
     "she-loves-me-2016/wsj--terry-teachout.json",
     "blackbird-2016/wsj--terry-teachout.json",
     "the-color-purple-2015/wsj--terry-teachout.json",
-    "spring-awakening-2015/broadway-and-me--janice-c-simpson.json",
     "the-audience-2015/timeout--david-cote.json",
     "fish-in-the-dark-2015/wsj--terry-teachout.json",
     "constellations-2015/timeout--adam-feldman.json",
+    "vanya-and-sonia-and-masha-and-spike-2013/village-voice--michael-musto.json",
     "the-performers-2012/northjerseycom--robert-feldberg.json",
     "once-2012/newsday--linda-winer.json",
     "the-house-of-blue-leaves-2011/newsday--matt-windman.json",
     "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
+    "a-life-in-the-theatre-2010/hollywood-reporter--frank-scheck.json",
     "collected-stories-2010/ew--melissa-rose-bernardo.json",
-    "fela-2009/wsj--terry-teachout.json",
+    "the-addams-family-2010/village-voice--michael-feingold.json",
     "next-to-normal-2009/newsday--linda-winer.json"
   ],
   "failed": [
@@ -1484,6 +1484,7 @@
     "a-view-from-the-bridge-2015/financialtimes--sarah-hemming.json",
     "the-gin-game-2015/vulture--jesse-green.json",
     "the-gin-game-2015/ap--mark-kennedy.json",
+    "spring-awakening-2015/broadway-and-me--janice-c-simpson.json",
     "something-rotten-2015/ap--mark-kennedy.json",
     "doctor-zhivago-2015/timeout--adam-feldman.json",
     "it-shoulda-been-you-2015/hollywood-reporter--david-rooney.json",
@@ -1508,7 +1509,6 @@
     "matilda-the-musical-2013/village-voice--michael-musto.json",
     "lucky-guy-2013/backstage--erik-haagensen.json",
     "hands-on-a-hardbody-2013/amny--matt-windman.json",
-    "vanya-and-sonia-and-masha-and-spike-2013/village-voice--michael-musto.json",
     "vanya-and-sonia-and-masha-and-spike-2013/new-jersey-newsroom--michael-sommers.json",
     "elf-2012/new-jersey-newsroom--michael-sommers.json",
     "the-heiress-2012/village-voice--michael-musto.json",
@@ -1547,7 +1547,6 @@
     "the-normal-heart-2011/backstage--unknown.json",
     "the-normal-heart-2011/bloomberg--jeremy-gerard.json",
     "jerusalem-2011/backstage--erik-haagensen.json",
-    "wonderland-2011/the-tampa-tribune--walt-belcher.json",
     "wonderland-2011/nytheatre--jo-ann-rosen.json",
     "war-horse-2011/backstage--erik-haagensen.json",
     "catch-me-if-you-can-2011/ap--mark-kennedy.json",
@@ -1568,8 +1567,6 @@
     "driving-miss-daisy-2010/nytheatre--martin-denton.json",
     "la-bete-2010/chicagotribune--ben-brantley.json",
     "bloody-bloody-andrew-jackson-2010/bloomberg--john-simon.json",
-    "a-life-in-the-theatre-2010/hollywood-reporter--frank-scheck.json",
-    "a-life-in-the-theatre-2010/backstage--david-sheward.json",
     "a-life-in-the-theatre-2010/nytheatre--martin-denton.json",
     "a-life-in-the-theatre-2010/bloomberg--john-simon.json",
     "the-pitmen-painters-2010/backstage--erik-haagensen.json",
@@ -1585,7 +1582,6 @@
     "la-cage-aux-folles-2010/backstage--david-sheward.json",
     "la-cage-aux-folles-2010/times-uk--clive-davis.json",
     "million-dollar-quartet-2010/backstage--david-sheward.json",
-    "the-addams-family-2010/village-voice--michael-feingold.json",
     "the-addams-family-2010/backstage--erik-haagensen.json",
     "red-2010/backstage--erik-haagensen.json",
     "red-2010/washpost--peter-marks.json",
@@ -1594,8 +1590,8 @@
     "come-fly-away-2010/backstage--david-sheward.json",
     "next-fall-2010/backstage--david-sheward.json",
     "a-behanding-in-spokane-2010/nytheatre--martin-denton.json",
-    "time-stands-still-2010/ew--melissa-rose-bernardo.json",
     "present-laughter-2010/hollywood-reporter--david-rooney.json",
+    "fela-2009/wsj--terry-teachout.json",
     "burn-the-floor-2009/ew--jennifer-armstrong.json",
     "burn-the-floor-2009/backstage--jo-sagolla.json",
     "waiting-for-godot-2009/amny--matt-windman.json",
@@ -1617,7 +1613,11 @@
     "the-seagull-2008/times-uk--clive-davis.json",
     "south-pacific-2008/newyorker--john-lahr.json",
     "the-little-mermaid-2008/dailybeast--coleman-spilde.json",
-    "the-seafarer-2007/hollywood-reporter--frank-scheck.json"
+    "the-seafarer-2007/hollywood-reporter--frank-scheck.json",
+    "the-farnsworth-invention-2007/variety--charles-isherwood.json",
+    "pygmalion-2007/variety--david-rooney.json",
+    "grease-2007/standard--nick-curtis.json",
+    "a-moon-for-the-misbegotten-2007/times-uk--clive-davis.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -1885,10 +1885,7 @@
       "return-of-the-godz-west-end-2026/londontheatre1--ben-ross.json",
       "whos-afraid-of-virginia-woolf-2020/theater-mirror--unknown.json",
       "whos-afraid-of-virginia-woolf-2020/whatsonstage--unknown.json",
-      "the-play-that-goes-wrong-2019/theatre-reviews-limited--david-roberts.json",
-      "jerome-off-broadway-2025/theatre-reviews-limited--unknown.json",
-      "camelot-2023/broadway-and-me--janice-c-simpson.json",
-      "spring-awakening-2015/broadway-and-me--janice-c-simpson.json"
+      "the-play-that-goes-wrong-2019/theatre-reviews-limited--david-roberts.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1927,17 +1924,7 @@
       "data/review-texts/whos-afraid-of-virginia-woolf-2020/deadline--greg-evans.json",
       "whos-afraid-of-virginia-woolf-2020/deadline--greg-evans.json",
       "data/review-texts/whos-afraid-of-virginia-woolf-2020/wsj--charles-isherwood.json",
-      "whos-afraid-of-virginia-woolf-2020/wsj--charles-isherwood.json",
-      "data/review-texts/fully-committed-2016/wsj--terry-teachout.json",
-      "fully-committed-2016/wsj--terry-teachout.json",
-      "data/review-texts/she-loves-me-2016/wsj--terry-teachout.json",
-      "she-loves-me-2016/wsj--terry-teachout.json",
-      "data/review-texts/blackbird-2016/wsj--terry-teachout.json",
-      "blackbird-2016/wsj--terry-teachout.json",
-      "data/review-texts/the-color-purple-2015/wsj--terry-teachout.json",
-      "the-color-purple-2015/wsj--terry-teachout.json",
-      "data/review-texts/fish-in-the-dark-2015/wsj--terry-teachout.json",
-      "fish-in-the-dark-2015/wsj--terry-teachout.json"
+      "whos-afraid-of-virginia-woolf-2020/wsj--charles-isherwood.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -2042,7 +2029,6 @@
       "carrie-1988/new-jersey-newsroom--michael-sommers.json",
       "trouble-in-mind-2021/broadwayworld--unknown.json",
       "the-audience-2015/timeout--david-cote.json",
-      "constellations-2015/timeout--adam-feldman.json",
       "clybourne-park-2012/broadwayworld--jennifer-broski.json",
       "the-house-of-blue-leaves-2011/newsday--matt-windman.json"
     ],
@@ -2103,7 +2089,7 @@
       "the-phantom-of-the-opera-1988/vulture--john-simon.json",
       "sticks-and-bones-1972/broadwayworld--walter-mcbride.json",
       "this-is-rambert-west-end-2026/voice-magazine--moni-fernandez.json",
-      "fela-2009/wsj--terry-teachout.json"
+      "fish-in-the-dark-2015/wsj--terry-teachout.json"
     ],
     "archiveToday": [
       "data/review-texts/birthright-off-broadway-2026/broadwayworld--unknown.json",
@@ -2200,9 +2186,7 @@
       "data/review-texts/miss-saigon-1991/ap--michael-kuchwara.json",
       "data/review-texts/sunday-in-the-park-with-george-1984/nypost--clive-barnes.json",
       "data/review-texts/whos-afraid-of-virginia-woolf-2020/backstage--unknown.json",
-      "data/review-texts/wonderland-2011/the-tampa-tribune--walt-belcher.json",
-      "data/review-texts/a-life-in-the-theatre-2010/backstage--david-sheward.json",
-      "data/review-texts/time-stands-still-2010/ew--melissa-rose-bernardo.json"
+      "data/review-texts/fela-2009/wsj--terry-teachout.json"
     ],
     "archive": [
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
@@ -2377,10 +2361,19 @@
       "burnt-up-love-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
       "the-loved-ones-off-broadway-2026/broadwayworld--team-bww.json",
       "whos-afraid-of-virginia-woolf-2020/playbill--unknown.json",
+      "camelot-2023/broadway-and-me--janice-c-simpson.json",
+      "fully-committed-2016/wsj--terry-teachout.json",
+      "she-loves-me-2016/wsj--terry-teachout.json",
+      "blackbird-2016/wsj--terry-teachout.json",
+      "the-color-purple-2015/wsj--terry-teachout.json",
+      "constellations-2015/timeout--adam-feldman.json",
+      "vanya-and-sonia-and-masha-and-spike-2013/village-voice--michael-musto.json",
       "the-performers-2012/northjerseycom--robert-feldberg.json",
       "once-2012/newsday--linda-winer.json",
       "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
+      "a-life-in-the-theatre-2010/hollywood-reporter--frank-scheck.json",
       "collected-stories-2010/ew--melissa-rose-bernardo.json",
+      "the-addams-family-2010/village-voice--michael-feingold.json",
       "next-to-normal-2009/newsday--linda-winer.json"
     ]
   },
@@ -2388,6 +2381,13 @@
     "The Times (UK)": {
       "count": 1,
       "domain": "thetimes.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Broadway & Me": {
+      "count": 1,
+      "domain": "broadwayandme.blogspot.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -2400,14 +2400,14 @@
       "isKnownBlocked": false
     },
     "Village Voice": {
-      "count": 2,
+      "count": 1,
       "domain": "blogs.villagevoice.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
     "The Hollywood Reporter": {
-      "count": 2,
+      "count": 1,
       "domain": "hollywoodreporter.com",
       "hasCredentials": false,
       "isPaywalled": false,
