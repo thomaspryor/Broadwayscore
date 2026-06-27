@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-27T11:41:33.388Z",
+  "timestamp": "2026-06-27T12:30:03.865Z",
   "stats": {
     "totalReviews": 39322,
-    "alreadyFlagged": 17518,
+    "alreadyFlagged": 17519,
     "dateGuardCatches": 39,
     "directorMismatch": 873,
     "tvFilmSignals": 1071,
-    "londonSignals": 677,
+    "londonSignals": 679,
     "offBroadwaySignals": 464,
     "yearMismatch": 84,
-    "noPublishDate": 3934
+    "noPublishDate": 3927
   },
   "findings": [
     {
@@ -29893,7 +29893,7 @@
       "file": "exeunt-magazine--loren-noveck.json",
       "score": 80,
       "publishDate": "2026-05-15T11:08:02-04:00",
-      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/",
+      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/#:~:text=Dad%20Don't%20Read%20This%20is%20messy%20and%20raw%20and,will%20keep%20it%20in%20my",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -35904,6 +35904,20 @@
       ]
     },
     {
+      "showId": "pride-west-end-2026",
+      "file": "west-end-best-friend--sophie-luck.json",
+      "score": 91,
+      "publishDate": "2026-06-26",
+      "url": "https://www.westendbestfriend.co.uk/news/review-pride-national-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
       "showId": "prima-facie-2023",
       "file": "slantmagazine--dan-rubins.json",
       "score": 82,
@@ -40178,6 +40192,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "the-misanthrope-west-end-2026",
+      "file": "west-end-wilma--unknown.json",
+      "score": 86,
+      "publishDate": "2026-06-26",
+      "url": "https://westendwilma.com/the-misanthrope-review-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
