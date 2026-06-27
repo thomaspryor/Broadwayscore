@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-27T19:27:22.428Z",
+  "timestamp": "2026-06-27T21:04:21.404Z",
   "stats": {
-    "totalReviews": 39332,
-    "alreadyFlagged": 17522,
+    "totalReviews": 39328,
+    "alreadyFlagged": 17533,
     "dateGuardCatches": 39,
     "directorMismatch": 874,
-    "tvFilmSignals": 1070,
-    "londonSignals": 685,
+    "tvFilmSignals": 1071,
+    "londonSignals": 684,
     "offBroadwaySignals": 464,
     "yearMismatch": 84,
-    "noPublishDate": 3930
+    "noPublishDate": 3915
   },
   "findings": [
     {
@@ -16006,6 +16006,20 @@
       ]
     },
     {
+      "showId": "one-man-two-guvnors-2012",
+      "file": "newsday--linda-winer.json",
+      "score": 62,
+      "publishDate": "April 18, 2012",
+      "url": "http://www.newsday.com/entertainment/theater/one-man-two-guvnors-is-pure-slapstick-1.3667079",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
       "showId": "operation-mincemeat-2025",
       "file": "ew--shania-russell.json",
       "score": 90,
@@ -26791,9 +26805,9 @@
     },
     {
       "showId": "whos-afraid-of-virginia-woolf-2020",
-      "file": "playbill--unknown.json",
+      "file": "playbill--mark-peikert.json",
       "score": null,
-      "publishDate": null,
+      "publishDate": "2020-03-21",
       "url": "https://playbill.com/article/broadway-revival-of-whos-afraid-of-virginia-woolf-starring-laurie-metcalf-and-rupert-everett-has-closed",
       "findings": [
         {
@@ -29933,7 +29947,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "theatreandtonic--penny-walshe.json",
-      "score": 90,
+      "score": 89,
       "publishDate": "2026-06-26",
       "url": "https://theatreandtonic.co.uk/blog/cyrano-de-bergerac-at-noel-coward-theatre-review",
       "findings": [
@@ -36750,20 +36764,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
-        }
-      ]
-    },
-    {
-      "showId": "sinatra-the-musical-west-end-2026",
-      "file": "nytimes--matt-wolf.json",
-      "score": 42,
-      "publishDate": "2026-06-27",
-      "url": "https://www.nytimes.com/2026/06/27/arts/sinatra-the-musical-aldwych-theatre-london.html?eafs_enabled=false",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
