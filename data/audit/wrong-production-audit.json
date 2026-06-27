@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-27T17:41:11.595Z",
+  "timestamp": "2026-06-27T19:27:22.428Z",
   "stats": {
-    "totalReviews": 39333,
+    "totalReviews": 39332,
     "alreadyFlagged": 17522,
     "dateGuardCatches": 39,
-    "directorMismatch": 873,
+    "directorMismatch": 874,
     "tvFilmSignals": 1070,
-    "londonSignals": 683,
+    "londonSignals": 685,
     "offBroadwaySignals": 464,
     "yearMismatch": 84,
-    "noPublishDate": 3934
+    "noPublishDate": 3930
   },
   "findings": [
     {
@@ -4904,6 +4904,20 @@
       ]
     },
     {
+      "showId": "cyrano-de-bergerac-west-end-2026",
+      "file": "westendtheatre--ghenet-pinderhughes-randall.json",
+      "score": 97,
+      "publishDate": "2026-06-26",
+      "url": "https://www.westendtheatre.com/359148/news/reviews/cyrano-de-bergerac-noel-coward-reviews/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from cyrano-de-bergerac-2012"
+        }
+      ]
+    },
+    {
       "showId": "dana-h-2021",
       "file": "variety--frank-rizzo.json",
       "score": 87,
@@ -8295,7 +8309,7 @@
       "file": "independent--alice-saville.json",
       "score": 58,
       "publishDate": "2026-06-18",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html?loginSuccessful=true",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -29917,6 +29931,20 @@
       ]
     },
     {
+      "showId": "cyrano-de-bergerac-west-end-2026",
+      "file": "theatreandtonic--penny-walshe.json",
+      "score": 90,
+      "publishDate": "2026-06-26",
+      "url": "https://theatreandtonic.co.uk/blog/cyrano-de-bergerac-at-noel-coward-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "dad-dont-read-this-off-broadway-2026",
       "file": "exeunt-magazine--loren-noveck.json",
       "score": 80,
@@ -36722,6 +36750,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "sinatra-the-musical-west-end-2026",
+      "file": "nytimes--matt-wolf.json",
+      "score": 42,
+      "publishDate": "2026-06-27",
+      "url": "https://www.nytimes.com/2026/06/27/arts/sinatra-the-musical-aldwych-theatre-london.html?eafs_enabled=false",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
