@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-06-27T20:02:54.254Z",
-  "processed": 495,
-  "failed": 640,
-  "successRate": "43.6%",
+  "updatedAt": "2026-06-27T20:06:42.074Z",
+  "processed": 498,
+  "failed": 647,
+  "successRate": "43.5%",
   "tierBreakdown": {
     "playwright": 236,
     "amp": 0,
     "browserbase": 26,
     "directCookies": 0,
     "scrapingbee": 91,
-    "brightdata": 49,
-    "archiveToday": 78,
-    "archive": 155
+    "brightdata": 50,
+    "archiveToday": 79,
+    "archive": 157
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-06-27T11:46:12.404Z",
-      "event": "bb-session",
-      "session": "464f0476",
-      "url": "http://www.wsj.com/articles/kiss-me-kate-review-so-not-in-love-11552609800"
-    },
-    {
-      "t": "2026-06-27T11:46:13.692Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-06-27T11:49:57.203Z",
-      "event": "bb-session",
-      "session": "92c67189",
-      "url": "https://www.wsj.com/articles/the-ferryman-review-a-house-divided-1540500470?gaa_"
-    },
-    {
-      "t": "2026-06-27T11:49:58.122Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-06-27T12:05:03.029Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-06-27T19:53:29.312Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-06-27T20:02:55.372Z",
+      "event": "bb-session",
+      "session": "8ded1f27",
+      "url": "http://www.hollywoodreporter.com/hr/film-reviews/come-fly-away-theater-review-10"
+    },
+    {
+      "t": "2026-06-27T20:02:56.476Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-06-27T20:04:33.968Z",
+      "event": "bb-session",
+      "session": "b1d6541c",
+      "url": "https://www.wsj.com/articles/SB10001424052748704187204575101443623615472"
+    },
+    {
+      "t": "2026-06-27T20:04:34.950Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
