@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-27T11:01:11.428Z",
-  "processed": 181,
-  "failed": 178,
-  "successRate": "50.4%",
+  "updatedAt": "2026-06-27T11:04:24.292Z",
+  "processed": 187,
+  "failed": 182,
+  "successRate": "50.7%",
   "tierBreakdown": {
-    "playwright": 19,
+    "playwright": 108,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 8,
     "directCookies": 0,
-    "scrapingbee": 38,
-    "brightdata": 18,
+    "scrapingbee": 40,
+    "brightdata": 19,
     "archiveToday": 39,
-    "archive": 36
+    "archive": 37
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-06-27T03:15:54.008Z",
@@ -47,6 +47,34 @@
       "t": "2026-06-27T04:04:01.824Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-27T06:21:51.229Z",
+      "event": "bb-session",
+      "session": "291483f0",
+      "url": "https://theaterlife.com/jamie-allans-amaze/"
+    },
+    {
+      "t": "2026-06-27T06:22:58.249Z",
+      "event": "bb-session",
+      "session": "e71cb4d2",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
+    },
+    {
+      "t": "2026-06-27T06:22:59.198Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-27T11:03:38.057Z",
+      "event": "bb-session",
+      "session": "e939bb79",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/tracee-ellis-ross-broadway-ever"
+    },
+    {
+      "t": "2026-06-27T11:03:38.825Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
