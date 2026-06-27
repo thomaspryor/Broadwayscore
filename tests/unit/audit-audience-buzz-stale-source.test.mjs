@@ -82,3 +82,41 @@ describe('OTHER_SOURCE_STALE flag', () => {
     }
   });
 });
+
+describe('REDDIT_SCORE_DIVERGENCE honors suppressed', () => {
+  // A divergent Reddit source (Glengarry Glen Ross West End 2026 case, 2026-06-26):
+  // reddit.score=48 vs 7-source consensus ~88, almost certainly wrong-production
+  // contamination from a same-titled production. Once suppressed (acknowledged +
+  // dropped from weighting), it must not keep failing the audit.
+  const divShows = [
+    { id: 'glengarry-glen-ross-west-end-2026', title: 'Glengarry Glen Ross', category: 'west-end', openingDate: '2026-06-10', status: 'open' },
+  ];
+  // Consensus ~88 from sources the audit actually considers (SOURCE_NAMES:
+  // showScore/mezzanine/reddit/theatr/broadwayCom), all rc>=10 so they count as
+  // credibleOthers; reddit=48 → diff>=40.
+  const baseSources = {
+    showScore: { score: 90, reviewCount: 30 },
+    mezzanine: { score: 88, reviewCount: 87 },
+    broadwayCom: { score: 88, reviewCount: 71 },
+  };
+
+  test('fires when divergent reddit is NOT suppressed', () => {
+    const buzz = { shows: { 'glengarry-glen-ross-west-end-2026': {
+      sources: { ...baseSources, reddit: { score: 48, reviewCount: 16 } },
+    } } };
+    const issues = audit({ shows: divShows, buzz, today: TODAY });
+    const g = issues.find(i => i.id === 'glengarry-glen-ross-west-end-2026');
+    assert.ok(g && g.flags.some(f => f.startsWith('REDDIT_SCORE_DIVERGENCE')),
+      `expected REDDIT_SCORE_DIVERGENCE, got: ${g ? g.flags.join(',') : 'no issue'}`);
+  });
+
+  test('does NOT fire once divergent reddit is suppressed', () => {
+    const buzz = { shows: { 'glengarry-glen-ross-west-end-2026': {
+      sources: { ...baseSources, reddit: { score: 48, reviewCount: 16, suppressed: true } },
+    } } };
+    const issues = audit({ shows: divShows, buzz, today: TODAY });
+    const g = issues.find(i => i.id === 'glengarry-glen-ross-west-end-2026');
+    const div = g && g.flags.find(f => f.startsWith('REDDIT_SCORE_DIVERGENCE'));
+    assert.strictEqual(div, undefined, `suppressed reddit must not fire divergence, got: ${g ? g.flags.join(',') : 'none'}`);
+  });
+});
