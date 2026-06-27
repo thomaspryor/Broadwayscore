@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-17T10:17:04.081Z",
+  "generatedAt": "2026-06-27T19:31:05.629Z",
   "shows": {
     "the-lost-boys-2026": {
       "title": "The Lost Boys",
@@ -1493,6 +1493,188 @@
       "researchedAt": "2026-06-17T10:17:04.081Z",
       "model": "o4-mini",
       "researchTrigger": "manual"
+    },
+    "well-ill-let-you-go-off-broadway": {
+      "capitalization": 3000000,
+      "capitalizationSource": "SEC Form D filing (Jeff Ross Broadway LLC) ([www.sec.gov](https://www.sec.gov/Archives/edgar/data/2075901/000207590125000001/xslFormDX08/primary_doc.xml#:~:text=Total%20Offering%20Amount%20%20,2650000))",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Flop",
+      "notes": "Producers filed to raise ~$3.0M (SEC Form D) ([www.sec.gov](https://www.sec.gov/Archives/edgar/data/2075901/000207590125000001/xslFormDX08/primary_doc.xml#:~:text=Total%20Offering%20Amount%20%20,2650000)). No data on weekly costs or recoupment; show closed after 7 weeks with no reported recoup.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "sec",
+          "url": "https://www.sec.gov/Archives/edgar/data/2075901/000207590125000001/xslFormDX08/primary_doc.xml",
+          "date": "2025-07-07"
+        }
+      ],
+      "title": "Well, I'll Let You Go",
+      "slug": "well-ill-let-you-go-off-broadway",
+      "openingDate": "2026-04-30",
+      "status": "closed",
+      "researchedAt": "2026-06-27T19:13:12.734Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "queued"
+    },
+    "vida-off-broadway": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Flop",
+      "notes": "VIDA ran only one weekend at Repertorio Espanól (June 18-21, 2026 ([www.broadwayworld.com](https://www.broadwayworld.com/off-broadway/article/Carolina-Gaitn-to-Star-in-VIDA-at-Repertorio-Espaol-20251215#:~:text=Through%20Vida%20Santiago%27s%20path%20to,21%2C%202026))). No public budget or cost data could be found.  The very limited engagement implies it did not recoup its capitalization.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/off-broadway/article/Carolina-Gaitan-to-Star-in-VIDA-at-Repertorio-Espanol-20251215",
+          "date": "2025-12-15"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.infobae.com/america/agencias/2026/06/13/el-musical-latino-vida-desembarca-en-el-off-broadway-para-explorar-el-precio-de-la-fama/",
+          "date": "2026-06-13"
+        }
+      ],
+      "title": "VIDA",
+      "slug": "vida-off-broadway",
+      "openingDate": "2026-06-18",
+      "status": "closed",
+      "researchedAt": "2026-06-27T19:17:05.809Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "queued"
+    },
+    "paddington-the-musical": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "No verified budget or weekly cost figures found.  A BroadwayWorld forum user speculated ~$35–40M capital and ~$1.5M/week (unofficial) ([forum.broadwayworld.com](https://forum.broadwayworld.com/thread/Paddington-Bway-Transfer-Possible#:~:text=It%20would%20be%20veeeeery%20%28bear,5%20million%C2%A0in%20weekly%20running%20costs)).  The show is not yet running and thus not recouped (recoupment TBD).",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://playbill.com/article/paddington-stage-musical-confirms-2027-broadway-bow",
+          "date": "2026-06-16"
+        },
+        {
+          "type": "manual",
+          "url": "https://forum.broadwayworld.com/thread/Paddington-Bway-Transfer-Possible",
+          "date": "2025-11-30"
+        }
+      ],
+      "title": "Paddington The Musical",
+      "slug": "paddington-the-musical",
+      "openingDate": "2027-04-18",
+      "status": "upcoming",
+      "researchedAt": "2026-06-27T19:23:29.592Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "queued"
+    },
+    "awake-and-sing": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Nonprofit",
+      "notes": "No budget or weekly operating cost was publicly reported for this production. Manhattan Theatre Club is a nonprofit theater ([www.manhattantheatreclub.com](https://www.manhattantheatreclub.com/who-we-are/about-mtc/financial-info/#:~:text=Over%20the%20past%20five%20decades%2C,a%20comprehensive%20approach%20to%20artistic)), and the show has not yet opened (so it has not recouped).",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "manual",
+          "url": "https://www.manhattantheatreclub.com/who-we-are/about-mtc/financial-info/",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.theatermania.com/news/danny-burstein-jessica-hecht-and-jeremy-shamos-to-star-in-broadway-revival-of-awake-and-sing_1839493/",
+          "date": "2026-06-01"
+        }
+      ],
+      "title": "Awake and Sing!",
+      "slug": "awake-and-sing",
+      "openingDate": "1935-02-19",
+      "status": "open",
+      "researchedAt": "2026-06-27T19:26:06.516Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "queued"
+    },
+    "bone-wars-a-new-musical-off-broadway": {
+      "capitalization": 100000,
+      "capitalizationSource": "Fractured Atlas crowdfunding page (producers target a $100k production budget) ([fundraising.fracturedatlas.org](https://fundraising.fracturedatlas.org/bone-wars/campaigns/c2194b39-59e0-46be-9416-ba2f029bd807#:~:text=been%20hard%20at%20work%20for,will%20guarantee%20our%20ability%20to))",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Flop",
+      "notes": "[PLAUSIBILITY WARNING: Capitalization $0.1M outside plausible range ($0.5M-$100M)] Producers raised funds on Fractured Atlas, citing a $100k production budget ([fundraising.fracturedatlas.org](https://fundraising.fracturedatlas.org/bone-wars/campaigns/c2194b39-59e0-46be-9416-ba2f029bd807#:~:text=been%20hard%20at%20work%20for,will%20guarantee%20our%20ability%20to)). With only a 5-week run and no reports of recovering costs, it did not recoup.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "manual",
+          "url": "https://fundraising.fracturedatlas.org/bone-wars/campaigns/c2194b39-59e0-46be-9416-ba2f029bd807",
+          "date": null
+        }
+      ],
+      "title": "Bone Wars a New Musical",
+      "slug": "bone-wars-a-new-musical-off-broadway",
+      "openingDate": "2026-06-18",
+      "status": "open",
+      "researchedAt": "2026-06-27T19:29:43.965Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "queued"
+    },
+    "the-winters-tale-off-broadway": {
+      "capitalization": null,
+      "capitalizationSource": "",
+      "weeklyRunningCost": null,
+      "costMethodology": "null",
+      "recouped": false,
+      "recoupedDate": "null",
+      "recoupedSource": "null",
+      "estimatedRecoupmentPct": null,
+      "designation": "Nonprofit",
+      "notes": "Free Shakespeare in the Park production by the Public Theater; no reported budget or recoupment.",
+      "confidence": "high",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://playbill.com/article/raul-esparza-lily-rabe-chuck-cooper-to-star-in-free-shakespeare-in-the-park-the-winters-tale",
+          "date": "2026-06-10"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.theatermania.com/news/lily-rabe-chuck-cooper-and-raul-esparza-join-sitps-the-winters-tale_1841487/",
+          "date": "2026-06-10"
+        }
+      ],
+      "title": "The Winter's Tale",
+      "slug": "the-winters-tale-off-broadway",
+      "openingDate": null,
+      "status": "upcoming",
+      "researchedAt": "2026-06-27T19:31:05.629Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "queued"
     }
   },
   "lastUpdated": "2026-06-27T18:35:52.452Z"
