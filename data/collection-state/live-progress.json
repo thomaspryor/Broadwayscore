@@ -1,18 +1,41 @@
 {
-  "updatedAt": "2026-06-27T03:16:05.648Z",
-  "processed": 2,
-  "failed": 7,
-  "successRate": "22.2%",
+  "updatedAt": "2026-06-27T03:18:49.021Z",
+  "processed": 1,
+  "failed": 8,
+  "successRate": "11.1%",
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 1,
-    "brightdata": 1,
-    "archiveToday": 2,
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archiveToday": 4,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-06-27T03:15:54.008Z",
+      "event": "bb-session",
+      "session": "99238b51",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2649682"
+    },
+    {
+      "t": "2026-06-27T03:15:54.926Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-27T03:16:24.995Z",
+      "event": "bb-session",
+      "session": "c89cb726",
+      "url": "https://www.nytimes.com/2026/06/19/theater/la-cage-aux-folles-review-porter-brad"
+    },
+    {
+      "t": "2026-06-27T03:16:25.958Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
