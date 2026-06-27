@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-27T06:22:27.627Z",
-  "processed": 32,
-  "failed": 67,
-  "successRate": "32.3%",
+  "updatedAt": "2026-06-27T06:25:44.805Z",
+  "processed": 39,
+  "failed": 70,
+  "successRate": "35.8%",
   "tierBreakdown": {
-    "playwright": 27,
+    "playwright": 29,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 6,
     "directCookies": 0,
-    "scrapingbee": 4,
-    "brightdata": 4,
+    "scrapingbee": 6,
+    "brightdata": 5,
     "archiveToday": 15,
-    "archive": 2
+    "archive": 3
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-06-27T03:15:54.008Z",
@@ -53,6 +53,17 @@
       "event": "bb-session",
       "session": "291483f0",
       "url": "https://theaterlife.com/jamie-allans-amaze/"
+    },
+    {
+      "t": "2026-06-27T06:22:58.249Z",
+      "event": "bb-session",
+      "session": "e71cb4d2",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
+    },
+    {
+      "t": "2026-06-27T06:22:59.198Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
