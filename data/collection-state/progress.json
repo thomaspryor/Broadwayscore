@@ -479,7 +479,12 @@
     "women-on-the-verge-of-a-nervous-breakdown-2010/amny--matt-windman.json",
     "rain-2010/newsday--linda-winer.json",
     "driving-miss-daisy-2010/ew--melissa-rose-bernardo.json",
-    "driving-miss-daisy-2010/newsday--linda-winer.json"
+    "driving-miss-daisy-2010/newsday--linda-winer.json",
+    "lombardi-2010/newyorker--uncredited.json",
+    "lombardi-2010/wsj--terry-teachout.json",
+    "lombardi-2010/time--richard-zoglin.json",
+    "bloody-bloody-andrew-jackson-2010/theatermania--andy-propst.json",
+    "bloody-bloody-andrew-jackson-2010/time--richard-zoglin.json"
   ],
   "failed": [
     "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
@@ -1096,7 +1101,12 @@
     "women-on-the-verge-of-a-nervous-breakdown-2010/backstage--erik-haagensen.json",
     "the-scottsboro-boys-2010/timeout--david-cote.json",
     "the-scottsboro-boys-2010/backstage--erik-haagensen.json",
-    "driving-miss-daisy-2010/nytheatre--martin-denton.json"
+    "driving-miss-daisy-2010/nytheatre--martin-denton.json",
+    "la-bete-2010/chicagotribune--ben-brantley.json",
+    "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
+    "bloody-bloody-andrew-jackson-2010/bloomberg--john-simon.json",
+    "a-life-in-the-theatre-2010/hollywood-reporter--frank-scheck.json",
+    "a-life-in-the-theatre-2010/backstage--david-sheward.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1332,7 +1342,9 @@
       "once-2012/theatermania--dan-bacalzo.json",
       "death-of-a-salesman-2012/theatermania--charles-isherwood.json",
       "good-people-2011/theatermania--david-rooney.json",
-      "the-importance-of-being-earnest-2011/theater-life--eric-march.json"
+      "the-importance-of-being-earnest-2011/theater-life--eric-march.json",
+      "bloody-bloody-andrew-jackson-2010/theatermania--andy-propst.json",
+      "bloody-bloody-andrew-jackson-2010/time--richard-zoglin.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1505,7 +1517,8 @@
       "all-the-way-2014/amny--matt-windman.json",
       "700-sundays-2013/ew--jessica-shaw.json",
       "master-class-2011/theatermania--david-finkle.json",
-      "the-peewee-herman-show-2010/theatermania--unknown.json"
+      "the-peewee-herman-show-2010/theatermania--unknown.json",
+      "lombardi-2010/wsj--terry-teachout.json"
     ],
     "archiveToday": [
       "data/review-texts/birthright-off-broadway-2026/broadwayworld--unknown.json",
@@ -1582,7 +1595,8 @@
       "data/review-texts/the-color-purple-2015/wsj--terry-teachout.json",
       "data/review-texts/the-audience-2015/timeout--david-cote.json",
       "data/review-texts/the-performers-2012/northjerseycom--robert-feldberg.json",
-      "data/review-texts/wonderland-2011/the-tampa-tribune--walt-belcher.json"
+      "data/review-texts/wonderland-2011/the-tampa-tribune--walt-belcher.json",
+      "data/review-texts/bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json"
     ],
     "archive": [
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
@@ -1729,11 +1743,13 @@
       "that-championship-season-2011/newsday--linda-winer.json",
       "good-people-2011/newsday--linda-winer.json",
       "women-on-the-verge-of-a-nervous-breakdown-2010/amny--matt-windman.json",
-      "rain-2010/newsday--linda-winer.json"
+      "rain-2010/newsday--linda-winer.json",
+      "lombardi-2010/newyorker--uncredited.json",
+      "lombardi-2010/time--richard-zoglin.json"
     ]
   },
   "startTime": "2026-06-27T03:12:50.769Z",
-  "lastProcessed": "driving-miss-daisy-2010/nytheatre--martin-denton.json",
+  "lastProcessed": "a-life-in-the-theatre-2010/backstage--david-sheward.json",
   "log": [
     {
       "t": "2026-06-27T03:15:54.008Z",
@@ -1916,6 +1932,28 @@
       "t": "2026-06-27T19:47:11.276Z",
       "event": "bb-cookie-inject",
       "domain": "timeout.com"
+    },
+    {
+      "t": "2026-06-27T19:52:22.063Z",
+      "event": "bb-session",
+      "session": "2d1aad12",
+      "url": "http://www.newyorker.com/arts/events/theatre/bloody-bloody-andrew-jackson-jacobs"
+    },
+    {
+      "t": "2026-06-27T19:52:23.097Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-06-27T19:53:28.259Z",
+      "event": "bb-session",
+      "session": "d527751d",
+      "url": "http://www.hollywoodreporter.com/hr/film-reviews/a-life-in-the-theatre-theater-r"
+    },
+    {
+      "t": "2026-06-27T19:53:29.312Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }

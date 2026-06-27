@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-06-27T19:49:54.608Z",
-  "processed": 480,
-  "failed": 615,
-  "successRate": "43.8%",
+  "updatedAt": "2026-06-27T19:56:28.803Z",
+  "processed": 485,
+  "failed": 620,
+  "successRate": "43.9%",
   "tierBreakdown": {
-    "playwright": 232,
+    "playwright": 234,
     "amp": 0,
     "browserbase": 26,
     "directCookies": 0,
     "scrapingbee": 91,
-    "brightdata": 48,
-    "archiveToday": 75,
-    "archive": 145
+    "brightdata": 49,
+    "archiveToday": 76,
+    "archive": 147
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-06-27T11:04:58.520Z",
-      "event": "bb-session",
-      "session": "4ba95f35",
-      "url": "https://variety.com/2025/theater/news/my-neighbour-totoro-puppet-artwork-stage-p"
-    },
-    {
-      "t": "2026-06-27T11:04:59.166Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-27T11:11:16.722Z",
-      "event": "bb-session",
-      "session": "2b22f8bd",
-      "url": "https://variety.com/2026/legit/news/heated-rivalry-broadway-musical-parody-12367"
-    },
-    {
-      "t": "2026-06-27T11:11:17.491Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-06-27T11:46:12.404Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-06-27T19:47:11.276Z",
       "event": "bb-cookie-inject",
       "domain": "timeout.com"
+    },
+    {
+      "t": "2026-06-27T19:52:22.063Z",
+      "event": "bb-session",
+      "session": "2d1aad12",
+      "url": "http://www.newyorker.com/arts/events/theatre/bloody-bloody-andrew-jackson-jacobs"
+    },
+    {
+      "t": "2026-06-27T19:52:23.097Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-06-27T19:53:28.259Z",
+      "event": "bb-session",
+      "session": "d527751d",
+      "url": "http://www.hollywoodreporter.com/hr/film-reviews/a-life-in-the-theatre-theater-r"
+    },
+    {
+      "t": "2026-06-27T19:53:29.312Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
