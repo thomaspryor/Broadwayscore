@@ -24,6 +24,7 @@ const { lookupIBDBDates, batchLookupIBDBDates } = require('./lib/ibdb-dates');
 const { cleanup } = require('./lib/scraper');
 const { splitCombinedCredits } = require('./lib/credit-splitting');
 const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
+const { ibdbYearMismatch, expectedShowYear } = require('./lib/ibdb-year-guard');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 
@@ -119,6 +120,16 @@ async function main() {
   for (const show of shows) {
     const ibdb = ibdbResults.get(show.title);
     if (!ibdb) continue;
+
+    // Wrong-production guard: IBDB matches by TITLE, so a new revival can match its ORIGINAL
+    // production (a-few-good-men-2026 matched the 1989 staging and got stamped 1989 dates +
+    // openingDateSource:ibdb, 2026-06-28). If the IBDB opening year is implausibly far from
+    // this show's expected year, the whole match is the wrong production — skip it entirely
+    // (dates AND ibdbUrl AND creativeTeam all belong to the other staging).
+    if (ibdbYearMismatch(show, ibdb.openingDate)) {
+      console.log(`  ⛔ ${show.title} (${show.id}): IBDB opening ${ibdb.openingDate} is implausible for this production (expected ~${expectedShowYear(show)}) — wrong-production match, skipping.`);
+      continue;
+    }
 
     // Allow processing if IBDB returned creative team even without dates
     const hasCreativeTeamData = ibdb.creativeTeam && ibdb.creativeTeam.length > 0;

@@ -25,6 +25,7 @@ const {
   isWithinPriorRun,
   hasDeclaredPriorRuns,
   shouldAutoClearWrongProductionPriorRun,
+  shouldAutoClearStaleDateGuard,
 } = require('../../scripts/lib/wrong-production-autoclear');
 
 describe('hasDeclaredPriorRuns (transfer discovery gate)', () => {
@@ -752,6 +753,76 @@ describe('shouldAutoClearWrongProductionPriorRun', () => {
       shouldAutoClearWrongProductionPriorRun(
         { publishDate: '2025-04-26' },
         show
+      ),
+      false
+    );
+  });
+});
+
+describe('shouldAutoClearStaleDateGuard (date-corrected pre-opening flag)', () => {
+  it('clears a Pre-opening-guard flag once the date is back in window', () => {
+    // all-my-sons-west-end-2025 Guardian/Arifa Akbar: flag set on a long-gone
+    // 2025-07-01 date, real publishDate corrected to 2025-11-22 (in window).
+    assert.strictEqual(
+      shouldAutoClearStaleDateGuard(
+        {
+          wrongProduction: true,
+          wrongProductionNote: 'Pre-opening guard: review dated 2025-07-01 is 90+ days before show starts 2025-11-14',
+        },
+        { nowInWindow: true }
+      ),
+      true
+    );
+  });
+
+  it('does NOT clear when the date is still out of window', () => {
+    assert.strictEqual(
+      shouldAutoClearStaleDateGuard(
+        {
+          wrongProduction: true,
+          wrongProductionNote: 'Pre-opening guard: review dated 2024-01-15 is 90+ days before show starts 2025-11-14',
+        },
+        { nowInWindow: false }
+      ),
+      false
+    );
+  });
+
+  it('does NOT touch a flag set by something other than the dated guard', () => {
+    // Operator / CV / cross-market / dateless-revival flags must survive even
+    // when the date is in window — only the dated guard's own flag is matched.
+    for (const note of [
+      'Cross-market contamination (audit-review-contamination)',
+      'Dateless revival guard: no publishDate on multi-production title',
+      'URL contains year 2019 not matching show season',
+      '',
+    ]) {
+      assert.strictEqual(
+        shouldAutoClearStaleDateGuard(
+          { wrongProduction: true, wrongProductionNote: note, wrongProductionReason: 'manual' },
+          { nowInWindow: true }
+        ),
+        false,
+        `should not clear note=${JSON.stringify(note)}`
+      );
+    }
+  });
+
+  it('returns false when wrongProduction is not set', () => {
+    assert.strictEqual(
+      shouldAutoClearStaleDateGuard(
+        { wrongProductionNote: 'Pre-opening guard: ...' },
+        { nowInWindow: true }
+      ),
+      false
+    );
+  });
+
+  it('returns false when nowInWindow is omitted/undefined', () => {
+    assert.strictEqual(
+      shouldAutoClearStaleDateGuard(
+        { wrongProduction: true, wrongProductionNote: 'Pre-opening guard: ...' },
+        {}
       ),
       false
     );
