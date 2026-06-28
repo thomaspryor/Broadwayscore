@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-06-28T14:15:12.418Z",
+  "runDate": "2026-06-28T14:43:37.842Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,38 +11,38 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 34,
-    "failed": 1124,
+    "processed": 42,
+    "failed": 1127,
     "skipped": 0,
-    "successRate": "2.9%"
+    "successRate": "3.6%"
   },
   "tierBreakdown": {
-    "playwright": 22,
+    "playwright": 25,
     "amp": 0,
     "browserbase": 8,
     "directCookies": 0,
-    "scrapingbee": 4,
-    "brightdata": 3,
-    "archiveToday": 29,
+    "scrapingbee": 8,
+    "brightdata": 4,
+    "archiveToday": 30,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 13,
-    "tier1Success": 12,
+    "tier1Attempts": 14,
+    "tier1Success": 13,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 2,
-    "tier2Success": 2,
+    "tier2Attempts": 5,
+    "tier2Success": 5,
     "tier3Attempts": 1,
     "tier3Success": 1,
-    "tier3_6Attempts": 1,
-    "tier3_6Success": 1,
-    "tier4Attempts": 1,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 81,
-    "scrapingBeePageCredits": 11,
+    "totalFailed": 77,
+    "scrapingBeePageCredits": 23,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -74,6 +74,7 @@
     "schmigadoon-2026/nytg--unknown.json",
     "im-sorry-prime-minister-west-end-2026/british-theatre--unknown.json",
     "art-2025/talkinbroadway--james-wilson.json",
+    "archduke-west-end-2026/london-box-office--stuart-king.json",
     "archduke-west-end-2026/west-end-best-friend--unknown.json",
     "cyrano-de-bergerac-west-end-2026/south-london--michael-holland.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/observer--unknown.json",
@@ -84,7 +85,14 @@
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/westendtheatre--unknown.json",
     "relics-west-end-2026/cambridge--unknown.json",
     "relics-west-end-2026/theatreandtonic--unknown.json",
-    "sting-west-end-2026/south-london--michael-holland.json"
+    "sting-west-end-2026/south-london--michael-holland.json",
+    "proof-2026/variety--unknown.json",
+    "proof-2026/ew--unknown.json",
+    "proof-2026/nysr--unknown.json",
+    "ragtime-2025/nytimes--unknown.json",
+    "burlesque-west-end-2026/theatreandtonic--unknown.json",
+    "heathers-the-musical-off-broadway-2025/theatrely--unknown.json",
+    "the-great-gatsby-2024/nytimes--unknown.json"
   ],
   "failed": [
     "spamalot-off-broadway-2026/vulture--jackson-mchenry.json",
@@ -1130,10 +1138,13 @@
     "encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
     "romeo-and-juliet-off-broadway-2026/one-minute-critic--emily-chackerian.json",
     "im-almost-there-off-broadway-2026/broadwayworld--team-bww.json",
-    "archduke-west-end-2026/guardian--unknown.json",
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/the-upcoming-uk--unknown.json",
-    "relics-west-end-2026/thestage--neil-norman.json",
-    "sting-west-end-2026/london-theatre--unknown.json",
+    "spamalot-off-broadway-2026/vulture--jackson-mchenry.json",
+    "spamalot-off-broadway-2026/nysr--unknown.json",
+    "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+    "birthright-off-broadway-2026/broadwayworld--unknown.json",
+    "encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
+    "romeo-and-juliet-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+    "im-almost-there-off-broadway-2026/broadwayworld--team-bww.json",
     "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
     "matilda-the-musical-west-end-2021/whatsonstage--meriel-patrick.json",
     "tammy-faye-2024/stageandcinema--mike-mineo.json",
@@ -1226,16 +1237,19 @@
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json",
       "the-misanthrope-west-end-2026/times-uk--clive-davis.json",
       "the-misanthrope-west-end-2026/times-uk--dominic-maxwell.json",
+      "archduke-west-end-2026/london-box-office--stuart-king.json",
       "archduke-west-end-2026/west-end-best-friend--unknown.json",
       "cyrano-de-bergerac-west-end-2026/south-london--michael-holland.json",
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/observer--unknown.json",
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/i-paper--unknown.json",
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre--unknown.json",
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/north-west-end--unknown.json",
-      "the-truth-a-comedy-by-florian-zeller-west-end-2026/westendtheatre--unknown.json",
       "relics-west-end-2026/cambridge--unknown.json",
       "relics-west-end-2026/theatreandtonic--unknown.json",
-      "sting-west-end-2026/south-london--michael-holland.json"
+      "sting-west-end-2026/south-london--michael-holland.json",
+      "proof-2026/ew--unknown.json",
+      "proof-2026/nysr--unknown.json",
+      "burlesque-west-end-2026/theatreandtonic--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1253,12 +1267,17 @@
       "sinatra-the-musical-west-end-2026/nytimes--unknown.json",
       "sinatra-the-musical-west-end-2026/nytimes--matt-wolf.json",
       "much-ado-about-nothing-globe-off-west-end-2026/london-theatre--lola-phillips.json",
-      "the-truth-a-comedy-by-florian-zeller-west-end-2026/plays-to-see--unknown.json"
+      "the-truth-a-comedy-by-florian-zeller-west-end-2026/plays-to-see--unknown.json",
+      "the-truth-a-comedy-by-florian-zeller-west-end-2026/westendtheatre--unknown.json",
+      "ragtime-2025/nytimes--unknown.json",
+      "heathers-the-musical-off-broadway-2025/theatrely--unknown.json",
+      "the-great-gatsby-2024/nytimes--unknown.json"
     ],
     "brightdata": [
       "camping-off-broadway-2026/talkinbroadway--unknown.json",
       "camping-off-broadway-2026/talkinbroadway--unknown.json",
-      "art-2025/talkinbroadway--james-wilson.json"
+      "art-2025/talkinbroadway--james-wilson.json",
+      "proof-2026/variety--unknown.json"
     ],
     "archiveToday": [
       "data/review-texts/birthright-off-broadway-2026/broadwayworld--unknown.json",
@@ -1289,18 +1308,11 @@
       "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
       "data/review-texts/birthright-off-broadway-2026/broadwayworld--unknown.json",
       "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
-      "data/review-texts/relics-west-end-2026/thestage--neil-norman.json"
+      "data/review-texts/birthright-off-broadway-2026/broadwayworld--unknown.json",
+      "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json"
     ],
     "archive": []
   },
-  "failuresByOutlet": {
-    "The Guardian": {
-      "count": 1,
-      "domain": "theguardian.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
