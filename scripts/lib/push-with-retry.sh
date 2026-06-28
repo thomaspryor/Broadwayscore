@@ -287,8 +287,17 @@ for i in $(seq 1 "$MAX_RETRIES"); do
     fi
   fi
 
-  # Add jitter: 10-45s to spread out concurrent push retries
-  WAIT=$((10 + RANDOM % 35))
+  # Backoff before retry. Shaped fast-then-growing instead of the old flat
+  # 10-44s: pushes against the busy public main almost always succeed within
+  # 2-3 attempts (a single bot commit landed between our fetch and push, so a
+  # quick re-fetch+push slips in), so the early attempts must be cheap. The old
+  # flat jitter spent ~27s avg per attempt — with up to 7 attempts and several
+  # push calls per job, that alone pushed jobs (update-show-status, fetch-
+  # todaytix, commercial-weekly) past their timeouts mid-push (2026-06-25→28,
+  # 5+ days of daily cancellations). Now: attempt 1 ≈5-9s … attempt 7 ≈17-21s,
+  # cutting typical (2-3 attempt) sleep time ~65% while keeping random jitter to
+  # avoid thundering-herd clustering and longer backoff on persistent contention.
+  WAIT=$(( 3 + i * 2 + RANDOM % 5 ))
   echo "  Waiting ${WAIT}s before retry..."
   sleep "$WAIT"
 done
