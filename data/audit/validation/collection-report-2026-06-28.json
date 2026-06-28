@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-06-28T09:22:55.988Z",
+  "runDate": "2026-06-28T11:28:43.902Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,43 +11,43 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 8,
-    "failed": 669,
+    "processed": 9,
+    "failed": 677,
     "skipped": 0,
-    "successRate": "1.2%"
+    "successRate": "1.3%"
   },
   "tierBreakdown": {
     "playwright": 4,
     "amp": 0,
-    "browserbase": 6,
+    "browserbase": 8,
     "directCookies": 0,
     "scrapingbee": 1,
     "brightdata": 2,
-    "archiveToday": 19,
+    "archiveToday": 21,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 0,
+    "tier1Attempts": 1,
     "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
-    "tier2Attempts": 0,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 1,
+    "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier3Attempts": 1,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 0,
+    "tier4Attempts": 3,
     "tier4Success": 0,
-    "totalFailed": 77,
+    "totalFailed": 0,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 77,
-    "urlDiscoverySuccess": 0,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.2,
+    "urlDiscoveryAttempts": 1,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -58,7 +58,8 @@
     "maybe-happy-ending-2024/variety--unknown.json",
     "maybe-happy-ending-2024/washpost--unknown.json",
     "cyrano-de-bergerac-west-end-2026/everything-theatre--unknown.json",
-    "pride-west-end-2026/plays-international--unknown.json"
+    "pride-west-end-2026/plays-international--unknown.json",
+    "proof-2026/deadline--unknown.json"
   ],
   "failed": [
     "spamalot-off-broadway-2026/vulture--jackson-mchenry.json",
@@ -729,7 +730,15 @@
     "the-little-mermaid-2008/nypost--clive-barnes.json",
     "is-he-dead-2007/nypost--clive-barnes.json",
     "inherit-the-wind-2007/nypost--clive-barnes.json",
-    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json"
+    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+    "spamalot-off-broadway-2026/vulture--jackson-mchenry.json",
+    "spamalot-off-broadway-2026/nysr--unknown.json",
+    "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+    "birthright-off-broadway-2026/broadwayworld--unknown.json",
+    "encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
+    "romeo-and-juliet-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+    "im-almost-there-off-broadway-2026/broadwayworld--team-bww.json",
+    "cyrano-de-bergerac-2012/newsday--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -745,7 +754,9 @@
       "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
       "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
       "data/review-texts/maybe-happy-ending-2024/variety--unknown.json",
-      "maybe-happy-ending-2024/variety--unknown.json"
+      "maybe-happy-ending-2024/variety--unknown.json",
+      "data/review-texts/proof-2026/deadline--unknown.json",
+      "proof-2026/deadline--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -774,10 +785,18 @@
       "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
       "data/review-texts/im-almost-there-off-broadway-2026/broadwayworld--team-bww.json",
       "data/review-texts/birthright-off-broadway-2026/broadwayworld--unknown.json",
+      "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
+      "data/review-texts/birthright-off-broadway-2026/broadwayworld--unknown.json",
       "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json"
     ],
     "archive": []
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "cyrano-de-bergerac-2012/newsday--unknown.json",
+      "oldUrl": "http://www.newsday.com/entertainment/theater/cyrano-review-not-one-for-the-ages-1.4098426",
+      "newUrl": "https://www.newsday.com/news/new-york/theater-review-cyrano-de-bergerac-2-stars-b94596"
+    }
+  ]
 }
