@@ -105,6 +105,36 @@ function dayOf(dateStr) { const d = new Date(dateStr + (dateStr.length === 10 ? 
 // CLAUDE.md the project uses tier-weighted averages everywhere (T1=1.0,
 // T2=0.75, T3=0.35), and the newsletter must match the site's published
 // number show-for-show.
+// --- Editorial-lede show-name italics ------------------------------------------
+// Show names in the lede should render in italics. Two inputs, one renderer:
+//   • *emphasis* / _emphasis_ markers an editor writes in LEDE_OVERRIDE (these
+//     cover short forms the canonical title won't — "Henry VI", "Sinatra"), and
+//   • exact canonical titles of this week's shows (so the cron's auto-generated
+//     lede — which interpolates full titles verbatim — italicizes with no marker).
+// HTML-significant characters never appear in our ledes, so a light-touch regex
+// pass is safe and keeps the lede authorable as plain text.
+function stripEmphasisMarkers(text) {
+  return (text || '').replace(/[*_]([^*_\n]+)[*_]/g, '$1');
+}
+function italicizeLede(text, titles = []) {
+  if (!text) return text;
+  // 1) explicit *X* / _X_ markers → <em>X</em>
+  let out = text.replace(/\*([^*\n]+)\*/g, '<em>$1</em>').replace(/_([^_\n]+)_/g, '<em>$1</em>');
+  // 2) exact canonical titles, longest-first so the full title wins over a
+  //    pre-colon short form, skipping anything already inside an <em>.
+  const sorted = [...new Set(titles)].filter(t => t && t.length >= 4).sort((a, b) => b.length - a.length);
+  for (const t of sorted) {
+    const esc = t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const re = new RegExp(`(?<![\\w>])(${esc})(?!\\w)`, 'g');
+    out = out.replace(re, (m, p1, off, full) => {
+      const before = full.slice(0, off);
+      if (before.lastIndexOf('<em>') > before.lastIndexOf('</em>')) return m; // already italic
+      return `<em>${p1}</em>`;
+    });
+  }
+  return out;
+}
+
 const _compositeCache = new Map();
 function loadCompositeScore(showId) {
   if (_compositeCache.has(showId)) return _compositeCache.get(showId);
@@ -1992,8 +2022,28 @@ const newsworthyCandidates = scoreCandidates(newsworthyInputs);
 // for a special issue the auto-scorer can't rank well — e.g. a marquee opening
 // that has no critic score yet (Shakespeare in the Park), or a post-ceremony
 // note. When unset, the newsworthiness scorer drives both.
-const subjectLine = process.env.SUBJECT_OVERRIDE || buildSubjectFromCandidates(newsworthyCandidates);
+const _subjectRaw = process.env.SUBJECT_OVERRIDE || buildSubjectFromCandidates(newsworthyCandidates);
 const ledeText = process.env.LEDE_OVERRIDE || buildLedeFromCandidates(newsworthyCandidates) || '';
+// Subject is plain text in every inbox — strip any *emphasis* markers an editor
+// (or a future marker-aware scorer) left in, so they never render literally.
+const subjectLine = stripEmphasisMarkers(_subjectRaw);
+
+// Show titles to italicize in the editorial lede. Bounded to currently-running
+// or recently-opened shows so a common-word title (Pride, Camping) can't match
+// stray prose from an unrelated show. Includes the pre-colon short form
+// ("Henry VI" from "Henry VI: A Trilogy in Two Parts") so the auto-generated
+// lede italicizes whichever form it used.
+const _ledeTitleSet = shows
+  .filter(s => ['open', 'previews'].includes(s.status) || (s.openingDate && s.openingDate >= _daysBefore(45)))
+  .flatMap(s => {
+    const t = (s.title || '').trim();
+    const pre = t.split(/[:(]/)[0].trim();
+    return pre && pre !== t ? [t, pre] : [t];
+  });
+// Visible lede: honor *markers* AND auto-italicize exact titles. Preheader stays
+// plain (it's hidden inbox-preview text — tags/markers must not leak into it).
+const ledeHtml = italicizeLede(ledeText, _ledeTitleSet);
+const ledePlain = stripEmphasisMarkers(ledeText);
 
 const yearForFooter = weekEndDate.getFullYear();
 
@@ -2069,7 +2119,7 @@ const html = `<!DOCTYPE html>
 <!-- Preheader: shown by inbox previews after the subject line. Hidden in the
      rendered email body. The empty span padding shoves any trailing "Broadway
      Scorecard"/header text out of the preview slot in Gmail/iOS. -->
-<div style="display:none !important;max-height:0;overflow:hidden;visibility:hidden;mso-hide:all;font-size:1px;line-height:1px;color:transparent;opacity:0;">${ledeText || 'This week on Broadway and beyond.'}<span style="display:none !important;color:transparent;">${'&zwnj; &nbsp; '.repeat(40)}</span></div>
+<div style="display:none !important;max-height:0;overflow:hidden;visibility:hidden;mso-hide:all;font-size:1px;line-height:1px;color:transparent;opacity:0;">${ledePlain || 'This week on Broadway and beyond.'}<span style="display:none !important;color:transparent;">${'&zwnj; &nbsp; '.repeat(40)}</span></div>
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#0f0f14" class="gmail-dark-bg"><tr><td align="center" bgcolor="#0f0f14" style="padding:24px 16px;background-color:#0f0f14;">
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width:560px;">
 <tr><td align="left" style="padding:0 4px 4px;">
@@ -2082,7 +2132,7 @@ const html = `<!DOCTYPE html>
   <div style="font-size:13px;color:#9ca3af;">Weekly Round-up · ${fmt(weekStartStr)} – ${fmt(weekEndStr)}, ${yearForFooter}</div>
 </td></tr>
 ${ledeText ? `<tr><td style="padding:6px 4px 20px;">
-  <div style="font-size:14px;line-height:1.55;color:#d1d5db;border-left:2px solid #d4a574;padding-left:12px;">${ledeText}</div>
+  <div style="font-size:14px;line-height:1.55;color:#d1d5db;border-left:2px solid #d4a574;padding-left:12px;">${ledeHtml}</div>
 </td></tr>` : '<tr><td style="padding:0 4px 12px;"></td></tr>'}
 ${sectionOrder.join('')}
 <tr><td align="center" style="padding:40px 4px 8px;">
