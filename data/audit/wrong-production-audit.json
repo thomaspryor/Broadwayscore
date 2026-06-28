@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-28T14:27:10.684Z",
+  "timestamp": "2026-06-28T15:03:55.644Z",
   "stats": {
-    "totalReviews": 39410,
+    "totalReviews": 39395,
     "alreadyFlagged": 17570,
     "dateGuardCatches": 34,
     "directorMismatch": 876,
-    "tvFilmSignals": 1073,
+    "tvFilmSignals": 1072,
     "londonSignals": 698,
     "offBroadwaySignals": 463,
     "yearMismatch": 84,
-    "noPublishDate": 3927
+    "noPublishDate": 3908
   },
   "findings": [
     {
@@ -17739,19 +17739,6 @@
     },
     {
       "showId": "proof-2026",
-      "file": "nysr--unknown.json",
-      "publishDate": null,
-      "url": "https://nystagereview.com/2026/04/16/proof-25-year-old-pulitzer-winner-proves-to-be-even-better-than-before/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "proof-2026",
       "file": "theatermania--david-gordon.json",
       "score": 65,
       "publishDate": "April 16, 2026",
@@ -28313,7 +28300,7 @@
     {
       "showId": "archduke-west-end-2026",
       "file": "west-end-best-friend--lisamarie-lamb.json",
-      "score": null,
+      "score": 89,
       "publishDate": "2026-06-28",
       "url": "https://www.westendbestfriend.co.uk/news/review-archduke-royal-court-theatre",
       "findings": [
@@ -30064,7 +30051,7 @@
       "file": "exeunt-magazine--loren-noveck.json",
       "score": 80,
       "publishDate": "2026-05-15T11:08:02-04:00",
-      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/#:~:text=Dad%20Don't%20Read%20This%20is%20messy%20and%20raw%20and,will%20keep%20it%20in%20my",
+      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/",
       "findings": [
         {
           "type": "DATE_GUARD",
