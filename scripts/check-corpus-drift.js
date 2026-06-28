@@ -118,6 +118,18 @@ const AUDITS = [
     args: [],
     crashCodes: [2],           // 0 all covered/exempt / 1 files need a decision (drift) / 2 = not a git repo
   },
+  {
+    name: 'review-contamination',
+    label: 'review-text contamination (strict classes A/C/E/F)',
+    script: 'audit-review-contamination.js',
+    // The per-push test.yml gate runs --gate (catastrophe FLOOR only — class A
+    // cross-market leak or a mass spike) so a single pre-existing/parallel C/E/F
+    // file in the bot-mutated 39k-file corpus doesn't red the trunk for unrelated
+    // pushes. The FULL --strict triage runs HERE, daily, surfaced (non-blocking) in
+    // the digest — that is the safety net for sub-floor E/F drift the gate lets pass.
+    args: ['--strict'],
+    crashCodes: [],            // 0 clean / 1 = strict hits (drift). Corpus-missing also exits 1 → shown as drift, same as aggregator-truth.
+  },
 ];
 
 function runAudit(audit) {
