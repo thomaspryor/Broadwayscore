@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-28T13:39:56.399Z",
+  "timestamp": "2026-06-28T14:27:10.684Z",
   "stats": {
-    "totalReviews": 39364,
-    "alreadyFlagged": 17547,
+    "totalReviews": 39410,
+    "alreadyFlagged": 17570,
     "dateGuardCatches": 34,
     "directorMismatch": 876,
-    "tvFilmSignals": 1072,
-    "londonSignals": 697,
+    "tvFilmSignals": 1073,
+    "londonSignals": 698,
     "offBroadwaySignals": 463,
     "yearMismatch": 84,
-    "noPublishDate": 3908
+    "noPublishDate": 3927
   },
   "findings": [
     {
@@ -17739,6 +17739,19 @@
     },
     {
       "showId": "proof-2026",
+      "file": "nysr--unknown.json",
+      "publishDate": null,
+      "url": "https://nystagereview.com/2026/04/16/proof-25-year-old-pulitzer-winner-proves-to-be-even-better-than-before/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "proof-2026",
       "file": "theatermania--david-gordon.json",
       "score": 65,
       "publishDate": "April 16, 2026",
@@ -28298,6 +28311,20 @@
       ]
     },
     {
+      "showId": "archduke-west-end-2026",
+      "file": "west-end-best-friend--lisamarie-lamb.json",
+      "score": null,
+      "publishDate": "2026-06-28",
+      "url": "https://www.westendbestfriend.co.uk/news/review-archduke-royal-court-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "are-you-watching-west-end-2026",
       "file": "british-theatre--keith-mckenna.json",
       "score": 64,
@@ -30037,7 +30064,7 @@
       "file": "exeunt-magazine--loren-noveck.json",
       "score": 80,
       "publishDate": "2026-05-15T11:08:02-04:00",
-      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/",
+      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/#:~:text=Dad%20Don't%20Read%20This%20is%20messy%20and%20raw%20and,will%20keep%20it%20in%20my",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -34873,7 +34900,7 @@
       "file": "standard--unknown.json",
       "score": 61,
       "publishDate": null,
-      "url": null,
+      "url": "https://www.standard.co.uk/culture/theatre/my-neighbour-totoro-barbican-studio-ghibli-theatre-review-b1033681.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -41278,7 +41305,7 @@
     },
     {
       "showId": "the-truth-a-comedy-by-florian-zeller-west-end-2026",
-      "file": "plays-international--unknown.json",
+      "file": "plays-international--maryam-philpott.json",
       "score": 79,
       "publishDate": "2026-06-27",
       "url": "https://playsinternational.org.uk/the-truth-apollo-theatre/",

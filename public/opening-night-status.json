@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-28T13:40:01.391Z",
+  "generatedAt": "2026-06-28T14:27:15.733Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -392,23 +392,23 @@
       "status": "open",
       "slug": "archduke-west-end",
       "thumbnail": "/images/shows/archduke-west-end-2026/thumbnail.webp",
-      "siteScore": 57.58,
-      "liveScore": 58,
-      "scoreDrift": 0.4200000000000017,
+      "siteScore": 60.19,
+      "liveScore": 60,
+      "scoreDrift": -0.18999999999999773,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 5,
+      "total": 6,
       "t1": 0,
-      "t2": 3,
+      "t2": 4,
       "t3": 2,
-      "positive": 1,
+      "positive": 2,
       "mixed": 3,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "5/8 total",
+          "6/8 total",
           "T1:0/3",
           "T2:1/2",
           "hi-conf:2/6"
@@ -426,10 +426,6 @@
         "detail": "Not yet broadcast-ready"
       },
       "missingT1": [
-        {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
         {
           "name": "Observer",
           "isDualMarket": true
@@ -514,6 +510,18 @@
           "t2": 3,
           "t3": 2,
           "p": 1,
+          "m": 3,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-06-28T14:27:15.733Z",
+          "rc": 6,
+          "s": 60.19,
+          "t1": 0,
+          "t2": 4,
+          "t3": 2,
+          "p": 2,
           "m": 3,
           "n": 1,
           "bc": "waiting"
