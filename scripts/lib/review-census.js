@@ -106,9 +106,21 @@ function censusVerdict(census, coveredScoredOutlets, opts = {}) {
   const suppressed = opts.suppressed || new Set();
   const missing = [];
   const suppressedMissing = [];
+  // Market-suffix tolerance: a roundup may label an outlet "Time Out"
+  // (normalizeOutlet → "timeout") while reviews.json carries the London variant
+  // "timeout-london" (and vice versa). Treat the bare id and its "-london"
+  // variant as the same outlet, else Time Out (et al.) would read missing on
+  // EVERY WE show → false-incomplete + dispatch storm. Codex ship-check #3.
+  const variants = (id) => {
+    const out = new Set([id]);
+    if (id.endsWith('-london')) out.add(id.slice(0, -'-london'.length));
+    else out.add(`${id}-london`);
+    return [...out];
+  };
+  const inSet = (set, id) => variants(id).some((v) => set.has(v));
   for (const e of census.entries) {
-    if (coveredScoredOutlets.has(e.outletId)) continue;       // present AND scored — good
-    if (suppressed.has(e.outletId)) { suppressedMissing.push(e); continue; } // known-unfetchable: stays visible, blocks complete
+    if (inSet(coveredScoredOutlets, e.outletId)) continue;       // present AND scored — good
+    if (inSet(suppressed, e.outletId)) { suppressedMissing.push(e); continue; } // known-unfetchable: stays visible, blocks complete
     missing.push(e);
   }
   // Suppressed-but-missing still means we don't have everything → never "complete".

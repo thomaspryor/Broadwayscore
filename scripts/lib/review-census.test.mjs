@@ -61,6 +61,19 @@ test('present-but-unscored counts as missing (MJ/All My Sons class)', () => {
   assert.equal(censusVerdict(census, new Set([])).verdict, 'incomplete');
 });
 
+test('market-suffix tolerance: census "timeout" matches reviews "timeout-london"', () => {
+  const census = unionCensus([{ source: 'theatre-reviews', reviews: [
+    { outletId: 'timeout', outlet: 'Time Out', critic: 'A', stars: 4, url: 'u1' },     // roundup bare label
+    { outletId: 'guardian', outlet: 'The Guardian', critic: 'B', stars: 3, url: 'u2' },
+  ]}]);
+  assert.equal(censusVerdict(census, new Set(['timeout-london', 'guardian'])).verdict, 'complete');
+  // reverse direction: census -london, reviews bare
+  const census2 = unionCensus([{ source: 'lbo', reviews: [
+    { outletId: 'timeout-london', outlet: 'Time Out London', critic: 'A', stars: 4, url: 'u1' },
+  ]}]);
+  assert.equal(censusVerdict(census2, new Set(['timeout'])).verdict, 'complete');
+});
+
 test('suppressed (unfetchable T1) keeps the show incomplete + visible, never complete', () => {
   const census = unionCensus([{ source: 'theatre-reviews', reviews: [
     { outletId: 'guardian', outlet: 'The Guardian', critic: 'A', stars: 3, url: 'u1' },

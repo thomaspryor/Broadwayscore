@@ -246,19 +246,37 @@ jobs:
               console.log('Reddit sentiment trigger failed:', e.message);
             }
 
-      - name: Audit T1/T2 coverage gaps
+      # Refresh the WE roundup archives so the completeness census (in the audit
+      # step below) has data. Roundups publish slowly — a miss/404 is fine; the
+      # audit then reads no-census-yet for that show (never falsely complete).
+      - name: Refresh WE roundup archives (for census)
+        if: steps.find.outputs.has_shows == 'true' && steps.find.outputs.serp_shows != ''
+        continue-on-error: true
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+        run: |
+          SHOWS="${{ steps.find.outputs.serp_shows }}"
+          node scripts/scrape-theatre-reviews.js --shows="$SHOWS" || true
+          node scripts/scrape-london-box-office-roundups.js --shows="$SHOWS" || true
+
+      - name: Audit coverage gaps (census-anchored, multi-source)
         if: steps.find.outputs.has_shows == 'true'
         id: coverage
         continue-on-error: true
         env:
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # --alert sends Discord on floor breaches (tier-1 silent extractor failure)
-          # and on outlet gaps. Floor breach severity=error; outlet gap severity=warning.
-          # No `|| true` — exit 1 on breach is the signal. continue-on-error keeps the
-          # workflow green; the step shows yellow in GH summary so breaches are visible.
+          # Census-anchored: unions the WE roundup critic lists with the T1 floor.
+          # --alert  → Discord on incomplete/floor-breach (lists census-missing outlets).
+          # --dispatch → auto-fires FULL gather + collect (→rebuild→score) for gap shows,
+          #   serialized by gather-reviews concurrency + per-show gather-idempotency dedup.
+          # exit 1 on major/incomplete is the signal; continue-on-error keeps the job green
+          # but yellow in the summary so gaps are visible.
           LOOKBACK=${{ inputs.lookback_days || 14 }}
-          node scripts/audit-opening-night-coverage.js --days=$LOOKBACK --alert
+          node scripts/audit-opening-night-coverage.js --days=$LOOKBACK --alert --dispatch
 
       - name: Notify on failure
         if: failure()
