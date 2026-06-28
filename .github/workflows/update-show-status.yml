@@ -36,10 +36,14 @@ concurrency:
 jobs:
   update-shows:
     runs-on: ubuntu-latest
-    # Raised 25→45: discovery alone is ~21 min now, leaving too little for the
-    # enrichment + push tail under a 25-min cap (every run hit the wall and was
-    # cancelled). The discovery step has its own 30-min cap + continue-on-error.
-    timeout-minutes: 45
+    # Raised 25→45→75. Discovery now runs the full ~30 min (its own cap), so the
+    # whole job legitimately takes ~44-55 min: even the last SUCCESS (2026-06-24)
+    # clocked 44 min, right at the old 45-min wall. From 2026-06-25 it tipped over
+    # every run → cancelled at the timeout before the (fast, ~40s) push could run,
+    # so discovery results were computed but never committed (stale 5+ days). 75
+    # gives ~15-20 min headroom over the realistic worst case (discovery 30 +
+    # enrichment ~10 + StubHub ~5 + push retries up to ~8 + setup ~5).
+    timeout-minutes: 75
     outputs:
       new_shows_count: ${{ steps.discover.outputs.new_shows_count }}
       new_shows: ${{ steps.discover.outputs.new_shows }}
