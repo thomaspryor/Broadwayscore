@@ -13,7 +13,7 @@ on:
       days:
         description: 'Lookback window in days (use a large value to backfill)'
         required: false
-        default: '14'
+        default: '400'
 
 permissions:
   contents: read   # only READS shows.json (checkout-core-data); review-texts push uses REVIEW_TEXTS_TOKEN PAT
@@ -49,7 +49,14 @@ jobs:
       - name: Poll LouReviews
         id: poll
         run: |
-          DAYS="${{ inputs.days || '14' }}"
+          # Wide default (400d ≈ 750 posts, under the poller's 10-page/1000-post cap).
+          # 14d missed MJ The Musical + All My Sons: Louise reviewed them Oct/Nov 2025,
+          # but both shows only entered shows.json on 2026-03-02 — ~4mo later, long
+          # outside a 14d window. A show can join our DB well after its review drops,
+          # so a narrow window permanently blinds the poller to it. Re-scanning the
+          # full recent feed daily is cheap: matching is in-memory and dedup skips
+          # existing files, so only genuinely-new matches trigger extraction/scoring.
+          DAYS="${{ inputs.days || '400' }}"
           echo "Polling loureviews.blog (last $DAYS days)..."
           node scripts/poll-loureviews.js --days="$DAYS" | tee /tmp/poll.out
           NEW=$(grep -oE '__LOUREVIEWS_NEW__=[0-9]+' /tmp/poll.out | tail -1 | cut -d= -f2)
