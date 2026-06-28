@@ -10,11 +10,13 @@
  * MULTI-SOURCE by design (operator: "can't rely on one slow aggregator"):
  *   - theatre.reviews   (best-structured; extractReviews)
  *   - London Box Office (extractReviewsFromLBO)
- *   - WestEndTheatre / The Stage roundups — add as their extractors stabilise.
+ *   - The Stage roundups (lib/thestage-extract — pure cheerio, no playwright)
+ *   - WestEndTheatre    (archives are pre-extracted JSON already in census shape)
  *
- * ARCHIVE-FIRST: reads data/aggregator-archive/{source}/{showId}.html if present
- * (cheap, no network); the workflow refreshes archives by running the existing
- * roundup scrapers. A show with NO archived roundup yields hadAnySource=false →
+ * ARCHIVE-FIRST: reads data/aggregator-archive/{source}/{showId}.{ext} if present
+ * (cheap, no network) — ext is per-source (.html for HTML roundups, .json for the
+ * pre-extracted WestEndTheatre archive); the workflow refreshes archives by running
+ * the existing roundup scrapers. A show with NO archived roundup yields hadAnySource=false →
  * the audit must read this as `no-census-yet`, NEVER `complete` (the vacuous-truth
  * trap: empty census ∧ "all present" = falsely green exactly when coverage is
  * worst — Sinatra/Much Ado/Misanthrope, June 2026).
@@ -37,15 +39,52 @@ const ARCHIVE = path.join(ROOT, 'data', 'aggregator-archive');
 // are deliberately NOT here; we want to keep trying them.
 const CI_UNFETCHABLE_OUTLETS = new Set(['wsj', 'newyorker']);
 
-// Each source: archive subdir + an extractor(html, showId) -> [{outlet, critic, stars, url}].
+// Parse a WestEndTheatre archive. Two shapes ship in the wild (~48 vs ~27 of 79):
+//   { reviews:[{outlet,outletId,critic,stars,url,...}] }  — rich, already census shape
+//   { ratings:[{outlet,stars,critic?,reviewUrl?}] }       — star-table only, no outletId/url
+// We MUST read both: reading only `reviews` silently drops a third of WET archives
+// to zero — the exact silent-gate trap the census exists to prevent. Kept here (not
+// a scraper) because the WET scraper requires a rendered-page browser path we don't
+// want in the audit; the archive is the stable contract. `ratings` rows are
+// normalized into census shape (outletId via normalizeOutlet, reviewUrl→url).
+function parseWetArchive(content /*, showId */) {
+  const data = JSON.parse(content);
+  if (Array.isArray(data)) return data.filter((r) => r && (r.outletId || r.outlet));
+  const reviews = (data && data.reviews) || [];
+  const rich = reviews.filter((r) => r && (r.outletId || r.outlet));
+  if (rich.length) return rich;
+  // Fall back to the star-table format.
+  const ratings = (data && data.ratings) || [];
+  return ratings
+    .filter((r) => r && r.outlet)
+    .map((r) => ({
+      outlet: r.outlet,
+      outletId: r.outletId || normalizeOutlet(r.outlet),
+      critic: r.critic || 'Unknown',
+      stars: r.stars != null ? r.stars : null,
+      url: r.url || r.reviewUrl || '',
+    }));
+}
+
+// Each source: archive subdir, file ext (default 'html'), and a reader
+// fn(content, showId) -> [{outlet, critic, stars, url}]. Every source loaded here
+// is playwright-FREE — the census runs inside the coverage audit, which must not
+// spin up a browser. (The Stage scraper imports playwright, so we pull its pure
+// extractor from lib/thestage-extract instead of requiring the scraper.)
 function sourceExtractors() {
   const { extractReviews } = require('../scrape-theatre-reviews');
-  let extractLbo = null;
-  try { ({ extractReviewsFromLBO: extractLbo } = require('../scrape-london-box-office-roundups')); } catch (_) {}
   const sources = [
     { name: 'theatre-reviews', dir: 'theatre-reviews', fn: extractReviews },
   ];
+  let extractLbo = null;
+  try { ({ extractReviewsFromLBO: extractLbo } = require('../scrape-london-box-office-roundups')); } catch (_) {}
   if (extractLbo) sources.push({ name: 'lbo', dir: 'lbo-roundups', fn: extractLbo });
+
+  let extractStage = null;
+  try { ({ extractReviews: extractStage } = require('./thestage-extract')); } catch (_) {}
+  if (extractStage) sources.push({ name: 'thestage', dir: 'thestage-roundups', fn: extractStage });
+
+  sources.push({ name: 'westendtheatre', dir: 'westendtheatre', ext: 'json', fn: parseWetArchive });
   return sources;
 }
 
@@ -97,7 +136,7 @@ function buildCensusFromArchives(showId, opts = {}) {
   const archivesPresent = [];
   const zeroExtract = [];
   for (const s of sources) {
-    const p = path.join(archiveDir, s.dir, `${showId}.html`);
+    const p = path.join(archiveDir, s.dir, `${showId}.${s.ext || 'html'}`);
     if (!fs.existsSync(p)) continue;
     archivesPresent.push(s.name);
     let reviews = [];

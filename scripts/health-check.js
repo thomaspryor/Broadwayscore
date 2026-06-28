@@ -921,13 +921,18 @@ function checkSEO() {
       if (age > 336) { // 14 days
         return { name: 'SEO: health', status: 'warn', message: `Last SEO check ${formatAge(age)} ago (>14d)`, hint: 'Trigger check-seo-health workflow manually' };
       }
-      // Check for anomalies flagged by the SEO health script
+      // Check for anomalies flagged by the SEO health script.
+      // Anomaly objects are { type, severity, message } — there is NO `metric`
+      // field, so the alert MUST render `message` (or `type`), not `a.metric`,
+      // or every SEO alert reads "N critical SEO anomalies: , " with blank
+      // descriptions and is unactionable (the state this digest sat in).
+      const describe = (a) => a.message || a.type || 'unknown';
       if (data.anomalies && data.anomalies.length > 0) {
         const critical = data.anomalies.filter(a => a.severity === 'error');
         if (critical.length > 0) {
-          return { name: 'SEO: health', status: 'error', message: `${critical.length} critical SEO anomalies: ${critical.map(a => a.metric).join(', ')}`, hint: 'Check data/audit/seo-health.json for details' };
+          return { name: 'SEO: health', status: 'error', message: `${critical.length} critical SEO anomalies: ${critical.map(describe).join('; ')}`, hint: 'Check data/audit/seo-health.json for details' };
         }
-        return { name: 'SEO: health', status: 'warn', message: `${data.anomalies.length} SEO warnings`, hint: 'Check data/audit/seo-health.json for details' };
+        return { name: 'SEO: health', status: 'warn', message: `${data.anomalies.length} SEO warning(s): ${data.anomalies.map(describe).join('; ')}`, hint: 'Check data/audit/seo-health.json for details' };
       }
       // Check index coverage — only warn if <50% (sample is 50 URLs from 700+ pages,
       // skewed toward historical shows Google deprioritizes)
