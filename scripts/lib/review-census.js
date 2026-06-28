@@ -26,6 +26,15 @@
 const fs = require('fs');
 const path = require('path');
 const { normalizeOutlet } = require('./review-normalization');
+const { verifyAggregatorUrl } = require('./show-match-verifier');
+
+// Pull the canonical/og URL out of an archived roundup page so verifyAggregatorUrl
+// can score the slug. Falls back to '' (it then relies on the page <title> + venue).
+function archiveCanonicalUrl(html) {
+  const m = /<link[^>]+rel=["']canonical["'][^>]+href=["']([^"']+)["']/i.exec(html || '')
+    || /<meta[^>]+property=["']og:url["'][^>]+content=["']([^"']+)["']/i.exec(html || '');
+  return m ? m[1] : '';
+}
 
 const ROOT = path.join(__dirname, '..', '..');
 const ARCHIVE = path.join(ROOT, 'data', 'aggregator-archive');
@@ -87,7 +96,12 @@ function parseWetArchive(content /*, showId */) {
 function sourceExtractors() {
   const { extractReviews } = require('../scrape-theatre-reviews');
   const sources = [
-    { name: 'theatre-reviews', dir: 'theatre-reviews', fn: extractReviews },
+    // validate:true → page-level cross-show check before extracting. theatre.reviews
+    // sometimes archives a DIFFERENT show's roundup under this show's id (War Horse →
+    // Equus, 2026-06): the poller's verifyAggregatorUrl guard was added after some
+    // archives were already cached, and the census reads cached archives without
+    // re-checking. Re-validating here closes that gap.
+    { name: 'theatre-reviews', dir: 'theatre-reviews', fn: extractReviews, validate: true },
   ];
   let extractLbo = null;
   try { ({ extractReviewsFromLBO: extractLbo } = require('../scrape-london-box-office-roundups')); } catch (_) {}
@@ -148,16 +162,32 @@ function buildCensusFromArchives(showId, opts = {}) {
   // audit alert on its own blindness (feedback_monitor_must_cover_own_output).
   const archivesPresent = [];
   const zeroExtract = [];
+  const wrongRoundup = [];
   for (const s of sources) {
     const p = path.join(archiveDir, s.dir, `${showId}.${s.ext || 'html'}`);
     if (!fs.existsSync(p)) continue;
     archivesPresent.push(s.name);
+    const html = fs.readFileSync(p, 'utf8');
+    // Cross-show guard (theatre.reviews): the archived roundup is sometimes a
+    // DIFFERENT show's page mis-saved under this id (War Horse → Equus). Validate the
+    // PAGE (its <title>/canonical-slug/venue) against the show, NOT per review URL —
+    // a roundup page names its own show, so this never false-drops a star/headline
+    // slug the way per-entry token matching would (Cabaret → 'redmayne-kit-kat').
+    // Reuses the exact guard the poller uses at fetch time (show-match-verifier).
+    if (s.validate && opts.show && opts.show.title) {
+      const v = verifyAggregatorUrl({ url: archiveCanonicalUrl(html), html, show: opts.show, openingDate: opts.show.openingDate });
+      // Reject ONLY on a positive wrong-show verdict. 'no-significant-title-tokens'
+      // means the guard couldn't judge (zero-token titles like "2:22") — fail OPEN
+      // and let extraction + outlet-union be the safety net, rather than nuking a
+      // genuine roundup we simply can't verify.
+      if (!v.isValid && v.rejectReason !== 'no-significant-title-tokens') { wrongRoundup.push(s.name); continue; }
+    }
     let reviews = [];
-    try { reviews = s.fn(fs.readFileSync(p, 'utf8'), showId) || []; } catch (_) { reviews = []; }
+    try { reviews = s.fn(html, showId) || []; } catch (_) { reviews = []; }
     if (!Array.isArray(reviews) || reviews.length === 0) zeroExtract.push(s.name);
     perSource.push({ source: s.name, reviews });
   }
-  return { ...unionCensus(perSource), archivesPresent, zeroExtract };
+  return { ...unionCensus(perSource), archivesPresent, zeroExtract, wrongRoundup };
 }
 
 /**
