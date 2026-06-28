@@ -351,7 +351,25 @@ async function sendDiscordAlert(gaps, floorBreaches = []) {
 
 async function dispatchCollection(gaps) {
   const { execSync } = require('child_process');
+  // Per-show in-flight dedup so a still-incomplete show (slow roundups keep it
+  // incomplete for DAYS) doesn't re-fire FULL gather on every 2x-daily run — a
+  // dispatch storm. Reuses the gather-idempotency run-name match (same as
+  // opening-night-reviews.yml's dispatch step). Codex ship-check #2.
+  let activeRuns = [];
+  try {
+    const out = execSync('gh run list --workflow=gather-reviews.yml --json status,displayTitle --limit 100', { encoding: 'utf8' });
+    activeRuns = JSON.parse(out || '[]');
+  } catch (_) { /* if we can't list, fall through and dispatch (fail-open) */ }
+  let showsNeedingGather = null;
+  try { ({ showsNeedingGather } = require('./lib/gather-idempotency')); } catch (_) {}
+  const wanted = gaps.map((g) => g.showId);
+  const needing = showsNeedingGather ? new Set(showsNeedingGather(activeRuns, wanted)) : new Set(wanted);
+
   for (const gap of gaps) {
+    if (!needing.has(gap.showId)) {
+      console.log(`\n⏭️  ${gap.showId}: gather already in-flight — skipping dispatch (no storm).`);
+      continue;
+    }
     try {
       // FULL gather (aggregators_only=false, max_tier=3) so the per-outlet SERP
       // pass searches the long tail the census flagged — not just aggregators.
