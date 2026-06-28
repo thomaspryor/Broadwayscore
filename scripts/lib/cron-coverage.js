@@ -11,9 +11,16 @@
  */
 
 // Does a workflow YAML body declare a scheduled (cron) trigger?
+// Strips comment-only lines first so a commented `# - cron: ...` under a live `schedule:`
+// key isn't mistaken for a trigger. Matches a list-item cron with ANY value (quoted OR
+// unquoted) — an unquoted-but-valid cron (`cron: 30 5 1,15 * *`) must NOT evade the gate.
 function isScheduledWorkflow(yamlText) {
   if (!yamlText) return false;
-  return /^\s*schedule:/m.test(yamlText) && /cron:\s*['"]/.test(yamlText);
+  const body = String(yamlText)
+    .split('\n')
+    .filter(line => !line.trim().startsWith('#'))
+    .join('\n');
+  return /^\s*schedule:/m.test(body) && /-\s*cron:\s*\S/.test(body);
 }
 
 // Parse a .cron-health-exempt.txt body into a Set of workflow filenames.

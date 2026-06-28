@@ -8,10 +8,14 @@ const { isScheduledWorkflow, parseExemptList, findUncoveredScheduled, findStaleE
 test('isScheduledWorkflow: true only when a cron schedule is present', () => {
   assert.equal(isScheduledWorkflow('on:\n  schedule:\n    - cron: "*/10 * * * *"\n'), true);
   assert.equal(isScheduledWorkflow("on:\n  schedule:\n    - cron: '0 9 * * 1'\n"), true);
+  // UNQUOTED cron must still be detected (else it evades the coverage gate).
+  assert.equal(isScheduledWorkflow('on:\n  schedule:\n    - cron: 30 5 1,15 * *\n'), true);
   // workflow_dispatch only — not scheduled
   assert.equal(isScheduledWorkflow('on:\n  workflow_dispatch:\n'), false);
   // a `schedule:` key with no cron string (defensive)
   assert.equal(isScheduledWorkflow('on:\n  schedule:\n'), false);
+  // schedule: key present but the only cron line is COMMENTED OUT → not actually scheduled
+  assert.equal(isScheduledWorkflow("on:\n  schedule:\n    # - cron: '0 9 * * *'\n  workflow_dispatch:\n"), false);
   // the word cron in a comment but no schedule trigger
   assert.equal(isScheduledWorkflow('# cron health note\non:\n  push:\n'), false);
   assert.equal(isScheduledWorkflow(''), false);

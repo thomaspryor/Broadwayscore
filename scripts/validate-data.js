@@ -487,14 +487,17 @@ function validateDates(shows) {
       error(`Show "${show.title}" (${show.id}) has previewsStartDate (${show.previewsStartDate}) AFTER openingDate (${show.openingDate}) — previews precede opening.`);
     }
 
-    // Inherited namesake date (HARD): this show's opening/previews date is byte-identical
-    // to a DIFFERENT same-title production's. Distinct productions never share an opening
-    // night, so an exact match is the date cloned from the namesake (a-few-good-men-2026
-    // carried a-few-good-men-1989's 1989-11-15, 2026-06-28).
+    // Inherited namesake date: this show's opening/previews date is byte-identical to a
+    // DIFFERENT same-title production's — the date cloned from the namesake (a-few-good-men-2026
+    // carried a-few-good-men-1989's 1989-11-15, 2026-06-28). An exact OPENING-night match is
+    // airtight (distinct productions never open the same night) → hard ERROR. A previews-only
+    // match is lower-confidence (placeholder/announced previews can coincide) → WARNING.
     const sameTitleSibs = (sameTitleGroups.get(normTitle(show.title)) || []).filter(o => o.id !== show.id);
     const inherited = inheritedDateFromSibling(show, sameTitleSibs);
-    if (inherited) {
-      error(`Show "${show.title}" (${show.id}) has ${inherited.field} identical to same-title sibling ${inherited.siblingId} — date was cloned from the wrong production. Set this production's real dates.`);
+    if (inherited && inherited.field === 'openingDate') {
+      error(`Show "${show.title}" (${show.id}) has openingDate identical to same-title sibling ${inherited.siblingId} — date was cloned from the wrong production. Set this production's real dates.`);
+    } else if (inherited) {
+      warn(`Show "${show.title}" (${show.id}) has ${inherited.field} identical to same-title sibling ${inherited.siblingId} — possible cloned date; verify.`);
     }
 
     // Inherited-year heuristic (SOFT/warn): recent {title}-{YYYY} id with a decades-older
