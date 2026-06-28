@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-06-27T23:40:47.372Z",
+  "timestamp": "2026-06-28T00:02:27.897Z",
   "stats": {
     "totalReviews": 39329,
     "alreadyFlagged": 17533,
     "dateGuardCatches": 39,
     "directorMismatch": 874,
-    "tvFilmSignals": 1071,
+    "tvFilmSignals": 1072,
     "londonSignals": 684,
     "offBroadwaySignals": 464,
     "yearMismatch": 84,
@@ -4867,6 +4867,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"jamie lloyd\" from cyrano-de-bergerac-2012"
+        }
+      ]
+    },
+    {
+      "showId": "cyrano-de-bergerac-west-end-2026",
+      "file": "standard--unknown.json",
+      "publishDate": null,
+      "url": "https://www.standard.co.uk/culture/theatre/cyrano-de-bergerac-noel-coward-theatre-review-b1287720.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"amazon prime\""
         }
       ]
     },
