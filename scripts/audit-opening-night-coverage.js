@@ -329,10 +329,13 @@ async function sendDiscordAlert(gaps, floorBreaches = []) {
     }
 
     if (gaps.length > 0) {
-      const fields = gaps.map(g => ({
-        name: `${g.title} (${g.openingDate})`,
-        value: `${g.reviewCount} reviews, ${g.scoredCount} scored\nMissing core T1: ${g.missingCore.join(', ') || 'none'}\nMissing key T2: ${g.missingKeyT2.join(', ') || 'none'}`,
-      }));
+      const fields = gaps.map(g => {
+        const lines = [`${g.reviewCount} reviews, ${g.scoredCount} scored`];
+        if (g.missingCore && g.missingCore.length) lines.push(`Missing core T1: ${g.missingCore.join(', ')}`);
+        if (g.censusMissing && g.censusMissing.length) lines.push(`Census-missing (roundup lists, we lack/unscored): ${g.censusMissing.join(', ')}`);
+        else if (g.censusVerdict === 'no-census-yet') lines.push(`Census: no roundup published yet`);
+        return { name: `${g.title} (${g.openingDate})`, value: lines.join('\n') };
+      });
       await sendAlert({
         title: 'Opening-Night Coverage Gaps',
         description: `${gaps.length} show(s) have missing T1/T2 reviews`,
@@ -350,9 +353,13 @@ async function dispatchCollection(gaps) {
   const { execSync } = require('child_process');
   for (const gap of gaps) {
     try {
-      console.log(`\nDispatching gather-reviews for ${gap.showId}...`);
+      // FULL gather (aggregators_only=false, max_tier=3) so the per-outlet SERP
+      // pass searches the long tail the census flagged — not just aggregators.
+      // collect-review-texts (chain=true, below) then triggers rebuild → score,
+      // so the recovered reviews reach reviews.json and the broadcast re-fires.
+      console.log(`\nDispatching FULL gather-reviews for ${gap.showId}...`);
       execSync(
-        `gh workflow run gather-reviews.yml -f shows="${gap.showId}" -f max_tier=2`,
+        `gh workflow run gather-reviews.yml -f shows="${gap.showId}" -f max_tier=3 -f aggregators_only=false`,
         { stdio: 'inherit' }
       );
 
