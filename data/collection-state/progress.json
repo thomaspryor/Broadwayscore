@@ -1,7 +1,11 @@
 {
   "processed": [
     "encores-la-cage-aux-folles-off-broadway-2026/nytimes--httpswwwnytimescombylaura-collins-hughes.json",
-    "camping-off-broadway-2026/talkinbroadway--unknown.json"
+    "camping-off-broadway-2026/talkinbroadway--unknown.json",
+    "cyrano-de-bergerac-west-end-2026/north-west-end--unknown.json",
+    "sinatra-the-musical-west-end-2026/nytimes--unknown.json",
+    "maybe-happy-ending-2024/variety--unknown.json",
+    "maybe-happy-ending-2024/washpost--unknown.json"
   ],
   "failed": [
     "spamalot-off-broadway-2026/vulture--jackson-mchenry.json",
@@ -54,27 +58,32 @@
     "encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
     "romeo-and-juliet-off-broadway-2026/one-minute-critic--emily-chackerian.json",
     "im-almost-there-off-broadway-2026/broadwayworld--team-bww.json",
-    "spamalot-off-broadway-2026/vulture--jackson-mchenry.json",
-    "spamalot-off-broadway-2026/nysr--unknown.json",
-    "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
-    "birthright-off-broadway-2026/broadwayworld--unknown.json",
-    "encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
-    "romeo-and-juliet-off-broadway-2026/one-minute-critic--emily-chackerian.json",
-    "im-almost-there-off-broadway-2026/broadwayworld--team-bww.json"
+    "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
+    "abba-voyage-off-west-end-2026/daily-mail--adrian-thrills.json",
+    "abba-voyage-off-west-end-2026/daily-mail--tim-de-lisle.json",
+    "matilda-the-musical-west-end-2021/whatsonstage--meriel-patrick.json",
+    "tammy-faye-2024/stageandcinema--mike-mineo.json",
+    "yellow-face-2024/nypost--johnny-oleksinski.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "cyrano-de-bergerac-west-end-2026/north-west-end--unknown.json",
+      "maybe-happy-ending-2024/washpost--unknown.json"
+    ],
     "amp": [],
     "browserbase": [
       "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/nytimes--httpswwwnytimescombylaura-collins-hughes.json",
       "encores-la-cage-aux-folles-off-broadway-2026/nytimes--httpswwwnytimescombylaura-collins-hughes.json",
       "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
       "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
-      "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json"
+      "data/review-texts/maybe-happy-ending-2024/variety--unknown.json",
+      "maybe-happy-ending-2024/variety--unknown.json"
     ],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "sinatra-the-musical-west-end-2026/nytimes--unknown.json"
+    ],
     "brightdata": [
       "camping-off-broadway-2026/talkinbroadway--unknown.json",
       "camping-off-broadway-2026/talkinbroadway--unknown.json"
@@ -103,7 +112,7 @@
     "archive": []
   },
   "startTime": "2026-06-28T03:13:30.511Z",
-  "lastProcessed": "im-almost-there-off-broadway-2026/broadwayworld--team-bww.json",
+  "lastProcessed": "yellow-face-2024/nypost--johnny-oleksinski.json",
   "log": [
     {
       "t": "2026-06-28T03:17:13.599Z",
@@ -150,15 +159,15 @@
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-06-28T06:11:45.353Z",
+      "t": "2026-06-28T06:10:57.100Z",
       "event": "bb-session",
-      "session": "f7a4f738",
-      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
+      "session": "e6aceb22",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
     },
     {
-      "t": "2026-06-28T06:11:46.264Z",
+      "t": "2026-06-28T06:10:57.734Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "variety.com"
     }
   ]
 }
