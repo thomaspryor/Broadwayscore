@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-28T12:48:41.615Z",
+  "timestamp": "2026-06-28T13:12:12.803Z",
   "stats": {
     "totalReviews": 39359,
-    "alreadyFlagged": 17537,
+    "alreadyFlagged": 17540,
     "dateGuardCatches": 34,
     "directorMismatch": 876,
     "tvFilmSignals": 1072,
     "londonSignals": 697,
-    "offBroadwaySignals": 464,
+    "offBroadwaySignals": 463,
     "yearMismatch": 84,
-    "noPublishDate": 3912
+    "noPublishDate": 3910
   },
   "findings": [
     {
@@ -35788,20 +35788,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "oratorio-for-living-things-off-broadway-2026",
-      "file": "nytimes--jesse-green.json",
-      "score": 90,
-      "publishDate": null,
-      "url": "https://www.nytimes.com/2022/03/30/theater/oratorio-for-living-things-review.html",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"ars nova\""
         }
       ]
     },
