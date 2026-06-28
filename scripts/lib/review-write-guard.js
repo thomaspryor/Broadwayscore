@@ -421,6 +421,17 @@ function safeWriteReview(filePath, newData, options = {}) {
     console.warn(`[review-write-guard] placeholder URL detected in ${path.basename(filePath)}: ${newData.url}`);
   }
 
+  // Self-heal self-referential `duplicateOf` — a file can never be a duplicate of
+  // itself. This nonsensical state (145 corpus-wide, 2026-06-28) is reported as a
+  // "duplicate" gap by the completeness census and can confuse dedup tiebreaks.
+  // Always clear; duplicateClearReason is the push-restore exception breadcrumb.
+  if (newData.duplicateOf && newData.duplicateOf === path.basename(filePath)) {
+    console.warn(`[review-write-guard] clearing self-referential duplicateOf in ${path.basename(filePath)}`);
+    newData.duplicateClearReason = `auto-cleared at write: self-referential duplicateOf (pointed at own filename)`;
+    newData.duplicateOf = null;
+    newData.duplicateReason = null;
+  }
+
   // Self-heal stale `duplicateOf` whose URL no longer matches the referenced file.
   // Triggered by Can I Be Frank case (2026-05-24): Sommers's URL was briefly
   // corrected to Bernardo's URL, fired url-collision-detected-at-write, then the

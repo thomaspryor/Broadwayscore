@@ -55,8 +55,9 @@ const {
   isWithinPriorRun,
   shouldAutoClearWrongProductionPriorRun,
   shouldAutoClearDatelessRevival,
+  shouldAutoClearStaleDateGuard,
 } = require('./lib/wrong-production-autoclear');
-const { evaluateDatelessRevivalGuard, earliestShowDate } = require('./lib/date-guard');
+const { evaluateDatelessRevivalGuard, earliestShowDate, evaluateDateGuard } = require('./lib/date-guard');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { KNOWN_SYNDICATION_PAIRS } = require('./lib/syndication-pairs');
 const { logExclusion: _sharedLogExclusion } = require('./lib/exclusion-logger');
@@ -1101,6 +1102,7 @@ const crossShowFingerprints = new Map();
   let priorRunAutoCleared = 0;
   let datelessRevivalFlagged = 0;
   let datelessRevivalAutoCleared = 0;
+  let staleDateGuardAutoCleared = 0;
   for (const sid of showDirs) {
     const showEarliest = showDateMap[sid];
     if (!showEarliest) continue;
@@ -1184,6 +1186,33 @@ const crossShowFingerprints = new Map();
           // Fall through — don't skip, file may still need other guards
         }
 
+        // Stale dated pre-opening guard auto-clear: the dated guard below
+        // short-circuits on d.wrongProduction, so a flag set when the review had
+        // a bad/old date is NEVER re-evaluated after the date is corrected
+        // (adjudication / re-scrape). Re-run the dated guard on the CURRENT
+        // reviewDate; if the date now sits inside the show's valid window the
+        // original basis is gone — clear the stale flag. Only the dated guard's
+        // own flag is matched (note prefix `Pre-opening guard:`); operator / CV /
+        // dateless-revival / manual flags are never touched. 145 genuine reviews
+        // recovered 2026-06-28 (e.g. all-my-sons-west-end-2025 Guardian/Arifa
+        // Akbar, held by a long-gone 2025-07-01 date).
+        if (reviewDate && d.wrongProduction === true &&
+            String(d.wrongProductionNote || '').startsWith('Pre-opening guard:') &&
+            !d.wrongProductionManualClear && d.humanReviewedWrongProduction !== false &&
+            !d.allowEarlyDate) {
+          const dgDecision = evaluateDateGuard({ pubDate: reviewDate, show: showRecord, outletId: d.outletId });
+          if (shouldAutoClearStaleDateGuard(d, { nowInWindow: dgDecision.flag === false })) {
+            const wasNote = d.wrongProductionNote;
+            d.wrongProduction = false;
+            d.wrongProductionAutoCleared = `rebuild: dated pre-opening guard re-evaluated in-window (was: ${wasNote})`;
+            d.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
+            delete d.wrongProductionNote;
+            safeWriteReview(fp, d, { force: true });
+            staleDateGuardAutoCleared++;
+            // Fall through — file may still need other guards (duplicateOf etc.)
+          }
+        }
+
         if (d.wrongProduction || d.wrongShow) continue;
         // routedFromShowId: already rerouted — publish date reflects the original show's era
         if (d.routedFromShowId) continue;
@@ -1255,11 +1284,15 @@ const crossShowFingerprints = new Map();
   if (priorRunSkipped > 0) {
     console.log(`Pre-opening guard: skipped ${priorRunSkipped} reviews via priorRuns window\n`);
   }
+  if (staleDateGuardAutoCleared > 0) {
+    console.log(`Pre-opening guard: auto-cleared ${staleDateGuardAutoCleared} stale flags (date corrected, now in-window)\n`);
+  }
   stats.preOpeningFlagged = preOpenFlagged;
   stats.priorRunAutoCleared = priorRunAutoCleared;
   stats.priorRunSkipped = priorRunSkipped;
   stats.datelessRevivalFlagged = datelessRevivalFlagged;
   stats.datelessRevivalAutoCleared = datelessRevivalAutoCleared;
+  stats.staleDateGuardAutoCleared = staleDateGuardAutoCleared;
 }
 
 // Stale --unknown filename cleanup: when a file is named --unknown but its critic was enriched,

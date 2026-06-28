@@ -319,6 +319,41 @@ function shouldAutoClearDatelessRevival(data, { hasUsableDate } = {}) {
   return !!hasUsableDate || humanOverride;
 }
 
+/**
+ * Decide whether a STALE dated pre-opening guard wrongProduction flag should be
+ * auto-cleared because the review's CURRENT date now falls inside the show's
+ * valid window.
+ *
+ * Background (2026-06-28): the rebuild's dated pre-opening guard sets
+ * wrongProduction + a `Pre-opening guard: ...` note when a review's date is 90+
+ * days before the show. Once flagged, the rebuild short-circuits on
+ * `d.wrongProduction` and NEVER re-evaluates the guard — so when the date is
+ * later corrected to an in-window date (adjudication / re-scrape), the stale
+ * flag silently keeps a genuine review out of the rebuild forever. 145 corpus-
+ * wide, including major-outlet reviews (all-my-sons-west-end-2025 Guardian/Arifa
+ * Akbar: a real 2025-11-22 review held by a long-gone 2025-07-01 date; Tina 2019
+ * WashPost/NYPost/NYDN; Torch Song 2018 Vulture/EW).
+ *
+ * SAFETY: only clears flags whose note proves the DATED guard set them
+ * (note begins `Pre-opening guard:`). Operator / CV / cross-market / dateless-
+ * revival / manual wrongProduction is never matched. The caller computes the
+ * in-window verdict via date-guard.evaluateDateGuard on the review's resolved
+ * date and passes it as `nowInWindow` — keeping this module free of a circular
+ * require on date-guard (which already requires isWithinPriorRun from here).
+ *
+ * @param {object} data - the review JSON object
+ * @param {object} ctx
+ * @param {boolean} ctx.nowInWindow - true if evaluateDateGuard(...).flag === false
+ *   for the review's current resolved date (date now inside the valid window)
+ * @returns {boolean}
+ */
+function shouldAutoClearStaleDateGuard(data, { nowInWindow } = {}) {
+  if (!data || data.wrongProduction !== true) return false;
+  const note = data.wrongProductionNote || '';
+  if (!note.startsWith('Pre-opening guard:')) return false;
+  return nowInWindow === true;
+}
+
 module.exports = {
   shouldAutoClearWrongProduction,
   shouldAutoClearWrongShow,
@@ -328,4 +363,5 @@ module.exports = {
   hasDeclaredPriorRuns,
   shouldAutoClearWrongProductionPriorRun,
   shouldAutoClearDatelessRevival,
+  shouldAutoClearStaleDateGuard,
 };
