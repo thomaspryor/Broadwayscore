@@ -16,6 +16,7 @@
 const fs = require('fs');
 const path = require('path');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { buildCensusFromArchives, censusVerdict } = require('./lib/review-census');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 
@@ -130,6 +131,10 @@ async function main() {
 
     // Get outlets that have reviews
     const coveredOutlets = new Set(showReviews.map(r => r.outletId).filter(Boolean));
+    // Census completeness keys off SCORED outlets only — a discovered-but-unscored
+    // review (assignedScore == null) is NOT live, so it must count as missing (the
+    // MJ / All My Sons class). See cloud-memory postmortem 2026-06.
+    const coveredScoredOutlets = new Set(scoredReviews.map(r => r.outletId).filter(Boolean));
 
     // Get expected outlets for this market
     const expected = getExpectedOutlets(category);
@@ -185,10 +190,39 @@ async function main() {
       console.log(`  🚨 FLOOR BREACH: ${showReviews.length}/${floorReviews} reviews, ${scoredReviews.length}/${floorScored} scored at ${Math.round(hoursSinceOpen)}h post-open`);
     }
 
+    // === Census-anchored completeness (multi-source roundup union) ===
+    // The roundups list EVERY critic; the census is the honest target. Three
+    // states: complete / incomplete(list missing) / no-census-yet (no roundup
+    // published — never falsely green). Census-missing outlets become real gaps.
+    let census = null, cVerdict = null;
+    const censusMissing = [];
+    if (isLondonMarket(category)) {
+      try { census = buildCensusFromArchives(showId); } catch (e) { console.warn(`  ⚠ census build failed for ${showId}: ${e.message}`); }
+      if (census) {
+        cVerdict = censusVerdict(census, coveredScoredOutlets);
+        for (const m of cVerdict.missing) {
+          if (!censusMissing.includes(m.outletId)) censusMissing.push(m.outletId);
+        }
+        if (census.hadAnySource) {
+          console.log(`  Census (${census.sourcesPresent.join('+')}): ${census.count} outlets; verdict=${cVerdict.verdict}`);
+          if (cVerdict.missing.length) {
+            console.log(`  CENSUS-MISSING (${cVerdict.missing.length}): ${cVerdict.missing.map(m => `${m.outletId}${m.url ? ' '+m.url : ''}`).join(' | ')}`);
+          }
+        } else {
+          console.log(`  Census: no roundup published yet → no-census-yet (holding at floor check)`);
+        }
+      }
+    }
+
+    // Status — census verdict wins when a census exists; else the legacy T1 view.
     if (floorBreached) {
       console.log(`  Status: FLOOR BREACH (silent extractor failure likely)`);
+    } else if (cVerdict && census.hadAnySource) {
+      console.log(`  Status: ${cVerdict.verdict.toUpperCase().replace(/-/g, ' ')}`);
     } else if (missingCore.length === 0 && missingKeyT2.length <= 2) {
-      console.log(`  Status: COMPLETE`);
+      // No census published — never claim "complete"; the floor is met but the
+      // long tail is unverified until a roundup exists (no-census-yet semantics).
+      console.log(`  Status: FLOOR OK (no census yet — long tail unverified)`);
     } else if (hasMajorGaps) {
       console.log(`  Status: MAJOR GAPS`);
     } else {
@@ -212,7 +246,10 @@ async function main() {
       });
     }
 
-    if (hasSomeGaps) {
+    // A census-incomplete show is a gap even if the T1 floor is met (the whole
+    // point: the floor missed the long tail). Census-missing escalates severity.
+    const censusIncomplete = !!(cVerdict && census && census.hadAnySource && cVerdict.verdict === 'incomplete');
+    if (hasSomeGaps || censusIncomplete) {
       gaps.push({
         showId,
         title: show.title,
@@ -223,7 +260,9 @@ async function main() {
         missingCore,
         missingFrequent,
         missingKeyT2,
-        severity: hasMajorGaps ? 'major' : 'minor',
+        censusMissing,
+        censusVerdict: cVerdict ? cVerdict.verdict : null,
+        severity: (hasMajorGaps || censusMissing.length >= 3) ? 'major' : 'minor',
       });
     }
   }
@@ -290,10 +329,13 @@ async function sendDiscordAlert(gaps, floorBreaches = []) {
     }
 
     if (gaps.length > 0) {
-      const fields = gaps.map(g => ({
-        name: `${g.title} (${g.openingDate})`,
-        value: `${g.reviewCount} reviews, ${g.scoredCount} scored\nMissing core T1: ${g.missingCore.join(', ') || 'none'}\nMissing key T2: ${g.missingKeyT2.join(', ') || 'none'}`,
-      }));
+      const fields = gaps.map(g => {
+        const lines = [`${g.reviewCount} reviews, ${g.scoredCount} scored`];
+        if (g.missingCore && g.missingCore.length) lines.push(`Missing core T1: ${g.missingCore.join(', ')}`);
+        if (g.censusMissing && g.censusMissing.length) lines.push(`Census-missing (roundup lists, we lack/unscored): ${g.censusMissing.join(', ')}`);
+        else if (g.censusVerdict === 'no-census-yet') lines.push(`Census: no roundup published yet`);
+        return { name: `${g.title} (${g.openingDate})`, value: lines.join('\n') };
+      });
       await sendAlert({
         title: 'Opening-Night Coverage Gaps',
         description: `${gaps.length} show(s) have missing T1/T2 reviews`,
@@ -309,11 +351,33 @@ async function sendDiscordAlert(gaps, floorBreaches = []) {
 
 async function dispatchCollection(gaps) {
   const { execSync } = require('child_process');
+  // Per-show in-flight dedup so a still-incomplete show (slow roundups keep it
+  // incomplete for DAYS) doesn't re-fire FULL gather on every 2x-daily run — a
+  // dispatch storm. Reuses the gather-idempotency run-name match (same as
+  // opening-night-reviews.yml's dispatch step). Codex ship-check #2.
+  let activeRuns = [];
+  try {
+    const out = execSync('gh run list --workflow=gather-reviews.yml --json status,displayTitle --limit 100', { encoding: 'utf8' });
+    activeRuns = JSON.parse(out || '[]');
+  } catch (_) { /* if we can't list, fall through and dispatch (fail-open) */ }
+  let showsNeedingGather = null;
+  try { ({ showsNeedingGather } = require('./lib/gather-idempotency')); } catch (_) {}
+  const wanted = gaps.map((g) => g.showId);
+  const needing = showsNeedingGather ? new Set(showsNeedingGather(activeRuns, wanted)) : new Set(wanted);
+
   for (const gap of gaps) {
+    if (!needing.has(gap.showId)) {
+      console.log(`\n⏭️  ${gap.showId}: gather already in-flight — skipping dispatch (no storm).`);
+      continue;
+    }
     try {
-      console.log(`\nDispatching gather-reviews for ${gap.showId}...`);
+      // FULL gather (aggregators_only=false, max_tier=3) so the per-outlet SERP
+      // pass searches the long tail the census flagged — not just aggregators.
+      // collect-review-texts (chain=true, below) then triggers rebuild → score,
+      // so the recovered reviews reach reviews.json and the broadcast re-fires.
+      console.log(`\nDispatching FULL gather-reviews for ${gap.showId}...`);
       execSync(
-        `gh workflow run gather-reviews.yml -f shows="${gap.showId}" -f max_tier=2`,
+        `gh workflow run gather-reviews.yml -f shows="${gap.showId}" -f max_tier=3 -f aggregators_only=false`,
         { stdio: 'inherit' }
       );
 
