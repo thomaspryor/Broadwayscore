@@ -204,3 +204,68 @@ test('buildCensusFromArchives reads The Stage .html via the pure (playwright-fre
   assert.equal(g.stars, 4);
   fs.rmSync(dir, { recursive: true, force: true });
 });
+
+
+// --- Cross-show archive guard (page-level via verifyAggregatorUrl) ---
+const TR = (title, venue, bodyExtra = '') =>
+  `<html><head><title>Theatre reviews roundup: ${title}</title>` +
+  `<link rel="canonical" href="https://theatre.reviews/reviews-roundup/${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-reviews/"></head>` +
+  `<body>⭑⭑⭑⭑ ${title} at ${venue}. ${bodyExtra}</body></html>`;
+
+test('wrongRoundup: a War Horse archive that is actually the Equus roundup is rejected (page-level)', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'census-tr-'));
+  fs.mkdirSync(path.join(dir, 'theatre-reviews'));
+  fs.writeFileSync(path.join(dir, 'theatre-reviews', 'war-horse-west-end-2026.html'), TR('Equus', 'The Menier'));
+  // The extractor would happily return Equus entries — but validation runs FIRST.
+  const sources = [{ name: 'theatre-reviews', dir: 'theatre-reviews', validate: true,
+    fn: () => ([{ outletId: 'guardian', outlet: 'The Guardian', critic: 'X', url: 'https://x/equus' }]) }];
+  const census = buildCensusFromArchives('war-horse-west-end-2026', {
+    archiveDir: dir, sources, show: { title: 'War Horse', venue: 'National Theatre' } });
+  assert.equal(census.count, 0, 'Equus page yields no War Horse census');
+  assert.deepEqual(census.wrongRoundup, ['theatre-reviews']);
+  assert.equal(census.zeroExtract.length, 0, 'parser never ran — not flagged broken');
+});
+
+test('a genuine roundup whose entries are STAR/headline slugs is kept (no false-drop)', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'census-cab-'));
+  fs.mkdirSync(path.join(dir, 'theatre-reviews'));
+  // Page title names the show (Cabaret); the review URLs are star slugs (redmayne).
+  fs.writeFileSync(path.join(dir, 'theatre-reviews', 'cabaret-2026.html'), TR('Cabaret', 'Kit Kat Club'));
+  const sources = [{ name: 'theatre-reviews', dir: 'theatre-reviews', validate: true,
+    fn: () => ([
+      { outletId: 'standard', outlet: 'Standard', critic: 'A', url: 'https://x/eddie-redmayne-kit-kat-club' },
+      { outletId: 'guardian', outlet: 'The Guardian', critic: 'B', url: 'https://x/cabaret-review' },
+    ]) }];
+  const census = buildCensusFromArchives('cabaret-2026', {
+    archiveDir: dir, sources, show: { title: 'Cabaret', venue: 'Kit Kat Club' } });
+  assert.deepEqual(census.entries.map((e) => e.outletId).sort(), ['guardian', 'standard'],
+    'headline-slug Standard review is NOT dropped — page validated by title, not per-URL token');
+  assert.equal(census.wrongRoundup.length, 0);
+});
+
+test('validation is a no-op without opts.show (back-compat) and for non-validate sources', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'census-noval-'));
+  fs.mkdirSync(path.join(dir, 'lbo-roundups'));
+  fs.writeFileSync(path.join(dir, 'lbo-roundups', 's.html'), '<html><title>anything</title></html>');
+  const sources = [{ name: 'lbo', dir: 'lbo-roundups', /* no validate */
+    fn: () => ([{ outletId: 'guardian', outlet: 'The Guardian', critic: 'A', url: 'u' }]) }];
+  // even with a show passed, a non-validate source is not page-checked
+  const census = buildCensusFromArchives('s', { archiveDir: dir, sources, show: { title: 'Whatever' } });
+  assert.equal(census.count, 1, 'non-validate source extracts normally');
+  assert.equal(census.wrongRoundup.length, 0);
+});
+
+test('fail-open: an unverifiable zero-token title (2:22) is NOT rejected as wrong-show', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'census-222-'));
+  fs.mkdirSync(path.join(dir, 'theatre-reviews'));
+  // titleTokens('2:22') === [] → verifyAggregatorUrl returns no-significant-title-tokens.
+  // That's "can't judge", not "wrong show" — the real roundup must survive.
+  fs.writeFileSync(path.join(dir, 'theatre-reviews', '222-west-end-2026.html'),
+    '<html><head><title>Theatre reviews roundup: 2:22 A Ghost Story</title></head><body>⭑⭑⭑⭑</body></html>');
+  const sources = [{ name: 'theatre-reviews', dir: 'theatre-reviews', validate: true,
+    fn: () => ([{ outletId: 'guardian', outlet: 'The Guardian', critic: 'A', url: 'https://x/222-review' }]) }];
+  const census = buildCensusFromArchives('222-west-end-2026', {
+    archiveDir: dir, sources, show: { title: '2:22' } });
+  assert.equal(census.count, 1, 'unverifiable title fails OPEN — roundup kept');
+  assert.equal(census.wrongRoundup.length, 0, 'not flagged wrong-show');
+});
