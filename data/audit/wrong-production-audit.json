@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-06-28T09:30:56.282Z",
+  "timestamp": "2026-06-28T09:54:53.908Z",
   "stats": {
     "totalReviews": 39346,
     "alreadyFlagged": 17529,
     "dateGuardCatches": 34,
     "directorMismatch": 875,
     "tvFilmSignals": 1072,
-    "londonSignals": 693,
+    "londonSignals": 694,
     "offBroadwaySignals": 464,
     "yearMismatch": 84,
     "noPublishDate": 3916
@@ -30003,7 +30003,7 @@
       "file": "exeunt-magazine--loren-noveck.json",
       "score": 80,
       "publishDate": "2026-05-15T11:08:02-04:00",
-      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/#:~:text=Dad%20Don't%20Read%20This%20is%20messy%20and%20raw%20and,will%20keep%20it%20in%20my",
+      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -32927,6 +32927,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "lbc--johnny-jenkins.json",
+      "score": 91,
+      "publishDate": "2026-04-08",
+      "url": "https://www.lbc.co.uk/article/inter-alia-review-best-plays-ever-seen-5HjdXRZ_2/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
