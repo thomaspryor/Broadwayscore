@@ -203,10 +203,15 @@ async function extractCastFromIBDBPage(url) {
 
   const doc = dom.window.document;
 
-  // Check for homepage redirect (production not found)
+  // Check for homepage redirect (production not found). This is NOT a genuine
+  // cast-less production (those load a real production page with no OBC section
+  // further down) — it means the URL didn't resolve: a stale/wrong stored URL or
+  // a transient IBDB redirect under load. Either way, retry rather than tombstone
+  // it as "0 cast" — a recurring failure is more honest than a silent empty.
   const bodyText = doc.body.textContent || '';
   if (bodyText.includes('Opening Nights in History') && !bodyText.includes('Opening Date')) {
     console.log(`  ⚠️  IBDB page redirected to homepage (production not found)`);
+    result.fetchFailed = true;
     return result;
   }
 
@@ -372,7 +377,15 @@ async function lookupIBDBCast(title, options = {}) {
       console.log(`  📎 Using stored IBDB URL: ${options.ibdbUrl}`);
       bestMatch = { url: options.ibdbUrl, title, year: null };
     } else {
-      // Search for IBDB production page
+      // Search for IBDB production page.
+      // KNOWN GAP: searchIBDB() swallows SERP API errors and returns [] (same as
+      // a genuine "not on IBDB"), so a transient SERP outage here is treated as a
+      // genuine empty and tombstoned. Narrow in practice — only hits shows with
+      // no stored ibdbUrl (new shows), and a genuinely-not-on-IBDB show SHOULD
+      // tombstone. Fixing properly means making searchIBDB distinguish API-error
+      // from no-results without breaking its other callers (ibdb-dates,
+      // backfill-ibdb-urls) — deferred. Established shows carry a stored URL and
+      // take the fetchFailed-aware path above.
       const searchResults = await searchIBDB(title, options);
 
       if (searchResults.length === 0) {
