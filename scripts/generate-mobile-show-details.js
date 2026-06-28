@@ -21,6 +21,7 @@ const { computeCriticScore } = require('./lib/compute-critic-score');
 const { loadReviewsWithBlog } = require('./lib/load-reviews-with-blog');
 const { getTier: getAuthoritativeTier } = require('./lib/outlet-tiers');
 const { shouldHideReviews } = require('./lib/should-hide-reviews');
+const { dedupByCritic } = require('./lib/dedup-by-critic');
 
 const dataDir = path.join(__dirname, '../data');
 const outputDir = path.join(__dirname, '../public/data/shows');
@@ -367,17 +368,8 @@ for (const show of visibleShows) {
   // distinct critics from the same outlet (NYSR, NYT, etc. publish multiple critics).
   // Previous outlet-level dedup was wrong — it dropped second critics (e.g. Sommers
   // when Finkle existed for NYSR on Titanique opening night 2026-04-12).
-  const byCriticKey = new Map();
-  for (const review of allShowReviews) {
-    const outletKey = (review.outletId || review.outlet || 'unknown').toLowerCase();
-    const criticKey = (review.criticName || 'unknown').toLowerCase();
-    const key = `${outletKey}|${criticKey}`;
-    const existing = byCriticKey.get(key);
-    if (!existing || (review.publishDate || '') > (existing.publishDate || '')) {
-      byCriticKey.set(key, review);
-    }
-  }
-  const showReviews = Array.from(byCriticKey.values());
+  // Extracted to lib/dedup-by-critic so verify-opening-night-live counts identically.
+  const showReviews = dedupByCritic(allShowReviews);
   const buzz = audienceBuzz[show.id];
 
   // Score breakdown — Positive = Recommended+ (75+), Mixed = Worth Seeing/Skippable (55-74), Negative = Critical Miss (<55)
