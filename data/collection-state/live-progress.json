@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-06-27T23:12:45.816Z",
+  "updatedAt": "2026-06-28T00:05:27.934Z",
   "processed": 573,
-  "failed": 992,
-  "successRate": "36.6%",
+  "failed": 999,
+  "successRate": "36.5%",
   "tierBreakdown": {
     "playwright": 265,
     "amp": 0,
-    "browserbase": 36,
+    "browserbase": 37,
     "directCookies": 0,
     "scrapingbee": 103,
     "brightdata": 57,
-    "archiveToday": 95,
+    "archiveToday": 97,
     "archive": 186
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-06-27T20:02:55.372Z",
-      "event": "bb-session",
-      "session": "8ded1f27",
-      "url": "http://www.hollywoodreporter.com/hr/film-reviews/come-fly-away-theater-review-10"
-    },
-    {
-      "t": "2026-06-27T20:02:56.476Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
     {
       "t": "2026-06-27T20:04:33.968Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-06-27T20:51:40.554Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-06-28T00:01:35.545Z",
+      "event": "bb-session",
+      "session": "726d50b7",
+      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
+    },
+    {
+      "t": "2026-06-28T00:01:36.379Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
