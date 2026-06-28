@@ -1644,12 +1644,17 @@ function londonSection() {
   if (!list.length) return null;
   const withScore = list.map(s => ({ s, agg: aggregateScore(s.id) })).filter(x => x.agg && x.agg.count >= minReviews(x.s.category));
   if (!withScore.length) return null;
-  // Sort: Gold first, then by score desc
+  // Sort: Gold first, then by score desc. When the DISPLAYED (rounded) scores
+  // tie, rank the better-reviewed show first — more reviews is a more settled
+  // verdict — rather than letting a sub-point raw difference decide order
+  // (Sinatra 64 on 29 reviews should sit above Archduke 64 on 7).
   withScore.sort((a, b) => {
     const ag = isGoldTier(a.agg.avg, a.s.category) ? 1 : 0;
     const bg = isGoldTier(b.agg.avg, b.s.category) ? 1 : 0;
     if (ag !== bg) return bg - ag;
-    return (b.agg.raw ?? b.agg.avg) - (a.agg.raw ?? a.agg.avg);
+    const ar = a.agg.raw ?? a.agg.avg, br = b.agg.raw ?? b.agg.avg;
+    if (Math.round(ar) === Math.round(br)) return (b.agg.count ?? 0) - (a.agg.count ?? 0);
+    return br - ar;
   });
   _londonHasGoldOpening = withScore.some(x => isGoldTier(x.agg.avg, x.s.category));
   const marketColor = '#f472b6';
