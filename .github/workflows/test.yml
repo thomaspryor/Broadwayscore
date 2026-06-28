@@ -25,6 +25,14 @@ on:
       - 'scripts/audit-churn-merge-coverage.js'
       - 'scripts/lib/churn-merge-coverage.js'
       - 'scripts/lib/churn-merge-coverage.test.mjs'
+      # Opening-night prod-verify (scored-but-not-live detector) + the shared
+      # (outlet,critic) dedup it counts with (kept in sync with the prod rv builder
+      # generate-mobile-show-details.js). Colocated *.test.mjs run via the lib glob;
+      # without these paths a solo edit triggers ZERO CI (allow-list gate).
+      - 'scripts/verify-opening-night-live.js'
+      - 'scripts/lib/verify-opening-night-live.test.mjs'
+      - 'scripts/lib/dedup-by-critic.js'
+      - 'scripts/lib/dedup-by-critic.test.mjs'
       # URL-shaped critic-name GC sweep (byline link href captured as criticName)
       # + the SERP discovery writer that bypasses the shared review-file-writer.
       # Without these entries a solo edit triggers ZERO CI (allow-list gate).
