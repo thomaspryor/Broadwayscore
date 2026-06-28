@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-28T18:44:04.930Z",
+  "generatedAt": "2026-06-28T21:42:08.296Z",
   "date": "2026-06-28",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 571502,
+  "entryCount": 576422,
   "shows": [
     {
       "showId": "an-ideal-husband-west-end-2026",
@@ -11,7 +11,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 2379229,
+        "collected-to-scored": 3182618,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -276,7 +276,7 @@
     },
     {
       "showId": "the-whos-tommy-2024",
-      "reviewCount": 30,
+      "reviewCount": 31,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2336,7 +2336,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 5671767,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -2366,7 +2366,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 457176165,
+        "collected-to-scored": 231319099,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -3051,7 +3051,7 @@
     },
     {
       "showId": "kiss-of-the-spider-woman-1993",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -3831,7 +3831,7 @@
     },
     {
       "showId": "blood-of-my-blood-west-end-2026",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4361,7 +4361,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 5874785,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -4551,7 +4551,7 @@
     },
     {
       "showId": "archduke-west-end-2026",
-      "reviewCount": 7,
+      "reviewCount": 8,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -10341,7 +10341,7 @@
     },
     {
       "showId": "sting-west-end-2026",
-      "reviewCount": 6,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -10356,7 +10356,7 @@
     },
     {
       "showId": "the-truth-a-comedy-by-florian-zeller-west-end-2026",
-      "reviewCount": 24,
+      "reviewCount": 25,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -11856,7 +11856,7 @@
     },
     {
       "showId": "pride-west-end-2026",
-      "reviewCount": 15,
+      "reviewCount": 18,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -11901,7 +11901,7 @@
     },
     {
       "showId": "relics-west-end-2026",
-      "reviewCount": 14,
+      "reviewCount": 15,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -12071,7 +12071,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 3985861,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -12086,7 +12086,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 3544900,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -12101,7 +12101,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 3517067,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -12111,7 +12111,82 @@
     },
     {
       "showId": "orlando-off-west-end-2026",
-      "reviewCount": 10,
+      "reviewCount": 11,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "murder-she-didnt-write-west-end-2025",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "yamato-the-drummers-of-japan-hito-no-chikara-the-power-of-human-strength-off-west-end-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-story-west-end-2026",
+      "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "tender-off-west-end-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-choir-of-man-off-west-end-2026",
+      "reviewCount": 1,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
