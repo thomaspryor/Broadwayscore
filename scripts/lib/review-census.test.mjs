@@ -2,8 +2,12 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+
 const require = createRequire(import.meta.url);
-const { unionCensus, censusVerdict } = require('./review-census.js');
+const { unionCensus, censusVerdict, buildCensusFromArchives, CI_UNFETCHABLE_OUTLETS } = require('./review-census.js');
 
 test('unionCensus dedups by normalized outlet, merges sources, keeps URL + real critic', () => {
   const c = unionCensus([
@@ -83,4 +87,29 @@ test('suppressed (unfetchable T1) keeps the show incomplete + visible, never com
   assert.equal(v.verdict, 'incomplete', 'suppressed-missing must NOT flip to complete');
   assert.deepEqual(v.suppressedMissing.map(m => m.outletId), ['nytimes']);
   assert.deepEqual(v.missing.map(m => m.outletId), []);
+});
+
+test('CI_UNFETCHABLE_OUTLETS is exported and covers the CI-IP-blocked outlets', () => {
+  assert.ok(CI_UNFETCHABLE_OUTLETS instanceof Set);
+  assert.ok(CI_UNFETCHABLE_OUTLETS.has('wsj'));
+  assert.ok(CI_UNFETCHABLE_OUTLETS.has('newyorker'));
+});
+
+test('buildCensusFromArchives flags zeroExtract: archive present but parser returns 0', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'census-'));
+  // Two source archives EXIST on disk; one extractor parses fine, one returns [].
+  fs.mkdirSync(path.join(dir, 'good'));
+  fs.mkdirSync(path.join(dir, 'broke'));
+  fs.writeFileSync(path.join(dir, 'good', 'show-x.html'), '<html>ok</html>');
+  fs.writeFileSync(path.join(dir, 'broke', 'show-x.html'), '<html>changed DOM</html>');
+  const sources = [
+    { name: 'good', dir: 'good', fn: () => [{ outletId: 'guardian', outlet: 'The Guardian', critic: 'A', stars: 3, url: 'u' }] },
+    { name: 'broke', dir: 'broke', fn: () => [] }, // parser drift → 0 reviews despite a present archive
+  ];
+  const census = buildCensusFromArchives('show-x', { archiveDir: dir, sources });
+  assert.deepEqual(census.archivesPresent.sort(), ['broke', 'good'], 'both files were present');
+  assert.deepEqual(census.zeroExtract, ['broke'], 'the broken parser is flagged, not silently swallowed');
+  assert.equal(census.hadAnySource, true, 'the working source still yields a census');
+  assert.equal(census.count, 1);
+  fs.rmSync(dir, { recursive: true, force: true });
 });

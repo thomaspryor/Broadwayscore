@@ -16,7 +16,7 @@
 const fs = require('fs');
 const path = require('path');
 const { isLondonMarket } = require('./lib/venue-classification');
-const { buildCensusFromArchives, censusVerdict } = require('./lib/review-census');
+const { buildCensusFromArchives, censusVerdict, CI_UNFETCHABLE_OUTLETS } = require('./lib/review-census');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 
@@ -196,17 +196,35 @@ async function main() {
     // published — never falsely green). Census-missing outlets become real gaps.
     let census = null, cVerdict = null;
     const censusMissing = [];
+    const censusSuppressed = [];
+    let censusExtractorBroken = false;
     if (isLondonMarket(category)) {
       try { census = buildCensusFromArchives(showId); } catch (e) { console.warn(`  ⚠ census build failed for ${showId}: ${e.message}`); }
       if (census) {
-        cVerdict = censusVerdict(census, coveredScoredOutlets);
+        // Pass the CI-unfetchable block list so paywalled-from-CI outlets (WSJ /
+        // New Yorker) stay visible + block `complete` but don't drive endless
+        // re-dispatch of a gather that can never satisfy them.
+        cVerdict = censusVerdict(census, coveredScoredOutlets, { suppressed: CI_UNFETCHABLE_OUTLETS });
         for (const m of cVerdict.missing) {
           if (!censusMissing.includes(m.outletId)) censusMissing.push(m.outletId);
+        }
+        for (const m of cVerdict.suppressedMissing) {
+          if (!censusSuppressed.includes(m.outletId)) censusSuppressed.push(m.outletId);
+        }
+        // An archive present but extracting 0 reviews = a silently-broken parser
+        // masquerading as no-census-yet. Surface it — the monitor must catch its
+        // own blindness, not go quiet exactly when coverage is unverifiable.
+        if (census.zeroExtract && census.zeroExtract.length) {
+          censusExtractorBroken = true;
+          console.log(`  🚨 CENSUS EXTRACTOR BROKEN: archive present but 0 reviews extracted from [${census.zeroExtract.join(', ')}] — parser likely broke (DOM drift).`);
         }
         if (census.hadAnySource) {
           console.log(`  Census (${census.sourcesPresent.join('+')}): ${census.count} outlets; verdict=${cVerdict.verdict}`);
           if (cVerdict.missing.length) {
             console.log(`  CENSUS-MISSING (${cVerdict.missing.length}): ${cVerdict.missing.map(m => `${m.outletId}${m.url ? ' '+m.url : ''}`).join(' | ')}`);
+          }
+          if (cVerdict.suppressedMissing.length) {
+            console.log(`  CENSUS-BLOCKED (unfetchable from CI, alert-only): ${censusSuppressed.join(', ')}`);
           }
         } else {
           console.log(`  Census: no roundup published yet → no-census-yet (holding at floor check)`);
@@ -249,7 +267,12 @@ async function main() {
     // A census-incomplete show is a gap even if the T1 floor is met (the whole
     // point: the floor missed the long tail). Census-missing escalates severity.
     const censusIncomplete = !!(cVerdict && census && census.hadAnySource && cVerdict.verdict === 'incomplete');
-    if (hasSomeGaps || censusIncomplete) {
+    // Dispatchable = there is something we can actually go fetch (legacy T1 gaps
+    // or NON-suppressed census-missing). A show that's incomplete ONLY because of
+    // suppressed/unfetchable outlets, or that has a broken extractor, is still
+    // alert-worthy but must NOT re-fire a gather that can't change the outcome.
+    const dispatchable = hasSomeGaps || censusMissing.length > 0;
+    if (hasSomeGaps || censusIncomplete || censusExtractorBroken) {
       gaps.push({
         showId,
         title: show.title,
@@ -261,8 +284,11 @@ async function main() {
         missingFrequent,
         missingKeyT2,
         censusMissing,
+        censusSuppressed,
+        censusExtractorBroken,
         censusVerdict: cVerdict ? cVerdict.verdict : null,
-        severity: (hasMajorGaps || censusMissing.length >= 3) ? 'major' : 'minor',
+        dispatchable,
+        severity: (hasMajorGaps || censusMissing.length >= 3 || censusExtractorBroken) ? 'major' : 'minor',
       });
     }
   }
@@ -284,13 +310,19 @@ async function main() {
     await sendDiscordAlert(gaps, floorBreaches);
   }
 
-  // Auto-dispatch collection
+  // Auto-dispatch collection — ONLY for gaps with something fetchable. A show
+  // that's incomplete only because of suppressed (unfetchable-from-CI) outlets,
+  // or whose extractor broke, is alerted above but not re-gathered (a gather
+  // can't satisfy a CI-blocked outlet — re-firing it every run is the storm).
   if (opts.dispatch && (gaps.length > 0 || floorBreaches.length > 0)) {
+    const dispatchableGaps = gaps.filter(g => g.dispatchable);
     const toDispatch = [
-      ...gaps,
-      ...floorBreaches.filter(b => !gaps.some(g => g.showId === b.showId)),
+      ...dispatchableGaps,
+      ...floorBreaches.filter(b => !dispatchableGaps.some(g => g.showId === b.showId)),
     ];
-    await dispatchCollection(toDispatch);
+    if (toDispatch.length) await dispatchCollection(toDispatch);
+    const skipped = gaps.length - dispatchableGaps.length;
+    if (skipped > 0) console.log(`\n⏭️  ${skipped} gap(s) alert-only (suppressed/unfetchable or broken extractor) — not dispatched.`);
   }
 
   // Machine-readable output
@@ -334,6 +366,8 @@ async function sendDiscordAlert(gaps, floorBreaches = []) {
         if (g.missingCore && g.missingCore.length) lines.push(`Missing core T1: ${g.missingCore.join(', ')}`);
         if (g.censusMissing && g.censusMissing.length) lines.push(`Census-missing (roundup lists, we lack/unscored): ${g.censusMissing.join(', ')}`);
         else if (g.censusVerdict === 'no-census-yet') lines.push(`Census: no roundup published yet`);
+        if (g.censusSuppressed && g.censusSuppressed.length) lines.push(`⛔ Blocked (unfetchable from CI — needs manual grab): ${g.censusSuppressed.join(', ')}`);
+        if (g.censusExtractorBroken) lines.push(`🚨 Census extractor broke (archive present, 0 extracted) — check roundup parser`);
         return { name: `${g.title} (${g.openingDate})`, value: lines.join('\n') };
       });
       await sendAlert({

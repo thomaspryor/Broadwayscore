@@ -28,6 +28,15 @@ const { normalizeOutlet } = require('./review-normalization');
 const ROOT = path.join(__dirname, '..', '..');
 const ARCHIVE = path.join(ROOT, 'data', 'aggregator-archive');
 
+// Outlets a WE roundup may list but that we can NEVER full-text-collect from a CI
+// runner (datacenter-IP blocks defeat cookies — see memory/feedback_wsj_newyorker_ci_ip_block).
+// Without this, such an outlet sits in `missing` forever → the show is `incomplete`
+// forever → a FULL gather re-fires every run. Passed as the default `suppressed`
+// set so these stay VISIBLE (block `complete`) but do NOT drive re-dispatch.
+// Recoverable paywalls (Times/FT/Telegraph — collectable via cookies/Browserbase)
+// are deliberately NOT here; we want to keep trying them.
+const CI_UNFETCHABLE_OUTLETS = new Set(['wsj', 'newyorker']);
+
 // Each source: archive subdir + an extractor(html, showId) -> [{outlet, critic, stars, url}].
 function sourceExtractors() {
   const { extractReviews } = require('../scrape-theatre-reviews');
@@ -80,14 +89,23 @@ function buildCensusFromArchives(showId, opts = {}) {
   const archiveDir = opts.archiveDir || ARCHIVE;
   const sources = opts.sources || sourceExtractors();
   const perSource = [];
+  // Track which archives EXISTED vs which yielded 0 reviews. A file present but
+  // extracting 0 (DOM drift / parser break) is otherwise indistinguishable from
+  // "no roundup archived" — both collapse to no-census-yet, so a silently-broken
+  // extractor masks itself as "still collecting" forever. zeroExtract lets the
+  // audit alert on its own blindness (feedback_monitor_must_cover_own_output).
+  const archivesPresent = [];
+  const zeroExtract = [];
   for (const s of sources) {
     const p = path.join(archiveDir, s.dir, `${showId}.html`);
     if (!fs.existsSync(p)) continue;
+    archivesPresent.push(s.name);
     let reviews = [];
     try { reviews = s.fn(fs.readFileSync(p, 'utf8'), showId) || []; } catch (_) { reviews = []; }
+    if (!Array.isArray(reviews) || reviews.length === 0) zeroExtract.push(s.name);
     perSource.push({ source: s.name, reviews });
   }
-  return unionCensus(perSource);
+  return { ...unionCensus(perSource), archivesPresent, zeroExtract };
 }
 
 /**
@@ -128,4 +146,4 @@ function censusVerdict(census, coveredScoredOutlets, opts = {}) {
   return { verdict, missing, suppressedMissing };
 }
 
-module.exports = { buildCensusFromArchives, unionCensus, censusVerdict };
+module.exports = { buildCensusFromArchives, unionCensus, censusVerdict, CI_UNFETCHABLE_OUTLETS };
