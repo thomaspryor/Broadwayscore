@@ -210,8 +210,24 @@ for (const cfg of PAGES) {
       // empty, URL doesn't change) — caught WE clear-all flake 2026-05-23.
       await page.getByRole('button', { name: 'Clear all', exact: true }).click();
 
-      // Wait for any deferred writes (startTransition / async router.replace)
-      await page.waitForTimeout(600);
+      // Wait for the URL to actually settle — the panel keys gone from the address
+      // bar — instead of a fixed delay. The async router.replace (startTransition)
+      // can take >600ms on a loaded CI runner, so the old `waitForTimeout(600)`
+      // raced the settle and read a still-dirty URL (`type=musical` survived),
+      // flaking ~1 push in N (2026-06-28). Polling the real condition both fixes the
+      // slow-CI flake AND still catches the regression it guards: a stray write that
+      // re-introduces a deleted key means the URL never goes clean → this times out.
+      await page.waitForFunction(
+        () => {
+          const p = new URLSearchParams(window.location.search);
+          return !p.has('type') && !p.has('status') && !p.has('production') && !p.has('years');
+        },
+        null,
+        { timeout: 8000 },
+      );
+      // Brief tail so a LATE stray re-introduction (the historical race) lands in the
+      // writes log and is asserted below, not missed by stopping at first-clean.
+      await page.waitForTimeout(200);
 
       const trace = await page.evaluate(() => {
         const w = window as unknown as { __pwWrites?: string[]; __pwOrigReplace?: typeof history.replaceState };
