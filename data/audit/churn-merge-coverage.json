@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-06-28T06:38:02.171Z",
+    "generatedAt": "2026-06-28T07:47:10.681Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -16,33 +16,33 @@
   "flagged": [
     {
       "path": "data/audit/processed-feedback.json",
-      "churn": 48
+      "churn": 49
     }
   ],
   "exempt": [
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 93
+      "churn": 94
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 86
+      "churn": 87
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 86
+      "churn": 87
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 86
+      "churn": 87
     },
     {
       "path": "data/llm-scoring-garbage-skips.json",
-      "churn": 75
+      "churn": 76
     },
     {
       "path": "public/data/shows/dad-dont-read-this-off-broadway-2026.json",
-      "churn": 66
+      "churn": 67
     },
     {
       "path": "data/commercial-rss-state.json",
@@ -50,7 +50,7 @@
     },
     {
       "path": "public/data/shows/glengarry-glen-ross-west-end-2026.json",
-      "churn": 57
+      "churn": 55
     },
     {
       "path": "public/opening-night-status.json",
@@ -58,7 +58,7 @@
     },
     {
       "path": "public/data/shows/cyrano-de-bergerac-west-end-2026.json",
-      "churn": 48
+      "churn": 52
     },
     {
       "path": "public/data/shows/the-truth-a-comedy-by-florian-zeller-west-end-2026.json",
@@ -78,36 +78,36 @@
     },
     {
       "path": "public/data/shows/sinatra-the-musical-west-end-2026.json",
-      "churn": 39
-    },
-    {
-      "path": "public/data/shows/the-misanthrope-west-end-2026.json",
-      "churn": 36
+      "churn": 42
     },
     {
       "path": "data/show-score-urls.json",
-      "churn": 35
+      "churn": 34
+    },
+    {
+      "path": "public/data/shows/the-misanthrope-west-end-2026.json",
+      "churn": 34
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 569,
+      "churn": 593,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 552,
+      "churn": 575,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 520,
+      "churn": 522,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 377,
+      "churn": 379,
       "mergeAttr": "union"
     },
     {
@@ -127,47 +127,47 @@
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 99,
+      "churn": 100,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/birthright-off-broadway-2026.json",
-      "churn": 87,
+      "churn": 88,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/dad-dont-read-this-off-broadway-2026.json",
-      "churn": 87,
+      "churn": 88,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/henry-vi-a-trilogy-in-two-parts-off-broadway-2026.json",
-      "churn": 87,
+      "churn": 88,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/misterman-theatre-row-off-broadway-2026.json",
-      "churn": 87,
+      "churn": 88,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/romeo-and-juliet-off-broadway-2026.json",
-      "churn": 86,
+      "churn": 87,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 86,
+      "churn": 87,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 84,
+      "churn": 82,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/gather-collisions.json",
-      "churn": 76,
+      "churn": 77,
       "mergeAttr": "ours"
     },
     {
@@ -187,7 +187,7 @@
     },
     {
       "path": "data/audit/poller-backoff/spamalot-off-broadway-2026.json",
-      "churn": 55,
+      "churn": 56,
       "mergeAttr": "ours"
     },
     {
@@ -222,7 +222,7 @@
     },
     {
       "path": "data/audit/market-misroutes.json",
-      "churn": 45,
+      "churn": 46,
       "mergeAttr": "ours"
     },
     {
@@ -307,7 +307,7 @@
     },
     {
       "path": "data/audit/poller-backoff/white-rabbit-red-rabbit-west-end-2026.json",
-      "churn": 33,
+      "churn": 34,
       "mergeAttr": "ours"
     },
     {

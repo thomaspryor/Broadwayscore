@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-06-28T06:38:02.177Z",
+    "generatedAt": "2026-06-28T07:47:10.687Z",
     "note": "Corpus-statistics drift monitor. Non-blocking; surfaced via health-check.js digest. Not a code-correctness gate."
   },
   "summary": {
@@ -18,7 +18,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "=== TEXT QUALITY AUDIT ===\n\nTotal reviews: 40031\nHas fullText: 31745\n\n--- Quality Breakdown ---\n  full: 21632 (68.1%)\n  truncated: 9427 (29.7%)\n  excerpt: 318 (1.0%)\n  partial: 315 (1.0%)\n  stub: 35 (0.1%)\n  complete: 13 (0.0%)\n  unknown: 5 (0.0%)\n\n--- Truncation Signals ---\n  no_ending_punctuation: 6528\n  has_footer_junk: 1461\n  ends_with_ellipsis: 129\n  has_footer_text: 109\n  paywall_or_login_prompt: 77\n\n--- Threshold Checks (MONITOR / drift band) ---\n  ✅ Full: 68.1% (min: 25%)\n  ✅ Truncated: 29.7% (max: 65%)\n  ✅ Unknown: 0.0% (max: 5%)\n\n✅ AUDIT PASSED"
+      "detail": "=== TEXT QUALITY AUDIT ===\n\nTotal reviews: 40037\nHas fullText: 31746\n\n--- Quality Breakdown ---\n  full: 21633 (68.1%)\n  truncated: 9427 (29.7%)\n  excerpt: 318 (1.0%)\n  partial: 315 (1.0%)\n  stub: 35 (0.1%)\n  complete: 13 (0.0%)\n  unknown: 5 (0.0%)\n\n--- Truncation Signals ---\n  no_ending_punctuation: 6530\n  has_footer_junk: 1461\n  ends_with_ellipsis: 129\n  has_footer_text: 109\n  paywall_or_login_prompt: 77\n\n--- Threshold Checks (MONITOR / drift band) ---\n  ✅ Full: 68.1% (min: 25%)\n  ✅ Truncated: 29.7% (max: 65%)\n  ✅ Unknown: 0.0% (max: 5%)\n\n✅ AUDIT PASSED"
     },
     {
       "name": "aggregator-truth",
@@ -54,7 +54,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "[audit-unknown-outlets] resolvable unknown outlets: 2 (threshold 5) across 40031 files"
+      "detail": "[audit-unknown-outlets] resolvable unknown outlets: 2 (threshold 5) across 40037 files"
     },
     {
       "name": "review-key-duplicates",
@@ -63,7 +63,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "[audit-review-key-duplicates] duplicate reviews: 3 (threshold 5) across 40031 files"
+      "detail": "[audit-review-key-duplicates] duplicate reviews: 3 (threshold 5) across 40037 files"
     },
     {
       "name": "churn-merge-coverage",
@@ -72,7 +72,7 @@
       "exitCode": 1,
       "ok": false,
       "crashed": false,
-      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 1 flagged, 17 exempt, 45 covered\n  ⚠️    48  data/audit/processed-feedback.json  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
+      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 1 flagged, 17 exempt, 45 covered\n  ⚠️    49  data/audit/processed-feedback.json  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
     }
   ]
 }
