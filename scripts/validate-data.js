@@ -27,6 +27,7 @@ const { wouldBeIncludedInRebuild, passesFlagFilters, hasValidScore } = require('
 // Canonical valid-tier list — propagates when TIER_WEIGHTS changes.
 const { VALID_TIERS } = require('./lib/outlet-tiers');
 const { buildOutletMaps } = require('./lib/outlet-region-map');
+const { previewsAfterOpening, inheritedDateFromSibling, suspiciousInheritedYear, normTitle } = require('./lib/show-date-integrity');
 
 // Canonical Broadway-category predicate. Treats null category as Broadway
 // per historical-import convention; use this instead of raw string compare.
@@ -366,6 +367,15 @@ function validateDates(shows) {
   let issues = 0;
   let staleStatusFixes = 0;
 
+  // Same-title groups for the inherited-date check (distinct productions of one title).
+  const sameTitleGroups = new Map();
+  for (const s of shows) {
+    const k = normTitle(s.title);
+    if (!k) continue;
+    if (!sameTitleGroups.has(k)) sameTitleGroups.set(k, []);
+    sameTitleGroups.get(k).push(s);
+  }
+
   for (const show of shows) {
     // Format + validity check (catches "TBD", "2026-13-45", non-ISO strings)
     const isValidDate = (d) => dateRegex.test(d) && !isNaN(new Date(d).getTime());
@@ -470,9 +480,30 @@ function validateDates(shows) {
       warn(`Show "${show.title}" has closingDate (${show.closingDate}) before openingDate (${show.openingDate}). If it never opened, set openingDate to null.`);
     }
 
-    // Previews after opening
-    if (show.previewsStartDate && show.openingDate && show.previewsStartDate > show.openingDate) {
-      warn(`Show "${show.title}" has previewsStartDate (${show.previewsStartDate}) after openingDate (${show.openingDate})`);
+    // Previews after opening — unambiguous data error (previews always precede opening).
+    // Hard error as of 2026-06-28: three-houses-off-broadway-2026 shipped with previews
+    // 2024-12-04 after its 2024-05-22 opening because this was only a warning.
+    if (previewsAfterOpening(show)) {
+      error(`Show "${show.title}" (${show.id}) has previewsStartDate (${show.previewsStartDate}) AFTER openingDate (${show.openingDate}) — previews precede opening.`);
+    }
+
+    // Inherited namesake date (HARD): this show's opening/previews date is byte-identical
+    // to a DIFFERENT same-title production's. Distinct productions never share an opening
+    // night, so an exact match is the date cloned from the namesake (a-few-good-men-2026
+    // carried a-few-good-men-1989's 1989-11-15, 2026-06-28).
+    const sameTitleSibs = (sameTitleGroups.get(normTitle(show.title)) || []).filter(o => o.id !== show.id);
+    const inherited = inheritedDateFromSibling(show, sameTitleSibs);
+    if (inherited) {
+      error(`Show "${show.title}" (${show.id}) has ${inherited.field} identical to same-title sibling ${inherited.siblingId} — date was cloned from the wrong production. Set this production's real dates.`);
+    }
+
+    // Inherited-year heuristic (SOFT/warn): recent {title}-{YYYY} id with a decades-older
+    // opening while still pre-open, when the namesake isn't a separate DB entry (so the hard
+    // check above can't catch it, e.g. awake-and-sing-2026 / 1935). Warns only — a legit
+    // long-runner imported with a recent id-year (book-of-mormon-west-end-2024 / 2013) trips
+    // it too, and that's acceptable noise, not a build blocker.
+    else if (suspiciousInheritedYear(show, new Date().getFullYear())) {
+      warn(`Show "${show.title}" (${show.id}) is status:${show.status} with openingDate ${show.openingDate} — id year implies a recent production but opening is decades earlier. Verify it isn't a namesake's date cloned onto a new revival.`);
     }
   }
 
