@@ -1311,6 +1311,11 @@ function boxOfficeSection() {
     if (!e[prevKey]) return null;
     const pct = ((e[metric] - e[prevKey]) / e[prevKey]) * 100;
     if (Math.abs(pct) < 1) return null;
+    // An established show never swings >150% WoW on gross/ATP/capacity. A number
+    // that large means the prior-week value is stale or corrupt (e.g. the 2026-06
+    // grosses column-shift left last week's ATP at $8, producing "+2585% WoW").
+    // Suppress rather than print an absurd badge.
+    if (Math.abs(pct) > 150) return null;
     const sign = pct > 0 ? '+' : '−';
     const color = pct > 0 ? '#22c55e' : '#ef4444';
     return `<span style="font-size:10px;color:${color};font-weight:700;">${sign}${Math.abs(pct).toFixed(0)}% WoW</span>`;
