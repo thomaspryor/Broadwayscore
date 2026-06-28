@@ -65,6 +65,7 @@ jobs:
 
 
       - name: Checkout core data
+        if: env.SKIP != 'true'
         uses: ./.github/actions/checkout-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}

@@ -315,13 +315,16 @@ async function main() {
     const pending = loadPending();
     pending.shows = pending.shows || {};
     const now = new Date().toISOString();
+    // LLM verdicts sometimes return the literal string "null" for recoupedDate;
+    // normalize to real null so downstream apply/validate never see a bad date.
+    const { cleanNullish } = require('./lib/commercial-apply-gate');
     let written = 0;
     for (const f of allFindings) {
       pending.shows[f.show.slug] = {
         ...(pending.shows[f.show.slug] || {}),
         recouped: true,
         _recoupedClaim: true,
-        recoupedDate: f.verdict.recoupedDate || null,
+        recoupedDate: cleanNullish(f.verdict.recoupedDate) || null,
         recoupedSource: f.url,
         confidence: f.verdict.confidence,
         evidence: f.verdict.evidence || null,
