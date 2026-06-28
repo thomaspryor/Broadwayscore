@@ -27,18 +27,47 @@
  * @returns {Array<object>} Gaps on open shows, sorted by ratingsCount desc.
  *          Each: { source, ourShowId, ourTitle, sourceName, ratingsCount, ...orig }
  */
+
+// Operator-confirmed NON-matches. The coverage audit fuzzy-matches a source
+// catalog entry to a same-titled open show to surface near-misses for review.
+// Sometimes the answer, after a human looks, is "different production" — e.g. a
+// source has ratings for an earlier NYC staging while our open show is a later,
+// reworked London production. Those productions are distinct, so the ratings
+// must NOT be linked (audience ratings are production-specific). Recording the
+// confirmed non-match here stops the audit re-asking every week. Keyed by
+// `source|normalizedSourceName|ourShowId` so it suppresses ONLY the specific
+// confirmed collision — a genuine future gap on the same show still surfaces.
+const CONFIRMED_NON_MATCHES = new Set([
+  // theatr "Archduke" (Off-Broadway NYC, ~102 ratings) is the earlier NY staging,
+  // not our 2026 Royal Court (London) production — reworked, distinct. 2026-06-28.
+  // NOTE: this permanently suppresses ANY theatr "Archduke" → this London show
+  // alert. If theatr ever lists the LONDON production under this same name and we
+  // DO want those ratings, remove this entry.
+  'theatr|archduke|archduke-west-end-2026',
+]);
+
+function nonMatchKey(source, sourceName, ourShowId) {
+  // Lowercase source — health-check.js passes 'Theatr'/'Mezzanine' (capitalized)
+  // while some callers pass lowercase; normalize so the key matches either way.
+  const src = String(source || '').toLowerCase();
+  const norm = String(sourceName || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  return `${src}|${norm}|${ourShowId}`;
+}
+
 function openShowCoverageGaps(coverageReports, openShowIds) {
   const gaps = [];
   for (const report of coverageReports || []) {
     if (!report || !Array.isArray(report.flagged)) continue;
     for (const f of report.flagged) {
       if (!f || !f.ourShowId || !openShowIds.has(f.ourShowId)) continue;
+      const sourceName = f.mezzName || f.theatrName || f.sourceName || f.name || null;
+      if (CONFIRMED_NON_MATCHES.has(nonMatchKey(report.source, sourceName, f.ourShowId))) continue;
       gaps.push({
         source: report.source,
         ourShowId: f.ourShowId,
         ourTitle: f.ourTitle,
         // Source-side catalog name is keyed differently per source; normalize.
-        sourceName: f.mezzName || f.theatrName || f.sourceName || f.name || null,
+        sourceName,
         ratingsCount: f.ratingsCount || f.watched || 0,
         ...f,
       });
@@ -48,4 +77,4 @@ function openShowCoverageGaps(coverageReports, openShowIds) {
   return gaps;
 }
 
-module.exports = { openShowCoverageGaps };
+module.exports = { openShowCoverageGaps, CONFIRMED_NON_MATCHES, nonMatchKey };

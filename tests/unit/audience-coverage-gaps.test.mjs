@@ -3,7 +3,7 @@ import assert from 'node:assert';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { openShowCoverageGaps } = require('../../scripts/lib/audience-coverage-gaps.js');
+const { openShowCoverageGaps, nonMatchKey } = require('../../scripts/lib/audience-coverage-gaps.js');
 
 // Reproduces the 2026-06-22 Encores La Cage miss: Mezzanine had the City Center
 // production (85 ratings) but the matcher never linked it, and the existing
@@ -50,5 +50,33 @@ describe('openShowCoverageGaps', () => {
     assert.deepStrictEqual(openShowCoverageGaps([], openIds), []);
     assert.deepStrictEqual(openShowCoverageGaps(null, openIds), []);
     assert.deepStrictEqual(openShowCoverageGaps([{ source: 'X' }, null, { flagged: null }], openIds), []);
+  });
+
+  test('suppresses an operator-confirmed non-match (Archduke cross-production)', () => {
+    // Uses the EXACT production shape: source 'Theatr' (capitalized, as health-
+    // check.js passes it), theatrName 'Archduke', ourShowId archduke-west-end-2026.
+    const report = {
+      source: 'Theatr',
+      flagged: [
+        { ourShowId: 'archduke-west-end-2026', ourTitle: 'Archduke', theatrName: 'Archduke', eventCategory: 'Off & Off-Off Broadway', watched: 102, ratingsCount: 102, jaccard: 1 },
+      ],
+    };
+    const gaps = openShowCoverageGaps([report], new Set(['archduke-west-end-2026']));
+    assert.strictEqual(gaps.length, 0, 'confirmed non-match must be suppressed regardless of source capitalization');
+  });
+
+  test('suppression is specific — a DIFFERENT show with the same source name still gaps', () => {
+    const report = {
+      source: 'Theatr',
+      flagged: [
+        { ourShowId: 'archduke-broadway-2099', ourTitle: 'Archduke', theatrName: 'Archduke', watched: 102 },
+      ],
+    };
+    const gaps = openShowCoverageGaps([report], new Set(['archduke-broadway-2099']));
+    assert.strictEqual(gaps.length, 1, 'only the confirmed (name,show) pair is suppressed, not the title globally');
+  });
+
+  test('nonMatchKey is case-insensitive on source', () => {
+    assert.strictEqual(nonMatchKey('Theatr', 'Archduke', 'archduke-west-end-2026'), nonMatchKey('theatr', 'archduke', 'archduke-west-end-2026'));
   });
 });
