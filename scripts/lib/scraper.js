@@ -502,6 +502,17 @@ async function fetchWithPlaywright(url, options = {}) {
         console.warn(`  ⚠️  Playwright waitForSelector "${options.playwrightWaitForSelector}" timed out at ${url} — proceeding with partial content`);
       }
     }
+    // Dismiss any GDPR/consent banner so we read the article, not the consent
+    // wall. Best-effort: never throws. Fixes the recurring whatsonstage.com
+    // false "not a review" flag (Sinatra/Much Ado/Misanthrope opening nights).
+    // Skip via options.skipConsentDismiss if a caller already has its content.
+    if (!options.skipConsentDismiss) {
+      try {
+        const { dismissConsent } = require('./cookie-consent');
+        const clicked = await dismissConsent(page);
+        if (clicked) console.log(`  🍪 dismissed consent banner (${clicked})`);
+      } catch (_) { /* best-effort — proceed with whatever rendered */ }
+    }
     const content = await page.content();
     await page.close();
     if (context) {
