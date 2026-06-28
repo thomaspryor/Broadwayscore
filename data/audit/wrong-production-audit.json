@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-28T12:11:47.929Z",
+  "timestamp": "2026-06-28T13:12:12.803Z",
   "stats": {
-    "totalReviews": 39365,
-    "alreadyFlagged": 17533,
+    "totalReviews": 39359,
+    "alreadyFlagged": 17540,
     "dateGuardCatches": 34,
     "directorMismatch": 876,
     "tvFilmSignals": 1072,
-    "londonSignals": 695,
-    "offBroadwaySignals": 464,
+    "londonSignals": 697,
+    "offBroadwaySignals": 463,
     "yearMismatch": 84,
-    "noPublishDate": 3922
+    "noPublishDate": 3910
   },
   "findings": [
     {
@@ -8322,7 +8322,7 @@
       "file": "independent--alice-saville.json",
       "score": 58,
       "publishDate": "2026-06-18",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html?loginSuccessful=true",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -28257,6 +28257,20 @@
     },
     {
       "showId": "archduke-west-end-2026",
+      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "score": 58,
+      "publishDate": "2026-06-27",
+      "url": "https://www.allthatdazzles.co.uk/post/review-archduke-royal-court",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "archduke-west-end-2026",
       "file": "london-theatre--julia-rank.json",
       "score": 62,
       "publishDate": "2026-06-27",
@@ -30023,7 +30037,7 @@
       "file": "exeunt-magazine--loren-noveck.json",
       "score": 80,
       "publishDate": "2026-05-15T11:08:02-04:00",
-      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/",
+      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/#:~:text=Dad%20Don't%20Read%20This%20is%20messy%20and%20raw%20and,will%20keep%20it%20in%20my",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -35778,20 +35792,6 @@
       ]
     },
     {
-      "showId": "oratorio-for-living-things-off-broadway-2026",
-      "file": "nytimes--jesse-green.json",
-      "score": 90,
-      "publishDate": null,
-      "url": "https://www.nytimes.com/2022/03/30/theater/oratorio-for-living-things-review.html",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"ars nova\""
-        }
-      ]
-    },
-    {
       "showId": "orphans-2013",
       "file": "timeout--david-cote.json",
       "score": 42,
@@ -41273,6 +41273,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Contains TV/film keyword: \"season 2\""
+        }
+      ]
+    },
+    {
+      "showId": "the-truth-a-comedy-by-florian-zeller-west-end-2026",
+      "file": "plays-international--unknown.json",
+      "score": 79,
+      "publishDate": "2026-06-27",
+      "url": "https://playsinternational.org.uk/the-truth-apollo-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },

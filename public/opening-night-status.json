@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-28T12:11:52.768Z",
+  "generatedAt": "2026-06-28T13:12:19.247Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -392,28 +392,28 @@
       "status": "open",
       "slug": "archduke-west-end",
       "thumbnail": "/images/shows/archduke-west-end-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": 66,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 2,
+      "siteScore": 57.58,
+      "liveScore": 58,
+      "scoreDrift": 0.4200000000000017,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 3,
+      "total": 5,
       "t1": 0,
-      "t2": 2,
-      "t3": 1,
+      "t2": 3,
+      "t3": 2,
       "positive": 1,
-      "mixed": 2,
-      "negative": 0,
+      "mixed": 3,
+      "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "3/8 total",
+          "5/8 total",
           "T1:0/3",
           "T2:1/2",
-          "hi-conf:1/6"
+          "hi-conf:2/6"
         ],
-        "highConfidence": 1,
+        "highConfidence": 2,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -504,6 +504,18 @@
           "p": 1,
           "m": 2,
           "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-06-28T12:48:46.498Z",
+          "rc": 5,
+          "s": 57.58,
+          "t1": 0,
+          "t2": 3,
+          "t3": 2,
+          "p": 1,
+          "m": 3,
+          "n": 1,
           "bc": "waiting"
         }
       ]
