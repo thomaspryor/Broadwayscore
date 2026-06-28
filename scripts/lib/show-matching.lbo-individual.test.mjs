@@ -23,8 +23,11 @@ const SHOWS = [
   { id: 'glengarry-glen-ross-west-end-2026', title: 'Glengarry Glen Ross', category: 'west-end', market: 'west-end' },
   { id: 'sinatra-the-musical-west-end-2026', title: 'Sinatra the Musical', category: 'west-end', market: 'west-end' },
   { id: 'the-truth-a-comedy-by-florian-zeller-west-end-2026', title: 'The Truth: A Comedy by Florian Zeller', category: 'west-end', market: 'west-end' },
-  // Distractor: a Broadway show that must NOT capture West-End-market lookups.
-  { id: 'some-other-broadway-show-2026', title: 'Some Other Broadway Show', category: 'broadway', market: 'broadway' },
+  // Distractor with no token overlap — confirms the matcher does not reach for
+  // an unrelated show. (matchSlugToShow ignores the market option; the sweep's
+  // cross-market scoping comes from pre-filtering the candidate pool, not this
+  // object's category.)
+  { id: 'some-other-show-2026', title: 'Some Other Show', category: 'west-end', market: 'west-end' },
 ];
 
 const postSlug = (url) =>

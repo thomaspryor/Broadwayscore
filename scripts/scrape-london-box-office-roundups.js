@@ -624,8 +624,10 @@ async function scrapeLBORoundups() {
       .replace(/^\/news\/post\//, '')
       .replace(/\/$/, '');
 
-    // 1. Venue-agnostic slug match (primary).
-    let match = matchSlugToShow(postSlug, weShows, { market: 'west-end' });
+    // 1. Venue-agnostic slug match (primary). matchSlugToShow ignores the
+    //    market option — cross-market scoping comes from `weShows` already being
+    //    pre-filtered to London productions (see weShows construction above).
+    let match = matchSlugToShow(postSlug, weShows);
     let via = 'slug';
 
     // 2. Legacy title-extraction fallback for odd URL shapes the slug matcher
@@ -666,9 +668,16 @@ async function scrapeLBORoundups() {
     try {
       const auditPath = path.join('data', 'audit', 'lbo-unmatched-individual-reviews.json');
       fs.mkdirSync(path.dirname(auditPath), { recursive: true });
-      const probableMisses = unmatchedIndividual.filter(
-        (u) => u.probableShow && !matchedIndividual.some((m) => m.show.id === u.probableShow)
-      );
+      // Every entry already has a probableShow (only those are pushed). Do NOT
+      // drop a miss just because another URL matched the same show this run — a
+      // show can have several distinct critic reviews, and a second missing one
+      // must still surface, or the visibility goal is defeated. Dedup by URL.
+      const seenUrls = new Set();
+      const probableMisses = unmatchedIndividual.filter((u) => {
+        if (!u.probableShow || seenUrls.has(u.url)) return false;
+        seenUrls.add(u.url);
+        return true;
+      });
       fs.writeFileSync(auditPath, JSON.stringify({
         generatedAt: new Date().toISOString(),
         note: 'LBO individual review URLs from the news sitemap that look like a tracked West End show but did not match high-confidence. Review and ingest manually (gather-reviews.yml -f shows=<id>) or extend matching.',
