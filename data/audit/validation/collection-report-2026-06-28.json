@@ -1,23 +1,23 @@
 {
-  "runDate": "2026-06-28T15:53:19.243Z",
+  "runDate": "2026-06-28T15:53:13.324Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "the-misanthrope-west-end-2026",
+    "showFilter": "the-truth-a-comedy-by-florian-zeller-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 2,
+    "processed": 2,
+    "failed": 3,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "40.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 2,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -27,22 +27,22 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 1,
+    "tier1Attempts": 4,
+    "tier1Success": 4,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 1,
-    "tier2Success": 0,
+    "tier2Success": 1,
     "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 2,
+    "tier4Attempts": 1,
     "tier4Success": 0,
-    "totalFailed": 2,
-    "scrapingBeePageCredits": 10,
+    "totalFailed": 3,
+    "scrapingBeePageCredits": 1,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -50,13 +50,20 @@
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/financialtimes--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json"
+  ],
   "failed": [
-    "the-misanthrope-west-end-2026/times-uk--clive-davis.json",
-    "the-misanthrope-west-end-2026/times-uk--sam-marlowe.json"
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/daily-mail--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/the-upcoming-uk--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/whatsonstage--editorial-staff.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "the-truth-a-comedy-by-florian-zeller-west-end-2026/financialtimes--unknown.json",
+      "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
