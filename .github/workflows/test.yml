@@ -39,6 +39,11 @@ on:
       - 'scripts/validate-show-venue.js'
       - 'scripts/lib/review-write-guard.js'
       - 'scripts/lib/show-matching.js'
+      # LBO sitemap sweep — venue-agnostic individual-review matching + the
+      # colocated regression test. Without these, an edit pushes with ZERO CI
+      # (Archduke/Royal Court silent-miss class, 2026-06-27).
+      - 'scripts/scrape-london-box-office-roundups.js'
+      - 'scripts/lib/show-matching.lbo-individual.test.mjs'
       - 'scripts/lib/feedback-dedup.js'
       # Show dedup (title normalization + checkForDuplicate) feeds both the
       # discover-new-shows creation guard and validate-data's catalog scan.

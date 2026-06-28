@@ -26,7 +26,7 @@ const path = require('path');
 const https = require('https');
 const { serpQuery } = require('./lib/url-discovery');
 const cheerio = require('cheerio');
-const { matchTitleToShow, loadShows, titleWordsMatch, validateRoundupPageTitle } = require('./lib/show-matching');
+const { matchTitleToShow, matchSlugToShow, loadShows, titleWordsMatch, validateRoundupPageTitle } = require('./lib/show-matching');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
@@ -601,21 +601,87 @@ async function scrapeLBORoundups() {
     matchedRoundups.push({ url, show: match.show, extractedTitle });
   }
 
-  // Match individual review URLs to shows
+  // Match individual review URLs to shows.
+  //
+  // Primary matcher is matchSlugToShow (token-based, venue-agnostic). The prior
+  // path — extractShowTitleFromIndividualUrl + matchTitleToShow — depended on a
+  // HARDCODED theatre-name list to strip the venue from the slug; any venue not
+  // in that list (e.g. Royal Court) left the title polluted, dropped the match
+  // to low confidence, and SILENTLY skipped the review. Archduke (Royal Court,
+  // 2026-06-27) was lost this way. matchSlugToShow has no venue list, so a
+  // missing theatre can no longer cause a silent miss.
+  //
+  // Anything that still fails to match high-confidence but looks like one of our
+  // tracked shows (medium title match) is recorded to an audit file instead of
+  // being dropped, so abbreviated-title URLs the slug matcher can't place
+  // (e.g. "much-ado-shakespeares-globe-review") stay VISIBLE.
   const matchedIndividual = [];
+  const unmatchedIndividual = [];
 
   for (const url of individualUrls) {
-    const extractedTitle = extractShowTitleFromIndividualUrl(url);
-    if (!extractedTitle) continue;
+    const postSlug = url
+      .replace(/^https?:\/\/[^/]+/, '')
+      .replace(/^\/news\/post\//, '')
+      .replace(/\/$/, '');
 
-    const match = matchTitleToShow(extractedTitle, weShows, { market: 'west-end' });
-    if (!match || !match.show) continue;
-    if (match.confidence !== 'high') {
-      console.log(`  [LOW CONFIDENCE] individual "${extractedTitle}" → ${match.show.title} (${match.confidence}) — skipped`);
-      continue;
+    // 1. Venue-agnostic slug match (primary).
+    let match = matchSlugToShow(postSlug, weShows, { market: 'west-end' });
+    let via = 'slug';
+
+    // 2. Legacy title-extraction fallback for odd URL shapes the slug matcher
+    //    can't parse.
+    if (!match || !match.show || match.confidence !== 'high') {
+      const extractedTitle = extractShowTitleFromIndividualUrl(url);
+      const tMatch = extractedTitle
+        ? matchTitleToShow(extractedTitle, weShows, { market: 'west-end' })
+        : null;
+      if (tMatch && tMatch.show && tMatch.confidence === 'high') {
+        match = tMatch;
+        via = 'title';
+      } else {
+        // Not high-confidence. Record probable misses (looks like one of ours)
+        // for visibility instead of silently skipping.
+        const probable = (match && match.show) ? match : tMatch;
+        if (probable && probable.show) {
+          unmatchedIndividual.push({
+            url,
+            extractedTitle: extractedTitle || postSlug,
+            probableShow: probable.show.id,
+            confidence: probable.confidence || 'unknown',
+          });
+        }
+        match = null;
+      }
     }
+
+    if (!match || !match.show) continue;
     if (targetShowIds && !targetShowIds.includes(match.show.id)) continue;
-    matchedIndividual.push({ url, show: match.show, extractedTitle });
+    matchedIndividual.push({ url, show: match.show, extractedTitle: postSlug, via });
+  }
+
+  // Persist probable-miss audit so silent drops become visible. Only writes when
+  // a tracked-show candidate exists, so genuinely off-West-End fringe reviews
+  // (which correctly match nothing) don't create noise.
+  if (!DRY_RUN) {
+    try {
+      const auditPath = path.join('data', 'audit', 'lbo-unmatched-individual-reviews.json');
+      fs.mkdirSync(path.dirname(auditPath), { recursive: true });
+      const probableMisses = unmatchedIndividual.filter(
+        (u) => u.probableShow && !matchedIndividual.some((m) => m.show.id === u.probableShow)
+      );
+      fs.writeFileSync(auditPath, JSON.stringify({
+        generatedAt: new Date().toISOString(),
+        note: 'LBO individual review URLs from the news sitemap that look like a tracked West End show but did not match high-confidence. Review and ingest manually (gather-reviews.yml -f shows=<id>) or extend matching.',
+        count: probableMisses.length,
+        reviews: probableMisses,
+      }, null, 2) + '\n');
+      if (probableMisses.length > 0) {
+        console.log(`::warning::${probableMisses.length} LBO individual review(s) look like tracked shows but were not auto-matched — see data/audit/lbo-unmatched-individual-reviews.json`);
+        stats.unmatchedIndividual = probableMisses.length;
+      }
+    } catch (err) {
+      console.log(`  [audit] failed to write unmatched-individual audit: ${err.message}`);
+    }
   }
 
   stats.matchedShows = matchedRoundups.length;
