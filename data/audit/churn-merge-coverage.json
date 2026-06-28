@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-06-28T05:48:34.166Z",
+    "generatedAt": "2026-06-28T06:38:02.171Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -9,9 +9,9 @@
   "summary": {
     "minChurn": 30,
     "flaggedCount": 1,
-    "exemptCount": 18,
+    "exemptCount": 17,
     "coveredCount": 45,
-    "highChurnTracked": 64
+    "highChurnTracked": 63
   },
   "flagged": [
     {
@@ -22,7 +22,7 @@
   "exempt": [
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 92
+      "churn": 93
     },
     {
       "path": "public/data/admin/critic-coverage.json",
@@ -42,7 +42,7 @@
     },
     {
       "path": "public/data/shows/dad-dont-read-this-off-broadway-2026.json",
-      "churn": 65
+      "churn": 66
     },
     {
       "path": "data/commercial-rss-state.json",
@@ -58,7 +58,7 @@
     },
     {
       "path": "public/data/shows/cyrano-de-bergerac-west-end-2026.json",
-      "churn": 47
+      "churn": 48
     },
     {
       "path": "public/data/shows/the-truth-a-comedy-by-florian-zeller-west-end-2026.json",
@@ -82,36 +82,32 @@
     },
     {
       "path": "public/data/shows/the-misanthrope-west-end-2026.json",
-      "churn": 38
+      "churn": 36
     },
     {
       "path": "data/show-score-urls.json",
       "churn": 35
-    },
-    {
-      "path": "public/data/shows/encores-la-cage-aux-folles-off-broadway-2026.json",
-      "churn": 30
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 561,
+      "churn": 569,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 544,
+      "churn": 552,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 519,
+      "churn": 520,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 378,
+      "churn": 377,
       "mergeAttr": "union"
     },
     {
@@ -131,7 +127,7 @@
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 98,
+      "churn": 99,
       "mergeAttr": "ours"
     },
     {
@@ -166,7 +162,7 @@
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 83,
+      "churn": 84,
       "mergeAttr": "ours"
     },
     {
@@ -176,7 +172,7 @@
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 73,
+      "churn": 74,
       "mergeAttr": "ours"
     },
     {
@@ -191,7 +187,7 @@
     },
     {
       "path": "data/audit/poller-backoff/spamalot-off-broadway-2026.json",
-      "churn": 54,
+      "churn": 55,
       "mergeAttr": "ours"
     },
     {
@@ -221,12 +217,12 @@
     },
     {
       "path": "data/audit/drift-state.json",
-      "churn": 47,
+      "churn": 46,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/market-misroutes.json",
-      "churn": 44,
+      "churn": 45,
       "mergeAttr": "ours"
     },
     {
