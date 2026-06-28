@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-28T08:03:05.758Z",
+  "timestamp": "2026-06-28T09:08:48.574Z",
   "stats": {
-    "totalReviews": 39332,
-    "alreadyFlagged": 17533,
+    "totalReviews": 39343,
+    "alreadyFlagged": 17529,
     "dateGuardCatches": 39,
-    "directorMismatch": 874,
+    "directorMismatch": 875,
     "tvFilmSignals": 1072,
-    "londonSignals": 684,
+    "londonSignals": 693,
     "offBroadwaySignals": 464,
     "yearMismatch": 84,
-    "noPublishDate": 3916
+    "noPublishDate": 3915
   },
   "findings": [
     {
@@ -8322,7 +8322,7 @@
       "file": "independent--alice-saville.json",
       "score": 58,
       "publishDate": "2026-06-18",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html?loginSuccessful=true",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -14781,6 +14781,19 @@
       "score": 85,
       "publishDate": "2024-03-28",
       "url": "https://www.londontheatre.co.uk/reviews/mj-the-musical-review-prince-edward-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"christopher wheeldon\" from mj-2022"
+        }
+      ]
+    },
+    {
+      "showId": "mj-the-musical-west-end-2024",
+      "file": "loureviews--louise-penn.json",
+      "publishDate": "2025-10-16",
+      "url": "https://loureviews.blog/2025/10/16/theatre-review-mj-the-musical-prince-edward/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -27696,6 +27709,19 @@
     },
     {
       "showId": "all-my-sons-west-end-2025",
+      "file": "loureviews--louise-penn.json",
+      "publishDate": "2025-11-22",
+      "url": "https://loureviews.blog/2025/11/22/theatre-review-all-my-sons-wyndhams/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "all-my-sons-west-end-2025",
       "file": "nytimes--houman-barekat.json",
       "score": 88,
       "publishDate": "November 24, 2025",
@@ -34612,6 +34638,32 @@
       ]
     },
     {
+      "showId": "much-ado-about-nothing-globe-off-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "publishDate": "2026-06-20",
+      "url": "https://www.londonboxoffice.co.uk/news/post/much-ado-shakespeares-globe-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-globe-off-west-end-2026",
+      "file": "theatreandtonic--penny-walshe.json",
+      "publishDate": "2026-06-21",
+      "url": "https://theatreandtonic.co.uk/blog/much-ado-about-nothing-at-shakespeares-globe-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "my-fair-lady-2018",
       "file": "broadwayworld--michael-dale.json",
       "score": 85,
@@ -35947,6 +35999,32 @@
     },
     {
       "showId": "pride-west-end-2026",
+      "file": "all-that-dazzles-uk--daz-gale.json",
+      "publishDate": "2026-06-25",
+      "url": "https://www.allthatdazzles.co.uk/post/review-pride-dorfman-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "pride-west-end-2026",
+      "file": "city-am--adam-bloodworth.json",
+      "publishDate": "2026-06-26",
+      "url": "https://www.cityam.com/pride-musical-at-the-national-theatre-review-ive-never-seen-so-many-people-in-tears/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "pride-west-end-2026",
       "file": "guardian--arifa-akbar.json",
       "publishDate": "2026-06-11",
       "url": "https://www.theguardian.com/stage/2026/jun/26/pride-review-dorfman-theatre-london",
@@ -35955,6 +36033,45 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "pride-west-end-2026",
+      "file": "independent--unknown.json",
+      "publishDate": "2026-06-25",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/pride-musical-review-national-theatre-b3003069.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "pride-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "publishDate": "2026-06-26",
+      "url": "https://www.londonboxoffice.co.uk/news/post/pride-national-theatre-dorfman-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "pride-west-end-2026",
+      "file": "londontheatre1--terry-eastham.json",
+      "publishDate": "2026-06-26",
+      "url": "https://www.londontheatre1.com/reviews/pride-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -40228,6 +40345,19 @@
       "score": 56,
       "publishDate": "2026-06-24",
       "url": "https://www.londontheatre1.com/reviews/the-misanthrope-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-misanthrope-west-end-2026",
+      "file": "south-london--unknown.json",
+      "publishDate": "2026-06-25",
+      "url": "https://southlondon.co.uk/area/southwark/review-the-misanthrope-at-national-theatre/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
