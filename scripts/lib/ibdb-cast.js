@@ -169,18 +169,26 @@ async function extractCastFromIBDBPage(url) {
     openingNightCast: [],
     currentCast: null,
     replacements: null,
-    ibdbUrl: url
+    ibdbUrl: url,
+    // fetchFailed distinguishes a TRANSIENT scrape failure (page didn't load /
+    // wasn't HTML / didn't parse) from a GENUINE empty (page loaded fine but the
+    // production has no Opening Night Cast on IBDB). Callers must not tombstone a
+    // transient failure as "0 cast" — that permanently blocks re-scraping (see
+    // backfill-cast.js). Hamilton was emptied this way by one bad scrape 2026-06-24.
+    fetchFailed: false
   };
 
   const content = await fetchIBDBPageHTML(url);
   if (!content) {
     console.log(`  ❌ Failed to fetch IBDB page`);
+    result.fetchFailed = true;
     return result;
   }
 
   // Need HTML content for DOM parsing
   if (!content.includes('<html') && !content.includes('<div')) {
     console.log(`  ⚠️  Content is not HTML — cannot parse cast tabs`);
+    result.fetchFailed = true;
     return result;
   }
 
@@ -189,6 +197,7 @@ async function extractCastFromIBDBPage(url) {
     dom = new JSDOM(content);
   } catch (e) {
     console.log(`  ⚠️  Failed to parse HTML: ${e.message}`);
+    result.fetchFailed = true;
     return result;
   }
 
@@ -345,7 +354,8 @@ async function lookupIBDBCast(title, options = {}) {
     openingNightCast: [],
     currentCast: null,
     ibdbUrl: null,
-    found: false
+    found: false,
+    fetchFailed: false
   };
 
   // IBDB is Broadway-only — skip for off-broadway and west-end shows
@@ -383,7 +393,9 @@ async function lookupIBDBCast(title, options = {}) {
 
     if (castData.openingNightCast.length === 0) {
       console.log(`  ❌ No OBC extracted from IBDB page for "${title}"`);
-      return { ...notFound, ibdbUrl: bestMatch.url };
+      // Propagate fetchFailed so the caller can tell a transient scrape miss
+      // (don't tombstone) from a genuinely cast-less production (tombstone OK).
+      return { ...notFound, ibdbUrl: bestMatch.url, fetchFailed: castData.fetchFailed };
     }
 
     // Title validation: skip when using a pre-known stored URL (already verified by prior lookup)
@@ -448,7 +460,8 @@ async function lookupIBDBCast(title, options = {}) {
 
   } catch (e) {
     console.log(`  ⚠️  IBDB cast lookup failed for "${title}": ${e.message}`);
-    return notFound;
+    // A thrown error (network, search API, scraper) is transient by nature.
+    return { ...notFound, fetchFailed: true };
   }
 }
 
