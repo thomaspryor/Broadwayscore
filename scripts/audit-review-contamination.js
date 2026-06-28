@@ -47,6 +47,19 @@ const REGISTRY_PATH = path.join(__dirname, '..', 'data', 'outlet-registry.json')
 // Parse args
 const args = process.argv.slice(2);
 const STRICT = args.includes('--strict');
+// --gate: blocking CATASTROPHE FLOOR for the per-push trunk (test.yml), distinct
+// from --strict (any strict-class hit fails — for the daily/manual full audit).
+// The review-texts corpus (39k files in a separate private repo) is mutated by
+// data bots every ~2min; --strict therefore reddened the trunk for EVERY unrelated
+// code push whenever any single pre-existing/parallel-introduced C/E/F file existed
+// (china-doll FT/Guardian, 2026-06-28). --gate blocks only on a genuine integrity
+// catastrophe — a cross-market leak (class A: wrong show's reviews shown) or a mass
+// spike past GATE_FLOOR — and lets single-file drift surface without blocking. The
+// FULL --strict triage runs daily in check-corpus-drift.yml (review-contamination
+// audit), surfaced non-blocking in the digest — the net for sub-floor E/F drift.
+// Same split already applied to audit-text-quality --gate and check-corpus-drift.yml.
+const GATE = args.includes('--gate');
+const GATE_FLOOR = 25;
 const JSON_OUT = args.includes('--json');
 const classesIdx = args.findIndex(a => a.startsWith('--classes'));
 let ONLY_CLASSES = null;
@@ -577,6 +590,20 @@ const strictHits = Object.entries(hits)
     return STRICT_CLASSES.has(classLetter);
   })
   .reduce((sum, [, arr]) => sum + arr.length, 0);
+
+// --gate: catastrophe floor only. A cross-market leak (class A — wrong show's
+// reviews shown to users) ALWAYS blocks; otherwise block only on a mass spike past
+// GATE_FLOOR. Single-file C/E/F drift is printed above but does NOT fail the trunk.
+if (GATE) {
+  const { shouldBlockContaminationGate } = require('./lib/contamination-gate');
+  const crossMarketLeaks = hits.A_cross_market.length;
+  if (shouldBlockContaminationGate({ crossMarketLeaks, strictHits, floor: GATE_FLOOR })) {
+    console.error(`\n❌ GATE: ${crossMarketLeaks} cross-market leak(s) (class A, zero-tolerance) + ${strictHits} strict hit(s) vs floor ${GATE_FLOOR}. Failing.`);
+    process.exit(1);
+  }
+  console.log(`\n✅ GATE: 0 cross-market leaks, ${strictHits} strict hit(s) ≤ floor ${GATE_FLOOR}. Non-catastrophic — surfaced above, not blocking the trunk. Full --strict triage runs daily in check-corpus-drift.yml (→ digest).`);
+  process.exit(0);
+}
 
 if (STRICT && strictHits > 0) {
   console.error(`\n❌ STRICT mode: ${strictHits} contamination issue(s) in strict classes. Failing.`);
