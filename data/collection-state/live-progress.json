@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-06-28T00:41:39.818Z",
+  "updatedAt": "2026-06-28T00:44:13.723Z",
   "processed": 573,
-  "failed": 1006,
-  "successRate": "36.3%",
+  "failed": 1033,
+  "successRate": "35.7%",
   "tierBreakdown": {
     "playwright": 265,
     "amp": 0,
@@ -10,17 +10,11 @@
     "directCookies": 0,
     "scrapingbee": 103,
     "brightdata": 57,
-    "archiveToday": 99,
+    "archiveToday": 103,
     "archive": 186
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-06-27T20:04:33.968Z",
-      "event": "bb-session",
-      "session": "b1d6541c",
-      "url": "https://www.wsj.com/articles/SB10001424052748704187204575101443623615472"
-    },
     {
       "t": "2026-06-27T20:04:34.950Z",
       "event": "bb-cookie-inject",
@@ -124,6 +118,12 @@
       "t": "2026-06-28T00:01:36.379Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-28T00:32:29.809Z",
+      "event": "bb-session",
+      "session": "c92cc114",
+      "url": "https://www.facebook.com/SinittaOfficial/posts/heading-to-see-the-opening-of-sin"
     }
   ]
 }
