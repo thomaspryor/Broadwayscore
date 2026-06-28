@@ -286,20 +286,48 @@ function parseExtractedRow(cells: string[]): BWWRowData | null {
   const split = splitShowTheater(cells[0]?.trim() || '');
   if (!split) return null;
 
-  return {
+  // BWW grosses table layout (verified 2026-06-28). BWW dropped the two
+  // year-over-year *gross* columns it used to carry, shifting every later
+  // column two slots left. The columns are now:
+  //   [0] Show / Theater
+  //   [1] This-week gross        [2] Last-week gross     [3] gross diff ($)
+  //   [4] "ATP TopTicket"        e.g. "101.74 $344.00"  → ATP is first token
+  //   [5] "Attendance Seats"     e.g. "5,918 8,208"     → attendance is first token
+  //   [6] Performances
+  //   [7] Capacity % this week   [8] Capacity % prev wk  [9] capacity diff (%)
+  // grossYoY is no longer published in this table; it's enriched from history
+  // (prior-year gross) downstream. See feedback_scraper_table_assertions.
+  const row: BWWRowData = {
     show: split.show,
     theater: split.theater,
     gross: parseCurrency(cells[1]),
     grossPrevWeek: parseCurrency(cells[2]),
-    // cells[3] = diff vs prev week (skip)
-    grossYoY: parseCurrency(cells[4]),
-    // cells[5] = diff vs last year (skip)
-    atp: parseCurrency(cells[6]?.split(/\s+/)?.[0]),         // "ATP TopTicket" → first value
-    attendance: parseNumber(cells[7]?.split(/\s+/)?.[0]),     // "Attendance Capacity" → first value
-    performances: parseNumber(cells[8]),
-    capacityPct: parsePercentage(cells[9]),
-    capacityPctPrevWeek: parsePercentage(cells[10]),
+    // cells[3] = week-over-week gross diff (skip)
+    grossYoY: null, // enriched from history (prior-year gross); not in the table anymore
+    atp: parseCurrency(cells[4]?.split(/\s+/)?.[0]),         // "ATP TopTicket" → ATP (first value)
+    attendance: parseNumber(cells[5]?.split(/\s+/)?.[0]),    // "Attendance Seats" → attendance (first value)
+    performances: parseNumber(cells[6]),
+    capacityPct: parsePercentage(cells[7]),
+    capacityPctPrevWeek: parsePercentage(cells[8]),
+    // cells[9] = capacity diff (skip)
   };
+
+  // Structural sanity guard — if BWW shifts columns again, these ranges break
+  // and we drop the row LOUDLY instead of silently shipping garbage (the
+  // 2026-06 incident: ATP read as "8", capacity as 0.25%, perf as 100).
+  if (row.gross != null) {
+    const sane =
+      (row.atp == null || (row.atp >= 15 && row.atp <= 1000)) &&
+      (row.performances == null || (row.performances >= 1 && row.performances <= 16)) &&
+      (row.capacityPct == null || (row.capacityPct >= 5 && row.capacityPct <= 120));
+    if (!sane) {
+      console.warn(`  ⚠ Dropping "${split.show}" — implausible parsed values ` +
+        `(atp=${row.atp}, perf=${row.performances}, cap=${row.capacityPct}). BWW columns may have shifted.`);
+      return null;
+    }
+  }
+
+  return row;
 }
 
 function extractWeekEndingFromTitle(title: string): string | null {
@@ -833,6 +861,7 @@ async function scrapeGrosses(): Promise<void> {
   let atpWoWCount = 0;
   let capYoYCount = 0;
   let atpYoYCount = 0;
+  let grossYoYCount = 0;
 
   for (const [slug, data] of Object.entries(grossesData.shows)) {
     if (!data.thisWeek) continue;
@@ -844,9 +873,16 @@ async function scrapeGrosses(): Promise<void> {
       atpWoWCount++;
     }
 
-    // Capacity YoY and ATP YoY from ~52 weeks ago in history
+    // Gross / Capacity / ATP YoY from ~52 weeks ago in history. BWW stopped
+    // publishing YoY gross in-table (2026-06), so the prior-year absolute gross
+    // now comes from our own history snapshot — which is what the newsletter's
+    // market-YoY aggregate expects (a comparable dollar value, not a percent).
     const yoyWeek = getYoYData(history, weekISO, slug);
     if (yoyWeek) {
+      if (yoyWeek.gross != null) {
+        data.thisWeek.grossYoY = yoyWeek.gross;
+        grossYoYCount++;
+      }
       if (yoyWeek.capacity != null) {
         data.thisWeek.capacityYoY = yoyWeek.capacity;
         capYoYCount++;
@@ -858,7 +894,7 @@ async function scrapeGrosses(): Promise<void> {
     }
   }
 
-  console.log(`  History enrichment: ATP WoW=${atpWoWCount}, Capacity YoY=${capYoYCount}, ATP YoY=${atpYoYCount}`);
+  console.log(`  History enrichment: Gross YoY=${grossYoYCount}, ATP WoW=${atpWoWCount}, Capacity YoY=${capYoYCount}, ATP YoY=${atpYoYCount}`);
 
   // Save current week snapshot to history
   const currentSnapshot: Record<string, HistoryEntry> = {};
