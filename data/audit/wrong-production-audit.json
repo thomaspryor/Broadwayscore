@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-28T18:24:43.162Z",
+  "timestamp": "2026-06-28T21:06:21.920Z",
   "stats": {
-    "totalReviews": 39547,
+    "totalReviews": 39549,
     "alreadyFlagged": 17429,
     "dateGuardCatches": 34,
     "directorMismatch": 886,
     "tvFilmSignals": 1085,
-    "londonSignals": 701,
+    "londonSignals": 702,
     "offBroadwaySignals": 467,
     "yearMismatch": 84,
-    "noPublishDate": 3966
+    "noPublishDate": 3969
   },
   "findings": [
     {
@@ -1282,6 +1282,7 @@
     {
       "showId": "an-ideal-husband-west-end-2026",
       "file": "london-box-office--stuart-king.json",
+      "score": 51,
       "publishDate": "2026-05-17",
       "url": "https://www.londonboxoffice.co.uk/news/post/an-ideal-husband-lyric-hammersmith-review",
       "findings": [
@@ -2015,6 +2016,7 @@
     {
       "showId": "beetlejuice-west-end-2026",
       "file": "london-box-office--shehrazade-zafar-arif.json",
+      "score": 98,
       "publishDate": "2026-05-27",
       "url": "https://www.londonboxoffice.co.uk/news/post/beetlejuice-prince-edward-review",
       "findings": [
@@ -8460,7 +8462,7 @@
       "file": "independent--alice-saville.json",
       "score": 58,
       "publishDate": "2026-06-18",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html?loginSuccessful=true",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -11044,7 +11046,7 @@
     {
       "showId": "in-transit-2016",
       "file": "variety--frank-rizzo.json",
-      "score": 80,
+      "score": 79,
       "publishDate": "December 11th, 2016",
       "url": "http://variety.com/2016/legit/reviews/in-transit-review-musical-1201939482/",
       "findings": [
@@ -28600,6 +28602,20 @@
       "score": 58,
       "publishDate": "2026-06-27",
       "url": "https://www.allthatdazzles.co.uk/post/review-archduke-royal-court",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "archduke-west-end-2026",
+      "file": "guardian--mark-lawson.json",
+      "score": 80,
+      "publishDate": null,
+      "url": "https://www.theguardian.com/stage/2026/jun/28/archduke-review-royal-court-london-rajiv-joseph",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
