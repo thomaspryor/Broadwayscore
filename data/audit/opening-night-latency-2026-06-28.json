@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-28T11:00:23.437Z",
+  "generatedAt": "2026-06-28T11:56:05.503Z",
   "date": "2026-06-28",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 534713,
+  "entryCount": 536967,
   "shows": [
     {
       "showId": "an-ideal-husband-west-end-2026",
@@ -2181,7 +2181,7 @@
     },
     {
       "showId": "proof-2026",
-      "reviewCount": 28,
+      "reviewCount": 27,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -10356,7 +10356,7 @@
     },
     {
       "showId": "the-truth-a-comedy-by-florian-zeller-west-end-2026",
-      "reviewCount": 20,
+      "reviewCount": 21,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -11856,7 +11856,7 @@
     },
     {
       "showId": "pride-west-end-2026",
-      "reviewCount": 13,
+      "reviewCount": 16,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -11916,7 +11916,7 @@
     },
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
-      "reviewCount": 17,
+      "reviewCount": 18,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -12036,6 +12036,21 @@
     },
     {
       "showId": "the-play-that-goes-wrong-2019",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-winters-tale-off-broadway",
       "reviewCount": 1,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
