@@ -45,21 +45,34 @@ const CI_UNFETCHABLE_OUTLETS = new Set(['wsj', 'newyorker']);
 // We MUST read both: reading only `reviews` silently drops a third of WET archives
 // to zero — the exact silent-gate trap the census exists to prevent. Kept here (not
 // a scraper) because the WET scraper requires a rendered-page browser path we don't
-// want in the audit; the archive is the stable contract. `ratings` rows are
-// normalized into census shape (outletId via normalizeOutlet, reviewUrl→url).
+// want in the audit; the archive is the stable contract.
+//
+// outletId is ALWAYS re-derived from the outlet NAME via normalizeOutlet, never
+// trusted from the archive's baked `outletId`. Unlike the live extractors
+// (theatre.reviews / The Stage) which normalize at census time, WET archives are
+// pre-extracted and frozen on disk — their baked ids reflect an OLD normalizeOutlet
+// (e.g. Daily Express→"the-express", The Sunday Times→"the-sun") and no longer
+// reconcile with reviews.json's current ids ("express-uk"/"times-uk"). Trusting them
+// split the same outlet into two census entries → a present, scored outlet read as
+// `missing` → false-incomplete → needless re-dispatch (caught running the real audit
+// on hercules-west-end-2025; 18/441 rows were stale). Re-normalizing makes WET behave
+// like the live sources. See [[feedback_includability_predicates_must_be_canonical]].
+function normalizeWetRow(r) {
+  return { ...r, outletId: r.outlet ? normalizeOutlet(r.outlet) : r.outletId };
+}
 function parseWetArchive(content /*, showId */) {
   const data = JSON.parse(content);
-  if (Array.isArray(data)) return data.filter((r) => r && (r.outletId || r.outlet));
+  if (Array.isArray(data)) return data.filter((r) => r && (r.outletId || r.outlet)).map(normalizeWetRow);
   const reviews = (data && data.reviews) || [];
   const rich = reviews.filter((r) => r && (r.outletId || r.outlet));
-  if (rich.length) return rich;
+  if (rich.length) return rich.map(normalizeWetRow);
   // Fall back to the star-table format.
   const ratings = (data && data.ratings) || [];
   return ratings
     .filter((r) => r && r.outlet)
     .map((r) => ({
       outlet: r.outlet,
-      outletId: r.outletId || normalizeOutlet(r.outlet),
+      outletId: normalizeOutlet(r.outlet),
       critic: r.critic || 'Unknown',
       stars: r.stars != null ? r.stars : null,
       url: r.url || r.reviewUrl || '',

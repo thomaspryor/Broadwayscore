@@ -158,6 +158,30 @@ test('WET .json ratings-only shape is unioned (NOT silently dropped) — outletI
   fs.rmSync(dir, { recursive: true, force: true });
 });
 
+test('WET rich row with a STALE baked outletId is re-normalized from the outlet name', () => {
+  // WET archives are pre-extracted/frozen; their baked outletId reflects an OLD
+  // normalizeOutlet (Daily Express→"the-express", The Sunday Times→"the-sun") that
+  // no longer matches reviews.json ("express-uk"/"times-uk"). Trusting it splits one
+  // outlet into two census entries → present+scored outlet reads as missing →
+  // false-incomplete → needless re-dispatch. Re-derive outletId from the name.
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'census-wetn-'));
+  fs.mkdirSync(path.join(dir, 'westendtheatre'));
+  fs.writeFileSync(path.join(dir, 'westendtheatre', 'show-n.json'), JSON.stringify({
+    reviews: [
+      { outlet: 'Daily Express', outletId: 'the-express', critic: 'A', stars: 4, url: 'e.com/r' },
+      { outlet: 'The Sunday Times', outletId: 'the-sun', critic: 'B', stars: 3, url: 's.com/r' },
+    ],
+  }));
+  const c = buildCensusFromArchives('show-n', { archiveDir: dir });
+  const ids = c.entries.map((e) => e.outletId).sort();
+  // normalizeOutlet collapses these to the canonical ids reviews.json uses.
+  assert.deepEqual(ids, ['express-uk', 'times-uk'], 'stale baked ids re-normalized, not trusted');
+  assert.ok(!ids.includes('the-express') && !ids.includes('the-sun'), 'no stale id leaks into the census');
+  // Now a show whose reviews.json HAS express-uk scored reads as complete, not missing.
+  assert.equal(censusVerdict(c, new Set(['express-uk', 'times-uk'])).verdict, 'complete');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
 test('truly-empty WET archive (no reviews, no ratings) → zeroExtract, never silent', () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'census-wete-'));
   fs.mkdirSync(path.join(dir, 'westendtheatre'));
