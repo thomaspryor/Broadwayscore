@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-28T22:16:11.572Z",
+  "timestamp": "2026-06-28T22:50:59.121Z",
   "stats": {
-    "totalReviews": 39546,
+    "totalReviews": 39547,
     "alreadyFlagged": 17434,
     "dateGuardCatches": 34,
     "directorMismatch": 887,
-    "tvFilmSignals": 1085,
+    "tvFilmSignals": 1086,
     "londonSignals": 703,
     "offBroadwaySignals": 467,
     "yearMismatch": 84,
-    "noPublishDate": 3953
+    "noPublishDate": 3954
   },
   "findings": [
     {
@@ -1823,6 +1823,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "becky-shaw-2026",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "publishDate": null,
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-G6WH9I",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hbo max\""
         }
       ]
     },
@@ -8462,7 +8475,7 @@
       "file": "independent--alice-saville.json",
       "score": 58,
       "publishDate": "2026-06-18",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html?loginSuccessful=true",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -40839,7 +40852,7 @@
       "file": "thestage--dave-fargnoli.json",
       "score": 38,
       "publishDate": "2026-06-24",
-      "url": "https://www.thestage.co.uk/reviews/the-misanthrope-review-lyttelton-national-theatre-london-sandra-oh",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-misanthrope-review-sandra-oh-what-a-disappointment-sbzvf82b2?t=1782310602034",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
