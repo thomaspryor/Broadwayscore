@@ -509,8 +509,13 @@ async function fetchWithPlaywright(url, options = {}) {
     if (!options.skipConsentDismiss) {
       try {
         const { dismissConsent } = require('./cookie-consent');
-        const clicked = await dismissConsent(page);
-        if (clicked) console.log(`  🍪 dismissed consent banner (${clicked})`);
+        const r = await dismissConsent(page);
+        if (r.clicked && !r.navigatedAway) console.log(`  🍪 dismissed consent banner (${r.clicked})`);
+        // If the consent click navigated off-page, try to return to the article
+        // so page.content() captures the review, not the redirect target.
+        if (r.navigatedAway) {
+          try { await page.goBack({ waitUntil: 'domcontentloaded', timeout: 8000 }); } catch (_) {}
+        }
       } catch (_) { /* best-effort — proceed with whatever rendered */ }
     }
     const content = await page.content();
