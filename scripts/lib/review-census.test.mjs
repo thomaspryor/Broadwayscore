@@ -113,3 +113,70 @@ test('buildCensusFromArchives flags zeroExtract: archive present but parser retu
   assert.equal(census.count, 1);
   fs.rmSync(dir, { recursive: true, force: true });
 });
+
+// ─── WET + The Stage wiring (real sourceExtractors, real per-source ext) ─────────
+// These exercise the actual default sources, not injected stubs: a regression in
+// the WET JSON parser, the ratings fallback, or the Stage extractor fails here.
+
+test('buildCensusFromArchives reads WestEndTheatre .json (rich reviews shape)', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'census-wet-'));
+  fs.mkdirSync(path.join(dir, 'westendtheatre'));
+  fs.writeFileSync(path.join(dir, 'westendtheatre', 'show-w.json'), JSON.stringify({
+    reviews: [
+      { outlet: 'The Guardian', outletId: 'guardian', critic: 'Arifa Akbar', stars: 4, url: 'g.com/r' },
+      { outlet: 'The Stage', outletId: 'thestage', critic: 'Tim Bano', stars: 3, url: 's.com/r' },
+    ],
+  }));
+  const c = buildCensusFromArchives('show-w', { archiveDir: dir });
+  assert.equal(c.hadAnySource, true);
+  assert.deepEqual(c.sourcesPresent, ['westendtheatre']);
+  assert.equal(c.count, 2);
+  assert.deepEqual(c.zeroExtract, [], 'rich archive must not flag zeroExtract');
+  const g = c.entries.find((e) => e.outletId === 'guardian');
+  assert.equal(g.url, 'g.com/r');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('WET .json ratings-only shape is unioned (NOT silently dropped) — outletId + reviewUrl normalized', () => {
+  // ~1/3 of real WET archives carry only the star table {ratings:[{outlet,stars}]},
+  // no outletId/url. Reading only `reviews` would zero them — the silent-gate trap.
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'census-wetr-'));
+  fs.mkdirSync(path.join(dir, 'westendtheatre'));
+  fs.writeFileSync(path.join(dir, 'westendtheatre', 'show-r.json'), JSON.stringify({
+    ratings: [
+      { outlet: 'The Standard', stars: 5 },
+      { outlet: 'The Telegraph', stars: 4, critic: 'Claire Allfree', reviewUrl: 't.com/r' },
+    ],
+  }));
+  const c = buildCensusFromArchives('show-r', { archiveDir: dir });
+  assert.equal(c.count, 2, 'ratings-only archive contributes to the census');
+  assert.deepEqual(c.zeroExtract, [], 'ratings fallback means the archive is NOT zeroExtract');
+  const tel = c.entries.find((e) => e.outletId === 'telegraph');
+  assert.ok(tel, 'outletId derived via normalizeOutlet from "The Telegraph"');
+  assert.equal(tel.critic, 'Claire Allfree');
+  assert.equal(tel.url, 't.com/r', 'reviewUrl mapped to census url');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('truly-empty WET archive (no reviews, no ratings) → zeroExtract, never silent', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'census-wete-'));
+  fs.mkdirSync(path.join(dir, 'westendtheatre'));
+  fs.writeFileSync(path.join(dir, 'westendtheatre', 'show-e.json'), JSON.stringify({ ratings: [] }));
+  const c = buildCensusFromArchives('show-e', { archiveDir: dir });
+  assert.deepEqual(c.archivesPresent, ['westendtheatre'], 'file was present');
+  assert.deepEqual(c.zeroExtract, ['westendtheatre'], 'empty archive flags its own blindness');
+  assert.equal(c.hadAnySource, false);
+});
+
+test('buildCensusFromArchives reads The Stage .html via the pure (playwright-free) extractor', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'census-stage-'));
+  fs.mkdirSync(path.join(dir, 'thestage-roundups'));
+  fs.writeFileSync(path.join(dir, 'thestage-roundups', 'show-s.html'),
+    '<html><body><p>Susannah Clapp (<a href="https://www.theguardian.com/x">Guardian, ★★★★</a>) admired it.</p></body></html>');
+  const c = buildCensusFromArchives('show-s', { archiveDir: dir });
+  assert.deepEqual(c.sourcesPresent, ['thestage'], 'The Stage source is wired into the default census');
+  const g = c.entries.find((e) => e.outletId === 'guardian');
+  assert.ok(g, 'Stage extractor parsed the Guardian rating');
+  assert.equal(g.stars, 4);
+  fs.rmSync(dir, { recursive: true, force: true });
+});

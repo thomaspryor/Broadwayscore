@@ -52,6 +52,14 @@ on:
       # (Archduke/Royal Court silent-miss class, 2026-06-27).
       - 'scripts/scrape-london-box-office-roundups.js'
       - 'scripts/lib/show-matching.lbo-individual.test.mjs'
+      # Review census (WE coverage truth) + its WET-json/Stage-html sources and the
+      # pure Stage extractor pulled out of the playwright-laden scraper. Without
+      # these paths an edit pushes with ZERO CI and the colocated
+      # review-census.test.mjs never runs (silent-gate class, feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/review-census.js'
+      - 'scripts/lib/review-census.test.mjs'
+      - 'scripts/lib/thestage-extract.js'
+      - 'scripts/scrape-thestage-roundups.js'
       - 'scripts/lib/feedback-dedup.js'
       # Show dedup (title normalization + checkForDuplicate) feeds both the
       # discover-new-shows creation guard and validate-data's catalog scan.
