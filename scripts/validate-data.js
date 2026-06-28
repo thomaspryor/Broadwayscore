@@ -27,7 +27,7 @@ const { wouldBeIncludedInRebuild, passesFlagFilters, hasValidScore } = require('
 // Canonical valid-tier list — propagates when TIER_WEIGHTS changes.
 const { VALID_TIERS } = require('./lib/outlet-tiers');
 const { buildOutletMaps } = require('./lib/outlet-region-map');
-const { previewsAfterOpening, inheritedDateFromSibling, suspiciousInheritedYear, normTitle } = require('./lib/show-date-integrity');
+const { previewsAfterOpening, excessivePreviewGap, inheritedDateFromSibling, suspiciousInheritedYear, normTitle } = require('./lib/show-date-integrity');
 
 // Canonical Broadway-category predicate. Treats null category as Broadway
 // per historical-import convention; use this instead of raw string compare.
@@ -485,6 +485,14 @@ function validateDates(shows) {
     // 2024-12-04 after its 2024-05-22 opening because this was only a warning.
     if (previewsAfterOpening(show)) {
       error(`Show "${show.title}" (${show.id}) has previewsStartDate (${show.previewsStartDate}) AFTER openingDate (${show.openingDate}) — previews precede opening.`);
+    }
+
+    // Previews implausibly far BEFORE opening = wrong-production previews date (cross-source
+    // backstop for the sunset-baby class: previews 2013-12-17 on a 2024 revival). COVID-delayed
+    // shows are exempt. The primary OB enricher already vetoes >60d shifts; this catches the
+    // diffuse/older writers that bypass it.
+    else if (excessivePreviewGap(show)) {
+      error(`Show "${show.title}" (${show.id}) has previewsStartDate (${show.previewsStartDate}) implausibly far before openingDate (${show.openingDate}) — likely a wrong-production previews date.`);
     }
 
     // Inherited namesake date: this show's opening/previews date is byte-identical to a
