@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-06-28T10:41:58.557Z",
+  "timestamp": "2026-06-28T11:35:27.906Z",
   "stats": {
-    "totalReviews": 39353,
+    "totalReviews": 39352,
     "alreadyFlagged": 17533,
     "dateGuardCatches": 34,
-    "directorMismatch": 875,
+    "directorMismatch": 876,
     "tvFilmSignals": 1072,
-    "londonSignals": 694,
+    "londonSignals": 695,
     "offBroadwaySignals": 464,
     "yearMismatch": 84,
     "noPublishDate": 3913
@@ -8322,7 +8322,7 @@
       "file": "independent--alice-saville.json",
       "score": 58,
       "publishDate": "2026-06-18",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html?loginSuccessful=true",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -12318,6 +12318,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
+        }
+      ]
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "score": 88,
+      "publishDate": "2026-03-26",
+      "url": "https://www.londonboxoffice.co.uk/news/post/royal-court-john-proctor-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -30004,7 +30023,7 @@
       "file": "exeunt-magazine--loren-noveck.json",
       "score": 80,
       "publishDate": "2026-05-15T11:08:02-04:00",
-      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/#:~:text=Dad%20Don't%20Read%20This%20is%20messy%20and%20raw%20and,will%20keep%20it%20in%20my",
+      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/",
       "findings": [
         {
           "type": "DATE_GUARD",

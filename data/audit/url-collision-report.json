@@ -1,12 +1,39 @@
 {
-  "generatedAt": "2026-06-28T09:25:14.803Z",
+  "generatedAt": "2026-06-28T11:29:53.888Z",
   "summary": {
-    "total": 1,
-    "high": 0,
+    "total": 2,
+    "high": 1,
     "medium": 0,
     "low": 1
   },
   "collisions": [
+    {
+      "url": "https://theaterlife.com/henry-vi-a-trilogy-in-two-parts/",
+      "normalizedUrl": "https://theaterlife.com/henry-vi-a-trilogy-in-two-parts",
+      "candidates": [
+        {
+          "showId": "henry-vi-a-trilogy-in-two-parts-off-broadway",
+          "file": "theater-life--barry-gordin.json",
+          "publishDate": "2026-06-23T14:07:36",
+          "openingDate": null,
+          "hasScore": false,
+          "hasFullText": true,
+          "outletId": "theater-life"
+        },
+        {
+          "showId": "henry-vi-a-trilogy-in-two-parts-off-broadway-2026",
+          "file": "theater-life--unknown.json",
+          "publishDate": "2026-06-23",
+          "openingDate": "2026-06-09",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "theater-life"
+        }
+      ],
+      "suggestedWinner": "henry-vi-a-trilogy-in-two-parts-off-broadway-2026",
+      "reason": "publishDate 2026-06-23 is 14 days from henry-vi-a-trilogy-in-two-parts-off-broadway-2026 opening (2026-06-09)",
+      "confidence": "high"
+    },
     {
       "url": "https://www.thestage.co.uk/reviews/2004/the-phantom-of-the-opera-review-at-her-majestys-theatre/",
       "normalizedUrl": "https://thestage.co.uk/reviews/2004/the-phantom-of-the-opera-review-at-her-majestys-theatre",
