@@ -6,10 +6,12 @@
 
 const fs = require('fs');
 const path = require('path');
+const { isScheduledWorkflow, parseExemptList, findUncoveredScheduled, findStaleExempt } = require('./lib/cron-coverage');
 
 const CUSHION_HOURS = 12;
 const WORKFLOWS_DIR = path.join(__dirname, '..', '.github', 'workflows');
 const CHECK_FILE = path.join(WORKFLOWS_DIR, 'check-cron-health.yml');
+const EXEMPT_FILE = path.join(__dirname, '..', '.cron-health-exempt.txt');
 
 // Entries whose max_hours is intentionally tighter than worst-gap + CUSHION_HOURS.
 // These trade the standard cron-lag cushion for SAME-DAY detection and are exempt
@@ -132,8 +134,46 @@ function main() {
   }
 
   console.log(`\nSummary: ${failures} failures, ${warnings} warnings, ${skipped} skipped (seasonal/manual)`);
+
+  // ── Coverage gate: every scheduled workflow must be in CRITICAL_CRONS or the exempt list ──
+  // Catches a new cron shipping with ZERO monitoring (process-feedback.yml was disabled for
+  // 15 days unnoticed because it was in neither list, 2026-06-11..26).
+  const covered = new Set(entries.map(([, wf]) => wf));
+  const allFiles = fs.readdirSync(WORKFLOWS_DIR).filter(f => f.endsWith('.yml'));
+  const scheduled = allFiles.filter(f => isScheduledWorkflow(fs.readFileSync(path.join(WORKFLOWS_DIR, f), 'utf8')));
+  const scheduledSet = new Set(scheduled);
+  const exempt = parseExemptList(fs.existsSync(EXEMPT_FILE) ? fs.readFileSync(EXEMPT_FILE, 'utf8') : '');
+
+  const uncovered = findUncoveredScheduled(scheduled, covered, exempt);
+  const stale = findStaleExempt(exempt, scheduledSet, covered);
+
+  console.log(`\nCoverage: ${scheduled.length} scheduled workflows — ${covered.size} in CRITICAL_CRONS, ${exempt.size} exempt, ${uncovered.length} uncovered.`);
+
+  // Stale exempt entries are advisory (don't block) — they just mean the allowlist drifted.
+  if (stale.notScheduled.length) {
+    console.log(`  🟡 ${stale.notScheduled.length} exempt entr(ies) no longer scheduled (prune from .cron-health-exempt.txt): ${stale.notScheduled.join(', ')}`);
+    warnings += stale.notScheduled.length;
+  }
+  if (stale.alsoCovered.length) {
+    console.log(`  🟡 ${stale.alsoCovered.length} exempt entr(ies) also in CRITICAL_CRONS (remove from exempt): ${stale.alsoCovered.join(', ')}`);
+    warnings += stale.alsoCovered.length;
+  }
+
+  let coverageFailures = 0;
+  if (uncovered.length) {
+    console.log(`\n🔴 ${uncovered.length} scheduled workflow(s) have NO monitoring (not in CRITICAL_CRONS, not exempt):`);
+    uncovered.forEach(f => console.log(`     ${f}`));
+    console.log(`  fix: add each to check-cron-health.yml CRITICAL_CRONS (real-time paging) OR to`);
+    console.log(`       .cron-health-exempt.txt (digest-only / low-stakes). Don't leave a cron unmonitored.`);
+    coverageFailures = uncovered.length;
+  }
+
   if (failures > 0) {
     console.log(`\n::error::${failures} check-cron-health entries are misconfigured — max_hours less than the worst cron gap.`);
+    process.exit(1);
+  }
+  if (coverageFailures > 0) {
+    console.log(`\n::error::${coverageFailures} scheduled workflow(s) are unmonitored — add to CRITICAL_CRONS or .cron-health-exempt.txt.`);
     process.exit(1);
   }
   if (warnings > 0 && process.argv.includes('--strict')) {
