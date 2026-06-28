@@ -1,60 +1,35 @@
 {
-  "timestamp": "2026-06-21T04:39:06.978Z",
+  "timestamp": "2026-06-28T04:39:33.800Z",
   "hasIssues": true,
   "current": {
+    "date": "2026-06-28",
+    "totalReviews": 40034,
+    "unknownOutlets": 2,
+    "duplicates": 3,
+    "syncDelta": 21441
+  },
+  "previous": {
     "date": "2026-06-21",
     "totalReviews": 39368,
     "unknownOutlets": 7,
     "duplicates": 3,
     "syncDelta": 20989
   },
-  "previous": {
-    "date": "2026-06-14",
-    "totalReviews": 39052,
-    "unknownOutlets": 1,
-    "duplicates": 2,
-    "syncDelta": 20758
-  },
   "issues": [
     {
       "type": "unknown_outlets",
       "severity": "warning",
-      "message": "7 reviews have unknown outlets",
+      "message": "2 reviews have unknown outlets",
       "examples": [
-        {
-          "file": "data/review-texts/avenue-q-west-end-2026/co--unknown.json",
-          "outletId": "co",
-          "outlet": "co"
-        },
-        {
-          "file": "data/review-texts/heathers-the-musical-off-broadway-2025/recliningstandards--david-fox.json",
-          "outletId": "recliningstandards",
-          "outlet": "recliningstandards"
-        },
         {
           "file": "data/review-texts/la-traviata-off-broadway-2026/was-along-for-the-ride--jonathan-loy.json",
           "outletId": "was-along-for-the-ride",
           "outlet": "was-along-for-the-ride"
         },
         {
-          "file": "data/review-texts/little-bear-ridge-road-2025/suntimes--httpschicagosuntimescomsteven-oxman.json",
-          "outletId": "suntimes",
-          "outlet": "suntimes"
-        },
-        {
-          "file": "data/review-texts/maybe-happy-ending-2024/baltimorefishbowl--ed-gunts.json",
-          "outletId": "baltimorefishbowl",
-          "outlet": "baltimorefishbowl"
-        },
-        {
-          "file": "data/review-texts/the-devil-wears-prada-west-end-2024/suntimes--httpschicagosuntimescomcatey-sullivan-for-the-sun-times.json",
-          "outletId": "suntimes",
-          "outlet": "suntimes"
-        },
-        {
-          "file": "data/review-texts/the-outsiders-2024/buffalorising--peter-hall.json",
-          "outletId": "buffalorising",
-          "outlet": "buffalorising"
+          "file": "data/review-texts/titus-andronicus-off-broadway-2026/redbulltheater--unknown.json",
+          "outletId": "redbulltheater",
+          "outlet": "redbulltheater"
         }
       ]
     },
@@ -80,23 +55,13 @@
     {
       "type": "sync_delta",
       "severity": "critical",
-      "message": "review-texts (39368) and reviews.json (18379) are out of sync by 20989 reviews"
-    },
-    {
-      "type": "unknown_outlets_degradation",
-      "severity": "warning",
-      "message": "Unknown outlets increased from 1 to 7"
-    },
-    {
-      "type": "duplicates_degradation",
-      "severity": "warning",
-      "message": "Duplicates increased from 2 to 3"
+      "message": "review-texts (40034) and reviews.json (18593) are out of sync by 21441 reviews"
     }
   ],
   "summary": {
-    "totalReviews": 39368,
-    "unknownOutlets": 7,
+    "totalReviews": 40034,
+    "unknownOutlets": 2,
     "duplicates": 3,
-    "syncDelta": 20989
+    "syncDelta": 21441
   }
 }
