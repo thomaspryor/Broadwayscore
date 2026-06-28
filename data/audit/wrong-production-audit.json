@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-28T21:06:21.920Z",
+  "timestamp": "2026-06-28T22:06:11.063Z",
   "stats": {
-    "totalReviews": 39549,
-    "alreadyFlagged": 17429,
+    "totalReviews": 39547,
+    "alreadyFlagged": 17434,
     "dateGuardCatches": 34,
-    "directorMismatch": 886,
+    "directorMismatch": 887,
     "tvFilmSignals": 1085,
-    "londonSignals": 702,
+    "londonSignals": 703,
     "offBroadwaySignals": 467,
     "yearMismatch": 84,
-    "noPublishDate": 3969
+    "noPublishDate": 3954
   },
   "findings": [
     {
@@ -8462,7 +8462,7 @@
       "file": "independent--alice-saville.json",
       "score": 58,
       "publishDate": "2026-06-18",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html?loginSuccessful=true",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -11767,6 +11767,20 @@
       "showId": "into-the-woods-west-end-2025",
       "file": "nytimes--alexis-soloski.json",
       "score": 79,
+      "publishDate": "2025-12-12",
+      "url": "https://www.nytimes.com/2025/12/12/theater/into-the-woods-bridge-theater.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
+      "file": "nytimes--houman-barekat.json",
+      "score": null,
       "publishDate": "2025-12-12",
       "url": "https://www.nytimes.com/2025/12/12/theater/into-the-woods-bridge-theater.html",
       "findings": [
@@ -40825,7 +40839,7 @@
       "file": "thestage--dave-fargnoli.json",
       "score": 38,
       "publishDate": "2026-06-24",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-misanthrope-review-sandra-oh-what-a-disappointment-sbzvf82b2?t=1782310602034",
+      "url": "https://www.thestage.co.uk/reviews/the-misanthrope-review-lyttelton-national-theatre-london-sandra-oh",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -42160,6 +42174,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "under-the-shadow-off-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "publishDate": "2026-06-11",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-under-the-shadow-almeida",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
