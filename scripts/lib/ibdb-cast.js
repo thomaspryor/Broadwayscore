@@ -169,18 +169,26 @@ async function extractCastFromIBDBPage(url) {
     openingNightCast: [],
     currentCast: null,
     replacements: null,
-    ibdbUrl: url
+    ibdbUrl: url,
+    // fetchFailed distinguishes a TRANSIENT scrape failure (page didn't load /
+    // wasn't HTML / didn't parse) from a GENUINE empty (page loaded fine but the
+    // production has no Opening Night Cast on IBDB). Callers must not tombstone a
+    // transient failure as "0 cast" — that permanently blocks re-scraping (see
+    // backfill-cast.js). Hamilton was emptied this way by one bad scrape 2026-06-24.
+    fetchFailed: false
   };
 
   const content = await fetchIBDBPageHTML(url);
   if (!content) {
     console.log(`  ❌ Failed to fetch IBDB page`);
+    result.fetchFailed = true;
     return result;
   }
 
   // Need HTML content for DOM parsing
   if (!content.includes('<html') && !content.includes('<div')) {
     console.log(`  ⚠️  Content is not HTML — cannot parse cast tabs`);
+    result.fetchFailed = true;
     return result;
   }
 
@@ -189,15 +197,21 @@ async function extractCastFromIBDBPage(url) {
     dom = new JSDOM(content);
   } catch (e) {
     console.log(`  ⚠️  Failed to parse HTML: ${e.message}`);
+    result.fetchFailed = true;
     return result;
   }
 
   const doc = dom.window.document;
 
-  // Check for homepage redirect (production not found)
+  // Check for homepage redirect (production not found). This is NOT a genuine
+  // cast-less production (those load a real production page with no OBC section
+  // further down) — it means the URL didn't resolve: a stale/wrong stored URL or
+  // a transient IBDB redirect under load. Either way, retry rather than tombstone
+  // it as "0 cast" — a recurring failure is more honest than a silent empty.
   const bodyText = doc.body.textContent || '';
   if (bodyText.includes('Opening Nights in History') && !bodyText.includes('Opening Date')) {
     console.log(`  ⚠️  IBDB page redirected to homepage (production not found)`);
+    result.fetchFailed = true;
     return result;
   }
 
@@ -345,7 +359,8 @@ async function lookupIBDBCast(title, options = {}) {
     openingNightCast: [],
     currentCast: null,
     ibdbUrl: null,
-    found: false
+    found: false,
+    fetchFailed: false
   };
 
   // IBDB is Broadway-only — skip for off-broadway and west-end shows
@@ -362,7 +377,15 @@ async function lookupIBDBCast(title, options = {}) {
       console.log(`  📎 Using stored IBDB URL: ${options.ibdbUrl}`);
       bestMatch = { url: options.ibdbUrl, title, year: null };
     } else {
-      // Search for IBDB production page
+      // Search for IBDB production page.
+      // KNOWN GAP: searchIBDB() swallows SERP API errors and returns [] (same as
+      // a genuine "not on IBDB"), so a transient SERP outage here is treated as a
+      // genuine empty and tombstoned. Narrow in practice — only hits shows with
+      // no stored ibdbUrl (new shows), and a genuinely-not-on-IBDB show SHOULD
+      // tombstone. Fixing properly means making searchIBDB distinguish API-error
+      // from no-results without breaking its other callers (ibdb-dates,
+      // backfill-ibdb-urls) — deferred. Established shows carry a stored URL and
+      // take the fetchFailed-aware path above.
       const searchResults = await searchIBDB(title, options);
 
       if (searchResults.length === 0) {
@@ -383,7 +406,9 @@ async function lookupIBDBCast(title, options = {}) {
 
     if (castData.openingNightCast.length === 0) {
       console.log(`  ❌ No OBC extracted from IBDB page for "${title}"`);
-      return { ...notFound, ibdbUrl: bestMatch.url };
+      // Propagate fetchFailed so the caller can tell a transient scrape miss
+      // (don't tombstone) from a genuinely cast-less production (tombstone OK).
+      return { ...notFound, ibdbUrl: bestMatch.url, fetchFailed: castData.fetchFailed };
     }
 
     // Title validation: skip when using a pre-known stored URL (already verified by prior lookup)
@@ -448,7 +473,8 @@ async function lookupIBDBCast(title, options = {}) {
 
   } catch (e) {
     console.log(`  ⚠️  IBDB cast lookup failed for "${title}": ${e.message}`);
-    return notFound;
+    // A thrown error (network, search API, scraper) is transient by nature.
+    return { ...notFound, fetchFailed: true };
   }
 }
 

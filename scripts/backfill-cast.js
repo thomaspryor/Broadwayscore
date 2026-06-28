@@ -22,6 +22,7 @@
 const fs = require('fs');
 const path = require('path');
 const { lookupIBDBCast, RATE_LIMIT_MS } = require('./lib/ibdb-cast');
+const { shouldTombstone } = require('./lib/cast-tombstone');
 const { cleanup } = require('./lib/scraper');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
@@ -142,10 +143,23 @@ async function main() {
       });
 
       if (!result.found || result.openingNightCast.length === 0) {
+        // A TRANSIENT scrape failure must NOT be tombstoned — a tombstone
+        // permanently blocks re-scraping (default runs skip shows with an
+        // existing cast file), so one bad scrape would empty a show forever.
+        // This is exactly how Hamilton lost its cast on 2026-06-24. Leave the
+        // file untouched (existing good data survives; a never-scraped show
+        // stays "missing" and is retried next run). Decision in shared lib.
+        if (!shouldTombstone(result)) {
+          console.log(`  ⏳ Transient scrape failure — NOT tombstoning; will retry next run`);
+          failed++;
+          continue;
+        }
+
         console.log(`  ⚠️  No cast data found`);
         empty++;
 
-        // Still write an empty file as a tombstone (prevents re-scraping)
+        // Genuine empty (page loaded fine, production has no IBDB cast): write an
+        // empty tombstone so we don't re-scrape a production that truly has none.
         writeCastFile(show.id, {
           showId: show.id,
           ibdbUrl: result.ibdbUrl || null,
