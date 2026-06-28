@@ -161,6 +161,22 @@ on:
       - 'scripts/scrape-outer-critics.js'
       - 'scripts/scrape-drama-league.js'
       - 'scripts/scrape-tony-awards.js'
+      # Data-integrity + cron-coverage guards (colocated scripts/lib/*.test.mjs run in the
+      # lib-test step, but only if this job fires — these paths trigger it on push).
+      - 'scripts/enrich-ibdb-dates.js'
+      - 'scripts/discover-new-shows.js'
+      - 'scripts/lib/ibdb-year-guard.js'
+      - 'scripts/lib/ibdb-year-guard.test.mjs'
+      - 'scripts/audit-cron-health-coverage.js'
+      - 'scripts/lib/cron-coverage.js'
+      - 'scripts/lib/cron-coverage.test.mjs'
+      - 'scripts/lib/show-date-integrity.js'
+      - 'scripts/lib/show-date-integrity.test.mjs'
+      - 'scripts/lib/outlet-region-map.js'
+      - 'scripts/lib/outlet-region-map.test.mjs'
+      - 'scripts/lib/cross-market-guard.js'
+      - 'scripts/lib/cross-market-guard.test.mjs'
+      - '.cron-health-exempt.txt'
       - 'data/awards.json'
       - 'data/precursors/**'
       # Curated outlet registry — domain/outlet/critic mappings the contamination
