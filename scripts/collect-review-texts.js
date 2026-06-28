@@ -116,6 +116,7 @@ function getNytCriticsPicks() {
 const { isLondonMarket } = require('./lib/venue-classification');
 const { shouldSkipScoredReview, shouldSkipWrongProductionAudit, wrongShowCleared, evaluateShowMentionGuard, pickShowTitleForHeuristic, checkLlmVerificationAgainstKeywords, hasHighConfidenceLlmScore } = require('./lib/review-guards');
 const { isWithinPriorRun } = require('./lib/wrong-production-autoclear');
+const { shouldRetryGarbageConsentWall } = require('./lib/consent-refetch');
 const { checkBrowserbaseCaps } = require('./lib/browserbase-caps');
 const { logExclusion } = require('./lib/exclusion-logger');
 const { shouldSkipPollerUpdate, safeRenameReview } = require('./lib/review-write-guard');
@@ -5562,15 +5563,32 @@ function findReviewsToProcess() {
           const isCollectorFlagged = data.wrongShow && typeof data.wrongShowReason === 'string'
             && data.wrongShowReason.startsWith('Collector LLM');
           const retryAge = data.wrongShowRetryAt ? Date.now() - new Date(data.wrongShowRetryAt).getTime() : Infinity;
+          // Consent-backlog auto-drain: a flagged review whose stored text is
+          // garbage (empty capture / consent-wall) was flagged on content the
+          // consent-dismissing scraper can now recover. Re-fetch it (cooldown-
+          // gated). Safe because isGarbageContent has 0% FP — a flag on a review
+          // with real buried text (isGarbage=false) is NOT matched. 2026-06-28.
+          // Cooldown reuses the EXISTING wrongShowRetryAt field: the post-fetch
+          // block (search _wrongShowRetrying) stamps it when a retry still fails,
+          // so the same 14-day clock that gates collector-flagged retries gates
+          // these. A separate field didn't survive the fetch path's rewrite
+          // (verified 2026-06-28 — consentRefetchAt was dropped, re-fetch looped).
+          const storedTextIsGarbage = isGarbageContent(data.fullText || '').isGarbage;
+          const garbageRetryAllowed = shouldRetryGarbageConsentWall({
+            hasGarbageStoredText: storedTextIsGarbage,
+            lastRetryMs: data.wrongShowRetryAt ? new Date(data.wrongShowRetryAt).getTime() : null,
+            nowMs: Date.now(),
+          });
           // 14-day cooldown for collector-flagged retries; a URL correction is a
           // strong signal the next fetch will succeed, so it bypasses the cooldown.
           const retryAllowed = (isCollectorFlagged && retryAge > 14 * 24 * 60 * 60 * 1000)
-            || urlCorrectedRefetch;
+            || urlCorrectedRefetch || garbageRetryAllowed;
           if (!retryAllowed) {
             logExclusion({ script: 'collect-review-texts', showId, file, reason: 'skippedWrongContent', details: { url: data.url, outletId: data.outletId, wrongShow: data.wrongShow, wrongProduction: data.wrongProduction } });
             continue;
           }
-          // Mark retry attempt timestamp
+          // Mark retry attempt — the post-fetch handler stamps wrongShowRetryAt
+          // (success clears the flag; failure starts the 14-day cooldown).
           data._wrongShowRetrying = true;
         }
 
