@@ -81,6 +81,13 @@ jobs:
 
       - uses: ./.github/actions/setup-node
 
+      # backfill-unknown-critics fetches review pages (fetchPage → Playwright
+      # tier) to extract bylines; classify-* steps also scrape. Without Chromium
+      # installed those fetches fail ("Executable doesn't exist"), so byline
+      # backfill silently yielded ~0 (verified 2026-06-28, run 28334270827).
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
       # ---- LLM enrichment chain ----
       # All four steps were previously in rebuild-reviews.yml between checkout and
       # rebuild. Order preserved to keep per-script dependencies intact:

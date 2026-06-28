@@ -11,6 +11,10 @@ on:
       - 'scripts/validate-market-expansion.js'
       - 'scripts/validate-mobile-shows.js'
       - 'scripts/audit-review-contamination.js'
+      # Contamination --gate catastrophe-floor decision (colocated test runs in the
+      # lib-test glob; path-listed so an edit triggers CI per feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/contamination-gate.js'
+      - 'scripts/lib/contamination-gate.test.mjs'
       - 'scripts/audit-non-reviews.js'
       - 'scripts/lib/non-review-patterns.js'
       - 'scripts/audit-cast-contamination.js'
@@ -1206,11 +1210,22 @@ jobs:
 
       - name: Audit review contamination
         if: always()
-        run: node scripts/audit-review-contamination.js --strict
+        run: node scripts/audit-review-contamination.js --gate
         # Catches cross-market contamination (WE/OB reviews in BW folders),
         # domain/outlet mismatches, unflagged roundup pages, and junk --unknown files.
         # Added 2026-04-11 after Oh Mary! BW audit found 18 issues in one folder,
         # systematic scan found 291 across all shows.
+        #
+        # --gate (not --strict) as of 2026-06-28: review-texts live in a SEPARATE
+        # private repo that data bots mutate every ~2min, so --strict (block on ANY
+        # strict-class hit) reddened the trunk for every UNRELATED code push whenever
+        # a single pre-existing/parallel C/E/F file existed (china-doll FT/Guardian).
+        # --gate blocks only on a genuine integrity catastrophe — a cross-market leak
+        # (class A) or a mass spike past the floor — and surfaces single-file drift
+        # without blocking. Same split as audit-text-quality --gate / check-corpus-drift.
+        # The FULL --strict triage runs daily in check-corpus-drift.yml (the
+        # review-contamination audit), surfaced non-blocking in the digest. Decision
+        # logic + tests: scripts/lib/contamination-gate.{js,test.mjs}.
 
       - name: Audit cast contamination
         if: always()
