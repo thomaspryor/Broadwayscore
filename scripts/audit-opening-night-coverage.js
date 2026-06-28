@@ -199,7 +199,7 @@ async function main() {
     const censusSuppressed = [];
     let censusExtractorBroken = false;
     if (isLondonMarket(category)) {
-      try { census = buildCensusFromArchives(showId); } catch (e) { console.warn(`  ⚠ census build failed for ${showId}: ${e.message}`); }
+      try { census = buildCensusFromArchives(showId, { show }); } catch (e) { console.warn(`  ⚠ census build failed for ${showId}: ${e.message}`); }
       if (census) {
         // Pass the CI-unfetchable block list so paywalled-from-CI outlets (WSJ /
         // New Yorker) stay visible + block `complete` but don't drive endless
@@ -217,6 +217,13 @@ async function main() {
         if (census.zeroExtract && census.zeroExtract.length) {
           censusExtractorBroken = true;
           console.log(`  🚨 CENSUS EXTRACTOR BROKEN: archive present but 0 reviews extracted from [${census.zeroExtract.join(', ')}] — parser likely broke (DOM drift).`);
+        }
+        // Parser worked but every entry was a DIFFERENT show → the archived roundup is
+        // the wrong show's (mis-saved combined roundup). Alert so it gets re-fetched;
+        // reuse the same flag so it's surfaced + never silently no-census-yet.
+        if (census.wrongRoundup && census.wrongRoundup.length) {
+          censusExtractorBroken = true;
+          console.log(`  🚨 WRONG-SHOW ROUNDUP: [${census.wrongRoundup.join(', ')}] archive is for a different show (combined roundup) — re-fetch this show's roundup.`);
         }
         if (census.hadAnySource) {
           console.log(`  Census (${census.sourcesPresent.join('+')}): ${census.count} outlets; verdict=${cVerdict.verdict}`);
