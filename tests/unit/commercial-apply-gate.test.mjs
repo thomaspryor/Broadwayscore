@@ -50,11 +50,27 @@ describe('commercial-apply-gate', () => {
       detectedBy: SCRAPER,
       confidence: 'high',
       sourceHost: 'nytimes.com',
+      recoupedDate: '2026-05',
       sourceUrl: 'https://www.nytimes.com/2026/05/19/theater/giant.html',
     };
 
     it('passes the canonical Giant-style scraper finding', () => {
       assert.equal(gate.isAutoApplyableClaim(goodEntry, [SCRAPER]), true);
+    });
+
+    it('rejects a claim with no recoupedDate (would write recouped=true w/o date)', () => {
+      const { recoupedDate, ...noDate } = goodEntry;
+      assert.equal(gate.isAutoApplyableClaim(noDate, [SCRAPER]), false);
+    });
+
+    it('rejects the literal "null"/garbage recoupedDate string', () => {
+      assert.equal(gate.isAutoApplyableClaim({ ...goodEntry, recoupedDate: 'null' }, [SCRAPER]), false);
+      assert.equal(gate.isAutoApplyableClaim({ ...goodEntry, recoupedDate: '' }, [SCRAPER]), false);
+      assert.equal(gate.isAutoApplyableClaim({ ...goodEntry, recoupedDate: 'May 2026' }, [SCRAPER]), false);
+    });
+
+    it('accepts a bare-year recoupedDate', () => {
+      assert.equal(gate.isAutoApplyableClaim({ ...goodEntry, recoupedDate: '2026' }, [SCRAPER]), true);
     });
 
     it('rejects when --auto-apply-claims-from is empty', () => {
@@ -187,6 +203,38 @@ describe('commercial-apply-gate', () => {
       const result = gate.buildCommercialEntry(scraperEntry, null, { isClaimAutoApply: true });
       assert.equal(result.recouped, true);
       assert.equal(result.designation, undefined);
+    });
+
+    it('drops literal "null"/"undefined"/"" sentinel strings instead of writing them', () => {
+      // The exact shape that aborted the hourly RSS poll: an LLM verdict that
+      // emitted the string "null" for recoupedDate + costMethodology. These must
+      // not land in commercial.json (validate-data.js rejects them).
+      const dirty = {
+        recouped: true,
+        recoupedDate: 'null',
+        costMethodology: 'null',
+        designation: 'undefined',
+        notes: '  ',
+      };
+      const result = gate.buildCommercialEntry(dirty, null, { isClaimAutoApply: false });
+      assert.equal(result.recoupedDate, undefined, 'string "null" date must be dropped');
+      assert.equal(result.costMethodology, undefined, 'string "null" costMethodology must be dropped');
+      assert.equal(result.designation, undefined, 'string "undefined" designation must be dropped');
+      assert.equal(result.notes, undefined, 'whitespace-only notes must be dropped');
+    });
+  });
+
+  describe('cleanNullish', () => {
+    it('collapses sentinel strings to undefined', () => {
+      for (const v of [null, undefined, '', '  ', 'null', 'NULL', 'undefined', 'Undefined']) {
+        assert.equal(gate.cleanNullish(v), undefined, `${JSON.stringify(v)} → undefined`);
+      }
+    });
+    it('passes real values through (trimmed)', () => {
+      assert.equal(gate.cleanNullish('2026-05'), '2026-05');
+      assert.equal(gate.cleanNullish('  trade-reported  '), 'trade-reported');
+      assert.equal(gate.cleanNullish(0), 0);
+      assert.equal(gate.cleanNullish(false), false);
     });
   });
 });

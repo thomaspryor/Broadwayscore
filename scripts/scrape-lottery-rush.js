@@ -1378,17 +1378,18 @@ function mergeIntoExisting(existing, scraped, source) {
   return changes;
 }
 
+const { evaluateShowIdStability } = require('./lib/lottery-stability-guard');
+
 /**
- * Guard: abort if the set of show IDs changed too dramatically.
+ * Guard: abort if the set of show IDs changed too dramatically. Decision logic
+ * (including the closed/orphan-removal exclusion) lives in the pure, unit-tested
+ * scripts/lib/lottery-stability-guard.js — this wrapper just handles the
+ * --force bypass, logging, and process exit.
  */
-function validateShowIdStability(original, updated) {
-  const oldIds = new Set(Object.keys(original.shows || {}));
-  const newIds = new Set(Object.keys(updated.shows || {}));
+function validateShowIdStability(original, updated, changes = []) {
+  const { added, removed, abort } = evaluateShowIdStability(original, updated, changes);
 
-  const added = [...newIds].filter(id => !oldIds.has(id));
-  const removed = [...oldIds].filter(id => !newIds.has(id));
-
-  if (added.length > 5 || removed.length > 3) {
+  if (abort) {
     if (forceGuard) {
       console.warn(`\n[Guard] WARNING: ${added.length} added, ${removed.length} removed — bypassed with --force`);
     } else {
@@ -1904,8 +1905,8 @@ async function main() {
   existing.lastUpdated = new Date().toISOString();
   existing.source = PLAYBILL_URL;
 
-  // Validate stability against original
-  validateShowIdStability(originalSnapshot, existing);
+  // Validate stability against original (closed/orphan cleanups excluded — see fn doc)
+  validateShowIdStability(originalSnapshot, existing, allChanges);
 
   // Summary
   printSummary(allChanges);

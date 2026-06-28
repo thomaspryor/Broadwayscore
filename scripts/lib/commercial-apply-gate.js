@@ -5,6 +5,26 @@ const { TRUSTED_RECOUPMENT_HOSTS } = require('./trusted-recoupment-domains');
 
 const CONFIDENCE_ORDER = { high: 3, medium: 2, low: 1 };
 
+// recoupedDate must be YYYY or YYYY-MM (mirrors validate-data.js:2688). A claim
+// without a parseable date is not auto-appliable — it produces recouped=true
+// with no date, which validate-data.js rejects (line 2633), aborting the whole
+// hourly RSS-poll run. Such claims fall through to manual review instead.
+const RECOUPED_DATE_RE = /^\d{4}(-\d{2})?$/;
+
+// LLM verdicts frequently emit the literal strings "null"/"undefined"/"" instead
+// of JSON null. Left untouched, `entry.recoupedDate || null` keeps "null" (a
+// truthy string) and writes it into commercial.json, which then fails the
+// YYYY/YYYY-MM format check. Treat these sentinels as absent everywhere.
+function cleanNullish(v) {
+  if (v == null) return undefined;
+  if (typeof v === 'string') {
+    const t = v.trim();
+    if (t === '' || t.toLowerCase() === 'null' || t.toLowerCase() === 'undefined') return undefined;
+    return t;
+  }
+  return v;
+}
+
 function meetsConfidenceThreshold(entry, minConfidence) {
   if (!minConfidence || minConfidence === 'all') return true;
   const entryLevel = CONFIDENCE_ORDER[entry.confidence] || 0;
@@ -31,6 +51,11 @@ function isAutoApplyableClaim(entry, autoApplyClaimsFrom) {
   if (!autoApplyClaimsFrom.includes(entry.detectedBy)) return false;
   if (entry.confidence !== 'high') return false;
   if (!entry.sourceHost || !TRUSTED_RECOUPMENT_HOSTS.has(entry.sourceHost)) return false;
+  // A recoupment claim with no parseable date can't be applied without producing
+  // invalid data (recouped=true + missing/garbage recoupedDate). Require a clean
+  // YYYY/YYYY-MM date; otherwise route to manual review.
+  const date = cleanNullish(entry.recoupedDate);
+  if (!date || !RECOUPED_DATE_RE.test(date)) return false;
   return true;
 }
 
@@ -43,15 +68,23 @@ function isAutoApplyableClaim(entry, autoApplyClaimsFrom) {
 function buildCommercialEntry(entry, existing, opts = {}) {
   const { isClaimAutoApply = false, normalizeSources = (x) => x } = opts;
   const result = isClaimAutoApply && existing ? { ...existing } : {};
-  if (entry.designation) result.designation = entry.designation;
+  // cleanNullish() collapses "null"/"undefined"/"" sentinels to undefined so a
+  // bad LLM field never overwrites an existing value or writes invalid data.
+  const designation = cleanNullish(entry.designation);
+  const capitalizationSource = cleanNullish(entry.capitalizationSource);
+  const costMethodology = cleanNullish(entry.costMethodology);
+  const recoupedDate = cleanNullish(entry.recoupedDate);
+  const recoupedSource = cleanNullish(entry.recoupedSource);
+  const notes = cleanNullish(entry.notes);
+  if (designation) result.designation = designation;
   if (entry.capitalization != null) result.capitalization = entry.capitalization;
-  if (entry.capitalizationSource) result.capitalizationSource = entry.capitalizationSource;
+  if (capitalizationSource) result.capitalizationSource = capitalizationSource;
   if (entry.weeklyRunningCost != null) result.weeklyRunningCost = entry.weeklyRunningCost;
-  if (entry.costMethodology) result.costMethodology = entry.costMethodology;
+  if (costMethodology) result.costMethodology = costMethodology;
   if (entry.recouped != null) result.recouped = entry.recouped;
-  if (entry.recoupedDate) result.recoupedDate = entry.recoupedDate;
-  if (entry.recoupedSource) result.recoupedSource = entry.recoupedSource;
-  if (entry.notes) result.notes = entry.notes;
+  if (recoupedDate) result.recoupedDate = recoupedDate;
+  if (recoupedSource) result.recoupedSource = recoupedSource;
+  if (notes) result.notes = notes;
   if (Array.isArray(entry.sources) && entry.sources.length > 0) {
     const normalized = normalizeSources(entry.sources);
     if (normalized.length > 0) {
@@ -68,6 +101,7 @@ function buildCommercialEntry(entry, existing, opts = {}) {
 
 module.exports = {
   CONFIDENCE_ORDER,
+  cleanNullish,
   meetsConfidenceThreshold,
   hasRecoupedClaim,
   isAutoApplyableClaim,
