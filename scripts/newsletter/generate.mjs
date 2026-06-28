@@ -701,14 +701,20 @@ function biggestMoverSection() {
     const snapDir = path.join(repo, 'data/audience-snapshots');
     let snapFile;
     try {
+      // Pick the most recent dated snapshot on/before weekStart, ACROSS SEASONS.
+      // This used to hardcode the `2025-26-` season prefix; when the season
+      // rolled to `2026-27-` the picker silently kept comparing against the last
+      // 2025-26 snapshot (May 19), so by late June the "audience movers" reflected
+      // ~5 weeks of drift, not the week. Match any `<season>-YYYY-MM-DD` file and
+      // sort by the embedded date so the freshest baseline always wins, whatever
+      // the season prefix. Baselines are excluded (they're season anchors, not
+      // weekly cadence points).
       const candidatesSnap = fs.readdirSync(snapDir)
-        .filter(f => f.startsWith('2025-26-') && f.endsWith('.json') && !f.includes('baseline'))
-        .filter(f => {
-          const m = f.match(/(\d{4}-\d{2}-\d{2})/);
-          return m && m[1] <= weekStartStr;
-        })
-        .sort();
-      snapFile = candidatesSnap[candidatesSnap.length - 1];
+        .filter(f => /^\d{4}-\d{2}-\d{4}-\d{2}-\d{2}\.json$/.test(f) && !f.includes('baseline'))
+        .map(f => ({ f, date: (f.match(/(\d{4}-\d{2}-\d{2})\.json$/) || [])[1] }))
+        .filter(x => x.date && x.date <= weekStartStr)
+        .sort((a, b) => a.date.localeCompare(b.date));
+      snapFile = candidatesSnap.length ? candidatesSnap[candidatesSnap.length - 1].f : undefined;
     } catch { return []; }
     if (!snapFile) return [];
     let before;
@@ -850,8 +856,14 @@ function biggestMoverSection() {
     if (last === -1) break;
     allRows = allRows.slice(0, last) + allRows.slice(last + BORDER_STR.length);
   }
-  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" class="cardbg">${allRows}</table>`;
   const totalRows = moverList.length + audMovers.length;
+  // Drop the section entirely on a quiet week rather than rendering a bare
+  // "Biggest Mover" heading over an empty table. This stayed latent while the
+  // audience-mover baseline was stuck ~5 weeks back (it always found *some*
+  // drifted grade); with a correct one-week baseline a genuinely quiet week
+  // legitimately has zero movers.
+  if (totalRows === 0) return null;
+  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" class="cardbg">${allRows}</table>`;
   const title = totalRows > 1 ? 'Biggest Movers' : 'Biggest Mover';
   return sectionWrap(sectionHeading(title), body);
 }
