@@ -16,7 +16,11 @@ concurrency:
 jobs:
   fetch:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # The fetch itself is ~85s; the rest is push-with-retry against the busy
+    # public main, which can take several minutes under contention. 15 was too
+    # tight — the job kept getting cancelled mid-push (2026-06-25→28). 30 gives
+    # headroom on top of the faster push backoff (see scripts/lib/push-with-retry.sh).
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v5
         with:
