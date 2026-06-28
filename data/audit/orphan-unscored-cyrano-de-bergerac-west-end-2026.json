@@ -2,9 +2,23 @@
   "version": 1,
   "showId": "cyrano-de-bergerac-west-end-2026",
   "openingDate": "2026-06-25",
-  "detectedAt": "2026-06-28T09:16:10.355Z",
+  "detectedAt": "2026-06-28T09:30:47.874Z",
   "windowDays": 7,
   "orphans": [
+    {
+      "file": "daily-echo--steve-page.json",
+      "outletId": "daily-echo",
+      "criticName": "Steve Page",
+      "url": "https://www.facebook.com/DelfontMackintoshTheatres/posts/cyrano-de-bergerac-plays-its-first-west-end-performance-at-the-no%C3%ABl-coward-theat/1405056414988255/",
+      "fullTextLen": 593,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "truncated",
+      "eligibilityReason": null
+    },
     {
       "file": "guardian-uk--unknown.json",
       "outletId": "guardian-uk",
@@ -20,7 +34,7 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
+  "orphanCount": 2,
   "blockBroadcast": true,
   "lastDispatch": "suppressed-cooldown",
   "lastDispatchAt": null

@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-28T09:08:48.574Z",
+  "timestamp": "2026-06-28T09:30:56.282Z",
   "stats": {
-    "totalReviews": 39343,
+    "totalReviews": 39346,
     "alreadyFlagged": 17529,
-    "dateGuardCatches": 39,
+    "dateGuardCatches": 34,
     "directorMismatch": 875,
     "tvFilmSignals": 1072,
     "londonSignals": 693,
     "offBroadwaySignals": 464,
     "yearMismatch": 84,
-    "noPublishDate": 3915
+    "noPublishDate": 3916
   },
   "findings": [
     {
@@ -14792,6 +14792,7 @@
     {
       "showId": "mj-the-musical-west-end-2024",
       "file": "loureviews--louise-penn.json",
+      "score": 78,
       "publishDate": "2025-10-16",
       "url": "https://loureviews.blog/2025/10/16/theatre-review-mj-the-musical-prince-edward/",
       "findings": [
@@ -34640,6 +34641,7 @@
     {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
+      "score": 75,
       "publishDate": "2026-06-20",
       "url": "https://www.londonboxoffice.co.uk/news/post/much-ado-shakespeares-globe-review",
       "findings": [
@@ -34653,6 +34655,7 @@
     {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
       "file": "theatreandtonic--penny-walshe.json",
+      "score": 88,
       "publishDate": "2026-06-21",
       "url": "https://theatreandtonic.co.uk/blog/much-ado-about-nothing-at-shakespeares-globe-review",
       "findings": [
@@ -36000,6 +36003,7 @@
     {
       "showId": "pride-west-end-2026",
       "file": "all-that-dazzles-uk--daz-gale.json",
+      "score": 97,
       "publishDate": "2026-06-25",
       "url": "https://www.allthatdazzles.co.uk/post/review-pride-dorfman-theatre",
       "findings": [
@@ -36013,6 +36017,7 @@
     {
       "showId": "pride-west-end-2026",
       "file": "city-am--adam-bloodworth.json",
+      "score": 84,
       "publishDate": "2026-06-26",
       "url": "https://www.cityam.com/pride-musical-at-the-national-theatre-review-ive-never-seen-so-many-people-in-tears/",
       "findings": [
@@ -36039,6 +36044,7 @@
     {
       "showId": "pride-west-end-2026",
       "file": "independent--unknown.json",
+      "score": 88,
       "publishDate": "2026-06-25",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/pride-musical-review-national-theatre-b3003069.html",
       "findings": [
@@ -36052,6 +36058,7 @@
     {
       "showId": "pride-west-end-2026",
       "file": "london-box-office--stuart-king.json",
+      "score": 79,
       "publishDate": "2026-06-26",
       "url": "https://www.londonboxoffice.co.uk/news/post/pride-national-theatre-dorfman-review",
       "findings": [
@@ -36065,6 +36072,7 @@
     {
       "showId": "pride-west-end-2026",
       "file": "londontheatre1--terry-eastham.json",
+      "score": 98,
       "publishDate": "2026-06-26",
       "url": "https://www.londontheatre1.com/reviews/pride-national-theatre/",
       "findings": [
@@ -40356,6 +40364,7 @@
     {
       "showId": "the-misanthrope-west-end-2026",
       "file": "south-london--unknown.json",
+      "score": 76,
       "publishDate": "2026-06-25",
       "url": "https://southlondon.co.uk/area/southwark/review-the-misanthrope-at-national-theatre/",
       "findings": [
@@ -41384,76 +41393,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "three-houses-off-broadway-2026",
-      "file": "forward--miranda-jackel.json",
-      "score": 78,
-      "publishDate": "2024-05-28",
-      "url": "https://forward.com/culture/theater/616879/dave-malloy-three-houses-covid-isolation-sondheim-into-the-wood-pigs/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 190d before show (2024-05-28 vs 2024-12-04)"
-        }
-      ]
-    },
-    {
-      "showId": "three-houses-off-broadway-2026",
-      "file": "nysr--david-finkle.json",
-      "score": 63,
-      "publishDate": "2024-05-21",
-      "url": "https://nystagereview.com/2024/05/20/three-houses-dave-malloys-new-sometimes-haunting-musical/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 197d before show (2024-05-21 vs 2024-12-04)"
-        }
-      ]
-    },
-    {
-      "showId": "three-houses-off-broadway-2026",
-      "file": "nyt-theater--jonathan-mandell.json",
-      "score": 63,
-      "publishDate": "2024-05-21",
-      "url": "https://newyorktheater.me/2024/05/20/three-houses-theater-review/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 197d before show (2024-05-21 vs 2024-12-04)"
-        }
-      ]
-    },
-    {
-      "showId": "three-houses-off-broadway-2026",
-      "file": "slantmagazine--dan-rubins.json",
-      "score": 60,
-      "publishDate": "2024-05-21",
-      "url": "https://www.slantmagazine.com/theater/three-houses-review/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 197d before show (2024-05-21 vs 2024-12-04)"
-        }
-      ]
-    },
-    {
-      "showId": "three-houses-off-broadway-2026",
-      "file": "theatre-reviews-limited--david-roberts.json",
-      "score": 78,
-      "publishDate": "2024-05-21",
-      "url": "https://www.theatrereviews.com/off-broadway-review-three-houses-at-signature-theatres-linney-theatre-through-sunday-june-9-2024/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 197d before show (2024-05-21 vs 2024-12-04)"
         }
       ]
     },
