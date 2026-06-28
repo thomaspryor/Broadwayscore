@@ -1,10 +1,11 @@
 {
-  "generatedAt": "2026-06-14T14:51:55.116Z",
+  "generatedAt": "2026-06-28T14:39:45.482Z",
   "counts": {
-    "accepted": 0,
-    "rejected": 6,
+    "accepted": 1,
+    "rejected": 7,
     "byReason": {
       "low-confidence-existing-match": 5,
+      "bot-shell": 1,
       "placeholder-venue-no-theater": 1
     }
   },
@@ -38,6 +39,12 @@
       "slug": "broadway-real-estate",
       "source": "playbill-verdict",
       "reason": "low-confidence-existing-match"
+    },
+    {
+      "url": "https://playbill.com/article/did-reviewers-think-american-repertory-theaters-black-swan-was-perfect",
+      "slug": "did-reviewers-think-american-repertory-theaters-black-swan-was-perfect",
+      "source": "playbill-verdict",
+      "reason": "bot-shell"
     },
     {
       "url": "https://www.broadwayworld.com/article/Review-Roundup-CELEBRITY-AUTOPBIOGRAPHY-On-Broadway-20260518",
