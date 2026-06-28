@@ -16,6 +16,11 @@ on:
         required: false
         type: number
         default: 14
+      alert_only:
+        description: 'Audit + Discord alert only — skip the auto-gather dispatch (read-only gap report)'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -276,7 +281,11 @@ jobs:
           # exit 1 on major/incomplete is the signal; continue-on-error keeps the job green
           # but yellow in the summary so gaps are visible.
           LOOKBACK=${{ inputs.lookback_days || 14 }}
-          node scripts/audit-opening-night-coverage.js --days=$LOOKBACK --alert --dispatch
+          # alert_only=true (manual read-only gap report): refresh archives + alert, but
+          # do NOT auto-fire the expensive gather/collect. Default keeps --dispatch on.
+          DISPATCH_FLAG="--dispatch"
+          if [ "${{ inputs.alert_only || 'false' }}" = "true" ]; then DISPATCH_FLAG=""; fi
+          node scripts/audit-opening-night-coverage.js --days=$LOOKBACK --alert $DISPATCH_FLAG
 
       - name: Notify on failure
         if: failure()
