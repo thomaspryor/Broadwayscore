@@ -1,6 +1,6 @@
 {
-  "lastRun": "2026-06-26T08:14:14.764Z",
-  "consecutiveErrorDays": 32,
+  "lastRun": "2026-06-28T08:09:15.608Z",
+  "consecutiveErrorDays": 33,
   "results": [
     {
       "name": "Freshness: reviews.json",
@@ -15,47 +15,47 @@
     {
       "name": "Freshness: grosses.json",
       "status": "pass",
-      "message": "2d old"
+      "message": "4d old"
     },
     {
       "name": "Freshness: audience-buzz.json",
       "status": "pass",
-      "message": "1h old"
+      "message": "0h old"
     },
     {
       "name": "Freshness: commercial.json",
       "status": "pass",
-      "message": "5d old"
+      "message": "12h old"
     },
     {
       "name": "Freshness: critic-consensus.json",
       "status": "pass",
-      "message": "3h old"
+      "message": "0h old"
     },
     {
       "name": "Freshness: lottery-rush.json",
       "status": "error",
-      "message": "4d old (error threshold: 3d)"
+      "message": "6d old (error threshold: 3d)"
     },
     {
       "name": "Freshness: cast-changes.json",
       "status": "pass",
-      "message": "2d old"
+      "message": "1d old"
     },
     {
       "name": "Freshness: nyt-critics-picks.json",
       "status": "pass",
-      "message": "2h old"
+      "message": "2d old"
     },
     {
       "name": "Freshness: video-reviews.json",
       "status": "pass",
-      "message": "4d old"
+      "message": "6d old"
     },
     {
       "name": "Freshness: social-pulse/_budget.json",
       "status": "pass",
-      "message": "4d old"
+      "message": "6d old"
     },
     {
       "name": "Freshness: tony-win-probabilities.json",
@@ -75,7 +75,7 @@
     {
       "name": "Push verify: shows.json",
       "status": "pass",
-      "message": "Data synced (23h old, workflow 2d ago)"
+      "message": "Data synced (23h old, workflow 4d ago)"
     },
     {
       "name": "Sync: review-texts vs reviews.json",
@@ -110,37 +110,37 @@
     {
       "name": "Sync: baseline drift",
       "status": "warn",
-      "message": "Reviews dropped: 18548 vs baseline 18553"
+      "message": "Reviews dropped: 18587 vs baseline 18593"
     },
     {
       "name": "Sync: grosses weekEnding",
       "status": "pass",
-      "message": "weekEnding 6/22/2026 (4d ago)"
+      "message": "weekEnding 6/22/2026 (6d ago)"
     },
     {
       "name": "Pipeline: rebuild-reviews",
       "status": "pass",
-      "message": "Last success 1h ago"
+      "message": "Last success 0h ago"
     },
     {
       "name": "Pipeline: update-show-status",
       "status": "pass",
-      "message": "Last success 22h ago"
+      "message": "Last success 23h ago"
     },
     {
       "name": "Pipeline: collect-review-texts",
       "status": "pass",
-      "message": "Last success 9h ago"
+      "message": "Last success 0h ago"
     },
     {
       "name": "Pipeline: weekly-grosses",
       "status": "pass",
-      "message": "Last success 2d ago"
+      "message": "Last success 4d ago"
     },
     {
       "name": "Pipeline: weekly-integrity",
       "status": "pass",
-      "message": "Last success 5d ago"
+      "message": "Last success 3h ago"
     },
     {
       "name": "Pipeline: test",
@@ -150,12 +150,12 @@
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.5% scored (18548/18834)"
+      "message": "98.5% scored (18587/18863)"
     },
     {
       "name": "Quality: corpus drift",
       "status": "warn",
-      "message": "2 audit(s) drifting: content-quality regex false-positive rate, cross-show URL contamination (review URL slug names a different show)"
+      "message": "3 audit(s) drifting: content-quality regex false-positive rate, cross-show URL contamination (review URL slug names a different show), high-churn tracked files lacking a .gitattributes merge driver"
     },
     {
       "name": "Cookies: expiration",
@@ -165,7 +165,7 @@
     {
       "name": "CWV: performance",
       "status": "pass",
-      "message": "All metrics within thresholds (5d ago)"
+      "message": "All metrics within thresholds (7d ago)"
     },
     {
       "name": "SEO: health",
@@ -175,22 +175,22 @@
     {
       "name": "Cron: Update Show Status",
       "status": "pass",
-      "message": "12h ago, cancelled"
+      "message": "23h ago, cancelled"
     },
     {
       "name": "Cron: Rebuild Reviews",
       "status": "pass",
-      "message": "2h ago, success"
+      "message": "0h ago, success"
     },
     {
       "name": "Cron: Collect Review Texts",
       "status": "pass",
-      "message": "2h ago, "
+      "message": "0h ago, "
     },
     {
       "name": "Cron: LLM Ensemble Score",
       "status": "pass",
-      "message": "1h ago, success"
+      "message": "0h ago, success"
     },
     {
       "name": "Cron: Test Suite",
@@ -205,12 +205,12 @@
     {
       "name": "Cron failed: Update Lottery/Rush",
       "status": "warn",
-      "message": "Last run failed (21h ago)"
+      "message": "Last run failed (1d ago)"
     },
     {
       "name": "Cron: Weekly Grosses",
       "status": "pass",
-      "message": "2d ago, success"
+      "message": "4d ago, success"
     },
     {
       "name": "Cron: Update Show Score",
@@ -225,37 +225,37 @@
     {
       "name": "Cron: Update Cast Changes",
       "status": "pass",
-      "message": "2d ago, success"
+      "message": "22h ago, success"
     },
     {
       "name": "Cron: NYT Critics Picks",
       "status": "pass",
-      "message": "2h ago, success"
+      "message": "2d ago, success"
     },
     {
       "name": "Cron: Weekly Video Reviews",
       "status": "pass",
-      "message": "4d ago, success"
+      "message": "6d ago, success"
     },
     {
       "name": "Cron: Update Social Pulse",
       "status": "pass",
-      "message": "4d ago, success"
+      "message": "6d ago, success"
     },
     {
       "name": "Secrets: health",
       "status": "pass",
-      "message": "Last check passed (4d ago)"
+      "message": "Last check passed (6d ago)"
     },
     {
       "name": "Credits: ScrapingBee",
       "status": "pass",
-      "message": "655k credits left (33%) · 65k/day burn · lasts until renewal Jul 5"
+      "message": "522k credits left (26%) · 66k/day burn · lasts until renewal Jul 5"
     },
     {
-      "name": "Workflow repeat-failure: Test Suite",
+      "name": "Workflow repeat-failure: Commercial RSS Poll",
       "status": "error",
-      "message": "Test Suite failed 4 times in the last 24h — likely broken, not transient."
+      "message": "Commercial RSS Poll failed 4 times in the last 24h — likely broken, not transient."
     }
   ],
   "lastCleanStreak": 0
