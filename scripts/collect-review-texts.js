@@ -116,6 +116,7 @@ function getNytCriticsPicks() {
 const { isLondonMarket } = require('./lib/venue-classification');
 const { shouldSkipScoredReview, shouldSkipWrongProductionAudit, wrongShowCleared, evaluateShowMentionGuard, pickShowTitleForHeuristic, checkLlmVerificationAgainstKeywords, hasHighConfidenceLlmScore } = require('./lib/review-guards');
 const { isWithinPriorRun } = require('./lib/wrong-production-autoclear');
+const { shouldRetryGarbageConsentWall } = require('./lib/consent-refetch');
 const { checkBrowserbaseCaps } = require('./lib/browserbase-caps');
 const { logExclusion } = require('./lib/exclusion-logger');
 const { shouldSkipPollerUpdate, safeRenameReview } = require('./lib/review-write-guard');
@@ -5562,14 +5563,28 @@ function findReviewsToProcess() {
           const isCollectorFlagged = data.wrongShow && typeof data.wrongShowReason === 'string'
             && data.wrongShowReason.startsWith('Collector LLM');
           const retryAge = data.wrongShowRetryAt ? Date.now() - new Date(data.wrongShowRetryAt).getTime() : Infinity;
+          // Consent-backlog auto-drain: a flagged review whose stored text is
+          // garbage (empty capture / consent-wall) was flagged on content the
+          // consent-dismissing scraper can now recover. Re-fetch it (cooldown-
+          // gated). Safe because isGarbageContent has 0% FP — a flag on a review
+          // with real buried text (isGarbage=false) is NOT matched. 2026-06-28.
+          const storedTextIsGarbage = isGarbageContent(data.fullText || '').isGarbage;
+          const garbageRetryAllowed = shouldRetryGarbageConsentWall({
+            hasGarbageStoredText: storedTextIsGarbage,
+            lastRetryMs: data.consentRefetchAt ? new Date(data.consentRefetchAt).getTime() : null,
+            nowMs: Date.now(),
+          });
           // 14-day cooldown for collector-flagged retries; a URL correction is a
           // strong signal the next fetch will succeed, so it bypasses the cooldown.
           const retryAllowed = (isCollectorFlagged && retryAge > 14 * 24 * 60 * 60 * 1000)
-            || urlCorrectedRefetch;
+            || urlCorrectedRefetch || garbageRetryAllowed;
           if (!retryAllowed) {
             logExclusion({ script: 'collect-review-texts', showId, file, reason: 'skippedWrongContent', details: { url: data.url, outletId: data.outletId, wrongShow: data.wrongShow, wrongProduction: data.wrongProduction } });
             continue;
           }
+          // Stamp the consent re-fetch cooldown so an undismissable wall isn't
+          // re-scraped every run (drain once, retry every 14 days).
+          if (garbageRetryAllowed) data.consentRefetchAt = new Date().toISOString();
           // Mark retry attempt timestamp
           data._wrongShowRetrying = true;
         }
