@@ -165,4 +165,8 @@ async function main() {
   console.log('');
 }
 
-main().catch((e) => { console.error('show-status fatal:', e.message); process.exit(1); });
+// Guard so `require('./show-status')` (for decodeSlimShow) does NOT run the CLI —
+// without this, importing it executes main(), which process.exit(2)s on missing args.
+if (require.main === module) {
+  main().catch((e) => { console.error('show-status fatal:', e.message); process.exit(1); });
+}
