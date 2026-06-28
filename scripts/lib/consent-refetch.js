@@ -31,7 +31,8 @@ const REFETCH_COOLDOWN_MS = 14 * 24 * 60 * 60 * 1000; // 14 days
 /**
  * @param {object} ctx
  * @param {boolean} ctx.hasGarbageStoredText - isGarbageContent(data.fullText).isGarbage
- * @param {number|null} ctx.lastRetryMs - epoch ms of the last consent re-fetch attempt (data.consentRefetchAt), or null
+ * @param {number|null} ctx.lastRetryMs - epoch ms of the last retry attempt (the
+ *   existing data.wrongShowRetryAt, stamped by the post-fetch handler), or null
  * @param {number} ctx.nowMs - current epoch ms
  * @returns {boolean}
  */
