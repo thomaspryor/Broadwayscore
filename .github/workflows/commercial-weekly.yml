@@ -229,7 +229,12 @@ jobs:
     needs: deep-research
     if: always() && inputs.dry_run != true
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # The apply itself is seconds; the tail is "Commit applied data + audit" →
+    # push-with-retry against the busy public main, which has clocked ~16.5 min
+    # under contention. 15 was too tight — the job was cancelled mid-push every
+    # week (last full success 2026-06-13; check-cron-health flagged it stale).
+    # 30 gives headroom on top of the faster push backoff (scripts/lib/push-with-retry.sh).
+    timeout-minutes: 30
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
