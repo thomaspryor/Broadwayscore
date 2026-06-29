@@ -495,6 +495,24 @@ function validateDates(shows) {
       error(`Show "${show.title}" (${show.id}) has previewsStartDate (${show.previewsStartDate}) implausibly far before openingDate (${show.openingDate}) — likely a wrong-production previews date.`);
     }
 
+    // Collapsed press night: West End openingDate === previewsStartDate with a
+    // todaytix source. TodayTix's "first performance" is the first PREVIEW, not
+    // press night — discover-new-shows.js now leaves openingDate null for WE
+    // unless ShowScore supplies a real "Opens" date, but legacy entries stored
+    // the preview date as both. enrich-west-end-dates.js --fix-unconfirmed
+    // backfills these from review-date clustering (Phase 4). Warn so new ones
+    // don't slip through silently before the cron corrects them. (West End /
+    // Off-West End only — Broadway cold-opens legitimately have previews ===
+    // opening.)
+    if (
+      (show.category === 'west-end' || show.category === 'off-west-end') &&
+      show.openingDate &&
+      show.openingDate === show.previewsStartDate &&
+      show.openingDateSource === 'todaytix'
+    ) {
+      warn(`Show "${show.title}" (${show.id}) has openingDate === previewsStartDate (${show.openingDate}) with source "todaytix" — likely the first-preview date stored as press night. Run: node scripts/enrich-west-end-dates.js --fix-unconfirmed (Phase 4 infers press night from review dates).`);
+    }
+
     // Inherited namesake date: this show's opening/previews date is byte-identical to a
     // DIFFERENT same-title production's — the date cloned from the namesake (a-few-good-men-2026
     // carried a-few-good-men-1989's 1989-11-15, 2026-06-28). An exact OPENING-night match is
