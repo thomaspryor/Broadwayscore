@@ -130,6 +130,37 @@ const AUDITS = [
     args: ['--strict'],
     crashCodes: [],            // 0 clean / 1 = strict hits (drift). Corpus-missing also exits 1 → shown as drift, same as aggregator-truth.
   },
+  // The four flappy whole-corpus audits gated to a --gate catastrophe floor in
+  // test.yml (2026-06-29, Notion 38e637c5). The FULL strict run lives HERE so the
+  // sub-floor drift the per-push gate lets pass still surfaces daily in the digest.
+  {
+    name: 'duplicate-of-url-mismatch',
+    label: 'stale duplicateOf flags (our URL ≠ sibling URL) — full report (gate = spike floor)',
+    script: 'audit-duplicate-of-url-mismatch.js',
+    args: [],                  // report mode: 0 clean / 1 = ANY mismatch (drift)
+    crashCodes: [],
+  },
+  {
+    name: 'cast-changes',
+    label: 'cast-changes.json integrity — full --strict (gate = cross-show conflict / spike)',
+    script: 'audit-cast-changes.js',
+    args: ['--strict'],        // 0 clean / 1 = ANY issue (drift)
+    crashCodes: [],
+  },
+  {
+    name: 'non-reviews',
+    label: 'scored non-review content (definitive wrong-page) — full --strict',
+    script: 'audit-non-reviews.js',
+    args: ['--strict'],        // 0 clean / 1 = definitive wrong-page among scored (drift)
+    crashCodes: [],
+  },
+  {
+    name: 'review-texts',
+    label: 'review-text file structure — full validator (gate = catastrophic classes + churn floor)',
+    script: 'validate-review-texts.js',
+    args: [],                  // 0 clean / 1 = ANY error: dup/garbage/contamination/corrupt (drift)
+    crashCodes: [],
+  },
 ];
 
 function runAudit(audit) {

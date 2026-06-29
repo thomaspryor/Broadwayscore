@@ -28,9 +28,14 @@ const https = require('https');
 
 // --- CLI args ---
 const args = process.argv.slice(2);
-const DRY_RUN = args.includes('--dry-run') || args.includes('--strict');
+// --gate: per-push trunk catastrophe floor (test.yml). Same free heuristics-only,
+// report-only behaviour as --strict, but the block/pass decision is the pure
+// scripts/lib/non-review-gate.js (definitive wrong-page = zero-tolerance). The full
+// --strict definitive check runs daily in check-corpus-drift.yml as a backstop.
+const GATE = args.includes('--gate');
+const DRY_RUN = args.includes('--dry-run') || args.includes('--strict') || GATE;
 const STRICT = args.includes('--strict'); // CI gate: report-only, exit 1 on high-confidence non-reviews
-const SKIP_LLM = args.includes('--skip-llm') || args.includes('--strict'); // strict uses free heuristics only
+const SKIP_LLM = args.includes('--skip-llm') || args.includes('--strict') || GATE; // strict/gate use free heuristics only
 
 const VERBOSE = args.includes('--verbose');
 const FORCE = args.includes('--force');
@@ -295,19 +300,25 @@ async function main() {
   // legit false positives (verified 0 across 34k scored reviews). Soft heuristics
   // (obituary/preview/interview) can FP on real reviews that mention a death etc.,
   // so they stay advisory in the cron, not a hard build gate.
-  if (STRICT) {
+  if (STRICT || GATE) {
     // Hard-gate ONLY the definitive wrong-page classes (0 FPs across 34k). Junk/
     // paywall/css stay advisory in the cron — gating them false-fails on real
     // reviews that carry scrape boilerplate (verified: 72 WSJ/HuffPost FPs).
     const GATE_TYPES = new Set(['weather_page', 'sports_page']);
     const high = flagged.filter(f => f.confidence === 'high' && GATE_TYPES.has(f.type));
-    if (high.length > 0) {
-      console.error(`\n❌ STRICT: ${high.length} scored review(s) classified as non-review content:`);
+    // The block/pass decision is the pure scripts/lib/non-review-gate.js so it is
+    // unit-tested independently of the corpus scan (CLAUDE.md §15). Definitive
+    // wrong-page is zero-tolerance (floor 0) — a single scored weather/sports page
+    // is user-facing-wrong; --gate and --strict share the same floor here.
+    const { shouldBlockNonReviewGate } = require('./lib/non-review-gate');
+    if (shouldBlockNonReviewGate({ definitiveHits: high.length })) {
+      const mode = GATE ? 'GATE' : 'STRICT';
+      console.error(`\n❌ ${mode}: ${high.length} scored review(s) classified as definitive non-review content (weather/sports page):`);
       for (const f of high.slice(0, 25)) console.error(`   ${f.showId}/${f.file} — ${f.type}: ${String(f.evidence).slice(0, 80)}`);
       console.error('\nThese must not be scored. Flag wrongProduction/invalid or delete them, then rebuild.');
       process.exit(1);
     }
-    console.log('\n✓ STRICT: no high-confidence non-reviews among scored reviews.');
+    console.log(`\n✓ ${GATE ? 'GATE' : 'STRICT'}: no definitive wrong-page non-reviews among scored reviews.`);
     return;
   }
 
@@ -337,4 +348,8 @@ async function main() {
   console.log('\nDone.');
 }
 
-main().catch(console.error);
+// Exit non-zero on an uncaught failure so --gate/--strict fail LOUD (red the trunk
+// / show as crashed in the digest) instead of passing green. Without this, a thrown
+// error (e.g. corpus dir missing) logged but swallowed would make the gate a false
+// pass — the outlier among the four gated audits, which all crash to exit 1.
+main().catch((err) => { console.error(err); process.exit(1); });
