@@ -19,7 +19,7 @@
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
@@ -31,7 +31,7 @@
     "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
+    "tier1_5Attempts": 1,
     "tier1_5Success": 0,
     "tier2Attempts": 1,
     "tier2Success": 0,
@@ -44,7 +44,7 @@
     "totalFailed": 3,
     "scrapingBeePageCredits": 1,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
+    "browserbaseSessionsUsed": 1,
     "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 3,
     "urlDiscoverySuccess": 0,
@@ -60,7 +60,9 @@
   "tierDetails": {
     "playwright": [],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
