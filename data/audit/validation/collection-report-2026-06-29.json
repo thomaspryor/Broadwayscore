@@ -19,7 +19,7 @@
   "tierBreakdown": {
     "playwright": 3,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
@@ -65,6 +65,7 @@
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-best-friend--news-desk.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/whatsonstage--editorial-staff.json"
   ],
+  "failed": [],
   "tierDetails": {
     "playwright": [
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/i-paper--sarah-carson.json",
@@ -72,7 +73,9 @@
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
