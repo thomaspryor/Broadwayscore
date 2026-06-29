@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-29T06:55:33.549Z",
-  "processed": 78,
-  "failed": 1511,
-  "successRate": "4.9%",
+  "updatedAt": "2026-06-29T06:58:07.582Z",
+  "processed": 84,
+  "failed": 1515,
+  "successRate": "5.3%",
   "tierBreakdown": {
-    "playwright": 63,
+    "playwright": 66,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 6,
     "directCookies": 0,
     "scrapingbee": 9,
-    "brightdata": 2,
+    "brightdata": 3,
     "archiveToday": 39,
-    "archive": 8
+    "archive": 9
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-06-29T08:06:43.243Z",
@@ -51,6 +51,17 @@
     },
     {
       "t": "2026-06-29T06:33:47.385Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-29T06:57:09.028Z",
+      "event": "bb-session",
+      "session": "90e2852f",
+      "url": "https://www.nytimes.com/2026/04/20/theater/schmigadoon-review-brightman-broadway"
+    },
+    {
+      "t": "2026-06-29T06:57:09.950Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

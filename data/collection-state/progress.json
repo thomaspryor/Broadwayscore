@@ -71,7 +71,13 @@
     "a-midsummer-nights-dream-globe-west-end-2026/whatsonstage--james-fitzgerald.json",
     "a-midsummer-nights-dream-globe-west-end-2026/whatsonstage--michael-davies.json",
     "a-midsummer-nights-dream-globe-west-end-2026/whatsonstage--ron-simpson.json",
-    "a-midsummer-nights-dream-globe-west-end-2026/whatsonstage--sarah-crompton.json"
+    "a-midsummer-nights-dream-globe-west-end-2026/whatsonstage--sarah-crompton.json",
+    "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+    "the-rocky-horror-show-2026/playbill--unknown.json",
+    "the-balusters-2026/broadwayworld--unknown.json",
+    "the-balusters-2026/playbill--unknown.json",
+    "schmigadoon-2026/nytimes--jesse-green.json",
+    "schmigadoon-2026/vulture--rhoda-feng.json"
   ],
   "failed": [
     "a-midsummer-nights-dream-west-end-2026/hollywood-reporter--frank-scheck.json",
@@ -1534,7 +1540,11 @@
     "a-midsummer-nights-dream-globe-west-end-2026/times-uk--clive-davis.json",
     "a-midsummer-nights-dream-globe-west-end-2026/times-uk--dominic-maxwell.json",
     "a-midsummer-nights-dream-globe-west-end-2026/times-uk--quentin-letts.json",
-    "a-midsummer-nights-dream-globe-west-end-2026/times-uk--richard-morrison.json"
+    "a-midsummer-nights-dream-globe-west-end-2026/times-uk--richard-morrison.json",
+    "the-rocky-horror-show-2026/british-theatre--unknown.json",
+    "a-midsummer-nights-dream-globe-west-end-2026/london-box-office--marian-pashley.json",
+    "a-midsummer-nights-dream-globe-west-end-2026/london-box-office--stuart-king.json",
+    "schmigadoon-2026/variety--clayton-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1599,14 +1609,19 @@
       "a-midsummer-nights-dream-globe-west-end-2026/whatsonstage--james-fitzgerald.json",
       "a-midsummer-nights-dream-globe-west-end-2026/whatsonstage--michael-davies.json",
       "a-midsummer-nights-dream-globe-west-end-2026/whatsonstage--ron-simpson.json",
-      "a-midsummer-nights-dream-globe-west-end-2026/whatsonstage--sarah-crompton.json"
+      "a-midsummer-nights-dream-globe-west-end-2026/whatsonstage--sarah-crompton.json",
+      "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+      "the-rocky-horror-show-2026/playbill--unknown.json",
+      "the-balusters-2026/playbill--unknown.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
       "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
       "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--matt-wolf.json",
-      "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--matt-wolf.json"
+      "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--matt-wolf.json",
+      "data/review-texts/schmigadoon-2026/nytimes--jesse-green.json",
+      "schmigadoon-2026/nytimes--jesse-green.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1621,7 +1636,8 @@
     ],
     "brightdata": [
       "sinatra-the-musical-west-end-2026/guardian--west-end-theatre.json",
-      "camping-off-broadway-2026/talkinbroadway--unknown.json"
+      "camping-off-broadway-2026/talkinbroadway--unknown.json",
+      "the-balusters-2026/broadwayworld--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1672,11 +1688,12 @@
       "orlando-off-west-end-2026/standard--nick-curtis.json",
       "white-rabbit-red-rabbit-west-end-2026/broadwayworld--mica-blackwell.json",
       "small-off-broadway-2026/culturesauce--thom-geier.json",
-      "a-midsummer-nights-dream-globe-west-end-2026/standard--tim-bano.json"
+      "a-midsummer-nights-dream-globe-west-end-2026/standard--tim-bano.json",
+      "schmigadoon-2026/vulture--rhoda-feng.json"
     ]
   },
   "startTime": "2026-06-28T15:51:57.545Z",
-  "lastProcessed": "a-midsummer-nights-dream-globe-west-end-2026/whatsonstage--sarah-crompton.json",
+  "lastProcessed": "schmigadoon-2026/vulture--rhoda-feng.json",
   "log": [
     {
       "t": "2026-06-29T08:06:43.243Z",
@@ -1714,6 +1731,17 @@
     },
     {
       "t": "2026-06-29T06:33:47.385Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-29T06:57:09.028Z",
+      "event": "bb-session",
+      "session": "90e2852f",
+      "url": "https://www.nytimes.com/2026/04/20/theater/schmigadoon-review-brightman-broadway"
+    },
+    {
+      "t": "2026-06-29T06:57:09.950Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
