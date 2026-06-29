@@ -157,6 +157,7 @@ on:
       # scripts/lib/email-utm.js) run the colocated scripts/lib/*.test.mjs step.
       - 'scripts/lib/email-utm.js'
       - 'scripts/lib/email-templates.js'
+      - 'scripts/lib/email-templates-headline.test.mjs'
       - 'scripts/newsletter/**'
       - 'scripts/send-opening-night-broadcast.js'
       # Market-aware broadcast readiness gate (Broadway 15+agg, West End 12) + its
