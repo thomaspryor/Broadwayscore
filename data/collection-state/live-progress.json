@@ -1,25 +1,36 @@
 {
-  "updatedAt": "2026-06-29T01:41:02.869Z",
+  "updatedAt": "2026-06-29T01:44:14.616Z",
   "processed": 31,
-  "failed": 768,
-  "successRate": "3.9%",
+  "failed": 778,
+  "successRate": "3.8%",
   "tierBreakdown": {
     "playwright": 20,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingbee": 5,
     "brightdata": 2,
-    "archiveToday": 14,
+    "archiveToday": 15,
     "archive": 5
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-06-28T19:42:09.552Z",
       "event": "bb-session",
       "session": "7487df0e",
       "url": "https://www.facebook.com/SinittaOfficial/posts/heading-to-see-the-opening-of-sin"
+    },
+    {
+      "t": "2026-06-29T01:41:51.671Z",
+      "event": "bb-session",
+      "session": "996822b4",
+      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
+    },
+    {
+      "t": "2026-06-29T01:41:52.588Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
