@@ -3,6 +3,13 @@
 
 import { ComputedShow } from '@/lib/engine';
 import type { AudienceBuzzData, ShowCommercial, ShowAwards, ShowGrosses } from '@/lib/data-types';
+// Single source of truth for the per-market minimum-reviews-to-show-a-score gate.
+// "Best …" pages rank by CriticScore, so they must only include shows that
+// actually display a score — gating at a flat 3 listed West End shows (gate = 5)
+// with no score (TBD) in a score-ranked list. getMarketMinReviews() returns the
+// canonical per-market threshold (West End / Broadway = 5, Off-West End /
+// Off-Broadway / Regional = 3) from score-buckets.ts.
+import { getMarketMinReviews } from '@/lib/market-utils';
 
 // Context object passed to dataFilter/customSort — avoids importing heavy data modules here
 export interface BrowseFilterContext {
@@ -444,7 +451,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     intro: 'Broadway musicals represent the pinnacle of theatrical entertainment, combining compelling stories with unforgettable songs, spectacular staging, and incredible performances. These are the highest-rated musicals currently playing on Broadway, as determined by aggregated critic reviews. Whether you\'re looking for a classic, a new hit, or something in between, these productions deliver the very best of what musical theater has to offer.',
     filter: (show) => {
       if (show.status !== 'open') return false;
-      return show.type === 'musical' && (show.criticScore?.reviewCount ?? 0) >= 3;
+      return show.type === 'musical' && (show.criticScore?.reviewCount ?? 0) >= getMarketMinReviews(show.category);
     },
     sort: 'score',
     relatedPages: ['best-recent-musicals', 'jukebox-musicals-on-broadway', 'best-broadway-revivals'],
@@ -519,7 +526,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     intro: 'Broadway plays offer some of the most powerful and intimate theatrical experiences available. Without the spectacle of big musical numbers, plays rely on exceptional writing, direction, and performances to captivate audiences. These are the highest-rated plays currently on Broadway, ranging from gripping dramas to sharp comedies. If you\'re looking for theater that challenges, moves, and stays with you, these productions deliver.',
     filter: (show) => {
       if (show.status !== 'open') return false;
-      return show.type === 'play' && (show.criticScore?.reviewCount ?? 0) >= 3;
+      return show.type === 'play' && (show.criticScore?.reviewCount ?? 0) >= getMarketMinReviews(show.category);
     },
     sort: 'score',
     relatedPages: ['best-broadway-dramas', 'best-broadway-comedies', 'tony-winners-on-broadway'],
@@ -820,7 +827,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     metaTitle: `Best West End Musicals (${CURRENT_YEAR}) — Ranked by Critics`,
     metaDescription: 'The best West End musicals in London right now, ranked by aggregated critic reviews from The Guardian, Telegraph, Time Out, WhatsOnStage, and more.',
     intro: 'Every currently running West End musical in London, ranked by aggregated CriticScore ratings. We collect reviews from the UK\'s leading theatre critics — The Guardian, The Telegraph, Time Out London, WhatsOnStage, The Stage, and more — and combine them into a single weighted score. Whether you\'re a London local choosing your next night out or a tourist planning a theatre trip, this is the definitive ranked list of West End musicals playing right now.',
-    filter: (show) => show.category === 'west-end' && show.status === 'open' && show.type === 'musical' && (show.criticScore?.reviewCount ?? 0) >= 3,
+    filter: (show) => show.category === 'west-end' && show.status === 'open' && show.type === 'musical' && (show.criticScore?.reviewCount ?? 0) >= getMarketMinReviews(show.category),
     sort: 'score',
     source: 'west-end',
     relatedPages: ['best-west-end-plays', 'west-end-shows', 'west-end-shows-for-kids', 'best-broadway-musicals'],
@@ -833,7 +840,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     metaTitle: `Best West End Plays (${CURRENT_YEAR}) — Ranked by Critics`,
     metaDescription: 'The best West End plays in London right now, ranked by aggregated critic reviews from The Guardian, Telegraph, Time Out, WhatsOnStage, and more.',
     intro: 'Every currently running West End play in London, ranked by aggregated CriticScore ratings. From gripping dramas to sharp comedies, these plays represent the finest non-musical theatre London has to offer. Our scores aggregate reviews from the UK\'s top theatre critics — The Guardian, The Telegraph, Time Out London, WhatsOnStage, and The Stage — into a single weighted score that reflects the critical consensus.',
-    filter: (show) => show.category === 'west-end' && show.status === 'open' && show.type === 'play' && (show.criticScore?.reviewCount ?? 0) >= 3,
+    filter: (show) => show.category === 'west-end' && show.status === 'open' && show.type === 'play' && (show.criticScore?.reviewCount ?? 0) >= getMarketMinReviews(show.category),
     sort: 'score',
     source: 'west-end',
     relatedPages: ['best-west-end-musicals', 'west-end-shows', 'longest-running-west-end-shows', 'best-broadway-plays'],
@@ -925,7 +932,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     intro: 'The highest-rated Off-West End shows currently playing in London, ranked by aggregated CriticScore. Only shows with at least three professional reviews qualify for this list, ensuring every ranking reflects a meaningful critical consensus. Off-West End consistently produces some of London\'s most acclaimed theatre — intimate venues, bold storytelling, and performances that rival anything in the West End. These are the Off-West End shows critics are raving about right now.',
     filter: (show) => {
       if (show.status !== 'open' && show.status !== 'previews') return false;
-      return (show.criticScore?.reviewCount ?? 0) >= 3;
+      return (show.criticScore?.reviewCount ?? 0) >= getMarketMinReviews(show.category);
     },
     sort: 'score',
     source: 'off-west-end',
@@ -939,7 +946,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     metaTitle: `Best Off-West End Musicals (${CURRENT_YEAR}) — Ranked`,
     metaDescription: 'The best Off-West End musicals in London right now, ranked by CriticScore. Intimate, inventive musicals beyond the West End.',
     intro: 'Off-West End is where some of the most inventive, daring, and intimate musicals in London come to life. From breakout hits that go on to transfer to the West End to hidden gems that thrive in smaller venues, these productions showcase the incredible range of musical theatre beyond Shaftesbury Avenue. Ranked by aggregated CriticScore from professional critics, these are the Off-West End musicals worth seeing right now.',
-    filter: (show) => (show.status === 'open' || show.status === 'previews') && show.type === 'musical' && (show.criticScore?.reviewCount ?? 0) >= 3,
+    filter: (show) => (show.status === 'open' || show.status === 'previews') && show.type === 'musical' && (show.criticScore?.reviewCount ?? 0) >= getMarketMinReviews(show.category),
     sort: 'score',
     source: 'off-west-end',
     relatedPages: ['best-off-west-end-plays', 'off-west-end-shows', 'best-off-west-end-shows', 'best-west-end-musicals'],
@@ -952,7 +959,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     metaTitle: `Best Off-West End Plays (${CURRENT_YEAR}) — Ranked`,
     metaDescription: 'The best Off-West End plays in London right now, ranked by CriticScore. Dramas, comedies, and experimental works in intimate venues.',
     intro: 'Off-West End is the beating heart of London\'s dramatic theatre scene. These plays — from searing dramas to sharp comedies to genre-defying experimental works — represent the full spectrum of what Off-West End does best: intimate storytelling in venues where you\'re close enough to see every expression on an actor\'s face. Ranked by aggregated CriticScore from professional critics, these are the Off-West End plays getting the best reviews right now.',
-    filter: (show) => (show.status === 'open' || show.status === 'previews') && show.type === 'play' && (show.criticScore?.reviewCount ?? 0) >= 3,
+    filter: (show) => (show.status === 'open' || show.status === 'previews') && show.type === 'play' && (show.criticScore?.reviewCount ?? 0) >= getMarketMinReviews(show.category),
     sort: 'score',
     source: 'off-west-end',
     relatedPages: ['best-off-west-end-musicals', 'off-west-end-shows', 'best-off-west-end-shows', 'best-west-end-plays'],
@@ -995,7 +1002,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     intro: 'The highest-rated Off-Broadway shows currently playing in New York City, ranked by aggregated CriticScore. Only shows with at least three professional reviews qualify for this list, ensuring every ranking reflects a meaningful critical consensus. Off-Broadway consistently produces some of NYC\'s most acclaimed theatre — intimate venues, bold storytelling, and performances that rival anything on the Great White Way. These are the Off-Broadway shows critics are raving about right now.',
     filter: (show) => {
       if (show.status !== 'open' && show.status !== 'previews') return false;
-      return (show.criticScore?.reviewCount ?? 0) >= 3;
+      return (show.criticScore?.reviewCount ?? 0) >= getMarketMinReviews(show.category);
     },
     sort: 'score',
     source: 'off-broadway',
@@ -1009,7 +1016,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     metaTitle: `Best Off-Broadway Musicals (${CURRENT_YEAR}) — Ranked`,
     metaDescription: 'The best Off-Broadway musicals in NYC right now, ranked by CriticScore. Intimate, inventive musicals beyond the Great White Way.',
     intro: 'Off-Broadway is where some of the most inventive, daring, and intimate musicals in New York City come to life. From breakout hits that go on to transfer to Broadway to hidden gems that thrive in smaller venues, these productions showcase the incredible range of musical theatre beyond Times Square. Ranked by aggregated CriticScore from professional critics, these are the Off-Broadway musicals worth seeing right now.',
-    filter: (show) => (show.status === 'open' || show.status === 'previews') && show.type === 'musical' && (show.criticScore?.reviewCount ?? 0) >= 3,
+    filter: (show) => (show.status === 'open' || show.status === 'previews') && show.type === 'musical' && (show.criticScore?.reviewCount ?? 0) >= getMarketMinReviews(show.category),
     sort: 'score',
     source: 'off-broadway',
     relatedPages: ['best-off-broadway-plays', 'off-broadway-shows', 'best-off-broadway-shows', 'best-broadway-musicals'],
@@ -1022,7 +1029,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     metaTitle: `Best Off-Broadway Plays (${CURRENT_YEAR}) — Ranked`,
     metaDescription: 'The best Off-Broadway plays in NYC right now, ranked by CriticScore. Dramas, comedies, and experimental works in intimate venues.',
     intro: 'Off-Broadway is the beating heart of New York\'s dramatic theatre scene. These plays — from searing dramas to sharp comedies to genre-defying experimental works — represent the full spectrum of what Off-Broadway does best: intimate storytelling in venues where you\'re close enough to see every expression on an actor\'s face. Ranked by aggregated CriticScore from professional critics, these are the Off-Broadway plays getting the best reviews right now.',
-    filter: (show) => (show.status === 'open' || show.status === 'previews') && show.type === 'play' && (show.criticScore?.reviewCount ?? 0) >= 3,
+    filter: (show) => (show.status === 'open' || show.status === 'previews') && show.type === 'play' && (show.criticScore?.reviewCount ?? 0) >= getMarketMinReviews(show.category),
     sort: 'score',
     source: 'off-broadway',
     relatedPages: ['best-off-broadway-musicals', 'off-broadway-shows', 'best-off-broadway-shows', 'best-broadway-plays'],

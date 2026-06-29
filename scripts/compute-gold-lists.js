@@ -23,6 +23,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { getMarketMinReviews } = require('./lib/min-reviews');
 
 const dataDir = path.join(__dirname, '..', 'data');
 const outputPath = path.join(dataDir, 'gold-lists-computed.json');
@@ -79,13 +80,16 @@ const outletRegistryData = require(path.join(dataDir, 'outlet-registry.json'));
 const outletRegistry = outletRegistryData.outlets || outletRegistryData;
 
 // Thresholds (must match src/config/gold-lists.ts).
-// minReviews matches src/lib/market-utils.ts::getMarketMinReviews():
-//   3 for Off-Broadway + any London market, 5 for Broadway.
+// minReviews is derived from scripts/lib/min-reviews.js getMarketMinReviews()
+// (the single source of truth, mirror of src/config/score-buckets.ts) so it
+// can never drift from the per-market score-display gate: West End / Broadway
+// = 5, Off-Broadway / Off-West End = 3. A gold list ranks by score, so it must
+// only include shows that actually display one.
 const THRESHOLDS = {
-  'critical-gold':              { minScore: 73, minReviews: 5, maxPerSeason: 10, maxAllTime: 25 },
-  'critical-gold-west-end':     { minScore: 73, minReviews: 3, maxPerSeason: 10, maxAllTime: 25 },
-  'critical-gold-off-broadway': { minScore: 73, minReviews: 3, maxPerSeason: 10, maxAllTime: 25 },
-  'critical-gold-off-west-end': { minScore: 73, minReviews: 3, maxPerSeason: 10, maxAllTime: 25 },
+  'critical-gold':              { minScore: 73, minReviews: getMarketMinReviews('broadway'), maxPerSeason: 10, maxAllTime: 25 },
+  'critical-gold-west-end':     { minScore: 73, minReviews: getMarketMinReviews('west-end'), maxPerSeason: 10, maxAllTime: 25 },
+  'critical-gold-off-broadway': { minScore: 73, minReviews: getMarketMinReviews('off-broadway'), maxPerSeason: 10, maxAllTime: 25 },
+  'critical-gold-off-west-end': { minScore: 73, minReviews: getMarketMinReviews('off-west-end'), maxPerSeason: 10, maxAllTime: 25 },
   'audience-gold':              { minScore: 78, maxPerSeason: 10, maxAllTime: 25 },
   'audience-gold-off-broadway': { minScore: 78, maxPerSeason: 10, maxAllTime: 25 },
   'audience-gold-west-end':     { minScore: 78, maxPerSeason: 10, maxAllTime: 25 },

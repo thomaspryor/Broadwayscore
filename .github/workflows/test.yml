@@ -42,6 +42,20 @@ on:
       # Without these entries a solo edit triggers ZERO CI (allow-list gate).
       - 'scripts/gc-url-critic-names.js'
       - 'scripts/discover-outlet-reviews-serp.js'
+      # Min-reviews single source of truth (mirror of src/config/score-buckets.ts)
+      # + the press-night review-date inference. Both have colocated
+      # scripts/lib/*.test.mjs that ONLY run when the lib-test job fires — without
+      # these path entries a solo edit triggers ZERO CI (allow-list gate,
+      # feedback_test_yml_push_path_allowlist). The consumers (generator, enrich,
+      # gold-lists, digest) are listed so an edit re-checks parity against the gate.
+      - 'scripts/lib/min-reviews.js'
+      - 'scripts/lib/min-reviews.test.mjs'
+      - 'scripts/lib/infer-press-night-from-reviews.js'
+      - 'scripts/lib/infer-press-night-from-reviews.test.mjs'
+      - 'scripts/enrich-west-end-dates.js'
+      - 'scripts/generate-mobile-show-details.js'
+      - 'scripts/compute-gold-lists.js'
+      - 'scripts/send-opening-digest.js'
       # Display-field artifact GC (html-entity decode + json-ld drop) + its shared
       # predicate/decoder lib. Colocated text-cleaning predicates are tested by
       # tests/unit/display-field-artifacts.test.mjs (no-data batch).

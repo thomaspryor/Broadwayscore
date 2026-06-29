@@ -59,8 +59,10 @@ const COLLAPSED_MIN_GAP_DAYS = 2;
  *   - The earliest publish date must have ≥2 reviews within a 3-day window
  *     (clustering check — single early outlier doesn't qualify).
  *   - Inferred press night = earliest review date − 1 day.
- *   - Gap between current openingDate and inferred press night must be 8-90 days.
- *     (≤7 days = same press cycle, no correction needed; >90 days = stale data.)
+ *   - Gap between current openingDate and the earliest review must be within
+ *     [minGap, 90] days, where minGap is 8 by default but 2 for COLLAPSED shows
+ *     (openingDate === previewsStartDate — see the floor docs above). Below
+ *     minGap = treat as the same press cycle (no correction); >90 = stale data.
  *
  * @param {object} opts
  * @param {Array<object>} opts.candidateShows - shows to consider.
