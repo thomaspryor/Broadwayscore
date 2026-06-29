@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-29T12:39:59.153Z",
+  "timestamp": "2026-06-29T13:03:13.370Z",
   "stats": {
-    "totalReviews": 39500,
-    "alreadyFlagged": 17433,
+    "totalReviews": 39493,
+    "alreadyFlagged": 17427,
     "dateGuardCatches": 35,
-    "directorMismatch": 887,
+    "directorMismatch": 888,
     "tvFilmSignals": 1086,
-    "londonSignals": 706,
+    "londonSignals": 707,
     "offBroadwaySignals": 467,
     "yearMismatch": 84,
-    "noPublishDate": 3960
+    "noPublishDate": 3958
   },
   "findings": [
     {
@@ -4956,6 +4956,20 @@
     },
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
+      "file": "artsdesk--unknown.json",
+      "score": 80,
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/cyrano-de-bergerac-noel-coward-theatre-review-smouldering-sadness-beneath-verbal-fireworks",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from cyrano-de-bergerac-2012"
+        }
+      ]
+    },
+    {
+      "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "london-theatre--mark-shenton.json",
       "score": null,
       "publishDate": "2026-06-26",
@@ -8476,7 +8490,7 @@
       "file": "independent--alice-saville.json",
       "score": 58,
       "publishDate": "2026-06-18",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html?loginSuccessful=true",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -28651,6 +28665,19 @@
     },
     {
       "showId": "archduke-west-end-2026",
+      "file": "british-theatre--keith-mckenna.json",
+      "publishDate": "2026-06-29",
+      "url": "https://www.britishtheatreguide.info/reviews/archduke-royal-court-the-25696",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "archduke-west-end-2026",
       "file": "broadwayworld--alexander-cohen.json",
       "score": null,
       "publishDate": "2026-06-29",
@@ -40906,7 +40933,7 @@
       "file": "thestage--dave-fargnoli.json",
       "score": 38,
       "publishDate": "2026-06-24",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-misanthrope-review-sandra-oh-what-a-disappointment-sbzvf82b2?t=1782310602034",
+      "url": "https://www.thestage.co.uk/reviews/the-misanthrope-review-lyttelton-national-theatre-london-sandra-oh",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
