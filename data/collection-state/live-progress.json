@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-06-29T16:35:57.159Z",
-  "processed": 3,
-  "failed": 97,
-  "successRate": "3.0%",
+  "updatedAt": "2026-06-29T16:38:59.207Z",
+  "processed": 8,
+  "failed": 102,
+  "successRate": "7.3%",
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 7,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 2,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-06-29T16:36:31.743Z",
+      "event": "bb-session",
+      "session": "3452061f",
+      "url": "https://www.nytimes.com/2026/06/27/arts/sinatra-the-musical-aldwych-theatre-lond"
+    },
+    {
+      "t": "2026-06-29T16:36:32.688Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }

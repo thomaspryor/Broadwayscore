@@ -2,7 +2,12 @@
   "processed": [
     "cyrano-de-bergerac-west-end-2026/guardian-uk--unknown.json",
     "cyrano-de-bergerac-west-end-2026/times-uk--dominic-maxwell.json",
-    "pride-west-end-2026/londontheatre1--terry-eastham.json"
+    "pride-west-end-2026/londontheatre1--terry-eastham.json",
+    "sinatra-the-musical-west-end-2026/nytimes--matt-wolf.json",
+    "sinatra-the-musical-west-end-2026/guardian-uk--unknown.json",
+    "sinatra-the-musical-west-end-2026/broadwayworld--chloe-rabinowitz.json",
+    "sinatra-the-musical-west-end-2026/london-box-office--john-yap.json",
+    "sinatra-the-musical-west-end-2026/london-box-office--phil-willmott.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
@@ -101,17 +106,29 @@
     "cyrano-de-bergerac-west-end-2026/variety--marilyn-stasio.json",
     "cyrano-de-bergerac-west-end-2026/ew--tanner-stransky.json",
     "cyrano-de-bergerac-west-end-2026/newsday--linda-winer.json",
-    "cyrano-de-bergerac-west-end-2026/wsj--terry-teachout.json"
+    "cyrano-de-bergerac-west-end-2026/wsj--terry-teachout.json",
+    "pride-west-end-2026/standard--the-standard.json",
+    "sinatra-the-musical-west-end-2026/variety--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/hollywood-reporter--daniel-fienberg.json",
+    "birthright-off-broadway-2026/theatermania--linda-buchwald.json",
+    "birthright-off-broadway-2026/theatermania--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "cyrano-de-bergerac-west-end-2026/guardian-uk--unknown.json",
       "cyrano-de-bergerac-west-end-2026/times-uk--dominic-maxwell.json",
-      "pride-west-end-2026/londontheatre1--terry-eastham.json"
+      "pride-west-end-2026/londontheatre1--terry-eastham.json",
+      "sinatra-the-musical-west-end-2026/guardian-uk--unknown.json",
+      "sinatra-the-musical-west-end-2026/broadwayworld--chloe-rabinowitz.json",
+      "sinatra-the-musical-west-end-2026/london-box-office--john-yap.json",
+      "sinatra-the-musical-west-end-2026/london-box-office--phil-willmott.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/sinatra-the-musical-west-end-2026/nytimes--matt-wolf.json",
+      "sinatra-the-musical-west-end-2026/nytimes--matt-wolf.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "jesus-christ-superstar-west-end-2026/broadwayworld--stephi-wild.json",
@@ -122,6 +139,18 @@
     "archive": []
   },
   "startTime": "2026-06-29T16:22:26.418Z",
-  "lastProcessed": "cyrano-de-bergerac-west-end-2026/wsj--terry-teachout.json",
-  "log": []
+  "lastProcessed": "sinatra-the-musical-west-end-2026/london-box-office--phil-willmott.json",
+  "log": [
+    {
+      "t": "2026-06-29T16:36:31.743Z",
+      "event": "bb-session",
+      "session": "3452061f",
+      "url": "https://www.nytimes.com/2026/06/27/arts/sinatra-the-musical-aldwych-theatre-lond"
+    },
+    {
+      "t": "2026-06-29T16:36:32.688Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
