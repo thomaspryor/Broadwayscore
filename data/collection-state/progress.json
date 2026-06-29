@@ -2190,7 +2190,13 @@
     "cats-the-jellicle-ball-2026/nbcny--robert-kahn.json",
     "cats-the-jellicle-ball-2026/northjerseycom--robert-feldberg.json",
     "cats-the-jellicle-ball-2026/telegraph--dominic-cavendish.json",
-    "cats-the-jellicle-ball-2026/west-end-wilma--unknown.json"
+    "cats-the-jellicle-ball-2026/west-end-wilma--unknown.json",
+    "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+    "birthright-off-broadway-2026/theatermania--linda-buchwald.json",
+    "birthright-off-broadway-2026/theatermania--unknown.json",
+    "birthright-off-broadway-2026/broadwayworld--unknown.json",
+    "birthright-off-broadway-2026/front-row-center--unknown.json",
+    "birthright-off-broadway-2026/playbill--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2304,7 +2310,8 @@
       "data/review-texts/death-of-a-salesman-2026/variety--marilyn-stasio.json",
       "death-of-a-salesman-2026/variety--marilyn-stasio.json",
       "data/review-texts/proof-2026/deadline--unknown.json",
-      "proof-2026/deadline--unknown.json"
+      "proof-2026/deadline--unknown.json",
+      "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -2372,7 +2379,8 @@
       "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
       "data/review-texts/a-midsummer-nights-dream-globe-west-end-2026/thestage--katie-chambers.json",
       "data/review-texts/a-midsummer-nights-dream-globe-west-end-2026/thestage--katie-chambers.json",
-      "data/review-texts/a-midsummer-nights-dream-globe-west-end-2026/thestage--katie-chambers.json"
+      "data/review-texts/a-midsummer-nights-dream-globe-west-end-2026/thestage--katie-chambers.json",
+      "data/review-texts/birthright-off-broadway-2026/broadwayworld--unknown.json"
     ],
     "archive": [
       "cyrano-de-bergerac-west-end-2026/standard--fiona-mountford.json",
@@ -2394,7 +2402,7 @@
     ]
   },
   "startTime": "2026-06-28T15:51:57.545Z",
-  "lastProcessed": "cats-the-jellicle-ball-2026/west-end-wilma--unknown.json",
+  "lastProcessed": "birthright-off-broadway-2026/playbill--unknown.json",
   "log": [
     {
       "t": "2026-06-29T08:06:43.243Z",
@@ -2467,6 +2475,17 @@
       "t": "2026-06-29T11:57:11.962Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-06-29T14:04:41.375Z",
+      "event": "bb-session",
+      "session": "1df0357d",
+      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
+    },
+    {
+      "t": "2026-06-29T14:04:42.310Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
