@@ -10,6 +10,23 @@ const { parseOriginalScore } = require('./score-parsers');
 const { decodeHtmlEntities } = require('./text-cleaning');
 const { AGGREGATOR_SCORE_SOURCES: AGGREGATOR_SOURCES_SET } = require('./review-normalization');
 
+// Whether a raw originalScore string is an UNAMBIGUOUS rating form that re-parses
+// reliably (letter grade like "A"/"B+", or a star form like "3/5", "4 stars",
+// "★★★"). Bare numbers ("5", "85") are AMBIGUOUS — "5" could mean 5/100 or 5 stars
+// — so they are NOT unambiguous and must defer to the stored originalScoreNormalized
+// (Pattern Card #7). Used by the stale-normalized guard in the P0 scoring path.
+function isUnambiguousRatingString(raw) {
+  if (raw == null) return false;
+  const s = String(raw).trim();
+  if (!s) return false;
+  if (/^[A-Fa-f][+-]?$/.test(s)) return true;            // letter grade token
+  if (/\d\s*\/\s*\d/.test(s)) return true;               // X/N (3/5, 8/10)
+  if (/\bstars?\b/i.test(s)) return true;                // "4 stars", "3.5 stars"
+  if (/[★⭑✪☆]/.test(s)) return true;                     // glyph stars
+  if (/\bout of\b/i.test(s)) return true;                // "4 out of 5"
+  return false;                                          // bare number / freeform → ambiguous
+}
+
 // ===================================================
 // TEXT CLEANING
 // ===================================================
@@ -461,7 +478,26 @@ function getBestScore(data, opts = {}) {
       // Fall back to parseOriginalScore() when normalizedValue is absent (older records).
       const normalizedFromExtraction = (typeof data.originalScoreNormalized === 'number' && data.originalScoreNormalized >= 0 && data.originalScoreNormalized <= 100)
         ? data.originalScoreNormalized : null;
-      const parsed = normalizedFromExtraction ?? parseOriginalScore(effectiveOriginalScore, data.outletId);
+      const reparsedOriginal = parseOriginalScore(effectiveOriginalScore, data.outletId);
+      // Stale-normalized guard (2026-06-29): originalScoreNormalized is a stored
+      // field that can go stale and silently override a correct grade. 11 corpus-
+      // wide, e.g. the-piano-lesson-2022 EW "A" with stored normalized 20 → the
+      // rebuild emitted assignedScore 20 (Pan) even though originalScore="A" and the
+      // LLM agreed Rave. When the raw originalScore is an UNAMBIGUOUS letter/star
+      // form (the re-parse is reliable — unlike a bare number where "5" could be 5
+      // or 100, which is why Pattern Card #7 prefers the stored value) AND the
+      // stored normalized disagrees with the canonical re-parse by >6, the stored
+      // value is stale: trust the re-parse. Bare-number originalScores still defer
+      // to the stored normalized.
+      let parsed;
+      if (reparsedOriginal !== null && normalizedFromExtraction !== null
+          && isUnambiguousRatingString(effectiveOriginalScore)
+          && Math.abs(reparsedOriginal - normalizedFromExtraction) > 6) {
+        inc('staleNormalizedOverridden');
+        parsed = reparsedOriginal;
+      } else {
+        parsed = normalizedFromExtraction ?? reparsedOriginal;
+      }
       if (parsed !== null) {
         const llm = data.llmScore && data.llmScore.score;
         const llmConf = data.llmScore && data.llmScore.confidence;
@@ -774,6 +810,7 @@ function extractDateFromUrl(url) {
 }
 
 module.exports = {
+  isUnambiguousRatingString,
   // Text cleaning
   normalizeThumb,
   normalizePublishDate,
