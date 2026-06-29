@@ -50,6 +50,16 @@ test('West End threshold (12) is looser than Broadway (15) — distribution-driv
   assert.equal(evaluateBroadcastReadiness(scored(13, { dtliThumb: 'up' }), 'broadway').ready, false);
 });
 
+test('Off-West-End is NOT treated as West End — must not slip through on the WE threshold', () => {
+  // OWE shows never broadcast. The lib must use exact 'west-end', not
+  // isLondonMarket() (which is true for off-west-end). An OWE show with 12
+  // LLM-scored reviews and no aggregator falls to the Broadway branch and fails.
+  const v = evaluateBroadcastReadiness(scored(12), 'off-west-end');
+  assert.equal(v.ready, false);
+  // Same for off-broadway / regional / null — anything that isn't exactly Broadway/WE.
+  assert.equal(evaluateBroadcastReadiness(scored(20), 'off-broadway').ready, false);
+});
+
 test('Defaults: null/empty reviews → not ready, never throws', () => {
   assert.equal(evaluateBroadcastReadiness(null, 'west-end').ready, false);
   assert.equal(evaluateBroadcastReadiness([], 'broadway').ready, false);

@@ -23,8 +23,6 @@
  * testable place (CLAUDE.md §15).
  */
 
-const { isLondonMarket } = require('./venue-classification');
-
 // Broadway floors out around 13 scored reviews; median ~29. West End median is
 // ~16 with a long tail of legit 8-15-review straight plays. 12 catches every
 // major WE opening (Beetlejuice 29, Sinatra 29, War Horse 26, Glengarry 26,
@@ -42,7 +40,12 @@ const WEST_END_MIN = 12;
 function evaluateBroadcastReadiness(showReviews, category) {
   const scored = (showReviews || []).filter(r => r && r.assignedScore != null);
   const count = scored.length;
-  const westEnd = isLondonMarket(category);
+  // Exact 'west-end' only — NOT isLondonMarket(), which is also true for
+  // off-west-end. OWE shows never broadcast (mirrors the off-broadway exclusion
+  // in send-opening-night-broadcast.js findRecentlyOpenedShows). Any non-WE
+  // category falls to the Broadway branch, where the aggregator requirement
+  // fails-closed for an OWE show that ever leaks this far (it has no DTLI/BWW).
+  const westEnd = category === 'west-end';
   const min = westEnd ? WEST_END_MIN : BROADWAY_MIN;
 
   if (count < min) {
