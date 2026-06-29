@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-06-29T16:49:19.989Z",
+  "runDate": "2026-06-29T16:49:34.593Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "birthright-off-broadway-2026",
+    "showFilter": "sting-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,7 +12,7 @@
   },
   "summary": {
     "processed": 0,
-    "failed": 5,
+    "failed": 19,
     "skipped": 0,
     "successRate": "0%"
   },
@@ -27,36 +27,50 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 0,
+    "tier1Attempts": 5,
+    "tier1Success": 3,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
-    "tier2Success": 0,
+    "tier2Attempts": 2,
+    "tier2Success": 2,
     "tier3Attempts": 1,
-    "tier3Success": 0,
+    "tier3Success": 1,
     "tier3_6Attempts": 1,
     "tier3_6Success": 1,
     "tier4Attempts": 1,
     "tier4Success": 0,
-    "totalFailed": 5,
-    "scrapingBeePageCredits": 1,
+    "totalFailed": 19,
+    "scrapingBeePageCredits": 11,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 4,
+    "urlDiscoveryAttempts": 14,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [],
   "failed": [
-    "birthright-off-broadway-2026/theatermania--linda-buchwald.json",
-    "birthright-off-broadway-2026/theatermania--unknown.json",
-    "birthright-off-broadway-2026/broadwayworld--unknown.json",
-    "birthright-off-broadway-2026/front-row-center--unknown.json",
-    "birthright-off-broadway-2026/playbill--unknown.json"
+    "sting-west-end-2026/hollywood-reporter--unknown.json",
+    "sting-west-end-2026/variety--unknown.json",
+    "sting-west-end-2026/ew--unknown.json",
+    "sting-west-end-2026/newsday--linda-winer.json",
+    "sting-west-end-2026/newsday--unknown.json",
+    "sting-west-end-2026/newsday--updated-december.json",
+    "sting-west-end-2026/timeout-london--tim-bano.json",
+    "sting-west-end-2026/amny--unknown.json",
+    "sting-west-end-2026/british-theatre--unknown.json",
+    "sting-west-end-2026/daily-mail--unknown.json",
+    "sting-west-end-2026/huffpost--unknown.json",
+    "sting-west-end-2026/london-theatre--unknown.json",
+    "sting-west-end-2026/nbcny--unknown.json",
+    "sting-west-end-2026/standard--unknown.json",
+    "sting-west-end-2026/talkinbroadway--unknown.json",
+    "sting-west-end-2026/thestage--unknown.json",
+    "sting-west-end-2026/times-uk--stephen-dalton.json",
+    "sting-west-end-2026/westendtheatre--unknown.json",
+    "sting-west-end-2026/whatsonstage--julia-rank.json"
   ],
   "tierDetails": {
     "playwright": [],
@@ -66,7 +80,7 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/birthright-off-broadway-2026/broadwayworld--unknown.json"
+      "data/review-texts/sting-west-end-2026/thestage--unknown.json"
     ],
     "archive": []
   },
