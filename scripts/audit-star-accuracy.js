@@ -56,10 +56,20 @@ function loadCoreJSON(name) {
 // rounding). NOTE: 'anchored-v6' is NOT star-governed — it anchors to the star
 // but the LLM adjusts WITHIN that star's band by sentiment (a 4/5 lands ~80-90),
 // so it is checked separately by a band-crossing rule, not must-match.
+//
+// 'human-review' is NOT star-governed either (fixed 2026-06-29): humanReviewScore
+// is an AUTHORITATIVE operator override — it deliberately deviates from the
+// captured star when the star/grade is wrong or the review is nuanced (e.g.
+// the-wiz EW carried an "A" grade but the operator scored 78 after the LLM read
+// the text as Mixed; titanique NYSR operator scores diverged from mis-extracted
+// unicode stars). Treating it as must-match-star reported 10 human judgments as
+// "definite conversion bugs". A human override that diverges from the star is a
+// SUSPECT at most (eyeball the captured star), never HARD.
 function isStarGoverned(scoreSource) {
   if (!scoreSource) return false;
   if (/anchored/i.test(scoreSource)) return false;
-  return /originalScore|human-review|word-stars|manual-stars|aggregatorStars|json-ld/i.test(scoreSource);
+  if (/human-review/i.test(scoreSource)) return false;
+  return /originalScore|word-stars|manual-stars|aggregatorStars|json-ld/i.test(scoreSource);
 }
 
 // The [min,max] band a captured star legitimately permits. Star base ±~12 so an

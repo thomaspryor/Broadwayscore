@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-29T15:54:07.946Z",
+  "timestamp": "2026-06-29T17:34:46.265Z",
   "stats": {
-    "totalReviews": 39489,
-    "alreadyFlagged": 17421,
+    "totalReviews": 39499,
+    "alreadyFlagged": 17424,
     "dateGuardCatches": 35,
     "directorMismatch": 888,
     "tvFilmSignals": 1086,
-    "londonSignals": 708,
+    "londonSignals": 709,
     "offBroadwaySignals": 467,
     "yearMismatch": 84,
-    "noPublishDate": 3959
+    "noPublishDate": 3967
   },
   "findings": [
     {
@@ -1719,7 +1719,7 @@
       "file": "independent--louis-chilton.json",
       "score": 40,
       "publishDate": "2026-04-17",
-      "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -30515,7 +30515,7 @@
       "file": "exeunt-magazine--loren-noveck.json",
       "score": 80,
       "publishDate": "2026-05-15T11:08:02-04:00",
-      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/#:~:text=Dad%20Don't%20Read%20This%20is%20messy%20and%20raw%20and,will%20keep%20it%20in%20my",
+      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -37428,6 +37428,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "sinatra-the-musical-west-end-2026",
+      "file": "nytimes--matt-wolf.json",
+      "score": 42,
+      "publishDate": "2026-06-27",
+      "url": "https://www.nytimes.com/2026/06/27/arts/sinatra-the-musical-aldwych-theatre-london.html?eafs_enabled=false",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
