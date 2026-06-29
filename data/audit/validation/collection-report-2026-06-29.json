@@ -1,34 +1,34 @@
 {
-  "runDate": "2026-06-29T16:47:30.073Z",
+  "runDate": "2026-06-29T16:48:07.296Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "the-truth-a-comedy-by-florian-zeller-west-end-2026",
+    "showFilter": "much-ado-about-nothing-globe-off-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 8,
+    "processed": 1,
+    "failed": 11,
     "skipped": 0,
-    "successRate": "27.3%"
+    "successRate": "8.3%"
   },
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 5,
-    "tier1Success": 5,
+    "tier1Attempts": 2,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -41,55 +41,43 @@
     "tier3_6Success": 0,
     "tier4Attempts": 1,
     "tier4Success": 0,
-    "totalFailed": 8,
+    "totalFailed": 11,
     "scrapingBeePageCredits": 1,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 7,
-    "urlDiscoverySuccess": 2,
+    "urlDiscoveryAttempts": 10,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/i-paper--sarah-carson.json",
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre--marianka-swain.json",
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json"
+    "much-ado-about-nothing-globe-off-west-end-2026/london-theatre--lola-phillips.json"
   ],
   "failed": [
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/hollywood-reporter--daniel-fienberg.json",
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/daily-mail--unknown.json",
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-box-office--nastazja-domaradzka.json",
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/the-contending--unknown.json",
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/the-upcoming-uk--unknown.json",
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/times-uk--dominic-maxwell.json",
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-best-friend--news-desk.json",
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/whatsonstage--editorial-staff.json"
+    "much-ado-about-nothing-globe-off-west-end-2026/the-upcoming-uk--unknown.json",
+    "much-ado-about-nothing-globe-off-west-end-2026/times-uk--ann-treneman.json",
+    "much-ado-about-nothing-globe-off-west-end-2026/times-uk--clive-davis.json",
+    "much-ado-about-nothing-globe-off-west-end-2026/times-uk--dominic-maxwell.json",
+    "much-ado-about-nothing-globe-off-west-end-2026/times-uk--rachel-halliburton.json",
+    "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--alun-hood.json",
+    "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--daisy-bowie.json",
+    "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--judi-herman.json",
+    "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--matt-trueman.json",
+    "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--michael-davies.json",
+    "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--mickey-jo-boucher.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "the-truth-a-comedy-by-florian-zeller-west-end-2026/i-paper--sarah-carson.json",
-      "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre--marianka-swain.json",
-      "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "much-ado-about-nothing-globe-off-west-end-2026/london-theatre--lola-phillips.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": [
-    {
-      "reviewId": "the-truth-a-comedy-by-florian-zeller-west-end-2026/i-paper--sarah-carson.json",
-      "oldUrl": "https://inews.co.uk/culture/dont-think-sam-campbell-telling-truth-4465988?srsltid=AfmBOorHPLKRrBOKS0qnnoK1HC89VyFj_1NLyLyFvf097tag_w5WnxN_",
-      "newUrl": "https://inews.co.uk/culture/dont-think-sam-campbell-telling-truth-4465988?srsltid=AfmBOoqLa1YItAHAvGgm_-lVNl_MnA8jnIfsNwQ5vBP2wELSAx8q1Zhd"
-    },
-    {
-      "reviewId": "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre--marianka-swain.json",
-      "oldUrl": "https://www.londontheatre.co.uk/reviews/the-truth-review-apollo-theatre",
-      "newUrl": "https://www.londontheatre.co.uk/theatre-news/news/everything-you-need-to-know-about-the-truth"
-    }
-  ]
+  "urlDiscoveries": []
 }
