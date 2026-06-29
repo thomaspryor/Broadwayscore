@@ -63,6 +63,12 @@ on:
       - 'scripts/lib/genre-classification.test.mjs'
       - 'scripts/discover-new-shows.js'
       - 'scripts/backfill-genre.js'
+      # Duplicate-show audit + the title-fragment detector it now also runs
+      # (colocated *.test.mjs runs in the lib glob). Without these a solo edit
+      # triggers ZERO CI.
+      - 'scripts/audit-duplicate-shows.js'
+      - 'scripts/lib/show-duplicate-detection.js'
+      - 'scripts/lib/show-duplicate-detection.test.mjs'
       # Display-field artifact GC (html-entity decode + json-ld drop) + its shared
       # predicate/decoder lib. Colocated text-cleaning predicates are tested by
       # tests/unit/display-field-artifacts.test.mjs (no-data batch).
