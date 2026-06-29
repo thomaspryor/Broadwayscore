@@ -159,6 +159,11 @@ on:
       - 'scripts/lib/email-templates.js'
       - 'scripts/newsletter/**'
       - 'scripts/send-opening-night-broadcast.js'
+      # Market-aware broadcast readiness gate (Broadway 15+agg, West End 12) + its
+      # colocated test (runs in the scripts/lib/*.test.mjs glob step). Path-listed
+      # so an edit triggers CI per feedback_test_yml_push_path_allowlist.
+      - 'scripts/lib/broadcast-readiness.js'
+      - 'scripts/lib/broadcast-readiness.test.mjs'
       - 'scripts/fantasy-weekly-email.js'
       - 'scripts/send-btc-results.js'
       - 'scripts/scrape-drama-desk.js'
