@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-29T11:04:15.337Z",
-  "processed": 21,
-  "failed": 398,
-  "successRate": "5.0%",
+  "updatedAt": "2026-06-29T07:06:45.470Z",
+  "processed": 103,
+  "failed": 1556,
+  "successRate": "6.2%",
   "tierBreakdown": {
-    "playwright": 18,
+    "playwright": 76,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 8,
     "directCookies": 0,
-    "scrapingbee": 3,
-    "brightdata": 0,
-    "archiveToday": 12,
-    "archive": 2
+    "scrapingbee": 11,
+    "brightdata": 8,
+    "archiveToday": 39,
+    "archive": 10
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-06-29T08:06:43.243Z",
@@ -24,8 +24,57 @@
     {
       "t": "2026-06-29T08:08:25.550Z",
       "event": "bb-session",
-      "session": "ac58ea16",
-      "url": "https://www.facebook.com/WestEndBestFriend/posts/-review-now-playing-in-the-nati"
+      "session": "996822b4",
+      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
+    },
+    {
+      "t": "2026-06-29T01:41:52.588Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-29T04:14:40.838Z",
+      "event": "bb-session",
+      "session": "a197c340",
+      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
+    },
+    {
+      "t": "2026-06-29T04:14:41.842Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-29T06:33:46.398Z",
+      "event": "bb-session",
+      "session": "72fb5bf2",
+      "url": "https://www.nytimes.com/2026/05/31/theater/and-then-the-rodeo-burned-down-review"
+    },
+    {
+      "t": "2026-06-29T06:33:47.385Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-29T06:57:09.028Z",
+      "event": "bb-session",
+      "session": "90e2852f",
+      "url": "https://www.nytimes.com/2026/04/20/theater/schmigadoon-review-brightman-broadway"
+    },
+    {
+      "t": "2026-06-29T06:57:09.950Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-29T07:03:51.748Z",
+      "event": "bb-session",
+      "session": "1517ec2a",
+      "url": "https://variety.com/2026/legit/news/death-of-a-salesman-broadway-review-nathan-l"
+    },
+    {
+      "t": "2026-06-29T07:03:52.764Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
