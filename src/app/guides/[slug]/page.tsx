@@ -166,29 +166,36 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
 
   // Event schema for upcoming shows — helps Google surface opening dates
   const eventSchemas = params.slug === 'upcoming-broadway-shows' && shows.length > 0
-    ? shows.filter(s => s.openingDate).map(show => ({
-        '@context': 'https://schema.org',
-        '@type': 'TheaterEvent',
-        name: show.title,
-        startDate: show.openingDate,
-        endDate: show.closingDate || undefined,
-        url: `${BASE_URL}/show/${show.slug}`,
-        location: show.venue ? {
-          '@type': 'PerformingArtsTheater',
-          name: show.venue,
-          address: show.theaterAddress || undefined,
-        } : undefined,
-        description: show.synopsis || undefined,
-        image: show.images?.hero || undefined,
-        eventStatus: 'https://schema.org/EventScheduled',
-        eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-        offers: show.ticketLinks?.[0] ? {
-          '@type': 'Offer',
-          url: show.ticketLinks[0].url,
-          priceCurrency: 'USD',
-          availability: 'https://schema.org/InStock',
-        } : undefined,
-      }))
+    ? shows.filter(s => s.openingDate).map(show => {
+        // Use sortTicketLinks so the JSON-LD Offer respects HIDDEN_PLATFORMS
+        // and priority order — same primary link the rendered card shows.
+        // Raw ticketLinks[0] would publish a hidden platform (Ticketmaster /
+        // StubHub) to Google even though we suppress its button.
+        const primaryTicket = sortTicketLinks(show.ticketLinks?.filter(Boolean) || [])[0];
+        return {
+          '@context': 'https://schema.org',
+          '@type': 'TheaterEvent',
+          name: show.title,
+          startDate: show.openingDate,
+          endDate: show.closingDate || undefined,
+          url: `${BASE_URL}/show/${show.slug}`,
+          location: show.venue ? {
+            '@type': 'PerformingArtsTheater',
+            name: show.venue,
+            address: show.theaterAddress || undefined,
+          } : undefined,
+          description: show.synopsis || undefined,
+          image: show.images?.hero || undefined,
+          eventStatus: 'https://schema.org/EventScheduled',
+          eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+          offers: primaryTicket ? {
+            '@type': 'Offer',
+            url: primaryTicket.url,
+            priceCurrency: 'USD',
+            availability: 'https://schema.org/InStock',
+          } : undefined,
+        };
+      })
     : [];
 
   const schemas = [breadcrumbSchema, itemListSchema, faqSchema, ...eventSchemas].filter(Boolean);
