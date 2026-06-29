@@ -19,7 +19,7 @@
   "tierBreakdown": {
     "playwright": 5,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
@@ -31,7 +31,7 @@
     "tier1Success": 8,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
+    "tier1_5Attempts": 1,
     "tier1_5Success": 0,
     "tier2Attempts": 1,
     "tier2Success": 0,
@@ -44,7 +44,7 @@
     "totalFailed": 23,
     "scrapingBeePageCredits": 10,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
+    "browserbaseSessionsUsed": 1,
     "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 24,
     "urlDiscoverySuccess": 4,
@@ -91,7 +91,9 @@
       "cyrano-de-bergerac-west-end-2026/london-theatre--mark-shenton.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
