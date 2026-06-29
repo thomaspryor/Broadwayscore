@@ -1,4 +1,55 @@
 {
+  "runDate": "2026-06-29T00:03:51.064Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 300,
+    "priority": "all",
+    "showFilter": "",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 29,
+    "failed": 601,
+    "skipped": 0,
+    "successRate": "4.6%"
+  },
+  "tierBreakdown": {
+    "playwright": 20,
+    "amp": 0,
+    "browserbase": 0,
+    "directCookies": 0,
+    "scrapingbee": 4,
+    "brightdata": 1,
+    "archiveToday": 12,
+    "archive": 5
+  },
+  "statistics": {
+    "tier1Attempts": 0,
+    "tier1Success": 0,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 77,
+    "scrapingBeePageCredits": 0,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 77,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
   "processed": [
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/financialtimes--unknown.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json",
@@ -633,8 +684,7 @@
     "inherit-the-wind-2007/nypost--clive-barnes.json",
     "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json"
   ],
-  "skipped": [],
-  "tierBreakdown": {
+  "tierDetails": {
     "playwright": [
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/financialtimes--unknown.json",
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json",
@@ -691,14 +741,6 @@
       "orlando-off-west-end-2026/standard--nick-curtis.json"
     ]
   },
-  "startTime": "2026-06-28T15:51:57.545Z",
-  "lastProcessed": "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
-  "log": [
-    {
-      "t": "2026-06-28T19:42:09.552Z",
-      "event": "bb-session",
-      "session": "7487df0e",
-      "url": "https://www.facebook.com/SinittaOfficial/posts/heading-to-see-the-opening-of-sin"
-    }
-  ]
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
 }
