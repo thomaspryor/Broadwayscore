@@ -33,6 +33,7 @@ const https = require('https');
 
 const { predictReviewCount } = require('./predict-review-count');
 const { getTier } = require('./lib/outlet-tiers');
+const { getMarketMinReviews } = require('./lib/min-reviews');
 const {
   TOKENS,
   esc,
@@ -80,12 +81,13 @@ function publishThresholds(market) {
 // never surfaces a number the public show page would itself suppress. A digest
 // that shows "Recommended 81" off 2 reviews while also flagging "Needs help —
 // 2/15 reviews" reads as contradictory and untrustworthy.
-//   Critic score: src/lib/market-utils.ts getMarketMinReviews()
-//                 → 3 (London + Off-Broadway), 5 (Broadway).
+//   Critic score: scripts/lib/min-reviews.js getMarketMinReviews() — the single
+//                 source of truth (mirror of src/config/score-buckets.ts):
+//                 West End / Broadway = 5, Off-West End / Off-Broadway = 3.
 //   Audience grade: src/lib/audience-grade-utils.ts MIN_AUDIENCE_REVIEWS = 15.
 // Below these, the digest shows "TBD" / "Audience: —" rather than a firm verdict.
 function minReviewsToShowScore(market) {
-  return (market === 'west-end' || market === 'off-west-end' || market === 'off-broadway') ? 3 : 5;
+  return getMarketMinReviews(market);
 }
 const MIN_AUDIENCE_REVIEWS = 15;
 
