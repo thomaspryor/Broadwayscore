@@ -1,29 +1,34 @@
 {
-  "processed": [
-    "encores-la-cage-aux-folles-off-broadway-2026/nytimes--httpswwwnytimescombylaura-collins-hughes.json"
-  ],
+  "processed": [],
   "failed": [
-    "encores-la-cage-aux-folles-off-broadway-2026/timeout-london--tom-wicker.json",
-    "encores-la-cage-aux-folles-off-broadway-2026/artsdesk--gary-naylor.json",
-    "encores-la-cage-aux-folles-off-broadway-2026/city-am--adam-bloodworth.json",
-    "encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json"
+    "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json"
+    ],
     "directCookies": [],
-    "scrapingbee": [
-      "encores-la-cage-aux-folles-off-broadway-2026/nytimes--httpswwwnytimescombylaura-collins-hughes.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [
-      "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json"
-    ],
+    "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-06-29T06:54:38.052Z",
-  "lastProcessed": "encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
-  "log": []
+  "startTime": "2026-06-29T06:55:43.655Z",
+  "lastProcessed": "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+  "log": [
+    {
+      "t": "2026-06-29T06:56:19.946Z",
+      "event": "bb-session",
+      "session": "ed5949e3",
+      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
+    },
+    {
+      "t": "2026-06-29T06:56:20.549Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
