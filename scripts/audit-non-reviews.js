@@ -348,4 +348,8 @@ async function main() {
   console.log('\nDone.');
 }
 
-main().catch(console.error);
+// Exit non-zero on an uncaught failure so --gate/--strict fail LOUD (red the trunk
+// / show as crashed in the digest) instead of passing green. Without this, a thrown
+// error (e.g. corpus dir missing) logged but swallowed would make the gate a false
+// pass — the outlier among the four gated audits, which all crash to exit 1.
+main().catch((err) => { console.error(err); process.exit(1); });

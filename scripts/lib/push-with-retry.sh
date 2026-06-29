@@ -39,9 +39,13 @@ BRANCH=${2:-main}
 # silently dropped from reviews.json and reddened validate-review-texts on main. This
 # guard scans the files about to be pushed — staged changes plus any commits ahead of
 # the remote — for start-of-line conflict markers and ABORTS before the push if any
-# are found. Detection lives in scripts/lib/conflict-markers.js (unit-tested, FP-safe:
-# it matches the <<<<<<< opener / >>>>>>> closer, not the bare ======= separator, so
-# Markdown setext headings don't trip it). Bypass: PUSH_SKIP_CONFLICT_CHECK=1.
+# are found. RUNS BEFORE EVERY push attempt in the retry loop (not just at startup),
+# so a marker introduced by this script's own rebase/merge auto-resolution can't slip
+# through on a later iteration. Detection lives in scripts/lib/conflict-markers.js
+# (unit-tested): it matches the <<<<<<< opener / >>>>>>> closer, NOT the bare =======
+# separator, so Markdown setext headings don't trip it. A literal 7+ "<"/">" run at
+# line start is treated as a marker; for the rare legitimate case (a fixture/doc that
+# embeds one on purpose) bypass with PUSH_SKIP_CONFLICT_CHECK=1.
 assert_no_conflict_markers() {
   [ "${PUSH_SKIP_CONFLICT_CHECK:-}" = "1" ] && return 0
   command -v node >/dev/null 2>&1 || return 0  # detector needs node; skip if absent
@@ -81,9 +85,8 @@ else
   PULL_BRANCH="$BRANCH"
 fi
 
-# Block the push if a committed/staged file carries unresolved conflict markers.
-# Runs after PULL_BRANCH is known (the outgoing-commit scan needs it).
-assert_no_conflict_markers
+# (The conflict-marker guard is invoked at the top of each retry-loop iteration
+# below, after PULL_BRANCH is known and after any in-loop rebase/merge resolution.)
 
 # Check if a file has a modify/delete conflict.
 # git checkout --ours/--theirs fails on these because one side has no version.
@@ -219,6 +222,10 @@ restore_protected_fields() {
 
 pushed=false
 for i in $(seq 1 "$MAX_RETRIES"); do
+  # Re-scan before each attempt: catches both pre-existing committed markers (the
+  # 09e78a7a corruption class) and any marker a prior iteration's rebase/merge
+  # resolution might have left in the now-outgoing commits.
+  assert_no_conflict_markers
   if git push origin "$BRANCH"; then
     echo "Push succeeded on attempt $i"
     pushed=true
