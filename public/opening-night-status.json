@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-29T12:09:03.022Z",
+  "generatedAt": "2026-06-29T12:40:03.895Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -82,6 +82,10 @@
         },
         {
           "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
           "isDualMarket": true
         },
         {
@@ -484,18 +488,18 @@
       "status": "open",
       "slug": "archduke-west-end",
       "thumbnail": "/images/shows/archduke-west-end-2026/thumbnail.webp",
-      "siteScore": 70.38,
+      "siteScore": 69.65,
       "liveScore": 70,
-      "scoreDrift": -0.37999999999999545,
+      "scoreDrift": 0.3499999999999943,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 12,
+      "total": 13,
       "t1": 3,
-      "t2": 6,
+      "t2": 7,
       "t3": 3,
       "positive": 7,
-      "mixed": 4,
+      "mixed": 5,
       "negative": 1,
       "readiness": {
         "ready": false,
@@ -546,15 +550,7 @@
           "isDualMarket": true
         },
         {
-          "name": "BroadwayWorld",
-          "isDualMarket": true
-        },
-        {
           "name": "New York Theatre Guide",
-          "isDualMarket": true
-        },
-        {
-          "name": "WhatsOnStage",
           "isDualMarket": true
         }
       ],
@@ -652,6 +648,18 @@
           "t3": 3,
           "p": 7,
           "m": 4,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-06-29T12:40:03.895Z",
+          "rc": 13,
+          "s": 69.65,
+          "t1": 3,
+          "t2": 7,
+          "t3": 3,
+          "p": 7,
+          "m": 5,
           "n": 1,
           "bc": "waiting"
         }

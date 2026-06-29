@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-29T12:08:56.927Z",
+  "timestamp": "2026-06-29T12:39:59.153Z",
   "stats": {
-    "totalReviews": 39486,
-    "alreadyFlagged": 17430,
+    "totalReviews": 39500,
+    "alreadyFlagged": 17433,
     "dateGuardCatches": 35,
     "directorMismatch": 887,
     "tvFilmSignals": 1086,
-    "londonSignals": 705,
+    "londonSignals": 706,
     "offBroadwaySignals": 467,
     "yearMismatch": 84,
-    "noPublishDate": 3955
+    "noPublishDate": 3960
   },
   "findings": [
     {
@@ -28641,6 +28641,20 @@
       "score": 58,
       "publishDate": "2026-06-27",
       "url": "https://www.allthatdazzles.co.uk/post/review-archduke-royal-court",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "archduke-west-end-2026",
+      "file": "broadwayworld--alexander-cohen.json",
+      "score": null,
+      "publishDate": "2026-06-29",
+      "url": "https://www.broadwayworld.com/westend/article/Review-ARCHDUKE-Royal-Court-20260629",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
