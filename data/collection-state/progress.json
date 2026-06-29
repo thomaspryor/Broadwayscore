@@ -132,7 +132,10 @@
     "cyrano-de-bergerac-west-end-2026/times-uk--dominic-maxwell.json",
     "white-rabbit-red-rabbit-west-end-2026/variety--naman-ramachandran.json",
     "cats-the-jellicle-ball-2026/cititour--brian-scott-lipton.json",
-    "cats-the-jellicle-ball-2026/exeunt-magazine--lane-williamson.json"
+    "cats-the-jellicle-ball-2026/exeunt-magazine--lane-williamson.json",
+    "dog-day-afternoon-2026/one-minute-critic--matthew-wexler.json",
+    "dog-day-afternoon-2026/playbill--unknown.json",
+    "music-city-off-broadway-2026/deadline--greg-evans.json"
   ],
   "failed": [
     "a-midsummer-nights-dream-west-end-2026/hollywood-reporter--frank-scheck.json",
@@ -2480,7 +2483,14 @@
     "cats-the-jellicle-ball-2026/newyorker--emily-nussbaum.json",
     "cats-the-jellicle-ball-2026/newsday--linda-winer.json",
     "cats-the-jellicle-ball-2026/huffpost--david-finkle.json",
-    "cats-the-jellicle-ball-2026/nbcny--robert-kahn.json"
+    "cats-the-jellicle-ball-2026/nbcny--robert-kahn.json",
+    "cats-the-jellicle-ball-2026/northjerseycom--robert-feldberg.json",
+    "cats-the-jellicle-ball-2026/telegraph--dominic-cavendish.json",
+    "cats-the-jellicle-ball-2026/west-end-wilma--unknown.json",
+    "cats-the-jellicle-ball-2026/thewrap--jason-clark.json",
+    "cats-the-jellicle-ball-2026/thewrap--robert-hofler.json",
+    "cats-the-jellicle-ball-2026/queerty--matthew-wexler.json",
+    "music-city-off-broadway-2026/observer--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2583,7 +2593,9 @@
       "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json",
       "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
       "cyrano-de-bergerac-west-end-2026/times-uk--dominic-maxwell.json",
-      "cats-the-jellicle-ball-2026/exeunt-magazine--lane-williamson.json"
+      "cats-the-jellicle-ball-2026/exeunt-magazine--lane-williamson.json",
+      "dog-day-afternoon-2026/one-minute-critic--matthew-wexler.json",
+      "dog-day-afternoon-2026/playbill--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -2598,7 +2610,9 @@
       "data/review-texts/proof-2026/deadline--unknown.json",
       "proof-2026/deadline--unknown.json",
       "data/review-texts/white-rabbit-red-rabbit-west-end-2026/variety--naman-ramachandran.json",
-      "white-rabbit-red-rabbit-west-end-2026/variety--naman-ramachandran.json"
+      "white-rabbit-red-rabbit-west-end-2026/variety--naman-ramachandran.json",
+      "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
+      "music-city-off-broadway-2026/deadline--greg-evans.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -2693,7 +2707,7 @@
     ]
   },
   "startTime": "2026-06-28T15:51:57.545Z",
-  "lastProcessed": "cats-the-jellicle-ball-2026/nbcny--robert-kahn.json",
+  "lastProcessed": "music-city-off-broadway-2026/observer--unknown.json",
   "log": [
     {
       "t": "2026-06-29T08:06:43.243Z",
@@ -2777,6 +2791,17 @@
       "t": "2026-06-29T14:30:27.286Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-29T14:40:52.083Z",
+      "event": "bb-session",
+      "session": "8d8926d4",
+      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
+    },
+    {
+      "t": "2026-06-29T14:40:52.504Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
