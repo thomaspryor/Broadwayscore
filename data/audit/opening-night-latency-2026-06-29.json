@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-29T13:48:23.371Z",
+  "generatedAt": "2026-06-29T15:30:32.259Z",
   "date": "2026-06-29",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 619844,
+  "entryCount": 624462,
   "shows": [
     {
       "showId": "an-ideal-husband-west-end-2026",
@@ -1596,7 +1596,7 @@
     },
     {
       "showId": "hercules-west-end-2025",
-      "reviewCount": 22,
+      "reviewCount": 23,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4281,7 +4281,7 @@
     },
     {
       "showId": "the-producers-west-end-2025",
-      "reviewCount": 19,
+      "reviewCount": 17,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4551,12 +4551,12 @@
     },
     {
       "showId": "archduke-west-end-2026",
-      "reviewCount": 13,
+      "reviewCount": 14,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 1448534,
+        "collected-to-scored": 1920211,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -10896,7 +10896,7 @@
     },
     {
       "showId": "the-misanthrope-west-end-2026",
-      "reviewCount": 22,
+      "reviewCount": 21,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -11841,7 +11841,7 @@
     },
     {
       "showId": "jesus-christ-superstar-west-end-2026",
-      "reviewCount": 4,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -12402,6 +12402,21 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 1148266,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "misterman-theatre-row-off-broadway-2026",
+      "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
