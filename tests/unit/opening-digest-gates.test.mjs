@@ -1,5 +1,6 @@
 // Tests the live-site parity DISPLAY gates in send-opening-digest.js:
-//   - critic score: getMarketMinReviews() → 3 (London/Off-Bway), 5 (Broadway)
+//   - critic score: getMarketMinReviews() → West End / Broadway = 5,
+//     Off-West End / Off-Broadway = 3 (canonical, mirror of score-buckets.ts)
 //   - audience grade: MIN_AUDIENCE_REVIEWS = 15
 // Requires the REAL functions (CLAUDE.md rule 15) — no copied logic.
 import { test } from 'node:test';
@@ -13,7 +14,7 @@ const { minReviewsToShowScore, getAudience, MIN_AUDIENCE_REVIEWS } =
 test('critic-score gate matches getMarketMinReviews', () => {
   assert.equal(minReviewsToShowScore('broadway'), 5);
   assert.equal(minReviewsToShowScore('off-broadway'), 3);
-  assert.equal(minReviewsToShowScore('west-end'), 3);
+  assert.equal(minReviewsToShowScore('west-end'), 5); // canonical: WE matches Broadway
   assert.equal(minReviewsToShowScore('off-west-end'), 3);
   assert.equal(minReviewsToShowScore(undefined), 5); // unknown → Broadway floor
 });

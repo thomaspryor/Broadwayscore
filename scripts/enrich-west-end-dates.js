@@ -488,8 +488,18 @@ async function main() {
 
   if (entries.length === 0) {
     console.warn('WARNING: 0 entries from all sources');
-    console.log('No changes to apply');
-    process.exit(0);
+    // In fix-unconfirmed mode, Phase 4 (infer press night from review-date
+    // clustering) is a review-data-only fallback that does NOT need any scrape
+    // entries — closed shows fall off Theatremonkey/Playbill listings, so they
+    // can ONLY be corrected by inference. Exiting here would skip that backfill
+    // forever (the weekly cron's TM/PB scrape returning empty was silently
+    // leaving ~32 collapsed WE openingDate===previewsStartDate todaytix shows
+    // uncorrected). Only bail early when there's genuinely nothing to do.
+    if (!fixUnconfirmed) {
+      console.log('No changes to apply');
+      process.exit(0);
+    }
+    console.log('Continuing to Phase 4 (review-date inference) despite 0 scrape entries.');
   }
 
   // Phase 4: Match to shows.json and compute changes

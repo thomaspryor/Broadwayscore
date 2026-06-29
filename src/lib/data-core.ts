@@ -15,6 +15,7 @@ import type { Director, Theater, TheaterStructuredTips, TheaterVenueScores, Thea
 import { getShowGrosses } from './data-grosses';
 import { getAudienceBuzz } from './data-audience';
 import { isOperaShow } from './show-market';
+import { isNonTheatricalGenre } from './genre';
 import { featureFlags } from '@/config/feature-flags';
 import { isHomepageNotable, isAcclaimedKnownPropertyRevival, notabilityRank, NOTABILITY_THRESHOLDS, type NotabilitySignals } from './homepage-notability';
 import { getShowCommercial } from './data-commercial';
@@ -98,11 +99,20 @@ const HIDDEN_LONDON_IDS = new Set<string>([
 ]);
 
 /**
- * Get all London shows (West End + Off-West End)
+ * Get all London shows for the West End hub (West End + Off-West End).
+ *
+ * Non-theatrical genres (dance, magic, comedy, cabaret, concert, circus) are
+ * EXCLUDED here even when their venue-derived category is west-end — they keep
+ * their critic scores but belong on the Off-West End hub, not the West End
+ * plays/musicals listing (they'd otherwise rank next to plays and musicals with
+ * a category-error score). They surface via getOffWestEndShows() instead.
+ * Routing by genre is reversion-proof: it holds regardless of what the
+ * venue-based category classifier sets. See src/lib/genre.ts.
  */
 export function getWestEndShows(): ComputedShow[] {
   return getAllShows().filter(show =>
     (show.category === 'west-end' || show.category === 'off-west-end') &&
+    !isNonTheatricalGenre(show.genre) &&
     !HIDDEN_LONDON_IDS.has(show.id)
   );
 }
@@ -194,11 +204,17 @@ export function getOperaShowByTitleSlug(titleSlug: string): ComputedShow | undef
 }
 
 /**
- * Get Off-West End shows only (excludes West End proper)
+ * Get Off-West End shows (excludes West End proper) PLUS any London show with a
+ * non-theatrical genre (dance/magic/comedy/cabaret/concert/circus), which lives
+ * on this hub regardless of its venue-derived category. This is the mirror of
+ * the exclusion in getWestEndShows() — together they guarantee every London show
+ * appears on exactly one hub, and that a dance show stuck at a West-End-listed
+ * venue still lands here. See src/lib/genre.ts.
  */
 export function getOffWestEndShows(): ComputedShow[] {
   return getAllShows().filter(show =>
-    show.category === 'off-west-end' && !HIDDEN_LONDON_IDS.has(show.id)
+    (show.category === 'off-west-end' || (isNonTheatricalGenre(show.genre) && (show.category === 'west-end' || show.category === 'off-west-end'))) &&
+    !HIDDEN_LONDON_IDS.has(show.id)
   );
 }
 

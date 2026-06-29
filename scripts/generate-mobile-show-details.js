@@ -22,6 +22,7 @@ const { loadReviewsWithBlog } = require('./lib/load-reviews-with-blog');
 const { getTier: getAuthoritativeTier } = require('./lib/outlet-tiers');
 const { shouldHideReviews } = require('./lib/should-hide-reviews');
 const { dedupByCritic } = require('./lib/dedup-by-critic');
+const { getMarketMinReviews, T3_ONLY_EXTRA } = require('./lib/min-reviews');
 
 const dataDir = path.join(__dirname, '../data');
 const outputDir = path.join(__dirname, '../public/data/shows');
@@ -463,17 +464,10 @@ for (const show of visibleShows) {
   const hideReviews = shouldHideReviews(show) || show.status === 'announced';
   const scoreResult = hideReviews ? null : computeCriticScore(showReviews, outletRegistry, show.category, show.type);
 
-  // Minimum review thresholds per market (matches src/config/score-buckets.ts)
-  const MIN_REVIEWS = 5;
-  const MIN_REVIEWS_OFF_BROADWAY = 3;
-  const MIN_REVIEWS_WEST_END = 5;
-  const MIN_REVIEWS_OFF_WEST_END = 3;
-  const T3_ONLY_EXTRA = 2;
-  let minReviews = show.category === 'off-broadway' ? MIN_REVIEWS_OFF_BROADWAY
-    : show.category === 'off-west-end' ? MIN_REVIEWS_OFF_WEST_END
-    : show.category === 'west-end' ? MIN_REVIEWS_WEST_END
-    : show.category === 'regional' ? MIN_REVIEWS_OFF_BROADWAY
-    : MIN_REVIEWS;
+  // Minimum review thresholds per market — single source of truth in
+  // scripts/lib/min-reviews.js (CommonJS mirror of src/config/score-buckets.ts,
+  // kept in sync by scripts/lib/min-reviews.test.mjs). Do NOT hardcode here.
+  let minReviews = getMarketMinReviews(show.category);
   // T3-only shows need extra reviews
   if (scoreResult && scoreResult.t1 === 0) {
     // Check if there are any T2 reviews

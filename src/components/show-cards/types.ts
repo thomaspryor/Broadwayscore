@@ -30,6 +30,7 @@ export interface ShowCardShow {
   audienceCombinedScore: number | null;
   audienceGrade: AudienceGrade | null;
   category?: string; // undefined for legacy Broadway shows — defaults to 'broadway'
+  genre?: string; // dance/magic/comedy/cabaret/concert/circus — drives GenrePill + OWE routing (see src/lib/genre.ts)
   subtitle?: string; // e.g. "$10 lottery" — shown below title on shelf cards
   subtitleColor?: string; // Tailwind text color class (default: emerald-400)
   tags?: string[];

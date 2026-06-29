@@ -31,6 +31,25 @@ const { isUnconfirmedDateSource } = require('./date-source-confidence');
 
 const DAY_MS = 86400000;
 
+// Minimum gap (days) between the current openingDate and the inferred press
+// night before we apply a correction.
+//
+// DEFAULT (8): for a generic unconfirmed openingDate we only trust the inference
+// when the review cluster is clearly a separate event a week+ later — a small
+// gap could just be the normal review-the-morning-after lag on an
+// already-correct press night, so we leave it alone.
+//
+// COLLAPSED (2): when openingDate === previewsStartDate the stored date is
+// DEFINITIONALLY the first-preview date (the TodayTix "first performance" bug),
+// not press night. Any review cluster after it is a real press wave, so even a
+// 2-7 day gap is a legitimate correction. West End fringe runs preview for only
+// a few days, so their press night always lands inside the default 8-day floor —
+// which is why 32 collapsed WE shows sat uncorrected. The ≥2-reviews-in-3-days
+// cluster check still guards against a single early outlier. (gap < 2 is a
+// no-op: press night = earliest review − 1 ≈ the stored date already.)
+const DEFAULT_MIN_GAP_DAYS = 8;
+const COLLAPSED_MIN_GAP_DAYS = 2;
+
 /**
  * Infer press-night dates from review-publish clustering.
  *
@@ -40,8 +59,10 @@ const DAY_MS = 86400000;
  *   - The earliest publish date must have ≥2 reviews within a 3-day window
  *     (clustering check — single early outlier doesn't qualify).
  *   - Inferred press night = earliest review date − 1 day.
- *   - Gap between current openingDate and inferred press night must be 8-90 days.
- *     (≤7 days = same press cycle, no correction needed; >90 days = stale data.)
+ *   - Gap between current openingDate and the earliest review must be within
+ *     [minGap, 90] days, where minGap is 8 by default but 2 for COLLAPSED shows
+ *     (openingDate === previewsStartDate — see the floor docs above). Below
+ *     minGap = treat as the same press cycle (no correction); >90 = stale data.
  *
  * @param {object} opts
  * @param {Array<object>} opts.candidateShows - shows to consider.
@@ -86,7 +107,12 @@ function inferPressNightFromReviews({ candidateShows, reviews, enabled = true, s
     const pressNightIso = new Date(pressNightMs).toISOString().split('T')[0];
     const gapDays = Math.round((earliestMs - openingMs) / DAY_MS);
 
-    if (gapDays <= 7) continue;
+    // Collapsed (openingDate === previewsStartDate) ⇒ stored date is a known
+    // preview date, so a small gap is still a real correction (see floor docs).
+    const isCollapsed = !!show.previewsStartDate && show.openingDate === show.previewsStartDate;
+    const minGapDays = isCollapsed ? COLLAPSED_MIN_GAP_DAYS : DEFAULT_MIN_GAP_DAYS;
+
+    if (gapDays < minGapDays) continue;
     if (gapDays > 90) continue;
 
     inferred.push({
@@ -94,6 +120,7 @@ function inferPressNightFromReviews({ candidateShows, reviews, enabled = true, s
       title: show.title,
       slug: show.slug,
       gapDays,
+      isCollapsed,
       clusterSize: nearEarliest.length,
       changes: [
         { field: 'previewsStartDate', old: show.previewsStartDate, new: show.openingDate },
@@ -106,4 +133,8 @@ function inferPressNightFromReviews({ candidateShows, reviews, enabled = true, s
   return inferred;
 }
 
-module.exports = { inferPressNightFromReviews };
+module.exports = {
+  inferPressNightFromReviews,
+  DEFAULT_MIN_GAP_DAYS,
+  COLLAPSED_MIN_GAP_DAYS,
+};

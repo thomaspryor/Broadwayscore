@@ -31,6 +31,7 @@
 const fs = require('fs');
 const path = require('path');
 const { normalizeTitle } = require('./lib/deduplication');
+const { findTitleFragmentDupes } = require('./lib/show-duplicate-detection');
 
 const ROOT = path.join(__dirname, '..');
 const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
@@ -138,6 +139,24 @@ function main() {
       }
     }
     if (dupPairs.length) clusters.push({ key, pairs: dupPairs });
+  }
+
+  // Title-fragment pass: the title+year grouping above can only compare shows
+  // that already share a normalized title, so a fragment dupe (one title is a
+  // subset of another's at the same venue/run — e.g. "Godot's To-Do List" inside
+  // a double-bill entry) never lands in the same group. This pass catches those.
+  // See scripts/lib/show-duplicate-detection.js for the false-positive guards.
+  for (const f of findTitleFragmentDupes(shows)) {
+    const a = shows.find((s) => s.id === f.a);
+    const b = shows.find((s) => s.id === f.b);
+    clusters.push({
+      key: `title-fragment@${f.venue}`,
+      pairs: [{
+        a: { id: f.a, venue: a?.venue, opening: a?.openingDate, reviews: reviewFileCount(f.a) },
+        b: { id: f.b, venue: b?.venue, opening: b?.openingDate, reviews: reviewFileCount(f.b) },
+        reason: 'title-fragment',
+      }],
+    });
   }
 
   fs.mkdirSync(path.dirname(JSON_OUT), { recursive: true });
