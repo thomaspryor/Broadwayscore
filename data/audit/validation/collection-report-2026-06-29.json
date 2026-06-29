@@ -1,83 +1,83 @@
 {
-  "runDate": "2026-06-29T16:48:07.296Z",
+  "runDate": "2026-06-29T16:49:19.989Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "much-ado-about-nothing-globe-off-west-end-2026",
+    "showFilter": "birthright-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 11,
+    "processed": 0,
+    "failed": 5,
     "skipped": 0,
-    "successRate": "8.3%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 0,
+    "archiveToday": 1,
     "archive": 0
   },
   "statistics": {
     "tier1Attempts": 2,
-    "tier1Success": 1,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 1,
-    "tier2Success": 1,
-    "tier3Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 1,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
     "tier4Attempts": 1,
     "tier4Success": 0,
-    "totalFailed": 11,
+    "totalFailed": 5,
     "scrapingBeePageCredits": 1,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 10,
+    "urlDiscoveryAttempts": 4,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [
-    "much-ado-about-nothing-globe-off-west-end-2026/london-theatre--lola-phillips.json"
-  ],
+  "processed": [],
   "failed": [
-    "much-ado-about-nothing-globe-off-west-end-2026/the-upcoming-uk--unknown.json",
-    "much-ado-about-nothing-globe-off-west-end-2026/times-uk--ann-treneman.json",
-    "much-ado-about-nothing-globe-off-west-end-2026/times-uk--clive-davis.json",
-    "much-ado-about-nothing-globe-off-west-end-2026/times-uk--dominic-maxwell.json",
-    "much-ado-about-nothing-globe-off-west-end-2026/times-uk--rachel-halliburton.json",
-    "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--alun-hood.json",
-    "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--daisy-bowie.json",
-    "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--judi-herman.json",
-    "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--matt-trueman.json",
-    "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--michael-davies.json",
-    "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--mickey-jo-boucher.json"
+    "birthright-off-broadway-2026/theatermania--linda-buchwald.json",
+    "birthright-off-broadway-2026/theatermania--unknown.json",
+    "birthright-off-broadway-2026/broadwayworld--unknown.json",
+    "birthright-off-broadway-2026/front-row-center--unknown.json",
+    "birthright-off-broadway-2026/playbill--unknown.json"
   ],
   "tierDetails": {
     "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [
-      "much-ado-about-nothing-globe-off-west-end-2026/london-theatre--lola-phillips.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/birthright-off-broadway-2026/broadwayworld--unknown.json"
+    ],
     "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Front Row Center": {
+      "count": 1,
+      "domain": "thefrontrowcenter.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
