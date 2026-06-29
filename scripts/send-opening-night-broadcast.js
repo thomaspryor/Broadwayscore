@@ -245,7 +245,11 @@ function findRecentlyOpenedShows(shows, lookbackDays) {
     if (s.type === 'opera') return false;
     // Filter by market
     if (isLondonMarket(MARKET)) {
-      if (!isLondonMarket(s.category)) return false;
+      // True West End only. isLondonMarket(category) is TRUE for off-west-end,
+      // so gating on it would sweep OWE openings (Globe/fringe/kids shows) into
+      // a WE broadcast — WE subscribers did not opt into off-West-End, exactly
+      // as Broadway excludes off-broadway below. Require the exact category.
+      if (s.category !== 'west-end') return false;
     } else {
       // Broadway: exclude off-broadway, regional (non-NYC US tryouts), and London markets.
       // Regional already carries market:'regional' so it fails the broadway-only gates,
@@ -709,10 +713,12 @@ async function main() {
     try {
       const result = await postJSON('https://api.resend.com/broadcasts', {
         audience_id: audienceId,
-        from: `Broadway Scorecard <${FROM_EMAIL}>`,
+        // SITE_NAME is market-aware ('West End Scorecard' for WE) — never hardcode
+        // 'Broadway Scorecard' here or WE subscribers get a Broadway-branded sender.
+        from: `${SITE_NAME} <${FROM_EMAIL}>`,
         subject,
         html,
-        name: `Opening night — ${showsForEmail.map(s => s.showTitle).join(', ')}`,
+        name: `${SITE_NAME} opening night — ${showsForEmail.map(s => s.showTitle).join(', ')}`,
       }, {
         'Authorization': `Bearer ${RESEND_API_KEY}`,
       });
@@ -738,7 +744,7 @@ async function main() {
 <p style="color:#888;font-size:12px;margin-top:16px;">Direct link: ${draftUrl}</p>`;
 
         await postJSON('https://api.resend.com/emails', {
-          from: `Broadway Scorecard <${FROM_EMAIL}>`,
+          from: `${SITE_NAME} <${FROM_EMAIL}>`,
           to: [OWNER_EMAIL],
           subject: `[Action Required] ${marketDisplay} draft ready — ${showsForEmail.map(s => s.showTitle).join(', ')}`,
           html: notificationHtml,
