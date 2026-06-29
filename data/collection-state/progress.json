@@ -88,7 +88,11 @@
     "the-fear-of-13-2026/broadwayworld--unknown.json",
     "the-fear-of-13-2026/one-minute-critic--matthew-wexler.json",
     "the-fear-of-13-2026/ew--shania-russell.json",
-    "the-fear-of-13-2026/playbill--unknown.json"
+    "the-fear-of-13-2026/playbill--unknown.json",
+    "death-of-a-salesman-2026/nytg--gillian-russo.json",
+    "death-of-a-salesman-2026/nytimes--jesse-green.json",
+    "death-of-a-salesman-2026/variety--marilyn-stasio.json",
+    "death-of-a-salesman-2026/vulture--rob-weinert-kendt.json"
   ],
   "failed": [
     "a-midsummer-nights-dream-west-end-2026/hollywood-reporter--frank-scheck.json",
@@ -1584,7 +1588,13 @@
     "the-fear-of-13-2026/times-uk--clive-davis.json",
     "the-fear-of-13-2026/whatsonstage--alex-wood.json",
     "the-fear-of-13-2026/independent--alice-saville.json",
-    "titanique-2026/the-queer-review--james-kleinmann.json"
+    "titanique-2026/the-queer-review--james-kleinmann.json",
+    "titanique-2026/wsj--charles-isherwood.json",
+    "titanique-2026/playbill--unknown.json",
+    "death-of-a-salesman-2026/broadwaynews--brittani-samuel.json",
+    "death-of-a-salesman-2026/newsday--linda-winer.json",
+    "death-of-a-salesman-2026/newsweek--joe-westerfield.json",
+    "death-of-a-salesman-2026/nydailynews--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1659,7 +1669,8 @@
       "proof-2026/playbill--unknown.json",
       "the-fear-of-13-2026/one-minute-critic--matthew-wexler.json",
       "the-fear-of-13-2026/ew--shania-russell.json",
-      "the-fear-of-13-2026/playbill--unknown.json"
+      "the-fear-of-13-2026/playbill--unknown.json",
+      "death-of-a-salesman-2026/nytg--gillian-russo.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1668,7 +1679,9 @@
       "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--matt-wolf.json",
       "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--matt-wolf.json",
       "data/review-texts/schmigadoon-2026/nytimes--jesse-green.json",
-      "schmigadoon-2026/nytimes--jesse-green.json"
+      "schmigadoon-2026/nytimes--jesse-green.json",
+      "data/review-texts/death-of-a-salesman-2026/variety--marilyn-stasio.json",
+      "death-of-a-salesman-2026/variety--marilyn-stasio.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1680,14 +1693,16 @@
       "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
       "small-off-broadway-2026/broadwayworld--marina-kennedy.json",
       "1536-west-end-2026/broadwayworld--cindy-marcolina.json",
-      "the-fear-of-13-2026/timeout-london--andrzej-lukowski.json"
+      "the-fear-of-13-2026/timeout-london--andrzej-lukowski.json",
+      "death-of-a-salesman-2026/nytimes--jesse-green.json"
     ],
     "brightdata": [
       "sinatra-the-musical-west-end-2026/guardian--west-end-theatre.json",
       "camping-off-broadway-2026/talkinbroadway--unknown.json",
       "the-balusters-2026/broadwayworld--unknown.json",
       "schmigadoon-2026/thewrap--robert-hofler.json",
-      "the-fear-of-13-2026/broadwayworld--unknown.json"
+      "the-fear-of-13-2026/broadwayworld--unknown.json",
+      "death-of-a-salesman-2026/vulture--rob-weinert-kendt.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1744,7 +1759,7 @@
     ]
   },
   "startTime": "2026-06-28T15:51:57.545Z",
-  "lastProcessed": "titanique-2026/the-queer-review--james-kleinmann.json",
+  "lastProcessed": "death-of-a-salesman-2026/nydailynews--unknown.json",
   "log": [
     {
       "t": "2026-06-29T08:06:43.243Z",
@@ -1795,6 +1810,17 @@
       "t": "2026-06-29T06:57:09.950Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-29T07:03:51.748Z",
+      "event": "bb-session",
+      "session": "1517ec2a",
+      "url": "https://variety.com/2026/legit/news/death-of-a-salesman-broadway-review-nathan-l"
+    },
+    {
+      "t": "2026-06-29T07:03:52.764Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
