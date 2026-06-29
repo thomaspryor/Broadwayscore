@@ -2490,7 +2490,13 @@
     "cats-the-jellicle-ball-2026/thewrap--jason-clark.json",
     "cats-the-jellicle-ball-2026/thewrap--robert-hofler.json",
     "cats-the-jellicle-ball-2026/queerty--matthew-wexler.json",
-    "music-city-off-broadway-2026/observer--unknown.json"
+    "music-city-off-broadway-2026/observer--unknown.json",
+    "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+    "birthright-off-broadway-2026/theatermania--linda-buchwald.json",
+    "birthright-off-broadway-2026/theatermania--unknown.json",
+    "birthright-off-broadway-2026/broadwayworld--unknown.json",
+    "birthright-off-broadway-2026/front-row-center--unknown.json",
+    "birthright-off-broadway-2026/playbill--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2612,7 +2618,8 @@
       "data/review-texts/white-rabbit-red-rabbit-west-end-2026/variety--naman-ramachandran.json",
       "white-rabbit-red-rabbit-west-end-2026/variety--naman-ramachandran.json",
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
-      "music-city-off-broadway-2026/deadline--greg-evans.json"
+      "music-city-off-broadway-2026/deadline--greg-evans.json",
+      "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -2685,6 +2692,7 @@
       "data/review-texts/a-midsummer-nights-dream-globe-west-end-2026/thestage--katie-chambers.json",
       "data/review-texts/a-midsummer-nights-dream-globe-west-end-2026/thestage--katie-chambers.json",
       "data/review-texts/a-midsummer-nights-dream-globe-west-end-2026/thestage--katie-chambers.json",
+      "data/review-texts/birthright-off-broadway-2026/broadwayworld--unknown.json",
       "data/review-texts/birthright-off-broadway-2026/broadwayworld--unknown.json"
     ],
     "archive": [
@@ -2707,7 +2715,7 @@
     ]
   },
   "startTime": "2026-06-28T15:51:57.545Z",
-  "lastProcessed": "music-city-off-broadway-2026/observer--unknown.json",
+  "lastProcessed": "birthright-off-broadway-2026/playbill--unknown.json",
   "log": [
     {
       "t": "2026-06-29T08:06:43.243Z",
@@ -2802,6 +2810,17 @@
       "t": "2026-06-29T14:40:52.504Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-06-29T15:03:03.817Z",
+      "event": "bb-session",
+      "session": "8678eb1a",
+      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
+    },
+    {
+      "t": "2026-06-29T15:03:04.729Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
