@@ -294,6 +294,23 @@ function getReviewStats(reviews, showId, market) {
   };
 }
 
+/**
+ * Build the Resend broadcast `name` (internal label, NOT subscriber-facing).
+ * Resend rejects names over 70 chars (HTTP 422). List titles when they fit;
+ * otherwise fall back to a count summary so any number of coalesced shows is safe.
+ * Pure + exported for unit testing.
+ */
+const RESEND_NAME_MAX = 70;
+function buildBroadcastName(siteName, shows) {
+  const titles = (shows || []).map(s => s.showTitle).filter(Boolean);
+  const prefix = `${siteName} opening night`;
+  const full = titles.length ? `${prefix} — ${titles.join(', ')}` : prefix;
+  if (full.length <= RESEND_NAME_MAX) return full;
+  const summary = `${prefix} — ${titles.length} shows`;
+  // Last-resort guard: even the summary must fit (very long siteName).
+  return summary.length <= RESEND_NAME_MAX ? summary : summary.slice(0, RESEND_NAME_MAX);
+}
+
 async function main() {
   const RESEND_API_KEY = process.env.RESEND_API_KEY;
 
@@ -718,7 +735,11 @@ async function main() {
         from: `${SITE_NAME} <${FROM_EMAIL}>`,
         subject,
         html,
-        name: `${SITE_NAME} opening night — ${showsForEmail.map(s => s.showTitle).join(', ')}`,
+        // Resend caps the broadcast `name` (internal label) at 70 chars. Listing
+        // every title overflows once several shows coalesce into one email (HTTP
+        // 422 when 6 WE shows were combined, 2026-06-29). Fall back to a count
+        // summary when the full list won't fit.
+        name: buildBroadcastName(SITE_NAME, showsForEmail),
       }, {
         'Authorization': `Bearer ${RESEND_API_KEY}`,
       });
@@ -822,7 +843,7 @@ async function main() {
 }
 
 // Exported for unit testing. Only run main() when invoked as a CLI.
-module.exports = { syncTrackerToOrigin, mergeTrackerEntries, findRecentlyOpenedShows };
+module.exports = { syncTrackerToOrigin, mergeTrackerEntries, findRecentlyOpenedShows, buildBroadcastName, RESEND_NAME_MAX };
 
 if (require.main === module) {
   main().catch(err => {

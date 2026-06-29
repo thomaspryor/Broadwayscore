@@ -16,10 +16,14 @@ import assert from 'node:assert';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
+import { createRequire } from 'node:module';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const sync = readFileSync(join(ROOT, 'scripts/sync-followers.js'), 'utf8');
 const broadcast = readFileSync(join(ROOT, 'scripts/send-opening-night-broadcast.js'), 'utf8');
+
+const require = createRequire(import.meta.url);
+const { buildBroadcastName, RESEND_NAME_MAX } = require(join(ROOT, 'scripts/send-opening-night-broadcast.js'));
 
 const WE_AUDIENCE = '0b17260b-6a72-4a5a-a700-7b7526f18d87';
 const BW_AUDIENCE = '472ec5ef-d7cc-4c48-8007-c0a6a302e7a4';
@@ -39,5 +43,33 @@ describe('Resend WE/Broadway audience split', () => {
   test('opening-night broadcast targets the WE audience for west-end', () => {
     assert.ok(broadcast.includes(WE_AUDIENCE),
       'send-opening-night-broadcast.js must carry the WE audience id (fallback) so WE drafts target real subscribers');
+  });
+});
+
+describe('buildBroadcastName — Resend 70-char name cap', () => {
+  const mk = n => Array.from({ length: n }, (_, i) => ({ showTitle: `A Reasonably Long West End Show Title ${i + 1}` }));
+
+  test('lists titles when they fit under the cap', () => {
+    const name = buildBroadcastName('West End Scorecard', [{ showTitle: 'Sinatra The Musical' }]);
+    assert.equal(name, 'West End Scorecard opening night — Sinatra The Musical');
+    assert.ok(name.length <= RESEND_NAME_MAX);
+  });
+
+  test('falls back to a count summary when many shows would overflow (the 6-WE-show bug)', () => {
+    const name = buildBroadcastName('West End Scorecard', mk(6));
+    assert.ok(name.length <= RESEND_NAME_MAX, `name too long for Resend: ${name.length} chars`);
+    assert.match(name, /6 shows$/);
+  });
+
+  test('never exceeds the cap regardless of show count', () => {
+    for (const n of [1, 2, 3, 6, 20]) {
+      assert.ok(buildBroadcastName('West End Scorecard', mk(n)).length <= RESEND_NAME_MAX, `failed at ${n} shows`);
+      assert.ok(buildBroadcastName('Broadway Scorecard', mk(n)).length <= RESEND_NAME_MAX, `failed at ${n} shows (BW)`);
+    }
+  });
+
+  test('handles empty/missing input without throwing', () => {
+    assert.equal(buildBroadcastName('West End Scorecard', []), 'West End Scorecard opening night');
+    assert.ok(buildBroadcastName('West End Scorecard', null).length <= RESEND_NAME_MAX);
   });
 });
