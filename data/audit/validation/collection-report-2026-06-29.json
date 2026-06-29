@@ -1,104 +1,128 @@
 {
-  "runDate": "2026-06-29T16:49:25.904Z",
+  "runDate": "2026-06-29T16:52:19.286Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "the-misanthrope-west-end-2026",
+    "showFilter": "glengarry-glen-ross-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 9,
+    "processed": 1,
+    "failed": 29,
     "skipped": 0,
-    "successRate": "18.2%"
+    "successRate": "3.3%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 1,
-    "archive": 0
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 2,
+    "tier1Attempts": 9,
+    "tier1Success": 8,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 5,
     "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
     "tier4Attempts": 2,
-    "tier4Success": 0,
-    "totalFailed": 9,
-    "scrapingBeePageCredits": 0,
+    "tier4Success": 1,
+    "totalFailed": 29,
+    "scrapingBeePageCredits": 40,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 9,
-    "urlDiscoverySuccess": 2,
+    "urlDiscoveryAttempts": 25,
+    "urlDiscoverySuccess": 5,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "the-misanthrope-west-end-2026/broadwayworld--cindy-marcolina.json",
-    "the-misanthrope-west-end-2026/whatsonstage--tanyel-gumushan.json"
+    "glengarry-glen-ross-west-end-2026/standard--henry-hitchings.json"
   ],
   "failed": [
-    "the-misanthrope-west-end-2026/nytheatre--david-gordon.json",
-    "the-misanthrope-west-end-2026/theatermania--david-finkle.json",
-    "the-misanthrope-west-end-2026/about-entertainment--jason-zinoman.json",
-    "the-misanthrope-west-end-2026/backstage--david-sheward.json",
-    "the-misanthrope-west-end-2026/curtainup--simon-saltzman.json",
-    "the-misanthrope-west-end-2026/times-uk--clive-davis.json",
-    "the-misanthrope-west-end-2026/times-uk--dominic-maxwell.json",
-    "the-misanthrope-west-end-2026/times-uk--sam-marlowe.json",
-    "the-misanthrope-west-end-2026/west-end-best-friend--news-desk.json"
+    "glengarry-glen-ross-west-end-2026/hollywood-reporter--david-rooney.json",
+    "glengarry-glen-ross-west-end-2026/hollywood-reporter--unknown.json",
+    "glengarry-glen-ross-west-end-2026/nytimes--jesse-green.json",
+    "glengarry-glen-ross-west-end-2026/variety--marilyn-stasio.json",
+    "glengarry-glen-ross-west-end-2026/vulture--sara-holdren.json",
+    "glengarry-glen-ross-west-end-2026/guardian-uk--unknown.json",
+    "glengarry-glen-ross-west-end-2026/newsday--linda-winer.json",
+    "glengarry-glen-ross-west-end-2026/observer--david-cote.json",
+    "glengarry-glen-ross-west-end-2026/oxfordshire-guardian--unknown.json",
+    "glengarry-glen-ross-west-end-2026/about-entertainment--ben-brantley.json",
+    "glengarry-glen-ross-west-end-2026/amny--matt-windman.json",
+    "glengarry-glen-ross-west-end-2026/bloomberg--jeremy-gerard.json",
+    "glengarry-glen-ross-west-end-2026/british-theatre--susan-novak.json",
+    "glengarry-glen-ross-west-end-2026/chicagotribune--unknown.json",
+    "glengarry-glen-ross-west-end-2026/daily-echo--matthew-baker.json",
+    "glengarry-glen-ross-west-end-2026/dailybeast--tim-teeman.json",
+    "glengarry-glen-ross-west-end-2026/financialtimes--brendan-lemon.json",
+    "glengarry-glen-ross-west-end-2026/front-row-center--yuval-jonas.json",
+    "glengarry-glen-ross-west-end-2026/nysr--frank-scheck.json",
+    "glengarry-glen-ross-west-end-2026/nysr--roma-torre.json",
+    "glengarry-glen-ross-west-end-2026/slantmagazine--dan-rubins.json",
+    "glengarry-glen-ross-west-end-2026/thestage--sam-marlowe.json",
+    "glengarry-glen-ross-west-end-2026/times-uk--ann-treneman.json",
+    "glengarry-glen-ross-west-end-2026/times-uk--benedict-nightingale.json",
+    "glengarry-glen-ross-west-end-2026/times-uk--dominic-maxwell.json",
+    "glengarry-glen-ross-west-end-2026/times-uk--maxie-szalwinska.json",
+    "glengarry-glen-ross-west-end-2026/washpost--unknown.json",
+    "glengarry-glen-ross-west-end-2026/western-mail--unknown.json",
+    "glengarry-glen-ross-west-end-2026/whatsonstage--lucinda-everett.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "the-misanthrope-west-end-2026/broadwayworld--cindy-marcolina.json",
-      "the-misanthrope-west-end-2026/whatsonstage--tanyel-gumushan.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/sting-west-end-2026/thestage--unknown.json"
+      "data/review-texts/glengarry-glen-ross-west-end-2026/thestage--sam-marlowe.json"
     ],
-    "archive": []
-  },
-  "failuresByOutlet": {
-    "The Times (UK)": {
-      "count": 2,
-      "domain": "thetimes.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
+    "archive": [
+      "glengarry-glen-ross-west-end-2026/standard--henry-hitchings.json"
+    ]
   },
   "urlDiscoveries": [
     {
-      "reviewId": "the-misanthrope-west-end-2026/broadwayworld--cindy-marcolina.json",
-      "oldUrl": "https://www.broadwayworld.com/westend/article/THE-MISANTHROPE-With-Sandra-Oh-Will-Come-to-Cinemas-From-National-Theatre-Live-20260609",
-      "newUrl": "https://www.broadwayworld.com/westend/article/Review-THE-MISANTHROPE-starring-Sandra-Oh-20260624"
+      "reviewId": "glengarry-glen-ross-west-end-2026/standard--henry-hitchings.json",
+      "oldUrl": "https://www.standard.co.uk/culture/theatre/glengarry-glen-ross-theatre-review-christian-slater-sells-sharp-mamet-revival-a3711241.html",
+      "newUrl": "https://www.standard.co.uk/culture/theatre/glengarry-glen-ross-at-the-old-vic-review-b1286630.html"
     },
     {
-      "reviewId": "the-misanthrope-west-end-2026/whatsonstage--tanyel-gumushan.json",
-      "oldUrl": "https://www.whatsonstage.com/news/the-misanthrope-with-sandra-oh-at-the-national-theatre-review_1725880/",
-      "newUrl": "https://www.whatsonstage.com/news/the-misanthrope-with-sandra-oh-to-have-cinema-release_1724246/"
+      "reviewId": "glengarry-glen-ross-west-end-2026/times-uk--ann-treneman.json",
+      "oldUrl": "https://www.thetimes.co.uk/article/theatre-review-glengarry-glen-ross-playhouse-wc2-zbbsm0kxj",
+      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0"
+    },
+    {
+      "reviewId": "glengarry-glen-ross-west-end-2026/times-uk--benedict-nightingale.json",
+      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-without-men-its-not-just-putting-lipstick-on-mamet-sjc0ff8h0",
+      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0"
+    },
+    {
+      "reviewId": "glengarry-glen-ross-west-end-2026/times-uk--dominic-maxwell.json",
+      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-without-men-its-not-just-putting-lipstick-on-mamet-sjc0ff8h0",
+      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0"
+    },
+    {
+      "reviewId": "glengarry-glen-ross-west-end-2026/times-uk--maxie-szalwinska.json",
+      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-without-men-its-not-just-putting-lipstick-on-mamet-sjc0ff8h0",
+      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0"
     }
   ]
 }
