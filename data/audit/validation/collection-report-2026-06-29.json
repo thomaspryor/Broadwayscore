@@ -27,7 +27,7 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 0,
+    "tier1Attempts": 1,
     "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
@@ -37,8 +37,8 @@
     "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
     "tier4Attempts": 0,
     "tier4Success": 0,
     "totalFailed": 1,
@@ -54,6 +54,7 @@
   "failed": [
     "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json"
   ],
+  "failed": [],
   "tierDetails": {
     "playwright": [],
     "amp": [],
