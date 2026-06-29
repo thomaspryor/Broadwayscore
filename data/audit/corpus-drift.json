@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-06-28T22:14:54.473Z",
+    "generatedAt": "2026-06-29T05:47:56.456Z",
     "note": "Corpus-statistics drift monitor. Non-blocking; surfaced via health-check.js digest. Not a code-correctness gate."
   },
   "summary": {
@@ -18,7 +18,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "=== TEXT QUALITY AUDIT ===\n\nTotal reviews: 40254\nHas fullText: 31813\n\n--- Quality Breakdown ---\n  full: 21740 (68.3%)\n  truncated: 9387 (29.5%)\n  excerpt: 317 (1.0%)\n  partial: 315 (1.0%)\n  stub: 36 (0.1%)\n  complete: 13 (0.0%)\n  unknown: 5 (0.0%)\n\n--- Truncation Signals ---\n  no_ending_punctuation: 6540\n  has_footer_junk: 1466\n  ends_with_ellipsis: 129\n  has_footer_text: 109\n  paywall_or_login_prompt: 77\n\n--- Threshold Checks (MONITOR / drift band) ---\n  ✅ Full: 68.3% (min: 25%)\n  ✅ Truncated: 29.5% (max: 65%)\n  ✅ Unknown: 0.0% (max: 5%)\n\n✅ AUDIT PASSED"
+      "detail": "=== TEXT QUALITY AUDIT ===\n\nTotal reviews: 40255\nHas fullText: 31815\n\n--- Quality Breakdown ---\n  full: 21746 (68.4%)\n  truncated: 9383 (29.5%)\n  excerpt: 317 (1.0%)\n  partial: 315 (1.0%)\n  stub: 36 (0.1%)\n  complete: 13 (0.0%)\n  unknown: 5 (0.0%)\n\n--- Truncation Signals ---\n  no_ending_punctuation: 6542\n  has_footer_junk: 1465\n  ends_with_ellipsis: 129\n  has_footer_text: 109\n  paywall_or_login_prompt: 77\n\n--- Threshold Checks (MONITOR / drift band) ---\n  ✅ Full: 68.4% (min: 25%)\n  ✅ Truncated: 29.5% (max: 65%)\n  ✅ Unknown: 0.0% (max: 5%)\n\n✅ AUDIT PASSED"
     },
     {
       "name": "aggregator-truth",
@@ -54,7 +54,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "[audit-unknown-outlets] resolvable unknown outlets: 2 (threshold 5) across 40254 files"
+      "detail": "[audit-unknown-outlets] resolvable unknown outlets: 2 (threshold 5) across 40255 files"
     },
     {
       "name": "review-key-duplicates",
@@ -63,7 +63,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "[audit-review-key-duplicates] duplicate reviews: 3 (threshold 5) across 40254 files"
+      "detail": "[audit-review-key-duplicates] duplicate reviews: 3 (threshold 5) across 40255 files"
     },
     {
       "name": "churn-merge-coverage",
@@ -72,7 +72,7 @@
       "exitCode": 1,
       "ok": false,
       "crashed": false,
-      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 4 flagged, 22 exempt, 45 covered\n  ⚠️    72  data/audit/processed-feedback.json  — no merge driver; needs a decision\n  ⚠️    41  data/audit/validation-baseline.json  — no merge driver; needs a decision\n  ⚠️    37  data/audit/pipeline-health/collect-review-texts.last-success  — no merge driver; needs a decision\n  ⚠️    37  data/audit/url-collision-report.json  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
+      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 5 flagged, 23 exempt, 46 covered\n  ⚠️    80  data/audit/processed-feedback.json  — no merge driver; needs a decision\n  ⚠️    48  data/audit/validation-baseline.json  — no merge driver; needs a decision\n  ⚠️    44  data/audit/pipeline-health/collect-review-texts.last-success  — no merge driver; needs a decision\n  ⚠️    44  data/audit/url-collision-report.json  — no merge driver; needs a decision\n  ⚠️    34  data/audit/validation/collection-report-2026-06-28.json  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
     },
     {
       "name": "review-contamination",
@@ -81,7 +81,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "=== REVIEW-TEXT CONTAMINATION AUDIT ===\nScanned: 1824 shows, 39547 files\nTotal hits: 158\n\n  A_cross_market: 0\n  A2_cross_market_relative: 0\n  B_false_positive_wp: 1\n  C_domain_mismatch: 0\n  C2_url_multi_critic: 59\n  D_pre_opening_feature: 98\n  E_unflagged_roundup: 0\n  F_empty_unknown: 0\n\n=== SAMPLES (first 5 per class) ===\n\n--- B_false_positive_wp ---\n  {\"showId\":\"sinatra-the-musical-west-end-2026\",\"file\":\"guardian--west-end-theatre.json\",\"daysFromOpening\":-16,\"wrongProductionNote\":\"\"}\n\n--- C2_url_multi_critic ---\n  {\"showId\":\"700-sundays-2013\",\"url\":\"https://www.nytimes.com/2013/11/14/theater/reviews/billy-crystal-brings-700-sund\",\"file1\":\"nytimes--ben-brantley.json\",\"critic1\":\"Ben Brantley\",\"file2\":\"nytimes--charles-isherwood.json\",\"critic2\":\"Charles Isherwood\"}\n  {\"showId\":\"back-to-the-future-west-end-2021\",\"url\":\"https://www.telegraph.co.uk/theatre/what-to-see/back-future-musical-review-cars-\",\"file1\":\"telegraph--dominic-cavendish.json\",\"critic1\":\"Dominic Cavendish\",\"file2\":\"telegraph--paul-raven.json\",\"critic2\":\"Paul Raven\"}\n  {\"showId\":\"how-to-dance-in-ohio-2023\",\"url\":\"https://observer.com/2023/12/review-how-to-dance-in-ohio-welcomes-autistic-youth\",\"file1\":\"observer--david-cote.json\",\"critic1\":\"David Cote\",\"file2\":\"observer--jesse-green.json\",\"critic2\":\"Jesse Green\"}\n  {\"showId\":\"the-lion-king-1997\",\"url\":\"https://www.broadwayworld.com/shows/The-Lion-King-5600/cast\",\"file1\":\"broadwayworld--brett-cullum.json\",\"critic1\":\"Brett Cullum\",\"file2\":\"broadwayworld--bryan-stanton.json\",\"critic2\":\"Bryan Stanton\"}\n  {\"showId\":\"the-lion-king-1997\",\"url\":\"https://www.broadwayworld.com/shows/The-Lion-King-5600/cast\",\"file1\":\"broadwayworld--brett-cullum.json\",\"critic1\":\"Brett Cullum\",\"file2\":\"broadwayworld--jake-bridges.json\",\"critic2\":\"Jake Bridges\"}\n\n--- D_pre_opening_feature ---\n  {\"showId\":\"1776-2022\",\"file\":\"guardian--adrian-horton.json\",\"daysBefore\":19,\"textLen\":4363}\n  {\"showId\":\"a-dolls-house-part-2-2017\",\"file\":\"the-modernist-beat--anthony-pennino.json\",\"daysBefore\":17,\"textLen\":3468}\n  {\"showId\":\"allegiance-2015\",\"file\":\"billboard--joe-lynch.json\",\"daysBefore\":30,\"textLen\":3856}\n  {\"showId\":\"allegiance-2015\",\"file\":\"huffpost--scott-stearman.json\",\"daysBefore\":31,\"textLen\":8029}\n  {\"showId\":\"allegiance-2015\",\"file\":\"realmericanmedia--john-entrada.json\",\"daysBefore\":20,\"textLen\":5530}"
+      "detail": "=== REVIEW-TEXT CONTAMINATION AUDIT ===\nScanned: 1824 shows, 39548 files\nTotal hits: 159\n\n  A_cross_market: 0\n  A2_cross_market_relative: 0\n  B_false_positive_wp: 2\n  C_domain_mismatch: 0\n  C2_url_multi_critic: 59\n  D_pre_opening_feature: 98\n  E_unflagged_roundup: 0\n  F_empty_unknown: 0\n\n=== SAMPLES (first 5 per class) ===\n\n--- B_false_positive_wp ---\n  {\"showId\":\"much-ado-about-nothing-globe-off-west-end-2026\",\"file\":\"guardian--susannah-clapp.json\",\"daysFromOpening\":1,\"wrongProductionNote\":\"Guardian API returned an article published 2025-02-23T10:30:\"}\n  {\"showId\":\"sinatra-the-musical-west-end-2026\",\"file\":\"guardian--west-end-theatre.json\",\"daysFromOpening\":-16,\"wrongProductionNote\":\"\"}\n\n--- C2_url_multi_critic ---\n  {\"showId\":\"700-sundays-2013\",\"url\":\"https://www.nytimes.com/2013/11/14/theater/reviews/billy-crystal-brings-700-sund\",\"file1\":\"nytimes--ben-brantley.json\",\"critic1\":\"Ben Brantley\",\"file2\":\"nytimes--charles-isherwood.json\",\"critic2\":\"Charles Isherwood\"}\n  {\"showId\":\"back-to-the-future-west-end-2021\",\"url\":\"https://www.telegraph.co.uk/theatre/what-to-see/back-future-musical-review-cars-\",\"file1\":\"telegraph--dominic-cavendish.json\",\"critic1\":\"Dominic Cavendish\",\"file2\":\"telegraph--paul-raven.json\",\"critic2\":\"Paul Raven\"}\n  {\"showId\":\"how-to-dance-in-ohio-2023\",\"url\":\"https://observer.com/2023/12/review-how-to-dance-in-ohio-welcomes-autistic-youth\",\"file1\":\"observer--david-cote.json\",\"critic1\":\"David Cote\",\"file2\":\"observer--jesse-green.json\",\"critic2\":\"Jesse Green\"}\n  {\"showId\":\"the-lion-king-1997\",\"url\":\"https://www.broadwayworld.com/shows/The-Lion-King-5600/cast\",\"file1\":\"broadwayworld--brett-cullum.json\",\"critic1\":\"Brett Cullum\",\"file2\":\"broadwayworld--bryan-stanton.json\",\"critic2\":\"Bryan Stanton\"}\n  {\"showId\":\"the-lion-king-1997\",\"url\":\"https://www.broadwayworld.com/shows/The-Lion-King-5600/cast\",\"file1\":\"broadwayworld--brett-cullum.json\",\"critic1\":\"Brett Cullum\",\"file2\":\"broadwayworld--jake-bridges.json\",\"critic2\":\"Jake Bridges\"}\n\n--- D_pre_opening_feature ---\n  {\"showId\":\"1776-2022\",\"file\":\"guardian--adrian-horton.json\",\"daysBefore\":19,\"textLen\":4363}\n  {\"showId\":\"a-dolls-house-part-2-2017\",\"file\":\"the-modernist-beat--anthony-pennino.json\",\"daysBefore\":17,\"textLen\":3468}\n  {\"showId\":\"allegiance-2015\",\"file\":\"billboard--joe-lynch.json\",\"daysBefore\":30,\"textLen\":3856}\n  {\"showId\":\"allegiance-2015\",\"file\":\"huffpost--scott-stearman.json\",\"daysBefore\":31,\"textLen\":8029}\n  {\"showId\":\"allegiance-2015\",\"file\":\"realmericanmedia--john-entrada.json\",\"daysBefore\":20,\"textLen\":5530}"
     }
   ]
 }
