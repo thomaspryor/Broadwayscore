@@ -28,6 +28,7 @@ export function serializeShowForClient(
     images?: { thumbnail?: string; poster?: string; hero?: string };
     criticScore?: { score?: number; reviewCount?: number; tier1Count?: number; tier2Count?: number } | null;
     category?: string;
+    genre?: string;
     tags?: string[];
     ageRecommendation?: string | null;
     creativeTeam?: Array<{ name: string; role: string }>;
@@ -75,6 +76,7 @@ export function serializeShowForClient(
       ? overrides.audienceGrade
       : (hasAudience ? getAudienceGrade(buzz!.combinedScore) : null),
     category: overrides?.category ?? show.category,
+    genre: show.genre,
     tags: show.tags,
     ageRecommendation: show.ageRecommendation ?? undefined,
     creativeTeam: show.creativeTeam,

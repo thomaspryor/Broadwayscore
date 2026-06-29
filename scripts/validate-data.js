@@ -35,6 +35,7 @@ const { isBroadwayCategory } = require('./lib/venue-classification');
 const { classifyReverseCrossMarket } = require('./lib/cross-market-guard');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { openingDateSourceHint } = require('./lib/opening-date-sources');
+const { isNonTheatricalGenre } = require('./lib/genre-classification');
 const { looksLikeUrlCriticName } = require('./lib/byline-normalization');
 const { hasUndecodedHtmlEntities, hasJsonLdArtifact } = require('./lib/text-cleaning');
 
@@ -513,6 +514,10 @@ function validateDates(shows) {
       warn(`Show "${show.title}" (${show.id}) has openingDate === previewsStartDate (${show.openingDate}) with source "todaytix" — likely the first-preview date stored as press night. Run: node scripts/enrich-west-end-dates.js --fix-unconfirmed (Phase 4 infers press night from review dates).`);
     }
 
+    // (Non-theatrical genre on a west-end-category show is auto-fixed to
+    // off-west-end in the venue/category cross-check below — genre overrides
+    // venue. See that block for the §6 reversion fix.)
+
     // Inherited namesake date: this show's opening/previews date is byte-identical to a
     // DIFFERENT same-title production's — the date cloned from the namesake (a-few-good-men-2026
     // carried a-few-good-men-1989's 1989-11-15, 2026-06-28). An exact OPENING-night match is
@@ -688,6 +693,21 @@ function validateVenueCategory(shows) {
   let autoFixed = 0;
 
   for (const show of shows) {
+    // GENRE OVERRIDES VENUE. A non-theatrical show (dance/magic/comedy/cabaret/
+    // concert/circus) belongs on the Off-West End hub even when it plays a West
+    // End venue (e.g. dance at Sadler's Wells). Without this, the venue→category
+    // auto-fix below silently reverted these to west-end every CI run — the §6
+    // "category reverts" bug. Handle both directions: force off-west-end, and
+    // exempt them from the off-west-end→west-end venue flip.
+    if (isNonTheatricalGenre(show.genre)) {
+      if (show.category === 'west-end') {
+        show.category = 'off-west-end';
+        autoFixed++;
+        info(`Auto-fixed "${show.title}" (${show.id}): west-end → off-west-end (genre: ${show.genre} overrides venue)`);
+      }
+      continue;
+    }
+
     if (!show.venue || show.venue === 'TBA' || !isLondonMarket(show.category)) continue;
 
     if (show.category === 'off-west-end' && isWestEndVenue(show.venue)) {

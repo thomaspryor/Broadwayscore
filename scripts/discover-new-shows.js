@@ -31,6 +31,7 @@ const { getTheaterAddress } = require('./lib/venue-addresses');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const { splitCombinedCredits } = require('./lib/credit-splitting');
 const { scrapeCurrentRuntimes, matchRuntimesToShows, batchScrapeAgeRecommendations } = require('./lib/broadway-com-runtimes');
+const { classifyGenre } = require('./lib/genre-classification');
 const { isLondonMarket, isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue } = require('./lib/venue-classification');
 const { BROADWAY_THEATERS, normalizeVenueName: normalizeBroadwayVenue } = require('./lib/broadway-theaters');
 
@@ -1325,13 +1326,21 @@ async function consumeShowScoreCandidatesFile() {
         openingDateSource = openingDate ? 'todaytix' : null;
       }
 
+      const venueName = (typeof ttShow.venue === 'string' ? ttShow.venue : ttShow.venue?.name) || 'TBA';
+      // Genre: tag non-play/musical performance types (dance/magic/comedy/cabaret/
+      // concert/circus) so the WE/OWE routing keeps them off the West End
+      // plays/musicals listing and on the Off-West End hub (see src/lib/genre.ts).
+      // Conservative classifier — returns null unless a venue/title signal is
+      // unambiguous, so plays/musicals are never mislabelled.
+      const genre = classifyGenre({ title, venue: venueName, description: ttShow.description || '' });
       validated.push({
         title,
-        venue: (typeof ttShow.venue === 'string' ? ttShow.venue : ttShow.venue?.name) || 'TBA',
+        venue: venueName,
         slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
         openingDate,
         openingDateSource,
         previewsStartDate,
+        ...(genre ? { genre } : {}),
         closingDate: ttShow.endDate === 'null' ? null : ttShow.endDate || null,
         category: candidate.category,
         description: ttShow.description || '',

@@ -36,6 +36,7 @@ export interface OffWestEndShow {
   audienceGrade: { grade: string; label: string; color: string; textColor: string; tooltip: string } | null;
   creativeTeam?: Array<{ name: string; role: string }>;
   category?: string;
+  genre?: string;
 }
 
 interface OffWestEndPageClientProps {
