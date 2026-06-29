@@ -157,11 +157,15 @@ jobs:
             echo "blocked=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: Readiness gate — 15+ scored reviews with aggregator coverage
+      - name: Readiness gate — market-aware (Broadway 15+agg, West End 12)
         if: steps.find.outputs.has_shows == 'true' && steps.time_gate.outputs.blocked != 'true' && inputs.send_to_all != 'true'
         id: readiness_gate
         run: |
-          # Require 15+ scored reviews AND at least 1 aggregator source (BWW or DTLI).
+          # Market-aware readiness gate (scripts/lib/broadcast-readiness.js):
+          #   - Broadway: 15+ scored reviews AND >=1 aggregator (DTLI or BWW).
+          #   - West End: 12+ scored reviews, NO aggregator requirement (WE reviews
+          #     are LLM-scored and never carry DTLI/BWW thumbs; the old Broadway-only
+          #     aggregator gate silently excluded every WE show — 2026-06-29).
           # PER-SHOW filter — shows that aren't ready are excluded, but ready shows
           # continue. Previously a single not-ready show blocked the entire batch
           # (e.g. a WE show with 0 reviews held Broadway hostage on Cats opening day
@@ -170,27 +174,24 @@ jobs:
           SHOWS="${{ steps.find.outputs.shows }}"
           node -e "
             try {
+              const { evaluateBroadcastReadiness } = require('./scripts/lib/broadcast-readiness');
               const raw = require('./data/reviews.json');
               const reviews = raw.reviews || raw;
               const allReviews = Array.isArray(reviews) ? reviews : [];
+              const showsData = require('./data/shows.json').shows || require('./data/shows.json');
+              const showsList = Array.isArray(showsData) ? showsData : Object.values(showsData);
+              const catById = new Map(showsList.map(s => [s.id || s.slug, s.category || 'broadway']));
               const shows = '$SHOWS'.split(',');
               const ready = [];
               for (const id of shows) {
-                const showReviews = allReviews.filter(r => r.showId === id && r.assignedScore != null);
-                const count = showReviews.length;
-                const hasDtli = showReviews.some(r => r.dtliThumb);
-                const hasBww = showReviews.some(r => r.bwwThumb);
-                const aggCount = [hasDtli, hasBww].filter(Boolean).length;
-                if (count < 15) {
-                  process.stderr.write(id + ': only ' + count + '/15 scored reviews — not ready (excluded)\n');
+                const showReviews = allReviews.filter(r => r.showId === id);
+                const category = catById.get(id) || 'broadway';
+                const verdict = evaluateBroadcastReadiness(showReviews, category);
+                if (!verdict.ready) {
+                  process.stderr.write(id + ' (' + category + '): ' + verdict.reason + ' — not ready (excluded)\n');
                   continue;
                 }
-                if (aggCount < 1) {
-                  process.stderr.write(id + ': 0/2 aggregator sources — need at least 1 (excluded)\n');
-                  continue;
-                }
-                const aggNames = [hasDtli && 'DTLI', hasBww && 'BWW'].filter(Boolean);
-                process.stderr.write(id + ': ' + count + ' scored reviews, aggregators: ' + aggNames.join('+') + ' — ready\n');
+                process.stderr.write(id + ' (' + category + '): ' + verdict.reason + ' — ready\n');
                 ready.push(id);
               }
               if (ready.length > 0) process.stdout.write(ready.join(','));
