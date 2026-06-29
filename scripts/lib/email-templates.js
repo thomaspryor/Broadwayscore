@@ -444,10 +444,14 @@ function buildBroadcastOpeningNightHtml(shows, email, market) {
   </td></tr>`;
   });
 
-  // H1: single show or multi-show
+  // H1: single show or multi-show. Multi-show mirrors the subject line's
+  // location phrasing ("in the West End"/"on Broadway") and deliberately avoids
+  // "Tonight" \u2014 the broadcast can coalesce shows that opened across several days
+  // (a weekly roundup), so a same-night claim would be inaccurate (2026-06-29).
+  const h1Location = isWE ? 'in the West End' : 'on Broadway';
   const h1 = shows.length === 1
     ? `${escapeHtml(shows[0].showTitle)} Critic Reviews Are In${shows[0].score != null ? ` \u2014 Critic Score: ${Math.round(shows[0].score)}` : ''}`
-    : `${shows.length} Shows Opened Tonight \u2014 The Reviews Are In`;
+    : `${shows.length} Shows Opened ${h1Location} \u2014 The Reviews Are In`;
 
   return `<!DOCTYPE html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="color-scheme" content="light dark"><meta name="supported-color-schemes" content="light dark"></head>
