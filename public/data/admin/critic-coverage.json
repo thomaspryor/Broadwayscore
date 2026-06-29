@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-06-29T10:55:33.307Z",
+  "generatedAt": "2026-06-29T11:10:16.136Z",
   "current": {
-    "totalCritics": 76,
-    "totalGaps": 1333,
+    "totalCritics": 78,
+    "totalGaps": 796,
     "gapsByBucket": {
-      "A": 37,
-      "B": 22,
-      "C": 1267,
+      "A": 27,
+      "B": 14,
+      "C": 748,
       "D": 7,
       "E": 0
     },
     "gapsBySource": {
-      "muckrack": 1333
+      "muckrack": 796
     }
   },
   "history": [
@@ -400,6 +400,61 @@
         "Gillian Russo": 1,
         "Dominic Maxwell": 1
       }
+    },
+    {
+      "date": "2026-06-29",
+      "timestamp": "2026-06-29T11:02:29.028Z",
+      "totalCritics": 78,
+      "totalGaps": 796,
+      "gapsByBucket": {
+        "A": 27,
+        "B": 14,
+        "C": 748,
+        "D": 7,
+        "E": 0
+      },
+      "gapsBySource": {
+        "muckrack": 796
+      },
+      "perCritic": {
+        "Chris Jones": 122,
+        "Elysa Gardner": 109,
+        "Jesse Green": 80,
+        "Steven Suskin": 34,
+        "David Rooney": 32,
+        "Dan Rubins": 30,
+        "Austin Fimmano": 30,
+        "Roma Torre": 29,
+        "David Finkle": 29,
+        "Tim Bano": 28,
+        "Frank Scheck": 27,
+        "Sarah Hemming": 25,
+        "Juan A. Ramirez": 23,
+        "Andrzej Lukowski": 23,
+        "Bob Verini": 22,
+        "Melissa Rose Bernardo": 20,
+        "Patrick Marmion": 17,
+        "Hayley Levitt": 15,
+        "Matt Wolf": 14,
+        "Pete Hempstead": 14,
+        "Helen Shaw": 13,
+        "Kyle Turner": 10,
+        "Christopher Kelly": 8,
+        "Sam Marlowe": 8,
+        "Sara Holdren": 6,
+        "Matt Windman": 5,
+        "Tim Teeman": 5,
+        "Mark Kennedy": 4,
+        "Alice Saville": 4,
+        "Jackson McHenry": 2,
+        "Arifa Akbar": 2,
+        "Jonathan Mandell": 1,
+        "Charles McNulty": 1,
+        "Michael Musto": 1,
+        "Frank Rizzo": 1,
+        "Dominic Maxwell": 1,
+        "Marianka Swain": 1
+      }
     }
   ],
   "topCriticsByGap": [
@@ -407,71 +462,71 @@
       "name": "Chris Jones",
       "outlet": "chicagotribune",
       "tier": 2,
-      "missingCount": 125,
+      "missingCount": 122,
       "lastDate": "2026-05-19"
     },
     {
       "name": "Elysa Gardner",
       "outlet": "usatoday",
       "tier": 2,
-      "missingCount": 110,
-      "lastDate": "2026-06-12"
+      "missingCount": 109,
+      "lastDate": "2026-06-25"
     },
     {
       "name": "Jesse Green",
       "outlet": "vulture",
       "tier": 1,
-      "missingCount": 86,
+      "missingCount": 80,
       "lastDate": "2025-06-25"
-    },
-    {
-      "name": "David Finkle",
-      "outlet": "nysr",
-      "tier": 2,
-      "missingCount": 64,
-      "lastDate": "2026-06-19"
     },
     {
       "name": "Steven Suskin",
       "outlet": "nysr",
       "tier": 2,
-      "missingCount": 64,
-      "lastDate": "2026-06-05"
+      "missingCount": 34,
+      "lastDate": "2026-06-24"
     },
     {
       "name": "David Rooney",
       "outlet": "hollywood-reporter",
       "tier": 1,
-      "missingCount": 57,
+      "missingCount": 32,
       "lastDate": "2026-04-15"
     },
     {
       "name": "Dan Rubins",
       "outlet": "slantmagazine",
       "tier": 2,
-      "missingCount": 53,
+      "missingCount": 30,
       "lastDate": "2026-06-12"
     },
     {
-      "name": "Frank Scheck",
-      "outlet": "nysr",
+      "name": "Austin Fimmano",
+      "outlet": "nytg",
       "tier": 2,
-      "missingCount": 50,
-      "lastDate": "2026-06-16"
-    },
-    {
-      "name": "Sarah Hemming",
-      "outlet": "financialtimes",
-      "tier": 1,
-      "missingCount": 50,
-      "lastDate": "2026-06-18"
+      "missingCount": 30,
+      "lastDate": "2026-06-05"
     },
     {
       "name": "Roma Torre",
       "outlet": "ny1",
       "tier": 2,
-      "missingCount": 49,
+      "missingCount": 29,
       "lastDate": "2026-06-12"
+    },
+    {
+      "name": "David Finkle",
+      "outlet": "nysr",
+      "tier": 2,
+      "missingCount": 29,
+      "lastDate": "2026-06-22"
+    },
+    {
+      "name": "Tim Bano",
+      "outlet": "thestage",
+      "tier": 2,
+      "missingCount": 28,
+      "lastDate": "2026-05-20"
     }
   ]
 }

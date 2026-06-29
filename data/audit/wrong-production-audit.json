@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-29T10:56:07.553Z",
+  "timestamp": "2026-06-29T11:10:48.789Z",
   "stats": {
-    "totalReviews": 39558,
-    "alreadyFlagged": 17437,
+    "totalReviews": 39486,
+    "alreadyFlagged": 17431,
     "dateGuardCatches": 35,
     "directorMismatch": 887,
     "tvFilmSignals": 1087,
-    "londonSignals": 704,
+    "londonSignals": 705,
     "offBroadwaySignals": 467,
     "yearMismatch": 84,
-    "noPublishDate": 3954
+    "noPublishDate": 3952
   },
   "findings": [
     {
@@ -4965,6 +4965,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2026 (2x) more than 2012 (0x). 2026 matches production: cyrano-de-bergerac-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "cyrano-de-bergerac-west-end-2026",
+      "file": "london-theatre--mark-shenton.json",
+      "score": null,
+      "publishDate": "2026-06-26",
+      "url": "https://www.londontheatre.co.uk/reviews/cyrano-de-bergerac-review-noel-coward-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from cyrano-de-bergerac-2012"
         }
       ]
     },
@@ -14454,20 +14468,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "master-haroldand-the-boys-2003",
-      "file": "about-entertainment--ben-brantley.json",
-      "score": null,
-      "publishDate": "June 2, 2003",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"athol fugard\" from master-haroldand-the-boys-1982"
         }
       ]
     },
@@ -28721,6 +28721,20 @@
     },
     {
       "showId": "archduke-west-end-2026",
+      "file": "times-uk--dominic-maxwell.json",
+      "score": 81,
+      "publishDate": null,
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/archduke-review-royal-court-london-g7w8q5ttr",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "archduke-west-end-2026",
       "file": "west-end-best-friend--lisamarie-lamb.json",
       "score": 89,
       "publishDate": "2026-06-28",
@@ -30473,7 +30487,7 @@
       "file": "exeunt-magazine--loren-noveck.json",
       "score": 80,
       "publishDate": "2026-05-15T11:08:02-04:00",
-      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/",
+      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/#:~:text=Dad%20Don't%20Read%20This%20is%20messy%20and%20raw%20and,will%20keep%20it%20in%20my",
       "findings": [
         {
           "type": "DATE_GUARD",
