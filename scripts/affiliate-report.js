@@ -31,7 +31,7 @@ const JSON_MODE = args.includes('--json');
 const HTML_MODE = args.includes('--html');
 
 async function main() {
-  const stats = await getAffiliateStats({ days: DAYS, includeWoW: false });
+  const stats = await getAffiliateStats({ days: DAYS, includeWoW: true });
 
   if (JSON_MODE) {
     console.log(JSON.stringify(stats, null, 2));
@@ -43,10 +43,19 @@ async function main() {
     return;
   }
 
-  const { window, impact, partnerize, posthog, errors, funnel, unitEconomics, perPlatform } = stats;
+  const { window, impact, partnerize, posthog, errors, funnel, unitEconomics, perPlatform, wowDelta } = stats;
 
   console.log(`\n📊 Affiliate Performance Report (${window.startDate} to ${window.endDate})\n`);
   console.log('='.repeat(60));
+
+  // ── Week over week (Impact only) ──
+  if (wowDelta) {
+    const arrow = (pct) => pct == null ? '' : (pct >= 0 ? `▲ +${pct.toFixed(1)}%` : `▼ ${pct.toFixed(1)}%`);
+    console.log(`\n── Week over Week (vs ${wowDelta.priorStartDate} to ${wowDelta.priorEndDate}, Impact only) ──`);
+    console.log(`  Commission   : ${arrow(wowDelta.commissionPct) || 'n/a'}    (prior $${wowDelta.priorCommission.toFixed(2)})`);
+    console.log(`  Conversions  : ${arrow(wowDelta.conversionsPct) || 'n/a'}    (prior ${wowDelta.priorConversions})`);
+    console.log(`  Attrib sales : ${arrow(wowDelta.revenuePct) || 'n/a'}    (prior $${wowDelta.priorRevenue.toFixed(2)})`);
+  }
 
   // ── Funnel ──
   if (funnel) {
