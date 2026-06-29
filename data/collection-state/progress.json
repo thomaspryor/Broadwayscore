@@ -12,7 +12,8 @@
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/i-paper--sarah-carson.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre--marianka-swain.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json",
-    "much-ado-about-nothing-globe-off-west-end-2026/london-theatre--lola-phillips.json"
+    "much-ado-about-nothing-globe-off-west-end-2026/london-theatre--lola-phillips.json",
+    "relics-west-end-2026/cambridge--unknown.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
@@ -141,7 +142,16 @@
     "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--judi-herman.json",
     "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--matt-trueman.json",
     "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--michael-davies.json",
-    "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--mickey-jo-boucher.json"
+    "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--mickey-jo-boucher.json",
+    "camping-off-broadway-2026/talkinbroadway--unknown.json",
+    "relics-west-end-2026/nytimes--unknown.json",
+    "sting-west-end-2026/hollywood-reporter--unknown.json",
+    "sting-west-end-2026/variety--unknown.json",
+    "sting-west-end-2026/newsday--linda-winer.json",
+    "sting-west-end-2026/newsday--unknown.json",
+    "sting-west-end-2026/newsday--updated-december.json",
+    "sting-west-end-2026/timeout-london--tim-bano.json",
+    "sting-west-end-2026/amny--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -157,7 +167,8 @@
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/i-paper--sarah-carson.json",
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre--marianka-swain.json",
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json",
-      "much-ado-about-nothing-globe-off-west-end-2026/london-theatre--lola-phillips.json"
+      "much-ado-about-nothing-globe-off-west-end-2026/london-theatre--lola-phillips.json",
+      "relics-west-end-2026/cambridge--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -171,11 +182,13 @@
       "the-misanthrope-west-end-2026/broadwayworld--cindy-marcolina.json"
     ],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/camping-off-broadway-2026/talkinbroadway--unknown.json"
+    ],
     "archive": []
   },
   "startTime": "2026-06-29T16:22:26.418Z",
-  "lastProcessed": "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--mickey-jo-boucher.json",
+  "lastProcessed": "sting-west-end-2026/amny--unknown.json",
   "log": [
     {
       "t": "2026-06-29T16:36:31.743Z",
@@ -187,6 +200,17 @@
       "t": "2026-06-29T16:36:32.688Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-29T16:46:11.448Z",
+      "event": "bb-session",
+      "session": "e3963da2",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2649682"
+    },
+    {
+      "t": "2026-06-29T16:46:12.319Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
