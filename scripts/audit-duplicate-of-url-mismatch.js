@@ -8,24 +8,38 @@
  * corrected, silently excluding a legitimate review.
  *
  * Usage:
- *   node scripts/audit-duplicate-of-url-mismatch.js          # Report
+ *   node scripts/audit-duplicate-of-url-mismatch.js          # Report (exit 1 on ANY mismatch)
+ *   node scripts/audit-duplicate-of-url-mismatch.js --gate   # Per-push trunk catastrophe FLOOR
  *   node scripts/audit-duplicate-of-url-mismatch.js --fix    # Clear stale flags
  *   node scripts/audit-duplicate-of-url-mismatch.js --json   # JSON output (CI)
  *
+ * --gate (vs report mode) as of 2026-06-29: review-texts live in a SEPARATE private
+ * repo that data bots mutate every ~2min, so report mode (block on ANY mismatch)
+ * reddened the trunk for every UNRELATED code push whenever a single stale
+ * duplicateOf pointer existed in the window before its self-heal cleared it (the
+ * 4-BWW sinatra-the-musical-west-end-2026 case, run 28388064370). EVERY mismatch is
+ * auto-healable by clear-stale-duplicate-of.yml --fix, so single-file drift must NOT
+ * block. --gate blocks only on a mass SPIKE past FIX_SURGE_THRESHOLD — a producer
+ * regression where auto-clearing would flood scoring with double-counted reviews.
+ * Decision logic + tests: scripts/lib/duplicate-of-gate.{js,test.mjs}. The FULL
+ * report-mode triage runs daily in check-corpus-drift.yml, surfaced non-blocking.
+ *
  * Exit codes:
- *   0 — no mismatches
- *   1 — mismatches found (CI gate)
+ *   0 — no mismatches (report) / not a catastrophe (--gate)
+ *   1 — mismatches found (report/CI gate) / spike past floor (--gate)
  */
 
 const fs = require('fs');
 const path = require('path');
 const { normalizeUrl } = require('./lib/review-normalization');
 const { safeWriteReview } = require('./lib/review-write-guard');
+const { shouldBlockDuplicateOfGate } = require('./lib/duplicate-of-gate');
 
 const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '..', 'data', 'review-texts');
 
 const args = process.argv.slice(2);
 const FIX = args.includes('--fix');
+const GATE = args.includes('--gate');
 const JSON_OUT = args.includes('--json');
 const FORCE_BULK = args.includes('--force-bulk');
 
@@ -166,6 +180,19 @@ function main() {
     }
     const cleared = fix(mismatches);
     console.log(`\nCleared ${cleared} stale duplicateOf flag(s). Re-run rebuild to surface the recovered reviews.`);
+    process.exit(0);
+  }
+
+  // --gate: catastrophe floor only. Every mismatch is auto-healable by
+  // clear-stale-duplicate-of.yml --fix, so a sub-floor count is surfaced above but
+  // does NOT block the trunk. A spike past FIX_SURGE_THRESHOLD is a producer
+  // regression where auto-clearing would flood scoring — that blocks.
+  if (GATE) {
+    if (shouldBlockDuplicateOfGate({ mismatchCount: mismatches.length, floor: FIX_SURGE_THRESHOLD })) {
+      console.error(`\n❌ GATE: ${mismatches.length} duplicateOf URL mismatch(es) > floor ${FIX_SURGE_THRESHOLD}. A spike this large signals a producer regression, not routine churn — failing the trunk for manual review before the self-heal re-admits a flood of reviews.`);
+      process.exit(1);
+    }
+    console.log(`\n✅ GATE: ${mismatches.length} duplicateOf URL mismatch(es) ≤ floor ${FIX_SURGE_THRESHOLD}. Auto-healable churn — surfaced above, not blocking the trunk. clear-stale-duplicate-of.yml --fix clears these; full report-mode triage runs daily in check-corpus-drift.yml (→ digest).`);
     process.exit(0);
   }
 

@@ -12,18 +12,29 @@
  * 4. Required fields - Must have showId, and either outletId or outlet
  *
  * Usage:
- *   node scripts/validate-review-texts.js                    # Validate all shows
+ *   node scripts/validate-review-texts.js                    # Validate all shows (exit 1 on ANY error)
+ *   node scripts/validate-review-texts.js --gate             # Per-push trunk catastrophe FLOOR
  *   node scripts/validate-review-texts.js --show=hamilton-2015  # Validate single show
  *   node scripts/validate-review-texts.js --json             # Output JSON (machine-readable)
  *
+ * --gate (vs default) as of 2026-06-29: review-texts live in a SEPARATE private repo
+ * that data bots mutate every ~2min, so the default (exit 1 on ANY error) reddened
+ * the trunk for unrelated pushes whenever a single duplicate-churn file existed in
+ * the window before the dedup workflows cleared it. --gate blocks only on
+ * catastrophic, non-self-healing classes (corrupt JSON / aggregator contamination /
+ * broken refs / missing required fields) and tolerates auto-healable duplicate churn
+ * up to a floor. Decision logic + tests: scripts/lib/review-texts-gate.{js,test.mjs}.
+ * The FULL validator runs daily in check-corpus-drift.yml, surfaced non-blocking.
+ *
  * Exit codes:
- *   0 - All files valid
- *   1 - Validation errors found
+ *   0 - All files valid (default) / no catastrophe (--gate)
+ *   1 - Validation errors found (default) / catastrophic error or churn spike (--gate)
  */
 
 const fs = require('fs');
 const path = require('path');
 const { normalizeOutlet, AGGREGATOR_SCORE_SOURCES } = require('./lib/review-normalization');
+const { shouldBlockReviewTextsGate, HEALABLE_CHECKS } = require('./lib/review-texts-gate');
 // Aggregator domain/outlet sets are the single source of truth in lib/aggregator-domains.js,
 // shared with the ingest-side guard in gather-reviews.js so the validator and the writer
 // agree by construction. See that file for the contamination-class rationale.
@@ -41,6 +52,9 @@ if (!AGGREGATOR_DOMAINS || AGGREGATOR_DOMAINS.size === 0 || !AGGREGATOR_OUTLET_I
 const args = process.argv.slice(2);
 const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
 const jsonOutput = args.includes('--json');
+const GATE = args.includes('--gate');
+// Per-push gate: tolerate this much auto-healable duplicate-churn before blocking.
+const GATE_HEALABLE_FLOOR = 10;
 
 // Paths
 const DATA_DIR = path.join(__dirname, '..', 'data');
@@ -372,6 +386,23 @@ function main() {
     }
 
     console.log(`Summary: ${summary.passed}/${summary.total} passed, ${summary.failed} errors, ${summary.warnings} warnings`);
+  }
+
+  // --gate: catastrophe floor only. Catastrophic classes (corrupt JSON, aggregator
+  // contamination, broken duplicate refs, missing required fields) are zero-tolerance
+  // — they ship bad data and no self-heal clears them. Auto-healable duplicate churn
+  // (WE scrapers minting variant files between dedup passes) is tolerated up to a
+  // floor. Any UNKNOWN error check defaults to catastrophic (fail-safe). Decision is
+  // the pure scripts/lib/review-texts-gate.js (unit-tested, CLAUDE.md §15).
+  if (GATE) {
+    const healableErrors = allErrors.filter(e => HEALABLE_CHECKS.has(e.check)).length;
+    const catastrophicErrors = allErrors.length - healableErrors;
+    if (shouldBlockReviewTextsGate({ catastrophicErrors, healableErrors, floor: GATE_HEALABLE_FLOOR })) {
+      console.error(`\n❌ GATE: ${catastrophicErrors} catastrophic error(s) (zero-tolerance) + ${healableErrors} auto-healable duplicate error(s) vs floor ${GATE_HEALABLE_FLOOR}. Failing the trunk.`);
+      process.exit(1);
+    }
+    console.log(`\n✅ GATE: 0 catastrophic errors, ${healableErrors} auto-healable duplicate error(s) ≤ floor ${GATE_HEALABLE_FLOOR}. Non-catastrophic — surfaced above, not blocking the trunk. Full validator runs daily in check-corpus-drift.yml (→ digest).`);
+    process.exit(0);
   }
 
   // Exit with appropriate code

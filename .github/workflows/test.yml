@@ -17,6 +17,26 @@ on:
       - 'scripts/lib/contamination-gate.test.mjs'
       - 'scripts/audit-non-reviews.js'
       - 'scripts/lib/non-review-patterns.js'
+      # Flappy whole-corpus audits gated to a --gate catastrophe floor (2026-06-29,
+      # Notion 38e637c5). Each pure block/pass decision lives in scripts/lib/*-gate.js
+      # with a colocated *.test.mjs (lib-test glob); path-listed so a solo edit
+      # triggers CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/non-review-gate.js'
+      - 'scripts/lib/non-review-gate.test.mjs'
+      - 'scripts/audit-cast-changes.js'
+      - 'scripts/lib/cast-changes-gate.js'
+      - 'scripts/lib/cast-changes-gate.test.mjs'
+      - 'scripts/validate-review-texts.js'
+      - 'scripts/lib/review-texts-gate.js'
+      - 'scripts/lib/review-texts-gate.test.mjs'
+      - 'scripts/lib/duplicate-of-gate.js'
+      - 'scripts/lib/duplicate-of-gate.test.mjs'
+      # Pre-push conflict-marker guard (root-cause fix for the committed-merge-marker
+      # corruption that broke validate-review-texts). Pure detector + colocated test.
+      - 'scripts/lib/conflict-markers.js'
+      - 'scripts/lib/conflict-markers.test.mjs'
+      - 'scripts/lib/push-with-retry.sh'
+      - 'scripts/lib/push-with-retry.conflict-marker.test.sh'
       - 'scripts/audit-cast-contamination.js'
       - 'scripts/audit-commercial-contamination.js'
       - 'scripts/audit-audience-buzz-contamination.js'
@@ -994,6 +1014,15 @@ jobs:
           [ ${#tests[@]} -eq 0 ] && { echo "no scripts/lib tests"; exit 0; }
           node --test "${tests[@]}"
 
+      - name: Run pre-push conflict-marker guard test (bash integration)
+        # Asserts push-with-retry.sh ABORTS before pushing when a staged file carries
+        # a git conflict marker (root-cause fix for the committed-marker corruption
+        # that broke validate-review-texts; Notion 38e637c5). Bash-level so it
+        # exercises the actual guard wiring, complementing the pure
+        # scripts/lib/conflict-markers.test.mjs run by the glob above.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/lib/push-with-retry.conflict-marker.test.sh
+
       - name: Run scraper-cookie-wiring tests (direct exec, no --test wrapper)
         # This file globally monkey-patches `https.get` and `https.request`
         # to capture outbound calls without making real requests. When run
@@ -1212,7 +1241,16 @@ jobs:
         # still rendered as upcoming, and stale [AUTO-FLAGGED] unverified
         # entries. The scraper has been hardened to emit `closure` events
         # directly; this gate keeps the data shape honest going forward.
-        run: node scripts/audit-cast-changes.js --strict
+        #
+        # --gate (not --strict) as of 2026-06-29: --strict blocks on ANY issue,
+        # but almost all kinds are routine churn that this script's own --write
+        # (run on schedule) auto-heals — blocking on a handful reddened the trunk
+        # for non-code reasons between --write passes. --gate blocks only on a
+        # cross-show conflict (actor in two shows at once, never auto-fixed) or a
+        # mass churn spike past the floor (scraper regression). Decision + tests:
+        # scripts/lib/cast-changes-gate.{js,test.mjs}. Full --strict triage runs
+        # daily in check-corpus-drift.yml (→ digest).
+        run: node scripts/audit-cast-changes.js --gate
 
       - name: Audit review contamination
         if: always()
@@ -1264,7 +1302,7 @@ jobs:
 
       - name: Audit non-review content (weather/sports/junk pages)
         if: always()
-        run: node scripts/audit-non-reviews.js --strict
+        run: node scripts/audit-non-reviews.js --gate
         # Hard-fails if any SCORED review is a definitive wrong-page newspaper
         # OCR (weather page, sports scoreboard) or junk scrape. Added after an
         # LA Times weather page shipped scored 88 and a Chicago Tribune sports
@@ -1273,6 +1311,12 @@ jobs:
         # soft heuristics (obituary/preview) stay advisory in audit-review-quality.yml.
         # Shared classifier: scripts/lib/non-review-patterns.js (also gates the
         # newspapers.com extractor at save time).
+        #
+        # --gate (not --strict) as of 2026-06-29: the block/pass decision is now the
+        # pure scripts/lib/non-review-gate.{js,test.mjs} (definitive wrong-page is
+        # zero-tolerance, floor 0) so it is unit-tested independently of the corpus
+        # scan, matching the other gated audits. The full --strict definitive check
+        # also runs daily in check-corpus-drift.yml as a non-blocking backstop.
 
       - name: Audit audience-buzz contamination
         if: always()
@@ -1366,13 +1410,21 @@ jobs:
 
       - name: Audit stale duplicateOf flags
         if: always()
-        run: node scripts/audit-duplicate-of-url-mismatch.js
+        run: node scripts/audit-duplicate-of-url-mismatch.js --gate
         # Fails when A.duplicateOf=B but their URLs differ. Catches the Sommers
         # case (2026-05-24) where a transient URL correction left a stale dupe
         # flag suppressing a legitimate T2 review. Self-heal at write time is
         # implemented in review-write-guard.js; this gate catches anything that
         # bypassed it (e.g., scripts writing JSON directly). Run with --fix
         # locally to clear stale flags. See memory/feedback_duplicate_of_url_mismatch.md.
+        #
+        # --gate (not report mode) as of 2026-06-29: EVERY mismatch is auto-healable
+        # by clear-stale-duplicate-of.yml --fix, so a sub-floor count (the 4-BWW
+        # sinatra case, run 28388064370) reddened the trunk for unrelated pushes
+        # before the self-heal cleared it. --gate blocks only on a mass spike past
+        # FIX_SURGE_THRESHOLD (producer regression — auto-clearing would flood
+        # scoring). Decision + tests: scripts/lib/duplicate-of-gate.{js,test.mjs}.
+        # Full report-mode triage runs daily in check-corpus-drift.yml (→ digest).
 
       - name: Audit orphan slim show files
         if: always()
@@ -1426,12 +1478,23 @@ jobs:
         if: always()
         run: |
           echo "Validating individual review-text files..."
-          node scripts/validate-review-texts.js
+          node scripts/validate-review-texts.js --gate
         # Validates review-text file structure:
         # - Required fields (showId, outletId or outlet) — ERROR
         # - Duplicate reviews (same outlet+critic in same show) — ERROR
         # - Unknown outlets (not in outlet-registry.json) — WARNING
         # - Garbage critic names (photo credit, staff, unknown) — WARNING
+        #
+        # --gate (not default exit-1-on-any-error) as of 2026-06-29: review-texts
+        # live in a SEPARATE private repo bots mutate every ~2min, so the default
+        # reddened the trunk for unrelated pushes whenever a single duplicate-churn
+        # file existed before the dedup workflows cleared it. --gate blocks only on
+        # catastrophic classes — corrupt JSON (the committed conflict-marker class,
+        # commit 09e78a7a, now also blocked pre-push by conflict-markers.js in
+        # push-with-retry.sh), aggregator contamination, broken duplicate refs,
+        # missing required fields — and tolerates auto-healable duplicate churn up to
+        # a floor. Decision + tests: scripts/lib/review-texts-gate.{js,test.mjs}.
+        # Full validator runs daily in check-corpus-drift.yml (→ digest).
 
       - name: Notify on failure
         if: failure()

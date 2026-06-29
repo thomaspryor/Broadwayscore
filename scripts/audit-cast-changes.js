@@ -19,7 +19,19 @@
  * Usage:
  *   node scripts/audit-cast-changes.js          # dry-run (default)
  *   node scripts/audit-cast-changes.js --write  # rewrite cast-changes.json
- *   node scripts/audit-cast-changes.js --strict # exit non-zero if issues
+ *   node scripts/audit-cast-changes.js --strict # exit non-zero if ANY issue
+ *   node scripts/audit-cast-changes.js --gate   # per-push trunk catastrophe FLOOR
+ *
+ * --gate (vs --strict) as of 2026-06-29: --strict blocks on totalIssues > 0, but
+ * almost all of those kinds (stale closure-date repairs, collapsed departures,
+ * dropped contradictions/absences, stale [AUTO-FLAGGED], name dedupes, redundant
+ * in-cast arrivals) are AUTO-HEALED by this script's own --write (run on schedule).
+ * Blocking on a handful reddens the trunk for non-code reasons in the window before
+ * --write runs. --gate blocks only on a genuine catastrophe — a cross-show conflict
+ * (actor in two shows at once, NOT auto-fixed) or a mass churn spike past the floor
+ * (cast-scraper regression). Decision logic + tests:
+ * scripts/lib/cast-changes-gate.{js,test.mjs}. The FULL --strict triage runs daily
+ * in check-corpus-drift.yml, surfaced non-blocking in the digest.
  */
 'use strict';
 
@@ -34,15 +46,21 @@ const {
   noteMatchesClosurePhrase,
   reconcileClosureDateWithClosingDate,
 } = require('./lib/cast-changes-filters');
+const { shouldBlockCastChangesGate } = require('./lib/cast-changes-gate');
 
 const DATA_PATH = path.join(__dirname, '..', 'data', 'cast-changes.json');
 const TODAY = new Date();
 const TODAY_STR = TODAY.toISOString().slice(0, 10);
 const DAY_MS = 24 * 60 * 60 * 1000;
 
+// Per-push gate floor: routine churn the cast scraper introduces between --write
+// passes exits 0; a spike beyond this signals a scraper regression and blocks.
+const GATE_FLOOR = 15;
+
 const args = new Set(process.argv.slice(2));
 const WRITE = args.has('--write');
 const STRICT = args.has('--strict');
+const GATE = args.has('--gate');
 
 function parseISO(s) {
   if (!s) return null;
@@ -336,6 +354,21 @@ function main() {
     console.log(`\n✔ wrote ${DATA_PATH}`);
   } else {
     console.log('\n(dry-run; pass --write to persist)');
+  }
+
+  // --gate: catastrophe floor only. A cross-show conflict (actor in two shows at
+  // once — never auto-fixed by --write) ALWAYS blocks; otherwise block only on a
+  // mass churn spike past GATE_FLOOR. Routine sub-floor churn is surfaced above but
+  // does NOT fail the trunk (the scheduled --write heals it). Decision is the pure
+  // scripts/lib/cast-changes-gate.js (unit-tested, CLAUDE.md §15).
+  if (GATE) {
+    const crossShowConflicts = report.crossShowConflicts.length;
+    if (shouldBlockCastChangesGate({ crossShowConflicts, totalIssues, floor: GATE_FLOOR })) {
+      console.error(`\n❌ GATE: ${crossShowConflicts} cross-show conflict(s) (zero-tolerance) + ${totalIssues} total issue(s) vs floor ${GATE_FLOOR}. Failing the trunk.`);
+      process.exit(1);
+    }
+    console.log(`\n✅ GATE: 0 cross-show conflicts, ${totalIssues} issue(s) ≤ floor ${GATE_FLOOR}. Auto-healable churn — surfaced above, not blocking the trunk. Full --strict triage runs daily in check-corpus-drift.yml (→ digest).`);
+    return;
   }
 
   if (STRICT && totalIssues > 0) {
