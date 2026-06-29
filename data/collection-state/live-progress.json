@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-29T06:32:57.408Z",
-  "processed": 43,
-  "failed": 1436,
-  "successRate": "2.9%",
+  "updatedAt": "2026-06-29T06:36:00.781Z",
+  "processed": 46,
+  "failed": 1443,
+  "successRate": "3.1%",
   "tierBreakdown": {
-    "playwright": 31,
+    "playwright": 33,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 4,
     "directCookies": 0,
     "scrapingbee": 6,
     "brightdata": 2,
     "archiveToday": 38,
     "archive": 6
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-06-29T08:06:43.243Z",
@@ -24,8 +24,35 @@
     {
       "t": "2026-06-29T08:08:25.550Z",
       "event": "bb-session",
-      "session": "ac58ea16",
-      "url": "https://www.facebook.com/WestEndBestFriend/posts/-review-now-playing-in-the-nati"
+      "session": "996822b4",
+      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
+    },
+    {
+      "t": "2026-06-29T01:41:52.588Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-29T04:14:40.838Z",
+      "event": "bb-session",
+      "session": "a197c340",
+      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
+    },
+    {
+      "t": "2026-06-29T04:14:41.842Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-29T06:33:46.398Z",
+      "event": "bb-session",
+      "session": "72fb5bf2",
+      "url": "https://www.nytimes.com/2026/05/31/theater/and-then-the-rodeo-burned-down-review"
+    },
+    {
+      "t": "2026-06-29T06:33:47.385Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

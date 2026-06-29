@@ -36,7 +36,10 @@
     "a-woman-among-women-off-broadway-2026/nyt-theater--jonathan-mandell.json",
     "girl-interrupted-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "girl-interrupted-off-broadway-2026/playbill--unknown.json",
-    "war-horse-west-end-2026/click-liverpool--carie-schneider.json"
+    "war-horse-west-end-2026/click-liverpool--carie-schneider.json",
+    "war-horse-west-end-2026/whatsonstage--jane-kemp.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--matt-wolf.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "a-midsummer-nights-dream-west-end-2026/hollywood-reporter--frank-scheck.json",
@@ -1424,7 +1427,14 @@
     "war-horse-west-end-2026/about-entertainment--ben-brantley.json",
     "war-horse-west-end-2026/amny--matt-windman.json",
     "war-horse-west-end-2026/bloomberg--jeremy-gerard.json",
-    "war-horse-west-end-2026/chicagotribune--unknown.json"
+    "war-horse-west-end-2026/chicagotribune--unknown.json",
+    "war-horse-west-end-2026/time--richard-zoglin.json",
+    "war-horse-west-end-2026/village-voice--michael-feingold.json",
+    "small-off-broadway-2026/hollywood-reporter--angie-han.json",
+    "small-off-broadway-2026/deadline--pete-hammond.json",
+    "small-off-broadway-2026/wsj--charles-isherwood.json",
+    "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--unknown.json",
+    "david-copperfield-59e59-theaters-off-broadway-2026/theatrecat--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1457,10 +1467,17 @@
       "a-woman-among-women-off-broadway-2026/nyt-theater--jonathan-mandell.json",
       "girl-interrupted-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "girl-interrupted-off-broadway-2026/playbill--unknown.json",
-      "war-horse-west-end-2026/click-liverpool--carie-schneider.json"
+      "war-horse-west-end-2026/click-liverpool--carie-schneider.json",
+      "war-horse-west-end-2026/whatsonstage--jane-kemp.json",
+      "and-then-the-rodeo-burned-down-off-broadway-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+      "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--matt-wolf.json",
+      "and-then-the-rodeo-burned-down-off-broadway-2026/nytimes--matt-wolf.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "cyrano-de-bergerac-west-end-2026/broadwayworld--stephi-wild.json",
@@ -1498,7 +1515,7 @@
     ]
   },
   "startTime": "2026-06-28T15:51:57.545Z",
-  "lastProcessed": "war-horse-west-end-2026/click-liverpool--carie-schneider.json",
+  "lastProcessed": "david-copperfield-59e59-theaters-off-broadway-2026/theatrecat--unknown.json",
   "log": [
     {
       "t": "2026-06-29T08:06:43.243Z",
@@ -1509,8 +1526,35 @@
     {
       "t": "2026-06-29T08:08:25.550Z",
       "event": "bb-session",
-      "session": "ac58ea16",
-      "url": "https://www.facebook.com/WestEndBestFriend/posts/-review-now-playing-in-the-nati"
+      "session": "996822b4",
+      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
+    },
+    {
+      "t": "2026-06-29T01:41:52.588Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-29T04:14:40.838Z",
+      "event": "bb-session",
+      "session": "a197c340",
+      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
+    },
+    {
+      "t": "2026-06-29T04:14:41.842Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-29T06:33:46.398Z",
+      "event": "bb-session",
+      "session": "72fb5bf2",
+      "url": "https://www.nytimes.com/2026/05/31/theater/and-then-the-rodeo-burned-down-review"
+    },
+    {
+      "t": "2026-06-29T06:33:47.385Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
