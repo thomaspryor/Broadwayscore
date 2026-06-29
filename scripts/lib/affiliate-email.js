@@ -18,7 +18,18 @@ function htmlInt(n) { return typeof n === 'number' ? n.toLocaleString() : '\u201
 function htmlPct(n) { return typeof n === 'number' ? `${(n * 100).toFixed(1)}%` : '\u2014'; }
 
 function buildAffiliateReportHtml(stats) {
-  const { window: win, funnel, unitEconomics, perPlatform, impact, errors } = stats;
+  const { window: win, funnel, unitEconomics, perPlatform, impact, errors, wowDelta } = stats;
+
+  // Small green/red ▲▼ delta chip for week-over-week movement.
+  // null pct (no prior-window activity) renders an em dash so the row stays aligned.
+  const wowChip = (pct) => {
+    if (pct == null) return `<span style="color:rgba(255,255,255,0.3);">—</span>`;
+    const up = pct >= 0;
+    const color = up ? '#22c55e' : '#f87171';
+    const sym = up ? '▲' : '▼';
+    const val = `${up ? '+' : ''}${pct.toFixed(1)}%`;
+    return `<span style="color:${color};font-weight:700;">${sym} ${esc(val)}</span>`;
+  };
 
   const card = (title, body) => `
   <tr><td style="padding-bottom:16px;">
@@ -49,9 +60,17 @@ function buildAffiliateReportHtml(stats) {
   </td>`;
 
   // Commission hero
+  const wowLine = wowDelta ? `
+    <p style="margin:12px 0 0;font-size:12px;color:rgba(255,255,255,0.45);font-family:${FONT};line-height:1.6;">
+      <span style="display:inline-block;margin-right:14px;">Commission ${wowChip(wowDelta.commissionPct)}</span>
+      <span style="display:inline-block;margin-right:14px;">Conversions ${wowChip(wowDelta.conversionsPct)}</span>
+      <span style="display:inline-block;">Sales ${wowChip(wowDelta.revenuePct)}</span>
+      <br><span style="font-size:11px;color:rgba(255,255,255,0.3);">vs prior ${win.days}d (${esc(wowDelta.priorStartDate)} \u2013 ${esc(wowDelta.priorEndDate)}) \u00b7 Impact only</span>
+    </p>` : '';
   const commissionHtml = card(`Our earnings \u2014 last ${win.days} days`, `
     <p style="margin:0;font-size:42px;font-weight:800;color:#ffffff;font-family:${FONT};line-height:1;">${esc(htmlMoney(stats.totals.commission))}</p>
     <p style="margin:8px 0 0;font-size:13px;color:rgba(255,255,255,0.5);font-family:${FONT};">${esc(htmlInt(stats.totals.conversions))} conversion${stats.totals.conversions !== 1 ? 's' : ''} &middot; ${esc(htmlMoney(stats.totals.revenue))} attributed sales</p>
+    ${wowLine}
   `);
 
   // Funnel

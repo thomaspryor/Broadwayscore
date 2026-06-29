@@ -426,15 +426,30 @@ async function getAffiliateStats({ days = 7, includeWoW = false } = {}) {
         const priorSummary = summarizeImpact(prior.actions);
         const priorCommission = priorSummary.totalPayout;
         const priorRevenue = priorSummary.totalRevenue;
+        const priorConversions = priorSummary.conversions;
+        // WoW compares Impact-to-Impact (commission/revenue/conversions all come
+        // from Impact; Partnerize returns no revenue and the prior window only
+        // fetches Impact). curCommission/Revenue == totals here since Partnerize
+        // contributes 0 commission, but curConversions excludes Partnerize so the
+        // delta stays apples-to-apples.
+        const curCommission = impact && !impact.skipped ? impact.totalPayout : 0;
+        const curRevenue = impact && !impact.skipped ? impact.totalRevenue : 0;
+        const curConversions = impact && !impact.skipped ? impact.conversions : 0;
         wowDelta = {
           commissionPct: priorCommission > 0
-            ? ((totalCommission - priorCommission) / priorCommission) * 100
+            ? ((curCommission - priorCommission) / priorCommission) * 100
             : null,
           revenuePct: priorRevenue > 0
-            ? ((totalRevenue - priorRevenue) / priorRevenue) * 100
+            ? ((curRevenue - priorRevenue) / priorRevenue) * 100
+            : null,
+          conversionsPct: priorConversions > 0
+            ? ((curConversions - priorConversions) / priorConversions) * 100
             : null,
           priorCommission,
           priorRevenue,
+          priorConversions,
+          priorStartDate: fmtDate(priorStart),
+          priorEndDate: fmtDate(priorEnd),
         };
       }
     } catch (err) {
