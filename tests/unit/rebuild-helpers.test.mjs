@@ -27,6 +27,7 @@ const {
   getBestScore,
   scoreToBucket,
   scoreToThumb,
+  isUnambiguousRatingString,
 } = require('../../scripts/lib/rebuild-helpers');
 
 const { BUCKET_SCORES, THUMB_SCORES } = require('../../scripts/lib/score-extractors');
@@ -808,5 +809,38 @@ describe('cleanExcerpt', () => {
     const result = cleanExcerpt(text);
     assert.ok(result);
     assert.ok(result.startsWith('A brilliant'));
+  });
+});
+
+describe('stale-normalized guard (isUnambiguousRatingString + getBestScore)', () => {
+  test('isUnambiguousRatingString: letters/stars true, bare numbers false', () => {
+    for (const s of ['A', 'B+', 'd-', '3/5', '3.5/5 stars', '4 stars', '★★★', '4 out of 5']) {
+      assert.equal(isUnambiguousRatingString(s), true, `${s} should be unambiguous`);
+    }
+    for (const s of ['5', '85', '90%', '', null, 'a glowing review']) {
+      assert.equal(isUnambiguousRatingString(s), false, `${JSON.stringify(s)} should be ambiguous`);
+    }
+  });
+
+  test('getBestScore: stale originalScoreNormalized is overridden by an unambiguous grade', () => {
+    // the-piano-lesson-2022 EW: originalScore "A" but stored normalized 20 →
+    // the rebuild used to emit 20 (Pan). Must now re-parse "A" → 90.
+    const stale = { originalScore: 'A', originalScoreNormalized: 20, outletId: 'ew',
+      scoreSource: 'letter-grade', scoreConfidence: 'medium', llmScore: { score: 90, confidence: 'medium' } };
+    assert.equal(getBestScore(stale).score, 90);
+  });
+
+  test('getBestScore: a CONSISTENT stored normalized is preserved', () => {
+    const ok = { originalScore: 'A', originalScoreNormalized: 90, outletId: 'ew',
+      scoreSource: 'letter-grade', scoreConfidence: 'medium' };
+    assert.equal(getBestScore(ok).score, 90);
+  });
+
+  test('getBestScore: a BARE-number originalScore still defers to stored normalized (Pattern Card #7)', () => {
+    // "5" is ambiguous (5 vs 5 stars) — must NOT be re-parsed to 5; trust the
+    // extraction-time normalized 100.
+    const bare = { originalScore: '5', originalScoreNormalized: 100, outletId: 'showscore',
+      scoreSource: 'json-ld', scoreConfidence: 'medium' };
+    assert.equal(getBestScore(bare).score, 100);
   });
 });
