@@ -26,8 +26,19 @@ const TICKET_PLATFORM_PRIORITY: Record<string, number> = {
 // cost vs TodayTix's proven $0.614 EPC. Will re-enable when Partnerize/
 // StubHub approves API access for direct deep-link lookups.
 // See memory/feedback_stubhub_hidden.md for the decision rationale.
+//
+// Ticketmaster hidden 2026-06-29: 63 Impact-tracked clicks over 90 days,
+// 0 conversions (0 ever). NOT an attribution bug — program is Active and our
+// deep link matches Impact's official TrackingLink exactly; Impact records the
+// clicks (TodayTix click counts parity-match PostHog, confirming tracking works).
+// The 0 is real: Ticketmaster's program excludes/stand-downs the sales and the
+// fee-heavy checkout bounces users. Only renders on 11 evergreen shows, all of
+// which keep TodayTix + Official Site (whose marketing sites route to
+// Ticketmaster anyway), so no official buy path is lost. $0 earned, so hiding
+// it removes CTA clutter and may nudge clicks to revenue-producing TodayTix.
 const HIDDEN_PLATFORMS: Set<string> = new Set([
   'StubHub',
+  'Ticketmaster',
 ]);
 
 export interface TicketLinkData {
