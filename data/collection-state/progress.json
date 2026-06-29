@@ -6,7 +6,8 @@
     "glengarry-glen-ross-west-end-2026/times-uk--maxie-szalwinska.json",
     "glengarry-glen-ross-west-end-2026/westendtheatre--louisa-baldwin.json",
     "a-midsummer-nights-dream-west-end-2026/london-theatre--aliya-al-hassan.json",
-    "cyrano-de-bergerac-west-end-2026/guardian-uk--unknown.json"
+    "cyrano-de-bergerac-west-end-2026/guardian-uk--unknown.json",
+    "cyrano-de-bergerac-west-end-2026/whatsonstage--alex-wood.json"
   ],
   "failed": [
     "a-midsummer-nights-dream-west-end-2026/hollywood-reporter--frank-scheck.json",
@@ -56,7 +57,16 @@
     "cyrano-de-bergerac-west-end-2026/ap--unknown.json",
     "cyrano-de-bergerac-west-end-2026/bloomberg--jeremy-gerard.json",
     "cyrano-de-bergerac-west-end-2026/broadwayworld--stephi-wild.json",
-    "cyrano-de-bergerac-west-end-2026/daily-echo--steve-page.json"
+    "cyrano-de-bergerac-west-end-2026/daily-echo--steve-page.json",
+    "cyrano-de-bergerac-west-end-2026/financialtimes--sarah-hemming.json",
+    "cyrano-de-bergerac-west-end-2026/metro-uk--claire-allfree.json",
+    "cyrano-de-bergerac-west-end-2026/northjerseycom--robert-feldberg.json",
+    "cyrano-de-bergerac-west-end-2026/standard--fiona-mountford.json",
+    "cyrano-de-bergerac-west-end-2026/telegraph--dominic-cavendish.json",
+    "cyrano-de-bergerac-west-end-2026/the-upcoming-uk--unknown.json",
+    "cyrano-de-bergerac-west-end-2026/thestage--dave-fargnoli.json",
+    "cyrano-de-bergerac-west-end-2026/times-uk--dominic-maxwell.json",
+    "cyrano-de-bergerac-west-end-2026/washpost--peter-marks.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -67,19 +77,23 @@
       "glengarry-glen-ross-west-end-2026/times-uk--maxie-szalwinska.json",
       "glengarry-glen-ross-west-end-2026/westendtheatre--louisa-baldwin.json",
       "a-midsummer-nights-dream-west-end-2026/london-theatre--aliya-al-hassan.json",
-      "cyrano-de-bergerac-west-end-2026/guardian-uk--unknown.json"
+      "cyrano-de-bergerac-west-end-2026/guardian-uk--unknown.json",
+      "cyrano-de-bergerac-west-end-2026/whatsonstage--alex-wood.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "cyrano-de-bergerac-west-end-2026/broadwayworld--stephi-wild.json"
+    ],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/glengarry-glen-ross-west-end-2026/thestage--sam-marlowe.json"
+      "data/review-texts/glengarry-glen-ross-west-end-2026/thestage--sam-marlowe.json",
+      "data/review-texts/cyrano-de-bergerac-west-end-2026/daily-echo--steve-page.json"
     ],
     "archive": []
   },
   "startTime": "2026-06-29T06:55:23.826Z",
-  "lastProcessed": "cyrano-de-bergerac-west-end-2026/daily-echo--steve-page.json",
+  "lastProcessed": "cyrano-de-bergerac-west-end-2026/whatsonstage--alex-wood.json",
   "log": []
 }
