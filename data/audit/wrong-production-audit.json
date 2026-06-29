@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-06-29T00:44:01.832Z",
+  "timestamp": "2026-06-29T00:55:14.229Z",
   "stats": {
-    "totalReviews": 39546,
+    "totalReviews": 39548,
     "alreadyFlagged": 17434,
-    "dateGuardCatches": 34,
+    "dateGuardCatches": 36,
     "directorMismatch": 887,
     "tvFilmSignals": 1086,
     "londonSignals": 703,
@@ -8476,7 +8476,7 @@
       "file": "independent--alice-saville.json",
       "score": 58,
       "publishDate": "2026-06-18",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html?loginSuccessful=true",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -27667,6 +27667,30 @@
       ]
     },
     {
+      "showId": "a-midsummer-nights-dream-west-end-2026",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 46d before show (2026-05-05 vs 2026-06-20)"
+        }
+      ]
+    },
+    {
+      "showId": "a-midsummer-nights-dream-west-end-2026",
+      "file": "thestage--holly-o.json",
+      "score": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 46d before show (2026-05-05 vs 2026-06-20)"
+        }
+      ]
+    },
+    {
       "showId": "a-mirrored-monet-west-end-2026",
       "file": "whatsonstage--miriam-sallon.json",
       "score": 39,
@@ -40853,7 +40877,7 @@
       "file": "thestage--dave-fargnoli.json",
       "score": 38,
       "publishDate": "2026-06-24",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-misanthrope-review-sandra-oh-what-a-disappointment-sbzvf82b2?t=1782310602034",
+      "url": "https://www.thestage.co.uk/reviews/the-misanthrope-review-lyttelton-national-theatre-london-sandra-oh",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
