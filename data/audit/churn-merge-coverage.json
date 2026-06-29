@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-06-29T14:16:16.665Z",
+    "generatedAt": "2026-06-29T17:45:18.540Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -8,61 +8,65 @@
   },
   "summary": {
     "minChurn": 30,
-    "flaggedCount": 5,
+    "flaggedCount": 6,
     "exemptCount": 23,
     "coveredCount": 43,
-    "highChurnTracked": 71
+    "highChurnTracked": 72
   },
   "flagged": [
     {
       "path": "data/audit/processed-feedback.json",
-      "churn": 86
+      "churn": 88
     },
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 63
+      "churn": 80
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 63
+      "churn": 80
     },
     {
       "path": "data/audit/validation-baseline.json",
-      "churn": 53
+      "churn": 70
     },
     {
       "path": "data/audit/validation/collection-report-2026-06-28.json",
       "churn": 34
+    },
+    {
+      "path": "data/audit/validation/collection-report-2026-06-29.json",
+      "churn": 31
     }
   ],
   "exempt": [
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 127
+      "churn": 134
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 127
-    },
-    {
-      "path": "data/llm-scoring-runs.json",
-      "churn": 126
+      "churn": 134
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 126
+      "churn": 134
+    },
+    {
+      "path": "data/llm-scoring-runs.json",
+      "churn": 133
     },
     {
       "path": "public/data/shows/dad-dont-read-this-off-broadway-2026.json",
+      "churn": 74
+    },
+    {
+      "path": "public/opening-night-status.json",
       "churn": 73
     },
     {
       "path": "data/llm-scoring-garbage-skips.json",
       "churn": 71
-    },
-    {
-      "path": "public/opening-night-status.json",
-      "churn": 70
     },
     {
       "path": "public/data/shows/cyrano-de-bergerac-west-end-2026.json",
@@ -74,35 +78,39 @@
     },
     {
       "path": "data/commercial-rss-state.json",
-      "churn": 56
+      "churn": 54
     },
     {
       "path": "public/data/shows/pride-west-end-2026.json",
-      "churn": 52
-    },
-    {
-      "path": "public/data/shows/the-truth-a-comedy-by-florian-zeller-west-end-2026.json",
-      "churn": 47
+      "churn": 51
     },
     {
       "path": "public/data/shows/the-misanthrope-west-end-2026.json",
-      "churn": 45
+      "churn": 51
+    },
+    {
+      "path": "public/data/shows/the-truth-a-comedy-by-florian-zeller-west-end-2026.json",
+      "churn": 48
     },
     {
       "path": "public/data/shows/sinatra-the-musical-west-end-2026.json",
-      "churn": 44
+      "churn": 47
     },
     {
       "path": "data/tony-kalshi-odds.json",
-      "churn": 42
+      "churn": 41
     },
     {
       "path": "data/tony-polymarket-odds.json",
-      "churn": 42
+      "churn": 41
     },
     {
       "path": "data/tony-win-probabilities.json",
-      "churn": 42
+      "churn": 41
+    },
+    {
+      "path": "public/data/shows/archduke-west-end-2026.json",
+      "churn": 41
     },
     {
       "path": "data/show-score-urls.json",
@@ -110,10 +118,6 @@
     },
     {
       "path": "public/data/shows/birthright-off-broadway-2026.json",
-      "churn": 40
-    },
-    {
-      "path": "public/data/shows/archduke-west-end-2026.json",
       "churn": 39
     },
     {
@@ -122,67 +126,67 @@
     },
     {
       "path": "public/data/shows/camping-off-broadway-2026.json",
-      "churn": 32
+      "churn": 31
     },
     {
       "path": "public/data/shows/encores-la-cage-aux-folles-off-broadway-2026.json",
-      "churn": 32
+      "churn": 31
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 834,
+      "churn": 948,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 806,
+      "churn": 917,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 556,
+      "churn": 571,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 404,
+      "churn": 424,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 266,
+      "churn": 274,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 266,
+      "churn": 274,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 169,
+      "churn": 173,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 137,
+      "churn": 144,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 126,
+      "churn": 133,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-cyrano-de-bergerac-west-end-2026.json",
-      "churn": 98,
+      "churn": 107,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 86,
+      "churn": 91,
       "mergeAttr": "ours"
     },
     {
@@ -212,47 +216,47 @@
     },
     {
       "path": "data/audit/poller-backoff/romeo-and-juliet-off-broadway-2026.json",
-      "churn": 77,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/gather-collisions.json",
       "churn": 75,
       "mergeAttr": "ours"
     },
     {
+      "path": "data/audit/gather-collisions.json",
+      "churn": 73,
+      "mergeAttr": "ours"
+    },
+    {
       "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 70,
+      "churn": 73,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/syndicated-duplicates.json",
-      "churn": 70,
+      "churn": 73,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/wrong-production-audit.json",
-      "churn": 70,
+      "churn": 73,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/show-review-gap.json",
-      "churn": 57,
+      "churn": 55,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/unknown-aggregator-outlets.json",
-      "churn": 57,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/gap-audit-checkpoint.json",
-      "churn": 51,
+      "churn": 55,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 50,
+      "churn": 55,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/gap-audit-checkpoint.json",
+      "churn": 49,
       "mergeAttr": "ours"
     },
     {
@@ -291,8 +295,8 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/poller-backoff/the-black-mirror-experience-off-broadway-2026.json",
-      "churn": 36,
+      "path": "data/audit/orphan-unscored-sinatra-the-musical-west-end-2026.json",
+      "churn": 40,
       "mergeAttr": "ours"
     },
     {
@@ -301,18 +305,18 @@
       "mergeAttr": "ours"
     },
     {
+      "path": "data/audit/poller-backoff/the-black-mirror-experience-off-broadway-2026.json",
+      "churn": 35,
+      "mergeAttr": "ours"
+    },
+    {
       "path": "data/audit/drift-state.json",
-      "churn": 34,
+      "churn": 32,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/cyrano-de-bergerac-west-end-2026.json",
       "churn": 32,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/orphan-unscored-sinatra-the-musical-west-end-2026.json",
-      "churn": 31,
       "mergeAttr": "ours"
     },
     {
