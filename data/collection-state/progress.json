@@ -1210,7 +1210,17 @@
     "spamalot-off-broadway-2026/oc-register--christopher-smith.json",
     "spamalot-off-broadway-2026/queerty--matthew-wexler.json",
     "spamalot-off-broadway-2026/roc-city-mag--david-andreatta.json",
-    "spamalot-off-broadway-2026/splash-magazines--beverly-cohn.json"
+    "spamalot-off-broadway-2026/splash-magazines--beverly-cohn.json",
+    "spamalot-off-broadway-2026/the-moderate-voice--dough-bursch.json",
+    "spamalot-off-broadway-2026/the-spot-518--bill-kellert.json",
+    "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+    "birthright-off-broadway-2026/theatermania--linda-buchwald.json",
+    "birthright-off-broadway-2026/theatermania--unknown.json",
+    "birthright-off-broadway-2026/broadwayworld--unknown.json",
+    "birthright-off-broadway-2026/playbill--unknown.json",
+    "encores-la-cage-aux-folles-off-broadway-2026/timeout-london--tom-wicker.json",
+    "encores-la-cage-aux-folles-off-broadway-2026/artsdesk--gary-naylor.json",
+    "encores-la-cage-aux-folles-off-broadway-2026/city-am--adam-bloodworth.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1238,6 +1248,7 @@
     ],
     "amp": [],
     "browserbase": [
+      "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
       "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json"
     ],
     "directCookies": [],
@@ -1283,7 +1294,8 @@
       "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
       "data/review-texts/birthright-off-broadway-2026/broadwayworld--unknown.json",
       "data/review-texts/encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
-      "data/review-texts/im-almost-there-off-broadway-2026/broadwayworld--team-bww.json"
+      "data/review-texts/im-almost-there-off-broadway-2026/broadwayworld--team-bww.json",
+      "data/review-texts/birthright-off-broadway-2026/broadwayworld--unknown.json"
     ],
     "archive": [
       "cyrano-de-bergerac-west-end-2026/standard--fiona-mountford.json",
@@ -1294,7 +1306,7 @@
     ]
   },
   "startTime": "2026-06-28T15:51:57.545Z",
-  "lastProcessed": "spamalot-off-broadway-2026/splash-magazines--beverly-cohn.json",
+  "lastProcessed": "encores-la-cage-aux-folles-off-broadway-2026/city-am--adam-bloodworth.json",
   "log": [
     {
       "t": "2026-06-28T19:42:09.552Z",
@@ -1310,6 +1322,17 @@
     },
     {
       "t": "2026-06-29T01:41:52.588Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-29T04:14:40.838Z",
+      "event": "bb-session",
+      "session": "a197c340",
+      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
+    },
+    {
+      "t": "2026-06-29T04:14:41.842Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
