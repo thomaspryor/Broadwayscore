@@ -76,6 +76,13 @@ on:
       - 'scripts/generate-mobile-show-details.js'
       - 'scripts/compute-gold-lists.js'
       - 'scripts/send-opening-digest.js'
+      # Genre classifier (non-theatrical routing, mirror of src/lib/genre.ts) +
+      # its colocated parity/FP test, and the discovery writer that tags new
+      # shows. Without these path entries a solo edit triggers ZERO CI.
+      - 'scripts/lib/genre-classification.js'
+      - 'scripts/lib/genre-classification.test.mjs'
+      - 'scripts/discover-new-shows.js'
+      - 'scripts/backfill-genre.js'
       # Display-field artifact GC (html-entity decode + json-ld drop) + its shared
       # predicate/decoder lib. Colocated text-cleaning predicates are tested by
       # tests/unit/display-field-artifacts.test.mjs (no-data batch).

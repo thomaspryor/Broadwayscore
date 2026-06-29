@@ -65,6 +65,7 @@ export interface RawShow {
   status: string;
   type: string;
   category?: string;  // 'broadway' (default), 'off-broadway', or 'west-end'
+  genre?: string;     // performance type beyond play/musical: dance/magic/comedy/cabaret/concert/circus (see src/lib/genre.ts)
   runtime: string;
   intermissions: number;
   images?: ShowImages;
@@ -213,6 +214,7 @@ export interface ComputedShow {
   status: string;
   type: string;
   category?: string;  // 'broadway' (default), 'off-broadway', or 'west-end'
+  genre?: string;     // performance type beyond play/musical: dance/magic/comedy/cabaret/concert/circus (see src/lib/genre.ts)
   runtime: string;
   intermissions?: number;
   images?: ShowImages;
@@ -746,6 +748,7 @@ export function computeShowData(
     status: normalizedStatus === 'previews' && show.previewsStartDate && show.previewsStartDate > today ? 'upcoming' : normalizedStatus,
     type: show.type,
     category: show.category,
+    genre: show.genre,
     runtime: show.runtime,
     intermissions: show.intermissions,
     images: show.images,

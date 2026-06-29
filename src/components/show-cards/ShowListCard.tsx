@@ -4,8 +4,9 @@ import { memo } from 'react';
 import Link from 'next/link';
 import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
-import { getScoreTier, getScoreColorClass, ScoreBadge, MustSeeCrown, StatusBadge, FormatPill, ProductionPill, AudienceChip, CategoryBadge } from '@/components/show-cards';
+import { getScoreTier, getScoreColorClass, ScoreBadge, MustSeeCrown, StatusBadge, FormatPill, GenrePill, ProductionPill, AudienceChip, CategoryBadge } from '@/components/show-cards';
 import type { ScoreTier } from '@/components/show-cards';
+import { isNonTheatricalGenre } from '@/lib/genre';
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
 import { getBroadwayDuration, getRunLength, formatOpeningDate, getDurationSuffix } from '@/lib/date-utils';
@@ -143,7 +144,9 @@ const ShowListCard = memo(function ShowListCard({
         {show.title}
       </h2>
       <div className="flex flex-wrap items-center gap-1.5 mt-1">
-        {showFormatPill && <FormatPill type={show.type} />}
+        {showFormatPill && (isNonTheatricalGenre(show.genre)
+          ? <GenrePill genre={show.genre} />
+          : <FormatPill type={show.type} />)}
         {isRevival && <ProductionPill isRevival={true} />}
       </div>
       <div className="flex flex-wrap items-center gap-1.5 mt-1 text-xs text-gray-500">
@@ -190,7 +193,9 @@ const ShowListCard = memo(function ShowListCard({
         {show.title}
       </h3>
       <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
-        <FormatPill type={show.type} />
+        {isNonTheatricalGenre(show.genre)
+          ? <GenrePill genre={show.genre} />
+          : <FormatPill type={show.type} />}
         <ProductionPill isRevival={isRevival} />
         {show.isOffWestEnd && <CategoryBadge category="off-west-end" />}
         {!hideStatus && <StatusBadge status={show.status} />}

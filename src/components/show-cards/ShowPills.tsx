@@ -41,6 +41,30 @@ export function FormatPill({ type }: { type: string }) {
   );
 }
 
+// Genre pill - labels non-play/musical performance types (dance/magic/comedy/
+// cabaret/concert/circus) that keep their critic score but live on the Off-West
+// End hub. Amber outline, distinct from the format-pill purple/blue/indigo and
+// the score-tier reds. See src/lib/genre.ts for the policy.
+const GENRE_PILL_CONFIG: Record<string, string> = {
+  dance: 'DANCE',
+  magic: 'MAGIC',
+  comedy: 'COMEDY',
+  cabaret: 'CABARET',
+  concert: 'CONCERT',
+  circus: 'CIRCUS',
+};
+
+export function GenrePill({ genre }: { genre?: string }) {
+  if (!genre) return null;
+  const label = GENRE_PILL_CONFIG[genre];
+  if (!label) return null;
+  return (
+    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] leading-none font-semibold uppercase tracking-wide border border-amber-500/50 text-amber-400">
+      {label}
+    </span>
+  );
+}
+
 // Audience grade chip - small pill shown below critic score in critics mode
 export function AudienceChip({ grade }: { grade: { grade: string; color: string; tooltip: string } }) {
   return (
