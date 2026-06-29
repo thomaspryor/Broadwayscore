@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-29T14:06:45.018Z",
-  "processed": 129,
-  "failed": 2066,
-  "successRate": "5.9%",
+  "updatedAt": "2026-06-29T14:41:14.443Z",
+  "processed": 136,
+  "failed": 2353,
+  "successRate": "5.5%",
   "tierBreakdown": {
-    "playwright": 97,
+    "playwright": 101,
     "amp": 0,
-    "browserbase": 11,
+    "browserbase": 14,
     "directCookies": 0,
-    "scrapingbee": 20,
-    "brightdata": 1,
-    "archiveToday": 41,
+    "scrapingbee": 23,
+    "brightdata": 2,
+    "archiveToday": 40,
     "archive": 16
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-06-29T08:06:43.243Z",
@@ -88,15 +88,26 @@
       "domain": "deadline.com"
     },
     {
-      "t": "2026-06-29T14:04:41.375Z",
+      "t": "2026-06-29T14:30:26.861Z",
       "event": "bb-session",
-      "session": "1df0357d",
-      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
+      "session": "13f6e501",
+      "url": "https://variety.com/2026/theater/news/christopher-eccleston-mel-giedroyc-white-r"
     },
     {
-      "t": "2026-06-29T14:04:42.310Z",
+      "t": "2026-06-29T14:30:27.286Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-29T14:40:52.083Z",
+      "event": "bb-session",
+      "session": "8d8926d4",
+      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
+    },
+    {
+      "t": "2026-06-29T14:40:52.504Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
