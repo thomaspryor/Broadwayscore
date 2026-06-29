@@ -3,22 +3,15 @@
 // Mirrors scripts/lib/score-parsers.js parseOriginalScore() but skips the
 // LETTER_GRADE_OUTLETS gate — for manual ingestion, the operator is the
 // authority on what the rating is, not the outlet's typical format.
+//
+// Letter conversion uses the canonical LETTER_GRADE_MAP (client-safe TS config,
+// same map score-parsers.js mirrors via score-extractors). A hardcoded copy here
+// had silently drifted to an inflated curve (A=95, D=65, F=50 vs canonical 90/35/20),
+// scoring every manually-ingested letter grade far too high (2026-06-29). A
+// cross-file parity test now enforces these never diverge again.
+const LETTER_GRADE_VALUES = LETTER_GRADE_MAP;
 
-const LETTER_GRADE_VALUES: Record<string, number> = {
-  'A+': 98,
-  A: 95,
-  'A-': 92,
-  'B+': 88,
-  B: 85,
-  'B-': 82,
-  'C+': 78,
-  C: 75,
-  'C-': 72,
-  'D+': 68,
-  D: 65,
-  'D-': 62,
-  F: 50,
-};
+import { LETTER_GRADE_MAP } from '@/config/scoring';
 
 export interface ScoreParseResult {
   score: number;

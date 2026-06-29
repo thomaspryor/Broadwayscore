@@ -13,14 +13,14 @@
 
 const WORD_NUM = { one: 1, two: 2, three: 3, four: 4, five: 5, half: 0.5 };
 
-// Letter grades → 0-100 (US critic style; matches score-parsers conventions).
-const LETTER = {
-  'a+': 98, a: 95, 'a-': 90,
-  'b+': 85, b: 80, 'b-': 75,
-  'c+': 68, c: 63, 'c-': 58,
-  'd+': 52, d: 47, 'd-': 42,
-  f: 25,
-};
+// Letter grades → 0-100. The audit MUST grade against production's conversion,
+// not its own — a local table (formerly A=95) silently disagreed with the
+// canonical map (A=90) and tripped ~20 false HARD flags (D=47-vs-35, D+=52-vs-42
+// etc.) where the score was actually correct (2026-06-29). Single-source from the
+// canonical CommonJS map (score-extractors.js LETTER_GRADES == src/config/scoring.ts
+// LETTER_GRADE_MAP); a cross-file parity test enforces they never drift.
+// Keys are upper-case there; parseStar lowercases input, so look up via toUpperCase().
+const { LETTER_GRADES: LETTER } = require('./score-extractors');
 
 function clamp(n) { return Math.max(1, Math.min(100, Math.round(n))); }
 
@@ -65,7 +65,8 @@ function parseStar(raw) {
   }
 
   // Letter grade (exact token).
-  if (LETTER[s] != null) return { score: LETTER[s], stars: null, outOf: null };
+  const lg = LETTER[s.toUpperCase()];
+  if (lg != null) return { score: lg, stars: null, outOf: null };
 
   return null;
 }
