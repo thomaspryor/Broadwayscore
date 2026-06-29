@@ -1,15 +1,15 @@
 {
   "system": "audience coverage",
-  "status": "error",
-  "lastChecked": "2026-06-28T08:09:15.612Z",
+  "status": "pass",
+  "lastChecked": "2026-06-29T08:39:51.357Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
-  "escalationState": "monitoring",
+  "escalationState": "resolved",
   "details": [
     {
       "name": "Audience coverage: open-show gaps",
-      "status": "error",
-      "message": "3 open show(s) have audience data on a source that didn't link — Mezzanine: Much Ado About Nothing - Globe (122 ratings ↔ Much Ado About Nothing); Mezzanine: Much Ado About Nothing - Globe (76 ratings ↔ Much Ado About Nothing); Mezzanine: Encores! La Cage Aux Folles (70 ratings ↔ La Cage aux Folles)"
+      "status": "ok",
+      "message": "No open shows with unlinked audience sources"
     }
   ]
 }

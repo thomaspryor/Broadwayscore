@@ -1,6 +1,6 @@
 {
-  "lastRun": "2026-06-28T08:09:15.608Z",
-  "consecutiveErrorDays": 33,
+  "lastRun": "2026-06-29T08:39:51.350Z",
+  "consecutiveErrorDays": 34,
   "results": [
     {
       "name": "Freshness: reviews.json",
@@ -10,52 +10,52 @@
     {
       "name": "Freshness: shows.json",
       "status": "pass",
-      "message": "23h old"
+      "message": "0h old"
     },
     {
       "name": "Freshness: grosses.json",
       "status": "pass",
-      "message": "4d old"
+      "message": "1d old"
     },
     {
       "name": "Freshness: audience-buzz.json",
       "status": "pass",
-      "message": "0h old"
+      "message": "1h old"
     },
     {
       "name": "Freshness: commercial.json",
       "status": "pass",
-      "message": "12h old"
+      "message": "19h old"
     },
     {
       "name": "Freshness: critic-consensus.json",
       "status": "pass",
-      "message": "0h old"
+      "message": "3h old"
     },
     {
       "name": "Freshness: lottery-rush.json",
-      "status": "error",
-      "message": "6d old (error threshold: 3d)"
+      "status": "pass",
+      "message": "24h old"
     },
     {
       "name": "Freshness: cast-changes.json",
       "status": "pass",
-      "message": "1d old"
+      "message": "2d old"
     },
     {
       "name": "Freshness: nyt-critics-picks.json",
       "status": "pass",
-      "message": "2d old"
+      "message": "2h old"
     },
     {
       "name": "Freshness: video-reviews.json",
       "status": "pass",
-      "message": "6d old"
+      "message": "3h old"
     },
     {
       "name": "Freshness: social-pulse/_budget.json",
       "status": "pass",
-      "message": "6d old"
+      "message": "7d old"
     },
     {
       "name": "Freshness: tony-win-probabilities.json",
@@ -75,7 +75,7 @@
     {
       "name": "Push verify: shows.json",
       "status": "pass",
-      "message": "Data synced (23h old, workflow 4d ago)"
+      "message": "Data synced (0h old, workflow 20h ago)"
     },
     {
       "name": "Sync: review-texts vs reviews.json",
@@ -85,17 +85,17 @@
     {
       "name": "Sync: open show coverage",
       "status": "pass",
-      "message": "40 open shows all have reviews and grosses"
+      "message": "35 open shows all have reviews and grosses"
     },
     {
       "name": "Audience coverage: open-show gaps",
-      "status": "error",
-      "message": "3 open show(s) have audience data on a source that didn't link — Mezzanine: Much Ado About Nothing - Globe (122 ratings ↔ Much Ado About Nothing); Mezzanine: Much Ado About Nothing - Globe (76 ratings ↔ Much Ado About Nothing); Mezzanine: Encores! La Cage Aux Folles (70 ratings ↔ La Cage aux Folles)"
+      "status": "ok",
+      "message": "No open shows with unlinked audience sources"
     },
     {
       "name": "Sync: social-pulse per-show freshness",
       "status": "pass",
-      "message": "90 running BW/WE shows — no stale social-pulse files"
+      "message": "85 running BW/WE shows — no stale social-pulse files"
     },
     {
       "name": "Sync: phantom show detection",
@@ -104,43 +104,43 @@
     },
     {
       "name": "Sync: cast coverage",
-      "status": "error",
-      "message": "4 empty cast: Hamilton, Awake and Sing!, A Few Good Men"
+      "status": "pass",
+      "message": "35 active Broadway shows all have cast data"
     },
     {
       "name": "Sync: baseline drift",
       "status": "warn",
-      "message": "Reviews dropped: 18587 vs baseline 18593"
+      "message": "Reviews dropped: 18881 vs baseline 18887"
     },
     {
       "name": "Sync: grosses weekEnding",
       "status": "pass",
-      "message": "weekEnding 6/22/2026 (6d ago)"
+      "message": "weekEnding 6/22/2026 (7d ago)"
     },
     {
       "name": "Pipeline: rebuild-reviews",
       "status": "pass",
-      "message": "Last success 0h ago"
+      "message": "Last success 2h ago"
     },
     {
       "name": "Pipeline: update-show-status",
       "status": "pass",
-      "message": "Last success 23h ago"
+      "message": "Last success 19h ago"
     },
     {
       "name": "Pipeline: collect-review-texts",
       "status": "pass",
-      "message": "Last success 0h ago"
+      "message": "Last success 2h ago"
     },
     {
       "name": "Pipeline: weekly-grosses",
       "status": "pass",
-      "message": "Last success 4d ago"
+      "message": "Last success 5d ago"
     },
     {
       "name": "Pipeline: weekly-integrity",
       "status": "pass",
-      "message": "Last success 3h ago"
+      "message": "Last success 1d ago"
     },
     {
       "name": "Pipeline: test",
@@ -150,12 +150,12 @@
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.5% scored (18587/18863)"
+      "message": "98.6% scored (18881/19154)"
     },
     {
       "name": "Quality: corpus drift",
       "status": "warn",
-      "message": "3 audit(s) drifting: content-quality regex false-positive rate, cross-show URL contamination (review URL slug names a different show), high-churn tracked files lacking a .gitattributes merge driver"
+      "message": "4 audit(s) drifting: content-quality regex false-positive rate, cross-show URL contamination (review URL slug names a different show), high-churn tracked files lacking a .gitattributes merge driver, review-text contamination (strict classes A/C/E/F)"
     },
     {
       "name": "Cookies: expiration",
@@ -165,32 +165,32 @@
     {
       "name": "CWV: performance",
       "status": "pass",
-      "message": "All metrics within thresholds (7d ago)"
+      "message": "All metrics within thresholds (23h ago)"
     },
     {
       "name": "SEO: health",
-      "status": "error",
-      "message": "2 critical SEO anomalies: , "
+      "status": "warn",
+      "message": "1 SEO warning(s): Lighthouse score dropped on /browse/best-broadway-musicals: 74 (was 87)"
     },
     {
       "name": "Cron: Update Show Status",
       "status": "pass",
-      "message": "23h ago, cancelled"
+      "message": "20h ago, success"
     },
     {
       "name": "Cron: Rebuild Reviews",
       "status": "pass",
-      "message": "0h ago, success"
+      "message": "2h ago, cancelled"
     },
     {
       "name": "Cron: Collect Review Texts",
       "status": "pass",
-      "message": "0h ago, "
+      "message": "2h ago, success"
     },
     {
       "name": "Cron: LLM Ensemble Score",
       "status": "pass",
-      "message": "0h ago, success"
+      "message": "1h ago, success"
     },
     {
       "name": "Cron: Test Suite",
@@ -200,17 +200,17 @@
     {
       "name": "Cron: Opening Night Broadcast",
       "status": "pass",
-      "message": "1h ago, success"
+      "message": "2h ago, skipped"
     },
     {
-      "name": "Cron failed: Update Lottery/Rush",
-      "status": "warn",
-      "message": "Last run failed (1d ago)"
+      "name": "Cron: Update Lottery/Rush",
+      "status": "pass",
+      "message": "24h ago, success"
     },
     {
       "name": "Cron: Weekly Grosses",
       "status": "pass",
-      "message": "4d ago, success"
+      "message": "5d ago, success"
     },
     {
       "name": "Cron: Update Show Score",
@@ -220,42 +220,42 @@
     {
       "name": "Cron: Update Mezzanine",
       "status": "pass",
-      "message": "7h ago, success"
+      "message": "8h ago, success"
     },
     {
       "name": "Cron: Update Cast Changes",
       "status": "pass",
-      "message": "22h ago, success"
+      "message": "2d ago, success"
     },
     {
       "name": "Cron: NYT Critics Picks",
       "status": "pass",
-      "message": "2d ago, success"
+      "message": "2h ago, success"
     },
     {
       "name": "Cron: Weekly Video Reviews",
       "status": "pass",
-      "message": "6d ago, success"
+      "message": "3h ago, success"
     },
     {
       "name": "Cron: Update Social Pulse",
       "status": "pass",
-      "message": "6d ago, success"
+      "message": "1h ago, "
     },
     {
       "name": "Secrets: health",
       "status": "pass",
-      "message": "Last check passed (6d ago)"
+      "message": "Last check passed (7d ago)"
     },
     {
       "name": "Credits: ScrapingBee",
       "status": "pass",
-      "message": "522k credits left (26%) · 66k/day burn · lasts until renewal Jul 5"
+      "message": "417k credits left (21%) · 67k/day burn · exhausts in ~6d (renews Jul 5)"
     },
     {
-      "name": "Workflow repeat-failure: Commercial RSS Poll",
+      "name": "Workflow repeat-failure: Collect Review Texts",
       "status": "error",
-      "message": "Commercial RSS Poll failed 4 times in the last 24h — likely broken, not transient."
+      "message": "Collect Review Texts failed 3 times in the last 24h — likely broken, not transient."
     }
   ],
   "lastCleanStreak": 0
