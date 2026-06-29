@@ -77,7 +77,10 @@ export default function HomePage() {
     s.criticScore && s.criticScore.reviewCount !== undefined && s.criticScore.reviewCount >= 5
   );
   const weShows = getWestEndShows().filter(s =>
-    s.criticScore && s.criticScore.reviewCount !== undefined && s.criticScore.reviewCount >= 3
+    s.criticScore?.score != null && hasEnoughReviews(
+      s.criticScore.reviewCount ?? 0, s.category,
+      (s.criticScore.tier1Count ?? 0) + (s.criticScore.tier2Count ?? 0),
+    )
   );
   // Opera shelf: small universe (typically 3-4 Met productions running concurrently),
   // so the reviewCount threshold is lower than OB (5) / WE (3). Currently-running

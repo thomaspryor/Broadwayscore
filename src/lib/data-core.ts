@@ -219,6 +219,21 @@ export function getOffWestEndShows(): ComputedShow[] {
 }
 
 /**
+ * Every London show (West End + Off-West End), genre-agnostic — the original
+ * getWestEndShows() semantics before the non-theatrical exclusion was added.
+ * Use this where genre routing is irrelevant and you need full coverage, e.g.
+ * the /west-end/theater venue index (a dance house like Sadler's Wells is still a
+ * real West End theatre and must appear even when all its current shows are
+ * non-theatrical). For the West End plays/musicals LISTING use getWestEndShows().
+ */
+export function getAllLondonShows(): ComputedShow[] {
+  return getAllShows().filter(show =>
+    (show.category === 'west-end' || show.category === 'off-west-end') &&
+    !HIDDEN_LONDON_IDS.has(show.id)
+  );
+}
+
+/**
  * Get market stats for the header market picker
  */
 export function getMarketStats() {
@@ -662,7 +677,11 @@ let _londonTheatersCache: Theater[] | null = null;
 export function getAllLondonTheaters(): Theater[] {
   if (_londonTheatersCache) return _londonTheatersCache;
 
-  const allShows = getWestEndShows(); // includes off-west-end, excludes hidden
+  // Genre-agnostic: a dance house (Sadler's Wells, Peacock) is a real West End
+  // theatre and must appear in the venue index even when all its current shows
+  // are non-theatrical (which getWestEndShows() now excludes). Venue coverage
+  // must not regress from the genre-routing change.
+  const allShows = getAllLondonShows();
   const theaterMap = new Map<string, { shows: ComputedShow[]; address?: string }>();
 
   // Skip placeholder venues — 10 announced shows list "TBA" which would create
