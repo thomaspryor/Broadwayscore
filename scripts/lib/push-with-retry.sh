@@ -33,6 +33,46 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MAX_RETRIES=${1:-7}
 BRANCH=${2:-main}
 
+# Pre-push conflict-marker guard (root-cause fix, 2026-06-29 / Notion 38e637c5).
+# A bad enrich-reviews rebase once committed unresolved git conflict markers into a
+# review-text JSON file (commit 09e78a7a), making it invalid JSON; the file was then
+# silently dropped from reviews.json and reddened validate-review-texts on main. This
+# guard scans the files about to be pushed — staged changes plus any commits ahead of
+# the remote — for start-of-line conflict markers and ABORTS before the push if any
+# are found. Detection lives in scripts/lib/conflict-markers.js (unit-tested, FP-safe:
+# it matches the <<<<<<< opener / >>>>>>> closer, not the bare ======= separator, so
+# Markdown setext headings don't trip it). Bypass: PUSH_SKIP_CONFLICT_CHECK=1.
+assert_no_conflict_markers() {
+  [ "${PUSH_SKIP_CONFLICT_CHECK:-}" = "1" ] && return 0
+  command -v node >/dev/null 2>&1 || return 0  # detector needs node; skip if absent
+
+  local files=""
+  # Staged changes (added/copied/modified — skip deletions).
+  files=$(git diff --cached --name-only --diff-filter=ACM 2>/dev/null || true)
+  # Commits ahead of the remote tip (the corruption class: a marker that got
+  # committed by a bad rebase and is now queued to push).
+  if git rev-parse --verify --quiet "origin/$PULL_BRANCH" >/dev/null 2>&1; then
+    local outgoing
+    outgoing=$(git diff --name-only --diff-filter=ACM "origin/$PULL_BRANCH"..HEAD 2>/dev/null || true)
+    files=$(printf '%s\n%s\n' "$files" "$outgoing")
+  fi
+
+  # Dedup + drop blanks, keep only files that still exist on disk.
+  local existing=()
+  while IFS= read -r f; do
+    [ -n "$f" ] || continue
+    [ -f "$f" ] || continue
+    existing+=("$f")
+  done < <(printf '%s\n' "$files" | sort -u)
+
+  [ ${#existing[@]} -eq 0 ] && return 0
+
+  if ! node "$SCRIPT_DIR/conflict-markers.js" "${existing[@]}"; then
+    echo "::error::Refusing to push: one or more staged/outgoing files contain unresolved git conflict markers (see paths above). This is the corruption class that committed invalid JSON to review-texts (commit 09e78a7a). Resolve the markers, re-commit, then push. Bypass only if these are intentional fixture lines: PUSH_SKIP_CONFLICT_CHECK=1."
+    exit 1
+  fi
+}
+
 # BRANCH may be a refspec like "HEAD:main" (for push) or a plain branch
 # name like "main". Pull commands need the remote branch name only.
 if [[ "$BRANCH" == *:* ]]; then
@@ -40,6 +80,10 @@ if [[ "$BRANCH" == *:* ]]; then
 else
   PULL_BRANCH="$BRANCH"
 fi
+
+# Block the push if a committed/staged file carries unresolved conflict markers.
+# Runs after PULL_BRANCH is known (the outgoing-commit scan needs it).
+assert_no_conflict_markers
 
 # Check if a file has a modify/delete conflict.
 # git checkout --ours/--theirs fails on these because one side has no version.
