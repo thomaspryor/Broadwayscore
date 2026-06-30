@@ -3,7 +3,21 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { buildBroadcastOpeningNightHtml, buildBroadcastSubjectLine } = require('./email-templates.js');
+const { buildBroadcastOpeningNightHtml, buildBroadcastSubjectLine, getScoreColor } = require('./email-templates.js');
+
+test('getScoreColor ROUNDS before tiering — matches the displayed score + the site', () => {
+  // 64.69 displays as 65, so it must read "Worth Seeing", not "Mixed" (the 2026-06-30 bug).
+  assert.equal(getScoreColor(64.69, 'west-end').label, 'Worth Seeing');
+  assert.equal(getScoreColor(64.4, 'west-end').label, 'Mixed');        // displays 64
+  assert.equal(getScoreColor(64.5, 'west-end').label, 'Worth Seeing'); // displays 65
+  assert.equal(getScoreColor(60.03, 'west-end').label, 'Mixed');       // displays 60
+});
+
+test('getScoreColor Critical Gold threshold is market-aware (WE 85, Broadway 83)', () => {
+  assert.equal(getScoreColor(83.4, 'west-end').label, 'Recommended');   // 83 < 85 WE gold
+  assert.equal(getScoreColor(84.6, 'west-end').label, 'Critical Gold'); // rounds to 85
+  assert.equal(getScoreColor(83, 'broadway').label, 'Critical Gold');   // 83 = BW gold
+});
 
 const mk = n => Array.from({ length: n }, (_, i) => ({
   showTitle: `Show ${i + 1}`, score: 70, reviewCount: 20, rave: 5, positive: 8, mixed: 5, negative: 2,
