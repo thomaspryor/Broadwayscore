@@ -1,6 +1,8 @@
 {
   "processed": [
-    "pride-west-end-2026/afridiziak-theatre-news--unknown.json"
+    "pride-west-end-2026/afridiziak-theatre-news--unknown.json",
+    "pride-west-end-2026/londontheatre1--terry-eastham.json",
+    "pride-west-end-2026/standard--unknown.json"
   ],
   "failed": [
     "pride-west-end-2026/hollywood-reporter--daniel-fienberg.json",
@@ -11,22 +13,35 @@
     "pride-west-end-2026/broadwayworld--jay-irwin.json",
     "pride-west-end-2026/click-liverpool--unknown.json",
     "pride-west-end-2026/frontmezzjunkies--unknown.json",
-    "pride-west-end-2026/latimes--erin-conley.json"
+    "pride-west-end-2026/latimes--erin-conley.json",
+    "pride-west-end-2026/nottingham-confidential--unknown.json",
+    "pride-west-end-2026/operawire--unknown.json",
+    "pride-west-end-2026/people--unknown.json",
+    "pride-west-end-2026/seattle-times--misha-berson.json",
+    "pride-west-end-2026/sunday-telegraph--unknown.json",
+    "pride-west-end-2026/thestage--dave-fargnoli.json",
+    "pride-west-end-2026/times-uk--allan-radcliffe.json",
+    "pride-west-end-2026/times-uk--ann-treneman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "pride-west-end-2026/afridiziak-theatre-news--unknown.json"
+      "pride-west-end-2026/afridiziak-theatre-news--unknown.json",
+      "pride-west-end-2026/londontheatre1--terry-eastham.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
-    "archive": []
+    "archiveToday": [
+      "data/review-texts/pride-west-end-2026/thestage--dave-fargnoli.json"
+    ],
+    "archive": [
+      "pride-west-end-2026/standard--unknown.json"
+    ]
   },
   "startTime": "2026-06-30T16:27:40.048Z",
-  "lastProcessed": "pride-west-end-2026/latimes--erin-conley.json",
+  "lastProcessed": "pride-west-end-2026/times-uk--ann-treneman.json",
   "log": []
 }
