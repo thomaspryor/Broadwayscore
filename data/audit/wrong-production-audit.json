@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-30T12:47:49.324Z",
+  "timestamp": "2026-06-30T15:13:10.244Z",
   "stats": {
-    "totalReviews": 39541,
+    "totalReviews": 39544,
     "alreadyFlagged": 17427,
     "dateGuardCatches": 35,
     "directorMismatch": 889,
-    "tvFilmSignals": 1087,
+    "tvFilmSignals": 1088,
     "londonSignals": 710,
     "offBroadwaySignals": 467,
     "yearMismatch": 84,
-    "noPublishDate": 3970
+    "noPublishDate": 3969
   },
   "findings": [
     {
@@ -589,6 +589,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"gregory mosher\" from a-view-from-the-bridge-2010"
+        }
+      ]
+    },
+    {
+      "showId": "a-walk-on-the-moon-off-broadway-2026",
+      "file": "times-square-chronicles--suzanna-bowling.json",
+      "score": 75,
+      "publishDate": "2026-06-30",
+      "url": "https://t2conline.com/a-walk-on-the-moon-explores-love-liberation-and-longing-during-a-summer-that-changed-america/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
