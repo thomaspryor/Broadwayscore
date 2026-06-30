@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-30T10:13:28.165Z",
+  "timestamp": "2026-06-30T10:42:51.702Z",
   "stats": {
-    "totalReviews": 39505,
-    "alreadyFlagged": 17420,
+    "totalReviews": 39515,
+    "alreadyFlagged": 17425,
     "dateGuardCatches": 35,
-    "directorMismatch": 888,
+    "directorMismatch": 889,
     "tvFilmSignals": 1087,
     "londonSignals": 710,
     "offBroadwaySignals": 467,
     "yearMismatch": 84,
-    "noPublishDate": 3961
+    "noPublishDate": 3960
   },
   "findings": [
     {
@@ -4970,6 +4970,19 @@
     },
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
+      "file": "artsdesk--rachel-halliburton.json",
+      "publishDate": "2026-06-29",
+      "url": "https://theartsdesk.com/theatre/cyrano-de-bergerac-noel-coward-theatre-review-smouldering-sadness-beneath-verbal-fireworks",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from cyrano-de-bergerac-2012"
+        }
+      ]
+    },
+    {
+      "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "artsdesk--unknown.json",
       "score": 80,
       "publishDate": null,
@@ -8504,7 +8517,7 @@
       "file": "independent--alice-saville.json",
       "score": 58,
       "publishDate": "2026-06-18",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html?loginSuccessful=true",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -30543,7 +30556,7 @@
       "file": "exeunt-magazine--loren-noveck.json",
       "score": 80,
       "publishDate": "2026-05-15T11:08:02-04:00",
-      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/#:~:text=Dad%20Don't%20Read%20This%20is%20messy%20and%20raw%20and,will%20keep%20it%20in%20my",
+      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -40990,7 +41003,7 @@
       "file": "thestage--dave-fargnoli.json",
       "score": 38,
       "publishDate": "2026-06-24",
-      "url": "https://www.thestage.co.uk/reviews/the-misanthrope-review-lyttelton-national-theatre-london-sandra-oh",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-misanthrope-review-sandra-oh-what-a-disappointment-sbzvf82b2?t=1782310602034",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
