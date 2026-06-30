@@ -1,20 +1,20 @@
 {
-  "runDate": "2026-06-30T10:22:47.199Z",
+  "runDate": "2026-06-30T16:36:30.550Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "to-kill-a-mockingbird-west-end-2026",
+    "showFilter": "glengarry-glen-ross-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 15,
+    "processed": 1,
+    "failed": 29,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "3.3%"
   },
   "tierBreakdown": {
     "playwright": 0,
@@ -23,50 +23,66 @@
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 0,
-    "archive": 0
+    "archiveToday": 2,
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 9,
+    "tier1Success": 7,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 0,
+    "tier2Attempts": 6,
+    "tier2Success": 1,
+    "tier3Attempts": 2,
+    "tier3Success": 1,
+    "tier3_6Attempts": 2,
+    "tier3_6Success": 2,
+    "tier4Attempts": 2,
     "tier4Success": 0,
-    "totalFailed": 15,
-    "scrapingBeePageCredits": 0,
+    "totalFailed": 29,
+    "scrapingBeePageCredits": 51,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 15,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 25,
+    "urlDiscoverySuccess": 5,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "glengarry-glen-ross-west-end-2026/standard--henry-hitchings.json"
+  ],
   "failed": [
-    "to-kill-a-mockingbird-west-end-2026/hollywood-reporter--david-rooney.json",
-    "to-kill-a-mockingbird-west-end-2026/observer--david-cote.json",
-    "to-kill-a-mockingbird-west-end-2026/thewrap--thom-geier.json",
-    "to-kill-a-mockingbird-west-end-2026/timeout--adam-feldman.json",
-    "to-kill-a-mockingbird-west-end-2026/wsj--terry-teachout.json",
-    "to-kill-a-mockingbird-west-end-2026/broadwayworld--michael-dale.json",
-    "to-kill-a-mockingbird-west-end-2026/chicagotribune--chris-jones.json",
-    "to-kill-a-mockingbird-west-end-2026/financialtimes--sarah-hemming.json",
-    "to-kill-a-mockingbird-west-end-2026/i-paper--sam-marlowe.json",
-    "to-kill-a-mockingbird-west-end-2026/inquirer--toby-zinman.json",
-    "to-kill-a-mockingbird-west-end-2026/latimes--unknown.json",
-    "to-kill-a-mockingbird-west-end-2026/standard--nick-curtis.json",
-    "to-kill-a-mockingbird-west-end-2026/sunday-telegraph--dominic-cavendish.json",
-    "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
-    "to-kill-a-mockingbird-west-end-2026/times-uk--quentin-letts.json"
+    "glengarry-glen-ross-west-end-2026/hollywood-reporter--david-rooney.json",
+    "glengarry-glen-ross-west-end-2026/hollywood-reporter--unknown.json",
+    "glengarry-glen-ross-west-end-2026/nytimes--jesse-green.json",
+    "glengarry-glen-ross-west-end-2026/variety--marilyn-stasio.json",
+    "glengarry-glen-ross-west-end-2026/vulture--sara-holdren.json",
+    "glengarry-glen-ross-west-end-2026/guardian-uk--unknown.json",
+    "glengarry-glen-ross-west-end-2026/newsday--linda-winer.json",
+    "glengarry-glen-ross-west-end-2026/observer--david-cote.json",
+    "glengarry-glen-ross-west-end-2026/oxfordshire-guardian--unknown.json",
+    "glengarry-glen-ross-west-end-2026/about-entertainment--ben-brantley.json",
+    "glengarry-glen-ross-west-end-2026/amny--matt-windman.json",
+    "glengarry-glen-ross-west-end-2026/bloomberg--jeremy-gerard.json",
+    "glengarry-glen-ross-west-end-2026/british-theatre--susan-novak.json",
+    "glengarry-glen-ross-west-end-2026/chicagotribune--unknown.json",
+    "glengarry-glen-ross-west-end-2026/daily-echo--matthew-baker.json",
+    "glengarry-glen-ross-west-end-2026/dailybeast--tim-teeman.json",
+    "glengarry-glen-ross-west-end-2026/financialtimes--brendan-lemon.json",
+    "glengarry-glen-ross-west-end-2026/front-row-center--yuval-jonas.json",
+    "glengarry-glen-ross-west-end-2026/nysr--frank-scheck.json",
+    "glengarry-glen-ross-west-end-2026/nysr--roma-torre.json",
+    "glengarry-glen-ross-west-end-2026/slantmagazine--dan-rubins.json",
+    "glengarry-glen-ross-west-end-2026/thestage--sam-marlowe.json",
+    "glengarry-glen-ross-west-end-2026/times-uk--ann-treneman.json",
+    "glengarry-glen-ross-west-end-2026/times-uk--benedict-nightingale.json",
+    "glengarry-glen-ross-west-end-2026/times-uk--dominic-maxwell.json",
+    "glengarry-glen-ross-west-end-2026/times-uk--maxie-szalwinska.json",
+    "glengarry-glen-ross-west-end-2026/washpost--unknown.json",
+    "glengarry-glen-ross-west-end-2026/western-mail--unknown.json",
+    "glengarry-glen-ross-west-end-2026/whatsonstage--lucinda-everett.json"
   ],
   "tierDetails": {
     "playwright": [],
@@ -75,9 +91,40 @@
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
-    "archive": []
+    "archiveToday": [
+      "data/review-texts/glengarry-glen-ross-west-end-2026/oxfordshire-guardian--unknown.json",
+      "data/review-texts/glengarry-glen-ross-west-end-2026/thestage--sam-marlowe.json"
+    ],
+    "archive": [
+      "glengarry-glen-ross-west-end-2026/standard--henry-hitchings.json"
+    ]
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "glengarry-glen-ross-west-end-2026/standard--henry-hitchings.json",
+      "oldUrl": "https://www.standard.co.uk/culture/theatre/glengarry-glen-ross-theatre-review-christian-slater-sells-sharp-mamet-revival-a3711241.html",
+      "newUrl": "https://www.standard.co.uk/culture/theatre/glengarry-glen-ross-at-the-old-vic-review-b1286630.html"
+    },
+    {
+      "reviewId": "glengarry-glen-ross-west-end-2026/times-uk--ann-treneman.json",
+      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0?eafs_enabled=false",
+      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0"
+    },
+    {
+      "reviewId": "glengarry-glen-ross-west-end-2026/times-uk--benedict-nightingale.json",
+      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0?eafs_enabled=false",
+      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0"
+    },
+    {
+      "reviewId": "glengarry-glen-ross-west-end-2026/times-uk--dominic-maxwell.json",
+      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0?eafs_enabled=false",
+      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0"
+    },
+    {
+      "reviewId": "glengarry-glen-ross-west-end-2026/times-uk--maxie-szalwinska.json",
+      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0?eafs_enabled=false",
+      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0"
+    }
+  ]
 }
