@@ -33,7 +33,7 @@ for (const f of glob.sync(path.join(REVIEW_DIR, '*', '*.json'))) {
   let d;
   try { d = JSON.parse(fs.readFileSync(f, 'utf8')); } catch { continue; }
   if (d.isRoundupArticle === true) { continue; }
-  const verdict = detectRoundupDigest({ fullText: d.fullText, criticName: d.criticName, url: d.url });
+  const verdict = detectRoundupDigest({ fullText: d.fullText, criticName: d.criticName, url: d.url, outletId: d.outletId });
   if (!verdict) continue;
   const showId = path.basename(path.dirname(f));
   const key = `${showId}|${d.outletId}|${d.criticName}`;
