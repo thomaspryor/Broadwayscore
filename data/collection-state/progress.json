@@ -1283,6 +1283,13 @@
     "birthright-off-broadway-2026/theatermania--unknown.json",
     "birthright-off-broadway-2026/broadwayworld--unknown.json",
     "birthright-off-broadway-2026/front-row-center--unknown.json",
+    "birthright-off-broadway-2026/playbill--unknown.json",
+    "a-walk-on-the-moon-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+    "birthright-off-broadway-2026/theatermania--linda-buchwald.json",
+    "birthright-off-broadway-2026/theatermania--unknown.json",
+    "birthright-off-broadway-2026/broadwayworld--unknown.json",
+    "birthright-off-broadway-2026/front-row-center--unknown.json",
     "birthright-off-broadway-2026/playbill--unknown.json"
   ],
   "skipped": [],
@@ -1358,6 +1365,7 @@
     "browserbase": [
       "data/review-texts/sinatra-the-musical-west-end-2026/nytimes--matt-wolf.json",
       "sinatra-the-musical-west-end-2026/nytimes--matt-wolf.json",
+      "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
       "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json"
     ],
     "directCookies": [],
@@ -1397,6 +1405,7 @@
       "data/review-texts/pride-west-end-2026/thestage--dave-fargnoli.json",
       "data/review-texts/birthright-off-broadway-2026/broadwayworld--unknown.json",
       "data/review-texts/archduke-west-end-2026/thestage--unknown.json",
+      "data/review-texts/birthright-off-broadway-2026/broadwayworld--unknown.json",
       "data/review-texts/birthright-off-broadway-2026/broadwayworld--unknown.json"
     ],
     "archive": [
@@ -1439,6 +1448,17 @@
     },
     {
       "t": "2026-06-30T00:51:22.463Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-30T01:22:31.911Z",
+      "event": "bb-session",
+      "session": "66b0288f",
+      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
+    },
+    {
+      "t": "2026-06-30T01:22:32.821Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
