@@ -1314,6 +1314,14 @@
     "birthright-off-broadway-2026/theatermania--unknown.json",
     "birthright-off-broadway-2026/broadwayworld--unknown.json",
     "birthright-off-broadway-2026/front-row-center--unknown.json",
+    "birthright-off-broadway-2026/playbill--unknown.json",
+    "a-walk-on-the-moon-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "a-walk-on-the-moon-off-broadway-2026/nysr--david-finkle.json",
+    "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+    "birthright-off-broadway-2026/theatermania--linda-buchwald.json",
+    "birthright-off-broadway-2026/theatermania--unknown.json",
+    "birthright-off-broadway-2026/broadwayworld--unknown.json",
+    "birthright-off-broadway-2026/front-row-center--unknown.json",
     "birthright-off-broadway-2026/playbill--unknown.json"
   ],
   "skipped": [],
@@ -1393,6 +1401,7 @@
       "data/review-texts/sinatra-the-musical-west-end-2026/nytimes--matt-wolf.json",
       "sinatra-the-musical-west-end-2026/nytimes--matt-wolf.json",
       "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+      "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
       "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json"
     ],
     "directCookies": [],
@@ -1436,7 +1445,9 @@
       "data/review-texts/birthright-off-broadway-2026/broadwayworld--unknown.json",
       "data/review-texts/birthright-off-broadway-2026/broadwayworld--unknown.json",
       "data/review-texts/birthright-off-broadway-2026/broadwayworld--unknown.json",
-      "data/review-texts/birthright-off-broadway-2026/broadwayworld--unknown.json"
+      "data/review-texts/birthright-off-broadway-2026/broadwayworld--unknown.json",
+      "data/review-texts/birthright-off-broadway-2026/broadwayworld--unknown.json",
+      "data/review-texts/birthright-off-broadway-2026/front-row-center--unknown.json"
     ],
     "archive": [
       "small-off-broadway-2026/culturesauce--thom-geier.json",
@@ -1489,6 +1500,17 @@
     },
     {
       "t": "2026-06-30T01:22:32.821Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-30T03:03:12.421Z",
+      "event": "bb-session",
+      "session": "f91bbaec",
+      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
+    },
+    {
+      "t": "2026-06-30T03:03:13.329Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
