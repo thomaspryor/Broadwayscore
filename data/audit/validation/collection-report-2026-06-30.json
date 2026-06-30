@@ -2,7 +2,7 @@
   "runDate": "2026-06-30T16:31:55.018Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 300,
     "priority": "all",
     "showFilter": "cyrano-de-bergerac-west-end-2026",
     "aggressive": false,
@@ -19,11 +19,11 @@
   "tierBreakdown": {
     "playwright": 3,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 4,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 0,
+    "archiveToday": 1,
     "archive": 0
   },
   "statistics": {
@@ -80,6 +80,28 @@
     "cyrano-de-bergerac-west-end-2026/newsday--linda-winer.json",
     "cyrano-de-bergerac-west-end-2026/wsj--terry-teachout.json"
   ],
+  "failed": [
+    "the-misanthrope-west-end-2026/nytheatre--david-gordon.json",
+    "the-misanthrope-west-end-2026/theatermania--david-finkle.json",
+    "the-misanthrope-west-end-2026/about-entertainment--jason-zinoman.json",
+    "the-misanthrope-west-end-2026/backstage--david-sheward.json",
+    "the-misanthrope-west-end-2026/curtainup--simon-saltzman.json",
+    "the-misanthrope-west-end-2026/thestage--dave-fargnoli.json",
+    "the-misanthrope-west-end-2026/times-uk--clive-davis.json",
+    "the-misanthrope-west-end-2026/times-uk--sam-marlowe.json",
+    "the-misanthrope-west-end-2026/west-end-best-friend--news-desk.json"
+  ],
+  "failed": [
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/hollywood-reporter--daniel-fienberg.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/daily-mail--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-box-office--nastazja-domaradzka.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/the-contending--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/the-upcoming-uk--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/times-uk--dominic-maxwell.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-best-friend--news-desk.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/whatsonstage--editorial-staff.json"
+  ],
+  "failed": [],
   "tierDetails": {
     "playwright": [
       "cyrano-de-bergerac-west-end-2026/guardian-uk--unknown.json",
@@ -87,13 +109,34 @@
       "cyrano-de-bergerac-west-end-2026/plays-international--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/proof-2026/deadline--unknown.json",
+      "proof-2026/deadline--unknown.json",
+      "data/review-texts/death-of-a-salesman-2026/variety--marilyn-stasio.json",
+      "death-of-a-salesman-2026/variety--marilyn-stasio.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/the-misanthrope-west-end-2026/thestage--dave-fargnoli.json"
+    ],
     "archive": []
   },
-  "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "failuresByOutlet": {
+    "The Times (UK)": {
+      "count": 2,
+      "domain": "thetimes.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
+  "urlDiscoveries": [
+    {
+      "reviewId": "the-misanthrope-west-end-2026/whatsonstage--tanyel-gumushan.json",
+      "oldUrl": "https://www.whatsonstage.com/news/the-misanthrope-with-sandra-oh-to-have-cinema-release_1724246/",
+      "newUrl": "https://www.whatsonstage.com/news/the-misanthrope-with-sandra-oh-at-the-national-theatre-review_1725880/"
+    }
+  ]
 }
