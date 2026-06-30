@@ -1,6 +1,9 @@
 {
   "processed": [
-    "the-guilty-west-end-2026/deadline--ted-johnson.json"
+    "the-guilty-west-end-2026/deadline--ted-johnson.json",
+    "a-walk-on-the-moon-off-broadway-2026/theatermania--unknown.json",
+    "springwood-west-end-2026/thereviewshub--unknown.json",
+    "a-walk-on-the-moon-off-broadway-2026/theatrely--unknown.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
@@ -31,24 +34,36 @@
     "to-kill-a-mockingbird-west-end-2026/inquirer--toby-zinman.json",
     "to-kill-a-mockingbird-west-end-2026/latimes--unknown.json",
     "to-kill-a-mockingbird-west-end-2026/standard--nick-curtis.json",
-    "to-kill-a-mockingbird-west-end-2026/sunday-telegraph--dominic-cavendish.json"
+    "to-kill-a-mockingbird-west-end-2026/sunday-telegraph--dominic-cavendish.json",
+    "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
+    "to-kill-a-mockingbird-west-end-2026/times-uk--quentin-letts.json",
+    "a-midsummer-nights-dream-west-end-2026/hollywood-reporter--frank-scheck.json",
+    "a-midsummer-nights-dream-west-end-2026/ew--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/guardian--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/newsday--unknown.json",
+    "springwood-west-end-2026/guardian--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "a-walk-on-the-moon-off-broadway-2026/theatermania--unknown.json",
+      "springwood-west-end-2026/thereviewshub--unknown.json"
+    ],
     "amp": [],
     "browserbase": [
       "data/review-texts/the-guilty-west-end-2026/deadline--ted-johnson.json",
       "the-guilty-west-end-2026/deadline--ted-johnson.json"
     ],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "a-walk-on-the-moon-off-broadway-2026/theatrely--unknown.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
   "startTime": "2026-06-30T16:47:37.281Z",
-  "lastProcessed": "to-kill-a-mockingbird-west-end-2026/sunday-telegraph--dominic-cavendish.json",
+  "lastProcessed": "a-walk-on-the-moon-off-broadway-2026/theatrely--unknown.json",
   "log": [
     {
       "t": "2026-06-30T16:51:17.696Z",
