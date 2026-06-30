@@ -3,6 +3,7 @@
 // See: https://llmstxt.org/
 
 import { getBroadwayShows, getWestEndShows, getOffWestEndShows, getAllBrowseSlugs } from '@/lib/data-core';
+import { hasEnoughReviews } from '@/config/score-buckets';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
@@ -23,9 +24,14 @@ export async function GET() {
   const westEndOpen = westEndShows.filter(s => s.status === 'open').length;
   const offWestEndOpen = offWestEndShows.filter(s => s.status === 'open').length;
 
-  // Get top-rated shows for highlighting (across all markets)
+  // Get top-rated shows for highlighting (across all markets). Use the canonical
+  // per-market gate, not a flat 5 — Off-West End qualifies at 3 reviews, so a
+  // flat 5 silently under-listed OWE shows in this mixed-market list.
   const topShows = shows
-    .filter(s => s.criticScore?.score && s.criticScore.reviewCount >= 5)
+    .filter(s => s.criticScore?.score != null && hasEnoughReviews(
+      s.criticScore.reviewCount ?? 0, s.category,
+      (s.criticScore.tier1Count ?? 0) + (s.criticScore.tier2Count ?? 0),
+    ))
     .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
     .slice(0, 5);
 
