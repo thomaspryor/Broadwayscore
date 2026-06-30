@@ -157,7 +157,7 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category }: { revi
   if (review.reviewScore >= goldMin) scoreLabel = 'Critical Gold';
   else if (review.reviewScore >= 75) scoreLabel = 'Recommended';
   else if (review.reviewScore >= 65) scoreLabel = 'Worth Seeing';
-  else if (review.reviewScore >= 55) scoreLabel = 'Skippable';
+  else if (review.reviewScore >= 55) scoreLabel = 'Mixed';
   else scoreLabel = 'Critical Miss';
 
   return (

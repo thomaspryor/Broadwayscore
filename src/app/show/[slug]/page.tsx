@@ -117,7 +117,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     'Critical Gold': 'Rave Reviews',
     'Recommended': 'Positive Reviews',
     'Worth Seeing': 'Worth Seeing',
-    'Skippable': 'Mixed Reviews',
+    'Mixed': 'Mixed Reviews',
     'Critical Miss': 'Poor Reviews',
   };
   const sentimentLabel = tier ? (SEO_SENTIMENT[tier.label] ?? null) : null;
@@ -153,7 +153,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     'Critical Gold': `Critics rave about ${show.title} — ${roundedScore}/100 from ${reviewCount} reviews.`,
     'Recommended': `${show.title} earns positive reviews — ${roundedScore}/100 from ${reviewCount} critics.`,
     'Worth Seeing': `Critics say ${show.title} is worth seeing — ${roundedScore}/100 from ${reviewCount} reviews.`,
-    'Skippable': `Critics are mixed on ${show.title} — ${roundedScore}/100 from ${reviewCount} reviews.`,
+    'Mixed': `Critics are mixed on ${show.title} — ${roundedScore}/100 from ${reviewCount} reviews.`,
     'Critical Miss': `${show.title} gets poor reviews from critics — ${roundedScore}/100 from ${reviewCount} reviews.`,
   };
   const description = (score && roundedScore && tier

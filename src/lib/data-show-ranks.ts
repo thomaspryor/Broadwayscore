@@ -22,7 +22,7 @@
  *
  * Tie-break: competition rank on the rounded display value (1, 1, 3 — not
  * 1, 1, 2). Reason: with dense rank, "#34 of 619" reads as "top 5%" but
- * actually means "34th distinct score tier" — a 56-score (Skippable) show
+ * actually means "34th distinct score tier" — a 56-score (Mixed) show
  * can land at #34 when most pool entries cluster in the 70-95 range, which
  * is misleading. Competition rank keeps "#N of M" meaningful: N-1 shows
  * scored strictly higher than this one. Per memory/feedback_round_once_share_everywhere.md
@@ -195,7 +195,7 @@ function valBoxOfficeThisWeek(show: ComputedShow): number | null {
 
 function valBoxOfficeAllTime(show: ComputedShow): number | null {
   // Cumulative all-time gross — every show that has ever reported grosses.
-  // Used for the all-time pool so a Skippable-but-historic show can rank
+  // Used for the all-time pool so a Mixed-but-historic show can rank
   // against Phantom / Wicked / Lion King by lifetime revenue.
   if (show.category !== 'broadway' && show.category !== 'west-end') return null;
   const g = getShowGrosses(show.slug);

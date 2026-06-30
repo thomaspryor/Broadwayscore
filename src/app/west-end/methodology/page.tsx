@@ -112,7 +112,7 @@ const faqSchema = {
       name: 'What do the score ranges mean?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Scores of 85+ indicate "Critical Gold" (drop-everything great), 75-84 is "Recommended" (strong choice), 65-74 is "Worth Seeing" (good with caveats), 55-64 is "Skippable" (optional), and below 55 is "Critical Miss" (not recommended). West End shows require 85+ for Critical Gold because UK outlets use star ratings almost exclusively, which compresses scores toward the top. Shows with fewer than 5 reviews display "TBD" until more reviews are collected.',
+        text: 'Scores of 85+ indicate "Critical Gold" (drop-everything great), 75-84 is "Recommended" (strong choice), 65-74 is "Worth Seeing" (good with caveats), 55-64 is "Mixed" (critics are split), and below 55 is "Critical Miss" (not recommended). West End shows require 85+ for Critical Gold because UK outlets use star ratings almost exclusively, which compresses scores toward the top. Shows with fewer than 5 reviews display "TBD" until more reviews are collected.',
       },
     },
     {
@@ -205,8 +205,8 @@ export default function WestEndMethodologyPage() {
               <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
                 <div className="w-14 h-10 rounded-lg score-tepid flex items-center justify-center font-bold text-sm flex-shrink-0">55-64</div>
                 <div>
-                  <span className="text-white font-medium">Skippable</span>
-                  <span className="text-gray-500 block sm:inline sm:ml-2">— Optional. Fine to miss unless you&apos;re a completist or super fan.</span>
+                  <span className="text-white font-medium">Mixed</span>
+                  <span className="text-gray-500 block sm:inline sm:ml-2">— Critics are split. Worth a look if the premise grabs you.</span>
                 </div>
               </div>
               <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">

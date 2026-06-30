@@ -62,7 +62,7 @@ function getScoreColor(score) {
   if (score >= 83) return { bg: '#FFD700', bgGradient: 'linear-gradient(135deg, #DAA520 0%, #FFD700 30%, #FFF0A0 50%, #FFD700 70%, #DAA520 100%)', text: '#1a1a1a', label: 'Critical Gold' };
   if (score >= 75) return { bg: '#22c55e', text: '#ffffff', label: 'Recommended' };
   if (score >= 65) return { bg: '#14b8a6', text: '#ffffff', label: 'Worth Seeing' };
-  if (score >= 55) return { bg: '#d97706', text: '#1a1a1a', label: 'Skippable' };
+  if (score >= 55) return { bg: '#d97706', text: '#1a1a1a', label: 'Mixed' };
   return { bg: '#ef4444', text: '#ffffff', label: 'Critical Miss' };
 }
 
