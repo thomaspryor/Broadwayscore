@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-30T17:00:17.857Z",
+  "generatedAt": "2026-06-30T17:57:54.685Z",
   "date": "2026-06-30",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 691576,
+  "entryCount": 702987,
   "shows": [
     {
       "showId": "an-ideal-husband-west-end-2026",
@@ -2001,12 +2001,12 @@
     },
     {
       "showId": "sinatra-the-musical-west-end-2026",
-      "reviewCount": 29,
+      "reviewCount": 30,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 1003666,
+        "collected-to-scored": 1001042,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -3501,12 +3501,12 @@
     },
     {
       "showId": "a-midsummer-nights-dream-west-end-2026",
-      "reviewCount": 3,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 693507,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -10896,7 +10896,7 @@
     },
     {
       "showId": "the-misanthrope-west-end-2026",
-      "reviewCount": 22,
+      "reviewCount": 21,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -11856,7 +11856,7 @@
     },
     {
       "showId": "pride-west-end-2026",
-      "reviewCount": 17,
+      "reviewCount": 18,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -11886,7 +11886,7 @@
     },
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
-      "reviewCount": 20,
+      "reviewCount": 21,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -11901,7 +11901,7 @@
     },
     {
       "showId": "relics-west-end-2026",
-      "reviewCount": 15,
+      "reviewCount": 16,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -12431,7 +12431,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 665092,
+        "collected-to-scored": 716540,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -12456,7 +12456,22 @@
     },
     {
       "showId": "a-walk-on-the-moon-off-broadway-2026",
-      "reviewCount": 8,
+      "reviewCount": 12,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 637327,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-guilty-west-end-2026",
+      "reviewCount": 1,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
