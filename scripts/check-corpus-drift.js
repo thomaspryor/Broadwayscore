@@ -161,6 +161,39 @@ const AUDITS = [
     args: [],                  // 0 clean / 1 = ANY error: dup/garbage/contamination/corrupt (drift)
     crashCodes: [],
   },
+  // The next four flappy whole-corpus contamination audits gated to a --gate
+  // catastrophe floor in test.yml (2026-06-30, Notion 38f637c5). The per-push gate
+  // blocks only on each file's zero-FP catastrophe class; the FULL run (fails +
+  // warns, incl. the sub-floor drift the gate lets pass) lives HERE so it still
+  // surfaces daily in the digest.
+  {
+    name: 'cast-contamination',
+    label: 'data/cast/*.json wrong-show contamination — full report (gate = wrong-show class only)',
+    script: 'audit-cast-contamination.js',
+    args: [],                  // report mode: 0 clean / 1 = ANY flagged file (fail or warn = drift)
+    crashCodes: [],
+  },
+  {
+    name: 'commercial-contamination',
+    label: 'data/commercial.json physics/contradiction — full --strict (gate = FAIL only)',
+    script: 'audit-commercial-contamination.js',
+    args: ['--strict'],        // 0 clean / 1 = fail or warn (drift)
+    crashCodes: [],
+  },
+  {
+    name: 'audience-buzz-contamination',
+    label: 'data/audience-buzz.json source divergence — full --strict (gate = divergence spike only)',
+    script: 'audit-audience-buzz-contamination.js',
+    args: ['--strict'],        // 0 clean / 1 = fail (single divergence) or warn (drift)
+    crashCodes: [],
+  },
+  {
+    name: 'critic-consensus-contamination',
+    label: 'data/critic-consensus.json orphan/staleness — full --strict (gate = orphan key only)',
+    script: 'audit-critic-consensus-contamination.js',
+    args: ['--strict'],        // 0 clean / 1 = orphan or staleness drift
+    crashCodes: [],
+  },
 ];
 
 function runAudit(audit) {

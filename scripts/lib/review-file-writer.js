@@ -36,6 +36,7 @@ const { validateUrlDomain } = require('./url-discovery');
 const { safeWriteReview } = require('./review-write-guard');
 const { classifyContentTier } = require('./content-quality');
 const { pickRerouteTarget, shouldSkipRoundupAudit } = require('./review-guards');
+const { detectRoundupDigest } = require('./roundup-digest');
 const { isBroadwayUrl, isLondonMarket } = require('./venue-classification');
 const { classifyMarketRouting, buildSiblingIndex } = require('./market-routing');
 const { sanitizeCriticName } = require('./byline-normalization');
@@ -393,6 +394,26 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   if (input.url && /\/news\/post\/(?:review-round[-_ ]?up|Review-Round-?Up)/i.test(input.url)) {
     fields.isRoundupArticle = true;
     fields.roundupArticleReason = 'auto: URL matches LBO Review-Round-Up page pattern';
+  }
+
+  // --- Guard E3: review-roundup DIGEST detection (content/byline, outlet-agnostic) ---
+  // Catches roundup compilations stored under an individual outlet id — chiefly
+  // WestEndTheatre.com roundup landing pages mis-attributed to telegraph/timeout/
+  // standard with the WET staff byline (63 found 2026-06-30). Guard E/E2 only
+  // covered BWW/LBO URL patterns. Detection is content-based (digest phrasing /
+  // publication-name-as-critic / known WET roundup author) so it won't fire on a
+  // real critic's excerpt relayed via an aggregator. Skip if already flagged.
+  if (!fields.isRoundupArticle) {
+    const digest = detectRoundupDigest({
+      fullText: input.fullText || fields.fullText,
+      criticName: input.criticName || fields.criticName,
+      url: input.url,
+      outletId,
+    });
+    if (digest) {
+      fields.isRoundupArticle = true;
+      fields.roundupArticleReason = `auto: ${digest.reason}`;
+    }
   }
 
   // --- Guard F: Empty unknown rejection ---

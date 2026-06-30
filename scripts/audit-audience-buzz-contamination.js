@@ -305,6 +305,14 @@ function main() {
   const issues = audit();
   const json = process.argv.includes('--json');
   const strict = process.argv.includes('--strict');
+  // --gate: per-push trunk catastrophe floor (test.yml). The single FAIL signal
+  // (REDDIT_SCORE_DIVERGENCE) is NOT zero-FP — a 40-point gap is as plausibly a
+  // genuine audience/critic split as a misroute (it reddened main on glengarry-
+  // glen-ross-west-end-2026, run f8abff972), so the gate blocks only on a SPIKE
+  // (scraper regression) via the pure scripts/lib/audience-buzz-contamination-
+  // gate.js (CLAUDE.md §15). Single divergences + all warns ride the digest. Full
+  // --strict runs daily in check-corpus-drift.yml.
+  const gate = process.argv.includes('--gate');
 
   if (json) {
     process.stdout.write(JSON.stringify(issues, null, 2) + '\n');
@@ -320,6 +328,25 @@ function main() {
 
   const fails = issues.filter(i => i.severity === 'fail').length;
   const warns = issues.filter(i => i.severity === 'warn').length;
+
+  if (gate) {
+    // Fail LOUD if the source-of-truth is absent: loadShows() swallows a missing
+    // data/shows.json to null, suppressing SHOW_NOT_IN_DB and resolved-show scoping.
+    // (audience-buzz.json missing already throws ENOENT in audit() → exit 1.)
+    if (loadShows() === null) {
+      console.error('\n❌ GATE: data/shows.json missing or unparseable — cannot run the audience-buzz contamination gate.');
+      process.exit(1);
+    }
+    const { shouldBlockAudienceBuzzContaminationGate } = require('./lib/audience-buzz-contamination-gate');
+    if (shouldBlockAudienceBuzzContaminationGate({ gateHits: fails })) {
+      console.error(`\n❌ GATE: ${fails} shows with REDDIT_SCORE_DIVERGENCE — a spike past the floor, the signature of a scraper regression that misrouted many titles.`);
+      process.exitCode = 1;
+    } else {
+      console.log(`\n✓ GATE: REDDIT_SCORE_DIVERGENCE count (${fails}) within the spike floor; individual divergences surfaced in digest for triage.`);
+    }
+    return;
+  }
+
   if (fails > 0 || (strict && warns > 0)) process.exitCode = 1;
 }
 

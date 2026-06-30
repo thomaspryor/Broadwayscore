@@ -15,7 +15,9 @@ import {
   getAllShows,
   getBroadwayShows,
   getWestEndShows,
+  getOffWestEndShows,
   getOffBroadwayShows,
+  getAllLondonShows,
   getMarketStats,
   getShowsByStatus,
   getCurrentShows,
@@ -155,20 +157,26 @@ describe('getOffBroadwayShows', () => {
 });
 
 describe('market partitioning', () => {
-  test('broadway + west-end + off-broadway covers all shows (modulo hidden)', () => {
-    // The three market filters are expected to partition all shows EXCEPT
+  test('broadway + west-end + off-west-end + off-broadway covers all shows (modulo hidden)', () => {
+    // The market filters are expected to partition all shows EXCEPT
     // entries that the public listings deliberately hide (e.g. ABBA Voyage —
     // a hologram concert, not theatre — is in the data set but excluded from
     // every market hub via HIDDEN_LONDON_IDS in src/lib/data-core.ts).
     //
+    // getOffWestEndShows() MUST be part of this union: genre routing excludes
+    // non-theatrical London shows (dance/magic/comedy) from getWestEndShows()
+    // and surfaces them via getOffWestEndShows() instead. Omitting it lets a
+    // genre-routed show fall through every partition (the 2026-06 regression).
+    //
     // We check the partition by IDs, not just counts: if any non-hidden show
-    // is missing from all three market filters the assertion message says
-    // exactly which one, so a future regression is debuggable in one read.
+    // is missing from all market filters the assertion message says exactly
+    // which one, so a future regression is debuggable in one read.
     const allShows = getAllShows();
     const allIds = new Set(allShows.map(s => s.id));
     const partitioned = new Set<string>();
     for (const s of getBroadwayShows()) partitioned.add(s.id);
     for (const s of getWestEndShows()) partitioned.add(s.id);
+    for (const s of getOffWestEndShows()) partitioned.add(s.id);
     for (const s of getOffBroadwayShows()) partitioned.add(s.id);
     const missing = Array.from(allIds).filter(id => !partitioned.has(id));
     // Known hidden IDs the public hubs deliberately exclude.
@@ -184,6 +192,29 @@ describe('market partitioning', () => {
     assert.deepStrictEqual(
       unexpected, [],
       `Shows missing from every market partition (and not in the known-hidden list): ${unexpected.join(', ')}`
+    );
+  });
+
+  test('genre routing invariant: west-end ∪ off-west-end === all London shows', () => {
+    // getWestEndShows() (theatrical only) and getOffWestEndShows() (off-west-end
+    // category + non-theatrical genres) must together cover every London show
+    // that getAllLondonShows() returns — no more, no less. If a genre-routed
+    // show is dropped from getWestEndShows() without being picked up by
+    // getOffWestEndShows(), it vanishes from both London hubs (the OWE-render
+    // gap that shipped alongside the 2026-06 partition regression).
+    const londonUnion = new Set<string>();
+    for (const s of getWestEndShows()) londonUnion.add(s.id);
+    for (const s of getOffWestEndShows()) londonUnion.add(s.id);
+    const allLondon = new Set(getAllLondonShows().map(s => s.id));
+    const droppedFromHubs = Array.from(allLondon).filter(id => !londonUnion.has(id));
+    assert.deepStrictEqual(
+      droppedFromHubs, [],
+      `London shows present in getAllLondonShows() but missing from BOTH getWestEndShows() and getOffWestEndShows(): ${droppedFromHubs.join(', ')}`
+    );
+    const leakedBeyondLondon = Array.from(londonUnion).filter(id => !allLondon.has(id));
+    assert.deepStrictEqual(
+      leakedBeyondLondon, [],
+      `IDs in the London hubs that getAllLondonShows() does not consider London: ${leakedBeyondLondon.join(', ')}`
     );
   });
 

@@ -39,15 +39,34 @@ describe('anchored-v6 precedence', () => {
     assert.strictEqual(res.source, 'anchored-v6');
   });
 
-  it('llm-v6 (unanchored) + llmScore wins over originalScore', () => {
+  it('llm-v6 + llmScore wins over a LOW-reliability late star', () => {
+    // llm-v6 means "no usable star AT SCORING TIME". A later-scraped star from a
+    // LOW-reliability source (css/text-pattern/numeric-stars) is exactly the
+    // noise that made the pipeline keep the LLM in the first place, so the LLM
+    // score still wins. See LOW_RELIABILITY_STAR_SOURCES in rebuild-helpers.js.
+    const data = makeData({
+      scoreSource: 'llm-v6',
+      llmScore: { score: 88 },
+      originalScore: 80,
+      originalScoreSource: 'numeric-stars',
+    });
+    const res = getBestScore(data);
+    assert.strictEqual(res.score, 88);
+    assert.strictEqual(res.source, 'llm-v6');
+  });
+
+  it('llm-v6 DEFERS to a HIGH-reliability late-arriving published star', () => {
+    // 2026-06-30 behavior change: when an 'llm-v6' review later carries a
+    // parseable star from a trustworthy (non-low-reliability) source, the
+    // published star wins over the LLM fallback. A bare originalScore with no
+    // declared low-reliability source counts as high-reliability.
     const data = makeData({
       scoreSource: 'llm-v6',
       llmScore: { score: 88 },
       originalScore: 80,
     });
     const res = getBestScore(data);
-    assert.strictEqual(res.score, 88);
-    assert.strictEqual(res.source, 'llm-v6');
+    assert.strictEqual(res.score, 80);
   });
 
   it('humanReviewScore (P0) still beats anchored-v6', () => {
