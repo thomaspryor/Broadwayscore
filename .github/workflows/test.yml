@@ -842,11 +842,10 @@ jobs:
   awards-data-freshness:
     name: Awards Data Freshness
     runs-on: ubuntu-latest
-    # 3-minute timeout was hitting on every workflow_dispatch — the full-
-    # history clone (fetch-depth: 0) alone takes ~3 min on this repo, leaving
-    # zero budget for the actual freshness check. Bumped to 8 min on 2026-05-17
-    # (Notion 363637c5-416f-8137) so the check actually runs to completion.
-    timeout-minutes: 8
+    # 3 min is ample now that the check is one O(1) API call + shallow checkout —
+    # the 8-min bump (2026-05-17) only existed to outlast the full-history clone,
+    # which this job no longer does. See the freshness-check step for the why.
+    timeout-minutes: 3
     # Schedule + manual only — never block unrelated PRs.
     # Surfaces in daily digest via getWorkflowRunSummary; promotes from
     # "operator forgot annual update" silent rot to a loud weekly failure.
@@ -855,27 +854,38 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
         with:
-          # Need full history so `git log -- data/awards.json` finds the last
-          # touch even if it's older than the default shallow-fetch depth.
-          fetch-depth: 0
+          # Shallow — the freshness check no longer reads git history (see below),
+          # only the local ./.github/actions/notify-failure composite needs the tree.
+          fetch-depth: 1
       - name: Check awards.json was updated within 14 months
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           # Annual awards cadence (Tony, Pulitzer, DD, OCC, DL, NYDCC, Olivier)
           # means data/awards.json should change at least once per ceremony year.
           # 14 months = 12-month annual cycle + 2 months grace for late ceremonies
           # (Tonys were September 2021 due to COVID).
           #
+          # Last-touch date comes from the GitHub commits-by-path API (O(1)) rather
+          # than `git log` over a full-history clone. The full clone (fetch-depth: 0)
+          # of this 134k-commit, ~2min-churn repo blew first the 3-min then the
+          # bumped 8-min job timeout (2026-06-30, Notion 38f637c5) — and on a
+          # high-churn repo even a 14-month --shallow-since fetch pulls most of
+          # history, so the API is the only stable fix. Same answer as git mtime.
+          #
           # If this fires, run the annual update — see memory/awards-annual-update.md.
           MAX_DAYS=425  # ~14 months
-          LAST_TS=$(git log -1 --format=%ct -- data/awards.json)
-          if [ -z "$LAST_TS" ]; then
-            echo "::error::No git history found for data/awards.json"
+          LAST_ISO=$(gh api "/repos/${{ github.repository }}/commits?path=data/awards.json&per_page=1" \
+            --jq '.[0].commit.committer.date')
+          if [ -z "$LAST_ISO" ] || [ "$LAST_ISO" = "null" ]; then
+            echo "::error::Could not determine last-touch date for data/awards.json via the GitHub API"
             exit 1
           fi
+          LAST_TS=$(date -u -d "$LAST_ISO" +%s 2>/dev/null \
+            || date -u -j -f "%Y-%m-%dT%H:%M:%SZ" "$LAST_ISO" +%s)
           NOW=$(date +%s)
           AGE_DAYS=$(( (NOW - LAST_TS) / 86400 ))
-          LAST_DATE=$(date -u -d "@$LAST_TS" +%Y-%m-%d 2>/dev/null || date -u -r "$LAST_TS" +%Y-%m-%d)
-          echo "data/awards.json last touched ${AGE_DAYS} days ago (${LAST_DATE})"
+          echo "data/awards.json last touched ${AGE_DAYS} days ago (${LAST_ISO})"
           if [ "$AGE_DAYS" -gt "$MAX_DAYS" ]; then
             echo "::error::data/awards.json is ${AGE_DAYS} days stale (max ${MAX_DAYS}). Run the annual awards update — see memory/awards-annual-update.md"
             exit 1
