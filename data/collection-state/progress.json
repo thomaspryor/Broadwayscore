@@ -96,7 +96,11 @@
     "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
     "every-brilliant-thing-2026/nytimes--ben-brantley.json",
     "every-brilliant-thing-2026/theatermania--hayley-levitt.json",
-    "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json"
+    "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json",
+    "oh-mary-west-end-2025/nytg--gillian-russo.json",
+    "oh-mary-west-end-2025/nytg--olivia-rook.json",
+    "oh-mary-west-end-2025/variety--brent-lang.json",
+    "oh-mary-west-end-2025/variety--rebecca-rubin.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
@@ -1432,7 +1436,13 @@
     "black-is-the-color-of-my-voice-west-end-2026/observer--sarah-crompton.json",
     "black-is-the-color-of-my-voice-west-end-2026/financialtimes--louise-levene.json",
     "black-is-the-color-of-my-voice-west-end-2026/financialtimes--sarah-hemming.json",
-    "black-is-the-color-of-my-voice-west-end-2026/london-theatre--olivia-rook.json"
+    "black-is-the-color-of-my-voice-west-end-2026/london-theatre--olivia-rook.json",
+    "black-is-the-color-of-my-voice-west-end-2026/standard--david-jays.json",
+    "oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json",
+    "oh-mary-west-end-2025/nyt-theater--jonathan-mandell.json",
+    "oh-mary-west-end-2025/nytimes--jesse-green.json",
+    "oh-mary-west-end-2025/vulture--sara-holdren.json",
+    "oh-mary-west-end-2025/broadwaynews--brittani-samuel.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1514,7 +1524,9 @@
       "dog-day-afternoon-2026/playbill--unknown.json",
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
       "every-brilliant-thing-2026/theatermania--hayley-levitt.json",
-      "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json"
+      "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json",
+      "oh-mary-west-end-2025/nytg--gillian-russo.json",
+      "oh-mary-west-end-2025/nytg--olivia-rook.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1527,7 +1539,11 @@
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
       "music-city-off-broadway-2026/deadline--greg-evans.json",
       "data/review-texts/every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
-      "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json"
+      "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/oh-mary-west-end-2025/variety--brent-lang.json",
+      "oh-mary-west-end-2025/variety--brent-lang.json",
+      "data/review-texts/oh-mary-west-end-2025/variety--rebecca-rubin.json",
+      "oh-mary-west-end-2025/variety--rebecca-rubin.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1595,7 +1611,7 @@
     ]
   },
   "startTime": "2026-06-29T16:22:26.418Z",
-  "lastProcessed": "black-is-the-color-of-my-voice-west-end-2026/london-theatre--olivia-rook.json",
+  "lastProcessed": "oh-mary-west-end-2025/broadwaynews--brittani-samuel.json",
   "log": [
     {
       "t": "2026-06-29T16:36:31.743Z",
@@ -1684,6 +1700,28 @@
       "t": "2026-06-30T06:13:33.972Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-06-30T06:15:35.871Z",
+      "event": "bb-session",
+      "session": "bf2e9ff0",
+      "url": "https://variety.com/2026/legit/news/maya-rudolph-oh-mary-broadway-debut-12366856"
+    },
+    {
+      "t": "2026-06-30T06:15:36.740Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-30T06:15:56.129Z",
+      "event": "bb-session",
+      "session": "998bd333",
+      "url": "https://variety.com/2025/legit/news/simu-liu-broadway-debut-oh-mary-cole-escola-"
+    },
+    {
+      "t": "2026-06-30T06:15:57.090Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

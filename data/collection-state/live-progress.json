@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-06-30T06:14:59.420Z",
-  "processed": 97,
-  "failed": 1334,
-  "successRate": "6.8%",
+  "updatedAt": "2026-06-30T06:16:19.325Z",
+  "processed": 101,
+  "failed": 1340,
+  "successRate": "7.0%",
   "tierBreakdown": {
-    "playwright": 78,
+    "playwright": 80,
     "amp": 0,
-    "browserbase": 10,
+    "browserbase": 14,
     "directCookies": 0,
     "scrapingbee": 15,
     "brightdata": 5,
     "archiveToday": 27,
     "archive": 7
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-06-29T16:36:31.743Z",
@@ -102,6 +102,28 @@
       "t": "2026-06-30T06:13:33.972Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-06-30T06:15:35.871Z",
+      "event": "bb-session",
+      "session": "bf2e9ff0",
+      "url": "https://variety.com/2026/legit/news/maya-rudolph-oh-mary-broadway-debut-12366856"
+    },
+    {
+      "t": "2026-06-30T06:15:36.740Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-30T06:15:56.129Z",
+      "event": "bb-session",
+      "session": "998bd333",
+      "url": "https://variety.com/2025/legit/news/simu-liu-broadway-debut-oh-mary-cole-escola-"
+    },
+    {
+      "t": "2026-06-30T06:15:57.090Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
