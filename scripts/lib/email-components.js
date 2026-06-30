@@ -67,16 +67,20 @@ function esc(s) {
 
 function criticTier(score, market) {
   if (score == null) return { bg: null, fg: '#9ca3af', label: 'TBD', glow: false };
+  // Round before tiering — match the displayed Math.round(score) and the site's
+  // ScoreBadge.getScoreTier (2026-06-30). Raw thresholds put a 64.69 in "Mixed"
+  // while the badge shows 65 ("Worth Seeing").
+  const s = Math.round(score);
   const goldThreshold = (market === 'west-end' || market === 'off-west-end') ? 85 : 83;
-  if (score >= goldThreshold) return {
+  if (s >= goldThreshold) return {
     bg: 'linear-gradient(135deg, #DAA520 0%, #FFD700 30%, #FFF0A0 50%, #FFD700 70%, #DAA520 100%)',
     fg: '#1a1a1a',
     label: 'Critical Gold',
     glow: true,
   };
-  if (score >= 75) return { bg: '#22c55e', fg: '#ffffff', label: 'Recommended', glow: false };
-  if (score >= 65) return { bg: '#14b8a6', fg: '#ffffff', label: 'Worth Seeing', glow: false };
-  if (score >= 55) return { bg: '#d97706', fg: '#1a1a1a', label: 'Mixed', glow: false };
+  if (s >= 75) return { bg: '#22c55e', fg: '#ffffff', label: 'Recommended', glow: false };
+  if (s >= 65) return { bg: '#14b8a6', fg: '#ffffff', label: 'Worth Seeing', glow: false };
+  if (s >= 55) return { bg: '#d97706', fg: '#1a1a1a', label: 'Mixed', glow: false };
   return { bg: '#ef4444', fg: '#ffffff', label: 'Critical Miss', glow: false };
 }
 
