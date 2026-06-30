@@ -1,5 +1,7 @@
 {
-  "processed": [],
+  "processed": [
+    "the-guilty-west-end-2026/deadline--ted-johnson.json"
+  ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
     "giulia-the-poison-queen-of-palermo-off-broadway-2026/nytimes--alan-light.json",
@@ -10,13 +12,25 @@
     "jesus-christ-superstar-west-end-2026/hollywood-reporter--david-rooney.json",
     "jesus-christ-superstar-west-end-2026/ew--melissa-rose-bernardo.json",
     "jesus-christ-superstar-west-end-2026/thereviewshub--the-reviews-hub.json",
-    "jesus-christ-superstar-west-end-2026/backstage--david-sheward.json"
+    "jesus-christ-superstar-west-end-2026/backstage--david-sheward.json",
+    "jesus-christ-superstar-west-end-2026/broadwayworld--stephi-wild.json",
+    "jesus-christ-superstar-west-end-2026/financialtimes--brendan-lemon.json",
+    "jesus-christ-superstar-west-end-2026/philadelphia-inquirer--howard-shapiro.json",
+    "jesus-christ-superstar-west-end-2026/west-end-wilma--unknown.json",
+    "the-guilty-west-end-2026/hollywood-reporter--angie-han.json",
+    "to-kill-a-mockingbird-west-end-2026/hollywood-reporter--david-rooney.json",
+    "the-guilty-west-end-2026/deadline--max-goldbart.json",
+    "to-kill-a-mockingbird-west-end-2026/observer--david-cote.json",
+    "to-kill-a-mockingbird-west-end-2026/thewrap--thom-geier.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-guilty-west-end-2026/deadline--ted-johnson.json",
+      "the-guilty-west-end-2026/deadline--ted-johnson.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
@@ -24,6 +38,18 @@
     "archive": []
   },
   "startTime": "2026-06-30T16:47:37.281Z",
-  "lastProcessed": "jesus-christ-superstar-west-end-2026/backstage--david-sheward.json",
-  "log": []
+  "lastProcessed": "to-kill-a-mockingbird-west-end-2026/thewrap--thom-geier.json",
+  "log": [
+    {
+      "t": "2026-06-30T16:51:17.696Z",
+      "event": "bb-session",
+      "session": "01467c27",
+      "url": "https://deadline.com/2026/06/john-bolton-pleads-guilty-trump-classified-informat"
+    },
+    {
+      "t": "2026-06-30T16:51:18.226Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    }
+  ]
 }
