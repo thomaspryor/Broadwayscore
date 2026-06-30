@@ -10,6 +10,18 @@ const { parseOriginalScore } = require('./score-parsers');
 const { decodeHtmlEntities } = require('./text-cleaning');
 const { AGGREGATOR_SCORE_SOURCES: AGGREGATOR_SOURCES_SET } = require('./review-normalization');
 
+// Low-reliability star EXTRACTION sources — automated CSS/generic pattern matches
+// that often read the wrong element (pagination, dates, sidebars). The LLM may
+// override these; everything else (json-ld, verified star images, svg/unicode
+// stars, letter grades, outlet APIs) is the critic's own published rating and is
+// trusted. Module-scoped so both the P0.4 late-star fall-through (keyed on
+// originalScoreSource) and the P0.5 reliability check use ONE list.
+const LOW_RELIABILITY_STAR_SOURCES = new Set([
+  'css-stars', 'star-class', 'css-rating', 'star-rating',
+  'text-pattern', 'og-description', 'wp-api-title',
+  'numeric-stars',    // Generic "X/5" pattern — false positives from pagination, dates, URLs
+]);
+
 // Whether a raw originalScore string is an UNAMBIGUOUS rating form that re-parses
 // reliably (letter grade like "A"/"B+", or a star form like "3/5", "4 stars",
 // "★★★"). Bare numbers ("5", "85") are AMBIGUOUS — "5" could mean 5/100 or 5 stars
@@ -409,8 +421,12 @@ function getBestScore(data, opts = {}) {
   if ((data.scoreSource === 'anchored-v6' || data.scoreSource === 'llm-v6')
       && data.llmScore && typeof data.llmScore.score === 'number'
       && data.llmScore.score >= 0 && data.llmScore.score <= 100) {
+    // Only HIGH-reliability late stars win — a low-reliability extraction
+    // (numeric-stars/css-stars, often a false positive) must NOT override the
+    // LLM, which is why llm-v6 kept the LLM in the first place.
     const llmV6HasLateStar = data.scoreSource === 'llm-v6'
       && data.originalScore
+      && !LOW_RELIABILITY_STAR_SOURCES.has(data.originalScoreSource)
       && parseOriginalScore(data.originalScore, data.outletId) !== null;
     if (!llmV6HasLateStar) {
       return { score: data.llmScore.score, source: data.scoreSource };
@@ -520,14 +536,10 @@ function getBestScore(data, opts = {}) {
         // LOW reliability = automated CSS/generic extraction that often reads wrong elements.
         // LLM can override these. Everything else (json-ld, verified star images, letter
         // grades, unicode stars) is the critic's own published rating — never override.
-        const LOW_RELIABILITY_EXTRACTION = new Set([
-          'css-stars', 'star-class', 'css-rating', 'star-rating',
-          'text-pattern', 'og-description', 'wp-api-title',
-          'numeric-stars',    // Generic "X/5" pattern — false positives from pagination, dates, URLs
-          // lbo-css-stars promoted to HIGH reliability 2026-04-01:
-          // Investigation confirmed first bstarsN is always the review rating,
-          // second is a sidebar related article. 33/33 recollections matched.
-        ]);
+        // Single source: module-scoped LOW_RELIABILITY_STAR_SOURCES (lbo-css-stars
+        // promoted to HIGH reliability 2026-04-01: first bstarsN is always the
+        // review rating, second is a sidebar related article; 33/33 matched).
+        const LOW_RELIABILITY_EXTRACTION = LOW_RELIABILITY_STAR_SOURCES;
         // Outlet-level trust overrides generic scoreSource labels. Outlets in
         // OUTLET_STAR_AUTHORITATIVE have dedicated extractors (or well-understood
         // markup) and publish their own star ratings; a generic "css-stars" /
