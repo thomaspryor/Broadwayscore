@@ -48,4 +48,15 @@ describe('needsLateStarReanchor', () => {
     assert.equal(needsLateStarReanchor(weStar({ humanReviewScore: 55 })), null);
     assert.equal(needsLateStarReanchor(weStar({ wrongShow: true })), null);
   });
+
+  // Inclusion gate: a review the scorer would reject (isScoreable → isIncludableForRebuild)
+  // must NOT be flagged — else its needsRescore never clears and the queue accumulates
+  // stuck entries (2026-06-30: 3 duplicateOf + 2 consent-wall stubs found stuck).
+  test('does NOT flag a duplicate (not includable for rebuild → scorer rejects it)', () => {
+    assert.equal(needsLateStarReanchor(weStar({ duplicateOf: 'other-critic.json' })), null);
+  });
+
+  test('does NOT flag an isNonReview file (not includable)', () => {
+    assert.equal(needsLateStarReanchor(weStar({ isNonReview: true })), null);
+  });
 });
