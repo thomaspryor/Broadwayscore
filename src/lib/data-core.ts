@@ -15,7 +15,7 @@ import type { Director, Theater, TheaterStructuredTips, TheaterVenueScores, Thea
 import { getShowGrosses } from './data-grosses';
 import { getAudienceBuzz } from './data-audience';
 import { isOperaShow } from './show-market';
-import { isNonTheatricalGenre } from './genre';
+import { belongsOnWestEndListing, belongsOnOffWestEndHub } from './genre';
 import { featureFlags } from '@/config/feature-flags';
 import { isHomepageNotable, isAcclaimedKnownPropertyRevival, notabilityRank, NOTABILITY_THRESHOLDS, type NotabilitySignals } from './homepage-notability';
 import { getShowCommercial } from './data-commercial';
@@ -111,9 +111,7 @@ const HIDDEN_LONDON_IDS = new Set<string>([
  */
 export function getWestEndShows(): ComputedShow[] {
   return getAllShows().filter(show =>
-    (show.category === 'west-end' || show.category === 'off-west-end') &&
-    !isNonTheatricalGenre(show.genre) &&
-    !HIDDEN_LONDON_IDS.has(show.id)
+    belongsOnWestEndListing(show) && !HIDDEN_LONDON_IDS.has(show.id)
   );
 }
 
@@ -208,13 +206,15 @@ export function getOperaShowByTitleSlug(titleSlug: string): ComputedShow | undef
  * non-theatrical genre (dance/magic/comedy/cabaret/concert/circus), which lives
  * on this hub regardless of its venue-derived category. This is the mirror of
  * the exclusion in getWestEndShows() — together they guarantee every London show
- * appears on exactly one hub, and that a dance show stuck at a West-End-listed
- * venue still lands here. See src/lib/genre.ts.
+ * appears on at least one hub, a non-theatrical show is never on the West End
+ * listing but always here, and a dance show stuck at a West-End-listed venue
+ * still lands here. (An OWE *theatrical* show is on both hubs by design — the
+ * /west-end page shows WE + OWE via a toggle.) Predicates + invariants tested in
+ * tests/unit/london-hub-routing.test.ts. See src/lib/genre.ts.
  */
 export function getOffWestEndShows(): ComputedShow[] {
   return getAllShows().filter(show =>
-    (show.category === 'off-west-end' || (isNonTheatricalGenre(show.genre) && (show.category === 'west-end' || show.category === 'off-west-end'))) &&
-    !HIDDEN_LONDON_IDS.has(show.id)
+    belongsOnOffWestEndHub(show) && !HIDDEN_LONDON_IDS.has(show.id)
   );
 }
 
