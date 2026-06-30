@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-06-30T06:34:43.783Z",
-  "processed": 119,
-  "failed": 1492,
-  "successRate": "7.4%",
+  "updatedAt": "2026-06-30T06:36:05.129Z",
+  "processed": 121,
+  "failed": 1500,
+  "successRate": "7.5%",
   "tierBreakdown": {
     "playwright": 87,
     "amp": 0,
-    "browserbase": 18,
+    "browserbase": 22,
     "directCookies": 0,
     "scrapingbee": 19,
     "brightdata": 6,
     "archiveToday": 29,
     "archive": 11
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 8,
   "recentActivity": [
-    {
-      "t": "2026-06-30T00:51:21.486Z",
-      "event": "bb-session",
-      "session": "c04c2725",
-      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
-    },
-    {
-      "t": "2026-06-30T00:51:22.463Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-06-30T01:22:31.911Z",
-      "event": "bb-session",
-      "session": "66b0288f",
-      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
-    },
-    {
-      "t": "2026-06-30T01:22:32.821Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-06-30T03:03:12.421Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-06-30T06:25:18.868Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-30T06:35:02.530Z",
+      "event": "bb-session",
+      "session": "42ae7bc4",
+      "url": "https://variety.com/2023/theater/news/stranger-things-play-the-first-shadow-cast"
+    },
+    {
+      "t": "2026-06-30T06:35:03.514Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-30T06:35:49.920Z",
+      "event": "bb-session",
+      "session": "c3ea3b20",
+      "url": "https://deadline.com/2024/03/stranger-things-first-shadow-broadway-1235850385/"
+    },
+    {
+      "t": "2026-06-30T06:35:50.857Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }

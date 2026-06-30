@@ -118,7 +118,9 @@
     "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
     "hadestown-west-end-2024/columbus-dispatch--unknown.json",
     "hadestown-west-end-2024/london-theatre--julia-rank.json",
-    "hadestown-west-end-2024/shy-strange-manic--kariss-ainsworth.json"
+    "hadestown-west-end-2024/shy-strange-manic--kariss-ainsworth.json",
+    "stranger-things-the-first-shadow-west-end-2023/variety--frank-rizzo.json",
+    "stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
@@ -1612,7 +1614,15 @@
     "hadestown-west-end-2024/times-uk--clive-davis.json",
     "hadestown-west-end-2024/towleroad--naveen-kumar.json",
     "hadestown-west-end-2024/vox--constance-grady.json",
-    "hadestown-west-end-2024/washpost--peter-marks.json"
+    "hadestown-west-end-2024/washpost--peter-marks.json",
+    "hadestown-west-end-2024/whatsonoffbroadway--scott-mitchell.json",
+    "hadestown-west-end-2024/wnyc--jennifer-vanasco.json",
+    "hadestown-west-end-2024/london-box-office--phil-willmott.json",
+    "stranger-things-the-first-shadow-west-end-2023/nytg--kyle-turner.json",
+    "stranger-things-the-first-shadow-west-end-2023/nytimes--elisabeth-vincentelli.json",
+    "stranger-things-the-first-shadow-west-end-2023/variety--ellise-shafer.json",
+    "stranger-things-the-first-shadow-west-end-2023/vulture--sara-holdren.json",
+    "stranger-things-the-first-shadow-west-end-2023/broadwaynews--brittani-samuel.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1724,7 +1734,11 @@
       "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
       "oh-mary-west-end-2025/deadline--greg-evans.json",
       "data/review-texts/maybe-happy-ending-2024/variety--unknown.json",
-      "maybe-happy-ending-2024/variety--unknown.json"
+      "maybe-happy-ending-2024/variety--unknown.json",
+      "data/review-texts/stranger-things-the-first-shadow-west-end-2023/variety--frank-rizzo.json",
+      "stranger-things-the-first-shadow-west-end-2023/variety--frank-rizzo.json",
+      "data/review-texts/stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json",
+      "stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1802,7 +1816,7 @@
     ]
   },
   "startTime": "2026-06-29T16:22:26.418Z",
-  "lastProcessed": "hadestown-west-end-2024/washpost--peter-marks.json",
+  "lastProcessed": "stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json",
   "log": [
     {
       "t": "2026-06-29T16:36:31.743Z",
@@ -1935,6 +1949,28 @@
       "t": "2026-06-30T06:25:18.868Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-30T06:35:02.530Z",
+      "event": "bb-session",
+      "session": "42ae7bc4",
+      "url": "https://variety.com/2023/theater/news/stranger-things-play-the-first-shadow-cast"
+    },
+    {
+      "t": "2026-06-30T06:35:03.514Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-06-30T06:35:49.920Z",
+      "event": "bb-session",
+      "session": "c3ea3b20",
+      "url": "https://deadline.com/2024/03/stranger-things-first-shadow-broadway-1235850385/"
+    },
+    {
+      "t": "2026-06-30T06:35:50.857Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
