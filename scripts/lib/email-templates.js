@@ -57,12 +57,20 @@ function escapeHtml(str) {
   return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
-function getScoreColor(score) {
+function getScoreColor(score, market) {
   if (score == null) return { bg: '#6b7280', text: '#ffffff', label: 'TBD' };
-  if (score >= 83) return { bg: '#FFD700', bgGradient: 'linear-gradient(135deg, #DAA520 0%, #FFD700 30%, #FFF0A0 50%, #FFD700 70%, #DAA520 100%)', text: '#1a1a1a', label: 'Critical Gold' };
-  if (score >= 75) return { bg: '#22c55e', text: '#ffffff', label: 'Recommended' };
-  if (score >= 65) return { bg: '#14b8a6', text: '#ffffff', label: 'Worth Seeing' };
-  if (score >= 55) return { bg: '#d97706', text: '#1a1a1a', label: 'Mixed' };
+  // Round before comparing — the badge displays Math.round(score) and the live
+  // site (ScoreBadge.getScoreTier) rounds before tiering, so a 64.69 must read
+  // "Worth Seeing" (displays 65), not "Mixed". Raw thresholds made the email
+  // disagree with both its own displayed score and the site (2026-06-30).
+  const s = Math.round(score);
+  // West End Critical Gold needs 85 (UK star ratings compress scores up), matching
+  // the site's getGoldThreshold(category). Broadway/default stays 83.
+  const goldThreshold = (market === 'west-end' || market === 'off-west-end') ? 85 : 83;
+  if (s >= goldThreshold) return { bg: '#FFD700', bgGradient: 'linear-gradient(135deg, #DAA520 0%, #FFD700 30%, #FFF0A0 50%, #FFD700 70%, #DAA520 100%)', text: '#1a1a1a', label: 'Critical Gold' };
+  if (s >= 75) return { bg: '#22c55e', text: '#ffffff', label: 'Recommended' };
+  if (s >= 65) return { bg: '#14b8a6', text: '#ffffff', label: 'Worth Seeing' };
+  if (s >= 55) return { bg: '#d97706', text: '#1a1a1a', label: 'Mixed' };
   return { bg: '#ef4444', text: '#ffffff', label: 'Critical Miss' };
 }
 
@@ -381,7 +389,7 @@ function buildBroadcastOpeningNightHtml(shows, email, market) {
   const browseUrl = isWE ? 'https://broadwayscorecard.com/west-end' : 'https://broadwayscorecard.com';
   // Build a score card for each show
   const showCards = shows.map(show => {
-    const sc = getScoreColor(show.score);
+    const sc = getScoreColor(show.score, market);
     const scoreDisplay = show.score != null ? Math.round(show.score) : '?';
     const reviewCount = show.reviewCount || 0;
     const rave = show.rave || 0;
@@ -634,7 +642,7 @@ function buildBroadcastApprovalHtml(shows, approvalUrl, market) {
   const brandColor = isWE ? '#f472b6' : '#d4a574';
 
   const showRows = shows.map(show => {
-    const sc = getScoreColor(show.score);
+    const sc = getScoreColor(show.score, market);
     const scoreDisplay = show.score != null ? Math.round(show.score) : '?';
     return `
       <tr>
