@@ -126,6 +126,21 @@ jobs:
         continue-on-error: true
         timeout-minutes: 5
 
+      # Self-healing late-star re-anchor (no API — pure local flag pass).
+      # Opening-night race: a WE/OWE review is LLM-scored UNANCHORED (llm-v6) before
+      # the outlet's star widget is scraped; the star arrives later but nothing
+      # re-anchors it, so a 3/5 review can sit at 77 outside its band. This flags
+      # such reviews needsRescore=true + rescoreReason='late-star-anchor'; the daily
+      # 5 AM scoring cron auto-detects the needsRescore backlog (llm-ensemble-score.yml
+      # check-needed → run_rescore) and re-scores them in ANCHORED mode. Runs AFTER
+      # the wrong-* classifiers so it respects fresh wrongProduction/wrongShow flags
+      # (needsLateStarReanchor returns null for those). See scripts/lib/late-star-anchor.js
+      # and the one-shot backfill scripts/flag-late-star-reanchor.js it shares logic with.
+      - name: Flag late-arriving stars for anchored re-score
+        run: node scripts/flag-late-star-reanchor.js --apply 2>&1 | tee -a /tmp/locked-skip.log
+        continue-on-error: true
+        timeout-minutes: 5
+
       - name: Backfill unknown critics (via scraper infrastructure)
         if: inputs.skip_backfill_critics != 'true'
         env:
