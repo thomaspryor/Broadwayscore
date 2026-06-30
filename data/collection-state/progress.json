@@ -181,7 +181,17 @@
     "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--alun-hood.json",
     "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--daisy-bowie.json",
     "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--judi-herman.json",
-    "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--matt-trueman.json"
+    "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--matt-trueman.json",
+    "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--michael-davies.json",
+    "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--mickey-jo-boucher.json",
+    "camping-off-broadway-2026/talkinbroadway--unknown.json",
+    "glengarry-glen-ross-west-end-2026/hollywood-reporter--david-rooney.json",
+    "glengarry-glen-ross-west-end-2026/hollywood-reporter--unknown.json",
+    "glengarry-glen-ross-west-end-2026/nytimes--jesse-green.json",
+    "glengarry-glen-ross-west-end-2026/variety--marilyn-stasio.json",
+    "glengarry-glen-ross-west-end-2026/vulture--sara-holdren.json",
+    "glengarry-glen-ross-west-end-2026/newsday--linda-winer.json",
+    "glengarry-glen-ross-west-end-2026/observer--david-cote.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -253,12 +263,13 @@
     "archiveToday": [
       "data/review-texts/a-midsummer-nights-dream-west-end-2026/thestage--unknown.json",
       "data/review-texts/springwood-west-end-2026/thestage--unknown.json",
-      "data/review-texts/cyrano-de-bergerac-west-end-2026/broadwayworld--stephi-wild.json"
+      "data/review-texts/cyrano-de-bergerac-west-end-2026/broadwayworld--stephi-wild.json",
+      "data/review-texts/camping-off-broadway-2026/talkinbroadway--unknown.json"
     ],
     "archive": []
   },
   "startTime": "2026-06-30T16:47:37.281Z",
-  "lastProcessed": "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--matt-trueman.json",
+  "lastProcessed": "glengarry-glen-ross-west-end-2026/observer--david-cote.json",
   "log": [
     {
       "t": "2026-06-30T16:51:17.696Z",
@@ -270,6 +281,17 @@
       "t": "2026-06-30T16:51:18.226Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-06-30T17:27:06.669Z",
+      "event": "bb-session",
+      "session": "47136d98",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2649682"
+    },
+    {
+      "t": "2026-06-30T17:27:07.188Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
