@@ -1,25 +1,5 @@
 [
   {
-    "startedAt": "2026-06-27T19:39:07.067Z",
-    "completedAt": "2026-06-27T19:39:23.901Z",
-    "totalReviews": 66,
-    "processed": 3,
-    "skipped": 62,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 28881,
-      "output": 989,
-      "total": 44452
-    },
-    "errorDetails": [
-      {
-        "showId": "cyrano-de-bergerac-west-end-2026",
-        "outletId": "guardian-uk",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-06-27T21:16:52.064Z",
     "completedAt": "2026-06-27T21:16:52.262Z",
     "totalReviews": 65,
@@ -771840,6 +771820,26 @@
           "total": 1
         },
         "hasDisagreement": false
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-06-30T13:42:00.750Z",
+    "completedAt": "2026-06-30T13:42:00.940Z",
+    "totalReviews": 70,
+    "processed": 0,
+    "skipped": 69,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "errorDetails": [
+      {
+        "showId": "cyrano-de-bergerac-west-end-2026",
+        "outletId": "guardian-uk",
+        "error": "input_validation_failed:body_too_short"
       }
     ]
   }
