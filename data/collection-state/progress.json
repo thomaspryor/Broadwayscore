@@ -1,7 +1,16 @@
 {
   "processed": [],
   "failed": [
-    "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json"
+    "archduke-west-end-2026/nyt-theater--jonathan-mandell.json",
+    "archduke-west-end-2026/broadwayworld--alexander-cohen.json",
+    "archduke-west-end-2026/culturesauce--thom-geier.json",
+    "archduke-west-end-2026/dc-theater-arts--deb-miller.json",
+    "archduke-west-end-2026/nysr--michael-sommers.json",
+    "archduke-west-end-2026/sierz-co-uk--unknown.json",
+    "archduke-west-end-2026/thestage--unknown.json",
+    "archduke-west-end-2026/whatsonstage--sarah-crompton.json",
+    "archduke-west-end-2026/nytg--amelia-merrill.json",
+    "archduke-west-end-2026/one-minute-critic--matthew-wexler.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -9,12 +18,16 @@
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "archduke-west-end-2026/broadwayworld--alexander-cohen.json"
+    ],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/archduke-west-end-2026/thestage--unknown.json"
+    ],
     "archive": []
   },
-  "startTime": "2026-06-30T06:57:44.421Z",
-  "lastProcessed": "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+  "startTime": "2026-06-30T06:56:56.605Z",
+  "lastProcessed": "archduke-west-end-2026/one-minute-critic--matthew-wexler.json",
   "log": []
 }
