@@ -76,7 +76,7 @@ function criticTier(score, market) {
   };
   if (score >= 75) return { bg: '#22c55e', fg: '#ffffff', label: 'Recommended', glow: false };
   if (score >= 65) return { bg: '#14b8a6', fg: '#ffffff', label: 'Worth Seeing', glow: false };
-  if (score >= 55) return { bg: '#d97706', fg: '#1a1a1a', label: 'Skippable', glow: false };
+  if (score >= 55) return { bg: '#d97706', fg: '#1a1a1a', label: 'Mixed', glow: false };
   return { bg: '#ef4444', fg: '#ffffff', label: 'Critical Miss', glow: false };
 }
 

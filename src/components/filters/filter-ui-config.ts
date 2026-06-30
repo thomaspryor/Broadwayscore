@@ -96,7 +96,7 @@ export const FILTER_GROUPS: MultiGroupConfig[] = [
       { id: 'critical-gold', label: 'Critical Gold (83+)', predicate: SCORE_TIER_CRITICAL_GOLD },
       { id: 'recommended', label: 'Recommended (75–82)', predicate: SCORE_TIER_RECOMMENDED },
       { id: 'worth-seeing', label: 'Worth Seeing (65–74)', predicate: SCORE_TIER_WORTH_SEEING },
-      { id: 'skippable', label: 'Skippable (55–64)', predicate: SCORE_TIER_SKIPPABLE },
+      { id: 'skippable', label: 'Mixed (55–64)', predicate: SCORE_TIER_SKIPPABLE },
       { id: 'critical-miss', label: 'Critical Miss (<55)', predicate: SCORE_TIER_CRITICAL_MISS },
     ],
   },

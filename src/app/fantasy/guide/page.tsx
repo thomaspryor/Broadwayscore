@@ -1,7 +1,8 @@
 import { Metadata } from 'next';
 import { getFantasyShowsSorted, getFantasyConfig, getShowScore } from '@/lib/data-fantasy';
-import { getCriticLabel, ELIGIBILITY_MARKERS, type FantasyShow } from '@/config/fantasy';
+import { ELIGIBILITY_MARKERS, type FantasyShow } from '@/config/fantasy';
 import { getOptimizedImageUrl } from '@/lib/images';
+import { getScoreLabel } from '@/config/score-buckets';
 
 export const metadata: Metadata = {
   title: 'Fantasy Draft Guide',
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 function ScorePill({ score }: { score: number }) {
-  const label = getCriticLabel(score);
+  const label = getScoreLabel(score); // display label ('Mixed' for 55-64); getCriticLabel is the data/wire key
   const colorClass =
     score >= 83 ? 'bg-yellow-500/20 text-yellow-300' :
     score >= 75 ? 'bg-emerald-500/20 text-emerald-300' :

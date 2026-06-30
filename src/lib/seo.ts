@@ -501,7 +501,7 @@ export function generateShowFAQSchema(show: ComputedShow, consensusText?: string
         score >= goldMin ? 'This is considered a "Critical Gold" show.' :
         score >= 75 ? 'This is a "Recommended" show.' :
         score >= 65 ? 'This is rated "Worth Seeing".' :
-        score >= 55 ? 'This show is rated "Skippable".' :
+        score >= 55 ? 'This show is rated "Mixed".' :
         'Critics generally did not recommend this show.'
       }`,
     });

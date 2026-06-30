@@ -25,8 +25,8 @@ export const SCORE_TIERS = {
     glow: false,
   },
   skippable: {
-    label: 'Skippable',
-    tooltip: 'Optional. Fine to miss unless you\'re a completist or super fan.',
+    label: 'Mixed',
+    tooltip: 'Critics are split — worth a look if the premise grabs you.',
     range: '55-64',
     color: '#d97706',
     glow: false,
@@ -56,7 +56,7 @@ const TIER_COLOR_CLASS: Record<string, string> = {
   'Critical Gold': 'score-must-see',
   'Recommended': 'score-great',
   'Worth Seeing': 'score-good',
-  'Skippable': 'score-tepid',
+  'Mixed': 'score-tepid',
   'Critical Miss': 'score-skip',
 };
 
@@ -64,7 +64,7 @@ const TIER_TEXT_CLASS: Record<string, string> = {
   'Critical Gold': 'text-score-must-see',
   'Recommended': 'text-score-great',
   'Worth Seeing': 'text-score-good',
-  'Skippable': 'text-score-tepid',
+  'Mixed': 'text-score-tepid',
   'Critical Miss': 'text-score-skip',
 };
 

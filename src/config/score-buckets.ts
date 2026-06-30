@@ -55,13 +55,13 @@ export const SCORE_BUCKETS: ScoreBucketConfig[] = [
   },
   {
     id: 'skippable',
-    label: 'Skippable',
-    shortLabel: 'Skippable',
+    label: 'Mixed',
+    shortLabel: 'Mixed',
     minScore: 55,
     maxScore: 64,
     color: 'text-orange-500',     // Orange (darker, distinct from Must-See gold)
     bgColor: 'bg-orange-500/20',
-    description: 'Optional. Fine to miss unless you\'re a completist or super fan.',
+    description: 'Critics are split — worth a look if the premise grabs you.',
   },
   {
     id: 'stay-away',

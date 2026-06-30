@@ -8,7 +8,7 @@ const TIER_STYLE: Record<string, { bg: string; text: string; label: string }> = 
   'Critical Gold': { bg: '#FFD700', text: '#1a1a1a', label: 'Critical Gold' },
   'Recommended':   { bg: '#22c55e', text: '#ffffff', label: 'Recommended' },
   'Worth Seeing':  { bg: '#14b8a6', text: '#ffffff', label: 'Worth Seeing' },
-  'Skippable':     { bg: '#d97706', text: '#1a1a1a', label: 'Skippable' },
+  'Mixed':     { bg: '#d97706', text: '#1a1a1a', label: 'Mixed' },
   'Critical Miss': { bg: '#ef4444', text: '#ffffff', label: 'Critical Miss' },
 };
 
