@@ -725448,17 +725448,23 @@
     ]
   },
   {
-    "startedAt": "2026-06-30T17:30:48.505Z",
-    "completedAt": "2026-06-30T17:30:53.852Z",
-    "totalReviews": 47,
-    "processed": 1,
-    "skipped": 46,
-    "errors": 0,
+    "startedAt": "2026-06-30T17:32:26.716Z",
+    "completedAt": "2026-06-30T17:32:26.906Z",
+    "totalReviews": 70,
+    "processed": 0,
+    "skipped": 69,
+    "errors": 1,
     "tokensUsed": {
-      "input": 8190,
-      "output": 328,
-      "total": 12691
+      "input": 0,
+      "output": 0,
+      "total": 0
     },
-    "errorDetails": []
+    "errorDetails": [
+      {
+        "showId": "cyrano-de-bergerac-west-end-2026",
+        "outletId": "guardian-uk",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
   }
 ]
