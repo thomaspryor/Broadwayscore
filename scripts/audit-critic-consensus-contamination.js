@@ -164,6 +164,13 @@ function main() {
   const warns = issues.filter(i => i.severity === 'warn').length;
 
   if (gate) {
+    // Fail LOUD if a source-of-truth is absent: loadShowIds()/loadReviewsByShow()
+    // swallow a missing data/shows.json or data/reviews.json to null, which
+    // suppresses SHOW_NOT_IN_DB and the drift signals and would pass green.
+    if (loadShowIds() === null || loadReviewsByShow() === null) {
+      console.error('\n❌ GATE: data/shows.json or data/reviews.json missing/unparseable — cannot run the critic-consensus contamination gate.');
+      process.exit(1);
+    }
     const {
       shouldBlockCriticConsensusContaminationGate,
       GATE_SIGNALS,

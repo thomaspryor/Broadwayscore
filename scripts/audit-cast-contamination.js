@@ -157,6 +157,13 @@ function main() {
   }
 
   if (gate) {
+    // Fail LOUD if the source-of-truth is absent: loadShowIds() swallows a
+    // missing data/shows.json to null, which would suppress SHOW_NOT_IN_DB and
+    // let the gate pass green on a broken checkout (non-review-gate philosophy).
+    if (loadShowIds() === null) {
+      console.error('\n❌ GATE: data/shows.json missing or unparseable — cannot run the cast contamination gate (would falsely pass).');
+      process.exit(1);
+    }
     if (shouldBlockCastContaminationGate({ gateHits: fails })) {
       console.error(`\n❌ GATE: ${fails} cast file(s) with wrong-show contamination (opera/TV roles, name swaps, column-header roles).`);
       console.error('These must be deleted or re-sourced, then re-run the backfill. See feedback_orphan_cast_invisible_by_design.md.');

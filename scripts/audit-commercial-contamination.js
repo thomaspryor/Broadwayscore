@@ -171,6 +171,13 @@ function main() {
   const warns = issues.filter(i => i.severity === 'warn').length;
 
   if (gate) {
+    // Fail LOUD if the source-of-truth is absent: loadShows() swallows a missing
+    // data/shows.json to null, suppressing SHOW_NOT_IN_DB/CATEGORY_TYPE_MISMATCH.
+    // (commercial.json missing already throws ENOENT in audit() → exit 1.)
+    if (loadShows() === null) {
+      console.error('\n❌ GATE: data/shows.json missing or unparseable — cannot run the commercial contamination gate.');
+      process.exit(1);
+    }
     const { shouldBlockCommercialContaminationGate } = require('./lib/commercial-contamination-gate');
     if (shouldBlockCommercialContaminationGate({ gateHits: fails })) {
       console.error(`\n❌ GATE: ${fails} commercial record(s) with impossible/contradictory physics (weekly>cap, recoupment contradiction, cap/weekly outlier).`);

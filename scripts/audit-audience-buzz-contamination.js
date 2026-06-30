@@ -330,6 +330,13 @@ function main() {
   const warns = issues.filter(i => i.severity === 'warn').length;
 
   if (gate) {
+    // Fail LOUD if the source-of-truth is absent: loadShows() swallows a missing
+    // data/shows.json to null, suppressing SHOW_NOT_IN_DB and resolved-show scoping.
+    // (audience-buzz.json missing already throws ENOENT in audit() → exit 1.)
+    if (loadShows() === null) {
+      console.error('\n❌ GATE: data/shows.json missing or unparseable — cannot run the audience-buzz contamination gate.');
+      process.exit(1);
+    }
     const { shouldBlockAudienceBuzzContaminationGate } = require('./lib/audience-buzz-contamination-gate');
     if (shouldBlockAudienceBuzzContaminationGate({ gateHits: fails })) {
       console.error(`\n❌ GATE: ${fails} shows with REDDIT_SCORE_DIVERGENCE — a spike past the floor, the signature of a scraper regression that misrouted many titles.`);
