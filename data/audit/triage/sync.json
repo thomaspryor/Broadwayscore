@@ -1,7 +1,7 @@
 {
   "system": "sync",
-  "status": "warn",
-  "lastChecked": "2026-06-29T08:39:51.357Z",
+  "status": "pass",
+  "lastChecked": "2026-06-30T08:14:09.968Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -33,13 +33,13 @@
     },
     {
       "name": "Sync: baseline drift",
-      "status": "warn",
-      "message": "Reviews dropped: 18881 vs baseline 18887"
+      "status": "pass",
+      "message": "2706 shows, 144 open, 18824 reviews (all at or above baseline)"
     },
     {
       "name": "Sync: grosses weekEnding",
       "status": "pass",
-      "message": "weekEnding 6/22/2026 (7d ago)"
+      "message": "weekEnding 6/22/2026 (8d ago)"
     }
   ]
 }
