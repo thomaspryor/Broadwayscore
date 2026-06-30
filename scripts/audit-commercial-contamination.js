@@ -149,6 +149,11 @@ function main() {
   const issues = audit();
   const json = process.argv.includes('--json');
   const strict = process.argv.includes('--strict');
+  // --gate: per-push trunk catastrophe floor (test.yml) — blocks only on the
+  // impossible/contradictory FAIL class via the pure scripts/lib/commercial-
+  // contamination-gate.js (CLAUDE.md §15). Warns (forthcoming shows, category
+  // mismatch) ride the digest. Full --strict runs daily in check-corpus-drift.yml.
+  const gate = process.argv.includes('--gate');
 
   if (json) {
     process.stdout.write(JSON.stringify(issues, null, 2) + '\n');
@@ -164,6 +169,25 @@ function main() {
 
   const fails = issues.filter(i => i.severity === 'fail').length;
   const warns = issues.filter(i => i.severity === 'warn').length;
+
+  if (gate) {
+    // Fail LOUD if the source-of-truth is absent: loadShows() swallows a missing
+    // data/shows.json to null, suppressing SHOW_NOT_IN_DB/CATEGORY_TYPE_MISMATCH.
+    // (commercial.json missing already throws ENOENT in audit() → exit 1.)
+    if (loadShows() === null) {
+      console.error('\n❌ GATE: data/shows.json missing or unparseable — cannot run the commercial contamination gate.');
+      process.exit(1);
+    }
+    const { shouldBlockCommercialContaminationGate } = require('./lib/commercial-contamination-gate');
+    if (shouldBlockCommercialContaminationGate({ gateHits: fails })) {
+      console.error(`\n❌ GATE: ${fails} commercial record(s) with impossible/contradictory physics (weekly>cap, recoupment contradiction, cap/weekly outlier).`);
+      process.exitCode = 1;
+    } else {
+      console.log(`\n✓ GATE: no impossible-physics commercial records; warns surfaced in digest.`);
+    }
+    return;
+  }
+
   if (fails > 0 || (strict && warns > 0)) process.exitCode = 1;
 }
 

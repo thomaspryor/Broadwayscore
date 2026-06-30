@@ -41,6 +41,18 @@ on:
       - 'scripts/audit-commercial-contamination.js'
       - 'scripts/audit-audience-buzz-contamination.js'
       - 'scripts/audit-critic-consensus-contamination.js'
+      # The four contamination audits gated to a --gate catastrophe floor (2026-06-30,
+      # Notion 38f637c5). Each pure block/pass decision lives in scripts/lib/*-
+      # contamination-gate.js with a colocated *.test.mjs (lib-test glob); path-listed
+      # so a solo edit triggers CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/cast-contamination-gate.js'
+      - 'scripts/lib/cast-contamination-gate.test.mjs'
+      - 'scripts/lib/commercial-contamination-gate.js'
+      - 'scripts/lib/commercial-contamination-gate.test.mjs'
+      - 'scripts/lib/audience-buzz-contamination-gate.js'
+      - 'scripts/lib/audience-buzz-contamination-gate.test.mjs'
+      - 'scripts/lib/critic-consensus-contamination-gate.js'
+      - 'scripts/lib/critic-consensus-contamination-gate.test.mjs'
       - 'scripts/audit-regex-patterns.js'
       - 'scripts/audit-duplicate-of-url-mismatch.js'
       # Churn-vs-merge-attribute coverage monitor + its pure decision lib. The
@@ -1300,7 +1312,7 @@ jobs:
 
       - name: Audit cast contamination
         if: always()
-        run: node scripts/audit-cast-contamination.js
+        run: node scripts/audit-cast-contamination.js --gate
         # Catches wrong-show cast scrapes (Met Opera singers as Kavalier-Clay
         # cast, TV-show titles as character roles, LASTNAME-FIRSTNAME name
         # swaps, source URLs that don't match the target show). Audit lives
@@ -1312,10 +1324,22 @@ jobs:
         # `if: always()` so this gate runs independently of the review-
         # contamination step above — different concerns, shouldn't share
         # a fail-fast.
+        #
+        # --gate (not bare) as of 2026-06-30: data/cast/ is bot-mutated, so
+        # blocking on ANY flagged file flapped the trunk on pre-existing files.
+        # --gate blocks only on the wrong-show class (fail) via the pure
+        # scripts/lib/cast-contamination-gate.{js,test.mjs}; soft heuristics
+        # (SRC_URL_NO_TITLE / SHOW_NOT_IN_DB) and the full report run daily and
+        # non-blocking in check-corpus-drift.yml → digest.
 
       - name: Audit commercial contamination
         if: always()
-        run: node scripts/audit-commercial-contamination.js
+        run: node scripts/audit-commercial-contamination.js --gate
+        # --gate (2026-06-30): blocks only on the impossible/contradictory FAIL
+        # class (weekly>cap, recoupment contradiction, cap/weekly outlier) via the
+        # pure scripts/lib/commercial-contamination-gate.{js,test.mjs}. Warns
+        # (forthcoming-show keys, category mismatch) + the full --strict run land
+        # daily and non-blocking in check-corpus-drift.yml → digest.
         # Same SERP->LLM wrong-source class as cast contamination, applied
         # to data/commercial.json (scripts/update-commercial-data.js feeds
         # Reddit/trade-press text to Claude Sonnet). Hard-fails on
@@ -1347,25 +1371,36 @@ jobs:
 
       - name: Audit audience-buzz contamination
         if: always()
-        run: node scripts/audit-audience-buzz-contamination.js
+        run: node scripts/audit-audience-buzz-contamination.js --gate
         # scripts/scrape-reddit-sentiment.js can land on wrong-show Reddit
-        # threads for generic titles ('Six', 'It', 'Pride'). Hard-fails
-        # when reddit.score diverges >=40pts from the median of >=2 other
-        # credible (reviewCount>=10) audience sources — the signature of
-        # a misrouted Reddit search. Warns on broadwayCom URL token
-        # mismatches and platform-disagreement divergence from other
-        # sources.
+        # threads for generic titles ('Six', 'It', 'Pride'). REDDIT_SCORE_DIVERGENCE
+        # fires when reddit.score diverges >=40pts from the median of >=2 other
+        # credible (reviewCount>=10) audience sources.
+        #
+        # --gate (2026-06-30): a single 40-pt divergence is NOT zero-FP — it is as
+        # plausibly a genuine audience/critic split as a misroute, and it reddened
+        # main on glengarry-glen-ross-west-end-2026 (run f8abff972). So the gate
+        # blocks only on a SPIKE (scraper regression: many titles misrouted at
+        # once) via the pure scripts/lib/audience-buzz-contamination-gate.{js,
+        # test.mjs}. The single divergence + all warns (broadwayCom URL token,
+        # platform divergence, volume inflation) run daily and non-blocking in
+        # check-corpus-drift.yml → digest, where a human triages each one.
 
       - name: Audit critic-consensus contamination
         if: always()
-        run: node scripts/audit-critic-consensus-contamination.js
+        run: node scripts/audit-critic-consensus-contamination.js --gate
         # scripts/generate-critic-consensus.js summaries are generated
         # against OUR reviews.json, so wrong-source contamination is lower
         # risk; the stronger signal is staleness drift — consensus written
         # when N reviews existed but reviews.json now has N+10+ reviews
-        # with a meaningfully different mean. Hard-fails on orphan keys
-        # and on reviewCount/meanScore drift past conservative thresholds
-        # (zero baseline hits as of 2026-05-24).
+        # with a meaningfully different mean.
+        #
+        # --gate (2026-06-30): blocks only on the structural-orphan class
+        # (SHOW_NOT_IN_DB) via the pure scripts/lib/critic-consensus-contamination-
+        # gate.{js,test.mjs}. The reviewCount/meanScore staleness signals fire BY
+        # DESIGN on opening nights and self-heal on the next update-critic-consensus
+        # regen, so hard-blocking them would red the trunk at the worst moment —
+        # they ride the full --strict run in check-corpus-drift.yml → digest.
 
       - name: Audit aggregator-archive integrity
         run: node scripts/audit-aggregator-archive-integrity.js --strict
