@@ -1,83 +1,108 @@
 {
-  "runDate": "2026-06-30T10:22:47.199Z",
+  "runDate": "2026-06-30T16:32:17.274Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "to-kill-a-mockingbird-west-end-2026",
+    "showFilter": "pride-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 15,
+    "processed": 3,
+    "failed": 23,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "11.5%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 2,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 0,
-    "archive": 0
+    "archiveToday": 1,
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 10,
+    "tier1Success": 9,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 0,
-    "tier4Success": 0,
-    "totalFailed": 15,
-    "scrapingBeePageCredits": 0,
+    "tier2Attempts": 5,
+    "tier2Success": 1,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
+    "tier4Attempts": 2,
+    "tier4Success": 2,
+    "totalFailed": 23,
+    "scrapingBeePageCredits": 50,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 15,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 16,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "pride-west-end-2026/afridiziak-theatre-news--unknown.json",
+    "pride-west-end-2026/londontheatre1--terry-eastham.json",
+    "pride-west-end-2026/standard--unknown.json"
+  ],
   "failed": [
-    "to-kill-a-mockingbird-west-end-2026/hollywood-reporter--david-rooney.json",
-    "to-kill-a-mockingbird-west-end-2026/observer--david-cote.json",
-    "to-kill-a-mockingbird-west-end-2026/thewrap--thom-geier.json",
-    "to-kill-a-mockingbird-west-end-2026/timeout--adam-feldman.json",
-    "to-kill-a-mockingbird-west-end-2026/wsj--terry-teachout.json",
-    "to-kill-a-mockingbird-west-end-2026/broadwayworld--michael-dale.json",
-    "to-kill-a-mockingbird-west-end-2026/chicagotribune--chris-jones.json",
-    "to-kill-a-mockingbird-west-end-2026/financialtimes--sarah-hemming.json",
-    "to-kill-a-mockingbird-west-end-2026/i-paper--sam-marlowe.json",
-    "to-kill-a-mockingbird-west-end-2026/inquirer--toby-zinman.json",
-    "to-kill-a-mockingbird-west-end-2026/latimes--unknown.json",
-    "to-kill-a-mockingbird-west-end-2026/standard--nick-curtis.json",
-    "to-kill-a-mockingbird-west-end-2026/sunday-telegraph--dominic-cavendish.json",
-    "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
-    "to-kill-a-mockingbird-west-end-2026/times-uk--quentin-letts.json"
+    "pride-west-end-2026/hollywood-reporter--daniel-fienberg.json",
+    "pride-west-end-2026/nyt-theater--unknown.json",
+    "pride-west-end-2026/nytimes--ben-brantley.json",
+    "pride-west-end-2026/nytimes--unknown.json",
+    "pride-west-end-2026/theatrely--kobi-kassal.json",
+    "pride-west-end-2026/broadwayworld--jay-irwin.json",
+    "pride-west-end-2026/click-liverpool--unknown.json",
+    "pride-west-end-2026/frontmezzjunkies--unknown.json",
+    "pride-west-end-2026/latimes--erin-conley.json",
+    "pride-west-end-2026/nottingham-confidential--unknown.json",
+    "pride-west-end-2026/operawire--unknown.json",
+    "pride-west-end-2026/people--unknown.json",
+    "pride-west-end-2026/seattle-times--misha-berson.json",
+    "pride-west-end-2026/sunday-telegraph--unknown.json",
+    "pride-west-end-2026/thestage--dave-fargnoli.json",
+    "pride-west-end-2026/times-uk--allan-radcliffe.json",
+    "pride-west-end-2026/times-uk--ann-treneman.json",
+    "pride-west-end-2026/times-uk--dominic-maxwell.json",
+    "pride-west-end-2026/times-uk--jane-edwardes.json",
+    "pride-west-end-2026/times-uk--lucy-sweet.json",
+    "pride-west-end-2026/whatsonstage--daisy-bowie.json",
+    "pride-west-end-2026/whatsonstage--sarah-crompton.json",
+    "pride-west-end-2026/standard--the-standard.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "pride-west-end-2026/afridiziak-theatre-news--unknown.json",
+      "pride-west-end-2026/londontheatre1--terry-eastham.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
-    "archive": []
+    "archiveToday": [
+      "data/review-texts/pride-west-end-2026/thestage--dave-fargnoli.json"
+    ],
+    "archive": [
+      "pride-west-end-2026/standard--unknown.json"
+    ]
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "pride-west-end-2026/whatsonstage--sarah-crompton.json",
+      "oldUrl": "https://www.whatsonstage.com/news/pride-musical-at-the-national-theatre-review_1726254/",
+      "newUrl": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/pride_1703068/"
+    }
+  ]
 }
