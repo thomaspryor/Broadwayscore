@@ -651,7 +651,17 @@
     "archduke-west-end-2026/dc-theater-arts--deb-miller.json",
     "archduke-west-end-2026/financialtimes--unknown.json",
     "archduke-west-end-2026/nysr--michael-sommers.json",
-    "archduke-west-end-2026/thestage--unknown.json"
+    "archduke-west-end-2026/thestage--unknown.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
+    "giulia-the-poison-queen-of-palermo-off-broadway-2026/nytimes--alan-light.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/loureviews--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/all-that-dazzles-uk--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/londontheatre1--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/west-end-best-friend--unknown.json",
+    "jesus-christ-superstar-west-end-2026/hollywood-reporter--david-rooney.json",
+    "jesus-christ-superstar-west-end-2026/ew--melissa-rose-bernardo.json",
+    "jesus-christ-superstar-west-end-2026/thereviewshub--the-reviews-hub.json",
+    "jesus-christ-superstar-west-end-2026/backstage--david-sheward.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -737,7 +747,8 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/the-guilty-west-end-2026/deadline--ted-johnson.json",
-      "the-guilty-west-end-2026/deadline--ted-johnson.json"
+      "the-guilty-west-end-2026/deadline--ted-johnson.json",
+      "data/review-texts/giulia-the-poison-queen-of-palermo-off-broadway-2026/nytimes--alan-light.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -782,7 +793,7 @@
     ]
   },
   "startTime": "2026-06-30T16:47:37.281Z",
-  "lastProcessed": "archduke-west-end-2026/thestage--unknown.json",
+  "lastProcessed": "jesus-christ-superstar-west-end-2026/backstage--david-sheward.json",
   "log": [
     {
       "t": "2026-06-30T16:51:17.696Z",
@@ -805,6 +816,17 @@
       "t": "2026-06-30T17:27:07.188Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-06-30T20:16:13.406Z",
+      "event": "bb-session",
+      "session": "2e8e3bb0",
+      "url": "https://www.nytimes.com/2026/06/30/theater/jennifer-nettles-giulia-musical.html"
+    },
+    {
+      "t": "2026-06-30T20:16:14.396Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
