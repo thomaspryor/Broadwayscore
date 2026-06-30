@@ -844,3 +844,31 @@ describe('stale-normalized guard (isUnambiguousRatingString + getBestScore)', ()
     assert.equal(getBestScore(bare).score, 100);
   });
 });
+
+describe('llm-v6 with a late-arriving star (P0.4 fall-through)', () => {
+  test('llm-v6 + now-present published star → star wins (not the LLM)', () => {
+    // Opening-night order: LLM scores text (llm-v6, no star), star scraped later.
+    // dark-of-the-moon WhatsOnStage published 2/5 (=40) but llm read 62.
+    const d = { outletId: 'whatsonstage', scoreSource: 'llm-v6',
+      originalScore: '2/5 stars', originalScoreNormalized: 40, scoreConfidence: 'medium',
+      llmScore: { score: 62, confidence: 'medium' } };
+    const r = getBestScore(d);
+    assert.equal(r.score, 40, 'published 2/5 must win over llm 62');
+    assert.equal(r.source, 'originalScore-priority0');
+  });
+
+  test('llm-v6 with NO star → keeps the LLM score (no regression)', () => {
+    const d = { outletId: 'nytimes', scoreSource: 'llm-v6',
+      llmScore: { score: 42, confidence: 'high' } };
+    assert.equal(getBestScore(d).score, 42);
+  });
+
+  test('anchored-v6 still returns the band-constrained LLM score (unchanged)', () => {
+    // anchored-v6 deliberately used the star's band — keep it, do NOT fall through.
+    const d = { outletId: 'guardian', scoreSource: 'anchored-v6',
+      originalScore: '4/5 stars', originalScoreNormalized: 80,
+      llmScore: { score: 86, confidence: 'high' } };
+    assert.equal(getBestScore(d).score, 86);
+    assert.equal(getBestScore(d).source, 'anchored-v6');
+  });
+});
