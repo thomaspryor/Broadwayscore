@@ -54,7 +54,17 @@
     "a-midsummer-nights-dream-west-end-2026/whatsonstage--daniel-perks.json",
     "a-midsummer-nights-dream-west-end-2026/whatsonstage--james-fitzgerald.json",
     "a-midsummer-nights-dream-west-end-2026/whatsonstage--judi-herman.json",
-    "a-midsummer-nights-dream-west-end-2026/whatsonstage--michael-davies.json"
+    "a-midsummer-nights-dream-west-end-2026/whatsonstage--michael-davies.json",
+    "a-midsummer-nights-dream-west-end-2026/whatsonstage--sarah-crompton.json",
+    "a-midsummer-nights-dream-west-end-2026/whatsonstage--theo-bosanquet.json",
+    "a-midsummer-nights-dream-west-end-2026/london-box-office--stuart-king.json",
+    "archduke-west-end-2026/nyt-theater--jonathan-mandell.json",
+    "archduke-west-end-2026/broadwayworld--alexander-cohen.json",
+    "archduke-west-end-2026/culturesauce--thom-geier.json",
+    "archduke-west-end-2026/dc-theater-arts--deb-miller.json",
+    "archduke-west-end-2026/nysr--michael-sommers.json",
+    "archduke-west-end-2026/sierz-co-uk--unknown.json",
+    "archduke-west-end-2026/thestage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -65,7 +75,10 @@
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "archduke-west-end-2026/broadwayworld--alexander-cohen.json",
+      "archduke-west-end-2026/sierz-co-uk--unknown.json"
+    ],
     "brightdata": [
       "camping-off-broadway-2026/talkinbroadway--unknown.json"
     ],
@@ -75,6 +88,13 @@
     ]
   },
   "startTime": "2026-06-30T10:27:38.638Z",
-  "lastProcessed": "a-midsummer-nights-dream-west-end-2026/whatsonstage--michael-davies.json",
-  "log": []
+  "lastProcessed": "archduke-west-end-2026/thestage--unknown.json",
+  "log": [
+    {
+      "t": "2026-06-30T11:25:21.943Z",
+      "event": "bb-session",
+      "session": "ee54344f",
+      "url": "https://www.sierz.co.uk/reviews/archduke-royal-court/"
+    }
+  ]
 }

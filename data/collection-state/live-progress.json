@@ -1,18 +1,25 @@
 {
-  "updatedAt": "2026-06-30T11:21:42.289Z",
+  "updatedAt": "2026-06-30T11:26:18.382Z",
   "processed": 4,
-  "failed": 49,
-  "successRate": "7.5%",
+  "failed": 59,
+  "successRate": "6.3%",
   "tierBreakdown": {
     "playwright": 2,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 2,
     "brightdata": 1,
     "archiveToday": 0,
     "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-06-30T11:25:21.943Z",
+      "event": "bb-session",
+      "session": "ee54344f",
+      "url": "https://www.sierz.co.uk/reviews/archduke-royal-court/"
+    }
+  ]
 }
