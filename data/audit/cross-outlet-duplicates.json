@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "generatedAt": "2026-06-23T06:34:48.138Z",
+    "generatedAt": "2026-06-30T06:36:32.813Z",
     "threshold": 40,
-    "showsScanned": 1758,
-    "reviewsScanned": 33600,
-    "duplicatesFound": 80,
+    "showsScanned": 1777,
+    "reviewsScanned": 33869,
+    "duplicatesFound": 78,
     "byMethod": {
       "similarity": [
         {
@@ -1075,21 +1075,6 @@
           "textSource": "fullText"
         },
         {
-          "showId": "take-me-out-2022",
-          "method": "similarity+llm",
-          "similarity": 47,
-          "primaryFile": "guardian--adrian-horton.json",
-          "primaryOutlet": "The Guardian",
-          "primaryCritic": "Adrian Horton",
-          "secondaryFile": "vulture--helen-shaw.json",
-          "secondaryOutlet": "Vulture",
-          "secondaryCritic": "Helen Shaw",
-          "primaryScore": null,
-          "secondaryScore": 73,
-          "scoreDiff": 73,
-          "textSource": "fullText"
-        },
-        {
           "showId": "the-price-2017",
           "method": "similarity+llm",
           "similarity": 64,
@@ -1195,21 +1180,6 @@
           "secondaryScore": null,
           "scoreDiff": 0,
           "textSource": "excerpts"
-        },
-        {
-          "showId": "the-devil-wears-prada-west-end-2024",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "guardian--susannah-clapp.json",
-          "primaryOutlet": "The Guardian",
-          "primaryCritic": "Susannah Clapp",
-          "secondaryFile": "observer--susannah-clapp.json",
-          "secondaryOutlet": "Observer",
-          "secondaryCritic": "Susannah Clapp",
-          "primaryScore": 45,
-          "secondaryScore": 40,
-          "scoreDiff": 5,
-          "textSource": "fullText"
         }
       ]
     }
@@ -2221,21 +2191,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "take-me-out-2022",
-      "method": "similarity+llm",
-      "similarity": 47,
-      "primaryFile": "guardian--adrian-horton.json",
-      "primaryOutlet": "The Guardian",
-      "primaryCritic": "Adrian Horton",
-      "secondaryFile": "vulture--helen-shaw.json",
-      "secondaryOutlet": "Vulture",
-      "secondaryCritic": "Helen Shaw",
-      "primaryScore": null,
-      "secondaryScore": 73,
-      "scoreDiff": 73,
-      "textSource": "fullText"
-    },
-    {
       "showId": "the-bridges-of-madison-county-2014",
       "method": "similarity",
       "similarity": 92,
@@ -2293,21 +2248,6 @@
       "primaryScore": 42,
       "secondaryScore": 56,
       "scoreDiff": 14,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "the-devil-wears-prada-west-end-2024",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "guardian--susannah-clapp.json",
-      "primaryOutlet": "The Guardian",
-      "primaryCritic": "Susannah Clapp",
-      "secondaryFile": "observer--susannah-clapp.json",
-      "secondaryOutlet": "Observer",
-      "secondaryCritic": "Susannah Clapp",
-      "primaryScore": 45,
-      "secondaryScore": 40,
-      "scoreDiff": 5,
       "textSource": "fullText"
     },
     {
