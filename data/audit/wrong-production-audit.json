@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-30T07:05:05.559Z",
+  "timestamp": "2026-06-30T07:39:40.318Z",
   "stats": {
-    "totalReviews": 39505,
-    "alreadyFlagged": 17422,
+    "totalReviews": 39506,
+    "alreadyFlagged": 17420,
     "dateGuardCatches": 35,
     "directorMismatch": 888,
-    "tvFilmSignals": 1086,
+    "tvFilmSignals": 1087,
     "londonSignals": 710,
     "offBroadwaySignals": 467,
     "yearMismatch": 84,
-    "noPublishDate": 3964
+    "noPublishDate": 3963
   },
   "findings": [
     {
@@ -2605,6 +2605,20 @@
       "score": 81,
       "publishDate": "April 11, 2022",
       "url": "https://variety.com/2022/legit/reviews/birthday-candles-review-debra-messing-1235233772/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "birthright-off-broadway-2026",
+      "file": "nysr--frank-scheck.json",
+      "score": 80,
+      "publishDate": "2026-06-30",
+      "url": "https://nystagereview.com/2026/06/29/birthright-political-and-personal-issues-intersect-to-powerful-effect/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -30529,7 +30543,7 @@
       "file": "exeunt-magazine--loren-noveck.json",
       "score": 80,
       "publishDate": "2026-05-15T11:08:02-04:00",
-      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/#:~:text=Dad%20Don't%20Read%20This%20is%20messy%20and%20raw%20and,will%20keep%20it%20in%20my",
+      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/",
       "findings": [
         {
           "type": "DATE_GUARD",
