@@ -1,0 +1,102 @@
+{
+  "runDate": "2026-06-30T07:04:55.118Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 0,
+    "priority": "all",
+    "showFilter": "the-misanthrope-west-end-2026",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 3,
+    "failed": 10,
+    "skipped": 0,
+    "successRate": "23.1%"
+  },
+  "tierBreakdown": {
+    "playwright": 3,
+    "amp": 0,
+    "browserbase": 0,
+    "directCookies": 0,
+    "scrapingbee": 2,
+    "brightdata": 0,
+    "archiveToday": 1,
+    "archive": 0
+  },
+  "statistics": {
+    "tier1Attempts": 6,
+    "tier1Success": 3,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 5,
+    "tier2Success": 3,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
+    "tier4Attempts": 3,
+    "tier4Success": 0,
+    "totalFailed": 8,
+    "scrapingBeePageCredits": 32,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 9,
+    "urlDiscoverySuccess": 2,
+    "urlDiscoveryCapped": 0
+  },
+  "processed": [
+    "the-misanthrope-west-end-2026/times-uk--clive-davis.json",
+    "the-misanthrope-west-end-2026/times-uk--sam-marlowe.json",
+    "the-misanthrope-west-end-2026/whatsonstage--tanyel-gumushan.json"
+  ],
+  "failed": [
+    "the-misanthrope-west-end-2026/nytheatre--david-gordon.json",
+    "the-misanthrope-west-end-2026/theatermania--david-finkle.json",
+    "the-misanthrope-west-end-2026/about-entertainment--jason-zinoman.json",
+    "the-misanthrope-west-end-2026/backstage--david-sheward.json",
+    "the-misanthrope-west-end-2026/broadwayworld--cindy-marcolina.json",
+    "the-misanthrope-west-end-2026/broadwayworld--unknown.json",
+    "the-misanthrope-west-end-2026/curtainup--simon-saltzman.json",
+    "the-misanthrope-west-end-2026/thestage--dave-fargnoli.json",
+    "the-misanthrope-west-end-2026/times-uk--dominic-maxwell.json",
+    "the-misanthrope-west-end-2026/west-end-best-friend--news-desk.json"
+  ],
+  "tierDetails": {
+    "playwright": [
+      "the-misanthrope-west-end-2026/times-uk--clive-davis.json",
+      "the-misanthrope-west-end-2026/times-uk--sam-marlowe.json",
+      "the-misanthrope-west-end-2026/whatsonstage--tanyel-gumushan.json"
+    ],
+    "amp": [],
+    "browserbase": [],
+    "directCookies": [],
+    "scrapingbee": [
+      "the-misanthrope-west-end-2026/broadwayworld--cindy-marcolina.json",
+      "the-misanthrope-west-end-2026/broadwayworld--unknown.json"
+    ],
+    "brightdata": [],
+    "archiveToday": [
+      "data/review-texts/the-misanthrope-west-end-2026/thestage--dave-fargnoli.json"
+    ],
+    "archive": []
+  },
+  "failuresByOutlet": {},
+  "urlDiscoveries": [
+    {
+      "reviewId": "the-misanthrope-west-end-2026/broadwayworld--cindy-marcolina.json",
+      "oldUrl": "https://www.broadwayworld.com/westend/article/THE-MISANTHROPE-With-Sandra-Oh-Will-Come-to-Cinemas-From-National-Theatre-Live-20260609",
+      "newUrl": "https://www.broadwayworld.com/westend/article/Review-THE-MISANTHROPE-starring-Sandra-Oh-20260624"
+    },
+    {
+      "reviewId": "the-misanthrope-west-end-2026/whatsonstage--tanyel-gumushan.json",
+      "oldUrl": "https://www.whatsonstage.com/news/the-misanthrope-with-sandra-oh-at-the-national-theatre-review_1725880/",
+      "newUrl": "https://www.whatsonstage.com/news/the-misanthrope-with-sandra-oh-to-have-cinema-release_1724246/"
+    }
+  ]
+}
