@@ -35,3 +35,35 @@ const NON_THEATRICAL_SET = new Set<string>(NON_THEATRICAL_GENRES);
 export function isNonTheatricalGenre(genre?: string | null): boolean {
   return !!genre && NON_THEATRICAL_SET.has(genre);
 }
+
+/** Minimal shape the London-hub routing predicates need. */
+type LondonRoutable = { category?: string; genre?: string | null };
+
+/** True for any London-market category (west-end or off-west-end). */
+function isLondonCategory(category?: string): boolean {
+  return category === 'west-end' || category === 'off-west-end';
+}
+
+/**
+ * Pure per-show routing decisions for the two London hubs. data-core's
+ * getWestEndShows() / getOffWestEndShows() map these over the catalog (plus a
+ * HIDDEN_LONDON_IDS exclusion). Extracted here so the routing invariant is
+ * unit-testable without loading the full data pipeline (see
+ * tests/unit/london-hub-routing.test.ts).
+ *
+ * Invariants the two predicates jointly guarantee (tested):
+ *  - A non-theatrical-genre show is NEVER on the West End listing.
+ *  - A non-theatrical-genre London show is ALWAYS on the Off-West End hub.
+ *  - Every London-category show is on at least one hub (none orphaned).
+ *  - An Off-West End *theatrical* show is intentionally on BOTH (the /west-end
+ *    page shows WE + OWE via a venue toggle); only the West End *listing* is
+ *    genre-filtered.
+ */
+export function belongsOnWestEndListing(show: LondonRoutable): boolean {
+  return isLondonCategory(show.category) && !isNonTheatricalGenre(show.genre);
+}
+
+export function belongsOnOffWestEndHub(show: LondonRoutable): boolean {
+  return show.category === 'off-west-end' ||
+    (isNonTheatricalGenre(show.genre) && isLondonCategory(show.category));
+}
