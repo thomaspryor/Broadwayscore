@@ -563,8 +563,13 @@ function validateSlugs(shows) {
   let invalid = 0;
   let autoFixed = 0;
 
+  // Track each fix keyed by the ORIGINAL id — the slug fix can also rename
+  // show.id (below), so we must match the on-disk record by the id it had
+  // BEFORE mutation, not the new one.
+  const slugFixes = [];
   for (const show of shows) {
     if (show.slug && !slugRegex.test(show.slug)) {
+      const originalId = show.id;
       const fixed = show.slug.replace(/[^a-z0-9-]/g, '').replace(/-+/g, '-').replace(/^-|-$/g, '');
       warn(`Show "${show.title}" had invalid slug "${show.slug}" — auto-fixed to "${fixed}"`);
       show.slug = fixed;
@@ -573,6 +578,7 @@ function validateSlugs(shows) {
         const fixedId = show.id.replace(/[^a-z0-9-]/g, '').replace(/-+/g, '-').replace(/^-|-$/g, '');
         show.id = fixedId;
       }
+      slugFixes.push({ originalId, slug: show.slug, id: show.id });
       autoFixed++;
     }
   }
@@ -581,15 +587,19 @@ function validateSlugs(shows) {
     warn(`Auto-fixed ${autoFixed} invalid slug(s) — saving corrected shows.json`);
     const showsFile = path.join(__dirname, '..', 'data', 'shows.json');
     if (fs.existsSync(showsFile)) {
-      const allShows = JSON.parse(fs.readFileSync(showsFile, 'utf8'));
-      for (const show of shows) {
-        const match = allShows.find(s => s.title === show.title);
-        if (match && match.slug !== show.slug) {
-          match.slug = show.slug;
-          if (show.id) match.id = show.id;
+      // shows.json is { shows: [...] } — read the wrapper and index into .shows.
+      // (Previously did JSON.parse(...).find(), treating the wrapper object as a
+      // bare array → TypeError if this ever fired; and matched by non-unique
+      // title. Match by the original id captured above.)
+      const showsData = JSON.parse(fs.readFileSync(showsFile, 'utf8'));
+      for (const fix of slugFixes) {
+        const match = showsData.shows.find(s => s.id === fix.originalId);
+        if (match) {
+          match.slug = fix.slug;
+          match.id = fix.id;
         }
       }
-      fs.writeFileSync(showsFile, JSON.stringify(allShows, null, 2) + '\n');
+      fs.writeFileSync(showsFile, JSON.stringify(showsData, null, 2) + '\n');
     }
   }
 
