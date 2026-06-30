@@ -1,7 +1,7 @@
 {
   "system": "cron",
   "status": "pass",
-  "lastChecked": "2026-06-29T08:39:51.358Z",
+  "lastChecked": "2026-06-30T08:14:09.969Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,17 +9,17 @@
     {
       "name": "Cron: Update Show Status",
       "status": "pass",
-      "message": "20h ago, success"
+      "message": "23h ago, success"
     },
     {
       "name": "Cron: Rebuild Reviews",
       "status": "pass",
-      "message": "2h ago, cancelled"
+      "message": "1h ago, success"
     },
     {
       "name": "Cron: Collect Review Texts",
       "status": "pass",
-      "message": "2h ago, success"
+      "message": "1h ago, "
     },
     {
       "name": "Cron: LLM Ensemble Score",
@@ -27,24 +27,19 @@
       "message": "1h ago, success"
     },
     {
-      "name": "Cron: Test Suite",
-      "status": "pass",
-      "message": "1h ago, cancelled"
-    },
-    {
       "name": "Cron: Opening Night Broadcast",
       "status": "pass",
-      "message": "2h ago, skipped"
+      "message": "1h ago, success"
     },
     {
       "name": "Cron: Update Lottery/Rush",
       "status": "pass",
-      "message": "24h ago, success"
+      "message": "20h ago, cancelled"
     },
     {
       "name": "Cron: Weekly Grosses",
       "status": "pass",
-      "message": "5d ago, success"
+      "message": "6d ago, success"
     },
     {
       "name": "Cron: Update Show Score",
@@ -54,27 +49,27 @@
     {
       "name": "Cron: Update Mezzanine",
       "status": "pass",
-      "message": "8h ago, success"
+      "message": "7h ago, success"
     },
     {
       "name": "Cron: Update Cast Changes",
       "status": "pass",
-      "message": "2d ago, success"
+      "message": "3d ago, success"
     },
     {
       "name": "Cron: NYT Critics Picks",
       "status": "pass",
-      "message": "2h ago, success"
+      "message": "1d ago, success"
     },
     {
       "name": "Cron: Weekly Video Reviews",
       "status": "pass",
-      "message": "3h ago, success"
+      "message": "1d ago, success"
     },
     {
       "name": "Cron: Update Social Pulse",
       "status": "pass",
-      "message": "1h ago, "
+      "message": "1d ago, success"
     }
   ]
 }
