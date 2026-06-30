@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-30T11:05:43.157Z",
+  "generatedAt": "2026-06-30T15:13:15.288Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -592,28 +592,28 @@
       "status": "open",
       "slug": "springwood-west-end",
       "thumbnail": "/images/shows/springwood-west-end-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": 70,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 1,
+      "siteScore": 62.05,
+      "liveScore": 62,
+      "scoreDrift": -0.04999999999999716,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 2,
-      "t1": 0,
-      "t2": 1,
+      "total": 4,
+      "t1": 1,
+      "t2": 2,
       "t3": 1,
       "positive": 1,
-      "mixed": 1,
+      "mixed": 3,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "2/8 total",
+          "4/8 total",
           "T1:0/3",
-          "T2:0/2",
-          "hi-conf:0/6"
+          "T2:1/2",
+          "hi-conf:1/6"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -689,6 +689,18 @@
           "m": 1,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-06-30T12:47:54.458Z",
+          "rc": 4,
+          "s": 62.05,
+          "t1": 1,
+          "t2": 2,
+          "t3": 1,
+          "p": 1,
+          "m": 3,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -703,22 +715,22 @@
       "slug": "a-midsummer-nights-dream-west-end",
       "thumbnail": "/images/shows/a-midsummer-nights-dream-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 67,
+      "liveScore": 48,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 4,
+      "reviewsNeeded": 3,
       "siteFileExists": true,
-      "total": 1,
-      "t1": 0,
+      "total": 2,
+      "t1": 1,
       "t2": 1,
       "t3": 0,
       "positive": 0,
       "mixed": 1,
-      "negative": 0,
+      "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/8 total",
+          "2/8 total",
           "T1:0/3",
           "T2:1/2",
           "hi-conf:0/6"
@@ -799,6 +811,18 @@
           "m": 1,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-06-30T12:47:54.458Z",
+          "rc": 2,
+          "s": 48,
+          "t1": 1,
+          "t2": 1,
+          "t3": 0,
+          "p": 0,
+          "m": 1,
+          "n": 1,
+          "bc": "waiting"
         }
       ]
     },
@@ -812,23 +836,23 @@
       "status": "open",
       "slug": "a-walk-on-the-moon-off-broadway",
       "thumbnail": "/images/shows/a-walk-on-the-moon-off-broadway-2026/thumbnail.webp",
-      "siteScore": 57.4,
+      "siteScore": 57.18,
       "liveScore": 57,
-      "scoreDrift": -0.3999999999999986,
+      "scoreDrift": -0.17999999999999972,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 5,
+      "total": 8,
       "t1": 1,
-      "t2": 3,
-      "t3": 1,
-      "positive": 0,
-      "mixed": 3,
-      "negative": 2,
+      "t2": 4,
+      "t3": 3,
+      "positive": 1,
+      "mixed": 4,
+      "negative": 3,
       "readiness": {
         "ready": false,
         "reasons": [
-          "5/12 total",
+          "8/12 total",
           "T1:1/3",
           "hi-conf:5/8"
         ],
@@ -916,10 +940,6 @@
           "isDualMarket": false
         },
         {
-          "name": "TheaterMania",
-          "isDualMarket": false
-        },
-        {
           "name": "BroadwayWorld",
           "isDualMarket": true
         },
@@ -960,19 +980,11 @@
           "isDualMarket": false
         },
         {
-          "name": "Talkin' Broadway",
-          "isDualMarket": false
-        },
-        {
           "name": "Cititour",
           "isDualMarket": false
         },
         {
           "name": "Slant Magazine",
-          "isDualMarket": false
-        },
-        {
-          "name": "Lighting & Sound America",
           "isDualMarket": false
         },
         {
@@ -1084,10 +1096,6 @@
           "isDualMarket": false
         },
         {
-          "name": "Theater Life",
-          "isDualMarket": false
-        },
-        {
           "name": "WhatsOnStage",
           "isDualMarket": true
         },
@@ -1187,6 +1195,18 @@
           "p": 0,
           "m": 3,
           "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-06-30T15:13:15.288Z",
+          "rc": 8,
+          "s": 57.18,
+          "t1": 1,
+          "t2": 4,
+          "t3": 3,
+          "p": 1,
+          "m": 4,
+          "n": 3,
           "bc": "waiting"
         }
       ]
