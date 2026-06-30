@@ -1,4 +1,55 @@
 {
+  "runDate": "2026-06-30T06:42:42.653Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 300,
+    "priority": "all",
+    "showFilter": "",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 128,
+    "failed": 1543,
+    "skipped": 0,
+    "successRate": "7.7%"
+  },
+  "tierBreakdown": {
+    "playwright": 92,
+    "amp": 0,
+    "browserbase": 22,
+    "directCookies": 0,
+    "scrapingbee": 21,
+    "brightdata": 6,
+    "archiveToday": 29,
+    "archive": 11
+  },
+  "statistics": {
+    "tier1Attempts": 28,
+    "tier1Success": 26,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 8,
+    "tier1_5Success": 8,
+    "tier2Attempts": 12,
+    "tier2Success": 8,
+    "tier3Attempts": 3,
+    "tier3Success": 3,
+    "tier3_6Attempts": 2,
+    "tier3_6Success": 2,
+    "tier4Attempts": 10,
+    "tier4Success": 5,
+    "totalFailed": 254,
+    "scrapingBeePageCredits": 82,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 8,
+    "browserbaseMinutesUsed": 1.9,
+    "urlDiscoveryAttempts": 274,
+    "urlDiscoverySuccess": 26,
+    "urlDiscoveryCapped": 0
+  },
   "processed": [
     "cyrano-de-bergerac-west-end-2026/guardian-uk--unknown.json",
     "cyrano-de-bergerac-west-end-2026/times-uk--dominic-maxwell.json",
@@ -1674,8 +1725,7 @@
     "and-juliet-2022/sunday-telegraph--dominic-cavendish.json",
     "and-juliet-2022/theater-pizzazz--unknown.json"
   ],
-  "skipped": [],
-  "tierBreakdown": {
+  "tierDetails": {
     "playwright": [
       "cyrano-de-bergerac-west-end-2026/guardian-uk--unknown.json",
       "cyrano-de-bergerac-west-end-2026/times-uk--dominic-maxwell.json",
@@ -1872,162 +1922,152 @@
       "hadestown-west-end-2024/shy-strange-manic--kariss-ainsworth.json"
     ]
   },
-  "startTime": "2026-06-29T16:22:26.418Z",
-  "lastProcessed": "and-juliet-2022/theater-pizzazz--unknown.json",
-  "log": [
+  "failuresByOutlet": {
+    "The Guardian": {
+      "count": 1,
+      "domain": "theguardian.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Sunday Telegraph": {
+      "count": 1,
+      "domain": "telegraph.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
+  "urlDiscoveries": [
     {
-      "t": "2026-06-29T16:36:31.743Z",
-      "event": "bb-session",
-      "session": "3452061f",
-      "url": "https://www.nytimes.com/2026/06/27/arts/sinatra-the-musical-aldwych-theatre-lond"
+      "reviewId": "death-of-a-salesman-2026/vulture--rob-weinert-kendt.json",
+      "oldUrl": "https://www.vulture.com/2022/10/theater-review-wendell-pierce-death-salesman-broadway.html",
+      "newUrl": "https://www.vulture.com/article/theater-review-lane-metcalf-death-of-a-salesman.html"
     },
     {
-      "t": "2026-06-29T16:36:32.688Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "reviewId": "death-of-a-salesman-2026/washpost--peter-marks.json",
+      "oldUrl": "https://www.washingtonpost.com/theater-dance/2022/10/09/salesman-broadway-miller-pierce-clarke/",
+      "newUrl": "https://www.washingtonpost.com/entertainment/theater/2026/04/15/death-of-a-salesman-cats-jellicle-ball-broadway-review/"
     },
     {
-      "t": "2026-06-29T16:46:11.448Z",
-      "event": "bb-session",
-      "session": "e3963da2",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2649682"
+      "reviewId": "cats-the-jellicle-ball-2026/timeout--david-cote.json",
+      "oldUrl": "https://www.timeout.com/newyork/news/broadway-review-paris-is-purring-in-cats-the-jellicle-ball-040826",
+      "newUrl": "https://www.timeout.com/newyork/theater/cats-the-jellicle-ball-1"
     },
     {
-      "t": "2026-06-29T16:46:12.319Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
+      "reviewId": "dog-day-afternoon-2026/playbill--unknown.json",
+      "oldUrl": "https://playbill.com/article/did-reviewers-scream-attica-for-dog-day-afternoon-on-broadway",
+      "newUrl": "https://playbill.com/article/video-ebon-moss-bachrach-promises-a-great-dangerous-funny-time-at-the-theatre-in-dog-day-afternoon"
     },
     {
-      "t": "2026-06-30T00:51:21.486Z",
-      "event": "bb-session",
-      "session": "c04c2725",
-      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
+      "reviewId": "music-city-off-broadway-2026/deadline--greg-evans.json",
+      "oldUrl": "https://deadline.com/2026/04/music-city-jt-harding-musical-off-broadway-1236861882/",
+      "newUrl": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680/"
     },
     {
-      "t": "2026-06-30T00:51:22.463Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "reviewId": "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+      "oldUrl": "https://www.hollywoodreporter.com/lifestyle/arts/tracee-ellis-ross-broadway-every-brilliant-thing-1236598559/",
+      "newUrl": "https://www.hollywoodreporter.com/lifestyle/arts/mariska-hargitay-to-make-broadway-debut-in-every-brilliant-thing-1236551549/"
     },
     {
-      "t": "2026-06-30T01:22:31.911Z",
-      "event": "bb-session",
-      "session": "66b0288f",
-      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
+      "reviewId": "every-brilliant-thing-2026/nytimes--ben-brantley.json",
+      "oldUrl": "https://www.nytimes.com/2026/03/12/theater/every-brilliant-thing-review-daniel-radcliffe.html",
+      "newUrl": "https://www.nytimes.com/2026/04/12/theater/daniel-radcliffe-every-brilliant-thing.html"
     },
     {
-      "t": "2026-06-30T01:22:32.821Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "reviewId": "every-brilliant-thing-2026/theatermania--hayley-levitt.json",
+      "oldUrl": "https://www.theatermania.com/news/mariska-hargitay-to-make-broadway-debut-in-every-brilliant-thing_1830753/",
+      "newUrl": "https://www.theatermania.com/news/review-daniel-radcliffe-invites-us-to-cherish-every-brilliant-thing_1827748/"
     },
     {
-      "t": "2026-06-30T03:03:12.421Z",
-      "event": "bb-session",
-      "session": "f91bbaec",
-      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
+      "reviewId": "oh-mary-west-end-2025/nytg--gillian-russo.json",
+      "oldUrl": "https://www.newyorktheatreguide.com/theatre-news/news/simu-liu-to-make-broadway-debut-in-oh-mary",
+      "newUrl": "https://www.newyorktheatreguide.com/theatre-news/news/maya-rudolph-extends-run-in-oh-mary-on-broadway"
     },
     {
-      "t": "2026-06-30T03:03:13.329Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "reviewId": "oh-mary-west-end-2025/nytg--olivia-rook.json",
+      "oldUrl": "https://www.newyorktheatreguide.com/theatre-news/news/simu-liu-to-make-broadway-debut-in-oh-mary",
+      "newUrl": "https://www.newyorktheatreguide.com/theatre-news/news/maya-rudolph-extends-run-in-oh-mary-on-broadway"
     },
     {
-      "t": "2026-06-30T04:10:05.620Z",
-      "event": "bb-session",
-      "session": "fc1502cf",
-      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
+      "reviewId": "oh-mary-west-end-2025/variety--brent-lang.json",
+      "oldUrl": "https://variety.com/2025/legit/news/simu-liu-broadway-debut-oh-mary-cole-escola-1236609831/",
+      "newUrl": "https://variety.com/2026/legit/news/maya-rudolph-oh-mary-broadway-debut-1236685691/"
     },
     {
-      "t": "2026-06-30T04:10:06.571Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "reviewId": "oh-mary-west-end-2025/variety--rebecca-rubin.json",
+      "oldUrl": "https://variety.com/2026/legit/news/maya-rudolph-oh-mary-broadway-debut-1236685691/",
+      "newUrl": "https://variety.com/2025/legit/news/simu-liu-broadway-debut-oh-mary-cole-escola-1236609831/"
     },
     {
-      "t": "2026-06-30T06:12:06.276Z",
-      "event": "bb-session",
-      "session": "b956eea7",
-      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
+      "reviewId": "oh-mary-west-end-2025/deadline--greg-evans.json",
+      "oldUrl": "https://deadline.com/2025/12/simu-liu-broadway-oh-mary-1236649862/",
+      "newUrl": "https://deadline.com/2026/03/maya-rudolph-broadway-oh-mary-1236751169/"
     },
     {
-      "t": "2026-06-30T06:12:07.255Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
+      "reviewId": "oh-mary-west-end-2025/theatermania--zachary-stewart.json",
+      "oldUrl": "https://www.theatermania.com/news/simu-liu-to-join-john-cameron-mitchell-in-oh-mary-on-broadway_1815350/",
+      "newUrl": "https://www.theatermania.com/news/meg-stalter-will-don-the-bratty-curls-in-oh-mary-on-broadway_1836823/"
     },
     {
-      "t": "2026-06-30T06:13:32.880Z",
-      "event": "bb-session",
-      "session": "98c793a8",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mariska-hargitay-to-make-broadw"
+      "reviewId": "stranger-things-2024/thestage--unknown.json",
+      "oldUrl": "https://www.thestage.co.uk/news/netflix-documentary-to-go-behind-the-scenes-of-stranger-things-the-first-shadow",
+      "newUrl": "https://www.thestage.co.uk/news/stranger-things-design-team-getting-the-show-up-was-an-intense-challenge-tony-awards"
     },
     {
-      "t": "2026-06-30T06:13:33.972Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
+      "reviewId": "the-great-gatsby-2024/nytimes--laura-collins-hughes.json",
+      "oldUrl": "https://www.nytimes.com/2024/04/25/theater/the-great-gatsby-review-noblezada-jordan.html",
+      "newUrl": "https://www.nytimes.com/2024/08/05/theater/great-gatsby-theater-influencers.html"
     },
     {
-      "t": "2026-06-30T06:15:35.871Z",
-      "event": "bb-session",
-      "session": "bf2e9ff0",
-      "url": "https://variety.com/2026/legit/news/maya-rudolph-oh-mary-broadway-debut-12366856"
+      "reviewId": "hadestown-west-end-2024/theatermania--zachary-stewart.json",
+      "oldUrl": "https://www.theatermania.com/broadway/reviews/is-hadestown-the-smartest-new-musical-on-broadway_88455.html",
+      "newUrl": "https://www.theatermania.com/news/jordan-fisher-maia-reficco-and-phillip-boykin-extend-their-runs-in-hadestown_1747752/"
     },
     {
-      "t": "2026-06-30T06:15:36.740Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
+      "reviewId": "hadestown-west-end-2024/london-theatre--julia-rank.json",
+      "oldUrl": "https://www.londontheatre.co.uk/theatre-news/news/a-complete-guide-to-all-the-songs-in-hadestown",
+      "newUrl": "https://www.londontheatre.co.uk/reviews/hadestown-review-lyric-theatre"
     },
     {
-      "t": "2026-06-30T06:15:56.129Z",
-      "event": "bb-session",
-      "session": "998bd333",
-      "url": "https://variety.com/2025/legit/news/simu-liu-broadway-debut-oh-mary-cole-escola-"
+      "reviewId": "stranger-things-the-first-shadow-west-end-2023/variety--frank-rizzo.json",
+      "oldUrl": "https://variety.com/2025/legit/reviews/stranger-things-the-first-shadow-review-broadway-1236375485/",
+      "newUrl": "https://variety.com/2023/theater/news/stranger-things-play-the-first-shadow-cast-west-end-1235789075/"
     },
     {
-      "t": "2026-06-30T06:15:57.090Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
+      "reviewId": "stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json",
+      "oldUrl": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-breaking-baz-1235667733/",
+      "newUrl": "https://deadline.com/2024/03/stranger-things-first-shadow-broadway-1235850385/"
     },
     {
-      "t": "2026-06-30T06:16:20.924Z",
-      "event": "bb-session",
-      "session": "466025ed",
-      "url": "https://deadline.com/2026/03/maya-rudolph-broadway-oh-mary-1236751169/"
+      "reviewId": "stranger-things-the-first-shadow-west-end-2023/timeout--adam-feldman.json",
+      "oldUrl": "https://www.timeout.com/newyork/theater/stranger-things-the-first-shadow-broadway-review-prequel-louis-mccartney",
+      "newUrl": "https://www.timeout.com/london/theatre/stranger-things-the-first-shadow-everything-you-need-to-know"
     },
     {
-      "t": "2026-06-30T06:16:21.867Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
+      "reviewId": "operation-mincemeat-west-end-2024/nytimes--jesse-green.json",
+      "oldUrl": "https://www.nytimes.com/2025/03/20/theater/operation-mincemeat-review-broadway.html",
+      "newUrl": "https://www.nytimes.com/2023/08/09/theater/operation-mincemeat-musical-west-end.html"
     },
     {
-      "t": "2026-06-30T06:25:17.865Z",
-      "event": "bb-session",
-      "session": "010f2e4b",
-      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
+      "reviewId": "operation-mincemeat-west-end-2024/musical-theatre-review--unknown.json",
+      "oldUrl": "https://musicaltheatrereview.com/operation-mincemeat-fortune-theatre-4/",
+      "newUrl": "https://musicaltheatrereview.com/operation-mincemeat-fortune-theatre/"
     },
     {
-      "t": "2026-06-30T06:25:18.868Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
+      "reviewId": "operation-mincemeat-west-end-2024/west-end-best-friend--nick-wayne.json",
+      "oldUrl": "https://www.westendbestfriend.co.uk/news/review-operation-mincemeat-theatre-royal-bath-tour",
+      "newUrl": "https://www.westendbestfriend.co.uk/news/review-operation-mincemeat-fortune-theatre"
     },
     {
-      "t": "2026-06-30T06:35:02.530Z",
-      "event": "bb-session",
-      "session": "42ae7bc4",
-      "url": "https://variety.com/2023/theater/news/stranger-things-play-the-first-shadow-cast"
+      "reviewId": "operation-mincemeat-west-end-2024/whatsonstage--alex-wood.json",
+      "oldUrl": "https://www.whatsonstage.com/news/operation-mincemeat-extends-west-end-run_58798/",
+      "newUrl": "https://www.whatsonstage.com/news/operation-mincemeat-extends-west-end-run-again_1225335/"
     },
     {
-      "t": "2026-06-30T06:35:03.514Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-06-30T06:35:49.920Z",
-      "event": "bb-session",
-      "session": "c3ea3b20",
-      "url": "https://deadline.com/2024/03/stranger-things-first-shadow-broadway-1235850385/"
-    },
-    {
-      "t": "2026-06-30T06:35:50.857Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
+      "reviewId": "and-juliet-2022/timeout-london--andrzej-lukowski.json",
+      "oldUrl": "https://www.timeout.com/london/theatre/juliet-review",
+      "newUrl": "https://www.timeout.com/newyork/theater/and-juliet-broadway-musical-review-max-martin"
     }
   ]
 }
