@@ -2,7 +2,7 @@
   "runDate": "2026-06-30T16:31:36.941Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 300,
     "priority": "all",
     "showFilter": "the-misanthrope-west-end-2026",
     "aggressive": false,
@@ -19,7 +19,7 @@
   "tierBreakdown": {
     "playwright": 1,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 4,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
@@ -64,12 +64,28 @@
     "the-misanthrope-west-end-2026/times-uk--sam-marlowe.json",
     "the-misanthrope-west-end-2026/west-end-best-friend--news-desk.json"
   ],
+  "failed": [
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/hollywood-reporter--daniel-fienberg.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/daily-mail--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-box-office--nastazja-domaradzka.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/the-contending--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/the-upcoming-uk--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/times-uk--dominic-maxwell.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-best-friend--news-desk.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/whatsonstage--editorial-staff.json"
+  ],
+  "failed": [],
   "tierDetails": {
     "playwright": [
       "the-misanthrope-west-end-2026/whatsonstage--tanyel-gumushan.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/proof-2026/deadline--unknown.json",
+      "proof-2026/deadline--unknown.json",
+      "data/review-texts/death-of-a-salesman-2026/variety--marilyn-stasio.json",
+      "death-of-a-salesman-2026/variety--marilyn-stasio.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
