@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-06-30T15:13:10.244Z",
+  "timestamp": "2026-06-30T16:57:00.422Z",
   "stats": {
-    "totalReviews": 39544,
-    "alreadyFlagged": 17427,
+    "totalReviews": 39567,
+    "alreadyFlagged": 17428,
     "dateGuardCatches": 35,
     "directorMismatch": 889,
     "tvFilmSignals": 1088,
-    "londonSignals": 710,
+    "londonSignals": 711,
     "offBroadwaySignals": 467,
     "yearMismatch": 84,
-    "noPublishDate": 3969
+    "noPublishDate": 3989
   },
   "findings": [
     {
@@ -36583,6 +36583,20 @@
     },
     {
       "showId": "pride-west-end-2026",
+      "file": "afridiziak-theatre-news--althyr-pivatto.json",
+      "score": 84,
+      "publishDate": "2026-06-29",
+      "url": "https://www.afridiziak.com/reviews/pride/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "pride-west-end-2026",
       "file": "all-that-dazzles-uk--daz-gale.json",
       "score": 97,
       "publishDate": "2026-06-25",
@@ -41017,7 +41031,7 @@
       "file": "thestage--dave-fargnoli.json",
       "score": 38,
       "publishDate": "2026-06-24",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-misanthrope-review-sandra-oh-what-a-disappointment-sbzvf82b2?t=1782310602034",
+      "url": "https://www.thestage.co.uk/review-round-ups/the-misanthrope-starring-sandra-oh-review-round-up",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
