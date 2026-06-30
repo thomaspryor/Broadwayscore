@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-30T17:27:07.154Z",
+  "generatedAt": "2026-06-30T18:14:05.932Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -737,28 +737,28 @@
       "status": "open",
       "slug": "a-midsummer-nights-dream-west-end",
       "thumbnail": "/images/shows/a-midsummer-nights-dream-west-end-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": 51,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 1,
+      "siteScore": 56.8,
+      "liveScore": 57,
+      "scoreDrift": 0.20000000000000284,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 4,
+      "total": 5,
       "t1": 1,
       "t2": 2,
-      "t3": 1,
-      "positive": 0,
+      "t3": 2,
+      "positive": 1,
       "mixed": 3,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "4/8 total",
+          "5/8 total",
           "T1:0/3",
           "T2:1/2",
-          "hi-conf:0/6"
+          "hi-conf:1/6"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -855,6 +855,18 @@
           "t2": 2,
           "t3": 1,
           "p": 0,
+          "m": 3,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-06-30T18:14:05.932Z",
+          "rc": 5,
+          "s": 56.8,
+          "t1": 1,
+          "t2": 2,
+          "t3": 2,
+          "p": 1,
           "m": 3,
           "n": 1,
           "bc": "waiting"
