@@ -1,55 +1,4 @@
 {
-  "runDate": "2026-06-30T17:43:39.210Z",
-  "config": {
-    "batchSize": 10,
-    "maxReviews": 300,
-    "priority": "all",
-    "showFilter": "glengarry-glen-ross-west-end-2026",
-    "aggressive": false,
-    "scrapingBeeEnabled": true,
-    "brightDataEnabled": true,
-    "stealthPluginLoaded": true
-  },
-  "summary": {
-    "processed": 64,
-    "failed": 236,
-    "skipped": 0,
-    "successRate": "21.3%"
-  },
-  "tierBreakdown": {
-    "playwright": 59,
-    "amp": 0,
-    "browserbase": 2,
-    "directCookies": 0,
-    "scrapingbee": 5,
-    "brightdata": 1,
-    "archiveToday": 4,
-    "archive": 2
-  },
-  "statistics": {
-    "tier1Attempts": 83,
-    "tier1Success": 74,
-    "ampAttempts": 0,
-    "ampSuccess": 0,
-    "tier1_5Attempts": 2,
-    "tier1_5Success": 1,
-    "tier2Attempts": 23,
-    "tier2Success": 10,
-    "tier3Attempts": 5,
-    "tier3Success": 4,
-    "tier3_6Attempts": 4,
-    "tier3_6Success": 4,
-    "tier4Attempts": 18,
-    "tier4Success": 1,
-    "totalFailed": 232,
-    "scrapingBeePageCredits": 167,
-    "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 0.7,
-    "urlDiscoveryAttempts": 245,
-    "urlDiscoverySuccess": 36,
-    "urlDiscoveryCapped": 0
-  },
   "processed": [
     "the-guilty-west-end-2026/deadline--ted-johnson.json",
     "a-walk-on-the-moon-off-broadway-2026/theatermania--unknown.json",
@@ -253,10 +202,8 @@
     "glengarry-glen-ross-west-end-2026/nytimes--jesse-green.json",
     "glengarry-glen-ross-west-end-2026/variety--marilyn-stasio.json",
     "glengarry-glen-ross-west-end-2026/vulture--sara-holdren.json",
-    "glengarry-glen-ross-west-end-2026/guardian-uk--unknown.json",
     "glengarry-glen-ross-west-end-2026/newsday--linda-winer.json",
     "glengarry-glen-ross-west-end-2026/observer--david-cote.json",
-    "glengarry-glen-ross-west-end-2026/oxfordshire-guardian--unknown.json",
     "glengarry-glen-ross-west-end-2026/about-entertainment--ben-brantley.json",
     "glengarry-glen-ross-west-end-2026/amny--matt-windman.json",
     "glengarry-glen-ross-west-end-2026/bloomberg--jeremy-gerard.json",
@@ -356,7 +303,8 @@
     "a-midsummer-nights-dream-globe-west-end-2026/london-theatre--julia-rank.json",
     "a-midsummer-nights-dream-globe-west-end-2026/standard--tim-bano.json"
   ],
-  "tierDetails": {
+  "skipped": [],
+  "tierBreakdown": {
     "playwright": [
       "a-walk-on-the-moon-off-broadway-2026/theatermania--unknown.json",
       "springwood-west-end-2026/thereviewshub--unknown.json",
@@ -445,216 +393,30 @@
       "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json"
     ]
   },
-  "failuresByOutlet": {
-    "The Guardian": {
-      "count": 2,
-      "domain": "theguardian.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Sunday Telegraph": {
-      "count": 1,
-      "domain": "telegraph.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Telegraph": {
-      "count": 1,
-      "domain": "telegraph.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "WhatsOnStage": {
-      "count": 1,
-      "domain": "whatsonstage.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
-  "urlDiscoveries": [
+  "startTime": "2026-06-30T16:47:37.281Z",
+  "lastProcessed": "a-midsummer-nights-dream-globe-west-end-2026/standard--tim-bano.json",
+  "log": [
     {
-      "reviewId": "jesus-christ-superstar-west-end-2026/broadwayworld--stephi-wild.json",
-      "oldUrl": "https://www.broadwayworld.com/westend/article/JESUS-CHRIST-SUPERSTAR-Will-Embark-on-UK-Tour-Starring-Sam-Ryder-20260622",
-      "newUrl": "https://www.broadwayworld.com/uk-regional/article/JESUS-CHRIST-SUPERSTAR-Starring-Sam-Ryder-to-Visit-Birmingham-Hippodrome-20260624"
+      "t": "2026-06-30T16:51:17.696Z",
+      "event": "bb-session",
+      "session": "01467c27",
+      "url": "https://deadline.com/2026/06/john-bolton-pleads-guilty-trump-classified-informat"
     },
     {
-      "reviewId": "a-midsummer-nights-dream-west-end-2026/broadwayworld--michael-major.json",
-      "oldUrl": "https://www.broadwayworld.com/westend/article/Video-A-MIDSUMMER-NIGHTS-DREAM-Trailer-Released-for-Shakespeares-Globe-20260624",
-      "newUrl": "https://www.broadwayworld.com/westend/article/Review-A-MIDSUMMER-NIGHTS-DREAM-Regents-Park-Open-Air-Theatre-20260630"
+      "t": "2026-06-30T16:51:18.226Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     },
     {
-      "reviewId": "a-midsummer-nights-dream-west-end-2026/london-box-office--kit-benjamin.json",
-      "oldUrl": "https://www.londonboxoffice.co.uk/news/post/review-midsummer-nights-dream",
-      "newUrl": "https://www.londonboxoffice.co.uk/news/post/a-midsummer-nights-dream-regents-park-open-air-theatre-review"
+      "t": "2026-06-30T17:27:06.669Z",
+      "event": "bb-session",
+      "session": "47136d98",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2649682"
     },
     {
-      "reviewId": "a-midsummer-nights-dream-west-end-2026/london-box-office--marian-pashley.json",
-      "oldUrl": "https://www.londonboxoffice.co.uk/news/post/review-midsummer-nights-dream-open-air",
-      "newUrl": "https://www.londonboxoffice.co.uk/news/post/a-midsummer-nights-dream-regents-park-open-air-theatre-review"
-    },
-    {
-      "reviewId": "a-midsummer-nights-dream-west-end-2026/times-uk--dominic-maxwell.json",
-      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/a-midsummer-nights-dream-review-turbo-charged-and-full-of-surprises-l59mqnwnt",
-      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/a-midsummer-nights-dream-review-a-hideous-set-ruins-the-fun-6z8l303sr"
-    },
-    {
-      "reviewId": "a-midsummer-nights-dream-west-end-2026/whatsonstage--alex-wood.json",
-      "oldUrl": "https://www.whatsonstage.com/news/review-a-midsummer-nights-dream-shakespeares-globe_49384/",
-      "newUrl": "https://www.whatsonstage.com/news/a-midsummer-nights-dream-at-regents-park-open-air-theatre-review_1726521/"
-    },
-    {
-      "reviewId": "a-midsummer-nights-dream-west-end-2026/whatsonstage--alun-hood.json",
-      "oldUrl": "https://www.whatsonstage.com/news/a-midsummer-nights-dream-at-shakespeares-globe-and-on-tour-review_1704672/",
-      "newUrl": "https://www.whatsonstage.com/news/a-midsummer-nights-dream-at-regents-park-open-air-theatre-review_1726521/"
-    },
-    {
-      "reviewId": "a-midsummer-nights-dream-west-end-2026/whatsonstage--daniel-perks.json",
-      "oldUrl": "https://www.whatsonstage.com/news/review-a-midsummer-nights-dream-criterion-theatre_50574/",
-      "newUrl": "https://www.whatsonstage.com/news/a-midsummer-nights-dream-at-regents-park-open-air-theatre-review_1726521/"
-    },
-    {
-      "reviewId": "a-midsummer-nights-dream-west-end-2026/whatsonstage--james-fitzgerald.json",
-      "oldUrl": "https://www.whatsonstage.com/news/review-a-midsummer-nights-dream-regents-park-open-air-theatre_49408/",
-      "newUrl": "https://www.whatsonstage.com/news/a-midsummer-nights-dream-at-regents-park-open-air-theatre-review_1726521/"
-    },
-    {
-      "reviewId": "a-midsummer-nights-dream-west-end-2026/whatsonstage--judi-herman.json",
-      "oldUrl": "https://www.whatsonstage.com/news/review-a-midsummer-nights-dream-watermill-theatre_51009/",
-      "newUrl": "https://www.whatsonstage.com/news/a-midsummer-nights-dream-at-regents-park-open-air-theatre-review_1726521/"
-    },
-    {
-      "reviewId": "a-midsummer-nights-dream-west-end-2026/whatsonstage--michael-davies.json",
-      "oldUrl": "https://www.whatsonstage.com/news/a-midsummer-nights-dream-at-shakespeare-north-playhouse-review_57489/",
-      "newUrl": "https://www.whatsonstage.com/news/a-midsummer-nights-dream-at-regents-park-open-air-theatre-review_1726521/"
-    },
-    {
-      "reviewId": "a-midsummer-nights-dream-west-end-2026/whatsonstage--sarah-crompton.json",
-      "oldUrl": "https://www.whatsonstage.com/news/review-a-midsummer-nights-dream-shakespeares-globe_54149/",
-      "newUrl": "https://www.whatsonstage.com/news/a-midsummer-nights-dream-at-regents-park-open-air-theatre-review_1726521/"
-    },
-    {
-      "reviewId": "a-midsummer-nights-dream-west-end-2026/whatsonstage--theo-bosanquet.json",
-      "oldUrl": "https://www.whatsonstage.com/news/a-midsummer-nights-dream-at-shakespeares-globe-review_59005/",
-      "newUrl": "https://www.whatsonstage.com/news/a-midsummer-nights-dream-at-regents-park-open-air-theatre-review_1726521/"
-    },
-    {
-      "reviewId": "a-midsummer-nights-dream-west-end-2026/london-box-office--stuart-king.json",
-      "oldUrl": "https://www.londonboxoffice.co.uk/news/post/review-midsummer-nights-dream-bridge-theatre",
-      "newUrl": "https://www.londonboxoffice.co.uk/news/post/a-midsummer-nights-dream-regents-park-open-air-theatre-review"
-    },
-    {
-      "reviewId": "cyrano-de-bergerac-west-end-2026/broadwayworld--stephi-wild.json",
-      "oldUrl": "https://www.broadwayworld.com/westend/article/Review-CYRANO-DE-BERGERAC-Nol-Coward-Theatre-20260626",
-      "newUrl": "https://www.broadwayworld.com/video/Cyrano-de-Bergerac-1985"
-    },
-    {
-      "reviewId": "pride-west-end-2026/whatsonstage--daisy-bowie.json",
-      "oldUrl": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/pride_1703068/",
-      "newUrl": "https://www.whatsonstage.com/news/the-pride-musical-celebrates-its-official-opening-night-in-london-during-pride-month_1726325/"
-    },
-    {
-      "reviewId": "pride-west-end-2026/whatsonstage--sarah-crompton.json",
-      "oldUrl": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/pride_1703068/",
-      "newUrl": "https://www.whatsonstage.com/news/the-pride-musical-celebrates-its-official-opening-night-in-london-during-pride-month_1726325/"
-    },
-    {
-      "reviewId": "birthright-off-broadway-2026/theatermania--linda-buchwald.json",
-      "oldUrl": "https://www.theatermania.com/news/molly-bernard-to-replace-abbi-jacobson-in-birthright-at-mcc_1841108/",
-      "newUrl": "https://www.theatermania.com/news/review-birthright-is-a-safe-three-and-a-half-hour-play-about-israel-palestine-and-fractured-friendships_1844046/"
-    },
-    {
-      "reviewId": "birthright-off-broadway-2026/playbill--unknown.json",
-      "oldUrl": "https://playbill.com/article/read-the-reviews-for-birthright-off-broadway",
-      "newUrl": "https://playbill.com/article/abbi-jacobson-departs-off-broadways-birthright-mcc-theater-pushes-start"
-    },
-    {
-      "reviewId": "sinatra-the-musical-west-end-2026/broadwayworld--emma-john.json",
-      "oldUrl": "https://www.broadwayworld.com/westend/article/Review-SINATRA-THE-MUSICAL-Aldwych-Theatre-20260624",
-      "newUrl": "https://www.broadwayworld.com/reviews/sinatra-the-musical"
-    },
-    {
-      "reviewId": "sinatra-the-musical-west-end-2026/london-box-office--john-yap.json",
-      "oldUrl": "https://www.londonboxoffice.co.uk/news/post/review-richard-shelton-sinatra-raw",
-      "newUrl": "https://www.londonboxoffice.co.uk/news/post/review-roundup-sinatra-the-musical-aldwych-theatre"
-    },
-    {
-      "reviewId": "sinatra-the-musical-west-end-2026/london-box-office--phil-willmott.json",
-      "oldUrl": "https://www.londonboxoffice.co.uk/news/post/sinatra-review",
-      "newUrl": "https://www.londonboxoffice.co.uk/news/post/review-roundup-sinatra-the-musical-aldwych-theatre"
-    },
-    {
-      "reviewId": "sinatra-the-musical-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
-      "oldUrl": "https://www.londonboxoffice.co.uk/news/post/review-roundup-sinatra-the-musical-aldwych-theatre",
-      "newUrl": "https://www.londonboxoffice.co.uk/news/post/sinatra-the-musical-photos"
-    },
-    {
-      "reviewId": "the-truth-a-comedy-by-florian-zeller-west-end-2026/i-paper--sarah-carson.json",
-      "oldUrl": "https://inews.co.uk/culture/dont-think-sam-campbell-telling-truth-4465988?srsltid=AfmBOood0PUC4BmF3nw5340Ir4tVhch5npHcTDSXaZaFR_SAe5tDKAgf",
-      "newUrl": "https://inews.co.uk/culture/dont-think-sam-campbell-telling-truth-4465988?srsltid=AfmBOorY2izE5a72yxyxjNz9jUmNS7ymkJlSIy6w2Dfjlk55VIOzoBcm"
-    },
-    {
-      "reviewId": "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre--marianka-swain.json",
-      "oldUrl": "https://www.londontheatre.co.uk/theatre-news/news/everything-you-need-to-know-about-the-truth",
-      "newUrl": "https://www.londontheatre.co.uk/reviews/the-truth-review-apollo-theatre"
-    },
-    {
-      "reviewId": "the-truth-a-comedy-by-florian-zeller-west-end-2026/times-uk--dominic-maxwell.json",
-      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/the-truth-review-florian-zeller-apollo-76tb0rdf2",
-      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/the-truth-review-florian-zeller-apollo-76tb0rdf2?eafs_enabled=false"
-    },
-    {
-      "reviewId": "glengarry-glen-ross-west-end-2026/times-uk--ann-treneman.json",
-      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0",
-      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0?eafs_enabled=false"
-    },
-    {
-      "reviewId": "glengarry-glen-ross-west-end-2026/times-uk--benedict-nightingale.json",
-      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0?eafs_enabled=false",
-      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0"
-    },
-    {
-      "reviewId": "glengarry-glen-ross-west-end-2026/times-uk--dominic-maxwell.json",
-      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0?eafs_enabled=false",
-      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0"
-    },
-    {
-      "reviewId": "glengarry-glen-ross-west-end-2026/times-uk--maxie-szalwinska.json",
-      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0",
-      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0?eafs_enabled=false"
-    },
-    {
-      "reviewId": "girl-interrupted-off-broadway-2026/playbill--unknown.json",
-      "oldUrl": "https://playbill.com/production/girl-interrupted-off-broadway-public-theater-martinson-hall-2026",
-      "newUrl": "https://playbill.com/article/what-are-reviews-saying-about-girl-interrupted"
-    },
-    {
-      "reviewId": "war-horse-west-end-2026/whatsonstage--jane-kemp.json",
-      "oldUrl": "https://www.whatsonstage.com/news/war-horse-at-the-national-theatre-review-still-a-theatrical-miracle_1722745/",
-      "newUrl": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/war-horse_1712421/"
-    },
-    {
-      "reviewId": "small-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
-      "oldUrl": "https://www.broadwayworld.com/article/Video-Robert-Montano-Answers-Big-Questions-About-His-New-Play-SMALL-20260618",
-      "newUrl": "https://www.broadwayworld.com/article/Review-Roundup-Robert-Montanos-SMALL-Off-Broadway-20260601"
-    },
-    {
-      "reviewId": "small-off-broadway-2026/broadwayworld--marina-kennedy.json",
-      "oldUrl": "https://www.broadwayworld.com/article/Review-Roundup-Robert-Montanos-SMALL-Off-Broadway-20260601",
-      "newUrl": "https://www.broadwayworld.com/article/Video-Robert-Montano-Answers-Big-Questions-About-His-New-Play-SMALL-20260618"
-    },
-    {
-      "reviewId": "celebrity-autobiography-2026/theatermania--brian-scott-lipton.json",
-      "oldUrl": "https://www.theatermania.com/news/review-celebrity-autobiography-on-broadway_1837709/",
-      "newUrl": "https://www.theatermania.com/news/celebrity-autobiography-to-close-early-on-brodway_1842058/"
-    },
-    {
-      "reviewId": "celebrity-autobiography-2026/playbill--unknown.json",
-      "oldUrl": "https://playbill.com/article/reviews-did-critics-think-celebrity-autobiography-on-broadway-was-a-novel-idea",
-      "newUrl": "https://playbill.com/article/celebrity-autobiography-will-close-on-broadway-earlier-than-expected"
+      "t": "2026-06-30T17:27:07.188Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
