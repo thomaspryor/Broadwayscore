@@ -2,7 +2,7 @@
   "runDate": "2026-06-30T16:31:04.073Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 300,
     "priority": "all",
     "showFilter": "sting-west-end-2026",
     "aggressive": false,
@@ -14,12 +14,12 @@
     "processed": 0,
     "failed": 19,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "27.3%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 3,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 4,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
@@ -72,10 +72,30 @@
     "sting-west-end-2026/westendtheatre--unknown.json",
     "sting-west-end-2026/whatsonstage--julia-rank.json"
   ],
+  "failed": [
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/hollywood-reporter--daniel-fienberg.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/daily-mail--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-box-office--nastazja-domaradzka.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/the-contending--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/the-upcoming-uk--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/times-uk--dominic-maxwell.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-best-friend--news-desk.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/whatsonstage--editorial-staff.json"
+  ],
+  "failed": [],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "the-truth-a-comedy-by-florian-zeller-west-end-2026/i-paper--sarah-carson.json",
+      "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre--marianka-swain.json",
+      "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json"
+    ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/proof-2026/deadline--unknown.json",
+      "proof-2026/deadline--unknown.json",
+      "data/review-texts/death-of-a-salesman-2026/variety--marilyn-stasio.json",
+      "death-of-a-salesman-2026/variety--marilyn-stasio.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
@@ -85,5 +105,16 @@
     "archive": []
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "the-truth-a-comedy-by-florian-zeller-west-end-2026/i-paper--sarah-carson.json",
+      "oldUrl": "https://inews.co.uk/culture/dont-think-sam-campbell-telling-truth-4465988?srsltid=AfmBOopKz4pCHEjPqjZ4YfI9Q9zE_5div8qGF2HyHPY-3jZdsy2WYiDR",
+      "newUrl": "https://inews.co.uk/culture/dont-think-sam-campbell-telling-truth-4465988?srsltid=AfmBOood0PUC4BmF3nw5340Ir4tVhch5npHcTDSXaZaFR_SAe5tDKAgf"
+    },
+    {
+      "reviewId": "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre--marianka-swain.json",
+      "oldUrl": "https://www.londontheatre.co.uk/reviews/the-truth-review-apollo-theatre",
+      "newUrl": "https://www.londontheatre.co.uk/theatre-news/news/everything-you-need-to-know-about-the-truth"
+    }
+  ]
 }
