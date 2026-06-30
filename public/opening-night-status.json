@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-30T10:42:57.998Z",
+  "generatedAt": "2026-06-30T10:50:22.549Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -812,28 +812,27 @@
       "status": "open",
       "slug": "a-walk-on-the-moon-off-broadway",
       "thumbnail": "/images/shows/a-walk-on-the-moon-off-broadway-2026/thumbnail.webp",
-      "siteScore": 60.47,
-      "liveScore": 60,
-      "scoreDrift": -0.46999999999999886,
+      "siteScore": 57.4,
+      "liveScore": 57,
+      "scoreDrift": -0.3999999999999986,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 3,
+      "total": 5,
       "t1": 1,
-      "t2": 1,
+      "t2": 3,
       "t3": 1,
       "positive": 0,
-      "mixed": 2,
-      "negative": 1,
+      "mixed": 3,
+      "negative": 2,
       "readiness": {
         "ready": false,
         "reasons": [
-          "3/12 total",
+          "5/12 total",
           "T1:1/3",
-          "T2:1/3",
-          "hi-conf:3/8"
+          "hi-conf:5/8"
         ],
-        "highConfidence": 3,
+        "highConfidence": 5,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1176,6 +1175,18 @@
           "p": 0,
           "m": 2,
           "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-06-30T10:50:22.549Z",
+          "rc": 5,
+          "s": 57.4,
+          "t1": 1,
+          "t2": 3,
+          "t3": 1,
+          "p": 0,
+          "m": 3,
+          "n": 2,
           "bc": "waiting"
         }
       ]
