@@ -1,83 +1,97 @@
 {
-  "runDate": "2026-06-30T10:22:47.199Z",
+  "runDate": "2026-06-30T16:31:36.941Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "to-kill-a-mockingbird-west-end-2026",
+    "showFilter": "the-misanthrope-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 15,
+    "processed": 1,
+    "failed": 9,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "10.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 0,
+    "archiveToday": 1,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 2,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 0,
+    "tier2Attempts": 1,
+    "tier2Success": 1,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
+    "tier4Attempts": 3,
     "tier4Success": 0,
-    "totalFailed": 15,
-    "scrapingBeePageCredits": 0,
+    "totalFailed": 9,
+    "scrapingBeePageCredits": 10,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 15,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 7,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "the-misanthrope-west-end-2026/whatsonstage--tanyel-gumushan.json"
+  ],
   "failed": [
-    "to-kill-a-mockingbird-west-end-2026/hollywood-reporter--david-rooney.json",
-    "to-kill-a-mockingbird-west-end-2026/observer--david-cote.json",
-    "to-kill-a-mockingbird-west-end-2026/thewrap--thom-geier.json",
-    "to-kill-a-mockingbird-west-end-2026/timeout--adam-feldman.json",
-    "to-kill-a-mockingbird-west-end-2026/wsj--terry-teachout.json",
-    "to-kill-a-mockingbird-west-end-2026/broadwayworld--michael-dale.json",
-    "to-kill-a-mockingbird-west-end-2026/chicagotribune--chris-jones.json",
-    "to-kill-a-mockingbird-west-end-2026/financialtimes--sarah-hemming.json",
-    "to-kill-a-mockingbird-west-end-2026/i-paper--sam-marlowe.json",
-    "to-kill-a-mockingbird-west-end-2026/inquirer--toby-zinman.json",
-    "to-kill-a-mockingbird-west-end-2026/latimes--unknown.json",
-    "to-kill-a-mockingbird-west-end-2026/standard--nick-curtis.json",
-    "to-kill-a-mockingbird-west-end-2026/sunday-telegraph--dominic-cavendish.json",
-    "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
-    "to-kill-a-mockingbird-west-end-2026/times-uk--quentin-letts.json"
+    "the-misanthrope-west-end-2026/nytheatre--david-gordon.json",
+    "the-misanthrope-west-end-2026/theatermania--david-finkle.json",
+    "the-misanthrope-west-end-2026/about-entertainment--jason-zinoman.json",
+    "the-misanthrope-west-end-2026/backstage--david-sheward.json",
+    "the-misanthrope-west-end-2026/curtainup--simon-saltzman.json",
+    "the-misanthrope-west-end-2026/thestage--dave-fargnoli.json",
+    "the-misanthrope-west-end-2026/times-uk--clive-davis.json",
+    "the-misanthrope-west-end-2026/times-uk--sam-marlowe.json",
+    "the-misanthrope-west-end-2026/west-end-best-friend--news-desk.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "the-misanthrope-west-end-2026/whatsonstage--tanyel-gumushan.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/the-misanthrope-west-end-2026/thestage--dave-fargnoli.json"
+    ],
     "archive": []
   },
-  "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "failuresByOutlet": {
+    "The Times (UK)": {
+      "count": 2,
+      "domain": "thetimes.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
+  "urlDiscoveries": [
+    {
+      "reviewId": "the-misanthrope-west-end-2026/whatsonstage--tanyel-gumushan.json",
+      "oldUrl": "https://www.whatsonstage.com/news/the-misanthrope-with-sandra-oh-to-have-cinema-release_1724246/",
+      "newUrl": "https://www.whatsonstage.com/news/the-misanthrope-with-sandra-oh-at-the-national-theatre-review_1725880/"
+    }
+  ]
 }
