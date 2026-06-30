@@ -1,18 +1,41 @@
 {
-  "updatedAt": "2026-06-30T16:36:17.952Z",
-  "processed": 1,
-  "failed": 29,
-  "successRate": "3.3%",
+  "updatedAt": "2026-06-30T17:43:35.319Z",
+  "processed": 64,
+  "failed": 236,
+  "successRate": "21.3%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 59,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
-    "archiveToday": 2,
-    "archive": 1
+    "scrapingbee": 5,
+    "brightdata": 1,
+    "archiveToday": 4,
+    "archive": 2
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-06-30T16:51:17.696Z",
+      "event": "bb-session",
+      "session": "01467c27",
+      "url": "https://deadline.com/2026/06/john-bolton-pleads-guilty-trump-classified-informat"
+    },
+    {
+      "t": "2026-06-30T16:51:18.226Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-06-30T17:27:06.669Z",
+      "event": "bb-session",
+      "session": "47136d98",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2649682"
+    },
+    {
+      "t": "2026-06-30T17:27:07.188Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }
