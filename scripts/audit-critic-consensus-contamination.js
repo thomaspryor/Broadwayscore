@@ -138,6 +138,14 @@ function main() {
   const issues = audit();
   const json = process.argv.includes('--json');
   const strict = process.argv.includes('--strict');
+  // --gate: per-push trunk catastrophe floor (test.yml). Of the three FAIL
+  // signals only SHOW_NOT_IN_DB (a structural orphan key) is a zero-FP per-push
+  // catastrophe; REVIEWCOUNT_DRIFT / MEANSCORE_DRIFT are STALENESS that fires on
+  // opening nights and self-heals on the next update-critic-consensus regen, so
+  // they are demoted to the digest. Decision is the pure scripts/lib/critic-
+  // consensus-contamination-gate.js (CLAUDE.md §15). Full --strict runs daily in
+  // check-corpus-drift.yml.
+  const gate = process.argv.includes('--gate');
 
   if (json) {
     process.stdout.write(JSON.stringify(issues, null, 2) + '\n');
@@ -154,6 +162,22 @@ function main() {
 
   const fails = issues.filter(i => i.severity === 'fail').length;
   const warns = issues.filter(i => i.severity === 'warn').length;
+
+  if (gate) {
+    const {
+      shouldBlockCriticConsensusContaminationGate,
+      GATE_SIGNALS,
+    } = require('./lib/critic-consensus-contamination-gate');
+    const gateHits = issues.filter(i => i.flags.some(f => GATE_SIGNALS.has(f.split(':')[0]))).length;
+    if (shouldBlockCriticConsensusContaminationGate({ gateHits })) {
+      console.error(`\n❌ GATE: ${gateHits} consensus key(s) resolve to no shows.json id (structural orphan).`);
+      process.exitCode = 1;
+    } else {
+      console.log(`\n✓ GATE: no orphan consensus keys; staleness drift surfaced in digest (self-heals on regen).`);
+    }
+    return;
+  }
+
   if (fails > 0 || (strict && warns > 0)) process.exitCode = 1;
 }
 
