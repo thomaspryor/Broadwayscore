@@ -1,0 +1,106 @@
+{
+  "runDate": "2026-06-30T07:04:05.164Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 0,
+    "priority": "all",
+    "showFilter": "cyrano-de-bergerac-west-end-2026",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 1,
+    "failed": 24,
+    "skipped": 0,
+    "successRate": "4.0%"
+  },
+  "tierBreakdown": {
+    "playwright": 1,
+    "amp": 0,
+    "browserbase": 0,
+    "directCookies": 0,
+    "scrapingbee": 0,
+    "brightdata": 1,
+    "archiveToday": 1,
+    "archive": 0
+  },
+  "statistics": {
+    "tier1Attempts": 4,
+    "tier1Success": 2,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 2,
+    "tier2Success": 0,
+    "tier3Attempts": 2,
+    "tier3Success": 1,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
+    "tier4Attempts": 1,
+    "tier4Success": 0,
+    "totalFailed": 23,
+    "scrapingBeePageCredits": 1,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 22,
+    "urlDiscoverySuccess": 1,
+    "urlDiscoveryCapped": 0
+  },
+  "processed": [
+    "cyrano-de-bergerac-west-end-2026/guardian-uk--unknown.json"
+  ],
+  "failed": [
+    "cyrano-de-bergerac-west-end-2026/hollywood-reporter--unknown.json",
+    "cyrano-de-bergerac-west-end-2026/ew--nick-romano.json",
+    "cyrano-de-bergerac-west-end-2026/newsday--unknown.json",
+    "cyrano-de-bergerac-west-end-2026/about-entertainment--ben-brantley.json",
+    "cyrano-de-bergerac-west-end-2026/amny--unknown.json",
+    "cyrano-de-bergerac-west-end-2026/ap--unknown.json",
+    "cyrano-de-bergerac-west-end-2026/bloomberg--jeremy-gerard.json",
+    "cyrano-de-bergerac-west-end-2026/broadwayworld--stephi-wild.json",
+    "cyrano-de-bergerac-west-end-2026/daily-echo--steve-page.json",
+    "cyrano-de-bergerac-west-end-2026/financialtimes--sarah-hemming.json",
+    "cyrano-de-bergerac-west-end-2026/metro-uk--claire-allfree.json",
+    "cyrano-de-bergerac-west-end-2026/northjerseycom--robert-feldberg.json",
+    "cyrano-de-bergerac-west-end-2026/standard--fiona-mountford.json",
+    "cyrano-de-bergerac-west-end-2026/telegraph--dominic-cavendish.json",
+    "cyrano-de-bergerac-west-end-2026/the-upcoming-uk--unknown.json",
+    "cyrano-de-bergerac-west-end-2026/thestage--dave-fargnoli.json",
+    "cyrano-de-bergerac-west-end-2026/times-uk--dominic-maxwell.json",
+    "cyrano-de-bergerac-west-end-2026/washpost--peter-marks.json",
+    "cyrano-de-bergerac-west-end-2026/hollywood-reporter--david-rooney.json",
+    "cyrano-de-bergerac-west-end-2026/nytg--gillian-russo.json",
+    "cyrano-de-bergerac-west-end-2026/variety--marilyn-stasio.json",
+    "cyrano-de-bergerac-west-end-2026/ew--tanner-stransky.json",
+    "cyrano-de-bergerac-west-end-2026/newsday--linda-winer.json",
+    "cyrano-de-bergerac-west-end-2026/wsj--terry-teachout.json"
+  ],
+  "tierDetails": {
+    "playwright": [
+      "cyrano-de-bergerac-west-end-2026/guardian-uk--unknown.json"
+    ],
+    "amp": [],
+    "browserbase": [],
+    "directCookies": [],
+    "scrapingbee": [],
+    "brightdata": [
+      "cyrano-de-bergerac-west-end-2026/broadwayworld--stephi-wild.json"
+    ],
+    "archiveToday": [
+      "data/review-texts/cyrano-de-bergerac-west-end-2026/daily-echo--steve-page.json"
+    ],
+    "archive": []
+  },
+  "failuresByOutlet": {},
+  "urlDiscoveries": [
+    {
+      "reviewId": "cyrano-de-bergerac-west-end-2026/broadwayworld--stephi-wild.json",
+      "oldUrl": "https://www.broadwayworld.com/video/Cyrano-de-Bergerac-1985",
+      "newUrl": "https://www.broadwayworld.com/westend/article/Review-CYRANO-DE-BERGERAC-Nol-Coward-Theatre-20260626"
+    }
+  ]
+}
