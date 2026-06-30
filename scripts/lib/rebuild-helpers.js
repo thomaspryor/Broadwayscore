@@ -395,10 +395,26 @@ function getBestScore(data, opts = {}) {
   //
   // humanReviewScore (P0) + adjudicatedScore (P0a) still override — manual
   // verdicts always win.
+  //
+  // EXCEPTION (2026-06-30): 'llm-v6' means "no usable star AT SCORING TIME". But
+  // on opening nights the LLM scores the text immediately and the outlet's star
+  // widget is scraped LATER, leaving scoreSource='llm-v6' alongside a now-present
+  // high-reliability star this early return would ignore — so a published 2/5
+  // showed as 62, a 3/5 as 77 (7 bucket-crossing live errors: care Time Out,
+  // dark-of-the-moon WhatsOnStage/everything-theatre, an-ideal-husband Times,
+  // mass, please-please-me). When an 'llm-v6' review now carries a parseable
+  // originalScore, fall through to P0.5 so the published star (and its existing
+  // reliability/LLM-conflict logic) decides. 'anchored-v6' already used the
+  // star's band as a hard constraint — keep returning it as-is.
   if ((data.scoreSource === 'anchored-v6' || data.scoreSource === 'llm-v6')
       && data.llmScore && typeof data.llmScore.score === 'number'
       && data.llmScore.score >= 0 && data.llmScore.score <= 100) {
-    return { score: data.llmScore.score, source: data.scoreSource };
+    const llmV6HasLateStar = data.scoreSource === 'llm-v6'
+      && data.originalScore
+      && parseOriginalScore(data.originalScore, data.outletId) !== null;
+    if (!llmV6HasLateStar) {
+      return { score: data.llmScore.score, source: data.scoreSource };
+    }
   }
 
   // P0.5: originalScore (aggregator-provided)
