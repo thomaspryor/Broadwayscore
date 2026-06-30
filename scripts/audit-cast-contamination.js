@@ -38,6 +38,10 @@ const {
   KNOWN_SWAP_SURNAMES,
   isOperaSourceUrl,
 } = require('./lib/cast-extraction-guards');
+const {
+  shouldBlockCastContaminationGate,
+  GATE_SIGNALS,
+} = require('./lib/cast-contamination-gate');
 
 const ROOT = path.join(__dirname, '..');
 const CAST_DIR = path.join(ROOT, 'data', 'cast');
@@ -111,11 +115,15 @@ function audit() {
     if (showIds && !showIds.has(showId)) flags.push('SHOW_NOT_IN_DB');
 
     if (flags.length > 0) {
+      // fail = carries a wrong-show contamination signal (the per-push gate
+      // class); warn = soft heuristic only (SRC_URL_NO_TITLE / SHOW_NOT_IN_DB).
+      const severity = flags.some(f => GATE_SIGNALS.has(f.split(':')[0])) ? 'fail' : 'warn';
       issues.push({
         showId,
         orphans: orphans.length,
         source: d.source || null,
         sourceUrl: d.sourceUrl || null,
+        severity,
         flags,
       });
     }
@@ -127,20 +135,46 @@ function audit() {
 function main() {
   const issues = audit();
   const json = process.argv.includes('--json');
+  // --gate: per-push trunk catastrophe floor (test.yml). Blocks only on the
+  // wrong-show contamination class (severity:'fail'); soft heuristics ride the
+  // digest. The block/pass decision is the pure scripts/lib/cast-contamination-
+  // gate.js (CLAUDE.md §15). The FULL report (fails + warns) runs daily and
+  // non-blocking in check-corpus-drift.yml.
+  const gate = process.argv.includes('--gate');
 
   if (json) {
     process.stdout.write(JSON.stringify(issues, null, 2) + '\n');
     return;
   }
 
-  console.log(`[audit-cast-contamination] flagged ${issues.length} cast files\n`);
+  const fails = issues.filter(i => i.severity === 'fail').length;
+  const warns = issues.filter(i => i.severity === 'warn').length;
+  console.log(`[audit-cast-contamination] flagged ${issues.length} cast files (${fails} fail, ${warns} warn)\n`);
   for (const i of issues) {
-    console.log(`  ${i.showId} (${i.orphans} orphans, source=${i.source || '?'})`);
+    console.log(`  [${i.severity}] ${i.showId} (${i.orphans} orphans, source=${i.source || '?'})`);
     console.log(`     flags: ${i.flags.join(', ')}`);
     if (i.sourceUrl) console.log(`     src:   ${i.sourceUrl}`);
   }
 
-  // Exit nonzero so CI can detect new contamination
+  if (gate) {
+    // Fail LOUD if the source-of-truth is absent: loadShowIds() swallows a
+    // missing data/shows.json to null, which would suppress SHOW_NOT_IN_DB and
+    // let the gate pass green on a broken checkout (non-review-gate philosophy).
+    if (loadShowIds() === null) {
+      console.error('\n❌ GATE: data/shows.json missing or unparseable — cannot run the cast contamination gate (would falsely pass).');
+      process.exit(1);
+    }
+    if (shouldBlockCastContaminationGate({ gateHits: fails })) {
+      console.error(`\n❌ GATE: ${fails} cast file(s) with wrong-show contamination (opera/TV roles, name swaps, column-header roles).`);
+      console.error('These must be deleted or re-sourced, then re-run the backfill. See feedback_orphan_cast_invisible_by_design.md.');
+      process.exitCode = 1;
+    } else {
+      console.log(`\n✓ GATE: no wrong-show cast contamination; soft heuristics surfaced in digest.`);
+    }
+    return;
+  }
+
+  // Default (drift monitor): any flagged file is reported as drift.
   if (issues.length > 0) process.exitCode = 1;
 }
 
