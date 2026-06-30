@@ -27,6 +27,7 @@ const ROOT = path.join(__dirname, '..');
 const showsRaw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'shows.json'), 'utf8'));
 const showsArr = Array.isArray(showsRaw) ? showsRaw : (showsRaw.shows || []);
 const marketById = new Map(showsArr.map(s => [s.id, s.market || s.category]));
+const titleById = new Map(showsArr.map(s => [s.id, s.title]));
 
 let flagged = 0;
 const byShow = {};
@@ -37,7 +38,10 @@ for (const f of glob.sync(path.join(ROOT, 'data', 'review-texts', '*', '*.json')
   let d;
   try { d = JSON.parse(fs.readFileSync(f, 'utf8')); } catch { continue; }
   if (d.needsRescore === true) continue; // already queued
-  const verdict = needsLateStarReanchor(d, { category });
+  // Pass show title + filePath so isIncludableForRebuild (inside needsLateStarReanchor)
+  // can run its full gate — excludes duplicates / consent-wall stubs the scorer rejects.
+  const show = titleById.get(showId) ? { title: titleById.get(showId) } : undefined;
+  const verdict = needsLateStarReanchor(d, { category, show, filePath: f });
   if (!verdict) continue;
   byShow[showId] = (byShow[showId] || 0) + 1;
   flagged++;
