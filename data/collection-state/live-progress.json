@@ -1,25 +1,36 @@
 {
-  "updatedAt": "2026-06-30T12:23:09.410Z",
-  "processed": 44,
-  "failed": 279,
-  "successRate": "13.6%",
+  "updatedAt": "2026-06-30T12:24:12.210Z",
+  "processed": 46,
+  "failed": 287,
+  "successRate": "13.8%",
   "tierBreakdown": {
-    "playwright": 38,
+    "playwright": 39,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 7,
     "brightdata": 3,
     "archiveToday": 0,
     "archive": 2
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-06-30T11:25:21.943Z",
       "event": "bb-session",
       "session": "ee54344f",
       "url": "https://www.sierz.co.uk/reviews/archduke-royal-court/"
+    },
+    {
+      "t": "2026-06-30T12:23:42.932Z",
+      "event": "bb-session",
+      "session": "abea625e",
+      "url": "https://deadline.com/2026/04/proof-broadway-review-ayo-edebiri-don-cheadle-kara-"
+    },
+    {
+      "t": "2026-06-30T12:23:44.163Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }

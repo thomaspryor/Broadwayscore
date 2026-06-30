@@ -43,7 +43,9 @@
     "the-balusters-2026/broadwayworld--unknown.json",
     "the-balusters-2026/playbill--unknown.json",
     "schmigadoon-2026/nytg--unknown.json",
-    "schmigadoon-2026/thewrap--robert-hofler.json"
+    "schmigadoon-2026/thewrap--robert-hofler.json",
+    "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
+    "proof-2026/deadline--unknown.json"
   ],
   "failed": [
     "a-walk-on-the-moon-off-broadway-2026/nyt-theater--jonathan-mandell.json",
@@ -324,7 +326,15 @@
     "the-rocky-horror-show-2026/british-theatre--unknown.json",
     "schmigadoon-2026/variety--clayton-davis.json",
     "schmigadoon-2026/musical-theatre-review--unknown.json",
-    "schmigadoon-2026/latimes--charles-mcnulty.json"
+    "schmigadoon-2026/latimes--charles-mcnulty.json",
+    "schmigadoon-2026/washpost--naveen-kumar.json",
+    "avenue-q-west-end-2026/nytimes--ben-brantley.json",
+    "avenue-q-west-end-2026/variety--david-rooney.json",
+    "avenue-q-west-end-2026/theatermania--andy-propst.json",
+    "proof-2026/680newscom--gloria-martin.json",
+    "avenue-q-west-end-2026/1883-magazine--nick-barr.json",
+    "avenue-q-west-end-2026/backstage--david-sheward.json",
+    "avenue-q-west-end-2026/talkinbroadway--matthew-murray.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -366,10 +376,14 @@
       "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
       "the-rocky-horror-show-2026/playbill--unknown.json",
       "the-balusters-2026/playbill--unknown.json",
-      "schmigadoon-2026/nytg--unknown.json"
+      "schmigadoon-2026/nytg--unknown.json",
+      "schmigadoon-2026/theater-pizzazz--eyal-solomon.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/proof-2026/deadline--unknown.json",
+      "proof-2026/deadline--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "archduke-west-end-2026/broadwayworld--alexander-cohen.json",
@@ -392,13 +406,24 @@
     ]
   },
   "startTime": "2026-06-30T10:27:38.638Z",
-  "lastProcessed": "schmigadoon-2026/latimes--charles-mcnulty.json",
+  "lastProcessed": "avenue-q-west-end-2026/talkinbroadway--matthew-murray.json",
   "log": [
     {
       "t": "2026-06-30T11:25:21.943Z",
       "event": "bb-session",
       "session": "ee54344f",
       "url": "https://www.sierz.co.uk/reviews/archduke-royal-court/"
+    },
+    {
+      "t": "2026-06-30T12:23:42.932Z",
+      "event": "bb-session",
+      "session": "abea625e",
+      "url": "https://deadline.com/2026/04/proof-broadway-review-ayo-edebiri-don-cheadle-kara-"
+    },
+    {
+      "t": "2026-06-30T12:23:44.163Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
