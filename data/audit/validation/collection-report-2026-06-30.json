@@ -22,7 +22,7 @@
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
+    "brightdata": 1,
     "archiveToday": 0,
     "archive": 0
   },
@@ -35,8 +35,8 @@
     "tier1_5Success": 0,
     "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
     "tier4Attempts": 1,
@@ -60,6 +60,7 @@
     "birthright-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
     "birthright-off-broadway-2026/pages-on-stages--unknown.json"
   ],
+  "failed": [],
   "tierDetails": {
     "playwright": [
       "birthright-off-broadway-2026/theatermania--linda-buchwald.json",
@@ -71,7 +72,9 @@
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "camping-off-broadway-2026/talkinbroadway--unknown.json"
+    ],
     "archiveToday": [],
     "archive": []
   },
