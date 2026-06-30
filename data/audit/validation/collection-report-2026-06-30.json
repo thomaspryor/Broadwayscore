@@ -1,111 +1,128 @@
 {
-  "runDate": "2026-06-30T07:02:49.328Z",
+  "runDate": "2026-06-30T07:05:43.684Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "pride-west-end-2026",
+    "showFilter": "glengarry-glen-ross-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 24,
+    "processed": 0,
+    "failed": 30,
     "skipped": 0,
-    "successRate": "4.0%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 1,
+    "archiveToday": 3,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 11,
-    "tier1Success": 10,
+    "tier1Attempts": 10,
+    "tier1Success": 7,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
+    "tier1_5Attempts": 2,
     "tier1_5Success": 0,
-    "tier2Attempts": 5,
+    "tier2Attempts": 7,
     "tier2Success": 1,
-    "tier3Attempts": 1,
+    "tier3Attempts": 3,
     "tier3Success": 1,
-    "tier3_6Attempts": 1,
-    "tier3_6Success": 1,
-    "tier4Attempts": 1,
-    "tier4Success": 0,
-    "totalFailed": 24,
-    "scrapingBeePageCredits": 30,
+    "tier3_6Attempts": 3,
+    "tier3_6Success": 3,
+    "tier4Attempts": 2,
+    "tier4Success": 1,
+    "totalFailed": 30,
+    "scrapingBeePageCredits": 52,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 16,
-    "urlDiscoverySuccess": 2,
+    "browserbaseSessionsUsed": 2,
+    "browserbaseMinutesUsed": 1.2,
+    "urlDiscoveryAttempts": 25,
+    "urlDiscoverySuccess": 5,
     "urlDiscoveryCapped": 0
   },
-  "processed": [
-    "pride-west-end-2026/londontheatre1--terry-eastham.json"
-  ],
+  "processed": [],
   "failed": [
-    "pride-west-end-2026/hollywood-reporter--daniel-fienberg.json",
-    "pride-west-end-2026/nyt-theater--unknown.json",
-    "pride-west-end-2026/nytimes--ben-brantley.json",
-    "pride-west-end-2026/nytimes--unknown.json",
-    "pride-west-end-2026/afridiziak-theatre-news--unknown.json",
-    "pride-west-end-2026/theatrely--kobi-kassal.json",
-    "pride-west-end-2026/broadwayworld--jay-irwin.json",
-    "pride-west-end-2026/click-liverpool--unknown.json",
-    "pride-west-end-2026/frontmezzjunkies--unknown.json",
-    "pride-west-end-2026/latimes--erin-conley.json",
-    "pride-west-end-2026/nottingham-confidential--unknown.json",
-    "pride-west-end-2026/operawire--unknown.json",
-    "pride-west-end-2026/people--unknown.json",
-    "pride-west-end-2026/seattle-times--misha-berson.json",
-    "pride-west-end-2026/sunday-telegraph--unknown.json",
-    "pride-west-end-2026/thestage--dave-fargnoli.json",
-    "pride-west-end-2026/times-uk--allan-radcliffe.json",
-    "pride-west-end-2026/times-uk--ann-treneman.json",
-    "pride-west-end-2026/times-uk--dominic-maxwell.json",
-    "pride-west-end-2026/times-uk--jane-edwardes.json",
-    "pride-west-end-2026/times-uk--lucy-sweet.json",
-    "pride-west-end-2026/whatsonstage--daisy-bowie.json",
-    "pride-west-end-2026/whatsonstage--sarah-crompton.json",
-    "pride-west-end-2026/standard--the-standard.json"
+    "glengarry-glen-ross-west-end-2026/hollywood-reporter--david-rooney.json",
+    "glengarry-glen-ross-west-end-2026/hollywood-reporter--unknown.json",
+    "glengarry-glen-ross-west-end-2026/nytimes--jesse-green.json",
+    "glengarry-glen-ross-west-end-2026/variety--marilyn-stasio.json",
+    "glengarry-glen-ross-west-end-2026/vulture--sara-holdren.json",
+    "glengarry-glen-ross-west-end-2026/guardian-uk--unknown.json",
+    "glengarry-glen-ross-west-end-2026/newsday--linda-winer.json",
+    "glengarry-glen-ross-west-end-2026/observer--david-cote.json",
+    "glengarry-glen-ross-west-end-2026/oxfordshire-guardian--unknown.json",
+    "glengarry-glen-ross-west-end-2026/about-entertainment--ben-brantley.json",
+    "glengarry-glen-ross-west-end-2026/amny--matt-windman.json",
+    "glengarry-glen-ross-west-end-2026/bloomberg--jeremy-gerard.json",
+    "glengarry-glen-ross-west-end-2026/british-theatre--susan-novak.json",
+    "glengarry-glen-ross-west-end-2026/chicagotribune--unknown.json",
+    "glengarry-glen-ross-west-end-2026/daily-echo--matthew-baker.json",
+    "glengarry-glen-ross-west-end-2026/dailybeast--tim-teeman.json",
+    "glengarry-glen-ross-west-end-2026/financialtimes--brendan-lemon.json",
+    "glengarry-glen-ross-west-end-2026/front-row-center--yuval-jonas.json",
+    "glengarry-glen-ross-west-end-2026/nysr--frank-scheck.json",
+    "glengarry-glen-ross-west-end-2026/nysr--roma-torre.json",
+    "glengarry-glen-ross-west-end-2026/slantmagazine--dan-rubins.json",
+    "glengarry-glen-ross-west-end-2026/standard--henry-hitchings.json",
+    "glengarry-glen-ross-west-end-2026/thestage--sam-marlowe.json",
+    "glengarry-glen-ross-west-end-2026/times-uk--ann-treneman.json",
+    "glengarry-glen-ross-west-end-2026/times-uk--benedict-nightingale.json",
+    "glengarry-glen-ross-west-end-2026/times-uk--dominic-maxwell.json",
+    "glengarry-glen-ross-west-end-2026/times-uk--maxie-szalwinska.json",
+    "glengarry-glen-ross-west-end-2026/washpost--unknown.json",
+    "glengarry-glen-ross-west-end-2026/western-mail--unknown.json",
+    "glengarry-glen-ross-west-end-2026/whatsonstage--lucinda-everett.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "pride-west-end-2026/londontheatre1--terry-eastham.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [
-      "archduke-west-end-2026/broadwayworld--alexander-cohen.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/pride-west-end-2026/thestage--dave-fargnoli.json"
+      "data/review-texts/glengarry-glen-ross-west-end-2026/oxfordshire-guardian--unknown.json",
+      "data/review-texts/glengarry-glen-ross-west-end-2026/thestage--sam-marlowe.json",
+      "data/review-texts/glengarry-glen-ross-west-end-2026/western-mail--unknown.json"
     ],
     "archive": []
   },
   "failuresByOutlet": {},
   "urlDiscoveries": [
     {
-      "reviewId": "pride-west-end-2026/whatsonstage--daisy-bowie.json",
-      "oldUrl": "https://www.whatsonstage.com/news/the-pride-musical-celebrates-its-official-opening-night-in-london-during-pride-month_1726325/",
-      "newUrl": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/pride_1703068/"
+      "reviewId": "glengarry-glen-ross-west-end-2026/standard--henry-hitchings.json",
+      "oldUrl": "https://www.standard.co.uk/culture/theatre/glengarry-glen-ross-theatre-review-christian-slater-sells-sharp-mamet-revival-a3711241.html",
+      "newUrl": "https://www.standard.co.uk/culture/theatre/glengarry-glen-ross-at-the-old-vic-review-b1286630.html"
     },
     {
-      "reviewId": "pride-west-end-2026/whatsonstage--sarah-crompton.json",
-      "oldUrl": "https://www.whatsonstage.com/news/the-pride-musical-celebrates-its-official-opening-night-in-london-during-pride-month_1726325/",
-      "newUrl": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/pride_1703068/"
+      "reviewId": "glengarry-glen-ross-west-end-2026/times-uk--ann-treneman.json",
+      "oldUrl": "https://www.thetimes.co.uk/article/theatre-review-glengarry-glen-ross-playhouse-wc2-zbbsm0kxj",
+      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0"
+    },
+    {
+      "reviewId": "glengarry-glen-ross-west-end-2026/times-uk--benedict-nightingale.json",
+      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-without-men-its-not-just-putting-lipstick-on-mamet-sjc0ff8h0",
+      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0"
+    },
+    {
+      "reviewId": "glengarry-glen-ross-west-end-2026/times-uk--dominic-maxwell.json",
+      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-without-men-its-not-just-putting-lipstick-on-mamet-sjc0ff8h0",
+      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0"
+    },
+    {
+      "reviewId": "glengarry-glen-ross-west-end-2026/times-uk--maxie-szalwinska.json",
+      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-without-men-its-not-just-putting-lipstick-on-mamet-sjc0ff8h0",
+      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0"
     }
   ]
 }
