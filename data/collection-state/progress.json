@@ -86,7 +86,11 @@
     "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json",
     "death-of-a-salesman-2026/washpost--peter-marks.json",
     "cats-the-jellicle-ball-2026/timeout--david-cote.json",
-    "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json"
+    "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json",
+    "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
+    "dog-day-afternoon-2026/one-minute-critic--matthew-wexler.json",
+    "dog-day-afternoon-2026/playbill--unknown.json",
+    "music-city-off-broadway-2026/deadline--greg-evans.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
@@ -1392,7 +1396,13 @@
     "cats-the-jellicle-ball-2026/newsday--linda-winer.json",
     "cats-the-jellicle-ball-2026/huffpost--david-finkle.json",
     "cats-the-jellicle-ball-2026/nbcny--robert-kahn.json",
-    "cats-the-jellicle-ball-2026/northjerseycom--robert-feldberg.json"
+    "cats-the-jellicle-ball-2026/northjerseycom--robert-feldberg.json",
+    "cats-the-jellicle-ball-2026/telegraph--dominic-cavendish.json",
+    "cats-the-jellicle-ball-2026/west-end-wilma--unknown.json",
+    "cats-the-jellicle-ball-2026/thewrap--jason-clark.json",
+    "cats-the-jellicle-ball-2026/thewrap--robert-hofler.json",
+    "cats-the-jellicle-ball-2026/queerty--matthew-wexler.json",
+    "music-city-off-broadway-2026/observer--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1468,7 +1478,10 @@
       "birthright-off-broadway-2026/nytg--kyle-turner.json",
       "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json",
       "death-of-a-salesman-2026/washpost--peter-marks.json",
-      "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json"
+      "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json",
+      "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
+      "dog-day-afternoon-2026/one-minute-critic--matthew-wexler.json",
+      "dog-day-afternoon-2026/playbill--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1477,7 +1490,9 @@
       "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
       "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
       "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
-      "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json"
+      "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+      "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
+      "music-city-off-broadway-2026/deadline--greg-evans.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1543,7 +1558,7 @@
     ]
   },
   "startTime": "2026-06-29T16:22:26.418Z",
-  "lastProcessed": "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json",
+  "lastProcessed": "music-city-off-broadway-2026/observer--unknown.json",
   "log": [
     {
       "t": "2026-06-29T16:36:31.743Z",
@@ -1610,6 +1625,17 @@
       "t": "2026-06-30T04:10:06.571Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-06-30T06:12:06.276Z",
+      "event": "bb-session",
+      "session": "b956eea7",
+      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
+    },
+    {
+      "t": "2026-06-30T06:12:07.255Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
