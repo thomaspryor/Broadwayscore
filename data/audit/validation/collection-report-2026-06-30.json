@@ -1,0 +1,86 @@
+{
+  "runDate": "2026-06-30T06:59:32.279Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 0,
+    "priority": "all",
+    "showFilter": "relics-west-end-2026",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 1,
+    "failed": 4,
+    "skipped": 0,
+    "successRate": "20.0%"
+  },
+  "tierBreakdown": {
+    "playwright": 1,
+    "amp": 0,
+    "browserbase": 0,
+    "directCookies": 0,
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archiveToday": 1,
+    "archive": 0
+  },
+  "statistics": {
+    "tier1Attempts": 3,
+    "tier1Success": 2,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 2,
+    "tier2Success": 0,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
+    "tier4Attempts": 2,
+    "tier4Success": 0,
+    "totalFailed": 4,
+    "scrapingBeePageCredits": 10,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 1,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
+  "processed": [
+    "relics-west-end-2026/cambridge--unknown.json"
+  ],
+  "failed": [
+    "relics-west-end-2026/nytimes--unknown.json",
+    "relics-west-end-2026/guardian--unknown.json",
+    "relics-west-end-2026/thestage--neil-norman.json",
+    "relics-west-end-2026/times-uk--dominic-maxwell.json"
+  ],
+  "tierDetails": {
+    "playwright": [
+      "relics-west-end-2026/cambridge--unknown.json"
+    ],
+    "amp": [],
+    "browserbase": [],
+    "directCookies": [],
+    "scrapingbee": [],
+    "brightdata": [],
+    "archiveToday": [
+      "data/review-texts/relics-west-end-2026/thestage--neil-norman.json"
+    ],
+    "archive": []
+  },
+  "failuresByOutlet": {
+    "The Guardian": {
+      "count": 1,
+      "domain": "theguardian.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
+  "urlDiscoveries": []
+}
