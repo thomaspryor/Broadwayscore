@@ -2,7 +2,7 @@
   "runDate": "2026-06-30T16:29:22.695Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 300,
     "priority": "all",
     "showFilter": "the-truth-a-comedy-by-florian-zeller-west-end-2026",
     "aggressive": false,
@@ -19,12 +19,12 @@
   "tierBreakdown": {
     "playwright": 3,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
+    "scrapingbee": 9,
+    "brightdata": 5,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 2
   },
   "statistics": {
     "tier1Attempts": 5,
@@ -65,6 +65,7 @@
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-best-friend--news-desk.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/whatsonstage--editorial-staff.json"
   ],
+  "failed": [],
   "tierDetails": {
     "playwright": [
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/i-paper--sarah-carson.json",
@@ -72,12 +73,36 @@
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/proof-2026/deadline--unknown.json",
+      "proof-2026/deadline--unknown.json",
+      "data/review-texts/death-of-a-salesman-2026/variety--marilyn-stasio.json",
+      "death-of-a-salesman-2026/variety--marilyn-stasio.json"
+    ],
     "directCookies": [],
-    "scrapingbee": [],
-    "brightdata": [],
+    "scrapingbee": [
+      "archduke-west-end-2026/broadwayworld--alexander-cohen.json",
+      "archduke-west-end-2026/sierz-co-uk--unknown.json",
+      "jesus-christ-superstar-west-end-2026/broadwayworld--stephi-wild.json",
+      "cyrano-de-bergerac-west-end-2026/broadwayworld--stephi-wild.json",
+      "girl-interrupted-off-broadway-2026/playbill--unknown.json",
+      "small-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+      "small-off-broadway-2026/broadwayworld--marina-kennedy.json",
+      "avenue-q-west-end-2026/telegraph--marianka-swain.json",
+      "the-fear-of-13-2026/playbill--unknown.json"
+    ],
+    "brightdata": [
+      "camping-off-broadway-2026/talkinbroadway--unknown.json",
+      "the-balusters-2026/broadwayworld--unknown.json",
+      "schmigadoon-2026/thewrap--robert-hofler.json",
+      "the-fear-of-13-2026/broadwayworld--unknown.json",
+      "death-of-a-salesman-2026/vulture--rob-weinert-kendt.json"
+    ],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "a-midsummer-nights-dream-west-end-2026/broadwayworld--michael-major.json",
+      "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json"
+    ]
   },
   "failuresByOutlet": {},
   "urlDiscoveries": [
