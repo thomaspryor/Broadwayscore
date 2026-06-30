@@ -1,0 +1,101 @@
+{
+  "runDate": "2026-06-30T06:59:13.821Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 0,
+    "priority": "all",
+    "showFilter": "the-truth-a-comedy-by-florian-zeller-west-end-2026",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 4,
+    "failed": 7,
+    "skipped": 0,
+    "successRate": "36.4%"
+  },
+  "tierBreakdown": {
+    "playwright": 4,
+    "amp": 0,
+    "browserbase": 0,
+    "directCookies": 0,
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archiveToday": 0,
+    "archive": 0
+  },
+  "statistics": {
+    "tier1Attempts": 6,
+    "tier1Success": 6,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 2,
+    "tier2Success": 1,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 1,
+    "tier4Success": 0,
+    "totalFailed": 7,
+    "scrapingBeePageCredits": 11,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 7,
+    "urlDiscoverySuccess": 3,
+    "urlDiscoveryCapped": 0
+  },
+  "processed": [
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/i-paper--sarah-carson.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre--marianka-swain.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/times-uk--dominic-maxwell.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json"
+  ],
+  "failed": [
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/hollywood-reporter--daniel-fienberg.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/daily-mail--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-box-office--nastazja-domaradzka.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/the-contending--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/the-upcoming-uk--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-best-friend--news-desk.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/whatsonstage--editorial-staff.json"
+  ],
+  "tierDetails": {
+    "playwright": [
+      "the-truth-a-comedy-by-florian-zeller-west-end-2026/i-paper--sarah-carson.json",
+      "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre--marianka-swain.json",
+      "the-truth-a-comedy-by-florian-zeller-west-end-2026/times-uk--dominic-maxwell.json",
+      "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json"
+    ],
+    "amp": [],
+    "browserbase": [],
+    "directCookies": [],
+    "scrapingbee": [],
+    "brightdata": [],
+    "archiveToday": [],
+    "archive": []
+  },
+  "failuresByOutlet": {},
+  "urlDiscoveries": [
+    {
+      "reviewId": "the-truth-a-comedy-by-florian-zeller-west-end-2026/i-paper--sarah-carson.json",
+      "oldUrl": "https://inews.co.uk/culture/dont-think-sam-campbell-telling-truth-4465988?srsltid=AfmBOoqLa1YItAHAvGgm_-lVNl_MnA8jnIfsNwQ5vBP2wELSAx8q1Zhd",
+      "newUrl": "https://inews.co.uk/culture/dont-think-sam-campbell-telling-truth-4465988?srsltid=AfmBOopFabuPQl3ELGMjJASlsPWFcnt-T-bHDiTYdKbNtZ_DDtwnSBTZ"
+    },
+    {
+      "reviewId": "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre--marianka-swain.json",
+      "oldUrl": "https://www.londontheatre.co.uk/theatre-news/news/everything-you-need-to-know-about-the-truth",
+      "newUrl": "https://www.londontheatre.co.uk/reviews/the-truth-review-apollo-theatre"
+    },
+    {
+      "reviewId": "the-truth-a-comedy-by-florian-zeller-west-end-2026/times-uk--dominic-maxwell.json",
+      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/the-truth-review-florian-zeller-apollo-76tb0rdf2?eafs_enabled=false",
+      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/the-truth-review-florian-zeller-apollo-76tb0rdf2"
+    }
+  ]
+}
