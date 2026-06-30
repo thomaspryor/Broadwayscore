@@ -406,8 +406,9 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   if (!fields.isRoundupArticle) {
     const digest = detectRoundupDigest({
       fullText: input.fullText || fields.fullText,
-      criticName: outletId ? (input.criticName || fields.criticName) : null,
+      criticName: input.criticName || fields.criticName,
       url: input.url,
+      outletId,
     });
     if (digest) {
       fields.isRoundupArticle = true;

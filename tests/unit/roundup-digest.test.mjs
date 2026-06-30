@@ -1,8 +1,8 @@
 /**
- * Unit tests for scripts/lib/roundup-digest.js — detect review-roundup DIGESTS
- * mis-stored as individual reviews (chiefly WestEndTheatre roundup pages under
- * telegraph/timeout/standard ids). MUST flag digests; MUST NOT flag a real
- * critic's relayed excerpt.
+ * Unit tests for scripts/lib/roundup-digest.js — detect WestEndTheatre review-
+ * roundup DIGESTS mis-stored as individual reviews. Precondition: WET url on a
+ * non-WET outlet. MUST flag digests; MUST NOT flag a real critic's relayed
+ * excerpt, and MUST NOT touch a legitimate review on its own domain.
  *
  * Run: node --test tests/unit/roundup-digest.test.mjs
  */
@@ -12,39 +12,41 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { detectRoundupDigest } = require('../../scripts/lib/roundup-digest.js');
 
+const WET = 'https://www.westendtheatre.com/351724/news/reviews/the-price-reviews/';
+
 describe('detectRoundupDigest', () => {
-  test('flags digest text ("Reviews are in for X")', () => {
-    const r = detectRoundupDigest({ fullText: 'Reviews are in for The Price, playing a limited run at the Marylebone Theatre and the verdict is...', criticName: 'Ghenet Pinderhughes Randall', url: 'https://www.westendtheatre.com/351724/news/reviews/the-price-reviews/' });
+  test('flags digest text on a WET-misattributed file', () => {
+    const r = detectRoundupDigest({ fullText: 'Reviews are in for The Price, and the verdict is...', criticName: 'Ghenet Pinderhughes Randall', url: WET, outletId: 'telegraph' });
     assert.equal(r?.isRoundup, true);
   });
 
-  test('flags "unanimous praise from the critics"', () => {
-    const r = detectRoundupDigest({ fullText: 'Toby Stephens and Noah Valentine earn unanimous praise from the critics', criticName: 'Julianna Barnaby', url: 'https://www.westendtheatre.com/x/news/reviews/equus-reviews/' });
+  test('flags publication-name-as-critic on a WET-misattributed file', () => {
+    const r = detectRoundupDigest({ fullText: 'Passion at the Donmar — a strong revival.', criticName: 'Daily Telegraph', url: WET, outletId: 'daily-mail' });
     assert.equal(r?.isRoundup, true);
   });
 
-  test('flags criticName that is a publication name', () => {
-    const r = detectRoundupDigest({ fullText: 'Passion at the Donmar — a strong revival of the Sondheim.', criticName: 'Daily Telegraph', url: 'https://www.westendtheatre.com/x/passion/' });
+  test('flags a known WET roundup author on a WET-misattributed file', () => {
+    const r = detectRoundupDigest({ fullText: '19 years after its first staging, War Horse returns.', criticName: 'West End Theatre', url: WET, outletId: 'timeout' });
     assert.equal(r?.isRoundup, true);
   });
 
-  test('flags a known WET roundup author on a WET url', () => {
-    const r = detectRoundupDigest({ fullText: '19 years after its first staging, War Horse returns to the National.', criticName: 'West End Theatre', url: 'https://www.westendtheatre.com/x/war-horse-reviews/' });
-    assert.equal(r?.isRoundup, true);
-  });
-
-  test('does NOT flag a real critic excerpt relayed via WET (the counted Tim Bano case)', () => {
-    const r = detectRoundupDigest({ fullText: 'Nineties garage music and nods to Beyoncé put new flesh on the old bones of Wilde’s comedy.', criticName: 'Tim Bano', url: 'https://www.westendtheatre.com/x/an-ideal-husband-reviews/' });
+  test('does NOT flag a real critic excerpt relayed via WET (Tim Bano / FT — the counted case)', () => {
+    const r = detectRoundupDigest({ fullText: 'Nineties garage music and nods to Beyoncé put new flesh on the old bones of Wilde’s comedy.', criticName: 'Tim Bano', url: WET, outletId: 'financialtimes' });
     assert.equal(r, null);
   });
 
-  test('does NOT flag a WET-author name when NOT on a WET url (safety)', () => {
-    const r = detectRoundupDigest({ fullText: 'A real review of the show.', criticName: 'Julianna Barnaby', url: 'https://www.thetimes.co.uk/article/real-review' });
-    assert.equal(r, null);
+  test('does NOT flag a legit review on its OWN domain (precondition: must be a WET url)', () => {
+    // FT bylines staff reviews as "Financial Times" on ft.com — legitimate.
+    assert.equal(detectRoundupDigest({ fullText: 'A pointed, well-argued FT review.', criticName: 'Financial Times', url: 'https://www.ft.com/content/abc', outletId: 'financialtimes' }), null);
+    // The Stage bylines some reviews as "The Stage" on thestage.co.uk — legitimate.
+    assert.equal(detectRoundupDigest({ fullText: 'A real Stage review mentioning the critics have had their say.', criticName: 'The Stage', url: 'https://www.thestage.co.uk/reviews/x', outletId: 'thestage' }), null);
   });
 
-  test('returns null on empty / ordinary review', () => {
-    assert.equal(detectRoundupDigest({ fullText: 'A glowing, specific review of the production.', criticName: 'Matt Wolf', url: 'https://nytimes.com/x' }), null);
+  test('does NOT flag a WET page that IS the WestEndTheatre outlet itself', () => {
+    assert.equal(detectRoundupDigest({ fullText: 'Reviews are in for X.', criticName: 'West End Theatre', url: WET, outletId: 'westendtheatre' }), null);
+  });
+
+  test('returns null on empty input', () => {
     assert.equal(detectRoundupDigest({}), null);
     assert.equal(detectRoundupDigest(null), null);
   });

@@ -30,7 +30,10 @@
  * and the one-time flag-wet-roundup-misattributions.js cleanup.
  */
 
-const ROUNDUP_DIGEST_TEXT = /(the\s+)?reviews are (in|out|coming)|round-?up of reviews|review(s)? round-?up|the (london )?critics have (delivered|travelled|had|given)|a reviews round-?up|reviews are coming out from|unanimous praise from the critics/i;
+// Tight, roundup-SPECIFIC openings only — loose phrasing like "the critics have
+// had their say" appears in ordinary reviews and caused false positives on legit
+// ft.com / thestage.co.uk reviews (2026-06-30).
+const ROUNDUP_DIGEST_TEXT = /(the\s+)?reviews are (in|out|coming out)\b|round-?up of reviews|review(s)? round-?up|a reviews round-?up|reviews are coming out from/i;
 
 // criticName values that are actually publication names — an aggregation artifact.
 const PUBLICATION_NAMES = new Set([
@@ -51,22 +54,38 @@ function isWetUrl(url) {
 }
 
 /**
- * @param {object} rec - { fullText, criticName, url }
+ * Detect a review record that is actually a WestEndTheatre review-roundup digest
+ * mis-stored under an individual outlet id.
+ *
+ * PRECONDITION (eliminates false positives): the url must be a WestEndTheatre.com
+ * page AND the outletId must NOT be westendtheatre. A legitimate review on its own
+ * domain (ft.com bylined "Financial Times", thestage.co.uk) never matches — the
+ * url/outlet mismatch is what makes a WET page mis-attributed. Within that set,
+ * digest phrasing / publication-name byline / known WET roundup author separate a
+ * roundup DIGEST (flag) from a real critic's excerpt relayed via WET (keep — e.g.
+ * Tim Bano / FT).
+ *
+ * @param {object} rec - { fullText, criticName, url, outletId }
  * @returns {{ isRoundup: true, reason: string } | null}
  */
 function detectRoundupDigest(rec) {
   if (!rec) return null;
+  // Precondition: WET url mis-attributed to a non-WET outlet.
+  if (!isWetUrl(rec.url)) return null;
+  const outlet = (rec.outletId || '').trim().toLowerCase();
+  if (outlet === 'westendtheatre' || outlet === '') return null;
+
   const text = (rec.fullText || '').slice(0, 300);
   const critic = (rec.criticName || '').trim().toLowerCase();
 
   if (text && ROUNDUP_DIGEST_TEXT.test(text)) {
-    return { isRoundup: true, reason: 'roundup-digest: text opens with review-roundup phrasing' };
+    return { isRoundup: true, reason: 'WET roundup digest: text opens with review-roundup phrasing' };
   }
   if (critic && PUBLICATION_NAMES.has(critic)) {
-    return { isRoundup: true, reason: `roundup-digest: criticName is a publication name ("${rec.criticName}")` };
+    return { isRoundup: true, reason: `WET roundup digest: criticName is a publication name ("${rec.criticName}")` };
   }
-  if (critic && WET_ROUNDUP_AUTHORS.has(critic) && isWetUrl(rec.url)) {
-    return { isRoundup: true, reason: `roundup-digest: WestEndTheatre roundup author ("${rec.criticName}") on a WET url` };
+  if (critic && WET_ROUNDUP_AUTHORS.has(critic)) {
+    return { isRoundup: true, reason: `WET roundup digest: WestEndTheatre roundup author ("${rec.criticName}")` };
   }
   return null;
 }
