@@ -112,7 +112,7 @@ const scoreSwatches: Swatch[] = [
   { name: 'Must See (83-100)', hex: '#FFD700', usage: 'Critical Gold', textOn: 'light' },
   { name: 'Recommended (75-82)', hex: '#22c55e', usage: 'Green', textOn: 'dark' },
   { name: 'Worth Seeing (65-74)', hex: '#14b8a6', usage: 'Teal', textOn: 'dark' },
-  { name: 'Skippable (55-64)', hex: '#d97706', usage: 'Amber/Orange', textOn: 'light' },
+  { name: 'Mixed (55-64)', hex: '#d97706', usage: 'Amber/Orange', textOn: 'light' },
   { name: 'Critical Miss (0-54)', hex: '#ef4444', usage: 'Red', textOn: 'light' },
 ];
 
@@ -425,7 +425,7 @@ export default function BrandPageClient() {
               <ol className="list-decimal list-inside space-y-2 pl-2">
                 <li><strong className="text-white">Score number</strong> — rounded, as a whole integer (e.g. 88)</li>
                 <li><strong className="text-white">Tier color</strong> — the badge background must match the tier: gold (83+), green (75-82), teal (65-74), orange (55-64), red (&lt;55)</li>
-                <li><strong className="text-white">Tier label</strong> — &ldquo;Critical Gold,&rdquo; &ldquo;Recommended,&rdquo; &ldquo;Worth Seeing,&rdquo; &ldquo;Skippable,&rdquo; or &ldquo;Critical Miss&rdquo;</li>
+                <li><strong className="text-white">Tier label</strong> — &ldquo;Critical Gold,&rdquo; &ldquo;Recommended,&rdquo; &ldquo;Worth Seeing,&rdquo; &ldquo;Mixed,&rdquo; or &ldquo;Critical Miss&rdquo;</li>
                 <li><strong className="text-white">Attribution</strong> — the text <span className="font-mono text-xs bg-surface-overlay px-2 py-0.5 rounded">CriticScore™ by Broadway Scorecard</span> in brand gold <code className="text-xs text-brand">#d4a574</code>, linking to broadwayscorecard.com</li>
               </ol>
               <p>
@@ -517,8 +517,8 @@ const scoreBadgeAssets: Asset[] = [
   { label: 'Recommended', sub: 'Transparent', filename: 'score-badges/recommended-79-transparent.png', transparent: true },
   { label: 'Worth Seeing', sub: 'Score 65–74', filename: 'score-badges/worth-seeing-70-dark.png' },
   { label: 'Worth Seeing', sub: 'Transparent', filename: 'score-badges/worth-seeing-70-transparent.png', transparent: true },
-  { label: 'Skippable', sub: 'Score 55–64', filename: 'score-badges/skippable-60-dark.png' },
-  { label: 'Skippable', sub: 'Transparent', filename: 'score-badges/skippable-60-transparent.png', transparent: true },
+  { label: 'Mixed', sub: 'Score 55–64', filename: 'score-badges/skippable-60-dark.png' },
+  { label: 'Mixed', sub: 'Transparent', filename: 'score-badges/skippable-60-transparent.png', transparent: true },
   { label: 'Critical Miss', sub: 'Score < 55', filename: 'score-badges/stay-away-45-dark.png' },
   { label: 'Critical Miss', sub: 'Transparent', filename: 'score-badges/stay-away-45-transparent.png', transparent: true },
 ];
@@ -628,7 +628,7 @@ function tierForScore(score: number): { key: string; label: string; desc: string
     badgeStyle: { backgroundColor: '#14b8a6', boxShadow: '0 2px 8px rgba(20,184,166,0.3)' },
   };
   if (score >= 55) return {
-    key: 'skippable', label: 'Skippable', desc: 'Fine to miss', tint: '#d97706', crown: false,
+    key: 'skippable', label: 'Mixed', desc: 'Critics split', tint: '#d97706', crown: false,
     textColor: '#1a1a1a',
     badgeStyle: { backgroundColor: '#d97706', boxShadow: '0 2px 8px rgba(217,119,6,0.3)' },
   };
