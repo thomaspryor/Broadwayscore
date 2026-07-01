@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-07-01T06:31:48.610Z",
-  "processed": 134,
-  "failed": 1646,
-  "successRate": "7.5%",
+  "updatedAt": "2026-07-01T06:33:27.134Z",
+  "processed": 139,
+  "failed": 1651,
+  "successRate": "7.8%",
   "tierBreakdown": {
-    "playwright": 99,
+    "playwright": 100,
     "amp": 0,
-    "browserbase": 18,
+    "browserbase": 20,
     "directCookies": 0,
-    "scrapingbee": 27,
+    "scrapingbee": 29,
     "brightdata": 7,
     "archiveToday": 26,
-    "archive": 10
+    "archive": 11
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
-    {
-      "t": "2026-06-30T20:16:13.406Z",
-      "event": "bb-session",
-      "session": "2e8e3bb0",
-      "url": "https://www.nytimes.com/2026/06/30/theater/jennifer-nettles-giulia-musical.html"
-    },
-    {
-      "t": "2026-06-30T20:16:14.396Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-07-01T01:06:07.906Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-07-01T06:22:11.095Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-01T06:31:56.394Z",
+      "event": "bb-session",
+      "session": "c0abe225",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
+    },
+    {
+      "t": "2026-07-01T06:31:57.183Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

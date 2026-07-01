@@ -133,7 +133,12 @@
     "just-in-time-2025/newyorker--conde-nast.json",
     "my-neighbour-totoro-west-end-2025/british-theatre--julia-jordan.json",
     "the-devil-wears-prada-west-end-2024/times-uk--dominic-maxwell.json",
-    "maybe-happy-ending-2024/newyorker--conde-nast.json"
+    "maybe-happy-ending-2024/newyorker--conde-nast.json",
+    "maybe-happy-ending-2024/variety--unknown.json",
+    "maybe-happy-ending-2024/the-contending--frank-j-avella.json",
+    "maybe-happy-ending-2024/washpost--unknown.json",
+    "oh-mary-2024/broadwaynews--brittani-samuel.json",
+    "the-great-gatsby-2024/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
@@ -1781,7 +1786,12 @@
     "the-devil-wears-prada-west-end-2024/liam-odell--unknown.json",
     "the-devil-wears-prada-west-end-2024/nytimes--alexis-soloski.json",
     "the-devil-wears-prada-west-end-2024/nypost--johnny-oleksinski.json",
-    "the-devil-wears-prada-west-end-2024/washpost--peter-marks.json"
+    "the-devil-wears-prada-west-end-2024/washpost--peter-marks.json",
+    "oh-mary-2024/observer--unknown.json",
+    "oh-mary-2024/british-theatre--unknown.json",
+    "oh-mary-2024/west-end-best-friend--unknown.json",
+    "the-great-gatsby-2024/independent--alice-saville.json",
+    "the-great-gatsby-2024/sunday-telegraph--claire-allfree.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1884,7 +1894,8 @@
       "oh-mary-west-end-2025/theatermania--zachary-stewart.json",
       "the-producers-west-end-2025/west-end-best-friend--unknown.json",
       "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
-      "my-neighbour-totoro-west-end-2025/british-theatre--julia-jordan.json"
+      "my-neighbour-totoro-west-end-2025/british-theatre--julia-jordan.json",
+      "maybe-happy-ending-2024/washpost--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1905,7 +1916,9 @@
       "data/review-texts/oh-mary-west-end-2025/variety--rebecca-rubin.json",
       "oh-mary-west-end-2025/variety--rebecca-rubin.json",
       "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
-      "oh-mary-west-end-2025/deadline--greg-evans.json"
+      "oh-mary-west-end-2025/deadline--greg-evans.json",
+      "data/review-texts/maybe-happy-ending-2024/variety--unknown.json",
+      "maybe-happy-ending-2024/variety--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1935,7 +1948,9 @@
       "every-brilliant-thing-2026/nytimes--ben-brantley.json",
       "heathers-the-musical-off-broadway-2025/nytimes--ben-brantley.json",
       "the-devil-wears-prada-west-end-2024/times-uk--dominic-maxwell.json",
-      "maybe-happy-ending-2024/newyorker--conde-nast.json"
+      "maybe-happy-ending-2024/newyorker--conde-nast.json",
+      "oh-mary-2024/broadwaynews--brittani-samuel.json",
+      "the-great-gatsby-2024/broadwaynews--brittani-samuel.json"
     ],
     "brightdata": [
       "a-walk-on-the-moon-off-broadway-2026/talkinbroadway--marc-miller.json",
@@ -1984,11 +1999,12 @@
       "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
       "archduke-west-end-2026/broadwayworld--alexander-cohen.json",
       "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
-      "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json"
+      "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json",
+      "maybe-happy-ending-2024/the-contending--frank-j-avella.json"
     ]
   },
   "startTime": "2026-06-30T16:47:37.281Z",
-  "lastProcessed": "maybe-happy-ending-2024/newyorker--conde-nast.json",
+  "lastProcessed": "the-great-gatsby-2024/sunday-telegraph--claire-allfree.json",
   "log": [
     {
       "t": "2026-06-30T16:51:17.696Z",
@@ -2121,6 +2137,17 @@
       "t": "2026-07-01T06:22:11.095Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-01T06:31:56.394Z",
+      "event": "bb-session",
+      "session": "c0abe225",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
+    },
+    {
+      "t": "2026-07-01T06:31:57.183Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
