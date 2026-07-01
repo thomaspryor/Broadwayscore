@@ -44,15 +44,15 @@ on:
           - west-end
         default: auto
       max_iterations:
-        description: 'Max poll iterations (default 16 = ~4 hours at 15 min — iterations 17-24 yielded near-zero new URLs and burned SERP)'
+        description: 'Max poll iterations (default 2 at 3h intervals; use 10 with poll_interval_minutes=10 for intensive opening-night mode)'
         required: false
         type: number
-        default: 16
+        default: 2
       poll_interval_minutes:
-        description: 'Minutes between poll cycles (default 15 — rate-limit safe; use 10 only for short windows)'
+        description: 'Minutes between poll cycles (default 180 = 3h; use 10 for intensive opening-night mode)'
         required: false
         type: number
-        default: 15
+        default: 180
       fast_path:
         description: 'Poller inlines rebuild+deploy after scoring (default true for opening nights)'
         required: false
@@ -334,15 +334,14 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SKIP_SERP: ${{ steps.budget.outputs.skip_serp }}
         run: |
-          # 2026-05-16: cut 16 → 10 to reduce duplicate aggregator+SERP fetches.
-          # With SERP_DEFER_ITERATIONS=8, iterations 1-8 are aggregator-only (no SERP),
-          # iterations 9-10 add SERP. Net: ~75% reduction in orchestrator SERP load and
-          # ~37% reduction in aggregator page-fetch load vs 16 iterations. Aggregator
-          # coverage during the first 80 min (the window when most reviews drop) is
-          # unchanged. Early-exit on broadcast-complete still applies. Manual dispatches
-          # can override with -f max_iterations=16.
-          MAX_ITERATIONS=${{ inputs.max_iterations || 10 }}
-          POLL_INTERVAL=${{ inputs.poll_interval_minutes || 10 }}
+          # 2026-07-01: cut 10 → 2 iterations, interval 10 → 180 min to reduce BD spend.
+          # Each poller run burns ~34 BD calls (theatre.reviews + westendtheatre.com).
+          # At 10-min intervals: ~50 poller runs/day × 34 BD calls = ~$76/month.
+          # At 3h intervals, 2 iterations: ~10 runs/day × 34 BD calls = ~$15/month.
+          # Manual dispatches can override with -f max_iterations=10 -f poll_interval_minutes=10
+          # for opening-night intensive mode.
+          MAX_ITERATIONS=${{ inputs.max_iterations || 2 }}
+          POLL_INTERVAL=${{ inputs.poll_interval_minutes || 180 }}
           SHOWS="${{ steps.find.outputs.shows }}"
           MARKET="${{ steps.market.outputs.market }}"
 
@@ -447,13 +446,11 @@ jobs:
             # Dispatch the poller with show_id and market
             echo "Dispatching opening-night-poller..."
 
-            # SERP deferral: skip SERP for first 8 iterations (~80-160 min at 10-20 min
-            # intervals). On opening night, Google hasn't indexed reviews yet — SERP
-            # returns wrong URLs that contaminate the pipeline. Layers 1-3 (aggregators,
-            # RSS, site-search) handle discovery until SERP catches up. Google indexing
-            # of major outlets takes 2-4h post-publication so the extra deferral is free.
-            # Budget override still takes precedence.
-            SERP_DEFER_ITERATIONS=8
+            # SERP deferral: skip SERP on iteration 1 (0-3h window — Google hasn't indexed
+            # yet). By iteration 2 (~3h after opening), major outlets are indexed.
+            # Google indexing of major outlets takes 2-4h post-publication so 1 iteration
+            # of deferral matches the real indexing window. Budget override takes precedence.
+            SERP_DEFER_ITERATIONS=1
             ITER_SKIP_SERP="$SKIP_SERP_FLAG"
             if [ "$ITERATION" -le "$SERP_DEFER_ITERATIONS" ] && [ -z "$SKIP_SERP_FLAG" ]; then
               echo "  ℹ️ SERP deferred (iteration $ITERATION <= $SERP_DEFER_ITERATIONS) — Layers 1-3 only"
