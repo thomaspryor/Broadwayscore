@@ -83,6 +83,7 @@
     "glengarry-glen-ross-west-end-2026/western-mail--unknown.json",
     "glengarry-glen-ross-west-end-2026/whatsonstage--lucinda-everett.json"
   ],
+  "failed": [],
   "tierDetails": {
     "playwright": [],
     "amp": [],
@@ -97,7 +98,15 @@
     ],
     "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Village Voice": {
+      "count": 1,
+      "domain": "blogs.villagevoice.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": [
     {
       "reviewId": "glengarry-glen-ross-west-end-2026/standard--henry-hitchings.json",
