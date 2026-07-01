@@ -1,230 +1,5 @@
 [
   {
-    "startedAt": "2026-06-29T06:19:24.320Z",
-    "completedAt": "2026-06-29T06:21:44.104Z",
-    "totalReviews": 40273,
-    "processed": 2,
-    "skipped": 40191,
-    "errors": 42,
-    "tokensUsed": {
-      "input": 371270,
-      "output": 5817,
-      "total": 563018
-    },
-    "errorDetails": [
-      {
-        "showId": "cyrano-de-bergerac-west-end-2026",
-        "outletId": "daily-echo",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "cyrano-de-bergerac-west-end-2026",
-        "outletId": "guardian-uk",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "war-horse-west-end-2026",
-        "outletId": "click-liverpool",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
-        "outletId": "off-off-online",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "joe-turners-come-and-gone-2026",
-        "outletId": "ny1",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "avenue-q-west-end-2026",
-        "outletId": "nottingham-confidential",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "the-fear-of-13-2026",
-        "outletId": "broadwayworld",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "the-fear-of-13-2026",
-        "outletId": "washpost",
-        "error": "input_validation_failed:nav_chrome_majority"
-      },
-      {
-        "showId": "moulin-rouge-2019",
-        "outletId": "billboard",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "matilda-the-musical-west-end-2021",
-        "outletId": "sunday-telegraph",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "jerome-off-broadway-2025",
-        "outletId": "off-off-online",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "jerome-off-broadway-2025",
-        "outletId": "wsj",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "end-of-the-rainbow-west-end-2026",
-        "outletId": "broadwayworld",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "well-ill-let-you-go-off-broadway-2026",
-        "outletId": "ny1",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "please-please-me-west-end-2026",
-        "outletId": "daily-mail",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "what-happened-was-off-broadway-2026",
-        "outletId": "talkinbroadway",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "titus-andronicus-off-broadway-2026",
-        "outletId": "deadline",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "the-amazing-adventures-of-kavalier-and-clay-off-broadway-2025",
-        "outletId": "times-uk",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "stephen-sondheims-old-friends-2025",
-        "outletId": "deadline",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "doubt-2024",
-        "outletId": "talkinbroadway",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "some-like-it-hot-2022",
-        "outletId": "newyorker",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "death-of-a-salesman-2022",
-        "outletId": "independent",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "company-2021",
-        "outletId": "theatrely",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "tina-2019",
-        "outletId": "newyorker",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "the-great-society-2019",
-        "outletId": "front-row-center",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "escape-to-margaritaville-2018",
-        "outletId": "playbill",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "charlie-and-the-chocolate-factory-2017",
-        "outletId": "billboard",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "the-lyons-2012",
-        "outletId": "theatermania",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "clybourne-park-2012",
-        "outletId": "broadwayworld",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "once-2012",
-        "outletId": "theatermania",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "the-peewee-herman-show-2010",
-        "outletId": "theatermania",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "million-dollar-quartet-2010",
-        "outletId": "theatermania",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "oleanna-2009",
-        "outletId": "theatermania",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "proof-2000",
-        "outletId": "nypost",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "proof-2000",
-        "outletId": "wsj",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "copenhagen-2000",
-        "outletId": "commonweal",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "copenhagen-2000",
-        "outletId": "the-nation",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "copenhagen-2000",
-        "outletId": "time",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "the-loved-ones-off-broadway-2026",
-        "outletId": "broadwayworld",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "whos-afraid-of-virginia-woolf-2020",
-        "outletId": "playbill",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "master-class-2011",
-        "outletId": "wsj",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "proof-2000",
-        "outletId": "nydailynews",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-06-29T06:34:13.039Z",
     "completedAt": "2026-06-29T06:36:12.042Z",
     "totalReviews": 40273,
@@ -680673,6 +680448,231 @@
           "total": 1
         },
         "hasDisagreement": false
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-07-01T20:15:35.994Z",
+    "completedAt": "2026-07-01T20:17:47.028Z",
+    "totalReviews": 40320,
+    "processed": 0,
+    "skipped": 40241,
+    "errors": 42,
+    "tokensUsed": {
+      "input": 344943,
+      "output": 4956,
+      "total": 522461
+    },
+    "errorDetails": [
+      {
+        "showId": "a-walk-on-the-moon-off-broadway-2026",
+        "outletId": "off-off-online",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "cyrano-de-bergerac-west-end-2026",
+        "outletId": "guardian-uk",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "war-horse-west-end-2026",
+        "outletId": "click-liverpool",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
+        "outletId": "off-off-online",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "mercury-off-broadway-2026",
+        "outletId": "washpost",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "joe-turners-come-and-gone-2026",
+        "outletId": "ny1",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "avenue-q-west-end-2026",
+        "outletId": "nottingham-confidential",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "the-fear-of-13-2026",
+        "outletId": "broadwayworld",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "the-fear-of-13-2026",
+        "outletId": "washpost",
+        "error": "input_validation_failed:nav_chrome_majority"
+      },
+      {
+        "showId": "matilda-the-musical-west-end-2021",
+        "outletId": "sunday-telegraph",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "jerome-off-broadway-2025",
+        "outletId": "off-off-online",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "jerome-off-broadway-2025",
+        "outletId": "wsj",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "end-of-the-rainbow-west-end-2026",
+        "outletId": "broadwayworld",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "well-ill-let-you-go-off-broadway-2026",
+        "outletId": "ny1",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "please-please-me-west-end-2026",
+        "outletId": "daily-mail",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "what-happened-was-off-broadway-2026",
+        "outletId": "talkinbroadway",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "titus-andronicus-off-broadway-2026",
+        "outletId": "deadline",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "the-amazing-adventures-of-kavalier-and-clay-off-broadway-2025",
+        "outletId": "times-uk",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "stephen-sondheims-old-friends-2025",
+        "outletId": "deadline",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "doubt-2024",
+        "outletId": "talkinbroadway",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "some-like-it-hot-2022",
+        "outletId": "newyorker",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "death-of-a-salesman-2022",
+        "outletId": "independent",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "company-2021",
+        "outletId": "theatrely",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "tina-2019",
+        "outletId": "newyorker",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "the-great-society-2019",
+        "outletId": "front-row-center",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "escape-to-margaritaville-2018",
+        "outletId": "playbill",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "charlie-and-the-chocolate-factory-2017",
+        "outletId": "billboard",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "the-lyons-2012",
+        "outletId": "theatermania",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "clybourne-park-2012",
+        "outletId": "broadwayworld",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "once-2012",
+        "outletId": "theatermania",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "the-peewee-herman-show-2010",
+        "outletId": "theatermania",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "million-dollar-quartet-2010",
+        "outletId": "theatermania",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "oleanna-2009",
+        "outletId": "theatermania",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "proof-2000",
+        "outletId": "nypost",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "proof-2000",
+        "outletId": "wsj",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "copenhagen-2000",
+        "outletId": "commonweal",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "copenhagen-2000",
+        "outletId": "the-nation",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "copenhagen-2000",
+        "outletId": "time",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "the-loved-ones-off-broadway-2026",
+        "outletId": "broadwayworld",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "whos-afraid-of-virginia-woolf-2020",
+        "outletId": "playbill",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "master-class-2011",
+        "outletId": "wsj",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "proof-2000",
+        "outletId": "nydailynews",
+        "error": "input_validation_failed:body_too_short"
       }
     ]
   }
