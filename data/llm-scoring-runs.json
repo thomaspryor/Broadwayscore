@@ -1,30 +1,5 @@
 [
   {
-    "startedAt": "2026-06-28T23:43:12.685Z",
-    "completedAt": "2026-06-28T23:43:13.076Z",
-    "totalReviews": 68,
-    "processed": 0,
-    "skipped": 66,
-    "errors": 2,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "errorDetails": [
-      {
-        "showId": "cyrano-de-bergerac-west-end-2026",
-        "outletId": "daily-echo",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "cyrano-de-bergerac-west-end-2026",
-        "outletId": "guardian-uk",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-06-29T00:09:45.744Z",
     "completedAt": "2026-06-29T00:09:46.104Z",
     "totalReviews": 68,
@@ -657646,6 +657621,26 @@
           "total": 1
         },
         "hasDisagreement": false
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-07-01T17:28:39.248Z",
+    "completedAt": "2026-07-01T17:28:49.046Z",
+    "totalReviews": 20,
+    "processed": 2,
+    "skipped": 17,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 18405,
+      "output": 641,
+      "total": 28385
+    },
+    "errorDetails": [
+      {
+        "showId": "a-walk-on-the-moon-off-broadway-2026",
+        "outletId": "off-off-online",
+        "error": "input_validation_failed:body_too_short"
       }
     ]
   }
