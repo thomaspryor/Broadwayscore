@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-01T20:05:33.703Z",
+  "timestamp": "2026-07-01T21:38:53.087Z",
   "stats": {
     "totalReviews": 39613,
     "alreadyFlagged": 17422,
     "dateGuardCatches": 35,
     "directorMismatch": 889,
-    "tvFilmSignals": 1091,
-    "londonSignals": 722,
+    "tvFilmSignals": 1092,
+    "londonSignals": 723,
     "offBroadwaySignals": 467,
     "yearMismatch": 84,
-    "noPublishDate": 3989
+    "noPublishDate": 3988
   },
   "findings": [
     {
@@ -1733,7 +1733,7 @@
       "file": "independent--louis-chilton.json",
       "score": 40,
       "publishDate": "2026-04-17",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
+      "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -23132,6 +23132,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-guilty-west-end-2026",
+      "file": "sunday-telegraph--dominic-cavendish.json",
+      "score": 88,
+      "publishDate": "2026-07-01",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/guilty-donmar-warehouse-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
         }
       ]
     },
