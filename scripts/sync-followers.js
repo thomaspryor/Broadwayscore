@@ -21,6 +21,13 @@ const FOLLOWERS_PATH = path.join(__dirname, '..', 'data', 'followers.json');
 const SUBSCRIBERS_PATH = path.join(__dirname, '..', 'data', 'subscribers.json');
 const SUBSCRIBERS_WESTEND_PATH = path.join(__dirname, '..', 'data', 'subscribers-westend.json');
 const DRY_RUN = process.argv.includes('--dry-run');
+// --full re-pulls ALL Formspree submissions (ignores the persisted lastSynced),
+// so historical signups that predate the current lastSynced are recovered — e.g.
+// subscribers stranded when the local accumulator was reset or when a form's
+// audience routing was wrong pre-fix. Safe: the WE audience sync is additive
+// (removeSet=null); Broadway only removes explicit cross-market strays.
+const FULL_RESYNC = process.argv.includes('--full') || process.argv.includes('--full-resync');
+if (FULL_RESYNC) console.log('** FULL RESYNC — ignoring lastSynced, pulling all-time Formspree submissions **');
 
 function loadFollowers() {
   try {
@@ -353,7 +360,7 @@ async function main() {
 
   if (followFormId && followToken) {
     console.log(`\nSyncing follows from form ${followFormId}...`);
-    const followSubs = await fetchAllSubmissions(followFormId, followToken, data._meta.lastSynced);
+    const followSubs = await fetchAllSubmissions(followFormId, followToken, FULL_RESYNC ? null : data._meta.lastSynced);
 
     if (followSubs === null) {
       console.log('Could not fetch follow form. If this is the first run, this is normal.');
@@ -427,7 +434,7 @@ async function main() {
       subscriberLastSynced = existing._meta?.lastSynced || null;
     } catch { /* first run */ }
 
-    const subSubs = await fetchAllSubmissions(subscriberFormId, subscriberToken, subscriberLastSynced);
+    const subSubs = await fetchAllSubmissions(subscriberFormId, subscriberToken, FULL_RESYNC ? null : subscriberLastSynced);
 
     if (subSubs === null) {
       console.log('Could not fetch subscriber form. If this is the first run, this is normal.');
@@ -503,7 +510,7 @@ async function main() {
       weLastSynced = existing._meta?.lastSynced || null;
     } catch { /* first run */ }
 
-    const weSubs = await fetchAllSubmissions(weFormId, weToken, weLastSynced);
+    const weSubs = await fetchAllSubmissions(weFormId, weToken, FULL_RESYNC ? null : weLastSynced);
 
     if (weSubs === null) {
       console.log('Could not fetch WE subscriber form. If this is the first run, this is normal.');

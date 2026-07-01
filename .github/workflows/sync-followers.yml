@@ -4,6 +4,12 @@ on:
   schedule:
     - cron: '0 12 * * *'  # Daily at noon UTC (7 AM ET)
   workflow_dispatch:
+    inputs:
+      full_resync:
+        description: 'Re-pull ALL Formspree submissions (ignore lastSynced) to recover historical/stranded subscribers'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -39,7 +45,7 @@ jobs:
           FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID: ${{ secrets.FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID }}
           FORMSPREE_WESTEND_SUBSCRIBER_API_KEY: ${{ secrets.FORMSPREE_WESTEND_SUBSCRIBER_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-        run: node scripts/sync-followers.js
+        run: node scripts/sync-followers.js ${{ (github.event_name == 'workflow_dispatch' && inputs.full_resync) && '--full' || '' }}
 
       - name: Push core data to private repo
         if: always()
