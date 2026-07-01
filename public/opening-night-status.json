@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-01T09:52:43.227Z",
+  "generatedAt": "2026-07-01T11:09:34.625Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -780,7 +780,7 @@
       "id": "a-midsummer-nights-dream-west-end-2026",
       "title": "A Midsummer Night's Dream",
       "market": "west-end",
-      "category": "west-end",
+      "category": "off-west-end",
       "type": "play",
       "openingDate": "2026-06-29",
       "status": "open",
@@ -971,26 +971,25 @@
       "status": "open",
       "slug": "a-walk-on-the-moon-off-broadway",
       "thumbnail": "/images/shows/a-walk-on-the-moon-off-broadway-2026/thumbnail.webp",
-      "siteScore": 59.09,
-      "liveScore": 59,
-      "scoreDrift": -0.09000000000000341,
+      "siteScore": 58.06,
+      "liveScore": 58,
+      "scoreDrift": -0.060000000000002274,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 12,
+      "total": 13,
       "t1": 1,
       "t2": 7,
-      "t3": 4,
+      "t3": 5,
       "positive": 1,
       "mixed": 8,
-      "negative": 3,
+      "negative": 4,
       "readiness": {
         "ready": false,
         "reasons": [
-          "T1:1/3",
-          "hi-conf:7/8"
+          "T1:1/3"
         ],
-        "highConfidence": 7,
+        "highConfidence": 8,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1361,6 +1360,18 @@
           "p": 1,
           "m": 8,
           "n": 3,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-01T11:09:34.625Z",
+          "rc": 13,
+          "s": 58.06,
+          "t1": 1,
+          "t2": 7,
+          "t3": 5,
+          "p": 1,
+          "m": 8,
+          "n": 4,
           "bc": "waiting"
         }
       ]
