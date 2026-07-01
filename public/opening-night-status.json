@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-01T15:59:19.524Z",
+  "generatedAt": "2026-07-01T20:05:38.719Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -13,27 +13,27 @@
       "slug": "to-kill-a-mockingbird-west-end",
       "thumbnail": "/images/shows/to-kill-a-mockingbird-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 80,
+      "liveScore": 86,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 4,
+      "reviewsNeeded": 1,
       "siteFileExists": true,
-      "total": 1,
+      "total": 4,
       "t1": 0,
-      "t2": 1,
-      "t3": 0,
-      "positive": 1,
-      "mixed": 0,
+      "t2": 3,
+      "t3": 1,
+      "positive": 3,
+      "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/8 total",
+          "4/8 total",
           "T1:0/3",
-          "T2:0/2",
-          "hi-conf:0/6"
+          "T2:1/2",
+          "hi-conf:2/6"
         ],
-        "highConfidence": 0,
+        "highConfidence": 2,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -86,10 +86,6 @@
         },
         {
           "name": "Variety",
-          "isDualMarket": true
-        },
-        {
-          "name": "BroadwayWorld",
           "isDualMarket": true
         },
         {
@@ -113,6 +109,42 @@
           "m": 0,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-07-01T17:15:41.282Z",
+          "rc": 2,
+          "s": 90,
+          "t1": 0,
+          "t2": 2,
+          "t3": 0,
+          "p": 2,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-01T17:52:48.815Z",
+          "rc": 3,
+          "s": 86,
+          "t1": 0,
+          "t2": 2,
+          "t3": 1,
+          "p": 3,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-01T18:53:48.021Z",
+          "rc": 4,
+          "s": 86,
+          "t1": 0,
+          "t2": 3,
+          "t3": 1,
+          "p": 3,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -126,27 +158,26 @@
       "status": "open",
       "slug": "the-guilty-west-end",
       "thumbnail": "/images/shows/the-guilty-west-end-2026/thumbnail.jpg",
-      "siteScore": 77.8,
-      "liveScore": 78,
-      "scoreDrift": 0.20000000000000284,
+      "siteScore": 80.45,
+      "liveScore": 80,
+      "scoreDrift": -0.45000000000000284,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 3,
-      "t1": 1,
-      "t2": 2,
-      "t3": 0,
-      "positive": 2,
+      "total": 8,
+      "t1": 3,
+      "t2": 4,
+      "t3": 1,
+      "positive": 7,
       "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "3/8 total",
-          "T1:0/3",
-          "hi-conf:1/6"
+          "T1:2/3",
+          "hi-conf:4/6"
         ],
-        "highConfidence": 1,
+        "highConfidence": 4,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -160,10 +191,6 @@
       },
       "missingT1": [
         {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
-        {
           "name": "Observer",
           "isDualMarket": true
         },
@@ -176,19 +203,11 @@
           "isDualMarket": true
         },
         {
-          "name": "The Times (UK)",
-          "isDualMarket": true
-        },
-        {
           "name": "The Independent",
           "isDualMarket": true
         },
         {
           "name": "Daily Mail",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Stage",
           "isDualMarket": true
         }
       ],
@@ -199,10 +218,6 @@
         },
         {
           "name": "Variety",
-          "isDualMarket": true
-        },
-        {
-          "name": "BroadwayWorld",
           "isDualMarket": true
         },
         {
@@ -231,6 +246,42 @@
           "t2": 2,
           "t3": 0,
           "p": 2,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-01T17:15:41.282Z",
+          "rc": 5,
+          "s": 78.71,
+          "t1": 2,
+          "t2": 3,
+          "t3": 0,
+          "p": 4,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-01T17:52:48.815Z",
+          "rc": 7,
+          "s": 80.01,
+          "t1": 2,
+          "t2": 4,
+          "t3": 1,
+          "p": 6,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-01T18:53:48.021Z",
+          "rc": 8,
+          "s": 80.45,
+          "t1": 3,
+          "t2": 4,
+          "t3": 1,
+          "p": 7,
           "m": 1,
           "n": 0,
           "bc": "waiting"
@@ -627,26 +678,25 @@
       "status": "open",
       "slug": "springwood-west-end",
       "thumbnail": "/images/shows/springwood-west-end-2026/thumbnail.webp",
-      "siteScore": 59.05,
-      "liveScore": 59,
-      "scoreDrift": -0.04999999999999716,
+      "siteScore": 61.59,
+      "liveScore": 62,
+      "scoreDrift": 0.4099999999999966,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 10,
-      "t1": 3,
+      "total": 12,
+      "t1": 4,
       "t2": 4,
-      "t3": 3,
-      "positive": 2,
-      "mixed": 6,
+      "t3": 4,
+      "positive": 3,
+      "mixed": 7,
       "negative": 2,
       "readiness": {
         "ready": false,
         "reasons": [
-          "T1:2/3",
-          "hi-conf:2/6"
+          "hi-conf:3/6"
         ],
-        "highConfidence": 2,
+        "highConfidence": 3,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -661,10 +711,6 @@
       "missingT1": [
         {
           "name": "Observer",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Times (UK)",
           "isDualMarket": true
         },
         {
@@ -790,6 +836,30 @@
           "m": 6,
           "n": 2,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-07-01T17:15:41.282Z",
+          "rc": 11,
+          "s": 59.1,
+          "t1": 3,
+          "t2": 4,
+          "t3": 4,
+          "p": 2,
+          "m": 7,
+          "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-01T18:53:48.021Z",
+          "rc": 12,
+          "s": 61.59,
+          "t1": 4,
+          "t2": 4,
+          "t3": 4,
+          "p": 3,
+          "m": 7,
+          "n": 2,
+          "bc": "waiting"
         }
       ]
     },
@@ -803,24 +873,23 @@
       "status": "open",
       "slug": "a-midsummer-nights-dream-west-end",
       "thumbnail": "/images/shows/a-midsummer-nights-dream-west-end-2026/thumbnail.webp",
-      "siteScore": 63.24,
-      "liveScore": 63,
-      "scoreDrift": -0.240000000000002,
+      "siteScore": 60.64,
+      "liveScore": 61,
+      "scoreDrift": 0.35999999999999943,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 10,
+      "total": 12,
       "t1": 2,
-      "t2": 3,
+      "t2": 5,
       "t3": 5,
       "positive": 4,
-      "mixed": 5,
-      "negative": 1,
+      "mixed": 6,
+      "negative": 2,
       "readiness": {
         "ready": false,
         "reasons": [
           "T1:1/3",
-          "T2:1/2",
           "hi-conf:4/6"
         ],
         "highConfidence": 4,
@@ -867,15 +936,7 @@
           "isDualMarket": true
         },
         {
-          "name": "BroadwayWorld",
-          "isDualMarket": true
-        },
-        {
           "name": "New York Theatre Guide",
-          "isDualMarket": true
-        },
-        {
-          "name": "WhatsOnStage",
           "isDualMarket": true
         }
       ],
@@ -987,6 +1048,30 @@
           "m": 5,
           "n": 1,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-07-01T17:15:41.282Z",
+          "rc": 11,
+          "s": 62.87,
+          "t1": 2,
+          "t2": 4,
+          "t3": 5,
+          "p": 4,
+          "m": 6,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-01T18:53:48.021Z",
+          "rc": 12,
+          "s": 60.64,
+          "t1": 2,
+          "t2": 5,
+          "t3": 5,
+          "p": 4,
+          "m": 6,
+          "n": 2,
+          "bc": "waiting"
         }
       ]
     },
@@ -1000,17 +1085,17 @@
       "status": "open",
       "slug": "a-walk-on-the-moon-off-broadway",
       "thumbnail": "/images/shows/a-walk-on-the-moon-off-broadway-2026/thumbnail.webp",
-      "siteScore": 58.06,
-      "liveScore": 58,
-      "scoreDrift": -0.060000000000002274,
+      "siteScore": 60.61,
+      "liveScore": 61,
+      "scoreDrift": 0.39000000000000057,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 13,
+      "total": 15,
       "t1": 1,
-      "t2": 7,
-      "t3": 5,
-      "positive": 1,
+      "t2": 8,
+      "t3": 6,
+      "positive": 3,
       "mixed": 8,
       "negative": 4,
       "readiness": {
@@ -1018,7 +1103,7 @@
         "reasons": [
           "T1:1/3"
         ],
-        "highConfidence": 8,
+        "highConfidence": 10,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1395,6 +1480,18 @@
           "t2": 7,
           "t3": 5,
           "p": 1,
+          "m": 8,
+          "n": 4,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-01T17:52:48.815Z",
+          "rc": 15,
+          "s": 60.61,
+          "t1": 1,
+          "t2": 8,
+          "t3": 6,
+          "p": 3,
           "m": 8,
           "n": 4,
           "bc": "waiting"

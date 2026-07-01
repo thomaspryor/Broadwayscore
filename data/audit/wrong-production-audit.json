@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-01T15:59:15.756Z",
+  "timestamp": "2026-07-01T20:05:33.703Z",
   "stats": {
-    "totalReviews": 39604,
-    "alreadyFlagged": 17430,
+    "totalReviews": 39613,
+    "alreadyFlagged": 17422,
     "dateGuardCatches": 35,
     "directorMismatch": 889,
-    "tvFilmSignals": 1090,
-    "londonSignals": 713,
+    "tvFilmSignals": 1091,
+    "londonSignals": 722,
     "offBroadwaySignals": 467,
     "yearMismatch": 84,
-    "noPublishDate": 3994
+    "noPublishDate": 3989
   },
   "findings": [
     {
@@ -8531,7 +8531,7 @@
       "file": "independent--alice-saville.json",
       "score": 58,
       "publishDate": "2026-06-18",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html?loginSuccessful=true",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -23113,6 +23113,20 @@
       "score": 63,
       "publishDate": "October 1, 2019",
       "url": "https://variety.com/2019/legit/reviews/great-society-review-brian-cox-1203355172/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-guilty-west-end-2026",
+      "file": "london-theatre--anya-ryan.json",
+      "score": 91,
+      "publishDate": "2026-07-01",
+      "url": "https://www.londontheatre.co.uk/reviews/the-guilty-review-donmar-warehouse",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -38216,6 +38230,34 @@
     },
     {
       "showId": "sting-west-end-2026",
+      "file": "artsdesk--unknown.json",
+      "score": 61,
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/sting-young-vic-review-emotionally-gruelling-bit-bizarre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "sting-west-end-2026",
+      "file": "london-theatre--olivia-rook.json",
+      "score": 69,
+      "publishDate": "2026-06-27",
+      "url": "https://www.londontheatre.co.uk/reviews/sting-review-young-vic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "sting-west-end-2026",
       "file": "theatre-weekly--greg-stewart.json",
       "score": 79,
       "publishDate": "2026-06-24",
@@ -40394,6 +40436,34 @@
     },
     {
       "showId": "the-guilty-west-end-2026",
+      "file": "broadwayworld--aliya-al-hassan.json",
+      "score": 79,
+      "publishDate": "2026-07-01",
+      "url": "https://www.broadwayworld.com/westend/article/Review-THE-GUILTY-Starring-Russell-Tovey-Donmar-Warehouse-20260701",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "the-guilty-west-end-2026",
+      "file": "guardian--unknown.json",
+      "score": 82,
+      "publishDate": null,
+      "url": "https://www.theguardian.com/stage/2026/jul/01/the-guilty-review-russell-tovey-donmar-warehouse-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "the-guilty-west-end-2026",
       "file": "theatre-weekly--greg-stewart.json",
       "score": 97,
       "publishDate": "2026-06-30",
@@ -41000,6 +41070,20 @@
     },
     {
       "showId": "the-misanthrope-west-end-2026",
+      "file": "city-am--steve-dinneen.json",
+      "score": 56,
+      "publishDate": "2026-06-30",
+      "url": "https://www.cityam.com/the-misanthrope-at-the-national-theatre-sandra-oh-shines-in-a-play-that-flatters-to-deceive/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-misanthrope-west-end-2026",
       "file": "guardian--arifa-akbar.json",
       "score": 60,
       "publishDate": "2026-06-24",
@@ -41087,7 +41171,7 @@
       "file": "thestage--dave-fargnoli.json",
       "score": 38,
       "publishDate": "2026-06-24",
-      "url": "https://www.thestage.co.uk/reviews/the-misanthrope-review-lyttelton-national-theatre-london-sandra-oh",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-misanthrope-review-sandra-oh-what-a-disappointment-sbzvf82b2?t=1782310602034",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -42254,6 +42338,62 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "broadwayworld--gary-naylor.json",
+      "score": 96,
+      "publishDate": "2026-07-01",
+      "url": "https://www.broadwayworld.com/westend/article/Review-TO-KILL-A-MOCKINGBIRD-Wyndhams-Theatre-2026070188",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "score": 71,
+      "publishDate": "2026-07-01",
+      "url": "https://www.londonboxoffice.co.uk/news/post/to-kill-a-mockingbird-wyndhams-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "london-theatre--aliya-al-hassan.json",
+      "score": 94,
+      "publishDate": "2026-07-01",
+      "url": "https://www.londontheatre.co.uk/reviews/to-kill-a-mockingbird-review-wyndhams-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "theatreandtonic--emmie-newitt.json",
+      "score": 81,
+      "publishDate": "2026-07-01",
+      "url": "https://theatreandtonic.co.uk/blog/to-kill-a-mockingbird-wyndhams-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
