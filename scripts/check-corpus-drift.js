@@ -194,6 +194,25 @@ const AUDITS = [
     args: ['--strict'],        // 0 clean / 1 = orphan or staleness drift
     crashCodes: [],
   },
+  {
+    name: 'stuck-rescore-flags',
+    label: 'needsRescore=true reviews the scorer rejects (stuck flags that never clear)',
+    // Invariant behind the late-star producer/consumer seam bug (2026-06-30): a
+    // review flagged for rescore that isScoreable=false never clears (the scorer
+    // filters non-scoreable reviews out BEFORE processing and only clears the flag
+    // AFTER scoring), so the queue accumulates. Catches EVERY producer of
+    // needsRescore, not just late-star. See scripts/lib/stuck-rescore-flag.js.
+    //
+    // The 1170-flag backlog measured 2026-07-01 was burned down (--fix) and the
+    // enrich-reviews.yml "Drain stuck needsRescore flags" step now clears them every
+    // 6h, so steady-state is ~0. --max=25 is a small cushion for in-flight churn
+    // between drain cycles (reviews flagged then wrong-flagged within a 6h window).
+    // Drift (exit 1) fires when the count exceeds that — a producer flagging
+    // non-scoreable reviews faster than the drain clears them (a new producer bug).
+    script: 'audit-stuck-rescore-flags.js',
+    args: ['--gate', '--max=25'],
+    crashCodes: [2],           // 0/under / 1 = grew above backlog (new producer bug) / 2 = corpus missing
+  },
 ];
 
 function runAudit(audit) {
