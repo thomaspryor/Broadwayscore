@@ -141,6 +141,21 @@ jobs:
         continue-on-error: true
         timeout-minutes: 5
 
+      # Self-draining needsRescore queue (no API — pure local flag pass).
+      # A review flagged needsRescore=true that a LATER enricher marks
+      # wrongShow/wrongProduction/contentTier=invalid/duplicate becomes non-scoreable;
+      # the scorer filters it out BEFORE processing and only clears the flag AFTER
+      # scoring, so the flag strands forever and the rescore queue accumulates (1170
+      # found 2026-07-01). --fix clears needsRescore on any flagged-but-non-scoreable
+      # review (isScoreable=false → the scorer will never touch it). Runs AFTER the
+      # wrong-* classifiers AND after the late-star flagger, so it sees fresh flags
+      # and never undoes late-star's work (those reviews are scoreable, so kept).
+      # Holds the corpus invariant asserted by scripts/audit-stuck-rescore-flags.js.
+      - name: Drain stuck needsRescore flags (non-scoreable)
+        run: node scripts/audit-stuck-rescore-flags.js --fix 2>&1 | tee -a /tmp/locked-skip.log
+        continue-on-error: true
+        timeout-minutes: 5
+
       - name: Backfill unknown critics (via scraper infrastructure)
         if: inputs.skip_backfill_critics != 'true'
         env:
