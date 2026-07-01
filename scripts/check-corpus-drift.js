@@ -203,14 +203,14 @@ const AUDITS = [
     // AFTER scoring), so the queue accumulates. Catches EVERY producer of
     // needsRescore, not just late-star. See scripts/lib/stuck-rescore-flag.js.
     //
-    // --max baseline = the known pre-existing backlog measured 2026-07-01: 1170
-    // reviews flagged (mostly "fullText added after excerpt-based scoring") that a
-    // LATER enricher flagged wrongShow/wrongProduction/contentTier=invalid, stranding
-    // the flag. Drift (exit 1) fires only when the count grows ABOVE the backlog — a
-    // new producer bug. Re-lower to 0 after the self-draining scorer fix + one-time
-    // --fix burn-down land (Notion 38f637c5 sibling card).
+    // The 1170-flag backlog measured 2026-07-01 was burned down (--fix) and the
+    // enrich-reviews.yml "Drain stuck needsRescore flags" step now clears them every
+    // 6h, so steady-state is ~0. --max=25 is a small cushion for in-flight churn
+    // between drain cycles (reviews flagged then wrong-flagged within a 6h window).
+    // Drift (exit 1) fires when the count exceeds that — a producer flagging
+    // non-scoreable reviews faster than the drain clears them (a new producer bug).
     script: 'audit-stuck-rescore-flags.js',
-    args: ['--gate', '--max=1200'],
+    args: ['--gate', '--max=25'],
     crashCodes: [2],           // 0/under / 1 = grew above backlog (new producer bug) / 2 = corpus missing
   },
 ];
