@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-07-01T07:30:37.255Z",
-  "processed": 157,
-  "failed": 2033,
+  "updatedAt": "2026-07-01T07:31:20.096Z",
+  "processed": 158,
+  "failed": 2042,
   "successRate": "7.2%",
   "tierBreakdown": {
     "playwright": 109,
     "amp": 0,
-    "browserbase": 24,
+    "browserbase": 26,
     "directCookies": 0,
     "scrapingbee": 34,
     "brightdata": 7,
     "archiveToday": 26,
     "archive": 14
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-07-01T03:10:57.929Z",
-      "event": "bb-session",
-      "session": "9fdf196a",
-      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
-    },
-    {
-      "t": "2026-07-01T03:10:58.406Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-07-01T06:16:56.263Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-07-01T06:41:30.050Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-01T07:31:01.835Z",
+      "event": "bb-session",
+      "session": "6d7c19e3",
+      "url": "https://variety.com/2026/legit/news/death-of-a-salesman-broadway-review-nathan-l"
+    },
+    {
+      "t": "2026-07-01T07:31:02.414Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

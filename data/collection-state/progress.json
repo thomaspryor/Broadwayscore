@@ -156,7 +156,8 @@
     "birthright-off-broadway-2026/nytimes--unknown.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre--apollo-theatre.json",
     "glengarry-glen-ross-west-end-2026/standard--henry-hitchings.json",
-    "beetlejuice-west-end-2026/timeout--adam-feldman.json"
+    "beetlejuice-west-end-2026/timeout--adam-feldman.json",
+    "death-of-a-salesman-2026/variety--marilyn-stasio.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
@@ -2191,7 +2192,16 @@
     "the-fear-of-13-2026/theatre-reviews-limited--david-roberts.json",
     "the-fear-of-13-2026/financialtimes--sarah-hemming.json",
     "the-fear-of-13-2026/i-paper--fiona-mountford.json",
-    "the-fear-of-13-2026/standard--nick-curtis.json"
+    "the-fear-of-13-2026/standard--nick-curtis.json",
+    "the-fear-of-13-2026/sunday-telegraph--claire-allfree.json",
+    "the-fear-of-13-2026/thestage--sam-marlowe.json",
+    "the-fear-of-13-2026/times-uk--clive-davis.json",
+    "the-fear-of-13-2026/whatsonstage--alex-wood.json",
+    "the-fear-of-13-2026/independent--alice-saville.json",
+    "titanique-2026/the-queer-review--james-kleinmann.json",
+    "titanique-2026/wsj--charles-isherwood.json",
+    "titanique-2026/playbill--unknown.json",
+    "death-of-a-salesman-2026/broadwaynews--brittani-samuel.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2331,7 +2341,9 @@
       "data/review-texts/stranger-things-the-first-shadow-west-end-2023/variety--frank-rizzo.json",
       "stranger-things-the-first-shadow-west-end-2023/variety--frank-rizzo.json",
       "data/review-texts/stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json",
-      "stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json"
+      "stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json",
+      "data/review-texts/death-of-a-salesman-2026/variety--marilyn-stasio.json",
+      "death-of-a-salesman-2026/variety--marilyn-stasio.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -2425,7 +2437,7 @@
     ]
   },
   "startTime": "2026-06-30T16:47:37.281Z",
-  "lastProcessed": "the-fear-of-13-2026/standard--nick-curtis.json",
+  "lastProcessed": "death-of-a-salesman-2026/broadwaynews--brittani-samuel.json",
   "log": [
     {
       "t": "2026-06-30T16:51:17.696Z",
@@ -2591,6 +2603,17 @@
       "t": "2026-07-01T06:41:30.050Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-01T07:31:01.835Z",
+      "event": "bb-session",
+      "session": "6d7c19e3",
+      "url": "https://variety.com/2026/legit/news/death-of-a-salesman-broadway-review-nathan-l"
+    },
+    {
+      "t": "2026-07-01T07:31:02.414Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
