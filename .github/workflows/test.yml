@@ -103,7 +103,7 @@ on:
       - 'scripts/lib/show-duplicate-detection.test.mjs'
       # Display-field artifact GC (html-entity decode + json-ld drop) + its shared
       # predicate/decoder lib. Colocated text-cleaning predicates are tested by
-      # tests/unit/display-field-artifacts.test.mjs (no-data batch).
+      # tests/unit/display-field-artifacts.test.mjs tests/unit/london-producing-house-classification.test.mjs (no-data batch).
       - 'scripts/gc-display-field-artifacts.js'
       - 'scripts/lib/text-cleaning.js'
       - 'scripts/audit-orphan-show-ids.js'
