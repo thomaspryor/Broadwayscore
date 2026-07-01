@@ -1,69 +1,134 @@
 {
-  "runDate": "2026-07-01T07:03:53.603Z",
+  "runDate": "2026-07-01T07:08:55.752Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "camping-off-broadway-2026",
+    "showFilter": "glengarry-glen-ross-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 1,
+    "processed": 5,
+    "failed": 25,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "16.7%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 4,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 0,
-    "archive": 0
+    "archiveToday": 1,
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 0,
+    "tier1Attempts": 9,
+    "tier1Success": 8,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 1,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
+    "tier2Attempts": 5,
+    "tier2Success": 1,
     "tier3Attempts": 1,
-    "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 1,
-    "tier4Success": 0,
-    "totalFailed": 0,
-    "scrapingBeePageCredits": 0,
+    "tier3Success": 1,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
+    "tier4Attempts": 2,
+    "tier4Success": 2,
+    "totalFailed": 25,
+    "scrapingBeePageCredits": 50,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 1,
+    "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 25,
+    "urlDiscoverySuccess": 5,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "glengarry-glen-ross-west-end-2026/standard--henry-hitchings.json",
+    "glengarry-glen-ross-west-end-2026/times-uk--ann-treneman.json",
+    "glengarry-glen-ross-west-end-2026/times-uk--benedict-nightingale.json",
+    "glengarry-glen-ross-west-end-2026/times-uk--dominic-maxwell.json",
+    "glengarry-glen-ross-west-end-2026/times-uk--maxie-szalwinska.json"
+  ],
   "failed": [
-    "camping-off-broadway-2026/talkinbroadway--unknown.json"
+    "glengarry-glen-ross-west-end-2026/hollywood-reporter--david-rooney.json",
+    "glengarry-glen-ross-west-end-2026/hollywood-reporter--unknown.json",
+    "glengarry-glen-ross-west-end-2026/nytimes--jesse-green.json",
+    "glengarry-glen-ross-west-end-2026/variety--marilyn-stasio.json",
+    "glengarry-glen-ross-west-end-2026/vulture--sara-holdren.json",
+    "glengarry-glen-ross-west-end-2026/guardian-uk--unknown.json",
+    "glengarry-glen-ross-west-end-2026/newsday--linda-winer.json",
+    "glengarry-glen-ross-west-end-2026/observer--david-cote.json",
+    "glengarry-glen-ross-west-end-2026/oxfordshire-guardian--unknown.json",
+    "glengarry-glen-ross-west-end-2026/about-entertainment--ben-brantley.json",
+    "glengarry-glen-ross-west-end-2026/amny--matt-windman.json",
+    "glengarry-glen-ross-west-end-2026/bloomberg--jeremy-gerard.json",
+    "glengarry-glen-ross-west-end-2026/british-theatre--susan-novak.json",
+    "glengarry-glen-ross-west-end-2026/chicagotribune--unknown.json",
+    "glengarry-glen-ross-west-end-2026/daily-echo--matthew-baker.json",
+    "glengarry-glen-ross-west-end-2026/dailybeast--tim-teeman.json",
+    "glengarry-glen-ross-west-end-2026/financialtimes--brendan-lemon.json",
+    "glengarry-glen-ross-west-end-2026/front-row-center--yuval-jonas.json",
+    "glengarry-glen-ross-west-end-2026/nysr--frank-scheck.json",
+    "glengarry-glen-ross-west-end-2026/nysr--roma-torre.json",
+    "glengarry-glen-ross-west-end-2026/slantmagazine--dan-rubins.json",
+    "glengarry-glen-ross-west-end-2026/thestage--sam-marlowe.json",
+    "glengarry-glen-ross-west-end-2026/washpost--unknown.json",
+    "glengarry-glen-ross-west-end-2026/western-mail--unknown.json",
+    "glengarry-glen-ross-west-end-2026/whatsonstage--lucinda-everett.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "glengarry-glen-ross-west-end-2026/times-uk--ann-treneman.json",
+      "glengarry-glen-ross-west-end-2026/times-uk--benedict-nightingale.json",
+      "glengarry-glen-ross-west-end-2026/times-uk--dominic-maxwell.json",
+      "glengarry-glen-ross-west-end-2026/times-uk--maxie-szalwinska.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
-    "archive": []
+    "archiveToday": [
+      "data/review-texts/glengarry-glen-ross-west-end-2026/thestage--sam-marlowe.json"
+    ],
+    "archive": [
+      "glengarry-glen-ross-west-end-2026/standard--henry-hitchings.json"
+    ]
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "glengarry-glen-ross-west-end-2026/standard--henry-hitchings.json",
+      "oldUrl": "https://www.standard.co.uk/culture/theatre/glengarry-glen-ross-theatre-review-christian-slater-sells-sharp-mamet-revival-a3711241.html",
+      "newUrl": "https://www.standard.co.uk/culture/theatre/glengarry-glen-ross-at-the-old-vic-review-b1286630.html"
+    },
+    {
+      "reviewId": "glengarry-glen-ross-west-end-2026/times-uk--ann-treneman.json",
+      "oldUrl": "https://www.thetimes.co.uk/article/theatre-review-glengarry-glen-ross-playhouse-wc2-zbbsm0kxj",
+      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-without-men-its-not-just-putting-lipstick-on-mamet-sjc0ff8h0"
+    },
+    {
+      "reviewId": "glengarry-glen-ross-west-end-2026/times-uk--benedict-nightingale.json",
+      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0?eafs_enabled=false",
+      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-without-men-its-not-just-putting-lipstick-on-mamet-sjc0ff8h0"
+    },
+    {
+      "reviewId": "glengarry-glen-ross-west-end-2026/times-uk--dominic-maxwell.json",
+      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0?eafs_enabled=false",
+      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-without-men-its-not-just-putting-lipstick-on-mamet-sjc0ff8h0"
+    },
+    {
+      "reviewId": "glengarry-glen-ross-west-end-2026/times-uk--maxie-szalwinska.json",
+      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0?eafs_enabled=false",
+      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-without-men-its-not-just-putting-lipstick-on-mamet-sjc0ff8h0"
+    }
+  ]
 }
