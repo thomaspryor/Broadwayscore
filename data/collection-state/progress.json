@@ -41,7 +41,13 @@
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/i-paper--sarah-carson.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre--apollo-theatre.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre--marianka-swain.json",
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json"
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json",
+    "the-misanthrope-west-end-2026/city-am--unknown.json",
+    "the-misanthrope-west-end-2026/times-uk--clive-davis.json",
+    "the-misanthrope-west-end-2026/times-uk--sam-marlowe.json",
+    "the-misanthrope-west-end-2026/whatsonstage--tanyel-gumushan.json",
+    "the-black-mirror-experience-off-broadway-2026/the-recs--unknown.json",
+    "much-ado-about-nothing-globe-off-west-end-2026/london-theatre--lola-phillips.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
@@ -161,7 +167,11 @@
     "sting-west-end-2026/nbcny--unknown.json",
     "sting-west-end-2026/talkinbroadway--unknown.json",
     "sting-west-end-2026/times-uk--stephen-dalton.json",
-    "the-misanthrope-west-end-2026/about-entertainment--jason-zinoman.json"
+    "the-misanthrope-west-end-2026/about-entertainment--jason-zinoman.json",
+    "the-misanthrope-west-end-2026/backstage--david-sheward.json",
+    "the-misanthrope-west-end-2026/curtainup--simon-saltzman.json",
+    "the-misanthrope-west-end-2026/west-end-best-friend--news-desk.json",
+    "much-ado-about-nothing-globe-off-west-end-2026/times-uk--ann-treneman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -205,10 +215,20 @@
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/i-paper--sarah-carson.json",
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre--apollo-theatre.json",
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre--marianka-swain.json",
-      "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json"
+      "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json",
+      "the-misanthrope-west-end-2026/whatsonstage--tanyel-gumushan.json",
+      "the-black-mirror-experience-off-broadway-2026/the-recs--unknown.json",
+      "much-ado-about-nothing-globe-off-west-end-2026/london-theatre--lola-phillips.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-misanthrope-west-end-2026/city-am--unknown.json",
+      "the-misanthrope-west-end-2026/city-am--unknown.json",
+      "data/review-texts/the-misanthrope-west-end-2026/times-uk--clive-davis.json",
+      "the-misanthrope-west-end-2026/times-uk--clive-davis.json",
+      "data/review-texts/the-misanthrope-west-end-2026/times-uk--sam-marlowe.json",
+      "the-misanthrope-west-end-2026/times-uk--sam-marlowe.json"
+    ],
     "directCookies": [
       "cyrano-de-bergerac-west-end-2026/times-uk--dominic-maxwell.json"
     ],
@@ -222,6 +242,35 @@
     ]
   },
   "startTime": "2026-07-01T16:50:27.166Z",
-  "lastProcessed": "the-misanthrope-west-end-2026/about-entertainment--jason-zinoman.json",
-  "log": []
+  "lastProcessed": "much-ado-about-nothing-globe-off-west-end-2026/times-uk--ann-treneman.json",
+  "log": [
+    {
+      "t": "2026-07-01T17:20:30.419Z",
+      "event": "bb-session",
+      "session": "43a99e16",
+      "url": "https://www.cityam.com/the-misanthrope-at-the-national-theatre-sandra-oh-shines-"
+    },
+    {
+      "t": "2026-07-01T17:21:48.752Z",
+      "event": "bb-session",
+      "session": "b8af367b",
+      "url": "https://www.thetimes.co.uk/culture/theatre-dance/article/the-misanthrope-review-"
+    },
+    {
+      "t": "2026-07-01T17:21:49.154Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-07-01T17:23:07.186Z",
+      "event": "bb-session",
+      "session": "301125f6",
+      "url": "https://www.thetimes.co.uk/culture/theatre-dance/article/the-misanthrope-review-"
+    },
+    {
+      "t": "2026-07-01T17:23:07.713Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
+    }
+  ]
 }
