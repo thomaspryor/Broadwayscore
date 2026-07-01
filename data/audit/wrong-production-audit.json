@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-01T12:09:22.113Z",
+  "timestamp": "2026-07-01T12:28:41.862Z",
   "stats": {
-    "totalReviews": 39598,
-    "alreadyFlagged": 17434,
+    "totalReviews": 39600,
+    "alreadyFlagged": 17430,
     "dateGuardCatches": 35,
     "directorMismatch": 889,
-    "tvFilmSignals": 1089,
+    "tvFilmSignals": 1090,
     "londonSignals": 713,
     "offBroadwaySignals": 467,
     "yearMismatch": 84,
-    "noPublishDate": 3991
+    "noPublishDate": 3993
   },
   "findings": [
     {
@@ -21800,6 +21800,20 @@
       ]
     },
     {
+      "showId": "the-black-mirror-experience-off-broadway-2026",
+      "file": "the-recs--unknown.json",
+      "score": 81,
+      "publishDate": "2026-07-01",
+      "url": "https://therecs.co.uk/the-black-mirror-experience-the-shed/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "the-book-of-mormon-west-end-2024",
       "file": "financialtimes--ian-shuttleworth.json",
       "score": 78,
@@ -27737,7 +27751,7 @@
     },
     {
       "showId": "a-midsummer-nights-dream-west-end-2026",
-      "file": "thereviewshub--unknown.json",
+      "file": "thereviewshub--the-reviews-hub-london.json",
       "score": 62,
       "publishDate": null,
       "url": "https://www.thereviewshub.com/midsummer-nights-dream-regents-park-open-air-theatre-london/",
@@ -30598,7 +30612,7 @@
       "file": "exeunt-magazine--loren-noveck.json",
       "score": 80,
       "publishDate": "2026-05-15T11:08:02-04:00",
-      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/",
+      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/#:~:text=Dad%20Don't%20Read%20This%20is%20messy%20and%20raw%20and,will%20keep%20it%20in%20my",
       "findings": [
         {
           "type": "DATE_GUARD",
