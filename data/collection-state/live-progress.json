@@ -1,31 +1,47 @@
 {
-  "updatedAt": "2026-07-01T16:37:22.721Z",
-  "processed": 0,
-  "failed": 30,
-  "successRate": "0%",
+  "updatedAt": "2026-07-01T17:46:32.335Z",
+  "processed": 63,
+  "failed": 237,
+  "successRate": "21.0%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 56,
     "amp": 0,
-    "browserbase": 0,
-    "directCookies": 0,
-    "scrapingbee": 0,
+    "browserbase": 6,
+    "directCookies": 1,
+    "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 3,
-    "archive": 0
+    "archiveToday": 1,
+    "archive": 2
   },
   "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-07-01T16:25:46.804Z",
+      "t": "2026-07-01T17:20:30.419Z",
       "event": "bb-session",
-      "session": "4bf858f5",
-      "url": "https://www.facebook.com/pinkprincetheatre/posts/tonight-im-a-plus-one-at-the-pr"
+      "session": "43a99e16",
+      "url": "https://www.cityam.com/the-misanthrope-at-the-national-theatre-sandra-oh-shines-"
     },
     {
-      "t": "2026-07-01T16:36:35.789Z",
+      "t": "2026-07-01T17:21:48.752Z",
       "event": "bb-session",
-      "session": "50700f9e",
-      "url": "https://www.facebook.com/thestage/posts/icymi-review-glengarry-glen-ross-at-the-"
+      "session": "b8af367b",
+      "url": "https://www.thetimes.co.uk/culture/theatre-dance/article/the-misanthrope-review-"
+    },
+    {
+      "t": "2026-07-01T17:21:49.154Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-07-01T17:23:07.186Z",
+      "event": "bb-session",
+      "session": "301125f6",
+      "url": "https://www.thetimes.co.uk/culture/theatre-dance/article/the-misanthrope-review-"
+    },
+    {
+      "t": "2026-07-01T17:23:07.713Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
     }
   ]
 }
