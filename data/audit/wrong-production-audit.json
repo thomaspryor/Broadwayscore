@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-01T17:15:36.427Z",
+  "timestamp": "2026-07-01T17:52:44.007Z",
   "stats": {
-    "totalReviews": 39616,
+    "totalReviews": 39615,
     "alreadyFlagged": 17431,
     "dateGuardCatches": 35,
     "directorMismatch": 889,
     "tvFilmSignals": 1091,
-    "londonSignals": 718,
+    "londonSignals": 719,
     "offBroadwaySignals": 467,
     "yearMismatch": 84,
-    "noPublishDate": 3995
+    "noPublishDate": 3994
   },
   "findings": [
     {
@@ -23124,6 +23124,7 @@
     {
       "showId": "the-guilty-west-end-2026",
       "file": "london-theatre--anya-ryan.json",
+      "score": 91,
       "publishDate": "2026-07-01",
       "url": "https://www.londontheatre.co.uk/reviews/the-guilty-review-donmar-warehouse",
       "findings": [
@@ -40422,6 +40423,7 @@
     {
       "showId": "the-guilty-west-end-2026",
       "file": "broadwayworld--aliya-al-hassan.json",
+      "score": 78,
       "publishDate": "2026-07-01",
       "url": "https://www.broadwayworld.com/westend/article/Review-THE-GUILTY-Starring-Russell-Tovey-Donmar-Warehouse-20260701",
       "findings": [
@@ -41030,6 +41032,19 @@
       "score": 79,
       "publishDate": "2026-06-28",
       "url": "https://www.allthatdazzles.co.uk/post/review-the-misanthrope-lyttelton-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-misanthrope-west-end-2026",
+      "file": "city-am--steve-dinneen.json",
+      "publishDate": "2026-06-30",
+      "url": "https://www.cityam.com/the-misanthrope-at-the-national-theatre-sandra-oh-shines-in-a-play-that-flatters-to-deceive/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -42314,6 +42329,7 @@
     {
       "showId": "to-kill-a-mockingbird-west-end-2026",
       "file": "london-box-office--stuart-king.json",
+      "score": 75,
       "publishDate": "2026-07-01",
       "url": "https://www.londonboxoffice.co.uk/news/post/to-kill-a-mockingbird-wyndhams-theatre-review",
       "findings": [
@@ -42327,6 +42343,7 @@
     {
       "showId": "to-kill-a-mockingbird-west-end-2026",
       "file": "theatreandtonic--emmie-newitt.json",
+      "score": 81,
       "publishDate": "2026-07-01",
       "url": "https://theatreandtonic.co.uk/blog/to-kill-a-mockingbird-wyndhams-theatre-review",
       "findings": [

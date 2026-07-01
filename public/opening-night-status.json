@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-01T17:15:41.282Z",
+  "generatedAt": "2026-07-01T17:52:48.815Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -13,27 +13,27 @@
       "slug": "to-kill-a-mockingbird-west-end",
       "thumbnail": "/images/shows/to-kill-a-mockingbird-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 90,
+      "liveScore": 86,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 3,
+      "reviewsNeeded": 2,
       "siteFileExists": true,
-      "total": 2,
+      "total": 3,
       "t1": 0,
       "t2": 2,
-      "t3": 0,
-      "positive": 2,
+      "t3": 1,
+      "positive": 3,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "2/8 total",
+          "3/8 total",
           "T1:0/3",
           "T2:0/2",
-          "hi-conf:0/6"
+          "hi-conf:1/6"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -121,6 +121,18 @@
           "m": 0,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-07-01T17:52:48.815Z",
+          "rc": 3,
+          "s": 86,
+          "t1": 0,
+          "t2": 2,
+          "t3": 1,
+          "p": 3,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -134,27 +146,27 @@
       "status": "open",
       "slug": "the-guilty-west-end",
       "thumbnail": "/images/shows/the-guilty-west-end-2026/thumbnail.jpg",
-      "siteScore": 78.71,
-      "liveScore": 79,
-      "scoreDrift": 0.29000000000000625,
+      "siteScore": 80.01,
+      "liveScore": 80,
+      "scoreDrift": -0.010000000000005116,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 5,
+      "total": 7,
       "t1": 2,
-      "t2": 3,
-      "t3": 0,
-      "positive": 4,
+      "t2": 4,
+      "t3": 1,
+      "positive": 6,
       "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "5/8 total",
+          "7/8 total",
           "T1:1/3",
-          "hi-conf:1/6"
+          "hi-conf:4/6"
         ],
-        "highConfidence": 1,
+        "highConfidence": 4,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -235,6 +247,18 @@
           "t2": 3,
           "t3": 0,
           "p": 4,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-01T17:52:48.815Z",
+          "rc": 7,
+          "s": 80.01,
+          "t1": 2,
+          "t2": 4,
+          "t3": 1,
+          "p": 6,
           "m": 1,
           "n": 0,
           "bc": "waiting"
@@ -1024,17 +1048,17 @@
       "status": "open",
       "slug": "a-walk-on-the-moon-off-broadway",
       "thumbnail": "/images/shows/a-walk-on-the-moon-off-broadway-2026/thumbnail.webp",
-      "siteScore": 58.06,
-      "liveScore": 58,
-      "scoreDrift": -0.060000000000002274,
+      "siteScore": 60.61,
+      "liveScore": 61,
+      "scoreDrift": 0.39000000000000057,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 13,
+      "total": 15,
       "t1": 1,
-      "t2": 7,
-      "t3": 5,
-      "positive": 1,
+      "t2": 8,
+      "t3": 6,
+      "positive": 3,
       "mixed": 8,
       "negative": 4,
       "readiness": {
@@ -1042,7 +1066,7 @@
         "reasons": [
           "T1:1/3"
         ],
-        "highConfidence": 8,
+        "highConfidence": 10,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1419,6 +1443,18 @@
           "t2": 7,
           "t3": 5,
           "p": 1,
+          "m": 8,
+          "n": 4,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-01T17:52:48.815Z",
+          "rc": 15,
+          "s": 60.61,
+          "t1": 1,
+          "t2": 8,
+          "t3": 6,
+          "p": 3,
           "m": 8,
           "n": 4,
           "bc": "waiting"
