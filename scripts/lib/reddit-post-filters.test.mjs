@@ -8,6 +8,8 @@ const {
   isGenericTitle,
   buildAudienceSearchQueries,
   isPreFixReddit,
+  isRefreshStaleCandidate,
+  refreshStaleSortKey,
   REDDIT_CONTAMINATION_FIX_DATE,
 } = require('./reddit-post-filters.js');
 
@@ -97,6 +99,44 @@ test('isPreFixReddit: pre-fix / undated records flagged, post-fix / suppressed /
   // No reddit source → false
   assert.equal(isPreFixReddit(null), false);
   assert.equal(isPreFixReddit(undefined), false);
+});
+
+test('isRefreshStaleCandidate: score window + staleness gating', () => {
+  const now = Date.now();
+  const staleBefore = new Date(now - 45 * 864e5);
+  const closedWindowCutoff = new Date(now - 3 * 365 * 864e5);
+  const nowISO = new Date(now).toISOString();
+  const opts = { staleBefore, closedWindowCutoff };
+  const openShow = { status: 'open' };
+  const recentClosed = { status: 'closed', closingDate: new Date(now - 30 * 864e5).toISOString() };
+  const oldClosed = { status: 'closed', closingDate: '2020-01-01' };
+
+  // In-window + stale reddit → refresh
+  assert.equal(isRefreshStaleCandidate(openShow, { sources: { reddit: { lastUpdated: '2026-02-01' } } }, opts), true);
+  // In-window + fresh reddit → skip
+  assert.equal(isRefreshStaleCandidate(openShow, { sources: { reddit: { lastUpdated: nowISO } } }, opts), false);
+  // In-window + never scraped/attempted → refresh
+  assert.equal(isRefreshStaleCandidate(openShow, { sources: {} }, opts), true);
+  assert.equal(isRefreshStaleCandidate(openShow, undefined, opts), true);
+  // THE STUCK-BACKLOG FIX: no-data show just attempted → NOT re-selected
+  assert.equal(isRefreshStaleCandidate(openShow, { redditLastAttempted: nowISO, sources: {} }, opts), false);
+  // ...but a stale attempt marker → retry
+  assert.equal(isRefreshStaleCandidate(openShow, { redditLastAttempted: '2026-01-01', sources: {} }, opts), true);
+  // Recently-closed (within 3yr) is in the score window
+  assert.equal(isRefreshStaleCandidate(recentClosed, { sources: {} }, opts), true);
+  // Long-closed (>3yr) is NOT — its Reddit no longer affects any live score
+  assert.equal(isRefreshStaleCandidate(oldClosed, { sources: {} }, opts), false);
+  // Missing show record → not a candidate
+  assert.equal(isRefreshStaleCandidate(undefined, { sources: {} }, opts), false);
+});
+
+test('refreshStaleSortKey: never-touched sorts oldest; attempt marker counts', () => {
+  assert.equal(refreshStaleSortKey({ sources: {} }), 0);
+  assert.equal(refreshStaleSortKey(undefined), 0);
+  const t = '2026-03-01T00:00:00Z';
+  assert.equal(refreshStaleSortKey({ sources: { reddit: { lastUpdated: t } } }), new Date(t).getTime());
+  // attempt marker used when no reddit.lastUpdated
+  assert.equal(refreshStaleSortKey({ redditLastAttempted: t, sources: {} }), new Date(t).getTime());
 });
 
 test('opera queries keep their Met anchoring unchanged', () => {
