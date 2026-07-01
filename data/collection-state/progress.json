@@ -140,7 +140,10 @@
     "oh-mary-2024/broadwaynews--brittani-samuel.json",
     "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
     "hadestown-west-end-2024/columbus-dispatch--unknown.json",
-    "hadestown-west-end-2024/shy-strange-manic--kariss-ainsworth.json"
+    "hadestown-west-end-2024/shy-strange-manic--kariss-ainsworth.json",
+    "stranger-things-the-first-shadow-west-end-2023/variety--frank-rizzo.json",
+    "stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json",
+    "stranger-things-the-first-shadow-west-end-2023/timeout--adam-feldman.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
@@ -1851,7 +1854,14 @@
     "hadestown-west-end-2024/wnyc--jennifer-vanasco.json",
     "hadestown-west-end-2024/london-box-office--phil-willmott.json",
     "stranger-things-the-first-shadow-west-end-2023/nytg--kyle-turner.json",
-    "stranger-things-the-first-shadow-west-end-2023/nytimes--elisabeth-vincentelli.json"
+    "stranger-things-the-first-shadow-west-end-2023/nytimes--elisabeth-vincentelli.json",
+    "stranger-things-the-first-shadow-west-end-2023/variety--ellise-shafer.json",
+    "stranger-things-the-first-shadow-west-end-2023/vulture--sara-holdren.json",
+    "stranger-things-the-first-shadow-west-end-2023/broadwaynews--brittani-samuel.json",
+    "stranger-things-the-first-shadow-west-end-2023/nydailynews--chris-jones.json",
+    "stranger-things-the-first-shadow-west-end-2023/thewrap--robert-hofler.json",
+    "stranger-things-the-first-shadow-west-end-2023/wsj--charles-isherwood.json",
+    "stranger-things-the-first-shadow-west-end-2023/cititour--brian-scott-lipton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1956,7 +1966,8 @@
       "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
       "my-neighbour-totoro-west-end-2025/british-theatre--julia-jordan.json",
       "maybe-happy-ending-2024/washpost--unknown.json",
-      "hadestown-west-end-2024/columbus-dispatch--unknown.json"
+      "hadestown-west-end-2024/columbus-dispatch--unknown.json",
+      "stranger-things-the-first-shadow-west-end-2023/timeout--adam-feldman.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1979,7 +1990,11 @@
       "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
       "oh-mary-west-end-2025/deadline--greg-evans.json",
       "data/review-texts/maybe-happy-ending-2024/variety--unknown.json",
-      "maybe-happy-ending-2024/variety--unknown.json"
+      "maybe-happy-ending-2024/variety--unknown.json",
+      "data/review-texts/stranger-things-the-first-shadow-west-end-2023/variety--frank-rizzo.json",
+      "stranger-things-the-first-shadow-west-end-2023/variety--frank-rizzo.json",
+      "data/review-texts/stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json",
+      "stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -2066,7 +2081,7 @@
     ]
   },
   "startTime": "2026-06-30T16:47:37.281Z",
-  "lastProcessed": "stranger-things-the-first-shadow-west-end-2023/nytimes--elisabeth-vincentelli.json",
+  "lastProcessed": "stranger-things-the-first-shadow-west-end-2023/cititour--brian-scott-lipton.json",
   "log": [
     {
       "t": "2026-06-30T16:51:17.696Z",
@@ -2210,6 +2225,28 @@
       "t": "2026-07-01T06:31:57.183Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-01T06:40:55.783Z",
+      "event": "bb-session",
+      "session": "eeb2b727",
+      "url": "https://variety.com/2023/theater/news/stranger-things-play-the-first-shadow-cast"
+    },
+    {
+      "t": "2026-07-01T06:40:56.525Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-01T06:41:29.407Z",
+      "event": "bb-session",
+      "session": "853e84d3",
+      "url": "https://deadline.com/2024/03/stranger-things-first-shadow-broadway-1235850385/"
+    },
+    {
+      "t": "2026-07-01T06:41:30.050Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }

@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-07-01T06:40:49.752Z",
-  "processed": 141,
-  "failed": 1709,
-  "successRate": "7.6%",
+  "updatedAt": "2026-07-01T06:42:08.329Z",
+  "processed": 144,
+  "failed": 1716,
+  "successRate": "7.7%",
   "tierBreakdown": {
-    "playwright": 101,
+    "playwright": 102,
     "amp": 0,
-    "browserbase": 20,
+    "browserbase": 24,
     "directCookies": 0,
     "scrapingbee": 29,
     "brightdata": 7,
     "archiveToday": 26,
     "archive": 12
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 9,
   "recentActivity": [
-    {
-      "t": "2026-07-01T01:06:07.906Z",
-      "event": "bb-session",
-      "session": "9daeca4d",
-      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
-    },
-    {
-      "t": "2026-07-01T01:06:08.435Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-07-01T02:40:30.116Z",
-      "event": "bb-session",
-      "session": "ff3d79df",
-      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
-    },
-    {
-      "t": "2026-07-01T02:40:31.148Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-07-01T03:10:57.929Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-07-01T06:31:57.183Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-01T06:40:55.783Z",
+      "event": "bb-session",
+      "session": "eeb2b727",
+      "url": "https://variety.com/2023/theater/news/stranger-things-play-the-first-shadow-cast"
+    },
+    {
+      "t": "2026-07-01T06:40:56.525Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-01T06:41:29.407Z",
+      "event": "bb-session",
+      "session": "853e84d3",
+      "url": "https://deadline.com/2024/03/stranger-things-first-shadow-broadway-1235850385/"
+    },
+    {
+      "t": "2026-07-01T06:41:30.050Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
