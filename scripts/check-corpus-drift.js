@@ -194,6 +194,25 @@ const AUDITS = [
     args: ['--strict'],        // 0 clean / 1 = orphan or staleness drift
     crashCodes: [],
   },
+  {
+    name: 'stuck-rescore-flags',
+    label: 'needsRescore=true reviews the scorer rejects (stuck flags that never clear)',
+    // Invariant behind the late-star producer/consumer seam bug (2026-06-30): a
+    // review flagged for rescore that isScoreable=false never clears (the scorer
+    // filters non-scoreable reviews out BEFORE processing and only clears the flag
+    // AFTER scoring), so the queue accumulates. Catches EVERY producer of
+    // needsRescore, not just late-star. See scripts/lib/stuck-rescore-flag.js.
+    //
+    // --max baseline = the known pre-existing backlog measured 2026-07-01: 1170
+    // reviews flagged (mostly "fullText added after excerpt-based scoring") that a
+    // LATER enricher flagged wrongShow/wrongProduction/contentTier=invalid, stranding
+    // the flag. Drift (exit 1) fires only when the count grows ABOVE the backlog — a
+    // new producer bug. Re-lower to 0 after the self-draining scorer fix + one-time
+    // --fix burn-down land (Notion 38f637c5 sibling card).
+    script: 'audit-stuck-rescore-flags.js',
+    args: ['--gate', '--max=1200'],
+    crashCodes: [2],           // 0/under / 1 = grew above backlog (new producer bug) / 2 = corpus missing
+  },
 ];
 
 function runAudit(audit) {
