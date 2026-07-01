@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-01T19:58:21.361Z",
+  "generatedAt": "2026-07-01T21:49:48.826Z",
   "date": "2026-07-01",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 760203,
+  "entryCount": 764810,
   "shows": [
     {
       "showId": "an-ideal-husband-west-end-2026",
@@ -10341,12 +10341,12 @@
     },
     {
       "showId": "sting-west-end-2026",
-      "reviewCount": 9,
+      "reviewCount": 10,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 3896853,
+        "collected-to-scored": 2082540,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -11711,7 +11711,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 766816,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -12471,7 +12471,7 @@
     },
     {
       "showId": "the-guilty-west-end-2026",
-      "reviewCount": 8,
+      "reviewCount": 9,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
