@@ -164,7 +164,9 @@
     "kinky-boots-the-musical-west-end-2026/express-uk--stefan-kyriazis.json",
     "kinky-boots-the-musical-west-end-2026/whatsonstage--alex-wood.json",
     "every-brilliant-thing-2026/nydailynews--joe-dziemianowicz.json",
-    "oh-mary-west-end-2025/timeout--adam-feldman.json"
+    "oh-mary-west-end-2025/timeout--adam-feldman.json",
+    "stranger-things-the-first-shadow-west-end-2023/deadline--greg-evans.json",
+    "moulin-rouge-the-musical-west-end-2021/independent--alice-saville.json"
   ],
   "failed": [
     "glengarry-glen-ross-west-end-2026/hollywood-reporter--david-rooney.json",
@@ -2225,7 +2227,15 @@
     "glengarry-glen-ross-west-end-2026/times-uk--ann-treneman.json",
     "glengarry-glen-ross-west-end-2026/times-uk--benedict-nightingale.json",
     "glengarry-glen-ross-west-end-2026/times-uk--dominic-maxwell.json",
-    "glengarry-glen-ross-west-end-2026/times-uk--maxie-szalwinska.json"
+    "glengarry-glen-ross-west-end-2026/times-uk--maxie-szalwinska.json",
+    "moulin-rouge-the-musical-west-end-2021/patch--debra-graff.json",
+    "moulin-rouge-the-musical-west-end-2021/patch--nancy-sasso-janis.json",
+    "moulin-rouge-the-musical-west-end-2021/revue-arts--john-kissane.json",
+    "moulin-rouge-the-musical-west-end-2021/san-diego-union-tribune--pam-kragen.json",
+    "moulin-rouge-the-musical-west-end-2021/san-francisco-chronicle--lily-janiak.json",
+    "moulin-rouge-the-musical-west-end-2021/scene--christine-howey.json",
+    "moulin-rouge-the-musical-west-end-2021/seattle-times--jerald-pierce.json",
+    "moulin-rouge-the-musical-west-end-2021/the-city-journals--peri-kinder.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2343,7 +2353,8 @@
       "schmigadoon-2026/nytg--unknown.json",
       "kinky-boots-the-musical-west-end-2026/express-uk--stefan-kyriazis.json",
       "kinky-boots-the-musical-west-end-2026/whatsonstage--alex-wood.json",
-      "oh-mary-west-end-2025/timeout--adam-feldman.json"
+      "oh-mary-west-end-2025/timeout--adam-feldman.json",
+      "moulin-rouge-the-musical-west-end-2021/independent--alice-saville.json"
     ],
     "amp": [],
     "browserbase": [
@@ -2376,7 +2387,9 @@
       "data/review-texts/cyrano-de-bergerac-west-end-2026/the-upcoming-uk--unknown.json",
       "cyrano-de-bergerac-west-end-2026/the-upcoming-uk--unknown.json",
       "data/review-texts/proof-2026/deadline--unknown.json",
-      "proof-2026/deadline--unknown.json"
+      "proof-2026/deadline--unknown.json",
+      "data/review-texts/stranger-things-the-first-shadow-west-end-2023/deadline--greg-evans.json",
+      "stranger-things-the-first-shadow-west-end-2023/deadline--greg-evans.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -2467,7 +2480,7 @@
     ]
   },
   "startTime": "2026-06-30T16:47:37.281Z",
-  "lastProcessed": "oh-mary-west-end-2025/timeout--adam-feldman.json",
+  "lastProcessed": "moulin-rouge-the-musical-west-end-2021/the-city-journals--peri-kinder.json",
   "log": [
     {
       "t": "2026-06-30T16:51:17.696Z",
@@ -2659,6 +2672,17 @@
     },
     {
       "t": "2026-07-01T11:50:14.942Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-01T11:51:49.443Z",
+      "event": "bb-session",
+      "session": "550c674c",
+      "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
+    },
+    {
+      "t": "2026-07-01T11:51:50.130Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
     }
