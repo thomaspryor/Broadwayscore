@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-01T06:59:45.248Z",
+  "timestamp": "2026-07-01T08:11:29.445Z",
   "stats": {
-    "totalReviews": 39565,
+    "totalReviews": 39572,
     "alreadyFlagged": 17429,
     "dateGuardCatches": 35,
     "directorMismatch": 889,
     "tvFilmSignals": 1089,
-    "londonSignals": 712,
+    "londonSignals": 713,
     "offBroadwaySignals": 467,
     "yearMismatch": 84,
-    "noPublishDate": 3977
+    "noPublishDate": 3980
   },
   "findings": [
     {
@@ -8531,7 +8531,7 @@
       "file": "independent--alice-saville.json",
       "score": 58,
       "publishDate": "2026-06-18",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html?loginSuccessful=true",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -27737,6 +27737,20 @@
     },
     {
       "showId": "a-midsummer-nights-dream-west-end-2026",
+      "file": "thereviewshub--unknown.json",
+      "score": 62,
+      "publishDate": null,
+      "url": "https://www.thereviewshub.com/midsummer-nights-dream-regents-park-open-air-theatre-london/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "a-midsummer-nights-dream-west-end-2026",
       "file": "thestage--holly-o.json",
       "findings": [
         {
@@ -30584,7 +30598,7 @@
       "file": "exeunt-magazine--loren-noveck.json",
       "score": 80,
       "publishDate": "2026-05-15T11:08:02-04:00",
-      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/",
+      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/#:~:text=Dad%20Don't%20Read%20This%20is%20messy%20and%20raw%20and,will%20keep%20it%20in%20my",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -41059,7 +41073,7 @@
       "file": "thestage--dave-fargnoli.json",
       "score": 38,
       "publishDate": "2026-06-24",
-      "url": "https://www.thestage.co.uk/reviews/the-misanthrope-review-lyttelton-national-theatre-london-sandra-oh",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-misanthrope-review-sandra-oh-what-a-disappointment-sbzvf82b2?t=1782310602034",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
