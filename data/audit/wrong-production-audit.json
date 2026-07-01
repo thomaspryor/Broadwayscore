@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-01T17:52:44.007Z",
+  "timestamp": "2026-07-01T18:53:42.908Z",
   "stats": {
     "totalReviews": 39615,
-    "alreadyFlagged": 17431,
+    "alreadyFlagged": 17422,
     "dateGuardCatches": 35,
     "directorMismatch": 889,
     "tvFilmSignals": 1091,
-    "londonSignals": 719,
+    "londonSignals": 721,
     "offBroadwaySignals": 467,
     "yearMismatch": 84,
-    "noPublishDate": 3994
+    "noPublishDate": 3993
   },
   "findings": [
     {
@@ -40423,9 +40423,23 @@
     {
       "showId": "the-guilty-west-end-2026",
       "file": "broadwayworld--aliya-al-hassan.json",
-      "score": 78,
+      "score": 79,
       "publishDate": "2026-07-01",
       "url": "https://www.broadwayworld.com/westend/article/Review-THE-GUILTY-Starring-Russell-Tovey-Donmar-Warehouse-20260701",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "the-guilty-west-end-2026",
+      "file": "guardian--unknown.json",
+      "score": 82,
+      "publishDate": null,
+      "url": "https://www.theguardian.com/stage/2026/jul/01/the-guilty-review-russell-tovey-donmar-warehouse-london",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -41043,6 +41057,7 @@
     {
       "showId": "the-misanthrope-west-end-2026",
       "file": "city-am--steve-dinneen.json",
+      "score": 56,
       "publishDate": "2026-06-30",
       "url": "https://www.cityam.com/the-misanthrope-at-the-national-theatre-sandra-oh-shines-in-a-play-that-flatters-to-deceive/",
       "findings": [
@@ -42315,7 +42330,7 @@
     {
       "showId": "to-kill-a-mockingbird-west-end-2026",
       "file": "broadwayworld--gary-naylor.json",
-      "score": 88,
+      "score": 96,
       "publishDate": "2026-07-01",
       "url": "https://www.broadwayworld.com/westend/article/Review-TO-KILL-A-MOCKINGBIRD-Wyndhams-Theatre-2026070188",
       "findings": [
@@ -42329,9 +42344,23 @@
     {
       "showId": "to-kill-a-mockingbird-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 75,
+      "score": 71,
       "publishDate": "2026-07-01",
       "url": "https://www.londonboxoffice.co.uk/news/post/to-kill-a-mockingbird-wyndhams-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "london-theatre--aliya-al-hassan.json",
+      "score": 94,
+      "publishDate": "2026-07-01",
+      "url": "https://www.londontheatre.co.uk/reviews/to-kill-a-mockingbird-review-wyndhams-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
