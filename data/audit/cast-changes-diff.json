@@ -1,21 +1,49 @@
 {
-  "timestamp": "2026-06-27T09:43:21.330Z",
+  "timestamp": "2026-07-01T10:21:10.268Z",
   "summary": {
     "eventsAdded": 0,
     "eventsUpgraded": 0,
-    "eventsCleaned": 1,
-    "showsCleaned": 0,
-    "totalChanges": 1,
+    "eventsCleaned": 2,
+    "showsCleaned": 5,
+    "totalChanges": 7,
     "errors": 0
   },
   "changes": [
     {
-      "showId": "the-rocky-horror-show-2026",
+      "showId": "proof-2026",
+      "changeType": "applied-departure",
+      "eventType": "departure",
+      "name": "Kara Young",
+      "role": "Claire",
+      "date": "2026-06-28"
+    },
+    {
+      "showId": "proof-2026",
       "changeType": "applied-arrival",
       "eventType": "arrival",
-      "name": "Sherie Rene Scott",
-      "role": "Magenta",
-      "date": "2026-06-26"
+      "name": "Adrienne Warren",
+      "role": "Claire",
+      "date": "2026-06-30"
+    },
+    {
+      "showId": "giant-2026",
+      "changeType": "removed-closed"
+    },
+    {
+      "showId": "death-becomes-her-2024",
+      "changeType": "removed-closed"
+    },
+    {
+      "showId": "encores-la-cage-aux-folles-off-broadway-2026",
+      "changeType": "removed-closed"
+    },
+    {
+      "showId": "kenrex-off-broadway-2026",
+      "changeType": "removed-closed"
+    },
+    {
+      "showId": "im-almost-there-off-broadway-2026",
+      "changeType": "removed-closed"
     }
   ],
   "stats": {
@@ -27,8 +55,8 @@
     "officialSitesChecked": 0,
     "eventsAdded": 0,
     "eventsUpgraded": 0,
-    "eventsCleaned": 1,
-    "showsCleaned": 0,
+    "eventsCleaned": 2,
+    "showsCleaned": 5,
     "errors": []
   }
 }
