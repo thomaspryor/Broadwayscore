@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-07-01T06:22:02.259Z",
-  "processed": 124,
-  "failed": 1556,
-  "successRate": "7.4%",
+  "updatedAt": "2026-07-01T06:23:17.813Z",
+  "processed": 127,
+  "failed": 1563,
+  "successRate": "7.5%",
   "tierBreakdown": {
-    "playwright": 95,
+    "playwright": 96,
     "amp": 0,
-    "browserbase": 16,
+    "browserbase": 18,
     "directCookies": 0,
     "scrapingbee": 24,
     "brightdata": 6,
     "archiveToday": 26,
-    "archive": 9
+    "archive": 10
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-06-30T17:27:06.669Z",
-      "event": "bb-session",
-      "session": "47136d98",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2649682"
-    },
-    {
-      "t": "2026-06-30T17:27:07.188Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
     {
       "t": "2026-06-30T20:16:13.406Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-07-01T06:21:39.142Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-01T06:22:10.318Z",
+      "event": "bb-session",
+      "session": "3e01fb5f",
+      "url": "https://deadline.com/2025/12/simu-liu-broadway-oh-mary-1236649862/"
+    },
+    {
+      "t": "2026-07-01T06:22:11.095Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }

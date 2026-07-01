@@ -123,7 +123,10 @@
     "oh-mary-west-end-2025/nytg--olivia-rook.json",
     "oh-mary-west-end-2025/variety--brent-lang.json",
     "oh-mary-west-end-2025/variety--naman-ramachandran.json",
-    "oh-mary-west-end-2025/variety--rebecca-rubin.json"
+    "oh-mary-west-end-2025/variety--rebecca-rubin.json",
+    "oh-mary-west-end-2025/deadline--greg-evans.json",
+    "oh-mary-west-end-2025/theatermania--zachary-stewart.json",
+    "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
@@ -1681,7 +1684,14 @@
     "oh-mary-west-end-2025/nyt-theater--jonathan-mandell.json",
     "oh-mary-west-end-2025/nytimes--jesse-green.json",
     "oh-mary-west-end-2025/vulture--sara-holdren.json",
-    "oh-mary-west-end-2025/broadwaynews--brittani-samuel.json"
+    "oh-mary-west-end-2025/broadwaynews--brittani-samuel.json",
+    "oh-mary-west-end-2025/ew--christian-holub.json",
+    "oh-mary-west-end-2025/guardian--unknown.json",
+    "oh-mary-west-end-2025/new-york-sun--elysa-gardner.json",
+    "oh-mary-west-end-2025/nydailynews--chris-jones.json",
+    "oh-mary-west-end-2025/nypost--johnny-oleksinski.json",
+    "oh-mary-west-end-2025/thewrap--robert-hofler.json",
+    "oh-mary-west-end-2025/wsj--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1780,7 +1790,8 @@
       "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json",
       "black-is-the-color-of-my-voice-west-end-2026/whatsonstage--diane-parkes.json",
       "oh-mary-west-end-2025/nytg--gillian-russo.json",
-      "oh-mary-west-end-2025/nytg--olivia-rook.json"
+      "oh-mary-west-end-2025/nytg--olivia-rook.json",
+      "oh-mary-west-end-2025/theatermania--zachary-stewart.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1799,7 +1810,9 @@
       "data/review-texts/oh-mary-west-end-2025/variety--naman-ramachandran.json",
       "oh-mary-west-end-2025/variety--naman-ramachandran.json",
       "data/review-texts/oh-mary-west-end-2025/variety--rebecca-rubin.json",
-      "oh-mary-west-end-2025/variety--rebecca-rubin.json"
+      "oh-mary-west-end-2025/variety--rebecca-rubin.json",
+      "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
+      "oh-mary-west-end-2025/deadline--greg-evans.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1873,11 +1886,12 @@
       "small-off-broadway-2026/broadwayworld--marina-kennedy.json",
       "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
       "archduke-west-end-2026/broadwayworld--alexander-cohen.json",
-      "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
+      "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+      "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json"
     ]
   },
   "startTime": "2026-06-30T16:47:37.281Z",
-  "lastProcessed": "oh-mary-west-end-2025/broadwaynews--brittani-samuel.json",
+  "lastProcessed": "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json",
   "log": [
     {
       "t": "2026-06-30T16:51:17.696Z",
@@ -1999,6 +2013,17 @@
       "t": "2026-07-01T06:21:39.142Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-01T06:22:10.318Z",
+      "event": "bb-session",
+      "session": "3e01fb5f",
+      "url": "https://deadline.com/2025/12/simu-liu-broadway-oh-mary-1236649862/"
+    },
+    {
+      "t": "2026-07-01T06:22:11.095Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
