@@ -147,7 +147,11 @@ jobs:
               echo "No show filter and no recent openings — processing all open shows"
             fi
           fi
-          if [ -n "${{ github.event.inputs.limit }}" ]; then
+          # Trailing limit append — skip in refresh-stale mode, which already sets
+          # its own bounded --limit=25 (the limit input defaults to 50, so without
+          # this guard a manual refresh_stale=true run would append --limit=50 and
+          # blow the documented refresh budget; script uses the first --limit only).
+          if [ -z "$REFRESH_STALE" ] && [ -n "${{ github.event.inputs.limit }}" ]; then
             ARGS="$ARGS --limit=${{ github.event.inputs.limit }}"
           fi
           node scripts/scrape-reddit-sentiment.js $ARGS

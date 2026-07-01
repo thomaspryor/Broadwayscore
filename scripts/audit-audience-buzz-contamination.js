@@ -344,7 +344,8 @@ function main() {
       const reddit = rec && rec.sources && rec.sources.reddit;
       if (!isPreFixReddit(reddit)) continue;
       const show = showById.get(id);
-      const showInfo = show ? { status: show.status, closingDate: show.closingDate } : undefined;
+      if (!show) continue; // orphan buzz id (renamed/removed show) — not a live-score backlog
+      const showInfo = { status: show.status, closingDate: show.closingDate };
       if (isRedditEligible(reddit, showInfo)) backlog++;
     }
     if (backlog > 0) {

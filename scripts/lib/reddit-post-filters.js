@@ -186,6 +186,38 @@ function isPreFixReddit(reddit, fixDate = REDDIT_CONTAMINATION_FIX_DATE) {
   return new Date(reddit.lastUpdated) < new Date(fixDate);
 }
 
+/**
+ * Should scrape-reddit-sentiment.js --refresh-stale re-scrape this show?
+ * True when the show is in the Reddit-scoring window (open/previews, or closed
+ * within the 3yr eligibility window) AND its Reddit is stale or never
+ * scraped/attempted. Honors a `redditLastAttempted` marker so a show that
+ * yields no Reddit data isn't re-selected on every run (the stuck-backlog trap:
+ * the oldest-first drain would otherwise churn no-signal shows forever and never
+ * reach the genuinely stale backlog behind them).
+ * @param {object} show                 shows.json entry ({status, closingDate})
+ * @param {object|undefined} buzzRecord audience-buzz.json shows[id] ({sources, redditLastAttempted})
+ * @param {{staleBefore: Date, closedWindowCutoff: Date}} opts
+ */
+function isRefreshStaleCandidate(show, buzzRecord, { staleBefore, closedWindowCutoff }) {
+  if (!show) return false;
+  const inWindow = show.status === 'open' || show.status === 'previews'
+    || (show.status === 'closed' && show.closingDate && new Date(show.closingDate) >= closedWindowCutoff);
+  if (!inWindow) return false;
+  const rec = buzzRecord || {};
+  const reddit = rec.sources && rec.sources.reddit;
+  const lastTouch = (reddit && reddit.lastUpdated) || rec.redditLastAttempted;
+  if (!lastTouch) return true;                 // never scraped/attempted → refresh
+  return new Date(lastTouch) < staleBefore;    // stale → refresh
+}
+
+/** Sort key for --refresh-stale (oldest touch first; never-touched = 0/oldest). */
+function refreshStaleSortKey(buzzRecord) {
+  const rec = buzzRecord || {};
+  const reddit = rec.sources && rec.sources.reddit;
+  const t = (reddit && reddit.lastUpdated) || rec.redditLastAttempted;
+  return t ? new Date(t).getTime() : 0;
+}
+
 module.exports = {
   isRoundupOrMegathread,
   isGenericTitle,
@@ -193,6 +225,8 @@ module.exports = {
   normalizeForGenericCheck,
   significantWords,
   isPreFixReddit,
+  isRefreshStaleCandidate,
+  refreshStaleSortKey,
   REDDIT_CONTAMINATION_FIX_DATE,
   ROUNDUP_TITLE_PATTERNS,
   KNOWN_GENERIC_TITLES,
