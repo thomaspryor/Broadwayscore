@@ -33,7 +33,7 @@
 const fs = require('fs');
 const path = require('path');
 const { searchAllPosts, collectCommentsFromPosts, getStats } = require('./lib/reddit-api');
-const { isRoundupOrMegathread, buildAudienceSearchQueries } = require('./lib/reddit-post-filters');
+const { isRoundupOrMegathread, buildAudienceSearchQueries, isRefreshStaleCandidate, refreshStaleSortKey } = require('./lib/reddit-post-filters');
 
 // A single roundup/megathread can hold hundreds of comments about dozens of
 // shows. Even after excluding such posts by title, cap how many comments any
@@ -610,20 +610,11 @@ async function main() {
     // eligibility window (mirrors audience-weighting.js isRedditEligible's
     // closed<now-3yr gate). Long-closed shows are excluded — their Reddit no
     // longer affects any live score, so refreshing them is wasted budget.
-    const cutoff = new Date();
-    cutoff.setFullYear(cutoff.getFullYear() - 3);
+    const closedWindowCutoff = new Date();
+    closedWindowCutoff.setFullYear(closedWindowCutoff.getFullYear() - 3);
     const staleBefore = new Date(Date.now() - staleDays * 24 * 60 * 60 * 1000);
-    const inScoreWindow = (s) => {
-      if (s.status === 'open' || s.status === 'previews') return true;
-      if (s.status === 'closed' && s.closingDate) return new Date(s.closingDate) >= cutoff;
-      return false;
-    };
-    shows = allActiveShows.filter(s => {
-      if (!inScoreWindow(s)) return false;
-      const r = ((audienceBuzz.shows || {})[s.id] || {}).sources?.reddit;
-      if (!r || !r.lastUpdated) return true;            // missing/undated → refresh
-      return new Date(r.lastUpdated) < staleBefore;      // stale → refresh
-    });
+    shows = allActiveShows.filter(s =>
+      isRefreshStaleCandidate(s, (audienceBuzz.shows || {})[s.id], { staleBefore, closedWindowCutoff }));
     console.log(`refresh-stale: ${shows.length} score-eligible shows with Reddit older than ${staleDays}d (or missing)`);
   } else if (showsArg === 'missing') {
     const base = includeAll ? allActiveShows : showsData.shows.filter(s => s.status === 'open' || s.status === 'previews');
@@ -644,11 +635,8 @@ async function main() {
     // Drain oldest/missing Reddit first so a bounded --limit run always attacks
     // the most-stale (and pre-fix contaminated) records first. Successive runs
     // chip through the backlog.
-    const luOf = (s) => {
-      const r = ((audienceBuzz.shows || {})[s.id] || {}).sources?.reddit;
-      return r && r.lastUpdated ? new Date(r.lastUpdated).getTime() : 0; // missing = oldest
-    };
-    shows.sort((a, b) => luOf(a) - luOf(b));
+    shows.sort((a, b) =>
+      refreshStaleSortKey((audienceBuzz.shows || {})[a.id]) - refreshStaleSortKey((audienceBuzz.shows || {})[b.id]));
   } else {
     // Sort: open first, then by opening date (recent first)
     shows.sort((a, b) => {
@@ -678,9 +666,11 @@ async function main() {
     shows = shows.slice(0, showLimit);
   }
 
-  // Shard partitioning
+  // Shard partitioning. refresh-stale keeps its oldest-first order (a stable
+  // deterministic id sort would still partition correctly, but re-sorting by id
+  // would silently discard the "attack most-stale first" intent).
   if (shardMode) {
-    shows.sort((a, b) => a.id.localeCompare(b.id));
+    if (!refreshStale) shows.sort((a, b) => a.id.localeCompare(b.id));
     const totalBefore = shows.length;
     shows = shows.filter((_, i) => i % totalShards === shard);
     console.log(`Shard ${shard}/${totalShards}: ${shows.length} shows (of ${totalBefore} total)`);
@@ -727,6 +717,17 @@ async function main() {
           if (saveAudienceBuzz()) {
             console.log(`  Saved to audience-buzz.json (${successful}/${shows.length} complete)`);
           }
+        }
+      } else if (refreshStale && !dryRun && !shardMode && !redditData) {
+        // No Reddit data this run (no qualifying posts / below MIN items). Stamp an
+        // attempt marker so the oldest-first --refresh-stale drain doesn't re-select
+        // this no-signal show on EVERY run and stall behind it (a bounded --limit run
+        // would otherwise churn the same shows forever, never reaching the real
+        // stale backlog). Ages out for staleDays like a real scrape, then retries.
+        audienceBuzz.shows[show.id] = audienceBuzz.shows[show.id] || { sources: {} };
+        audienceBuzz.shows[show.id].redditLastAttempted = new Date().toISOString();
+        if (saveAudienceBuzz()) {
+          console.log(`  No Reddit data — marked attempted (${processed}/${shows.length})`);
         }
       }
     } catch (e) {
