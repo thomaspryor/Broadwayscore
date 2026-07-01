@@ -1130,7 +1130,17 @@ function _matchCleanedSlugAgainstShows(cleanedSlug, shows, options = {}) {
     // supporting token. The HOLIDAY INN regression that motivated the
     // title-token switch is fixed without lowering this gate because
     // "Holiday Inn" has 2 tokens [holiday, inn], not 1.
-    if (tokens.length === 1 && tokens[0].length < 5) continue;
+    //
+    // Numeric exception: a purely-numeric single token (≥3 digits) is exempt
+    // from the ≥5-char rule. The gate exists to reject common short English
+    // WORDS (home/cats/rent) that collide with unrelated slugs; a 3-4 digit
+    // NUMBER is not an English word and is highly distinctive, so it does not
+    // carry that false-positive risk. Without this, numeric-titled shows like
+    // "1536" (Ambassadors) and "1984" were silently unmatched — Stuart King's
+    // 1536 review (londonboxoffice.co.uk/news/post/1536-ambassadors-review)
+    // was dropped this way (2026-06-28 report). Mirrors the numeric exemption
+    // already used by matchTitleToShow's first-token gate (`/^\d+$/`).
+    if (tokens.length === 1 && tokens[0].length < 5 && !/^\d{3,}$/.test(tokens[0])) continue;
     let matchedTokens = 0;
     let score = 0;       // sum of matched-token-length squared
     let totalLen = 0;

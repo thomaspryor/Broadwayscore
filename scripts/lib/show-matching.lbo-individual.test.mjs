@@ -23,6 +23,13 @@ const SHOWS = [
   { id: 'glengarry-glen-ross-west-end-2026', title: 'Glengarry Glen Ross', category: 'west-end', market: 'west-end' },
   { id: 'sinatra-the-musical-west-end-2026', title: 'Sinatra the Musical', category: 'west-end', market: 'west-end' },
   { id: 'the-truth-a-comedy-by-florian-zeller-west-end-2026', title: 'The Truth: A Comedy by Florian Zeller', category: 'west-end', market: 'west-end' },
+  // Numeric title — the single-token ≥5-char gate used to reject the 4-digit
+  // "1536" and silently drop its LBO review (Stuart King report 2026-06-28).
+  // The numeric exemption re-admits it.
+  { id: '1536-west-end-2026', title: '1536', category: 'west-end', market: 'west-end' },
+  // Single-letter second token ("Q") is dropped by the ≥3-char token filter;
+  // the match must still land on the surviving "avenue" token.
+  { id: 'avenue-q-west-end-2026', title: 'Avenue Q', category: 'west-end', market: 'west-end' },
   // Distractor with no token overlap — confirms the matcher does not reach for
   // an unrelated show. (matchSlugToShow ignores the market option; the sweep's
   // cross-market scoping comes from pre-filtering the candidate pool, not this
@@ -39,6 +46,10 @@ const CASES = [
   { url: 'https://www.londonboxoffice.co.uk/news/post/review-glengarry-glen-ross-old-vic', id: 'glengarry-glen-ross-west-end-2026' },
   { url: 'https://www.londonboxoffice.co.uk/news/post/sinatra-aldwych-theatre-review', id: 'sinatra-the-musical-west-end-2026' },
   { url: 'https://www.londonboxoffice.co.uk/news/post/review-the-truth-apollo-theatre', id: 'the-truth-a-comedy-by-florian-zeller-west-end-2026' },
+  // Numeric-titled show (4 digits) — must match despite the single-token gate.
+  { url: 'https://www.londonboxoffice.co.uk/news/post/1536-ambassadors-review', id: '1536-west-end-2026' },
+  // Single-letter token dropped; must still match on "avenue".
+  { url: 'https://www.londonboxoffice.co.uk/news/post/avenue-q-shaftesbury-review', id: 'avenue-q-west-end-2026' },
 ];
 
 test('LBO individual review URLs match their show at high confidence, venue-agnostically', () => {
