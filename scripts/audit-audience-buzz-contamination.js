@@ -68,7 +68,8 @@
 const fs = require('fs');
 const path = require('path');
 const { meaningfulTitleTokens } = require('./lib/cast-extraction-guards');
-const { isGenericTitle } = require('./lib/reddit-post-filters');
+const { isGenericTitle, isPreFixReddit, REDDIT_CONTAMINATION_FIX_DATE } = require('./lib/reddit-post-filters');
+const { isRedditEligible } = require('./lib/audience-weighting');
 
 const ROOT = path.join(__dirname, '..');
 const BUZZ_FILE = path.join(ROOT, 'data', 'audience-buzz.json');
@@ -328,6 +329,28 @@ function main() {
 
   const fails = issues.filter(i => i.severity === 'fail').length;
   const warns = issues.filter(i => i.severity === 'warn').length;
+
+  // Informational backlog metric (stderr — never pollutes --json stdout, never
+  // gates). Counts score-eligible shows whose Reddit predates the contamination
+  // fix and so may carry pre-fix collision noise. This is coverage, not a per-show
+  // contamination verdict (undetectable from aggregates — see isPreFixReddit doc);
+  // it shrinks to 0 as `scrape-reddit-sentiment.js --refresh-stale` drains them.
+  try {
+    const shows = loadShows() || [];
+    const showById = new Map(shows.map(s => [s.id, s]));
+    const buzz = JSON.parse(fs.readFileSync(BUZZ_FILE, 'utf-8')).shows || {};
+    let backlog = 0;
+    for (const [id, rec] of Object.entries(buzz)) {
+      const reddit = rec && rec.sources && rec.sources.reddit;
+      if (!isPreFixReddit(reddit)) continue;
+      const show = showById.get(id);
+      const showInfo = show ? { status: show.status, closingDate: show.closingDate } : undefined;
+      if (isRedditEligible(reddit, showInfo)) backlog++;
+    }
+    if (backlog > 0) {
+      console.error(`[audit] ${backlog} score-eligible shows still on pre-fix Reddit (<${REDDIT_CONTAMINATION_FIX_DATE}); drained by scrape-reddit-sentiment.js --refresh-stale`);
+    }
+  } catch { /* informational only — never block the audit */ }
 
   if (gate) {
     // Fail LOUD if the source-of-truth is absent: loadShows() swallows a missing
