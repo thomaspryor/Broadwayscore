@@ -162,12 +162,38 @@ function buildAudienceSearchQueries({ cleanTitle, marketName, isWestEnd, isOpera
   ];
 }
 
+// Date the generic-title contamination fix shipped (commit 8e8c1c4316):
+// market-anchored queries + isRoundupOrMegathread post filter + per-comment LLM
+// relevance classification. Reddit records last scraped BEFORE this were built by
+// the old "assume any 'I saw it' is the target show" heuristic, so on collision-
+// prone titles they can carry megathread/off-topic sentiment. Post-fix scrapes are
+// clean. Used to measure the remaining pre-fix backlog (drained by the scraper's
+// --refresh-stale mode) — NOT to auto-suppress, since stored aggregates cannot
+// distinguish contamination from genuine platform bias (giant-2026 was 73%
+// contaminated yet only 0.79x volume and 6pts low — invisible to any threshold).
+const REDDIT_CONTAMINATION_FIX_DATE = '2026-06-15';
+
+/**
+ * Was this Reddit record harvested by the pre-fix (contamination-prone) scraper?
+ * True when reddit exists, isn't already suppressed, and its lastUpdated predates
+ * the fix (or is missing — undated records predate the lastUpdated field).
+ * @param {object|null|undefined} reddit  audience-buzz.json sources.reddit
+ * @param {string} [fixDate=REDDIT_CONTAMINATION_FIX_DATE]  ISO date boundary
+ */
+function isPreFixReddit(reddit, fixDate = REDDIT_CONTAMINATION_FIX_DATE) {
+  if (!reddit || reddit.suppressed) return false;
+  if (!reddit.lastUpdated) return true;
+  return new Date(reddit.lastUpdated) < new Date(fixDate);
+}
+
 module.exports = {
   isRoundupOrMegathread,
   isGenericTitle,
   buildAudienceSearchQueries,
   normalizeForGenericCheck,
   significantWords,
+  isPreFixReddit,
+  REDDIT_CONTAMINATION_FIX_DATE,
   ROUNDUP_TITLE_PATTERNS,
   KNOWN_GENERIC_TITLES,
 };
