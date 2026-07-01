@@ -1,18 +1,47 @@
 {
-  "updatedAt": "2026-07-01T21:15:38.991Z",
+  "updatedAt": "2026-07-01T21:16:24.609Z",
   "processed": 111,
-  "failed": 989,
-  "successRate": "10.1%",
+  "failed": 999,
+  "successRate": "10.0%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 86,
     "amp": 0,
-    "browserbase": 0,
-    "directCookies": 0,
-    "scrapingbee": 1,
-    "brightdata": 0,
-    "archiveToday": 0,
-    "archive": 0
+    "browserbase": 6,
+    "directCookies": 8,
+    "scrapingbee": 5,
+    "brightdata": 4,
+    "archiveToday": 6,
+    "archive": 7
   },
   "browserbaseSessions": 0,
-  "recentActivity": []
+  "recentActivity": [
+    {
+      "t": "2026-07-01T17:20:30.419Z",
+      "event": "bb-session",
+      "session": "43a99e16",
+      "url": "https://www.cityam.com/the-misanthrope-at-the-national-theatre-sandra-oh-shines-"
+    },
+    {
+      "t": "2026-07-01T17:21:48.752Z",
+      "event": "bb-session",
+      "session": "b8af367b",
+      "url": "https://www.thetimes.co.uk/culture/theatre-dance/article/the-misanthrope-review-"
+    },
+    {
+      "t": "2026-07-01T17:21:49.154Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-07-01T17:23:07.186Z",
+      "event": "bb-session",
+      "session": "301125f6",
+      "url": "https://www.thetimes.co.uk/culture/theatre-dance/article/the-misanthrope-review-"
+    },
+    {
+      "t": "2026-07-01T17:23:07.713Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
+    }
+  ]
 }
