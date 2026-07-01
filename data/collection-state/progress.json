@@ -158,7 +158,13 @@
     "glengarry-glen-ross-west-end-2026/standard--henry-hitchings.json",
     "beetlejuice-west-end-2026/timeout--adam-feldman.json",
     "death-of-a-salesman-2026/variety--marilyn-stasio.json",
-    "cyrano-de-bergerac-west-end-2026/the-upcoming-uk--unknown.json"
+    "cyrano-de-bergerac-west-end-2026/the-upcoming-uk--unknown.json",
+    "schmigadoon-2026/nytg--unknown.json",
+    "proof-2026/deadline--unknown.json",
+    "kinky-boots-the-musical-west-end-2026/express-uk--stefan-kyriazis.json",
+    "kinky-boots-the-musical-west-end-2026/whatsonstage--alex-wood.json",
+    "every-brilliant-thing-2026/nydailynews--joe-dziemianowicz.json",
+    "oh-mary-west-end-2025/timeout--adam-feldman.json"
   ],
   "failed": [
     "glengarry-glen-ross-west-end-2026/hollywood-reporter--david-rooney.json",
@@ -2215,7 +2221,11 @@
     "a-walk-on-the-moon-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
     "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
     "birthright-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
-    "birthright-off-broadway-2026/pages-on-stages--unknown.json"
+    "birthright-off-broadway-2026/pages-on-stages--unknown.json",
+    "glengarry-glen-ross-west-end-2026/times-uk--ann-treneman.json",
+    "glengarry-glen-ross-west-end-2026/times-uk--benedict-nightingale.json",
+    "glengarry-glen-ross-west-end-2026/times-uk--dominic-maxwell.json",
+    "glengarry-glen-ross-west-end-2026/times-uk--maxie-szalwinska.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2329,7 +2339,11 @@
       "springwood-west-end-2026/north-west-end--unknown.json",
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre--apollo-theatre.json",
       "beetlejuice-west-end-2026/timeout--adam-feldman.json",
-      "cyrano-de-bergerac-west-end-2026/daily-echo--steve-page.json"
+      "cyrano-de-bergerac-west-end-2026/daily-echo--steve-page.json",
+      "schmigadoon-2026/nytg--unknown.json",
+      "kinky-boots-the-musical-west-end-2026/express-uk--stefan-kyriazis.json",
+      "kinky-boots-the-musical-west-end-2026/whatsonstage--alex-wood.json",
+      "oh-mary-west-end-2025/timeout--adam-feldman.json"
     ],
     "amp": [],
     "browserbase": [
@@ -2360,7 +2374,9 @@
       "data/review-texts/death-of-a-salesman-2026/variety--marilyn-stasio.json",
       "death-of-a-salesman-2026/variety--marilyn-stasio.json",
       "data/review-texts/cyrano-de-bergerac-west-end-2026/the-upcoming-uk--unknown.json",
-      "cyrano-de-bergerac-west-end-2026/the-upcoming-uk--unknown.json"
+      "cyrano-de-bergerac-west-end-2026/the-upcoming-uk--unknown.json",
+      "data/review-texts/proof-2026/deadline--unknown.json",
+      "proof-2026/deadline--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -2446,11 +2462,12 @@
       "maybe-happy-ending-2024/the-contending--frank-j-avella.json",
       "hadestown-west-end-2024/shy-strange-manic--kariss-ainsworth.json",
       "and-juliet-2022/newyorker--conde-nast.json",
-      "glengarry-glen-ross-west-end-2026/standard--henry-hitchings.json"
+      "glengarry-glen-ross-west-end-2026/standard--henry-hitchings.json",
+      "every-brilliant-thing-2026/nydailynews--joe-dziemianowicz.json"
     ]
   },
   "startTime": "2026-06-30T16:47:37.281Z",
-  "lastProcessed": "birthright-off-broadway-2026/pages-on-stages--unknown.json",
+  "lastProcessed": "oh-mary-west-end-2025/timeout--adam-feldman.json",
   "log": [
     {
       "t": "2026-06-30T16:51:17.696Z",
@@ -2633,6 +2650,17 @@
       "event": "bb-session",
       "session": "4bbf3c1d",
       "url": "https://www.theupcoming.co.uk/2026/06/25/cyrano-de-bergerac-at-noel-coward-theat"
+    },
+    {
+      "t": "2026-07-01T11:50:14.216Z",
+      "event": "bb-session",
+      "session": "455806a3",
+      "url": "https://deadline.com/2026/04/proof-broadway-review-ayo-edebiri-don-cheadle-kara-"
+    },
+    {
+      "t": "2026-07-01T11:50:14.942Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }

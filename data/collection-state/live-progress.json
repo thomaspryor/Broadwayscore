@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-07-01T11:01:20.750Z",
-  "processed": 159,
-  "failed": 2055,
-  "successRate": "7.2%",
+  "updatedAt": "2026-07-01T11:51:47.282Z",
+  "processed": 165,
+  "failed": 2059,
+  "successRate": "7.4%",
   "tierBreakdown": {
-    "playwright": 110,
+    "playwright": 114,
     "amp": 0,
-    "browserbase": 28,
+    "browserbase": 30,
     "directCookies": 0,
     "scrapingbee": 36,
     "brightdata": 7,
     "archiveToday": 20,
-    "archive": 14
+    "archive": 15
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-07-01T06:16:57.073Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
-    },
-    {
-      "t": "2026-07-01T06:18:49.382Z",
-      "event": "bb-session",
-      "session": "5e5dd6d0",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mariska-hargitay-to-make-broadw"
-    },
     {
       "t": "2026-07-01T06:18:50.049Z",
       "event": "bb-cookie-inject",
@@ -124,6 +113,17 @@
       "event": "bb-session",
       "session": "4bbf3c1d",
       "url": "https://www.theupcoming.co.uk/2026/06/25/cyrano-de-bergerac-at-noel-coward-theat"
+    },
+    {
+      "t": "2026-07-01T11:50:14.216Z",
+      "event": "bb-session",
+      "session": "455806a3",
+      "url": "https://deadline.com/2026/04/proof-broadway-review-ayo-edebiri-don-cheadle-kara-"
+    },
+    {
+      "t": "2026-07-01T11:50:14.942Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
