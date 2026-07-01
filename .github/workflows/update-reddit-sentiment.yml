@@ -7,6 +7,11 @@ on:
     - cron: '0 10 4 * *'   # 4th — retry if 1st failed (skips if fresh)
     - cron: '0 10 15 * *'  # 15th — mid-month refresh
     - cron: '0 10 18 * *'  # 18th — retry if 15th failed (skips if fresh)
+    - cron: '0 12 8 * *'   # 8th — bounded refresh-stale drain of score-eligible
+                           #       CLOSED shows (open shows are covered by the 1st/15th
+                           #       ticks; closed shows otherwise never re-scrape and keep
+                           #       pre-fix contaminated Reddit forever). Offset day+time to
+                           #       avoid racing the open-show ticks on audience-buzz.json.
   # Allow manual trigger
   workflow_dispatch:
     inputs:
@@ -23,6 +28,11 @@ on:
         required: false
         type: number
         default: 50
+      refresh_stale:
+        description: 'Re-scrape score-eligible shows (incl. closed <3yr) with stale/missing Reddit, oldest first'
+        required: false
+        type: boolean
+        default: false
 
 concurrency:
   # Per-run concurrency prevents the orchestrator's back-to-back dispatches from
@@ -103,7 +113,21 @@ jobs:
           SCRAPER_USE_SCRAPINGDOG: '1'
         run: |
           ARGS=""
-          if [ -n "${{ github.event.inputs.show_id }}" ]; then
+          # refresh-stale: manual flag, or the 8th-of-month schedule tick. Drains
+          # score-eligible shows (incl. closed <3yr) with stale/missing Reddit,
+          # oldest-first, bounded by --limit so one run fits the CI timeout/budget.
+          DAY=$(date -u +%d)
+          REFRESH_STALE=""
+          if [ "${{ github.event.inputs.refresh_stale }}" = "true" ]; then
+            REFRESH_STALE="1"
+          elif [ "${{ github.event_name }}" = "schedule" ] && [ "$DAY" = "08" ]; then
+            REFRESH_STALE="1"
+          fi
+          if [ -n "$REFRESH_STALE" ]; then
+            ARGS="--refresh-stale"
+            if [ -z "${{ github.event.inputs.limit }}" ]; then ARGS="$ARGS --limit=25"; fi
+            echo "refresh-stale mode: draining stale score-eligible shows (oldest first)"
+          elif [ -n "${{ github.event.inputs.show_id }}" ]; then
             ARGS="$ARGS --show=${{ github.event.inputs.show_id }}"
           elif [ -n "${{ github.event.inputs.shows }}" ]; then
             ARGS="$ARGS --shows=${{ github.event.inputs.shows }}"

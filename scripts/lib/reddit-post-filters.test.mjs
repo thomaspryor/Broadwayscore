@@ -7,6 +7,8 @@ const {
   isRoundupOrMegathread,
   isGenericTitle,
   buildAudienceSearchQueries,
+  isPreFixReddit,
+  REDDIT_CONTAMINATION_FIX_DATE,
 } = require('./reddit-post-filters.js');
 
 test('roundup/megathread posts are detected (real contaminators seen for music-city)', () => {
@@ -79,6 +81,22 @@ test('every KNOWN_GENERIC_TITLES entry round-trips through normalizeForGenericCh
     assert.equal(normalizeForGenericCheck(key), key, `KNOWN key "${key}" must be its own normalized form`);
     assert.equal(isGenericTitle(key), true, `KNOWN key "${key}" must be generic`);
   }
+});
+
+test('isPreFixReddit: pre-fix / undated records flagged, post-fix / suppressed / absent are not', () => {
+  // Pre-fix scrape (the contamination-prone era) → true
+  assert.equal(isPreFixReddit({ lastUpdated: '2026-05-15T00:00:00Z', reviewCount: 481 }), true);
+  // Undated legacy record (predates the lastUpdated field) → true
+  assert.equal(isPreFixReddit({ reviewCount: 100 }), true);
+  // Post-fix clean scrape → false
+  assert.equal(isPreFixReddit({ lastUpdated: '2026-06-30T00:00:00Z', reviewCount: 132 }), false);
+  // Exactly on the boundary is NOT pre-fix (strict <)
+  assert.equal(isPreFixReddit({ lastUpdated: REDDIT_CONTAMINATION_FIX_DATE }), false);
+  // Already suppressed → handled, not counted as backlog
+  assert.equal(isPreFixReddit({ lastUpdated: '2026-01-01', suppressed: true }), false);
+  // No reddit source → false
+  assert.equal(isPreFixReddit(null), false);
+  assert.equal(isPreFixReddit(undefined), false);
 });
 
 test('opera queries keep their Met anchoring unchanged', () => {

@@ -59,6 +59,16 @@ const totalShardsArg = args.find(a => a.startsWith('--total-shards='));
 const shard = shardArg ? parseInt(shardArg.split('=')[1]) : null;
 const totalShards = totalShardsArg ? parseInt(totalShardsArg.split('=')[1]) : null;
 const shardMode = shard !== null && totalShards !== null;
+// --refresh-stale: re-scrape SCORE-ELIGIBLE shows (open/previews + closed within
+// the 3yr audience-weighting window) whose stored Reddit is stale/missing. This
+// closes the gap where the default/schedule selection only covers open+previews,
+// so recently-closed shows keep pre-fix contaminated Reddit forever (they never
+// self-heal). Scoped to the scoring window so it never touches the 700+ long-
+// closed shows a blanket --all would (which blows the CI timeout). Default
+// staleness threshold 45 days; override with --stale-days=N.
+const refreshStale = args.includes('--refresh-stale');
+const staleDaysArg = args.find(a => a.startsWith('--stale-days='));
+const staleDays = staleDaysArg ? parseInt(staleDaysArg.split('=')[1], 10) : 45;
 
 // Config — subreddits per market
 const SUBREDDIT_BW = 'broadway';
@@ -595,6 +605,26 @@ async function main() {
       process.exit(1);
     }
     console.log(`Processing specific shows: ${shows.map(s => s.title).join(', ')}`);
+  } else if (refreshStale) {
+    // Score-window shows: open/previews, or closed within the 3yr Reddit-
+    // eligibility window (mirrors audience-weighting.js isRedditEligible's
+    // closed<now-3yr gate). Long-closed shows are excluded — their Reddit no
+    // longer affects any live score, so refreshing them is wasted budget.
+    const cutoff = new Date();
+    cutoff.setFullYear(cutoff.getFullYear() - 3);
+    const staleBefore = new Date(Date.now() - staleDays * 24 * 60 * 60 * 1000);
+    const inScoreWindow = (s) => {
+      if (s.status === 'open' || s.status === 'previews') return true;
+      if (s.status === 'closed' && s.closingDate) return new Date(s.closingDate) >= cutoff;
+      return false;
+    };
+    shows = allActiveShows.filter(s => {
+      if (!inScoreWindow(s)) return false;
+      const r = ((audienceBuzz.shows || {})[s.id] || {}).sources?.reddit;
+      if (!r || !r.lastUpdated) return true;            // missing/undated → refresh
+      return new Date(r.lastUpdated) < staleBefore;      // stale → refresh
+    });
+    console.log(`refresh-stale: ${shows.length} score-eligible shows with Reddit older than ${staleDays}d (or missing)`);
   } else if (showsArg === 'missing') {
     const base = includeAll ? allActiveShows : showsData.shows.filter(s => s.status === 'open' || s.status === 'previews');
     shows = base.filter(s => {
@@ -610,16 +640,27 @@ async function main() {
     }
   }
 
-  // Sort: open first, then by opening date (recent first)
-  shows.sort((a, b) => {
-    if (a.status === 'open' && b.status !== 'open') return -1;
-    if (b.status === 'open' && a.status !== 'open') return 1;
-    return new Date(b.openingDate || 0) - new Date(a.openingDate || 0);
-  });
+  if (refreshStale) {
+    // Drain oldest/missing Reddit first so a bounded --limit run always attacks
+    // the most-stale (and pre-fix contaminated) records first. Successive runs
+    // chip through the backlog.
+    const luOf = (s) => {
+      const r = ((audienceBuzz.shows || {})[s.id] || {}).sources?.reddit;
+      return r && r.lastUpdated ? new Date(r.lastUpdated).getTime() : 0; // missing = oldest
+    };
+    shows.sort((a, b) => luOf(a) - luOf(b));
+  } else {
+    // Sort: open first, then by opening date (recent first)
+    shows.sort((a, b) => {
+      if (a.status === 'open' && b.status !== 'open') return -1;
+      if (b.status === 'open' && a.status !== 'open') return 1;
+      return new Date(b.openingDate || 0) - new Date(a.openingDate || 0);
+    });
+  }
 
   // Multi-production guard: Reddit searches by title, so only process the most
   // recent production of each title (avoids duplicate/conflated data)
-  if (includeAll) {
+  if (includeAll || refreshStale) {
     const beforeCount = shows.length;
     shows = shows.filter(s => isMostRecentProduction(s));
     const skipped = beforeCount - shows.length;
