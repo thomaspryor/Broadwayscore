@@ -14,10 +14,10 @@
     "processed": 0,
     "failed": 19,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "10.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -50,7 +50,9 @@
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "the-misanthrope-west-end-2026/whatsonstage--tanyel-gumushan.json"
+  ],
   "failed": [
     "sting-west-end-2026/hollywood-reporter--unknown.json",
     "sting-west-end-2026/variety--unknown.json",
@@ -73,7 +75,9 @@
     "sting-west-end-2026/whatsonstage--julia-rank.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "the-misanthrope-west-end-2026/whatsonstage--tanyel-gumushan.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
@@ -84,6 +88,20 @@
     ],
     "archive": []
   },
-  "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "failuresByOutlet": {
+    "The Times (UK)": {
+      "count": 2,
+      "domain": "thetimes.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
+  "urlDiscoveries": [
+    {
+      "reviewId": "the-misanthrope-west-end-2026/whatsonstage--tanyel-gumushan.json",
+      "oldUrl": "https://www.whatsonstage.com/news/the-misanthrope-with-sandra-oh-at-the-national-theatre-review_1725880/",
+      "newUrl": "https://www.whatsonstage.com/news/the-misanthrope-with-sandra-oh-to-have-cinema-release_1724246/"
+    }
+  ]
 }
