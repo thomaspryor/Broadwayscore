@@ -1,0 +1,148 @@
+#!/usr/bin/env node
+'use strict';
+
+/**
+ * audit-stuck-rescore-flags.js — corpus invariant: no review may carry
+ * needsRescore=true while the scorer would reject it (isScoreable=false).
+ *
+ * Such a flag never clears (the scorer filters non-scoreable reviews out BEFORE
+ * processing and only clears needsRescore AFTER scoring), so it sits in the
+ * rescore queue forever and accumulates every cron. See scripts/lib/stuck-rescore-flag.js
+ * for the full rationale (the late-star producer/consumer seam bug, 2026-06-30).
+ *
+ * Report grouped by rescoreReason so a producer bug (one reason dominating) is
+ * obvious. --fix clears the stuck flags (needsRescore/rescoreReason/lateStarAnchorBand)
+ * via the write guard. Non-blocking by default; --gate/--strict escalates.
+ *
+ * Usage:
+ *   node scripts/audit-stuck-rescore-flags.js              # report, exit 0 (or 1 if any, with --gate)
+ *   node scripts/audit-stuck-rescore-flags.js --max=0      # threshold for drift exit-1
+ *   node scripts/audit-stuck-rescore-flags.js --gate       # exit 1 if count > max
+ *   node scripts/audit-stuck-rescore-flags.js --fix        # clear stuck flags
+ *   node scripts/audit-stuck-rescore-flags.js --json       # machine-readable
+ *
+ * Exit codes: 0 = at/under threshold, 1 = over threshold (only with --gate/--strict),
+ *   2 = could not run (corpus/shows.json missing).
+ */
+
+const fs = require('fs');
+const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
+const { isStuckRescoreFlag } = require('./lib/stuck-rescore-flag');
+
+const ROOT = path.join(__dirname, '..');
+const REVIEW_TEXTS_DIR = path.join(ROOT, 'data', 'review-texts');
+
+function parseArgs(argv) {
+  const maxArg = argv.find((a) => a.startsWith('--max='));
+  return {
+    fix: argv.includes('--fix'),
+    gate: argv.includes('--gate') || argv.includes('--strict'),
+    json: argv.includes('--json'),
+    max: maxArg ? parseInt(maxArg.split('=')[1], 10) : 0,
+  };
+}
+
+function loadShowTitles() {
+  const showsPath = path.join(ROOT, 'data', 'shows.json');
+  const raw = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+  const arr = Array.isArray(raw) ? raw : (raw.shows || []);
+  return new Map(arr.map((s) => [s.id, s.title]));
+}
+
+// Pure-ish scan (reads files): returns the stuck list. Kept separate from I/O
+// side effects (--fix) so the invariant logic stays testable via the predicate.
+function findStuck(reviewTextsDir, titleById) {
+  const stuck = [];
+  let total = 0;
+  const showDirs = listShowDirs(reviewTextsDir).filter((f) =>
+    fs.statSync(path.join(reviewTextsDir, f)).isDirectory()
+  );
+  for (const showDir of showDirs) {
+    const showPath = path.join(reviewTextsDir, showDir);
+    const files = fs
+      .readdirSync(showPath)
+      .filter((f) => f.endsWith('.json') && f !== 'failed-fetches.json');
+    for (const file of files) {
+      const fp = path.join(showPath, file);
+      let data;
+      try {
+        data = JSON.parse(fs.readFileSync(fp, 'utf8'));
+      } catch {
+        continue;
+      }
+      if (data.needsRescore !== true) continue;
+      total++;
+      const show = titleById.get(showDir) ? { title: titleById.get(showDir) } : undefined;
+      if (isStuckRescoreFlag(data, show, fp)) {
+        stuck.push({
+          path: fp,
+          rel: `${showDir}/${file}`,
+          reason: data.rescoreReason || '(none)',
+        });
+      }
+    }
+  }
+  return { stuck, totalFlagged: total };
+}
+
+function main() {
+  const opts = parseArgs(process.argv.slice(2));
+
+  if (!fs.existsSync(REVIEW_TEXTS_DIR)) {
+    console.error(`[stuck-rescore] review-texts dir missing: ${REVIEW_TEXTS_DIR}`);
+    process.exit(2);
+  }
+  let titleById;
+  try {
+    titleById = loadShowTitles();
+  } catch (e) {
+    console.error(`[stuck-rescore] cannot load shows.json: ${e.message}`);
+    process.exit(2);
+  }
+
+  const { stuck, totalFlagged } = findStuck(REVIEW_TEXTS_DIR, titleById);
+
+  const byReason = {};
+  for (const s of stuck) byReason[s.reason] = (byReason[s.reason] || 0) + 1;
+
+  if (opts.fix && stuck.length) {
+    // Lazy-require so the pure/report path has no write-guard dependency.
+    const { safeWriteReview } = require('./lib/review-write-guard');
+    for (const s of stuck) {
+      const d = JSON.parse(fs.readFileSync(s.path, 'utf8'));
+      delete d.needsRescore;
+      delete d.rescoreReason;
+      delete d.lateStarAnchorBand;
+      safeWriteReview(s.path, d, { force: true });
+    }
+  }
+
+  if (opts.json) {
+    console.log(JSON.stringify({
+      totalFlagged, stuckCount: stuck.length, max: opts.max, byReason,
+      fixed: opts.fix ? stuck.length : 0,
+      examples: stuck.slice(0, 20).map((s) => ({ rel: s.rel, reason: s.reason })),
+    }, null, 2));
+  } else {
+    console.log(`[stuck-rescore] ${stuck.length} stuck needsRescore flag(s) (non-scoreable) of ${totalFlagged} flagged; threshold --max=${opts.max}`);
+    for (const [reason, n] of Object.entries(byReason).sort((a, b) => b[1] - a[1])) {
+      console.log(`  ${String(n).padStart(4)}  ${reason}`);
+    }
+    for (const s of stuck.slice(0, 20)) console.log(`    - ${s.rel}  [${s.reason}]`);
+    if (stuck.length > 20) console.log(`    … +${stuck.length - 20} more`);
+    if (opts.fix) console.log(`[stuck-rescore] --fix cleared ${stuck.length} flag(s).`);
+    if (stuck.length > opts.max && !opts.fix) {
+      console.log(`[stuck-rescore] A dominant single reason usually means a producer flagged non-includable reviews — fix that producer to gate on isScoreable/isIncludableForRebuild, then --fix the residue.`);
+    }
+  }
+
+  const over = stuck.length > opts.max;
+  process.exit(opts.gate && over && !opts.fix ? 1 : 0);
+}
+
+if (require.main === module) {
+  main();
+}
+
+module.exports = { findStuck };
