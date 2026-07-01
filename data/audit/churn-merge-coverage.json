@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-01T07:59:36.975Z",
+    "generatedAt": "2026-07-01T08:08:58.838Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -24,11 +24,11 @@
     },
     {
       "path": "data/audit/validation-baseline.json",
-      "churn": 111
+      "churn": 112
     },
     {
       "path": "data/audit/processed-feedback.json",
-      "churn": 78
+      "churn": 77
     },
     {
       "path": "data/audit/validation/collection-report-2026-06-29.json",
@@ -38,35 +38,35 @@
   "exempt": [
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 164
+      "churn": 163
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 164
+      "churn": 163
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 164
+      "churn": 163
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 160
+      "churn": 159
     },
     {
       "path": "public/opening-night-status.json",
-      "churn": 85
+      "churn": 84
     },
     {
       "path": "public/data/shows/dad-dont-read-this-off-broadway-2026.json",
-      "churn": 78
+      "churn": 79
     },
     {
       "path": "public/data/shows/birthright-off-broadway-2026.json",
-      "churn": 72
+      "churn": 73
     },
     {
       "path": "public/data/shows/glengarry-glen-ross-west-end-2026.json",
-      "churn": 67
+      "churn": 68
     },
     {
       "path": "data/llm-scoring-garbage-skips.json",
@@ -74,7 +74,7 @@
     },
     {
       "path": "public/data/shows/the-misanthrope-west-end-2026.json",
-      "churn": 62
+      "churn": 63
     },
     {
       "path": "public/data/shows/a-walk-on-the-moon-off-broadway-2026.json",
@@ -82,7 +82,7 @@
     },
     {
       "path": "data/commercial-rss-state.json",
-      "churn": 53
+      "churn": 52
     },
     {
       "path": "public/data/shows/pride-west-end-2026.json",
@@ -102,11 +102,11 @@
     },
     {
       "path": "public/data/shows/the-truth-a-comedy-by-florian-zeller-west-end-2026.json",
-      "churn": 43
+      "churn": 44
     },
     {
       "path": "data/show-score-urls.json",
-      "churn": 42
+      "churn": 43
     },
     {
       "path": "data/tony-kalshi-odds.json",
@@ -122,7 +122,7 @@
     },
     {
       "path": "public/data/shows/a-midsummer-nights-dream-west-end-2026.json",
-      "churn": 33
+      "churn": 34
     },
     {
       "path": "public/data/shows/camping-off-broadway-2026.json",
@@ -148,12 +148,12 @@
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 1162,
+      "churn": 1173,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 1122,
+      "churn": 1132,
       "mergeAttr": "ours"
     },
     {
@@ -163,7 +163,7 @@
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 490,
+      "churn": 488,
       "mergeAttr": "union"
     },
     {
@@ -178,7 +178,7 @@
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 191,
+      "churn": 190,
       "mergeAttr": "ours"
     },
     {
@@ -188,17 +188,17 @@
     },
     {
       "path": "data/audit/orphan-unscored-cyrano-de-bergerac-west-end-2026.json",
-      "churn": 163,
+      "churn": 162,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 163,
+      "churn": 162,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 101,
+      "churn": 100,
       "mergeAttr": "ours"
     },
     {
@@ -213,17 +213,17 @@
     },
     {
       "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 85,
+      "churn": 84,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/syndicated-duplicates.json",
-      "churn": 85,
+      "churn": 84,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/wrong-production-audit.json",
-      "churn": 85,
+      "churn": 84,
       "mergeAttr": "ours"
     },
     {
@@ -293,7 +293,7 @@
     },
     {
       "path": "data/audit/gather-collisions.json",
-      "churn": 39,
+      "churn": 40,
       "mergeAttr": "ours"
     },
     {
