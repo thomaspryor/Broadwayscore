@@ -1662,7 +1662,8 @@
     "browserbase": [
       "data/review-texts/the-guilty-west-end-2026/deadline--ted-johnson.json",
       "the-guilty-west-end-2026/deadline--ted-johnson.json",
-      "data/review-texts/giulia-the-poison-queen-of-palermo-off-broadway-2026/nytimes--alan-light.json"
+      "data/review-texts/giulia-the-poison-queen-of-palermo-off-broadway-2026/nytimes--alan-light.json",
+      "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1769,6 +1770,17 @@
     },
     {
       "t": "2026-06-30T20:16:14.396Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-01T01:06:07.906Z",
+      "event": "bb-session",
+      "session": "9daeca4d",
+      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
+    },
+    {
+      "t": "2026-07-01T01:06:08.435Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
