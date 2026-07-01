@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-07-01T12:09:33.907Z",
-  "processed": 177,
-  "failed": 2147,
-  "successRate": "7.6%",
+  "updatedAt": "2026-07-01T12:10:39.361Z",
+  "processed": 179,
+  "failed": 2155,
+  "successRate": "7.7%",
   "tierBreakdown": {
-    "playwright": 120,
+    "playwright": 121,
     "amp": 0,
-    "browserbase": 32,
+    "browserbase": 34,
     "directCookies": 0,
     "scrapingbee": 39,
     "brightdata": 8,
     "archiveToday": 21,
     "archive": 17
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-07-01T06:21:04.132Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-07-01T06:21:20.505Z",
-      "event": "bb-session",
-      "session": "658437e6",
-      "url": "https://variety.com/2026/legit/news/maya-rudolph-oh-mary-broadway-debut-12366856"
-    },
     {
       "t": "2026-07-01T06:21:21.143Z",
       "event": "bb-cookie-inject",
@@ -124,6 +113,17 @@
       "t": "2026-07-01T11:51:50.130Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-01T12:10:01.262Z",
+      "event": "bb-session",
+      "session": "9a95b8b8",
+      "url": "https://www.wsj.com/articles/hamilton-sets-weekly-record-again-with-3-8-million-"
+    },
+    {
+      "t": "2026-07-01T12:10:02.029Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
