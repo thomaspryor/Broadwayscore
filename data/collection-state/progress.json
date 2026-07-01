@@ -157,7 +157,8 @@
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre--apollo-theatre.json",
     "glengarry-glen-ross-west-end-2026/standard--henry-hitchings.json",
     "beetlejuice-west-end-2026/timeout--adam-feldman.json",
-    "death-of-a-salesman-2026/variety--marilyn-stasio.json"
+    "death-of-a-salesman-2026/variety--marilyn-stasio.json",
+    "cyrano-de-bergerac-west-end-2026/the-upcoming-uk--unknown.json"
   ],
   "failed": [
     "glengarry-glen-ross-west-end-2026/hollywood-reporter--david-rooney.json",
@@ -2125,7 +2126,36 @@
     "archduke-west-end-2026/financialtimes--unknown.json",
     "archduke-west-end-2026/nysr--michael-sommers.json",
     "archduke-west-end-2026/thestage--unknown.json",
-    "archduke-west-end-2026/whatsonstage--sarah-crompton.json"
+    "archduke-west-end-2026/whatsonstage--sarah-crompton.json",
+    "archduke-west-end-2026/nytg--amelia-merrill.json",
+    "archduke-west-end-2026/one-minute-critic--matthew-wexler.json",
+    "cyrano-de-bergerac-west-end-2026/hollywood-reporter--unknown.json",
+    "pride-west-end-2026/hollywood-reporter--daniel-fienberg.json",
+    "pride-west-end-2026/nyt-theater--unknown.json",
+    "pride-west-end-2026/nytimes--ben-brantley.json",
+    "pride-west-end-2026/nytimes--unknown.json",
+    "cyrano-de-bergerac-west-end-2026/ew--nick-romano.json",
+    "cyrano-de-bergerac-west-end-2026/newsday--unknown.json",
+    "pride-west-end-2026/theatrely--kobi-kassal.json",
+    "cyrano-de-bergerac-west-end-2026/about-entertainment--ben-brantley.json",
+    "cyrano-de-bergerac-west-end-2026/amny--unknown.json",
+    "cyrano-de-bergerac-west-end-2026/ap--unknown.json",
+    "cyrano-de-bergerac-west-end-2026/bloomberg--jeremy-gerard.json",
+    "cyrano-de-bergerac-west-end-2026/broadwayworld--stephi-wild.json",
+    "cyrano-de-bergerac-west-end-2026/daily-echo--steve-page.json",
+    "cyrano-de-bergerac-west-end-2026/financialtimes--sarah-hemming.json",
+    "cyrano-de-bergerac-west-end-2026/metro-uk--claire-allfree.json",
+    "cyrano-de-bergerac-west-end-2026/northjerseycom--robert-feldberg.json",
+    "cyrano-de-bergerac-west-end-2026/standard--fiona-mountford.json",
+    "cyrano-de-bergerac-west-end-2026/telegraph--dominic-cavendish.json",
+    "cyrano-de-bergerac-west-end-2026/thestage--dave-fargnoli.json",
+    "cyrano-de-bergerac-west-end-2026/times-uk--dominic-maxwell.json",
+    "cyrano-de-bergerac-west-end-2026/washpost--peter-marks.json",
+    "pride-west-end-2026/broadwayworld--jay-irwin.json",
+    "pride-west-end-2026/click-liverpool--unknown.json",
+    "pride-west-end-2026/frontmezzjunkies--unknown.json",
+    "pride-west-end-2026/latimes--erin-conley.json",
+    "pride-west-end-2026/nottingham-confidential--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2238,7 +2268,8 @@
       "to-kill-a-mockingbird-west-end-2026/london-theatre--unknown.json",
       "springwood-west-end-2026/north-west-end--unknown.json",
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre--apollo-theatre.json",
-      "beetlejuice-west-end-2026/timeout--adam-feldman.json"
+      "beetlejuice-west-end-2026/timeout--adam-feldman.json",
+      "cyrano-de-bergerac-west-end-2026/daily-echo--steve-page.json"
     ],
     "amp": [],
     "browserbase": [
@@ -2267,7 +2298,9 @@
       "data/review-texts/stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json",
       "stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json",
       "data/review-texts/death-of-a-salesman-2026/variety--marilyn-stasio.json",
-      "death-of-a-salesman-2026/variety--marilyn-stasio.json"
+      "death-of-a-salesman-2026/variety--marilyn-stasio.json",
+      "data/review-texts/cyrano-de-bergerac-west-end-2026/the-upcoming-uk--unknown.json",
+      "cyrano-de-bergerac-west-end-2026/the-upcoming-uk--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -2305,6 +2338,7 @@
       "cyrano-de-bergerac-west-end-2026/broadwayworld--stephi-wild.json",
       "birthright-off-broadway-2026/nytimes--helen-shaw.json",
       "birthright-off-broadway-2026/nytimes--unknown.json",
+      "cyrano-de-bergerac-west-end-2026/broadwayworld--stephi-wild.json",
       "cyrano-de-bergerac-west-end-2026/broadwayworld--stephi-wild.json"
     ],
     "brightdata": [
@@ -2352,7 +2386,7 @@
     ]
   },
   "startTime": "2026-06-30T16:47:37.281Z",
-  "lastProcessed": "archduke-west-end-2026/whatsonstage--sarah-crompton.json",
+  "lastProcessed": "pride-west-end-2026/nottingham-confidential--unknown.json",
   "log": [
     {
       "t": "2026-06-30T16:51:17.696Z",
@@ -2529,6 +2563,12 @@
       "t": "2026-07-01T07:31:02.414Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-01T09:48:19.333Z",
+      "event": "bb-session",
+      "session": "4bbf3c1d",
+      "url": "https://www.theupcoming.co.uk/2026/06/25/cyrano-de-bergerac-at-noel-coward-theat"
     }
   ]
 }
