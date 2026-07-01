@@ -124,9 +124,12 @@ jobs:
             REFRESH_STALE="1"
           fi
           if [ -n "$REFRESH_STALE" ]; then
-            ARGS="--refresh-stale"
-            if [ -z "${{ github.event.inputs.limit }}" ]; then ARGS="$ARGS --limit=25"; fi
-            echo "refresh-stale mode: draining stale score-eligible shows (oldest first)"
+            # Always bound refresh-stale at 25/run (the documented drain budget).
+            # The `limit` input's default=50 makes a user-set value indistinguishable
+            # from the default, so honoring it risks an UNBOUNDED drain (240-min
+            # timeout) on a manual refresh_stale=true run — ignore it here.
+            ARGS="--refresh-stale --limit=25"
+            echo "refresh-stale mode: draining up to 25 stale score-eligible shows (oldest first)"
           elif [ -n "${{ github.event.inputs.show_id }}" ]; then
             ARGS="$ARGS --show=${{ github.event.inputs.show_id }}"
           elif [ -n "${{ github.event.inputs.shows }}" ]; then
