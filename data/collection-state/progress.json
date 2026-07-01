@@ -1,20 +1,29 @@
 {
-  "processed": [],
+  "processed": [
+    "relics-west-end-2026/cambridge--unknown.json"
+  ],
   "failed": [
-    "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json"
+    "relics-west-end-2026/nytimes--unknown.json",
+    "relics-west-end-2026/guardian--unknown.json",
+    "relics-west-end-2026/thestage--neil-norman.json",
+    "relics-west-end-2026/times-uk--dominic-maxwell.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "relics-west-end-2026/cambridge--unknown.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/relics-west-end-2026/thestage--neil-norman.json"
+    ],
     "archive": []
   },
-  "startTime": "2026-07-01T07:02:32.067Z",
-  "lastProcessed": "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+  "startTime": "2026-07-01T06:59:06.181Z",
+  "lastProcessed": "relics-west-end-2026/times-uk--dominic-maxwell.json",
   "log": []
 }
