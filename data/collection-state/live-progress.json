@@ -1,18 +1,52 @@
 {
-  "updatedAt": "2026-07-01T16:27:03.622Z",
-  "processed": 1,
-  "failed": 9,
+  "updatedAt": "2026-07-01T16:34:41.982Z",
+  "processed": 2,
+  "failed": 18,
   "successRate": "10.0%",
   "tierBreakdown": {
     "playwright": 1,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 1,
-    "archive": 0
+    "archiveToday": 3,
+    "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-07-01T16:31:27.973Z",
+      "event": "bb-session",
+      "session": "16cc4317",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-pride-and-"
+    },
+    {
+      "t": "2026-07-01T16:31:28.453Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-01T16:33:10.481Z",
+      "event": "bb-session",
+      "session": "8da3b424",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-pride-and-"
+    },
+    {
+      "t": "2026-07-01T16:33:10.950Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-01T16:34:32.834Z",
+      "event": "bb-session",
+      "session": "9065ddd3",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/pride-stage-adaptation-re"
+    },
+    {
+      "t": "2026-07-01T16:34:33.248Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    }
+  ]
 }
