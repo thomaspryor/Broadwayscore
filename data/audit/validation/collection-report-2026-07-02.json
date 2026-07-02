@@ -14,12 +14,12 @@
     "processed": 0,
     "failed": 7,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "33.3%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 4,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
@@ -27,19 +27,19 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 5,
-    "tier1Success": 4,
+    "tier1Attempts": 6,
+    "tier1Success": 6,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 1,
     "tier2Success": 1,
-    "tier3Attempts": 1,
-    "tier3Success": 1,
-    "tier3_6Attempts": 1,
-    "tier3_6Success": 1,
-    "tier4Attempts": 1,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 0,
     "tier4Success": 0,
     "totalFailed": 7,
     "scrapingBeePageCredits": 0,
@@ -50,7 +50,12 @@
     "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/i-paper--sarah-carson.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre--apollo-theatre.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre--marianka-swain.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json"
+  ],
   "failed": [
     "the-misanthrope-west-end-2026/nytheatre--david-gordon.json",
     "the-misanthrope-west-end-2026/theatermania--david-finkle.json",
@@ -62,11 +67,14 @@
   ],
   "failed": [],
   "tierDetails": {
-    "playwright": [],
-    "amp": [],
-    "browserbase": [
-      "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json"
+    "playwright": [
+      "the-truth-a-comedy-by-florian-zeller-west-end-2026/i-paper--sarah-carson.json",
+      "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre--apollo-theatre.json",
+      "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre--marianka-swain.json",
+      "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json"
     ],
+    "amp": [],
+    "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
