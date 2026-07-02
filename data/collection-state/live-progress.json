@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-02T06:02:55.989Z",
-  "processed": 121,
-  "failed": 1311,
-  "successRate": "8.4%",
+  "updatedAt": "2026-07-02T06:04:31.252Z",
+  "processed": 125,
+  "failed": 1317,
+  "successRate": "8.7%",
   "tierBreakdown": {
-    "playwright": 93,
+    "playwright": 95,
     "amp": 0,
-    "browserbase": 7,
+    "browserbase": 9,
     "directCookies": 8,
-    "scrapingbee": 5,
+    "scrapingbee": 6,
     "brightdata": 6,
     "archiveToday": 16,
     "archive": 8
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-07-01T17:20:30.419Z",
@@ -53,6 +53,17 @@
       "t": "2026-07-02T04:58:41.338Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-02T06:03:15.936Z",
+      "event": "bb-session",
+      "session": "d51b34dd",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mariska-hargitay-to-make-broadw"
+    },
+    {
+      "t": "2026-07-02T06:03:16.927Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
