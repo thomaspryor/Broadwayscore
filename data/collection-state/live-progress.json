@@ -1,17 +1,17 @@
 {
-  "updatedAt": "2026-07-02T06:05:02.419Z",
-  "processed": 118,
-  "failed": 1309,
-  "successRate": "8.3%",
+  "updatedAt": "2026-07-02T06:50:39.300Z",
+  "processed": 148,
+  "failed": 1624,
+  "successRate": "8.4%",
   "tierBreakdown": {
-    "playwright": 91,
+    "playwright": 4,
     "amp": 0,
-    "browserbase": 7,
-    "directCookies": 8,
-    "scrapingbee": 5,
-    "brightdata": 6,
-    "archiveToday": 16,
-    "archive": 7
+    "browserbase": 0,
+    "directCookies": 0,
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archiveToday": 0,
+    "archive": 0
   },
   "browserbaseSessions": 0,
   "recentActivity": [
@@ -53,6 +53,61 @@
       "t": "2026-07-02T04:58:41.338Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-02T06:03:15.936Z",
+      "event": "bb-session",
+      "session": "d51b34dd",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mariska-hargitay-to-make-broadw"
+    },
+    {
+      "t": "2026-07-02T06:03:16.927Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-07-02T06:05:09.334Z",
+      "event": "bb-session",
+      "session": "af39fdbf",
+      "url": "https://variety.com/2026/legit/news/maya-rudolph-oh-mary-broadway-debut-12366856"
+    },
+    {
+      "t": "2026-07-02T06:05:10.224Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-02T06:05:29.213Z",
+      "event": "bb-session",
+      "session": "40b6327c",
+      "url": "https://variety.com/2026/legit/news/maya-rudolph-oh-mary-broadway-debut-12366856"
+    },
+    {
+      "t": "2026-07-02T06:05:30.147Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-02T06:05:55.121Z",
+      "event": "bb-session",
+      "session": "094395db",
+      "url": "https://deadline.com/2025/12/john-cameron-mitchell-broadway-oh-mary-1236645723/"
+    },
+    {
+      "t": "2026-07-02T06:05:56.045Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-02T06:20:46.107Z",
+      "event": "bb-session",
+      "session": "23054564",
+      "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
+    },
+    {
+      "t": "2026-07-02T06:20:47.137Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
