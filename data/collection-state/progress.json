@@ -6,7 +6,8 @@
     "a-midsummer-nights-dream-west-end-2026/london-box-office--marian-pashley.json",
     "a-midsummer-nights-dream-west-end-2026/london-box-office--stuart-king.json",
     "a-midsummer-nights-dream-west-end-2026/sunday-telegraph--claire-allfree.json",
-    "springwood-west-end-2026/cambridge--louise-penn.json"
+    "springwood-west-end-2026/cambridge--louise-penn.json",
+    "archduke-west-end-2026/broadwayworld--alexander-cohen.json"
   ],
   "failed": [
     "the-guilty-west-end-2026/hollywood-reporter--angie-han.json",
@@ -91,7 +92,16 @@
     "a-midsummer-nights-dream-west-end-2026/thestage--unknown.json",
     "a-midsummer-nights-dream-west-end-2026/times-uk--dominic-maxwell.json",
     "a-midsummer-nights-dream-west-end-2026/times-uk--rachel-halliburton.json",
-    "a-midsummer-nights-dream-west-end-2026/westendtheatre--west-end-theatre.json"
+    "a-midsummer-nights-dream-west-end-2026/westendtheatre--west-end-theatre.json",
+    "springwood-west-end-2026/financialtimes--unknown.json",
+    "springwood-west-end-2026/standard--nick-curtis.json",
+    "springwood-west-end-2026/theatrecat--unknown.json",
+    "springwood-west-end-2026/thestage--unknown.json",
+    "springwood-west-end-2026/west-end-best-friend--unknown.json",
+    "archduke-west-end-2026/nyt-theater--jonathan-mandell.json",
+    "archduke-west-end-2026/culturesauce--thom-geier.json",
+    "archduke-west-end-2026/dc-theater-arts--deb-miller.json",
+    "archduke-west-end-2026/financialtimes--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -118,9 +128,23 @@
       "data/review-texts/to-kill-a-mockingbird-west-end-2026/tribune--unknown.json",
       "data/review-texts/a-midsummer-nights-dream-west-end-2026/thestage--unknown.json"
     ],
-    "archive": []
+    "archive": [
+      "archduke-west-end-2026/broadwayworld--alexander-cohen.json"
+    ]
   },
   "startTime": "2026-07-02T18:54:33.720Z",
-  "lastProcessed": "a-midsummer-nights-dream-west-end-2026/westendtheatre--west-end-theatre.json",
-  "log": []
+  "lastProcessed": "archduke-west-end-2026/financialtimes--unknown.json",
+  "log": [
+    {
+      "t": "2026-07-02T19:50:12.522Z",
+      "event": "bb-session",
+      "session": "a47d2912",
+      "url": "https://www.thestage.co.uk/reviews/springwood-review-hampstead-theatre-london-ro"
+    },
+    {
+      "t": "2026-07-02T19:50:13.081Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    }
+  ]
 }
