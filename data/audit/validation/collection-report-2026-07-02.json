@@ -14,13 +14,13 @@
     "processed": 0,
     "failed": 18,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "12.5%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
     "browserbase": 0,
-    "directCookies": 0,
+    "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 1,
@@ -76,7 +76,9 @@
     "playwright": [],
     "amp": [],
     "browserbase": [],
-    "directCookies": [],
+    "directCookies": [
+      "the-misanthrope-west-end-2026/thestage--dave-fargnoli.json"
+    ],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
@@ -85,5 +87,11 @@
     "archive": []
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "the-misanthrope-west-end-2026/whatsonstage--tanyel-gumushan.json",
+      "oldUrl": "https://www.whatsonstage.com/news/the-misanthrope-with-sandra-oh-at-the-national-theatre-review_1725880/",
+      "newUrl": "https://www.whatsonstage.com/news/the-misanthrope-with-sandra-oh-to-have-cinema-release_1724246/"
+    }
+  ]
 }
