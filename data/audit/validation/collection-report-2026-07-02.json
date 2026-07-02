@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-07-02T16:26:10.604Z",
+  "runDate": "2026-07-02T16:31:11.789Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "archduke-west-end-2026",
+    "showFilter": "pride-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,77 +12,102 @@
   },
   "summary": {
     "processed": 2,
-    "failed": 9,
+    "failed": 23,
     "skipped": 0,
-    "successRate": "18.2%"
+    "successRate": "8.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 2,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 4,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 1,
-    "archive": 1
+    "archiveToday": 3,
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 4,
+    "tier1Attempts": 9,
     "tier1Success": 2,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 1,
-    "tier1_5Success": 1,
-    "tier2Attempts": 1,
+    "tier1_5Attempts": 4,
+    "tier1_5Success": 4,
+    "tier2Attempts": 7,
     "tier2Success": 1,
-    "tier3Attempts": 1,
+    "tier3Attempts": 3,
     "tier3Success": 1,
-    "tier3_6Attempts": 1,
-    "tier3_6Success": 1,
-    "tier4Attempts": 1,
+    "tier3_6Attempts": 3,
+    "tier3_6Success": 3,
+    "tier4Attempts": 5,
     "tier4Success": 0,
-    "totalFailed": 9,
-    "scrapingBeePageCredits": 10,
+    "totalFailed": 23,
+    "scrapingBeePageCredits": 52,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.2,
-    "urlDiscoveryAttempts": 6,
-    "urlDiscoverySuccess": 0,
+    "browserbaseSessionsUsed": 4,
+    "browserbaseMinutesUsed": 0.8,
+    "urlDiscoveryAttempts": 17,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "archduke-west-end-2026/broadwayworld--alexander-cohen.json",
-    "archduke-west-end-2026/city-am--steve-dinneen.json"
+    "pride-west-end-2026/londontheatre1--terry-eastham.json",
+    "pride-west-end-2026/whatsonstage--sarah-crompton.json"
   ],
   "failed": [
-    "archduke-west-end-2026/nyt-theater--jonathan-mandell.json",
-    "archduke-west-end-2026/culturesauce--thom-geier.json",
-    "archduke-west-end-2026/dc-theater-arts--deb-miller.json",
-    "archduke-west-end-2026/financialtimes--unknown.json",
-    "archduke-west-end-2026/nysr--michael-sommers.json",
-    "archduke-west-end-2026/thestage--unknown.json",
-    "archduke-west-end-2026/whatsonstage--sarah-crompton.json",
-    "archduke-west-end-2026/nytg--amelia-merrill.json",
-    "archduke-west-end-2026/one-minute-critic--matthew-wexler.json"
+    "pride-west-end-2026/hollywood-reporter--daniel-fienberg.json",
+    "pride-west-end-2026/nyt-theater--unknown.json",
+    "pride-west-end-2026/nytimes--ben-brantley.json",
+    "pride-west-end-2026/nytimes--unknown.json",
+    "pride-west-end-2026/theatrely--kobi-kassal.json",
+    "pride-west-end-2026/broadwayworld--jay-irwin.json",
+    "pride-west-end-2026/click-liverpool--unknown.json",
+    "pride-west-end-2026/frontmezzjunkies--unknown.json",
+    "pride-west-end-2026/latimes--erin-conley.json",
+    "pride-west-end-2026/nottingham-confidential--unknown.json",
+    "pride-west-end-2026/operawire--unknown.json",
+    "pride-west-end-2026/people--unknown.json",
+    "pride-west-end-2026/seattle-times--misha-berson.json",
+    "pride-west-end-2026/sunday-telegraph--unknown.json",
+    "pride-west-end-2026/talkinbroadway--unknown.json",
+    "pride-west-end-2026/thestage--dave-fargnoli.json",
+    "pride-west-end-2026/times-uk--allan-radcliffe.json",
+    "pride-west-end-2026/times-uk--ann-treneman.json",
+    "pride-west-end-2026/times-uk--dominic-maxwell.json",
+    "pride-west-end-2026/times-uk--jane-edwardes.json",
+    "pride-west-end-2026/times-uk--lucy-sweet.json",
+    "pride-west-end-2026/whatsonstage--daisy-bowie.json",
+    "pride-west-end-2026/standard--the-standard.json"
   ],
   "failed": [],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "pride-west-end-2026/londontheatre1--terry-eastham.json",
+      "pride-west-end-2026/whatsonstage--sarah-crompton.json"
+    ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/archduke-west-end-2026/city-am--steve-dinneen.json",
-      "archduke-west-end-2026/city-am--steve-dinneen.json"
+      "data/review-texts/pride-west-end-2026/times-uk--allan-radcliffe.json",
+      "data/review-texts/pride-west-end-2026/times-uk--ann-treneman.json",
+      "data/review-texts/pride-west-end-2026/times-uk--dominic-maxwell.json",
+      "data/review-texts/pride-west-end-2026/times-uk--jane-edwardes.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/archduke-west-end-2026/thestage--unknown.json"
+      "data/review-texts/pride-west-end-2026/click-liverpool--unknown.json",
+      "data/review-texts/pride-west-end-2026/nottingham-confidential--unknown.json",
+      "data/review-texts/pride-west-end-2026/thestage--dave-fargnoli.json"
     ],
-    "archive": [
-      "archduke-west-end-2026/broadwayworld--alexander-cohen.json"
-    ]
+    "archive": []
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "pride-west-end-2026/whatsonstage--sarah-crompton.json",
+      "oldUrl": "https://www.whatsonstage.com/news/pride-musical-at-the-national-theatre-review_1726254/",
+      "newUrl": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/pride_1703068/"
+    }
+  ]
 }
