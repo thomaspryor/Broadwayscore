@@ -1,7 +1,7 @@
 {
   "system": "sync",
   "status": "pass",
-  "lastChecked": "2026-07-01T08:26:01.177Z",
+  "lastChecked": "2026-07-02T08:04:03.322Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -19,7 +19,7 @@
     {
       "name": "Sync: social-pulse per-show freshness",
       "status": "pass",
-      "message": "85 running BW/WE shows — no stale social-pulse files"
+      "message": "84 running BW/WE shows — no stale social-pulse files"
     },
     {
       "name": "Sync: phantom show detection",
@@ -34,12 +34,12 @@
     {
       "name": "Sync: baseline drift",
       "status": "pass",
-      "message": "2709 shows, 147 open, 18864 reviews (all at or above baseline)"
+      "message": "2709 shows, 147 open, 18896 reviews (all at or above baseline)"
     },
     {
       "name": "Sync: grosses weekEnding",
       "status": "pass",
-      "message": "weekEnding 6/22/2026 (9d ago)"
+      "message": "weekEnding 6/29/2026 (3d ago)"
     }
   ]
 }
