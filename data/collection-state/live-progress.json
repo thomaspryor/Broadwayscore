@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-02T06:05:48.901Z",
-  "processed": 128,
-  "failed": 1334,
+  "updatedAt": "2026-07-02T06:06:32.847Z",
+  "processed": 130,
+  "failed": 1342,
   "successRate": "8.8%",
   "tierBreakdown": {
-    "playwright": 96,
+    "playwright": 97,
     "amp": 0,
-    "browserbase": 13,
+    "browserbase": 15,
     "directCookies": 8,
     "scrapingbee": 6,
     "brightdata": 6,
     "archiveToday": 16,
     "archive": 8
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-07-01T17:20:30.419Z",
@@ -86,6 +86,17 @@
       "t": "2026-07-02T06:05:30.147Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-02T06:05:55.121Z",
+      "event": "bb-session",
+      "session": "094395db",
+      "url": "https://deadline.com/2025/12/john-cameron-mitchell-broadway-oh-mary-1236645723/"
+    },
+    {
+      "t": "2026-07-02T06:05:56.045Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
