@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-07-02T19:09:02.842Z",
-  "processed": 7,
-  "failed": 43,
-  "successRate": "14.0%",
+  "updatedAt": "2026-07-02T19:50:22.266Z",
+  "processed": 8,
+  "failed": 92,
+  "successRate": "8.0%",
   "tierBreakdown": {
     "playwright": 6,
     "amp": 0,
@@ -10,9 +10,21 @@
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 1,
-    "archiveToday": 3,
-    "archive": 0
+    "archiveToday": 6,
+    "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-07-02T19:50:12.522Z",
+      "event": "bb-session",
+      "session": "a47d2912",
+      "url": "https://www.thestage.co.uk/reviews/springwood-review-hampstead-theatre-london-ro"
+    },
+    {
+      "t": "2026-07-02T19:50:13.081Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    }
+  ]
 }
