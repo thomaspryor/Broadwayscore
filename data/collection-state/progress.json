@@ -124,7 +124,10 @@
     "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
     "every-brilliant-thing-2026/nytimes--ben-brantley.json",
     "every-brilliant-thing-2026/theatermania--hayley-levitt.json",
-    "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json"
+    "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json",
+    "oh-mary-west-end-2025/nytg--olivia-rook.json",
+    "oh-mary-west-end-2025/variety--brent-lang.json",
+    "oh-mary-west-end-2025/variety--naman-ramachandran.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
@@ -1453,7 +1456,14 @@
     "im-sorry-prime-minister-west-end-2026/british-theatre--rachael-birtwistle.json",
     "black-is-the-color-of-my-voice-west-end-2026/guardian--paul-raven.json",
     "black-is-the-color-of-my-voice-west-end-2026/observer--sarah-crompton.json",
-    "black-is-the-color-of-my-voice-west-end-2026/financialtimes--louise-levene.json"
+    "black-is-the-color-of-my-voice-west-end-2026/financialtimes--louise-levene.json",
+    "black-is-the-color-of-my-voice-west-end-2026/financialtimes--sarah-hemming.json",
+    "black-is-the-color-of-my-voice-west-end-2026/london-theatre--olivia-rook.json",
+    "black-is-the-color-of-my-voice-west-end-2026/standard--david-jays.json",
+    "oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json",
+    "oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
+    "oh-mary-west-end-2025/nyt-theater--jonathan-mandell.json",
+    "oh-mary-west-end-2025/nytimes--jesse-green.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1552,7 +1562,8 @@
       "small-off-broadway-2026/the-interested-bystander--cary-wong.json",
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
       "every-brilliant-thing-2026/theatermania--hayley-levitt.json",
-      "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json"
+      "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json",
+      "oh-mary-west-end-2025/nytg--olivia-rook.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1564,7 +1575,11 @@
       "the-misanthrope-west-end-2026/times-uk--sam-marlowe.json",
       "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
       "data/review-texts/every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
-      "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json"
+      "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/oh-mary-west-end-2025/variety--brent-lang.json",
+      "oh-mary-west-end-2025/variety--brent-lang.json",
+      "data/review-texts/oh-mary-west-end-2025/variety--naman-ramachandran.json",
+      "oh-mary-west-end-2025/variety--naman-ramachandran.json"
     ],
     "directCookies": [
       "cyrano-de-bergerac-west-end-2026/times-uk--dominic-maxwell.json",
@@ -1622,7 +1637,7 @@
     ]
   },
   "startTime": "2026-07-01T16:50:27.166Z",
-  "lastProcessed": "black-is-the-color-of-my-voice-west-end-2026/financialtimes--louise-levene.json",
+  "lastProcessed": "oh-mary-west-end-2025/variety--naman-ramachandran.json",
   "log": [
     {
       "t": "2026-07-01T17:20:30.419Z",
@@ -1673,6 +1688,28 @@
       "t": "2026-07-02T06:03:16.927Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-07-02T06:05:09.334Z",
+      "event": "bb-session",
+      "session": "af39fdbf",
+      "url": "https://variety.com/2026/legit/news/maya-rudolph-oh-mary-broadway-debut-12366856"
+    },
+    {
+      "t": "2026-07-02T06:05:10.224Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-02T06:05:29.213Z",
+      "event": "bb-session",
+      "session": "40b6327c",
+      "url": "https://variety.com/2026/legit/news/maya-rudolph-oh-mary-broadway-debut-12366856"
+    },
+    {
+      "t": "2026-07-02T06:05:30.147Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
