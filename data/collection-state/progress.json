@@ -65,7 +65,9 @@
     "proof-2026/playbill--unknown.json",
     "the-fear-of-13-2026/broadwayworld--unknown.json",
     "the-fear-of-13-2026/one-minute-critic--matthew-wexler.json",
-    "the-fear-of-13-2026/playbill--unknown.json"
+    "the-fear-of-13-2026/playbill--unknown.json",
+    "death-of-a-salesman-2026/variety--marilyn-stasio.json",
+    "death-of-a-salesman-2026/vulture--rob-weinert-kendt.json"
   ],
   "failed": [
     "the-guilty-west-end-2026/hollywood-reporter--angie-han.json",
@@ -368,7 +370,15 @@
     "the-fear-of-13-2026/theatre-reviews-limited--david-roberts.json",
     "the-fear-of-13-2026/financialtimes--sarah-hemming.json",
     "the-fear-of-13-2026/i-paper--fiona-mountford.json",
-    "the-fear-of-13-2026/standard--nick-curtis.json"
+    "the-fear-of-13-2026/standard--nick-curtis.json",
+    "the-fear-of-13-2026/sunday-telegraph--claire-allfree.json",
+    "the-fear-of-13-2026/thestage--sam-marlowe.json",
+    "the-fear-of-13-2026/times-uk--clive-davis.json",
+    "the-fear-of-13-2026/whatsonstage--alex-wood.json",
+    "the-fear-of-13-2026/independent--alice-saville.json",
+    "titanique-2026/the-queer-review--james-kleinmann.json",
+    "titanique-2026/wsj--charles-isherwood.json",
+    "titanique-2026/playbill--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -429,7 +439,9 @@
       "data/review-texts/pride-west-end-2026/times-uk--ann-treneman.json",
       "data/review-texts/pride-west-end-2026/times-uk--dominic-maxwell.json",
       "data/review-texts/pride-west-end-2026/times-uk--jane-edwardes.json",
-      "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json"
+      "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+      "data/review-texts/death-of-a-salesman-2026/variety--marilyn-stasio.json",
+      "death-of-a-salesman-2026/variety--marilyn-stasio.json"
     ],
     "directCookies": [
       "cyrano-de-bergerac-west-end-2026/times-uk--dominic-maxwell.json",
@@ -449,7 +461,8 @@
       "camping-off-broadway-2026/talkinbroadway--unknown.json",
       "the-balusters-2026/broadwayworld--unknown.json",
       "schmigadoon-2026/thewrap--robert-hofler.json",
-      "the-fear-of-13-2026/broadwayworld--unknown.json"
+      "the-fear-of-13-2026/broadwayworld--unknown.json",
+      "death-of-a-salesman-2026/vulture--rob-weinert-kendt.json"
     ],
     "archiveToday": [
       "data/review-texts/pride-west-end-2026/click-liverpool--unknown.json",
@@ -470,7 +483,7 @@
     ]
   },
   "startTime": "2026-07-01T16:50:27.166Z",
-  "lastProcessed": "the-fear-of-13-2026/standard--nick-curtis.json",
+  "lastProcessed": "death-of-a-salesman-2026/vulture--rob-weinert-kendt.json",
   "log": [
     {
       "t": "2026-07-02T06:56:56.791Z",
@@ -526,6 +539,17 @@
       "t": "2026-07-02T10:59:34.718Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-02T12:24:29.910Z",
+      "event": "bb-session",
+      "session": "555ea6a5",
+      "url": "https://variety.com/2026/legit/news/death-of-a-salesman-broadway-review-nathan-l"
+    },
+    {
+      "t": "2026-07-02T12:24:30.996Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
