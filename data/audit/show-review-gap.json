@@ -1,42 +1,132 @@
 {
-  "generatedAt": "2026-07-02T18:24:29.026Z",
+  "generatedAt": "2026-07-02T19:11:39.832Z",
   "windowDays": 1095,
-  "targets": 12,
+  "targets": 5,
   "counts": {
-    "withGap": 7,
-    "totalMissing": 12,
-    "totalFlaggedMisses": 38,
-    "totalRecoverable": 1,
+    "withGap": 5,
+    "totalMissing": 61,
+    "totalFlaggedMisses": 37,
+    "totalRecoverable": 0,
     "totalRecovered": 0
   },
   "results": [
     {
-      "showId": "labelless-off-broadway-2026",
-      "title": "Label•less",
-      "openingDate": "2026-06-18",
+      "showId": "girl-interrupted-off-broadway-2026",
+      "title": "Girl, Interrupted",
+      "openingDate": "2026-06-04",
       "status": "open",
       "category": "off-broadway",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.theatermania.com/news/review-labelless-an-obama-era-throwback-dance-spectacular_1842310/",
-        "https://culturesauce.com/drew-lachey-label-less-off-broadway-review/"
+      "aggregatorArticles": [
+        "https://playbill.com/article/what-are-reviews-saying-about-girl-interrupted",
+        "https://www.broadwayworld.com/article/Review-Roundup-GIRL-INTERRUPTED-Opens-At-The-Public-Theater-20260604"
       ],
-      "dirFiles": 3,
-      "dirClean": 3,
-      "inReviewsJson": 3,
+      "aggregatorListedUrls": [
+        "https://1minutecritic.com/girl-interrupted-aimee-mann-musical-review/",
+        "https://cititour.com/NYC_News/Girl-Interrupted-Needs-More-Time-to-Be-Effective/10756",
+        "https://newyorktheater.me/2026/06/04/theater-reviews-girl-interrupted-a-woman-among-women/",
+        "https://culturesauce.com/girl-interrupted-musical-aimee-mann-martyna-majok-off-broadway-review/",
+        "https://ctvoice.com/2026/06/05/off-broadway-review-girl-interrupted/",
+        "https://exeuntnyc.com/reviews/review-girl-interrupted-at-the-public-theater/",
+        "https://www.theguardian.com/stage/2026/jun/05/girl-interrupted-review-musical-aimee-mann",
+        "https://newyorknotebook.substack.com/p/copy-girl-interrupted",
+        "https://nystagereview.com/2026/06/04/girl-interrupted-living-under-the-bell-jar/",
+        "https://www.newyorktheatreguide.com/reviews/girl-interrupted-off-broadway-review",
+        "https://www.nytimes.com/2026/06/04/theater/girl-interrupted-review-mann-majok-king-princess-canfield.html",
+        "https://pagesonstages.com/2026/06/04/girl-interrupted/",
+        "https://therecs.co.uk/girl-interrupted/",
+        "https://www.slantmagazine.com/theater/girl-interrupted-review-aimee-mann/",
+        "https://stageandcinema.com/2026/06/04/girl-interrupted-review-the-public-theater/",
+        "https://www.theatermania.com/news/review-girl-interrupted-re-enters-the-mental-health-chat-this-time-with-music_1840247/",
+        "https://www.wsj.com/articles/girl-interrupted-review-a-musical-at-a-mental-hospital-597ee742",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=TG4MLS",
+        "https://www.talkinbroadway.com/page/ob/06_04_26b.html",
+        "https://www.theaterscene.net/musicals/offbway/girl-interrupted/joseph-pisano/",
+        "https://www.theatrereviews.com/off-broadway-review-girl-interrupted-at-the-publics-martinson-hall-through-sunday-july-12-2026/"
+      ],
+      "dirFiles": 34,
+      "dirClean": 23,
+      "inReviewsJson": 22,
       "missing": [],
       "dirOnly": [
         {
-          "host": "1minutecritic.com",
+          "host": "thefrontrowcenter.com",
+          "count": 1
+        },
+        {
+          "host": "theaterlife.com",
+          "count": 1
+        },
+        {
+          "host": "theaterpizzazz.com",
+          "count": 1
+        },
+        {
+          "host": "theatrely.com",
+          "count": 1
+        },
+        {
+          "host": "vulture.com",
           "count": 1
         }
       ],
-      "flaggedMisses": []
+      "flaggedMisses": [
+        {
+          "url": "https://pagesonstages.com/2026/06/04/girl-interrupted/",
+          "host": "pagesonstages.com",
+          "knownOutletId": "pages-on-stages",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "pages-on-stages--mason-pilevsky.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://pagesonstages.com/2026/06/04/girl-interrupted/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.talkinbroadway.com/page/ob/06_04_26b.html",
+          "host": "talkinbroadway.com",
+          "knownOutletId": "talkinbroadway",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "talkinbroadway--unknown.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2648432"
+            }
+          ]
+        },
+        {
+          "url": "https://www.theatrereviews.com/off-broadway-review-girl-interrupted-at-the-publics-martinson-hall-through-sunday-july-12-2026/",
+          "host": "theatrereviews.com",
+          "knownOutletId": "theatre-reviews-limited",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatre-reviews-limited--unknown.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.theatrereviews.com/off-broadway-review-girl-interrupted-at-the-publics-martinson-hall-through-sunday-july-12-2026/"
+            }
+          ]
+        }
+      ]
     },
     {
-      "showId": "bone-wars-a-new-musical-off-broadway-2026",
-      "title": "Bone Wars a New Musical",
-      "openingDate": "2026-06-18",
+      "showId": "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024",
+      "title": "La Breve y Maravillosa Vida de Oscar Wao",
+      "openingDate": "2024-02-17",
       "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
@@ -68,7 +158,7 @@
           "outletId": "bootstrapcdn",
           "provisional": true,
           "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=bone-wars-a-new-musical-off-broadway-2"
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=la-breve-y-maravillosa-vida-de-oscar-w"
         },
         {
           "url": "https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css",
@@ -76,122 +166,41 @@
           "outletId": "bootstrapcdn",
           "provisional": true,
           "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=bone-wars-a-new-musical-off-broadway-2"
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=la-breve-y-maravillosa-vida-de-oscar-w"
         }
       ],
       "ingestSkippedByCap": []
     },
     {
-      "showId": "much-ado-about-nothing-globe-off-west-end-2026",
-      "title": "Much Ado About Nothing - Globe",
-      "openingDate": "2026-06-20",
+      "showId": "my-joy-is-heavy-off-broadway-2025",
+      "title": "My Joy Is Heavy",
+      "openingDate": "2026-03-17",
       "status": "open",
-      "category": "off-west-end",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [],
-      "dirOnly": [],
-      "flaggedMisses": []
-    },
-    {
-      "showId": "the-outsiders-2024",
-      "title": "The Outsiders",
-      "openingDate": "2024-04-11",
-      "status": "open",
-      "category": "broadway",
+      "category": "off-broadway",
       "aggregatorArticles": [
-        "https://playbill.com/article/reviews-what-do-critics-think-of-the-outsiders-on-broadway",
-        "https://playbill.com/article/reviews-heres-what-critics-are-saying-about-the-musical-adaptation-of-the-outsiders",
-        "https://www.broadwayworld.com/article/Review-Roundup-THE-OUTSIDERS-Opens-On-Broadway-20240411",
-        "https://www.broadwayworld.com/article/Review-Roundup-THE-OUTSIDERS-Embarks-on-National-Tour-20251029",
-        "https://www.broadwayworld.com/article/Review-Roundup-THE-OUTSIDERS-World-Premiere-Opens-at-La-Jolla-Playhouse-20230307"
+        "https://playbill.com/article/what-are-reviews-for-the-bengsons-my-joy-is-heavy-at-new-york-theatre-workshop"
       ],
       "aggregatorListedUrls": [
-        "https://www.amny.com/entertainment/theater/review-outsiders-gets-lost-in-the-rumble/",
-        "https://www.broadwaynews.com/the-broadway-review-the-outsiders-a-rival-gang-story-void-of-any-risk/",
-        "https://www.chicagotribune.com/2024/04/11/review-in-the-outsiders-on-broadway-what-should-be-ponyboys-story-has-a-grown-up-chill/",
-        "https://cititour.com/NYC_Broadway/The-Outsiders/1220",
-        "https://www.digitaljournal.com/entertainment/review-the-outsiders-is-a-new-coming-of-age-musical-on-broadway/article",
-        "https://ew.com/the-outsiders-review-broadway-musical-8629965",
-        "https://www.theguardian.com/stage/2024/apr/11/the-outsiders-broadway-review",
-        "https://nypost.com/2024/04/11/entertainment/the-outsiders-broadway-review-warring-teens-tug-at-the-heart-in-one-of-the-seasons-best-new-musicals/",
-        "https://newyorktheater.me/2024/04/11/the-outsiders-broadway-review/",
-        "https://nystagereview.com/2024/04/11/the-outsiders-the-popular-novel-and-film-is-now-a-killer-musical/",
-        "https://nystagereview.com/2024/04/11/the-outsiders-lets-get-ready-to-rumble/",
-        "https://www.newyorktheatreguide.com/reviews/the-outsiders-broadway-review",
-        "https://www.nytimes.com/2024/04/11/theater/review-outsiders-musical.html",
-        "https://www.slantmagazine.com/theater/the-outsiders-broadway-review/",
-        "https://www.theatermania.com/news/review-the-outsiders-becomes-a-soggy-broadway-musical_1736986/",
-        "https://www.theatrely.com/post/the-outsiders-finds-greatness-on-broadway-review",
-        "https://www.timeout.com/newyork/theater/the-outsiders",
-        "https://variety.com/2024/legit/reviews/the-outsiders-review-broadway-musical-1235966796/",
-        "https://www.washingtonpost.com/entertainment/theater/2024/04/11/outsiders-broadway-review/",
-        "https://www.wsj.com/articles/the-outsiders-review-the-greasers-go-to-broadway-danya-taymor-musical-jamestown-revival-2e20f5ca",
-        "https://www.thewrap.com/the-outsiders-broadway-review-improves-coppola-cult-classic/",
-        "https://www.latimes.com/entertainment-arts/story/2023-03-07/review-the-outsiders-musical-la-jolla-playhouse",
-        "https://www.nytimes.com/2023/03/06/theater/the-outsiders-review-la-jolla-playhouse.html",
-        "https://www.sandiegouniontribune.com/entertainment/theater/story/2023-03-06/review-la-jolla-playhouses-the-outsiders-a-faithful-tuneful-and-muscular-homage-to-classic-60s-tale",
-        "https://www.theatrely.com/post/the-outsiders-in-california-a-gripping-adaptation-review",
-        "https://www.buffalorising.com/2025/09/stay-gold-the-outsiders-at-sheas-is-a-benchmark-musical-that-will-be-talked-about-for-years/",
-        "https://www.dailynebraskan.com/culture/review-the-outsiders-stays-gold-beyond-broadway/article_babf90fd-be8c-4aaa-8c90-9246b32a4248.html",
-        "https://www.austinchronicle.com/arts/arts-reviews/open-hearted-outsiders/",
-        "https://www.houstonpress.com/arts/the-outsiders-stays-gold-in-musical-form/",
-        "https://chicago.suntimes.com/theater/2026/02/13/the-outsiders-musical-review-chicago-theater-broadway-cadillac-palace",
-        "https://www.chicagotribune.com/2026/02/12/review-outsiders-cadillac-palace/",
-        "https://www.theonlycritic.com/post/the-outsiders-review-a-vulnerable-high-voltage-musical-reimagining-that-honors-the-novel-s-heart",
-        "https://www.theoaklandpress.com/2026/03/05/the-outsiders-is-deep-emotional-and-transformative-at-the-fisher-theatre/",
-        "https://columbusunderground.com/theater-review-broadway-in-columbuss-the-outsiders-conjures-the-lightning-fire-and-blood-of-adolescence-rs1/",
-        "https://www.bostonglobe.com/2026/04/02/arts/the-outsiders-broadway-in-boston/",
-        "https://warwickpost.com/ppacs-the-outsiders-dazzles/",
-        "https://www.clevescene.com/arts/the-outsiders-at-playhouse-square-is-ephemeral-artistry/",
-        "https://www.axios.com/local/cleveland/2026/05/01/the-outsiders-musical-playhouses-square-opening",
-        "https://www.news-herald.com/2026/04/30/the-outsiders-at-playhouse-square-review-musical-adaptation-hits-hard/",
-        "https://www.cleveland.com/entertainment/2026/04/the-outsiders-review-rain-rumble-and-raw-emotion-at-playhouse-square.html",
-        "https://www.timesunion.com/theater/article/outsiders-musical-proctors-theater-review-22266482.php",
-        "http://https://www.latimes.com/entertainment-arts/story/2023-03-07/review-the-outsiders-musical-la-jolla-playhouse",
-        "https://www.timeout.com/newyork/theater/the-outsiders-broadway-musical-review"
+        "https://www.timeout.com/newyork/news/theater-review-the-bengsons-sing-of-a-pregnant-pause-in-my-joy-is-heavy-031726",
+        "https://www.newyorktheatreguide.com/reviews/my-joy-is-heavy-off-broadway-review",
+        "https://1minutecritic.com/my-joy-is-heavy-bengsons-review/",
+        "https://www.nytimes.com/2026/03/18/theater/my-joy-is-heavy-review-bengsons.html",
+        "https://www.theatermania.com/news/review-my-joy-is-heavy-asks-can-grief-and-happiness-coexist_1828198/",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=TCF48I",
+        "https://www.talkinbroadway.com/page/ob/03_17_26.html",
+        "https://www.theatrereviews.com/off-broadway-review-my-joy-is-heavy-at-the-new-york-theatre-workshop-through-sunday-april-5-2026/"
       ],
-      "dirFiles": 55,
-      "dirClean": 34,
-      "inReviewsJson": 32,
-      "missing": [
-        {
-          "url": "https://www.dailynebraskan.com/culture/review-the-outsiders-stays-gold-beyond-broadway/article_babf90fd-be8c-4aaa-8c90-9246b32a4248.html",
-          "host": "dailynebraskan.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "http://https://www.latimes.com/entertainment-arts/story/2023-03-07/review-the-outsiders-musical-la-jolla-playhouse",
-          "host": "https",
-          "knownOutletId": null
-        }
-      ],
+      "dirFiles": 16,
+      "dirClean": 8,
+      "inReviewsJson": 9,
+      "missing": [],
       "dirOnly": [
-        {
-          "host": "thefrontrowcenter.com",
-          "count": 1
-        },
         {
           "host": "pagesonstages.com",
           "count": 1
         },
         {
-          "host": "stageandcinema.com",
-          "count": 1
-        },
-        {
-          "host": "talkinbroadway.com",
-          "count": 2
-        },
-        {
-          "host": "theaterlife.com",
-          "count": 1
-        },
-        {
-          "host": "theaterscene.net",
+          "host": "theaterpizzazz.com",
           "count": 1
         },
         {
@@ -201,9 +210,9 @@
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.thewrap.com/the-outsiders-broadway-review-improves-coppola-cult-classic/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TCF48I",
+          "host": "lightingandsoundamerica.com",
+          "knownOutletId": "lighting-and-sound-america",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -211,16 +220,16 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "thewrap--robert-hofler.json",
+              "file": "lighting-and-sound-america--david-barbour.json",
               "flag": "wrongShow",
-              "urlInDir": "https://www.thewrap.com/the-outsiders-broadway-review-improves-coppola-cult-classic/"
+              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TCF48I"
             }
           ]
         },
         {
-          "url": "https://www.houstonpress.com/arts/the-outsiders-stays-gold-in-musical-form/",
-          "host": "houstonpress.com",
-          "knownOutletId": null,
+          "url": "https://www.talkinbroadway.com/page/ob/03_17_26.html",
+          "host": "talkinbroadway.com",
+          "knownOutletId": "talkinbroadway",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -228,16 +237,21 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "houstonpress--natalie-de-la-garza.json",
+              "file": "talkinbroadway--marc-miller.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.houstonpress.com/arts/the-outsiders-stays-gold-in-musical-form/"
+              "urlInDir": "https://www.talkinbroadway.com/page/ob/03_17_26.html"
+            },
+            {
+              "file": "talkinbroadway--unknown.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2643876"
             }
           ]
         },
         {
-          "url": "https://chicago.suntimes.com/theater/2026/02/13/the-outsiders-musical-review-chicago-theater-broadway-cadillac-palace",
-          "host": "suntimes.com",
-          "knownOutletId": "suntimes",
+          "url": "https://www.theatrereviews.com/off-broadway-review-my-joy-is-heavy-at-the-new-york-theatre-workshop-through-sunday-april-5-2026/",
+          "host": "theatrereviews.com",
+          "knownOutletId": "theatre-reviews-limited",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -245,372 +259,554 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "suntimes--httpschicagosuntimescomcatey-sullivan-for-the-sun-times.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://chicago.suntimes.com/theater/2026/02/13/the-outsiders-musical-review-chicago-theater-broadway-cadillac-palace"
-            }
-          ]
-        },
-        {
-          "url": "https://www.theoaklandpress.com/2026/03/05/the-outsiders-is-deep-emotional-and-transformative-at-the-fisher-theatre/",
-          "host": "theoaklandpress.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theoaklandpress--gary-graff.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theoaklandpress.com/2026/03/05/the-outsiders-is-deep-emotional-and-transformative-at-the-fisher-theatre/"
-            }
-          ]
-        },
-        {
-          "url": "https://columbusunderground.com/theater-review-broadway-in-columbuss-the-outsiders-conjures-the-lightning-fire-and-blood-of-adolescence-rs1/",
-          "host": "columbusunderground.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "columbusunderground--richard-sanford.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://columbusunderground.com/theater-review-broadway-in-columbuss-the-outsiders-conjures-the-lightning-fire-and-blood-of-adolescence-rs1/"
-            }
-          ]
-        },
-        {
-          "url": "https://www.bostonglobe.com/2026/04/02/arts/the-outsiders-broadway-in-boston/",
-          "host": "bostonglobe.com",
-          "knownOutletId": "boston-globe",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "boston-globe--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.bostonglobe.com/2026/04/02/arts/the-outsiders-broadway-in-boston/"
-            }
-          ]
-        },
-        {
-          "url": "https://warwickpost.com/ppacs-the-outsiders-dazzles/",
-          "host": "warwickpost.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "warwickpost--joe-siegel.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://warwickpost.com/ppacs-the-outsiders-dazzles/"
-            }
-          ]
-        },
-        {
-          "url": "https://www.clevescene.com/arts/the-outsiders-at-playhouse-square-is-ephemeral-artistry/",
-          "host": "clevescene.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "clevescene--gwendolyn-kochur.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.clevescene.com/arts/the-outsiders-at-playhouse-square-is-ephemeral-artistry/"
-            }
-          ]
-        },
-        {
-          "url": "https://www.axios.com/local/cleveland/2026/05/01/the-outsiders-musical-playhouses-square-opening",
-          "host": "axios.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "axios--troy-smith.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.axios.com/local/cleveland/2026/05/01/the-outsiders-musical-playhouses-square-opening"
-            }
-          ]
-        },
-        {
-          "url": "https://www.news-herald.com/2026/04/30/the-outsiders-at-playhouse-square-review-musical-adaptation-hits-hard/",
-          "host": "news-herald.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "news-herald--mark-meszoros.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.news-herald.com/2026/04/30/the-outsiders-at-playhouse-square-review-musical-adaptation-hits-hard/"
-            }
-          ]
-        },
-        {
-          "url": "https://www.cleveland.com/entertainment/2026/04/the-outsiders-review-rain-rumble-and-raw-emotion-at-playhouse-square.html",
-          "host": "cleveland.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "cleveland--joey-morona.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.cleveland.com/entertainment/2026/04/the-outsiders-review-rain-rumble-and-raw-emotion-at-playhouse-square.html"
-            }
-          ]
-        },
-        {
-          "url": "https://www.timesunion.com/theater/article/outsiders-musical-proctors-theater-review-22266482.php",
-          "host": "timesunion.com",
-          "knownOutletId": "albany-times-union",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "albany-times-union--katherine-kiessling.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.timesunion.com/theater/article/outsiders-musical-proctors-theater-review-22266482.php"
+              "file": "theatre-reviews-limited--david-roberts.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.theatrereviews.com/off-broadway-review-my-joy-is-heavy-at-the-new-york-theatre-workshop-through-sunday-april-5-2026/"
             }
           ]
         }
+      ]
+    },
+    {
+      "showId": "age-is-a-feeling-off-broadway-2024",
+      "title": "Age Is a Feeling",
+      "openingDate": "2024-09-11",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css",
+        "https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"
       ],
-      "ingestResults": [
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [
         {
-          "url": "https://www.dailynebraskan.com/culture/review-the-outsiders-stays-gold-beyond-broadway/article_babf90fd-be8c-4aaa-8c90-9246b32a4248.html",
-          "host": "dailynebraskan.com",
-          "outletId": "dailynebraskan",
-          "provisional": true,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=the-outsiders-2024 --url=https://www.d"
+          "url": "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css",
+          "host": "bootstrapcdn.com",
+          "knownOutletId": null
         },
         {
-          "url": "http://https://www.latimes.com/entertainment-arts/story/2023-03-07/review-the-outsiders-musical-la-jolla-playhouse",
-          "host": "https",
-          "outletId": null,
+          "url": "https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css",
+          "host": "bootstrapcdn.com",
+          "knownOutletId": null
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "ingestResults": [
+        {
+          "url": "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css",
+          "host": "bootstrapcdn.com",
+          "outletId": "bootstrapcdn",
           "provisional": true,
           "ok": false,
-          "reason": "unknown-outlet-no-host"
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=age-is-a-feeling-off-broadway-2024 --u"
+        },
+        {
+          "url": "https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css",
+          "host": "bootstrapcdn.com",
+          "outletId": "bootstrapcdn",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=age-is-a-feeling-off-broadway-2024 --u"
         }
       ],
       "ingestSkippedByCap": []
     },
     {
-      "showId": "pied-a-terre-off-broadway-2026",
-      "title": "Pied à Terre",
-      "openingDate": "2026-03-04",
+      "showId": "hadestown-west-end-2024",
+      "title": "Hadestown",
+      "openingDate": "2024-02-22",
       "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://d4ov6iqsvotvt.cloudfront.net",
-        "https://fonts.gstatic.com",
-        "https://fonts.googleapis.com/css2",
-        "https://maps.google.com/",
-        "https://www.todaytixgroup.com/careers",
-        "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform"
+      "category": "west-end",
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-reviews-for-hadestown-on-broadway",
+        "https://www.broadwayworld.com/article/Review-Roundup-HADESTOWN-Opens-On-Broadway--What-Did-The-Critics-Think-20190417",
+        "https://www.broadwayworld.com/article/Review-Roundup-Did-HADESTOWN-Impress-in-Londons-West-End-20240222",
+        "https://www.broadwayworld.com/article/Review-Roundup-HADESTOWN-Tour-Kicks-Off-What-Are-The-Critics-Saying-20211025",
+        "https://www.broadwayworld.com/article/Review-Roundup-HADESTOWN-Opens-at-the-National-Theatre-20181115"
       ],
-      "dirFiles": 4,
-      "dirClean": 1,
-      "inReviewsJson": 0,
+      "aggregatorListedUrls": [
+        "https://www.amny.com/entertainment/hadestown-review-1.29924932",
+        "https://broadway.news/2019/04/17/review-an-exhilarating-hadestown-revitalizes-a-classic-love-story/",
+        "https://www.thedailybeast.com/hadestown-the-broadway-musical-that-takes-its-sweet-sounding-time-going-to-hell-and-back",
+        "https://deadline.com/2019/04/hadestown-broadway-review-anais-mitchell-rachel-chavkin-reeve-carney-1202597073/",
+        "https://ew.com/theater-reviews/2019/04/17/hadestown-review/",
+        "https://www.hollywoodreporter.com/review/hadestown-theater-review-1202512",
+        "https://www.nj.com/entertainment/2019/04/hadestown-review-this-devilish-new-musical-looks-poised-for-tonys-victory.html",
+        "https://www.nydailynews.com/entertainment/broadway/ny-jones-review-hadestown-broadway-20190418-24muagsknrcxxdft7hwt3w7lue-story.html",
+        "https://nypost.com/2019/04/17/hadestown-review-broadway-douses-the-fires-of-hell-with-folk-music/",
+        "http://nystagereview.com/2019/04/17/hadestown-anais-mitchells-myths-and-hymns-from-way-downtown/",
+        "http://nystagereview.com/2019/04/17/hadestown-red-hot-and-bluesy-score-fuels-a-trip-to-hell-and-back/",
+        "https://www.nytimes.com/2019/04/17/theater/hadestown-review-broadway-anais-mitchell.html",
+        "https://observer.com/2019/04/hadestown-tries-like-hell-to-spin-a-concept-album-on-broadway-review/",
+        "https://www.rollingstone.com/culture/culture-features/hadestown-broadway-anais-mitchell-musical-review-822688/",
+        "https://www.timeout.com/newyork/theater/hadestown-review-broadway",
+        "http://www.towleroad.com/2019/04/hadestown/",
+        "https://variety.com/2019/legit/reviews/hadestown-review-musical-broadway-1203191646/",
+        "https://www.vulture.com/2019/04/hadestown-is-a-songwriting-and-storytelling-tour-de-force.html",
+        "https://www.wsj.com/articles/hadestown-review-a-musical-heats-up-broadway-11555547401",
+        "https://www.thewrap.com/hadestown-broadway-review-anais-mitchell-musical-orpheus-eurydice-trump/",
+        "https://variety.com/t/hadestown/",
+        "https://variety.com/2016/legit/reviews/hadestown-review-1201782036/",
+        "https://www.theguardian.com/stage/2024/feb/22/hadestown-review-lyric-theatre-london",
+        "https://www.whatsonstage.com/news/hadestown-west-end-review-the-road-to-hell-is-paved-with-exultation_1577857/",
+        "https://www.thestage.co.uk/reviews/hadestown-review-at-lyric-theatre-london-from-anais-mitchell-and-rachel-chavkin",
+        "https://www.londontheatre.co.uk/reviews/hadestown-review-lyric-theatre",
+        "https://www.washingtonpost.com/entertainment/theater_dance/hadestown-kennedy-center-review/2021/10/15/7cb03fe0-2d65-11ec-985d-3150f7e106b2_story.html",
+        "https://dcmetrotheaterarts.com/2021/10/17/explosively-beautiful-hadestown-gets-down-at-kennedy-center/",
+        "https://www.bostonglobe.com/2021/11/04/arts/top-world-hadestown/",
+        "https://www.dispatch.com/story/entertainment/2021/11/17/review-hadestown-marks-return-live-theater-columbus/8640242002/",
+        "https://www.columbusunderground.com/theater-review-broadway-in-columbus-returns-with-majestic-fiery-hadestown-rs1/",
+        "https://thejewishnews.com/2021/11/24/review-hadestown-brings-a-message-of-love-and-hope-to-the-darkest-of-places/",
+        "https://www.encoremichigan.com/2021/11/broadway-in-detroit-hadestown-takes-audiences-to-hell-and-back-superbly/",
+        "https://www.wearegreenbay.com/critic-at-large/warren-gerds-critic-at-large-review-originality-fuels-riveting-hadestown-in-appleton/",
+        "https://www.postcrescent.com/story/entertainment/2021/12/15/hadestown-fox-cities-performing-arts-center-offers-unlikely-hope/6477669001/",
+        "https://captimes.com/entertainment/theater/raise-a-cup-to-epic-heart-breaking-hadestown-now-in-appleton/article_fcc24feb-f102-55eb-9ce6-275c3910473d.html",
+        "https://www.whereyat.com/hadestown-to-the-crescent-city-and-back",
+        "https://www.theatrecriticism.com/joyous-national-tour-of-hadestown-opens-appropriately-at-saenger-theater/",
+        "https://dallas.culturemap.com/news/arts/01-20-22-hadestown-review-dallas-summer-musicals/",
+        "https://dallas.culturemap.com/news/arts/01-03-22-underground-musical-turned-broadway-hit-stages-Hadestown-Dallas-Summer-Musicals/",
+        "https://www.newcitystage.com/2022/03/07/hell-of-a-show-a-review-of-hadestown-at-broadway-in-chicago/",
+        "https://www.shawlocal.com/northwest-herald/arts-and-entertainment/2022/03/05/review-heralded-hadestown-counters-seductive-undertow/",
+        "https://thirdcoastreview.com/2022/03/04/review-hadestown-celebrates-human-love-and-tragedy-against-a-glorious-jazzy-musical-backdrop/",
+        "https://chicago.suntimes.com/2022/3/3/22960383/hadestown-review-chicago-stage-musicals-positively-heavenly",
+        "https://www.twincities.com/2022/03/16/theater-review-hadestown-is-just-the-story-we-need-in-these-hades-ish-times/",
+        "https://twincitiesarts.com/2022/03/15/review-hurry-down-the-road-to-hell-in-hadestown-orpheum-htt/",
+        "https://omaha.com/entertainment/arts-and-theatre/review-hadestown-is-a-little-piece-of-broadway-musical-heaven-in-omaha/article_d7899528-af84-11ec-97fe-1bf3b8f9334a.html",
+        "https://tucson.com/entertainment/arts-and-theatre/hell-is-a-musical-mecca-in-hadestown/article_75ba2ff0-bb51-11ec-9bde-c7408b29ba9f.html",
+        "https://guardianlv.com/2022/05/upbeat-hadestown-opens-in-los-angeles/",
+        "https://timesofsandiego.com/arts/2022/06/02/a-timeless-yet-timely-story-of-love-in-hell-hadestown-at-the-civic-theatre/",
+        "https://datebook.sfchronicle.com/theater/review-hadestown-will-make-you-fall-in-love-with-musical-theater-again",
+        "https://www.mercurynews.com/2022/06/09/review-swinging-mythology-musical-hadestown-enchants-in-sf/",
+        "https://www.inlander.com/spokane/review-hadestown-offers-up-a-sonic-feast/Content",
+        "https://www.spokesman.com/stories/2022/jul/06/hadestown-shines-behind-excellent-performances-and/",
+        "https://www.seattletimes.com/entertainment/theater/hadestown-at-seattles-paramount-theatre-makes-a-strong-argument-for-how-art-can-change-the-world/",
+        "https://kutv.com/news/entertainment/review-journey-to-hell-and-back-with-the-magnificent-soulful-musical-hadestown",
+        "https://gephardtdaily.com/entertainment/review-hadestown-well-worth-the-trip/",
+        "https://southpasadenan.com/hadestown-national-tour-brings-the-world-back-into-tune/",
+        "https://socalthrills.com/hadestown-the-tony-winning-best-musical-theatre-review/",
+        "https://www.denverpost.com/2022/09/01/hadestown-denver-buell-theatre-review/",
+        "https://www.expressnews.com/entertainment/article/Hadestown-Majestic-Theatre-review-17438244.php",
+        "https://www.austinchronicle.com/daily/arts/2022-09-22/review-broadway-in-austins-hadestown/",
+        "https://tulsaworld.com/entertainment/arts-and-theatre/review-hadestown-a-bit-of-musical-theater-heaven/article_8188225a-3e7e-11ed-bbf1-abf594d43837.html",
+        "https://preview.houstonchronicle.com/theater/tony-winning-hadestown-at-hobby-center-is-worth-17489276",
+        "https://www.houstonpress.com/arts/review-hadestown-at-broadway-at-the-hobby-14248839",
+        "https://www.pghcitypaper.com/pittsburgh/hadestown-turns-greek-myth-into-a-musical-steampunk-dystopia/Content",
+        "https://www.orlandoweekly.com/arts/the-long-wait-for-hadestown-to-get-to-orlando-was-well-worth-the-wait-33118511",
+        "https://www.bocamag.com/broadways-hadestown-rivets-in-moments-but-doesnt-congeal/",
+        "https://www.palmbeachdailynews.com/story/entertainment/2023/01/04/review-hadestown-makes-trip-to-hell-and-back-a-satisfying-adventure/69777519007/",
+        "https://www.fanbolt.com/136492/hadestown-musical-review/",
+        "https://www.cleveland.com/entertainment/2023/02/hadestown-at-playhouse-square-is-a-mesmerizing-ride-to-hell-and-back.html",
+        "https://www.buffalorising.com/2023/02/hadestown-at-sheas-lives-up-to-the-buzz-and-more/",
+        "https://www.timesunion.com/theater/article/hadestown-musically-visually-gorgeous-proctors-17810239.php",
+        "https://dailygazette.com/2023/03/01/theater-review-hadestown-story-diffuse-but-production-mightily-entertaining/",
+        "https://patch.com/connecticut/hartford/theater-review-hadestown-tour-bushnell",
+        "https://whatsupnewp.com/2023/03/theater-review-hadestown-at-ppac-ranks-among-the-best/",
+        "https://revuewm.com/arts/theatre/item/5415-review-the-tale-of-hadestown-deserves-to-be-told-again-and-again",
+        "https://www.courier-journal.com/story/entertainment/theater/2023/05/17/hadestown-pnc-broadway-in-louisville-review-enjoyable-road-to-hell/70218813007/",
+        "https://www.fayettevilleflyer.com/2023/05/24/review-hadestown-takes-us-to-the-underworld-and-forces-us-to-contemplate-the-state-of-affairs/",
+        "https://fwtx.com/culture/hadestown-comes-to-cowtown/",
+        "https://dallasvoice.com/review-an-epic-piece-of-beauty-hadestown-is-a-glorious-trip-to-hell/",
+        "https://www.theglobeandmail.com/arts/theatre-and-performance/reviews/article-hadestown-is-a-triumphant-timely-retelling-of-an-age-old-myth/",
+        "https://ottawacitizen.com/entertainment/local-arts/theatre-review-hadestown-at-the-national-arts-centre",
+        "https://apt613.ca/review-hadestown-at-the-nac/",
+        "https://www.seattletimes.com/entertainment/theater/theater-review-hadestown-tackles-love-art-and-the-limits-of-each/",
+        "https://www.straight.com/arts/broadway-across-canadas-hadestown-crackles-with-hope-and-hauntings",
+        "https://www.abqjournal.com/lifestyle/go-way-down-to-hadestown-at-popejoy----its-worth-the-ticket/article_ded57dae-94cc-11ee-bf29-5f337a991b25.html",
+        "https://www.postandcourier.com/features/hadestown-north-charleston-performing-arts-center/article_b3415af2-aa5f-11ee-9fd4-23b83039b987.html",
+        "https://www.sun-sentinel.com/2024/01/10/review-hadestown-at-broward-center-isnt-just-a-broadway-show-its-a-masterwork/",
+        "https://www.sarasotamagazine.com/arts-and-entertainment/2024/01/review-hadestown-sarasota-van-wezel",
+        "https://www.pilotonline.com/2024/03/28/vicious-and-delicious-hadestown-heats-up-chrysler-hall/",
+        "https://www.westendbestfriend.co.uk/news/review-hadestown-ensemble-arts-philly-us-tour",
+        "https://www.syracuse.com/entertainment/2024/04/whirling-and-swirling-hadestown-at-the-landmark-mesmerizes-review.html",
+        "https://variety.com/2018/legit/reviews/hadestown-review-london-musical-1203028703/",
+        "https://www.standard.co.uk/go/london/theatre/hadestown-musical-national-theatre-review-a3989621.html",
+        "https://www.dailymail.co.uk/debate/article-6386989/Greek-epic-lost-love-hit-myth-QUENTIN-LETTS-reviews-Hadestown-National-Theatre.html",
+        "https://www.theguardian.com/stage/2018/nov/14/hadestown-review-musical-rachel-chavkin-anais-mitchell-olivier-london",
+        "https://www.thestage.co.uk/reviews/2018/hadestown-eva-noblezada-anais-mitchell-review-national-theatre-london/",
+        "https://www.whatsonstage.com/london-theatre/reviews/hadestown-national-anais-mitchel-eva-noblezada_48001.html",
+        "https://www.timeout.com/london/theatre/hadestown-review",
+        "https://www.standard.co.uk/culture/theatre/hadestown-lyric-shaftesbury-avenue-review-anais-mitchell-b1140682.html",
+        "https://www.timeout.com/london/theatre/hadestown-review-1",
+        "https://www.telegraph.co.uk/theatre/what-to-see/hadestown-lyric-theatre-review/",
+        "https://www.londontheatre.co.uk/theatre-news/news/a-guide-to-west-end-shows-playing-on-sundays-and-mondays"
+      ],
+      "dirFiles": 109,
+      "dirClean": 21,
+      "inReviewsJson": 20,
       "missing": [
         {
-          "url": "https://d4ov6iqsvotvt.cloudfront.net",
-          "host": "cloudfront.net",
+          "url": "https://www.columbusunderground.com/theater-review-broadway-in-columbus-returns-with-majestic-fiery-hadestown-rs1/",
+          "host": "columbusunderground.com",
           "knownOutletId": null
         },
         {
-          "url": "https://fonts.gstatic.com",
-          "host": "gstatic.com",
+          "url": "https://thejewishnews.com/2021/11/24/review-hadestown-brings-a-message-of-love-and-hope-to-the-darkest-of-places/",
+          "host": "thejewishnews.com",
           "knownOutletId": null
         },
         {
-          "url": "https://fonts.googleapis.com/css2",
-          "host": "googleapis.com",
+          "url": "https://www.encoremichigan.com/2021/11/broadway-in-detroit-hadestown-takes-audiences-to-hell-and-back-superbly/",
+          "host": "encoremichigan.com",
           "knownOutletId": null
         },
         {
-          "url": "https://maps.google.com/",
-          "host": "google.com",
+          "url": "https://captimes.com/entertainment/theater/raise-a-cup-to-epic-heart-breaking-hadestown-now-in-appleton/article_fcc24feb-f102-55eb-9ce6-275c3910473d.html",
+          "host": "captimes.com",
           "knownOutletId": null
         },
         {
-          "url": "https://www.todaytixgroup.com/careers",
-          "host": "todaytixgroup.com",
+          "url": "https://www.newcitystage.com/2022/03/07/hell-of-a-show-a-review-of-hadestown-at-broadway-in-chicago/",
+          "host": "newcitystage.com",
           "knownOutletId": null
         },
         {
-          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
-          "host": "google.com",
+          "url": "https://www.shawlocal.com/northwest-herald/arts-and-entertainment/2022/03/05/review-heralded-hadestown-counters-seductive-undertow/",
+          "host": "shawlocal.com",
+          "knownOutletId": "shaw-local"
+        },
+        {
+          "url": "https://thirdcoastreview.com/2022/03/04/review-hadestown-celebrates-human-love-and-tragedy-against-a-glorious-jazzy-musical-backdrop/",
+          "host": "thirdcoastreview.com",
+          "knownOutletId": "third-coast-review"
+        },
+        {
+          "url": "https://chicago.suntimes.com/2022/3/3/22960383/hadestown-review-chicago-stage-musicals-positively-heavenly",
+          "host": "suntimes.com",
+          "knownOutletId": "suntimes"
+        },
+        {
+          "url": "https://www.twincities.com/2022/03/16/theater-review-hadestown-is-just-the-story-we-need-in-these-hades-ish-times/",
+          "host": "twincities.com",
           "knownOutletId": null
+        },
+        {
+          "url": "https://twincitiesarts.com/2022/03/15/review-hurry-down-the-road-to-hell-in-hadestown-orpheum-htt/",
+          "host": "twincitiesarts.com",
+          "knownOutletId": "twin-cities-arts-reader"
+        },
+        {
+          "url": "https://omaha.com/entertainment/arts-and-theatre/review-hadestown-is-a-little-piece-of-broadway-musical-heaven-in-omaha/article_d7899528-af84-11ec-97fe-1bf3b8f9334a.html",
+          "host": "omaha.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://tucson.com/entertainment/arts-and-theatre/hell-is-a-musical-mecca-in-hadestown/article_75ba2ff0-bb51-11ec-9bde-c7408b29ba9f.html",
+          "host": "tucson.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://guardianlv.com/2022/05/upbeat-hadestown-opens-in-los-angeles/",
+          "host": "guardianlv.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://timesofsandiego.com/arts/2022/06/02/a-timeless-yet-timely-story-of-love-in-hell-hadestown-at-the-civic-theatre/",
+          "host": "timesofsandiego.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://datebook.sfchronicle.com/theater/review-hadestown-will-make-you-fall-in-love-with-musical-theater-again",
+          "host": "sfchronicle.com",
+          "knownOutletId": "san-francisco-chronicle"
+        },
+        {
+          "url": "https://www.mercurynews.com/2022/06/09/review-swinging-mythology-musical-hadestown-enchants-in-sf/",
+          "host": "mercurynews.com",
+          "knownOutletId": "san-jose-mercury-news"
+        },
+        {
+          "url": "https://www.inlander.com/spokane/review-hadestown-offers-up-a-sonic-feast/Content",
+          "host": "inlander.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.spokesman.com/stories/2022/jul/06/hadestown-shines-behind-excellent-performances-and/",
+          "host": "spokesman.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.seattletimes.com/entertainment/theater/hadestown-at-seattles-paramount-theatre-makes-a-strong-argument-for-how-art-can-change-the-world/",
+          "host": "seattletimes.com",
+          "knownOutletId": "seattle-times"
+        },
+        {
+          "url": "https://kutv.com/news/entertainment/review-journey-to-hell-and-back-with-the-magnificent-soulful-musical-hadestown",
+          "host": "kutv.com",
+          "knownOutletId": "kutv"
+        },
+        {
+          "url": "https://gephardtdaily.com/entertainment/review-hadestown-well-worth-the-trip/",
+          "host": "gephardtdaily.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://southpasadenan.com/hadestown-national-tour-brings-the-world-back-into-tune/",
+          "host": "southpasadenan.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://socalthrills.com/hadestown-the-tony-winning-best-musical-theatre-review/",
+          "host": "socalthrills.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.denverpost.com/2022/09/01/hadestown-denver-buell-theatre-review/",
+          "host": "denverpost.com",
+          "knownOutletId": "denver-post"
+        },
+        {
+          "url": "https://www.expressnews.com/entertainment/article/Hadestown-Majestic-Theatre-review-17438244.php",
+          "host": "expressnews.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.austinchronicle.com/daily/arts/2022-09-22/review-broadway-in-austins-hadestown/",
+          "host": "austinchronicle.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://tulsaworld.com/entertainment/arts-and-theatre/review-hadestown-a-bit-of-musical-theater-heaven/article_8188225a-3e7e-11ed-bbf1-abf594d43837.html",
+          "host": "tulsaworld.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://preview.houstonchronicle.com/theater/tony-winning-hadestown-at-hobby-center-is-worth-17489276",
+          "host": "houstonchronicle.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.houstonpress.com/arts/review-hadestown-at-broadway-at-the-hobby-14248839",
+          "host": "houstonpress.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.pghcitypaper.com/pittsburgh/hadestown-turns-greek-myth-into-a-musical-steampunk-dystopia/Content",
+          "host": "pghcitypaper.com",
+          "knownOutletId": "pittsburgh-city-paper"
+        },
+        {
+          "url": "https://www.orlandoweekly.com/arts/the-long-wait-for-hadestown-to-get-to-orlando-was-well-worth-the-wait-33118511",
+          "host": "orlandoweekly.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.bocamag.com/broadways-hadestown-rivets-in-moments-but-doesnt-congeal/",
+          "host": "bocamag.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.palmbeachdailynews.com/story/entertainment/2023/01/04/review-hadestown-makes-trip-to-hell-and-back-a-satisfying-adventure/69777519007/",
+          "host": "palmbeachdailynews.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.fanbolt.com/136492/hadestown-musical-review/",
+          "host": "fanbolt.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.cleveland.com/entertainment/2023/02/hadestown-at-playhouse-square-is-a-mesmerizing-ride-to-hell-and-back.html",
+          "host": "cleveland.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.buffalorising.com/2023/02/hadestown-at-sheas-lives-up-to-the-buzz-and-more/",
+          "host": "buffalorising.com",
+          "knownOutletId": "buffalorising"
+        },
+        {
+          "url": "https://www.timesunion.com/theater/article/hadestown-musically-visually-gorgeous-proctors-17810239.php",
+          "host": "timesunion.com",
+          "knownOutletId": "albany-times-union"
+        },
+        {
+          "url": "https://dailygazette.com/2023/03/01/theater-review-hadestown-story-diffuse-but-production-mightily-entertaining/",
+          "host": "dailygazette.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://patch.com/connecticut/hartford/theater-review-hadestown-tour-bushnell",
+          "host": "patch.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://whatsupnewp.com/2023/03/theater-review-hadestown-at-ppac-ranks-among-the-best/",
+          "host": "whatsupnewp.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://revuewm.com/arts/theatre/item/5415-review-the-tale-of-hadestown-deserves-to-be-told-again-and-again",
+          "host": "revuewm.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.courier-journal.com/story/entertainment/theater/2023/05/17/hadestown-pnc-broadway-in-louisville-review-enjoyable-road-to-hell/70218813007/",
+          "host": "courier-journal.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.fayettevilleflyer.com/2023/05/24/review-hadestown-takes-us-to-the-underworld-and-forces-us-to-contemplate-the-state-of-affairs/",
+          "host": "fayettevilleflyer.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://fwtx.com/culture/hadestown-comes-to-cowtown/",
+          "host": "fwtx.com",
+          "knownOutletId": "fwtx"
+        },
+        {
+          "url": "https://dallasvoice.com/review-an-epic-piece-of-beauty-hadestown-is-a-glorious-trip-to-hell/",
+          "host": "dallasvoice.com",
+          "knownOutletId": "dallasvoice"
+        },
+        {
+          "url": "https://www.theglobeandmail.com/arts/theatre-and-performance/reviews/article-hadestown-is-a-triumphant-timely-retelling-of-an-age-old-myth/",
+          "host": "theglobeandmail.com",
+          "knownOutletId": "the-globe-and-mail"
+        },
+        {
+          "url": "https://ottawacitizen.com/entertainment/local-arts/theatre-review-hadestown-at-the-national-arts-centre",
+          "host": "ottawacitizen.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://apt613.ca/review-hadestown-at-the-nac/",
+          "host": "apt613.ca",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.seattletimes.com/entertainment/theater/theater-review-hadestown-tackles-love-art-and-the-limits-of-each/",
+          "host": "seattletimes.com",
+          "knownOutletId": "seattle-times"
+        },
+        {
+          "url": "https://www.straight.com/arts/broadway-across-canadas-hadestown-crackles-with-hope-and-hauntings",
+          "host": "straight.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.abqjournal.com/lifestyle/go-way-down-to-hadestown-at-popejoy----its-worth-the-ticket/article_ded57dae-94cc-11ee-bf29-5f337a991b25.html",
+          "host": "abqjournal.com",
+          "knownOutletId": "albuquerque-journal"
+        },
+        {
+          "url": "https://www.postandcourier.com/features/hadestown-north-charleston-performing-arts-center/article_b3415af2-aa5f-11ee-9fd4-23b83039b987.html",
+          "host": "postandcourier.com",
+          "knownOutletId": "post-and-courier"
+        },
+        {
+          "url": "https://www.sun-sentinel.com/2024/01/10/review-hadestown-at-broward-center-isnt-just-a-broadway-show-its-a-masterwork/",
+          "host": "sun-sentinel.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.sarasotamagazine.com/arts-and-entertainment/2024/01/review-hadestown-sarasota-van-wezel",
+          "host": "sarasotamagazine.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.pilotonline.com/2024/03/28/vicious-and-delicious-hadestown-heats-up-chrysler-hall/",
+          "host": "pilotonline.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://www.westendbestfriend.co.uk/news/review-hadestown-ensemble-arts-philly-us-tour",
+          "host": "westendbestfriend.co.uk",
+          "knownOutletId": "west-end-best-friend"
+        },
+        {
+          "url": "https://www.syracuse.com/entertainment/2024/04/whirling-and-swirling-hadestown-at-the-landmark-mesmerizes-review.html",
+          "host": "syracuse.com",
+          "knownOutletId": "syracuse-herald-journal"
         }
       ],
       "dirOnly": [
         {
-          "host": "wsj.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [],
-      "ingestResults": [
-        {
-          "url": "https://d4ov6iqsvotvt.cloudfront.net",
-          "host": "cloudfront.net",
-          "outletId": "cloudfront",
-          "provisional": true,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=pied-a-terre-off-broadway-2026 --url=h"
-        },
-        {
-          "url": "https://fonts.gstatic.com",
-          "host": "gstatic.com",
-          "outletId": "gstatic",
-          "provisional": true,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=pied-a-terre-off-broadway-2026 --url=h"
-        },
-        {
-          "url": "https://fonts.googleapis.com/css2",
-          "host": "googleapis.com",
-          "outletId": "googleapis",
-          "provisional": true,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=pied-a-terre-off-broadway-2026 --url=h"
-        },
-        {
-          "url": "https://maps.google.com/",
-          "host": "google.com",
-          "outletId": "google",
-          "provisional": true,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=pied-a-terre-off-broadway-2026 --url=h"
-        },
-        {
-          "url": "https://www.todaytixgroup.com/careers",
-          "host": "todaytixgroup.com",
-          "outletId": "todaytixgroup",
-          "provisional": true,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=pied-a-terre-off-broadway-2026 --url=h"
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://docs.google.com/forms/d/e/1FAIpQLSeQVpj5eHLl3fxmeUBiVHB5uNqCfP9NlAatDKcqo5Zs1I13Jw/viewform",
-          "host": "google.com",
-          "outletId": "google"
-        }
-      ]
-    },
-    {
-      "showId": "heathers-the-musical-off-broadway-2025",
-      "title": "Heathers The Musical",
-      "openingDate": "2025-06-30",
-      "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/reviews-are-out-for-the-heathers-off-broadway-revival",
-        "https://www.broadwayworld.com/article/Review-Roundup-HEATHERS-THE-MUSICAL-Off-Broadway-20140331",
-        "https://www.broadwayworld.com/article/Review-Roundup-HEATHERS-THE-MUSICAL-Returns-Off-Broadway-at-New-World-Stages-20250710"
-      ],
-      "aggregatorListedUrls": [
-        "https://cititour.com/NYC_Broadway/Heathers/1313",
-        "https://culturesauce.com/2025/07/10/heathers-musical-off-broadway-review/",
-        "https://www.thedailybeast.com/obsessed/heathers-the-musical-why-fans-are-losing-their-collective-minds/",
-        "https://www.digitaljournal.com/entertainment/review-lorna-courtney-and-casey-likes-star-in-heathers-the-musical-at-new-world-stages/article",
-        "https://exeuntnyc.com/reviews/review-heathers-the-musical-at-new-world-stages/",
-        "https://thefrontrowcenter.com/2025/07/heathers-the-musical/",
-        "https://nystagereview.com/2025/07/10/heathers-the-musical-longtime-fans-will-cheer-the-revival-others-may-not/",
-        "https://newyorktheater.me/2025/07/10/heathers-the-musical-review/",
-        "https://www.newyorktheatreguide.com/reviews/heathers-off-broadway-review",
-        "https://observer.com/2025/07/theater-review-heathers-off-broadway-revival/",
-        "https://1minutecritic.com/heathers-off-broadway-review/",
-        "https://recliningstandards.com/2025/07/10/ck-df-review-heathers-at-new-world-stages/",
-        "https://www.theatermania.com/news/review-heathers-the-musical-predicted-americas-social-disintegration_1789455/",
-        "https://www.theatrely.com/post/heathers-is-back-in-new-york-and-thank-goodness-for-that-review",
-        "https://www.timeout.com/newyork/theater/heathers-the-musical-review-off-broadway",
-        "http://www.nytimes.com/2014/04/02/theater/heathers-the-musical-brings-back-guilt-free-mayhem.html",
-        "http://abcnews.go.com/Entertainment/wireStory/review-heathers-musical-shallow-catchy-23136186",
-        "http://www.hollywoodreporter.com/review/heathers-musical-theater-review-692398",
-        "http://www.usatoday.com/story/life/theater/2014/03/31/off-broadway-review-heathers-the-musical/7107013/",
-        "http://www.nbcnewyork.com/entertainment/the-scene/heathers-newworld-review-253177461.html",
-        "http://www.timeout.com/newyork/theater/heathers-the-musical",
-        "http://www.amny.com/entertainment/review-heathers-the-musical-2-5-stars-1.7563094",
-        "http://www.nydailynews.com/entertainment/music-arts/heathers-musical-theater-review-article-1.1740672",
-        "http://nypost.com/2014/03/31/heathers-still-cliques-in-musical-re-imagining/",
-        "http://www.vulture.com/2014/03/theater-review-heathers-the-musical.html",
-        "https://frontmezzjunkies.com/2025/07/10/acton-says-color-me-stoked-heathers-the-musical-at-new-world-stages/",
-        "https://pagesonstages.com/2025/07/10/heathers/",
-        "https://theaterpizzazz.com/heathers-the-musical-is-back-with-a-vengeance/",
-        "https://www.amny.com/entertainment/broadway/review-heathers-the-musical-off-broadway-revival/",
-        "https://stageandcinema.com/2025/07/10/heathers-the-musical-new-world/",
-        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-QBZQD9",
-        "https://www.talkinbroadway.com/page/ob/07_10_25.html",
-        "https://www.theaterscene.net/musicals/offbway/heathers-the-musical/victor-gluck/"
-      ],
-      "dirFiles": 56,
-      "dirClean": 20,
-      "inReviewsJson": 19,
-      "missing": [],
-      "dirOnly": [
-        {
-          "host": "aaroninnyc.com",
+          "host": "theartsdesk.com",
           "count": 1
         },
         {
-          "host": "lavocedinewyork.com",
+          "host": "everything-theatre.co.uk",
           "count": 1
         },
         {
-          "host": "mashable.com",
+          "host": "express.co.uk",
           "count": 1
         },
         {
-          "host": "nysun.com",
+          "host": "ft.com",
+          "count": 2
+        },
+        {
+          "host": "inews.co.uk",
           "count": 1
         },
         {
-          "host": "northjersey.com",
+          "host": "westendtheatre.com",
           "count": 1
         },
         {
-          "host": "theaterlife.com",
+          "host": "londonboxoffice.co.uk",
+          "count": 1
+        },
+        {
+          "host": "londontheatre1.com",
+          "count": 1
+        },
+        {
+          "host": "shystrangemanic.com",
+          "count": 1
+        },
+        {
+          "host": "theatreweekly.com",
+          "count": 1
+        },
+        {
+          "host": "thetimes.co.uk",
           "count": 1
         }
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.thedailybeast.com/obsessed/heathers-the-musical-why-fans-are-losing-their-collective-minds/",
+          "url": "https://www.amny.com/entertainment/hadestown-review-1.29924932",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "amny--matt-windman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.amny.com/entertainment/hadestown-review-1.29924932"
+            }
+          ]
+        },
+        {
+          "url": "https://broadway.news/2019/04/17/review-an-exhilarating-hadestown-revitalizes-a-classic-love-story/",
+          "host": "broadway.news",
+          "knownOutletId": "broadwaynews",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "broadwaynews--charles-isherwood.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://broadway.news/2019/04/17/review-an-exhilarating-hadestown-revitalizes-a-classic-love-story/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.thedailybeast.com/hadestown-the-broadway-musical-that-takes-its-sweet-sounding-time-going-to-hell-and-back",
           "host": "thedailybeast.com",
           "knownOutletId": "dailybeast",
           "recoverable": false,
@@ -621,66 +817,15 @@
           "dirFlags": [
             {
               "file": "dailybeast--tim-teeman.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.thedailybeast.com/obsessed/heathers-the-musical-why-fans-are-losing-their-collective-minds/"
-            }
-          ]
-        },
-        {
-          "url": "https://www.digitaljournal.com/entertainment/review-lorna-courtney-and-casey-likes-star-in-heathers-the-musical-at-new-world-stages/article",
-          "host": "digitaljournal.com",
-          "knownOutletId": "digital-journal",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "digital-journal--mark-papadatos.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.digitaljournal.com/entertainment/review-lorna-courtney-and-casey-likes-star-in-heathers-the-musical-at-new-world-stages/article"
-            }
-          ]
-        },
-        {
-          "url": "https://nystagereview.com/2025/07/10/heathers-the-musical-longtime-fans-will-cheer-the-revival-others-may-not/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nysr--david-finkle.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://nystagereview.com/2025/07/10/heathers-the-musical-longtime-fans-will-cheer-the-revival-others-may-not/"
-            }
-          ]
-        },
-        {
-          "url": "https://newyorktheater.me/2025/07/10/heathers-the-musical-review/",
-          "host": "newyorktheater.me",
-          "knownOutletId": "nyt-theater",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nyt-theater--jonathan-mandell.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://newyorktheater.me/2025/07/10/heathers-the-musical-review/"
+              "urlInDir": "https://www.thedailybeast.com/hadestown-the-broadway-musical-that-takes-its-sweet-sounding-time-going-to-hell-and-back?source=articles&via=rss&utm_source=dlvr.it&utm_medium=twitter"
             }
           ]
         },
         {
-          "url": "https://observer.com/2025/07/theater-review-heathers-off-broadway-revival/",
-          "host": "observer.com",
-          "knownOutletId": "observer",
+          "url": "https://deadline.com/2019/04/hadestown-broadway-review-anais-mitchell-rachel-chavkin-reeve-carney-1202597073/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -688,21 +833,16 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "observer--david-cote.json",
+              "file": "deadline--greg-evans.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://observer.com/2025/07/theater-review-heathers-off-broadway-revival/"
-            },
-            {
-              "file": "observer--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://observer.com/2025/07/theater-review-heathers-off-broadway-revival/"
+              "urlInDir": "https://deadline.com/2019/04/hadestown-broadway-review-anais-mitchell-rachel-chavkin-reeve-carney-1202597073/"
             }
           ]
         },
         {
-          "url": "https://www.theatrely.com/post/heathers-is-back-in-new-york-and-thank-goodness-for-that-review",
-          "host": "theatrely.com",
-          "knownOutletId": "theatrely",
+          "url": "https://ew.com/theater-reviews/2019/04/17/hadestown-review/",
+          "host": "ew.com",
+          "knownOutletId": "ew",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -710,53 +850,14 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "theatrely--kobi-kassal.json",
+              "file": "ew--jessica-derschowitz.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.theatrely.com/post/heathers-is-back-in-new-york-and-thank-goodness-for-that-review"
+              "urlInDir": "https://ew.com/theater-reviews/2019/04/17/hadestown-review/"
             }
           ]
         },
         {
-          "url": "http://www.nytimes.com/2014/04/02/theater/heathers-the-musical-brings-back-guilt-free-mayhem.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--ben-brantley.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.nytimes.com/2014/04/02/theater/heathers-the-musical-brings-back-guilt-free-mayhem.html"
-            },
-            {
-              "file": "nytimes--elisabeth-vincentelli.json",
-              "flag": "nonReview",
-              "urlInDir": "https://www.nytimes.com/2025/07/08/theater/heathers-the-musical-preview.html"
-            }
-          ]
-        },
-        {
-          "url": "http://abcnews.go.com/Entertainment/wireStory/review-heathers-musical-shallow-catchy-23136186",
-          "host": "go.com",
-          "knownOutletId": "abc-news",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "ap--peter-santilli.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://abcnews.go.com/Entertainment/wireStory/review-heathers-musical-shallow-catchy-23136186"
-            }
-          ]
-        },
-        {
-          "url": "http://www.hollywoodreporter.com/review/heathers-musical-theater-review-692398",
+          "url": "https://www.hollywoodreporter.com/review/hadestown-theater-review-1202512",
           "host": "hollywoodreporter.com",
           "knownOutletId": "hollywood-reporter",
           "recoverable": false,
@@ -768,14 +869,14 @@
             {
               "file": "hollywood-reporter--david-rooney.json",
               "flag": "wrongProduction",
-              "urlInDir": "http://www.hollywoodreporter.com/review/heathers-musical-theater-review-692398"
+              "urlInDir": "https://www.hollywoodreporter.com/review/hadestown-theater-review-1202512"
             }
           ]
         },
         {
-          "url": "http://www.usatoday.com/story/life/theater/2014/03/31/off-broadway-review-heathers-the-musical/7107013/",
-          "host": "usatoday.com",
-          "knownOutletId": "usatoday",
+          "url": "https://www.nj.com/entertainment/2019/04/hadestown-review-this-devilish-new-musical-looks-poised-for-tonys-victory.html",
+          "host": "nj.com",
+          "knownOutletId": "njcom",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -783,406 +884,14 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "usatoday--elysa-gardner.json",
+              "file": "njcom--christopher-kelly.json",
               "flag": "wrongProduction",
-              "urlInDir": "http://www.usatoday.com/story/life/theater/2014/03/31/off-broadway-review-heathers-the-musical/7107013/"
+              "urlInDir": "https://www.nj.com/entertainment/2019/04/hadestown-review-this-devilish-new-musical-looks-poised-for-tonys-victory.html"
             }
           ]
         },
         {
-          "url": "http://www.nbcnewyork.com/entertainment/the-scene/heathers-newworld-review-253177461.html",
-          "host": "nbcnewyork.com",
-          "knownOutletId": "nbcny",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nbcny--robert-kahn.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.nbcnewyork.com/entertainment/the-scene/heathers-newworld-review-253177461.html"
-            }
-          ]
-        },
-        {
-          "url": "http://www.nydailynews.com/entertainment/music-arts/heathers-musical-theater-review-article-1.1740672",
-          "host": "nydailynews.com",
-          "knownOutletId": "nydailynews",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nydailynews--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.nydailynews.com/entertainment/music-arts/heathers-musical-theater-review-article-1.1740672"
-            }
-          ]
-        },
-        {
-          "url": "http://nypost.com/2014/03/31/heathers-still-cliques-in-musical-re-imagining/",
-          "host": "nypost.com",
-          "knownOutletId": "nypost",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nypost--elisabeth-vincentelli.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://nypost.com/2014/03/31/heathers-still-cliques-in-musical-re-imagining/"
-            }
-          ]
-        },
-        {
-          "url": "http://www.vulture.com/2014/03/theater-review-heathers-the-musical.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "vulture--jackson-mchenry.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.vulture.com/article/heathers-musical-nyc-revival-new-world-stages.html"
-            },
-            {
-              "file": "vulture--jesse-green.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.vulture.com/2014/03/theater-review-heathers-the-musical.html"
-            }
-          ]
-        },
-        {
-          "url": "https://frontmezzjunkies.com/2025/07/10/acton-says-color-me-stoked-heathers-the-musical-at-new-world-stages/",
-          "host": "frontmezzjunkies.com",
-          "knownOutletId": "frontmezzjunkies",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "frontmezzjunkies--ross.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://frontmezzjunkies.com/2025/07/10/acton-says-color-me-stoked-heathers-the-musical-at-new-world-stages/"
-            },
-            {
-              "file": "frontmezzjunkies--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://frontmezzjunkies.com/2025/07/10/acton-says-color-me-stoked-heathers-the-musical-at-new-world-stages/"
-            }
-          ]
-        },
-        {
-          "url": "https://theaterpizzazz.com/heathers-the-musical-is-back-with-a-vengeance/",
-          "host": "theaterpizzazz.com",
-          "knownOutletId": "theater-pizzazz",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theater-pizzazz--ron-fassler.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://theaterpizzazz.com/heathers-the-musical-is-back-with-a-vengeance/"
-            }
-          ]
-        },
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-QBZQD9",
-          "host": "lightingandsoundamerica.com",
-          "knownOutletId": "lighting-and-sound-america",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "lighting-and-sound-america--david-barbour.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-QBZQD9"
-            }
-          ]
-        },
-        {
-          "url": "https://www.talkinbroadway.com/page/ob/07_10_25.html",
-          "host": "talkinbroadway.com",
-          "knownOutletId": "talkinbroadway",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "talkinbroadway--howard-miller.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.talkinbroadway.com/page/ob/07_10_25.html"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "showId": "los-soles-truncos-off-broadway-2025",
-      "title": "LOS SOLES TRUNCOS",
-      "openingDate": "2025-02-20",
-      "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [],
-      "dirOnly": [],
-      "flaggedMisses": []
-    },
-    {
-      "showId": "music-city-off-broadway-2026",
-      "title": "Music City",
-      "openingDate": "2026-03-23",
-      "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-MUSIC-CITY-Returns-Off-Broadway-20260625"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.newyorktheatreguide.com/reviews/music-city-off-broadway-review",
-        "https://www.theatermania.com/news/review-music-city-returns-better-than-ever_1843039/",
-        "https://1minutecritic.com/music-city-review-lolo-pritchard/"
-      ],
-      "dirFiles": 19,
-      "dirClean": 6,
-      "inReviewsJson": 6,
-      "missing": [],
-      "dirOnly": [
-        {
-          "host": "lightingandsoundamerica.com",
-          "count": 1
-        },
-        {
-          "host": "nysun.com",
-          "count": 1
-        },
-        {
-          "host": "theaterscene.net",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": []
-    },
-    {
-      "showId": "la-llamada-off-broadway-2024",
-      "title": "La Llamada",
-      "openingDate": "2024-05-01",
-      "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [],
-      "dirOnly": [],
-      "flaggedMisses": []
-    },
-    {
-      "showId": "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025",
-      "title": "The 25th Annual Putnam County Spelling Bee",
-      "openingDate": "2025-11-17",
-      "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-THE-25TH-ANNUAL-PUTNAM-COUNTY-SPELLING-BEE-Returns-Off-Broadway-20251117"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.thedailybeast.com/obsessed/25th-annual-putnam-county-spelling-bee-review-a-delightful-adorable-triumph/",
-        "https://www.newyorktheatreguide.com/reviews/the-25th-annual-putnam-county-spelling-bee-off-broadway-review-charming",
-        "https://exeuntnyc.com/reviews/review-the-25th-annual-putnam-county-spelling-bee-at-new-world-stages/",
-        "https://1minutecritic.com/25th-annual-putnam-county-spelling-bee-off-broadway-review/",
-        "https://culturesauce.com/2025/11/17/25th-annual-putnam-county-spelling-bee-off-broadway-review/",
-        "https://nystagereview.com/2025/11/17/the-25th-annual-putnam-county-spelling-bee-revival-spells-s-u-c-c-e-s-s/",
-        "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-bee-review.html"
-      ],
-      "dirFiles": 18,
-      "dirClean": 7,
-      "inReviewsJson": 7,
-      "missing": [],
-      "dirOnly": [
-        {
-          "host": "aaroninnyc.com",
-          "count": 1
-        },
-        {
-          "host": "theatermania.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.thedailybeast.com/obsessed/25th-annual-putnam-county-spelling-bee-review-a-delightful-adorable-triumph/",
-          "host": "thedailybeast.com",
-          "knownOutletId": "dailybeast",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "dailybeast--tim-teeman.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.thedailybeast.com/obsessed/25th-annual-putnam-county-spelling-bee-review-a-delightful-adorable-triumph/"
-            }
-          ]
-        },
-        {
-          "url": "https://nystagereview.com/2025/11/17/the-25th-annual-putnam-county-spelling-bee-revival-spells-s-u-c-c-e-s-s/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nysr--roma-torre.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://nystagereview.com/2025/11/17/the-25th-annual-putnam-county-spelling-bee-revival-spells-s-u-c-c-e-s-s/"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "showId": "drunk-romeo-and-juliet-off-broadway-2025",
-      "title": "Drunk Romeo & Juliet",
-      "openingDate": "2025-05-29",
-      "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css",
-        "https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"
-      ],
-      "dirFiles": 1,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [
-        {
-          "url": "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css",
-          "host": "bootstrapcdn.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css",
-          "host": "bootstrapcdn.com",
-          "knownOutletId": null
-        }
-      ],
-      "dirOnly": [],
-      "flaggedMisses": [],
-      "ingestResults": [
-        {
-          "url": "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css",
-          "host": "bootstrapcdn.com",
-          "outletId": "bootstrapcdn",
-          "provisional": true,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=drunk-romeo-and-juliet-off-broadway-20"
-        },
-        {
-          "url": "https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css",
-          "host": "bootstrapcdn.com",
-          "outletId": "bootstrapcdn",
-          "provisional": true,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=drunk-romeo-and-juliet-off-broadway-20"
-        }
-      ],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "masquerade-off-broadway-2025",
-      "title": "Masquerade",
-      "openingDate": "2025-09-29",
-      "status": "open",
-      "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/what-do-the-critics-think-of-masquerade-the-immersive-phantom-of-the-opera-production",
-        "https://www.broadwayworld.com/article/Review-Roundup-MASQUERADE-Immersive-PHANTOM-Experience-Opens-Off-Broadway-20250929"
-      ],
-      "aggregatorListedUrls": [
-        "https://1minutecritic.com/masquerade-phantom-of-the-opera-review/",
-        "https://www.thedailybeast.com/obsessed/masquerade-phantom-of-the-opera-like-youve-never-experienced-before/",
-        "https://culturesauce.com/2025/09/29/masquerade-phantom-opera-off-broadway-review/",
-        "https://www.theguardian.com/stage/2025/sep/29/masquerade-review-phantom-of-the-opera",
-        "https://www.nydailynews.com/2025/09/29/broadway-review-masquerade-immersive-phantom-of-the-opera-experience-review/",
-        "https://nystagereview.com/2025/09/29/masquerade-phantom-of-the-opera-immersive-style/",
-        "https://www.newyorktheatreguide.com/reviews/masquerade-off-broadway-review-immersive-phantom-of-the-opera",
-        "https://www.nytimes.com/2025/09/29/theater/masquerade-review-phantom-of-the-opera.html",
-        "https://observer.com/2025/09/review-masquerade-phantom-of-the-opera-experience-immersive-theater/",
-        "https://www.slantmagazine.com/theater/masquerade-review-the-phantom-of-the-opera/",
-        "https://www.theatermania.com/news/review-immersive-musical-masquerade-is-a-phantom-fever-dream_1805227/",
-        "https://www.timeout.com/newyork/theater/masquerade-review-phantom-opera-immersive-andrew-lloyd-webber",
-        "https://www.washingtonpost.com/entertainment/theater/2025/09/29/masquerade-phantom-review/",
-        "https://www.amny.com/entertainment/broadway/review-masquerade-phantom-of-the-opera-2025/",
-        "https://nypost.com/2025/09/29/entertainment/masquerade-review-secretive-off-broadway-phantom-of-the-opera-riff-is-a-sexy-hot-ticket/"
-      ],
-      "dirFiles": 24,
-      "dirClean": 12,
-      "inReviewsJson": 12,
-      "missing": [],
-      "dirOnly": [
-        {
-          "host": "chicagotribune.com",
-          "count": 1
-        },
-        {
-          "host": "pagesonstages.com",
-          "count": 1
-        },
-        {
-          "host": "vulture.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://culturesauce.com/2025/09/29/masquerade-phantom-opera-off-broadway-review/",
-          "host": "culturesauce.com",
-          "knownOutletId": "culturesauce",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "culturesauce--thom-geier.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://culturesauce.com/2025/09/29/masquerade-phantom-opera-off-broadway-review/"
-            }
-          ]
-        },
-        {
-          "url": "https://www.nydailynews.com/2025/09/29/broadway-review-masquerade-immersive-phantom-of-the-opera-experience-review/",
+          "url": "https://www.nydailynews.com/entertainment/broadway/ny-jones-review-hadestown-broadway-20190418-24muagsknrcxxdft7hwt3w7lue-story.html",
           "host": "nydailynews.com",
           "knownOutletId": "nydailynews",
           "recoverable": false,
@@ -1193,15 +902,15 @@
           "dirFlags": [
             {
               "file": "nydailynews--chris-jones.json",
-              "flag": "clean",
-              "urlInDir": "https://www.nydailynews.com/2025/09/29/broadway-review-masquerade-immersive-phantom-of-the-opera-experience-review/"
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nydailynews.com/entertainment/broadway/ny-jones-review-hadestown-broadway-20190418-24muagsknrcxxdft7hwt3w7lue-story.html"
             }
           ]
         },
         {
-          "url": "https://www.newyorktheatreguide.com/reviews/masquerade-off-broadway-review-immersive-phantom-of-the-opera",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
+          "url": "https://nypost.com/2019/04/17/hadestown-review-broadway-douses-the-fires-of-hell-with-folk-music/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -1209,38 +918,38 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "nytg--gillian-russo.json",
+              "file": "nypost--johnny-oleksinski.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.newyorktheatreguide.com/reviews/masquerade-off-broadway-review-immersive-phantom-of-the-opera"
+              "urlInDir": "https://nypost.com/2019/04/17/hadestown-review-broadway-douses-the-fires-of-hell-with-folk-music/"
             }
           ]
         },
         {
-          "url": "https://www.nytimes.com/2025/09/29/theater/masquerade-review-phantom-of-the-opera.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": true,
-          "recoverableFile": "nytimes--unknown.json",
-          "recoverableOutletId": "nytimes",
-          "recoverableCritic": "Unknown",
+          "url": "http://nystagereview.com/2019/04/17/hadestown-anais-mitchells-myths-and-hymns-from-way-downtown/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "nytimes--alexis-soloski.json",
+              "file": "nysr--elysa-gardner.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.nytimes.com/2025/09/29/theater/masquerade-review-phantom-of-the-opera.html"
+              "urlInDir": "http://nystagereview.com/2019/04/17/hadestown-anais-mitchells-myths-and-hymns-from-way-downtown/"
             },
             {
-              "file": "nytimes--unknown.json",
-              "flag": "duplicate",
-              "urlInDir": "https://www.nytimes.com/2025/09/29/theater/masquerade-review-phantom-of-the-opera.html"
+              "file": "nysr--michael-sommers.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://nystagereview.com/2019/04/17/hadestown-red-hot-and-bluesy-score-fuels-a-trip-to-hell-and-back/"
             }
           ]
         },
         {
-          "url": "https://www.theatermania.com/news/review-immersive-musical-masquerade-is-a-phantom-fever-dream_1805227/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
+          "url": "http://nystagereview.com/2019/04/17/hadestown-red-hot-and-bluesy-score-fuels-a-trip-to-hell-and-back/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -1248,14 +957,204 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "theatermania--meg-masseron.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.theatermania.com/news/review-immersive-musical-masquerade-is-a-phantom-fever-dream_1805227/"
+              "file": "nysr--elysa-gardner.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://nystagereview.com/2019/04/17/hadestown-anais-mitchells-myths-and-hymns-from-way-downtown/"
+            },
+            {
+              "file": "nysr--michael-sommers.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://nystagereview.com/2019/04/17/hadestown-red-hot-and-bluesy-score-fuels-a-trip-to-hell-and-back/"
             }
           ]
         },
         {
-          "url": "https://www.washingtonpost.com/entertainment/theater/2025/09/29/masquerade-phantom-review/",
+          "url": "https://www.nytimes.com/2019/04/17/theater/hadestown-review-broadway-anais-mitchell.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--jesse-green.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nytimes.com/2019/04/17/theater/hadestown-review-broadway-anais-mitchell.html"
+            }
+          ]
+        },
+        {
+          "url": "https://observer.com/2019/04/hadestown-tries-like-hell-to-spin-a-concept-album-on-broadway-review/",
+          "host": "observer.com",
+          "knownOutletId": "observer",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "observer--david-cote.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://observer.com/2019/04/hadestown-tries-like-hell-to-spin-a-concept-album-on-broadway-review/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.rollingstone.com/culture/culture-features/hadestown-broadway-anais-mitchell-musical-review-822688/",
+          "host": "rollingstone.com",
+          "knownOutletId": "rollingstone",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "rollingstone--will-hermes.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.rollingstone.com/culture/culture-features/hadestown-broadway-anais-mitchell-musical-review-822688/"
+            }
+          ]
+        },
+        {
+          "url": "http://www.towleroad.com/2019/04/hadestown/",
+          "host": "towleroad.com",
+          "knownOutletId": "towleroad",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "towleroad--naveen-kumar.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.towleroad.com/2019/04/hadestown/"
+            }
+          ]
+        },
+        {
+          "url": "https://variety.com/2019/legit/reviews/hadestown-review-musical-broadway-1203191646/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "variety--marilyn-stasio.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://variety.com/2019/legit/reviews/hadestown-review-musical-broadway-1203191646/"
+            },
+            {
+              "file": "variety--matt-trueman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://variety.com/2019/legit/reviews/hadestown-review-musical-broadway-1203191646/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.vulture.com/2019/04/hadestown-is-a-songwriting-and-storytelling-tour-de-force.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "vulture--sara-holdren.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.vulture.com/2019/04/hadestown-is-a-songwriting-and-storytelling-tour-de-force.html"
+            }
+          ]
+        },
+        {
+          "url": "https://www.wsj.com/articles/hadestown-review-a-musical-heats-up-broadway-11555547401",
+          "host": "wsj.com",
+          "knownOutletId": "wsj",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "wsj--terry-teachout.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.wsj.com/articles/hadestown-review-a-musical-heats-up-broadway-11555547401"
+            }
+          ]
+        },
+        {
+          "url": "https://www.thewrap.com/hadestown-broadway-review-anais-mitchell-musical-orpheus-eurydice-trump/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thewrap--thom-geier.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thewrap.com/hadestown-broadway-review-anais-mitchell-musical-orpheus-eurydice-trump/"
+            }
+          ]
+        },
+        {
+          "url": "https://variety.com/t/hadestown/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "variety--marilyn-stasio.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://variety.com/2019/legit/reviews/hadestown-review-musical-broadway-1203191646/"
+            },
+            {
+              "file": "variety--matt-trueman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://variety.com/2019/legit/reviews/hadestown-review-musical-broadway-1203191646/"
+            }
+          ]
+        },
+        {
+          "url": "https://variety.com/2016/legit/reviews/hadestown-review-1201782036/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "variety--marilyn-stasio.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://variety.com/2019/legit/reviews/hadestown-review-musical-broadway-1203191646/"
+            },
+            {
+              "file": "variety--matt-trueman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://variety.com/2019/legit/reviews/hadestown-review-musical-broadway-1203191646/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater_dance/hadestown-kennedy-center-review/2021/10/15/7cb03fe0-2d65-11ec-985d-3150f7e106b2_story.html",
           "host": "washingtonpost.com",
           "knownOutletId": "washpost",
           "recoverable": false,
@@ -1265,23 +1164,473 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "washpost--naveen-kumar.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.washingtonpost.com/entertainment/theater/2025/09/29/masquerade-phantom-review/"
+              "file": "washpost--peter-marks.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.washingtonpost.com/entertainment/theater_dance/hadestown-arrives-on-broadway-and-well-it-all-goes-to-you-know-where/2019/04/17/ed83afa8-6112-11e9-9ff2-abc984dc9eec_story.html"
+            }
+          ]
+        },
+        {
+          "url": "https://dcmetrotheaterarts.com/2021/10/17/explosively-beautiful-hadestown-gets-down-at-kennedy-center/",
+          "host": "dcmetrotheaterarts.com",
+          "knownOutletId": "dc-metro-theater-arts",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "dc-metro-theater-arts--deb-miller.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://dcmetrotheaterarts.com/2019/04/22/review-hadestown-at-the-walter-kerr-theatre/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.wearegreenbay.com/critic-at-large/warren-gerds-critic-at-large-review-originality-fuels-riveting-hadestown-in-appleton/",
+          "host": "wearegreenbay.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "wearegreenbay--warren.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.wearegreenbay.com/critic-at-large/warren-gerds-critic-at-large-review-originality-fuels-riveting-hadestown-in-appleton/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.postcrescent.com/story/entertainment/2021/12/15/hadestown-fox-cities-performing-arts-center-offers-unlikely-hope/6477669001/",
+          "host": "postcrescent.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "postcrescent--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.postcrescent.com/story/entertainment/2021/12/15/hadestown-fox-cities-performing-arts-center-offers-unlikely-hope/6477669001/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.whereyat.com/hadestown-to-the-crescent-city-and-back",
+          "host": "whereyat.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "whereyat--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.whereyat.com/hadestown-to-the-crescent-city-and-back"
+            }
+          ]
+        },
+        {
+          "url": "https://www.theatrecriticism.com/joyous-national-tour-of-hadestown-opens-appropriately-at-saenger-theater/",
+          "host": "theatrecriticism.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatrecriticism--alan-smason.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatrecriticism.com/joyous-national-tour-of-hadestown-opens-appropriately-at-saenger-theater/"
+            }
+          ]
+        },
+        {
+          "url": "https://dallas.culturemap.com/news/arts/01-20-22-hadestown-review-dallas-summer-musicals/",
+          "host": "culturemap.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "culturemap--httpswwwfacebookcom311748092248591.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://dallas.culturemap.com/news/arts/01-20-22-hadestown-review-dallas-summer-musicals/"
+            }
+          ]
+        },
+        {
+          "url": "https://dallas.culturemap.com/news/arts/01-03-22-underground-musical-turned-broadway-hit-stages-Hadestown-Dallas-Summer-Musicals/",
+          "host": "culturemap.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "culturemap--httpswwwfacebookcom311748092248591.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://dallas.culturemap.com/news/arts/01-20-22-hadestown-review-dallas-summer-musicals/"
+            }
+          ]
+        },
+        {
+          "url": "https://variety.com/2018/legit/reviews/hadestown-review-london-musical-1203028703/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "variety--marilyn-stasio.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://variety.com/2019/legit/reviews/hadestown-review-musical-broadway-1203191646/"
+            },
+            {
+              "file": "variety--matt-trueman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://variety.com/2019/legit/reviews/hadestown-review-musical-broadway-1203191646/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.dailymail.co.uk/debate/article-6386989/Greek-epic-lost-love-hit-myth-QUENTIN-LETTS-reviews-Hadestown-National-Theatre.html",
+          "host": "dailymail.co.uk",
+          "knownOutletId": "daily-mail",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "daily-mail--quentin-letts.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.dailymail.co.uk/debate/article-6386989/Greek-epic-lost-love-hit-myth-QUENTIN-LETTS-reviews-Hadestown-National-Theatre.html"
             }
           ]
         }
       ],
-      "recoveryResults": [
+      "ingestResults": [
         {
-          "url": "https://www.nytimes.com/2025/09/29/theater/masquerade-review-phantom-of-the-opera.html",
-          "host": "nytimes.com",
-          "file": "nytimes--unknown.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "reason": "ingest no-op (text landed elsewhere or unchanged)",
-          "recoveryCount": 1
+          "url": "https://www.columbusunderground.com/theater-review-broadway-in-columbus-returns-with-majestic-fiery-hadestown-rs1/",
+          "host": "columbusunderground.com",
+          "outletId": "columbusunderground",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=hadestown-west-end-2024 --url=https://"
+        },
+        {
+          "url": "https://thejewishnews.com/2021/11/24/review-hadestown-brings-a-message-of-love-and-hope-to-the-darkest-of-places/",
+          "host": "thejewishnews.com",
+          "outletId": "thejewishnews",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=hadestown-west-end-2024 --url=https://"
+        },
+        {
+          "url": "https://www.encoremichigan.com/2021/11/broadway-in-detroit-hadestown-takes-audiences-to-hell-and-back-superbly/",
+          "host": "encoremichigan.com",
+          "outletId": "encoremichigan",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=hadestown-west-end-2024 --url=https://"
+        },
+        {
+          "url": "https://captimes.com/entertainment/theater/raise-a-cup-to-epic-heart-breaking-hadestown-now-in-appleton/article_fcc24feb-f102-55eb-9ce6-275c3910473d.html",
+          "host": "captimes.com",
+          "outletId": "captimes",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=hadestown-west-end-2024 --url=https://"
+        },
+        {
+          "url": "https://www.newcitystage.com/2022/03/07/hell-of-a-show-a-review-of-hadestown-at-broadway-in-chicago/",
+          "host": "newcitystage.com",
+          "outletId": "newcitystage",
+          "provisional": true,
+          "ok": true,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.shawlocal.com/northwest-herald/arts-and-entertainment/2022/03/05/review-heralded-hadestown-counters-seductive-undertow/",
+          "host": "shawlocal.com",
+          "outletId": "shaw-local"
+        },
+        {
+          "url": "https://thirdcoastreview.com/2022/03/04/review-hadestown-celebrates-human-love-and-tragedy-against-a-glorious-jazzy-musical-backdrop/",
+          "host": "thirdcoastreview.com",
+          "outletId": "third-coast-review"
+        },
+        {
+          "url": "https://chicago.suntimes.com/2022/3/3/22960383/hadestown-review-chicago-stage-musicals-positively-heavenly",
+          "host": "suntimes.com",
+          "outletId": "suntimes"
+        },
+        {
+          "url": "https://www.twincities.com/2022/03/16/theater-review-hadestown-is-just-the-story-we-need-in-these-hades-ish-times/",
+          "host": "twincities.com",
+          "outletId": "twincities"
+        },
+        {
+          "url": "https://twincitiesarts.com/2022/03/15/review-hurry-down-the-road-to-hell-in-hadestown-orpheum-htt/",
+          "host": "twincitiesarts.com",
+          "outletId": "twin-cities-arts-reader"
+        },
+        {
+          "url": "https://omaha.com/entertainment/arts-and-theatre/review-hadestown-is-a-little-piece-of-broadway-musical-heaven-in-omaha/article_d7899528-af84-11ec-97fe-1bf3b8f9334a.html",
+          "host": "omaha.com",
+          "outletId": "omaha"
+        },
+        {
+          "url": "https://tucson.com/entertainment/arts-and-theatre/hell-is-a-musical-mecca-in-hadestown/article_75ba2ff0-bb51-11ec-9bde-c7408b29ba9f.html",
+          "host": "tucson.com",
+          "outletId": "tucson"
+        },
+        {
+          "url": "https://guardianlv.com/2022/05/upbeat-hadestown-opens-in-los-angeles/",
+          "host": "guardianlv.com",
+          "outletId": "guardianlv"
+        },
+        {
+          "url": "https://timesofsandiego.com/arts/2022/06/02/a-timeless-yet-timely-story-of-love-in-hell-hadestown-at-the-civic-theatre/",
+          "host": "timesofsandiego.com",
+          "outletId": "timesofsandiego"
+        },
+        {
+          "url": "https://datebook.sfchronicle.com/theater/review-hadestown-will-make-you-fall-in-love-with-musical-theater-again",
+          "host": "sfchronicle.com",
+          "outletId": "san-francisco-chronicle"
+        },
+        {
+          "url": "https://www.mercurynews.com/2022/06/09/review-swinging-mythology-musical-hadestown-enchants-in-sf/",
+          "host": "mercurynews.com",
+          "outletId": "san-jose-mercury-news"
+        },
+        {
+          "url": "https://www.inlander.com/spokane/review-hadestown-offers-up-a-sonic-feast/Content",
+          "host": "inlander.com",
+          "outletId": "inlander"
+        },
+        {
+          "url": "https://www.spokesman.com/stories/2022/jul/06/hadestown-shines-behind-excellent-performances-and/",
+          "host": "spokesman.com",
+          "outletId": "spokesman"
+        },
+        {
+          "url": "https://www.seattletimes.com/entertainment/theater/hadestown-at-seattles-paramount-theatre-makes-a-strong-argument-for-how-art-can-change-the-world/",
+          "host": "seattletimes.com",
+          "outletId": "seattle-times"
+        },
+        {
+          "url": "https://kutv.com/news/entertainment/review-journey-to-hell-and-back-with-the-magnificent-soulful-musical-hadestown",
+          "host": "kutv.com",
+          "outletId": "kutv"
+        },
+        {
+          "url": "https://gephardtdaily.com/entertainment/review-hadestown-well-worth-the-trip/",
+          "host": "gephardtdaily.com",
+          "outletId": "gephardtdaily"
+        },
+        {
+          "url": "https://southpasadenan.com/hadestown-national-tour-brings-the-world-back-into-tune/",
+          "host": "southpasadenan.com",
+          "outletId": "southpasadenan"
+        },
+        {
+          "url": "https://socalthrills.com/hadestown-the-tony-winning-best-musical-theatre-review/",
+          "host": "socalthrills.com",
+          "outletId": "socalthrills"
+        },
+        {
+          "url": "https://www.denverpost.com/2022/09/01/hadestown-denver-buell-theatre-review/",
+          "host": "denverpost.com",
+          "outletId": "denver-post"
+        },
+        {
+          "url": "https://www.expressnews.com/entertainment/article/Hadestown-Majestic-Theatre-review-17438244.php",
+          "host": "expressnews.com",
+          "outletId": "expressnews"
+        },
+        {
+          "url": "https://www.austinchronicle.com/daily/arts/2022-09-22/review-broadway-in-austins-hadestown/",
+          "host": "austinchronicle.com",
+          "outletId": "austinchronicle"
+        },
+        {
+          "url": "https://tulsaworld.com/entertainment/arts-and-theatre/review-hadestown-a-bit-of-musical-theater-heaven/article_8188225a-3e7e-11ed-bbf1-abf594d43837.html",
+          "host": "tulsaworld.com",
+          "outletId": "tulsaworld"
+        },
+        {
+          "url": "https://preview.houstonchronicle.com/theater/tony-winning-hadestown-at-hobby-center-is-worth-17489276",
+          "host": "houstonchronicle.com",
+          "outletId": "houstonchronicle"
+        },
+        {
+          "url": "https://www.houstonpress.com/arts/review-hadestown-at-broadway-at-the-hobby-14248839",
+          "host": "houstonpress.com",
+          "outletId": "houstonpress"
+        },
+        {
+          "url": "https://www.pghcitypaper.com/pittsburgh/hadestown-turns-greek-myth-into-a-musical-steampunk-dystopia/Content",
+          "host": "pghcitypaper.com",
+          "outletId": "pittsburgh-city-paper"
+        },
+        {
+          "url": "https://www.orlandoweekly.com/arts/the-long-wait-for-hadestown-to-get-to-orlando-was-well-worth-the-wait-33118511",
+          "host": "orlandoweekly.com",
+          "outletId": "orlandoweekly"
+        },
+        {
+          "url": "https://www.bocamag.com/broadways-hadestown-rivets-in-moments-but-doesnt-congeal/",
+          "host": "bocamag.com",
+          "outletId": "bocamag"
+        },
+        {
+          "url": "https://www.palmbeachdailynews.com/story/entertainment/2023/01/04/review-hadestown-makes-trip-to-hell-and-back-a-satisfying-adventure/69777519007/",
+          "host": "palmbeachdailynews.com",
+          "outletId": "palmbeachdailynews"
+        },
+        {
+          "url": "https://www.fanbolt.com/136492/hadestown-musical-review/",
+          "host": "fanbolt.com",
+          "outletId": "fanbolt"
+        },
+        {
+          "url": "https://www.cleveland.com/entertainment/2023/02/hadestown-at-playhouse-square-is-a-mesmerizing-ride-to-hell-and-back.html",
+          "host": "cleveland.com",
+          "outletId": "cleveland"
+        },
+        {
+          "url": "https://www.buffalorising.com/2023/02/hadestown-at-sheas-lives-up-to-the-buzz-and-more/",
+          "host": "buffalorising.com",
+          "outletId": "buffalorising"
+        },
+        {
+          "url": "https://www.timesunion.com/theater/article/hadestown-musically-visually-gorgeous-proctors-17810239.php",
+          "host": "timesunion.com",
+          "outletId": "albany-times-union"
+        },
+        {
+          "url": "https://dailygazette.com/2023/03/01/theater-review-hadestown-story-diffuse-but-production-mightily-entertaining/",
+          "host": "dailygazette.com",
+          "outletId": "dailygazette"
+        },
+        {
+          "url": "https://patch.com/connecticut/hartford/theater-review-hadestown-tour-bushnell",
+          "host": "patch.com",
+          "outletId": "patch"
+        },
+        {
+          "url": "https://whatsupnewp.com/2023/03/theater-review-hadestown-at-ppac-ranks-among-the-best/",
+          "host": "whatsupnewp.com",
+          "outletId": "whatsupnewp"
+        },
+        {
+          "url": "https://revuewm.com/arts/theatre/item/5415-review-the-tale-of-hadestown-deserves-to-be-told-again-and-again",
+          "host": "revuewm.com",
+          "outletId": "revuewm"
+        },
+        {
+          "url": "https://www.courier-journal.com/story/entertainment/theater/2023/05/17/hadestown-pnc-broadway-in-louisville-review-enjoyable-road-to-hell/70218813007/",
+          "host": "courier-journal.com",
+          "outletId": "courier-journal"
+        },
+        {
+          "url": "https://www.fayettevilleflyer.com/2023/05/24/review-hadestown-takes-us-to-the-underworld-and-forces-us-to-contemplate-the-state-of-affairs/",
+          "host": "fayettevilleflyer.com",
+          "outletId": "fayettevilleflyer"
+        },
+        {
+          "url": "https://fwtx.com/culture/hadestown-comes-to-cowtown/",
+          "host": "fwtx.com",
+          "outletId": "fwtx"
+        },
+        {
+          "url": "https://dallasvoice.com/review-an-epic-piece-of-beauty-hadestown-is-a-glorious-trip-to-hell/",
+          "host": "dallasvoice.com",
+          "outletId": "dallasvoice"
+        },
+        {
+          "url": "https://www.theglobeandmail.com/arts/theatre-and-performance/reviews/article-hadestown-is-a-triumphant-timely-retelling-of-an-age-old-myth/",
+          "host": "theglobeandmail.com",
+          "outletId": "the-globe-and-mail"
+        },
+        {
+          "url": "https://ottawacitizen.com/entertainment/local-arts/theatre-review-hadestown-at-the-national-arts-centre",
+          "host": "ottawacitizen.com",
+          "outletId": "ottawacitizen"
+        },
+        {
+          "url": "https://apt613.ca/review-hadestown-at-the-nac/",
+          "host": "apt613.ca",
+          "outletId": "apt613"
+        },
+        {
+          "url": "https://www.seattletimes.com/entertainment/theater/theater-review-hadestown-tackles-love-art-and-the-limits-of-each/",
+          "host": "seattletimes.com",
+          "outletId": "seattle-times"
+        },
+        {
+          "url": "https://www.straight.com/arts/broadway-across-canadas-hadestown-crackles-with-hope-and-hauntings",
+          "host": "straight.com",
+          "outletId": "straight"
+        },
+        {
+          "url": "https://www.abqjournal.com/lifestyle/go-way-down-to-hadestown-at-popejoy----its-worth-the-ticket/article_ded57dae-94cc-11ee-bf29-5f337a991b25.html",
+          "host": "abqjournal.com",
+          "outletId": "albuquerque-journal"
+        },
+        {
+          "url": "https://www.postandcourier.com/features/hadestown-north-charleston-performing-arts-center/article_b3415af2-aa5f-11ee-9fd4-23b83039b987.html",
+          "host": "postandcourier.com",
+          "outletId": "post-and-courier"
+        },
+        {
+          "url": "https://www.sun-sentinel.com/2024/01/10/review-hadestown-at-broward-center-isnt-just-a-broadway-show-its-a-masterwork/",
+          "host": "sun-sentinel.com",
+          "outletId": "sun-sentinel"
+        },
+        {
+          "url": "https://www.sarasotamagazine.com/arts-and-entertainment/2024/01/review-hadestown-sarasota-van-wezel",
+          "host": "sarasotamagazine.com",
+          "outletId": "sarasotamagazine"
+        },
+        {
+          "url": "https://www.pilotonline.com/2024/03/28/vicious-and-delicious-hadestown-heats-up-chrysler-hall/",
+          "host": "pilotonline.com",
+          "outletId": "pilotonline"
+        },
+        {
+          "url": "https://www.westendbestfriend.co.uk/news/review-hadestown-ensemble-arts-philly-us-tour",
+          "host": "westendbestfriend.co.uk",
+          "outletId": "west-end-best-friend"
+        },
+        {
+          "url": "https://www.syracuse.com/entertainment/2024/04/whirling-and-swirling-hadestown-at-the-landmark-mesmerizes-review.html",
+          "host": "syracuse.com",
+          "outletId": "syracuse-herald-journal"
         }
       ]
     }
