@@ -1,15 +1,20 @@
 {
   "system": "workflow repeat-failure",
   "status": "error",
-  "lastChecked": "2026-07-01T08:26:01.177Z",
+  "lastChecked": "2026-07-02T08:04:03.323Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
-      "name": "Workflow repeat-failure: Collect Review Texts",
+      "name": "Workflow repeat-failure: Rebuild Reviews (Fast)",
       "status": "error",
-      "message": "Collect Review Texts failed 4 times in the last 24h — likely broken, not transient."
+      "message": "Rebuild Reviews (Fast) failed 7 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Rebuild Reviews Data",
+      "status": "error",
+      "message": "Rebuild Reviews Data failed 4 times in the last 24h — likely broken, not transient."
     }
   ]
 }
