@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-07-03T06:17:40.623Z",
-  "processed": 106,
-  "failed": 958,
-  "successRate": "10.0%",
+  "updatedAt": "2026-07-03T06:19:48.703Z",
+  "processed": 112,
+  "failed": 962,
+  "successRate": "10.4%",
   "tierBreakdown": {
     "playwright": 64,
     "amp": 0,
-    "browserbase": 14,
+    "browserbase": 16,
     "directCookies": 13,
-    "scrapingbee": 10,
+    "scrapingbee": 13,
     "brightdata": 6,
     "archiveToday": 15,
-    "archive": 7
+    "archive": 9
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
-    {
-      "t": "2026-07-02T19:50:12.522Z",
-      "event": "bb-session",
-      "session": "a47d2912",
-      "url": "https://www.thestage.co.uk/reviews/springwood-review-hampstead-theatre-london-ro"
-    },
-    {
-      "t": "2026-07-02T19:50:13.081Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
     {
       "t": "2026-07-02T22:31:18.521Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-07-03T06:09:00.132Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-03T06:18:03.059Z",
+      "event": "bb-session",
+      "session": "0a37267e",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
+    },
+    {
+      "t": "2026-07-03T06:18:03.472Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
