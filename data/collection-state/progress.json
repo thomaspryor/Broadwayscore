@@ -4,25 +4,35 @@
     "much-ado-about-nothing-globe-off-west-end-2026/times-uk--ann-treneman.json",
     "much-ado-about-nothing-globe-off-west-end-2026/times-uk--clive-davis.json",
     "much-ado-about-nothing-globe-off-west-end-2026/times-uk--dominic-maxwell.json",
-    "much-ado-about-nothing-globe-off-west-end-2026/times-uk--rachel-halliburton.json"
+    "much-ado-about-nothing-globe-off-west-end-2026/times-uk--rachel-halliburton.json",
+    "birthright-off-broadway-2026/theatermania--linda-buchwald.json",
+    "birthright-off-broadway-2026/wsj--unknown.json",
+    "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
+    "birthright-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "the-black-mirror-experience-off-broadway-2026/the-recs--unknown.json",
+    "camping-off-broadway-2026/talkinbroadway--unknown.json"
   ],
   "failed": [
-    "much-ado-about-nothing-globe-off-west-end-2026/the-upcoming-uk--unknown.json",
-    "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--alun-hood.json",
-    "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--daisy-bowie.json",
-    "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--judi-herman.json",
-    "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--matt-trueman.json",
-    "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--michael-davies.json",
-    "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--mickey-jo-boucher.json"
+    "a-walk-on-the-moon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "a-walk-on-the-moon-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+    "birthright-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "birthright-off-broadway-2026/pages-on-stages--unknown.json"
   ],
-  "failed": [],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "much-ado-about-nothing-globe-off-west-end-2026/london-theatre--lola-phillips.json"
+      "much-ado-about-nothing-globe-off-west-end-2026/london-theatre--lola-phillips.json",
+      "birthright-off-broadway-2026/theatermania--linda-buchwald.json",
+      "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
+      "birthright-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "the-black-mirror-experience-off-broadway-2026/the-recs--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/birthright-off-broadway-2026/wsj--unknown.json",
+      "birthright-off-broadway-2026/wsj--unknown.json"
+    ],
     "directCookies": [
       "much-ado-about-nothing-globe-off-west-end-2026/times-uk--ann-treneman.json",
       "much-ado-about-nothing-globe-off-west-end-2026/times-uk--clive-davis.json",
@@ -30,11 +40,25 @@
       "much-ado-about-nothing-globe-off-west-end-2026/times-uk--rachel-halliburton.json"
     ],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "camping-off-broadway-2026/talkinbroadway--unknown.json"
+    ],
     "archiveToday": [],
     "archive": []
   },
   "startTime": "2026-07-03T06:39:36.591Z",
-  "lastProcessed": "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--mickey-jo-boucher.json",
-  "log": []
+  "lastProcessed": "camping-off-broadway-2026/talkinbroadway--unknown.json",
+  "log": [
+    {
+      "t": "2026-07-03T07:45:00.877Z",
+      "event": "bb-session",
+      "session": "c332f6a8",
+      "url": "https://www.wsj.com/articles/birthright-review-jonathan-spectors-generational-je"
+    },
+    {
+      "t": "2026-07-03T07:45:01.952Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
