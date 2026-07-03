@@ -1,26 +1,19 @@
 {
-  "processed": [],
-  "failed": [
-    "sting-west-end-2026/hollywood-reporter--unknown.json",
-    "sting-west-end-2026/variety--unknown.json",
-    "sting-west-end-2026/ew--unknown.json",
-    "sting-west-end-2026/newsday--linda-winer.json",
-    "sting-west-end-2026/newsday--unknown.json",
-    "sting-west-end-2026/newsday--updated-december.json",
-    "sting-west-end-2026/timeout-london--tim-bano.json",
-    "sting-west-end-2026/amny--unknown.json",
-    "sting-west-end-2026/british-theatre--unknown.json",
-    "sting-west-end-2026/daily-mail--unknown.json",
-    "sting-west-end-2026/huffpost--unknown.json",
-    "sting-west-end-2026/independent--unknown.json",
-    "sting-west-end-2026/nbcny--unknown.json",
-    "sting-west-end-2026/standard--unknown.json",
-    "sting-west-end-2026/talkinbroadway--unknown.json",
-    "sting-west-end-2026/thestage--unknown.json",
-    "sting-west-end-2026/times-uk--stephen-dalton.json",
-    "sting-west-end-2026/westendtheatre--unknown.json",
-    "sting-west-end-2026/whatsonstage--julia-rank.json"
+  "processed": [
+    "archduke-west-end-2026/broadwayworld--alexander-cohen.json"
   ],
+  "failed": [
+    "archduke-west-end-2026/nyt-theater--jonathan-mandell.json",
+    "archduke-west-end-2026/culturesauce--thom-geier.json",
+    "archduke-west-end-2026/dc-theater-arts--deb-miller.json",
+    "archduke-west-end-2026/financialtimes--unknown.json",
+    "archduke-west-end-2026/nysr--michael-sommers.json",
+    "archduke-west-end-2026/thestage--unknown.json",
+    "archduke-west-end-2026/whatsonstage--sarah-crompton.json",
+    "archduke-west-end-2026/nytg--amelia-merrill.json",
+    "archduke-west-end-2026/one-minute-critic--matthew-wexler.json"
+  ],
+  "failed": [],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
@@ -30,11 +23,13 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/sting-west-end-2026/thestage--unknown.json"
+      "data/review-texts/archduke-west-end-2026/thestage--unknown.json"
     ],
-    "archive": []
+    "archive": [
+      "archduke-west-end-2026/broadwayworld--alexander-cohen.json"
+    ]
   },
-  "startTime": "2026-07-03T06:39:41.280Z",
-  "lastProcessed": "sting-west-end-2026/whatsonstage--julia-rank.json",
+  "startTime": "2026-07-03T06:39:02.526Z",
+  "lastProcessed": "archduke-west-end-2026/one-minute-critic--matthew-wexler.json",
   "log": []
 }
