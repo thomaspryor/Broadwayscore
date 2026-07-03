@@ -1,35 +1,30 @@
 {
-  "processed": [],
+  "processed": [
+    "relics-west-end-2026/cambridge--unknown.json"
+  ],
   "failed": [
-    "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json"
+    "relics-west-end-2026/nytimes--unknown.json",
+    "relics-west-end-2026/guardian--unknown.json",
+    "relics-west-end-2026/thestage--neil-norman.json",
+    "relics-west-end-2026/times-uk--dominic-maxwell.json"
   ],
   "failed": [],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
-    "amp": [],
-    "browserbase": [
-      "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json"
+    "playwright": [
+      "relics-west-end-2026/cambridge--unknown.json"
     ],
+    "amp": [],
+    "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/relics-west-end-2026/thestage--neil-norman.json"
+    ],
     "archive": []
   },
-  "startTime": "2026-07-03T16:18:48.118Z",
-  "lastProcessed": "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
-  "log": [
-    {
-      "t": "2026-07-03T16:19:15.309Z",
-      "event": "bb-session",
-      "session": "e8532a8a",
-      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
-    },
-    {
-      "t": "2026-07-03T16:19:16.372Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    }
-  ]
+  "startTime": "2026-07-03T16:18:34.971Z",
+  "lastProcessed": "relics-west-end-2026/times-uk--dominic-maxwell.json",
+  "log": []
 }
