@@ -14,10 +14,10 @@
     "processed": 0,
     "failed": 19,
     "skipped": 0,
-    "successRate": "10.0%"
+    "successRate": "60.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 3,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -51,7 +51,9 @@
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "archduke-west-end-2026/broadwayworld--alexander-cohen.json"
+    "birthright-off-broadway-2026/theatermania--linda-buchwald.json",
+    "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
+    "birthright-off-broadway-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "sting-west-end-2026/hollywood-reporter--unknown.json",
@@ -75,7 +77,11 @@
     "sting-west-end-2026/whatsonstage--julia-rank.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "birthright-off-broadway-2026/theatermania--linda-buchwald.json",
+      "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
+      "birthright-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
@@ -87,5 +93,11 @@
     "archive": []
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "birthright-off-broadway-2026/theatermania--linda-buchwald.json",
+      "oldUrl": "https://www.theatermania.com/news/review-birthright-is-a-safe-three-and-a-half-hour-play-about-israel-palestine-and-fractured-friendships_1844046/",
+      "newUrl": "https://www.theatermania.com/news/molly-bernard-to-replace-abbi-jacobson-in-birthright-at-mcc_1841108/"
+    }
+  ]
 }
