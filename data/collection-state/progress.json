@@ -1,12 +1,6 @@
 {
   "processed": [
-    "much-ado-about-nothing-globe-off-west-end-2026/london-theatre--lola-phillips.json",
-    "much-ado-about-nothing-globe-off-west-end-2026/times-uk--ann-treneman.json",
-    "much-ado-about-nothing-globe-off-west-end-2026/times-uk--clive-davis.json",
-    "much-ado-about-nothing-globe-off-west-end-2026/times-uk--dominic-maxwell.json",
-    "much-ado-about-nothing-globe-off-west-end-2026/times-uk--rachel-halliburton.json",
     "birthright-off-broadway-2026/theatermania--linda-buchwald.json",
-    "birthright-off-broadway-2026/wsj--unknown.json",
     "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
     "birthright-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "the-black-mirror-experience-off-broadway-2026/the-recs--unknown.json",
@@ -92,7 +86,6 @@
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "much-ado-about-nothing-globe-off-west-end-2026/london-theatre--lola-phillips.json",
       "birthright-off-broadway-2026/theatermania--linda-buchwald.json",
       "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
       "birthright-off-broadway-2026/one-minute-critic--matthew-wexler.json",
@@ -101,14 +94,14 @@
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/birthright-off-broadway-2026/wsj--unknown.json",
-      "birthright-off-broadway-2026/wsj--unknown.json"
+      "data/review-texts/the-mystery-of-edwin-drood-amt-theater-off-broadway-2026/nytimes--brittani-samuel.json",
+      "the-mystery-of-edwin-drood-amt-theater-off-broadway-2026/nytimes--brittani-samuel.json",
+      "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
+      "music-city-off-broadway-2026/deadline--greg-evans.json"
     ],
-    "directCookies": [
-      "much-ado-about-nothing-globe-off-west-end-2026/times-uk--ann-treneman.json",
-      "much-ado-about-nothing-globe-off-west-end-2026/times-uk--clive-davis.json",
-      "much-ado-about-nothing-globe-off-west-end-2026/times-uk--dominic-maxwell.json",
-      "much-ado-about-nothing-globe-off-west-end-2026/times-uk--rachel-halliburton.json"
+    "directCookies": [],
+    "scrapingbee": [
+      "girl-interrupted-off-broadway-2026/playbill--unknown.json"
     ],
     "scrapingbee": [],
     "brightdata": [
@@ -129,15 +122,26 @@
   "lastProcessed": "cyrano-de-bergerac-west-end-2026/about-entertainment--ben-brantley.json",
   "log": [
     {
-      "t": "2026-07-03T07:45:00.877Z",
+      "t": "2026-07-03T09:22:18.386Z",
       "event": "bb-session",
-      "session": "c332f6a8",
-      "url": "https://www.wsj.com/articles/birthright-review-jonathan-spectors-generational-je"
+      "session": "9285fbb4",
+      "url": "https://www.nytimes.com/2026/05/13/theater/joshua-henry-ragtime-broadway.html"
     },
     {
-      "t": "2026-07-03T07:45:01.952Z",
+      "t": "2026-07-03T09:22:19.338Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-03T09:23:43.754Z",
+      "event": "bb-session",
+      "session": "6c481ca5",
+      "url": "https://deadline.com/2026/04/music-city-jt-harding-musical-off-broadway-12368618"
+    },
+    {
+      "t": "2026-07-03T09:23:44.739Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
