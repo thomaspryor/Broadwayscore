@@ -79,7 +79,13 @@
     "cats-the-jellicle-ball-2026/timeout--david-cote.json",
     "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json",
     "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
-    "a-midsummer-nights-dream-west-end-2026/telegraph--dominic-cavendish.json"
+    "a-midsummer-nights-dream-west-end-2026/telegraph--dominic-cavendish.json",
+    "and-then-the-rodeo-burned-down-off-broadway-2026/variety--haley-kluge.json",
+    "celebrity-autobiography-2026/nypost--angela-barbuti.json",
+    "dog-day-afternoon-2026/one-minute-critic--matthew-wexler.json",
+    "music-city-off-broadway-2026/deadline--greg-evans.json",
+    "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
+    "music-city-off-broadway-2026/theatrely--unknown.json"
   ],
   "failed": [
     "the-guilty-west-end-2026/hollywood-reporter--angie-han.json",
@@ -915,7 +921,11 @@
     "a-walk-on-the-moon-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
     "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
     "birthright-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
-    "birthright-off-broadway-2026/pages-on-stages--unknown.json"
+    "birthright-off-broadway-2026/pages-on-stages--unknown.json",
+    "cats-the-jellicle-ball-2026/thewrap--jason-clark.json",
+    "cats-the-jellicle-ball-2026/thewrap--robert-hofler.json",
+    "cats-the-jellicle-ball-2026/queerty--matthew-wexler.json",
+    "music-city-off-broadway-2026/observer--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -972,12 +982,18 @@
       "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json",
       "cats-the-jellicle-ball-2026/timeout--david-cote.json",
       "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json",
-      "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json"
+      "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
+      "dog-day-afternoon-2026/one-minute-critic--matthew-wexler.json",
+      "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
-      "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json"
+      "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+      "data/review-texts/and-then-the-rodeo-burned-down-off-broadway-2026/variety--haley-kluge.json",
+      "and-then-the-rodeo-burned-down-off-broadway-2026/variety--haley-kluge.json",
+      "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
+      "music-city-off-broadway-2026/deadline--greg-evans.json"
     ],
     "directCookies": [
       "much-ado-about-nothing-globe-off-west-end-2026/times-uk--ann-treneman.json",
@@ -998,7 +1014,8 @@
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre--apollo-theatre.json",
       "much-ado-about-nothing-globe-off-west-end-2026/london-theatre--lola-phillips.json",
       "the-fear-of-13-2026/playbill--unknown.json",
-      "a-midsummer-nights-dream-west-end-2026/telegraph--dominic-cavendish.json"
+      "a-midsummer-nights-dream-west-end-2026/telegraph--dominic-cavendish.json",
+      "music-city-off-broadway-2026/theatrely--unknown.json"
     ],
     "brightdata": [
       "a-midsummer-nights-dream-west-end-2026/sunday-telegraph--claire-allfree.json",
@@ -1029,11 +1046,12 @@
       "small-off-broadway-2026/broadwayworld--marina-kennedy.json",
       "small-off-broadway-2026/culturesauce--thom-geier.json",
       "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json",
-      "schmigadoon-2026/theater-pizzazz--eyal-solomon.json"
+      "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
+      "celebrity-autobiography-2026/nypost--angela-barbuti.json"
     ]
   },
   "startTime": "2026-07-02T18:54:33.720Z",
-  "lastProcessed": "birthright-off-broadway-2026/pages-on-stages--unknown.json",
+  "lastProcessed": "music-city-off-broadway-2026/theatrely--unknown.json",
   "log": [
     {
       "t": "2026-07-02T19:50:12.522Z",
@@ -1078,6 +1096,28 @@
       "t": "2026-07-03T05:18:52.866Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-03T06:02:36.874Z",
+      "event": "bb-session",
+      "session": "f2cfcaa1",
+      "url": "https://variety.com/2026/legit/awards/michael-arden-lost-boys-happy-feet-anthrop"
+    },
+    {
+      "t": "2026-07-03T06:02:37.323Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-03T06:03:21.723Z",
+      "event": "bb-session",
+      "session": "ca8a1470",
+      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
+    },
+    {
+      "t": "2026-07-03T06:03:22.171Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
