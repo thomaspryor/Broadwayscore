@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-03T05:36:07.300Z",
+  "generatedAt": "2026-07-03T07:27:47.685Z",
   "date": "2026-07-03",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 767537,
+  "entryCount": 767603,
   "shows": [
     {
       "showId": "an-ideal-husband-west-end-2026",
@@ -2411,7 +2411,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 3866906109,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
