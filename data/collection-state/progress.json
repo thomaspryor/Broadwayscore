@@ -20,7 +20,8 @@
     "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
     "amaze-off-broadway-2026/timeout--adam-feldman.json",
     "manon-off-broadway-2027/broadwayworld--steve-callahan.json",
-    "aida-off-broadway-2027/broadwayworld--stephi-wild.json"
+    "aida-off-broadway-2027/broadwayworld--stephi-wild.json",
+    "medea-off-broadway-2026/hollywood-reporter--david-rooney.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
@@ -101,7 +102,16 @@
     "miles-for-mary-off-broadway-2026/front-row-center--tulis-mccall.json",
     "miles-for-mary-off-broadway-2026/playbill--olivia-clement.json",
     "miles-for-mary-off-broadway-2026/theatre-arts-daily--mark-johnson.json",
-    "miles-for-mary-off-broadway-2026/times-square-chronicles--suzanna-bowling.json"
+    "miles-for-mary-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
+    "miles-for-mary-off-broadway-2026/village-voice--david-cote.json",
+    "samson-et-dalila-off-broadway-2026/operawire--david-salazar.json",
+    "tosca-off-broadway-2026/huffpost--wilborn-hampton.json",
+    "medea-off-broadway-2026/timeout--adam-feldman.json",
+    "medea-off-broadway-2026/dailybeast--tim-teeman.json",
+    "medea-off-broadway-2026/i-paper--fiona-mountford.json",
+    "medea-off-broadway-2026/independent--alice-saville.json",
+    "medea-off-broadway-2026/standard--nick-curtis.json",
+    "medea-off-broadway-2026/sunday-express--neil-norman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -126,19 +136,16 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
-      "music-city-off-broadway-2026/deadline--greg-evans.json"
+      "music-city-off-broadway-2026/deadline--greg-evans.json",
+      "data/review-texts/medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
+      "medea-off-broadway-2026/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [
       "miles-for-mary-off-broadway-2026/broadwayworld--bww-news-desk.json"
     ],
     "brightdata": [],
-    "archiveToday": [
-      "data/review-texts/the-guilty-west-end-2026/thestage--unknown.json",
-      "data/review-texts/to-kill-a-mockingbird-west-end-2026/tribune--unknown.json",
-      "data/review-texts/a-midsummer-nights-dream-west-end-2026/thestage--unknown.json",
-      "data/review-texts/springwood-west-end-2026/thestage--unknown.json"
-    ],
+    "archiveToday": [],
     "archive": [
       "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
       "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
@@ -147,7 +154,7 @@
     ]
   },
   "startTime": "2026-07-03T09:56:00.331Z",
-  "lastProcessed": "miles-for-mary-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
+  "lastProcessed": "medea-off-broadway-2026/sunday-express--neil-norman.json",
   "log": [
     {
       "t": "2026-07-03T10:04:05.835Z",
@@ -159,6 +166,17 @@
       "t": "2026-07-03T10:04:06.196Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-03T10:14:30.449Z",
+      "event": "bb-session",
+      "session": "aa52cf93",
+      "url": "https://www.hollywoodreporter.com/news/general-news/rose-byrne-bobby-cannavale-s"
+    },
+    {
+      "t": "2026-07-03T10:14:30.930Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
