@@ -1,0 +1,109 @@
+{
+  "runDate": "2026-07-03T06:45:30.051Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 0,
+    "priority": "all",
+    "showFilter": "much-ado-about-nothing-globe-off-west-end-2026",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 5,
+    "failed": 7,
+    "skipped": 0,
+    "successRate": "41.7%"
+  },
+  "tierBreakdown": {
+    "playwright": 1,
+    "amp": 0,
+    "browserbase": 0,
+    "directCookies": 4,
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archiveToday": 0,
+    "archive": 0
+  },
+  "statistics": {
+    "tier1Attempts": 6,
+    "tier1Success": 2,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 4,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 5,
+    "tier4Success": 0,
+    "totalFailed": 7,
+    "scrapingBeePageCredits": 30,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 10,
+    "urlDiscoverySuccess": 4,
+    "urlDiscoveryCapped": 0
+  },
+  "processed": [
+    "much-ado-about-nothing-globe-off-west-end-2026/london-theatre--lola-phillips.json",
+    "much-ado-about-nothing-globe-off-west-end-2026/times-uk--ann-treneman.json",
+    "much-ado-about-nothing-globe-off-west-end-2026/times-uk--clive-davis.json",
+    "much-ado-about-nothing-globe-off-west-end-2026/times-uk--dominic-maxwell.json",
+    "much-ado-about-nothing-globe-off-west-end-2026/times-uk--rachel-halliburton.json"
+  ],
+  "failed": [
+    "much-ado-about-nothing-globe-off-west-end-2026/the-upcoming-uk--unknown.json",
+    "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--alun-hood.json",
+    "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--daisy-bowie.json",
+    "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--judi-herman.json",
+    "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--matt-trueman.json",
+    "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--michael-davies.json",
+    "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--mickey-jo-boucher.json"
+  ],
+  "tierDetails": {
+    "playwright": [
+      "much-ado-about-nothing-globe-off-west-end-2026/london-theatre--lola-phillips.json"
+    ],
+    "amp": [],
+    "browserbase": [],
+    "directCookies": [
+      "much-ado-about-nothing-globe-off-west-end-2026/times-uk--ann-treneman.json",
+      "much-ado-about-nothing-globe-off-west-end-2026/times-uk--clive-davis.json",
+      "much-ado-about-nothing-globe-off-west-end-2026/times-uk--dominic-maxwell.json",
+      "much-ado-about-nothing-globe-off-west-end-2026/times-uk--rachel-halliburton.json"
+    ],
+    "scrapingbee": [],
+    "brightdata": [],
+    "archiveToday": [],
+    "archive": []
+  },
+  "failuresByOutlet": {},
+  "urlDiscoveries": [
+    {
+      "reviewId": "much-ado-about-nothing-globe-off-west-end-2026/times-uk--ann-treneman.json",
+      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/much-ado-about-nothing-review-shakespeare-mjwhw56rs?eafs_enabled=false",
+      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/much-ado-about-nothing-review-shakespeare-mjwhw56rs"
+    },
+    {
+      "reviewId": "much-ado-about-nothing-globe-off-west-end-2026/times-uk--clive-davis.json",
+      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/much-ado-about-nothing-review-shakespeare-mjwhw56rs?eafs_enabled=false",
+      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/much-ado-about-nothing-review-shakespeare-mjwhw56rs"
+    },
+    {
+      "reviewId": "much-ado-about-nothing-globe-off-west-end-2026/times-uk--dominic-maxwell.json",
+      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/much-ado-about-nothing-review-shakespeare-mjwhw56rs?eafs_enabled=false",
+      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/much-ado-about-nothing-review-shakespeare-mjwhw56rs"
+    },
+    {
+      "reviewId": "much-ado-about-nothing-globe-off-west-end-2026/times-uk--rachel-halliburton.json",
+      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/much-ado-about-nothing-review-shakespeare-mjwhw56rs?eafs_enabled=false",
+      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/much-ado-about-nothing-review-shakespeare-mjwhw56rs"
+    }
+  ]
+}
