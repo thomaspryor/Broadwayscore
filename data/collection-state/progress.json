@@ -11,7 +11,17 @@
     "pride-west-end-2026/broadwayworld--jay-irwin.json",
     "pride-west-end-2026/click-liverpool--unknown.json",
     "pride-west-end-2026/frontmezzjunkies--unknown.json",
-    "pride-west-end-2026/latimes--erin-conley.json"
+    "pride-west-end-2026/latimes--erin-conley.json",
+    "pride-west-end-2026/nottingham-confidential--unknown.json",
+    "pride-west-end-2026/operawire--unknown.json",
+    "pride-west-end-2026/people--unknown.json",
+    "pride-west-end-2026/seattle-times--misha-berson.json",
+    "pride-west-end-2026/sunday-telegraph--unknown.json",
+    "pride-west-end-2026/talkinbroadway--unknown.json",
+    "pride-west-end-2026/thestage--dave-fargnoli.json",
+    "pride-west-end-2026/times-uk--allan-radcliffe.json",
+    "pride-west-end-2026/times-uk--ann-treneman.json",
+    "pride-west-end-2026/times-uk--dominic-maxwell.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -19,14 +29,54 @@
       "pride-west-end-2026/londontheatre1--terry-eastham.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/pride-west-end-2026/times-uk--allan-radcliffe.json",
+      "data/review-texts/pride-west-end-2026/times-uk--ann-treneman.json",
+      "data/review-texts/pride-west-end-2026/times-uk--dominic-maxwell.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/pride-west-end-2026/thestage--dave-fargnoli.json"
+    ],
     "archive": []
   },
   "startTime": "2026-07-03T06:39:00.239Z",
-  "lastProcessed": "pride-west-end-2026/londontheatre1--terry-eastham.json",
-  "log": []
+  "lastProcessed": "pride-west-end-2026/times-uk--dominic-maxwell.json",
+  "log": [
+    {
+      "t": "2026-07-03T06:42:32.210Z",
+      "event": "bb-session",
+      "session": "a8bbec41",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-pride-and-"
+    },
+    {
+      "t": "2026-07-03T06:42:33.228Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-03T06:44:04.538Z",
+      "event": "bb-session",
+      "session": "1be4f28f",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-pride-and-"
+    },
+    {
+      "t": "2026-07-03T06:44:05.579Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-03T06:45:27.325Z",
+      "event": "bb-session",
+      "session": "eea875ce",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/pride-stage-adaptation-re"
+    },
+    {
+      "t": "2026-07-03T06:45:28.350Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    }
+  ]
 }
