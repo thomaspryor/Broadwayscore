@@ -76,7 +76,11 @@
     "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
     "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json",
     "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json",
-    "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json"
+    "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
+    "dog-day-afternoon-2026/one-minute-critic--matthew-wexler.json",
+    "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+    "every-brilliant-thing-2026/nytimes--ben-brantley.json",
+    "every-brilliant-thing-2026/nydailynews--joe-dziemianowicz.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
@@ -411,7 +415,13 @@
     "cats-the-jellicle-ball-2026/west-end-wilma--unknown.json",
     "cats-the-jellicle-ball-2026/thewrap--jason-clark.json",
     "cats-the-jellicle-ball-2026/thewrap--robert-hofler.json",
-    "cats-the-jellicle-ball-2026/queerty--matthew-wexler.json"
+    "cats-the-jellicle-ball-2026/queerty--matthew-wexler.json",
+    "kinky-boots-the-musical-west-end-2026/chicago-sun-times--the-hand-club-for.json",
+    "kinky-boots-the-musical-west-end-2026/city-am--adam-bloodworth.json",
+    "kinky-boots-the-musical-west-end-2026/times-square-chronicles--unknown.json",
+    "kinky-boots-the-musical-west-end-2026/london-box-office--davor-golub.json",
+    "kinky-boots-the-musical-west-end-2026/london-box-office--the-break-a-leggers.json",
+    "kinky-boots-the-musical-west-end-2026/whatsonstage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -467,7 +477,8 @@
       "the-fear-of-13-2026/playbill--unknown.json",
       "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json",
       "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json",
-      "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json"
+      "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
+      "dog-day-afternoon-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
     "browserbase": [
@@ -476,7 +487,9 @@
       "data/review-texts/proof-2026/deadline--unknown.json",
       "proof-2026/deadline--unknown.json",
       "data/review-texts/death-of-a-salesman-2026/variety--marilyn-stasio.json",
-      "death-of-a-salesman-2026/variety--marilyn-stasio.json"
+      "death-of-a-salesman-2026/variety--marilyn-stasio.json",
+      "data/review-texts/every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+      "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json"
     ],
     "directCookies": [
       "cyrano-de-bergerac-west-end-2026/times-uk--dominic-maxwell.json",
@@ -492,7 +505,9 @@
     ],
     "scrapingbee": [
       "girl-interrupted-off-broadway-2026/playbill--unknown.json",
-      "heathers-the-musical-off-broadway-2025/nytimes--ben-brantley.json"
+      "heathers-the-musical-off-broadway-2025/nytimes--ben-brantley.json",
+      "every-brilliant-thing-2026/nytimes--ben-brantley.json",
+      "every-brilliant-thing-2026/nydailynews--joe-dziemianowicz.json"
     ],
     "brightdata": [
       "the-balusters-2026/broadwayworld--unknown.json",
@@ -517,7 +532,7 @@
     ]
   },
   "startTime": "2026-07-03T10:40:44.420Z",
-  "lastProcessed": "cats-the-jellicle-ball-2026/queerty--matthew-wexler.json",
+  "lastProcessed": "every-brilliant-thing-2026/nydailynews--joe-dziemianowicz.json",
   "log": [
     {
       "t": "2026-07-03T10:48:39.987Z",
@@ -551,6 +566,17 @@
       "t": "2026-07-03T12:16:04.657Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-03T12:20:16.639Z",
+      "event": "bb-session",
+      "session": "d5a7e29d",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mariska-hargitay-to-make-broadw"
+    },
+    {
+      "t": "2026-07-03T12:20:17.041Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
