@@ -1,28 +1,39 @@
 {
-  "processed": [],
+  "processed": [
+    "archduke-west-end-2026/timeout-london--unknown.json",
+    "archduke-west-end-2026/broadwayworld--alexander-cohen.json"
+  ],
   "failed": [
-    "springwood-west-end-2026/guardian--unknown.json",
-    "springwood-west-end-2026/guardian-uk--unknown.json",
-    "springwood-west-end-2026/artsdesk--unknown.json",
-    "springwood-west-end-2026/financialtimes--unknown.json",
-    "springwood-west-end-2026/standard--nick-curtis.json",
-    "springwood-west-end-2026/theatrecat--unknown.json",
-    "springwood-west-end-2026/thestage--unknown.json",
-    "springwood-west-end-2026/west-end-best-friend--unknown.json"
+    "archduke-west-end-2026/nyt-theater--jonathan-mandell.json",
+    "archduke-west-end-2026/culturesauce--thom-geier.json",
+    "archduke-west-end-2026/dc-theater-arts--deb-miller.json",
+    "archduke-west-end-2026/financialtimes--unknown.json",
+    "archduke-west-end-2026/nysr--michael-sommers.json",
+    "archduke-west-end-2026/standard--nick-curtis.json",
+    "archduke-west-end-2026/thestage--unknown.json",
+    "archduke-west-end-2026/whatsonstage--sarah-crompton.json",
+    "archduke-west-end-2026/nytg--amelia-merrill.json",
+    "archduke-west-end-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "archduke-west-end-2026/timeout-london--unknown.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
-    "archive": []
+    "archiveToday": [
+      "data/review-texts/archduke-west-end-2026/thestage--unknown.json"
+    ],
+    "archive": [
+      "archduke-west-end-2026/broadwayworld--alexander-cohen.json"
+    ]
   },
-  "startTime": "2026-07-03T16:18:39.177Z",
-  "lastProcessed": "springwood-west-end-2026/west-end-best-friend--unknown.json",
+  "startTime": "2026-07-03T16:18:49.920Z",
+  "lastProcessed": "archduke-west-end-2026/one-minute-critic--matthew-wexler.json",
   "log": []
 }
