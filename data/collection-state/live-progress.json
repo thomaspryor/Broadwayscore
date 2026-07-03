@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-03T12:47:20.689Z",
-  "processed": 83,
-  "failed": 387,
-  "successRate": "17.7%",
+  "updatedAt": "2026-07-03T12:51:42.135Z",
+  "processed": 85,
+  "failed": 435,
+  "successRate": "16.3%",
   "tierBreakdown": {
     "playwright": 55,
     "amp": 0,
-    "browserbase": 8,
+    "browserbase": 9,
     "directCookies": 10,
     "scrapingbee": 4,
     "brightdata": 4,
     "archiveToday": 5,
-    "archive": 6
+    "archive": 8
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-07-03T10:48:39.987Z",
@@ -58,6 +58,17 @@
       "t": "2026-07-03T12:20:17.041Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-07-03T12:51:29.054Z",
+      "event": "bb-session",
+      "session": "e1784baa",
+      "url": "https://deadline.com/2026/07/ira-sachs-on-the-man-i-love-rami-malek-european-inf"
+    },
+    {
+      "t": "2026-07-03T12:51:30.109Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
