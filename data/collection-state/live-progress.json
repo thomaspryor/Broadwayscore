@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-03T12:15:25.603Z",
-  "processed": 71,
-  "failed": 299,
+  "updatedAt": "2026-07-03T12:16:48.701Z",
+  "processed": 73,
+  "failed": 307,
   "successRate": "19.2%",
   "tierBreakdown": {
     "playwright": 49,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 6,
     "directCookies": 10,
     "scrapingbee": 2,
-    "brightdata": 3,
+    "brightdata": 4,
     "archiveToday": 5,
     "archive": 5
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-07-03T10:48:39.987Z",
@@ -36,6 +36,17 @@
       "t": "2026-07-03T12:13:07.407Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-03T12:16:04.303Z",
+      "event": "bb-session",
+      "session": "d6f427a8",
+      "url": "https://variety.com/2026/legit/news/death-of-a-salesman-broadway-review-nathan-l"
+    },
+    {
+      "t": "2026-07-03T12:16:04.657Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
