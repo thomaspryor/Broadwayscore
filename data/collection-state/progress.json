@@ -21,7 +21,10 @@
     "amaze-off-broadway-2026/timeout--adam-feldman.json",
     "manon-off-broadway-2027/broadwayworld--steve-callahan.json",
     "aida-off-broadway-2027/broadwayworld--stephi-wild.json",
-    "medea-off-broadway-2026/hollywood-reporter--david-rooney.json"
+    "medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
+    "macbeth-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+    "macbeth-off-broadway-2026/ew--leah-greenblatt.json",
+    "macbeth-off-broadway-2026/newsday--linda-winer.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
@@ -121,7 +124,14 @@
     "the-unbelievers-off-broadway-2026/financialtimes--sarah-hemming.json",
     "the-unbelievers-off-broadway-2026/i-paper--fiona-mountford.json",
     "the-unbelievers-off-broadway-2026/standard--nick-curtis.json",
-    "the-unbelievers-off-broadway-2026/telegraph--dominic-cavendish.json"
+    "the-unbelievers-off-broadway-2026/telegraph--dominic-cavendish.json",
+    "the-unbelievers-off-broadway-2026/thestage--sam-marlowe.json",
+    "the-unbelievers-off-broadway-2026/times-uk--clive-davis.json",
+    "the-unbelievers-off-broadway-2026/whatsonstage--alun-hood.json",
+    "cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
+    "cosi-fan-tutte-off-broadway-2026/epoch-times--barry-bassis.json",
+    "cosi-fan-tutte-off-broadway-2026/financialtimes--virginia-webb.json",
+    "macbeth-off-broadway-2026/abc-news--peter-travers.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -141,14 +151,17 @@
       "mercury-off-broadway-2026/washpost--doug-feinberg.json",
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
       "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
-      "amaze-off-broadway-2026/timeout--adam-feldman.json"
+      "amaze-off-broadway-2026/timeout--adam-feldman.json",
+      "macbeth-off-broadway-2026/ew--leah-greenblatt.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
       "music-city-off-broadway-2026/deadline--greg-evans.json",
       "data/review-texts/medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
-      "medea-off-broadway-2026/hollywood-reporter--david-rooney.json"
+      "medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
+      "data/review-texts/macbeth-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+      "macbeth-off-broadway-2026/hollywood-reporter--frank-scheck.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -160,11 +173,12 @@
       "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
       "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
       "manon-off-broadway-2027/broadwayworld--steve-callahan.json",
-      "aida-off-broadway-2027/broadwayworld--stephi-wild.json"
+      "aida-off-broadway-2027/broadwayworld--stephi-wild.json",
+      "macbeth-off-broadway-2026/newsday--linda-winer.json"
     ]
   },
   "startTime": "2026-07-03T09:56:00.331Z",
-  "lastProcessed": "the-unbelievers-off-broadway-2026/telegraph--dominic-cavendish.json",
+  "lastProcessed": "macbeth-off-broadway-2026/newsday--linda-winer.json",
   "log": [
     {
       "t": "2026-07-03T10:04:05.835Z",
@@ -185,6 +199,17 @@
     },
     {
       "t": "2026-07-03T10:14:30.930Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-07-03T10:15:58.783Z",
+      "event": "bb-session",
+      "session": "eb68b915",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/daniel-craig-ruth-negga-asia-ka"
+    },
+    {
+      "t": "2026-07-03T10:15:59.201Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }

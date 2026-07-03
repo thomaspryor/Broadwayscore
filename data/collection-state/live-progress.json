@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-03T10:15:49.194Z",
-  "processed": 22,
-  "failed": 98,
-  "successRate": "18.3%",
+  "updatedAt": "2026-07-03T10:16:59.127Z",
+  "processed": 25,
+  "failed": 105,
+  "successRate": "19.2%",
   "tierBreakdown": {
-    "playwright": 16,
+    "playwright": 17,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 6,
     "directCookies": 0,
     "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 4
+    "archive": 5
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-07-03T10:04:05.835Z",
@@ -34,6 +34,17 @@
     },
     {
       "t": "2026-07-03T10:14:30.930Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-07-03T10:15:58.783Z",
+      "event": "bb-session",
+      "session": "eb68b915",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/daniel-craig-ruth-negga-asia-ka"
+    },
+    {
+      "t": "2026-07-03T10:15:59.201Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
