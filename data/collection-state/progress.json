@@ -64,7 +64,10 @@
     "the-balusters-2026/broadwayworld--unknown.json",
     "the-balusters-2026/playbill--unknown.json",
     "schmigadoon-2026/thewrap--robert-hofler.json",
-    "schmigadoon-2026/theater-pizzazz--eyal-solomon.json"
+    "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
+    "proof-2026/deadline--unknown.json",
+    "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
+    "proof-2026/playbill--unknown.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
@@ -351,7 +354,14 @@
     "avenue-q-west-end-2026/nytimes--ben-brantley.json",
     "avenue-q-west-end-2026/variety--david-rooney.json",
     "avenue-q-west-end-2026/theatermania--andy-propst.json",
-    "proof-2026/680newscom--gloria-martin.json"
+    "proof-2026/680newscom--gloria-martin.json",
+    "avenue-q-west-end-2026/1883-magazine--nick-barr.json",
+    "avenue-q-west-end-2026/backstage--david-sheward.json",
+    "avenue-q-west-end-2026/talkinbroadway--matthew-murray.json",
+    "avenue-q-west-end-2026/telegraph--marianka-swain.json",
+    "avenue-q-west-end-2026/theupcoming--sunny-morgan.json",
+    "avenue-q-west-end-2026/valentine-dsides--unknown.json",
+    "avenue-q-west-end-2026/west-end-best-friend--jacob-bush.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -400,12 +410,16 @@
       "the-rocky-horror-show-2026/ew--dalton-ross.json",
       "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
       "the-rocky-horror-show-2026/playbill--unknown.json",
-      "the-balusters-2026/playbill--unknown.json"
+      "the-balusters-2026/playbill--unknown.json",
+      "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
+      "proof-2026/playbill--unknown.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
-      "music-city-off-broadway-2026/deadline--greg-evans.json"
+      "music-city-off-broadway-2026/deadline--greg-evans.json",
+      "data/review-texts/proof-2026/deadline--unknown.json",
+      "proof-2026/deadline--unknown.json"
     ],
     "directCookies": [
       "cyrano-de-bergerac-west-end-2026/times-uk--dominic-maxwell.json",
@@ -443,7 +457,7 @@
     ]
   },
   "startTime": "2026-07-03T10:40:44.420Z",
-  "lastProcessed": "proof-2026/680newscom--gloria-martin.json",
+  "lastProcessed": "proof-2026/playbill--unknown.json",
   "log": [
     {
       "t": "2026-07-03T10:48:39.987Z",
@@ -453,6 +467,17 @@
     },
     {
       "t": "2026-07-03T10:48:40.617Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-03T12:13:07.004Z",
+      "event": "bb-session",
+      "session": "8197b27b",
+      "url": "https://deadline.com/2026/04/proof-broadway-review-ayo-edebiri-don-cheadle-kara-"
+    },
+    {
+      "t": "2026-07-03T12:13:07.407Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
     }
