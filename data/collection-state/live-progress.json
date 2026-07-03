@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-07-03T10:20:06.565Z",
+  "updatedAt": "2026-07-03T10:31:23.252Z",
   "processed": 29,
-  "failed": 121,
-  "successRate": "19.3%",
+  "failed": 128,
+  "successRate": "18.5%",
   "tierBreakdown": {
     "playwright": 19,
     "amp": 0,
@@ -10,10 +10,10 @@
     "directCookies": 1,
     "scrapingbee": 2,
     "brightdata": 1,
-    "archiveToday": 0,
+    "archiveToday": 1,
     "archive": 5
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-07-03T10:04:05.835Z",
@@ -47,6 +47,17 @@
       "t": "2026-07-03T10:15:59.201Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-07-03T10:31:05.923Z",
+      "event": "bb-session",
+      "session": "da875944",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2649682"
+    },
+    {
+      "t": "2026-07-03T10:31:06.344Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
