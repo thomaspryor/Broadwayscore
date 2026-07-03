@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-03T12:20:51.742Z",
-  "processed": 55,
-  "failed": 315,
-  "successRate": "14.9%",
+  "updatedAt": "2026-07-03T12:21:21.224Z",
+  "processed": 81,
+  "failed": 339,
+  "successRate": "19.3%",
   "tierBreakdown": {
-    "playwright": 38,
+    "playwright": 53,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 8,
     "directCookies": 10,
-    "scrapingbee": 2,
-    "brightdata": 0,
-    "archiveToday": 9,
-    "archive": 4
+    "scrapingbee": 4,
+    "brightdata": 4,
+    "archiveToday": 5,
+    "archive": 6
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-07-03T10:48:39.987Z",
@@ -27,10 +27,37 @@
       "domain": "deadline.com"
     },
     {
-      "t": "2026-07-03T12:11:36.494Z",
+      "t": "2026-07-03T12:13:07.004Z",
       "event": "bb-session",
-      "session": "347d1ce3",
-      "url": "https://www.inkl.com/news/the-guilty-review-russell-tovey-is-commanding-in-cop-t"
+      "session": "8197b27b",
+      "url": "https://deadline.com/2026/04/proof-broadway-review-ayo-edebiri-don-cheadle-kara-"
+    },
+    {
+      "t": "2026-07-03T12:13:07.407Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-03T12:16:04.303Z",
+      "event": "bb-session",
+      "session": "d6f427a8",
+      "url": "https://variety.com/2026/legit/news/death-of-a-salesman-broadway-review-nathan-l"
+    },
+    {
+      "t": "2026-07-03T12:16:04.657Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-03T12:20:16.639Z",
+      "event": "bb-session",
+      "session": "d5a7e29d",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mariska-hargitay-to-make-broadw"
+    },
+    {
+      "t": "2026-07-03T12:20:17.041Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
