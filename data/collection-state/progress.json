@@ -21,7 +21,8 @@
     "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
     "amaze-off-broadway-2026/timeout--adam-feldman.json",
     "aida-off-broadway-2027/broadwayworld--stephi-wild.json",
-    "miles-for-mary-off-broadway-2026/broadwayworld--bww-news-desk.json"
+    "miles-for-mary-off-broadway-2026/broadwayworld--bww-news-desk.json",
+    "medea-off-broadway-2026/hollywood-reporter--frank-scheck.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
@@ -101,7 +102,16 @@
     "miles-for-mary-off-broadway-2026/culturebot--jennifer-cayer.json",
     "miles-for-mary-off-broadway-2026/front-row-center--tulis-mccall.json",
     "miles-for-mary-off-broadway-2026/playbill--olivia-clement.json",
-    "miles-for-mary-off-broadway-2026/theatre-arts-daily--mark-johnson.json"
+    "miles-for-mary-off-broadway-2026/theatre-arts-daily--mark-johnson.json",
+    "miles-for-mary-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
+    "miles-for-mary-off-broadway-2026/village-voice--david-cote.json",
+    "samson-et-dalila-off-broadway-2026/operawire--david-salazar.json",
+    "tosca-off-broadway-2026/huffpost--wilborn-hampton.json",
+    "medea-off-broadway-2026/timeout--adam-feldman.json",
+    "medea-off-broadway-2026/dailybeast--tim-teeman.json",
+    "medea-off-broadway-2026/i-paper--fiona-mountford.json",
+    "medea-off-broadway-2026/independent--alice-saville.json",
+    "medea-off-broadway-2026/standard--nick-curtis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -128,23 +138,16 @@
       "data/review-texts/the-mystery-of-edwin-drood-amt-theater-off-broadway-2026/nytimes--brittani-samuel.json",
       "the-mystery-of-edwin-drood-amt-theater-off-broadway-2026/nytimes--brittani-samuel.json",
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
-      "music-city-off-broadway-2026/deadline--greg-evans.json"
+      "music-city-off-broadway-2026/deadline--greg-evans.json",
+      "data/review-texts/medea-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+      "medea-off-broadway-2026/hollywood-reporter--frank-scheck.json"
     ],
     "directCookies": [],
     "scrapingbee": [
       "girl-interrupted-off-broadway-2026/playbill--unknown.json"
     ],
-    "scrapingbee": [],
-    "brightdata": [
-      "camping-off-broadway-2026/talkinbroadway--unknown.json"
-    ],
-    "archiveToday": [
-      "data/review-texts/the-guilty-west-end-2026/thestage--unknown.json",
-      "data/review-texts/to-kill-a-mockingbird-west-end-2026/tribune--unknown.json",
-      "data/review-texts/a-midsummer-nights-dream-west-end-2026/thestage--unknown.json",
-      "data/review-texts/springwood-west-end-2026/thestage--unknown.json",
-      "data/review-texts/archduke-west-end-2026/thestage--unknown.json"
-    ],
+    "brightdata": [],
+    "archiveToday": [],
     "archive": [
       "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
       "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
@@ -152,7 +155,7 @@
     ]
   },
   "startTime": "2026-07-03T09:15:44.858Z",
-  "lastProcessed": "miles-for-mary-off-broadway-2026/theatre-arts-daily--mark-johnson.json",
+  "lastProcessed": "medea-off-broadway-2026/standard--nick-curtis.json",
   "log": [
     {
       "t": "2026-07-03T09:22:18.386Z",
@@ -175,6 +178,17 @@
       "t": "2026-07-03T09:23:44.739Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-03T09:31:48.902Z",
+      "event": "bb-session",
+      "session": "6a29a519",
+      "url": "https://www.hollywoodreporter.com/news/general-news/rose-byrne-bobby-cannavale-s"
+    },
+    {
+      "t": "2026-07-03T09:31:49.897Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
