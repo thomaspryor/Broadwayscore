@@ -1,19 +1,5 @@
 [
   {
-    "startedAt": "2026-06-30T14:01:15.197Z",
-    "completedAt": "2026-06-30T14:01:21.212Z",
-    "totalReviews": 11,
-    "processed": 1,
-    "skipped": 10,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 9607,
-      "output": 300,
-      "total": 14733
-    },
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-06-30T14:34:08.702Z",
     "completedAt": "2026-06-30T14:34:08.891Z",
     "totalReviews": 70,
@@ -331061,6 +331047,26 @@
   {
     "startedAt": "2026-07-03T00:05:00.711Z",
     "completedAt": "2026-07-03T00:05:00.904Z",
+    "totalReviews": 20,
+    "processed": 0,
+    "skipped": 19,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "errorDetails": [
+      {
+        "showId": "a-walk-on-the-moon-off-broadway-2026",
+        "outletId": "off-off-online",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-07-03T00:19:41.158Z",
+    "completedAt": "2026-07-03T00:19:41.342Z",
     "totalReviews": 20,
     "processed": 0,
     "skipped": 19,
