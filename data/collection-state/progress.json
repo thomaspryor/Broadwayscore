@@ -1125,7 +1125,17 @@
     "hadestown-west-end-2024/stage-left--robert-russo.json",
     "hadestown-west-end-2024/stagezine--david-nounou.json",
     "hadestown-west-end-2024/talkinbroadway--howard-miller.json",
-    "hadestown-west-end-2024/theater-pizzazz--carole-di-tosti.json"
+    "hadestown-west-end-2024/theater-pizzazz--carole-di-tosti.json",
+    "hadestown-west-end-2024/theater-scene--victor-gluck.json",
+    "hadestown-west-end-2024/theatres-leiter-side--samuel-l-leiter.json",
+    "hadestown-west-end-2024/times-square-chronicles--unknown.json",
+    "hadestown-west-end-2024/times-uk--clive-davis.json",
+    "hadestown-west-end-2024/towleroad--naveen-kumar.json",
+    "hadestown-west-end-2024/vox--constance-grady.json",
+    "hadestown-west-end-2024/washpost--peter-marks.json",
+    "hadestown-west-end-2024/whatsonoffbroadway--scott-mitchell.json",
+    "hadestown-west-end-2024/wnyc--jennifer-vanasco.json",
+    "hadestown-west-end-2024/london-box-office--phil-willmott.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1213,7 +1223,9 @@
       "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
       "oh-mary-west-end-2025/deadline--greg-evans.json",
       "data/review-texts/maybe-happy-ending-2024/variety--unknown.json",
-      "maybe-happy-ending-2024/variety--unknown.json"
+      "maybe-happy-ending-2024/variety--unknown.json",
+      "data/review-texts/hadestown-west-end-2024/times-uk--clive-davis.json",
+      "hadestown-west-end-2024/times-uk--clive-davis.json"
     ],
     "directCookies": [
       "much-ado-about-nothing-globe-off-west-end-2026/times-uk--ann-treneman.json",
@@ -1285,7 +1297,7 @@
     ]
   },
   "startTime": "2026-07-02T18:54:33.720Z",
-  "lastProcessed": "hadestown-west-end-2024/theater-pizzazz--carole-di-tosti.json",
+  "lastProcessed": "hadestown-west-end-2024/london-box-office--phil-willmott.json",
   "log": [
     {
       "t": "2026-07-02T19:50:12.522Z",
@@ -1407,6 +1419,17 @@
       "t": "2026-07-03T06:18:03.472Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-03T06:26:36.859Z",
+      "event": "bb-session",
+      "session": "48d3611f",
+      "url": "https://www.thetimes.co.uk/article/hadestown-review-magical-folk-opera-that-touc"
+    },
+    {
+      "t": "2026-07-03T06:26:37.306Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
     }
   ]
 }

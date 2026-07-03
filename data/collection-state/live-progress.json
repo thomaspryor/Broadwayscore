@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-07-03T06:24:58.201Z",
+  "updatedAt": "2026-07-03T06:27:43.466Z",
   "processed": 115,
-  "failed": 1009,
-  "successRate": "10.2%",
+  "failed": 1019,
+  "successRate": "10.1%",
   "tierBreakdown": {
     "playwright": 65,
     "amp": 0,
-    "browserbase": 16,
+    "browserbase": 18,
     "directCookies": 13,
     "scrapingbee": 14,
     "brightdata": 6,
     "archiveToday": 15,
     "archive": 10
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 8,
   "recentActivity": [
-    {
-      "t": "2026-07-02T22:31:18.521Z",
-      "event": "bb-session",
-      "session": "842d8e0a",
-      "url": "https://www.thestage.co.uk/reviews/springwood-review-hampstead-theatre-london-ro"
-    },
-    {
-      "t": "2026-07-02T22:31:19.148Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
     {
       "t": "2026-07-03T03:03:07.168Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-07-03T06:18:03.472Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-03T06:26:36.859Z",
+      "event": "bb-session",
+      "session": "48d3611f",
+      "url": "https://www.thetimes.co.uk/article/hadestown-review-magical-folk-opera-that-touc"
+    },
+    {
+      "t": "2026-07-03T06:26:37.306Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
     }
   ]
 }
