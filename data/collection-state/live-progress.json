@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-03T09:32:54.734Z",
-  "processed": 23,
-  "failed": 97,
+  "updatedAt": "2026-07-03T09:34:43.181Z",
+  "processed": 25,
+  "failed": 105,
   "successRate": "19.2%",
   "tierBreakdown": {
-    "playwright": 16,
+    "playwright": 17,
     "amp": 0,
-    "browserbase": 6,
+    "browserbase": 8,
     "directCookies": 0,
     "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 3
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-07-03T09:22:18.386Z",
@@ -45,6 +45,17 @@
     },
     {
       "t": "2026-07-03T09:31:49.897Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-07-03T09:34:10.113Z",
+      "event": "bb-session",
+      "session": "ac42ad1a",
+      "url": "https://www.hollywoodreporter.com/news/general-news/macbeth-theater-review-12503"
+    },
+    {
+      "t": "2026-07-03T09:34:11.080Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
