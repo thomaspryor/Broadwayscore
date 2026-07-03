@@ -13,7 +13,10 @@
     "the-mystery-of-edwin-drood-amt-theater-off-broadway-2026/nytimes--brittani-samuel.json",
     "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json",
     "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
-    "mercury-off-broadway-2026/washpost--doug-feinberg.json"
+    "mercury-off-broadway-2026/washpost--doug-feinberg.json",
+    "music-city-off-broadway-2026/deadline--greg-evans.json",
+    "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
+    "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
@@ -31,7 +34,14 @@
     "mercury-off-broadway-2026/nytimes--ben-brantley.json",
     "mercury-off-broadway-2026/all-that-dazzles-uk--unknown.json",
     "mercury-off-broadway-2026/theatrecat--unknown.json",
-    "milk-and-honey-amt-theater-off-broadway-2026/nytimes--rachel-sherman.json"
+    "milk-and-honey-amt-theater-off-broadway-2026/nytimes--rachel-sherman.json",
+    "milk-and-honey-amt-theater-off-broadway-2026/variety--brent-lang.json",
+    "music-city-off-broadway-2026/observer--unknown.json",
+    "music-city-off-broadway-2026/dc-theater-arts--isabella-artino.json",
+    "music-city-off-broadway-2026/maryland-theatre-guide--posted-by.json",
+    "music-city-off-broadway-2026/stageandcinema--lynne-weiss.json",
+    "gotta-dance-off-broadway-2026/theatermania--linda-buchwald.json",
+    "gotta-dance-off-broadway-2026/the-interested-bystander--cary-wong.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -47,12 +57,15 @@
       "small-off-broadway-2026/culturesauce--thom-geier.json",
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json",
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
-      "mercury-off-broadway-2026/washpost--doug-feinberg.json"
+      "mercury-off-broadway-2026/washpost--doug-feinberg.json",
+      "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/the-mystery-of-edwin-drood-amt-theater-off-broadway-2026/nytimes--brittani-samuel.json",
-      "the-mystery-of-edwin-drood-amt-theater-off-broadway-2026/nytimes--brittani-samuel.json"
+      "the-mystery-of-edwin-drood-amt-theater-off-broadway-2026/nytimes--brittani-samuel.json",
+      "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
+      "music-city-off-broadway-2026/deadline--greg-evans.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -60,10 +73,12 @@
     ],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
+    ]
   },
   "startTime": "2026-07-03T09:15:44.858Z",
-  "lastProcessed": "milk-and-honey-amt-theater-off-broadway-2026/nytimes--rachel-sherman.json",
+  "lastProcessed": "gotta-dance-off-broadway-2026/the-interested-bystander--cary-wong.json",
   "log": [
     {
       "t": "2026-07-03T09:22:18.386Z",
@@ -75,6 +90,17 @@
       "t": "2026-07-03T09:22:19.338Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-03T09:23:43.754Z",
+      "event": "bb-session",
+      "session": "6c481ca5",
+      "url": "https://deadline.com/2026/04/music-city-jt-harding-musical-off-broadway-12368618"
+    },
+    {
+      "t": "2026-07-03T09:23:44.739Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
