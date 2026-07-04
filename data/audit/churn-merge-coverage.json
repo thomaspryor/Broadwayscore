@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-04T20:04:01.258Z",
+    "generatedAt": "2026-07-04T21:20:55.675Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -10,13 +10,13 @@
     "minChurn": 30,
     "flaggedCount": 4,
     "exemptCount": 7,
-    "coveredCount": 34,
-    "highChurnTracked": 45
+    "coveredCount": 33,
+    "highChurnTracked": 44
   },
   "flagged": [
     {
       "path": "data/audit/processed-feedback.json",
-      "churn": 80
+      "churn": 81
     },
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
@@ -34,7 +34,7 @@
   "exempt": [
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 125
+      "churn": 121
     },
     {
       "path": "public/data/shows/a-walk-on-the-moon-off-broadway-2026.json",
@@ -46,11 +46,11 @@
     },
     {
       "path": "data/commercial-rss-state.json",
-      "churn": 52
+      "churn": 51
     },
     {
       "path": "public/data/shows/glengarry-glen-ross-west-end-2026.json",
-      "churn": 41
+      "churn": 40
     },
     {
       "path": "public/data/shows/birthright-off-broadway-2026.json",
@@ -58,28 +58,28 @@
     },
     {
       "path": "data/show-score-urls.json",
-      "churn": 32
+      "churn": 33
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 1045,
+      "churn": 1026,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 1017,
+      "churn": 998,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 487,
+      "churn": 484,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 206,
+      "churn": 201,
       "mergeAttr": "union"
     },
     {
@@ -94,7 +94,7 @@
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 151,
+      "churn": 148,
       "mergeAttr": "ours"
     },
     {
@@ -119,27 +119,22 @@
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 71,
+      "churn": 70,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/show-review-gap.json",
-      "churn": 58,
+      "churn": 56,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/unknown-aggregator-outlets.json",
-      "churn": 58,
+      "churn": 56,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/gap-audit-checkpoint.json",
-      "churn": 55,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 50,
+      "churn": 53,
       "mergeAttr": "ours"
     },
     {
@@ -148,13 +143,13 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/poller-backoff/to-kill-a-mockingbird-west-end-2026.json",
-      "churn": 46,
+      "path": "data/audit/opening-night-completeness-state.json",
+      "churn": 49,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/drift-state.json",
-      "churn": 45,
+      "path": "data/audit/poller-backoff/to-kill-a-mockingbird-west-end-2026.json",
+      "churn": 46,
       "mergeAttr": "ours"
     },
     {
@@ -193,17 +188,22 @@
       "mergeAttr": "ours"
     },
     {
+      "path": "data/audit/drift-state.json",
+      "churn": 43,
+      "mergeAttr": "ours"
+    },
+    {
       "path": "data/audit/poller-backoff/cyrano-de-bergerac-west-end-2026.json",
       "churn": 43,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/poller-backoff/the-guilty-west-end-2026.json",
-      "churn": 37,
+      "path": "data/audit/poller-backoff/labelless-off-broadway-2026.json",
+      "churn": 36,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/poller-backoff/labelless-off-broadway-2026.json",
+      "path": "data/audit/poller-backoff/the-guilty-west-end-2026.json",
       "churn": 36,
       "mergeAttr": "ours"
     },
@@ -224,12 +224,7 @@
     },
     {
       "path": "data/audit/gather-collisions.json",
-      "churn": 32,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/url-mismatch-suspects.json",
-      "churn": 30,
+      "churn": 31,
       "mergeAttr": "ours"
     }
   ]
