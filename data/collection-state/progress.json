@@ -77,7 +77,11 @@
     "every-brilliant-thing-2026/theatermania--hayley-levitt.json",
     "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json",
     "oh-mary-west-end-2025/nytg--olivia-rook.json",
-    "oh-mary-west-end-2025/nytimes--jesse-green.json"
+    "oh-mary-west-end-2025/nytimes--jesse-green.json",
+    "oh-mary-west-end-2025/variety--brent-lang.json",
+    "oh-mary-west-end-2025/variety--naman-ramachandran.json",
+    "oh-mary-west-end-2025/deadline--greg-evans.json",
+    "oh-mary-west-end-2025/theatermania--zachary-stewart.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
@@ -1093,7 +1097,13 @@
     "black-is-the-color-of-my-voice-west-end-2026/standard--david-jays.json",
     "oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json",
     "oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
-    "oh-mary-west-end-2025/nyt-theater--jonathan-mandell.json"
+    "oh-mary-west-end-2025/nyt-theater--jonathan-mandell.json",
+    "oh-mary-west-end-2025/vulture--sara-holdren.json",
+    "oh-mary-west-end-2025/broadwaynews--brittani-samuel.json",
+    "oh-mary-west-end-2025/ew--christian-holub.json",
+    "oh-mary-west-end-2025/new-york-sun--elysa-gardner.json",
+    "oh-mary-west-end-2025/nydailynews--chris-jones.json",
+    "oh-mary-west-end-2025/nypost--johnny-oleksinski.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1151,7 +1161,8 @@
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
       "every-brilliant-thing-2026/theatermania--hayley-levitt.json",
       "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json",
-      "oh-mary-west-end-2025/nytg--olivia-rook.json"
+      "oh-mary-west-end-2025/nytg--olivia-rook.json",
+      "oh-mary-west-end-2025/theatermania--zachary-stewart.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1166,7 +1177,13 @@
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
       "music-city-off-broadway-2026/deadline--greg-evans.json",
       "data/review-texts/every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
-      "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json"
+      "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/oh-mary-west-end-2025/variety--brent-lang.json",
+      "oh-mary-west-end-2025/variety--brent-lang.json",
+      "data/review-texts/oh-mary-west-end-2025/variety--naman-ramachandran.json",
+      "oh-mary-west-end-2025/variety--naman-ramachandran.json",
+      "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
+      "oh-mary-west-end-2025/deadline--greg-evans.json"
     ],
     "directCookies": [
       "glengarry-glen-ross-west-end-2026/times-uk--ann-treneman.json",
@@ -1225,7 +1242,7 @@
     ]
   },
   "startTime": "2026-07-03T16:18:57.316Z",
-  "lastProcessed": "oh-mary-west-end-2025/nytimes--jesse-green.json",
+  "lastProcessed": "oh-mary-west-end-2025/theatermania--zachary-stewart.json",
   "log": [
     {
       "t": "2026-07-03T16:22:51.373Z",
@@ -1347,6 +1364,39 @@
       "t": "2026-07-04T06:07:25.431Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-07-04T06:09:57.508Z",
+      "event": "bb-session",
+      "session": "dd2dac7a",
+      "url": "https://variety.com/2026/legit/news/maya-rudolph-oh-mary-broadway-debut-12366856"
+    },
+    {
+      "t": "2026-07-04T06:09:58.109Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-04T06:10:16.172Z",
+      "event": "bb-session",
+      "session": "54f45070",
+      "url": "https://variety.com/2026/legit/news/maya-rudolph-oh-mary-broadway-debut-12366856"
+    },
+    {
+      "t": "2026-07-04T06:10:16.756Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-04T06:10:36.455Z",
+      "event": "bb-session",
+      "session": "9069fee6",
+      "url": "https://deadline.com/2025/12/simu-liu-broadway-oh-mary-1236649862/"
+    },
+    {
+      "t": "2026-07-04T06:10:36.995Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
