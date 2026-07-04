@@ -1090,11 +1090,48 @@ function normalizePublishDate(dateStr) {
  * Used by aggregator scrapers to prevent creating duplicate files when different
  * scrapers use different outlet name formats (e.g., "variety-frank-rizzo" vs "variety").
  */
-function findExistingReviewFile(showDir, outletName, criticName) {
+function findExistingReviewFile(showDir, outletName, criticName, url = null) {
   if (!fs.existsSync(showDir)) return null;
 
   const normalizedOutlet = normalizeOutlet(outletName);
   const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json'));
+
+  // Pass 0: match by canonical URL WITHIN THE SAME OUTLET. A review URL uniquely
+  // identifies one review, so a re-scrape that extracts a DIFFERENT byline from
+  // the page's author list (e.g. WhatsOnStage/Times pages whose byline selector
+  // is non-deterministic — one URL → 9 files "whatsonstage--alex-wood",
+  // "--alun-hood", … all same body) must merge into the existing file, not spawn
+  // a byline variant. Filename is keyed on criticName, so without this the
+  // variants accumulate, the write-guard marks them url-collision duplicates, and
+  // the real review ends up buried (invalid tier + circular duplicateOf) and never
+  // scores. Byline-explosion detector: scripts/audit-review-url-clusters.js.
+  //
+  // The same-outlet gate is REQUIRED: aggregator roundup URLs are legitimately
+  // shared across outlets (one WET/Show-Score/Stagedoor roundup URL backs the
+  // Telegraph, FT, Guardian star-stubs — distinct outlets, distinct scores; see
+  // feedback_aggregator_roundup_urls_shared_across_outlets). Matching on URL
+  // alone would collapse those into one and lose real reviews. canonicalReviewUrl
+  // (strips query/hash/trailing-slash — the SAME URL identity the detector uses)
+  // is intentionally stronger than the write-guard's normalizeUrl. Skips
+  // wrongProduction/duplicateOf files so contamination is never a merge target.
+  if (url) {
+    const { canonicalReviewUrl } = require('./review-url-clusters');
+    const canonUrl = canonicalReviewUrl(url);
+    if (canonUrl) {
+      for (const file of files) {
+        const filePath = path.join(showDir, file);
+        try {
+          const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+          if (!data || !data.url || data.wrongProduction || data.duplicateOf) continue;
+          const fileOutlet = normalizeOutlet(data.outletId || file.split('--')[0]);
+          if (fileOutlet !== normalizedOutlet) continue;
+          if (canonicalReviewUrl(data.url) === canonUrl) {
+            return { path: filePath, filename: file, data };
+          }
+        } catch { /* unreadable — skip */ }
+      }
+    }
+  }
 
   // Pass 1: match by filename prefix (fast path — no file reads needed)
   for (const file of files) {
