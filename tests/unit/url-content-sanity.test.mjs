@@ -430,4 +430,30 @@ describe('validateContentMentionsShow — short / one-word title recovery (Sting
       '<title>Sting at the Young Vic – review</title>', 'Sting', 'sting-west-end-2026');
     assert.strictEqual(r.valid, false);
   });
+
+  // ship-check P1 (2026-07-04, two-model): the single-mention drop must require the headline
+  // to LEAD with the show token, not merely CONTAIN it — htmlTitleMatch is substring-based and
+  // false-matches short/common titles, even as whole words ("Company" in "Theatre Company").
+  const INCIDENTAL = (word) => ('X ' + word + ' takes the stage in a bold new production. '.padEnd(200, 'x') +
+    (' The show is a meditation; this production unfolds across ninety minutes, the staging spare. '.repeat(20))).slice(0, 3706);
+
+  test('FALSE-ACCEPT GUARD: "Cats" vs <title>The Aristocats review</title>, 1 incidental mention → REJECTED', () => {
+    const r = validateContentMentionsShow(INCIDENTAL('cats'), '<title>The Aristocats review - SomeSite</title>', 'Cats', 'cats-2026');
+    assert.strictEqual(r.valid, false);
+  });
+
+  test('FALSE-ACCEPT GUARD: "Company" vs <title>Manhattan Theatre Company season</title> (whole-word substring) → REJECTED', () => {
+    const r = validateContentMentionsShow(INCIDENTAL('company'), '<title>Manhattan Theatre Company announces new season</title>', 'Company', 'company-2026');
+    assert.strictEqual(r.valid, false);
+  });
+
+  test('FALSE-ACCEPT GUARD: "Sting" vs <title>Stingray at the aquarium</title> → REJECTED', () => {
+    const r = validateContentMentionsShow(INCIDENTAL('jellyfish'), '<title>Stingray at the aquarium — a guide</title>', 'Sting', 'sting-2026');
+    assert.strictEqual(r.valid, false);
+  });
+
+  test('genuine review whose headline LEADS with a common-word title still ACCEPTED', () => {
+    const r = validateContentMentionsShow(INCIDENTAL('Company'), '<title>Company review — a dazzling revival | The Guardian</title>', 'Company', 'company-2026');
+    assert.strictEqual(r.valid, true);
+  });
 });

@@ -210,6 +210,41 @@ test('CARVE-OUT: re-discovery of the OLD production URL (out of window) is still
   assert.equal(result.reason, 'stale-flag-on-existing-file');
 });
 
+test('CARVE-OUT: pre-opening window is 30d, not 90d — a review 60d before opening stays BLOCKED (ship-check P1)', () => {
+  const showDir = seedShow('tkam-we-2026-preopen', {
+    'standard--nick-curtis.json': {
+      outletId: 'standard', criticName: 'Nick Curtis',
+      url: 'https://www.standard.co.uk/culture/theatre/tkam-gielgud-2022.html',
+      publishDate: '2022-04-01', wrongProduction: true,
+    },
+  });
+  // 60 days before opening — inside the OLD 90d window, outside the tightened 30d window.
+  const result = detectIngestCollision({
+    showDir, outletId: 'standard', criticName: 'Nick Curtis',
+    url: 'https://www.standard.co.uk/culture/theatre/tkam-early-preview.html',
+    publishDate: '2026-05-01', // opening 2026-06-30 → 60 days prior
+    openingDate: '2026-06-30',
+  });
+  assert.equal(result.ok, false, 'a review 60d pre-opening is not proven current-production — stays blocked');
+});
+
+test('CARVE-OUT: a review within 30d pre-opening (late previews) is ALLOWED', () => {
+  const showDir = seedShow('tkam-we-2026-previews', {
+    'standard--nick-curtis.json': {
+      outletId: 'standard', criticName: 'Nick Curtis',
+      url: 'https://www.standard.co.uk/culture/theatre/tkam-gielgud-2022.html',
+      publishDate: '2022-04-01', wrongProduction: true,
+    },
+  });
+  const result = detectIngestCollision({
+    showDir, outletId: 'standard', criticName: 'Nick Curtis',
+    url: 'https://www.standard.co.uk/culture/theatre/tkam-wyndhams-preview.html',
+    publishDate: '2026-06-20', // 10 days before opening — legit late-preview review
+    openingDate: '2026-06-30',
+  });
+  assert.equal(result.ok, true);
+});
+
 test('CARVE-OUT: dateless incoming stays BLOCKED even with openingDate (cannot prove current production)', () => {
   const showDir = seedShow('tkam-we-2026-nodate', {
     'standard--nick-curtis.json': {
