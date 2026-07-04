@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-07-04T06:06:04.810Z",
-  "processed": 72,
-  "failed": 990,
-  "successRate": "6.8%",
+  "updatedAt": "2026-07-04T06:08:16.645Z",
+  "processed": 75,
+  "failed": 997,
+  "successRate": "7.0%",
   "tierBreakdown": {
-    "playwright": 51,
+    "playwright": 52,
     "amp": 0,
-    "browserbase": 10,
+    "browserbase": 12,
     "directCookies": 9,
-    "scrapingbee": 4,
+    "scrapingbee": 5,
     "brightdata": 4,
     "archiveToday": 22,
     "archive": 4
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-07-03T16:22:51.373Z",
-      "event": "bb-session",
-      "session": "d88f01aa",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-pride-and-"
-    },
-    {
-      "t": "2026-07-03T16:22:51.804Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
     {
       "t": "2026-07-03T16:24:43.046Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-07-04T06:05:11.935Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-04T06:07:24.902Z",
+      "event": "bb-session",
+      "session": "b45cdc5a",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/tracee-ellis-ross-broadway-ever"
+    },
+    {
+      "t": "2026-07-04T06:07:25.431Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
