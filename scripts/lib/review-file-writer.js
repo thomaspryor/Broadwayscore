@@ -348,7 +348,8 @@ function createOrMergeReviewFile(showId, input, options = {}) {
         const existingForCheck = findExistingReviewFile(
           showDirForCheck,
           outletId,
-          (input.criticName && input.criticName !== 'Unknown') ? input.criticName : null
+          (input.criticName && input.criticName !== 'Unknown') ? input.criticName : null,
+          input.url
         );
         const existingData = existingForCheck && existingForCheck.data;
         const humanCleared = existingData && (
@@ -466,7 +467,7 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   // Cross-scraper dedup: find by outlet+critic regardless of filename format.
   // Use the refined outletId (not input.outlet) so URL-based disambiguation is respected —
   // e.g. after refinement, outletId='timeout-london' not 'timeout' for timeout.com/london URLs.
-  const existing = findExistingReviewFile(showDir, outletId, criticName !== 'Unknown' ? criticName : null);
+  const existing = findExistingReviewFile(showDir, outletId, criticName !== 'Unknown' ? criticName : null, input.url);
 
   if (existing && existing.data) {
     return _mergeIntoExisting(existing.path, existing.data, { showId, outletId, input, fields, criticName, dryRun, onMerge });
