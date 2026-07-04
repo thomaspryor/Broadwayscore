@@ -50,7 +50,9 @@
     "proof-2026/playbill--unknown.json",
     "the-fear-of-13-2026/broadwayworld--unknown.json",
     "the-fear-of-13-2026/one-minute-critic--matthew-wexler.json",
-    "the-fear-of-13-2026/playbill--unknown.json"
+    "the-fear-of-13-2026/playbill--unknown.json",
+    "death-of-a-salesman-2026/variety--marilyn-stasio.json",
+    "death-of-a-salesman-2026/vulture--rob-weinert-kendt.json"
   ],
   "failed": [
     "jesus-christ-superstar-west-end-2026/hollywood-reporter--david-rooney.json",
@@ -341,7 +343,15 @@
     "the-fear-of-13-2026/thestage--sam-marlowe.json",
     "the-fear-of-13-2026/times-uk--clive-davis.json",
     "the-fear-of-13-2026/whatsonstage--alex-wood.json",
-    "the-fear-of-13-2026/independent--alice-saville.json"
+    "the-fear-of-13-2026/independent--alice-saville.json",
+    "titanique-2026/the-queer-review--james-kleinmann.json",
+    "titanique-2026/wsj--charles-isherwood.json",
+    "titanique-2026/playbill--unknown.json",
+    "death-of-a-salesman-2026/broadwaynews--brittani-samuel.json",
+    "death-of-a-salesman-2026/newsday--linda-winer.json",
+    "death-of-a-salesman-2026/newsweek--joe-westerfield.json",
+    "death-of-a-salesman-2026/backstage--erik-haagensen.json",
+    "death-of-a-salesman-2026/bloomberg--jeremy-gerard.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -390,7 +400,9 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/proof-2026/deadline--unknown.json",
-      "proof-2026/deadline--unknown.json"
+      "proof-2026/deadline--unknown.json",
+      "data/review-texts/death-of-a-salesman-2026/variety--marilyn-stasio.json",
+      "death-of-a-salesman-2026/variety--marilyn-stasio.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -400,7 +412,8 @@
       "the-balusters-2026/broadwayworld--unknown.json",
       "schmigadoon-2026/thewrap--robert-hofler.json",
       "proof-2026/cititour--brian-scott-lipton.json",
-      "the-fear-of-13-2026/broadwayworld--unknown.json"
+      "the-fear-of-13-2026/broadwayworld--unknown.json",
+      "death-of-a-salesman-2026/vulture--rob-weinert-kendt.json"
     ],
     "archiveToday": [
       "data/review-texts/camping-off-broadway-2026/talkinbroadway--unknown.json"
@@ -414,7 +427,7 @@
     ]
   },
   "startTime": "2026-07-04T10:30:28.285Z",
-  "lastProcessed": "the-fear-of-13-2026/independent--alice-saville.json",
+  "lastProcessed": "death-of-a-salesman-2026/bloomberg--jeremy-gerard.json",
   "log": [
     {
       "t": "2026-07-04T11:24:27.755Z",
@@ -437,6 +450,17 @@
       "t": "2026-07-04T11:49:21.732Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-04T11:52:18.282Z",
+      "event": "bb-session",
+      "session": "2b0c92cf",
+      "url": "https://variety.com/2026/legit/news/death-of-a-salesman-broadway-review-nathan-l"
+    },
+    {
+      "t": "2026-07-04T11:52:18.703Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
