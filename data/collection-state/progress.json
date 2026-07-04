@@ -74,9 +74,7 @@
     "oh-mary-west-end-2025/theatermania--zachary-stewart.json",
     "oh-mary-west-end-2025/timeout--adam-feldman.json",
     "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json",
-    "birthright-off-broadway-2026/broadwayworld--aa-cristi.json",
-    "camping-off-broadway-2026/theatrely--unknown.json",
-    "camping-off-broadway-2026/talkinbroadway--unknown.json"
+    "pride-west-end-2026/wsj--unknown.json"
   ],
   "failed": [
     "jesus-christ-superstar-west-end-2026/hollywood-reporter--david-rooney.json",
@@ -504,7 +502,16 @@
     "archduke-west-end-2026/nyt-theater--jonathan-mandell.json",
     "archduke-west-end-2026/culturesauce--thom-geier.json",
     "archduke-west-end-2026/dc-theater-arts--deb-miller.json",
-    "archduke-west-end-2026/nysr--michael-sommers.json"
+    "archduke-west-end-2026/nysr--michael-sommers.json",
+    "archduke-west-end-2026/nytg--amelia-merrill.json",
+    "archduke-west-end-2026/one-minute-critic--matthew-wexler.json",
+    "cyrano-de-bergerac-west-end-2026/hollywood-reporter--unknown.json",
+    "pride-west-end-2026/hollywood-reporter--daniel-fienberg.json",
+    "pride-west-end-2026/nyt-theater--unknown.json",
+    "pride-west-end-2026/nytimes--ben-brantley.json",
+    "pride-west-end-2026/nytimes--unknown.json",
+    "cyrano-de-bergerac-west-end-2026/newsday--unknown.json",
+    "pride-west-end-2026/theatrely--kobi-kassal.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -575,22 +582,22 @@
       "data/review-texts/oh-mary-west-end-2025/variety--naman-ramachandran.json",
       "oh-mary-west-end-2025/variety--naman-ramachandran.json",
       "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
-      "oh-mary-west-end-2025/deadline--greg-evans.json"
+      "oh-mary-west-end-2025/deadline--greg-evans.json",
+      "data/review-texts/pride-west-end-2026/wsj--unknown.json",
+      "pride-west-end-2026/wsj--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
       "girl-interrupted-off-broadway-2026/playbill--unknown.json",
       "every-brilliant-thing-2026/nytimes--ben-brantley.json",
-      "oh-mary-west-end-2025/nytimes--jesse-green.json",
-      "camping-off-broadway-2026/theatrely--unknown.json"
+      "oh-mary-west-end-2025/nytimes--jesse-green.json"
     ],
     "brightdata": [
       "the-balusters-2026/broadwayworld--unknown.json",
       "schmigadoon-2026/thewrap--robert-hofler.json",
       "proof-2026/cititour--brian-scott-lipton.json",
       "the-fear-of-13-2026/broadwayworld--unknown.json",
-      "death-of-a-salesman-2026/vulture--rob-weinert-kendt.json",
-      "camping-off-broadway-2026/talkinbroadway--unknown.json"
+      "death-of-a-salesman-2026/vulture--rob-weinert-kendt.json"
     ],
     "archiveToday": [
       "data/review-texts/camping-off-broadway-2026/talkinbroadway--unknown.json"
@@ -604,12 +611,11 @@
       "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
       "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
       "every-brilliant-thing-2026/nydailynews--joe-dziemianowicz.json",
-      "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json",
-      "birthright-off-broadway-2026/broadwayworld--aa-cristi.json"
+      "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json"
     ]
   },
   "startTime": "2026-07-04T10:30:28.285Z",
-  "lastProcessed": "archduke-west-end-2026/nysr--michael-sommers.json",
+  "lastProcessed": "pride-west-end-2026/theatrely--kobi-kassal.json",
   "log": [
     {
       "t": "2026-07-04T11:24:27.755Z",
@@ -698,6 +704,17 @@
       "t": "2026-07-04T11:59:56.876Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-04T12:28:42.743Z",
+      "event": "bb-session",
+      "session": "aa771413",
+      "url": "https://www.wsj.com/arts-culture/fine-art/folk-nation-crafting-patriotism-in-the"
+    },
+    {
+      "t": "2026-07-04T12:28:43.813Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
