@@ -55,7 +55,11 @@
     "death-of-a-salesman-2026/vulture--rob-weinert-kendt.json",
     "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
     "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json",
-    "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json"
+    "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json",
+    "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
+    "dog-day-afternoon-2026/one-minute-critic--matthew-wexler.json",
+    "music-city-off-broadway-2026/deadline--greg-evans.json",
+    "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
   ],
   "failed": [
     "jesus-christ-superstar-west-end-2026/hollywood-reporter--david-rooney.json",
@@ -371,7 +375,13 @@
     "cats-the-jellicle-ball-2026/timeout--david-cote.json",
     "cats-the-jellicle-ball-2026/huffpost--david-finkle.json",
     "cats-the-jellicle-ball-2026/nbcny--robert-kahn.json",
-    "cats-the-jellicle-ball-2026/northjerseycom--robert-feldberg.json"
+    "cats-the-jellicle-ball-2026/northjerseycom--robert-feldberg.json",
+    "cats-the-jellicle-ball-2026/telegraph--dominic-cavendish.json",
+    "cats-the-jellicle-ball-2026/west-end-wilma--unknown.json",
+    "cats-the-jellicle-ball-2026/thewrap--jason-clark.json",
+    "cats-the-jellicle-ball-2026/thewrap--robert-hofler.json",
+    "cats-the-jellicle-ball-2026/queerty--matthew-wexler.json",
+    "music-city-off-broadway-2026/observer--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -417,14 +427,19 @@
       "the-fear-of-13-2026/one-minute-critic--matthew-wexler.json",
       "the-fear-of-13-2026/playbill--unknown.json",
       "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json",
-      "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json"
+      "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json",
+      "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
+      "dog-day-afternoon-2026/one-minute-critic--matthew-wexler.json",
+      "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/proof-2026/deadline--unknown.json",
       "proof-2026/deadline--unknown.json",
       "data/review-texts/death-of-a-salesman-2026/variety--marilyn-stasio.json",
-      "death-of-a-salesman-2026/variety--marilyn-stasio.json"
+      "death-of-a-salesman-2026/variety--marilyn-stasio.json",
+      "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
+      "music-city-off-broadway-2026/deadline--greg-evans.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -450,7 +465,7 @@
     ]
   },
   "startTime": "2026-07-04T10:30:28.285Z",
-  "lastProcessed": "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json",
+  "lastProcessed": "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
   "log": [
     {
       "t": "2026-07-04T11:24:27.755Z",
@@ -484,6 +499,17 @@
       "t": "2026-07-04T11:52:18.703Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-04T11:55:33.426Z",
+      "event": "bb-session",
+      "session": "8b49af06",
+      "url": "https://deadline.com/2026/04/music-city-jt-harding-musical-off-broadway-12368618"
+    },
+    {
+      "t": "2026-07-04T11:55:33.786Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
