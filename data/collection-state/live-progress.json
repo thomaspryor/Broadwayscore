@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-04T12:00:48.638Z",
-  "processed": 43,
-  "failed": 307,
-  "successRate": "12.3%",
+  "updatedAt": "2026-07-04T12:02:44.308Z",
+  "processed": 74,
+  "failed": 376,
+  "successRate": "16.4%",
   "tierBreakdown": {
-    "playwright": 37,
+    "playwright": 50,
     "amp": 0,
-    "browserbase": 8,
+    "browserbase": 14,
     "directCookies": 0,
-    "scrapingbee": 1,
-    "brightdata": 0,
-    "archiveToday": 4,
-    "archive": 5
+    "scrapingbee": 3,
+    "brightdata": 5,
+    "archiveToday": 1,
+    "archive": 9
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 8,
   "recentActivity": [
     {
       "t": "2026-07-04T11:24:27.755Z",
@@ -69,6 +69,39 @@
       "t": "2026-07-04T11:57:03.784Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-07-04T11:59:19.240Z",
+      "event": "bb-session",
+      "session": "a50b6184",
+      "url": "https://variety.com/2025/legit/news/simu-liu-broadway-debut-oh-mary-cole-escola-"
+    },
+    {
+      "t": "2026-07-04T11:59:19.625Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-04T11:59:34.466Z",
+      "event": "bb-session",
+      "session": "f0d7ebdb",
+      "url": "https://variety.com/2025/legit/news/simu-liu-broadway-debut-oh-mary-cole-escola-"
+    },
+    {
+      "t": "2026-07-04T11:59:34.844Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-04T11:59:56.500Z",
+      "event": "bb-session",
+      "session": "fe7932f6",
+      "url": "https://deadline.com/2025/12/simu-liu-broadway-oh-mary-1236649862/"
+    },
+    {
+      "t": "2026-07-04T11:59:56.876Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
