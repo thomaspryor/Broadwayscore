@@ -2667,7 +2667,17 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
   // multi-show page cannot pass on a single mention; the htmlTitleMatch===false
   // backstop below is untouched, so a wrong-article CDN misroute still fails.
   const htmlTitleIsRoundup = !!normHtmlTitle && ROUNDUP_HEADLINE_MARKERS.test(normHtmlTitle);
-  const titleProvesShow = htmlTitleMatch === true && !htmlTitleIsRoundup;
+  // The single-mention drop demands a STRONG "page is about THIS show" signal — not the
+  // substring htmlTitleMatch (line ~2603 uses .includes()), which false-matches short/
+  // common tokens: "Sting"⊂"Stingray"/"casting", "Cats"⊂"Aristocats", and even as a whole
+  // word "Company" in "Manhattan Theatre Company" (ship-check P1 2026-07-04, two models).
+  // Require the headline to LEAD with a show token (after an optional "Review:" prefix) —
+  // the same proof titleLeadsWithShow uses for long titles. A review headline opens with
+  // the show name; an unrelated article that merely contains the word does not. Reuses
+  // headlineLead (computed above, "review:"-prefix stripped).
+  const headlineLeadsWithShow = !!headlineLead
+    && [...tokens].some((tok) => tok && headlineLead.startsWith(tok));
+  const titleProvesShow = htmlTitleMatch === true && !htmlTitleIsRoundup && headlineLeadsWithShow;
   const effectiveThreshold = bodyHasLongTitlePhrase
     ? 1
     : (titleProvesShow && mentionCount >= 1)
