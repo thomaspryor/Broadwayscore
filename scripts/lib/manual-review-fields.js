@@ -204,12 +204,18 @@ function detectIngestCollision(opts = {}) {
   // writes to a clean file, and findExistingReviewFile skips the flagged prior file as a
   // merge target, so there is no flag inheritance — the Beaches 2026-04-22 protection holds,
   // because that incoming was NOT in-window and would still block here.
+  // Pre-opening bound is 30d (not 90d): current-production reviews cluster at press
+  // night and during late previews; a 90d pre-opening window would also bless a review
+  // of a CONCURRENT prior run (tour/tryout) dated up to a quarter before this opening,
+  // which the heuristic downstream production check may not catch (ship-check P1,
+  // 2026-07-04). 30d aligns with quickDateCheck's own pre-opening suspicion threshold.
+  // Post-opening 365d is safe — a wrong prior production is dated BEFORE this opening.
   const DAY = 86400000;
   const openingMs = openingDate ? Date.parse(openingDate) : NaN;
   const incomingCurMs = publishDate ? Date.parse(publishDate) : NaN;
   const incomingIsCurrentProduction = Number.isFinite(openingMs)
     && Number.isFinite(incomingCurMs)
-    && incomingCurMs >= openingMs - 90 * DAY
+    && incomingCurMs >= openingMs - 30 * DAY
     && incomingCurMs <= openingMs + 365 * DAY;
 
   let files;
