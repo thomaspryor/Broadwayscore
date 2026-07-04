@@ -80,6 +80,23 @@ jobs:
           fi
           node scripts/check-corpus-drift.js $ARGS
 
+      - name: Audit review-URL byline clusters (non-blocking)
+        if: always()
+        env:
+          REVIEW_TEXTS_DIR: data/review-texts
+        run: |
+          # Byline-explosion detector: one review URL scraped into 5+ files under
+          # different critic names. criticName-keyed dedup misses these; they
+          # usually leave the real review unscored (invalid tier + circular dup),
+          # which buried WhatsOnStage reviews for the concurrent 2026 Midsummers.
+          # Non-blocking warning until the existing backlog is cleaned.
+          OUT=$(node scripts/audit-review-url-clusters.js || true)
+          echo "$OUT"
+          if echo "$OUT" | grep -q "byline-explosion cluster"; then
+            N=$(echo "$OUT" | head -1 | grep -oE '[0-9]+' | head -1)
+            echo "::warning::review-url-cluster audit found $N byline-explosion cluster(s) — reviews likely buried/unscored. Run: node scripts/audit-review-url-clusters.js"
+          fi
+
       - name: Check for changes
         id: changes
         if: always()
