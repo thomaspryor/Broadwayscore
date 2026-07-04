@@ -147,3 +147,100 @@ test('Unknown critic hits any matching-outlet record (filename parts are <outlet
   assert.equal(result.ok, false);
   assert.equal(result.reason, 'stale-flag-on-existing-file');
 });
+
+// ── Revival / returning-production carve-out (2026-07-04, To Kill a Mockingbird WE) ──
+// When openingDate is supplied and the incoming review's publishDate falls in this
+// production's opening window, a stale prior-production file for the same outlet is a
+// sibling, not a duplicate — the fresh review must NOT be blocked. This is the systemic
+// West End failure: revivals/returns reviewed by the same critics left every major outlet
+// with a prior-production file, dropping every fresh review. See feedback memory.
+
+test('CARVE-OUT: fresh current-production review (in opening window) is ALLOWED despite stale prior-production file', () => {
+  const showDir = seedShow('to-kill-a-mockingbird-we-2026', {
+    'standard--nick-curtis.json': {
+      outletId: 'standard', criticName: 'Nick Curtis',
+      url: 'https://www.standard.co.uk/culture/theatre/tkam-gielgud-2022.html',
+      publishDate: '2022-04-01',
+      wrongProduction: true,
+    },
+  });
+  const result = detectIngestCollision({
+    showDir, outletId: 'standard', criticName: 'Nick Curtis',
+    url: 'https://www.standard.co.uk/culture/theatre/tkam-wyndhams-2026.html',
+    publishDate: '2026-07-01',
+    openingDate: '2026-06-30',
+  });
+  assert.equal(result.ok, true, 'a fresh review in the opening window must ingest even when a prior-production file exists');
+});
+
+test('CARVE-OUT: unknown-critic fresh review (in window) ALLOWED against a stale named-critic file at same outlet', () => {
+  const showDir = seedShow('tkam-we-2026-unk', {
+    'times-uk--clive-davis.json': {
+      outletId: 'times-uk', criticName: 'Clive Davis',
+      url: 'https://www.thetimes.co.uk/article/tkam-gielgud-2022',
+      publishDate: '2022-04-01',
+      wrongProduction: true,
+    },
+  });
+  const result = detectIngestCollision({
+    showDir, outletId: 'times-uk', criticName: 'Unknown',
+    url: 'https://www.thetimes.co.uk/article/tkam-wyndhams-2026',
+    publishDate: '2026-07-01',
+    openingDate: '2026-06-30',
+  });
+  assert.equal(result.ok, true);
+});
+
+test('CARVE-OUT: re-discovery of the OLD production URL (out of window) is still BLOCKED even with openingDate', () => {
+  const showDir = seedShow('tkam-we-2026-old', {
+    'guardian--arifa-akbar.json': {
+      outletId: 'guardian', criticName: 'Arifa Akbar',
+      url: 'https://www.theguardian.com/stage/2022/mar/31/tkam-full',
+      publishDate: '2022-04-01',
+      wrongProduction: true,
+    },
+  });
+  const result = detectIngestCollision({
+    showDir, outletId: 'guardian', criticName: 'Arifa Akbar',
+    url: 'https://www.theguardian.com/stage/2022/mar/31/tkam-short',
+    publishDate: '2022-03-31',
+    openingDate: '2026-06-30',
+  });
+  assert.equal(result.ok, false, 'a 2022-dated re-discovery is not the current production — stays blocked');
+  assert.equal(result.reason, 'stale-flag-on-existing-file');
+});
+
+test('CARVE-OUT: dateless incoming stays BLOCKED even with openingDate (cannot prove current production)', () => {
+  const showDir = seedShow('tkam-we-2026-nodate', {
+    'standard--nick-curtis.json': {
+      outletId: 'standard', criticName: 'Nick Curtis',
+      url: 'https://www.standard.co.uk/culture/theatre/tkam-gielgud-2022.html',
+      publishDate: '2022-04-01',
+      wrongProduction: true,
+    },
+  });
+  const result = detectIngestCollision({
+    showDir, outletId: 'standard', criticName: 'Nick Curtis',
+    url: 'https://www.standard.co.uk/culture/theatre/tkam-wyndhams-2026.html',
+    openingDate: '2026-06-30',
+  });
+  assert.equal(result.ok, false, 'no publishDate → cannot confirm current production → conservative block preserved');
+});
+
+test('CARVE-OUT: publish-date-gap block is also suppressed for an in-window current-production review', () => {
+  const showDir = seedShow('revival-gap-2026', {
+    'nytimes--jesse-green.json': {
+      outletId: 'nytimes', criticName: 'Jesse Green',
+      url: 'https://nytimes.com/2020/original-run.html',
+      publishDate: '2020-01-15',
+      // NOTE: no wrongProduction flag — this exercises the >365d gap branch specifically
+    },
+  });
+  const result = detectIngestCollision({
+    showDir, outletId: 'nytimes', criticName: 'Jesse Green',
+    url: 'https://nytimes.com/2026/revival.html',
+    publishDate: '2026-06-30',
+    openingDate: '2026-06-30',
+  });
+  assert.equal(result.ok, true, 'in-window review must not be blocked by the >365d gap against a prior run');
+});
