@@ -1,53 +1,20 @@
 {
-  "updatedAt": "2026-07-04T06:25:59.118Z",
-  "processed": 94,
-  "failed": 1168,
-  "successRate": "7.4%",
+  "updatedAt": "2026-07-04T06:27:57.243Z",
+  "processed": 97,
+  "failed": 1175,
+  "successRate": "7.6%",
   "tierBreakdown": {
     "playwright": 59,
     "amp": 0,
-    "browserbase": 18,
+    "browserbase": 24,
     "directCookies": 9,
     "scrapingbee": 10,
     "brightdata": 5,
     "archiveToday": 22,
     "archive": 7
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 9,
   "recentActivity": [
-    {
-      "t": "2026-07-04T01:00:33.127Z",
-      "event": "bb-session",
-      "session": "8d4dc297",
-      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
-    },
-    {
-      "t": "2026-07-04T01:00:33.869Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-07-04T02:45:45.472Z",
-      "event": "bb-session",
-      "session": "571ec6e6",
-      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
-    },
-    {
-      "t": "2026-07-04T02:45:46.002Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-07-04T04:28:14.032Z",
-      "event": "bb-session",
-      "session": "d02e0580",
-      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
-    },
-    {
-      "t": "2026-07-04T04:28:14.439Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-07-04T05:21:50.606Z",
       "event": "bb-session",
@@ -122,6 +89,39 @@
     },
     {
       "t": "2026-07-04T06:10:36.995Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-04T06:26:05.320Z",
+      "event": "bb-session",
+      "session": "7c0000b1",
+      "url": "https://variety.com/2023/theater/news/stranger-things-play-the-first-shadow-cast"
+    },
+    {
+      "t": "2026-07-04T06:26:05.878Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-04T06:26:37.971Z",
+      "event": "bb-session",
+      "session": "0e67905c",
+      "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
+    },
+    {
+      "t": "2026-07-04T06:26:38.511Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-04T06:27:19.716Z",
+      "event": "bb-session",
+      "session": "12de8716",
+      "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
+    },
+    {
+      "t": "2026-07-04T06:27:20.247Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
     }
