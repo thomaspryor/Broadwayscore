@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-04T13:52:38.155Z",
+    "generatedAt": "2026-07-04T20:04:01.258Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -15,16 +15,16 @@
   },
   "flagged": [
     {
+      "path": "data/audit/processed-feedback.json",
+      "churn": 80
+    },
+    {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 82
+      "churn": 74
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 82
-    },
-    {
-      "path": "data/audit/processed-feedback.json",
-      "churn": 77
+      "churn": 74
     },
     {
       "path": "data/audit/validation/collection-report-2026-07-02.json",
@@ -34,97 +34,92 @@
   "exempt": [
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 144
+      "churn": 125
     },
     {
       "path": "public/data/shows/a-walk-on-the-moon-off-broadway-2026.json",
-      "churn": 89
+      "churn": 85
     },
     {
       "path": "public/data/shows/dad-dont-read-this-off-broadway-2026.json",
-      "churn": 76
+      "churn": 78
     },
     {
       "path": "data/commercial-rss-state.json",
-      "churn": 53
+      "churn": 52
     },
     {
       "path": "public/data/shows/glengarry-glen-ross-west-end-2026.json",
-      "churn": 48
+      "churn": 41
     },
     {
       "path": "public/data/shows/birthright-off-broadway-2026.json",
-      "churn": 39
+      "churn": 36
     },
     {
       "path": "data/show-score-urls.json",
-      "churn": 33
+      "churn": 32
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 1091,
+      "churn": 1045,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 1061,
+      "churn": 1017,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 504,
+      "churn": 487,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 269,
+      "churn": 206,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 168,
+      "churn": 151,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 168,
+      "churn": 151,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 168,
+      "churn": 151,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/birthright-off-broadway-2026.json",
-      "churn": 103,
+      "churn": 104,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/dad-dont-read-this-off-broadway-2026.json",
-      "churn": 103,
+      "churn": 104,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/the-potluck-off-broadway-2026.json",
-      "churn": 102,
+      "churn": 103,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/a-walk-on-the-moon-off-broadway-2026.json",
-      "churn": 101,
+      "churn": 102,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 79,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 61,
+      "churn": 71,
       "mergeAttr": "ours"
     },
     {
@@ -139,7 +134,12 @@
     },
     {
       "path": "data/audit/gap-audit-checkpoint.json",
-      "churn": 54,
+      "churn": 55,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/opening-night-completeness-state.json",
+      "churn": 50,
       "mergeAttr": "ours"
     },
     {
@@ -153,12 +153,22 @@
       "mergeAttr": "ours"
     },
     {
+      "path": "data/audit/drift-state.json",
+      "churn": 45,
+      "mergeAttr": "ours"
+    },
+    {
       "path": "data/audit/poller-backoff/a-midsummer-nights-dream-west-end-2026.json",
       "churn": 44,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/glengarry-glen-ross-west-end-2026.json",
+      "churn": 44,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/pride-west-end-2026.json",
       "churn": 44,
       "mergeAttr": "ours"
     },
@@ -188,18 +198,8 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/poller-backoff/pride-west-end-2026.json",
-      "churn": 43,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/drift-state.json",
-      "churn": 40,
-      "mergeAttr": "ours"
-    },
-    {
       "path": "data/audit/poller-backoff/the-guilty-west-end-2026.json",
-      "churn": 38,
+      "churn": 37,
       "mergeAttr": "ours"
     },
     {
