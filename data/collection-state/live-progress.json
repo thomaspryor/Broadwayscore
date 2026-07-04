@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-04T11:58:38.927Z",
-  "processed": 66,
-  "failed": 344,
-  "successRate": "16.1%",
+  "updatedAt": "2026-07-04T11:59:51.610Z",
+  "processed": 70,
+  "failed": 350,
+  "successRate": "16.7%",
   "tierBreakdown": {
-    "playwright": 47,
+    "playwright": 48,
     "amp": 0,
-    "browserbase": 8,
+    "browserbase": 12,
     "directCookies": 0,
-    "scrapingbee": 2,
+    "scrapingbee": 3,
     "brightdata": 5,
     "archiveToday": 1,
     "archive": 8
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
       "t": "2026-07-04T11:24:27.755Z",
@@ -69,6 +69,28 @@
       "t": "2026-07-04T11:57:03.784Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-07-04T11:59:19.240Z",
+      "event": "bb-session",
+      "session": "a50b6184",
+      "url": "https://variety.com/2025/legit/news/simu-liu-broadway-debut-oh-mary-cole-escola-"
+    },
+    {
+      "t": "2026-07-04T11:59:19.625Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-04T11:59:34.466Z",
+      "event": "bb-session",
+      "session": "f0d7ebdb",
+      "url": "https://variety.com/2025/legit/news/simu-liu-broadway-debut-oh-mary-cole-escola-"
+    },
+    {
+      "t": "2026-07-04T11:59:34.844Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
