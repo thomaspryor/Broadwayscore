@@ -389,3 +389,45 @@ describe('validateContentMentionsShow — long-title FP (Are You Now Or Have You
     assert.strictEqual(r.valid, false);
   });
 });
+
+describe('validateContentMentionsShow — short / one-word title recovery (Sting @ Young Vic 2026-07-04)', () => {
+  // A genuine review of a one-word show ("Sting") names the title once, then uses
+  // "the show"/"this production". At >1500 chars the 3-mention threshold (relaxed to 2
+  // on htmlTitleMatch) still dropped it as url_content_mismatch — even though the page's
+  // own <title> proves the URL is correct AND a star rating had been extracted. The fix:
+  // an affirmative, non-roundup htmlTitleMatch lowers the body-mention floor to 1.
+  // NOTE: "Sting" must appear EXACTLY ONCE — only the trailing clause repeats — so these
+  // tests exercise the htmlTitleMatch relaxation, not a high raw mention count.
+  const ONE_WORD_BODY = ('Sting takes the stage at the Young Vic in a bold new production. '.padEnd(200, 'x') +
+    (' The show is a meditation on grief and shipbuilding. This production, directed with flair, ' +
+    'unfolds across ninety minutes. The staging is spare, the songs plaintive. '.repeat(20))).slice(0, 3706);
+
+  test('one-word title, 1 mention, matching <title> → ACCEPTED (was dropped)', () => {
+    const r = validateContentMentionsShow(ONE_WORD_BODY,
+      '<title>Sting at the Young Vic – review | WhatsOnStage</title>', 'Sting', 'sting-west-end-2026');
+    assert.strictEqual(r.valid, true);
+  });
+
+  test('wrong-article page (different-show <title>, 0 mentions) still REJECTED', () => {
+    const r = validateContentMentionsShow(ONE_WORD_BODY.replace('Sting takes', 'Hamilton takes'),
+      '<title>Hamilton at the Victoria Palace – review</title>', 'Sting', 'sting-west-end-2026');
+    assert.strictEqual(r.valid, false);
+  });
+
+  test('roundup <title> listing the show among others, 1 mention still REJECTED (no relaxation)', () => {
+    const r = validateContentMentionsShow(ONE_WORD_BODY,
+      '<title>Best shows to see this week: Sting, Hamilton and more</title>', 'Sting', 'sting-west-end-2026');
+    assert.strictEqual(r.valid, false);
+  });
+
+  test('no HTML provided (no title proof), 1 mention still REJECTED (conservative)', () => {
+    const r = validateContentMentionsShow(ONE_WORD_BODY, null, 'Sting', 'sting-west-end-2026');
+    assert.strictEqual(r.valid, false);
+  });
+
+  test('boilerplate body with matching <title> but 0 mentions still REJECTED (≥1 floor)', () => {
+    const r = validateContentMentionsShow('cookie policy accept all subscribe newsletter '.repeat(80),
+      '<title>Sting at the Young Vic – review</title>', 'Sting', 'sting-west-end-2026');
+    assert.strictEqual(r.valid, false);
+  });
+});
