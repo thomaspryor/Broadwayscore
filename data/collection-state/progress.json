@@ -2,7 +2,12 @@
   "processed": [
     "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json",
     "a-midsummer-nights-dream-west-end-2026/sunday-telegraph--claire-allfree.json",
-    "a-midsummer-nights-dream-west-end-2026/whatsonstage--theo-bosanquet.json"
+    "a-midsummer-nights-dream-west-end-2026/whatsonstage--theo-bosanquet.json",
+    "birthright-off-broadway-2026/theatermania--linda-buchwald.json",
+    "birthright-off-broadway-2026/broadwayworld--aa-cristi.json",
+    "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
+    "birthright-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "the-black-mirror-experience-off-broadway-2026/the-recs--unknown.json"
   ],
   "failed": [
     "springwood-west-end-2026/guardian-uk--unknown.json",
@@ -55,20 +60,32 @@
     "a-midsummer-nights-dream-west-end-2026/times-uk--rachel-halliburton.json",
     "a-midsummer-nights-dream-west-end-2026/westendtheatre--west-end-theatre.json",
     "springwood-west-end-2026/artsdesk--unknown.json",
-    "springwood-west-end-2026/financialtimes--sarah-hemming.json"
+    "springwood-west-end-2026/financialtimes--sarah-hemming.json",
+    "a-walk-on-the-moon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "a-walk-on-the-moon-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+    "birthright-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "birthright-off-broadway-2026/pages-on-stages--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json",
-      "a-midsummer-nights-dream-west-end-2026/whatsonstage--theo-bosanquet.json"
+      "a-midsummer-nights-dream-west-end-2026/whatsonstage--theo-bosanquet.json",
+      "birthright-off-broadway-2026/theatermania--linda-buchwald.json",
+      "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
+      "birthright-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "the-black-mirror-experience-off-broadway-2026/the-recs--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [
-      "a-midsummer-nights-dream-west-end-2026/sunday-telegraph--claire-allfree.json"
+      "a-midsummer-nights-dream-west-end-2026/sunday-telegraph--claire-allfree.json",
+      "birthright-off-broadway-2026/broadwayworld--aa-cristi.json"
     ],
     "archiveToday": [
       "data/review-texts/the-guilty-west-end-2026/thestage--unknown.json",
@@ -79,6 +96,18 @@
     "archive": []
   },
   "startTime": "2026-07-04T20:56:42.639Z",
-  "lastProcessed": "springwood-west-end-2026/financialtimes--sarah-hemming.json",
-  "log": []
+  "lastProcessed": "the-black-mirror-experience-off-broadway-2026/the-recs--unknown.json",
+  "log": [
+    {
+      "t": "2026-07-04T23:49:09.911Z",
+      "event": "bb-session",
+      "session": "7afef873",
+      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
+    },
+    {
+      "t": "2026-07-04T23:49:10.530Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
