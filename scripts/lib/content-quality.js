@@ -2656,11 +2656,25 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
   // title-only page can't sneak through). Beaches NY Sun 2026-04-27: paywalled
   // article with `htmlTitleMatch=true` and 2 body mentions of "Beaches" was
   // being rejected against the 3-mention threshold for >1500-char text.
+  //
+  // SHORT / one-word titles (2026-07-04, Sting @ Young Vic): an affirmative
+  // htmlTitleMatch IS the URL-correctness proof this guard exists to establish, so a
+  // SINGLE body mention then suffices. Requiring 2 repeats false-rejected genuine
+  // reviews of one-word titles ("Sting", "Cats") that name the show once and then use
+  // "the show"/"this production" (WhatsOnStage: 3706-char review, 1 mention,
+  // titleMatch=true, dropped as url_content_mismatch → unscored despite an extracted
+  // 3/5 star). Excludes roundup <title>s (which list the show among others) so a
+  // multi-show page cannot pass on a single mention; the htmlTitleMatch===false
+  // backstop below is untouched, so a wrong-article CDN misroute still fails.
+  const htmlTitleIsRoundup = !!normHtmlTitle && ROUNDUP_HEADLINE_MARKERS.test(normHtmlTitle);
+  const titleProvesShow = htmlTitleMatch === true && !htmlTitleIsRoundup;
   const effectiveThreshold = bodyHasLongTitlePhrase
     ? 1
-    : (htmlTitleMatch === true && mentionCount >= 1)
-      ? Math.max(1, threshold - 1)
-      : threshold;
+    : (titleProvesShow && mentionCount >= 1)
+      ? 1
+      : (htmlTitleMatch === true && mentionCount >= 1)
+        ? Math.max(1, threshold - 1)
+        : threshold;
 
   if (mentionCount < effectiveThreshold) {
     return {
