@@ -222,6 +222,9 @@ function extractByline(html) {
     criticName: critic,
     url,
     publishDate: publishDate,
+    // Revival/returning-production carve-out: a fresh review in this show's opening
+    // window must not be blocked by a prior-production file (2026-07-04 WE fix).
+    openingDate: show.openingDate,
     forceClearStale,
   });
   if (!collision.ok) {

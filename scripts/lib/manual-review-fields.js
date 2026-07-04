@@ -168,6 +168,11 @@ function buildManualReviewFields(opts = {}) {
  * @param {string}  opts.criticName        Critic name (may be "Unknown")
  * @param {string}  [opts.url]             Incoming URL
  * @param {string}  [opts.publishDate]     Incoming publishDate (YYYY-MM-DD)
+ * @param {string}  [opts.openingDate]     Show opening date (YYYY-MM-DD). When the incoming
+ *                                         publishDate falls in this show's opening window, the
+ *                                         incoming is the CURRENT production and stale-flag /
+ *                                         date-gap collisions against prior-production files are
+ *                                         suppressed (revival/returning-production carve-out).
  * @param {boolean} [opts.forceClearStale] Bypass the stale-flag check (--force-clear-stale-flag)
  * @param {object}  [opts.fs]              Injected fs for tests
  * @param {object}  [opts.path]            Injected path for tests
@@ -176,7 +181,7 @@ function buildManualReviewFields(opts = {}) {
 function detectIngestCollision(opts = {}) {
   const fs = opts.fs || require('fs');
   const path = opts.path || require('path');
-  const { showDir, outletId, criticName, url, publishDate, forceClearStale } = opts;
+  const { showDir, outletId, criticName, url, publishDate, forceClearStale, openingDate } = opts;
 
   if (!showDir || !fs.existsSync(showDir)) return { ok: true };
   if (!outletId) return { ok: true };
@@ -186,6 +191,26 @@ function detectIngestCollision(opts = {}) {
   const normalizedCritic = criticName && criticName.toLowerCase() !== 'unknown'
     ? normalizeCritic(criticName)
     : null;
+
+  // REVIVAL / RETURNING-PRODUCTION CARVE-OUT (2026-07-04, To Kill a Mockingbird WE):
+  // The stale-flag and publish-date-gap blocks below stop a fresh review from silently
+  // merging into (and inheriting the flag of) a *prior production's* file. But when the
+  // incoming review is itself the CURRENT production — its publishDate falls inside this
+  // show's opening window — the existing flagged file is a prior-production sibling, NOT a
+  // duplicate. Blocking here was the systemic West End failure: WE is dominated by
+  // revivals/returns/transfers reviewed by the same critics, so every major outlet has a
+  // prior-production file and every fresh review got dropped → "6 reviews, all minor blogs"
+  // every opening. When the incoming is provably current-production we let it through: it
+  // writes to a clean file, and findExistingReviewFile skips the flagged prior file as a
+  // merge target, so there is no flag inheritance — the Beaches 2026-04-22 protection holds,
+  // because that incoming was NOT in-window and would still block here.
+  const DAY = 86400000;
+  const openingMs = openingDate ? Date.parse(openingDate) : NaN;
+  const incomingCurMs = publishDate ? Date.parse(publishDate) : NaN;
+  const incomingIsCurrentProduction = Number.isFinite(openingMs)
+    && Number.isFinite(incomingCurMs)
+    && incomingCurMs >= openingMs - 90 * DAY
+    && incomingCurMs <= openingMs + 365 * DAY;
 
   let files;
   try { files = fs.readdirSync(showDir).filter((f) => f.endsWith('.json')); }
@@ -207,7 +232,7 @@ function detectIngestCollision(opts = {}) {
     const hasStaleFlag = data.wrongProduction === true
       || data.wrongShow === true
       || data.wrongProductionAutoCleared === true;
-    if (hasStaleFlag && !urlMatches && !forceClearStale) {
+    if (hasStaleFlag && !urlMatches && !forceClearStale && !incomingIsCurrentProduction) {
       return {
         ok: false,
         file,
@@ -227,7 +252,9 @@ function detectIngestCollision(opts = {}) {
     }
 
     // Wide publishDate gap = likely a different production of the same show.
-    if (publishDate && data.publishDate && !forceClearStale) {
+    // Skip when the incoming review is provably this production (in-window): a large gap
+    // from a prior-production file is expected, not a collision.
+    if (publishDate && data.publishDate && !forceClearStale && !incomingIsCurrentProduction) {
       const existingMs = Date.parse(data.publishDate);
       const incomingMs = Date.parse(publishDate);
       if (Number.isFinite(existingMs) && Number.isFinite(incomingMs)) {

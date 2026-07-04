@@ -2908,12 +2908,17 @@ function createReviewFile(showId, reviewData, options = {}) {
   // which is why this was invisible until now. Log it, write to the audit file,
   // and don't create the new file. Doesn't abort the batch.
   if (reviewData.url) {
+    // Pass openingDate so the collision guard recognises a current-production review and
+    // does NOT block it against a prior-production file (revival/returning-production
+    // carve-out — the West End stale-flag-collision failure, 2026-07-04).
+    const _collisionShow = getShowData(showId);
     const staleCollision = detectIngestCollision({
       showDir,
       outletId: normalizedOutletId,
       criticName: reviewData.criticName,
       url: reviewData.url,
       publishDate: reviewData.publishDate,
+      openingDate: _collisionShow && _collisionShow.openingDate,
     });
     if (!staleCollision.ok) {
       console.log(`    ✗ Skipping ${filename}: stale-flag collision with ${staleCollision.file} (${staleCollision.reason})`);
