@@ -14,8 +14,11 @@
   "score": 88,
   "bucket": "Rave",
   "confidence": "high",
-  "reasoning": "Creator saw the closing performance and expresses strong enthusiasm—calls it fun, creative, weird, praises performances and music, and wants a cast recording. Clear positive recommendation signal despite brief treatment.",
+  "reasoning": "Creator saw the closing performance and expresses strong enthusiasm\u2014calls it fun, creative, weird, praises performances and music, and wants a cast recording. Clear positive recommendation signal despite brief treatment.",
   "keyQuote": "I had such a good time... It was a really fun, creative, weird story... The performances, the music was great. I want a cast recording.",
   "scoredAt": "2026-04-19T18:58:53.192Z",
-  "scoringModel": "claude-opus-4-7"
+  "scoringModel": "claude-opus-4-7",
+  "wrongProduction": true,
+  "wrongProductionReason": "The transcript describes a day attending multiple events, not a standalone review of the Dead Outlaw production.",
+  "flaggedBy": "audit-before-share pre-launch review 2026-07-05 (GPT-4o side A, user-approved)"
 }
