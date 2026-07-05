@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-05T06:30:49.430Z",
+    "generatedAt": "2026-07-05T07:39:30.506Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -8,33 +8,29 @@
   },
   "summary": {
     "minChurn": 30,
-    "flaggedCount": 4,
+    "flaggedCount": 3,
     "exemptCount": 7,
     "coveredCount": 34,
-    "highChurnTracked": 45
+    "highChurnTracked": 44
   },
   "flagged": [
     {
       "path": "data/audit/processed-feedback.json",
-      "churn": 81
+      "churn": 80
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 76
+      "churn": 69
     },
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 75
-    },
-    {
-      "path": "data/audit/validation/collection-report-2026-07-02.json",
-      "churn": 31
+      "churn": 68
     }
   ],
   "exempt": [
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 100
+      "churn": 97
     },
     {
       "path": "public/data/shows/a-walk-on-the-moon-off-broadway-2026.json",
@@ -53,12 +49,12 @@
       "churn": 38
     },
     {
-      "path": "public/data/shows/glengarry-glen-ross-west-end-2026.json",
-      "churn": 35
+      "path": "data/show-score-urls.json",
+      "churn": 33
     },
     {
-      "path": "data/show-score-urls.json",
-      "churn": 34
+      "path": "public/data/shows/glengarry-glen-ross-west-end-2026.json",
+      "churn": 33
     }
   ],
   "covered": [
@@ -69,7 +65,7 @@
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 999,
+      "churn": 997,
       "mergeAttr": "ours"
     },
     {
@@ -89,12 +85,12 @@
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 146,
+      "churn": 131,
       "mergeAttr": "union"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 126,
+      "churn": 123,
       "mergeAttr": "ours"
     },
     {
@@ -114,12 +110,12 @@
     },
     {
       "path": "data/audit/poller-backoff/the-potluck-off-broadway-2026.json",
-      "churn": 96,
+      "churn": 95,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 86,
+      "churn": 89,
       "mergeAttr": "ours"
     },
     {
