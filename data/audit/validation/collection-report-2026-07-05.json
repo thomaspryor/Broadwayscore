@@ -1,20 +1,20 @@
 {
-  "runDate": "2026-07-05T15:45:45.364Z",
+  "runDate": "2026-07-05T15:45:47.749Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "cyrano-de-bergerac-west-end-2026",
+    "showFilter": "the-truth-a-comedy-by-florian-zeller-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 23,
+    "processed": 3,
+    "failed": 9,
     "skipped": 0,
-    "successRate": "8.0%"
+    "successRate": "25.0%"
   },
   "tierBreakdown": {
     "playwright": 1,
@@ -24,14 +24,14 @@
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 1,
-    "archive": 1
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 3,
-    "tier1Success": 2,
+    "tier1Attempts": 6,
+    "tier1Success": 5,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
+    "tier1_5Attempts": 1,
     "tier1_5Success": 0,
     "tier2Attempts": 1,
     "tier2Success": 0,
@@ -39,49 +39,38 @@
     "tier3Success": 0,
     "tier3_6Attempts": 1,
     "tier3_6Success": 1,
-    "tier4Attempts": 1,
+    "tier4Attempts": 2,
     "tier4Success": 0,
-    "totalFailed": 23,
+    "totalFailed": 9,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 22,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.5,
+    "urlDiscoveryAttempts": 7,
     "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "cyrano-de-bergerac-west-end-2026/guardian-uk--unknown.json",
-    "cyrano-de-bergerac-west-end-2026/broadwayworld--stephi-wild.json"
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre--apollo-theatre.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre--marianka-swain.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json"
   ],
   "failed": [
-    "cyrano-de-bergerac-west-end-2026/hollywood-reporter--unknown.json",
-    "cyrano-de-bergerac-west-end-2026/ew--nick-romano.json",
-    "cyrano-de-bergerac-west-end-2026/newsday--unknown.json",
-    "cyrano-de-bergerac-west-end-2026/about-entertainment--ben-brantley.json",
-    "cyrano-de-bergerac-west-end-2026/amny--unknown.json",
-    "cyrano-de-bergerac-west-end-2026/ap--unknown.json",
-    "cyrano-de-bergerac-west-end-2026/bloomberg--jeremy-gerard.json",
-    "cyrano-de-bergerac-west-end-2026/daily-echo--steve-page.json",
-    "cyrano-de-bergerac-west-end-2026/financialtimes--sarah-hemming.json",
-    "cyrano-de-bergerac-west-end-2026/metro-uk--claire-allfree.json",
-    "cyrano-de-bergerac-west-end-2026/northjerseycom--robert-feldberg.json",
-    "cyrano-de-bergerac-west-end-2026/standard--fiona-mountford.json",
-    "cyrano-de-bergerac-west-end-2026/telegraph--dominic-cavendish.json",
-    "cyrano-de-bergerac-west-end-2026/the-upcoming-uk--unknown.json",
-    "cyrano-de-bergerac-west-end-2026/thestage--dave-fargnoli.json",
-    "cyrano-de-bergerac-west-end-2026/times-uk--dominic-maxwell.json",
-    "cyrano-de-bergerac-west-end-2026/washpost--peter-marks.json",
-    "cyrano-de-bergerac-west-end-2026/hollywood-reporter--david-rooney.json",
-    "cyrano-de-bergerac-west-end-2026/nytg--gillian-russo.json",
-    "cyrano-de-bergerac-west-end-2026/variety--marilyn-stasio.json",
-    "cyrano-de-bergerac-west-end-2026/ew--tanner-stransky.json",
-    "cyrano-de-bergerac-west-end-2026/newsday--linda-winer.json",
-    "cyrano-de-bergerac-west-end-2026/wsj--terry-teachout.json"
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/hollywood-reporter--daniel-fienberg.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/daily-mail--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/i-paper--sarah-carson.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-box-office--nastazja-domaradzka.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/the-contending--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/the-upcoming-uk--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/times-uk--dominic-maxwell.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-best-friend--news-desk.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/whatsonstage--editorial-staff.json"
   ],
   "tierDetails": {
     "playwright": [
-      "cyrano-de-bergerac-west-end-2026/guardian-uk--unknown.json"
+      "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre--apollo-theatre.json",
+      "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre--marianka-swain.json",
+      "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -89,18 +78,16 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/cyrano-de-bergerac-west-end-2026/daily-echo--steve-page.json"
+      "data/review-texts/the-truth-a-comedy-by-florian-zeller-west-end-2026/daily-mail--unknown.json"
     ],
-    "archive": [
-      "cyrano-de-bergerac-west-end-2026/broadwayworld--stephi-wild.json"
-    ]
+    "archive": []
   },
   "failuresByOutlet": {},
   "urlDiscoveries": [
     {
-      "reviewId": "cyrano-de-bergerac-west-end-2026/broadwayworld--stephi-wild.json",
-      "oldUrl": "https://www.broadwayworld.com/westend/article/Review-CYRANO-DE-BERGERAC-Nol-Coward-Theatre-20260626",
-      "newUrl": "https://www.broadwayworld.com/brooklyn/article/CYRANO-DE-BERGERAC-ADAPTED-FOR-THE-MODERN-CLOWN-to-Play-Brooklyn-This-Summer-20260622"
+      "reviewId": "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre--marianka-swain.json",
+      "oldUrl": "https://www.londontheatre.co.uk/theatre-news/news/everything-you-need-to-know-about-the-truth",
+      "newUrl": "https://www.londontheatre.co.uk/reviews/the-truth-review-apollo-theatre"
     }
   ]
 }
