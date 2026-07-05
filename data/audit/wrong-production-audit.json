@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-05T17:59:01.354Z",
+  "timestamp": "2026-07-05T18:31:49.325Z",
   "stats": {
     "totalReviews": 39791,
-    "alreadyFlagged": 17491,
-    "dateGuardCatches": 36,
+    "alreadyFlagged": 17481,
+    "dateGuardCatches": 44,
     "directorMismatch": 891,
     "tvFilmSignals": 1094,
-    "londonSignals": 732,
+    "londonSignals": 733,
     "offBroadwaySignals": 467,
     "yearMismatch": 85,
-    "noPublishDate": 3987
+    "noPublishDate": 3989
   },
   "findings": [
     {
@@ -25526,6 +25526,106 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2018 (2x) more than 2026 (1x). 2018 matches production: to-kill-a-mockingbird-2018"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "financialtimes--sarah-hemming.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1546d before show (2022-04-01 vs 2026-06-25)"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "guardian--arifa-akbar.json",
+      "publishDate": "2022-04-01",
+      "url": "https://www.theguardian.com/stage/2022/mar/31/to-kill-a-mockingbird-review-aaron-sorkin-rafe-spall-gielgud-theatre",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1546d before show (2022-04-01 vs 2026-06-25)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "i-paper--sam-marlowe.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1546d before show (2022-04-01 vs 2026-06-25)"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "publishDate": "2022-04-01",
+      "url": "https://www.standard.co.uk/culture/theatre/to-kill-a-mockingbird-at-wyndhams-review-b1288617.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1546d before show (2022-04-01 vs 2026-06-25)"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "sunday-telegraph--dominic-cavendish.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1546d before show (2022-04-01 vs 2026-06-25)"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "timeout--andrzej-lukowski.json",
+      "score": null,
+      "publishDate": "2023-02-07",
+      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1546d before show (2022-04-01 vs 2026-06-25)"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "times-uk--quentin-letts.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1546d before show (2022-04-01 vs 2026-06-25)"
         }
       ]
     },
