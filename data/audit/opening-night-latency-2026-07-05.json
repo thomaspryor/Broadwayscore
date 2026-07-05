@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-05T14:52:29.728Z",
+  "generatedAt": "2026-07-05T17:40:35.417Z",
   "date": "2026-07-05",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 170477,
+  "entryCount": 183359,
   "shows": [
     {
       "showId": "jesus-christ-superstar-west-end-2026",
@@ -801,7 +801,7 @@
     },
     {
       "showId": "proof-2026",
-      "reviewCount": 27,
+      "reviewCount": 28,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -936,12 +936,12 @@
     },
     {
       "showId": "birthright-off-broadway-2026",
-      "reviewCount": 14,
+      "reviewCount": 15,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 337250,
+        "collected-to-scored": 338696,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -981,12 +981,12 @@
     },
     {
       "showId": "the-guilty-west-end-2026",
-      "reviewCount": 15,
+      "reviewCount": 16,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 2121706,
+        "collected-to-scored": 2119218,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -1732,6 +1732,36 @@
     {
       "showId": "illinoise-2024",
       "reviewCount": 22,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-wiz-2024",
+      "reviewCount": 26,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "water-for-elephants-2024",
+      "reviewCount": 33,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
