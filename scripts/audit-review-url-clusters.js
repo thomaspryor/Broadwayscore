@@ -224,9 +224,20 @@ function applyRecover(clusterCtx, decision) {
 
 function applySkip(clusterCtx) {
   const { dir, parsed, cluster } = clusterCtx;
-  // Tombstone = the first member (kept as-is: already wrongProduction/invalid and
-  // NOT scoring). Point every other member's duplicateOf at it → 1 primary.
-  const tombstone = cluster.files[0];
+  // Tombstone = a member kept as the sole primary. Prefer one already flagged
+  // wrongProduction (a genuine wrong-production marker) so nothing new scores;
+  // else the first file. Its OWN duplicateOf must be cleared — these clusters
+  // often contain a circular duplicateOf pair (arifa<->chris), which would leave
+  // primaryCount=0 and the cluster "unresolved" (2026-07-05).
+  const tombstone = cluster.files.find((f) => (parsed[f] || {}).wrongProduction === true)
+    || cluster.files[0];
+  const t = parsed[tombstone];
+  if (t.duplicateOf) {
+    t.duplicateOf = null;
+    t.duplicateReason = null;
+    t.duplicateClearReason = `byline-explosion-tombstone (${STAMP})`;
+    writePlain(path.join(dir, tombstone), t);
+  }
   for (const f of cluster.files) {
     if (f === tombstone) continue;
     const d = parsed[f];
