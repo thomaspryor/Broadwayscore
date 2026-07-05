@@ -29,7 +29,14 @@ const MIN_WORDS = 100;
 let _showsCache = null;
 function getShowData(showId) {
   if (!_showsCache) {
-    try { _showsCache = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8')).shows; } catch { _showsCache = []; }
+    // Missing shows.json must be fatal: with an empty cache every review's
+    // date sanity-check silently degrades and CI publishes nothing while
+    // reporting success (root cause of the 2026-04→07 no-op runs).
+    if (!fs.existsSync(SHOWS_PATH)) {
+      console.error(`Missing ${SHOWS_PATH} — data/shows.json is private core data; in CI the workflow must run .github/actions/checkout-core-data first.`);
+      process.exit(1);
+    }
+    _showsCache = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8')).shows;
   }
   return _showsCache.find(s => s && s.id === showId) || null;
 }
