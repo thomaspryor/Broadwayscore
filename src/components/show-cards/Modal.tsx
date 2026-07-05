@@ -27,6 +27,9 @@ const MAX_WIDTH_CLASS = {
   lg: 'sm:max-w-[520px]',
 } as const;
 
+// Module-level stack of currently-open modals (mount order = stacking order).
+const openModalStack: symbol[] = [];
+
 /**
  * Shared modal wrapper — handles backdrop, escape, scroll lock, and iOS Safari fixes.
  *
@@ -47,10 +50,28 @@ export default function Modal({
   ariaLabel,
 }: ModalProps) {
   const scrollYRef = useRef(0);
+  const stackIdRef = useRef<symbol | null>(null);
 
-  // Escape key handler
+  // Track open modals so Escape only dismisses the TOPMOST one — with stacked
+  // modals (e.g. sign-in over the rating editor) a single Escape used to close
+  // both, discarding the editor draft beneath (2026-07-05).
+  useEffect(() => {
+    if (!isOpen) return;
+    const id = Symbol('modal');
+    stackIdRef.current = id;
+    openModalStack.push(id);
+    return () => {
+      const idx = openModalStack.indexOf(id);
+      if (idx !== -1) openModalStack.splice(idx, 1);
+      stackIdRef.current = null;
+    };
+  }, [isOpen]);
+
+  // Escape key handler — topmost modal only
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
-    if (e.key === 'Escape') onClose();
+    if (e.key !== 'Escape') return;
+    if (openModalStack[openModalStack.length - 1] !== stackIdRef.current) return;
+    onClose();
   }, [onClose]);
 
   useEffect(() => {
