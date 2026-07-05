@@ -6,7 +6,7 @@
  * Analogous to gather-reviews.js for text reviews — this is step 1 of the
  * video review pipeline.
  *
- * Pipeline: discover-videos → collect-transcripts → classify-reviews → score-video-reviews → build-video-reviews
+ * Pipeline: discover-videos → pre-classify-titles → collect-transcripts → classify-reviews → score-video-reviews → build-video-reviews
  *
  * Process:
  * 1. Read creator registry (data/video-creators.json)
@@ -26,6 +26,7 @@
 const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
+const { preserveLlmFlags } = require('../lib/video-discovery-merge');
 
 const CREATORS_PATH = path.join(__dirname, '../../data/video-creators.json');
 const DISCOVERY_DIR = path.join(__dirname, '../../data/video-reviews-discovery');
@@ -111,6 +112,21 @@ function main() {
     const result = scanCreator(creator, limit);
 
     if (result) {
+      // Rescans must not wipe llmFlagged markers set by pre-classify-titles.js —
+      // TikTok captions rarely match REVIEW_SIGNALS, so those flags are the only
+      // thing keeping most TikTok reviews in the pipeline.
+      if (fs.existsSync(outFile)) {
+        try {
+          const prev = JSON.parse(fs.readFileSync(outFile, 'utf8'));
+          const carried = preserveLlmFlags(prev.videos, result.videos);
+          if (carried > 0) {
+            result.reviewCandidates = result.videos.filter(v => v.isReviewCandidate || v.llmFlagged).length;
+            console.log(`  (carried ${carried} LLM flags from previous scan)`);
+          }
+        } catch (err) {
+          console.error(`  Warning: could not carry LLM flags: ${err.message}`);
+        }
+      }
       fs.writeFileSync(outFile, JSON.stringify(result, null, 2));
       console.log(`  ${result.totalVideos} total, ${result.reviewCandidates} review candidates`);
     }
