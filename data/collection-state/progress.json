@@ -3,10 +3,13 @@
     "relics-west-end-2026/cambridge--unknown.json"
   ],
   "failed": [
-    "relics-west-end-2026/nytimes--unknown.json",
-    "relics-west-end-2026/guardian--unknown.json",
-    "relics-west-end-2026/thestage--neil-norman.json",
-    "relics-west-end-2026/times-uk--dominic-maxwell.json"
+    "springwood-west-end-2026/guardian-uk--unknown.json",
+    "springwood-west-end-2026/artsdesk--unknown.json",
+    "springwood-west-end-2026/financialtimes--sarah-hemming.json",
+    "springwood-west-end-2026/standard--nick-curtis.json",
+    "springwood-west-end-2026/theatrecat--unknown.json",
+    "springwood-west-end-2026/thestage--unknown.json",
+    "springwood-west-end-2026/west-end-best-friend--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -19,23 +22,11 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/relics-west-end-2026/thestage--neil-norman.json"
+      "data/review-texts/springwood-west-end-2026/thestage--unknown.json"
     ],
     "archive": []
   },
-  "startTime": "2026-07-05T06:36:40.229Z",
-  "lastProcessed": "relics-west-end-2026/times-uk--dominic-maxwell.json",
-  "log": [
-    {
-      "t": "2026-07-05T06:39:41.340Z",
-      "event": "bb-session",
-      "session": "813c839d",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/relics-review-theatre-sal"
-    },
-    {
-      "t": "2026-07-05T06:39:41.760Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    }
-  ]
+  "startTime": "2026-07-05T06:36:03.092Z",
+  "lastProcessed": "springwood-west-end-2026/west-end-best-friend--unknown.json",
+  "log": []
 }
