@@ -182,3 +182,82 @@ test('applyExternallyPaid: early anthropic recharges + scrapingbee topups exclud
   assert.equal(res2.cleared, 2);
   assert.ok(rows.every((r) => !r.excluded && !r.excludedReason));
 });
+
+test('exact-from rules match Gmail API display-name-wrapped From headers', () => {
+  const wrapped = M.classifyReceipt({
+    from: 'Anthropic, PBC <invoice+statements@mail.anthropic.com>',
+    subject: 'Your receipt from Anthropic, PBC #2599-5034-2766',
+    body: 'Amount paid $504.70',
+  }, config);
+  assert.equal(wrapped.vendorKey, 'anthropic');
+  const bare = M.classifyReceipt({
+    from: 'invoice+statements@mail.anthropic.com',
+    subject: 'Your receipt from Anthropic, PBC #2599-5034-2766',
+    body: 'Amount paid $504.70',
+  }, config);
+  assert.equal(bare.vendorKey, 'anthropic');
+  assert.equal(M.extractEmailAddress('ScrapingBee <contact@scrapingbee.com>'), 'contact@scrapingbee.com');
+});
+
+test('display-name spoofing cannot book under a real vendor (ship-check findings 2+3)', () => {
+  // Quoted display name containing a decoy vendor address — real addr-spec is LAST.
+  const spoofExact = M.classifyReceipt({
+    from: '"x <invoice+statements@mail.anthropic.com>" <attacker@evil.com>',
+    subject: 'Your receipt', body: 'Amount paid $999.00',
+  }, config);
+  assert.equal(spoofExact.disposition, 'needs-review');
+  // fromContains rules must not match display-name text either.
+  const spoofContains = M.classifyReceipt({
+    from: '"billing openai.com" <attacker@evil.com>',
+    subject: 'Your receipt', body: 'Total $999.00',
+  }, config);
+  assert.equal(spoofContains.disposition, 'needs-review');
+  assert.equal(M.extractEmailAddress('"x <a@b.com>" <c@d.com>'), 'c@d.com');
+});
+
+test('personalExclude matches wrapped From headers (ship-check finding 1)', () => {
+  const r = M.classifyReceipt({
+    from: 'Google Play <googleplay-noreply@google.com>',
+    subject: 'Your order receipt', body: 'Total $4.99',
+  }, config);
+  assert.equal(r.disposition, 'personal');
+});
+
+test('refund notices book as negative rows with the credited amount, not the original charge', () => {
+  const { row, disposition } = M.toLedgerRow({
+    gmailMessageId: 'refund-1', date: '2026-03-04T20:49:26Z',
+    from: 'Vercel Inc. <invoice+statements@vercel.com>',
+    subject: 'Your refund from Vercel Inc. #3166-7470',
+    body: 'Refund from Vercel Inc. $875.15 Refunded on March 4, 2026 Total $3,521.71 Amount paid $3,521.71 Build Minutes (Qty. 251557) -$875.15 Credited total -$875.15 Adjusted invoice total $2,646.56',
+  }, config);
+  assert.equal(disposition, 'booked');
+  assert.equal(row.vendorKey, 'vercel');
+  assert.equal(row.kind, 'refund');
+  assert.equal(row.amountUsd, -875.15);
+  assert.equal(row.amountBusiness, -875.15);
+});
+
+test('Claude Max subscription books as anthropic-max subscription, not API usage-recharge', () => {
+  const { row } = M.toLedgerRow({
+    gmailMessageId: 'max-1', date: '2026-06-21T03:08:10Z',
+    from: 'Anthropic, PBC <invoice+statements@mail.anthropic.com>',
+    subject: 'Your receipt from Anthropic, PBC #2599-5034-2766',
+    body: 'Receipt #2599-5034-2766 Jun 20–Jul 20, 2026 Max plan - 20x Qty 1 $200.00 Subtotal $200.00 Total $206.00 Amount paid $206.00',
+  }, config);
+  assert.equal(row.vendorKey, 'anthropic-max');
+  assert.equal(row.kind, 'subscription');
+  assert.equal(row.amountUsd, 206);
+  // API recharge (no "Max plan") still books under anthropic and stays exclusion-eligible.
+  const api = M.classifyReceipt({
+    from: 'Anthropic, PBC <invoice+statements@mail.anthropic.com>',
+    subject: 'Your receipt from Anthropic, PBC #2720-4839-9430',
+    body: 'Usage credits Qty 1 $490.00 Total $504.70 Amount paid $504.70',
+  }, config);
+  assert.equal(api.vendorKey, 'anthropic');
+  // A pre-May Max sub must NOT be excluded by the API-overage rule.
+  const maxRow = { vendorKey: 'anthropic-max', kind: 'subscription', date: '2026-03-21' };
+  const apiRow = { vendorKey: 'anthropic', kind: 'usage-recharge', date: '2026-03-21' };
+  M.applyExternallyPaid([maxRow, apiRow], config);
+  assert.ok(!maxRow.excluded);
+  assert.ok(apiRow.excluded);
+});
