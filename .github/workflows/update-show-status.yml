@@ -213,6 +213,17 @@ jobs:
         run: node scripts/enrich-wikipedia-runtimes.js --limit=20
         continue-on-error: true
 
+      # Second self-heal pass: discovery + IBDB enrichment above can attach an
+      # original production's ibdbUrl to a freshly discovered revival stub —
+      # that's exactly what blocked the commit daily 2026-07-03→05 (the stale
+      # URLs never landed in shows.json; each day's discovery re-created them
+      # in the working tree and validation re-blocked). The pass before
+      # pre-validate heals pre-existing data; this pass heals what discovery
+      # just introduced. Idempotent and near-instant.
+      - name: Self-heal shared ibdbUrls (post-discovery)
+        if: ${{ inputs.skip_discovery != 'true' }}
+        run: node scripts/fix-shared-ibdb-urls.js
+
       # Step 4: Validate data before committing
       - name: Validate data
         id: validate
