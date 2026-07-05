@@ -23,15 +23,18 @@ function canonicalReviewUrl(url) {
 }
 
 /** Outlet key for grouping — a URL is a review's identity WITHIN an outlet.
- * Prefer an explicit outlet field, else the `<outlet>--<critic>.json` prefix.
- * Grouping by outlet stops false clusters on aggregator roundup URLs that are
- * legitimately shared across outlets (Telegraph/FT/Guardian star-stubs pointing
- * at one WET/Show-Score roundup) — see feedback_aggregator_roundup_urls_shared_across_outlets. */
+ * Prefer the `<outletId>--<critic>.json` filename prefix (the CANONICAL outlet id
+ * used at write time) over the free-text `r.outlet` DISPLAY field, then normalize
+ * to lowercase-alphanumeric. The display field is inconsistent — the same outlet
+ * appears as "WhatsOnStage" and "What's On Stage", which would split one byline
+ * cluster into two groups and leave a member uncollapsed (the theo-bosanquet leak,
+ * 2026-07-05). Grouping by outlet stops false clusters on aggregator roundup URLs
+ * legitimately shared across outlets (Telegraph/FT/Guardian star-stubs on one
+ * WET/Show-Score roundup) — see feedback_aggregator_roundup_urls_shared_across_outlets. */
 function outletOf(r) {
-  if (r && r.outlet) return String(r.outlet).toLowerCase();
   const f = r && r.file;
-  if (typeof f === 'string' && f.includes('--')) return f.split('--')[0].toLowerCase();
-  return '';
+  let raw = (typeof f === 'string' && f.includes('--')) ? f.split('--')[0] : ((r && r.outlet) || '');
+  return String(raw).toLowerCase().replace(/[^a-z0-9]/g, '');
 }
 
 /**

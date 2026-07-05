@@ -61,8 +61,22 @@ test('primaryCount excludes duplicateOf siblings (collapsed cluster resolves to 
   assert.equal(cluster.primaryCount, 1); // ...but caller can see it is resolved
 });
 
-test('outletOf prefers explicit outlet, falls back to filename prefix', () => {
-  assert.equal(outletOf({ outlet: 'Times-UK' }), 'times-uk');
-  assert.equal(outletOf({ file: 'whatsonstage--sarah.json' }), 'whatsonstage');
-  assert.equal(outletOf({ file: 'noprefix.json' }), '');
+test('outletOf uses filename prefix (canonical id) over display field, normalized', () => {
+  // The display `outlet` field is inconsistent; the filename prefix is canonical.
+  assert.equal(outletOf({ file: 'whatsonstage--theo.json', outlet: "What's On Stage" }), 'whatsonstage');
+  assert.equal(outletOf({ file: 'whatsonstage--alex.json', outlet: 'WhatsOnStage' }), 'whatsonstage');
+  assert.equal(outletOf({ outlet: 'Times-UK' }), 'timesuk'); // no filename → normalized display
+  assert.equal(outletOf({ file: 'noprefix.json' }), ''); // no '--' prefix, no display field
+});
+
+test('display-name variants of one outlet group into ONE cluster (theo-bosanquet leak)', () => {
+  const url = 'https://www.whatsonstage.com/news/x_1726521';
+  const files = [
+    { file: 'whatsonstage--alex-wood.json', url, outlet: 'WhatsOnStage', criticName: 'Alex Wood' },
+    { file: 'whatsonstage--theo-bosanquet.json', url, outlet: "What's On Stage", criticName: 'Theo Bosanquet' },
+    ...['a', 'b', 'c', 'd'].map((c) => ({ file: `whatsonstage--${c}.json`, url, outlet: 'WhatsOnStage', criticName: c })),
+  ];
+  const clusters = findUrlClusters(files, 5);
+  assert.equal(clusters.length, 1);
+  assert.equal(clusters[0].count, 6); // theo grouped in, not split off
 });
