@@ -1,27 +1,41 @@
 {
-  "processed": [],
+  "processed": [
+    "relics-west-end-2026/cambridge--unknown.json"
+  ],
   "failed": [
-    "the-guilty-west-end-2026/hollywood-reporter--angie-han.json",
-    "the-guilty-west-end-2026/deadline--max-goldbart.json",
-    "the-guilty-west-end-2026/guardian-uk--unknown.json",
-    "the-guilty-west-end-2026/rollingstone--charisma-madarang.json",
-    "the-guilty-west-end-2026/thestage--unknown.json",
-    "the-guilty-west-end-2026/times-uk--unknown.json"
+    "relics-west-end-2026/nytimes--unknown.json",
+    "relics-west-end-2026/guardian--unknown.json",
+    "relics-west-end-2026/thestage--neil-norman.json",
+    "relics-west-end-2026/times-uk--dominic-maxwell.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "relics-west-end-2026/cambridge--unknown.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/the-guilty-west-end-2026/thestage--unknown.json"
+      "data/review-texts/relics-west-end-2026/thestage--neil-norman.json"
     ],
     "archive": []
   },
-  "startTime": "2026-07-05T06:36:27.942Z",
-  "lastProcessed": "the-guilty-west-end-2026/times-uk--unknown.json",
-  "log": []
+  "startTime": "2026-07-05T06:36:40.229Z",
+  "lastProcessed": "relics-west-end-2026/times-uk--dominic-maxwell.json",
+  "log": [
+    {
+      "t": "2026-07-05T06:39:41.340Z",
+      "event": "bb-session",
+      "session": "813c839d",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/relics-review-theatre-sal"
+    },
+    {
+      "t": "2026-07-05T06:39:41.760Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    }
+  ]
 }
