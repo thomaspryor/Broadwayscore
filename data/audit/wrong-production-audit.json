@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-07-05T17:53:27.469Z",
+  "timestamp": "2026-07-05T17:59:01.354Z",
   "stats": {
     "totalReviews": 39791,
-    "alreadyFlagged": 17492,
+    "alreadyFlagged": 17491,
     "dateGuardCatches": 36,
     "directorMismatch": 891,
     "tvFilmSignals": 1094,
-    "londonSignals": 731,
+    "londonSignals": 732,
     "offBroadwaySignals": 467,
-    "yearMismatch": 84,
+    "yearMismatch": 85,
     "noPublishDate": 3987
   },
   "findings": [
@@ -25507,6 +25507,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"tye blue\" from titanique-2026"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "score": 98,
+      "publishDate": "2026-07-01",
+      "url": "https://www.allthatdazzles.co.uk/post/review-to-kill-a-mockingbird-wyndham-s-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2018 (2x) more than 2026 (1x). 2018 matches production: to-kill-a-mockingbird-2018"
         }
       ]
     },
