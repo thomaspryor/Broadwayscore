@@ -1185,6 +1185,18 @@ jobs:
           fi
           echo "✓ Zero aggregator-archive files in public repo"
 
+          # Fail immediately if ANY finances files are tracked in the public repo.
+          # data/finances/ holds billing receipts + P&L ledgers (PII) — lives in the
+          # private repo thomaspryor/broadway-scorecard-data under data/finances/,
+          # accessed only via the GitHub API. It must NEVER be committed here.
+          FIN_COUNT=$(git ls-tree -r HEAD --name-only -- 'data/finances/' 2>/dev/null | wc -l | tr -d ' ')
+          if [ "$FIN_COUNT" -gt "0" ]; then
+            echo "::error::CRITICAL: $FIN_COUNT finances files found in public repo! These contain billing PII and MUST be removed."
+            git ls-tree -r HEAD --name-only -- 'data/finances/' | head -20
+            exit 1
+          fi
+          echo "✓ Zero finances files in public repo"
+
       - name: Guard — public show JSONs not stripped of reviews
         run: |
           # Detect when a commit strips reviews from public show JSONs.
