@@ -88,13 +88,15 @@ Import: `import { ComponentName } from '@/components/show-cards'`
 | `ScoreToggle` | Critics vs. audience score switcher |
 | `StatGrid` | Grid layout for statistics |
 | `ColumnHeader` | Sortable table header with direction indicators |
-| `Modal` / `ModalCloseButton` | Modal dialog container |
+| `Modal` / `ModalCloseButton` | Modal dialog container — portals to `<body>` (safe inside `.card`, whose `contain: layout style` would otherwise trap `position:fixed`) |
 | `ShowSearchDropdown` | Search/autocomplete for shows |
 | `MustSeeCrown` | Crown icon for Critical Gold scores |
 
 **Other shared utilities** (not in show-cards barrel but used by it):
 - `ShowImage` from `@/components/ShowImage` — Optimized show image with fallback/loading states
 - `getOptimizedImageUrl(url, size)` from `@/lib/images` — CDN-optimized image URL builder
+- `RatingEditor` from `@/components/user/RatingEditor` — shared user rating editor (adjustable half-stars, date-seen capped to min(today, closing), 2000-char private notes, failed-save keeps draft + Retry, `'auth-gated'` onSave contract keeps editor open behind sign-in). Bottom-sheet Modal on mobile / inline card on desktop via live matchMedia. The ONLY rating editor — do not resurrect ReviewPanel/ShowPageRating (fixture-only legacy).
+- `StarRating` from `@/components/user/StarRating` — half-star input/display; interactive half derived from pointer-x (keyboard Enter = whole star), `readOnly` renders role="img" display
 
 **Rule:** Before creating any new UI component, check this list. If a shared component exists, use it. If you need a new shared component, add it to `show-cards/` and export from `index.ts`.
 
