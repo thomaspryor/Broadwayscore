@@ -41,6 +41,8 @@ data/review-texts/
 
 # Aggregator archive (copyrighted scraped HTML — stored in private repo thomaspryor/broadway-review-texts)
 data/aggregator-archive/
+# Finances (billing PII: receipts + P&L ledgers — stored in private repo thomaspryor/broadway-scorecard-data under data/finances/, GitHub-API access only, never checked into the public build)
+data/finances/
 # Audit HTML caches (copyrighted source HTML — used by audit-opening-night-extraction.js)
 data/review-sources/
 # Live HTML test fixtures (copyrighted aggregator snapshots used to reproduce
