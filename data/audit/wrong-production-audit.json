@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-05T09:42:35.560Z",
+  "timestamp": "2026-07-05T10:20:47.192Z",
   "stats": {
-    "totalReviews": 39654,
-    "alreadyFlagged": 17443,
+    "totalReviews": 39669,
+    "alreadyFlagged": 17452,
     "dateGuardCatches": 36,
-    "directorMismatch": 889,
+    "directorMismatch": 890,
     "tvFilmSignals": 1094,
-    "londonSignals": 729,
+    "londonSignals": 730,
     "offBroadwaySignals": 467,
     "yearMismatch": 84,
-    "noPublishDate": 3983
+    "noPublishDate": 3981
   },
   "findings": [
     {
@@ -8699,6 +8699,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "glengarry-glen-ross-west-end-2026",
+      "file": "the-jewish-chronicle--john-nathan.json",
+      "publishDate": "2026-06-30",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
         }
       ]
     },
@@ -30713,7 +30726,7 @@
       "file": "exeunt-magazine--loren-noveck.json",
       "score": 80,
       "publishDate": "2026-05-15T11:08:02-04:00",
-      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/",
+      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/#:~:text=Dad%20Don't%20Read%20This%20is%20messy%20and%20raw%20and,will%20keep%20it%20in%20my",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -36827,6 +36840,19 @@
       "score": 96,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/pride-dorfman-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "pride-west-end-2026",
+      "file": "observer--david-benedict.json",
+      "publishDate": "2026-07-04",
+      "url": null,
       "findings": [
         {
           "type": "LONDON_SIGNAL",
