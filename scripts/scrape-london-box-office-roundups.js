@@ -743,9 +743,14 @@ async function scrapeLBORoundups() {
   //
   // For a targeted show with no sitemap-matched individual review, ask SERP for
   // the byline review directly and accept a result ONLY when its slug matches
-  // THIS show via matchSlugToShow (single-show pool) — the same guard the
-  // sitemap path uses — so a wrong-show URL can't contaminate (the Stuart King
-  // mis-attribution failure mode this file has hit before).
+  // THIS show as the WINNER against the full weShows pool — identical to the
+  // sitemap path (line ~630). Matching against a single-show pool would be a
+  // strictly weaker guard: it returns "high" whenever this show's tokens appear
+  // in the slug even if the URL is really about a different show that would
+  // out-score it across the pool (e.g. "avenue-verte" slug matching Avenue Q on
+  // the bare "avenue" token). The full-pool + id-equality check prevents that
+  // wrong-show contamination (the Stuart King mis-attribution failure mode this
+  // file has hit before).
   if (targetShowIds && SCRAPINGBEE_KEY) {
     const matchedIndivIds = new Set(matchedIndividual.map(r => r.show.id));
     const unmatchedIndivTargets = targetShowIds.filter(id => !matchedIndivIds.has(id));
@@ -773,8 +778,8 @@ async function scrapeLBORoundups() {
             .replace(/^https?:\/\/[^/]+/, '')
             .replace(/^\/news\/post\//, '')
             .replace(/\/$/, '');
-          const m = matchSlugToShow(postSlug, [show]);
-          if (m && m.show && m.confidence === 'high') { picked = u; break; }
+          const m = matchSlugToShow(postSlug, weShows);
+          if (m && m.show && m.show.id === show.id && m.confidence === 'high') { picked = u; break; }
         }
 
         if (picked) {

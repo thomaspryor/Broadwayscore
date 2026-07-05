@@ -1140,6 +1140,15 @@ function _matchCleanedSlugAgainstShows(cleanedSlug, shows, options = {}) {
     // 1536 review (londonboxoffice.co.uk/news/post/1536-ambassadors-review)
     // was dropped this way (2026-06-28 report). Mirrors the numeric exemption
     // already used by matchTitleToShow's first-token gate (`/^\d+$/`).
+    //
+    // Blast radius: this helper backs matchSlugToShow (PV, LBO) AND
+    // matchBwwRoundupSlugToShow (BWW), so the exemption is intentionally global
+    // — a numeric-titled show (1536, 1776, 1984) should be matchable from every
+    // aggregator, not just LBO. Spurious matches on an incidental year token are
+    // contained by three existing gates: _tokenAppearsInSlug requires a hyphen
+    // boundary (so `1536` never bleeds into `21536`), ALL of a show's tokens
+    // must appear, and the squared-length sort lets any genuine multi-token
+    // candidate out-score a lone numeric token.
     if (tokens.length === 1 && tokens[0].length < 5 && !/^\d{3,}$/.test(tokens[0])) continue;
     let matchedTokens = 0;
     let score = 0;       // sum of matched-token-length squared
