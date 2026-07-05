@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useCallback } from 'react';
+import { useState, useCallback, useId } from 'react';
 
 interface StarRatingProps {
   rating: number | null;
@@ -17,23 +17,69 @@ const SIZE_MAP = {
   lg: { star: 40, gap: 4 },
 };
 
+const STAR_PATH = 'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z';
+
+/**
+ * Renders a single star at a given fill level. `clipId` must be unique per
+ * StarRating instance so multiple star rows on one page don't share a clipPath.
+ */
+function StarShape({ fill, clipId }: { fill: '0%' | '50%' | '100%'; clipId: string }) {
+  if (fill === '100%') {
+    return (
+      <svg viewBox="0 0 24 24" fill="none" className="w-full h-full">
+        <path d={STAR_PATH} fill="#FFD700" />
+      </svg>
+    );
+  }
+  if (fill === '0%') {
+    return (
+      <svg viewBox="0 0 24 24" fill="none" className="w-full h-full">
+        <path d={STAR_PATH} fill="none" stroke="#6B7280" strokeWidth="1.5" strokeLinejoin="round" />
+      </svg>
+    );
+  }
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className="absolute inset-0 w-full h-full">
+      <defs>
+        <clipPath id={clipId}>
+          <rect x="0" y="0" width="12" height="24" />
+        </clipPath>
+      </defs>
+      <path d={STAR_PATH} fill="none" stroke="#6B7280" strokeWidth="1.5" strokeLinejoin="round" />
+      <path d={STAR_PATH} fill="#FFD700" clipPath={`url(#${clipId})`} />
+    </svg>
+  );
+}
+
+function fillFor(displayRating: number, starIndex: number): '0%' | '50%' | '100%' {
+  if (displayRating >= starIndex) return '100%';
+  if (displayRating >= starIndex - 0.5) return '50%';
+  return '0%';
+}
+
+/**
+ * Half-star rating input. One button per star; the clicked/hovered half is
+ * derived from the pointer x-position relative to the button. This works
+ * identically on mouse and touch (a tap fires a click carrying clientX), which
+ * is the whole point — the previous isTouchDevice/synthetic-mousemove heuristic
+ * broke half-stars on real phones.
+ */
 export default function StarRating({ rating, onRatingChange, size = 'md', readOnly = false, hideLabel = false }: StarRatingProps) {
   const [hoverRating, setHoverRating] = useState<number | null>(null);
-  const [showHalfButton, setShowHalfButton] = useState(false);
-  const [lastTappedStar, setLastTappedStar] = useState<number | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const isTouchDevice = useRef(false);
   const { star: starSize, gap } = SIZE_MAP[size];
+  const uid = useId();
 
   const displayRating = hoverRating ?? rating ?? 0;
 
+  const valueFromPointer = (e: React.MouseEvent, starIndex: number): number => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const isLeftHalf = e.clientX - rect.left < rect.width / 2;
+    return isLeftHalf ? starIndex - 0.5 : starIndex;
+  };
+
   const handleMouseMove = useCallback((e: React.MouseEvent, starIndex: number) => {
     if (readOnly) return;
-    isTouchDevice.current = false;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const isLeftHalf = x < rect.width / 2;
-    setHoverRating(isLeftHalf ? starIndex - 0.5 : starIndex);
+    setHoverRating(valueFromPointer(e, starIndex));
   }, [readOnly]);
 
   const handleMouseLeave = useCallback(() => {
@@ -43,132 +89,41 @@ export default function StarRating({ rating, onRatingChange, size = 'md', readOn
 
   const handleClick = useCallback((e: React.MouseEvent, starIndex: number) => {
     if (readOnly) return;
-
-    // Desktop: use hover position for half-star precision
-    if (!isTouchDevice.current) {
-      const rect = e.currentTarget.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const isLeftHalf = x < rect.width / 2;
-      const newRating = isLeftHalf ? starIndex - 0.5 : starIndex;
-      onRatingChange(newRating);
-      return;
-    }
-
-    // Mobile: tap = full star, show half button
-    onRatingChange(starIndex);
-    setLastTappedStar(starIndex);
-    setShowHalfButton(true);
+    setHoverRating(null);
+    onRatingChange(valueFromPointer(e, starIndex));
   }, [readOnly, onRatingChange]);
 
-  const handleTouch = useCallback(() => {
-    isTouchDevice.current = true;
-  }, []);
-
-  const handleHalfStarClick = useCallback(() => {
-    if (lastTappedStar !== null) {
-      onRatingChange(lastTappedStar - 0.5);
-      setShowHalfButton(false);
-    }
-  }, [lastTappedStar, onRatingChange]);
-
-  const getFillWidth = (starIndex: number): string => {
-    if (displayRating >= starIndex) return '100%';
-    if (displayRating >= starIndex - 0.5) return '50%';
-    return '0%';
-  };
+  const labelValue = readOnly ? rating : hoverRating ?? rating;
 
   return (
     <div className="inline-flex flex-col items-start">
       <div
-        ref={containerRef}
         className={`inline-flex items-center ${readOnly ? '' : 'cursor-pointer'}`}
         style={{ gap }}
         onMouseLeave={handleMouseLeave}
-        onTouchStart={handleTouch}
-        role="radiogroup"
-        aria-label="Star rating"
+        role={readOnly ? 'img' : 'radiogroup'}
+        aria-label={readOnly ? `${(rating ?? 0).toFixed(1)} out of 5 stars` : 'Star rating'}
       >
         {[1, 2, 3, 4, 5].map(starIndex => (
           <button
             key={starIndex}
             type="button"
             disabled={readOnly}
-            className={`relative ${readOnly ? 'cursor-default' : 'cursor-pointer'} transition-transform ${
-              !readOnly ? 'hover:scale-110 active:scale-95' : ''
-            }`}
+            className={`relative transition-transform ${readOnly ? 'cursor-default' : 'cursor-pointer hover:scale-110 active:scale-95'}`}
             style={{ width: starSize, height: starSize }}
-            onMouseMove={e => handleMouseMove(e, starIndex)}
-            onClick={e => handleClick(e, starIndex)}
+            onMouseMove={readOnly ? undefined : e => handleMouseMove(e, starIndex)}
+            onClick={readOnly ? undefined : e => handleClick(e, starIndex)}
             aria-label={`${starIndex} star${starIndex !== 1 ? 's' : ''}`}
           >
-            {getFillWidth(starIndex) === '100%' ? (
-              /* Fully filled — single gold star, no overlap artifacts */
-              <svg viewBox="0 0 24 24" fill="none" className="w-full h-full">
-                <path
-                  d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
-                  fill="#FFD700"
-                />
-              </svg>
-            ) : getFillWidth(starIndex) === '0%' ? (
-              /* Empty — outline only (like Google Maps) */
-              <svg viewBox="0 0 24 24" fill="none" className="w-full h-full">
-                <path
-                  d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
-                  fill="none"
-                  stroke="#6B7280"
-                  strokeWidth="1.5"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            ) : (
-              /* Half-filled — use clipPath for clean half-star */
-              <>
-                <svg viewBox="0 0 24 24" fill="none" className="absolute inset-0 w-full h-full">
-                  <defs>
-                    <clipPath id={`half-${starIndex}`}>
-                      <rect x="0" y="0" width="12" height="24" />
-                    </clipPath>
-                  </defs>
-                  {/* Outline background */}
-                  <path
-                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
-                    fill="none"
-                    stroke="#6B7280"
-                    strokeWidth="1.5"
-                    strokeLinejoin="round"
-                  />
-                  {/* Gold left half */}
-                  <path
-                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
-                    fill="#FFD700"
-                    clipPath={`url(#half-${starIndex})`}
-                  />
-                </svg>
-              </>
-            )}
+            <StarShape fill={fillFor(displayRating, starIndex)} clipId={`half-${uid}-${starIndex}`} />
           </button>
         ))}
-
-        {/* Rating label */}
-        {rating !== null && !hideLabel && (
-          <span className={`ml-1 font-bold text-white ${
-            size === 'sm' ? 'text-xs' : size === 'md' ? 'text-sm' : 'text-base'
-          }`}>
-            {rating.toFixed(1)}
+        {labelValue !== null && labelValue !== undefined && !hideLabel && (
+          <span className={`ml-1 font-bold text-white ${size === 'sm' ? 'text-xs' : size === 'md' ? 'text-sm' : 'text-base'}`}>
+            {labelValue.toFixed(1)}
           </span>
         )}
       </div>
-
-      {/* Mobile half-star button */}
-      {showHalfButton && !readOnly && lastTappedStar !== null && (
-        <button
-          type="button"
-          onClick={handleHalfStarClick}
-          className="mt-1.5 px-2.5 py-1 text-xs font-semibold text-amber-300 bg-amber-500/10 border border-amber-500/20 rounded-full hover:bg-amber-500/20 transition-colors"
-        >
-          Make it {(lastTappedStar - 0.5).toFixed(1)} ½
-        </button>
-      )}
     </div>
   );
 }

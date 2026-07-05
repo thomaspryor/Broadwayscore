@@ -48,7 +48,9 @@ Add any conflicts found to the context block as **"Known conflicts"** so reviewe
 Launch ALL SIX simultaneously in a single message with parallel tool calls — the pre-mortem and the design reviewer run in parallel too, not after. Do not serialize them; latency matters and they're independent.
 
 1. **Codex (GPT-5.x with codebase access) — Production & Architecture focus** — Run via Bash.
-   **Codex check:** Run `command -v codex >/dev/null && echo READY || echo MISSING` first. If MISSING, use a Claude agent (Task tool, subagent_type "general-purpose") with the same prompt below. Note: "Codex unavailable — using Claude as second reviewer."
+   **Codex check:** Run `command -v codex >/dev/null && echo READY || echo MISSING` first.
+   - READY (local): run Codex as below.
+   - MISSING (expected in cloud): do NOT fall straight to Claude — that removes the only GPT-family reviewer. Instead run this SAME prompt against **GPT-4o via `api.openai.com`** (`curl https://api.openai.com/v1/chat/completions -H "Authorization: Bearer $OPENAI_API_KEY"`, `model: "gpt-4o"`, this prompt as the message; check `jq -e '.error'` and surface any error). Only if `OPENAI_API_KEY` is also unavailable, use a Claude agent. Record which reviewer actually ran in the coverage banner (Phase 3).
    ```bash
    set -o pipefail
    [ -s "${PLAN_FILE:-/tmp/critique-plan.txt}" ] || { echo "ERROR: plan file is missing or empty — write the plan file before running this reviewer"; exit 1; }
@@ -155,7 +157,7 @@ Launch ALL SIX simultaneously in a single message with parallel tool calls — t
    > [paste the full plan text here]
 
 4. **Gemini — Consistency & Gap Checker** — Run this curl command via Bash.
-   **Gemini check:** Run `echo ${GEMINI_API_KEY:+SET}` first. If empty, skip this reviewer. Note: "Gemini unavailable — running with 3 reviewers."
+   **Gemini check:** Run `echo ${GEMINI_API_KEY:+SET}` first. If empty, record Gemini as **MISSING** in the coverage banner (Phase 3) with the fix (set `GEMINI_API_KEY`; it rides the default `*.googleapis.com` allowlist, so no network change is needed) — don't just silently drop it. If SET, run the curl and check `jq -e '.error'`; surface any API error instead of emitting empty output.
    ```
    curl -s "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=$GEMINI_API_KEY" \
      -H "Content-Type: application/json" \
@@ -241,6 +243,8 @@ Launch ALL SIX simultaneously in a single message with parallel tool calls — t
    > [paste the full plan text here]
 
 ### Phase 3: Present results
+
+**Reviewer coverage (print this FIRST):** State which reviewers ran and on which model — specifically whether the Codex lens ran on Codex / GPT-4o / Claude, and whether Gemini ran. If any external-model reviewer fell back off its intended model, print a `⚠️` line naming it + the one-line fix. A plan reviewed with fewer independent model families is weaker — say so explicitly rather than presenting it as full six-reviewer coverage.
 
 Show all six critiques clearly with headers:
 - **Codex (Production & Architecture)**
