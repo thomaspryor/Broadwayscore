@@ -258,6 +258,10 @@ export default function RatingEditor({
       onClose={onCancel}
       bottomSheet
       maxWidth="md"
+      // Below SignInModal's z=80: the auth-gated flow opens sign-in ON TOP of
+      // this editor, and the editor's backdrop must not cover the sign-in
+      // dialog or intercept its clicks.
+      zIndex={60}
       closeOnBackdrop={!saving}
       closeOnEscape={!saving}
       ariaLabel={`Rate ${showTitle}`}
