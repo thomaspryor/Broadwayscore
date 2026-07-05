@@ -6,20 +6,26 @@ This file + a small set of project-scoped substitutes (`.claude/hooks/`, `cloud-
 
 ## Before your first tool call
 
-1. **Verify secrets:** `node scripts/check-cloud-secrets.js`. If Tier 1 is missing, ask the user to set them at claude.ai/code → click the **cloud icon showing the current environment's name** (top of the input area) → hover environment row → click the **gear icon** → paste into the **Environment variables** field (`KEY=value` per line, no quotes). Caveat per Anthropic docs: this is NOT a dedicated secrets store — values are visible to anyone with environment edit access.
-2. **Read accumulated learnings:** `cat cloud-memory/INDEX.md` then `cat cloud-memory/MEMORY.md` for the full index. Specific feedback files referenced in the index live alongside it.
+1. **Verify secrets:** `node scripts/check-cloud-secrets.js`. If Tier 1 is missing, ask the user to set them at claude.ai/code → click the **cloud icon showing the current environment's name** (top of the input area) → hover environment row → click the **gear icon** → paste into the **Environment variables** field (`KEY=value` per line, no quotes). Caveat per Anthropic docs: this is NOT a dedicated secrets store — values are visible to anyone with environment edit access. The two that block real work: `REVIEW_TEXTS_TOKEN` (clones the private core-data repo — without it the app can't build) and `NOTION_API_KEY` (notion-brain.js + the notion-create hook gate).
+2. **Data bootstrap is automatic.** The `cloud-bootstrap.sh` SessionStart hook runs `scripts/cloud-bootstrap-data.sh`, which clones the real private data if `REVIEW_TEXTS_TOKEN`/`gh` is available, else synthesizes a buildable STUB from `public/data/mobile-shows.json` (reviews/scores empty — UI/build work only). It also `npm install`s `@notionhq/client` on demand. If you still see no `data/shows.json`, run `bash scripts/cloud-bootstrap-data.sh` manually and check the output.
+3. **Read accumulated learnings:** `cat cloud-memory/MEMORY.md` — the full index. Specific feedback files referenced in it live alongside it in `cloud-memory/`.
 
 ## Project hooks that fire in cloud (project-scoped subset)
 
 - `.claude/hooks/session-start.sh` — critical-rules banner + integrity check
 - `.claude/hooks/verify-edits.sh` — Stop hook; blocks "done" without Bash verification. Bypass: `NO-VERIFY: <reason>` in final message.
 - `.claude/hooks/notion-create-block.sh` — PreToolUse Bash gate; blocks subsequent tool calls if a `notion-brain.js create` failed earlier in the session.
+- `.claude/hooks/cloud-bootstrap.sh` — SessionStart; runs the data bootstrap above. Cloud-only by design (no user-level master); inert on local CLI where `data/shows.json` already resolves.
 
 These are derivatives of `~/.claude/hooks/` masters. Each script self-skips if `$HOME/.claude/hooks/<basename>` exists (so on local CLI the user-level master fires; on cloud the project copy fires). 12 other user-level hooks DO NOT fire in cloud (worktree-enforce, design-system-lint, etc.) — be extra careful with edits the local hooks would catch.
 
 ## Slash commands available in cloud
 
-Cloud sees commands committed to `.claude/commands/` in this repo. Local CLI sees both project + user-level. Check `ls .claude/commands/` for what's available cloud-side.
+Cloud sees commands committed to `.claude/commands/` in this repo. Local CLI sees both project + user-level. Check `ls .claude/commands/` for what's available cloud-side. The planning suite (`/plan-review`, `/right-problem`, `/plan-tasks`) is committed here so cloud sessions get the tuned multi-model review instead of approximating it — Codex/Gemini legs self-degrade to Claude agents when those CLIs/keys are absent.
+
+## GitHub work in cloud (no `gh` CLI)
+
+Cloud has no `gh` CLI — CLAUDE.md's `gh run`/`gh workflow run`/`gh secret set` runbooks don't run as written. Use the GitHub MCP connector; the full step-by-step mapping (and where it has no equivalent, e.g. secret rotation) is in `cloud-memory/feedback_gh_cli_to_github_mcp_mapping.md`. Key traps: no `--jq` (filter in code), job logs live on the blocked `*.blob.core.windows.net` and overflow context (save to a file, slice), and monitoring is `ScheduleWakeup` + a single `get_workflow_run`, never a polling loop.
 
 ## Key gaps cloud has vs local
 
