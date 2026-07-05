@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-05T15:32:09.193Z",
+  "timestamp": "2026-07-05T15:49:26.876Z",
   "stats": {
-    "totalReviews": 39695,
-    "alreadyFlagged": 17468,
+    "totalReviews": 39704,
+    "alreadyFlagged": 17475,
     "dateGuardCatches": 36,
     "directorMismatch": 890,
-    "tvFilmSignals": 1094,
-    "londonSignals": 730,
+    "tvFilmSignals": 1095,
+    "londonSignals": 731,
     "offBroadwaySignals": 467,
     "yearMismatch": 84,
-    "noPublishDate": 3990
+    "noPublishDate": 3989
   },
   "findings": [
     {
@@ -18056,6 +18056,19 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2000 (2x) more than 2026 (1x). 2000 matches production: proof-2000"
+        }
+      ]
+    },
+    {
+      "showId": "proof-2026",
+      "file": "nysr--unknown.json",
+      "publishDate": null,
+      "url": "https://nystagereview.com/2026/04/16/proof-25-year-old-pulitzer-winner-proves-to-be-even-better-than-before/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -40611,6 +40624,19 @@
       "score": 82,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2026/jul/01/the-guilty-review-russell-tovey-donmar-warehouse-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "the-guilty-west-end-2026",
+      "file": "theatre-vibe--unknown.json",
+      "publishDate": "2026-07-04",
+      "url": "https://theatrevibe.co.uk/2026/07/04/review-the-guilty-donmar-warehouse-2026/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
