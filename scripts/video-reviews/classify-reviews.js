@@ -38,6 +38,10 @@ if (!ANTHROPIC_API_KEY) {
 }
 
 function getOpenBroadwayShows() {
+  if (!fs.existsSync(SHOWS_PATH)) {
+    console.error(`Missing ${SHOWS_PATH} — data/shows.json is private core data; in CI the workflow must run .github/actions/checkout-core-data first.`);
+    process.exit(1);
+  }
   const data = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
   // Include open/previews shows plus closed shows from the last 3 seasons
   // (June 2023 onward) so transcripts can be matched to historical productions.
@@ -230,4 +234,4 @@ async function main() {
   }
 }
 
-main().catch(console.error);
+main().catch(e => { console.error(e); process.exit(1); });
