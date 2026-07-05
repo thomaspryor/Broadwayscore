@@ -52,6 +52,7 @@
 - [page.evaluate .click() races hydration](feedback_playwright_evaluate_click_hydration.md) — use page.getByRole().click() for actionability
 
 ## ⚙️ CI / GitHub Actions / workflows
+- [gh-CLI → GitHub MCP mapping (cloud)](feedback_gh_cli_to_github_mcp_mapping.md) — no gh in cloud; run_workflow/get_workflow_run/get_job_logs; secrets have NO MCP path; logs overflow → slice from file
 - [Workflow cascade prevention](feedback_workflow_cascade_prevention.md) — trace dispatch graph; circular chains → 1000+ runs/day
 - [Cron timeout = script budget](feedback_cron_timeout_needs_script_budget.md) — cancelled-at-timeout crons need --time-budget-min + rotation; check skip-cache checkout wiring
 - [test.yml push path allow-list](feedback_test_yml_push_path_allowlist.md) — non-listed scripts/ pushes trigger ZERO CI; add new paths
