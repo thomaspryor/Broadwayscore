@@ -1,75 +1,85 @@
 {
-  "runDate": "2026-07-05T15:42:58.729Z",
+  "runDate": "2026-07-05T15:44:40.375Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "the-misanthrope-west-end-2026",
+    "showFilter": "relics-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 7,
+    "processed": 1,
+    "failed": 3,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "25.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 0,
+    "archiveToday": 1,
     "archive": 0
   },
   "statistics": {
     "tier1Attempts": 2,
-    "tier1Success": 2,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 1,
-    "tier1_5Success": 1,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
     "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 0,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
+    "tier4Attempts": 2,
     "tier4Success": 0,
-    "totalFailed": 7,
+    "totalFailed": 3,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 7,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "relics-west-end-2026/cambridge--unknown.json"
+  ],
   "failed": [
-    "the-misanthrope-west-end-2026/nytheatre--david-gordon.json",
-    "the-misanthrope-west-end-2026/theatermania--david-finkle.json",
-    "the-misanthrope-west-end-2026/about-entertainment--jason-zinoman.json",
-    "the-misanthrope-west-end-2026/backstage--david-sheward.json",
-    "the-misanthrope-west-end-2026/curtainup--simon-saltzman.json",
-    "the-misanthrope-west-end-2026/west-end-best-friend--news-desk.json",
-    "the-misanthrope-west-end-2026/whatsonstage--tanyel-gumushan.json"
+    "relics-west-end-2026/nytimes--unknown.json",
+    "relics-west-end-2026/guardian--unknown.json",
+    "relics-west-end-2026/thestage--neil-norman.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "relics-west-end-2026/cambridge--unknown.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/relics-west-end-2026/thestage--neil-norman.json"
+    ],
     "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The Guardian": {
+      "count": 1,
+      "domain": "theguardian.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
