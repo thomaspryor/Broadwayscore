@@ -167,10 +167,24 @@ function minReviews(category) {
   return (category === 'off-broadway' || category === 'off-west-end') ? 5 : 5;
 }
 
+// Email clients (Gmail web + app, Outlook, Yahoo) do NOT render WebP — which is
+// the primary format our image archiver emits, and most on-site thumbnails/posters
+// have no raster fallback on prod. Route every on-site image through the weserv.nl
+// image CDN, forcing JPEG output so it renders in every mail client. `we` = never
+// enlarge; `w`/`dpr` keep it sharp on retina while shrinking the payload. A non-BSC
+// URL (already-jpg external, favicon, etc.) or an already-proxied URL is passed
+// through untouched. Without this, ~15-18 images per issue silently broke in Gmail
+// (invisible in the browser-based Resend preview, visible only in the delivered mail).
+function emailSafeImg(url, w = 240) {
+  if (!url || !url.startsWith('https://broadwayscorecard.com')) return url;
+  const stripped = url.replace(/^https?:\/\//, '');
+  return `https://images.weserv.nl/?url=${encodeURIComponent(stripped)}&output=jpg&w=${w}&we`;
+}
+
 function getImage(show) {
   if (show.images && show.images.thumbnail) {
     const p = show.images.thumbnail.startsWith('/') ? show.images.thumbnail : '/' + show.images.thumbnail;
-    return 'https://broadwayscorecard.com' + p;
+    return emailSafeImg('https://broadwayscorecard.com' + p);
   }
   return null;
 }
@@ -421,7 +435,7 @@ function thumb(show, size = 64) {
 function posterOrThumb(show, posterW = 80, posterH = 120) {
   if (show.images && show.images.poster) {
     const p = show.images.poster.startsWith('/') ? show.images.poster : '/' + show.images.poster;
-    const url = 'https://broadwayscorecard.com' + p;
+    const url = emailSafeImg('https://broadwayscorecard.com' + p, Math.max(posterW * 2, 240));
     const img = `<img src="${url}" alt="${show.title}" width="${posterW}" height="${posterH}" style="display:block;width:${posterW}px;height:${posterH}px;object-fit:cover;border-radius:8px;background:#2a2a38;">`;
     return show && show.slug
       ? `<a href="${SITE}/show/${show.slug}" class="tdec">${img}</a>`
