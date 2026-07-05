@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-05T15:49:26.876Z",
+  "timestamp": "2026-07-05T16:04:21.396Z",
   "stats": {
-    "totalReviews": 39704,
-    "alreadyFlagged": 17475,
+    "totalReviews": 39784,
+    "alreadyFlagged": 17483,
     "dateGuardCatches": 36,
-    "directorMismatch": 890,
+    "directorMismatch": 891,
     "tvFilmSignals": 1095,
     "londonSignals": 731,
     "offBroadwaySignals": 467,
     "yearMismatch": 84,
-    "noPublishDate": 3989
+    "noPublishDate": 3990
   },
   "findings": [
     {
@@ -14538,6 +14538,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "master-haroldand-the-boys-2003",
+      "file": "about-entertainment--ben-brantley.json",
+      "score": null,
+      "publishDate": "June 2, 2003",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"athol fugard\" from master-haroldand-the-boys-1982"
         }
       ]
     },
@@ -40635,6 +40649,7 @@
     {
       "showId": "the-guilty-west-end-2026",
       "file": "theatre-vibe--unknown.json",
+      "score": 95,
       "publishDate": "2026-07-04",
       "url": "https://theatrevibe.co.uk/2026/07/04/review-the-guilty-donmar-warehouse-2026/",
       "findings": [
