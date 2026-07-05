@@ -2,6 +2,14 @@
 
 import { useState, useCallback } from 'react';
 import { getSupabaseClient } from '@/lib/supabase';
+import {
+  supabaseRestInsert,
+  supabaseRestUpdate,
+  supabaseRestDelete,
+  supabaseRestUpsert,
+  supabaseRestSelect,
+  supabaseRestRpc,
+} from '@/lib/supabase-rest';
 import type { UserList, ListItem } from '@/types/user';
 
 const MAX_LISTS = 50;
@@ -97,8 +105,7 @@ export function useUserLists(userId: string | null) {
     description?: string | null,
     isRanked?: boolean,
   ): Promise<UserList | null> => {
-    const client = getSupabaseClient();
-    if (!client || !userId) return null;
+    if (!userId) return null;
 
     // Enforce max lists
     if (lists.length >= MAX_LISTS) {
@@ -108,19 +115,15 @@ export function useUserLists(userId: string | null) {
 
     setError(null);
     try {
-      const { data, error: err } = await client
-        .from('lists')
-        .insert({
-          user_id: userId,
-          name: name.trim(),
-          description: description?.trim() || null,
-          is_ranked: isRanked ?? false,
-        })
-        .select()
-        .single();
+      const { data, error: err } = await supabaseRestInsert<UserList>('lists', {
+        user_id: userId,
+        name: name.trim(),
+        description: description?.trim() || null,
+        is_ranked: isRanked ?? false,
+      });
 
-      if (err) throw err;
-      const newList: UserList = { ...data, item_count: 0, preview_show_ids: [], all_show_ids: [] };
+      if (err) throw new Error(err.message);
+      const newList: UserList = { ...(data as UserList), item_count: 0, preview_show_ids: [], all_show_ids: [] };
       setLists(prev => [newList, ...prev]);
       return newList;
     } catch (e) {
@@ -134,8 +137,7 @@ export function useUserLists(userId: string | null) {
     listId: string,
     updates: { name?: string; description?: string | null; is_ranked?: boolean; is_public?: boolean },
   ): Promise<void> => {
-    const client = getSupabaseClient();
-    if (!client || !userId) return;
+    if (!userId) return;
 
     setError(null);
     try {
@@ -145,12 +147,8 @@ export function useUserLists(userId: string | null) {
       if (updates.is_ranked !== undefined) payload.is_ranked = updates.is_ranked;
       if (updates.is_public !== undefined) payload.is_public = updates.is_public;
 
-      const { error: err } = await client
-        .from('lists')
-        .update(payload)
-        .eq('id', listId);
-
-      if (err) throw err;
+      const { error: err } = await supabaseRestUpdate('lists', `id=eq.${listId}&user_id=eq.${userId}`, payload);
+      if (err) throw new Error(err.message);
 
       // Optimistic update
       setLists(prev => prev.map(l =>
@@ -159,33 +157,29 @@ export function useUserLists(userId: string | null) {
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Failed to update list';
       setError(msg);
+      throw e instanceof Error ? e : new Error(msg);
     }
   }, [userId]);
 
   const deleteList = useCallback(async (listId: string): Promise<void> => {
-    const client = getSupabaseClient();
-    if (!client || !userId) return;
+    if (!userId) return;
 
     setError(null);
     try {
-      const { error: err } = await client
-        .from('lists')
-        .delete()
-        .eq('id', listId);
-
-      if (err) throw err;
+      const { error: err } = await supabaseRestDelete('lists', `id=eq.${listId}&user_id=eq.${userId}`);
+      if (err) throw new Error(err.message);
 
       // Optimistic update
       setLists(prev => prev.filter(l => l.id !== listId));
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Failed to delete list';
       setError(msg);
+      throw e instanceof Error ? e : new Error(msg);
     }
   }, [userId]);
 
   const addToList = useCallback(async (listId: string, showId: string): Promise<void> => {
-    const client = getSupabaseClient();
-    if (!client || !userId) return;
+    if (!userId) return;
 
     // Enforce max items
     const list = lists.find(l => l.id === listId);
@@ -197,23 +191,21 @@ export function useUserLists(userId: string | null) {
     setError(null);
     try {
       // Get max position for this list
-      const { data: maxData } = await client
-        .from('list_items')
-        .select('position')
-        .eq('list_id', listId)
-        .order('position', { ascending: false })
-        .limit(1);
+      const { data: maxData } = await supabaseRestSelect<{ position: number }>(
+        'list_items',
+        `list_id=eq.${listId}&select=position&order=position.desc&limit=1`,
+      );
 
       const maxPos = maxData && maxData.length > 0 ? maxData[0].position : 0;
 
-      const { error: err } = await client
-        .from('list_items')
-        .upsert(
-          { list_id: listId, show_id: showId, position: maxPos + POSITION_GAP },
-          { onConflict: 'list_id,show_id', ignoreDuplicates: true }
-        );
+      const { error: err } = await supabaseRestUpsert(
+        'list_items',
+        { list_id: listId, show_id: showId, position: maxPos + POSITION_GAP },
+        'list_id,show_id',
+        { ignoreDuplicates: true },
+      );
 
-      if (err) throw err;
+      if (err) throw new Error(err.message);
 
       // Optimistic update — only increment if show wasn't already in the list
       setLists(prev => prev.map(l => {
@@ -232,22 +224,17 @@ export function useUserLists(userId: string | null) {
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Failed to add to list';
       setError(msg);
+      throw e instanceof Error ? e : new Error(msg);
     }
   }, [userId, lists]);
 
   const removeFromList = useCallback(async (listId: string, showId: string): Promise<void> => {
-    const client = getSupabaseClient();
-    if (!client || !userId) return;
+    if (!userId) return;
 
     setError(null);
     try {
-      const { error: err } = await client
-        .from('list_items')
-        .delete()
-        .eq('list_id', listId)
-        .eq('show_id', showId);
-
-      if (err) throw err;
+      const { error: err } = await supabaseRestDelete('list_items', `list_id=eq.${listId}&show_id=eq.${showId}`);
+      if (err) throw new Error(err.message);
 
       // Optimistic update — backfill preview if a preview show was removed
       setLists(prev => prev.map(l => {
@@ -267,6 +254,7 @@ export function useUserLists(userId: string | null) {
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Failed to remove from list';
       setError(msg);
+      throw e instanceof Error ? e : new Error(msg);
     }
   }, [userId]);
 
@@ -275,27 +263,26 @@ export function useUserLists(userId: string | null) {
     itemIds: string[],
     positions: number[],
   ): Promise<void> => {
-    const client = getSupabaseClient();
-    if (!client || !userId) return;
+    if (!userId) return;
 
     setError(null);
     try {
-      const { error: err } = await client.rpc('reorder_list_items', {
+      const { error: err } = await supabaseRestRpc('reorder_list_items', {
         p_list_id: listId,
         p_item_ids: itemIds,
         p_positions: positions,
       });
 
-      if (err) throw err;
+      if (err) throw new Error(err.message);
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Failed to reorder list';
       setError(msg);
+      throw e instanceof Error ? e : new Error(msg);
     }
   }, [userId]);
 
   const shareList = useCallback(async (listId: string): Promise<string | null> => {
-    const client = getSupabaseClient();
-    if (!client || !userId) return null;
+    if (!userId) return null;
 
     const list = lists.find(l => l.id === listId);
     if (!list) return null;
@@ -309,12 +296,13 @@ export function useUserLists(userId: string | null) {
     setError(null);
     try {
       const slug = list.share_slug || crypto.randomUUID().slice(0, 8);
-      const { error: err } = await client
-        .from('lists')
-        .update({ is_public: true, share_slug: slug })
-        .eq('id', listId);
+      const { error: err } = await supabaseRestUpdate(
+        'lists',
+        `id=eq.${listId}&user_id=eq.${userId}`,
+        { is_public: true, share_slug: slug },
+      );
 
-      if (err) throw err;
+      if (err) throw new Error(err.message);
 
       // Optimistic update
       setLists(prev => prev.map(l =>
@@ -330,8 +318,7 @@ export function useUserLists(userId: string | null) {
   }, [userId, lists]);
 
   const togglePublic = useCallback(async (listId: string, isPublic: boolean): Promise<void> => {
-    const client = getSupabaseClient();
-    if (!client || !userId) return;
+    if (!userId) return;
 
     setError(null);
     try {
@@ -344,12 +331,8 @@ export function useUserLists(userId: string | null) {
         }
       }
 
-      const { error: err } = await client
-        .from('lists')
-        .update(payload)
-        .eq('id', listId);
-
-      if (err) throw err;
+      const { error: err } = await supabaseRestUpdate('lists', `id=eq.${listId}&user_id=eq.${userId}`, payload);
+      if (err) throw new Error(err.message);
 
       // Optimistic update
       setLists(prev => prev.map(l =>
@@ -358,6 +341,7 @@ export function useUserLists(userId: string | null) {
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Failed to update list visibility';
       setError(msg);
+      throw e instanceof Error ? e : new Error(msg);
     }
   }, [userId, lists]);
 
