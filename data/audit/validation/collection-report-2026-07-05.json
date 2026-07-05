@@ -1,76 +1,84 @@
 {
-  "runDate": "2026-07-05T15:45:47.749Z",
+  "runDate": "2026-07-05T15:49:28.341Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "the-truth-a-comedy-by-florian-zeller-west-end-2026",
+    "showFilter": "to-kill-a-mockingbird-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 9,
+    "processed": 2,
+    "failed": 19,
     "skipped": 0,
-    "successRate": "25.0%"
+    "successRate": "9.5%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 2,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 1,
+    "archiveToday": 2,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 6,
+    "tier1Attempts": 7,
     "tier1Success": 5,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 1,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
+    "tier2Attempts": 3,
     "tier2Success": 0,
-    "tier3Attempts": 1,
-    "tier3Success": 0,
-    "tier3_6Attempts": 1,
-    "tier3_6Success": 1,
-    "tier4Attempts": 2,
+    "tier3Attempts": 3,
+    "tier3Success": 1,
+    "tier3_6Attempts": 2,
+    "tier3_6Success": 2,
+    "tier4Attempts": 1,
     "tier4Success": 0,
-    "totalFailed": 9,
+    "totalFailed": 19,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.5,
-    "urlDiscoveryAttempts": 7,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 14,
     "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre--apollo-theatre.json",
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre--marianka-swain.json",
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json"
+    "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json",
+    "to-kill-a-mockingbird-west-end-2026/broadwayworld--michael-dale.json"
   ],
   "failed": [
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/hollywood-reporter--daniel-fienberg.json",
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/daily-mail--unknown.json",
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/i-paper--sarah-carson.json",
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-box-office--nastazja-domaradzka.json",
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/the-contending--unknown.json",
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/the-upcoming-uk--unknown.json",
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/times-uk--dominic-maxwell.json",
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-best-friend--news-desk.json",
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/whatsonstage--editorial-staff.json"
+    "to-kill-a-mockingbird-west-end-2026/hollywood-reporter--david-rooney.json",
+    "to-kill-a-mockingbird-west-end-2026/observer--david-cote.json",
+    "to-kill-a-mockingbird-west-end-2026/theater-news-online--david-cote.json",
+    "to-kill-a-mockingbird-west-end-2026/thewrap--thom-geier.json",
+    "to-kill-a-mockingbird-west-end-2026/timeout--adam-feldman.json",
+    "to-kill-a-mockingbird-west-end-2026/wsj--terry-teachout.json",
+    "to-kill-a-mockingbird-west-end-2026/british-theatre--unknown.json",
+    "to-kill-a-mockingbird-west-end-2026/chicagotribune--chris-jones.json",
+    "to-kill-a-mockingbird-west-end-2026/financialtimes--sarah-hemming.json",
+    "to-kill-a-mockingbird-west-end-2026/i-paper--sam-marlowe.json",
+    "to-kill-a-mockingbird-west-end-2026/inquirer--toby-zinman.json",
+    "to-kill-a-mockingbird-west-end-2026/latimes--unknown.json",
+    "to-kill-a-mockingbird-west-end-2026/sunday-telegraph--dominic-cavendish.json",
+    "to-kill-a-mockingbird-west-end-2026/the-morning-star--unknown.json",
+    "to-kill-a-mockingbird-west-end-2026/the-upcoming-uk--unknown.json",
+    "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
+    "to-kill-a-mockingbird-west-end-2026/times-uk--quentin-letts.json",
+    "to-kill-a-mockingbird-west-end-2026/tribune--unknown.json",
+    "to-kill-a-mockingbird-west-end-2026/western-mail--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
-      "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre--apollo-theatre.json",
-      "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre--marianka-swain.json",
-      "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json"
+      "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json",
+      "to-kill-a-mockingbird-west-end-2026/broadwayworld--michael-dale.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -78,16 +86,17 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/the-truth-a-comedy-by-florian-zeller-west-end-2026/daily-mail--unknown.json"
+      "data/review-texts/to-kill-a-mockingbird-west-end-2026/tribune--unknown.json",
+      "data/review-texts/to-kill-a-mockingbird-west-end-2026/western-mail--unknown.json"
     ],
     "archive": []
   },
   "failuresByOutlet": {},
   "urlDiscoveries": [
     {
-      "reviewId": "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre--marianka-swain.json",
-      "oldUrl": "https://www.londontheatre.co.uk/theatre-news/news/everything-you-need-to-know-about-the-truth",
-      "newUrl": "https://www.londontheatre.co.uk/reviews/the-truth-review-apollo-theatre"
+      "reviewId": "to-kill-a-mockingbird-west-end-2026/broadwayworld--michael-dale.json",
+      "oldUrl": "/article/BWW-Review-Jeff-Daniels-is-Atticus-Finch-in-Aaron-Sorkin-and-Bartlett-Shers-Exquisite-Adaptation-of-TO-KILL-A-MOCKINGBIRD-20181213",
+      "newUrl": "https://www.broadwayworld.com/westend/article/Review-TO-KILL-A-MOCKINGBIRD-Wyndhams-Theatre-2026070188"
     }
   ]
 }
