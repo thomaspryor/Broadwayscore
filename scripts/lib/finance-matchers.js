@@ -162,10 +162,19 @@ function toLedgerRow(receipt, config = loadVendorConfig(), fx = DEFAULT_FX_TO_US
   const cls = classifyReceipt(receipt, config);
   if (cls.disposition !== 'booked') return { row: null, disposition: cls.disposition };
 
+  // Stripe-style refund notices ("Your refund from Vercel Inc. #...") arrive
+  // from the same sender as receipts and book as NEGATIVE rows. Their bodies
+  // repeat the original charge ("Amount paid $3,521.71"), so anchor on the
+  // credited figure first (2026-03-04 Vercel build-minutes refund: $875.15
+  // credited against a $3,521.71 invoice).
+  const isRefund = /\brefund from\b/i.test(receipt.subject || '');
   const vcfg = (config.expenseVendors || []).find((v) => v.key === cls.vendorKey) || {};
-  const anchors = vcfg.amountAnchor ? [vcfg.amountAnchor] : [];
+  const anchors = isRefund
+    ? ['credited total', 'refund from']
+    : (vcfg.amountAnchor ? [vcfg.amountAnchor] : []);
   const money = extractAmount(receipt.body || receipt.subject || '', { anchors });
   if (!money) return { row: null, disposition: 'amount-unparsed' };
+  if (isRefund) money.amount = -Math.abs(money.amount);
 
   const amountUsd = toUsd(money.amount, money.currency, fx);
   const receiptNo = extractReceiptNo(receipt.body || receipt.subject || '');
@@ -179,7 +188,7 @@ function toLedgerRow(receipt, config = loadVendorConfig(), fx = DEFAULT_FX_TO_US
     vendorKey: cls.vendorKey,
     vendor: cls.vendor,
     category: cls.category,
-    kind: cls.kind,
+    kind: isRefund ? 'refund' : cls.kind,
     amount: money.amount,
     currency: money.currency,
     amountUsd,

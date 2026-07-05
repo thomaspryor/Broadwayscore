@@ -9,6 +9,7 @@
   },
 
   "expenseVendors": [
+    { "key": "anthropic-max", "vendor": "Anthropic (Claude Max)", "category": "llm", "kind": "subscription", "businessPct": 100, "match": { "from": "invoice+statements@mail.anthropic.com", "bodyContains": "Max plan" }, "note": "Claude Max subscription shares the API receipt sender. MUST precede 'anthropic' (first match wins) so the sub doesn't book as usage-recharge — and doesn't get caught by the pre-May externallyPaid rule, which covers API overages only." },
     { "key": "anthropic", "vendor": "Anthropic (Claude API)", "category": "llm", "kind": "usage-recharge", "businessPct": 100, "match": { "from": "invoice+statements@mail.anthropic.com" } },
     { "key": "google-cloud", "vendor": "Google Cloud (Gemini API)", "category": "llm", "kind": "usage", "businessPct": 100, "match": { "from": "payments-noreply@google.com", "subjectContains": "received your payment", "bodyContains": "Google Cloud Platform" } },
     { "key": "openrouter", "vendor": "OpenRouter", "category": "llm", "kind": "usage-recharge", "businessPct": 100, "match": { "from": "receipts@openrouter.ai" } },

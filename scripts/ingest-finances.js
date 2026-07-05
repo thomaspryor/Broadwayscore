@@ -51,7 +51,7 @@ async function fetchGmailReceipts(days) {
   const auth = new google.auth.OAuth2(GMAIL_CLIENT_ID, GMAIL_CLIENT_SECRET);
   auth.setCredentials({ refresh_token: GMAIL_REFRESH_TOKEN });
   const gmail = google.gmail({ version: 'v1', auth });
-  const q = `newer_than:${days}d (subject:(receipt OR invoice OR payment OR subscription OR recharged) OR from:(brightdata.com OR openrouter.ai OR anthropic.com))`;
+  const q = `newer_than:${days}d (subject:(receipt OR invoice OR payment OR subscription OR recharged OR refund) OR from:(brightdata.com OR openrouter.ai OR anthropic.com))`;
   const out = [];
   let pageToken;
   do {
