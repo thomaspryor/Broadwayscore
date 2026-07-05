@@ -107,6 +107,16 @@ jobs:
           fi
           node scripts/update-show-status.js $SS_FLAG
 
+      # Self-heal shared ibdbUrls BEFORE validation. A revival stub that
+      # inherited the original production's ibdbUrl hard-fails validate-data
+      # ("Shared ibdbUrl ... null the stale url on the revival entry") and
+      # blocked the discovery commit daily 2026-07-03→05 (Sound of Music,
+      # A Few Good Men). This applies the validator's prescribed remedy
+      # automatically: earliest production keeps the URL, later entries are
+      # nulled; enrichment re-adds the revival's own URL later.
+      - name: Self-heal shared ibdbUrls
+        run: node scripts/fix-shared-ibdb-urls.js
+
       # Pre-discovery validation snapshot. Runs the same validator that gates
       # the commit below, but warn-only. If this fails, the data was already
       # broken BEFORE discovery ran — a peripheral file (lottery-rush.json,
