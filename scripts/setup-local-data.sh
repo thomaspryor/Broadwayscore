@@ -39,6 +39,16 @@ if [ -n "$TOKEN" ]; then
 elif command -v gh &>/dev/null; then
   echo "Using GitHub CLI for authentication..."
   AUTH_METHOD="gh"
+elif [ "${CLAUDE_CODE_REMOTE:-}" = "true" ]; then
+  # Cloud Claude Code session: no token, no gh CLI. Cloud sessions route ALL git
+  # operations through Anthropic's GitHub proxy, which authenticates with the
+  # connected account's credential for ANY repo that account can see — including
+  # this private core-data repo. So a plain, tokenless clone works here even
+  # though it would fail locally. GIT_TERMINAL_PROMPT=0 makes it fail fast rather
+  # than hang if the proxy doesn't inject auth (e.g. account lacks repo access).
+  # See .claude/CLOUD.md. If this path fails, the caller falls back to a stub.
+  echo "Cloud session detected — cloning via GitHub proxy (no token needed)..."
+  AUTH_METHOD="proxy"
 else
   echo "ERROR: No authentication method available."
   echo ""
@@ -72,6 +82,12 @@ else
   if [ "$AUTH_METHOD" = "gh" ]; then
     if ! gh repo clone thomaspryor/broadway-scorecard-data "$CORE_DATA_DIR" -- --depth 1 2>/dev/null; then
       echo "ERROR: Failed to clone broadway-scorecard-data. Check your access permissions."
+      exit 1
+    fi
+  elif [ "$AUTH_METHOD" = "proxy" ]; then
+    # Tokenless clone through the cloud GitHub proxy (see auth-method selection above).
+    if ! GIT_TERMINAL_PROMPT=0 git clone --depth 1 "https://github.com/thomaspryor/broadway-scorecard-data.git" "$CORE_DATA_DIR" 2>/dev/null; then
+      echo "ERROR: Proxy clone of broadway-scorecard-data failed — the connected GitHub account may lack access to the private repo. Set REVIEW_TEXTS_TOKEN as a fallback."
       exit 1
     fi
   else
@@ -133,6 +149,11 @@ if [ "${1:-}" = "--all" ]; then
   if [ "$AUTH_METHOD" = "gh" ]; then
     if ! gh repo clone thomaspryor/broadway-review-texts "$TEMP_DIR/review-texts" -- --depth 1 2>/dev/null; then
       echo "ERROR: Failed to clone broadway-review-texts. Check your access permissions."
+      exit 1
+    fi
+  elif [ "$AUTH_METHOD" = "proxy" ]; then
+    if ! GIT_TERMINAL_PROMPT=0 git clone --depth 1 "https://github.com/thomaspryor/broadway-review-texts.git" "$TEMP_DIR/review-texts" 2>/dev/null; then
+      echo "ERROR: Proxy clone of broadway-review-texts failed — set REVIEW_TEXTS_TOKEN as a fallback."
       exit 1
     fi
   else
