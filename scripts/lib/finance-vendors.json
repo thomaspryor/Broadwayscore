@@ -31,6 +31,14 @@
     { "key": "washington-post", "vendor": "The Washington Post", "category": "data-subscription", "kind": "subscription", "businessPct": 100, "match": { "fromContains": "washingtonpost.com", "subjectContains": "subscription" } }
   ],
 
+  "externallyPaid": {
+    "_note": "Charges someone other than the business paid (family covered early costs — 2026-07-05 user request). Matching rows stay in the ledger for audit but get excluded:true and are skipped by finance-stats. Rules only, no amounts (public repo). 'kinds' omitted = all kinds; 'before' is an exclusive YYYY-MM-DD upper bound on row.date. scrapingbee 'extra-topup' rows are produced by reclassifyMonthlyDupes (2nd+ subscription charge in the same calendar month = credit top-up / early renewal).",
+    "rules": [
+      { "vendorKey": "anthropic", "kinds": ["usage-recharge"], "before": "2026-05-01", "reason": "paid-by-family" },
+      { "vendorKey": "scrapingbee", "kinds": ["extra-topup"], "before": "2026-05-01", "reason": "paid-by-family" }
+    ]
+  },
+
   "revenueSources": [
     { "key": "affiliate", "source": "Affiliate commissions", "provider": "Impact + Partnerize", "capture": "api", "note": "Accrued monthly from getAffiliateStats totals.commission (NEVER totals.revenue)." },
     { "key": "buymeacoffee", "source": "Buy Me A Coffee", "provider": "buymeacoffee.com", "capture": "gmail", "realizedOnPayout": true, "match": { "fromContains": "buymeacoffee.com", "subjectContainsAny": ["supported you", "new member", "became a supporter"] }, "note": "Book as PENDING until a payout clears (account had a verification hold)." }

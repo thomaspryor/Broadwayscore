@@ -22,7 +22,7 @@
  */
 const fs = require('fs');
 const path = require('path');
-const { toLedgerRow, loadVendorConfig } = require('./lib/finance-matchers');
+const { toLedgerRow, loadVendorConfig, reclassifyMonthlyDupes, applyExternallyPaid } = require('./lib/finance-matchers');
 const { computeFinanceStats } = require('./lib/finance-stats');
 
 function parseArgs(argv) {
@@ -127,8 +127,14 @@ async function main() {
 
   ledger.sort((a, b) => String(a.date).localeCompare(String(b.date)));
 
+  // Whole-ledger post-passes (both idempotent): split same-month duplicate
+  // subscription charges into 'extra-topup', then re-mark externally-paid rows.
+  const retyped = reclassifyMonthlyDupes(ledger);
+  const ext = applyExternallyPaid(ledger, config);
+
   console.log(`Receipts in: ${receipts.length}`);
   console.log(`  booked ${stats.booked} · duplicate ${stats.duplicate} · personal ${stats.personal} · ignored ${stats.ignore} · needs-review ${stats.needsReview} · amount-unparsed ${stats.unparsed}`);
+  console.log(`  extra-topup retyped ${retyped} · externally-paid marked ${ext.excluded} / cleared ${ext.cleared} (total excluded ${ledger.filter((r) => r.excluded).length})`);
 
   const revenue = readJson(path.join(args.out, 'revenue-ledger.json'), []);
   const pnl = computeFinanceStats({ expenses: ledger, revenue, monthsBack: 6 });

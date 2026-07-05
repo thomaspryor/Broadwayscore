@@ -33,6 +33,7 @@ interface Stats {
   byCategory: CategoryRow[];
   byVendor: VendorRow[];
   recurringVsUsage: { recurring: number; usage: number };
+  excluded: { count: number; totalUsd: number };
   burnRate: number;
   runwayMonths: number | null;
   totals: { expense: number; revenue: number; net: number };
@@ -300,6 +301,10 @@ export default function Dashboard() {
           <div className="text-xs text-gray-600">
             {stats.ledgerCounts.expenses} expense rows · {stats.ledgerCounts.revenue} revenue rows · amounts USD ·
             businessPct applied · pending revenue excluded from net.
+            {stats.excluded?.count > 0 && (
+              <> {stats.excluded.count} early charge{stats.excluded.count === 1 ? '' : 's'} ({fmtMoney(stats.excluded.totalUsd)})
+              paid externally — not counted.</>
+            )}
           </div>
         </>
       )}

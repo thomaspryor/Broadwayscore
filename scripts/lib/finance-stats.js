@@ -54,7 +54,12 @@ function sumBy(rows, keyFn, valFn) {
  * @param {number} opts.monthsBack how many months of trend (default 12)
  * @param {number|null} opts.cashOnHand optional, enables runway
  */
-function computeFinanceStats({ expenses = [], revenue = [], asOfMonth, monthsBack = 12, cashOnHand = null } = {}) {
+function computeFinanceStats({ expenses: rawExpenses = [], revenue = [], asOfMonth, monthsBack = 12, cashOnHand = null } = {}) {
+  // Rows marked excluded (externally paid — see finance-vendors.json
+  // externallyPaid) never count toward any total; surfaced separately below.
+  const expenses = rawExpenses.filter((e) => !e.excluded);
+  const excludedRows = rawExpenses.filter((e) => e.excluded);
+
   const allMonths = [
     ...expenses.map((e) => monthKey(e.date)),
     ...revenue.map((r) => r.month || monthKey(r.date)),
@@ -136,6 +141,10 @@ function computeFinanceStats({ expenses = [], revenue = [], asOfMonth, monthsBac
     recurringVsUsage: { recurring, usage },
     burnRate,
     runwayMonths,
+    excluded: {
+      count: excludedRows.length,
+      totalUsd: round2(excludedRows.reduce((s, e) => s + ((e.amountBusiness != null ? e.amountBusiness : e.amountUsd) || 0), 0)),
+    },
     totals: {
       expense: round2(trend.reduce((s, t) => s + t.expense, 0)),
       revenue: round2(trend.reduce((s, t) => s + t.revenue, 0)),

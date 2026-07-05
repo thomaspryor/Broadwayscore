@@ -149,3 +149,36 @@ test('unknown vendor → needs-review, never auto-booked', () => {
   }, config);
   assert.equal(r.disposition, 'needs-review');
 });
+
+test('reclassifyMonthlyDupes: 2nd+ same-month subscription charge → extra-topup, idempotent', () => {
+  const rows = [
+    { id: 'a', vendorKey: 'scrapingbee', kind: 'subscription', date: '2026-02-02' },
+    { id: 'b', vendorKey: 'scrapingbee', kind: 'subscription', date: '2026-02-09' },
+    { id: 'c', vendorKey: 'scrapingbee', kind: 'subscription', date: '2026-02-19' },
+    { id: 'd', vendorKey: 'scrapingbee', kind: 'subscription', date: '2026-03-11' }, // new month resets
+    { id: 'e', vendorKey: 'resend', kind: 'subscription', date: '2026-02-15' },      // other vendor untouched
+    { id: 'f', vendorKey: 'anthropic', kind: 'usage-recharge', date: '2026-02-15' }, // non-subscription untouched
+  ];
+  assert.equal(M.reclassifyMonthlyDupes(rows), 2);
+  assert.deepEqual(rows.map((r) => r.kind), ['subscription', 'extra-topup', 'extra-topup', 'subscription', 'subscription', 'usage-recharge']);
+  assert.equal(M.reclassifyMonthlyDupes(rows), 0); // second run: no changes
+});
+
+test('applyExternallyPaid: early anthropic recharges + scrapingbee topups excluded, boundary respected', () => {
+  const rows = [
+    { vendorKey: 'anthropic', kind: 'usage-recharge', date: '2026-04-10' }, // < before → excluded
+    { vendorKey: 'anthropic', kind: 'usage-recharge', date: '2026-05-10' }, // ≥ before → kept
+    { vendorKey: 'scrapingbee', kind: 'extra-topup', date: '2026-02-09' },  // excluded
+    { vendorKey: 'scrapingbee', kind: 'subscription', date: '2026-02-02' }, // base sub kept
+  ];
+  const res = M.applyExternallyPaid(rows, config);
+  assert.equal(res.excluded, 2);
+  assert.deepEqual(rows.map((r) => !!r.excluded), [true, false, true, false]);
+  assert.equal(rows[0].excludedReason, 'paid-by-family');
+
+  // Config edit retroactively clears flags (self-healing).
+  const noRules = { ...config, externallyPaid: { rules: [] } };
+  const res2 = M.applyExternallyPaid(rows, noRules);
+  assert.equal(res2.cleared, 2);
+  assert.ok(rows.every((r) => !r.excluded && !r.excludedReason));
+});

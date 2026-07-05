@@ -176,8 +176,70 @@ function toLedgerRow(receipt, config = loadVendorConfig(), fx = DEFAULT_FX_TO_US
   return { row, disposition: 'booked' };
 }
 
+/**
+ * A vendor billed as 'subscription' should charge once per calendar month; the
+ * 2nd+ charge in the same month is a credit top-up / early renewal (ScrapingBee
+ * did this 5x in Feb 2026). Reclassify those rows to kind 'extra-topup' so
+ * exclusion rules and the recurring-vs-usage split can tell them apart.
+ * Operates on the WHOLE ledger and is idempotent + self-healing: each run the
+ * earliest subscription-family charge of a vendor-month is 'subscription', the
+ * rest are 'extra-topup', regardless of what a prior run wrote.
+ * Returns the number of rows whose kind changed.
+ */
+function reclassifyMonthlyDupes(rows) {
+  const groups = new Map();
+  for (const r of rows) {
+    if (r.kind !== 'subscription' && r.kind !== 'extra-topup') continue;
+    const k = `${r.vendorKey}|${String(r.date).slice(0, 7)}`;
+    if (!groups.has(k)) groups.set(k, []);
+    groups.get(k).push(r);
+  }
+  let changed = 0;
+  for (const group of groups.values()) {
+    group.sort((a, b) => String(a.date).localeCompare(String(b.date)) || String(a.id).localeCompare(String(b.id)));
+    group.forEach((r, i) => {
+      const want = i === 0 ? 'subscription' : 'extra-topup';
+      if (r.kind !== want) { r.kind = want; changed++; }
+    });
+  }
+  return changed;
+}
+
+/**
+ * Mark rows matching config.externallyPaid.rules as excluded (paid by someone
+ * other than the business). Recomputes the flag on EVERY row each run so a
+ * config edit retroactively updates the whole ledger. finance-stats skips
+ * excluded rows; they stay in the ledger for audit.
+ * Returns { excluded, cleared } counts.
+ */
+function applyExternallyPaid(rows, config = loadVendorConfig()) {
+  const rules = (config.externallyPaid && config.externallyPaid.rules) || [];
+  const matches = (r, rule) =>
+    r.vendorKey === rule.vendorKey &&
+    (!rule.kinds || rule.kinds.includes(r.kind)) &&
+    (!rule.before || String(r.date) < rule.before) &&
+    (!rule.after || String(r.date) >= rule.after);
+  let excluded = 0;
+  let cleared = 0;
+  for (const r of rows) {
+    const rule = rules.find((rl) => matches(r, rl));
+    if (rule) {
+      if (!r.excluded) excluded++;
+      r.excluded = true;
+      r.excludedReason = rule.reason || 'paid-externally';
+    } else if (r.excluded) {
+      delete r.excluded;
+      delete r.excludedReason;
+      cleared++;
+    }
+  }
+  return { excluded, cleared };
+}
+
 module.exports = {
   loadVendorConfig,
+  reclassifyMonthlyDupes,
+  applyExternallyPaid,
   classifyReceipt,
   matchesRule,
   isPersonal,

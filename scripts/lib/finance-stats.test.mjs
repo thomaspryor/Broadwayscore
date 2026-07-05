@@ -58,3 +58,17 @@ test('runway = cashOnHand / trailing-3mo burn when provided', () => {
 });
 
 function round(n) { return Math.round(n * 100) / 100; }
+
+test('excluded rows are skipped everywhere and surfaced in the excluded rollup', () => {
+  const withExcluded = [
+    ...expenses,
+    { date: '2026-06-20', vendorKey: 'anthropic', vendor: 'Anthropic (Claude API)', category: 'llm', kind: 'usage-recharge', amountUsd: 400, businessPct: 100, amountBusiness: 400, excluded: true, excludedReason: 'paid-by-family' },
+  ];
+  const s = computeFinanceStats({ expenses: withExcluded, revenue, asOfMonth: '2026-06', monthsBack: 3 });
+  const base = computeFinanceStats({ expenses, revenue, asOfMonth: '2026-06', monthsBack: 3 });
+  assert.equal(s.current.expense, base.current.expense);       // totals unchanged
+  assert.equal(s.recurringVsUsage.usage, base.recurringVsUsage.usage);
+  assert.equal(s.excluded.count, 1);
+  assert.equal(s.excluded.totalUsd, 400);
+  assert.equal(base.excluded.count, 0);
+});
