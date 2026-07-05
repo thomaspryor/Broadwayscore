@@ -182,3 +182,19 @@ test('applyExternallyPaid: early anthropic recharges + scrapingbee topups exclud
   assert.equal(res2.cleared, 2);
   assert.ok(rows.every((r) => !r.excluded && !r.excludedReason));
 });
+
+test('exact-from rules match Gmail API display-name-wrapped From headers', () => {
+  const wrapped = M.classifyReceipt({
+    from: 'Anthropic, PBC <invoice+statements@mail.anthropic.com>',
+    subject: 'Your receipt from Anthropic, PBC #2599-5034-2766',
+    body: 'Amount paid $504.70',
+  }, config);
+  assert.equal(wrapped.vendorKey, 'anthropic');
+  const bare = M.classifyReceipt({
+    from: 'invoice+statements@mail.anthropic.com',
+    subject: 'Your receipt from Anthropic, PBC #2599-5034-2766',
+    body: 'Amount paid $504.70',
+  }, config);
+  assert.equal(bare.vendorKey, 'anthropic');
+  assert.equal(M.extractEmailAddress('ScrapingBee <contact@scrapingbee.com>'), 'contact@scrapingbee.com');
+});

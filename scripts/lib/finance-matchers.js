@@ -28,6 +28,15 @@ function extractStripeAcct(from = '') {
   return m ? m[0] : null;
 }
 
+// "Anthropic, PBC <invoice+statements@mail.anthropic.com>" → the bare address.
+// The Gmail API returns display-name-wrapped From headers; MCP-sourced receipts
+// carry bare addresses. Exact-from rules must match both (2026-07-05 backfill:
+// 17/1253 booked because every exact-from vendor failed on the wrapped form).
+function extractEmailAddress(from = '') {
+  const m = String(from).match(/<([^>]+)>/);
+  return (m ? m[1] : String(from)).trim();
+}
+
 function lc(s) { return String(s || '').toLowerCase(); }
 
 function condContains(haystack, needle) {
@@ -44,7 +53,7 @@ function matchesRule(receipt, match) {
   const subject = receipt.subject || '';
   const body = receipt.body || '';
 
-  if (match.from && lc(from) !== lc(match.from)) return false;
+  if (match.from && lc(extractEmailAddress(from)) !== lc(match.from)) return false;
   if (match.fromContains && !condContains(from, match.fromContains)) return false;
   if (match.stripeAcct && extractStripeAcct(from) !== match.stripeAcct) return false;
   if (match.subjectContains && !condContains(subject, match.subjectContains)) return false;
@@ -244,6 +253,7 @@ module.exports = {
   matchesRule,
   isPersonal,
   extractStripeAcct,
+  extractEmailAddress,
   extractAmount,
   extractReceiptNo,
   toUsd,

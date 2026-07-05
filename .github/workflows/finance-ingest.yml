@@ -68,6 +68,8 @@ jobs:
           if [ "$BACKFILL" = "true" ]; then FLAGS="--backfill"; fi
           node scripts/ingest-finances.js $FLAGS --out=/tmp/finance-data/data/finances
 
+      # hygiene-push-ok: pushes to the external private-repo checkout in /tmp —
+      # push-with-retry.sh targets the main workspace checkout and can't be reused here.
       - name: Commit and push ledgers
         run: |
           cd /tmp/finance-data
