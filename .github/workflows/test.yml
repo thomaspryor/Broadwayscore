@@ -11,6 +11,14 @@ on:
       - 'scripts/validate-market-expansion.js'
       - 'scripts/validate-mobile-shows.js'
       - 'scripts/audit-review-contamination.js'
+      # Finance tracker: pure matchers + P&L rollup + ingestion. Colocated
+      # *.test.mjs run in the lib-test glob; path-listed so a solo edit triggers CI.
+      - 'scripts/lib/finance-matchers.js'
+      - 'scripts/lib/finance-matchers.test.mjs'
+      - 'scripts/lib/finance-stats.js'
+      - 'scripts/lib/finance-stats.test.mjs'
+      - 'scripts/lib/finance-vendors.json'
+      - 'scripts/ingest-finances.js'
       # Contamination --gate catastrophe-floor decision (colocated test runs in the
       # lib-test glob; path-listed so an edit triggers CI per feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/contamination-gate.js'
@@ -1184,6 +1192,18 @@ jobs:
             exit 1
           fi
           echo "✓ Zero aggregator-archive files in public repo"
+
+          # Fail immediately if ANY finances files are tracked in the public repo.
+          # data/finances/ holds billing receipts + P&L ledgers (PII) — lives in the
+          # private repo thomaspryor/broadway-scorecard-data under data/finances/,
+          # accessed only via the GitHub API. It must NEVER be committed here.
+          FIN_COUNT=$(git ls-tree -r HEAD --name-only -- 'data/finances/' 2>/dev/null | wc -l | tr -d ' ')
+          if [ "$FIN_COUNT" -gt "0" ]; then
+            echo "::error::CRITICAL: $FIN_COUNT finances files found in public repo! These contain billing PII and MUST be removed."
+            git ls-tree -r HEAD --name-only -- 'data/finances/' | head -20
+            exit 1
+          fi
+          echo "✓ Zero finances files in public repo"
 
       - name: Guard — public show JSONs not stripped of reviews
         run: |

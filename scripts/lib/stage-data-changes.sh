@@ -7,9 +7,10 @@
 # With no arguments: stages all of data/ (minus exclusions).
 # With arguments:    stages only the listed paths (minus exclusions).
 #
-# Excluded paths (copyrighted content that must never hit the public repo):
+# Excluded paths (copyrighted content / billing PII that must never hit the public repo):
 #   - data/aggregator-archive/   (scraped HTML archives)
 #   - data/review-texts/         (full-text reviews)
+#   - data/finances/             (billing receipts + P&L ledgers — PII)
 #
 # The exclusions are enforced via git pathspec negation (:!prefix).
 # They apply even if a caller accidentally passes one of these paths.
@@ -33,6 +34,7 @@ set -euo pipefail
 EXCLUDE_PATHS=(
   ':!data/aggregator-archive/'
   ':!data/review-texts/'
+  ':!data/finances/'
 )
 
 # Default to data/ if no arguments provided
