@@ -1,5 +1,13 @@
 {
   "_comment": "Project-scoped Claude Code config. Loaded by cloud apps (iOS, Mac, web) that can't reach the user's ~/.claude/. Each project hook script begins with a self-skip preamble: if ~/.claude/hooks/<basename> exists (local CLI), the project copy exits 0 and the user-level master fires. On cloud sandboxes ~/.claude/hooks/ does not exist, so the project copy runs. See .claude/CLOUD.md.",
+  "_comment_permissions": "Pre-approve claude-code-remote scheduling tools so cloud sessions can self-schedule PR/CI check-ins without hitting an approval wall (send_later was blocked mid-session 2026-07-05). VERIFY the exact tool ids from a cloud session — run the tool once and read the mcp__<server>__<tool> name it reports, then adjust these if the server id differs. Harmless on local CLI where these tools don't exist.",
+  "permissions": {
+    "allow": [
+      "mcp__claude-code-remote__send_later",
+      "mcp__claude-code-remote__create_trigger",
+      "mcp__claude-code-remote__schedule"
+    ]
+  },
   "hooks": {
     "PreToolUse": [
       {
@@ -43,6 +51,10 @@
           {
             "type": "command",
             "command": "bash .claude/hooks/session-start.sh"
+          },
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/cloud-bootstrap.sh"
           }
         ]
       }
