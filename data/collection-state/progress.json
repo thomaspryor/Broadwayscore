@@ -1,0 +1,32 @@
+{
+  "processed": [],
+  "failed": [
+    "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json"
+  ],
+  "skipped": [],
+  "tierBreakdown": {
+    "playwright": [],
+    "amp": [],
+    "browserbase": [],
+    "directCookies": [],
+    "scrapingbee": [],
+    "brightdata": [],
+    "archiveToday": [],
+    "archive": []
+  },
+  "startTime": "2026-07-05T06:36:20.155Z",
+  "lastProcessed": "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+  "log": [
+    {
+      "t": "2026-07-05T06:36:36.808Z",
+      "event": "bb-session",
+      "session": "0c421fa8",
+      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
+    },
+    {
+      "t": "2026-07-05T06:36:37.708Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
+}
