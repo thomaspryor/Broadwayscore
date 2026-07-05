@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-07-05T20:00:23.658Z",
+  "timestamp": "2026-07-05T20:05:46.434Z",
   "stats": {
     "totalReviews": 39788,
-    "alreadyFlagged": 17482,
-    "dateGuardCatches": 44,
+    "alreadyFlagged": 17489,
+    "dateGuardCatches": 42,
     "directorMismatch": 891,
     "tvFilmSignals": 1095,
     "londonSignals": 735,
@@ -25590,19 +25590,6 @@
     },
     {
       "showId": "to-kill-a-mockingbird-west-end-2026",
-      "file": "standard--nick-curtis.json",
-      "publishDate": "2022-04-01",
-      "url": "https://www.standard.co.uk/culture/theatre/to-kill-a-mockingbird-at-wyndhams-review-b1288617.html",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1546d before show (2022-04-01 vs 2026-06-25)"
-        }
-      ]
-    },
-    {
-      "showId": "to-kill-a-mockingbird-west-end-2026",
       "file": "sunday-telegraph--dominic-cavendish.json",
       "score": 97,
       "publishDate": "2022-04-01",
@@ -28011,17 +27998,6 @@
     {
       "showId": "a-midsummer-nights-dream-west-end-2026",
       "file": "thestage--holly-o.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 46d before show (2026-05-05 vs 2026-06-20)"
-        }
-      ]
-    },
-    {
-      "showId": "a-midsummer-nights-dream-west-end-2026",
-      "file": "whatsonstage--theo-bosanquet.json",
       "findings": [
         {
           "type": "DATE_GUARD",
