@@ -1,39 +1,12 @@
 {
-  "generatedAt": "2026-07-05T11:29:25.445Z",
+  "generatedAt": "2026-07-05T11:53:23.435Z",
   "summary": {
     "total": 2,
-    "high": 1,
+    "high": 0,
     "medium": 0,
-    "low": 1
+    "low": 2
   },
   "collisions": [
-    {
-      "url": "https://theaterlife.com/a-walk-on-the-moon-1-2/",
-      "normalizedUrl": "https://theaterlife.com/a-walk-on-the-moon-1-2",
-      "candidates": [
-        {
-          "showId": "a-walk-on-the-moon-off-broadway",
-          "file": "theater-life--barry-gordin.json",
-          "publishDate": "2026-06-29T21:00:00",
-          "openingDate": null,
-          "hasScore": false,
-          "hasFullText": true,
-          "outletId": "theater-life"
-        },
-        {
-          "showId": "a-walk-on-the-moon-off-broadway-2026",
-          "file": "theater-life--unknown.json",
-          "publishDate": "2026-06-29",
-          "openingDate": "2026-06-29",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "theater-life"
-        }
-      ],
-      "suggestedWinner": "a-walk-on-the-moon-off-broadway-2026",
-      "reason": "publishDate 2026-06-29 is 0 days from a-walk-on-the-moon-off-broadway-2026 opening (2026-06-29)",
-      "confidence": "high"
-    },
     {
       "url": "https://www.thestage.co.uk/reviews/2004/the-phantom-of-the-opera-review-at-her-majestys-theatre/",
       "normalizedUrl": "https://thestage.co.uk/reviews/2004/the-phantom-of-the-opera-review-at-her-majestys-theatre",
@@ -59,6 +32,33 @@
       ],
       "suggestedWinner": "the-phantom-of-the-opera-west-end-1986",
       "reason": "publishDate June 1st, 2004 is 6445+ days from all openings; defaulting to most recent production",
+      "confidence": "low"
+    },
+    {
+      "url": "https://www.afridiziak.com/reviews/the-play-that-goes-wrong-duchess-theatre/",
+      "normalizedUrl": "https://afridiziak.com/reviews/the-play-that-goes-wrong-duchess-theatre",
+      "candidates": [
+        {
+          "showId": "the-play-that-goes-wrong-off-broadway-2019",
+          "file": "afridiziak-theatre-news--unknown.json",
+          "publishDate": null,
+          "openingDate": "2019-02-11",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "afridiziak-theatre-news"
+        },
+        {
+          "showId": "the-play-that-goes-wrong-west-end-2021",
+          "file": "afridiziak-theatre-news--unknown.json",
+          "publishDate": null,
+          "openingDate": "2014-09-18",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "afridiziak-theatre-news"
+        }
+      ],
+      "suggestedWinner": "the-play-that-goes-wrong-off-broadway-2019",
+      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
       "confidence": "low"
     }
   ]
