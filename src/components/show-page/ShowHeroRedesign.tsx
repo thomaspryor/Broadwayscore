@@ -27,6 +27,7 @@
 import React, { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import { track } from '@vercel/analytics';
 import {
   ScoreBadge,
   ScoreBreakdownBar,
@@ -303,6 +304,7 @@ function Inner({
         updated_at: new Date().toISOString(),
       });
       if (error) throw new Error(error.message);
+      track('rating_submitted', { show_id: show.id, rating: data.rating, has_review_text: !!data.reviewText, is_edit: true });
       showToast?.(<>Updated in <a href="/my-shows" className="underline hover:text-white/90">My Ratings &amp; Reviews</a></>, 'success');
     } else {
       const { error } = await supabaseRestInsert('reviews', {
@@ -313,6 +315,7 @@ function Inner({
         date_seen: data.dateSeen || null,
       });
       if (error) throw new Error(error.message);
+      track('rating_submitted', { show_id: show.id, rating: data.rating, has_review_text: !!data.reviewText, is_edit: false });
       showToast?.(<>Added to <a href="/my-shows" className="underline hover:text-white/90">My Ratings &amp; Reviews</a></>, 'success');
     }
     await getReviewsForShow(show.id);

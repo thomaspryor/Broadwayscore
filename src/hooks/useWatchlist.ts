@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { track } from '@vercel/analytics';
 import { getSupabaseClient } from '@/lib/supabase';
+import { supabaseRestInsert, supabaseRestDelete, supabaseRestUpdate } from '@/lib/supabase-rest';
 import type { WatchlistEntry } from '@/types/user';
 
 // Cross-instance sync: all useWatchlist hooks with the same userId share state
@@ -61,16 +62,12 @@ export function useWatchlist(userId: string | null) {
   }, [watchlist]);
 
   const addToWatchlist = useCallback(async (showId: string): Promise<void> => {
-    const client = getSupabaseClient();
-    if (!client || !userId) return;
+    if (!userId) return;
 
     setError(null);
     try {
-      const { error: err } = await client
-        .from('watchlist')
-        .insert({ user_id: userId, show_id: showId });
-
-      if (err) throw err;
+      const { error: err } = await supabaseRestInsert('watchlist', { user_id: userId, show_id: showId });
+      if (err) throw new Error(err.message);
 
       track('watchlist_add', { show_id: showId });
 
@@ -91,18 +88,12 @@ export function useWatchlist(userId: string | null) {
   }, [userId]);
 
   const removeFromWatchlist = useCallback(async (showId: string): Promise<void> => {
-    const client = getSupabaseClient();
-    if (!client || !userId) return;
+    if (!userId) return;
 
     setError(null);
     try {
-      const { error: err } = await client
-        .from('watchlist')
-        .delete()
-        .eq('user_id', userId)
-        .eq('show_id', showId);
-
-      if (err) throw err;
+      const { error: err } = await supabaseRestDelete('watchlist', `user_id=eq.${userId}&show_id=eq.${showId}`);
+      if (err) throw new Error(err.message);
 
       track('watchlist_remove', { show_id: showId });
 
@@ -120,18 +111,16 @@ export function useWatchlist(userId: string | null) {
   }, [userId]);
 
   const updatePlannedDate = useCallback(async (showId: string, plannedDate: string | null): Promise<void> => {
-    const client = getSupabaseClient();
-    if (!client || !userId) return;
+    if (!userId) return;
 
     setError(null);
     try {
-      const { error: err } = await client
-        .from('watchlist')
-        .update({ planned_date: plannedDate })
-        .eq('user_id', userId)
-        .eq('show_id', showId);
-
-      if (err) throw err;
+      const { error: err } = await supabaseRestUpdate(
+        'watchlist',
+        `user_id=eq.${userId}&show_id=eq.${showId}`,
+        { planned_date: plannedDate },
+      );
+      if (err) throw new Error(err.message);
 
       // Optimistic update + broadcast to other instances
       setWatchlist(prev => {
