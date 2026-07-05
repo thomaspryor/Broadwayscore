@@ -73,7 +73,10 @@ async function main() {
   for (const file of discoveryFiles) {
     const filePath = path.join(DISCOVERY_DIR, file);
     const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-    if (creatorFilter && data.handle !== creatorFilter) continue;
+    // Match handle or filename case-insensitively — the workflow's `creator`
+    // input is a creator id, which can differ in case from the channel handle.
+    if (creatorFilter && data.handle.toLowerCase() !== creatorFilter.toLowerCase()
+        && file.replace(/\.json$/, '').toLowerCase() !== creatorFilter.toLowerCase()) continue;
 
     // Skip YouTube — Mickey-Jo's 300 videos are mostly review content, already well-tagged
     if (data.platform === 'youtube') {

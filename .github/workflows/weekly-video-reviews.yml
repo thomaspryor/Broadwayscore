@@ -58,7 +58,7 @@ jobs:
           pip install yt-dlp --break-system-packages --quiet
           yt-dlp --version
 
-      # Step 1 of 7 — scan creator feeds for new review candidates.
+      # Step 1 of 8 — scan creator feeds for new review candidates.
       # Writes to data/video-reviews-discovery/{handle}.json.
       # Skips creators scanned < 24h ago unless --refresh.
       - name: Discover videos
@@ -73,7 +73,26 @@ jobs:
           fi
           node scripts/video-reviews/discover-videos.js "${ARGS[@]}"
 
-      # Step 2 of 7 — extract transcripts for new candidates via yt-dlp.
+      # Step 2 of 8 — LLM pre-classification of TikTok titles (Haiku).
+      # TikTok captions rarely contain the word "review" ("This was pure magic!",
+      # "Show at Venue #hashtags"), so the regex in discover-videos.js misses
+      # most of them. This step flags llmFlagged=true in the discovery files;
+      # collect-transcripts.js picks up isReviewCandidate OR llmFlagged.
+      # Skips YouTube creators (title heuristics are sufficient there).
+      # Missing from the original pipeline — TikTok pickup silently died
+      # 2026-04 → 2026-06 without it.
+      - name: Pre-classify titles
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          set -euo pipefail
+          ARGS=()
+          if [ -n "${{ inputs.creator }}" ]; then
+            ARGS+=("--creator=${{ inputs.creator }}")
+          fi
+          node scripts/video-reviews/pre-classify-titles.js "${ARGS[@]}"
+
+      # Step 3 of 8 — extract transcripts for new candidates via yt-dlp.
       # Writes to data/video-reviews-transcripts/raw/. Skips existing files.
       - name: Collect transcripts
         run: |
@@ -84,7 +103,7 @@ jobs:
           fi
           node scripts/video-reviews/collect-transcripts.js "${ARGS[@]}"
 
-      # Step 3 of 7 — LLM classification: genuine review vs casting news / commentary.
+      # Step 4 of 8 — LLM classification: genuine review vs casting news / commentary.
       # Writes to data/video-reviews-transcripts/classified/.
       - name: Classify reviews
         env:
@@ -93,14 +112,14 @@ jobs:
           set -euo pipefail
           node scripts/video-reviews/classify-reviews.js
 
-      # Step 4 of 7 — picks best review per creator per show (by date proximity
+      # Step 5 of 8 — picks best review per creator per show (by date proximity
       # to opening + transcript length). Moves from classified/ to per-show dirs.
       - name: Select best reviews
         run: |
           set -euo pipefail
           node scripts/video-reviews/select-best-reviews.js
 
-      # Step 5 of 7 — LLM scoring: writes score/bucket/confidence/keyQuote
+      # Step 6 of 8 — LLM scoring: writes score/bucket/confidence/keyQuote
       # into each transcript file. Skips already-scored files.
       - name: Score video reviews
         env:
@@ -109,14 +128,14 @@ jobs:
           set -euo pipefail
           node scripts/video-reviews/score-video-reviews.js
 
-      # Step 6 of 7 — rebuild data/video-reviews.json from all scored transcripts.
+      # Step 7 of 8 — rebuild data/video-reviews.json from all scored transcripts.
       # This file is in the Vercel deploy trigger path — pushing it kicks a deploy.
       - name: Build video-reviews.json
         run: |
           set -euo pipefail
           node scripts/video-reviews/build-video-reviews.js
 
-      # Step 7 of 7 — download thumbnails for any new reviews that lack one.
+      # Step 8 of 8 — download thumbnails for any new reviews that lack one.
       # Updates data/video-reviews.json in-place and writes JPGs to
       # public/images/video-reviews/{handle}-{showId}.jpg.
       - name: Backfill thumbnails
@@ -124,7 +143,7 @@ jobs:
           set -euo pipefail
           node scripts/video-reviews/backfill-thumbnails.js
 
-      # Only commit if all 7 steps succeeded. Avoids shipping inconsistent state
+      # Only commit if all 8 steps succeeded. Avoids shipping inconsistent state
       # (e.g. transcripts collected but video-reviews.json not yet rebuilt).
       - name: Commit and push
         run: |
