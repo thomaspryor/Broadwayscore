@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-07-05T01:32:40.149Z",
+  "updatedAt": "2026-07-05T01:36:11.631Z",
   "processed": 13,
-  "failed": 218,
-  "successRate": "5.6%",
+  "failed": 223,
+  "successRate": "5.5%",
   "tierBreakdown": {
     "playwright": 8,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 5,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 4,
@@ -38,13 +38,24 @@
       "domain": "variety.com"
     },
     {
-      "t": "2026-07-05T01:31:56.594Z",
+      "t": "2026-07-05T01:33:18.457Z",
       "event": "bb-session",
-      "session": "372f062d",
+      "session": "79651be9",
       "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
     },
     {
-      "t": "2026-07-05T01:31:57.603Z",
+      "t": "2026-07-05T01:33:18.857Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-05T01:35:29.013Z",
+      "event": "bb-session",
+      "session": "a586bf3f",
+      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
+    },
+    {
+      "t": "2026-07-05T01:35:29.963Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
