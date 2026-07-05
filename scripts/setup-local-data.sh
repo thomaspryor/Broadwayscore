@@ -31,10 +31,13 @@ git config --global merge.ours.driver true 2>/dev/null \
   && echo "git: registered merge.ours.driver (audit-state conflict auto-resolution)"
 
 
-# Determine auth method (token takes priority if explicitly set)
-TOKEN="${REVIEW_TEXTS_TOKEN:-}"
+# Determine auth method (token takes priority if explicitly set).
+# Accept GH_TOKEN too: Anthropic's cloud docs recommend setting GH_TOKEN so the
+# gh CLI works in a cloud session, so honoring it here means ONE token env var
+# enables both gh and this private-repo clone — no separate REVIEW_TEXTS_TOKEN needed.
+TOKEN="${REVIEW_TEXTS_TOKEN:-${GH_TOKEN:-}}"
 if [ -n "$TOKEN" ]; then
-  echo "Using REVIEW_TEXTS_TOKEN for authentication..."
+  echo "Using token (REVIEW_TEXTS_TOKEN/GH_TOKEN) for authentication..."
   AUTH_METHOD="token"
 elif command -v gh &>/dev/null; then
   echo "Using GitHub CLI for authentication..."
