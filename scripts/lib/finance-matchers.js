@@ -32,9 +32,14 @@ function extractStripeAcct(from = '') {
 // The Gmail API returns display-name-wrapped From headers; MCP-sourced receipts
 // carry bare addresses. Exact-from rules must match both (2026-07-05 backfill:
 // 17/1253 booked because every exact-from vendor failed on the wrapped form).
+// Takes the LAST angle-addr: RFC 5322 puts the real addr-spec last, and a quoted
+// display name may legally contain a decoy "<vendor@real.com>" (ship-check
+// finding: first-bracket extraction let a spoofed display name book arbitrary
+// amounts under a real vendor).
 function extractEmailAddress(from = '') {
-  const m = String(from).match(/<([^>]+)>/);
-  return (m ? m[1] : String(from)).trim();
+  const s = String(from);
+  const all = [...s.matchAll(/<([^<>]+)>/g)];
+  return (all.length ? all[all.length - 1][1] : s).trim();
 }
 
 function lc(s) { return String(s || '').toLowerCase(); }
@@ -53,8 +58,10 @@ function matchesRule(receipt, match) {
   const subject = receipt.subject || '';
   const body = receipt.body || '';
 
+  // Both from-rules run on the extracted bare address: the raw header's display
+  // name is attacker-controlled text ("billing openai.com" <evil@x> must not book).
   if (match.from && lc(extractEmailAddress(from)) !== lc(match.from)) return false;
-  if (match.fromContains && !condContains(from, match.fromContains)) return false;
+  if (match.fromContains && !condContains(extractEmailAddress(from), match.fromContains)) return false;
   if (match.stripeAcct && extractStripeAcct(from) !== match.stripeAcct) return false;
   if (match.subjectContains && !condContains(subject, match.subjectContains)) return false;
   if (match.bodyContains && !condContains(body, match.bodyContains)) return false;
@@ -65,9 +72,9 @@ function matchesRule(receipt, match) {
 
 function isPersonal(receipt, config) {
   const pe = config.personalExclude || {};
-  const from = receipt.from || '';
-  if ((pe.fromExact || []).some((f) => lc(from) === lc(f))) return true;
-  if ((pe.fromContains || []).some((f) => condContains(from, f))) return true;
+  const addr = extractEmailAddress(receipt.from || '');
+  if ((pe.fromExact || []).some((f) => lc(addr) === lc(f))) return true;
+  if ((pe.fromContains || []).some((f) => condContains(addr, f))) return true;
   return false;
 }
 

@@ -84,8 +84,10 @@ jobs:
           for i in 1 2 3; do
             if git push; then break; fi
             if [ "$i" = "3" ]; then echo "::error::push failed after 3 attempts"; exit 1; fi
-            git pull --rebase
             sleep $((i * 2))
+            # -X theirs favors OUR commit's ledger on conflict (same policy as
+            # push-with-retry.sh); shallow clone is fine for a fast-forward pull.
+            git pull --rebase -X theirs
           done
 
       - name: Notify on failure

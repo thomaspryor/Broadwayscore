@@ -198,3 +198,27 @@ test('exact-from rules match Gmail API display-name-wrapped From headers', () =>
   assert.equal(bare.vendorKey, 'anthropic');
   assert.equal(M.extractEmailAddress('ScrapingBee <contact@scrapingbee.com>'), 'contact@scrapingbee.com');
 });
+
+test('display-name spoofing cannot book under a real vendor (ship-check findings 2+3)', () => {
+  // Quoted display name containing a decoy vendor address — real addr-spec is LAST.
+  const spoofExact = M.classifyReceipt({
+    from: '"x <invoice+statements@mail.anthropic.com>" <attacker@evil.com>',
+    subject: 'Your receipt', body: 'Amount paid $999.00',
+  }, config);
+  assert.equal(spoofExact.disposition, 'needs-review');
+  // fromContains rules must not match display-name text either.
+  const spoofContains = M.classifyReceipt({
+    from: '"billing openai.com" <attacker@evil.com>',
+    subject: 'Your receipt', body: 'Total $999.00',
+  }, config);
+  assert.equal(spoofContains.disposition, 'needs-review');
+  assert.equal(M.extractEmailAddress('"x <a@b.com>" <c@d.com>'), 'c@d.com');
+});
+
+test('personalExclude matches wrapped From headers (ship-check finding 1)', () => {
+  const r = M.classifyReceipt({
+    from: 'Google Play <googleplay-noreply@google.com>',
+    subject: 'Your order receipt', body: 'Total $4.99',
+  }, config);
+  assert.equal(r.disposition, 'personal');
+});

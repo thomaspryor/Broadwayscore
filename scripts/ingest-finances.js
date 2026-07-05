@@ -98,21 +98,33 @@ async function main() {
   const ledgerPath = path.join(args.out, 'expense-ledger.json');
   const queuePath = path.join(args.out, 'review-queue.json');
   const ledger = readJson(ledgerPath, []);
-  const queue = readJson(queuePath, []);
+  let queue = readJson(queuePath, []);
 
   const seenIds = new Set(ledger.map((r) => r.id).filter(Boolean));
-  const seenHashes = new Set(ledger.map((r) => r.dedupHash).filter(Boolean));
+  const rowByHash = new Map(ledger.filter((r) => r.dedupHash).map((r) => [r.dedupHash, r]));
   const seenQueue = new Set(queue.map((q) => q.gmailMessageId).filter(Boolean));
 
   const stats = { booked: 0, duplicate: 0, personal: 0, ignore: 0, needsReview: 0, unparsed: 0 };
 
+  // The dedupHash (vendor|date|amount|receiptNo) is a FALLBACK for rows whose
+  // Gmail id form changed across the MCP→API switch. When BOTH rows carry Gmail
+  // ids and they differ, the ids are authoritative proof of distinct charges —
+  // e.g. two $50 Bright Data recharges on the same day (no receiptNo) must both
+  // book (ship-check finding: hash-only dedup silently dropped the second).
+  const isDuplicate = (row) => {
+    if (row.id && seenIds.has(row.id)) return true;
+    const existing = rowByHash.get(row.dedupHash);
+    if (!existing) return false;
+    return !(row.id && existing.id && row.id !== existing.id);
+  };
+
   for (const receipt of receipts) {
     const { row, disposition } = toLedgerRow(receipt, config);
     if (disposition === 'booked') {
-      if ((row.id && seenIds.has(row.id)) || seenHashes.has(row.dedupHash)) { stats.duplicate++; continue; }
+      if (isDuplicate(row)) { stats.duplicate++; continue; }
       ledger.push(row);
       if (row.id) seenIds.add(row.id);
-      seenHashes.add(row.dedupHash);
+      if (!rowByHash.has(row.dedupHash)) rowByHash.set(row.dedupHash, row);
       stats.booked++;
     } else if (disposition === 'personal') stats.personal++;
     else if (disposition === 'ignore') stats.ignore++;
@@ -132,9 +144,17 @@ async function main() {
   const retyped = reclassifyMonthlyDupes(ledger);
   const ext = applyExternallyPaid(ledger, config);
 
+  // Drain queue entries whose message has since booked (a matcher fix can turn
+  // yesterday's needs-review into today's booking — the stale entry would sit
+  // in the dashboard's review count forever otherwise).
+  const bookedIds = new Set(ledger.map((r) => r.id).filter(Boolean));
+  const queueBefore = queue.length;
+  queue = queue.filter((q) => !bookedIds.has(`gmail-${q.gmailMessageId}`));
+  const drained = queueBefore - queue.length;
+
   console.log(`Receipts in: ${receipts.length}`);
   console.log(`  booked ${stats.booked} · duplicate ${stats.duplicate} · personal ${stats.personal} · ignored ${stats.ignore} · needs-review ${stats.needsReview} · amount-unparsed ${stats.unparsed}`);
-  console.log(`  extra-topup retyped ${retyped} · externally-paid marked ${ext.excluded} / cleared ${ext.cleared} (total excluded ${ledger.filter((r) => r.excluded).length})`);
+  console.log(`  extra-topup retyped ${retyped} · externally-paid marked ${ext.excluded} / cleared ${ext.cleared} (total excluded ${ledger.filter((r) => r.excluded).length}) · queue drained ${drained}`);
 
   const revenue = readJson(path.join(args.out, 'revenue-ledger.json'), []);
   const pnl = computeFinanceStats({ expenses: ledger, revenue, monthsBack: 6 });
