@@ -40,6 +40,17 @@ let lastRequestTime = 0;
 let brightDataDown = false;
 let scrapingDogDown = false; // Latched on 401/403 (bad key / no credits)
 
+// Scrapingdog tier escalation for reddit: plain (1cr) 400s with "try enabling
+// Stealth Mode" (2026-07-05 run: 41/41 plain requests refused). Escalate
+// plain → premium → stealth on that 400 and LATCH the tier for the rest of
+// the run so each request pays the working tier once, not 3 probe calls.
+const SD_TIERS = [
+  { name: 'plain', params: {} },
+  { name: 'premium', params: { premium: 'true' } },
+  { name: 'stealth', params: { stealth_mode: 'true' } },
+];
+let sdTierIndex = 0;
+
 // Overridable for tests (points at a local mock server)
 const SCRAPINGDOG_BASE_URL = process.env.SCRAPINGDOG_BASE_URL || 'https://api.scrapingdog.com/scrape';
 
@@ -133,17 +144,36 @@ async function fetchViaScrapingBee(url) {
 /**
  * Fetch via Scrapingdog (cheap proxy tier, tried before ScrapingBee to
  * conserve SB credits — mirrors scripts/lib/scraper.js cost ordering).
- * Reddit JSON endpoints need no JS rendering, so dynamic=false (1 credit).
+ * Reddit JSON endpoints need no JS rendering, so dynamic=false. Starts at
+ * the plain tier and escalates to premium/stealth when Scrapingdog's 400
+ * response asks for it (see SD_TIERS above).
  */
-function fetchViaScrapingDog(url) {
+async function fetchViaScrapingDog(url) {
   const apiKey = process.env.SCRAPINGDOG_API_KEY;
   if (!apiKey) {
-    return Promise.reject(new Error('SCRAPINGDOG_API_KEY not set'));
+    throw new Error('SCRAPINGDOG_API_KEY not set');
   }
 
+  while (true) {
+    const tier = SD_TIERS[sdTierIndex];
+    try {
+      return await scrapingDogRequest(apiKey, url, tier);
+    } catch (e) {
+      if (e.escalate && sdTierIndex < SD_TIERS.length - 1) {
+        sdTierIndex++;
+        console.warn(`  Scrapingdog ${tier.name} tier refused (${e.message.slice(0, 80)}...) — escalating to ${SD_TIERS[sdTierIndex].name} tier for this run`);
+        continue;
+      }
+      throw e;
+    }
+  }
+}
+
+/** Single Scrapingdog API request at a given tier. */
+function scrapingDogRequest(apiKey, url, tier) {
   stats.scrapingDog++;
 
-  const params = new URLSearchParams({ api_key: apiKey, url, dynamic: 'false' });
+  const params = new URLSearchParams({ api_key: apiKey, url, dynamic: 'false', ...tier.params });
   const apiUrl = `${SCRAPINGDOG_BASE_URL}?${params}`;
   const client = apiUrl.startsWith('http:') ? require('http') : https;
 
@@ -170,7 +200,10 @@ function fetchViaScrapingDog(url) {
             `is current and the account has credits; disabling Scrapingdog for this run`
           ));
         } else {
-          reject(new Error(`Scrapingdog HTTP ${res.statusCode}: ${data.slice(0, 100)}`));
+          const err = new Error(`Scrapingdog HTTP ${res.statusCode} (${tier.name}): ${data.slice(0, 120)}`);
+          // 400 + "Stealth Mode" hint = target needs a higher proxy tier
+          if (res.statusCode === 400 && /stealth/i.test(data)) err.escalate = true;
+          reject(err);
         }
       });
     }).on('error', reject);
@@ -569,6 +602,7 @@ function resetFallbackState() {
   scrapingBeeDown = false;
   brightDataDown = false;
   scrapingDogDown = false;
+  sdTierIndex = 0;
   scrapingBeeSwitchTime = 0;
   rateLimitCount = 0;
   lastRequestTime = 0;

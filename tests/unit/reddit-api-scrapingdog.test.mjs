@@ -13,6 +13,16 @@ const server = http.createServer((req, res) => {
   if (target.includes('good')) {
     res.writeHead(200);
     res.end(JSON.stringify({ data: { children: [{ kind: 't3', data: { id: 'abc' } }] } }));
+  } else if (target.includes('needs-stealth')) {
+    // Mirrors real Scrapingdog behavior on reddit (2026-07-05): plain AND
+    // premium tiers 400 with a stealth hint; only stealth_mode=true succeeds.
+    if (u.searchParams.get('stealth_mode') === 'true') {
+      res.writeHead(200);
+      res.end(JSON.stringify({ data: { children: [], tier: 'stealth' } }));
+    } else {
+      res.writeHead(400);
+      res.end('Oops! Something went wrong. You can try enabling Stealth Mode using stealth_mode=true.');
+    }
   } else if (target.includes('wrapped')) {
     res.writeHead(200);
     res.end('<html><body>{"data":{"children":[]}}</body></html>');
@@ -76,6 +86,20 @@ test('fetchViaScrapingDog rejects on 401 with actionable message', async () => {
     () => fetchViaScrapingDog('https://old.reddit.com/unauthorized.json'),
     /Scrapingdog 401.*SCRAPINGDOG_API_KEY/s
   );
+});
+
+test('fetchViaScrapingDog escalates plain -> premium -> stealth on 400 stealth hint, then latches', async () => {
+  const { fetchViaScrapingDog, getStats, resetFallbackState } = load();
+  resetFallbackState();
+  const result = await fetchViaScrapingDog('https://old.reddit.com/r/broadway/needs-stealth.json');
+  assert.equal(result.data.tier, 'stealth');
+  // plain 400 + premium 400 + stealth 200 = 3 requests
+  assert.equal(getStats().scrapingDog, 3, 'escalation should cost 2 extra probes');
+
+  // Tier is latched: next request goes straight to stealth (1 request)
+  const again = await fetchViaScrapingDog('https://old.reddit.com/r/broadway/needs-stealth.json');
+  assert.equal(again.data.tier, 'stealth');
+  assert.equal(getStats().scrapingDog, 4, 'latched tier should not re-probe lower tiers');
 });
 
 test('fetchViaScrapingDog rejects when no key is configured', async () => {
