@@ -86,7 +86,7 @@ else
     fi
   elif [ "$AUTH_METHOD" = "proxy" ]; then
     # Tokenless clone through the cloud GitHub proxy (see auth-method selection above).
-    if ! GIT_TERMINAL_PROMPT=0 git clone --depth 1 "https://github.com/thomaspryor/broadway-scorecard-data.git" "$CORE_DATA_DIR" 2>/dev/null; then
+    if ! GIT_TERMINAL_PROMPT=0 git -c credential.helper= clone --depth 1 "https://github.com/thomaspryor/broadway-scorecard-data.git" "$CORE_DATA_DIR" 2>/dev/null; then
       echo "ERROR: Proxy clone of broadway-scorecard-data failed — the connected GitHub account may lack access to the private repo. Set REVIEW_TEXTS_TOKEN as a fallback."
       exit 1
     fi
@@ -144,6 +144,11 @@ if [ "${1:-}" = "--all" ]; then
   echo "--- Review Texts (from broadway-review-texts) ---"
   echo "This may take a few minutes (~234 MB)..."
 
+  # Throwaway clone dir (rsync'd into $DATA_DIR below). Previously referenced but
+  # never assigned — under `set -u` that aborted --all with an unbound-variable error.
+  TEMP_DIR="$(mktemp -d)"
+  trap 'rm -rf "$TEMP_DIR"' EXIT
+
   mkdir -p "$DATA_DIR/review-texts"
 
   if [ "$AUTH_METHOD" = "gh" ]; then
@@ -152,7 +157,7 @@ if [ "${1:-}" = "--all" ]; then
       exit 1
     fi
   elif [ "$AUTH_METHOD" = "proxy" ]; then
-    if ! GIT_TERMINAL_PROMPT=0 git clone --depth 1 "https://github.com/thomaspryor/broadway-review-texts.git" "$TEMP_DIR/review-texts" 2>/dev/null; then
+    if ! GIT_TERMINAL_PROMPT=0 git -c credential.helper= clone --depth 1 "https://github.com/thomaspryor/broadway-review-texts.git" "$TEMP_DIR/review-texts" 2>/dev/null; then
       echo "ERROR: Proxy clone of broadway-review-texts failed — set REVIEW_TEXTS_TOKEN as a fallback."
       exit 1
     fi
