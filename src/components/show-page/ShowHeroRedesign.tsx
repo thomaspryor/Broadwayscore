@@ -124,7 +124,11 @@ function Inner({
 
   // ?rate=1 / ?stars=N / ?edit=1 deep-link helpers (kept compatible with /my-shows entry points)
   const [autoRate] = useState(() => searchParams.get('rate') === '1');
-  const autoRateStars = searchParams.get('stars') ? parseFloat(searchParams.get('stars')!) : null;
+  const autoRateStarsRaw = searchParams.get('stars') ? parseFloat(searchParams.get('stars')!) : null;
+  // Untrusted input: ?stars=abc → NaN, ?stars=99 → out of range. Drop invalid values.
+  const autoRateStars = autoRateStarsRaw !== null && Number.isFinite(autoRateStarsRaw) && autoRateStarsRaw >= 0.5 && autoRateStarsRaw <= 5
+    ? autoRateStarsRaw
+    : null;
   const [autoEditLatest] = useState(() => searchParams.get('edit') === '1');
 
   // ─── Derived state ─────────────────────────────────────────────────────
@@ -193,6 +197,11 @@ function Inner({
   // ?rate=1 — auto-open rate panel (deferred-auth target for inline-stars CTAs)
   useEffect(() => {
     if (!autoRate || ratePanelOpen) return;
+    // The pending-action effect above runs first in the same commit and sets
+    // this ref synchronously when it consumed a draft for this show — without
+    // this guard, the stale ratePanelOpen=false read here would let us clobber
+    // the just-restored draft (typed note included) with a bare stars hint.
+    if (hasExecutedPending.current) return;
     if (!isAuthenticated && !authLoading) {
       savePendingAction({
         type: 'rating',
@@ -278,10 +287,16 @@ function Inner({
   // open with the typed note intact when this rejects. So on the authed path we
   // THROW on failure (no swallow, no close-in-finally) and let a resolved promise
   // signal success — the editor then calls onSaved to close.
-  const handleSaveReview = useCallback(async (data: { rating: number; reviewText: string | null; dateSeen: string | null; reviewId?: string }) => {
+  const handleSaveReview = useCallback(async (data: { rating: number; reviewText: string | null; dateSeen: string | null; reviewId?: string }): Promise<void | 'auth-gated'> => {
     if (!user) {
-      // Gate at Save — persist the full draft, then sign in. The pending-action
-      // effect reopens the editor prefilled on return.
+      if (authLoading) {
+        // Session still restoring for an already-signed-in user — don't bounce
+        // them to sign-in; surface a retryable error in the editor instead.
+        throw new Error('Still restoring your session — tap Retry in a moment.');
+      }
+      // Gate at Save — persist the full draft, then sign in. The editor stays
+      // open behind the sign-in modal ('auth-gated'), so cancelling sign-in
+      // loses nothing; completing it lets the pending-action effect resume.
       savePendingAction({
         type: 'rating',
         showId: show.id,
@@ -293,17 +308,20 @@ function Inner({
         timestamp: Date.now(),
       });
       showSignIn('rating');
-      return;
+      return 'auth-gated';
     }
     if (data.reviewId) {
       const filters = `id=eq.${data.reviewId}&user_id=eq.${user.id}`;
-      const { error } = await supabaseRestUpdate('reviews', filters, {
+      const { data: updated, error } = await supabaseRestUpdate<{ id: string }>('reviews', filters, {
         rating: data.rating,
         review_text: data.reviewText || null,
         date_seen: data.dateSeen || null,
         updated_at: new Date().toISOString(),
       });
       if (error) throw new Error(error.message);
+      // PostgREST returns 200 + [] when the filter matched nothing (e.g. the
+      // review was deleted in another tab) — that's a failed save, not success.
+      if (!updated) throw new Error('This rating no longer exists — it may have been deleted elsewhere.');
       track('rating_submitted', { show_id: show.id, rating: data.rating, has_review_text: !!data.reviewText, is_edit: true });
       showToast?.(<>Updated in <a href="/my-shows" className="underline hover:text-white/90">My Ratings &amp; Reviews</a></>, 'success');
     } else {
@@ -319,7 +337,7 @@ function Inner({
       showToast?.(<>Added to <a href="/my-shows" className="underline hover:text-white/90">My Ratings &amp; Reviews</a></>, 'success');
     }
     await getReviewsForShow(show.id);
-  }, [user, show.id, getReviewsForShow, showToast, showSignIn]);
+  }, [user, authLoading, show.id, getReviewsForShow, showToast, showSignIn]);
 
   const handleRateSaved = useCallback(() => {
     setRatePanelOpen(false);
@@ -587,7 +605,10 @@ function Inner({
       )}
 
       {/* Rating editor — bottom-sheet on mobile, inline card on desktop. Adjustable
-          stars live inside; a failed save keeps the panel open with the note intact. */}
+          stars live inside; a failed save keeps the panel open with the note intact.
+          suggestedDateSeen: watchlist planned-date prefills Date Seen for any
+          non-edit save; a restored draft's own dateSeen (initialDateSeen) takes
+          precedence inside the editor, so pendingDraft doesn't null it out. */}
       {userFeaturesEnabled && ratePanelOpen && (
         <RatingEditor
           key={editingReview?.id ?? pendingDraft?.reviewId ?? 'new-viewing'}
@@ -597,7 +618,7 @@ function Inner({
           initialRating={editingReview?.rating ?? pendingDraft?.rating ?? 0}
           initialReviewText={editingReview?.review_text ?? pendingDraft?.reviewText ?? null}
           initialDateSeen={editingReview?.date_seen ?? pendingDraft?.dateSeen ?? null}
-          suggestedDateSeen={editingReview || pendingDraft ? null : watchlistDate}
+          suggestedDateSeen={editingReview ? null : watchlistDate}
           mode={editingReview || pendingDraft?.reviewId ? 'edit' : hasRating ? 'append' : 'new'}
           onSave={handleSaveReview}
           onSaved={handleRateSaved}

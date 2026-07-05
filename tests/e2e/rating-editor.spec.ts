@@ -83,6 +83,31 @@ for (const vp of VIEWPORTS) {
       await expect(page.locator('input[type="date"]')).toHaveAttribute('max', '2020-01-01');
     });
 
+    test('modal presentation escapes .card containment — Save reachable', async ({ page }) => {
+      // Regression: .card sets `contain: layout style`, which traps position:fixed
+      // descendants; before the Modal portal fix, the bottom sheet rendered inside
+      // the card and the Save button landed below the fold on phones (2026-07-05).
+      await goToEditor(page, '?presentation=modal');
+
+      // Dialog must be a direct child of <body> (portal), not nested in the card.
+      const parentTag = await page.evaluate(() => {
+        const dlg = document.querySelector('[role="dialog"][aria-label^="Rate"]');
+        return dlg?.parentElement?.tagName ?? 'MISSING';
+      });
+      expect(parentTag).toBe('BODY');
+
+      // Save must be fully inside the viewport and clickable.
+      const editor = page.locator('[data-testid="rating-editor"]');
+      await editor.getByRole('button', { name: '4 stars' }).click({ position: { x: 30, y: 20 } });
+      const saveBtn = page.getByRole('button', { name: /^save$/i });
+      const box = await saveBtn.boundingBox();
+      const viewport = page.viewportSize()!;
+      expect(box).not.toBeNull();
+      expect(box!.y + box!.height).toBeLessThanOrEqual(viewport.height);
+      await saveBtn.click({ timeout: 5000 });
+      await expect(page.locator('[data-testid="last-saved"]')).toContainText('saved:4:');
+    });
+
     test('edit state pre-fills note/date and round-trips the reviewId', async ({ page }) => {
       await goToEditor(page, '?state=edit');
       const editor = page.locator('[data-testid="rating-editor"]');

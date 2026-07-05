@@ -72,6 +72,9 @@ export default function StarRating({ rating, onRatingChange, size = 'md', readOn
   const displayRating = hoverRating ?? rating ?? 0;
 
   const valueFromPointer = (e: React.MouseEvent, starIndex: number): number => {
+    // Keyboard activation (Enter/Space) fires a click with detail 0 and no real
+    // coordinates — treat it as the whole star, not a position-derived half.
+    if (e.detail === 0) return starIndex;
     const rect = e.currentTarget.getBoundingClientRect();
     const isLeftHalf = e.clientX - rect.left < rect.width / 2;
     return isLeftHalf ? starIndex - 0.5 : starIndex;
@@ -93,7 +96,10 @@ export default function StarRating({ rating, onRatingChange, size = 'md', readOn
     onRatingChange(valueFromPointer(e, starIndex));
   }, [readOnly, onRatingChange]);
 
-  const labelValue = readOnly ? rating : hoverRating ?? rating;
+  // Label renders only for a committed rating — mounting it on hover-enter when
+  // rating is null shifted tightly-packed rows (My Shows "To Be Rated" renders
+  // interactive null-rating stars without hideLabel). Hover previews via fills.
+  const labelValue = rating !== null ? (readOnly ? rating : hoverRating ?? rating) : null;
 
   return (
     <div className="inline-flex flex-col items-start">

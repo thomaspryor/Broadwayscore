@@ -192,8 +192,12 @@ export default function ListsTab({ userId, showMap, isMockMode, createTrigger = 
             }
           }}
           onMakePrivate={async () => {
-            await togglePublic(activeListId, false);
-            showToast?.('List is now private.', 'info');
+            try {
+              await togglePublic(activeListId, false);
+              showToast?.('List is now private.', 'info');
+            } catch {
+              showToast?.('Failed to make list private.', 'error');
+            }
           }}
           onReorder={(itemIds, positions) => {
             // Save previous state for undo
