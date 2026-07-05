@@ -1,7 +1,7 @@
 {
   "system": "workflow repeat-failure",
   "status": "error",
-  "lastChecked": "2026-07-04T07:58:33.151Z",
+  "lastChecked": "2026-07-05T08:01:18.839Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -9,7 +9,22 @@
     {
       "name": "Workflow repeat-failure: Collect Review Texts",
       "status": "error",
-      "message": "Collect Review Texts failed 12 times in the last 24h — likely broken, not transient."
+      "message": "Collect Review Texts failed 13 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Rebuild Reviews Data",
+      "status": "error",
+      "message": "Rebuild Reviews Data failed 3 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Update Reddit Sentiment",
+      "status": "error",
+      "message": "Update Reddit Sentiment failed 3 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: LLM Ensemble Score Reviews",
+      "status": "warn",
+      "message": "LLM Ensemble Score Reviews failed 2 times in the last 24h — likely broken, not transient."
     }
   ]
 }
