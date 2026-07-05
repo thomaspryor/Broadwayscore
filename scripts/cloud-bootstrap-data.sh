@@ -70,12 +70,21 @@ if [ -n "${REVIEW_TEXTS_TOKEN:-}" ] || command -v gh >/dev/null 2>&1 || [ "${CLA
   run_bounded 300 bash "$SCRIPT_DIR/setup-local-data.sh" 2>&1 | sed 's/^/[setup-local-data] /' || true
 fi
 
-# 3. Still nothing? Fall back to a synthesized stub so the app can build.
+# 3. Run the stub generator UNCONDITIONALLY as a gap-fill. cloud-stub-data.js
+# skips any path that already exists (symlinks from a real clone included) and
+# never touches git-tracked files, so:
+#   - no real data  -> it writes the full stub set (app builds, empty scores)
+#   - real data      -> it writes ONLY the gitignored, locally-generated files the
+#                       private repo doesn't ship (cast-manifest.json, actor-slugs.json,
+#                       video-reviews.json, ...). Without this, `tsc`/build fails with
+#                       TS2307 on those static imports even when real data is present.
 if [ ! -s data/shows.json ]; then
-  log "no private-repo access — synthesizing STUB dataset from public/data/mobile-shows.json"
+  log "no private-repo access — synthesizing full STUB dataset from public/data/mobile-shows.json"
   log "NOTE: reviews/scores are empty in stub mode; use this only for UI/build work"
-  node "$SCRIPT_DIR/cloud-stub-data.js" 2>&1 | sed 's/^/[cloud-stub] /' || true
+else
+  log "real data present — filling gitignored generated-file gaps so the app builds"
 fi
+node "$SCRIPT_DIR/cloud-stub-data.js" 2>&1 | sed 's/^/[cloud-stub] /' || true
 
 if [ -s data/shows.json ]; then
   log "dataset ready ($(node -e "try{console.log(require('./data/shows.json').shows.length+' shows')}catch(e){console.log('present')}" 2>/dev/null))"
