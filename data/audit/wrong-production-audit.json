@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-05T16:04:21.396Z",
+  "timestamp": "2026-07-05T16:28:02.806Z",
   "stats": {
-    "totalReviews": 39784,
-    "alreadyFlagged": 17483,
+    "totalReviews": 39786,
+    "alreadyFlagged": 17487,
     "dateGuardCatches": 36,
     "directorMismatch": 891,
-    "tvFilmSignals": 1095,
+    "tvFilmSignals": 1094,
     "londonSignals": 731,
     "offBroadwaySignals": 467,
     "yearMismatch": 84,
-    "noPublishDate": 3990
+    "noPublishDate": 3988
   },
   "findings": [
     {
@@ -18070,19 +18070,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2000 (2x) more than 2026 (1x). 2000 matches production: proof-2000"
-        }
-      ]
-    },
-    {
-      "showId": "proof-2026",
-      "file": "nysr--unknown.json",
-      "publishDate": null,
-      "url": "https://nystagereview.com/2026/04/16/proof-25-year-old-pulitzer-winner-proves-to-be-even-better-than-before/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
