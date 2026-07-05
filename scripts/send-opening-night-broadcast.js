@@ -11,7 +11,7 @@
  *
  * Multiple shows opening the same night are coalesced into a single email.
  *
- * Usage: node scripts/send-opening-night-broadcast.js [--dry-run] [--lookback=DAYS] [--market=broadway|west-end] [--send-to=EMAIL]
+ * Usage: node scripts/send-opening-night-broadcast.js [--dry-run] [--lookback=DAYS] [--market=broadway|west-end] [--send-to=EMAIL] [--subject="..."]
  *
  * --send-to=EMAIL  Preview mode: send a single transactional email via Resend (not a broadcast/draft).
  *                  Use this to review the email rendering before a real draft is created.
@@ -63,6 +63,11 @@ const RECREATE_DRAFT = process.argv.includes('--recreate-draft');
 // For revivals or niche shows where T1 outlets are unlikely to cover; owner manually reviews the
 // draft in Resend UI and decides whether to send.
 const FORCE_CREATE_DRAFT = process.argv.includes('--force-create-draft');
+// --subject="..." — override the generated subject line for this run. For one-off wording
+// (return engagements, transfers) without touching the shared template. Applies to both the
+// draft and the [PREVIEW] variant, and still passes the FORBIDDEN_SUBJECT_WORDS safety check.
+const SUBJECT_ARG = process.argv.find(a => a.startsWith('--subject='));
+const SUBJECT_OVERRIDE = SUBJECT_ARG ? SUBJECT_ARG.split('=').slice(1).join('=').trim() : null;
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
@@ -548,7 +553,8 @@ async function main() {
   // Build subject line — kept clean (no [PREVIEW] tag) so it's safe to reuse for the
   // actual subscriber broadcast. The preview-only subject is derived separately below
   // and is only used when we call the Resend single-recipient /emails endpoint.
-  const subject = buildBroadcastSubjectLine(showsForEmail, MARKET);
+  const subject = SUBJECT_OVERRIDE || buildBroadcastSubjectLine(showsForEmail, MARKET);
+  if (SUBJECT_OVERRIDE) console.log(`Subject override active (--subject)`);
 
   // Preview-only subject — prefixed so the owner can tell it apart from the real broadcast
   // in their inbox. NEVER used for the actual subscriber send (which uses `subject` above).
@@ -561,7 +567,12 @@ async function main() {
   const previousSent = sentData.shows[broadcastKey];
 
   // --recreate-draft: delete the old Resend draft and clear the sent record so we proceed fresh.
-  if (RECREATE_DRAFT && previousSent) {
+  // Skipped under --dry-run: the delete is a LIVE Resend API call and saveSentData mutates
+  // tracked state — neither belongs in a dry run (found 2026-07-05: dry-run cleared records).
+  if (RECREATE_DRAFT && previousSent && DRY_RUN) {
+    console.log(`\n[DRY RUN] Would delete old draft ${previousSent.draftId || '(none)'} and clear sent records`);
+  }
+  if (RECREATE_DRAFT && previousSent && !DRY_RUN) {
     if (previousSent.draftId) {
       console.log(`\n--recreate-draft: deleting old draft ${previousSent.draftId}...`);
       try {
