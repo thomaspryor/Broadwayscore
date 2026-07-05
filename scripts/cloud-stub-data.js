@@ -22,7 +22,11 @@ function writeJson(rel, obj) {
     return;
   }
   const p = path.join(ROOT, rel);
-  if (fs.existsSync(p)) {
+  // lstat (not existsSync): existsSync follows symlinks and returns false for a
+  // DANGLING symlink, which would let writeFileSync write THROUGH the link into
+  // the private-repo target (e.g. a broken data/shows.json -> ~/broadway-scorecard-data).
+  // lstat sees the link itself, so we skip any pre-existing path — file OR symlink.
+  if (fs.lstatSync(p, { throwIfNoEntry: false })) {
     console.log(`exists, leaving: ${rel}`);
     return;
   }

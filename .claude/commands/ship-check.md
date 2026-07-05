@@ -197,7 +197,7 @@ Launch all three reviewers simultaneously. Save the screenshots to files that ca
 2. **GPT-4o — Fresh-eyes UX review** — Run this curl command via Bash.
    **OpenAI check:** Run `echo ${OPENAI_API_KEY:+SET}` first.
    - If SET: run the curl, then **check the response** — if it's empty or `echo "$RESP" | jq -e '.error'` matches (bad key, quota, blocked host), do NOT swallow it. Print the error and record GPT-4o as **FAILED** in the coverage banner (Phase 6). A present key that errors is a real problem the user must see, not a silent Claude fallback.
-   - If empty: this is a fixable misconfiguration, not a routine fallback. In a cloud session, add `OPENAI_API_KEY` at claude.ai/code env settings (Network access must be **Full** or include `api.openai.com` — see `claude-outputs/cloud-code-setup.txt`). Fall back to a Claude agent with the same system prompt so the review still runs, but record GPT-4o as **MISSING** in the coverage banner and surface it prominently.
+   - If empty: this is a fixable misconfiguration, not a routine fallback. In a cloud session, add `OPENAI_API_KEY` in the environment settings at claude.ai/code (cloud icon → gear → Environment variables), and make sure Network access is **Full** or its Custom allowlist includes `api.openai.com`. Fall back to a Claude agent with the same system prompt so the review still runs, but record GPT-4o as **MISSING** in the coverage banner and surface it prominently.
    **GPT-4o gets a description of the pages + what they should show, but NOT the code. It reviews from a pure user perspective.**
    ```
    curl -s https://api.openai.com/v1/chat/completions \
