@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-05T22:27:08.813Z",
+  "timestamp": "2026-07-05T22:38:19.572Z",
   "stats": {
-    "totalReviews": 39789,
-    "alreadyFlagged": 17491,
+    "totalReviews": 39791,
+    "alreadyFlagged": 17492,
     "dateGuardCatches": 42,
     "directorMismatch": 891,
     "tvFilmSignals": 1095,
     "londonSignals": 735,
     "offBroadwaySignals": 467,
     "yearMismatch": 86,
-    "noPublishDate": 3983
+    "noPublishDate": 3984
   },
   "findings": [
     {
@@ -25547,6 +25547,8 @@
       "showId": "to-kill-a-mockingbird-west-end-2026",
       "file": "financialtimes--sarah-hemming.json",
       "score": 76,
+      "publishDate": "2022-04-01",
+      "url": "https://www.ft.com/content/1a41fbbe-b98c-4a36-87b8-4dc38636d640",
       "findings": [
         {
           "type": "DATE_GUARD",
