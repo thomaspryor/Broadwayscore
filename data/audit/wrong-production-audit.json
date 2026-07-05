@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-05T19:21:40.622Z",
+  "timestamp": "2026-07-05T20:00:23.658Z",
   "stats": {
-    "totalReviews": 39784,
-    "alreadyFlagged": 17480,
+    "totalReviews": 39788,
+    "alreadyFlagged": 17482,
     "dateGuardCatches": 44,
     "directorMismatch": 891,
     "tvFilmSignals": 1095,
-    "londonSignals": 734,
+    "londonSignals": 735,
     "offBroadwaySignals": 467,
-    "yearMismatch": 85,
-    "noPublishDate": 3983
+    "yearMismatch": 86,
+    "noPublishDate": 3984
   },
   "findings": [
     {
@@ -8546,7 +8546,7 @@
       "file": "independent--alice-saville.json",
       "score": 58,
       "publishDate": "2026-06-18",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html?loginSuccessful=true",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -18132,6 +18132,7 @@
     {
       "showId": "public-charge-off-broadway-2026",
       "file": "lighting-and-sound-america--david-barbour.json",
+      "score": 71,
       "publishDate": null,
       "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=U6PAPY",
       "findings": [
@@ -25577,6 +25578,8 @@
       "showId": "to-kill-a-mockingbird-west-end-2026",
       "file": "i-paper--sam-marlowe.json",
       "score": 85,
+      "publishDate": "2022-04-01",
+      "url": "https://inews.co.uk/culture/arts/to-kill-a-mockingbird-gielgud-theatre-review-rafe-spall-plays-the-hero-in-a-tremendous-reimagining-1550710",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -25602,11 +25605,23 @@
       "showId": "to-kill-a-mockingbird-west-end-2026",
       "file": "sunday-telegraph--dominic-cavendish.json",
       "score": 97,
+      "publishDate": "2022-04-01",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/kill-mockingbird-review-aaron-sorkins-revelatory-adaptation/",
       "findings": [
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 1546d before show (2022-04-01 vs 2026-06-25)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2018 (2x) more than 2026 (0x). 2018 matches production: to-kill-a-mockingbird-2018"
         }
       ]
     },
@@ -25628,6 +25643,8 @@
       "showId": "to-kill-a-mockingbird-west-end-2026",
       "file": "times-uk--clive-davis.json",
       "score": 82,
+      "publishDate": "2022-04-01",
+      "url": "https://www.thetimes.co.uk/article/to-kill-a-mockingbird-review-rafe-spall-is-stunning-in-new-take-on-classic-70smwnd0z",
       "findings": [
         {
           "type": "DATE_GUARD",
