@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-06-28T14:39:45.482Z",
+  "generatedAt": "2026-07-05T14:37:13.813Z",
   "counts": {
     "accepted": 1,
-    "rejected": 7,
+    "rejected": 8,
     "byReason": {
       "low-confidence-existing-match": 5,
-      "bot-shell": 1,
+      "bot-shell": 2,
       "placeholder-venue-no-theater": 1
     }
   },
@@ -43,6 +43,12 @@
     {
       "url": "https://playbill.com/article/did-reviewers-think-american-repertory-theaters-black-swan-was-perfect",
       "slug": "did-reviewers-think-american-repertory-theaters-black-swan-was-perfect",
+      "source": "playbill-verdict",
+      "reason": "bot-shell"
+    },
+    {
+      "url": "https://playbill.com/article/were-reviewers-diggin-on-the-tlc-musical-crazysexycool-at-arena-stage",
+      "slug": "were-reviewers-diggin-on-the-tlc-musical-crazysexycool-at-arena-stage",
       "source": "playbill-verdict",
       "reason": "bot-shell"
     },
