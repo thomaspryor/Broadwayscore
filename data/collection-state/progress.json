@@ -437,7 +437,12 @@
     "small-off-broadway-2026/british-theatre--unknown.json",
     "small-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
     "small-off-broadway-2026/nysr--david-finkle.json",
-    "beetlejuice-west-end-2026/nytg--mark-shenton.json"
+    "beetlejuice-west-end-2026/nytg--mark-shenton.json",
+    "a-walk-on-the-moon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "a-walk-on-the-moon-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+    "birthright-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "birthright-off-broadway-2026/pages-on-stages--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -473,6 +478,7 @@
       "data/review-texts/maybe-happy-ending-2024/variety--unknown.json",
       "maybe-happy-ending-2024/variety--unknown.json",
       "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+      "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
       "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json"
     ],
     "directCookies": [
@@ -500,7 +506,7 @@
     ]
   },
   "startTime": "2026-07-04T20:56:42.639Z",
-  "lastProcessed": "beetlejuice-west-end-2026/nytg--mark-shenton.json",
+  "lastProcessed": "birthright-off-broadway-2026/pages-on-stages--unknown.json",
   "log": [
     {
       "t": "2026-07-04T23:49:09.911Z",
@@ -543,6 +549,17 @@
     },
     {
       "t": "2026-07-05T01:35:29.963Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-05T02:36:55.241Z",
+      "event": "bb-session",
+      "session": "c0cbbd4b",
+      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
+    },
+    {
+      "t": "2026-07-05T02:36:55.738Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
