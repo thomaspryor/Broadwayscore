@@ -1,21 +1,47 @@
 {
-  "processed": [],
+  "processed": [
+    "birthright-off-broadway-2026/amny--unknown.json",
+    "proof-2026/variety--unknown.json",
+    "proof-2026/deadline--unknown.json",
+    "music-city-off-broadway-2026/theatrely--unknown.json",
+    "ragtime-2025/nytimes--unknown.json",
+    "burlesque-west-end-2026/theatreandtonic--unknown.json",
+    "heathers-the-musical-off-broadway-2025/theatrely--unknown.json",
+    "maybe-happy-ending-2024/variety--unknown.json"
+  ],
   "failed": [
-    "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json"
+    "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+    "to-kill-a-mockingbird-west-end-2026/i-paper--sam-marlowe.json",
+    "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "burlesque-west-end-2026/theatreandtonic--unknown.json"
+    ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/proof-2026/variety--unknown.json",
+      "proof-2026/variety--unknown.json",
+      "data/review-texts/proof-2026/deadline--unknown.json",
+      "proof-2026/deadline--unknown.json",
+      "data/review-texts/maybe-happy-ending-2024/variety--unknown.json",
+      "maybe-happy-ending-2024/variety--unknown.json"
+    ],
     "directCookies": [],
-    "scrapingbee": [],
-    "brightdata": [],
+    "scrapingbee": [
+      "music-city-off-broadway-2026/theatrely--unknown.json",
+      "ragtime-2025/nytimes--unknown.json",
+      "heathers-the-musical-off-broadway-2025/theatrely--unknown.json"
+    ],
+    "brightdata": [
+      "birthright-off-broadway-2026/amny--unknown.json"
+    ],
     "archiveToday": [],
     "archive": []
   },
   "startTime": "2026-07-05T16:48:47.319Z",
-  "lastProcessed": "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+  "lastProcessed": "maybe-happy-ending-2024/variety--unknown.json",
   "log": [
     {
       "t": "2026-07-05T16:48:55.562Z",
@@ -27,6 +53,39 @@
       "t": "2026-07-05T16:48:56.573Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-05T19:05:53.588Z",
+      "event": "bb-session",
+      "session": "af1dc686",
+      "url": "https://variety.com/2026/legit/reviews/proof-broadway-review-ayo-edebiri-don-che"
+    },
+    {
+      "t": "2026-07-05T19:05:54.003Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-05T19:06:09.236Z",
+      "event": "bb-session",
+      "session": "1641bf1f",
+      "url": "https://deadline.com/2026/04/proof-broadway-review-ayo-edebiri-don-cheadle-kara-"
+    },
+    {
+      "t": "2026-07-05T19:06:09.653Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-05T19:07:06.887Z",
+      "event": "bb-session",
+      "session": "19427701",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
+    },
+    {
+      "t": "2026-07-05T19:07:07.305Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
