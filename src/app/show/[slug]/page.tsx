@@ -51,10 +51,6 @@ import { AwardsNavLink } from '@/components/AwardsNavLink';
 
 // Group A: personalized, auth-dependent — ssr:false so they don't block
 // the pre-rendered HTML, Suspense prevents hydration mismatch.
-const ShowPageRatingConnected = dynamic(
-  () => import('@/components/user/ShowPageRatingConnected'),
-  { ssr: false }
-);
 const ShowPageWatchlistButton = dynamic(
   () => import('@/components/user/ShowPageWatchlistButton'),
   { ssr: false }
@@ -703,15 +699,9 @@ export default async function ShowPage({ params }: { params: { slug: string } })
             <Suspense fallback={null}><ShowPageWatchlistButton showId={show.id} /></Suspense>
           </div>
 
-          {/* User Rating — feature-flagged */}
-          <Suspense fallback={null}>
-            <ShowPageRatingConnected
-              showId={show.id}
-              showTitle={show.title}
-              previewDate={show.previewsStartDate}
-              closingDate={show.closingDate}
-            />
-          </Suspense>
+          {/* Rating on the legacy (redesign-off) layout is handled by ShowHeroRedesign
+              in the flipped layout; the unflagged path ships without the UGC widget
+              (userAccounts is off whenever showPageRedesign is off — combined flip). */}
         </div>
         </RedesignOff>
 

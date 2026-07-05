@@ -65,7 +65,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setSignInLoading(false);
 
         // Pending action execution handled by consuming components
-        // (e.g. ShowPageRatingConnected reads and clears the pending action)
+        // (e.g. ShowHeroRedesign reads and clears the pending action)
       } else if (event === 'SIGNED_OUT') {
         setUser(null);
         setProfile(null);

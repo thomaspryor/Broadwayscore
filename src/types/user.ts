@@ -77,6 +77,8 @@ export interface PendingAction {
   rating?: number;
   reviewText?: string;
   dateSeen?: string;
+  /** When set, the resumed rating edits/replaces this review; when absent, it appends a new viewing. */
+  reviewId?: string;
   listId?: string;
   listName?: string;
   returnUrl: string;

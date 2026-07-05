@@ -20,8 +20,8 @@
  *  • Watchlist + rating are independent — Want to See persists after rating.
  *  • <3 reviews → "Awaiting reviews" replaces score row + bar + Critics' Take.
  *
- * Deferred-auth flow mirrors ShowPageRatingConnected: pending action saved before
- * showSignIn(); resumed when user lands back on this page authenticated.
+ * Deferred-auth flow: pending action (rating draft) saved before showSignIn();
+ * resumed when the user lands back on this page authenticated.
  */
 
 import React, { Suspense, useCallback, useEffect, useRef, useState } from 'react';
@@ -37,7 +37,7 @@ import {
   getScoreTier,
 } from '@/components/show-cards';
 import StarRating from '@/components/user/StarRating';
-import ReviewPanel from '@/components/user/ReviewPanel';
+import RatingEditor from '@/components/user/RatingEditor';
 import ShowImage from '@/components/ShowImage';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 import TicketButtonsAB from '@/components/TicketButtonsAB';
@@ -61,7 +61,7 @@ function slugify(str: string): string {
 }
 import type { AudienceGrade } from '@/components/show-cards';
 import type { TicketLinkData } from '@/lib/ticket-utils';
-import type { UserReview } from '@/types/user';
+import type { UserReview, PendingAction } from '@/types/user';
 import type { ShowRanks } from '@/lib/data-show-ranks';
 import HeroRankLine from '@/components/show-page/HeroRankLine';
 
@@ -117,8 +117,8 @@ function Inner({
 
   const [ratePanelOpen, setRatePanelOpen] = useState(false);
   const [editingReview, setEditingReview] = useState<UserReview | null>(null);
-  const [pendingRatingFromAuth, setPendingRatingFromAuth] = useState<number | null>(null);
-  const [saving, setSaving] = useState(false);
+  // Draft carried across sign-in (rating + typed note + date + target review id).
+  const [pendingDraft, setPendingDraft] = useState<PendingAction | null>(null);
   const hasExecutedPending = useRef(false);
 
   // ?rate=1 / ?stars=N / ?edit=1 deep-link helpers (kept compatible with /my-shows entry points)
@@ -177,8 +177,9 @@ function Inner({
     clearPendingAction();
 
     if (pending.type === 'rating') {
+      // Resume the draft the user was mid-editing before we gated on sign-in.
       setEditingReview(null);
-      setPendingRatingFromAuth(pending.rating ?? null);
+      setPendingDraft(pending);
       setRatePanelOpen(true);
     } else if (pending.type === 'watchlist') {
       addToWatchlist(show.id)
@@ -201,9 +202,14 @@ function Inner({
       });
       showSignIn('rating');
     } else {
-      // Open with latest review pre-filled (edit) if rated, else fresh panel with stars hint
+      // Open with latest review pre-filled (edit) if rated, else fresh panel seeded
+      // with the ?stars= hint.
       setEditingReview(latestReview);
-      setPendingRatingFromAuth(latestReview ? null : autoRateStars);
+      setPendingDraft(
+        latestReview || autoRateStars == null
+          ? null
+          : { type: 'rating', showId: show.id, rating: autoRateStars, returnUrl: '', timestamp: 0 },
+      );
       setRatePanelOpen(true);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -245,16 +251,8 @@ function Inner({
   }, [isAuthenticated, authLoading, onWatchlist, show.id, addToWatchlist, removeFromWatchlist, showSignIn, showToast]);
 
   const handleRateIt = useCallback(() => {
-    if (!isAuthenticated && !authLoading) {
-      savePendingAction({
-        type: 'rating',
-        showId: show.id,
-        returnUrl: window.location.pathname,
-        timestamp: Date.now(),
-      });
-      showSignIn('rating');
-      return;
-    }
+    // Open the editor for everyone. Unauthenticated users invest first; we gate
+    // on sign-in at Save (handleSaveReview) and preserve their draft across auth.
     if (isMulti) {
       // 2+ existing ratings → "Log another viewing": fresh panel, appends new entry.
       setEditingReview(null);
@@ -265,9 +263,9 @@ function Inner({
       // First rating → fresh panel.
       setEditingReview(null);
     }
-    setPendingRatingFromAuth(null);
+    setPendingDraft(null);
     setRatePanelOpen(true);
-  }, [isAuthenticated, authLoading, show.id, hasRating, isMulti, latestReview, showSignIn]);
+  }, [hasRating, isMulti, latestReview]);
 
   const handleEditLatest = useCallback(() => {
     if (!latestReview) return;
@@ -275,50 +273,61 @@ function Inner({
     setRatePanelOpen(true);
   }, [latestReview]);
 
-  const handleSaveReview = useCallback(async (data: { rating: number; reviewText: string | null; dateSeen: string | null }) => {
+  // NOTE: RatingEditor owns the saving spinner and, critically, keeps the panel
+  // open with the typed note intact when this rejects. So on the authed path we
+  // THROW on failure (no swallow, no close-in-finally) and let a resolved promise
+  // signal success — the editor then calls onSaved to close.
+  const handleSaveReview = useCallback(async (data: { rating: number; reviewText: string | null; dateSeen: string | null; reviewId?: string }) => {
     if (!user) {
-      showToast?.('Please sign in to save ratings.', 'error');
+      // Gate at Save — persist the full draft, then sign in. The pending-action
+      // effect reopens the editor prefilled on return.
+      savePendingAction({
+        type: 'rating',
+        showId: show.id,
+        rating: data.rating,
+        ...(data.reviewText ? { reviewText: data.reviewText } : {}),
+        ...(data.dateSeen ? { dateSeen: data.dateSeen } : {}),
+        ...(data.reviewId ? { reviewId: data.reviewId } : {}),
+        returnUrl: window.location.pathname,
+        timestamp: Date.now(),
+      });
+      showSignIn('rating');
       return;
     }
-    setSaving(true);
-    try {
-      if (editingReview) {
-        const filters = `id=eq.${editingReview.id}&user_id=eq.${user.id}`;
-        const { error } = await supabaseRestUpdate('reviews', filters, {
-          rating: data.rating,
-          review_text: data.reviewText || null,
-          date_seen: data.dateSeen || null,
-          updated_at: new Date().toISOString(),
-        });
-        if (error) throw new Error(error.message);
-        showToast?.(<>Updated in <a href="/my-shows" className="underline hover:text-white/90">My Ratings &amp; Reviews</a></>, 'success');
-      } else {
-        const { error } = await supabaseRestInsert('reviews', {
-          user_id: user.id,
-          show_id: show.id,
-          rating: data.rating,
-          review_text: data.reviewText || null,
-          date_seen: data.dateSeen || null,
-        });
-        if (error) throw new Error(error.message);
-        showToast?.(<>Added to <a href="/my-shows" className="underline hover:text-white/90">My Ratings &amp; Reviews</a></>, 'success');
-      }
-      await getReviewsForShow(show.id);
-    } catch (e) {
-      const detail = e instanceof Error ? e.message : 'Unknown error';
-      showToast?.(`Save failed: ${detail}`, 'error');
-    } finally {
-      setSaving(false);
-      setRatePanelOpen(false);
-      setEditingReview(null);
-      setPendingRatingFromAuth(null);
+    if (data.reviewId) {
+      const filters = `id=eq.${data.reviewId}&user_id=eq.${user.id}`;
+      const { error } = await supabaseRestUpdate('reviews', filters, {
+        rating: data.rating,
+        review_text: data.reviewText || null,
+        date_seen: data.dateSeen || null,
+        updated_at: new Date().toISOString(),
+      });
+      if (error) throw new Error(error.message);
+      showToast?.(<>Updated in <a href="/my-shows" className="underline hover:text-white/90">My Ratings &amp; Reviews</a></>, 'success');
+    } else {
+      const { error } = await supabaseRestInsert('reviews', {
+        user_id: user.id,
+        show_id: show.id,
+        rating: data.rating,
+        review_text: data.reviewText || null,
+        date_seen: data.dateSeen || null,
+      });
+      if (error) throw new Error(error.message);
+      showToast?.(<>Added to <a href="/my-shows" className="underline hover:text-white/90">My Ratings &amp; Reviews</a></>, 'success');
     }
-  }, [user, editingReview, show.id, getReviewsForShow, showToast]);
+    await getReviewsForShow(show.id);
+  }, [user, show.id, getReviewsForShow, showToast, showSignIn]);
+
+  const handleRateSaved = useCallback(() => {
+    setRatePanelOpen(false);
+    setEditingReview(null);
+    setPendingDraft(null);
+  }, []);
 
   const handleCancelRate = useCallback(() => {
     setRatePanelOpen(false);
     setEditingReview(null);
-    setPendingRatingFromAuth(null);
+    setPendingDraft(null);
   }, []);
 
   const handleDeleteRating = useCallback(async () => {
@@ -333,6 +342,7 @@ function Inner({
     } finally {
       setRatePanelOpen(false);
       setEditingReview(null);
+      setPendingDraft(null);
     }
   }, [editingReview, deleteReview, getReviewsForShow, show.id, showToast]);
 
@@ -573,32 +583,24 @@ function Inner({
         </p>
       )}
 
-      {/* Inline rate panel (web behavior) — delete-rating button rendered as a separate
-          row when editing an existing review (ReviewPanel itself has no delete slot) */}
+      {/* Rating editor — bottom-sheet on mobile, inline card on desktop. Adjustable
+          stars live inside; a failed save keeps the panel open with the note intact. */}
       {userFeaturesEnabled && ratePanelOpen && (
-        <div className="space-y-2">
-          <ReviewPanel
-            rating={editingReview?.rating ?? pendingRatingFromAuth ?? 5}
-            existingReviewText={editingReview?.review_text}
-            existingDateSeen={editingReview?.date_seen ?? (editingReview ? undefined : watchlistDate)}
-            showTitle={show.title}
-            latestDate={show.closingDate}
-            onSave={handleSaveReview}
-            onCancel={handleCancelRate}
-            saving={saving}
-          />
-          {editingReview && (
-            <div className="flex justify-end">
-              <button
-                type="button"
-                onClick={handleDeleteRating}
-                className="text-[11px] text-gray-500 hover:text-score-skip transition-colors px-2 py-1"
-              >
-                Delete this rating
-              </button>
-            </div>
-          )}
-        </div>
+        <RatingEditor
+          key={editingReview?.id ?? pendingDraft?.reviewId ?? 'new-viewing'}
+          showTitle={show.title}
+          closingDate={show.closingDate}
+          reviewId={editingReview?.id ?? pendingDraft?.reviewId}
+          initialRating={editingReview?.rating ?? pendingDraft?.rating ?? 0}
+          initialReviewText={editingReview?.review_text ?? pendingDraft?.reviewText ?? null}
+          initialDateSeen={editingReview?.date_seen ?? pendingDraft?.dateSeen ?? null}
+          suggestedDateSeen={editingReview || pendingDraft ? null : watchlistDate}
+          mode={editingReview || pendingDraft?.reviewId ? 'edit' : hasRating ? 'append' : 'new'}
+          onSave={handleSaveReview}
+          onSaved={handleRateSaved}
+          onCancel={handleCancelRate}
+          onDelete={editingReview ? handleDeleteRating : undefined}
+        />
       )}
 
       {/* Tickets — primary CTA + lottery/rush pill (desktop only).
