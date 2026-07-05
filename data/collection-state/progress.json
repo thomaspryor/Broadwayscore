@@ -1,38 +1,17 @@
 {
   "processed": [
-    "cyrano-de-bergerac-west-end-2026/guardian-uk--unknown.json",
-    "cyrano-de-bergerac-west-end-2026/broadwayworld--stephi-wild.json"
+    "relics-west-end-2026/cambridge--unknown.json"
   ],
   "failed": [
-    "cyrano-de-bergerac-west-end-2026/hollywood-reporter--unknown.json",
-    "cyrano-de-bergerac-west-end-2026/ew--nick-romano.json",
-    "cyrano-de-bergerac-west-end-2026/newsday--unknown.json",
-    "cyrano-de-bergerac-west-end-2026/about-entertainment--ben-brantley.json",
-    "cyrano-de-bergerac-west-end-2026/amny--unknown.json",
-    "cyrano-de-bergerac-west-end-2026/ap--unknown.json",
-    "cyrano-de-bergerac-west-end-2026/bloomberg--jeremy-gerard.json",
-    "cyrano-de-bergerac-west-end-2026/daily-echo--steve-page.json",
-    "cyrano-de-bergerac-west-end-2026/financialtimes--sarah-hemming.json",
-    "cyrano-de-bergerac-west-end-2026/metro-uk--claire-allfree.json",
-    "cyrano-de-bergerac-west-end-2026/northjerseycom--robert-feldberg.json",
-    "cyrano-de-bergerac-west-end-2026/standard--fiona-mountford.json",
-    "cyrano-de-bergerac-west-end-2026/telegraph--dominic-cavendish.json",
-    "cyrano-de-bergerac-west-end-2026/the-upcoming-uk--unknown.json",
-    "cyrano-de-bergerac-west-end-2026/thestage--dave-fargnoli.json",
-    "cyrano-de-bergerac-west-end-2026/times-uk--dominic-maxwell.json",
-    "cyrano-de-bergerac-west-end-2026/washpost--peter-marks.json",
-    "cyrano-de-bergerac-west-end-2026/hollywood-reporter--david-rooney.json",
-    "cyrano-de-bergerac-west-end-2026/nytg--gillian-russo.json",
-    "cyrano-de-bergerac-west-end-2026/variety--marilyn-stasio.json",
-    "cyrano-de-bergerac-west-end-2026/ew--tanner-stransky.json",
-    "cyrano-de-bergerac-west-end-2026/newsday--linda-winer.json",
-    "cyrano-de-bergerac-west-end-2026/wsj--terry-teachout.json"
+    "relics-west-end-2026/nytimes--unknown.json",
+    "relics-west-end-2026/guardian--unknown.json",
+    "relics-west-end-2026/thestage--neil-norman.json",
+    "relics-west-end-2026/times-uk--dominic-maxwell.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "cyrano-de-bergerac-west-end-2026/guardian-uk--unknown.json",
-      "cyrano-de-bergerac-west-end-2026/broadwayworld--stephi-wild.json"
+      "relics-west-end-2026/cambridge--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -40,11 +19,23 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/cyrano-de-bergerac-west-end-2026/daily-echo--steve-page.json"
+      "data/review-texts/relics-west-end-2026/thestage--neil-norman.json"
     ],
     "archive": []
   },
-  "startTime": "2026-07-05T06:35:53.792Z",
-  "lastProcessed": "cyrano-de-bergerac-west-end-2026/wsj--terry-teachout.json",
-  "log": []
+  "startTime": "2026-07-05T06:36:40.229Z",
+  "lastProcessed": "relics-west-end-2026/times-uk--dominic-maxwell.json",
+  "log": [
+    {
+      "t": "2026-07-05T06:39:41.340Z",
+      "event": "bb-session",
+      "session": "813c839d",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/relics-review-theatre-sal"
+    },
+    {
+      "t": "2026-07-05T06:39:41.760Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    }
+  ]
 }

@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-07-05T06:39:46.837Z",
-  "processed": 2,
-  "failed": 23,
-  "successRate": "8.0%",
+  "updatedAt": "2026-07-05T06:39:51.513Z",
+  "processed": 1,
+  "failed": 4,
+  "successRate": "20.0%",
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -13,6 +13,18 @@
     "archiveToday": 1,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-07-05T06:39:41.340Z",
+      "event": "bb-session",
+      "session": "813c839d",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/relics-review-theatre-sal"
+    },
+    {
+      "t": "2026-07-05T06:39:41.760Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    }
+  ]
 }
