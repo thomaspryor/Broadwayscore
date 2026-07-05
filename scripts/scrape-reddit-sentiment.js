@@ -754,6 +754,7 @@ async function main() {
   console.log(`\nSession stats:`);
   console.log(`  Reddit direct requests: ${sessionStats.redditDirect}`);
   console.log(`  Bright Data requests: ${sessionStats.brightData}`);
+  console.log(`  Scrapingdog requests: ${sessionStats.scrapingDog}`);
   console.log(`  ScrapingBee requests: ${sessionStats.scrapingBee}`);
   console.log(`  Rate limits hit: ${sessionStats.rateLimits}`);
   console.log(`  Backoff retries: ${sessionStats.backoffRetries}`);
