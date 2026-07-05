@@ -1687,10 +1687,19 @@ function londonSection() {
   });
   _londonHasGoldOpening = withScore.some(x => isGoldTier(x.agg.avg, x.s.category));
   const marketColor = '#f472b6';
-  const goldRows = withScore.filter(x => isGoldTier(x.agg.avg, x.s.category));
-  const nonGoldRows = withScore.filter(x => !isGoldTier(x.agg.avg, x.s.category));
-  // Gold-tier shows: full showRow (poster, venue, audience chip, score badge)
-  const goldHtml = goldRows.map(x => showRow(x.s, { showMarket: true })).join('');
+  // Hero (big poster showRow) treatment: every gold-tier show PLUS the week's
+  // top-ranked opening even if it just missed gold. withScore is already sorted
+  // gold-first then score-desc, so index 0 is the marquee opening. Without the
+  // index-0 rule a section with no gold show (e.g. TKAMB West End at 84.39, just
+  // under the 85 WE gold line) would render every card in the small compact
+  // format and lose its hero poster — the top opening always earns the big card.
+  const heroRows = withScore.filter((x, i) => i === 0 || isGoldTier(x.agg.avg, x.s.category));
+  const heroSet = new Set(heroRows);
+  const nonGoldRows = withScore.filter(x => !heroSet.has(x));
+  // Hero shows: full showRow (poster, venue, audience chip, score badge). The
+  // badge still reflects the real tier, so a non-gold top opening shows its
+  // actual (green/etc.) badge — not the gold shimmer.
+  const goldHtml = heroRows.map(x => showRow(x.s, { showMarket: true })).join('');
   // Non-gold shows: compact card (existing layout)
   const compactRows = nonGoldRows.map((x, i, arr) => {
     const score = x.agg.avg;
