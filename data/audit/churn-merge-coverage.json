@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-05T19:48:11.169Z",
+    "generatedAt": "2026-07-05T19:55:19.939Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -16,15 +16,15 @@
   "flagged": [
     {
       "path": "data/audit/processed-feedback.json",
-      "churn": 87
+      "churn": 86
     },
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 82
+      "churn": 83
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 77
+      "churn": 78
     },
     {
       "path": "data/audit/validation-baseline.json",
@@ -32,7 +32,7 @@
     },
     {
       "path": "data/audit/validation/collection-report-2026-07-05.json",
-      "churn": 39
+      "churn": 40
     }
   ],
   "exempt": [
@@ -46,7 +46,7 @@
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 77
+      "churn": 76
     },
     {
       "path": "data/commercial-rss-state.json",
@@ -66,43 +66,43 @@
     },
     {
       "path": "public/data/shows/glengarry-glen-ross-west-end-2026.json",
-      "churn": 33
+      "churn": 32
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 1014,
+      "churn": 1013,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 993,
+      "churn": 992,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 492,
+      "churn": 490,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 179,
+      "churn": 178,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 179,
+      "churn": 178,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 158,
+      "churn": 157,
       "mergeAttr": "union"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 104,
+      "churn": 102,
       "mergeAttr": "ours"
     },
     {
