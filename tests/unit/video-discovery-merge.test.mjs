@@ -74,11 +74,14 @@ describe('preserveLlmFlags', () => {
     for (const f of files) {
       const data = JSON.parse(fs.readFileSync(path.join(DISCOVERY_DIR, f), 'utf8'));
       const prev = JSON.parse(JSON.stringify(data.videos));
-      // Simulate a manual pre-classify pass: flag every 10th non-candidate video
-      let expected = 0;
+      // Flag every 10th non-candidate video (guarantees flags even for files
+      // that predate the CI pre-classify pass). Committed files may ALSO carry
+      // real llmFlagged entries from the live pipeline, so the expected carry
+      // count is the TOTAL flagged in prev, not just the synthetic additions.
       for (let i = 0; i < prev.length; i += 10) {
-        if (!prev[i].isReviewCandidate) { prev[i].llmFlagged = true; expected++; }
+        if (!prev[i].isReviewCandidate) prev[i].llmFlagged = true;
       }
+      const expected = prev.filter(v => v.llmFlagged).length;
       // Simulate the fresh rescan discover-videos.js produces (no flags)
       const next = JSON.parse(JSON.stringify(data.videos)).map(v => {
         const { llmFlagged, ...rest } = v;
