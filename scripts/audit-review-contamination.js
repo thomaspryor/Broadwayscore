@@ -260,6 +260,8 @@ const AGGREGATOR_ROUNDUP_DOMAINS = new Set([
 // A2 promoted to strict 2026-07-05 after 9 clean bake days (0 false positives).
 // Only level='contamination' hits block (corroborated by region or url-token);
 // level='review' hits (uncorroborated date clusters) remain report-only.
+// C2 is intentionally excluded: 'C2_url_multi_critic'.split('_')[0] === 'C2', NOT 'C'.
+// C2 multi-byline cases need a resolvable byline signal before auto-blocking; report-only.
 const STRICT_CLASSES = new Set(['A', 'A2', 'C', 'E', 'F']);
 
 const hits = {
@@ -351,7 +353,7 @@ for (const showId of showDirs) {
     // with a near-in-time cross-market sibling's opening (e.g. West End R&J 03-31 vs
     // Delacorte R&J 06-11). Requires region OR url-token corroboration so legit
     // dual-market coverage (Guardian/Times-UK on the Broadway opening) is never
-    // flagged. REPORT-ONLY (A2 not in STRICT_CLASSES) until promoted.
+    // flagged. Promoted to strict 2026-07-05; level='contamination' hits block.
     if (shouldRunClass('A') && !alreadyFlagged && !d._auditAllowCrossMarket && xmarketSibs.length) {
       const pubDate = parseDate(d.publishDate);
       if (pubDate && showOpening) {

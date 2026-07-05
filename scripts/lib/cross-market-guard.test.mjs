@@ -195,24 +195,30 @@ test('promotion: corroborated contamination carries sibId + reason for audit tra
   assert.ok(typeof v.sibDiff === 'number', 'sibDiff must be numeric');
 });
 
-test('margin default (45d): review exactly at margin boundary stays clear, just-over stays review', () => {
-  // thisDiff = sibDiff + margin - 1 → not far enough → clear.
-  // Delacorte opens 2026-06-11 (thisShow). WE sibling opened 2026-03-31 (72d earlier).
-  // A review dated 2026-04-02 is 1d from WE sibling (sibDiff=2), 70d from Delacorte (thisDiff=70).
-  // 70 >= 2 + 45 = 47 → dateCluster passes. But non-dual + london region → contamination.
-  // Let's test with isDualMarket=true (no region corroboration) to isolate margin behavior.
+test('margin default (45d): boundary clear/review/contamination across the 45d threshold', () => {
+  // Sibling opens 2026-04-01 (sibDiff=1d from reviewDate 2026-04-02).
+  // dateCluster fires when thisDiff >= sibDiff + margin = 1 + 45 = 46.
+  // Use isDualMarket=true (no region corroboration) to isolate margin behavior.
   const base = {
-    reviewDate: D('2026-04-02'), thisShow: DELACORTE,
+    reviewDate: D('2026-04-02'),
     siblings: [{ id: 'romeo-and-juliet-west-end-2026', opening: D('2026-04-01'), market: 'uk', tokens: [] }],
     outletRegion: 'london', isDualMarket: true,
   };
-  // sibDiff=1d, thisDiff=70d; 70 >= 1+45 → dateCluster true, but no url-token → 'review'.
-  assert.equal(classifyCrossMarketContamination({ ...base }).level, 'review');
 
-  // With url-token match → contamination.
+  // thisDiff=45 (thisShow opens 2026-05-17): 45 >= 46 → false → dateCluster fails → clear.
+  assert.equal(classifyCrossMarketContamination({
+    ...base, thisShow: { opening: D('2026-05-17'), market: 'us' },
+  }).level, 'clear');
+
+  // thisDiff=46 (thisShow opens 2026-05-18): 46 >= 46 → true → dateCluster fires, dual, no token → review.
+  assert.equal(classifyCrossMarketContamination({
+    ...base, thisShow: { opening: D('2026-05-18'), market: 'us' },
+  }).level, 'review');
+
+  // thisDiff=70 (DELACORTE): dateCluster true, url-token → contamination.
   const sibWithToken = [{ id: 'romeo-and-juliet-west-end-2026', opening: D('2026-04-01'), market: 'uk', tokens: ['sadie-sink'] }];
   assert.equal(classifyCrossMarketContamination({
-    ...base, siblings: sibWithToken,
+    ...base, thisShow: DELACORTE, siblings: sibWithToken,
     reviewUrl: 'https://www.thetimes.com/romeo-juliet-review-sadie-sink',
   }).level, 'contamination');
 });
