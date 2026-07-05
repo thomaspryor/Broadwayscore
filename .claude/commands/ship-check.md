@@ -195,7 +195,9 @@ Launch all three reviewers simultaneously. Save the screenshots to files that ca
    > WHAT WAS BUILT: [describe the feature and list key files]
 
 2. **GPT-4o — Fresh-eyes UX review** — Run this curl command via Bash.
-   **OpenAI check:** Run `echo ${OPENAI_API_KEY:+SET}` first. If empty, skip the curl and use a Claude agent (Task tool, subagent_type "general-purpose") with the same system prompt below. Note: "GPT-4o unavailable — using Claude as second reviewer."
+   **OpenAI check:** Run `echo ${OPENAI_API_KEY:+SET}` first.
+   - If SET: run the curl, then **check the response** — if it's empty or `echo "$RESP" | jq -e '.error'` matches (bad key, quota, blocked host), do NOT swallow it. Print the error and record GPT-4o as **FAILED** in the coverage banner (Phase 6). A present key that errors is a real problem the user must see, not a silent Claude fallback.
+   - If empty: this is a fixable misconfiguration, not a routine fallback. In a cloud session, add `OPENAI_API_KEY` at claude.ai/code env settings (Network access must be **Full** or include `api.openai.com` — see `claude-outputs/cloud-code-setup.txt`). Fall back to a Claude agent with the same system prompt so the review still runs, but record GPT-4o as **MISSING** in the coverage banner and surface it prominently.
    **GPT-4o gets a description of the pages + what they should show, but NOT the code. It reviews from a pure user perspective.**
    ```
    curl -s https://api.openai.com/v1/chat/completions \
@@ -218,7 +220,9 @@ Launch all three reviewers simultaneously. Save the screenshots to files that ca
    - Any design choices that might be surprising
 
 3. **Codex (GPT-5.x with codebase access) — Adversarial design review** — Run via Bash.
-   **Codex check:** Run `command -v codex >/dev/null && echo READY || echo MISSING`. If MISSING, skip this reviewer with note "Codex unavailable — running with 2 reviewers."
+   **Codex check:** Run `command -v codex >/dev/null && echo READY || echo MISSING`.
+   - READY (local): run Codex as below.
+   - MISSING (expected in cloud — there is no Codex CLI): do NOT drop to a Claude reviewer, which would leave **zero** non-Claude adversarial review. Instead run this SAME adversarial prompt + diff against **GPT-4o via `api.openai.com`** — reuse reviewer 2's curl mechanics (write `PROMPT_HEAD` + the diff to a temp file, send it as the `user` message, `model: "gpt-4o"`, check `jq -e '.error'` and surface any error). This preserves a real GPT-family adversarial reviewer. Only if `OPENAI_API_KEY` is also unavailable, fall back to a Claude agent. Record which reviewer actually ran (Codex / GPT-4o / Claude) in the coverage banner.
    **This reviewer challenges the design from a different model family. It reads the diff and the surrounding code, then questions whether the chosen approach is right — not whether it's correct.**
    ```bash
    set -o pipefail
@@ -265,7 +269,10 @@ Launch all three reviewers simultaneously. Save the screenshots to files that ca
 
 ### Phase 6: Report
 
-Present findings in a structured report:
+Present findings in a structured report.
+
+**Reviewer coverage (print this FIRST — a degraded review is NOT a passed review):**
+State exactly which of the three reviewers ran and on which model: (1) Claude codebase review, (2) fresh-eyes UX — GPT-4o or Claude fallback, (3) adversarial design — Codex / GPT-4o / Claude fallback. If any external-model reviewer did not run on its intended model, print a `⚠️` line naming what's missing and the one-line fix (usually: set the key, or set Network to Full). Do NOT print "Ready to ship" with full confidence when fewer than the intended external models ran — instead write e.g. "Ready to ship (reviewed with 2/3 model perspectives — GPT-family missing, see ⚠️)".
 
 **P0 — Blockers** (must fix before shipping):
 - Build/lint/type errors
