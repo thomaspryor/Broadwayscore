@@ -461,6 +461,12 @@ function showRow(show, opts = {}) {
   const eligible = a && a.count >= minReviews(show.category);
   const score = eligible ? a.avg : null;
   const rank = score != null ? openMarketRank(show) : null;
+  // opts.showMarket: render the market pill (e.g. WEST END / OFF WEST END) inline.
+  // Off by default — a single-market section's heading already names the market, so
+  // the pill would be redundant. Enabled only where one section mixes markets (London
+  // Openings carries both west-end and off-west-end, and the gold cards must be
+  // distinguishable from the off-west-end ones).
+  const marketTag = opts.showMarket ? marketPill(show.category) : '';
   const formatPill = show.type ? pill(show.type.toUpperCase(), '#c084fc', 'rgba(168,85,247,0.15)') : '';
   const revivalPill = show.isRevival ? pill('REVIVAL', '#d4a574', 'rgba(212,165,116,0.15)') : '';
   const reopenPill = opts.isReopening ? pill('REOPENED', '#a78bfa', 'rgba(167,139,250,0.18)') : '';
@@ -491,7 +497,7 @@ function showRow(show, opts = {}) {
       <td valign="top" width="96" style="padding:14px 0 14px 16px;">${posterOrThumb(show, 80, 120)}</td>
       <td valign="top" style="padding:14px 8px 14px 12px;">
         <div style="font-size:17px;font-weight:700;color:#fff;line-height:1.25;">${showLink(show, show.title)}</div>
-        <div style="margin-top:6px;">${formatPill}${revivalPill}${reopenPill}</div>
+        <div style="margin-top:6px;">${marketTag}${formatPill}${revivalPill}${reopenPill}</div>
         <div style="font-size:13px;color:#9ca3af;margin-top:8px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${metaDate}</div>
         <div style="font-size:13px;color:#9ca3af;margin-top:2px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${metaVenue}</div>
       </td>
@@ -1052,14 +1058,11 @@ function outlierSection() {
   const best = findWeekOutlier();
   if (!best) return null;
   const r = best.review;
-  const outletMap = { 'Deadline': 'deadline.com', 'New York Theatre Guide': 'newyorktheatreguide.com', 'TheaterMania': 'theatermania.com', 'New York Stage Review': 'newyorkstagereview.com', "Talkin' Broadway": 'talkinbroadway.com', "New York Daily News": 'nydailynews.com', 'The Recs': 'therecs.com', '1 Minute Critic': '1minutecritic.com', 'Cititour': 'cititour.com', 'Time Out New York': 'timeout.com', 'Vulture': 'vulture.com', 'The New York Times': 'nytimes.com', 'Variety': 'variety.com', 'New York Post': 'nypost.com', 'The Hollywood Reporter': 'hollywoodreporter.com', 'TheWrap': 'thewrap.com', 'The Times (UK)': 'thetimes.com', 'Front Row Center': 'frontrowcenter.com', 'Theater Scene': 'theaterscene.net', 'The Guardian': 'theguardian.com', 'WhatsOnStage': 'whatsonstage.com', 'TheaterScene.net': 'theaterscene.net', 'The Stage': 'thestage.co.uk', 'Stage and Cinema': 'stageandcinema.com' };
-  const domain = outletMap[r.outlet] || (r.outlet || '').toLowerCase().replace(/[^a-z0-9]+/g, '') + '.com';
-  const logoUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
   const directionWord = 'above'; // always positive outlier now
   const cleanQuote = pickReviewQuote(r);
   const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" class="cardbg">
     <tr>
-      <td valign="middle" width="44" style="padding:14px 0 14px 14px;">${outletLink(r.outlet, `<img src="${logoUrl}" alt="${r.outlet}" width="32" height="32" style="display:block;border-radius:6px;background:#fff;">`)}</td>
+      <td valign="middle" width="52" style="padding:14px 0 14px 14px;">${thumb(best.show, 40)}</td>
       <td valign="middle" style="padding:14px 8px 14px 10px;">
         <div style="font-size:13px;color:#fff;font-weight:700;line-height:1.25;">${criticLink(r.criticName, r.criticName || 'Unknown critic')} <span style="color:#9ca3af;font-weight:400;">· ${outletLink(r.outlet, r.outlet)}</span></div>
         <div style="font-size:13px;color:#d1d5db;margin-top:2px;">on <strong style="color:#fff;">${showLink(best.show, best.show.title)}</strong> ${marketPill(best.show.category)}</div>
@@ -1109,7 +1112,7 @@ function announcedClosingsSection() {
     return `<tr>
       <td valign="middle" width="52" style="padding:12px 10px 12px 0;${!isLast?'border-bottom:1px solid rgba(255,255,255,0.05);':''}">${thumb(a.show, 40)}</td>
       <td valign="middle" style="padding:12px 0;${!isLast?'border-bottom:1px solid rgba(255,255,255,0.05);':''}">
-        <div style="font-size:14px;color:#fff;font-weight:700;line-height:1.25;">${showLink(a.show, a.show.title)} ${marketPill(a.show.category)}</div>
+        <div style="font-size:14px;color:#fff;font-weight:700;line-height:1.25;">${showLink(a.show, a.show.title)}</div>
         <div style="font-size:12px;color:#9ca3af;margin-top:3px;">Closes <span style="color:#fbbf24;font-weight:600;">${closingFmt}</span></div>
       </td>
       <td valign="middle" width="48" align="right" style="padding:12px 0;${!isLast?'border-bottom:1px solid rgba(255,255,255,0.05);':''}">
@@ -1215,7 +1218,7 @@ function closingSection() {
     return `<tr>
       <td valign="middle" width="52" style="padding:12px 10px 12px 0;${borderBottom}">${thumb(s, 40)}</td>
       <td valign="middle" style="padding:12px 0;${borderBottom}">
-        <div style="font-size:14px;color:#fff;font-weight:700;">${showLink(s, s.title)} ${marketPill(s.category)}</div>
+        <div style="font-size:14px;color:#fff;font-weight:700;">${showLink(s, s.title)}</div>
         <div style="font-size:12px;color:#9ca3af;margin-top:3px;">Closes <span style="color:#fbbf24;font-weight:600;">${dayOf(s.closingDate)} ${fmt(s.closingDate)}</span></div>
       </td>
       <td valign="middle" width="48" align="right" style="padding:12px 0;${borderBottom}">
@@ -1365,9 +1368,6 @@ function boxOfficeSection() {
   const topGross = [...entries].sort((a, b) => b.gross - a.gross).slice(0, 1)[0];
   const topCap = [...entries].sort((a, b) => b.capacity - a.capacity).slice(0, 1)[0];
   const topAtp = [...entries].sort((a, b) => b.atp - a.atp).slice(0, 1)[0];
-  // Market-wide WoW + YoY: sum gross across all open BW shows that have a comparable
-  // previous-week / previous-year value. A show missing prev data is excluded from
-  // BOTH numerator and denominator on that side so the ratio stays apples-to-apples.
   function fmtPct(pct) {
     if (pct == null || !isFinite(pct)) return null;
     // Suppress sub-1% noise — "↓ 0%" reads as broken even when accurate.
@@ -1375,20 +1375,49 @@ function boxOfficeSection() {
     const arrow = pct >= 0 ? '↑' : '↓';
     return `${arrow} ${Math.abs(pct).toFixed(0)}%`;
   }
-  function aggDelta(metricKey, prevKey) {
-    let cur = 0, prev = 0, n = 0;
-    for (const e of entries) {
-      if (typeof e[metricKey] !== 'number' || typeof e[prevKey] !== 'number' || e[prevKey] <= 0) continue;
-      cur += e[metricKey]; prev += e[prevKey]; n++;
-    }
-    if (n === 0 || prev === 0) return null;
-    return ((cur - prev) / prev) * 100;
+  // Market-wide WoW/YoY from grosses-history.json total-market sums — the headline
+  // figures BroadwayWorld / Playbill / broadwaynews publish (sum of ALL running shows
+  // this week vs the prior week and the same week last year). The earlier per-show
+  // like-for-like sum silently dropped shows that had closed, so it understated the
+  // market — it showed ↓2% the week the market was actually down ~6% after three
+  // closings (2026-07-05). Falls back to nulls (delta line omitted) if history is absent.
+  function toISO(md) {
+    // grosses.weekEnding is "M/D/YYYY"; grosses-history keys are "YYYY-MM-DD".
+    const m = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec((md || '').trim());
+    return m ? `${m[3]}-${m[1].padStart(2, '0')}-${m[2].padStart(2, '0')}` : null;
   }
-  const wowPct = aggDelta('gross', 'grossPrevWeek');
-  const yoyPct = aggDelta('gross', 'grossYoY');
-  const wowStr = fmtPct(wowPct);
-  const yoyStr = fmtPct(yoyPct);
+  function marketDeltas() {
+    let weeks;
+    try { weeks = JSON.parse(fs.readFileSync(path.join(repo, 'data/grosses-history.json'), 'utf8')).weeks; }
+    catch { return { wow: null, yoy: null, curKey: null }; }
+    const sum = (wk) => { const w = weeks[wk]; if (!w) return null; let t = 0; for (const s of Object.values(w)) if (typeof s.gross === 'number') t += s.gross; return t || null; };
+    const keys = Object.keys(weeks).sort();
+    if (!keys.length) return { wow: null, yoy: null, curKey: null };
+    const iso = toISO(grosses.weekEnding);
+    const curKey = (iso && weeks[iso]) ? iso : keys[keys.length - 1];
+    const ci = keys.indexOf(curKey);
+    const prevKey = ci > 0 ? keys[ci - 1] : null;
+    // Prior-year = the history week closest to 364 days (52 weeks) before curKey.
+    const targetMs = Date.parse(curKey + 'T00:00:00Z') - 364 * 864e5;
+    let yoyKey = null, best = Infinity;
+    for (const k of keys) { const d = Math.abs(Date.parse(k + 'T00:00:00Z') - targetMs); if (d < best) { best = d; yoyKey = k; } }
+    if (yoyKey && best > 10 * 864e5) yoyKey = null; // no comparable week within ~10 days
+    const cur = sum(curKey), prev = prevKey ? sum(prevKey) : null, yoy = yoyKey ? sum(yoyKey) : null;
+    const pct = (a, b) => (a != null && b != null && b > 0) ? ((a - b) / b) * 100 : null;
+    return { wow: pct(cur, prev), yoy: pct(cur, yoy), curKey };
+  }
+  const _md = marketDeltas();
+  const wowStr = fmtPct(_md.wow);
+  const yoyStr = fmtPct(_md.yoy);
   const marketDelta = [wowStr ? `${wowStr} WoW` : null, yoyStr ? `${yoyStr} YoY` : null].filter(Boolean).join(' · ');
+  // Broadway grosses weeks end Sunday; our data keys the following Monday. Display the
+  // Sunday so the date matches how BWW/Playbill label the week (6/28, not 6/29).
+  function sundayLabel(curKey, fallback) {
+    if (!curKey) return fallback;
+    const d = new Date(Date.parse(curKey + 'T00:00:00Z') - 864e5); // Monday key − 1 day = Sunday
+    return `${d.getUTCMonth() + 1}/${d.getUTCDate()}/${d.getUTCFullYear()}`;
+  }
+  const weekLabel = sundayLabel(_md.curKey, grosses.weekEnding);
   function row(label, entry, valueStr, sublabel, metric, isLast = false) {
     const vsm = wowChange(entry, metric);
     const borderStyle = isLast ? '' : 'border-bottom:1px solid rgba(255,255,255,0.05);';
@@ -1416,7 +1445,7 @@ function boxOfficeSection() {
     </td></tr>
     ${seeAllLink(`${SITE}/box-office`, 'See full box office')}
   </table>`;
-  const subhead = [`Week of ${grosses.weekEnding}`, marketDelta].filter(Boolean).join(' · ');
+  const subhead = [`Week of ${weekLabel}`, marketDelta].filter(Boolean).join(' · ');
   return sectionWrap(sectionHeading('Box Office', subhead, { href: 'https://broadwayscorecard.com/box-office' }), body);
 }
 
@@ -1661,7 +1690,7 @@ function londonSection() {
   const goldRows = withScore.filter(x => isGoldTier(x.agg.avg, x.s.category));
   const nonGoldRows = withScore.filter(x => !isGoldTier(x.agg.avg, x.s.category));
   // Gold-tier shows: full showRow (poster, venue, audience chip, score badge)
-  const goldHtml = goldRows.map(x => showRow(x.s, {})).join('');
+  const goldHtml = goldRows.map(x => showRow(x.s, { showMarket: true })).join('');
   // Non-gold shows: compact card (existing layout)
   const compactRows = nonGoldRows.map((x, i, arr) => {
     const score = x.agg.avg;
@@ -1907,7 +1936,10 @@ const sectionOrder = [
   _slot('announced-closings', announced),
   _slot('box-office', box),
   _slot('recoupment', commercial),
-  _slot('social-buzz', bz),
+  // Social Buzz removed 2026-07-05 pending fix: mention-volume metric is
+  // compressed into a ~170-210 band so the same show (Every Brilliant Thing)
+  // holds #1 for weeks and the section reads as unchanged. Re-enable once the
+  // social-pulse fetcher produces discriminating volumes. _slot('social-buzz', bz),
   _slot('outlier-of-the-week', outlier),
   _slot('london-openings', londonBottom), // Non-gold WE openings stay at bottom
   _slot('opera-openings', opera),

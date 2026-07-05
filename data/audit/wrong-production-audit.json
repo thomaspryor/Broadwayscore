@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-05T18:31:49.325Z",
+  "timestamp": "2026-07-05T18:37:59.831Z",
   "stats": {
-    "totalReviews": 39791,
+    "totalReviews": 39792,
     "alreadyFlagged": 17481,
     "dateGuardCatches": 44,
     "directorMismatch": 891,
-    "tvFilmSignals": 1094,
+    "tvFilmSignals": 1095,
     "londonSignals": 733,
     "offBroadwaySignals": 467,
     "yearMismatch": 85,
-    "noPublishDate": 3989
+    "noPublishDate": 3990
   },
   "findings": [
     {
@@ -18130,6 +18130,19 @@
       ]
     },
     {
+      "showId": "public-charge-off-broadway-2026",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "publishDate": null,
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=U6PAPY",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hbo max\""
+        }
+      ]
+    },
+    {
       "showId": "punch-2025",
       "file": "culturesauce--thom-geier.json",
       "score": 88,
@@ -25595,7 +25608,7 @@
     },
     {
       "showId": "to-kill-a-mockingbird-west-end-2026",
-      "file": "timeout--andrzej-lukowski.json",
+      "file": "timeout-london--andrzej-lukowski.json",
       "score": null,
       "publishDate": "2023-02-07",
       "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
