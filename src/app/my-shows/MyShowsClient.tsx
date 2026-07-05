@@ -125,8 +125,29 @@ export default function MyShowsClient() {
   }, []);
 
   const effectiveDeleteReview = isMockMode ? mockDeleteReview : deleteReview;
+
+  // Shared delete handler — deleteReview rethrows on failure (Phase 2), so a
+  // bare `await` in an onClick would be an unhandled rejection with no feedback.
+  const handleDeleteReviewWithToast = useCallback(async (reviewId: string) => {
+    try {
+      await effectiveDeleteReview(reviewId);
+      showToast?.('Rating deleted.', 'info');
+    } catch {
+      showToast?.('Delete failed — please try again.', 'error');
+    }
+  }, [effectiveDeleteReview, showToast]);
   const effectiveRemoveFromWatchlist = isMockMode ? mockRemoveFromWatchlist : removeFromWatchlist;
   const effectiveUpdatePlannedDate = isMockMode ? mockUpdatePlannedDate : updatePlannedDate;
+
+  // updatePlannedDate rethrows on failure (Phase 2) — surface it instead of
+  // letting the onChange promise reject unhandled with zero feedback.
+  const handlePlannedDateChange = useCallback(async (showId: string, date: string | null) => {
+    try {
+      await effectiveUpdatePlannedDate(showId, date);
+    } catch {
+      showToast?.('Failed to save date.', 'error');
+    }
+  }, [effectiveUpdatePlannedDate, showToast]);
   const effectiveAddToWatchlist = isMockMode ? mockAddToWatchlist : addToWatchlist;
 
   // Load show lookup data (abort if mock mode activates mid-flight)
@@ -611,7 +632,7 @@ export default function MyShowsClient() {
                         );
                       })}
                       {upcomingReviews.map(review => (
-                        <DiaryCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={async () => { await effectiveDeleteReview(review.id); showToast?.('Rating deleted.', 'info'); }} />
+                        <DiaryCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={() => handleDeleteReviewWithToast(review.id)} />
                       ))}
                     </div>
                   ) : (
@@ -635,7 +656,7 @@ export default function MyShowsClient() {
                         );
                       })}
                       {upcomingReviews.map(review => (
-                        <DiaryGridCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={async () => { await effectiveDeleteReview(review.id); showToast?.('Rating deleted.', 'info'); }} />
+                        <DiaryGridCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={() => handleDeleteReviewWithToast(review.id)} />
                       ))}
                     </div>
                   )}
@@ -658,7 +679,7 @@ export default function MyShowsClient() {
                       {diaryView === 'list' ? (
                         <div className="space-y-2">
                           {pastReviews.map(review => (
-                            <DiaryCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={async () => { await effectiveDeleteReview(review.id); showToast?.('Rating deleted.', 'info'); }} />
+                            <DiaryCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={() => handleDeleteReviewWithToast(review.id)} />
                           ))}
                           <AddShowCard context="diary" variant="list" onOpen={() => {
                             const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add a show to diary"], [aria-label="Rate a show"]');
@@ -668,7 +689,7 @@ export default function MyShowsClient() {
                       ) : (
                         <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                           {pastReviews.map(review => (
-                            <DiaryGridCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={async () => { await effectiveDeleteReview(review.id); showToast?.('Rating deleted.', 'info'); }} />
+                            <DiaryGridCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={() => handleDeleteReviewWithToast(review.id)} />
                           ))}
                           <AddShowCard context="diary" onOpen={() => {
                             const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add a show to diary"], [aria-label="Rate a show"]');
@@ -717,7 +738,7 @@ export default function MyShowsClient() {
                         {diaryView === 'list' ? (
                           <div className="space-y-2">
                             {reviewsByYear[year].map(review => (
-                              <DiaryCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={async () => { await effectiveDeleteReview(review.id); showToast?.('Rating deleted.', 'info'); }} />
+                              <DiaryCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={() => handleDeleteReviewWithToast(review.id)} />
                             ))}
                             {yearIdx === sortedYears.length - 1 && (
                               <AddShowCard context="diary" variant="list" onOpen={() => {
@@ -729,7 +750,7 @@ export default function MyShowsClient() {
                         ) : (
                           <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                             {reviewsByYear[year].map(review => (
-                              <DiaryGridCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={async () => { await effectiveDeleteReview(review.id); showToast?.('Rating deleted.', 'info'); }} />
+                              <DiaryGridCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={() => handleDeleteReviewWithToast(review.id)} />
                             ))}
                             {yearIdx === sortedYears.length - 1 && (
                               <AddShowCard context="diary" onOpen={() => {
@@ -770,7 +791,7 @@ export default function MyShowsClient() {
                     key={entry.id}
                     entry={entry}
                     show={showMap[entry.show_id]}
-                    onDateChange={(date) => effectiveUpdatePlannedDate(entry.show_id, date)}
+                    onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
                     onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
                   />
                 ))}
@@ -786,7 +807,7 @@ export default function MyShowsClient() {
                     key={entry.id}
                     entry={entry}
                     show={showMap[entry.show_id]}
-                    onDateChange={(date) => effectiveUpdatePlannedDate(entry.show_id, date)}
+                    onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
                     onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
                   />
                 ))}
@@ -811,7 +832,7 @@ export default function MyShowsClient() {
                           key={entry.id}
                           entry={entry}
                           show={showMap[entry.show_id]}
-                          onDateChange={(date) => effectiveUpdatePlannedDate(entry.show_id, date)}
+                          onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
                           onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
                         />
                       ))}
@@ -827,7 +848,7 @@ export default function MyShowsClient() {
                           key={entry.id}
                           entry={entry}
                           show={showMap[entry.show_id]}
-                          onDateChange={(date) => effectiveUpdatePlannedDate(entry.show_id, date)}
+                          onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
                           onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
                         />
                       ))}
@@ -851,7 +872,7 @@ export default function MyShowsClient() {
                           key={entry.id}
                           entry={entry}
                           show={showMap[entry.show_id]}
-                          onDateChange={(date) => effectiveUpdatePlannedDate(entry.show_id, date)}
+                          onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
                           onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
                         />
                       ))}
@@ -869,7 +890,7 @@ export default function MyShowsClient() {
                           key={entry.id}
                           entry={entry}
                           show={showMap[entry.show_id]}
-                          onDateChange={(date) => effectiveUpdatePlannedDate(entry.show_id, date)}
+                          onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
                           onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
                         />
                       ))}

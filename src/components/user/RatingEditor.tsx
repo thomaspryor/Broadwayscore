@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import Modal from '@/components/show-cards/Modal';
 import StarRating from './StarRating';
 
@@ -29,8 +29,10 @@ interface RatingEditorProps {
   /**
    * Persist the rating. MUST throw on failure — the editor stays open with the
    * typed text intact and shows an inline error + Retry. Resolve on success.
+   * Resolve with 'auth-gated' when the save was deferred to a sign-in flow:
+   * the editor stays open (draft visible behind the sign-in modal), no error.
    */
-  onSave: (data: RatingEditorSaveData) => Promise<void>;
+  onSave: (data: RatingEditorSaveData) => Promise<void | 'auth-gated'>;
   /** Called after a successful save so the parent can close the editor. */
   onSaved: () => void;
   onCancel: () => void;
@@ -47,6 +49,16 @@ function localToday(): string {
   const d = new Date();
   const offsetMs = d.getTimezoneOffset() * 60 * 1000;
   return new Date(d.getTime() - offsetMs).toISOString().split('T')[0];
+}
+
+/**
+ * Sanitize a rating that may come from an untrusted source (?stars= deep link):
+ * NaN/Infinity → 0 (unrated), clamp to [0, 5], snap to half-star steps. The DB
+ * has no CHECK constraint yet (Phase 4), so this is the write-path guard.
+ */
+function sanitizeRating(r: number): number {
+  if (!Number.isFinite(r)) return 0;
+  return Math.min(5, Math.max(0, Math.round(r * 2) / 2));
 }
 
 const HEADER_COPY: Record<NonNullable<RatingEditorProps['mode']>, string> = {
@@ -75,7 +87,7 @@ export default function RatingEditor({
   // Cap to today; for a closed show that has already closed, cap to the closing date.
   const maxDate = closingDate && closingDate < today ? closingDate : today;
 
-  const [rating, setRating] = useState<number>(initialRating);
+  const [rating, setRating] = useState<number>(() => sanitizeRating(initialRating));
   const [reviewText, setReviewText] = useState<string>(initialReviewText || '');
   const [dateSeen, setDateSeen] = useState<string>(() => {
     // Editing keeps the review's stored date (may be empty). New viewings default
@@ -88,24 +100,38 @@ export default function RatingEditor({
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const [isDesktop] = useState<boolean>(
+  const [isDesktop, setIsDesktop] = useState<boolean>(
     () => typeof window !== 'undefined' && window.matchMedia('(min-width: 640px)').matches,
   );
+  // Track viewport changes (rotate / window resize) so the presentation doesn't
+  // go stale mid-edit — the two branches differ structurally (scroll lock etc.).
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 640px)');
+    const onChange = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
 
   const charsRemaining = MAX_CHARS - reviewText.length;
   const isOverLimit = charsRemaining < 0;
 
   const handleSave = useCallback(async () => {
-    if (saving || isOverLimit || rating < 0.5) return;
+    if (saving || isOverLimit || rating < 0.5 || rating > 5) return;
     setSaving(true);
     setError(null);
     try {
-      await onSave({
-        rating,
+      const result = await onSave({
+        rating: sanitizeRating(rating),
         reviewText: reviewText.trim() || null,
         dateSeen: dateSeen || null,
         reviewId,
       });
+      if (result === 'auth-gated') {
+        // Save deferred to sign-in: keep the editor (and the typed draft)
+        // visible behind the sign-in modal so cancelling auth loses nothing.
+        setSaving(false);
+        return;
+      }
       onSaved();
     } catch (e) {
       // Failed save keeps the editor open with the typed text intact.
@@ -124,8 +150,12 @@ export default function RatingEditor({
 
       {/* Adjustable stars — the core fix (editor no longer opens locked at 5.0) */}
       <div className="flex items-center gap-3 mb-4">
-        <StarRating rating={rating} onRatingChange={setRating} size="lg" hideLabel />
-        <span className="text-lg font-bold text-amber-400 tabular-nums">{rating.toFixed(1)}</span>
+        <StarRating rating={rating > 0 ? rating : null} onRatingChange={setRating} size="lg" hideLabel />
+        {rating >= 0.5 ? (
+          <span className="text-lg font-bold text-amber-400 tabular-nums">{rating.toFixed(1)}</span>
+        ) : (
+          <span className="text-xs text-gray-500" data-testid="pick-stars-hint">Tap a star to rate</span>
+        )}
       </div>
 
       {/* Date Seen */}

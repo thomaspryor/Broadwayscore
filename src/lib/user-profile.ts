@@ -14,9 +14,11 @@ export async function fetchProfile(userId: string): Promise<UserProfile | null> 
 
 /** Update the display name. Throws on failure so callers can surface an error. */
 export async function updateDisplayName(userId: string, displayName: string): Promise<void> {
-  const { error } = await supabaseRestUpdate('profiles', `id=eq.${userId}`, {
+  const { data, error } = await supabaseRestUpdate<{ id: string }>('profiles', `id=eq.${userId}`, {
     display_name: displayName.trim(),
     updated_at: new Date().toISOString(),
   });
   if (error) throw new Error(error.message);
+  // PostgREST returns 200 + [] when the filter matched no row — that's a miss, not a save.
+  if (!data) throw new Error('Profile not found.');
 }

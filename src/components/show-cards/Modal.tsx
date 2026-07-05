@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useCallback, useRef } from 'react';
+import { createPortal } from 'react-dom';
 
 interface ModalProps {
   isOpen: boolean;
@@ -98,7 +99,16 @@ export default function Modal({
     ? 'rounded-t-2xl sm:rounded-2xl'
     : 'rounded-2xl';
 
-  return (
+  // Portal to <body>: position:fixed resolves against the nearest containing
+  // block, and any ancestor with a transform, filter, or CSS containment
+  // creates one. The design system's .card sets `contain: layout style`, so a
+  // Modal rendered inside a card (e.g. RatingEditor in the show hero) would be
+  // trapped inside the card — on mobile that pushed the Save button below the
+  // fold with body scroll locked (2026-07-05, caught on demo). The portal
+  // guarantees the overlay is always viewport-anchored.
+  if (typeof document === 'undefined') return null;
+
+  return createPortal(
     <div
       className={`fixed inset-0 ${alignClass}`}
       style={{ zIndex }}
@@ -117,7 +127,8 @@ export default function Modal({
       <div className={`relative w-full ${MAX_WIDTH_CLASS[maxWidth]} bg-surface-raised border border-white/10 ${panelRounding} shadow-2xl max-h-[85vh] overflow-y-auto`}>
         {children}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
 

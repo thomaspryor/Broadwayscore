@@ -23,6 +23,9 @@ function RatingEditorFixtureInner() {
   const fail = sp.get('fail') === '1';
   const closing = sp.get('closing');
   const starsParam = sp.get('stars');
+  // ?presentation=modal renders the Modal path INSIDE the .card wrapper —
+  // regression fixture for the contain:layout containment trap (2026-07-05).
+  const presentation = sp.get('presentation') === 'modal' ? 'modal' as const : 'inline' as const;
   const isEdit = state === 'edit';
 
   const [open, setOpen] = useState(true);
@@ -42,7 +45,7 @@ function RatingEditorFixtureInner() {
         <div className="card p-5" data-testid="editor-card">
           {open ? (
             <RatingEditor
-              presentation="inline"
+              presentation={presentation}
               showTitle="Hamilton"
               closingDate={closing}
               reviewId={isEdit ? 'r1' : undefined}

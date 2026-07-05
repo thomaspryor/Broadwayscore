@@ -112,6 +112,10 @@ export default function ShowPageAddToListButton({ showId }: ShowPageAddToListBut
         showToast?.(<>Added to <a href={`/my-shows?tab=lists&list=${newList.id}`} className="underline hover:text-white/90">{trimmed}</a></>, 'success');
         setCreating(false);
         setNewName('');
+      } else {
+        // createList swallows its errors and returns null (expired session,
+        // list cap) — without this branch the tap fails with zero feedback.
+        showToast?.('Failed to create list', 'error');
       }
     } catch {
       showToast?.('Failed to create list', 'error');
