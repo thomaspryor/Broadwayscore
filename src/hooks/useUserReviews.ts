@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { track } from '@vercel/analytics';
 import { getSupabaseClient } from '@/lib/supabase';
+import { supabaseRestDelete } from '@/lib/supabase-rest';
 import type { UserReview } from '@/types/user';
 
 export function useUserReviews(userId: string | null) {
@@ -63,95 +63,25 @@ export function useUserReviews(userId: string | null) {
     }
   }, [userId]);
 
-  const saveReview = useCallback(async (data: {
-    showId: string;
-    rating: number;
-    reviewText?: string | null;
-    dateSeen?: string | null;
-    reviewId?: string; // If editing existing
-  }): Promise<UserReview | null> => {
-    const client = getSupabaseClient();
-    if (!client || !userId) {
-      // eslint-disable-next-line no-console
-      console.error('[Reviews] Cannot save: missing client or userId', { hasClient: !!client, userId });
-      throw new Error('Not signed in. Please refresh and try again.');
-    }
-
-    if (data.rating < 0.5 || data.rating > 5) {
-      throw new Error('Rating must be between 0.5 and 5');
-    }
-
-    setError(null);
-    try {
-      if (data.reviewId) {
-        // Update existing
-        const { data: updated, error: err } = await client
-          .from('reviews')
-          .update({
-            rating: data.rating,
-            review_text: data.reviewText || null,
-            date_seen: data.dateSeen || null,
-            updated_at: new Date().toISOString(),
-          })
-          .eq('id', data.reviewId)
-          .eq('user_id', userId)
-          .select()
-          .single();
-
-        if (err) throw err;
-        const updatedReview = updated as UserReview;
-        track('rating_submitted', { show_id: data.showId, rating: data.rating, has_review_text: !!data.reviewText, is_edit: true });
-        setReviews(prev => prev.map(r => r.id === data.reviewId ? updatedReview : r));
-        return updatedReview;
-      } else {
-        // Insert new viewing
-        const { data: inserted, error: err } = await client
-          .from('reviews')
-          .insert({
-            user_id: userId,
-            show_id: data.showId,
-            rating: data.rating,
-            review_text: data.reviewText || null,
-            date_seen: data.dateSeen || null,
-          })
-          .select()
-          .single();
-
-        if (err) throw err;
-        const insertedReview = inserted as UserReview;
-        track('rating_submitted', { show_id: data.showId, rating: data.rating, has_review_text: !!data.reviewText, is_edit: false });
-        setReviews(prev => [insertedReview, ...prev]);
-        return insertedReview;
-      }
-    } catch (e) {
-      const msg = e instanceof Error ? e.message : 'Failed to save review';
-      // eslint-disable-next-line no-console
-      console.error('[Reviews] Save failed:', msg, e);
-      setError(msg);
-      throw new Error(msg);
-    }
-  }, [userId]);
+  // NOTE: the actual rating write lives in ShowHeroRedesign.handleSaveReview
+  // (direct supabase-rest with explicit auth headers). This hook only reads and
+  // deletes; a former saveReview() here was dead code — its rating_submitted
+  // analytics never fired. The live save path now emits that event.
 
   const deleteReview = useCallback(async (reviewId: string): Promise<void> => {
-    const client = getSupabaseClient();
-    if (!client || !userId) return;
+    if (!userId) return;
 
     setError(null);
     try {
-      const { error: err } = await client
-        .from('reviews')
-        .delete()
-        .eq('id', reviewId)
-        .eq('user_id', userId);
-
-      if (err) throw err;
+      const { error: err } = await supabaseRestDelete('reviews', `id=eq.${reviewId}&user_id=eq.${userId}`);
+      if (err) throw new Error(err.message);
 
       // Remove from local state so UI updates immediately
       setReviews(prev => prev.filter(r => r.id !== reviewId));
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Failed to delete review';
       setError(msg);
-      throw new Error(msg);
+      throw e instanceof Error ? e : new Error(msg);
     }
   }, [userId]);
 
@@ -161,7 +91,6 @@ export function useUserReviews(userId: string | null) {
     error,
     getReviewsForShow,
     getAllReviews,
-    saveReview,
     deleteReview,
   };
 }

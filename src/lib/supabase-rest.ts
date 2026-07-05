@@ -75,22 +75,24 @@ export async function supabaseRestInsert<T = Record<string, unknown>>(
   return { data: Array.isArray(data) ? data[0] : data, error: null };
 }
 
-/** UPSERT a row via PostgREST. */
+/** UPSERT a row via PostgREST. Pass `ignoreDuplicates` to keep the existing row
+ *  on conflict (Prefer resolution=ignore-duplicates) instead of merging. */
 export async function supabaseRestUpsert(
   table: string,
   row: Record<string, unknown>,
   onConflict: string,
+  opts?: { ignoreDuplicates?: boolean },
 ): Promise<RestResult> {
   const accessToken = await getAccessToken();
   if (!accessToken) {
     return { data: null, error: { message: 'No valid session. Please sign in again.' } };
   }
 
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
+  const resolution = opts?.ignoreDuplicates ? 'ignore-duplicates' : 'merge-duplicates';
+  const conflictParam = onConflict ? `?on_conflict=${encodeURIComponent(onConflict)}` : '';
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}${conflictParam}`, {
     method: 'POST',
-    headers: {
-      ...headers(accessToken, 'return=representation,resolution=merge-duplicates'),
-    },
+    headers: headers(accessToken, `return=representation,resolution=${resolution}`),
     body: JSON.stringify(row),
   });
 
@@ -127,6 +129,56 @@ export async function supabaseRestUpdate<T = Record<string, unknown>>(
 
   const data = await res.json();
   return { data: Array.isArray(data) ? data[0] : data, error: null };
+}
+
+/** DELETE rows via PostgREST with filters in query string. */
+export async function supabaseRestDelete(
+  table: string,
+  filters: string,
+): Promise<RestResult> {
+  const accessToken = await getAccessToken();
+  if (!accessToken) {
+    return { data: null, error: { message: 'No valid session. Please sign in again.' } };
+  }
+
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${filters}`, {
+    method: 'DELETE',
+    headers: headers(accessToken, 'return=representation'),
+  });
+
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    return { data: null, error: { message: body.message || `HTTP ${res.status}`, code: body.code } };
+  }
+
+  // DELETE with return=representation yields the deleted rows; some configs 204.
+  const data = res.status === 204 ? null : await res.json().catch(() => null);
+  return { data: Array.isArray(data) ? data[0] : data, error: null };
+}
+
+/** Call a Postgres function (RPC) via PostgREST. */
+export async function supabaseRestRpc<T = unknown>(
+  fn: string,
+  args: Record<string, unknown> = {},
+): Promise<RestResult<T>> {
+  const accessToken = await getAccessToken();
+  if (!accessToken) {
+    return { data: null, error: { message: 'No valid session. Please sign in again.' } };
+  }
+
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`, {
+    method: 'POST',
+    headers: headers(accessToken),
+    body: JSON.stringify(args),
+  });
+
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    return { data: null, error: { message: body.message || `HTTP ${res.status}`, code: body.code } };
+  }
+
+  const data = res.status === 204 ? null : await res.json().catch(() => null);
+  return { data: data as T, error: null };
 }
 
 /** SELECT rows via PostgREST with query string params. */
