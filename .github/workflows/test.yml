@@ -11,6 +11,14 @@ on:
       - 'scripts/validate-market-expansion.js'
       - 'scripts/validate-mobile-shows.js'
       - 'scripts/audit-review-contamination.js'
+      # Finance tracker: pure matchers + P&L rollup + ingestion. Colocated
+      # *.test.mjs run in the lib-test glob; path-listed so a solo edit triggers CI.
+      - 'scripts/lib/finance-matchers.js'
+      - 'scripts/lib/finance-matchers.test.mjs'
+      - 'scripts/lib/finance-stats.js'
+      - 'scripts/lib/finance-stats.test.mjs'
+      - 'scripts/lib/finance-vendors.json'
+      - 'scripts/ingest-finances.js'
       # Contamination --gate catastrophe-floor decision (colocated test runs in the
       # lib-test glob; path-listed so an edit triggers CI per feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/contamination-gate.js'
