@@ -57,6 +57,7 @@ function looksLikeConsentWall(head) {
  * @property {string}  [originalScore]
  * @property {boolean} [venueMatch]    body names the filed-under venue (overrides a stale wrongShow)
  * @property {boolean} [includable]    isIncludableForRebuild(file) — already scoring
+ * @property {number}  [humanReviewScore] set when a human vouched — pins as canonical
  * @property {string}  [criticName]
  * @property {string}  [duplicateOf]
  */
@@ -81,6 +82,9 @@ function decideClusterAction(files, opts = {}) {
 
   const isCandidate = (f) => {
     if (!f) return false;
+    // A human-vouched review is ALWAYS a candidate (and pinned by rank below) —
+    // never let a longer junk sibling out-rank and bury real human work.
+    if (f.humanReviewScore != null) return true;
     if (f.wrongProduction === true) return false;
     // A stale wrongShow flag is overridable ONLY when the body names the venue.
     if (f.wrongShow === true && f.venueMatch !== true) return false;
@@ -110,9 +114,10 @@ function decideClusterAction(files, opts = {}) {
     if (pref) return { action: 'recover', reason: 'preferred-canonical', canonical: pref.file };
   }
 
-  // Rank: real complete body > longest body > already-includable > has a star >
-  // has a concrete (non-Unknown) byline. Final tiebreak on filename = deterministic.
+  // Rank: human-vouched > real complete body > longest body > already-includable >
+  // has a star > concrete (non-Unknown) byline. Final tiebreak on filename = deterministic.
   const rankVec = (f) => [
+    f.humanReviewScore != null ? 1 : 0,
     f.contentTier === 'complete' ? 1 : 0,
     f.fullTextLen | 0,
     f.includable === true ? 1 : 0,

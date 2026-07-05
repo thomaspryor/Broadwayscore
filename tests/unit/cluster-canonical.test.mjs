@@ -118,6 +118,18 @@ test('hasStar parses X/5 forms', () => {
   assert.equal(hasStar(undefined), false);
 });
 
+test('a human-vouched review is pinned as canonical even against a longer junk sibling', () => {
+  const files = [
+    { file: 'nyt--junk.json', contentTier: 'complete', fullTextLen: 9000,
+      fullTextHead: 'A long but wrong review of the production', wrongProduction: false, wrongShow: false },
+    { file: 'nyt--real.json', contentTier: 'truncated', fullTextLen: 300, humanReviewScore: 85,
+      fullTextHead: 'Short human-scored review', wrongProduction: false, wrongShow: false, criticName: 'Ben Brantley' },
+  ];
+  const r = decideClusterAction(files, { hardReject: false });
+  assert.equal(r.action, 'recover');
+  assert.equal(r.canonical, 'nyt--real.json'); // human score outranks length
+});
+
 test('empty input → skip, never throws', () => {
   assert.deepEqual(decideClusterAction([], {}), { action: 'skip', reason: 'no-recoverable-review', canonical: null });
   assert.deepEqual(decideClusterAction(null, {}), { action: 'skip', reason: 'no-recoverable-review', canonical: null });

@@ -34,7 +34,6 @@ const { findUrlClusters } = require('./lib/review-url-clusters');
 const { decideClusterAction } = require('./lib/cluster-canonical');
 const { contentMatchesFiledUnderVenue } = require('./lib/cross-production-guards');
 const { verifyAggregatorUrl } = require('./lib/show-match-verifier');
-const { buildManualReviewFields } = require('./lib/manual-review-fields');
 const { GENERIC_VENUE_SLUGS } = require('./lib/venue-classification');
 let isIncludableForRebuild = () => false;
 try { ({ isIncludableForRebuild } = require('./lib/review-guards')); } catch { /* optional */ }
@@ -159,6 +158,7 @@ function signalsFor(cluster, dir, parsed, show) {
       originalScore: r.originalScore,
       venueMatch: vSlug ? contentMatchesFiledUnderVenue({ fullText: body }, vSlug) : false,
       includable,
+      humanReviewScore: r.humanReviewScore,
       criticName: r.criticName || r.critic,
       duplicateOf: r.duplicateOf,
     };
@@ -180,6 +180,9 @@ function decideFor(clusterCtx) {
   }
   const key = `${showId}|${cluster.url}`;
   const preferredCanonical = PREFERRED_CANONICAL[key] || null;
+  // A show missing from shows.json gives us NO venue/URL validation (venueMatch
+  // and hardReject both default false) — never recover blind; only collapse.
+  if (!show) return { decision: { action: 'skip', reason: 'show-not-in-catalog', canonical: null }, hardReject: false };
   const decision = decideClusterAction(files, { hardReject, preferredCanonical });
   return { decision, hardReject };
 }
@@ -189,31 +192,56 @@ function applyRecover(clusterCtx, decision) {
   const { show: showId, dir, parsed, cluster } = clusterCtx;
   const canonical = decision.canonical;
   const canonData = parsed[canonical];
-  const body = canonData.fullText || '';
   const key = `${showId}|${cluster.url}`;
+  const show = shows.get(showId);
+  const vSlug = show ? venueSlug(show.venue) : null;
+  const venueMatch = !!(vSlug && contentMatchesFiledUnderVenue({ fullText: canonData.fullText || '' }, vSlug));
 
-  // Do NOT pass originalScore into buildManualReviewFields — it would recompute
-  // originalScoreNormalized from the (null) humanScore and wipe the existing
-  // normalized value. The spread preserves the canonical's own score fields.
-  const fields = buildManualReviewFields({
-    fullText: body || null,
-    publishDate: canonData.publishDate || null,
-    humanScore: null,
-    operatorTrust: true,
-  });
+  // NARROW recovery — assert ONLY what un-suppresses this specific byline
+  // explosion. Deliberately NOT buildManualReviewFields({operatorTrust:true}):
+  // that stamps allowCrossMarket / allowTourSignal / allowFilmSignal /
+  // wrongProductionOverride — the blanket immunity manual-review-fields.js:57-62
+  // warns automated callers must never grant (it re-admitted prior-production /
+  // cross-market contamination, 2026-06-21, 335 reviews). A machine-picked
+  // canonical must stay subject to every production guard except the ones this
+  // review demonstrably clears (a venue-body-matched stale wrongShow).
   const merged = {
     ...canonData,
-    ...fields,
     duplicateOf: null,
     duplicateReason: null,
     duplicateClearReason: `byline-explosion-canonical (${STAMP})`,
   };
+  const prot = new Set(canonData.protectedFields || []);
+  // Clear a stale wrongShow ONLY when the body named the venue (decideClusterAction
+  // already required venueMatch to keep a wrongShow file as a candidate).
+  if (canonData.wrongShow === true) {
+    merged.wrongShow = false;
+    merged.wrongShowManualClear = true;
+    prot.add('wrongShow'); prot.add('wrongShowManualClear');
+  }
+  // Rescue scoreability of a real body the classifier marked invalid. The
+  // invalid-tier guard (review-guards.js:2433) only defers to a wrongProduction
+  // clear, so a venue-body-matched review needs wrongProductionManualClear to
+  // pass — this asserts ONLY "not wrong production" (which the venue-body match
+  // proves), NOT the tour/film/cross-market immunity operatorTrust would grant.
+  // Require positive venue evidence so a machine pick can't self-exempt blindly.
+  if (canonData.contentTier === 'invalid') {
+    merged.manualContentTier = 'complete';
+    prot.add('manualContentTier');
+    if (venueMatch) {
+      merged.wrongProductionManualClear = true;
+      prot.add('wrongProductionManualClear');
+    }
+  }
+  merged.protectedFields = [...prot];
   if (NEUTRALIZE_CRITIC[key]) merged.criticName = NEUTRALIZE_CRITIC[key];
   writePlain(path.join(dir, canonical), merged);
 
   for (const f of cluster.files) {
     if (f === canonical) continue;
     const d = parsed[f];
+    // Never bury a human-vouched review under a machine canonical.
+    if (d.humanReviewScore != null) continue;
     d.duplicateOf = canonical;
     d.duplicateReason = 'byline-explosion-collapse';
     d.duplicateClearReason = null;
@@ -229,7 +257,10 @@ function applySkip(clusterCtx) {
   // else the first file. Its OWN duplicateOf must be cleared — these clusters
   // often contain a circular duplicateOf pair (arifa<->chris), which would leave
   // primaryCount=0 and the cluster "unresolved" (2026-07-05).
-  const tombstone = cluster.files.find((f) => (parsed[f] || {}).wrongProduction === true)
+  // Never tombstone under, or collapse away, a human-vouched review.
+  const tombstone = cluster.files.find((f) => (parsed[f] || {}).wrongProduction === true
+      && (parsed[f] || {}).humanReviewScore == null)
+    || cluster.files.find((f) => (parsed[f] || {}).humanReviewScore == null)
     || cluster.files[0];
   const t = parsed[tombstone];
   if (t.duplicateOf) {
@@ -241,6 +272,7 @@ function applySkip(clusterCtx) {
   for (const f of cluster.files) {
     if (f === tombstone) continue;
     const d = parsed[f];
+    if (d.humanReviewScore != null) continue; // preserve human work as its own primary
     d.duplicateOf = tombstone;
     d.duplicateReason = 'byline-explosion-collapse';
     d.duplicateClearReason = null;
@@ -254,13 +286,20 @@ const groups = gatherClusters();
 
 if (doFix) {
   const plans = [];
+  let skippedResolved = 0;
   for (const g of groups) {
     for (const cluster of g.clusters) {
+      // Idempotency + scoping: a cluster already collapsed to a single primary is
+      // resolved — do not re-tombstone/re-recover it (a rerun would otherwise
+      // churn tombstone choice on already-fixed data). Force reprocessing with
+      // --force if a canonical genuinely needs re-selecting.
+      if (cluster.primaryCount === 1 && !args.includes('--force')) { skippedResolved++; continue; }
       const ctx = { show: g.show, dir: g.dir, parsed: g.parsed, cluster };
       const { decision, hardReject } = decideFor(ctx);
       plans.push({ ctx, decision, hardReject });
     }
   }
+  if (skippedResolved) console.log(`[audit-review-url-clusters] ${skippedResolved} already-resolved cluster(s) skipped (use --force to reprocess)\n`);
   const recovers = plans.filter((p) => p.decision.action === 'recover');
   if (recovers.length > maxRecover) {
     console.error(`::error:: refusing --fix: ${recovers.length} recover actions exceed --max-recover=${maxRecover}. ` +
