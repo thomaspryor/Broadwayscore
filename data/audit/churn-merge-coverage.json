@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-05T19:55:19.939Z",
+    "generatedAt": "2026-07-05T20:07:47.252Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -20,11 +20,11 @@
     },
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 83
+      "churn": 82
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 78
+      "churn": 77
     },
     {
       "path": "data/audit/validation-baseline.json",
@@ -46,7 +46,7 @@
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 76
+      "churn": 77
     },
     {
       "path": "data/commercial-rss-state.json",
@@ -54,11 +54,11 @@
     },
     {
       "path": "data/llm-scoring-garbage-skips.json",
-      "churn": 51
+      "churn": 52
     },
     {
       "path": "public/data/shows/birthright-off-broadway-2026.json",
-      "churn": 47
+      "churn": 48
     },
     {
       "path": "data/show-score-urls.json",
@@ -66,43 +66,43 @@
     },
     {
       "path": "public/data/shows/glengarry-glen-ross-west-end-2026.json",
-      "churn": 32
+      "churn": 33
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 1013,
+      "churn": 1018,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 992,
+      "churn": 997,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 490,
+      "churn": 494,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 178,
+      "churn": 180,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 178,
+      "churn": 180,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 157,
+      "churn": 158,
       "mergeAttr": "union"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 102,
+      "churn": 104,
       "mergeAttr": "ours"
     },
     {
@@ -132,7 +132,7 @@
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 77,
+      "churn": 78,
       "mergeAttr": "ours"
     },
     {
@@ -176,17 +176,17 @@
       "mergeAttr": "ours"
     },
     {
+      "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
+      "churn": 47,
+      "mergeAttr": "ours"
+    },
+    {
       "path": "data/audit/poller-backoff/camping-off-broadway-2026.json",
       "churn": 47,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/drift-state.json",
-      "churn": 46,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
       "churn": 46,
       "mergeAttr": "ours"
     },
