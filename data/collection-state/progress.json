@@ -66,6 +66,11 @@
     "a-walk-on-the-moon-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
     "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
     "birthright-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "birthright-off-broadway-2026/pages-on-stages--unknown.json",
+    "a-walk-on-the-moon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "a-walk-on-the-moon-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+    "birthright-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
     "birthright-off-broadway-2026/pages-on-stages--unknown.json"
   ],
   "skipped": [],
@@ -80,6 +85,7 @@
     ],
     "amp": [],
     "browserbase": [
+      "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
       "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json"
     ],
     "directCookies": [],
@@ -98,7 +104,7 @@
     "archive": []
   },
   "startTime": "2026-07-04T20:56:42.639Z",
-  "lastProcessed": "camping-off-broadway-2026/talkinbroadway--unknown.json",
+  "lastProcessed": "birthright-off-broadway-2026/pages-on-stages--unknown.json",
   "log": [
     {
       "t": "2026-07-04T23:49:09.911Z",
@@ -108,6 +114,17 @@
     },
     {
       "t": "2026-07-04T23:49:10.530Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-05T00:36:12.904Z",
+      "event": "bb-session",
+      "session": "8f97ea14",
+      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
+    },
+    {
+      "t": "2026-07-05T00:36:13.226Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
