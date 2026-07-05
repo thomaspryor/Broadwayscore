@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-05T20:22:25.067Z",
+    "generatedAt": "2026-07-05T20:38:07.437Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -16,7 +16,7 @@
   "flagged": [
     {
       "path": "data/audit/processed-feedback.json",
-      "churn": 86
+      "churn": 87
     },
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
@@ -50,11 +50,11 @@
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 76
+      "churn": 75
     },
     {
       "path": "data/commercial-rss-state.json",
-      "churn": 53
+      "churn": 52
     },
     {
       "path": "data/llm-scoring-garbage-skips.json",
@@ -70,33 +70,33 @@
     },
     {
       "path": "public/data/shows/glengarry-glen-ross-west-end-2026.json",
-      "churn": 33
+      "churn": 32
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 1024,
+      "churn": 1019,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 1003,
+      "churn": 998,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 495,
+      "churn": 496,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 182,
+      "churn": 181,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 182,
+      "churn": 181,
       "mergeAttr": "ours"
     },
     {
@@ -106,7 +106,7 @@
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 103,
+      "churn": 102,
       "mergeAttr": "ours"
     },
     {
@@ -141,51 +141,51 @@
     },
     {
       "path": "data/audit/show-review-gap.json",
-      "churn": 58,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/unknown-aggregator-outlets.json",
-      "churn": 58,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/gap-audit-checkpoint.json",
       "churn": 57,
       "mergeAttr": "ours"
     },
     {
+      "path": "data/audit/unknown-aggregator-outlets.json",
+      "churn": 57,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/gap-audit-checkpoint.json",
+      "churn": 56,
+      "mergeAttr": "ours"
+    },
+    {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 49,
+      "churn": 50,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/glengarry-glen-ross-west-end-2026.json",
-      "churn": 48,
+      "churn": 49,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/pride-west-end-2026.json",
-      "churn": 48,
+      "churn": 49,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/relics-west-end-2026.json",
-      "churn": 48,
+      "churn": 49,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/sting-west-end-2026.json",
+      "churn": 49,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/cyrano-de-bergerac-west-end-2026.json",
       "churn": 48,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/camping-off-broadway-2026.json",
-      "churn": 47,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/cyrano-de-bergerac-west-end-2026.json",
       "churn": 47,
       "mergeAttr": "ours"
     },
@@ -216,7 +216,7 @@
     },
     {
       "path": "data/audit/gather-collisions.json",
-      "churn": 34,
+      "churn": 33,
       "mergeAttr": "ours"
     },
     {
@@ -241,7 +241,7 @@
     },
     {
       "path": "data/audit/url-mismatch-suspects.json",
-      "churn": 32,
+      "churn": 31,
       "mergeAttr": "ours"
     }
   ]
