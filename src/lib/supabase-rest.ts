@@ -141,9 +141,11 @@ export async function supabaseRestDelete(
     return { data: null, error: { message: 'No valid session. Please sign in again.' } };
   }
 
+  // return=minimal: no caller reads the deleted rows, and representation would
+  // force PostgREST to serialize every cascaded row back over the wire.
   const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${filters}`, {
     method: 'DELETE',
-    headers: headers(accessToken, 'return=representation'),
+    headers: headers(accessToken, 'return=minimal'),
   });
 
   if (!res.ok) {
@@ -151,9 +153,7 @@ export async function supabaseRestDelete(
     return { data: null, error: { message: body.message || `HTTP ${res.status}`, code: body.code } };
   }
 
-  // DELETE with return=representation yields the deleted rows; some configs 204.
-  const data = res.status === 204 ? null : await res.json().catch(() => null);
-  return { data: Array.isArray(data) ? data[0] : data, error: null };
+  return { data: null, error: null };
 }
 
 /** Call a Postgres function (RPC) via PostgREST. */

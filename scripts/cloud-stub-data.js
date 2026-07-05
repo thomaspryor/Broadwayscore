@@ -83,7 +83,9 @@ const stubs = {
   'data/awards.json': { _meta: { lastUpdated: NOW }, awards: [], shows: {}, seasons: {} },
   'data/tony-nominations.json': { _meta: { lastUpdated: NOW }, seasons: {}, nominations: [], shows: {} },
   'data/commercial.json': { _meta: { lastUpdated: NOW }, shows: {}, commercial: [] },
-  'data/grosses.json': { _meta: { lastUpdated: NOW }, shows: {}, grosses: {} },
+  // Shape must match GrossesFile in src/lib/data-grosses.ts (lastUpdated/weekEnding/shows),
+  // else `grossesData as GrossesFile` fails tsc with TS2352.
+  'data/grosses.json': { lastUpdated: NOW, weekEnding: '2026-01-01', shows: {} },
   'data/grosses-history.json': { _meta: { lastUpdated: NOW }, shows: {}, weeks: [] },
   'data/critic-consensus.json': { _meta: { lastUpdated: NOW }, shows: {}, consensus: {} },
   'data/audience-buzz.json': { _meta: { lastUpdated: NOW }, shows: {} },
