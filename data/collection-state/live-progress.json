@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-07-05T00:42:28.268Z",
-  "processed": 9,
-  "failed": 66,
-  "successRate": "12.0%",
+  "updatedAt": "2026-07-05T00:44:26.004Z",
+  "processed": 13,
+  "failed": 102,
+  "successRate": "11.3%",
   "tierBreakdown": {
-    "playwright": 6,
+    "playwright": 8,
     "amp": 0,
     "browserbase": 3,
     "directCookies": 0,
     "scrapingbee": 0,
-    "brightdata": 3,
-    "archiveToday": 4,
+    "brightdata": 4,
+    "archiveToday": 5,
     "archive": 0
   },
   "browserbaseSessions": 1,
@@ -27,26 +27,15 @@
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-07-05T00:36:12.904Z",
+      "t": "2026-07-05T00:40:43.276Z",
       "event": "bb-session",
-      "session": "8f97ea14",
-      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
+      "session": "6ba03f46",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
     },
     {
-      "t": "2026-07-05T00:36:13.226Z",
+      "t": "2026-07-05T00:40:43.641Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-07-05T00:41:48.638Z",
-      "event": "bb-session",
-      "session": "8dfbb045",
-      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
-    },
-    {
-      "t": "2026-07-05T00:41:49.073Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "variety.com"
     }
   ]
 }
