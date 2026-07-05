@@ -51,6 +51,16 @@ jobs:
         with:
           configure-git: 'true'
 
+      # classify-reviews.js and select-best-reviews.js read data/shows.json
+      # (private core data) to match transcripts to productions. Without this
+      # checkout they silently no-op'd for months: classify crashed on ENOENT
+      # into a swallowed catch, exit 0, and no CI run ever published a review
+      # (the 488 on the site all came from manual local runs, 2026-07-05).
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
       # yt-dlp is not on ubuntu-latest by default.
       # --break-system-packages required on Ubuntu 24.04+ (PEP 668).
       - name: Install yt-dlp
