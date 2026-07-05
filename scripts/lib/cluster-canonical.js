@@ -84,9 +84,17 @@ function decideClusterAction(files, opts = {}) {
     if (f.wrongProduction === true) return false;
     // A stale wrongShow flag is overridable ONLY when the body names the venue.
     if (f.wrongShow === true && f.venueMatch !== true) return false;
-    const hasBody = (f.fullTextLen | 0) >= 1500 && !looksLikeConsentWall(f.fullTextHead);
-    const hasStarScore = hasStar(f.aggregatorStars) || hasStar(f.originalScore);
-    return hasBody || f.includable === true || hasStarScore;
+    // MUST carry a genuine review body. A star / `includable` flag ALONE is not
+    // enough: an unflagged wrong-production tour stub (moulin-rouge Chicago
+    // `herbert-paine` — 4/5 aggregatorStars, includable via circular-dup
+    // recovery, empty body, at a Nederlander-tour URL the show-match gate does
+    // not hard-reject) would otherwise be "recovered" and score a US tour review
+    // on the West End production. A body is the only per-file signal that
+    // positively ties the review to THIS show (2026-07-05 dry-run). Empty
+    // extractions of the RIGHT URL (a real review that failed to scrape) return
+    // no candidate here too — the driver reports them for a targeted re-gather,
+    // which is correct: we must not fabricate a score from a star with no prose.
+    return (f.fullTextLen | 0) >= 1500 && !looksLikeConsentWall(f.fullTextHead);
   };
 
   const candidates = list.filter(isCandidate);

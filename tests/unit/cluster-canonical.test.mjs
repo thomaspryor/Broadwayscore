@@ -101,10 +101,14 @@ test('consent-wall guard does not false-reject a real review mentioning cookies'
   assert.equal(looksLikeConsentWall('This production of the play is a review triumph; cookies are served in the interval.'), false);
 });
 
-test('star-stub with a rating is recoverable even with no body', () => {
-  const files = [{ file: 'times-uk--x.json', contentTier: 'stub', fullTextLen: 0, aggregatorStars: '4/5 stars' }];
-  const r = decideClusterAction(files, {});
-  assert.equal(r.action, 'recover');
+test('a body-less star/includable stub is NOT recoverable (moulin Chicago-tour herbert-paine guard)', () => {
+  // 4/5 star + includable but empty body at a wrong-production tour URL the
+  // show-match gate does not hard-reject → must SKIP, never score the tour.
+  const files = [{ file: 'broadwayworld--herbert-paine.json', contentTier: 'excerpt', fullTextLen: 0,
+    aggregatorStars: '4/5', includable: true, wrongProduction: false }];
+  const r = decideClusterAction(files, { hardReject: false });
+  assert.equal(r.action, 'skip');
+  assert.equal(r.reason, 'no-recoverable-review');
 });
 
 test('hasStar parses X/5 forms', () => {
