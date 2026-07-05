@@ -22,26 +22,50 @@ function canonicalReviewUrl(url) {
   return url.split('#')[0].split('?')[0].replace(/\/+$/, '').toLowerCase();
 }
 
+/** Outlet key for grouping — a URL is a review's identity WITHIN an outlet.
+ * Prefer the `<outletId>--<critic>.json` filename prefix (the CANONICAL outlet id
+ * used at write time) over the free-text `r.outlet` DISPLAY field, then normalize
+ * to lowercase-alphanumeric. The display field is inconsistent — the same outlet
+ * appears as "WhatsOnStage" and "What's On Stage", which would split one byline
+ * cluster into two groups and leave a member uncollapsed (the theo-bosanquet leak,
+ * 2026-07-05). Grouping by outlet stops false clusters on aggregator roundup URLs
+ * legitimately shared across outlets (Telegraph/FT/Guardian star-stubs on one
+ * WET/Show-Score roundup) — see feedback_aggregator_roundup_urls_shared_across_outlets. */
+function outletOf(r) {
+  const f = r && r.file;
+  let raw = (typeof f === 'string' && f.includes('--')) ? f.split('--')[0] : ((r && r.outlet) || '');
+  return String(raw).toLowerCase().replace(/[^a-z0-9]/g, '');
+}
+
 /**
- * @param {Array<{file?:string, url?:string, criticName?:string, contentTier?:string}>} reviews
- * @param {number} threshold  minimum files sharing one URL to flag (default 5)
- * @returns {Array<{url:string, count:number, bylines:string[], invalidCount:number, files:string[]}>}
+ * @param {Array<{file?:string, url?:string, outlet?:string, criticName?:string, contentTier?:string, duplicateOf?:string}>} reviews
+ * @param {number} threshold  minimum files sharing one (outlet,url) to flag (default 5)
+ * @returns {Array<{url:string, outlet:string, count:number, primaryCount:number, bylines:string[], invalidCount:number, files:string[]}>}
+ *
+ * DETECTOR CONTRACT: flags on the RAW file count (a cluster is real regardless of
+ * how it was later collapsed). `primaryCount` (files with no `duplicateOf`) is
+ * reported alongside so the audit CALLER can distinguish a collapsed/resolved
+ * cluster (exactly 1 primary) from a harmful one — remediation logic stays out of
+ * the detector (design review, 2026-07-05).
  */
 function findUrlClusters(reviews, threshold = 5) {
-  const byUrl = new Map();
+  const byKey = new Map();
   for (const r of reviews || []) {
     const u = canonicalReviewUrl(r && r.url);
     if (!u) continue;
-    if (!byUrl.has(u)) byUrl.set(u, []);
-    byUrl.get(u).push(r);
+    const key = `${outletOf(r)}\n${u}`;
+    if (!byKey.has(key)) byKey.set(key, { url: u, outlet: outletOf(r), group: [] });
+    byKey.get(key).group.push(r);
   }
   const clusters = [];
-  for (const [url, group] of byUrl) {
+  for (const { url, outlet, group } of byKey.values()) {
     if (group.length < threshold) continue;
     const bylines = [...new Set(group.map(r => (r.criticName || r.critic || 'unknown')))];
     clusters.push({
       url,
+      outlet,
       count: group.length,
+      primaryCount: group.filter(r => !r.duplicateOf).length,
       bylines,
       invalidCount: group.filter(r => r.contentTier === 'invalid').length,
       files: group.map(r => r.file).filter(Boolean),
@@ -50,4 +74,4 @@ function findUrlClusters(reviews, threshold = 5) {
   return clusters.sort((a, b) => b.count - a.count);
 }
 
-module.exports = { canonicalReviewUrl, findUrlClusters };
+module.exports = { canonicalReviewUrl, findUrlClusters, outletOf };
