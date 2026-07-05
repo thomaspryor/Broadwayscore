@@ -1,0 +1,94 @@
+name: Finance Ingest
+
+# Phase D of the finance tracker: pull vendor receipt emails from Gmail
+# (read-only OAuth), book them into the expense ledger, and sync the ledgers
+# to the PRIVATE data repo (amounts + billing PII never touch this repo —
+# CLAUDE.md §3/§11). The /admin/finances dashboard reads those ledger files
+# at request time via the GitHub contents API.
+#
+# Idempotent by Gmail message id + dedup hash, so daily re-runs and manual
+# dispatches never double-book. Exclusion rules (finance-vendors.json
+# externallyPaid) and same-month topup reclassification are re-applied to the
+# whole ledger on every run, so config edits propagate retroactively.
+#
+# NOT in the scraping-token gate's scope: this workflow calls the Gmail API
+# with OAuth, no page scraping, no SCRAPINGBEE/BRIGHTDATA.
+
+on:
+  schedule:
+    - cron: '17 11 * * *' # daily, offset from top-of-hour cron congestion
+  workflow_dispatch:
+    inputs:
+      backfill:
+        description: 'Full 400-day historical backfill (first run / recovery)'
+        type: boolean
+        default: false
+
+concurrency:
+  group: finance-ingest
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      # ingest-finances.js lazy-requires googleapis only on the Gmail path, so
+      # it isn't a package.json dependency (keeps the main install lean for the
+      # 60+ other workflows). Installed ad hoc here.
+      - name: Install googleapis
+        run: npm install --no-save --no-audit --no-fund googleapis
+
+      - name: Clone finance ledgers (private repo)
+        env:
+          TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          git clone --depth 1 "https://x-access-token:${TOKEN}@github.com/thomaspryor/broadway-scorecard-data.git" /tmp/finance-data
+          mkdir -p /tmp/finance-data/data/finances
+
+      - name: Ingest receipts from Gmail
+        env:
+          GMAIL_CLIENT_ID: ${{ secrets.GMAIL_CLIENT_ID }}
+          GMAIL_CLIENT_SECRET: ${{ secrets.GMAIL_CLIENT_SECRET }}
+          GMAIL_REFRESH_TOKEN: ${{ secrets.GMAIL_REFRESH_TOKEN }}
+          BACKFILL: ${{ inputs.backfill }}
+        run: |
+          FLAGS=""
+          if [ "$BACKFILL" = "true" ]; then FLAGS="--backfill"; fi
+          node scripts/ingest-finances.js $FLAGS --out=/tmp/finance-data/data/finances
+
+      - name: Commit and push ledgers
+        run: |
+          cd /tmp/finance-data
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add data/finances
+          if git diff --staged --quiet; then
+            echo "No ledger changes."
+            exit 0
+          fi
+          git commit -m "finance: receipt ingest ($(date -u +%Y-%m-%d))"
+          for i in 1 2 3; do
+            if git push; then break; fi
+            if [ "$i" = "3" ]; then echo "::error::push failed after 3 attempts"; exit 1; fi
+            git pull --rebase
+            sleep $((i * 2))
+          done
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Finance Ingest Failed'
+          description: 'Daily Gmail receipt ingest did not complete. Likely causes: revoked GMAIL_REFRESH_TOKEN (re-mint via OAuth Playground), REVIEW_TEXTS_TOKEN expiry, or a private-repo push conflict.'
