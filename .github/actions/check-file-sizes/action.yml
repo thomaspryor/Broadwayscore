@@ -12,26 +12,35 @@ runs:
         # when gitignored diary-shows.json (13MB) and mezzanine-productions-raw.json
         # blocked every workflow that used this check.
         # Known large files that are legitimately committed to the public repo.
-        # stage-latency.jsonl is an append-only audit log that grows ~1MB/day;
-        # blocked the LLM scoring workflow twice (2026-05-01 at 5MB, 2026-05-16
-        # at 25MB) — added here because trimming-in-place keeps growing back.
-        # Long-term: move to private core-data or add a periodic rotation job.
+        # stage-latency.jsonl is an append-only audit log; blocked the LLM
+        # scoring workflow twice (2026-05-01 at 5MB, 2026-05-16 at 25MB) —
+        # added here because trimming-in-place keeps growing back.
+        # emitStage() now self-rotates it at 40MB (scripts/lib/stage-latency.js).
         ALLOW_LARGE="llm-scoring-runs.json llm-scoring-garbage-skips.json master-review-list.json reviews.json shows.json show-score.json stage-latency.jsonl"
+
+        # Even allowlisted files must stay below GitHub's 100 MiB push limit.
+        # stage-latency.jsonl reached 100.15MB on 2026-07-05 and every push to
+        # main was rejected for a day while this check kept passing. Fail here,
+        # loudly, well before the cliff.
+        HARD_CAP=94371840  # 90 MiB
 
         LARGE=""
         while IFS= read -r file; do
           [ -z "$file" ] && continue
           BASENAME=$(basename "$file")
-          # Skip known-large legitimate files
+          [ -f "$file" ] || continue
+          SIZE=$(stat --format=%s "$file" 2>/dev/null || stat -f%z "$file" 2>/dev/null || echo 0)
+          # Allowlisted files skip the 5MB check but never the hard cap
           if echo " $ALLOW_LARGE " | grep -q " $BASENAME "; then
-            continue
-          fi
-          if [ -f "$file" ]; then
-            SIZE=$(stat --format=%s "$file" 2>/dev/null || stat -f%z "$file" 2>/dev/null || echo 0)
-            if [ "$SIZE" -gt 5242880 ]; then
-              LARGE="${LARGE}${file} (${SIZE} bytes)
+            if [ "$SIZE" -gt "$HARD_CAP" ]; then
+              LARGE="${LARGE}${file} (${SIZE} bytes — exceeds 90MiB hard cap; GitHub rejects pushes at 100MiB)
         "
             fi
+            continue
+          fi
+          if [ "$SIZE" -gt 5242880 ]; then
+            LARGE="${LARGE}${file} (${SIZE} bytes)
+        "
           fi
         done <<< "$(git diff --cached --name-only --diff-filter=ACM 2>/dev/null | grep '^data/' || true)"
 
