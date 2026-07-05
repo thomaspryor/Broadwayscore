@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-05T06:41:37.387Z",
-  "processed": 1,
-  "failed": 19,
-  "successRate": "5.0%",
+  "updatedAt": "2026-07-05T06:44:15.695Z",
+  "processed": 2,
+  "failed": 23,
+  "successRate": "8.0%",
   "tierBreakdown": {
     "playwright": 1,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 5,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 1,
     "archive": 0
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-07-05T06:39:54.070Z",
@@ -34,6 +34,28 @@
     },
     {
       "t": "2026-07-05T06:41:25.031Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-05T06:42:39.595Z",
+      "event": "bb-session",
+      "session": "6ff32cff",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/pride-stage-adaptation-re"
+    },
+    {
+      "t": "2026-07-05T06:42:40.666Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-05T06:43:56.844Z",
+      "event": "bb-session",
+      "session": "7efd4abd",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-prism-prid"
+    },
+    {
+      "t": "2026-07-05T06:43:57.818Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
     }
