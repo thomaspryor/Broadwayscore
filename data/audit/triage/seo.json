@@ -1,7 +1,7 @@
 {
   "system": "seo",
   "status": "warn",
-  "lastChecked": "2026-07-05T08:01:18.838Z",
+  "lastChecked": "2026-07-06T08:32:04.994Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,7 +9,7 @@
     {
       "name": "SEO: health",
       "status": "warn",
-      "message": "1 SEO warning(s): Lighthouse score dropped on /browse/best-broadway-musicals: 74 (was 87)"
+      "message": "5 SEO warning(s): Lighthouse score below 70 on /show/hamilton: 64/100 (lab only — field CWV healthy); Lighthouse score below 70 on /west-end: 62/100 (lab only — field CWV healthy); LCP regressed on /west-end: 2485ms (was 1152ms); Lighthouse score dropped on /west-end: 62 (was 79); Lighthouse score dropped on /off-broadway: 72 (was 96)"
     }
   ]
 }
