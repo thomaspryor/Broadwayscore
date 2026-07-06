@@ -1,23 +1,23 @@
 {
-  "runDate": "2026-07-06T16:45:52.394Z",
+  "runDate": "2026-07-06T16:47:34.478Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "relics-west-end-2026",
+    "showFilter": "springwood-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 3,
+    "processed": 0,
+    "failed": 6,
     "skipped": 0,
-    "successRate": "25.0%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -27,8 +27,8 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 1,
+    "tier1Attempts": 5,
+    "tier1Success": 4,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -41,45 +41,36 @@
     "tier3_6Success": 1,
     "tier4Attempts": 2,
     "tier4Success": 0,
-    "totalFailed": 3,
+    "totalFailed": 6,
     "scrapingBeePageCredits": 10,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [
-    "relics-west-end-2026/cambridge--unknown.json"
-  ],
+  "processed": [],
   "failed": [
-    "relics-west-end-2026/nytimes--unknown.json",
-    "relics-west-end-2026/guardian--unknown.json",
-    "relics-west-end-2026/thestage--neil-norman.json"
+    "springwood-west-end-2026/guardian-uk--unknown.json",
+    "springwood-west-end-2026/artsdesk--unknown.json",
+    "springwood-west-end-2026/standard--nick-curtis.json",
+    "springwood-west-end-2026/theatrecat--unknown.json",
+    "springwood-west-end-2026/thestage--unknown.json",
+    "springwood-west-end-2026/west-end-best-friend--unknown.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "relics-west-end-2026/cambridge--unknown.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/relics-west-end-2026/thestage--neil-norman.json"
+      "data/review-texts/springwood-west-end-2026/thestage--unknown.json"
     ],
     "archive": []
   },
-  "failuresByOutlet": {
-    "The Guardian": {
-      "count": 1,
-      "domain": "theguardian.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
