@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-06T13:33:48.329Z",
+  "generatedAt": "2026-07-06T15:28:58.372Z",
   "date": "2026-07-06",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 224830,
+  "entryCount": 229402,
   "shows": [
     {
       "showId": "jesus-christ-superstar-west-end-2026",
@@ -21,7 +21,7 @@
     },
     {
       "showId": "a-midsummer-nights-dream-west-end-2026",
-      "reviewCount": 15,
+      "reviewCount": 16,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -36,12 +36,12 @@
     },
     {
       "showId": "archduke-west-end-2026",
-      "reviewCount": 25,
+      "reviewCount": 26,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 2980042,
+        "collected-to-scored": 2391887,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -176,7 +176,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 607532129,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -596,7 +596,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 683918,
+        "collected-to-scored": 251535656,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -966,7 +966,7 @@
     },
     {
       "showId": "a-walk-on-the-moon-off-broadway-2026",
-      "reviewCount": 17,
+      "reviewCount": 18,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1956,7 +1956,7 @@
     },
     {
       "showId": "evita-west-end-2025",
-      "reviewCount": 29,
+      "reviewCount": 30,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
