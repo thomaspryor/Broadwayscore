@@ -756,6 +756,7 @@
       "proof-2026/deadline--unknown.json",
       "data/review-texts/maybe-happy-ending-2024/variety--unknown.json",
       "maybe-happy-ending-2024/variety--unknown.json",
+      "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
       "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json"
     ],
     "directCookies": [],
@@ -834,6 +835,17 @@
     },
     {
       "t": "2026-07-06T01:29:49.209Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-06T02:13:54.443Z",
+      "event": "bb-session",
+      "session": "76505faf",
+      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
+    },
+    {
+      "t": "2026-07-06T02:13:54.821Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
