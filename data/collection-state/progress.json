@@ -90,7 +90,10 @@
     "operation-mincemeat-2025/new-york-city-theatre--unknown.json",
     "my-neighbour-totoro-west-end-2025/theatre-weekly--unknown.json",
     "my-neighbour-totoro-west-end-2025/west-end-best-friend--news-desk.json",
-    "los-soles-truncos-off-broadway-2025/broadwayworld--chloe-rabinowitz.json"
+    "los-soles-truncos-off-broadway-2025/broadwayworld--chloe-rabinowitz.json",
+    "the-devil-wears-prada-west-end-2024/times-uk--dominic-maxwell.json",
+    "maybe-happy-ending-2024/newyorker--conde-nast.json",
+    "maybe-happy-ending-2024/the-contending--frank-j-avella.json"
   ],
   "failed": [
     "pride-west-end-2026/hollywood-reporter--daniel-fienberg.json",
@@ -829,7 +832,14 @@
     "oliver-west-end-2024/theatermania--david-gordon.json",
     "oliver-west-end-2024/dailybeast--unknown.json",
     "oliver-west-end-2024/i-paper--fiona-mountford.json",
-    "the-devil-wears-prada-west-end-2024/new-city-stage--brian-hieggelke.json"
+    "the-devil-wears-prada-west-end-2024/new-city-stage--brian-hieggelke.json",
+    "the-devil-wears-prada-west-end-2024/chicagotribune--chris-jones.json",
+    "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
+    "the-devil-wears-prada-west-end-2024/liam-odell--unknown.json",
+    "the-devil-wears-prada-west-end-2024/nytimes--alexis-soloski.json",
+    "the-devil-wears-prada-west-end-2024/nypost--johnny-oleksinski.json",
+    "the-devil-wears-prada-west-end-2024/washpost--peter-marks.json",
+    "maybe-happy-ending-2024/washpost--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -937,13 +947,15 @@
       "every-brilliant-thing-2026/nytimes--ben-brantley.json",
       "every-brilliant-thing-2026/nydailynews--joe-dziemianowicz.json",
       "oh-mary-west-end-2025/nytimes--jesse-green.json",
-      "heathers-the-musical-off-broadway-2025/nytimes--ben-brantley.json"
+      "heathers-the-musical-off-broadway-2025/nytimes--ben-brantley.json",
+      "the-devil-wears-prada-west-end-2024/times-uk--dominic-maxwell.json"
     ],
     "brightdata": [
       "the-balusters-2026/broadwayworld--unknown.json",
       "schmigadoon-2026/thewrap--robert-hofler.json",
       "the-fear-of-13-2026/broadwayworld--unknown.json",
-      "just-in-time-2025/newyorker--conde-nast.json"
+      "just-in-time-2025/newyorker--conde-nast.json",
+      "maybe-happy-ending-2024/newyorker--conde-nast.json"
     ],
     "archiveToday": [
       "data/review-texts/pride-west-end-2026/click-liverpool--unknown.json",
@@ -989,11 +1001,12 @@
       "death-of-a-salesman-2026/vulture--rob-weinert-kendt.json",
       "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
       "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
-      "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json"
+      "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json",
+      "maybe-happy-ending-2024/the-contending--frank-j-avella.json"
     ]
   },
   "startTime": "2026-07-05T16:48:47.319Z",
-  "lastProcessed": "the-devil-wears-prada-west-end-2024/new-city-stage--brian-hieggelke.json",
+  "lastProcessed": "maybe-happy-ending-2024/washpost--unknown.json",
   "log": [
     {
       "t": "2026-07-06T07:04:24.294Z",
@@ -1203,6 +1216,17 @@
       "t": "2026-07-06T12:35:02.268Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-06T12:46:22.201Z",
+      "event": "bb-session",
+      "session": "24625526",
+      "url": "https://www.washingtonpost.com/entertainment/theater/2024/11/12/maybe-happy-endi"
+    },
+    {
+      "t": "2026-07-06T12:46:22.999Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
