@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-07-06T20:07:48.276Z",
+  "runDate": "2026-07-06T21:11:29.774Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -12,51 +12,52 @@
   },
   "summary": {
     "processed": 52,
-    "failed": 249,
+    "failed": 349,
     "skipped": 0,
-    "successRate": "17.3%"
+    "successRate": "13.0%"
   },
   "tierBreakdown": {
-    "playwright": 38,
+    "playwright": 41,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 4,
-    "scrapingbee": 2,
-    "brightdata": 2,
-    "archiveToday": 0,
-    "archive": 6
+    "scrapingbee": 0,
+    "brightdata": 3,
+    "archiveToday": 9,
+    "archive": 4
   },
   "statistics": {
-    "tier1Attempts": 50,
-    "tier1Success": 40,
+    "tier1Attempts": 44,
+    "tier1Success": 39,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 11,
-    "tier2Success": 2,
+    "tier2Attempts": 5,
+    "tier2Success": 0,
     "tier3Attempts": 2,
     "tier3Success": 2,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 18,
+    "tier4Attempts": 17,
     "tier4Success": 1,
-    "totalFailed": 248,
-    "scrapingBeePageCredits": 101,
+    "totalFailed": 253,
+    "scrapingBeePageCredits": 50,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 270,
-    "urlDiscoverySuccess": 28,
+    "urlDiscoveryAttempts": 272,
+    "urlDiscoverySuccess": 20,
     "urlDiscoveryCapped": 0
   },
   "processed": [
     "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json",
-    "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
     "a-midsummer-nights-dream-west-end-2026/sunday-telegraph--claire-allfree.json",
     "a-midsummer-nights-dream-west-end-2026/whatsonstage--alex-wood.json",
     "a-midsummer-nights-dream-west-end-2026/whatsonstage--theo-bosanquet.json",
     "archduke-west-end-2026/broadwayworld--alexander-cohen.json",
+    "jesus-christ-superstar-west-end-2026/broadwayworld--stephi-wild.json",
+    "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
     "cyrano-de-bergerac-west-end-2026/guardian-uk--unknown.json",
     "pride-west-end-2026/londontheatre1--terry-eastham.json",
     "birthright-off-broadway-2026/theatermania--linda-buchwald.json",
@@ -64,25 +65,22 @@
     "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
     "birthright-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "relics-west-end-2026/cambridge--unknown.json",
-    "sinatra-the-musical-west-end-2026/broadwayworld--emma-john.json",
-    "sinatra-the-musical-west-end-2026/london-box-office--john-yap.json",
-    "sinatra-the-musical-west-end-2026/london-box-office--phil-willmott.json",
-    "sinatra-the-musical-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
     "sinatra-the-musical-west-end-2026/theatre-vibe--lizzie-loveridge.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre--apollo-theatre.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json",
     "the-black-mirror-experience-off-broadway-2026/the-recs--unknown.json",
     "much-ado-about-nothing-globe-off-west-end-2026/london-theatre--lola-phillips.json",
-    "much-ado-about-nothing-globe-off-west-end-2026/times-uk--ann-treneman.json",
-    "much-ado-about-nothing-globe-off-west-end-2026/times-uk--clive-davis.json",
-    "much-ado-about-nothing-globe-off-west-end-2026/times-uk--dominic-maxwell.json",
-    "much-ado-about-nothing-globe-off-west-end-2026/times-uk--rachel-halliburton.json",
+    "glengarry-glen-ross-west-end-2026/times-uk--ann-treneman.json",
+    "glengarry-glen-ross-west-end-2026/times-uk--benedict-nightingale.json",
+    "glengarry-glen-ross-west-end-2026/times-uk--dominic-maxwell.json",
+    "glengarry-glen-ross-west-end-2026/times-uk--maxie-szalwinska.json",
     "girl-interrupted-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "girl-interrupted-off-broadway-2026/playbill--unknown.json",
     "war-horse-west-end-2026/click-liverpool--carie-schneider.json",
     "and-then-the-rodeo-burned-down-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "small-off-broadway-2026/broadwayworld--marina-kennedy.json",
     "small-off-broadway-2026/culturesauce--thom-geier.json",
+    "small-off-broadway-2026/theater-scene--victor-gluck.json",
     "celebrity-autobiography-2026/theatermania--brian-scott-lipton.json",
     "celebrity-autobiography-2026/one-minute-critic--matthew-wexler.json",
     "celebrity-autobiography-2026/playbill--unknown.json",
@@ -96,16 +94,113 @@
     "the-lost-boys-2026/theatermania--editorial-staff.json",
     "the-lost-boys-2026/playbill--unknown.json",
     "joe-turners-come-and-gone-2026/ny1--spectrum-news-staff.json",
-    "the-rocky-horror-show-2026/ew--dalton-ross.json",
+    "joe-turners-come-and-gone-2026/playbill--unknown.json",
     "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
     "the-rocky-horror-show-2026/playbill--unknown.json",
     "the-balusters-2026/broadwayworld--unknown.json",
     "the-balusters-2026/playbill--unknown.json",
     "schmigadoon-2026/thewrap--robert-hofler.json",
-    "schmigadoon-2026/theater-pizzazz--eyal-solomon.json"
+    "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
+    "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
+    "proof-2026/playbill--unknown.json"
   ],
   "failed": [
     "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+    "the-guilty-west-end-2026/hollywood-reporter--angie-han.json",
+    "to-kill-a-mockingbird-west-end-2026/hollywood-reporter--david-rooney.json",
+    "the-guilty-west-end-2026/deadline--max-goldbart.json",
+    "the-guilty-west-end-2026/guardian-uk--unknown.json",
+    "to-kill-a-mockingbird-west-end-2026/observer--david-cote.json",
+    "to-kill-a-mockingbird-west-end-2026/thewrap--thom-geier.json",
+    "to-kill-a-mockingbird-west-end-2026/timeout--adam-feldman.json",
+    "to-kill-a-mockingbird-west-end-2026/wsj--terry-teachout.json",
+    "the-guilty-west-end-2026/plays-international--unknown.json",
+    "the-guilty-west-end-2026/rollingstone--charisma-madarang.json",
+    "the-guilty-west-end-2026/thestage--unknown.json",
+    "the-guilty-west-end-2026/times-uk--unknown.json",
+    "to-kill-a-mockingbird-west-end-2026/british-theatre--unknown.json",
+    "to-kill-a-mockingbird-west-end-2026/chicagotribune--chris-jones.json",
+    "to-kill-a-mockingbird-west-end-2026/inquirer--toby-zinman.json",
+    "to-kill-a-mockingbird-west-end-2026/latimes--unknown.json",
+    "to-kill-a-mockingbird-west-end-2026/the-morning-star--unknown.json",
+    "to-kill-a-mockingbird-west-end-2026/the-upcoming-uk--unknown.json",
+    "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
+    "to-kill-a-mockingbird-west-end-2026/times-uk--libby-purves.json",
+    "to-kill-a-mockingbird-west-end-2026/tribune--unknown.json",
+    "to-kill-a-mockingbird-west-end-2026/western-mail--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/hollywood-reporter--frank-scheck.json",
+    "a-midsummer-nights-dream-west-end-2026/ew--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/newsday--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/nydailynews--unknown.json",
+    "springwood-west-end-2026/guardian-uk--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/bloomberg--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/cambridge--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/financialtimes--sarah-hemming.json",
+    "a-midsummer-nights-dream-west-end-2026/huffpost--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/london-box-office--kit-benjamin.json",
+    "a-midsummer-nights-dream-west-end-2026/london-box-office--stuart-king.json",
+    "a-midsummer-nights-dream-west-end-2026/london-theatre--aliya-al-hassan.json",
+    "a-midsummer-nights-dream-west-end-2026/standard--nick-curtis.json",
+    "a-midsummer-nights-dream-west-end-2026/standard--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/telegraph--dominic-cavendish.json",
+    "a-midsummer-nights-dream-west-end-2026/thestage--holly-o.json",
+    "a-midsummer-nights-dream-west-end-2026/thestage--katie-chambers.json",
+    "a-midsummer-nights-dream-west-end-2026/thestage--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/times-uk--dominic-maxwell.json",
+    "a-midsummer-nights-dream-west-end-2026/times-uk--rachel-halliburton.json",
+    "a-midsummer-nights-dream-west-end-2026/westendtheatre--west-end-theatre.json",
+    "springwood-west-end-2026/artsdesk--unknown.json",
+    "springwood-west-end-2026/standard--nick-curtis.json",
+    "springwood-west-end-2026/theatrecat--unknown.json",
+    "the-guilty-west-end-2026/hollywood-reporter--angie-han.json",
+    "to-kill-a-mockingbird-west-end-2026/hollywood-reporter--david-rooney.json",
+    "the-guilty-west-end-2026/deadline--max-goldbart.json",
+    "the-guilty-west-end-2026/guardian-uk--unknown.json",
+    "to-kill-a-mockingbird-west-end-2026/observer--david-cote.json",
+    "to-kill-a-mockingbird-west-end-2026/thewrap--thom-geier.json",
+    "to-kill-a-mockingbird-west-end-2026/timeout--adam-feldman.json",
+    "to-kill-a-mockingbird-west-end-2026/wsj--terry-teachout.json",
+    "the-guilty-west-end-2026/plays-international--unknown.json",
+    "the-guilty-west-end-2026/rollingstone--charisma-madarang.json",
+    "the-guilty-west-end-2026/thestage--unknown.json",
+    "the-guilty-west-end-2026/times-uk--unknown.json",
+    "to-kill-a-mockingbird-west-end-2026/british-theatre--unknown.json",
+    "to-kill-a-mockingbird-west-end-2026/chicagotribune--chris-jones.json",
+    "to-kill-a-mockingbird-west-end-2026/inquirer--toby-zinman.json",
+    "to-kill-a-mockingbird-west-end-2026/latimes--unknown.json",
+    "to-kill-a-mockingbird-west-end-2026/the-morning-star--unknown.json",
+    "to-kill-a-mockingbird-west-end-2026/the-upcoming-uk--unknown.json",
+    "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
+    "to-kill-a-mockingbird-west-end-2026/times-uk--libby-purves.json",
+    "to-kill-a-mockingbird-west-end-2026/tribune--unknown.json",
+    "to-kill-a-mockingbird-west-end-2026/western-mail--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/hollywood-reporter--frank-scheck.json",
+    "a-midsummer-nights-dream-west-end-2026/ew--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/newsday--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/nydailynews--unknown.json",
+    "springwood-west-end-2026/guardian-uk--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/bloomberg--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/cambridge--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/financialtimes--sarah-hemming.json",
+    "a-midsummer-nights-dream-west-end-2026/huffpost--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/london-box-office--kit-benjamin.json",
+    "a-midsummer-nights-dream-west-end-2026/london-box-office--stuart-king.json",
+    "a-midsummer-nights-dream-west-end-2026/london-theatre--aliya-al-hassan.json",
+    "a-midsummer-nights-dream-west-end-2026/standard--nick-curtis.json",
+    "a-midsummer-nights-dream-west-end-2026/standard--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/telegraph--dominic-cavendish.json",
+    "a-midsummer-nights-dream-west-end-2026/thestage--holly-o.json",
+    "a-midsummer-nights-dream-west-end-2026/thestage--katie-chambers.json",
+    "a-midsummer-nights-dream-west-end-2026/thestage--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/times-uk--dominic-maxwell.json",
+    "a-midsummer-nights-dream-west-end-2026/times-uk--rachel-halliburton.json",
+    "a-midsummer-nights-dream-west-end-2026/westendtheatre--west-end-theatre.json",
+    "springwood-west-end-2026/artsdesk--unknown.json",
+    "springwood-west-end-2026/standard--nick-curtis.json",
+    "springwood-west-end-2026/theatrecat--unknown.json",
+    "springwood-west-end-2026/thestage--unknown.json",
+    "springwood-west-end-2026/west-end-best-friend--unknown.json",
+    "archduke-west-end-2026/nyt-theater--jonathan-mandell.json",
     "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
     "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/loureviews--unknown.json",
     "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/all-that-dazzles-uk--unknown.json",
@@ -117,7 +212,6 @@
     "jesus-christ-superstar-west-end-2026/theatre-reviews-limited--unknown.json",
     "jesus-christ-superstar-west-end-2026/thereviewshub--the-reviews-hub.json",
     "jesus-christ-superstar-west-end-2026/backstage--david-sheward.json",
-    "jesus-christ-superstar-west-end-2026/broadwayworld--stephi-wild.json",
     "jesus-christ-superstar-west-end-2026/financialtimes--brendan-lemon.json",
     "jesus-christ-superstar-west-end-2026/philadelphia-inquirer--howard-shapiro.json",
     "jesus-christ-superstar-west-end-2026/west-end-wilma--unknown.json",
@@ -193,6 +287,10 @@
     "relics-west-end-2026/nytimes--unknown.json",
     "sinatra-the-musical-west-end-2026/variety--unknown.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/hollywood-reporter--daniel-fienberg.json",
+    "sinatra-the-musical-west-end-2026/broadwayworld--emma-john.json",
+    "sinatra-the-musical-west-end-2026/london-box-office--john-yap.json",
+    "sinatra-the-musical-west-end-2026/london-box-office--phil-willmott.json",
+    "sinatra-the-musical-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/i-paper--sarah-carson.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-box-office--nastazja-domaradzka.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre--marianka-swain.json",
@@ -218,6 +316,10 @@
     "the-misanthrope-west-end-2026/curtainup--simon-saltzman.json",
     "the-misanthrope-west-end-2026/west-end-best-friend--news-desk.json",
     "the-misanthrope-west-end-2026/whatsonstage--tanyel-gumushan.json",
+    "much-ado-about-nothing-globe-off-west-end-2026/times-uk--ann-treneman.json",
+    "much-ado-about-nothing-globe-off-west-end-2026/times-uk--clive-davis.json",
+    "much-ado-about-nothing-globe-off-west-end-2026/times-uk--dominic-maxwell.json",
+    "much-ado-about-nothing-globe-off-west-end-2026/times-uk--rachel-halliburton.json",
     "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--alun-hood.json",
     "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--daisy-bowie.json",
     "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--judi-herman.json",
@@ -244,10 +346,6 @@
     "glengarry-glen-ross-west-end-2026/nysr--roma-torre.json",
     "glengarry-glen-ross-west-end-2026/slantmagazine--dan-rubins.json",
     "glengarry-glen-ross-west-end-2026/standard--henry-hitchings.json",
-    "glengarry-glen-ross-west-end-2026/times-uk--ann-treneman.json",
-    "glengarry-glen-ross-west-end-2026/times-uk--benedict-nightingale.json",
-    "glengarry-glen-ross-west-end-2026/times-uk--dominic-maxwell.json",
-    "glengarry-glen-ross-west-end-2026/times-uk--maxie-szalwinska.json",
     "glengarry-glen-ross-west-end-2026/washpost--unknown.json",
     "white-rabbit-red-rabbit-west-end-2026/nytimes--charles-isherwood.json",
     "white-rabbit-red-rabbit-west-end-2026/guardian--david-jays.json",
@@ -315,7 +413,6 @@
     "a-midsummer-nights-dream-globe-west-end-2026/ew--unknown.json",
     "a-midsummer-nights-dream-globe-west-end-2026/newsday--linda-winer.json",
     "a-midsummer-nights-dream-globe-west-end-2026/newsday--unknown.json",
-    "a-midsummer-nights-dream-globe-west-end-2026/andrzej-lukowski--andrzej-lukowski.json",
     "a-midsummer-nights-dream-globe-west-end-2026/bloomberg--unknown.json",
     "a-midsummer-nights-dream-globe-west-end-2026/financialtimes--sarah-hemming.json",
     "a-midsummer-nights-dream-globe-west-end-2026/huffpost--unknown.json",
@@ -339,7 +436,6 @@
     "the-lost-boys-2026/bloomberg--chris-rovzar.json",
     "joe-turners-come-and-gone-2026/broadwaynews--jonah-de-forest-for-broadwaycom.json",
     "joe-turners-come-and-gone-2026/broadwaynews--jonah-de-forest.json",
-    "joe-turners-come-and-gone-2026/playbill--unknown.json",
     "the-rocky-horror-show-2026/musical-theatre-review--unknown.json",
     "the-rocky-horror-show-2026/thereviewshub--unknown.json",
     "the-rocky-horror-show-2026/british-theatre--unknown.json",
@@ -353,13 +449,18 @@
     "proof-2026/680newscom--gloria-martin.json",
     "avenue-q-west-end-2026/1883-magazine--nick-barr.json",
     "avenue-q-west-end-2026/backstage--david-sheward.json",
-    "avenue-q-west-end-2026/talkinbroadway--matthew-murray.json"
+    "avenue-q-west-end-2026/talkinbroadway--matthew-murray.json",
+    "avenue-q-west-end-2026/telegraph--marianka-swain.json",
+    "avenue-q-west-end-2026/theupcoming--sunny-morgan.json",
+    "avenue-q-west-end-2026/valentine-dsides--unknown.json",
+    "avenue-q-west-end-2026/west-end-best-friend--jacob-bush.json"
   ],
   "tierDetails": {
     "playwright": [
       "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json",
       "a-midsummer-nights-dream-west-end-2026/whatsonstage--alex-wood.json",
       "a-midsummer-nights-dream-west-end-2026/whatsonstage--theo-bosanquet.json",
+      "jesus-christ-superstar-west-end-2026/broadwayworld--stephi-wild.json",
       "cyrano-de-bergerac-west-end-2026/guardian-uk--unknown.json",
       "pride-west-end-2026/londontheatre1--terry-eastham.json",
       "birthright-off-broadway-2026/theatermania--linda-buchwald.json",
@@ -367,22 +468,22 @@
       "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
       "birthright-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "relics-west-end-2026/cambridge--unknown.json",
-      "sinatra-the-musical-west-end-2026/london-box-office--john-yap.json",
-      "sinatra-the-musical-west-end-2026/london-box-office--phil-willmott.json",
-      "sinatra-the-musical-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
       "sinatra-the-musical-west-end-2026/theatre-vibe--lizzie-loveridge.json",
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-theatre--apollo-theatre.json",
       "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json",
       "the-black-mirror-experience-off-broadway-2026/the-recs--unknown.json",
       "much-ado-about-nothing-globe-off-west-end-2026/london-theatre--lola-phillips.json",
       "girl-interrupted-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "girl-interrupted-off-broadway-2026/playbill--unknown.json",
       "war-horse-west-end-2026/click-liverpool--carie-schneider.json",
       "and-then-the-rodeo-burned-down-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "small-off-broadway-2026/theater-scene--victor-gluck.json",
       "celebrity-autobiography-2026/theatermania--brian-scott-lipton.json",
       "celebrity-autobiography-2026/one-minute-critic--matthew-wexler.json",
       "celebrity-autobiography-2026/playbill--unknown.json",
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json",
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
+      "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json",
       "a-midsummer-nights-dream-globe-west-end-2026/timeout--andrzej-lukowski.json",
       "mercury-off-broadway-2026/washpost--doug-feinberg.json",
       "the-lost-boys-2026/nytg--joe-dziemianowicz.json",
@@ -390,179 +491,155 @@
       "the-lost-boys-2026/theatermania--editorial-staff.json",
       "the-lost-boys-2026/playbill--unknown.json",
       "joe-turners-come-and-gone-2026/ny1--spectrum-news-staff.json",
-      "the-rocky-horror-show-2026/ew--dalton-ross.json",
+      "joe-turners-come-and-gone-2026/playbill--unknown.json",
       "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
       "the-rocky-horror-show-2026/playbill--unknown.json",
       "the-balusters-2026/playbill--unknown.json",
-      "schmigadoon-2026/theater-pizzazz--eyal-solomon.json"
+      "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
+      "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
+      "proof-2026/playbill--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [
-      "much-ado-about-nothing-globe-off-west-end-2026/times-uk--ann-treneman.json",
-      "much-ado-about-nothing-globe-off-west-end-2026/times-uk--clive-davis.json",
-      "much-ado-about-nothing-globe-off-west-end-2026/times-uk--dominic-maxwell.json",
-      "much-ado-about-nothing-globe-off-west-end-2026/times-uk--rachel-halliburton.json"
+      "glengarry-glen-ross-west-end-2026/times-uk--ann-treneman.json",
+      "glengarry-glen-ross-west-end-2026/times-uk--benedict-nightingale.json",
+      "glengarry-glen-ross-west-end-2026/times-uk--dominic-maxwell.json",
+      "glengarry-glen-ross-west-end-2026/times-uk--maxie-szalwinska.json"
     ],
-    "scrapingbee": [
-      "a-midsummer-nights-dream-west-end-2026/sunday-telegraph--claire-allfree.json",
-      "girl-interrupted-off-broadway-2026/playbill--unknown.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [
+      "a-midsummer-nights-dream-west-end-2026/sunday-telegraph--claire-allfree.json",
       "the-balusters-2026/broadwayworld--unknown.json",
       "schmigadoon-2026/thewrap--robert-hofler.json"
     ],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/the-guilty-west-end-2026/thestage--unknown.json",
+      "data/review-texts/to-kill-a-mockingbird-west-end-2026/tribune--unknown.json",
+      "data/review-texts/to-kill-a-mockingbird-west-end-2026/western-mail--unknown.json",
+      "data/review-texts/a-midsummer-nights-dream-west-end-2026/thestage--unknown.json",
+      "data/review-texts/the-guilty-west-end-2026/thestage--unknown.json",
+      "data/review-texts/to-kill-a-mockingbird-west-end-2026/tribune--unknown.json",
+      "data/review-texts/to-kill-a-mockingbird-west-end-2026/western-mail--unknown.json",
+      "data/review-texts/a-midsummer-nights-dream-west-end-2026/thestage--unknown.json",
+      "data/review-texts/springwood-west-end-2026/thestage--unknown.json"
+    ],
     "archive": [
-      "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
       "archduke-west-end-2026/broadwayworld--alexander-cohen.json",
-      "sinatra-the-musical-west-end-2026/broadwayworld--emma-john.json",
+      "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
       "small-off-broadway-2026/broadwayworld--marina-kennedy.json",
-      "small-off-broadway-2026/culturesauce--thom-geier.json",
-      "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json"
+      "small-off-broadway-2026/culturesauce--thom-geier.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The Telegraph": {
+      "count": 1,
+      "domain": "telegraph.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": [
     {
       "reviewId": "jesus-christ-superstar-west-end-2026/broadwayworld--stephi-wild.json",
-      "oldUrl": "https://www.broadwayworld.com/westend/article/JESUS-CHRIST-SUPERSTAR-Will-Embark-on-UK-Tour-Starring-Sam-Ryder-20260622",
-      "newUrl": "https://www.broadwayworld.com/uk-regional/article/JESUS-CHRIST-SUPERSTAR-Starring-Sam-Ryder-to-Visit-Birmingham-Hippodrome-20260624"
-    },
-    {
-      "reviewId": "a-midsummer-nights-dream-west-end-2026/whatsonstage--theo-bosanquet.json",
-      "oldUrl": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/a-midsummer-nights-dream_1713945/",
-      "newUrl": "https://www.whatsonstage.com/news/a-midsummer-nights-dream-at-regents-park-open-air-theatre-review_1726521/"
+      "oldUrl": "https://www.broadwayworld.com/uk-regional/article/JESUS-CHRIST-SUPERSTAR-Starring-Sam-Ryder-to-Visit-Birmingham-Hippodrome-20260624",
+      "newUrl": "https://www.broadwayworld.com/westend/article/JESUS-CHRIST-SUPERSTAR-Will-Embark-on-UK-Tour-Starring-Sam-Ryder-20260622"
     },
     {
       "reviewId": "birthright-off-broadway-2026/theatermania--linda-buchwald.json",
-      "oldUrl": "https://www.theatermania.com/news/review-birthright-is-a-safe-three-and-a-half-hour-play-about-israel-palestine-and-fractured-friendships_1844046/",
-      "newUrl": "https://www.theatermania.com/news/molly-bernard-to-replace-abbi-jacobson-in-birthright-at-mcc_1841108/"
+      "oldUrl": "https://www.theatermania.com/news/molly-bernard-to-replace-abbi-jacobson-in-birthright-at-mcc_1841108/",
+      "newUrl": "https://www.theatermania.com/news/review-birthright-is-a-safe-three-and-a-half-hour-play-about-israel-palestine-and-fractured-friendships_1844046/"
     },
     {
       "reviewId": "sinatra-the-musical-west-end-2026/broadwayworld--emma-john.json",
-      "oldUrl": "https://www.broadwayworld.com/reviews/sinatra-the-musical",
-      "newUrl": "https://www.broadwayworld.com/westend/article/Review-SINATRA-THE-MUSICAL-Aldwych-Theatre-20260624"
-    },
-    {
-      "reviewId": "sinatra-the-musical-west-end-2026/london-box-office--john-yap.json",
-      "oldUrl": "https://www.londonboxoffice.co.uk/news/post/review-richard-shelton-sinatra-raw",
-      "newUrl": "https://www.londonboxoffice.co.uk/news/post/review-roundup-sinatra-the-musical-aldwych-theatre"
-    },
-    {
-      "reviewId": "sinatra-the-musical-west-end-2026/london-box-office--phil-willmott.json",
-      "oldUrl": "https://www.londonboxoffice.co.uk/news/post/sinatra-review",
-      "newUrl": "https://www.londonboxoffice.co.uk/news/post/review-roundup-sinatra-the-musical-aldwych-theatre"
-    },
-    {
-      "reviewId": "sinatra-the-musical-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
-      "oldUrl": "https://www.londonboxoffice.co.uk/news/post/5-reasons-to-watch-sinatra-the-musical",
-      "newUrl": "https://www.londonboxoffice.co.uk/news/post/review-roundup-sinatra-the-musical-aldwych-theatre"
-    },
-    {
-      "reviewId": "much-ado-about-nothing-globe-off-west-end-2026/times-uk--ann-treneman.json",
-      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/much-ado-about-nothing-review-shakespeare-mjwhw56rs?eafs_enabled=false",
-      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/much-ado-about-nothing-review-shakespeare-mjwhw56rs"
-    },
-    {
-      "reviewId": "much-ado-about-nothing-globe-off-west-end-2026/times-uk--clive-davis.json",
-      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/much-ado-about-nothing-review-shakespeare-mjwhw56rs?eafs_enabled=false",
-      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/much-ado-about-nothing-review-shakespeare-mjwhw56rs"
-    },
-    {
-      "reviewId": "much-ado-about-nothing-globe-off-west-end-2026/times-uk--dominic-maxwell.json",
-      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/much-ado-about-nothing-review-shakespeare-mjwhw56rs?eafs_enabled=false",
-      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/much-ado-about-nothing-review-shakespeare-mjwhw56rs"
-    },
-    {
-      "reviewId": "much-ado-about-nothing-globe-off-west-end-2026/times-uk--rachel-halliburton.json",
-      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/much-ado-about-nothing-review-shakespeare-mjwhw56rs?eafs_enabled=false",
-      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/much-ado-about-nothing-review-shakespeare-mjwhw56rs"
+      "oldUrl": "https://www.broadwayworld.com/westend/article/Review-SINATRA-THE-MUSICAL-Aldwych-Theatre-20260624",
+      "newUrl": "https://www.broadwayworld.com/translate/ar/Review-Roundup-SINATRA-THE-MUSICAL-at-the-Aldwych-Theatre-20260626"
     },
     {
       "reviewId": "glengarry-glen-ross-west-end-2026/times-uk--ann-treneman.json",
-      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-without-men-its-not-just-putting-lipstick-on-mamet-sjc0ff8h0",
-      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0"
+      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0",
+      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-without-men-its-not-just-putting-lipstick-on-mamet-sjc0ff8h0"
     },
     {
       "reviewId": "glengarry-glen-ross-west-end-2026/times-uk--benedict-nightingale.json",
-      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-without-men-its-not-just-putting-lipstick-on-mamet-sjc0ff8h0",
-      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0"
+      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0",
+      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-without-men-its-not-just-putting-lipstick-on-mamet-sjc0ff8h0"
     },
     {
       "reviewId": "glengarry-glen-ross-west-end-2026/times-uk--dominic-maxwell.json",
-      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-without-men-its-not-just-putting-lipstick-on-mamet-sjc0ff8h0",
-      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0"
+      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0",
+      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-without-men-its-not-just-putting-lipstick-on-mamet-sjc0ff8h0"
     },
     {
       "reviewId": "glengarry-glen-ross-west-end-2026/times-uk--maxie-szalwinska.json",
-      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-without-men-its-not-just-putting-lipstick-on-mamet-sjc0ff8h0",
-      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0"
+      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0",
+      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-without-men-its-not-just-putting-lipstick-on-mamet-sjc0ff8h0"
     },
     {
       "reviewId": "girl-interrupted-off-broadway-2026/playbill--unknown.json",
-      "oldUrl": "https://playbill.com/article/what-are-reviews-saying-about-girl-interrupted",
-      "newUrl": "https://playbill.com/production/girl-interrupted-off-broadway-public-theater-martinson-hall-2026"
+      "oldUrl": "https://playbill.com/production/girl-interrupted-off-broadway-public-theater-martinson-hall-2026",
+      "newUrl": "https://playbill.com/article/what-are-reviews-saying-about-girl-interrupted"
     },
     {
       "reviewId": "small-off-broadway-2026/broadwayworld--marina-kennedy.json",
-      "oldUrl": "https://www.broadwayworld.com/article/Video-Robert-Montano-Answers-Big-Questions-About-His-New-Play-SMALL-20260618",
-      "newUrl": "https://www.broadwayworld.com/article/Review-Roundup-Robert-Montanos-SMALL-Off-Broadway-20260601"
+      "oldUrl": "https://www.broadwayworld.com/article/Review-Roundup-Robert-Montanos-SMALL-Off-Broadway-20260601",
+      "newUrl": "https://www.broadwayworld.com/article/Video-Robert-Montano-Answers-Big-Questions-About-His-New-Play-SMALL-20260618"
     },
     {
       "reviewId": "celebrity-autobiography-2026/theatermania--brian-scott-lipton.json",
-      "oldUrl": "https://www.theatermania.com/news/review-celebrity-autobiography-on-broadway_1837709/",
-      "newUrl": "https://www.theatermania.com/news/celebrity-autobiography-to-close-early-on-brodway_1842058/"
+      "oldUrl": "https://www.theatermania.com/news/celebrity-autobiography-to-close-early-on-brodway_1842058/",
+      "newUrl": "https://www.theatermania.com/news/review-celebrity-autobiography-on-broadway_1837709/"
     },
     {
       "reviewId": "celebrity-autobiography-2026/playbill--unknown.json",
-      "oldUrl": "https://playbill.com/article/reviews-did-critics-think-celebrity-autobiography-on-broadway-was-a-novel-idea",
-      "newUrl": "https://playbill.com/article/get-a-1st-look-at-celebrity-autobiography-on-broadway"
+      "oldUrl": "https://playbill.com/article/get-a-1st-look-at-celebrity-autobiography-on-broadway",
+      "newUrl": "https://playbill.com/article/reviews-did-critics-think-celebrity-autobiography-on-broadway-was-a-novel-idea"
     },
     {
       "reviewId": "a-midsummer-nights-dream-globe-west-end-2026/timeout--andrzej-lukowski.json",
-      "oldUrl": "https://www.timeout.com/london/theatre/a-midsummer-nights-dream-review-1a",
-      "newUrl": "https://www.timeout.com/london/theatre/a-midsummer-nights-dream-100-review"
+      "oldUrl": "https://www.timeout.com/london/theatre/a-midsummer-nights-dream-100-review",
+      "newUrl": "https://www.timeout.com/london/theatre/a-midsummer-nights-dream-101-review"
     },
     {
       "reviewId": "the-lost-boys-2026/nytg--joe-dziemianowicz.json",
-      "oldUrl": "https://www.newyorktheatreguide.com/reviews/the-lost-boys-broadway-review",
-      "newUrl": "https://www.newyorktheatreguide.com/theatre-news/news/how-the-lost-boys-on-broadway-takes-flight"
+      "oldUrl": "https://www.newyorktheatreguide.com/theatre-news/news/how-the-lost-boys-on-broadway-takes-flight",
+      "newUrl": "https://www.newyorktheatreguide.com/reviews/the-lost-boys-broadway-review"
     },
     {
       "reviewId": "the-lost-boys-2026/theatermania--david-gordon.json",
-      "oldUrl": "https://www.theatermania.com/news/review-the-lost-boys-breaks-the-curse-of-the-vampire-musical-on-broadway_1834562/",
-      "newUrl": "https://www.theatermania.com/news/the-lost-boys-leads-2026-outer-critics-circle-award-nominations_1833672/"
+      "oldUrl": "https://www.theatermania.com/news/the-lost-boys-leads-2026-outer-critics-circle-award-nominations_1833672/",
+      "newUrl": "https://www.theatermania.com/news/review-the-lost-boys-breaks-the-curse-of-the-vampire-musical-on-broadway_1834562/"
     },
     {
       "reviewId": "the-lost-boys-2026/theatermania--editorial-staff.json",
-      "oldUrl": "https://www.theatermania.com/news/review-the-lost-boys-breaks-the-curse-of-the-vampire-musical-on-broadway_1834562/",
-      "newUrl": "https://www.theatermania.com/news/the-lost-boys-leads-2026-outer-critics-circle-award-nominations_1833672/"
+      "oldUrl": "https://www.theatermania.com/news/the-lost-boys-leads-2026-outer-critics-circle-award-nominations_1833672/",
+      "newUrl": "https://www.theatermania.com/news/review-the-lost-boys-breaks-the-curse-of-the-vampire-musical-on-broadway_1834562/"
     },
     {
       "reviewId": "the-lost-boys-2026/playbill--unknown.json",
-      "oldUrl": "https://playbill.com/article/reviews-what-do-the-critics-think-of-the-lost-boys-on-broadway",
-      "newUrl": "https://playbill.com/article/a-three-story-set-a-65-foot-fly-rig-the-lost-boys-promises-a-true-broadway-spectacle"
+      "oldUrl": "https://playbill.com/article/a-three-story-set-a-65-foot-fly-rig-the-lost-boys-promises-a-true-broadway-spectacle",
+      "newUrl": "https://playbill.com/article/reviews-what-do-the-critics-think-of-the-lost-boys-on-broadway"
     },
     {
       "reviewId": "joe-turners-come-and-gone-2026/playbill--unknown.json",
-      "oldUrl": "https://playbill.com/article/reviews-what-do-the-critics-think-of-joe-turners-come-and-gone-on-broadway",
-      "newUrl": "https://playbill.com/article/video-cast-of-joe-turners-come-and-gone-discuss-doing-august-wilsons-favorite-play"
-    },
-    {
-      "reviewId": "the-rocky-horror-show-2026/ew--dalton-ross.json",
-      "oldUrl": "https://ew.com/the-rocky-horror-show-review-luke-evans-born-to-wear-fishnets-on-broadway-11956084?srsltid=AfmBOoqNKNSEX3TuJngoMxVe6FhisMnqj3_Tdj3PSCuJchr9-Wf7dXU4",
-      "newUrl": "https://ew.com/the-rocky-horror-show-review-luke-evans-born-to-wear-fishnets-on-broadway-11956084?srsltid=AfmBOoqONF8yotwgZcg-OxvWOZHQFcWEYEvdTLX7SE8DfP838i-FktRg"
+      "oldUrl": "https://playbill.com/article/video-cast-of-joe-turners-come-and-gone-discuss-doing-august-wilsons-favorite-play",
+      "newUrl": "https://playbill.com/article/reviews-what-do-the-critics-think-of-joe-turners-come-and-gone-on-broadway"
     },
     {
       "reviewId": "the-rocky-horror-show-2026/playbill--unknown.json",
-      "oldUrl": "https://playbill.com/article/reviews-did-critics-find-the-rocky-horror-show-revival-worth-the-antici-pation",
-      "newUrl": "https://playbill.com/article/the-rocky-horror-show-extends-on-broadway"
+      "oldUrl": "https://playbill.com/article/the-rocky-horror-show-extends-on-broadway",
+      "newUrl": "https://playbill.com/article/reviews-did-critics-find-the-rocky-horror-show-revival-worth-the-antici-pation"
     },
     {
       "reviewId": "the-balusters-2026/playbill--unknown.json",
-      "oldUrl": "https://playbill.com/article/watch-a-scene-from-the-balusters-on-broadway",
-      "newUrl": "https://playbill.com/article/reviews-what-do-the-critics-think-of-the-balusters-on-broadway"
+      "oldUrl": "https://playbill.com/article/reviews-what-do-the-critics-think-of-the-balusters-on-broadway",
+      "newUrl": "https://playbill.com/article/get-a-1st-look-at-the-balusters-on-broadway"
+    },
+    {
+      "reviewId": "proof-2026/playbill--unknown.json",
+      "oldUrl": "https://playbill.com/article/reviews-what-do-the-critics-think-of-proof-on-broadway",
+      "newUrl": "https://playbill.com/article/david-auburn-wasnt-planning-for-a-proof-revival-then-don-cheadle-and-ayo-edebiri-showed-up"
     }
   ]
 }
