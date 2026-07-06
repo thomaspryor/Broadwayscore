@@ -264,3 +264,13 @@ test('Claude Max subscription books as anthropic-max subscription, not API usage
   assert.ok(apiRow.excluded);
   assert.ok(!apiRowMay.excluded);
 });
+
+test('Vercel Jan–Mar 2026 excluded (family-paid), including the Feb bill and Mar refund; Apr+ kept', () => {
+  const rows = [
+    { vendorKey: 'vercel', kind: 'usage', date: '2026-02-21' },   // the $3.5K bill
+    { vendorKey: 'vercel', kind: 'refund', date: '2026-03-04' },  // its refund
+    { vendorKey: 'vercel', kind: 'usage', date: '2026-04-22' },   // April onward = business
+  ];
+  M.applyExternallyPaid(rows, config);
+  assert.deepEqual(rows.map((r) => !!r.excluded), [true, true, false]);
+});

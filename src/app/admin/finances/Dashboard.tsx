@@ -24,6 +24,23 @@ interface VendorRow {
   momPct: number | null;
 }
 
+interface ExpenseRow {
+  date: string;
+  vendor: string;
+  category: string;
+  kind: string;
+  amount: number;
+  excluded: boolean;
+  excludedReason?: string;
+}
+
+interface QueueItem {
+  date: string;
+  from: string;
+  subject: string;
+  reason: string;
+}
+
 interface Stats {
   asOfMonth: string;
   current: TrendMonth | null;
@@ -34,6 +51,8 @@ interface Stats {
   byVendor: VendorRow[];
   recurringVsUsage: { recurring: number; usage: number };
   excluded: { count: number; totalUsd: number };
+  rows: ExpenseRow[];
+  queuePreview: QueueItem[];
   burnRate: number;
   runwayMonths: number | null;
   totals: { expense: number; revenue: number; net: number };
@@ -92,11 +111,40 @@ function BigStat({ label, value, accent, sub }: { label: string; value: string; 
   );
 }
 
+function MonthDetail({ rows }: { rows: ExpenseRow[] }) {
+  if (rows.length === 0) {
+    return <div className="text-xs text-gray-500 py-2 pl-14">No booked expenses this month.</div>;
+  }
+  return (
+    <div className="pl-2 sm:pl-14 py-2">
+      <table className="w-full text-xs sm:text-sm">
+        <tbody>
+          {rows.map((r, i) => (
+            <tr key={i} className={`border-t border-white/[0.04] ${r.excluded ? 'opacity-50' : ''}`}>
+              <td className="py-1 pr-2 text-gray-500 whitespace-nowrap">{r.date.slice(5)}</td>
+              <td className="py-1 pr-2 text-white">
+                {r.vendor}
+                {r.kind === 'refund' && <span className="ml-1.5 text-[10px] uppercase text-green-400">refund</span>}
+                {r.excluded && <span className="ml-1.5 text-[10px] uppercase text-gray-500">excluded · {r.excludedReason}</span>}
+              </td>
+              <td className="py-1 pr-2 text-gray-500 hidden sm:table-cell">{r.category} · {r.kind}</td>
+              <td className={`py-1 text-right tabular-nums font-semibold ${r.amount < 0 ? 'text-green-400' : r.excluded ? 'text-gray-500' : 'text-gray-200'}`}>
+                {fmtMoney(r.amount)}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 export default function Dashboard() {
   const [months, setMonths] = useState<Months>(6);
   const [stats, setStats] = useState<Stats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [openMonth, setOpenMonth] = useState<string | null>(null);
 
   const load = useCallback(async (m: Months, refresh = false) => {
     setLoading(true);
@@ -129,6 +177,9 @@ export default function Dashboard() {
 
   const cur = stats?.current;
   const maxTrend = stats ? Math.max(...stats.trend.map(t => Math.max(t.expense, t.revenue)), 1) : 1;
+  // First month with any tracked revenue — Impact's API only reaches back 45
+  // days, so earlier months genuinely have no revenue data (not $0 earned).
+  const revenueSince = stats?.trend.find(t => t.revenue > 0 || t.revenuePending > 0)?.month ?? null;
 
   return (
     <div className="space-y-5">
@@ -197,31 +248,50 @@ export default function Dashboard() {
 
           {/* Monthly trend — paired bars, table-legible */}
           <Card title={`Monthly trend — last ${stats.trend.length} months`}>
-            <div className="space-y-2">
-              {stats.trend.map(t => (
-                <div key={t.month} className="grid grid-cols-[3rem_1fr_5rem] items-center gap-2 text-sm">
-                  <span className="text-gray-500 text-xs">{fmtMonth(t.month)}</span>
-                  <div className="space-y-1">
-                    <div className="h-2 rounded-sm bg-green-400/80" style={{ width: `${Math.max((t.revenue / maxTrend) * 100, t.revenue > 0 ? 2 : 0)}%` }} />
-                    <div className="h-2 rounded-sm bg-red-400/70" style={{ width: `${Math.max((t.expense / maxTrend) * 100, t.expense > 0 ? 2 : 0)}%` }} />
+            <div className="text-[11px] text-gray-500 mb-2">Tap a month for the full expense list.</div>
+            <div className="space-y-1">
+              {stats.trend.map(t => {
+                const monthRows = stats.rows.filter(r => r.date.startsWith(t.month));
+                const refunds = monthRows.filter(r => !r.excluded && r.amount < 0).reduce((s, r) => s + r.amount, 0);
+                const gross = t.expense - refunds; // spend before refunds netted
+                const isOpen = openMonth === t.month;
+                return (
+                  <div key={t.month} className="rounded-md -mx-1 px-1 hover:bg-surface-overlay">
+                    <button
+                      onClick={() => setOpenMonth(isOpen ? null : t.month)}
+                      className="w-full grid grid-cols-[3.5rem_1fr_5.5rem] items-center gap-2 text-sm py-1.5 text-left"
+                    >
+                      <span className="text-gray-500 text-xs">{isOpen ? '▾ ' : '▸ '}{fmtMonth(t.month)}</span>
+                      <div className="space-y-1">
+                        <div className="h-2 rounded-sm bg-green-400/80" style={{ width: `${Math.max((t.revenue / maxTrend) * 100, t.revenue > 0 ? 2 : 0)}%` }} />
+                        <div className="flex items-center gap-1">
+                          <div className="h-2 rounded-sm bg-red-400/70" style={{ width: `${Math.max((gross / maxTrend) * 100, gross > 0 ? 2 : 0)}%` }} />
+                          {refunds < 0 && (
+                            <span className="text-[10px] text-green-400 whitespace-nowrap leading-none">{fmtMoney(refunds)} refunded</span>
+                          )}
+                        </div>
+                      </div>
+                      <span
+                        className={`text-right tabular-nums font-semibold ${
+                          t.revenue === 0 && t.expense === 0
+                            ? 'text-gray-600'
+                            : t.net >= 0
+                            ? 'text-green-400'
+                            : 'text-red-400'
+                        }`}
+                      >
+                        {fmtMoney(t.net)}
+                      </span>
+                    </button>
+                    {isOpen && <MonthDetail rows={monthRows} />}
                   </div>
-                  <span
-                    className={`text-right tabular-nums font-semibold ${
-                      t.revenue === 0 && t.expense === 0
-                        ? 'text-gray-600' // no activity that month — don't color a meaningless zero
-                        : t.net >= 0
-                        ? 'text-green-400'
-                        : 'text-red-400'
-                    }`}
-                  >
-                    {fmtMoney(t.net)}
-                  </span>
-                </div>
-              ))}
+                );
+              })}
             </div>
-            <div className="flex gap-4 text-[11px] text-gray-500 mt-3">
+            <div className="flex gap-4 flex-wrap text-[11px] text-gray-500 mt-3">
               <span><span className="inline-block w-2 h-2 rounded-sm bg-green-400/80 mr-1" />revenue</span>
-              <span><span className="inline-block w-2 h-2 rounded-sm bg-red-400/70 mr-1" />expenses</span>
+              <span><span className="inline-block w-2 h-2 rounded-sm bg-red-400/70 mr-1" />expenses (before refunds)</span>
+              {revenueSince && <span>revenue tracked from {fmtMonth(revenueSince)}</span>}
               <span className="ml-auto">
                 {months}mo totals: {fmtMoney(stats.totals.revenue)} in · {fmtMoney(stats.totals.expense)} out ·{' '}
                 <span className={stats.totals.net >= 0 ? 'text-green-400' : 'text-red-400'}>{fmtMoney(stats.totals.net)} net</span>
@@ -258,7 +328,7 @@ export default function Dashboard() {
               </div>
               {stats.reviewQueueCount > 0 && (
                 <div className="mt-3 text-xs text-yellow-500">
-                  {stats.reviewQueueCount} receipt{stats.reviewQueueCount === 1 ? '' : 's'} awaiting classification in the review queue.
+                  {stats.reviewQueueCount} email{stats.reviewQueueCount === 1 ? '' : 's'} in the review queue (listed below).
                 </div>
               )}
             </Card>
@@ -290,6 +360,30 @@ export default function Dashboard() {
                         >
                           {fmtPct(v.momPct)}
                         </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </Card>
+          )}
+
+          {/* Review queue — emails the matcher couldn't classify. Read-only:
+              booking rules live in finance-vendors.json. */}
+          {stats.queuePreview.length > 0 && (
+            <Card title={`Review queue — ${stats.reviewQueueCount} unclassified emails`}>
+              <div className="text-xs text-gray-500 mb-3">
+                Not booked, not counted — just unrecognized. To book or suppress one, add a vendor/ignore rule
+                (tell Claude the sender). Newest {stats.queuePreview.length} shown.
+              </div>
+              <div className="overflow-x-auto -mx-4 sm:-mx-5">
+                <table className="w-full text-xs sm:text-sm">
+                  <tbody>
+                    {stats.queuePreview.map((q, i) => (
+                      <tr key={i} className="border-t border-white/[0.04]">
+                        <td className="px-4 sm:px-5 py-1.5 text-gray-500 whitespace-nowrap align-top">{q.date}</td>
+                        <td className="px-2 py-1.5 text-gray-300 max-w-[10rem] truncate align-top">{q.from}</td>
+                        <td className="px-2 sm:px-5 py-1.5 text-gray-400 align-top">{q.subject}</td>
                       </tr>
                     ))}
                   </tbody>
