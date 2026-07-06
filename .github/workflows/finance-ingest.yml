@@ -68,6 +68,22 @@ jobs:
           if [ "$BACKFILL" = "true" ]; then FLAGS="--backfill"; fi
           node scripts/ingest-finances.js $FLAGS --out=/tmp/finance-data/data/finances
 
+      # Book affiliate commission into the revenue ledger (same module as
+      # /admin/affiliate). continue-on-error: an Impact/Partnerize flake must
+      # not block the expense ingest; the script itself refuses to write
+      # partial data, and the next daily run self-heals.
+      - name: Accrue affiliate revenue
+        continue-on-error: true
+        env:
+          IMPACT_ACCOUNT_SID: ${{ secrets.IMPACT_ACCOUNT_SID }}
+          IMPACT_AUTH_TOKEN: ${{ secrets.IMPACT_AUTH_TOKEN }}
+          PARTNERIZE_APP_KEY: ${{ secrets.PARTNERIZE_APP_KEY }}
+          PARTNERIZE_API_KEY: ${{ secrets.PARTNERIZE_API_KEY }}
+          PARTNERIZE_PUBLISHER_ID: ${{ secrets.PARTNERIZE_PUBLISHER_ID }}
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
+          POSTHOG_PROJECT_ID: ${{ secrets.POSTHOG_PROJECT_ID }}
+        run: node scripts/accrue-revenue.js --out=/tmp/finance-data/data/finances
+
       # hygiene-push-ok: pushes to the external private-repo checkout in /tmp —
       # push-with-retry.sh targets the main workspace checkout and can't be reused here.
       - name: Commit and push ledgers

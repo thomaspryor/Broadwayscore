@@ -254,10 +254,13 @@ test('Claude Max subscription books as anthropic-max subscription, not API usage
     body: 'Usage credits Qty 1 $490.00 Total $504.70 Amount paid $504.70',
   }, config);
   assert.equal(api.vendorKey, 'anthropic');
-  // A pre-May Max sub must NOT be excluded by the API-overage rule.
-  const maxRow = { vendorKey: 'anthropic-max', kind: 'subscription', date: '2026-03-21' };
+  // Max subs are excluded outright on any date (personal — 2026-07-05 user
+  // decision); API recharges follow the pre-May family-paid rule.
+  const maxRow = { vendorKey: 'anthropic-max', kind: 'subscription', date: '2026-06-21' };
   const apiRow = { vendorKey: 'anthropic', kind: 'usage-recharge', date: '2026-03-21' };
-  M.applyExternallyPaid([maxRow, apiRow], config);
-  assert.ok(!maxRow.excluded);
+  const apiRowMay = { vendorKey: 'anthropic', kind: 'usage-recharge', date: '2026-05-21' };
+  M.applyExternallyPaid([maxRow, apiRow, apiRowMay], config);
+  assert.equal(maxRow.excludedReason, 'personal');
   assert.ok(apiRow.excluded);
+  assert.ok(!apiRowMay.excluded);
 });
