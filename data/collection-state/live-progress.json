@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-07-06T12:47:03.405Z",
-  "processed": 9,
-  "failed": 707,
-  "successRate": "1.3%",
+  "updatedAt": "2026-07-06T12:51:15.993Z",
+  "processed": 10,
+  "failed": 716,
+  "successRate": "1.4%",
   "tierBreakdown": {
     "playwright": 7,
     "amp": 0,
-    "browserbase": 13,
+    "browserbase": 15,
     "directCookies": 0,
     "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 22,
+    "archiveToday": 23,
     "archive": 9
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-07-06T07:05:50.782Z",
-      "event": "bb-session",
-      "session": "d2a5e77b",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-pride-and-"
-    },
-    {
-      "t": "2026-07-06T07:05:51.380Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
     {
       "t": "2026-07-06T07:07:00.099Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-07-06T07:17:56.893Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-06T12:48:33.532Z",
+      "event": "bb-session",
+      "session": "f39252dd",
+      "url": "https://www.ft.com/content/cef84f92-3213-430f-a2db-640f6f812dcf?syn-25a6b1a6=1"
+    },
+    {
+      "t": "2026-07-06T12:48:34.114Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
     }
   ]
 }
