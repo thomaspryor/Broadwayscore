@@ -1,26 +1,28 @@
 {
-  "processed": [],
+  "processed": [
+    "relics-west-end-2026/cambridge--unknown.json"
+  ],
   "failed": [
-    "the-misanthrope-west-end-2026/nytheatre--david-gordon.json",
-    "the-misanthrope-west-end-2026/theatermania--david-finkle.json",
-    "the-misanthrope-west-end-2026/about-entertainment--jason-zinoman.json",
-    "the-misanthrope-west-end-2026/backstage--david-sheward.json",
-    "the-misanthrope-west-end-2026/curtainup--simon-saltzman.json",
-    "the-misanthrope-west-end-2026/west-end-best-friend--news-desk.json",
-    "the-misanthrope-west-end-2026/whatsonstage--tanyel-gumushan.json"
+    "relics-west-end-2026/nytimes--unknown.json",
+    "relics-west-end-2026/guardian--unknown.json",
+    "relics-west-end-2026/thestage--neil-norman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "relics-west-end-2026/cambridge--unknown.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/relics-west-end-2026/thestage--neil-norman.json"
+    ],
     "archive": []
   },
-  "startTime": "2026-07-06T06:58:51.730Z",
-  "lastProcessed": "the-misanthrope-west-end-2026/whatsonstage--tanyel-gumushan.json",
+  "startTime": "2026-07-06T06:58:34.355Z",
+  "lastProcessed": "relics-west-end-2026/thestage--neil-norman.json",
   "log": []
 }
