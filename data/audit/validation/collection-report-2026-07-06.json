@@ -1,23 +1,23 @@
 {
-  "runDate": "2026-07-06T07:01:58.741Z",
+  "runDate": "2026-07-06T07:03:48.552Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "sting-west-end-2026",
+    "showFilter": "a-midsummer-nights-dream-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 19,
+    "processed": 1,
+    "failed": 22,
     "skipped": 0,
-    "successRate": "66.7%"
+    "successRate": "4.3%"
   },
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -33,55 +33,53 @@
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 2,
+    "tier2Attempts": 3,
     "tier2Success": 2,
     "tier3Attempts": 1,
     "tier3Success": 1,
     "tier3_6Attempts": 1,
     "tier3_6Success": 1,
-    "tier4Attempts": 1,
+    "tier4Attempts": 2,
     "tier4Success": 0,
-    "totalFailed": 19,
-    "scrapingBeePageCredits": 11,
+    "totalFailed": 22,
+    "scrapingBeePageCredits": 20,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 15,
+    "urlDiscoveryAttempts": 18,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "birthright-off-broadway-2026/theatermania--linda-buchwald.json",
-    "birthright-off-broadway-2026/broadwayworld--aa-cristi.json",
-    "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
-    "birthright-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+    "a-midsummer-nights-dream-west-end-2026/whatsonstage--alex-wood.json"
   ],
   "failed": [
-    "sting-west-end-2026/hollywood-reporter--unknown.json",
-    "sting-west-end-2026/variety--unknown.json",
-    "sting-west-end-2026/deadline--unknown.json",
-    "sting-west-end-2026/ew--unknown.json",
-    "sting-west-end-2026/newsday--linda-winer.json",
-    "sting-west-end-2026/newsday--unknown.json",
-    "sting-west-end-2026/newsday--updated-december.json",
-    "sting-west-end-2026/timeout-london--tim-bano.json",
-    "sting-west-end-2026/amny--unknown.json",
-    "sting-west-end-2026/british-theatre--unknown.json",
-    "sting-west-end-2026/daily-mail--unknown.json",
-    "sting-west-end-2026/huffpost--unknown.json",
-    "sting-west-end-2026/independent--unknown.json",
-    "sting-west-end-2026/nbcny--unknown.json",
-    "sting-west-end-2026/standard--unknown.json",
-    "sting-west-end-2026/talkinbroadway--unknown.json",
-    "sting-west-end-2026/thestage--unknown.json",
-    "sting-west-end-2026/times-uk--stephen-dalton.json",
-    "sting-west-end-2026/westendtheatre--unknown.json"
+    "a-midsummer-nights-dream-west-end-2026/hollywood-reporter--frank-scheck.json",
+    "a-midsummer-nights-dream-west-end-2026/ew--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/newsday--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/nydailynews--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/bloomberg--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/cambridge--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/financialtimes--sarah-hemming.json",
+    "a-midsummer-nights-dream-west-end-2026/huffpost--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/london-box-office--kit-benjamin.json",
+    "a-midsummer-nights-dream-west-end-2026/london-box-office--stuart-king.json",
+    "a-midsummer-nights-dream-west-end-2026/london-theatre--aliya-al-hassan.json",
+    "a-midsummer-nights-dream-west-end-2026/standard--nick-curtis.json",
+    "a-midsummer-nights-dream-west-end-2026/standard--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/sunday-telegraph--claire-allfree.json",
+    "a-midsummer-nights-dream-west-end-2026/telegraph--dominic-cavendish.json",
+    "a-midsummer-nights-dream-west-end-2026/thestage--holly-o.json",
+    "a-midsummer-nights-dream-west-end-2026/thestage--katie-chambers.json",
+    "a-midsummer-nights-dream-west-end-2026/thestage--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/times-uk--dominic-maxwell.json",
+    "a-midsummer-nights-dream-west-end-2026/times-uk--rachel-halliburton.json",
+    "a-midsummer-nights-dream-west-end-2026/westendtheatre--west-end-theatre.json",
+    "a-midsummer-nights-dream-west-end-2026/whatsonstage--theo-bosanquet.json"
   ],
   "tierDetails": {
     "playwright": [
-      "birthright-off-broadway-2026/theatermania--linda-buchwald.json",
-      "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
-      "birthright-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+      "a-midsummer-nights-dream-west-end-2026/whatsonstage--alex-wood.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -89,7 +87,7 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/sting-west-end-2026/thestage--unknown.json"
+      "data/review-texts/a-midsummer-nights-dream-west-end-2026/thestage--unknown.json"
     ],
     "archive": []
   },
