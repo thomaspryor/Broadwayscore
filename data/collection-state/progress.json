@@ -52,7 +52,15 @@
     "avenue-q-west-end-2026/guardian-uk--unknown.json",
     "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
     "proof-2026/playbill--unknown.json",
-    "the-fear-of-13-2026/broadwayworld--unknown.json"
+    "the-fear-of-13-2026/broadwayworld--unknown.json",
+    "the-fear-of-13-2026/one-minute-critic--matthew-wexler.json",
+    "the-fear-of-13-2026/playbill--unknown.json",
+    "death-of-a-salesman-2026/variety--marilyn-stasio.json",
+    "death-of-a-salesman-2026/vulture--rob-weinert-kendt.json",
+    "death-of-a-salesman-2026/theatre-reviews-limited--joseph-verlezza.json",
+    "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
+    "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json",
+    "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json"
   ],
   "failed": [
     "pride-west-end-2026/hollywood-reporter--daniel-fienberg.json",
@@ -669,7 +677,9 @@
     "cyrano-de-bergerac-west-end-2026/broadwayworld--stephi-wild.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-box-office--nastazja-domaradzka.json",
     "joe-turners-come-and-gone-2026/playbill--unknown.json",
-    "avenue-q-west-end-2026/telegraph--marianka-swain.json"
+    "avenue-q-west-end-2026/telegraph--marianka-swain.json",
+    "cats-the-jellicle-ball-2026/newyorker--helen-shaw.json",
+    "cats-the-jellicle-ball-2026/timeout--david-cote.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -714,7 +724,11 @@
       "the-balusters-2026/playbill--unknown.json",
       "avenue-q-west-end-2026/guardian-uk--unknown.json",
       "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
-      "proof-2026/playbill--unknown.json"
+      "proof-2026/playbill--unknown.json",
+      "the-fear-of-13-2026/one-minute-critic--matthew-wexler.json",
+      "death-of-a-salesman-2026/theatre-reviews-limited--joseph-verlezza.json",
+      "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json",
+      "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json"
     ],
     "amp": [],
     "browserbase": [
@@ -731,14 +745,16 @@
       "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
       "data/review-texts/death-of-a-salesman-2026/variety--marilyn-stasio.json",
       "death-of-a-salesman-2026/variety--marilyn-stasio.json",
-      "data/review-texts/springwood-west-end-2026/financialtimes--unknown.json",
-      "springwood-west-end-2026/financialtimes--unknown.json"
+      "data/review-texts/death-of-a-salesman-2026/variety--marilyn-stasio.json",
+      "death-of-a-salesman-2026/variety--marilyn-stasio.json"
     ],
     "directCookies": [
       "beetlejuice-west-end-2026/times-uk--john-bleasdale.json",
       "beetlejuice-west-end-2026/times-uk--susannah-butter.json"
     ],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "the-fear-of-13-2026/playbill--unknown.json"
+    ],
     "brightdata": [
       "the-balusters-2026/broadwayworld--unknown.json",
       "schmigadoon-2026/thewrap--robert-hofler.json",
@@ -784,11 +800,13 @@
       "glengarry-glen-ross-west-end-2026/standard--henry-hitchings.json",
       "small-off-broadway-2026/culturesauce--thom-geier.json",
       "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json",
-      "schmigadoon-2026/theater-pizzazz--eyal-solomon.json"
+      "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
+      "death-of-a-salesman-2026/vulture--rob-weinert-kendt.json",
+      "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json"
     ]
   },
   "startTime": "2026-07-05T16:48:47.319Z",
-  "lastProcessed": "the-fear-of-13-2026/broadwayworld--unknown.json",
+  "lastProcessed": "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json",
   "log": [
     {
       "t": "2026-07-06T07:04:24.294Z",
@@ -912,15 +930,15 @@
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-07-06T12:48:33.532Z",
+      "t": "2026-07-06T12:25:38.850Z",
       "event": "bb-session",
-      "session": "f39252dd",
-      "url": "https://www.ft.com/content/cef84f92-3213-430f-a2db-640f6f812dcf?syn-25a6b1a6=1"
+      "session": "2a715434",
+      "url": "https://variety.com/2026/legit/news/death-of-a-salesman-broadway-review-nathan-l"
     },
     {
-      "t": "2026-07-06T12:48:34.114Z",
+      "t": "2026-07-06T12:25:39.624Z",
       "event": "bb-cookie-inject",
-      "domain": "ft.com"
+      "domain": "variety.com"
     }
   ]
 }
