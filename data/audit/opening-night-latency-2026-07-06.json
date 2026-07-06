@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-06T21:49:08.973Z",
+  "generatedAt": "2026-07-06T22:44:16.994Z",
   "date": "2026-07-06",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 245445,
+  "entryCount": 246600,
   "shows": [
     {
       "showId": "jesus-christ-superstar-west-end-2026",
@@ -2032,6 +2032,21 @@
     {
       "showId": "henry-vi-a-trilogy-in-two-parts-off-broadway-2026",
       "reviewCount": 9,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "giant-2026",
+      "reviewCount": 25,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
