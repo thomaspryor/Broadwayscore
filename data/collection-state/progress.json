@@ -65,7 +65,12 @@
     "dog-day-afternoon-2026/one-minute-critic--matthew-wexler.json",
     "music-city-off-broadway-2026/deadline--greg-evans.json",
     "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
-    "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
+    "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+    "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+    "every-brilliant-thing-2026/nytimes--ben-brantley.json",
+    "every-brilliant-thing-2026/nydailynews--joe-dziemianowicz.json",
+    "every-brilliant-thing-2026/theatermania--hayley-levitt.json",
+    "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "pride-west-end-2026/hollywood-reporter--daniel-fienberg.json",
@@ -699,7 +704,12 @@
     "kinky-boots-the-musical-west-end-2026/chicago-sun-times--the-hand-club-for.json",
     "kinky-boots-the-musical-west-end-2026/city-am--adam-bloodworth.json",
     "kinky-boots-the-musical-west-end-2026/times-square-chronicles--unknown.json",
-    "kinky-boots-the-musical-west-end-2026/london-box-office--davor-golub.json"
+    "kinky-boots-the-musical-west-end-2026/london-box-office--davor-golub.json",
+    "kinky-boots-the-musical-west-end-2026/london-box-office--the-break-a-leggers.json",
+    "kinky-boots-the-musical-west-end-2026/whatsonstage--unknown.json",
+    "every-brilliant-thing-2026/latimes--unknown.json",
+    "every-brilliant-thing-2026/standard--nick-curtis.json",
+    "every-brilliant-thing-2026/telegraph--marianka-swain.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -751,7 +761,9 @@
       "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json",
       "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
       "dog-day-afternoon-2026/one-minute-critic--matthew-wexler.json",
-      "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
+      "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
+      "every-brilliant-thing-2026/theatermania--hayley-levitt.json",
+      "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
     "browserbase": [
@@ -771,14 +783,18 @@
       "data/review-texts/death-of-a-salesman-2026/variety--marilyn-stasio.json",
       "death-of-a-salesman-2026/variety--marilyn-stasio.json",
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
-      "music-city-off-broadway-2026/deadline--greg-evans.json"
+      "music-city-off-broadway-2026/deadline--greg-evans.json",
+      "data/review-texts/every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+      "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json"
     ],
     "directCookies": [
       "beetlejuice-west-end-2026/times-uk--john-bleasdale.json",
       "beetlejuice-west-end-2026/times-uk--susannah-butter.json"
     ],
     "scrapingbee": [
-      "the-fear-of-13-2026/playbill--unknown.json"
+      "the-fear-of-13-2026/playbill--unknown.json",
+      "every-brilliant-thing-2026/nytimes--ben-brantley.json",
+      "every-brilliant-thing-2026/nydailynews--joe-dziemianowicz.json"
     ],
     "brightdata": [
       "the-balusters-2026/broadwayworld--unknown.json",
@@ -832,7 +848,7 @@
     ]
   },
   "startTime": "2026-07-05T16:48:47.319Z",
-  "lastProcessed": "kinky-boots-the-musical-west-end-2026/london-box-office--davor-golub.json",
+  "lastProcessed": "every-brilliant-thing-2026/telegraph--marianka-swain.json",
   "log": [
     {
       "t": "2026-07-06T07:04:24.294Z",
@@ -976,6 +992,17 @@
       "t": "2026-07-06T12:27:39.207Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-06T12:29:29.631Z",
+      "event": "bb-session",
+      "session": "f4b9a6f8",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/tracee-ellis-ross-broadway-ever"
+    },
+    {
+      "t": "2026-07-06T12:29:30.508Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
