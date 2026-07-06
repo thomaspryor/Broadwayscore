@@ -111,15 +111,41 @@ function BigStat({ label, value, accent, sub }: { label: string; value: string; 
   );
 }
 
+type DetailSort = 'date' | 'amount-desc' | 'amount-asc';
+
 function MonthDetail({ rows }: { rows: ExpenseRow[] }) {
+  const [sort, setSort] = useState<DetailSort>('amount-desc');
   if (rows.length === 0) {
     return <div className="text-xs text-gray-500 py-2 pl-14">No booked expenses this month.</div>;
   }
+  const sorted = [...rows].sort((a, b) =>
+    sort === 'date' ? b.date.localeCompare(a.date)
+    : sort === 'amount-desc' ? b.amount - a.amount
+    : a.amount - b.amount,
+  );
+  const opts: { key: DetailSort; label: string }[] = [
+    { key: 'amount-desc', label: '$ high' },
+    { key: 'amount-asc', label: '$ low' },
+    { key: 'date', label: 'date' },
+  ];
   return (
     <div className="pl-2 sm:pl-14 py-2">
+      <div className="flex gap-1 mb-1">
+        {opts.map(o => (
+          <button
+            key={o.key}
+            onClick={() => setSort(o.key)}
+            className={`px-2 py-0.5 text-[10px] uppercase tracking-wide rounded ${
+              sort === o.key ? 'bg-surface-overlay text-white' : 'text-gray-500 hover:text-gray-300'
+            }`}
+          >
+            {o.label}
+          </button>
+        ))}
+      </div>
       <table className="w-full text-xs sm:text-sm">
         <tbody>
-          {rows.map((r, i) => (
+          {sorted.map((r, i) => (
             <tr key={i} className={`border-t border-white/[0.04] ${r.excluded ? 'opacity-50' : ''}`}>
               <td className="py-1 pr-2 text-gray-500 whitespace-nowrap">{r.date.slice(5)}</td>
               <td className="py-1 pr-2 text-white">
@@ -145,6 +171,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [openMonth, setOpenMonth] = useState<string | null>(null);
+  const [vendorAsc, setVendorAsc] = useState(false);
 
   const load = useCallback(async (m: Months, refresh = false) => {
     setLoading(true);
@@ -342,13 +369,17 @@ export default function Dashboard() {
                   <thead>
                     <tr className="text-xs text-gray-500 uppercase tracking-wide">
                       <th className="text-left font-medium px-4 sm:px-5 pb-2">Vendor</th>
-                      <th className="text-right font-medium px-2 pb-2">This mo</th>
+                      <th className="text-right font-medium px-2 pb-2">
+                        <button onClick={() => setVendorAsc(a => !a)} className="uppercase tracking-wide hover:text-white">
+                          This mo {vendorAsc ? '↑' : '↓'}
+                        </button>
+                      </th>
                       <th className="text-right font-medium px-2 pb-2">Last mo</th>
                       <th className="text-right font-medium px-4 sm:px-5 pb-2">MoM</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {stats.byVendor.map(v => (
+                    {[...stats.byVendor].sort((a, b) => (vendorAsc ? a.amount - b.amount : b.amount - a.amount)).map(v => (
                       <tr key={v.vendorKey} className="border-t border-white/[0.06]">
                         <td className="px-4 sm:px-5 py-2 text-white font-medium">{v.vendor}</td>
                         <td className="px-2 py-2 text-right text-white font-semibold tabular-nums">{fmtMoney(v.amount)}</td>

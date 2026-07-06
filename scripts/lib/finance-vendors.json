@@ -1,63 +1,950 @@
 {
   "_note": "Vendor allowlist + match rules for the BWSC finance tracker. Committed as code-adjacent config (no dollar amounts, no PII — vendor names already appear in scraper-cost-report.yml / check-secrets-health.js). The actual ledgers (with amounts) live in the PRIVATE repo under data/finances/, gitignored here. A receipt is booked only on a confident positive match; anything else → review queue (never auto-booked). businessPct is the share booked to the business (per-vendor split); mixed-domain vendors (Google) are separated per-charge via match rules, not by percent.",
-  "categories": ["hosting", "scraping", "llm", "email", "analytics", "data-subscription", "domains", "other"],
-
+  "categories": [
+    "hosting",
+    "scraping",
+    "llm",
+    "email",
+    "analytics",
+    "data-subscription",
+    "domains",
+    "other"
+  ],
   "personalExclude": {
     "_note": "Hard-reject senders/patterns BEFORE vendor matching. Guards mixed-domain vendors (Google) and known-personal receipts so they never reach the allowlist.",
-    "fromExact": ["googleplay-noreply@google.com", "googlestore-noreply@google.com"],
-    "fromContains": ["united.com", "amtrak.com", "lyftmail.com", "njtransit.com", "optimum.net", "apple.com", "crunch.com", "tryfi.com", "suno.com", "wispr.ai", "nysun.com/personal-placeholder",
-      "amazon.com", "paypal.com", "chase.com", "venmo.com", "doordash.com", "airbnb.com", "expedia.com", "turo.com", "etsy.com", "jm-maintenance.com", "waveapps.com", "rectanglehealth.com", "transactis.net", "plantemoran.com", "statefarmservice.com", "physiologicnyc.com", "astound.com", "eclinicalmail.com", "rcn.net", "xero.com", "thomas.pryor@gmail.com", "thomaspryor@gmail.com",
-      "janeapp.com", "eventfulbypooja.com", "resly.com.au", "ebmmedical.com", "marcusattorneys.com", "bryanjohnson.com", "substack.com", "fitbod", "returnqueen", "buttondown.email", "driped.com", "notify.proton.me"]
+    "fromExact": [
+      "googleplay-noreply@google.com",
+      "googlestore-noreply@google.com"
+    ],
+    "fromContains": [
+      "united.com",
+      "amtrak.com",
+      "lyftmail.com",
+      "njtransit.com",
+      "optimum.net",
+      "apple.com",
+      "crunch.com",
+      "tryfi.com",
+      "suno.com",
+      "wispr.ai",
+      "nysun.com/personal-placeholder",
+      "amazon.com",
+      "paypal.com",
+      "chase.com",
+      "venmo.com",
+      "doordash.com",
+      "airbnb.com",
+      "expedia.com",
+      "turo.com",
+      "etsy.com",
+      "jm-maintenance.com",
+      "waveapps.com",
+      "rectanglehealth.com",
+      "transactis.net",
+      "plantemoran.com",
+      "statefarmservice.com",
+      "physiologicnyc.com",
+      "astound.com",
+      "eclinicalmail.com",
+      "rcn.net",
+      "xero.com",
+      "thomas.pryor@gmail.com",
+      "thomaspryor@gmail.com",
+      "janeapp.com",
+      "eventfulbypooja.com",
+      "resly.com.au",
+      "ebmmedical.com",
+      "marcusattorneys.com",
+      "bryanjohnson.com",
+      "substack.com",
+      "fitbod",
+      "returnqueen",
+      "buttondown.email",
+      "driped.com",
+      "notify.proton.me",
+      "accounts.scribd.com",
+      "acuityscheduling-mail.com",
+      "adobesign.com",
+      "adsc.com",
+      "aimazor.com",
+      "alchemation.com",
+      "amaysim.com.au",
+      "app.advicepay.com",
+      "app.helcim.com",
+      "app.invoicehome.com",
+      "app.pocketsuite.io",
+      "apps.myob.com",
+      "bankwest.com.au",
+      "bdwayinfo.com",
+      "blvd.co",
+      "booking.com",
+      "broadwayand.com",
+      "buybacktree.com",
+      "chargerback.com",
+      "chubbycable.com",
+      "crystalwatermonitor.com",
+      "dashlane.com",
+      "diceplatform.com",
+      "digital-delivery.com",
+      "discussions.tripleseat.com",
+      "drafthouse.com",
+      "dropbox.com",
+      "eg.vrbo.com",
+      "email.qualialife.com",
+      "email.smh.com.au",
+      "email.ticketmaster.com",
+      "equifaxbreachsettlement.com",
+      "everbody.com",
+      "examine.com",
+      "fahertybrand.com",
+      "fb02.freshbooks.com",
+      "fb05.freshbooks.com",
+      "fedex.com",
+      "figma.com",
+      "finance.nyc.gov",
+      "gadgetgone.com",
+      "ghfproductions.co.uk",
+      "googlegroups.com",
+      "govone.com",
+      "harris-ginsberg.com",
+      "holzkern.com",
+      "ideogram.ai",
+      "improvasylum.com",
+      "info.suitdirect.co.uk",
+      "info.whistle.com",
+      "infomails.microsoft.com",
+      "instacart.com",
+      "legal.spotify.com",
+      "linkedin.com",
+      "longservice.nsw.gov.au",
+      "lucena.com.au",
+      "m.shopifyemail.com",
+      "mail.nordaccount.com",
+      "mail.nordvpn.com",
+      "mail.perplexity.ai",
+      "mailag.cx.usg.oraclecloud.com",
+      "mailservice.computershare.com.au",
+      "mercury.com",
+      "mews.li",
+      "mg.imaginepay.com",
+      "michaelscaduto.com",
+      "mindbodyonline.com",
+      "mizzenandmain.com",
+      "mountsinai.org",
+      "mtishows.com",
+      "myconnectnyc.org",
+      "nordaccount.com",
+      "noreply.meandu.com",
+      "notification.intuit.com",
+      "notifications.ro.co",
+      "nowatch.com",
+      "nyulangone.org",
+      "ohenryproductions.com",
+      "optummedical.com",
+      "orders.rythmhealth.com",
+      "outsidespacenyc.com",
+      "patient-message.com",
+      "patientnotebook.com",
+      "paulsmith.co.uk",
+      "payadvantage.com.au",
+      "perfectvenue.com",
+      "peterattiamd.com",
+      "platedskinscience.com",
+      "po.atlassian.net",
+      "podium.com",
+      "practicemailer.com",
+      "primevideo.com",
+      "proof.com",
+      "publictheater.org",
+      "qcny.com",
+      "questdiagnostics.com",
+      "readwise.io",
+      "rebootspa.com",
+      "rockpoolstudios.com",
+      "safariportal.app",
+      "safewebservices.com",
+      "samsungcheckout.com",
+      "secure-booker.com",
+      "securebillpay.net",
+      "stellatebilling.com",
+      "stubhub.com",
+      "sydneymorningherald.zendesk.com",
+      "t.delta.com",
+      "t.kajabimail.com",
+      "tlfapparel.com",
+      "toasttab.com",
+      "trenitalia.it",
+      "ubank.com.au",
+      "updates.bluebikes.com",
+      "updates.monarch.com",
+      "ups.com",
+      "upvote.shop",
+      "usps.com",
+      "verifypaymentinfo.com",
+      "weareflood.com",
+      "wordpress.com",
+      "yourbooking.qantas.com.au",
+      "zbiotics.com",
+      "acct_16fjkqgaugpntelh",
+      "acct_1aetmjgxitprge41",
+      "acct_1botohjf5wypoq1m",
+      "acct_1gpducfy9xdyqqdy",
+      "acct_1jf5wobfioyzwow8",
+      "acct_1jregtlklhuliuin",
+      "acct_1nntdckmem7gtnd0",
+      "acct_1o1cl0kfx9xmdjpm",
+      "andrew.roberts.moore@gmail.com",
+      "baharatvur@gmail.com",
+      "beccajaney@gmail.com",
+      "debmccarney@gmail.com",
+      "ewcampbell1@gmail.com",
+      "jameskylepatrick@gmail.com",
+      "jennymrankin@gmail.com",
+      "julia.silbergeld@gmail.com",
+      "lnsparkslope@gmail.com",
+      "lyndyberthon@gmail.com",
+      "scaduto@gmail.com",
+      "sethmcnew@gmail.com",
+      "googleone-noreply@google.com"
+    ],
+    "_note2": "2026-07-06: bulk additions from the user's tagged review-queue spreadsheet (256 'personal' rows). Stripe-fronted personal apps are excluded by acct_ id, NOT stripe.com wholesale — scrapingdog/browserbase/x book via Stripe."
   },
-
   "expenseVendors": [
-    { "key": "anthropic-max", "vendor": "Anthropic (Claude Max)", "category": "llm", "kind": "subscription", "businessPct": 100, "match": { "from": "invoice+statements@mail.anthropic.com", "bodyContains": "Max plan" }, "note": "Claude Max subscription shares the API receipt sender. MUST precede 'anthropic' (first match wins) so the sub doesn't book as usage-recharge — and doesn't get caught by the pre-May externallyPaid rule, which covers API overages only." },
-    { "key": "anthropic", "vendor": "Anthropic (Claude API)", "category": "llm", "kind": "usage-recharge", "businessPct": 100, "match": { "from": "invoice+statements@mail.anthropic.com" } },
-    { "key": "google-cloud", "vendor": "Google Cloud (Gemini API)", "category": "llm", "kind": "usage", "businessPct": 100, "match": { "from": "payments-noreply@google.com", "subjectContains": "received your payment", "bodyContains": "Google Cloud Platform" } },
-    { "key": "openrouter", "vendor": "OpenRouter", "category": "llm", "kind": "usage-recharge", "businessPct": 100, "match": { "from": "receipts@openrouter.ai" } },
-    { "key": "openai", "vendor": "OpenAI (API)", "category": "llm", "kind": "usage", "businessPct": 100, "match": { "fromContains": "openai.com", "subjectContains": "receipt" } },
-    { "key": "brightdata", "vendor": "Bright Data", "category": "scraping", "kind": "usage-recharge", "businessPct": 100, "match": { "from": "noreply@brightdata.com", "subjectContains": "recharged" }, "amountAnchor": "recharged for", "note": "Book the recharge emails; amount is 'recharged for $X' (whole-dollar, with a decoy balance figure in the same line). The monthly 'bill (paid)' PDF is a SUMMARY — see brightdata-invoice-ignore." },
-    { "key": "brightdata-invoice-ignore", "vendor": "Bright Data (monthly summary — DO NOT BOOK)", "category": "scraping", "kind": "ignore", "businessPct": 0, "match": { "from": "noreply@brightdata.com", "subjectContains": "monthly bill" }, "note": "Explicit ignore rule so the summary invoice never double-counts the recharges." },
-    { "key": "brightdata-order-ignore", "vendor": "Bright Data (order-complete companion — DO NOT BOOK)", "category": "scraping", "kind": "ignore", "businessPct": 0, "match": { "from": "noreply@brightdata.com", "subjectContains": "your order is complete" }, "note": "Each recharge sends TWO emails: 'recharged for $X' (booked) and 'Your order is complete… receipt is attached' (amount only in the PDF). Ignoring the companion prevents double-booking; 22 of these sat in the review queue after the 2026-07-05 backfill." },
-    { "key": "brightdata-notices-ignore", "vendor": "Bright Data (non-billing notices)", "category": "scraping", "kind": "ignore", "businessPct": 0, "match": { "fromContains": "brightdata.com" }, "note": "Catch-all AFTER the booking + ignore rules above: security notices, token-expiry reminders, product marketing. Order matters — this must stay below brightdata/brightdata-invoice-ignore/brightdata-order-ignore." },
-    { "key": "scrapingbee", "vendor": "ScrapingBee", "category": "scraping", "kind": "subscription", "businessPct": 100, "match": { "from": "contact@scrapingbee.com" } },
-    { "key": "scrapingdog", "vendor": "Scrapingdog", "category": "scraping", "kind": "subscription", "businessPct": 100, "match": { "stripeAcct": "acct_1GXTgWLsPRCYo9Br", "bodyContains": "OPENDATA LABS" } },
-    { "key": "browserbase", "vendor": "Browserbase", "category": "scraping", "kind": "usage", "businessPct": 100, "match": { "stripeAcct": "acct_1Oq0jrGhqv5yXZ43", "bodyContains": "Browserbase" } },
-    { "key": "vercel", "vendor": "Vercel", "category": "hosting", "kind": "usage", "businessPct": 100, "match": { "from": "invoice+statements@vercel.com" } },
-    { "key": "resend", "vendor": "Resend", "category": "email", "kind": "subscription", "businessPct": 100, "match": { "from": "invoice+statements@invoicing.resend.com" } },
-    { "key": "posthog", "vendor": "PostHog", "category": "analytics", "kind": "usage", "businessPct": 100, "match": { "stripeAcct": "acct_1HIMDDEuIatRXSdz", "bodyContains": "PostHog" } },
-    { "key": "github", "vendor": "GitHub", "category": "hosting", "kind": "subscription", "businessPct": 100, "match": { "from": "noreply@github.com", "subjectContains": "Payment Receipt" } },
-    { "key": "x-developer", "vendor": "X Developer Platform (API)", "category": "data-subscription", "kind": "subscription", "businessPct": 100, "match": { "stripeAcct": "acct_1S46seBJoSOSGwEl", "bodyContains": "X Developer Platform" } },
-    { "key": "x-premium", "vendor": "X Premium", "category": "other", "kind": "subscription", "businessPct": 100, "match": { "stripeAcct": "acct_1Ika5JA3KZ32dPo1", "bodyContains": "Premium" }, "note": "Owner: 100% BWSC. Distinct Stripe acct from x-developer." },
-    { "key": "improvmx", "vendor": "ImprovMX", "category": "email", "kind": "subscription", "businessPct": 100, "match": { "from": "support@improvmx.com" } },
-    { "key": "canva", "vendor": "Canva", "category": "other", "kind": "subscription", "businessPct": 100, "match": { "from": "no-reply@account.canva.com" } },
-    { "key": "ny-sun", "vendor": "The New York Sun", "category": "data-subscription", "kind": "subscription", "businessPct": 100, "match": { "from": "invoice+statements@payments.nysun.com" } },
-    { "key": "broadway-brands", "vendor": "Broadway Brands", "category": "data-subscription", "kind": "subscription", "businessPct": 100, "match": { "stripeAcct": "acct_17ohgmL39wk6fORM", "bodyContains": "Broadway Brands" } },
-    { "key": "washington-post", "vendor": "The Washington Post", "category": "data-subscription", "kind": "subscription", "businessPct": 100, "match": { "fromContains": "washingtonpost.com", "subjectContains": "subscription" } },
-    { "key": "apify", "vendor": "Apify", "category": "scraping", "kind": "subscription", "businessPct": 100, "match": { "fromContains": "apify.com", "subjectContains": "payment successful" }, "note": "Scraping platform (APIFY_TOKEN in repo secrets). 4 unbooked invoices found in the 2026-07-06 queue triage." },
-    { "key": "expo", "vendor": "Expo (650 Industries)", "category": "hosting", "kind": "subscription", "businessPct": 100, "match": { "fromContains": "expo.dev", "subjectContains": "receipt" }, "note": "Build/update infra for the BroadwayScorecard iOS app. 4 unbooked receipts found in the 2026-07-06 queue triage." },
-    { "key": "apify-notices-ignore", "vendor": "Apify (non-receipt notices)", "category": "scraping", "kind": "ignore", "businessPct": 0, "match": { "fromContains": "apify.com" }, "note": "Renewal reminders etc. Must stay below the apify booking rule." },
-    { "key": "browserbase-native-ignore", "vendor": "Browserbase (native confirmation — DO NOT BOOK)", "category": "scraping", "kind": "ignore", "businessPct": 0, "match": { "fromContains": "browserbase.com" }, "note": "Browserbase charges book via the Stripe receipt (stripeAcct rule); the 'payment was successful' email from browserbase.com is a companion — booking it would double-count." },
-    { "key": "scrapingdog-notices-ignore", "vendor": "Scrapingdog (failure/auth notices)", "category": "scraping", "kind": "ignore", "businessPct": 0, "match": { "fromContains": "scrapingdog.com" }, "note": "Payment-failed / auth notices; real charges book via the OPENDATA LABS Stripe receipt." },
-    { "key": "openrouter-notices-ignore", "vendor": "OpenRouter (non-receipt notices)", "category": "llm", "kind": "ignore", "businessPct": 0, "match": { "fromContains": "openrouter.ai" }, "note": "Marketing/policy mail. Must stay below the openrouter booking rule (exact-from receipts@)." },
-    { "key": "vercel-notices-ignore", "vendor": "Vercel (support threads, usage alerts)", "category": "hosting", "kind": "ignore", "businessPct": 0, "match": { "fromContains": "vercel.com" }, "note": "Support correspondence + credit-usage notifications. Must stay below the vercel booking rule (exact-from invoice+statements@)." },
-    { "key": "bww-alerts-ignore", "vendor": "BroadwayWorld (alert confirmations)", "category": "other", "kind": "ignore", "businessPct": 0, "match": { "fromContains": "broadwayworld.com" }, "note": "Free review-alert subscription confirmations — no billing." },
-    { "key": "impact-notices-ignore", "vendor": "Impact (commission payout notices)", "category": "other", "kind": "ignore", "businessPct": 0, "match": { "fromContains": "impact.com" }, "note": "Revenue side — booked by accrue-revenue.js from the Impact API, not from emails." },
-    { "key": "anthropic-notices-ignore", "vendor": "Anthropic (non-receipt notices)", "category": "llm", "kind": "ignore", "businessPct": 0, "match": { "fromContains": "anthropic.com" }, "note": "Catch-all AFTER anthropic-max/anthropic booking rules: spend-threshold alerts, API-access notices, failed-payment warnings, login links. Order matters — must stay below the booking rules." }
+    {
+      "key": "anthropic-max",
+      "vendor": "Anthropic (Claude Max)",
+      "category": "llm",
+      "kind": "subscription",
+      "businessPct": 100,
+      "match": {
+        "from": "invoice+statements@mail.anthropic.com",
+        "bodyContains": "Max plan"
+      },
+      "note": "Claude Max subscription shares the API receipt sender. MUST precede 'anthropic' (first match wins) so the sub doesn't book as usage-recharge — and doesn't get caught by the pre-May externallyPaid rule, which covers API overages only."
+    },
+    {
+      "key": "anthropic",
+      "vendor": "Anthropic (Claude API)",
+      "category": "llm",
+      "kind": "usage-recharge",
+      "businessPct": 100,
+      "match": {
+        "from": "invoice+statements@mail.anthropic.com"
+      }
+    },
+    {
+      "key": "google-cloud",
+      "vendor": "Google Cloud (Gemini API)",
+      "category": "llm",
+      "kind": "usage",
+      "businessPct": 100,
+      "match": {
+        "from": "payments-noreply@google.com",
+        "subjectContains": "received your payment",
+        "bodyContains": "Google Cloud Platform"
+      }
+    },
+    {
+      "key": "openrouter",
+      "vendor": "OpenRouter",
+      "category": "llm",
+      "kind": "usage-recharge",
+      "businessPct": 100,
+      "match": {
+        "from": "receipts@openrouter.ai"
+      }
+    },
+    {
+      "key": "openai",
+      "vendor": "OpenAI (API)",
+      "category": "llm",
+      "kind": "usage",
+      "businessPct": 100,
+      "match": {
+        "fromContains": "openai.com",
+        "subjectContains": "receipt"
+      }
+    },
+    {
+      "key": "brightdata",
+      "vendor": "Bright Data",
+      "category": "scraping",
+      "kind": "usage-recharge",
+      "businessPct": 100,
+      "match": {
+        "from": "noreply@brightdata.com",
+        "subjectContains": "recharged"
+      },
+      "amountAnchor": "recharged for",
+      "note": "Book the recharge emails; amount is 'recharged for $X' (whole-dollar, with a decoy balance figure in the same line). The monthly 'bill (paid)' PDF is a SUMMARY — see brightdata-invoice-ignore."
+    },
+    {
+      "key": "brightdata-invoice-ignore",
+      "vendor": "Bright Data (monthly summary — DO NOT BOOK)",
+      "category": "scraping",
+      "kind": "ignore",
+      "businessPct": 0,
+      "match": {
+        "from": "noreply@brightdata.com",
+        "subjectContains": "monthly bill"
+      },
+      "note": "Explicit ignore rule so the summary invoice never double-counts the recharges."
+    },
+    {
+      "key": "brightdata-order-ignore",
+      "vendor": "Bright Data (order-complete companion — DO NOT BOOK)",
+      "category": "scraping",
+      "kind": "ignore",
+      "businessPct": 0,
+      "match": {
+        "from": "noreply@brightdata.com",
+        "subjectContains": "your order is complete"
+      },
+      "note": "Each recharge sends TWO emails: 'recharged for $X' (booked) and 'Your order is complete… receipt is attached' (amount only in the PDF). Ignoring the companion prevents double-booking; 22 of these sat in the review queue after the 2026-07-05 backfill."
+    },
+    {
+      "key": "brightdata-notices-ignore",
+      "vendor": "Bright Data (non-billing notices)",
+      "category": "scraping",
+      "kind": "ignore",
+      "businessPct": 0,
+      "match": {
+        "fromContains": "brightdata.com"
+      },
+      "note": "Catch-all AFTER the booking + ignore rules above: security notices, token-expiry reminders, product marketing. Order matters — this must stay below brightdata/brightdata-invoice-ignore/brightdata-order-ignore."
+    },
+    {
+      "key": "scrapingbee",
+      "vendor": "ScrapingBee",
+      "category": "scraping",
+      "kind": "subscription",
+      "businessPct": 100,
+      "match": {
+        "from": "contact@scrapingbee.com"
+      }
+    },
+    {
+      "key": "scrapingdog",
+      "vendor": "Scrapingdog",
+      "category": "scraping",
+      "kind": "subscription",
+      "businessPct": 100,
+      "match": {
+        "stripeAcct": "acct_1GXTgWLsPRCYo9Br",
+        "bodyContains": "OPENDATA LABS"
+      }
+    },
+    {
+      "key": "browserbase",
+      "vendor": "Browserbase",
+      "category": "scraping",
+      "kind": "usage",
+      "businessPct": 100,
+      "match": {
+        "stripeAcct": "acct_1Oq0jrGhqv5yXZ43",
+        "bodyContains": "Browserbase"
+      }
+    },
+    {
+      "key": "vercel",
+      "vendor": "Vercel",
+      "category": "hosting",
+      "kind": "usage",
+      "businessPct": 100,
+      "match": {
+        "from": "invoice+statements@vercel.com"
+      }
+    },
+    {
+      "key": "resend",
+      "vendor": "Resend",
+      "category": "email",
+      "kind": "subscription",
+      "businessPct": 100,
+      "match": {
+        "from": "invoice+statements@invoicing.resend.com"
+      }
+    },
+    {
+      "key": "posthog",
+      "vendor": "PostHog",
+      "category": "analytics",
+      "kind": "usage",
+      "businessPct": 100,
+      "match": {
+        "stripeAcct": "acct_1HIMDDEuIatRXSdz",
+        "bodyContains": "PostHog"
+      }
+    },
+    {
+      "key": "github",
+      "vendor": "GitHub",
+      "category": "hosting",
+      "kind": "subscription",
+      "businessPct": 100,
+      "match": {
+        "from": "noreply@github.com",
+        "subjectContains": "Payment Receipt"
+      }
+    },
+    {
+      "key": "x-developer",
+      "vendor": "X Developer Platform (API)",
+      "category": "data-subscription",
+      "kind": "subscription",
+      "businessPct": 100,
+      "match": {
+        "stripeAcct": "acct_1S46seBJoSOSGwEl",
+        "bodyContains": "X Developer Platform"
+      }
+    },
+    {
+      "key": "x-premium",
+      "vendor": "X Premium",
+      "category": "other",
+      "kind": "subscription",
+      "businessPct": 100,
+      "match": {
+        "stripeAcct": "acct_1Ika5JA3KZ32dPo1",
+        "bodyContains": "Premium"
+      },
+      "note": "Owner: 100% BWSC. Distinct Stripe acct from x-developer."
+    },
+    {
+      "key": "improvmx",
+      "vendor": "ImprovMX",
+      "category": "email",
+      "kind": "subscription",
+      "businessPct": 100,
+      "match": {
+        "from": "support@improvmx.com"
+      }
+    },
+    {
+      "key": "canva",
+      "vendor": "Canva",
+      "category": "other",
+      "kind": "subscription",
+      "businessPct": 100,
+      "match": {
+        "from": "no-reply@account.canva.com",
+        "subjectContainsAny": [
+          "receipt",
+          "payment received",
+          "invoice",
+          "billed"
+        ]
+      },
+      "note": "2026-07-06: subject gate added so payment-detail nags fall to canva-notices-ignore."
+    },
+    {
+      "key": "ny-sun",
+      "vendor": "The New York Sun",
+      "category": "data-subscription",
+      "kind": "subscription",
+      "businessPct": 100,
+      "match": {
+        "from": "invoice+statements@payments.nysun.com"
+      }
+    },
+    {
+      "key": "broadway-brands",
+      "vendor": "Broadway Brands",
+      "category": "data-subscription",
+      "kind": "subscription",
+      "businessPct": 100,
+      "match": {
+        "stripeAcct": "acct_17ohgmL39wk6fORM",
+        "bodyContains": "Broadway Brands"
+      }
+    },
+    {
+      "key": "washington-post",
+      "vendor": "The Washington Post",
+      "category": "data-subscription",
+      "kind": "subscription",
+      "businessPct": 100,
+      "match": {
+        "fromContains": "washingtonpost.com",
+        "subjectContains": "subscription"
+      }
+    },
+    {
+      "key": "nyt",
+      "vendor": "The New York Times",
+      "category": "data-subscription",
+      "kind": "subscription",
+      "businessPct": 100,
+      "match": {
+        "fromContains": "nytimes.com",
+        "subjectContainsAny": [
+          "receipt",
+          "payment",
+          "invoice",
+          "billed"
+        ]
+      },
+      "note": "2026-07-06 user-tagged business (review source / industry data). Receipt-shaped subjects book; everything else falls to the paired notices-ignore."
+    },
+    {
+      "key": "nyt-notices-ignore",
+      "vendor": "The New York Times (notices)",
+      "category": "data-subscription",
+      "kind": "ignore",
+      "businessPct": 0,
+      "match": {
+        "fromContains": "nytimes.com"
+      }
+    },
+    {
+      "key": "nyt-edm",
+      "vendor": "The New York Times",
+      "category": "data-subscription",
+      "kind": "subscription",
+      "businessPct": 100,
+      "match": {
+        "fromContains": "newyorktimes.com",
+        "subjectContainsAny": [
+          "receipt",
+          "payment",
+          "invoice",
+          "billed"
+        ]
+      },
+      "note": "2026-07-06 user-tagged business (review source / industry data). Receipt-shaped subjects book; everything else falls to the paired notices-ignore."
+    },
+    {
+      "key": "nyt-edm-notices-ignore",
+      "vendor": "The New York Times (notices)",
+      "category": "data-subscription",
+      "kind": "ignore",
+      "businessPct": 0,
+      "match": {
+        "fromContains": "newyorktimes.com"
+      }
+    },
+    {
+      "key": "wsj",
+      "vendor": "The Wall Street Journal (Dow Jones)",
+      "category": "data-subscription",
+      "kind": "subscription",
+      "businessPct": 100,
+      "match": {
+        "fromContains": "dowjones.com",
+        "subjectContainsAny": [
+          "receipt",
+          "payment",
+          "invoice",
+          "billed"
+        ]
+      },
+      "note": "2026-07-06 user-tagged business (review source / industry data). Receipt-shaped subjects book; everything else falls to the paired notices-ignore."
+    },
+    {
+      "key": "wsj-notices-ignore",
+      "vendor": "The Wall Street Journal (Dow Jones) (notices)",
+      "category": "data-subscription",
+      "kind": "ignore",
+      "businessPct": 0,
+      "match": {
+        "fromContains": "dowjones.com"
+      }
+    },
+    {
+      "key": "ft",
+      "vendor": "Financial Times",
+      "category": "data-subscription",
+      "kind": "subscription",
+      "businessPct": 100,
+      "match": {
+        "fromContains": "mail.ft.com",
+        "subjectContainsAny": [
+          "receipt",
+          "payment",
+          "invoice",
+          "billed"
+        ]
+      },
+      "note": "2026-07-06 user-tagged business (review source / industry data). Receipt-shaped subjects book; everything else falls to the paired notices-ignore."
+    },
+    {
+      "key": "ft-notices-ignore",
+      "vendor": "Financial Times (notices)",
+      "category": "data-subscription",
+      "kind": "ignore",
+      "businessPct": 0,
+      "match": {
+        "fromContains": "mail.ft.com"
+      }
+    },
+    {
+      "key": "telegraph",
+      "vendor": "The Telegraph",
+      "category": "data-subscription",
+      "kind": "subscription",
+      "businessPct": 100,
+      "match": {
+        "fromContains": "telegraph.co.uk",
+        "subjectContainsAny": [
+          "receipt",
+          "payment",
+          "invoice",
+          "billed"
+        ]
+      },
+      "note": "2026-07-06 user-tagged business (review source / industry data). Receipt-shaped subjects book; everything else falls to the paired notices-ignore."
+    },
+    {
+      "key": "telegraph-notices-ignore",
+      "vendor": "The Telegraph (notices)",
+      "category": "data-subscription",
+      "kind": "ignore",
+      "businessPct": 0,
+      "match": {
+        "fromContains": "telegraph.co.uk"
+      }
+    },
+    {
+      "key": "times-uk",
+      "vendor": "The Times (UK)",
+      "category": "data-subscription",
+      "kind": "subscription",
+      "businessPct": 100,
+      "match": {
+        "fromContains": "thetimes.co.uk",
+        "subjectContainsAny": [
+          "receipt",
+          "payment",
+          "invoice",
+          "billed"
+        ]
+      },
+      "note": "2026-07-06 user-tagged business (review source / industry data). Receipt-shaped subjects book; everything else falls to the paired notices-ignore."
+    },
+    {
+      "key": "times-uk-notices-ignore",
+      "vendor": "The Times (UK) (notices)",
+      "category": "data-subscription",
+      "kind": "ignore",
+      "businessPct": 0,
+      "match": {
+        "fromContains": "thetimes.co.uk"
+      }
+    },
+    {
+      "key": "new-yorker",
+      "vendor": "The New Yorker",
+      "category": "data-subscription",
+      "kind": "subscription",
+      "businessPct": 100,
+      "match": {
+        "fromContains": "newyorker.com",
+        "subjectContainsAny": [
+          "receipt",
+          "payment",
+          "invoice",
+          "billed"
+        ]
+      },
+      "note": "2026-07-06 user-tagged business (review source / industry data). Receipt-shaped subjects book; everything else falls to the paired notices-ignore."
+    },
+    {
+      "key": "new-yorker-notices-ignore",
+      "vendor": "The New Yorker (notices)",
+      "category": "data-subscription",
+      "kind": "ignore",
+      "businessPct": 0,
+      "match": {
+        "fromContains": "newyorker.com"
+      }
+    },
+    {
+      "key": "newspapers-com",
+      "vendor": "Newspapers.com",
+      "category": "data-subscription",
+      "kind": "subscription",
+      "businessPct": 100,
+      "match": {
+        "fromContains": "newspapers.com",
+        "subjectContainsAny": [
+          "receipt",
+          "payment",
+          "invoice",
+          "billed"
+        ]
+      },
+      "note": "2026-07-06 user-tagged business (review source / industry data). Receipt-shaped subjects book; everything else falls to the paired notices-ignore."
+    },
+    {
+      "key": "newspapers-com-notices-ignore",
+      "vendor": "Newspapers.com (notices)",
+      "category": "data-subscription",
+      "kind": "ignore",
+      "businessPct": 0,
+      "match": {
+        "fromContains": "newspapers.com"
+      }
+    },
+    {
+      "key": "the-stage",
+      "vendor": "The Stage",
+      "category": "data-subscription",
+      "kind": "subscription",
+      "businessPct": 100,
+      "match": {
+        "fromContains": "thestage.co.uk",
+        "subjectContainsAny": [
+          "receipt",
+          "payment",
+          "invoice",
+          "billed"
+        ]
+      },
+      "note": "2026-07-06 user-tagged business (review source / industry data). Receipt-shaped subjects book; everything else falls to the paired notices-ignore."
+    },
+    {
+      "key": "the-stage-notices-ignore",
+      "vendor": "The Stage (notices)",
+      "category": "data-subscription",
+      "kind": "ignore",
+      "businessPct": 0,
+      "match": {
+        "fromContains": "thestage.co.uk"
+      }
+    },
+    {
+      "key": "theatre-record",
+      "vendor": "Theatre Record",
+      "category": "data-subscription",
+      "kind": "subscription",
+      "businessPct": 100,
+      "match": {
+        "fromContains": "theatrerecord.com",
+        "subjectContainsAny": [
+          "receipt",
+          "payment",
+          "invoice",
+          "billed"
+        ]
+      },
+      "note": "2026-07-06 user-tagged business (review source / industry data). Receipt-shaped subjects book; everything else falls to the paired notices-ignore."
+    },
+    {
+      "key": "theatre-record-notices-ignore",
+      "vendor": "Theatre Record (notices)",
+      "category": "data-subscription",
+      "kind": "ignore",
+      "businessPct": 0,
+      "match": {
+        "fromContains": "theatrerecord.com"
+      }
+    },
+    {
+      "key": "broadway-briefing",
+      "vendor": "Broadway Briefing",
+      "category": "data-subscription",
+      "kind": "subscription",
+      "businessPct": 100,
+      "match": {
+        "fromContains": "broadwaybriefing.com",
+        "subjectContainsAny": [
+          "receipt",
+          "payment",
+          "invoice",
+          "billed"
+        ]
+      },
+      "note": "2026-07-06 user-tagged business (review source / industry data). Receipt-shaped subjects book; everything else falls to the paired notices-ignore."
+    },
+    {
+      "key": "broadway-briefing-notices-ignore",
+      "vendor": "Broadway Briefing (notices)",
+      "category": "data-subscription",
+      "kind": "ignore",
+      "businessPct": 0,
+      "match": {
+        "fromContains": "broadwaybriefing.com"
+      }
+    },
+    {
+      "key": "canva-notices-ignore",
+      "vendor": "Canva (notices)",
+      "category": "other",
+      "kind": "ignore",
+      "businessPct": 0,
+      "match": {
+        "fromContains": "canva.com"
+      },
+      "note": "Payment-detail nags etc. Must stay below the canva booking rule (exact-from no-reply@account.canva.com)."
+    },
+    {
+      "key": "apify",
+      "vendor": "Apify",
+      "category": "scraping",
+      "kind": "subscription",
+      "businessPct": 100,
+      "match": {
+        "fromContains": "apify.com",
+        "subjectContains": "payment successful"
+      },
+      "note": "Scraping platform (APIFY_TOKEN in repo secrets). 4 unbooked invoices found in the 2026-07-06 queue triage."
+    },
+    {
+      "key": "expo",
+      "vendor": "Expo (650 Industries)",
+      "category": "hosting",
+      "kind": "subscription",
+      "businessPct": 100,
+      "match": {
+        "fromContains": "expo.dev",
+        "subjectContains": "receipt"
+      },
+      "note": "Build/update infra for the BroadwayScorecard iOS app. 4 unbooked receipts found in the 2026-07-06 queue triage."
+    },
+    {
+      "key": "apify-notices-ignore",
+      "vendor": "Apify (non-receipt notices)",
+      "category": "scraping",
+      "kind": "ignore",
+      "businessPct": 0,
+      "match": {
+        "fromContains": "apify.com"
+      },
+      "note": "Renewal reminders etc. Must stay below the apify booking rule."
+    },
+    {
+      "key": "browserbase-native-ignore",
+      "vendor": "Browserbase (native confirmation — DO NOT BOOK)",
+      "category": "scraping",
+      "kind": "ignore",
+      "businessPct": 0,
+      "match": {
+        "fromContains": "browserbase.com"
+      },
+      "note": "Browserbase charges book via the Stripe receipt (stripeAcct rule); the 'payment was successful' email from browserbase.com is a companion — booking it would double-count."
+    },
+    {
+      "key": "scrapingdog-notices-ignore",
+      "vendor": "Scrapingdog (failure/auth notices)",
+      "category": "scraping",
+      "kind": "ignore",
+      "businessPct": 0,
+      "match": {
+        "fromContains": "scrapingdog.com"
+      },
+      "note": "Payment-failed / auth notices; real charges book via the OPENDATA LABS Stripe receipt."
+    },
+    {
+      "key": "openrouter-notices-ignore",
+      "vendor": "OpenRouter (non-receipt notices)",
+      "category": "llm",
+      "kind": "ignore",
+      "businessPct": 0,
+      "match": {
+        "fromContains": "openrouter.ai"
+      },
+      "note": "Marketing/policy mail. Must stay below the openrouter booking rule (exact-from receipts@)."
+    },
+    {
+      "key": "vercel-notices-ignore",
+      "vendor": "Vercel (support threads, usage alerts)",
+      "category": "hosting",
+      "kind": "ignore",
+      "businessPct": 0,
+      "match": {
+        "fromContains": "vercel.com"
+      },
+      "note": "Support correspondence + credit-usage notifications. Must stay below the vercel booking rule (exact-from invoice+statements@)."
+    },
+    {
+      "key": "bww-alerts-ignore",
+      "vendor": "BroadwayWorld (alert confirmations)",
+      "category": "other",
+      "kind": "ignore",
+      "businessPct": 0,
+      "match": {
+        "fromContains": "broadwayworld.com"
+      },
+      "note": "Free review-alert subscription confirmations — no billing."
+    },
+    {
+      "key": "impact-notices-ignore",
+      "vendor": "Impact (commission payout notices)",
+      "category": "other",
+      "kind": "ignore",
+      "businessPct": 0,
+      "match": {
+        "fromContains": "impact.com"
+      },
+      "note": "Revenue side — booked by accrue-revenue.js from the Impact API, not from emails."
+    },
+    {
+      "key": "anthropic-notices-ignore",
+      "vendor": "Anthropic (non-receipt notices)",
+      "category": "llm",
+      "kind": "ignore",
+      "businessPct": 0,
+      "match": {
+        "fromContains": "anthropic.com"
+      },
+      "note": "Catch-all AFTER anthropic-max/anthropic booking rules: spend-threshold alerts, API-access notices, failed-payment warnings, login links. Order matters — must stay below the booking rules."
+    }
   ],
-
   "externallyPaid": {
     "_note": "Charges someone other than the business paid (family covered early costs — 2026-07-05 user request). Matching rows stay in the ledger for audit but get excluded:true and are skipped by finance-stats. Rules only, no amounts (public repo). 'kinds' omitted = all kinds; 'before' is an exclusive YYYY-MM-DD upper bound on row.date. scrapingbee 'extra-topup' rows are produced by reclassifyMonthlyDupes (2nd+ subscription charge in the same calendar month = credit top-up / early renewal).",
     "rules": [
-      { "vendorKey": "anthropic", "kinds": ["usage-recharge"], "before": "2026-05-01", "reason": "paid-by-family" },
-      { "vendorKey": "scrapingbee", "kinds": ["extra-topup"], "before": "2026-05-01", "reason": "paid-by-family" },
-      { "vendorKey": "anthropic-max", "reason": "personal", "_note": "2026-07-05 user decision: Claude Max subscription stays off the business P&L entirely (no date bound)." },
-      { "vendorKey": "vercel", "before": "2026-04-01", "reason": "paid-by-family", "_note": "2026-07-06 user decision: family covered the first three Vercel months (Jan–Mar 2026). No kinds filter, so the Feb accidental-builds bill AND its Mar refund both drop — removing the cross-month refund artifact from the trend." }
+      {
+        "vendorKey": "anthropic",
+        "kinds": [
+          "usage-recharge"
+        ],
+        "before": "2026-05-01",
+        "reason": "paid-by-family"
+      },
+      {
+        "vendorKey": "scrapingbee",
+        "kinds": [
+          "extra-topup"
+        ],
+        "before": "2026-05-01",
+        "reason": "paid-by-family"
+      },
+      {
+        "vendorKey": "anthropic-max",
+        "reason": "personal",
+        "_note": "2026-07-05 user decision: Claude Max subscription stays off the business P&L entirely (no date bound)."
+      },
+      {
+        "vendorKey": "vercel",
+        "before": "2026-04-01",
+        "reason": "paid-by-family",
+        "_note": "2026-07-06 user decision: family covered the first three Vercel months (Jan–Mar 2026). No kinds filter, so the Feb accidental-builds bill AND its Mar refund both drop — removing the cross-month refund artifact from the trend."
+      }
     ]
   },
-
   "revenueSources": [
-    { "key": "affiliate", "source": "Affiliate commissions", "provider": "Impact + Partnerize", "capture": "api", "note": "Accrued monthly from getAffiliateStats totals.commission (NEVER totals.revenue)." },
-    { "key": "buymeacoffee", "source": "Buy Me A Coffee", "provider": "buymeacoffee.com", "capture": "gmail", "realizedOnPayout": true, "match": { "fromContains": "buymeacoffee.com", "subjectContainsAny": ["supported you", "new member", "became a supporter"] }, "note": "Book as PENDING until a payout clears (account had a verification hold)." }
+    {
+      "key": "affiliate",
+      "source": "Affiliate commissions",
+      "provider": "Impact + Partnerize",
+      "capture": "api",
+      "note": "Accrued monthly from getAffiliateStats totals.commission (NEVER totals.revenue)."
+    },
+    {
+      "key": "buymeacoffee",
+      "source": "Buy Me A Coffee",
+      "provider": "buymeacoffee.com",
+      "capture": "gmail",
+      "realizedOnPayout": true,
+      "match": {
+        "fromContains": "buymeacoffee.com",
+        "subjectContainsAny": [
+          "supported you",
+          "new member",
+          "became a supporter"
+        ]
+      },
+      "note": "Book as PENDING until a payout clears (account had a verification hold)."
+    }
   ]
 }
