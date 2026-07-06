@@ -1,18 +1,41 @@
 {
-  "updatedAt": "2026-07-06T16:46:35.692Z",
-  "processed": 0,
-  "failed": 10,
-  "successRate": "0%",
+  "updatedAt": "2026-07-06T16:52:45.579Z",
+  "processed": 1,
+  "failed": 19,
+  "successRate": "5.0%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 1,
+    "archiveToday": 3,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-07-06T16:51:03.690Z",
+      "event": "bb-session",
+      "session": "08b58aa5",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-pride-and-"
+    },
+    {
+      "t": "2026-07-06T16:51:04.100Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-06T16:52:42.933Z",
+      "event": "bb-session",
+      "session": "dbd34a10",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-pride-and-"
+    },
+    {
+      "t": "2026-07-06T16:52:43.524Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    }
+  ]
 }
