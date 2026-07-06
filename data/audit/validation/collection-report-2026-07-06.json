@@ -14,10 +14,10 @@
     "processed": 0,
     "failed": 19,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "66.7%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 3,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -50,7 +50,12 @@
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "birthright-off-broadway-2026/theatermania--linda-buchwald.json",
+    "birthright-off-broadway-2026/broadwayworld--aa-cristi.json",
+    "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
+    "birthright-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+  ],
   "failed": [
     "sting-west-end-2026/hollywood-reporter--unknown.json",
     "sting-west-end-2026/variety--unknown.json",
@@ -73,7 +78,11 @@
     "sting-west-end-2026/westendtheatre--unknown.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "birthright-off-broadway-2026/theatermania--linda-buchwald.json",
+      "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
+      "birthright-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
