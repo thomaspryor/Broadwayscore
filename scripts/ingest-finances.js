@@ -22,7 +22,7 @@
  */
 const fs = require('fs');
 const path = require('path');
-const { toLedgerRow, loadVendorConfig, reclassifyMonthlyDupes, applyExternallyPaid } = require('./lib/finance-matchers');
+const { toLedgerRow, loadVendorConfig, reclassifyMonthlyDupes, applyExternallyPaid, classifyReceipt } = require('./lib/finance-matchers');
 const { computeFinanceStats } = require('./lib/finance-stats');
 
 function parseArgs(argv) {
@@ -146,10 +146,17 @@ async function main() {
 
   // Drain queue entries whose message has since booked (a matcher fix can turn
   // yesterday's needs-review into today's booking — the stale entry would sit
-  // in the dashboard's review count forever otherwise).
+  // in the dashboard's review count forever otherwise), then re-classify the
+  // remainder against the CURRENT config so new personalExclude/ignore rules
+  // retroactively clear old entries (bodies aren't stored in the queue, but
+  // personal + ignore rules only need from/subject).
   const bookedIds = new Set(ledger.map((r) => r.id).filter(Boolean));
   const queueBefore = queue.length;
   queue = queue.filter((q) => !bookedIds.has(`gmail-${q.gmailMessageId}`));
+  queue = queue.filter((q) => {
+    const cls = classifyReceipt({ from: q.from, subject: q.subject, body: '' }, config);
+    return cls.disposition !== 'personal' && cls.disposition !== 'ignore';
+  });
   const drained = queueBefore - queue.length;
 
   console.log(`Receipts in: ${receipts.length}`);

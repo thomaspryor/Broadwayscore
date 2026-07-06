@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-06T05:37:24.013Z",
+    "generatedAt": "2026-07-06T07:14:15.486Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -20,15 +20,15 @@
     },
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 87
+      "churn": 83
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 82
+      "churn": 79
     },
     {
       "path": "data/audit/validation-baseline.json",
-      "churn": 56
+      "churn": 68
     },
     {
       "path": "data/audit/validation/collection-report-2026-07-05.json",
@@ -50,7 +50,7 @@
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 60
+      "churn": 59
     },
     {
       "path": "data/llm-scoring-garbage-skips.json",
@@ -86,7 +86,7 @@
     },
     {
       "path": "public/data/shows/glengarry-glen-ross-west-end-2026.json",
-      "churn": 36
+      "churn": 37
     },
     {
       "path": "public/data/shows/to-kill-a-mockingbird-west-end-2026.json",
@@ -96,17 +96,17 @@
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 1022,
+      "churn": 1019,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 1004,
+      "churn": 1003,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 507,
+      "churn": 508,
       "mergeAttr": "ours"
     },
     {
@@ -121,7 +121,7 @@
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 163,
+      "churn": 160,
       "mergeAttr": "union"
     },
     {
@@ -140,28 +140,28 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/collection-state/browserbase-usage.json",
-      "churn": 94,
-      "mergeAttr": "ours"
-    },
-    {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 90,
+      "churn": 91,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 88,
+      "churn": 87,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/collection-state/browserbase-usage.json",
+      "churn": 86,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/the-potluck-off-broadway-2026.json",
-      "churn": 72,
+      "churn": 71,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 63,
+      "churn": 64,
       "mergeAttr": "ours"
     },
     {
@@ -177,11 +177,6 @@
     {
       "path": "data/audit/gap-audit-checkpoint.json",
       "churn": 59,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/camping-off-broadway-2026.json",
-      "churn": 48,
       "mergeAttr": "ours"
     },
     {
@@ -202,6 +197,11 @@
     {
       "path": "data/audit/poller-backoff/sting-west-end-2026.json",
       "churn": 48,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/camping-off-broadway-2026.json",
+      "churn": 47,
       "mergeAttr": "ours"
     },
     {
@@ -260,28 +260,28 @@
       "mergeAttr": "ours"
     },
     {
+      "path": "data/audit/poller-backoff/misterman-theatre-row-off-broadway-2026.json",
+      "churn": 36,
+      "mergeAttr": "ours"
+    },
+    {
       "path": "data/audit/url-mismatch-suspects.json",
       "churn": 36,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/poller-backoff/misterman-theatre-row-off-broadway-2026.json",
-      "churn": 35,
-      "mergeAttr": "ours"
-    },
-    {
       "path": "data/audit/poller-backoff/bone-wars-a-new-musical-off-broadway-2026.json",
-      "churn": 33,
+      "churn": 34,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/labelless-off-broadway-2026.json",
-      "churn": 33,
+      "churn": 34,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/the-black-mirror-experience-off-broadway-2026.json",
-      "churn": 33,
+      "churn": 34,
       "mergeAttr": "ours"
     }
   ]
