@@ -67,7 +67,9 @@
     "proof-2026/playbill--unknown.json",
     "the-fear-of-13-2026/broadwayworld--unknown.json",
     "the-fear-of-13-2026/one-minute-critic--matthew-wexler.json",
-    "the-fear-of-13-2026/playbill--unknown.json"
+    "the-fear-of-13-2026/playbill--unknown.json",
+    "death-of-a-salesman-2026/variety--marilyn-stasio.json",
+    "death-of-a-salesman-2026/vulture--rob-weinert-kendt.json"
   ],
   "failed": [
     "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
@@ -1094,7 +1096,15 @@
     "the-fear-of-13-2026/thestage--sam-marlowe.json",
     "the-fear-of-13-2026/times-uk--clive-davis.json",
     "the-fear-of-13-2026/whatsonstage--alex-wood.json",
-    "the-fear-of-13-2026/independent--alice-saville.json"
+    "the-fear-of-13-2026/independent--alice-saville.json",
+    "titanique-2026/the-queer-review--james-kleinmann.json",
+    "titanique-2026/wsj--charles-isherwood.json",
+    "titanique-2026/playbill--unknown.json",
+    "death-of-a-salesman-2026/broadwaynews--brittani-samuel.json",
+    "death-of-a-salesman-2026/newsday--linda-winer.json",
+    "death-of-a-salesman-2026/newsweek--joe-westerfield.json",
+    "death-of-a-salesman-2026/backstage--erik-haagensen.json",
+    "death-of-a-salesman-2026/bloomberg--jeremy-gerard.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1159,7 +1169,9 @@
       "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
       "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
       "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
-      "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json"
+      "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+      "data/review-texts/death-of-a-salesman-2026/variety--marilyn-stasio.json",
+      "death-of-a-salesman-2026/variety--marilyn-stasio.json"
     ],
     "directCookies": [
       "beetlejuice-west-end-2026/times-uk--john-bleasdale.json",
@@ -1192,11 +1204,12 @@
       "a-midsummer-nights-dream-west-end-2026/newsday--updated-november.json",
       "archduke-west-end-2026/broadwayworld--alexander-cohen.json",
       "glengarry-glen-ross-west-end-2026/standard--henry-hitchings.json",
-      "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json"
+      "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json",
+      "death-of-a-salesman-2026/vulture--rob-weinert-kendt.json"
     ]
   },
   "startTime": "2026-07-05T16:48:47.319Z",
-  "lastProcessed": "the-fear-of-13-2026/independent--alice-saville.json",
+  "lastProcessed": "death-of-a-salesman-2026/bloomberg--jeremy-gerard.json",
   "log": [
     {
       "t": "2026-07-05T16:48:55.562Z",
@@ -1296,6 +1309,17 @@
       "t": "2026-07-06T03:14:36.045Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-06T06:51:52.263Z",
+      "event": "bb-session",
+      "session": "e7c7a48b",
+      "url": "https://variety.com/2026/legit/news/death-of-a-salesman-broadway-review-nathan-l"
+    },
+    {
+      "t": "2026-07-06T06:51:53.182Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
