@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-07-06T12:27:05.851Z",
-  "processed": 61,
-  "failed": 617,
-  "successRate": "9.0%",
+  "updatedAt": "2026-07-06T12:28:06.137Z",
+  "processed": 65,
+  "failed": 623,
+  "successRate": "9.4%",
   "tierBreakdown": {
-    "playwright": 45,
+    "playwright": 48,
     "amp": 0,
-    "browserbase": 15,
+    "browserbase": 17,
     "directCookies": 2,
     "scrapingbee": 1,
     "brightdata": 3,
     "archiveToday": 13,
     "archive": 17
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-07-06T07:07:00.099Z",
-      "event": "bb-session",
-      "session": "c6135243",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-prism-prid"
-    },
-    {
-      "t": "2026-07-06T07:07:00.681Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
-    },
     {
       "t": "2026-07-05T19:07:06.887Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-07-06T12:25:39.624Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-06T12:27:38.401Z",
+      "event": "bb-session",
+      "session": "e0f2903a",
+      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
+    },
+    {
+      "t": "2026-07-06T12:27:39.207Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
