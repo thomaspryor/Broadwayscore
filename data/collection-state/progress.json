@@ -1,55 +1,4 @@
 {
-  "runDate": "2026-07-06T16:31:56.323Z",
-  "config": {
-    "batchSize": 10,
-    "maxReviews": 300,
-    "priority": "all",
-    "showFilter": "",
-    "aggressive": false,
-    "scrapingBeeEnabled": true,
-    "brightDataEnabled": true,
-    "stealthPluginLoaded": true
-  },
-  "summary": {
-    "processed": 132,
-    "failed": 1696,
-    "skipped": 0,
-    "successRate": "7.2%"
-  },
-  "tierBreakdown": {
-    "playwright": 81,
-    "amp": 0,
-    "browserbase": 37,
-    "directCookies": 11,
-    "scrapingbee": 12,
-    "brightdata": 6,
-    "archiveToday": 24,
-    "archive": 21
-  },
-  "statistics": {
-    "tier1Attempts": 10,
-    "tier1Success": 5,
-    "ampAttempts": 0,
-    "ampSuccess": 0,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
-    "tier2Attempts": 6,
-    "tier2Success": 1,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 7,
-    "tier4Success": 0,
-    "totalFailed": 290,
-    "scrapingBeePageCredits": 51,
-    "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 297,
-    "urlDiscoverySuccess": 8,
-    "urlDiscoveryCapped": 0
-  },
   "processed": [
     "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json",
     "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
@@ -1882,7 +1831,8 @@
     "kinky-boots-the-musical-west-end-2026/times-square-chronicles--unknown.json",
     "kinky-boots-the-musical-west-end-2026/london-box-office--davor-golub.json"
   ],
-  "tierDetails": {
+  "skipped": [],
+  "tierBreakdown": {
     "playwright": [
       "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json",
       "a-midsummer-nights-dream-west-end-2026/whatsonstage--alex-wood.json",
@@ -2091,47 +2041,261 @@
       "hadestown-west-end-2024/shy-strange-manic--kariss-ainsworth.json"
     ]
   },
-  "failuresByOutlet": {},
-  "urlDiscoveries": [
+  "startTime": "2026-07-05T16:48:47.319Z",
+  "lastProcessed": "kinky-boots-the-musical-west-end-2026/london-box-office--davor-golub.json",
+  "log": [
     {
-      "reviewId": "a-midsummer-nights-dream-west-end-2026/london-box-office--kit-benjamin.json",
-      "oldUrl": "https://www.londonboxoffice.co.uk/news/post/review-midsummer-nights-dream",
-      "newUrl": "https://www.londonboxoffice.co.uk/news/post/a-midsummer-nights-dream-regents-park-open-air-theatre-review"
+      "t": "2026-07-06T07:04:24.294Z",
+      "event": "bb-session",
+      "session": "bc31ce6c",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-pride-and-"
     },
     {
-      "reviewId": "a-midsummer-nights-dream-west-end-2026/london-box-office--marian-pashley.json",
-      "oldUrl": "https://www.londonboxoffice.co.uk/news/post/review-midsummer-nights-dream-open-air",
-      "newUrl": "https://www.londonboxoffice.co.uk/news/post/a-midsummer-nights-dream-regents-park-open-air-theatre-review"
+      "t": "2026-07-06T07:04:24.954Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     },
     {
-      "reviewId": "a-midsummer-nights-dream-west-end-2026/london-box-office--stuart-king.json",
-      "oldUrl": "https://www.londonboxoffice.co.uk/news/post/review-midsummer-nights-dream-bridge-theatre",
-      "newUrl": "https://www.londonboxoffice.co.uk/news/post/a-midsummer-nights-dream-regents-park-open-air-theatre-review"
+      "t": "2026-07-06T07:05:50.782Z",
+      "event": "bb-session",
+      "session": "d2a5e77b",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-pride-and-"
     },
     {
-      "reviewId": "the-truth-a-comedy-by-florian-zeller-west-end-2026/times-uk--dominic-maxwell.json",
-      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/the-truth-review-florian-zeller-apollo-76tb0rdf2",
-      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/the-truth-review-florian-zeller-apollo-76tb0rdf2?eafs_enabled=false"
+      "t": "2026-07-06T07:05:51.380Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     },
     {
-      "reviewId": "much-ado-about-nothing-globe-off-west-end-2026/times-uk--ann-treneman.json",
-      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/much-ado-about-nothing-review-shakespeare-mjwhw56rs",
-      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/much-ado-about-nothing-review-shakespeare-mjwhw56rs?eafs_enabled=false"
+      "t": "2026-07-06T07:07:00.099Z",
+      "event": "bb-session",
+      "session": "c6135243",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-prism-prid"
     },
     {
-      "reviewId": "much-ado-about-nothing-globe-off-west-end-2026/times-uk--clive-davis.json",
-      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/much-ado-about-nothing-review-shakespeare-mjwhw56rs",
-      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/much-ado-about-nothing-review-shakespeare-mjwhw56rs?eafs_enabled=false"
+      "t": "2026-07-06T07:07:00.681Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     },
     {
-      "reviewId": "much-ado-about-nothing-globe-off-west-end-2026/times-uk--dominic-maxwell.json",
-      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/much-ado-about-nothing-review-shakespeare-mjwhw56rs",
-      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/much-ado-about-nothing-review-shakespeare-mjwhw56rs?eafs_enabled=false"
+      "t": "2026-07-05T19:07:06.887Z",
+      "event": "bb-session",
+      "session": "19427701",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
     },
     {
-      "reviewId": "much-ado-about-nothing-globe-off-west-end-2026/times-uk--rachel-halliburton.json",
-      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/much-ado-about-nothing-review-shakespeare-mjwhw56rs",
-      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/much-ado-about-nothing-review-shakespeare-mjwhw56rs?eafs_enabled=false"
+      "t": "2026-07-05T19:07:07.305Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-06T01:29:48.497Z",
+      "event": "bb-session",
+      "session": "cda1488f",
+      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
+    },
+    {
+      "t": "2026-07-06T01:29:49.209Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-06T02:13:54.443Z",
+      "event": "bb-session",
+      "session": "76505faf",
+      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
+    },
+    {
+      "t": "2026-07-06T02:13:54.821Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-06T02:20:44.904Z",
+      "event": "bb-session",
+      "session": "4078082d",
+      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
+    },
+    {
+      "t": "2026-07-06T02:20:45.417Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-06T03:10:32.083Z",
+      "event": "bb-session",
+      "session": "8d8cbe95",
+      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
+    },
+    {
+      "t": "2026-07-06T03:10:32.935Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-06T03:14:35.083Z",
+      "event": "bb-session",
+      "session": "8eebf5ef",
+      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
+    },
+    {
+      "t": "2026-07-06T03:14:36.045Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-06T06:51:52.263Z",
+      "event": "bb-session",
+      "session": "e7c7a48b",
+      "url": "https://variety.com/2026/legit/news/death-of-a-salesman-broadway-review-nathan-l"
+    },
+    {
+      "t": "2026-07-06T06:51:53.182Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-06T07:17:56.324Z",
+      "event": "bb-session",
+      "session": "5abaea39",
+      "url": "https://www.nytimes.com/2026/06/30/theater/birthright-review-israel-spector.html"
+    },
+    {
+      "t": "2026-07-06T07:17:56.893Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-06T12:25:38.850Z",
+      "event": "bb-session",
+      "session": "2a715434",
+      "url": "https://variety.com/2026/legit/news/death-of-a-salesman-broadway-review-nathan-l"
+    },
+    {
+      "t": "2026-07-06T12:25:39.624Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-06T12:27:38.401Z",
+      "event": "bb-session",
+      "session": "e0f2903a",
+      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
+    },
+    {
+      "t": "2026-07-06T12:27:39.207Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-06T12:29:29.631Z",
+      "event": "bb-session",
+      "session": "f4b9a6f8",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/tracee-ellis-ross-broadway-ever"
+    },
+    {
+      "t": "2026-07-06T12:29:30.508Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-07-06T12:32:07.032Z",
+      "event": "bb-session",
+      "session": "e8a053c2",
+      "url": "https://variety.com/2026/legit/news/maya-rudolph-oh-mary-broadway-debut-12366856"
+    },
+    {
+      "t": "2026-07-06T12:32:07.817Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-06T12:32:27.246Z",
+      "event": "bb-session",
+      "session": "802f0f95",
+      "url": "https://variety.com/2026/legit/news/maya-rudolph-oh-mary-broadway-debut-12366856"
+    },
+    {
+      "t": "2026-07-06T12:32:28.039Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-06T12:32:44.978Z",
+      "event": "bb-session",
+      "session": "fc02146d",
+      "url": "https://variety.com/2026/legit/news/maya-rudolph-oh-mary-broadway-debut-12366856"
+    },
+    {
+      "t": "2026-07-06T12:32:45.787Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-06T12:33:06.217Z",
+      "event": "bb-session",
+      "session": "0cadb448",
+      "url": "https://deadline.com/2025/12/john-cameron-mitchell-broadway-oh-mary-1236645723/"
+    },
+    {
+      "t": "2026-07-06T12:33:06.972Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-06T12:35:01.419Z",
+      "event": "bb-session",
+      "session": "e7d667de",
+      "url": "https://deadline.com/2026/07/broadway-two-strangers-carry-a-cake-taylor-swift-12"
+    },
+    {
+      "t": "2026-07-06T12:35:02.268Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-06T12:46:22.201Z",
+      "event": "bb-session",
+      "session": "24625526",
+      "url": "https://www.washingtonpost.com/entertainment/theater/2024/11/12/maybe-happy-endi"
+    },
+    {
+      "t": "2026-07-06T12:46:22.999Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-07-06T12:54:49.818Z",
+      "event": "bb-session",
+      "session": "250799b5",
+      "url": "https://www.thetimes.co.uk/article/hadestown-review-magical-folk-opera-that-touc"
+    },
+    {
+      "t": "2026-07-06T12:54:50.778Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-07-06T12:56:28.072Z",
+      "event": "bb-session",
+      "session": "ce848c2b",
+      "url": "https://deadline.com/2024/03/stranger-things-first-shadow-broadway-1235850385/"
+    },
+    {
+      "t": "2026-07-06T12:56:28.972Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-06T12:56:44.297Z",
+      "event": "bb-session",
+      "session": "2080f76e",
+      "url": "https://deadline.com/2024/03/stranger-things-first-shadow-broadway-1235850385/"
+    },
+    {
+      "t": "2026-07-06T12:56:45.041Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
