@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-06T11:45:49.913Z",
+  "generatedAt": "2026-07-06T13:33:48.329Z",
   "date": "2026-07-06",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 221327,
+  "entryCount": 224830,
   "shows": [
     {
       "showId": "jesus-christ-superstar-west-end-2026",
@@ -1927,6 +1927,36 @@
     {
       "showId": "the-music-man-2022",
       "reviewCount": 40,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "los-soles-truncos-off-broadway-2025",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "evita-west-end-2025",
+      "reviewCount": 29,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
