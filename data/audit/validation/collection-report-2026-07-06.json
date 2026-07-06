@@ -1,23 +1,23 @@
 {
-  "runDate": "2026-07-06T16:45:52.394Z",
+  "runDate": "2026-07-06T16:47:17.825Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "relics-west-end-2026",
+    "showFilter": "sting-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 3,
+    "processed": 0,
+    "failed": 19,
     "skipped": 0,
-    "successRate": "25.0%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -27,8 +27,8 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 1,
+    "tier1Attempts": 4,
+    "tier1Success": 3,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -39,47 +39,51 @@
     "tier3Success": 1,
     "tier3_6Attempts": 1,
     "tier3_6Success": 1,
-    "tier4Attempts": 2,
+    "tier4Attempts": 1,
     "tier4Success": 0,
-    "totalFailed": 3,
+    "totalFailed": 19,
     "scrapingBeePageCredits": 10,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
+    "urlDiscoveryAttempts": 15,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [
-    "relics-west-end-2026/cambridge--unknown.json"
-  ],
+  "processed": [],
   "failed": [
-    "relics-west-end-2026/nytimes--unknown.json",
-    "relics-west-end-2026/guardian--unknown.json",
-    "relics-west-end-2026/thestage--neil-norman.json"
+    "sting-west-end-2026/hollywood-reporter--unknown.json",
+    "sting-west-end-2026/variety--unknown.json",
+    "sting-west-end-2026/deadline--unknown.json",
+    "sting-west-end-2026/ew--unknown.json",
+    "sting-west-end-2026/newsday--linda-winer.json",
+    "sting-west-end-2026/newsday--unknown.json",
+    "sting-west-end-2026/newsday--updated-december.json",
+    "sting-west-end-2026/timeout-london--tim-bano.json",
+    "sting-west-end-2026/amny--unknown.json",
+    "sting-west-end-2026/british-theatre--unknown.json",
+    "sting-west-end-2026/daily-mail--unknown.json",
+    "sting-west-end-2026/huffpost--unknown.json",
+    "sting-west-end-2026/independent--unknown.json",
+    "sting-west-end-2026/nbcny--unknown.json",
+    "sting-west-end-2026/standard--unknown.json",
+    "sting-west-end-2026/talkinbroadway--unknown.json",
+    "sting-west-end-2026/thestage--unknown.json",
+    "sting-west-end-2026/times-uk--stephen-dalton.json",
+    "sting-west-end-2026/westendtheatre--unknown.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "relics-west-end-2026/cambridge--unknown.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/relics-west-end-2026/thestage--neil-norman.json"
+      "data/review-texts/sting-west-end-2026/thestage--unknown.json"
     ],
     "archive": []
   },
-  "failuresByOutlet": {
-    "The Guardian": {
-      "count": 1,
-      "domain": "theguardian.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
