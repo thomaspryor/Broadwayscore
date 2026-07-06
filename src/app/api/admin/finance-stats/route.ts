@@ -86,8 +86,35 @@ export async function GET(request: NextRequest) {
     ]);
 
     const stats = computeFinanceStats({ expenses, revenue, monthsBack: months });
+
+    // Row-level detail for the dashboard's month drill-down. Slimmed to what
+    // the UI renders — no raw email subjects/receipt numbers leave the server.
+    type Row = { date?: string; vendor?: string; category?: string; kind?: string; amountBusiness?: number; amountUsd?: number; excluded?: boolean; excludedReason?: string };
+    const rows = (expenses as Row[])
+      .map((e) => ({
+        date: e.date,
+        vendor: e.vendor,
+        category: e.category,
+        kind: e.kind,
+        amount: e.amountBusiness != null ? e.amountBusiness : e.amountUsd,
+        excluded: !!e.excluded,
+        excludedReason: e.excludedReason,
+      }))
+      .sort((a, b) => String(b.date).localeCompare(String(a.date)));
+
+    // Review-queue preview (admin-only page; senders/subjects are served at
+    // request time from the private repo, never bundled or committed here).
+    type QueueItem = { date?: string; from?: string; subject?: string; reason?: string };
+    const queuePreview = (reviewQueue as QueueItem[])
+      .slice()
+      .sort((a, b) => String(b.date).localeCompare(String(a.date)))
+      .slice(0, 50)
+      .map((q) => ({ date: String(q.date || '').slice(0, 10), from: q.from, subject: q.subject, reason: q.reason }));
+
     const payload = {
       ...stats,
+      rows,
+      queuePreview,
       ledgerCounts: { expenses: expenses.length, revenue: revenue.length },
       reviewQueueCount: reviewQueue.length,
       updatedAt: new Date().toISOString(),

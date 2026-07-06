@@ -34,6 +34,15 @@
     { "key": "ny-sun", "vendor": "The New York Sun", "category": "data-subscription", "kind": "subscription", "businessPct": 100, "match": { "from": "invoice+statements@payments.nysun.com" } },
     { "key": "broadway-brands", "vendor": "Broadway Brands", "category": "data-subscription", "kind": "subscription", "businessPct": 100, "match": { "stripeAcct": "acct_17ohgmL39wk6fORM", "bodyContains": "Broadway Brands" } },
     { "key": "washington-post", "vendor": "The Washington Post", "category": "data-subscription", "kind": "subscription", "businessPct": 100, "match": { "fromContains": "washingtonpost.com", "subjectContains": "subscription" } },
+    { "key": "apify", "vendor": "Apify", "category": "scraping", "kind": "subscription", "businessPct": 100, "match": { "fromContains": "apify.com", "subjectContains": "payment successful" }, "note": "Scraping platform (APIFY_TOKEN in repo secrets). 4 unbooked invoices found in the 2026-07-06 queue triage." },
+    { "key": "expo", "vendor": "Expo (650 Industries)", "category": "hosting", "kind": "subscription", "businessPct": 100, "match": { "fromContains": "expo.dev", "subjectContains": "receipt" }, "note": "Build/update infra for the BroadwayScorecard iOS app. 4 unbooked receipts found in the 2026-07-06 queue triage." },
+    { "key": "apify-notices-ignore", "vendor": "Apify (non-receipt notices)", "category": "scraping", "kind": "ignore", "businessPct": 0, "match": { "fromContains": "apify.com" }, "note": "Renewal reminders etc. Must stay below the apify booking rule." },
+    { "key": "browserbase-native-ignore", "vendor": "Browserbase (native confirmation — DO NOT BOOK)", "category": "scraping", "kind": "ignore", "businessPct": 0, "match": { "fromContains": "browserbase.com" }, "note": "Browserbase charges book via the Stripe receipt (stripeAcct rule); the 'payment was successful' email from browserbase.com is a companion — booking it would double-count." },
+    { "key": "scrapingdog-notices-ignore", "vendor": "Scrapingdog (failure/auth notices)", "category": "scraping", "kind": "ignore", "businessPct": 0, "match": { "fromContains": "scrapingdog.com" }, "note": "Payment-failed / auth notices; real charges book via the OPENDATA LABS Stripe receipt." },
+    { "key": "openrouter-notices-ignore", "vendor": "OpenRouter (non-receipt notices)", "category": "llm", "kind": "ignore", "businessPct": 0, "match": { "fromContains": "openrouter.ai" }, "note": "Marketing/policy mail. Must stay below the openrouter booking rule (exact-from receipts@)." },
+    { "key": "vercel-notices-ignore", "vendor": "Vercel (support threads, usage alerts)", "category": "hosting", "kind": "ignore", "businessPct": 0, "match": { "fromContains": "vercel.com" }, "note": "Support correspondence + credit-usage notifications. Must stay below the vercel booking rule (exact-from invoice+statements@)." },
+    { "key": "bww-alerts-ignore", "vendor": "BroadwayWorld (alert confirmations)", "category": "other", "kind": "ignore", "businessPct": 0, "match": { "fromContains": "broadwayworld.com" }, "note": "Free review-alert subscription confirmations — no billing." },
+    { "key": "impact-notices-ignore", "vendor": "Impact (commission payout notices)", "category": "other", "kind": "ignore", "businessPct": 0, "match": { "fromContains": "impact.com" }, "note": "Revenue side — booked by accrue-revenue.js from the Impact API, not from emails." },
     { "key": "anthropic-notices-ignore", "vendor": "Anthropic (non-receipt notices)", "category": "llm", "kind": "ignore", "businessPct": 0, "match": { "fromContains": "anthropic.com" }, "note": "Catch-all AFTER anthropic-max/anthropic booking rules: spend-threshold alerts, API-access notices, failed-payment warnings, login links. Order matters — must stay below the booking rules." }
   ],
 
@@ -42,7 +51,8 @@
     "rules": [
       { "vendorKey": "anthropic", "kinds": ["usage-recharge"], "before": "2026-05-01", "reason": "paid-by-family" },
       { "vendorKey": "scrapingbee", "kinds": ["extra-topup"], "before": "2026-05-01", "reason": "paid-by-family" },
-      { "vendorKey": "anthropic-max", "reason": "personal", "_note": "2026-07-05 user decision: Claude Max subscription stays off the business P&L entirely (no date bound)." }
+      { "vendorKey": "anthropic-max", "reason": "personal", "_note": "2026-07-05 user decision: Claude Max subscription stays off the business P&L entirely (no date bound)." },
+      { "vendorKey": "vercel", "before": "2026-04-01", "reason": "paid-by-family", "_note": "2026-07-06 user decision: family covered the first three Vercel months (Jan–Mar 2026). No kinds filter, so the Feb accidental-builds bill AND its Mar refund both drop — removing the cross-month refund artifact from the trend." }
     ]
   },
 
