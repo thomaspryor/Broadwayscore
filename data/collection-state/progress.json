@@ -76,7 +76,10 @@
     "oh-mary-west-end-2025/nytimes--jesse-green.json",
     "oh-mary-west-end-2025/variety--brent-lang.json",
     "oh-mary-west-end-2025/variety--naman-ramachandran.json",
-    "oh-mary-west-end-2025/variety--unknown.json"
+    "oh-mary-west-end-2025/variety--unknown.json",
+    "oh-mary-west-end-2025/deadline--greg-evans.json",
+    "oh-mary-west-end-2025/theatermania--zachary-stewart.json",
+    "oh-mary-west-end-2025/timeout--adam-feldman.json"
   ],
   "failed": [
     "pride-west-end-2026/hollywood-reporter--daniel-fienberg.json",
@@ -729,7 +732,14 @@
     "black-is-the-color-of-my-voice-west-end-2026/standard--david-jays.json",
     "oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json",
     "oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
-    "oh-mary-west-end-2025/nyt-theater--jonathan-mandell.json"
+    "oh-mary-west-end-2025/nyt-theater--jonathan-mandell.json",
+    "oh-mary-west-end-2025/vulture--sara-holdren.json",
+    "oh-mary-west-end-2025/broadwaynews--brittani-samuel.json",
+    "oh-mary-west-end-2025/ew--christian-holub.json",
+    "oh-mary-west-end-2025/new-york-sun--elysa-gardner.json",
+    "oh-mary-west-end-2025/nypost--johnny-oleksinski.json",
+    "oh-mary-west-end-2025/thewrap--robert-hofler.json",
+    "oh-mary-west-end-2025/wsj--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -785,7 +795,9 @@
       "every-brilliant-thing-2026/theatermania--hayley-levitt.json",
       "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json",
       "oh-mary-west-end-2025/nytg--olivia-rook.json",
-      "oh-mary-west-end-2025/nytg--unknown.json"
+      "oh-mary-west-end-2025/nytg--unknown.json",
+      "oh-mary-west-end-2025/theatermania--zachary-stewart.json",
+      "oh-mary-west-end-2025/timeout--adam-feldman.json"
     ],
     "amp": [],
     "browserbase": [
@@ -813,7 +825,9 @@
       "data/review-texts/oh-mary-west-end-2025/variety--naman-ramachandran.json",
       "oh-mary-west-end-2025/variety--naman-ramachandran.json",
       "data/review-texts/oh-mary-west-end-2025/variety--unknown.json",
-      "oh-mary-west-end-2025/variety--unknown.json"
+      "oh-mary-west-end-2025/variety--unknown.json",
+      "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
+      "oh-mary-west-end-2025/deadline--greg-evans.json"
     ],
     "directCookies": [
       "beetlejuice-west-end-2026/times-uk--john-bleasdale.json",
@@ -877,7 +891,7 @@
     ]
   },
   "startTime": "2026-07-05T16:48:47.319Z",
-  "lastProcessed": "oh-mary-west-end-2025/variety--unknown.json",
+  "lastProcessed": "oh-mary-west-end-2025/wsj--charles-isherwood.json",
   "log": [
     {
       "t": "2026-07-06T07:04:24.294Z",
@@ -1065,6 +1079,17 @@
       "t": "2026-07-06T12:32:45.787Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-06T12:33:06.217Z",
+      "event": "bb-session",
+      "session": "0cadb448",
+      "url": "https://deadline.com/2025/12/john-cameron-mitchell-broadway-oh-mary-1236645723/"
+    },
+    {
+      "t": "2026-07-06T12:33:06.972Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }

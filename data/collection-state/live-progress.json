@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-07-06T12:33:01.043Z",
-  "processed": 77,
-  "failed": 651,
-  "successRate": "10.6%",
+  "updatedAt": "2026-07-06T12:34:02.066Z",
+  "processed": 80,
+  "failed": 658,
+  "successRate": "10.8%",
   "tierBreakdown": {
-    "playwright": 52,
+    "playwright": 54,
     "amp": 0,
-    "browserbase": 25,
+    "browserbase": 27,
     "directCookies": 2,
     "scrapingbee": 4,
     "brightdata": 3,
     "archiveToday": 13,
     "archive": 18
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
-    {
-      "t": "2026-07-06T03:10:32.083Z",
-      "event": "bb-session",
-      "session": "8d8cbe95",
-      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
-    },
-    {
-      "t": "2026-07-06T03:10:32.935Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-07-06T03:14:35.083Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-07-06T12:32:45.787Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-06T12:33:06.217Z",
+      "event": "bb-session",
+      "session": "0cadb448",
+      "url": "https://deadline.com/2025/12/john-cameron-mitchell-broadway-oh-mary-1236645723/"
+    },
+    {
+      "t": "2026-07-06T12:33:06.972Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
