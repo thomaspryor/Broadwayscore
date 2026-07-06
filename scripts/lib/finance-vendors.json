@@ -5,7 +5,9 @@
   "personalExclude": {
     "_note": "Hard-reject senders/patterns BEFORE vendor matching. Guards mixed-domain vendors (Google) and known-personal receipts so they never reach the allowlist.",
     "fromExact": ["googleplay-noreply@google.com", "googlestore-noreply@google.com"],
-    "fromContains": ["united.com", "amtrak.com", "lyftmail.com", "njtransit.com", "optimum.net", "apple.com", "crunch.com", "tryfi.com", "suno.com", "wispr.ai", "nysun.com/personal-placeholder"]
+    "fromContains": ["united.com", "amtrak.com", "lyftmail.com", "njtransit.com", "optimum.net", "apple.com", "crunch.com", "tryfi.com", "suno.com", "wispr.ai", "nysun.com/personal-placeholder",
+      "amazon.com", "paypal.com", "chase.com", "venmo.com", "doordash.com", "airbnb.com", "expedia.com", "turo.com", "etsy.com", "jm-maintenance.com", "waveapps.com", "rectanglehealth.com", "transactis.net", "plantemoran.com", "statefarmservice.com", "physiologicnyc.com", "astound.com", "eclinicalmail.com", "rcn.net", "xero.com", "thomas.pryor@gmail.com", "thomaspryor@gmail.com",
+      "janeapp.com", "eventfulbypooja.com", "resly.com.au", "ebmmedical.com", "marcusattorneys.com", "bryanjohnson.com", "substack.com", "fitbod", "returnqueen", "buttondown.email", "driped.com", "notify.proton.me"]
   },
 
   "expenseVendors": [
@@ -16,6 +18,8 @@
     { "key": "openai", "vendor": "OpenAI (API)", "category": "llm", "kind": "usage", "businessPct": 100, "match": { "fromContains": "openai.com", "subjectContains": "receipt" } },
     { "key": "brightdata", "vendor": "Bright Data", "category": "scraping", "kind": "usage-recharge", "businessPct": 100, "match": { "from": "noreply@brightdata.com", "subjectContains": "recharged" }, "amountAnchor": "recharged for", "note": "Book the recharge emails; amount is 'recharged for $X' (whole-dollar, with a decoy balance figure in the same line). The monthly 'bill (paid)' PDF is a SUMMARY — see brightdata-invoice-ignore." },
     { "key": "brightdata-invoice-ignore", "vendor": "Bright Data (monthly summary — DO NOT BOOK)", "category": "scraping", "kind": "ignore", "businessPct": 0, "match": { "from": "noreply@brightdata.com", "subjectContains": "monthly bill" }, "note": "Explicit ignore rule so the summary invoice never double-counts the recharges." },
+    { "key": "brightdata-order-ignore", "vendor": "Bright Data (order-complete companion — DO NOT BOOK)", "category": "scraping", "kind": "ignore", "businessPct": 0, "match": { "from": "noreply@brightdata.com", "subjectContains": "your order is complete" }, "note": "Each recharge sends TWO emails: 'recharged for $X' (booked) and 'Your order is complete… receipt is attached' (amount only in the PDF). Ignoring the companion prevents double-booking; 22 of these sat in the review queue after the 2026-07-05 backfill." },
+    { "key": "brightdata-notices-ignore", "vendor": "Bright Data (non-billing notices)", "category": "scraping", "kind": "ignore", "businessPct": 0, "match": { "fromContains": "brightdata.com" }, "note": "Catch-all AFTER the booking + ignore rules above: security notices, token-expiry reminders, product marketing. Order matters — this must stay below brightdata/brightdata-invoice-ignore/brightdata-order-ignore." },
     { "key": "scrapingbee", "vendor": "ScrapingBee", "category": "scraping", "kind": "subscription", "businessPct": 100, "match": { "from": "contact@scrapingbee.com" } },
     { "key": "scrapingdog", "vendor": "Scrapingdog", "category": "scraping", "kind": "subscription", "businessPct": 100, "match": { "stripeAcct": "acct_1GXTgWLsPRCYo9Br", "bodyContains": "OPENDATA LABS" } },
     { "key": "browserbase", "vendor": "Browserbase", "category": "scraping", "kind": "usage", "businessPct": 100, "match": { "stripeAcct": "acct_1Oq0jrGhqv5yXZ43", "bodyContains": "Browserbase" } },
@@ -29,14 +33,16 @@
     { "key": "canva", "vendor": "Canva", "category": "other", "kind": "subscription", "businessPct": 100, "match": { "from": "no-reply@account.canva.com" } },
     { "key": "ny-sun", "vendor": "The New York Sun", "category": "data-subscription", "kind": "subscription", "businessPct": 100, "match": { "from": "invoice+statements@payments.nysun.com" } },
     { "key": "broadway-brands", "vendor": "Broadway Brands", "category": "data-subscription", "kind": "subscription", "businessPct": 100, "match": { "stripeAcct": "acct_17ohgmL39wk6fORM", "bodyContains": "Broadway Brands" } },
-    { "key": "washington-post", "vendor": "The Washington Post", "category": "data-subscription", "kind": "subscription", "businessPct": 100, "match": { "fromContains": "washingtonpost.com", "subjectContains": "subscription" } }
+    { "key": "washington-post", "vendor": "The Washington Post", "category": "data-subscription", "kind": "subscription", "businessPct": 100, "match": { "fromContains": "washingtonpost.com", "subjectContains": "subscription" } },
+    { "key": "anthropic-notices-ignore", "vendor": "Anthropic (non-receipt notices)", "category": "llm", "kind": "ignore", "businessPct": 0, "match": { "fromContains": "anthropic.com" }, "note": "Catch-all AFTER anthropic-max/anthropic booking rules: spend-threshold alerts, API-access notices, failed-payment warnings, login links. Order matters — must stay below the booking rules." }
   ],
 
   "externallyPaid": {
     "_note": "Charges someone other than the business paid (family covered early costs — 2026-07-05 user request). Matching rows stay in the ledger for audit but get excluded:true and are skipped by finance-stats. Rules only, no amounts (public repo). 'kinds' omitted = all kinds; 'before' is an exclusive YYYY-MM-DD upper bound on row.date. scrapingbee 'extra-topup' rows are produced by reclassifyMonthlyDupes (2nd+ subscription charge in the same calendar month = credit top-up / early renewal).",
     "rules": [
       { "vendorKey": "anthropic", "kinds": ["usage-recharge"], "before": "2026-05-01", "reason": "paid-by-family" },
-      { "vendorKey": "scrapingbee", "kinds": ["extra-topup"], "before": "2026-05-01", "reason": "paid-by-family" }
+      { "vendorKey": "scrapingbee", "kinds": ["extra-topup"], "before": "2026-05-01", "reason": "paid-by-family" },
+      { "vendorKey": "anthropic-max", "reason": "personal", "_note": "2026-07-05 user decision: Claude Max subscription stays off the business P&L entirely (no date bound)." }
     ]
   },
 

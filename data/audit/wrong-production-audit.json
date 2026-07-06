@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-06T05:30:08.254Z",
+  "timestamp": "2026-07-06T07:09:59.658Z",
   "stats": {
-    "totalReviews": 39796,
-    "alreadyFlagged": 17493,
+    "totalReviews": 39797,
+    "alreadyFlagged": 17496,
     "dateGuardCatches": 42,
-    "directorMismatch": 891,
-    "tvFilmSignals": 1095,
+    "directorMismatch": 892,
+    "tvFilmSignals": 1094,
     "londonSignals": 735,
     "offBroadwaySignals": 467,
     "yearMismatch": 86,
-    "noPublishDate": 3985
+    "noPublishDate": 3984
   },
   "findings": [
     {
@@ -1739,20 +1739,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "avenue-q-west-end-2026",
-      "file": "telegraph--marianka-swain.json",
-      "score": 82,
-      "publishDate": "2026-04-17",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/avenue-qs-bawdy-puppets-gleefully-outrageous/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -8546,7 +8532,7 @@
       "file": "independent--alice-saville.json",
       "score": 58,
       "publishDate": "2026-06-18",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html?loginSuccessful=true",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -12683,6 +12669,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
+      "file": "the-recs--the-recs-em-erin-muldoon.json",
+      "score": 90,
+      "publishDate": "2026-03-27",
+      "url": "https://therecs.co.uk/john-proctor-is-the-villain/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
         }
       ]
     },
@@ -41491,7 +41491,7 @@
       "file": "thestage--dave-fargnoli.json",
       "score": 38,
       "publishDate": "2026-06-24",
-      "url": "https://www.thestage.co.uk/reviews/the-misanthrope-review-lyttelton-national-theatre-london-sandra-oh",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-misanthrope-review-sandra-oh-what-a-disappointment-sbzvf82b2?t=1782310602034",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

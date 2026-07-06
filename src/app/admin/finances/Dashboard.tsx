@@ -302,8 +302,8 @@ export default function Dashboard() {
             {stats.ledgerCounts.expenses} expense rows · {stats.ledgerCounts.revenue} revenue rows · amounts USD ·
             businessPct applied · pending revenue excluded from net.
             {stats.excluded?.count > 0 && (
-              <> {stats.excluded.count} early charge{stats.excluded.count === 1 ? '' : 's'} ({fmtMoney(stats.excluded.totalUsd)})
-              paid externally — not counted.</>
+              <> {stats.excluded.count} charge{stats.excluded.count === 1 ? '' : 's'} ({fmtMoney(stats.excluded.totalUsd)})
+              excluded — not business costs (family-paid early overages, personal subscriptions).</>
             )}
           </div>
         </>
