@@ -1,53 +1,20 @@
 {
-  "updatedAt": "2026-07-06T12:31:15.457Z",
-  "processed": 71,
-  "failed": 647,
-  "successRate": "9.9%",
+  "updatedAt": "2026-07-06T12:33:01.043Z",
+  "processed": 77,
+  "failed": 651,
+  "successRate": "10.6%",
   "tierBreakdown": {
-    "playwright": 50,
+    "playwright": 52,
     "amp": 0,
-    "browserbase": 19,
+    "browserbase": 25,
     "directCookies": 2,
-    "scrapingbee": 3,
+    "scrapingbee": 4,
     "brightdata": 3,
     "archiveToday": 13,
     "archive": 18
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-07-06T01:29:48.497Z",
-      "event": "bb-session",
-      "session": "cda1488f",
-      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
-    },
-    {
-      "t": "2026-07-06T01:29:49.209Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-07-06T02:13:54.443Z",
-      "event": "bb-session",
-      "session": "76505faf",
-      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
-    },
-    {
-      "t": "2026-07-06T02:13:54.821Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-07-06T02:20:44.904Z",
-      "event": "bb-session",
-      "session": "4078082d",
-      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
-    },
-    {
-      "t": "2026-07-06T02:20:45.417Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-07-06T03:10:32.083Z",
       "event": "bb-session",
@@ -124,6 +91,39 @@
       "t": "2026-07-06T12:29:30.508Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-07-06T12:32:07.032Z",
+      "event": "bb-session",
+      "session": "e8a053c2",
+      "url": "https://variety.com/2026/legit/news/maya-rudolph-oh-mary-broadway-debut-12366856"
+    },
+    {
+      "t": "2026-07-06T12:32:07.817Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-06T12:32:27.246Z",
+      "event": "bb-session",
+      "session": "802f0f95",
+      "url": "https://variety.com/2026/legit/news/maya-rudolph-oh-mary-broadway-debut-12366856"
+    },
+    {
+      "t": "2026-07-06T12:32:28.039Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-06T12:32:44.978Z",
+      "event": "bb-session",
+      "session": "fc02146d",
+      "url": "https://variety.com/2026/legit/news/maya-rudolph-oh-mary-broadway-debut-12366856"
+    },
+    {
+      "t": "2026-07-06T12:32:45.787Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
