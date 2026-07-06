@@ -70,7 +70,8 @@
     "the-fear-of-13-2026/playbill--unknown.json",
     "death-of-a-salesman-2026/variety--marilyn-stasio.json",
     "death-of-a-salesman-2026/vulture--rob-weinert-kendt.json",
-    "jesus-christ-superstar-west-end-2026/broadwayworld--stephi-wild.json"
+    "jesus-christ-superstar-west-end-2026/broadwayworld--stephi-wild.json",
+    "birthright-off-broadway-2026/nytimes--unknown.json"
   ],
   "failed": [
     "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
@@ -1184,7 +1185,16 @@
     "pride-west-end-2026/times-uk--lucy-sweet.json",
     "pride-west-end-2026/whatsonstage--daisy-bowie.json",
     "cyrano-de-bergerac-west-end-2026/hollywood-reporter--david-rooney.json",
-    "cyrano-de-bergerac-west-end-2026/nytg--gillian-russo.json"
+    "cyrano-de-bergerac-west-end-2026/nytg--gillian-russo.json",
+    "cyrano-de-bergerac-west-end-2026/variety--marilyn-stasio.json",
+    "cyrano-de-bergerac-west-end-2026/ew--tanner-stransky.json",
+    "cyrano-de-bergerac-west-end-2026/newsday--linda-winer.json",
+    "cyrano-de-bergerac-west-end-2026/wsj--terry-teachout.json",
+    "pride-west-end-2026/standard--the-standard.json",
+    "relics-west-end-2026/nytimes--unknown.json",
+    "sinatra-the-musical-west-end-2026/variety--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/hollywood-reporter--daniel-fienberg.json",
+    "birthright-off-broadway-2026/broadwayworld--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1271,7 +1281,8 @@
       "camping-off-broadway-2026/talkinbroadway--unknown.json",
       "the-balusters-2026/broadwayworld--unknown.json",
       "schmigadoon-2026/thewrap--robert-hofler.json",
-      "the-fear-of-13-2026/broadwayworld--unknown.json"
+      "the-fear-of-13-2026/broadwayworld--unknown.json",
+      "birthright-off-broadway-2026/nytimes--unknown.json"
     ],
     "archiveToday": [
       "data/review-texts/the-guilty-west-end-2026/thestage--unknown.json",
@@ -1290,7 +1301,7 @@
     ]
   },
   "startTime": "2026-07-05T16:48:47.319Z",
-  "lastProcessed": "cyrano-de-bergerac-west-end-2026/nytg--gillian-russo.json",
+  "lastProcessed": "birthright-off-broadway-2026/broadwayworld--unknown.json",
   "log": [
     {
       "t": "2026-07-05T16:48:55.562Z",
@@ -1401,6 +1412,17 @@
       "t": "2026-07-06T06:51:53.182Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-06T07:17:56.324Z",
+      "event": "bb-session",
+      "session": "5abaea39",
+      "url": "https://www.nytimes.com/2026/06/30/theater/birthright-review-israel-spector.html"
+    },
+    {
+      "t": "2026-07-06T07:17:56.893Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
