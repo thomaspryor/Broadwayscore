@@ -17,7 +17,7 @@
     "successRate": "12.5%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 2,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -39,7 +39,7 @@
     "tier3Success": 0,
     "tier3_6Attempts": 2,
     "tier3_6Success": 1,
-    "tier4Attempts": 2,
+    "tier4Attempts": 1,
     "tier4Success": 0,
     "totalFailed": 13,
     "scrapingBeePageCredits": 2,
@@ -87,5 +87,11 @@
     ]
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "cyrano-de-bergerac-west-end-2026/broadwayworld--stephi-wild.json",
+      "oldUrl": "https://www.broadwayworld.com/westend/article/Review-CYRANO-DE-BERGERAC-Nol-Coward-Theatre-20260626",
+      "newUrl": "https://www.broadwayworld.com/brooklyn/article/CYRANO-DE-BERGERAC-ADAPTED-FOR-THE-MODERN-CLOWN-to-Play-Brooklyn-This-Summer-20260622"
+    }
+  ]
 }
