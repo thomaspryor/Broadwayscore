@@ -91,7 +91,13 @@
     "the-producers-west-end-2025/west-end-best-friend--unknown.json",
     "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
     "just-in-time-2025/newyorker--conde-nast.json",
-    "the-devil-wears-prada-west-end-2024/times-uk--dominic-maxwell.json"
+    "the-devil-wears-prada-west-end-2024/times-uk--dominic-maxwell.json",
+    "maybe-happy-ending-2024/newyorker--conde-nast.json",
+    "maybe-happy-ending-2024/variety--unknown.json",
+    "maybe-happy-ending-2024/the-contending--frank-j-avella.json",
+    "maybe-happy-ending-2024/washpost--unknown.json",
+    "oh-mary-2024/broadwaynews--brittani-samuel.json",
+    "the-great-gatsby-2024/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
     "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
@@ -1105,7 +1111,11 @@
     "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
     "the-devil-wears-prada-west-end-2024/liam-odell--unknown.json",
     "the-devil-wears-prada-west-end-2024/nytimes--alexis-soloski.json",
-    "the-devil-wears-prada-west-end-2024/nypost--johnny-oleksinski.json"
+    "the-devil-wears-prada-west-end-2024/nypost--johnny-oleksinski.json",
+    "the-devil-wears-prada-west-end-2024/washpost--peter-marks.json",
+    "oh-mary-2024/observer--unknown.json",
+    "oh-mary-2024/british-theatre--unknown.json",
+    "oh-mary-2024/west-end-best-friend--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1188,7 +1198,9 @@
       "data/review-texts/oh-mary-west-end-2025/variety--unknown.json",
       "oh-mary-west-end-2025/variety--unknown.json",
       "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
-      "oh-mary-west-end-2025/deadline--greg-evans.json"
+      "oh-mary-west-end-2025/deadline--greg-evans.json",
+      "data/review-texts/maybe-happy-ending-2024/variety--unknown.json",
+      "maybe-happy-ending-2024/variety--unknown.json"
     ],
     "directCookies": [
       "glengarry-glen-ross-west-end-2026/times-uk--ann-treneman.json",
@@ -1204,7 +1216,10 @@
       "avenue-q-west-end-2026/telegraph--marianka-swain.json",
       "every-brilliant-thing-2026/nytimes--ben-brantley.json",
       "just-in-time-2025/newyorker--conde-nast.json",
-      "the-devil-wears-prada-west-end-2024/times-uk--dominic-maxwell.json"
+      "the-devil-wears-prada-west-end-2024/times-uk--dominic-maxwell.json",
+      "maybe-happy-ending-2024/newyorker--conde-nast.json",
+      "oh-mary-2024/broadwaynews--brittani-samuel.json",
+      "the-great-gatsby-2024/broadwaynews--brittani-samuel.json"
     ],
     "brightdata": [
       "a-midsummer-nights-dream-west-end-2026/sunday-telegraph--claire-allfree.json",
@@ -1253,11 +1268,13 @@
       "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
       "a-midsummer-nights-dream-west-end-2026/ew--reviewed-by.json",
       "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
-      "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json"
+      "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json",
+      "maybe-happy-ending-2024/the-contending--frank-j-avella.json",
+      "maybe-happy-ending-2024/washpost--unknown.json"
     ]
   },
   "startTime": "2026-07-06T18:25:48.296Z",
-  "lastProcessed": "the-devil-wears-prada-west-end-2024/nypost--johnny-oleksinski.json",
+  "lastProcessed": "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
   "log": [
     {
       "t": "2026-07-07T00:38:37.799Z",
@@ -1368,6 +1385,17 @@
       "t": "2026-07-07T06:13:47.074Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-07T06:22:43.978Z",
+      "event": "bb-session",
+      "session": "20b05500",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
+    },
+    {
+      "t": "2026-07-07T06:22:44.957Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
