@@ -66,7 +66,8 @@
     "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json",
     "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
     "a-midsummer-nights-dream-west-end-2026/ew--reviewed-by.json",
-    "a-midsummer-nights-dream-west-end-2026/huffpost--david-finkle.json"
+    "a-midsummer-nights-dream-west-end-2026/huffpost--david-finkle.json",
+    "the-guilty-west-end-2026/hollywood-reporter--rick-porter.json"
   ],
   "failed": [
     "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
@@ -828,7 +829,16 @@
     "jesus-christ-superstar-west-end-2026/financialtimes--brendan-lemon.json",
     "jesus-christ-superstar-west-end-2026/philadelphia-inquirer--howard-shapiro.json",
     "jesus-christ-superstar-west-end-2026/west-end-wilma--unknown.json",
-    "the-guilty-west-end-2026/hollywood-reporter--angie-han.json"
+    "the-guilty-west-end-2026/hollywood-reporter--angie-han.json",
+    "to-kill-a-mockingbird-west-end-2026/hollywood-reporter--david-rooney.json",
+    "the-guilty-west-end-2026/deadline--denise-petski.json",
+    "the-guilty-west-end-2026/deadline--max-goldbart.json",
+    "the-guilty-west-end-2026/guardian-uk--unknown.json",
+    "to-kill-a-mockingbird-west-end-2026/observer--david-cote.json",
+    "to-kill-a-mockingbird-west-end-2026/thewrap--thom-geier.json",
+    "to-kill-a-mockingbird-west-end-2026/timeout--adam-feldman.json",
+    "to-kill-a-mockingbird-west-end-2026/wsj--terry-teachout.json",
+    "the-guilty-west-end-2026/plays-international--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -883,7 +893,10 @@
       "a-midsummer-nights-dream-west-end-2026/huffpost--david-finkle.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-guilty-west-end-2026/hollywood-reporter--rick-porter.json",
+      "the-guilty-west-end-2026/hollywood-reporter--rick-porter.json"
+    ],
     "directCookies": [
       "glengarry-glen-ross-west-end-2026/times-uk--ann-treneman.json",
       "glengarry-glen-ross-west-end-2026/times-uk--benedict-nightingale.json",
@@ -940,6 +953,18 @@
     ]
   },
   "startTime": "2026-07-06T18:25:48.296Z",
-  "lastProcessed": "the-guilty-west-end-2026/hollywood-reporter--angie-han.json",
-  "log": []
+  "lastProcessed": "the-guilty-west-end-2026/plays-international--unknown.json",
+  "log": [
+    {
+      "t": "2026-07-07T00:38:37.799Z",
+      "event": "bb-session",
+      "session": "da4938b5",
+      "url": "https://www.hollywoodreporter.com/tv/tv-news/julia-garner-true-crime-drama-guilt"
+    },
+    {
+      "t": "2026-07-07T00:38:38.817Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    }
+  ]
 }
