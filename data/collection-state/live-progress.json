@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-07T07:08:33.085Z",
+  "updatedAt": "2026-07-07T07:10:00.405Z",
   "processed": 1,
-  "failed": 19,
-  "successRate": "5.0%",
+  "failed": 23,
+  "successRate": "4.2%",
   "tierBreakdown": {
     "playwright": 1,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 3,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 3,
     "archive": 0
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-07-07T07:06:50.898Z",
@@ -34,6 +34,17 @@
     },
     {
       "t": "2026-07-07T07:08:22.355Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-07T07:09:43.390Z",
+      "event": "bb-session",
+      "session": "856b3426",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-prism-prid"
+    },
+    {
+      "t": "2026-07-07T07:09:43.860Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
     }
