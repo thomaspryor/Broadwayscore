@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-07-07T17:00:16.663Z",
+  "runDate": "2026-07-07T17:00:54.891Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "a-midsummer-nights-dream-west-end-2026",
+    "showFilter": "cyrano-de-bergerac-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 1,
-    "failed": 26,
+    "failed": 24,
     "skipped": 0,
-    "successRate": "3.7%"
+    "successRate": "4.0%"
   },
   "tierBreakdown": {
     "playwright": 1,
@@ -24,66 +24,64 @@
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 1,
-    "archive": 1
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 5,
-    "tier1Success": 3,
+    "tier1Attempts": 3,
+    "tier1Success": 2,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 2,
-    "tier2Success": 1,
+    "tier2Attempts": 1,
+    "tier2Success": 0,
     "tier3Attempts": 1,
-    "tier3Success": 1,
+    "tier3Success": 0,
     "tier3_6Attempts": 1,
     "tier3_6Success": 1,
-    "tier4Attempts": 3,
+    "tier4Attempts": 1,
     "tier4Success": 0,
-    "totalFailed": 26,
-    "scrapingBeePageCredits": 20,
+    "totalFailed": 24,
+    "scrapingBeePageCredits": 1,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 22,
-    "urlDiscoverySuccess": 1,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "a-midsummer-nights-dream-west-end-2026/whatsonstage--alex-wood.json"
+    "cyrano-de-bergerac-west-end-2026/guardian-uk--unknown.json"
   ],
   "failed": [
-    "a-midsummer-nights-dream-west-end-2026/hollywood-reporter--frank-scheck.json",
-    "a-midsummer-nights-dream-west-end-2026/ew--unknown.json",
-    "a-midsummer-nights-dream-west-end-2026/newsday--unknown.json",
-    "a-midsummer-nights-dream-west-end-2026/nydailynews--unknown.json",
-    "a-midsummer-nights-dream-west-end-2026/observer--kate-kellaway.json",
-    "a-midsummer-nights-dream-west-end-2026/observer--unknown.json",
-    "a-midsummer-nights-dream-west-end-2026/bloomberg--unknown.json",
-    "a-midsummer-nights-dream-west-end-2026/cambridge--unknown.json",
-    "a-midsummer-nights-dream-west-end-2026/financialtimes--julianna-barnaby.json",
-    "a-midsummer-nights-dream-west-end-2026/financialtimes--sarah-hemming.json",
-    "a-midsummer-nights-dream-west-end-2026/huffpost--unknown.json",
-    "a-midsummer-nights-dream-west-end-2026/london-box-office--kit-benjamin.json",
-    "a-midsummer-nights-dream-west-end-2026/london-box-office--stuart-king.json",
-    "a-midsummer-nights-dream-west-end-2026/london-theatre--aliya-al-hassan.json",
-    "a-midsummer-nights-dream-west-end-2026/standard--dominic-cavendish.json",
-    "a-midsummer-nights-dream-west-end-2026/standard--nick-curtis.json",
-    "a-midsummer-nights-dream-west-end-2026/standard--unknown.json",
-    "a-midsummer-nights-dream-west-end-2026/sunday-telegraph--claire-allfree.json",
-    "a-midsummer-nights-dream-west-end-2026/telegraph--dominic-cavendish.json",
-    "a-midsummer-nights-dream-west-end-2026/thestage--holly-o.json",
-    "a-midsummer-nights-dream-west-end-2026/thestage--katie-chambers.json",
-    "a-midsummer-nights-dream-west-end-2026/thestage--unknown.json",
-    "a-midsummer-nights-dream-west-end-2026/times-uk--dominic-maxwell.json",
-    "a-midsummer-nights-dream-west-end-2026/times-uk--rachel-halliburton.json",
-    "a-midsummer-nights-dream-west-end-2026/westendtheatre--west-end-theatre.json",
-    "a-midsummer-nights-dream-west-end-2026/whatsonstage--theo-bosanquet.json"
+    "cyrano-de-bergerac-west-end-2026/hollywood-reporter--unknown.json",
+    "cyrano-de-bergerac-west-end-2026/ew--nick-romano.json",
+    "cyrano-de-bergerac-west-end-2026/newsday--unknown.json",
+    "cyrano-de-bergerac-west-end-2026/about-entertainment--ben-brantley.json",
+    "cyrano-de-bergerac-west-end-2026/amny--unknown.json",
+    "cyrano-de-bergerac-west-end-2026/ap--unknown.json",
+    "cyrano-de-bergerac-west-end-2026/bloomberg--jeremy-gerard.json",
+    "cyrano-de-bergerac-west-end-2026/broadwayworld--stephi-wild.json",
+    "cyrano-de-bergerac-west-end-2026/daily-echo--steve-page.json",
+    "cyrano-de-bergerac-west-end-2026/financialtimes--sarah-hemming.json",
+    "cyrano-de-bergerac-west-end-2026/metro-uk--claire-allfree.json",
+    "cyrano-de-bergerac-west-end-2026/northjerseycom--robert-feldberg.json",
+    "cyrano-de-bergerac-west-end-2026/standard--fiona-mountford.json",
+    "cyrano-de-bergerac-west-end-2026/telegraph--dominic-cavendish.json",
+    "cyrano-de-bergerac-west-end-2026/the-upcoming-uk--unknown.json",
+    "cyrano-de-bergerac-west-end-2026/thestage--dave-fargnoli.json",
+    "cyrano-de-bergerac-west-end-2026/times-uk--dominic-maxwell.json",
+    "cyrano-de-bergerac-west-end-2026/washpost--peter-marks.json",
+    "cyrano-de-bergerac-west-end-2026/hollywood-reporter--david-rooney.json",
+    "cyrano-de-bergerac-west-end-2026/nytg--gillian-russo.json",
+    "cyrano-de-bergerac-west-end-2026/variety--marilyn-stasio.json",
+    "cyrano-de-bergerac-west-end-2026/ew--tanner-stransky.json",
+    "cyrano-de-bergerac-west-end-2026/newsday--linda-winer.json",
+    "cyrano-de-bergerac-west-end-2026/wsj--terry-teachout.json"
   ],
   "tierDetails": {
     "playwright": [
-      "a-midsummer-nights-dream-west-end-2026/whatsonstage--alex-wood.json"
+      "cyrano-de-bergerac-west-end-2026/guardian-uk--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -91,26 +89,10 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/a-midsummer-nights-dream-west-end-2026/thestage--unknown.json"
+      "data/review-texts/cyrano-de-bergerac-west-end-2026/daily-echo--steve-page.json"
     ],
-    "archive": [
-      "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json"
-    ]
+    "archive": []
   },
-  "failuresByOutlet": {
-    "Sunday Telegraph": {
-      "count": 1,
-      "domain": "telegraph.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
-  "urlDiscoveries": [
-    {
-      "reviewId": "a-midsummer-nights-dream-west-end-2026/whatsonstage--theo-bosanquet.json",
-      "oldUrl": "https://www.whatsonstage.com/news/a-midsummer-nights-dream-at-regents-park-open-air-theatre-review_1726521/",
-      "newUrl": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/a-midsummer-nights-dream_1713945/"
-    }
-  ]
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
 }
