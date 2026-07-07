@@ -74,7 +74,11 @@
     "dog-day-afternoon-2026/one-minute-critic--matthew-wexler.json",
     "music-city-off-broadway-2026/deadline--greg-evans.json",
     "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
-    "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
+    "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+    "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+    "every-brilliant-thing-2026/nytimes--ben-brantley.json",
+    "every-brilliant-thing-2026/theatermania--hayley-levitt.json",
+    "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
@@ -975,7 +979,13 @@
     "kinky-boots-the-musical-west-end-2026/chicago-sun-times--the-hand-club-for.json",
     "kinky-boots-the-musical-west-end-2026/city-am--adam-bloodworth.json",
     "kinky-boots-the-musical-west-end-2026/times-square-chronicles--unknown.json",
-    "kinky-boots-the-musical-west-end-2026/london-box-office--davor-golub.json"
+    "kinky-boots-the-musical-west-end-2026/london-box-office--davor-golub.json",
+    "kinky-boots-the-musical-west-end-2026/london-box-office--the-break-a-leggers.json",
+    "kinky-boots-the-musical-west-end-2026/whatsonstage--unknown.json",
+    "every-brilliant-thing-2026/nydailynews--joe-dziemianowicz.json",
+    "every-brilliant-thing-2026/latimes--unknown.json",
+    "every-brilliant-thing-2026/standard--nick-curtis.json",
+    "every-brilliant-thing-2026/telegraph--marianka-swain.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1030,7 +1040,9 @@
       "a-midsummer-nights-dream-west-end-2026/huffpost--david-finkle.json",
       "beetlejuice-west-end-2026/timeout--adam-feldman.json",
       "dog-day-afternoon-2026/one-minute-critic--matthew-wexler.json",
-      "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
+      "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
+      "every-brilliant-thing-2026/theatermania--hayley-levitt.json",
+      "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1040,7 +1052,9 @@
       "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
       "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
-      "music-city-off-broadway-2026/deadline--greg-evans.json"
+      "music-city-off-broadway-2026/deadline--greg-evans.json",
+      "data/review-texts/every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+      "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json"
     ],
     "directCookies": [
       "glengarry-glen-ross-west-end-2026/times-uk--ann-treneman.json",
@@ -1053,7 +1067,8 @@
       "much-ado-about-nothing-globe-off-west-end-2026/times-uk--rachel-halliburton.json"
     ],
     "scrapingbee": [
-      "avenue-q-west-end-2026/telegraph--marianka-swain.json"
+      "avenue-q-west-end-2026/telegraph--marianka-swain.json",
+      "every-brilliant-thing-2026/nytimes--ben-brantley.json"
     ],
     "brightdata": [
       "a-midsummer-nights-dream-west-end-2026/sunday-telegraph--claire-allfree.json",
@@ -1105,7 +1120,7 @@
     ]
   },
   "startTime": "2026-07-06T18:25:48.296Z",
-  "lastProcessed": "kinky-boots-the-musical-west-end-2026/london-box-office--davor-golub.json",
+  "lastProcessed": "every-brilliant-thing-2026/telegraph--marianka-swain.json",
   "log": [
     {
       "t": "2026-07-07T00:38:37.799Z",
@@ -1161,6 +1176,17 @@
       "t": "2026-07-07T06:08:43.737Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-07T06:10:26.257Z",
+      "event": "bb-session",
+      "session": "8cf882b5",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mariska-hargitay-to-make-broadw"
+    },
+    {
+      "t": "2026-07-07T06:10:27.673Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
