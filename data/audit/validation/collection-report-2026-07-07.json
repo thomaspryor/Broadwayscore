@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-07-07T16:57:26.939Z",
+  "runDate": "2026-07-07T16:57:48.423Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "the-misanthrope-west-end-2026",
+    "showFilter": "sting-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,7 +12,7 @@
   },
   "summary": {
     "processed": 0,
-    "failed": 8,
+    "failed": 19,
     "skipped": 0,
     "successRate": "0%"
   },
@@ -27,8 +27,8 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 1,
+    "tier1Attempts": 4,
+    "tier1Success": 3,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -41,25 +41,36 @@
     "tier3_6Success": 1,
     "tier4Attempts": 1,
     "tier4Success": 0,
-    "totalFailed": 8,
+    "totalFailed": 19,
     "scrapingBeePageCredits": 10,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 7,
-    "urlDiscoverySuccess": 1,
+    "urlDiscoveryAttempts": 15,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [],
   "failed": [
-    "the-misanthrope-west-end-2026/nytheatre--david-gordon.json",
-    "the-misanthrope-west-end-2026/theatermania--david-finkle.json",
-    "the-misanthrope-west-end-2026/about-entertainment--jason-zinoman.json",
-    "the-misanthrope-west-end-2026/backstage--david-sheward.json",
-    "the-misanthrope-west-end-2026/curtainup--simon-saltzman.json",
-    "the-misanthrope-west-end-2026/thestage--dave-fargnoli.json",
-    "the-misanthrope-west-end-2026/west-end-best-friend--news-desk.json",
-    "the-misanthrope-west-end-2026/whatsonstage--tanyel-gumushan.json"
+    "sting-west-end-2026/hollywood-reporter--unknown.json",
+    "sting-west-end-2026/variety--unknown.json",
+    "sting-west-end-2026/deadline--unknown.json",
+    "sting-west-end-2026/ew--unknown.json",
+    "sting-west-end-2026/newsday--linda-winer.json",
+    "sting-west-end-2026/newsday--unknown.json",
+    "sting-west-end-2026/newsday--updated-december.json",
+    "sting-west-end-2026/timeout-london--tim-bano.json",
+    "sting-west-end-2026/amny--unknown.json",
+    "sting-west-end-2026/british-theatre--unknown.json",
+    "sting-west-end-2026/daily-mail--unknown.json",
+    "sting-west-end-2026/huffpost--unknown.json",
+    "sting-west-end-2026/independent--unknown.json",
+    "sting-west-end-2026/nbcny--unknown.json",
+    "sting-west-end-2026/standard--unknown.json",
+    "sting-west-end-2026/talkinbroadway--unknown.json",
+    "sting-west-end-2026/thestage--unknown.json",
+    "sting-west-end-2026/times-uk--stephen-dalton.json",
+    "sting-west-end-2026/westendtheatre--unknown.json"
   ],
   "tierDetails": {
     "playwright": [],
@@ -69,7 +80,7 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/the-misanthrope-west-end-2026/thestage--dave-fargnoli.json"
+      "data/review-texts/sting-west-end-2026/thestage--unknown.json"
     ],
     "archive": []
   },
