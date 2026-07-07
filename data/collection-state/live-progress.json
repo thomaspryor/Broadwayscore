@@ -1,18 +1,25 @@
 {
-  "updatedAt": "2026-07-07T19:04:33.077Z",
-  "processed": 5,
-  "failed": 50,
-  "successRate": "9.1%",
+  "updatedAt": "2026-07-07T19:09:16.104Z",
+  "processed": 6,
+  "failed": 59,
+  "successRate": "9.2%",
   "tierBreakdown": {
     "playwright": 4,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 3,
-    "archive": 0
+    "archiveToday": 5,
+    "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-07-07T19:09:00.625Z",
+      "event": "bb-session",
+      "session": "5f4a57dd",
+      "url": "https://www.express.co.uk/entertainment/theatre/1924910/Hello-Dolly-review-palla"
+    }
+  ]
 }
