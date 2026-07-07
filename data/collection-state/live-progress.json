@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-07T06:13:34.174Z",
-  "processed": 84,
-  "failed": 920,
-  "successRate": "8.4%",
+  "updatedAt": "2026-07-07T06:14:50.900Z",
+  "processed": 87,
+  "failed": 927,
+  "successRate": "8.6%",
   "tierBreakdown": {
-    "playwright": 55,
+    "playwright": 56,
     "amp": 0,
-    "browserbase": 15,
+    "browserbase": 17,
     "directCookies": 8,
     "scrapingbee": 2,
     "brightdata": 7,
     "archiveToday": 28,
-    "archive": 7
+    "archive": 8
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-07-07T00:38:37.799Z",
@@ -113,6 +113,17 @@
       "t": "2026-07-07T06:13:13.934Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-07T06:13:46.118Z",
+      "event": "bb-session",
+      "session": "db006489",
+      "url": "https://deadline.com/2025/12/simu-liu-broadway-oh-mary-1236649862/"
+    },
+    {
+      "t": "2026-07-07T06:13:47.074Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
