@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-07-07T00:48:33.451Z",
+  "updatedAt": "2026-07-07T00:48:57.800Z",
   "processed": 68,
-  "failed": 760,
-  "successRate": "8.2%",
+  "failed": 799,
+  "successRate": "7.8%",
   "tierBreakdown": {
     "playwright": 48,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 8,
     "scrapingbee": 1,
-    "brightdata": 5,
-    "archiveToday": 25,
+    "brightdata": 4,
+    "archiveToday": 28,
     "archive": 6
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-07-07T00:38:37.799Z",
+      "event": "bb-session",
+      "session": "da4938b5",
+      "url": "https://www.hollywoodreporter.com/tv/tv-news/julia-garner-true-crime-drama-guilt"
+    },
+    {
+      "t": "2026-07-07T00:38:38.817Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    }
+  ]
 }
