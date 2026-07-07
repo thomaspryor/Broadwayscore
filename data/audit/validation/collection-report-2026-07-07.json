@@ -1,20 +1,20 @@
 {
-  "runDate": "2026-07-07T07:03:29.449Z",
+  "runDate": "2026-07-07T07:07:19.536Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "sting-west-end-2026",
+    "showFilter": "a-midsummer-nights-dream-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 19,
+    "processed": 1,
+    "failed": 22,
     "skipped": 0,
-    "successRate": "12.5%"
+    "successRate": "4.3%"
   },
   "tierBreakdown": {
     "playwright": 1,
@@ -27,56 +27,59 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 4,
+    "tier1Attempts": 5,
     "tier1Success": 3,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
-    "tier2Success": 0,
+    "tier2Attempts": 2,
+    "tier2Success": 1,
     "tier3Attempts": 1,
     "tier3Success": 1,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 1,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
+    "tier4Attempts": 3,
     "tier4Success": 0,
-    "totalFailed": 18,
-    "scrapingBeePageCredits": 0,
+    "totalFailed": 22,
+    "scrapingBeePageCredits": 20,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 15,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 18,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "the-misanthrope-west-end-2026/whatsonstage--tanyel-gumushan.json"
+    "a-midsummer-nights-dream-west-end-2026/whatsonstage--alex-wood.json"
   ],
   "failed": [
-    "sting-west-end-2026/hollywood-reporter--unknown.json",
-    "sting-west-end-2026/variety--unknown.json",
-    "sting-west-end-2026/deadline--unknown.json",
-    "sting-west-end-2026/ew--unknown.json",
-    "sting-west-end-2026/newsday--linda-winer.json",
-    "sting-west-end-2026/newsday--unknown.json",
-    "sting-west-end-2026/newsday--updated-december.json",
-    "sting-west-end-2026/timeout-london--tim-bano.json",
-    "sting-west-end-2026/amny--unknown.json",
-    "sting-west-end-2026/british-theatre--unknown.json",
-    "sting-west-end-2026/daily-mail--unknown.json",
-    "sting-west-end-2026/huffpost--unknown.json",
-    "sting-west-end-2026/independent--unknown.json",
-    "sting-west-end-2026/nbcny--unknown.json",
-    "sting-west-end-2026/standard--unknown.json",
-    "sting-west-end-2026/talkinbroadway--unknown.json",
-    "sting-west-end-2026/thestage--unknown.json",
-    "sting-west-end-2026/times-uk--stephen-dalton.json",
-    "sting-west-end-2026/westendtheatre--unknown.json"
+    "a-midsummer-nights-dream-west-end-2026/hollywood-reporter--frank-scheck.json",
+    "a-midsummer-nights-dream-west-end-2026/ew--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/newsday--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/nydailynews--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/bloomberg--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/cambridge--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/financialtimes--sarah-hemming.json",
+    "a-midsummer-nights-dream-west-end-2026/huffpost--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/london-box-office--kit-benjamin.json",
+    "a-midsummer-nights-dream-west-end-2026/london-box-office--stuart-king.json",
+    "a-midsummer-nights-dream-west-end-2026/london-theatre--aliya-al-hassan.json",
+    "a-midsummer-nights-dream-west-end-2026/standard--nick-curtis.json",
+    "a-midsummer-nights-dream-west-end-2026/standard--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/sunday-telegraph--claire-allfree.json",
+    "a-midsummer-nights-dream-west-end-2026/telegraph--dominic-cavendish.json",
+    "a-midsummer-nights-dream-west-end-2026/thestage--holly-o.json",
+    "a-midsummer-nights-dream-west-end-2026/thestage--katie-chambers.json",
+    "a-midsummer-nights-dream-west-end-2026/thestage--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/times-uk--dominic-maxwell.json",
+    "a-midsummer-nights-dream-west-end-2026/times-uk--rachel-halliburton.json",
+    "a-midsummer-nights-dream-west-end-2026/westendtheatre--west-end-theatre.json",
+    "a-midsummer-nights-dream-west-end-2026/whatsonstage--theo-bosanquet.json"
   ],
   "tierDetails": {
     "playwright": [
-      "the-misanthrope-west-end-2026/whatsonstage--tanyel-gumushan.json"
+      "a-midsummer-nights-dream-west-end-2026/whatsonstage--alex-wood.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -84,16 +87,24 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/the-misanthrope-west-end-2026/thestage--dave-fargnoli.json"
+      "data/review-texts/a-midsummer-nights-dream-west-end-2026/thestage--unknown.json"
     ],
     "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Sunday Telegraph": {
+      "count": 1,
+      "domain": "telegraph.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": [
     {
-      "reviewId": "the-misanthrope-west-end-2026/whatsonstage--tanyel-gumushan.json",
-      "oldUrl": "https://www.whatsonstage.com/news/the-misanthrope-with-sandra-oh-to-have-cinema-release_1724246/",
-      "newUrl": "https://www.whatsonstage.com/news/the-misanthrope-with-sandra-oh-at-the-national-theatre-review_1725880/"
+      "reviewId": "a-midsummer-nights-dream-west-end-2026/whatsonstage--theo-bosanquet.json",
+      "oldUrl": "https://www.whatsonstage.com/news/a-midsummer-nights-dream-at-regents-park-open-air-theatre-review_1726521/",
+      "newUrl": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/a-midsummer-nights-dream_1713945/"
     }
   ]
 }
