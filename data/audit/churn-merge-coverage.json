@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-07T12:55:31.991Z",
+    "generatedAt": "2026-07-07T20:39:38.808Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -8,27 +8,27 @@
   },
   "summary": {
     "minChurn": 30,
-    "flaggedCount": 6,
+    "flaggedCount": 7,
     "exemptCount": 15,
     "coveredCount": 40,
-    "highChurnTracked": 61
+    "highChurnTracked": 62
   },
   "flagged": [
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 121
+      "churn": 131
     },
     {
       "path": "data/audit/validation-baseline.json",
-      "churn": 118
+      "churn": 128
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 116
+      "churn": 126
     },
     {
       "path": "data/audit/processed-feedback.json",
-      "churn": 84
+      "churn": 82
     },
     {
       "path": "data/audit/validation/collection-report-2026-07-05.json",
@@ -37,56 +37,60 @@
     {
       "path": "data/audit/validation/collection-report-2026-07-06.json",
       "churn": 38
+    },
+    {
+      "path": "data/audit/validation/collection-report-2026-07-07.json",
+      "churn": 34
     }
   ],
   "exempt": [
     {
       "path": "public/data/shows/a-walk-on-the-moon-off-broadway-2026.json",
-      "churn": 100
-    },
-    {
-      "path": "public/data/shows/dad-dont-read-this-off-broadway-2026.json",
-      "churn": 89
+      "churn": 101
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 88
+      "churn": 95
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 88
+      "churn": 95
     },
     {
       "path": "public/data/mobile-shows.json",
+      "churn": 95
+    },
+    {
+      "path": "public/data/shows/dad-dont-read-this-off-broadway-2026.json",
+      "churn": 90
+    },
+    {
+      "path": "public/opening-night-status.json",
       "churn": 88
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 84
-    },
-    {
-      "path": "public/opening-night-status.json",
-      "churn": 83
+      "churn": 86
     },
     {
       "path": "data/llm-scoring-garbage-skips.json",
-      "churn": 82
+      "churn": 84
     },
     {
       "path": "data/commercial-rss-state.json",
-      "churn": 54
+      "churn": 56
+    },
+    {
+      "path": "public/data/shows/glengarry-glen-ross-west-end-2026.json",
+      "churn": 50
     },
     {
       "path": "public/data/shows/birthright-off-broadway-2026.json",
       "churn": 48
     },
     {
-      "path": "public/data/shows/glengarry-glen-ross-west-end-2026.json",
-      "churn": 48
-    },
-    {
       "path": "data/show-score-urls.json",
-      "churn": 42
+      "churn": 41
     },
     {
       "path": "public/data/shows/a-midsummer-nights-dream-west-end-2026.json",
@@ -94,57 +98,57 @@
     },
     {
       "path": "public/data/shows/to-kill-a-mockingbird-west-end-2026.json",
-      "churn": 37
+      "churn": 36
     },
     {
       "path": "public/data/shows/cyrano-de-bergerac-west-end-2026.json",
-      "churn": 35
+      "churn": 34
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 926,
+      "churn": 971,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 916,
+      "churn": 959,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 595,
+      "churn": 596,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 361,
+      "churn": 407,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 253,
+      "churn": 259,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 253,
+      "churn": 259,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 120,
+      "churn": 121,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 111,
+      "churn": 115,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 101,
+      "churn": 102,
       "mergeAttr": "ours"
     },
     {
@@ -164,27 +168,27 @@
     },
     {
       "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 83,
+      "churn": 88,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/syndicated-duplicates.json",
-      "churn": 83,
+      "churn": 88,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/wrong-production-audit.json",
-      "churn": 83,
+      "churn": 88,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 78,
+      "churn": 85,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 75,
+      "churn": 80,
       "mergeAttr": "ours"
     },
     {
@@ -194,37 +198,37 @@
     },
     {
       "path": "data/audit/show-review-gap.json",
-      "churn": 54,
+      "churn": 55,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/unknown-aggregator-outlets.json",
-      "churn": 54,
+      "churn": 55,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/cyrano-de-bergerac-west-end-2026.json",
-      "churn": 50,
+      "churn": 49,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/glengarry-glen-ross-west-end-2026.json",
-      "churn": 50,
+      "churn": 49,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/pride-west-end-2026.json",
-      "churn": 50,
+      "churn": 49,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/relics-west-end-2026.json",
-      "churn": 50,
+      "churn": 49,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/sting-west-end-2026.json",
-      "churn": 50,
+      "churn": 49,
       "mergeAttr": "ours"
     },
     {
@@ -233,32 +237,7 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/poller-backoff/the-potluck-off-broadway-2026.json",
-      "churn": 41,
-      "mergeAttr": "ours"
-    },
-    {
       "path": "data/audit/poller-backoff/the-misanthrope-west-end-2026.json",
-      "churn": 40,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/to-kill-a-mockingbird-west-end-2026.json",
-      "churn": 40,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/gather-collisions.json",
-      "churn": 39,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/a-midsummer-nights-dream-west-end-2026.json",
-      "churn": 39,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/the-truth-a-comedy-by-florian-zeller-west-end-2026.json",
       "churn": 39,
       "mergeAttr": "ours"
     },
@@ -268,23 +247,48 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/drift-state.json",
+      "path": "data/audit/poller-backoff/a-midsummer-nights-dream-west-end-2026.json",
       "churn": 38,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/churn-merge-coverage.json",
-      "churn": 32,
+      "path": "data/audit/poller-backoff/the-potluck-off-broadway-2026.json",
+      "churn": 38,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/corpus-drift.json",
-      "churn": 32,
+      "path": "data/audit/poller-backoff/the-truth-a-comedy-by-florian-zeller-west-end-2026.json",
+      "churn": 38,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/to-kill-a-mockingbird-west-end-2026.json",
+      "churn": 38,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/drift-state.json",
+      "churn": 37,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/gather-collisions.json",
+      "churn": 37,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/misterman-theatre-row-off-broadway-2026.json",
       "churn": 32,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/churn-merge-coverage.json",
+      "churn": 31,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/corpus-drift.json",
+      "churn": 31,
       "mergeAttr": "ours"
     },
     {
