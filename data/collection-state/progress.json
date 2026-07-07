@@ -68,7 +68,12 @@
     "a-midsummer-nights-dream-west-end-2026/ew--reviewed-by.json",
     "a-midsummer-nights-dream-west-end-2026/huffpost--david-finkle.json",
     "the-guilty-west-end-2026/hollywood-reporter--rick-porter.json",
-    "camping-off-broadway-2026/talkinbroadway--unknown.json"
+    "camping-off-broadway-2026/talkinbroadway--unknown.json",
+    "beetlejuice-west-end-2026/timeout--adam-feldman.json",
+    "death-of-a-salesman-2026/vulture--rob-weinert-kendt.json",
+    "dog-day-afternoon-2026/one-minute-critic--matthew-wexler.json",
+    "music-city-off-broadway-2026/deadline--greg-evans.json",
+    "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
   ],
   "failed": [
     "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
@@ -955,7 +960,12 @@
     "a-walk-on-the-moon-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
     "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
     "birthright-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
-    "birthright-off-broadway-2026/pages-on-stages--unknown.json"
+    "birthright-off-broadway-2026/pages-on-stages--unknown.json",
+    "cats-the-jellicle-ball-2026/west-end-wilma--unknown.json",
+    "cats-the-jellicle-ball-2026/thewrap--jason-clark.json",
+    "cats-the-jellicle-ball-2026/thewrap--robert-hofler.json",
+    "cats-the-jellicle-ball-2026/queerty--matthew-wexler.json",
+    "music-city-off-broadway-2026/observer--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1007,7 +1017,10 @@
       "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json",
       "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json",
       "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
-      "a-midsummer-nights-dream-west-end-2026/huffpost--david-finkle.json"
+      "a-midsummer-nights-dream-west-end-2026/huffpost--david-finkle.json",
+      "beetlejuice-west-end-2026/timeout--adam-feldman.json",
+      "dog-day-afternoon-2026/one-minute-critic--matthew-wexler.json",
+      "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1015,7 +1028,9 @@
       "the-guilty-west-end-2026/hollywood-reporter--rick-porter.json",
       "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
       "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
-      "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json"
+      "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+      "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
+      "music-city-off-broadway-2026/deadline--greg-evans.json"
     ],
     "directCookies": [
       "glengarry-glen-ross-west-end-2026/times-uk--ann-treneman.json",
@@ -1036,7 +1051,8 @@
       "schmigadoon-2026/thewrap--robert-hofler.json",
       "the-fear-of-13-2026/broadwayworld--unknown.json",
       "camping-off-broadway-2026/talkinbroadway--unknown.json",
-      "camping-off-broadway-2026/talkinbroadway--unknown.json"
+      "camping-off-broadway-2026/talkinbroadway--unknown.json",
+      "death-of-a-salesman-2026/vulture--rob-weinert-kendt.json"
     ],
     "archiveToday": [
       "data/review-texts/the-guilty-west-end-2026/thestage--unknown.json",
@@ -1078,7 +1094,7 @@
     ]
   },
   "startTime": "2026-07-06T18:25:48.296Z",
-  "lastProcessed": "birthright-off-broadway-2026/pages-on-stages--unknown.json",
+  "lastProcessed": "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
   "log": [
     {
       "t": "2026-07-07T00:38:37.799Z",
@@ -1123,6 +1139,17 @@
       "t": "2026-07-07T05:25:25.255Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-07T06:08:42.608Z",
+      "event": "bb-session",
+      "session": "d63c6b0c",
+      "url": "https://deadline.com/2026/04/music-city-jt-harding-musical-off-broadway-12368618"
+    },
+    {
+      "t": "2026-07-07T06:08:43.737Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
