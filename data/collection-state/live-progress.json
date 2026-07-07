@@ -1,129 +1,52 @@
 {
-  "updatedAt": "2026-07-07T06:45:46.813Z",
-  "processed": 111,
-  "failed": 1143,
-  "successRate": "8.9%",
+  "updatedAt": "2026-07-07T07:10:00.405Z",
+  "processed": 1,
+  "failed": 23,
+  "successRate": "4.2%",
   "tierBreakdown": {
-    "playwright": 66,
+    "playwright": 1,
     "amp": 0,
-    "browserbase": 25,
-    "directCookies": 8,
-    "scrapingbee": 8,
-    "brightdata": 7,
-    "archiveToday": 28,
-    "archive": 12
+    "browserbase": 3,
+    "directCookies": 0,
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archiveToday": 3,
+    "archive": 0
   },
-  "browserbaseSessions": 10,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-07-07T06:08:42.608Z",
+      "t": "2026-07-07T07:06:50.898Z",
       "event": "bb-session",
-      "session": "d63c6b0c",
-      "url": "https://deadline.com/2026/04/music-city-jt-harding-musical-off-broadway-12368618"
+      "session": "860cce2d",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-pride-and-"
     },
     {
-      "t": "2026-07-07T06:08:43.737Z",
+      "t": "2026-07-07T07:06:51.355Z",
       "event": "bb-cookie-inject",
-      "domain": "deadline.com"
+      "domain": "thetimes.com"
     },
     {
-      "t": "2026-07-07T06:10:26.257Z",
+      "t": "2026-07-07T07:08:21.918Z",
       "event": "bb-session",
-      "session": "8cf882b5",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mariska-hargitay-to-make-broadw"
+      "session": "62eeb616",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-pride-and-"
     },
     {
-      "t": "2026-07-07T06:10:27.673Z",
+      "t": "2026-07-07T07:08:22.355Z",
       "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
+      "domain": "thetimes.com"
     },
     {
-      "t": "2026-07-07T06:12:29.153Z",
+      "t": "2026-07-07T07:09:43.390Z",
       "event": "bb-session",
-      "session": "75bfab9d",
-      "url": "https://variety.com/2025/legit/news/simu-liu-broadway-debut-oh-mary-cole-escola-"
+      "session": "856b3426",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-prism-prid"
     },
     {
-      "t": "2026-07-07T06:12:29.990Z",
+      "t": "2026-07-07T07:09:43.860Z",
       "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-07-07T06:12:48.402Z",
-      "event": "bb-session",
-      "session": "c9863b1c",
-      "url": "https://variety.com/2025/legit/news/simu-liu-broadway-debut-oh-mary-cole-escola-"
-    },
-    {
-      "t": "2026-07-07T06:12:49.307Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-07-07T06:13:13.010Z",
-      "event": "bb-session",
-      "session": "aeaa82f7",
-      "url": "https://variety.com/2025/legit/news/simu-liu-broadway-debut-oh-mary-cole-escola-"
-    },
-    {
-      "t": "2026-07-07T06:13:13.934Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-07-07T06:13:46.118Z",
-      "event": "bb-session",
-      "session": "db006489",
-      "url": "https://deadline.com/2025/12/simu-liu-broadway-oh-mary-1236649862/"
-    },
-    {
-      "t": "2026-07-07T06:13:47.074Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
-    },
-    {
-      "t": "2026-07-07T06:22:43.978Z",
-      "event": "bb-session",
-      "session": "20b05500",
-      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
-    },
-    {
-      "t": "2026-07-07T06:22:44.957Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-07-07T06:33:56.437Z",
-      "event": "bb-session",
-      "session": "dc8e3d01",
-      "url": "https://variety.com/2023/theater/news/stranger-things-play-the-first-shadow-cast"
-    },
-    {
-      "t": "2026-07-07T06:33:57.427Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-07-07T06:34:37.051Z",
-      "event": "bb-session",
-      "session": "387ddd20",
-      "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
-    },
-    {
-      "t": "2026-07-07T06:34:37.953Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
-    },
-    {
-      "t": "2026-07-07T06:34:53.727Z",
-      "event": "bb-session",
-      "session": "a76ccb80",
-      "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
-    },
-    {
-      "t": "2026-07-07T06:34:54.602Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
+      "domain": "thetimes.com"
     }
   ]
 }
