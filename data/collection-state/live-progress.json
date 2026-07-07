@@ -1,17 +1,17 @@
 {
-  "updatedAt": "2026-07-07T21:32:34.904Z",
-  "processed": 16,
-  "failed": 269,
-  "successRate": "5.6%",
+  "updatedAt": "2026-07-07T22:01:54.553Z",
+  "processed": 63,
+  "failed": 582,
+  "successRate": "9.8%",
   "tierBreakdown": {
-    "playwright": 13,
+    "playwright": 47,
     "amp": 0,
     "browserbase": 3,
-    "directCookies": 1,
-    "scrapingbee": 0,
-    "brightdata": 0,
-    "archiveToday": 22,
-    "archive": 2
+    "directCookies": 9,
+    "scrapingbee": 1,
+    "brightdata": 1,
+    "archiveToday": 11,
+    "archive": 5
   },
   "browserbaseSessions": 0,
   "recentActivity": [
@@ -28,10 +28,15 @@
       "url": "https://www.express.co.uk/entertainment/theatre/1924910/Hello-Dolly-review-palla"
     },
     {
-      "t": "2026-07-07T20:36:23.500Z",
+      "t": "2026-07-07T21:03:05.253Z",
       "event": "bb-session",
-      "session": "70e430e1",
-      "url": "https://www.express.co.uk/entertainment/theatre/1924910/Hello-Dolly-review-palla"
+      "session": "99bd6de7",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2649682"
+    },
+    {
+      "t": "2026-07-07T21:03:05.592Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
