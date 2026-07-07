@@ -1,20 +1,25 @@
 {
-  "totalCandidates": 4,
-  "cdxFound": 0,
-  "cdxNotFound": 3,
-  "recovered": 0,
+  "totalCandidates": 18,
+  "cdxFound": 7,
+  "cdxNotFound": 1,
+  "recovered": 6,
   "recoveredByTier": {
     "1": 0,
     "2": 0,
-    "3": 0
+    "3": 6
   },
-  "recoveredByDomain": {},
+  "recoveredByDomain": {
+    "broadwayworld.com": 3,
+    "independent.co.uk": 1,
+    "londontheatre.co.uk": 1,
+    "inews.co.uk": 1
+  },
   "tooShort": 0,
   "garbage": 0,
   "wrongShow": 0,
   "archiveTodayRecovered": 0,
-  "errors": 1,
-  "notInArchive": 3,
+  "errors": 10,
+  "notInArchive": 1,
   "domainSkipped": 0,
   "circuitBrokenDomains": []
 }
