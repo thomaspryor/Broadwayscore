@@ -75,7 +75,8 @@
     "war-horse-west-end-2026/click-liverpool--carie-schneider.json",
     "war-horse-west-end-2026/london-box-office--daniel-perks.json",
     "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/frontmezzjunkies--unknown.json",
-    "schmigadoon-2026/nytg--unknown.json"
+    "schmigadoon-2026/nytg--unknown.json",
+    "proof-2026/deadline--unknown.json"
   ],
   "failed": [
     "jesus-christ-superstar-west-end-2026/hollywood-reporter--david-rooney.json",
@@ -632,7 +633,16 @@
     "the-rocky-horror-show-2026/thereviewshub--unknown.json",
     "the-rocky-horror-show-2026/british-theatre--unknown.json",
     "schmigadoon-2026/variety--clayton-davis.json",
-    "schmigadoon-2026/musical-theatre-review--unknown.json"
+    "schmigadoon-2026/musical-theatre-review--unknown.json",
+    "schmigadoon-2026/latimes--charles-mcnulty.json",
+    "schmigadoon-2026/washpost--naveen-kumar.json",
+    "avenue-q-west-end-2026/nytimes--ben-brantley.json",
+    "avenue-q-west-end-2026/variety--david-rooney.json",
+    "avenue-q-west-end-2026/theatermania--andy-propst.json",
+    "proof-2026/680newscom--gloria-martin.json",
+    "avenue-q-west-end-2026/1883-magazine--nick-barr.json",
+    "avenue-q-west-end-2026/backstage--david-sheward.json",
+    "avenue-q-west-end-2026/talkinbroadway--matthew-murray.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -695,7 +705,9 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/jesus-christ-superstar-west-end-2026/times-uk--rachel-halliburton.json",
-      "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json"
+      "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+      "data/review-texts/proof-2026/deadline--unknown.json",
+      "proof-2026/deadline--unknown.json"
     ],
     "directCookies": [
       "glengarry-glen-ross-west-end-2026/times-uk--benedict-nightingale.json",
@@ -739,7 +751,7 @@
     ]
   },
   "startTime": "2026-07-07T10:37:02.811Z",
-  "lastProcessed": "schmigadoon-2026/musical-theatre-review--unknown.json",
+  "lastProcessed": "avenue-q-west-end-2026/talkinbroadway--matthew-murray.json",
   "log": [
     {
       "t": "2026-07-07T10:47:31.441Z",
@@ -762,6 +774,17 @@
       "t": "2026-07-07T11:57:19.680Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-07T13:38:14.632Z",
+      "event": "bb-session",
+      "session": "2c925443",
+      "url": "https://deadline.com/2026/04/proof-broadway-review-ayo-edebiri-don-cheadle-kara-"
+    },
+    {
+      "t": "2026-07-07T13:38:16.038Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }

@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-07T13:37:48.653Z",
-  "processed": 76,
-  "failed": 555,
+  "updatedAt": "2026-07-07T13:38:41.297Z",
+  "processed": 77,
+  "failed": 564,
   "successRate": "12.0%",
   "tierBreakdown": {
     "playwright": 54,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 4,
     "directCookies": 11,
     "scrapingbee": 3,
     "brightdata": 3,
     "archiveToday": 6,
     "archive": 7
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-07-07T10:47:31.441Z",
@@ -36,6 +36,17 @@
       "t": "2026-07-07T11:57:19.680Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-07T13:38:14.632Z",
+      "event": "bb-session",
+      "session": "2c925443",
+      "url": "https://deadline.com/2026/04/proof-broadway-review-ayo-edebiri-don-cheadle-kara-"
+    },
+    {
+      "t": "2026-07-07T13:38:16.038Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
