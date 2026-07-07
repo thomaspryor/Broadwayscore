@@ -1,138 +1,181 @@
 {
-  "runDate": "2026-07-07T17:03:53.494Z",
+  "runDate": "2026-07-07T17:37:34.098Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 100,
     "priority": "all",
-    "showFilter": "pride-west-end-2026",
+    "showFilter": "jesus-christ-superstar-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 23,
+    "processed": 5,
+    "failed": 40,
     "skipped": 0,
-    "successRate": "4.2%"
+    "successRate": "11.1%"
   },
   "tierBreakdown": {
-    "playwright": 71,
+    "playwright": 4,
     "amp": 0,
-    "browserbase": 3,
-    "directCookies": 0,
+    "browserbase": 0,
+    "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 3,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 7,
-    "tier1Success": 1,
+    "tier1Attempts": 19,
+    "tier1Success": 15,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 3,
-    "tier1_5Success": 3,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
     "tier2Attempts": 6,
-    "tier2Success": 1,
+    "tier2Success": 3,
     "tier3Attempts": 3,
     "tier3Success": 1,
     "tier3_6Attempts": 3,
     "tier3_6Success": 3,
-    "tier4Attempts": 4,
-    "tier4Success": 1,
-    "totalFailed": 23,
+    "tier4Attempts": 2,
+    "tier4Success": 0,
+    "totalFailed": 40,
     "scrapingBeePageCredits": 42,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 3,
-    "browserbaseMinutesUsed": 0.6,
-    "urlDiscoveryAttempts": 17,
-    "urlDiscoverySuccess": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 35,
+    "urlDiscoverySuccess": 11,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "pride-west-end-2026/londontheatre1--terry-eastham.json"
+    "jesus-christ-superstar-west-end-2026/musical-theatre-review--unknown.json",
+    "jesus-christ-superstar-west-end-2026/british-theatre--susan-novak.json",
+    "jesus-christ-superstar-west-end-2026/british-theatre--unknown.json",
+    "jesus-christ-superstar-west-end-2026/londontheatre1--unknown.json",
+    "jesus-christ-superstar-west-end-2026/times-uk--ann-treneman.json"
   ],
   "failed": [
-    "pride-west-end-2026/hollywood-reporter--daniel-fienberg.json",
-    "pride-west-end-2026/nyt-theater--unknown.json",
-    "pride-west-end-2026/nytimes--ben-brantley.json",
-    "pride-west-end-2026/nytimes--unknown.json",
-    "pride-west-end-2026/wsj--unknown.json",
-    "pride-west-end-2026/theatrely--kobi-kassal.json",
-    "pride-west-end-2026/broadwayworld--jay-irwin.json",
-    "pride-west-end-2026/click-liverpool--unknown.json",
-    "pride-west-end-2026/frontmezzjunkies--unknown.json",
-    "pride-west-end-2026/latimes--erin-conley.json",
-    "pride-west-end-2026/nottingham-confidential--unknown.json",
-    "pride-west-end-2026/operawire--unknown.json",
-    "pride-west-end-2026/people--unknown.json",
-    "pride-west-end-2026/seattle-times--misha-berson.json",
-    "pride-west-end-2026/sunday-telegraph--unknown.json",
-    "pride-west-end-2026/talkinbroadway--unknown.json",
-    "pride-west-end-2026/thestage--dave-fargnoli.json",
-    "pride-west-end-2026/times-uk--allan-radcliffe.json",
-    "pride-west-end-2026/times-uk--ann-treneman.json",
-    "pride-west-end-2026/times-uk--jane-edwardes.json",
-    "pride-west-end-2026/times-uk--lucy-sweet.json",
-    "pride-west-end-2026/whatsonstage--daisy-bowie.json",
-    "pride-west-end-2026/standard--the-standard.json"
+    "jesus-christ-superstar-west-end-2026/hollywood-reporter--david-rooney.json",
+    "jesus-christ-superstar-west-end-2026/ew--melissa-rose-bernardo.json",
+    "jesus-christ-superstar-west-end-2026/guardian--arifa-akbar.json",
+    "jesus-christ-superstar-west-end-2026/guardian--mark-lawson.json",
+    "jesus-christ-superstar-west-end-2026/guardian--tammy-tarng.json",
+    "jesus-christ-superstar-west-end-2026/newsday--linda-winer.json",
+    "jesus-christ-superstar-west-end-2026/newsday--unknown.json",
+    "jesus-christ-superstar-west-end-2026/observer--kate-kellaway.json",
+    "jesus-christ-superstar-west-end-2026/theatre-reviews-limited--unknown.json",
+    "jesus-christ-superstar-west-end-2026/thereviewshub--the-reviews-hub.json",
+    "jesus-christ-superstar-west-end-2026/timeout-london--caroline-mc.json",
+    "jesus-christ-superstar-west-end-2026/timeout-london--holly-williams.json",
+    "jesus-christ-superstar-west-end-2026/about-entertainment--charles-isherwood.json",
+    "jesus-christ-superstar-west-end-2026/ap--mark-kennedy.json",
+    "jesus-christ-superstar-west-end-2026/backstage--david-sheward.json",
+    "jesus-christ-superstar-west-end-2026/broadwayworld--stephi-wild.json",
+    "jesus-christ-superstar-west-end-2026/cambridge--unknown.json",
+    "jesus-christ-superstar-west-end-2026/click-liverpool--unknown.json",
+    "jesus-christ-superstar-west-end-2026/daily-mail--patrick-marmion.json",
+    "jesus-christ-superstar-west-end-2026/express-uk--neil-norman.json",
+    "jesus-christ-superstar-west-end-2026/financialtimes--brendan-lemon.json",
+    "jesus-christ-superstar-west-end-2026/financialtimes--sarah-hemming.json",
+    "jesus-christ-superstar-west-end-2026/i-paper--fiona-mountford.json",
+    "jesus-christ-superstar-west-end-2026/independent--alice-saville.json",
+    "jesus-christ-superstar-west-end-2026/londontheatre1--london-theatre-1.json",
+    "jesus-christ-superstar-west-end-2026/philadelphia-inquirer--howard-shapiro.json",
+    "jesus-christ-superstar-west-end-2026/standard--nick-curtis.json",
+    "jesus-christ-superstar-west-end-2026/telegraph--dominic-cavendish.json",
+    "jesus-christ-superstar-west-end-2026/thestage--holly-o.json",
+    "jesus-christ-superstar-west-end-2026/times-uk--dominic-maxwell.json",
+    "jesus-christ-superstar-west-end-2026/times-uk--rachel-halliburton.json",
+    "jesus-christ-superstar-west-end-2026/usatoday--elysa-gardner.json",
+    "jesus-christ-superstar-west-end-2026/west-end-wilma--unknown.json",
+    "jesus-christ-superstar-west-end-2026/whatsonstage--alex-wood.json",
+    "jesus-christ-superstar-west-end-2026/whatsonstage--alun-hood.json",
+    "jesus-christ-superstar-west-end-2026/whatsonstage--jonas-schwartz.json",
+    "jesus-christ-superstar-west-end-2026/whatsonstage--judi-herman.json",
+    "jesus-christ-superstar-west-end-2026/whatsonstage--matt-barton.json",
+    "jesus-christ-superstar-west-end-2026/whatsonstage--matt-trueman.json",
+    "jesus-christ-superstar-west-end-2026/whatsonstage--sarah-crompton.json"
   ],
   "tierDetails": {
     "playwright": [
-      "pride-west-end-2026/londontheatre1--terry-eastham.json"
+      "jesus-christ-superstar-west-end-2026/musical-theatre-review--unknown.json",
+      "jesus-christ-superstar-west-end-2026/british-theatre--susan-novak.json",
+      "jesus-christ-superstar-west-end-2026/british-theatre--unknown.json",
+      "jesus-christ-superstar-west-end-2026/londontheatre1--unknown.json"
     ],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/pride-west-end-2026/times-uk--allan-radcliffe.json",
-      "data/review-texts/pride-west-end-2026/times-uk--ann-treneman.json",
-      "data/review-texts/pride-west-end-2026/times-uk--jane-edwardes.json"
+    "browserbase": [],
+    "directCookies": [
+      "jesus-christ-superstar-west-end-2026/times-uk--ann-treneman.json"
     ],
-    "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/pride-west-end-2026/click-liverpool--unknown.json",
-      "data/review-texts/pride-west-end-2026/nottingham-confidential--unknown.json",
-      "data/review-texts/pride-west-end-2026/thestage--dave-fargnoli.json"
+      "data/review-texts/jesus-christ-superstar-west-end-2026/cambridge--unknown.json",
+      "data/review-texts/jesus-christ-superstar-west-end-2026/click-liverpool--unknown.json",
+      "data/review-texts/jesus-christ-superstar-west-end-2026/thestage--holly-o.json"
     ],
-    "archive": [
-      "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
-      "archduke-west-end-2026/broadwayworld--alexander-cohen.json",
-      "small-off-broadway-2026/culturesauce--thom-geier.json",
-      "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json",
-      "a-midsummer-nights-dream-west-end-2026/standard--dominic-cavendish.json",
-      "pride-west-end-2026/standard--ghenet-pinderhughes-randall.json",
-      "sinatra-the-musical-west-end-2026/standard--unknown.json",
-      "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json"
-    ]
+    "archive": []
   },
   "failuresByOutlet": {},
   "urlDiscoveries": [
     {
-      "reviewId": "a-midsummer-nights-dream-west-end-2026/london-box-office--kit-benjamin.json",
-      "oldUrl": "https://www.londonboxoffice.co.uk/news/post/review-midsummer-nights-dream",
-      "newUrl": "https://www.londonboxoffice.co.uk/news/post/a-midsummer-nights-dream-regents-park-open-air-theatre-review"
+      "reviewId": "jesus-christ-superstar-west-end-2026/british-theatre--susan-novak.json",
+      "oldUrl": "https://www.britishtheatre.com/fr/posts/jesus-christ-superstar-reveals-star-studded-herod-line-up-for-theatre-royal-drur",
+      "newUrl": "https://www.britishtheatre.com/hi/posts/jesus-christ-superstar-reveals-star-studded-herod-line-up-for-theatre-royal-drur"
     },
     {
-      "reviewId": "a-midsummer-nights-dream-west-end-2026/london-box-office--marian-pashley.json",
-      "oldUrl": "https://www.londonboxoffice.co.uk/news/post/review-midsummer-nights-dream-open-air",
-      "newUrl": "https://www.londonboxoffice.co.uk/news/post/a-midsummer-nights-dream-regents-park-open-air-theatre-review"
+      "reviewId": "jesus-christ-superstar-west-end-2026/broadwayworld--stephi-wild.json",
+      "oldUrl": "https://www.broadwayworld.com/westend/article/JESUS-CHRIST-SUPERSTAR-Will-Embark-on-UK-Tour-Starring-Sam-Ryder-20260622",
+      "newUrl": "https://www.broadwayworld.com/uk-regional/article/JESUS-CHRIST-SUPERSTAR-Starring-Sam-Ryder-to-Visit-Birmingham-Hippodrome-20260624"
     },
     {
-      "reviewId": "a-midsummer-nights-dream-west-end-2026/london-box-office--stuart-king.json",
-      "oldUrl": "https://www.londonboxoffice.co.uk/news/post/review-midsummer-nights-dream-bridge-theatre",
-      "newUrl": "https://www.londonboxoffice.co.uk/news/post/a-midsummer-nights-dream-regents-park-open-air-theatre-review"
+      "reviewId": "jesus-christ-superstar-west-end-2026/londontheatre1--london-theatre-1.json",
+      "oldUrl": "https://www.londontheatre1.com/theatre-news/jesus-christ-superstar-starring-sam-ryder-to-open-uk-tour-in-2027/",
+      "newUrl": "https://www.londontheatre1.com/shows/jesus-christ-superstar-starring-sam-ryder-at-kings-theatre-glasgow/"
     },
     {
-      "reviewId": "sinatra-the-musical-west-end-2026/london-box-office--john-yap.json",
-      "oldUrl": "https://www.londonboxoffice.co.uk/news/post/review-richard-shelton-sinatra-raw",
-      "newUrl": "https://www.londonboxoffice.co.uk/news/post/review-roundup-sinatra-the-musical-aldwych-theatre"
+      "reviewId": "jesus-christ-superstar-west-end-2026/times-uk--ann-treneman.json",
+      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/jesus-christ-superstar-review-a-mike-swinging-swaggering-spectacle-9zz8kbjc2",
+      "newUrl": "https://www.thetimes.com/culture/music/article/sam-ryder-jesus-christ-superstar-pc5q9glmz"
     },
     {
-      "reviewId": "sinatra-the-musical-west-end-2026/london-box-office--phil-willmott.json",
-      "oldUrl": "https://www.londonboxoffice.co.uk/news/post/sinatra-review",
-      "newUrl": "https://www.londonboxoffice.co.uk/news/post/review-roundup-sinatra-the-musical-aldwych-theatre"
+      "reviewId": "jesus-christ-superstar-west-end-2026/whatsonstage--alex-wood.json",
+      "oldUrl": "https://www.whatsonstage.com/news/jesus-christ-superstar-with-sam-ryder-to-tour-in-2027_1725680/",
+      "newUrl": "https://www.whatsonstage.com/news/jesus-christ-superstar-with-sam-ryder-begins-performances-at-the-london-palladium_1725578/"
+    },
+    {
+      "reviewId": "jesus-christ-superstar-west-end-2026/whatsonstage--alun-hood.json",
+      "oldUrl": "https://www.whatsonstage.com/news/jesus-christ-superstar-with-sam-ryder-to-tour-in-2027_1725680/",
+      "newUrl": "https://www.whatsonstage.com/news/jesus-christ-superstar-with-sam-ryder-begins-performances-at-the-london-palladium_1725578/"
+    },
+    {
+      "reviewId": "jesus-christ-superstar-west-end-2026/whatsonstage--jonas-schwartz.json",
+      "oldUrl": "https://www.whatsonstage.com/news/jesus-christ-superstar-with-sam-ryder-to-tour-in-2027_1725680/",
+      "newUrl": "https://www.whatsonstage.com/news/jesus-christ-superstar-with-sam-ryder-begins-performances-at-the-london-palladium_1725578/"
+    },
+    {
+      "reviewId": "jesus-christ-superstar-west-end-2026/whatsonstage--judi-herman.json",
+      "oldUrl": "https://www.whatsonstage.com/news/jesus-christ-superstar-with-sam-ryder-to-tour-in-2027_1725680/",
+      "newUrl": "https://www.whatsonstage.com/news/jesus-christ-superstar-with-sam-ryder-begins-performances-at-the-london-palladium_1725578/"
+    },
+    {
+      "reviewId": "jesus-christ-superstar-west-end-2026/whatsonstage--matt-barton.json",
+      "oldUrl": "https://www.whatsonstage.com/news/jesus-christ-superstar-with-sam-ryder-to-tour-in-2027_1725680/",
+      "newUrl": "https://www.whatsonstage.com/news/jesus-christ-superstar-with-sam-ryder-begins-performances-at-the-london-palladium_1725578/"
+    },
+    {
+      "reviewId": "jesus-christ-superstar-west-end-2026/whatsonstage--matt-trueman.json",
+      "oldUrl": "https://www.whatsonstage.com/news/jesus-christ-superstar-with-sam-ryder-to-tour-in-2027_1725680/",
+      "newUrl": "https://www.whatsonstage.com/news/jesus-christ-superstar-with-sam-ryder-begins-performances-at-the-london-palladium_1725578/"
+    },
+    {
+      "reviewId": "jesus-christ-superstar-west-end-2026/whatsonstage--sarah-crompton.json",
+      "oldUrl": "https://www.whatsonstage.com/news/jesus-christ-superstar-with-sam-ryder-to-tour-in-2027_1725680/",
+      "newUrl": "https://www.whatsonstage.com/news/jesus-christ-superstar-with-sam-ryder-begins-performances-at-the-london-palladium_1725578/"
     }
   ]
 }
