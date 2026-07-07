@@ -1,8 +1,7 @@
 {
-  "generatedAt": "2026-07-06T23:32:09.319Z",
+  "generatedAt": "2026-07-07T02:52:16.441Z",
   "lookbackDays": 3,
-  "shows": [],
-  "upcoming": [
+  "shows": [
     {
       "id": "jesus-christ-superstar-west-end-2026",
       "title": "Jesus Christ Superstar",
@@ -13,21 +12,98 @@
       "status": "previews",
       "slug": "jesus-christ-superstar-west-end",
       "thumbnail": "/images/shows/jesus-christ-superstar-west-end-2026/thumbnail.jpg",
-      "daysUntil": 1,
-      "readinessChecks": {
-        "wrongProduction": {
-          "pass": true,
-          "detail": "No pre-existing score files"
+      "siteScore": null,
+      "liveScore": null,
+      "scoreDrift": null,
+      "belowThreshold": true,
+      "reviewsNeeded": 7,
+      "siteFileExists": true,
+      "total": 0,
+      "t1": 0,
+      "t2": 0,
+      "t3": 0,
+      "positive": 0,
+      "mixed": 0,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "0/8 total",
+          "T1:0/3",
+          "T2:0/2",
+          "hi-conf:0/6"
+        ],
+        "highConfidence": 0,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
         }
       },
-      "readinessSummary": {
-        "failures": 1,
-        "warnings": 0,
-        "unknowns": 2,
-        "total": 4
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
       },
-      "preflight": false
-    },
+      "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        }
+      ]
+    }
+  ],
+  "upcoming": [
     {
       "id": "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026",
       "title": "Why I Stuck A Flare Up My Arse For England (Soho Playhouse)",
@@ -38,7 +114,7 @@
       "status": "previews",
       "slug": "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway",
       "thumbnail": "/images/shows/why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 2,
+      "daysUntil": 1,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -77,7 +153,7 @@
       "status": "previews",
       "slug": "dukes-off-broadway",
       "thumbnail": "/images/shows/bocking-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 2,
+      "daysUntil": 1,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -116,7 +192,7 @@
       "status": "upcoming",
       "slug": "tender-off-west-end",
       "thumbnail": "/images/shows/tender-off-west-end-2026/thumbnail.webp",
-      "daysUntil": 3,
+      "daysUntil": 2,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -141,7 +217,7 @@
       "status": "upcoming",
       "slug": "allegra-west-end",
       "thumbnail": "/images/shows/allegra-west-end-2026/thumbnail.jpg",
-      "daysUntil": 3,
+      "daysUntil": 2,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -166,7 +242,7 @@
       "status": "previews",
       "slug": "giulia-the-poison-queen-of-palermo-off-broadway",
       "thumbnail": "/images/shows/giulia-the-poison-queen-of-palermo-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 4,
+      "daysUntil": 3,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -205,7 +281,7 @@
       "status": "previews",
       "slug": "hershey-felder-the-piano-and-me-off-broadway",
       "thumbnail": "/images/shows/hershey-felder-the-piano-and-me-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 4,
+      "daysUntil": 3,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -244,7 +320,7 @@
       "status": "previews",
       "slug": "sukkot-off-broadway",
       "thumbnail": "/images/shows/sukkot-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 5,
+      "daysUntil": 4,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -283,6 +359,70 @@
       "status": "announced",
       "slug": "the-jonathan-larson-project-off-west-end",
       "thumbnail": "/images/shows/the-jonathan-larson-project-off-west-end-2026/thumbnail.jpg",
+      "daysUntil": 6,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        }
+      },
+      "readinessSummary": {
+        "failures": 1,
+        "warnings": 0,
+        "unknowns": 2,
+        "total": 4
+      },
+      "preflight": false
+    },
+    {
+      "id": "the-whoopi-monologues-off-broadway-2026",
+      "title": "The Whoopi Monologues",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "play",
+      "openingDate": "2026-07-14",
+      "status": "upcoming",
+      "slug": "the-whoopi-monologues-off-broadway",
+      "thumbnail": "/images/shows/the-whoopi-monologues-off-broadway-2026/thumbnail.jpg",
+      "daysUntil": 7,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": false,
+          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived — bww-rr-discover.js will auto-fetch within minutes of publication",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Not yet archived — tb-direct-url.js will discover at poll time",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
+      },
+      "preflight": false
+    },
+    {
+      "id": "the-oresteia-west-end-2026",
+      "title": "The Oresteia",
+      "market": "west-end",
+      "category": "west-end",
+      "type": "play",
+      "openingDate": "2026-07-14",
+      "status": "announced",
+      "slug": "the-oresteia-west-end",
+      "thumbnail": "/images/shows/the-oresteia-west-end-2026/thumbnail.jpg",
       "daysUntil": 7,
       "readinessChecks": {
         "wrongProduction": {
