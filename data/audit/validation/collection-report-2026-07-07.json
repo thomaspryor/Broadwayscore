@@ -1,23 +1,23 @@
 {
-  "runDate": "2026-07-07T16:56:10.385Z",
+  "runDate": "2026-07-07T16:56:55.595Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "birthright-off-broadway-2026",
+    "showFilter": "springwood-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 2,
+    "processed": 0,
+    "failed": 6,
     "skipped": 0,
-    "successRate": "60.0%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -28,43 +28,39 @@
   },
   "statistics": {
     "tier1Attempts": 5,
-    "tier1Success": 5,
+    "tier1Success": 4,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 1,
+    "tier4Attempts": 2,
     "tier4Success": 0,
-    "totalFailed": 2,
+    "totalFailed": 5,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
-    "urlDiscoverySuccess": 1,
+    "urlDiscoveryAttempts": 0,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [
-    "birthright-off-broadway-2026/theatermania--linda-buchwald.json",
-    "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
-    "birthright-off-broadway-2026/one-minute-critic--matthew-wexler.json"
-  ],
+  "processed": [],
   "failed": [
-    "birthright-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
-    "birthright-off-broadway-2026/pages-on-stages--unknown.json"
+    "springwood-west-end-2026/guardian-uk--unknown.json",
+    "springwood-west-end-2026/artsdesk--unknown.json",
+    "springwood-west-end-2026/standard--nick-curtis.json",
+    "springwood-west-end-2026/theatrecat--unknown.json",
+    "springwood-west-end-2026/thestage--unknown.json",
+    "springwood-west-end-2026/west-end-best-friend--unknown.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "birthright-off-broadway-2026/theatermania--linda-buchwald.json",
-      "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
-      "birthright-off-broadway-2026/one-minute-critic--matthew-wexler.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
@@ -74,12 +70,5 @@
     "archive": []
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": [
-    {
-      "reviewId": "birthright-off-broadway-2026/theatermania--linda-buchwald.json",
-      "oldUrl": "https://www.theatermania.com/news/molly-bernard-to-replace-abbi-jacobson-in-birthright-at-mcc_1841108/",
-      "newUrl": "https://www.theatermania.com/news/review-birthright-is-a-safe-three-and-a-half-hour-play-about-israel-palestine-and-fractured-friendships_1844046/"
-    }
-  },
   "urlDiscoveries": []
 }
