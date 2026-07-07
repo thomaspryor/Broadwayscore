@@ -67,7 +67,8 @@
     "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
     "a-midsummer-nights-dream-west-end-2026/ew--reviewed-by.json",
     "a-midsummer-nights-dream-west-end-2026/huffpost--david-finkle.json",
-    "the-guilty-west-end-2026/hollywood-reporter--rick-porter.json"
+    "the-guilty-west-end-2026/hollywood-reporter--rick-porter.json",
+    "camping-off-broadway-2026/talkinbroadway--unknown.json"
   ],
   "failed": [
     "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
@@ -874,7 +875,12 @@
     "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
     "birthright-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
     "birthright-off-broadway-2026/pages-on-stages--unknown.json",
-    "camping-off-broadway-2026/talkinbroadway--unknown.json"
+    "camping-off-broadway-2026/talkinbroadway--unknown.json",
+    "a-walk-on-the-moon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "a-walk-on-the-moon-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+    "birthright-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "birthright-off-broadway-2026/pages-on-stages--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -931,7 +937,8 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/the-guilty-west-end-2026/hollywood-reporter--rick-porter.json",
-      "the-guilty-west-end-2026/hollywood-reporter--rick-porter.json"
+      "the-guilty-west-end-2026/hollywood-reporter--rick-porter.json",
+      "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json"
     ],
     "directCookies": [
       "glengarry-glen-ross-west-end-2026/times-uk--ann-treneman.json",
@@ -951,6 +958,7 @@
       "the-balusters-2026/broadwayworld--unknown.json",
       "schmigadoon-2026/thewrap--robert-hofler.json",
       "the-fear-of-13-2026/broadwayworld--unknown.json",
+      "camping-off-broadway-2026/talkinbroadway--unknown.json",
       "camping-off-broadway-2026/talkinbroadway--unknown.json"
     ],
     "archiveToday": [
@@ -1005,6 +1013,17 @@
       "t": "2026-07-07T00:38:38.817Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-07-07T01:30:16.885Z",
+      "event": "bb-session",
+      "session": "4a9d29d6",
+      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
+    },
+    {
+      "t": "2026-07-07T01:30:17.966Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
