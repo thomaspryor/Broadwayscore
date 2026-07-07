@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-07T07:09:44.705Z",
+    "generatedAt": "2026-07-07T07:41:09.532Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -16,15 +16,15 @@
   "flagged": [
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 102
+      "churn": 116
     },
     {
       "path": "data/audit/validation-baseline.json",
-      "churn": 98
+      "churn": 112
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 97
+      "churn": 111
     },
     {
       "path": "data/audit/processed-feedback.json",
@@ -50,11 +50,11 @@
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 75
+      "churn": 76
     },
     {
       "path": "data/llm-scoring-garbage-skips.json",
-      "churn": 73
+      "churn": 74
     },
     {
       "path": "public/data/admin/critic-coverage.json",
@@ -82,54 +82,54 @@
     },
     {
       "path": "public/data/shows/glengarry-glen-ross-west-end-2026.json",
-      "churn": 43
+      "churn": 44
     },
     {
       "path": "data/show-score-urls.json",
-      "churn": 41
+      "churn": 40
     },
     {
       "path": "public/data/shows/to-kill-a-mockingbird-west-end-2026.json",
-      "churn": 36
+      "churn": 37
     },
     {
       "path": "public/data/shows/cyrano-de-bergerac-west-end-2026.json",
-      "churn": 32
+      "churn": 33
     },
     {
       "path": "public/data/shows/a-midsummer-nights-dream-west-end-2026.json",
-      "churn": 31
+      "churn": 32
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 963,
+      "churn": 969,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 952,
+      "churn": 960,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 565,
+      "churn": 568,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 307,
+      "churn": 316,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 232,
+      "churn": 234,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 232,
+      "churn": 234,
       "mergeAttr": "ours"
     },
     {
@@ -139,6 +139,11 @@
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
+      "churn": 98,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/collection-state/scoring-progress.json",
       "churn": 98,
       "mergeAttr": "ours"
     },
@@ -158,13 +163,8 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/collection-state/scoring-progress.json",
-      "churn": 97,
-      "mergeAttr": "ours"
-    },
-    {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 80,
+      "churn": 82,
       "mergeAttr": "ours"
     },
     {
@@ -238,18 +238,18 @@
       "mergeAttr": "ours"
     },
     {
+      "path": "data/audit/gather-collisions.json",
+      "churn": 40,
+      "mergeAttr": "ours"
+    },
+    {
       "path": "data/audit/poller-backoff/to-kill-a-mockingbird-west-end-2026.json",
       "churn": 40,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/drift-state.json",
-      "churn": 39,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/gather-collisions.json",
-      "churn": 39,
+      "path": "data/audit/url-mismatch-suspects.json",
+      "churn": 40,
       "mergeAttr": "ours"
     },
     {
@@ -258,8 +258,8 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/url-mismatch-suspects.json",
-      "churn": 39,
+      "path": "data/audit/drift-state.json",
+      "churn": 38,
       "mergeAttr": "ours"
     },
     {
