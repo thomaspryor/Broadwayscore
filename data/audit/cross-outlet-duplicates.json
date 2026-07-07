@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "generatedAt": "2026-06-30T06:36:32.813Z",
+    "generatedAt": "2026-07-07T06:30:33.119Z",
     "threshold": 40,
-    "showsScanned": 1777,
-    "reviewsScanned": 33869,
-    "duplicatesFound": 78,
+    "showsScanned": 1780,
+    "reviewsScanned": 34030,
+    "duplicatesFound": 79,
     "byMethod": {
       "similarity": [
         {
@@ -593,21 +593,6 @@
           "textSource": "fullText"
         },
         {
-          "showId": "on-the-twentieth-century-2015",
-          "method": "similarity",
-          "similarity": 58,
-          "primaryFile": "front-row-center--tulis-mccall.json",
-          "primaryOutlet": "The Front Row Center",
-          "primaryCritic": "Tulis McCall",
-          "secondaryFile": "nytg--brian-scott-lipton.json",
-          "secondaryOutlet": "New York Theatre Guide",
-          "secondaryCritic": "Brian Scott Lipton",
-          "primaryScore": 93,
-          "secondaryScore": 91,
-          "scoreDiff": 2,
-          "textSource": "fullText"
-        },
-        {
           "showId": "once-upon-a-one-more-time-2023",
           "method": "similarity",
           "similarity": 76,
@@ -833,6 +818,21 @@
           "textSource": "fullText"
         },
         {
+          "showId": "the-bands-visit-2017",
+          "method": "similarity",
+          "similarity": 99,
+          "primaryFile": "theater-life--barry-gordin.json",
+          "primaryOutlet": "Theater Life",
+          "primaryCritic": "Barry Gordin",
+          "secondaryFile": "off-script-with-dan-dwyer--dan-dwyer.json",
+          "secondaryOutlet": "Off Script with Dan Dwyer",
+          "secondaryCritic": "Dan Dwyer",
+          "primaryScore": 92,
+          "secondaryScore": 84,
+          "scoreDiff": 8,
+          "textSource": "fullText"
+        },
+        {
           "showId": "the-bridges-of-madison-county-2014",
           "method": "similarity",
           "similarity": 92,
@@ -908,18 +908,18 @@
           "textSource": "fullText"
         },
         {
-          "showId": "the-music-man-2022",
+          "showId": "the-misanthrope-west-end-2026",
           "method": "similarity",
-          "similarity": 95,
-          "primaryFile": "slantmagazine--dan-rubins.json",
-          "primaryOutlet": "Slant Magazine",
-          "primaryCritic": "Dan Rubins",
-          "secondaryFile": "showbiz411--roger-friedman.json",
-          "secondaryOutlet": "Showbiz411",
-          "secondaryCritic": "Roger Friedman",
-          "primaryScore": 79,
-          "secondaryScore": 80,
-          "scoreDiff": 1,
+          "similarity": 96,
+          "primaryFile": "times-uk--clive-davis.json",
+          "primaryOutlet": "The Times (UK)",
+          "primaryCritic": "Clive Davis",
+          "secondaryFile": "thestage--dave-fargnoli.json",
+          "secondaryOutlet": "The Stage",
+          "secondaryCritic": "Dave Fargnoli",
+          "primaryScore": 38,
+          "secondaryScore": 38,
+          "scoreDiff": 0,
           "textSource": "fullText"
         },
         {
@@ -1135,6 +1135,21 @@
           "secondaryScore": 87,
           "scoreDiff": 1,
           "textSource": "fullText"
+        },
+        {
+          "showId": "glengarry-glen-ross-west-end-2026",
+          "method": "fingerprint",
+          "similarity": 100,
+          "primaryFile": "wsj--unknown.json",
+          "primaryOutlet": "The Wall Street Journal",
+          "primaryCritic": "Unknown",
+          "secondaryFile": "british-theatre--susan-novak.json",
+          "secondaryOutlet": "British Theatre Guide",
+          "secondaryCritic": "Susan Novak",
+          "primaryScore": null,
+          "secondaryScore": null,
+          "scoreDiff": 0,
+          "textSource": "excerpts"
         },
         {
           "showId": "hello-dolly-2017",
@@ -1561,6 +1576,21 @@
       "textSource": "fullText"
     },
     {
+      "showId": "glengarry-glen-ross-west-end-2026",
+      "method": "fingerprint",
+      "similarity": 100,
+      "primaryFile": "wsj--unknown.json",
+      "primaryOutlet": "The Wall Street Journal",
+      "primaryCritic": "Unknown",
+      "secondaryFile": "british-theatre--susan-novak.json",
+      "secondaryOutlet": "British Theatre Guide",
+      "secondaryCritic": "Susan Novak",
+      "primaryScore": null,
+      "secondaryScore": null,
+      "scoreDiff": 0,
+      "textSource": "excerpts"
+    },
+    {
       "showId": "grand-horizons-2020",
       "method": "similarity",
       "similarity": 71,
@@ -1936,21 +1966,6 @@
       "textSource": "excerpts"
     },
     {
-      "showId": "on-the-twentieth-century-2015",
-      "method": "similarity",
-      "similarity": 58,
-      "primaryFile": "front-row-center--tulis-mccall.json",
-      "primaryOutlet": "The Front Row Center",
-      "primaryCritic": "Tulis McCall",
-      "secondaryFile": "nytg--brian-scott-lipton.json",
-      "secondaryOutlet": "New York Theatre Guide",
-      "secondaryCritic": "Brian Scott Lipton",
-      "primaryScore": 93,
-      "secondaryScore": 91,
-      "scoreDiff": 2,
-      "textSource": "fullText"
-    },
-    {
       "showId": "once-upon-a-one-more-time-2023",
       "method": "similarity",
       "similarity": 76,
@@ -2191,6 +2206,21 @@
       "textSource": "fullText"
     },
     {
+      "showId": "the-bands-visit-2017",
+      "method": "similarity",
+      "similarity": 99,
+      "primaryFile": "theater-life--barry-gordin.json",
+      "primaryOutlet": "Theater Life",
+      "primaryCritic": "Barry Gordin",
+      "secondaryFile": "off-script-with-dan-dwyer--dan-dwyer.json",
+      "secondaryOutlet": "Off Script with Dan Dwyer",
+      "secondaryCritic": "Dan Dwyer",
+      "primaryScore": 92,
+      "secondaryScore": 84,
+      "scoreDiff": 8,
+      "textSource": "fullText"
+    },
+    {
       "showId": "the-bridges-of-madison-county-2014",
       "method": "similarity",
       "similarity": 92,
@@ -2266,18 +2296,18 @@
       "textSource": "fullText"
     },
     {
-      "showId": "the-music-man-2022",
+      "showId": "the-misanthrope-west-end-2026",
       "method": "similarity",
-      "similarity": 95,
-      "primaryFile": "slantmagazine--dan-rubins.json",
-      "primaryOutlet": "Slant Magazine",
-      "primaryCritic": "Dan Rubins",
-      "secondaryFile": "showbiz411--roger-friedman.json",
-      "secondaryOutlet": "Showbiz411",
-      "secondaryCritic": "Roger Friedman",
-      "primaryScore": 79,
-      "secondaryScore": 80,
-      "scoreDiff": 1,
+      "similarity": 96,
+      "primaryFile": "times-uk--clive-davis.json",
+      "primaryOutlet": "The Times (UK)",
+      "primaryCritic": "Clive Davis",
+      "secondaryFile": "thestage--dave-fargnoli.json",
+      "secondaryOutlet": "The Stage",
+      "secondaryCritic": "Dave Fargnoli",
+      "primaryScore": 38,
+      "secondaryScore": 38,
+      "scoreDiff": 0,
       "textSource": "fullText"
     },
     {
