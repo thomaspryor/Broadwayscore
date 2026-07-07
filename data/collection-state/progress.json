@@ -78,7 +78,12 @@
     "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
     "every-brilliant-thing-2026/nytimes--ben-brantley.json",
     "every-brilliant-thing-2026/theatermania--hayley-levitt.json",
-    "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json"
+    "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json",
+    "oh-mary-west-end-2025/nytg--olivia-rook.json",
+    "oh-mary-west-end-2025/nytg--unknown.json",
+    "oh-mary-west-end-2025/variety--brent-lang.json",
+    "oh-mary-west-end-2025/variety--naman-ramachandran.json",
+    "oh-mary-west-end-2025/variety--unknown.json"
   ],
   "failed": [
     "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
@@ -995,7 +1000,12 @@
     "black-is-the-color-of-my-voice-west-end-2026/observer--sarah-crompton.json",
     "black-is-the-color-of-my-voice-west-end-2026/financialtimes--louise-levene.json",
     "black-is-the-color-of-my-voice-west-end-2026/financialtimes--sarah-hemming.json",
-    "black-is-the-color-of-my-voice-west-end-2026/london-theatre--olivia-rook.json"
+    "black-is-the-color-of-my-voice-west-end-2026/london-theatre--olivia-rook.json",
+    "black-is-the-color-of-my-voice-west-end-2026/standard--david-jays.json",
+    "oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json",
+    "oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
+    "oh-mary-west-end-2025/nyt-theater--jonathan-mandell.json",
+    "oh-mary-west-end-2025/nytimes--jesse-green.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1052,7 +1062,9 @@
       "dog-day-afternoon-2026/one-minute-critic--matthew-wexler.json",
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
       "every-brilliant-thing-2026/theatermania--hayley-levitt.json",
-      "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json"
+      "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json",
+      "oh-mary-west-end-2025/nytg--olivia-rook.json",
+      "oh-mary-west-end-2025/nytg--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1064,7 +1076,13 @@
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
       "music-city-off-broadway-2026/deadline--greg-evans.json",
       "data/review-texts/every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
-      "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json"
+      "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/oh-mary-west-end-2025/variety--brent-lang.json",
+      "oh-mary-west-end-2025/variety--brent-lang.json",
+      "data/review-texts/oh-mary-west-end-2025/variety--naman-ramachandran.json",
+      "oh-mary-west-end-2025/variety--naman-ramachandran.json",
+      "data/review-texts/oh-mary-west-end-2025/variety--unknown.json",
+      "oh-mary-west-end-2025/variety--unknown.json"
     ],
     "directCookies": [
       "glengarry-glen-ross-west-end-2026/times-uk--ann-treneman.json",
@@ -1130,7 +1148,7 @@
     ]
   },
   "startTime": "2026-07-06T18:25:48.296Z",
-  "lastProcessed": "black-is-the-color-of-my-voice-west-end-2026/london-theatre--olivia-rook.json",
+  "lastProcessed": "oh-mary-west-end-2025/variety--unknown.json",
   "log": [
     {
       "t": "2026-07-07T00:38:37.799Z",
@@ -1197,6 +1215,39 @@
       "t": "2026-07-07T06:10:27.673Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-07-07T06:12:29.153Z",
+      "event": "bb-session",
+      "session": "75bfab9d",
+      "url": "https://variety.com/2025/legit/news/simu-liu-broadway-debut-oh-mary-cole-escola-"
+    },
+    {
+      "t": "2026-07-07T06:12:29.990Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-07T06:12:48.402Z",
+      "event": "bb-session",
+      "session": "c9863b1c",
+      "url": "https://variety.com/2025/legit/news/simu-liu-broadway-debut-oh-mary-cole-escola-"
+    },
+    {
+      "t": "2026-07-07T06:12:49.307Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-07T06:13:13.010Z",
+      "event": "bb-session",
+      "session": "aeaa82f7",
+      "url": "https://variety.com/2025/legit/news/simu-liu-broadway-debut-oh-mary-cole-escola-"
+    },
+    {
+      "t": "2026-07-07T06:13:13.934Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
