@@ -31,7 +31,17 @@
     "jesus-christ-superstar-west-end-2026/londontheatre1--london-theatre-1.json",
     "jesus-christ-superstar-west-end-2026/philadelphia-inquirer--howard-shapiro.json",
     "jesus-christ-superstar-west-end-2026/standard--nick-curtis.json",
-    "jesus-christ-superstar-west-end-2026/telegraph--dominic-cavendish.json"
+    "jesus-christ-superstar-west-end-2026/telegraph--dominic-cavendish.json",
+    "jesus-christ-superstar-west-end-2026/thestage--holly-o.json",
+    "jesus-christ-superstar-west-end-2026/times-uk--dominic-maxwell.json",
+    "jesus-christ-superstar-west-end-2026/times-uk--rachel-halliburton.json",
+    "jesus-christ-superstar-west-end-2026/west-end-wilma--unknown.json",
+    "jesus-christ-superstar-west-end-2026/whatsonstage--alex-wood.json",
+    "jesus-christ-superstar-west-end-2026/whatsonstage--alun-hood.json",
+    "jesus-christ-superstar-west-end-2026/whatsonstage--jonas-schwartz.json",
+    "jesus-christ-superstar-west-end-2026/whatsonstage--judi-herman.json",
+    "jesus-christ-superstar-west-end-2026/whatsonstage--matt-barton.json",
+    "jesus-christ-superstar-west-end-2026/whatsonstage--matt-trueman.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -44,17 +54,32 @@
       "jesus-christ-superstar-west-end-2026/londontheatre1--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/jesus-christ-superstar-west-end-2026/times-uk--rachel-halliburton.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/jesus-christ-superstar-west-end-2026/cambridge--unknown.json",
-      "data/review-texts/jesus-christ-superstar-west-end-2026/click-liverpool--unknown.json"
+      "data/review-texts/jesus-christ-superstar-west-end-2026/click-liverpool--unknown.json",
+      "data/review-texts/jesus-christ-superstar-west-end-2026/thestage--holly-o.json"
     ],
     "archive": []
   },
   "startTime": "2026-07-07T10:37:02.811Z",
-  "lastProcessed": "jesus-christ-superstar-west-end-2026/telegraph--dominic-cavendish.json",
-  "log": []
+  "lastProcessed": "jesus-christ-superstar-west-end-2026/whatsonstage--matt-trueman.json",
+  "log": [
+    {
+      "t": "2026-07-07T10:47:31.441Z",
+      "event": "bb-session",
+      "session": "720cecb9",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/hello-dolly-review-imelda"
+    },
+    {
+      "t": "2026-07-07T10:47:32.432Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    }
+  ]
 }
