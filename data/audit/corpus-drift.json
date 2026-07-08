@@ -1,11 +1,11 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-08T20:19:05.203Z",
+    "generatedAt": "2026-07-08T20:33:49.624Z",
     "note": "Corpus-statistics drift monitor. Non-blocking; surfaced via health-check.js digest. Not a code-correctness gate."
   },
   "summary": {
     "auditsRun": 17,
-    "driftCount": 6,
+    "driftCount": 7,
     "crashCount": 0,
     "anyDrift": true,
     "anyCrashed": false
@@ -72,7 +72,7 @@
       "exitCode": 1,
       "ok": false,
       "crashed": false,
-      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 7 flagged, 15 exempt, 35 covered\n  ⚠️   124  data/audit/pipeline-health/collect-review-texts.last-success  — no merge driver; needs a decision\n  ⚠️   124  data/audit/url-collision-report.json  — no merge driver; needs a decision\n  ⚠️   104  data/audit/validation-baseline.json  — no merge driver; needs a decision\n  ⚠️    83  data/audit/processed-feedback.json  — no merge driver; needs a decision\n  ⚠️    38  data/audit/validation/collection-report-2026-07-06.json  — no merge driver; needs a decision\n  ⚠️    36  data/audit/validation/collection-report-2026-07-07.json  — no merge driver; needs a decision\n  ⚠️    30  data/audit/validation/collection-report-2026-07-08.json  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
+      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 7 flagged, 15 exempt, 35 covered\n  ⚠️   124  data/audit/pipeline-health/collect-review-texts.last-success  — no merge driver; needs a decision\n  ⚠️   124  data/audit/url-collision-report.json  — no merge driver; needs a decision\n  ⚠️   104  data/audit/validation-baseline.json  — no merge driver; needs a decision\n  ⚠️    82  data/audit/processed-feedback.json  — no merge driver; needs a decision\n  ⚠️    38  data/audit/validation/collection-report-2026-07-06.json  — no merge driver; needs a decision\n  ⚠️    36  data/audit/validation/collection-report-2026-07-07.json  — no merge driver; needs a decision\n  ⚠️    30  data/audit/validation/collection-report-2026-07-08.json  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
     },
     {
       "name": "review-contamination",
@@ -87,10 +87,10 @@
       "name": "duplicate-of-url-mismatch",
       "label": "stale duplicateOf flags (our URL ≠ sibling URL) — full report (gate = spike floor)",
       "command": "node scripts/audit-duplicate-of-url-mismatch.js",
-      "exitCode": 0,
-      "ok": true,
+      "exitCode": 1,
+      "ok": false,
       "crashed": false,
-      "detail": "OK: no duplicateOf URL mismatches found"
+      "detail": "Found 2 duplicateOf URL mismatch(es):\n\n  jesus-christ-superstar-west-end-2026/times-uk--ann-treneman.json\n    → duplicateOf: times-uk--dan-cairns.json  (url-mismatch)\n    → our url:     https://www.thetimes.com/culture/music/article/sam-ryder-jesus-christ-superstar-pc5q9glmz\n    → sibling url: https://www.thetimes.com/culture/theatre-dance/article/jesus-christ-superstar-review-sam-ryder-london-palladium-tim-sheader-zfqtxmj8b\n\n  jesus-christ-superstar-west-end-2026/times-uk--dan-cairns.json\n    → duplicateOf: times-uk--ann-treneman.json  (url-mismatch)\n    → our url:     https://www.thetimes.com/culture/theatre-dance/article/jesus-christ-superstar-review-sam-ryder-london-palladium-tim-sheader-zfqtxmj8b\n    → sibling url: https://www.thetimes.com/culture/music/article/sam-ryder-jesus-christ-superstar-pc5q9glmz\n\nRun with --fix to clear stale flags."
     },
     {
       "name": "cast-changes",
@@ -108,7 +108,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "=== Audit Non-Review Content ===\nMode: DRY RUN | LLM: OFF\n\n\n=== RESULTS ===\nScanned: 35016 scored reviews\nAlready rejected: 434\nHeuristic high-confidence: 1\nHeuristic medium → LLM confirmed: 0\nHeuristic medium → LLM cleared: 0\nHeuristic medium → LLM failed: 0\nTotal flagged: 1\n\n--- Flagged Non-Reviews ---\n  ✗ home-2024/thewrap--robert-hofler.json\n    Type: obituary | Outlet: The Wrap | Score: 76\n    Evidence: passed away; age 78, and one of the sad ironies of his death; passed away last month at age 78\n\nAudit report: /home/runner/work/Broadwayscore/Broadwayscore/data/audit/non-review-audit.json\n\n✓ STRICT: no definitive wrong-page non-reviews among scored reviews."
+      "detail": "=== Audit Non-Review Content ===\nMode: DRY RUN | LLM: OFF\n\n\n=== RESULTS ===\nScanned: 35017 scored reviews\nAlready rejected: 433\nHeuristic high-confidence: 1\nHeuristic medium → LLM confirmed: 0\nHeuristic medium → LLM cleared: 0\nHeuristic medium → LLM failed: 0\nTotal flagged: 1\n\n--- Flagged Non-Reviews ---\n  ✗ home-2024/thewrap--robert-hofler.json\n    Type: obituary | Outlet: The Wrap | Score: 76\n    Evidence: passed away; age 78, and one of the sad ironies of his death; passed away last month at age 78\n\nAudit report: /home/runner/work/Broadwayscore/Broadwayscore/data/audit/non-review-audit.json\n\n✓ STRICT: no definitive wrong-page non-reviews among scored reviews."
     },
     {
       "name": "review-texts",
@@ -162,7 +162,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "[stuck-rescore] 2 stuck needsRescore flag(s) (non-scoreable) of 726 flagged; threshold --max=25\n     2  fullText added after excerpt-based scoring\n    - a-midsummer-nights-dream-globe-west-end-2026/whatsonstage--alun-hood.json  [fullText added after excerpt-based scoring]\n    - jesus-christ-superstar-west-end-2026/financialtimes--brendan-lemon.json  [fullText added after excerpt-based scoring]"
+      "detail": "[stuck-rescore] 3 stuck needsRescore flag(s) (non-scoreable) of 727 flagged; threshold --max=25\n     3  fullText added after excerpt-based scoring\n    - a-midsummer-nights-dream-globe-west-end-2026/whatsonstage--alun-hood.json  [fullText added after excerpt-based scoring]\n    - jesus-christ-superstar-west-end-2026/financialtimes--brendan-lemon.json  [fullText added after excerpt-based scoring]\n    - jesus-christ-superstar-west-end-2026/times-uk--rachel-halliburton.json  [fullText added after excerpt-based scoring]"
     }
   ]
 }
