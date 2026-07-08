@@ -366,6 +366,31 @@ function referenceTitle(source, record) {
  * @param {Set<string>} args.existingSlugs  slugs already in shows.json
  * @returns {{status:'accept', candidate:object} | {status:'reject', reason:string, detail?:string}}
  */
+// Broadway-feeder regional theatres (the "out-of-market but Broadway-bound"
+// watchlist, memory/project_regional_expansion_watchlist.md). A candidate whose
+// venue matches gets category 'regional' instead of 'off-broadway': the OB
+// promoter's Playbill-OB/Lortel cross-validation can never confirm a DC or
+// Chicago production, so these must be surfaced to a human (email alert in
+// extract-aggregator-candidates.js) rather than silently parked in staging —
+// that's how CrazySexyCool (Arena Stage) sat undiscovered for 6 days (2026-07).
+const REGIONAL_FEEDER_VENUE_RE = new RegExp(
+  '\\b(?:' +
+  // NOTE: no bare "A.R.T." alternative — "A.R.T./New York Theatres" is a real
+  // NYC Off-Broadway rental complex; PV/BWW articles spell Cambridge's venue out.
+  'american repertory theat(?:er|re)|' +
+  'la jolla playhouse|old globe|berkeley rep(?:ertory)?|' +
+  'goodman(?: theatre| theater)?|steppenwolf|chicago shakespeare|' +
+  'arena stage|kreeger|fichandler|shakespeare theatre company|' +
+  'american conservatory theater|5th avenue theatre|paper mill playhouse|' +
+  'alliance theatre|center theatre group|ahmanson|mark taper' +
+  ')\\b',
+  'i'
+);
+
+function classifyVenueMarket(venue) {
+  return REGIONAL_FEEDER_VENUE_RE.test(venue || '') ? 'regional' : 'off-broadway';
+}
+
 function classifyCandidate({ source, record, html, existingSlugs }) {
   const slug = record.slug || '';
   if (isInfrastructureSlug(slug) || isInfrastructureSlug(record.url || '')) {
@@ -430,13 +455,15 @@ function classifyCandidate({ source, record, html, existingSlugs }) {
     sourceUrl: record.url || null,
     articlePublishedAt: fields.date,
     discoveredAt: record.firstSeen || fields.date || new Date().toISOString(),
-    category: 'off-broadway',
+    category: classifyVenueMarket(fields.venue),
   };
   return { status: 'accept', candidate };
 }
 
 module.exports = {
   INFRASTRUCTURE_SLUG_RE,
+  REGIONAL_FEEDER_VENUE_RE,
+  classifyVenueMarket,
   isInfrastructureSlug,
   isBotShell,
   parseBwwSlugTitle,
