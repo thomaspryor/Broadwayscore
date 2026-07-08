@@ -1964,7 +1964,13 @@ showDirs.forEach(showId => {
         const wpCvConfirmedWrongArticle = data.contentVerification?.wrongArticle === true
           && data.contentVerification?.confidence === 'high';
         const wpHasManualReason = !!data.wrongProductionReason;
-        if (!wpCvConfirmedWrong && !wpCvConfirmedWrongArticle && !wpHasManualReason) {
+        // Same listing-page carve-out as the UK-URL auto-clear below: a /shows/
+        // aggregate/listing page is not a dated review, so a URL-year mismatch on
+        // it is not a clearable false positive (cousin of the theo-bosanquet
+        // /shows/ stub, 2026-07-05).
+        const wpIsShowListingUrl = !!data.url && (/(?:whatsonstage|broadwayworld)\.com\/shows?\//i.test(data.url)
+          || require('./lib/cross-production-guards').isEvergreenListingUrl(data.url));
+        if (!wpCvConfirmedWrong && !wpCvConfirmedWrongArticle && !wpHasManualReason && !wpIsShowListingUrl) {
           data.wrongProduction = false;
           data.wrongProductionAutoCleared = `rebuild: WE/OB exempt from URL-year guard (was: ${data.wrongProductionNote})`;
           data.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
@@ -2186,7 +2192,15 @@ showDirs.forEach(showId => {
               const cvConfirmedWrongArticle = data.contentVerification?.wrongArticle === true
                 && data.contentVerification?.confidence === 'high';
               const hasManualReason = !!data.wrongProductionReason;
-              if (isUkUrl && !cvConfirmedWrong && !cvConfirmedWrongArticle && !hasManualReason) {
+              // A show-LISTING / aggregate page (whatsonstage.com/shows/…,
+              // broadwayworld.com/shows/…) is NOT a dated critic review — a UK
+              // URL on it is not evidence of THIS production. Auto-clearing wp
+              // here re-scored a Birmingham-Rep whatsonstage /shows/ aggregate
+              // stub (4/5) on the Regent's Park Midsummer (2026-07-05). Reviews
+              // live at /news/ (WOS) and /article/ (BWW); /shows/ is a listing.
+              const isShowListingUrl = /(?:whatsonstage|broadwayworld)\.com\/shows?\//i.test(data.url)
+                || require('./lib/cross-production-guards').isEvergreenListingUrl(data.url);
+              if (isUkUrl && !cvConfirmedWrong && !cvConfirmedWrongArticle && !hasManualReason && !isShowListingUrl) {
                 delete data.wrongProduction;
                 delete data.wrongProductionNote;
                 data.wrongProductionAutoCleared = `rebuild: UK URL on London show (${hostname})`;
