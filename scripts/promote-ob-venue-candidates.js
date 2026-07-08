@@ -122,9 +122,12 @@ function decideRegionalPromotion(candidate) {
  *  (a roundup only exists after press night), openingDate ≈ the roundup's
  *  publish date (roundups land on/within a day of opening). */
 function buildRegionalShowEntry(candidate) {
-  const pub = candidate.articlePublishedAt ? new Date(candidate.articlePublishedAt) : new Date();
-  const year = Number.isNaN(pub.getTime()) ? new Date().getFullYear() : pub.getUTCFullYear();
-  const openingDate = Number.isNaN(pub.getTime()) ? null : pub.toISOString().slice(0, 10);
+  // Take the DATE PART of the publish timestamp verbatim — it's already in the
+  // publisher's local zone. UTC conversion would roll an ET Dec-31 evening
+  // publish into Jan 1 and mint a wrong-year id (QA 2026-07-08).
+  const dm = String(candidate.articlePublishedAt || '').match(/^(\d{4})-(\d{2})-(\d{2})/);
+  const year = dm ? Number(dm[1]) : new Date().getFullYear();
+  const openingDate = dm ? `${dm[1]}-${dm[2]}-${dm[3]}` : null;
   const slugBase = candidate.slug || candidate.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
   const id = `${slugBase}-regional-${year}`;
   const city = feederVenueCity(candidate.venue);
@@ -162,9 +165,12 @@ function writeLastPromotionFile(promoted) {
 
 async function main() {
   const staged = loadStaging();
+  // Reset the promotion record up front so a crash mid-run can never leave a
+  // STALE file claiming yesterday's promotions happened again (the workflow
+  // reads it to decide targeted scrapes and commits it).
+  if (!dryRun) writeLastPromotionFile([]);
   if (staged.length === 0) {
     console.log('No staged candidates to promote.');
-    if (!dryRun) writeLastPromotionFile([]);
     return;
   }
   console.log(`Loaded ${staged.length} staged candidates from staging file.`);
@@ -304,6 +310,15 @@ async function main() {
     }
     promoted.push({ candidate: c, entry, confirmationSource: source, confirmationReason: reason });
     existingIds.add(entry.id);
+    // Feed the promotion back into the jaccard dedup index under BOTH venue
+    // spellings (candidate's bare venue and the entry's city-suffixed venue) so
+    // a second candidate for the same show in the SAME run — PV + BWW both
+    // roundup one opening, with slight title variants → different slugified
+    // ids — hits findExistingMatch instead of minting a duplicate show.
+    for (const vk of new Set([canonicalVenue(c.venue), canonicalVenue(entry.venue)])) {
+      if (!existingByVenue.has(vk)) existingByVenue.set(vk, []);
+      existingByVenue.get(vk).push({ id: entry.id, title: entry.title, tokens: titleTokens(entry.title), normalized: normalizeTitle(entry.title) });
+    }
     logEntry({ kind: 'promote', title: c.title, venue: c.venue, id: entry.id, confirmationSource: source });
   }
 
@@ -340,8 +355,6 @@ async function main() {
     console.log(`Staging file: ${remainingStaged.length} unpromoted candidates remain.`);
   };
 
-  writeLastPromotionFile(promoted);
-
   if (promoted.length === 0) {
     console.log('Nothing to promote; shows.json unchanged.');
     if (remainingStaged.length !== staged.length) rewriteStaging();
@@ -360,6 +373,11 @@ async function main() {
     }
     throw e;
   }
+
+  // Record promotions ONLY after the shows.json write landed — written before,
+  // a shrink-gate abort would leave a file claiming promotions that never
+  // happened, and the workflow would targeted-scrape ghosts (QA 2026-07-08).
+  writeLastPromotionFile(promoted);
 
   // Rewrite staging file with only the unpromoted candidates.
   rewriteStaging();

@@ -134,26 +134,44 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         run: |
+          set +e  # every failure below is handled explicitly
+          # Core data missing (checkout-core-data failed but if:always() ran us):
+          # bail — the slug-collision guard would be blind and stage garbage.
+          if [ ! -f data/shows.json ]; then
+            echo "::warning::core data missing — skipping regional discovery this run"
+            exit 0
+          fi
           node scripts/extract-aggregator-candidates.js --limit=20
           node scripts/promote-ob-venue-candidates.js --regional-only --email
-          IDS=$(node -e "const d=require('./data/audit/last-promotion-ids.json'); console.log(d.promoted.map(p=>p.id).join(','))" 2>/dev/null || echo "")
-          if [ -n "$IDS" ]; then
-            echo "Auto-promoted: $IDS"
-            if node scripts/validate-data.js; then
+          PROMOTE_RC=$?
+          [ "$PROMOTE_RC" -ne 0 ] && echo "::error::promotion script exited $PROMOTE_RC (failure email sent by the script)"
+          IDS=$(node -e "const d=require('./data/audit/last-promotion-ids.json'); console.log(d.promoted.map(p=>p.id).join(','))" 2>/dev/null)
+          [ -n "$IDS" ] && echo "Auto-promoted: $IDS"
+          # ALWAYS validate before the push-core-data step below — promotion may
+          # have modified shows.json even on a non-zero exit, and validate-data
+          # arms the push-refusal sentinel on failure so a bad shows.json can
+          # never reach the private repo.
+          if node scripts/validate-data.js; then
+            if [ -n "$IDS" ]; then
               echo "validate-data passed — same-run targeted review scrape"
               node scripts/scrape-playbill-verdict.js --shows="$IDS" || true
               node scripts/scrape-bww-reviews.js --shows="$IDS" || true
-            else
-              # validate-data armed the push-core-data refusal sentinel, so the
-              # bad shows.json can NOT reach the private repo. Restore staging +
-              # promotion record so the candidate is retried tomorrow instead of
-              # being consumed with no show to show for it.
-              echo "::error::validate-data FAILED after regional promotion — rolling back staging consumption"
-              git checkout -- data/audit/ob-venue-candidates.json data/audit/last-promotion-ids.json 2>/dev/null || true
             fi
           else
-            echo "No regional promotions this run."
+            # Push is refused via the sentinel. Roll back the staging consumption
+            # (tracked file) and blank the promotion record (may be untracked on
+            # the first runs — git checkout would silently no-op) so tomorrow
+            # retries clean, and email — this branch loops daily until a human
+            # looks, and silence would hide it forever.
+            echo "::error::validate-data FAILED after regional promotion — rolling back staging consumption"
+            git checkout -- data/audit/ob-venue-candidates.json || true
+            node -e "require('fs').writeFileSync('data/audit/last-promotion-ids.json', JSON.stringify({generatedAt:new Date().toISOString(),promoted:[]},null,2)+'\n')" || true
+            PROMOTED_IDS="$IDS" node -e "
+              const {sendEmailAlert}=require('./scripts/lib/discord-notify');
+              sendEmailAlert({title:'Regional auto-promotion: validate-data FAILED',severity:'error',description:'Promoting ['+(process.env.PROMOTED_IDS||'?')+'] produced a shows.json that failed validate-data. The private-repo push was refused (sentinel) and staging was rolled back — this will retry and re-alert daily until fixed.'}).then(()=>process.exit(0)).catch(()=>process.exit(0));
+            " || true
           fi
+          exit 0
 
       - name: Push core data (regional auto-promotion)
         if: always()

@@ -299,6 +299,24 @@ function slugCollidesWith(title, existingSlugs) {
 }
 
 /**
+ * Build the slug set used by every already-in-shows gate (extractor pre-fetch
+ * skip, classify slug-collision, pruneUnmatchedAudit). Promoted regional/OB
+ * shows carry `-regional-<year>` / `-off-broadway-<year>` suffixed slugs that
+ * slugify(title) never equals — without the stripped variants every promoted
+ * show re-fetches + re-stages + skip-duplicates DAILY, forever (QA 2026-07-08).
+ */
+function collisionSlugSet(shows) {
+  const set = new Set();
+  for (const s of Array.isArray(shows) ? shows : []) {
+    if (!s || !s.slug) continue;
+    set.add(s.slug);
+    const stripped = s.slug.replace(/-(?:regional|off-broadway)-\d{4}$/, '');
+    if (stripped !== s.slug) set.add(stripped);
+  }
+  return set;
+}
+
+/**
  * Prune an unmatched-audit array (the *-unmatched.json the PV + BWW landing
  * scrapers write) of entries that no longer belong:
  *   - infrastructure slugs (site nav / legal / feeds) — never a show, so they
@@ -487,6 +505,7 @@ module.exports = {
   extractArticleFields,
   classifyTitleDelta,
   slugCollidesWith,
+  collisionSlugSet,
   pruneUnmatchedAudit,
   referenceTitle,
   classifyCandidate,

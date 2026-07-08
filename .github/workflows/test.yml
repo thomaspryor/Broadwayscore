@@ -116,6 +116,12 @@ on:
       - 'scripts/extract-aggregator-candidates.js'
       - 'scripts/promote-ob-venue-candidates.js'
       - 'tests/unit/promote-regional-auto.test.mjs'
+      # Regional auto-promotion touches the shared non-Broadway filter + both
+      # aggregator scrapers (allowRegional). Without these a solo edit pushes
+      # with ZERO CI (tour-forward-tense / tryout-url-filter cover the filter).
+      - 'scripts/lib/content-filters.js'
+      - 'scripts/scrape-playbill-verdict.js'
+      - 'scripts/scrape-bww-reviews.js'
       - 'scripts/lib/show-duplicate-detection.test.mjs'
       # Display-field artifact GC (html-entity decode + json-ld drop) + its shared
       # predicate/decoder lib. Colocated text-cleaning predicates are tested by

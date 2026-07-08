@@ -34,7 +34,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { classifyCandidate, slugCollidesWith, referenceTitle } = require('./lib/aggregator-candidate-extract');
+const { classifyCandidate, slugCollidesWith, referenceTitle, collisionSlugSet } = require('./lib/aggregator-candidate-extract');
 const { writeStagingCandidates, loadStaging } = require('./lib/venue-listing-discover');
 
 const AUDIT_DIR = path.join(__dirname, '..', 'data', 'audit');
@@ -66,7 +66,7 @@ function loadExistingShowSlugs() {
     try {
       const data = JSON.parse(fs.readFileSync(p, 'utf8'));
       const shows = data.shows || data;
-      return new Set(shows.map(s => s.slug).filter(Boolean));
+      return collisionSlugSet(shows);
     } catch { /* try next */ }
   }
   console.warn('::warning::shows.json not found locally — slug-collision guard disabled this run.');

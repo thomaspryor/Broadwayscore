@@ -18,7 +18,7 @@
 const fs = require('fs');
 const path = require('path');
 const { matchTitleToShow, matchSlugToShow, cleanSlugTitle, loadShows, cleanExternalTitle, titleWordsMatch } = require('./lib/show-matching');
-const { pruneUnmatchedAudit } = require('./lib/aggregator-candidate-extract');
+const { pruneUnmatchedAudit, collisionSlugSet } = require('./lib/aggregator-candidate-extract');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, isJunkOutlet, maybeUpgradeUrl } = require('./lib/review-normalization');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
@@ -508,7 +508,7 @@ async function processShowViaGoogle(show, showId, shows) {
 
         const $ = cheerio.load(html);
         const pageTitle = $('title').text() + ' ' + $('h1').text();
-        if (isNotBroadway(pageTitle, { allowOffBroadway: showEntry && showEntry.category === 'off-broadway', allowWestEnd: showEntry && isLondonMarket(showEntry.category), allowOpera: showEntry && showEntry.type === 'opera' })) {
+        if (isNotBroadway(pageTitle, { allowOffBroadway: showEntry && showEntry.category === 'off-broadway', allowWestEnd: showEntry && isLondonMarket(showEntry.category), allowOpera: showEntry && showEntry.type === 'opera', allowRegional: showEntry && showEntry.category === 'regional' })) {
           console.log(`    [SKIP] Article is not about Broadway: "${pageTitle.slice(0, 80)}"`);
           continue;
         }
@@ -670,7 +670,7 @@ async function scrapePlaybillVerdict() {
   for (const article of uniqueArticles) {
     // Allow off-Broadway, West End, AND opera articles through at pre-match stage —
     // per-show filtering happens at save time
-    if (isNotBroadway(article.title, { allowOffBroadway: true, allowWestEnd: true, allowOpera: true })) {
+    if (isNotBroadway(article.title, { allowOffBroadway: true, allowWestEnd: true, allowOpera: true, allowRegional: true })) {
       stats.skippedOffBroadway++;
       continue;
     }
@@ -727,7 +727,7 @@ async function scrapePlaybillVerdict() {
     // Prune entries that no longer belong (already-in-shows by exact slug +
     // infrastructure) so the file doesn't grow unbounded across daily runs.
     // Gate matches extract-aggregator-candidates.js exactly — see pruneUnmatchedAudit.
-    const existingSlugs = new Set(shows.map(s => s.slug).filter(Boolean));
+    const existingSlugs = collisionSlugSet(shows);
     const { kept, pruned } = pruneUnmatchedAudit([...byUrl.values()], { source: 'playbill-verdict', existingSlugs });
     fs.writeFileSync(auditPath, JSON.stringify(kept, null, 2));
     console.log(`Wrote ${unmatchedArticles.length} unmatched articles to ${auditPath} (total tracked: ${kept.length}, pruned ${pruned})`);
@@ -776,7 +776,7 @@ async function scrapePlaybillVerdict() {
     // Validate the fetched article is about Broadway (not London, Chicago, film, etc.)
     const $article = cheerio.load(html);
     const articlePageTitle = $article('title').text() + ' ' + $article('h1').text();
-    if (isNotBroadway(articlePageTitle, { allowOffBroadway: matchedShow && matchedShow.category === 'off-broadway', allowWestEnd: matchedShow && isLondonMarket(matchedShow.category), allowOpera: matchedShow && matchedShow.type === 'opera' })) {
+    if (isNotBroadway(articlePageTitle, { allowOffBroadway: matchedShow && matchedShow.category === 'off-broadway', allowWestEnd: matchedShow && isLondonMarket(matchedShow.category), allowOpera: matchedShow && matchedShow.type === 'opera', allowRegional: matchedShow && matchedShow.category === 'regional' })) {
       console.log(`    [SKIP] Article is not about Broadway: "${articlePageTitle.slice(0, 80)}"`);
       continue;
     }

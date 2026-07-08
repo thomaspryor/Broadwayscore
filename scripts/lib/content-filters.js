@@ -20,16 +20,18 @@ const { hasOnlyForwardTenseTourMention } = require('./excerpt-validation');
 function isNotBroadway(text, options = {}) {
   if (!text) return false;
   const lower = text.toLowerCase();
-  const { allowOffBroadway = false, allowWestEnd = false, allowOpera = false } = options;
+  const { allowOffBroadway = false, allowWestEnd = false, allowOpera = false, allowRegional = false } = options;
 
   // Off-Broadway / regional — skip these checks if allowOffBroadway
+  // ("world premiere" also gets a pass under allowRegional: feeder-venue
+  // roundups are almost all world premieres — Iceboy!, CrazySexyCool 2026-07).
   if (!allowOffBroadway) {
     if (lower.includes('off-broadway') ||
         lower.includes('off broadway') ||
         // Off-Broadway venues
         lower.includes('public theater') || lower.includes('at the public') ||
         // World premieres — many off-Broadway shows ARE world premieres
-        lower.includes('world premiere')) {
+        (!allowRegional && lower.includes('world premiere'))) {
       return true;
     }
   }
@@ -60,7 +62,7 @@ function isNotBroadway(text, options = {}) {
     // Always rejected regardless of category — but allowOpera={true} for shows
     // tagged type='opera' (Met Opera productions etc.)
     (!allowOpera && lower.includes('opera')) ||
-    lower.includes('in chicago') ||
+    (!allowRegional && lower.includes('in chicago')) ||
     // Film / movie
     lower.includes('film review') ||
     lower.includes('film adaptation') ||
@@ -68,10 +70,17 @@ function isNotBroadway(text, options = {}) {
     lower.includes('movie') ||
     lower.includes('on film') ||
     lower.includes('on screen') ||
-    // Regional venues (NOT off-Broadway NYC venues, NOT West End)
-    lower.includes('chicago shakespeare') ||
-    lower.includes('old globe') || lower.includes('la jolla') ||
-    lower.includes('hollywood bowl') || lower.includes('at the ahmanson') ||
+    // Regional venues (NOT off-Broadway NYC venues, NOT West End).
+    // allowRegional={true} passes these through: category:'regional' shows
+    // (Broadway-feeder tryouts) live at exactly these venues, and the
+    // aggregator pre-match filters must let their articles reach the
+    // matcher / unmatched audit (auto-promotion chain, 2026-07-08).
+    (!allowRegional && (
+      lower.includes('chicago shakespeare') ||
+      lower.includes('old globe') || lower.includes('la jolla') ||
+      lower.includes('at the ahmanson')
+    )) ||
+    lower.includes('hollywood bowl') ||
     // TV specials and streaming
     (lower.includes(' live') && (lower.includes('nbc') || lower.includes('tv') || lower.includes('fox'))) ||
     lower.includes('tv review') || lower.includes('tv series') || lower.includes('tv show') ||
