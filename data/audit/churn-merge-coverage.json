@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-08T19:42:59.100Z",
+    "generatedAt": "2026-07-08T19:56:32.995Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -42,15 +42,15 @@
   "exempt": [
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 106
+      "churn": 107
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 106
+      "churn": 107
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 106
+      "churn": 107
     },
     {
       "path": "public/data/shows/a-walk-on-the-moon-off-broadway-2026.json",
@@ -66,7 +66,7 @@
     },
     {
       "path": "public/opening-night-status.json",
-      "churn": 86
+      "churn": 87
     },
     {
       "path": "data/llm-scoring-garbage-skips.json",
@@ -74,7 +74,7 @@
     },
     {
       "path": "public/data/shows/glengarry-glen-ross-west-end-2026.json",
-      "churn": 62
+      "churn": 61
     },
     {
       "path": "data/commercial-rss-state.json",
@@ -82,11 +82,11 @@
     },
     {
       "path": "public/data/shows/a-midsummer-nights-dream-west-end-2026.json",
-      "churn": 50
+      "churn": 51
     },
     {
       "path": "public/data/shows/jesus-christ-superstar-west-end-2026.json",
-      "churn": 50
+      "churn": 51
     },
     {
       "path": "public/data/shows/birthright-off-broadway-2026.json",
@@ -98,18 +98,18 @@
     },
     {
       "path": "public/data/shows/to-kill-a-mockingbird-west-end-2026.json",
-      "churn": 33
+      "churn": 32
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 1078,
+      "churn": 1074,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 1063,
+      "churn": 1059,
       "mergeAttr": "ours"
     },
     {
@@ -119,7 +119,7 @@
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 459,
+      "churn": 460,
       "mergeAttr": "union"
     },
     {
@@ -134,22 +134,22 @@
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 132,
+      "churn": 133,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 113,
+      "churn": 114,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 110,
+      "churn": 109,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 96,
+      "churn": 97,
       "mergeAttr": "ours"
     },
     {
@@ -169,17 +169,17 @@
     },
     {
       "path": "data/audit/wrong-production-audit.json",
-      "churn": 86,
+      "churn": 87,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 84,
+      "churn": 85,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/syndicated-duplicates.json",
-      "churn": 84,
+      "churn": 85,
       "mergeAttr": "ours"
     },
     {
@@ -204,7 +204,7 @@
     },
     {
       "path": "data/audit/orphan-unscored-jesus-christ-superstar-west-end-2026.json",
-      "churn": 46,
+      "churn": 47,
       "mergeAttr": "ours"
     },
     {
