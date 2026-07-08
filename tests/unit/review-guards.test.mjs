@@ -19,6 +19,7 @@ const {
   hasStrongDifferentShowSignal,
   hasNamedDifferentDirectorSignal,
   hasHighConfidenceLlmScore,
+  isRoundupUrl,
 } = require('../../scripts/lib/review-guards.js');
 
 describe('isLikelyWrongProduction', () => {
@@ -638,5 +639,23 @@ describe('hasHighConfidenceLlmScore — Balusters CLASS 1 contradiction guard', 
   test('llmScore confidence case-insensitive', () => {
     assert.strictEqual(hasHighConfidenceLlmScore({ llmScore: { score: 80, confidence: 'HIGH' } }), true);
     assert.strictEqual(hasHighConfidenceLlmScore({ llmScore: { score: 80, confidence: 'Medium' } }), true);
+  });
+});
+
+describe('isRoundupUrl — WhatsOnStage review round-ups', () => {
+  test('WOS /news/{slug}-review-round-up_{id}/ → roundup (JCS byline explosion 2026-07-08)', () => {
+    const r = isRoundupUrl('https://www.whatsonstage.com/news/did-sam-ryder-reach-for-the-stars-jesus-christ-superstar-review-round-up_1726870/');
+    assert.strictEqual(r.isRoundup, true);
+  });
+
+  test('WOS individual review URL (…-review_{id}/) → NOT roundup', () => {
+    const r = isRoundupUrl('https://www.whatsonstage.com/news/tender-at-soho-theatre-review_1720027/');
+    assert.strictEqual(r.isRoundup, false);
+  });
+
+  test('review-round-up beyond the /news/ path segment → NOT matched', () => {
+    // Pattern must stay inside the slug: a query param or deeper path must not match.
+    const r = isRoundupUrl('https://www.whatsonstage.com/news/some-review_123/?from=review-round-up');
+    assert.strictEqual(r.isRoundup, false);
   });
 });

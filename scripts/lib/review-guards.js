@@ -818,6 +818,13 @@ function isRoundupUrl(url) {
     return { isRoundup: true, reason: 'Playbill critics-think-of roundup' };
   }
 
+  // WhatsOnStage review round-ups — /news/{slug}-review-round-up_{id}/. One
+  // 902-word roundup quoting 7 critics exploded into 7 per-critic files scored
+  // 100 via unicode-stars on jesus-christ-superstar-west-end-2026 (2026-07-08).
+  if (/whatsonstage\.com\/news\/[^/?#]*review-round-up/i.test(url)) {
+    return { isRoundup: true, reason: 'WhatsOnStage review round-up page' };
+  }
+
   // NOTE: Do NOT add generic roundup URL patterns (e.g. /review-roundup/ in BWW URLs).
   // Many legitimate individual critic reviews are SOURCED from roundup pages —
   // the URL points to the roundup where the review was discovered, but the review
