@@ -1964,7 +1964,13 @@ showDirs.forEach(showId => {
         const wpCvConfirmedWrongArticle = data.contentVerification?.wrongArticle === true
           && data.contentVerification?.confidence === 'high';
         const wpHasManualReason = !!data.wrongProductionReason;
-        if (!wpCvConfirmedWrong && !wpCvConfirmedWrongArticle && !wpHasManualReason) {
+        // Same listing-page carve-out as the UK-URL auto-clear below: a /shows/
+        // aggregate/listing page is not a dated review, so a URL-year mismatch on
+        // it is not a clearable false positive (cousin of the theo-bosanquet
+        // /shows/ stub, 2026-07-05).
+        const wpIsShowListingUrl = !!data.url && (/(?:whatsonstage|broadwayworld)\.com\/shows?\//i.test(data.url)
+          || require('./lib/cross-production-guards').isEvergreenListingUrl(data.url));
+        if (!wpCvConfirmedWrong && !wpCvConfirmedWrongArticle && !wpHasManualReason && !wpIsShowListingUrl) {
           data.wrongProduction = false;
           data.wrongProductionAutoCleared = `rebuild: WE/OB exempt from URL-year guard (was: ${data.wrongProductionNote})`;
           data.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
