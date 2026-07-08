@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-08T21:34:27.638Z",
+  "timestamp": "2026-07-08T23:53:37.343Z",
   "stats": {
-    "totalReviews": 39877,
-    "alreadyFlagged": 17553,
-    "dateGuardCatches": 41,
+    "totalReviews": 39878,
+    "alreadyFlagged": 17552,
+    "dateGuardCatches": 42,
     "directorMismatch": 891,
     "tvFilmSignals": 1096,
     "londonSignals": 739,
     "offBroadwaySignals": 467,
     "yearMismatch": 86,
-    "noPublishDate": 4024
+    "noPublishDate": 4025
   },
   "findings": [
     {
@@ -1733,7 +1733,7 @@
       "file": "independent--louis-chilton.json",
       "score": 40,
       "publishDate": "2026-04-17",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
+      "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -8561,7 +8561,7 @@
       "file": "independent--alice-saville.json",
       "score": 58,
       "publishDate": "2026-06-18",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/glengarry-glen-ross-review-old-vic-b2997665.html?loginSuccessful=true",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -28026,6 +28026,17 @@
       ]
     },
     {
+      "showId": "a-midsummer-nights-dream-west-end-2026",
+      "file": "whatsonstage--theo-bosanquet.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 46d before show (2026-05-05 vs 2026-06-20)"
+        }
+      ]
+    },
+    {
       "showId": "a-mirrored-monet-west-end-2026",
       "file": "whatsonstage--miriam-sallon.json",
       "score": 39,
@@ -41547,7 +41558,7 @@
       "file": "thestage--dave-fargnoli.json",
       "score": 38,
       "publishDate": "2026-06-24",
-      "url": "https://www.thestage.co.uk/reviews/the-misanthrope-review-lyttelton-national-theatre-london-sandra-oh",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-misanthrope-review-sandra-oh-what-a-disappointment-sbzvf82b2?t=1782310602034",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
