@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-08T10:45:55.938Z",
+  "generatedAt": "2026-07-08T11:44:51.912Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -772,23 +772,23 @@
       "status": "open",
       "slug": "jesus-christ-superstar-west-end",
       "thumbnail": "/images/shows/jesus-christ-superstar-west-end-2026/thumbnail.jpg",
-      "siteScore": 69.67,
-      "liveScore": 70,
-      "scoreDrift": 0.3299999999999983,
+      "siteScore": 74.77,
+      "liveScore": 75,
+      "scoreDrift": 0.23000000000000398,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 11,
-      "t1": 3,
-      "t2": 4,
+      "total": 16,
+      "t1": 1,
+      "t2": 11,
       "t3": 4,
-      "positive": 5,
-      "mixed": 5,
+      "positive": 12,
+      "mixed": 3,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "T1:2/3"
+          "T1:0/3"
         ],
         "highConfidence": 7,
         "thresholds": {
@@ -804,10 +804,6 @@
       },
       "missingT1": [
         {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
-        {
           "name": "Observer",
           "isDualMarket": true
         },
@@ -817,6 +813,10 @@
         },
         {
           "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
           "isDualMarket": true
         },
         {
@@ -839,10 +839,6 @@
         },
         {
           "name": "New York Theatre Guide",
-          "isDualMarket": true
-        },
-        {
-          "name": "WhatsOnStage",
           "isDualMarket": true
         }
       ],
@@ -988,6 +984,18 @@
           "t3": 4,
           "p": 5,
           "m": 5,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-08T11:44:51.912Z",
+          "rc": 16,
+          "s": 74.77,
+          "t1": 1,
+          "t2": 11,
+          "t3": 4,
+          "p": 12,
+          "m": 3,
           "n": 1,
           "bc": "waiting"
         }
