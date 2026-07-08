@@ -30,7 +30,7 @@
 ## 🌳 Worktrees & git
 - [Worktrees mandatory for code edits](feedback_worktree_code_changes.md) — src/, scripts/, .github/, CLAUDE.md; prefix paths .claude/worktrees/ ([[feedback_worktree_edit_paths.md]])
 - [Parallel worktree sessions race](feedback_parallel_worktree_race.md) — re-pull + grep scripts/lib/ BEFORE writing; plan "parallel" = subagents ([[feedback_plan_parallel_means_subagents.md]])
-- [Dual repo data files](feedback_dual_repo_data_files.md) — shows/reviews/awards/outlet-registry authoritative in private repo, fix BOTH ([[feedback_awards_json_dual_repo.md]], [[feedback_outlet_registry_dual_repo.md]]); data/review-texts NOT a symlink, edit ~/broadway-review-texts/ ([[feedback_review_texts_not_symlink.md]])
+- [Dual repo data files](feedback_dual_repo_data_files.md) — shows/reviews/awards/outlet-registry authoritative in private repo, fix BOTH ([[feedback_awards_json_dual_repo.md]], [[feedback_outlet_registry_dual_repo.md]]); data/review-texts NOT a symlink, edit ~/broadway-review-texts/ ([[feedback_review_texts_not_symlink.md]]); NEVER run rebuild-all-reviews.js locally — stale clone + no flag parsing ([[feedback_local_rebuild_stale_clone_hazard.md]])
 - [Stray symlink crashes pipeline](feedback_stray_symlink_crashes_pipeline.md) — committed abs-path symlink dangles in CI; use listShowDirs()
 - [audit-review-contamination strict CI gate](feedback_audit_contamination_strict_mode.md) — strict A/B/C fail CI; B = false-pos wrongProduction
 - [Commit data repo edits IMMEDIATELY](feedback_data_repos_clobber_uncommitted.md) — pull --rebase clobbers uncommitted; never reset-hard+rsync ([[feedback_reset_rsync_wipes_ci_fields.md]]); gh api PUT /contents/ when local git broken ([[feedback_gh_api_emergency_commit.md]])
@@ -95,6 +95,7 @@
 - [Manual review protection fields](feedback_manual_review_protection_fields.md) — need ALL 8 fields or guards re-flag; carve-out extends to wrongShow ([[feedback_manual_clear_covers_all_rejection_types.md]], [[feedback_protected_fields_every_write.md]])
 - [Star score cap rule](feedback_star_score_cap.md) — 5/5=100 is ground truth; never cap with LLM
 - [Reviews.json dual repo push](feedback_reviews_json_dual_repo_push.md) — flag + rebuild + push data repo + redeploy
+- [Returning production → priorRuns](feedback_returning_production_priorRuns.md) — WE return/transfer shows few reviews b/c majors reviewed earlier run; declare priorRuns {openingDate/closingDate/venue} to re-include ([[feedback_stale_flag_collision_drops_current_production.md]])
 - [Review recovery pipeline gaps](feedback_review_recovery_pipeline_gaps.md) — run verify-review-recovery.js; 5 steps fail independently
 - [Pseudonymous bylines ≠ multi-author](feedback_pseudonymous_bylines.md) — pen names w/ scraper-invented drift; URL-date guards gate on Unknown byline ([[feedback_url_date_guards_critic_gate.md]])
 - [Curated historical 4-review threshold](feedback_curated_historical_4review_threshold.md) — isCuratedHistorical → 4-review min when ≥1 T1/T2
@@ -115,6 +116,7 @@
 - [Mobile link min-height + row exceptions](feedback_mobile_link_min_height.md) — a{min-height:44px}; .performer-row/.craft-row opt out; e2e-guarded
 - [App Router rendering](feedback_react_lazy_for_app_router_split.md) — next/dynamic from server = no-op, use 'use client' Loader + Suspense; above-fold features render in page.tsx BEFORE HomePageClient ([[feedback_page_tsx_renders_before_homepageclient.md]]); demo flags client-only ([[feedback_demo_flags_client_only.md]])
 - [A/B tests](feedback_ab_test_guardrails.md) — PostHog filters/exclusions/stat-sig thresholds
+- [.card contain traps fixed modals](feedback_css_contain_traps_fixed_modals.md) — Modal must portal to body; fixtures must exercise every presentation variant in-situ
 - [UGC test patterns](feedback_ugc_test_patterns.md) — Sanity env, mock dates, overflow, 404s; use page.getByRole().click() not page.evaluate, races hydration ([[feedback_playwright_evaluate_click_hydration.md]])
 
 ## 💼 Commercial / features
