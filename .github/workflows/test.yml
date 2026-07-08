@@ -108,6 +108,13 @@ on:
       # triggers ZERO CI.
       - 'scripts/audit-duplicate-shows.js'
       - 'scripts/lib/show-duplicate-detection.js'
+      # Aggregator-candidate bridge (PV/BWW unmatched → OB/regional staging) +
+      # its colocated test (lib glob) + driver + promoter. Without these a solo
+      # edit triggers ZERO CI.
+      - 'scripts/lib/aggregator-candidate-extract.js'
+      - 'scripts/lib/aggregator-candidate-extract.test.mjs'
+      - 'scripts/extract-aggregator-candidates.js'
+      - 'scripts/promote-ob-venue-candidates.js'
       - 'scripts/lib/show-duplicate-detection.test.mjs'
       # Display-field artifact GC (html-entity decode + json-ld drop) + its shared
       # predicate/decoder lib. Colocated text-cleaning predicates are tested by

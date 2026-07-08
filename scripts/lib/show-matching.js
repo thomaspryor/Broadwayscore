@@ -1112,6 +1112,30 @@ function _yearGap(show, articleYear) {
   return Math.abs(y - articleYear);
 }
 
+// A single-token show whose token appears in the slug ONLY immediately after
+// a location preposition ("in-chicago", "at-chicago") is a place mention, not
+// a title mention: "did-reviewers-warm-to-...-iceboy-in-chicago" is about
+// Iceboy! at a Chicago venue, not the musical CHICAGO — but "chicago" (7 chars)
+// out-scores "iceboy" (6) on the squared-length axis, so without this guard the
+// wrong show wins with high confidence (2026-07-08). Multi-token shows are
+// never demoted (only their first token can follow the preposition), and a
+// demoted candidate still matches when nothing better does ("swept-up-in-
+// maybe-happy-ending" keeps matching Maybe Happy Ending).
+function _tokenOnlyLocationPrefixed(token, cleanedSlug) {
+  let idx = -1;
+  let sawOccurrence = false;
+  while ((idx = cleanedSlug.indexOf(token, idx + 1)) !== -1) {
+    const startOk = idx === 0 || cleanedSlug[idx - 1] === '-';
+    const endOk = idx + token.length === cleanedSlug.length || cleanedSlug[idx + token.length] === '-';
+    if (!startOk || !endOk) continue;
+    sawOccurrence = true;
+    const before = cleanedSlug.slice(0, Math.max(0, idx - 1)); // drop the joining '-'
+    const prevWord = before.slice(before.lastIndexOf('-') + 1);
+    if (prevWord !== 'in' && prevWord !== 'at') return false; // a non-location occurrence exists
+  }
+  return sawOccurrence;
+}
+
 function _matchCleanedSlugAgainstShows(cleanedSlug, shows, options = {}) {
   if (!cleanedSlug || !shows || shows.length === 0) return null;
   const articleYear = options && options.year ? options.year : null;
@@ -1151,7 +1175,8 @@ function _matchCleanedSlugAgainstShows(cleanedSlug, shows, options = {}) {
     // slug. The matcher's job is to recognize when a show's title appears
     // in a slug — partial matches are not recognition, they're noise.
     if (matchedTokens < tokens.length) continue;
-    candidates.push({ show, matched: matchedTokens, total: tokens.length, score, totalLen });
+    const locPrefixed = tokens.length === 1 && _tokenOnlyLocationPrefixed(tokens[0], cleanedSlug);
+    candidates.push({ show, matched: matchedTokens, total: tokens.length, score, totalLen, locPrefixed });
   }
   if (candidates.length === 0) return null;
   // Sort by:
@@ -1163,6 +1188,14 @@ function _matchCleanedSlugAgainstShows(cleanedSlug, shows, options = {}) {
   //   4. more recent openingDate (a 2026 production beats a 2009 production
   //      with the same single-word title — without this, Hamlet@BAM-2026
   //      tied with Hamlet-2009 on every other axis and picked arbitrarily)
+  // Location-prepositioned candidates are place mentions, not recognition —
+  // drop them entirely. If nothing else matched, the article stays unmatched
+  // (→ audit log → human), which is strictly safer than ingesting reviews
+  // into the wrong show.
+  const viable = candidates.filter(c => !c.locPrefixed);
+  if (viable.length === 0) return null;
+  candidates.length = 0;
+  candidates.push(...viable);
   candidates.sort((a, b) => {
     if (b.score !== a.score) return b.score - a.score;
     if (b.totalLen !== a.totalLen) return b.totalLen - a.totalLen;

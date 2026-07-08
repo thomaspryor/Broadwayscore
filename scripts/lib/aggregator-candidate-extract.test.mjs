@@ -223,3 +223,23 @@ test('low-confidence PV entries are not new candidates', () => {
   assert.equal(r.status, 'reject');
   assert.equal(r.reason, 'low-confidence-existing-match');
 });
+
+test('regional feeder venues classify as category regional (2026-07-08)', () => {
+  const { classifyVenueMarket } = require('./aggregator-candidate-extract.js');
+  assert.equal(classifyVenueMarket('Arena Stage'), 'regional');
+  assert.equal(classifyVenueMarket('Kreeger Theater'), 'regional');
+  assert.equal(classifyVenueMarket('Goodman Theatre'), 'regional');
+  assert.equal(classifyVenueMarket('American Repertory Theater'), 'regional');
+  // NYC rental complex must NOT classify regional (QA finding 2026-07-08)
+  assert.equal(classifyVenueMarket('A.R.T./New York Theatres'), 'off-broadway');
+  assert.equal(classifyVenueMarket('La Jolla Playhouse'), 'regional');
+  assert.equal(classifyVenueMarket('Steppenwolf Theatre'), 'regional');
+  // NYC OB venues stay off-broadway
+  assert.equal(classifyVenueMarket("St. Luke's Theatre"), 'off-broadway');
+  assert.equal(classifyVenueMarket('Atlantic Theater Company'), 'off-broadway');
+  assert.equal(classifyVenueMarket('Signature Center'), 'off-broadway');
+  assert.equal(classifyVenueMarket(''), 'off-broadway');
+  assert.equal(classifyVenueMarket(null), 'off-broadway');
+  // "part" must not fuzzy-hit "mark taper" etc. — word-boundary anchored
+  assert.equal(classifyVenueMarket('New Art Theatre'), 'off-broadway');
+});
