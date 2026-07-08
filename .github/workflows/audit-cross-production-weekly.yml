@@ -91,32 +91,10 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
 
-      - name: Extract aggregator candidates
-        # Turns the unmatched-article audit (written by the PV + BWW scrapers
-        # earlier on Sunday) into OB-discovery candidates staged in
-        # ob-venue-candidates.json. Human-gated promotion stays in
-        # promote-ob-venue-candidates.js (CLAUDE.md §3 — no auto-add).
-        # --limit caps fetches; abort gate inside the script stops runaway
-        # parser regressions from mass-staging.
-        #
-        # continue-on-error: the MAX_ACCEPT abort (exit 1) must NOT fail the
-        # whole job — that would skip the non-if:always() "Check for changes"
-        # step and suppress the UNRELATED cross-production + slug-routing audit
-        # commits. The ::error:: annotation still surfaces the abort. (ship-check)
-        continue-on-error: true
-        run: |
-          if [ -z "$BRIGHTDATA_TOKEN" ] && [ -z "$SCRAPINGBEE_API_KEY" ]; then
-            echo "::warning::No scraper credentials present — aggregator candidate extraction will fetch nothing."
-          fi
-          node scripts/extract-aggregator-candidates.js --limit=20 --email
-        env:
-          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
-          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
-          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
-          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
-          SCRAPER_USE_SCRAPINGDOG: '1'
-          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+      # Aggregator-candidate extraction MOVED to scrape-new-aggregators.yml
+      # (daily, right after the PV scrape) 2026-07-08 — single owner for the
+      # extract → auto-promote → targeted-rescrape chain. Running it here too
+      # raced the same staging file on Sundays (both crons are 14:00 UTC).
 
       - name: Check for changes
         id: changes
