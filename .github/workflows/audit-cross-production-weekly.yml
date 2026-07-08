@@ -108,13 +108,15 @@ jobs:
           if [ -z "$BRIGHTDATA_TOKEN" ] && [ -z "$SCRAPINGBEE_API_KEY" ]; then
             echo "::warning::No scraper credentials present — aggregator candidate extraction will fetch nothing."
           fi
-          node scripts/extract-aggregator-candidates.js --limit=20
+          node scripts/extract-aggregator-candidates.js --limit=20 --email
         env:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
 
       - name: Check for changes
         id: changes

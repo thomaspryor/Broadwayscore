@@ -138,6 +138,42 @@ jobs:
             echo "No unmatched-articles changes to commit"
           fi
 
+      # Bridge the unmatched audit → candidate staging DAILY (the Sunday
+      # audit-cross-production-weekly run alone left a 6-day discovery lag:
+      # CrazySexyCool @ Arena Stage, 2026-07). Idempotent — already-staged
+      # URLs are skipped, so daily cost is at most a few fetches. Regional
+      # feeder-venue candidates trigger an owner alert email (--email); they
+      # can't auto-promote (no Playbill-OB/Lortel listing, CLAUDE.md §3).
+      # continue-on-error: the MAX_ACCEPT abort or an email hiccup must not
+      # fail the job — the downstream rebuild gate checks job result.
+      - name: Extract aggregator candidates + regional alert
+        if: always()
+        continue-on-error: true
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: |
+          # Sunday is covered by audit-cross-production-weekly (same 14:00 UTC
+          # cron) — skip here so two extractors never race the same staging
+          # file / double-send the alert email.
+          if [ "$(date -u +%u)" = "7" ]; then
+            echo "Sunday — extraction runs in audit-cross-production-weekly instead."
+            exit 0
+          fi
+          node scripts/extract-aggregator-candidates.js --limit=20 --email
+          git add data/audit/ob-venue-candidates.json data/audit/ob-aggregator-rejections.json 2>/dev/null || true
+          if ! git diff --staged --quiet; then
+            git commit -m "data: aggregator candidate staging (daily) [skip ci]"
+            bash scripts/lib/push-with-retry.sh
+          else
+            echo "No candidate-staging changes to commit"
+          fi
+
   scrape-nyc-theatre:
     runs-on: ubuntu-latest
     timeout-minutes: 60

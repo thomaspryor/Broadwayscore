@@ -112,7 +112,11 @@ async function main() {
   // "musical" → jaccard 0.8, not 1.0. 0.8 still requires 80% token overlap.
   const DEDUP_JACCARD_THRESHOLD = 0.80;
   const existingByVenue = new Map(); // canonicalVenue → [{ id, title, tokens, normalized }]
-  for (const s of showsData.shows.filter(s => s.category === 'off-broadway')) {
+  // Include 'regional' alongside 'off-broadway': regional candidates are added
+  // to shows.json manually (runbook), and without them in this index a staged
+  // regional entry never matches → never drops → re-hits validation weekly
+  // forever (Black Swan sat staged 3 weeks after shipping, 2026-07-08).
+  for (const s of showsData.shows.filter(s => s.category === 'off-broadway' || s.category === 'regional')) {
     const venueKey = canonicalVenue(s.venue);
     if (!existingByVenue.has(venueKey)) existingByVenue.set(venueKey, []);
     existingByVenue.get(venueKey).push({
@@ -174,6 +178,21 @@ async function main() {
       continue;
     }
 
+    // Regional feeder-venue candidates (category set by aggregator-candidate-
+    // extract.js) can never be confirmed by Playbill-OB/Lortel — don't burn
+    // cross-validation on them. They stay staged; the extractor's --email
+    // alert is their surfacing path, and the human adds them per
+    // memory/feedback_regional_show_add_runbook.md. This skip is UNCONDITIONAL
+    // (no --admin-force/--admin-promote-all escape): buildShowEntry hardcodes
+    // category 'off-broadway' + market 'broadway' + an -off-broadway- id, so
+    // promoting a regional candidate here would mint a mislabeled show.
+    if (c.category === 'regional') {
+      skipped.push({ candidate: c, reason: 'regional feeder venue — manual add via runbook (alert emailed)' });
+      remainingStaged.push(c);
+      logEntry({ kind: 'skip-regional', title: c.title, venue: c.venue });
+      continue;
+    }
+
     let confirmed = false;
     let reason = '';
     let source = null;
@@ -227,8 +246,20 @@ async function main() {
     return;
   }
 
+  // Staging rewrite must NOT be gated on promotions: dedup-matched entries
+  // (candidate's show since added to shows.json by hand — the regional flow)
+  // leave staging via remainingStaged, and that cleanup has to land even on a
+  // zero-promotion run or stale entries linger forever (QA 2026-07-08).
+  const rewriteStaging = () => {
+    const stagingPath = path.join(__dirname, '..', 'data', 'audit', 'ob-venue-candidates.json');
+    fs.writeFileSync(stagingPath + '.tmp.' + process.pid, JSON.stringify(remainingStaged, null, 2));
+    fs.renameSync(stagingPath + '.tmp.' + process.pid, stagingPath);
+    console.log(`Staging file: ${remainingStaged.length} unpromoted candidates remain.`);
+  };
+
   if (promoted.length === 0) {
     console.log('Nothing to promote; shows.json unchanged.');
+    if (remainingStaged.length !== staged.length) rewriteStaging();
     return;
   }
 
@@ -245,13 +276,8 @@ async function main() {
     throw e;
   }
 
-  // Rewrite staging file with only the unpromoted candidates
-  // (atomic write happens inside writeStagingCandidates — replace-by-hash)
-  // We need to wipe staging and re-add the remaining ones.
-  const stagingPath = path.join(__dirname, '..', 'data', 'audit', 'ob-venue-candidates.json');
-  fs.writeFileSync(stagingPath + '.tmp.' + process.pid, JSON.stringify(remainingStaged, null, 2));
-  fs.renameSync(stagingPath + '.tmp.' + process.pid, stagingPath);
-  console.log(`Staging file: ${remainingStaged.length} unpromoted candidates remain.`);
+  // Rewrite staging file with only the unpromoted candidates.
+  rewriteStaging();
 }
 
 if (require.main === module) {

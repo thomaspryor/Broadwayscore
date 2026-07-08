@@ -100,6 +100,7 @@ function getNotificationStatus() { return { alerts: false, reports: false, newsh
 
 module.exports = {
   sendAlert,
+  sendEmailAlert, // resolves true/false — for callers that must act on delivery failure
   sendReport,
   sendNewShowNotification,
   sendMessage,

@@ -248,3 +248,36 @@ test('date-context: when NO candidate is in-window the date axis is inert (open 
   const r = matchBwwRoundupSlugToShow('/article/Review-Roundup-PIPPIN-Opens-on-Broadway-20400101', DATE_CTX_SHOWS);
   assert.equal(r && r.show.id, 'pippin-open-1985', 'no in-window candidate → defer to open-production preference, not closest year');
 });
+
+// ---------------------------------------------------------------------------
+// Location-preposition guard (2026-07-08): "iceboy-in-chicago" is a place
+// mention of Chicago, not the musical CHICAGO. A single-token show whose token
+// appears in the slug ONLY after "in-"/"at-" must never match.
+// ---------------------------------------------------------------------------
+
+const LOC_SHOWS = [
+  { id: 'chicago-1996', title: 'Chicago', openingDate: '1996-11-14', status: 'open', category: 'broadway' },
+  { id: 'iceboy-regional-2026', title: 'Iceboy!', openingDate: '2026-06-29', status: 'open', category: 'regional' },
+  { id: 'maybe-happy-ending-2024', title: 'Maybe Happy Ending', openingDate: '2024-11-12', status: 'open', category: 'broadway' },
+];
+
+test('location-preposition: "-in-chicago" routes to the show whose title actually matches, not the city', () => {
+  const r = matchSlugToShow('did-reviewers-warm-to-world-premiere-musical-iceboy-in-chicago', LOC_SHOWS);
+  assert.equal(r && r.show.id, 'iceboy-regional-2026',
+    '"chicago" after "in-" is a location, so iceboy must win despite its shorter token');
+});
+
+test('location-preposition: a sole candidate matched only via "in-<city>" is rejected outright', () => {
+  const r = matchSlugToShow('a-new-musical-comedy-opens-in-chicago', LOC_SHOWS);
+  assert.equal(r, null, 'a place mention alone is not recognition — must stay unmatched');
+});
+
+test('location-preposition: multi-token titles after "in" still match (only the first token follows the preposition)', () => {
+  const r = matchSlugToShow('were-critics-swept-up-in-maybe-happy-ending', LOC_SHOWS);
+  assert.equal(r && r.show.id, 'maybe-happy-ending-2024');
+});
+
+test('location-preposition: a non-prepositioned occurrence anywhere keeps the match', () => {
+  const r = matchSlugToShow('did-critics-cheer-the-revival-of-chicago', LOC_SHOWS);
+  assert.equal(r && r.show.id, 'chicago-1996', '"of-chicago" is not a location preposition — Chicago must still match');
+});
