@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-07-08T08:01:15.051Z",
+  "generatedAt": "2026-07-08T10:01:19.857Z",
   "date": "2026-07-08",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 297165,
+  "entryCount": 306347,
   "shows": [
     {
       "showId": "jesus-christ-superstar-west-end-2026",
-      "reviewCount": 10,
+      "reviewCount": 8,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2052,6 +2052,21 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "iceboy-regional-2026",
+      "reviewCount": 8,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 418725,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
