@@ -1,447 +1,143 @@
 {
-  "generatedAt": "2026-07-08T08:41:17.666Z",
+  "generatedAt": "2026-07-08T09:36:21.541Z",
   "windowDays": 1095,
-  "targets": 5,
+  "targets": 7,
   "counts": {
-    "withGap": 4,
-    "totalMissing": 53,
-    "totalFlaggedMisses": 23,
+    "withGap": 6,
+    "totalMissing": 18,
+    "totalFlaggedMisses": 35,
     "totalRecoverable": 0,
     "totalRecovered": 0
   },
   "results": [
     {
-      "showId": "kinky-boots-the-musical-west-end-2026",
-      "title": "Kinky Boots The Musical",
-      "openingDate": "2026-03-17",
+      "showId": "beetlejuice-west-end-2026",
+      "title": "Beetlejuice",
+      "openingDate": "2026-05-28",
       "status": "open",
       "category": "west-end",
       "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-KINKY-BOOTS-in-Chicago-All-the-Reviews-20121020"
+        "https://playbill.com/article/read-reviews-for-beetlejuice-on-broadway",
+        "https://playbill.com/article/what-did-critics-think-of-the-beetlejuice-musicals-world-premiere",
+        "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Begins-Its-Broadway-Haunt--See-What-The-Critics-Had-To-Say-20190425",
+        "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-on-Pre-Broadway-BEETLEJUICE-in-DC-Updating-Live-20181105",
+        "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221",
+        "https://www.broadwayworld.com/article/Review-Roundup-BEETLEJUICE-BEETLEJUICE--What-Do-Critics-Think-of-the-Long-Awaited-Sequel-20240828"
       ],
       "aggregatorListedUrls": [
-        "http://www.chicagotribune.com/entertainment/theater/theaterloop/chi-kinky-boots-review-chicago,0,6703372.column",
-        "http://www.suntimes.com/entertainment/15794191-421/feel-good-kinky-boots-is-a-step-in-the-billy-elliot-direction.html",
-        "http://timeoutchicago.com/arts-culture/theater/15794896/kinky-boots-at-bank-of-america-theatre-theater-review",
-        "http://showbizchicago.com/billy-porter-is-the-soul-of-kinky-boots/",
-        "http://www.aroundthetownchicago.com/theatre-reviews/kinky-boots-the-musical/",
-        "http://www.examiner.com/review/kinky-boots-musical-on-sure-path-to-tony-awards"
-      ],
-      "dirFiles": 37,
-      "dirClean": 5,
-      "inReviewsJson": 11,
-      "missing": [
-        {
-          "url": "http://www.chicagotribune.com/entertainment/theater/theaterloop/chi-kinky-boots-review-chicago,0,6703372.column",
-          "host": "chicagotribune.com",
-          "knownOutletId": "chicagotribune"
-        },
-        {
-          "url": "http://timeoutchicago.com/arts-culture/theater/15794896/kinky-boots-at-bank-of-america-theatre-theater-review",
-          "host": "timeoutchicago.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "http://showbizchicago.com/billy-porter-is-the-soul-of-kinky-boots/",
-          "host": "showbizchicago.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "http://www.aroundthetownchicago.com/theatre-reviews/kinky-boots-the-musical/",
-          "host": "aroundthetownchicago.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "http://www.examiner.com/review/kinky-boots-musical-on-sure-path-to-tony-awards",
-          "host": "examiner.com",
-          "knownOutletId": "examiner"
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "theguardian.com",
-          "count": 1
-        },
-        {
-          "host": "londonboxoffice.co.uk",
-          "count": 1
-        },
-        {
-          "host": "londontheatre1.com",
-          "count": 1
-        },
-        {
-          "host": "loureviews.blog",
-          "count": 1
-        },
-        {
-          "host": "standard.co.uk",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "http://www.suntimes.com/entertainment/15794191-421/feel-good-kinky-boots-is-a-step-in-the-billy-elliot-direction.html",
-          "host": "suntimes.com",
-          "knownOutletId": "suntimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "chicago-sun-times--the-hand-club-for.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.suntimes.com/entertainment/15794191-421/feel-good-kinky-boots-is-a-step-in-the-billy-elliot-direction.html"
-            }
-          ]
-        }
-      ],
-      "ingestResults": [
-        {
-          "url": "http://www.chicagotribune.com/entertainment/theater/theaterloop/chi-kinky-boots-review-chicago,0,6703372.column",
-          "host": "chicagotribune.com",
-          "outletId": "chicagotribune",
-          "provisional": false,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=kinky-boots-the-musical-west-end-2026 "
-        },
-        {
-          "url": "http://timeoutchicago.com/arts-culture/theater/15794896/kinky-boots-at-bank-of-america-theatre-theater-review",
-          "host": "timeoutchicago.com",
-          "outletId": "timeoutchicago",
-          "provisional": true,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=kinky-boots-the-musical-west-end-2026 "
-        },
-        {
-          "url": "http://showbizchicago.com/billy-porter-is-the-soul-of-kinky-boots/",
-          "host": "showbizchicago.com",
-          "outletId": "showbizchicago",
-          "provisional": true,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=kinky-boots-the-musical-west-end-2026 "
-        },
-        {
-          "url": "http://www.aroundthetownchicago.com/theatre-reviews/kinky-boots-the-musical/",
-          "host": "aroundthetownchicago.com",
-          "outletId": "aroundthetownchicago",
-          "provisional": true,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=kinky-boots-the-musical-west-end-2026 "
-        },
-        {
-          "url": "http://www.examiner.com/review/kinky-boots-musical-on-sure-path-to-tony-awards",
-          "host": "examiner.com",
-          "outletId": "examiner",
-          "provisional": false,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=kinky-boots-the-musical-west-end-2026 "
-        }
-      ],
-      "ingestSkippedByCap": []
-    },
-    {
-      "showId": "jesus-christ-superstar-west-end-2026",
-      "title": "Jesus Christ Superstar",
-      "openingDate": "2026-07-07",
-      "status": "open",
-      "category": "west-end",
-      "aggregatorArticles": [
-        "https://playbill.com/article/what-did-critics-think-of-nbcs-jesus-christ-superstar-live-in-concert-starring-john-legend",
-        "https://playbill.com/article/read-reviews-for-jesus-christ-superstar-at-lyric-opera-of-chicago",
-        "https://www.broadwayworld.com/article/Review-Roundup-JESUS-CHRIST-SUPERSTAR-at-the-Hollywood-Bowl-Starring-Cynthia-Erivo-Adam-Lambert-and-More-20250804",
-        "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-in-on-the-50th-Anniversary-Tour-of-JESUS-CHRIST-SUPERSTAR-20191017",
-        "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-JESUS-CHRIST-SUPERSTAR-Resumes-What-Are-the-Critics-Saying-20211110",
-        "https://www.broadwayworld.com/article/Review-Roundup-JESUS-CHRIST-SUPERSTAR-on-Broadway-Updating-LIVE-20120322"
-      ],
-      "aggregatorListedUrls": [
-        "http://deadline.com/2018/04/jesus-christ-superstar-live-review-john-legend-sara-bareilles-brandon-victor-dixon-andrew-lloyd-webber-1202356696/",
-        "http://ew.com/tv/2018/04/02/jesus-christ-superstar-live-in-concert-review/",
-        "https://hollywoodreporter.com/review/jesus-christ-superstar-live-in-concert-1098854",
-        "http://latimes.com/entertainment/tv/la-la-et-st-jesus-christ-superstar-review-20180402-story.html",
-        "https://nytimes.com/2018/04/02/arts/television/jesus-christ-superstar-live-in-concert-nbc-review.html",
-        "https://newsday.com/entertainment/tv/jesus-christ-superstar-review-nbc-1.17819394",
-        "https://npr.org/sections/monkeysee/2018/04/02/598732076/jesus-christ-superstar-brings-strong-voices-to-a-familiar-story",
-        "http://variety.com/2018/tv/reviews/jesus-christ-superstar-live-in-concert-nbc-john-legend-brandon-victor-dixon-sara-bareilles-1202741222/",
-        "https://chicago.suntimes.com/entertainment/lyric-operas-jesus-christ-superstar-a-glorious-rock-opera-celebration/",
-        "http://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-jesus-christ-superstar-lyric-review-0430-story.html",
-        "https://variety.com/2025/music/concert-reviews/jesus-christ-superstar-cynthia-erivo-adam-lambert-hollywood-bowl-review-1236477734/",
-        "https://www.thewrap.com/jesus-christ-superstar-review-cynthia-erivo-adam-lambert-hollywood-bowl/",
-        "https://www.theguardian.com/stage/2025/aug/04/jesus-christ-superstar-review-cynthia-erivo",
-        "https://weliveentertainment.com/we-live-entertainment/concerts/theater-review-jesus-christ-superstar-hollywood-bowl-absolutely-divine-spectacle/",
-        "https://www.austin360.com/entertainmentlife/20191010/why-this-jesus-christ-superstar-is-one-of-great-revivals-in-musical-theater-history",
-        "https://www.austinchronicle.com/daily/arts/2019-10-15/review-jesus-christ-superstar/",
-        "https://www.latimes.com/entertainment-arts/story/2019-10-31/jesus-christ-superstar-national-tour-pantages",
-        "https://947thewave.radio.com/blogs/deborah-howell/jesus-christ-superstar-hollywood-pantages",
-        "https://patch.com/california/hollywood/jesus-christ-superstar-still-rocks-after-50-years",
-        "https://www.sandiegouniontribune.com/entertainment/theater/story/2019-11-14/review-new-touring-production-of-jesus-christ-superstar-boasts-rock-n-roll-power-but-not-a-lot-of-clarity",
-        "http://www.sandiegostory.com/jesus-christ-superstar-rocks-and-shocks-at-civic-theatre/",
-        "https://www.spokesman.com/stories/2019/nov/21/updated-jesus-christ-superstar-keeps-the-rock-in-r/",
-        "https://www.latinlifedenver.com/community/it-all-the-buzz-jesus-christ-superstar-returns-to-denver-thru-dec-1-only/",
-        "http://www.becauseitoldyouso.com/2019/12/broadway-in-tucson-review-jesus-christ.html",
-        "https://www.omaha.com/entertainment/review-th-anniversary-tour-of-jesus-christ-superstar-shines-like/article_4241cf00-0b2b-5096-a8fb-81fc56a01d87.html",
-        "https://thereader.com/theater-2/jesus-christ-superstar-revival-is-divine-entertainment",
-        "http://www.theatrebloom.com/2019/12/jesus-christ-superstar-at-the-hippodrome-theatre/",
-        "https://dcmetrotheaterarts.com/2019/12/18/jesus-christ-superstar-hits-the-road-to-50/",
-        "https://www.post-gazette.com/ae/theater-dance/2020/01/01/Review-Cutting-edge-Jesus-Christ-Superstar-thrills-tour-Pittsburgh/stories/202001010155",
-        "https://chasingsupermom.com/2021/09/jesus-christ-superstar-comes-to-portland/",
-        "https://www.seattletimes.com/entertainment/theater/review-a-brisk-jesus-christ-superstar-marks-the-return-of-broadway-at-the-paramount/",
-        "https://popwrapped.com/jesus-christ-superstar-brings-broadway-back-to-san-fran/",
-        "https://sfist.com/2021/10/15/jesus-christ-superstar-at-the-golden-gate-theater-is-a-brash/",
-        "https://www.newportbeachindy.com/a-glorious-jesus-christ-superstar-marks-return-of-touring-musicals-to-segerstrom-center/",
-        "https://stageandcinema.com/2021/11/11/jesus-christ-superstar-national-tour/",
-        "https://shepherdexpress.com/culture/theater/jesus-christ-superstar-rocks-at-marcus-performing-arts-cen/",
-        "https://www.bostonglobe.com/2022/01/07/arts/jesus-christ-superstar-with-swagger-imbued-with-sorrow/",
-        "https://www.wishtv.com/lifestylelive/jesus-christ-superstar-brings-worldwide-50th-anniversary-tour-to-indianapolis/",
-        "https://www.cleveland.com/entertainment/2022/02/rebooted-jesus-christ-superstar-50th-anniversary-tour-gets-off-to-stunning-start-in-cleveland.html",
-        "https://www.washingtonpost.com/theater-dance/2022/02/24/jesus-christ-superstar-kennedy-center/",
-        "https://mdtheatreguide.com/2022/02/theatre-review-jesus-christ-superstar-at-the-kennedy-center/",
-        "https://nbc-2.com/news/2022/03/16/2s-review-jesus-christ-superstar/",
-        "https://greenvillejournal.com/arts-culture/review-jesus-christ-superstar-a-powerful-go-for-broke-production-at-peace-center/",
-        "https://gephardtdaily.com/local/review-jesus-christ-superstar-delivers-powerhouse-passion/",
-        "https://thisisreno.com/2022/05/heaven-on-their-minds-jesus-christ-superstar-at-the-pioneer/",
-        "https://theatricalmusings.com/musical-2/touring-production-of-jesus-christ-superstar-offers-a-relatable-titular-character/",
-        "https://attractionsmagazine.com/theater-review-the-50th-anniversary-tour-of-jesus-christ-superstar-breathes-new-life-into-a-modern-classic/",
-        "https://www.newcitystage.com/2022/07/26/the-passion-of-the-superstar-a-review-of-jesus-christ-superstar-at-broadway-in-chicago/",
-        "https://chicago.suntimes.com/2022/7/21/23273090/jesus-christ-superstar-review-cadillac-palace-chicago",
-        "http://theater.nytimes.com/2012/03/23/theater/reviews/jesus-christ-superstar-at-the-neil-simon-theater.html",
-        "http://www.usatoday.com/life/theater/reviews/story/2012-03-22/jesus-christ-superstar-once-musicals/53713214/1",
-        "http://www.crescent-news.com/ap%20entertainment/2012/03/22/ap-review-jesus-christ-superstar-overly-flashy",
-        "http://www.hollywoodreporter.com/review/jesus-christ-superstar-theater-review-andrew-lloyd-webber-303387",
-        "http://www.backstage.com/bso/reviews-movie-tv-reviews/ny-review-jesus-christ-superstar-1006552952.story",
-        "http://www.amny.com/urbanite-1.812039/theater-review-jesus-christ-superstar-3-5-stars-1.3618340",
-        "http://www.chicagotribune.com/entertainment/chi-ent-jesus-christ-superstar-review-20120322,0,1543035.column",
-        "http://www.newsday.com/entertainment/theater/a-very-serious-jesus-christ-superstar-1.3616182",
-        "http://blogs.villagevoice.com/dailymusto/2012/03/jesus_christ_su.php",
-        "http://www.nydailynews.com/entertainment/jesus-christ-superstar-rocks-broadway-article-1.1048973",
+        "https://www.amny.com/entertainment/beetlejuice-review-1.30234785",
+        "https://broadway.news/2019/04/25/review-in-beetlejuice-death-comes-to-life/",
+        "https://www.thedailybeast.com/beetlejuice-on-broadway-it-was-a-horror-show-now-it-feels-like-a-hit",
+        "https://deadline.com/2019/04/beetlejuice-broadway-review-musical-theater-alex-brightman-sophia-anne-caruso-1202601783/",
+        "https://ew.com/theater-reviews/2019/04/25/beetlejuice-musical-review/",
+        "https://www.theguardian.com/stage/2019/apr/25/beetlejuice-broadway-tim-burton-adaptation-haunts",
+        "https://www.hollywoodreporter.com/review/beetlejuice-theater-review-1204616",
+        "https://www.newsday.com/entertainment/theater/beetlejuice-musical-1.30192947",
+        "https://www.nydailynews.com/entertainment/broadway/ny-review-broadway-chris-jones-beetlejuice-20190426-qufnjwcktvdajnjtwm4hdudipi-story.html",
+        "https://www.vulture.com/2019/04/review-beetlejuice-is-best-when-its-at-its-most-antic.html",
+        "https://nypost.com/2019/04/25/beetlejuice-review-musical-is-a-coke-snorting-f-bombing-disaster/",
+        "http://nystagereview.com/2019/04/25/beetlejuice-these-ghosts-are-gonna-live-forever/",
+        "http://nystagereview.com/2019/04/25/beetlejuice-tim-burtons-1988-cult-film-kinda-musicalized/",
+        "https://www.nytimes.com/2019/04/25/theater/beetlejuice-review-broadway.html",
+        "https://www.newyorktheatreguide.com/reviews/review-of-beetlejuice-starring-alex-brightman-on-broadway",
+        "https://www.ny1.com/nyc/all-boroughs/theater-reviews/2019/04/25/theater-review---beetlejuice-",
+        "https://observer.com/2019/04/beetlejuice-broadway-spring-2019-reivew-alex-timbers-rex-reed/",
+        "https://www.thestage.co.uk/reviews/2019/beetlejuice-musical-tim-burton-review-winter-garden-new-york/",
+        "https://www.timeout.com/newyork/theater/beetlejuice-review-broadway-musical",
+        "https://variety.com/2019/legit/reviews/beetlejuice-review-broadway-musical-1203194763/",
+        "https://www.washingtonpost.com/entertainment/theater_dance/beetlejuice-cleans-up-its-act-for-broadway-its-not-a-raging-success-but-itll-do/2019/04/25/cec14fa8-676b-11e9-8985-4cf30147bdca_story.html",
+        "https://www.thewrap.com/beetlejuice-broadway-review-tim-burtons-ghosts-turn-scarily-uncomic-in-musical-misfire/",
+        "https://news.iheart.com/featured/toby-knapp/content/2018-11-04-review-buckle-up-broadway-beetlejuice-is-coming/",
+        "https://www.metroweekly.com/2018/11/theater-review-beetlejuice-the-musical-at-national-theatre/",
+        "https://variety.com/2018/legit/reviews/pre-broadway-review-beetlejuice-1203019914/",
+        "https://www.washingtonpost.com/entertainment/theater_dance/the-new-beetlejuice-musical-is-overcaffeinated-overstuffed-and-virtually-charmless/2018/11/04/66b21146-dfe3-11e8-b732-3c72cbf131f2_story.html",
+        "https://theatrenerds.com/beetlejuice-the-musical-dc-review/",
+        "https://variety.com/2024/film/reviews/beetlejuice-beetlejuice-review-tim-burton-jenna-ortega-winona-ryder-1236119595/",
+        "https://deadline.com/2024/08/beetlejuice-beetlejuice-2-review-jenna-ortega-tim-burton-1236058235/",
+        "https://www.ign.com/articles/beetlejuice-beetlejuice-review-tim-burton-michael-keaton-winona-ryder-jenna-ortega",
+        "https://www.theguardian.com/film/article/2024/aug/28/beetlejuice-beetlejuice-review-venice-film-festival",
+        "https://www.bbc.com/culture/article/20240828-beetlejuice-beetlejuice-review",
+        "https://time.com/7015514/beetlejuice-beetlejuice-review/",
+        "https://time.com/4325002/tim-burton-beetlejuice-2-rumors/",
+        "https://www.hollywoodreporter.com/movies/movie-reviews/beetlejuice-beetlejuice-review-winona-ryder-tim-burton-michael-keaton-jenna-ortega-1235985886/",
+        "https://www.empireonline.com/movies/reviews/beetlejuice-beetlejuice/",
+        "https://www.indiewire.com/criticism/movies/beetlejuice-beetlejuice-review-tim-burton-sequel-1235041019/",
         "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css",
         "https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"
       ],
-      "dirFiles": 60,
-      "dirClean": 9,
-      "inReviewsJson": 10,
+      "dirFiles": 66,
+      "dirClean": 32,
+      "inReviewsJson": 29,
       "missing": [
         {
-          "url": "http://latimes.com/entertainment/tv/la-la-et-st-jesus-christ-superstar-review-20180402-story.html",
-          "host": "latimes.com",
-          "knownOutletId": "latimes"
+          "url": "https://broadway.news/2019/04/25/review-in-beetlejuice-death-comes-to-life/",
+          "host": "broadway.news",
+          "knownOutletId": "broadwaynews"
         },
         {
-          "url": "https://npr.org/sections/monkeysee/2018/04/02/598732076/jesus-christ-superstar-brings-strong-voices-to-a-familiar-story",
-          "host": "npr.org",
-          "knownOutletId": "npr"
+          "url": "http://nystagereview.com/2019/04/25/beetlejuice-these-ghosts-are-gonna-live-forever/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr"
         },
         {
-          "url": "https://chicago.suntimes.com/entertainment/lyric-operas-jesus-christ-superstar-a-glorious-rock-opera-celebration/",
-          "host": "suntimes.com",
-          "knownOutletId": "suntimes"
+          "url": "http://nystagereview.com/2019/04/25/beetlejuice-tim-burtons-1988-cult-film-kinda-musicalized/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr"
         },
         {
-          "url": "http://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-jesus-christ-superstar-lyric-review-0430-story.html",
-          "host": "chicagotribune.com",
-          "knownOutletId": "chicagotribune"
+          "url": "https://www.ny1.com/nyc/all-boroughs/theater-reviews/2019/04/25/theater-review---beetlejuice-",
+          "host": "ny1.com",
+          "knownOutletId": "ny1"
         },
         {
-          "url": "https://www.thewrap.com/jesus-christ-superstar-review-cynthia-erivo-adam-lambert-hollywood-bowl/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap"
+          "url": "https://observer.com/2019/04/beetlejuice-broadway-spring-2019-reivew-alex-timbers-rex-reed/",
+          "host": "observer.com",
+          "knownOutletId": "observer"
         },
         {
-          "url": "https://weliveentertainment.com/we-live-entertainment/concerts/theater-review-jesus-christ-superstar-hollywood-bowl-absolutely-divine-spectacle/",
-          "host": "weliveentertainment.com",
-          "knownOutletId": "weliveentertainment"
-        },
-        {
-          "url": "https://www.austin360.com/entertainmentlife/20191010/why-this-jesus-christ-superstar-is-one-of-great-revivals-in-musical-theater-history",
-          "host": "austin360.com",
+          "url": "https://news.iheart.com/featured/toby-knapp/content/2018-11-04-review-buckle-up-broadway-beetlejuice-is-coming/",
+          "host": "iheart.com",
           "knownOutletId": null
         },
         {
-          "url": "https://www.austinchronicle.com/daily/arts/2019-10-15/review-jesus-christ-superstar/",
-          "host": "austinchronicle.com",
+          "url": "https://www.metroweekly.com/2018/11/theater-review-beetlejuice-the-musical-at-national-theatre/",
+          "host": "metroweekly.com",
+          "knownOutletId": "metro-weekly"
+        },
+        {
+          "url": "https://theatrenerds.com/beetlejuice-the-musical-dc-review/",
+          "host": "theatrenerds.com",
           "knownOutletId": null
         },
         {
-          "url": "https://www.latimes.com/entertainment-arts/story/2019-10-31/jesus-christ-superstar-national-tour-pantages",
-          "host": "latimes.com",
-          "knownOutletId": "latimes"
-        },
-        {
-          "url": "https://947thewave.radio.com/blogs/deborah-howell/jesus-christ-superstar-hollywood-pantages",
-          "host": "radio.com",
+          "url": "https://www.ign.com/articles/beetlejuice-beetlejuice-review-tim-burton-michael-keaton-winona-ryder-jenna-ortega",
+          "host": "ign.com",
           "knownOutletId": null
         },
         {
-          "url": "https://patch.com/california/hollywood/jesus-christ-superstar-still-rocks-after-50-years",
-          "host": "patch.com",
-          "knownOutletId": null
+          "url": "https://www.bbc.com/culture/article/20240828-beetlejuice-beetlejuice-review",
+          "host": "bbc.com",
+          "knownOutletId": "bbc-news"
         },
         {
-          "url": "https://www.sandiegouniontribune.com/entertainment/theater/story/2019-11-14/review-new-touring-production-of-jesus-christ-superstar-boasts-rock-n-roll-power-but-not-a-lot-of-clarity",
-          "host": "sandiegouniontribune.com",
-          "knownOutletId": "san-diego-union-tribune"
+          "url": "https://time.com/7015514/beetlejuice-beetlejuice-review/",
+          "host": "time.com",
+          "knownOutletId": "time"
         },
         {
-          "url": "http://www.sandiegostory.com/jesus-christ-superstar-rocks-and-shocks-at-civic-theatre/",
-          "host": "sandiegostory.com",
-          "knownOutletId": null
+          "url": "https://time.com/4325002/tim-burton-beetlejuice-2-rumors/",
+          "host": "time.com",
+          "knownOutletId": "time"
         },
         {
-          "url": "https://www.spokesman.com/stories/2019/nov/21/updated-jesus-christ-superstar-keeps-the-rock-in-r/",
-          "host": "spokesman.com",
-          "knownOutletId": null
+          "url": "https://www.empireonline.com/movies/reviews/beetlejuice-beetlejuice/",
+          "host": "empireonline.com",
+          "knownOutletId": "empire"
         },
         {
-          "url": "https://www.latinlifedenver.com/community/it-all-the-buzz-jesus-christ-superstar-returns-to-denver-thru-dec-1-only/",
-          "host": "latinlifedenver.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "http://www.becauseitoldyouso.com/2019/12/broadway-in-tucson-review-jesus-christ.html",
-          "host": "becauseitoldyouso.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://www.omaha.com/entertainment/review-th-anniversary-tour-of-jesus-christ-superstar-shines-like/article_4241cf00-0b2b-5096-a8fb-81fc56a01d87.html",
-          "host": "omaha.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://thereader.com/theater-2/jesus-christ-superstar-revival-is-divine-entertainment",
-          "host": "thereader.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "http://www.theatrebloom.com/2019/12/jesus-christ-superstar-at-the-hippodrome-theatre/",
-          "host": "theatrebloom.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://dcmetrotheaterarts.com/2019/12/18/jesus-christ-superstar-hits-the-road-to-50/",
-          "host": "dcmetrotheaterarts.com",
-          "knownOutletId": "dc-metro-theater-arts"
-        },
-        {
-          "url": "https://www.post-gazette.com/ae/theater-dance/2020/01/01/Review-Cutting-edge-Jesus-Christ-Superstar-thrills-tour-Pittsburgh/stories/202001010155",
-          "host": "post-gazette.com",
-          "knownOutletId": "pittsburgh-post-gazette"
-        },
-        {
-          "url": "https://chasingsupermom.com/2021/09/jesus-christ-superstar-comes-to-portland/",
-          "host": "chasingsupermom.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://www.seattletimes.com/entertainment/theater/review-a-brisk-jesus-christ-superstar-marks-the-return-of-broadway-at-the-paramount/",
-          "host": "seattletimes.com",
-          "knownOutletId": "seattle-times"
-        },
-        {
-          "url": "https://popwrapped.com/jesus-christ-superstar-brings-broadway-back-to-san-fran/",
-          "host": "popwrapped.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://sfist.com/2021/10/15/jesus-christ-superstar-at-the-golden-gate-theater-is-a-brash/",
-          "host": "sfist.com",
-          "knownOutletId": "sfist"
-        },
-        {
-          "url": "https://www.newportbeachindy.com/a-glorious-jesus-christ-superstar-marks-return-of-touring-musicals-to-segerstrom-center/",
-          "host": "newportbeachindy.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://stageandcinema.com/2021/11/11/jesus-christ-superstar-national-tour/",
-          "host": "stageandcinema.com",
-          "knownOutletId": "stageandcinema"
-        },
-        {
-          "url": "https://shepherdexpress.com/culture/theater/jesus-christ-superstar-rocks-at-marcus-performing-arts-cen/",
-          "host": "shepherdexpress.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://www.bostonglobe.com/2022/01/07/arts/jesus-christ-superstar-with-swagger-imbued-with-sorrow/",
-          "host": "bostonglobe.com",
-          "knownOutletId": "boston-globe"
-        },
-        {
-          "url": "https://www.wishtv.com/lifestylelive/jesus-christ-superstar-brings-worldwide-50th-anniversary-tour-to-indianapolis/",
-          "host": "wishtv.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://www.cleveland.com/entertainment/2022/02/rebooted-jesus-christ-superstar-50th-anniversary-tour-gets-off-to-stunning-start-in-cleveland.html",
-          "host": "cleveland.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://www.washingtonpost.com/theater-dance/2022/02/24/jesus-christ-superstar-kennedy-center/",
-          "host": "washingtonpost.com",
-          "knownOutletId": "washpost"
-        },
-        {
-          "url": "https://mdtheatreguide.com/2022/02/theatre-review-jesus-christ-superstar-at-the-kennedy-center/",
-          "host": "mdtheatreguide.com",
-          "knownOutletId": "maryland-theatre-guide"
-        },
-        {
-          "url": "https://nbc-2.com/news/2022/03/16/2s-review-jesus-christ-superstar/",
-          "host": "nbc-2.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://greenvillejournal.com/arts-culture/review-jesus-christ-superstar-a-powerful-go-for-broke-production-at-peace-center/",
-          "host": "greenvillejournal.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://gephardtdaily.com/local/review-jesus-christ-superstar-delivers-powerhouse-passion/",
-          "host": "gephardtdaily.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://thisisreno.com/2022/05/heaven-on-their-minds-jesus-christ-superstar-at-the-pioneer/",
-          "host": "thisisreno.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://theatricalmusings.com/musical-2/touring-production-of-jesus-christ-superstar-offers-a-relatable-titular-character/",
-          "host": "theatricalmusings.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://attractionsmagazine.com/theater-review-the-50th-anniversary-tour-of-jesus-christ-superstar-breathes-new-life-into-a-modern-classic/",
-          "host": "attractionsmagazine.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://www.newcitystage.com/2022/07/26/the-passion-of-the-superstar-a-review-of-jesus-christ-superstar-at-broadway-in-chicago/",
-          "host": "newcitystage.com",
-          "knownOutletId": null
-        },
-        {
-          "url": "https://chicago.suntimes.com/2022/7/21/23273090/jesus-christ-superstar-review-cadillac-palace-chicago",
-          "host": "suntimes.com",
-          "knownOutletId": "suntimes"
-        },
-        {
-          "url": "http://www.chicagotribune.com/entertainment/chi-ent-jesus-christ-superstar-review-20120322,0,1543035.column",
-          "host": "chicagotribune.com",
-          "knownOutletId": "chicagotribune"
-        },
-        {
-          "url": "http://blogs.villagevoice.com/dailymusto/2012/03/jesus_christ_su.php",
-          "host": "villagevoice.com",
-          "knownOutletId": "village-voice"
-        },
-        {
-          "url": "http://www.nydailynews.com/entertainment/jesus-christ-superstar-rocks-broadway-article-1.1048973",
-          "host": "nydailynews.com",
-          "knownOutletId": "nydailynews"
+          "url": "https://www.indiewire.com/criticism/movies/beetlejuice-beetlejuice-review-tim-burton-sequel-1235041019/",
+          "host": "indiewire.com",
+          "knownOutletId": "indiewire"
         },
         {
           "url": "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css",
@@ -456,11 +152,23 @@
       ],
       "dirOnly": [
         {
-          "host": "allthatdazzles.co.uk",
+          "host": "afridiziak.com",
           "count": 1
         },
         {
-          "host": "loureviews.blog",
+          "host": "theartsdesk.com",
+          "count": 2
+        },
+        {
+          "host": "broadwayworld.com",
+          "count": 1
+        },
+        {
+          "host": "cityam.com",
+          "count": 1
+        },
+        {
+          "host": "ft.com",
           "count": 1
         },
         {
@@ -468,11 +176,31 @@
           "count": 1
         },
         {
+          "host": "hamhigh.co.uk",
+          "count": 1
+        },
+        {
+          "host": "independent.co.uk",
+          "count": 1
+        },
+        {
           "host": "londonboxoffice.co.uk",
           "count": 1
         },
         {
-          "host": "londontheatrereviews.co.uk",
+          "host": "londontheatre.co.uk",
+          "count": 1
+        },
+        {
+          "host": "londontheatre1.com",
+          "count": 1
+        },
+        {
+          "host": "musicaltheatrereview.com",
+          "count": 1
+        },
+        {
+          "host": "playsinternational.org.uk",
           "count": 1
         },
         {
@@ -480,262 +208,57 @@
           "count": 1
         },
         {
+          "host": "standard.co.uk",
+          "count": 1
+        },
+        {
+          "host": "express.co.uk",
+          "count": 1
+        },
+        {
+          "host": "telegraph.co.uk",
+          "count": 1
+        },
+        {
+          "host": "theatresoutheast.com",
+          "count": 1
+        },
+        {
+          "host": "theatrevibe.co.uk",
+          "count": 1
+        },
+        {
           "host": "theatreweekly.com",
           "count": 1
         },
         {
-          "host": "timeout.com",
+          "host": "theatreandtonic.co.uk",
+          "count": 1
+        },
+        {
+          "host": "thereviewshub.com",
+          "count": 1
+        },
+        {
+          "host": "thetimes.com",
           "count": 1
         },
         {
           "host": "westendbestfriend.co.uk",
           "count": 1
+        },
+        {
+          "host": "westendwilma.com",
+          "count": 1
+        },
+        {
+          "host": "whatsonstage.com",
+          "count": 1
         }
       ],
       "flaggedMisses": [
         {
-          "url": "http://deadline.com/2018/04/jesus-christ-superstar-live-review-john-legend-sara-bareilles-brandon-victor-dixon-andrew-lloyd-webber-1202356696/",
-          "host": "deadline.com",
-          "knownOutletId": "deadline",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "deadline--dino-ray-ramos.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://deadline.com/2018/04/jesus-christ-superstar-live-review-john-legend-sara-bareilles-brandon-victor-dixon-andrew-lloyd-webber-1202356696/"
-            }
-          ]
-        },
-        {
-          "url": "http://ew.com/tv/2018/04/02/jesus-christ-superstar-live-in-concert-review/",
-          "host": "ew.com",
-          "knownOutletId": "ew",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "ew--melissa-rose-bernardo.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://ew.com/cynthia-erivo-cast-jesus-christ-superstar-musical-11681479?srsltid=AfmBOoqVFZ6HQoqJqChg6BPrg6O2enDUuzdqseFxMOEHXaOf2PzufywE"
-            }
-          ]
-        },
-        {
-          "url": "https://hollywoodreporter.com/review/jesus-christ-superstar-live-in-concert-1098854",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "hollywood-reporter--david-rooney.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.hollywoodreporter.com/review/jesus-christ-superstar-theater-review-andrew-lloyd-webber-303387?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+thr%2Fnews+%28The+Hollywood+Reporter+-+Top+Stories%29"
-            }
-          ]
-        },
-        {
-          "url": "https://nytimes.com/2018/04/02/arts/television/jesus-christ-superstar-live-in-concert-nbc-review.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "about-entertainment--charles-isherwood.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://theater.nytimes.com/2012/03/23/theater/reviews/jesus-christ-superstar-at-the-neil-simon-theater.html?adxnnl=1&adxnnlx=1332468908-ZvjkZ2cfy1NLdSrRcXuqYg"
-            }
-          ]
-        },
-        {
-          "url": "https://newsday.com/entertainment/tv/jesus-christ-superstar-review-nbc-1.17819394",
-          "host": "newsday.com",
-          "knownOutletId": "newsday",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "newsday--linda-winer.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.newsday.com/entertainment/theater/a-very-serious-jesus-christ-superstar-1.3616182"
-            },
-            {
-              "file": "newsday--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://newsday.com/entertainment/tv/jesus-christ-superstar-review-nbc-1.17819394"
-            }
-          ]
-        },
-        {
-          "url": "http://variety.com/2018/tv/reviews/jesus-christ-superstar-live-in-concert-nbc-john-legend-brandon-victor-dixon-sara-bareilles-1202741222/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "variety--maureen-ryan.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://variety.com/2018/tv/reviews/jesus-christ-superstar-live-in-concert-nbc-john-legend-brandon-victor-dixon-sara-bareilles-1202741222/"
-            }
-          ]
-        },
-        {
-          "url": "https://variety.com/2025/music/concert-reviews/jesus-christ-superstar-cynthia-erivo-adam-lambert-hollywood-bowl-review-1236477734/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "variety--maureen-ryan.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://variety.com/2018/tv/reviews/jesus-christ-superstar-live-in-concert-nbc-john-legend-brandon-victor-dixon-sara-bareilles-1202741222/"
-            }
-          ]
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2025/aug/04/jesus-christ-superstar-review-cynthia-erivo",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "guardian--arifa-akbar.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theguardian.com/stage/2026/jul/08/jesus-christ-superstar-review-sam-ryder"
-            },
-            {
-              "file": "guardian--mark-lawson.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theguardian.com/stage/2026/jul/08/jesus-christ-superstar-review-sam-ryder"
-            },
-            {
-              "file": "guardian--tammy-tarng.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theguardian.com/stage/2026/jul/08/jesus-christ-superstar-review-sam-ryder"
-            },
-            {
-              "file": "observer--kate-kellaway.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theguardian.com/stage/article/2024/jul/28/the-week-in-theatre-hello-dolly-london-palladium-imelda-staunton-review-the-hot-wing-king-dorfman-national-theatre-fangirls-musical-lyric-hammersmith"
-            }
-          ]
-        },
-        {
-          "url": "http://theater.nytimes.com/2012/03/23/theater/reviews/jesus-christ-superstar-at-the-neil-simon-theater.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "about-entertainment--charles-isherwood.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://theater.nytimes.com/2012/03/23/theater/reviews/jesus-christ-superstar-at-the-neil-simon-theater.html?adxnnl=1&adxnnlx=1332468908-ZvjkZ2cfy1NLdSrRcXuqYg"
-            }
-          ]
-        },
-        {
-          "url": "http://www.usatoday.com/life/theater/reviews/story/2012-03-22/jesus-christ-superstar-once-musicals/53713214/1",
-          "host": "usatoday.com",
-          "knownOutletId": "usatoday",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "usatoday--elysa-gardner.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.usatoday.com/life/theater/reviews/story/2012-03-22/jesus-christ-superstar-once-musicals/53713214/1"
-            }
-          ]
-        },
-        {
-          "url": "http://www.crescent-news.com/ap%20entertainment/2012/03/22/ap-review-jesus-christ-superstar-overly-flashy",
-          "host": "crescent-news.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "ap--mark-kennedy.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.crescent-news.com/ap%20entertainment/2012/03/22/ap-review-jesus-christ-superstar-overly-flashy"
-            }
-          ]
-        },
-        {
-          "url": "http://www.hollywoodreporter.com/review/jesus-christ-superstar-theater-review-andrew-lloyd-webber-303387",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "hollywood-reporter--david-rooney.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.hollywoodreporter.com/review/jesus-christ-superstar-theater-review-andrew-lloyd-webber-303387?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+thr%2Fnews+%28The+Hollywood+Reporter+-+Top+Stories%29"
-            }
-          ]
-        },
-        {
-          "url": "http://www.backstage.com/bso/reviews-movie-tv-reviews/ny-review-jesus-christ-superstar-1006552952.story",
-          "host": "backstage.com",
-          "knownOutletId": "backstage",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "backstage--david-sheward.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.backstage.com/bso/reviews-movie-tv-reviews/ny-review-jesus-christ-superstar-1006552952.story"
-            }
-          ]
-        },
-        {
-          "url": "http://www.amny.com/urbanite-1.812039/theater-review-jesus-christ-superstar-3-5-stars-1.3618340",
+          "url": "https://www.amny.com/entertainment/beetlejuice-review-1.30234785",
           "host": "amny.com",
           "knownOutletId": "amny",
           "recoverable": false,
@@ -747,12 +270,63 @@
             {
               "file": "amny--matt-windman.json",
               "flag": "wrongProduction",
-              "urlInDir": "http://www.amny.com/urbanite-1.812039/theater-review-jesus-christ-superstar-3-5-stars-1.3618340"
+              "urlInDir": "https://www.amny.com/entertainment/beetlejuice-review-1.30234785"
             }
           ]
         },
         {
-          "url": "http://www.newsday.com/entertainment/theater/a-very-serious-jesus-christ-superstar-1.3616182",
+          "url": "https://deadline.com/2019/04/beetlejuice-broadway-review-musical-theater-alex-brightman-sophia-anne-caruso-1202601783/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "deadline--greg-evans.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://deadline.com/2019/04/beetlejuice-broadway-review-musical-theater-alex-brightman-sophia-anne-caruso-1202601783/"
+            }
+          ]
+        },
+        {
+          "url": "https://ew.com/theater-reviews/2019/04/25/beetlejuice-musical-review/",
+          "host": "ew.com",
+          "knownOutletId": "ew",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "ew--nick-romano.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://ew.com/theater/beetlejuice-musical-returning-to-broadway-2022/?srsltid=AfmBOoqDNSTtZsrPhtgn_D95armm48PR1OdtTtR9f6IT9nF-rZGn7qtn"
+            }
+          ]
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/beetlejuice-theater-review-1204616",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "hollywood-reporter--david-rooney.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.hollywoodreporter.com/review/beetlejuice-theater-review-1204616"
+            }
+          ]
+        },
+        {
+          "url": "https://www.newsday.com/entertainment/theater/beetlejuice-musical-1.30192947",
           "host": "newsday.com",
           "knownOutletId": "newsday",
           "recoverable": false,
@@ -762,55 +336,279 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "newsday--linda-winer.json",
+              "file": "newsday--barbara-schuler.json",
               "flag": "wrongProduction",
-              "urlInDir": "http://www.newsday.com/entertainment/theater/a-very-serious-jesus-christ-superstar-1.3616182"
+              "urlInDir": "https://www.newsday.com/entertainment/theater/beetlejuice-musical-1.30192947"
+            }
+          ]
+        },
+        {
+          "url": "https://www.nydailynews.com/entertainment/broadway/ny-review-broadway-chris-jones-beetlejuice-20190426-qufnjwcktvdajnjtwm4hdudipi-story.html",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nydailynews--chris-jones.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nydailynews.com/entertainment/broadway/ny-review-broadway-chris-jones-beetlejuice-20190426-qufnjwcktvdajnjtwm4hdudipi-story.html"
+            }
+          ]
+        },
+        {
+          "url": "https://www.vulture.com/2019/04/review-beetlejuice-is-best-when-its-at-its-most-antic.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "vulture--sara-holdren.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.vulture.com/2019/04/review-beetlejuice-is-best-when-its-at-its-most-antic.html"
+            }
+          ]
+        },
+        {
+          "url": "https://www.nytimes.com/2019/04/25/theater/beetlejuice-review-broadway.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--ben-brantley.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nytimes.com/2019/04/25/theater/beetlejuice-review-broadway.html"
             },
             {
-              "file": "newsday--unknown.json",
+              "file": "nytimes--sarah-bahr.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://newsday.com/entertainment/tv/jesus-christ-superstar-review-nbc-1.17819394"
+              "urlInDir": "https://www.nytimes.com/2023/01/09/theater/alex-brightman-beetlejuice-closing.html"
+            },
+            {
+              "file": "nytimes--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nytimes.com/2025/06/03/theater/beetlejuice-broadway.html"
+            }
+          ]
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/review-of-beetlejuice-starring-alex-brightman-on-broadway",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytg--mark-shenton.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newyorktheatreguide.com/reviews/review-of-beetlejuice-starring-alex-brightman-on-broadway"
+            }
+          ]
+        },
+        {
+          "url": "https://variety.com/2019/legit/reviews/beetlejuice-review-broadway-musical-1203194763/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "variety--frank-rizzo.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://variety.com/2019/legit/reviews/beetlejuice-review-broadway-musical-1203194763/"
+            },
+            {
+              "file": "variety--owen-gleiberman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://variety.com/2024/film/reviews/beetlejuice-beetlejuice-review-tim-burton-jenna-ortega-winona-ryder-1236119595/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater_dance/beetlejuice-cleans-up-its-act-for-broadway-its-not-a-raging-success-but-itll-do/2019/04/25/cec14fa8-676b-11e9-8985-4cf30147bdca_story.html",
+          "host": "washingtonpost.com",
+          "knownOutletId": "washpost",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "washpost--peter-marks.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.washingtonpost.com/entertainment/theater_dance/the-new-beetlejuice-musical-is-overcaffeinated-overstuffed-and-virtually-charmless/2018/11/04/66b21146-dfe3-11e8-b732-3c72cbf131f2_story.html"
+            }
+          ]
+        },
+        {
+          "url": "https://www.thewrap.com/beetlejuice-broadway-review-tim-burtons-ghosts-turn-scarily-uncomic-in-musical-misfire/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thewrap--robert-hofler.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thewrap.com/beetlejuice-broadway-review-tim-burtons-ghosts-turn-scarily-uncomic-in-musical-misfire/"
+            }
+          ]
+        },
+        {
+          "url": "https://variety.com/2018/legit/reviews/pre-broadway-review-beetlejuice-1203019914/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "variety--frank-rizzo.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://variety.com/2019/legit/reviews/beetlejuice-review-broadway-musical-1203194763/"
+            },
+            {
+              "file": "variety--owen-gleiberman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://variety.com/2024/film/reviews/beetlejuice-beetlejuice-review-tim-burton-jenna-ortega-winona-ryder-1236119595/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater_dance/the-new-beetlejuice-musical-is-overcaffeinated-overstuffed-and-virtually-charmless/2018/11/04/66b21146-dfe3-11e8-b732-3c72cbf131f2_story.html",
+          "host": "washingtonpost.com",
+          "knownOutletId": "washpost",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "washpost--peter-marks.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.washingtonpost.com/entertainment/theater_dance/the-new-beetlejuice-musical-is-overcaffeinated-overstuffed-and-virtually-charmless/2018/11/04/66b21146-dfe3-11e8-b732-3c72cbf131f2_story.html"
+            }
+          ]
+        },
+        {
+          "url": "https://variety.com/2024/film/reviews/beetlejuice-beetlejuice-review-tim-burton-jenna-ortega-winona-ryder-1236119595/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "variety--frank-rizzo.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://variety.com/2019/legit/reviews/beetlejuice-review-broadway-musical-1203194763/"
+            },
+            {
+              "file": "variety--owen-gleiberman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://variety.com/2024/film/reviews/beetlejuice-beetlejuice-review-tim-burton-jenna-ortega-winona-ryder-1236119595/"
+            }
+          ]
+        },
+        {
+          "url": "https://deadline.com/2024/08/beetlejuice-beetlejuice-2-review-jenna-ortega-tim-burton-1236058235/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "deadline--greg-evans.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://deadline.com/2019/04/beetlejuice-broadway-review-musical-theater-alex-brightman-sophia-anne-caruso-1202601783/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/movies/movie-reviews/beetlejuice-beetlejuice-review-winona-ryder-tim-burton-michael-keaton-jenna-ortega-1235985886/",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "hollywood-reporter--david-rooney.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.hollywoodreporter.com/review/beetlejuice-theater-review-1204616"
             }
           ]
         }
       ],
       "ingestResults": [
         {
-          "url": "http://latimes.com/entertainment/tv/la-la-et-st-jesus-christ-superstar-review-20180402-story.html",
-          "host": "latimes.com",
-          "outletId": "latimes",
+          "url": "https://broadway.news/2019/04/25/review-in-beetlejuice-death-comes-to-life/",
+          "host": "broadway.news",
+          "outletId": "broadwaynews",
           "provisional": false,
           "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=jesus-christ-superstar-west-end-2026 -"
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=beetlejuice-west-end-2026 --url=https:"
         },
         {
-          "url": "https://npr.org/sections/monkeysee/2018/04/02/598732076/jesus-christ-superstar-brings-strong-voices-to-a-familiar-story",
-          "host": "npr.org",
-          "outletId": "npr",
+          "url": "http://nystagereview.com/2019/04/25/beetlejuice-these-ghosts-are-gonna-live-forever/",
+          "host": "nystagereview.com",
+          "outletId": "nysr",
           "provisional": false,
           "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=jesus-christ-superstar-west-end-2026 -"
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=beetlejuice-west-end-2026 --url=http:/"
         },
         {
-          "url": "https://chicago.suntimes.com/entertainment/lyric-operas-jesus-christ-superstar-a-glorious-rock-opera-celebration/",
-          "host": "suntimes.com",
-          "outletId": "suntimes",
+          "url": "http://nystagereview.com/2019/04/25/beetlejuice-tim-burtons-1988-cult-film-kinda-musicalized/",
+          "host": "nystagereview.com",
+          "outletId": "nysr",
           "provisional": false,
           "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=jesus-christ-superstar-west-end-2026 -"
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=beetlejuice-west-end-2026 --url=http:/"
         },
         {
-          "url": "http://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-jesus-christ-superstar-lyric-review-0430-story.html",
-          "host": "chicagotribune.com",
-          "outletId": "chicagotribune",
+          "url": "https://www.ny1.com/nyc/all-boroughs/theater-reviews/2019/04/25/theater-review---beetlejuice-",
+          "host": "ny1.com",
+          "outletId": "ny1",
           "provisional": false,
           "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=jesus-christ-superstar-west-end-2026 -"
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=beetlejuice-west-end-2026 --url=https:"
         },
         {
-          "url": "https://www.thewrap.com/jesus-christ-superstar-review-cynthia-erivo-adam-lambert-hollywood-bowl/",
-          "host": "thewrap.com",
-          "outletId": "thewrap",
+          "url": "https://observer.com/2019/04/beetlejuice-broadway-spring-2019-reivew-alex-timbers-rex-reed/",
+          "host": "observer.com",
+          "outletId": "observer",
           "provisional": false,
           "ok": true,
           "reason": null
@@ -818,199 +616,49 @@
       ],
       "ingestSkippedByCap": [
         {
-          "url": "https://weliveentertainment.com/we-live-entertainment/concerts/theater-review-jesus-christ-superstar-hollywood-bowl-absolutely-divine-spectacle/",
-          "host": "weliveentertainment.com",
-          "outletId": "weliveentertainment"
+          "url": "https://news.iheart.com/featured/toby-knapp/content/2018-11-04-review-buckle-up-broadway-beetlejuice-is-coming/",
+          "host": "iheart.com",
+          "outletId": "iheart"
         },
         {
-          "url": "https://www.austin360.com/entertainmentlife/20191010/why-this-jesus-christ-superstar-is-one-of-great-revivals-in-musical-theater-history",
-          "host": "austin360.com",
-          "outletId": "austin360"
+          "url": "https://www.metroweekly.com/2018/11/theater-review-beetlejuice-the-musical-at-national-theatre/",
+          "host": "metroweekly.com",
+          "outletId": "metro-weekly"
         },
         {
-          "url": "https://www.austinchronicle.com/daily/arts/2019-10-15/review-jesus-christ-superstar/",
-          "host": "austinchronicle.com",
-          "outletId": "austinchronicle"
+          "url": "https://theatrenerds.com/beetlejuice-the-musical-dc-review/",
+          "host": "theatrenerds.com",
+          "outletId": "theatrenerds"
         },
         {
-          "url": "https://www.latimes.com/entertainment-arts/story/2019-10-31/jesus-christ-superstar-national-tour-pantages",
-          "host": "latimes.com",
-          "outletId": "latimes"
+          "url": "https://www.ign.com/articles/beetlejuice-beetlejuice-review-tim-burton-michael-keaton-winona-ryder-jenna-ortega",
+          "host": "ign.com",
+          "outletId": "ign"
         },
         {
-          "url": "https://947thewave.radio.com/blogs/deborah-howell/jesus-christ-superstar-hollywood-pantages",
-          "host": "radio.com",
-          "outletId": "radio"
+          "url": "https://www.bbc.com/culture/article/20240828-beetlejuice-beetlejuice-review",
+          "host": "bbc.com",
+          "outletId": "bbc-news"
         },
         {
-          "url": "https://patch.com/california/hollywood/jesus-christ-superstar-still-rocks-after-50-years",
-          "host": "patch.com",
-          "outletId": "patch"
+          "url": "https://time.com/7015514/beetlejuice-beetlejuice-review/",
+          "host": "time.com",
+          "outletId": "time"
         },
         {
-          "url": "https://www.sandiegouniontribune.com/entertainment/theater/story/2019-11-14/review-new-touring-production-of-jesus-christ-superstar-boasts-rock-n-roll-power-but-not-a-lot-of-clarity",
-          "host": "sandiegouniontribune.com",
-          "outletId": "san-diego-union-tribune"
+          "url": "https://time.com/4325002/tim-burton-beetlejuice-2-rumors/",
+          "host": "time.com",
+          "outletId": "time"
         },
         {
-          "url": "http://www.sandiegostory.com/jesus-christ-superstar-rocks-and-shocks-at-civic-theatre/",
-          "host": "sandiegostory.com",
-          "outletId": "sandiegostory"
+          "url": "https://www.empireonline.com/movies/reviews/beetlejuice-beetlejuice/",
+          "host": "empireonline.com",
+          "outletId": "empire"
         },
         {
-          "url": "https://www.spokesman.com/stories/2019/nov/21/updated-jesus-christ-superstar-keeps-the-rock-in-r/",
-          "host": "spokesman.com",
-          "outletId": "spokesman"
-        },
-        {
-          "url": "https://www.latinlifedenver.com/community/it-all-the-buzz-jesus-christ-superstar-returns-to-denver-thru-dec-1-only/",
-          "host": "latinlifedenver.com",
-          "outletId": "latinlifedenver"
-        },
-        {
-          "url": "http://www.becauseitoldyouso.com/2019/12/broadway-in-tucson-review-jesus-christ.html",
-          "host": "becauseitoldyouso.com",
-          "outletId": "becauseitoldyouso"
-        },
-        {
-          "url": "https://www.omaha.com/entertainment/review-th-anniversary-tour-of-jesus-christ-superstar-shines-like/article_4241cf00-0b2b-5096-a8fb-81fc56a01d87.html",
-          "host": "omaha.com",
-          "outletId": "omaha"
-        },
-        {
-          "url": "https://thereader.com/theater-2/jesus-christ-superstar-revival-is-divine-entertainment",
-          "host": "thereader.com",
-          "outletId": "thereader"
-        },
-        {
-          "url": "http://www.theatrebloom.com/2019/12/jesus-christ-superstar-at-the-hippodrome-theatre/",
-          "host": "theatrebloom.com",
-          "outletId": "theatrebloom"
-        },
-        {
-          "url": "https://dcmetrotheaterarts.com/2019/12/18/jesus-christ-superstar-hits-the-road-to-50/",
-          "host": "dcmetrotheaterarts.com",
-          "outletId": "dc-metro-theater-arts"
-        },
-        {
-          "url": "https://www.post-gazette.com/ae/theater-dance/2020/01/01/Review-Cutting-edge-Jesus-Christ-Superstar-thrills-tour-Pittsburgh/stories/202001010155",
-          "host": "post-gazette.com",
-          "outletId": "pittsburgh-post-gazette"
-        },
-        {
-          "url": "https://chasingsupermom.com/2021/09/jesus-christ-superstar-comes-to-portland/",
-          "host": "chasingsupermom.com",
-          "outletId": "chasingsupermom"
-        },
-        {
-          "url": "https://www.seattletimes.com/entertainment/theater/review-a-brisk-jesus-christ-superstar-marks-the-return-of-broadway-at-the-paramount/",
-          "host": "seattletimes.com",
-          "outletId": "seattle-times"
-        },
-        {
-          "url": "https://popwrapped.com/jesus-christ-superstar-brings-broadway-back-to-san-fran/",
-          "host": "popwrapped.com",
-          "outletId": "popwrapped"
-        },
-        {
-          "url": "https://sfist.com/2021/10/15/jesus-christ-superstar-at-the-golden-gate-theater-is-a-brash/",
-          "host": "sfist.com",
-          "outletId": "sfist"
-        },
-        {
-          "url": "https://www.newportbeachindy.com/a-glorious-jesus-christ-superstar-marks-return-of-touring-musicals-to-segerstrom-center/",
-          "host": "newportbeachindy.com",
-          "outletId": "newportbeachindy"
-        },
-        {
-          "url": "https://stageandcinema.com/2021/11/11/jesus-christ-superstar-national-tour/",
-          "host": "stageandcinema.com",
-          "outletId": "stageandcinema"
-        },
-        {
-          "url": "https://shepherdexpress.com/culture/theater/jesus-christ-superstar-rocks-at-marcus-performing-arts-cen/",
-          "host": "shepherdexpress.com",
-          "outletId": "shepherdexpress"
-        },
-        {
-          "url": "https://www.bostonglobe.com/2022/01/07/arts/jesus-christ-superstar-with-swagger-imbued-with-sorrow/",
-          "host": "bostonglobe.com",
-          "outletId": "boston-globe"
-        },
-        {
-          "url": "https://www.wishtv.com/lifestylelive/jesus-christ-superstar-brings-worldwide-50th-anniversary-tour-to-indianapolis/",
-          "host": "wishtv.com",
-          "outletId": "wishtv"
-        },
-        {
-          "url": "https://www.cleveland.com/entertainment/2022/02/rebooted-jesus-christ-superstar-50th-anniversary-tour-gets-off-to-stunning-start-in-cleveland.html",
-          "host": "cleveland.com",
-          "outletId": "cleveland"
-        },
-        {
-          "url": "https://www.washingtonpost.com/theater-dance/2022/02/24/jesus-christ-superstar-kennedy-center/",
-          "host": "washingtonpost.com",
-          "outletId": "washpost"
-        },
-        {
-          "url": "https://mdtheatreguide.com/2022/02/theatre-review-jesus-christ-superstar-at-the-kennedy-center/",
-          "host": "mdtheatreguide.com",
-          "outletId": "maryland-theatre-guide"
-        },
-        {
-          "url": "https://nbc-2.com/news/2022/03/16/2s-review-jesus-christ-superstar/",
-          "host": "nbc-2.com",
-          "outletId": "nbc-2"
-        },
-        {
-          "url": "https://greenvillejournal.com/arts-culture/review-jesus-christ-superstar-a-powerful-go-for-broke-production-at-peace-center/",
-          "host": "greenvillejournal.com",
-          "outletId": "greenvillejournal"
-        },
-        {
-          "url": "https://gephardtdaily.com/local/review-jesus-christ-superstar-delivers-powerhouse-passion/",
-          "host": "gephardtdaily.com",
-          "outletId": "gephardtdaily"
-        },
-        {
-          "url": "https://thisisreno.com/2022/05/heaven-on-their-minds-jesus-christ-superstar-at-the-pioneer/",
-          "host": "thisisreno.com",
-          "outletId": "thisisreno"
-        },
-        {
-          "url": "https://theatricalmusings.com/musical-2/touring-production-of-jesus-christ-superstar-offers-a-relatable-titular-character/",
-          "host": "theatricalmusings.com",
-          "outletId": "theatricalmusings"
-        },
-        {
-          "url": "https://attractionsmagazine.com/theater-review-the-50th-anniversary-tour-of-jesus-christ-superstar-breathes-new-life-into-a-modern-classic/",
-          "host": "attractionsmagazine.com",
-          "outletId": "attractionsmagazine"
-        },
-        {
-          "url": "https://www.newcitystage.com/2022/07/26/the-passion-of-the-superstar-a-review-of-jesus-christ-superstar-at-broadway-in-chicago/",
-          "host": "newcitystage.com",
-          "outletId": "newcitystage"
-        },
-        {
-          "url": "https://chicago.suntimes.com/2022/7/21/23273090/jesus-christ-superstar-review-cadillac-palace-chicago",
-          "host": "suntimes.com",
-          "outletId": "suntimes"
-        },
-        {
-          "url": "http://www.chicagotribune.com/entertainment/chi-ent-jesus-christ-superstar-review-20120322,0,1543035.column",
-          "host": "chicagotribune.com",
-          "outletId": "chicagotribune"
-        },
-        {
-          "url": "http://blogs.villagevoice.com/dailymusto/2012/03/jesus_christ_su.php",
-          "host": "villagevoice.com",
-          "outletId": "village-voice"
-        },
-        {
-          "url": "http://www.nydailynews.com/entertainment/jesus-christ-superstar-rocks-broadway-article-1.1048973",
-          "host": "nydailynews.com",
-          "outletId": "nydailynews"
+          "url": "https://www.indiewire.com/criticism/movies/beetlejuice-beetlejuice-review-tim-burton-sequel-1235041019/",
+          "host": "indiewire.com",
+          "outletId": "indiewire"
         },
         {
           "url": "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css",
@@ -1025,38 +673,437 @@
       ]
     },
     {
-      "showId": "tender-off-west-end-2026",
-      "title": "Tender",
-      "openingDate": "2026-07-09",
-      "status": "upcoming",
-      "category": "off-west-end",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.timeout.com/london/theatre/tender-1-review",
-        "https://www.thestage.co.uk/reviews/tender-review-soho-theatre-london-dave-harris-matthew-xia",
-        "https://theartsdesk.com/theatre/tender-soho-theatre-review-anarchic-takedown-cliched-masculinity",
-        "https://www.theguardian.com/stage/2026/may/04/tender-review-soho-theatre-london-dave-harris",
-        "https://www.whatsonstage.com/news/tender-at-soho-theatre-review_1720027/"
+      "showId": "dad-dont-read-this-off-broadway-2026",
+      "title": "Dad Don't Read This",
+      "openingDate": "2026-06-23",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/what-are-the-reviews-for-eliya-smiths-dad-dont-read-this-off-broadway",
+        "https://www.broadwayworld.com/article/Review-Roundup-DAD-DONT-READ-THIS-At-St-Lukes-Theatre-20260515"
       ],
-      "dirFiles": 6,
-      "dirClean": 1,
-      "inReviewsJson": 0,
+      "aggregatorListedUrls": [
+        "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/",
+        "https://nystagereview.com/2026/06/23/dad-dont-read-this-16-going-on-angst/",
+        "https://www.nytimes.com/2026/05/17/theater/dad-dont-read-this-review.html",
+        "https://www.newyorktheatreguide.com/reviews/dad-dont-read-this-off-broadway-review",
+        "https://www.theatermania.com/news/review-dad-dont-read-this-a-beautiful-simulation-of-teen-girlhood_1842877/",
+        "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css",
+        "https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"
+      ],
+      "dirFiles": 11,
+      "dirClean": 9,
+      "inReviewsJson": 9,
       "missing": [
         {
-          "url": "https://www.thestage.co.uk/reviews/tender-review-soho-theatre-london-dave-harris-matthew-xia",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage"
+          "url": "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css",
+          "host": "bootstrapcdn.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css",
+          "host": "bootstrapcdn.com",
+          "knownOutletId": null
         }
       ],
       "dirOnly": [
         {
+          "host": "thefrontrowcenter.com",
+          "count": 1
+        },
+        {
+          "host": "theaterpizzazz.com",
+          "count": 1
+        },
+        {
+          "host": "theaterscene.net",
+          "count": 1
+        },
+        {
+          "host": "vulture.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "ingestResults": [
+        {
+          "url": "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css",
+          "host": "bootstrapcdn.com",
+          "outletId": "bootstrapcdn",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=dad-dont-read-this-off-broadway-2026 -"
+        },
+        {
+          "url": "https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css",
+          "host": "bootstrapcdn.com",
+          "outletId": "bootstrapcdn",
+          "provisional": true,
+          "ok": false,
+          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=dad-dont-read-this-off-broadway-2026 -"
+        }
+      ],
+      "ingestSkippedByCap": []
+    },
+    {
+      "showId": "avenue-q-west-end-2026",
+      "title": "Avenue Q",
+      "openingDate": "2026-04-16",
+      "status": "open",
+      "category": "west-end",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-did-critics-feel-at-home-on-avenue-q-in-londons-west-end"
+      ],
+      "aggregatorListedUrls": [
+        "https://1883magazine.com/avenue-q-review-london/",
+        "https://www.broadwayworld.com/westend/article/Review-AVENUE-Q-Shaftesbury-Theatre-20260417",
+        "https://www.cityam.com/avenue-q-is-wonderfully-lawless-chaos-with-very-rude-puppets/",
+        "https://www.curtaincallreviews.co.uk/avenue-q",
+        "https://www.theguardian.com/stage/2026/apr/17/avenue-q-review-shatesbury-theatre-london-west-end-musical-puppets",
+        "https://www.hamhigh.co.uk/news/26034128.avenue-q-shaftesbury-theatre-london---review/",
+        "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
+        "https://www.londontheatre.co.uk/reviews/avenue-q-review-shaftesbury-theatre",
+        "https://www.standard.co.uk/culture/theatre/avenue-q-review-b1278927.html",
+        "https://theatreandtonic.co.uk/blog/avenue-q-shaftesbury-theatre-review",
+        "https://playsinternational.org.uk/avenue-q-shaftesbury-theatre/",
+        "https://therecs.co.uk/avenue-q-shaftesbury-theatre/",
+        "https://www.thereviewshub.com/avenue-q-shaftesbury-theatre-london/",
+        "https://www.reviewsgate.co.uk/all-reviews/avenue-q-book-by-jeff-whitty-music-amp-lyrics-by-robert-lopez-amp-jeff-marx-the-shaftesbury-theatre",
+        "https://www.thestage.co.uk/reviews/avenue-q-review-shaftesbury-theatre-london",
+        "https://stagedoorjoe.co.uk/2026/04/18/avenue-q-review/",
+        "https://www.express.co.uk/entertainment/theatre/2197440/avenue-q-reviews-tickets",
+        "https://www.theatre-news.com/review/UK/6511/Theatre/Avenue-Q-Shaftsbury-Theatre",
+        "https://theatrevibe.co.uk/2026/04/16/review-avenue-q-shaftesbury-theatre-2026/",
+        "https://www.telegraph.co.uk/theatre/what-to-see/avenue-qs-bawdy-puppets-gleefully-outrageous/",
+        "https://www.thetimes.com/culture/theatre-dance/article/avenue-q-review-smart-lyrics-mj36f7lh8",
+        "https://www.timeout.com/london/theatre/avenue-q-review",
+        "https://www.theupcoming.co.uk/2026/04/17/avenue-q-at-shaftesbury-theatre-theatre-review/",
+        "https://valentinedsides.com/2026/04/17/avenue-q/",
+        "https://www.whatsonstage.com/news/avenue-q-west-end-review-puerile-puppetry-perfection_1718652/",
+        "https://theartsdesk.com/theatre/avenue-q-shaftesbury-theatre-review-we-need-puppet-sex-now-and-rest"
+      ],
+      "dirFiles": 59,
+      "dirClean": 30,
+      "inReviewsJson": 29,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "allthatdazzles.co.uk",
+          "count": 1
+        },
+        {
+          "host": "britishtheatre.com",
+          "count": 1
+        },
+        {
+          "host": "everything-theatre.co.uk",
+          "count": 1
+        },
+        {
+          "host": "ft.com",
+          "count": 1
+        },
+        {
+          "host": "londonboxoffice.co.uk",
+          "count": 1
+        },
+        {
+          "host": "londonist.com",
+          "count": 1
+        },
+        {
+          "host": "londontheatre1.com",
+          "count": 1
+        },
+        {
           "host": "loureviews.blog",
+          "count": 1
+        },
+        {
+          "host": "musicaltheatrereview.com",
+          "count": 1
+        },
+        {
+          "host": "facebook.com",
+          "count": 1
+        },
+        {
+          "host": "theatreweekly.com",
+          "count": 1
+        },
+        {
+          "host": "westendwilma.com",
           "count": 1
         }
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.timeout.com/london/theatre/tender-1-review",
+          "url": "https://1883magazine.com/avenue-q-review-london/",
+          "host": "1883magazine.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "1883-magazine--nick-barr.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://1883magazine.com/avenue-q-review-london/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.thereviewshub.com/avenue-q-shaftesbury-theatre-london/",
+          "host": "thereviewshub.com",
+          "knownOutletId": "thereviewshub",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thereviewshub--the-reviews-hub-london.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thereviewshub.com/avenue-q-shaftesbury-theatre-london/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.reviewsgate.co.uk/all-reviews/avenue-q-book-by-jeff-whitty-music-amp-lyrics-by-robert-lopez-amp-jeff-marx-the-shaftesbury-theatre",
+          "host": "reviewsgate.co.uk",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "reviews--william-russell.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.reviewsgate.co.uk/all-reviews/avenue-q-book-by-jeff-whitty-music-amp-lyrics-by-robert-lopez-amp-jeff-marx-the-shaftesbury-theatre"
+            }
+          ]
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/avenue-q-review-shaftesbury-theatre-london",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thestage--tom-wicker.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.thestage.co.uk/reviews/avenue-q-review-shaftesbury-theatre-london"
+            }
+          ]
+        },
+        {
+          "url": "https://www.express.co.uk/entertainment/theatre/2197440/avenue-q-reviews-tickets",
+          "host": "express.co.uk",
+          "knownOutletId": "sunday-express",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "sunday-express--callum-crumlish.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.express.co.uk/entertainment/theatre/2197440/avenue-q-reviews-tickets"
+            }
+          ]
+        },
+        {
+          "url": "https://www.theupcoming.co.uk/2026/04/17/avenue-q-at-shaftesbury-theatre-theatre-review/",
+          "host": "theupcoming.co.uk",
+          "knownOutletId": "theupcoming",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theupcoming--benedetta-mancusi.json",
+              "flag": "clean",
+              "urlInDir": "https://www.theupcoming.co.uk/2026/04/17/avenue-q-at-shaftesbury-theatre-theatre-review/"
+            },
+            {
+              "file": "theupcoming--michael-higgs.json",
+              "flag": "duplicate",
+              "urlInDir": "https://www.theupcoming.co.uk/2026/04/17/avenue-q-at-shaftesbury-theatre-theatre-review/"
+            },
+            {
+              "file": "theupcoming--sunny-morgan.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theupcoming.co.uk/2026/04/17/avenue-q-at-shaftesbury-theatre-theatre-review/"
+            }
+          ]
+        },
+        {
+          "url": "https://valentinedsides.com/2026/04/17/avenue-q/",
+          "host": "valentinedsides.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "valentine-dsides--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://valentinedsides.com/2026/04/17/avenue-q/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/avenue-q-west-end-review-puerile-puppetry-perfection_1718652/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "whatsonstage--alun-hood.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.whatsonstage.com/news/avenue-q-west-end-review-puerile-puppetry-perfection_1718652/"
+            },
+            {
+              "file": "whatsonstage--paul-raven.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.whatsonstage.com/news/avenue-q-west-end-review-puerile-puppetry-perfection_1718652/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "showId": "oliver-west-end-2024",
+      "title": "Oliver!",
+      "openingDate": "2024-12-14",
+      "status": "open",
+      "category": "west-end",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-what-are-critics-saying-about-oliver-at-new-york-city-center-encores",
+        "https://www.broadwayworld.com/article/Review-Roundup-OLIVER-Opens-at-City-Center-Encores-20230504"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.thedailybeast.com/oliver-review-young-star-benjamin-pajak-commands-the-stage-in-mixed-revival",
+        "https://nystagereview.com/2023/05/04/oliver-please-may-we-have-some-more/",
+        "https://www.nytimes.com/2023/05/04/theater/oliver-review-encores-city-center.html",
+        "https://www.theatermania.com/news/reviewing-the-situation-benjamin-pajak-raul-esparza-and-lilli-cooper-in-oliver-at-encores_1701245/",
+        "https://www.standard.co.uk/culture/theatre/oliver-gielgud-theatre-review-cameron-mackintosh-matthew-bourne-b1204920.html",
+        "https://www.timeout.com/london/theatre/oliver-2-review",
+        "https://www.telegraph.co.uk/theatre/what-to-see/oliver-gielgud-theatre-review/",
+        "https://www.whatsonstage.com/news/oliver-in-the-west-end-review-what-more-could-you-want_1660259/",
+        "https://www.thestage.co.uk/reviews/oliver-review-gielgud-theatre-london-matthew-bourne-lionel-bart-simon-lipkin-shanay-holmes-cameron-mackintosh",
+        "https://theatreweekly.com/review-oliver-at-the-gielgud-theatre-london/",
+        "https://theartsdesk.com/theatre/oliver-gielgud-theatre-review-lionel-barts-1960-masterpiece-bourne-again",
+        "https://www.londontheatre.co.uk/theatre-news/news/a-guide-to-west-end-shows-playing-on-sundays-and-mondays"
+      ],
+      "dirFiles": 50,
+      "dirClean": 10,
+      "inReviewsJson": 16,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "broadwayworld.com",
+          "count": 2
+        },
+        {
+          "host": "londonboxoffice.co.uk",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.thedailybeast.com/oliver-review-young-star-benjamin-pajak-commands-the-stage-in-mixed-revival",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "dailybeast--tim-teeman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thedailybeast.com/oliver-review-young-star-benjamin-pajak-commands-the-stage-in-mixed-revival"
+            },
+            {
+              "file": "dailybeast--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thedailybeast.com/oliver-review-young-star-benjamin-pajak-commands-the-stage-in-mixed-revival"
+            }
+          ]
+        },
+        {
+          "url": "https://nystagereview.com/2023/05/04/oliver-please-may-we-have-some-more/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nysr--david-finkle.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2023/05/04/oliver-please-may-we-have-some-more/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.nytimes.com/2023/05/04/theater/oliver-review-encores-city-center.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--jesse-green.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nytimes.com/2023/05/04/theater/oliver-review-encores-city-center.html"
+            }
+          ]
+        },
+        {
+          "url": "https://www.theatermania.com/news/reviewing-the-situation-benjamin-pajak-raul-esparza-and-lilli-cooper-in-oliver-at-encores_1701245/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatermania--david-gordon.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatermania.com/news/reviewing-the-situation-benjamin-pajak-raul-esparza-and-lilli-cooper-in-oliver-at-encores_1701245/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/oliver-2-review",
           "host": "timeout.com",
           "knownOutletId": "timeout-london",
           "recoverable": false,
@@ -1067,13 +1114,95 @@
           "dirFlags": [
             {
               "file": "timeout-london--andrzej-lukowski.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.timeout.com/london/theatre/tender-1-review"
+              "flag": "wrongShow",
+              "urlInDir": "https://www.timeout.com/london/theatre/oliver-2-review#google_vignette"
             }
           ]
         },
         {
-          "url": "https://theartsdesk.com/theatre/tender-soho-theatre-review-anarchic-takedown-cliched-masculinity",
+          "url": "https://www.thestage.co.uk/reviews/oliver-review-gielgud-theatre-london-matthew-bourne-lionel-bart-simon-lipkin-shanay-holmes-cameron-mackintosh",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thestage--dave-fargnoli.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thestage.co.uk/reviews/the-other-place-review-lyttelton-theatre-national-theatre-london-alexander-zeldin-antigone-emma-darcy-alison-oliver-nina-sosanya-tobias-menzies"
+            },
+            {
+              "file": "thestage--holly-omahony.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.thestage.co.uk/reviews/marie-and-rosetta-review-rose-theatre-kingston-london-beverley-knight-sister-rosetta-tharpe-soul-singer"
+            },
+            {
+              "file": "thestage--matt-hemley.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thestage.co.uk/reviews/oliver-review-chichester-festival-theatre-matthew-bourne-with-simon-lipkin-shanay-holmes-aaron-sidwell-billy-jenkins"
+            },
+            {
+              "file": "thestage--sam-marlowe.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thestage.co.uk/reviews/oliver-review-gielgud-theatre-london-matthew-bourne-lionel-bart-simon-lipkin-shanay-holmes-cameron-mackintosh"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "showId": "im-sorry-prime-minister-west-end-2026",
+      "title": "I’m Sorry, Prime Minister",
+      "openingDate": "2026-02-12",
+      "status": "open",
+      "category": "west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.londontheatre.co.uk/reviews/im-sorry-prime-minister-review-apollo-theatre",
+        "https://www.broadwayworld.com/westend/article/Review-IM-SORRY-PRIME-MINISTER-starring-Griff-Rhys-Jones-Apollo-Theatre-20260213",
+        "https://www.standard.co.uk/culture/theatre/i-m-sorry-prime-minister-review-apollo-theatre-b1270903.html",
+        "https://www.telegraph.co.uk/theatre/what-to-see/im-sorry-prime-minister-review-west-end/",
+        "https://www.thestage.co.uk/reviews/im-sorry-prime-minister-review-apollo-theatre-london-jonathan-lynn",
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/im-sorry-prime-minister-yes-review-apollo-theatre-b2919769.html",
+        "https://www.timeout.com/london/theatre/im-sorry-prime-minister-review",
+        "https://theartsdesk.com/theatre/im-sorry-prime-minister-apollo-theatre-review-genial-farewell-great-comedy-double-act"
+      ],
+      "dirFiles": 23,
+      "dirClean": 13,
+      "inReviewsJson": 17,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "allthatdazzles.co.uk",
+          "count": 1
+        },
+        {
+          "host": "dailymail.co.uk",
+          "count": 1
+        },
+        {
+          "host": "theguardian.com",
+          "count": 1
+        },
+        {
+          "host": "londonboxoffice.co.uk",
+          "count": 1
+        },
+        {
+          "host": "westendbestfriend.co.uk",
+          "count": 1
+        },
+        {
+          "host": "whatsonstage.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://theartsdesk.com/theatre/im-sorry-prime-minister-apollo-theatre-review-genial-farewell-great-comedy-double-act",
           "host": "theartsdesk.com",
           "knownOutletId": "artsdesk",
           "recoverable": false,
@@ -1083,16 +1212,69 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "artsdesk--unknown.json",
+              "file": "artsdesk--helen-hawkins.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://theartsdesk.com/theatre/tender-soho-theatre-review-anarchic-takedown-cliched-masculinity"
+              "urlInDir": "https://theartsdesk.com/theatre/im-sorry-prime-minister-apollo-theatre-review-genial-farewell-great-comedy-double-act"
             }
           ]
+        }
+      ]
+    },
+    {
+      "showId": "grace-pervades-west-end-2026",
+      "title": "Grace Pervades",
+      "openingDate": "2026-04-30",
+      "status": "open",
+      "category": "west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.londontheatre.co.uk/reviews/grace-pervades-review-theatre-royal-haymarket",
+        "https://www.standard.co.uk/culture/theatre/grace-pervades-at-theatre-royal-haymarket-b1280689.html",
+        "https://www.telegraph.co.uk/theatre/what-to-see/grace-pervades-ralph-fiennes-miranda-raison/",
+        "https://www.whatsonstage.com/news/grace-pervades-with-ralph-fiennes-and-miranda-raison-west-end-review_1720019/",
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/grace-pervades-review-ralph-fiennes-b2968757.html",
+        "https://www.timeout.com/london/theatre/grace-pervades-review",
+        "https://www.google.com/url"
+      ],
+      "dirFiles": 34,
+      "dirClean": 15,
+      "inReviewsJson": 17,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "theartsdesk.com",
+          "count": 2
         },
         {
-          "url": "https://www.theguardian.com/stage/2026/may/04/tender-review-soho-theatre-london-dave-harris",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
+          "host": "britishtheatre.com",
+          "count": 2
+        },
+        {
+          "host": "broadwayworld.com",
+          "count": 2
+        },
+        {
+          "host": "everything-theatre.co.uk",
+          "count": 1
+        },
+        {
+          "host": "londonboxoffice.co.uk",
+          "count": 1
+        },
+        {
+          "host": "playsinternational.org.uk",
+          "count": 1
+        },
+        {
+          "host": "thestage.co.uk",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/grace-pervades-at-theatre-royal-haymarket-b1280689.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -1100,14 +1282,19 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "guardian--david-jays.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theguardian.com/stage/2026/may/04/tender-review-soho-theatre-london-dave-harris"
+              "file": "standard--ghenet-pinderhughes-randall.json",
+              "flag": "nonReview",
+              "urlInDir": "https://standard.co.uk/culture/theatre/grace-pervades-at-theatre-royal-haymarket-b1280689.html"
+            },
+            {
+              "file": "standard--nick-curtis.json",
+              "flag": "duplicate",
+              "urlInDir": "https://www.standard.co.uk/culture/theatre/grace-pervades-at-theatre-royal-haymarket-b1280689.html"
             }
           ]
         },
         {
-          "url": "https://www.whatsonstage.com/news/tender-at-soho-theatre-review_1720027/",
+          "url": "https://www.whatsonstage.com/news/grace-pervades-with-ralph-fiennes-and-miranda-raison-west-end-review_1720019/",
           "host": "whatsonstage.com",
           "knownOutletId": "whatsonstage",
           "recoverable": false,
@@ -1117,31 +1304,42 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "whatsonstage--unknown.json",
+              "file": "whatsonstage--kris-hallett.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.whatsonstage.com/news/tender-at-soho-theatre-review_1720027/"
+              "urlInDir": "https://www.whatsonstage.com/news/grace-pervades-with-ralph-fiennes-and-miranda-raison-west-end-review_1720019/"
+            },
+            {
+              "file": "whatsonstage--sarah-crompton.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.whatsonstage.com/news/grace-pervades-with-ralph-fiennes-and-miranda-raison-west-end-review_1720019/"
+            }
+          ]
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/grace-pervades-review-ralph-fiennes-b2968757.html",
+          "host": "independent.co.uk",
+          "knownOutletId": "independent",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "independent--alice-saville.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/grace-pervades-review-ralph-fiennes-b2968757.html"
             }
           ]
         }
-      ],
-      "ingestResults": [
-        {
-          "url": "https://www.thestage.co.uk/reviews/tender-review-soho-theatre-london-dave-harris-matthew-xia",
-          "host": "thestage.co.uk",
-          "outletId": "thestage",
-          "provisional": false,
-          "ok": false,
-          "reason": "Command failed: node scripts/ingest-review-from-url.js --show=tender-off-west-end-2026 --url=https:/"
-        }
-      ],
-      "ingestSkippedByCap": []
+      ]
     },
     {
-      "showId": "allegra-west-end-2026",
-      "title": "Allegra",
-      "openingDate": "2026-07-09",
-      "status": "upcoming",
-      "category": "west-end",
+      "showId": "springwood-west-end-2026",
+      "title": "Springwood",
+      "openingDate": "2026-06-29",
+      "status": "open",
+      "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [],
       "dirFiles": 0,
@@ -1150,154 +1348,6 @@
       "missing": [],
       "dirOnly": [],
       "flaggedMisses": []
-    },
-    {
-      "showId": "paddington-the-musical-west-end-2025",
-      "title": "Paddington The Musical",
-      "openingDate": "2025-11-29",
-      "status": "open",
-      "category": "west-end",
-      "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-PADDINGTON-THE-MUSICAL-on-the-West-End-20251130"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.cityam.com/paddington-musical-review-as-warm-and-fuzzy-as-the-films/",
-        "https://www.whatsonstage.com/news/paddington-the-musical-west-end-review-a-paw-fect-stage-adaptation_1704856/",
-        "https://variety.com/2025/legit/reviews/paddington-review-musical-1236595841/",
-        "https://www.timeout.com/london/news/review-paddington-the-musical-at-the-savoy-theatre-113025",
-        "https://www.telegraph.co.uk/theatre/what-to-see/paddington-musical-review/",
-        "https://www.londontheatre.co.uk/reviews/paddington-the-musical-review-savoy-theatre",
-        "https://theatreweekly.com/review-paddington-the-musical-at-savoy-theatre/",
-        "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/paddington-the-musical-west-end-b2874351.html",
-        "https://musicaltheatrereview.com/paddington-the-musical-savoy-theatre/",
-        "https://www.thestage.co.uk/reviews/paddington-the-musical-review-savoy-theatre-london-michael-bond-tom-fletcher-jessica-swale",
-        "https://www.thetimes.com/culture/theatre-dance/article/paddington-the-musical-review-this-singing-bear-will-capture-your-heart-kr397ksdm",
-        "https://www.standard.co.uk/culture/theatre/paddington-the-musical-savoy-theatre-review-b1260368.html",
-        "https://www.theguardian.com/stage/2025/dec/01/paddington-the-musical-review-savoy-theatre",
-        "https://www.radiotimes.com/going-out/going-out-reviews/paddington-the-musical-review/",
-        "https://www.allthatdazzles.co.uk/post/review-paddington-the-musical-savoy-theatre",
-        "https://www.dailymail.co.uk/tv/article-15340469/Marmalade-magic-Paddington-Musical-scale-cuteness-PATRICK-MARMION-reviews-opening-night-Londons-Savoy-Theatre.html",
-        "https://www.shinyshiny.tv/2025/11/review-paddington-the-musical.html",
-        "https://southlondon.co.uk/lifestyle/review-paddington-the-musical-at-the-savoy-theatre/",
-        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/paddington-the-musical-west-end-b2874351.html"
-      ],
-      "dirFiles": 42,
-      "dirClean": 25,
-      "inReviewsJson": 25,
-      "missing": [
-        {
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/paddington-the-musical-west-end-b2874351.html",
-          "host": "independent.co.uk",
-          "knownOutletId": "independent"
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "everything-theatre.co.uk",
-          "count": 1
-        },
-        {
-          "host": "ft.com",
-          "count": 1
-        },
-        {
-          "host": "inews.co.uk",
-          "count": 1
-        },
-        {
-          "host": "londonboxoffice.co.uk",
-          "count": 1
-        },
-        {
-          "host": "londontheatre1.com",
-          "count": 1
-        },
-        {
-          "host": "observer.co.uk",
-          "count": 1
-        },
-        {
-          "host": "spectator.co.uk",
-          "count": 1
-        },
-        {
-          "host": "theatrecat.com",
-          "count": 1
-        },
-        {
-          "host": "westendtheatre.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.cityam.com/paddington-musical-review-as-warm-and-fuzzy-as-the-films/",
-          "host": "cityam.com",
-          "knownOutletId": "city-am",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "city-am--adam-bloodworth.json",
-              "flag": "duplicate",
-              "urlInDir": "https://www.cityam.com/paddington-musical-review-as-warm-and-fuzzy-as-the-films/"
-            },
-            {
-              "file": "city-am--steve-dinneen.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.cityam.com/paddington-musical-review-as-warm-and-fuzzy-as-the-films/"
-            }
-          ]
-        },
-        {
-          "url": "https://www.dailymail.co.uk/tv/article-15340469/Marmalade-magic-Paddington-Musical-scale-cuteness-PATRICK-MARMION-reviews-opening-night-Londons-Savoy-Theatre.html",
-          "host": "dailymail.co.uk",
-          "knownOutletId": "daily-mail",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "daily-mail--patrick-marmion.json",
-              "flag": "clean",
-              "urlInDir": "https://www.dailymail.co.uk/tv/article-15340469/Marmalade-magic-Paddington-Musical-scale-cuteness-PATRICK-MARMION-reviews-opening-night-Londons-Savoy-Theatre.html"
-            }
-          ]
-        },
-        {
-          "url": "https://www.shinyshiny.tv/2025/11/review-paddington-the-musical.html",
-          "host": "shinyshiny.tv",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "shiny-shiny--chris-price.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.shinyshiny.tv/2025/11/review-paddington-the-musical.html"
-            }
-          ]
-        }
-      ],
-      "ingestResults": [
-        {
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/paddington-the-musical-west-end-b2874351.html",
-          "host": "independent.co.uk",
-          "outletId": "independent",
-          "provisional": false,
-          "ok": true,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": []
     }
   ]
 }
