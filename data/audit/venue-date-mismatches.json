@@ -1,35 +1,24 @@
 {
-  "generatedAt": "2026-06-12T17:33:56.880Z",
+  "generatedAt": "2026-07-08T03:59:58.120Z",
   "filter": {
-    "show": "romeo-and-juliet-off-broadway-2026"
+    "show": "iceboy-regional-2026"
   },
   "counts": {
     "total": 1,
-    "match": 1,
+    "match": 0,
     "mismatch": 0,
-    "unresolved": 0
+    "unresolved": 1
   },
   "results": [
     {
-      "id": "romeo-and-juliet-off-broadway-2026",
-      "title": "Romeo and Juliet",
-      "venue": "Public Theater/Delacorte Theater",
-      "result": "match",
-      "playbillUrl": "https://playbill.com/production/romeo-and-juliet-off-broadway-public-theater-delacorte-theater-2026",
-      "parsed": {
-        "titleParse": {
-          "rawTitle": "Romeo and Juliet",
-          "market": "Off-Broadway",
-          "venue": "Public Theater/Delacorte Theater",
-          "year": 2026
-        },
-        "dates": {
-          "firstPreview": "2026-05-22",
-          "openingDate": "2026-06-11",
-          "closingDate": "2026-06-28"
-        }
-      },
-      "mismatches": []
+      "id": "iceboy-regional-2026",
+      "title": "Iceboy!",
+      "venue": "Goodman Theatre, Chicago, IL",
+      "result": "no-playbill-url",
+      "urlSource": "none",
+      "mismatches": [],
+      "playbillUrl": null,
+      "parsed": null
     }
   ]
 }
