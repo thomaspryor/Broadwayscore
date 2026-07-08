@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-08T15:59:32.370Z",
+  "generatedAt": "2026-07-08T16:50:25.439Z",
   "date": "2026-07-08",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 164480,
+  "entryCount": 166791,
   "shows": [
     {
       "showId": "the-guilty-west-end-2026",
@@ -276,7 +276,7 @@
     },
     {
       "showId": "a-midsummer-nights-dream-west-end-2026",
-      "reviewCount": 17,
+      "reviewCount": 18,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1377,6 +1377,21 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "crazysexycool-regional-2026",
+      "reviewCount": 5,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 2570638,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
