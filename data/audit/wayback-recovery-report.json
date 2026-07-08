@@ -1,25 +1,28 @@
 {
-  "totalCandidates": 18,
-  "cdxFound": 7,
-  "cdxNotFound": 1,
-  "recovered": 6,
+  "totalCandidates": 23,
+  "cdxFound": 8,
+  "cdxNotFound": 8,
+  "recovered": 7,
   "recoveredByTier": {
     "1": 0,
     "2": 0,
-    "3": 6
+    "3": 7
   },
   "recoveredByDomain": {
-    "broadwayworld.com": 3,
-    "independent.co.uk": 1,
+    "aroundthetownchicago.com": 1,
+    "bachtrack.com": 1,
+    "londonboxoffice.co.uk": 3,
     "londontheatre.co.uk": 1,
-    "inews.co.uk": 1
+    "westendwilma.com": 1
   },
-  "tooShort": 0,
+  "tooShort": 5,
   "garbage": 0,
   "wrongShow": 0,
   "archiveTodayRecovered": 0,
-  "errors": 10,
-  "notInArchive": 1,
+  "errors": 7,
+  "notInArchive": 8,
   "domainSkipped": 0,
-  "circuitBrokenDomains": []
+  "circuitBrokenDomains": [
+    "facebook.com"
+  ]
 }
