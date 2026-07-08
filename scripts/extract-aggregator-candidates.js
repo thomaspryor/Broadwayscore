@@ -28,15 +28,13 @@
  *   --dry-run         classify + print; write nothing
  *   --limit=N         cap fetches this run (default 20; CI passes --limit=20)
  *   --source=pv|bww   only process one source
- *   --email           send owner an alert (Resend) when regional feeder-venue
- *                     candidates are staged (they can't auto-promote)
  *   --no-fetch        skip fetching (only processes records with usable slug/
  *                     title; mostly for offline debugging)
  */
 
 const fs = require('fs');
 const path = require('path');
-const { classifyCandidate, slugCollidesWith, referenceTitle } = require('./lib/aggregator-candidate-extract');
+const { classifyCandidate, slugCollidesWith, referenceTitle, collisionSlugSet } = require('./lib/aggregator-candidate-extract');
 const { writeStagingCandidates, loadStaging } = require('./lib/venue-listing-discover');
 
 const AUDIT_DIR = path.join(__dirname, '..', 'data', 'audit');
@@ -49,7 +47,6 @@ const MAX_ACCEPT = 50; // stability guard (mirrors update-lottery-rush abort)
 const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
 const noFetch = args.includes('--no-fetch');
-const emailAlerts = args.includes('--email');
 const onlySource = (args.find(a => a.startsWith('--source=')) || '').split('=')[1] || null;
 const limit = parseInt((args.find(a => a.startsWith('--limit=')) || '').split('=')[1] || '20', 10);
 
@@ -69,7 +66,7 @@ function loadExistingShowSlugs() {
     try {
       const data = JSON.parse(fs.readFileSync(p, 'utf8'));
       const shows = data.shows || data;
-      return new Set(shows.map(s => s.slug).filter(Boolean));
+      return collisionSlugSet(shows);
     } catch { /* try next */ }
   }
   console.warn('::warning::shows.json not found locally — slug-collision guard disabled this run.');
@@ -176,47 +173,14 @@ async function finish(accepted, rejected) {
     return;
   }
 
-  // Regional feeder-venue candidates can NEVER pass the OB promoter's
-  // Playbill-OB/Lortel cross-validation, so staging alone silently strands
-  // them (CrazySexyCool @ Arena Stage sat 6 days, 2026-07). Alert the owner
-  // BEFORE staging: staging marks a URL as done (future runs skip it), so a
-  // failed email must leave its candidates un-staged to retry next run —
-  // otherwise one transient Resend failure permanently loses the signal.
-  let toStage = accepted;
   const regional = accepted.filter(c => c.category === 'regional');
   if (regional.length > 0) {
-    console.log(`::warning::${regional.length} Broadway-feeder regional candidate(s) — needs manual add per regional-show-add runbook`);
-    if (emailAlerts) {
-      let sent = false;
-      try {
-        const { sendEmailAlert } = require('./lib/discord-notify');
-        sent = await sendEmailAlert({
-          title: `${regional.length} Broadway-bound regional show candidate(s) discovered`,
-          severity: 'warning',
-          description:
-            'New review roundup(s) found for shows at Broadway-feeder regional theatres. ' +
-            'These cannot be auto-promoted (no Playbill-OB/Lortel listing) — add each per ' +
-            'memory/feedback_regional_show_add_runbook.md (data-only, ~30 min/show).',
-          fields: regional.map(c => ({
-            name: `${c.title} @ ${c.venue}`,
-            value: c.sourceUrl || c.slug,
-          })),
-        });
-      } catch (e) {
-        console.warn(`::warning::regional-candidate alert email threw: ${e.message}`);
-      }
-      if (sent) {
-        console.log('Sent regional-candidate alert email.');
-      } else {
-        console.warn('::warning::regional alert email failed — leaving regional candidate(s) un-staged so tomorrow\'s run retries');
-        toStage = accepted.filter(c => c.category !== 'regional');
-      }
-    }
+    console.log(`::notice::${regional.length} regional feeder-venue candidate(s) staged — promote-ob-venue-candidates.js --regional-only auto-promotes them (go-live email sent there)`);
   }
 
-  if (toStage.length > 0) {
-    writeStagingCandidates(toStage);
-    console.log(`Staged ${toStage.length} candidate(s) → data/audit/ob-venue-candidates.json`);
+  if (accepted.length > 0) {
+    writeStagingCandidates(accepted);
+    console.log(`Staged ${accepted.length} candidate(s) → data/audit/ob-venue-candidates.json`);
   }
 
   // Always refresh the rejection log (so stale entries don't linger).

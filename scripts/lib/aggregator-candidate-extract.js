@@ -299,6 +299,24 @@ function slugCollidesWith(title, existingSlugs) {
 }
 
 /**
+ * Build the slug set used by every already-in-shows gate (extractor pre-fetch
+ * skip, classify slug-collision, pruneUnmatchedAudit). Promoted regional/OB
+ * shows carry `-regional-<year>` / `-off-broadway-<year>` suffixed slugs that
+ * slugify(title) never equals — without the stripped variants every promoted
+ * show re-fetches + re-stages + skip-duplicates DAILY, forever (QA 2026-07-08).
+ */
+function collisionSlugSet(shows) {
+  const set = new Set();
+  for (const s of Array.isArray(shows) ? shows : []) {
+    if (!s || !s.slug) continue;
+    set.add(s.slug);
+    const stripped = s.slug.replace(/-(?:regional|off-broadway)-\d{4}$/, '');
+    if (stripped !== s.slug) set.add(stripped);
+  }
+  return set;
+}
+
+/**
  * Prune an unmatched-audit array (the *-unmatched.json the PV + BWW landing
  * scrapers write) of entries that no longer belong:
  *   - infrastructure slugs (site nav / legal / feeds) — never a show, so they
@@ -370,25 +388,41 @@ function referenceTitle(source, record) {
 // watchlist, memory/project_regional_expansion_watchlist.md). A candidate whose
 // venue matches gets category 'regional' instead of 'off-broadway': the OB
 // promoter's Playbill-OB/Lortel cross-validation can never confirm a DC or
-// Chicago production, so these must be surfaced to a human (email alert in
-// extract-aggregator-candidates.js) rather than silently parked in staging —
-// that's how CrazySexyCool (Arena Stage) sat undiscovered for 6 days (2026-07).
-const REGIONAL_FEEDER_VENUE_RE = new RegExp(
-  '\\b(?:' +
-  // NOTE: no bare "A.R.T." alternative — "A.R.T./New York Theatres" is a real
-  // NYC Off-Broadway rental complex; PV/BWW articles spell Cambridge's venue out.
-  'american repertory theat(?:er|re)|' +
-  'la jolla playhouse|old globe|berkeley rep(?:ertory)?|' +
-  'goodman(?: theatre| theater)?|steppenwolf|chicago shakespeare|' +
-  'arena stage|kreeger|fichandler|shakespeare theatre company|' +
-  'american conservatory theater|5th avenue theatre|paper mill playhouse|' +
-  'alliance theatre|center theatre group|ahmanson|mark taper' +
-  ')\\b',
-  'i'
-);
+// Chicago production, so these auto-promote off the roundup page itself
+// (promote-ob-venue-candidates.js --regional-only; user rule 2026-07-08: a PV
+// Verdict / BWW Review Roundup page IS the go-live signal) — before that,
+// CrazySexyCool (Arena Stage) sat undiscovered in staging for 6 days (2026-07).
+// One table drives BOTH classification (classifyVenueMarket) and the promoted
+// show entry's "Venue, City, ST" string (feederVenueCity) — a venue can never
+// classify regional without a city and vice versa.
+// NOTE: no bare "A.R.T." pattern — "A.R.T./New York Theatres" is a real NYC
+// Off-Broadway rental complex; PV/BWW articles spell Cambridge's venue out.
+const REGIONAL_FEEDER_VENUES = [
+  { re: /\bamerican repertory theat(?:er|re)\b/i, city: 'Cambridge, MA' },
+  { re: /\bla jolla playhouse\b/i, city: 'La Jolla, CA' },
+  { re: /\bold globe\b/i, city: 'San Diego, CA' },
+  { re: /\bberkeley rep(?:ertory)?\b/i, city: 'Berkeley, CA' },
+  { re: /\bgoodman(?: theatre| theater)?\b/i, city: 'Chicago, IL' },
+  { re: /\bsteppenwolf\b/i, city: 'Chicago, IL' },
+  { re: /\bchicago shakespeare\b/i, city: 'Chicago, IL' },
+  { re: /\b(?:arena stage|kreeger|fichandler)\b/i, city: 'Washington, DC' },
+  { re: /\bshakespeare theatre company\b/i, city: 'Washington, DC' },
+  { re: /\bamerican conservatory theater\b/i, city: 'San Francisco, CA' },
+  { re: /\b5th avenue theatre\b/i, city: 'Seattle, WA' },
+  { re: /\bpaper mill playhouse\b/i, city: 'Millburn, NJ' },
+  { re: /\balliance theatre\b/i, city: 'Atlanta, GA' },
+  { re: /\b(?:center theatre group|ahmanson|mark taper)\b/i, city: 'Los Angeles, CA' },
+];
+
+/** City string for a Broadway-feeder regional venue, or null if not one. */
+function feederVenueCity(venue) {
+  if (!venue) return null;
+  const hit = REGIONAL_FEEDER_VENUES.find(v => v.re.test(venue));
+  return hit ? hit.city : null;
+}
 
 function classifyVenueMarket(venue) {
-  return REGIONAL_FEEDER_VENUE_RE.test(venue || '') ? 'regional' : 'off-broadway';
+  return feederVenueCity(venue) ? 'regional' : 'off-broadway';
 }
 
 function classifyCandidate({ source, record, html, existingSlugs }) {
@@ -462,7 +496,8 @@ function classifyCandidate({ source, record, html, existingSlugs }) {
 
 module.exports = {
   INFRASTRUCTURE_SLUG_RE,
-  REGIONAL_FEEDER_VENUE_RE,
+  REGIONAL_FEEDER_VENUES,
+  feederVenueCity,
   classifyVenueMarket,
   isInfrastructureSlug,
   isBotShell,
@@ -470,6 +505,7 @@ module.exports = {
   extractArticleFields,
   classifyTitleDelta,
   slugCollidesWith,
+  collisionSlugSet,
   pruneUnmatchedAudit,
   referenceTitle,
   classifyCandidate,

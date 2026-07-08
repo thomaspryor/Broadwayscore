@@ -30,7 +30,7 @@ const https = require('https');
 const cheerio = require('cheerio');
 const { serpQuery } = require('./lib/url-discovery');
 const { matchTitleToShow, matchBwwRoundupSlugToShow, loadShows, titleWordsMatch } = require('./lib/show-matching');
-const { pruneUnmatchedAudit } = require('./lib/aggregator-candidate-extract');
+const { pruneUnmatchedAudit, collisionSlugSet } = require('./lib/aggregator-candidate-extract');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, isJunkOutlet, maybeUpgradeUrl } = require('./lib/review-normalization');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
@@ -543,13 +543,14 @@ async function discoverBwwRoundup(show, showId, options = {}) {
     if (!titleWordsMatch(searchTitle, urlSlug)) return false;
     // General non-Broadway check (tours, streaming, off-Broadway, etc.)
     // For off-Broadway shows, allow off-Broadway content through
-    if (isNotBroadway(urlSlug, { allowOffBroadway: show.category === 'off-broadway', allowWestEnd: isLondonMarket(show.category), allowOpera: isOpera })) {
+    if (isNotBroadway(urlSlug, { allowOffBroadway: show.category === 'off-broadway', allowWestEnd: isLondonMarket(show.category), allowOpera: isOpera, allowRegional: show.category === 'regional' })) {
       console.log(`  [SKIP] roundup: non-Broadway article: ${url.split('/article/')[1] || url}`);
       return false;
     }
     // Additional roundup-specific checks (safe in article titles, too aggressive for review text)
-    if (/\bon tour\b/.test(urlSlug) || /\bat the kennedy center\b/.test(urlSlug) ||
-        /\bat the (ahmanson|old globe|la jolla|goodman|steppenwolf|arena stage)\b/.test(urlSlug)) {
+    if (/\bon tour\b/.test(urlSlug) ||
+        (show.category !== 'regional' && (/\bat the kennedy center\b/.test(urlSlug) ||
+          /\bat the (ahmanson|old globe|la jolla|goodman|steppenwolf|arena stage)\b/.test(urlSlug)))) {
       console.log(`  [SKIP] roundup: non-Broadway venue/tour in title: ${url.split('/article/')[1] || url}`);
       return false;
     }
@@ -1087,7 +1088,7 @@ async function processShow(show, showId, options = {}) {
       console.log(`    Extracted ${reviews.length} reviews from roundup (${format} format)${averageRating ? ` (avg: ${averageRating}%)` : ''}`);
 
       for (const review of reviews) {
-        if (review.outlet && isNotBroadway(review.outlet, { allowOffBroadway: show.category === 'off-broadway', allowWestEnd: isLondonMarket(show.category), allowOpera: show.type === 'opera' })) {
+        if (review.outlet && isNotBroadway(review.outlet, { allowOffBroadway: show.category === 'off-broadway', allowWestEnd: isLondonMarket(show.category), allowOpera: show.type === 'opera', allowRegional: show.category === 'regional' })) {
           stats.skippedGuards++;
           continue;
         }
@@ -1212,7 +1213,7 @@ async function landingDiscoverMode(shows, options = {}) {
     // Prune entries that no longer belong (already-in-shows by exact slug +
     // infrastructure) so the file doesn't grow unbounded across weekly runs.
     // Gate matches extract-aggregator-candidates.js exactly — see pruneUnmatchedAudit.
-    const existingSlugs = new Set(shows.map(s => s.slug).filter(Boolean));
+    const existingSlugs = collisionSlugSet(shows);
     const { kept, pruned } = pruneUnmatchedAudit([...byUrl.values()], { source: 'bww-roundup', existingSlugs });
     fs.writeFileSync(auditPath, JSON.stringify(kept, null, 2));
     console.log(`\nWrote ${unmatched.length} unmatched roundups to ${auditPath} (total tracked: ${kept.length}, pruned ${pruned})`);
