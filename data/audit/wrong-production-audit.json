@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-07-08T04:32:53.957Z",
+  "timestamp": "2026-07-08T19:35:22.313Z",
   "stats": {
-    "totalReviews": 39833,
-    "alreadyFlagged": 17537,
+    "totalReviews": 39872,
+    "alreadyFlagged": 17541,
     "dateGuardCatches": 43,
     "directorMismatch": 891,
     "tvFilmSignals": 1096,
-    "londonSignals": 737,
+    "londonSignals": 739,
     "offBroadwaySignals": 467,
     "yearMismatch": 86,
     "noPublishDate": 4023
@@ -1733,7 +1733,7 @@
       "file": "independent--louis-chilton.json",
       "score": 40,
       "publishDate": "2026-04-17",
-      "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -30902,7 +30902,7 @@
       "file": "exeunt-magazine--loren-noveck.json",
       "score": 80,
       "publishDate": "2026-05-15T11:08:02-04:00",
-      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/#:~:text=Dad%20Don't%20Read%20This%20is%20messy%20and%20raw%20and,will%20keep%20it%20in%20my",
+      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -34078,6 +34078,34 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "jesus-christ-superstar-west-end-2026",
+      "file": "cambridge--louise-penn.json",
+      "score": 89,
+      "publishDate": "2026-07-07",
+      "url": "https://loureviews.blog/2026/07/08/sam-ryder-and-jesus-christ-superstar/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "jesus-christ-superstar-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 74,
+      "publishDate": "2026-07-07",
+      "url": "https://www.timeout.com/london/news/jesus-christ-superstar-palladium-2026-070726",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-08T04:32:58.809Z",
+  "generatedAt": "2026-07-08T19:35:27.182Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -9,7 +9,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-07-08",
-      "status": "previews",
+      "status": "open",
       "slug": "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway",
       "thumbnail": "/images/shows/why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
@@ -389,7 +389,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-07-08",
-      "status": "previews",
+      "status": "open",
       "slug": "dukes-off-broadway",
       "thumbnail": "/images/shows/bocking-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
@@ -772,28 +772,25 @@
       "status": "open",
       "slug": "jesus-christ-superstar-west-end",
       "thumbnail": "/images/shows/jesus-christ-superstar-west-end-2026/thumbnail.jpg",
-      "siteScore": null,
-      "liveScore": 69,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 5,
+      "siteScore": 75.73,
+      "liveScore": 76,
+      "scoreDrift": 0.269999999999996,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 2,
-      "t1": 0,
-      "t2": 0,
-      "t3": 2,
-      "positive": 1,
-      "mixed": 1,
-      "negative": 0,
+      "total": 13,
+      "t1": 4,
+      "t2": 4,
+      "t3": 5,
+      "positive": 7,
+      "mixed": 5,
+      "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "2/8 total",
-          "T1:0/3",
-          "T2:0/2",
-          "hi-conf:1/6"
+          "T1:2/3"
         ],
-        "highConfidence": 1,
+        "highConfidence": 7,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -821,18 +818,6 @@
         {
           "name": "The Telegraph",
           "isDualMarket": true
-        },
-        {
-          "name": "The Times (UK)",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Independent",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Stage",
-          "isDualMarket": true
         }
       ],
       "missingT2": [
@@ -845,15 +830,7 @@
           "isDualMarket": true
         },
         {
-          "name": "BroadwayWorld",
-          "isDualMarket": true
-        },
-        {
           "name": "New York Theatre Guide",
-          "isDualMarket": true
-        },
-        {
-          "name": "WhatsOnStage",
           "isDualMarket": true
         }
       ],
@@ -953,6 +930,126 @@
           "m": 1,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-07-08T07:50:55.496Z",
+          "rc": 10,
+          "s": 68.21,
+          "t1": 3,
+          "t2": 3,
+          "t3": 4,
+          "p": 4,
+          "m": 5,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-08T09:41:57.399Z",
+          "rc": 8,
+          "s": 69.91,
+          "t1": 1,
+          "t2": 3,
+          "t3": 4,
+          "p": 4,
+          "m": 3,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-08T10:23:32.383Z",
+          "rc": 9,
+          "s": 71.39,
+          "t1": 1,
+          "t2": 4,
+          "t3": 4,
+          "p": 5,
+          "m": 3,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-08T10:39:40.019Z",
+          "rc": 11,
+          "s": 69.67,
+          "t1": 3,
+          "t2": 4,
+          "t3": 4,
+          "p": 5,
+          "m": 5,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-08T11:44:51.912Z",
+          "rc": 16,
+          "s": 74.77,
+          "t1": 1,
+          "t2": 11,
+          "t3": 4,
+          "p": 12,
+          "m": 3,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-08T13:24:01.188Z",
+          "rc": 17,
+          "s": 72.76,
+          "t1": 2,
+          "t2": 11,
+          "t3": 4,
+          "p": 12,
+          "m": 4,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-08T16:30:41.849Z",
+          "rc": 16,
+          "s": 74.77,
+          "t1": 1,
+          "t2": 11,
+          "t3": 4,
+          "p": 12,
+          "m": 3,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-08T18:09:30.648Z",
+          "rc": 21,
+          "s": 76.39,
+          "t1": 4,
+          "t2": 13,
+          "t3": 4,
+          "p": 15,
+          "m": 5,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-08T18:27:36.603Z",
+          "rc": 21,
+          "s": 76.14,
+          "t1": 4,
+          "t2": 13,
+          "t3": 4,
+          "p": 15,
+          "m": 5,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-08T19:35:27.182Z",
+          "rc": 13,
+          "s": 75.73,
+          "t1": 4,
+          "t2": 4,
+          "t3": 5,
+          "p": 7,
+          "m": 5,
+          "n": 1,
+          "bc": "waiting"
         }
       ]
     }
@@ -990,7 +1087,7 @@
       "category": "west-end",
       "type": "play",
       "openingDate": "2026-07-09",
-      "status": "upcoming",
+      "status": "previews",
       "slug": "allegra-west-end",
       "thumbnail": "/images/shows/allegra-west-end-2026/thumbnail.jpg",
       "daysUntil": 1,
