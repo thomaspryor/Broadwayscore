@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-08T09:11:26.236Z",
+  "generatedAt": "2026-07-08T09:41:57.399Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -772,23 +772,23 @@
       "status": "open",
       "slug": "jesus-christ-superstar-west-end",
       "thumbnail": "/images/shows/jesus-christ-superstar-west-end-2026/thumbnail.jpg",
-      "siteScore": 68.21,
-      "liveScore": 68,
-      "scoreDrift": -0.20999999999999375,
+      "siteScore": 69.91,
+      "liveScore": 70,
+      "scoreDrift": 0.09000000000000341,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 10,
-      "t1": 3,
+      "total": 8,
+      "t1": 1,
       "t2": 3,
       "t3": 4,
       "positive": 4,
-      "mixed": 5,
+      "mixed": 3,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "T1:2/3"
+          "T1:0/3"
         ],
         "highConfidence": 6,
         "thresholds": {
@@ -817,6 +817,10 @@
         },
         {
           "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
           "isDualMarket": true
         },
         {
@@ -956,6 +960,18 @@
           "t3": 4,
           "p": 4,
           "m": 5,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-08T09:41:57.399Z",
+          "rc": 8,
+          "s": 69.91,
+          "t1": 1,
+          "t2": 3,
+          "t3": 4,
+          "p": 4,
+          "m": 3,
           "n": 1,
           "bc": "waiting"
         }
