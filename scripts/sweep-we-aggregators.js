@@ -494,10 +494,14 @@ async function sweepWET(show) {
   for (const post of allPosts.slice(0, 5)) {
     const wpTitle = (post.title?.rendered || '').replace(/&#8217;/g, "'").replace(/&#8211;/g, '\u2013').replace(/&#8212;/g, '\u2014').replace(/&amp;/g, '&').replace(/&#039;/g, "'").replace(/<[^>]+>/g, '');
 
-    // Try matching with cleaned title, raw title, and show title in WP title
+    // Try matching with cleaned title and raw title — both derived from the
+    // WP post. NEVER add show.title here: matching the show's own title
+    // against [show] always succeeds, turning this gate into a no-op. That
+    // tautology let WET's Hello Dolly roundup (same venue) attach 13 wrong-show
+    // ratings to jesus-christ-superstar-west-end-2026 on opening day 2026-07-07.
     const cleaned = extractShowTitle(wpTitle);
     let matched = false;
-    for (const tryTitle of [cleaned, wpTitle, show.title]) {
+    for (const tryTitle of [cleaned, wpTitle]) {
       if (!tryTitle) continue;
       const m = matchTitleToShow(tryTitle, [show], { market: 'west-end' });
       if (m && m.show) { matched = true; break; }

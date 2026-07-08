@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-06-22T20:57:49.219Z",
+    "lastUpdated": "2026-07-08T03:57:50.130Z",
     "version": "2.1.0",
     "lastChange": "T3->T4 demotion of 38 long-tail/stale outlets"
   },
@@ -10076,6 +10076,47 @@
         "metr mag"
       ],
       "accessModel": "free"
+    },
+    "morris-theatre-dc": {
+      "id": "morris-theatre-dc",
+      "displayName": "Morris Theatre DC",
+      "tier": 4,
+      "aliases": [
+        "morris-theatre-dc",
+        "morris theatre dc",
+        "morristheatredc"
+      ],
+      "domain": "morristheatredc.com",
+      "region": "washington-dc",
+      "accessModel": "free"
+    },
+    "feature-presentation": {
+      "id": "feature-presentation",
+      "displayName": "Feature Presentation",
+      "tier": 4,
+      "aliases": [
+        "feature-presentation",
+        "feature presentation",
+        "featurepresentationvideo"
+      ],
+      "domain": "featurepresentationvideo.substack.com",
+      "region": "washington-dc",
+      "accessModel": "free",
+      "defaultCritic": "Patrick J. Regal"
+    },
+    "allie-and-the-after-party": {
+      "id": "allie-and-the-after-party",
+      "displayName": "Allie and the After Party",
+      "tier": 4,
+      "aliases": [
+        "allie-and-the-after-party",
+        "allie and the after party",
+        "allieandtheafterparty"
+      ],
+      "domain": "allieandtheafterparty.com",
+      "region": "chicago",
+      "accessModel": "free",
+      "defaultCritic": "Allie Bugajski"
     }
   },
   "_aliasIndex": {
