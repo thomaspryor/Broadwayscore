@@ -176,25 +176,23 @@ async function finish(accepted, rejected) {
     return;
   }
 
-  if (accepted.length > 0) {
-    writeStagingCandidates(accepted);
-    console.log(`Staged ${accepted.length} candidate(s) → data/audit/ob-venue-candidates.json`);
-  }
-
   // Regional feeder-venue candidates can NEVER pass the OB promoter's
   // Playbill-OB/Lortel cross-validation, so staging alone silently strands
   // them (CrazySexyCool @ Arena Stage sat 6 days, 2026-07). Alert the owner
-  // so the show gets added per memory/feedback_regional_show_add_runbook.md.
+  // BEFORE staging: staging marks a URL as done (future runs skip it), so a
+  // failed email must leave its candidates un-staged to retry next run —
+  // otherwise one transient Resend failure permanently loses the signal.
+  let toStage = accepted;
   const regional = accepted.filter(c => c.category === 'regional');
   if (regional.length > 0) {
-    console.log(`::warning::${regional.length} Broadway-feeder regional candidate(s) staged — needs manual add (see alert email)`);
+    console.log(`::warning::${regional.length} Broadway-feeder regional candidate(s) — needs manual add per regional-show-add runbook`);
     if (emailAlerts) {
+      let sent = false;
       try {
-        const { sendAlert } = require('./lib/discord-notify');
-        await sendAlert({
+        const { sendEmailAlert } = require('./lib/discord-notify');
+        sent = await sendEmailAlert({
           title: `${regional.length} Broadway-bound regional show candidate(s) discovered`,
           severity: 'warning',
-          email: true,
           description:
             'New review roundup(s) found for shows at Broadway-feeder regional theatres. ' +
             'These cannot be auto-promoted (no Playbill-OB/Lortel listing) — add each per ' +
@@ -204,11 +202,21 @@ async function finish(accepted, rejected) {
             value: c.sourceUrl || c.slug,
           })),
         });
-        console.log('Sent regional-candidate alert email.');
       } catch (e) {
-        console.warn(`::warning::regional-candidate alert email failed: ${e.message}`);
+        console.warn(`::warning::regional-candidate alert email threw: ${e.message}`);
+      }
+      if (sent) {
+        console.log('Sent regional-candidate alert email.');
+      } else {
+        console.warn('::warning::regional alert email failed — leaving regional candidate(s) un-staged so tomorrow\'s run retries');
+        toStage = accepted.filter(c => c.category !== 'regional');
       }
     }
+  }
+
+  if (toStage.length > 0) {
+    writeStagingCandidates(toStage);
+    console.log(`Staged ${toStage.length} candidate(s) → data/audit/ob-venue-candidates.json`);
   }
 
   // Always refresh the rejection log (so stale entries don't linger).

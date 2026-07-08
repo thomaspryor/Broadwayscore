@@ -375,7 +375,9 @@ function referenceTitle(source, record) {
 // that's how CrazySexyCool (Arena Stage) sat undiscovered for 6 days (2026-07).
 const REGIONAL_FEEDER_VENUE_RE = new RegExp(
   '\\b(?:' +
-  'american repertory theat(?:er|re)|a\\.r\\.t\\.?|' +
+  // NOTE: no bare "A.R.T." alternative — "A.R.T./New York Theatres" is a real
+  // NYC Off-Broadway rental complex; PV/BWW articles spell Cambridge's venue out.
+  'american repertory theat(?:er|re)|' +
   'la jolla playhouse|old globe|berkeley rep(?:ertory)?|' +
   'goodman(?: theatre| theater)?|steppenwolf|chicago shakespeare|' +
   'arena stage|kreeger|fichandler|shakespeare theatre company|' +

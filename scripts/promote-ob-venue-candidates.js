@@ -182,8 +182,11 @@ async function main() {
     // extract.js) can never be confirmed by Playbill-OB/Lortel — don't burn
     // cross-validation on them. They stay staged; the extractor's --email
     // alert is their surfacing path, and the human adds them per
-    // memory/feedback_regional_show_add_runbook.md.
-    if (c.category === 'regional' && !adminPromoteAll && !adminForceArgs.includes(titleLower)) {
+    // memory/feedback_regional_show_add_runbook.md. This skip is UNCONDITIONAL
+    // (no --admin-force/--admin-promote-all escape): buildShowEntry hardcodes
+    // category 'off-broadway' + market 'broadway' + an -off-broadway- id, so
+    // promoting a regional candidate here would mint a mislabeled show.
+    if (c.category === 'regional') {
       skipped.push({ candidate: c, reason: 'regional feeder venue — manual add via runbook (alert emailed)' });
       remainingStaged.push(c);
       logEntry({ kind: 'skip-regional', title: c.title, venue: c.venue });
@@ -243,8 +246,20 @@ async function main() {
     return;
   }
 
+  // Staging rewrite must NOT be gated on promotions: dedup-matched entries
+  // (candidate's show since added to shows.json by hand — the regional flow)
+  // leave staging via remainingStaged, and that cleanup has to land even on a
+  // zero-promotion run or stale entries linger forever (QA 2026-07-08).
+  const rewriteStaging = () => {
+    const stagingPath = path.join(__dirname, '..', 'data', 'audit', 'ob-venue-candidates.json');
+    fs.writeFileSync(stagingPath + '.tmp.' + process.pid, JSON.stringify(remainingStaged, null, 2));
+    fs.renameSync(stagingPath + '.tmp.' + process.pid, stagingPath);
+    console.log(`Staging file: ${remainingStaged.length} unpromoted candidates remain.`);
+  };
+
   if (promoted.length === 0) {
     console.log('Nothing to promote; shows.json unchanged.');
+    if (remainingStaged.length !== staged.length) rewriteStaging();
     return;
   }
 
@@ -261,13 +276,8 @@ async function main() {
     throw e;
   }
 
-  // Rewrite staging file with only the unpromoted candidates
-  // (atomic write happens inside writeStagingCandidates — replace-by-hash)
-  // We need to wipe staging and re-add the remaining ones.
-  const stagingPath = path.join(__dirname, '..', 'data', 'audit', 'ob-venue-candidates.json');
-  fs.writeFileSync(stagingPath + '.tmp.' + process.pid, JSON.stringify(remainingStaged, null, 2));
-  fs.renameSync(stagingPath + '.tmp.' + process.pid, stagingPath);
-  console.log(`Staging file: ${remainingStaged.length} unpromoted candidates remain.`);
+  // Rewrite staging file with only the unpromoted candidates.
+  rewriteStaging();
 }
 
 if (require.main === module) {

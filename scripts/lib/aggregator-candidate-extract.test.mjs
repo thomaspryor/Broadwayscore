@@ -230,6 +230,8 @@ test('regional feeder venues classify as category regional (2026-07-08)', () => 
   assert.equal(classifyVenueMarket('Kreeger Theater'), 'regional');
   assert.equal(classifyVenueMarket('Goodman Theatre'), 'regional');
   assert.equal(classifyVenueMarket('American Repertory Theater'), 'regional');
+  // NYC rental complex must NOT classify regional (QA finding 2026-07-08)
+  assert.equal(classifyVenueMarket('A.R.T./New York Theatres'), 'off-broadway');
   assert.equal(classifyVenueMarket('La Jolla Playhouse'), 'regional');
   assert.equal(classifyVenueMarket('Steppenwolf Theatre'), 'regional');
   // NYC OB venues stay off-broadway

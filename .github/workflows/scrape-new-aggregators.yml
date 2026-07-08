@@ -158,6 +158,13 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         run: |
+          # Sunday is covered by audit-cross-production-weekly (same 14:00 UTC
+          # cron) — skip here so two extractors never race the same staging
+          # file / double-send the alert email.
+          if [ "$(date -u +%u)" = "7" ]; then
+            echo "Sunday — extraction runs in audit-cross-production-weekly instead."
+            exit 0
+          fi
           node scripts/extract-aggregator-candidates.js --limit=20 --email
           git add data/audit/ob-venue-candidates.json data/audit/ob-aggregator-rejections.json 2>/dev/null || true
           if ! git diff --staged --quiet; then
