@@ -477,14 +477,26 @@ function safeWriteReview(filePath, newData, options = {}) {
   if (!force && newData.url && !newData.urlCorrectedFrom) {
     const collider = checkUrlCollision(filePath, newData);
     if (collider) {
-      console.warn(`[review-write-guard] URL collision: ${path.basename(filePath)} shares URL with ${collider} — marking as duplicate`);
-      newData.duplicateOf = collider;
-      newData.duplicateReason = 'url-collision-detected-at-write';
-      // Clear any stale clear-breadcrumb from a prior heal — this file is now a
-      // live duplicate again, so a leftover duplicateClearReason would lie about
-      // its state (and the push-review-texts restore exception keys on that
-      // breadcrumb). Keep the marker consistent with the live flag. 2026-06-01.
-      newData.duplicateClearReason = null;
+      let colliderData = null;
+      try {
+        colliderData = JSON.parse(fs.readFileSync(path.join(path.dirname(filePath), collider), 'utf-8'));
+      } catch { /* unreadable collider — fall back to marking dup (historical behavior) */ }
+      if (shouldMarkUrlCollisionDuplicate(newData, colliderData)) {
+        console.warn(`[review-write-guard] URL collision: ${path.basename(filePath)} shares URL with ${collider} — marking as duplicate`);
+        newData.duplicateOf = collider;
+        newData.duplicateReason = 'url-collision-detected-at-write';
+        // Clear any stale clear-breadcrumb from a prior heal — this file is now a
+        // live duplicate again, so a leftover duplicateClearReason would lie about
+        // its state (and the push-review-texts restore exception keys on that
+        // breadcrumb). Keep the marker consistent with the live flag. 2026-06-01.
+        newData.duplicateClearReason = null;
+      } else {
+        // newData carries the real review body and the collider is a thin/empty
+        // same-URL stub. Marking newData duplicate here BURIES the real review
+        // under the stub and re-forms a byline-explosion cluster on every write
+        // (much-ado Sarah Crompton → alun-hood, 2026-07-05). Keep it primary.
+        console.warn(`[review-write-guard] URL collision: ${path.basename(filePath)} shares URL with ${collider} but has the substantive body — keeping primary`);
+      }
     }
   }
 
@@ -548,6 +560,37 @@ function getEffectiveProtectedFields(existingData) {
  * @param {object} newData - The data to write (must have a .url field to be checked)
  * @returns {string|null} Conflicting filename (basename only), or null if no collision
  */
+/**
+ * Decide whether a URL-collision should mark the NEW file as duplicateOf the
+ * collider. Returns false — i.e. keep the new file PRIMARY — only when the new
+ * file carries a substantive review body and the collider is a materially
+ * thinner (empty/stub) same-URL sibling. Otherwise defer to the collider
+ * (historical behavior: the first same-URL file wins).
+ *
+ * Why: checkUrlCollision returns the first same-URL sibling in readdir order,
+ * regardless of which holds the real review. Blindly marking the new file a
+ * duplicate buries a real review under an empty byline-explosion stub and
+ * re-forms the cluster on every write (much-ado Sarah Crompton re-dupped to an
+ * empty alun-hood, 2026-07-05). A body is the only per-file signal that a review
+ * actually exists, so the file with the body must stay primary.
+ *
+ * Pure (no I/O) for tests/unit/url-collision-canonical.test.mjs.
+ * @param {{fullText?:string}} newData
+ * @param {{fullText?:string}|null} colliderData
+ * @returns {boolean} true → mark new file duplicate; false → keep new file primary
+ */
+function shouldMarkUrlCollisionDuplicate(newData, colliderData) {
+  // Can't read the collider → defer to historical behavior (mark duplicate). We
+  // only keep the new file primary when we can PROVE the collider is thinner.
+  if (!colliderData) return true;
+  const newLen = String((newData && newData.fullText) || '').trim().length;
+  const colLen = String((colliderData && colliderData.fullText) || '').trim().length;
+  // New file has a real body AND the collider is (near-)empty → new file is the
+  // canonical; do not mark it duplicate.
+  if (newLen >= 500 && colLen < 200) return false;
+  return true;
+}
+
 function checkUrlCollision(filePath, newData) {
   if (!newData || !newData.url || typeof newData.url !== 'string') return null;
   const dir = path.dirname(filePath);
@@ -1007,4 +1050,4 @@ function _updateSisterStoresOnRename(srcPath, dstPath) {
   return { llmScoreMoved, pointersUpdated, sisterStoreConflict, sisterStoreError };
 }
 
-module.exports = { safeWriteReview, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, isIntentionalClear };
+module.exports = { safeWriteReview, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, shouldMarkUrlCollisionDuplicate, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, isIntentionalClear };
