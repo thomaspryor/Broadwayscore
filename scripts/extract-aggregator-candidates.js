@@ -28,6 +28,8 @@
  *   --dry-run         classify + print; write nothing
  *   --limit=N         cap fetches this run (default 20; CI passes --limit=20)
  *   --source=pv|bww   only process one source
+ *   --email           send owner an alert (Resend) when regional feeder-venue
+ *                     candidates are staged (they can't auto-promote)
  *   --no-fetch        skip fetching (only processes records with usable slug/
  *                     title; mostly for offline debugging)
  */
@@ -47,6 +49,7 @@ const MAX_ACCEPT = 50; // stability guard (mirrors update-lottery-rush abort)
 const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
 const noFetch = args.includes('--no-fetch');
+const emailAlerts = args.includes('--email');
 const onlySource = (args.find(a => a.startsWith('--source=')) || '').split('=')[1] || null;
 const limit = parseInt((args.find(a => a.startsWith('--limit=')) || '').split('=')[1] || '20', 10);
 
@@ -154,7 +157,7 @@ async function main() {
   return finish(accepted, rejected);
 }
 
-function finish(accepted, rejected) {
+async function finish(accepted, rejected) {
   console.log('');
   console.log(`Summary: ${accepted.length} accepted / ${rejected.length} rejected.`);
   const byReason = {};
@@ -176,6 +179,36 @@ function finish(accepted, rejected) {
   if (accepted.length > 0) {
     writeStagingCandidates(accepted);
     console.log(`Staged ${accepted.length} candidate(s) → data/audit/ob-venue-candidates.json`);
+  }
+
+  // Regional feeder-venue candidates can NEVER pass the OB promoter's
+  // Playbill-OB/Lortel cross-validation, so staging alone silently strands
+  // them (CrazySexyCool @ Arena Stage sat 6 days, 2026-07). Alert the owner
+  // so the show gets added per memory/feedback_regional_show_add_runbook.md.
+  const regional = accepted.filter(c => c.category === 'regional');
+  if (regional.length > 0) {
+    console.log(`::warning::${regional.length} Broadway-feeder regional candidate(s) staged — needs manual add (see alert email)`);
+    if (emailAlerts) {
+      try {
+        const { sendAlert } = require('./lib/discord-notify');
+        await sendAlert({
+          title: `${regional.length} Broadway-bound regional show candidate(s) discovered`,
+          severity: 'warning',
+          email: true,
+          description:
+            'New review roundup(s) found for shows at Broadway-feeder regional theatres. ' +
+            'These cannot be auto-promoted (no Playbill-OB/Lortel listing) — add each per ' +
+            'memory/feedback_regional_show_add_runbook.md (data-only, ~30 min/show).',
+          fields: regional.map(c => ({
+            name: `${c.title} @ ${c.venue}`,
+            value: c.sourceUrl || c.slug,
+          })),
+        });
+        console.log('Sent regional-candidate alert email.');
+      } catch (e) {
+        console.warn(`::warning::regional-candidate alert email failed: ${e.message}`);
+      }
+    }
   }
 
   // Always refresh the rejection log (so stale entries don't linger).

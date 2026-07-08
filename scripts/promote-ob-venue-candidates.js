@@ -112,7 +112,11 @@ async function main() {
   // "musical" → jaccard 0.8, not 1.0. 0.8 still requires 80% token overlap.
   const DEDUP_JACCARD_THRESHOLD = 0.80;
   const existingByVenue = new Map(); // canonicalVenue → [{ id, title, tokens, normalized }]
-  for (const s of showsData.shows.filter(s => s.category === 'off-broadway')) {
+  // Include 'regional' alongside 'off-broadway': regional candidates are added
+  // to shows.json manually (runbook), and without them in this index a staged
+  // regional entry never matches → never drops → re-hits validation weekly
+  // forever (Black Swan sat staged 3 weeks after shipping, 2026-07-08).
+  for (const s of showsData.shows.filter(s => s.category === 'off-broadway' || s.category === 'regional')) {
     const venueKey = canonicalVenue(s.venue);
     if (!existingByVenue.has(venueKey)) existingByVenue.set(venueKey, []);
     existingByVenue.get(venueKey).push({
@@ -171,6 +175,18 @@ async function main() {
     if (existingMatch) {
       skipped.push({ candidate: c, reason: `already in shows.json as ${existingMatch.match.id} (${existingMatch.reason})` });
       logEntry({ kind: 'skip-duplicate', title: c.title, venue: c.venue, matchedTo: existingMatch.match.id, matchReason: existingMatch.reason });
+      continue;
+    }
+
+    // Regional feeder-venue candidates (category set by aggregator-candidate-
+    // extract.js) can never be confirmed by Playbill-OB/Lortel — don't burn
+    // cross-validation on them. They stay staged; the extractor's --email
+    // alert is their surfacing path, and the human adds them per
+    // memory/feedback_regional_show_add_runbook.md.
+    if (c.category === 'regional' && !adminPromoteAll && !adminForceArgs.includes(titleLower)) {
+      skipped.push({ candidate: c, reason: 'regional feeder venue — manual add via runbook (alert emailed)' });
+      remainingStaged.push(c);
+      logEntry({ kind: 'skip-regional', title: c.title, venue: c.venue });
       continue;
     }
 
