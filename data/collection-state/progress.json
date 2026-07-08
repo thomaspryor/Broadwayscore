@@ -135,7 +135,17 @@
     "to-kill-a-mockingbird-west-end-2026/the-morning-star--unknown.json",
     "to-kill-a-mockingbird-west-end-2026/the-upcoming-uk--unknown.json",
     "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
-    "to-kill-a-mockingbird-west-end-2026/times-uk--libby-purves.json"
+    "to-kill-a-mockingbird-west-end-2026/times-uk--libby-purves.json",
+    "to-kill-a-mockingbird-west-end-2026/tribune--unknown.json",
+    "to-kill-a-mockingbird-west-end-2026/western-mail--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/hollywood-reporter--frank-scheck.json",
+    "a-midsummer-nights-dream-west-end-2026/ew--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/newsday--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/nydailynews--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/observer--kate-kellaway.json",
+    "springwood-west-end-2026/guardian-uk--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/bloomberg--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/cambridge--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -179,12 +189,14 @@
       "data/review-texts/pride-west-end-2026/thestage--dave-fargnoli.json",
       "data/review-texts/jesus-christ-superstar-west-end-2026/click-liverpool--unknown.json",
       "data/review-texts/jesus-christ-superstar-west-end-2026/click-liverpool--unknown.json",
-      "data/review-texts/the-guilty-west-end-2026/thestage--unknown.json"
+      "data/review-texts/the-guilty-west-end-2026/thestage--unknown.json",
+      "data/review-texts/to-kill-a-mockingbird-west-end-2026/tribune--unknown.json",
+      "data/review-texts/to-kill-a-mockingbird-west-end-2026/western-mail--unknown.json"
     ],
     "archive": []
   },
   "startTime": "2026-07-08T06:26:18.133Z",
-  "lastProcessed": "to-kill-a-mockingbird-west-end-2026/times-uk--libby-purves.json",
+  "lastProcessed": "a-midsummer-nights-dream-west-end-2026/cambridge--unknown.json",
   "log": [
     {
       "t": "2026-07-08T06:32:58.520Z",
@@ -218,6 +230,12 @@
       "t": "2026-07-08T06:36:00.156Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-08T08:18:04.827Z",
+      "event": "bb-session",
+      "session": "1334c034",
+      "url": "https://www.inkl.com/news/springwood-review-timely-tale-of-british-monarchs-miss"
     }
   ]
 }
