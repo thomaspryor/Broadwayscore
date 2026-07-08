@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-07T23:36:07.287Z",
+  "timestamp": "2026-07-08T03:48:44.645Z",
   "stats": {
-    "totalReviews": 39829,
+    "totalReviews": 39833,
     "alreadyFlagged": 17532,
     "dateGuardCatches": 43,
     "directorMismatch": 891,
     "tvFilmSignals": 1096,
-    "londonSignals": 736,
+    "londonSignals": 737,
     "offBroadwaySignals": 467,
     "yearMismatch": 86,
-    "noPublishDate": 4026
+    "noPublishDate": 4028
   },
   "findings": [
     {
@@ -36355,6 +36355,19 @@
       "score": 83,
       "publishDate": "2024-07-26",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-13674445/Oliver-review-Dickens-writes-GEORGINA-BROWN.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "oliver-west-end-2024",
+      "file": "i-paper--unknown.json",
+      "publishDate": null,
+      "url": "https://inews.co.uk/culture/arts/oliver-review-immaculate-left-cold-3480332",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
