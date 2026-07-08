@@ -108,6 +108,78 @@ jobs:
           fi
           node scripts/scrape-playbill-verdict.js $SHOWS_FLAG $SKIP_FLAG
 
+      # ── Regional auto-promotion chain (daily, single owner) ──────────────
+      # A PV Verdict / BWW Review Roundup page at a Broadway-feeder regional
+      # venue IS the go-live signal (user rule 2026-07-08): stage the
+      # candidate, auto-promote it into shows.json (promote --regional-only),
+      # then re-scrape its roundups in the SAME run so reviews ingest before
+      # the push-review-texts steps below. This is the ONLY scheduled
+      # extraction/promotion path (removed from audit-cross-production-weekly
+      # 2026-07-08 — dual owners raced the staging file on Sundays).
+      # Safety: feeder-venue allowlist + bot-shell guard upstream; jaccard/slug
+      # /id dedup + atomic write + shrink gate in the promoter; validate-data
+      # gates the private-repo push (sentinel) and a failure rolls back the
+      # staging consumption so tomorrow retries clean. Failures email the owner
+      # (promote --email) — continue-on-error keeps the downstream rebuild
+      # gate alive, so without that email a break here would be silent.
+      - name: Discover + auto-promote regional roundup candidates
+        if: always()
+        continue-on-error: true
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: |
+          set +e  # every failure below is handled explicitly
+          # Core data missing (checkout-core-data failed but if:always() ran us):
+          # bail — the slug-collision guard would be blind and stage garbage.
+          if [ ! -f data/shows.json ]; then
+            echo "::warning::core data missing — skipping regional discovery this run"
+            exit 0
+          fi
+          node scripts/extract-aggregator-candidates.js --limit=20
+          node scripts/promote-ob-venue-candidates.js --regional-only --email
+          PROMOTE_RC=$?
+          [ "$PROMOTE_RC" -ne 0 ] && echo "::error::promotion script exited $PROMOTE_RC (failure email sent by the script)"
+          IDS=$(node -e "const d=require('./data/audit/last-promotion-ids.json'); console.log(d.promoted.map(p=>p.id).join(','))" 2>/dev/null)
+          [ -n "$IDS" ] && echo "Auto-promoted: $IDS"
+          # ALWAYS validate before the push-core-data step below — promotion may
+          # have modified shows.json even on a non-zero exit, and validate-data
+          # arms the push-refusal sentinel on failure so a bad shows.json can
+          # never reach the private repo.
+          if node scripts/validate-data.js; then
+            if [ -n "$IDS" ]; then
+              echo "validate-data passed — same-run targeted review scrape"
+              node scripts/scrape-playbill-verdict.js --shows="$IDS" || true
+              node scripts/scrape-bww-reviews.js --shows="$IDS" || true
+            fi
+          else
+            # Push is refused via the sentinel. Roll back the staging consumption
+            # (tracked file) and blank the promotion record (may be untracked on
+            # the first runs — git checkout would silently no-op) so tomorrow
+            # retries clean, and email — this branch loops daily until a human
+            # looks, and silence would hide it forever.
+            echo "::error::validate-data FAILED after regional promotion — rolling back staging consumption"
+            git checkout -- data/audit/ob-venue-candidates.json || true
+            node -e "require('fs').writeFileSync('data/audit/last-promotion-ids.json', JSON.stringify({generatedAt:new Date().toISOString(),promoted:[]},null,2)+'\n')" || true
+            PROMOTED_IDS="$IDS" node -e "
+              const {sendEmailAlert}=require('./scripts/lib/discord-notify');
+              sendEmailAlert({title:'Regional auto-promotion: validate-data FAILED',severity:'error',description:'Promoting ['+(process.env.PROMOTED_IDS||'?')+'] produced a shows.json that failed validate-data. The private-repo push was refused (sentinel) and staging was rolled back — this will retry and re-alert daily until fixed.'}).then(()=>process.exit(0)).catch(()=>process.exit(0));
+            " || true
+          fi
+          exit 0
+
+      - name: Push core data (regional auto-promotion)
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: auto-promote regional shows from aggregator roundups"
+
       - name: Push review-texts to private repo (PV)
         if: always()
         uses: ./.github/actions/push-review-texts
@@ -125,53 +197,17 @@ jobs:
       # downstream rebuild job re-checks out main and would lose this file
       # otherwise. data/audit/ is the established public-repo audit location
       # (see audit-aggregator-coverage.yml for the same pattern).
-      - name: Commit Playbill Verdict unmatched-articles audit
+      - name: Commit Playbill Verdict unmatched-articles audit + candidate staging
         if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/audit/playbill-verdict-unmatched.json 2>/dev/null || true
+          bash scripts/lib/git-add-existing.sh data/audit/playbill-verdict-unmatched.json data/audit/ob-venue-candidates.json data/audit/ob-aggregator-rejections.json data/audit/last-promotion-ids.json data/audit/ob-promotion-log.jsonl
           if ! git diff --staged --quiet; then
-            git commit -m "data: Playbill Verdict unmatched articles audit [skip ci]"
+            git commit -m "data: Playbill Verdict unmatched audit + candidate staging [skip ci]"
             bash scripts/lib/push-with-retry.sh
           else
-            echo "No unmatched-articles changes to commit"
-          fi
-
-      # Bridge the unmatched audit → candidate staging DAILY (the Sunday
-      # audit-cross-production-weekly run alone left a 6-day discovery lag:
-      # CrazySexyCool @ Arena Stage, 2026-07). Idempotent — already-staged
-      # URLs are skipped, so daily cost is at most a few fetches. Regional
-      # feeder-venue candidates trigger an owner alert email (--email); they
-      # can't auto-promote (no Playbill-OB/Lortel listing, CLAUDE.md §3).
-      # continue-on-error: the MAX_ACCEPT abort or an email hiccup must not
-      # fail the job — the downstream rebuild gate checks job result.
-      - name: Extract aggregator candidates + regional alert
-        if: always()
-        continue-on-error: true
-        env:
-          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
-          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
-          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
-          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
-          SCRAPER_USE_SCRAPINGDOG: '1'
-          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
-        run: |
-          # Sunday is covered by audit-cross-production-weekly (same 14:00 UTC
-          # cron) — skip here so two extractors never race the same staging
-          # file / double-send the alert email.
-          if [ "$(date -u +%u)" = "7" ]; then
-            echo "Sunday — extraction runs in audit-cross-production-weekly instead."
-            exit 0
-          fi
-          node scripts/extract-aggregator-candidates.js --limit=20 --email
-          git add data/audit/ob-venue-candidates.json data/audit/ob-aggregator-rejections.json 2>/dev/null || true
-          if ! git diff --staged --quiet; then
-            git commit -m "data: aggregator candidate staging (daily) [skip ci]"
-            bash scripts/lib/push-with-retry.sh
-          else
-            echo "No candidate-staging changes to commit"
+            echo "No audit/staging changes to commit"
           fi
 
   scrape-nyc-theatre:

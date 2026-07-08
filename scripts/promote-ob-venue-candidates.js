@@ -33,13 +33,27 @@ const { isCandidateConfirmed } = require('./lib/ob-cross-validation');
 const { atomicWriteShowsJson, AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
 const { scrapePlaybillOBData } = require('./lib/playbill-ob-schedule');
 const { scrapeLortel } = require('./enrich-off-broadway-dates');
+const { feederVenueCity } = require('./lib/aggregator-candidate-extract');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const PROMOTION_LOG = path.join(__dirname, '..', 'data', 'audit', 'ob-promotion-log.jsonl');
+// Machine-readable output for the CI workflow: which ids were promoted THIS
+// run (always rewritten, empty array when none) so the workflow can trigger a
+// same-run targeted review scrape without parsing stdout.
+const LAST_PROMOTION_FILE = path.join(__dirname, '..', 'data', 'audit', 'last-promotion-ids.json');
 
 const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
 const adminPromoteAll = args.includes('--admin-promote-all');
+// --regional-only: the DAILY CI path (scrape-new-aggregators.yml). Considers
+// ONLY category:'regional' candidates — no Playbill-OB/Lortel fetches, no OB
+// promotions (those keep the operator-run path via health-check). Regional
+// candidates validate off the aggregator roundup page itself (user rule
+// 2026-07-08: a PV Verdict / BWW Review Roundup page IS the go-live signal).
+const regionalOnly = args.includes('--regional-only');
+// --email: send the owner a "went live" notification for promoted regional
+// shows (best-effort — the promotion does NOT depend on delivery).
+const emailAlerts = args.includes('--email');
 const adminForceArgs = args
   .filter(a => a.startsWith('--admin-force='))
   .map(a => a.split('=').slice(1).join('=').toLowerCase());
@@ -80,8 +94,81 @@ function buildShowEntry(candidate) {
   };
 }
 
+// Sources whose staged candidates were minted from an aggregator ROUNDUP page
+// (extract-aggregator-candidates.js). For regional feeder venues that page is
+// the validation: it only exists once professional reviews are out.
+const AGGREGATOR_ROUNDUP_SOURCES = new Set(['bww-roundup', 'playbill-verdict']);
+
+/** Pure promotion rule for regional candidates (testable, CLAUDE.md §15). */
+function decideRegionalPromotion(candidate) {
+  if (!candidate || candidate.category !== 'regional') {
+    return { confirmed: false, reason: 'not a regional candidate' };
+  }
+  if (!AGGREGATOR_ROUNDUP_SOURCES.has(candidate.source)) {
+    return { confirmed: false, reason: `regional candidate from non-roundup source "${candidate.source}" — needs a PV/BWW roundup page to go live` };
+  }
+  if (!feederVenueCity(candidate.venue)) {
+    // classifyVenueMarket and this check share REGIONAL_FEEDER_VENUES, so this
+    // only fires on stale staged entries written before the venue table existed.
+    return { confirmed: false, reason: `venue "${candidate.venue}" not in the feeder-venue table` };
+  }
+  return { confirmed: true, reason: 'aggregator roundup page exists (regional feeder venue)', source: 'aggregator-roundup' };
+}
+
+/** Show entry for an auto-promoted REGIONAL production. Differs from the OB
+ *  stub: -regional- id/slug (useCurrentMarket detection requires it), market
+ *  'regional' (fail-closed: every `.market !== 'broadway'` gate — broadcasts,
+ *  recoupment/closure pollers, orchestrator — excludes it), status 'open'
+ *  (a roundup only exists after press night), openingDate ≈ the roundup's
+ *  publish date (roundups land on/within a day of opening). */
+function buildRegionalShowEntry(candidate) {
+  // Take the DATE PART of the publish timestamp verbatim — it's already in the
+  // publisher's local zone. UTC conversion would roll an ET Dec-31 evening
+  // publish into Jan 1 and mint a wrong-year id (QA 2026-07-08).
+  const dm = String(candidate.articlePublishedAt || '').match(/^(\d{4})-(\d{2})-(\d{2})/);
+  const year = dm ? Number(dm[1]) : new Date().getFullYear();
+  const openingDate = dm ? `${dm[1]}-${dm[2]}-${dm[3]}` : null;
+  const slugBase = candidate.slug || candidate.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const id = `${slugBase}-regional-${year}`;
+  const city = feederVenueCity(candidate.venue);
+  return {
+    id,
+    title: candidate.title,
+    slug: id, // regional slugs must contain '-regional' (useCurrentMarket)
+    venue: city ? `${candidate.venue}, ${city}` : candidate.venue,
+    openingDate,
+    openingDateSource: 'aggregator-roundup',
+    previewsStartDate: null,
+    closingDate: null,
+    status: 'open',
+    category: 'regional',
+    market: 'regional',
+    tags: ['regional'],
+    type: /\bmusical\b/i.test(candidate.title || '') ? 'musical' : null,
+    discoverySource: `aggregator-roundup:${candidate.source}`,
+    discoveredAt: candidate.discoveredAt,
+    // Provisional — reviews auto-ingest via the PV/BWW matchers now that the
+    // show exists; images/cast/exact dates arrive via the enrichment email.
+    provisional: true,
+  };
+}
+
+function writeLastPromotionFile(promoted) {
+  const out = {
+    generatedAt: new Date().toISOString(),
+    promoted: promoted.map(p => ({ id: p.entry.id, source: p.candidate.source, sourceUrl: p.candidate.sourceUrl || null })),
+  };
+  const tmp = LAST_PROMOTION_FILE + '.tmp.' + process.pid;
+  fs.writeFileSync(tmp, JSON.stringify(out, null, 2) + '\n');
+  fs.renameSync(tmp, LAST_PROMOTION_FILE);
+}
+
 async function main() {
   const staged = loadStaging();
+  // Reset the promotion record up front so a crash mid-run can never leave a
+  // STALE file claiming yesterday's promotions happened again (the workflow
+  // reads it to decide targeted scrapes and commits it).
+  if (!dryRun) writeLastPromotionFile([]);
   if (staged.length === 0) {
     console.log('No staged candidates to promote.');
     return;
@@ -144,10 +231,12 @@ async function main() {
     return null;
   }
 
-  // Fetch cross-validation sources unless --admin-promote-all
+  // Fetch cross-validation sources unless --admin-promote-all or
+  // --regional-only (regional candidates never use Playbill-OB/Lortel; the
+  // daily CI path must not spend those fetches).
   let playbillEntries = [];
   let lortelEntries = [];
-  if (!adminPromoteAll) {
+  if (!adminPromoteAll && !regionalOnly) {
     console.log('Fetching Playbill OB for cross-validation...');
     const pb = await scrapePlaybillOBData();
     playbillEntries = pb.entries;
@@ -167,6 +256,14 @@ async function main() {
   for (const c of staged) {
     const titleLower = (c.title || '').toLowerCase();
 
+    // --regional-only: non-regional candidates are untouched (stay staged for
+    // the operator-run OB promotion path). Keeps the daily CI blast radius to
+    // exactly the regional feeder-venue class.
+    if (regionalOnly && c.category !== 'regional') {
+      remainingStaged.push(c);
+      continue;
+    }
+
     // Dedupe via per-venue jaccard match. Catches: cross-year duplicates,
     // venue-string variants ("Atlantic Theater Company - Linda Gross" vs
     // "Atlantic Theater"), cross-source same-venue (TNG → Signature Center),
@@ -178,25 +275,17 @@ async function main() {
       continue;
     }
 
-    // Regional feeder-venue candidates (category set by aggregator-candidate-
-    // extract.js) can never be confirmed by Playbill-OB/Lortel — don't burn
-    // cross-validation on them. They stay staged; the extractor's --email
-    // alert is their surfacing path, and the human adds them per
-    // memory/feedback_regional_show_add_runbook.md. This skip is UNCONDITIONAL
-    // (no --admin-force/--admin-promote-all escape): buildShowEntry hardcodes
-    // category 'off-broadway' + market 'broadway' + an -off-broadway- id, so
-    // promoting a regional candidate here would mint a mislabeled show.
-    if (c.category === 'regional') {
-      skipped.push({ candidate: c, reason: 'regional feeder venue — manual add via runbook (alert emailed)' });
-      remainingStaged.push(c);
-      logEntry({ kind: 'skip-regional', title: c.title, venue: c.venue });
-      continue;
-    }
-
     let confirmed = false;
     let reason = '';
     let source = null;
-    if (adminPromoteAll) {
+    if (c.category === 'regional') {
+      // Regional feeder-venue candidates auto-promote off the roundup page
+      // itself (user rule 2026-07-08) — Playbill-OB/Lortel can never confirm
+      // a DC/Chicago production, and admin flags are ignored for this class
+      // (the OB buildShowEntry would mint a mislabeled entry).
+      const r = decideRegionalPromotion(c);
+      confirmed = r.confirmed; reason = r.reason; source = r.source || null;
+    } else if (adminPromoteAll) {
       confirmed = true; reason = '--admin-promote-all'; source = 'admin';
     } else if (adminForceArgs.includes(titleLower)) {
       confirmed = true; reason = `--admin-force="${c.title}"`; source = 'admin-force';
@@ -213,7 +302,7 @@ async function main() {
     }
 
     // Build show entry + dedupe by ID
-    const entry = buildShowEntry(c);
+    const entry = c.category === 'regional' ? buildRegionalShowEntry(c) : buildShowEntry(c);
     if (existingIds.has(entry.id)) {
       skipped.push({ candidate: c, reason: `id ${entry.id} already exists` });
       logEntry({ kind: 'skip-id-collision', title: c.title, venue: c.venue, id: entry.id });
@@ -221,6 +310,15 @@ async function main() {
     }
     promoted.push({ candidate: c, entry, confirmationSource: source, confirmationReason: reason });
     existingIds.add(entry.id);
+    // Feed the promotion back into the jaccard dedup index under BOTH venue
+    // spellings (candidate's bare venue and the entry's city-suffixed venue) so
+    // a second candidate for the same show in the SAME run — PV + BWW both
+    // roundup one opening, with slight title variants → different slugified
+    // ids — hits findExistingMatch instead of minting a duplicate show.
+    for (const vk of new Set([canonicalVenue(c.venue), canonicalVenue(entry.venue)])) {
+      if (!existingByVenue.has(vk)) existingByVenue.set(vk, []);
+      existingByVenue.get(vk).push({ id: entry.id, title: entry.title, tokens: titleTokens(entry.title), normalized: normalizeTitle(entry.title) });
+    }
     logEntry({ kind: 'promote', title: c.title, venue: c.venue, id: entry.id, confirmationSource: source });
   }
 
@@ -276,15 +374,59 @@ async function main() {
     throw e;
   }
 
+  // Record promotions ONLY after the shows.json write landed — written before,
+  // a shrink-gate abort would leave a file claiming promotions that never
+  // happened, and the workflow would targeted-scrape ghosts (QA 2026-07-08).
+  writeLastPromotionFile(promoted);
+
   // Rewrite staging file with only the unpromoted candidates.
   rewriteStaging();
+
+  // Best-effort "went live" notification for regional promotions. The show is
+  // already written — email delivery failure only logs (the site does not
+  // depend on it, and the promotion-log JSONL is the durable record).
+  const regionalPromoted = promoted.filter(p => p.entry.category === 'regional');
+  if (emailAlerts && regionalPromoted.length > 0) {
+    try {
+      const { sendEmailAlert } = require('./lib/discord-notify');
+      const sent = await sendEmailAlert({
+        title: `${regionalPromoted.length} regional show(s) auto-added and going live`,
+        severity: 'info',
+        description:
+          'Auto-promoted from an aggregator roundup page (PV Verdict / BWW Review Roundup). ' +
+          'Reviews ingest automatically via the daily aggregator scrape. Cosmetic enrichment still manual: ' +
+          'images (poster/hero), cast + creative team, exact previews/opening/closing dates, audience scrapers ' +
+          '(scrape-reddit-sentiment.js / scrape-mezzanine-audience.js). See memory/feedback_regional_show_add_runbook.md steps 5-6.',
+        fields: regionalPromoted.map(p => ({
+          name: `${p.entry.title} @ ${p.entry.venue}`,
+          value: `https://broadwayscorecard.com/show/${p.entry.id} — roundup: ${p.candidate.sourceUrl || 'n/a'}`,
+        })),
+      });
+      console.log(sent ? 'Sent regional go-live email.' : '::warning::regional go-live email failed to send (promotion unaffected)');
+    } catch (e) {
+      console.warn(`::warning::regional go-live email threw: ${e.message} (promotion unaffected)`);
+    }
+  }
 }
 
 if (require.main === module) {
-  main().catch(err => {
+  main().catch(async err => {
     console.error('Fatal error:', err);
+    // Self-monitoring: a silently-failing daily promotion means shows never go
+    // live and nobody notices (the CI step is continue-on-error). Email the
+    // failure when --email is on; best-effort.
+    if (emailAlerts) {
+      try {
+        const { sendEmailAlert } = require('./lib/discord-notify');
+        await sendEmailAlert({
+          title: 'Regional auto-promotion FAILED',
+          severity: 'error',
+          description: `promote-ob-venue-candidates.js crashed: ${err.message}. Staged candidates are untouched and will retry next run, but investigate — repeated failures strand regional shows.`,
+        });
+      } catch { /* best-effort */ }
+    }
     process.exit(1);
   });
 }
 
-module.exports = { buildShowEntry };
+module.exports = { buildShowEntry, buildRegionalShowEntry, decideRegionalPromotion };

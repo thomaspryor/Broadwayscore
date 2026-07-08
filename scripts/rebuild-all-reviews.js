@@ -2191,6 +2191,13 @@ showDirs.forEach(showId => {
                 && data.contentVerification?.confidence === 'high';
               const cvConfirmedWrongArticle = data.contentVerification?.wrongArticle === true
                 && data.contentVerification?.confidence === 'high';
+              // articleType carries its own confidence — a high-confidence non-review
+              // classification blocks the clear even when overall confidence is low.
+              // Times Sam Ryder interview (JCS Palladium, 2026-07-08): wrongArticle=true
+              // at overall confidence=low was ignored here, but articleType=interview
+              // had articleTypeConfidence=high; the cleared file scored 70 as a T1 review.
+              const cvNonReviewType = data.contentVerification?.articleTypeConfidence === 'high'
+                && ['preview', 'interview', 'news', 'feature', 'box-office', 'obituary', 'listicle'].includes(data.contentVerification?.articleType);
               const hasManualReason = !!data.wrongProductionReason;
               // A show-LISTING / aggregate page (whatsonstage.com/shows/…,
               // broadwayworld.com/shows/…) is NOT a dated critic review — a UK
@@ -2200,7 +2207,7 @@ showDirs.forEach(showId => {
               // live at /news/ (WOS) and /article/ (BWW); /shows/ is a listing.
               const isShowListingUrl = /(?:whatsonstage|broadwayworld)\.com\/shows?\//i.test(data.url)
                 || require('./lib/cross-production-guards').isEvergreenListingUrl(data.url);
-              if (isUkUrl && !cvConfirmedWrong && !cvConfirmedWrongArticle && !hasManualReason && !isShowListingUrl) {
+              if (isUkUrl && !cvConfirmedWrong && !cvConfirmedWrongArticle && !cvNonReviewType && !hasManualReason && !isShowListingUrl) {
                 delete data.wrongProduction;
                 delete data.wrongProductionNote;
                 data.wrongProductionAutoCleared = `rebuild: UK URL on London show (${hostname})`;
