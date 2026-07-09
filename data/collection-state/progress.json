@@ -134,7 +134,8 @@
     "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
     "hadestown-west-end-2024/columbus-dispatch--unknown.json",
     "hadestown-west-end-2024/london-theatre--will-longman.json",
-    "hadestown-west-end-2024/shy-strange-manic--kariss-ainsworth.json"
+    "hadestown-west-end-2024/shy-strange-manic--kariss-ainsworth.json",
+    "stranger-things-the-first-shadow-west-end-2023/variety--frank-rizzo.json"
   ],
   "failed": [
     "iceboy-regional-2026/chicago-sun-times--mike-davis-wbez.json",
@@ -1179,7 +1180,16 @@
     "hadestown-west-end-2024/theater-scene--victor-gluck.json",
     "hadestown-west-end-2024/theatres-leiter-side--samuel-l-leiter.json",
     "hadestown-west-end-2024/times-square-chronicles--unknown.json",
-    "hadestown-west-end-2024/times-uk--clive-davis.json"
+    "hadestown-west-end-2024/times-uk--clive-davis.json",
+    "hadestown-west-end-2024/towleroad--naveen-kumar.json",
+    "hadestown-west-end-2024/vox--constance-grady.json",
+    "hadestown-west-end-2024/washpost--peter-marks.json",
+    "hadestown-west-end-2024/whatsonoffbroadway--scott-mitchell.json",
+    "hadestown-west-end-2024/wnyc--jennifer-vanasco.json",
+    "stranger-things-the-first-shadow-west-end-2023/nytg--kyle-turner.json",
+    "stranger-things-the-first-shadow-west-end-2023/nytimes--elisabeth-vincentelli.json",
+    "stranger-things-the-first-shadow-west-end-2023/variety--ellise-shafer.json",
+    "stranger-things-the-first-shadow-west-end-2023/vulture--sara-holdren.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1294,7 +1304,9 @@
       "data/review-texts/maybe-happy-ending-2024/variety--unknown.json",
       "maybe-happy-ending-2024/variety--unknown.json",
       "data/review-texts/maybe-happy-ending-2024/washpost--unknown.json",
-      "maybe-happy-ending-2024/washpost--unknown.json"
+      "maybe-happy-ending-2024/washpost--unknown.json",
+      "data/review-texts/stranger-things-the-first-shadow-west-end-2023/variety--frank-rizzo.json",
+      "stranger-things-the-first-shadow-west-end-2023/variety--frank-rizzo.json"
     ],
     "directCookies": [
       "jesus-christ-superstar-west-end-2026/times-uk--ann-treneman.json",
@@ -1366,7 +1378,7 @@
     ]
   },
   "startTime": "2026-07-08T18:19:15.461Z",
-  "lastProcessed": "hadestown-west-end-2024/times-uk--clive-davis.json",
+  "lastProcessed": "stranger-things-the-first-shadow-west-end-2023/vulture--sara-holdren.json",
   "log": [
     {
       "t": "2026-07-09T06:09:24.583Z",
@@ -1477,6 +1489,17 @@
       "t": "2026-07-09T06:25:27.691Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-07-09T06:32:33.054Z",
+      "event": "bb-session",
+      "session": "4add4476",
+      "url": "https://variety.com/2023/theater/news/stranger-things-play-the-first-shadow-cast"
+    },
+    {
+      "t": "2026-07-09T06:32:34.031Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
