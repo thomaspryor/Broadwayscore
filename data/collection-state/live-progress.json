@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-07-09T06:09:05.385Z",
-  "processed": 96,
-  "failed": 862,
-  "successRate": "10.0%",
+  "updatedAt": "2026-07-09T06:09:54.077Z",
+  "processed": 99,
+  "failed": 869,
+  "successRate": "10.2%",
   "tierBreakdown": {
-    "playwright": 73,
+    "playwright": 75,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 10,
     "scrapingbee": 4,
     "brightdata": 5,
     "archiveToday": 18,
     "archive": 6
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-07-09T06:09:24.583Z",
+      "event": "bb-session",
+      "session": "30a8c0ae",
+      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
+    },
+    {
+      "t": "2026-07-09T06:09:25.646Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    }
+  ]
 }

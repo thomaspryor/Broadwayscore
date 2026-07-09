@@ -95,7 +95,10 @@
     "cats-the-jellicle-ball-2026/nydailynews--unknown.json",
     "cats-the-jellicle-ball-2026/nysr--unknown.json",
     "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json",
-    "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json"
+    "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
+    "dog-day-afternoon-2026/one-minute-critic--matthew-wexler.json",
+    "music-city-off-broadway-2026/deadline--greg-evans.json",
+    "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
   ],
   "failed": [
     "iceboy-regional-2026/chicago-sun-times--mike-davis-wbez.json",
@@ -959,7 +962,14 @@
     "cats-the-jellicle-ball-2026/timeout--david-cote.json",
     "cats-the-jellicle-ball-2026/huffpost--david-finkle.json",
     "cats-the-jellicle-ball-2026/nbcny--robert-kahn.json",
-    "cats-the-jellicle-ball-2026/northjerseycom--robert-feldberg.json"
+    "cats-the-jellicle-ball-2026/northjerseycom--robert-feldberg.json",
+    "cats-the-jellicle-ball-2026/telegraph--dominic-cavendish.json",
+    "cats-the-jellicle-ball-2026/west-end-wilma--unknown.json",
+    "cats-the-jellicle-ball-2026/thewrap--jason-clark.json",
+    "cats-the-jellicle-ball-2026/thewrap--robert-hofler.json",
+    "cats-the-jellicle-ball-2026/queerty--matthew-wexler.json",
+    "music-city-off-broadway-2026/observer--unknown.json",
+    "music-city-off-broadway-2026/dc-theater-arts--isabella-artino.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1036,10 +1046,15 @@
       "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json",
       "cats-the-jellicle-ball-2026/nysr--unknown.json",
       "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json",
-      "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json"
+      "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
+      "dog-day-afternoon-2026/one-minute-critic--matthew-wexler.json",
+      "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
+      "music-city-off-broadway-2026/deadline--greg-evans.json"
+    ],
     "directCookies": [
       "jesus-christ-superstar-west-end-2026/times-uk--ann-treneman.json",
       "jesus-christ-superstar-west-end-2026/times-uk--dan-cairns.json",
@@ -1095,6 +1110,18 @@
     ]
   },
   "startTime": "2026-07-08T18:19:15.461Z",
-  "lastProcessed": "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
-  "log": []
+  "lastProcessed": "music-city-off-broadway-2026/dc-theater-arts--isabella-artino.json",
+  "log": [
+    {
+      "t": "2026-07-09T06:09:24.583Z",
+      "event": "bb-session",
+      "session": "30a8c0ae",
+      "url": "https://deadline.com/2026/03/music-city-new-york-off-broadway-musical-1236761680"
+    },
+    {
+      "t": "2026-07-09T06:09:25.646Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    }
+  ]
 }
