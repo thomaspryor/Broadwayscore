@@ -1,8 +1,8 @@
 {
-  "runDate": "2026-07-09T10:10:16.271Z",
+  "runDate": "2026-07-09T11:06:24.428Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 100,
     "priority": "all",
     "showFilter": "allegra-west-end-2026",
     "aggressive": false,
@@ -12,7 +12,7 @@
   },
   "summary": {
     "processed": 0,
-    "failed": 1,
+    "failed": 2,
     "skipped": 0,
     "successRate": "0%"
   },
@@ -23,26 +23,26 @@
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 0,
+    "archiveToday": 1,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 0,
+    "tier1Attempts": 1,
     "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier3Attempts": 1,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
     "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 1,
-    "scrapingBeePageCredits": 0,
+    "totalFailed": 2,
+    "scrapingBeePageCredits": 1,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -52,6 +52,7 @@
   },
   "processed": [],
   "failed": [
+    "allegra-west-end-2026/cambridge--unknown.json",
     "allegra-west-end-2026/whatsonstage--aliya-al.json"
   ],
   "tierDetails": {
@@ -61,7 +62,9 @@
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/allegra-west-end-2026/cambridge--unknown.json"
+    ],
     "archive": []
   },
   "failuresByOutlet": {},
