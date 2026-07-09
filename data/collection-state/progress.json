@@ -2,16 +2,27 @@
   "processed": [
     "iceboy-regional-2026/chicago-sun-times--unknown.json",
     "iceboy-regional-2026/chicagotribune--christopher-borrelli.json",
-    "iceboy-regional-2026/chicagotribune--unknown.json"
+    "iceboy-regional-2026/chicagotribune--unknown.json",
+    "jesus-christ-superstar-west-end-2026/guardian-uk--unknown.json"
   ],
   "failed": [
     "iceboy-regional-2026/chicago-sun-times--mike-davis-wbez.json",
-    "iceboy-regional-2026/one-minute-critic--matthew-wexler.json"
+    "iceboy-regional-2026/one-minute-critic--matthew-wexler.json",
+    "allegra-west-end-2026/cambridge--kathy-baker-johnson.json",
+    "allegra-west-end-2026/whatsonstage--aliya-al.json",
+    "tender-off-west-end-2026/daily-mail--unknown.json",
+    "tender-off-west-end-2026/london-box-office--stuart-king.json",
+    "tender-off-west-end-2026/thestage--dave-fargnoli.json",
+    "jesus-christ-superstar-west-end-2026/hollywood-reporter--david-rooney.json",
+    "jesus-christ-superstar-west-end-2026/ew--melissa-rose-bernardo.json",
+    "jesus-christ-superstar-west-end-2026/newsday--linda-winer.json",
+    "jesus-christ-superstar-west-end-2026/newsday--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "iceboy-regional-2026/chicago-sun-times--unknown.json"
+      "iceboy-regional-2026/chicago-sun-times--unknown.json",
+      "jesus-christ-superstar-west-end-2026/guardian-uk--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -21,10 +32,20 @@
       "iceboy-regional-2026/chicagotribune--unknown.json"
     ],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/allegra-west-end-2026/cambridge--kathy-baker-johnson.json",
+      "data/review-texts/tender-off-west-end-2026/thestage--dave-fargnoli.json"
+    ],
     "archive": []
   },
   "startTime": "2026-07-09T18:01:58.655Z",
-  "lastProcessed": "iceboy-regional-2026/one-minute-critic--matthew-wexler.json",
-  "log": []
+  "lastProcessed": "jesus-christ-superstar-west-end-2026/newsday--unknown.json",
+  "log": [
+    {
+      "t": "2026-07-09T21:33:34.767Z",
+      "event": "bb-session",
+      "session": "fd3a26c9",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-11692551/EastEnders-James-Bye-deta"
+    }
+  ]
 }

@@ -1,18 +1,25 @@
 {
-  "updatedAt": "2026-07-09T18:02:55.412Z",
-  "processed": 3,
-  "failed": 2,
-  "successRate": "60.0%",
+  "updatedAt": "2026-07-09T21:35:38.559Z",
+  "processed": 4,
+  "failed": 11,
+  "successRate": "26.7%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 2,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 2,
     "brightdata": 0,
-    "archiveToday": 0,
+    "archiveToday": 2,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-07-09T21:33:34.767Z",
+      "event": "bb-session",
+      "session": "fd3a26c9",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-11692551/EastEnders-James-Bye-deta"
+    }
+  ]
 }
