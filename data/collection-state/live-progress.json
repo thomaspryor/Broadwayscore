@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-09T06:22:53.765Z",
-  "processed": 125,
-  "failed": 983,
-  "successRate": "11.3%",
+  "updatedAt": "2026-07-09T06:25:45.025Z",
+  "processed": 129,
+  "failed": 989,
+  "successRate": "11.5%",
   "tierBreakdown": {
     "playwright": 85,
     "amp": 0,
-    "browserbase": 16,
+    "browserbase": 19,
     "directCookies": 10,
-    "scrapingbee": 11,
-    "brightdata": 5,
+    "scrapingbee": 12,
+    "brightdata": 6,
     "archiveToday": 18,
-    "archive": 8
+    "archive": 9
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 10,
   "recentActivity": [
     {
       "t": "2026-07-09T06:09:24.583Z",
@@ -102,6 +102,28 @@
       "t": "2026-07-09T06:15:14.509Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-09T06:23:38.074Z",
+      "event": "bb-session",
+      "session": "218ef55b",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
+    },
+    {
+      "t": "2026-07-09T06:23:39.048Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-09T06:25:26.770Z",
+      "event": "bb-session",
+      "session": "5ddec1ad",
+      "url": "https://www.washingtonpost.com/entertainment/theater/2024/11/12/maybe-happy-endi"
+    },
+    {
+      "t": "2026-07-09T06:25:27.691Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
