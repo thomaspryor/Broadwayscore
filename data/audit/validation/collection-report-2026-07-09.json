@@ -1,101 +1,85 @@
 {
-  "runDate": "2026-07-09T16:44:29.167Z",
+  "runDate": "2026-07-09T18:03:00.135Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 100,
     "priority": "all",
-    "showFilter": "pride-west-end-2026",
+    "showFilter": "iceboy-regional-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 23,
+    "processed": 3,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "4.2%"
+    "successRate": "60.0%"
   },
   "tierBreakdown": {
     "playwright": 1,
     "amp": 0,
-    "browserbase": 3,
+    "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 2,
     "brightdata": 0,
-    "archiveToday": 1,
+    "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 7,
-    "tier1Success": 3,
+    "tier1Attempts": 2,
+    "tier1Success": 2,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 3,
-    "tier1_5Success": 3,
-    "tier2Attempts": 4,
-    "tier2Success": 1,
-    "tier3Attempts": 1,
-    "tier3Success": 1,
-    "tier3_6Attempts": 1,
-    "tier3_6Success": 1,
-    "tier4Attempts": 4,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 2,
+    "tier2Success": 2,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 23,
-    "scrapingBeePageCredits": 40,
+    "totalFailed": 2,
+    "scrapingBeePageCredits": 20,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 3,
-    "browserbaseMinutesUsed": 0.6,
-    "urlDiscoveryAttempts": 17,
-    "urlDiscoverySuccess": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 2,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "pride-west-end-2026/londontheatre1--terry-eastham.json"
+    "iceboy-regional-2026/chicago-sun-times--unknown.json",
+    "iceboy-regional-2026/chicagotribune--christopher-borrelli.json",
+    "iceboy-regional-2026/chicagotribune--unknown.json"
   ],
   "failed": [
-    "pride-west-end-2026/hollywood-reporter--daniel-fienberg.json",
-    "pride-west-end-2026/nyt-theater--unknown.json",
-    "pride-west-end-2026/nytimes--ben-brantley.json",
-    "pride-west-end-2026/nytimes--unknown.json",
-    "pride-west-end-2026/wsj--unknown.json",
-    "pride-west-end-2026/theatrely--kobi-kassal.json",
-    "pride-west-end-2026/broadwayworld--jay-irwin.json",
-    "pride-west-end-2026/click-liverpool--unknown.json",
-    "pride-west-end-2026/frontmezzjunkies--unknown.json",
-    "pride-west-end-2026/latimes--erin-conley.json",
-    "pride-west-end-2026/nottingham-confidential--unknown.json",
-    "pride-west-end-2026/operawire--unknown.json",
-    "pride-west-end-2026/people--unknown.json",
-    "pride-west-end-2026/seattle-times--misha-berson.json",
-    "pride-west-end-2026/sunday-telegraph--unknown.json",
-    "pride-west-end-2026/talkinbroadway--unknown.json",
-    "pride-west-end-2026/thestage--dave-fargnoli.json",
-    "pride-west-end-2026/times-uk--allan-radcliffe.json",
-    "pride-west-end-2026/times-uk--ann-treneman.json",
-    "pride-west-end-2026/times-uk--jane-edwardes.json",
-    "pride-west-end-2026/times-uk--lucy-sweet.json",
-    "pride-west-end-2026/whatsonstage--daisy-bowie.json",
-    "pride-west-end-2026/standard--the-standard.json"
+    "iceboy-regional-2026/chicago-sun-times--mike-davis-wbez.json",
+    "iceboy-regional-2026/one-minute-critic--matthew-wexler.json"
   ],
   "tierDetails": {
     "playwright": [
-      "pride-west-end-2026/londontheatre1--terry-eastham.json"
+      "iceboy-regional-2026/chicago-sun-times--unknown.json"
     ],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/pride-west-end-2026/times-uk--allan-radcliffe.json",
-      "data/review-texts/pride-west-end-2026/times-uk--ann-treneman.json",
-      "data/review-texts/pride-west-end-2026/times-uk--jane-edwardes.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
-    "brightdata": [],
-    "archiveToday": [
-      "data/review-texts/pride-west-end-2026/thestage--dave-fargnoli.json"
+    "scrapingbee": [
+      "iceboy-regional-2026/chicagotribune--christopher-borrelli.json",
+      "iceboy-regional-2026/chicagotribune--unknown.json"
     ],
+    "brightdata": [],
+    "archiveToday": [],
     "archive": []
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "iceboy-regional-2026/chicagotribune--christopher-borrelli.json",
+      "oldUrl": "https://www.chicagotribune.com/2026/06/25/iceboy-goodman-theatre-musical/",
+      "newUrl": "https://www.chicagotribune.com/2026/06/30/review-iceboy-goodman-theatre/"
+    }
+  ]
 }
