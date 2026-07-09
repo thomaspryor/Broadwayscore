@@ -1,0 +1,85 @@
+{
+  "runDate": "2026-07-09T06:52:54.556Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 0,
+    "priority": "all",
+    "showFilter": "iceboy-regional-2026",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 3,
+    "failed": 2,
+    "skipped": 0,
+    "successRate": "60.0%"
+  },
+  "tierBreakdown": {
+    "playwright": 2,
+    "amp": 0,
+    "browserbase": 0,
+    "directCookies": 0,
+    "scrapingbee": 1,
+    "brightdata": 0,
+    "archiveToday": 0,
+    "archive": 0
+  },
+  "statistics": {
+    "tier1Attempts": 3,
+    "tier1Success": 3,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 1,
+    "tier2Success": 1,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 2,
+    "scrapingBeePageCredits": 10,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 2,
+    "urlDiscoverySuccess": 1,
+    "urlDiscoveryCapped": 0
+  },
+  "processed": [
+    "iceboy-regional-2026/allie-and-the-after-party--allie-bugajski.json",
+    "iceboy-regional-2026/broadwayworld--rachel-weinberg.json",
+    "iceboy-regional-2026/chicagotribune--christopher-borrelli.json"
+  ],
+  "failed": [
+    "iceboy-regional-2026/chicago-sun-times--mike-davis-wbez.json",
+    "iceboy-regional-2026/one-minute-critic--matthew-wexler.json"
+  ],
+  "tierDetails": {
+    "playwright": [
+      "iceboy-regional-2026/allie-and-the-after-party--allie-bugajski.json",
+      "iceboy-regional-2026/broadwayworld--rachel-weinberg.json"
+    ],
+    "amp": [],
+    "browserbase": [],
+    "directCookies": [],
+    "scrapingbee": [
+      "iceboy-regional-2026/chicagotribune--christopher-borrelli.json"
+    ],
+    "brightdata": [],
+    "archiveToday": [],
+    "archive": []
+  },
+  "failuresByOutlet": {},
+  "urlDiscoveries": [
+    {
+      "reviewId": "iceboy-regional-2026/chicagotribune--christopher-borrelli.json",
+      "oldUrl": "https://www.chicagotribune.com/2026/06/25/iceboy-goodman-theatre-musical/",
+      "newUrl": "https://www.chicagotribune.com/2026/06/30/review-iceboy-goodman-theatre/"
+    }
+  ]
+}
