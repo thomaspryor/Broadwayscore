@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-09T21:50:42.971Z",
+  "generatedAt": "2026-07-09T22:19:06.381Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -988,16 +988,18 @@
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 18,
-      "t1": 6,
+      "total": 17,
+      "t1": 5,
       "t2": 5,
       "t3": 7,
       "positive": 11,
-      "mixed": 6,
+      "mixed": 5,
       "negative": 1,
       "readiness": {
-        "ready": true,
-        "reasons": [],
+        "ready": false,
+        "reasons": [
+          "T1:2/3"
+        ],
         "highConfidence": 11,
         "thresholds": {
           "minReviews": 8,
@@ -1008,7 +1010,7 @@
       },
       "broadcast": {
         "state": "waiting",
-        "detail": "Ready — awaiting send"
+        "detail": "Not yet broadcast-ready"
       },
       "missingT1": [
         {
@@ -1025,6 +1027,10 @@
         },
         {
           "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "Daily Mail",
           "isDualMarket": true
         }
       ],
@@ -1380,6 +1386,18 @@
           "t3": 7,
           "p": 11,
           "m": 6,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-09T22:19:06.381Z",
+          "rc": 17,
+          "s": 75.34,
+          "t1": 5,
+          "t2": 5,
+          "t3": 7,
+          "p": 11,
+          "m": 5,
           "n": 1,
           "bc": "waiting"
         }
