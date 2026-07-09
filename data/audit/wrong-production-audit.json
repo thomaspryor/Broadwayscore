@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-09T08:54:32.913Z",
+  "timestamp": "2026-07-09T09:25:48.167Z",
   "stats": {
     "totalReviews": 39874,
-    "alreadyFlagged": 17555,
+    "alreadyFlagged": 17553,
     "dateGuardCatches": 41,
     "directorMismatch": 891,
     "tvFilmSignals": 1095,
-    "londonSignals": 739,
+    "londonSignals": 740,
     "offBroadwaySignals": 467,
     "yearMismatch": 86,
-    "noPublishDate": 4023
+    "noPublishDate": 4021
   },
   "findings": [
     {
@@ -34062,6 +34062,20 @@
       "score": 74,
       "publishDate": "2026-07-07",
       "url": "https://www.timeout.com/london/news/jesus-christ-superstar-palladium-2026-070726",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "jesus-christ-superstar-west-end-2026",
+      "file": "westendtheatre--julianna-barnaby.json",
+      "score": 94,
+      "publishDate": "2026-07-08",
+      "url": "https://www.westendtheatre.com/359762/news/jesus-christ-superstar-reviews/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
