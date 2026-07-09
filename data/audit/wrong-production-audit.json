@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-07-09T23:13:11.422Z",
+  "timestamp": "2026-07-09T23:51:52.957Z",
   "stats": {
     "totalReviews": 39895,
     "alreadyFlagged": 17556,
     "dateGuardCatches": 45,
     "directorMismatch": 891,
-    "tvFilmSignals": 1095,
+    "tvFilmSignals": 1096,
     "londonSignals": 741,
     "offBroadwaySignals": 467,
     "yearMismatch": 86,
@@ -12219,6 +12219,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"amazon prime\""
+        }
+      ]
+    },
+    {
+      "showId": "jesa-off-broadway-2026",
+      "file": "broadwayworld--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/off-broadway/article/Ma-Yi-Theater-and-The-Public-Theater-Extend-JESA-20260305",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
