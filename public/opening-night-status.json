@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-09T22:19:06.381Z",
+  "generatedAt": "2026-07-09T22:54:04.613Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -988,18 +988,16 @@
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 17,
-      "t1": 5,
+      "total": 18,
+      "t1": 6,
       "t2": 5,
       "t3": 7,
       "positive": 11,
-      "mixed": 5,
+      "mixed": 6,
       "negative": 1,
       "readiness": {
-        "ready": false,
-        "reasons": [
-          "T1:2/3"
-        ],
+        "ready": true,
+        "reasons": [],
         "highConfidence": 11,
         "thresholds": {
           "minReviews": 8,
@@ -1010,7 +1008,7 @@
       },
       "broadcast": {
         "state": "waiting",
-        "detail": "Not yet broadcast-ready"
+        "detail": "Ready — awaiting send"
       },
       "missingT1": [
         {
@@ -1398,6 +1396,18 @@
           "t3": 7,
           "p": 11,
           "m": 5,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-09T22:54:04.613Z",
+          "rc": 18,
+          "s": 75.34,
+          "t1": 6,
+          "t2": 5,
+          "t3": 7,
+          "p": 11,
+          "m": 6,
           "n": 1,
           "bc": "waiting"
         }
