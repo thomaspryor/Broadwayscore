@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-07-09T16:38:52.546Z",
+  "runDate": "2026-07-09T16:40:28.775Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "cyrano-de-bergerac-west-end-2026",
+    "showFilter": "to-kill-a-mockingbird-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "processed": 1,
-    "failed": 24,
+    "failed": 15,
     "skipped": 0,
-    "successRate": "4.0%"
+    "successRate": "6.3%"
   },
   "tierBreakdown": {
     "playwright": 1,
@@ -23,65 +23,56 @@
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 1,
+    "archiveToday": 2,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 3,
-    "tier1Success": 2,
+    "tier1Attempts": 6,
+    "tier1Success": 4,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
+    "tier2Attempts": 2,
     "tier2Success": 0,
-    "tier3Attempts": 1,
+    "tier3Attempts": 2,
     "tier3Success": 0,
-    "tier3_6Attempts": 1,
-    "tier3_6Success": 1,
-    "tier4Attempts": 1,
+    "tier3_6Attempts": 2,
+    "tier3_6Success": 2,
+    "tier4Attempts": 2,
     "tier4Success": 0,
-    "totalFailed": 24,
-    "scrapingBeePageCredits": 1,
+    "totalFailed": 15,
+    "scrapingBeePageCredits": 2,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 22,
+    "urlDiscoveryAttempts": 9,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "cyrano-de-bergerac-west-end-2026/guardian-uk--unknown.json"
+    "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json"
   ],
   "failed": [
-    "cyrano-de-bergerac-west-end-2026/hollywood-reporter--unknown.json",
-    "cyrano-de-bergerac-west-end-2026/ew--nick-romano.json",
-    "cyrano-de-bergerac-west-end-2026/newsday--unknown.json",
-    "cyrano-de-bergerac-west-end-2026/about-entertainment--ben-brantley.json",
-    "cyrano-de-bergerac-west-end-2026/amny--unknown.json",
-    "cyrano-de-bergerac-west-end-2026/ap--unknown.json",
-    "cyrano-de-bergerac-west-end-2026/bloomberg--jeremy-gerard.json",
-    "cyrano-de-bergerac-west-end-2026/broadwayworld--stephi-wild.json",
-    "cyrano-de-bergerac-west-end-2026/daily-echo--steve-page.json",
-    "cyrano-de-bergerac-west-end-2026/financialtimes--sarah-hemming.json",
-    "cyrano-de-bergerac-west-end-2026/metro-uk--claire-allfree.json",
-    "cyrano-de-bergerac-west-end-2026/northjerseycom--robert-feldberg.json",
-    "cyrano-de-bergerac-west-end-2026/standard--fiona-mountford.json",
-    "cyrano-de-bergerac-west-end-2026/telegraph--dominic-cavendish.json",
-    "cyrano-de-bergerac-west-end-2026/the-upcoming-uk--unknown.json",
-    "cyrano-de-bergerac-west-end-2026/thestage--dave-fargnoli.json",
-    "cyrano-de-bergerac-west-end-2026/times-uk--dominic-maxwell.json",
-    "cyrano-de-bergerac-west-end-2026/washpost--peter-marks.json",
-    "cyrano-de-bergerac-west-end-2026/hollywood-reporter--david-rooney.json",
-    "cyrano-de-bergerac-west-end-2026/nytg--gillian-russo.json",
-    "cyrano-de-bergerac-west-end-2026/variety--marilyn-stasio.json",
-    "cyrano-de-bergerac-west-end-2026/ew--tanner-stransky.json",
-    "cyrano-de-bergerac-west-end-2026/newsday--linda-winer.json",
-    "cyrano-de-bergerac-west-end-2026/wsj--terry-teachout.json"
+    "to-kill-a-mockingbird-west-end-2026/hollywood-reporter--david-rooney.json",
+    "to-kill-a-mockingbird-west-end-2026/observer--david-cote.json",
+    "to-kill-a-mockingbird-west-end-2026/thewrap--thom-geier.json",
+    "to-kill-a-mockingbird-west-end-2026/timeout--adam-feldman.json",
+    "to-kill-a-mockingbird-west-end-2026/wsj--terry-teachout.json",
+    "to-kill-a-mockingbird-west-end-2026/british-theatre--unknown.json",
+    "to-kill-a-mockingbird-west-end-2026/chicagotribune--chris-jones.json",
+    "to-kill-a-mockingbird-west-end-2026/inquirer--toby-zinman.json",
+    "to-kill-a-mockingbird-west-end-2026/latimes--unknown.json",
+    "to-kill-a-mockingbird-west-end-2026/the-morning-star--unknown.json",
+    "to-kill-a-mockingbird-west-end-2026/the-upcoming-uk--unknown.json",
+    "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
+    "to-kill-a-mockingbird-west-end-2026/times-uk--libby-purves.json",
+    "to-kill-a-mockingbird-west-end-2026/tribune--unknown.json",
+    "to-kill-a-mockingbird-west-end-2026/western-mail--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
-      "cyrano-de-bergerac-west-end-2026/guardian-uk--unknown.json"
+      "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -89,10 +80,19 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/cyrano-de-bergerac-west-end-2026/daily-echo--steve-page.json"
+      "data/review-texts/to-kill-a-mockingbird-west-end-2026/tribune--unknown.json",
+      "data/review-texts/to-kill-a-mockingbird-west-end-2026/western-mail--unknown.json"
     ],
     "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The Times (UK)": {
+      "count": 1,
+      "domain": "thetimes.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
