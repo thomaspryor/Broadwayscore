@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-09T09:25:53.195Z",
+  "generatedAt": "2026-07-09T10:03:27.103Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -9,31 +9,31 @@
       "category": "off-west-end",
       "type": "play",
       "openingDate": "2026-07-09",
-      "status": "upcoming",
+      "status": "open",
       "slug": "tender-off-west-end",
       "thumbnail": "/images/shows/tender-off-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 78,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 5,
+      "reviewsNeeded": 4,
       "siteFileExists": true,
-      "total": 0,
+      "total": 1,
       "t1": 0,
       "t2": 0,
-      "t3": 0,
-      "positive": 0,
+      "t3": 1,
+      "positive": 1,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/8 total",
+          "1/8 total",
           "T1:0/3",
           "T2:0/2",
-          "hi-conf:0/6"
+          "hi-conf:1/6"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -46,10 +46,6 @@
         "detail": "Not yet broadcast-ready"
       },
       "missingT1": [
-        {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
         {
           "name": "Observer",
           "isDualMarket": true
@@ -91,10 +87,20 @@
         {
           "name": "New York Theatre Guide",
           "isDualMarket": true
-        },
+        }
+      ],
+      "timeline": [
         {
-          "name": "WhatsOnStage",
-          "isDualMarket": true
+          "t": "2026-07-09T10:03:27.103Z",
+          "rc": 1,
+          "s": 78,
+          "t1": 0,
+          "t2": 0,
+          "t3": 1,
+          "p": 1,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -105,7 +111,7 @@
       "category": "west-end",
       "type": "play",
       "openingDate": "2026-07-09",
-      "status": "previews",
+      "status": "open",
       "slug": "allegra-west-end",
       "thumbnail": "/images/shows/allegra-west-end-2026/thumbnail.jpg",
       "siteScore": 57.17,
@@ -955,17 +961,17 @@
       "status": "open",
       "slug": "jesus-christ-superstar-west-end",
       "thumbnail": "/images/shows/jesus-christ-superstar-west-end-2026/thumbnail.jpg",
-      "siteScore": 75.02,
+      "siteScore": 74.93,
       "liveScore": 75,
-      "scoreDrift": -0.01999999999999602,
+      "scoreDrift": 0.06999999999999318,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 14,
+      "total": 13,
       "t1": 4,
-      "t2": 5,
+      "t2": 4,
       "t3": 5,
-      "positive": 8,
+      "positive": 7,
       "mixed": 5,
       "negative": 1,
       "readiness": {
@@ -1282,6 +1288,18 @@
           "t2": 5,
           "t3": 5,
           "p": 8,
+          "m": 5,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-09T10:03:27.103Z",
+          "rc": 13,
+          "s": 74.93,
+          "t1": 4,
+          "t2": 4,
+          "t3": 5,
+          "p": 7,
           "m": 5,
           "n": 1,
           "bc": "waiting"
