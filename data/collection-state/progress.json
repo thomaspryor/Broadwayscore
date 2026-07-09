@@ -135,7 +135,10 @@
     "hadestown-west-end-2024/columbus-dispatch--unknown.json",
     "hadestown-west-end-2024/london-theatre--will-longman.json",
     "hadestown-west-end-2024/shy-strange-manic--kariss-ainsworth.json",
-    "stranger-things-the-first-shadow-west-end-2023/variety--frank-rizzo.json"
+    "stranger-things-the-first-shadow-west-end-2023/variety--frank-rizzo.json",
+    "stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json",
+    "stranger-things-the-first-shadow-west-end-2023/deadline--greg-evans.json",
+    "stranger-things-the-first-shadow-west-end-2023/timeout--adam-feldman.json"
   ],
   "failed": [
     "iceboy-regional-2026/chicago-sun-times--mike-davis-wbez.json",
@@ -1189,7 +1192,14 @@
     "stranger-things-the-first-shadow-west-end-2023/nytg--kyle-turner.json",
     "stranger-things-the-first-shadow-west-end-2023/nytimes--elisabeth-vincentelli.json",
     "stranger-things-the-first-shadow-west-end-2023/variety--ellise-shafer.json",
-    "stranger-things-the-first-shadow-west-end-2023/vulture--sara-holdren.json"
+    "stranger-things-the-first-shadow-west-end-2023/vulture--sara-holdren.json",
+    "stranger-things-the-first-shadow-west-end-2023/broadwaynews--brittani-samuel.json",
+    "stranger-things-the-first-shadow-west-end-2023/nydailynews--chris-jones.json",
+    "stranger-things-the-first-shadow-west-end-2023/thewrap--robert-hofler.json",
+    "stranger-things-the-first-shadow-west-end-2023/wsj--charles-isherwood.json",
+    "stranger-things-the-first-shadow-west-end-2023/cititour--brian-scott-lipton.json",
+    "stranger-things-the-first-shadow-west-end-2023/amny--matt-windman.json",
+    "stranger-things-the-first-shadow-west-end-2023/chicagotribune--chris-jones.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1281,7 +1291,8 @@
       "buena-vista-social-club-2025/nysr--unknown.json",
       "oh-mary-2024/culturesauce--thom-geier.json",
       "hadestown-west-end-2024/columbus-dispatch--unknown.json",
-      "hadestown-west-end-2024/london-theatre--will-longman.json"
+      "hadestown-west-end-2024/london-theatre--will-longman.json",
+      "stranger-things-the-first-shadow-west-end-2023/timeout--adam-feldman.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1306,7 +1317,11 @@
       "data/review-texts/maybe-happy-ending-2024/washpost--unknown.json",
       "maybe-happy-ending-2024/washpost--unknown.json",
       "data/review-texts/stranger-things-the-first-shadow-west-end-2023/variety--frank-rizzo.json",
-      "stranger-things-the-first-shadow-west-end-2023/variety--frank-rizzo.json"
+      "stranger-things-the-first-shadow-west-end-2023/variety--frank-rizzo.json",
+      "data/review-texts/stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json",
+      "stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json",
+      "data/review-texts/stranger-things-the-first-shadow-west-end-2023/deadline--greg-evans.json",
+      "stranger-things-the-first-shadow-west-end-2023/deadline--greg-evans.json"
     ],
     "directCookies": [
       "jesus-christ-superstar-west-end-2026/times-uk--ann-treneman.json",
@@ -1378,7 +1393,7 @@
     ]
   },
   "startTime": "2026-07-08T18:19:15.461Z",
-  "lastProcessed": "stranger-things-the-first-shadow-west-end-2023/vulture--sara-holdren.json",
+  "lastProcessed": "stranger-things-the-first-shadow-west-end-2023/chicagotribune--chris-jones.json",
   "log": [
     {
       "t": "2026-07-09T06:09:24.583Z",
@@ -1500,6 +1515,28 @@
       "t": "2026-07-09T06:32:34.031Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-09T06:33:02.755Z",
+      "event": "bb-session",
+      "session": "2da42a95",
+      "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
+    },
+    {
+      "t": "2026-07-09T06:33:03.694Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-09T06:33:20.252Z",
+      "event": "bb-session",
+      "session": "8669f6f1",
+      "url": "https://deadline.com/2023/12/stranger-things-the-first-shadow-stage-trilogy-brea"
+    },
+    {
+      "t": "2026-07-09T06:33:21.178Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
