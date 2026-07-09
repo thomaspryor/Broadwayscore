@@ -1,86 +1,30 @@
 {
   "processed": [
-    "pride-west-end-2026/londontheatre1--terry-eastham.json"
+    "iceboy-regional-2026/chicago-sun-times--unknown.json",
+    "iceboy-regional-2026/chicagotribune--christopher-borrelli.json",
+    "iceboy-regional-2026/chicagotribune--unknown.json"
   ],
   "failed": [
-    "pride-west-end-2026/hollywood-reporter--daniel-fienberg.json",
-    "pride-west-end-2026/nyt-theater--unknown.json",
-    "pride-west-end-2026/nytimes--ben-brantley.json",
-    "pride-west-end-2026/nytimes--unknown.json",
-    "pride-west-end-2026/wsj--unknown.json",
-    "pride-west-end-2026/theatrely--kobi-kassal.json",
-    "pride-west-end-2026/broadwayworld--jay-irwin.json",
-    "pride-west-end-2026/click-liverpool--unknown.json",
-    "pride-west-end-2026/frontmezzjunkies--unknown.json",
-    "pride-west-end-2026/latimes--erin-conley.json",
-    "pride-west-end-2026/nottingham-confidential--unknown.json",
-    "pride-west-end-2026/operawire--unknown.json",
-    "pride-west-end-2026/people--unknown.json",
-    "pride-west-end-2026/seattle-times--misha-berson.json",
-    "pride-west-end-2026/sunday-telegraph--unknown.json",
-    "pride-west-end-2026/talkinbroadway--unknown.json",
-    "pride-west-end-2026/thestage--dave-fargnoli.json",
-    "pride-west-end-2026/times-uk--allan-radcliffe.json",
-    "pride-west-end-2026/times-uk--ann-treneman.json",
-    "pride-west-end-2026/times-uk--jane-edwardes.json",
-    "pride-west-end-2026/times-uk--lucy-sweet.json",
-    "pride-west-end-2026/whatsonstage--daisy-bowie.json",
-    "pride-west-end-2026/standard--the-standard.json"
+    "iceboy-regional-2026/chicago-sun-times--mike-davis-wbez.json",
+    "iceboy-regional-2026/one-minute-critic--matthew-wexler.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "pride-west-end-2026/londontheatre1--terry-eastham.json"
+      "iceboy-regional-2026/chicago-sun-times--unknown.json"
     ],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/pride-west-end-2026/times-uk--allan-radcliffe.json",
-      "data/review-texts/pride-west-end-2026/times-uk--ann-treneman.json",
-      "data/review-texts/pride-west-end-2026/times-uk--jane-edwardes.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
-    "brightdata": [],
-    "archiveToday": [
-      "data/review-texts/pride-west-end-2026/thestage--dave-fargnoli.json"
+    "scrapingbee": [
+      "iceboy-regional-2026/chicagotribune--christopher-borrelli.json",
+      "iceboy-regional-2026/chicagotribune--unknown.json"
     ],
+    "brightdata": [],
+    "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-07-09T16:37:16.423Z",
-  "lastProcessed": "pride-west-end-2026/standard--the-standard.json",
-  "log": [
-    {
-      "t": "2026-07-09T16:41:12.839Z",
-      "event": "bb-session",
-      "session": "52a62b20",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-pride-and-"
-    },
-    {
-      "t": "2026-07-09T16:41:13.662Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-07-09T16:42:57.563Z",
-      "event": "bb-session",
-      "session": "6984ecaf",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-pride-and-"
-    },
-    {
-      "t": "2026-07-09T16:42:58.301Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-07-09T16:44:06.763Z",
-      "event": "bb-session",
-      "session": "4542c97c",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-prism-prid"
-    },
-    {
-      "t": "2026-07-09T16:44:07.629Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    }
-  ]
+  "startTime": "2026-07-09T18:01:58.655Z",
+  "lastProcessed": "iceboy-regional-2026/one-minute-critic--matthew-wexler.json",
+  "log": []
 }
