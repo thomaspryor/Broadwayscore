@@ -186,7 +186,17 @@
     "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--mickey-jo-boucher.json",
     "camping-off-broadway-2026/talkinbroadway--unknown.json",
     "glengarry-glen-ross-west-end-2026/hollywood-reporter--david-rooney.json",
-    "glengarry-glen-ross-west-end-2026/hollywood-reporter--unknown.json"
+    "glengarry-glen-ross-west-end-2026/hollywood-reporter--unknown.json",
+    "glengarry-glen-ross-west-end-2026/nytimes--jesse-green.json",
+    "glengarry-glen-ross-west-end-2026/variety--marilyn-stasio.json",
+    "glengarry-glen-ross-west-end-2026/vulture--sara-holdren.json",
+    "glengarry-glen-ross-west-end-2026/newsday--linda-winer.json",
+    "glengarry-glen-ross-west-end-2026/observer--david-cote.json",
+    "glengarry-glen-ross-west-end-2026/about-entertainment--ben-brantley.json",
+    "glengarry-glen-ross-west-end-2026/amny--matt-windman.json",
+    "glengarry-glen-ross-west-end-2026/bloomberg--jeremy-gerard.json",
+    "glengarry-glen-ross-west-end-2026/british-theatre--susan-novak.json",
+    "glengarry-glen-ross-west-end-2026/chicagotribune--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -236,7 +246,8 @@
     ],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/sinatra-the-musical-west-end-2026/theatre-vibe--lizzie-loveridge.json"
+      "data/review-texts/sinatra-the-musical-west-end-2026/theatre-vibe--lizzie-loveridge.json",
+      "data/review-texts/camping-off-broadway-2026/talkinbroadway--unknown.json"
     ],
     "archive": [
       "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
@@ -244,13 +255,24 @@
     ]
   },
   "startTime": "2026-07-09T18:01:58.655Z",
-  "lastProcessed": "glengarry-glen-ross-west-end-2026/hollywood-reporter--unknown.json",
+  "lastProcessed": "glengarry-glen-ross-west-end-2026/chicagotribune--unknown.json",
   "log": [
     {
       "t": "2026-07-09T21:17:28.987Z",
       "event": "bb-session",
       "session": "16126d40",
       "url": "https://www.londontheatre1.com/reviews/pride-national-theatre/"
+    },
+    {
+      "t": "2026-07-09T21:28:37.234Z",
+      "event": "bb-session",
+      "session": "4d1208d7",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2649682"
+    },
+    {
+      "t": "2026-07-09T21:28:38.263Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
