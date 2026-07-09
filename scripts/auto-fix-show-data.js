@@ -19,6 +19,7 @@ const { isValidSynopsis, classifyBadSynopsis } = require('./lib/synopsis-validat
 const { verifyProductionMatch } = require('./lib/synopsis-production-match');
 const { isValidCreativeTeamName, lookupIBDBDates } = require('./lib/ibdb-dates');
 const { serpQuery } = require('./lib/url-discovery');
+const { ROLE_CANON, roleVerb, serpTextConfirms } = require('./lib/creative-team-verify');
 const { CLAUDE_HAIKU, CLAUDE_OPUS } = require('./lib/models');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
@@ -409,43 +410,28 @@ Return ONLY the JSON array, no other text. Example:
   // Result: LLM hallucinated "Martyna Majok (Book Writer)" for Liberation (correct:
   // Bess Wohl, Playwright) and reached production. Now ALL roles require SERP
   // confirmation; unrecognized roles are rejected rather than silently accepted.
-  // Canonical role label written into show.creativeTeam. src/lib/data-creative.ts
-  // ROLE_TO_CATEGORIES is exact-case — writing "playwright" or "Book writer"
-  // (lowercase from LLM) silently drops the entry from /playwrights pages.
-  const ROLE_CANON = {
-    director: 'Director', playwright: 'Playwright', choreographer: 'Choreographer',
-    'book writer': 'Book Writer', book: 'Book',
-    composer: 'Composer', lyricist: 'Lyricist',
-  };
+  // Decision logic lives in lib/creative-team-verify.js (shared with
+  // audit-creative-team-serp.js, which retro-verifies pre-guard entries).
   const verified = [];
   for (const member of proposed) {
     const role = String(member.role || '').toLowerCase();
-    const roleVerb = role === 'director' ? 'directed by' :
-                     role === 'playwright' ? 'written by' :
-                     role === 'choreographer' ? 'choreographed by' :
-                     (role === 'book writer' || role === 'book') ? 'book by' :
-                     role === 'composer' ? 'music by' :
-                     role === 'lyricist' ? 'lyrics by' : null;
-    if (!roleVerb) {
+    const verb = roleVerb(role);
+    if (!verb) {
       console.log(`    ❌ Unrecognized role "${member.role}" for ${member.name} — rejecting (cannot SERP-verify)`);
       continue;
     }
     const canonRole = ROLE_CANON[role];
 
-    const query = `"${show.title}" ${year} "${roleVerb} ${member.name}"`;
+    const query = `"${show.title}" ${year} "${verb} ${member.name}"`;
     console.log(`    🔍 Verifying: ${member.name} (${member.role}) via SERP...`);
     try {
       await sleep(500);
       const serpResults = await serpQuery(query);
       if (serpResults && serpResults.length > 0) {
-        // Require the full phrase "directed by [name]" in a snippet — not just the name.
-        // This prevents false-positives where the name appears in unrelated context.
-        const nameLC = member.name.toLowerCase();
-        const phraseLC = `${roleVerb} ${nameLC}`;
-        const confirmed = serpResults.some(r => {
-          const text = ((r.title || '') + ' ' + (r.snippet || '')).toLowerCase();
-          return text.includes(phraseLC);
-        });
+        // Require the full phrase "directed by [name]" in a snippet — not just
+        // the name — anchored to a segment naming this show (see
+        // lib/creative-team-verify.js for the snippet-stitching failure mode).
+        const confirmed = serpTextConfirms(serpResults, [verb], member.name, { title: show.title });
         if (confirmed) {
           console.log(`    ✅ SERP confirmed: ${member.name} (${member.role})`);
           verified.push({ ...member, role: canonRole, _source: 'serp-verified-llm' });
