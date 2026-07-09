@@ -21,7 +21,11 @@
     "pride-west-end-2026/talkinbroadway--unknown.json",
     "pride-west-end-2026/thestage--dave-fargnoli.json",
     "pride-west-end-2026/times-uk--allan-radcliffe.json",
-    "pride-west-end-2026/times-uk--ann-treneman.json"
+    "pride-west-end-2026/times-uk--ann-treneman.json",
+    "pride-west-end-2026/times-uk--jane-edwardes.json",
+    "pride-west-end-2026/times-uk--lucy-sweet.json",
+    "pride-west-end-2026/whatsonstage--daisy-bowie.json",
+    "pride-west-end-2026/standard--the-standard.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -30,7 +34,9 @@
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/pride-west-end-2026/times-uk--allan-radcliffe.json"
+      "data/review-texts/pride-west-end-2026/times-uk--allan-radcliffe.json",
+      "data/review-texts/pride-west-end-2026/times-uk--ann-treneman.json",
+      "data/review-texts/pride-west-end-2026/times-uk--jane-edwardes.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -43,7 +49,7 @@
     "archive": []
   },
   "startTime": "2026-07-09T06:51:12.262Z",
-  "lastProcessed": "pride-west-end-2026/times-uk--ann-treneman.json",
+  "lastProcessed": "pride-west-end-2026/standard--the-standard.json",
   "log": [
     {
       "t": "2026-07-09T06:52:10.798Z",
@@ -65,6 +71,28 @@
     },
     {
       "t": "2026-07-09T06:57:16.267Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-09T06:59:16.812Z",
+      "event": "bb-session",
+      "session": "f1b3f2b2",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-pride-and-"
+    },
+    {
+      "t": "2026-07-09T06:59:17.838Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-09T07:00:11.041Z",
+      "event": "bb-session",
+      "session": "3a779dfa",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-prism-prid"
+    },
+    {
+      "t": "2026-07-09T07:00:12.101Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
     }

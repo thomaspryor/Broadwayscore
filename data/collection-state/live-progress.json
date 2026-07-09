@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-09T06:59:01.380Z",
+  "updatedAt": "2026-07-09T07:00:29.610Z",
   "processed": 1,
-  "failed": 19,
-  "successRate": "5.0%",
+  "failed": 23,
+  "successRate": "4.2%",
   "tierBreakdown": {
     "playwright": 1,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 3,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 3,
     "archive": 0
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-07-09T06:52:10.798Z",
@@ -35,6 +35,28 @@
     },
     {
       "t": "2026-07-09T06:57:16.267Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-09T06:59:16.812Z",
+      "event": "bb-session",
+      "session": "f1b3f2b2",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-pride-and-"
+    },
+    {
+      "t": "2026-07-09T06:59:17.838Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-09T07:00:11.041Z",
+      "event": "bb-session",
+      "session": "3a779dfa",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-prism-prid"
+    },
+    {
+      "t": "2026-07-09T07:00:12.101Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
     }
