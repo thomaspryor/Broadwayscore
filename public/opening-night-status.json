@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-09T10:03:27.103Z",
+  "generatedAt": "2026-07-09T10:53:19.115Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -114,23 +114,23 @@
       "status": "open",
       "slug": "allegra-west-end",
       "thumbnail": "/images/shows/allegra-west-end-2026/thumbnail.jpg",
-      "siteScore": 57.17,
-      "liveScore": 57,
-      "scoreDrift": -0.1700000000000017,
+      "siteScore": 55.93,
+      "liveScore": 56,
+      "scoreDrift": 0.07000000000000028,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 6,
+      "total": 7,
       "t1": 5,
-      "t2": 1,
+      "t2": 2,
       "t3": 0,
       "positive": 2,
-      "mixed": 1,
+      "mixed": 2,
       "negative": 3,
       "readiness": {
         "ready": false,
         "reasons": [
-          "6/8 total"
+          "7/8 total"
         ],
         "highConfidence": 6,
         "thresholds": {
@@ -186,6 +186,18 @@
           "t3": 0,
           "p": 2,
           "m": 1,
+          "n": 3,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-09T10:53:19.115Z",
+          "rc": 7,
+          "s": 55.93,
+          "t1": 5,
+          "t2": 2,
+          "t3": 0,
+          "p": 2,
+          "m": 2,
           "n": 3,
           "bc": "waiting"
         }
@@ -961,25 +973,25 @@
       "status": "open",
       "slug": "jesus-christ-superstar-west-end",
       "thumbnail": "/images/shows/jesus-christ-superstar-west-end-2026/thumbnail.jpg",
-      "siteScore": 74.93,
+      "siteScore": 74.78,
       "liveScore": 75,
-      "scoreDrift": 0.06999999999999318,
+      "scoreDrift": 0.21999999999999886,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 13,
-      "t1": 4,
-      "t2": 4,
+      "total": 15,
+      "t1": 5,
+      "t2": 5,
       "t3": 5,
-      "positive": 7,
-      "mixed": 5,
+      "positive": 8,
+      "mixed": 6,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
           "T1:2/3"
         ],
-        "highConfidence": 7,
+        "highConfidence": 9,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1301,6 +1313,18 @@
           "t3": 5,
           "p": 7,
           "m": 5,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-09T10:53:19.115Z",
+          "rc": 15,
+          "s": 74.78,
+          "t1": 5,
+          "t2": 5,
+          "t3": 5,
+          "p": 8,
+          "m": 6,
           "n": 1,
           "bc": "waiting"
         }
