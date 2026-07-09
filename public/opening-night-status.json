@@ -1,7 +1,190 @@
 {
-  "generatedAt": "2026-07-08T23:53:42.236Z",
+  "generatedAt": "2026-07-09T02:51:44.184Z",
   "lookbackDays": 3,
   "shows": [
+    {
+      "id": "tender-off-west-end-2026",
+      "title": "Tender",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-07-09",
+      "status": "upcoming",
+      "slug": "tender-off-west-end",
+      "thumbnail": "/images/shows/tender-off-west-end-2026/thumbnail.webp",
+      "siteScore": null,
+      "liveScore": null,
+      "scoreDrift": null,
+      "belowThreshold": true,
+      "reviewsNeeded": 5,
+      "siteFileExists": true,
+      "total": 0,
+      "t1": 0,
+      "t2": 0,
+      "t3": 0,
+      "positive": 0,
+      "mixed": 0,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "0/8 total",
+          "T1:0/3",
+          "T2:0/2",
+          "hi-conf:0/6"
+        ],
+        "highConfidence": 0,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        }
+      ]
+    },
+    {
+      "id": "allegra-west-end-2026",
+      "title": "Allegra",
+      "market": "west-end",
+      "category": "west-end",
+      "type": "play",
+      "openingDate": "2026-07-09",
+      "status": "previews",
+      "slug": "allegra-west-end",
+      "thumbnail": "/images/shows/allegra-west-end-2026/thumbnail.jpg",
+      "siteScore": 57.17,
+      "liveScore": 57,
+      "scoreDrift": -0.1700000000000017,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
+      "siteFileExists": true,
+      "total": 6,
+      "t1": 5,
+      "t2": 1,
+      "t3": 0,
+      "positive": 2,
+      "mixed": 1,
+      "negative": 3,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "6/8 total"
+        ],
+        "highConfidence": 6,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-07-09T02:51:44.184Z",
+          "rc": 6,
+          "s": 57.17,
+          "t1": 5,
+          "t2": 1,
+          "t3": 0,
+          "p": 2,
+          "m": 1,
+          "n": 3,
+          "bc": "waiting"
+        }
+      ]
+    },
     {
       "id": "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026",
       "title": "Why I Stuck A Flare Up My Arse For England (Soho Playhouse)",
@@ -1080,56 +1263,6 @@
   ],
   "upcoming": [
     {
-      "id": "tender-off-west-end-2026",
-      "title": "Tender",
-      "market": "west-end",
-      "category": "off-west-end",
-      "type": "play",
-      "openingDate": "2026-07-09",
-      "status": "upcoming",
-      "slug": "tender-off-west-end",
-      "thumbnail": "/images/shows/tender-off-west-end-2026/thumbnail.webp",
-      "daysUntil": 1,
-      "readinessChecks": {
-        "wrongProduction": {
-          "pass": true,
-          "detail": "No pre-existing score files"
-        }
-      },
-      "readinessSummary": {
-        "failures": 1,
-        "warnings": 0,
-        "unknowns": 2,
-        "total": 4
-      },
-      "preflight": false
-    },
-    {
-      "id": "allegra-west-end-2026",
-      "title": "Allegra",
-      "market": "west-end",
-      "category": "west-end",
-      "type": "play",
-      "openingDate": "2026-07-09",
-      "status": "previews",
-      "slug": "allegra-west-end",
-      "thumbnail": "/images/shows/allegra-west-end-2026/thumbnail.jpg",
-      "daysUntil": 1,
-      "readinessChecks": {
-        "wrongProduction": {
-          "pass": true,
-          "detail": "No pre-existing score files"
-        }
-      },
-      "readinessSummary": {
-        "failures": 1,
-        "warnings": 0,
-        "unknowns": 2,
-        "total": 4
-      },
-      "preflight": false
-    },
-    {
       "id": "giulia-the-poison-queen-of-palermo-off-broadway-2026",
       "title": "Giulia: The Poison Queen of Palermo",
       "market": "broadway",
@@ -1139,7 +1272,7 @@
       "status": "previews",
       "slug": "giulia-the-poison-queen-of-palermo-off-broadway",
       "thumbnail": "/images/shows/giulia-the-poison-queen-of-palermo-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 2,
+      "daysUntil": 1,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1178,7 +1311,7 @@
       "status": "previews",
       "slug": "hershey-felder-the-piano-and-me-off-broadway",
       "thumbnail": "/images/shows/hershey-felder-the-piano-and-me-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 2,
+      "daysUntil": 1,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1217,7 +1350,7 @@
       "status": "previews",
       "slug": "sukkot-off-broadway",
       "thumbnail": "/images/shows/sukkot-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 3,
+      "daysUntil": 2,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1256,7 +1389,7 @@
       "status": "announced",
       "slug": "the-jonathan-larson-project-off-west-end",
       "thumbnail": "/images/shows/the-jonathan-larson-project-off-west-end-2026/thumbnail.jpg",
-      "daysUntil": 5,
+      "daysUntil": 4,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1281,7 +1414,7 @@
       "status": "previews",
       "slug": "the-whoopi-monologues-off-broadway",
       "thumbnail": "/images/shows/the-whoopi-monologues-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 6,
+      "daysUntil": 5,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1320,7 +1453,7 @@
       "status": "announced",
       "slug": "the-oresteia-west-end",
       "thumbnail": "/images/shows/the-oresteia-west-end-2026/thumbnail.jpg",
-      "daysUntil": 6,
+      "daysUntil": 5,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
