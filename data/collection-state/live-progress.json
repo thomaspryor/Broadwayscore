@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-07-09T15:21:09.418Z",
+  "updatedAt": "2026-07-09T15:22:04.673Z",
   "processed": 56,
-  "failed": 296,
-  "successRate": "15.9%",
+  "failed": 299,
+  "successRate": "15.8%",
   "tierBreakdown": {
     "playwright": 44,
     "amp": 0,
@@ -10,10 +10,10 @@
     "directCookies": 9,
     "scrapingbee": 1,
     "brightdata": 1,
-    "archiveToday": 6,
+    "archiveToday": 7,
     "archive": 3
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-07-09T12:19:05.567Z",
@@ -56,6 +56,17 @@
     },
     {
       "t": "2026-07-09T14:44:34.794Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-07-09T15:21:12.962Z",
+      "event": "bb-session",
+      "session": "eb8f94e7",
+      "url": "https://www.newyorker.com/magazine/2026/07/20/birthright-theatre-review-giant-br"
+    },
+    {
+      "t": "2026-07-09T15:21:13.426Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
     }
