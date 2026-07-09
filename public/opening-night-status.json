@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-09T11:13:33.010Z",
+  "generatedAt": "2026-07-09T12:09:39.334Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -64,10 +64,6 @@
         },
         {
           "name": "The Independent",
-          "isDualMarket": true
-        },
-        {
-          "name": "Daily Mail",
           "isDualMarket": true
         }
       ],
@@ -979,17 +975,17 @@
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 15,
-      "t1": 5,
+      "total": 14,
+      "t1": 4,
       "t2": 5,
       "t3": 5,
       "positive": 8,
-      "mixed": 6,
+      "mixed": 5,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "T1:2/3"
+          "T1:1/3"
         ],
         "highConfidence": 9,
         "thresholds": {
@@ -1004,10 +1000,6 @@
         "detail": "Not yet broadcast-ready"
       },
       "missingT1": [
-        {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
         {
           "name": "Observer",
           "isDualMarket": true
@@ -1325,6 +1317,18 @@
           "t3": 5,
           "p": 8,
           "m": 6,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-09T12:01:42.957Z",
+          "rc": 14,
+          "s": 74.78,
+          "t1": 4,
+          "t2": 5,
+          "t3": 5,
+          "p": 8,
+          "m": 5,
           "n": 1,
           "bc": "waiting"
         }
