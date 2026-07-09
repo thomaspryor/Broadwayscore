@@ -54,7 +54,8 @@
     "a-midsummer-nights-dream-globe-west-end-2026/whatsonstage--james-fitzgerald.json",
     "a-midsummer-nights-dream-globe-west-end-2026/whatsonstage--michael-davies.json",
     "a-midsummer-nights-dream-globe-west-end-2026/whatsonstage--ron-simpson.json",
-    "a-midsummer-nights-dream-globe-west-end-2026/whatsonstage--sarah-crompton.json"
+    "a-midsummer-nights-dream-globe-west-end-2026/whatsonstage--sarah-crompton.json",
+    "camping-off-broadway-2026/talkinbroadway--unknown.json"
   ],
   "failed": [
     "allegra-west-end-2026/cambridge--unknown.json",
@@ -303,7 +304,20 @@
     "a-midsummer-nights-dream-globe-west-end-2026/standard--tim-bano.json",
     "a-midsummer-nights-dream-globe-west-end-2026/telegraph--kirsten-grant.json",
     "a-midsummer-nights-dream-globe-west-end-2026/london-box-office--marian-pashley.json",
-    "a-midsummer-nights-dream-globe-west-end-2026/london-box-office--stuart-king.json"
+    "a-midsummer-nights-dream-globe-west-end-2026/london-box-office--stuart-king.json",
+    "dukes-off-broadway-2026/theatermania--linda-buchwald.json",
+    "dukes-off-broadway-2026/theatermania--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/guardian--mark-fisher.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/loureviews--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/all-that-dazzles-uk--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/londontheatre1--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/west-end-best-friend--unknown.json",
+    "a-walk-on-the-moon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "a-walk-on-the-moon-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+    "birthright-off-broadway-2026/newyorker--emily-nussbaum.json",
+    "birthright-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "birthright-off-broadway-2026/pages-on-stages--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -369,11 +383,14 @@
     "scrapingbee": [
       "iceboy-regional-2026/chicagotribune--christopher-borrelli.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "camping-off-broadway-2026/talkinbroadway--unknown.json"
+    ],
     "archiveToday": [
       "data/review-texts/allegra-west-end-2026/cambridge--unknown.json",
       "data/review-texts/tender-off-west-end-2026/thestage--dave-fargnoli.json",
-      "data/review-texts/camping-off-broadway-2026/talkinbroadway--unknown.json"
+      "data/review-texts/camping-off-broadway-2026/talkinbroadway--unknown.json",
+      "data/review-texts/birthright-off-broadway-2026/newyorker--emily-nussbaum.json"
     ],
     "archive": [
       "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
@@ -382,7 +399,7 @@
     ]
   },
   "startTime": "2026-07-09T11:04:57.567Z",
-  "lastProcessed": "a-midsummer-nights-dream-globe-west-end-2026/london-box-office--stuart-king.json",
+  "lastProcessed": "camping-off-broadway-2026/talkinbroadway--unknown.json",
   "log": [
     {
       "t": "2026-07-09T12:19:05.567Z",
@@ -394,6 +411,17 @@
       "t": "2026-07-09T12:19:06.222Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-07-09T13:15:58.142Z",
+      "event": "bb-session",
+      "session": "8b81e3c3",
+      "url": "https://www.newyorker.com/magazine/2026/07/20/birthright-theatre-review-giant-br"
+    },
+    {
+      "t": "2026-07-09T13:15:59.069Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }
