@@ -60,6 +60,7 @@
 ## 📋 Open work
 - [OB venue historical backfill](project_ob_venue_historical_backfill.md) — Atlantic/Vineyard/MCC archive pages; Tier A deferred TFANA+2ndStage ([[project_ob_tier_a_deferred.md]])
 - [Manual stubs bypass venue/date validation](feedback_manual_stub_bypasses_validation.md) — NEVER stub shows.json from memory; look up Playbill first
+- [Regional shows FULLY auto-promote](project_regional_expansion_watchlist.md) — roundup page = go-live; daily auto-add + review ingest 2026-07-08; only images/cast/audience manual ([[regional-show-add-runbook]])
 
 ## 🎯 Opening night pipeline
 - [_pending no-byline strand](feedback_pending_no_byline_strand_drain.md) — multi-critic outlets w/o byline strand in _pending/; CHECK _pending FIRST when reviews missing; drain rejects KEEP-not-delete
@@ -81,6 +82,7 @@
 - [Scraper architecture](feedback_scraper_architecture.md) — use fetchPage(); BD empty 200s, Playwright 404s as success ([[feedback_fetchpage_gotchas.md]]); BWW soft-404 returns 200 homepage, check <title> ([[feedback_aggregator_soft_404.md]])
 - [SB SERP burns invisibly](feedback_sb_serp_invisible_burn.md) — _serpViaScrapingBee logs nothing; poller preferSpeed=SB-primary + SD-empty fallthrough = 60-100K cr/day; audit via usage-counter sampling not logs. BD zone web_unlocker2 ([[feedback_brightdata_zone_migration.md]]); budgets [[feedback_sb_credit_budget.md]]
 - [Closing-date automation gaps](feedback_closing_date_audit_gaps.md) — 4 silent gaps; broadway.org/TodayTix lag; WE=0 automation
+- [WET venue-page wrong-show ingestion](feedback_wet_venue_page_wrong_show_ingestion.md) — same-venue predecessor show's reviews attach via venue corroboration; check rv URL slugs; flag needs wrongShowReason + delete WET cache
 - [SEO site-avg position brand-skewed](feedback_seo_site_avg_position_is_brand_skewed.md) — never cite GSC avg as ranking quality; use de-branded review-intent
 - [Cloudflare/DataDome blocks](feedback_cloudflare_bypass_hierarchy.md) — managed challenge + WSJ/NewYorker CI IP block defeat all; Browserbase only ([[feedback_wsj_newyorker_ci_ip_block.md]])
 - [Cookie auth](feedback_stage_cookie_minimal_set.md) — Stage = 5 cookies, cookie-only; Mac Studio Terminal needs FDA ([[feedback_mac_studio_cookies.md]]); health = body-length not expiry, re-login needs user ([[feedback_cookie_health_body_length_not_expiry.md]])
