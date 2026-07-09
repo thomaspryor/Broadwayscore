@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-09T12:09:39.334Z",
+  "generatedAt": "2026-07-09T13:04:04.668Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -110,25 +110,26 @@
       "status": "open",
       "slug": "allegra-west-end",
       "thumbnail": "/images/shows/allegra-west-end-2026/thumbnail.jpg",
-      "siteScore": 55.93,
-      "liveScore": 56,
-      "scoreDrift": 0.07000000000000028,
+      "siteScore": 54.6,
+      "liveScore": 55,
+      "scoreDrift": 0.3999999999999986,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 7,
+      "total": 6,
       "t1": 5,
-      "t2": 2,
+      "t2": 1,
       "t3": 0,
-      "positive": 2,
+      "positive": 1,
       "mixed": 2,
       "negative": 3,
       "readiness": {
         "ready": false,
         "reasons": [
-          "7/8 total"
+          "6/8 total",
+          "hi-conf:5/6"
         ],
-        "highConfidence": 6,
+        "highConfidence": 5,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -193,6 +194,18 @@
           "t2": 2,
           "t3": 0,
           "p": 2,
+          "m": 2,
+          "n": 3,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-09T13:04:04.668Z",
+          "rc": 6,
+          "s": 54.6,
+          "t1": 5,
+          "t2": 1,
+          "t3": 0,
+          "p": 1,
           "m": 2,
           "n": 3,
           "bc": "waiting"
@@ -969,25 +982,25 @@
       "status": "open",
       "slug": "jesus-christ-superstar-west-end",
       "thumbnail": "/images/shows/jesus-christ-superstar-west-end-2026/thumbnail.jpg",
-      "siteScore": 74.78,
+      "siteScore": 75.01,
       "liveScore": 75,
-      "scoreDrift": 0.21999999999999886,
+      "scoreDrift": -0.010000000000005116,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 14,
-      "t1": 4,
+      "total": 16,
+      "t1": 5,
       "t2": 5,
-      "t3": 5,
-      "positive": 8,
+      "t3": 6,
+      "positive": 10,
       "mixed": 5,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "T1:1/3"
+          "T1:2/3"
         ],
-        "highConfidence": 9,
+        "highConfidence": 11,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1000,6 +1013,10 @@
         "detail": "Not yet broadcast-ready"
       },
       "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
         {
           "name": "Observer",
           "isDualMarket": true
@@ -1328,6 +1345,18 @@
           "t2": 5,
           "t3": 5,
           "p": 8,
+          "m": 5,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-09T13:04:04.668Z",
+          "rc": 16,
+          "s": 75.01,
+          "t1": 5,
+          "t2": 5,
+          "t3": 6,
+          "p": 10,
           "m": 5,
           "n": 1,
           "bc": "waiting"
