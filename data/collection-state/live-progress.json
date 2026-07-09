@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-09T06:15:09.918Z",
-  "processed": 113,
-  "failed": 895,
-  "successRate": "11.2%",
+  "updatedAt": "2026-07-09T06:16:25.205Z",
+  "processed": 117,
+  "failed": 901,
+  "successRate": "11.5%",
   "tierBreakdown": {
-    "playwright": 79,
+    "playwright": 81,
     "amp": 0,
-    "browserbase": 14,
+    "browserbase": 16,
     "directCookies": 10,
     "scrapingbee": 7,
     "brightdata": 5,
     "archiveToday": 18,
-    "archive": 7
+    "archive": 8
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 8,
   "recentActivity": [
     {
       "t": "2026-07-09T06:09:24.583Z",
@@ -91,6 +91,17 @@
       "t": "2026-07-09T06:14:51.279Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-09T06:15:13.594Z",
+      "event": "bb-session",
+      "session": "124b91fe",
+      "url": "https://deadline.com/2026/03/maya-rudolph-broadway-oh-mary-1236751169/"
+    },
+    {
+      "t": "2026-07-09T06:15:14.509Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
