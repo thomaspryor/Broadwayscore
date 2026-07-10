@@ -1633,6 +1633,75 @@ function shouldSkipRoundupAudit(data) {
   );
 }
 
+// Hosts whose isRoundupUrl patterns identify roundup PAGES, mapped to the
+// outletIds that publish on that host. A review file whose own outletId
+// belongs to the host of its roundup URL IS the roundup page ingested as a
+// review (page-as-review). A file with a different outletId (e.g. times-uk
+// with a westendtheatre.com URL) is a review SOURCED from the roundup and
+// stays includable — see the NOTE in isRoundupUrl.
+const ROUNDUP_HOST_OUTLETS = {
+  'whatsonstage.com': ['whatsonstage'],
+  'playbill.com': ['playbill'],
+  // DELIBERATELY absent: thestage.co.uk, londonboxoffice.co.uk,
+  // westendtheatre.com. Corpus audit 2026-07-09 found scored, unflagged
+  // page-as-review entries under those hosts (westendtheatre--* editorial
+  // ratings at 77-97, thestage--unknown roundup stubs) that appear to be
+  // INTENTIONAL inclusions under the aggregator-stars design
+  // (feedback_paywalled_star_outlets_not_gaps). Whether an aggregator's own
+  // rating counts as a review is a scoring-policy decision — do not add
+  // those hosts here without deciding it (Notion card filed 2026-07-09).
+  // WOS and Playbill roundups only QUOTE other outlets' critics, so their
+  // page-as-review entries are unambiguously wrong.
+};
+
+/**
+ * Inclusion-time roundup gate. The isRoundupArticle flag setter only runs in
+ * full-enrichment rebuilds; fast_path/skip_enrichment rebuilds (the common
+ * case — every poller cycle) shipped unflagged roundup pages as reviews:
+ * 4 live entries found 2026-07-09 (hamilton-west-end-2021, les-miserables-
+ * west-end-2021, one-flew-over-the-cuckoos-nest-west-end-2026, the-truth
+ * WOS). This predicate needs no prior enrichment pass — it derives the
+ * verdict from the URL + outletId alone. Honors manual clears.
+ *
+ * @param {Object|null} data - Review data object
+ * @returns {boolean} true when the file is a roundup page ingested as a review
+ */
+function isRoundupPageAsReview(data) {
+  if (!data || typeof data !== 'object' || !data.url) return false;
+  if (shouldSkipRoundupAudit(data)) return false;
+  if (!isRoundupUrl(data.url).isRoundup) return false;
+  let host;
+  try { host = new URL(data.url).hostname.toLowerCase().replace(/^www\./, ''); } catch { return false; }
+  const hostOutlets = ROUNDUP_HOST_OUTLETS[host];
+  if (!hostOutlets) return false;
+  return hostOutlets.includes((data.outletId || '').toLowerCase());
+}
+
+// Non-review articleType values from content-verifier.js's enum
+// ("review"/"preview"/"interview"/"news"/"feature"/"box-office"/"obituary"/"listicle"/"other").
+// "other" is deliberately absent — too ambiguous to block a clear on.
+const NON_REVIEW_ARTICLE_TYPES = ['preview', 'interview', 'news', 'feature', 'box-office', 'obituary', 'listicle'];
+
+/**
+ * True when contentVerification is strong enough evidence against the review
+ * to block the rebuild's "UK URL on London show" wrongProduction auto-clear.
+ * articleType carries its own confidence, separate from the overall CV
+ * confidence: the Times Sam Ryder interview (JCS Palladium, 2026-07-08) had
+ * wrongArticle=true at overall confidence=low (ignored) while
+ * articleType=interview was high-confidence (unused) — the cleared file
+ * scored 70 as a T1 review on opening morning.
+ *
+ * @param {Object|null} cv - data.contentVerification
+ * @returns {boolean} true when the auto-clear must NOT strip wrongProduction
+ */
+function cvBlocksUkWrongProductionAutoClear(cv) {
+  if (!cv || typeof cv !== 'object') return false;
+  if (cv.wrongProduction === true && cv.confidence === 'high') return true;
+  if (cv.wrongArticle === true && cv.confidence === 'high') return true;
+  if (cv.articleTypeConfidence === 'high' && NON_REVIEW_ARTICLE_TYPES.includes(cv.articleType)) return true;
+  return false;
+}
+
 /**
  * Returns true if the show is a revival of an earlier-titled production.
  *
@@ -2808,6 +2877,8 @@ module.exports = {
   shouldSkipCrossShowUrlFlag,
   isProductionAwareCvVerdict,
   shouldSkipRoundupAudit,
+  isRoundupPageAsReview,
+  cvBlocksUkWrongProductionAutoClear,
   isRevivalByCanonicalTitle,
   urlOrTitleLooksLikeReview,
   isWrongShowUnknownLocked,
