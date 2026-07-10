@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-10T03:28:32.555Z",
+  "generatedAt": "2026-07-10T07:30:15.481Z",
   "date": "2026-07-10",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 251766,
+  "entryCount": 263252,
   "shows": [
     {
       "showId": "the-guilty-west-end-2026",
@@ -36,7 +36,7 @@
     },
     {
       "showId": "to-kill-a-mockingbird-west-end-2026",
-      "reviewCount": 23,
+      "reviewCount": 22,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -276,7 +276,7 @@
     },
     {
       "showId": "a-midsummer-nights-dream-west-end-2026",
-      "reviewCount": 19,
+      "reviewCount": 18,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -291,7 +291,7 @@
     },
     {
       "showId": "jesus-christ-superstar-west-end-2026",
-      "reviewCount": 18,
+      "reviewCount": 20,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1452,6 +1452,21 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "millions-world-premiere-musical-regional-2025",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 5223982,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
