@@ -314,7 +314,11 @@
     "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/londontheatre1--unknown.json",
     "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/west-end-best-friend--unknown.json",
     "a-walk-on-the-moon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-    "a-walk-on-the-moon-off-broadway-2026/pages-on-stages--mason-pilevsky.json"
+    "a-walk-on-the-moon-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+    "birthright-off-broadway-2026/newyorker--emily-nussbaum.json",
+    "birthright-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "birthright-off-broadway-2026/pages-on-stages--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -384,7 +388,8 @@
     "archiveToday": [
       "data/review-texts/millions-world-premiere-musical-regional-2025/artsatl--benjamin-carr.json",
       "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
-      "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
+      "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+      "data/review-texts/birthright-off-broadway-2026/newyorker--emily-nussbaum.json"
     ],
     "archive": [
       "millions-world-premiere-musical-regional-2025/broadwayworld--joseph-harrison.json",
@@ -395,6 +400,18 @@
     ]
   },
   "startTime": "2026-07-10T04:56:47.962Z",
-  "lastProcessed": "a-walk-on-the-moon-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
-  "log": []
+  "lastProcessed": "birthright-off-broadway-2026/pages-on-stages--unknown.json",
+  "log": [
+    {
+      "t": "2026-07-10T07:08:13.817Z",
+      "event": "bb-session",
+      "session": "a6dcb082",
+      "url": "https://www.newyorker.com/magazine/2026/07/20/birthright-theatre-review-giant-br"
+    },
+    {
+      "t": "2026-07-10T07:08:14.270Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    }
+  ]
 }
