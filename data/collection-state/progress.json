@@ -769,7 +769,10 @@
     "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/west-end-best-friend--unknown.json",
     "a-walk-on-the-moon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "a-walk-on-the-moon-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
-    "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json"
+    "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+    "birthright-off-broadway-2026/newyorker--emily-nussbaum.json",
+    "birthright-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "birthright-off-broadway-2026/pages-on-stages--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -890,7 +893,8 @@
       "data/review-texts/jesus-christ-superstar-west-end-2026/click-liverpool--unknown.json",
       "data/review-texts/jesus-christ-superstar-west-end-2026/nottingham-confidential--unknown.json",
       "data/review-texts/jesus-christ-superstar-west-end-2026/thestage--holly-o.json",
-      "data/review-texts/the-guilty-west-end-2026/thestage--unknown.json"
+      "data/review-texts/the-guilty-west-end-2026/thestage--unknown.json",
+      "data/review-texts/birthright-off-broadway-2026/newyorker--emily-nussbaum.json"
     ],
     "archive": [
       "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
@@ -900,7 +904,7 @@
     ]
   },
   "startTime": "2026-07-09T18:01:58.655Z",
-  "lastProcessed": "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+  "lastProcessed": "birthright-off-broadway-2026/pages-on-stages--unknown.json",
   "log": [
     {
       "t": "2026-07-09T21:17:28.987Z",
@@ -935,6 +939,17 @@
       "event": "bb-session",
       "session": "a092328b",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-11692551/EastEnders-James-Bye-deta"
+    },
+    {
+      "t": "2026-07-10T01:16:10.518Z",
+      "event": "bb-session",
+      "session": "b7597e31",
+      "url": "https://www.newyorker.com/magazine/2026/07/20/birthright-theatre-review-giant-br"
+    },
+    {
+      "t": "2026-07-10T01:16:10.907Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }
