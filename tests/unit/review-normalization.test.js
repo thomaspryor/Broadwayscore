@@ -11,7 +11,7 @@
  * Run with: node --test tests/unit/review-normalization.test.js
  */
 
-const { test, describe } = require('node:test');
+const { test, describe, it } = require('node:test');
 const assert = require('node:assert');
 
 const {
