@@ -368,6 +368,24 @@ async function verifyContent({ scrapedText, excerpt, showTitle, outletName, crit
         'Touring production / Met "Live in HD" cinema broadcast (not the staged production)',
         'Festival performance (Salzburg, Bayreuth, etc.)'
       ]
+    },
+    // 'regional' — Broadway-feeder tryout productions (category:'regional':
+    // Arena Stage, Goodman, A.R.T., Alliance, La Jolla, ...). Without this
+    // entry the fallback was the BROADWAY prompt, whose wrong-production
+    // examples explicitly list "Regional theater" and "Pre-Broadway tryout" —
+    // so EVERY regional review got LLM-flagged wrongProduction (Millions @
+    // Alliance E2E, 2026-07-10). The regional venue IS the canonical venue;
+    // "pre-Broadway tryout" language describes this very production.
+    'regional': {
+      label: 'regional (Broadway-feeder)',
+      description: 'professional regional-theater productions — often pre-Broadway tryouts — performed at the named regional venue (NOT in a Broadway theater; an out-of-town dateline is correct, not a mismatch)',
+      dateLabel: 'Regional opening date',
+      venueLabel: 'Regional venue',
+      wrongProdExamples: [
+        'A DIFFERENT production of the same title: on Broadway, in the West End, on tour, or at a different theater than the named regional venue',
+        'A prior year/season production of the title at another venue',
+        'Coverage of a later Broadway transfer rather than this regional run'
+      ]
     }
   };
   const mc = marketConfig[effectiveMarket] || marketConfig['broadway'];
