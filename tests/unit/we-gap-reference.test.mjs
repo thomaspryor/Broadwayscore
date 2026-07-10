@@ -1,0 +1,166 @@
+/**
+ * WE completeness gate — reference sources + safety-invariant tests.
+ *
+ * Covers the plan-review P0s (2026-07-09):
+ *  - URL-less WET rows must surface (outlet-based matching, not URL-only)
+ *  - prior-run roundup rows are NEVER ingest-eligible
+ *  - empty-parse from a found roundup = detector failure flag, not "no citations"
+ *  - opening-window scoping (no back-catalogue grind)
+ *  - default-OFF ingest: the workflow must carry the WE_GAP_INGEST env line and
+ *    the audit must gate on === '1' (absent env fails closed)
+ *  - alert dedup hash is order-insensitive and change-sensitive
+ *
+ * Run: node --test tests/unit/we-gap-reference.test.mjs
+ */
+
+import { test, describe } from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const {
+  getWeReferenceRows, isWeShow, inOpeningWindow, isCurrentRunRoundup, missingSetHash,
+} = require('../../scripts/lib/gap-reference-sources.js');
+
+const noLog = () => {};
+const NOW = Date.parse('2026-07-10T12:00:00Z');
+const SHOW = { id: 'sting-west-end-2026', title: 'Sting', venue: 'The Maria Theatre', category: 'west-end', openingDate: '2026-07-01' };
+
+describe('scoping helpers', () => {
+  test('isWeShow: west-end + off-west-end yes; broadway/off-broadway no', () => {
+    assert.equal(isWeShow({ category: 'west-end' }), true);
+    assert.equal(isWeShow({ category: 'off-west-end' }), true);
+    assert.equal(isWeShow({ category: 'broadway' }), false);
+    assert.equal(isWeShow({ market: 'west-end' }), true);
+    assert.equal(isWeShow({}), false);
+  });
+
+  test('inOpeningWindow: opened 9d ago yes; opened 400d ago no (back-catalogue excluded); pre-opening no', () => {
+    assert.equal(inOpeningWindow({ openingDate: '2026-07-01' }, NOW), true);
+    assert.equal(inOpeningWindow({ openingDate: '2025-06-01' }, NOW), false);
+    assert.equal(inOpeningWindow({ openingDate: '2026-08-01' }, NOW), false, 'roundups do not exist pre-opening');
+    assert.equal(inOpeningWindow({ openingDate: null }, NOW), false);
+  });
+
+  test('isCurrentRunRoundup: 2022 roundup on a 2026 opening is a prior run', () => {
+    const show = { openingDate: '2026-06-30' };
+    assert.equal(isCurrentRunRoundup('2022-04-01', show), false);
+    assert.equal(isCurrentRunRoundup('2026-07-01', show), true);
+    assert.equal(isCurrentRunRoundup(null, show), true, 'unknown date treated as current (discovery already date-gated)');
+  });
+
+  test('missingSetHash: order-insensitive, change-sensitive', () => {
+    assert.equal(missingSetHash(['guardian', 'thestage']), missingSetHash(['thestage', 'guardian']));
+    assert.notEqual(missingSetHash(['guardian']), missingSetHash(['guardian', 'thestage']));
+    assert.equal(missingSetHash(['a', 'a', 'b']), missingSetHash(['a', 'b']), 'dedup before hashing');
+  });
+});
+
+describe('getWeReferenceRows', () => {
+  const wetTablePost = (dateIso) => ([{
+    id: 1, link: 'https://www.westendtheatre.com/1/news/reviews/sting-review-round-up/',
+    date: dateIso,
+    title: { rendered: 'Sting Review round-up' },
+    content: { rendered: '<table>\n<tr>\n<td>The Guardian</td>\n<td>★★★★</td>\n</tr>\n<tr>\n<td>WhatsOnStage</td>\n<td>★★★</td>\n</tr>\n</table>' },
+  }]);
+
+  test('WET table rows arrive with url:null + outletId (the class URL-matching would drop)', async () => {
+    const ref = await getWeReferenceRows(SHOW, {
+      fetchJSON: async (url) => /westendtheatre/.test(url) ? wetTablePost('2026-07-02T09:00:00') : [],
+      fetchPage: async () => { throw new Error('404'); },
+      dataDir: '/nonexistent',
+      log: noLog,
+    });
+    const wetRows = ref.rows.filter(r => r.source === 'westendtheatre');
+    assert.ok(wetRows.length >= 2, 'both table rows extracted');
+    assert.ok(wetRows.every(r => r.url === null), 'table rows have no URL');
+    assert.ok(wetRows.every(r => r.outletId && r.outletId.length > 0), 'rows carry outletId for outlet-based matching');
+    assert.equal(wetRows[0].priorRun, false, 'post dated day after opening = current run');
+  });
+
+  test('PRIOR-RUN GUARD: 2022-dated WET roundup rows are marked priorRun', async () => {
+    const ref = await getWeReferenceRows({ ...SHOW, openingDate: '2026-06-30' }, {
+      fetchJSON: async (url) => /westendtheatre/.test(url) ? wetTablePost('2022-04-01T09:00:00') : [],
+      fetchPage: async () => { throw new Error('404'); },
+      dataDir: '/nonexistent',
+      log: noLog,
+    });
+    const wetRows = ref.rows.filter(r => r.source === 'westendtheatre');
+    assert.ok(wetRows.length >= 2);
+    assert.ok(wetRows.every(r => r.priorRun === true), 'prior-run roundup rows flagged (never ingest-eligible)');
+  });
+
+  test('EMPTY-PARSE FLOOR: title-matched WET post with 0 parseable rows → emptyParse, not silence', async () => {
+    const posts = [{
+      id: 2, link: 'https://www.westendtheatre.com/2/news/reviews/sting-review-round-up/',
+      date: '2026-07-02T09:00:00',
+      title: { rendered: 'Sting Review round-up' },
+      content: { rendered: '<div class="totally-new-template">redesigned markup, no stars</div>' },
+    }];
+    const ref = await getWeReferenceRows(SHOW, {
+      fetchJSON: async (url) => /westendtheatre/.test(url) ? posts : [],
+      fetchPage: async () => ({ content: '<div class="totally-new-template">no legacy classes</div>', source: 'test' }),
+      dataDir: '/nonexistent',
+      log: noLog,
+    });
+    assert.equal(ref.sources.westendtheatre.found, true, 'roundup WAS found');
+    assert.equal(ref.sources.westendtheatre.emptyParse, true, 'parser drift flagged as detector failure');
+  });
+
+  test('BLACKOUT FLOOR: every source throwing → allSourcesFailed=true', async () => {
+    const boom = async () => { throw new Error('network down'); };
+    const ref = await getWeReferenceRows(SHOW, { fetchJSON: boom, fetchPage: boom, dataDir: '/nonexistent', log: noLog });
+    assert.equal(ref.allSourcesFailed, true);
+    assert.equal(ref.rows.length, 0);
+  });
+});
+
+describe('safety wiring (audit + workflow must keep the fail-closed invariants)', () => {
+  const auditSrc = fs.readFileSync(new URL('../../scripts/audit-show-review-gap.js', import.meta.url), 'utf8');
+  const wfSrc = fs.readFileSync(new URL('../../.github/workflows/audit-aggregator-gap.yml', import.meta.url), 'utf8');
+
+  test('audit gates WE ingest on WE_GAP_INGEST === "1" (absent env fails closed)', () => {
+    assert.ok(auditSrc.includes("process.env.WE_GAP_INGEST === '1'"), 'explicit-opt-in comparison present');
+    assert.ok(auditSrc.includes('m.weRef && (!weGateOn || m.priorRun)'), 'prior-run rows excluded from ingest even when gate is on');
+  });
+
+  test('audit invalidates stale WE checkpoints via WE_REF_VERSION', () => {
+    assert.ok(auditSrc.includes('WE_REF_VERSION'), 'reference version constant present');
+    assert.ok(auditSrc.includes('e.refVersion !== WE_REF_VERSION'), 'freshness skip bypassed for stale WE entries');
+  });
+
+  test('workflow env carries the gate flags + email secrets (a dropped line fails THIS test, not silently enables ingest)', () => {
+    for (const needle of ['WE_GAP_INGEST', 'WE_GAP_REFERENCE_DISABLED', 'RESEND_API_KEY', 'OWNER_EMAIL']) {
+      assert.ok(wfSrc.includes(needle), `audit-aggregator-gap.yml env must include ${needle}`);
+    }
+  });
+
+  test('P0 (ship-check): flaggedMisses RECOVERY path also respects the WE gate + prior-run block', () => {
+    assert.ok(auditSrc.includes('m.recoverable && recBlockedPred(m)') && auditSrc.includes('m.recoverable && !recBlockedPred(m)'),
+      'recovery filter must exclude gate-blocked rows — an empty-body file + a 2022 roundup URL must never re-ingest prior-production text');
+    assert.ok(auditSrc.includes('(isWeShow(s) && !weRecGateOn)'),
+      'on WE shows ALL recovery requires the gate, not just weRef rows');
+  });
+
+  test('INCIDENT 2026-07-10: on WE shows ALL missing-URL ingest requires the gate (Broadway-path same-title contamination)', () => {
+    assert.ok(auditSrc.includes('(showIsWe && !weGateOn) || (m.weRef && (!weGateOn || m.priorRun))'),
+      'Broadway-path SERP finds same-title US/prior-production roundups for WE shows — their URLs ingested 2018 TKAM/2013 Midsummer/2014 Last Ship/2025 JLP reviews onto WE entries');
+  });
+
+  test('P1 (ship-check): prior-run-only alert sets do not daily re-ping; failed delivery does not record dedup hash', () => {
+    assert.ok(auditSrc.includes('rePingDue && !allPriorRun'), 'unfixable prior-run-only sets alert once, not daily');
+    assert.ok(auditSrc.includes('if (delivered) {'), 'hash recorded only on real delivery so failures retry');
+  });
+
+  test('P1 (ship-check): outlet display variants match covered files (canonical key)', () => {
+    assert.ok(auditSrc.includes("replace(/-(london|uk)$/,'').replace(/-/g, '')"),
+      'timeout-london/broadway-world-uk class variants must match registry ids');
+  });
+
+  test('audit alerts via email with set-change dedup', () => {
+    assert.ok(auditSrc.includes('missingSetHash('), 'set-change dedup in place');
+    assert.ok(auditSrc.includes('email: true'), 'alert requests email delivery');
+    assert.ok(auditSrc.includes('citedNoUrl'), 'URL-less citations surface in results');
+  });
+});

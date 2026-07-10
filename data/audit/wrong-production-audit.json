@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-10T12:38:54.502Z",
+  "timestamp": "2026-07-10T19:43:19.635Z",
   "stats": {
-    "totalReviews": 39934,
-    "alreadyFlagged": 17564,
-    "dateGuardCatches": 50,
-    "directorMismatch": 893,
-    "tvFilmSignals": 1096,
+    "totalReviews": 39962,
+    "alreadyFlagged": 17576,
+    "dateGuardCatches": 49,
+    "directorMismatch": 897,
+    "tvFilmSignals": 1097,
     "londonSignals": 742,
     "offBroadwaySignals": 467,
     "yearMismatch": 87,
-    "noPublishDate": 4036
+    "noPublishDate": 4041
   },
   "findings": [
     {
@@ -1733,7 +1733,7 @@
       "file": "independent--louis-chilton.json",
       "score": 40,
       "publishDate": "2026-04-17",
-      "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -14013,7 +14013,7 @@
       "showId": "little-bear-ridge-road-2025",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 88,
-      "publishDate": null,
+      "publishDate": "2025-10-31",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/little-bear-ridge-road-review-laurie-metcalf-broadway-1236414531/",
       "findings": [
         {
@@ -14118,6 +14118,67 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "little-bear-ridge-road-regional-2024",
+      "file": "around-the-town-chicago--alan-bresloff.json",
+      "score": 86,
+      "publishDate": null,
+      "url": "https://aroundthetownchicago.com/theatre-reviews/little-bear-ridge-road/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"joe mantello\" from little-bear-ridge-road-2025"
+        }
+      ]
+    },
+    {
+      "showId": "little-bear-ridge-road-regional-2024",
+      "file": "chicago-reader--dan-jakes.json",
+      "score": 92,
+      "publishDate": "2024-06-26",
+      "url": "https://chicagoreader.com/arts-culture/theater/theater-review/little-bear-ridge-road-steppenwolf-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"joe mantello\" from little-bear-ridge-road-2025"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"streaming show\""
+        }
+      ]
+    },
+    {
+      "showId": "little-bear-ridge-road-regional-2024",
+      "file": "third-coast-review--adam-kaz.json",
+      "score": 79,
+      "publishDate": "2024-06-26",
+      "url": "https://thirdcoastreview.com/2024/06/26/stages-review-steppenwolf-little-bear-ridge-road",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"joe mantello\" from little-bear-ridge-road-2025"
+        }
+      ]
+    },
+    {
+      "showId": "little-bear-ridge-road-regional-2024",
+      "file": "wsj--charles-isherwood.json",
+      "score": 92,
+      "publishDate": "2024-07-18",
+      "url": "https://www.wsj.com/articles/little-bear-ridge-road-review-laurie-metcalf-steppenwolf-4479a7d4?st=8802lge3hb47ler&reflink=desktopwebshare_permalink",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"joe mantello\" from little-bear-ridge-road-2025"
         }
       ]
     },
@@ -39633,20 +39694,6 @@
       ]
     },
     {
-      "showId": "tender-off-west-end-2026",
-      "file": "loureviews--louise-penn.json",
-      "score": 78,
-      "publishDate": "2026-05-05",
-      "url": "https://loureviews.blog/2026/05/05/play-review-tender-at-soho-theatre/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 65d before show (2026-05-05 vs 2026-07-09)"
-        }
-      ]
-    },
-    {
       "showId": "that-championship-season-2011",
       "file": "new-jersey-newsroom--michael-sommers.json",
       "score": 42,
@@ -41745,7 +41792,7 @@
       "file": "thestage--dave-fargnoli.json",
       "score": 38,
       "publishDate": "2026-06-24",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-misanthrope-review-sandra-oh-what-a-disappointment-sbzvf82b2?t=1782310602034",
+      "url": "https://www.thestage.co.uk/reviews/the-misanthrope-review-lyttelton-national-theatre-london-sandra-oh",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

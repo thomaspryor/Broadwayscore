@@ -575,14 +575,19 @@ async function main() {
       console.log(f.value);
     }
   } else {
-    await sendAlert({
+    // email:true — orphan-unscored reviews in the opening window are precisely the
+    // silent-strand class (Springwood 2026-07). Log-only alerts reached nobody.
+    const delivered = await sendAlert({
       title: `Orphan-Unscored Reviews — ${showsWithOrphans.length} show(s)`,
       description,
       severity: 'warning',
       fields,
       url: `https://github.com/${PUBLIC_REPO_OWNER}/${PUBLIC_REPO_NAME}/actions`,
+      email: true,
     });
-    console.log('[verify-all-scored] Alert dispatched (logged; surfaces in BSC Daily digest).');
+    console.log(delivered
+      ? '[verify-all-scored] Alert dispatched via email.'
+      : '[verify-all-scored] ⚠️ Alert email NOT delivered — logged only.');
   }
 
   // We DO NOT exit non-zero. The rebuild pipeline calls this with

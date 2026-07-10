@@ -70,7 +70,11 @@ jobs:
       - name: Run completeness check
         if: steps.rebuild_check.outputs.skip != 'true'
         env:
-          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          # RESEND_API_KEY + OWNER_EMAIL are what discord-notify.js actually reads for
+          # email delivery. The old DISCORD_WEBHOOK_ALERTS secret was never read by the
+          # lib (Discord support removed) — alerts were log-only for months (2026-07-09).
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
           SHOW_ARG=""

@@ -47,13 +47,14 @@ const { discoverCorrectUrl, OUTLET_DOMAINS } = require('./lib/url-discovery');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { llmFallbackExtract, hasStructuralMarkers } = require('./lib/llm-extractor');
-const { verifyAggregatorUrl } = require('./lib/show-match-verifier');
 const { normalizeOutlet, normalizeUrl: normalizeUrlCanonical } = require('./lib/review-normalization');
 const { extractReviewsFromLBO } = require('./scrape-london-box-office-roundups');
 const { extractReviews: extractTheatreReviews } = require('./scrape-theatre-reviews');
-const { matchTitleToShow, validateRoundupPageTitle } = require('./lib/show-matching');
-const { fetchPage, fetchJSON } = require('./lib/scraper');
-const { cleanSearchTitle } = require('./lib/title-normalization');
+const { matchTitleToShow } = require('./lib/show-matching');
+const { fetchPage } = require('./lib/scraper');
+const { discoverLboRoundupHtml } = require('./lib/lbo-roundup-discover');
+const { discoverTrRoundupHtml } = require('./lib/tr-roundup-discover');
+const { discoverWetRoundupRows } = require('./lib/wet-roundup-discover');
 const { tryTbDirectUrl } = require('./lib/tb-direct-url');
 const {
   DEFAULT_SERP_BURST_CONFIG,
@@ -777,105 +778,14 @@ async function runAggregators(show) {
   }
 
   // 1d. London Box Office roundups (WE/OWE only)
+  // Discovery (curated map → archive → sitemap, title-validated) extracted to
+  // lib/lbo-roundup-discover.js (2026-07-10) so the review-gap audit shares it.
   if (isWestEnd) {
     try {
       console.log('  Checking London Box Office roundup...');
-      // Check curated URL map first
-      const lboMapPath = path.join(DATA_DIR, 'lbo-roundup-urls.json');
-      let lboUrl = null;
-      try {
-        const lboMap = JSON.parse(fs.readFileSync(lboMapPath, 'utf8'));
-        lboUrl = (lboMap.shows || {})[show.id];
-      } catch (e) {}
-
-      // Also check archive
-      const lboArchivePath = path.join(DATA_DIR, 'aggregator-archive', 'lbo-roundups', `${show.id}.html`);
-
-      let lboHtml = null;
-      let lboHtmlSource = null; // 'curated' | 'archive' | 'sitemap'
-      if (lboUrl) {
-        console.log(`    Curated URL: ${lboUrl}`);
-        try {
-          const lboResult = await fetchPage(lboUrl, { renderJs: false });
-          lboHtml = lboResult?.content || null;
-          if (lboHtml) lboHtmlSource = 'curated';
-        } catch (e) {
-          console.log(`    LBO fetch error: ${e.message}`);
-        }
-      } else if (fs.existsSync(lboArchivePath)) {
-        console.log('    Using archived LBO page');
-        lboHtml = fs.readFileSync(lboArchivePath, 'utf8');
-        lboHtmlSource = 'archive';
-      }
-
-      // Fallback: live sitemap discovery (free, ~16 entries)
-      if (!lboHtml) {
-        try {
-          let sitemapXml = null;
-          try {
-            const smResult = await fetchPage('https://www.londonboxoffice.co.uk/news-sitemap.xml', { renderJs: false });
-            sitemapXml = smResult?.content || null;
-          } catch (e) { /* sitemap fetch failed, continue */ }
-          if (sitemapXml) {
-            // Match URL slug → title → matchTitleToShow against THIS show only.
-            // The previous "≥2 of titleWords>2chars" heuristic produced false
-            // matches via common words like "the" and "musical" (e.g.
-            // "Trainspotting the musical" matched the Paddington The Musical
-            // roundup). Stuart King contamination 2026-04-25.
-            const reviewUrls = [...sitemapXml.matchAll(/<loc>(https:\/\/www\.londonboxoffice\.co\.uk\/news\/post\/[^<]*review[^<]*)<\/loc>/gi)]
-              .map(m => m[1])
-              .filter(url => {
-                const slug = url.split('/').pop().toLowerCase();
-                return slug.includes('review') && !slug.includes('photo') && !slug.includes('cast-announced') && !slug.includes('announces');
-              });
-            const match = reviewUrls.find(url => {
-              const slug = url.split('/').pop()
-                .replace(/^review-(?:round-?up-)?/i, '')
-                .replace(/-review(?:-[\w-]+)?$/i, '')
-                .replace(/-/g, ' ')
-                .toLowerCase();
-              const r = matchTitleToShow(slug, [show], { market: 'west-end' });
-              return r && r.show && r.confidence === 'high';
-            });
-            if (match) {
-              console.log(`    Sitemap match: ${match}`);
-              try {
-                const matchResult = await fetchPage(match, { renderJs: false });
-                lboHtml = matchResult?.content || null;
-                if (lboHtml) lboHtmlSource = 'sitemap';
-              } catch (e) { /* page fetch failed */ }
-            }
-          }
-        } catch (e) {
-          console.log(`    LBO sitemap fallback error: ${(e.message || '').substring(0, 60)}`);
-        }
-      }
-
-      // Validate page title before extracting / archiving — protects against
-      // poisoned cache entries (archive source) and against any URL/sitemap
-      // mismatch we may have missed (curated/sitemap sources).
-      if (lboHtml) {
-        const validation = validateRoundupPageTitle(lboHtml, show.title);
-        if (!validation.ok) {
-          console.log(`  LBO: skipping (${validation.reason}) — page title "${(validation.pageTitle || '').substring(0, 60)}" doesn't match "${show.title}"`);
-          if (lboHtmlSource === 'archive' && fs.existsSync(lboArchivePath)) {
-            // Quarantine the bad archive so future runs don't repeat the mistake.
-            const quarantine = lboArchivePath + '.mismatch';
-            try { fs.renameSync(lboArchivePath, quarantine); console.log(`    Quarantined bad archive → ${path.basename(quarantine)}`); } catch (e) {}
-          }
-          lboHtml = null;
-        } else if (lboHtmlSource === 'sitemap') {
-          // Only persist after validation passed.
-          try {
-            const archDir = path.dirname(lboArchivePath);
-            if (!fs.existsSync(archDir)) fs.mkdirSync(archDir, { recursive: true });
-            fs.writeFileSync(lboArchivePath, lboHtml);
-          } catch (e) { /* best-effort archive write */ }
-        }
-      }
-
-      if (lboHtml) {
-        const lboReviews = extractReviewsFromLBO(lboHtml, show.id);
+      const lbo = await discoverLboRoundupHtml(show, { dataDir: DATA_DIR });
+      if (lbo) {
+        const lboReviews = extractReviewsFromLBO(lbo.html, show.id);
         console.log(`  LBO: ${lboReviews.length} reviews found`);
         for (const r of lboReviews) {
           results.push({
@@ -899,97 +809,19 @@ async function runAggregators(show) {
   }
 
   // 1e. theatre.reviews roundups (WE/OWE only — best structured WE aggregator)
+  // Discovery (bounded URL construction → WP-API, cross-show-guarded) extracted
+  // to lib/tr-roundup-discover.js (2026-07-10) so the review-gap audit shares it.
   if (isWestEnd) {
     try {
       console.log('  Checking theatre.reviews...');
-      // Try direct URL construction: reviews-roundup/{title-slug}-reviews
-      const titleSlug = show.title.toLowerCase()
-        .replace(/[^a-z0-9\s-]/g, '')
-        .replace(/\s+/g, '-')
-        .replace(/-+/g, '-')
-        .replace(/^-|-$/g, '');
-      // REVIEWED 2026-05-16 (Notion 362637c5-416f-8109): 1-2 bounded
-      // theatre.reviews URL candidates. TR has no listing-page
-      // equivalent of BWW's /reviews.php — construction is the best
-      // available primitive. Each candidate fetched then validated
-      // against ⭑ star ratings + title-word presence (see ~795).
-      // NOT the BWW antipattern. Leave in place.
-      const trUrls = [
-        `https://theatre.reviews/reviews-roundup/${titleSlug}-reviews/`,
-      ];
-      // Also try with venue suffix if we have venue info
-      if (show.venue) {
-        const venueSlug = show.venue.toLowerCase()
-          .replace(/\s*theatre\s*/gi, '').replace(/\s*theater\s*/gi, '')
-          .replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-');
-        if (venueSlug) {
-          trUrls.unshift(`https://theatre.reviews/reviews-roundup/${titleSlug}-${venueSlug}-reviews/`);
-        }
-      }
-
-      let trHtml = null;
-      // Try direct URL construction via proxy (avoids TLS fingerprint blocking in CI)
-      for (const trUrl of trUrls) {
-        try {
-          const result = await fetchPage(trUrl, { renderJs: false });
-          // Check content is the actual roundup page — must contain ⭑ star ratings
-          // AND a key word from the show title (not just generic site chrome)
-          const titleWord = show.title.split(/\s+/).filter(w => w.length > 3)[0] || show.title;
-          if (result && result.content && result.content.length > 1000 &&
-              result.content.includes('⭑') &&
-              result.content.toLowerCase().includes(titleWord.toLowerCase())) {
-            // Cross-show gate: TR's search/URL-guessing can land on a different show's
-            // roundup (e.g. "war horse" → equus-menier-reviews → Equus contamination).
-            // verifyAggregatorUrl uses slug + page-title/venue/date signals.
-            const v = verifyAggregatorUrl({ url: trUrl, html: result.content, show, openingDate: show.openingDate });
-            if (!v.isValid) {
-              console.log(`    ✗ TR ${trUrl} rejected: ${v.rejectReason} (cross-show guard)`);
-              continue;
-            }
-            trHtml = result.content;
-            console.log(`    Found at: ${trUrl} (via ${result.source})`);
-            break;
-          }
-        } catch (e) {
-          // 404/403 are expected for guessed URLs — continue to next variation
-        }
-      }
-
-      // Fallback: WP API search when URL construction misses
-      if (!trHtml) {
-        try {
-          const searchTitle = cleanSearchTitle(show.title);
-          const wpApiUrl = `https://theatre.reviews/wp-json/wp/v2/posts?per_page=5&search=${encodeURIComponent(searchTitle)}`;
-          const posts = await fetchJSON(wpApiUrl);
-          if (posts && Array.isArray(posts)) {
-            const roundup = posts.find(p => p.link && p.link.includes('/reviews-roundup/'));
-            if (roundup) {
-              console.log(`    WP API found: ${roundup.link}`);
-              const pageResult = await fetchPage(roundup.link, { renderJs: false });
-              if (pageResult && pageResult.content && pageResult.content.length > 1000) {
-                // Cross-show gate: WP-API search for "war horse" returns the Equus
-                // roundup. Reject roundups that don't match this show.
-                const v = verifyAggregatorUrl({ url: roundup.link, html: pageResult.content, show, openingDate: show.openingDate });
-                if (v.isValid) {
-                  trHtml = pageResult.content;
-                } else {
-                  console.log(`    ✗ TR WP-API ${roundup.link} rejected: ${v.rejectReason} (cross-show guard)`);
-                }
-              }
-            }
-          }
-        } catch (e) {
-          console.log(`    TR WP API fallback error: ${(e.message || '').substring(0, 60)}`);
-        }
-      }
-
-      if (trHtml) {
+      const tr = await discoverTrRoundupHtml(show);
+      if (tr) {
         // Cache to archive for future runs
         const archivePath = path.join(DATA_DIR, 'aggregator-archive', 'theatre-reviews', `${show.id}.html`);
         if (!fs.existsSync(path.dirname(archivePath))) fs.mkdirSync(path.dirname(archivePath), { recursive: true });
-        fs.writeFileSync(archivePath, trHtml);
+        fs.writeFileSync(archivePath, tr.html);
 
-        const trReviews = extractTheatreReviews(trHtml, show.id);
+        const trReviews = extractTheatreReviews(tr.html, show.id);
         console.log(`  theatre.reviews: ${trReviews.length} reviews found`);
         for (const r of trReviews) {
           results.push({
@@ -1043,136 +875,59 @@ async function runAggregators(show) {
   }
 
   // 1g. WestEndTheatre.com roundups (WE/OWE only — WP API + rendered page fallback)
+  // Discovery + dual-format row extraction extracted to lib/wet-roundup-discover.js
+  // (2026-07-10) so the review-gap audit shares it. This block keeps: archive
+  // marker write, per-row URL-date validation, results mapping (wetStars policy).
   if (isWestEnd) {
     try {
       console.log('  Checking WestEndTheatre.com (WP API)...');
-      const cheerioWet = require('cheerio');
-      const searchTitle = cleanSearchTitle(show.title);
-      const apiUrl = `https://www.westendtheatre.com/wp-json/wp/v2/posts?categories=10&per_page=20&search=${encodeURIComponent(searchTitle)}`;
+      const wet = await discoverWetRoundupRows(show);
+      if (wet) {
+        const { rows: wetReviews, post } = wet;
+        console.log(`  WestEndTheatre: ${wetReviews.length} ratings found`);
 
-      // Use fetchJSON for proxy-routed WP API call (avoids TLS blocking in CI)
-      let posts = [];
-      try {
-        posts = await fetchJSON(apiUrl);
-        if (!Array.isArray(posts)) posts = [];
-      } catch (e) {
-        console.log(`    WET API error: ${(e.message || '').substring(0, 60)}`);
-      }
+        // Archive
+        const wetArchiveDir = path.join(DATA_DIR, 'aggregator-archive', 'westendtheatre');
+        if (!fs.existsSync(wetArchiveDir)) fs.mkdirSync(wetArchiveDir, { recursive: true });
+        fs.writeFileSync(path.join(wetArchiveDir, `${show.id}.json`),
+          JSON.stringify({ ourShowId: show.id, wpPostId: post.id, fetchedAt: new Date().toISOString().slice(0, 10) }, null, 2) + '\n');
 
-      if (Array.isArray(posts) && posts.length > 0) {
-        for (const post of posts.slice(0, 3)) {
-          // Validate post title matches our show (WP search can return wrong shows)
-          const wpTitle = (post.title?.rendered || '').replace(/&#8217;/g, "'").replace(/&#8211;/g, '\u2013').replace(/&amp;/g, '&').replace(/<[^>]+>/g, '');
-          const normalizeForMatch = (t) => t.toLowerCase().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, ' ').trim();
-          const wpNorm = normalizeForMatch(wpTitle);
-          const showNorm = normalizeForMatch(searchTitle);
-          const showWords = showNorm.split(' ').filter(w => w.length > 2);
-          const matchedWords = showWords.filter(w => wpNorm.includes(w));
-          const minMatch = showWords.length <= 2 ? showWords.length : Math.ceil(showWords.length * 0.6);
-          if (matchedWords.length < minMatch) {
-            console.log(`    ✗ WET title mismatch: "${wpTitle.slice(0, 60)}" doesn't match "${searchTitle}"`);
-            continue;
-          }
-
-          const htmlContent = post.content?.rendered || '';
-          let wetReviews = [];
-
-          // Try table format first (API content)
-          if (htmlContent.includes('★') || htmlContent.includes('<table')) {
-            const text = htmlContent.replace(/<[^>]+>/g, '').replace(/&[^;]+;/g, ' ');
-            const starRegex = /(★{1,5})/g;
-            let sMatch;
-            while ((sMatch = starRegex.exec(text)) !== null) {
-              const stars = sMatch[1].length;
-              const before = text.substring(Math.max(0, sMatch.index - 200), sMatch.index).trim();
-              const outletLine = before.split('\n').filter(l => l.trim()).pop()?.trim() || '';
-              if (!outletLine || outletLine.length < 2 || outletLine.length > 50) continue;
-              if (outletLine.startsWith('"') || outletLine.startsWith('\u201c')) continue;
-              // Skip table headers parsed as outlet names
-              if (/publication|rating|critic/i.test(outletLine)) continue;
-              wetReviews.push({ outlet: outletLine, stars, critic: 'Unknown' });
+        for (const r of wetReviews) {
+          // Validate URL date: extract date from URL slug and reject if >60 days before opening
+          let urlDate = null;
+          if (r.url) {
+            // Common UK URL date patterns: /2026/mar/26/ or /2026-03-26/ or /2026/03/26/
+            const dateMatch = r.url.match(/\/(\d{4})\/(\w{3}|\d{2})\/(\d{1,2})\//);
+            if (dateMatch) {
+              const months = { jan:0, feb:1, mar:2, apr:3, may:4, jun:5, jul:6, aug:7, sep:8, oct:9, nov:10, dec:11 };
+              const y = parseInt(dateMatch[1]);
+              const m = months[dateMatch[2].toLowerCase()] ?? (parseInt(dateMatch[2]) - 1);
+              const d = parseInt(dateMatch[3]);
+              if (!isNaN(y) && !isNaN(m) && !isNaN(d)) urlDate = new Date(y, m, d);
             }
           }
-
-          // Fallback: fetch rendered page for section-format posts (CSS classes)
-          if (wetReviews.length === 0 && post.link) {
-            try {
-              console.log(`    Fetching rendered page: ${post.link}`);
-              const pageResult = await fetchPage(post.link, { renderJs: false });
-              const pageHtml = pageResult?.content || null;
-              if (pageHtml) {
-                const $w = cheerioWet.load(pageHtml);
-                $w('.reviewnewpubhead').each((_, el) => {
-                  const outlet = $w(el).text().trim();
-                  const stars = ($w(el).next('.reviewnewstars').text().match(/★/g) || []).length;
-                  const authorText = $w(el).nextAll('.reviewnewauthor').first().text().trim();
-                  const cm = authorText.match(/^([A-Z][a-z]+(?:\s[A-Z][a-z'-]+)+)/);
-                  // Extract individual review URL from the <a> after this review block
-                  let reviewUrl = '';
-                  $w(el).nextAll('a').each((_, a) => {
-                    const href = $w(a).attr('href') || '';
-                    if (!reviewUrl && href.startsWith('http') && !href.includes('westendtheatre.com')) {
-                      reviewUrl = href;
-                    }
-                  });
-                  if (outlet && stars > 0) {
-                    wetReviews.push({ outlet, stars, critic: cm ? cm[1] : 'Unknown', url: reviewUrl });
-                  }
-                });
-              }
-            } catch (e) {
-              console.log(`    WET page fetch error: ${(e.message || '').substring(0, 60)}`);
-            }
+          const openingMs = show.openingDate ? new Date(show.openingDate).getTime() : null;
+          if (urlDate && openingMs && (openingMs - urlDate.getTime()) > 60 * 86400000) {
+            console.log(`    ✗ Rejecting ${r.outlet} URL: date ${urlDate.toISOString().slice(0,10)} is >60 days before opening ${show.openingDate}`);
+            // Clear the bad URL so it falls back to the roundup post link
+            r.url = '';
           }
-
-          if (wetReviews.length === 0) continue;
-
-          console.log(`  WestEndTheatre: ${wetReviews.length} ratings found`);
-
-          // Archive
-          const wetArchiveDir = path.join(DATA_DIR, 'aggregator-archive', 'westendtheatre');
-          if (!fs.existsSync(wetArchiveDir)) fs.mkdirSync(wetArchiveDir, { recursive: true });
-          fs.writeFileSync(path.join(wetArchiveDir, `${show.id}.json`),
-            JSON.stringify({ ourShowId: show.id, wpPostId: post.id, fetchedAt: new Date().toISOString().slice(0, 10) }, null, 2) + '\n');
-
-          for (const r of wetReviews) {
-            // Validate URL date: extract date from URL slug and reject if >60 days before opening
-            let urlDate = null;
-            if (r.url) {
-              // Common UK URL date patterns: /2026/mar/26/ or /2026-03-26/ or /2026/03/26/
-              const dateMatch = r.url.match(/\/(\d{4})\/(\w{3}|\d{2})\/(\d{1,2})\//);
-              if (dateMatch) {
-                const months = { jan:0, feb:1, mar:2, apr:3, may:4, jun:5, jul:6, aug:7, sep:8, oct:9, nov:10, dec:11 };
-                const y = parseInt(dateMatch[1]);
-                const m = months[dateMatch[2].toLowerCase()] ?? (parseInt(dateMatch[2]) - 1);
-                const d = parseInt(dateMatch[3]);
-                if (!isNaN(y) && !isNaN(m) && !isNaN(d)) urlDate = new Date(y, m, d);
-              }
-            }
-            const openingMs = show.openingDate ? new Date(show.openingDate).getTime() : null;
-            if (urlDate && openingMs && (openingMs - urlDate.getTime()) > 60 * 86400000) {
-              console.log(`    ✗ Rejecting ${r.outlet} URL: date ${urlDate.toISOString().slice(0,10)} is >60 days before opening ${show.openingDate}`);
-              // Clear the bad URL so it falls back to the roundup post link
-              r.url = '';
-            }
-            results.push({
-              showId: show.id,
-              outletId: normalizeOutlet(r.outlet),
-              outlet: r.outlet,
-              criticName: r.critic,
-              url: r.url || post.link || '',
-              excerpt: '',
-              // WET rates shows independently — don't use as outlet's score
-              wetStars: r.stars ? `${r.stars}/5` : undefined,
-              source: 'westendtheatre',
-              // Pass roundup post date so createReviewFile can validate against opening date
-              publishDate: post.date ? post.date.slice(0, 10) : undefined,
-            });
-          }
-          break;
+          results.push({
+            showId: show.id,
+            outletId: normalizeOutlet(r.outlet),
+            outlet: r.outlet,
+            criticName: r.critic,
+            url: r.url || post.link || '',
+            excerpt: '',
+            // WET rates shows independently — don't use as outlet's score
+            wetStars: r.stars ? `${r.stars}/5` : undefined,
+            source: 'westendtheatre',
+            // Pass roundup post date so createReviewFile can validate against opening date
+            publishDate: post.date || undefined,
+          });
         }
       } else {
-        console.log(`  WestEndTheatre: no matching roundup (API returned ${Array.isArray(posts) ? posts.length + ' posts' : typeof posts})`);
+        console.log('  WestEndTheatre: no matching roundup');
       }
     } catch (err) {
       console.log(`  WestEndTheatre error: ${err.message}`);

@@ -443,8 +443,10 @@ function decideInclusion(review, show, guards) {
     return { included: false, reason: 'tour-review URL' };
   }
 
-  if (review.url && guards.isRoundupUrl(review.url).isRoundup) {
-    return { included: false, reason: 'roundup URL' };
+  if (guards.isRoundupPageAsReview ? guards.isRoundupPageAsReview(review) : (review.url && guards.isRoundupUrl(review.url).isRoundup)) {
+    // page-as-review only — a review SOURCED from a roundup (different outletId)
+    // is included by rebuild, so the sim must include it too (parity, 2026-07-10)
+    return { included: false, reason: 'roundup page as review' };
   }
 
   return { included: true, reason: 'passes guards' };

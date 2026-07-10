@@ -97,6 +97,18 @@ jobs:
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # WE completeness gate (2026-07-10). Email delivery for the named-missing-
+          # outlet alerts (discord-notify email path — log-only alerts reached nobody):
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # WE auto-ingest is DEFAULT-OFF: reference-derived URLs ingest only when the
+          # repo variable WE_GAP_INGEST is '1'. Absent/deleted variable = report-only
+          # (fails closed — plan-review 2026-07-09 pre-mortem: a dropped env line must
+          # not silently enable ingest). Prior-run roundup URLs never ingest regardless.
+          WE_GAP_INGEST: ${{ vars.WE_GAP_INGEST || '' }}
+          # WE-only kill switch (leaves the Broadway audit untouched):
+          WE_GAP_REFERENCE_DISABLED: ${{ vars.WE_GAP_REFERENCE_DISABLED || '' }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
           # Default window widened to 3y + include-closed so the cron grinds the
           # whole back-catalogue, not just the last 21d. Checkpointing + the soft

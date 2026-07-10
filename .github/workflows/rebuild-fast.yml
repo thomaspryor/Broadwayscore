@@ -168,7 +168,10 @@ jobs:
         # analyze-rebuild-drops.js (full-rebuild only) for the fast path.
         # See scripts/check-opening-night-completeness.js + memory/feedback_admin_ingest_opening_night_2026-04-26.md (#A19/#A20).
         env:
-          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          # discord-notify.js reads RESEND_API_KEY+OWNER_EMAIL for email delivery;
+          # DISCORD_WEBHOOK_ALERTS was never read (Discord removed) — alerts were log-only.
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: node scripts/check-opening-night-completeness.js
         continue-on-error: true
@@ -183,7 +186,10 @@ jobs:
         # Discord warning, 60-min cooldown per show. continue-on-error so a
         # failure here never blocks the rebuild itself.
         env:
-          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          # discord-notify.js reads RESEND_API_KEY+OWNER_EMAIL for email delivery;
+          # DISCORD_WEBHOOK_ALERTS was never read (Discord removed) — alerts were log-only.
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/verify-all-scored.js
