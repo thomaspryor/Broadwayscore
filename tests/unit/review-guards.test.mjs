@@ -20,6 +20,8 @@ const {
   hasNamedDifferentDirectorSignal,
   hasHighConfidenceLlmScore,
   isRoundupUrl,
+  isRoundupPageAsReview,
+  cvBlocksUkWrongProductionAutoClear,
 } = require('../../scripts/lib/review-guards.js');
 
 describe('isLikelyWrongProduction', () => {
@@ -657,5 +659,73 @@ describe('isRoundupUrl — WhatsOnStage review round-ups', () => {
     // Pattern must stay inside the slug: a query param or deeper path must not match.
     const r = isRoundupUrl('https://www.whatsonstage.com/news/some-review_123/?from=review-round-up');
     assert.strictEqual(r.isRoundup, false);
+  });
+});
+
+describe('isRoundupPageAsReview — page-as-review vs sourced-from-roundup', () => {
+  const wosRoundup = 'https://www.whatsonstage.com/news/did-sam-ryder-reach-for-the-stars-jesus-christ-superstar-review-round-up_1726870/';
+  const stageRoundup = 'https://www.thestage.co.uk/review-round-ups/hamilton-review-round-up';
+
+  test('WOS roundup URL + whatsonstage outletId → true (page IS the review)', () => {
+    assert.strictEqual(isRoundupPageAsReview({ url: wosRoundup, outletId: 'whatsonstage' }), true);
+  });
+
+  test('WOS roundup URL + times-uk outletId → false (review SOURCED from roundup)', () => {
+    assert.strictEqual(isRoundupPageAsReview({ url: wosRoundup, outletId: 'times-uk' }), false);
+  });
+
+  test('Stage review-round-ups URL + thestage outletId → false (host deliberately excluded: aggregator-stars policy pending)', () => {
+    assert.strictEqual(isRoundupPageAsReview({ url: stageRoundup, outletId: 'thestage' }), false);
+  });
+
+  test('manual clear (isRoundupArticle=false) → false even on matching URL+outlet', () => {
+    assert.strictEqual(isRoundupPageAsReview({ url: wosRoundup, outletId: 'whatsonstage', isRoundupArticle: false }), false);
+  });
+
+  test('roundupArticleClearedNote → false (setter-skip semantics honored)', () => {
+    assert.strictEqual(isRoundupPageAsReview({ url: wosRoundup, outletId: 'whatsonstage', roundupArticleClearedNote: 'human verified individual review' }), false);
+  });
+
+  test('individual WOS review URL → false', () => {
+    assert.strictEqual(isRoundupPageAsReview({ url: 'https://www.whatsonstage.com/news/tender-at-soho-theatre-review_1720027/', outletId: 'whatsonstage' }), false);
+  });
+
+  test('missing url / null data → false', () => {
+    assert.strictEqual(isRoundupPageAsReview({ outletId: 'whatsonstage' }), false);
+    assert.strictEqual(isRoundupPageAsReview(null), false);
+  });
+});
+
+describe('cvBlocksUkWrongProductionAutoClear', () => {
+  test('Times Sam Ryder interview case: wrongArticle low conf + articleType interview HIGH conf → true', () => {
+    assert.strictEqual(cvBlocksUkWrongProductionAutoClear({
+      wrongArticle: true, wrongProduction: true, confidence: 'low',
+      articleType: 'interview', articleTypeConfidence: 'high',
+    }), true);
+  });
+
+  test('wrongArticle true at overall high confidence → true', () => {
+    assert.strictEqual(cvBlocksUkWrongProductionAutoClear({ wrongArticle: true, confidence: 'high' }), true);
+  });
+
+  test('wrongProduction true at overall high confidence → true', () => {
+    assert.strictEqual(cvBlocksUkWrongProductionAutoClear({ wrongProduction: true, confidence: 'high' }), true);
+  });
+
+  test('articleType review at high confidence → false (real review, clear allowed)', () => {
+    assert.strictEqual(cvBlocksUkWrongProductionAutoClear({ articleType: 'review', articleTypeConfidence: 'high' }), false);
+  });
+
+  test('articleType interview at medium confidence → false (not strong enough to block)', () => {
+    assert.strictEqual(cvBlocksUkWrongProductionAutoClear({ articleType: 'interview', articleTypeConfidence: 'medium' }), false);
+  });
+
+  test('wrongArticle true at low confidence with no articleType signal → false', () => {
+    assert.strictEqual(cvBlocksUkWrongProductionAutoClear({ wrongArticle: true, confidence: 'low' }), false);
+  });
+
+  test('null/missing cv → false', () => {
+    assert.strictEqual(cvBlocksUkWrongProductionAutoClear(null), false);
+    assert.strictEqual(cvBlocksUkWrongProductionAutoClear(undefined), false);
   });
 });

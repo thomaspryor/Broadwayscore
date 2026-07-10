@@ -92,3 +92,13 @@ test('OB buildShowEntry unchanged: still -off-broadway- id, announced, market br
   assert.equal(e.status, 'announced');
   assert.equal(e.market, 'broadway');
 });
+
+test('stale-roundup guard: a roundup older than 90 days promotes as closed, fresh as open (2026-07-09)', () => {
+  const old = buildRegionalShowEntry({ ...ROUNDUP_CANDIDATE, articlePublishedAt: '2025-05-30T10:00:00-04:00', slug: 'millions' });
+  assert.equal(old.status, 'closed', 'year-old roundup = run is over');
+  assert.equal(old.id, 'millions-regional-2025');
+  assert.equal(old.openingDate, '2025-05-30');
+  const freshDate = new Date(Date.now() - 5 * 86400000).toISOString();
+  const fresh = buildRegionalShowEntry({ ...ROUNDUP_CANDIDATE, articlePublishedAt: freshDate });
+  assert.equal(fresh.status, 'open', 'recent roundup = currently running');
+});

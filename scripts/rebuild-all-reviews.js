@@ -39,7 +39,7 @@ const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTL
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
 const { shouldRejectAsReservation, isInternalNote, hasCopyrightChrome, stripLeadingChrome } = require('./lib/pull-quote-guards');
 const { emitStage } = require('./lib/stage-latency');
-const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow } = require('./lib/review-guards');
+const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, isRoundupPageAsReview, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl } = require('./lib/rebuild-helpers');
@@ -2187,17 +2187,7 @@ showDirs.forEach(showId => {
               // ALSO: Do NOT auto-clear if cv flagged wrongArticle (review is about a completely
               // different show) — that's the bug found in WE pre-Reddit-launch audit (2026-04-10).
               // Matilda was rendering a TimeOut Paddington review at 100/100, etc.
-              const cvConfirmedWrong = data.contentVerification?.wrongProduction === true
-                && data.contentVerification?.confidence === 'high';
-              const cvConfirmedWrongArticle = data.contentVerification?.wrongArticle === true
-                && data.contentVerification?.confidence === 'high';
-              // articleType carries its own confidence — a high-confidence non-review
-              // classification blocks the clear even when overall confidence is low.
-              // Times Sam Ryder interview (JCS Palladium, 2026-07-08): wrongArticle=true
-              // at overall confidence=low was ignored here, but articleType=interview
-              // had articleTypeConfidence=high; the cleared file scored 70 as a T1 review.
-              const cvNonReviewType = data.contentVerification?.articleTypeConfidence === 'high'
-                && ['preview', 'interview', 'news', 'feature', 'box-office', 'obituary', 'listicle'].includes(data.contentVerification?.articleType);
+              const cvBlocksClear = cvBlocksUkWrongProductionAutoClear(data.contentVerification);
               const hasManualReason = !!data.wrongProductionReason;
               // A show-LISTING / aggregate page (whatsonstage.com/shows/…,
               // broadwayworld.com/shows/…) is NOT a dated critic review — a UK
@@ -2207,7 +2197,7 @@ showDirs.forEach(showId => {
               // live at /news/ (WOS) and /article/ (BWW); /shows/ is a listing.
               const isShowListingUrl = /(?:whatsonstage|broadwayworld)\.com\/shows?\//i.test(data.url)
                 || require('./lib/cross-production-guards').isEvergreenListingUrl(data.url);
-              if (isUkUrl && !cvConfirmedWrong && !cvConfirmedWrongArticle && !cvNonReviewType && !hasManualReason && !isShowListingUrl) {
+              if (isUkUrl && !cvBlocksClear && !hasManualReason && !isShowListingUrl) {
                 delete data.wrongProduction;
                 delete data.wrongProductionNote;
                 data.wrongProductionAutoCleared = `rebuild: UK URL on London show (${hostname})`;
@@ -2977,7 +2967,9 @@ showDirs.forEach(showId => {
       // attribution and should count as original reviews.
       // Defensive override: stale flag on a substantial individual review (long
       // fullText + isFullReview + non-roundup URL) is treated as wrong. Notion 34e637c5.
-      if (data.isRoundupArticle === true && !isLikelyStaleRoundupFlag(data)) {
+      // isRoundupPageAsReview covers unflagged roundup pages — the flag setter is
+      // enrichment-gated and fast_path rebuilds shipped 4 live roundup entries (2026-07-09).
+      if ((data.isRoundupArticle === true && !isLikelyStaleRoundupFlag(data)) || isRoundupPageAsReview(data)) {
         logExclusion("skippedRoundup", showId, file, data);
         stats.skippedRoundup = (stats.skippedRoundup || 0) + 1;
         return;
