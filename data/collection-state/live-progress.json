@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-07-10T03:35:35.427Z",
+  "updatedAt": "2026-07-10T03:36:37.318Z",
   "processed": 83,
-  "failed": 776,
-  "successRate": "9.7%",
+  "failed": 779,
+  "successRate": "9.6%",
   "tierBreakdown": {
     "playwright": 58,
     "amp": 0,
@@ -10,23 +10,11 @@
     "directCookies": 9,
     "scrapingbee": 7,
     "brightdata": 5,
-    "archiveToday": 32,
+    "archiveToday": 33,
     "archive": 4
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-07-09T21:17:28.987Z",
-      "event": "bb-session",
-      "session": "16126d40",
-      "url": "https://www.londontheatre1.com/reviews/pride-national-theatre/"
-    },
-    {
-      "t": "2026-07-09T21:28:37.234Z",
-      "event": "bb-session",
-      "session": "4d1208d7",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2649682"
-    },
     {
       "t": "2026-07-09T21:28:38.263Z",
       "event": "bb-cookie-inject",
@@ -123,6 +111,17 @@
     },
     {
       "t": "2026-07-10T02:41:56.135Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-07-10T03:35:44.668Z",
+      "event": "bb-session",
+      "session": "c2ab61be",
+      "url": "https://www.newyorker.com/magazine/2026/07/20/birthright-theatre-review-giant-br"
+    },
+    {
+      "t": "2026-07-10T03:35:45.112Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
     }
