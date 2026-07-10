@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-07-10T03:51:18.521Z",
+  "updatedAt": "2026-07-10T03:52:17.618Z",
   "processed": 83,
-  "failed": 802,
-  "successRate": "9.4%",
+  "failed": 805,
+  "successRate": "9.3%",
   "tierBreakdown": {
     "playwright": 58,
     "amp": 0,
@@ -10,22 +10,11 @@
     "directCookies": 9,
     "scrapingbee": 7,
     "brightdata": 5,
-    "archiveToday": 34,
+    "archiveToday": 35,
     "archive": 4
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-07-10T00:22:09.851Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-07-10T00:45:22.495Z",
-      "event": "bb-session",
-      "session": "a092328b",
-      "url": "https://www.dailymail.co.uk/tvshowbiz/article-11692551/EastEnders-James-Bye-deta"
-    },
     {
       "t": "2026-07-10T01:16:10.518Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-07-10T03:39:45.185Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-07-10T03:51:25.727Z",
+      "event": "bb-session",
+      "session": "04b2b905",
+      "url": "https://www.newyorker.com/magazine/2026/07/20/birthright-theatre-review-giant-br"
+    },
+    {
+      "t": "2026-07-10T03:51:26.301Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
     }
