@@ -369,3 +369,58 @@ describe('safeUnlinkReview', () => {
     assert.ok(!fs.existsSync(file));
   });
 });
+
+describe('safeRenameReview self-referential duplicate pointer strip (JCS 2026-07-09)', () => {
+  test('renaming a flagged *--unknown.json ONTO its pointer target strips the pointer', () => {
+    // timeout-london--unknown.json was fingerprint-flagged as duplicateTextOf
+    // timeout-london--andrzej-lukowski.json (which does not exist yet). Byline
+    // backfill identifies the critic and renames it onto that exact name — the
+    // pointer must not ride along and turn self-referential.
+    const showDir = path.join(tmpDir, 'review-texts', 'jcs-we-2026');
+    const src = path.join(showDir, 'timeout-london--unknown.json');
+    const dst = path.join(showDir, 'timeout-london--andrzej-lukowski.json');
+    writeFile(src, {
+      criticName: 'Andrzej Lukowski',
+      outletId: 'timeout-london',
+      duplicateTextOf: 'timeout-london--andrzej-lukowski.json',
+    });
+
+    const result = safeRenameReview(src, dst);
+    assert.equal(result.wrote, true);
+    const after = JSON.parse(fs.readFileSync(dst, 'utf-8'));
+    assert.equal(after.duplicateTextOf, undefined, 'self-pointer stripped on rename');
+    assert.equal(after.criticName, 'Andrzej Lukowski', 'rest of data intact');
+  });
+
+  test('duplicateOf equal to the destination name is stripped too', () => {
+    const showDir = path.join(tmpDir, 'review-texts', 'jcs-we-2026');
+    const src = path.join(showDir, 'lbo--unknown.json');
+    const dst = path.join(showDir, 'london-box-office--stuart-king.json');
+    writeFile(src, {
+      outletId: 'london-box-office',
+      duplicateOf: 'london-box-office--stuart-king.json',
+      duplicateReason: 'url-collision-detected-at-write',
+    });
+
+    const result = safeRenameReview(src, dst);
+    assert.equal(result.wrote, true);
+    const after = JSON.parse(fs.readFileSync(dst, 'utf-8'));
+    assert.equal(after.duplicateOf, undefined, 'self-pointer stripped');
+    assert.equal(after.duplicateReason, undefined, 'stale reason stripped with it');
+  });
+
+  test('pointer to a DIFFERENT sibling survives the rename untouched', () => {
+    const showDir = path.join(tmpDir, 'review-texts', 'jcs-we-2026');
+    const src = path.join(showDir, 'guardian-uk--unknown.json');
+    const dst = path.join(showDir, 'guardian-uk--staff.json');
+    writeFile(src, {
+      outletId: 'guardian-uk',
+      duplicateTextOf: 'guardian--arifa-akbar.json',
+    });
+
+    const result = safeRenameReview(src, dst);
+    assert.equal(result.wrote, true);
+    const after = JSON.parse(fs.readFileSync(dst, 'utf-8'));
+    assert.equal(after.duplicateTextOf, 'guardian--arifa-akbar.json', 'legit pointer preserved');
+  });
+});
