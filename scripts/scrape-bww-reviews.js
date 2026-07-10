@@ -457,8 +457,19 @@ async function discoverBwwRoundup(show, showId, options = {}) {
         productionType: show.type,
       });
       if (!validation.valid) {
-        console.log(`  [SKIP] forced URL doesn't match "${searchTitleForVal}": ${validation.reason}`);
-        return null;
+        // The LLM tiebreak is stochastic and false-negatives short titles
+        // against descriptor-laden roundup headings ("Millions" vs "Review
+        // Roundup: MILLIONS World Premiere Musical at ...", 2026-07-10). The
+        // deterministic slug matcher is a stronger signal for a caller-forced
+        // URL: if it routes this exact URL to this exact show with high
+        // confidence, proceed over the LLM's objection.
+        const slugMatch = matchBwwRoundupSlugToShow(options.forceRoundupUrl, [show]);
+        if (slugMatch && slugMatch.confidence === 'high' && slugMatch.show && slugMatch.show.id === showId) {
+          console.log(`  [FORCE-URL] LLM rejected ("${validation.reason && validation.reason.slice(0, 60)}") but slug-matcher confirms ${showId} — proceeding`);
+        } else {
+          console.log(`  [SKIP] forced URL doesn't match "${searchTitleForVal}": ${validation.reason}`);
+          return null;
+        }
       }
       if (!options.dryRun) {
         if (!fs.existsSync(roundupArchiveDir)) fs.mkdirSync(roundupArchiveDir, { recursive: true });
@@ -1265,8 +1276,19 @@ async function main() {
   const targetShowIds = showsArg ? showsArg.replace('--shows=', '').split(',').map(s => s.trim()).filter(Boolean) : null;
   const limit = limitArg ? parseInt(limitArg.replace('--limit=', '')) : null;
   const type = typeArg ? typeArg.replace('--type=', '') : 'all';
+  // --roundup-url: caller already KNOWS the roundup URL (e.g. the regional
+  // auto-promotion chain — the staged candidate's sourceUrl IS the roundup).
+  // Skips SERP/BWW-search discovery, whose quoted-title query fails on
+  // slug-parsed titles like "MILLIONS World Premiere Musical" (E2E test,
+  // 2026-07-10). Single-show only; validated via validatePageMatchesShow.
+  const roundupUrlArg = args.find(a => a.startsWith('--roundup-url='));
+  const roundupUrl = roundupUrlArg ? roundupUrlArg.replace('--roundup-url=', '') : null;
+  if (roundupUrl && (!targetShowIds || targetShowIds.length !== 1)) {
+    console.error('--roundup-url requires exactly one --shows=<id>');
+    process.exit(2);
+  }
 
-  const options = { type, force, dryRun, verify, tokenOverlapSet: null }; // populated below
+  const options = { type, force, dryRun, verify, tokenOverlapSet: null, ...(roundupUrl ? { forceRoundupUrl: roundupUrl } : {}) }; // populated below
 
   console.log(`Type: ${type} | Force: ${force} | Dry-run: ${dryRun} | Verify: ${verify}`);
   if (targetShowIds) console.log(`Target shows: ${targetShowIds.join(', ')}`);
