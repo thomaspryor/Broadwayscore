@@ -257,14 +257,20 @@ const AGGREGATOR_ROUNDUP_DOMAINS = new Set([
 //     excludes files flagged isNonReview/nonReviewFlag/nonReviewContent
 //     via alreadyFlagged above, so the hit count trends down as the
 //     classifier chews through the backlog.
-const STRICT_CLASSES = new Set(['A', 'C', 'E', 'F']);
+// A2 promoted to strict 2026-07-05 after 9 clean bake days (0 false positives).
+// Only level='contamination' hits block (corroborated by region or url-token);
+// level='review' hits (uncorroborated date clusters) remain report-only.
+// C2 is intentionally excluded: 'C2_url_multi_critic'.split('_')[0] === 'C2', NOT 'C'.
+// C2 multi-byline cases need a resolvable byline signal before auto-blocking; report-only.
+const STRICT_CLASSES = new Set(['A', 'A2', 'C', 'E', 'F']);
 
 const hits = {
   A_cross_market: [],
   // A2: same-season cross-market contamination (relative date-cluster + region/url
-  // corroboration). REPORT-ONLY for now (not in STRICT_CLASSES) — promote to strict
-  // after one clean corpus cycle. Added 2026-06-26 after the #382 R&J incident, which
-  // the absolute >180d Category-A threshold missed (siblings only ~72d apart).
+  // corroboration). Promoted to strict on 2026-07-05 (9 clean bake days, 0 FPs).
+  // level='contamination' hits count toward the strict gate; level='review' entries
+  // (date-clustered but no corroboration) remain report-only. Added 2026-06-26 after
+  // the #382 R&J incident — absolute >180d Category-A missed siblings ~72d apart.
   A2_cross_market_relative: [],
   B_false_positive_wp: [],
   C_domain_mismatch: [],
@@ -347,7 +353,7 @@ for (const showId of showDirs) {
     // with a near-in-time cross-market sibling's opening (e.g. West End R&J 03-31 vs
     // Delacorte R&J 06-11). Requires region OR url-token corroboration so legit
     // dual-market coverage (Guardian/Times-UK on the Broadway opening) is never
-    // flagged. REPORT-ONLY (A2 not in STRICT_CLASSES) until promoted.
+    // flagged. Promoted to strict 2026-07-05; level='contamination' hits block.
     if (shouldRunClass('A') && !alreadyFlagged && !d._auditAllowCrossMarket && xmarketSibs.length) {
       const pubDate = parseDate(d.publishDate);
       if (pubDate && showOpening) {
@@ -584,12 +590,17 @@ if (JSON_OUT) {
 
 // In strict mode, only count classes that are in the strict set.
 // Class D (pre-opening features) is report-only — too many legitimate preview reviews.
+// Class A2: only contamination-level hits count (corroborated by region or url-token);
+// review-level hits (uncorroborated date clusters) remain report-only in both modes.
 const strictHits = Object.entries(hits)
-  .filter(([k]) => {
+  .reduce((sum, [k, arr]) => {
     const classLetter = k.split('_')[0];
-    return STRICT_CLASSES.has(classLetter);
-  })
-  .reduce((sum, [, arr]) => sum + arr.length, 0);
+    if (!STRICT_CLASSES.has(classLetter)) return sum;
+    if (classLetter === 'A2') {
+      return sum + arr.filter(h => h.level === 'contamination').length;
+    }
+    return sum + arr.length;
+  }, 0);
 
 // --gate: catastrophe floor only. A cross-market leak (class A — wrong show's
 // reviews shown to users) ALWAYS blocks; otherwise block only on a mass spike past

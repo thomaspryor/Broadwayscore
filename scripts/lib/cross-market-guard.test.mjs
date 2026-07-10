@@ -166,3 +166,59 @@ test('no siblings or missing dates → clear (never throws)', () => {
   assert.equal(classifyCrossMarketContamination({ reviewDate: null, thisShow: DELACORTE, siblings: SIB_WE }).level, 'clear');
   assert.equal(classifyCrossMarketContamination({ reviewDate: D('2026-04-01'), thisShow: { opening: null, market: 'us' }, siblings: SIB_WE }).level, 'clear');
 });
+
+// ─── Promotion boundary tests (A2 strict-gate promotion 2026-07-05) ─────────
+// These document the exact contamination vs review split the strict gate enforces:
+// level='contamination' → blocks --strict; level='review' → report-only.
+
+test('promotion: uncorroborated date cluster → review (not contamination, never blocks strict gate)', () => {
+  // A dual-market outlet (Guardian) reviewed near the WE sibling opening with no url-token
+  // match. This is a human-review candidate, NOT a blocking contamination signal.
+  const v = classifyCrossMarketContamination({
+    reviewDate: D('2026-04-01'), thisShow: DELACORTE, siblings: SIB_WE,
+    outletRegion: 'london', isDualMarket: true,
+    reviewUrl: 'https://www.theguardian.com/stage/romeo-and-juliet-review',
+  });
+  assert.equal(v.level, 'review');
+  assert.equal(v.sibId, 'romeo-and-juliet-west-end-2026');
+});
+
+test('promotion: corroborated contamination carries sibId + reason for audit trail', () => {
+  const v = classifyCrossMarketContamination({
+    reviewDate: D('2026-04-01'), thisShow: DELACORTE, siblings: SIB_WE,
+    outletRegion: 'london', isDualMarket: false,
+  });
+  assert.equal(v.level, 'contamination');
+  assert.ok(v.sibId, 'sibId must be set for audit trail');
+  assert.ok(v.reason, 'reason must be set for audit trail');
+  assert.ok(typeof v.thisDiff === 'number', 'thisDiff must be numeric');
+  assert.ok(typeof v.sibDiff === 'number', 'sibDiff must be numeric');
+});
+
+test('margin default (45d): boundary clear/review/contamination across the 45d threshold', () => {
+  // Sibling opens 2026-04-01 (sibDiff=1d from reviewDate 2026-04-02).
+  // dateCluster fires when thisDiff >= sibDiff + margin = 1 + 45 = 46.
+  // Use isDualMarket=true (no region corroboration) to isolate margin behavior.
+  const base = {
+    reviewDate: D('2026-04-02'),
+    siblings: [{ id: 'romeo-and-juliet-west-end-2026', opening: D('2026-04-01'), market: 'uk', tokens: [] }],
+    outletRegion: 'london', isDualMarket: true,
+  };
+
+  // thisDiff=45 (thisShow opens 2026-05-17): 45 >= 46 → false → dateCluster fails → clear.
+  assert.equal(classifyCrossMarketContamination({
+    ...base, thisShow: { opening: D('2026-05-17'), market: 'us' },
+  }).level, 'clear');
+
+  // thisDiff=46 (thisShow opens 2026-05-18): 46 >= 46 → true → dateCluster fires, dual, no token → review.
+  assert.equal(classifyCrossMarketContamination({
+    ...base, thisShow: { opening: D('2026-05-18'), market: 'us' },
+  }).level, 'review');
+
+  // thisDiff=70 (DELACORTE): dateCluster true, url-token → contamination.
+  const sibWithToken = [{ id: 'romeo-and-juliet-west-end-2026', opening: D('2026-04-01'), market: 'uk', tokens: ['sadie-sink'] }];
+  assert.equal(classifyCrossMarketContamination({
+    ...base, thisShow: DELACORTE, siblings: sibWithToken,
+    reviewUrl: 'https://www.thetimes.com/romeo-juliet-review-sadie-sink',
+  }).level, 'contamination');
+});
