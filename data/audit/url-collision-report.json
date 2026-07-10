@@ -1,12 +1,39 @@
 {
-  "generatedAt": "2026-07-10T13:26:21.789Z",
+  "generatedAt": "2026-07-10T14:05:32.614Z",
   "summary": {
-    "total": 1,
+    "total": 2,
     "high": 0,
     "medium": 0,
-    "low": 1
+    "low": 2
   },
   "collisions": [
+    {
+      "url": "https://aroundthetownchicago.com/theatre-reviews/little-bear-ridge-road/",
+      "normalizedUrl": "https://aroundthetownchicago.com/theatre-reviews/little-bear-ridge-road",
+      "candidates": [
+        {
+          "showId": "little-bear-ridge-road-2025",
+          "file": "around-the-town-chicago--unknown.json",
+          "publishDate": null,
+          "openingDate": "2025-10-30",
+          "hasScore": false,
+          "hasFullText": true,
+          "outletId": "around-the-town-chicago"
+        },
+        {
+          "showId": "little-bear-ridge-road-regional-2024",
+          "file": "around-the-town-chicago--alan-bresloff.json",
+          "publishDate": null,
+          "openingDate": "2024-06-24",
+          "hasScore": false,
+          "hasFullText": true,
+          "outletId": "around-the-town-chicago"
+        }
+      ],
+      "suggestedWinner": "little-bear-ridge-road-2025",
+      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
+      "confidence": "low"
+    },
     {
       "url": "https://www.thestage.co.uk/reviews/2004/the-phantom-of-the-opera-review-at-her-majestys-theatre/",
       "normalizedUrl": "https://thestage.co.uk/reviews/2004/the-phantom-of-the-opera-review-at-her-majestys-theatre",
