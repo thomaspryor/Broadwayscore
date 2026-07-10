@@ -83,14 +83,65 @@ function audit() {
 
     for (const file of files) {
       const data = load(file);
-      if (!data || !data.duplicateOf) continue;
+      if (!data) continue;
+
+      // duplicateTextOf: content-fingerprint dedup. A URL mismatch against the
+      // sibling is EXPECTED (same text syndicated at different URLs), so only
+      // the structurally-impossible pointer states are stale:
+      //   - self-reference: a file cannot be a duplicate of itself. Born when
+      //     safeRenameReview renames `outlet--unknown.json` (flagged as a dupe
+      //     of `outlet--critic.json`) onto that very name once the byline is
+      //     identified — the pointer rides along and now targets its own file
+      //     (jesus-christ-superstar-west-end-2026 Time Out/LBO/Radio Times,
+      //     116 corpus-wide, 2026-07-09).
+      //   - sibling-missing: pointer target was deleted; this file is the
+      //     survivor and must re-enter scoring.
+      if (typeof data.duplicateTextOf === 'string' && data.duplicateTextOf.endsWith('.json')) {
+        if (data.duplicateTextOf === file) {
+          mismatches.push({
+            showId: path.basename(showDir),
+            file,
+            field: 'duplicateTextOf',
+            duplicateOf: data.duplicateTextOf,
+            reason: 'self-reference',
+            url: data.url || null,
+            siblingUrl: null,
+          });
+        } else if (!load(data.duplicateTextOf)) {
+          mismatches.push({
+            showId: path.basename(showDir),
+            file,
+            field: 'duplicateTextOf',
+            duplicateOf: data.duplicateTextOf,
+            reason: 'sibling-missing',
+            url: data.url || null,
+            siblingUrl: null,
+          });
+        }
+      }
+
+      if (!data.duplicateOf) continue;
       if (typeof data.duplicateOf !== 'string' || !data.duplicateOf.endsWith('.json')) continue;
+
+      if (data.duplicateOf === file) {
+        mismatches.push({
+          showId: path.basename(showDir),
+          file,
+          field: 'duplicateOf',
+          duplicateOf: data.duplicateOf,
+          reason: 'self-reference',
+          url: data.url || null,
+          siblingUrl: null,
+        });
+        continue;
+      }
 
       const sibling = load(data.duplicateOf);
       if (!sibling) {
         mismatches.push({
           showId: path.basename(showDir),
           file,
+          field: 'duplicateOf',
           duplicateOf: data.duplicateOf,
           reason: 'sibling-missing',
           url: data.url || null,
@@ -122,6 +173,7 @@ function audit() {
         mismatches.push({
           showId: path.basename(showDir),
           file,
+          field: 'duplicateOf',
           duplicateOf: data.duplicateOf,
           reason: 'url-mismatch',
           url: data.url,
@@ -139,12 +191,21 @@ function fix(mismatches) {
   for (const m of mismatches) {
     const filePath = path.join(REVIEW_TEXTS_DIR, m.showId, m.file);
     const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-    const reason = m.reason === 'sibling-missing'
-      ? `audit-duplicate-of-url-mismatch.js (--fix) on ${new Date().toISOString().slice(0, 10)}: sibling ${m.duplicateOf} no longer exists`
-      : `audit-duplicate-of-url-mismatch.js (--fix) on ${new Date().toISOString().slice(0, 10)}: our URL ${data.url} ≠ sibling ${m.duplicateOf} URL ${m.siblingUrl}`;
+    const field = m.field || 'duplicateOf';
+    const reason = m.reason === 'self-reference'
+      ? `audit-duplicate-of-url-mismatch.js (--fix) on ${new Date().toISOString().slice(0, 10)}: ${field} pointed at this file itself`
+      : m.reason === 'sibling-missing'
+        ? `audit-duplicate-of-url-mismatch.js (--fix) on ${new Date().toISOString().slice(0, 10)}: sibling ${m.duplicateOf} no longer exists`
+        : `audit-duplicate-of-url-mismatch.js (--fix) on ${new Date().toISOString().slice(0, 10)}: our URL ${data.url} ≠ sibling ${m.duplicateOf} URL ${m.siblingUrl}`;
     data.duplicateClearReason = reason;
-    data.duplicateOf = null;
-    data.duplicateReason = null;
+    if (field === 'duplicateTextOf') {
+      // No duplicateTextOfCleared: the content-fingerprint pass must stay free
+      // to re-flag this file with a CORRECT pointer if a genuine dupe exists.
+      data.duplicateTextOf = null;
+    } else {
+      data.duplicateOf = null;
+      data.duplicateReason = null;
+    }
     safeWriteReview(filePath, data);
     cleared++;
   }
