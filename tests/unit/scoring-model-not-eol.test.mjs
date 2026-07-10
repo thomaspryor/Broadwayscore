@@ -52,4 +52,25 @@ describe('scoring model is not EOL', () => {
         `${rel} should reference the canonical Claude scoring model ${CLAUDE_SONNET}`);
     });
   }
+
+  // Repo-wide sweep: the scoring-path guard above missed 2 stragglers
+  // (scan-we-cross-market.ts, get-ai-feedback.yml) that kept calling the dead
+  // pin until 2026-07-09. Any file that ships a model string can rot the same
+  // way, so scan everything we execute — scripts, src, workflows.
+  test('no retired Claude model pin anywhere in scripts/, src/, .github/', async () => {
+    const { execSync } = await import('node:child_process');
+    for (const dead of DEAD_MODELS) {
+      let hits = '';
+      try {
+        hits = execSync(
+          `grep -rl --fixed-strings ${JSON.stringify(dead)} scripts src .github --include='*.js' --include='*.ts' --include='*.mjs' --include='*.yml' --include='*.yaml' || true`,
+          { cwd: root, encoding: 'utf8' }
+        ).trim();
+      } catch { /* grep exit 1 = no matches — handled by || true */ }
+      // This test file legitimately names the dead pin.
+      const offenders = hits.split('\n').filter(f => f && !f.includes('scoring-model-not-eol'));
+      assert.deepEqual(offenders, [],
+        `retired model ${dead} still referenced by: ${offenders.join(', ')} — use models.js`);
+    }
+  });
 });
