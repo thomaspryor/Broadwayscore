@@ -87,7 +87,20 @@ async function sendEmailAlert({ title, description, severity = 'error', fields =
 async function sendAlert({ title, description, severity = 'error', fields = [], url, email = false }) {
   console.log(`[Alert] ${title}: ${description}`);
   if (email) {
-    await sendEmailAlert({ title, description, severity, fields, url });
+    const delivered = await sendEmailAlert({ title, description, severity, fields, url });
+    if (!delivered) {
+      // A requested-but-failed alert is itself a critical failure: this exact
+      // silent path is why months of completeness alerts reached nobody
+      // (2026-07-09 plan-review finding). Surface it where CI makes it visible.
+      console.error(`::error::alert delivery FAILED (email) — "${title}". Check RESEND_API_KEY / OWNER_EMAIL. The alert content was only logged, nobody was notified.`);
+      if (process.env.GITHUB_STEP_SUMMARY) {
+        try {
+          require('fs').appendFileSync(process.env.GITHUB_STEP_SUMMARY,
+            `\n## 🚨 Alert delivery FAILED\n\n**${title}** — email could not be sent (RESEND_API_KEY/OWNER_EMAIL missing or Resend error). Alert was log-only.\n`);
+        } catch {}
+      }
+    }
+    return delivered;
   }
   return false;
 }

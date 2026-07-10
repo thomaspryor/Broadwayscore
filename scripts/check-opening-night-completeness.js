@@ -304,14 +304,20 @@ async function main() {
         console.log(f.value);
       }
     } else {
-      await sendAlert({
+      // email:true — drops on opening-night shows are exactly the class of failure
+      // that sat invisible for months when this was log-only (2026-07-09 finding:
+      // sendAlert without email:true never left the CI log).
+      const delivered = await sendAlert({
         title: `Opening-Night Drop Alert — ${alerts.length} show(s)`,
         description,
         severity: 'warning',
         fields,
         url: `https://github.com/${process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore'}/actions`,
+        email: true,
       });
-      console.log('[completeness] Alert dispatched (logged; surfaces in BSC Daily digest).');
+      console.log(delivered
+        ? '[completeness] Alert dispatched via email.'
+        : '[completeness] ⚠️ Alert email NOT delivered — logged only (see ::error:: annotation).');
     }
   } else {
     console.log('[completeness] No drops detected — opening-night shows look complete vs last snapshot.');
