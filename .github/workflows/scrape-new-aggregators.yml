@@ -155,7 +155,16 @@ jobs:
             if [ -n "$IDS" ]; then
               echo "validate-data passed — same-run targeted review scrape"
               node scripts/scrape-playbill-verdict.js --shows="$IDS" || true
-              node scripts/scrape-bww-reviews.js --shows="$IDS" || true
+              # BWW: the staged candidate's sourceUrl IS the roundup — pass it
+              # directly (--roundup-url) so ingestion doesn't depend on SERP
+              # re-discovery of a slug-parsed title (Millions E2E gap, 2026-07-10).
+              node -e "const d=require('./data/audit/last-promotion-ids.json');for(const p of d.promoted)console.log(p.id+'|'+(p.sourceUrl||''))" | while IFS='|' read -r pid purl; do
+                if [ -n "$purl" ] && echo "$purl" | grep -q "broadwayworld.com"; then
+                  node scripts/scrape-bww-reviews.js --shows="$pid" --roundup-url="$purl" || true
+                else
+                  node scripts/scrape-bww-reviews.js --shows="$pid" || true
+                fi
+              done
             fi
           else
             # Push is refused via the sentinel. Roll back the staging consumption
