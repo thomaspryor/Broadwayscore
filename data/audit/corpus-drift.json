@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-10T13:52:41.857Z",
+    "generatedAt": "2026-07-10T14:18:05.902Z",
     "note": "Corpus-statistics drift monitor. Non-blocking; surfaced via health-check.js digest. Not a code-correctness gate."
   },
   "summary": {
@@ -18,7 +18,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "=== TEXT QUALITY AUDIT ===\n\nTotal reviews: 40650\nHas fullText: 32246\n\n--- Quality Breakdown ---\n  full: 22001 (68.2%)\n  truncated: 9541 (29.6%)\n  partial: 326 (1.0%)\n  excerpt: 319 (1.0%)\n  stub: 41 (0.1%)\n  complete: 13 (0.0%)\n  unknown: 5 (0.0%)\n\n--- Truncation Signals ---\n  no_ending_punctuation: 6631\n  has_footer_junk: 1476\n  ends_with_ellipsis: 129\n  has_footer_text: 109\n  paywall_or_login_prompt: 77\n\n--- Threshold Checks (MONITOR / drift band) ---\n  ✅ Full: 68.2% (min: 25%)\n  ✅ Truncated: 29.6% (max: 65%)\n  ✅ Unknown: 0.0% (max: 5%)\n\n✅ AUDIT PASSED"
+      "detail": "=== TEXT QUALITY AUDIT ===\n\nTotal reviews: 40650\nHas fullText: 32251\n\n--- Quality Breakdown ---\n  full: 22006 (68.2%)\n  truncated: 9541 (29.6%)\n  partial: 326 (1.0%)\n  excerpt: 319 (1.0%)\n  stub: 41 (0.1%)\n  complete: 13 (0.0%)\n  unknown: 5 (0.0%)\n\n--- Truncation Signals ---\n  no_ending_punctuation: 6632\n  has_footer_junk: 1476\n  ends_with_ellipsis: 129\n  has_footer_text: 109\n  paywall_or_login_prompt: 77\n\n--- Threshold Checks (MONITOR / drift band) ---\n  ✅ Full: 68.2% (min: 25%)\n  ✅ Truncated: 29.6% (max: 65%)\n  ✅ Unknown: 0.0% (max: 5%)\n\n✅ AUDIT PASSED"
     },
     {
       "name": "aggregator-truth",
@@ -72,7 +72,7 @@
       "exitCode": 1,
       "ok": false,
       "crashed": false,
-      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 6 flagged, 15 exempt, 39 covered\n  ⚠️   105  data/audit/url-collision-report.json  — no merge driver; needs a decision\n  ⚠️   104  data/audit/pipeline-health/collect-review-texts.last-success  — no merge driver; needs a decision\n  ⚠️    87  data/audit/processed-feedback.json  — no merge driver; needs a decision\n  ⚠️    86  data/audit/validation-baseline.json  — no merge driver; needs a decision\n  ⚠️    32  data/audit/validation/collection-report-2026-07-08.json  — no merge driver; needs a decision\n  ⚠️    32  data/opening-night-timeline/jesus-christ-superstar-west-end-2026.jsonl  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
+      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 6 flagged, 15 exempt, 39 covered\n  ⚠️   107  data/audit/url-collision-report.json  — no merge driver; needs a decision\n  ⚠️   106  data/audit/pipeline-health/collect-review-texts.last-success  — no merge driver; needs a decision\n  ⚠️    88  data/audit/validation-baseline.json  — no merge driver; needs a decision\n  ⚠️    86  data/audit/processed-feedback.json  — no merge driver; needs a decision\n  ⚠️    32  data/audit/validation/collection-report-2026-07-08.json  — no merge driver; needs a decision\n  ⚠️    32  data/opening-night-timeline/jesus-christ-superstar-west-end-2026.jsonl  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
     },
     {
       "name": "review-contamination",
@@ -162,7 +162,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "[stuck-rescore] 2 stuck needsRescore flag(s) (non-scoreable) of 728 flagged; threshold --max=25\n     2  fullText added after excerpt-based scoring\n    - a-midsummer-nights-dream-globe-west-end-2026/whatsonstage--alun-hood.json  [fullText added after excerpt-based scoring]\n    - jesus-christ-superstar-west-end-2026/times-uk--rachel-halliburton.json  [fullText added after excerpt-based scoring]"
+      "detail": "[stuck-rescore] 3 stuck needsRescore flag(s) (non-scoreable) of 729 flagged; threshold --max=25\n     3  fullText added after excerpt-based scoring\n    - a-midsummer-nights-dream-globe-west-end-2026/whatsonstage--alun-hood.json  [fullText added after excerpt-based scoring]\n    - jesus-christ-superstar-west-end-2026/financialtimes--brendan-lemon.json  [fullText added after excerpt-based scoring]\n    - jesus-christ-superstar-west-end-2026/times-uk--rachel-halliburton.json  [fullText added after excerpt-based scoring]"
     }
   ]
 }

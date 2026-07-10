@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-10T13:44:58.992Z",
+  "timestamp": "2026-07-10T13:53:37.808Z",
   "stats": {
-    "totalReviews": 39936,
+    "totalReviews": 39942,
     "alreadyFlagged": 17567,
     "dateGuardCatches": 49,
-    "directorMismatch": 893,
+    "directorMismatch": 895,
     "tvFilmSignals": 1096,
     "londonSignals": 742,
     "offBroadwaySignals": 467,
     "yearMismatch": 87,
-    "noPublishDate": 4031
+    "noPublishDate": 4037
   },
   "findings": [
     {
@@ -14118,6 +14118,32 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "little-bear-ridge-road-regional-2024",
+      "file": "broadwayworld--rachel-weinberg.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/chicago/article/Review-LITTLE-BEAR-RIDGE-ROAD-at-Steppenwolf-Theatre-Company-20240624",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"joe mantello\" from little-bear-ridge-road-2025"
+        }
+      ]
+    },
+    {
+      "showId": "little-bear-ridge-road-regional-2024",
+      "file": "third-coast-review--adam-kaz.json",
+      "publishDate": null,
+      "url": "https://thirdcoastreview.com/2024/06/26/stages-review-steppenwolf-little-bear-ridge-road",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"joe mantello\" from little-bear-ridge-road-2025"
         }
       ]
     },
