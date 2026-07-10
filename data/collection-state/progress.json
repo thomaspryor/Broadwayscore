@@ -78,7 +78,8 @@
     "the-balusters-2026/broadwayworld--unknown.json",
     "the-balusters-2026/playbill--unknown.json",
     "schmigadoon-2026/nytg--unknown.json",
-    "schmigadoon-2026/thewrap--robert-hofler.json"
+    "schmigadoon-2026/thewrap--robert-hofler.json",
+    "proof-2026/deadline--unknown.json"
   ],
   "failed": [
     "allegra-west-end-2026/cambridge--kathy-baker-johnson.json",
@@ -605,7 +606,16 @@
     "the-rocky-horror-show-2026/british-theatre--unknown.json",
     "schmigadoon-2026/variety--clayton-davis.json",
     "schmigadoon-2026/musical-theatre-review--unknown.json",
-    "schmigadoon-2026/latimes--charles-mcnulty.json"
+    "schmigadoon-2026/latimes--charles-mcnulty.json",
+    "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
+    "schmigadoon-2026/washpost--naveen-kumar.json",
+    "avenue-q-west-end-2026/nytimes--ben-brantley.json",
+    "avenue-q-west-end-2026/variety--david-rooney.json",
+    "avenue-q-west-end-2026/theatermania--andy-propst.json",
+    "proof-2026/680newscom--gloria-martin.json",
+    "avenue-q-west-end-2026/1883-magazine--nick-barr.json",
+    "avenue-q-west-end-2026/backstage--david-sheward.json",
+    "avenue-q-west-end-2026/talkinbroadway--matthew-murray.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -670,7 +680,9 @@
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/tender-off-west-end-2026/times-uk--richard-morrison.json"
+      "data/review-texts/tender-off-west-end-2026/times-uk--richard-morrison.json",
+      "data/review-texts/proof-2026/deadline--unknown.json",
+      "proof-2026/deadline--unknown.json"
     ],
     "directCookies": [
       "jesus-christ-superstar-west-end-2026/times-uk--ann-treneman.json",
@@ -711,11 +723,12 @@
       "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
       "archduke-west-end-2026/broadwayworld--alexander-cohen.json",
       "pride-west-end-2026/standard--unknown.json",
-      "sinatra-the-musical-west-end-2026/standard--unknown.json"
+      "sinatra-the-musical-west-end-2026/standard--unknown.json",
+      "schmigadoon-2026/theater-pizzazz--eyal-solomon.json"
     ]
   },
   "startTime": "2026-07-10T10:21:30.800Z",
-  "lastProcessed": "schmigadoon-2026/latimes--charles-mcnulty.json",
+  "lastProcessed": "avenue-q-west-end-2026/talkinbroadway--matthew-murray.json",
   "log": [
     {
       "t": "2026-07-10T10:25:31.024Z",
@@ -740,15 +753,15 @@
       "domain": "newyorker.com"
     },
     {
-      "t": "2026-07-10T13:09:47.571Z",
+      "t": "2026-07-10T13:19:39.722Z",
       "event": "bb-session",
-      "session": "84ce57f5",
-      "url": "https://www.newyorker.com/magazine/2026/07/20/birthright-theatre-review-giant-br"
+      "session": "3b377a5d",
+      "url": "https://deadline.com/2026/07/ayo-edebiri-mental-physical-toll-proof-broadway-deb"
     },
     {
-      "t": "2026-07-10T13:09:48.060Z",
+      "t": "2026-07-10T13:19:40.093Z",
       "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
+      "domain": "deadline.com"
     }
   ]
 }
