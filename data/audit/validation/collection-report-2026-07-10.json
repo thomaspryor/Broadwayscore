@@ -1,48 +1,48 @@
 {
-  "runDate": "2026-07-10T06:42:38.465Z",
+  "runDate": "2026-07-10T06:45:30.805Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "crazysexycool-regional-2026",
+    "showFilter": "a-walk-on-the-moon-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 1,
+    "processed": 0,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "66.7%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 3,
+    "tier1Attempts": 2,
     "tier1Success": 2,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
-    "tier2Success": 1,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
     "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 1,
-    "scrapingBeePageCredits": 1,
+    "totalFailed": 2,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -50,23 +50,17 @@
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [
-    "crazysexycool-regional-2026/feature-presentation--unknown.json",
-    "crazysexycool-regional-2026/morris-theatre-dc--unknown.json"
-  ],
+  "processed": [],
   "failed": [
-    "crazysexycool-regional-2026/playbill--unknown.json"
+    "a-walk-on-the-moon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "a-walk-on-the-moon-off-broadway-2026/pages-on-stages--mason-pilevsky.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "crazysexycool-regional-2026/morris-theatre-dc--unknown.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [
-      "crazysexycool-regional-2026/feature-presentation--unknown.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
