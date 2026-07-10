@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-07-10T22:05:55.234Z",
+  "timestamp": "2026-07-10T23:49:27.354Z",
   "stats": {
     "totalReviews": 39960,
     "alreadyFlagged": 17574,
     "dateGuardCatches": 50,
     "directorMismatch": 897,
-    "tvFilmSignals": 1097,
+    "tvFilmSignals": 1098,
     "londonSignals": 742,
     "offBroadwaySignals": 467,
     "yearMismatch": 87,
@@ -23746,6 +23746,19 @@
       "score": 55,
       "publishDate": "2026-04-26",
       "url": "https://www.thewrap.com/creative-content/theater/the-lost-boys-broadway-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "the-magic-show-1974",
+      "file": "indiewire--wilson-chapman.json",
+      "publishDate": null,
+      "url": "https://www.indiewire.com/criticism/movies/moana-review-disney-live-action-remake-1235204036/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
