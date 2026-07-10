@@ -1,24 +1,25 @@
 {
-  "totalCandidates": 10,
+  "totalCandidates": 16,
   "cdxFound": 4,
-  "cdxNotFound": 4,
-  "recovered": 3,
+  "cdxNotFound": 1,
+  "recovered": 4,
   "recoveredByTier": {
-    "1": 0,
-    "2": 0,
-    "3": 3
+    "1": 1,
+    "2": 2,
+    "3": 1
   },
   "recoveredByDomain": {
-    "broadwayworld.com": 1,
-    "dailymail.co.uk": 1,
-    "radiotimes.com": 1
+    "vulture.com": 1,
+    "thedailybeast.com": 1,
+    "indiewire.com": 1,
+    "eveningnews24.co.uk": 1
   },
   "tooShort": 0,
   "garbage": 0,
   "wrongShow": 0,
   "archiveTodayRecovered": 0,
-  "errors": 2,
-  "notInArchive": 4,
+  "errors": 11,
+  "notInArchive": 1,
   "domainSkipped": 0,
   "circuitBrokenDomains": []
 }
