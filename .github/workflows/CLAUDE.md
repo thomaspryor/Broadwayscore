@@ -408,6 +408,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Scripts:** `scripts/process-feedback.js`, `scripts/diagnose-feedback-bug.js`
 - **Requires:** FORMSPREE_TOKEN, ANTHROPIC_API_KEY
 - **Bug diagnosis:** For each Bug/Content Error submission (max 5), keyword-matches to relevant file categories, loads code/data within ~30K token budget, calls Claude Sonnet for structured diagnosis. Creates separate GitHub Issue per bug with labels `bug-diagnosis` + `{priority}-priority`.
+- **Cancellation resilience (2026-07-10):** Diagnoses persist in `data/audit/pending-bug-diagnoses.json` (committed with the tracking file) and issue creation runs BEFORE the push-retry tracking commit; timeout is 30 min. Previously issue creation was the last step gated `if: success()`, so a job timing out during push contention was cancelled with the submission already marked processed — the diagnosis vanished with no issue and no alert (Erik Andersen's homepage-filter bug, run 28876301784, 2026-07-07). Leftover pending diagnoses are drained on the next run via the `has_pending_diagnoses` output.
 - **Cost:** ~$0.15/bug diagnosis, typical week $0-0.45, max $0.75
 - **CLI test:** `node scripts/diagnose-feedback-bug.js --message "score seems wrong" --show "Hamilton"`
 
