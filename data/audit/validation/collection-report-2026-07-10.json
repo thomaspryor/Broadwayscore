@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-07-10T04:58:12.388Z",
+  "runDate": "2026-07-10T06:05:42.891Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 1000,
@@ -17,18 +17,18 @@
     "successRate": "66.7%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 1,
-    "archive": 1
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 1,
+    "tier1Attempts": 1,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -40,7 +40,7 @@
     "tier3_6Attempts": 1,
     "tier3_6Success": 1,
     "tier4Attempts": 1,
-    "tier4Success": 0,
+    "tier4Success": 1,
     "totalFailed": 1,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
@@ -58,9 +58,7 @@
     "millions-world-premiere-musical-regional-2025/artsatl--benjamin-carr.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "millions-world-premiere-musical-regional-2025/showriz--frank-rizzo.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
@@ -70,7 +68,8 @@
       "data/review-texts/millions-world-premiere-musical-regional-2025/artsatl--benjamin-carr.json"
     ],
     "archive": [
-      "millions-world-premiere-musical-regional-2025/broadwayworld--joseph-harrison.json"
+      "millions-world-premiere-musical-regional-2025/broadwayworld--joseph-harrison.json",
+      "millions-world-premiere-musical-regional-2025/showriz--frank-rizzo.json"
     ]
   },
   "failuresByOutlet": {},
