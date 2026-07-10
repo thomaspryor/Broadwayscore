@@ -85,6 +85,9 @@ export interface RawShow {
   originalProductionId?: string | null; // ID of the original production (e.g., "cabaret-1966")
   productionNumber?: number;            // 1 for original, 2 for first revival, etc.
   season?: string;                      // Broadway season (e.g., "2024-2025")
+  // Regional→Broadway transfer pair (reciprocal ids; validate-data enforces).
+  transferOf?: string | null;           // on the Broadway show: id of its regional tryout
+  transferredTo?: string | null;        // on the regional show: id of its Broadway transfer
   // Homepage curation overrides (off-Broadway shows surfaced on the Broadway grid).
   // See src/lib/homepage-notability.ts. Editorial escape hatches over the auto rule.
   homepageInclude?: boolean;           // force onto homepage grid (e.g. star-driven previews)
@@ -234,6 +237,8 @@ export interface ComputedShow {
   originalProductionId?: string | null;
   productionNumber?: number;
   season?: string;
+  transferOf?: string | null;
+  transferredTo?: string | null;
   // Homepage curation overrides (see RawShow above / homepage-notability.ts)
   homepageInclude?: boolean;
   homepageExclude?: boolean;
@@ -768,6 +773,8 @@ export function computeShowData(
     originalProductionId: show.originalProductionId,
     productionNumber: show.productionNumber,
     season: show.season,
+    transferOf: show.transferOf,
+    transferredTo: show.transferredTo,
     homepageInclude: show.homepageInclude,
     homepageExclude: show.homepageExclude,
     // Scores

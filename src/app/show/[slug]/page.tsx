@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 import dynamic from 'next/dynamic';
-import { getShowBySlug, getRecentShowSlugs, getShowLastUpdated, slugify, getRelatedShowsOpen, getRelatedShowsClosed, getOtherProductions, getTheaterBySlug, getOperaTitleSlug } from '@/lib/data-core';
+import { getShowBySlug, getShowById, getRecentShowSlugs, getShowLastUpdated, slugify, getRelatedShowsOpen, getRelatedShowsClosed, getOtherProductions, getTheaterBySlug, getOperaTitleSlug } from '@/lib/data-core';
 import { getShowGrosses, getGrossesWeekEnding } from '@/lib/data-grosses';
 import { getShowAwards } from '@/lib/data-awards';
 import { getTonyNamesByCategory } from '@/lib/data-tony-noms';
@@ -516,13 +516,46 @@ export default async function ShowPage({ params }: { params: { slug: string } })
 
               {/* Regional trust line — keyed on category (renders even if the market flag is off,
                   since the detail page is reachable directly). Explains why a non-Broadway show
-                  lives on Broadway Scorecard so first-time search arrivals don't bounce. */}
-              {isRegional && (
-                <p className="text-xs sm:text-sm mb-4 -mt-1 leading-relaxed text-emerald-300/90" data-testid="regional-trust-line">
-                  <span className="font-semibold">Regional production</span>
-                  <span className="text-gray-400"> — tracked as a buzzy, well-reviewed show that could transfer to Broadway.</span>
-                </p>
-              )}
+                  lives on Broadway Scorecard so first-time search arrivals don't bounce.
+                  When the tryout has a linked Broadway transfer (transferredTo), say so. */}
+              {isRegional && (() => {
+                const transfer = show.transferredTo ? getShowById(show.transferredTo) : null;
+                return (
+                  <p className="text-xs sm:text-sm mb-4 -mt-1 leading-relaxed text-emerald-300/90" data-testid="regional-trust-line">
+                    <span className="font-semibold">Regional production</span>
+                    {transfer ? (
+                      <span className="text-gray-400">
+                        {' '}— this tryout transferred to Broadway.{' '}
+                        <Link href={`/show/${transfer.slug}`} className="text-emerald-300 underline decoration-emerald-300/40 underline-offset-2 hover:text-emerald-200" data-testid="transfer-link">
+                          See the Broadway production →
+                        </Link>
+                      </span>
+                    ) : (
+                      <span className="text-gray-400"> — tracked as a buzzy, well-reviewed show that could transfer to Broadway.</span>
+                    )}
+                  </p>
+                );
+              })()}
+
+              {/* Broadway side of a regional→Broadway transfer pair: surface the
+                  tryout's critic score (often the only pre-Broadway signal). */}
+              {!isRegional && show.transferOf && (() => {
+                const tryout = getShowById(show.transferOf);
+                if (!tryout) return null;
+                const tryoutVenue = (tryout.venue || '').split(',')[0];
+                const tryoutScore = tryout.criticScore?.score ? Math.round(tryout.criticScore.score) : null;
+                return (
+                  <p className="text-xs sm:text-sm mb-4 -mt-1 leading-relaxed text-emerald-300/90" data-testid="tryout-link-line">
+                    <span className="font-semibold">Pre-Broadway tryout</span>
+                    <span className="text-gray-400">
+                      {' '}— critics first reviewed this show at {tryoutVenue}{tryoutScore ? <> (scored <span className="text-emerald-300 font-semibold">{tryoutScore}/100</span>)</> : null}.{' '}
+                      <Link href={`/show/${tryout.slug}`} className="text-emerald-300 underline decoration-emerald-300/40 underline-offset-2 hover:text-emerald-200" data-testid="transfer-link">
+                        See the tryout reviews →
+                      </Link>
+                    </span>
+                  </p>
+                );
+              })()}
 
               {/* Score Box + Sentiment + Review Count - Metacritic style */}
               {(() => {
