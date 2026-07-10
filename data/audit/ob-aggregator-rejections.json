@@ -1,12 +1,13 @@
 {
-  "generatedAt": "2026-07-10T03:29:47.089Z",
+  "generatedAt": "2026-07-10T14:56:23.811Z",
   "counts": {
-    "accepted": 2,
-    "rejected": 8,
+    "accepted": 0,
+    "rejected": 10,
     "byReason": {
       "low-confidence-existing-match": 5,
       "bot-shell": 2,
-      "placeholder-venue-no-theater": 1
+      "placeholder-venue-no-theater": 1,
+      "already-in-shows": 2
     }
   },
   "rejected": [
@@ -57,6 +58,20 @@
       "slug": "Review-Roundup-CELEBRITY-AUTOPBIOGRAPHY-On-Broadway-20260518",
       "source": "bww-roundup",
       "reason": "placeholder-venue-no-theater"
+    },
+    {
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-CRAZYSEXYCOOL-THE-TLC-MUSICAL-at-Arena-Stage-20260701",
+      "slug": "Review-Roundup-CRAZYSEXYCOOL-THE-TLC-MUSICAL-at-Arena-Stage-20260701",
+      "source": "bww-roundup",
+      "reason": "already-in-shows",
+      "detail": "Crazysexycool The Tlc Musical"
+    },
+    {
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-MILLIONS-World-Premiere-Musical-at-Alliance-Theatre-20250530",
+      "slug": "Review-Roundup-MILLIONS-World-Premiere-Musical-at-Alliance-Theatre-20250530",
+      "source": "bww-roundup",
+      "reason": "already-in-shows",
+      "detail": "Millions World Premiere Musical"
     }
   ]
 }
