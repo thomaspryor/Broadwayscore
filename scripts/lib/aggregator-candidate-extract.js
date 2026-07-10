@@ -402,20 +402,20 @@ function referenceTitle(source, record) {
 // NOTE: no bare "A.R.T." pattern — "A.R.T./New York Theatres" is a real NYC
 // Off-Broadway rental complex; PV/BWW articles spell Cambridge's venue out.
 const REGIONAL_FEEDER_VENUES = [
-  { re: /\bamerican repertory theat(?:er|re)\b/i, city: 'Cambridge, MA' },
-  { re: /\bla jolla playhouse\b/i, city: 'La Jolla, CA' },
-  { re: /\bold globe\b/i, city: 'San Diego, CA' },
-  { re: /\bberkeley rep(?:ertory)?\b/i, city: 'Berkeley, CA' },
-  { re: /\bgoodman(?: theatre| theater)?\b/i, city: 'Chicago, IL' },
-  { re: /\bsteppenwolf\b/i, city: 'Chicago, IL' },
-  { re: /\bchicago shakespeare\b/i, city: 'Chicago, IL' },
-  { re: /\b(?:arena stage|kreeger|fichandler)\b/i, city: 'Washington, DC' },
-  { re: /\bshakespeare theatre company\b/i, city: 'Washington, DC' },
-  { re: /\bamerican conservatory theater\b/i, city: 'San Francisco, CA' },
-  { re: /\b5th avenue theatre\b/i, city: 'Seattle, WA' },
-  { re: /\bpaper mill playhouse\b/i, city: 'Millburn, NJ' },
-  { re: /\balliance theatre\b/i, city: 'Atlanta, GA' },
-  { re: /\b(?:center theatre group|ahmanson|mark taper)\b/i, city: 'Los Angeles, CA' },
+  { re: /\bamerican repertory theat(?:er|re)\b/i, city: 'Cambridge, MA', domain: 'americanrepertorytheater.org' },
+  { re: /\bla jolla playhouse\b/i, city: 'La Jolla, CA', domain: 'lajollaplayhouse.org' },
+  { re: /\bold globe\b/i, city: 'San Diego, CA', domain: 'theoldglobe.org' },
+  { re: /\bberkeley rep(?:ertory)?\b/i, city: 'Berkeley, CA', domain: 'berkeleyrep.org' },
+  { re: /\bgoodman(?: theatre| theater)?\b/i, city: 'Chicago, IL', domain: 'goodmantheatre.org' },
+  { re: /\bsteppenwolf\b/i, city: 'Chicago, IL', domain: 'steppenwolf.org' },
+  { re: /\bchicago shakespeare\b/i, city: 'Chicago, IL', domain: 'chicagoshakes.com' },
+  { re: /\b(?:arena stage|kreeger|fichandler)\b/i, city: 'Washington, DC', domain: 'arenastage.org' },
+  { re: /\bshakespeare theatre company\b/i, city: 'Washington, DC', domain: 'shakespearetheatre.org' },
+  { re: /\bamerican conservatory theater\b/i, city: 'San Francisco, CA', domain: 'act-sf.org' },
+  { re: /\b5th avenue theatre\b/i, city: 'Seattle, WA', domain: '5thavenue.org' },
+  { re: /\bpaper mill playhouse\b/i, city: 'Millburn, NJ', domain: 'papermill.org' },
+  { re: /\balliance theatre\b/i, city: 'Atlanta, GA', domain: 'alliancetheatre.org' },
+  { re: /\b(?:center theatre group|ahmanson|mark taper)\b/i, city: 'Los Angeles, CA', domain: 'centertheatregroup.org' },
 ];
 
 /** City string for a Broadway-feeder regional venue, or null if not one. */
