@@ -1,53 +1,53 @@
 {
-  "runDate": "2026-07-10T14:06:13.123Z",
+  "runDate": "2026-07-10T16:14:08.363Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 1000,
+    "maxReviews": 300,
     "priority": "all",
-    "showFilter": "little-bear-ridge-road-regional-2024",
+    "showFilter": "",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 95,
-    "failed": 839,
+    "processed": 104,
+    "failed": 870,
     "skipped": 0,
-    "successRate": "10.2%"
+    "successRate": "10.7%"
   },
   "tierBreakdown": {
-    "playwright": 64,
+    "playwright": 71,
     "amp": 0,
     "browserbase": 3,
-    "directCookies": 11,
+    "directCookies": 12,
     "scrapingbee": 7,
     "brightdata": 7,
-    "archiveToday": 7,
-    "archive": 8
+    "archiveToday": 10,
+    "archive": 9
   },
   "statistics": {
-    "tier1Attempts": 5,
-    "tier1Success": 4,
+    "tier1Attempts": 8,
+    "tier1Success": 7,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 2,
-    "tier3Success": 2,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 3,
+    "tier4Attempts": 4,
     "tier4Success": 1,
     "totalFailed": 291,
     "scrapingBeePageCredits": 10,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 296,
-    "urlDiscoverySuccess": 6,
+    "urlDiscoveryAttempts": 298,
+    "urlDiscoverySuccess": 7,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -145,7 +145,16 @@
     "death-of-a-salesman-2026/vulture--rob-weinert-kendt.json",
     "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
     "death-of-a-salesman-2026/latimes--charles-mcnulty.json",
-    "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json"
+    "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json",
+    "allegra-west-end-2026/london-box-office--stuart-king.json",
+    "tender-off-west-end-2026/london-box-office--stuart-king.json",
+    "a-midsummer-nights-dream-west-end-2026/london-box-office--kit-benjamin.json",
+    "a-midsummer-nights-dream-west-end-2026/london-box-office--marian-pashley.json",
+    "a-midsummer-nights-dream-west-end-2026/london-box-office--stuart-king.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/i-paper--sarah-carson.json",
+    "glengarry-glen-ross-west-end-2026/times-uk--ann-treneman.json",
+    "cats-the-jellicle-ball-2026/nydailynews--unknown.json",
+    "cats-the-jellicle-ball-2026/timeout--david-cote.json"
   ],
   "failed": [
     "allegra-west-end-2026/cambridge--kathy-baker-johnson.json",
@@ -700,6 +709,37 @@
     "tender-off-west-end-2026/guardian--david-jays.json",
     "allegra-west-end-2026/whatsonstage--aliya-al.json",
     "tender-off-west-end-2026/about-entertainment--ben-brantley.json",
+    "tender-off-west-end-2026/daily-mail--unknown.json",
+    "tender-off-west-end-2026/thestage--dave-fargnoli.json",
+    "tender-off-west-end-2026/times-uk--richard-morrison.json",
+    "giulia-the-poison-queen-of-palermo-off-broadway-2026/broadwayworld--unknown.json",
+    "dukes-off-broadway-2026/theatermania--linda-buchwald.json",
+    "dukes-off-broadway-2026/theatermania--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/guardian--mark-fisher.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/loureviews--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/all-that-dazzles-uk--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/londontheatre1--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/west-end-best-friend--unknown.json",
+    "a-walk-on-the-moon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "a-walk-on-the-moon-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+    "birthright-off-broadway-2026/newyorker--emily-nussbaum.json",
+    "birthright-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "birthright-off-broadway-2026/pages-on-stages--unknown.json",
+    "tender-off-west-end-2026/guardian--david-jays.json",
+    "tender-off-west-end-2026/about-entertainment--ben-brantley.json",
+    "tender-off-west-end-2026/daily-mail--unknown.json",
+    "tender-off-west-end-2026/thestage--dave-fargnoli.json",
+    "tender-off-west-end-2026/times-uk--richard-morrison.json",
+    "tender-off-west-end-2026/guardian--david-jays.json",
+    "tender-off-west-end-2026/about-entertainment--ben-brantley.json",
+    "tender-off-west-end-2026/daily-mail--unknown.json",
+    "tender-off-west-end-2026/thestage--dave-fargnoli.json",
+    "tender-off-west-end-2026/times-uk--richard-morrison.json",
+    "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
+    "tender-off-west-end-2026/guardian--david-jays.json",
+    "allegra-west-end-2026/whatsonstage--aliya-al.json",
+    "tender-off-west-end-2026/about-entertainment--ben-brantley.json",
     "dukes-off-broadway-2026/theatermania--linda-buchwald.json",
     "dukes-off-broadway-2026/theatermania--unknown.json",
     "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/guardian--mark-fisher.json",
@@ -746,8 +786,6 @@
     "a-midsummer-nights-dream-west-end-2026/financialtimes--julianna-barnaby.json",
     "a-midsummer-nights-dream-west-end-2026/financialtimes--sarah-hemming.json",
     "a-midsummer-nights-dream-west-end-2026/huffpost--unknown.json",
-    "a-midsummer-nights-dream-west-end-2026/london-box-office--kit-benjamin.json",
-    "a-midsummer-nights-dream-west-end-2026/london-box-office--stuart-king.json",
     "a-midsummer-nights-dream-west-end-2026/london-theatre--aliya-al-hassan.json",
     "a-midsummer-nights-dream-west-end-2026/standard--dominic-cavendish.json",
     "a-midsummer-nights-dream-west-end-2026/standard--nick-curtis.json",
@@ -805,7 +843,6 @@
     "sinatra-the-musical-west-end-2026/london-box-office--phil-willmott.json",
     "sinatra-the-musical-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/huffpost--ed-mazza.json",
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/i-paper--sarah-carson.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/london-box-office--nastazja-domaradzka.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/the-contending--unknown.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/times-uk--dominic-maxwell.json",
@@ -857,7 +894,6 @@
     "glengarry-glen-ross-west-end-2026/nysr--frank-scheck.json",
     "glengarry-glen-ross-west-end-2026/nysr--roma-torre.json",
     "glengarry-glen-ross-west-end-2026/slantmagazine--dan-rubins.json",
-    "glengarry-glen-ross-west-end-2026/times-uk--ann-treneman.json",
     "glengarry-glen-ross-west-end-2026/washpost--unknown.json",
     "white-rabbit-red-rabbit-west-end-2026/nytimes--charles-isherwood.json",
     "white-rabbit-red-rabbit-west-end-2026/guardian--david-jays.json",
@@ -986,7 +1022,11 @@
     "death-of-a-salesman-2026/queerty--matthew-wexler.json",
     "death-of-a-salesman-2026/stagebuddy--elyse-trevers.json",
     "death-of-a-salesman-2026/theater-pizzazz--carol-rocamora.json",
-    "death-of-a-salesman-2026/usatoday--elysa-gardner.json"
+    "death-of-a-salesman-2026/usatoday--elysa-gardner.json",
+    "cats-the-jellicle-ball-2026/hollywood-reporter--frank-scheck.json",
+    "cats-the-jellicle-ball-2026/newyorker--emily-nussbaum.json",
+    "cats-the-jellicle-ball-2026/newyorker--helen-shaw.json",
+    "cats-the-jellicle-ball-2026/newsday--linda-winer.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -1053,7 +1093,14 @@
       "tender-off-west-end-2026/timeout-london--andrzej-lukowski.json",
       "jesus-christ-superstar-west-end-2026/financialtimes--brendan-lemon.json",
       "joe-turners-come-and-gone-2026/playbill--unknown.json",
-      "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json"
+      "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json",
+      "allegra-west-end-2026/london-box-office--stuart-king.json",
+      "tender-off-west-end-2026/london-box-office--stuart-king.json",
+      "a-midsummer-nights-dream-west-end-2026/london-box-office--kit-benjamin.json",
+      "a-midsummer-nights-dream-west-end-2026/london-box-office--marian-pashley.json",
+      "a-midsummer-nights-dream-west-end-2026/london-box-office--stuart-king.json",
+      "the-truth-a-comedy-by-florian-zeller-west-end-2026/i-paper--sarah-carson.json",
+      "cats-the-jellicle-ball-2026/timeout--david-cote.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1072,7 +1119,8 @@
       "beetlejuice-west-end-2026/times-uk--john-bleasdale.json",
       "beetlejuice-west-end-2026/times-uk--susannah-butter.json",
       "jesus-christ-superstar-west-end-2026/times-uk--dan-cairns.json",
-      "jesus-christ-superstar-west-end-2026/times-uk--rachel-halliburton.json"
+      "jesus-christ-superstar-west-end-2026/times-uk--rachel-halliburton.json",
+      "glengarry-glen-ross-west-end-2026/times-uk--ann-treneman.json"
     ],
     "scrapingbee": [
       "jesus-christ-superstar-west-end-2026/thereviewshub--the-reviews-hub-london.json",
@@ -1092,11 +1140,17 @@
       "proof-2026/deadline--glenn-garner.json",
       "death-of-a-salesman-2026/latimes--charles-mcnulty.json"
     ],
-    "directCookies": [],
-    "scrapingbee": [],
-    "brightdata": [],
     "archiveToday": [
-      "data/review-texts/little-bear-ridge-road-regional-2024/chicagotribune--chris-jones.json"
+      "data/review-texts/allegra-west-end-2026/cambridge--kathy-baker-johnson.json",
+      "data/review-texts/tender-off-west-end-2026/thestage--dave-fargnoli.json",
+      "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+      "data/review-texts/giulia-the-poison-queen-of-palermo-off-broadway-2026/broadwayworld--unknown.json",
+      "data/review-texts/birthright-off-broadway-2026/newyorker--emily-nussbaum.json",
+      "data/review-texts/war-horse-west-end-2026/click-liverpool--carie-schneider.json",
+      "data/review-texts/giulia-the-poison-queen-of-palermo-off-broadway-2026/broadwayworld--unknown.json",
+      "data/review-texts/tender-off-west-end-2026/thestage--dave-fargnoli.json",
+      "data/review-texts/giulia-the-poison-queen-of-palermo-off-broadway-2026/broadwayworld--unknown.json",
+      "data/review-texts/birthright-off-broadway-2026/newyorker--emily-nussbaum.json"
     ],
     "archive": [
       "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
@@ -1106,40 +1160,46 @@
       "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
       "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
       "death-of-a-salesman-2026/vulture--rob-weinert-kendt.json",
-      "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json"
+      "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
+      "cats-the-jellicle-ball-2026/nydailynews--unknown.json"
     ]
   },
   "failuresByOutlet": {},
   "urlDiscoveries": [
     {
-      "reviewId": "jesus-christ-superstar-west-end-2026/financialtimes--brendan-lemon.json",
-      "oldUrl": "https://www.ft.com/content/123b9505-14d8-45b1-88ec-d3fb845f71b2",
-      "newUrl": "https://www.ft.com/content/123b9505-14d8-45b1-88ec-d3fb845f71b2?syn-25a6b1a6=1"
+      "reviewId": "a-midsummer-nights-dream-west-end-2026/london-box-office--kit-benjamin.json",
+      "oldUrl": "https://www.londonboxoffice.co.uk/news/post/review-midsummer-nights-dream",
+      "newUrl": "https://www.londonboxoffice.co.uk/news/post/a-midsummer-nights-dream-regents-park-open-air-theatre-review"
+    },
+    {
+      "reviewId": "a-midsummer-nights-dream-west-end-2026/london-box-office--marian-pashley.json",
+      "oldUrl": "https://www.londonboxoffice.co.uk/news/post/review-midsummer-nights-dream-open-air",
+      "newUrl": "https://www.londonboxoffice.co.uk/news/post/a-midsummer-nights-dream-regents-park-open-air-theatre-review"
+    },
+    {
+      "reviewId": "a-midsummer-nights-dream-west-end-2026/london-box-office--stuart-king.json",
+      "oldUrl": "https://www.londonboxoffice.co.uk/news/post/review-midsummer-nights-dream-bridge-theatre",
+      "newUrl": "https://www.londonboxoffice.co.uk/news/post/a-midsummer-nights-dream-regents-park-open-air-theatre-review"
+    },
+    {
+      "reviewId": "the-truth-a-comedy-by-florian-zeller-west-end-2026/i-paper--sarah-carson.json",
+      "oldUrl": "https://inews.co.uk/culture/dont-think-sam-campbell-telling-truth-4465988?srsltid=AfmBOoqxwzyhz9IaXDn3VTJ5Mc8DkK8VPiP380uiUAXADI5t0GG5YrF-",
+      "newUrl": "https://inews.co.uk/culture/dont-think-sam-campbell-telling-truth-4465988?srsltid=AfmBOopS7-GUigV8K5OVmvrVi7WaCAAX1RphCPbQXa7ANJEHqqyrVug9"
     },
     {
       "reviewId": "glengarry-glen-ross-west-end-2026/times-uk--ann-treneman.json",
-      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0?eafs_enabled=false",
-      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0"
+      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0",
+      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-without-men-its-not-just-putting-lipstick-on-mamet-sjc0ff8h0"
     },
     {
-      "reviewId": "joe-turners-come-and-gone-2026/playbill--unknown.json",
-      "oldUrl": "https://playbill.com/article/video-cast-of-joe-turners-come-and-gone-discuss-doing-august-wilsons-favorite-play",
-      "newUrl": "https://playbill.com/article/reviews-what-do-the-critics-think-of-joe-turners-come-and-gone-on-broadway"
+      "reviewId": "cats-the-jellicle-ball-2026/nydailynews--unknown.json",
+      "oldUrl": "https://www.nydailynews.com/2024/06/20/theater-review-cats-the-jellicle-ball-is-an-inspired-reimagining-of-the-broadway-classic/",
+      "newUrl": "https://www.nydailynews.com/2026/04/07/broadway-review-cats-jellicle-ball/"
     },
     {
-      "reviewId": "proof-2026/deadline--glenn-garner.json",
-      "oldUrl": "https://deadline.com/2026/04/proof-broadway-review-ayo-edebiri-don-cheadle-kara-young-1236861306/",
-      "newUrl": "https://deadline.com/2026/07/ayo-edebiri-mental-physical-toll-proof-broadway-debut-1236978060/"
-    },
-    {
-      "reviewId": "death-of-a-salesman-2026/vulture--rob-weinert-kendt.json",
-      "oldUrl": "https://www.vulture.com/2022/10/theater-review-wendell-pierce-death-salesman-broadway.html",
-      "newUrl": "https://www.vulture.com/article/theater-review-lane-metcalf-death-of-a-salesman.html"
-    },
-    {
-      "reviewId": "death-of-a-salesman-2026/latimes--charles-mcnulty.json",
-      "oldUrl": "http://latimesblogs.latimes.com/culturemonster/2012/03/theater-review-death-of-a-salesman-on-broadway.html",
-      "newUrl": "https://www.latimes.com/entertainment-arts/story/2026-04-01/arthur-miller-plays-revivals-death-of-a-salesman-the-price-review"
+      "reviewId": "cats-the-jellicle-ball-2026/timeout--david-cote.json",
+      "oldUrl": "https://www.timeout.com/newyork/theater/cats-the-jellicle-ball-1",
+      "newUrl": "https://www.timeout.com/newyork/news/broadway-review-paris-is-purring-in-cats-the-jellicle-ball-040826"
     }
   ]
 }
