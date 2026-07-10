@@ -64,6 +64,7 @@
 - [Regional shows FULLY auto-promote](project_regional_expansion_watchlist.md) — roundup page = go-live; daily auto-add + review ingest 2026-07-08; only images/cast/audience manual ([[regional-show-add-runbook]])
 
 ## 🎯 Opening night pipeline
+- [WE completeness gate](project_we_completeness_gate.md) — hourly audit diffs WE shows vs WET/TR/LBO citations, EMAILS named missing outlets; ingest default-OFF (var WE_GAP_INGEST=1), prior-run URLs never ingest; sendAlert w/o email:true is LOG-ONLY
 - [_pending no-byline strand](feedback_pending_no_byline_strand_drain.md) — multi-critic outlets w/o byline strand in _pending/; CHECK _pending FIRST when reviews missing; drain rejects KEEP-not-delete
 - [Date-gated flips](feedback_previews_open_flip_needs_review_signal.md) — stuck previews suppresses score, 2d review-driven backstop; OB openingDate==previewsStartDate misses press night ([[feedback_off_broadway_opening_date_gap.md]])
 - [Opening-night runbooks](feedback_admin_ingest_opening_night_2026-04-26.md) — Joe Turner master log (~42 issues, read FIRST) + 25-item failure-mode checklist ([[feedback_manual_ingest_opening_night_runbook.md]])

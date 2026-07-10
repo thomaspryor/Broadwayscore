@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-10T18:36:17.837Z",
+  "generatedAt": "2026-07-10T19:43:23.787Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -769,24 +769,24 @@
       "slug": "tender-off-west-end",
       "thumbnail": "/images/shows/tender-off-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 80,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 5,
+      "reviewsNeeded": 2,
       "siteFileExists": true,
-      "total": 0,
-      "t1": 0,
+      "total": 1,
+      "t1": 1,
       "t2": 0,
       "t3": 0,
-      "positive": 0,
+      "positive": 1,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/8 total",
+          "1/8 total",
           "T1:0/3",
-          "T2:0/2",
+          "T2:1/2",
           "hi-conf:0/6"
         ],
         "highConfidence": 0,
@@ -828,6 +828,10 @@
         },
         {
           "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
           "isDualMarket": true
         }
       ],
@@ -886,6 +890,18 @@
           "t2": 1,
           "t3": 1,
           "p": 4,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-10T19:38:06.478Z",
+          "rc": 1,
+          "s": 80,
+          "t1": 1,
+          "t2": 0,
+          "t3": 0,
+          "p": 1,
           "m": 0,
           "n": 0,
           "bc": "waiting"
@@ -1837,12 +1853,12 @@
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 21,
-      "t1": 9,
+      "total": 20,
+      "t1": 8,
       "t2": 5,
       "t3": 7,
       "positive": 12,
-      "mixed": 8,
+      "mixed": 7,
       "negative": 1,
       "readiness": {
         "ready": true,
@@ -1872,6 +1888,10 @@
         },
         {
           "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
           "isDualMarket": true
         },
         {
@@ -2335,6 +2355,18 @@
           "m": 8,
           "n": 1,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-07-10T19:38:06.478Z",
+          "rc": 20,
+          "s": 74.85,
+          "t1": 8,
+          "t2": 5,
+          "t3": 7,
+          "p": 12,
+          "m": 7,
+          "n": 1,
+          "bc": "complete"
         }
       ]
     }
