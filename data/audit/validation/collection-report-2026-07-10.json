@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-07-10T06:05:42.891Z",
+  "runDate": "2026-07-10T06:48:44.077Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 1000,
+    "maxReviews": 0,
     "priority": "all",
-    "showFilter": "millions-world-premiere-musical-regional-2025",
+    "showFilter": "a-midsummer-nights-dream-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,66 +12,102 @@
   },
   "summary": {
     "processed": 2,
-    "failed": 1,
+    "failed": 23,
     "skipped": 0,
-    "successRate": "66.7%"
+    "successRate": "8.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 2,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 1,
-    "archive": 2
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 0,
+    "tier1Attempts": 5,
+    "tier1Success": 3,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
+    "tier2Attempts": 2,
     "tier2Success": 0,
     "tier3Attempts": 1,
-    "tier3Success": 0,
+    "tier3Success": 1,
     "tier3_6Attempts": 1,
     "tier3_6Success": 1,
-    "tier4Attempts": 1,
-    "tier4Success": 1,
-    "totalFailed": 1,
-    "scrapingBeePageCredits": 0,
+    "tier4Attempts": 3,
+    "tier4Success": 0,
+    "totalFailed": 23,
+    "scrapingBeePageCredits": 10,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 20,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "millions-world-premiere-musical-regional-2025/broadwayworld--joseph-harrison.json",
-    "millions-world-premiere-musical-regional-2025/showriz--frank-rizzo.json"
+    "a-midsummer-nights-dream-west-end-2026/whatsonstage--alex-wood.json",
+    "a-midsummer-nights-dream-west-end-2026/whatsonstage--theo-bosanquet.json"
   ],
   "failed": [
-    "millions-world-premiere-musical-regional-2025/artsatl--benjamin-carr.json"
+    "a-midsummer-nights-dream-west-end-2026/hollywood-reporter--frank-scheck.json",
+    "a-midsummer-nights-dream-west-end-2026/ew--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/newsday--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/nydailynews--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/observer--kate-kellaway.json",
+    "a-midsummer-nights-dream-west-end-2026/bloomberg--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/cambridge--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/financialtimes--julianna-barnaby.json",
+    "a-midsummer-nights-dream-west-end-2026/financialtimes--sarah-hemming.json",
+    "a-midsummer-nights-dream-west-end-2026/huffpost--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/london-box-office--kit-benjamin.json",
+    "a-midsummer-nights-dream-west-end-2026/london-box-office--stuart-king.json",
+    "a-midsummer-nights-dream-west-end-2026/london-theatre--aliya-al-hassan.json",
+    "a-midsummer-nights-dream-west-end-2026/standard--dominic-cavendish.json",
+    "a-midsummer-nights-dream-west-end-2026/standard--nick-curtis.json",
+    "a-midsummer-nights-dream-west-end-2026/standard--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/sunday-telegraph--claire-allfree.json",
+    "a-midsummer-nights-dream-west-end-2026/thestage--holly-o.json",
+    "a-midsummer-nights-dream-west-end-2026/thestage--katie-chambers.json",
+    "a-midsummer-nights-dream-west-end-2026/thestage--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/times-uk--dominic-maxwell.json",
+    "a-midsummer-nights-dream-west-end-2026/times-uk--rachel-halliburton.json",
+    "a-midsummer-nights-dream-west-end-2026/westendtheatre--west-end-theatre.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "a-midsummer-nights-dream-west-end-2026/whatsonstage--alex-wood.json",
+      "a-midsummer-nights-dream-west-end-2026/whatsonstage--theo-bosanquet.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/millions-world-premiere-musical-regional-2025/artsatl--benjamin-carr.json"
+      "data/review-texts/a-midsummer-nights-dream-west-end-2026/thestage--unknown.json"
     ],
-    "archive": [
-      "millions-world-premiere-musical-regional-2025/broadwayworld--joseph-harrison.json",
-      "millions-world-premiere-musical-regional-2025/showriz--frank-rizzo.json"
-    ]
+    "archive": []
   },
-  "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "failuresByOutlet": {
+    "Sunday Telegraph": {
+      "count": 1,
+      "domain": "telegraph.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
+  "urlDiscoveries": [
+    {
+      "reviewId": "a-midsummer-nights-dream-west-end-2026/whatsonstage--theo-bosanquet.json",
+      "oldUrl": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/a-midsummer-nights-dream_1713945/",
+      "newUrl": "https://www.whatsonstage.com/news/a-midsummer-nights-dream-at-regents-park-open-air-theatre-review_1726521/"
+    }
+  ]
 }
