@@ -137,8 +137,15 @@ describe('safety wiring (audit + workflow must keep the fail-closed invariants)'
   });
 
   test('P0 (ship-check): flaggedMisses RECOVERY path also respects the WE gate + prior-run block', () => {
-    assert.ok(auditSrc.includes('m.recoverable && !(m.weRef && (!weRecGateOn || m.priorRun))'),
-      'recovery filter must exclude WE-gated + prior-run rows — an empty-body file + a 2022 roundup URL must never re-ingest prior-production text');
+    assert.ok(auditSrc.includes('m.recoverable && recBlockedPred(m)') && auditSrc.includes('m.recoverable && !recBlockedPred(m)'),
+      'recovery filter must exclude gate-blocked rows — an empty-body file + a 2022 roundup URL must never re-ingest prior-production text');
+    assert.ok(auditSrc.includes('(isWeShow(s) && !weRecGateOn)'),
+      'on WE shows ALL recovery requires the gate, not just weRef rows');
+  });
+
+  test('INCIDENT 2026-07-10: on WE shows ALL missing-URL ingest requires the gate (Broadway-path same-title contamination)', () => {
+    assert.ok(auditSrc.includes('(showIsWe && !weGateOn) || (m.weRef && (!weGateOn || m.priorRun))'),
+      'Broadway-path SERP finds same-title US/prior-production roundups for WE shows — their URLs ingested 2018 TKAM/2013 Midsummer/2014 Last Ship/2025 JLP reviews onto WE entries');
   });
 
   test('P1 (ship-check): prior-run-only alert sets do not daily re-ping; failed delivery does not record dedup hash', () => {

@@ -1095,8 +1095,15 @@ if (require.main === module) (async () => {
       // ingest ONLY when WE_GAP_INGEST=1 is explicitly set (a dropped env line
       // fails closed to report-only), and prior-run roundup URLs NEVER ingest.
       const weGateOn = process.env.WE_GAP_INGEST === '1';
-      const weBlocked = r.missing.filter(m => m.weRef && (!weGateOn || m.priorRun));
-      const eligibleMissing = r.missing.filter(m => !(m.weRef && (!weGateOn || m.priorRun)));
+      // On WE shows, the gate covers ALL missing URLs — not just weRef rows. The
+      // Broadway-path SERP/Show Score discovery finds same-title US/prior-production
+      // roundups for WE shows and ingested their reviews (2026-07-10 first-run
+      // incident: 2018 TKAM Broadway, 2013 Midsummer/Taymor, 2014 Last Ship, 2025
+      // NYC JLP reviews all ingested onto WE entries → validate-data red).
+      const showIsWe = isWeShow(s);
+      const blockedPred = (m) => (showIsWe && !weGateOn) || (m.weRef && (!weGateOn || m.priorRun));
+      const weBlocked = r.missing.filter(blockedPred);
+      const eligibleMissing = r.missing.filter(m => !blockedPred(m));
       if (weBlocked.length > 0) {
         r.weIngestBlocked = weBlocked.map(m => ({ url: m.url, host: m.host, priorRun: !!m.priorRun }));
         console.log(`  ⛔ ${weBlocked.length} WE-reference URL(s) not ingested (${weGateOn ? 'prior-run roundup — permanently report-only' : 'WE_GAP_INGEST unset — report-only mode'})`);
@@ -1147,11 +1154,12 @@ if (require.main === module) (async () => {
       // citing a Guardian URL would otherwise re-ingest PRIOR-PRODUCTION text
       // into the current show's file every hour (the WET mass-ingestion class).
       const weRecGateOn = process.env.WE_GAP_INGEST === '1';
-      const weRecBlocked = r.flaggedMisses.filter(m => m.recoverable && m.weRef && (!weRecGateOn || m.priorRun));
+      const recBlockedPred = (m) => (isWeShow(s) && !weRecGateOn) || (m.weRef && (!weRecGateOn || m.priorRun));
+      const weRecBlocked = r.flaggedMisses.filter(m => m.recoverable && recBlockedPred(m));
       if (weRecBlocked.length > 0) {
-        console.log(`  ⛔ ${weRecBlocked.length} WE-reference recoverable(s) not recovered (${weRecGateOn ? 'prior-run roundup — permanently report-only' : 'WE_GAP_INGEST unset — report-only mode'})`);
+        console.log(`  ⛔ ${weRecBlocked.length} recoverable(s) not recovered on this WE show (${weRecGateOn ? 'prior-run roundup — permanently report-only' : 'WE_GAP_INGEST unset — report-only mode'})`);
       }
-      const recoverables = r.flaggedMisses.filter(m => m.recoverable && !(m.weRef && (!weRecGateOn || m.priorRun)));
+      const recoverables = r.flaggedMisses.filter(m => m.recoverable && !recBlockedPred(m));
       // Recovery draws from whatever the missing-URL ingest left of the shared
       // per-show fetch budget (INGEST_PER_SHOW_CAP). Anything beyond rolls to the
       // next hourly run via the audit JSON.

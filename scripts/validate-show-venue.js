@@ -73,8 +73,14 @@ function loadPlaybillUrlCache() {
 }
 
 function isProvisional(show) {
-  if (show.provisional === true) return true;
   const src = show.discoverySource || '';
+  // Roundup-promoted REGIONAL shows are exempt: "the roundup IS the validation"
+  // (user rule 2026-07-08, CLAUDE.md §3). Playbill validation false-positives on
+  // them because Playbill's /production/ page for a same-title show is often the
+  // Broadway transfer, not the regional run (little-bear-ridge-road-regional-2024:
+  // Steppenwolf 2024 record vs Playbill's Booth 2025 transfer — main red 2026-07-10).
+  if (show.category === 'regional' && src.startsWith('aggregator-roundup')) return false;
+  if (show.provisional === true) return true;
   return src.startsWith('manual-user-request') || src.startsWith('venue-page');
 }
 
