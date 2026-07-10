@@ -432,6 +432,28 @@ function safeWriteReview(filePath, newData, options = {}) {
     newData.duplicateReason = null;
   }
 
+  // Same self-heal for `duplicateTextOf` (the content-fingerprint dedup pointer):
+  // self-reference (born when safeRenameReview renames a flagged *--unknown.json
+  // ONTO its pointer target once the byline is identified — 116 corpus-wide,
+  // 2026-07-09 JCS) and dangling target. URL mismatch is deliberately NOT
+  // checked here — identical text at different URLs is exactly what
+  // duplicateTextOf encodes (syndication). No duplicateTextOfCleared marker:
+  // the fingerprint pass must stay free to re-flag with a correct pointer.
+  if (newData.duplicateTextOf && newData.duplicateTextOf === path.basename(filePath)) {
+    console.warn(`[review-write-guard] clearing self-referential duplicateTextOf in ${path.basename(filePath)}`);
+    newData.duplicateClearReason = `auto-cleared at write: self-referential duplicateTextOf (pointed at own filename)`;
+    newData.duplicateTextOf = null;
+  }
+  if (newData.duplicateTextOf && typeof newData.duplicateTextOf === 'string' && newData.duplicateTextOf.endsWith('.json')) {
+    try {
+      if (!fs.existsSync(path.join(path.dirname(filePath), newData.duplicateTextOf))) {
+        console.warn(`[review-write-guard] clearing dangling duplicateTextOf in ${path.basename(filePath)}: sibling ${newData.duplicateTextOf} no longer exists`);
+        newData.duplicateClearReason = `auto-cleared at write: duplicateTextOf sibling ${newData.duplicateTextOf} no longer exists`;
+        newData.duplicateTextOf = null;
+      }
+    } catch { /* silent — best-effort self-heal */ }
+  }
+
   // Self-heal stale `duplicateOf` whose URL no longer matches the referenced file.
   // Triggered by Can I Be Frank case (2026-05-24): Sommers's URL was briefly
   // corrected to Bernardo's URL, fired url-collision-detected-at-write, then the
@@ -892,6 +914,18 @@ function safeRenameReview(srcPath, dstPath, options = {}) {
 
   fs.mkdirSync(path.dirname(dstPath), { recursive: true });
   const contentToWrite = (newData && typeof newData === 'object') ? newData : srcData;
+  // A file flagged as a duplicate of `dstFile` that is now being renamed ONTO
+  // that name (byline identified: outlet--unknown.json → outlet--critic.json)
+  // would carry the pointer along and become a duplicate of itself — silently
+  // dropped from every rebuild. It IS the canonical file now; strip the pointer.
+  const dstBasename = path.basename(dstPath);
+  for (const field of ['duplicateOf', 'duplicateTextOf']) {
+    if (contentToWrite[field] === dstBasename) {
+      delete contentToWrite[field];
+      if (field === 'duplicateOf') delete contentToWrite.duplicateReason;
+      console.log(`[review-write-guard] stripped self-referential ${field} on rename → ${dstBasename}`);
+    }
+  }
   fs.writeFileSync(dstPath, JSON.stringify(contentToWrite, null, 2) + '\n');
   fs.unlinkSync(srcPath);
 

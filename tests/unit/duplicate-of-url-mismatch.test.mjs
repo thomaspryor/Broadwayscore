@@ -77,3 +77,81 @@ test('different-article (path) diff IS flagged and --fix clears it', () => {
   assert.equal(after.duplicateOf, null, 'stale flag cleared');
   assert.ok(after.duplicateClearReason, 'clear reason recorded');
 });
+
+test('self-referential duplicateTextOf IS flagged and --fix clears only that field', () => {
+  writeShow('self-ref-2026', {
+    'timeout-london--andrzej-lukowski.json': {
+      url: 'https://www.timeout.com/london/news/jcs-review',
+      duplicateTextOf: 'timeout-london--andrzej-lukowski.json',
+    },
+  });
+  const mismatches = audit().filter(m => m.showId === 'self-ref-2026');
+  assert.equal(mismatches.length, 1);
+  assert.equal(mismatches[0].reason, 'self-reference');
+  assert.equal(mismatches[0].field, 'duplicateTextOf');
+
+  fix(mismatches);
+  const after = JSON.parse(fs.readFileSync(path.join(FIXTURE, 'self-ref-2026', 'timeout-london--andrzej-lukowski.json'), 'utf-8'));
+  assert.equal(after.duplicateTextOf, null, 'self-ref cleared');
+  assert.equal(after.duplicateTextOfCleared, undefined, 'must NOT block future re-dedup');
+  assert.ok(after.duplicateClearReason, 'clear reason recorded');
+});
+
+test('self-referential duplicateOf IS flagged', () => {
+  writeShow('self-ref-of-2026', {
+    'wsj--charles-isherwood.json': {
+      url: 'https://www.wsj.com/arts/becky-shaw-review',
+      duplicateOf: 'wsj--charles-isherwood.json',
+    },
+  });
+  const mismatches = audit().filter(m => m.showId === 'self-ref-of-2026');
+  assert.equal(mismatches.length, 1);
+  assert.equal(mismatches[0].reason, 'self-reference');
+  assert.equal(mismatches[0].field, 'duplicateOf');
+
+  fix(mismatches);
+  const after = JSON.parse(fs.readFileSync(path.join(FIXTURE, 'self-ref-of-2026', 'wsj--charles-isherwood.json'), 'utf-8'));
+  assert.equal(after.duplicateOf, null, 'self-ref cleared');
+});
+
+test('dangling duplicateTextOf (target deleted) IS flagged; valid pointer is NOT', () => {
+  writeShow('dangling-2026', {
+    'cambridge--louise-penn.json': {
+      url: 'https://cambridge.example/jcs',
+      duplicateTextOf: 'loureviews--louise-penn.json', // does not exist
+    },
+    'guardian-uk--unknown.json': {
+      url: 'https://guardian.example/jcs',
+      duplicateTextOf: 'guardian--arifa-akbar.json', // exists — legit dedup
+    },
+    'guardian--arifa-akbar.json': { url: 'https://theguardian.example/jcs-akbar' },
+  });
+  const mismatches = audit().filter(m => m.showId === 'dangling-2026');
+  assert.equal(mismatches.length, 1, 'only the dangling pointer is flagged');
+  assert.equal(mismatches[0].file, 'cambridge--louise-penn.json');
+  assert.equal(mismatches[0].reason, 'sibling-missing');
+  assert.equal(mismatches[0].field, 'duplicateTextOf');
+});
+
+test('duplicateTextOf URL mismatch vs existing sibling is NOT flagged (syndication is url-independent)', () => {
+  writeShow('synd-2026', {
+    'northjersey--robert-feldberg.json': {
+      url: 'https://northjersey.example/review',
+      duplicateTextOf: 'record--robert-feldberg.json',
+    },
+    'record--robert-feldberg.json': { url: 'https://record.example/totally-different-path' },
+  });
+  const mismatches = audit().filter(m => m.showId === 'synd-2026');
+  assert.equal(mismatches.length, 0);
+});
+
+test('non-filename duplicateOf sentinel values are ignored (report-only conservatism)', () => {
+  writeShow('sentinel-2026', {
+    'northjerseycom--robert-feldberg.json': {
+      url: 'https://northjersey.example/review',
+      duplicateOf: 'northjerseycom',
+    },
+  });
+  const mismatches = audit().filter(m => m.showId === 'sentinel-2026');
+  assert.equal(mismatches.length, 0, 'sentinel-valued pointers are not auto-clearable');
+});
