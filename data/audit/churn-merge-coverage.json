@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-10T05:28:48.710Z",
+    "generatedAt": "2026-07-10T05:41:15.491Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -46,15 +46,15 @@
   "exempt": [
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 123
+      "churn": 124
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 123
+      "churn": 124
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 123
+      "churn": 124
     },
     {
       "path": "data/llm-scoring-runs.json",
@@ -62,15 +62,15 @@
     },
     {
       "path": "public/data/shows/jesus-christ-superstar-west-end-2026.json",
-      "churn": 105
+      "churn": 106
     },
     {
       "path": "public/data/shows/a-walk-on-the-moon-off-broadway-2026.json",
-      "churn": 101
+      "churn": 100
     },
     {
       "path": "public/data/shows/dad-dont-read-this-off-broadway-2026.json",
-      "churn": 84
+      "churn": 83
     },
     {
       "path": "public/opening-night-status.json",
@@ -118,12 +118,12 @@
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 568,
+      "churn": 567,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 463,
+      "churn": 462,
       "mergeAttr": "union"
     },
     {
@@ -138,7 +138,7 @@
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 159,
+      "churn": 160,
       "mergeAttr": "ours"
     },
     {
@@ -148,7 +148,7 @@
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 116,
+      "churn": 117,
       "mergeAttr": "ours"
     },
     {
@@ -273,7 +273,7 @@
     },
     {
       "path": "data/audit/orphan-unscored-tender-off-west-end-2026.json",
-      "churn": 34,
+      "churn": 35,
       "mergeAttr": "ours"
     },
     {
