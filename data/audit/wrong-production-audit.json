@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-07-10T00:40:50.344Z",
+  "timestamp": "2026-07-10T03:10:32.068Z",
   "stats": {
-    "totalReviews": 39897,
-    "alreadyFlagged": 17558,
-    "dateGuardCatches": 45,
+    "totalReviews": 39905,
+    "alreadyFlagged": 17555,
+    "dateGuardCatches": 53,
     "directorMismatch": 891,
     "tvFilmSignals": 1096,
-    "londonSignals": 741,
+    "londonSignals": 742,
     "offBroadwaySignals": 467,
-    "yearMismatch": 86,
+    "yearMismatch": 87,
     "noPublishDate": 4024
   },
   "findings": [
@@ -1733,7 +1733,7 @@
       "file": "independent--louis-chilton.json",
       "score": 40,
       "publishDate": "2026-04-17",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
+      "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -25560,6 +25560,32 @@
     },
     {
       "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "artsdesk--helen-hawkins.json",
+      "publishDate": "2022-04-01",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1546d before show (2022-04-01 vs 2026-06-25)"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "daily-mail--patrick-marmion.json",
+      "publishDate": "2022-04-01",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1546d before show (2022-04-01 vs 2026-06-25)"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
       "file": "financialtimes--sarah-hemming.json",
       "score": 76,
       "publishDate": "2022-04-01",
@@ -25607,6 +25633,45 @@
     },
     {
       "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "london-theatre--matt-wolf.json",
+      "publishDate": "2022-04-04",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1543d before show (2022-04-04 vs 2026-06-25)"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "londontheatre1--chris-omaweng.json",
+      "publishDate": "2022-04-01",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1546d before show (2022-04-01 vs 2026-06-25)"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "observer--susannah-clapp.json",
+      "publishDate": "2022-04-03",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1544d before show (2022-04-03 vs 2026-06-25)"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
       "file": "sunday-telegraph--dominic-cavendish.json",
       "score": 97,
       "publishDate": "2022-04-01",
@@ -25626,6 +25691,50 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2018 (2x) more than 2026 (0x). 2018 matches production: to-kill-a-mockingbird-2018"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "telegraph--dominic-cavendish.json",
+      "publishDate": "2022-03-31",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1547d before show (2022-03-31 vs 2026-06-25)"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2018 (2x) more than 2026 (0x). 2018 matches production: to-kill-a-mockingbird-2018"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "the-spectator-uk--lloyd-evans.json",
+      "publishDate": "2022-04-09",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1538d before show (2022-04-09 vs 2026-06-25)"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "theatre-weekly--greg-stewart.json",
+      "publishDate": "2022-03-31",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1547d before show (2022-03-31 vs 2026-06-25)"
         }
       ]
     },
@@ -28535,6 +28644,19 @@
       ]
     },
     {
+      "showId": "allegra-west-end-2026",
+      "file": "theatre-weekly--greg-stewart.json",
+      "publishDate": "2026-06-08",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "amaze-off-broadway-2026",
       "file": "timeout--adam-feldman.json",
       "score": 78,
@@ -30914,7 +31036,7 @@
       "file": "exeunt-magazine--loren-noveck.json",
       "score": 80,
       "publishDate": "2026-05-15T11:08:02-04:00",
-      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/",
+      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/#:~:text=Dad%20Don't%20Read%20This%20is%20messy%20and%20raw%20and,will%20keep%20it%20in%20my",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -41624,7 +41746,7 @@
       "file": "thestage--dave-fargnoli.json",
       "score": 38,
       "publishDate": "2026-06-24",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-misanthrope-review-sandra-oh-what-a-disappointment-sbzvf82b2?t=1782310602034",
+      "url": "https://www.thestage.co.uk/reviews/the-misanthrope-review-lyttelton-national-theatre-london-sandra-oh",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

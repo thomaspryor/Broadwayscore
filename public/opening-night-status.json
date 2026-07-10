@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-10T00:40:55.154Z",
+  "generatedAt": "2026-07-10T03:10:38.413Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -870,26 +870,23 @@
       "status": "open",
       "slug": "allegra-west-end",
       "thumbnail": "/images/shows/allegra-west-end-2026/thumbnail.jpg",
-      "siteScore": 54.6,
-      "liveScore": 55,
-      "scoreDrift": 0.3999999999999986,
+      "siteScore": 57.82,
+      "liveScore": 58,
+      "scoreDrift": 0.17999999999999972,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 6,
+      "total": 8,
       "t1": 5,
-      "t2": 1,
-      "t3": 0,
-      "positive": 1,
+      "t2": 2,
+      "t3": 1,
+      "positive": 2,
       "mixed": 2,
-      "negative": 3,
+      "negative": 4,
       "readiness": {
-        "ready": false,
-        "reasons": [
-          "6/8 total",
-          "hi-conf:5/6"
-        ],
-        "highConfidence": 5,
+        "ready": true,
+        "reasons": [],
+        "highConfidence": 7,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -899,7 +896,7 @@
       },
       "broadcast": {
         "state": "waiting",
-        "detail": "Not yet broadcast-ready"
+        "detail": "Ready — awaiting send"
       },
       "missingT1": [
         {
@@ -968,6 +965,18 @@
           "p": 1,
           "m": 2,
           "n": 3,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-10T03:10:38.413Z",
+          "rc": 8,
+          "s": 57.82,
+          "t1": 5,
+          "t2": 2,
+          "t3": 1,
+          "p": 2,
+          "m": 2,
+          "n": 4,
           "bc": "waiting"
         }
       ]
