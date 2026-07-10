@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-10T06:32:12.756Z",
+  "generatedAt": "2026-07-10T08:28:24.167Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -816,10 +816,6 @@
         },
         {
           "name": "The Telegraph",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Times (UK)",
           "isDualMarket": true
         },
         {
@@ -1775,23 +1771,23 @@
       "status": "open",
       "slug": "jesus-christ-superstar-west-end",
       "thumbnail": "/images/shows/jesus-christ-superstar-west-end-2026/thumbnail.jpg",
-      "siteScore": 74.85,
+      "siteScore": 75.06,
       "liveScore": 75,
-      "scoreDrift": 0.15000000000000568,
+      "scoreDrift": -0.060000000000002274,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 20,
-      "t1": 8,
+      "total": 21,
+      "t1": 9,
       "t2": 5,
       "t3": 7,
-      "positive": 12,
+      "positive": 13,
       "mixed": 7,
       "negative": 1,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 13,
+        "highConfidence": 14,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1807,10 +1803,6 @@
         {
           "name": "Observer",
           "isDualMarket": true
-        },
-        {
-          "name": "Daily Mail",
-          "isDualMarket": true
         }
       ],
       "missingT2": [
@@ -1820,6 +1812,10 @@
         },
         {
           "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
           "isDualMarket": true
         },
         {
@@ -2220,6 +2216,18 @@
           "t2": 5,
           "t3": 7,
           "p": 12,
+          "m": 7,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-10T08:28:24.167Z",
+          "rc": 21,
+          "s": 75.06,
+          "t1": 9,
+          "t2": 5,
+          "t3": 7,
+          "p": 13,
           "m": 7,
           "n": 1,
           "bc": "waiting"
