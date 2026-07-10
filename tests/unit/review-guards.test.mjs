@@ -21,6 +21,8 @@ const {
   hasHighConfidenceLlmScore,
   isRoundupUrl,
   isRoundupPageAsReview,
+  isQuotingRoundupHostUrl,
+  isIncludableForRebuild: _isIncludable,
   cvBlocksUkWrongProductionAutoClear,
 } = require('../../scripts/lib/review-guards.js');
 
@@ -727,5 +729,42 @@ describe('cvBlocksUkWrongProductionAutoClear', () => {
   test('null/missing cv → false', () => {
     assert.strictEqual(cvBlocksUkWrongProductionAutoClear(null), false);
     assert.strictEqual(cvBlocksUkWrongProductionAutoClear(undefined), false);
+  });
+});
+
+describe('isRoundupPageAsReview — hardened host/outlet matching (ship-check 2026-07-10)', () => {
+  const wosRoundup = 'https://www.whatsonstage.com/news/some-show-review-round-up_123/';
+
+  test('mobile subdomain m.whatsonstage.com → still page-as-review', () => {
+    assert.strictEqual(isRoundupPageAsReview({ url: 'https://m.whatsonstage.com/news/x-review-round-up_1/', outletId: 'whatsonstage' }), true);
+  });
+
+  test('protocol-less URL → still matched (no silent fail-open on new URL())', () => {
+    assert.strictEqual(isRoundupPageAsReview({ url: 'www.whatsonstage.com/news/x-review-round-up_1/', outletId: 'whatsonstage' }), true);
+  });
+
+  test('outletId variant whats-on-stage → matched via alias', () => {
+    assert.strictEqual(isRoundupPageAsReview({ url: wosRoundup, outletId: 'whats-on-stage' }), true);
+  });
+
+  test('lookalike host notwhatsonstage.com → NOT gated (endsWith requires dot boundary)', () => {
+    assert.strictEqual(isQuotingRoundupHostUrl('https://notwhatsonstage.com/news/x-review-round-up_1/'), false);
+  });
+
+  test('isQuotingRoundupHostUrl: WOS yes, Stage no (policy pending), garbage no', () => {
+    assert.strictEqual(isQuotingRoundupHostUrl(wosRoundup), true);
+    assert.strictEqual(isQuotingRoundupHostUrl('https://www.thestage.co.uk/review-round-ups/x'), false);
+    assert.strictEqual(isQuotingRoundupHostUrl('not a url'), false);
+    assert.strictEqual(isQuotingRoundupHostUrl(null), false);
+  });
+
+  test('parity: isIncludableForRebuild excludes an unflagged page-as-review file', () => {
+    const data = { url: wosRoundup, outletId: 'whatsonstage', fullText: 'x'.repeat(900) };
+    assert.strictEqual(_isIncludable(data), false);
+  });
+
+  test('parity: sourced-from-roundup (times-uk outletId) stays includable', () => {
+    const data = { url: wosRoundup, outletId: 'times-uk', fullText: 'x'.repeat(900) };
+    assert.strictEqual(_isIncludable(data), true);
   });
 });

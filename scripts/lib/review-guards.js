@@ -1640,7 +1640,7 @@ function shouldSkipRoundupAudit(data) {
 // with a westendtheatre.com URL) is a review SOURCED from the roundup and
 // stays includable — see the NOTE in isRoundupUrl.
 const ROUNDUP_HOST_OUTLETS = {
-  'whatsonstage.com': ['whatsonstage'],
+  'whatsonstage.com': ['whatsonstage', 'whats-on-stage'],
   'playbill.com': ['playbill'],
   // DELIBERATELY absent: thestage.co.uk, londonboxoffice.co.uk,
   // westendtheatre.com. Corpus audit 2026-07-09 found scored, unflagged
@@ -1666,15 +1666,36 @@ const ROUNDUP_HOST_OUTLETS = {
  * @param {Object|null} data - Review data object
  * @returns {boolean} true when the file is a roundup page ingested as a review
  */
+function roundupGatedHostFor(url) {
+  if (!url) return null;
+  let host;
+  try {
+    host = new URL(/^https?:\/\//i.test(url) ? url : `https://${url}`).hostname.toLowerCase();
+  } catch { return null; }
+  for (const gated of Object.keys(ROUNDUP_HOST_OUTLETS)) {
+    if (host === gated || host.endsWith(`.${gated}`)) return gated; // covers www./m./amp. subdomains
+  }
+  return null;
+}
+
+/**
+ * True when the URL's host is one of the "quoting" roundup hosts (WOS,
+ * Playbill) — hosts whose roundups quote OTHER outlets' critics, so a
+ * roundup URL there is only page-as-review when the file's own outletId
+ * belongs to the host. Used by rebuild's auto-setter to avoid flagging
+ * reviews merely SOURCED from those roundups (e.g. times-uk rows).
+ */
+function isQuotingRoundupHostUrl(url) {
+  return roundupGatedHostFor(url) !== null;
+}
+
 function isRoundupPageAsReview(data) {
   if (!data || typeof data !== 'object' || !data.url) return false;
   if (shouldSkipRoundupAudit(data)) return false;
   if (!isRoundupUrl(data.url).isRoundup) return false;
-  let host;
-  try { host = new URL(data.url).hostname.toLowerCase().replace(/^www\./, ''); } catch { return false; }
-  const hostOutlets = ROUNDUP_HOST_OUTLETS[host];
-  if (!hostOutlets) return false;
-  return hostOutlets.includes((data.outletId || '').toLowerCase());
+  const gated = roundupGatedHostFor(data.url);
+  if (!gated) return false;
+  return ROUNDUP_HOST_OUTLETS[gated].includes((data.outletId || '').toLowerCase());
 }
 
 // Non-review articleType values from content-verifier.js's enum
@@ -2418,6 +2439,9 @@ function isIncludableForRebuild(data, show, filePath) {
     }
   }
   if (data.isRoundupArticle === true && !isLikelyStaleRoundupFlag(data)) return false;
+  // Unflagged roundup pages (flag setter is enrichment-gated; parity with rebuild's
+  // inclusion gate so scoring never scores what rebuild excludes — ship-check 2026-07-10)
+  if (isRoundupPageAsReview(data)) return false;
   if (
     data.isNonReview === true ||
     data.isNotReview === true ||
@@ -2878,6 +2902,7 @@ module.exports = {
   isProductionAwareCvVerdict,
   shouldSkipRoundupAudit,
   isRoundupPageAsReview,
+  isQuotingRoundupHostUrl,
   cvBlocksUkWrongProductionAutoClear,
   isRevivalByCanonicalTitle,
   urlOrTitleLooksLikeReview,

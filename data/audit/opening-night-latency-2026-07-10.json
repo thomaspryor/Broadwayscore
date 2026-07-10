@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-10T03:28:32.555Z",
+  "generatedAt": "2026-07-10T14:00:55.686Z",
   "date": "2026-07-10",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 251766,
+  "entryCount": 274782,
   "shows": [
     {
       "showId": "the-guilty-west-end-2026",
@@ -36,7 +36,7 @@
     },
     {
       "showId": "to-kill-a-mockingbird-west-end-2026",
-      "reviewCount": 23,
+      "reviewCount": 22,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -246,7 +246,7 @@
     },
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
-      "reviewCount": 24,
+      "reviewCount": 26,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -261,7 +261,7 @@
     },
     {
       "showId": "the-truth-a-comedy-by-florian-zeller-west-end-2026",
-      "reviewCount": 26,
+      "reviewCount": 25,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -291,7 +291,7 @@
     },
     {
       "showId": "jesus-christ-superstar-west-end-2026",
-      "reviewCount": 18,
+      "reviewCount": 21,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -306,7 +306,7 @@
     },
     {
       "showId": "springwood-west-end-2026",
-      "reviewCount": 18,
+      "reviewCount": 19,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1391,7 +1391,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 2570638,
+        "collected-to-scored": 2574517,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -1447,6 +1447,36 @@
     {
       "showId": "are-you-now-or-have-you-ever-been-off-broadway-2026",
       "reviewCount": 10,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "millions-world-premiere-musical-regional-2025",
+      "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 7787890,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "care-west-end-2026",
+      "reviewCount": 20,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {

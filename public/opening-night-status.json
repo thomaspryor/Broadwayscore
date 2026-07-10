@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-10T05:10:35.828Z",
+  "generatedAt": "2026-07-10T13:45:04.106Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -9,7 +9,7 @@
       "category": "off-broadway",
       "type": "musical",
       "openingDate": "2026-07-10",
-      "status": "previews",
+      "status": "open",
       "slug": "giulia-the-poison-queen-of-palermo-off-broadway",
       "thumbnail": "/images/shows/giulia-the-poison-queen-of-palermo-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
@@ -123,10 +123,6 @@
         {
           "name": "TheaterMania",
           "isDualMarket": false
-        },
-        {
-          "name": "BroadwayWorld",
-          "isDualMarket": true
         },
         {
           "name": "amNewYork",
@@ -389,7 +385,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-07-10",
-      "status": "previews",
+      "status": "open",
       "slug": "hershey-felder-the-piano-and-me-off-broadway",
       "thumbnail": "/images/shows/hershey-felder-the-piano-and-me-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
@@ -773,27 +769,27 @@
       "slug": "tender-off-west-end",
       "thumbnail": "/images/shows/tender-off-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 78,
+      "liveScore": null,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 4,
+      "reviewsNeeded": 5,
       "siteFileExists": true,
-      "total": 1,
+      "total": 0,
       "t1": 0,
       "t2": 0,
-      "t3": 1,
-      "positive": 1,
+      "t3": 0,
+      "positive": 0,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/8 total",
+          "0/8 total",
           "T1:0/3",
           "T2:0/2",
-          "hi-conf:1/6"
+          "hi-conf:0/6"
         ],
-        "highConfidence": 1,
+        "highConfidence": 0,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -806,6 +802,10 @@
         "detail": "Not yet broadcast-ready"
       },
       "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
         {
           "name": "Observer",
           "isDualMarket": true
@@ -825,6 +825,10 @@
         {
           "name": "The Independent",
           "isDualMarket": true
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
         }
       ],
       "missingT2": [
@@ -843,6 +847,10 @@
         {
           "name": "New York Theatre Guide",
           "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
         }
       ],
       "timeline": [
@@ -854,6 +862,30 @@
           "t2": 0,
           "t3": 1,
           "p": 1,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-10T11:09:00.054Z",
+          "rc": 4,
+          "s": 79.7,
+          "t1": 2,
+          "t2": 1,
+          "t3": 1,
+          "p": 4,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-10T12:08:53.764Z",
+          "rc": 4,
+          "s": 79.68,
+          "t1": 2,
+          "t2": 1,
+          "t3": 1,
+          "p": 4,
           "m": 0,
           "n": 0,
           "bc": "waiting"
@@ -1781,12 +1813,12 @@
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 20,
-      "t1": 8,
+      "total": 21,
+      "t1": 9,
       "t2": 5,
       "t3": 7,
       "positive": 12,
-      "mixed": 7,
+      "mixed": 8,
       "negative": 1,
       "readiness": {
         "ready": true,
@@ -1806,10 +1838,6 @@
       "missingT1": [
         {
           "name": "Observer",
-          "isDualMarket": true
-        },
-        {
-          "name": "Daily Mail",
           "isDualMarket": true
         }
       ],
@@ -2225,6 +2253,66 @@
           "t3": 7,
           "p": 12,
           "m": 7,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-10T08:28:24.167Z",
+          "rc": 21,
+          "s": 75.06,
+          "t1": 9,
+          "t2": 5,
+          "t3": 7,
+          "p": 13,
+          "m": 7,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-10T10:22:12.079Z",
+          "rc": 22,
+          "s": 75.31,
+          "t1": 10,
+          "t2": 5,
+          "t3": 7,
+          "p": 13,
+          "m": 8,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-10T11:09:00.054Z",
+          "rc": 21,
+          "s": 75.06,
+          "t1": 9,
+          "t2": 5,
+          "t3": 7,
+          "p": 13,
+          "m": 7,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-10T12:38:59.420Z",
+          "rc": 20,
+          "s": 74.85,
+          "t1": 8,
+          "t2": 5,
+          "t3": 7,
+          "p": 12,
+          "m": 7,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-10T13:45:04.106Z",
+          "rc": 21,
+          "s": 74.85,
+          "t1": 9,
+          "t2": 5,
+          "t3": 7,
+          "p": 12,
+          "m": 8,
           "n": 1,
           "bc": "waiting"
         }
