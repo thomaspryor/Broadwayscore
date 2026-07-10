@@ -1,0 +1,78 @@
+{
+  "runDate": "2026-07-10T04:58:12.388Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 1000,
+    "priority": "all",
+    "showFilter": "millions-world-premiere-musical-regional-2025",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 2,
+    "failed": 1,
+    "skipped": 0,
+    "successRate": "66.7%"
+  },
+  "tierBreakdown": {
+    "playwright": 1,
+    "amp": 0,
+    "browserbase": 0,
+    "directCookies": 0,
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archiveToday": 1,
+    "archive": 1
+  },
+  "statistics": {
+    "tier1Attempts": 2,
+    "tier1Success": 1,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 1,
+    "tier2Success": 0,
+    "tier3Attempts": 1,
+    "tier3Success": 0,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
+    "tier4Attempts": 1,
+    "tier4Success": 0,
+    "totalFailed": 1,
+    "scrapingBeePageCredits": 0,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 0,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
+  "processed": [
+    "millions-world-premiere-musical-regional-2025/broadwayworld--joseph-harrison.json",
+    "millions-world-premiere-musical-regional-2025/showriz--frank-rizzo.json"
+  ],
+  "failed": [
+    "millions-world-premiere-musical-regional-2025/artsatl--benjamin-carr.json"
+  ],
+  "tierDetails": {
+    "playwright": [
+      "millions-world-premiere-musical-regional-2025/showriz--frank-rizzo.json"
+    ],
+    "amp": [],
+    "browserbase": [],
+    "directCookies": [],
+    "scrapingbee": [],
+    "brightdata": [],
+    "archiveToday": [
+      "data/review-texts/millions-world-premiere-musical-regional-2025/artsatl--benjamin-carr.json"
+    ],
+    "archive": [
+      "millions-world-premiere-musical-regional-2025/broadwayworld--joseph-harrison.json"
+    ]
+  },
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
+}
