@@ -237,6 +237,9 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
     scoreMode: (['critics', 'audience'].includes(initialSearchParams.get('scoreMode') as string)
       ? initialSearchParams.get('scoreMode') as ScoreModeParam : DEFAULT_SCORE_MODE),
     q: initialSearchParams.get('q') || '',
+    // Off-Broadway picks toggle — the grid mixes in a small curated set of
+    // notable OB shows (src/lib/homepage-notability.ts); 'hidden' removes them.
+    obPicks: (initialSearchParams.get('obPicks') === 'hidden' ? 'hidden' : 'shown') as 'shown' | 'hidden',
   }));
 
   // Legacy redirect: `/?offBway=true` used to switch the list to Off-Broadway in place.
@@ -286,6 +289,7 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
   const type = filters.type;
   const scoreMode = filters.scoreMode;
   const searchQuery = filters.q;
+  const obPicks = filters.obPicks;
 
   // Internal status filter value
   const statusFilter = statusParamToFilter[status];
@@ -300,7 +304,8 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
             key === 'status' ? DEFAULT_STATUS :
             key === 'sort' ? DEFAULT_SORT :
             key === 'type' ? DEFAULT_TYPE :
-            key === 'scoreMode' ? DEFAULT_SCORE_MODE : '';
+            key === 'scoreMode' ? DEFAULT_SCORE_MODE :
+            key === 'obPicks' ? 'shown' : '';
         } else {
           (next as Record<string, string>)[key] = value;
         }
@@ -319,6 +324,7 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
       setOrDelete('type', next.type, next.type === DEFAULT_TYPE);
       setOrDelete('scoreMode', next.scoreMode, next.scoreMode === DEFAULT_SCORE_MODE);
       setOrDelete('q', next.q, !next.q);
+      setOrDelete('obPicks', next.obPicks, next.obPicks !== 'hidden');
 
       const paramString = urlParams.toString();
       window.history.replaceState({}, '', paramString ? `/?${paramString}` : '/');
@@ -336,6 +342,7 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
       type: DEFAULT_TYPE,
       scoreMode: DEFAULT_SCORE_MODE,
       q: '',
+      obPicks: 'shown',
     });
     window.history.replaceState({}, '', '/');
   }, []);
@@ -433,8 +440,11 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
       return fuseResults;
     }
 
-    // Non-search filtering: apply score mode, status, and type filters
+    // Non-search filtering: apply score mode, status, and type filters.
+    // Search is deliberately NOT gated on obPicks — typing a show's name is
+    // explicit intent, same reason search ignores status/type.
     let result = allShows.filter(show => {
+      if (obPicks === 'hidden' && show.category === 'off-broadway') return false;
       // Previews shows appear in the Upcoming carousel, not the main grid
       if (show.status === 'previews' || show.status === 'upcoming') return false;
       if (scoreMode === 'audience') {
@@ -530,7 +540,7 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
     }
 
     return result;
-  }, [allShows, fuseResults, statusFilter, type, searchQuery, sort, scoreMode, isEffectivelyOpen]);
+  }, [allShows, fuseResults, statusFilter, type, searchQuery, sort, scoreMode, obPicks, isEffectivelyOpen]);
 
   // Advanced filter panel — applies on top of inline-filtered shows.
   // Type + Status mirror the inline ToggleBars as full panel members.
@@ -701,6 +711,22 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
           className="flex-shrink-0"
         />
       </div>
+
+      {/* Off-Broadway picks toggle — only when curated OB shows are mixed into the grid */}
+      {shows.some(s => s.category === 'off-broadway') && (
+        <div className="flex items-center gap-2 mb-3 text-sm">
+          <ToggleBar
+            label="OFF-BWAY PICKS:"
+            options={[
+              { value: 'shown' as const, label: 'SHOWN' },
+              { value: 'hidden' as const, label: 'HIDDEN' },
+            ]}
+            value={obPicks}
+            onChange={(v) => updateParams({ obPicks: v === 'shown' ? null : v })}
+            ariaLabel="Show or hide notable off-Broadway picks"
+          />
+        </div>
+      )}
 
       {/* Status & Sort Filters */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-3 mb-4 sm:mb-6 text-sm">
