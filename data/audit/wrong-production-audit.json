@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-07-10T10:11:07.473Z",
+  "timestamp": "2026-07-10T10:22:07.265Z",
   "stats": {
     "totalReviews": 39921,
-    "alreadyFlagged": 17561,
-    "dateGuardCatches": 51,
+    "alreadyFlagged": 17559,
+    "dateGuardCatches": 52,
     "directorMismatch": 891,
     "tvFilmSignals": 1096,
     "londonSignals": 742,
@@ -28134,6 +28134,17 @@
     {
       "showId": "a-midsummer-nights-dream-west-end-2026",
       "file": "thestage--holly-o.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 46d before show (2026-05-05 vs 2026-06-20)"
+        }
+      ]
+    },
+    {
+      "showId": "a-midsummer-nights-dream-west-end-2026",
+      "file": "whatsonstage--theo-bosanquet.json",
       "findings": [
         {
           "type": "DATE_GUARD",
