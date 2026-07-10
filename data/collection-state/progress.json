@@ -345,7 +345,11 @@
     "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/londontheatre1--unknown.json",
     "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/west-end-best-friend--unknown.json",
     "a-walk-on-the-moon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-    "a-walk-on-the-moon-off-broadway-2026/pages-on-stages--mason-pilevsky.json"
+    "a-walk-on-the-moon-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+    "birthright-off-broadway-2026/newyorker--emily-nussbaum.json",
+    "birthright-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "birthright-off-broadway-2026/pages-on-stages--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -432,7 +436,8 @@
       "data/review-texts/giulia-the-poison-queen-of-palermo-off-broadway-2026/broadwayworld--unknown.json",
       "data/review-texts/birthright-off-broadway-2026/newyorker--emily-nussbaum.json",
       "data/review-texts/war-horse-west-end-2026/click-liverpool--carie-schneider.json",
-      "data/review-texts/giulia-the-poison-queen-of-palermo-off-broadway-2026/broadwayworld--unknown.json"
+      "data/review-texts/giulia-the-poison-queen-of-palermo-off-broadway-2026/broadwayworld--unknown.json",
+      "data/review-texts/birthright-off-broadway-2026/newyorker--emily-nussbaum.json"
     ],
     "archive": [
       "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
@@ -440,7 +445,7 @@
     ]
   },
   "startTime": "2026-07-10T10:21:30.800Z",
-  "lastProcessed": "a-walk-on-the-moon-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+  "lastProcessed": "birthright-off-broadway-2026/pages-on-stages--unknown.json",
   "log": [
     {
       "t": "2026-07-10T10:25:31.024Z",
@@ -461,6 +466,17 @@
     },
     {
       "t": "2026-07-10T11:15:09.834Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-07-10T13:09:47.571Z",
+      "event": "bb-session",
+      "session": "84ce57f5",
+      "url": "https://www.newyorker.com/magazine/2026/07/20/birthright-theatre-review-giant-br"
+    },
+    {
+      "t": "2026-07-10T13:09:48.060Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
     }
