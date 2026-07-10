@@ -821,7 +821,10 @@
     "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/west-end-best-friend--unknown.json",
     "a-walk-on-the-moon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "a-walk-on-the-moon-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
-    "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json"
+    "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+    "birthright-off-broadway-2026/newyorker--emily-nussbaum.json",
+    "birthright-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "birthright-off-broadway-2026/pages-on-stages--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -946,6 +949,7 @@
       "data/review-texts/birthright-off-broadway-2026/newyorker--emily-nussbaum.json",
       "data/review-texts/birthright-off-broadway-2026/newyorker--emily-nussbaum.json",
       "data/review-texts/birthright-off-broadway-2026/newyorker--emily-nussbaum.json",
+      "data/review-texts/birthright-off-broadway-2026/newyorker--emily-nussbaum.json",
       "data/review-texts/birthright-off-broadway-2026/newyorker--emily-nussbaum.json"
     ],
     "archive": [
@@ -956,7 +960,7 @@
     ]
   },
   "startTime": "2026-07-09T18:01:58.655Z",
-  "lastProcessed": "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+  "lastProcessed": "birthright-off-broadway-2026/pages-on-stages--unknown.json",
   "log": [
     {
       "t": "2026-07-09T21:17:28.987Z",
@@ -1033,6 +1037,17 @@
     },
     {
       "t": "2026-07-10T02:23:11.450Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-07-10T02:26:14.620Z",
+      "event": "bb-session",
+      "session": "61243f96",
+      "url": "https://www.newyorker.com/magazine/2026/07/20/birthright-theatre-review-giant-br"
+    },
+    {
+      "t": "2026-07-10T02:26:15.698Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
     }
