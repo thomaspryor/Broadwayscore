@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-10T13:09:32.061Z",
+    "generatedAt": "2026-07-10T13:52:22.767Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -10,8 +10,8 @@
     "minChurn": 30,
     "flaggedCount": 6,
     "exemptCount": 15,
-    "coveredCount": 40,
-    "highChurnTracked": 61
+    "coveredCount": 39,
+    "highChurnTracked": 60
   },
   "flagged": [
     {
@@ -36,10 +36,14 @@
     },
     {
       "path": "data/opening-night-timeline/jesus-christ-superstar-west-end-2026.jsonl",
-      "churn": 31
+      "churn": 32
     }
   ],
   "exempt": [
+    {
+      "path": "public/data/shows/jesus-christ-superstar-west-end-2026.json",
+      "churn": 117
+    },
     {
       "path": "public/data/admin/critic-coverage.json",
       "churn": 116
@@ -53,43 +57,39 @@
       "churn": 116
     },
     {
-      "path": "public/data/shows/jesus-christ-superstar-west-end-2026.json",
-      "churn": 116
-    },
-    {
       "path": "data/llm-scoring-runs.json",
-      "churn": 112
+      "churn": 113
     },
     {
       "path": "public/data/shows/a-walk-on-the-moon-off-broadway-2026.json",
-      "churn": 100
+      "churn": 101
     },
     {
       "path": "public/data/shows/dad-dont-read-this-off-broadway-2026.json",
-      "churn": 82
+      "churn": 83
     },
     {
       "path": "public/opening-night-status.json",
-      "churn": 73
+      "churn": 74
     },
     {
       "path": "data/llm-scoring-garbage-skips.json",
-      "churn": 63
+      "churn": 64
     },
     {
       "path": "data/commercial-rss-state.json",
-      "churn": 61
-    },
-    {
-      "path": "public/data/shows/a-midsummer-nights-dream-west-end-2026.json",
       "churn": 60
     },
     {
-      "path": "public/data/shows/birthright-off-broadway-2026.json",
-      "churn": 42
+      "path": "public/data/shows/a-midsummer-nights-dream-west-end-2026.json",
+      "churn": 59
     },
     {
       "path": "data/show-score-urls.json",
+      "churn": 42
+    },
+    {
+      "path": "public/data/shows/birthright-off-broadway-2026.json",
       "churn": 41
     },
     {
@@ -104,32 +104,32 @@
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 943,
+      "churn": 945,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 932,
+      "churn": 934,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 573,
+      "churn": 575,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 443,
+      "churn": 440,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 266,
+      "churn": 267,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 266,
+      "churn": 267,
       "mergeAttr": "ours"
     },
     {
@@ -139,7 +139,7 @@
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 127,
+      "churn": 128,
       "mergeAttr": "ours"
     },
     {
@@ -149,7 +149,7 @@
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 92,
+      "churn": 93,
       "mergeAttr": "ours"
     },
     {
@@ -169,17 +169,17 @@
     },
     {
       "path": "data/audit/poller-backoff/dukes-off-broadway-2026.json",
-      "churn": 75,
+      "churn": 76,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026.json",
-      "churn": 75,
+      "churn": 76,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/wrong-production-audit.json",
-      "churn": 73,
+      "churn": 74,
       "mergeAttr": "ours"
     },
     {
@@ -209,7 +209,7 @@
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 54,
+      "churn": 55,
       "mergeAttr": "ours"
     },
     {
@@ -263,13 +263,8 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/orphan-unscored-tender-off-west-end-2026.json",
-      "churn": 44,
-      "mergeAttr": "ours"
-    },
-    {
       "path": "data/audit/drift-state.json",
-      "churn": 40,
+      "churn": 39,
       "mergeAttr": "ours"
     },
     {
