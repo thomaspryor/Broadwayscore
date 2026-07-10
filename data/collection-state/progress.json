@@ -716,7 +716,10 @@
     "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/west-end-best-friend--unknown.json",
     "a-walk-on-the-moon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "a-walk-on-the-moon-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
-    "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json"
+    "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+    "birthright-off-broadway-2026/newyorker--emily-nussbaum.json",
+    "birthright-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "birthright-off-broadway-2026/pages-on-stages--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -830,7 +833,8 @@
       "data/review-texts/jesus-christ-superstar-west-end-2026/thestage--holly-o.json",
       "data/review-texts/the-guilty-west-end-2026/thestage--unknown.json",
       "data/review-texts/to-kill-a-mockingbird-west-end-2026/tribune--unknown.json",
-      "data/review-texts/to-kill-a-mockingbird-west-end-2026/western-mail--unknown.json"
+      "data/review-texts/to-kill-a-mockingbird-west-end-2026/western-mail--unknown.json",
+      "data/review-texts/birthright-off-broadway-2026/newyorker--emily-nussbaum.json"
     ],
     "archive": [
       "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
@@ -840,7 +844,7 @@
     ]
   },
   "startTime": "2026-07-09T18:01:58.655Z",
-  "lastProcessed": "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+  "lastProcessed": "birthright-off-broadway-2026/pages-on-stages--unknown.json",
   "log": [
     {
       "t": "2026-07-09T21:17:28.987Z",
@@ -858,6 +862,17 @@
       "t": "2026-07-09T21:28:38.263Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-07-10T00:22:09.183Z",
+      "event": "bb-session",
+      "session": "2629a4b9",
+      "url": "https://www.newyorker.com/magazine/2026/07/20/birthright-theatre-review-giant-br"
+    },
+    {
+      "t": "2026-07-10T00:22:09.851Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }
