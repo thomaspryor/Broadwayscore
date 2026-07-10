@@ -33,6 +33,10 @@ async function discoverTrRoundupHtml(show, opts = {}) {
   const fetchPage = opts.fetchPage || require('./scraper').fetchPage;
   const fetchJSON = opts.fetchJSON || require('./scraper').fetchJSON;
   const log = opts.log || console.log;
+  // opts.stats (optional, mutated): { fetchErrors } — lets the gap audit
+  // distinguish "no roundup exists" from "discovery could not fetch anything".
+  const stats = opts.stats || {};
+  stats.fetchErrors = 0;
 
   const titleSlug = show.title.toLowerCase()
     .replace(/[^a-z0-9\s-]/g, '')
@@ -72,6 +76,7 @@ async function discoverTrRoundupHtml(show, opts = {}) {
       }
     } catch (e) {
       // 404/403 are expected for guessed URLs — continue to next variation
+      stats.fetchErrors++;
     }
   }
 
@@ -95,6 +100,7 @@ async function discoverTrRoundupHtml(show, opts = {}) {
       }
     }
   } catch (e) {
+    stats.fetchErrors++;
     log(`    TR WP API fallback error: ${(e.message || '').substring(0, 60)}`);
   }
 

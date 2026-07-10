@@ -101,6 +101,13 @@ const includeClosed = args.includes('--include-closed');
 const TIME_BUDGET_MS = parseInt(args.find(a => a.startsWith('--time-budget-min='))?.split('=')[1] || '20', 10) * 60 * 1000;
 const FRESHNESS_HOURS = parseInt(args.find(a => a.startsWith('--freshness-hours='))?.split('=')[1] || '12', 10);
 const CHECKPOINT_PATH = path.join(ROOT, 'data', 'audit', 'gap-audit-checkpoint.json');
+// WE completeness gate (2026-07-10): reference rows from WE roundup aggregators.
+const { getWeReferenceRows, isWeShow, inOpeningWindow, missingSetHash } = require('./lib/gap-reference-sources');
+const { normalizeOutlet: normalizeOutletId } = require('./lib/review-normalization');
+// WE reference schema version — bump to invalidate WE checkpoint entries (59 shows
+// recorded gaps:0 from vacuous Broadway-only-reference runs and closed-clean shows
+// get a 365d skip; without invalidation the WE reference would never run on them).
+const WE_REF_VERSION = 2;
 function loadCheckpoint() {
   try { return JSON.parse(fs.readFileSync(CHECKPOINT_PATH, 'utf8')) || {}; } catch { return {}; }
 }
@@ -535,6 +542,8 @@ async function auditShow(show) {
     missing: [],         // urls listed by aggregator but not in dir
     dirOnly: [],         // urls in dir but not on aggregator (FYI, not necessarily bad)
     flaggedMisses: [],   // urls listed by aggregator that ARE in dir but flagged out
+    citedNoUrl: [],      // WE reference rows with no URL (WET tables) whose outlet has no covered file — alert-only, never auto-ingestable
+    weReference: null,   // WE reference source health ({sources, rowCount, allSourcesFailed})
   };
 
   const articles = await findAggregatorArticles(show);
@@ -572,8 +581,46 @@ async function auditShow(show) {
     if (verbose) console.error(`  Show Score discovery error for ${show.id}: ${e.message}`);
   }
 
+  // ---- West End reference (completeness gate, 2026-07-10) ----
+  // Playbill/BWW above are Broadway aggregators; for WE shows they find ~nothing,
+  // which made "no gaps" vacuous (TKAM 2026: 6 live, 15 recoverable, zero alarms).
+  // Reference = union of outlets cited by WET / theatre.reviews / LBO roundups,
+  // via the same discovery libs the opening-night poller uses. Scoped to the
+  // opening window so the 1095d back-catalogue grind doesn't fetch 4 aggregators
+  // for all 362 WE shows every cycle. Kill switch: WE_GAP_REFERENCE_DISABLED=1.
+  const weRefUrls = new Set();
+  const weRefPriorRunUrls = new Set();
+  const weRefNoUrlRows = [];
+  if (process.env.WE_GAP_REFERENCE_DISABLED !== '1' && isWeShow(show) && inOpeningWindow(show)) {
+    try {
+      const weRef = await getWeReferenceRows(show, { log: (m) => { if (verbose) console.log(m); } });
+      result.weReference = { rowCount: weRef.rows.length, sources: weRef.sources, allSourcesFailed: weRef.allSourcesFailed };
+      // Health floors (plan-review 2026-07-09): a broken detector must ALARM,
+      // never read as "no gaps" — that vacuous green is the failure this gate exists to kill.
+      if (weRef.allSourcesFailed) {
+        console.error(`::error::WE reference blackout for ${show.id} — all WE aggregator discoveries errored; "no gaps" for this show is NOT meaningful this run.`);
+      }
+      for (const [src, st] of Object.entries(weRef.sources)) {
+        if (st.emptyParse) console.error(`::error::WE reference empty-parse for ${show.id} — ${src} roundup was found but parsed 0 rows (parser drift?). Detector failure, not zero citations.`);
+      }
+      for (const row of weRef.rows) {
+        if (row.url) {
+          if (!isReviewUrl(row.url)) continue;
+          const u = normalizeReviewUrl(row.url);
+          aggUrls.add(u);
+          weRefUrls.add(u);
+          if (row.priorRun) weRefPriorRunUrls.add(u);
+        } else {
+          weRefNoUrlRows.push(row);
+        }
+      }
+    } catch (e) {
+      console.error(`::error::WE reference failed for ${show.id}: ${(e.message || '').slice(0, 120)}`);
+    }
+  }
+
   result.aggregatorListedUrls = [...aggUrls];
-  if (aggUrls.size === 0) return result;
+  if (aggUrls.size === 0 && weRefNoUrlRows.length === 0) return result;
 
   const dirData = loadDirFiles(show.id);
   result.dirFiles = dirData.length;
@@ -635,6 +682,62 @@ async function auditShow(show) {
     const clean = files.filter(d => isCoveredFile(d, show));
     if (clean.length > 0) {
       result.dirOnly.push({ host: h, count: clean.length });
+    }
+  }
+
+  // Tag WE-reference-derived missing URLs. Ingest for these is gated by
+  // WE_GAP_INGEST=1 (absent = report-only — the SAFE default; a dropped env line
+  // must fail closed), and prior-run roundup URLs are PERMANENTLY report-only
+  // (auto-ingesting a prior production's URLs is the WET mass-ingestion class).
+  if (weRefUrls.size > 0) {
+    for (const m of result.missing) {
+      if (weRefUrls.has(m.url)) m.weRef = true;
+      if (weRefPriorRunUrls.has(m.url)) m.priorRun = true;
+    }
+    for (const m of result.flaggedMisses) {
+      if (weRefUrls.has(m.url)) m.weRef = true;
+      if (weRefPriorRunUrls.has(m.url)) m.priorRun = true;
+    }
+  }
+
+  // Outlet-based coverage for URL-less WE citations (WET's dominant table format
+  // cites outlet+stars with NO link — URL-only matching would silently drop the
+  // biggest citation class; plan-review P0). Covered = any file for the outlet
+  // that passes isIncludableForRebuild (this naturally covers paywalled star-stubs,
+  // which ARE scoreable — memory: paywalled star outlets are not gaps), or a
+  // _pending/ no-byline strand file (known, tracked elsewhere — not a NEW gap).
+  if (weRefNoUrlRows.length > 0) {
+    const dirByOutlet = new Map();
+    for (const d of dirData) {
+      const oid = normalizeOutletId(d.outletId || (d._file || '').split('--')[0] || '');
+      if (!oid) continue;
+      if (!dirByOutlet.has(oid)) dirByOutlet.set(oid, []);
+      dirByOutlet.get(oid).push(d);
+    }
+    let pendingOutlets = new Set();
+    try {
+      const pendingDir = path.join(REVIEW_TEXTS_DIR, '_pending', show.id);
+      if (fs.existsSync(pendingDir)) {
+        pendingOutlets = new Set(fs.readdirSync(pendingDir).filter(f => f.endsWith('.json')).map(f => normalizeOutletId(f.split('--')[0])));
+      }
+    } catch { /* pending scan is best-effort */ }
+    const seenOutlets = new Set();
+    for (const row of weRefNoUrlRows) {
+      const oid = normalizeOutletId(row.outletId || row.outletName);
+      if (!oid || seenOutlets.has(oid)) continue;
+      seenOutlets.add(oid);
+      const files = dirByOutlet.get(oid) || [];
+      if (files.some(d => isCoveredFile(d, show))) continue;
+      if (pendingOutlets.has(oid)) continue;
+      result.citedNoUrl.push({
+        outletId: oid,
+        outletName: row.outletName,
+        stars: row.stars,
+        source: row.source,
+        sourceArticleUrl: row.sourceArticleUrl,
+        priorRun: row.priorRun,
+        hasExcludedFiles: files.length > 0,
+      });
     }
   }
 
@@ -853,6 +956,10 @@ if (require.main === module) (async () => {
       .filter((s) => {
         const e = checkpoint[s.id];
         if (!e) return true; // never audited → always include
+        // WE reference invalidation: entries written before the WE reference
+        // existed recorded vacuous gaps:0 (59 shows) and closed-clean shows get a
+        // 365d skip — force one re-audit under the new reference version.
+        if (isWeShow(s) && e.refVersion !== WE_REF_VERSION) return true;
         return (now - new Date(e.at).getTime()) >= freshnessMsFor(s, e);
       })
       .sort((a, b) => {
@@ -881,12 +988,57 @@ if (require.main === module) (async () => {
     if (verbose) console.log(`\n${s.id} "${s.title}" (${s.openingDate} ${s.status})`);
     const r = await auditShow(s);
     if (useCheckpoint) {
-      checkpoint[s.id] = { at: new Date().toISOString(), gaps: r.missing.length + r.flaggedMisses.length };
+      checkpoint[s.id] = {
+        at: new Date().toISOString(),
+        gaps: r.missing.length + r.flaggedMisses.length + r.citedNoUrl.length,
+        ...(isWeShow(s) ? { refVersion: WE_REF_VERSION } : {}),
+        ...(checkpoint[s.id] && checkpoint[s.id].weAlert ? { weAlert: checkpoint[s.id].weAlert } : {}),
+      };
       saveCheckpoint(checkpoint);
     }
     results.push(r);
-    const gapTotal = r.missing.length + r.flaggedMisses.length;
-    const summary = `  ${r.inReviewsJson}/${r.aggregatorListedUrls.length || '?'} reviews | ${gapTotal} gap (missing=${r.missing.length} flagged=${r.flaggedMisses.length})`;
+
+    // WE completeness alert: email the named missing outlets for opening-window
+    // WE shows. Deduped on missing-SET change + 24h re-ping — the hourly cron
+    // would otherwise re-alert ~240× per show over a 10-day window and the
+    // channel gets muted (plan-review 2026-07-09; the ::warning:: digest failed
+    // exactly this way). Delivered via email (discord-notify email:true) — the
+    // log-only path is what kept months of gaps invisible.
+    if (isWeShow(s) && r.weReference && (r.missing.length + r.citedNoUrl.length) > 0) {
+      const missingIds = [
+        ...r.missing.map(m => m.knownOutletId || m.host),
+        ...r.citedNoUrl.map(c => c.outletId),
+      ];
+      const hash = missingSetHash(missingIds);
+      const prevAlert = (checkpoint[s.id] && checkpoint[s.id].weAlert) || {};
+      const rePingDue = !prevAlert.at || (Date.now() - new Date(prevAlert.at).getTime()) > 24 * 60 * 60 * 1000;
+      if (hash !== prevAlert.hash || rePingDue) {
+        try {
+          const { sendAlert } = require('./lib/discord-notify');
+          const lines = [
+            ...r.missing.map(m => `• ${m.knownOutletId || m.host} — ${m.url}${m.priorRun ? ' [prior-run roundup]' : ''}`),
+            ...r.citedNoUrl.map(c => `• ${c.outletId} — cited by ${c.source}${c.stars ? ` (${c.stars}★)` : ''}, no URL${c.priorRun ? ' [prior-run roundup]' : ''}`),
+          ];
+          const delivered = await sendAlert({
+            title: `WE review gap — ${s.title}: ${lines.length} outlet(s) missing`,
+            description: `${r.inReviewsJson} review(s) in reviews.json vs ${r.aggregatorListedUrls.length + r.citedNoUrl.length} reference citation(s). Ingest a URL: node scripts/ingest-review-from-url.js --show=${s.id} --url=<url>`,
+            severity: 'warning',
+            fields: [{ name: 'Missing outlets', value: lines.slice(0, 20).join('\n') || '(none)' }],
+            url: `https://github.com/${process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore'}/actions`,
+            email: true,
+          });
+          if (useCheckpoint) {
+            checkpoint[s.id] = { ...(checkpoint[s.id] || {}), weAlert: { hash, at: new Date().toISOString(), delivered: !!delivered } };
+            saveCheckpoint(checkpoint);
+          }
+        } catch (e) {
+          console.error(`::error::WE gap alert failed for ${s.id}: ${(e.message || '').slice(0, 100)}`);
+        }
+      }
+    }
+
+    const gapTotal = r.missing.length + r.flaggedMisses.length + r.citedNoUrl.length;
+    const summary = `  ${r.inReviewsJson}/${r.aggregatorListedUrls.length || '?'} reviews | ${gapTotal} gap (missing=${r.missing.length} flagged=${r.flaggedMisses.length} citedNoUrl=${r.citedNoUrl.length})`;
     if (verbose || gapTotal > 0) console.log(`${r.showId}${verbose ? '' : ': ' + r.title}\n${summary}`);
     if (verbose && r.missing.length > 0) {
       for (const m of r.missing) console.log(`    ❌ ${m.url}`);
@@ -917,10 +1069,20 @@ if (require.main === module) (async () => {
       // ctvoice / New York Notebook class on the Girl, Interrupted opening. The
       // host is still recorded in unknown-aggregator-outlets.json for promotion
       // to a real registry entry.
-      const ingestable = r.missing.slice(0, INGEST_PER_SHOW_CAP);
+      // WE ingest gate (default OFF — plan-review 2026-07-09): WE-reference URLs
+      // ingest ONLY when WE_GAP_INGEST=1 is explicitly set (a dropped env line
+      // fails closed to report-only), and prior-run roundup URLs NEVER ingest.
+      const weGateOn = process.env.WE_GAP_INGEST === '1';
+      const weBlocked = r.missing.filter(m => m.weRef && (!weGateOn || m.priorRun));
+      const eligibleMissing = r.missing.filter(m => !(m.weRef && (!weGateOn || m.priorRun)));
+      if (weBlocked.length > 0) {
+        r.weIngestBlocked = weBlocked.map(m => ({ url: m.url, host: m.host, priorRun: !!m.priorRun }));
+        console.log(`  ⛔ ${weBlocked.length} WE-reference URL(s) not ingested (${weGateOn ? 'prior-run roundup — permanently report-only' : 'WE_GAP_INGEST unset — report-only mode'})`);
+      }
+      const ingestable = eligibleMissing.slice(0, INGEST_PER_SHOW_CAP);
       // P1 fix 2026-05-27 (ship-check): record cap-skipped URLs so future runs
       // (and operators) can see they exist and weren't silently dropped.
-      const cappedSkipped = r.missing.slice(INGEST_PER_SHOW_CAP);
+      const cappedSkipped = eligibleMissing.slice(INGEST_PER_SHOW_CAP);
       r.ingestResults = [];
       r.ingestSkippedByCap = cappedSkipped.map(m => ({ url: m.url, host: m.host, outletId: m.knownOutletId || provisionalOutletIdFromHost(m.host) }));
       for (const m of ingestable) {
@@ -992,8 +1154,9 @@ if (require.main === module) (async () => {
     windowDays,
     targets: targets.length,
     counts: {
-      withGap: results.filter(r => r.missing.length + r.flaggedMisses.length > 0).length,
+      withGap: results.filter(r => r.missing.length + r.flaggedMisses.length + (r.citedNoUrl || []).length > 0).length,
       totalMissing: results.reduce((a, r) => a + r.missing.length, 0),
+      totalCitedNoUrl: results.reduce((a, r) => a + (r.citedNoUrl || []).length, 0),
       totalFlaggedMisses: results.reduce((a, r) => a + r.flaggedMisses.length, 0),
       totalRecoverable: results.reduce((a, r) => a + r.flaggedMisses.filter(m => m.recoverable).length, 0),
       totalRecovered: results.reduce((a, r) => a + (r.recoveryResults || []).filter(x => x.recovered).length, 0),

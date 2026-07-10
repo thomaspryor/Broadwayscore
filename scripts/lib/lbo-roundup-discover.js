@@ -40,6 +40,9 @@ async function discoverLboRoundupHtml(show, opts = {}) {
   const dataDir = opts.dataDir || DEFAULT_DATA_DIR;
   const fetchPage = opts.fetchPage || require('./scraper').fetchPage;
   const log = opts.log || console.log;
+  // opts.stats (optional, mutated): { fetchErrors } — see tr-roundup-discover.
+  const stats = opts.stats || {};
+  stats.fetchErrors = 0;
 
   // 1. Curated URL map
   const lboMapPath = path.join(dataDir, 'lbo-roundup-urls.json');
@@ -62,6 +65,7 @@ async function discoverLboRoundupHtml(show, opts = {}) {
       lboHtml = lboResult?.content || null;
       if (lboHtml) lboHtmlSource = 'curated';
     } catch (e) {
+      stats.fetchErrors++;
       log(`    LBO fetch error: ${e.message}`);
     }
   } else if (fs.existsSync(lboArchivePath)) {
@@ -77,7 +81,7 @@ async function discoverLboRoundupHtml(show, opts = {}) {
       try {
         const smResult = await fetchPage('https://www.londonboxoffice.co.uk/news-sitemap.xml', { renderJs: false });
         sitemapXml = smResult?.content || null;
-      } catch (e) { /* sitemap fetch failed, continue */ }
+      } catch (e) { stats.fetchErrors++; /* sitemap fetch failed, continue */ }
       if (sitemapXml) {
         const reviewUrls = [...sitemapXml.matchAll(/<loc>(https:\/\/www\.londonboxoffice\.co\.uk\/news\/post\/[^<]*review[^<]*)<\/loc>/gi)]
           .map(m => m[1])

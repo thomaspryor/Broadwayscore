@@ -37,6 +37,13 @@ async function discoverWetRoundupRows(show, opts = {}) {
   const fetchPage = opts.fetchPage || require('./scraper').fetchPage;
   const fetchJSON = opts.fetchJSON || require('./scraper').fetchJSON;
   const log = opts.log || console.log;
+  // opts.stats (optional, mutated): { titleMatchedPosts, apiPosts } — lets the
+  // gap audit distinguish "no matching post" (fine) from "title-matched post but
+  // 0 rows parsed" (WET template drift = detector failure that must ALARM).
+  const stats = opts.stats || {};
+  stats.apiPosts = 0;
+  stats.titleMatchedPosts = 0;
+  stats.fetchErrors = 0;
 
   const searchTitle = cleanSearchTitle(show.title);
   const apiUrl = `https://www.westendtheatre.com/wp-json/wp/v2/posts?categories=10&per_page=20&search=${encodeURIComponent(searchTitle)}`;
@@ -47,10 +54,12 @@ async function discoverWetRoundupRows(show, opts = {}) {
     posts = await fetchJSON(apiUrl);
     if (!Array.isArray(posts)) posts = [];
   } catch (e) {
+    stats.fetchErrors++;
     log(`    WET API error: ${(e.message || '').substring(0, 60)}`);
   }
 
   if (!Array.isArray(posts) || posts.length === 0) return null;
+  stats.apiPosts = posts.length;
 
   for (const post of posts.slice(0, 3)) {
     // Validate post title matches our show (WP search can return wrong shows)
@@ -66,6 +75,7 @@ async function discoverWetRoundupRows(show, opts = {}) {
       continue;
     }
 
+    stats.titleMatchedPosts++;
     const htmlContent = post.content?.rendered || '';
     let wetReviews = [];
 
@@ -113,6 +123,7 @@ async function discoverWetRoundupRows(show, opts = {}) {
           });
         }
       } catch (e) {
+        stats.fetchErrors++;
         log(`    WET page fetch error: ${(e.message || '').substring(0, 60)}`);
       }
     }
