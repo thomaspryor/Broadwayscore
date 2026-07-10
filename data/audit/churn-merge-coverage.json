@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-10T05:07:33.657Z",
+    "generatedAt": "2026-07-10T05:14:04.701Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -46,15 +46,15 @@
   "exempt": [
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 122
+      "churn": 123
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 122
+      "churn": 123
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 122
+      "churn": 123
     },
     {
       "path": "data/llm-scoring-runs.json",
@@ -74,7 +74,7 @@
     },
     {
       "path": "public/opening-night-status.json",
-      "churn": 79
+      "churn": 80
     },
     {
       "path": "data/llm-scoring-garbage-skips.json",
@@ -118,7 +118,7 @@
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 569,
+      "churn": 568,
       "mergeAttr": "ours"
     },
     {
@@ -138,7 +138,7 @@
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 157,
+      "churn": 158,
       "mergeAttr": "ours"
     },
     {
@@ -148,17 +148,17 @@
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 114,
+      "churn": 115,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 98,
+      "churn": 99,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/wrong-production-audit.json",
-      "churn": 79,
+      "churn": 80,
       "mergeAttr": "ours"
     },
     {
@@ -178,12 +178,12 @@
     },
     {
       "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 74,
+      "churn": 75,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/syndicated-duplicates.json",
-      "churn": 74,
+      "churn": 75,
       "mergeAttr": "ours"
     },
     {
@@ -273,7 +273,7 @@
     },
     {
       "path": "data/audit/orphan-unscored-tender-off-west-end-2026.json",
-      "churn": 32,
+      "churn": 33,
       "mergeAttr": "ours"
     },
     {
