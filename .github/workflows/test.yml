@@ -124,6 +124,9 @@ on:
       # 2026-07-09; its test runs in the line-1767 batch.
       - 'scripts/lib/review-normalization.js'
       - 'tests/unit/review-normalization.test.js'
+      # LLM content verifier (market-aware prompts) — ZERO-CI on solo edits
+      # until 2026-07-10; its test runs in the line-1715 batch.
+      - 'scripts/lib/content-verifier.js'
       - 'scripts/scrape-playbill-verdict.js'
       - 'scripts/scrape-bww-reviews.js'
       - 'scripts/lib/show-duplicate-detection.test.mjs'
