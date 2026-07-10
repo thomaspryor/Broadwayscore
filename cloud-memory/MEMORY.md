@@ -56,6 +56,7 @@
 - [Refactor parity test on real data](feedback_refactor_parity_test.md) — old vs new predicate; 0 diffs = safe
 - [Paywalled star outlets not gaps](feedback_paywalled_star_outlets_not_gaps.md) — Stage stubs scored via aggregatorStars-fallback; gap-scans exclude _pending/
 - [CI E2E runs vs production](feedback_e2e_runs_against_production.md) — UI fix stays red until deploy lands; push-triggered run is deploy-lag false-neg; rerun after deploy
+- [Fixture E2E specs: dual registration](feedback_fixture_e2e_specs_dual_registration.md) — /test/* specs go in BOTH playwright testIgnore AND test-ugc.yml run list; TestGuard redirects fixtures to / on prod
 
 ## 📋 Open work
 - [OB venue historical backfill](project_ob_venue_historical_backfill.md) — Atlantic/Vineyard/MCC archive pages; Tier A deferred TFANA+2ndStage ([[project_ob_tier_a_deferred.md]])
@@ -83,6 +84,7 @@
 - [SB SERP burns invisibly](feedback_sb_serp_invisible_burn.md) — _serpViaScrapingBee logs nothing; poller preferSpeed=SB-primary + SD-empty fallthrough = 60-100K cr/day; audit via usage-counter sampling not logs. BD zone web_unlocker2 ([[feedback_brightdata_zone_migration.md]]); budgets [[feedback_sb_credit_budget.md]]
 - [Closing-date automation gaps](feedback_closing_date_audit_gaps.md) — 4 silent gaps; broadway.org/TodayTix lag; WE=0 automation
 - [WET venue-page wrong-show ingestion](feedback_wet_venue_page_wrong_show_ingestion.md) — same-venue predecessor show's reviews attach via venue corroboration; check rv URL slugs; flag needs wrongShowReason + delete WET cache
+- [In-place URL update preserves stale state](feedback_inplace_url_update_preserves_stale_state.md) — real reviews merged into flagged slots stay suppressed; check file's CURRENT url before assuming discovery failed; run isScoreable() directly for hidden blockers
 - [SEO site-avg position brand-skewed](feedback_seo_site_avg_position_is_brand_skewed.md) — never cite GSC avg as ranking quality; use de-branded review-intent
 - [Cloudflare/DataDome blocks](feedback_cloudflare_bypass_hierarchy.md) — managed challenge + WSJ/NewYorker CI IP block defeat all; Browserbase only ([[feedback_wsj_newyorker_ci_ip_block.md]])
 - [Cookie auth](feedback_stage_cookie_minimal_set.md) — Stage = 5 cookies, cookie-only; Mac Studio Terminal needs FDA ([[feedback_mac_studio_cookies.md]]); health = body-length not expiry, re-login needs user ([[feedback_cookie_health_body_length_not_expiry.md]])
@@ -104,6 +106,7 @@
 - [Regex bare-keyword/fragment FPs](feedback_content_quality_regex_fps.md) — audit patterns against real corpus before edit; anchor + URL filter ([[feedback_regex_url_fragment_fps.md]])
 - [Market/season routing](feedback_same_title_disambiguation.md) — extend classifyMarketRouting, ≥2-signal cascade; new UK ceremony MUST be in UK_CEREMONIES or fallback routes WE→BW ([[feedback_uk_ceremonies_strict_season.md]])
 - [Stale-flag CI gates](feedback_duplicate_of_url_mismatch.md) — duplicateOf w/o matching URLs = bug, CI gate + self-heal; orphan slim show files gate --fix deletes ([[feedback_orphan_slim_show_files.md]])
+- [Self-referential duplicate pointers](feedback_self_referential_duplicate_pointers.md) — rename-onto-pointer-target makes file a dupe of itself, silently dropped; check duplicateTextOf too; drift actual>expected = rebuild will drop
 - [In-sample accuracy needs LOSO](feedback_in_sample_accuracy_claims_need_loso.md) — never publish in-sample backtest % as "Accuracy"
 
 ## 🤖 LLM / evals

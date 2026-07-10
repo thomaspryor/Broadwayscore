@@ -39,7 +39,7 @@ const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTL
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
 const { shouldRejectAsReservation, isInternalNote, hasCopyrightChrome, stripLeadingChrome } = require('./lib/pull-quote-guards');
 const { emitStage } = require('./lib/stage-latency');
-const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, isRoundupPageAsReview, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow } = require('./lib/review-guards');
+const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl } = require('./lib/rebuild-helpers');
@@ -1959,10 +1959,9 @@ showDirs.forEach(showId => {
       // (same guards as the UK-URL auto-clear path below — cousin bug fixed 2026-04-15)
       if (data.wrongProduction === true && data.wrongProductionNote && data.wrongProductionNote.includes('URL contains year')
           && (isLondonMarket(showCat) || showCat === 'off-broadway')) {
-        const wpCvConfirmedWrong = data.contentVerification?.wrongProduction === true
-          && data.contentVerification?.confidence === 'high';
-        const wpCvConfirmedWrongArticle = data.contentVerification?.wrongArticle === true
-          && data.contentVerification?.confidence === 'high';
+        // Shared with the UK-URL auto-clear below — includes the high-confidence
+        // non-review articleType block (Times Sam Ryder interview, 2026-07-08).
+        const wpCvBlocksClear = cvBlocksUkWrongProductionAutoClear(data.contentVerification);
         const wpHasManualReason = !!data.wrongProductionReason;
         // Same listing-page carve-out as the UK-URL auto-clear below: a /shows/
         // aggregate/listing page is not a dated review, so a URL-year mismatch on
@@ -1970,7 +1969,7 @@ showDirs.forEach(showId => {
         // /shows/ stub, 2026-07-05).
         const wpIsShowListingUrl = !!data.url && (/(?:whatsonstage|broadwayworld)\.com\/shows?\//i.test(data.url)
           || require('./lib/cross-production-guards').isEvergreenListingUrl(data.url));
-        if (!wpCvConfirmedWrong && !wpCvConfirmedWrongArticle && !wpHasManualReason && !wpIsShowListingUrl) {
+        if (!wpCvBlocksClear && !wpHasManualReason && !wpIsShowListingUrl) {
           data.wrongProduction = false;
           data.wrongProductionAutoCleared = `rebuild: WE/OB exempt from URL-year guard (was: ${data.wrongProductionNote})`;
           data.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
@@ -2969,7 +2968,16 @@ showDirs.forEach(showId => {
       // fullText + isFullReview + non-roundup URL) is treated as wrong. Notion 34e637c5.
       // isRoundupPageAsReview covers unflagged roundup pages — the flag setter is
       // enrichment-gated and fast_path rebuilds shipped 4 live roundup entries (2026-07-09).
-      if ((data.isRoundupArticle === true && !isLikelyStaleRoundupFlag(data)) || isRoundupPageAsReview(data)) {
+      const roundupPageAsReview = isRoundupPageAsReview(data);
+      if (roundupPageAsReview && data.isRoundupArticle !== true) {
+        // Persist so validate-data / verify-review-recovery / scoring agree with
+        // this exclusion instead of counting it as a silent gap forever.
+        data.isRoundupArticle = true;
+        data.roundupNote = 'inclusion-gate: roundup page ingested as review (isRoundupPageAsReview)';
+        try { safeWriteReview(path.join(showDir, file), data, { force: true }); } catch (e) {}
+        stats.autoFlaggedRoundup = (stats.autoFlaggedRoundup || 0) + 1;
+      }
+      if ((data.isRoundupArticle === true && !isLikelyStaleRoundupFlag(data)) || roundupPageAsReview) {
         logExclusion("skippedRoundup", showId, file, data);
         stats.skippedRoundup = (stats.skippedRoundup || 0) + 1;
         return;
@@ -3487,7 +3495,12 @@ showDirs.forEach(showId => {
       // Guard: skip files where isRoundupArticle was manually cleared (shouldSkipRoundupAudit).
       if (data.url && !data.isRoundupArticle && !shouldSkipRoundupAudit(data)) {
         const roundupCheck = isRoundupUrl(data.url);
-        if (roundupCheck.isRoundup) {
+        // Quoting hosts (WOS, Playbill) aggregate OTHER outlets' critics: only the
+        // host's own outletId is page-as-review; a different outletId is a review
+        // SOURCED from the roundup and must stay unflagged (ship-check 2026-07-10).
+        const sourcedFromQuotingRoundup = roundupCheck.isRoundup
+          && isQuotingRoundupHostUrl(data.url) && !isRoundupPageAsReview(data);
+        if (roundupCheck.isRoundup && !sourcedFromQuotingRoundup) {
           data.isRoundupArticle = true;
           data.roundupNote = roundupCheck.reason;
           stats.autoFlaggedRoundup = (stats.autoFlaggedRoundup || 0) + 1;
