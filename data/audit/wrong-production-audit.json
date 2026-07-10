@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-10T18:36:12.898Z",
+  "timestamp": "2026-07-10T19:38:02.648Z",
   "stats": {
     "totalReviews": 39962,
-    "alreadyFlagged": 17574,
-    "dateGuardCatches": 48,
+    "alreadyFlagged": 17576,
+    "dateGuardCatches": 49,
     "directorMismatch": 897,
     "tvFilmSignals": 1097,
     "londonSignals": 742,
     "offBroadwaySignals": 467,
     "yearMismatch": 87,
-    "noPublishDate": 4045
+    "noPublishDate": 4041
   },
   "findings": [
     {
@@ -28208,6 +28208,18 @@
     },
     {
       "showId": "a-midsummer-nights-dream-west-end-2026",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 46d before show (2026-05-05 vs 2026-06-20)"
+        }
+      ]
+    },
+    {
+      "showId": "a-midsummer-nights-dream-west-end-2026",
       "file": "thereviewshub--the-reviews-hub-london.json",
       "score": 62,
       "publishDate": null,
@@ -41781,7 +41793,7 @@
       "file": "thestage--dave-fargnoli.json",
       "score": 38,
       "publishDate": "2026-06-24",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-misanthrope-review-sandra-oh-what-a-disappointment-sbzvf82b2?t=1782310602034",
+      "url": "https://www.thestage.co.uk/reviews/the-misanthrope-review-lyttelton-national-theatre-london-sandra-oh",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
