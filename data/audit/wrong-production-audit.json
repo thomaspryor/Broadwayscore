@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-10T12:38:54.502Z",
+  "timestamp": "2026-07-10T13:44:58.992Z",
   "stats": {
-    "totalReviews": 39934,
-    "alreadyFlagged": 17564,
-    "dateGuardCatches": 50,
+    "totalReviews": 39936,
+    "alreadyFlagged": 17567,
+    "dateGuardCatches": 49,
     "directorMismatch": 893,
     "tvFilmSignals": 1096,
     "londonSignals": 742,
     "offBroadwaySignals": 467,
     "yearMismatch": 87,
-    "noPublishDate": 4036
+    "noPublishDate": 4031
   },
   "findings": [
     {
@@ -31061,7 +31061,7 @@
       "file": "exeunt-magazine--loren-noveck.json",
       "score": 80,
       "publishDate": "2026-05-15T11:08:02-04:00",
-      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/#:~:text=Dad%20Don't%20Read%20This%20is%20messy%20and%20raw%20and,will%20keep%20it%20in%20my",
+      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -39629,20 +39629,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "tender-off-west-end-2026",
-      "file": "loureviews--louise-penn.json",
-      "score": 78,
-      "publishDate": "2026-05-05",
-      "url": "https://loureviews.blog/2026/05/05/play-review-tender-at-soho-theatre/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 65d before show (2026-05-05 vs 2026-07-09)"
         }
       ]
     },
