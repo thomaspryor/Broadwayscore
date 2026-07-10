@@ -136,6 +136,21 @@ describe('safety wiring (audit + workflow must keep the fail-closed invariants)'
     }
   });
 
+  test('P0 (ship-check): flaggedMisses RECOVERY path also respects the WE gate + prior-run block', () => {
+    assert.ok(auditSrc.includes('m.recoverable && !(m.weRef && (!weRecGateOn || m.priorRun))'),
+      'recovery filter must exclude WE-gated + prior-run rows — an empty-body file + a 2022 roundup URL must never re-ingest prior-production text');
+  });
+
+  test('P1 (ship-check): prior-run-only alert sets do not daily re-ping; failed delivery does not record dedup hash', () => {
+    assert.ok(auditSrc.includes('rePingDue && !allPriorRun'), 'unfixable prior-run-only sets alert once, not daily');
+    assert.ok(auditSrc.includes('if (delivered) {'), 'hash recorded only on real delivery so failures retry');
+  });
+
+  test('P1 (ship-check): outlet display variants match covered files (canonical key)', () => {
+    assert.ok(auditSrc.includes("replace(/-(london|uk)$/,'').replace(/-/g, '')"),
+      'timeout-london/broadway-world-uk class variants must match registry ids');
+  });
+
   test('audit alerts via email with set-change dedup', () => {
     assert.ok(auditSrc.includes('missingSetHash('), 'set-change dedup in place');
     assert.ok(auditSrc.includes('email: true'), 'alert requests email delivery');

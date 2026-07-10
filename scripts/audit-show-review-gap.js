@@ -707,9 +707,15 @@ async function auditShow(show) {
   // which ARE scoreable — memory: paywalled star outlets are not gaps), or a
   // _pending/ no-byline strand file (known, tracked elsewhere — not a NEW gap).
   if (weRefNoUrlRows.length > 0) {
+    // Canonical outlet key: WET prints display variants that normalize to ids the
+    // registry doesn't use ("Time Out London"→timeout-london vs registry timeout;
+    // "Broadway World UK"→broadway-world-uk vs broadwayworld). Collapse hyphens and
+    // strip a -london/-uk market suffix so a COVERED outlet is never reported
+    // missing for 21 days over a naming variant (ship-check P1 2026-07-10).
+    const outletKey = (oid) => String(oid || '').replace(/-(london|uk)$/,'').replace(/-/g, '');
     const dirByOutlet = new Map();
     for (const d of dirData) {
-      const oid = normalizeOutletId(d.outletId || (d._file || '').split('--')[0] || '');
+      const oid = outletKey(normalizeOutletId(d.outletId || (d._file || '').split('--')[0] || ''));
       if (!oid) continue;
       if (!dirByOutlet.has(oid)) dirByOutlet.set(oid, []);
       dirByOutlet.get(oid).push(d);
@@ -718,19 +724,20 @@ async function auditShow(show) {
     try {
       const pendingDir = path.join(REVIEW_TEXTS_DIR, '_pending', show.id);
       if (fs.existsSync(pendingDir)) {
-        pendingOutlets = new Set(fs.readdirSync(pendingDir).filter(f => f.endsWith('.json')).map(f => normalizeOutletId(f.split('--')[0])));
+        pendingOutlets = new Set(fs.readdirSync(pendingDir).filter(f => f.endsWith('.json')).map(f => outletKey(normalizeOutletId(f.split('--')[0]))));
       }
     } catch { /* pending scan is best-effort */ }
     const seenOutlets = new Set();
     for (const row of weRefNoUrlRows) {
-      const oid = normalizeOutletId(row.outletId || row.outletName);
+      const rawOid = normalizeOutletId(row.outletId || row.outletName);
+      const oid = outletKey(rawOid);
       if (!oid || seenOutlets.has(oid)) continue;
       seenOutlets.add(oid);
       const files = dirByOutlet.get(oid) || [];
       if (files.some(d => isCoveredFile(d, show))) continue;
       if (pendingOutlets.has(oid)) continue;
       result.citedNoUrl.push({
-        outletId: oid,
+        outletId: rawOid,
         outletName: row.outletName,
         stars: row.stars,
         source: row.source,
@@ -1004,33 +1011,48 @@ if (require.main === module) (async () => {
     // channel gets muted (plan-review 2026-07-09; the ::warning:: digest failed
     // exactly this way). Delivered via email (discord-notify email:true) — the
     // log-only path is what kept months of gaps invisible.
-    if (isWeShow(s) && r.weReference && (r.missing.length + r.citedNoUrl.length) > 0) {
+    // Scope the alert STRICTLY to WE-reference-derived gaps (weRef missing +
+    // citedNoUrl). The Broadway-path SERP finds same-title PRIOR-PRODUCTION
+    // roundups for WE revivals (TKAM: the 2018 Broadway BWW RR → 77 'missing'
+    // US URLs) — alerting on those is a noise blast that gets the channel muted
+    // (verified in the 2026-07-10 e2e run). Those stay in the audit JSON and the
+    // existing ::warning:: digest, as before.
+    const weMissing = r.missing.filter(m => m.weRef);
+    if (isWeShow(s) && r.weReference && (weMissing.length + r.citedNoUrl.length) > 0) {
       const missingIds = [
-        ...r.missing.map(m => m.knownOutletId || m.host),
+        ...weMissing.map(m => m.knownOutletId || m.host),
         ...r.citedNoUrl.map(c => c.outletId),
       ];
       const hash = missingSetHash(missingIds);
       const prevAlert = (checkpoint[s.id] && checkpoint[s.id].weAlert) || {};
       const rePingDue = !prevAlert.at || (Date.now() - new Date(prevAlert.at).getTime()) > 24 * 60 * 60 * 1000;
-      if (hash !== prevAlert.hash || rePingDue) {
+      // Prior-run-only sets are UNFIXABLE rows (report-only forever) — alert once
+      // on set-change, never daily re-ping, or a returning production emails every
+      // day of the 21-day window (ship-check P1 2026-07-10).
+      const allPriorRun = [...weMissing, ...r.citedNoUrl].every(x => x.priorRun);
+      // Manual runs (no --checkpoint) have no dedup state — the operator is
+      // watching stdout; log instead of emailing on every invocation.
+      if (useCheckpoint && (hash !== prevAlert.hash || (rePingDue && !allPriorRun))) {
         try {
           const { sendAlert } = require('./lib/discord-notify');
           const lines = [
-            ...r.missing.map(m => `• ${m.knownOutletId || m.host} — ${m.url}${m.priorRun ? ' [prior-run roundup]' : ''}`),
+            ...weMissing.map(m => `• ${m.knownOutletId || m.host} — ${m.url}${m.priorRun ? ' [prior-run roundup]' : ''}`),
             ...r.citedNoUrl.map(c => `• ${c.outletId} — cited by ${c.source}${c.stars ? ` (${c.stars}★)` : ''}, no URL${c.priorRun ? ' [prior-run roundup]' : ''}`),
           ];
           const delivered = await sendAlert({
             title: `WE review gap — ${s.title}: ${lines.length} outlet(s) missing`,
-            description: `${r.inReviewsJson} review(s) in reviews.json vs ${r.aggregatorListedUrls.length + r.citedNoUrl.length} reference citation(s). Ingest a URL: node scripts/ingest-review-from-url.js --show=${s.id} --url=<url>`,
+            description: `${r.inReviewsJson} review(s) in reviews.json; WE roundups cite ${weMissing.length + r.citedNoUrl.length} outlet(s) we don't have. Ingest a URL: node scripts/ingest-review-from-url.js --show=${s.id} --url=<url>`,
             severity: 'warning',
             fields: [{ name: 'Missing outlets', value: lines.slice(0, 20).join('\n') || '(none)' }],
             url: `https://github.com/${process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore'}/actions`,
             email: true,
           });
-          if (useCheckpoint) {
-            checkpoint[s.id] = { ...(checkpoint[s.id] || {}), weAlert: { hash, at: new Date().toISOString(), delivered: !!delivered } };
+          if (delivered) {
+            checkpoint[s.id] = { ...(checkpoint[s.id] || {}), weAlert: { hash, at: new Date().toISOString(), delivered: true } };
             saveCheckpoint(checkpoint);
           }
+          // NOT delivered → don't record the hash: the next hourly run retries
+          // (each emitting a visible ::error:: until RESEND/OWNER_EMAIL is fixed).
         } catch (e) {
           console.error(`::error::WE gap alert failed for ${s.id}: ${(e.message || '').slice(0, 100)}`);
         }
@@ -1120,7 +1142,16 @@ if (require.main === module) (async () => {
     // Those flaggedMisses stay visible for --dispatch-gather and manual
     // `ingest-review-from-url.js --force-clear-stale-flag` (operator clears the flag).
     if (ingestMissing) {
-      const recoverables = r.flaggedMisses.filter(m => m.recoverable);
+      // P0 (ship-check 2026-07-10): recovery must respect the WE ingest gate and
+      // the prior-run block — an empty-body guardian file + a 2022 WET roundup
+      // citing a Guardian URL would otherwise re-ingest PRIOR-PRODUCTION text
+      // into the current show's file every hour (the WET mass-ingestion class).
+      const weRecGateOn = process.env.WE_GAP_INGEST === '1';
+      const weRecBlocked = r.flaggedMisses.filter(m => m.recoverable && m.weRef && (!weRecGateOn || m.priorRun));
+      if (weRecBlocked.length > 0) {
+        console.log(`  ⛔ ${weRecBlocked.length} WE-reference recoverable(s) not recovered (${weRecGateOn ? 'prior-run roundup — permanently report-only' : 'WE_GAP_INGEST unset — report-only mode'})`);
+      }
+      const recoverables = r.flaggedMisses.filter(m => m.recoverable && !(m.weRef && (!weRecGateOn || m.priorRun)));
       // Recovery draws from whatever the missing-URL ingest left of the shared
       // per-show fetch budget (INGEST_PER_SHOW_CAP). Anything beyond rolls to the
       // next hourly run via the audit JSON.
