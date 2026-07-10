@@ -1276,3 +1276,21 @@ describe('mergeReviews — URL protection', () => {
       'URLs containing "undefined" should be repaired');
   });
 });
+
+// Junk-byline guard (2026-07-09): CMS boilerplate scraped as a byline must
+// normalize to 'unknown', not mint a phantom critic. "Posted By" defeated the
+// outlet+critic manual-entry dedup and duplicated MDTG on the live CSC page.
+const { normalizeCritic: _normCritic } = require('../../scripts/lib/review-normalization.js');
+describe('normalizeCritic junk-byline guard', () => {
+  it('maps CMS boilerplate bylines to unknown', () => {
+    for (const junk of ['Posted By', 'posted by:', 'Written By', 'Staff Writer', 'Admin', 'BY']) {
+      assert.strictEqual(_normCritic(junk), 'unknown', `"${junk}" must normalize to unknown`);
+    }
+  });
+  it('leaves real critic names untouched', () => {
+    assert.strictEqual(_normCritic("Aidan O'Connor") !== 'unknown', true);
+    assert.strictEqual(_normCritic('Chris Jones') !== 'unknown', true);
+    // real surnames that contain junk words must not be swallowed
+    assert.strictEqual(_normCritic('By Smith') !== 'unknown', true);
+  });
+});
