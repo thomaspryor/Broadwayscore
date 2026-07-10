@@ -120,6 +120,10 @@ on:
       # aggregator scrapers (allowRegional). Without these a solo edit pushes
       # with ZERO CI (tour-forward-tense / tryout-url-filter cover the filter).
       - 'scripts/lib/content-filters.js'
+      # Score-source watchlist file (§7) — was ZERO-CI on solo edits until
+      # 2026-07-09; its test runs in the line-1767 batch.
+      - 'scripts/lib/review-normalization.js'
+      - 'tests/unit/review-normalization.test.js'
       - 'scripts/scrape-playbill-verdict.js'
       - 'scripts/scrape-bww-reviews.js'
       - 'scripts/lib/show-duplicate-detection.test.mjs'

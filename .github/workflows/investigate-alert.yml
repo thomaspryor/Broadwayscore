@@ -22,6 +22,10 @@ jobs:
   investigate:
     runs-on: ubuntu-latest
     steps:
+      # Required for the local notify-failure action below
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Investigate with Claude and send email
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -34,8 +38,10 @@ jobs:
           RUN_URL: ${{ github.event.inputs.run_url }}
         run: |
           node << 'SCRIPT'
-          const https = require('https');
-          const crypto = require('crypto');
+          // ESM imports (not require) — the script uses top-level await, and
+          // Node 22.7+ module detection rejects require() + top-level await together
+          import https from 'node:https';
+          import crypto from 'node:crypto';
 
           const alertType = process.env.ALERT_TYPE || '';
           const alertTitle = process.env.ALERT_TITLE || '';

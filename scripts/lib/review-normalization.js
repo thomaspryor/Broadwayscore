@@ -383,6 +383,18 @@ function normalizeCritic(criticName) {
 
   const lower = cleaned.toLowerCase().trim();
 
+  // CMS boilerplate scraped as a byline is not a critic. "Posted By: Aidan
+  // O'Connor" extracted as critic "Posted By" minted a phantom MDTG critic and
+  // a duplicate review on the live CrazySexyCool page (2026-07-09) — the
+  // manual-entry dedup matches on outlet+critic, so a junk byline defeats it.
+  // Mapping to 'unknown' routes these through the Unknown-byline guards instead.
+  const JUNK_BYLINES = new Set([
+    'posted by', 'written by', 'by', 'staff', 'staff writer', 'staff reports',
+    'admin', 'administrator', 'editor', 'editorial staff', 'contributor',
+    'guest', 'guest contributor', 'press release', 'newsdesk', 'news desk',
+  ]);
+  if (JUNK_BYLINES.has(lower.replace(/[:.]+$/, '').trim())) return 'unknown';
+
   // Check against all aliases
   for (const [canonical, aliases] of Object.entries(CRITIC_ALIASES)) {
     if (aliases.some(alias => {

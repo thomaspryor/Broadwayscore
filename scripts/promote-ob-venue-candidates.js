@@ -131,6 +131,12 @@ function buildRegionalShowEntry(candidate) {
   const slugBase = candidate.slug || candidate.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
   const id = `${slugBase}-regional-${year}`;
   const city = feederVenueCity(candidate.venue);
+  // Regional runs are limited engagements (6-10 weeks). A fresh roundup ⇒ the
+  // show just opened ⇒ 'open'. A roundup older than ~90 days reaching this
+  // code is a backfill/seed — the run is almost certainly over, and 'open'
+  // would show a closed production as running (Millions @ Alliance test seed,
+  // 2026-07-09). closingDate stays null either way (unknown).
+  const ageDays = openingDate ? (Date.now() - new Date(openingDate).getTime()) / 86400000 : 0;
   return {
     id,
     title: candidate.title,
@@ -140,7 +146,7 @@ function buildRegionalShowEntry(candidate) {
     openingDateSource: 'aggregator-roundup',
     previewsStartDate: null,
     closingDate: null,
-    status: 'open',
+    status: ageDays > 90 ? 'closed' : 'open',
     category: 'regional',
     market: 'regional',
     tags: ['regional'],
