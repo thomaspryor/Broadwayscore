@@ -228,7 +228,7 @@ if (scoredCount > 0) {
   pass(`${scoredCount} files have LLM scores`);
 }
 if (unscoredIncludable > 0) {
-  console.log(`  ${FAIL} ${unscoredIncludable} includable files with content but no score — run: gh workflow run "LLM Ensemble Score Reviews" -f show=${showId}`);
+  console.log(`  ${FAIL} ${unscoredIncludable} includable files with content but no score — run: gh workflow run "LLM Ensemble Score Reviews" -f show_id=${showId}`);
 }
 
 // ── Check 5: Rebuild inclusion ──────────────────────────────────────────────
@@ -338,7 +338,7 @@ if (totalFail > 0) {
   }
   if (unscoredIncludable > 0) {
     console.log(`\n  Trigger scoring:`);
-    console.log(`    gh workflow run "LLM Ensemble Score Reviews" -f show=${showId}`);
+    console.log(`    gh workflow run "LLM Ensemble Score Reviews" -f show_id=${showId}`);
   }
   if (reviewsData) {
     const missing = includable.filter(f => {
