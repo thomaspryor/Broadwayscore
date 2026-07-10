@@ -243,3 +243,14 @@ test('regional feeder venues classify as category regional (2026-07-08)', () => 
   // "part" must not fuzzy-hit "mark taper" etc. — word-boundary anchored
   assert.equal(classifyVenueMarket('New Art Theatre'), 'off-broadway');
 });
+
+test('collisionSlugSet: title-derived and suffix-stripped slugs both collide (daily re-fetch loop guard)', () => {
+  const { collisionSlugSet, slugCollidesWith } = require('./aggregator-candidate-extract.js');
+  const set = collisionSlugSet([
+    { slug: 'crazysexycool-regional-2026', title: 'CrazySexyCool: The TLC Musical' },
+    { slug: 'iceboy-regional-2026', title: 'Iceboy!' },
+  ]);
+  assert.equal(slugCollidesWith('Crazysexycool: The Tlc Musical', set), true, 'title-derived slug must collide');
+  assert.equal(slugCollidesWith('Iceboy!', set), true, 'suffix-stripped slug must collide');
+  assert.equal(slugCollidesWith('Some Unrelated Show', set), false);
+});

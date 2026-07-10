@@ -312,6 +312,10 @@ function collisionSlugSet(shows) {
     set.add(s.slug);
     const stripped = s.slug.replace(/-(?:regional|off-broadway)-\d{4}$/, '');
     if (stripped !== s.slug) set.add(stripped);
+    // Also index by TITLE-derived slug: a retitled show ("CrazySexyCool: The
+    // TLC Musical", slug base "crazysexycool") must still collide with its
+    // roundup's parsed title, or the article re-fetches daily (2026-07-10).
+    if (s.title) set.add(slugify(s.title));
   }
   return set;
 }
