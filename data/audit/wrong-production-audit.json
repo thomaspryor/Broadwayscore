@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-10T13:53:37.808Z",
+  "timestamp": "2026-07-10T15:08:53.395Z",
   "stats": {
-    "totalReviews": 39942,
-    "alreadyFlagged": 17567,
+    "totalReviews": 39944,
+    "alreadyFlagged": 17570,
     "dateGuardCatches": 49,
-    "directorMismatch": 895,
-    "tvFilmSignals": 1096,
+    "directorMismatch": 897,
+    "tvFilmSignals": 1097,
     "londonSignals": 742,
     "offBroadwaySignals": 467,
     "yearMismatch": 87,
-    "noPublishDate": 4037
+    "noPublishDate": 4031
   },
   "findings": [
     {
@@ -14013,7 +14013,7 @@
       "showId": "little-bear-ridge-road-2025",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 88,
-      "publishDate": null,
+      "publishDate": "2025-10-31",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/little-bear-ridge-road-review-laurie-metcalf-broadway-1236414531/",
       "findings": [
         {
@@ -14123,9 +14123,10 @@
     },
     {
       "showId": "little-bear-ridge-road-regional-2024",
-      "file": "broadwayworld--rachel-weinberg.json",
+      "file": "around-the-town-chicago--alan-bresloff.json",
+      "score": 86,
       "publishDate": null,
-      "url": "https://www.broadwayworld.com/chicago/article/Review-LITTLE-BEAR-RIDGE-ROAD-at-Steppenwolf-Theatre-Company-20240624",
+      "url": "https://aroundthetownchicago.com/theatre-reviews/little-bear-ridge-road/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -14136,9 +14137,43 @@
     },
     {
       "showId": "little-bear-ridge-road-regional-2024",
+      "file": "chicago-reader--dan-jakes.json",
+      "score": 92,
+      "publishDate": "2024-06-26",
+      "url": "https://chicagoreader.com/arts-culture/theater/theater-review/little-bear-ridge-road-steppenwolf-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"joe mantello\" from little-bear-ridge-road-2025"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"streaming show\""
+        }
+      ]
+    },
+    {
+      "showId": "little-bear-ridge-road-regional-2024",
       "file": "third-coast-review--adam-kaz.json",
-      "publishDate": null,
+      "score": 79,
+      "publishDate": "2024-06-26",
       "url": "https://thirdcoastreview.com/2024/06/26/stages-review-steppenwolf-little-bear-ridge-road",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"joe mantello\" from little-bear-ridge-road-2025"
+        }
+      ]
+    },
+    {
+      "showId": "little-bear-ridge-road-regional-2024",
+      "file": "wsj--charles-isherwood.json",
+      "score": 92,
+      "publishDate": "2024-07-18",
+      "url": "https://www.wsj.com/articles/little-bear-ridge-road-review-laurie-metcalf-steppenwolf-4479a7d4?st=8802lge3hb47ler&reflink=desktopwebshare_permalink",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -31087,7 +31122,7 @@
       "file": "exeunt-magazine--loren-noveck.json",
       "score": 80,
       "publishDate": "2026-05-15T11:08:02-04:00",
-      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/",
+      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/#:~:text=Dad%20Don't%20Read%20This%20is%20messy%20and%20raw%20and,will%20keep%20it%20in%20my",
       "findings": [
         {
           "type": "DATE_GUARD",
