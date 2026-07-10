@@ -1,48 +1,48 @@
 {
-  "runDate": "2026-07-10T06:42:38.465Z",
+  "runDate": "2026-07-10T06:46:55.276Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "crazysexycool-regional-2026",
+    "showFilter": "springwood-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 1,
+    "processed": 0,
+    "failed": 6,
     "skipped": 0,
-    "successRate": "66.7%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 0,
+    "archiveToday": 1,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 3,
-    "tier1Success": 2,
+    "tier1Attempts": 5,
+    "tier1Success": 4,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 1,
     "tier2Success": 1,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 0,
-    "tier4Success": 0,
-    "totalFailed": 1,
-    "scrapingBeePageCredits": 1,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
+    "tier4Attempts": 2,
+    "tier4Success": 1,
+    "totalFailed": 6,
+    "scrapingBeePageCredits": 10,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -50,25 +50,25 @@
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [
-    "crazysexycool-regional-2026/feature-presentation--unknown.json",
-    "crazysexycool-regional-2026/morris-theatre-dc--unknown.json"
-  ],
+  "processed": [],
   "failed": [
-    "crazysexycool-regional-2026/playbill--unknown.json"
+    "springwood-west-end-2026/guardian-uk--unknown.json",
+    "springwood-west-end-2026/artsdesk--unknown.json",
+    "springwood-west-end-2026/standard--nick-curtis.json",
+    "springwood-west-end-2026/theatrecat--unknown.json",
+    "springwood-west-end-2026/thestage--unknown.json",
+    "springwood-west-end-2026/west-end-best-friend--unknown.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "crazysexycool-regional-2026/morris-theatre-dc--unknown.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [
-      "crazysexycool-regional-2026/feature-presentation--unknown.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/springwood-west-end-2026/thestage--unknown.json"
+    ],
     "archive": []
   },
   "failuresByOutlet": {},
