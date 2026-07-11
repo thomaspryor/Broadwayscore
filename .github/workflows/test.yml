@@ -187,6 +187,14 @@ on:
       # changes to core discovery/scoring-guard logic push with ZERO CI coverage.
       - 'scripts/lib/url-discovery.js'
       - 'scripts/lib/review-guards.js'
+      # Pre-window inclusion predicate + priorRuns window logic (card 386637c5).
+      # These decide review inclusion exactly like review-guards.js — without
+      # these entries an edit to them pushes with ZERO CI coverage.
+      - 'scripts/lib/date-guard.js'
+      - 'scripts/lib/date-guard.test.mjs'
+      - 'scripts/lib/wrong-production-autoclear.js'
+      - 'scripts/rebuild-all-reviews.js'
+      - 'scripts/scoring-delta.js'
       - 'scripts/test-opening-night-fixes.js'
       - 'scripts/audit-slug-match-routing.js'
       - 'scripts/apply-slug-misroute-whitelist.js'

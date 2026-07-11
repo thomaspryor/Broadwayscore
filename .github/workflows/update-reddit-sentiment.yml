@@ -178,6 +178,16 @@ jobs:
             console.log('✓ Validation passed');
           "
 
+      - name: Neutralize generic-title Reddit contamination
+        if: steps.freshness.outputs.skip != 'true'
+        # The scraper overwrites each show's reddit object, wiping any prior
+        # suppressed flag — and generic-phrase titles (Fear & Wonder, Mercury,
+        # Sukkot) re-inflate even with market-anchored queries (165 bad matches
+        # observed post-fix, 2026-07-11). Re-suppress before the recompute so
+        # contamination self-heals every scrape instead of resurfacing on the
+        # live site until someone runs neutralize by hand. Non-destructive.
+        run: node scripts/neutralize-contaminated-reddit-buzz.js --apply
+
       - name: Recalculate all combined scores
         if: steps.freshness.outputs.skip != 'true'
         run: node scripts/recalculate-audience-buzz.js

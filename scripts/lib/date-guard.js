@@ -19,6 +19,16 @@ const DAYS_BEFORE_PREVIEW = 21;
 const DAYS_AFTER_CLOSE = 7;
 const UK_DAYS_BEFORE_PREVIEW = 35;
 
+// Inclusion-time pre-window thresholds (rebuild-all-reviews.js + scoring-delta.js
+// sim — parity by construction, both call evaluatePreWindowInclusion below).
+// PRE_WINDOW_DAYS: off-Broadway / London markets, and the rebuild file-flagging
+// pass for all categories. Tightened 90→60 (card 386637c5): no legitimate review
+// publishes >60d before the earliest show date, and the standalone 21d/35d
+// flagger above stays the fine-grained layer.
+// PRE_WINDOW_DAYS_BROADWAY: Broadway embargo grace, unchanged.
+const PRE_WINDOW_DAYS = 60;
+const PRE_WINDOW_DAYS_BROADWAY = 14;
+
 /**
  * Earliest plausible start of a production's run — the window anchor for the
  * pre-opening/date guard. Returns the MIN (not first-non-null) of previewDate /
@@ -180,12 +190,50 @@ function isArticleOutsideProductionWindow(show, dateStr) {
   return true;
 }
 
+/**
+ * Pure inclusion-time pre-window decision — the single source of truth for
+ * "is this review published implausibly far before the show's run?" used by
+ * rebuild-all-reviews.js (main inclusion pass + duplicate-reference replica)
+ * and the scoring-delta.js simulator. Before extraction (card 386637c5) each
+ * site duplicated the threshold math, and the sim had already drifted (no
+ * priorRuns exemption).
+ *
+ * The caller keeps ownership of the bypass fields that differ per site
+ * (allowEarlyDate, routedFromShowId, long-run-WE exemption, manual clears) —
+ * this predicate decides only the date-vs-window question.
+ *
+ * @param {object} args
+ * @param {Date|null} args.pubDate - parsed review publish date
+ * @param {Date|null} args.showEarliest - parsed earliest show date (see earliestShowDate)
+ * @param {boolean} args.isFlexCategory - off-broadway or London market (90d legacy family)
+ * @param {Array|null|undefined} args.priorRuns - show.priorRuns; a covered date is
+ *   legitimate earlier-run coverage, never excluded here
+ * @returns {{ exclude: boolean, daysBefore: number|null, threshold: number, reason: 'pre-window date'|'prior-run window'|null }}
+ */
+function evaluatePreWindowInclusion({ pubDate, showEarliest, isFlexCategory, priorRuns }) {
+  const threshold = isFlexCategory ? PRE_WINDOW_DAYS : PRE_WINDOW_DAYS_BROADWAY;
+  if (!pubDate || isNaN(pubDate.getTime()) || !showEarliest || isNaN(showEarliest.getTime())) {
+    return { exclude: false, daysBefore: null, threshold, reason: null };
+  }
+  const daysBefore = Math.ceil((showEarliest - pubDate) / 86400000);
+  if (daysBefore <= threshold) {
+    return { exclude: false, daysBefore, threshold, reason: null };
+  }
+  if (isWithinPriorRun(pubDate, priorRuns)) {
+    return { exclude: false, daysBefore, threshold, reason: 'prior-run window' };
+  }
+  return { exclude: true, daysBefore, threshold, reason: 'pre-window date' };
+}
+
 module.exports = {
   evaluateDateGuard,
   evaluateDatelessRevivalGuard,
   earliestShowDate,
   isArticleOutsideProductionWindow,
+  evaluatePreWindowInclusion,
   DAYS_BEFORE_PREVIEW,
   DAYS_AFTER_CLOSE,
   UK_DAYS_BEFORE_PREVIEW,
+  PRE_WINDOW_DAYS,
+  PRE_WINDOW_DAYS_BROADWAY,
 };

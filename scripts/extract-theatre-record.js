@@ -19,6 +19,7 @@ const path = require('path');
 const { execSync } = require('child_process');
 const { chromium } = require('playwright');
 const { isLikelyWrongProduction, isLikelyTourReview } = require('./lib/review-guards');
+const { isWithinPriorRun } = require('./lib/wrong-production-autoclear');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, getOutletDisplayName: getRegistryDisplayName } = require('./lib/review-normalization');
 const { safeWriteReview } = require('./lib/review-write-guard');
 
@@ -792,7 +793,11 @@ async function main() {
       const showEarliestDate = show.previewsStartDate || show.openingDate;
       let skipReason = null;
 
-      if (isLikelyWrongProduction(pubDate, showEarliestDate, 90)) {
+      // priorRuns exemption: a TR archive review inside a declared earlier-run
+      // window is legitimate prior-run coverage (return engagement / transfer),
+      // not a wrong production — mirrors the rebuild inclusion guard.
+      if (isLikelyWrongProduction(pubDate, showEarliestDate, 90)
+          && !(pubDate && isWithinPriorRun(new Date(pubDate), show.priorRuns))) {
         skipReason = `wrong-production-date (review ${pubDate} vs show ${showEarliestDate})`;
       }
 
