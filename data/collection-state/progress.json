@@ -112,7 +112,8 @@
     "every-brilliant-thing-2026/nytimes--ben-brantley.json",
     "every-brilliant-thing-2026/nydailynews--joe-dziemianowicz.json",
     "every-brilliant-thing-2026/theatermania--hayley-levitt.json",
-    "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json"
+    "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json",
+    "oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json"
   ],
   "failed": [
     "iceboy-regional-2026/chicago-sun-times--mike-davis-wbez.json",
@@ -845,7 +846,16 @@
     "every-brilliant-thing-2026/standard--nick-curtis.json",
     "every-brilliant-thing-2026/telegraph--marianka-swain.json",
     "every-brilliant-thing-2026/thestage--dave-fargnoli.json",
-    "every-brilliant-thing-2026/times-uk--alice-jones.json"
+    "every-brilliant-thing-2026/times-uk--alice-jones.json",
+    "every-brilliant-thing-2026/whatsonstage--julia-rank.json",
+    "every-brilliant-thing-2026/theatre-reviews-limited--david-roberts.json",
+    "im-sorry-prime-minister-west-end-2026/british-theatre--rachael-birtwistle.json",
+    "black-is-the-color-of-my-voice-west-end-2026/guardian--paul-raven.json",
+    "black-is-the-color-of-my-voice-west-end-2026/observer--sarah-crompton.json",
+    "black-is-the-color-of-my-voice-west-end-2026/financialtimes--louise-levene.json",
+    "black-is-the-color-of-my-voice-west-end-2026/financialtimes--sarah-hemming.json",
+    "black-is-the-color-of-my-voice-west-end-2026/london-theatre--olivia-rook.json",
+    "black-is-the-color-of-my-voice-west-end-2026/standard--david-jays.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -936,7 +946,9 @@
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
       "music-city-off-broadway-2026/deadline--greg-evans.json",
       "data/review-texts/every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
-      "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json"
+      "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json",
+      "oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json"
     ],
     "directCookies": [
       "jesus-christ-superstar-west-end-2026/times-uk--ann-treneman.json",
@@ -1001,7 +1013,7 @@
     ]
   },
   "startTime": "2026-07-10T17:43:10.129Z",
-  "lastProcessed": "every-brilliant-thing-2026/times-uk--alice-jones.json",
+  "lastProcessed": "oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json",
   "log": [
     {
       "t": "2026-07-11T01:48:19.522Z",
@@ -1044,6 +1056,17 @@
     },
     {
       "t": "2026-07-11T05:53:02.359Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-07-11T05:54:40.733Z",
+      "event": "bb-session",
+      "session": "7df8642a",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/simu-liu-broadway-debut-oh-mary"
+    },
+    {
+      "t": "2026-07-11T05:54:41.225Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
