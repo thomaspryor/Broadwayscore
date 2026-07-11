@@ -241,6 +241,18 @@ async function scrapeRoundups(page, urls, weShows) {
         continue;
       }
 
+      // Never archive a page with no extractable rows — a title-valid PAYWALLED
+      // teaser (expired cookies) otherwise lands as a 0-row archive that the
+      // gap-audit's thestage-archive reference reads as emptyParse every hour
+      // (QA review 2026-07-11). Skipping (not caching) means a later run with
+      // working cookies still gets to archive the real page.
+      const extractedRows = extractReviews(html, showId);
+      if (extractedRows.length === 0) {
+        console.log(`    ✗ 0 extractable rows (paywalled teaser or template drift) — not archiving`);
+        stats.errors++;
+        continue;
+      }
+
       if (!DRY_RUN) {
         fs.writeFileSync(archivePath, html);
       }

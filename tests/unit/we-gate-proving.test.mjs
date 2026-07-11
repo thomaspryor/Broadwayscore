@@ -134,14 +134,21 @@ describe('per-aggregator accuracy (2026-07-11 — corroboration as a trust signa
     perSource,
   });
 
-  test('recordGateObservation keeps the BEST per-source observation (max semantics, no hourly double-count)', () => {
+  test('recordGateObservation keeps fullest-and-latest per-source observation (no double-count; regressions visible)', () => {
     const t = emptyTracker();
     const show = newShow('alpha-west-end-2026', '2026-07-12');
     recordGateObservation(t, show, REF_WITH_SOURCES({ westendtheatre: { cited: 4, corroborated: 2 } }), '2026-07-15T00:00:00Z');
     recordGateObservation(t, show, REF_WITH_SOURCES({ westendtheatre: { cited: 6, corroborated: 5 } }), '2026-07-15T01:00:00Z');
+    // Same citation count, LOWER corroboration (covered files later flagged out):
+    // the latest observation must win so accuracy reflects current reality, not
+    // the flattering early snapshot (codex review 2026-07-11).
     recordGateObservation(t, show, REF_WITH_SOURCES({ westendtheatre: { cited: 6, corroborated: 3 } }), '2026-07-15T02:00:00Z');
-    assert.deepEqual(t.shows['alpha-west-end-2026'].perSource.westendtheatre, { cited: 6, corroborated: 5 },
-      'best observation wins; repeat observation of the same citations must not accumulate');
+    assert.deepEqual(t.shows['alpha-west-end-2026'].perSource.westendtheatre, { cited: 6, corroborated: 3 },
+      'latest wins on equal cited — corroboration regressions update accuracy');
+    // A PARTIAL observation (fewer cited) must not erase fuller evidence:
+    recordGateObservation(t, show, REF_WITH_SOURCES({ westendtheatre: { cited: 2, corroborated: 0 } }), '2026-07-15T03:00:00Z');
+    assert.deepEqual(t.shows['alpha-west-end-2026'].perSource.westendtheatre, { cited: 6, corroborated: 3 },
+      'lower-cited observation never replaces fuller one');
   });
 
   test('aggregatorAccuracy sums across shows; thin samples get accuracy:null (fail-open)', () => {
@@ -175,5 +182,28 @@ describe('per-aggregator accuracy (2026-07-11 — corroboration as a trust signa
     assert.ok(auditSrc.includes('result.weReference.perSource'), 'per-source corroboration recorded per show');
     assert.ok(auditSrc.includes('lowTrustSources(loadWeProving())'), 'trust set computed from accumulated tracker');
     assert.ok(auditSrc.includes('aggregatorAccuracy(loadWeProving())'), 'accuracy table surfaced in run output');
+  });
+});
+
+describe('passive-source floor exemption (QA review 2026-07-11)', () => {
+  const { recordGateObservation: rec, emptyTracker: et } = require('../../scripts/lib/we-gate-proving.js');
+
+  test('passive-source emptyParse/error never adds floorErrors; live-source emptyParse still does', () => {
+    const t = et();
+    const show = { id: 'x-west-end-2026', openingDate: '2026-07-12' };
+    rec(t, show, {
+      rowCount: 5, currentRunRows: 5, corroborated: 3, allSourcesFailed: false,
+      sources: {
+        westendtheatre: { found: true, rows: 5, emptyParse: false, error: null },
+        'thestage-archive': { found: true, rows: 0, emptyParse: true, error: null, passive: true },
+      },
+    }, '2026-07-15T00:00:00Z');
+    assert.equal(t.shows['x-west-end-2026'].floorErrors, 0,
+      'a stale paywall-stub archive must not permanently disqualify the show from proving');
+    rec(t, show, {
+      rowCount: 0, currentRunRows: 0, corroborated: 0, allSourcesFailed: false,
+      sources: { westendtheatre: { found: true, rows: 0, emptyParse: true, error: null } },
+    }, '2026-07-15T01:00:00Z');
+    assert.equal(t.shows['x-west-end-2026'].floorErrors, 1, 'live-source emptyParse is still a floor');
   });
 });

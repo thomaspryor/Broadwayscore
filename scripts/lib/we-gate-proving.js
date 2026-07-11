@@ -79,24 +79,32 @@ function recordGateObservation(tracker, show, weReference, nowIso = new Date().t
   if (weReference) {
     e.currentRunRowsMax = Math.max(e.currentRunRowsMax, weReference.currentRunRows || 0);
     e.corroboratedMax = Math.max(e.corroboratedMax, weReference.corroborated || 0);
-    // Per-source corroboration: keep each source's BEST observation for this show
-    // (max cited; ties broken by corroborated). Max-of-observation semantics —
-    // NOT a running sum — so the hourly cron re-observing the same citations
-    // doesn't double-count them.
+    // Per-source corroboration: keep each source's FULLEST-and-LATEST observation
+    // for this show (max cited; on equal cited the LATEST observation wins).
+    // Max-of-observation semantics — NOT a running sum — so the hourly cron
+    // re-observing the same citations doesn't double-count them; latest-on-tie
+    // (codex review 2026-07-11) so a corroboration REGRESSION (covered files
+    // later flagged out) updates accuracy instead of preserving the flattering
+    // early snapshot forever. A lower-cited observation (partial fetch) never
+    // erases fuller evidence.
     if (weReference.perSource) {
       e.perSource = e.perSource || {};
       for (const [src, obs] of Object.entries(weReference.perSource)) {
         const cited = obs.cited || 0, corroborated = obs.corroborated || 0;
         const prev = e.perSource[src];
-        if (!prev || cited > prev.cited || (cited === prev.cited && corroborated > prev.corroborated)) {
+        if (!prev || cited >= prev.cited) {
           e.perSource[src] = { cited, corroborated };
         }
       }
     }
     const sources = weReference.sources || {};
+    // Passive (archive-only) sources never count as floors: they're bonus
+    // coverage, and a stale/paywall-stub archive artifact must not permanently
+    // disqualify a show from proving while the fetching sources are healthy
+    // (QA review 2026-07-11 — floorErrors===0 is required and never resets).
     const floors =
       (weReference.allSourcesFailed ? 1 : 0) +
-      Object.values(sources).filter(src => src && (src.emptyParse || src.error)).length;
+      Object.values(sources).filter(src => src && !src.passive && (src.emptyParse || src.error)).length;
     e.floorErrors += floors;
   } else {
     // The WE branch threw before producing a reference — that IS a floor.

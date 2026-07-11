@@ -188,15 +188,25 @@ async function getWeReferenceRows(show, opts = {}) {
     const archPath = path.join(dataDir, 'aggregator-archive', 'thestage-roundups', `${show.id}.html`);
     if (fs.existsSync(archPath)) {
       const html = fs.readFileSync(archPath, 'utf8');
-      sources['thestage-archive'].found = true;
-      const { extractReviews: extractTsRows } = require('./thestage-extract');
-      const parsed = extractTsRows(html, show.id) || [];
-      sources['thestage-archive'].rows = parsed.length;
-      if (parsed.length === 0) sources['thestage-archive'].emptyParse = true;
-      const { extractPublishDate } = require('./article-extractor');
-      const priorRun = !isCurrentRunRoundup(extractPublishDate(html), show);
-      const canonical = (html.match(/<link[^>]+rel=["']canonical["'][^>]+href=["']([^"']+)["']/i) || [])[1] || null;
-      for (const r of parsed) push('thestage-archive', canonical, priorRun, r);
+      // Wrong-show guard (QA review 2026-07-11): every other archive consumer
+      // title-validates before trusting archive content (gather quarantines on
+      // mismatch) — a wrong-show archive must not feed outlets into the reference.
+      const { validateRoundupPageTitle } = require('./show-matching');
+      const v = validateRoundupPageTitle(html, show.title);
+      if (!v.ok) {
+        sources['thestage-archive'].error = `archive title mismatch (${v.reason})`;
+        log(`    WE-ref TS-archive title mismatch for ${show.id} (${v.reason}) — archive ignored`);
+      } else {
+        sources['thestage-archive'].found = true;
+        const { extractReviews: extractTsRows } = require('./thestage-extract');
+        const parsed = extractTsRows(html, show.id) || [];
+        sources['thestage-archive'].rows = parsed.length;
+        if (parsed.length === 0) sources['thestage-archive'].emptyParse = true;
+        const { extractPublishDate } = require('./article-extractor');
+        const priorRun = !isCurrentRunRoundup(extractPublishDate(html), show);
+        const canonical = (html.match(/<link[^>]+rel=["']canonical["'][^>]+href=["']([^"']+)["']/i) || [])[1] || null;
+        for (const r of parsed) push('thestage-archive', canonical, priorRun, r);
+      }
     }
   } catch (e) {
     sources['thestage-archive'].error = e.message;
