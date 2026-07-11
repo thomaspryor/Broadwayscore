@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T06:37:24.969Z",
+  "generatedAt": "2026-07-11T07:42:54.694Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -392,27 +392,26 @@
       "status": "open",
       "slug": "giulia-the-poison-queen-of-palermo-off-broadway",
       "thumbnail": "/images/shows/giulia-the-poison-queen-of-palermo-off-broadway-2026/thumbnail.webp",
-      "siteScore": 68.28,
+      "siteScore": 67.98,
       "liveScore": 68,
-      "scoreDrift": -0.28000000000000114,
+      "scoreDrift": 0.01999999999999602,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 7,
+      "total": 10,
       "t1": 1,
-      "t2": 5,
-      "t3": 1,
-      "positive": 4,
-      "mixed": 2,
+      "t2": 7,
+      "t3": 2,
+      "positive": 5,
+      "mixed": 4,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "7/12 total",
-          "T1:1/3",
-          "hi-conf:7/8"
+          "10/12 total",
+          "T1:1/3"
         ],
-        "highConfidence": 7,
+        "highConfidence": 9,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -514,6 +513,10 @@
         {
           "name": "Observer",
           "isDualMarket": true
+        },
+        {
+          "name": "Playbill",
+          "isDualMarket": false
         },
         {
           "name": "The Daily Beast",
@@ -746,6 +749,18 @@
           "t3": 1,
           "p": 4,
           "m": 2,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-11T07:42:54.694Z",
+          "rc": 10,
+          "s": 67.98,
+          "t1": 1,
+          "t2": 7,
+          "t3": 2,
+          "p": 5,
+          "m": 4,
           "n": 1,
           "bc": "waiting"
         }
