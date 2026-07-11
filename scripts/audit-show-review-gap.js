@@ -591,6 +591,11 @@ async function auditShow(show) {
       result.priorRunArticles = result.priorRunArticles || [];
       result.priorRunArticles.push({ url: art, publishDate: extracted.publishDate });
       console.log(`  ⏮  prior-production article (published ${extracted.publishDate || '?'}, opening ${show.openingDate}): ${art} — its ${extracted.urls.length} URL(s) are report-only`);
+    } else if (!extracted.publishDate && extracted.urls.length > 0) {
+      // Fail-open observability (codex review 2026-07-11): Playbill/BWW roundup
+      // articles reliably carry OpenGraph/JSON-LD dates, so a dateless one means
+      // metadata drift — and the production-identity gate is silently OFF for it.
+      console.log(`::warning::no publish date extracted from aggregator article ${art} (${show.id}) — production-identity gate fails open for its ${extracted.urls.length} URL(s)`);
     }
   }
   const bwPriorRunUrls = new Set([...bwPriorCandidateUrls].filter(u => !bwCurrentUrls.has(u)));
@@ -652,7 +657,12 @@ async function auditShow(show) {
         console.error(`::error::WE reference blackout for ${show.id} — all WE aggregator discoveries errored; "no gaps" for this show is NOT meaningful this run.`);
       }
       for (const [src, st] of Object.entries(weRef.sources)) {
-        if (st.emptyParse) console.error(`::error::WE reference empty-parse for ${show.id} — ${src} roundup was found but parsed 0 rows (parser drift?). Detector failure, not zero citations.`);
+        if (!st.emptyParse) continue;
+        // Passive (archive-only) sources are bonus coverage: a 0-row archive is
+        // a stale paywall-stub artifact or parser drift — visible, but not a
+        // detector failure of the live reference (QA review 2026-07-11).
+        if (st.passive) console.log(`::warning::WE reference ${src} archive for ${show.id} parsed 0 rows (paywall-stub archive or parser drift) — source skipped this run.`);
+        else console.error(`::error::WE reference empty-parse for ${show.id} — ${src} roundup was found but parsed 0 rows (parser drift?). Detector failure, not zero citations.`);
       }
       for (const row of weRef.rows) {
         if (row.url) {
@@ -660,13 +670,23 @@ async function auditShow(show) {
           const u = normalizeReviewUrl(row.url);
           aggUrls.add(u);
           weRefUrls.add(u);
-          if (!weRefUrlSources.has(u)) weRefUrlSources.set(u, new Set());
-          weRefUrlSources.get(u).add(row.source);
+          // Source attribution is CURRENT-RUN only (QA review 2026-07-11): a
+          // source's prior-run citation must not earn corroboration credit for
+          // (or vouch trust on) a URL its current roundup never cited.
+          if (!row.priorRun) {
+            if (!weRefUrlSources.has(u)) weRefUrlSources.set(u, new Set());
+            weRefUrlSources.get(u).add(row.source);
+          }
           if (row.priorRun) weRefPriorRunUrls.add(u);
         } else {
           weRefNoUrlRows.push(row);
         }
       }
+      // Current-run rows first (stable): the outlet-dedup loop below is
+      // first-row-wins, and a prior-run citation must never shadow a current-run
+      // citation of the same outlet (QA review 2026-07-11 — a shadowed current
+      // gap would be mislabeled priorRun and lose its 24h alert re-ping).
+      weRefNoUrlRows.sort((a, b) => (a.priorRun ? 1 : 0) - (b.priorRun ? 1 : 0));
     } catch (e) {
       console.error(`::error::WE reference failed for ${show.id}: ${(e.message || '').slice(0, 120)}`);
     }
@@ -795,7 +815,13 @@ async function auditShow(show) {
         continue;
       }
       if (pendingOutlets.has(oid)) continue;
-      if (!row.priorRun) bumpPerSource(row.source, false);
+      // Accuracy counts only CHECKABLE citations (QA review 2026-07-11): an
+      // outlet with NO files at all is merely un-gathered — unverifiable, not
+      // contradicted — and must not count against the source's accuracy (a
+      // fresh opening's first hours would otherwise flip sources low-trust).
+      // Excluded-files-exist IS checkable: we hold independent data and it
+      // doesn't corroborate the citation.
+      if (!row.priorRun && files.length > 0) bumpPerSource(row.source, false);
       result.citedNoUrl.push({
         outletId: rawOid,
         outletName: row.outletName,
@@ -826,7 +852,12 @@ async function auditShow(show) {
       seenUrls.add(u);
       const covered = !missingUrls.has(u) && !flaggedUrls.has(u);
       if (covered) coveredUrlRows++;
-      // Every source that cited this URL earns the corroboration credit/blame —
+      // Accuracy counts only CHECKABLE citations (QA review 2026-07-11): a URL
+      // still in `missing` (no file for its host at all) is merely un-gathered —
+      // unverifiable, not contradicted. covered = corroborated; flagged = we
+      // hold files for the host and none corroborate = checkable blame.
+      if (missingUrls.has(u)) continue;
+      // Every current-run source that cited this URL earns the credit/blame —
       // per-source accuracy is about EACH source's citations matching reality.
       for (const src of (weRefUrlSources.get(u) || [])) bumpPerSource(src, covered);
     }
