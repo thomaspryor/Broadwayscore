@@ -27,7 +27,11 @@
     "medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
     "medea-off-broadway-2026/sunday-express--neil-norman.json",
     "the-unbelievers-off-broadway-2026/whatsonstage--alun-hood.json",
-    "cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json"
+    "cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
+    "macbeth-off-broadway-2026/hollywood-reporter--demetrios-matheou.json",
+    "macbeth-off-broadway-2026/ew--leah-greenblatt.json",
+    "macbeth-off-broadway-2026/newsday--linda-winer.json",
+    "macbeth-off-broadway-2026/timeout--naveen-kumar.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
@@ -141,7 +145,13 @@
     "the-unbelievers-off-broadway-2026/i-paper--fiona-mountford.json",
     "the-unbelievers-off-broadway-2026/standard--nick-curtis.json",
     "the-unbelievers-off-broadway-2026/telegraph--dominic-cavendish.json",
-    "the-unbelievers-off-broadway-2026/times-uk--clive-davis.json"
+    "the-unbelievers-off-broadway-2026/times-uk--clive-davis.json",
+    "cosi-fan-tutte-off-broadway-2026/epoch-times--barry-bassis.json",
+    "cosi-fan-tutte-off-broadway-2026/financialtimes--virginia-webb.json",
+    "macbeth-off-broadway-2026/abc-news--peter-travers.json",
+    "macbeth-off-broadway-2026/thewrap--robert-hofler.json",
+    "macbeth-off-broadway-2026/amny--unknown.json",
+    "macbeth-off-broadway-2026/chicagotribune--chris-jones.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -161,7 +171,9 @@
       "perfect-crime-off-broadway-1987/times-square-chronicles--suzanna-bowling.json",
       "amaze-off-broadway-2026/timeout--adam-feldman.json",
       "tosca-off-broadway-2026/broadwayworld--dc-felton.json",
-      "the-unbelievers-off-broadway-2026/whatsonstage--alun-hood.json"
+      "the-unbelievers-off-broadway-2026/whatsonstage--alun-hood.json",
+      "macbeth-off-broadway-2026/ew--leah-greenblatt.json",
+      "macbeth-off-broadway-2026/timeout--naveen-kumar.json"
     ],
     "amp": [],
     "browserbase": [
@@ -170,7 +182,9 @@
       "data/review-texts/medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
       "medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
       "data/review-texts/cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
-      "cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json"
+      "cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
+      "data/review-texts/macbeth-off-broadway-2026/hollywood-reporter--demetrios-matheou.json",
+      "macbeth-off-broadway-2026/hollywood-reporter--demetrios-matheou.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -190,11 +204,12 @@
       "manon-off-broadway-2027/broadwayworld--steve-callahan.json",
       "aida-off-broadway-2027/broadwayworld--jay-irwin.json",
       "miles-for-mary-off-broadway-2026/broadway-blog--matthew-wexler.json",
-      "medea-off-broadway-2026/sunday-express--neil-norman.json"
+      "medea-off-broadway-2026/sunday-express--neil-norman.json",
+      "macbeth-off-broadway-2026/newsday--linda-winer.json"
     ]
   },
   "startTime": "2026-07-11T08:48:56.597Z",
-  "lastProcessed": "cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
+  "lastProcessed": "macbeth-off-broadway-2026/chicagotribune--chris-jones.json",
   "log": [
     {
       "t": "2026-07-11T08:56:59.929Z",
@@ -228,6 +243,17 @@
       "t": "2026-07-11T09:09:00.116Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-07-11T09:09:27.221Z",
+      "event": "bb-session",
+      "session": "c7adb3c0",
+      "url": "https://www.hollywoodreporter.com/lifestyle/style/alan-cumming-macbeth-good-wife"
+    },
+    {
+      "t": "2026-07-11T09:09:27.622Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
