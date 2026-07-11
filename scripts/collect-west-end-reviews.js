@@ -28,6 +28,7 @@
 const fs = require('fs');
 const path = require('path');
 const { normalizeOutlet, normalizeCritic } = require('./lib/review-normalization');
+const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { isLondonMarket } = require('./lib/venue-classification');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
@@ -189,38 +190,43 @@ function main() {
       }
     }
 
-    // Create show directory
-    if (!fs.existsSync(showDir)) {
-      fs.mkdirSync(showDir, { recursive: true });
-    }
-
-    const reviewData = {
-      showId,
-      outletId: canonicalOutletId,
+    // Route through the shared save-time chokepoint (card 38b637c5) so every
+    // guard applies (junk outlet, domain validation, cross-market reroute,
+    // cross-show URL ownership, roundup detection). onMerge aborts — this
+    // importer only CREATES files; the exact-name + canonical-variant
+    // pre-checks above already enforced its skip-if-exists contract.
+    const res = createOrMergeReviewFile(showId, {
       outlet: outlet || canonicalOutletId,
+      outletId: canonicalOutletId,
       criticName: criticName || 'Unknown',
       url: url || null,
-      publishDate: publishDate || null,
-      fullText: null,
-      isFullReview: false,
-      originalScore: `${stars}/${maxStars}`,
-      assignedScore,
-      scoreSource: 'explicit-rating',
       source: source || 'web-search',
-      showScoreExcerpt: excerpt || null,
-      dtliExcerpt: null,
-      dtliThumb: null,
-      bwwExcerpt: null,
-      contentTier: excerpt ? 'excerpt' : 'stub',
-      contentTierReason: excerpt
-        ? `Excerpt from ${source || 'review roundup'}`
-        : 'Star rating only, no excerpt',
-      addedAt: new Date().toISOString(),
-      incompleteReason: 'not_attempted',
-      incompleteDetail: 'Has URL but never scraped',
-    };
+      fields: {
+        publishDate: publishDate || null,
+        fullText: null,
+        isFullReview: false,
+        originalScore: `${stars}/${maxStars}`,
+        assignedScore,
+        scoreSource: 'explicit-rating',
+        showScoreExcerpt: excerpt || null,
+        dtliExcerpt: null,
+        dtliThumb: null,
+        bwwExcerpt: null,
+        contentTier: excerpt ? 'excerpt' : 'stub',
+        contentTierReason: excerpt
+          ? `Excerpt from ${source || 'review roundup'}`
+          : 'Star rating only, no excerpt',
+        addedAt: new Date().toISOString(),
+        incompleteReason: 'not_attempted',
+        incompleteDetail: 'Has URL but never scraped',
+      },
+    }, { onMerge: () => false, reviewTextsDir: REVIEW_TEXTS_DIR });
 
-    fs.writeFileSync(filePath, JSON.stringify(reviewData, null, 2) + '\n');
+    if (res.action !== 'new') {
+      console.warn(`Skipping ${showId} ${canonicalOutletId}: ${res.reason || res.action}`);
+      skipped++;
+      continue;
+    }
     created++;
     showCounts[showId] = (showCounts[showId] || 0) + 1;
   }
@@ -239,4 +245,6 @@ function main() {
   }
 }
 
-main();
+if (require.main === module) {
+  main();
+}

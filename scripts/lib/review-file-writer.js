@@ -225,8 +225,23 @@ function createOrMergeReviewFile(showId, input, options = {}) {
       const urlOutlet = registry?.outlets?.[urlResolved.outletId];
       const nameOutlet = registry?.outlets?.[outletId];
       if (urlOutlet && nameOutlet && urlOutlet.domain === nameOutlet.domain) {
-        // Case 1: same domain, path-based disambiguation — URL is authoritative
-        outletId = urlResolved.outletId;
+        // Case 1: same domain. URL is authoritative ONLY when the URL's PATH
+        // informed the resolution (timeout.com/london vs /newyork). When two
+        // outlets merely share a bare domain (telegraph / sunday-telegraph,
+        // express-uk / sunday-express), the URL carries no edition signal —
+        // overriding here would force every explicitly-labeled "Sunday
+        // Telegraph" review to the daily edition (card 38b637c5 review).
+        // Detect path-awareness generically: if resolving the bare origin
+        // yields the same outlet as the full URL, the path added nothing and
+        // the supplied name stands.
+        let pathInformed = false;
+        try {
+          const originResolved = resolveOutletFromUrl(new URL(input.url).origin + '/');
+          pathInformed = !originResolved || originResolved.outletId !== urlResolved.outletId;
+        } catch { /* unparseable — keep name */ }
+        if (pathInformed) {
+          outletId = urlResolved.outletId;
+        }
       } else if (urlOutlet) {
         // Case 2: cross-domain. URL points to a known outlet's domain, so the
         // aggregator-supplied name-derived outletId is a misattribution.
@@ -625,12 +640,18 @@ function _mergeIntoExisting(filepath, existing, ctx) {
     changed = true;
   }
 
-  // Update sources array
+  // Update sources array. Compare before/after — the old `_prevSourcesLen`
+  // sentinel was read but never written, so any file that already had a
+  // sources array reported changed on EVERY merge and was rewritten with
+  // identical content (idempotency bug, found via convert-show-score parity
+  // testing, card 38b637c5).
   if (input.source) {
+    const before = JSON.stringify(existing.sources || null);
     const sources = new Set(existing.sources || [existing.source || '']);
     sources.add(input.source);
-    existing.sources = Array.from(sources).filter(Boolean);
-    if (existing.sources.length > (existing._prevSourcesLen || 0)) {
+    const next = Array.from(sources).filter(Boolean);
+    if (JSON.stringify(next) !== before) {
+      existing.sources = next;
       changed = true;
     }
   }
