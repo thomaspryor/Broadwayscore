@@ -36,7 +36,9 @@ jobs:
   drift:
     name: Compare reviews.json vs review-texts
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    # 15 min: push-with-retry on the audit commit can spend 10+ min against a
+    # busy main (2026-07-11 run 29158806185 timed out mid-retry at 10).
+    timeout-minutes: 15
 
     steps:
       - name: Checkout repository
@@ -67,7 +69,13 @@ jobs:
           if [ -n "${{ inputs.show }}" ]; then
             ARGS="$ARGS --show=${{ inputs.show }}"
           fi
-          if [ "${{ inputs.strict }}" = "true" ]; then
+          # Scheduled runs are ALWAYS strict: a suppression/freshness breach is
+          # actionable (reviews silently missing on an opening-window show, or
+          # the rebuild pipeline down). A green-with-warning run reaches nobody —
+          # the exact silent-strand failure mode (Springwood 2026-07) that the
+          # now-silenced warning emails were originally added to patch. A red run
+          # surfaces in the daily digest's workflow summary instead.
+          if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ inputs.strict }}" = "true" ]; then
             ARGS="$ARGS --strict"
           fi
           node scripts/check-review-count-drift.js $ARGS
@@ -93,9 +101,10 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
 
-          git add data/audit/review-count-drift.json
+          # Glob: --show dispatches write review-count-drift-{show}.json
+          git add data/audit/review-count-drift*.json
 
-          SUMMARY=$(node -e "const d=require('./data/audit/review-count-drift.json'); console.log(d.summary.showsOverThreshold + ' shows over threshold, global delta ' + d.summary.globalDelta)")
+          SUMMARY=$(node -e "const d=require('./data/audit/review-count-drift.json'); const s=d.summary; console.log(s.showsOverThreshold + ' show(s) over suppression threshold, reviews.json ' + (s.reviewsJsonAgeHours ?? '?') + 'h old')")
 
           if [ -n "${{ inputs.show }}" ]; then
             MSG="audit: Review-count drift for ${{ inputs.show }} ($SUMMARY)"
@@ -117,18 +126,16 @@ jobs:
             node -e "
               const d = require('./data/audit/review-count-drift.json');
               const s = d.summary;
-              console.log('**Shows scanned:** ' + s.showsScanned);
-              console.log('**Total expected:** ' + s.totalExpected);
-              console.log('**Total actual:** ' + s.totalActual);
-              console.log('**Global delta:** ' + s.globalDelta + ' (threshold ±' + d.thresholds.globalDelta + ')');
-              console.log('**Shows over threshold:** ' + s.showsOverThreshold);
+              console.log('**reviews.json:** ' + (s.reviewsJsonLastUpdated || 'no _meta.lastUpdated') + ' (' + (s.reviewsJsonAgeHours ?? '?') + 'h old, max ' + d.thresholds.maxAgeHours + 'h' + (s.freshnessBreach ? ' — **STALE**' : '') + ')');
+              console.log('**Shows scanned (opening window ±' + d.thresholds.windowDays + 'd):** ' + s.showsScanned);
+              console.log('**Shows over suppression threshold:** ' + s.showsOverThreshold + ' (suppressed > ' + d.thresholds.suppressedPerShow + ')');
               console.log('**Orphan showIds in reviews.json:** ' + s.orphanReviews);
               if (d.showsOverThreshold.length > 0) {
                 console.log('');
-                console.log('| Show | Expected | Actual | Delta |');
-                console.log('|------|----------|--------|-------|');
+                console.log('| Show | Suppressed | In reviews.json |');
+                console.log('|------|------------|-----------------|');
                 for (const r of d.showsOverThreshold.slice(0, 25)) {
-                  console.log('| ' + r.showDir + ' | ' + r.expected + ' | ' + r.actual + ' | ' + r.delta + ' |');
+                  console.log('| ' + r.showDir + ' | ' + r.suppressed + ' | ' + r.actual + ' |');
                 }
                 if (d.showsOverThreshold.length > 25) {
                   console.log('_…and ' + (d.showsOverThreshold.length - 25) + ' more_');

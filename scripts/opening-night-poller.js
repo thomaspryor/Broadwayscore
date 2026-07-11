@@ -1669,7 +1669,10 @@ async function pollCycle() {
             await sendAlert({
               title: 'WE SERP burst tripwire',
               description: msg,
-              severity: 'warning',
+              // 'error': same-day actionable — the 60-100K credits/day runaway
+              // class (feedback_sb_serp_invisible_burn); the daily digest is up
+              // to 24h late. warning would be suppressed (actionable-only policy).
+              severity: 'error',
               email: true,
             });
           } catch (e) {

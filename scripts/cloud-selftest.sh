@@ -37,6 +37,20 @@ for k in NOTION_API_KEY OPENAI_API_KEY GEMINI_API_KEY REVIEW_TEXTS_TOKEN; do
 done
 
 echo ""
+echo "--- github auth (does the built-in proxy reach the private data repo WITHOUT a token?) ---"
+echo "origin remote:      $(git remote get-url origin 2>/dev/null || echo '(none)')"
+echo "credential.helper:  $(git config --get-regexp 'credential.*helper' 2>/dev/null | tr '\n' ';' || echo '(none set)')"
+echo "url.*.insteadOf:    $(git config --get-regexp 'url.*insteadof' 2>/dev/null | tr '\n' ';' || echo '(none)')"
+echo "http.extraheader:   $([ -n "$(git config --get-regexp 'http.*extraheader' 2>/dev/null)" ] && echo 'present (proxy token header)' || echo '(none)')"
+rm -rf /tmp/authtest
+if GIT_TERMINAL_PROMPT=0 git clone --depth 1 https://github.com/thomaspryor/broadway-scorecard-data.git /tmp/authtest >/tmp/authtest.log 2>&1; then
+  echo "tokenless clone of private data repo: ✅ WORKS (no token needed — the proxy authenticates it)"
+else
+  echo "tokenless clone of private data repo: ❌ FAILS ($(tail -1 /tmp/authtest.log)) — a token (GH_TOKEN) is required"
+fi
+rm -rf /tmp/authtest
+
+echo ""
 echo "--- network reachability (the Full-network / allowlist check) ---"
 for host in api.openai.com generativelanguage.googleapis.com; do
   code=$(curl -s -o /dev/null -m 8 -w '%{http_code}' "https://$host" 2>/dev/null || echo "000")

@@ -600,47 +600,26 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
       && !blockUrlChange) {
     merged.url = incoming.url;
     if (urlChanged) {
-      // URL fundamentally changed — old content flags are stale
+      // URL moved to a different canonical article. Refresh publishDate and
+      // fullText from the incoming record — the fresh URL's text beats any
+      // old-URL text regardless of length (the length-preference above was
+      // written for same-URL refreshes and would keep the OLD article's
+      // longer text here).
       if (incoming.publishDate) merged.publishDate = incoming.publishDate;
-      // Preserve manual flags: if a human reviewed and flagged this file
-      // (humanReviewedWrongProduction === false means "verified correct"),
-      // do NOT clear the wrong-production/wrong-show state.
-      // Also preserve date-based flags ('Pre-opening guard', 'Date guard',
-      // 'Dateless show', 'Tour transfer') — a URL refresh doesn't change the
-      // underlying date facts. Only URL-based flags ('Same URL') are eligible
-      // for clearing here.
-      const existingNote = existing.wrongProductionNote || '';
-      const isUrlBasedFlag = !existingNote || existingNote.startsWith('Same URL');
-      if (existing.humanReviewedWrongProduction !== false && isUrlBasedFlag) {
-        delete merged.wrongProduction;
-        delete merged.wrongProductionNote;
-      }
+      if (incoming.fullText) merged.fullText = decodeHtmlEntities(incoming.fullText);
       delete merged.wrongArticle;
-      // Only clear wrongShow if it wasn't manually set with a reason
-      if (!existing.wrongShowReason) {
-        delete merged.wrongShow;
-        delete merged.wrongShowNote;
-        delete merged.wrongShowAutoCleared;
-      }
-      // Reset content state so text collection re-fetches from the new URL
-      if (merged.contentTier === 'invalid' || merged.contentTier === 'stub') {
-        delete merged.contentTier;
-        delete merged.contentTierReason;
-      }
-      if (merged.contentVerification) {
-        delete merged.contentVerification;
-      }
-      delete merged.rejectedBy;
-      delete merged.rejectionReason;
-      delete merged.rejectionReasoning;
-      // Clear incomplete/fetch state so collector retries from the new URL.
-      // Without this, a file with incompleteReason: 'wrong_content' from the
-      // OLD URL keeps that flag forever and collect-review-texts.js skips it.
-      // Matches the clearing done in collect-review-texts.js SERP-discovery path.
-      delete merged.incompleteReason;
-      delete merged.incompleteDetail;
-      delete merged.fetchAttempts;
-      delete merged.lastFetchDate;
+      // Write-topology invariant (Notion 399637c5): everything derived from
+      // the OLD url — wrong flags (including manual wrongShowReason: flagging
+      // a file for its URL is really flagging the URL), content state,
+      // excerpts, aggregatorStars, LLM scores, old text — must not survive.
+      // This replaced a partial hand-rolled clear whose carve-outs (manual
+      // wrongShowReason, non-'Same URL' notes, scored content) suppressed the
+      // real JCS Palladium reviews on 2026-07-08..10. Date-based
+      // wrongProduction flags are still preserved inside the invariant.
+      const { applyUrlChangeInvariant } = require('./url-change-invariant');
+      applyUrlChangeInvariant(existing, merged, {
+        fileLabel: context.file || `${existing.outletId || existing.outlet || '?'}--${existing.criticName || '?'}`,
+      });
       merged.urlUpdatedFrom = existing.url;
       merged.urlUpdatedAt = new Date().toISOString();
     }
@@ -653,17 +632,20 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
     merged.criticName = incoming.criticName;
   }
 
-  // Keep all excerpts (decode entities on incoming)
-  if (incoming.dtliExcerpt && !existing.dtliExcerpt) {
+  // Keep all excerpts (decode entities on incoming). Gates check `merged`, not
+  // `existing`, so a fresh incoming excerpt still lands when the URL-change
+  // invariant above just cleared a stale old-URL excerpt (identical behavior
+  // to checking `existing` on every other path).
+  if (incoming.dtliExcerpt && !merged.dtliExcerpt) {
     merged.dtliExcerpt = decodeHtmlEntities(incoming.dtliExcerpt);
   }
-  if (incoming.bwwExcerpt && !existing.bwwExcerpt) {
+  if (incoming.bwwExcerpt && !merged.bwwExcerpt) {
     merged.bwwExcerpt = decodeHtmlEntities(incoming.bwwExcerpt);
   }
-  if (incoming.showScoreExcerpt && !existing.showScoreExcerpt) {
+  if (incoming.showScoreExcerpt && !merged.showScoreExcerpt) {
     merged.showScoreExcerpt = decodeHtmlEntities(incoming.showScoreExcerpt);
   }
-  if (incoming.nycTheatreExcerpt && !existing.nycTheatreExcerpt) {
+  if (incoming.nycTheatreExcerpt && !merged.nycTheatreExcerpt) {
     merged.nycTheatreExcerpt = decodeHtmlEntities(incoming.nycTheatreExcerpt);
   }
 
@@ -1337,6 +1319,11 @@ function normalizeUrl(url) {
     u = u.replace(/[?&](utm_\w+|ref|source|fbclid|gclid|partner|emc|_r|smid|campaign|algo|nc|srsltid)=[^&]*/g, '')
       .replace(/\?$/, '')
       .replace(/\?&/, '?');
+    // Re-strip trailing slashes: the first strip (above) runs before the
+    // query string is removed, so `/review/?utm_source=x` still ends in a
+    // slash here and would compare unequal to `/review` — a false "URL
+    // changed" signal for the url-change invariant (and a missed dedup).
+    u = u.replace(/\/+$/, '');
     // AMP-suffix strip (added 2026-04-28, Item 3 of systematic CI plan).
     // Only matches a path-final `/amp` segment; never a mid-path `/amp/`
     // to avoid false collisions on outlets that legitimately use `/amp/`

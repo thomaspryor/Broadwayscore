@@ -317,7 +317,7 @@ async function main() {
       });
       console.log(delivered
         ? '[completeness] Alert dispatched via email.'
-        : '[completeness] ⚠️ Alert email NOT delivered — logged only (see ::error:: annotation).');
+        : '[completeness] Alert not emailed (warning severity — actionable-only policy) — logged + step summary; broadcast gates cover the actionable case.');
     }
   } else {
     console.log('[completeness] No drops detected — opening-night shows look complete vs last snapshot.');
