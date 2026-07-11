@@ -1041,8 +1041,12 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     h1: 'Upcoming Off-Broadway Shows in NYC',
     metaTitle: `Upcoming Off-Broadway Shows (${CURRENT_YEAR})`,
     metaDescription: 'All upcoming Off-Broadway shows opening in NYC. New plays, musicals, and revivals coming to Off-Broadway venues, sorted by opening date.',
-    intro: 'Every Off-Broadway show announced for New York City venues, sorted by opening date. Off-Broadway is where tomorrow\'s Broadway hits get their start and where the most exciting new voices in theatre debut their work. From world premieres at iconic venues like Playwrights Horizons and MCC Theater to transfers from regional theatres, these are the Off-Broadway productions on the horizon. Shows currently in previews appear on the main Off-Broadway page.',
-    filter: (show) => show.status === 'upcoming',
+    intro: 'Every Off-Broadway show announced for New York City venues, sorted by opening date. Off-Broadway is where tomorrow\'s Broadway hits get their start and where the most exciting new voices in theatre debut their work. From world premieres at iconic venues like Playwrights Horizons and MCC Theater to transfers from regional theatres, these are the Off-Broadway productions on the horizon.',
+    // Include previews, not just upcoming — matches upcoming-broadway-shows.
+    // Filtering to 'upcoming' only dropped every show already flipped to
+    // previews (e.g. the entire July/August slate), leaving a misleading gap
+    // that jumped from one July show straight to September (user, 2026-07-11).
+    filter: (show) => show.status === 'upcoming' || show.status === 'previews',
     sort: 'opening-date-asc',
     source: 'off-broadway',
     relatedPages: ['off-broadway-shows', 'best-off-broadway-shows', 'upcoming-broadway-shows'],
