@@ -14,14 +14,14 @@
     "processed": 0,
     "failed": 11,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "33.3%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 1,
     "archive": 0
@@ -50,7 +50,9 @@
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "iceboy-regional-2026/chicagotribune--christopher-borrelli.json"
+  ],
   "failed": [
     "the-guilty-west-end-2026/hollywood-reporter--angie-han.json",
     "the-guilty-west-end-2026/hollywood-reporter--lily-ford.json",
@@ -69,7 +71,9 @@
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "iceboy-regional-2026/chicagotribune--christopher-borrelli.json"
+    ],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/the-guilty-west-end-2026/thestage--unknown.json"
@@ -77,5 +81,11 @@
     "archive": []
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "iceboy-regional-2026/chicagotribune--christopher-borrelli.json",
+      "oldUrl": "https://www.chicagotribune.com/2026/06/25/iceboy-goodman-theatre-musical/",
+      "newUrl": "https://www.chicagotribune.com/2026/06/30/review-iceboy-goodman-theatre/"
+    }
+  ]
 }
