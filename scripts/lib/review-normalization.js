@@ -582,7 +582,15 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
   // See: Boy at the Back of the Class thestage URL oscillation (2026-04-10).
   const urlIsProtected = existing.urlVerified === true || existing.urlManualOverride === true;
   const existingUrlLooksBroken = !existing.url || existing.url.includes('undefined');
-  const urlChanged = incoming.url && existing.url
+  // A garbage incoming url ('undefined' fragments, non-http strings like
+  // 'N/A' or relative paths) must never REPLACE a real existing url — the
+  // invariant below deliberately no-ops on garbage (no state wipe), so
+  // adopting the garbage url here would swap the url with no clear, no
+  // breadcrumb, and a publishDate refresh (ship-check 2026-07-11). First-set
+  // onto an empty/broken url is still allowed for http(s) urls only.
+  const incomingUrlGarbage = !!incoming.url && (typeof incoming.url !== 'string'
+    || incoming.url.includes('undefined') || !/^https?:\/\//i.test(incoming.url));
+  const urlChanged = incoming.url && existing.url && !incomingUrlGarbage
     && normalizeUrl(incoming.url) !== normalizeUrl(existing.url);
   // Block URL changes only when the existing URL is protected AND not
   // obviously broken. First-URL-set and undefined-repair always proceed.
@@ -596,7 +604,8 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
       details: { existingUrl: existing.url, incomingUrl: incoming.url, outletId: existing.outletId, criticName: existing.criticName },
     });
   }
-  if (incoming.url && (!existing.url || existing.url.includes('undefined') || urlChanged)
+  if (incoming.url && !incomingUrlGarbage
+      && (!existing.url || existing.url.includes('undefined') || urlChanged)
       && !blockUrlChange) {
     merged.url = incoming.url;
     if (urlChanged) {

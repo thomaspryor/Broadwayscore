@@ -3359,10 +3359,11 @@ function createReviewFile(showId, reviewData, options = {}) {
               fileLabel: existingFile,
               preserveFields: new Set(AGGREGATOR_FIELDS),
             });
-            // Signal that text needs to be collected from the new URL
-            if (!replacement.fullText) {
-              replacement.needsRecollection = true;
-            }
+            // Re-fetch signalling (needsRefetch + urlCorrectedFrom — the pair
+            // collect-review-texts.js actually reads) is handled by the
+            // invariant call above. The legacy needsRecollection flag set here
+            // was written by this one line and read by nothing (ship-check
+            // 2026-07-11), so it was dropped.
             fs.writeFileSync(path.join(showDir, existingFile), JSON.stringify(replacement, null, 2) + '\n');
             if (existingFile !== filename) {
               fs.renameSync(path.join(showDir, existingFile), filepath);

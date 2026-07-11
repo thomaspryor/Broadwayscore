@@ -131,8 +131,8 @@ For full details on any subsystem: `memory/CLAUDE-reference.md`
 ### 15. Test Extraction Pattern (MANDATORY for new logic tests)
 **Never copy logic into test files — always `require()` the real function.** Extract pure decision functions to `scripts/lib/` (e.g. `review-guards.js`); `module.exports` and `require()` in the test. Production code changes → test fails — that's the point. When fixing inline pipeline logic: extract → export → wire back → test.
 
-### 16. Propose Memory Entries Inline (at session end)
-During `/wrap-up` / `/done`, propose a full `memory/feedback_*.md` entry (frontmatter + Why + How-to-apply, quality of `feedback_404_not_terminal.md`) if you saw: 2+ corrections on same topic, 10+ re-reads of same file, or explicit "remember this / always do X / never do Y." Show the proposed entry; user replies `y` to commit. **Why:** post-hoc cron miners ship templated slop; in-session you saw the incident. Teardown rationale: 2026-05-27.
+### 16. Memory Entries: Encode First, Write Rarely
+**Never offer to "commit a memory file to the repo for cloud sessions"** — the session-stop hook (`sync-memory-to-repo.sh`) auto-mirrors all local memory to `cloud-memory/`. The y/n proposal ceremony is retired (2026-07-11: its entries failed the "would this actually help?" test on challenge). Write a local memory entry ONLY if all three pass: (1) **encode-first** — the lesson can NOT be a code/test/hook/CI change; an encoded fix needs no memory (exception: diagnostic recipe for symptoms that recur despite the fix); (2) **counterfactual** — name the specific future action that changes; (3) **recall** — a future session hitting this mistake would plausibly surface the file from its description. **No new memory is the normal session outcome.** A memory entry never satisfies "Prevention added" when code-level prevention was possible. If the user says "remember this," write it without ceremony.
 
 ### 17. Email Broadcast Safety (MANDATORY — NO EXCEPTIONS)
 See `memory/email-broadcast-rules.md` for full incident history.

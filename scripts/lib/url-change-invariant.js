@@ -124,6 +124,12 @@ function urlCanonicallyChanged(existingUrl, newUrl) {
 /**
  * Enforce the invariant on a post-merge record. Mutates `merged` in place.
  *
+ * CONTRACT: `merged` must be the COMPLETE record that will be written to disk
+ * (fully merged, or a fully-materialized replacement) — never a sparse patch.
+ * Omission-recording treats any URL-derived field absent from `merged` but
+ * present on `existing` as an intentional clear and breadcrumbs it, which
+ * would suppress legitimate restores if `merged` were a partial record.
+ *
  * @param {object} existing - The on-disk record BEFORE the write
  * @param {object} merged - The record about to be written (already merged)
  * @param {object} [opts]
@@ -168,7 +174,12 @@ function applyUrlChangeInvariant(existing, merged, { fileLabel = '?', preserveFi
   // resurrect hop 1's fields. Carry the prior cleared[] into the new era when
   // the prior breadcrumb chains (prior.to == the url we're moving away from).
   let priorCleared = [];
-  const prior = merged._urlChangedClear;
+  // Read the prior breadcrumb from `merged` OR `existing`: gather-reviews'
+  // replacement branch builds a fresh record that never carries the old
+  // _urlChangedClear forward, and hop-1's cleared fields are absent from BOTH
+  // sides there (so omission-recording can't see them either) — only the
+  // existing record's breadcrumb preserves the chain (ship-check 2026-07-11).
+  const prior = merged._urlChangedClear || existing._urlChangedClear;
   if (prior && Array.isArray(prior.cleared) && prior.to) {
     try {
       const { normalizeUrl } = require('./review-normalization');
