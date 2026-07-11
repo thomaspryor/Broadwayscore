@@ -112,6 +112,10 @@ function saveWeProving(t) {
   try { fs.writeFileSync(WE_PROVING_PATH, JSON.stringify(t, null, 2) + '\n'); } catch { /* non-fatal */ }
 }
 const { normalizeOutlet: normalizeOutletId } = require('./lib/review-normalization');
+// Production-identity + ingest-eligibility policy (2026-07-11): Broadway-path
+// aggregator articles are date-gated against the show's opening window, and
+// prior-run URLs are ingest-blocked on EVERY path (see lib/gap-ingest-policy.js).
+const { articleRunIdentity, ingestBlockReason } = require('./lib/gap-ingest-policy');
 // WE reference schema version — bump to invalidate WE checkpoint entries (59 shows
 // recorded gaps:0 from vacuous Broadway-only-reference runs and closed-clean shows
 // get a 365d skip; without invalidation the WE reference would never run on them).
@@ -252,6 +256,11 @@ function isReviewUrl(href) {
   try {
     const p = new URL(href).pathname;
     if (NON_REVIEW_PATH_PATTERNS.some(rx => rx.test(p))) return false;
+    // Static assets: Show Score pages link CDN stylesheets/scripts (e.g.
+    // maxcdn.bootstrapcdn.com/bootstrap.min.css) which surfaced as "missing
+    // reviews" and, under --ingest-missing, would ingest as a provisional
+    // "bootstrapcdn" outlet (spamalot-off-broadway-2026, 2026-07-11).
+    if (/\.(css|js|json|xml|png|jpe?g|gif|svg|webp|ico|woff2?|ttf|mp4|pdf)$/i.test(p)) return false;
   } catch { return false; }
   return true;
 }
@@ -482,7 +491,15 @@ async function extractAggregatorReviewUrls(articleUrl, show) {
     if (!urlMatchesShow(href, tokens)) return;
     urls.add(normalizeReviewUrl(href));
   });
-  return [...urls];
+  // Production identity (2026-07-11): urlMatchesShow filters wrong SHOWS, not
+  // wrong PRODUCTIONS — a same-title prior production's roundup passes it (the
+  // 2018 TKAM Broadway RR → 77 "missing" 2018 URLs class). Date the ARTICLE
+  // against this show's opening window; the caller marks out-of-window
+  // articles' URLs priorRun (report-only, never auto-ingested). Computed per
+  // (article, show) pair — a multi-show recap can be current for one show and
+  // prior for another — so it lives outside the shared HTML cache.
+  const identity = articleRunIdentity(html, show);
+  return { urls: [...urls], priorRun: identity.priorRun, publishDate: identity.publishDate };
 }
 
 // Coarse label for reporting WHY a file is excluded (shown in flaggedMisses detail).
@@ -558,10 +575,25 @@ async function auditShow(show) {
   result.aggregatorArticles = articles;
 
   const aggUrls = new Set();
+  // Broadway-path production identity: URLs cited ONLY by out-of-window
+  // (prior-production) articles are priorRun → ingest-blocked. A URL also cited
+  // by a current-run article stays ingestable (the current citation vouches).
+  const bwCurrentUrls = new Set();
+  const bwPriorCandidateUrls = new Set();
   for (const art of articles) {
-    const urls = await extractAggregatorReviewUrls(art, show);
-    if (urls) for (const u of urls) aggUrls.add(u);
+    const extracted = await extractAggregatorReviewUrls(art, show);
+    if (!extracted) continue;
+    for (const u of extracted.urls) {
+      aggUrls.add(u);
+      (extracted.priorRun ? bwPriorCandidateUrls : bwCurrentUrls).add(u);
+    }
+    if (extracted.priorRun) {
+      result.priorRunArticles = result.priorRunArticles || [];
+      result.priorRunArticles.push({ url: art, publishDate: extracted.publishDate });
+      console.log(`  ⏮  prior-production article (published ${extracted.publishDate || '?'}, opening ${show.openingDate}): ${art} — its ${extracted.urls.length} URL(s) are report-only`);
+    }
   }
+  const bwPriorRunUrls = new Set([...bwPriorCandidateUrls].filter(u => !bwCurrentUrls.has(u)));
 
   // Show Score per-show page → direct outlet review URLs. Show Score covers
   // off-Broadway (unlike DTLI, which is Broadway-only) — it lands later and lists
@@ -699,14 +731,13 @@ async function auditShow(show) {
   // WE_GAP_INGEST=1 (absent = report-only — the SAFE default; a dropped env line
   // must fail closed), and prior-run roundup URLs are PERMANENTLY report-only
   // (auto-ingesting a prior production's URLs is the WET mass-ingestion class).
-  if (weRefUrls.size > 0) {
-    for (const m of result.missing) {
+  if (weRefUrls.size > 0 || bwPriorRunUrls.size > 0) {
+    for (const m of [...result.missing, ...result.flaggedMisses]) {
       if (weRefUrls.has(m.url)) m.weRef = true;
       if (weRefPriorRunUrls.has(m.url)) m.priorRun = true;
-    }
-    for (const m of result.flaggedMisses) {
-      if (weRefUrls.has(m.url)) m.weRef = true;
-      if (weRefPriorRunUrls.has(m.url)) m.priorRun = true;
+      // Broadway-path production identity: cited only by a prior production's
+      // dated aggregator article → permanently report-only (TKAM 2018 class).
+      if (bwPriorRunUrls.has(m.url)) { m.priorRun = true; m.priorRunSource = 'aggregator-article-date'; }
     }
   }
 
@@ -1148,12 +1179,16 @@ if (require.main === module) (async () => {
       // incident: 2018 TKAM Broadway, 2013 Midsummer/Taymor, 2014 Last Ship, 2025
       // NYC JLP reviews all ingested onto WE entries → validate-data red).
       const showIsWe = isWeShow(s);
-      const blockedPred = (m) => (showIsWe && !weGateOn) || (m.weRef && (!weGateOn || m.priorRun));
+      // Canonical ingest-eligibility predicate (lib/gap-ingest-policy.js):
+      // prior-run URLs block on EVERY market/path; WE gate blocks the rest on
+      // WE shows + weRef rows until WE_GAP_INGEST=1.
+      const blockedPred = (m) => ingestBlockReason(m, { showIsWe, weGateOn }) !== null;
       const weBlocked = r.missing.filter(blockedPred);
       const eligibleMissing = r.missing.filter(m => !blockedPred(m));
       if (weBlocked.length > 0) {
-        r.weIngestBlocked = weBlocked.map(m => ({ url: m.url, host: m.host, priorRun: !!m.priorRun }));
-        console.log(`  ⛔ ${weBlocked.length} WE-reference URL(s) not ingested (${weGateOn ? 'prior-run roundup — permanently report-only' : 'WE_GAP_INGEST unset — report-only mode'})`);
+        r.weIngestBlocked = weBlocked.map(m => ({ url: m.url, host: m.host, priorRun: !!m.priorRun, reason: ingestBlockReason(m, { showIsWe, weGateOn }) }));
+        const nPrior = weBlocked.filter(m => m.priorRun).length;
+        console.log(`  ⛔ ${weBlocked.length} URL(s) not ingested (${nPrior} prior-production — permanently report-only${nPrior < weBlocked.length ? `; ${weBlocked.length - nPrior} WE_GAP_INGEST unset — report-only mode` : ''})`);
       }
       const ingestable = eligibleMissing.slice(0, INGEST_PER_SHOW_CAP);
       // P1 fix 2026-05-27 (ship-check): record cap-skipped URLs so future runs
@@ -1201,10 +1236,13 @@ if (require.main === module) (async () => {
       // citing a Guardian URL would otherwise re-ingest PRIOR-PRODUCTION text
       // into the current show's file every hour (the WET mass-ingestion class).
       const weRecGateOn = process.env.WE_GAP_INGEST === '1';
-      const recBlockedPred = (m) => (isWeShow(s) && !weRecGateOn) || (m.weRef && (!weRecGateOn || m.priorRun));
+      // Same canonical predicate as the missing-URL ingest above — prior-run
+      // (production-identity) blocks recovery on every market, not just weRef rows.
+      const recBlockedPred = (m) => ingestBlockReason(m, { showIsWe: isWeShow(s), weGateOn: weRecGateOn }) !== null;
       const weRecBlocked = r.flaggedMisses.filter(m => m.recoverable && recBlockedPred(m));
       if (weRecBlocked.length > 0) {
-        console.log(`  ⛔ ${weRecBlocked.length} recoverable(s) not recovered on this WE show (${weRecGateOn ? 'prior-run roundup — permanently report-only' : 'WE_GAP_INGEST unset — report-only mode'})`);
+        const nPrior = weRecBlocked.filter(m => m.priorRun).length;
+        console.log(`  ⛔ ${weRecBlocked.length} recoverable(s) not recovered (${nPrior} prior-production — permanently report-only${nPrior < weRecBlocked.length ? `; ${weRecBlocked.length - nPrior} WE_GAP_INGEST unset — report-only mode` : ''})`);
       }
       const recoverables = r.flaggedMisses.filter(m => m.recoverable && !recBlockedPred(m));
       // Recovery draws from whatever the missing-URL ingest left of the shared

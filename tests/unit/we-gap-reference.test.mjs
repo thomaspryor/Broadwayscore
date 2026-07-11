@@ -122,7 +122,10 @@ describe('safety wiring (audit + workflow must keep the fail-closed invariants)'
 
   test('audit gates WE ingest on WE_GAP_INGEST === "1" (absent env fails closed)', () => {
     assert.ok(auditSrc.includes("process.env.WE_GAP_INGEST === '1'"), 'explicit-opt-in comparison present');
-    assert.ok(auditSrc.includes('m.weRef && (!weGateOn || m.priorRun)'), 'prior-run rows excluded from ingest even when gate is on');
+    // The predicate itself is canonical in lib/gap-ingest-policy.js (behaviorally
+    // tested in gap-ingest-policy.test.mjs — priorRun blocks even when gate is on).
+    assert.ok(auditSrc.includes('ingestBlockReason(m, { showIsWe, weGateOn })'),
+      'missing-URL ingest must consult the canonical policy predicate');
   });
 
   test('audit invalidates stale WE checkpoints via WE_REF_VERSION', () => {
@@ -139,13 +142,20 @@ describe('safety wiring (audit + workflow must keep the fail-closed invariants)'
   test('P0 (ship-check): flaggedMisses RECOVERY path also respects the WE gate + prior-run block', () => {
     assert.ok(auditSrc.includes('m.recoverable && recBlockedPred(m)') && auditSrc.includes('m.recoverable && !recBlockedPred(m)'),
       'recovery filter must exclude gate-blocked rows — an empty-body file + a 2022 roundup URL must never re-ingest prior-production text');
-    assert.ok(auditSrc.includes('(isWeShow(s) && !weRecGateOn)'),
-      'on WE shows ALL recovery requires the gate, not just weRef rows');
+    assert.ok(auditSrc.includes('ingestBlockReason(m, { showIsWe: isWeShow(s), weGateOn: weRecGateOn })'),
+      'recovery must consult the SAME canonical policy predicate as missing-URL ingest');
   });
 
-  test('INCIDENT 2026-07-10: on WE shows ALL missing-URL ingest requires the gate (Broadway-path same-title contamination)', () => {
-    assert.ok(auditSrc.includes('(showIsWe && !weGateOn) || (m.weRef && (!weGateOn || m.priorRun))'),
-      'Broadway-path SERP finds same-title US/prior-production roundups for WE shows — their URLs ingested 2018 TKAM/2013 Midsummer/2014 Last Ship/2025 JLP reviews onto WE entries');
+  test('INCIDENT 2026-07-10: Broadway-path same-title contamination blocked by production identity', () => {
+    // Was: WE shows gated ALL missing-URL ingest on WE_GAP_INGEST — which stops
+    // protecting the moment the gate auto-enables. Now the Broadway-path articles
+    // themselves are date-gated (articleRunIdentity) and prior-run URLs are
+    // permanently blocked on every market (2018 TKAM/2013 Midsummer/2014 Last
+    // Ship/2025 JLP reviews all ingested onto WE entries in the first run).
+    assert.ok(auditSrc.includes('articleRunIdentity(html, show)'),
+      'every fetched aggregator article must be dated against the opening window');
+    assert.ok(auditSrc.includes("m.priorRunSource = 'aggregator-article-date'"),
+      'prior-production article URLs must be tagged priorRun in missing/flaggedMisses');
   });
 
   test('P1 (ship-check): prior-run-only alert sets do not daily re-ping; failed delivery does not record dedup hash', () => {
