@@ -266,6 +266,21 @@ jobs:
           node scripts/scrape-theatre-reviews.js --shows="$SHOWS" || true
           node scripts/scrape-london-box-office-roundups.js --shows="$SHOWS" || true
 
+      # The census scrapers above also create/update review-text stubs (TR/LBO
+      # excerpts, star metadata, newly discovered reviews). They run AFTER the
+      # SERP push, so without this second push those writes were silently
+      # discarded every run and only re-landed when a dispatched gather
+      # happened to re-scrape the same pages. The archive HTML they fetch is
+      # intentionally NOT persisted (aggregator-archive repo isn't checked out
+      # here — the census reads it fresh in the audit step below).
+      - name: Push review-texts (census discoveries)
+        if: steps.find.outputs.has_shows == 'true' && steps.find.outputs.serp_shows != ''
+        continue-on-error: true
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: WE census discoveries (TR/LBO)'
+
       - name: Audit coverage gaps (census-anchored, multi-source)
         if: steps.find.outputs.has_shows == 'true'
         id: coverage
