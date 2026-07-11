@@ -1,6 +1,8 @@
 {
   "processed": [
-    "iceboy-regional-2026/chicagotribune--christopher-borrelli.json"
+    "iceboy-regional-2026/chicago-sun-times--unknown.json",
+    "iceboy-regional-2026/chicagotribune--christopher-borrelli.json",
+    "iceboy-regional-2026/chicagotribune--unknown.json"
   ],
   "failed": [
     "iceboy-regional-2026/chicago-sun-times--mike-davis-wbez.json",
@@ -8,18 +10,21 @@
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "iceboy-regional-2026/chicago-sun-times--unknown.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [
-      "iceboy-regional-2026/chicagotribune--christopher-borrelli.json"
+      "iceboy-regional-2026/chicagotribune--christopher-borrelli.json",
+      "iceboy-regional-2026/chicagotribune--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-07-11T15:56:49.411Z",
+  "startTime": "2026-07-11T17:18:54.504Z",
   "lastProcessed": "iceboy-regional-2026/one-minute-critic--matthew-wexler.json",
   "log": []
 }
