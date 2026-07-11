@@ -175,8 +175,12 @@ function applyUrlChangeInvariant(existing, merged, { fileLabel = '?', preserveFi
   // coupled to it. A date clears when it's carried over from the old record
   // (format-insensitive: an aggregator re-supplying 'October 12, 2023' for a
   // stored '2023-10-12' is the same stale date) or dropped by omission.
-  const publishDateWillClear = merged.publishDate === undefined
-    ? existing.publishDate !== undefined
+  // Empty covers undefined AND explicit null/'' — outlet-listing-poller
+  // writes publishDate:null, which must count as "date basis gone", not as a
+  // fresh date (else stale Date-guard flags strand on a dateless record).
+  const _emptyDate = (v) => v === undefined || v === null || v === '';
+  const publishDateWillClear = _emptyDate(merged.publishDate)
+    ? !_emptyDate(existing.publishDate)
     : _publishDatesEqual(merged.publishDate, existing.publishDate);
   // Preserve WP fields for: manual 'Tour transfer' flags (always), and
   // automatic date guards whose publishDate basis SURVIVES (a genuinely new
@@ -192,9 +196,9 @@ function applyUrlChangeInvariant(existing, merged, { fileLabel = '?', preserveFi
     if (field === 'publishDate') {
       if (!publishDateWillClear) continue;
       if (merged.publishDate !== undefined) {
-        delete merged.publishDate;
+        delete merged.publishDate; // includes explicit null/'' — basis gone
         cleared.push('publishDate');
-      } else if (existing.publishDate !== undefined) {
+      } else if (existing.publishDate !== undefined && existing.publishDate !== null) {
         cleared.push('publishDate'); // omission
       }
       continue;
