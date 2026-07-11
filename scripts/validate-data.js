@@ -32,7 +32,8 @@ const { previewsAfterOpening, excessivePreviewGap, inheritedDateFromSibling, sus
 // Canonical Broadway-category predicate. Treats null category as Broadway
 // per historical-import convention; use this instead of raw string compare.
 const { isBroadwayCategory } = require('./lib/venue-classification');
-const { classifyReverseCrossMarket } = require('./lib/cross-market-guard');
+const { classifyReverseCrossMarket, classifyUsOnWeCrossMarket } = require('./lib/cross-market-guard');
+const { earliestShowDate, evaluatePreWindowInclusion } = require('./lib/date-guard');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { openingDateSourceHint } = require('./lib/opening-date-sources');
 const { isNonTheatricalGenre } = require('./lib/genre-classification');
@@ -4199,13 +4200,48 @@ function validateCrossMarketContamination() {
   } catch { /* no registry = skip check */ return; }
   const { outletRegionMap, dualMarket, tier12Outlets, outletTierMap, canonicalOutletId } = buildOutletMaps(reg);
 
+  // Forward direction: US outlets on West End / off-West End shows.
+  // Classification lives in scripts/lib/cross-market-guard.js (pure, tested):
+  //   error   — explicitly US-region outlet AND pre-window publish date (>60d
+  //             before the show's earliest date, outside every declared priorRun).
+  //             Both signals present = Broadway-run reviews leaking onto a WE
+  //             revival (Glengarry WE 2026, card 386637c5). Blocks the build.
+  //   warning — any other non-London outlet (unknown region, or in-window date —
+  //             NYT/Variety-style legitimate WE coverage stays non-blocking, and
+  //             Tier 1/2 + dual-market outlets are skipped entirely).
+  const showByIdFull = new Map(shows.map(s => [s.id, s]));
   let issues = 0;
+  let usOnWeErrors = 0;
   const weReviews = reviews.filter(r => isLondonMarket(showCategoryMap[r.showId]));
   for (const r of weReviews) {
     const oid = (r.outletId || r.outlet || '').toLowerCase();
-    if (dualMarket.has(oid) || tier12Outlets.has(oid)) continue;
     const region = outletRegionMap[oid];
-    if (region !== 'london') {
+    // Pre-window signal: same predicate the rebuild inclusion pass uses
+    // (scripts/lib/date-guard.js), including the priorRuns exemption.
+    let isPreWindowDate = false;
+    const show = showByIdFull.get(r.showId);
+    const earliest = show ? earliestShowDate(show) : null;
+    if (earliest && r.publishDate) {
+      const pw = evaluatePreWindowInclusion({
+        pubDate: new Date(r.publishDate),
+        showEarliest: new Date(earliest),
+        isFlexCategory: true,
+        priorRuns: show.priorRuns,
+      });
+      isPreWindowDate = pw.exclude;
+    }
+    const { level, reason } = classifyUsOnWeCrossMarket({
+      region,
+      isDualMarket: dualMarket.has(oid),
+      isTier12: tier12Outlets.has(oid),
+      isPreWindowDate,
+    });
+    if (level === 'error') {
+      usOnWeErrors++;
+      if (usOnWeErrors <= 5) {
+        error(`Cross-market: WE show "${r.showId}" has review from US outlet "${r.outlet || oid}" dated ${r.publishDate} (${reason})`);
+      }
+    } else if (level === 'warning') {
       issues++;
       if (issues <= 5) {
         warn(`Cross-market: WE show "${r.showId}" has review from non-London outlet "${r.outlet || oid}"`);
@@ -4213,6 +4249,9 @@ function validateCrossMarketContamination() {
     }
   }
 
+  if (usOnWeErrors > 5) {
+    error(`... and ${usOnWeErrors - 5} more US-on-WE pre-window cross-market reviews`);
+  }
   if (issues > 5) {
     warn(`... and ${issues - 5} more US→WE cross-market reviews`);
   }
