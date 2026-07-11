@@ -1047,12 +1047,18 @@ if (require.main === module) (async () => {
             url: `https://github.com/${process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore'}/actions`,
             email: true,
           });
-          if (delivered) {
-            checkpoint[s.id] = { ...(checkpoint[s.id] || {}), weAlert: { hash, at: new Date().toISOString(), delivered: true } };
+          // Record the hash when the alert was HANDLED: delivered, or
+          // suppressed by the actionable-only email policy (warning-severity
+          // alerts no longer email, 2026-07-11 — without this, `delivered`
+          // stays false forever and the hourly cron re-attempts the same
+          // alert indefinitely). Retry-on-false is preserved only for the
+          // case it was built for: policy WOULD email but delivery failed
+          // (missing RESEND/OWNER_EMAIL or Resend error).
+          const { shouldEmailAlert } = require('./lib/discord-notify');
+          if (delivered || !shouldEmailAlert('warning')) {
+            checkpoint[s.id] = { ...(checkpoint[s.id] || {}), weAlert: { hash, at: new Date().toISOString(), delivered } };
             saveCheckpoint(checkpoint);
           }
-          // NOT delivered → don't record the hash: the next hourly run retries
-          // (each emitting a visible ::error:: until RESEND/OWNER_EMAIL is fixed).
         } catch (e) {
           console.error(`::error::WE gap alert failed for ${s.id}: ${(e.message || '').slice(0, 100)}`);
         }
