@@ -2,7 +2,36 @@ import { test } from 'node:test';
 import assert from 'node:assert';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { ROLE_CANON, roleVerb, roleVerbVariants, serpTextConfirms } = require('./creative-team-verify.js');
+const { ROLE_CANON, roleVerb, roleVerbVariants, serpTextConfirms, titleTokens, normalizeForMatch } = require('./creative-team-verify.js');
+
+test('normalizeForMatch bridges typographic variance', () => {
+  assert.equal(normalizeForMatch('I’m Sorry, Prime Minister'), "i'm sorry, prime minister");
+  assert.equal(normalizeForMatch('STORIES – The  Tap Dance Sensation'), 'stories - the tap dance sensation');
+});
+
+test('titleTokens: subtitle split on colon and spaced dash, short cuts dropped', () => {
+  assert.deepEqual(titleTokens('Giulia: The Poison Queen of Palermo'), ['giulia: the poison queen of palermo', 'giulia']);
+  assert.ok(titleTokens('STORIES – The Tap Dance Sensation').includes('stories'));
+  assert.deepEqual(titleTokens('Six'), ['six']); // no subtitle → single token
+});
+
+test('curly-apostrophe title anchors match straight-quoted snippets', () => {
+  const results = [{
+    title: 'Review roundup',
+    snippet: "I'm Sorry, Prime Minister, directed by Jonathan Lynn, opened last night.",
+  }];
+  assert.equal(
+    serpTextConfirms(results, ['directed by'], 'Jonathan Lynn', { title: 'I’m Sorry, Prime Minister' }),
+    true
+  );
+});
+
+test('roleVerbVariants covers corpus authorship roles found in 2026-07 audit', () => {
+  for (const r of ['Co-Author', 'Writer, Performer', 'Creator', 'Composer and Lyricist', 'Book/Music/Lyrics', 'Book Writers']) {
+    assert.ok(roleVerbVariants(r), `expected variants for ${r}`);
+  }
+  assert.equal(roleVerbVariants('Casting Director'), null); // still unverifiable
+});
 
 test('roleVerb matches the write-path guard exactly', () => {
   assert.equal(roleVerb('director'), 'directed by');

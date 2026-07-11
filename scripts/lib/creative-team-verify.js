@@ -50,6 +50,7 @@ function roleVerbVariants(role) {
     playwright: ['written by', 'play by', 'written and'],
     choreographer: ['choreographed by', 'choreography by'],
     'book writer': ['book by', 'written by', 'book and'],
+    'book writers': ['book by', 'written by', 'book and'],
     book: ['book by', 'written by', 'book and'],
     composer: ['music by', 'composed by', 'score by', 'music and'],
     lyricist: ['lyrics by', 'lyrics and'],
@@ -57,18 +58,45 @@ function roleVerbVariants(role) {
     lyrics: ['lyrics by', 'lyrics and'],
     'music & lyrics': ['music and lyrics by', 'music & lyrics by', 'songs by', 'written by', 'music by'],
     'book, music & lyrics': ['written by', 'book, music', 'music and lyrics by', 'music by'],
+    'book/music/lyrics': ['written by', 'book, music', 'music and lyrics by', 'music by', 'book by'],
+    'composer and lyricist': ['music and lyrics by', 'music by', 'lyrics by', 'composed by', 'songs by'],
+    'co-author': ['written by', 'co-written by', 'co-authored by', 'by'],
+    creator: ['created by', 'creator', 'written by'],
+    'creator, performer': ['created by', 'created and performed by', 'written by'],
+    'writer, performer': ['written by', 'written and performed by', 'created by'],
+    writer: ['written by', 'by'],
+    author: ['written by', 'by'],
   };
   return map[r] || null;
 }
 
 /**
+ * Normalize typographic variance before substring matching: curly quotes →
+ * straight, en/em dashes → hyphen, collapsed whitespace. Snippets and our
+ * titles disagree on these constantly ("I'm Sorry, Prime Minister" with a
+ * curly apostrophe never matches a straight-quoted snippet otherwise).
+ * See memory/feedback_word_boundary_punct_titles.md for the general rule.
+ */
+function normalizeForMatch(s) {
+  return String(s || '')
+    .toLowerCase()
+    .replace(/[‘’ʼ]/g, "'")
+    .replace(/[“”]/g, '"')
+    .replace(/[–—]/g, '-')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+/**
  * Distinctive lowercase tokens for tying a snippet segment to THIS show.
- * Full title plus the pre-colon short title for subtitled shows.
+ * Full normalized title plus a pre-subtitle short token (split on colon or
+ * a spaced dash) for subtitled shows.
  */
 function titleTokens(title) {
-  const t = String(title || '').toLowerCase().trim();
+  const t = normalizeForMatch(title);
   const tokens = t ? [t] : [];
-  if (t.includes(':')) tokens.push(t.split(':')[0].trim());
+  const cut = t.split(/:|\s-\s/)[0].trim();
+  if (cut && cut !== t && cut.length >= 4) tokens.push(cut);
   return tokens;
 }
 
@@ -93,19 +121,19 @@ function titleTokens(title) {
  */
 function serpTextConfirms(serpResults, phrases, name, opts = {}) {
   if (!Array.isArray(serpResults) || serpResults.length === 0) return false;
-  const nameLC = String(name).toLowerCase();
-  const wanted = phrases.map(p => `${p.toLowerCase()} ${nameLC}`);
+  const nameN = normalizeForMatch(name);
+  const wanted = phrases.map(p => `${normalizeForMatch(p)} ${nameN}`);
   const anchors = titleTokens(opts.title);
 
   return serpResults.some(r => {
-    const pageTitle = (r.title || '').toLowerCase();
-    const snippet = (r.snippet || '').toLowerCase();
+    const pageTitle = normalizeForMatch(r.title);
+    const snippet = normalizeForMatch(r.snippet);
     if (anchors.length === 0) {
       // No title anchor supplied — legacy loose check.
       return wanted.some(w => (pageTitle + ' ' + snippet).includes(w));
     }
     const pageTitleNamesShow = anchors.some(a => pageTitle.includes(a));
-    // Google joins unrelated page fragments with "..." / "…" — treat each
+    // Google joins unrelated page fragments with "..." or "…" — treat each
     // fragment as its own evidence unit.
     const segments = snippet.split(/\.\.\.|…/);
     return segments.some(seg =>
@@ -115,4 +143,4 @@ function serpTextConfirms(serpResults, phrases, name, opts = {}) {
   });
 }
 
-module.exports = { ROLE_CANON, roleVerb, roleVerbVariants, serpTextConfirms, titleTokens };
+module.exports = { ROLE_CANON, roleVerb, roleVerbVariants, serpTextConfirms, titleTokens, normalizeForMatch };
