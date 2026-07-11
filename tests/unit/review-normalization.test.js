@@ -1302,3 +1302,28 @@ describe('normalizeCritic junk-byline guard', () => {
     assert.strictEqual(_normCritic('By Smith') !== 'unknown', true);
   });
 });
+
+describe('resolveOutletFromUrl — shared-primary-domain collisions (card 38b637c5)', () => {
+  // 9 registry outlets share a primary domain with another outlet (edition
+  // splits like telegraph/sunday-telegraph, express-uk/sunday-express, plus
+  // registry duplicates). The old last-write-wins index handed telegraph.co.uk
+  // to sunday-telegraph, so every daily-Telegraph URL was re-homed to the
+  // Sunday edition at write time. Collision rule under test: eponymous outlet
+  // (id matches domain base) wins; otherwise first registration wins.
+  const { resolveOutletFromUrl } = require('../../scripts/lib/review-normalization');
+
+  it('telegraph.co.uk resolves to telegraph, never sunday-telegraph', () => {
+    const r = resolveOutletFromUrl('https://www.telegraph.co.uk/theatre/what-to-see/some-review/');
+    assert.strictEqual(r && r.outletId, 'telegraph');
+  });
+
+  it('express.co.uk resolves to express-uk, never sunday-express', () => {
+    const r = resolveOutletFromUrl('https://www.express.co.uk/entertainment/theatre/123/review');
+    assert.strictEqual(r && r.outletId, 'express-uk');
+  });
+
+  it('timeout path split still routes by path', () => {
+    assert.strictEqual(resolveOutletFromUrl('https://www.timeout.com/london/theatre/x-review').outletId, 'timeout-london');
+    assert.strictEqual(resolveOutletFromUrl('https://www.timeout.com/newyork/theater/x-review').outletId, 'timeout');
+  });
+});

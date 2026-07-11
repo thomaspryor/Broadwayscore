@@ -899,15 +899,40 @@ function buildDomainToOutletIndex() {
     // claimed newyorktheatreguide.com, observer.domainAliases claimed
     // theguardian.com — single-pass iteration order made the bug intermittent).
     //
-    // Pass 1: register every outlet's primary `domain`. Last-write-wins is OK
-    // here because two live outlets should not share a primary domain.
+    // Pass 1: register every outlet's primary `domain`.
+    //
+    // Primary-domain COLLISIONS exist (9 as of 2026-07-11): edition splits
+    // (telegraph/sunday-telegraph, express-uk/sunday-express) and registry
+    // duplicates (scene/scene-on-stage, theupcoming/the-upcoming-uk, …).
+    // The old last-write-wins rule silently handed telegraph.co.uk to
+    // sunday-telegraph (iterated later), so EVERY Telegraph URL resolved to
+    // the Sunday edition and the shared writer re-homed daily-Telegraph
+    // reviews under sunday-telegraph--*.json (card 38b637c5 discovery).
+    // Collision rule: the eponymous outlet (id matches the domain base, e.g.
+    // 'telegraph' for telegraph.co.uk) wins its own domain; otherwise the
+    // FIRST registration wins (registry order lists the primary edition
+    // first). A URL can never positively identify the non-eponymous edition
+    // of a shared domain — byline/section data has to do that downstream.
+    const _idMatchesBase = (id, base) =>
+      String(id).replace(/[^a-z0-9]/g, '') === String(base).replace(/[^a-z0-9]/g, '');
+    const _claimDomain = (key, entry, base) => {
+      const existing = _domainToOutletCache.get(key);
+      if (!existing) { _domainToOutletCache.set(key, entry); return; }
+      if (existing.outletId === entry.outletId) return;
+      if (_idMatchesBase(entry.outletId, base) && !_idMatchesBase(existing.outletId, base)) {
+        console.warn(`  ⚠️  Domain collision on "${key}": ${existing.outletId} vs ${entry.outletId} — eponymous ${entry.outletId} wins`);
+        _domainToOutletCache.set(key, entry);
+        return;
+      }
+      console.warn(`  ⚠️  Domain collision on "${key}": keeping ${existing.outletId}, ignoring ${entry.outletId}`);
+    };
     for (const [outletId, outletData] of Object.entries(registry.outlets)) {
       if (!outletData.domain) continue;
       const entry = { outletId, displayName: outletData.displayName };
       const fullHost = outletData.domain.replace(/^www\./, '').toLowerCase();
       const domainBase = fullHost.split('.')[0];
-      _domainToOutletCache.set(fullHost, entry);
-      _domainToOutletCache.set(domainBase, entry);
+      _claimDomain(fullHost, entry, domainBase);
+      _claimDomain(domainBase, entry, domainBase);
     }
 
     // Pass 2: register domainAliases ONLY where the key is not already taken
