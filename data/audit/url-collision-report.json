@@ -1,12 +1,39 @@
 {
-  "generatedAt": "2026-07-11T07:01:31.597Z",
+  "generatedAt": "2026-07-11T08:00:00.694Z",
   "summary": {
-    "total": 1,
-    "high": 0,
+    "total": 2,
+    "high": 1,
     "medium": 0,
     "low": 1
   },
   "collisions": [
+    {
+      "url": "https://loureviews.blog/2026/05/05/play-review-tender-at-soho-theatre/",
+      "normalizedUrl": "https://loureviews.blog/2026/05/05/play-review-tender-at-soho-theatre",
+      "candidates": [
+        {
+          "showId": "tender-by-dave-harris-off-west-end-2026",
+          "file": "loureviews--louise-penn.json",
+          "publishDate": "2026-05-05",
+          "openingDate": "2026-04-30",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "loureviews"
+        },
+        {
+          "showId": "tender-off-west-end-2026",
+          "file": "loureviews--louise-penn.json",
+          "publishDate": "2026-05-05",
+          "openingDate": "2026-07-09",
+          "hasScore": false,
+          "hasFullText": true,
+          "outletId": "loureviews"
+        }
+      ],
+      "suggestedWinner": "tender-by-dave-harris-off-west-end-2026",
+      "reason": "publishDate 2026-05-05 is 5 days from tender-by-dave-harris-off-west-end-2026 opening (2026-04-30); next closest is 65 days from tender-off-west-end-2026",
+      "confidence": "high"
+    },
     {
       "url": "https://www.thestage.co.uk/reviews/2004/the-phantom-of-the-opera-review-at-her-majestys-theatre/",
       "normalizedUrl": "https://thestage.co.uk/reviews/2004/the-phantom-of-the-opera-review-at-her-majestys-theatre",
