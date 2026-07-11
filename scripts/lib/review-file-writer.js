@@ -40,6 +40,7 @@ const { detectRoundupDigest } = require('./roundup-digest');
 const { isBroadwayUrl, isLondonMarket } = require('./venue-classification');
 const { classifyMarketRouting, buildSiblingIndex } = require('./market-routing');
 const { sanitizeCriticName } = require('./byline-normalization');
+const { findCrossShowOwners, shouldBlockCrossShowCreate, recordUrlOwner } = require('./url-ownership');
 const { decodeHtmlEntities, hasUndecodedHtmlEntities, hasJsonLdArtifact } = require('./text-cleaning');
 
 // Save-time mirror of validate-data's [html-entity] (CHECK 5) and
@@ -481,6 +482,26 @@ function createOrMergeReviewFile(showId, input, options = {}) {
     } catch { /* unreadable — fall through to create */ }
   }
 
+  // --- Guard I: cross-show URL ownership (Notion 39a637c5-416f-8167) ---
+  // A URL already held LIVE (unflagged, non-roundup) by another show belongs
+  // to that show. Same-title siblings otherwise churn forever: discovery
+  // title-matches the OPEN sibling (closed shows are filtered out of the
+  // candidate set), a new file is created here, the cross-show audit re-flags
+  // it, and the next poll re-creates it (tender-off-west-end-2026 vs
+  // tender-by-dave-harris-off-west-end-2026, 2026-07-10/11). Re-homes stay
+  // possible: when every cross-show copy is itself flagged wrongShow/
+  // wrongProduction, creation proceeds. Manual escape hatch:
+  // fields.allowCrossShowUrl. NEW files only — merges into this show's own
+  // existing file were handled above.
+  if (input.url && fields.allowCrossShowUrl !== true) {
+    const owners = findCrossShowOwners(input.url, showId, reviewTextsDir);
+    const verdict = shouldBlockCrossShowCreate(owners);
+    if (verdict.block) {
+      console.warn(`  ⛔ Cross-show URL ownership: ${input.url} is live at ${verdict.owner.showId}/${verdict.owner.file} — refusing new file under ${showId}`);
+      return { action: 'skipped', reason: `cross-show-url-owned:${verdict.owner.showId}` };
+    }
+  }
+
   // --- Create new file ---
   const outletDisplay = getOutletDisplayName(outletId) || input.outlet || outletId;
   const newReview = {
@@ -512,6 +533,9 @@ function createOrMergeReviewFile(showId, input, options = {}) {
     }
     sanitizeDisplayFields(newReview);
     safeWriteReview(filepath, newReview, { merge: false });
+    // Keep the process-wide ownership index current so a later create in this
+    // same run (another show, same URL) hits Guard I without an fs rescan.
+    if (newReview.url) recordUrlOwner(newReview.url, showId, filename, reviewTextsDir);
   }
 
   return { action: 'new', filepath };

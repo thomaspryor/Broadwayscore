@@ -327,9 +327,34 @@ describe('isIntentionalClear honors _urlChangedClear (rebase-restore durability)
     };
     // Committed record from the OLD era → suppress the restore (resurrection).
     assert.equal(isIntentionalClear('fullText', local, { url: DOLLY_URL, fullText: 'Dolly text' }), true);
-    // Committed record from the SAME era (post-refetch commit) → allow the
-    // restore; that empty local fullText is real data loss, not the clear.
-    assert.equal(isIntentionalClear('fullText', local, { url: JCS_URL, fullText: 'JCS text' }), false);
+    // Committed record from the SAME era, PROVEN by its own matching breadcrumb
+    // (a post-clear, post-refetch commit) → allow the restore; that empty local
+    // fullText is real data loss, not the clear.
+    assert.equal(isIntentionalClear('fullText', local, {
+      url: JCS_URL,
+      fullText: 'JCS text',
+      _urlChangedClear: { from: DOLLY_URL, to: JCS_URL, cleared: ['fullText'] },
+    }), false);
+    // Frankenstein committed state: NEW url but no breadcrumb — produced by the
+    // pre-invariant restores (url landed, clears didn't). Its field values may
+    // be old-era contamination; the url match alone must NOT unlock restores.
+    assert.equal(isIntentionalClear('fullText', local, { url: JCS_URL, fullText: 'Dolly text under JCS url' }), true);
+  });
+
+  test('gather replacement path: hop chaining works via the EXISTING record breadcrumb', () => {
+    // gather's replacement builds a fresh record that never carries
+    // _urlChangedClear forward — the chain must survive via existing's copy.
+    const URL_C = 'https://www.telegraph.co.uk/theatre/what-to-see/jcs-palladium-second-look/';
+    const existing = {
+      url: JCS_URL,
+      _urlChangedClear: { from: DOLLY_URL, to: JCS_URL, at: '2026-07-10T00:00:00Z', cleared: ['wrongShow', 'llmScore'] },
+    };
+    const replacement = { url: URL_C, outletId: 'telegraph' }; // fresh, no breadcrumb
+    const result = applyUrlChangeInvariant(existing, replacement, {});
+    assert.equal(result.changed, true);
+    assert.ok(replacement._urlChangedClear.cleared.includes('wrongShow'),
+      'hop-1 clears must chain via existing when the fresh record lacks the breadcrumb');
+    assert.equal(replacement._urlChangedClear.to, URL_C);
   });
 
   test('every URL_DERIVED_FIELD records into the breadcrumb shape isIntentionalClear reads', () => {
