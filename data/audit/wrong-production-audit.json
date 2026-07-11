@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-07-10T23:49:27.354Z",
+  "timestamp": "2026-07-11T00:30:29.088Z",
   "stats": {
     "totalReviews": 39960,
     "alreadyFlagged": 17574,
     "dateGuardCatches": 50,
     "directorMismatch": 897,
-    "tvFilmSignals": 1098,
+    "tvFilmSignals": 1099,
     "londonSignals": 742,
     "offBroadwaySignals": 467,
     "yearMismatch": 87,
@@ -2619,6 +2619,20 @@
       "score": 81,
       "publishDate": "April 11, 2022",
       "url": "https://variety.com/2022/legit/reviews/birthday-candles-review-debra-messing-1235233772/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "birthright-off-broadway-2026",
+      "file": "newyorker--emily-nussbaum.json",
+      "score": 68,
+      "publishDate": "2026-07-09",
+      "url": "https://www.newyorker.com/magazine/2026/07/20/birthright-theatre-review-giant-broadway",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -31147,7 +31161,7 @@
       "file": "exeunt-magazine--loren-noveck.json",
       "score": 80,
       "publishDate": "2026-05-15T11:08:02-04:00",
-      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/#:~:text=Dad%20Don't%20Read%20This%20is%20messy%20and%20raw%20and,will%20keep%20it%20in%20my",
+      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/",
       "findings": [
         {
           "type": "DATE_GUARD",
