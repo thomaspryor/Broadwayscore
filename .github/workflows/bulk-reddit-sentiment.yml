@@ -243,6 +243,12 @@ jobs:
             console.log('✓ Validation passed');
           "
 
+      - name: Neutralize generic-title Reddit contamination
+        # Re-suppress generic-phrase titles the scraper re-inflated (see
+        # update-reddit-sentiment.yml for rationale). Recomputes combined score
+        # from clean sources. Runs before commit so the fix persists.
+        run: node scripts/neutralize-contaminated-reddit-buzz.js --apply
+
       - name: Restore backup on failure
         if: failure()
         run: |
