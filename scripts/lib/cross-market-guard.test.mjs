@@ -166,3 +166,55 @@ test('no siblings or missing dates → clear (never throws)', () => {
   assert.equal(classifyCrossMarketContamination({ reviewDate: null, thisShow: DELACORTE, siblings: SIB_WE }).level, 'clear');
   assert.equal(classifyCrossMarketContamination({ reviewDate: D('2026-04-01'), thisShow: { opening: null, market: 'us' }, siblings: SIB_WE }).level, 'clear');
 });
+
+// ── classifyUsOnWeCrossMarket (forward direction: US outlet on WE show) ──────
+// Error tier requires BOTH signals (US region + pre-window date) — a domain-only
+// gate was rejected 2026-06-21 because NYT/Variety legitimately review the West
+// End near opening. See card 386637c5.
+
+const { classifyUsOnWeCrossMarket } = require('./cross-market-guard.js');
+
+test('US-on-WE: dual-market and Tier 1/2 outlets are skipped (NYT/Variety review the WE)', () => {
+  assert.equal(
+    classifyUsOnWeCrossMarket({ region: 'us', isDualMarket: true, isTier12: false, isPreWindowDate: true }).level,
+    'skip'
+  );
+  assert.equal(
+    classifyUsOnWeCrossMarket({ region: 'us', isDualMarket: false, isTier12: true, isPreWindowDate: true }).level,
+    'skip'
+  );
+});
+
+test('US-on-WE: UK-side regions (london/uk/dual) are skipped', () => {
+  for (const region of ['london', 'uk', 'dual']) {
+    assert.equal(
+      classifyUsOnWeCrossMarket({ region, isDualMarket: false, isTier12: false, isPreWindowDate: true }).level,
+      'skip'
+    );
+  }
+});
+
+test('US-on-WE: explicit US region + pre-window date → error (blocks the build)', () => {
+  // The Glengarry WE 2026 class: Broadway-2025 EW/NYDailyNews/Yahoo reviews on
+  // the WE revival, dated ~a year before the WE opening.
+  for (const region of ['us', 'new-york', 'chicago']) {
+    const r = classifyUsOnWeCrossMarket({ region, isDualMarket: false, isTier12: false, isPreWindowDate: true });
+    assert.equal(r.level, 'error');
+  }
+});
+
+test('US-on-WE: US region with in-window date → warning only (legit transfer coverage)', () => {
+  assert.equal(
+    classifyUsOnWeCrossMarket({ region: 'us', isDualMarket: false, isTier12: false, isPreWindowDate: false }).level,
+    'warning'
+  );
+});
+
+test('US-on-WE: unknown region never errors, even pre-window (not enough signal)', () => {
+  for (const region of [null, undefined, '']) {
+    assert.equal(
+      classifyUsOnWeCrossMarket({ region, isDualMarket: false, isTier12: false, isPreWindowDate: true }).level,
+      'warning'
+    );
+  }
+});

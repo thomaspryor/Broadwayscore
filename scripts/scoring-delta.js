@@ -41,6 +41,10 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { execSync } = require('child_process');
+// Working-tree copy is fine here: earliestShowDate only builds the shared show
+// map (both replay sides read the same map); per-side guard code is loaded by
+// loadBaselineGuards/loadWorkingTreeGuards below.
+const { earliestShowDate } = require('./lib/date-guard');
 
 const ARGS = process.argv.slice(2);
 const BASE_REF = (ARGS.find(a => a.startsWith('--base=')) || '--base=HEAD').split('=')[1];
@@ -103,6 +107,11 @@ process.on('exit', () => {
 const INCLUSION_FILES = [
   'scripts/lib/review-guards.js',
   'scripts/rebuild-all-reviews.js',
+  // Pre-window inclusion predicate + priorRuns window logic (card 386637c5).
+  // Threshold changes there flip inclusion decisions exactly like review-guards
+  // edits do — before this entry, date-guard.js edits bypassed this gate entirely.
+  'scripts/lib/date-guard.js',
+  'scripts/lib/wrong-production-autoclear.js',
   'src/lib/scoring.ts',
   'src/lib/engine.ts',
   'src/lib/data-core.ts',
@@ -271,16 +280,45 @@ function loadBaselineGuards() {
     );
   }
 
+  // date-guard.js (+ its dependency wrong-production-autoclear.js): the
+  // pre-window inclusion predicate lives there (card 386637c5). Materialize the
+  // BASE_REF copies so threshold/predicate changes replay per side. Baselines
+  // that predate a file fall back to the working-tree copy (the sim then uses
+  // its legacy inline thresholds for that side — see simulateInclusion).
+  for (const dep of ['date-guard.js', 'wrong-production-autoclear.js']) {
+    try {
+      const src = execSync(`git show ${BASE_REF}:scripts/lib/${dep}`, {
+        cwd: REPO_ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'],
+      });
+      fs.writeFileSync(path.join(baselineLibDir, dep), src);
+    } catch {
+      fs.copyFileSync(
+        path.join(REPO_ROOT, 'scripts/lib', dep),
+        path.join(baselineLibDir, dep)
+      );
+    }
+  }
+
   // Clear require cache and load baseline
   const baselinePath = path.join(baselineLibDir, 'review-guards.js');
   delete require.cache[require.resolve(baselinePath)];
-  return require(baselinePath);
+  const guards = require(baselinePath);
+  const dgPath = path.join(baselineLibDir, 'date-guard.js');
+  delete require.cache[require.resolve(dgPath)];
+  const prPath = path.join(baselineLibDir, 'wrong-production-autoclear.js');
+  delete require.cache[require.resolve(prPath)];
+  return { ...guards, __dateGuard: require(dgPath), __priorRunLib: require(prPath) };
 }
 
 function loadWorkingTreeGuards() {
   const wtPath = path.resolve(REPO_ROOT, 'scripts/lib/review-guards.js');
   delete require.cache[require.resolve(wtPath)];
-  return require(wtPath);
+  const guards = require(wtPath);
+  const dgPath = path.resolve(REPO_ROOT, 'scripts/lib/date-guard.js');
+  delete require.cache[require.resolve(dgPath)];
+  const prPath = path.resolve(REPO_ROOT, 'scripts/lib/wrong-production-autoclear.js');
+  delete require.cache[require.resolve(prPath)];
+  return { ...guards, __dateGuard: require(dgPath), __priorRunLib: require(prPath) };
 }
 
 // ─── Load two versions of rebuild-helpers (Phase B) ──────────────────────────
@@ -443,9 +481,25 @@ function decideInclusion(review, show, guards) {
   if (show?.earliestDate && review.publishDate && !review.allowEarlyDate) {
     const isOB = show.category === 'off-broadway';
     const isLondon = show.category === 'west-end' || show.category === 'off-west-end';
-    const threshold = (isOB || isLondon) ? 90 : 14;
-    if (guards.isLikelyWrongProduction(review.publishDate, show.earliestDate, threshold)) {
-      return { included: false, reason: `date-guard (>${threshold}d before show)` };
+    const evalPreWindow = guards.__dateGuard?.evaluatePreWindowInclusion;
+    if (evalPreWindow) {
+      // Same predicate the rebuild inclusion pass calls (parity by construction,
+      // incl. the priorRuns exemption the legacy sim branch below lacked).
+      const pw = evalPreWindow({
+        pubDate: new Date(review.publishDate),
+        showEarliest: new Date(show.earliestDate),
+        isFlexCategory: isOB || isLondon,
+        priorRuns: show.priorRuns,
+      });
+      if (pw.exclude) {
+        return { included: false, reason: `date-guard (>${pw.threshold}d before show)` };
+      }
+    } else {
+      // Baseline predates the extracted predicate — replicate its inline thresholds.
+      const threshold = (isOB || isLondon) ? 90 : 14;
+      if (guards.isLikelyWrongProduction(review.publishDate, show.earliestDate, threshold)) {
+        return { included: false, reason: `date-guard (>${threshold}d before show)` };
+      }
     }
   }
 
@@ -534,6 +588,13 @@ function main() {
         && (baseline.isRoundupUrl?.toString() || '') === (working.isRoundupUrl?.toString() || '')
         && (baseline.isLikelyStaleRoundupFlag?.toString() || '') === (working.isLikelyStaleRoundupFlag?.toString() || '')
         && (baseline.isLikelyStaleSuspectedMisattribution?.toString() || '') === (working.isLikelyStaleSuspectedMisattribution?.toString() || '')
+        // Pre-window predicate + its THRESHOLD CONSTANTS. Constants are compared
+        // by value, not via toString() — the function body reads free variables
+        // (PRE_WINDOW_DAYS), so a constant-only edit leaves the source identical.
+        && (baseline.__dateGuard?.evaluatePreWindowInclusion?.toString() || '') === (working.__dateGuard?.evaluatePreWindowInclusion?.toString() || '')
+        && String(baseline.__dateGuard?.PRE_WINDOW_DAYS) === String(working.__dateGuard?.PRE_WINDOW_DAYS)
+        && String(baseline.__dateGuard?.PRE_WINDOW_DAYS_BROADWAY) === String(working.__dateGuard?.PRE_WINDOW_DAYS_BROADWAY)
+        && (baseline.__priorRunLib?.isWithinPriorRun?.toString() || '') === (working.__priorRunLib?.isWithinPriorRun?.toString() || '')
         && registryHash === baselineRegistryHash;
       if (guardsIdentical && !dataFlagDiff) {
         log('[scoring-delta] Phase A: review-guards.js decisions + critic-registry identical — skipping inclusion replay.');
@@ -593,14 +654,18 @@ function main() {
   const shows = Array.isArray(showsRaw) ? showsRaw : showsRaw.shows || [];
   const showById = new Map();
   for (const s of shows) {
-    // earliestDate = openingDate or first preview
-    const earliestDate = s.openingDate || s.firstPreview || s.startDate || null;
+    // earliestDate: MIN of previewDate/previewsStartDate/openingDate — same
+    // anchor the rebuild uses (earliestShowDate). The old openingDate-first
+    // pick anchored the sim later than the rebuild and misplaced flips near
+    // the pre-window threshold. Legacy field names kept as final fallback.
+    const earliestDate = earliestShowDate(s) || s.firstPreview || s.startDate || null;
     showById.set(s.id, {
       id: s.id,
       openingDate: s.openingDate || null,
       earliestDate,
       category: s.category || 'broadway',
       status: s.status || 'open',
+      priorRuns: s.priorRuns || null,
     });
   }
 

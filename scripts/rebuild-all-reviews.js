@@ -57,7 +57,7 @@ const {
   shouldAutoClearDatelessRevival,
   shouldAutoClearStaleDateGuard,
 } = require('./lib/wrong-production-autoclear');
-const { evaluateDatelessRevivalGuard, earliestShowDate, evaluateDateGuard } = require('./lib/date-guard');
+const { evaluateDatelessRevivalGuard, earliestShowDate, evaluateDateGuard, evaluatePreWindowInclusion } = require('./lib/date-guard');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { KNOWN_SYNDICATION_PAIRS } = require('./lib/syndication-pairs');
 const { logExclusion: _sharedLogExclusion } = require('./lib/exclusion-logger');
@@ -1229,19 +1229,32 @@ const crossShowFingerprints = new Map();
         }
         // (reviewDate resolved above, shared with the dateless-revival auto-clear.
         // YYYY-only URL fallback intentionally omitted: a year alone defaults to
-        // July 1st — too imprecise for a 90-day guard, caused 74 false positives
+        // July 1st — too imprecise for the pre-window guard, caused 74 false positives
         // in the Class B audit 2026-04-12. Only YYYYMMDD is specific enough.)
-        if (reviewDate && (showEarliest - reviewDate) > 90 * 86400000 && !d.wrongProductionCleared && d.humanReviewedWrongProduction !== false && !shouldSkipWrongProductionAudit(d)) {
+        // Pre-window flag pass — shared predicate with the inclusion pass
+        // (evaluatePreWindowInclusion). Category-agnostic on purpose: 60d before
+        // the earliest show date is implausible for every market, and the 21d/35d
+        // standalone flagger (flag-wrong-production-by-date.js) stays the
+        // fine-grained layer with its own UK grace machinery.
+        if (reviewDate && !d.wrongProductionCleared && d.humanReviewedWrongProduction !== false && !shouldSkipWrongProductionAudit(d)) {
+          const preWindow = evaluatePreWindowInclusion({
+            pubDate: reviewDate,
+            showEarliest,
+            isFlexCategory: true,
+            priorRuns: showRecord && showRecord.priorRuns,
+          });
           // Production-continuity skip: review falls inside a declared priorRuns window
-          if (showRecord && isWithinPriorRun(reviewDate, showRecord.priorRuns)) {
+          if (preWindow.reason === 'prior-run window') {
             priorRunSkipped++;
             continue;
           }
-          console.log(`  [PRE-OPENING] ${sid}/${f}: review ${reviewDate.toISOString().split('T')[0]} is 90+ days before show ${showEarliest.toISOString().split('T')[0]}`);
-          d.wrongProduction = true;
-          d.wrongProductionNote = `Pre-opening guard: review dated ${reviewDate.toISOString().split('T')[0]} is 90+ days before show starts ${showEarliest.toISOString().split('T')[0]}`;
-          safeWriteReview(fp, d);
-          preOpenFlagged++;
+          if (preWindow.exclude) {
+            console.log(`  [PRE-OPENING] ${sid}/${f}: review ${reviewDate.toISOString().split('T')[0]} is ${preWindow.threshold}+ days before show ${showEarliest.toISOString().split('T')[0]}`);
+            d.wrongProduction = true;
+            d.wrongProductionNote = `Pre-opening guard: pre-window date — review dated ${reviewDate.toISOString().split('T')[0]} is ${preWindow.threshold}+ days before show starts ${showEarliest.toISOString().split('T')[0]}`;
+            safeWriteReview(fp, d);
+            preOpenFlagged++;
+          }
         } else if (!reviewDate && !d.wrongProductionCleared && d.humanReviewedWrongProduction !== false && !shouldSkipWrongProductionAudit(d)) {
           // Dateless-revival guard: a review with NO usable date escapes every
           // dated guard above and defaults to includable. On a multi-production
@@ -1856,14 +1869,16 @@ showDirs.forEach(showId => {
           // Check if reference would be excluded by later guards
           refExcluded = !isIncludableForRebuild(refData, showById[showId]);
           if (!refExcluded && refData.publishDate && showDateMap[showId] && !refData.allowEarlyDate) {
-            const refPubDate = new Date(refData.publishDate);
-            const openDate = showDateMap[showId];
-            const daysBefore = Math.ceil((openDate - refPubDate) / (1000 * 60 * 60 * 24));
-            const isFlexCat = showCat === 'off-broadway' || isLondonMarket(showCat);
-            const threshold = isFlexCat ? 90 : 14;
-            // Production-continuity exemption: refData falls inside a declared priorRuns window
-            const inPriorRun = isWithinPriorRun(refPubDate, showById[showId]?.priorRuns);
-            if (daysBefore > threshold && !inPriorRun) refExcluded = true;
+            // Same predicate as the main inclusion pass (evaluatePreWindowInclusion,
+            // incl. the priorRuns exemption) — a threshold drift here would let a
+            // duplicate's excluded reference block the surviving copy's recovery.
+            const preWindow = evaluatePreWindowInclusion({
+              pubDate: new Date(refData.publishDate),
+              showEarliest: showDateMap[showId],
+              isFlexCategory: showCat === 'off-broadway' || isLondonMarket(showCat),
+              priorRuns: showById[showId]?.priorRuns,
+            });
+            if (preWindow.exclude) refExcluded = true;
           }
           if (refExcluded) stats.dupeRefExcludedRecovered = (stats.dupeRefExcludedRecovered || 0) + 1;
         } catch {
@@ -2548,9 +2563,11 @@ showDirs.forEach(showId => {
       }
 
       // Skip pre-opening reviews (published before show opened — wrong production)
-      // Broadway: 14-day grace period (preview coverage).
-      // Off-Broadway/West End: 90-day grace period — matches the pre-opening guard threshold.
-      // A review >90 days before the show opened is almost certainly a different production.
+      // Broadway: PRE_WINDOW_DAYS_BROADWAY (14d) grace period (preview coverage).
+      // Off-Broadway/West End: PRE_WINDOW_DAYS (60d, tightened from 90d — card
+      // 386637c5) — thresholds + priorRuns exemption live in
+      // scripts/lib/date-guard.js evaluatePreWindowInclusion (shared with the
+      // duplicate-reference replica above and the scoring-delta sim).
       // Long-run WE shows (opened before 2015): skip this guard entirely — decades of valid reviews.
       // Reviews with allowEarlyDate: true bypass all date checks.
       // routedFromShowId: already rerouted — publish date reflects the original show's era
@@ -2558,19 +2575,21 @@ showDirs.forEach(showId => {
       if (data.publishDate && showDateMap[showId] && !data.allowEarlyDate && !data.routedFromShowId && !showLongRunWE.has(showId)) {
         const pubDate = new Date(data.publishDate);
         const openDate = showDateMap[showId];
-        const daysBefore = Math.ceil((openDate - pubDate) / (1000 * 60 * 60 * 24));
-        const isFlexCategory = showCategory === 'off-broadway' || isLondonMarket(showCategory);
-        const threshold = isFlexCategory ? 90 : 14;
-        const inPriorRun = isWithinPriorRun(pubDate, showById[showId]?.priorRuns);
-        if (daysBefore > threshold && !inPriorRun) {
-          console.log(`  [PRE-OPENING] ${showId}/${file}: published ${daysBefore} days before opening (${data.publishDate} vs ${openDate.toISOString().split('T')[0]})`);
+        const preWindow = evaluatePreWindowInclusion({
+          pubDate,
+          showEarliest: openDate,
+          isFlexCategory: showCategory === 'off-broadway' || isLondonMarket(showCategory),
+          priorRuns: showById[showId]?.priorRuns,
+        });
+        if (preWindow.exclude) {
+          console.log(`  [PRE-OPENING] ${showId}/${file}: published ${preWindow.daysBefore} days before opening (${data.publishDate} vs ${openDate.toISOString().split('T')[0]})`);
           logExclusion("skippedPreOpening", showId, file, data);
           stats.skippedPreOpening = (stats.skippedPreOpening || 0) + 1;
           // Also flag the source file for future reference
           if (!data.wrongProduction && !shouldSkipWrongProductionAudit(data)) {
             // [GUARD:DAYS-BEFORE-OPENED]
             data.wrongProduction = true;
-            data.wrongProductionNote = `Review published ${daysBefore} days before show opened — likely reviewing a different production`;
+            data.wrongProductionNote = `Review published ${preWindow.daysBefore} days before show opened — pre-window date (>${preWindow.threshold}d), likely reviewing a different production`;
             safeWriteReview(path.join(showDir, file), data);
           }
           return;

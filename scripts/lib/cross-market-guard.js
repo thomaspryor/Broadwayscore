@@ -164,4 +164,58 @@ function classifyCrossMarketContamination({
   return { ...out, level: 'review', confidence: null, reason: `date-clusters with sibling ${best.id} (${out.sibDiff}d, this ${out.thisDiff}d) but no region/url corroboration${isDualMarket ? ' (dual-market outlet)' : ''}` };
 }
 
-module.exports = { classifyReverseCrossMarket, classifyCrossMarketContamination };
+/**
+ * Forward cross-market classification: a US-region outlet review on a
+ * West End / off-West End show — the reverse of classifyReverseCrossMarket.
+ *
+ * History (card 386637c5): validate-data.js only WARNED on US-outlet-on-WE, so
+ * Broadway reviews leaking onto WE revivals (Glengarry WE 2026 carrying the
+ * Culkin/Odenkirk Broadway-2025 EW/NYDailyNews/Yahoo reviews) never failed CI.
+ * A domain-only error tier was rejected in 2026-06-21's pass — NYT/Variety
+ * legitimately review the West End near opening — so the error tier requires
+ * BOTH signals: an explicitly US-region outlet AND a pre-window publish date
+ * (>PRE_WINDOW_DAYS before the show's earliest date, outside any priorRun —
+ * the caller computes that via evaluatePreWindowInclusion).
+ *
+ * Levels:
+ *   'skip'    — dual-market outlet, Tier 1/2 outlet (prestige papers cover both
+ *               markets), or a UK-side region ('london'/'uk'/'dual').
+ *   'error'   — explicitly US-region outlet AND pre-window date. Both signals
+ *               present = genuine cross-production contamination; block the build.
+ *   'warning' — any other non-London outlet on a WE show (unknown region, or
+ *               US region with an in-window date — legitimate transfer coverage
+ *               and dual-market candidates surface here without blocking).
+ *
+ * Pure function — validate-data.js feeds it flags it already computes.
+ *
+ * @param {object} args
+ * @param {string|null|undefined} args.region - outlet region from the registry
+ * @param {boolean} args.isDualMarket
+ * @param {boolean} args.isTier12
+ * @param {boolean} args.isPreWindowDate - review publishDate falls before the
+ *   show's pre-window threshold and outside every declared priorRun
+ * @returns {{ level: 'skip'|'error'|'warning', reason: string }}
+ */
+function classifyUsOnWeCrossMarket({ region, isDualMarket, isTier12, isPreWindowDate }) {
+  if (isDualMarket) {
+    return { level: 'skip', reason: 'dual-market outlet (legit by definition)' };
+  }
+  if (isTier12) {
+    return { level: 'skip', reason: 'Tier 1/2 outlet — prestige papers legitimately review the West End' };
+  }
+  if (region === 'london' || region === 'uk' || region === 'dual') {
+    return { level: 'skip', reason: 'UK-side outlet' };
+  }
+  // Registry regions other than london/uk/dual are all US-side ('us' or a US
+  // city). An absent region means the outlet is unknown to the registry — not
+  // enough signal to block a build on.
+  if (region && isPreWindowDate) {
+    return {
+      level: 'error',
+      reason: `US-region outlet ('${region}') with pre-window publish date on West End show — cross-production contamination`,
+    };
+  }
+  return { level: 'warning', reason: 'non-London outlet on West End show' };
+}
+
+module.exports = { classifyReverseCrossMarket, classifyCrossMarketContamination, classifyUsOnWeCrossMarket };
