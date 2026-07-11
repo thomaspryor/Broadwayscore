@@ -441,6 +441,9 @@ for (const show of visibleShows) {
       const sources = {};
       for (const [key, data] of Object.entries(buzz.sources)) {
         if (!data || data.score == null) continue;
+        // Suppressed sources (generic-title contamination) are dropped from the
+        // combined score by audience-weighting.js — omit their tile too.
+        if (data.suppressed) continue;
         if (key === 'theatr' && (data.reviewCount || 0) < MIN_THEATR_VOTES) continue;
         const minKey = KEY_MAP[key] || key;
         const entry = { s: data.score, c: data.reviewCount };

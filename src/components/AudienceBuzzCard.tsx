@@ -117,6 +117,10 @@ export default function AudienceBuzzCard({
     .map((src) => {
       const data = buzz.sources[src.key];
       if (!data || data.score == null) return null;
+      // Suppressed sources (generic-title contamination) are excluded from the
+      // combined score by audience-weighting.js — hide their tile too so we
+      // don't show, e.g., an inflated Reddit count next to the corrected grade.
+      if (data.suppressed) return null;
       // Per-source minimum-volume gates (mirrors scripts/lib/audience-weighting.js
       // and generate-mobile-show-details.js). Without these, sources with too
       // little signal render as misleading "100% / 1 vote" cards.
