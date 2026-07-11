@@ -84,6 +84,11 @@ const MANUAL_FIELDS = [
   'bwwThumb',
   // Per-file protection array lock
   'protectedFields',
+  // (b) Durable url-change-invariant breadcrumb (Notion 399637c5) — records
+  // fields deliberately cleared when a file's url moved to a different
+  // canonical article. isIntentionalClear() keys on it; losing it on rebase
+  // would let this very script resurrect the cleared old-URL flags/scores.
+  '_urlChangedClear',
   // (b) Durable SERP retry state — must survive rebase
   'serpDiscoveryAbandoned',
   'serpAbandonmentReason',
@@ -219,7 +224,11 @@ try {
         });
         const ours = JSON.parse(oursContent);
         const oursText = ours.fullText || '';
-        if (oursText.length > 100 && oursText.length > (local.fullText || '').length) {
+        // isIntentionalClear: an empty local fullText behind a _urlChangedClear
+        // breadcrumb is a deliberate clear (the text belongs to the file's OLD
+        // url) — restoring it would re-contaminate the new URL era.
+        if (oursText.length > 100 && oursText.length > (local.fullText || '').length
+            && !isIntentionalClear('fullText', local)) {
           local.fullText = oursText;
           modified = true;
           process.stderr.write(`  Restored fullText (${oursText.length} chars) from pre-rebase HEAD in ${f}\n`);
