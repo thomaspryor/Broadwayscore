@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-11T10:43:07.874Z",
+  "timestamp": "2026-07-11T11:30:20.015Z",
   "stats": {
-    "totalReviews": 39980,
-    "alreadyFlagged": 17585,
-    "dateGuardCatches": 50,
+    "totalReviews": 39985,
+    "alreadyFlagged": 17592,
+    "dateGuardCatches": 48,
     "directorMismatch": 897,
     "tvFilmSignals": 1098,
     "londonSignals": 742,
     "offBroadwaySignals": 467,
     "yearMismatch": 87,
-    "noPublishDate": 4038
+    "noPublishDate": 4039
   },
   "findings": [
     {
@@ -28222,18 +28222,6 @@
     },
     {
       "showId": "a-midsummer-nights-dream-west-end-2026",
-      "file": "telegraph--dominic-cavendish.json",
-      "score": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 46d before show (2026-05-05 vs 2026-06-20)"
-        }
-      ]
-    },
-    {
-      "showId": "a-midsummer-nights-dream-west-end-2026",
       "file": "thereviewshub--the-reviews-hub-london.json",
       "score": 62,
       "publishDate": null,
@@ -28249,17 +28237,6 @@
     {
       "showId": "a-midsummer-nights-dream-west-end-2026",
       "file": "thestage--holly-o.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 46d before show (2026-05-05 vs 2026-06-20)"
-        }
-      ]
-    },
-    {
-      "showId": "a-midsummer-nights-dream-west-end-2026",
-      "file": "whatsonstage--theo-bosanquet.json",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -41818,7 +41795,7 @@
       "file": "thestage--dave-fargnoli.json",
       "score": 38,
       "publishDate": "2026-06-24",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-misanthrope-review-sandra-oh-what-a-disappointment-sbzvf82b2?t=1782310602034",
+      "url": "https://www.thestage.co.uk/reviews/the-misanthrope-review-lyttelton-national-theatre-london-sandra-oh",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
