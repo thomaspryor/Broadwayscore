@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T00:30:34.002Z",
+  "generatedAt": "2026-07-11T05:05:59.521Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -392,28 +392,26 @@
       "status": "open",
       "slug": "giulia-the-poison-queen-of-palermo-off-broadway",
       "thumbnail": "/images/shows/giulia-the-poison-queen-of-palermo-off-broadway-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": null,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 5,
+      "siteScore": 68.54,
+      "liveScore": 69,
+      "scoreDrift": 0.45999999999999375,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 0,
-      "t1": 0,
-      "t2": 0,
-      "t3": 0,
-      "positive": 0,
-      "mixed": 0,
-      "negative": 0,
+      "total": 8,
+      "t1": 1,
+      "t2": 6,
+      "t3": 1,
+      "positive": 4,
+      "mixed": 3,
+      "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/12 total",
-          "T1:0/3",
-          "T2:0/3",
-          "hi-conf:0/8"
+          "8/12 total",
+          "T1:1/3"
         ],
-        "highConfidence": 0,
+        "highConfidence": 8,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -426,10 +424,6 @@
         "detail": "Not yet broadcast-ready"
       },
       "missingT1": [
-        {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
         {
           "name": "Vulture",
           "isDualMarket": false
@@ -509,10 +503,6 @@
           "isDualMarket": false
         },
         {
-          "name": "New York Stage Review",
-          "isDualMarket": false
-        },
-        {
           "name": "Chicago Tribune",
           "isDualMarket": false
         },
@@ -522,10 +512,6 @@
         },
         {
           "name": "New York Daily News",
-          "isDualMarket": false
-        },
-        {
-          "name": "TheWrap",
           "isDualMarket": false
         },
         {
@@ -541,10 +527,6 @@
           "isDualMarket": false
         },
         {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
-        },
-        {
           "name": "New York Theater",
           "isDualMarket": false
         },
@@ -558,10 +540,6 @@
         },
         {
           "name": "Cititour",
-          "isDualMarket": false
-        },
-        {
-          "name": "Slant Magazine",
           "isDualMarket": false
         },
         {
@@ -755,6 +733,20 @@
         {
           "name": "London Box Office",
           "isDualMarket": false
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-07-11T05:05:59.521Z",
+          "rc": 8,
+          "s": 68.54,
+          "t1": 1,
+          "t2": 6,
+          "t3": 1,
+          "p": 4,
+          "m": 3,
+          "n": 1,
+          "bc": "waiting"
         }
       ]
     },
@@ -1149,24 +1141,23 @@
       "slug": "tender-off-west-end",
       "thumbnail": "/images/shows/tender-off-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 82,
+      "liveScore": 81,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 2,
+      "reviewsNeeded": 1,
       "siteFileExists": true,
-      "total": 1,
+      "total": 2,
       "t1": 1,
-      "t2": 0,
+      "t2": 1,
       "t3": 0,
-      "positive": 1,
+      "positive": 2,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/8 total",
+          "2/8 total",
           "T1:0/3",
-          "T2:1/2",
           "hi-conf:0/6"
         ],
         "highConfidence": 0,
@@ -1231,10 +1222,6 @@
         {
           "name": "New York Theatre Guide",
           "isDualMarket": true
-        },
-        {
-          "name": "WhatsOnStage",
-          "isDualMarket": true
         }
       ],
       "timeline": [
@@ -1294,6 +1281,18 @@
           "t2": 0,
           "t3": 0,
           "p": 1,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-07-11T05:05:59.521Z",
+          "rc": 2,
+          "s": 81,
+          "t1": 1,
+          "t2": 1,
+          "t3": 0,
+          "p": 2,
           "m": 0,
           "n": 0,
           "bc": "waiting"
