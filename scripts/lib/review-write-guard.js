@@ -271,13 +271,17 @@ const CLEAR_BREADCRUMBS = {
  *
  * @param {string} field
  * @param {object} localData - the local/working-tree review record
+ * @param {object} [committedData] - the committed/remote counterpart the
+ *   restore would copy FROM, when the caller has it. Lets the url-change
+ *   breadcrumb distinguish old-era values (suppress) from same-era values
+ *   (restore — that's legitimate data-loss healing).
  * @returns {boolean}
  */
-function isIntentionalClear(field, localData) {
+function isIntentionalClear(field, localData, committedData) {
   if (!localData) return false;
   const pred = CLEAR_BREADCRUMBS[field];
   if (typeof pred === 'function' && pred(localData)) return true;
-  return _urlChangeCleared(field, localData);
+  return _urlChangeCleared(field, localData, committedData);
 }
 
 /**
@@ -285,11 +289,22 @@ function isIntentionalClear(field, localData) {
  * lists fields deliberately deleted because the file's url moved to a different
  * canonical article. Honored generically for ANY field it names — but only
  * while the record still carries the url the clear was made for, so a later
- * URL era's legitimate values aren't suppressed by a stale breadcrumb.
+ * URL era's legitimate values aren't suppressed by a stale breadcrumb. When the
+ * caller supplies the committed/remote record, a same-era committed value
+ * (committed.url == local.url) is never suppressed: it was written after (or
+ * independent of) the URL change, so restoring it heals real data loss —
+ * without this, a post-refetch fullText lost to a later rebase would stay lost
+ * because the old breadcrumb still names 'fullText'.
  */
-function _urlChangeCleared(field, localData) {
+function _urlChangeCleared(field, localData, committedData) {
   const b = localData._urlChangedClear;
   if (!b || !Array.isArray(b.cleared) || !b.cleared.includes(field)) return false;
+  try {
+    if (committedData && committedData.url && localData.url
+        && _normalizeUrlForCollision(committedData.url) === _normalizeUrlForCollision(localData.url)) {
+      return false;
+    }
+  } catch { /* fall through to the era gate */ }
   if (!b.to || !localData.url) return true;
   try {
     return _normalizeUrlForCollision(localData.url) === _normalizeUrlForCollision(b.to);

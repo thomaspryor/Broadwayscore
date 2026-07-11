@@ -66,6 +66,8 @@ describe('applyUrlChangeInvariant (pure)', () => {
     assert.equal(merged.llmMetadata, undefined);
     assert.equal(merged.fullText, undefined, 'old article text must clear');
     assert.equal(merged.contentTier, undefined);
+    assert.equal(merged.publishDate, undefined,
+      'old article publishDate must clear — a stale date makes the rebuild date-guard re-flag the file');
     // Breadcrumb
     assert.ok(merged._urlChangedClear, 'breadcrumb field required (acceptance criterion)');
     assert.equal(merged._urlChangedClear.from, DOLLY_URL);
@@ -128,17 +130,74 @@ describe('applyUrlChangeInvariant (pure)', () => {
     assert.equal(urlCanonicallyChanged('https://x.com/undefined/undefined', JCS_URL), false);
   });
 
-  test('date-based wrongProduction flags are preserved across URL change', () => {
-    const existing = {
+  test('manual Tour-transfer wrongProduction is preserved; automatic date guards clear', () => {
+    const tour = {
       url: DOLLY_URL,
       wrongProduction: true,
-      wrongProductionNote: 'Pre-opening guard: published 2026-06-01, opening 2026-07-08',
+      wrongProductionNote: 'Tour transfer: flagged manually',
       llmScore: { score: 60 },
     };
-    const merged = { ...existing, url: JCS_URL };
-    applyUrlChangeInvariant(existing, merged, {});
-    assert.equal(merged.wrongProduction, true, 'date-based flag keys on publishDate, not URL');
+    let merged = { ...tour, url: JCS_URL };
+    applyUrlChangeInvariant(tour, merged, {});
+    assert.equal(merged.wrongProduction, true, 'manual Tour transfer flag survives');
     assert.equal(merged.llmScore, undefined, 'non-WP fields still clear');
+
+    // Automatic date guards were computed from the OLD article's publishDate,
+    // which the invariant also clears — the rebuild re-derives them fresh.
+    const dateGuard = {
+      url: DOLLY_URL,
+      publishDate: '2026-06-01',
+      wrongProduction: true,
+      wrongProductionNote: 'Pre-opening guard: published 2026-06-01, opening 2026-07-08',
+    };
+    merged = { ...dateGuard, url: JCS_URL };
+    applyUrlChangeInvariant(dateGuard, merged, {});
+    assert.equal(merged.wrongProduction, undefined, 'stale-date guard must clear with its stale basis');
+    assert.equal(merged.publishDate, undefined);
+  });
+
+  test('garbage incoming URL never triggers a state wipe', () => {
+    assert.equal(urlCanonicallyChanged(DOLLY_URL, 'https://x.com/undefined/review'), false);
+    assert.equal(urlCanonicallyChanged(DOLLY_URL, 'N/A'), false);
+    assert.equal(urlCanonicallyChanged(DOLLY_URL, '/relative/path'), false);
+  });
+
+  test('A→B→C hop chains the breadcrumb into the new era', () => {
+    const URL_C = 'https://www.telegraph.co.uk/theatre/what-to-see/jcs-palladium-second-look/';
+    // State after hop A→B: fields cleared, breadcrumb {to: B}.
+    const afterHop1 = {
+      url: JCS_URL,
+      _urlChangedClear: { from: DOLLY_URL, to: JCS_URL, at: '2026-07-10T00:00:00Z', cleared: ['wrongShow', 'llmScore'] },
+    };
+    const merged = { ...afterHop1, url: URL_C };
+    const result = applyUrlChangeInvariant(afterHop1, merged, {});
+    assert.equal(result.changed, true, 'era must be re-stamped even when nothing new clears');
+    assert.equal(merged._urlChangedClear.to, URL_C);
+    assert.ok(merged._urlChangedClear.cleared.includes('wrongShow'),
+      'hop-1 clears must carry into the new era or the push-restore resurrects them');
+  });
+
+  test('replacement-style writes record omitted URL-derived fields in the breadcrumb', () => {
+    // gather-reviews' wrongShow replacement branch builds a FRESH record — old
+    // flags are dropped by omission, not deleted. Without breadcrumb entries the
+    // CI push-restore resurrects them from the committed state.
+    const existing = dollyContaminatedFile();
+    const replacement = {
+      showId: existing.showId,
+      outletId: 'telegraph',
+      criticName: 'Dominic Cavendish',
+      url: JCS_URL,
+      bwwExcerpt: 'roundup excerpt keyed to the show',
+    };
+    const result = applyUrlChangeInvariant(existing, replacement, {
+      preserveFields: new Set(['bwwExcerpt', 'bwwScore', 'dtliThumb']),
+    });
+    assert.equal(result.changed, true);
+    assert.ok(replacement._urlChangedClear.cleared.includes('wrongShow'), 'omitted wrongShow must be in breadcrumb');
+    assert.ok(replacement._urlChangedClear.cleared.includes('llmScore'), 'omitted llmScore must be in breadcrumb');
+    assert.ok(!replacement._urlChangedClear.cleared.includes('bwwExcerpt'), 'preserveFields exempt from recording');
+    assert.equal(replacement.bwwExcerpt, 'roundup excerpt keyed to the show');
+    assert.equal(replacement.wrongShow, undefined);
   });
 
   test('stale duplicateOf clears with duplicateClearReason breadcrumb', () => {
@@ -259,6 +318,18 @@ describe('isIntentionalClear honors _urlChangedClear (rebase-restore durability)
       _urlChangedClear: { from: DOLLY_URL, to: JCS_URL, cleared: ['wrongShow'] },
     };
     assert.equal(isIntentionalClear('wrongShow', local), false);
+  });
+
+  test('same-era committed value is restorable (data-loss healing beats suppression)', () => {
+    const local = {
+      url: JCS_URL,
+      _urlChangedClear: { from: DOLLY_URL, to: JCS_URL, cleared: ['fullText'] },
+    };
+    // Committed record from the OLD era → suppress the restore (resurrection).
+    assert.equal(isIntentionalClear('fullText', local, { url: DOLLY_URL, fullText: 'Dolly text' }), true);
+    // Committed record from the SAME era (post-refetch commit) → allow the
+    // restore; that empty local fullText is real data loss, not the clear.
+    assert.equal(isIntentionalClear('fullText', local, { url: JCS_URL, fullText: 'JCS text' }), false);
   });
 
   test('every URL_DERIVED_FIELD records into the breadcrumb shape isIntentionalClear reads', () => {
