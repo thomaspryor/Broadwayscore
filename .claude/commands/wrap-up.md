@@ -77,7 +77,7 @@ Check for:
 3. **Write the Outcome using the MANDATORY template below.** Check the card's **Type** field and use the matching variant. Every section must be filled — no placeholders, no "N/A", no skipping. If a section truly doesn't apply, write "None identified" with a one-sentence explanation.
 
    **Type-specific additions** (add these sections AFTER the standard 4):
-   - **Fix:** Add `### Root cause` and `### Prevention added`
+   - **Fix:** Add `### Root cause` and `### Prevention added` (prevention = a code/test/hook/CI change; a memory file alone doesn't count — CLAUDE.md rule 16)
    - **New Feature:** Add `### User-facing changes` and `### How to verify`
    - **Market Expansion:** Add `### Shows affected` and `### Aggregators used`
    - **Data Quality:** Add `### Data before/after` and `### Validation added`
