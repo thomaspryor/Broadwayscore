@@ -134,6 +134,9 @@ function dedupeByPersonShow(events) {
     } else if (newAdded && !oldAdded) {
       winner = event;
     }
+    // Capture the loser BEFORE the pin below may replace `winner` with a copy —
+    // an identity check after that point would misresolve the loser.
+    const loser = winner === event ? existing : event;
 
     // addedDate is write-once (first-seen): content recency picks the winning
     // record, but the collapsed event must keep the EARLIEST addedDate. A
@@ -145,13 +148,7 @@ function dedupeByPersonShow(events) {
     }
 
     const newRole = winner.role && winner.role !== 'Unknown' ? winner.role : '';
-    const otherRole =
-      (winner === event ? existing.role : event.role) &&
-      (winner === event ? existing.role : event.role) !== 'Unknown'
-        ? winner === event
-          ? existing.role
-          : event.role
-        : '';
+    const otherRole = loser.role && loser.role !== 'Unknown' ? loser.role : '';
     if (newRole.length === 0 && otherRole.length > 0) {
       winner = { ...winner, role: otherRole };
     }
