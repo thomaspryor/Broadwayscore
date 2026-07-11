@@ -110,10 +110,21 @@ export function dedupeByPersonShow(events: CastEvent[]): CastEvent[] {
     let winner: CastEvent = existing;
     if (newAdded && oldAdded) winner = newAdded > oldAdded ? event : existing;
     else if (newAdded && !oldAdded) winner = event;
+    // Capture the loser BEFORE the pin below may replace `winner` with a copy —
+    // an identity check after that point would misresolve the loser.
+    const loser = winner === event ? existing : event;
+
+    // addedDate is write-once (first-seen): content recency picks the winning
+    // record, but the collapsed event must keep the EARLIEST addedDate. A
+    // re-extraction of an old article otherwise re-stamps it to today and the
+    // newsletter re-announces a months-old closing (Moulin Rouge, 2026-07-11).
+    const pinnedAdded = earliestAddedDate(existing.addedDate, event.addedDate);
+    if (pinnedAdded != null && winner.addedDate !== pinnedAdded) {
+      winner = { ...winner, addedDate: pinnedAdded };
+    }
 
     // Preserve the more specific role if the winner's is missing/Unknown
     // (mirror of scripts/lib/cast-changes-filters.js dedupeByPersonShow).
-    const loser = winner === event ? existing : event;
     const winnerRole = winner.role && winner.role !== 'Unknown' ? winner.role : '';
     const loserRole = loser.role && loser.role !== 'Unknown' ? loser.role : '';
     if (winnerRole.length === 0 && loserRole.length > 0) {

@@ -438,6 +438,27 @@ jobs:
         run: |
           npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/index.ts ${{ steps.build-args.outputs.args }}
 
+      # Anti-starvation drain (2026-07-11). check-needed is a strict priority
+      # cascade: the needsRescore branch only fires when UNSCORED==0 corpus-wide.
+      # New reviews arrive near-continuously, so flagged files sat for days (47
+      # WE files found 2026-07-11; JCS opening-night flags from Jul 7 still
+      # pending Jul 11). This step runs AFTER the main scheduled scoring pass
+      # and drains a capped slice of the needsRescore backlog regardless of
+      # unscored inflow, so the queue can never be starved.
+      #
+      # No pre-count here on purpose: a hand-rolled backlog predicate drifts
+      # from the scorer's real filter (needsRescore===true + isScoreable,
+      # index.ts ~813) — the exact producer/consumer drift stuck-rescore-flag.js
+      # warns about. The scorer self-filters and exits cheaply at zero matches.
+      # Capped at 50/run to bound API spend; flags clear on success
+      # (rescoreCompletedAt), so the step is idempotent.
+      # Skipped when the main pass already ran in rescore mode.
+      # Kill switch: set repo variable DISABLE_RESCORE_DRAIN=1.
+      - name: Drain needsRescore backlog (capped, scheduled only)
+        if: github.event_name == 'schedule' && steps.check-needed.outputs.skip != 'true' && steps.check-needed.outputs.run_rescore != 'true' && vars.DISABLE_RESCORE_DRAIN != '1'
+        run: |
+          npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/index.ts --ensemble --all --needs-rescore --limit=50 --verbose
+
       - name: Check for changes
         id: check-changes
         if: always() && github.event.inputs.dry_run != 'true'

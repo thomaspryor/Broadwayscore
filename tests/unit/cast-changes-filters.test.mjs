@@ -63,14 +63,28 @@ test('filterStaleAddedDates drops undated events with stale addedDate', () => {
   assert.deepEqual(out.map(e => e.name).sort(), ['Dated', 'FreshNote']);
 });
 
-test('dedupeByPersonShow keeps most-recent addedDate per (name,type,role)', () => {
+test('dedupeByPersonShow keeps most-recent record content but pins earliest addedDate', () => {
   const events = [
     { type: 'arrival', name: 'Eric Anderson', role: 'Meyer Wolfsheim', addedDate: '2026-02-11', note: 'AUTO' },
     { type: 'arrival', name: 'Eric Anderson', role: 'Meyer Wolfsheim', addedDate: '2026-04-25', note: 'verified' },
   ];
   const out = dedupeByPersonShow(events);
   assert.equal(out.length, 1);
-  assert.equal(out[0].addedDate, '2026-04-25');
+  assert.equal(out[0].note, 'verified', 'newest record content wins');
+  // addedDate is write-once (first-seen): a re-extraction of an old article
+  // must not re-stamp it to today, or the newsletter re-announces months-old
+  // news as "this week" (Moulin Rouge closure, 2026-07-11 incident).
+  assert.equal(out[0].addedDate, '2026-02-11', 'earliest addedDate pinned');
+});
+
+test('dedupeByPersonShow re-stamp regression: fresh closure twin cannot move addedDate forward', () => {
+  const events = [
+    { type: 'closure', name: 'Moulin Rouge! The Musical', role: 'Production', date: '2026-08-30', note: 'Production closes 2026-08-30 (date reconciled to broadway.com-audited closingDate).', addedDate: '2026-02-05' },
+    { type: 'closure', name: 'Moulin Rouge! The Musical', role: 'Production', date: '2026-08-30', note: 'Production closes 2026-08-30 (date reconciled to broadway.com-audited closingDate).', addedDate: '2026-07-11', sourceUrl: 'https://playbill.com/article/old-closing-article' },
+  ];
+  const out = dedupeByPersonShow(events);
+  assert.equal(out.length, 1);
+  assert.equal(out[0].addedDate, '2026-02-05', 'first-announcement date survives the collapse');
 });
 
 test('dedupeByPersonShow prefers specific role over Unknown', () => {
@@ -210,7 +224,8 @@ test('dedupeByPersonShow collapses name variants', () => {
   ];
   const out = dedupeByPersonShow(events);
   assert.equal(out.length, 1);
-  assert.equal(out[0].addedDate, '2026-04-09'); // newest wins
+  assert.equal(out[0].name, "Joanna 'JoJo' Levesque", 'newest record content wins');
+  assert.equal(out[0].addedDate, '2026-04-07', 'earliest addedDate pinned (write-once)');
 });
 
 test('reconcileClosure suppresses departures within 3 days of closure with closure-note', () => {
@@ -439,7 +454,7 @@ test('mergePreservingAddedDate keeps first-seen addedDate on a source upgrade', 
   assert.equal(existing.sourceType, 'playbill');
 });
 
-test('findClosureDupe matches a closure by date even when name/role differ', () => {
+test('findClosureDupe matches the existing closure even when name/role/date differ', () => {
   const upcoming = [
     { type: 'closure', name: 'death-becomes-her-2024', role: 'Production', date: '2026-06-28' },
     { type: 'departure', name: 'Megan Hilty', role: 'Madeline', date: '2026-06-28' },
@@ -449,9 +464,24 @@ test('findClosureDupe matches a closure by date even when name/role differ', () 
   });
   assert.ok(dupe, 'should find existing closure on same date');
   assert.equal(dupe.name, 'death-becomes-her-2024');
-  // Non-closure or different date → no match
+  // A production has ONE upcoming closure: an old article carrying the
+  // pre-extension date must still match, or the new row becomes an
+  // identical-date twin after reconcileClosure and re-stamps addedDate
+  // (Ragtime/Moulin Rouge, 2026-07-11 incident).
+  const staleDate = findClosureDupe(upcoming, { type: 'closure', name: 'Death Becomes Her', role: 'Production', date: '2026-07-01' });
+  assert.ok(staleDate, 'different extracted date still matches the one closure');
+  assert.equal(staleDate.name, 'death-becomes-her-2024');
+  // Non-closure event or no closure on file → no match
   assert.equal(findClosureDupe(upcoming, { type: 'arrival', date: '2026-06-28' }), null);
-  assert.equal(findClosureDupe(upcoming, { type: 'closure', date: '2026-07-01' }), null);
+  assert.equal(findClosureDupe([{ type: 'departure', name: 'X', date: '2026-06-28' }], { type: 'closure', date: '2026-06-28' }), null);
+  // Legacy double-closure rows: merge target is the FIRST-SEEN closure
+  // (earliest addedDate), not whichever happens to come first in the file.
+  const twoClosures = [
+    { type: 'closure', name: 'Ragtime', role: 'Production', date: '2026-08-16', addedDate: '2026-07-11' },
+    { type: 'closure', name: 'ragtime-2025', role: 'Production', date: '2026-08-16', addedDate: '2026-05-05' },
+  ];
+  const target = findClosureDupe(twoClosures, { type: 'closure', name: 'Ragtime', role: 'Production', date: '2026-08-16' });
+  assert.equal(target.addedDate, '2026-05-05', 'earliest-addedDate closure is the merge target');
 });
 
 test('dedupeClosures collapses two closures on the same date, keeping richer note + earliest addedDate', () => {
