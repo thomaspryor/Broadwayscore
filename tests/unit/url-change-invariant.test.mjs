@@ -172,6 +172,21 @@ describe('applyUrlChangeInvariant (pure)', () => {
     assert.equal(merged.wrongProduction, true, 'flag preserved until rebuild re-evaluates the new date');
   });
 
+  test('explicit publishDate:null counts as basis-gone — date guard clears, not strands', () => {
+    // outlet-listing-poller writes publishDate:null; treating null as a
+    // "fresh date" would preserve a Date-guard flag on a dateless record.
+    const existing = {
+      url: DOLLY_URL,
+      publishDate: '2023-10-12',
+      wrongProduction: true,
+      wrongProductionNote: 'Date guard: review 2023-10-12 is 907d before 2026-05-11',
+    };
+    const merged = { ...existing, url: JCS_URL, publishDate: null };
+    applyUrlChangeInvariant(existing, merged, {});
+    assert.equal(merged.publishDate, undefined);
+    assert.equal(merged.wrongProduction, undefined, 'flag must clear with its vanished basis');
+  });
+
   test('format-echoed publishDate clears together with its date guard', () => {
     const existing = {
       url: DOLLY_URL,
