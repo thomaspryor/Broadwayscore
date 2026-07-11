@@ -1128,10 +1128,17 @@ describe('mergeReviews — wrongProduction flag preservation', () => {
     assert.strictEqual(merged.wrongProductionAutoCleared, true);
   });
 
-  test('preserves Pre-opening guard flag when URL changes', () => {
-    // The poller sometimes re-scrapes with a slightly different URL.
-    // Date-based flags should NOT be cleared just because the URL refreshed —
-    // the publish date fact hasn't changed.
+  test('clears Pre-opening guard flag AND its publishDate basis on canonical URL change', () => {
+    // Changed 2026-07-11 with the url-change invariant (Notion 399637c5).
+    // Old behavior preserved date-based flags across URL changes ("the publish
+    // date fact hasn't changed") — but the date FACT belongs to the old URL's
+    // article. Keeping the stale date while clearing everything else made the
+    // invariant defeat itself: the rebuild date-guard re-flagged the corrected
+    // file from the old article's date. New semantics: the flag and its
+    // publishDate basis clear together; collect re-fetches the new URL, and the
+    // rebuild re-derives the guard from the REAL date (re-flagging if genuinely
+    // pre-opening — the guard runs fresh every rebuild, so nothing can leak in).
+    // Manual 'Tour transfer' flags still persist (see test above).
     const existing = {
       ...baseExisting,
       url: 'https://www.thestage.co.uk/reviews/example-show-review-long-slug',
@@ -1143,8 +1150,9 @@ describe('mergeReviews — wrongProduction flag preservation', () => {
       source: 'show-score',
     };
     const merged = mergeReviews(existing, incoming);
-    assert.strictEqual(merged.wrongProduction, true, 'date-based flag should persist across URL change');
-    assert.ok(merged.wrongProductionNote.startsWith('Pre-opening guard'));
+    assert.strictEqual(merged.wrongProduction, undefined, 'stale-date guard clears with its stale basis');
+    assert.strictEqual(merged.publishDate, undefined, 'old article publishDate must not survive');
+    assert.ok(merged._urlChangedClear.cleared.includes('wrongProduction'), 'clear recorded for push-restore');
   });
 
   test('still clears Same URL flag when URL changes (URL-based self-heal path)', () => {

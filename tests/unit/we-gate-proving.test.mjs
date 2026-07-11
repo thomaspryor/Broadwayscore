@@ -103,6 +103,18 @@ describe('audit + workflow safety wiring', () => {
     assert.ok(auditSrc.includes('delayed notice'), 'retry email path exists');
   });
 
+  test('actionable-only policy: enable/failure notices are severity error (emailable), not suppressed FYI', () => {
+    // The auto-enable + one-command + delayed-notice emails announce an autonomous
+    // production state change — they MUST reach the owner under the 2026-07-11
+    // actionable-only email policy (only critical/error email). A silent downgrade
+    // to info/warning would suppress the one notice that matters.
+    const enableBlock = auditSrc.slice(auditSrc.indexOf('Self-proving auto-enable'));
+    assert.ok(!/one command to enable auto-ingest[\s\S]{0,200}?severity: 'info'/.test(enableBlock),
+      'enable notice must not be info-severity (would be email-suppressed)');
+    assert.ok((enableBlock.match(/severity: 'error'/g) || []).length >= 3,
+      'the three enable/failure notices are error-severity so the policy delivers them');
+  });
+
   test('corroboration stats are computed by the audit (currentRunRows + corroborated)', () => {
     assert.ok(auditSrc.includes('result.weReference.currentRunRows'), 'current-run row count recorded');
     assert.ok(auditSrc.includes('result.weReference.corroborated'), 'corroboration count recorded');

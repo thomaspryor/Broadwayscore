@@ -21,11 +21,10 @@
  * URL changes. A manual wrongShowReason, by contrast, means the OLD url was
  * wrong; a different-URL write is exactly the recovery case, so it clears.
  *
- * Date-based wrongProduction flags ('Pre-opening guard', 'Date guard',
- * 'Dateless show', 'Tour transfer') are preserved: they key on publishDate,
- * not URL, and the rebuild re-derives them each run — clearing here would just
- * oscillate with the rebuild (same carve-out as gather-reviews' replacement
- * branch).
+ * Manual 'Tour transfer' wrongProduction flags are preserved. The automatic
+ * date guards ('Pre-opening guard' etc.) are NOT: they were computed from the
+ * old article's publishDate, which this invariant also clears; the rebuild
+ * re-derives them fresh from the new URL's date.
  *
  * The clear is recorded in `_urlChangedClear` ({from, to, at, cleared}), which
  * review-write-guard.js protects and isIntentionalClear() honors, so the CI
@@ -33,11 +32,15 @@
  * restore-protected-fields.js) does not resurrect the cleared fields from the
  * committed state on the next rebase.
  *
- * Called from the two write chokepoints:
+ * Called from the three write chokepoints:
  *   - safeWriteReview() (review-write-guard.js) — sweep-we-aggregators,
  *     review-file-writer (poller/ingest), collect-review-texts, etc.
  *   - mergeReviews() (review-normalization.js) — gather-reviews merge paths,
  *     which write raw fs.writeFileSync and never reach safeWriteReview.
+ *   - gather-reviews.js wrongShow/wrongProd URL-replacement branch (~3320) —
+ *     builds a fresh `replacement` record, so its clears happen by OMISSION;
+ *     the invariant records those in the breadcrumb (see below) so the CI
+ *     push-restore doesn't resurrect them.
  */
 
 const { REPLACE_CLEAR_FIELDS } = require('./wrongprod-replacement-preserve');
@@ -57,20 +60,30 @@ const URL_DERIVED_FIELDS = Array.from(new Set([
   'originalScoreType', 'originalRating',
   'fullText', 'textFetchedAt', 'textWordCount', 'textStatus', 'textQuality',
   'sourceMethod', 'isFullReview',
-  'wrongFullText', 'wrongAttribution', 'showNotMentioned',
+  'wrongFullText', 'wrongAttribution', 'wrongArticle', 'showNotMentioned',
+  'isRoundupArticle', 'isCombinedReview',
   'wrongProductionAutoCleared', 'wrongProductionAutoClearedAt',
   'urlPlaceholderSuspect',
+  // The old ARTICLE's publish date. Leaving it makes the fix defeat itself:
+  // the rebuild's date guards re-flag the cleared file from the stale date,
+  // and the Tour-transfer carve-out below would then preserve that flag across
+  // any later correction. Cleared here (when carried over), re-derived by
+  // collect-review-texts from the new URL's page.
+  'publishDate', 'publishDateVerified', 'publishDateSource',
   // Dedup pointers key on URL (duplicateOf) or on fullText fingerprint
   // (duplicateTextOf) — both are old-URL-derived. duplicateClearReason is set
   // alongside so the push-restore exception breadcrumb machinery honors it.
   'duplicateOf', 'duplicateReason', 'duplicateTextOf',
 ]));
 
-// wrongProductionNote prefixes that mark DATE-based flags — independent of the
-// URL, re-derived by the rebuild each run. Keep them (and their reason/note)
-// across URL changes. Mirrors gather-reviews.js existingIsDateBasedWrongProd.
+// wrongProductionNote prefixes preserved across URL changes. Only the MANUAL
+// 'Tour transfer' family survives: the automatic date guards ('Pre-opening
+// guard', 'Date guard', 'Dateless show') were computed from the OLD article's
+// publishDate — which this invariant also clears — and the rebuild re-derives
+// them fresh every run from the new URL's date, so clearing them cannot strand
+// a file (worst case: re-flagged at the next rebuild, correctly).
 const DATE_BASED_WP_PREFIXES = [
-  'Pre-opening guard', 'Date guard', 'Dateless show', 'Tour transfer',
+  'Tour transfer',
 ];
 
 const WP_FIELDS = new Set(['wrongProduction', 'wrongProductionNote', 'wrongProductionReason']);
@@ -100,6 +113,9 @@ function urlCanonicallyChanged(existingUrl, newUrl) {
   if (!existingUrl || !newUrl) return false;
   if (typeof existingUrl !== 'string' || typeof newUrl !== 'string') return false;
   if (existingUrl.includes('undefined')) return false; // broken-URL repair, not a change
+  // A garbage INCOMING url must never trigger a full state wipe — only a real,
+  // fetchable replacement article counts as a URL change.
+  if (newUrl.includes('undefined') || !/^https?:\/\//i.test(newUrl)) return false;
   // Lazy require — review-normalization lazy-requires this module back.
   const { normalizeUrl } = require('./review-normalization');
   return normalizeUrl(existingUrl) !== normalizeUrl(newUrl);
@@ -112,9 +128,13 @@ function urlCanonicallyChanged(existingUrl, newUrl) {
  * @param {object} merged - The record about to be written (already merged)
  * @param {object} [opts]
  * @param {string} [opts.fileLabel] - For log context
+ * @param {Set<string>} [opts.preserveFields] - Fields exempt from clearing.
+ *   Used by gather-reviews' replacement branch to honor its aggregator-signal
+ *   contract (computeReplacementPreserve AGGREGATOR_FIELDS: show-keyed roundup
+ *   data, independent of the file's URL).
  * @returns {{ changed: boolean, cleared: string[] }}
  */
-function applyUrlChangeInvariant(existing, merged, { fileLabel = '?' } = {}) {
+function applyUrlChangeInvariant(existing, merged, { fileLabel = '?', preserveFields = null } = {}) {
   if (!existing || !merged) return { changed: false, cleared: [] };
   if (!urlCanonicallyChanged(existing.url, merged.url)) {
     return { changed: false, cleared: [] };
@@ -123,8 +143,17 @@ function applyUrlChangeInvariant(existing, merged, { fileLabel = '?' } = {}) {
   const preserveDateBasedWp = _isDateBasedWrongProduction(existing);
   const cleared = [];
   for (const field of URL_DERIVED_FIELDS) {
-    if (merged[field] === undefined) continue;
+    if (preserveFields && preserveFields.has(field)) continue;
     if (preserveDateBasedWp && WP_FIELDS.has(field)) continue;
+    if (merged[field] === undefined) {
+      // Cleared BY OMISSION: the old record had this URL-derived field and the
+      // replacement-style write dropped it. Nothing to delete, but it must go
+      // in the breadcrumb — otherwise the push-restore sees an emptied
+      // PROTECTED field with no intentional-clear signal and resurrects the
+      // committed value (exactly the JCS resurrection failure mode).
+      if (existing[field] !== undefined) cleared.push(field);
+      continue;
+    }
     // Only clear values that provably came from the old-URL record; a fresh
     // value supplied by the incoming write differs and survives.
     if (!_valuesEqual(merged[field], existing[field])) continue;
@@ -132,7 +161,24 @@ function applyUrlChangeInvariant(existing, merged, { fileLabel = '?' } = {}) {
     cleared.push(field);
   }
 
-  if (cleared.length === 0) return { changed: false, cleared };
+  // Chain-carry a prior breadcrumb: across A→B→C hops, hop 2's own clear list
+  // may be empty (everything already cleared at hop 1) — but the era gate in
+  // isIntentionalClear keys on breadcrumb.to, so a stale {to: B} breadcrumb
+  // stops being honored once the file is at url C and the push-restore would
+  // resurrect hop 1's fields. Carry the prior cleared[] into the new era when
+  // the prior breadcrumb chains (prior.to == the url we're moving away from).
+  let priorCleared = [];
+  const prior = merged._urlChangedClear;
+  if (prior && Array.isArray(prior.cleared) && prior.to) {
+    try {
+      const { normalizeUrl } = require('./review-normalization');
+      if (normalizeUrl(String(prior.to)) === normalizeUrl(existing.url)) {
+        priorCleared = prior.cleared;
+      }
+    } catch { /* unparseable prior — drop it */ }
+  }
+  const allCleared = Array.from(new Set([...priorCleared, ...cleared]));
+  if (allCleared.length === 0) return { changed: false, cleared };
 
   if (cleared.includes('duplicateOf') || cleared.includes('duplicateTextOf')) {
     merged.duplicateClearReason = `auto-cleared at write: url changed ${existing.url} → ${merged.url}`;
@@ -151,10 +197,12 @@ function applyUrlChangeInvariant(existing, merged, { fileLabel = '?' } = {}) {
     from: existing.url,
     to: merged.url,
     at: new Date().toISOString(),
-    cleared,
+    cleared: allCleared,
   };
 
-  console.warn(`[url-changed] ${fileLabel}: cleared old-URL-derived fields (${cleared.join(', ')}) — url ${existing.url} → ${merged.url}`);
+  if (cleared.length > 0) {
+    console.warn(`[url-changed] ${fileLabel}: cleared old-URL-derived fields (${cleared.join(', ')}) — url ${existing.url} → ${merged.url}`);
+  }
   return { changed: true, cleared };
 }
 

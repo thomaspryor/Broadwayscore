@@ -123,7 +123,7 @@ runs:
               // so an intentional clear is honored even on a _locked file (same
               // precedence the duplicateOf carve-out always had).
               for (const field of PROTECTED) {
-                if (isEmpty(local[field]) && isIntentionalClear(field, local)) {
+                if (isEmpty(local[field]) && isIntentionalClear(field, local, committed)) {
                   continue;
                 }
                 const committedHasContent = !isEmpty(committed[field]);
