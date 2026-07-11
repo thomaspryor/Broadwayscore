@@ -67,7 +67,13 @@ jobs:
           if [ -n "${{ inputs.show }}" ]; then
             ARGS="$ARGS --show=${{ inputs.show }}"
           fi
-          if [ "${{ inputs.strict }}" = "true" ]; then
+          # Scheduled runs are ALWAYS strict: a suppression/freshness breach is
+          # actionable (reviews silently missing on an opening-window show, or
+          # the rebuild pipeline down). A green-with-warning run reaches nobody —
+          # the exact silent-strand failure mode (Springwood 2026-07) that the
+          # now-silenced warning emails were originally added to patch. A red run
+          # surfaces in the daily digest's workflow summary instead.
+          if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ inputs.strict }}" = "true" ]; then
             ARGS="$ARGS --strict"
           fi
           node scripts/check-review-count-drift.js $ARGS
