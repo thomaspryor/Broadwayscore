@@ -15,7 +15,11 @@ concurrency:
 jobs:
   process-feedback:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # 30 min, not 15: the tracking-file push (push-with-retry, 7 attempts with
+    # backoff) can alone eat ~15 min under main-branch contention. On 2026-07-07
+    # (run 28876301784) that timed the job out as "cancelled" before issue
+    # creation ran, silently swallowing a diagnosed bug report.
+    timeout-minutes: 30
 
     steps:
       - name: Checkout repository
@@ -50,97 +54,39 @@ jobs:
         run: |
           node scripts/process-feedback.js
 
-      - name: Commit tracking file
-        if: always()
-        run: |
-          git add data/audit/processed-feedback.json
-          if git diff --staged --quiet; then
-            echo "No tracking changes"
-          else
-            git commit -m "chore: Update feedback tracking
-
-          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
-
-            bash scripts/lib/push-with-retry.sh
-          fi
-
-      - name: Ensure owner is not watching repo (prevents GitHub notification emails)
-        env:
-          GH_TOKEN: ${{ secrets.GH_DISPATCH_TOKEN }}
-        run: |
-          # "Not watching" — owner only gets @mentions, not every bot-created
-          # issue/comment. All pipeline notifications go via Resend, not GitHub.
-          # NOTE: unwatching requires DELETE on the subscription. The old code
-          # used PUT {"subscribed":false}, which GitHub rejects (422) and which
-          # left the owner subscribed — the root cause of the per-issue email
-          # noise. DELETE removes the subscription (idempotent: 404 = already
-          # unwatched). Needs the token's "notifications" (or repo) scope.
-          code=$(curl -s -o /dev/null -w '%{http_code}' -X DELETE \
-            -H "Authorization: Bearer $GH_TOKEN" \
-            -H "Accept: application/vnd.github+json" \
-            "https://api.github.com/repos/${{ github.repository }}/subscription")
-          echo "Unwatch DELETE returned HTTP $code (204=unwatched, 404=already not watching)"
-          if [ "$code" != "204" ] && [ "$code" != "404" ]; then
-            echo "::warning::Could not unwatch repo (HTTP $code) — GH_DISPATCH_TOKEN may lack 'notifications' scope; owner may keep getting issue emails."
-          fi
-
-      # Only fires when there is a Formshield spam-flagged item needing a manual
-      # "Not Spam" rescue. Routine feedback no longer creates a digest issue:
-      # bugs become deduped bug-diagnosis issues, praise/features get submitter
-      # thank-yous. This kills the daily "Feedback Digest" notification noise.
-      - name: Create Needs-Review Issue (spam-flagged only)
-        if: success() && steps.process.outputs.has_spam_flagged == 'true'
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const fs = require('fs');
-
-            let summary = '';
-            try {
-              summary = fs.readFileSync('.feedback-summary.md', 'utf8');
-            } catch (error) {
-              return; // No summary = no issue
-            }
-
-            if (!summary || summary.trim().length === 0) return;
-
-            await github.rest.issues.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              title: `Feedback Needs Review (spam-flagged) - ${new Date().toISOString().split('T')[0]}`,
-              body: summary,
-              labels: ['feedback-digest', 'needs-review']
-            });
-
-      - name: Notify on failure
-        if: failure()
-        uses: ./.github/actions/notify-failure
-        with:
-          title: 'Process Feedback Failed'
-          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
-          resend_api_key: ${{ secrets.RESEND_API_KEY }}
-          owner_email: ${{ secrets.OWNER_EMAIL }}
-
+      # Step order is deliberate: issue creation (cheap API calls) runs BEFORE the
+      # tracking commit (push-with-retry can burn 15 min under contention). The old
+      # order lost a diagnosed bug when the job timed out mid-push (2026-07-07,
+      # run 28876301784): tracking had already marked the submission processed via
+      # if: always(), but the success()-gated issue step never ran. Diagnoses are
+      # also persisted in data/audit/pending-bug-diagnoses.json (drained here,
+      # committed below) so even a cancellation during THIS step is recoverable
+      # on the next run via has_pending_diagnoses.
       - name: Create Bug Diagnosis Issues
-        if: success() && steps.process.outputs.has_submissions == 'true'
+        if: success() && (steps.process.outputs.has_submissions == 'true' || steps.process.outputs.has_pending_diagnoses == 'true')
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const fs = require('fs');
+            const PENDING_PATH = 'data/audit/pending-bug-diagnoses.json';
 
             let diagnoses = [];
             try {
-              diagnoses = JSON.parse(fs.readFileSync('.bug-diagnoses.json', 'utf8'));
+              diagnoses = JSON.parse(fs.readFileSync(PENDING_PATH, 'utf8'));
             } catch {
-              console.log('No bug diagnoses file found');
+              console.log('No pending diagnoses file found');
               return;
             }
+            if (!Array.isArray(diagnoses)) diagnoses = [];
 
+            // Entries with a null diagnosis (diagnosis call failed) are dropped
+            // from pending — they already surfaced in the run log/digest and
+            // retrying without a diagnosis produces nothing.
             const diagnosed = diagnoses.filter(d => d.diagnosis);
             if (diagnosed.length === 0) {
               console.log('No bugs diagnosed');
+              fs.writeFileSync(PENDING_PATH, '[]\n');
               return;
             }
 
@@ -182,106 +128,193 @@ jobs:
               ) || null;
             }
 
-            for (const { item, submission, diagnosis } of diagnosed) {
-              const resolvedShow = resolveShow(submission.show);
-              const diagPayload = {
-                ...diagnosis,
-                showId: resolvedShow?.id || null,
-                showSlug: resolvedShow?.slug || null,
-                submitterName: submission.name || null,
-                submitterEmail: submission.email || null,
-                submitterShow: submission.show || null,
-                originalMessage: submission.message || null,
-              };
+            // Drain as we go: entries are removed from `remaining` once handled,
+            // and whatever is left (mid-loop crash/cancel) is written back in
+            // finally so the next run picks it up instead of losing it.
+            const remaining = new Set(diagnosed);
+            try {
+              for (const entry of diagnosed) {
+                const { item, submission, diagnosis } = entry;
+                const resolvedShow = resolveShow(submission.show);
+                const diagPayload = {
+                  ...diagnosis,
+                  showId: resolvedShow?.id || null,
+                  showSlug: resolvedShow?.slug || null,
+                  submitterName: submission.name || null,
+                  submitterEmail: submission.email || null,
+                  submitterShow: submission.show || null,
+                  originalMessage: submission.message || null,
+                };
 
-              // Skip if this bug duplicates an already-open issue — comment on
-              // the existing one (no new issue, no new auto-fix dispatch, no
-              // new owner email).
-              const dup = findDuplicateOpenBug(diagPayload, openBugs);
-              if (dup) {
-                console.log(`Duplicate of open issue #${dup.number} (${dup.reason}) — commenting, not creating new`);
-                let commented = false;
-                try {
-                  await github.rest.issues.createComment({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    issue_number: dup.number,
-                    body: [
-                      `Another user reported this${submission.name ? ` (${submission.name})` : ''} on ${new Date().toISOString().split('T')[0]}:`,
-                      '',
-                      `> ${(submission.message || '(no message)').replace(/\n/g, '\n> ')}`,
-                      '',
-                      `_Matched as a duplicate (${dup.reason}); folded in here instead of opening a new issue._`,
-                    ].join('\n'),
-                  });
-                  commented = true;
-                } catch (err) {
-                  console.log(`  Failed to comment on #${dup.number}: ${err.message}`);
+                // Skip if this bug duplicates an already-open issue — comment on
+                // the existing one (no new issue, no new auto-fix dispatch, no
+                // new owner email).
+                const dup = findDuplicateOpenBug(diagPayload, openBugs);
+                if (dup) {
+                  console.log(`Duplicate of open issue #${dup.number} (${dup.reason}) — commenting, not creating new`);
+                  let commented = false;
+                  try {
+                    await github.rest.issues.createComment({
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
+                      issue_number: dup.number,
+                      body: [
+                        `Another user reported this${submission.name ? ` (${submission.name})` : ''} on ${new Date().toISOString().split('T')[0]}:`,
+                        '',
+                        `> ${(submission.message || '(no message)').replace(/\n/g, '\n> ')}`,
+                        '',
+                        `_Matched as a duplicate (${dup.reason}); folded in here instead of opening a new issue._`,
+                      ].join('\n'),
+                    });
+                    commented = true;
+                  } catch (err) {
+                    console.log(`  Failed to comment on #${dup.number}: ${err.message}`);
+                  }
+                  // Only suppress the new issue if the dedup comment actually
+                  // landed. The submission is already marked processed upstream,
+                  // so a failed comment with `continue` would silently lose the
+                  // report — fall through to normal issue creation instead.
+                  if (commented) { remaining.delete(entry); continue; }
+                  console.log('  Comment failed — creating a normal issue so the report is not lost');
                 }
-                // Only suppress the new issue if the dedup comment actually
-                // landed. The submission is already marked processed upstream,
-                // so a failed comment with `continue` would silently lose the
-                // report — fall through to normal issue creation instead.
-                if (commented) continue;
-                console.log('  Comment failed — creating a normal issue so the report is not lost');
-              }
 
-              const body = [
-                `## Bug Report: ${item.summary}`,
-                `**From:** ${submission.name || 'Anonymous'} | **Show:** ${submission.show || 'N/A'} | **Priority:** ${item.priority}`,
-                `**Original message:** ${submission.message}`,
-                '',
-                `## What's Happening`,
-                diagnosis.whatsHappening,
-                '',
-                `## What I Found`,
-                ...diagnosis.findings.map(f => `- ${f}`),
-                '',
-                `## Proposed Fix`,
-                diagnosis.proposedFix,
-                `**Confidence:** ${diagnosis.confidence} | **Type:** ${diagnosis.fixType}`,
-                `**Files:** ${diagnosis.relevantFiles.join(', ')}`,
-                '',
-                '---',
-                `*Auto-diagnosed by feedback pipeline*`,
-                '',
-                `<!-- DIAGNOSIS_JSON`,
-                JSON.stringify(diagPayload),
-                `DIAGNOSIS_JSON -->`,
-              ].join('\n');
+                const body = [
+                  `## Bug Report: ${item.summary}`,
+                  `**From:** ${submission.name || 'Anonymous'} | **Show:** ${submission.show || 'N/A'} | **Priority:** ${item.priority}`,
+                  `**Original message:** ${submission.message}`,
+                  '',
+                  `## What's Happening`,
+                  diagnosis.whatsHappening,
+                  '',
+                  `## What I Found`,
+                  ...diagnosis.findings.map(f => `- ${f}`),
+                  '',
+                  `## Proposed Fix`,
+                  diagnosis.proposedFix,
+                  `**Confidence:** ${diagnosis.confidence} | **Type:** ${diagnosis.fixType}`,
+                  `**Files:** ${diagnosis.relevantFiles.join(', ')}`,
+                  '',
+                  '---',
+                  `*Auto-diagnosed by feedback pipeline*`,
+                  '',
+                  `<!-- DIAGNOSIS_JSON`,
+                  JSON.stringify(diagPayload),
+                  `DIAGNOSIS_JSON -->`,
+                ].join('\n');
 
-              const title = `Bug Diagnosis: ${item.summary.substring(0, 60)}`;
-              const labels = ['bug-diagnosis'];
-              if (item.priority) labels.push(`${item.priority.toLowerCase()}-priority`);
+                const title = `Bug Diagnosis: ${item.summary.substring(0, 60)}`;
+                const labels = ['bug-diagnosis'];
+                if (item.priority) labels.push(`${item.priority.toLowerCase()}-priority`);
 
-              const issue = await github.rest.issues.create({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                title,
-                body,
-                labels
-              });
-
-              console.log(`Created issue #${issue.data.number}: ${title}`);
-
-              // Make this new issue dedup-able for the rest of this run (two
-              // near-identical reports in one batch should collapse too).
-              openBugs.push({ number: issue.data.number, diagnosis: diagPayload });
-
-              // Dispatch auto-fix workflow (GITHUB_TOKEN events don't trigger issues.opened)
-              try {
-                await github.rest.actions.createWorkflowDispatch({
+                const issue = await github.rest.issues.create({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
-                  workflow_id: 'auto-fix-feedback-bug.yml',
-                  ref: 'main',
-                  inputs: { issue_number: String(issue.data.number) }
+                  title,
+                  body,
+                  labels
                 });
-                console.log(`  Dispatched auto-fix for #${issue.data.number}`);
-              } catch (err) {
-                console.log(`  Failed to dispatch auto-fix: ${err.message}`);
-              }
 
-              // 10s spacing between dispatches
-              await new Promise(r => setTimeout(r, 10000));
+                console.log(`Created issue #${issue.data.number}: ${title}`);
+                remaining.delete(entry);
+
+                // Make this new issue dedup-able for the rest of this run (two
+                // near-identical reports in one batch should collapse too).
+                openBugs.push({ number: issue.data.number, diagnosis: diagPayload });
+
+                // Dispatch auto-fix workflow (GITHUB_TOKEN events don't trigger issues.opened)
+                try {
+                  await github.rest.actions.createWorkflowDispatch({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    workflow_id: 'auto-fix-feedback-bug.yml',
+                    ref: 'main',
+                    inputs: { issue_number: String(issue.data.number) }
+                  });
+                  console.log(`  Dispatched auto-fix for #${issue.data.number}`);
+                } catch (err) {
+                  console.log(`  Failed to dispatch auto-fix: ${err.message}`);
+                }
+
+                // 10s spacing between dispatches
+                await new Promise(r => setTimeout(r, 10000));
+              }
+            } finally {
+              const leftover = [...remaining];
+              fs.writeFileSync(PENDING_PATH, JSON.stringify(leftover, null, 2) + '\n');
+              if (leftover.length > 0) {
+                console.log(`${leftover.length} diagnosis(es) NOT issued — left in ${PENDING_PATH} for the next run`);
+              }
             }
+
+      # Only fires when there is a Formshield spam-flagged item needing a manual
+      # "Not Spam" rescue. Routine feedback no longer creates a digest issue:
+      # bugs become deduped bug-diagnosis issues, praise/features get submitter
+      # thank-yous. This kills the daily "Feedback Digest" notification noise.
+      - name: Create Needs-Review Issue (spam-flagged only)
+        if: success() && steps.process.outputs.has_spam_flagged == 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+
+            let summary = '';
+            try {
+              summary = fs.readFileSync('.feedback-summary.md', 'utf8');
+            } catch (error) {
+              return; // No summary = no issue
+            }
+
+            if (!summary || summary.trim().length === 0) return;
+
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Feedback Needs Review (spam-flagged) - ${new Date().toISOString().split('T')[0]}`,
+              body: summary,
+              labels: ['feedback-digest', 'needs-review']
+            });
+
+      - name: Commit tracking file
+        if: always()
+        run: |
+          git add data/audit/processed-feedback.json
+          git add data/audit/pending-bug-diagnoses.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No tracking changes"
+          else
+            git commit -m "chore: Update feedback tracking
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Ensure owner is not watching repo (prevents GitHub notification emails)
+        env:
+          GH_TOKEN: ${{ secrets.GH_DISPATCH_TOKEN }}
+        run: |
+          # "Not watching" — owner only gets @mentions, not every bot-created
+          # issue/comment. All pipeline notifications go via Resend, not GitHub.
+          # NOTE: unwatching requires DELETE on the subscription. The old code
+          # used PUT {"subscribed":false}, which GitHub rejects (422) and which
+          # left the owner subscribed — the root cause of the per-issue email
+          # noise. DELETE removes the subscription (idempotent: 404 = already
+          # unwatched). Needs the token's "notifications" (or repo) scope.
+          code=$(curl -s -o /dev/null -w '%{http_code}' -X DELETE \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/subscription")
+          echo "Unwatch DELETE returned HTTP $code (204=unwatched, 404=already not watching)"
+          if [ "$code" != "204" ] && [ "$code" != "404" ]; then
+            echo "::warning::Could not unwatch repo (HTTP $code) — GH_DISPATCH_TOKEN may lack 'notifications' scope; owner may keep getting issue emails."
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Process Feedback Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

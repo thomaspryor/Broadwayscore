@@ -17,11 +17,18 @@ import { diagnoseBug } from './diagnose-feedback-bug.js';
 const require = createRequire(import.meta.url);
 const { buildFeedbackThankYouEmail, postJSON } = require('./lib/email-templates.js');
 const { CLAUDE_SONNET } = require('./lib/models');
+const { loadPendingDiagnoses, mergePendingDiagnoses } = require('./lib/pending-diagnoses.js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const TRACKING_FILE = path.join(__dirname, '../data/audit/processed-feedback.json');
+// Diagnoses awaiting GitHub-issue creation. Committed (not ephemeral) because a
+// run can be cancelled between diagnosing and issue creation — the submission is
+// already marked processed by then, so an uncommitted diagnosis is silently lost
+// (Erik Andersen's homepage-filter bug, run 28876301784, 2026-07-07). The
+// workflow drains this file after creating issues.
+const PENDING_DIAGNOSES_FILE = path.join(__dirname, '../data/audit/pending-bug-diagnoses.json');
 const MAX_SUBMISSIONS_PER_RUN = 20; // Spam cap
 const MAX_DIAGNOSES = 5;
 
@@ -393,6 +400,15 @@ async function main() {
       fs.appendFileSync(process.env.GITHUB_OUTPUT, `has_spam_flagged=${spamFlagged.length > 0}\n`);
     }
 
+    // Leftover diagnoses from a cancelled run still need their issues created —
+    // surface them to the workflow even when there's nothing new to process.
+    const pendingDiagnoses = loadPendingDiagnoses(PENDING_DIAGNOSES_FILE);
+    if (process.env.GITHUB_OUTPUT) {
+      const hasPending = pendingDiagnoses.some(d => d.diagnosis);
+      fs.appendFileSync(process.env.GITHUB_OUTPUT, `has_pending_diagnoses=${hasPending}\n`);
+      if (hasPending) console.log(`${pendingDiagnoses.length} pending diagnosis(es) from a previous run awaiting issue creation`);
+    }
+
     if (newSubmissions.length === 0 && spamFlagged.length === 0) {
       console.log('No new submissions. Exiting.');
       saveTracking(tracking);
@@ -452,9 +468,14 @@ async function main() {
       console.log(`\nDiagnosed ${bugDiagnoses.filter(d => d.diagnosis).length}/${bugDiagnoses.length} bugs\n`);
     }
 
-    // Write diagnoses for workflow to create separate issues
-    const diagnosesPath = path.join(__dirname, '../.bug-diagnoses.json');
-    fs.writeFileSync(diagnosesPath, JSON.stringify(bugDiagnoses, null, 2));
+    // Write diagnoses for workflow to create separate issues. Merge with any
+    // leftovers from a cancelled run (deduped by submission ID) so nothing is
+    // dropped; the workflow's issue-creation step drains this file.
+    const merged = mergePendingDiagnoses(pendingDiagnoses, bugDiagnoses, submissionId);
+    fs.writeFileSync(PENDING_DIAGNOSES_FILE, JSON.stringify(merged, null, 2) + '\n');
+    if (process.env.GITHUB_OUTPUT && merged.some(d => d.diagnosis)) {
+      fs.appendFileSync(process.env.GITHUB_OUTPUT, `has_pending_diagnoses=true\n`);
+    }
 
     const summary = generateSummary(submissions, categorized, bugDiagnoses, spamFlagged);
 
