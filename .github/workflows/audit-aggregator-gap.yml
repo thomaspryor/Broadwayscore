@@ -83,6 +83,15 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
+      # The Stage reference source is ARCHIVE-ONLY (cookie-gated live) — the WE
+      # gap reference reads data/aggregator-archive/thestage-roundups/*.html
+      # written by gather-reviews/opening-night-poller. Without this checkout the
+      # source is silently absent (passive — audit still runs, just without TS).
+      - name: Checkout aggregator archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
       # Record the review-texts HEAD before the audit ingests anything, so the
       # rebuild trigger below fires only when --ingest-missing actually added files.
       - name: Record review-texts SHA (pre-ingest)
