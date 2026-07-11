@@ -250,6 +250,104 @@ async function downloadImageDirect(url) {
   return Buffer.from(await resp.arrayBuffer());
 }
 
+// ---------------------------------------------------------------------------
+// Regional shows (category:'regional') — TodayTix/IBDB/ShowScore have nothing
+// for Broadway-feeder venues. Source the venue page og:image (canonical key
+// art), falling back to the show's archived BWW roundup og:image (production
+// photo). Unlike the CDN sources, venue images are downloaded and sharp-
+// cropped HERE (600x900 poster / 300x450 thumb / 1600x1000 hero, attention
+// crop) because venue og:images are usually landscape and would fail
+// archive-show-images.js's poster aspect gate as-is. Returns LOCAL
+// /images/shows/<id>/ paths (the persist step keeps those verbatim).
+// ---------------------------------------------------------------------------
+
+async function fetchFromRegionalVenue(show, verifyCtx) {
+  let sharpLib;
+  try { sharpLib = require('sharp'); } catch { console.log('   ⚠ sharp unavailable — cannot process regional venue images'); return null; }
+  const { REGIONAL_FEEDER_VENUES } = require('./lib/aggregator-candidate-extract');
+  const venueEntry = REGIONAL_FEEDER_VENUES.find(v => v.re.test(show.venue || ''));
+
+  const localPaths = {
+    poster: `/images/shows/${show.id}/poster.webp`,
+    thumbnail: `/images/shows/${show.id}/thumbnail.webp`,
+    hero: `/images/shows/${show.id}/hero.webp`,
+  };
+
+  // Existing real files win unless --force: re-runs (default local run, manual
+  // dispatch with only_missing=false, --show=<id>) must not silently replace
+  // curated/manual images with a re-scraped roundup photo. (ship-check P2)
+  const posterOnDisk = path.join(IMAGES_DIR, show.id, 'poster.webp');
+  if (!process.argv.includes('--force') && fs.existsSync(posterOnDisk) && !isPlaceholderFile(posterOnDisk)) {
+    console.log('   ✓ regional images already on disk — keeping (use --force to re-source)');
+    return { ...localPaths };
+  }
+
+  const extractOgImage = (html, baseUrl) => {
+    const m = (html && html.match(/property="og:image"\s+content="([^"]+)"/i))
+      || (html && html.match(/content="([^"]+)"\s+property="og:image"/i));
+    if (!m) return null;
+    const raw = m[1].replace(/&amp;/g, '&');
+    try { return new URL(raw, baseUrl || undefined).href; } catch { return null; }
+  };
+
+  // Candidate source URLs, best-first.
+  const sources = [];
+  if (venueEntry && venueEntry.domain) {
+    try {
+      const results = await serpQuery(`site:${venueEntry.domain} "${show.title}"`);
+      const hit = (results || []).map(r => r.url).find(u => u && u.includes(venueEntry.domain));
+      if (hit) sources.push({ url: hit, label: 'venue page' });
+    } catch (e) {
+      console.log(`   ⚠ venue SERP failed: ${e.message.slice(0, 60)}`);
+    }
+  }
+  const roundupArchive = path.join(__dirname, '..', 'data', 'aggregator-archive', 'bww-roundups', `${show.id}.html`);
+  if (fs.existsSync(roundupArchive)) sources.push({ archivePath: roundupArchive, label: 'BWW roundup archive' });
+
+  for (const src of sources) {
+    try {
+      const html = src.archivePath
+        ? fs.readFileSync(src.archivePath, 'utf8')
+        : await fetchPageWithFallback(src.url);
+      const ogImage = extractOgImage(html, src.url);
+      if (!ogImage) { console.log(`   ⚠ no og:image on ${src.label}`); continue; }
+      console.log(`   Regional source (${src.label}): ${ogImage.slice(0, 90)}`);
+      const buffer = await downloadImageDirect(ogImage);
+      const meta = await sharpLib(buffer).metadata();
+      if (!meta.width || meta.width < 400) { console.log(`   ⚠ source image too small (${meta.width}px)`); continue; }
+
+      // Same Gemini verification gate every other non-trusted source passes —
+      // a venue SERP can land on a season-announcement page whose og:image is
+      // another show's art or the venue logo. (ship-check P1)
+      if (verifyCtx) {
+        try {
+          const { verifyImage: verifyRegionalImage } = require('./lib/verify-image');
+          const v = await verifyRegionalImage(buffer, show.title, { year: show.openingDate ? String(new Date(show.openingDate).getFullYear()) : undefined });
+          if (v && v.match === false) {
+            console.log(`   ✗ verification rejected ${src.label} image: ${(v.description || '').slice(0, 80)}`);
+            continue;
+          }
+        } catch (e) {
+          console.log(`   ⚠ verification errored (${e.message.slice(0, 50)}) — accepting unverified`);
+        }
+      }
+
+      // Honor --dry-run exactly like the other local-write paths. (ship-check P1)
+      const outputBase = dryRunMode ? DRY_RUN_DIR : IMAGES_DIR;
+      const dir = path.join(outputBase, show.id);
+      fs.mkdirSync(dir, { recursive: true });
+      await sharpLib(buffer).resize(600, 900, { fit: 'cover', position: 'attention' }).webp({ quality: 82 }).toFile(path.join(dir, 'poster.webp'));
+      await sharpLib(buffer).resize(300, 450, { fit: 'cover', position: 'attention' }).webp({ quality: 80 }).toFile(path.join(dir, 'thumbnail.webp'));
+      await sharpLib(buffer).resize(1600, 1000, { fit: 'cover', position: 'attention' }).webp({ quality: 82 }).toFile(path.join(dir, 'hero.webp'));
+      console.log(`   ✓ regional images written (poster/thumbnail/hero) from ${src.label}${dryRunMode ? ' [dry-run dir]' : ''}`);
+      return { ...localPaths, _source: `regional-venue:${src.label}` };
+    } catch (e) {
+      console.log(`   ⚠ ${src.label} failed: ${e.message.slice(0, 80)}`);
+    }
+  }
+  return null;
+}
+
 // Search Google for TodayTix pages (works for closed shows)
 async function searchGoogleForTodayTix(showTitle) {
   const query = `site:todaytix.com "${showTitle}" broadway nyc`;
@@ -1830,6 +1928,14 @@ async function verifyAndCollect(images, show, tierName, verifyCtx) {
 
 async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
   console.log(`\n📽️  ${show.title}`);
+
+  // Regional feeder-venue shows: venue og:image is the canonical key art —
+  // none of the NYC-centric sources below know these productions.
+  if (show.category === 'regional') {
+    const regional = await fetchFromRegionalVenue(show, verifyCtx);
+    if (regional) return regional;
+    console.log('   ⚠ regional venue sourcing failed — falling through to generic chain');
+  }
 
   // Step 1: Try TodayTix API data (native square images, no HTTP call needed)
   // TRUSTED SOURCE — skip verification
