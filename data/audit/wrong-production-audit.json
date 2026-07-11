@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-07-11T21:23:05.564Z",
+  "timestamp": "2026-07-11T21:59:13.690Z",
   "stats": {
-    "totalReviews": 39967,
-    "alreadyFlagged": 17586,
-    "dateGuardCatches": 50,
+    "totalReviews": 39970,
+    "alreadyFlagged": 17587,
+    "dateGuardCatches": 51,
     "directorMismatch": 897,
-    "tvFilmSignals": 1096,
+    "tvFilmSignals": 1097,
     "londonSignals": 741,
     "offBroadwaySignals": 467,
     "yearMismatch": 86,
@@ -1739,6 +1739,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "avenue-q-west-end-2026",
+      "file": "telegraph--marianka-swain.json",
+      "score": 82,
+      "publishDate": "2026-04-17",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/avenue-qs-bawdy-puppets-gleefully-outrageous/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -28202,6 +28216,18 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 49d before show (2026-05-02 vs 2026-06-20)"
+        }
+      ]
+    },
+    {
+      "showId": "a-midsummer-nights-dream-west-end-2026",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 46d before show (2026-05-05 vs 2026-06-20)"
         }
       ]
     },
