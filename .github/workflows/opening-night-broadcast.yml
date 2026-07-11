@@ -346,7 +346,9 @@ jobs:
               sendAlert({
                 title: 'Opening Night Broadcast Blocked — Checklist Errors',
                 description: 'Automated broadcast halted: opening night checklist found errors for pending shows.\nCheck /tmp/checklist-*.json or re-run with force_broadcast=true to override.',
-                severity: 'warning',
+                // 'error' (renders [CRITICAL]): a blocked flagship broadcast is
+                // actionable — warnings no longer email (actionable-only policy).
+                severity: 'error',
                 email: true,
               }).then(() => process.exit(1)).catch(e => { process.stderr.write(e.message+'\n'); process.exit(1); });
             "
@@ -403,8 +405,10 @@ jobs:
               const { sendAlert } = require('./scripts/lib/discord-notify');
               sendAlert({
                 title: 'Opening Night Broadcast Blocked — Review-Count Drift',
-                description: 'Automated broadcast halted: data/reviews.json is out of sync with data/review-texts/ for one or more pending shows. Drift > 2 reviews (per-show pre-broadcast threshold).\nCheck data/audit/review-count-drift-{show}.json or re-run with force_broadcast=true to override.',
-                severity: 'warning',
+                description: 'Automated broadcast halted: scored in-window reviews are missing from data/reviews.json for one or more pending shows (or reviews.json is stale).\nCheck data/audit/review-count-drift-{show}.json or re-run with force_broadcast=true to override.',
+                // 'error' (renders [CRITICAL]): a blocked flagship broadcast is
+                // actionable — warnings no longer email (actionable-only policy).
+                severity: 'error',
                 email: true,
                 fields: [{ name: 'Shows', value: process.env.BREACHED_LIST || '(unknown)' }],
               }).then(() => process.exit(1)).catch(e => { process.stderr.write(e.message+'\n'); process.exit(1); });
