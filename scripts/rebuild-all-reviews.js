@@ -3882,14 +3882,19 @@ if (fs.existsSync(reviewsJsonPath)) {
                   }
                 }
                 // 2. Pre-opening date: review published well before show opened
-                //    (priorRuns exemption mirrors the inclusion guard above)
+                //    Same predicate as the inclusion pass (incl. priorRuns exemption);
+                //    a threshold drift here under-predicts drops and can hard-abort
+                //    the first rebuild after a tightening.
                 if (!wouldBeExcluded && d.publishDate && sEarliest && !d.allowEarlyDate && !d.routedFromShowId && !showLongRunWE.has(showId)) {
                   const pubDate = parseDate(d.publishDate);
                   if (pubDate) {
-                    const daysBefore = Math.ceil((sEarliest - pubDate) / (1000 * 60 * 60 * 24));
-                    const threshold = (sCat === 'off-broadway' || isLondonMarket(sCat)) ? 90 : 14;
-                    const inPriorRun = isWithinPriorRun(pubDate, showById[showId]?.priorRuns);
-                    if (daysBefore > threshold && !inPriorRun) wouldBeExcluded = true;
+                    const preWindow = evaluatePreWindowInclusion({
+                      pubDate,
+                      showEarliest: sEarliest,
+                      isFlexCategory: sCat === 'off-broadway' || isLondonMarket(sCat),
+                      priorRuns: showById[showId]?.priorRuns,
+                    });
+                    if (preWindow.exclude) wouldBeExcluded = true;
                   }
                 }
                 // 3. Syndication dedup

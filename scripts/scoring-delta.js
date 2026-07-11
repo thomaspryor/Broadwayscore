@@ -282,9 +282,12 @@ function loadBaselineGuards() {
 
   // date-guard.js (+ its dependency wrong-production-autoclear.js): the
   // pre-window inclusion predicate lives there (card 386637c5). Materialize the
-  // BASE_REF copies so threshold/predicate changes replay per side. Baselines
-  // that predate a file fall back to the working-tree copy (the sim then uses
-  // its legacy inline thresholds for that side — see simulateInclusion).
+  // BASE_REF copies so threshold/predicate changes replay per side. If BASE_REF
+  // predates a file entirely, the WORKING-TREE copy is used for that baseline
+  // side — the baseline then behaves like the working tree (silent zero-delta
+  // for that guard). Acceptable: date-guard.js has existed since 2026-05-25,
+  // and BASE_REF defaults to HEAD. Baselines that HAVE date-guard.js but lack
+  // evaluatePreWindowInclusion take simulateInclusion's legacy inline branch.
   for (const dep of ['date-guard.js', 'wrong-production-autoclear.js']) {
     try {
       const src = execSync(`git show ${BASE_REF}:scripts/lib/${dep}`, {
