@@ -57,7 +57,7 @@ const {
   shouldAutoClearDatelessRevival,
   shouldAutoClearStaleDateGuard,
 } = require('./lib/wrong-production-autoclear');
-const { evaluateDatelessRevivalGuard, earliestShowDate, evaluateDateGuard, evaluatePreWindowInclusion } = require('./lib/date-guard');
+const { evaluateDatelessRevivalGuard, earliestShowDate, evaluateDateGuard, evaluatePreWindowInclusion, PRE_WINDOW_DAYS } = require('./lib/date-guard');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { KNOWN_SYNDICATION_PAIRS } = require('./lib/syndication-pairs');
 const { logExclusion: _sharedLogExclusion } = require('./lib/exclusion-logger');
@@ -1925,14 +1925,16 @@ showDirs.forEach(showId => {
           // Check if reference would be excluded by later guards
           refWouldBeExcluded = !isIncludableForRebuild(refData, showById[showId]);
           if (!refWouldBeExcluded && refData.publishDate && showDateMap[showId] && !refData.allowEarlyDate) {
-            const refPubDate = new Date(refData.publishDate);
-            const openDate = showDateMap[showId];
-            const daysBefore = Math.ceil((openDate - refPubDate) / (1000 * 60 * 60 * 24));
-            const isFlexCat = showCat === 'off-broadway' || isLondonMarket(showCat);
-            const threshold = isFlexCat ? 90 : 14;
-            // Production-continuity exemption: refData falls inside a declared priorRuns window
-            const inPriorRun = isWithinPriorRun(refPubDate, showById[showId]?.priorRuns);
-            if (daysBefore > threshold && !inPriorRun) refWouldBeExcluded = true;
+            // Same predicate as the duplicateOf replica above — the two duplicate
+            // paths must agree on whether a reference is excluded or recovery
+            // depends on which duplicate field happened to be set.
+            const preWindow = evaluatePreWindowInclusion({
+              pubDate: new Date(refData.publishDate),
+              showEarliest: showDateMap[showId],
+              isFlexCategory: showCat === 'off-broadway' || isLondonMarket(showCat),
+              priorRuns: showById[showId]?.priorRuns,
+            });
+            if (preWindow.exclude) refWouldBeExcluded = true;
           }
           if (refWouldBeExcluded) stats.dupeRefExcludedRecovered = (stats.dupeRefExcludedRecovered || 0) + 1;
           // Verify fingerprints still match — flag may be stale after text re-fetch or deletion
@@ -2166,7 +2168,7 @@ showDirs.forEach(showId => {
       // OVERRIDE: If wrongProduction was set by cross-market guard ("US outlet reviewing London show")
       // but the URL is actually a UK domain, clear it — the guard was wrong.
       // Also clears stale flags (no note, "US-only" script) on UK/dual-market outlets with London URLs.
-      // BUT: Never auto-clear if the review date is >90 days before the show's earliest date —
+      // BUT: Never auto-clear if the review date is more than PRE_WINDOW_DAYS before the show's earliest date —
       // that's a genuine wrong-production, not a cross-market false positive.
       if (data.wrongProduction === true && !data.wrongProductionOverride && isLondonMarket(showCat) && data.url) {
         const wpNote = data.wrongProductionNote || '';
@@ -2174,12 +2176,14 @@ showDirs.forEach(showId => {
         // "Same URL exists", "Pre-opening guard", or "days before show opened" flags
         const isStructuralFlag = wpNote.includes('Same URL exists') || wpNote.includes('Pre-opening guard')
           || wpNote.includes('days before show opened') || wpNote.includes('URL contains year');
-        // Date-aware guard: if review is >90 days before the show's earliest date, it's genuinely
-        // from a prior production — do NOT auto-clear regardless of URL domain
+        // Date-aware guard: if review predates the show's earliest date by more than
+        // the pre-window threshold, it's genuinely from a prior production — do NOT
+        // auto-clear regardless of URL domain (kept aligned with PRE_WINDOW_DAYS so a
+        // pre-window file can't auto-clear here and immediately re-flag below)
         let isDateMismatch = false;
         if (data.publishDate && showDateMap[showId]) {
           const reviewDate = parseDate(data.publishDate);
-          if (reviewDate && (showDateMap[showId] - reviewDate) > 90 * 86400000) {
+          if (reviewDate && (showDateMap[showId] - reviewDate) > PRE_WINDOW_DAYS * 86400000) {
             isDateMismatch = true;
           }
         }
@@ -2267,7 +2271,7 @@ showDirs.forEach(showId => {
       // the wrongShow flag is almost certainly a false positive from LLM classification.
       // UK outlets reviewing London shows cannot be "wrong show" — they only cover London theatre.
       // BUT: Do NOT auto-clear if content verification flagged wrongArticle (e.g., news/preview, not a review).
-      // AND: Do NOT auto-clear if the review date is >90 days before the show — that's a prior production.
+      // AND: Do NOT auto-clear if the review date is more than PRE_WINDOW_DAYS before the show — that's a prior production.
       // AND: Do NOT auto-clear if any manual wrongShowReason is set — same pattern as wrongProduction
       // (cousin bug fixed 2026-04-15: regex filter missed manual reasons like "confirmed via audit")
       const isWrongArticle = (data.contentVerification && data.contentVerification.wrongArticle === true);
@@ -2275,7 +2279,7 @@ showDirs.forEach(showId => {
       let wsDateMismatch = false;
       if (data.publishDate && showDateMap[showId]) {
         const wsReviewDate = parseDate(data.publishDate);
-        if (wsReviewDate && (showDateMap[showId] - wsReviewDate) > 90 * 86400000) {
+        if (wsReviewDate && (showDateMap[showId] - wsReviewDate) > PRE_WINDOW_DAYS * 86400000) {
           wsDateMismatch = true;
         }
       }
