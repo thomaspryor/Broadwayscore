@@ -89,7 +89,13 @@ else
     fi
   elif [ "$AUTH_METHOD" = "proxy" ]; then
     # Tokenless clone through the cloud GitHub proxy (see auth-method selection above).
-    if ! GIT_TERMINAL_PROMPT=0 git -c credential.helper= clone --depth 1 "https://github.com/thomaspryor/broadway-scorecard-data.git" "$CORE_DATA_DIR" 2>/dev/null; then
+    # Do NOT disable the credential helper here: this branch only runs in a cloud
+    # session (CLAUDE_CODE_REMOTE=true), where the GitHub proxy authenticates git
+    # THROUGH a credential helper. `-c credential.helper=` would kill that and force
+    # a stub. GIT_TERMINAL_PROMPT=0 still prevents an interactive hang if there's no
+    # helper. (The osxkeychain-hang concern only applies locally, and this branch
+    # never runs locally.)
+    if ! GIT_TERMINAL_PROMPT=0 git clone --depth 1 "https://github.com/thomaspryor/broadway-scorecard-data.git" "$CORE_DATA_DIR" 2>/dev/null; then
       echo "ERROR: Proxy clone of broadway-scorecard-data failed — the connected GitHub account may lack access to the private repo. Set REVIEW_TEXTS_TOKEN as a fallback."
       exit 1
     fi
@@ -160,7 +166,7 @@ if [ "${1:-}" = "--all" ]; then
       exit 1
     fi
   elif [ "$AUTH_METHOD" = "proxy" ]; then
-    if ! GIT_TERMINAL_PROMPT=0 git -c credential.helper= clone --depth 1 "https://github.com/thomaspryor/broadway-review-texts.git" "$TEMP_DIR/review-texts" 2>/dev/null; then
+    if ! GIT_TERMINAL_PROMPT=0 git clone --depth 1 "https://github.com/thomaspryor/broadway-review-texts.git" "$TEMP_DIR/review-texts" 2>/dev/null; then
       echo "ERROR: Proxy clone of broadway-review-texts failed — set REVIEW_TEXTS_TOKEN as a fallback."
       exit 1
     fi
