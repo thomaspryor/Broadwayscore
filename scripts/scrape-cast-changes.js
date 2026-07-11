@@ -1243,11 +1243,12 @@ function mergeEvents(existing, newEvents, source) {
         continue;
       }
 
-      // Closure de-dup runs first: a production has exactly ONE closure per
-      // closing date, but the captured name/role vary by source ("Death
-      // Becomes Her" vs the showId), so the name/role-keyed checks below miss
-      // it and a second closure row leaks in. Match on date alone and keep the
-      // richer record, pinning the earliest (first-seen) addedDate.
+      // Closure de-dup runs first: a production has exactly ONE upcoming
+      // closure, but the captured name/role/date all vary by source ("Death
+      // Becomes Her" vs the showId; an old article carries the pre-extension
+      // date), so the name/role-keyed checks below miss it and a second
+      // closure row leaks in. Match ANY existing closure and keep the richer
+      // record, pinning the earliest (first-seen) addedDate.
       if (event.type === 'closure') {
         const closureDupe = findClosureDupe(showData.upcoming, event);
         if (closureDupe) {
@@ -1255,14 +1256,20 @@ function mergeEvents(existing, newEvents, source) {
           const newPriority = SOURCE_PRIORITY[event.sourceType] || 0;
           const richerNote = (event.note || '').length > (closureDupe.note || '').length;
           if (newPriority > existingPriority || (newPriority === existingPriority && richerNote)) {
+            // Keep the existing (already-reconciled) date: an old article's
+            // pre-extension date must not overwrite it, or the pre-write
+            // self-heal can drop the closure as contradicted-by-later-arrival
+            // before the audit re-reconciles. Reconcile owns the date.
+            const reconciledDate = closureDupe.date;
             mergePreservingAddedDate(closureDupe, event);
+            if (reconciledDate) closureDupe.date = reconciledDate;
             changes.push({ showId, type: 'upgraded-closure', event, source });
             stats.eventsUpgraded++;
           }
           // else: keep existing record untouched (write-once addedDate preserved)
           continue;
         }
-        // No existing closure on this date — fall through to add it as new.
+        // No existing closure — fall through to add it as new.
       }
 
       // Check for exact duplicate

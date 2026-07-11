@@ -60,3 +60,59 @@ describe('needsLateStarReanchor', () => {
     assert.equal(needsLateStarReanchor(weStar({ isNonReview: true })), null);
   });
 });
+
+// 2026-07-11 extension: files whose scoreSource is an extraction label (scored
+// pre-v6, or the v6 stamp was overwritten by a later star extraction) but which
+// carry an ensemble LLM verdict. The rebuild serves their flat star conversion
+// (P0.5) instead of a within-band sentiment score — they must be re-anchored.
+// (Found via war-horse-west-end-2026 telegraph: LLM 91 high-conf + ensemble,
+// scoreSource='telegraph-svg-stars', site showed flat 100.)
+describe('needsLateStarReanchor — non-v6 stamp extension', () => {
+  const overwritten = (over = {}) => ({
+    scoreSource: 'telegraph-svg-stars', originalScore: '5/5 stars',
+    category: 'west-end',
+    llmScore: { score: 91 }, ensembleData: { models: 3 },
+    ...over,
+  });
+
+  test('flags an extraction-stamped WE review with an ensemble LLM verdict → 5/5 band', () => {
+    const r = needsLateStarReanchor(overwritten());
+    assert.ok(r && r.band, 'should return a band');
+    assert.equal(r.band.floor, 91); assert.equal(r.band.ceiling, 100);
+  });
+
+  test('does NOT flag when llmScore.band already present (anchored before; loop-proof marker)', () => {
+    assert.equal(needsLateStarReanchor(overwritten({
+      llmScore: { score: 94, band: { floor: 91, ceiling: 100 } },
+    })), null);
+  });
+
+  test('does NOT flag without ensembleData (single-model — upgrade path handles those)', () => {
+    assert.equal(needsLateStarReanchor(overwritten({ ensembleData: undefined })), null);
+  });
+
+  test('does NOT flag without any LLM verdict (star-only file, no prose to sentiment-read)', () => {
+    assert.equal(needsLateStarReanchor(overwritten({ llmScore: undefined, ensembleData: undefined })), null);
+  });
+
+  test('does NOT flag a low-reliability extraction stamp (css-stars)', () => {
+    assert.equal(needsLateStarReanchor(overwritten({ scoreSource: 'css-stars' })), null);
+  });
+
+  test('does NOT flag on Broadway (not an anchored market)', () => {
+    assert.equal(needsLateStarReanchor(overwritten({ category: 'broadway' })), null);
+  });
+
+  test('does NOT flag an adjudicated review (adjudication wins at read time)', () => {
+    assert.equal(needsLateStarReanchor(overwritten({ adjudicatedScore: 72 })), null);
+  });
+
+  test('does NOT flag a bare-numeric aggregator relay (no star string anywhere)', () => {
+    // Show Score writes originalScore=100 as a NUMBER — detectBandFromReviewFile
+    // only reads string originalScore, so no band → no flag. The rebuild-side
+    // guard (isUnambiguousRatingString) keeps the LLM score for these.
+    assert.equal(needsLateStarReanchor(overwritten({
+      scoreSource: 'llm-gemini', originalScore: 100,
+    })), null);
+  });
+});

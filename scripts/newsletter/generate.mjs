@@ -2045,6 +2045,11 @@ const newsworthyInputs = {
       const show = shows.find(s => s.id === showId);
       if (!show || show.category !== 'broadway' || isOperaShow(show) || show.status !== 'open' || !show.closingDate) continue;
       if (show.closingDate <= weekEndStr) continue;
+      // Parity with announcedClosingsSection: a closing already featured in a
+      // recent issue is suppressed from the body, so the lede must not
+      // resurface it either (Titanique 2026-07-11: lede said "sets closing
+      // date" while the body correctly skipped it via recentAnnouncedIds).
+      if (recentAnnouncedIds.has(show.id)) continue;
       out.push({ show });
     }
     return out;

@@ -134,15 +134,21 @@ function dedupeByPersonShow(events) {
     } else if (newAdded && !oldAdded) {
       winner = event;
     }
+    // Capture the loser BEFORE the pin below may replace `winner` with a copy —
+    // an identity check after that point would misresolve the loser.
+    const loser = winner === event ? existing : event;
+
+    // addedDate is write-once (first-seen): content recency picks the winning
+    // record, but the collapsed event must keep the EARLIEST addedDate. A
+    // re-extraction of an old article otherwise re-stamps it to today and the
+    // newsletter re-announces a months-old closing (Moulin Rouge, 2026-07-11).
+    const pinnedAdded = earliestAddedDate(existing.addedDate, event.addedDate);
+    if (pinnedAdded != null && winner.addedDate !== pinnedAdded) {
+      winner = { ...winner, addedDate: pinnedAdded };
+    }
 
     const newRole = winner.role && winner.role !== 'Unknown' ? winner.role : '';
-    const otherRole =
-      (winner === event ? existing.role : event.role) &&
-      (winner === event ? existing.role : event.role) !== 'Unknown'
-        ? winner === event
-          ? existing.role
-          : event.role
-        : '';
+    const otherRole = loser.role && loser.role !== 'Unknown' ? loser.role : '';
     if (newRole.length === 0 && otherRole.length > 0) {
       winner = { ...winner, role: otherRole };
     }
@@ -419,15 +425,24 @@ function mergePreservingAddedDate(target, source) {
 
 /**
  * Find an existing closure event in `upcoming` that is the same closing as
- * `event`. A production has exactly ONE closure per closing date, but the
- * captured `name`/`role` vary by source ("Death Becomes Her" vs the showId
- * "death-becomes-her-2024"), so name/role-keyed dedup misses it and a second
- * closure row leaks in. Match closures on `date` alone. Returns the existing
- * closure or null. Only meaningful for `event.type === 'closure'`.
+ * `event`. A production has exactly ONE upcoming closure, but the captured
+ * `name`/`role`/`date` all vary by source ("Death Becomes Her" vs the showId
+ * "death-becomes-her-2024"; an old article carries the pre-extension closing
+ * date while the on-file event was reconciled to the canonical shows.json
+ * date), so name/role- or date-keyed matching misses it and a second closure
+ * row leaks in — which reconcileClosure then rewrites into an identical-date
+ * twin that re-stamps addedDate via dedupe (Ragtime/Moulin Rouge, 2026-07-11).
+ * Match ANY existing closure; reconcileClosure owns the date. Returns the
+ * existing closure or null. Only meaningful for `event.type === 'closure'`.
  */
 function findClosureDupe(upcoming, event) {
   if (!event || event.type !== 'closure' || !event.date) return null;
-  return (upcoming || []).find(e => e.type === 'closure' && e.date === event.date) || null;
+  // Legacy data may still hold two closure rows; merge into the FIRST-SEEN one
+  // (earliest addedDate) so the target is deterministic, not file-order.
+  const closures = (upcoming || []).filter(e => e.type === 'closure');
+  if (closures.length === 0) return null;
+  return closures.reduce((best, e) =>
+    (earliestAddedDate(best.addedDate, e.addedDate) === best.addedDate ? best : e));
 }
 
 /**
