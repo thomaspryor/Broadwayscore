@@ -103,7 +103,10 @@
     "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json",
     "cats-the-jellicle-ball-2026/nysr--unknown.json",
     "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json",
-    "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json"
+    "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
+    "dog-day-afternoon-2026/one-minute-critic--matthew-wexler.json",
+    "music-city-off-broadway-2026/deadline--greg-evans.json",
+    "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
   ],
   "failed": [
     "iceboy-regional-2026/chicago-sun-times--mike-davis-wbez.json",
@@ -815,7 +818,14 @@
     "cats-the-jellicle-ball-2026/huffpost--david-finkle.json",
     "cats-the-jellicle-ball-2026/nbcny--robert-kahn.json",
     "cats-the-jellicle-ball-2026/northjerseycom--robert-feldberg.json",
-    "cats-the-jellicle-ball-2026/telegraph--dominic-cavendish.json"
+    "cats-the-jellicle-ball-2026/telegraph--dominic-cavendish.json",
+    "cats-the-jellicle-ball-2026/west-end-wilma--unknown.json",
+    "cats-the-jellicle-ball-2026/thewrap--jason-clark.json",
+    "cats-the-jellicle-ball-2026/thewrap--robert-hofler.json",
+    "cats-the-jellicle-ball-2026/queerty--matthew-wexler.json",
+    "music-city-off-broadway-2026/observer--unknown.json",
+    "music-city-off-broadway-2026/dc-theater-arts--isabella-artino.json",
+    "music-city-off-broadway-2026/maryland-theatre-guide--posted-by.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -893,11 +903,34 @@
       "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json",
       "cats-the-jellicle-ball-2026/nysr--unknown.json",
       "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json",
-      "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json"
+      "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
+      "dog-day-afternoon-2026/one-minute-critic--matthew-wexler.json",
+      "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
     ],
     "amp": [],
-    "browserbase": [],
-    "directCookies": [],
+    "browserbase": [
+      "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+      "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+      "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
+      "music-city-off-broadway-2026/deadline--greg-evans.json"
+    ],
+    "directCookies": [
+      "jesus-christ-superstar-west-end-2026/times-uk--ann-treneman.json",
+      "jesus-christ-superstar-west-end-2026/times-uk--dan-cairns.json",
+      "jesus-christ-superstar-west-end-2026/times-uk--rachel-halliburton.json",
+      "jesus-christ-superstar-west-end-2026/times-uk--thomas-w-hodgkinson.json",
+      "much-ado-about-nothing-globe-off-west-end-2026/times-uk--ann-treneman.json",
+      "much-ado-about-nothing-globe-off-west-end-2026/times-uk--clive-davis.json",
+      "much-ado-about-nothing-globe-off-west-end-2026/times-uk--dominic-maxwell.json",
+      "much-ado-about-nothing-globe-off-west-end-2026/times-uk--rachel-halliburton.json",
+      "glengarry-glen-ross-west-end-2026/times-uk--ann-treneman.json",
+      "glengarry-glen-ross-west-end-2026/times-uk--benedict-nightingale.json",
+      "glengarry-glen-ross-west-end-2026/times-uk--dominic-maxwell.json",
+      "glengarry-glen-ross-west-end-2026/times-uk--maxie-szalwinska.json",
+      "jesus-christ-superstar-west-end-2026/times-uk--rachel-halliburton.json",
+      "jesus-christ-superstar-west-end-2026/times-uk--ann-treneman.json",
+      "jesus-christ-superstar-west-end-2026/times-uk--thomas-w-hodgkinson.json"
+    ],
     "scrapingbee": [
       "iceboy-regional-2026/chicagotribune--unknown.json",
       "giulia-the-poison-queen-of-palermo-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
@@ -941,7 +974,7 @@
     ]
   },
   "startTime": "2026-07-10T17:43:10.129Z",
-  "lastProcessed": "cats-the-jellicle-ball-2026/telegraph--dominic-cavendish.json",
+  "lastProcessed": "music-city-off-broadway-2026/maryland-theatre-guide--posted-by.json",
   "log": [
     {
       "t": "2026-07-11T01:48:19.522Z",
@@ -964,6 +997,17 @@
       "t": "2026-07-11T03:47:30.829Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-07-11T05:51:35.623Z",
+      "event": "bb-session",
+      "session": "888bc2b9",
+      "url": "https://deadline.com/2026/04/music-city-jt-harding-musical-off-broadway-12368618"
+    },
+    {
+      "t": "2026-07-11T05:51:36.156Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
