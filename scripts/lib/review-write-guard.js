@@ -290,18 +290,24 @@ function isIntentionalClear(field, localData, committedData) {
  * canonical article. Honored generically for ANY field it names — but only
  * while the record still carries the url the clear was made for, so a later
  * URL era's legitimate values aren't suppressed by a stale breadcrumb. When the
- * caller supplies the committed/remote record, a same-era committed value
- * (committed.url == local.url) is never suppressed: it was written after (or
- * independent of) the URL change, so restoring it heals real data loss —
- * without this, a post-refetch fullText lost to a later rebase would stay lost
- * because the old breadcrumb still names 'fullText'.
+ * caller supplies the committed/remote record, a same-era committed value is
+ * never suppressed: it was written after the URL change, so restoring it heals
+ * real data loss — without this, a post-refetch fullText lost to a later
+ * rebase would stay lost because the old breadcrumb still names 'fullText'.
+ * "Same era" requires the committed record to carry a matching breadcrumb
+ * (same `to`, same url) — not merely a matching url. Frankenstein committed
+ * states with the NEW url but old-era field values exist in history (produced
+ * by the pre-invariant restores this machinery remediates, JCS 2026-07-08..10);
+ * keying on url alone would restore that contamination on every rebase.
  */
 function _urlChangeCleared(field, localData, committedData) {
   const b = localData._urlChangedClear;
   if (!b || !Array.isArray(b.cleared) || !b.cleared.includes(field)) return false;
   try {
-    if (committedData && committedData.url && localData.url
-        && _normalizeUrlForCollision(committedData.url) === _normalizeUrlForCollision(localData.url)) {
+    const cb = committedData && committedData._urlChangedClear;
+    if (cb && cb.to && committedData.url && localData.url
+        && _normalizeUrlForCollision(committedData.url) === _normalizeUrlForCollision(localData.url)
+        && _normalizeUrlForCollision(String(cb.to)) === _normalizeUrlForCollision(committedData.url)) {
       return false;
     }
   } catch { /* fall through to the era gate */ }
@@ -431,16 +437,29 @@ function safeWriteReview(filePath, newData, options = {}) {
       // replaceable via force (mirrors mergeReviews' blockUrlChange).
       {
         const { urlCanonicallyChanged, applyUrlChangeInvariant } = require('./url-change-invariant');
-        if (urlCanonicallyChanged(existing.url, newData.url)) {
-          if (lockedOverride || existing.urlVerified === true || existing.urlManualOverride === true) {
-            console.warn(`[review-write-guard] blocked url change on ${path.basename(filePath)} (${lockedOverride ? '_locked' : 'urlVerified/urlManualOverride'}): keeping ${existing.url}`);
-            newData.url = existing.url;
-          } else {
-            const inv = applyUrlChangeInvariant(existing, newData, { fileLabel: path.basename(filePath) });
-            for (const f of inv.cleared) {
-              const i = preserved.indexOf(f);
-              if (i !== -1) preserved.splice(i, 1);
-            }
+        // The protection block must key on RAW url difference, not on
+        // urlCanonicallyChanged: that predicate deliberately returns false for
+        // garbage incoming urls ('undefined', non-http), and gating the block
+        // on it would let a garbage url silently overwrite a verified/locked
+        // url (ship-check 2026-07-11 regression catch). A garbage incoming url
+        // never replaces a real existing url on ANY file.
+        const existingUrlReal = typeof existing.url === 'string' && existing.url
+          && !existing.url.includes('undefined');
+        const incomingUrlGarbage = typeof newData.url === 'string' && newData.url
+          && (newData.url.includes('undefined') || !/^https?:\/\//i.test(newData.url));
+        const rawUrlDiffers = existingUrlReal && typeof newData.url === 'string' && newData.url
+          && _normalizeUrlForCollision(newData.url) !== _normalizeUrlForCollision(existing.url);
+        if (rawUrlDiffers && incomingUrlGarbage) {
+          console.warn(`[review-write-guard] rejecting garbage url ${JSON.stringify(newData.url)} on ${path.basename(filePath)}: keeping ${existing.url}`);
+          newData.url = existing.url;
+        } else if (rawUrlDiffers && (lockedOverride || existing.urlVerified === true || existing.urlManualOverride === true)) {
+          console.warn(`[review-write-guard] blocked url change on ${path.basename(filePath)} (${lockedOverride ? '_locked' : 'urlVerified/urlManualOverride'}): keeping ${existing.url}`);
+          newData.url = existing.url;
+        } else if (urlCanonicallyChanged(existing.url, newData.url)) {
+          const inv = applyUrlChangeInvariant(existing, newData, { fileLabel: path.basename(filePath) });
+          for (const f of inv.cleared) {
+            const i = preserved.indexOf(f);
+            if (i !== -1) preserved.splice(i, 1);
           }
         }
       }

@@ -235,6 +235,7 @@ module.exports = {
   parseLetterGrade,
   parseNumericRating,
   parseOriginalScore,
+  getStarScaleForOutlet,
   normalizeLlmResult,
   LETTER_GRADE_OUTLETS,
   // Re-export for callers that need the raw map

@@ -131,8 +131,8 @@ For full details on any subsystem: `memory/CLAUDE-reference.md`
 ### 15. Test Extraction Pattern (MANDATORY for new logic tests)
 **Never copy logic into test files — always `require()` the real function.** Extract pure decision functions to `scripts/lib/` (e.g. `review-guards.js`); `module.exports` and `require()` in the test. Production code changes → test fails — that's the point. When fixing inline pipeline logic: extract → export → wire back → test.
 
-### 16. Propose Memory Entries Inline (at session end)
-During `/wrap-up` / `/done`, propose a full `memory/feedback_*.md` entry (frontmatter + Why + How-to-apply, quality of `feedback_404_not_terminal.md`) if you saw: 2+ corrections on same topic, 10+ re-reads of same file, or explicit "remember this / always do X / never do Y." Show the proposed entry; user replies `y` to commit. **Why:** post-hoc cron miners ship templated slop; in-session you saw the incident. Teardown rationale: 2026-05-27.
+### 16. Memory Entries: Encode First, Write Rarely
+**Never offer to "commit a memory file to the repo"** — the session-stop hook (`sync-memory-to-repo.sh --commit`) mirrors local memory to `cloud-memory/` AND commits+pushes it. The y/n proposal ceremony is retired (2026-07-11). Write a local memory entry ONLY if all three pass: (1) **encode-first** — the lesson can NOT be a code/test/hook/CI change (exception: a triage recipe — how to recognize/diagnose a symptom — when the failure has 2+ independent silent causes); (2) **counterfactual** — name the specific future action that changes; (3) **recall** — a future session hitting this mistake would plausibly surface the file from its description. **No new memory is the normal session outcome.** A memory entry never satisfies "Prevention added" when code-level prevention was possible. "Remember this" from the user → write it, no ceremony.
 
 ### 17. Email Broadcast Safety (MANDATORY — NO EXCEPTIONS)
 See `memory/email-broadcast-rules.md` for full incident history.
@@ -147,4 +147,4 @@ CLAUDE.md (**limit: 150 lines**) and MEMORY.md (**limit: 180 lines**) load every
 New topics → `memory/{topic}.md` + one-line pointer. Completed tasks → `memory/completed-migrations.md`.
 
 ## Cloud sessions
-If you're a cloud Claude Code session (iOS, Mac app, claude.ai/code) you don't have `~/.claude/`. Read `.claude/CLOUD.md` first, then `cloud-memory/INDEX.md`. Run `node scripts/check-cloud-secrets.js` to verify required secrets are present.
+If you're a cloud Claude Code session (iOS, Mac app, claude.ai/code) you don't have `~/.claude/`. Read `.claude/CLOUD.md` first, then `cloud-memory/MEMORY.md`. Run `node scripts/check-cloud-secrets.js` to verify required secrets are present.

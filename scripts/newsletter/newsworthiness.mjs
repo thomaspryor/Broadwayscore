@@ -254,9 +254,17 @@ export function buildSubjectFromCandidates(candidates, opts = {}) {
 // we don't get three "X recoups" sentences in a row. Also rotates verdict
 // phrasing — two openings in the same week with the same tier shouldn't both
 // say "opens to decent reviews"; the second uses the next pool variant.
-export function buildLedeFromCandidates(candidates) {
+export function buildLedeFromCandidates(candidates, maxSentences = 3) {
+  const r = buildLedeSentences(candidates, maxSentences);
+  return r ? r.sentences.join(' ') : null;
+}
+
+// Sentence-level variant: returns { sentences, kinds } so the expanded-lede
+// composer in generate.mjs can add box-office / coming-up context without
+// duplicating a kind that already made the cut.
+export function buildLedeSentences(candidates, maxSentences = 3) {
   if (!candidates.length) return null;
-  const unique = dedupeByKind(candidates).slice(0, 3);
+  const unique = dedupeByKind(candidates).slice(0, maxSentences);
   // Per-tier counter so the Nth occurrence picks variantIndex N.
   const tierSeen = {};
   const sentences = unique.map((c) => {
@@ -270,7 +278,7 @@ export function buildLedeFromCandidates(candidates) {
     }
     return headlineToSentence({ ...c, headline });
   });
-  return sentences.join(' ');
+  return { sentences, kinds: unique.map(c => c.kind) };
 }
 
 function headlineToSentence(c) {

@@ -15,3 +15,6 @@ Three parallel sessions worked on the same parent Notion card (WE long-runner CV
 - Cheap heuristic: `node scripts/notion-brain.js search --status "In progress"` — if two cards reference the same parent ID, coordinate or narrow scope.
 
 **Why:** Engineering the "right" fix twice is waste; the second implementation never ships regardless of quality. The small upfront check (30s of greps) prevents hour-scale duplicate work.
+
+## test.yml unit-test batch is a merge-conflict magnet (2026-07-11)
+`.github/workflows/test.yml`'s unit-test batch is ONE giant `node --test <200 files>` line. When 2+ parallel worktree sessions each register a new `*.test.mjs`, that line conflicts on EVERY merge, and a careless conflict resolution silently DROPS a session's registration → the `orphan-test` audit (`Audit — no orphan unit tests`) fails main red on the next push, and/or the same file gets registered twice (harmless but runs twice). This session lost `we-gate-proving.test.mjs`'s registration in a merge and hit it. Fix pattern: after ANY merge that touched test.yml, re-grep `grep -c '<yourtest>.test.mjs' test.yml` (expect exactly 1) before pushing; resolve conflicts by taking origin's line and re-inserting your test next to a stable anchor (e.g. `bww-rr-discover.test.mjs`), never by picking one whole side.

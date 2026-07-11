@@ -77,7 +77,7 @@ Check for:
 3. **Write the Outcome using the MANDATORY template below.** Check the card's **Type** field and use the matching variant. Every section must be filled — no placeholders, no "N/A", no skipping. If a section truly doesn't apply, write "None identified" with a one-sentence explanation.
 
    **Type-specific additions** (add these sections AFTER the standard 4):
-   - **Fix:** Add `### Root cause` and `### Prevention added`
+   - **Fix:** Add `### Root cause` and `### Prevention added` (prevention = a code/test/hook/CI change; a memory file alone doesn't count — CLAUDE.md rule 16)
    - **New Feature:** Add `### User-facing changes` and `### How to verify`
    - **Market Expansion:** Add `### Shows affected` and `### Aggregators used`
    - **Data Quality:** Add `### Data before/after` and `### Validation added`
@@ -221,6 +221,8 @@ This phase combines documentation updates with lessons learned. For each item be
 - It's likely to recur in future sessions
 - It's not already covered by existing rules
 - It can be stated in one imperative sentence with brief context
+
+**Memory-entry criteria (CLAUDE.md rule 16 — encode first, write rarely):** a memory file must pass all three: (1) the lesson could NOT be encoded as code/test/hook/CI gate — if you already encoded the fix, the memory is redundant, skip it; (2) you can name the specific future action that changes; (3) a future session hitting the same mistake would plausibly recall the file from its description. **"No new learnings worth saving" is the normal outcome — say that and move on.** Never offer to commit memory files to the repo; the session-stop hook auto-syncs them to `cloud-memory/`.
 
 **MEMORY.md size check** — if you touched MEMORY.md this session, verify it's still under cap:
 ```bash
