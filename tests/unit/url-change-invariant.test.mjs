@@ -156,6 +156,38 @@ describe('applyUrlChangeInvariant (pure)', () => {
     assert.equal(merged.publishDate, undefined);
   });
 
+  test('auto date guard is preserved when a genuinely NEW publishDate survives', () => {
+    // Clearing the flag while a date remains reds the validate-data
+    // [wrong-production-by-date] gate until the next rebuild. With a fresh
+    // date the rebuild re-evaluates the guard; the flag rides along until then.
+    const existing = {
+      url: DOLLY_URL,
+      publishDate: '2023-10-12',
+      wrongProduction: true,
+      wrongProductionNote: 'Date guard: review 2023-10-12 is 907d before 2026-05-11',
+    };
+    const merged = { ...existing, url: JCS_URL, publishDate: '2026-07-07' };
+    applyUrlChangeInvariant(existing, merged, {});
+    assert.equal(merged.publishDate, '2026-07-07', 'fresh date survives');
+    assert.equal(merged.wrongProduction, true, 'flag preserved until rebuild re-evaluates the new date');
+  });
+
+  test('format-echoed publishDate clears together with its date guard', () => {
+    const existing = {
+      url: DOLLY_URL,
+      publishDate: '2023-10-12',
+      wrongProduction: true,
+      wrongProductionNote: 'Date guard: review 2023-10-12 is 907d before 2026-05-11',
+    };
+    // Aggregator re-supplies the SAME date in a different format — that's the
+    // old article's date, not a fresh one.
+    const merged = { ...existing, url: JCS_URL, publishDate: 'October 12, 2023' };
+    applyUrlChangeInvariant(existing, merged, {});
+    assert.equal(merged.publishDate, undefined, 'format-echoed stale date must clear');
+    assert.equal(merged.wrongProduction, undefined, 'date guard clears with its basis');
+    assert.ok(merged._urlChangedClear.cleared.includes('publishDate'));
+  });
+
   test('garbage incoming URL never triggers a state wipe', () => {
     assert.equal(urlCanonicallyChanged(DOLLY_URL, 'https://x.com/undefined/review'), false);
     assert.equal(urlCanonicallyChanged(DOLLY_URL, 'N/A'), false);
