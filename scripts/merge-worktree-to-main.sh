@@ -73,7 +73,9 @@ restore_stash() {
   [ "$STASHED" = 1 ] || return 0
   if ! g stash pop >/dev/null 2>&1; then
     # Conflicts are only ever in auto-generated state files — take the committed
-    # version (the daemon regenerates them) and drop the stash.
+    # version (the daemon regenerates them) and drop the stash. Discarding
+    # cloud-memory/ is safe: it's a mirror of local memory, regenerated and
+    # committed by session-stop's sync-memory-to-repo.sh --commit.
     log "stash pop conflicted on auto-gen files — taking committed version"
     g checkout HEAD -- cloud-memory/ data/audit/ public/data/admin/ >/dev/null 2>&1 || true
     g checkout HEAD -- . >/dev/null 2>&1 || true

@@ -81,9 +81,26 @@ function starBand(starScore) {
 }
 
 // Pull the captured star string from a review-text record (first that parses).
+// Outlet-scale aware (2026-07-11): a bare "4 stars" from a /4-scale outlet
+// (NY Post) is 100, not 80. parseStar() has no outlet context and defaulted
+// to /5, so the audit reported the CORRECT rebuild conversion as a HARD error
+// (betrayal-2019 + back-to-the-future-2023 nypost false positives). Use the
+// same registry starScale hook the scorer uses (score-parsers.js) whenever
+// the raw string carries no explicit denominator.
+const { getStarScaleForOutlet } = require('./lib/score-parsers');
 function capturedStar(j) {
   for (const k of ['originalScore', 'originalRating', 'aggregatorStars']) {
-    if (j[k]) { const p = parseStar(j[k]); if (p) return { raw: j[k], ...p, field: k }; }
+    if (j[k]) {
+      const p = parseStar(j[k]);
+      if (p) {
+        const hasExplicitDenominator = /\/\s*\d|out of\s+(\d|five|four|ten)/i.test(String(j[k]));
+        const scale = getStarScaleForOutlet(j.outletId);
+        if (!hasExplicitDenominator && p.stars != null && scale && scale !== p.outOf && p.stars <= scale) {
+          return { raw: j[k], score: Math.round((p.stars / scale) * 100), stars: p.stars, outOf: scale, field: k };
+        }
+        return { raw: j[k], ...p, field: k };
+      }
+    }
   }
   // originalScoreNormalized is already 0-100 (no raw star string).
   if (Number.isFinite(j.originalScoreNormalized)) {
