@@ -408,7 +408,7 @@ async function main() {
           value: `https://broadwayscorecard.com/show/${p.entry.id} — roundup: ${p.candidate.sourceUrl || 'n/a'}`,
         })),
       });
-      console.log(sent ? 'Sent regional go-live email.' : '::warning::regional go-live email failed to send (promotion unaffected)');
+      console.log(sent ? 'Sent regional go-live email.' : 'Regional go-live email not sent (info severity — actionable-only policy; promotion unaffected, durable record is the promotion log).');
     } catch (e) {
       console.warn(`::warning::regional go-live email threw: ${e.message} (promotion unaffected)`);
     }
