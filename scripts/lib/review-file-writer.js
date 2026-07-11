@@ -496,7 +496,15 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   if (input.url && fields.allowCrossShowUrl !== true) {
     const owners = findCrossShowOwners(input.url, showId, reviewTextsDir);
     const verdict = shouldBlockCrossShowCreate(owners);
-    if (verdict.block) {
+    // Reroute exemption: if Guard A just rerouted this write AWAY from the
+    // owning show (owner is in the visited chain), the market-routing decision
+    // explicitly supersedes the owner's copy — blocking here would discard the
+    // review entirely (rerouted write skipped, nothing written anywhere; both
+    // ship-check reviewers flagged this interaction). The origin's stale copy
+    // is the cross-show audit's to reconcile.
+    if (verdict.block && _rerouteVisited && _rerouteVisited.has(verdict.owner.showId)) {
+      console.warn(`  ⚠️  Cross-show URL ownership: owner ${verdict.owner.showId} is in this write's reroute chain — allowing create under ${showId} (routing supersedes ownership)`);
+    } else if (verdict.block) {
       console.warn(`  ⛔ Cross-show URL ownership: ${input.url} is live at ${verdict.owner.showId}/${verdict.owner.file} — refusing new file under ${showId}`);
       return { action: 'skipped', reason: `cross-show-url-owned:${verdict.owner.showId}` };
     }
@@ -535,7 +543,10 @@ function createOrMergeReviewFile(showId, input, options = {}) {
     safeWriteReview(filepath, newReview, { merge: false });
     // Keep the process-wide ownership index current so a later create in this
     // same run (another show, same URL) hits Guard I without an fs rescan.
-    if (newReview.url) recordUrlOwner(newReview.url, showId, filename, reviewTextsDir);
+    // Pass the record so blocking state reflects any wrongProduction flag
+    // Guard A stamped above — a flagged create must not poison the cache as a
+    // live owner and block the legitimate destination show mid-run.
+    if (newReview.url) recordUrlOwner(newReview.url, showId, filename, reviewTextsDir, newReview);
   }
 
   return { action: 'new', filepath };

@@ -41,6 +41,15 @@ function _normalizeUrl(url) {
   return normalizeUrl(url);
 }
 
+// Only real http(s) article URLs participate in ownership. The corpus holds
+// 139+ unflagged files with non-http "urls" (critic-profile hrefs like
+// /people/ben-brantley/ a scraper grabbed instead of the article, shared
+// across up to 7 shows) — indexing those would make Guard I skip entire
+// reviews over junk that used to just land as a fixable bad-url stub.
+function _isOwnableUrl(url) {
+  return typeof url === 'string' && /^https?:\/\//i.test(url) && !url.includes('undefined');
+}
+
 // A copy of the URL under another show BLOCKS creation only when it is live
 // there: not flagged as wrong-show/wrong-production, and not a multi-show
 // (combined/roundup) article.
@@ -75,7 +84,7 @@ function buildUrlOwnershipIndex(reviewTextsDir, { force = false } = {}) {
       try {
         data = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
       } catch { continue; }
-      if (!data.url || typeof data.url !== 'string') continue;
+      if (!_isOwnableUrl(data.url)) continue;
       const key = _normalizeUrl(data.url);
       if (!key) continue;
       const entry = { showId, file: f, blocking: _isBlockingOwnerCopy(data) };
@@ -92,7 +101,7 @@ function buildUrlOwnershipIndex(reviewTextsDir, { force = false } = {}) {
  * Empty array when the URL is unclaimed or only claimed by currentShowId.
  */
 function findCrossShowOwners(url, currentShowId, reviewTextsDir) {
-  if (!url || typeof url !== 'string') return [];
+  if (!_isOwnableUrl(url)) return [];
   const map = buildUrlOwnershipIndex(reviewTextsDir);
   const key = _normalizeUrl(url);
   if (!key) return [];
@@ -112,12 +121,16 @@ function shouldBlockCrossShowCreate(owners) {
 /**
  * Incremental index update — call after this process creates a file, so a
  * later create in the same run sees the new owner without an fs rescan.
+ * Pass the written record so blocking state matches _isBlockingOwnerCopy —
+ * a create that Guard A already stamped wrongProduction (or that is a
+ * roundup/combined article) is NOT a live owner and must not block the
+ * legitimate destination show later in the same run.
  */
-function recordUrlOwner(url, showId, file, reviewTextsDir) {
-  if (!url || !_index || _index.dir !== reviewTextsDir) return;
+function recordUrlOwner(url, showId, file, reviewTextsDir, record = null) {
+  if (!_isOwnableUrl(url) || !_index || _index.dir !== reviewTextsDir) return;
   const key = _normalizeUrl(url);
   if (!key) return;
-  const entry = { showId, file, blocking: true };
+  const entry = { showId, file, blocking: record ? _isBlockingOwnerCopy(record) : true };
   const arr = _index.map.get(key);
   if (arr) arr.push(entry); else _index.map.set(key, [entry]);
 }
