@@ -97,6 +97,29 @@ jobs:
             echo "::warning::review-url-cluster audit found $N byline-explosion cluster(s) — reviews likely buried/unscored. Run: node scripts/audit-review-url-clusters.js"
           fi
 
+      - name: Audit star-rating accuracy (HARD blocking-signal, SUSPECT warning)
+        if: always()
+        run: |
+          # Catches displayed scores that contradict the critic's published star:
+          # HARD = star-governed scoreSource whose assignedScore != the star's
+          # conversion (definite conversion bug); SUSPECT = LLM-scored review
+          # >22pts from its captured star (miscaptured star OR a genuine
+          # star/prose gap the anchored rollout will clamp). Was written
+          # 2026-06 but wired into no workflow — 32 out-of-band Broadway scores
+          # accumulated unseen (found 2026-07-11 during NYC rollout simulation).
+          # Non-blocking (::warning) until the NYC anchoring rollout clears the
+          # known backlog; flip to --gate after that lands.
+          OUT=$(node scripts/audit-star-accuracy.js || true)
+          echo "$OUT"
+          HARD=$(echo "$OUT" | grep -oE 'HARD conversion bugs: [0-9]+' | grep -oE '[0-9]+' || echo 0)
+          SUS=$(echo "$OUT" | grep -oE 'SUSPECT captures: [0-9]+' | grep -oE '[0-9]+' || echo 0)
+          if [ "${HARD:-0}" -gt 0 ]; then
+            echo "::warning::star-accuracy audit: $HARD HARD conversion bug(s) — displayed score contradicts the critic's published star. Run: node scripts/audit-star-accuracy.js"
+          fi
+          if [ "${SUS:-0}" -gt 80 ]; then
+            echo "::warning::star-accuracy audit: SUSPECT count ($SUS) grew past baseline 74 — check for a new extraction/scoring regression."
+          fi
+
       - name: Check for changes
         id: changes
         if: always()
