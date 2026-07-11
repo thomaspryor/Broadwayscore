@@ -132,7 +132,12 @@
     "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
     "just-in-time-2025/newyorker--conde-nast.json",
     "buena-vista-social-club-2025/nysr--unknown.json",
-    "the-devil-wears-prada-west-end-2024/times-uk--dominic-maxwell.json"
+    "the-devil-wears-prada-west-end-2024/times-uk--dominic-maxwell.json",
+    "maybe-happy-ending-2024/newyorker--conde-nast.json",
+    "maybe-happy-ending-2024/variety--unknown.json",
+    "maybe-happy-ending-2024/the-contending--frank-j-avella.json",
+    "oh-mary-2024/broadwaynews--brittani-samuel.json",
+    "oh-mary-2024/independent--unknown.json"
   ],
   "failed": [
     "iceboy-regional-2026/chicago-sun-times--mike-davis-wbez.json",
@@ -965,7 +970,12 @@
     "the-devil-wears-prada-west-end-2024/chicagotribune--chris-jones.json",
     "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
     "the-devil-wears-prada-west-end-2024/liam-odell--unknown.json",
-    "the-devil-wears-prada-west-end-2024/nytimes--alexis-soloski.json"
+    "the-devil-wears-prada-west-end-2024/nytimes--alexis-soloski.json",
+    "the-devil-wears-prada-west-end-2024/nypost--johnny-oleksinski.json",
+    "the-devil-wears-prada-west-end-2024/washpost--peter-marks.json",
+    "maybe-happy-ending-2024/washpost--unknown.json",
+    "oh-mary-2024/observer--unknown.json",
+    "oh-mary-2024/british-theatre--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1076,7 +1086,11 @@
       "data/review-texts/oh-mary-west-end-2025/variety--unknown.json",
       "oh-mary-west-end-2025/variety--unknown.json",
       "data/review-texts/oh-mary-west-end-2025/deadline--greg-evans.json",
-      "oh-mary-west-end-2025/deadline--greg-evans.json"
+      "oh-mary-west-end-2025/deadline--greg-evans.json",
+      "data/review-texts/maybe-happy-ending-2024/variety--unknown.json",
+      "maybe-happy-ending-2024/variety--unknown.json",
+      "data/review-texts/maybe-happy-ending-2024/washpost--unknown.json",
+      "maybe-happy-ending-2024/washpost--unknown.json"
     ],
     "directCookies": [
       "jesus-christ-superstar-west-end-2026/times-uk--ann-treneman.json",
@@ -1103,14 +1117,17 @@
       "oh-mary-west-end-2025/nytimes--jesse-green.json",
       "heathers-the-musical-off-broadway-2025/nytimes--ben-brantley.json",
       "just-in-time-2025/newyorker--conde-nast.json",
-      "the-devil-wears-prada-west-end-2024/times-uk--dominic-maxwell.json"
+      "the-devil-wears-prada-west-end-2024/times-uk--dominic-maxwell.json",
+      "oh-mary-2024/broadwaynews--brittani-samuel.json",
+      "oh-mary-2024/independent--unknown.json"
     ],
     "brightdata": [
       "camping-off-broadway-2026/talkinbroadway--unknown.json",
       "the-balusters-2026/broadwayworld--unknown.json",
       "schmigadoon-2026/thewrap--robert-hofler.json",
       "the-fear-of-13-2026/broadwayworld--unknown.json",
-      "giulia-the-poison-queen-of-palermo-off-broadway-2026/thewrap--robert-hofler.json"
+      "giulia-the-poison-queen-of-palermo-off-broadway-2026/thewrap--robert-hofler.json",
+      "maybe-happy-ending-2024/newyorker--conde-nast.json"
     ],
     "archive": [
       "iceboy-regional-2026/chicagotribune--christopher-borrelli.json",
@@ -1124,7 +1141,8 @@
       "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
       "every-brilliant-thing-2026/nydailynews--joe-dziemianowicz.json",
       "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json",
-      "hercules-west-end-2025/times-uk--clive-davis.json"
+      "hercules-west-end-2025/times-uk--clive-davis.json",
+      "maybe-happy-ending-2024/the-contending--frank-j-avella.json"
     ],
     "archiveToday": [
       "data/review-texts/allegra-west-end-2026/cambridge--kathy-baker-johnson.json",
@@ -1147,7 +1165,7 @@
     ]
   },
   "startTime": "2026-07-10T17:43:10.129Z",
-  "lastProcessed": "the-devil-wears-prada-west-end-2024/nytimes--alexis-soloski.json",
+  "lastProcessed": "oh-mary-2024/independent--unknown.json",
   "log": [
     {
       "t": "2026-07-11T01:48:19.522Z",
@@ -1258,6 +1276,28 @@
       "t": "2026-07-11T05:56:59.952Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-11T06:06:55.309Z",
+      "event": "bb-session",
+      "session": "81e2535b",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
+    },
+    {
+      "t": "2026-07-11T06:06:56.611Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-11T06:08:44.887Z",
+      "event": "bb-session",
+      "session": "b891cf47",
+      "url": "https://www.washingtonpost.com/entertainment/theater/2024/11/12/maybe-happy-endi"
+    },
+    {
+      "t": "2026-07-11T06:08:45.453Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }

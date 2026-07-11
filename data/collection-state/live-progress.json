@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-07-11T06:06:26.698Z",
-  "processed": 133,
-  "failed": 965,
-  "successRate": "12.1%",
+  "updatedAt": "2026-07-11T06:09:36.125Z",
+  "processed": 138,
+  "failed": 970,
+  "successRate": "12.5%",
   "tierBreakdown": {
     "playwright": 86,
     "amp": 0,
-    "browserbase": 18,
+    "browserbase": 22,
     "directCookies": 15,
-    "scrapingbee": 8,
-    "brightdata": 5,
+    "scrapingbee": 10,
+    "brightdata": 6,
     "archiveToday": 17,
-    "archive": 12
+    "archive": 13
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-07-11T01:48:19.522Z",
-      "event": "bb-session",
-      "session": "312b355c",
-      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
-    },
-    {
-      "t": "2026-07-11T01:48:20.299Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-07-11T03:47:30.240Z",
-      "event": "bb-session",
-      "session": "f497fe75",
-      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
-    },
-    {
-      "t": "2026-07-11T03:47:30.829Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-07-11T05:51:35.623Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-07-11T05:56:59.952Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-11T06:06:55.309Z",
+      "event": "bb-session",
+      "session": "81e2535b",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
+    },
+    {
+      "t": "2026-07-11T06:06:56.611Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-11T06:08:44.887Z",
+      "event": "bb-session",
+      "session": "b891cf47",
+      "url": "https://www.washingtonpost.com/entertainment/theater/2024/11/12/maybe-happy-endi"
+    },
+    {
+      "t": "2026-07-11T06:08:45.453Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
