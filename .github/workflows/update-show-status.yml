@@ -161,6 +161,20 @@ jobs:
         continue-on-error: true
         run: node scripts/discover-new-shows.js --include-off-broadway --include-west-end --consume-show-score-candidates
 
+      # Regional→Broadway transfer auto-linking: if a just-discovered (or any
+      # existing) Broadway show title-matches a tracked regional tryout and
+      # opened after it, set the reciprocal transferOf/transferredTo pair so
+      # both pages cross-link with the tryout score (feature 2026-07-11).
+      # Pure detection logic + tests: scripts/lib/transfer-detection.js.
+      # Ambiguous matches are emailed, never applied. validate-data (below)
+      # enforces reciprocity before anything pushes.
+      - name: Detect regional→Broadway transfers
+        continue-on-error: true
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/detect-regional-transfers.js --email
+
       # Step 3: Enrich new/incomplete shows with metadata from free APIs
       - name: Enrich shows with TodayTix runtimes
         if: ${{ inputs.skip_discovery != 'true' }}

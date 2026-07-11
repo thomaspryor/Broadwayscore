@@ -133,6 +133,7 @@ jobs:
           SCRAPER_USE_SCRAPINGDOG: '1'
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           set +e  # every failure below is handled explicitly
           # Core data missing (checkout-core-data failed but if:always() ran us):
@@ -165,6 +166,11 @@ jobs:
                   node scripts/scrape-bww-reviews.js --shows="$pid" || true
                 fi
               done
+              # Audience data — the last go-live gap (reddit + mezzanine are
+              # already regional-aware; dispatch keeps their runtime out of
+              # this job). Neither workflow dispatches back — no cascade.
+              gh workflow run update-reddit-sentiment.yml -f shows="$IDS" || echo "::warning::reddit-sentiment dispatch failed"
+              gh workflow run update-mezzanine.yml -f shows="$IDS" || echo "::warning::mezzanine dispatch failed"
             fi
           else
             # Push is refused via the sentinel. Roll back the staging consumption
