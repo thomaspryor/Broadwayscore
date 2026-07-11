@@ -210,8 +210,17 @@ function validateNoDuplicates(shows) {
         if (!target) {
           error(`Show "${s.id}" ${field} "${ref}" does not reference an existing show`);
           transferIssues++;
+        } else if (ref === s.id) {
+          error(`Show "${s.id}" ${field} points at itself`);
+          transferIssues++;
         } else if (target[reciprocal] !== s.id) {
           error(`Show "${s.id}" ${field} "${ref}" is not reciprocated — "${ref}" must set ${reciprocal}: "${s.id}"`);
+          transferIssues++;
+        } else if (field === 'transferOf' && target.category !== 'regional') {
+          error(`Show "${s.id}" transferOf "${ref}" must point at a category:'regional' show (got "${target.category}")`);
+          transferIssues++;
+        } else if (field === 'transferredTo' && s.category !== 'regional') {
+          error(`Show "${s.id}" has transferredTo but is category "${s.category}" — only regional tryouts carry transferredTo`);
           transferIssues++;
         }
       }

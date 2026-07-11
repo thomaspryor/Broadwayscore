@@ -519,7 +519,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
                   lives on Broadway Scorecard so first-time search arrivals don't bounce.
                   When the tryout has a linked Broadway transfer (transferredTo), say so. */}
               {isRegional && (() => {
-                const transfer = show.transferredTo ? getShowById(show.transferredTo) : null;
+                const transfer = (featureFlags.regional && show.transferredTo) ? getShowById(show.transferredTo) : null;
                 return (
                   <p className="text-xs sm:text-sm mb-4 -mt-1 leading-relaxed text-emerald-300/90" data-testid="regional-trust-line">
                     <span className="font-semibold">Regional production</span>
@@ -539,11 +539,16 @@ export default async function ShowPage({ params }: { params: { slug: string } })
 
               {/* Broadway side of a regional→Broadway transfer pair: surface the
                   tryout's critic score (often the only pre-Broadway signal). */}
-              {!isRegional && show.transferOf && (() => {
+              {!isRegional && featureFlags.regional && show.transferOf && (() => {
                 const tryout = getShowById(show.transferOf);
                 if (!tryout) return null;
                 const tryoutVenue = (tryout.venue || '').split(',')[0];
-                const tryoutScore = tryout.criticScore?.score ? Math.round(tryout.criticScore.score) : null;
+                // Same TBD gate as everywhere else — never broadcast a score the
+                // tryout's own page would show as TBD. (ship-check P2)
+                const tCount = tryout.criticScore?.reviewCount || 0;
+                const tT12 = (tryout.criticScore?.tier1Count || 0) + (tryout.criticScore?.tier2Count || 0);
+                const tryoutScore = (tryout.criticScore?.score && hasEnoughReviews(tCount, tryout.category, tT12, false))
+                  ? Math.round(tryout.criticScore.score) : null;
                 return (
                   <p className="text-xs sm:text-sm mb-4 -mt-1 leading-relaxed text-emerald-300/90" data-testid="tryout-link-line">
                     <span className="font-semibold">Pre-Broadway tryout</span>
