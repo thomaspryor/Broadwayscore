@@ -205,9 +205,12 @@ function badgeHtml(score, size = 64, category) {
 
 function smallBadge(score, size = 36, category) {
   const t = scoreTier(score, category);
-  if (!t) return `<div style="display:inline-block;width:${size}px;height:${size}px;border-radius:8px;background:#2a2a38;color:#9ca3af;border:1px solid rgba(255,255,255,0.1);font-size:11px;font-weight:700;line-height:${size}px;text-align:center;">TBD</div>`;
+  // Number font must scale with the box (design-system ScoreBadge ratio ~0.42,
+  // e.g. text-lg/18px in a 44px badge). Was hardcoded 15px, so enlarging the box
+  // left the numbers looking tiny (user, 2026-07-11). TBD is 3 chars → smaller ratio.
+  if (!t) return `<div style="display:inline-block;width:${size}px;height:${size}px;border-radius:8px;background:#2a2a38;color:#9ca3af;border:1px solid rgba(255,255,255,0.1);font-size:${Math.round(size * 0.30)}px;font-weight:700;line-height:${size}px;text-align:center;">TBD</div>`;
   const isGold = t.id === 'gold';
-  const fontSize = 15;
+  const fontSize = Math.round(size * 0.42);
   // Some email clients (notably Gmail Android) don't respect box-sizing:border-box,
   // which makes the 2px gold border push total dimensions to 44px while peers stay
   // at 40px. Compensate by shrinking the inner width/height so total visual = size.
@@ -468,6 +471,17 @@ function criticsTake(showId) {
   return t && t.trim() ? t.trim() : null;
 }
 
+// The site consensus texts run ~130-280 chars (a full 1-2 sentence take) — too
+// long for an email card (user, 2026-07-11). Clamp to a ~2-line teaser at a word
+// boundary; the card already links to the show page for the full take. The cut
+// lands on a natural pivot ("though…", "but…") that invites the click.
+function clampTake(text, max = 140) {
+  if (!text || text.length <= max) return text;
+  const slice = text.slice(0, max + 1);
+  const space = slice.lastIndexOf(' ');
+  return slice.slice(0, space > 0 ? space : max).replace(/[\s,;:.—-]+$/, '') + '…';
+}
+
 // SHOW ROW — uses POSTER image (2:3) on left for vertical fill; audience chip lives in score column under the critic badge
 function showRow(show, opts = {}) {
   const a = aggregateScore(show.id);
@@ -515,9 +529,10 @@ function showRow(show, opts = {}) {
         <div style="font-size:13px;color:#9ca3af;margin-top:2px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${metaVenue}</div>
         ${(() => {
           if (opts.noConsensus || score == null) return '';
-          const take = criticsTake(show.id);
+          const take = clampTake(criticsTake(show.id));
           if (!take) return '';
-          return `<div style="font-size:13px;color:#c7cbd4;margin-top:10px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.06);line-height:1.5;"><span style="color:#d4a574;font-weight:700;">Critics&#8217; Take&nbsp;&nbsp;</span>${take}</div>`;
+          const readMore = show.slug ? ` <a href="${showHref(show)}" style="color:#d4a574;font-weight:600;text-decoration:none;white-space:nowrap;">Read more&nbsp;&rarr;</a>` : '';
+          return `<div style="font-size:13px;color:#c7cbd4;margin-top:10px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.06);line-height:1.5;"><span style="color:#d4a574;font-weight:700;">Critics&#8217; Take&nbsp;&nbsp;</span>${take}${readMore}</div>`;
         })()}
       </td>
       ${scoreCol}
@@ -1472,10 +1487,11 @@ function boxOfficeSection() {
       <td valign="middle" style="padding:7px 0;${borderStyle}">
         <div style="font-size:10px;color:#d4a574;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;">${label}</div>
         <div style="font-size:16px;color:#fff;font-weight:700;margin-top:1px;">${showLink(entry.show, entry.show.title)}</div>
-        <div style="font-size:11px;color:#9ca3af;margin-top:1px;">${[sublabel, vsm].filter(Boolean).join(' · ')}</div>
+        ${sublabel ? `<div style="font-size:11px;color:#9ca3af;margin-top:1px;">${sublabel}</div>` : ''}
       </td>
-      <td valign="middle" width="80" align="right" style="padding:7px 0;${borderStyle}">
+      <td valign="middle" width="90" align="right" style="padding:7px 0;${borderStyle}">
         <div style="font-size:16px;color:#fff;font-weight:700;">${valueStr}</div>
+        ${vsm ? `<div style="margin-top:2px;">${vsm}</div>` : ''}
       </td>
     </tr>`;
   }
@@ -2130,7 +2146,7 @@ const _subjectRaw = process.env.SUBJECT_OVERRIDE || buildSubjectFromCandidates(n
 //   short            — the original 1-3 sentence lede
 // Context lines are deterministic (no LLM): derived from the same data the
 // Box Office / Coming Up / Closing sections just rendered.
-const LEDE_STYLE = process.env.NEWSLETTER_LEDE_STYLE || 'expanded-brief';
+const LEDE_STYLE = process.env.NEWSLETTER_LEDE_STYLE || 'short';
 // Each context builder returns { tag, text, brief }: `text` is a full prose
 // sentence (paragraph styles); `brief` is a compact fragment for the bullet
 // strip, phrased so it doesn't repeat its own tag.
