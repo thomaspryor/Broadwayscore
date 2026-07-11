@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-11T20:07:12.482Z",
+    "generatedAt": "2026-07-11T20:30:04.560Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -16,7 +16,7 @@
   "flagged": [
     {
       "path": "data/audit/processed-feedback.json",
-      "churn": 97
+      "churn": 96
     },
     {
       "path": "data/audit/validation-baseline.json",
@@ -34,23 +34,23 @@
   "exempt": [
     {
       "path": "public/data/shows/jesus-christ-superstar-west-end-2026.json",
-      "churn": 116
+      "churn": 115
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 112
+      "churn": 113
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 112
+      "churn": 113
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 112
+      "churn": 113
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 102
+      "churn": 101
     },
     {
       "path": "public/data/shows/a-walk-on-the-moon-off-broadway-2026.json",
@@ -62,15 +62,15 @@
     },
     {
       "path": "public/opening-night-status.json",
-      "churn": 79
+      "churn": 80
     },
     {
       "path": "data/llm-scoring-garbage-skips.json",
-      "churn": 70
+      "churn": 69
     },
     {
       "path": "data/commercial-rss-state.json",
-      "churn": 61
+      "churn": 60
     },
     {
       "path": "public/data/shows/a-midsummer-nights-dream-west-end-2026.json",
@@ -96,22 +96,22 @@
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 930,
+      "churn": 929,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 915,
+      "churn": 914,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 588,
+      "churn": 590,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 436,
+      "churn": 437,
       "mergeAttr": "union"
     },
     {
@@ -126,17 +126,17 @@
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 164,
+      "churn": 165,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 124,
+      "churn": 123,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 112,
+      "churn": 113,
       "mergeAttr": "ours"
     },
     {
@@ -171,7 +171,7 @@
     },
     {
       "path": "data/audit/wrong-production-audit.json",
-      "churn": 79,
+      "churn": 80,
       "mergeAttr": "ours"
     },
     {
@@ -191,17 +191,17 @@
     },
     {
       "path": "data/audit/gap-audit-checkpoint.json",
-      "churn": 58,
+      "churn": 57,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/show-review-gap.json",
-      "churn": 58,
+      "churn": 57,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/unknown-aggregator-outlets.json",
-      "churn": 58,
+      "churn": 57,
       "mergeAttr": "ours"
     },
     {
@@ -216,7 +216,7 @@
     },
     {
       "path": "data/audit/poller-backoff/tender-off-west-end-2026.json",
-      "churn": 52,
+      "churn": 53,
       "mergeAttr": "ours"
     },
     {
@@ -226,7 +226,7 @@
     },
     {
       "path": "data/audit/poller-backoff/allegra-west-end-2026.json",
-      "churn": 48,
+      "churn": 49,
       "mergeAttr": "ours"
     },
     {
