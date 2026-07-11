@@ -314,6 +314,16 @@ function loadBaselineScoring() {
   if (!fs.existsSync(baselinePath)) {
     throw new Error(`Baseline rebuild-helpers.js missing after git archive at ${baselinePath}`);
   }
+  // Give the baseline libs the repo's data/ directory. score-parsers lazy-loads
+  // data/outlet-registry.json via __dirname/../../data — inside the tmpDir
+  // extract that path doesn't exist, so outlet star scales (NY Post /4) fell
+  // back to /5 and the BASELINE mis-scored every outlet-scale review, reporting
+  // phantom flips the working tree didn't cause (4 false NY Post flips,
+  // 2026-07-11). Symlink is read-only usage; tmpDir is cleaned after the run.
+  const dataLink = path.join(tmpDir, 'data');
+  if (!fs.existsSync(dataLink)) {
+    fs.symlinkSync(path.join(REPO_ROOT, 'data'), dataLink, 'dir');
+  }
   // Purge any previously cached module under this tmpDir path (should be none,
   // but be defensive in case the script is imported in a long-running process).
   for (const cached of Object.keys(require.cache)) {
