@@ -256,6 +256,21 @@ describe('safeWriteReview integration', () => {
     assert.equal(written.wrongShow, true, 'no URL change — no clearing');
   });
 
+  test('protocol-less variant of the same article never replaces the real url', () => {
+    // 'telegraph.co.uk/x' normalizes EQUAL to 'https://telegraph.co.uk/x', so
+    // a normalized-difference gate misses it — raw-string comparison must
+    // reject it (ship-check 2026-07-11).
+    const filePath = path.join(tmpDir, 'protocolless.json');
+    fs.writeFileSync(filePath, JSON.stringify(dollyContaminatedFile(), null, 2));
+    safeWriteReview(filePath, {
+      outletId: 'telegraph',
+      url: DOLLY_URL.replace(/^https:\/\//, ''),
+    });
+    const written = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    assert.equal(written.url, DOLLY_URL, 'protocol-less garbage must not be written');
+    assert.equal(written.wrongShow, true, 'no URL change — no clearing');
+  });
+
   test('_locked blocks the URL change', () => {
     const filePath = path.join(tmpDir, 'locked.json');
     fs.writeFileSync(filePath, JSON.stringify({

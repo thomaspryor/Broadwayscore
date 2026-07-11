@@ -147,6 +147,31 @@ describe('index + createOrMergeReviewFile integration (tender replay)', () => {
     assert.equal(shouldBlockCrossShowCreate(owners).block, true);
   });
 
+  test('non-http junk urls never participate in ownership (critic-profile hrefs)', () => {
+    // Live corpus: /people/ben-brantley/ sits unflagged under 7 shows. Junk
+    // must not become an owner (blocking a whole review over a fixable stub)
+    // and must not be looked up.
+    writeOwnerFile(OWNER_SHOW, 'nytimes--ben-brantley.json', {
+      showId: OWNER_SHOW, outletId: 'nytimes', url: '/people/ben-brantley/', fullText: 'x',
+    });
+    const map = buildUrlOwnershipIndex(tmpDir, { force: true });
+    assert.equal(map.size, 0, 'non-http urls must not be indexed');
+    assert.deepEqual(findCrossShowOwners('/people/ben-brantley/', SIBLING_SHOW, tmpDir), []);
+  });
+
+  test('reroute chain exemption: owner in _rerouteVisited does not block the rerouted create', () => {
+    writeOwnerFile(OWNER_SHOW, 'guardian--david-jays.json', {
+      showId: OWNER_SHOW, outletId: 'guardian', url: SOHO_URL, fullText: 'live at origin',
+    });
+    // Simulate Guard A having rerouted this write AWAY from OWNER_SHOW.
+    const result = createOrMergeReviewFile(SIBLING_SHOW, {
+      outlet: 'The Guardian', outletId: 'guardian', criticName: 'David Jays',
+      url: SOHO_URL, source: 'gather-reviews',
+      fields: { fullText: 'routing decided this belongs here' },
+    }, { reviewTextsDir: tmpDir, _rerouteVisited: new Set([OWNER_SHOW]) });
+    assert.equal(result.action, 'new', 'routing supersedes ownership — review must not be dropped');
+  });
+
   test('_pending and unreadable files are skipped without crashing', () => {
     fs.mkdirSync(path.join(tmpDir, '_pending'), { recursive: true });
     fs.writeFileSync(path.join(tmpDir, '_pending', 'x.json'), '{"url":"https://a.com/x"}');

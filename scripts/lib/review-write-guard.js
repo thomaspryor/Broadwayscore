@@ -437,22 +437,25 @@ function safeWriteReview(filePath, newData, options = {}) {
       // replaceable via force (mirrors mergeReviews' blockUrlChange).
       {
         const { urlCanonicallyChanged, applyUrlChangeInvariant } = require('./url-change-invariant');
-        // The protection block must key on RAW url difference, not on
-        // urlCanonicallyChanged: that predicate deliberately returns false for
-        // garbage incoming urls ('undefined', non-http), and gating the block
-        // on it would let a garbage url silently overwrite a verified/locked
-        // url (ship-check 2026-07-11 regression catch). A garbage incoming url
-        // never replaces a real existing url on ANY file.
+        // The protection block must NOT key on urlCanonicallyChanged: that
+        // predicate deliberately returns false for garbage incoming urls
+        // ('undefined', non-http), and gating the block on it would let a
+        // garbage url silently overwrite a verified/locked url (ship-check
+        // 2026-07-11 regression catch). A garbage incoming url never replaces
+        // a real existing url on ANY file — compared as RAW strings, because a
+        // protocol-less variant of the same article ('nytimes.com/x' vs
+        // 'https://nytimes.com/x') normalizes EQUAL yet must still be
+        // rejected, not written.
         const existingUrlReal = typeof existing.url === 'string' && existing.url
           && !existing.url.includes('undefined');
         const incomingUrlGarbage = typeof newData.url === 'string' && newData.url
           && (newData.url.includes('undefined') || !/^https?:\/\//i.test(newData.url));
-        const rawUrlDiffers = existingUrlReal && typeof newData.url === 'string' && newData.url
+        const normalizedUrlDiffers = existingUrlReal && typeof newData.url === 'string' && newData.url
           && _normalizeUrlForCollision(newData.url) !== _normalizeUrlForCollision(existing.url);
-        if (rawUrlDiffers && incomingUrlGarbage) {
+        if (existingUrlReal && incomingUrlGarbage && newData.url !== existing.url) {
           console.warn(`[review-write-guard] rejecting garbage url ${JSON.stringify(newData.url)} on ${path.basename(filePath)}: keeping ${existing.url}`);
           newData.url = existing.url;
-        } else if (rawUrlDiffers && (lockedOverride || existing.urlVerified === true || existing.urlManualOverride === true)) {
+        } else if (normalizedUrlDiffers && (lockedOverride || existing.urlVerified === true || existing.urlManualOverride === true)) {
           console.warn(`[review-write-guard] blocked url change on ${path.basename(filePath)} (${lockedOverride ? '_locked' : 'urlVerified/urlManualOverride'}): keeping ${existing.url}`);
           newData.url = existing.url;
         } else if (urlCanonicallyChanged(existing.url, newData.url)) {
