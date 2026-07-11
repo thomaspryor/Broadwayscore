@@ -103,6 +103,14 @@ const FRESHNESS_HOURS = parseInt(args.find(a => a.startsWith('--freshness-hours=
 const CHECKPOINT_PATH = path.join(ROOT, 'data', 'audit', 'gap-audit-checkpoint.json');
 // WE completeness gate (2026-07-10): reference rows from WE roundup aggregators.
 const { getWeReferenceRows, isWeShow, inOpeningWindow, missingSetHash } = require('./lib/gap-reference-sources');
+const { recordGateObservation, evaluateProving, emptyTracker } = require('./lib/we-gate-proving');
+const WE_PROVING_PATH = path.join(ROOT, 'data', 'audit', 'we-gate-proving.json');
+function loadWeProving() {
+  try { return JSON.parse(fs.readFileSync(WE_PROVING_PATH, 'utf8')) || emptyTracker(); } catch { return emptyTracker(); }
+}
+function saveWeProving(t) {
+  try { fs.writeFileSync(WE_PROVING_PATH, JSON.stringify(t, null, 2) + '\n'); } catch { /* non-fatal */ }
+}
 const { normalizeOutlet: normalizeOutletId } = require('./lib/review-normalization');
 // WE reference schema version — bump to invalidate WE checkpoint entries (59 shows
 // recorded gaps:0 from vacuous Broadway-only-reference runs and closed-clean shows
@@ -591,9 +599,11 @@ async function auditShow(show) {
   const weRefUrls = new Set();
   const weRefPriorRunUrls = new Set();
   const weRefNoUrlRows = [];
+  let weRefData = null;
   if (process.env.WE_GAP_REFERENCE_DISABLED !== '1' && isWeShow(show) && inOpeningWindow(show)) {
     try {
       const weRef = await getWeReferenceRows(show, { log: (m) => { if (verbose) console.log(m); } });
+      weRefData = weRef;
       result.weReference = { rowCount: weRef.rows.length, sources: weRef.sources, allSourcesFailed: weRef.allSourcesFailed };
       // Health floors (plan-review 2026-07-09): a broken detector must ALARM,
       // never read as "no gaps" — that vacuous green is the failure this gate exists to kill.
@@ -706,6 +716,7 @@ async function auditShow(show) {
   // that passes isIncludableForRebuild (this naturally covers paywalled star-stubs,
   // which ARE scoreable — memory: paywalled star outlets are not gaps), or a
   // _pending/ no-byline strand file (known, tracked elsewhere — not a NEW gap).
+  let _weCoveredNoUrl = 0;
   if (weRefNoUrlRows.length > 0) {
     // Canonical outlet key: WET prints display variants that normalize to ids the
     // registry doesn't use ("Time Out London"→timeout-london vs registry timeout;
@@ -734,7 +745,7 @@ async function auditShow(show) {
       if (!oid || seenOutlets.has(oid)) continue;
       seenOutlets.add(oid);
       const files = dirByOutlet.get(oid) || [];
-      if (files.some(d => isCoveredFile(d, show))) continue;
+      if (files.some(d => isCoveredFile(d, show))) { if (!row.priorRun) _weCoveredNoUrl++; continue; }
       if (pendingOutlets.has(oid)) continue;
       result.citedNoUrl.push({
         outletId: rawOid,
@@ -746,6 +757,28 @@ async function auditShow(show) {
         hasExcludedFiles: files.length > 0,
       });
     }
+  }
+
+  // Corroboration stats for the self-proving gate (ship-check P0 2026-07-11):
+  // proving must measure REFERENCE CORRECTNESS, not detector uptime. A citation is
+  // corroborated when it names a review we independently have (covered file) —
+  // CURRENT-RUN rows only; prior-run rows are permanently ingest-blocked and prove
+  // nothing about ingest safety.
+  if (result.weReference && weRefData) {
+    const currentRunRows = weRefData.rows.filter(r => !r.priorRun);
+    const missingUrls = new Set(result.missing.map(m => m.url));
+    const flaggedUrls = new Set(result.flaggedMisses.map(m => m.url));
+    let coveredUrlRows = 0;
+    const seenUrls = new Set();
+    for (const row of currentRunRows) {
+      if (!row.url || !isReviewUrl(row.url)) continue;
+      const u = normalizeReviewUrl(row.url);
+      if (seenUrls.has(u)) continue;
+      seenUrls.add(u);
+      if (!missingUrls.has(u) && !flaggedUrls.has(u)) coveredUrlRows++;
+    }
+    result.weReference.currentRunRows = currentRunRows.length;
+    result.weReference.corroborated = coveredUrlRows + _weCoveredNoUrl;
   }
 
   return result;
@@ -1059,6 +1092,14 @@ if (require.main === module) (async () => {
       }
     }
 
+    // Self-proving tracker: record this observation for WE in-window shows so the
+    // gate can auto-enable ingest once it has proven itself (see lib/we-gate-proving.js).
+    if (isWeShow(s) && inOpeningWindow(s) && process.env.WE_GAP_REFERENCE_DISABLED !== '1') {
+      const proving = loadWeProving();
+      recordGateObservation(proving, s, r.weReference);
+      saveWeProving(proving);
+    }
+
     const gapTotal = r.missing.length + r.flaggedMisses.length + r.citedNoUrl.length;
     const summary = `  ${r.inReviewsJson}/${r.aggregatorListedUrls.length || '?'} reviews | ${gapTotal} gap (missing=${r.missing.length} flagged=${r.flaggedMisses.length} citedNoUrl=${r.citedNoUrl.length})`;
     if (verbose || gapTotal > 0) console.log(`${r.showId}${verbose ? '' : ': ' + r.title}\n${summary}`);
@@ -1183,6 +1224,88 @@ if (require.main === module) (async () => {
         if (recCapped.length > 0) {
           r.recoverySkippedByCap = recCapped.map(m => ({ url: m.url, host: m.host, file: m.recoverableFile }));
           console.log(`  ⏸  ${recCapped.length} recoverable flaggedMiss(es) over shared per-show fetch budget (--ingest-cap=${INGEST_PER_SHOW_CAP}) — next run`);
+        }
+      }
+    }
+  }
+
+  // ── Self-proving auto-enable (2026-07-11, hardened per ship-check) ─────────
+  // "Enable ingest after the report proves itself" was a human-memory step;
+  // nobody was going to remember it. When the proving criteria are met
+  // (lib/we-gate-proving.js — corroboration-based, not uptime-based), the audit
+  // enables ingest itself and emails the owner. Safety posture:
+  //   - CI-only: a LOCAL --checkpoint run must never flip a prod variable via
+  //     the operator's gh session (ship-check P1).
+  //   - Create, never overwrite: if WE_GAP_INGEST already EXISTS as a repo
+  //     variable (any value), an operator has expressed state — respect it.
+  //     This also makes "owner emptied the variable" a durable off switch even
+  //     if the tracker commit was lost (ship-check P1).
+  //   - Crash-safe ordering: provenAt saved BEFORE the flip, enabledAt saved
+  //     immediately AFTER; email-delivery failure sets notifyPending so later
+  //     runs retry the notification until it lands (flip-but-owner-unaware is
+  //     the "alert channel silently dead" incident — ship-check P1).
+  //   - Attempt throttle: non-enabled outcomes retry at most every 24h.
+  if (useCheckpoint && process.env.GITHUB_ACTIONS === 'true'
+      && process.env.WE_GAP_INGEST !== '1' && process.env.WE_GAP_REFERENCE_DISABLED !== '1') {
+    const proving = loadWeProving();
+    const { sendAlert } = require('./lib/discord-notify');
+    const DAY = 24 * 60 * 60 * 1000;
+    const attemptDue = !proving.lastEnableAttemptAt || (Date.now() - new Date(proving.lastEnableAttemptAt).getTime()) > DAY;
+    if (proving.enabledAt && proving.notifyPending) {
+      // Flip already happened but the owner was never notified — retry until it lands.
+      const delivered = await sendAlert({
+        title: 'WE auto-ingest is ENABLED (delayed notice — earlier notification failed)',
+        description: `Auto-ingest was enabled at ${proving.enabledAt} after the gate proved itself. Prior-run roundup URLs remain blocked; per-show caps apply. Kill switch: repo variable WE_GAP_REFERENCE_DISABLED=1.`,
+        severity: 'warning',
+        email: true,
+      });
+      if (delivered) { proving.notifyPending = false; saveWeProving(proving); }
+      else console.error('::error::WE auto-ingest is ON but the owner still could not be notified (email failing). Fix RESEND_API_KEY/OWNER_EMAIL.');
+    } else if (!proving.enabledAt && attemptDue) {
+      const verdict = evaluateProving(proving);
+      if (verdict.enable) {
+        proving.provenAt = proving.provenAt || new Date().toISOString();
+        proving.lastEnableAttemptAt = new Date().toISOString();
+        saveWeProving(proving); // persist proof BEFORE side effects (crash safety)
+        // Respect operator state: only CREATE the variable if it does not exist.
+        let varExists = true;
+        try { execFileSync('gh', ['variable', 'get', 'WE_GAP_INGEST'], { stdio: 'pipe' }); }
+        catch { varExists = false; }
+        if (varExists) {
+          console.log('WE gate proven, but WE_GAP_INGEST variable already exists (operator-set state) — not touching it.');
+          const delivered = await sendAlert({
+            title: 'WE completeness gate PROVEN — variable already set, respecting your state',
+            description: `Proving criteria met (${verdict.reason}) on: ${verdict.qualifying.join(', ')}. The WE_GAP_INGEST repo variable already exists, so nothing was changed. To enable: gh variable set WE_GAP_INGEST --body 1`,
+            severity: 'info',
+            email: true,
+          });
+          proving.notifyPending = !delivered;
+          proving.enabledAt = new Date().toISOString(); // terminal state: decision handed to operator, never re-fire
+          saveWeProving(proving);
+        } else {
+          let flipped = false;
+          try {
+            execFileSync('gh', ['variable', 'set', 'WE_GAP_INGEST', '--body', '1'], { stdio: 'pipe' });
+            flipped = true;
+          } catch (e) {
+            console.error(`::warning::WE gate PROVEN but variable write failed (${(e.message || '').slice(0, 80)}) — will email manual instructions.`);
+          }
+          if (flipped) { proving.enabledAt = new Date().toISOString(); saveWeProving(proving); }
+          const delivered = await sendAlert({
+            title: flipped
+              ? 'WE auto-ingest ENABLED — completeness gate proved itself'
+              : 'WE completeness gate PROVEN — one command to enable auto-ingest',
+            description: flipped
+              ? `Proving criteria met (${verdict.reason}) on: ${verdict.qualifying.join(', ')}. Auto-ingest of WE-reference review URLs is now ON (prior-run roundup URLs remain permanently blocked; per-show ingest caps apply). Kill switch: repo variable WE_GAP_REFERENCE_DISABLED=1 (WE-only), or empty WE_GAP_INGEST.`
+              : `Proving criteria met (${verdict.reason}) on: ${verdict.qualifying.join(', ')}, but the workflow token could not set the repo variable. Run: gh variable set WE_GAP_INGEST --body 1`,
+            severity: 'info',
+            email: true,
+          });
+          if (flipped && !delivered) {
+            proving.notifyPending = true;
+            saveWeProving(proving);
+            console.error('::error::WE auto-ingest was ENABLED but the notification email failed — will retry notifying hourly. Fix RESEND_API_KEY/OWNER_EMAIL.');
+          }
         }
       }
     }
