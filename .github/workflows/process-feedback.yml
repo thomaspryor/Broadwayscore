@@ -80,10 +80,43 @@ jobs:
             }
             if (!Array.isArray(diagnoses)) diagnoses = [];
 
-            // Entries with a null diagnosis (diagnosis call failed) are dropped
-            // from pending — they already surfaced in the run log/digest and
-            // retrying without a diagnosis produces nothing.
-            const diagnosed = diagnoses.filter(d => d.diagnosis);
+            // Partition entries. Malformed rows (no submission/item — e.g. a
+            // hand-edited or corrupted pending file) are dropped with a log:
+            // keeping them would crash the drain loop on submission.show and,
+            // because the finally block writes leftovers back, turn one bad row
+            // into a permanent failure loop. Entries with a submission but a
+            // null diagnosis (LLM call failed) get a minimal needs-review issue
+            // below instead of vanishing — a failed diagnosis must not silently
+            // eat the user's report.
+            const wellFormed = diagnoses.filter(d => d && d.submission && d.item);
+            const malformed = diagnoses.length - wellFormed.length;
+            if (malformed > 0) console.log(`Dropping ${malformed} malformed pending entr(ies) with no submission/item`);
+            const diagnosed = wellFormed.filter(d => d.diagnosis);
+            const undiagnosed = wellFormed.filter(d => !d.diagnosis);
+
+            for (const entry of undiagnosed) {
+              const { item, submission } = entry;
+              try {
+                const issue = await github.rest.issues.create({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  title: `Bug report needs manual review (auto-diagnosis failed): ${(item.summary || 'no summary').substring(0, 60)}`,
+                  body: [
+                    `Auto-diagnosis failed for this feedback submission — review manually.`,
+                    '',
+                    `**From:** ${submission.name || 'Anonymous'} (${submission.email || 'no email'}) | **Show:** ${submission.show || 'N/A'} | **Priority:** ${item.priority || 'unknown'}`,
+                    '',
+                    `**Original message:**`,
+                    `> ${(submission.message || '(no message)').replace(/\n/g, '\n> ')}`,
+                  ].join('\n'),
+                  labels: ['feedback-digest', 'needs-review'],
+                });
+                console.log(`Created needs-review issue #${issue.data.number} for undiagnosed report`);
+              } catch (err) {
+                console.log(`Failed to create needs-review issue for undiagnosed report: ${err.message}`);
+              }
+            }
+
             if (diagnosed.length === 0) {
               console.log('No bugs diagnosed');
               fs.writeFileSync(PENDING_PATH, '[]\n');
