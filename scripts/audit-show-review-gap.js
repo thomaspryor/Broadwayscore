@@ -1256,7 +1256,7 @@ if (require.main === module) (async () => {
       const delivered = await sendAlert({
         title: 'WE auto-ingest is ENABLED (delayed notice — earlier notification failed)',
         description: `Auto-ingest was enabled at ${proving.enabledAt} after the gate proved itself. Prior-run roundup URLs remain blocked; per-show caps apply. Kill switch: repo variable WE_GAP_REFERENCE_DISABLED=1.`,
-        severity: 'warning',
+        severity: 'error',
         email: true,
       });
       if (delivered) { proving.notifyPending = false; saveWeProving(proving); }
@@ -1276,7 +1276,7 @@ if (require.main === module) (async () => {
           const delivered = await sendAlert({
             title: 'WE completeness gate PROVEN — variable already set, respecting your state',
             description: `Proving criteria met (${verdict.reason}) on: ${verdict.qualifying.join(', ')}. The WE_GAP_INGEST repo variable already exists, so nothing was changed. To enable: gh variable set WE_GAP_INGEST --body 1`,
-            severity: 'info',
+            severity: 'error',
             email: true,
           });
           proving.notifyPending = !delivered;
@@ -1298,7 +1298,7 @@ if (require.main === module) (async () => {
             description: flipped
               ? `Proving criteria met (${verdict.reason}) on: ${verdict.qualifying.join(', ')}. Auto-ingest of WE-reference review URLs is now ON (prior-run roundup URLs remain permanently blocked; per-show ingest caps apply). Kill switch: repo variable WE_GAP_REFERENCE_DISABLED=1 (WE-only), or empty WE_GAP_INGEST.`
               : `Proving criteria met (${verdict.reason}) on: ${verdict.qualifying.join(', ')}, but the workflow token could not set the repo variable. Run: gh variable set WE_GAP_INGEST --body 1`,
-            severity: 'info',
+            severity: 'error',
             email: true,
           });
           if (flipped && !delivered) {
