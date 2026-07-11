@@ -166,7 +166,13 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
-      "music-city-off-broadway-2026/deadline--greg-evans.json"
+      "music-city-off-broadway-2026/deadline--greg-evans.json",
+      "data/review-texts/medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
+      "medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
+      "data/review-texts/cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
+      "cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
+      "data/review-texts/macbeth-off-broadway-2026/hollywood-reporter--demetrios-matheou.json",
+      "macbeth-off-broadway-2026/hollywood-reporter--demetrios-matheou.json"
     ],
     "directCookies": [
       "jesus-christ-superstar-west-end-2026/times-uk--ann-treneman.json",
@@ -175,7 +181,8 @@
     ],
     "scrapingbee": [
       "giulia-the-poison-queen-of-palermo-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
-      "henry-vi-a-trilogy-in-two-parts-off-broadway-2026/playbill--unknown.json"
+      "henry-vi-a-trilogy-in-two-parts-off-broadway-2026/playbill--unknown.json",
+      "miles-for-mary-off-broadway-2026/broadwayworld--bww-news-desk.json"
     ],
     "brightdata": [
       "camping-off-broadway-2026/talkinbroadway--unknown.json"
@@ -189,7 +196,12 @@
     ],
     "archive": [
       "small-off-broadway-2026/culturesauce--thom-geier.json",
-      "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
+      "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+      "manon-off-broadway-2027/broadwayworld--steve-callahan.json",
+      "aida-off-broadway-2027/broadwayworld--jay-irwin.json",
+      "miles-for-mary-off-broadway-2026/broadway-blog--matthew-wexler.json",
+      "medea-off-broadway-2026/sunday-express--neil-norman.json",
+      "macbeth-off-broadway-2026/newsday--linda-winer.json"
     ]
   },
   "startTime": "2026-07-11T08:48:56.597Z",
@@ -205,6 +217,39 @@
       "t": "2026-07-11T08:57:00.291Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-11T09:07:20.600Z",
+      "event": "bb-session",
+      "session": "be191519",
+      "url": "https://www.hollywoodreporter.com/news/general-news/rose-byrne-bobby-cannavale-s"
+    },
+    {
+      "t": "2026-07-11T09:07:21.002Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-07-11T09:08:59.704Z",
+      "event": "bb-session",
+      "session": "531424b1",
+      "url": "https://www.wsj.com/articles/cosi-fan-tutte-review-a-carnival-of-deception-15214"
+    },
+    {
+      "t": "2026-07-11T09:09:00.116Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-07-11T09:09:27.221Z",
+      "event": "bb-session",
+      "session": "c7adb3c0",
+      "url": "https://www.hollywoodreporter.com/lifestyle/style/alan-cumming-macbeth-good-wife"
+    },
+    {
+      "t": "2026-07-11T09:09:27.622Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
