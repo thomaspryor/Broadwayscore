@@ -9,7 +9,6 @@
 
 ## 👤 User profile & session discipline
 - [Terse output default](feedback_terse_output_default.md) — no recap, cut narration, keep proof; estimate in Claude-pace minutes ([[feedback_no_human_day_estimates.md]])
-- [No premature handoff](feedback_no_premature_handoff.md) — next steps are actions ([[feedback_next_steps_actionable.md]]): if you CAN do it, DO it now
 - [User non-technical](feedback_no_review_offers_user_not_technical.md) — never offer "review the diff"; laptop+phone, infer from message style ([[feedback_user_device_context.md]])
 - [Absorb gate ceremony](feedback_absorb_gate_ceremony.md) — run hooks/visual-qa/approvals myself, report outcomes not process; Stop hook blocks "done", bypass NO-VERIFY: ([[feedback_verification_gate_hook.md]])
 - [Always wait for async](feedback_always_wait_async.md) — never end turn while deploy/rebuild runs; flag-gated features verify on demo URL ([[feedback_flag_gated_verify_on_demo.md]])
@@ -19,17 +18,15 @@
 - [Review rituals](feedback_sprint_plan_needs_review.md) — /plan-review before multi-sprint plans; GPT-4o+Gemini parallel on screenshots ([[feedback_two_model_ui_review.md]], [[feedback_three_model_audit_modality.md]])
 - [Test pure function at I/O boundary](feedback_test_pure_function_at_io_boundary.md) — also test wrapper against real data
 - [Anti-AI-slop writing](feedback_anti_ai_slop_writing.md) — strip em dashes, "not X it's Y", hedges, fake comparisons in external copy ([[feedback_email_drafting.md]])
-- [Ask with recommendation](feedback_ask_with_recommendation.md) — lead with (Recommended) option 1 + why
 - [GitHub polling rate limit](feedback_github_polling_rate_limit.md) — no gh run list loops, use gh run watch; gh run list silently caps at 20 — use gh api --paginate for counts
 
 ## 📇 Notion / brain
 - [Notion brain workflow](notion-brain-workflow.md) — IDs, schema, lifecycle; CLI only, never MCP ([[feedback_notion_cli_only.md]])
-- [Notion cards need context](feedback_notion_card_context.md) — paths, commands, root cause, repro ([[feedback_notion_card_reproduction.md]]); on create read FULL output, never pipe to grep, avoid "rejected" word ([[feedback_notion_create_verify.md]], [[feedback_notion_create_hook_false_rejection.md]])
-- [Roadmap lives in Notion](project_roadmap_notion.md) — not GitHub issues
+- [Notion cards need context](feedback_notion_card_context.md) — paths, commands, root cause, repro; on create read FULL output, never pipe to grep, avoid "rejected" word ([[feedback_notion_create_verify.md]], [[feedback_notion_create_hook_false_rejection.md]])
 
 ## 🌳 Worktrees & git
 - [Worktrees mandatory for code edits](feedback_worktree_code_changes.md) — src/, scripts/, .github/, CLAUDE.md; prefix paths .claude/worktrees/ ([[feedback_worktree_edit_paths.md]])
-- [Parallel worktree sessions race](feedback_parallel_worktree_race.md) — re-pull + grep scripts/lib/ BEFORE writing; plan "parallel" = subagents ([[feedback_plan_parallel_means_subagents.md]])
+- [Parallel worktree sessions race](feedback_parallel_worktree_race.md) — re-pull + grep scripts/lib/ BEFORE writing; plan "parallel" = subagents ([[feedback_plan_parallel_means_subagents.md]]); same-name worktree may be another session's LIVE locked one, `git worktree list` first ([[feedback_enterworktree_name_collision_live_session.md]])
 - [Dual repo data files](feedback_dual_repo_data_files.md) — shows/reviews/awards/outlet-registry authoritative in private repo, fix BOTH ([[feedback_awards_json_dual_repo.md]], [[feedback_outlet_registry_dual_repo.md]]); data/review-texts NOT a symlink, edit ~/broadway-review-texts/ ([[feedback_review_texts_not_symlink.md]]); NEVER run rebuild-all-reviews.js locally — stale clone + no flag parsing ([[feedback_local_rebuild_stale_clone_hazard.md]])
 - [Stray symlink crashes pipeline](feedback_stray_symlink_crashes_pipeline.md) — committed abs-path symlink dangles in CI; use listShowDirs()
 - [audit-review-contamination strict CI gate](feedback_audit_contamination_strict_mode.md) — strict A/B/C fail CI; B = false-pos wrongProduction
