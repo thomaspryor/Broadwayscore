@@ -22,11 +22,18 @@ citation has a URL, canonical outletId otherwise (WET tables cite outlet+stars
 with NO link — hyphen-collapsed, -london/-uk-stripped key so display variants
 match). Paywalled star-stubs and `_pending/` strand files count as covered.
 
-**Alerting:** named-missing-outlet emails via `discord-notify.js sendAlert
-email:true` (Resend). NOTE: Discord is dead code — sendAlert without `email:true`
-is LOG-ONLY; that silent path is why months of completeness alerts reached nobody.
-Alerts dedup on missing-SET change + 24h re-ping; prior-run-only sets alert once;
-failed delivery doesn't record the dedup hash (retries next run + ::error::).
+**Alerting (reconciled with the 2026-07-11 actionable-only email policy):** the
+per-opening WE review-gap alert is `severity:'warning'` → the policy
+([[feedback_actionable_only_email_alerts.md]]) routes it to the BSC Daily digest
++ step summary, NOT email (owner named "WE review gaps" as noise to suppress).
+That is intended — the gate's real payoff is the AUTO-RECOVERY, not per-gap
+emails. Only the actionable auto-ENABLE state-change notice + the enable-failed /
+manual-enable notices are `severity:'error'` so the policy delivers them
+(a we-gate-proving test asserts this so they can't be silently downgraded).
+`sendAlert` without `email:true` is LOG-ONLY; with a suppressed severity it
+returns false but does NOT fire the ::error:: delivery-failed path (policy
+suppression ≠ delivery failure). Gap dedup records on EMIT (not just delivery)
+so an unchanged gap doesn't re-append to the digest hourly.
 
 **Safety (all ship-check/plan-review hardened):**
 - Ingest is DEFAULT-OFF: WE-reference URLs ingest only when repo var
@@ -42,9 +49,13 @@ failed delivery doesn't record the dedup hash (retries next run + ::error::).
   untouched). Safety wiring is unit-tested (tests/unit/we-gap-reference.test.mjs
   asserts the workflow env lines exist — deleting one fails CI, not silently).
 
-**Rollout state (as of 2026-07-10):** report-only. Enable auto-ingest ONLY after
-the report matches manual audits across ≥2 real WE openings: set repo var
-WE_GAP_INGEST=1 (`gh variable set WE_GAP_INGEST --body 1`).
+**Rollout state:** report-only until the gate PROVES ITSELF — and that flip is
+AUTOMATED (2026-07-11, `lib/we-gate-proving.js` + tracker
+`data/audit/we-gate-proving.json`): when ≥2 NEW openings (post-2026-07-10) are
+each audited ≥2× with a working reference (≥3 rows) and ZERO detector-failure
+floors, the audit sets WE_GAP_INGEST=1 itself and emails the owner (kill switch
+named); if the token can't write the variable it emails the one command. Fires
+once. Nobody needs to remember anything — do NOT re-add a manual enable step.
 
 **Gotchas:**
 - The Broadway-path SERP finds same-title PRIOR-PRODUCTION Broadway roundups for

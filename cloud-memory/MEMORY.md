@@ -52,7 +52,7 @@
 ## 🔌 External APIs & verification
 - [404 is not always terminal](feedback_404_not_terminal.md) — check prior state before flipping success→failure
 - [Live-API contract test](feedback_live_api_contract_test.md) — call live API, unit tests miss empirical behavior; verify bug claim before fixing ([[feedback_verify_bug_claim_before_fixing.md]]); normalize JSON keys at load ([[feedback_api_key_whitespace.md]])
-- [Resend preview ≠ delivered email](feedback_resend_preview_masks_delivered_rendering.md) — browser preview hides webp/dark-mode reality; verify email rendering in real client (owner Gmail iOS), never ship off preview
+- [Resend preview ≠ delivered email](feedback_resend_preview_masks_delivered_rendering.md) — preview hides webp/dark-mode; verify in real client (owner Gmail iOS)
 - [Refactor parity test on real data](feedback_refactor_parity_test.md) — old vs new predicate; 0 diffs = safe
 - [Paywalled star outlets not gaps](feedback_paywalled_star_outlets_not_gaps.md) — Stage stubs scored via aggregatorStars-fallback; gap-scans exclude _pending/
 - [CI E2E runs vs production](feedback_e2e_runs_against_production.md) — UI fix stays red until deploy lands; push-triggered run is deploy-lag false-neg; rerun after deploy
@@ -61,10 +61,10 @@
 ## 📋 Open work
 - [OB venue historical backfill](project_ob_venue_historical_backfill.md) — Atlantic/Vineyard/MCC archive pages; Tier A deferred TFANA+2ndStage ([[project_ob_tier_a_deferred.md]])
 - [Manual stubs bypass venue/date validation](feedback_manual_stub_bypasses_validation.md) — NEVER stub shows.json from memory; look up Playbill first
-- [Regional shows FULLY auto-promote](project_regional_expansion_watchlist.md) — roundup page = go-live; daily auto-add + review ingest 2026-07-08; only images/cast/audience manual ([[regional-show-add-runbook]])
+- [Regional auto-promotion](project_regional_expansion_watchlist.md) — roundup=go-live; auto add+reviews+images; transferOf/transferredTo cross-link tryout↔Broadway; cast/audience manual
 
 ## 🎯 Opening night pipeline
-- [WE completeness gate](project_we_completeness_gate.md) — hourly audit diffs WE shows vs WET/TR/LBO citations, EMAILS named missing outlets; ingest default-OFF (var WE_GAP_INGEST=1), prior-run URLs never ingest; sendAlert w/o email:true is LOG-ONLY
+- [WE completeness gate](project_we_completeness_gate.md) — hourly audit diffs WE shows vs WET/TR/LBO, emails missing outlets; ingest default-OFF (WE_GAP_INGEST=1); sendAlert w/o email:true is LOG-ONLY
 - [_pending no-byline strand](feedback_pending_no_byline_strand_drain.md) — multi-critic outlets w/o byline strand in _pending/; CHECK _pending FIRST when reviews missing; drain rejects KEEP-not-delete
 - [Date-gated flips](feedback_previews_open_flip_needs_review_signal.md) — stuck previews suppresses score, 2d review-driven backstop; OB openingDate==previewsStartDate misses press night ([[feedback_off_broadway_opening_date_gap.md]])
 - [Opening-night runbooks](feedback_admin_ingest_opening_night_2026-04-26.md) — Joe Turner master log (~42 issues, read FIRST) + 25-item failure-mode checklist ([[feedback_manual_ingest_opening_night_runbook.md]])
@@ -72,7 +72,7 @@
 - [SERP opening night timing](feedback_serp_opening_night_timing.md) — Google indexes major outlets 2.9h+ post-pub; 3h gate
 - [shows.json category at scheduling](feedback_shows_json_category_at_schedule.md) — null category/market must fail validate-data.js
 - [Opening night corrections](feedback_opening_night_corrections.md) — disable orchestrator first; humanReviewScore only override
-- [Email broadcast rules](email-broadcast-rules.md) — never direct broadcast API; quality bar ≥1 more review than BWW RR, send 7-9am ([[feedback_broadcast_quality_bar.md]]); orchestrator pause ≠ broadcast pause, disable workflow ([[feedback_orchestrator_pause_does_not_pause_broadcast.md]])
+- [Email rules](email-broadcast-rules.md) — no direct broadcast API; quality bar + 7-9am ([[feedback_broadcast_quality_bar.md]]); pause = disable workflow ([[feedback_orchestrator_pause_does_not_pause_broadcast.md]]); alerts = ACTION only, warning/info no email ([[feedback_actionable_only_email_alerts.md]])
 - [PROTECTED_FIELDS 3-way sync](feedback_protected_fields_three_way_sync.md) — write-guard + push action + restore must all carry overrides
 
 ## 🏆 Awards & Tony
@@ -98,8 +98,8 @@
 - [Includability predicates must be canonical](feedback_includability_predicates_must_be_canonical.md) — call isIncludableForRebuild; "must match X" comment IS the bug ([[feedback_must_match_comment_is_a_bug.md]])
 - [\b regex fails on punct/apostrophe names](feedback_word_boundary_punct_titles.md) — Schmigadoon!, O'Hara; normalize text+name, non-alphanumeric lookaround ([[feedback_apostrophe_name_matching.md]])
 - [Manual review protection fields](feedback_manual_review_protection_fields.md) — need ALL 8 fields or guards re-flag; carve-out extends to wrongShow ([[feedback_manual_clear_covers_all_rejection_types.md]], [[feedback_protected_fields_every_write.md]])
-- [Star score cap rule](feedback_star_score_cap.md) — 5/5=100 is ground truth; never cap with LLM
-- [Reviews.json dual repo push](feedback_reviews_json_dual_repo_push.md) — flag + rebuild + push data repo + redeploy
+- [Anchored-v6 leaks](feedback_anchored_v6_stamp_and_rescore_starvation.md) — numeric relay ≠ star; llmScore.band = anchored proof; drain rescore queue ([[feedback_star_score_cap.md]])
+- [Reviews.json dual repo push](feedback_reviews_json_dual_repo_push.md) — flag + rebuild + push data repo
 - [Returning production → priorRuns](feedback_returning_production_priorRuns.md) — WE return/transfer shows few reviews b/c majors reviewed earlier run; declare priorRuns {openingDate/closingDate/venue} to re-include ([[feedback_stale_flag_collision_drops_current_production.md]])
 - [Review recovery pipeline gaps](feedback_review_recovery_pipeline_gaps.md) — run verify-review-recovery.js; 5 steps fail independently
 - [Pseudonymous bylines ≠ multi-author](feedback_pseudonymous_bylines.md) — pen names w/ scraper-invented drift; URL-date guards gate on Unknown byline ([[feedback_url_date_guards_critic_gate.md]])
