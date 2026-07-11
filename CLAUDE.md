@@ -41,8 +41,7 @@ Use shared components from `src/components/show-cards/` — never create custom 
 
 ### 6. Notion Brain (MANDATORY — every session)
 **Notion is the single source of truth for project state.** See `memory/notion-brain-workflow.md` for IDs, schema, and full lifecycle.
-- **Session start:** Create a new Notion card for this session's work → set "In progress." Output card URL. Check for stale "In progress" cards.
-- **Session end:** Append Outcome (what/why/approach/gotchas) + Key Files + Tags → set "Done" or "Paused."
+- **Session start:** Create a Notion card → "In progress," output URL, check for stale cards. **Session end:** Append Outcome (what/why/approach/gotchas) + Key Files + Tags → "Done"/"Paused."
 - **New discoveries:** Create Notion card (Not started). Don't context-switch.
 - **If Notion unreachable:** Warn user, continue without tracking. On wrap-up failure, output Outcome text so nothing is lost.
 
@@ -50,9 +49,7 @@ Use shared components from `src/components/show-cards/` — never create custom 
 See global CLAUDE.md. Additionally: test 3 representative cases before merging.
 
 ### 8. Pipeline Operations
-**E2E test before large dispatch** (5+ runs or 50+ reviews). Test 5 reviews first.
-- Verify secrets, check concurrency slots, 10s+ spacing, shard scoring to 10.
-- **Batch scripts must checkpoint** — save progress incrementally, `if: always()` on commit/push.
+**E2E test before large dispatch** (5+ runs or 50+ reviews): test 5 first; verify secrets, concurrency slots, 10s+ spacing, shard scoring to 10. **Batch scripts must checkpoint** — save incrementally, `if: always()` on commit/push.
 
 ### 9. Expansion Playbook (MANDATORY for new markets)
 Aggregators first, web search second. See `memory/expansion-playbook.md`. Never skip aggregator scraping.
