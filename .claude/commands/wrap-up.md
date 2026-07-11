@@ -222,6 +222,8 @@ This phase combines documentation updates with lessons learned. For each item be
 - It's not already covered by existing rules
 - It can be stated in one imperative sentence with brief context
 
+**Memory-entry criteria (CLAUDE.md rule 16 — encode first, write rarely):** a memory file must pass all three: (1) the lesson could NOT be encoded as code/test/hook/CI gate — if you already encoded the fix, the memory is redundant, skip it; (2) you can name the specific future action that changes; (3) a future session hitting the same mistake would plausibly recall the file from its description. **"No new learnings worth saving" is the normal outcome — say that and move on.** Never offer to commit memory files to the repo; the session-stop hook auto-syncs them to `cloud-memory/`.
+
 **MEMORY.md size check** — if you touched MEMORY.md this session, verify it's still under cap:
 ```bash
 wc -l ~/.claude/projects/-Users-tompryor-Broadwayscore/memory/MEMORY.md   # cap: 180
