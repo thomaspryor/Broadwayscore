@@ -81,6 +81,35 @@ describe('anchored-v6 precedence', () => {
     assert.strictEqual(res.score, 100);
   });
 
+  it('band marker heals a stamp-overwritten anchored verdict (extraction label scoreSource)', () => {
+    // Anchored-scored (llmScore.band present), then a later star extraction
+    // overwrote scoreSource. The anchored verdict must still win over the
+    // flat conversion.
+    const data = makeData({
+      scoreSource: 'telegraph-svg-stars',
+      llmScore: { score: 94, band: { floor: 91, ceiling: 100 } },
+      originalScore: '5/5 stars',
+      originalScoreSource: 'telegraph-svg-stars',
+    });
+    const res = getBestScore(data);
+    assert.strictEqual(res.score, 94);
+    assert.strictEqual(res.source, 'anchored-v6');
+  });
+
+  it('STALE band marker (current star outside band) falls through to the published star', () => {
+    // equus telegraph shape: anchored to an aggregator-relayed 5/5, but the
+    // outlet's own extraction later wrote 4/5. The current star must decide.
+    const data = makeData({
+      scoreSource: 'telegraph-svg-stars',
+      llmScore: { score: 96, band: { floor: 91, ceiling: 100 } },
+      originalScore: '4/5 stars',
+      originalScoreSource: 'telegraph-svg-stars',
+    });
+    const res = getBestScore(data);
+    assert.strictEqual(res.score, 80);
+    assert.strictEqual(res.source, 'originalScore-priority0');
+  });
+
   it('llm-v6 KEEPS the LLM over a bare-numeric originalScore with no source (aggregator relay)', () => {
     // 2026-07-11 hardening: a bare numeric originalScore with no extraction
     // source is an aggregator's normalized 0-100 relay (Show Score), not a

@@ -52,6 +52,11 @@ for (const f of glob.sync(path.join(ROOT, 'data', 'review-texts', '*', '*.json')
     d.needsRescore = true;
     d.rescoreReason = 'late-star-anchor';
     d.lateStarAnchorBand = `${verdict.band.floor}-${verdict.band.ceiling} (${verdict.starsRaw})`;
+    // A file rescored once before carries rescoreCompletedAt — the workflow's
+    // backlog counters skip any flagged file that still has it, so a re-queue
+    // without clearing it is invisible to the drain. Same pattern as
+    // flag-combined-reviews.js.
+    delete d.rescoreCompletedAt;
     safeWriteReview(f, d, { force: true });
   }
   if (LIMIT && flagged >= LIMIT) break;

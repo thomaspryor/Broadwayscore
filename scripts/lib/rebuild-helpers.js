@@ -418,9 +418,36 @@ function getBestScore(data, opts = {}) {
   // originalScore, fall through to P0.5 so the published star (and its existing
   // reliability/LLM-conflict logic) decides. 'anchored-v6' already used the
   // star's band as a hard constraint — keep returning it as-is.
-  if ((data.scoreSource === 'anchored-v6' || data.scoreSource === 'llm-v6')
+  // llmScore.band is only ever written by the anchored scorer, so its presence
+  // proves this llmScore is a band-constrained (anchored) verdict — even when a
+  // later star extraction overwrote scoreSource with its extraction label
+  // (e.g. 'telegraph-svg-stars'), which used to knock the file out of this
+  // early return and ship the flat star conversion via P0.5 (2026-07-11).
+  const anchoredBand = data.llmScore && data.llmScore.band;
+  let hasAnchoredBandMarker = !!(anchoredBand && typeof anchoredBand.floor === 'number');
+  // Staleness guard (marker path only — a real 'anchored-v6'/'llm-v6' stamp is
+  // handled by the existing logic below): the star can CHANGE after anchoring
+  // (equus telegraph: anchored to an aggregator-relayed 5/5, the outlet's own
+  // svg extraction later wrote 4/5). If the current originalScore parses to a
+  // flat value outside the anchored band (±2 for boundary rounding), the
+  // marker is stale — fall through so the current published star decides at
+  // P0.5. Deliberately NOT re-flagged for re-anchor: band detection may keep
+  // preferring the stale relay field, which would re-flag forever.
+  if (hasAnchoredBandMarker
+      && data.scoreSource !== 'anchored-v6' && data.scoreSource !== 'llm-v6'
+      && data.originalScore) {
+    const currentFlat = parseOriginalScore(data.originalScore, data.outletId);
+    if (currentFlat !== null
+        && (currentFlat < anchoredBand.floor - 2 || currentFlat > anchoredBand.ceiling + 2)) {
+      hasAnchoredBandMarker = false;
+    }
+  }
+  if ((data.scoreSource === 'anchored-v6' || data.scoreSource === 'llm-v6' || hasAnchoredBandMarker)
       && data.llmScore && typeof data.llmScore.score === 'number'
       && data.llmScore.score >= 0 && data.llmScore.score <= 100) {
+    // Band marker present → the verdict is anchored regardless of the stamp.
+    const effectiveV6Source = (data.scoreSource === 'anchored-v6' || hasAnchoredBandMarker)
+      ? 'anchored-v6' : 'llm-v6';
     // Only HIGH-reliability late stars win — a low-reliability extraction
     // (numeric-stars/css-stars, often a false positive) must NOT override the
     // LLM, which is why llm-v6 kept the LLM in the first place.
@@ -437,12 +464,12 @@ function getBestScore(data, opts = {}) {
     const lateStarReliable = data.originalScoreSource
       ? !LOW_RELIABILITY_STAR_SOURCES.has(data.originalScoreSource)
       : isUnambiguousRatingString(data.originalScore);
-    const llmV6HasLateStar = data.scoreSource === 'llm-v6'
+    const llmV6HasLateStar = effectiveV6Source === 'llm-v6'
       && data.originalScore
       && lateStarReliable
       && parseOriginalScore(data.originalScore, data.outletId) !== null;
     if (!llmV6HasLateStar) {
-      return { score: data.llmScore.score, source: data.scoreSource };
+      return { score: data.llmScore.score, source: effectiveV6Source };
     }
   }
 
