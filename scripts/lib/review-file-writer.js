@@ -225,8 +225,23 @@ function createOrMergeReviewFile(showId, input, options = {}) {
       const urlOutlet = registry?.outlets?.[urlResolved.outletId];
       const nameOutlet = registry?.outlets?.[outletId];
       if (urlOutlet && nameOutlet && urlOutlet.domain === nameOutlet.domain) {
-        // Case 1: same domain, path-based disambiguation — URL is authoritative
-        outletId = urlResolved.outletId;
+        // Case 1: same domain. URL is authoritative ONLY when the URL's PATH
+        // informed the resolution (timeout.com/london vs /newyork). When two
+        // outlets merely share a bare domain (telegraph / sunday-telegraph,
+        // express-uk / sunday-express), the URL carries no edition signal —
+        // overriding here would force every explicitly-labeled "Sunday
+        // Telegraph" review to the daily edition (card 38b637c5 review).
+        // Detect path-awareness generically: if resolving the bare origin
+        // yields the same outlet as the full URL, the path added nothing and
+        // the supplied name stands.
+        let pathInformed = false;
+        try {
+          const originResolved = resolveOutletFromUrl(new URL(input.url).origin + '/');
+          pathInformed = !originResolved || originResolved.outletId !== urlResolved.outletId;
+        } catch { /* unparseable — keep name */ }
+        if (pathInformed) {
+          outletId = urlResolved.outletId;
+        }
       } else if (urlOutlet) {
         // Case 2: cross-domain. URL points to a known outlet's domain, so the
         // aggregator-supplied name-derived outletId is a misattribution.

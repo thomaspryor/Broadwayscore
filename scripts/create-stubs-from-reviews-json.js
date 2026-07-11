@@ -104,6 +104,11 @@ function main() {
       continue;
     }
 
+    // Cross-market reroute can land the stub under a sibling show — surface it
+    // so the summary can't silently mask a still-missing file for THIS show.
+    if (res.filepath && !res.filepath.includes(`/${review.showId}/`)) {
+      console.log(`  [REROUTED] ${review.showId} → ${path.basename(path.dirname(res.filepath))}/${path.basename(res.filepath)}`);
+    }
     if (CONFIG.dryRun) {
       console.log(`  [DRY] Would create: ${review.showId}/${path.basename(res.filepath || '')}`);
     }
