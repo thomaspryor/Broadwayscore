@@ -1,76 +1,85 @@
 {
-  "runDate": "2026-07-11T15:58:19.809Z",
+  "runDate": "2026-07-11T17:19:59.398Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 100,
     "priority": "all",
-    "showFilter": "springwood-west-end-2026",
+    "showFilter": "iceboy-regional-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 6,
+    "processed": 3,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "60.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 2,
     "brightdata": 0,
-    "archiveToday": 1,
+    "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 5,
-    "tier1Success": 4,
+    "tier1Attempts": 2,
+    "tier1Success": 2,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
-    "tier2Success": 1,
-    "tier3Attempts": 1,
-    "tier3Success": 1,
-    "tier3_6Attempts": 1,
-    "tier3_6Success": 1,
-    "tier4Attempts": 2,
-    "tier4Success": 1,
-    "totalFailed": 6,
-    "scrapingBeePageCredits": 10,
+    "tier2Attempts": 2,
+    "tier2Success": 2,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 2,
+    "scrapingBeePageCredits": 20,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 2,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "iceboy-regional-2026/chicago-sun-times--unknown.json",
+    "iceboy-regional-2026/chicagotribune--christopher-borrelli.json",
+    "iceboy-regional-2026/chicagotribune--unknown.json"
+  ],
   "failed": [
-    "springwood-west-end-2026/guardian-uk--unknown.json",
-    "springwood-west-end-2026/artsdesk--unknown.json",
-    "springwood-west-end-2026/standard--nick-curtis.json",
-    "springwood-west-end-2026/theatrecat--unknown.json",
-    "springwood-west-end-2026/thestage--unknown.json",
-    "springwood-west-end-2026/west-end-best-friend--unknown.json"
+    "iceboy-regional-2026/chicago-sun-times--mike-davis-wbez.json",
+    "iceboy-regional-2026/one-minute-critic--matthew-wexler.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "iceboy-regional-2026/chicago-sun-times--unknown.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
-    "brightdata": [],
-    "archiveToday": [
-      "data/review-texts/springwood-west-end-2026/thestage--unknown.json"
+    "scrapingbee": [
+      "iceboy-regional-2026/chicagotribune--christopher-borrelli.json",
+      "iceboy-regional-2026/chicagotribune--unknown.json"
     ],
+    "brightdata": [],
+    "archiveToday": [],
     "archive": []
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "iceboy-regional-2026/chicagotribune--christopher-borrelli.json",
+      "oldUrl": "https://www.chicagotribune.com/2026/06/30/review-iceboy-goodman-theatre/",
+      "newUrl": "https://www.chicagotribune.com/2026/06/25/iceboy-goodman-theatre-musical/"
+    }
+  ]
 }
