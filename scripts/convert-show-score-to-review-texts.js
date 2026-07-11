@@ -15,11 +15,11 @@ const {
   normalizeOutlet,
   normalizeCritic,
   findExistingReviewFile,
-  generateReviewFilename,
   getOutletDisplayName,
   resolveOutletFromCritic,
   resolveOutletFromUrl,
 } = require('./lib/review-normalization');
+const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 
 const showScorePath = path.join(__dirname, '../data/show-score.json');
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -81,84 +81,54 @@ function main() {
         }
       }
 
-      const outletId = normalizeOutlet(resolvedOutlet);
-      const criticId = normalizeCritic(review.author || 'unknown');
-
-      // Check for existing file using fuzzy matching (handles alias differences)
-      const existing = findExistingReviewFile(showDir, resolvedOutlet, review.author);
-
-      if (existing) {
-        // Existing file found — enrich with showScoreExcerpt and star rating if missing
-        let changed = false;
-        if (!existing.data.showScoreExcerpt && review.excerpt) {
-          existing.data.showScoreExcerpt = review.excerpt;
-          existing.data.showScoreUrl = data.showScoreUrl;
-          changed = true;
-        }
-        if (!existing.data.url && review.url) {
-          existing.data.url = review.url;
-          changed = true;
-        }
-        if (!existing.data.aggregatorStars && !existing.data.originalScore && review.starRating != null) {
-          if (review.starRating > 5) {
-            existing.data.aggregatorStars = `${review.starRating}/100`;
-          } else {
-            existing.data.aggregatorStars = `${review.starRating}/${review.starMax || 5}`;
-          }
-          existing.data.scoreSource = 'show-score-stars';
-          changed = true;
-        }
-        if (changed) {
-          fs.writeFileSync(existing.path, JSON.stringify(existing.data, null, 2));
-          totalUpdated++;
-        } else {
-          totalSkipped++;
-        }
-        continue;
-      }
-
-      // No existing file — create new one
-      if (!fs.existsSync(showDir)) {
-        fs.mkdirSync(showDir, { recursive: true });
-      }
-
-      const filename = generateReviewFilename(resolvedOutlet, review.author || 'unknown');
-      const filePath = path.join(showDir, filename);
-
       // Convert star rating to aggregatorStars (Show Score stars are aggregator data, not outlet-direct)
       let aggregatorStars = null;
-      let scoreSource = null;
       if (review.starRating != null) {
         if (review.starRating > 5) {
           aggregatorStars = `${review.starRating}/100`;
         } else {
           aggregatorStars = `${review.starRating}/${review.starMax || 5}`;
         }
-        scoreSource = 'show-score-stars';
       }
 
-      const reviewData = {
-        showId,
-        outletId,
-        outlet: getOutletDisplayName(outletId) || resolvedOutlet,
-        criticName: review.author || null,
-        url: review.url || null,
-        publishDate: review.date || null,
-        fullText: null,
-        isFullReview: false,
-        showScoreExcerpt: review.excerpt || null,
-        showScoreUrl: data.showScoreUrl,
-        originalScore: null,
-        aggregatorStars,
-        scoreSource,
-        assignedScore: null,
-        source: 'show-score',
-        dtliThumb: null
-      };
+      // Pre-state read (read-only): the shared writer's default merge sets a
+      // field whenever the stored value is falsy, but this importer's original
+      // contract is stricter — aggregator stars must never land on a file that
+      // already carries an outlet-direct originalScore. Capture the pre-state
+      // and include the star fields only when the original conditions hold.
+      const preExisting = findExistingReviewFile(showDir, resolvedOutlet, review.author);
+      const starsAllowed = aggregatorStars != null && (
+        !preExisting || (!preExisting.data.aggregatorStars && !preExisting.data.originalScore)
+      );
 
-      fs.writeFileSync(filePath, JSON.stringify(reviewData, null, 2));
-      console.log(`  Created: ${filename}`);
-      totalCreated++;
+      // Route through the shared save-time chokepoint (card 38b637c5) so every
+      // guard applies (junk outlet, domain validation, cross-market reroute,
+      // cross-show URL ownership, roundup detection, URL-change invariant).
+      // Merge path = the writer's default field merge (fills empty fields,
+      // upgrades URL under the cross-show guard) — same enrichment contract as
+      // the old inline code, with guards.
+      const res = createOrMergeReviewFile(showId, {
+        outlet: resolvedOutlet,
+        criticName: review.author || 'Unknown',
+        url: review.url || null,
+        source: 'show-score',
+        fields: {
+          publishDate: review.date || null,
+          showScoreExcerpt: review.excerpt || null,
+          showScoreUrl: data.showScoreUrl,
+          ...(starsAllowed ? { aggregatorStars, scoreSource: 'show-score-stars' } : {}),
+          ...(preExisting ? {} : { fullText: null, isFullReview: false, originalScore: null, assignedScore: null, dtliThumb: null }),
+        },
+      }, { reviewTextsDir });
+
+      if (res.action === 'new') {
+        console.log(`  Created: ${path.basename(res.filepath || '')}`);
+        totalCreated++;
+      } else if (res.action === 'updated') {
+        totalUpdated++;
+      } else {
+        totalSkipped++;
+      }
     }
   }
 
@@ -168,4 +138,6 @@ function main() {
   console.log(`Skipped (already exists): ${totalSkipped}`);
 }
 
-main();
+if (require.main === module) {
+  main();
+}

@@ -41,6 +41,15 @@ function stripSuppressedSources(buzz: AudienceBuzzData): AudienceBuzzData {
     if (data?.suppressed) continue;
     clean[key] = data;
   }
+  // Defense in depth: neutralize/recalculate already null the combinedScore
+  // when suppression leaves no scoreable source, but if that pipeline ever
+  // drifts (suppressed flag written without the recompute), a lingering
+  // non-null score would render a grade with zero visible sources behind it.
+  // Force it to null here so score and sources can never disagree.
+  const hasScoreable = Object.values(clean).some(s => s && s.score != null);
+  if (!hasScoreable) {
+    return { ...buzz, sources: clean, combinedScore: null as unknown as number, designation: null as unknown as AudienceBuzzDesignation };
+  }
   return { ...buzz, sources: clean };
 }
 
