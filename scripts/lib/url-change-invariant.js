@@ -76,22 +76,25 @@ const URL_DERIVED_FIELDS = Array.from(new Set([
   'duplicateOf', 'duplicateReason', 'duplicateTextOf',
 ]));
 
-// wrongProductionNote prefixes preserved across URL changes. Only the MANUAL
-// 'Tour transfer' family survives: the automatic date guards ('Pre-opening
-// guard', 'Date guard', 'Dateless show') were computed from the OLD article's
-// publishDate — which this invariant also clears — and the rebuild re-derives
-// them fresh every run from the new URL's date, so clearing them cannot strand
-// a file (worst case: re-flagged at the next rebuild, correctly).
-const DATE_BASED_WP_PREFIXES = [
-  'Tour transfer',
-];
+// wrongProductionNote prefixes preserved across URL changes. The MANUAL
+// 'Tour transfer' family ALWAYS survives. The automatic date guards survive
+// only while their publishDate basis survives (see applyUrlChangeInvariant):
+// clearing a date guard while a publishDate remains on the record creates an
+// early-dated-but-unflagged state that reds the validate-data
+// [wrong-production-by-date] CI gate until the next rebuild re-derives the
+// flag (observed pre-existing on care-west-end-2026, 2026-07-11). When the
+// date clears too, the state is consistent (dateless + unflagged) and the
+// rebuild re-derives everything from the new URL's real date.
+const MANUAL_WP_PREFIXES = ['Tour transfer'];
+const AUTO_DATE_WP_PREFIXES = ['Pre-opening guard', 'Date guard', 'Dateless show'];
+// Kept for external references/tests: prefixes that can survive a URL change.
+const DATE_BASED_WP_PREFIXES = [...MANUAL_WP_PREFIXES, ...AUTO_DATE_WP_PREFIXES];
 
 const WP_FIELDS = new Set(['wrongProduction', 'wrongProductionNote', 'wrongProductionReason']);
 
-function _isDateBasedWrongProduction(existing) {
+function _noteStartsWith(existing, prefixes) {
   const note = existing && existing.wrongProductionNote;
-  return typeof note === 'string'
-    && DATE_BASED_WP_PREFIXES.some((p) => note.startsWith(p));
+  return typeof note === 'string' && prefixes.some((p) => note.startsWith(p));
 }
 
 function _valuesEqual(a, b) {
@@ -102,6 +105,28 @@ function _valuesEqual(a, b) {
   } catch {
     return false;
   }
+}
+
+// Format-insensitive publishDate equality ('2023-10-12' vs 'October 12, 2023'
+// are the SAME carried-over date — string deep-equal would treat the re-format
+// as a fresh value and keep the stale date under the new URL).
+function _publishDayKey(v) {
+  if (typeof v !== 'string' || !v.trim()) return null;
+  const t = v.trim();
+  if (/^\d{4}-\d{2}-\d{2}/.test(t)) return t.slice(0, 10);
+  const ms = Date.parse(t);
+  if (Number.isNaN(ms)) return null;
+  // Verbose dates parse as LOCAL midnight; shifting +12h before taking the
+  // UTC day lands inside the intended calendar day for any offset within ±12h.
+  return new Date(ms + 12 * 3600 * 1000).toISOString().slice(0, 10);
+}
+
+function _publishDatesEqual(a, b) {
+  if (a === b) return true;
+  if (!a || !b) return false;
+  const ka = _publishDayKey(a);
+  const kb = _publishDayKey(b);
+  return !!ka && !!kb && ka === kb;
 }
 
 /**
@@ -146,11 +171,34 @@ function applyUrlChangeInvariant(existing, merged, { fileLabel = '?', preserveFi
     return { changed: false, cleared: [] };
   }
 
-  const preserveDateBasedWp = _isDateBasedWrongProduction(existing);
+  // Decide the publishDate's fate FIRST — the automatic date-guard flags are
+  // coupled to it. A date clears when it's carried over from the old record
+  // (format-insensitive: an aggregator re-supplying 'October 12, 2023' for a
+  // stored '2023-10-12' is the same stale date) or dropped by omission.
+  const publishDateWillClear = merged.publishDate === undefined
+    ? existing.publishDate !== undefined
+    : _publishDatesEqual(merged.publishDate, existing.publishDate);
+  // Preserve WP fields for: manual 'Tour transfer' flags (always), and
+  // automatic date guards whose publishDate basis SURVIVES (a genuinely new
+  // date arrived) — the rebuild re-evaluates the guard against that date and
+  // auto-clears it if in-window. Clearing the flag while a date remains would
+  // red the validate-data [wrong-production-by-date] gate until the rebuild.
+  const preserveDateBasedWp = _noteStartsWith(existing, MANUAL_WP_PREFIXES)
+    || (_noteStartsWith(existing, AUTO_DATE_WP_PREFIXES) && !publishDateWillClear);
   const cleared = [];
   for (const field of URL_DERIVED_FIELDS) {
     if (preserveFields && preserveFields.has(field)) continue;
     if (preserveDateBasedWp && WP_FIELDS.has(field)) continue;
+    if (field === 'publishDate') {
+      if (!publishDateWillClear) continue;
+      if (merged.publishDate !== undefined) {
+        delete merged.publishDate;
+        cleared.push('publishDate');
+      } else if (existing.publishDate !== undefined) {
+        cleared.push('publishDate'); // omission
+      }
+      continue;
+    }
     if (merged[field] === undefined) {
       // Cleared BY OMISSION: the old record had this URL-derived field and the
       // replacement-style write dropped it. Nothing to delete, but it must go
