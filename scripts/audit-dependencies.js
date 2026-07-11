@@ -8,9 +8,19 @@
  * range <=4.2.1 — 4.2.1 IS the latest version) turns CI permanently red until
  * a breaking major upgrade of the dependent (sanity) ships. `|| true` is
  * banned house-wide (silent-masking), so this wrapper:
- *   - fails on ANY critical advisory not in ALLOWLIST
+ *   - fails on ANY critical-severity ADVISORY not in ALLOWLIST
  *   - fails on any allowlisted entry past its expiry (forces re-triage)
+ *   - fails when npm audit itself errored (registry outage must be red,
+ *     not silently green)
  *   - prints what was allowlisted so the log never reads as "clean"
+ *
+ * Detection is per-ADVISORY, not per-package: every advisory appears as an
+ * object entry in the `via` array of the package it directly affects, with
+ * its own `severity` field. Scanning all vulnerabilities' object vias for
+ * severity === 'critical' therefore covers arbitrary-depth transitive chains
+ * without graph walking, and does not false-positive on lower-severity
+ * advisories that share a package with a critical one (2026-07-11 ship-check:
+ * the first version walked one transitive level — both unsound directions).
  *
  * Adding an entry requires: the GHSA id, why it can't be fixed, a Notion card
  * or issue reference, and an expiry date ~90 days out.
@@ -30,6 +40,66 @@ const ALLOWLIST = [
     expires: '2026-10-15',
   },
 ];
+
+/**
+ * Pure decision core — exported for tests/unit/audit-dependencies.test.mjs.
+ *
+ * @param {object} report - parsed `npm audit --json` output
+ * @param {Array<{ghsa:string,module:string,reason:string,expires:string}>} allowlist
+ * @param {string} today - YYYY-MM-DD
+ * @returns {{ ok: boolean, errors: string[], allowedHits: Array<{ghsa:string,module:string,reason:string,expires:string}> }}
+ */
+function evaluateAuditReport(report, allowlist, today) {
+  const errors = [];
+
+  // Registry outage / npm error: npm emits {"error":{...}} as valid JSON, and
+  // a report with no vulnerabilities object is not a clean bill of health.
+  if (!report || typeof report !== 'object') {
+    return { ok: false, errors: ['npm audit produced no report object'], allowedHits: [] };
+  }
+  if (report.error) {
+    const e = report.error;
+    return {
+      ok: false,
+      errors: [`npm audit itself errored: ${e.code || ''} ${e.summary || JSON.stringify(e).slice(0, 200)}`],
+      allowedHits: [],
+    };
+  }
+  if (!report.vulnerabilities || typeof report.vulnerabilities !== 'object') {
+    return { ok: false, errors: ['npm audit report has no vulnerabilities object — refusing to treat as clean'], allowedHits: [] };
+  }
+
+  const allowByGhsa = new Map(allowlist.map((a) => [a.ghsa, a]));
+  const expired = allowlist.filter((a) => a.expires <= today);
+  if (expired.length) {
+    for (const a of expired) {
+      errors.push(`expired allowlist entry: ${a.ghsa} (${a.module}) expired ${a.expires} — re-triage or extend with a reason`);
+    }
+    return { ok: false, errors, allowedHits: [] };
+  }
+
+  // Per-advisory scan: object entries in `via` are the advisories themselves,
+  // each with its own severity. String entries are pointers to other package
+  // keys, whose own object vias are scanned when we reach that key.
+  const allowedHits = new Map();
+  const failing = new Map(); // ghsa/url -> description
+  for (const [pkgName, vuln] of Object.entries(report.vulnerabilities)) {
+    for (const via of (vuln.via || [])) {
+      if (typeof via !== 'object' || via === null) continue;
+      if (via.severity !== 'critical') continue;
+      const id = String(via.url || '').split('/').pop() || `unknown:${pkgName}:${via.title}`;
+      const allowed = allowByGhsa.get(id);
+      if (allowed) {
+        allowedHits.set(id, allowed);
+      } else {
+        failing.set(id, `${pkgName}: ${via.title} (${via.url || 'no advisory url'})`);
+      }
+    }
+  }
+
+  for (const desc of failing.values()) errors.push(`critical advisory not in allowlist — ${desc}`);
+  return { ok: errors.length === 0, errors, allowedHits: Array.from(allowedHits.values()) };
+}
 
 function main() {
   let raw;
@@ -58,60 +128,24 @@ function main() {
   }
 
   const today = new Date().toISOString().slice(0, 10);
-  const allowByGhsa = new Map(ALLOWLIST.map((a) => [a.ghsa, a]));
-  const expired = ALLOWLIST.filter((a) => a.expires <= today);
-  if (expired.length) {
-    console.error('❌ Expired dependency-audit allowlist entries (re-triage or extend with a reason):');
-    for (const a of expired) console.error(`   ${a.ghsa} (${a.module}) expired ${a.expires}`);
-    process.exit(1);
-  }
+  const result = evaluateAuditReport(report, ALLOWLIST, today);
 
-  const failures = [];
-  const allowedHits = new Set();
-  for (const [name, vuln] of Object.entries(report.vulnerabilities || {})) {
-    if (vuln.severity !== 'critical') continue;
-    // Direct advisories on this package (objects in `via`); string entries are
-    // transitive pointers to another vulnerability key and are judged there.
-    const direct = (vuln.via || []).filter((v) => typeof v === 'object');
-    const unallowed = direct.filter((v) => {
-      const id = (v.url || '').split('/').pop();
-      if (allowByGhsa.has(id)) { allowedHits.add(id); return false; }
-      return true;
-    });
-    if (direct.length > 0 && unallowed.length > 0) {
-      failures.push({ name, advisories: unallowed.map((v) => `${v.title} (${v.url})`) });
-    }
-    if (direct.length === 0) {
-      // Purely transitive critical — allowed only if every root cause it
-      // points at resolves to an allowlisted advisory. Walk one level.
-      const roots = (vuln.via || []).filter((v) => typeof v === 'string');
-      const rootAllowed = roots.every((r) => {
-        const rv = report.vulnerabilities[r];
-        return rv && (rv.via || []).filter((v) => typeof v === 'object')
-          .every((v) => allowByGhsa.has((v.url || '').split('/').pop()));
-      });
-      if (!rootAllowed) failures.push({ name, advisories: [`transitive critical via ${roots.join(', ')}`] });
-    }
-  }
-
-  if (allowedHits.size) {
+  if (result.allowedHits.length) {
     console.log('⚠️  Allowlisted critical advisories (NOT clean — tracked, unfixable today):');
-    for (const id of allowedHits) {
-      const a = allowByGhsa.get(id);
-      console.log(`   ${id} (${a.module}) — ${a.reason} [expires ${a.expires}]`);
+    for (const a of result.allowedHits) {
+      console.log(`   ${a.ghsa} (${a.module}) — ${a.reason} [expires ${a.expires}]`);
     }
   }
 
-  if (failures.length) {
-    console.error('❌ Critical advisories not in allowlist:');
-    for (const f of failures) {
-      console.error(`   ${f.name}:`);
-      for (const adv of f.advisories) console.error(`     - ${adv}`);
-    }
+  if (!result.ok) {
+    console.error('❌ Dependency audit failed:');
+    for (const err of result.errors) console.error(`   ${err}`);
     process.exit(1);
   }
 
   console.log('✅ No unallowlisted critical advisories.');
 }
 
-main();
+module.exports = { evaluateAuditReport, ALLOWLIST };
+
+if (require.main === module) main();
