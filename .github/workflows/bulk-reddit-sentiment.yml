@@ -246,7 +246,11 @@ jobs:
       - name: Neutralize generic-title Reddit contamination
         # Re-suppress generic-phrase titles the scraper re-inflated (see
         # update-reddit-sentiment.yml for rationale). Recomputes combined score
-        # from clean sources. Runs before commit so the fix persists.
+        # from clean sources. Runs before the commit + push-core-data steps so
+        # the suppression reaches the private repo. continue-on-error so a
+        # failure can't trigger "Restore backup on failure" and lose the merged
+        # shard data (degrades to pre-fix status quo).
+        continue-on-error: true
         run: node scripts/neutralize-contaminated-reddit-buzz.js --apply
 
       - name: Restore backup on failure

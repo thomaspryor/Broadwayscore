@@ -186,6 +186,11 @@ jobs:
         # observed post-fix, 2026-07-11). Re-suppress before the recompute so
         # contamination self-heals every scrape instead of resurfacing on the
         # live site until someone runs neutralize by hand. Non-destructive.
+        # continue-on-error: a neutralize hiccup must NOT trip the job's
+        # "Restore backup on failure" step, which would discard this scrape's
+        # fresh Reddit data and push the old file. Worst case if it fails is
+        # the pre-fix status quo (contamination shows until the next scrape).
+        continue-on-error: true
         run: node scripts/neutralize-contaminated-reddit-buzz.js --apply
 
       - name: Recalculate all combined scores
