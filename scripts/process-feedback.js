@@ -404,7 +404,9 @@ async function main() {
     // surface them to the workflow even when there's nothing new to process.
     const pendingDiagnoses = loadPendingDiagnoses(PENDING_DIAGNOSES_FILE);
     if (process.env.GITHUB_OUTPUT) {
-      const hasPending = pendingDiagnoses.some(d => d.diagnosis);
+      // Undiagnosed (diagnosis:null) leftovers count too — the workflow now
+      // creates a needs-review fallback issue for them instead of dropping.
+      const hasPending = pendingDiagnoses.some(d => d && d.submission && d.item);
       fs.appendFileSync(process.env.GITHUB_OUTPUT, `has_pending_diagnoses=${hasPending}\n`);
       if (hasPending) console.log(`${pendingDiagnoses.length} pending diagnosis(es) from a previous run awaiting issue creation`);
     }
@@ -473,7 +475,7 @@ async function main() {
     // dropped; the workflow's issue-creation step drains this file.
     const merged = mergePendingDiagnoses(pendingDiagnoses, bugDiagnoses, submissionId);
     fs.writeFileSync(PENDING_DIAGNOSES_FILE, JSON.stringify(merged, null, 2) + '\n');
-    if (process.env.GITHUB_OUTPUT && merged.some(d => d.diagnosis)) {
+    if (process.env.GITHUB_OUTPUT && merged.some(d => d && d.submission && d.item)) {
       fs.appendFileSync(process.env.GITHUB_OUTPUT, `has_pending_diagnoses=true\n`);
     }
 

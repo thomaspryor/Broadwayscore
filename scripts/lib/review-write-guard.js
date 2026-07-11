@@ -19,6 +19,13 @@
  * - scripts/ingest-manual-review.js (via review-file-writer)
  * - Any future script that writes to data/review-texts/
  *
+ * URL-change invariant (Notion 399637c5): safeWriteReview() and
+ * review-normalization.js mergeReviews() both enforce, via
+ * lib/url-change-invariant.js, that a write moving a file's url to a different
+ * canonical article clears old-URL-derived state (flags, excerpts, stars,
+ * scores, text) and records a durable `_urlChangedClear` breadcrumb that
+ * isIntentionalClear() honors so rebase-restores don't resurrect it.
+ *
  * NOT used by (bespoke preservation, keep in sync with PROTECTED_FIELDS):
  * - scripts/gather-reviews.js URL-replacement path (line ~3101). Imports
  *   PROTECTED_FIELDS and intersects with REPLACE_CLEAR_FIELDS to derive its
@@ -84,6 +91,11 @@ const PROTECTED_FIELDS = [
   // intentional-clear signal (CLEAR_BREADCRUMBS) survives a rebase rather than
   // being lost, which would let the restore resurrect the stale flag.
   '_previousWrongFlags',
+  // url-change-invariant.js breadcrumb: fields cleared because the file's url
+  // moved to a different canonical article (Notion 399637c5). Same rationale as
+  // _previousWrongFlags — isIntentionalClear() keys on it, so losing it on a
+  // rebase would let the restore resurrect old-URL-derived flags/scores.
+  '_urlChangedClear',
   'wrongAttribution',
   'manualContentTier',
   'designation',
@@ -259,12 +271,46 @@ const CLEAR_BREADCRUMBS = {
  *
  * @param {string} field
  * @param {object} localData - the local/working-tree review record
+ * @param {object} [committedData] - the committed/remote counterpart the
+ *   restore would copy FROM, when the caller has it. Lets the url-change
+ *   breadcrumb distinguish old-era values (suppress) from same-era values
+ *   (restore — that's legitimate data-loss healing).
  * @returns {boolean}
  */
-function isIntentionalClear(field, localData) {
+function isIntentionalClear(field, localData, committedData) {
   if (!localData) return false;
   const pred = CLEAR_BREADCRUMBS[field];
-  return typeof pred === 'function' ? !!pred(localData) : false;
+  if (typeof pred === 'function' && pred(localData)) return true;
+  return _urlChangeCleared(field, localData, committedData);
+}
+
+/**
+ * url-change-invariant breadcrumb (Notion 399637c5): `_urlChangedClear.cleared`
+ * lists fields deliberately deleted because the file's url moved to a different
+ * canonical article. Honored generically for ANY field it names — but only
+ * while the record still carries the url the clear was made for, so a later
+ * URL era's legitimate values aren't suppressed by a stale breadcrumb. When the
+ * caller supplies the committed/remote record, a same-era committed value
+ * (committed.url == local.url) is never suppressed: it was written after (or
+ * independent of) the URL change, so restoring it heals real data loss —
+ * without this, a post-refetch fullText lost to a later rebase would stay lost
+ * because the old breadcrumb still names 'fullText'.
+ */
+function _urlChangeCleared(field, localData, committedData) {
+  const b = localData._urlChangedClear;
+  if (!b || !Array.isArray(b.cleared) || !b.cleared.includes(field)) return false;
+  try {
+    if (committedData && committedData.url && localData.url
+        && _normalizeUrlForCollision(committedData.url) === _normalizeUrlForCollision(localData.url)) {
+      return false;
+    }
+  } catch { /* fall through to the era gate */ }
+  if (!b.to || !localData.url) return true;
+  try {
+    return _normalizeUrlForCollision(localData.url) === _normalizeUrlForCollision(b.to);
+  } catch {
+    return true;
+  }
 }
 
 /**
@@ -370,6 +416,31 @@ function safeWriteReview(filePath, newData, options = {}) {
         for (const [key, val] of Object.entries(existing)) {
           if (newData[key] === undefined) {
             newData[key] = val;
+          }
+        }
+      }
+
+      // Write-topology invariant (Notion 399637c5): a write that moves this
+      // file's url to a DIFFERENT canonical article must not carry old-URL-
+      // derived state (flags, excerpts, stars, scores, text) — that state was
+      // computed from an article this file no longer points at. Runs AFTER the
+      // preservation+merge passes so it catches exactly what they carried over
+      // (fields the incoming write refreshed differ from `existing` and
+      // survive). Manual URL decisions win first: a urlVerified /
+      // urlManualOverride url — and any url on a _locked file — is only
+      // replaceable via force (mirrors mergeReviews' blockUrlChange).
+      {
+        const { urlCanonicallyChanged, applyUrlChangeInvariant } = require('./url-change-invariant');
+        if (urlCanonicallyChanged(existing.url, newData.url)) {
+          if (lockedOverride || existing.urlVerified === true || existing.urlManualOverride === true) {
+            console.warn(`[review-write-guard] blocked url change on ${path.basename(filePath)} (${lockedOverride ? '_locked' : 'urlVerified/urlManualOverride'}): keeping ${existing.url}`);
+            newData.url = existing.url;
+          } else {
+            const inv = applyUrlChangeInvariant(existing, newData, { fileLabel: path.basename(filePath) });
+            for (const f of inv.cleared) {
+              const i = preserved.indexOf(f);
+              if (i !== -1) preserved.splice(i, 1);
+            }
           }
         }
       }
