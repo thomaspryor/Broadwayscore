@@ -424,9 +424,22 @@ function getBestScore(data, opts = {}) {
     // Only HIGH-reliability late stars win — a low-reliability extraction
     // (numeric-stars/css-stars, often a false positive) must NOT override the
     // LLM, which is why llm-v6 kept the LLM in the first place.
+    //
+    // Reliability of the late star (2026-07-11 hardening):
+    // - originalScoreSource present → trust its reliability class.
+    // - originalScoreSource ABSENT → the raw value must be an unambiguous
+    //   rating form ("5/5 stars", "★★★★", "A-"). A bare numeric with no
+    //   extraction source is an aggregator's normalized 0-100 relay (e.g.
+    //   Show Score writing originalScore=100), NOT a published star — it was
+    //   knocking llm-v6 out of this early return and the raw aggregator
+    //   number then shipped via P3b over the LLM's sentiment score (JCS
+    //   london-theatre: LLM 94, site showed 100).
+    const lateStarReliable = data.originalScoreSource
+      ? !LOW_RELIABILITY_STAR_SOURCES.has(data.originalScoreSource)
+      : isUnambiguousRatingString(data.originalScore);
     const llmV6HasLateStar = data.scoreSource === 'llm-v6'
       && data.originalScore
-      && !LOW_RELIABILITY_STAR_SOURCES.has(data.originalScoreSource)
+      && lateStarReliable
       && parseOriginalScore(data.originalScore, data.outletId) !== null;
     if (!llmV6HasLateStar) {
       return { score: data.llmScore.score, source: data.scoreSource };

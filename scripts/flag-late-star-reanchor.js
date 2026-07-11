@@ -1,10 +1,13 @@
 #!/usr/bin/env node
 'use strict';
 /**
- * Flag reviews that were scored UNANCHORED (llm-v6) but now carry a high-reliability
- * published star, so they get re-scored in ANCHORED mode. Backfills ALL West End /
- * off-West-End shows (the anchored markets) corpus-wide — closing the opening-night
- * late-arriving-star race (see scripts/lib/late-star-anchor.js).
+ * Flag reviews that should be re-scored in ANCHORED mode: scored UNANCHORED
+ * (llm-v6) with a late-arriving high-reliability star, OR carrying an ensemble
+ * LLM verdict under a non-v6 scoreSource stamp (scored pre-v6, or the v6 stamp
+ * was overwritten by a later star extraction) so the rebuild serves the flat
+ * star conversion instead of a within-band sentiment score. Backfills ALL West
+ * End / off-West-End shows (the anchored markets) corpus-wide — closing the
+ * opening-night late-arriving-star race (see scripts/lib/late-star-anchor.js).
  *
  * Sets needsRescore=true + rescoreReason='late-star-anchor'. Then run:
  *   ANCHORED_BANDS_PILOT unnecessary for WE/OWE (auto-anchored):
@@ -53,6 +56,6 @@ for (const f of glob.sync(path.join(ROOT, 'data', 'review-texts', '*', '*.json')
   }
   if (LIMIT && flagged >= LIMIT) break;
 }
-console.log(`${APPLY ? 'Flagged' : 'Would flag'} ${flagged} llm-v6 WE/OWE reviews with a late high-reliability star, across ${Object.keys(byShow).length} shows:`);
+console.log(`${APPLY ? 'Flagged' : 'Would flag'} ${flagged} WE/OWE reviews needing anchored re-score (late star or non-v6 stamp), across ${Object.keys(byShow).length} shows:`);
 for (const [s, n] of Object.entries(byShow).sort((a, b) => b[1] - a[1])) console.log(`  ${n}  ${s}`);
 if (!APPLY) console.log('\n(dry run — pass --apply to write needsRescore flags)');

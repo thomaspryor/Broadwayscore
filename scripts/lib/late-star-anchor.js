@@ -46,9 +46,29 @@ const { isIncludableForRebuild } = require('./review-guards');
  * @returns {{ band: object, starsRaw: string } | null} the band to anchor to, or null
  */
 function needsLateStarReanchor(data, ctx = {}) {
-  if (!data || data.scoreSource !== 'llm-v6') return null;
+  if (!data) return null;
+  // Already anchored. Check llmScore.band, NOT scoreSource — later star
+  // extraction overwrites scoreSource with the extraction label (e.g.
+  // 'telegraph-svg-stars'), but llmScore.band is only ever written by the
+  // anchored scorer, so it survives and prevents a re-flag/re-score loop.
+  if (data.scoreSource === 'anchored-v6') return null;
+  if (data.llmScore && data.llmScore.band) return null;
+  const isV6Unanchored = data.scoreSource === 'llm-v6';
+  // Non-v6 stamps (2026-07-11 extension): a file whose scoreSource is an
+  // extraction label (unicode-stars, json-ld, guardian-api, …) but which
+  // carries an ensemble LLM verdict was either scored pre-v6 or had its v6
+  // stamp overwritten by a later star extraction. Either way the rebuild
+  // serves the star-flat conversion (P0.5) instead of a within-band
+  // sentiment score — re-anchor it. Files with no ensemble LLM at all are
+  // left alone: unscored ones drain via the normal scoring queue, and
+  // excerpt-less star-only files have no prose to sentiment-read.
+  if (!isV6Unanchored) {
+    if (!(data.llmScore && typeof data.llmScore.score === 'number' && data.ensembleData)) return null;
+  }
   // A manual/human override is includable but must not be disturbed (human wins).
   if (data.humanReviewScore != null) return null;
+  // Adjudicated verdicts win at read time (P0a) — rescoring is wasted spend.
+  if (data.adjudicatedScore != null) return null;
   // Canonical inclusion gate — same predicate the scorer applies. Subsumes wrong-*,
   // roundup, duplicateOf, isNonReview, stub/invalid-content; prevents stuck-flag
   // accumulation on reviews that can never be re-scored (see header).
@@ -56,14 +76,20 @@ function needsLateStarReanchor(data, ctx = {}) {
   // Only anchored markets (WE/OWE, or env-flagged) — elsewhere llm-v6 is expected.
   const category = ctx.category != null ? ctx.category : data.category;
   if (!shouldUseAnchoredMode({ category, envFlag: process.env.ANCHORED_BANDS_PILOT === '1' })) return null;
-  // Reliability MUST be judged from the EXTRACTION source (originalScoreSource).
-  // isHighReliabilityStar()/detectBandFromReviewFile() key off data.scoreSource,
-  // which for a late star is 'llm-v6' (the final source) — so they'd wrongly call
-  // a numeric-stars/css-stars extraction high-reliability. Gate here so we never
-  // re-anchor an FP-prone star (2026-06-30).
-  if (LOW_RELIABILITY_EXTRACTION.has(data.originalScoreSource)) return null;
+  if (isV6Unanchored) {
+    // Reliability MUST be judged from the EXTRACTION source (originalScoreSource).
+    // isHighReliabilityStar()/detectBandFromReviewFile() key off data.scoreSource,
+    // which for a late star is 'llm-v6' (the final source) — so they'd wrongly call
+    // a numeric-stars/css-stars extraction high-reliability. Gate here so we never
+    // re-anchor an FP-prone star (2026-06-30).
+    if (LOW_RELIABILITY_EXTRACTION.has(data.originalScoreSource)) return null;
+  }
   const det = detectBandFromReviewFile(data);
   if (det && det.band) {
+    // For non-v6 stamps the scoreSource IS the extraction label, so
+    // det.highReliability (isHighReliabilityStar on scoreSource) is the
+    // correct gate — never re-anchor onto an FP-prone extraction.
+    if (!isV6Unanchored && !det.highReliability) return null;
     return { band: det.band, starsRaw: det.starsRaw };
   }
   return null;

@@ -58,15 +58,43 @@ describe('anchored-v6 precedence', () => {
   it('llm-v6 DEFERS to a HIGH-reliability late-arriving published star', () => {
     // 2026-06-30 behavior change: when an 'llm-v6' review later carries a
     // parseable star from a trustworthy (non-low-reliability) source, the
-    // published star wins over the LLM fallback. A bare originalScore with no
-    // declared low-reliability source counts as high-reliability.
+    // published star wins over the LLM fallback.
     const data = makeData({
       scoreSource: 'llm-v6',
       llmScore: { score: 88 },
-      originalScore: 80,
+      originalScore: '4/5 stars',
+      originalScoreSource: 'unicode-stars',
     });
     const res = getBestScore(data);
     assert.strictEqual(res.score, 80);
+  });
+
+  it('llm-v6 DEFERS to an unambiguous star string even with no originalScoreSource', () => {
+    // Late stars written without an extraction-source stamp (e.g. cyrano
+    // times-uk '5/5 stars') still count when the raw form is unambiguous.
+    const data = makeData({
+      scoreSource: 'llm-v6',
+      llmScore: { score: 92 },
+      originalScore: '5/5 stars',
+    });
+    const res = getBestScore(data);
+    assert.strictEqual(res.score, 100);
+  });
+
+  it('llm-v6 KEEPS the LLM over a bare-numeric originalScore with no source (aggregator relay)', () => {
+    // 2026-07-11 hardening: a bare numeric originalScore with no extraction
+    // source is an aggregator's normalized 0-100 relay (Show Score), not a
+    // published star. It must NOT knock llm-v6 out of the early return —
+    // that shipped Show Score's flat 100 over the LLM's 94 (JCS london-theatre).
+    const data = makeData({
+      scoreSource: 'llm-v6',
+      llmScore: { score: 94 },
+      originalScore: 100,
+      source: 'show-score-playwright',
+    });
+    const res = getBestScore(data);
+    assert.strictEqual(res.score, 94);
+    assert.strictEqual(res.source, 'llm-v6');
   });
 
   it('humanReviewScore (P0) still beats anchored-v6', () => {
