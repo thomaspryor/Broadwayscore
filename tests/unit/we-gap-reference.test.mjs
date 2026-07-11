@@ -111,8 +111,70 @@ describe('getWeReferenceRows', () => {
   test('BLACKOUT FLOOR: every source throwing → allSourcesFailed=true', async () => {
     const boom = async () => { throw new Error('network down'); };
     const ref = await getWeReferenceRows(SHOW, { fetchJSON: boom, fetchPage: boom, dataDir: '/nonexistent', log: noLog });
-    assert.equal(ref.allSourcesFailed, true);
+    assert.equal(ref.allSourcesFailed, true, 'passive TS-archive absence must NOT mask a real blackout of the fetching sources');
     assert.equal(ref.rows.length, 0);
+  });
+});
+
+describe('The Stage archive source (passive, 2026-07-11)', () => {
+  const os = require('node:os');
+  const pathMod = require('node:path');
+
+  const TS_HTML = (dateIso) => `<html><head>
+<link rel="canonical" href="https://www.thestage.co.uk/review-round-ups/sting-review-round-up">
+<meta property="article:published_time" content="${dateIso}T09:00:00+00:00">
+</head><body>
+<p>writes Arifa Akbar (<a href="https://www.theguardian.com/stage/review/sting">Guardian, ★★★★</a>) while others demur.</p>
+<p>says Tim Bano (<a href="https://www.thestage.co.uk/reviews/sting-review">The Stage, ★★★</a>) in his verdict.</p>
+</body></html>`;
+
+  const writeArchive = (showId, html) => {
+    const dir = fs.mkdtempSync(pathMod.join(os.tmpdir(), 'ts-arch-'));
+    const arch = pathMod.join(dir, 'aggregator-archive', 'thestage-roundups');
+    fs.mkdirSync(arch, { recursive: true });
+    fs.writeFileSync(pathMod.join(arch, `${showId}.html`), html);
+    return dir;
+  };
+  const noNetwork = { fetchJSON: async () => [], fetchPage: async () => { throw new Error('404'); }, log: noLog };
+
+  test('archived roundup rows join the union — including The Stage\'s OWN review (the T1 blind spot)', async () => {
+    const dataDir = writeArchive(SHOW.id, TS_HTML('2026-07-02'));
+    const ref = await getWeReferenceRows(SHOW, { ...noNetwork, dataDir });
+    const tsRows = ref.rows.filter(r => r.source === 'thestage-archive');
+    assert.ok(tsRows.length >= 2, `expected ≥2 archive rows, got ${tsRows.length}`);
+    assert.ok(tsRows.some(r => r.outletId === 'thestage' || /stage/i.test(r.outletName)),
+      'The Stage cites its own review in its roundup — a missing Stage review is now flaggable');
+    assert.ok(tsRows.every(r => r.priorRun === false), 'current-run archive rows are ingest-eligible');
+    assert.equal(ref.sources['thestage-archive'].found, true);
+    assert.equal(ref.sources['thestage-archive'].passive, true);
+  });
+
+  test('prior-production archive (gather SERP archived the wrong run) → rows priorRun', async () => {
+    const dataDir = writeArchive(SHOW.id, TS_HTML('2022-04-01'));
+    const ref = await getWeReferenceRows(SHOW, { ...noNetwork, dataDir });
+    const tsRows = ref.rows.filter(r => r.source === 'thestage-archive');
+    assert.ok(tsRows.length >= 2);
+    assert.ok(tsRows.every(r => r.priorRun === true), 'stale archived roundup rows must never be ingest-eligible');
+  });
+
+  test('archive exists but parses 0 rows → emptyParse floor (parser drift, not zero citations)', async () => {
+    const dataDir = writeArchive(SHOW.id, '<html><body><p>redesigned template, no star links</p></body></html>');
+    const ref = await getWeReferenceRows(SHOW, { ...noNetwork, dataDir });
+    assert.equal(ref.sources['thestage-archive'].found, true);
+    assert.equal(ref.sources['thestage-archive'].emptyParse, true);
+  });
+
+  test('no archive → passive absence: no error, no floor, no rows', async () => {
+    const ref = await getWeReferenceRows(SHOW, { ...noNetwork, dataDir: '/nonexistent' });
+    assert.equal(ref.sources['thestage-archive'].found, false);
+    assert.equal(ref.sources['thestage-archive'].error, null);
+    assert.equal(ref.sources['thestage-archive'].emptyParse, false);
+  });
+
+  test('workflow checks out the aggregator archive so TS is present in CI', () => {
+    const wfSrc = fs.readFileSync(new URL('../../.github/workflows/audit-aggregator-gap.yml', import.meta.url), 'utf8');
+    assert.ok(wfSrc.includes('checkout-aggregator-archive'),
+      'audit-aggregator-gap.yml must checkout the aggregator archive or the TS source is silently absent in CI');
   });
 });
 
@@ -122,7 +184,10 @@ describe('safety wiring (audit + workflow must keep the fail-closed invariants)'
 
   test('audit gates WE ingest on WE_GAP_INGEST === "1" (absent env fails closed)', () => {
     assert.ok(auditSrc.includes("process.env.WE_GAP_INGEST === '1'"), 'explicit-opt-in comparison present');
-    assert.ok(auditSrc.includes('m.weRef && (!weGateOn || m.priorRun)'), 'prior-run rows excluded from ingest even when gate is on');
+    // The predicate itself is canonical in lib/gap-ingest-policy.js (behaviorally
+    // tested in gap-ingest-policy.test.mjs — priorRun blocks even when gate is on).
+    assert.ok(auditSrc.includes('ingestBlockReason(m, { showIsWe, weGateOn, lowTrustSources: lowTrust })'),
+      'missing-URL ingest must consult the canonical policy predicate (incl. per-source trust)');
   });
 
   test('audit invalidates stale WE checkpoints via WE_REF_VERSION', () => {
@@ -139,13 +204,20 @@ describe('safety wiring (audit + workflow must keep the fail-closed invariants)'
   test('P0 (ship-check): flaggedMisses RECOVERY path also respects the WE gate + prior-run block', () => {
     assert.ok(auditSrc.includes('m.recoverable && recBlockedPred(m)') && auditSrc.includes('m.recoverable && !recBlockedPred(m)'),
       'recovery filter must exclude gate-blocked rows — an empty-body file + a 2022 roundup URL must never re-ingest prior-production text');
-    assert.ok(auditSrc.includes('(isWeShow(s) && !weRecGateOn)'),
-      'on WE shows ALL recovery requires the gate, not just weRef rows');
+    assert.ok(auditSrc.includes('ingestBlockReason(m, { showIsWe: isWeShow(s), weGateOn: weRecGateOn, lowTrustSources: lowTrust })'),
+      'recovery must consult the SAME canonical policy predicate as missing-URL ingest');
   });
 
-  test('INCIDENT 2026-07-10: on WE shows ALL missing-URL ingest requires the gate (Broadway-path same-title contamination)', () => {
-    assert.ok(auditSrc.includes('(showIsWe && !weGateOn) || (m.weRef && (!weGateOn || m.priorRun))'),
-      'Broadway-path SERP finds same-title US/prior-production roundups for WE shows — their URLs ingested 2018 TKAM/2013 Midsummer/2014 Last Ship/2025 JLP reviews onto WE entries');
+  test('INCIDENT 2026-07-10: Broadway-path same-title contamination blocked by production identity', () => {
+    // Was: WE shows gated ALL missing-URL ingest on WE_GAP_INGEST — which stops
+    // protecting the moment the gate auto-enables. Now the Broadway-path articles
+    // themselves are date-gated (articleRunIdentity) and prior-run URLs are
+    // permanently blocked on every market (2018 TKAM/2013 Midsummer/2014 Last
+    // Ship/2025 JLP reviews all ingested onto WE entries in the first run).
+    assert.ok(auditSrc.includes('articleRunIdentity(html, show)'),
+      'every fetched aggregator article must be dated against the opening window');
+    assert.ok(auditSrc.includes("m.priorRunSource = 'aggregator-article-date'"),
+      'prior-production article URLs must be tagged priorRun in missing/flaggedMisses');
   });
 
   test('P1 (ship-check): prior-run-only alert sets do not daily re-ping; failed delivery does not record dedup hash', () => {

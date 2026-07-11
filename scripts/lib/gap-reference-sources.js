@@ -22,14 +22,23 @@
  *   production's earlier-run roundup is informative under priorRuns — but such
  *   rows are NEVER ingest-eligible; auto-ingesting 2022 URLs onto a 2026 entry
  *   is the WET mass-ingestion incident class).
- * - The Stage roundups are NOT a v1 source (Browserbase/cookie-gated, usually
- *   absent in CI — a source that's silently absent 95% of the time would make
- *   set-change alert dedup flap). Stagedoor is archive-only and its archives
- *   are gitignored/private (absent in the audit's CI checkout) — same call.
+ * - The Stage roundups joined as an ARCHIVE-ONLY source (2026-07-11, was
+ *   excluded from v1): The Stage is cookie/Browserbase-gated so the audit never
+ *   fetches it live — gather-reviews/opening-night-poller archive the roundup
+ *   HTML when their authenticated fetch succeeds, and the audit consumes
+ *   data/aggregator-archive/thestage-roundups/{id}.html on later runs. The v1
+ *   flap concern (a source silently absent 95% of the time makes set-change
+ *   alert dedup flap) doesn't apply to an archive: once the file lands it is
+ *   present on every subsequent run. Absence stays EXPECTED (pre-archive, or a
+ *   checkout without the archive) — the source is `passive` and never counts
+ *   toward allSourcesFailed. Stagedoor remains excluded (archives private AND
+ *   it needs a Stagedoor ID — no per-show file to consume).
  *
  * @module gap-reference-sources
  */
 
+const fs = require('fs');
+const path = require('path');
 const { discoverWetRoundupRows } = require('./wet-roundup-discover');
 const { discoverTrRoundupHtml } = require('./tr-roundup-discover');
 const { discoverLboRoundupHtml } = require('./lbo-roundup-discover');
@@ -166,13 +175,43 @@ async function getWeReferenceRows(show, opts = {}) {
     log(`    WE-ref LBO error: ${(e.message || '').slice(0, 80)}`);
   }
 
+  // The Stage — archive-only, `passive`: absence is expected (cookie-gated live;
+  // archive lands only after gather/poller's authenticated fetch) and must never
+  // count toward allSourcesFailed. An archive that EXISTS but parses 0 rows is
+  // still emptyParse — gather archives only pages that parsed >0 rows at fetch
+  // time, so 0 rows later means parser drift, not zero citations. Rows are
+  // date-gated like every other roundup: gather's SERP title-match is weak
+  // enough to archive a prior production's roundup under the current show id.
+  sources['thestage-archive'] = { found: false, rows: 0, emptyParse: false, error: null, passive: true };
+  try {
+    const dataDir = opts.dataDir || path.join(__dirname, '..', '..', 'data');
+    const archPath = path.join(dataDir, 'aggregator-archive', 'thestage-roundups', `${show.id}.html`);
+    if (fs.existsSync(archPath)) {
+      const html = fs.readFileSync(archPath, 'utf8');
+      sources['thestage-archive'].found = true;
+      const { extractReviews: extractTsRows } = require('./thestage-extract');
+      const parsed = extractTsRows(html, show.id) || [];
+      sources['thestage-archive'].rows = parsed.length;
+      if (parsed.length === 0) sources['thestage-archive'].emptyParse = true;
+      const { extractPublishDate } = require('./article-extractor');
+      const priorRun = !isCurrentRunRoundup(extractPublishDate(html), show);
+      const canonical = (html.match(/<link[^>]+rel=["']canonical["'][^>]+href=["']([^"']+)["']/i) || [])[1] || null;
+      for (const r of parsed) push('thestage-archive', canonical, priorRun, r);
+    }
+  } catch (e) {
+    sources['thestage-archive'].error = e.message;
+    log(`    WE-ref TS-archive error: ${(e.message || '').slice(0, 80)}`);
+  }
+
   // A source "failed" if it threw OR if its discovery hit fetch errors and found
   // nothing (the discover libs swallow network errors by poller-design, so a
   // total blackout would otherwise be indistinguishable from "no roundup exists").
+  // Passive (archive-only) sources are excluded: their absence is expected, and
+  // counting them would mask a real network blackout of the fetching sources.
   sources.westendtheatre.fetchErrors = wetStats.fetchErrors || 0;
   sources['theatre-reviews'].fetchErrors = trStats.fetchErrors || 0;
   sources['lbo-roundup'].fetchErrors = lboStats.fetchErrors || 0;
-  const allSourcesFailed = Object.values(sources).every(
+  const allSourcesFailed = Object.values(sources).filter((s) => !s.passive).every(
     (s) => !s.found && (s.error !== null || (s.fetchErrors || 0) > 0)
   );
   return { rows, sources, allSourcesFailed };
