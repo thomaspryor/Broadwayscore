@@ -195,6 +195,39 @@ function validateNoDuplicates(shows) {
     ok('No duplicate slugs');
   }
 
+  // Regional→Broadway transfer pairs: transferOf (on the Broadway show) and
+  // transferredTo (on the regional tryout) must reference existing shows AND
+  // point back at each other — a dangling or one-way link renders a dead
+  // cross-link chip on the show page.
+  {
+    const byId = new Map(shows.map(s => [s.id, s]));
+    let transferIssues = 0;
+    for (const s of shows) {
+      for (const [field, reciprocal] of [['transferOf', 'transferredTo'], ['transferredTo', 'transferOf']]) {
+        const ref = s[field];
+        if (ref === undefined || ref === null) continue;
+        const target = byId.get(ref);
+        if (!target) {
+          error(`Show "${s.id}" ${field} "${ref}" does not reference an existing show`);
+          transferIssues++;
+        } else if (ref === s.id) {
+          error(`Show "${s.id}" ${field} points at itself`);
+          transferIssues++;
+        } else if (target[reciprocal] !== s.id) {
+          error(`Show "${s.id}" ${field} "${ref}" is not reciprocated — "${ref}" must set ${reciprocal}: "${s.id}"`);
+          transferIssues++;
+        } else if (field === 'transferOf' && target.category !== 'regional') {
+          error(`Show "${s.id}" transferOf "${ref}" must point at a category:'regional' show (got "${target.category}")`);
+          transferIssues++;
+        } else if (field === 'transferredTo' && s.category !== 'regional') {
+          error(`Show "${s.id}" has transferredTo but is category "${s.category}" — only regional tryouts carry transferredTo`);
+          transferIssues++;
+        }
+      }
+    }
+    if (transferIssues === 0) ok('All transfer pairs (transferOf/transferredTo) reciprocal');
+  }
+
   // Check duplicate ibdbUrl — each IBDB production maps to exactly one show entry.
   // Two shows sharing an ibdbUrl means a revival was cloned from the original
   // production's IBDB page and silently inherited its opening/preview dates (and

@@ -50,6 +50,15 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
+      # The drift check reads data/review-texts/ directly. This checkout was
+      # missing since the workflow's creation (2026-04-22) — every scheduled
+      # run died with "review-texts dir not found" (exit 1), which was the
+      # actual cause of the daily red, not review-count drift.
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
       - uses: ./.github/actions/setup-node
 
       - name: Run drift check

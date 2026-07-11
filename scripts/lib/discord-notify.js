@@ -11,10 +11,37 @@ const https = require('https');
 
 
 /**
+ * Actionable-only email policy (2026-07-11, owner request): the inbox had 305
+ * automated alerts, most of them warning/info-level FYIs (WE review gaps,
+ * opening-night drop warnings, orphan-unscored, regional auto-adds). Email is
+ * reserved for severities that demand ACTION — 'critical' and 'error' (the
+ * latter renders as [CRITICAL] in the subject line). warning/info alerts are
+ * logged + surfaced in the run's step summary; systemic problems still reach
+ * the owner via the BSC Daily digest's repeat-failure promotion.
+ *
+ * Enforced INSIDE sendEmailAlert so direct callers can't bypass it.
+ */
+const EMAILABLE_SEVERITIES = new Set(['critical', 'error']);
+
+function shouldEmailAlert(severity) {
+  return EMAILABLE_SEVERITIES.has(severity);
+}
+
+/**
  * Send an email alert via Resend (for truly critical issues)
  * Requires RESEND_API_KEY and OWNER_EMAIL env vars.
  */
 async function sendEmailAlert({ title, description, severity = 'error', fields = [], url }) {
+  if (!shouldEmailAlert(severity)) {
+    console.log(`[Alert policy] email suppressed for severity=${severity} — "${title}" (actionable-only policy; see BSC Daily / run logs)`);
+    if (process.env.GITHUB_STEP_SUMMARY) {
+      try {
+        require('fs').appendFileSync(process.env.GITHUB_STEP_SUMMARY,
+          `\n> ⚠️ [${severity}] **${title}** — ${description || ''} _(email suppressed by actionable-only policy)_\n`);
+      } catch {}
+    }
+    return false;
+  }
   const apiKey = process.env.RESEND_API_KEY;
   const ownerEmail = process.env.OWNER_EMAIL;
 
@@ -23,7 +50,7 @@ async function sendEmailAlert({ title, description, severity = 'error', fields =
     return false;
   }
 
-  const severityLabel = { error: 'CRITICAL', warning: 'WARNING', info: 'INFO' };
+  const severityLabel = { critical: 'CRITICAL', error: 'CRITICAL', warning: 'WARNING', info: 'INFO' };
   const fieldsHtml = fields.map(f => `<li><strong>${f.name}:</strong> ${f.value}</li>`).join('\n');
   const html = `
     <div style="font-family: system-ui, sans-serif; max-width: 600px;">
@@ -87,6 +114,11 @@ async function sendEmailAlert({ title, description, severity = 'error', fields =
 async function sendAlert({ title, description, severity = 'error', fields = [], url, email = false }) {
   console.log(`[Alert] ${title}: ${description}`);
   if (email) {
+    // Policy suppression is not a delivery failure — sendEmailAlert logs it
+    // and returns false; don't fire the ::error:: delivery-failed annotation.
+    if (!shouldEmailAlert(severity)) {
+      return sendEmailAlert({ title, description, severity, fields, url });
+    }
     const delivered = await sendEmailAlert({ title, description, severity, fields, url });
     if (!delivered) {
       // A requested-but-failed alert is itself a critical failure: this exact
@@ -114,6 +146,7 @@ function getNotificationStatus() { return { alerts: false, reports: false, newsh
 module.exports = {
   sendAlert,
   sendEmailAlert, // resolves true/false — for callers that must act on delivery failure
+  shouldEmailAlert, // pure policy predicate — unit-tested in alert-email-policy.test.mjs
   sendReport,
   sendNewShowNotification,
   sendMessage,
