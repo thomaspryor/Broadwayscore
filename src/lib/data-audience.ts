@@ -20,9 +20,36 @@ interface AudienceBuzzFile {
   shows: Record<string, AudienceBuzzData>;
 }
 
-const audienceBuzz = audienceBuzzData as unknown as AudienceBuzzFile;
+const audienceBuzzRaw = audienceBuzzData as unknown as AudienceBuzzFile;
 const rawShows = showsData.shows as Array<{ id: string; slug: string }>;
 const showScoreUrls = (showScoreUrlsData as Record<string, unknown>).shows as Record<string, string> | undefined;
+
+/**
+ * Drop suppressed sources (generic-title Reddit contamination, flagged by
+ * neutralize-contaminated-reddit-buzz.js) from a buzz entry. combinedScore is
+ * already recomputed without them, but the source object lingers — so any
+ * consumer that iterates sources (grade tiles, review-count totals, the
+ * sortable table's per-source columns) would otherwise still count/show the
+ * inflated Reddit numbers. Excluding them once here keeps every reader
+ * consistent with the score. Clones only when a suppressed source exists.
+ */
+function stripSuppressedSources(buzz: AudienceBuzzData): AudienceBuzzData {
+  const sources = buzz.sources || {};
+  if (!Object.values(sources).some(s => s?.suppressed)) return buzz;
+  const clean: Record<string, typeof sources[string]> = {};
+  for (const [key, data] of Object.entries(sources)) {
+    if (data?.suppressed) continue;
+    clean[key] = data;
+  }
+  return { ...buzz, sources: clean };
+}
+
+// Normalize once at module load so every accessor sees clean sources.
+const normalizedShows: Record<string, AudienceBuzzData> = {};
+for (const [id, buzz] of Object.entries(audienceBuzzRaw.shows)) {
+  normalizedShows[id] = stripSuppressedSources(buzz);
+}
+const audienceBuzz: AudienceBuzzFile = { ...audienceBuzzRaw, shows: normalizedShows };
 
 /**
  * Get audience buzz data for a specific show by ID
