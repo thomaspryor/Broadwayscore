@@ -914,6 +914,27 @@ jobs:
           ")
           node scripts/submit-indexnow.js --shows "$SLUGS"
 
+      # submit-google-indexing.js records usage in the shared daily quota
+      # ledger (data/audit/indexing-api-usage.json, 200/day). The submit steps
+      # run AFTER "Commit data", so without this commit the run's usage is
+      # silently discarded and other same-day callers (check-seo-health,
+      # update-show-status) undercount the quota.
+      - name: Record indexing quota usage
+        if: steps.find.outputs.has_shows == 'true' && env.GOOGLE_INDEXING_KEY != ''
+        continue-on-error: true
+        env:
+          GOOGLE_INDEXING_KEY: ${{ secrets.GOOGLE_INDEXING_KEY }}
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          bash scripts/lib/git-add-existing.sh data/audit/indexing-api-usage.json
+          if git diff --staged --quiet; then
+            echo "No quota usage to record"
+            exit 0
+          fi
+          git commit -m "chore: Record indexing API quota usage [skip ci]"
+          bash scripts/lib/push-with-retry.sh || echo "::warning::Quota ledger push failed"
+
       - name: Notify on failure
         if: failure()
         uses: ./.github/actions/notify-failure

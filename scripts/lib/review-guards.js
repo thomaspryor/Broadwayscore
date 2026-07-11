@@ -1642,16 +1642,18 @@ function shouldSkipRoundupAudit(data) {
 const ROUNDUP_HOST_OUTLETS = {
   'whatsonstage.com': ['whatsonstage', 'whats-on-stage'],
   'playbill.com': ['playbill'],
-  // DELIBERATELY absent: thestage.co.uk, londonboxoffice.co.uk,
-  // westendtheatre.com. Corpus audit 2026-07-09 found scored, unflagged
-  // page-as-review entries under those hosts (westendtheatre--* editorial
-  // ratings at 77-97, thestage--unknown roundup stubs) that appear to be
-  // INTENTIONAL inclusions under the aggregator-stars design
-  // (feedback_paywalled_star_outlets_not_gaps). Whether an aggregator's own
-  // rating counts as a review is a scoring-policy decision — do not add
-  // those hosts here without deciding it (Notion card filed 2026-07-09).
-  // WOS and Playbill roundups only QUOTE other outlets' critics, so their
-  // page-as-review entries are unambiguously wrong.
+  // Policy decided 2026-07-11 (user): a NAMED CRITIC reviewing the show
+  // counts; a site's AGGREGATED score does not. isRoundupUrl matches only
+  // these hosts' aggregate/roundup pages — never their individual critic
+  // review posts (Stage /reviews/, LBO /news/post/<show>-review, WET
+  // per-outlet rows carry the OUTLET's id, not the host's) — so
+  // page-as-review on these hosts is by definition an aggregated score
+  // dressed as a review. Named-byline reviews at individual URLs are
+  // unaffected. Cleanup: dropped WET editorial 77-97 entries (cyrano,
+  // abba-voyage, much-ado, the-truth) + thestage--unknown 64 stub.
+  'thestage.co.uk': ['thestage', 'the-stage'],
+  'londonboxoffice.co.uk': ['london-box-office', 'londonboxoffice'],
+  'westendtheatre.com': ['westendtheatre', 'west-end-theatre', 'west-end-theatre-editorial'],
 };
 
 /**

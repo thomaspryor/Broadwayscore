@@ -676,8 +676,18 @@ describe('isRoundupPageAsReview — page-as-review vs sourced-from-roundup', () 
     assert.strictEqual(isRoundupPageAsReview({ url: wosRoundup, outletId: 'times-uk' }), false);
   });
 
-  test('Stage review-round-ups URL + thestage outletId → false (host deliberately excluded: aggregator-stars policy pending)', () => {
-    assert.strictEqual(isRoundupPageAsReview({ url: stageRoundup, outletId: 'thestage' }), false);
+  test('Stage review-round-ups URL + thestage outletId → true (policy 2026-07-11: aggregated score, not a critic review)', () => {
+    assert.strictEqual(isRoundupPageAsReview({ url: stageRoundup, outletId: 'thestage' }), true);
+  });
+
+  test('WET reviews-page URL + westendtheatre editorial outletId → true; sourced outlet row → false', () => {
+    const wetPage = 'https://www.westendtheatre.com/12345/reviews/some-show-reviews/';
+    assert.strictEqual(isRoundupPageAsReview({ url: wetPage, outletId: 'west-end-theatre-editorial' }), true);
+    assert.strictEqual(isRoundupPageAsReview({ url: wetPage, outletId: 'times-uk' }), false);
+  });
+
+  test('LBO individual review post (named critic) → NOT page-as-review', () => {
+    assert.strictEqual(isRoundupPageAsReview({ url: 'https://www.londonboxoffice.co.uk/news/post/tender-soho-theatre-review', outletId: 'london-box-office' }), false);
   });
 
   test('manual clear (isRoundupArticle=false) → false even on matching URL+outlet', () => {
@@ -751,9 +761,9 @@ describe('isRoundupPageAsReview — hardened host/outlet matching (ship-check 20
     assert.strictEqual(isQuotingRoundupHostUrl('https://notwhatsonstage.com/news/x-review-round-up_1/'), false);
   });
 
-  test('isQuotingRoundupHostUrl: WOS yes, Stage no (policy pending), garbage no', () => {
+  test('isQuotingRoundupHostUrl: WOS + Stage gated (policy 2026-07-11), garbage no', () => {
     assert.strictEqual(isQuotingRoundupHostUrl(wosRoundup), true);
-    assert.strictEqual(isQuotingRoundupHostUrl('https://www.thestage.co.uk/review-round-ups/x'), false);
+    assert.strictEqual(isQuotingRoundupHostUrl('https://www.thestage.co.uk/review-round-ups/x'), true);
     assert.strictEqual(isQuotingRoundupHostUrl('not a url'), false);
     assert.strictEqual(isQuotingRoundupHostUrl(null), false);
   });

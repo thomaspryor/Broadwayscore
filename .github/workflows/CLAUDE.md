@@ -65,6 +65,10 @@ bash scripts/lib/stage-data-changes.sh data/ public/ # stages specific paths wit
 ```
 This automatically excludes `data/aggregator-archive/` and `data/review-texts/`. **NEVER use `git add -f data/aggregator-archive/`** — this overrides `.gitignore` and leaks copyrighted files. A CI guard ("Guard — no copyrighted content in public repo" in `test.yml`) catches violations, but fix the workflow rather than repeatedly untracking files.
 
+## Step Ordering: Writes Before Pushes
+
+**Any step that writes a repo file the run should persist must come BEFORE the push of that repo — or self-commit (health-stamp pattern: stage → `git diff --staged --quiet ||` commit → `push-with-retry.sh`).** Writes after the last push of a tree are silently discarded at job end; the run looks green and the loss is invisible. Audited 2026-07-11 (15 workflows scanned): the shared indexing quota ledger (`data/audit/indexing-api-usage.json`) was dropped by `opening-night-broadcast.yml` + `update-show-status.yml`, and TR/LBO census review-stubs by `opening-night-reviews.yml`. Post-push steps that only dispatch (`gh workflow run`), call external APIs without a ledger, or write gitignored scratch (e.g. `data/audit/score-integrity.json`) are fine. Intentionally-local writes (e.g. poller's "Rebuild reviews.json locally (for readiness check)") should say so in the step name.
+
 ## Notification Severity
 
 Only 4 workflows should use `severity: 'critical'`: `vercel-deploy`, `opening-night-broadcast`, `opening-night-poller`, `data-health-check` (carries the email digest — if it crashes, daily email won't send). These get real-time email alerts (via Resend) with a 2-hour cooldown per workflow. `check-cron-health` was downgraded to `warning` (2026-05-17) — cron staleness and cookie health both surface in BSC Daily. **Important:** `.github/actions/notify-failure/action.yml` is a no-op for any severity other than `critical` — do not rely on invoking it with `warning`/`low` to send anything. Non-critical failures appear in the digest below.

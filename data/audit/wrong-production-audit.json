@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-11T18:23:09.380Z",
+  "timestamp": "2026-07-11T20:00:56.560Z",
   "stats": {
     "totalReviews": 39976,
-    "alreadyFlagged": 17596,
-    "dateGuardCatches": 48,
+    "alreadyFlagged": 17597,
+    "dateGuardCatches": 50,
     "directorMismatch": 897,
     "tvFilmSignals": 1096,
-    "londonSignals": 742,
+    "londonSignals": 741,
     "offBroadwaySignals": 467,
     "yearMismatch": 86,
-    "noPublishDate": 4008
+    "noPublishDate": 4007
   },
   "findings": [
     {
@@ -28190,6 +28190,18 @@
     },
     {
       "showId": "a-midsummer-nights-dream-west-end-2026",
+      "file": "london-theatre--aliya-al-hassan.json",
+      "score": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 49d before show (2026-05-02 vs 2026-06-20)"
+        }
+      ]
+    },
+    {
+      "showId": "a-midsummer-nights-dream-west-end-2026",
       "file": "thereviewshub--the-reviews-hub-london.json",
       "score": 62,
       "publishDate": null,
@@ -28205,6 +28217,17 @@
     {
       "showId": "a-midsummer-nights-dream-west-end-2026",
       "file": "thestage--holly-o.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 46d before show (2026-05-05 vs 2026-06-20)"
+        }
+      ]
+    },
+    {
+      "showId": "a-midsummer-nights-dream-west-end-2026",
+      "file": "whatsonstage--theo-bosanquet.json",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -41755,20 +41778,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "the-misanthrope-west-end-2026",
-      "file": "thestage--dave-fargnoli.json",
-      "score": 38,
-      "publishDate": "2026-06-24",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-misanthrope-review-sandra-oh-what-a-disappointment-sbzvf82b2?t=1782310602034",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"lyttelton\""
         }
       ]
     },

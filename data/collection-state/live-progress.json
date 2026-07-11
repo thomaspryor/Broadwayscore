@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-07-11T19:34:55.694Z",
-  "processed": 20,
-  "failed": 85,
-  "successRate": "19.0%",
+  "updatedAt": "2026-07-11T19:48:24.821Z",
+  "processed": 54,
+  "failed": 251,
+  "successRate": "17.7%",
   "tierBreakdown": {
-    "playwright": 14,
+    "playwright": 40,
     "amp": 0,
     "browserbase": 0,
-    "directCookies": 4,
-    "scrapingbee": 2,
+    "directCookies": 8,
+    "scrapingbee": 3,
     "brightdata": 0,
-    "archiveToday": 9,
-    "archive": 0
+    "archiveToday": 2,
+    "archive": 3
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-07-11T19:34:20.838Z",
+      "event": "bb-session",
+      "session": "0b7236b2",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2649682"
+    },
+    {
+      "t": "2026-07-11T19:34:21.663Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }
