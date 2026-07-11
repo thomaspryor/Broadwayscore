@@ -113,7 +113,14 @@
     "every-brilliant-thing-2026/nydailynews--joe-dziemianowicz.json",
     "every-brilliant-thing-2026/theatermania--hayley-levitt.json",
     "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json",
-    "oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json"
+    "oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json",
+    "oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
+    "oh-mary-west-end-2025/nytg--olivia-rook.json",
+    "oh-mary-west-end-2025/nytg--unknown.json",
+    "oh-mary-west-end-2025/nytimes--jesse-green.json",
+    "oh-mary-west-end-2025/variety--brent-lang.json",
+    "oh-mary-west-end-2025/variety--naman-ramachandran.json",
+    "oh-mary-west-end-2025/variety--unknown.json"
   ],
   "failed": [
     "iceboy-regional-2026/chicago-sun-times--mike-davis-wbez.json",
@@ -855,7 +862,10 @@
     "black-is-the-color-of-my-voice-west-end-2026/financialtimes--louise-levene.json",
     "black-is-the-color-of-my-voice-west-end-2026/financialtimes--sarah-hemming.json",
     "black-is-the-color-of-my-voice-west-end-2026/london-theatre--olivia-rook.json",
-    "black-is-the-color-of-my-voice-west-end-2026/standard--david-jays.json"
+    "black-is-the-color-of-my-voice-west-end-2026/standard--david-jays.json",
+    "oh-mary-west-end-2025/nyt-theater--jonathan-mandell.json",
+    "oh-mary-west-end-2025/vulture--sara-holdren.json",
+    "oh-mary-west-end-2025/broadwaynews--brittani-samuel.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -937,7 +947,9 @@
       "dog-day-afternoon-2026/one-minute-critic--matthew-wexler.json",
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
       "every-brilliant-thing-2026/theatermania--hayley-levitt.json",
-      "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json"
+      "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json",
+      "oh-mary-west-end-2025/nytg--olivia-rook.json",
+      "oh-mary-west-end-2025/nytg--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -948,7 +960,15 @@
       "data/review-texts/every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
       "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
       "data/review-texts/oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json",
-      "oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json"
+      "oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
+      "oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
+      "data/review-texts/oh-mary-west-end-2025/variety--brent-lang.json",
+      "oh-mary-west-end-2025/variety--brent-lang.json",
+      "data/review-texts/oh-mary-west-end-2025/variety--naman-ramachandran.json",
+      "oh-mary-west-end-2025/variety--naman-ramachandran.json",
+      "data/review-texts/oh-mary-west-end-2025/variety--unknown.json",
+      "oh-mary-west-end-2025/variety--unknown.json"
     ],
     "directCookies": [
       "jesus-christ-superstar-west-end-2026/times-uk--ann-treneman.json",
@@ -971,7 +991,8 @@
       "iceboy-regional-2026/chicagotribune--unknown.json",
       "giulia-the-poison-queen-of-palermo-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
       "henry-vi-a-trilogy-in-two-parts-off-broadway-2026/playbill--unknown.json",
-      "every-brilliant-thing-2026/nytimes--ben-brantley.json"
+      "every-brilliant-thing-2026/nytimes--ben-brantley.json",
+      "oh-mary-west-end-2025/nytimes--jesse-green.json"
     ],
     "brightdata": [
       "camping-off-broadway-2026/talkinbroadway--unknown.json",
@@ -1013,7 +1034,7 @@
     ]
   },
   "startTime": "2026-07-10T17:43:10.129Z",
-  "lastProcessed": "oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json",
+  "lastProcessed": "oh-mary-west-end-2025/broadwaynews--brittani-samuel.json",
   "log": [
     {
       "t": "2026-07-11T01:48:19.522Z",
@@ -1069,6 +1090,50 @@
       "t": "2026-07-11T05:54:41.225Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-07-11T05:54:57.254Z",
+      "event": "bb-session",
+      "session": "1b04c6b2",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/simu-liu-broadway-debut-oh-mary"
+    },
+    {
+      "t": "2026-07-11T05:54:57.761Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-07-11T05:56:02.538Z",
+      "event": "bb-session",
+      "session": "ad335187",
+      "url": "https://variety.com/2026/legit/news/maya-rudolph-oh-mary-broadway-debut-12366856"
+    },
+    {
+      "t": "2026-07-11T05:56:03.022Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-11T05:56:21.563Z",
+      "event": "bb-session",
+      "session": "031d2ca0",
+      "url": "https://variety.com/2026/legit/news/maya-rudolph-oh-mary-broadway-debut-12366856"
+    },
+    {
+      "t": "2026-07-11T05:56:22.052Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-11T05:56:37.594Z",
+      "event": "bb-session",
+      "session": "1b74e243",
+      "url": "https://variety.com/2026/legit/news/maya-rudolph-oh-mary-broadway-debut-12366856"
+    },
+    {
+      "t": "2026-07-11T05:56:38.094Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
