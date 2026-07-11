@@ -23,7 +23,9 @@
     "manon-off-broadway-2027/broadwayworld--steve-callahan.json",
     "aida-off-broadway-2027/broadwayworld--jay-irwin.json",
     "miles-for-mary-off-broadway-2026/broadway-blog--matthew-wexler.json",
-    "tosca-off-broadway-2026/broadwayworld--dc-felton.json"
+    "tosca-off-broadway-2026/broadwayworld--dc-felton.json",
+    "medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
+    "medea-off-broadway-2026/sunday-express--neil-norman.json"
   ],
   "failed": [
     "matilda-the-musical-theatre-row-off-broadway-2026/times-square-chronicles--unknown.json",
@@ -121,7 +123,15 @@
     "miles-for-mary-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
     "miles-for-mary-off-broadway-2026/village-voice--david-cote.json",
     "samson-et-dalila-off-broadway-2026/operawire--david-salazar.json",
-    "tosca-off-broadway-2026/huffpost--wilborn-hampton.json"
+    "tosca-off-broadway-2026/huffpost--wilborn-hampton.json",
+    "medea-off-broadway-2026/timeout--adam-feldman.json",
+    "medea-off-broadway-2026/dailybeast--tim-teeman.json",
+    "medea-off-broadway-2026/i-paper--fiona-mountford.json",
+    "medea-off-broadway-2026/independent--alice-saville.json",
+    "medea-off-broadway-2026/standard--nick-curtis.json",
+    "medea-off-broadway-2026/sunday-telegraph--dominic-cavendish.json",
+    "medea-off-broadway-2026/times-uk--clive-davis.json",
+    "medea-off-broadway-2026/times-uk--quentin-letts.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -145,7 +155,9 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
-      "music-city-off-broadway-2026/deadline--greg-evans.json"
+      "music-city-off-broadway-2026/deadline--greg-evans.json",
+      "data/review-texts/medea-off-broadway-2026/hollywood-reporter--david-rooney.json",
+      "medea-off-broadway-2026/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -164,11 +176,12 @@
       "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
       "manon-off-broadway-2027/broadwayworld--steve-callahan.json",
       "aida-off-broadway-2027/broadwayworld--jay-irwin.json",
-      "miles-for-mary-off-broadway-2026/broadway-blog--matthew-wexler.json"
+      "miles-for-mary-off-broadway-2026/broadway-blog--matthew-wexler.json",
+      "medea-off-broadway-2026/sunday-express--neil-norman.json"
     ]
   },
   "startTime": "2026-07-11T08:48:56.597Z",
-  "lastProcessed": "tosca-off-broadway-2026/huffpost--wilborn-hampton.json",
+  "lastProcessed": "medea-off-broadway-2026/times-uk--quentin-letts.json",
   "log": [
     {
       "t": "2026-07-11T08:56:59.929Z",
@@ -180,6 +193,17 @@
       "t": "2026-07-11T08:57:00.291Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-11T09:07:20.600Z",
+      "event": "bb-session",
+      "session": "be191519",
+      "url": "https://www.hollywoodreporter.com/news/general-news/rose-byrne-bobby-cannavale-s"
+    },
+    {
+      "t": "2026-07-11T09:07:21.002Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
