@@ -606,7 +606,19 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
       // written for same-URL refreshes and would keep the OLD article's
       // longer text here).
       if (incoming.publishDate) merged.publishDate = incoming.publishDate;
-      if (incoming.fullText) merged.fullText = decodeHtmlEntities(incoming.fullText);
+      if (incoming.fullText) {
+        const decodedIncoming = decodeHtmlEntities(incoming.fullText);
+        if (decodedIncoming === decodeHtmlEntities(existing.fullText || '')) {
+          // Incoming ECHOES the old article's text (modulo entity encoding)
+          // under a new URL — keep the raw existing value so the invariant's
+          // deep-equal clears it. Taking the decoded echo would masquerade the
+          // old article's text as fresh content for the new URL, and it would
+          // then be LLM-scored against the wrong article.
+          merged.fullText = existing.fullText;
+        } else {
+          merged.fullText = decodedIncoming;
+        }
+      }
       delete merged.wrongArticle;
       // Write-topology invariant (Notion 399637c5): everything derived from
       // the OLD url — wrong flags (including manual wrongShowReason: flagging

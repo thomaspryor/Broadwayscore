@@ -190,7 +190,7 @@ try {
           // the remote flag. Without this guard the remote's stale `true` comes
           // right back on every rebase. Mirrors the action.yml restore skip and
           // review-guards.js is-cleared semantics. (2026-06-05)
-          if (isIntentionalClear(field, local)) continue;
+          if (isIntentionalClear(field, local, remote)) continue;
           local[field] = remote[field];
           modified = true;
           process.stderr.write(`  Restored ${field} in ${f}\n`);
@@ -228,7 +228,7 @@ try {
         // breadcrumb is a deliberate clear (the text belongs to the file's OLD
         // url) — restoring it would re-contaminate the new URL era.
         if (oursText.length > 100 && oursText.length > (local.fullText || '').length
-            && !isIntentionalClear('fullText', local)) {
+            && !isIntentionalClear('fullText', local, ours)) {
           local.fullText = oursText;
           modified = true;
           process.stderr.write(`  Restored fullText (${oursText.length} chars) from pre-rebase HEAD in ${f}\n`);
@@ -260,7 +260,7 @@ try {
           // governing top-level field was deliberately cleared, do NOT resurrect
           // the nested CV flag — the rebuild pre-pass would re-promote it and
           // silently re-exclude the review.
-          if (isIntentionalClear(CV_FIELD_TO_TOPLEVEL[key], local)) continue;
+          if (isIntentionalClear(CV_FIELD_TO_TOPLEVEL[key], local, remote)) continue;
 
           if (!local.contentVerification) local.contentVerification = {};
           const localVal = local.contentVerification[key];

@@ -82,7 +82,8 @@ const {
   mergeAggregatorReviews,
 } = require('./lib/llm-extractor');
 const { shouldRetryUrlDiscovery, recordSerpAttempt } = require('./lib/review-guards');
-const { computeReplacementPreserve } = require('./lib/wrongprod-replacement-preserve');
+const { computeReplacementPreserve, AGGREGATOR_FIELDS } = require('./lib/wrongprod-replacement-preserve');
+const { applyUrlChangeInvariant } = require('./lib/url-change-invariant');
 const { domainMatchesExpected, fetchPage, verifyFetchedUrl } = require('./lib/scraper');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { titleWordsMatchWithConfidence, validateRoundupPageTitle } = require('./lib/show-matching');
@@ -3346,6 +3347,18 @@ function createReviewFile(showId, reviewData, options = {}) {
             }
             delete replacement.fetchAttempts;
             delete replacement.lastFetchDate;
+            // Write-topology invariant (Notion 399637c5): this branch clears the
+            // old-URL state BY OMISSION (replacement is built fresh; the deletes
+            // above are belt-and-braces), which the CI push-restore reads as
+            // data-loss and resurrects from the committed state. The invariant
+            // records every dropped URL-derived field in the _urlChangedClear
+            // breadcrumb so isIntentionalClear() suppresses the resurrection.
+            // AGGREGATOR_FIELDS stay exempt — this path's contract preserves
+            // show-keyed roundup signals (bwwScore/dtliThumb/etc.) deliberately.
+            applyUrlChangeInvariant(existingReview, replacement, {
+              fileLabel: existingFile,
+              preserveFields: new Set(AGGREGATOR_FIELDS),
+            });
             // Signal that text needs to be collected from the new URL
             if (!replacement.fullText) {
               replacement.needsRecollection = true;
