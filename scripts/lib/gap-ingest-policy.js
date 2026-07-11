@@ -46,17 +46,26 @@ function articleRunIdentity(html, show) {
 
 /**
  * Why an aggregator-listed URL must NOT be auto-ingested (null = ingestable).
- * @param {object} m    missing/flaggedMiss entry ({priorRun, weRef})
- * @param {object} ctx  {showIsWe: boolean, weGateOn: boolean}
- * @returns {'prior-run'|'we-gate-off'|null}
+ * @param {object} m    missing/flaggedMiss entry ({priorRun, weRef, weRefSources})
+ * @param {object} ctx  {showIsWe: boolean, weGateOn: boolean, lowTrustSources?: Set<string>}
+ * @returns {'prior-run'|'we-gate-off'|'low-trust-source'|null}
  */
-function ingestBlockReason(m, { showIsWe, weGateOn }) {
+function ingestBlockReason(m, { showIsWe, weGateOn, lowTrustSources }) {
   // Production identity: a URL cited only by a prior production's article/roundup
   // is NEVER auto-ingested, on any market, regardless of gate state.
   if (m.priorRun) return 'prior-run';
   // WE completeness gate (default OFF, fails closed): on WE shows ALL missing
   // URLs wait for WE_GAP_INGEST=1; weRef-derived URLs wait for it everywhere.
   if ((showIsWe || m.weRef) && !weGateOn) return 'we-gate-off';
+  // Per-aggregator trust (lib/we-gate-proving.js aggregatorAccuracy): a URL
+  // vouched for ONLY by sources whose citations have measurably failed
+  // corroboration stays report-only. One trusted citing source is enough to
+  // ingest; no source attribution (Broadway-path URLs) is never low-trust.
+  if (m.weRef && lowTrustSources && lowTrustSources.size > 0 &&
+      Array.isArray(m.weRefSources) && m.weRefSources.length > 0 &&
+      m.weRefSources.every((s) => lowTrustSources.has(s))) {
+    return 'low-trust-source';
+  }
   return null;
 }
 

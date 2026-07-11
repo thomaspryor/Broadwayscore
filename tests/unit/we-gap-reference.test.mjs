@@ -186,8 +186,8 @@ describe('safety wiring (audit + workflow must keep the fail-closed invariants)'
     assert.ok(auditSrc.includes("process.env.WE_GAP_INGEST === '1'"), 'explicit-opt-in comparison present');
     // The predicate itself is canonical in lib/gap-ingest-policy.js (behaviorally
     // tested in gap-ingest-policy.test.mjs — priorRun blocks even when gate is on).
-    assert.ok(auditSrc.includes('ingestBlockReason(m, { showIsWe, weGateOn })'),
-      'missing-URL ingest must consult the canonical policy predicate');
+    assert.ok(auditSrc.includes('ingestBlockReason(m, { showIsWe, weGateOn, lowTrustSources: lowTrust })'),
+      'missing-URL ingest must consult the canonical policy predicate (incl. per-source trust)');
   });
 
   test('audit invalidates stale WE checkpoints via WE_REF_VERSION', () => {
@@ -204,7 +204,7 @@ describe('safety wiring (audit + workflow must keep the fail-closed invariants)'
   test('P0 (ship-check): flaggedMisses RECOVERY path also respects the WE gate + prior-run block', () => {
     assert.ok(auditSrc.includes('m.recoverable && recBlockedPred(m)') && auditSrc.includes('m.recoverable && !recBlockedPred(m)'),
       'recovery filter must exclude gate-blocked rows — an empty-body file + a 2022 roundup URL must never re-ingest prior-production text');
-    assert.ok(auditSrc.includes('ingestBlockReason(m, { showIsWe: isWeShow(s), weGateOn: weRecGateOn })'),
+    assert.ok(auditSrc.includes('ingestBlockReason(m, { showIsWe: isWeShow(s), weGateOn: weRecGateOn, lowTrustSources: lowTrust })'),
       'recovery must consult the SAME canonical policy predicate as missing-URL ingest');
   });
 

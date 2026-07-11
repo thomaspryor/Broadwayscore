@@ -125,3 +125,55 @@ describe('audit + workflow safety wiring', () => {
     assert.ok(wf.includes('data/audit/we-gate-proving.json'), 'tracker persisted across runs');
   });
 });
+
+describe('per-aggregator accuracy (2026-07-11 — corroboration as a trust signal)', () => {
+  const { aggregatorAccuracy, lowTrustSources } = require('../../scripts/lib/we-gate-proving.js');
+  const REF_WITH_SOURCES = (perSource) => ({
+    rowCount: 8, currentRunRows: 8, corroborated: 5, allSourcesFailed: false,
+    sources: { westendtheatre: { found: true, rows: 8, emptyParse: false, error: null } },
+    perSource,
+  });
+
+  test('recordGateObservation keeps the BEST per-source observation (max semantics, no hourly double-count)', () => {
+    const t = emptyTracker();
+    const show = newShow('alpha-west-end-2026', '2026-07-12');
+    recordGateObservation(t, show, REF_WITH_SOURCES({ westendtheatre: { cited: 4, corroborated: 2 } }), '2026-07-15T00:00:00Z');
+    recordGateObservation(t, show, REF_WITH_SOURCES({ westendtheatre: { cited: 6, corroborated: 5 } }), '2026-07-15T01:00:00Z');
+    recordGateObservation(t, show, REF_WITH_SOURCES({ westendtheatre: { cited: 6, corroborated: 3 } }), '2026-07-15T02:00:00Z');
+    assert.deepEqual(t.shows['alpha-west-end-2026'].perSource.westendtheatre, { cited: 6, corroborated: 5 },
+      'best observation wins; repeat observation of the same citations must not accumulate');
+  });
+
+  test('aggregatorAccuracy sums across shows; thin samples get accuracy:null (fail-open)', () => {
+    const t = emptyTracker();
+    recordGateObservation(t, newShow('a-west-end-2026', '2026-07-12'),
+      REF_WITH_SOURCES({ westendtheatre: { cited: 3, corroborated: 3 }, 'lbo-roundup': { cited: 2, corroborated: 0 } }), '2026-07-15T00:00:00Z');
+    recordGateObservation(t, newShow('b-west-end-2026', '2026-07-13'),
+      REF_WITH_SOURCES({ westendtheatre: { cited: 3, corroborated: 2 }, 'lbo-roundup': { cited: 2, corroborated: 0 } }), '2026-07-15T00:00:00Z');
+    const acc = aggregatorAccuracy(t);
+    assert.equal(acc.westendtheatre.cited, 6);
+    assert.equal(acc.westendtheatre.corroborated, 5);
+    assert.ok(Math.abs(acc.westendtheatre.accuracy - 5 / 6) < 1e-9);
+    assert.equal(acc['lbo-roundup'].cited, 4, 'below minCited=5');
+    assert.equal(acc['lbo-roundup'].accuracy, null, 'thin sample must not be judged');
+  });
+
+  test('lowTrustSources: proven-bad source flagged; thin-sample and good sources are not', () => {
+    const t = emptyTracker();
+    recordGateObservation(t, newShow('a-west-end-2026', '2026-07-12'),
+      REF_WITH_SOURCES({
+        westendtheatre: { cited: 6, corroborated: 6 },      // 100% — trusted
+        'theatre-reviews': { cited: 6, corroborated: 1 },   // 17% on 6 cited — low trust
+        'lbo-roundup': { cited: 2, corroborated: 0 },       // thin sample — fail-open
+      }), '2026-07-15T00:00:00Z');
+    const low = lowTrustSources(t);
+    assert.deepEqual([...low], ['theatre-reviews']);
+  });
+
+  test('wiring: audit computes perSource, feeds tracker, and gates ingest on low trust', () => {
+    const auditSrc = fs.readFileSync(new URL('../../scripts/audit-show-review-gap.js', import.meta.url), 'utf8');
+    assert.ok(auditSrc.includes('result.weReference.perSource'), 'per-source corroboration recorded per show');
+    assert.ok(auditSrc.includes('lowTrustSources(loadWeProving())'), 'trust set computed from accumulated tracker');
+    assert.ok(auditSrc.includes('aggregatorAccuracy(loadWeProving())'), 'accuracy table surfaced in run output');
+  });
+});

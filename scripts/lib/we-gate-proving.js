@@ -36,6 +36,14 @@ const GATE_LIVE_DATE = '2026-07-10';
 
 const DEFAULTS = { minShows: 2, minAudits: 2, minRows: 3, minCorroborated: 2 };
 
+// Per-aggregator trust (2026-07-11): corroboration is tracked PER SOURCE so the
+// accuracy of each aggregator's citations is a measured quantity, not just an
+// input to the one-time binary enable. A source needs ≥ minCited checkable
+// citations before its accuracy means anything (fail-open below that), and a
+// source below the accuracy floor loses auto-ingest privileges (its rows stay
+// report-only) even while trusted sources keep ingesting.
+const ACCURACY_DEFAULTS = { minCited: 5, minAccuracy: 0.6 };
+
 function emptyTracker() {
   return { version: 2, shows: {}, enabledAt: null, provenAt: null, lastEnableAttemptAt: null, notifyPending: false };
 }
@@ -71,6 +79,20 @@ function recordGateObservation(tracker, show, weReference, nowIso = new Date().t
   if (weReference) {
     e.currentRunRowsMax = Math.max(e.currentRunRowsMax, weReference.currentRunRows || 0);
     e.corroboratedMax = Math.max(e.corroboratedMax, weReference.corroborated || 0);
+    // Per-source corroboration: keep each source's BEST observation for this show
+    // (max cited; ties broken by corroborated). Max-of-observation semantics —
+    // NOT a running sum — so the hourly cron re-observing the same citations
+    // doesn't double-count them.
+    if (weReference.perSource) {
+      e.perSource = e.perSource || {};
+      for (const [src, obs] of Object.entries(weReference.perSource)) {
+        const cited = obs.cited || 0, corroborated = obs.corroborated || 0;
+        const prev = e.perSource[src];
+        if (!prev || cited > prev.cited || (cited === prev.cited && corroborated > prev.corroborated)) {
+          e.perSource[src] = { cited, corroborated };
+        }
+      }
+    }
     const sources = weReference.sources || {};
     const floors =
       (weReference.allSourcesFailed ? 1 : 0) +
@@ -119,4 +141,44 @@ function evaluateProving(tracker, opts = {}) {
   return { enable: false, qualifying, reason: `${qualifying.length}/${minShows} qualifying opening(s) so far` };
 }
 
-module.exports = { recordGateObservation, evaluateProving, emptyTracker, baseTitleKey, GATE_LIVE_DATE, DEFAULTS };
+/**
+ * Roll up per-source corroboration across every tracked show.
+ * @returns {Record<string, {cited: number, corroborated: number, accuracy: number|null, shows: number}>}
+ *   accuracy is null while cited < minCited (not enough evidence to judge).
+ */
+function aggregatorAccuracy(tracker, opts = {}) {
+  const { minCited } = { ...ACCURACY_DEFAULTS, ...opts };
+  const out = {};
+  for (const e of Object.values((tracker && tracker.shows) || {})) {
+    for (const [src, obs] of Object.entries(e.perSource || {})) {
+      const agg = out[src] = out[src] || { cited: 0, corroborated: 0, accuracy: null, shows: 0 };
+      agg.cited += obs.cited || 0;
+      agg.corroborated += obs.corroborated || 0;
+      agg.shows += 1;
+    }
+  }
+  for (const agg of Object.values(out)) {
+    if (agg.cited >= minCited) agg.accuracy = agg.corroborated / agg.cited;
+  }
+  return out;
+}
+
+/**
+ * Sources that have PROVEN untrustworthy: enough checkable citations, low
+ * corroboration rate. Fail-open — a source with a thin sample is NOT low-trust.
+ * @returns {Set<string>}
+ */
+function lowTrustSources(tracker, opts = {}) {
+  const { minAccuracy } = { ...ACCURACY_DEFAULTS, ...opts };
+  const low = new Set();
+  for (const [src, agg] of Object.entries(aggregatorAccuracy(tracker, opts))) {
+    if (agg.accuracy !== null && agg.accuracy < minAccuracy) low.add(src);
+  }
+  return low;
+}
+
+module.exports = {
+  recordGateObservation, evaluateProving, emptyTracker, baseTitleKey,
+  aggregatorAccuracy, lowTrustSources,
+  GATE_LIVE_DATE, DEFAULTS, ACCURACY_DEFAULTS,
+};

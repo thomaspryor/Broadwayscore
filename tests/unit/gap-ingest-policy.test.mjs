@@ -106,3 +106,40 @@ describe('ingestBlockReason — WE gate parity for non-priorRun rows', () => {
     assert.equal(ingestBlockReason({}, { showIsWe: false, weGateOn: false }), null);
   });
 });
+
+describe('ingestBlockReason — per-aggregator trust (2026-07-11)', () => {
+  const gateOn = { showIsWe: true, weGateOn: true };
+
+  test('URL cited ONLY by low-trust sources stays report-only even with the gate on', () => {
+    assert.equal(
+      ingestBlockReason(
+        { weRef: true, weRefSources: ['theatre-reviews'] },
+        { ...gateOn, lowTrustSources: new Set(['theatre-reviews']) }
+      ),
+      'low-trust-source'
+    );
+  });
+
+  test('one trusted citing source is enough to ingest', () => {
+    assert.equal(
+      ingestBlockReason(
+        { weRef: true, weRefSources: ['theatre-reviews', 'westendtheatre'] },
+        { ...gateOn, lowTrustSources: new Set(['theatre-reviews']) }
+      ),
+      null
+    );
+  });
+
+  test('fail-open: no trust data / no source attribution / non-weRef rows are never low-trust blocked', () => {
+    assert.equal(ingestBlockReason({ weRef: true, weRefSources: ['theatre-reviews'] }, { ...gateOn, lowTrustSources: new Set() }), null);
+    assert.equal(ingestBlockReason({ weRef: true, weRefSources: ['theatre-reviews'] }, gateOn), null);
+    assert.equal(ingestBlockReason({ weRef: true }, { ...gateOn, lowTrustSources: new Set(['theatre-reviews']) }), null);
+    assert.equal(ingestBlockReason({}, { showIsWe: false, weGateOn: false, lowTrustSources: new Set(['theatre-reviews']) }), null);
+  });
+
+  test('precedence: prior-run and gate-off outrank low-trust', () => {
+    const ctx = { showIsWe: true, weGateOn: false, lowTrustSources: new Set(['theatre-reviews']) };
+    assert.equal(ingestBlockReason({ weRef: true, priorRun: true, weRefSources: ['theatre-reviews'] }, { ...ctx, weGateOn: true }), 'prior-run');
+    assert.equal(ingestBlockReason({ weRef: true, weRefSources: ['theatre-reviews'] }, ctx), 'we-gate-off');
+  });
+});
