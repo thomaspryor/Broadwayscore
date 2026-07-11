@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-11T11:58:54.731Z",
+  "timestamp": "2026-07-11T13:18:56.338Z",
   "stats": {
-    "totalReviews": 39979,
-    "alreadyFlagged": 17588,
-    "dateGuardCatches": 48,
+    "totalReviews": 39975,
+    "alreadyFlagged": 17586,
+    "dateGuardCatches": 49,
     "directorMismatch": 897,
     "tvFilmSignals": 1098,
     "londonSignals": 742,
     "offBroadwaySignals": 467,
     "yearMismatch": 87,
-    "noPublishDate": 4039
+    "noPublishDate": 4035
   },
   "findings": [
     {
@@ -28246,6 +28246,17 @@
       ]
     },
     {
+      "showId": "a-midsummer-nights-dream-west-end-2026",
+      "file": "whatsonstage--theo-bosanquet.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 46d before show (2026-05-05 vs 2026-06-20)"
+        }
+      ]
+    },
+    {
       "showId": "a-mirrored-monet-west-end-2026",
       "file": "whatsonstage--miriam-sallon.json",
       "score": 39,
@@ -31125,7 +31136,7 @@
       "file": "exeunt-magazine--loren-noveck.json",
       "score": 80,
       "publishDate": "2026-05-15T11:08:02-04:00",
-      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/",
+      "url": "https://exeuntnyc.com/reviews/review-dad-dont-read-this-at-st-lukes-theatre/#:~:text=Dad%20Don't%20Read%20This%20is%20messy%20and%20raw%20and,will%20keep%20it%20in%20my",
       "findings": [
         {
           "type": "DATE_GUARD",
