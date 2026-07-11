@@ -378,6 +378,15 @@ export interface AudienceBuzzSource {
   totalComments?: number;
   /** Resolved URL for the platform's audience review page (stored by scrapers) */
   url?: string;
+  /**
+   * Set by neutralize-contaminated-reddit-buzz.js when a generic-title source
+   * (e.g. Reddit on "Fear & Wonder") is contaminated by unrelated matches. The
+   * combined score is already recomputed without it; display layers must also
+   * hide the tile. Self-clears on the next clean scrape.
+   */
+  suppressed?: boolean;
+  suppressedReason?: string;
+  suppressedAt?: string;
 }
 
 export interface AudienceBuzzData {

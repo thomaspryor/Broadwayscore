@@ -42,7 +42,7 @@ describe('Guard G: Critic-registry misattribution detection', { skip: !hasRegist
       outlet: 'Variety',
       outletId: 'variety',
       criticName: 'Peter Marks',
-      url: 'https://variety.com/fake-review',
+      url: 'https://variety.com/fake-review-1',
       source: 'test',
     }, { reviewTextsDir: tmpDir });
 
@@ -85,7 +85,7 @@ describe('Guard G: Critic-registry misattribution detection', { skip: !hasRegist
       outlet: 'variety',
       outletId: 'variety',
       criticName: 'Unknown',
-      url: 'https://variety.com/fake-review',
+      url: 'https://variety.com/fake-review-2',
       source: 'test',
     }, { reviewTextsDir: tmpDir });
 
@@ -99,7 +99,7 @@ describe('Guard G: Critic-registry misattribution detection', { skip: !hasRegist
       outlet: 'variety',
       outletId: 'variety',
       criticName: 'Completely New Critic Nobody Has Heard Of',
-      url: 'https://variety.com/fake-review',
+      url: 'https://variety.com/fake-review-3',
       source: 'test',
     }, { reviewTextsDir: tmpDir });
 
@@ -130,7 +130,7 @@ describe('Guard G: Critic-registry misattribution detection', { skip: !hasRegist
       outletId: 'variety',
       outlet: 'Variety',
       criticName: 'Peter Marks',
-      url: 'https://variety.com/fake-review',
+      url: 'https://variety.com/fake-review-merge',
       source: 'bww-roundup',
       sources: ['bww-roundup'],
       suspectedMisattribution: false,
@@ -142,7 +142,7 @@ describe('Guard G: Critic-registry misattribution detection', { skip: !hasRegist
       outlet: 'Variety',
       outletId: 'variety',
       criticName: 'Peter Marks',
-      url: 'https://variety.com/fake-review',
+      url: 'https://variety.com/fake-review-merge',
       source: 'dtli',
       fields: { dtliExcerpt: 'Great show' },
     }, { reviewTextsDir: tmpDir });

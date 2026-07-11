@@ -121,6 +121,7 @@ describe('The Stage archive source (passive, 2026-07-11)', () => {
   const pathMod = require('node:path');
 
   const TS_HTML = (dateIso) => `<html><head>
+<title>Sting review round-up: what did the critics think?</title>
 <link rel="canonical" href="https://www.thestage.co.uk/review-round-ups/sting-review-round-up">
 <meta property="article:published_time" content="${dateIso}T09:00:00+00:00">
 </head><body>
@@ -157,11 +158,20 @@ describe('The Stage archive source (passive, 2026-07-11)', () => {
     assert.ok(tsRows.every(r => r.priorRun === true), 'stale archived roundup rows must never be ingest-eligible');
   });
 
-  test('archive exists but parses 0 rows → emptyParse floor (parser drift, not zero citations)', async () => {
-    const dataDir = writeArchive(SHOW.id, '<html><body><p>redesigned template, no star links</p></body></html>');
+  test('archive exists but parses 0 rows → emptyParse (visible; passive so never a proving floor)', async () => {
+    const dataDir = writeArchive(SHOW.id, '<html><head><title>Sting review round-up</title></head><body><p>redesigned template, no star links</p></body></html>');
     const ref = await getWeReferenceRows(SHOW, { ...noNetwork, dataDir });
     assert.equal(ref.sources['thestage-archive'].found, true);
     assert.equal(ref.sources['thestage-archive'].emptyParse, true);
+    assert.equal(ref.sources['thestage-archive'].passive, true, 'passive flag exempts it from proving floors');
+  });
+
+  test('wrong-show archive (title mismatch) is IGNORED — no rows, error noted (QA review 2026-07-11)', async () => {
+    const dataDir = writeArchive(SHOW.id, TS_HTML('2026-07-02').replace(/<title>[^<]*<\/title>/, '<title>Completely Different Show review round-up</title>'));
+    const ref = await getWeReferenceRows(SHOW, { ...noNetwork, dataDir });
+    assert.equal(ref.rows.filter(r => r.source === 'thestage-archive').length, 0, 'wrong-show rows must not join the union');
+    assert.equal(ref.sources['thestage-archive'].found, false);
+    assert.match(ref.sources['thestage-archive'].error || '', /title mismatch/);
   });
 
   test('no archive → passive absence: no error, no floor, no rows', async () => {

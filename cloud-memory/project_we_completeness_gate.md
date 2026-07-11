@@ -57,15 +57,36 @@ floors, the audit sets WE_GAP_INGEST=1 itself and emails the owner (kill switch
 named); if the token can't write the variable it emails the one command. Fires
 once. Nobody needs to remember anything — do NOT re-add a manual enable step.
 
+**Hardening (2026-07-11, main 15546f8487):**
+- Broadway-path production identity: SERP-found Playbill/BWW articles are now
+  DATE-GATED (`lib/gap-ingest-policy.js` articleRunIdentity — publish date from
+  HTML metadata vs [opening-30d,+90d]); prior-production URLs are priorRun and
+  ingest-blocked on EVERY path/market via the single canonical predicate
+  `ingestBlockReason()` (used by both missing-URL ingest AND flaggedMiss
+  recovery). This closed the TKAM-2018 class for Broadway revivals AND for WE
+  shows post-auto-enable. Dateless article → fails open + ::warning::.
+- The Stage IS now a reference source — ARCHIVE-ONLY (`thestage-archive`,
+  passive): reads data/aggregator-archive/thestage-roundups/{id}.html (written
+  by gather/poller; audit workflow checks out the archive). Passive = absence
+  never counts toward allSourcesFailed and its emptyParse/error is a ::warning::
+  and NEVER a proving floor. TS scraper no longer archives 0-row (paywall-stub)
+  pages. Stagedoor still excluded (needs Stagedoor ID).
+- Per-aggregator accuracy: weReference.perSource {cited,corroborated} → proving
+  tracker (fullest-and-latest per show, no hourly double-count) →
+  `aggregatorAccuracy()`/`lowTrustSources()` (≥5 cited + <60% → source's rows
+  report-only even with gate on; one trusted citing source is enough). "Cited"
+  counts CHECKABLE citations only — still-missing URLs/outlets are un-gathered,
+  not contradicted. Accuracy table prints every run.
+
 **Gotchas:**
-- The Broadway-path SERP finds same-title PRIOR-PRODUCTION Broadway roundups for
-  WE revivals (TKAM: 77 "missing" 2018 US URLs) — the WE alert is scoped to
-  WE-reference-derived gaps only; the Broadway-path noise stays in the audit JSON.
 - Checkpoint entries carry refVersion (WE_REF_VERSION) — bump it to force a
   one-time WE re-audit (used to invalidate 59 poisoned gaps:0 entries).
-- The Stage + Stagedoor are NOT v1 reference sources (cookie/Browserbase-gated,
-  archives private) — reference is WET/TR/LBO only.
 - Backtest 2026-07-10: TKAM reference named exactly the 6 broadsheets the manual
   audit found (prior-run, report-only); Sting/Springwood zeros = true negatives.
+- False-positive wrongProduction from misparsed publishDate suppresses real T1
+  reviews (care-west-end-2026 Stage review stamped 2023-10-12, actually
+  2026-05-20): verify against the live page date + Theatre Record year before
+  trusting a wrong-production-by-date validation error; clear with the full
+  manual-clear field set ([[feedback_manual_review_protection_fields.md]]).
 Related: [[feedback_stale_flag_collision_drops_current_production.md]],
 [[feedback_returning_production_priorRuns.md]], [[feedback_pending_no_byline_strand_drain.md]].
