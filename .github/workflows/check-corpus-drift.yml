@@ -109,15 +109,26 @@ jobs:
           # accumulated unseen (found 2026-07-11 during NYC rollout simulation).
           # Non-blocking (::warning) until the NYC anchoring rollout clears the
           # known backlog; flip to --gate after that lands.
-          OUT=$(node scripts/audit-star-accuracy.js || true)
+          set +e
+          OUT=$(node scripts/audit-star-accuracy.js 2>&1)
+          RC=$?
+          set -e
           echo "$OUT"
-          HARD=$(echo "$OUT" | grep -oE 'HARD conversion bugs: [0-9]+' | grep -oE '[0-9]+' || echo 0)
-          SUS=$(echo "$OUT" | grep -oE 'SUSPECT captures: [0-9]+' | grep -oE '[0-9]+' || echo 0)
-          if [ "${HARD:-0}" -gt 0 ]; then
-            echo "::warning::star-accuracy audit: $HARD HARD conversion bug(s) — displayed score contradicts the critic's published star. Run: node scripts/audit-star-accuracy.js"
-          fi
-          if [ "${SUS:-0}" -gt 80 ]; then
-            echo "::warning::star-accuracy audit: SUSPECT count ($SUS) grew past baseline 74 — check for a new extraction/scoring regression."
+          # A crashed audit or a changed summary format must WARN, not silently
+          # report zero (Codex review 2026-07-11): the summary line is the
+          # contract — its absence means the audit itself is broken.
+          SUMMARY=$(echo "$OUT" | grep -E 'HARD conversion bugs: [0-9]+' || true)
+          if [ "$RC" -ne 0 ] || [ -z "$SUMMARY" ]; then
+            echo "::warning::star-accuracy audit is BROKEN (exit=$RC, summary line missing) — no star-vs-score signal this run. Fix scripts/audit-star-accuracy.js or its data checkout."
+          else
+            HARD=$(echo "$SUMMARY" | grep -oE 'HARD conversion bugs: [0-9]+' | grep -oE '[0-9]+')
+            SUS=$(echo "$OUT" | grep -oE 'SUSPECT captures: [0-9]+' | grep -oE '[0-9]+' || echo 0)
+            if [ "${HARD:-0}" -gt 0 ]; then
+              echo "::warning::star-accuracy audit: $HARD HARD conversion bug(s) — displayed score contradicts the critic's published star. Run: node scripts/audit-star-accuracy.js"
+            fi
+            if [ "${SUS:-0}" -gt 74 ]; then
+              echo "::warning::star-accuracy audit: SUSPECT count ($SUS) grew past baseline 74 — check for a new extraction/scoring regression."
+            fi
           fi
 
       - name: Check for changes
