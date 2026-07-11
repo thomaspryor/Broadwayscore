@@ -25,7 +25,11 @@ const {
   hasAggregatorExcerpt,
 } = require(path.join(__dirname, '..', '..', 'scripts', 'lib', 'review-text-scoreable.js'));
 
-const { countExpectedForShow, buildActualCounts } = require(
+// check-review-count-drift.js reads REVIEW_TEXTS_DIR from env at load time —
+// point it at a fixture dir BEFORE the require so findSuppressedForShow scans it.
+const DRIFT_FIXTURE = fs.mkdtempSync(path.join(os.tmpdir(), 'drift-suppress-'));
+process.env.REVIEW_TEXTS_DIR = DRIFT_FIXTURE;
+const { findSuppressedForShow, isInOpeningWindow } = require(
   path.join(__dirname, '..', '..', 'scripts', 'check-review-count-drift.js'),
 );
 
@@ -223,59 +227,79 @@ test('hasAggregatorExcerpt: each aggregator excerpt key is recognized', () => {
   assert.equal(hasAggregatorExcerpt({}), false);
 });
 
-// ----- drift script: synthetic fixture with known delta -----
-test('drift script: buildActualCounts sums per-showId', () => {
-  const counts = buildActualCounts([
-    { showId: 'hamlet-2026' },
-    { showId: 'hamlet-2026' },
-    { showId: 'macbeth-2026' },
-    null,
-    { showId: 'macbeth-2026' },
-    { noShowId: true },
-  ]);
-  assert.deepEqual(counts, { 'hamlet-2026': 2, 'macbeth-2026': 2 });
-});
-
-test('drift script: countExpectedForShow returns delta of 2 vs actual of 3', () => {
-  // Synthetic review-texts directory. Write 5 files: 3 includable w/ score,
-  // 2 excluded. Expected = 3. If reviews.json has 1 entry, delta = +2.
-  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'drift-test-'));
-  const showDir = path.join(tmp, 'hamlet-2026');
+// ----- drift script: suppression scan (redesigned 2026-07-11) -----
+test('drift script: findSuppressedForShow catches the JCS class, ignores prior-production files', () => {
+  // Show opening now; production window ≈ [previews-21d, opening+30d].
+  const show = {
+    id: 'jcs-we-2026',
+    category: 'west-end',
+    previewsStartDate: '2026-07-01',
+    openingDate: '2026-07-07',
+  };
+  const showDir = path.join(DRIFT_FIXTURE, 'jcs-we-2026');
   fs.mkdirSync(showDir, { recursive: true });
 
   const files = {
-    'nyt--jesse-green.json':     { llmScore: { score: 80 } },                 // include
-    'variety--greg.json':        { originalScore: '75' },                     // include
-    'wsj--terry.json':           { humanReviewScore: 90 },                    // include
-    'bww--wp.json':              { wrongProduction: true, llmScore: { score: 60 } }, // exclude (flag)
-    'no-score.json':             { outletId: 'x' },                           // exclude (no score)
+    // Suppressed: scored, canonical-includable, published on opening night,
+    // NOT matched in reviews.json — the JCS 2026-07-09 class.
+    'timeout-london--andrzej-lukowski.json': {
+      outletId: 'timeout-london', criticName: 'Andrzej Lukowski',
+      publishDate: '2026-07-07', fullText: 'review body',
+      llmScore: { score: 78 }, url: 'https://timeout.com/jcs-review',
+    },
+    // NOT suppressed: matched by filename key against reviews.json entries.
+    'guardian--arifa-akbar.json': {
+      outletId: 'guardian', criticName: 'Arifa Akbar',
+      publishDate: '2026-07-07', fullText: 'review body',
+      llmScore: { score: 81 }, url: 'https://theguardian.com/jcs',
+    },
+    // NOT suppressed: prior-production review — flags manually cleared so the
+    // canonical predicate accepts it, but publishDate fails the production
+    // window (the Beetlejuice-WE dailybeast-2019 false-positive class).
+    'dailybeast--tim-teeman.json': {
+      outletId: 'dailybeast', criticName: 'Tim Teeman',
+      publishDate: '2019-04-26', fullText: 'broadway 2019 review',
+      wrongProduction: true, humanReviewedWrongProduction: false,
+      llmScore: { score: 70 }, url: 'https://thedailybeast.com/beetlejuice-2019',
+    },
+    // NOT suppressed: in-window but unscored (pending scoring, not suppression).
+    'westendtheatre--pending.json': {
+      outletId: 'westendtheatre', criticName: 'Pending Critic',
+      publishDate: '2026-07-08', fullText: 'review body',
+      url: 'https://westendtheatre.com/jcs',
+    },
+    // NOT suppressed: matched by URL even though the filename key differs.
+    'standard--unknown.json': {
+      outletId: 'standard', criticName: 'Unknown',
+      publishDate: '2026-07-07', fullText: 'review body',
+      llmScore: { score: 65 }, url: 'https://www.standard.co.uk/jcs-review/',
+    },
   };
   for (const [name, data] of Object.entries(files)) {
     fs.writeFileSync(path.join(showDir, name), JSON.stringify(data));
   }
 
-  // Cannot pass custom root to countExpectedForShow (uses REPO_ROOT),
-  // so verify the predicate-level count directly — same logic the script uses.
-  let expected = 0;
-  for (const name of Object.keys(files)) {
-    const data = JSON.parse(fs.readFileSync(path.join(showDir, name), 'utf8'));
-    if (wouldBeIncludedInRebuild(data)) expected++;
-  }
-  assert.equal(expected, 3);
-
-  const syntheticReviews = [
-    { showId: 'hamlet-2026', outlet: 'nyt' },
+  const showReviews = [
+    { showId: 'jcs-we-2026', outletId: 'guardian', criticName: 'Arifa Akbar', url: 'https://theguardian.com/jcs' },
+    { showId: 'jcs-we-2026', outletId: 'standard', criticName: 'Nick Curtis', url: 'https://standard.co.uk/jcs-review' },
   ];
-  const actualCounts = buildActualCounts(syntheticReviews);
-  const actual = actualCounts['hamlet-2026'] || 0;
-  const delta = expected - actual;
-  assert.equal(delta, 2, 'synthetic fixture should produce a delta of 2');
 
-  fs.rmSync(tmp, { recursive: true, force: true });
+  const { suppressed, scanned } = findSuppressedForShow('jcs-we-2026', show, showReviews);
+  assert.equal(scanned, 5);
+  assert.deepEqual(suppressed.map((s) => s.file), ['timeout-london--andrzej-lukowski.json']);
 });
 
-test('drift script: countExpectedForShow handles missing show dir gracefully', () => {
-  const { expected, scanned } = countExpectedForShow('__definitely-not-a-real-show__');
-  assert.equal(expected, 0);
+test('drift script: isInOpeningWindow gates the scan to ±7d of opening', () => {
+  const now = new Date('2026-07-10').getTime();
+  assert.equal(isInOpeningWindow({ openingDate: '2026-07-07' }, now), true);
+  assert.equal(isInOpeningWindow({ openingDate: '2026-07-16' }, now), true);
+  assert.equal(isInOpeningWindow({ openingDate: '2026-06-01' }, now), false);
+  assert.equal(isInOpeningWindow({ openingDate: null }, now), false);
+  assert.equal(isInOpeningWindow(undefined, now), false);
+});
+
+test('drift script: findSuppressedForShow handles missing show dir gracefully', () => {
+  const { suppressed, scanned } = findSuppressedForShow('__definitely-not-a-real-show__', undefined, []);
+  assert.deepEqual(suppressed, []);
   assert.equal(scanned, 0);
 });
