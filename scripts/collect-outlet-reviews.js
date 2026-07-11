@@ -38,6 +38,7 @@ const fs = require('fs');
 const path = require('path');
 const { discoverCorrectUrl, OUTLET_DOMAINS, calculateDateWindow } = require('./lib/url-discovery');
 const { generateReviewFilename, findExistingReviewFile, resolveOutletFromUrl } = require('./lib/review-normalization');
+const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { domainMatchesExpected } = require('./lib/scraper');
 const { isLondonMarket } = require('./lib/venue-classification');
 
@@ -286,40 +287,46 @@ function looksLikeReview(url, serpTitle) {
 
 function writeReviewFile(showId, outletId, url, showTitle, outletName, opts) {
   const showDir = path.join(REVIEW_TEXTS_DIR, showId);
-  if (!fs.existsSync(showDir)) fs.mkdirSync(showDir, { recursive: true });
 
-  // Use normalized filename via review-normalization
+  // Pre-check under the caller's own outlet identity (read-only): the shared
+  // writer refines outletId from the URL, so without this an existing file
+  // under the SERP-supplied identity would be shadowed by a refined-identity
+  // duplicate. findExistingReviewFile skips flagged files by design — a
+  // flagged copy must not be recreated, so also check the exact filename.
   const fileName = generateReviewFilename(outletId, 'unknown');
-
-  // Check for existing file (handles variant filenames)
-  // findExistingReviewFile skips wrongProduction files, so this only matches valid reviews
   const existing = findExistingReviewFile(showDir, outletId, 'unknown');
-  if (existing) {
-    console.log(`    SKIP (file exists): ${existing.filename}`);
+  if (existing || fs.existsSync(path.join(showDir, fileName))) {
+    console.log(`    SKIP (file exists): ${existing ? existing.filename : fileName}`);
     return false;
   }
 
-  const filePath = path.join(showDir, fileName);
-
-  const data = {
-    showId,
-    showTitle,
+  // Route through the shared save-time chokepoint (card 38b637c5) so every
+  // guard applies (junk outlet, domain validation, cross-market reroute,
+  // cross-show URL ownership, roundup detection). onMerge aborts — this
+  // discovery path only CREATES stubs, never enriches.
+  const res = createOrMergeReviewFile(showId, {
     outlet: outletName,
     outletId,
     criticName: 'Unknown',
     url,
     source: 'outlet-serp-discovery',
-    contentTier: 'stub',
-    collectedAt: new Date().toISOString(),
-  };
+    fields: {
+      showTitle,
+      contentTier: 'stub',
+      collectedAt: new Date().toISOString(),
+    },
+  }, { dryRun: opts.dryRun, onMerge: () => false });
 
-  if (opts.dryRun) {
-    console.log(`    DRY RUN: Would write ${fileName}`);
-    return true;
+  if (res.action !== 'new') {
+    console.log(`    SKIP (${res.reason || res.action})`);
+    return false;
   }
 
-  fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
-  console.log(`    WROTE: ${fileName}`);
+  if (opts.dryRun) {
+    console.log(`    DRY RUN: Would write ${path.basename(res.filepath || fileName)}`);
+  } else {
+    console.log(`    WROTE: ${path.basename(res.filepath || fileName)}`);
+  }
   return true;
 }
 
@@ -563,7 +570,12 @@ async function main() {
   console.log(`Dry run: ${opts.dryRun}`);
 }
 
-main().catch(e => {
-  console.error('Fatal error:', e);
-  process.exit(1);
-});
+// Export the write path for tests (CLAUDE.md §15 — test the real function).
+module.exports = { writeReviewFile };
+
+if (require.main === module) {
+  main().catch(e => {
+    console.error('Fatal error:', e);
+    process.exit(1);
+  });
+}

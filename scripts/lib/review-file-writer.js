@@ -625,12 +625,18 @@ function _mergeIntoExisting(filepath, existing, ctx) {
     changed = true;
   }
 
-  // Update sources array
+  // Update sources array. Compare before/after — the old `_prevSourcesLen`
+  // sentinel was read but never written, so any file that already had a
+  // sources array reported changed on EVERY merge and was rewritten with
+  // identical content (idempotency bug, found via convert-show-score parity
+  // testing, card 38b637c5).
   if (input.source) {
+    const before = JSON.stringify(existing.sources || null);
     const sources = new Set(existing.sources || [existing.source || '']);
     sources.add(input.source);
-    existing.sources = Array.from(sources).filter(Boolean);
-    if (existing.sources.length > (existing._prevSourcesLen || 0)) {
+    const next = Array.from(sources).filter(Boolean);
+    if (JSON.stringify(next) !== before) {
+      existing.sources = next;
       changed = true;
     }
   }
