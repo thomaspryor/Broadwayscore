@@ -55,6 +55,8 @@ const path = require('path');
 
 const { isIncludableForRebuild, isReviewWithinOwnProductionWindow } = require('./lib/review-guards');
 const { hasValidScore } = require('./lib/review-text-scoreable');
+const { generateReviewFilename } = require('./lib/review-normalization');
+const { unwrapRedirectUrl } = require('./lib/scraper');
 
 // CLI ---------------------------------------------------------
 const args = process.argv.slice(2);
@@ -76,8 +78,10 @@ if (Number.isNaN(SHOW_DELTA_THRESHOLD) || SHOW_DELTA_THRESHOLD < 0) {
 // scan (matches opening-night-completeness-check's ±7d window).
 const WINDOW_DAYS = 7;
 // reviews.json freshness: rebuild-fast crons every 4h, full rebuild daily.
+// --show gate allows 8h: worst healthy gap = 4h cadence + GitHub cron lag
+// (routinely 30min-3h) — 6h false-blocked a broadcast in review modeling.
 const GLOBAL_MAX_AGE_HOURS = 30;
-const SHOW_MAX_AGE_HOURS = 6;
+const SHOW_MAX_AGE_HOURS = 8;
 
 // Paths -------------------------------------------------------
 const REPO_ROOT = path.resolve(__dirname, '..');
@@ -102,12 +106,11 @@ function loadReviewsJson() {
   return { reviews, lastUpdated };
 }
 
-function criticSlug(name) {
-  return (name || 'unknown').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-}
-
 function normUrl(u) {
-  return (u || '')
+  // Google-redirect wrappers survive in some reviews.json entry URLs (SERP
+  // ingest pre-04e7aa6b88); the source file holds the clean URL. Unwrap first
+  // or the same review reads as two different URLs → false "suppressed".
+  return (unwrapRedirectUrl(u) || '')
     .replace(/^https?:\/\/(www\.)?/, '')
     .split('?')[0]
     .replace(/[\/\s]+$/, '')
@@ -139,7 +142,12 @@ function findSuppressedForShow(showDir, show, showReviews) {
   const entryKeys = new Set();
   const entryUrls = new Set();
   for (const r of showReviews) {
-    entryKeys.add(`${r.outletId}--${criticSlug(r.criticName)}.json`);
+    // Canonical filename generator (ship-check 2026-07-11): the writers name
+    // files via normalizeOutlet/normalizeCritic (prefix stripping, alias
+    // collapse, junk-byline→unknown). A naive local slug diverges on exactly
+    // those names and reads a PRESENT review as suppressed → false broadcast
+    // block. URL matching below remains the fallback for byline drift.
+    entryKeys.add(generateReviewFilename(r.outletId, r.criticName));
     if (r.url) entryUrls.add(normUrl(r.url));
   }
 
@@ -224,6 +232,11 @@ function main() {
     if (!allShowDirs.includes(showFilter)) {
       console.error(`ERROR: show-filter "${showFilter}" not found in review-texts/`);
       process.exit(1);
+    }
+    if (!showById[showFilter]) {
+      // Without show metadata the production-window test rejects everything and
+      // the suppression scan is silently dead — say so instead of passing quiet.
+      warnLog(`::warning::show "${showFilter}" missing from shows.json — suppression scan is inert, gate reduces to freshness-only`);
     }
     targetShows = [showFilter];
   } else {
@@ -327,4 +340,4 @@ if (require.main === module) {
   }
 }
 
-module.exports = { findSuppressedForShow, isInOpeningWindow, criticSlug, normUrl };
+module.exports = { findSuppressedForShow, isInOpeningWindow, normUrl };

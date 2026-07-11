@@ -774,6 +774,14 @@ function main() {
       showsAffectedIncluded: affectedShowsIncluded.size,
       showsAffectedScore: affectedShowsScore.size,
       t1Details: [...flipsExcluded, ...flipsIncluded, ...scoreFlips].filter(f => f.tier === 'T1'),
+      // Full flip detail (capped) — without this, a within-tolerance non-T1
+      // delta is unexplainable: the human gate requires saying WHICH reviews
+      // moved and why, and the text mode only prints per-show counts.
+      flipDetails: {
+        excluded: flipsExcluded.slice(0, 100),
+        included: flipsIncluded.slice(0, 100),
+        scoreChanged: scoreFlips.slice(0, 100),
+      },
     }, null, 2));
   } else {
     const significant = totalFlips > TOTAL_FLIP_THRESHOLD || t1Flips > T1_FLIP_THRESHOLD;
