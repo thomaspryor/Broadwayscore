@@ -27,7 +27,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { isRedditVolumeInflated, REDDIT_INFLATION_MIN_RC } = require('./lib/reddit-post-filters');
+const { isRedditVolumeInflated, otherSourceReviewCounts, REDDIT_INFLATION_MIN_RC } = require('./lib/reddit-post-filters');
 const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
 
 const ROOT = path.join(__dirname, '..');
@@ -35,7 +35,6 @@ const BUZZ_FILE = path.join(ROOT, 'data', 'audience-buzz.json');
 const SHOWS_FILE = path.join(ROOT, 'data', 'shows.json');
 
 const MIN_RC = REDDIT_INFLATION_MIN_RC;
-const SOURCE_NAMES = ['showScore', 'mezzanine', 'reddit', 'theatr', 'broadwayCom', 'seatplan', 'lbo', 'ltd'];
 
 const apply = process.argv.includes('--apply');
 const excludeArg = process.argv.find((a) => a.startsWith('--exclude='));
@@ -69,8 +68,7 @@ function main() {
       if (new Date(show.closingDate) < cutoff) continue;
     }
 
-    const otherCounts = SOURCE_NAMES.filter((n) => n !== 'reddit')
-      .map((n) => sources[n]).filter((s) => s && (s.reviewCount || 0) > 0).map((s) => s.reviewCount);
+    const otherCounts = otherSourceReviewCounts(sources);
     const maxOther = otherCounts.length ? Math.max(...otherCounts) : 0;
     // Title-independent contamination test (shared with the audit). Catches
     // multi-word generic phrases the old isGenericTitle gate missed.

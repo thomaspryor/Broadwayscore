@@ -68,7 +68,7 @@
 const fs = require('fs');
 const path = require('path');
 const { meaningfulTitleTokens } = require('./lib/cast-extraction-guards');
-const { isRedditVolumeInflated, isPreFixReddit, REDDIT_CONTAMINATION_FIX_DATE } = require('./lib/reddit-post-filters');
+const { isRedditVolumeInflated, otherSourceReviewCounts, isPreFixReddit, REDDIT_CONTAMINATION_FIX_DATE } = require('./lib/reddit-post-filters');
 const { isRedditEligible } = require('./lib/audience-weighting');
 
 const ROOT = path.join(__dirname, '..');
@@ -241,14 +241,12 @@ function audit({ shows: injectedShows, buzz: injectedBuzz, today } = {}) {
       // Already manually suppressed (neutralize-contaminated-reddit-buzz.js) =
       // handled; don't keep warning until the next scrape clears the flag.
       if (scoreEligible && reddit && !reddit.suppressed) {
-        const otherCounts = SOURCE_NAMES
-          .filter(n => n !== 'reddit')
-          .map(n => sources[n])
-          .filter(s => s && (s.reviewCount || 0) > 0)
-          .map(s => s.reviewCount);
+        // Shared source list + predicate with the neutralize suppressor so the
+        // audit never flags a show the suppressor won't touch. The audit's local
+        // SOURCE_NAMES (used by the other flag types) omits WE sources; the
+        // contamination check MUST use the canonical list.
+        const otherCounts = otherSourceReviewCounts(sources);
         const maxOther = otherCounts.length ? Math.max(...otherCounts) : 0;
-        // Title-independent (shared with neutralize) — catches multi-word
-        // generic phrases isGenericTitle alone missed.
         if (isRedditVolumeInflated(rc, otherCounts, titleForGeneric)) {
           flags.push(`REDDIT_GENERIC_VOLUME_INFLATION:rc=${rc},maxOther=${maxOther},title="${titleForGeneric}"`);
         }
