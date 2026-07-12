@@ -8,27 +8,26 @@
 
 ### 1. Git Workflow
 Global rules apply (worktree-first, branch check, commit frequently). Project additions:
-- **Worktree scope (MANDATORY for ANY tracked code edit):** `src/`, `scripts/`, `.github/workflows/`, `next.config.js`, `tsconfig.json`, `package.json`, `CLAUDE.md` → **must be in a worktree before the first edit.** Local git hooks and parallel CI commits silently revert uncommitted edits. Memory and data files can skip. See `memory/feedback_worktree_code_changes.md`. Advisory warnings (session-start.sh, script-edit-check.sh) are advisory only — act on them.
+- **Worktree scope (MANDATORY for ANY tracked code edit):** `src/`, `scripts/`, `.github/workflows/`, `next.config.js`, `tsconfig.json`, `package.json`, `CLAUDE.md` → **must be in a worktree before the first edit** (local hooks + parallel CI silently revert uncommitted edits; memory/data files can skip). See `memory/feedback_worktree_code_changes.md`.
 - **Push** every ~30 min or after milestones. **15+ min without committing** → stop and commit NOW.
 - **`git pull` before every shows.json edit.** CI commits to it every ~30 min; stale local copy + rebase silently re-introduces deleted entries. Pull immediately before edits and verify fixes survived after any rebase.
 
 ### 2. Vercel Deployment
 Git-triggered builds are BLOCKED. Deploys ONLY via `vercel-deploy.yml`.
-- **Cron deploys main HEAD every 5 min** (auto-skips ticks where HEAD hasn't moved). After a push to main, the deploy lands within ~5-10 min — DO NOT run `gh workflow run "Deploy to Vercel"` after a normal push; it races with the cron and re-triggers the cascade we just fixed.
-- **Manual deploy** is for "ship NOW" only (opening night, broken page, post-rebuild data ship that can't wait): `gh workflow run "Deploy to Vercel"`. Auto-triggered post-rebuild via `workflow_run` already exists — manual dispatch is rarely needed.
-- **"Pushed" ≠ "Deployed" — verify against Vercel, NOT the GitHub run.** Confirm with `node scripts/check-prod-deploy.js <commit>` (e.g. `HEAD`): exits 0 only when that commit is actually live on the production domain. **Never** trust `gh run list --workflow="Deploy to Vercel" --json headSha` — during a cancel-cascade that run reports `success` while its Vercel deployment gets CANCELED, so the SHA it prints was never served (false "it's deployed", 2026-06-26 incident). The GitHub run is fine for "did the workflow error?"; the Vercel production READY deployment is the only proof of what's *serving*. Deploys can lag 20-30 min during automation bursts — the last deploy in a burst wins, so poll: `node scripts/check-prod-deploy.js HEAD --wait`.
-- **CI monitoring:** NEVER `gh run watch` — it polls every 3s (~1200 calls/hr per watch; quota zeroed twice 2026-07-11). Use `scripts/lib/wait-for-run.sh <run-id> [timeout-min]` (~1 call/min, quota-aware backoff; exit 0/1/2 = success/failure/timeout). Multi-repo pushes: push ALL repos first, then wait on the one final run ID — never chase intermediate cancelled runs. Prefer verifying OUTCOMES over run status: prod URL content, `check-prod-deploy.js`, raw.githubusercontent.com file state, data-repo `git log` — all rate-limit-immune. On a 403 rate-limit do NOT retry gh in a loop: `gh api rate_limit` (free) shows the reset time; wait for it or use those fallbacks.
+- **Cron deploys main HEAD every 5 min.** After a normal push the deploy lands in ~5-10 min — do NOT `gh workflow run "Deploy to Vercel"` (races the cron, re-triggers the cancel-cascade). Manual dispatch is "ship NOW" only (opening night, broken page).
+- **"Pushed" ≠ "Deployed" — verify against Vercel, not the GitHub run.** `node scripts/check-prod-deploy.js HEAD` exits 0 only when that commit is live on prod (`--wait` to poll; deploys lag 20-30 min in bursts, last one wins). A cancel-cascade run reports `success` while its Vercel deploy is CANCELED — the READY prod deployment is the only proof (2026-06-26 incident).
+- **CI monitoring:** never `gh run watch` (polls every 3s, zeroed the quota twice). Use `scripts/lib/wait-for-run.sh <run-id> [min]`; prefer outcome checks (prod URL, check-prod-deploy.js, raw.githubusercontent.com, data-repo `git log`) — all rate-limit-immune. On 403: `gh api rate_limit` for the reset, don't loop gh. Detail: `memory/feedback_github_polling_rate_limit.md`.
 
 ### 3. Core Data Rules
 - **Never extract metadata from URLs** — URLs are inconsistent. Use publish dates and text content.
 - **Copyrighted text, PII, API keys** → private repos, all gitignored (see §11).
 - **Session data check:** `npm run data:check` at start. Missing → `./scripts/setup-local-data.sh`.
-- **Never add stub shows.json entries without running `scripts/validate-show-venue.js` first.** Provisional/manual entries (`discoverySource: manual-user-request` or `venue-page:*`, or `provisional: true`) must be cross-validated against Playbill before commit. Run `node scripts/validate-show-venue.js --show=ID` (or `--all-provisional`). Catches wrong-year revivals (Sunset Baby 2014 vs 2024 Signature, 2026-05-26) and stub-from-memory dates. Audit log: `data/audit/venue-date-mismatches.json`. Exception: regional feeder-venue shows auto-promote off their PV/BWW roundup page (`promote-ob-venue-candidates.js --regional-only`, daily in scrape-new-aggregators.yml) — the roundup IS the validation (user rule 2026-07-08).
+- **Never add stub shows.json entries without running `scripts/validate-show-venue.js` first.** Provisional/manual entries (`discoverySource: manual-user-request`/`venue-page:*`, or `provisional: true`) cross-validate against Playbill before commit: `node scripts/validate-show-venue.js --show=ID` (or `--all-provisional`). Catches wrong-year revivals + stub-from-memory dates. Exception: regional feeder-venue shows auto-promote off their PV/BWW roundup page (`promote-ob-venue-candidates.js --regional-only`) — the roundup IS the validation.
 - **Critic Score for external claims:** use `getCriticScore(showId)` from `scripts/lib/canonical-critic-scores.ts` only. Reads `public/data/shows/{id}.json:cs` so it's parity-by-definition with the live site. Never raw-mean `reviews.json` and never use `getAllShows()/engine.ts compositeScore` — both diverged in shipped copy. Full rationale + 2026-05-30 / 2026-06-02 incidents: `memory/feedback_critic_score_canonical_helper.md`.
 
 ### 4. Design System (MANDATORY — read `memory/design-system.md` before ANY UI work)
 Use shared components from `src/components/show-cards/` — never create custom versions.
-- **Components:** ScoreBadge, ScoreBreakdownBar, ShowListCard, MiniShowCard, StatusBadge, FormatPill, ProductionPill, AudienceChip, CategoryBadge, ToggleBar, ScoreToggle, StatGrid, ColumnHeader, Modal, ShowSearchDropdown. Import from `@/components/show-cards`.
+- **Components** (import from `@/components/show-cards`): ScoreBadge, ScoreBreakdownBar, ShowListCard, MiniShowCard, StatusBadge, Modal, ShowSearchDropdown, … — full list in `memory/design-system.md`.
 - **Surface colors:** `bg-surface` (page), `bg-surface-raised` (cards), `bg-surface-overlay` (hover), `bg-surface-elevated` (modals). **NEVER use `zinc-*`, `slate-*`, or hardcoded dark hex values.**
 - **Score colors:** Always use `getScoreBucket()` from `score-buckets.ts` or `getScoreTier()` from show-cards. Never hardcode tier colors.
 - **Cards:** Use `.card` / `.card-interactive` / `.card-premium` CSS classes. Never build custom card borders/backgrounds.
@@ -37,7 +36,7 @@ Use shared components from `src/components/show-cards/` — never create custom 
 - **When adding new shared components or tokens**, update `memory/design-system.md`.
 
 ### 5. Visual QA (MANDATORY for UI Changes — gate ENFORCES)
-**Run `/visual-qa` before any push touching UI files** (`src/**/*.{tsx,jsx,css,scss}`, `tailwind.config.*`, `src/app/**`). Element crops at full resolution + structural overflow probe + two-model LLM diff vs user-supplied references. Stop hook blocks claims of visual correctness without a fresh verdict; pre-push hook blocks `git push`/`gh pr merge` without `APPROVED: <verdictHash>` from the user. Bypass: `NO-VERIFY: <reason>` or `ship immediately for: <reason>`. **Score badges remain sacred** (`w-20 sm:w-24`). Full rules: `memory/feedback_local_preview_before_push.md` and `.claude/skills/visual-qa/skill.md`.
+**Run `/visual-qa` before any push touching UI files** (`src/**/*.{tsx,jsx,css,scss}`, `tailwind.config.*`, `src/app/**`): element crops + overflow probe + two-model LLM diff vs references. Stop hook blocks visual-correctness claims without a fresh verdict; pre-push hook blocks `git push`/`gh pr merge` without user `APPROVED: <verdictHash>`. Bypass: `NO-VERIFY: <reason>` or `ship immediately for: <reason>`. **Score badges sacred** (`w-20 sm:w-24`). Full rules: `memory/feedback_local_preview_before_push.md`.
 
 ### 6. Notion Brain (MANDATORY — every session)
 **Notion is the single source of truth for project state.** See `memory/notion-brain-workflow.md` for IDs, schema, and full lifecycle.
@@ -68,28 +67,17 @@ Before EVERY commit touching `src/`, `scripts/`, or config:
 4. **Scripts:** run against real data, minimum 3 diverse cases. `node --check` is syntax only — NOT a test.
 5. **Script migrations:** compare output before/after on same input. Empty results = broken.
 6. For UI: visual verification per §5
-7. **Scoring-logic edits** — two watchlists, both trigger `scripts/scoring-delta.js`:
-   - Inclusion: `scripts/lib/review-guards.js`, `scripts/rebuild-all-reviews.js`, `src/lib/scoring.ts`, `src/lib/engine.ts`, `src/lib/data-core.ts`.
-   - Score-source: `scripts/lib/rebuild-helpers.js`, `scripts/lib/score-extractors.js`, `scripts/lib/score-parsers.js`, `scripts/lib/review-normalization.js`, `scripts/lib/score-routing.js`.
-   Unit tests are NOT sufficient. **MUST run** `node scripts/scoring-delta.js` AND `node scripts/test-temporal-override-regression.js`. Paste summary to user before pushing. Stop hook enforces. See `memory/feedback_scoring_delta_required.md`.
-8. **Content-quality regex edits** (`scripts/lib/content-quality.js` pattern arrays) — MUST run `node scripts/audit-regex-patterns.js --full` before pushing. Catches bare-keyword FPs that unit tests miss. The pre-push run is the blocking gate for edits (Stop hook enforces); the `--full` audit also runs non-blocking in `check-corpus-drift.yml` for ongoing corpus drift (moved out of `test.yml` 2026-06-21 — it flapped on corpus growth). See `memory/feedback_content_quality_regex_fps.md`.
+7. **Scoring-logic edits** — two watchlists (unit tests NOT sufficient). Inclusion: `scripts/lib/review-guards.js`, `scripts/rebuild-all-reviews.js`, `src/lib/{scoring,engine,data-core}.ts`. Score-source: `scripts/lib/{rebuild-helpers,score-extractors,score-parsers,review-normalization,score-routing}.js`. **MUST run** `node scripts/scoring-delta.js` AND `node scripts/test-temporal-override-regression.js`, paste summary before pushing (Stop hook enforces). See `memory/feedback_scoring_delta_required.md`.
+8. **Content-quality regex edits** (`scripts/lib/content-quality.js` pattern arrays) — **MUST run** `node scripts/audit-regex-patterns.js --full` before pushing (catches bare-keyword FPs unit tests miss; Stop hook enforces; also runs non-blocking in `check-corpus-drift.yml`). See `memory/feedback_content_quality_regex_fps.md`.
 **If any check fails, fix before committing.** Never push broken code.
 
 ### 13. Prompt Changes Require A/B Check (MANDATORY)
 Never rescore >100 reviews without the built-in A/B comparison. Aborts if bucket shift >5% or mean drift >5pts.
 
 ### 14. Opening Night Readiness Check (MANDATORY)
-**TIMING RULE — read first:** Aggregator/outlet review pages (BWW RR, DTLI, Playbill Verdict, Show Score, NYC Theatre Roundups, WET, theatre.reviews, Stagedoor, The Stage roundups) **don't exist until reviews start dropping.** A 404 pre-opening is normal — automation discovers URLs at poll time. **Don't pre-stage these URLs. Don't treat their absence pre-opening as a gap.** Only revisit items 6/8/9 AFTER first reviews land in `reviews.json`. **Exception: Talkin' Broadway can publish early** (24h pre-opening seen) — TB direct-URL discovery handles this; don't reject as "too early."
+**TIMING RULE:** Aggregator/outlet review pages (BWW RR, DTLI, Playbill Verdict, Show Score, NYC Theatre, WET, theatre.reviews, Stagedoor, The Stage) **don't exist until reviews drop.** A 404 pre-opening is normal — automation discovers URLs at poll time; don't pre-stage them or treat absence as a gap. Revisit items 6/8/9 only AFTER first reviews land in `reviews.json`. Exception: Talkin' Broadway can publish 24h early (TB direct-URL discovery handles it — don't reject as "too early").
 
-When asked "is everything ready for opening night?", check the AUTOMATION CHAIN, not just the data:
-1. `gh run list --limit 50 --json name,createdAt --jq '.[] | select(.name == "Opening Night Orchestrator") | .createdAt'` — confirm the 3 AM UTC Broadway cron has actually fired before for this market (not just the 10 PM UTC West End cron)
-2. Verify `opening-night-orchestrator.yml` is in `check-cron-health.yml`'s CRITICAL_CRONS list
-3. `gh workflow run opening-night-orchestrator.yml -f show_id=SHOW_ID -f market=broadway` to manually trigger if the cron is late (GitHub crons can lag 15-30 min or miss entirely on new workflows)
-4. **ScrapingBee credits:** `gh workflow run check-secrets-health.yml` and check output — needs >25% remaining. Check-secrets-health warns at 50% (monitor) and 75% (opening nights at risk).
-5. **`category` + `status` + pre-scores check:** `category` must be `'broadway'`/`'west-end'` not `null` (orchestrator defaults fragile); verify `status='open'` is actually pushed to private repo (update-show-status.yml has logged-but-not-pushed); `ls data/llm-scores/{show-id}/` and add `wrongProduction:true` to any prior-production scores.
-6. **DTLI auto-discovery (Broadway only):** Chain is slug-map → homepage scan → sitemap → URL guessing. Missing slug-map entry pre-opening is expected — homepage scan catches it within seconds of DTLI publishing. Full detail in `memory/opening-night-discovery-chains.md`.
-7. **Bright Data zone:** `gh workflow run check-secrets-health.yml` checks zone status. Active zone is `$BRIGHTDATA_ZONE` (`web_unlocker2`); ignore `mcp_unlocker` trial alarms. Disabled zone needs UI recovery. Swap: `printf 'NEW_ZONE' | gh secret set BRIGHTDATA_ZONE`. See `memory/feedback_brightdata_zone_migration.md`.
-8. **BWW RR + Talkin' Broadway URLs:** Discovery details and gotchas in `memory/opening-night-discovery-chains.md`. BWW: reviews.php → homepage → SERP, manual `--bww-roundup-url=` if all fail. TB: `tryTbDirectUrl` (year-suffixed + bare-slug), validates title/byline/publish-date; can publish 24h pre-opening.
+Run `/verify-opening-night <show-id>` for the full 9-point checklist. Check the AUTOMATION CHAIN, not just the data: the Opening Night Orchestrator cron actually fired (3 AM UTC Broadway / 10 PM UTC WE) and is in `check-cron-health.yml` CRITICAL_CRONS (`gh workflow run opening-night-orchestrator.yml -f show_id=ID -f market=broadway` to force if late); `category` is `'broadway'`/`'west-end'` not `null`; `status='open'` actually pushed to private repo; ScrapingBee >25% credits; Bright Data zone `web_unlocker2` active (ignore `mcp_unlocker` trial alarms). Discovery-chain + BWW/TB gotchas: `memory/opening-night-discovery-chains.md`.
 
 ---
 
@@ -117,14 +105,12 @@ Source: `data/review-texts/` → Derived: `reviews.json`. Run `validate-data.js`
 Config: `src/config/commercial.ts`. Components: `src/components/biz/`. Never mark `recouped: true` without citation.
 
 ### Content Quality
-5 tiers: complete→truncated→excerpt→stub→invalid. Flags: `wrongProduction`, `wrongShow`, `isRoundupArticle` → excluded.
-**After ANY manual review recovery** (clearing flags, creating stubs, ingesting URLs): run `node scripts/verify-review-recovery.js --show=SHOW_ID --production`. The pipeline has 5 steps that silently fail independently (conflict markers, scoring cancellation, rebuild timing). This script checks all of them and prints the exact fix command for each failure.
+5 tiers: complete→truncated→excerpt→stub→invalid. Flags `wrongProduction`, `wrongShow`, `isRoundupArticle` → excluded.
+**After ANY manual review recovery** (clearing flags, stubs, ingesting URLs): run `node scripts/verify-review-recovery.js --show=ID --production` — the pipeline has 5 steps that fail silently and independently; it checks all and prints the fix command for each.
 
 ### Web Scraping
-Fallback chain: Bright Data → ScrapingBee → Playwright (`scripts/lib/scraper.js`).
-**Rule:** All new scraping scripts MUST use `fetchPage()` from `scripts/lib/scraper.js` — never call BD/SB APIs directly. Workflows that scrape must pass both `BRIGHTDATA_TOKEN` AND `SCRAPINGBEE_API_KEY`. CI enforces this in `test.yml` (`lint-workflows` job). If a new workflow is legitimately exempt (health check, credential validator), add it to the exempt list in test.yml with a comment.
-**Broadway aggregators:** Show Score, DTLI, BWW Roundups, BWW Reviews Pages, Playbill Verdict, NYC Theatre Roundups.
-**WE aggregators:** WestEndTheatre.com (WET), theatre.reviews (TR), Stagedoor (SD), The Stage roundups (TS), London Box Office (LBO). Integrated in both `gather-reviews.js` and `opening-night-poller.js`.
+Fallback chain: Bright Data → ScrapingBee → Playwright. **Rule:** all new scraping MUST use `fetchPage()` from `scripts/lib/scraper.js` — never call BD/SB APIs directly; scraping workflows pass both `BRIGHTDATA_TOKEN` AND `SCRAPINGBEE_API_KEY` (CI enforces in `lint-workflows`; legit exemptions go in test.yml's exempt list with a comment).
+**Aggregators** — BW: Show Score, DTLI, BWW Roundups + Reviews Pages, Playbill Verdict, NYC Theatre. WE: WestEndTheatre (WET), theatre.reviews (TR), Stagedoor (SD), The Stage (TS), London Box Office (LBO) — in `gather-reviews.js` + `opening-night-poller.js`.
 
 For full details on any subsystem: `memory/CLAUDE-reference.md`
 
@@ -132,7 +118,7 @@ For full details on any subsystem: `memory/CLAUDE-reference.md`
 **Never copy logic into test files — always `require()` the real function.** Extract pure decision functions to `scripts/lib/` (e.g. `review-guards.js`); `module.exports` and `require()` in the test. Production code changes → test fails — that's the point. When fixing inline pipeline logic: extract → export → wire back → test.
 
 ### 16. Memory Entries: Encode First, Write Rarely
-**Never offer to "commit a memory file to the repo"** — the session-stop hook (`sync-memory-to-repo.sh --commit`) mirrors local memory to `cloud-memory/` AND commits+pushes it. The y/n proposal ceremony is retired (2026-07-11). Write a local memory entry ONLY if all three pass: (1) **encode-first** — the lesson can NOT be a code/test/hook/CI change (exception: a triage recipe — how to recognize/diagnose a symptom — when the failure has 2+ independent silent causes); (2) **counterfactual** — name the specific future action that changes; (3) **recall** — a future session hitting this mistake would plausibly surface the file from its description. **No new memory is the normal session outcome.** A memory entry never satisfies "Prevention added" when code-level prevention was possible. "Remember this" from the user → write it, no ceremony.
+**Never offer to "commit a memory file"** — the session-stop hook (`sync-memory-to-repo.sh --commit`) mirrors + commits + pushes local memory automatically. Write a local memory entry ONLY if all three hold: (1) **encode-first** — the lesson can't be a code/test/hook/CI change (exception: a triage recipe when a symptom has 2+ independent silent causes); (2) **counterfactual** — names the specific future action that changes; (3) **recall** — a future session would surface it from its description. **No new memory is the normal outcome**; it never satisfies "Prevention added" when code-level prevention was possible. "Remember this" from the user → write it, no ceremony.
 
 ### 17. Email Broadcast Safety (MANDATORY — NO EXCEPTIONS)
 See `memory/email-broadcast-rules.md` for full incident history.

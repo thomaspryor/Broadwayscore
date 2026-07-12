@@ -1,0 +1,10 @@
+{
+  "_comment": "Single source of truth for CLAUDE.md integrity anchors. Every phrase here MUST appear verbatim in root CLAUDE.md. Read by ~/.claude/hooks/session-start.sh (advisory, fail-soft) AND .github/workflows/test.yml lint-workflows (blocking CI gate). Add a phrase here when a new section becomes load-bearing; the trim/edit of CLAUDE.md must never drop a listed phrase.",
+  "anchors": [
+    "Notion Brain",
+    "Opening Night Readiness",
+    "Test Extraction Pattern",
+    "Email Broadcast Safety"
+  ],
+  "byteLimit": 14336
+}
