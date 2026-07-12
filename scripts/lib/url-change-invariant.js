@@ -316,9 +316,12 @@ function updateFileUrlWithInvariant(filePath, newUrl, metadata = {}, opts = {}) 
   // maps to a different outlet (that this outlet doesn't own). Mirrors the
   // mergeReviews guard — direct writers (discover-real-urls,
   // merge-showscore-urls) reach here without going through mergeReviews.
+  // Applies to ANY write that changes the url string (canonical move,
+  // first-set, broken-url repair, stampOnNoop variant swap): these callers
+  // repair a KNOWN outlet slot's URL, so another outlet's URL is never right.
   // Lazy require: review-normalization lazily requires this module inside
   // mergeReviews, so a top-level require here would be circular.
-  if (canonicalMove && existing.outletId) {
+  if (existing.outletId && typeof newUrl === 'string' && newUrl !== existing.url) {
     const { isCrossOutletUrl } = require('./review-normalization');
     if (isCrossOutletUrl(existing.outletId, newUrl)) {
       const { logExclusion } = require('./exclusion-logger');
