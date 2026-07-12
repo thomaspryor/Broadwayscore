@@ -1,0 +1,103 @@
+name: Fix Circular duplicateOf Pairs
+
+# Scheduled cleanup for circular (mutual) `duplicateOf` pairs in
+# data/review-texts/: fileA.duplicateOf=fileB AND fileB.duplicateOf=fileA.
+# Background: review-write-guard's URL-collision detector marks a same-URL
+# sibling as duplicateOf the other; when BOTH directions get written a 2-cycle
+# forms. The rebuild's BUG-F circular-recovery over-serves these — surfacing
+# BOTH sides when their text differs (double-counting a critic in scoring) or
+# dropping the good side on its byline-blind lexical tiebreak (suppressing a
+# legit review). 242 pairs found 2026-07-11.
+#
+# Producer prevention: review-write-guard.js wouldFormDuplicateCycle now refuses
+# to write a duplicateOf that would close a 2-cycle. This workflow heals anything
+# that bypassed the write guard (scripts writing JSON directly, legacy pointers)
+# so the test.yml gate ("Audit circular duplicateOf pairs") never trips on slow
+# accumulation. Sibling of clear-stale-duplicate-of.yml.
+on:
+  schedule:
+    # Daily at 11:40 AM UTC — just after clear-stale-duplicate-of.yml (:30) so
+    # the two duplicateOf self-heals don't contend for the review-texts push lock.
+    - cron: '40 11 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Report only, no fix'
+        required: false
+        default: 'false'
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fix-circular-duplicate-pairs
+  cancel-in-progress: false
+
+jobs:
+  fix-circular:
+    name: Fix circular duplicateOf pairs
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout review-texts
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Run audit (report)
+        id: audit
+        run: |
+          set +e
+          OUT=$(node scripts/fix-circular-duplicate-pairs.js 2>&1)
+          STATUS=$?
+          echo "$OUT"
+          COUNT=$(echo "$OUT" | grep -oE 'Found [0-9]+' | head -1 | awk '{print $2}')
+          COUNT=${COUNT:-0}
+          echo "count=$COUNT" >> "$GITHUB_OUTPUT"
+          echo "status=$STATUS" >> "$GITHUB_OUTPUT"
+          # Don't fail here — the next step fixes.
+          exit 0
+
+      - name: Apply fix
+        if: steps.audit.outputs.status != '0' && inputs.dry_run != 'true'
+        run: node scripts/fix-circular-duplicate-pairs.js --fix
+
+      - name: Push to private repo
+        if: steps.audit.outputs.status != '0' && inputs.dry_run != 'true'
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: |
+            chore: auto-collapse ${{ steps.audit.outputs.count }} circular duplicateOf pairs [circular-fix]
+
+      - name: Summary
+        run: |
+          {
+            echo "## Circular duplicateOf Pair Sweep"
+            echo ""
+            echo "**Circular pairs detected:** ${{ steps.audit.outputs.count }}"
+            if [ "${{ inputs.dry_run }}" = "true" ]; then
+              echo "**Mode:** dry-run (no commit)"
+            elif [ "${{ steps.audit.outputs.status }}" = "0" ]; then
+              echo "**Mode:** no fix needed"
+            else
+              echo "**Mode:** auto-fixed + pushed"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Fix Circular duplicateOf Pairs Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
