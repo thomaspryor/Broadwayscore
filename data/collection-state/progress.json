@@ -556,7 +556,10 @@
     "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/west-end-best-friend--unknown.json",
     "a-walk-on-the-moon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "a-walk-on-the-moon-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
-    "a-walk-on-the-moon-off-broadway-2026/talkinbroadway--marc-miller.json"
+    "a-walk-on-the-moon-off-broadway-2026/talkinbroadway--marc-miller.json",
+    "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+    "birthright-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "birthright-off-broadway-2026/pages-on-stages--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -617,7 +620,8 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/a-delicate-balance-1996/variety--jeremy-gerard.json",
-      "a-delicate-balance-1996/variety--jeremy-gerard.json"
+      "a-delicate-balance-1996/variety--jeremy-gerard.json",
+      "data/review-texts/birthright-off-broadway-2026/pages-on-stages--mason-pilevsky.json"
     ],
     "directCookies": [
       "jesus-christ-superstar-west-end-2026/times-uk--ann-treneman.json",
@@ -665,7 +669,8 @@
       "data/review-texts/les-liaisons-dangereuses-west-end-2026/evening-chronicle--unknown.json",
       "data/review-texts/romeo-and-juliet-west-end-2026/cambridge--unknown.json",
       "data/review-texts/romeo-and-juliet-west-end-2026/click-liverpool--unknown.json",
-      "data/review-texts/the-magic-show-1974/hollywood-reporter--david-rooney.json"
+      "data/review-texts/the-magic-show-1974/hollywood-reporter--david-rooney.json",
+      "data/review-texts/a-walk-on-the-moon-off-broadway-2026/talkinbroadway--marc-miller.json"
     ],
     "archive": [
       "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
@@ -674,7 +679,7 @@
     ]
   },
   "startTime": "2026-07-11T17:18:54.504Z",
-  "lastProcessed": "a-walk-on-the-moon-off-broadway-2026/talkinbroadway--marc-miller.json",
+  "lastProcessed": "birthright-off-broadway-2026/pages-on-stages--unknown.json",
   "log": [
     {
       "t": "2026-07-11T19:34:20.838Z",
@@ -697,6 +702,23 @@
       "t": "2026-07-12T00:56:23.275Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-07-12T01:40:16.295Z",
+      "event": "bb-session",
+      "session": "6b83e9a9",
+      "url": "https://pagesonstages.com/2026/06/29/birthright/"
+    },
+    {
+      "t": "2026-07-12T01:40:22.698Z",
+      "event": "bb-session",
+      "session": "9fbe7210",
+      "url": "https://www.talkinbroadway.com/page/ob/06_29_26.html?__cf_chl_f_tk=P9RfwACvik9Zf"
+    },
+    {
+      "t": "2026-07-12T01:40:23.151Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
