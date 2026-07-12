@@ -250,6 +250,30 @@ function decideTodayTixCandidates(state, thresholdChecks = 2) {
     }));
 }
 
+/**
+ * Suppression guard for proposals the weekly alert should NOT surface.
+ * Returns a reason string, or null when the candidate is actionable.
+ *
+ *  - 'already-has-closing-date': shows.json already carries a closingDate —
+ *    review-era dates are frequently superseded by extensions (Heathers was
+ *    extended Jan→Nov 2026; Dad Don't Read This Jul 11→18), so an existing
+ *    date always outranks review boilerplate. Never propose overwrites.
+ *  - 'stale-evidence': the proposed date is more than a year in the past for
+ *    a show still marked open. A truly stale-open show gets caught within
+ *    weeks; a year-old "runs through" quote on an open show means the run
+ *    extended or went open-ended (Little Shop of Horrors 2019 revival's
+ *    "through Jan 19" 2020 quotes).
+ */
+function shouldSuppressCandidate(show, proposedClosingDateISO, todayISO) {
+  if (show && show.closingDate) return 'already-has-closing-date';
+  if (proposedClosingDateISO && todayISO) {
+    const proposed = new Date(`${proposedClosingDateISO}T00:00:00Z`);
+    const today = new Date(`${todayISO}T00:00:00Z`);
+    if ((today - proposed) / 86400000 > 365) return 'stale-evidence';
+  }
+  return null;
+}
+
 module.exports = {
   MONTH_NAMES,
   extractClosingDateMentions,
@@ -257,6 +281,7 @@ module.exports = {
   extractClosingDateCandidates,
   runLengthWeeks,
   aggregateClosingDateCandidates,
+  shouldSuppressCandidate,
   updateTodayTixMissingState,
   decideTodayTixCandidates,
 };
