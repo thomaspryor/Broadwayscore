@@ -100,6 +100,12 @@ Import: `import { ComponentName } from '@/components/show-cards'`
 
 **Rule:** Before creating any new UI component, check this list. If a shared component exists, use it. If you need a new shared component, add it to `show-cards/` and export from `index.ts`.
 
+## Button Hierarchy (owner decision 2026-07-12 — CI-guarded)
+
+One rule, no exceptions: **`.btn-primary` (champagne-gold gradient `#d4a574→#b8956a`, white text — the Get Tickets treatment) = THE single primary action of a screen.** Get Tickets, "+ Add show", "Create a list", Save/Retry in the rating editor. **`.btn-secondary` (neutral fill `bg-white/10 border-white/15 text-white`) = every other tappable action** (Want to See, Rate it, Cancel). **Bright `#FFD700` is reserved for stars and scores ONLY — never a button/border/background fill class** (SVG `fill=` in star/score art is the sanctioned use). Active/selected states use brand tints (`bg-brand/10 border-brand text-brand`), not gold.
+
+Enforced by `tests/unit/button-hierarchy.test.mjs` (registered in test.yml): fails CI on any `bg-[#FFD700]`/`border-[#FFD700]`/`hover:bg-[#e6c200]` class in src. Don't hand-roll gradients or gold pills — use the classes.
+
 ## CSS Component Classes (from `globals.css`)
 
 Use these classes directly in `className`. Don't recreate their styling.
