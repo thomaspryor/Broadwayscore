@@ -235,16 +235,45 @@ function pick(canonical, loser, reason) {
   return { canonical, loser, reason };
 }
 
+// Show lookup by id, memoized. The rebuild passes showById[showId] to
+// isIncludableForRebuild (scripts/rebuild-all-reviews.js ~1870); the show-aware
+// guards (wrongShow stale-recovery review-guards.js:2389, revival/date checks)
+// diverge when show is undefined, so passing it keeps this sim faithful to the
+// real keep-side (ship-check Codex finding, 2026-07-12). Best-effort: falls back
+// to undefined (prior behavior) when shows.json can't be located — the script
+// then still runs, just without show-context fidelity.
+let _showByIdCache; // undefined = not loaded; Map (possibly empty) once attempted
+function _showById(showId) {
+  if (_showByIdCache === undefined) {
+    _showByIdCache = new Map();
+    const candidates = [
+      process.env.SHOWS_JSON,
+      path.join(__dirname, '..', 'data', 'shows.json'),
+    ].filter(Boolean);
+    for (const p of candidates) {
+      try {
+        const arr = JSON.parse(fs.readFileSync(p, 'utf-8'));
+        const shows = Array.isArray(arr) ? arr : (arr.shows || []);
+        for (const s of shows) if (s && s.id) _showByIdCache.set(s.id, s);
+        if (_showByIdCache.size) break;
+      } catch { /* try next candidate */ }
+    }
+  }
+  return _showByIdCache.get(showId);
+}
+
 /**
  * Would this record be includable-for-rebuild AND scoreable if its duplicateOf
  * were cleared? Mirrors exactly what the rebuild keeps. I/O: reads sibling files
- * (isIncludableForRebuild consults the show dir to resolve duplicate pointers).
+ * (isIncludableForRebuild consults the show dir to resolve duplicate pointers)
+ * and passes the show object so show-aware guards match the rebuild.
  */
 function wouldBeLiveIfCleared(data, filePath) {
   if (!isScoreable(data)) return false;
   const sim = { ...data, duplicateOf: null, duplicateReason: null, duplicateClearReason: 'sim' };
+  const showId = path.basename(path.dirname(filePath));
   try {
-    return !!isIncludableForRebuild(sim, undefined, filePath);
+    return !!isIncludableForRebuild(sim, _showById(showId), filePath);
   } catch {
     return false;
   }
