@@ -57,7 +57,6 @@ const AUDIENCES = {
   'west-end': { id: '0b17260b-6a72-4a5a-a700-7b7526f18d87', label: 'West End' },
   test: { id: 'b1255239-ad6e-415f-b837-4536c05c6d9b', label: 'Broadcast Test' },
 };
-const FROM_EMAIL = 'Broadway Scorecard <updates@broadwayscorecard.com>';
 const RESEND_BROADCASTS_URL = ['https://api.resend.com', 'broadcasts'].join('/');
 
 // --- Arg parsing ---------------------------------------------------------------
@@ -80,6 +79,13 @@ const isCreate = flags.create === true;
 // the West End weekly can't collide with the Broadway one in Resend (find-by-
 // name would otherwise UPDATE the wrong draft). Explicit --audience wins.
 const EDITION = (process.env.NEWSLETTER_EDITION || 'broadway').trim();
+// Sender display name follows the edition — the WE weekly must arrive from
+// "West End Scorecard", not "Broadway Scorecard" (subscriber-visible; same
+// pattern as send-opening-night-broadcast.js SITE_NAME). Address stays on
+// broadwayscorecard.com, the one verified Resend domain.
+const FROM_EMAIL = EDITION === 'west-end'
+  ? 'West End Scorecard <updates@broadwayscorecard.com>'
+  : 'Broadway Scorecard <updates@broadwayscorecard.com>';
 const audienceKey = (flags.audience || (EDITION === 'west-end' ? 'west-end' : 'general')).toString();
 const audience = AUDIENCES[audienceKey];
 if (!audience) {
