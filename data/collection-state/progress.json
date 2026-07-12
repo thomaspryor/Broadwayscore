@@ -1,7 +1,8 @@
 {
   "processed": [
     "cats-the-jellicle-ball-2026/nypost--johnny-oleksinski.json",
-    "the-maids-off-broadway-2026/thewrap--unknown.json"
+    "the-maids-off-broadway-2026/thewrap--unknown.json",
+    "christmas-carol-goes-wrong-west-end-2026/london-box-office--unknown.json"
   ],
   "failed": [
     "iceboy-regional-2026/chicago-sun-times--mike-davis-wbez.json",
@@ -83,11 +84,14 @@
     "is-he-dead-2007/nypost--clive-barnes.json",
     "inherit-the-wind-2007/nypost--clive-barnes.json",
     "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
-    "jack-and-the-beanstalk-off-west-end-2026/guardian--brian-logan.json"
+    "jack-and-the-beanstalk-off-west-end-2026/guardian--brian-logan.json",
+    "jack-and-the-beanstalk-off-west-end-2026/thestage--paul-vale.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "christmas-carol-goes-wrong-west-end-2026/london-box-office--unknown.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
@@ -96,10 +100,12 @@
       "cats-the-jellicle-ball-2026/nypost--johnny-oleksinski.json",
       "the-maids-off-broadway-2026/thewrap--unknown.json"
     ],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/jack-and-the-beanstalk-off-west-end-2026/thestage--paul-vale.json"
+    ],
     "archive": []
   },
   "startTime": "2026-07-12T17:24:29.659Z",
-  "lastProcessed": "jack-and-the-beanstalk-off-west-end-2026/guardian--brian-logan.json",
+  "lastProcessed": "jack-and-the-beanstalk-off-west-end-2026/thestage--paul-vale.json",
   "log": []
 }
