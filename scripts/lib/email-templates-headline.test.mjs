@@ -3,7 +3,17 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { buildBroadcastOpeningNightHtml, buildBroadcastSubjectLine, getScoreColor } = require('./email-templates.js');
+const { buildBroadcastOpeningNightHtml, buildBroadcastSubjectLine, getScoreColor, siteNameForMarket, buildFromAddress } = require('./email-templates.js');
+
+test('sender brand follows the market — WE never sends as "Broadway Scorecard" (2026-07-12 incident)', () => {
+  assert.equal(siteNameForMarket('west-end'), 'West End Scorecard');
+  assert.equal(siteNameForMarket('broadway'), 'Broadway Scorecard');
+  assert.equal(siteNameForMarket(undefined), 'Broadway Scorecard'); // unset edition = Broadway
+  assert.equal(buildFromAddress('west-end'), 'West End Scorecard <updates@broadwayscorecard.com>');
+  // Address must stay on the verified Resend domain for every market.
+  assert.match(buildFromAddress('west-end'), /<updates@broadwayscorecard\.com>$/);
+  assert.equal(buildFromAddress('broadway'), 'Broadway Scorecard <updates@broadwayscorecard.com>');
+});
 
 test('getScoreColor ROUNDS before tiering — matches the displayed score + the site', () => {
   // 64.69 displays as 65, so it must read "Worth Seeing", not "Mixed" (the 2026-06-30 bug).
