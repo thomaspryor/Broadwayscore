@@ -22,7 +22,7 @@ import { createRequire } from 'node:module';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repo = path.resolve(__dirname, '..', '..');
 const cjsRequire = createRequire(import.meta.url);
-const { buildUnsubscribeUrl, buildFromAddress } = cjsRequire(path.join(repo, 'scripts/lib/email-templates'));
+const { buildUnsubscribeUrl, buildFromAddress, resolveNewsletterEdition } = cjsRequire(path.join(repo, 'scripts/lib/email-templates'));
 
 const KEY = process.env.RESEND_API_KEY;
 if (!KEY) { console.error('No RESEND_API_KEY'); process.exit(1); }
@@ -30,7 +30,7 @@ if (!KEY) { console.error('No RESEND_API_KEY'); process.exit(1); }
 const RECIPIENT = process.env.NEWSLETTER_TEST_RECIPIENT || 'thomas.pryor@gmail.com';
 // Edition drives the sender name + unsubscribe market so the WE preview looks
 // exactly like the WE broadcast (from "West End Scorecard", WE unsubscribe).
-const EDITION = (process.env.NEWSLETTER_EDITION || 'broadway').trim();
+const EDITION = resolveNewsletterEdition(process.env.NEWSLETTER_EDITION); // throws on typos/unknown editions
 const FROM_EMAIL = buildFromAddress(EDITION);
 const SLUG = process.env.NEWSLETTER_SLUG || 'A-2026-05-18';
 // Match generate.mjs's output resolution: env override > iCloud path > repo-local.
@@ -52,7 +52,17 @@ let subject = 'Weekly Round-up · preview';
 try {
   const meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
   if (meta.subject) subject = meta.subject;
-} catch {
+  // Same edition gate as create-broadcast-draft.mjs: a WE preview over stale
+  // Broadway HTML (shared A-<week> slug) would send the owner a mislabeled
+  // "West End Scorecard" email wrapping Broadway content — and get approved.
+  // Legacy metas without the stamp are Broadway.
+  const metaEdition = meta.edition || 'broadway';
+  if (metaEdition !== EDITION) {
+    console.error(`Generated HTML is the "${metaEdition}" edition but NEWSLETTER_EDITION=${EDITION} — re-run generate.mjs under this edition first.`);
+    process.exit(1);
+  }
+} catch (e) {
+  if (e && e.code !== 'ENOENT' && !(e instanceof SyntaxError)) throw e;
   const subjMatch = htmlRaw.match(/<!--\s*SUBJECT:\s*(.+?)\s*-->/);
   if (subjMatch) subject = subjMatch[1];
 }

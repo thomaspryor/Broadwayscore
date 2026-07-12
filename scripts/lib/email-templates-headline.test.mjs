@@ -3,7 +3,19 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { buildBroadcastOpeningNightHtml, buildBroadcastSubjectLine, getScoreColor, siteNameForMarket, buildFromAddress } = require('./email-templates.js');
+const { buildBroadcastOpeningNightHtml, buildBroadcastSubjectLine, getScoreColor, siteNameForMarket, buildFromAddress, resolveNewsletterEdition } = require('./email-templates.js');
+
+test('resolveNewsletterEdition rejects unknown editions instead of degrading to Broadway', () => {
+  assert.equal(resolveNewsletterEdition('west-end'), 'west-end');
+  assert.equal(resolveNewsletterEdition('broadway'), 'broadway');
+  assert.equal(resolveNewsletterEdition(undefined), 'broadway'); // cron default
+  assert.equal(resolveNewsletterEdition(' west-end '), 'west-end'); // trims
+  // 'off-west-end' passes isLondonMarket but is NOT a newsletter edition — it
+  // once produced a WE sender on the Broadway audience with Broadway HTML.
+  assert.throws(() => resolveNewsletterEdition('off-west-end'), /Unknown NEWSLETTER_EDITION/);
+  assert.throws(() => resolveNewsletterEdition('westend'), /Unknown NEWSLETTER_EDITION/);
+  assert.throws(() => resolveNewsletterEdition('West-End'), /Unknown NEWSLETTER_EDITION/);
+});
 
 test('sender brand follows the market — WE never sends as "Broadway Scorecard" (2026-07-12 incident)', () => {
   assert.equal(siteNameForMarket('west-end'), 'West End Scorecard');

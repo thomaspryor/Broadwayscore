@@ -19,13 +19,19 @@
 // Options:
 //   --create                Actually create the draft. WITHOUT this flag the
 //                           script is a DRY RUN that only prints what it would do.
-//   --audience=<key>        general (default) | west-end | test
+//   --audience=<key>        general (default) | west-end | test. MUST agree
+//                           with NEWSLETTER_EDITION (test is exempt): a WE
+//                           draft needs BOTH NEWSLETTER_EDITION=west-end (for
+//                           WE HTML + sender + broadcast name) AND
+//                           --audience=west-end — the script hard-fails on a
+//                           mismatch instead of drafting hybrid output.
 //   --subject="..."         Override the subject (defaults to meta.json subject).
 //   --name="..."            Override the broadcast name (default "Scorecard Weekly — <weekStart>").
 //   --out-dir=<path>        Where the generated HTML/meta live (default:
 //                           $NEWSLETTER_OUT_DIR or ~/Documents/claude-outputs/newsletter-mocks).
 //
-// Required env: RESEND_API_KEY.
+// Required env: RESEND_API_KEY. NEWSLETTER_EDITION=west-end for the WE weekly
+// (must match the edition generate.mjs ran with — checked via meta.edition).
 //
 // The HTML is consumed verbatim: the generator emits {{{RESEND_UNSUBSCRIBE_URL}}}
 // as the unsubscribe link, and Resend substitutes that token per-recipient at
@@ -43,7 +49,7 @@ import { createRequire } from 'node:module';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repo = path.resolve(__dirname, '..', '..');
 const cjsRequire = createRequire(import.meta.url);
-const { buildFromAddress } = cjsRequire(path.join(repo, 'scripts/lib/email-templates'));
+const { buildFromAddress, resolveNewsletterEdition } = cjsRequire(path.join(repo, 'scripts/lib/email-templates'));
 // NOTE: deliberately NO send-lock here. The GitHub-backed send-lock (used by the
 // actual SEND wrappers) commits data/email-send.lock to the public repo's main
 // branch on acquire AND release — 2 commits per run, each tripping CI/deploys.
@@ -81,7 +87,7 @@ const isCreate = flags.create === true;
 // Edition (NEWSLETTER_EDITION) drives the default audience + broadcast name so
 // the West End weekly can't collide with the Broadway one in Resend (find-by-
 // name would otherwise UPDATE the wrong draft). Explicit --audience wins.
-const EDITION = (process.env.NEWSLETTER_EDITION || 'broadway').trim();
+const EDITION = resolveNewsletterEdition(process.env.NEWSLETTER_EDITION); // throws on typos/unknown editions
 // Sender display name follows the edition — the WE weekly must arrive from
 // "West End Scorecard", not "Broadway Scorecard" (2026-07-12 incident: the WE
 // weekly went to subscribers with the Broadway sender). Shared helper keeps
