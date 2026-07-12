@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-07-12T16:24:57.160Z",
+  "timestamp": "2026-07-12T17:12:24.992Z",
   "stats": {
     "totalReviews": 39968,
-    "alreadyFlagged": 17555,
-    "dateGuardCatches": 49,
+    "alreadyFlagged": 17550,
+    "dateGuardCatches": 48,
     "directorMismatch": 914,
     "tvFilmSignals": 1097,
-    "londonSignals": 742,
+    "londonSignals": 744,
     "offBroadwaySignals": 466,
     "yearMismatch": 85,
     "noPublishDate": 3777
@@ -28440,17 +28440,6 @@
       ]
     },
     {
-      "showId": "a-midsummer-nights-dream-west-end-2026",
-      "file": "whatsonstage--theo-bosanquet.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 46d before show (2026-05-05 vs 2026-06-20)"
-        }
-      ]
-    },
-    {
       "showId": "a-mirrored-monet-west-end-2026",
       "file": "whatsonstage--miriam-sallon.json",
       "score": 39,
@@ -42011,6 +42000,19 @@
     },
     {
       "showId": "the-misanthrope-west-end-2026",
+      "file": "thestage--dave-fargnoli.json",
+      "publishDate": "2026-06-24",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-misanthrope-review-sandra-oh-what-a-disappointment-sbzvf82b2?t=1782310602034",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "the-misanthrope-west-end-2026",
       "file": "times-uk--clive-davis.json",
       "score": 38,
       "publishDate": "2026-06-24",
@@ -43796,6 +43798,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
+        }
+      ]
+    },
+    {
+      "showId": "white-rabbit-red-rabbit-west-end-2026",
+      "file": "broadwayworld--mica-blackwell.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/shows/White-Rabbit-Red-Rabbit-336047.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
