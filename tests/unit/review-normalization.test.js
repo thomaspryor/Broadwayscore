@@ -1327,3 +1327,54 @@ describe('resolveOutletFromUrl — shared-primary-domain collisions (card 38b637
     assert.strictEqual(resolveOutletFromUrl('https://www.timeout.com/newyork/theater/x-review').outletId, 'timeout');
   });
 });
+
+describe('mergeReviews — cross-outlet URL change guard (Louise Penn Cambridge incident, 2026-07-12)', () => {
+  // A slot whose outletId was minted from a SERP label (phantom 'cambridge')
+  // swallowed Louise Penn's real loureviews.blog reviews via in-place URL
+  // updates, publishing her under an outlet she never wrote for. When the
+  // incoming URL's domain resolves to a DIFFERENT outlet than the slot,
+  // mergeReviews must no-op entirely — no url, text, critic, or date merge.
+  const base = {
+    showId: 'jesus-christ-superstar-west-end-2026',
+    outletId: 'cambridge',
+    outlet: 'Cambridge',
+    criticName: 'Unknown',
+    url: 'https://www.facebook.com/LWTheatres/posts/some-post/',
+    fullText: 'short stub',
+  };
+
+  it('no-ops the entire merge when incoming URL resolves to a different outlet', () => {
+    const incoming = {
+      outletId: 'cambridge',
+      criticName: 'Louise Penn',
+      url: 'https://loureviews.blog/2026/07/08/sam-ryder-and-jesus-christ-superstar/',
+      publishDate: '2026-07-07',
+      fullText: 'a much longer real review text that would normally win the length preference merge',
+    };
+    const merged = mergeReviews({ ...base }, incoming, {}, { script: 'test' });
+    assert.strictEqual(merged.url, base.url, 'url must not move to another outlet\'s domain');
+    assert.strictEqual(merged.fullText, base.fullText, 'other outlet\'s text must not merge');
+    assert.strictEqual(merged.criticName, 'Unknown', 'other outlet\'s critic must not merge');
+    assert.strictEqual(merged.urlUpdatedFrom, undefined);
+  });
+
+  it('allows a same-outlet URL change', () => {
+    const existing = { ...base, outletId: 'loureviews', outlet: 'LouReviews', url: 'https://loureviews.blog/2026/07/01/old-slug/' };
+    const incoming = { outletId: 'loureviews', url: 'https://loureviews.blog/2026/07/08/new-slug/', fullText: 'refreshed text for the new url' };
+    const merged = mergeReviews(existing, incoming, {}, { script: 'test' });
+    assert.strictEqual(merged.url, incoming.url);
+  });
+
+  it('allows a URL change to a domain the registry does not know', () => {
+    const incoming = { outletId: 'cambridge', url: 'https://some-unknown-blog-domain-xyz.co.uk/review/', fullText: 'text' };
+    const merged = mergeReviews({ ...base }, incoming, {}, { script: 'test' });
+    assert.strictEqual(merged.url, incoming.url, 'no positive mismatch evidence — merge proceeds');
+  });
+
+  it('allows first-URL-set even cross-domain (guard only fires on CHANGES)', () => {
+    const existing = { ...base, url: null };
+    const incoming = { outletId: 'cambridge', url: 'https://loureviews.blog/2026/07/08/x/' };
+    const merged = mergeReviews(existing, incoming, {}, { script: 'test' });
+    assert.strictEqual(merged.url, incoming.url);
+  });
+});
