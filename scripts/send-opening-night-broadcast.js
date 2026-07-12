@@ -24,7 +24,7 @@ const path = require('path');
 const { execSync } = require('child_process');
 const { sendAlert } = require('./lib/discord-notify');
 const {
-  postJSON, buildBroadcastOpeningNightHtml: buildBroadcastOpeningNightHtmlRaw, buildBroadcastSubjectLine, buildUnsubscribeUrl,
+  postJSON, buildBroadcastOpeningNightHtml: buildBroadcastOpeningNightHtmlRaw, buildBroadcastSubjectLine, buildUnsubscribeUrl, siteNameForMarket,
 } = require('./lib/email-templates');
 const { applyUtm } = require('./lib/email-utm');
 const { isLondonMarket } = require('./lib/venue-classification');
@@ -80,7 +80,7 @@ const EXPRESS_COMPLETED_PATH = path.join(DATA_DIR, 'audit', 'opening-night-expre
 const MOBILE_SHOWS_PATH = path.join(__dirname, '..', 'public', 'data', 'mobile-shows.json');
 const OUTLET_REGISTRY_PATH = path.join(DATA_DIR, 'outlet-registry.json');
 const FROM_EMAIL = 'updates@broadwayscorecard.com';
-const SITE_NAME = isLondonMarket(MARKET) ? 'West End Scorecard' : 'Broadway Scorecard';
+const SITE_NAME = siteNameForMarket(MARKET);
 // WE has ~15 reliable outlets vs Broadway's 40+; median WE show gets 10 scored reviews
 const MIN_REVIEWS = isLondonMarket(MARKET) ? 8 : 12;
 const MIN_T1_REVIEWS = 3;

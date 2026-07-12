@@ -38,9 +38,12 @@ import os from 'node:os';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repo = path.resolve(__dirname, '..', '..');
+const cjsRequire = createRequire(import.meta.url);
+const { buildFromAddress } = cjsRequire(path.join(repo, 'scripts/lib/email-templates'));
 // NOTE: deliberately NO send-lock here. The GitHub-backed send-lock (used by the
 // actual SEND wrappers) commits data/email-send.lock to the public repo's main
 // branch on acquire AND release — 2 commits per run, each tripping CI/deploys.
@@ -80,16 +83,26 @@ const isCreate = flags.create === true;
 // name would otherwise UPDATE the wrong draft). Explicit --audience wins.
 const EDITION = (process.env.NEWSLETTER_EDITION || 'broadway').trim();
 // Sender display name follows the edition — the WE weekly must arrive from
-// "West End Scorecard", not "Broadway Scorecard" (subscriber-visible; same
-// pattern as send-opening-night-broadcast.js SITE_NAME). Address stays on
-// broadwayscorecard.com, the one verified Resend domain.
-const FROM_EMAIL = EDITION === 'west-end'
-  ? 'West End Scorecard <updates@broadwayscorecard.com>'
-  : 'Broadway Scorecard <updates@broadwayscorecard.com>';
+// "West End Scorecard", not "Broadway Scorecard" (2026-07-12 incident: the WE
+// weekly went to subscribers with the Broadway sender). Shared helper keeps
+// the mapping in one place with send-opening-night-broadcast.js.
+const FROM_EMAIL = buildFromAddress(EDITION);
 const audienceKey = (flags.audience || (EDITION === 'west-end' ? 'west-end' : 'general')).toString();
 const audience = AUDIENCES[audienceKey];
 if (!audience) {
   console.error(`Unknown audience "${audienceKey}". Valid: ${Object.keys(AUDIENCES).join(', ')}`);
+  process.exit(1);
+}
+// Edition and audience must agree (test audience exempt). A local
+// `--audience=west-end` run without NEWSLETTER_EDITION would otherwise draft
+// Broadway-edition HTML with a Broadway sender to the WE list — AND, because
+// the broadcast name is edition-derived, lookupByName() would find the
+// existing BROADWAY draft and PATCH its audience over to West End.
+const editionIsWE = EDITION === 'west-end';
+if (audienceKey !== 'test' && editionIsWE !== (audienceKey === 'west-end')) {
+  console.error(`Edition/audience mismatch: NEWSLETTER_EDITION=${EDITION} but --audience=${audienceKey}.`);
+  console.error('The generated HTML, sender name, and broadcast name all follow the edition —');
+  console.error(`re-run with NEWSLETTER_EDITION=${audienceKey === 'west-end' ? 'west-end' : 'broadway'} (and regenerate via generate.mjs under that edition first).`);
   process.exit(1);
 }
 
@@ -112,6 +125,13 @@ const name = (flags.name || (EDITION === 'west-end' ? `West End Weekly — ${wee
 // --- Sanity gates (fail loudly before any API call) ----------------------------
 const problems = [];
 if (!subject) problems.push('Subject is empty (no meta.subject and no --subject).');
+// The out-dir slug (A-<weekStart>) is shared across editions, so a WE draft
+// run can silently pick up Broadway HTML generated earlier (or vice versa).
+// generate.mjs stamps meta.edition; legacy metas without it are Broadway.
+const metaEdition = (meta.edition || 'broadway');
+if (metaEdition !== EDITION) {
+  problems.push(`Generated HTML is the "${metaEdition}" edition but NEWSLETTER_EDITION=${EDITION} — re-run generate.mjs under this edition first.`);
+}
 if (/^scorecard weekly:/i.test(subject)) problems.push('Subject uses the banned "Scorecard Weekly:" prefix (see pre-send-check.mjs).');
 if (!html.includes('{{{RESEND_UNSUBSCRIBE_URL}}}')) problems.push('HTML is missing the {{{RESEND_UNSUBSCRIBE_URL}}} token — Resend needs it to render an unsubscribe link.');
 if (problems.length) {

@@ -22,7 +22,7 @@ import { createRequire } from 'node:module';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repo = path.resolve(__dirname, '..', '..');
 const cjsRequire = createRequire(import.meta.url);
-const { buildUnsubscribeUrl } = cjsRequire(path.join(repo, 'scripts/lib/email-templates'));
+const { buildUnsubscribeUrl, buildFromAddress } = cjsRequire(path.join(repo, 'scripts/lib/email-templates'));
 
 const KEY = process.env.RESEND_API_KEY;
 if (!KEY) { console.error('No RESEND_API_KEY'); process.exit(1); }
@@ -31,9 +31,7 @@ const RECIPIENT = process.env.NEWSLETTER_TEST_RECIPIENT || 'thomas.pryor@gmail.c
 // Edition drives the sender name + unsubscribe market so the WE preview looks
 // exactly like the WE broadcast (from "West End Scorecard", WE unsubscribe).
 const EDITION = (process.env.NEWSLETTER_EDITION || 'broadway').trim();
-const FROM_EMAIL = EDITION === 'west-end'
-  ? 'West End Scorecard <updates@broadwayscorecard.com>'
-  : 'Broadway Scorecard <updates@broadwayscorecard.com>';
+const FROM_EMAIL = buildFromAddress(EDITION);
 const SLUG = process.env.NEWSLETTER_SLUG || 'A-2026-05-18';
 // Match generate.mjs's output resolution: env override > iCloud path > repo-local.
 const OUT_DIR = process.env.NEWSLETTER_OUT_DIR
@@ -44,7 +42,7 @@ const htmlPath = `${OUT_DIR}/${SLUG}.html`;
 const metaPath = `${OUT_DIR}/${SLUG}.meta.json`;
 
 const htmlRaw = fs.readFileSync(htmlPath, 'utf8');
-const unsubUrl = buildUnsubscribeUrl(RECIPIENT, EDITION === 'west-end' ? 'west-end' : 'broadway');
+const unsubUrl = buildUnsubscribeUrl(RECIPIENT, EDITION);
 const html = htmlRaw.replace(/\{\{\{RESEND_UNSUBSCRIBE_URL\}\}\}/g, unsubUrl);
 
 // Subject comes from the generator's meta.json sidecar (machine-readable,

@@ -155,10 +155,25 @@ function buildUnsubscribeUrl(email, market) {
   return isLondonMarket(market) ? `${base}&market=west-end` : base;
 }
 
+// Canonical market → subscriber-visible brand name. Every audience-facing
+// email (weekly newsletter, opening-night broadcast, previews) must build its
+// sender through these — the 2026-07-12 WE weekly went out as "Broadway
+// Scorecard" because a script hardcoded the name instead.
+function siteNameForMarket(market) {
+  return isLondonMarket(market) ? 'West End Scorecard' : 'Broadway Scorecard';
+}
+
+// Full RFC-5322 from value. The address stays on broadwayscorecard.com for
+// every market — it's the only Resend-verified domain; only the display
+// name follows the market.
+function buildFromAddress(market) {
+  return `${siteNameForMarket(market)} <updates@broadwayscorecard.com>`;
+}
+
 function buildFooterHtml(showTitle, showId, email, market) {
   const unfollowUrl = buildUnfollowUrl(showId, showTitle, email);
   const isWE = isLondonMarket(market);
-  const siteName = isWE ? 'West End Scorecard' : 'Broadway Scorecard';
+  const siteName = siteNameForMarket(market);
   const siteUrl = isWE ? 'https://broadwayscorecard.com/west-end' : 'https://broadwayscorecard.com';
   return `<tr><td style="padding-top:20px;border-top:1px solid rgba(255,255,255,0.06);">
     <p style="margin:0;font-size:12px;color:rgba(255,255,255,0.25);line-height:1.6;font-family:${FONT};">
@@ -200,7 +215,7 @@ function buildBroadcastFooterHtml(email, market) {
   // Resend; if we ever switch back to Buttondown, this becomes {{ unsubscribe_url }}.
   const unsubscribeUrl = email ? buildUnsubscribeUrl(email, market) : '{{{RESEND_UNSUBSCRIBE_URL}}}';
   const isWE = isLondonMarket(market);
-  const siteName = isWE ? 'West End Scorecard' : 'Broadway Scorecard';
+  const siteName = siteNameForMarket(market);
   const siteUrl = isWE ? 'https://broadwayscorecard.com/west-end' : 'https://broadwayscorecard.com';
   return `<tr><td style="padding-top:20px;border-top:1px solid rgba(255,255,255,0.06);">
     <p style="margin:0;font-size:12px;color:rgba(255,255,255,0.25);line-height:1.6;font-family:${FONT};">
@@ -898,6 +913,8 @@ module.exports = {
   getChangeAnchor,
   buildUnfollowUrl,
   buildUnsubscribeUrl,
+  siteNameForMarket,
+  buildFromAddress,
   buildFooterHtml,
   buildBroadcastFooterHtml,
   buildSocialRowHtml,
