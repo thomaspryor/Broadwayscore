@@ -65,3 +65,41 @@ test('buildSeed falls back to task.description when no Notion card fetched', () 
   const seed = buildSeed({ id: '9', subject: 'S', status: 'pending', description: 'fallback body' }, null);
   assert.match(seed, /fallback body/);
 });
+
+test('category filter: Marketing/Partnerships never default-picked, --id still works', () => {
+  const { categoryOf, isExcludedCategory } = require('./bsc-next.js');
+  const T = [
+    { id: '1', subject: 'Scope TodayTix partnership', status: 'pending', description: '[notion:a] P0 Now · Not started · Partnerships\nhttps://n/1' },
+    { id: '2', subject: 'LinkedIn post', status: 'pending', description: '[notion:b] P0 Now · Not started · Marketing' },
+    { id: '3', subject: 'Fix scraper', status: 'pending', description: '[notion:c] P1 Next · Not started · Product' },
+    { id: '4', subject: 'legacy task no category', status: 'pending', description: '[notion:d] P2 · Not started' },
+  ];
+  assert.equal(categoryOf(T[0]), 'partnerships');
+  assert.equal(categoryOf(T[3]), null);            // legacy 2-segment format
+  assert.equal(isExcludedCategory(T[3]), false);   // unknown category is NOT excluded
+  // default pick skips P0 marketing/partnerships, lands on Product despite lower priority
+  assert.equal(pickTask(T, {}).id, '3');
+  // actionable hides them; includeExcluded shows them
+  assert.deepEqual(actionable(T).map(t => t.id), ['3', '4']);
+  assert.equal(actionable(T, true).length, 4);
+  // explicit --id can still select a human card
+  assert.equal(pickTask(T, { id: '1' }).id, '1');
+});
+
+test('verb layer: Admin-category human actions excluded; technical Admin allowed', () => {
+  const { isExcludedCategory } = require('./bsc-next.js');
+  const email = { id: '1', subject: 'Email volunteers', status: 'pending', description: '[notion:a] P0 Now · Not started · Admin' };
+  const reconnect = { id: '2', subject: 'Reconnect App Store Connect', status: 'pending', description: '[notion:b] P2 · Not started · Admin' };
+  const trim = { id: '3', subject: 'CLAUDE.md trim + anchor-extraction', status: 'pending', description: '[notion:c] P2 · Not started · Admin' };
+  assert.equal(isExcludedCategory(email), true);
+  assert.equal(isExcludedCategory(reconnect), true);
+  assert.equal(isExcludedCategory(trim), false);
+});
+
+test('verb layer word-bound: "Email gate conversion..." (product) allowed, "Email volunteers" excluded', () => {
+  const { isExcludedCategory } = require('./bsc-next.js');
+  const gate = { subject: 'Email gate conversion critically low at 0.9%', description: '[notion:a] P0 Now · In progress · Product' };
+  const vols = { subject: 'Email volunteers', description: '[notion:b] P0 Now · Not started · Admin' };
+  assert.equal(isExcludedCategory(gate), false);
+  assert.equal(isExcludedCategory(vols), true);
+});

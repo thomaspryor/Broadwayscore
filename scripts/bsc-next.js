@@ -54,18 +54,45 @@ function loadTasks(dir) {
 }
 
 // Notion priority is mirrored into the task description's first line
-// ("[notion:<id>] P0 Now · In progress"). Rank it so "top" means highest
-// priority, not just lowest task id. Unknown/absent → lowest.
+// ("[notion:<id>] P0 Now · In progress · Marketing"). Rank it so "top" means
+// highest priority, not just lowest task id. Unknown/absent → lowest.
 function priorityRank(task) {
   const m = /\]\s*(P\d)\b/.exec(task.description || '');
   return m ? parseInt(m[1].slice(1), 10) : 9;
 }
 
+// Category is the trailing meta segment (mirrored by notion-tasks-sync).
+// Marketing/Partnerships cards are human territory — the launcher must never
+// default-pick them (2026-07-12: bsc-next seeded a session onto "Scope the
+// TodayTix partnership" and it started drafting business strategy). They can
+// still be selected explicitly via --id / --pick.
+const EXCLUDED_CATEGORIES = new Set(['marketing', 'partnerships']);
+// Second layer: Admin/Product cards that are still human ACTIONS (emailing
+// people, reconnecting accounts, posting) — category can't see these.
+const HUMAN_ACTION_RE = /^(send|reply|follow up|email|recruit|post|repost|meet|reschedule|reconnect|call|text|dm|share|announce|pitch|ask)\b/i;
+function categoryOf(task) {
+  const firstLine = (task.description || '').split('\n')[0];
+  const parts = firstLine.split('·').map(s => s.trim());
+  return parts.length >= 3 ? parts[parts.length - 1].toLowerCase() : null;
+}
+function isExcludedCategory(task) {
+  const c = categoryOf(task);
+  if (c !== null && EXCLUDED_CATEGORIES.has(c)) return true;
+  // Verb layer applies only to short imperatives ("Email volunteers") — long
+  // subjects starting with the same word are product cards ("Email gate
+  // conversion critically low at 0.9%").
+  const subject = (task.subject || '').trim();
+  return HUMAN_ACTION_RE.test(subject) && subject.split(/\s+/).length <= 5;
+}
+
 // Actionable list, best-first: by Notion priority, then pending before
-// in_progress (fresh work first), then task id. Completed dropped.
-function actionable(tasks) {
+// in_progress (fresh work first), then task id. Completed dropped;
+// Marketing/Partnerships dropped unless includeExcluded (used by --list to show
+// them greyed rather than hide them).
+function actionable(tasks, includeExcluded = false) {
   return tasks
     .filter(t => t.status === 'pending' || t.status === 'in_progress')
+    .filter(t => includeExcluded || !isExcludedCategory(t))
     .sort((a, b) =>
       priorityRank(a) - priorityRank(b) ||
       (a.status === 'pending' ? 0 : 1) - (b.status === 'pending' ? 0 : 1) ||
@@ -121,7 +148,9 @@ function launchCmux(task, seed) {
   const title = task.subject.slice(0, 50);
   // The workspace shell expands $(cat …) so the multi-line prompt survives
   // without brittle inline quoting. `claude "<prompt>"` opens interactive on it.
-  const command = `claude "$(cat ${seedFile})"`;
+  // --dangerously-skip-permissions: launched sessions must never permission-ping
+  // (user rule 2026-07-12); explicit permissions.deny rules still outrank bypass.
+  const command = `claude --dangerously-skip-permissions "$(cat ${seedFile})"`;
   if (!fs.existsSync(CMUX)) return { ok: false, reason: 'cmux CLI not found', seedFile, command };
   const r = spawnSync(CMUX, ['new-workspace', '--name', title, '--cwd', REPO, '--command', command, '--focus', 'true'],
     { stdio: 'inherit' });
@@ -140,8 +169,13 @@ function main() {
 
   if (args.list) {
     const list = actionable(tasks);
-    console.log(`Top actionable tasks in '${LIST_ID}' (launch with --pick N):`);
+    console.log(`Top workable tasks in '${LIST_ID}' (launch with --pick N):`);
     list.slice(0, 10).forEach((t, i) => console.log(`  ${i + 1}. #${t.id} [${t.status}] ${t.subject}`));
+    const excluded = actionable(tasks, true).filter(isExcludedCategory);
+    if (excluded.length) {
+      console.log(`\nHuman-territory (${excluded.length} marketing/partnerships — never auto-picked; use --id N deliberately):`);
+      excluded.slice(0, 6).forEach(t => console.log(`     #${t.id} [${categoryOf(t)}] ${t.subject}`));
+    }
     return;
   }
 
@@ -160,7 +194,7 @@ function main() {
 
   if (args.exec) {
     // Run an interactive claude on the seed in this terminal (no Cmux).
-    const r = spawnSync('claude', [seed], { stdio: 'inherit', cwd: REPO });
+    const r = spawnSync('claude', ['--dangerously-skip-permissions', seed], { stdio: 'inherit', cwd: REPO });
     if (r.error) { console.error(`[bsc-next] failed to launch claude: ${r.error.message}`); process.exit(1); }
     process.exit(r.status == null ? 1 : r.status); // null = killed by signal → non-zero
   }
@@ -177,4 +211,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { parseArgs, loadTasks, actionable, pickTask, notionIdOf, buildSeed };
+module.exports = { parseArgs, loadTasks, actionable, pickTask, notionIdOf, buildSeed, categoryOf, isExcludedCategory, EXCLUDED_CATEGORIES };
