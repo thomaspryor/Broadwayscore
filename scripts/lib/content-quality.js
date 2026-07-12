@@ -2313,12 +2313,70 @@ function cleanAuthorName(name) {
   return cleaned;
 }
 
+// Months — used to stop byline capture before a trailing publish date.
+const _BYLINE_MONTHS = new Set([
+  'january', 'february', 'march', 'april', 'may', 'june', 'july',
+  'august', 'september', 'october', 'november', 'december',
+]);
+
+/**
+ * Extract the real critic byline from a theaterlife.com review body.
+ *
+ * theaterlife.com (WordPress) attributes EVERY post to the site owner
+ * "Barry Gordin" via the author vcard (class="author vcard" → /author/barry/).
+ * That is the CMS account, never the review's critic — the real byline is the
+ * in-body "By: <name>" line near the top of the article (e.g. "By: Samuel L.
+ * Leiter"). The generic extractors pick the vcard first, so 366 reviews were
+ * mis-bylined "Barry Gordin" before this. See Notion 39b637c5.
+ *
+ * Conservative First-[MiddleInitial]-Last parse: returns null when the shape is
+ * ambiguous so the caller can route the file to manual triage rather than guess.
+ * The "By:" colon form (double-spaced on some pages) is not caught by the shared
+ * BYLINE_PATTERNS, which is why this is a dedicated parser.
+ *
+ * @param {string} text - Cleaned article text
+ * @returns {string|null} Canonical critic name, or null if not confidently parseable
+ */
+function extractTheaterLifeByline(text) {
+  if (!text) return null;
+  const m = String(text).slice(0, 1200).match(/\bBy:\s+([A-Z][^\n]{2,60})/);
+  if (!m) return null;
+  const tokens = m[1].trim().split(/\s+/);
+  const isCap = (t) => /^[A-ZÀ-Þ]/.test(t);
+  const isInitial = (t) => /^[A-Z]\.?$/.test(t);
+  const isName = (t) => /^[A-ZÀ-Þ][A-Za-zÀ-ÿ'’.\-]*$/.test(t) && !_BYLINE_MONTHS.has(t.toLowerCase());
+  if (tokens.length < 2 || !isName(tokens[0]) || !isName(tokens[1])) return null;
+  let name;
+  // "Samuel L. Leiter" — First + middle initial + Last
+  if (isInitial(tokens[1]) && tokens[2] && isName(tokens[2]) && !isInitial(tokens[2])) {
+    name = `${tokens[0]} ${tokens[1]} ${tokens[2]}`;
+  } else {
+    // First + Last (stop here — extra tokens are body text, e.g. "Isa Goldberg Transferred…")
+    name = `${tokens[0]} ${tokens[1]}`;
+  }
+  if (isNonNameWord(name)) return null;
+  if (!isValidAuthorName(name)) return null;
+  const cleaned = cleanAuthorName(name);
+  // The vcard owner is never a real byline; if the body somehow says "By: Barry
+  // Gordin", treat it as unparseable rather than re-stamping the phantom.
+  if (/^barry\s+gordin$/i.test(cleaned)) return null;
+  return cleaned;
+}
+
 /**
  * Extract author name from HTML using multiple strategies.
  * Priority: meta tags → JSON-LD → byline CSS → text-based extractByline()
  */
 function extractAuthorFromHtml(html, text, options = {}) {
   if (!html) return null;
+
+  // Outlet override: theaterlife.com's author vcard is the site owner "Barry
+  // Gordin" on every post, so the generic byline-CSS strategy mis-attributes
+  // every review. Prefer the in-body "By: <name>" for this outlet. Notion 39b637c5.
+  if (options && options.url && /(^|\/\/|\.)theaterlife\.com/i.test(String(options.url))) {
+    const tl = extractTheaterLifeByline(text);
+    if (tl) return tl;
+  }
 
   const metaPatterns = [
     /<meta\s+name="author"\s+content="([^"]+)"/i,
@@ -2756,6 +2814,7 @@ module.exports = {
   detectHorrorFilmContent,
   // Author extraction from HTML
   extractAuthorFromHtml,
+  extractTheaterLifeByline,
   extractHighConfidenceAuthor,
   isValidAuthorName,
   cleanAuthorName,
