@@ -53,6 +53,7 @@ const {
   isRegisteredOutlet,
   isSuspiciousOutletId,
   AGGREGATOR_SCORE_SOURCES,
+  WIRE_SERVICE_OUTLETS,
 } = require('./lib/review-normalization');
 const { verifyProduction, quickDateCheck, getShowData } = require('./lib/production-verifier');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
@@ -3565,8 +3566,8 @@ function createReviewFile(showId, reviewData, options = {}) {
   // also misattribute. Wire services and shared-domain outlets are exempted below.
   const shouldValidateDomain = true;
   if (review.url && shouldValidateDomain) {
-    const WIRE_SERVICES = new Set(['ap', 'reuters', 'bloomberg', 'upi']);
-    if (!WIRE_SERVICES.has(normalizedOutletId)) {
+    // Shared with the mergeReviews cross-outlet guard — see review-normalization.js
+    if (!WIRE_SERVICE_OUTLETS.has(normalizedOutletId)) {
       try {
         const resolved = resolveOutletFromUrl(review.url);
         if (resolved && resolved.outletId !== normalizedOutletId) {

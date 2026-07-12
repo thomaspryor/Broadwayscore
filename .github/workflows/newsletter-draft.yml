@@ -214,6 +214,7 @@ jobs:
           NEWSLETTER_SLUG: A-${{ steps.week.outputs.weekStart }}
           NEWSLETTER_TEST_RECIPIENT: ${{ secrets.OWNER_EMAIL }}
           NEWSLETTER_SUBJECT_PREFIX: ${{ github.event.inputs.subjectPrefix || '[DRAFT]' }}
+          NEWSLETTER_EDITION: ${{ github.event.inputs.edition || 'broadway' }}
         run: |
           node scripts/newsletter/send-test.mjs
 

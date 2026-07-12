@@ -1415,3 +1415,28 @@ describe('mergeReviews — cross-outlet guard respects existing outlet\'s own do
     assert.strictEqual(merged.criticName, 'Unknown');
   });
 });
+
+describe('isCrossOutletUrl — wire services and syndication (QA review follow-up)', () => {
+  const { isCrossOutletUrl } = require('../../scripts/lib/review-normalization.js');
+
+  it('never treats wire-service slots as cross-outlet (AP syndicates anywhere)', () => {
+    assert.strictEqual(isCrossOutletUrl('ap', 'https://www.huffpost.com/entry/review-x'), false);
+    assert.strictEqual(isCrossOutletUrl('ap', 'https://www.sfgate.com/entertainment/article/review-y'), false);
+  });
+
+  it('allows observer slots on theguardian.com (UK Observer hosted by Guardian)', () => {
+    assert.strictEqual(isCrossOutletUrl('observer', 'https://www.theguardian.com/stage/2026/jul/06/some-observer-review'), false);
+  });
+
+  it('still flags a genuine cross-outlet URL', () => {
+    assert.strictEqual(isCrossOutletUrl('cambridge', 'https://loureviews.blog/2026/07/08/x/'), true);
+    assert.strictEqual(isCrossOutletUrl('loureviews', 'https://www.nytimes.com/2026/07/08/theater/review.html'), true);
+  });
+
+  it('mergeReviews allows an AP slot URL moving between syndication hosts', () => {
+    const existing = { outletId: 'ap', outlet: 'Associated Press', criticName: 'Mark Kennedy', url: 'https://www.huffpost.com/entry/old-host' };
+    const incoming = { outletId: 'ap', url: 'https://www.sfgate.com/entertainment/article/new-host' };
+    const merged = mergeReviews(existing, incoming, {}, { script: 'test' });
+    assert.strictEqual(merged.url, incoming.url);
+  });
+});

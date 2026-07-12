@@ -237,3 +237,6 @@ tmp/
 # Local test/debug caches (e.g. GD API JSON fixtures)
 .cache/
 .claude/visual-qa/
+
+# Autonomous nightly loop — generated queue artifact (rewritten every triage run)
+/data/audit/autonomous-queue.json

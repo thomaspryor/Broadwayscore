@@ -312,6 +312,26 @@ function updateFileUrlWithInvariant(filePath, newUrl, metadata = {}, opts = {}) 
     return null;
   }
   const canonicalMove = urlCanonicallyChanged(existing.url, newUrl);
+  // Cross-outlet refusal: never move a file's URL onto a domain the registry
+  // maps to a different outlet (that this outlet doesn't own). Mirrors the
+  // mergeReviews guard — direct writers (discover-real-urls,
+  // merge-showscore-urls) reach here without going through mergeReviews.
+  // Lazy require: review-normalization lazily requires this module inside
+  // mergeReviews, so a top-level require here would be circular.
+  if (canonicalMove && existing.outletId) {
+    const { isCrossOutletUrl } = require('./review-normalization');
+    if (isCrossOutletUrl(existing.outletId, newUrl)) {
+      const { logExclusion } = require('./exclusion-logger');
+      logExclusion({
+        script: 'url-change-invariant',
+        showId: existing.showId || 'unknown',
+        file: path.basename(filePath),
+        reason: 'skippedCrossOutletMerge',
+        details: { existingUrl: existing.url, incomingUrl: newUrl, outletId: existing.outletId, criticName: existing.criticName },
+      });
+      return null;
+    }
+  }
   if (!canonicalMove && !opts.stampOnNoop) return null;
   if (!canonicalMove && opts.stampOnNoop) {
     // Never adopt a garbage replacement url, even as a plain stamp.

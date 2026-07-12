@@ -17,7 +17,7 @@
 - [Systematic fix: threat model + parity test](feedback_systematic_fix_threat_model_first.md) — check trigger frequency; parity-test bad URLs
 - [Review rituals](feedback_sprint_plan_needs_review.md) — /plan-review before multi-sprint plans; GPT-4o+Gemini parallel on screenshots ([[feedback_two_model_ui_review.md]], [[feedback_three_model_audit_modality.md]])
 - [Test pure function at I/O boundary](feedback_test_pure_function_at_io_boundary.md) — also test wrapper against real data
-- [Show status before external comms](feedback_check_show_status_before_external_comms.md) — surface status/closingDate with show drafts; OB closings lag
+- [Check show status before external comms](feedback_check_show_status_before_external_comms.md) — surface status/closingDate with any show-related draft; OB closings lag in shows.json
 - [Anti-AI-slop writing](feedback_anti_ai_slop_writing.md) — strip em dashes, "not X it's Y", hedges, fake comparisons in external copy ([[feedback_email_drafting.md]])
 - [GitHub polling rate limit](feedback_github_polling_rate_limit.md) — no gh polling loops; NEVER gh run watch, use scripts/lib/wait-for-run.sh; 403 → rate_limit reset + git/raw/prod fallbacks
 
@@ -46,6 +46,7 @@
 - [Test extraction pattern](feedback_test_extraction_pattern.md) — extract to scripts/lib/ + require(); .mjs node:test, register in test.yml ([[feedback_test_format_node_not_jest.md]])
 - [Branch protection: direct pushes not gated](feedback_branch_protection_direct_push.md) — required checks gate PR merges only; direct pushes land red
 - [Hook stdin format](feedback_hook_stdin_format.md) — PostToolUse stdin under tool_input; jq .tool_input.command
+- [Pre-push gate parser trap](feedback_prepush_gate_stash_push_parser.md) — `git stash push` in compound cmd breaks push-target parse; NO-VERIFY must be SAME turn + standalone `git push`
 
 ## 🔌 External APIs & verification
 - [404 is not always terminal](feedback_404_not_terminal.md) — check prior state before flipping success→failure

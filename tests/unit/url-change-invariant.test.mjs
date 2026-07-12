@@ -20,7 +20,7 @@ import { createRequire } from 'module';
 import { fileURLToPath } from 'node:url';
 const require = createRequire(import.meta.url);
 
-const { applyUrlChangeInvariant, urlCanonicallyChanged, URL_DERIVED_FIELDS } =
+const { applyUrlChangeInvariant, urlCanonicallyChanged, URL_DERIVED_FIELDS, updateFileUrlWithInvariant } =
   require('../../scripts/lib/url-change-invariant');
 const { safeWriteReview, isIntentionalClear } = require('../../scripts/lib/review-write-guard');
 const { mergeReviews } = require('../../scripts/lib/review-normalization');
@@ -581,5 +581,34 @@ describe('updateFileUrlWithInvariant (raw-writer helper)', () => {
       fs.rmSync(reviewDir, { recursive: true, force: true });
       fs.rmSync(sidecarDir, { recursive: true, force: true });
     }
+  });
+});
+
+describe('updateFileUrlWithInvariant — cross-outlet refusal', () => {
+  test('refuses to move a slot URL onto another outlet\'s domain', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'xoutlet-'));
+    const fp = path.join(dir, 'cambridge--unknown.json');
+    fs.writeFileSync(fp, JSON.stringify({
+      showId: 'test-show', outletId: 'cambridge', outlet: 'Cambridge',
+      criticName: 'Unknown', url: 'https://www.facebook.com/x/posts/1/',
+    }, null, 2));
+    const res = updateFileUrlWithInvariant(fp, 'https://loureviews.blog/2026/07/08/x/', {}, { stampOnNoop: true });
+    assert.strictEqual(res, null);
+    const after = JSON.parse(fs.readFileSync(fp, 'utf8'));
+    assert.strictEqual(after.url, 'https://www.facebook.com/x/posts/1/');
+    fs.rmSync(dir, { recursive: true, force: true });
+  });
+
+  test('still allows same-outlet canonical moves', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'xoutlet2-'));
+    const fp = path.join(dir, 'loureviews--louise-penn.json');
+    fs.writeFileSync(fp, JSON.stringify({
+      showId: 'test-show', outletId: 'loureviews', outlet: 'LouReviews',
+      criticName: 'Louise Penn', url: 'https://loureviews.blog/2026/07/01/old/',
+    }, null, 2));
+    const res = updateFileUrlWithInvariant(fp, 'https://loureviews.blog/2026/07/08/new/', {}, { stampOnNoop: true });
+    assert.ok(res);
+    assert.strictEqual(res.url, 'https://loureviews.blog/2026/07/08/new/');
+    fs.rmSync(dir, { recursive: true, force: true });
   });
 });
