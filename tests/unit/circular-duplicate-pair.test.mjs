@@ -302,3 +302,62 @@ test('cross-market: a class-A colliding mutual pair is left suppressed (duplicat
   const cleared = [ka, kb].filter(x => (x.duplicateOf ?? null) === null).length;
   assert.equal(cleared, 1, 'the non-contaminated pair is still collapsed to exactly one canonical');
 });
+
+test('cross-market: --fix FAILS CLOSED when shows.json is unavailable (guard inert → refuse to repair)', () => {
+  // A colliding pair with NO shows.json: the guard cannot see siblings, so the
+  // safe action is to refuse the repair (else it would re-canonicalize a
+  // contaminated member — the exact 2026-07-12 regression). SHOWS_JSON pointed
+  // at an empty-array file is authoritative (no fallback), so no shows load.
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'failclosed-'));
+  const emptyShows = path.join(root, 'empty-shows.json');
+  fs.writeFileSync(emptyShows, JSON.stringify([]));
+  const dir = path.join(root, 'show-x-2026');
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(path.join(dir, 'outlet--a.json'),
+    JSON.stringify({ url: 'u', assignedScore: 80, duplicateOf: 'outlet--b.json', duplicateReason: 'url-collision-detected-at-write' }));
+  fs.writeFileSync(path.join(dir, 'outlet--b.json'),
+    JSON.stringify({ url: 'u', assignedScore: 80, duplicateOf: 'outlet--a.json', duplicateReason: 'url-collision-detected-at-write' }));
+
+  let status = 0;
+  try {
+    execFileSync('node', [SCRIPT, '--fix'], {
+      env: { ...process.env, REVIEW_TEXTS_DIR: root, SHOWS_JSON: emptyShows }, stdio: 'pipe',
+    });
+  } catch (e) { status = e.status ?? 1; }
+  assert.equal(status, 1, '--fix must refuse (exit 1) when shows.json is unavailable');
+  // Nothing repaired — both members still point at each other.
+  const a = JSON.parse(fs.readFileSync(path.join(dir, 'outlet--a.json'), 'utf-8'));
+  const b = JSON.parse(fs.readFileSync(path.join(dir, 'outlet--b.json'), 'utf-8'));
+  assert.equal(a.duplicateOf, 'outlet--b.json', 'no repair happened');
+  assert.equal(b.duplicateOf, 'outlet--a.json', 'no repair happened');
+});
+
+test('cross-market: _auditAllowCrossMarket carve-out — allowlisting one member canonicalizes it (parity with the audit)', () => {
+  // A human allowlisted the real review as belonging here despite the date
+  // coincidence. fix-circular must honor that (not skip), and make the
+  // allowlisted member canonical — matching the audit's !_auditAllowCrossMarket.
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'allow-'));
+  const showsJson = path.join(root, 'shows.json');
+  fs.writeFileSync(showsJson, JSON.stringify([
+    { id: 'op-mincemeat-we-2024', title: 'Operation Mincemeat', openingDate: '2024-05-01', category: 'west-end' },
+    { id: 'op-mincemeat-2025', title: 'Operation Mincemeat', openingDate: '2025-03-20', category: 'broadway' },
+  ]));
+  const dir = path.join(root, 'op-mincemeat-we-2024');
+  fs.mkdirSync(dir, { recursive: true });
+  const url = 'https://example.com/om';
+  // Both dated on the sibling opening → both would be class-A; but the real one
+  // is allowlisted, so only the junk sibling stays class-A → clean one wins.
+  fs.writeFileSync(path.join(dir, 'timeout--real.json'), JSON.stringify({
+    url, publishDate: 'March 20, 2025', contentTier: 'complete', isFullReview: true, fullText: longReview,
+    assignedScore: 80, _auditAllowCrossMarket: true, duplicateOf: 'timeout--junk.json', duplicateReason: 'url-collision-detected-at-write',
+  }));
+  fs.writeFileSync(path.join(dir, 'timeout--junk.json'), JSON.stringify({
+    url, publishDate: 'March 20, 2025', contentTier: 'complete', isFullReview: true, fullText: longReview,
+    assignedScore: 80, duplicateOf: 'timeout--real.json', duplicateReason: 'url-collision-detected-at-write',
+  }));
+  runFix(root, showsJson);
+  const real = JSON.parse(fs.readFileSync(path.join(dir, 'timeout--real.json'), 'utf-8'));
+  const junk = JSON.parse(fs.readFileSync(path.join(dir, 'timeout--junk.json'), 'utf-8'));
+  assert.equal(real.duplicateOf ?? null, null, 'allowlisted member is canonicalized (not suppressed)');
+  assert.equal(junk.duplicateOf, 'timeout--real.json', 'junk sibling stays a duplicate of the canonical');
+});

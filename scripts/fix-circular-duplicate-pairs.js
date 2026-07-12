@@ -260,10 +260,13 @@ let _showByIdCache; // undefined = not loaded; Map (possibly empty) once attempt
 function _showById(showId) {
   if (_showByIdCache === undefined) {
     _showByIdCache = new Map();
-    const candidates = [
-      process.env.SHOWS_JSON,
-      path.join(__dirname, '..', 'data', 'shows.json'),
-    ].filter(Boolean);
+    // SHOWS_JSON is authoritative when set (operator/CI points it explicitly);
+    // otherwise the repo default. No silent fallback between them — an explicit
+    // but empty/missing SHOWS_JSON must NOT resolve to the default, so a caller
+    // that intends "no shows data" gets fail-closed behavior downstream.
+    const candidates = process.env.SHOWS_JSON
+      ? [process.env.SHOWS_JSON]
+      : [path.join(__dirname, '..', 'data', 'shows.json')];
     for (const p of candidates) {
       try {
         const arr = JSON.parse(fs.readFileSync(p, 'utf-8'));
@@ -296,16 +299,34 @@ function _showOpening(showId) {
 }
 
 /**
+ * True once shows.json has been loaded and yielded at least one show. shows.json
+ * (private core-data) is REQUIRED for the class-A guard; when it is absent the
+ * guard is silently inert (every isClassAContaminated → false), which is exactly
+ * how the 2026-07-12 regression would re-enter production. --fix refuses to run
+ * in that state (see main), so this is the fail-closed check.
+ */
+function showsDataAvailable() {
+  _siblingOpenings(' ensure-loaded'); // forces the shows.json load attempt
+  return _showByIdCache instanceof Map && _showByIdCache.size > 0;
+}
+
+/**
  * True when a review record is strict Category-A cross-market contaminated
  * relative to its folder show: its publishDate clusters with a same-title
  * sibling's opening but is far from this show's opening. Such a member must
  * NEVER be canonicalized — clearing its duplicateOf un-suppressed a wrong-show
  * review and reddened main on 2026-07-12. Shares the exact predicate with
  * audit-review-contamination.js class A (scripts/lib/cross-market-contamination.js).
+ *
+ * Honors the same operator carve-out as the audit: a record explicitly
+ * allowlisted with `_auditAllowCrossMarket` (a human confirmed it belongs here
+ * despite the date coincidence) is NOT treated as class-A, so the two stay in
+ * lockstep on which reviews count as contaminated.
  */
 function isClassAContaminated(data, showId) {
+  if (!data || data._auditAllowCrossMarket) return false;
   return classifyClassAContamination(
-    parseDate(data && data.publishDate),
+    parseDate(data.publishDate),
     _showOpening(showId),
     _siblingOpenings(showId),
   ).isClassA;
@@ -386,9 +407,15 @@ function walkShowDirs(root) {
     .map(e => path.join(root, e.name));
 }
 
+// Class-A cross-market pairs deliberately left as intact 2-cycles (both members
+// suppressed). Populated by the most recent audit() call so main()/JSON can
+// surface a count — otherwise these are invisible to the pair gate.
+let _skippedClassA = [];
+
 /** Find all mutual duplicateOf pairs. Returns [{showId, canonical, loser, reason, ...}]. */
 function audit() {
   const results = [];
+  _skippedClassA = [];
   for (const showDir of walkShowDirs(REVIEW_TEXTS_DIR)) {
     let files;
     try { files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json'); }
@@ -414,7 +441,9 @@ function audit() {
       const choice = chooseCanonicalForRebuild(file, d, sibName, sd, showDir);
       if (choice.skip) {
         // Class-A contaminated 2-cycle: leave it intact (both stay suppressed).
-        // Not a repairable pair — excluded from report/gate/fix counts.
+        // Not a repairable pair — excluded from report/gate/fix counts, but
+        // tracked so a spike is still visible.
+        _skippedClassA.push({ showId: path.basename(showDir), files: [file, sibName], url: d.url || sd.url || null });
         if (!JSON_OUT) {
           console.error(`  skip (cross-market class-A): ${path.basename(showDir)} — ${file} ↔ ${sibName} left suppressed`);
         }
@@ -470,12 +499,16 @@ function fix(pairs) {
 
 function main() {
   const pairs = audit();
+  const skipped = _skippedClassA.length;
   if (JSON_OUT) {
-    console.log(JSON.stringify({ count: pairs.length, pairs }, null, 2));
+    console.log(JSON.stringify({ count: pairs.length, pairs, skippedClassA: skipped, skippedPairs: _skippedClassA }, null, 2));
     process.exit(pairs.length === 0 ? 0 : 1);
   }
+  if (skipped) {
+    console.log(`(${skipped} cross-market class-A pair(s) left suppressed — see 'skip' lines on stderr)\n`);
+  }
   if (pairs.length === 0) {
-    console.log('OK: no circular (mutual) duplicateOf pairs found');
+    console.log('OK: no repairable circular (mutual) duplicateOf pairs found');
     process.exit(0);
   }
   console.log(`Found ${pairs.length} circular duplicateOf pair(s):\n`);
@@ -485,6 +518,13 @@ function main() {
     console.log(`    loser:     ${p.loser}  → stays duplicateOf ${p.canonical}`);
   }
   if (FIX) {
+    // Fail-closed: never repair without the cross-market guard's inputs. Without
+    // shows.json the guard is inert and fix() could un-suppress a class-A review
+    // (the 2026-07-12 regression). Erroring here pages via notify-failure instead.
+    if (!showsDataAvailable()) {
+      console.error('\n❌ REFUSING --fix: shows.json (core-data) could not be loaded, so the cross-market class-A canonical guard is inert. Repairing now risks re-canonicalizing a cross-market review. Check out core-data (shows.json) and retry.');
+      process.exit(1);
+    }
     const r = fix(pairs);
     console.log(`\nCleared ${r.clearedCanonicals} canonical(s); repointed ${r.repointedLosers} loser(s).`);
     console.log('Re-run the rebuild to collapse each pair to its canonical.');

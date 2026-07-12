@@ -34,7 +34,7 @@ const FAR_OWN_SHOW_DAYS = 180;
  * here would silently change which shows count as siblings.
  */
 function normalizeShowTitle(t) {
-  return (t || '').toLowerCase().trim().replace(/[!?.,'"]/g, '');
+  return String(t || '').toLowerCase().trim().replace(/[!?.,'"]/g, '');
 }
 
 /**
@@ -69,8 +69,8 @@ function buildSiblingOpeningsMap(shows, parseDate) {
 
 /** Coerce a Date | number | date-string | null into an epoch (ms), or NaN. */
 function toEpoch(v) {
-  if (v == null) return NaN;
-  const n = +v; // +Date -> epoch, +number -> number, +"" -> 0 (guarded by null check upstream)
+  if (v == null || v === '') return NaN; // guard "" — +"" is 0 (epoch 1970), not "no date"
+  const n = +v; // +Date -> epoch, +number -> number
   return Number.isFinite(n) ? n : NaN;
 }
 
