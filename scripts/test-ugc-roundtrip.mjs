@@ -148,13 +148,23 @@ async function main() {
     const tokenB = await mintToken(userB.email);
     check('sign-in: minted a real user session (no OAuth popup)', !!tokenA);
 
+    // Mirror what the app does on first sign-in (AuthContext.ensureProfile):
+    // upsert a profiles row. reviews/watchlist/lists.user_id all FK to
+    // profiles(id), so writes fail without it. Exercises the profiles INSERT
+    // RLS policy (WITH CHECK auth.uid() = id) via the user's own token.
+    for (const [u, tok] of [[userA, tokenA], [userB, tokenB]]) {
+      const pr = await rest('POST', 'profiles', tok,
+        { id: u.id, display_name: 'Roundtrip Test' }, 'return=representation,resolution=merge-duplicates');
+      if (u === userA) check('sign-in: profile row created (ensureProfile)', pr.ok, `HTTP ${pr.status} ${pr.text.slice(0, 120)}`);
+    }
+
     // ── REVIEW: insert → read back → cross-user isolation → update → delete ──
     const ins = await rest('POST', 'reviews', tokenA, {
       user_id: userA.id, show_id: SHOW_ID, rating: 4.5,
       review_text: 'round-trip note', date_seen: '2024-11-15',
     });
     const reviewId = Array.isArray(ins.json) ? ins.json[0]?.id : ins.json?.id;
-    check('rating: saves via authenticated REST insert', ins.status === 201 && !!reviewId, `HTTP ${ins.status}`);
+    check('rating: saves via authenticated REST insert', ins.status === 201 && !!reviewId, `HTTP ${ins.status} ${ins.ok ? '' : ins.text.slice(0, 160)}`);
     check('rating: stored value is correct', Array.isArray(ins.json) && ins.json[0]?.rating === 4.5,
       `rating=${Array.isArray(ins.json) ? ins.json[0]?.rating : '?'}`);
 
