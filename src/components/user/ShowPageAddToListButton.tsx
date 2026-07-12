@@ -167,7 +167,7 @@ export default function ShowPageAddToListButton({ showId }: ShowPageAddToListBut
                 >
                   {/* Checkbox */}
                   <span className={`w-4 h-4 rounded border flex-shrink-0 flex items-center justify-center transition-colors ${
-                    inList ? 'bg-[#FFD700] border-[#FFD700]' : 'border-white/20'
+                    inList ? 'bg-brand border-brand' : 'border-white/20'
                   }`}>
                     {inList && (
                       <svg className="w-3 h-3 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3}>
@@ -198,7 +198,7 @@ export default function ShowPageAddToListButton({ showId }: ShowPageAddToListBut
                   onChange={e => setNewName(e.target.value)}
                   placeholder="List name"
                   maxLength={100}
-                  className="flex-1 bg-transparent text-sm text-white placeholder-gray-500 outline-none border-b border-white/20 focus:border-[#FFD700]/50 px-1 py-1"
+                  className="flex-1 bg-transparent text-sm text-white placeholder-gray-500 outline-none border-b border-white/20 focus:border-brand/50 px-1 py-1"
                 />
                 <button
                   type="submit"

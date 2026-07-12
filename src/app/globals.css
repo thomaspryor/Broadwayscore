@@ -289,6 +289,15 @@
     @apply btn bg-transparent text-gray-400 hover:text-white hover:bg-white/5;
   }
 
+  /* Secondary action — neutral fill (2026-07-12 button hierarchy):
+     btn-primary (champagne gradient) = THE primary action of a screen
+     (Get Tickets, Add show, Create a list, Save). btn-secondary = other
+     tappable actions (Want to See, Rate it). Bright #FFD700 is reserved
+     for stars/scores and must never be a button fill (CI-guarded). */
+  .btn-secondary {
+    @apply btn bg-white/10 border border-white/15 text-white hover:bg-white/15 hover:border-white/25;
+  }
+
   .btn-active {
     @apply btn bg-brand text-white;
   }
