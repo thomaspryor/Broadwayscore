@@ -1,6 +1,6 @@
 ---
 name: github-polling-rate-limit
-description: Never use gh run list in a polling loop — burns GitHub rate limit to zero in minutes. Hook now enforces this.
+description: Never use gh run list in a polling loop, and gh run watch NEEDS -i 60 (default 3s poll = 1200 calls/hr, NOT long-polling). Hook enforces both.
 metadata: 
   node_type: memory
   type: feedback
@@ -25,6 +25,8 @@ Never put `gh run list` in a `until`/`while` polling loop to monitor CI. Discove
 
 **Seventh incident 2026-06-29:** PRIMARY quota (not secondary) exhausted: 5 sessions logged `HTTP 403: API rate limit exceeded for user ID 3475675`. NOT a read-poll loop — the drain was **`gh workflow run` DISPATCH volume**: transcripts showed ~544 dispatches + ~214 `gh run list` + ~199 `gh run view` in one day, incl. a session's manual "backup dispatcher" (`while …; gh workflow run …; sleep 300; done`, every 5 min for 6h). The existing guards target read-poll loops (`gh run list…sleep`) and never looked at `gh workflow run`, so this slipped past both. **Plan-review (6 reviewers) REJECTED a `gh` throttle-shim 6/6** — metering shim invocations ≠ API calls (`gh run watch`=1 invocation/many calls), an always-on hot-path interceptor on every gh call diverges from the default-passthrough hook philosophy, and a stale mkdir-lock after kill-9 would deadlock all gh. **Fixes (stay in the two-layer model):** (1) **Rule 3** in `gh-poll-block.sh` blocks `(until|while)+gh workflow run+do+sleep` dispatch loops (bypass `# FORCE-DISPATCH`). (2) **Rule 4** = per-session dispatch budget (warn 25/hr, block 60/hr; per-session-keyed file so NO cross-process lock). (3) **Reaper** `is_gh_loop` broadened to `gh (run …|api|workflow run)` + ps prefilter `gh (run|api|workflow)` so it kills long-lived dispatch loops too (Codex/parallel/crashed); `for`-loops still NOT matched (legit batch loops). All proven: 8/8 hook cases + 9/9 reaper cases incl. live decoy. **GitHub App token (15k/hr, 3×) evaluated + DEFERRED** — needs an hourly JWT→installation-token refresh daemon (reintroduces the expiring-token machinery just tamed 2026-06-28); revisit only if R1–R3 prove insufficient. Detail: `~/.config/gh-dispatch-guard/README.md`. **Key lesson: the guards were scoped to ONE call shape (read-poll loops); a different shape (dispatch volume) bypassed them entirely. When adding a gh-quota guard, enumerate ALL high-volume call types (run list/view/watch, api, workflow run), not just the one that burned you last time.**
 
+**Eighth incident 2026-07-11/12 (quota zeroed twice in one evening):** the drain was `gh run watch` ITSELF. **`gh run watch` is NOT long-polling** — it re-fetches the run every REFRESH seconds, **default 3s = ~1,200 core-API calls/hour per watch**. One session ran six default-interval watches (some 25-40 min, some concurrent with a parallel session's watch) following this very file's old "watch is rate-limit safe" advice — the wrong claim lived HERE and in the hook's USE-INSTEAD text, so every session kept re-burning the quota with the blessed pattern. **Fixes:** (1) hook Rule 5 blocks `gh run watch` without `-i <seconds>` >= 30; (2) this file and the hook message corrected. **Key lesson: the "safe alternative" a guard recommends is itself a quota consumer — verify the recommended pattern's actual call rate before blessing it (gh docs: watch has `-i/--interval`, default 3).**
+
 **Vercel-API fallback for deploy verification (no GitHub calls):** When GitHub is rate-limited (or to avoid spending quota), confirm a commit is deployed via Vercel's API + local git ancestry:
 ```bash
 TOKEN=$(grep -E '^VERCEL_TOKEN=' .env | cut -d= -f2- | tr -d '"' )
@@ -41,7 +43,8 @@ This is the canonical "pushed ≠ deployed" check when GitHub is unavailable. Se
 
 **How to apply:**
 - Get run ID once: `gh run list --limit 1 --json databaseId --jq '.[0].databaseId'`
-- Then watch it: `gh run watch <id>` — blocks, uses long-polling, rate-limit safe. `gh run watch` is the ONLY safe pattern for waiting on a run.
+- Then watch it: `gh run watch <id> -i 60 --exit-status` — **`-i 60` is MANDATORY** (hook Rule 5 blocks watches without `-i` >= 30). Watch POLLS every interval; the 3s default is ~1,200 calls/hr per watch (Eighth incident).
+- **One watch at a time.** Don't chase superseded runs with fresh watches — when pushes keep landing, wait for the last push, then watch once.
 - Or: use `gh api repos/OWNER/REPO/actions/runs` directly (doesn't hit workflow-listing endpoint)
 - Or: check once after a fixed wait, report to user, move on to other work
 - **Never** chain `sleep N && gh run X` in a `while`/`until` loop — applies to `gh run list`, `gh run view`, AND `gh api`.
