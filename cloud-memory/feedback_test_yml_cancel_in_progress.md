@@ -52,3 +52,21 @@ that don't reproduce locally — DO NOT touch the assertions or jsdom. Check the
 already be enforcing the fix. Never reintroduce unconditional `cancel-in-progress: true` on a
 push-to-main workflow. Related: [[feedback_ci_red_stale_state_and_brittle_assertions.md]],
 [[feedback_test_yml_data_gates_flap_and_shortcircuit.md]], [[feedback_workflow_cascade_prevention.md]].
+
+---
+
+**2026-07-12 follow-up — `cancel-in-progress: false` is NOT sufficient on its own.**
+The conditional-cancel fix above stopped *in-progress* cancellation, but main runs were STILL
+cancelled during data-bot/code-merge bursts (7 in a row on 2026-07-11, e.g. run 15546f848
+cancelled in 42s with `jobs:[]` — killed while PENDING, before any job started). Root cause:
+GitHub keeps only ONE pending run per concurrency group and **cancels the older pending run when
+a newer push queues behind the same in-progress run** — independent of `cancel-in-progress`.
+Fix: on main, append `github.sha` to the concurrency group so every commit runs in its OWN group
+(`...-${{ github.event_name }}${{ github.ref == 'refs/heads/main' && format('-{0}', github.sha) || '' }}`);
+PRs keep the shared group + cancel-superseded. `audit-workflow-concurrency.js` treats a group
+containing a per-run token (`github.sha`) as exempt, so the guard stays green.
+
+**How to apply (updated):** cancelled main run + `jobs:[]` + <60s runtime = pending-supersession,
+NOT in-progress cancellation. `cancel-in-progress:false` won't fix it — the concurrency GROUP must
+be per-commit (include github.sha/run_id) so nothing shares a pending queue. Applies to ANY
+push-to-main workflow, not just test.yml.
