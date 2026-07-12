@@ -2498,6 +2498,10 @@ fs.writeFileSync(`${outDir}/${slug}.html`, applyUtm(html, { source: 'newsletter'
 // silently-skipped sections in regression tests / CI.
 sections.writeMeta(`${outDir}/${slug}.meta.json`, {
   subject: subjectLine,
+  // The A-<weekStart> slug is edition-agnostic, so the edition stamp is how
+  // create-broadcast-draft.mjs detects a WE draft built on Broadway HTML
+  // (or vice versa) when both editions share an out dir.
+  edition: EDITION,
   weekStart: argDate,
   weekEnd: weekEndStr,
   htmlPath: `${outDir}/${slug}.html`,
