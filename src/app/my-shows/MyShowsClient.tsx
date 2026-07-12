@@ -7,6 +7,7 @@ import { featureFlags } from '@/config/feature-flags';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserReviews } from '@/hooks/useUserReviews';
 import { useWatchlist } from '@/hooks/useWatchlist';
+import { useUserLists } from '@/hooks/useUserLists';
 import StarRating from '@/components/user/StarRating';
 
 import { useToastSafe } from '@/components/ui/Toast';
@@ -89,6 +90,10 @@ export default function MyShowsClient() {
   const { user, isAuthenticated, loading: authLoading, showSignIn } = useAuth();
   const { reviews: realReviews, getAllReviews, deleteReview, loading: reviewsLoading } = useUserReviews(user?.id || null);
   const { watchlist: realWatchlist, getWatchlist, addToWatchlist, updatePlannedDate, removeFromWatchlist, loading: watchlistLoading } = useWatchlist(user?.id || null);
+  // Count-only lists instance for the tab badge (ListsTab owns its own full
+  // CRUD instance; hook instances don't share state, so this fetches the list
+  // rows once per page view — cheap, and the badge works without visiting the tab).
+  const { lists: realLists, getLists } = useUserLists(user?.id || null);
   const { showToast } = useToastSafe();
 
   // In mock mode, bypass loading/auth and inject fake data
@@ -102,6 +107,7 @@ export default function MyShowsClient() {
 
   const reviews = isMockMode && mockData ? mockData.reviews : realReviews;
   const watchlist = isMockMode && mockData ? mockData.watchlist : realWatchlist;
+  const listsCount = isMockMode ? 3 : realLists.length;
   const loading = isMockMode ? !mockData : (authLoading || reviewsLoading || watchlistLoading);
 
   // Mock-mode mutation handlers — update local state so tests can verify delete/remove/date flows
@@ -185,6 +191,7 @@ export default function MyShowsClient() {
     if (isAuthenticated && user) {
       getAllReviews();
       getWatchlist();
+      getLists();
     }
   }, [isMockMode, isAuthenticated, user, getAllReviews, getWatchlist]);
 
@@ -409,8 +416,14 @@ export default function MyShowsClient() {
               ? 'text-white border-brand'
               : 'text-gray-500 border-transparent hover:text-gray-300'
           }`}
+          aria-label={showsSeen > 0 ? `Diary, ${showsSeen} shows` : 'Diary'}
         >
           Diary
+          {showsSeen > 0 && (
+            <span className="ml-1.5 px-1.5 py-0.5 text-[10px] bg-white/10 rounded-full" aria-hidden="true">
+              {showsSeen}
+            </span>
+          )}
         </button>
         <button
           type="button"
@@ -445,8 +458,14 @@ export default function MyShowsClient() {
               ? 'text-white border-brand'
               : 'text-gray-500 border-transparent hover:text-gray-300'
           }`}
+          aria-label={listsCount > 0 ? `Lists, ${listsCount} lists` : 'Lists'}
         >
           Lists
+          {listsCount > 0 && (
+            <span className="ml-1.5 px-1.5 py-0.5 text-[10px] bg-white/10 rounded-full" aria-hidden="true">
+              {listsCount}
+            </span>
+          )}
         </button>
 
         {/* Desktop-only inline controls (hidden on mobile — shown in second row below) */}
