@@ -8,7 +8,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { repeatFailureResults, getDigestSubject, getPlaybookEntry } = require('../../scripts/health-check.js');
+const { repeatFailureResults, feedbackBacklogResults, getDigestSubject, getPlaybookEntry } = require('../../scripts/health-check.js');
 
 test('repeatFailureResults: skipped summary yields no synthetic checks', () => {
   assert.deepEqual(repeatFailureResults({ skipped: true, repeatFailures: [{ name: 'x.yml', count: 9 }] }), []);
@@ -74,4 +74,28 @@ test('getDigestSubject: clean window stays green', () => {
   ];
   const subject = getDigestSubject(results, { consecutiveErrorDays: 0 }, {});
   assert.match(subject, /All clear/);
+});
+
+// --- feedbackBacklogResults (needs-manual-review backlog digest check) ---
+
+test('feedbackBacklogResults: empty backlog and skipped summary yield no results', () => {
+  assert.deepEqual(feedbackBacklogResults({ skipped: false, issues: [] }), []);
+  assert.deepEqual(feedbackBacklogResults({ skipped: true, issues: [] }), []);
+  assert.deepEqual(feedbackBacklogResults(null), []);
+});
+
+test('feedbackBacklogResults: open backlog warns with count, oldest age, newest title', () => {
+  const now = new Date('2026-07-12T00:00:00Z');
+  const results = feedbackBacklogResults({
+    skipped: false,
+    issues: [
+      { number: 393, title: 'Bug Diagnosis: MISTERMAN FRC score', createdAt: '2026-07-03T17:00:41Z' },
+      { number: 279, title: 'Bug Diagnosis: fluctuating scores', createdAt: '2026-04-24T09:34:49Z' },
+    ],
+  }, now);
+  assert.equal(results.length, 1);
+  assert.equal(results[0].status, 'warn');
+  assert.match(results[0].message, /2 open user-feedback issue\(s\)/);
+  assert.match(results[0].message, /oldest 78d/);
+  assert.match(results[0].message, /#393/);
 });
