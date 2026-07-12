@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-12T00:46:44.310Z",
-  "processed": 61,
-  "failed": 447,
-  "successRate": "12.0%",
+  "updatedAt": "2026-07-12T00:57:52.068Z",
+  "processed": 70,
+  "failed": 475,
+  "successRate": "12.8%",
   "tierBreakdown": {
-    "playwright": 46,
+    "playwright": 52,
     "amp": 0,
-    "browserbase": 0,
-    "directCookies": 8,
-    "scrapingbee": 3,
+    "browserbase": 2,
+    "directCookies": 9,
+    "scrapingbee": 4,
     "brightdata": 1,
-    "archiveToday": 25,
+    "archiveToday": 26,
     "archive": 3
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-07-11T19:34:20.838Z",
@@ -25,6 +25,17 @@
       "t": "2026-07-11T19:34:21.663Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-07-12T00:56:22.327Z",
+      "event": "bb-session",
+      "session": "3b22ff9d",
+      "url": "https://variety.com/1996/legit/reviews/a-delicate-balance-6-1200445585/"
+    },
+    {
+      "t": "2026-07-12T00:56:23.275Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
