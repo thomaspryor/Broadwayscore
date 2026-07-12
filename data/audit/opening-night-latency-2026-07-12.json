@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-12T18:37:25.851Z",
+  "generatedAt": "2026-07-12T19:42:26.777Z",
   "date": "2026-07-12",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 240698,
+  "entryCount": 241848,
   "shows": [
     {
       "showId": "dukes-off-broadway-2026",
@@ -551,7 +551,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 1511466,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -6082,6 +6082,21 @@
     {
       "showId": "jack-and-the-beanstalk-off-west-end-2026",
       "reviewCount": 4,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "christmas-carol-goes-wrong-west-end-2026",
+      "reviewCount": 1,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
