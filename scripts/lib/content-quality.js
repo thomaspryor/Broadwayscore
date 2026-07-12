@@ -2313,12 +2313,91 @@ function cleanAuthorName(name) {
   return cleaned;
 }
 
+// Months — used to stop byline capture before a trailing publish date.
+const _BYLINE_MONTHS = new Set([
+  'january', 'february', 'march', 'april', 'may', 'june', 'july',
+  'august', 'september', 'october', 'november', 'december',
+]);
+
+/**
+ * Extract the real critic byline from a theaterlife.com review body.
+ *
+ * theaterlife.com (WordPress) attributes EVERY post to the site owner
+ * "Barry Gordin" via the author vcard (class="author vcard" → /author/barry/).
+ * That is the CMS account, never the review's critic — the real byline is the
+ * in-body "By: <name>" line near the top of the article (e.g. "By: Samuel L.
+ * Leiter"). The generic extractors pick the vcard first, so 366 reviews were
+ * mis-bylined "Barry Gordin" before this. See Notion 39b637c5.
+ *
+ * Conservative First-[MiddleInitial]-Last parse: returns null when the shape is
+ * ambiguous so the caller can route the file to manual triage rather than guess.
+ * The "By:" colon form (double-spaced on some pages) is not caught by the shared
+ * BYLINE_PATTERNS, which is why this is a dedicated parser.
+ *
+ * @param {string} text - Cleaned article text
+ * @returns {string|null} Canonical critic name, or null if not confidently parseable
+ */
+function extractTheaterLifeByline(text) {
+  if (!text) return null;
+  const head = String(text).slice(0, 1200);
+  // "By: Name" anywhere near the top — the colon makes this safe (prose almost
+  // never writes "By:"). Fall back to "By Name" only at text-start or line-start
+  // (no-colon form some posts use), anchored so it can't match "directed by" /
+  // "produced by" in the body.
+  let m = head.match(/\bBy:\s+([A-Z][^\n]{2,60})/);
+  // No-colon form ("By <Name>" then the publish date). Require a "Month DD, YYYY"
+  // to follow the name — theaterlife bylines are always "By <Name> <date>". The
+  // trailing date distinguishes the real byline (even when an ALL-CAPS headline
+  // precedes it) from a mid-body playwright credit ("By David Mamet, …"), and
+  // works whether the byline and date are newline- or space-separated.
+  if (!m) {
+    m = head.match(/\bBy\s+([A-Z][A-Za-zÀ-ÿ.'’ -]{2,40}?)\s*\n*\s*(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2}/);
+  }
+  if (!m) return null;
+  // Some posts glue the article text straight onto the byline with no space
+  // ("By: Alix Cohen“We are merchants…" or "By: Alix CohenSeptember 19, 2025").
+  // Cut at the first quote/paren, and cut a glued-on month ONLY when it's followed
+  // by a date (digit) — so a real month-surname ("John March", "Ada DeMay") is
+  // preserved while the glued publish date is dropped.
+  const captured = m[1]
+    .split(/[“”"«»(){}]/)[0]
+    .replace(/([a-z])(?:January|February|March|April|May|June|July|August|September|October|November|December)(?=\s*\d)[\s\S]*/i, '$1');
+  const tokens = captured.trim().split(/\s+/);
+  const isCap = (t) => /^[A-ZÀ-Þ]/.test(t);
+  const isInitial = (t) => /^[A-Z]\.?$/.test(t);
+  const isName = (t) => /^[A-ZÀ-Þ][A-Za-zÀ-ÿ'’.\-]*$/.test(t) && !_BYLINE_MONTHS.has(t.toLowerCase());
+  if (tokens.length < 2 || !isName(tokens[0]) || !isName(tokens[1])) return null;
+  let name;
+  // "Samuel L. Leiter" — First + middle initial + Last
+  if (isInitial(tokens[1]) && tokens[2] && isName(tokens[2]) && !isInitial(tokens[2])) {
+    name = `${tokens[0]} ${tokens[1]} ${tokens[2]}`;
+  } else {
+    // First + Last (stop here — extra tokens are body text, e.g. "Isa Goldberg Transferred…")
+    name = `${tokens[0]} ${tokens[1]}`;
+  }
+  if (isNonNameWord(name)) return null;
+  if (!isValidAuthorName(name)) return null;
+  const cleaned = cleanAuthorName(name);
+  // The vcard owner is never a real byline; if the body somehow says "By: Barry
+  // Gordin", treat it as unparseable rather than re-stamping the phantom.
+  if (/^barry\s+gordin$/i.test(cleaned)) return null;
+  return cleaned;
+}
+
 /**
  * Extract author name from HTML using multiple strategies.
  * Priority: meta tags → JSON-LD → byline CSS → text-based extractByline()
  */
 function extractAuthorFromHtml(html, text, options = {}) {
   if (!html) return null;
+
+  // Outlet override: theaterlife.com's author vcard is the site owner "Barry
+  // Gordin" on every post, so the generic byline-CSS strategy mis-attributes
+  // every review. Prefer the in-body "By: <name>" for this outlet. Notion 39b637c5.
+  if (options && options.url && /(^|\/\/|\.)theaterlife\.com/i.test(String(options.url))) {
+    const tl = extractTheaterLifeByline(text);
+    if (tl) return tl;
+  }
 
   const metaPatterns = [
     /<meta\s+name="author"\s+content="([^"]+)"/i,
@@ -2756,6 +2835,7 @@ module.exports = {
   detectHorrorFilmContent,
   // Author extraction from HTML
   extractAuthorFromHtml,
+  extractTheaterLifeByline,
   extractHighConfidenceAuthor,
   isValidAuthorName,
   cleanAuthorName,
