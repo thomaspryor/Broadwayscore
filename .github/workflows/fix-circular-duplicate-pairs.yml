@@ -47,6 +47,15 @@ jobs:
           ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      # shows.json (private core-data) is REQUIRED: the canonical-selection
+      # cross-market guard reads sibling opening dates from it. Without it the
+      # guard is inert (fail-closed in the script → --fix errors), so check it
+      # out before running.
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
       - name: Checkout review-texts
         uses: ./.github/actions/checkout-review-texts
         with:

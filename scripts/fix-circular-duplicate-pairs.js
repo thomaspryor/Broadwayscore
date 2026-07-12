@@ -23,6 +23,18 @@
  * canonical (already true in a 2-cycle); if it points elsewhere we repoint it.
  *
  * Canonical choice — INCLUDABILITY-FIRST (chooseCanonicalForRebuild):
+ *  -1. CROSS-MARKET EXCLUSION (dominant, above rebuild-truth) — a member whose
+ *      publishDate clusters with a same-title SIBLING production's opening (≤30d)
+ *      but is far (>180d) from its OWN show's opening is class-A contaminated
+ *      (the exact audit-review-contamination.js strict-A predicate, shared via
+ *      scripts/lib/cross-market-contamination.js). Such a member LOOKS includable
+ *      but belongs to the sibling run, so it must NEVER be canonicalized. Mutual
+ *      pairs share a URL + publishDate, so this is usually symmetric: BOTH class-A
+ *      → the pair is skipped (2-cycle left intact, both stay suppressed — the safe
+ *      outcome, and audit-review-contamination --gate stays green because a set
+ *      duplicateOf counts as alreadyFlagged). One-sided → the clean member wins.
+ *      Without this, fix-circular canonicalized a Stagedoor excerpt dated on a
+ *      Broadway sibling's opening and reddened main on 2026-07-12.
  *   0. REBUILD TRUTH — if, with duplicateOf cleared, exactly ONE member would be
  *      includable-for-rebuild (isIncludableForRebuild + scoreable), that member
  *      is canonical. This is dominant and non-negotiable: it is the ONLY choice
@@ -67,6 +79,8 @@ const fs = require('fs');
 const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { isIncludableForRebuild } = require('./lib/review-guards');
+const { parseDate } = require('./lib/date-utils');
+const { classifyClassAContamination, buildSiblingOpeningsMap } = require('./lib/cross-market-contamination');
 
 const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '..', 'data', 'review-texts');
 
@@ -246,10 +260,13 @@ let _showByIdCache; // undefined = not loaded; Map (possibly empty) once attempt
 function _showById(showId) {
   if (_showByIdCache === undefined) {
     _showByIdCache = new Map();
-    const candidates = [
-      process.env.SHOWS_JSON,
-      path.join(__dirname, '..', 'data', 'shows.json'),
-    ].filter(Boolean);
+    // SHOWS_JSON is authoritative when set (operator/CI points it explicitly);
+    // otherwise the repo default. No silent fallback between them — an explicit
+    // but empty/missing SHOWS_JSON must NOT resolve to the default, so a caller
+    // that intends "no shows data" gets fail-closed behavior downstream.
+    const candidates = process.env.SHOWS_JSON
+      ? [process.env.SHOWS_JSON]
+      : [path.join(__dirname, '..', 'data', 'shows.json')];
     for (const p of candidates) {
       try {
         const arr = JSON.parse(fs.readFileSync(p, 'utf-8'));
@@ -260,6 +277,59 @@ function _showById(showId) {
     }
   }
   return _showByIdCache.get(showId);
+}
+
+// Same-title sibling opening epochs per show, memoized. Built from the same
+// shows.json _showById loaded (Map may be empty if shows.json can't be located —
+// then every show has no siblings and the class-A guard is a no-op, matching the
+// audit's own "no siblings → can't be class-A" behavior).
+let _siblingOpeningsCache; // undefined = not built; Map once attempted
+function _siblingOpenings(showId) {
+  if (_siblingOpeningsCache === undefined) {
+    _showById(' ensure-loaded'); // force _showByIdCache population
+    _siblingOpeningsCache = buildSiblingOpeningsMap([..._showByIdCache.values()], parseDate);
+  }
+  return _siblingOpeningsCache.get(showId) || [];
+}
+
+/** This show's openingDate as a Date (or null when show/date unknown). */
+function _showOpening(showId) {
+  const s = _showById(showId);
+  return s ? parseDate(s.openingDate) : null;
+}
+
+/**
+ * True once shows.json has been loaded and yielded at least one show. shows.json
+ * (private core-data) is REQUIRED for the class-A guard; when it is absent the
+ * guard is silently inert (every isClassAContaminated → false), which is exactly
+ * how the 2026-07-12 regression would re-enter production. --fix refuses to run
+ * in that state (see main), so this is the fail-closed check.
+ */
+function showsDataAvailable() {
+  _siblingOpenings(' ensure-loaded'); // forces the shows.json load attempt
+  return _showByIdCache instanceof Map && _showByIdCache.size > 0;
+}
+
+/**
+ * True when a review record is strict Category-A cross-market contaminated
+ * relative to its folder show: its publishDate clusters with a same-title
+ * sibling's opening but is far from this show's opening. Such a member must
+ * NEVER be canonicalized — clearing its duplicateOf un-suppressed a wrong-show
+ * review and reddened main on 2026-07-12. Shares the exact predicate with
+ * audit-review-contamination.js class A (scripts/lib/cross-market-contamination.js).
+ *
+ * Honors the same operator carve-out as the audit: a record explicitly
+ * allowlisted with `_auditAllowCrossMarket` (a human confirmed it belongs here
+ * despite the date coincidence) is NOT treated as class-A, so the two stay in
+ * lockstep on which reviews count as contaminated.
+ */
+function isClassAContaminated(data, showId) {
+  if (!data || data._auditAllowCrossMarket) return false;
+  return classifyClassAContamination(
+    parseDate(data.publishDate),
+    _showOpening(showId),
+    _siblingOpenings(showId),
+  ).isClassA;
 }
 
 /**
@@ -295,6 +365,25 @@ function wouldBeIncludableIfCleared(data, filePath) {
  * @param {string} showDir absolute path to the show directory
  */
 function chooseCanonicalForRebuild(aName, aData, bName, bData, showDir) {
+  // Layer 0 — DOMINANT cross-market exclusion (above rebuild-truth). A class-A
+  // contaminated member LOOKS includable (it passes isIncludableForRebuild — that
+  // is exactly the trap) but belongs to a sibling production; canonicalizing it
+  // clears its duplicateOf and un-suppresses a wrong-show review (2026-07-12
+  // class-A main red). Mutual pairs share a URL + publishDate, so contamination is
+  // usually symmetric: when BOTH members are class-A the pair is left untouched
+  // (skip:true) — the intact 2-cycle keeps both suppressed, which is the safe
+  // outcome and keeps audit-review-contamination --gate green (duplicateOf =
+  // alreadyFlagged). When only one member collides (different dates on the shared
+  // URL), the clean member is canonical and the contaminated one stays a duplicate.
+  const showId = path.basename(showDir);
+  const aClassA = isClassAContaminated(aData, showId);
+  const bClassA = isClassAContaminated(bData, showId);
+  if (aClassA && !bClassA) return pick(bName, aName, 'cross-market: other member is class-A contaminated — excluded from canonical');
+  if (bClassA && !aClassA) return pick(aName, bName, 'cross-market: other member is class-A contaminated — excluded from canonical');
+  if (aClassA && bClassA) {
+    return { ...pick(aName, bName, 'cross-market: BOTH members class-A contaminated — pair left suppressed (2-cycle intact)'), skip: true };
+  }
+
   const aIncl = wouldBeIncludableIfCleared(aData, path.join(showDir, aName));
   const bIncl = wouldBeIncludableIfCleared(bData, path.join(showDir, bName));
   // Dominant: never demote the only member the rebuild would keep.
@@ -318,9 +407,15 @@ function walkShowDirs(root) {
     .map(e => path.join(root, e.name));
 }
 
+// Class-A cross-market pairs deliberately left as intact 2-cycles (both members
+// suppressed). Populated by the most recent audit() call so main()/JSON can
+// surface a count — otherwise these are invisible to the pair gate.
+let _skippedClassA = [];
+
 /** Find all mutual duplicateOf pairs. Returns [{showId, canonical, loser, reason, ...}]. */
 function audit() {
   const results = [];
+  _skippedClassA = [];
   for (const showDir of walkShowDirs(REVIEW_TEXTS_DIR)) {
     let files;
     try { files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json'); }
@@ -344,6 +439,16 @@ function audit() {
       if (seen.has(key)) continue;
       seen.add(key);
       const choice = chooseCanonicalForRebuild(file, d, sibName, sd, showDir);
+      if (choice.skip) {
+        // Class-A contaminated 2-cycle: leave it intact (both stay suppressed).
+        // Not a repairable pair — excluded from report/gate/fix counts, but
+        // tracked so a spike is still visible.
+        _skippedClassA.push({ showId: path.basename(showDir), files: [file, sibName], url: d.url || sd.url || null });
+        if (!JSON_OUT) {
+          console.error(`  skip (cross-market class-A): ${path.basename(showDir)} — ${file} ↔ ${sibName} left suppressed`);
+        }
+        continue;
+      }
       results.push({
         showId: path.basename(showDir),
         canonical: choice.canonical,
@@ -394,12 +499,16 @@ function fix(pairs) {
 
 function main() {
   const pairs = audit();
+  const skipped = _skippedClassA.length;
   if (JSON_OUT) {
-    console.log(JSON.stringify({ count: pairs.length, pairs }, null, 2));
+    console.log(JSON.stringify({ count: pairs.length, pairs, skippedClassA: skipped, skippedPairs: _skippedClassA }, null, 2));
     process.exit(pairs.length === 0 ? 0 : 1);
   }
+  if (skipped) {
+    console.log(`(${skipped} cross-market class-A pair(s) left suppressed — see 'skip' lines on stderr)\n`);
+  }
   if (pairs.length === 0) {
-    console.log('OK: no circular (mutual) duplicateOf pairs found');
+    console.log('OK: no repairable circular (mutual) duplicateOf pairs found');
     process.exit(0);
   }
   console.log(`Found ${pairs.length} circular duplicateOf pair(s):\n`);
@@ -409,6 +518,13 @@ function main() {
     console.log(`    loser:     ${p.loser}  → stays duplicateOf ${p.canonical}`);
   }
   if (FIX) {
+    // Fail-closed: never repair without the cross-market guard's inputs. Without
+    // shows.json the guard is inert and fix() could un-suppress a class-A review
+    // (the 2026-07-12 regression). Erroring here pages via notify-failure instead.
+    if (!showsDataAvailable()) {
+      console.error('\n❌ REFUSING --fix: shows.json (core-data) could not be loaded, so the cross-market class-A canonical guard is inert. Repairing now risks re-canonicalizing a cross-market review. Check out core-data (shows.json) and retry.');
+      process.exit(1);
+    }
     const r = fix(pairs);
     console.log(`\nCleared ${r.clearedCanonicals} canonical(s); repointed ${r.repointedLosers} loser(s).`);
     console.log('Re-run the rebuild to collapse each pair to its canonical.');
@@ -431,5 +547,5 @@ if (require.main === module) main();
 module.exports = {
   bylineSlug, outletSlug, isUnknownByline, levenshtein, scoreSignals,
   isScoreable, chooseCanonical, chooseCanonicalForRebuild, wouldBeIncludableIfCleared,
-  audit, fix,
+  isClassAContaminated, audit, fix,
 };
