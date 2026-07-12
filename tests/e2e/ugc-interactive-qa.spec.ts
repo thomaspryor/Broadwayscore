@@ -16,7 +16,7 @@ const MOCK_URL = '/my-shows?mock=1';
 
 async function goToMock(page: Page, tab: 'diary' | 'watchlist' = 'diary') {
   await page.goto(`${MOCK_URL}&tab=${tab}`);
-  await page.waitForSelector('text=shows seen', { timeout: 30000 });
+  await page.waitForSelector('#tab-watchlist span', { timeout: 30000 });
 }
 
 // ═══════════════════════════════════════════════════════════════

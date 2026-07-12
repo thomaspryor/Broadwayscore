@@ -52,6 +52,7 @@ import { useWatchlist } from '@/hooks/useWatchlist';
 import { useUserLists } from '@/hooks/useUserLists';
 import { useToastSafe } from '@/components/ui/Toast';
 import { savePendingAction, getPendingAction, clearPendingAction } from '@/lib/deferred-auth';
+import { invalidateRatingsCache } from '@/hooks/useMyRating';
 import { supabaseRestInsert, supabaseRestUpdate } from '@/lib/supabase-rest';
 import { featureFlags } from '@/config/feature-flags';
 import { getOptimizedImageUrl } from '@/lib/images';
@@ -342,6 +343,7 @@ function Inner({
       }
     }
     await getReviewsForShow(show.id);
+    invalidateRatingsCache();
   }, [user, authLoading, show.id, getReviewsForShow, showToast, showSignIn, isWatchlisted, removeFromWatchlist]);
 
   const handleRateSaved = useCallback(() => {
@@ -364,6 +366,7 @@ function Inner({
       await deleteReview(editingReview.id);
       showToast?.('Rating deleted.', 'info');
       await getReviewsForShow(show.id);
+      invalidateRatingsCache();
     } catch (e) {
       const detail = e instanceof Error ? e.message : 'Unknown error';
       showToast?.(`Delete failed: ${detail}`, 'error');
