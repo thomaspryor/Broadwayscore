@@ -2033,6 +2033,31 @@ function validateOutletRegistryDuplicates() {
 }
 
 /**
+ * Primary-domain collisions must be declared edition pairs.
+ * Logic lives in scripts/lib/outlet-registry-domain-collisions.js (§15);
+ * colocated test: tests/unit/outlet-registry-domain-collisions.test.mjs.
+ */
+function validateOutletRegistryDomainCollisions() {
+  info('Checking outlet-registry.json for undeclared primary-domain collisions...');
+  const registryFile = path.join(DATA_DIR, 'outlet-registry.json');
+  if (!fs.existsSync(registryFile)) {
+    info('outlet-registry.json does not exist, skipping');
+    return;
+  }
+  const { findUndeclaredDomainCollisions } = require('./lib/outlet-registry-domain-collisions');
+  const registry = JSON.parse(fs.readFileSync(registryFile, 'utf8'));
+  const collisions = findUndeclaredDomainCollisions(registry.outlets || registry);
+  for (const c of collisions) {
+    error(`[domain-collision] ${c.domain} is claimed by ${c.outletIds.length} outlets (${c.outletIds.join(', ')}) — URL resolution is ambiguous. Merge the duplicates, fix the domain, or declare the pair in EDITION_PAIRS (scripts/lib/outlet-registry-domain-collisions.js)`);
+  }
+  if (collisions.length === 0) {
+    ok('No undeclared primary-domain collisions in outlet-registry.json');
+  } else {
+    error(`Found ${collisions.length} undeclared primary-domain collision(s) in outlet-registry.json`);
+  }
+}
+
+/**
  * Validate outlet-registry.json field shapes:
  *  - starScale must be a number in {4, 5, 10, 100} when present
  *  - multiAuthor must be boolean (true or false) when present
@@ -4511,6 +4536,8 @@ function runValidation() {
   validateOutletFragmentation();
   console.log('');
   validateOutletRegistryDuplicates();
+  console.log('');
+  validateOutletRegistryDomainCollisions();
   console.log('');
   validateOutletRegistryFields();
   console.log('');
