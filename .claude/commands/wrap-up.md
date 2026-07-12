@@ -262,4 +262,11 @@ HANDOFF PROMPT:
 ```
 The user pastes the prompt into a fresh session and it works with zero extra context. A Notion card ID alone is NOT a handoff.
 
-If there are no loose ends, say so explicitly — "Clean exit, no loose ends."
+**End the report with a mandatory `### Next` section** that triages EVERY Notion card created this session and every recommendation you made, each into exactly one bucket:
+- **DONE-NOW** — you did it before ending (say what happened)
+- **DEFERRED** — with the deferral bar it hits + HANDOFF PROMPT (format above)
+- **BACKLOG** — one line on why it can safely wait; no user action needed
+
+Close with exactly one line: `Your next action: <nothing | paste the handoff prompt above into a new session | answer the DECISION NEEDED above>`.
+
+Only say "Clean exit, no loose ends" when you are ALSO not recommending any next-session work — a "recommended next session" IS a loose end and belongs in `### Next`, triaged. Never make the user ask "what's required next?"
