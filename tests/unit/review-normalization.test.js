@@ -1424,8 +1424,8 @@ describe('isCrossOutletUrl — wire services and syndication (QA review follow-u
     assert.strictEqual(isCrossOutletUrl('ap', 'https://www.sfgate.com/entertainment/article/review-y'), false);
   });
 
-  it('allows observer slots on theguardian.com (UK Observer hosted by Guardian)', () => {
-    assert.strictEqual(isCrossOutletUrl('observer', 'https://www.theguardian.com/stage/2026/jul/06/some-observer-review'), false);
+  it('blocks observer slots on theguardian.com (deliberate: adding it to domainAliases misattributes Guardian reviews via getKnownDomainMap — see outlet-registry integrity test)', () => {
+    assert.strictEqual(isCrossOutletUrl('observer', 'https://www.theguardian.com/stage/2026/jul/06/some-observer-review'), true);
   });
 
   it('still flags a genuine cross-outlet URL', () => {
