@@ -353,14 +353,21 @@ on:
         type: boolean
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}
-  # On PRs: cancel superseded runs — only the latest commit on a branch matters.
-  # On main: NEVER cancel. Every commit to the protected trunk is permanent and must
-  #   complete validation; cancel-in-progress meant each push killed the prior run
-  #   mid-setup, so ~75% of main commits landed unvalidated AND the cancelled runs
-  #   emitted misleading jsdom/shows.json failures that sent sessions chasing phantom
-  #   bugs. Matches the "queued, not cancelled" pattern already used by rebuild-reviews,
-  #   enrich-reviews, and llm-ensemble-score. See memory/feedback_test_yml_cancel_in_progress.md.
+  # On main: PER-COMMIT group (append github.sha) so every commit runs in its own
+  #   group and no push can ever supersede another's run. cancel-in-progress:false
+  #   alone was NOT enough — GitHub keeps only ONE pending run per group and
+  #   CANCELS the older pending one when a newer push queues behind the same
+  #   in-progress run. During a data-bot/code-merge burst that silently cancelled
+  #   queued code-push runs before any job started (2026-07-11: 7 consecutive main
+  #   runs cancelled in <60s with jobs:[], incl. code merge 15546f848 — the
+  #   consecutive-main-failure pager keys on COMPLETED runs, so a red code push
+  #   could land with no completed run attributed to it). Per-sha grouping removes
+  #   the shared queue entirely; runs never cancel, only wait on runner slots.
+  # On PRs: keep the shared workflow-ref-event group + cancel-in-progress so
+  #   superseded commits cancel — only the latest commit on a branch matters.
+  # See memory/feedback_test_yml_cancel_in_progress.md (cancel-in-progress fix) and
+  # the pending-supersession follow-up.
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}${{ github.ref == 'refs/heads/main' && format('-{0}', github.sha) || '' }}
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
