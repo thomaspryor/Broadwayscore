@@ -66,7 +66,10 @@
     "romeo-and-juliet-west-end-2026/everything-theatre--unknown.json",
     "romeo-and-juliet-west-end-2026/theatreandtonic--unknown.json",
     "death-of-a-salesman-2012/times-uk--unknown.json",
-    "a-little-night-music-2009/theater-mirror--mike-hoban.json"
+    "a-little-night-music-2009/theater-mirror--mike-hoban.json",
+    "a-delicate-balance-1996/variety--jeremy-gerard.json",
+    "don-quixote-off-broadway-2026/stageandcinema--unknown.json",
+    "giant-the-play-off-west-end-2026/london-box-office--stuart-king.json"
   ],
   "failed": [
     "iceboy-regional-2026/chicago-sun-times--mike-davis-wbez.json",
@@ -536,7 +539,14 @@
     "all-my-sons-2008/usatoday--elysa-gardner.json",
     "macbeth-2008/usatoday--elysa-gardner.json",
     "come-back-little-sheba-2008/usatoday--elysa-gardner.json",
-    "the-little-mermaid-2008/nypost--clive-barnes.json"
+    "the-little-mermaid-2008/nypost--clive-barnes.json",
+    "is-he-dead-2007/nypost--clive-barnes.json",
+    "inherit-the-wind-2007/nypost--clive-barnes.json",
+    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+    "the-magic-show-1974/hollywood-reporter--david-rooney.json",
+    "the-magic-show-1974/thewrap--william-bibbiani.json",
+    "the-magic-show-1974/ign--ines-flint.json",
+    "kings-2-off-west-end-2026/london-box-office--stuart-king.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -590,10 +600,15 @@
       "the-play-that-goes-wrong-west-end-2021/afridiziak-theatre-news--unknown.json",
       "romeo-and-juliet-west-end-2026/everything-theatre--unknown.json",
       "romeo-and-juliet-west-end-2026/theatreandtonic--unknown.json",
-      "a-little-night-music-2009/theater-mirror--mike-hoban.json"
+      "a-little-night-music-2009/theater-mirror--mike-hoban.json",
+      "don-quixote-off-broadway-2026/stageandcinema--unknown.json",
+      "giant-the-play-off-west-end-2026/london-box-office--stuart-king.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/a-delicate-balance-1996/variety--jeremy-gerard.json",
+      "a-delicate-balance-1996/variety--jeremy-gerard.json"
+    ],
     "directCookies": [
       "jesus-christ-superstar-west-end-2026/times-uk--ann-treneman.json",
       "jesus-christ-superstar-west-end-2026/times-uk--dan-cairns.json",
@@ -639,7 +654,8 @@
       "data/review-texts/les-liaisons-dangereuses-west-end-2026/click-liverpool--unknown.json",
       "data/review-texts/les-liaisons-dangereuses-west-end-2026/evening-chronicle--unknown.json",
       "data/review-texts/romeo-and-juliet-west-end-2026/cambridge--unknown.json",
-      "data/review-texts/romeo-and-juliet-west-end-2026/click-liverpool--unknown.json"
+      "data/review-texts/romeo-and-juliet-west-end-2026/click-liverpool--unknown.json",
+      "data/review-texts/the-magic-show-1974/hollywood-reporter--david-rooney.json"
     ],
     "archive": [
       "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
@@ -648,7 +664,7 @@
     ]
   },
   "startTime": "2026-07-11T17:18:54.504Z",
-  "lastProcessed": "the-little-mermaid-2008/nypost--clive-barnes.json",
+  "lastProcessed": "kings-2-off-west-end-2026/london-box-office--stuart-king.json",
   "log": [
     {
       "t": "2026-07-11T19:34:20.838Z",
@@ -660,6 +676,17 @@
       "t": "2026-07-11T19:34:21.663Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-07-12T00:56:22.327Z",
+      "event": "bb-session",
+      "session": "3b22ff9d",
+      "url": "https://variety.com/1996/legit/reviews/a-delicate-balance-6-1200445585/"
+    },
+    {
+      "t": "2026-07-12T00:56:23.275Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
