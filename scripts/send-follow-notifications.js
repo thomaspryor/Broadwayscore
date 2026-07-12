@@ -22,7 +22,7 @@ const { sendAlert } = require('./lib/discord-notify');
 const { isLondonMarket } = require('./lib/venue-classification');
 const {
   postJSON, sleep, escapeHtml, getScoreColor, getChangeAnchor,
-  buildUnfollowUrl, buildFooterHtml, buildEmailHtml, buildOpeningNightHtml,
+  buildUnfollowUrl, buildFooterHtml, buildEmailHtml, buildOpeningNightHtml, siteNameForMarket,
 } = require('./lib/email-templates');
 
 const DIGEST_PATH = path.join(__dirname, '..', 'data', 'audit', 'show-changes-digest.json');
@@ -188,7 +188,7 @@ async function main() {
       ? buildOpeningNightHtml(showTitle, openingNight, otherChanges, showUrl, showId, email, imageUrl, market)
       : buildEmailHtml(showTitle, changes, showUrl, showId, email, market);
 
-    const siteName = market === 'west-end' ? 'West End Scorecard' : 'Broadway Scorecard';
+    const siteName = siteNameForMarket(market);
     const subject = openingNight
       ? `${showTitle} is now open, and the critic reviews are in`
       : `Updates for ${showTitle} on ${siteName}`;
