@@ -472,14 +472,18 @@ function criticsTake(showId) {
 }
 
 // The site consensus texts run ~130-280 chars (a full 1-2 sentence take) — too
-// long for an email card (user, 2026-07-11). Clamp to a ~2-line teaser at a word
-// boundary; the card already links to the show page for the full take. The cut
-// lands on a natural pivot ("though…", "but…") that invites the click.
-function clampTake(text, max = 140) {
-  if (!text || text.length <= max) return text;
-  const slice = text.slice(0, max + 1);
-  const space = slice.lastIndexOf(' ');
-  return slice.slice(0, space > 0 ? space : max).replace(/[\s,;:.—-]+$/, '') + '…';
+// long for an email card (user, 2026-07-11). Clamp to a tight ~2-line teaser:
+// prefer cutting at the FIRST clause boundary (comma / semicolon / em dash) so
+// the teaser is a complete thought, else fall back to a word boundary. The card
+// links to the show page for the rest.
+function clampTake(text, max = 120) {
+  if (!text || text.length <= 95) return text;
+  const window = text.slice(0, max + 1);
+  let cut = -1;
+  for (const b of [', ', '; ', ' — ', '—']) { const idx = window.lastIndexOf(b); if (idx > cut) cut = idx; }
+  if (cut >= 45) return text.slice(0, cut).replace(/[\s,;:—-]+$/, '') + '…';
+  const space = window.lastIndexOf(' ');
+  return text.slice(0, space > 0 ? space : max).replace(/[\s,;:.—-]+$/, '') + '…';
 }
 
 // SHOW ROW — uses POSTER image (2:3) on left for vertical fill; audience chip lives in score column under the critic badge
@@ -992,9 +996,9 @@ function awardsMoversSection() {
     const dirArrow = m.delta > 0 ? '▲' : '▼';
     const dirWord = m.delta > 0 ? 'up' : 'down';
     const pts = Math.round(Math.abs(m.delta));
-    const thumbHtml = m.show ? thumb(m.show, 44) : `<div style="width:44px;height:44px;border-radius:8px;background:#2a2a38;text-align:center;line-height:44px;font-size:18px;color:#6b7280;">🏆</div>`;
+    const thumbHtml = m.show ? thumb(m.show, 56) : `<div style="width:56px;height:56px;border-radius:8px;background:#2a2a38;text-align:center;line-height:56px;font-size:22px;color:#6b7280;">🏆</div>`;
     return `<tr>
-      <td valign="middle" width="52" style="padding:10px 10px 10px 0;${!isLast?'border-bottom:1px solid rgba(255,255,255,0.05);':''}">${thumbHtml}</td>
+      <td valign="middle" width="68" style="padding:10px 10px 10px 0;${!isLast?'border-bottom:1px solid rgba(255,255,255,0.05);':''}">${thumbHtml}</td>
       <td valign="middle" style="padding:10px 0;${!isLast?'border-bottom:1px solid rgba(255,255,255,0.05);':''}">
         <div style="font-size:16px;color:#fff;font-weight:700;line-height:1.25;">${m.nominee}</div>
         <div style="font-size:11px;color:#9ca3af;margin-top:2px;">${m.category}</div>
@@ -1121,7 +1125,7 @@ function outlierSection() {
   const cleanQuote = pickReviewQuote(r);
   const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" class="cardbg">
     <tr>
-      <td valign="middle" width="64" style="padding:14px 0 14px 14px;">${thumb(best.show, 48)}</td>
+      <td valign="middle" width="68" style="padding:14px 0 14px 14px;">${thumb(best.show, 56)}</td>
       <td valign="middle" style="padding:14px 8px 14px 10px;">
         <div style="font-size:13px;color:#fff;font-weight:700;line-height:1.25;">${criticLink(r.criticName, r.criticName || 'Unknown critic')} <span style="color:#9ca3af;font-weight:400;">· ${outletLink(r.outlet, r.outlet)}</span></div>
         <div style="font-size:13px;color:#d1d5db;margin-top:2px;">on <strong style="color:#fff;">${showLink(best.show, best.show.title)}</strong> ${marketPill(best.show.category)}</div>
@@ -1483,7 +1487,7 @@ function boxOfficeSection() {
     const borderStyle = isLast ? '' : 'border-bottom:1px solid rgba(255,255,255,0.05);';
     // Tightened: thumb 40→36, vertical padding 10→7. Each row ~10px shorter.
     return `<tr>
-      <td valign="middle" width="40" style="padding:7px 8px 7px 0;${borderStyle}">${showLink(entry.show, `<img src="${getImage(entry.show) || ''}" alt="${entry.show.title}" width="36" height="36" style="display:block;width:36px;height:36px;object-fit:cover;border-radius:6px;background:#2a2a38;">`)}</td>
+      <td valign="middle" width="68" style="padding:7px 8px 7px 0;${borderStyle}">${showLink(entry.show, `<img src="${getImage(entry.show) || ''}" alt="${entry.show.title}" width="56" height="56" style="display:block;width:56px;height:56px;object-fit:cover;border-radius:8px;background:#2a2a38;">`)}</td>
       <td valign="middle" style="padding:7px 0;${borderStyle}">
         <div style="font-size:10px;color:#d4a574;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;">${label}</div>
         <div style="font-size:16px;color:#fff;font-weight:700;margin-top:1px;">${showLink(entry.show, entry.show.title)}</div>
@@ -1626,7 +1630,7 @@ function buzziestSection() {
     // Tighter padding on #2/#3 rows + drop the redundant "of N" subtitle —
     // it's already on the hero. Frees ~14px per row of vertical space.
     return `<tr>
-      <td valign="middle" width="64" style="padding:6px 10px 6px 0;${!isLast?'border-bottom:1px solid rgba(255,255,255,0.05);':''}">${thumb(c.show, 48)}</td>
+      <td valign="middle" width="68" style="padding:6px 10px 6px 0;${!isLast?'border-bottom:1px solid rgba(255,255,255,0.05);':''}">${thumb(c.show, 56)}</td>
       <td valign="middle" style="padding:6px 0;${!isLast?'border-bottom:1px solid rgba(255,255,255,0.05);':''}">
         <div style="font-size:14px;font-weight:700;color:#fff;line-height:1.25;">${showLink(c.show, c.show.title)} ${marketPill(c.show.category)}</div>
         <div style="font-size:11px;color:#9ca3af;margin-top:2px;">${sentP}% positive · ${ment} mentions</div>
@@ -1641,7 +1645,7 @@ function buzziestSection() {
   // label + rank box right. Sentiment bar lives below the row so the hero stays
   // visually consistent with the rest of the card stack across the email.
   const heroRow = `<tr>
-      <td valign="middle" width="64" style="padding:6px 10px 6px 0;">${thumb(top.show, 48)}</td>
+      <td valign="middle" width="68" style="padding:6px 10px 6px 0;">${thumb(top.show, 56)}</td>
       <td valign="middle" style="padding:6px 0;">
         <div style="font-size:16px;font-weight:700;color:#fff;line-height:1.25;">${showLink(top.show, top.show.title)} ${marketPill(top.show.category)}</div>
         <div style="font-size:11px;color:#9ca3af;margin-top:3px;">${top.rank ? `in <span style="color:#d1d5db;font-weight:600;">${top.rank.market}</span> social buzz` : display.sub}</div>
@@ -1700,7 +1704,7 @@ function seasonStandingFor(openedShow) {
         <div style="font-size:14px;font-weight:700;color:${isHighlight ? '#d4a574' : '#6b7280'};">${rank}</div>
       </td>
       <td valign="middle" width="48" style="padding:10px 10px 10px 0;${rowBg}">
-        <img src="${getImage(x.s) || ''}" alt="${x.s.title}" width="44" height="44" style="display:block;width:44px;height:44px;object-fit:cover;border-radius:8px;background:#2a2a38;${isHighlight ? 'box-shadow:0 0 0 2px #d4a574;' : ''}">
+        <img src="${getImage(x.s) || ''}" alt="${x.s.title}" width="56" height="56" style="display:block;width:56px;height:56px;object-fit:cover;border-radius:8px;background:#2a2a38;${isHighlight ? 'box-shadow:0 0 0 2px #d4a574;' : ''}">
       </td>
       <td valign="middle" style="padding:10px 0;${!isLast ? 'border-bottom:1px solid rgba(255,255,255,0.05);' : ''}${rowBg}">
         <div style="font-size:14px;font-weight:${isHighlight ? '700' : '600'};color:${isHighlight ? '#fff' : '#f3f4f6'};line-height:1.3;">${showLink(x.s, x.s.title)}</div>
@@ -1748,43 +1752,15 @@ function londonSection() {
     return br - ar;
   });
   _londonHasGoldOpening = withScore.some(x => isGoldTier(x.agg.avg, x.s.category));
-  const marketColor = '#f472b6';
-  // Hero (big poster showRow) treatment: every gold-tier show PLUS the week's
-  // top-ranked opening even if it just missed gold. withScore is already sorted
-  // gold-first then score-desc, so index 0 is the marquee opening. Without the
-  // index-0 rule a section with no gold show (e.g. TKAMB West End at 84.39, just
-  // under the 85 WE gold line) would render every card in the small compact
-  // format and lose its hero poster — the top opening always earns the big card.
-  const heroRows = withScore.filter((x, i) => i === 0 || isGoldTier(x.agg.avg, x.s.category));
-  const heroSet = new Set(heroRows);
-  const nonGoldRows = withScore.filter(x => !heroSet.has(x));
-  // Hero shows: full showRow (poster, venue, audience chip, score badge). The
-  // badge still reflects the real tier, so a non-gold top opening shows its
-  // actual (green/etc.) badge — not the gold shimmer.
-  const goldHtml = heroRows.map(x => showRow(x.s, { showMarket: true })).join('');
-  // Non-gold shows: compact card (existing layout)
-  const compactRows = nonGoldRows.map((x, i, arr) => {
-    const score = x.agg.avg;
-    const market = x.s.category === 'west-end' ? 'WEST END' : 'OFF WEST END';
-    const isLast = i === arr.length - 1;
-    return `<tr>
-      <td valign="middle" width="72" style="padding:${i===0?'14':'10'}px 0 ${isLast?'14':'10'}px 16px;">${thumb(x.s, 56)}</td>
-      <td valign="middle" style="padding:${i===0?'14':'10'}px 8px ${isLast?'14':'10'}px 12px;">
-        <div style="font-size:16px;font-weight:700;color:#fff;line-height:1.25;">${showLink(x.s, x.s.title)}</div>
-        <div style="font-size:10px;color:${marketColor};font-weight:600;letter-spacing:0.06em;text-transform:uppercase;margin-top:3px;">${market}</div>
-        <div style="font-size:13px;color:#9ca3af;margin-top:4px;">Opened ${fmt(x.s.openingDate)}</div>
-      </td>
-      <td valign="middle" width="84" align="center" style="padding:${i===0?'14':'10'}px 12px ${isLast?'14':'10'}px 4px;">
-        ${tierLabel(score, x.s.category)}
-        ${smallBadge(score, 48, x.s.category)}
-      </td>
-    </tr>${!isLast ? '<tr><td colspan="3" style="padding:0 16px;"><div style="border-top:1px solid rgba(255,255,255,0.05);"></div></td></tr>' : ''}`;
-  }).join('');
+  // Every opening is a full feature card — same large size for all opening
+  // shows (user 2026-07-11). The old gold-hero / non-gold-compact split (which
+  // rendered e.g. Allegra as a small row next to a big Jesus Christ Superstar
+  // card) is gone; showRow already renders the real tier badge, not the gold
+  // shimmer, so a non-gold opening shows its actual colour.
+  const cards = withScore.map(x => showRow(x.s, { showMarket: true })).join('');
   const seeAll = seeAllLink(`${SITE}/west-end`, 'Explore the full West End Scorecard', { color: '#f472b6' });
-  const compactCard = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="background:#1a1a24;border-radius:16px;border:1px solid rgba(244,114,182,0.18);">${compactRows}${seeAll}</table>`;
-  const seeAllOnlyCard = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="background:#1a1a24;border-radius:16px;border:1px solid rgba(244,114,182,0.18);">${seeAll}</table>`;
-  const body = goldHtml + (nonGoldRows.length ? compactCard : seeAllOnlyCard);
-  return sectionWrap(sectionHeading('London Openings', null, { href: `${SITE}/west-end` }), body);
+  const seeAllCard = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="background:#1a1a24;border-radius:16px;border:1px solid rgba(244,114,182,0.18);">${seeAll}</table>`;
+  return sectionWrap(sectionHeading('London Openings', null, { href: `${SITE}/west-end` }), cards + seeAllCard);
 }
 
 // SECTION: Opera Openings — mirrors London Openings (compact card, themed
@@ -1798,31 +1774,12 @@ function operaOpeningsSection() {
   const withScore = list.map(s => ({ s, agg: aggregateScore(s.id) })).filter(x => x.agg && x.agg.count >= 3);
   if (!withScore.length) return null;
   const marketColor = '#a78bfa'; // indigo/violet — opera's accent
-  const rows = withScore.map((x, i, arr) => {
-    const score = x.agg.avg;
-    const venueLabel = (x.s.category === 'broadway' ? 'BROADWAY OPERA'
-      : x.s.category === 'off-broadway' ? 'OFF-BROADWAY OPERA'
-      : x.s.category === 'west-end' ? 'WEST END OPERA'
-      : x.s.category === 'off-west-end' ? 'OFF WEST END OPERA'
-      : 'OPERA');
-    const isLast = i === arr.length - 1;
-    return `<tr>
-      <td valign="middle" width="72" style="padding:${i===0?'14':'10'}px 0 ${isLast?'14':'10'}px 16px;">${thumb(x.s, 56)}</td>
-      <td valign="middle" style="padding:${i===0?'14':'10'}px 8px ${isLast?'14':'10'}px 12px;">
-        <div style="font-size:16px;font-weight:700;color:#fff;line-height:1.25;">${showLink(x.s, x.s.title)}</div>
-        <div style="font-size:10px;color:${marketColor};font-weight:600;letter-spacing:0.06em;text-transform:uppercase;margin-top:3px;">${venueLabel}</div>
-        <div style="font-size:13px;color:#9ca3af;margin-top:4px;">Opened ${fmt(x.s.openingDate)}</div>
-      </td>
-      <td valign="middle" width="84" align="center" style="padding:${i===0?'14':'10'}px 12px ${isLast?'14':'10'}px 4px;">
-        ${tierLabel(score, x.s.category)}
-        ${smallBadge(score, 48, x.s.category)}
-      </td>
-    </tr>${!isLast ? '<tr><td colspan="3" style="padding:0 16px;"><div style="border-top:1px solid rgba(255,255,255,0.05);"></div></td></tr>' : ''}`;
-  }).join('');
-  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="background:#1a1a24;border-radius:16px;border:1px solid rgba(167,139,250,0.18);">${rows}
-    ${seeAllLink(`${SITE}/opera`, 'Explore the full Opera Scorecard', { color: marketColor })}
-  </table>`;
-  return sectionWrap(sectionHeading('Opera Openings', null, { href: `${SITE}/opera` }), body);
+  // All opening cards are the same large feature size (user 2026-07-11) —
+  // mirrors London Openings. showRow renders the OPERA + market pills.
+  const cards = withScore.map(x => showRow(x.s, { showMarket: true })).join('');
+  const seeAll = seeAllLink(`${SITE}/opera`, 'Explore the full Opera Scorecard', { color: marketColor });
+  const seeAllCard = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="background:#1a1a24;border-radius:16px;border:1px solid rgba(167,139,250,0.18);">${seeAll}</table>`;
+  return sectionWrap(sectionHeading('Opera Openings', null, { href: `${SITE}/opera` }), cards + seeAllCard);
 }
 
 // SECTION: Trending This Week — show pages with the biggest WoW page-view
@@ -1863,7 +1820,7 @@ function mostReadSection(climberList) {
   const rows = items.map((it, i, arr) => {
     const border = i < arr.length - 1 ? 'border-bottom:1px solid rgba(255,255,255,0.05);' : '';
     return `<tr>
-    <td valign="middle" width="64" style="padding:7px 10px 7px 0;${border}">${thumb(it.show, 48)}</td>
+    <td valign="middle" width="68" style="padding:7px 10px 7px 0;${border}">${thumb(it.show, 56)}</td>
     <td valign="middle" style="padding:7px 0;${border}">
       <a href="${SITE}/show/${it.slug}" style="text-decoration:none;display:block;">
         <div style="font-size:14px;font-weight:700;color:#fff;line-height:1.3;">${it.title} ${marketPill(it.category)}</div>
@@ -1871,7 +1828,7 @@ function mostReadSection(climberList) {
       </a>
     </td>
     <td valign="middle" width="56" align="right" style="padding:7px 8px 7px 4px;${border}">
-      ${it.score != null ? smallBadge(it.score, 44, it.category) : `<div style="box-sizing:border-box;display:inline-block;width:44px;height:44px;border-radius:8px;background:#2a2a38;color:#6b7280;font-size:13px;font-weight:700;line-height:44px;text-align:center;border:1px solid rgba(255,255,255,0.1);">—</div>`}
+      ${it.score != null ? smallBadge(it.score, 48, it.category) : `<div style="box-sizing:border-box;display:inline-block;width:48px;height:48px;border-radius:8px;background:#2a2a38;color:#6b7280;font-size:14px;font-weight:700;line-height:48px;text-align:center;border:1px solid rgba(255,255,255,0.1);">—</div>`}
     </td>
   </tr>`;
   }).join('');

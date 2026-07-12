@@ -48,6 +48,9 @@ interface BrowseListClientProps {
   /** Optional per-show section labels computed server-side. Shows with the same
    *  label are grouped under an H2 heading. Only displayed when using default sort. */
   sectionLabels?: string[];
+  /** Upcoming-shows pages: relabel the opening-date sorts to "Soonest"/"Latest"
+   *  since every show is in the future — "Oldest"/"Newest" reads as past tense. */
+  upcomingContext?: boolean;
 }
 
 
@@ -73,7 +76,13 @@ export default function BrowseListClient({
   showScoreToggle,
   subtitle,
   sectionLabels,
+  upcomingContext,
 }: BrowseListClientProps) {
+  // On upcoming pages, opening-date sorts read as future-facing: "Soonest"
+  // (opens first) / "Latest" (opens last), not "Oldest"/"Newest".
+  const sortLabels: Record<SortOption, string> = upcomingContext
+    ? { ...SORT_LABELS, oldest: 'Soonest', newest: 'Latest' }
+    : SORT_LABELS;
   const [scoreMode, setScoreMode] = useState<ScoreMode>('critics');
   const [sort, setSort] = useState<SortOption>(
     defaultSort === 'custom' ? 'custom' :
@@ -169,7 +178,7 @@ export default function BrowseListClient({
             {availableSorts.length > 1 ? (
               <ToggleBar
                 label="Sort:"
-                options={availableSorts.map(s => ({ value: s, label: SORT_LABELS[s] }))}
+                options={availableSorts.map(s => ({ value: s, label: sortLabels[s] }))}
                 value={sort}
                 onChange={setSort}
                 ariaLabel="Sort shows"
