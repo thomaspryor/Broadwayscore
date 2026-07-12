@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-07-12T01:49:28.937Z",
+  "runDate": "2026-07-12T02:16:57.774Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,38 +11,38 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 70,
-    "failed": 552,
+    "processed": 71,
+    "failed": 578,
     "skipped": 0,
-    "successRate": "11.3%"
+    "successRate": "10.9%"
   },
   "tierBreakdown": {
     "playwright": 52,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 4,
     "directCookies": 9,
     "scrapingbee": 4,
-    "brightdata": 1,
-    "archiveToday": 26,
+    "brightdata": 2,
+    "archiveToday": 28,
     "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 0,
+    "tier1Attempts": 1,
     "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 0,
+    "tier2Attempts": 1,
+    "tier2Success": 1,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
+    "tier4Attempts": 1,
     "tier4Success": 0,
-    "totalFailed": 77,
-    "scrapingBeePageCredits": 0,
+    "totalFailed": 78,
+    "scrapingBeePageCredits": 10,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -120,7 +120,8 @@
     "a-little-night-music-2009/theater-mirror--mike-hoban.json",
     "a-delicate-balance-1996/variety--jeremy-gerard.json",
     "don-quixote-off-broadway-2026/stageandcinema--unknown.json",
-    "giant-the-play-off-west-end-2026/london-box-office--stuart-king.json"
+    "giant-the-play-off-west-end-2026/london-box-office--stuart-king.json",
+    "a-walk-on-the-moon-off-broadway-2026/talkinbroadway--marc-miller.json"
   ],
   "failed": [
     "iceboy-regional-2026/chicago-sun-times--mike-davis-wbez.json",
@@ -598,6 +599,31 @@
     "the-magic-show-1974/thewrap--william-bibbiani.json",
     "the-magic-show-1974/ign--ines-flint.json",
     "kings-2-off-west-end-2026/london-box-office--stuart-king.json",
+    "dukes-off-broadway-2026/theatermania--linda-buchwald.json",
+    "dukes-off-broadway-2026/theatermania--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/guardian--mark-fisher.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/loureviews--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/all-that-dazzles-uk--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/londontheatre1--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/west-end-best-friend--unknown.json",
+    "a-walk-on-the-moon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "a-walk-on-the-moon-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "a-walk-on-the-moon-off-broadway-2026/talkinbroadway--marc-miller.json",
+    "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+    "birthright-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "birthright-off-broadway-2026/pages-on-stages--unknown.json",
+    "dukes-off-broadway-2026/theatermania--linda-buchwald.json",
+    "dukes-off-broadway-2026/theatermania--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/guardian--mark-fisher.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/loureviews--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/all-that-dazzles-uk--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/londontheatre1--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/west-end-best-friend--unknown.json",
+    "a-walk-on-the-moon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "a-walk-on-the-moon-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+    "birthright-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "birthright-off-broadway-2026/pages-on-stages--unknown.json",
     "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
     "matilda-the-musical-west-end-2021/whatsonstage--meriel-patrick.json",
     "tammy-faye-2024/stageandcinema--mike-mineo.json",
@@ -674,7 +700,8 @@
     "the-little-mermaid-2008/nypost--clive-barnes.json",
     "is-he-dead-2007/nypost--clive-barnes.json",
     "inherit-the-wind-2007/nypost--clive-barnes.json",
-    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json"
+    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+    "360-allstars-off-west-end-2026/thestage--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -734,7 +761,9 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/a-delicate-balance-1996/variety--jeremy-gerard.json",
-      "a-delicate-balance-1996/variety--jeremy-gerard.json"
+      "a-delicate-balance-1996/variety--jeremy-gerard.json",
+      "data/review-texts/birthright-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+      "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json"
     ],
     "directCookies": [
       "jesus-christ-superstar-west-end-2026/times-uk--ann-treneman.json",
@@ -754,7 +783,8 @@
       "oh-mary-2024/independent--unknown.json"
     ],
     "brightdata": [
-      "the-maids-off-broadway-2026/thewrap--unknown.json"
+      "the-maids-off-broadway-2026/thewrap--unknown.json",
+      "a-walk-on-the-moon-off-broadway-2026/talkinbroadway--marc-miller.json"
     ],
     "archiveToday": [
       "data/review-texts/the-misanthrope-west-end-2026/thestage--dave-fargnoli.json",
@@ -782,7 +812,9 @@
       "data/review-texts/les-liaisons-dangereuses-west-end-2026/evening-chronicle--unknown.json",
       "data/review-texts/romeo-and-juliet-west-end-2026/cambridge--unknown.json",
       "data/review-texts/romeo-and-juliet-west-end-2026/click-liverpool--unknown.json",
-      "data/review-texts/the-magic-show-1974/hollywood-reporter--david-rooney.json"
+      "data/review-texts/the-magic-show-1974/hollywood-reporter--david-rooney.json",
+      "data/review-texts/a-walk-on-the-moon-off-broadway-2026/talkinbroadway--marc-miller.json",
+      "data/review-texts/360-allstars-off-west-end-2026/thestage--unknown.json"
     ],
     "archive": [
       "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
