@@ -72,7 +72,10 @@ async function main() {
   fs.writeFileSync(FIXTURE, JSON.stringify(fixture, null, 2) + '\n');
 
   console.log(JSON.stringify(summary, null, 2));
-  const pass = (summary.sizeAgreement.pct ?? 100) >= 80 && absoluteViolations.length === 0;
+  const pass = (summary.sizeAgreement.pct ?? 100) >= 80
+    && (summary.eligibilityAgreement.pct ?? 100) >= 90
+    && absoluteViolations.length === 0
+    && failed.length === 0;
   console.error(pass ? '[calibrate] PASS' : '[calibrate] FAIL — iterate the prompt (buildTriagePrompt), not the golden labels');
   process.exit(pass ? 0 : 1);
 }

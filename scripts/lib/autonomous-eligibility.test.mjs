@@ -94,13 +94,25 @@ test('self-modification is refused', () => {
 test('tests/, docs/, memory/ and enumerated tooling files are allowed', () => {
   for (const f of [
     'tests/unit/date-utils.test.mjs',
-    'tests/fixtures/triage-calibration.json',
+    'tests/fixtures/some-other-fixture.json',
     'docs/anything.md',
     'memory/some-topic.md',
     './memory/some-topic.md', // normalized
     'scripts/bsc-next.js',
   ]) {
     assert.equal(isPathAllowed(f), true, `${f} must be allowed`);
+  }
+});
+
+test('traversal, backslashes, and the calibration corpus are refused', () => {
+  for (const f of [
+    'tests/../src/lib/scoring.ts',
+    'docs/../scripts/lib/scraper.js',
+    'memory/../.github/workflows/test.yml',
+    'tests\\..\\src\\lib\\scoring.ts',
+    'tests/fixtures/triage-calibration.json', // loop must not grade its own homework
+  ]) {
+    assert.equal(isPathAllowed(f), false, `${f} must be refused`);
   }
 });
 

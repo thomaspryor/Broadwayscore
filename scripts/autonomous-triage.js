@@ -129,8 +129,10 @@ async function main() {
     try {
       card = notionBrain(['get', id]);
     } catch (err) {
-      entries.push({ card: { id }, preFilter: { eligible: false, reason: `card fetch failed: ${err.message.slice(0, 120)}` }, decision: 'failed', failed: 'fetch' });
-      console.error(`[triage] ${i + 1}/${ids.length} ${id} FETCH FAILED`);
+      // Transient (Notion hiccup) — skip WITHOUT stamping Auto so the card is
+      // re-triaged tomorrow, never permanently stranded by one bad fetch.
+      entries.push({ card: { id }, preFilter: { eligible: false, reason: `card fetch failed: ${err.message.slice(0, 120)}` }, decision: 'skip', transient: true });
+      console.error(`[triage] ${i + 1}/${ids.length} ${id} FETCH FAILED (skip, no stamp)`);
       continue;
     }
     // Cards the loop already processed (Auto set) are not re-triaged.
@@ -182,6 +184,14 @@ async function main() {
         : null;
       if (!auto || !e.card.id) continue;
       try {
+        // Freshness guard (poor man's compare-and-set): a human or parallel
+        // session may have moved the card between triage and this stamp —
+        // re-read and only stamp cards still untriaged and Not started.
+        const fresh = notionBrain(['get', e.card.id]);
+        if (fresh.auto || fresh.status !== 'Not started') {
+          console.error(`[triage] skip stamp on ${e.card.name}: state moved underneath us (status=${fresh.status}, auto=${fresh.auto || 'none'})`);
+          continue;
+        }
         execFileSync('node', [path.join(__dirname, 'notion-brain.js'), 'update', e.card.id, '--auto', auto], {
           cwd: REPO, stdio: ['ignore', 'ignore', 'inherit'], env: process.env,
         });

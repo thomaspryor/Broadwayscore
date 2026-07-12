@@ -20,14 +20,14 @@
         "why": "git hooks + lint infra outside Tier-1 paths"
       },
       "recorded": {
-        "at": "2026-07-12T21:49:31.197Z",
+        "at": "2026-07-12T22:11:15.957Z",
         "preFilterEligible": true,
         "preFilterReason": null,
         "decision": "skip",
-        "size": "M",
+        "size": "L",
         "eligible": false,
         "failed": null,
-        "reason": "Extracting CI lints into a shared script requires editing workflows/.git/hooks and generic scripts/ files outside the Tier-1 allowed path set."
+        "reason": "This requires editing CI workflow files (test.yml) and .git/hooks configuration, both explicitly outside Tier-1 scope and touching infra the loop cannot modify."
       }
     },
     {
@@ -48,7 +48,7 @@
         "why": "deny-tag email"
       },
       "recorded": {
-        "at": "2026-07-12T21:49:31.199Z",
+        "at": "2026-07-12T22:11:15.958Z",
         "preFilterEligible": false,
         "preFilterReason": "deny-tag \"email\"",
         "decision": "skip",
@@ -76,14 +76,14 @@
         "why": "newsletter/data pipeline (Tier 2 territory)"
       },
       "recorded": {
-        "at": "2026-07-12T21:49:40.085Z",
+        "at": "2026-07-12T22:11:28.199Z",
         "preFilterEligible": true,
         "preFilterReason": null,
         "decision": "skip",
         "size": "M",
         "eligible": false,
         "failed": null,
-        "reason": "Fix requires editing src/lib/cast-changes-filters.ts and scripts/lib/cast-changes-filters.js plus scripts/newsletter/generate.mjs, none of which are Tier-1 editable paths."
+        "reason": "Fix requires editing src/lib/cast-changes-filters.ts and scripts/lib/cast-changes-filters.js plus data repair, all outside Tier-1 paths."
       }
     },
     {
@@ -104,7 +104,7 @@
         "why": "deny-tag scoring"
       },
       "recorded": {
-        "at": "2026-07-12T21:49:40.085Z",
+        "at": "2026-07-12T22:11:28.200Z",
         "preFilterEligible": false,
         "preFilterReason": "deny-tag \"scoring\"",
         "decision": "skip",
@@ -130,7 +130,7 @@
         "why": "human marketing action (Reddit post)"
       },
       "recorded": {
-        "at": "2026-07-12T21:49:40.085Z",
+        "at": "2026-07-12T22:11:28.200Z",
         "preFilterEligible": false,
         "preFilterReason": "category \"Marketing\" is human territory",
         "decision": "skip",
@@ -159,7 +159,7 @@
         "why": "deny-tag scoring"
       },
       "recorded": {
-        "at": "2026-07-12T21:49:40.085Z",
+        "at": "2026-07-12T22:11:28.200Z",
         "preFilterEligible": false,
         "preFilterReason": "deny-tag \"scoring\"",
         "decision": "skip",
@@ -187,14 +187,14 @@
         "why": "review recovery = data repo (Tier 2)"
       },
       "recorded": {
-        "at": "2026-07-12T21:49:44.165Z",
+        "at": "2026-07-12T22:11:33.571Z",
         "preFilterEligible": true,
         "preFilterReason": null,
         "decision": "skip",
         "size": "M",
         "eligible": false,
         "failed": null,
-        "reason": "This requires pushing commits to data/review-texts, triggering CI scoring/rebuild workflows, and editing data/ outputs, all outside Tier-1 scope."
+        "reason": "Requires pushing to external data repo, triggering CI scoring/rebuild workflows, and touching data/review-texts — all outside Tier-1 paths and needing network/infra access this loop cannot use."
       }
     },
     {
@@ -214,14 +214,14 @@
         "why": "data contamination fix (Tier 2)"
       },
       "recorded": {
-        "at": "2026-07-12T21:49:58.151Z",
+        "at": "2026-07-12T22:11:50.080Z",
         "preFilterEligible": true,
         "preFilterReason": null,
         "decision": "skip",
         "size": "L",
         "eligible": false,
         "failed": null,
-        "reason": "Fixing this requires editing core ingestion/scoring/audit infra (ingest-review-from-url.js, poll-loureviews.js, validate-data.js, scoring) and running data remediation across 159 shows, all outside Tier-1 paths and beyond a single unattended session."
+        "reason": "Fix touches ingestion/scoring/validate-data src infra and a data remediation script outside Tier-1 paths, and involves cross-subsystem override-semantics changes plus a one-shot data fix needing product judgment."
       }
     },
     {
@@ -241,14 +241,14 @@
         "why": "src/ UI (Tier 3)"
       },
       "recorded": {
-        "at": "2026-07-12T21:50:00.152Z",
+        "at": "2026-07-12T22:11:52.280Z",
         "preFilterEligible": true,
         "preFilterReason": null,
         "decision": "skip",
         "size": "S",
         "eligible": false,
         "failed": null,
-        "reason": "Fixing a button handler in the beat-the-critics quiz requires editing src/ UI code, which is out of Tier-1 scope even though it's a small, well-scoped fix."
+        "reason": "This is a src/ UI button/state-handling fix on a live product surface, matching the rage-click anchor pattern but out of Tier-1 scope for this loop."
       }
     },
     {
@@ -268,14 +268,14 @@
         "why": "src/ UI (Tier 3)"
       },
       "recorded": {
-        "at": "2026-07-12T21:50:05.394Z",
+        "at": "2026-07-12T22:11:54.433Z",
         "preFilterEligible": true,
         "preFilterReason": null,
         "decision": "skip",
         "size": "S",
         "eligible": false,
         "failed": null,
-        "reason": "Fixing button responsiveness/disabled-state requires editing src/ UI components, which is outside Tier-1 paths, though the fix itself is a small one-session change."
+        "reason": "UI fix in src/beat-the-critics components requiring product/UX judgment and PostHog verification, outside Tier-1 edit scope and unverifiable by a runnable command."
       }
     },
     {
@@ -295,14 +295,14 @@
         "why": "conversion redesign needs product judgment + A/B — still open after multiple sessions (relabeled during calibration 2026-07-12)"
       },
       "recorded": {
-        "at": "2026-07-12T21:50:08.540Z",
+        "at": "2026-07-12T22:11:59.788Z",
         "preFilterEligible": true,
         "preFilterReason": null,
         "decision": "skip",
         "size": "L",
         "eligible": false,
         "failed": null,
-        "reason": "Requires product/design judgment, A/B testing, and src/ UI changes with human-verified outcomes over weeks, outside Tier-1 unattended scope."
+        "reason": "Requires product/design decisions (A/B testing, copy, timing) and touches src/ UI code outside Tier-1 paths, so it cannot be done unattended."
       }
     },
     {
@@ -322,14 +322,14 @@
         "why": "src/ UI (Tier 3)"
       },
       "recorded": {
-        "at": "2026-07-12T21:50:10.636Z",
+        "at": "2026-07-12T22:12:01.971Z",
         "preFilterEligible": true,
         "preFilterReason": null,
         "decision": "skip",
         "size": "S",
         "eligible": false,
         "failed": null,
-        "reason": "This is a UI button fix in src/ (rage-click anchor case), which is a one-component src change out of scope for Tier-1 paths."
+        "reason": "This is a UI button/state fix in src/ (Beat-the-Critics component), which Tier-1 cannot touch and requires a PostHog-verified acceptance criterion, not a runnable command."
       }
     },
     {
@@ -349,14 +349,14 @@
         "why": "src/ UI (Tier 3)"
       },
       "recorded": {
-        "at": "2026-07-12T21:50:14.887Z",
+        "at": "2026-07-12T22:12:03.670Z",
         "preFilterEligible": true,
         "preFilterReason": null,
         "decision": "skip",
         "size": "S",
         "eligible": false,
         "failed": null,
-        "reason": "Fixing the Lock In button component/handler/CSS requires editing src/ which is outside Tier-1 paths for this loop."
+        "reason": "Fixing a rage-click button requires editing src/ UI components, which is outside Tier-1 paths for this loop."
       }
     },
     {
@@ -376,14 +376,14 @@
         "why": "src/ UI (Tier 3)"
       },
       "recorded": {
-        "at": "2026-07-12T21:50:18.775Z",
+        "at": "2026-07-12T22:12:05.886Z",
         "preFilterEligible": true,
         "preFilterReason": null,
         "decision": "skip",
         "size": "S",
         "eligible": false,
         "failed": null,
-        "reason": "This is a one-component UI/button-handler fix in src/ (quiz frontend), which is off-limits to Tier-1 paths even though the fix itself is small and well-specified."
+        "reason": "This is a UI button/handler fix in src/ (out of Tier-1 scope) even though it matches the rage-click anchor for a small, well-specified fix."
       }
     },
     {
@@ -403,14 +403,14 @@
         "why": "conversion redesign needs product judgment + A/B — still open after multiple sessions (relabeled during calibration 2026-07-12)"
       },
       "recorded": {
-        "at": "2026-07-12T21:50:20.929Z",
+        "at": "2026-07-12T22:12:07.923Z",
         "preFilterEligible": true,
         "preFilterReason": null,
         "decision": "skip",
         "size": "L",
         "eligible": false,
         "failed": null,
-        "reason": "Requires product/UX judgment, A/B testing, and src/ modal changes with human-facing business decisions, none of which the loop can do unattended in Tier-1 paths."
+        "reason": "Requires product/business judgment, A/B testing, and src/ UI changes with outcome measured by live user metrics, none of which the Tier-1 loop can do unattended."
       }
     },
     {
@@ -427,7 +427,7 @@
         "why": "human action (send work to a person)"
       },
       "recorded": {
-        "at": "2026-07-12T21:50:20.929Z",
+        "at": "2026-07-12T22:12:07.923Z",
         "preFilterEligible": false,
         "preFilterReason": "category \"Marketing\" is human territory",
         "decision": "skip",
@@ -451,7 +451,7 @@
         "why": "marketing content, human voice"
       },
       "recorded": {
-        "at": "2026-07-12T21:50:20.929Z",
+        "at": "2026-07-12T22:12:07.923Z",
         "preFilterEligible": false,
         "preFilterReason": "category \"Marketing\" is human territory",
         "decision": "skip",
@@ -475,7 +475,7 @@
         "why": "human follow-up"
       },
       "recorded": {
-        "at": "2026-07-12T21:50:20.929Z",
+        "at": "2026-07-12T22:12:07.923Z",
         "preFilterEligible": false,
         "preFilterReason": "category \"Partnerships\" is human territory",
         "decision": "skip",
@@ -499,7 +499,7 @@
         "why": "human action (send)"
       },
       "recorded": {
-        "at": "2026-07-12T21:50:20.930Z",
+        "at": "2026-07-12T22:12:07.923Z",
         "preFilterEligible": false,
         "preFilterReason": "category \"Partnerships\" is human territory",
         "decision": "skip",
@@ -523,7 +523,7 @@
         "why": "human reply"
       },
       "recorded": {
-        "at": "2026-07-12T21:50:20.930Z",
+        "at": "2026-07-12T22:12:07.923Z",
         "preFilterEligible": false,
         "preFilterReason": "category \"Partnerships\" is human territory",
         "decision": "skip",
@@ -547,7 +547,7 @@
         "why": "human recruiting"
       },
       "recorded": {
-        "at": "2026-07-12T21:50:20.930Z",
+        "at": "2026-07-12T22:12:07.923Z",
         "preFilterEligible": false,
         "preFilterReason": "category \"Marketing\" is human territory",
         "decision": "skip",
@@ -571,7 +571,7 @@
         "why": "human email action"
       },
       "recorded": {
-        "at": "2026-07-12T21:50:20.931Z",
+        "at": "2026-07-12T22:12:07.923Z",
         "preFilterEligible": false,
         "preFilterReason": "title is a human action (\"Email volunteers\")",
         "decision": "skip",
@@ -597,7 +597,7 @@
         "why": "deny-tag ios-app"
       },
       "recorded": {
-        "at": "2026-07-12T21:50:20.931Z",
+        "at": "2026-07-12T22:12:07.923Z",
         "preFilterEligible": false,
         "preFilterReason": "title is a human action (\"Reconnect App Store Connect\")",
         "decision": "skip",
@@ -623,7 +623,7 @@
         "why": "deny-tag commercial"
       },
       "recorded": {
-        "at": "2026-07-12T21:50:20.931Z",
+        "at": "2026-07-12T22:12:07.923Z",
         "preFilterEligible": false,
         "preFilterReason": "deny-tag \"commercial\"",
         "decision": "skip",
@@ -651,14 +651,14 @@
         "why": "data re-gather (Tier 2)"
       },
       "recorded": {
-        "at": "2026-07-12T21:50:24.595Z",
+        "at": "2026-07-12T22:12:17.453Z",
         "preFilterEligible": true,
         "preFilterReason": null,
         "decision": "skip",
         "size": "M",
         "eligible": false,
         "failed": null,
-        "reason": "Deleting review-text data files and running the scraping poller touches data/ and scraping infra, which is outside the Tier-1 editable paths."
+        "reason": "Deleting/re-gathering scraped review data and running the poller touches data/ and scraping infra outside Tier-1 paths, so it can't be done unattended by this loop."
       }
     },
     {
@@ -678,14 +678,14 @@
         "why": "review-data sweep (Tier 2)"
       },
       "recorded": {
-        "at": "2026-07-12T21:50:31.993Z",
+        "at": "2026-07-12T22:12:24.785Z",
         "preFilterEligible": true,
         "preFilterReason": null,
         "decision": "skip",
         "size": "M",
         "eligible": false,
         "failed": null,
-        "reason": "Requires editing data/review-texts JSON files and scripts/flag-wrong-production-by-date.js, both outside Tier-1 allowed paths, and touches scoring/audit infra."
+        "reason": "Requires editing scoring infra (flag-wrong-production-by-date.js) and modifying review data files with live-page verification, both outside Tier-1 paths and requiring human judgment."
       }
     },
     {
@@ -706,7 +706,7 @@
         "why": "deny-tag scoring"
       },
       "recorded": {
-        "at": "2026-07-12T21:50:31.993Z",
+        "at": "2026-07-12T22:12:24.785Z",
         "preFilterEligible": false,
         "preFilterReason": "deny-tag \"scoring\"",
         "decision": "skip",
@@ -733,14 +733,14 @@
         "why": "reviews.json data recovery (Tier 2)"
       },
       "recorded": {
-        "at": "2026-07-12T21:50:38.680Z",
+        "at": "2026-07-12T22:12:30.718Z",
         "preFilterEligible": true,
         "preFilterReason": null,
         "decision": "skip",
         "size": "M",
         "eligible": false,
         "failed": null,
-        "reason": "Fixing the rebuild-all-reviews.js dedup tiebreak logic and backfilling reviews.json touches src/ and data/, which are out of Tier-1 scope even though the fix itself is a well-scoped few-file change."
+        "reason": "Fixing rebuild dedup tiebreak logic and backfilling reviews.json requires editing src/ scoring/rebuild scripts and data/ files outside Tier-1 scope."
       }
     },
     {
@@ -763,14 +763,14 @@
         "why": "shows.json data add (Tier 2)"
       },
       "recorded": {
-        "at": "2026-07-12T21:50:40.602Z",
+        "at": "2026-07-12T22:12:45.599Z",
         "preFilterEligible": true,
         "preFilterReason": null,
         "decision": "skip",
         "size": "S",
         "eligible": false,
         "failed": null,
-        "reason": "Adding a show requires editing shows.json under data/ and a product decision to confirm the production, which is out of Tier-1 scope for this loop."
+        "reason": "Adding a new show requires editing data/shows.json and manual Playbill confirmation, which is outside Tier-1 scope and needs human judgment."
       }
     },
     {
@@ -792,14 +792,14 @@
         "why": "src/ UI (Tier 3)"
       },
       "recorded": {
-        "at": "2026-07-12T21:50:46.064Z",
+        "at": "2026-07-12T22:12:48.303Z",
         "preFilterEligible": true,
         "preFilterReason": null,
         "decision": "skip",
         "size": "S",
         "eligible": false,
         "failed": null,
-        "reason": "Fixing a rage-click element requires editing src/ show-page components and reviewing PostHog recordings, both outside Tier-1 paths and unattended capability."
+        "reason": "Fixing a rage-click element requires editing src/ show-page components and PostHog investigation, which is outside Tier-1 scope for this loop."
       }
     },
     {
@@ -820,14 +820,14 @@
         "why": "tests/** only, pure function, runnable check"
       },
       "recorded": {
-        "at": "2026-07-12T21:50:49.963Z",
+        "at": "2026-07-12T22:12:50.791Z",
         "preFilterEligible": true,
         "preFilterReason": null,
         "decision": "attempt",
         "size": "S",
         "eligible": true,
         "failed": null,
-        "reason": "Adding a single new unit-test file under tests/** for a pure function is mechanical, well-specified, and within Tier-1 scope."
+        "reason": "Adding a single pure-function unit test file under tests/ is mechanical and well-specified, fully within Tier-1 scope."
       }
     },
     {
@@ -847,14 +847,14 @@
         "why": "docs/** only"
       },
       "recorded": {
-        "at": "2026-07-12T21:50:52.171Z",
+        "at": "2026-07-12T22:12:52.345Z",
         "preFilterEligible": true,
         "preFilterReason": null,
         "decision": "attempt",
         "size": "S",
         "eligible": true,
         "failed": null,
-        "reason": "Writing a documentation file describing an existing JSON format is a docs-only, mechanical task fully within Tier-1 scope."
+        "reason": "Writing a new docs file describing an existing JSON schema is a mechanical, single-file documentation task within Tier-1 docs/ path."
       }
     },
     {
@@ -875,23 +875,23 @@
         "why": "enumerated tooling file scripts/bsc-next.js"
       },
       "recorded": {
-        "at": "2026-07-12T21:50:53.838Z",
+        "at": "2026-07-12T22:12:54.153Z",
         "preFilterEligible": true,
         "preFilterReason": null,
         "decision": "attempt",
         "size": "S",
         "eligible": true,
         "failed": null,
-        "reason": "Small mechanical change to scripts/bsc-next.js --list output using existing priorityRank data, fully within Tier-1 editable paths."
+        "reason": "Small mechanical change to one script's --list branch plus test update, fully within Tier-1 allowed paths."
       }
     }
   ],
   "lastCalibration": {
-    "at": "2026-07-12T21:50:53.838Z",
+    "at": "2026-07-12T22:12:54.153Z",
     "sizeAgreement": {
-      "agree": 18,
+      "agree": 17,
       "of": 19,
-      "pct": 95
+      "pct": 89
     },
     "eligibilityAgreement": {
       "agree": 33,
@@ -905,6 +905,7 @@
     "triageFailures": [],
     "disagreements": {
       "size": [
+        "Fix CI reds systematically: local pre-push mirror of write-routing lints: golden M vs recorded L",
         "Fix CI red on main: cross-market + headline-critic data contamination: golden M vs recorded L"
       ],
       "eligibility": []

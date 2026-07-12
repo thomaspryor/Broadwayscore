@@ -24,7 +24,7 @@
     "checkableDone": {
       "type": "string",
       "minLength": 10,
-      "description": "A concrete runnable command that proves the card is done (e.g. 'node --test scripts/lib/foo.test.mjs'). 'It works' is not acceptable."
+      "description": "A concrete runnable command that proves the card is done. For eligible cards this MUST match one of the safe forms in SAFE_CHECK_FORMS (autonomous-triage-core.js) — node --test on tests//scripts/ *.test.mjs files, npx tsc --noEmit, npx next lint, or test -f on a docs//memory//tests/ path — because a later sprint EXECUTES this string and card text is untrusted (prompt injection → command execution otherwise). 'It works' is not acceptable."
     },
     "splitProposal": {
       "type": "array",

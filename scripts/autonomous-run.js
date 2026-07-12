@@ -54,7 +54,10 @@ function parseArgs(argv) {
 
 function branchNameFor(card) {
   const slug = String(card.name || card.id).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40);
-  return `auto/${slug}`;
+  // Card-id suffix keeps similarly-titled cards (e.g. recurring "Missing
+  // show:" cards) from colliding onto one branch.
+  const idFrag = String(card.id || '').replace(/-/g, '').slice(-6) || 'noid';
+  return `auto/${slug}-${idFrag}`;
 }
 
 // Simulate one card's night. Every state hop goes through the real state
@@ -68,6 +71,10 @@ function planCard(item, remainingUSD, opts) {
   if (!env) {
     return { item, admitted: false, steps: [`refused: size "${size}" has no budget envelope (L cards are split, not attempted)`], state: 'queued' };
   }
+  // Worst case (both attempts) is RESERVED at admission, not just checked —
+  // otherwise N admitted cards can collectively overshoot the night cap when
+  // several need their retry. The real executor refunds the unused attempt-2
+  // reservation when attempt 1 lands.
   const worstCase = env.estUSD + env.estAttempt2USD;
   if (worstCase > remainingUSD) {
     return {
@@ -85,14 +92,14 @@ function planCard(item, remainingUSD, opts) {
     const r = transition(state, 'run.fail', { reason: 'needed permission' });
     state = r.next;
     steps.push(`implementer hit a deny/permission block → run.fail("${r.reason}") → Auto=failed — run CONTINUES with next card`);
-    return { item, admitted: true, state, steps, spentUSD: env.estUSD };
+    return { item, admitted: true, state, steps, spentUSD: env.estUSD, reservedUSD: worstCase };
   }
 
   steps.push(`verify: tsc + colocated tests + card's checkableDone (${item.checkableDone || 'n/a'})`);
   steps.push(`diff gate: isDiffAllowed(git diff --name-only) — card text is untrusted, gate runs regardless`);
   steps.push(`push branch + Auto → needs-approval → morning email item`);
   state = transition(state, 'run.pass').next;
-  return { item, admitted: true, state, steps, spentUSD: env.estUSD };
+  return { item, admitted: true, state, steps, spentUSD: env.estUSD, reservedUSD: worstCase };
 }
 
 function main() {
@@ -134,16 +141,16 @@ function main() {
       continue;
     }
     const r = planCard(item, remaining, { simulateOutcome: item.synthetic ? 'permission-prompt' : 'pass' });
-    if (r.admitted) { remaining -= r.spentUSD; taken++; }
+    if (r.admitted) { remaining -= r.reservedUSD; taken++; }
     results.push(r);
   }
 
   for (const [i, r] of results.entries()) {
     console.log(`${i + 1}. ${r.item.name}  [size ${r.item.size || '?'} · ${r.item.priority || '—'}]`);
     for (const s of r.steps) console.log(`   - ${s}`);
-    console.log(`   ⇒ end state: ${r.state}${r.admitted ? ` · est spend $${r.spentUSD.toFixed(2)}` : ''}\n`);
+    console.log(`   ⇒ end state: ${r.state}${r.admitted ? ` · est spend $${r.spentUSD.toFixed(2)} (reserved $${r.reservedUSD.toFixed(2)} incl. retry)` : ''}\n`);
   }
-  console.log(`would attempt ${taken} card(s) · est spend $${(nightUSD - 0.5 - remaining).toFixed(2)} of $${(nightUSD - 0.5).toFixed(2)} available · $${remaining.toFixed(2)} unspent`);
+  console.log(`would attempt ${taken} card(s) · reserved $${(nightUSD - 0.5 - remaining).toFixed(2)} of $${(nightUSD - 0.5).toFixed(2)} available (worst-case incl. retries) · $${remaining.toFixed(2)} unreserved`);
   console.log(`writes performed: NONE (plan-only)`);
 }
 

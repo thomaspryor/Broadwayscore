@@ -22,6 +22,33 @@ const fs = require('fs');
 const path = require('path');
 const { isCardEligible, TIER1_ALLOW_PREFIXES, TIER1_ALLOW_FILES } = require('./autonomous-eligibility.js');
 
+// checkableDone is LLM-authored text that a later sprint EXECUTES as the
+// card's verification command. Card notes are untrusted and flow into the
+// triage prompt, so this is a prompt-injection → command-execution path
+// unless the command shape is locked down at validation time. Only these
+// forms are accepted; every file argument must be a relative, traversal-free
+// path under tests/, scripts/, or docs//memory/ (for test -f).
+const SAFE_CHECK_FORMS = [
+  { re: /^node --test( --test-timeout \d+)?((?: [\w@./-]+\.test\.(?:mjs|js|ts))+)$/, pathsGroup: 2, pathPrefix: ['tests/', 'scripts/'] },
+  { re: /^npx tsc --noEmit$/ },
+  { re: /^npx next lint$/ },
+  { re: /^test -f((?: [\w@./-]+)+)$/, pathsGroup: 1, pathPrefix: ['docs/', 'memory/', 'tests/'] },
+];
+
+function isSafeCheckCommand(cmd) {
+  const s = String(cmd || '').trim();
+  for (const form of SAFE_CHECK_FORMS) {
+    const m = form.re.exec(s);
+    if (!m) continue;
+    if (!form.pathsGroup) return true;
+    const args = m[form.pathsGroup].trim().split(/\s+/);
+    if (args.every(a => !a.split('/').includes('..') && form.pathPrefix.some(p => a.startsWith(p)))) return true;
+  }
+  return false;
+}
+
+const SAFE_CHECK_DESCRIPTION = '`node --test <*.test.mjs files under tests/ or scripts/>`, `npx tsc --noEmit`, `npx next lint`, or `test -f <docs|memory|tests path>`';
+
 const SCHEMA_PATH = path.join(__dirname, 'triage-schema.json');
 const schema = JSON.parse(fs.readFileSync(SCHEMA_PATH, 'utf8'));
 const SIZE_VALUES = schema.properties.size.enum;
@@ -41,7 +68,7 @@ JSON contract:
   "size": "S" | "M" | "L",
   "eligible": boolean,             // can the loop do this UNATTENDED within Tier-1 paths?
   "reason": "one sentence (≥${MIN_REASON} chars) justifying size + eligibility",
-  "checkableDone": "a concrete runnable command that proves completion (≥${MIN_CHECKABLE} chars)",
+  "checkableDone": "the runnable command that proves completion — MUST be exactly one of these forms: ${SAFE_CHECK_DESCRIPTION}. If no such command can prove the work, set eligible to false.",
   "splitProposal": [               // REQUIRED non-empty iff size "L" AND eligible true, else omit
     { "title": "child card title", "notes": "≥${MIN_SPLIT_NOTES} chars with ## Problem, ## Suggested approach, ## Acceptance criteria sections" }
   ]
@@ -66,15 +93,23 @@ ${(card.notes || '(no notes)').slice(0, 6000)}`;
 }
 
 // Tolerant extraction: models occasionally wrap JSON in fences or prefix a
-// sentence despite instructions. Find the first {...} balanced block.
+// sentence despite instructions. Try a direct parse first, then scan for the
+// first balanced {...} block. The scanner is string-aware so braces inside
+// JSON string values ('"reason": "fixes the } case"') don't break balancing.
 function parseTriageResponse(text) {
   const s = String(text || '').trim().replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/, '');
   const start = s.indexOf('{');
   if (start === -1) throw new Error('no JSON object in response');
-  let depth = 0;
+  try { return JSON.parse(s); } catch { /* fall through to scan */ }
+  let depth = 0, inString = false, escaped = false;
   for (let i = start; i < s.length; i++) {
-    if (s[i] === '{') depth++;
-    else if (s[i] === '}' && --depth === 0) {
+    const c = s[i];
+    if (escaped) { escaped = false; continue; }
+    if (c === '\\') { escaped = inString; continue; }
+    if (c === '"') { inString = !inString; continue; }
+    if (inString) continue;
+    if (c === '{') depth++;
+    else if (c === '}' && --depth === 0) {
       return JSON.parse(s.slice(start, i + 1));
     }
   }
@@ -105,6 +140,9 @@ function validateTriageResult(obj) {
   }
   if ('checkableDone' in obj && (typeof obj.checkableDone !== 'string' || obj.checkableDone.length < MIN_CHECKABLE)) {
     errors.push(`checkableDone must be a string of ≥${MIN_CHECKABLE} chars naming a runnable command`);
+  } else if (obj.eligible === true && 'checkableDone' in obj && !isSafeCheckCommand(obj.checkableDone)) {
+    // Only eligible cards' checks ever run, so only they must be safe-form.
+    errors.push(`checkableDone for an eligible card must be one of the allowed forms: ${SAFE_CHECK_DESCRIPTION}`);
   }
   if (obj.size === 'L' && obj.eligible === true && (!Array.isArray(obj.splitProposal) || obj.splitProposal.length === 0)) {
     errors.push('size "L" with eligible true requires a non-empty splitProposal array');
@@ -194,6 +232,8 @@ function orderQueue(entries) {
 
 module.exports = {
   SCHEMA_PATH,
+  SAFE_CHECK_FORMS,
+  isSafeCheckCommand,
   buildTriagePrompt,
   parseTriageResponse,
   validateTriageResult,

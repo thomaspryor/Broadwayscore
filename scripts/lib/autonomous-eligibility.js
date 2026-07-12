@@ -99,6 +99,8 @@ const TIER1_ALLOW_FILES = new Set([
 // colocated drift test fails if scoring-delta.js gains an entry we miss.
 const EXCLUDED_FILES = new Set([
   'scripts/lib/scraper.js',
+  // The loop must never edit the corpus that gates its own triage quality.
+  'tests/fixtures/triage-calibration.json',
   // scoring-delta INCLUSION_FILES
   'scripts/lib/review-guards.js',
   'scripts/rebuild-all-reviews.js',
@@ -132,6 +134,10 @@ function normalizePath(file) {
 function isPathAllowed(file) {
   const f = normalizePath(file);
   if (!f) return false;
+  // Traversal segments defeat prefix matching ("tests/../src/x" starts with
+  // an allowed prefix). git diff output never contains them, but this is the
+  // canonical predicate and future callers may feed constructed paths.
+  if (f.split('/').includes('..') || f.includes('\\')) return false;
   // Exclusions always win.
   if (EXCLUDED_FILES.has(f)) return false;
   if (EXCLUDED_PREFIXES.some(p => f.startsWith(p))) return false;
