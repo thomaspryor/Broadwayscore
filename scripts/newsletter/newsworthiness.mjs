@@ -23,6 +23,10 @@ export const WEIGHTS = {
   OB_OPENING_BASE: 70,                // smaller market but still review news
   OB_OPENING_GOLD_BUMP: 15,
   WE_GOLD_OPENING_BASE: 78,           // Critical Gold West End earns subject line (non-gold WE excluded)
+  WE_OPENING_SECONDARY_BASE: 66,      // In the US edition, a West End opening is SECONDARY news:
+                                      // rank it below every NY opening (OB_OPENING_BASE 70) so the
+                                      // editorial leads with NY shows when they exist (user 2026-07-12).
+                                      // In the WE edition the same opening is PRIMARY (see below).
   OUTLIER_BASE: 70,                   // a critic out of step IS review news
   OUTLIER_LARGE_BUMP: 10,             // ≥20pt delta from consensus
   BIGGEST_MOVER_BASE: 72,             // score moves are the most direct review signal
@@ -116,7 +120,12 @@ export function scoreCandidates(input) {
     const headline = verdict
       ? `${s.title} opens in London to ${verdict}`
       : `${s.title} opens in London`;
-    out.push({ kind: 'we-gold-opening', weight: WEIGHTS.WE_GOLD_OPENING_BASE, headline, show: s, slug: s.slug,
+    // Edition-aware weight: PRIMARY in the West End edition (leads like a
+    // Broadway opening); SECONDARY in the US edition (below NY openings so the
+    // editorial leads with NY shows when they exist — user 2026-07-12).
+    const isWeEdition = (input.edition || 'broadway') === 'west-end';
+    const weWeight = isWeEdition ? WEIGHTS.BW_OPENING_BASE : WEIGHTS.WE_OPENING_SECONDARY_BASE;
+    out.push({ kind: 'we-gold-opening', weight: weWeight, headline, show: s, slug: s.slug,
       verdictTier: tier, verdictPrefix: `${s.title} opens in London to `, openingVenue: 'London' });
   }
 

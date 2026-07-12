@@ -106,6 +106,11 @@ jobs:
 
       - uses: ./.github/actions/setup-node
 
+      # Chromium for the mobile-overflow gate below (renders the email at phone
+      # width to catch a layout that would zoom-out in iOS Gmail).
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
       # Pipeline-health gate: don't generate against stale data. Cron at 11 UTC
       # Saturday assumes Friday-night reviews have been ingested via the daily
       # rebuild cron. If that's stale, fail fast — the draft would otherwise
@@ -162,6 +167,16 @@ jobs:
           NEWSLETTER_OUT_DIR: ${{ github.workspace }}/data/newsletter-drafts
         run: |
           node scripts/newsletter/pre-send-check.mjs "${{ steps.week.outputs.weekStart }}"
+
+      # HARD GATE: fail the draft if the email overflows a phone screen. A long
+      # venue name inside a nowrap meta line once forced the whole email to
+      # ~533px, so iOS Gmail zoomed everything out (2026-07-12). Renders the
+      # generated HTML at 375px and blocks if it can't fit.
+      - name: Mobile overflow gate
+        env:
+          NEWSLETTER_OUT_DIR: ${{ github.workspace }}/data/newsletter-drafts
+        run: |
+          node scripts/newsletter/overflow-check.mjs "${{ steps.week.outputs.weekStart }}"
 
       - name: Regression test (catches silent section drops)
         env:
