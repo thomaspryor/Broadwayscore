@@ -123,6 +123,11 @@ function Inner({
   // Draft carried across sign-in (rating + typed note + date + target review id).
   const [pendingDraft, setPendingDraft] = useState<PendingAction | null>(null);
   const hasExecutedPending = useRef(false);
+  const rateBtnRef = useRef<HTMLButtonElement>(null);
+  // Return focus to the rate button when the editor closes — the inline
+  // (desktop) editor is not a Modal, so nothing else restores focus and it
+  // falls to <body>, stranding keyboard/screen-reader users (audit P2).
+  const refocusRateBtn = () => requestAnimationFrame(() => rateBtnRef.current?.focus());
 
   // ?rate=1 / ?stars=N / ?edit=1 deep-link helpers (kept compatible with /my-shows entry points)
   const [autoRate] = useState(() => searchParams.get('rate') === '1');
@@ -214,11 +219,11 @@ function Inner({
       });
       showSignIn('rating');
     } else {
-      // Open with latest review pre-filled (edit) if rated, else fresh panel seeded
-      // with the ?stars= hint.
-      setEditingReview(latestReview);
+      // Always a FRESH panel (append), seeded with the ?stars= hint — consistent
+      // with the rate button. Editing an existing rating is ?edit=1 / the pencil.
+      setEditingReview(null);
       setPendingDraft(
-        latestReview || autoRateStars == null
+        autoRateStars == null
           ? null
           : { type: 'rating', showId: show.id, rating: autoRateStars, returnUrl: '', timestamp: 0 },
       );
@@ -339,12 +344,14 @@ function Inner({
     setRatePanelOpen(false);
     setEditingReview(null);
     setPendingDraft(null);
+    refocusRateBtn();
   }, []);
 
   const handleCancelRate = useCallback(() => {
     setRatePanelOpen(false);
     setEditingReview(null);
     setPendingDraft(null);
+    refocusRateBtn();
   }, []);
 
   const handleDeleteRating = useCallback(async () => {
@@ -560,6 +567,7 @@ function Inner({
           </button>
           <button
             type="button"
+            ref={rateBtnRef}
             onClick={handleRateIt}
             className="flex flex-col items-center gap-1.5 py-3 px-2 rounded-card border bg-surface-raised border-white/10 text-gray-300 hover:text-white hover:border-white/20 transition-all"
           >
