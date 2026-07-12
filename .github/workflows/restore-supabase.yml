@@ -1,0 +1,40 @@
+name: Restore Supabase Project
+
+# Un-pauses the free-tier Supabase project after a >7-day idle auto-pause (which
+# NXDOMAINs the host and breaks all sign-in / read / write). Manual trigger — run
+# this the moment the UGC Auth Round-trip fails with ENOTFOUND / INACTIVE.
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: restore-supabase
+  cancel-in-progress: false
+
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Restore project
+        run: node scripts/restore-supabase-project.mjs
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Supabase Restore Failed'
+          description: 'Could not un-pause the Supabase project — sign-in stays broken until it is restored from the dashboard.'
+          severity: 'critical'
+          email: 'true'
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
