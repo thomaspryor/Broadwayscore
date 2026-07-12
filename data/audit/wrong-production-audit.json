@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-12T07:02:33.885Z",
+  "timestamp": "2026-07-12T07:31:33.890Z",
   "stats": {
     "totalReviews": 39936,
     "alreadyFlagged": 17549,
-    "dateGuardCatches": 47,
-    "directorMismatch": 894,
+    "dateGuardCatches": 49,
+    "directorMismatch": 914,
     "tvFilmSignals": 1096,
     "londonSignals": 742,
     "offBroadwaySignals": 466,
     "yearMismatch": 85,
-    "noPublishDate": 3816
+    "noPublishDate": 3814
   },
   "findings": [
     {
@@ -10263,15 +10263,240 @@
     },
     {
       "showId": "heathers-the-musical-off-broadway-2025",
+      "file": "amny--matt-windman.json",
+      "score": 89,
+      "publishDate": "2025-07-13",
+      "url": "https://www.amny.com/entertainment/broadway/review-heathers-the-musical-off-broadway-revival/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"andy fickman\" from heathers-the-musical-off-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "heathers-the-musical-off-broadway-2025",
+      "file": "cititour--brian-scott-lipton.json",
+      "score": 78,
+      "publishDate": null,
+      "url": "https://cititour.com/NYC_Broadway/Heathers/1313",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"andy fickman\" from heathers-the-musical-off-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "heathers-the-musical-off-broadway-2025",
+      "file": "culturesauce--thom-geier.json",
+      "score": 78,
+      "publishDate": "July 10, 2025",
+      "url": "https://culturesauce.com/2025/07/10/heathers-musical-off-broadway-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"andy fickman\" from heathers-the-musical-off-west-end-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "heathers-the-musical-off-broadway-2025",
+      "file": "culturesauce--unknown.json",
+      "score": 88,
+      "publishDate": "2025-07-10",
+      "url": "https://culturesauce.com/2025/07/10/heathers-musical-off-broadway-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"andy fickman\" from heathers-the-musical-off-west-end-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "heathers-the-musical-off-broadway-2025",
+      "file": "exeunt-magazine--lane-williamson.json",
+      "score": 66,
+      "publishDate": "2025-07-11",
+      "url": "https://exeuntnyc.com/reviews/review-heathers-the-musical-at-new-world-stages/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"andy fickman\" from heathers-the-musical-off-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "heathers-the-musical-off-broadway-2025",
+      "file": "front-row-center--stanford-friedman.json",
+      "score": 68,
+      "publishDate": "2025-07-10T21:15:52",
+      "url": "https://thefrontrowcenter.com/2025/07/heathers-the-musical/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"andy fickman\" from heathers-the-musical-off-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "heathers-the-musical-off-broadway-2025",
+      "file": "la-voce-di-new-york--jk-clarke.json",
+      "score": 81,
+      "publishDate": "July 11, 2025",
+      "url": "https://lavocedinewyork.com/en/new-york/2025/07/11/everything-old-is-delightfully-new-again-in-heathers-the-musical/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"andy fickman\" from heathers-the-musical-off-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "heathers-the-musical-off-broadway-2025",
+      "file": "mashable--kristy-puchko.json",
+      "score": 90,
+      "publishDate": "2025-07-11",
+      "url": "https://mashable.com/article/heathers-off-broadway-2025-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"andy fickman\" from heathers-the-musical-off-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "heathers-the-musical-off-broadway-2025",
+      "file": "new-york-sun--elysa-gardner.json",
+      "score": 77,
+      "publishDate": "2025-07-11",
+      "url": "https://www.nysun.com/article/emerging-as-a-cult-favorite-heathers-the-musical-gets-a-new-york-revival-marked-by-multiple-winning-performances",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"andy fickman\" from heathers-the-musical-off-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "heathers-the-musical-off-broadway-2025",
+      "file": "northjerseycom--robert-feldberg.json",
+      "score": 75,
+      "publishDate": null,
+      "url": "http://www.northjersey.com/arts-and-entertainment/theater/revisiting-the-dark-side-of-high-school-1.839003",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"andy fickman\" from heathers-the-musical-off-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "heathers-the-musical-off-broadway-2025",
+      "file": "nytg--caroline-cao.json",
+      "score": 73,
+      "publishDate": "July 10th, 2025",
+      "url": "https://www.newyorktheatreguide.com/reviews/heathers-off-broadway-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"andy fickman\" from heathers-the-musical-off-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "heathers-the-musical-off-broadway-2025",
       "file": "nytimes--elisabeth-vincentelli.json",
       "score": 76,
       "publishDate": "2025-07-08",
       "url": "https://www.nytimes.com/2025/07/08/theater/heathers-the-musical-preview.html",
       "findings": [
         {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"andy fickman\" from heathers-the-musical-off-west-end-2026"
+        },
+        {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "heathers-the-musical-off-broadway-2025",
+      "file": "one-minute-critic--matthew-wexler.json",
+      "score": 63,
+      "publishDate": "2025-07-11",
+      "url": "https://1minutecritic.com/heathers-off-broadway-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"andy fickman\" from heathers-the-musical-off-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "heathers-the-musical-off-broadway-2025",
+      "file": "pages-on-stages--mason-pilevsky.json",
+      "score": 88,
+      "publishDate": "July 10, 2025",
+      "url": "https://pagesonstages.com/2025/07/10/heathers/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"andy fickman\" from heathers-the-musical-off-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "heathers-the-musical-off-broadway-2025",
+      "file": "reclining-standards--david-fox.json",
+      "score": 64,
+      "publishDate": "2025-07-11",
+      "url": "https://recliningstandards.com/2025/07/10/ck-df-review-heathers-at-new-world-stages/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"andy fickman\" from heathers-the-musical-off-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "heathers-the-musical-off-broadway-2025",
+      "file": "stageandcinema--gregory-fletcher.json",
+      "score": 79,
+      "publishDate": "July 10, 2025",
+      "url": "https://stageandcinema.com/2025/07/10/heathers-the-musical-new-world/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"andy fickman\" from heathers-the-musical-off-west-end-2026"
         }
       ]
     },
@@ -10283,9 +10508,56 @@
       "url": "https://theaterlife.com/heathers-the-musical-2/",
       "findings": [
         {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"andy fickman\" from heathers-the-musical-off-west-end-2026"
+        },
+        {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "heathers-the-musical-off-broadway-2025",
+      "file": "theater-scene--victor-gluck.json",
+      "score": 86,
+      "publishDate": "2025-07-19",
+      "url": "https://www.theaterscene.net/musicals/offbway/heathers-the-musical/victor-gluck/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"andy fickman\" from heathers-the-musical-off-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "heathers-the-musical-off-broadway-2025",
+      "file": "theatermania--zachary-stewart.json",
+      "score": 88,
+      "publishDate": "2025-07-11",
+      "url": "https://www.theatermania.com/news/review-heathers-the-musical-predicted-americas-social-disintegration_1789455/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"andy fickman\" from heathers-the-musical-off-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "heathers-the-musical-off-broadway-2025",
+      "file": "timeout--raven-snook.json",
+      "score": 78,
+      "publishDate": "2025-07-10",
+      "url": "https://www.timeout.com/newyork/theater/heathers-the-musical-review-off-broadway",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"andy fickman\" from heathers-the-musical-off-west-end-2026"
         }
       ]
     },
@@ -28119,6 +28391,17 @@
     },
     {
       "showId": "a-midsummer-nights-dream-west-end-2026",
+      "file": "telegraph--dominic-cavendish.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 46d before show (2026-05-05 vs 2026-06-20)"
+        }
+      ]
+    },
+    {
+      "showId": "a-midsummer-nights-dream-west-end-2026",
       "file": "thereviewshub--the-reviews-hub-london.json",
       "score": 62,
       "publishDate": null,
@@ -28134,6 +28417,17 @@
     {
       "showId": "a-midsummer-nights-dream-west-end-2026",
       "file": "thestage--holly-o.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 46d before show (2026-05-05 vs 2026-06-20)"
+        }
+      ]
+    },
+    {
+      "showId": "a-midsummer-nights-dream-west-end-2026",
+      "file": "whatsonstage--theo-bosanquet.json",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -33119,34 +33413,6 @@
       "score": 88,
       "publishDate": "2026-04-15",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/heart-wall-theatre-review-pbwhxxk5w",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "heathers-the-musical-off-broadway-2025",
-      "file": "culturesauce--thom-geier.json",
-      "score": 78,
-      "publishDate": "July 10, 2025",
-      "url": "https://culturesauce.com/2025/07/10/heathers-musical-off-broadway-review/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "heathers-the-musical-off-broadway-2025",
-      "file": "culturesauce--unknown.json",
-      "score": 88,
-      "publishDate": "2025-07-10",
-      "url": "https://culturesauce.com/2025/07/10/heathers-musical-off-broadway-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
