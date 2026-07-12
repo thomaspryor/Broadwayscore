@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-12T05:08:47.025Z",
+  "timestamp": "2026-07-12T06:08:54.224Z",
   "stats": {
-    "totalReviews": 39934,
-    "alreadyFlagged": 17547,
+    "totalReviews": 39933,
+    "alreadyFlagged": 17551,
     "dateGuardCatches": 50,
     "directorMismatch": 894,
     "tvFilmSignals": 1096,
-    "londonSignals": 740,
+    "londonSignals": 741,
     "offBroadwaySignals": 466,
     "yearMismatch": 85,
-    "noPublishDate": 3820
+    "noPublishDate": 3813
   },
   "findings": [
     {
@@ -5041,7 +5041,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "london-theatre--mark-shenton.json",
-      "score": null,
+      "score": 91,
       "publishDate": "2026-06-26",
       "url": "https://www.londontheatre.co.uk/reviews/cyrano-de-bergerac-review-noel-coward-theatre",
       "findings": [
@@ -34826,6 +34826,20 @@
     },
     {
       "showId": "les-liaisons-dangereuses-2016",
+      "file": "washington-times--mark-kennedy.json",
+      "score": null,
+      "publishDate": "October 30th, 2016",
+      "url": "http://www.washingtontimes.com/news/2016/oct/30/review-nyc-revival-of-les-liaisons-dangereuses-cra/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "les-liaisons-dangereuses-2016",
       "file": "washpost--mark-kennedy.json",
       "score": 73,
       "publishDate": "October 30, 2016",
@@ -37003,6 +37017,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "paranormal-activity-west-end-2025",
+      "file": "times-uk--rachel-halliburton.json",
+      "publishDate": "2025-12-16",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/paranormal-activity-review-this-play-is-as-terrifying-as-the-film-pqdnk35jz?gaa_at=eafs&gaa_n=AWEtsqc0hUH9KoQ4XW_xHQI3YlaYk3ddGSuPLhoNCgtRG27k_ugyuAd5eEuvyyNh0wM%3D&gaa_ts=695300de&gaa_sig=Xw4QOETBlXABAvt0TZvRowDWPHNVHFtiHbv5jxLzZUBFlPyacS1-6lLOzdOP0aw_Mje-9gNBXOYTL54R2ye1IQ%3D%3D&gearefresh=",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -42930,20 +42957,6 @@
       "score": 71,
       "publishDate": "2026-07-01",
       "url": "https://www.londonboxoffice.co.uk/news/post/to-kill-a-mockingbird-wyndhams-theatre-review",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "to-kill-a-mockingbird-west-end-2026",
-      "file": "london-theatre--aliya-al-hassan.json",
-      "score": 94,
-      "publishDate": "2026-07-01",
-      "url": "https://www.londontheatre.co.uk/reviews/to-kill-a-mockingbird-review-wyndhams-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
