@@ -143,7 +143,9 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
               logo: { '@type': 'ImageObject', url: `${BASE_URL}/og/home.png` },
             },
             mainEntityOfPage: { '@type': 'WebPage', '@id': `${BASE_URL}/blog/${params.slug}` },
-          }),
+            // CMS-sourced strings could contain "</script>"; < keeps the JSON
+            // valid while preventing tag breakout.
+          }).replace(/</g, '\\u003c'),
         }}
       />
     </article>

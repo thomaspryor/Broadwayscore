@@ -1,12 +1,12 @@
 {
   "summary": {
-    "generated": "2026-07-12T21:31:58.273Z",
-    "source": "broadwayscorecard.com — 17,000+ scored critic reviews + audience data from Show-Score, Mezzanine, BroadwayBox, TheatreNYC, Reddit",
-    "thresholds": "Includes shows with >=5 critic reviews and >=100 audience samples",
-    "count": 583,
-    "meanGap": 7.34,
+    "generated": "2026-07-12T22:16:58.810Z",
+    "source": "broadwayscorecard.com — scored critic reviews + audience data from Show-Score, Mezzanine, BroadwayBox, TheatreNYC, Reddit",
+    "thresholds": "Includes Broadway, Off-Broadway, West End, and Off-West End shows with >=5 critic reviews and >=100 audience samples",
+    "count": 582,
+    "meanGap": 7.33,
     "meanAbsGap": 8.67,
-    "audienceHigherCount": 501,
+    "audienceHigherCount": 500,
     "criticHigherCount": 81,
     "byCategory": {
       "broadway": {
@@ -23,7 +23,7 @@
       },
       "west-end": {
         "count": 66,
-        "meanGap": 10.06,
+        "meanGap": 10.04,
         "audienceHigher": 61,
         "criticHigher": 5
       },
@@ -2113,33 +2113,6 @@
         "positive": 15,
         "mixed": 1,
         "negative": 2
-      }
-    },
-    {
-      "id": "black-swan-regional-2026",
-      "slug": "black-swan-regional-2026",
-      "title": "Black Swan",
-      "category": "regional",
-      "market": "regional",
-      "status": "open",
-      "openingDate": "2026-06-03",
-      "closingDate": "2026-07-12",
-      "critic": 78.2,
-      "audience": 87.2,
-      "gap": 9,
-      "reviewCount": 8,
-      "audienceCount": 343,
-      "audienceSources": {
-        "showScore": null,
-        "mezzanine": 192,
-        "boxOffice": null,
-        "theatre": null,
-        "reddit": 151
-      },
-      "breakdown": {
-        "positive": 5,
-        "mixed": 2,
-        "negative": 1
       }
     },
     {
@@ -7899,9 +7872,9 @@
       "status": "closed",
       "openingDate": "2022-04-28",
       "closingDate": "2022-07-10",
-      "critic": 49,
+      "critic": 48.8,
       "audience": 65.1,
-      "gap": 16.1,
+      "gap": 16.2,
       "reviewCount": 26,
       "audienceCount": 447,
       "audienceSources": {
@@ -14025,10 +13998,10 @@
       "status": "open",
       "openingDate": "2025-09-13",
       "closingDate": "2026-09-19",
-      "critic": 86.5,
+      "critic": 87.5,
       "audience": 89.2,
-      "gap": 2.7,
-      "reviewCount": 18,
+      "gap": 1.7,
+      "reviewCount": 17,
       "audienceCount": 3836,
       "audienceSources": {
         "showScore": 2482,
@@ -14039,7 +14012,7 @@
       },
       "breakdown": {
         "positive": 15,
-        "mixed": 3,
+        "mixed": 2,
         "negative": 0
       }
     },
