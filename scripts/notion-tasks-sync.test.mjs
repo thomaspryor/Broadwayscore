@@ -37,8 +37,8 @@ test('planPull creates unmapped cards, updates on status change, else unchanged'
     { id: 'same', status: 'In progress' },
   ];
   const map = {
-    moved: { taskId: '2', syncedStatus: 'Not started' },
-    same: { taskId: '3', syncedStatus: 'In progress' },
+    moved: { taskId: '2', syncedStatus: 'Not started', fmt: 2 },
+    same: { taskId: '3', syncedStatus: 'In progress', fmt: 2 },
   };
   const plan = planPull(cards, map);
   assert.deepEqual(plan.toCreate.map(x => x.card.id), ['new']);
@@ -48,7 +48,7 @@ test('planPull creates unmapped cards, updates on status change, else unchanged'
 
 test('planPull is idempotent: re-running with a fully-synced map is a no-op', () => {
   const cards = [{ id: 'a', status: 'In progress' }, { id: 'b', status: 'Not started' }];
-  const map = { a: { taskId: '1', syncedStatus: 'In progress' }, b: { taskId: '2', syncedStatus: 'Not started' } };
+  const map = { a: { taskId: '1', syncedStatus: 'In progress', fmt: 2 }, b: { taskId: '2', syncedStatus: 'Not started', fmt: 2 } };
   const plan = planPull(cards, map);
   assert.equal(plan.toCreate.length, 0);
   assert.equal(plan.toUpdate.length, 0);
@@ -89,4 +89,19 @@ test('writeHwm never regresses below a concurrent bump', () => {
 
 test('notionMarker format is stable', () => {
   assert.equal(notionMarker('abc-123'), '[notion:abc-123]');
+});
+
+test('mapCardToTask mirrors category as third meta segment', () => {
+  const t = mapCardToTask({ id: 'x', name: 'N', status: 'Not started', priority: 'P0 Now', category: 'Marketing', notes: '' }, 1);
+  assert.match(t.description.split('\n')[0], /· Marketing$/);
+  const t2 = mapCardToTask({ id: 'y', name: 'N', status: 'Not started' }, 2);
+  assert.match(t2.description.split('\n')[0], /· no-category$/);
+});
+
+test('planPull upgrades pre-fmt2 entries even when status unchanged', () => {
+  const cards = [{ id: 'a', status: 'Not started', category: 'Product' }];
+  const oldMap = { a: { taskId: '1', syncedStatus: 'Not started' } };          // no fmt
+  const newMap = { a: { taskId: '1', syncedStatus: 'Not started', fmt: 2 } };
+  assert.equal(planPull(cards, oldMap).toUpdate.length, 1);  // format upgrade
+  assert.equal(planPull(cards, newMap).unchanged.length, 1); // idempotent after
 });
