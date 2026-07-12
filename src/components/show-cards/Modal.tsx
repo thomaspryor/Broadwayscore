@@ -51,16 +51,27 @@ export default function Modal({
 
   // Escape dismisses only the TOPMOST open modal — with stacked modals (e.g.
   // sign-in over the rating editor) a single Escape used to close both,
-  // discarding the editor draft beneath (2026-07-05). Topmost-ness is decided
-  // from the DOM, NOT a module-level stack: Next.js code-splitting duplicates
-  // this module across chunks (verified: two chunks carry the Modal component),
-  // so module state is split-brain and every copy thought it was topmost
-  // (2026-07-11). All modals portal to <body>, so among open modal overlays
-  // the one latest in body order is the top of the stack.
+  // discarding the editor draft beneath (2026-07-05/11). Two hard-won rules:
+  //
+  // 1. Topmost-ness comes from the DOM (all modals portal to <body>, so the
+  //    last [role=dialog][aria-modal] in body order is on top) — NOT from a
+  //    module-level stack: Next.js code-splitting can duplicate this module
+  //    across chunks, giving each modal a private, split-brain stack.
+  //
+  // 2. One Escape = one modal, enforced by marking the EVENT. React 18
+  //    flushes discrete-event state updates between native listeners: when the
+  //    top modal's listener closes it, its dialog is already gone from the DOM
+  //    by the time a later-attached listener runs, so the modal underneath
+  //    sees itself as topmost and closes too (listener attach order is NOT
+  //    mount order — e.g. the editor re-attaches when `saving` toggles). The
+  //    string-keyed mark survives chunk duplication (same native event object).
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (e.key !== 'Escape') return;
+    const ev = e as KeyboardEvent & { __bscEscapeConsumed?: boolean };
+    if (ev.__bscEscapeConsumed) return;
     const overlays = document.querySelectorAll('[role="dialog"][aria-modal="true"]');
     if (overlays.length && overlays[overlays.length - 1] !== overlayRef.current) return;
+    ev.__bscEscapeConsumed = true;
     onClose();
   }, [onClose]);
 

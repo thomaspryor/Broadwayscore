@@ -113,71 +113,10 @@ function isMostRecentProduction(show) {
   return !newest || newest.id === show.id;
 }
 
-/**
- * Calculate buzz score from classifications
- */
-function calculateBuzzScore(classifications, totalPosts = 0, totalComments = 0) {
-  const relevant = classifications.filter(c => c.is_relevant);
-  if (relevant.length === 0) return null;
-
-  const sentimentScores = {
-    enthusiastic: 98,
-    positive: 88,
-    mixed: 68,
-    negative: 40,
-    neutral: 60
-  };
-
-  const sentimentCounts = {
-    enthusiastic: 0,
-    positive: 0,
-    mixed: 0,
-    negative: 0,
-    neutral: 0
-  };
-
-  for (const item of relevant) {
-    const sentiment = item.sentiment || 'neutral';
-    if (sentimentCounts[sentiment] !== undefined) {
-      sentimentCounts[sentiment]++;
-    }
-  }
-
-  // Weighted average
-  let weightedSum = 0;
-  let totalWeight = 0;
-  for (const [sentiment, count] of Object.entries(sentimentCounts)) {
-    if (count > 0) {
-      weightedSum += sentimentScores[sentiment] * count;
-      totalWeight += count;
-    }
-  }
-
-  const baseScore = totalWeight > 0 ? weightedSum / totalWeight : 50;
-
-  // Enthusiasm bonus (up to +5 points)
-  const enthusiasmRate = sentimentCounts.enthusiastic / relevant.length;
-  const enthusiasmBonus = Math.min(5, enthusiasmRate * 15);
-
-  // Calculate final score
-  const finalScore = Math.min(99, Math.round(baseScore + enthusiasmBonus));
-
-  return {
-    score: finalScore,
-    reviewCount: relevant.length,
-    totalPosts,
-    totalComments,
-    sentiment: {
-      enthusiastic: Math.round(sentimentCounts.enthusiastic / relevant.length * 100) / 100,
-      positive: Math.round(sentimentCounts.positive / relevant.length * 100) / 100,
-      mixed: Math.round(sentimentCounts.mixed / relevant.length * 100) / 100,
-      negative: Math.round(sentimentCounts.negative / relevant.length * 100) / 100,
-      neutral: Math.round(sentimentCounts.neutral / relevant.length * 100) / 100,
-    },
-    positiveRate: (sentimentCounts.enthusiastic + sentimentCounts.positive) / relevant.length,
-    lastUpdated: new Date().toISOString()
-  };
-}
+// calculateBuzzScore is a pure helper, extracted to ./lib/buzz-score.js so the
+// A/B harness can require it without this module's data-file reads. Re-exported
+// below for existing importers.
+const { calculateBuzzScore } = require('./lib/buzz-score');
 
 /**
  * Check if a post title suggests audience reaction (not industry discussion)
@@ -345,13 +284,43 @@ async function searchAudiencePosts(subreddit, showTitle, maxPosts = 10000, { cat
 }
 
 /**
- * Process a single show
+ * Production context for the relevance gate: venue / market / type / run-window
+ * let the classifier tell a comment about THIS staging apart from an unrelated
+ * novel/film/phrase that merely shares the title (the "Oscar Wao" / "Pied à Terre"
+ * contamination vector).
  */
-async function processShow(show) {
-  console.log(`\nProcessing: ${show.title}`);
+function buildShowContext(show) {
+  const isOperaCtx = (show.type || '') === 'opera';
+  const market = isOperaCtx ? 'the Metropolitan Opera'
+    : isLondonMarket(show.category) ? 'West End'
+    : show.category === 'off-broadway' ? 'Off-Broadway'
+    : 'Broadway';
+  return {
+    venue: show.venue || '',
+    market,
+    type: show.type || '',
+    openingDate: show.openingDate || '',
+    closingDate: show.closingDate || '',
+  };
+}
 
-  // 1. Search for posts with audience-focused queries — aggregate across
-  // all relevant subreddits (multi-subreddit for opera shows).
+const BOT_PATTERNS = [
+  /^It looks like you've shared an image/i,
+  /^I'm a bot/i,
+  /^I am a bot/i,
+  /^This is an automated/i,
+  /RemindMe!/i,
+  /u\/RemindMeBot/i,
+];
+
+/**
+ * Search posts + collect and clean comments for a show. Each returned comment
+ * carries its thread's `postTitle` (attached in reddit-api) so the classifier's
+ * production-reference gate can run. Returns null when nothing survives.
+ * Extracted so the A/B / re-scrape harness can collect once and classify twice.
+ * @returns {Promise<{filtered:Array,totalPosts:number,totalComments:number}|null>}
+ */
+async function collectShowComments(show) {
   const subreddits = getSubreddits(show);
   if (!subreddits || subreddits.length === 0) {
     console.log(`  Skipping — no relevant subreddit for ${show.category || 'unknown'} category`);
@@ -398,7 +367,7 @@ async function processShow(show) {
     return null;
   }
 
-  // 2. Select posts - use Reddit's relevance ordering from our audience-focused searches
+  // Select posts - use Reddit's relevance ordering from our audience-focused searches
   // Don't re-sort by engagement (that drowns out good posts with high-engagement meta threads)
   // The LLM will filter out irrelevant comments - we just need to give it good posts to work with
   // Filter out posts with very few comments (saves API calls on comment fetching)
@@ -434,20 +403,10 @@ async function processShow(show) {
 
   console.log(`  Collected ${comments.length} comments`);
 
-  // 3. Filter comments (remove deleted, short, and bot messages)
-  const BOT_PATTERNS = [
-    /^It looks like you've shared an image/i,
-    /^I'm a bot/i,
-    /^I am a bot/i,
-    /^This is an automated/i,
-    /RemindMe!/i,
-    /u\/RemindMeBot/i,
-  ];
-
+  // Filter comments (remove deleted, short, and bot messages)
   const filtered = comments.filter(c => {
     if (!c.body || c.body.length < 15) return false;
     if (c.body === '[deleted]' || c.body === '[removed]') return false;
-    // Filter out bot messages
     for (const pattern of BOT_PATTERNS) {
       if (pattern.test(c.body)) return false;
     }
@@ -455,16 +414,28 @@ async function processShow(show) {
   });
   console.log(`  After filtering: ${filtered.length} comments`);
 
-  if (filtered.length === 0) {
-    return null;
-  }
+  if (filtered.length === 0) return null;
+  return { filtered, totalPosts, totalComments };
+}
 
-  // 4. Classify comments
+/**
+ * Process a single show
+ */
+async function processShow(show) {
+  console.log(`\nProcessing: ${show.title}`);
+
+  // 1-3. Search + collect + clean comments (each tagged with its thread title).
+  const collected = await collectShowComments(show);
+  if (!collected) return null;
+  const { filtered, totalPosts, totalComments } = collected;
+
+  // 4. Classify comments (production-reference gate driven by showContext)
   console.log(`  Classifying with LLM...`);
+  const showContext = buildShowContext(show);
 
   let classifications;
   try {
-    classifications = await classifyAllComments(show.title, filtered, 150);
+    classifications = await classifyAllComments(show.title, filtered, 150, 'gemini', 4, showContext);
   } catch (e) {
     console.error(`  Classification failed: ${e.message}`);
     return null;
@@ -769,7 +740,17 @@ async function main() {
   }
 }
 
-main().catch(e => {
-  console.error('Fatal error:', e.message);
-  process.exit(1);
-});
+if (require.main === module) {
+  main().catch(e => {
+    console.error('Fatal error:', e.message);
+    process.exit(1);
+  });
+}
+
+module.exports = {
+  collectShowComments,
+  buildShowContext,
+  calculateBuzzScore,
+  processShow,
+  showMapById,
+};

@@ -129,6 +129,31 @@ for (const vp of VIEWPORTS) {
       await expect(editor).not.toBeVisible({ timeout: 3000 });
     });
 
+    test('auth-gated save then Escape: only the top modal closes, draft survives', async ({ page }) => {
+      // Reproduces the production listener-order bug (2026-07-11): Save toggles
+      // the editor's `saving` state, re-attaching its Escape listener AFTER the
+      // stacked modal's. React 18 flushes the top modal's close between native
+      // listeners, so without event-claiming the editor then saw itself as
+      // topmost and closed too, discarding the draft.
+      await goToEditor(page, '?presentation=modal&authgate=1');
+      const editor = page.locator('[data-testid="rating-editor"]');
+      const stacked = page.locator('[data-testid="stacked-modal"]');
+
+      await editor.getByRole('button', { name: '4 stars' }).click({ position: { x: 30, y: 20 } });
+      await page.locator('textarea').fill('gated draft');
+      await page.getByRole('button', { name: /^save$/i }).click();
+      await expect(stacked).toBeVisible({ timeout: 3000 });
+      await expect(editor).toBeVisible();
+
+      await page.keyboard.press('Escape');
+      await expect(stacked).not.toBeVisible({ timeout: 3000 });
+      await expect(editor).toBeVisible();
+      await expect(page.locator('textarea')).toHaveValue('gated draft');
+
+      await page.keyboard.press('Escape');
+      await expect(editor).not.toBeVisible({ timeout: 3000 });
+    });
+
     test('edit state pre-fills note/date and round-trips the reviewId', async ({ page }) => {
       await goToEditor(page, '?state=edit');
       const editor = page.locator('[data-testid="rating-editor"]');

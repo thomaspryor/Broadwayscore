@@ -30,16 +30,26 @@ function RatingEditorFixtureInner() {
   // ?stack=1 opens a second shared Modal over the editor's modal — regression
   // fixture for topmost-only Escape (stacked sign-in over editor, 2026-07-11).
   const stack = sp.get('stack') === '1';
+  // ?authgate=1 mirrors the production anonymous-save flow: Save resolves
+  // 'auth-gated' and opens the stacked modal. Critically this toggles the
+  // editor's `saving` state, which re-attaches its Escape listener AFTER the
+  // stacked modal's — the listener-order scenario that broke stacked Escape
+  // in production while mount-order fixtures stayed green (2026-07-11).
+  const authGate = sp.get('authgate') === '1';
   const isEdit = state === 'edit';
 
   const [open, setOpen] = useState(true);
   const [stackOpen, setStackOpen] = useState(stack);
   const [saved, setSaved] = useState<RatingEditorSaveData | null>(null);
 
-  const handleSave = useCallback(async (data: RatingEditorSaveData) => {
+  const handleSave = useCallback(async (data: RatingEditorSaveData): Promise<void | 'auth-gated'> => {
     if (fail) throw new Error('Simulated network failure.');
+    if (authGate) {
+      setStackOpen(true);
+      return 'auth-gated';
+    }
     setSaved(data);
-  }, [fail]);
+  }, [fail, authGate]);
 
   return (
     <div className="min-h-screen bg-surface text-white" data-testid="rating-editor-fixture">
