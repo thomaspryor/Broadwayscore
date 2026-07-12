@@ -83,7 +83,7 @@ Manual ingest is needed when:
 
 17. **Vercel concurrency cancels back-to-back dispatches** — 4 dispatches → 2 succeeded, 2 cancelled. Wait between dispatches, don't queue. Rocky Horror postmortem #17.
 
-18. **Deploy verification:** after dispatch, watch the run with `gh run watch` and confirm the deployed reviews.json mtime > the manual-ingest start timestamp.
+18. **Deploy verification:** after dispatch, wait with `scripts/lib/wait-for-run.sh <run-id>` (never `gh run watch` — 3s polling burns quota, [[feedback_github_polling_rate_limit.md]]) and confirm the deployed reviews.json mtime > the manual-ingest start timestamp.
 
 ---
 

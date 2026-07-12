@@ -1142,6 +1142,72 @@ function outlierSection() {
   return sectionWrap(sectionHeading('Outlier of the Week'), body);
 }
 
+// Rave & Pan of the Week — the most glowing and most brutal pull quotes of the
+// week, whatever the consensus. Different from the (statistical) Outlier: picked
+// for PUNCH, not divergence. A rave can be for a show everyone loved; a pan for
+// a show everyone panned. NYC + West End (opera excluded — has its own voice).
+function findWeekRavePan() {
+  const reviewCount = {};
+  const eligible = reviews.filter(r => {
+    if (!inWeekDateOnly(r.publishDate) || r.assignedScore == null) return false;
+    if (!(r.quote || r.summary || r.pullQuote)) return false;
+    // A named critic + real byline is what makes a Rave/Pan quotable — an
+    // "Unknown / London Theatre Reviews" line reads as anonymous filler. Skip
+    // missing/Unknown bylines (user, 2026-07-12).
+    const critic = (r.criticName || '').trim();
+    if (!critic || /^unknown\b/i.test(critic)) return false;
+    const s = shows.find(x => x.id === r.showId);
+    return s && !isOperaShow(s) && ['broadway', 'off-broadway', 'west-end', 'off-west-end'].includes(s.category);
+  });
+  if (!eligible.length) return { rave: null, pan: null };
+  // Per-show review volume (this-week window) — used to tie-break toward the
+  // more-reviewed (marquee) show when two reviews share the extreme score.
+  reviews.forEach(r => { if (inWeekDateOnly(r.publishDate) && r.assignedScore != null) reviewCount[r.showId] = (reviewCount[r.showId] || 0) + 1; });
+  const rc = (r) => reviewCount[r.showId] || 0;
+  const pick = (arr) => {
+    for (const r of arr) {
+      const q = pickReviewQuote(r);
+      if (q && q.length >= 30) return { review: r, quote: q, show: shows.find(s => s.id === r.showId) };
+    }
+    return null;
+  };
+  // Rave: highest score, then the more-reviewed show (a rave for a widely-seen
+  // marquee show lands harder than one for a 2-review curio).
+  const raveArr = eligible.filter(r => r.assignedScore >= 85)
+    .sort((a, b) => b.assignedScore - a.assignedScore || rc(b) - rc(a));
+  const panArr = eligible.filter(r => r.assignedScore <= 52)
+    .sort((a, b) => a.assignedScore - b.assignedScore || rc(b) - rc(a));
+  const rave = pick(raveArr);
+  let pan = pick(panArr);
+  if (rave && pan && pan.review === rave.review) pan = null;
+  return { rave, pan };
+}
+
+// SECTION: Rave & Pan of the Week — up to two quote cards (green rave / red pan).
+function ravePanSection() {
+  const { rave, pan } = findWeekRavePan();
+  if (!rave && !pan) return null;
+  const card = (pick, kind) => {
+    if (!pick) return '';
+    const accent = kind === 'rave' ? '#22c55e' : '#ef4444';
+    const label = kind === 'rave' ? 'RAVE OF THE WEEK' : 'PAN OF THE WEEK';
+    const r = pick.review, s = pick.show;
+    return `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" class="cardbg" style="margin-bottom:10px;">
+      <tr><td colspan="2" style="padding:12px 16px 0;"><span style="font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:${accent};">${label}</span></td></tr>
+      <tr>
+        <td valign="top" width="68" style="padding:10px 0 14px 16px;">${thumb(s, 56)}</td>
+        <td valign="top" style="padding:10px 16px 14px 12px;">
+          <div style="font-size:15px;line-height:1.5;color:#e5e7eb;font-style:italic;border-left:2px solid ${accent};padding-left:12px;">&ldquo;${pick.quote}&rdquo;</div>
+          <div style="font-size:12px;color:#9ca3af;margin-top:10px;">${criticLink(r.criticName, r.criticName || 'Unknown critic')} <span style="color:#6b7280;">· ${outletLink(r.outlet, r.outlet)}</span></div>
+          <div style="font-size:13px;color:#d1d5db;margin-top:3px;">on <strong style="color:#fff;">${showLink(s, s.title)}</strong> ${marketPill(s.category)} <span style="color:#6b7280;font-size:12px;">· they scored it ${Math.round(r.assignedScore)}</span></div>
+        </td>
+      </tr>
+    </table>`;
+  };
+  const heading = (rave && pan) ? 'Rave &amp; Pan of the Week' : rave ? 'Rave of the Week' : 'Pan of the Week';
+  return sectionWrap(sectionHeading(heading), card(rave, 'rave') + card(pan, 'pan'));
+}
+
 // SECTION: Recently Announced Closings (Broadway only)
 // Reads first-class `closure` cast-events: any closure added IN THE WEEK
 // WINDOW with a future date. Earlier versions used a 28-day lookback to give
@@ -1893,7 +1959,7 @@ try {
 } catch (e) { process.stderr.write('[newsletter] state write failed: ' + e.message + '\n'); }
 const lon  = sections.run('london-openings', () => londonSection());
 const opera = sections.run('opera-openings', () => operaOpeningsSection());
-const outlier = sections.run('outlier-of-the-week', () => outlierSection());
+const ravepan = sections.run('rave-pan-of-the-week', () => ravePanSection());
 
 // Most-read show pages — real GA4 page-view data via popular-pages.mjs.
 // Async because GA4 client returns a Promise. If creds missing or API errors,
@@ -1936,8 +2002,6 @@ if (seasonStandings.length) {
 // London stays at the bottom alongside opera/casting.
 const upcomingTop = upcoming && _upcomingHasBroadway ? upcoming : null;
 const upcomingBottom = upcoming && !_upcomingHasBroadway ? upcoming : null;
-const londonTop = lon && _londonHasGoldOpening ? lon : null;
-const londonBottom = lon && !_londonHasGoldOpening ? lon : null;
 
 // Drop list (NEWSLETTER_DROP_SECTIONS) is a one-off lever for suppressing
 // any section ad hoc. OPT_IN_SECTIONS is empty — tony-predictions was
@@ -1957,20 +2021,22 @@ if (_includeSet.size) process.stderr.write(`[newsletter] opt-in sections: ${[...
 const sectionOrder = [
   _slot('broadway-openings', bwO.html),
   _slot('offbroadway-openings', obO.html),
-  _slot('london-openings', londonTop),   // Gold WE openings float up to join NYC openers
   _slot('upcoming-openings', upcomingTop),
   _slot('biggest-movers', mover),
   _slot('closing-this-week', clo),
   _slot('announced-closings', announced),
+  // London (+ Opera) openings sit right after the closings block — user
+  // direction 2026-07-12. Replaces the old gold-float-up / non-gold-at-bottom
+  // split; London Openings now has one fixed home for every week.
+  _slot('london-openings', lon),
+  _slot('opera-openings', opera),
   _slot('box-office', box),
   _slot('recoupment', commercial),
   // Social Buzz removed 2026-07-05 pending fix: mention-volume metric is
   // compressed into a ~170-210 band so the same show (Every Brilliant Thing)
   // holds #1 for weeks and the section reads as unchanged. Re-enable once the
   // social-pulse fetcher produces discriminating volumes. _slot('social-buzz', bz),
-  _slot('outlier-of-the-week', outlier),
-  _slot('london-openings', londonBottom), // Non-gold WE openings stay at bottom
-  _slot('opera-openings', opera),
+  _slot('rave-pan-of-the-week', ravepan),
   _slot('casting-updates', cas),
   ...(_dropSet.has('season-standing') ? [] : seasonStandings),
   _slot('upcoming-openings', upcomingBottom),

@@ -17,7 +17,7 @@ Three stacked hazards, all hit on 2026-07-05:
 **Why:** reviews.json is the derived source of truth for every score on the site; a stale rebuild silently regresses hundreds of shows and CI would have propagated it within minutes if committed.
 
 **How to apply:**
-- Rebuild: `gh workflow run rebuild-reviews.yml -f reason="..."` then `gh run watch <id>` — CI checks out fresh canonical repos.
+- Rebuild: `gh workflow run rebuild-reviews.yml -f reason="..."` then `scripts/lib/wait-for-run.sh <id>` (never `gh run watch` — 3s polling, see [[feedback_github_polling_rate_limit.md]]) — CI checks out fresh canonical repos.
 - Never pipe a data-writing script to `head`/`grep` — capture to a file in scratchpad, then filter.
 - After ANY accidental local run of a rebuild/enrichment script: `git -C ~/broadway-scorecard-data status` immediately and checkout-restore before anything commits.
 - Related: `verify-review-recovery.js` also reads the stale local clone — treat its per-file findings as hypotheses and re-check against `~/broadway-review-texts` (it flagged a file that didn't exist canonically, and named the wrong unscored file).

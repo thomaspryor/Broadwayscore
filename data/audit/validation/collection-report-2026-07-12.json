@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-07-12T13:58:26.437Z",
+  "runDate": "2026-07-12T14:28:24.204Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,38 +11,38 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 20,
+    "processed": 28,
     "failed": 998,
     "skipped": 0,
-    "successRate": "2.0%"
+    "successRate": "2.7%"
   },
   "tierBreakdown": {
-    "playwright": 12,
+    "playwright": 16,
     "amp": 0,
     "browserbase": 4,
     "directCookies": 1,
-    "scrapingbee": 2,
+    "scrapingbee": 3,
     "brightdata": 4,
     "archiveToday": 23,
-    "archive": 1
+    "archive": 4
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 7,
+    "tier1Success": 4,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
+    "tier2Attempts": 4,
+    "tier2Success": 1,
     "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 0,
-    "tier4Success": 0,
+    "tier4Attempts": 3,
+    "tier4Success": 2,
     "totalFailed": 77,
-    "scrapingBeePageCredits": 0,
+    "scrapingBeePageCredits": 31,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -70,7 +70,15 @@
     "jesus-christ-superstar-west-end-2026/loureviews--unknown.json",
     "pride-west-end-2026/theatrely--unknown.json",
     "pride-west-end-2026/standard--unknown.json",
-    "oh-mary-2024/independent--unknown.json"
+    "oh-mary-2024/independent--unknown.json",
+    "white-rabbit-red-rabbit-west-end-2026/times-uk--anya-ryan.json",
+    "schmigadoon-2026/nytg--unknown.json",
+    "titanique-2026/nytg--gillian-russo.json",
+    "burlesque-west-end-2026/theatreandtonic--unknown.json",
+    "hercules-west-end-2025/times-uk--clive-davis.json",
+    "heathers-the-musical-off-broadway-2025/theatrely--unknown.json",
+    "the-comedy-about-spies-west-end-2026/london-theatre--unknown.json",
+    "the-comedy-about-spies-west-end-2026/times-uk--clive-davis.json"
   ],
   "failed": [
     "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/guardian--mark-fisher.json",
@@ -1085,7 +1093,11 @@
       "jesus-christ-superstar-west-end-2026/whatsonstage--jonas-schwartz.json",
       "jesus-christ-superstar-west-end-2026/whatsonstage--matt-barton.json",
       "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json",
-      "jesus-christ-superstar-west-end-2026/loureviews--unknown.json"
+      "jesus-christ-superstar-west-end-2026/loureviews--unknown.json",
+      "schmigadoon-2026/nytg--unknown.json",
+      "titanique-2026/nytg--gillian-russo.json",
+      "burlesque-west-end-2026/theatreandtonic--unknown.json",
+      "the-comedy-about-spies-west-end-2026/london-theatre--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1099,7 +1111,8 @@
     ],
     "scrapingbee": [
       "pride-west-end-2026/theatrely--unknown.json",
-      "oh-mary-2024/independent--unknown.json"
+      "oh-mary-2024/independent--unknown.json",
+      "heathers-the-musical-off-broadway-2025/theatrely--unknown.json"
     ],
     "brightdata": [
       "giulia-the-poison-queen-of-palermo-off-broadway-2026/vulture--jackson-mchenry.json",
@@ -1133,7 +1146,10 @@
       "data/review-texts/the-guilty-west-end-2026/thestage--unknown.json"
     ],
     "archive": [
-      "pride-west-end-2026/standard--unknown.json"
+      "pride-west-end-2026/standard--unknown.json",
+      "white-rabbit-red-rabbit-west-end-2026/times-uk--anya-ryan.json",
+      "hercules-west-end-2025/times-uk--clive-davis.json",
+      "the-comedy-about-spies-west-end-2026/times-uk--clive-davis.json"
     ]
   },
   "failuresByOutlet": {},

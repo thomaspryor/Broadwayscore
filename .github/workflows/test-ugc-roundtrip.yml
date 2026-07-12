@@ -1,0 +1,51 @@
+name: UGC Auth Round-trip
+
+# Verifies the signed-in Rating/Watchlist/List round-trip against the LIVE
+# Supabase project: real user JWT → PostgREST write → read-back → RLS isolation
+# → delete. Catches "sign-in works in the UI but nothing actually saves / is
+# leaked across users / the project is down" — the class of failure the
+# OAuth-blocked UI tests can't see. Runs hands-off so nobody has to manually
+# rate a show to know it still works.
+
+on:
+  schedule:
+    - cron: '17 13 * * *'  # daily 13:17 UTC (~8am ET)
+  workflow_dispatch:
+  # Re-check right after a demo deploy ships new UGC code.
+  workflow_run:
+    workflows: ['Deploy Demo Site']
+    types: [completed]
+
+concurrency:
+  group: test-ugc-roundtrip
+  cancel-in-progress: false
+
+jobs:
+  roundtrip:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # Skip the workflow_run trigger when the demo deploy itself failed.
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Authenticated round-trip
+        run: node scripts/test-ugc-roundtrip.mjs
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'UGC Auth Round-trip Failed'
+          description: 'Signed-in save/read/RLS round-trip against live Supabase failed — user ratings may not be saving or may be leaking across accounts. Check the run log.'
+          severity: 'critical'
+          email: 'true'
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

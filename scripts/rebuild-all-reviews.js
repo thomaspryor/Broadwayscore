@@ -1314,7 +1314,7 @@ const crossShowFingerprints = new Map();
 // from the --unknown file into it and delete the stale --unknown file. This prevents duplicate
 // entries in validate-review-texts.js (which keys on JSON criticName, not filename).
 {
-  let renamedCount = 0, mergedCount = 0, errorCount = 0;
+  let renamedCount = 0, mergedCount = 0, errorCount = 0, skippedFlaggedCount = 0;
   for (const sid of showDirs) {
     const sDir = path.join(reviewTextsDir, sid);
     const unknownFiles = fs.readdirSync(sDir).filter(f => f.endsWith('.json') && f.includes('--unknown'));
@@ -1335,7 +1335,7 @@ const crossShowFingerprints = new Map();
           // target (totoro contamination, Notion 39b637c5-416f-815e) — leave it.
           const existingData = JSON.parse(fs.readFileSync(expectedPath, 'utf8'));
           const mergeResult = mergeUniqueReviewFields(existingData, d);
-          if (mergeResult.action === 'skip-flagged-source') continue;
+          if (mergeResult.action === 'skip-flagged-source') { skippedFlaggedCount++; continue; }
           if (mergeResult.changed) {
             safeWriteReview(expectedPath, existingData);
           }
@@ -1356,11 +1356,12 @@ const crossShowFingerprints = new Map();
       }
     }
   }
-  if (renamedCount > 0 || mergedCount > 0) {
-    console.log(`Stale --unknown cleanup: ${renamedCount} renamed, ${mergedCount} merged+deleted${errorCount ? `, ${errorCount} errors` : ''}`);
+  if (renamedCount > 0 || mergedCount > 0 || skippedFlaggedCount > 0) {
+    console.log(`Stale --unknown cleanup: ${renamedCount} renamed, ${mergedCount} merged+deleted, ${skippedFlaggedCount} flagged tombstones left in place${errorCount ? `, ${errorCount} errors` : ''}`);
   }
   stats.staleUnknownRenamed = renamedCount;
   stats.staleUnknownMerged = mergedCount;
+  stats.staleUnknownSkippedFlagged = skippedFlaggedCount;
 }
 
 // Stale outlet-mismatch cleanup: when a file's outlet prefix doesn't match the outletId in JSON
@@ -1368,7 +1369,7 @@ const crossShowFingerprints = new Map();
 // rename or merge into the correctly-named file.
 // Uses fresh readdirSync per directory (not cached from Pass 1) to see renamed files correctly.
 {
-  let renamedCount = 0, mergedCount = 0, errorCount = 0;
+  let renamedCount = 0, mergedCount = 0, errorCount = 0, skippedFlaggedCount = 0;
   for (const sid of showDirs) {
     const sDir = path.join(reviewTextsDir, sid);
     for (const f of fs.readdirSync(sDir).filter(x => x.endsWith('.json'))) {
@@ -1388,7 +1389,7 @@ const crossShowFingerprints = new Map();
           // target (totoro contamination, Notion 39b637c5-416f-815e) — leave it.
           const existingData = JSON.parse(fs.readFileSync(expectedPath, 'utf8'));
           const mergeResult = mergeUniqueReviewFields(existingData, d);
-          if (mergeResult.action === 'skip-flagged-source') continue;
+          if (mergeResult.action === 'skip-flagged-source') { skippedFlaggedCount++; continue; }
           if (mergeResult.changed) {
             safeWriteReview(expectedPath, existingData);
           }
@@ -1407,11 +1408,12 @@ const crossShowFingerprints = new Map();
       }
     }
   }
-  if (renamedCount > 0 || mergedCount > 0) {
-    console.log(`Stale outlet-mismatch cleanup: ${renamedCount} renamed, ${mergedCount} merged+deleted${errorCount ? `, ${errorCount} errors` : ''}`);
+  if (renamedCount > 0 || mergedCount > 0 || skippedFlaggedCount > 0) {
+    console.log(`Stale outlet-mismatch cleanup: ${renamedCount} renamed, ${mergedCount} merged+deleted, ${skippedFlaggedCount} flagged tombstones left in place${errorCount ? `, ${errorCount} errors` : ''}`);
   }
   stats.staleOutletRenamed = renamedCount;
   stats.staleOutletMerged = mergedCount;
+  stats.staleOutletSkippedFlagged = skippedFlaggedCount;
 }
 
 // URL-domain mismatch guard: detect reviews where URL domain doesn't match outlet's registered domain.
