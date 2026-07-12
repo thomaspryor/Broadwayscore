@@ -1,11 +1,11 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-12T05:16:00.670Z",
+    "generatedAt": "2026-07-12T06:09:32.391Z",
     "note": "Corpus-statistics drift monitor. Non-blocking; surfaced via health-check.js digest. Not a code-correctness gate."
   },
   "summary": {
     "auditsRun": 17,
-    "driftCount": 6,
+    "driftCount": 7,
     "crashCount": 0,
     "anyDrift": true,
     "anyCrashed": false
@@ -18,7 +18,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "=== TEXT QUALITY AUDIT ===\n\nTotal reviews: 40661\nHas fullText: 32192\n\n--- Quality Breakdown ---\n  full: 21990 (68.3%)\n  truncated: 9500 (29.5%)\n  partial: 326 (1.0%)\n  excerpt: 317 (1.0%)\n  stub: 41 (0.1%)\n  complete: 13 (0.0%)\n  unknown: 5 (0.0%)\n\n--- Truncation Signals ---\n  no_ending_punctuation: 6629\n  has_footer_junk: 1474\n  ends_with_ellipsis: 129\n  has_footer_text: 109\n  paywall_or_login_prompt: 75\n\n--- Threshold Checks (MONITOR / drift band) ---\n  ✅ Full: 68.3% (min: 25%)\n  ✅ Truncated: 29.5% (max: 65%)\n  ✅ Unknown: 0.0% (max: 5%)\n\n✅ AUDIT PASSED"
+      "detail": "=== TEXT QUALITY AUDIT ===\n\nTotal reviews: 40660\nHas fullText: 32204\n\n--- Quality Breakdown ---\n  full: 21998 (68.3%)\n  truncated: 9504 (29.5%)\n  partial: 326 (1.0%)\n  excerpt: 317 (1.0%)\n  stub: 41 (0.1%)\n  complete: 13 (0.0%)\n  unknown: 5 (0.0%)\n\n--- Truncation Signals ---\n  no_ending_punctuation: 6635\n  has_footer_junk: 1475\n  ends_with_ellipsis: 130\n  has_footer_text: 109\n  paywall_or_login_prompt: 75\n\n--- Threshold Checks (MONITOR / drift band) ---\n  ✅ Full: 68.3% (min: 25%)\n  ✅ Truncated: 29.5% (max: 65%)\n  ✅ Unknown: 0.0% (max: 5%)\n\n✅ AUDIT PASSED"
     },
     {
       "name": "aggregator-truth",
@@ -54,7 +54,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "[audit-unknown-outlets] resolvable unknown outlets: 2 (threshold 5) across 40661 files"
+      "detail": "[audit-unknown-outlets] resolvable unknown outlets: 2 (threshold 5) across 40660 files"
     },
     {
       "name": "review-key-duplicates",
@@ -63,7 +63,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "[audit-review-key-duplicates] duplicate reviews: 3 (threshold 5) across 40661 files"
+      "detail": "[audit-review-key-duplicates] duplicate reviews: 3 (threshold 5) across 40660 files"
     },
     {
       "name": "churn-merge-coverage",
@@ -72,7 +72,7 @@
       "exitCode": 1,
       "ok": false,
       "crashed": false,
-      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 4 flagged, 18 exempt, 41 covered\n  ⚠️    99  data/audit/processed-feedback.json  — no merge driver; needs a decision\n  ⚠️    97  data/audit/validation-baseline.json  — no merge driver; needs a decision\n  ⚠️    95  data/audit/url-collision-report.json  — no merge driver; needs a decision\n  ⚠️    93  data/audit/pipeline-health/collect-review-texts.last-success  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
+      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 5 flagged, 18 exempt, 41 covered\n  ⚠️    99  data/audit/processed-feedback.json  — no merge driver; needs a decision\n  ⚠️    98  data/audit/validation-baseline.json  — no merge driver; needs a decision\n  ⚠️    96  data/audit/url-collision-report.json  — no merge driver; needs a decision\n  ⚠️    94  data/audit/pipeline-health/collect-review-texts.last-success  — no merge driver; needs a decision\n  ⚠️    30  data/audit/pipeline-health/test.last-success  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
     },
     {
       "name": "review-contamination",
@@ -87,10 +87,10 @@
       "name": "duplicate-of-url-mismatch",
       "label": "stale duplicateOf flags (our URL ≠ sibling URL) — full report (gate = spike floor)",
       "command": "node scripts/audit-duplicate-of-url-mismatch.js",
-      "exitCode": 0,
-      "ok": true,
+      "exitCode": 1,
+      "ok": false,
       "crashed": false,
-      "detail": "OK: no duplicateOf URL mismatches found"
+      "detail": "Found 1 duplicateOf URL mismatch(es):\n\n  to-kill-a-mockingbird-west-end-2026/london-theatre--unknown.json\n    → duplicateOf: london-theatre--aliya-al-hassan.json  (url-mismatch)\n    → our url:     https://www.londontheatre.co.uk/show/46321-to-kill-a-mockingbird\n    → sibling url: https://www.londontheatre.co.uk/reviews/to-kill-a-mockingbird-review-wyndhams-theatre\n\nRun with --fix to clear stale flags."
     },
     {
       "name": "cast-changes",
@@ -108,7 +108,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "=== Audit Non-Review Content ===\nMode: DRY RUN | LLM: OFF\n\n\n=== RESULTS ===\nScanned: 34987 scored reviews\nAlready rejected: 430\nHeuristic high-confidence: 1\nHeuristic medium → LLM confirmed: 0\nHeuristic medium → LLM cleared: 0\nHeuristic medium → LLM failed: 0\nTotal flagged: 1\n\n--- Flagged Non-Reviews ---\n  ✗ home-2024/thewrap--robert-hofler.json\n    Type: obituary | Outlet: The Wrap | Score: 76\n    Evidence: passed away; age 78, and one of the sad ironies of his death; passed away last month at age 78\n\nAudit report: /home/runner/work/Broadwayscore/Broadwayscore/data/audit/non-review-audit.json\n\n✓ STRICT: no definitive wrong-page non-reviews among scored reviews."
+      "detail": "=== Audit Non-Review Content ===\nMode: DRY RUN | LLM: OFF\n\n\n=== RESULTS ===\nScanned: 34994 scored reviews\nAlready rejected: 430\nHeuristic high-confidence: 1\nHeuristic medium → LLM confirmed: 0\nHeuristic medium → LLM cleared: 0\nHeuristic medium → LLM failed: 0\nTotal flagged: 1\n\n--- Flagged Non-Reviews ---\n  ✗ home-2024/thewrap--robert-hofler.json\n    Type: obituary | Outlet: The Wrap | Score: 76\n    Evidence: passed away; age 78, and one of the sad ironies of his death; passed away last month at age 78\n\nAudit report: /home/runner/work/Broadwayscore/Broadwayscore/data/audit/non-review-audit.json\n\n✓ STRICT: no definitive wrong-page non-reviews among scored reviews."
     },
     {
       "name": "review-texts",
@@ -117,7 +117,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "  review-texts/true-west-2000/variety--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/turandot-off-broadway-2025/parterre-box--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/two-strangers-bway-2025/wsj--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/ulster-american-irish-repertory-theatre-off-broadway-2026/broadwayworld--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/urinetown-2001/talkinbroadway--unknown.json: Garbage critic name: '(empty)'\n  review-texts/violet-2014/timeout--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/waiting-for-godot-2025/newsday--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/waiting-for-godot-2025/northjerseycom--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/waiting-for-godot-2025/nyt-theater--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/waiting-for-godot-2025/stagebuddy--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/waiting-for-godot-2025/west-end-best-friend--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/waiting-for-godot-2025/wsj--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/war-horse-2011/amny--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/war-horse-2011/chicagotribune--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/war-horse-west-end-2026/london-theatre--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/war-horse-west-end-2026/theupcoming--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/war-horse-west-end-2026/west-end-wilma--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/water-for-elephants-2024/stagebuddy--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/well-ill-let-you-go-off-broadway-2026/the-recs--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/well-ill-let-you-go-off-broadway-2026/theater-life--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/well-ill-let-you-go-off-broadway-2026/theater-pizzazz--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/what-happened-was-off-broadway-2026/broadwayworld--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/what-happened-was-off-broadway-2026/talkinbroadway--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/what-we-did-before-our-moth-days-off-broadway-2026/nytg--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/what-we-did-before-our-moth-days-off-broadway-2026/wsj--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/whos-afraid-of-virginia-woolf-2012/variety--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/whos-afraid-of-virginia-woolf-2012/vulture--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/whos-afraid-of-virginia-woolf-2020/backstage--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/whos-afraid-of-virginia-woolf-2020/nytg--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/whos-afraid-of-virginia-woolf-2020/times-uk--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/witness-for-the-prosecution-west-end-2022/broadwayworld--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/witness-for-the-prosecution-west-end-2022/everything-theatre--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/witness-for-the-prosecution-west-end-2022/theupcoming--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/wonderland-2011/hollywood-reporter--unknown.json: Garbage critic name: '(empty)'\n  review-texts/wonderland-2011/talkinbroadway--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/you-got-older-off-broadway-2026/new-york-city-theatre--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/you-got-older-off-broadway-2026/theatre-reviews-limited--unknown.json: Garbage critic name: 'Unknown'\n\nSummary: 40661/40661 passed, 0 errors, 873 warnings"
+      "detail": "  review-texts/true-west-2000/variety--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/turandot-off-broadway-2025/parterre-box--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/two-strangers-bway-2025/wsj--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/ulster-american-irish-repertory-theatre-off-broadway-2026/broadwayworld--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/urinetown-2001/talkinbroadway--unknown.json: Garbage critic name: '(empty)'\n  review-texts/violet-2014/timeout--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/waiting-for-godot-2025/newsday--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/waiting-for-godot-2025/northjerseycom--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/waiting-for-godot-2025/nyt-theater--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/waiting-for-godot-2025/stagebuddy--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/waiting-for-godot-2025/west-end-best-friend--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/waiting-for-godot-2025/wsj--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/war-horse-2011/amny--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/war-horse-2011/chicagotribune--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/war-horse-west-end-2026/london-theatre--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/war-horse-west-end-2026/theupcoming--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/war-horse-west-end-2026/west-end-wilma--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/water-for-elephants-2024/stagebuddy--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/well-ill-let-you-go-off-broadway-2026/the-recs--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/well-ill-let-you-go-off-broadway-2026/theater-life--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/well-ill-let-you-go-off-broadway-2026/theater-pizzazz--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/what-happened-was-off-broadway-2026/broadwayworld--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/what-happened-was-off-broadway-2026/talkinbroadway--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/what-we-did-before-our-moth-days-off-broadway-2026/nytg--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/what-we-did-before-our-moth-days-off-broadway-2026/wsj--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/whos-afraid-of-virginia-woolf-2012/variety--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/whos-afraid-of-virginia-woolf-2012/vulture--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/whos-afraid-of-virginia-woolf-2020/backstage--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/whos-afraid-of-virginia-woolf-2020/nytg--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/whos-afraid-of-virginia-woolf-2020/times-uk--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/witness-for-the-prosecution-west-end-2022/broadwayworld--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/witness-for-the-prosecution-west-end-2022/everything-theatre--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/witness-for-the-prosecution-west-end-2022/theupcoming--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/wonderland-2011/hollywood-reporter--unknown.json: Garbage critic name: '(empty)'\n  review-texts/wonderland-2011/talkinbroadway--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/you-got-older-off-broadway-2026/new-york-city-theatre--unknown.json: Garbage critic name: 'Unknown'\n  review-texts/you-got-older-off-broadway-2026/theatre-reviews-limited--unknown.json: Garbage critic name: 'Unknown'\n\nSummary: 40660/40660 passed, 0 errors, 872 warnings"
     },
     {
       "name": "cast-contamination",
@@ -162,7 +162,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "[stuck-rescore] 0 stuck needsRescore flag(s) (non-scoreable) of 40 flagged; threshold --max=25"
+      "detail": "[stuck-rescore] 0 stuck needsRescore flag(s) (non-scoreable) of 41 flagged; threshold --max=25"
     }
   ]
 }
