@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-12T06:32:19.215Z",
+  "timestamp": "2026-07-12T07:02:33.885Z",
   "stats": {
     "totalReviews": 39936,
     "alreadyFlagged": 17549,
-    "dateGuardCatches": 50,
+    "dateGuardCatches": 47,
     "directorMismatch": 894,
     "tvFilmSignals": 1096,
-    "londonSignals": 741,
+    "londonSignals": 742,
     "offBroadwaySignals": 466,
     "yearMismatch": 85,
-    "noPublishDate": 3817
+    "noPublishDate": 3816
   },
   "findings": [
     {
@@ -28119,30 +28119,6 @@
     },
     {
       "showId": "a-midsummer-nights-dream-west-end-2026",
-      "file": "london-theatre--aliya-al-hassan.json",
-      "score": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 49d before show (2026-05-02 vs 2026-06-20)"
-        }
-      ]
-    },
-    {
-      "showId": "a-midsummer-nights-dream-west-end-2026",
-      "file": "telegraph--dominic-cavendish.json",
-      "score": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 46d before show (2026-05-05 vs 2026-06-20)"
-        }
-      ]
-    },
-    {
-      "showId": "a-midsummer-nights-dream-west-end-2026",
       "file": "thereviewshub--the-reviews-hub-london.json",
       "score": 62,
       "publishDate": null,
@@ -28158,17 +28134,6 @@
     {
       "showId": "a-midsummer-nights-dream-west-end-2026",
       "file": "thestage--holly-o.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 46d before show (2026-05-05 vs 2026-06-20)"
-        }
-      ]
-    },
-    {
-      "showId": "a-midsummer-nights-dream-west-end-2026",
-      "file": "whatsonstage--theo-bosanquet.json",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -42958,6 +42923,20 @@
       "score": 71,
       "publishDate": "2026-07-01",
       "url": "https://www.londonboxoffice.co.uk/news/post/to-kill-a-mockingbird-wyndhams-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "london-theatre--aliya-al-hassan.json",
+      "score": 94,
+      "publishDate": "2026-07-01",
+      "url": "https://www.londontheatre.co.uk/reviews/to-kill-a-mockingbird-review-wyndhams-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
