@@ -361,6 +361,11 @@ on:
       - 'data/outlet-registry.json'
       - 'tests/fixtures/classify-category-baseline.json'
       - 'public/data/mobile-shows.json'
+      # OB closing-date detector (alert-only) — colocated scripts/lib/*.test.mjs
+      # runs in the lib-test glob, but only if this job fires on push.
+      - 'scripts/detect-ob-closings.js'
+      - 'scripts/lib/ob-closing-detector.js'
+      - 'scripts/lib/ob-closing-detector.test.mjs'
       - 'package.json'
       - 'package-lock.json'
       - 'next.config.*'
