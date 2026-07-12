@@ -590,10 +590,15 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
   // reviews on in-place URL updates — Louise Penn's loureviews.blog reviews
   // were published under the phantom outlet 'Cambridge' this way (her email,
   // 2026-07-12). An unresolvable incoming domain still merges: blocking
-  // requires positive evidence of a mismatch, not mere ignorance.
+  // requires positive evidence of a mismatch, not mere ignorance. And a
+  // resolver mismatch is NOT evidence when the existing outlet's own registry
+  // entry owns the incoming domain — shared-domain losers (sunday-telegraph
+  // on telegraph.co.uk) and domainAliases (ap syndicated on abcnews.go.com)
+  // resolve to the domain's primary owner, not the slot's outlet.
   if (urlChanged && existing.outletId) {
     const incomingOutlet = resolveOutletFromUrl(incoming.url);
-    if (incomingOutlet && incomingOutlet.outletId !== existing.outletId) {
+    if (incomingOutlet && incomingOutlet.outletId !== existing.outletId
+        && !outletOwnsUrlDomain(existing.outletId, incoming.url)) {
       logExclusion({
         script: context.script || 'unknown-caller',
         showId: context.showId || 'unknown',
@@ -755,6 +760,30 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
  * Get the full outlet object from the registry.
  * Returns { displayName, tier, aliases, domain } or null if not found.
  */
+/**
+ * Does this outlet's own registry entry claim the URL's domain?
+ * Checks `domain` plus `domainAliases` (syndication hosts), matching the
+ * hostname exactly or as a subdomain. Used by the mergeReviews cross-outlet
+ * guard: when two outlets share a domain (telegraph/sunday-telegraph) or an
+ * outlet syndicates on another's domain (ap on abcnews.go.com),
+ * resolveOutletFromUrl returns the domain's primary owner — the slot's outlet
+ * still legitimately owns the URL and must not be blocked.
+ */
+function outletOwnsUrlDomain(outletId, url) {
+  if (!outletId || !url) return false;
+  const entry = getOutletFromRegistry(outletId);
+  if (!entry) return false;
+  let hostname;
+  try {
+    hostname = new URL(url).hostname.replace(/^www\./, '').toLowerCase();
+  } catch {
+    return false;
+  }
+  const owned = [entry.domain, ...(entry.domainAliases || [])]
+    .filter(Boolean).map(d => d.replace(/^www\./, '').toLowerCase());
+  return owned.some(d => hostname === d || hostname.endsWith('.' + d));
+}
+
 function getOutletFromRegistry(outletId) {
   const registry = loadOutletRegistry();
   if (!registry || !registry.outlets) return null;
@@ -1563,6 +1592,7 @@ module.exports = {
   resolveOutletFromCritic,
   clearCriticRegistryCache,
   resolveOutletFromUrl,
+  outletOwnsUrlDomain,
   clearDomainCache,
   getOutletAliases,
   isProfileUrl,
