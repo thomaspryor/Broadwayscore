@@ -21,7 +21,7 @@ const require = createRequire(import.meta.url);
 const FIXTURE = fs.mkdtempSync(path.join(os.tmpdir(), 'su-dedup-'));
 process.env.REVIEW_TEXTS_DIR = FIXTURE;
 const {
-  jaccard, isCohesiveGroup, rebuildAlreadyCollapses, audit, fix,
+  jaccard, containment, isCohesiveGroup, rebuildAlreadyCollapses, audit, fix,
 } = require('../../scripts/dedupe-same-url-bylines.js');
 
 const shared = 'A substantive critic review with a clear verdict and thoughtful analysis of the staging and performances. '.repeat(20);
@@ -44,6 +44,22 @@ test('isCohesiveGroup: same fingerprint OR high Jaccard true; low Jaccard false'
   assert.equal(isCohesiveGroup([{ fullText: 'NAV BREADCRUMB ' + shared }, { fullText: shared }]), true); // boilerplate prefix
   assert.equal(isCohesiveGroup([{ fullText: 'wholly different words here about nothing '.repeat(20) }, { fullText: shared }]), false);
   assert.equal(isCohesiveGroup([{ fullText: shared }, { fullText: '' }]), false); // missing text → cannot confirm
+});
+
+test('containment: shorter-is-near-subset → high; disjoint → low', () => {
+  const long = shared + ' plus lots of extra trailing paragraphs and boilerplate advertisement material here. '.repeat(10);
+  assert.ok(containment(shared.slice(0, 800), long) >= 0.85, 'a truncated slice of the article is contained in the full version');
+  assert.ok(containment('completely unrelated vocabulary about different topics entirely nothing shared here whatsoever indeed', shared) < 0.3);
+});
+
+test('isCohesiveGroup: containment catches a truncated same-article extraction that Jaccard misses', () => {
+  // The NYT Brantley/Isherwood / Guardian misfiled-green case: one extraction is
+  // much shorter (truncated) so symmetric Jaccard < 0.7, but the shorter is a
+  // near-subset of the longer → same article.
+  const full = shared + ' additional closing analysis and a verdict paragraph plus outlet boilerplate footer. '.repeat(12);
+  const truncated = shared.slice(0, Math.floor(shared.length * 0.55));
+  assert.ok(jaccard(truncated, full) < 0.7, 'precondition: symmetric Jaccard is below the cohesion threshold');
+  assert.equal(isCohesiveGroup([{ fullText: truncated }, { fullText: full }]), true, 'containment rescues the same-article group');
 });
 
 test('rebuildAlreadyCollapses: identical fingerprint (long) → true (rebuild handles it)', () => {
