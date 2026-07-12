@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-12T02:45:36.399Z",
+  "timestamp": "2026-07-12T05:08:47.025Z",
   "stats": {
-    "totalReviews": 39969,
-    "alreadyFlagged": 17594,
-    "dateGuardCatches": 51,
-    "directorMismatch": 898,
-    "tvFilmSignals": 1097,
-    "londonSignals": 741,
-    "offBroadwaySignals": 467,
-    "yearMismatch": 86,
-    "noPublishDate": 3997
+    "totalReviews": 39934,
+    "alreadyFlagged": 17547,
+    "dateGuardCatches": 50,
+    "directorMismatch": 894,
+    "tvFilmSignals": 1096,
+    "londonSignals": 740,
+    "offBroadwaySignals": 466,
+    "yearMismatch": 85,
+    "noPublishDate": 3820
   },
   "findings": [
     {
@@ -6578,20 +6578,6 @@
       ]
     },
     {
-      "showId": "equus-west-end-2026",
-      "file": "telegraph--unknown.json",
-      "score": 96,
-      "publishDate": null,
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/equus-review-menier-chocolate-factory/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
       "showId": "escape-to-margaritaville-2018",
       "file": "broadwayworld--michael-dale.json",
       "score": 72,
@@ -8219,7 +8205,7 @@
     },
     {
       "showId": "giant-west-end-2025",
-      "file": "sunday-telegraph--dominic-cavendish.json",
+      "file": "telegraph--dominic-cavendish.json",
       "score": 82,
       "publishDate": "2025-05-02",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/giant-harold-pinter-theatre-review-john-lithgow/",
@@ -8510,20 +8496,6 @@
     },
     {
       "showId": "glengarry-glen-ross-west-end-2026",
-      "file": "artsdesk--unknown.json",
-      "score": 57,
-      "publishDate": null,
-      "url": "https://theartsdesk.com/theatre/glengarry-glen-ross-old-vic-review-ladies-night-odds-mamets-machismo",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
-        }
-      ]
-    },
-    {
-      "showId": "glengarry-glen-ross-west-end-2026",
       "file": "city-am--steve-dinneen.json",
       "score": 39,
       "publishDate": "2026-06-22",
@@ -8737,7 +8709,7 @@
     },
     {
       "showId": "glengarry-glen-ross-west-end-2026",
-      "file": "sunday-telegraph--dominic-cavendish.json",
+      "file": "telegraph--dominic-cavendish.json",
       "score": 64,
       "publishDate": "2026-06-18",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/glengarry-glen-ross-at-the-old-vic-review-3-stars/",
@@ -14126,7 +14098,7 @@
       "showId": "little-bear-ridge-road-2025",
       "file": "timeout--adam-feldman.json",
       "score": 92,
-      "publishDate": null,
+      "publishDate": "October 30th, 2025",
       "url": "https://www.timeout.com/newyork/theater/little-bear-ridge-road-broadway-review-laurie-metcalf-micah-stock-samuel-hunter",
       "findings": [
         {
@@ -14460,20 +14432,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"apple tv\""
-        }
-      ]
-    },
-    {
-      "showId": "macbeth-2022",
-      "file": "timeout--adam-feldman.json",
-      "score": 25,
-      "publishDate": "April 29, 2022",
-      "url": "http://www.timeout.com/newyork/theater/macbeth-22",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jack o'brien\" from macbeth-2013"
         }
       ]
     },
@@ -15786,7 +15744,7 @@
       "showId": "natasha-pierre-and-the-great-comet-of-1812-2016",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 95,
-      "publishDate": null,
+      "publishDate": "November 14th, 2016",
       "url": "https://www.hollywoodreporter.com/review/natasha-pierre-great-comet-1812-review-947155",
       "findings": [
         {
@@ -18940,7 +18898,7 @@
       "showId": "romeo-juliet-2024",
       "file": "the-interested-bystander--cary-wong.json",
       "score": 76,
-      "publishDate": null,
+      "publishDate": "October 24th, 2024",
       "url": "https://www.interestedbystander.com/2024/10/theater-review-romeo-juliet-jellicle.html",
       "findings": [
         {
@@ -19118,7 +19076,7 @@
       "showId": "sea-wall-a-life-2019",
       "file": "theatre-reviews-limited--david-roberts.json",
       "score": 25,
-      "publishDate": null,
+      "publishDate": "September 4th, 2019",
       "url": "https://www.theatrereviews.com/off-broadway-review-sea-wall-a-life-at-the-hudson-theatre/",
       "findings": [
         {
@@ -20328,7 +20286,7 @@
       "showId": "spring-awakening-2015",
       "file": "as-her-world-turns--erica-meyer.json",
       "score": 89,
-      "publishDate": null,
+      "publishDate": "November 9th, 2015",
       "url": "http://www.asherworldturns.com/theater-recap-fall-2015/",
       "findings": [
         {
@@ -20361,7 +20319,7 @@
       "showId": "spring-awakening-2015",
       "file": "curtainup--elyse-sommer.json",
       "score": 89,
-      "publishDate": null,
+      "publishDate": "September 26th, 2015",
       "url": "http://www.curtainup.com/springawakeningdeaf15.html",
       "findings": [
         {
@@ -20450,7 +20408,7 @@
       "showId": "spring-awakening-2015",
       "file": "theater-life--david-sheward.json",
       "score": 88,
-      "publishDate": null,
+      "publishDate": "September 30th, 2015",
       "url": "http://theaterlife.com/node/15266",
       "findings": [
         {
@@ -23327,7 +23285,7 @@
     },
     {
       "showId": "the-guilty-west-end-2026",
-      "file": "sunday-telegraph--dominic-cavendish.json",
+      "file": "telegraph--dominic-cavendish.json",
       "score": 88,
       "publishDate": "2026-07-01",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/guilty-donmar-warehouse-review/",
@@ -23612,20 +23570,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "the-king-and-i-2015",
-      "file": "nytimes--ben-brantley.json",
-      "score": 86,
-      "publishDate": "April 16, 2015",
-      "url": "http://www.nytimes.com/2015/04/17/theater/review-the-king-and-i-back-on-broadway.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"christopher renshaw\" from the-king-and-i-1996"
         }
       ]
     },
@@ -24181,7 +24125,7 @@
       "file": "deadline--jeremy-gerard.json",
       "score": null,
       "publishDate": "November 30, 2017",
-      "url": "https://deadline.com/2017/11/broadway-review-uma-thurman-beau-willimon-the-parisian-woman-1202217774/",
+      "url": "http://deadline.com/2017/11/broadway-review-uma-thurman-beau-willimon-the-parisian-woman-1202217774/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -25776,34 +25720,10 @@
     },
     {
       "showId": "to-kill-a-mockingbird-west-end-2026",
-      "file": "sunday-telegraph--dominic-cavendish.json",
-      "score": 97,
-      "publishDate": "2022-04-01",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/kill-mockingbird-review-aaron-sorkins-revelatory-adaptation/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1546d before show (2022-04-01 vs 2026-06-25)"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"gielgud\""
-        },
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2018 (2x) more than 2026 (0x). 2018 matches production: to-kill-a-mockingbird-2018"
-        }
-      ]
-    },
-    {
-      "showId": "to-kill-a-mockingbird-west-end-2026",
       "file": "telegraph--dominic-cavendish.json",
       "score": 92,
       "publishDate": "2022-03-31",
-      "url": null,
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/kill-mockingbird-review-aaron-sorkins-revelatory-adaptation/",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -25919,7 +25839,7 @@
       "showId": "topdog-underdog-2022",
       "file": "new-york-sun--elysa-gardner.json",
       "score": 88,
-      "publishDate": null,
+      "publishDate": "October 20th, 2022",
       "url": "https://www.nysun.com/article/this-topdog-sheds-all-underdog-status",
       "findings": [
         {
@@ -25985,7 +25905,7 @@
       "showId": "topdog-underdog-2022",
       "file": "theatermania--david-gordon.json",
       "score": 81,
-      "publishDate": null,
+      "publishDate": "October 20th, 2022",
       "url": "https://www.theatermania.com/broadway/news/review-topdog-underdog-broadway-revival_94441.html",
       "findings": [
         {
@@ -26486,30 +26406,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"marianne elliott\" from war-horse-2011"
-        }
-      ]
-    },
-    {
-      "showId": "war-horse-west-end-2026",
-      "file": "standard--unknown.json",
-      "score": 78,
-      "publishDate": "2026-04-01",
-      "url": "https://www.standard.co.uk/culture/theatre/war-horse-review-national-theatre-b1284771.html",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 45d before show (2026-04-01 vs 2026-05-16)"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"marianne elliott\" from war-horse-2011"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -28262,6 +28158,17 @@
     {
       "showId": "a-midsummer-nights-dream-west-end-2026",
       "file": "thestage--holly-o.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 46d before show (2026-05-05 vs 2026-06-20)"
+        }
+      ]
+    },
+    {
+      "showId": "a-midsummer-nights-dream-west-end-2026",
+      "file": "whatsonstage--theo-bosanquet.json",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -30477,7 +30384,7 @@
       "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
       "file": "london-theatre--suzy-evans.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "December 13th, 2021",
       "url": "https://www.londontheatre.co.uk/reviews/cabaret-at-the-kit-kat-club-review-eddie-redmayne-and-jessie-buckley",
       "findings": [
         {
@@ -31614,6 +31521,20 @@
     },
     {
       "showId": "evening-all-afternoon-west-end-2026",
+      "file": "guardian--arifa-akbar.json",
+      "score": 74,
+      "publishDate": "2026-02-25",
+      "url": "https://www.theguardian.com/stage/2026/feb/25/evening-all-afternoon-review-donmar-warehouse-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "evening-all-afternoon-west-end-2026",
       "file": "london-theatre--holly-omahony.json",
       "score": 64,
       "publishDate": "February 25th, 2026",
@@ -32162,7 +32083,7 @@
       "showId": "fun-home-2015",
       "file": "cititour--brian-scott-lipton.json",
       "score": 88,
-      "publishDate": null,
+      "publishDate": "November 17th, 2015",
       "url": "https://cititour.com/NYC_Broadway/Fun-Home/394",
       "findings": [
         {
@@ -32525,7 +32446,7 @@
       "showId": "hadestown-2019",
       "file": "cititour--brian-scott-lipton.json",
       "score": 81,
-      "publishDate": null,
+      "publishDate": "April 17th, 2019",
       "url": "https://cititour.com/NYC_Broadway/Hadestown/803",
       "findings": [
         {
@@ -35607,7 +35528,7 @@
       "showId": "matilda-the-musical-west-end-2021",
       "file": "london-theatre--peter-brown.json",
       "score": 92,
-      "publishDate": null,
+      "publishDate": "November 24th, 2011",
       "url": "https://www.londontheatre.co.uk/reviews/matilda-the-musical-review",
       "findings": [
         {
@@ -36698,7 +36619,7 @@
       "showId": "oliver-west-end-2024",
       "file": "standard--unknown.json",
       "score": 96,
-      "publishDate": null,
+      "publishDate": "January 15th, 2025",
       "url": "https://www.standard.co.uk/culture/theatre/oliver-gielgud-theatre-review-cameron-mackintosh-matthew-bourne-b1204920.html",
       "findings": [
         {
@@ -37943,7 +37864,7 @@
       "showId": "sea-wall-a-life-2019",
       "file": "cititour--brian-scott-lipton.json",
       "score": 80,
-      "publishDate": null,
+      "publishDate": "August 8th, 2019",
       "url": "https://cititour.com/NYC_Broadway/Sea-WallA-Life/848",
       "findings": [
         {
@@ -39977,7 +39898,7 @@
       "showId": "the-bands-visit-2017",
       "file": "curtainup--elyse-sommer.json",
       "score": 85,
-      "publishDate": null,
+      "publishDate": "November 9th, 2017",
       "url": "https://www.curtainup.com/bandsvisitbway.html",
       "findings": [
         {
@@ -39991,7 +39912,7 @@
       "showId": "the-bands-visit-2017",
       "file": "dailybeast--tim-teeman.json",
       "score": 88,
-      "publishDate": null,
+      "publishDate": "November 9th, 2017",
       "url": "https://www.thedailybeast.com/the-bands-visit-is-the-best-new-musical-on-broadway/",
       "findings": [
         {
@@ -40019,7 +39940,7 @@
       "showId": "the-bands-visit-2017",
       "file": "newsday--barbara-schuler.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "November 9th, 2017",
       "url": "https://www.newsday.com/entertainment/theater/the-band-s-visit-review-1.14856296",
       "findings": [
         {
@@ -41563,7 +41484,7 @@
       "showId": "the-lion-king-west-end-2021",
       "file": "guardian--unknown.json",
       "score": 58,
-      "publishDate": null,
+      "publishDate": "January 4th, 2011",
       "url": "https://www.theguardian.com/stage/1999/oct/21/theatre.artsfeatures",
       "findings": [
         {
@@ -42322,7 +42243,7 @@
     {
       "showId": "the-price-off-west-end-2026",
       "file": "guardian--unknown.json",
-      "publishDate": null,
+      "publishDate": "April 24th, 2026",
       "url": "https://www.theguardian.com/stage/2026/apr/24/the-price-review-marylebone-theatre-london-arthur-miller-henry-goodman",
       "findings": [
         {
@@ -42497,20 +42418,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
-        }
-      ]
-    },
-    {
-      "showId": "the-sign-in-sidney-brusteins-window-2023",
-      "file": "cititour--brian-scott-lipton.json",
-      "score": 86,
-      "publishDate": "2023-05-05",
-      "url": "https://cititour.com/NYC_News/Review-See-Oscar-Issac-in-the-Sign-in-Sidney-Brusteins-Window/7315",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"bam\""
         }
       ]
     },
