@@ -67,7 +67,9 @@ function callSonnet(prompt) {
   if (!apiKey) throw new Error('ANTHROPIC_API_KEY not set');
   const body = JSON.stringify({
     model: MODEL,
-    max_tokens: 2000,
+    // Split proposals for L cards run long (300+ chars per child, several
+    // children) — 2000 truncated mid-JSON on the first live test.
+    max_tokens: 8000,
     messages: [{ role: 'user', content: prompt }],
   });
   return new Promise((resolve, reject) => {
@@ -85,7 +87,11 @@ function callSonnet(prompt) {
         if (res.statusCode !== 200) return reject(new Error(`Anthropic HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
         try {
           const json = JSON.parse(data);
-          resolve(json.content?.[0]?.text || '');
+          // content[0] is not always the text block (thinking-capable models
+          // may lead with a thinking block) — collect every text block.
+          const text = (json.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
+          if (json.stop_reason === 'max_tokens') return reject(new Error(`response truncated at max_tokens (${text.length} chars)`));
+          resolve(text);
         } catch (e) {
           reject(new Error(`Anthropic parse error: ${e.message}`));
         }
