@@ -6,7 +6,8 @@ name: Rebuild Reviews (Fast)
 concurrency:
   # Per-run group: GH concurrency queue depth is 1, so a shared "rebuild-reviews"
   # group cancelled 5+ queued rebuilds on Beaches + Rocky Horror opening nights.
-  # The opening-night-orchestrator serializes externally via `gh run watch`, so
+  # The opening-night-orchestrator serializes externally by waiting on each
+  # poller run (scripts/lib/wait-for-run.sh), so
   # per-run groups are safe here. See memory/feedback_gha_concurrency_queue_limit.md.
   group: rebuild-fast-${{ github.run_id }}
   cancel-in-progress: false
