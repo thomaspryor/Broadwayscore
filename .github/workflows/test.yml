@@ -172,8 +172,10 @@ on:
       # hook. Without these paths an edit to the lint or its allowlists pushes
       # with ZERO CI (silent-gate class, feedback_test_yml_push_path_allowlist).
       - 'scripts/lint-write-routing.sh'
+      - 'scripts/lint-workflow-guards.sh'
       - '.review-write-guard-exempt.txt'
       - '.reviews-json-write-exempt.txt'
+      - '.gitattributes'
       - 'scripts/hooks/**'
       - 'scripts/lib/show-matching.js'
       # LBO sitemap sweep — venue-agnostic individual-review matching + the
@@ -627,84 +629,25 @@ jobs:
 
       - name: Check workflows don't bypass npm prebuild lifecycle
         run: |
-          # `npx next build` (or bare `next build`) in a workflow step skips
-          # the npm `prebuild` lifecycle hook (scripts/prebuild.sh), which is
-          # the only thing that generates the gitignored
-          # data/cast-manifest.json and data/actor-slugs.json files. Without
-          # those, `next build` fails with
-          #   Module not found: '../../data/cast-manifest.json'.
-          # The 2026-05-26 Test UGC Features failure was caused by exactly
-          # this in test-ugc.yml. All workflows must invoke `npm run build`,
-          # which runs prebuild → build atomically.
-          VIOLATIONS=""
-          for f in .github/workflows/*.yml; do
-            # Match `npx next build` and `npx --no-install next build`; tolerate
-            # extra flags after. Avoid matching `npm run build` (which is fine).
-            if grep -E '^[[:space:]]*(run:[[:space:]]*)?(npx([[:space:]]+--[a-z-]+)*[[:space:]]+next[[:space:]]+build|next[[:space:]]+build)([[:space:]]|$)' "$f" >/dev/null 2>&1; then
-              VIOLATIONS="$VIOLATIONS $(basename "$f")"
-            fi
-          done
-          if [ -n "$VIOLATIONS" ]; then
-            echo "::error::Workflows invoke 'next build' directly (bypasses npm prebuild):$VIOLATIONS"
-            echo "Fix: change 'npx next build' to 'npm run build'. The prebuild hook"
-            echo "generates data/cast-manifest.json + data/actor-slugs.json (both gitignored)"
-            echo "which next build imports at compile time."
-            exit 1
-          fi
-          echo "All workflows use 'npm run build' (prebuild lifecycle preserved)"
+          # Logic lives in scripts/lint-workflow-guards.sh — shared with the
+          # local pre-push hook (scripts/hooks/pre-push) so violations block
+          # at push time instead of reddening main.
+          bash scripts/lint-workflow-guards.sh prebuild
 
       - name: Check checkout-core-data has matching push-core-data
         run: |
-          # Workflows that checkout core data AND have write permissions
-          # must also push-core-data, or changes get lost on next deploy.
-          MISSING=""
-          for f in .github/workflows/*.yml; do
-            HAS_CHECKOUT=$(grep -c 'checkout-core-data' "$f" 2>/dev/null || echo 0)
-            HAS_WRITE=$(grep -c 'contents: write' "$f" 2>/dev/null || echo 0)
-            HAS_PUSH=$(grep -c 'push-core-data' "$f" 2>/dev/null || echo 0)
-            if [ "$HAS_CHECKOUT" -gt 0 ] && [ "$HAS_WRITE" -gt 0 ] && [ "$HAS_PUSH" -eq 0 ]; then
-              MISSING="$MISSING $(basename $f)"
-            fi
-          done
-          if [ -n "$MISSING" ]; then
-            echo "::error::Workflows using checkout-core-data with write permissions but missing push-core-data:$MISSING"
-            echo "Add push-core-data action to sync changes back to the private repo."
-            exit 1
-          fi
-          echo "All writable workflows with checkout-core-data have matching push-core-data"
+          # WARNING-ONLY: the original inline version was a dead no-op since
+          # birth (grep -c "0\n0" bug made the integer tests silently error);
+          # fixed, the heuristic matches ~50 mostly-read-only workflows, so it
+          # warns instead of failing until it's redesigned to detect actual
+          # core-data WRITES. See scripts/lint-workflow-guards.sh.
+          bash scripts/lint-workflow-guards.sh core-data-pairing
 
       - name: Check workflows don't git-add private core data files
         run: |
-          # Core data files live in the private broadway-scorecard-data repo
-          # and are gitignored here. They sync via push-core-data after each
-          # workflow. Any `git add data/<core-file>` in this repo is either a
-          # silent no-op (diff on an ignored file is always clean) or a hard
-          # failure (fatal: ignored by one of your .gitignore files).
-          # 2026-04-14: update-lottery-rush.yml hit the hard failure; 5 other
-          # workflows silently failed the same way for weeks.
-          #
-          # The authoritative core-data list is in push-core-data/action.yml
-          # (the loop over files to copy to /tmp/core-data-checkout). Keep
-          # these in sync. Force-adds (`git add -f`) are allowed — they are
-          # explicit overrides, used legitimately for opening-night-sent.json.
-          CORE_FILES="shows.json reviews.json grosses.json grosses-history.json commercial.json audience-buzz.json critic-consensus.json critic-registry.json outlet-registry.json diary-shows.json audience-reviews-lbo.json followers.json subscribers.json subscribers-westend.json"
-          VIOLATIONS=""
-          for f in .github/workflows/*.yml; do
-            for core in $CORE_FILES; do
-              # Match `git add` (no -f/--force) then data/<core>. Reject both
-              # `git add data/shows.json` and `git add a b data/shows.json c`.
-              if grep -E "^[[:space:]]*git add([[:space:]]+[^-][^[:space:]]*)*[[:space:]]+data/$core([[:space:]]|$)" "$f" >/dev/null 2>&1; then
-                VIOLATIONS="$VIOLATIONS $(basename "$f"):$core"
-              fi
-            done
-          done
-          if [ -n "$VIOLATIONS" ]; then
-            echo "::error::Workflows git-add private core data files:$VIOLATIONS"
-            echo "These files are gitignored and synced via push-core-data."
-            echo "Remove them from git-add lines. See .github/workflows/CLAUDE.md §Data Sync Architecture."
-            exit 1
-          fi
-          echo "No workflows git-add private core data files"
+          # Logic lives in scripts/lint-workflow-guards.sh — shared with the
+          # local pre-push hook.
+          bash scripts/lint-workflow-guards.sh private-git-add
 
       - name: Check for tracked symlinks or gitlinks
         run: |
@@ -722,141 +665,29 @@ jobs:
 
       - name: Check .gitattributes merge drivers are registered
         run: |
-          # A custom `merge=<name>` driver in .gitattributes silently NO-OPS unless
-          # `git config merge.<name>.driver ...` is registered. When unregistered,
-          # git falls back to a normal 3-way merge and CONFLICTS on the very files
-          # the driver was meant to auto-resolve — with zero error (feature-flags.ts
-          # merge=ours sat broken this way until 830c1f5b48). This guard fails the
-          # build if any custom driver lacks a registration in setup-local-data.sh.
-          #
-          # NOTE: this protects the LOCAL/HUMAN bare-`git merge` path only. CI bots
-          # do NOT use these per-path drivers — push-with-retry.sh resolves via
-          # `git rebase -X theirs` / `git merge -X ours` (strategy options). So the
-          # canonical (and sufficient) registration point is setup-local-data.sh.
-          #
-          # Built-in merge drivers need no registration; everything else does.
-          BUILTIN="union text binary"
-          REG_FILE="scripts/setup-local-data.sh"
-          MISSING=""
-          DRIVERS=$(grep -oE 'merge=[A-Za-z0-9_.-]+' .gitattributes | sed 's/^merge=//' | sort -u)
-          for d in $DRIVERS; do
-            if echo "$BUILTIN" | grep -qw "$d"; then continue; fi
-            # Tolerant match: `git config [--global] merge.<d>.driver ...`
-            if ! grep -qE "merge\.$d\.driver" "$REG_FILE"; then
-              MISSING="$MISSING $d"
-            fi
-          done
-          if [ -n "$MISSING" ]; then
-            echo "::error::Custom .gitattributes merge driver(s) not registered in $REG_FILE:$MISSING"
-            echo "::error::Unregistered drivers silently no-op and let these files CONFLICT on a human git merge."
-            echo "Fix: add a line like 'git config --global merge.<name>.driver <command>' to $REG_FILE,"
-            echo "or, if <name> is actually a git built-in, add it to the BUILTIN allowlist in this step."
-            exit 1
-          fi
-          echo "All custom merge drivers registered:${DRIVERS:+ }$DRIVERS"
+          # Logic lives in scripts/lint-workflow-guards.sh — shared with the
+          # local pre-push hook.
+          bash scripts/lint-workflow-guards.sh merge-drivers
 
       - name: Check scraping workflows have multi-service fallback
         run: |
-          # Any workflow that uses SCRAPINGBEE_API_KEY for actual scraping
-          # must also have BRIGHTDATA_TOKEN so there's always a fallback.
-          # Workflows exempt from this rule. Two categories:
-          # (A) Health checks / credential validators — SB key checked for validity, not scraping
-          # (B) Scripts require JS rendering — BD (raw HTML) can't replace SB here; correct
-          #     fallback is SB → Playwright (already implemented in the scripts themselves)
-          EXEMPT="
-            check-secrets-health.yml
-            opening-night-orchestrator.yml
-            check-cookie-health.yml
-            data-health-check.yml
-            backfill-historical-metadata.yml
-            check-show-freshness.yml
-            scrape-alltime-grosses.yml
-            weekly-grosses.yml
-            reddit-engagement-digest.yml
-            scrape-dtli-show-score.yml
-            scraper-cost-report.yml
-            btc-results-preview.yml
-          "
-          VIOLATIONS=""
-          for f in .github/workflows/*.yml; do
-            name=$(basename "$f")
-            # Skip exempt workflows
-            if echo "$EXEMPT" | grep -qw "$name"; then continue; fi
-            if grep -q "SCRAPINGBEE_API_KEY" "$f" && ! grep -q "BRIGHTDATA_TOKEN" "$f"; then
-              VIOLATIONS="$VIOLATIONS $name"
-            fi
-          done
-          if [ -n "$VIOLATIONS" ]; then
-            echo "::error::Scraping workflows must use scraper.js with BD+SB fallback, not a single service."
-            echo "::error::Missing BRIGHTDATA_TOKEN in:$VIOLATIONS"
-            echo "Fix: add BRIGHTDATA_TOKEN: \${{ secrets.BRIGHTDATA_TOKEN }} to the scraping step's env block."
-            echo "If this workflow legitimately uses only SB (health check, etc), add it to the EXEMPT list in test.yml."
-            exit 1
-          fi
-          echo "All scraping workflows have multi-service fallback"
+          # fetchPage()/BD+SB fallback enforcement. Logic lives in
+          # scripts/lint-workflow-guards.sh (EXEMPT list included) — shared
+          # with the local pre-push hook.
+          bash scripts/lint-workflow-guards.sh scraping-fallback
 
       - name: Check Theatr token is not passed to unauthorized workflows
         run: |
-          # THEATR_REFRESH_TOKEN burns on use (Theatr rotates refresh tokens).
-          # Only two workflows may use it:
-          #   - update-theatr.yml (the single authorized caller)
-          #   - rotate-theatr-token.yml (one-click manual rotation)
-          # Any other workflow that passes this secret will silently burn the
-          # token chain — fetch-all-image-formats.yml did this for 2 weeks
-          # before it was caught (April 2026).
-          ALLOWED="update-theatr.yml rotate-theatr-token.yml"
-          VIOLATIONS=""
-          for f in .github/workflows/*.yml; do
-            name=$(basename "$f")
-            if echo "$ALLOWED" | grep -qw "$name"; then continue; fi
-            # Match actual secret usage, not comments
-            if grep -E '^\s+THEATR_REFRESH_TOKEN:\s+\$\{\{' "$f" >/dev/null 2>&1; then
-              VIOLATIONS="$VIOLATIONS $name"
-            fi
-          done
-          if [ -n "$VIOLATIONS" ]; then
-            echo "::error::THEATR_REFRESH_TOKEN must only be used by update-theatr.yml and rotate-theatr-token.yml"
-            echo "::error::Unauthorized usage in:$VIOLATIONS"
-            echo "Theatr rotates refresh tokens on every use. Multiple callers race and burn the token chain."
-            echo "Use data/theatr-image-cache.json (populated by update-theatr.yml) instead of calling the API directly."
-            exit 1
-          fi
-          echo "Theatr token restricted to authorized workflows only"
+          # Logic lives in scripts/lint-workflow-guards.sh — shared with the
+          # local pre-push hook.
+          bash scripts/lint-workflow-guards.sh theatr-token
 
       - name: Check demo feature flags not used in server components
         run: |
-          # Demo feature flags require window (runtime) and MUST be checked
-          # inside 'use client' components. In server components / SSR pages,
-          # isDemo() returns false and the feature silently disappears.
-          # See: fix 7770e1b567 (theater scorecard invisible on demo).
-          #
-          # Emergency escape hatch (opening-night hotfixes only): if the
-          # commit message contains the literal "[skip-demo-flag-check]",
-          # this gate exits 0. Use sparingly and follow up with a real fix.
-          if git log -1 --format=%B | grep -Fq "[skip-demo-flag-check]"; then
-            echo "::warning::demo-flag check skipped via [skip-demo-flag-check] commit-message tag"
-            exit 0
-          fi
-          # Keep in sync with DEMO_FEATURES in src/config/feature-flags.ts.
-          # awards/awardScoreV2 launched 2026-05-17 — removed from this list now
-          # that their getters return true unconditionally (server-side usage is
-          # safe). Re-add any flag here if you put it back in DEMO_FEATURES.
-          DEMO_FLAGS="theaterScorecard|showPageRedesign|userAccounts|showtimes"
-          VIOLATIONS=""
-          for f in $(grep -rlE "featureFlags\.(${DEMO_FLAGS})" src/ 2>/dev/null || true); do
-            # Check if file has 'use client' directive
-            if ! head -3 "$f" | grep -q "'use client'"; then
-              VIOLATIONS="$VIOLATIONS $f"
-            fi
-          done
-          if [ -n "$VIOLATIONS" ]; then
-            echo "::error::Demo feature flags used in server components (will always be false during SSR):"
-            echo "::error::$VIOLATIONS"
-            echo "Move the featureFlags check inside a 'use client' component."
-            echo "Emergency bypass (opening-night hotfix only): include [skip-demo-flag-check] in the commit message."
-            exit 1
-          fi
-          echo "All demo feature flag checks are in client components"
+          # Logic lives in scripts/lint-workflow-guards.sh — shared with the
+          # local pre-push hook. [skip-demo-flag-check] commit-message bypass
+          # preserved inside the script.
+          bash scripts/lint-workflow-guards.sh demo-flags
 
       - name: Check scripts route review-texts writes through safeWriteReview
         run: |
