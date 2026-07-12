@@ -272,7 +272,7 @@ export default function SharedListClient({ slug }: { slug: string }) {
           <p className="text-sm text-gray-400 mb-3">Want to make your own list?</p>
           <Link
             href="/my-shows?tab=lists"
-            className="inline-block px-6 py-2.5 text-sm font-semibold text-black bg-[#FFD700] rounded-lg hover:bg-[#e6c200] transition-colors"
+            className="btn-primary text-sm"
           >
             Create your own list
           </Link>

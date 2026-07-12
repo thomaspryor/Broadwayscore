@@ -59,8 +59,10 @@ function mapStatus(notionStatus) {
 // sidecar map is lost.
 function mapCardToTask(card, taskId) {
   const shortNotes = (card.notes || '').replace(/\s+/g, ' ').trim().slice(0, 400);
+  // Category is the third meta segment — bsc-next's launcher filter keys on it
+  // (Marketing/Partnerships are human territory, never default-picked).
   const descLines = [
-    `[notion:${card.id}] ${card.priority || 'no-priority'} · ${card.status || 'no-status'}`,
+    `[notion:${card.id}] ${card.priority || 'no-priority'} · ${card.status || 'no-status'} · ${card.category || 'no-category'}`,
     card.url || '',
     shortNotes,
   ].filter(Boolean);
@@ -83,7 +85,9 @@ function planPull(cards, existingMap) {
   for (const card of cards) {
     const entry = existingMap[card.id];
     if (!entry) { plan.toCreate.push({ card }); continue; }
-    if (entry.syncedStatus !== card.status) {
+    // fmt 2 = description carries the category segment; older mirrors get
+    // rewritten once so bsc-next's category filter sees every task.
+    if (entry.syncedStatus !== card.status || entry.fmt !== 2) {
       plan.toUpdate.push({ card, taskId: entry.taskId });
     } else {
       plan.unchanged.push(card.id);
@@ -236,7 +240,7 @@ function cmdPull(args) {
       id = dry ? id : allocateFreeId(dir, id);
       const task = mapCardToTask(card, id);
       if (!dry) writeTask(dir, task);
-      map[card.id] = { taskId: task.id, name: card.name, syncedStatus: card.status, url: card.url, pushed: false };
+      map[card.id] = { taskId: task.id, name: card.name, syncedStatus: card.status, url: card.url, pushed: false, fmt: 2 };
       created.push({ taskId: task.id, name: card.name });
       id++;
     };
@@ -245,10 +249,18 @@ function cmdPull(args) {
     for (const { card, taskId } of plan.toUpdate) {
       if (!dry && !taskBelongsTo(dir, taskId, card.id)) { doCreate(card); continue; }
       const existing = readTask(dir, taskId) || {};
-      const task = { ...mapCardToTask(card, taskId), blocks: existing.blocks || [], blockedBy: existing.blockedBy || [] };
+      // Never downgrade a live session's local progress: a session that claimed
+      // the task (in_progress) or finished it (completed) outranks the mapped
+      // Notion status, which can lag behind (2026-07-12 ship-check finding —
+      // a pull could un-claim active work and cause duplicate pickup).
+      const mapped = mapCardToTask(card, taskId);
+      if (existing.status === 'completed') mapped.status = 'completed';
+      else if (existing.status === 'in_progress' && mapped.status === 'pending') mapped.status = 'in_progress';
+      const task = { ...mapped, blocks: existing.blocks || [], blockedBy: existing.blockedBy || [] };
       if (!dry) writeTask(dir, task);
       map[card.id].syncedStatus = card.status;
       map[card.id].name = card.name;
+      map[card.id].fmt = 2;
       updated.push({ taskId, name: card.name });
     }
     if (!dry) { writeMap(dir, map); writeHwm(dir, id); }

@@ -25,6 +25,7 @@ import { fileURLToPath } from 'url';
 import { createRequire } from 'module';
 const _require = createRequire(import.meta.url);
 const { CLAUDE_SONNET } = _require('./lib/models');
+const { resolveShow, resolveShowMatches, extractShowTitlesFromText } = _require('./lib/resolve-show.js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -81,24 +82,15 @@ const BUG_CATEGORIES = {
 const DEFAULT_FILES = ['src/lib/engine.ts', 'src/config/scoring.ts', 'src/app/page.tsx'];
 
 /**
- * Extract potential show names from user message by matching against shows.json titles
+ * Extract potential show names from user message by matching against shows.json
+ * titles. Token-boundary matching via resolve-show.js — the old flat substring
+ * scan matched "Rent" inside the word "currently" (GH issue #393).
  */
 function extractShowNamesFromMessage(message) {
   try {
     const raw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/shows.json'), 'utf8'));
     const shows = raw.shows || raw;
-    const lower = message.toLowerCase();
-    const matched = new Set();
-
-    for (const show of shows) {
-      // Match show titles that appear in the message (case-insensitive)
-      const titleLower = show.title.toLowerCase();
-      if (titleLower.length >= 4 && lower.includes(titleLower)) {
-        matched.add(show.title);
-      }
-    }
-
-    return Array.from(matched);
+    return extractShowTitlesFromText(message, shows);
   } catch {
     return [];
   }
@@ -111,13 +103,7 @@ function loadAllShowData(showName) {
   try {
     const raw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/shows.json'), 'utf8'));
     const shows = raw.shows || raw;
-    const lower = showName.toLowerCase().trim();
-    const matches = shows.filter(s =>
-      s.title.toLowerCase() === lower ||
-      s.slug === lower ||
-      s.title.toLowerCase().includes(lower) ||
-      lower.includes(s.title.toLowerCase())
-    );
+    const matches = resolveShowMatches(showName, shows);
 
     if (matches.length === 0) return [];
 
@@ -198,15 +184,9 @@ function loadShowData(showName) {
     return null;
   }
 
-  // Simple show matching (case-insensitive title or slug)
-  const lower = showName.toLowerCase().trim();
-  const show = shows.find(s =>
-    s.title.toLowerCase() === lower ||
-    s.slug === lower ||
-    s.slug === lower.replace(/\s+/g, '-') ||
-    s.title.toLowerCase().includes(lower) ||
-    lower.includes(s.title.toLowerCase())
-  );
+  // Ranked show matching (exact > normalized > token-sequence) — the old flat
+  // OR-chain let "Ma" hijack "MISTERMAN" via reverse-substring (GH issue #393).
+  const show = resolveShow(showName, shows);
 
   if (!show) return null;
 
