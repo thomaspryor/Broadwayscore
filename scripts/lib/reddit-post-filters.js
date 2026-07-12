@@ -134,6 +134,27 @@ const REDDIT_INFLATION_RATIO_GENERIC = 2;
 // votes) from being falsely suppressed. Notion 39a637c5.
 const REDDIT_INFLATION_RATIO_OTHER = 4;
 
+// Canonical non-Reddit audience source keys in audience-buzz.json. Used to build
+// the `otherCounts` fed to isRedditVolumeInflated so the suppressor and the audit
+// measure corroboration against the SAME sources — omitting West End sources
+// (seatplan/lbo/ltd) made the audit see maxOther=0 for WE shows and over-flag
+// them while the suppressor (which included them) correctly left them alone.
+const AUDIENCE_OTHER_SOURCE_NAMES = ['showScore', 'mezzanine', 'theatr', 'broadwayCom', 'seatplan', 'lbo', 'ltd'];
+
+/**
+ * reviewCounts of every non-Reddit audience source with data, for a buzz entry's
+ * `sources` object. Single source of truth so contamination detection can't
+ * diverge between callers.
+ * @param {Record<string, {reviewCount?: number}|null>} sources
+ * @returns {number[]}
+ */
+function otherSourceReviewCounts(sources) {
+  return AUDIENCE_OTHER_SOURCE_NAMES
+    .map((n) => sources && sources[n])
+    .filter((s) => s && (s.reviewCount || 0) > 0)
+    .map((s) => s.reviewCount);
+}
+
 /**
  * Does this show's Reddit source look like generic-phrase volume contamination?
  * Title-INDEPENDENT: the discriminator is corroboration, not the title. True
@@ -261,6 +282,8 @@ module.exports = {
   isRoundupOrMegathread,
   isGenericTitle,
   isRedditVolumeInflated,
+  otherSourceReviewCounts,
+  AUDIENCE_OTHER_SOURCE_NAMES,
   REDDIT_INFLATION_MIN_RC,
   REDDIT_INFLATION_RATIO_GENERIC,
   REDDIT_INFLATION_RATIO_OTHER,
