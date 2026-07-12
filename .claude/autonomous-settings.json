@@ -1,0 +1,30 @@
+{
+  "//": "Settings profile for autonomous nightly-loop implementer sessions (launched by scripts/autonomous-run.js as: claude --dangerously-skip-permissions --settings .claude/autonomous-settings.json). Bypass suppresses permission PROMPTS (invariant: an unattended session must never hang on a prompt); these deny rules outrank bypass and hard-block the actions the loop must never take. The path-eligibility gate (scripts/lib/autonomous-eligibility.js) additionally runs on the resulting git diff before any branch push — deny rules are defense-in-depth, not the primary gate. Any denied/blocked action inside an implementer session = that card fails, the run continues (autonomous-run.js contract). Verified by scripts/autonomous-probe.js.",
+  "permissions": {
+    "deny": [
+      "Bash(git push:*)",
+      "Bash(gh pr merge:*)",
+      "Bash(gh workflow run:*)",
+      "Bash(gh api:*)",
+      "Bash(curl:*)",
+      "Bash(wget:*)",
+      "Bash(vercel:*)",
+      "Bash(npx vercel:*)",
+      "Bash(node scripts/send-opening-night-broadcast.js:*)",
+      "Bash(node scripts/autonomous-email.js:*)",
+      "Bash(node scripts/rebuild-all-reviews.js:*)",
+      "Edit(.github/workflows/**)",
+      "Write(.github/workflows/**)",
+      "Edit(src/**)",
+      "Write(src/**)",
+      "Edit(data/**)",
+      "Write(data/**)",
+      "Edit(scripts/lib/scraper.js)",
+      "Write(scripts/lib/scraper.js)",
+      "Edit(scripts/lib/review-guards.js)",
+      "Write(scripts/lib/review-guards.js)",
+      "Edit(.claude/autonomous-settings.json)",
+      "Write(.claude/autonomous-settings.json)"
+    ]
+  }
+}
