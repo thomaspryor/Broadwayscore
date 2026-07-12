@@ -236,9 +236,15 @@ async function main() {
             const review = domainReviews.shift();
             const metadata = { urlVerified: true, urlUpdatedAt: new Date().toISOString() };
             const written = updateFileUrlWithInvariant(review.filePath, found.url, metadata, { stampOnNoop: true });
-            if (written) review.data = written;
-            console.log(`      Updated: ${review.filePath}`);
-            updated++;
+            if (written) {
+              review.data = written;
+              console.log(`      Updated: ${review.filePath}`);
+              updated++;
+            } else {
+              // null = cross-outlet refusal or unreadable file — not a success
+              console.log(`      Refused (cross-outlet or unreadable): ${review.filePath}`);
+              failed++;
+            }
           }
         } else {
           console.log(`      Invalid: ${verification.reason}`);

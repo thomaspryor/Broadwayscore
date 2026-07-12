@@ -108,11 +108,16 @@ function main() {
             metadata.showScoreExcerpt = ssReview.excerpt;
           }
           const written = updateFileUrlWithInvariant(match.path, newUrl, metadata, { stampOnNoop: true });
-          if (written) match.data = written;
-          console.log(`  Updated: ${match.filename}`);
-          console.log(`    Old: ${currentUrl.substring(0, 60)}...`);
-          console.log(`    New: ${newUrl.substring(0, 60)}...`);
-          updated++;
+          if (written) {
+            match.data = written;
+            console.log(`  Updated: ${match.filename}`);
+            console.log(`    Old: ${currentUrl.substring(0, 60)}...`);
+            console.log(`    New: ${newUrl.substring(0, 60)}...`);
+            updated++;
+          } else {
+            // null = cross-outlet refusal or unreadable file — not a success
+            console.log(`  Refused (cross-outlet or unreadable): ${match.filename}`);
+          }
         }
       } else {
         notFound++;

@@ -23,6 +23,7 @@ const { execSync } = require('child_process');
 const { OUTLET_DOMAINS, DOMAIN_REDIRECTS, discoverCorrectUrl } = require('./lib/url-discovery');
 const { shouldRetryUrlDiscovery, recordSerpAttempt } = require('./lib/review-guards');
 const { updateFileUrlWithInvariant } = require('./lib/url-change-invariant');
+const { isCrossOutletUrl } = require('./lib/review-normalization');
 
 // ---------------------------------------------------------------------------
 // CONFIG
@@ -154,6 +155,16 @@ function loadCandidates() {
 function updateReviewUrl(candidate, newUrl, method) {
   if (CONFIG.dryRun) {
     console.log(`  [DRY RUN] Would update ${candidate.reviewId}: ${candidate.url} → ${newUrl} (${method})`);
+    return;
+  }
+
+  // Cross-outlet refusal (Louise Penn 'Cambridge' incident, 2026-07-12):
+  // updateFileUrlWithInvariant also refuses these, but its null return is
+  // indistinguishable from "same canonical URL", and the fallback branch
+  // below writes data.url directly — so a refused URL would land anyway.
+  // Check explicitly and bail before either write path.
+  if (candidate.outletId && isCrossOutletUrl(candidate.outletId, newUrl)) {
+    console.log(`  ✗ Cross-outlet refusal: ${candidate.reviewId} (${candidate.outletId}) must not take ${newUrl}`);
     return;
   }
 
