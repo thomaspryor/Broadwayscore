@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-12T05:28:53.488Z",
+  "generatedAt": "2026-07-12T07:10:56.743Z",
   "date": "2026-07-12",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 195676,
+  "entryCount": 201450,
   "shows": [
     {
       "showId": "dukes-off-broadway-2026",
@@ -51,12 +51,12 @@
     },
     {
       "showId": "a-midsummer-nights-dream-west-end-2026",
-      "reviewCount": 19,
+      "reviewCount": 18,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 267952896,
+        "collected-to-scored": 176883830,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -576,12 +576,12 @@
     },
     {
       "showId": "iceboy-regional-2026",
-      "reviewCount": 8,
+      "reviewCount": 9,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 34784770,
+        "collected-to-scored": 35627739,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -606,7 +606,7 @@
     },
     {
       "showId": "showstopper-the-improvised-musical-west-end-2023",
-      "reviewCount": 5,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -876,12 +876,12 @@
     },
     {
       "showId": "allegra-west-end-2026",
-      "reviewCount": 11,
+      "reviewCount": 12,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 2278104,
+        "collected-to-scored": 1315019,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -1011,12 +1011,12 @@
     },
     {
       "showId": "giulia-the-poison-queen-of-palermo-off-broadway-2026",
-      "reviewCount": 10,
+      "reviewCount": 11,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 352880,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -1911,7 +1911,7 @@
     },
     {
       "showId": "straight-white-men-2018",
-      "reviewCount": 44,
+      "reviewCount": 45,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2231,7 +2231,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 327882,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -2636,7 +2636,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 313741,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -5436,12 +5436,12 @@
     },
     {
       "showId": "paranormal-activity-west-end-2025",
-      "reviewCount": 17,
+      "reviewCount": 18,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 509166,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -5831,7 +5831,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 979160,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -5932,6 +5932,81 @@
     {
       "showId": "giant-the-play-off-west-end-2026",
       "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "dear-england-new-wimbledon-theatre-west-end-2026",
+      "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "11-to-midnight-off-broadway-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "a-dolls-house-part-2-2017",
+      "reviewCount": 53,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 369303,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "war-paint-2017",
+      "reviewCount": 56,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 359363,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "mj-the-musical-west-end-2024",
+      "reviewCount": 11,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
