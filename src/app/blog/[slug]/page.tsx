@@ -8,6 +8,7 @@ import {
   postSlugsQuery,
   type PostDetail,
 } from '@/sanity/queries';
+import { BASE_URL } from '@/lib/seo';
 
 export const revalidate = 3600;
 
@@ -119,6 +120,32 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
       ) : (
         <p className="text-gray-400 italic">This post has no content yet.</p>
       )}
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BlogPosting',
+            headline: post.title,
+            description: post.excerpt,
+            url: `${BASE_URL}/blog/${params.slug}`,
+            datePublished: post.publishedAt,
+            dateModified: post.publishedAt,
+            ...(post.author ? { author: { '@type': 'Person', name: post.author } } : {}),
+            ...(post.heroImage?.url
+              ? { image: [post.heroImage.url] }
+              : { image: [`${BASE_URL}/og/home.png`] }),
+            publisher: {
+              '@type': 'Organization',
+              name: 'Broadway Scorecard',
+              url: BASE_URL,
+              logo: { '@type': 'ImageObject', url: `${BASE_URL}/og/home.png` },
+            },
+            mainEntityOfPage: { '@type': 'WebPage', '@id': `${BASE_URL}/blog/${params.slug}` },
+          }),
+        }}
+      />
     </article>
   );
 }
