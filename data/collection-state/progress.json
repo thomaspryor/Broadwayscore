@@ -553,7 +553,17 @@
     "the-guilty-west-end-2026/rollingstone--charisma-madarang.json",
     "the-guilty-west-end-2026/thestage--unknown.json",
     "the-guilty-west-end-2026/times-uk--unknown.json",
-    "to-kill-a-mockingbird-west-end-2026/british-theatre--unknown.json"
+    "to-kill-a-mockingbird-west-end-2026/british-theatre--unknown.json",
+    "tender-off-west-end-2026/guardian--arifa-akbar.json",
+    "allegra-west-end-2026/cambridge--kathy-baker-johnson.json",
+    "allegra-west-end-2026/whatsonstage--aliya-al.json",
+    "tender-off-west-end-2026/about-entertainment--ben-brantley.json",
+    "tender-off-west-end-2026/daily-mail--unknown.json",
+    "tender-off-west-end-2026/thestage--dave-fargnoli.json",
+    "tender-off-west-end-2026/times-uk--richard-morrison.json",
+    "tender-off-west-end-2026/times-uk--sam-marlowe.json",
+    "tender-off-west-end-2026/whatsonstage--oliver-ainley.json",
+    "jesus-christ-superstar-west-end-2026/hollywood-reporter--david-rooney.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -572,6 +582,7 @@
     ],
     "amp": [],
     "browserbase": [
+      "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json",
       "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json",
       "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json",
       "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json"
@@ -603,12 +614,13 @@
       "data/review-texts/jesus-christ-superstar-west-end-2026/click-liverpool--unknown.json",
       "data/review-texts/jesus-christ-superstar-west-end-2026/nottingham-confidential--unknown.json",
       "data/review-texts/jesus-christ-superstar-west-end-2026/thestage--holly-o.json",
-      "data/review-texts/the-guilty-west-end-2026/thestage--unknown.json"
+      "data/review-texts/the-guilty-west-end-2026/thestage--unknown.json",
+      "data/review-texts/allegra-west-end-2026/cambridge--kathy-baker-johnson.json"
     ],
     "archive": []
   },
   "startTime": "2026-07-12T06:26:43.619Z",
-  "lastProcessed": "to-kill-a-mockingbird-west-end-2026/british-theatre--unknown.json",
+  "lastProcessed": "jesus-christ-superstar-west-end-2026/hollywood-reporter--david-rooney.json",
   "log": [
     {
       "t": "2026-07-12T09:31:50.501Z",
@@ -640,6 +652,17 @@
     },
     {
       "t": "2026-07-12T10:45:02.094Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-12T11:35:13.960Z",
+      "event": "bb-session",
+      "session": "396d266e",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/sessions-review-a-tender-"
+    },
+    {
+      "t": "2026-07-12T11:35:14.411Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
     }
