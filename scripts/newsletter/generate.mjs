@@ -274,6 +274,22 @@ function marketLabel(category) {
 const SITE = 'https://broadwayscorecard.com';
 function showHref(show) { return show && show.slug ? `${SITE}/show/${show.slug}` : SITE; }
 
+// ── Edition (market) ─────────────────────────────────────────────────────────
+// NEWSLETTER_EDITION=west-end produces the West End weekly for WE subscribers;
+// default 'broadway' is the original US edition. The edition flips PRIMARY (the
+// hero markets) and the branding; each section filters on PRIMARY so one
+// generator serves both. West End has no grosses feed, so the WE edition drops
+// Box Office / Recoupment / Season Standing / Opera entirely (see assembly).
+const EDITION = (process.env.NEWSLETTER_EDITION || 'broadway').trim();
+const IS_WE = EDITION === 'west-end';
+const PRIMARY = IS_WE ? ['west-end', 'off-west-end'] : ['broadway', 'off-broadway'];
+const isPrimaryMarket = (s) => s && PRIMARY.includes(s.category);
+// Branding: gold "Broadway Scorecard" vs pink "West End Scorecard". Same domain
+// (broadwayscorecard.com), but the WE edition's primary CTA is /west-end.
+const BRAND = IS_WE
+  ? { prefix: 'West End', accentGrad: 'linear-gradient(135deg,#f472b6 0%,#db2777 100%)', accentSolid: '#f472b6', primaryPath: '/west-end', primaryLabel: 'West End Scorecard', utm: 'we-weekly' }
+  : { prefix: 'Broadway', accentGrad: 'linear-gradient(135deg,#d4a574 0%,#b8956a 100%)', accentSolid: '#d4a574', primaryPath: '', primaryLabel: 'Broadway Scorecard', utm: 'weekly' };
+
 // Opera shows (type='opera') are surfaced in their own dedicated Opera
 // Openings section and EXCLUDED from every other section. Opera coverage
 // follows different conventions: T1-flat weighting (per src/lib/engine.ts
@@ -658,7 +674,7 @@ function upcomingOpeningsSection() {
   const horizon7 = (() => { const d = new Date(today + 'T12:00:00'); d.setDate(d.getDate() + 7); return d.toISOString().slice(0, 10); })();
   const items = [];
   for (const s of shows) {
-    if (s.category !== 'broadway' && s.category !== 'off-broadway') continue;
+    if (!isPrimaryMarket(s)) continue;
     if (isOperaShow(s)) continue;
     // Dance/concert one-offs (type 'special', e.g. City Center programs) read
     // as non-theater in a theater digest — user call 2026-07-11.
@@ -757,7 +773,7 @@ function findRenderableCriticMovers() {
     // The last guard stops a show we featured as an opening last week (Jerome)
     // from re-surfacing this week as a "mover" on one trickle-in review.
     if (lastMoverIds.has(id) || lastFeaturedIds.has(id) || !notFeatured(id)) continue;
-    if (show.category !== 'broadway' && show.category !== 'off-broadway') continue;
+    if (!isPrimaryMarket(show)) continue;
     if (isOperaShow(show)) continue;
     // A show that already CLOSED before this week isn't a "mover" in any
     // meaningful sense — late-trickling reviews/audience entries on a finished
@@ -840,7 +856,7 @@ function biggestMoverSection() {
       if (!show) return;
       if (lastMoverIds.has(id) || lastFeaturedIds.has(id) || !notFeatured(id)) return; // no week-over-week repeat; no recent-feature repeat; no cross-section dupe
       if (show.closingDate && show.closingDate < weekStartStr) return; // a run that closed before this week isn't a current "mover" (TRU backfill case)
-      if (show.category !== 'broadway' && show.category !== 'off-broadway') return;
+      if (!isPrimaryMarket(show)) return;
     if (isOperaShow(show)) return;
       // Off-Broadway threshold lowered 100 → 50 (Gemini final review): 100
       // was effectively gating out every OB audience mover; many OB shows
@@ -1157,7 +1173,7 @@ function findWeekRavePan() {
     const critic = (r.criticName || '').trim();
     if (!critic || /^unknown\b/i.test(critic)) return false;
     const s = shows.find(x => x.id === r.showId);
-    return s && !isOperaShow(s) && ['broadway', 'off-broadway', 'west-end', 'off-west-end'].includes(s.category);
+    return s && !isOperaShow(s) && PRIMARY.includes(s.category);
   });
   if (!eligible.length) return { rave: null, pan: null };
   // Per-show review volume (this-week window) — used to tie-break toward the
@@ -1331,7 +1347,7 @@ function closingSection() {
   const list = shows.filter(s => {
     if (!s.closingDate || s.closingDate <= weekEndStr || s.closingDate > horizon7Str) return false;
     if (s.status !== 'open') return false;
-    if (!['broadway', 'off-broadway'].includes(s.category)) return false; // NYC only
+    if (!isPrimaryMarket(s)) return false; // primary market only
     if (isOperaShow(s)) return false; // opera has its own section — never in NYC closings
     if (!notFeatured(s.id)) return false; // already surfaced in a higher section
     // Must have a qualifying critic score (drop pending/no-score shows)
@@ -1363,12 +1379,12 @@ function closingSection() {
     return `<tr><td style="padding:14px 16px 2px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#d4a574;">${label}</td></tr>
       <tr><td style="padding:0 16px;"><table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">${rows}</table></td></tr>`;
   };
-  const bw = list.filter(s => s.category === 'broadway');
-  const ob = list.filter(s => s.category === 'off-broadway');
+  const bw = list.filter(s => s.category === PRIMARY[0]);
+  const ob = list.filter(s => s.category === PRIMARY[1]);
   const divider = (bw.length && ob.length)
     ? '<tr><td style="padding:6px 16px;"><div style="border-top:1px solid rgba(255,255,255,0.08);"></div></td></tr>'
     : '';
-  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" class="cardbg">${groupBlock('Broadway', bw)}${divider}${groupBlock('Off-Broadway', ob)}</table>`;
+  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" class="cardbg">${groupBlock(IS_WE ? 'West End' : 'Broadway', bw)}${divider}${groupBlock(IS_WE ? 'Off West End' : 'Off-Broadway', ob)}</table>`;
   return sectionWrap(sectionHeading('Closing this Week'), body);
 }
 
@@ -1377,7 +1393,7 @@ function castingSection() {
   const eventsAll = [];
   Object.keys(castData.shows).forEach(showId => {
     const show = shows.find(s => s.id === showId);
-    if (!show || show.category !== 'broadway' || isOperaShow(show)) return;
+    if (!show || !isPrimaryMarket(show) || isOperaShow(show)) return;
     const data = castData.shows[showId];
     // Defend at the READ boundary against a stale closure date: cast-changes.json
     // is only healed by the weekly audit, so between runs (or in local preview) a
@@ -1826,7 +1842,7 @@ function londonSection() {
   const cards = withScore.map(x => showRow(x.s, { showMarket: true })).join('');
   const seeAll = seeAllLink(`${SITE}/west-end`, 'Explore the full West End Scorecard', { color: '#f472b6' });
   const seeAllCard = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="background:#1a1a24;border-radius:16px;border:1px solid rgba(244,114,182,0.18);">${seeAll}</table>`;
-  return sectionWrap(sectionHeading('London Openings', null, { href: `${SITE}/west-end` }), cards + seeAllCard);
+  return sectionWrap(sectionHeading(IS_WE ? 'Opened in the West End' : 'London Openings', null, { href: `${SITE}/west-end` }), cards + seeAllCard);
 }
 
 // SECTION: Opera Openings — mirrors London Openings (compact card, themed
@@ -1861,7 +1877,7 @@ function mostReadSection(climberList) {
   for (const p of climberList) {
     const show = shows.find(s => s.slug === p.slug);
     if (!show) continue;
-    if (show.category !== 'broadway' && show.category !== 'off-broadway') continue;
+    if (!isPrimaryMarket(show)) continue;
     if (isOperaShow(show)) continue;
     const a = aggregateScore(show.id);
     const trendingMin = show.category === 'broadway' ? 5 : 5; // OB default is 3, too low for Trending
@@ -2018,7 +2034,18 @@ function _slot(name, html) {
 }
 if (_dropSet.size) process.stderr.write(`[newsletter] dropping sections: ${[..._dropSet].join(', ')}\n`);
 if (_includeSet.size) process.stderr.write(`[newsletter] opt-in sections: ${[..._includeSet].join(', ')}\n`);
-const sectionOrder = [
+// WE edition: a lean, West End-first order. No Box Office (no WE grosses feed),
+// no Broadway/OB openings, no Recoupment / Announced-Closings / Opera / Season
+// Standing. The WE openings (londonSection, relabeled "Opened in the West End")
+// are the hero.
+const sectionOrder = IS_WE ? [
+  _slot('london-openings', lon),
+  _slot('closing-this-week', clo),
+  _slot('rave-pan-of-the-week', ravepan),
+  _slot('casting-updates', cas),
+  _slot('upcoming-openings', upcomingTop || upcomingBottom),
+  _slot('most-read-pages', popular),
+].filter(Boolean) : [
   _slot('broadway-openings', bwO.html),
   _slot('offbroadway-openings', obO.html),
   _slot('upcoming-openings', upcomingTop),
@@ -2043,10 +2070,10 @@ const sectionOrder = [
   _slot('most-read-pages', popular),
 ].filter(Boolean);
 
-const headerCounts = [
+const headerCounts = (IS_WE ? [] : [
   bwO.list.length ? `${bwO.list.length} BW opening${bwO.list.length!==1?'s':''}` : null,
   obO.list.length ? `${obO.list.length} OB` : null,
-].filter(Boolean).join(' · ') || 'A quiet week';
+]).filter(Boolean).join(' · ') || 'A quiet week';
 
 // Subject + lede are driven by a cross-section newsworthiness scorer
 // (see ./newsworthiness.mjs). Each candidate feed is queried below and passed
@@ -2067,14 +2094,16 @@ const _subjHasScore = (s) => { const a = aggregateScore(s.id); return a && a.cou
 // review gate AND the OB 14-day grace window. Recomputing with the strict
 // in-week window here was the bug that made the subject ignore Heated Rivalry
 // (opened May 12, shown in the body) and fall back to an obscure closing.
-const bwEvents = bwO.list.map(s => ({ show: s }));
-const obEvents = obO.list.map(s => ({ show: s }));
-// West End openings: only the Gold-tier ones enter the scorer (same threshold
-// londonSection uses for the featured showRow format). Non-gold WE shows
-// aren't subject-line news for a US-focused newsletter audience.
+const bwEvents = IS_WE ? [] : bwO.list.map(s => ({ show: s }));
+const obEvents = IS_WE ? [] : obO.list.map(s => ({ show: s }));
+// West End openings that lead the subject/lede: Recommended-or-better (score
+// >= 75), not gold-only — a marquee WE opening like Jesus Christ Superstar
+// (75, Palladium, 19 reviews) is genuinely the week's biggest story and the
+// reader should see it (user, 2026-07-12). The scorer phrases by score, so a
+// 75 reads "strong reviews", a 90 "near-universal praise".
 const weGoldEvents = shows
   .filter(s => (s.category === 'west-end' || s.category === 'off-west-end') && inWeek(s.openingDate))
-  .filter(s => { const a = aggregateScore(s.id); return a && a.count >= minReviews(s.category) && isGoldTier(a.avg, s.category); })
+  .filter(s => { const a = aggregateScore(s.id); return a && a.count >= minReviews(s.category) && (IS_WE || a.avg >= 75); })
   .map(s => ({ show: s }));
 
 const newsworthyInputs = {
@@ -2113,10 +2142,16 @@ const newsworthyInputs = {
       return out;
     } catch { return []; }
   })(),
+  // Closings the lede may mention = the ones ACTUALLY in the body's "Closing
+  // this Week" section (upcoming, next 7d, featured). The old window was the
+  // PAST week (weekStart..weekEnd), so the lede name-checked a show that had
+  // already closed and appeared nowhere in the email — e.g. "The Fear of 13
+  // plays final performance" with no Fear of 13 anywhere in the body (user,
+  // 2026-07-12). Gate to featuredShowIds so lede ⊆ body.
   closingsThisWeek: shows.filter(s =>
-    s.closingDate && s.closingDate >= weekStartStr && s.closingDate <= weekEndStr
-    && s.status === 'open' && (s.category === 'broadway' || s.category === 'off-broadway') && !isOperaShow(s)
-    && _subjHasScore(s)), // never lead the subject with a show we have no reviews for
+    s.closingDate && s.closingDate > weekEndStr && s.closingDate <= horizon7Str
+    && s.status === 'open' && isPrimaryMarket(s) && !isOperaShow(s)
+    && featuredShowIds.has(s.id) && _subjHasScore(s)),
   announcedClosings: (() => {
     // Mirror announcedClosingsSection exactly: closure events added IN THE
     // WEEK WINDOW only. The prior 28-day lookback resurfaced 3-week-old
@@ -2334,7 +2369,7 @@ const html = `<!DOCTYPE html>
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#0f0f14" class="gmail-dark-bg"><tr><td align="center" bgcolor="#0f0f14" style="padding:24px 16px;background-color:#0f0f14;">
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width:560px;">
 <tr><td align="left" style="padding:0 4px 4px;">
-  <a href="https://broadwayscorecard.com" style="text-decoration:none;color:inherit;display:inline-block;"><span style="font-size:22px;font-weight:700;color:#fff;letter-spacing:-0.02em;">Broadway</span><span style="font-size:22px;font-weight:700;background:linear-gradient(135deg,#d4a574 0%,#b8956a 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;color:#d4a574;letter-spacing:-0.02em;">Scorecard</span><span style="font-size:9px;color:#6b7280;font-weight:400;vertical-align:super;margin-left:1px;">™</span></a>
+  <a href="${SITE}${BRAND.primaryPath}" style="text-decoration:none;color:inherit;display:inline-block;"><span style="font-size:22px;font-weight:700;color:#fff;letter-spacing:-0.02em;">${BRAND.prefix}</span><span style="font-size:22px;font-weight:700;background:${BRAND.accentGrad};-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;color:${BRAND.accentSolid};letter-spacing:-0.02em;">Scorecard</span><span style="font-size:9px;color:#6b7280;font-weight:400;vertical-align:super;margin-left:1px;">™</span></a>
 </td></tr>
 <tr><td align="left" style="padding:0 4px 10px;">
   <div style="font-size:13px;color:#9ca3af;letter-spacing:0.01em;">Every show. Every review. One score.</div>
@@ -2343,7 +2378,7 @@ const html = `<!DOCTYPE html>
   <div style="font-size:13px;color:#9ca3af;">Weekly Round-up · ${fmt(weekStartStr)} – ${fmt(weekEndStr)}, ${yearForFooter}</div>
 </td></tr>
 ${ledeText ? `<tr><td style="padding:6px 4px 20px;">
-  <div style="border-left:2px solid #d4a574;padding-left:12px;">
+  <div>
     <div style="font-size:14px;line-height:1.55;color:#d1d5db;">${ledeHtml}</div>
     ${ledeSecondaryHtml ? `<div style="font-size:14px;line-height:1.55;color:#d1d5db;margin-top:10px;">${ledeSecondaryHtml}</div>` : ''}
     ${ledeBulletsHtml ? `<div style="margin-top:10px;">${ledeBulletsHtml}</div>` : ''}
@@ -2353,15 +2388,15 @@ ${sectionOrder.join('')}
 <tr><td align="center" style="padding:40px 4px 8px;">
   <div style="border-top:1px solid rgba(255,255,255,0.05);padding-top:24px;">
     <div style="font-size:18px;font-weight:700;">
-      <a href="https://broadwayscorecard.com" style="text-decoration:none;color:inherit;"><span style="color:#fff;">Broadway</span><span style="background:linear-gradient(135deg,#d4a574 0%,#b8956a 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;color:#d4a574;">Scorecard</span><span style="font-size:8px;color:#6b7280;font-weight:400;vertical-align:super;">™</span></a>
+      <a href="${SITE}${BRAND.primaryPath}" style="text-decoration:none;color:inherit;"><span style="color:#fff;">${BRAND.prefix}</span><span style="background:${BRAND.accentGrad};-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;color:${BRAND.accentSolid};">Scorecard</span><span style="font-size:8px;color:#6b7280;font-weight:400;vertical-align:super;">™</span></a>
     </div>
     <div style="font-size:13px;color:#9ca3af;margin-top:10px;">Every show. Every review. One score.</div>
     <div style="font-size:11px;color:#6b7280;margin-top:18px;">
-      <a href="https://broadwayscorecard.com/about" style="color:#9ca3af;text-decoration:none;">About</a> &nbsp;·&nbsp;
-      <a href="https://broadwayscorecard.com/methodology" style="color:#9ca3af;text-decoration:none;">Methodology</a> &nbsp;·&nbsp;
+      <a href="${SITE}${BRAND.primaryPath}/about" style="color:#9ca3af;text-decoration:none;">About</a> &nbsp;·&nbsp;
+      <a href="${SITE}${BRAND.primaryPath}/methodology" style="color:#9ca3af;text-decoration:none;">Methodology</a> &nbsp;·&nbsp;
       <a href="{{{RESEND_UNSUBSCRIBE_URL}}}" style="color:#9ca3af;text-decoration:none;">Unsubscribe</a>
     </div>
-    <div style="font-size:10px;color:#4b5563;margin-top:18px;">© ${yearForFooter} Broadway Scorecard™ LLC</div>
+    <div style="font-size:10px;color:#4b5563;margin-top:18px;">© ${yearForFooter} ${BRAND.primaryLabel}™ LLC</div>
   </div>
 </td></tr>
 </table>

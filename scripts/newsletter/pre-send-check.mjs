@@ -85,7 +85,10 @@ if (!subject) {
 }
 
 // ── SOFT: lede checks ─────────────────────────────────────────────────────────
-const ledeRaw = html.match(/border-left:2px solid #d4a574[^>]*>([\s\S]*?)<\/div>/)?.[1] || '';
+// The lede is the first content block after the "Weekly Round-up · <dates>"
+// row (the gold left-border was removed 2026-07-12). Match the lede paragraph
+// by its distinctive font-size:14px;line-height:1.55 style instead.
+const ledeRaw = html.match(/font-size:14px;line-height:1\.55;color:#d1d5db;">([\s\S]*?)<\/div>/)?.[1] || '';
 const ledeText = ledeRaw.replace(/<[^>]+>/g, '').trim();
 if (!ledeText) {
   softIssues.push('Lede appears empty');
