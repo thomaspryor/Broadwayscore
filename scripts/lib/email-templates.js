@@ -170,6 +170,22 @@ function buildFromAddress(market) {
   return `${siteNameForMarket(market)} <updates@broadwayscorecard.com>`;
 }
 
+// Canonical NEWSLETTER_EDITION parser for the weekly-newsletter scripts
+// (generate.mjs, send-test.mjs, create-broadcast-draft.mjs). Throws on any
+// unknown value instead of degrading: 'westend', 'West-End' or 'off-west-end'
+// would otherwise route brand/audience/content THREE different ways — the
+// scripts compare `=== 'west-end'` but the brand helpers use isLondonMarket(),
+// which also accepts other London markets. Unset/empty stays Broadway (the
+// cron default).
+const NEWSLETTER_EDITIONS = ['broadway', 'west-end'];
+function resolveNewsletterEdition(raw) {
+  const edition = (raw || 'broadway').trim();
+  if (!NEWSLETTER_EDITIONS.includes(edition)) {
+    throw new Error(`Unknown NEWSLETTER_EDITION "${raw}" — valid: ${NEWSLETTER_EDITIONS.join(', ')}`);
+  }
+  return edition;
+}
+
 function buildFooterHtml(showTitle, showId, email, market) {
   const unfollowUrl = buildUnfollowUrl(showId, showTitle, email);
   const isWE = isLondonMarket(market);
@@ -915,6 +931,7 @@ module.exports = {
   buildUnsubscribeUrl,
   siteNameForMarket,
   buildFromAddress,
+  resolveNewsletterEdition,
   buildFooterHtml,
   buildBroadcastFooterHtml,
   buildSocialRowHtml,

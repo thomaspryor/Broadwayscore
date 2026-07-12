@@ -21,7 +21,7 @@ const repo = path.resolve(__dirname, '..', '..');
 // Bridge to the canonical CJS email-templates lib. Imports use repo-relative
 // paths now (was hardcoded /Users/tompryor/... — broke on CI).
 const cjsRequire = createRequire(import.meta.url);
-const { buildUnsubscribeUrl } = cjsRequire(path.join(repo, 'scripts/lib/email-templates'));
+const { buildUnsubscribeUrl, resolveNewsletterEdition } = cjsRequire(path.join(repo, 'scripts/lib/email-templates'));
 const { reconcileClosure, reconcileClosureDateWithClosingDate } = cjsRequire(path.join(repo, 'scripts/lib/cast-changes-filters'));
 const { reviews } = JSON.parse(fs.readFileSync(path.join(repo, 'data/reviews.json'), 'utf8'));
 const { shows } = JSON.parse(fs.readFileSync(path.join(repo, 'data/shows.json'), 'utf8'));
@@ -46,7 +46,7 @@ const horizon7Str = horizon7Date.toISOString().slice(0, 10);
 // Box Office / Recoupment / Season Standing / Opera entirely (see assembly).
 // Defined up here (not with BRAND rendering) because the cross-issue state key
 // below is edition-scoped.
-const EDITION = (process.env.NEWSLETTER_EDITION || 'broadway').trim();
+const EDITION = resolveNewsletterEdition(process.env.NEWSLETTER_EDITION); // throws on typos — 'westend' must not silently build the Broadway edition
 const IS_WE = EDITION === 'west-end';
 const PRIMARY = IS_WE ? ['west-end', 'off-west-end'] : ['broadway', 'off-broadway'];
 const isPrimaryMarket = (s) => s && PRIMARY.includes(s.category);
