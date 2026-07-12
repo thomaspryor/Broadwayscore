@@ -3,15 +3,18 @@ name: UGC Auth Round-trip
 # Verifies the signed-in Rating/Watchlist/List round-trip against the LIVE
 # Supabase project: real user JWT → PostgREST write → read-back → RLS isolation
 # → delete. Catches "sign-in works in the UI but nothing actually saves / is
-# leaked across users / the project is down" — the class of failure the
-# OAuth-blocked UI tests can't see. Runs hands-off so nobody has to manually
-# rate a show to know it still works.
+# leaked across users / the project is down."
+#
+# SELF-HEALING: the #1 failure cause is the free-tier project idle-pausing
+# (INACTIVE → host NXDOMAINs → all auth dead). So on failure we auto-restore the
+# project and re-run, and only page the owner if the self-fix didn't recover it.
+# A successful self-heal sends one informational email (the pause is worth
+# knowing — it's the signal to consider Supabase Pro).
 
 on:
   schedule:
-    - cron: '17 13 * * *'  # daily 13:17 UTC (~8am ET)
+    - cron: '17 13 * * *'  # daily 13:17 UTC (~8am ET) — also keep-alive
   workflow_dispatch:
-  # Re-check right after a demo deploy ships new UGC code.
   workflow_run:
     workflows: ['Deploy Demo Site']
     types: [completed]
@@ -23,8 +26,7 @@ concurrency:
 jobs:
   roundtrip:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
-    # Skip the workflow_run trigger when the demo deploy itself failed.
+    timeout-minutes: 15
     if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Checkout repository
@@ -32,7 +34,9 @@ jobs:
 
       - uses: ./.github/actions/setup-node
 
-      - name: Authenticated round-trip
+      - name: Round-trip (attempt 1)
+        id: rt1
+        continue-on-error: true
         run: node scripts/test-ugc-roundtrip.mjs
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
@@ -40,12 +44,56 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
 
+      - name: Self-heal — restore project if paused
+        id: heal
+        if: steps.rt1.outcome == 'failure'
+        run: node scripts/restore-supabase-project.mjs
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+
+      - name: Round-trip (attempt 2, after self-heal)
+        id: rt2
+        if: steps.rt1.outcome == 'failure' && steps.heal.outcome == 'success'
+        run: node scripts/test-ugc-roundtrip.mjs
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+
+      - name: Notify — self-heal succeeded (informational)
+        if: steps.rt1.outcome == 'failure' && steps.rt2.outcome == 'success'
+        uses: actions/github-script@v7
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        with:
+          script: |
+            const { sendAlert } = require('./scripts/lib/discord-notify.js');
+            const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            await sendAlert({
+              title: 'UGC: Supabase auto-restored (no action needed)',
+              description: 'The Supabase project had idle-paused (sign-in was briefly down); the round-trip auto-restored it and re-verified all UGC flows are working. If this recurs, consider Supabase Pro to stop idle-pauses.',
+              severity: 'error',
+              email: true,
+              url: runUrl,
+              fields: [{ name: 'Run', value: `[View logs](${runUrl})` }],
+            }).catch(e => console.error('Self-heal notice failed:', e.message));
+
+      - name: Fail job if not recovered
+        if: steps.rt1.outcome == 'failure' && steps.rt2.outcome != 'success'
+        run: |
+          echo "::error::UGC round-trip failed and self-heal did not recover it (restore outcome: ${{ steps.heal.outcome }}, retry outcome: ${{ steps.rt2.outcome }})."
+          exit 1
+
       - name: Notify on failure
         if: failure()
         uses: ./.github/actions/notify-failure
         with:
-          title: 'UGC Auth Round-trip Failed'
-          description: 'Signed-in save/read/RLS round-trip against live Supabase failed — user ratings may not be saving or may be leaking across accounts. Check the run log.'
+          title: 'UGC Auth Round-trip Failed (self-heal did not recover)'
+          description: 'Signed-in save/read/RLS round-trip failed AND auto-restore did not fix it — user ratings may not be saving or may be leaking across accounts. Check the run log; may need a manual Supabase dashboard restore or a schema/RLS fix.'
           severity: 'critical'
           email: 'true'
           resend_api_key: ${{ secrets.RESEND_API_KEY }}

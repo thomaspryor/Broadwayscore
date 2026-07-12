@@ -35,8 +35,13 @@
  * selection). What slips through is the same article scraped under DIFFERENT
  * real critics with DIFFERENT fingerprints (boilerplate/nav extraction noise):
  * the rebuild treats those as a legit "multi-critic page" and keeps both.
- * Measured 2026-07-12: 99 such cohesive groups collapsed; 85 same-fingerprint
- * skipped (rebuild handles); 23 non-cohesive reported for triage.
+ * Measured 2026-07-12: 112 cohesive groups collapsed (99 via fingerprint/Jaccard
+ * + 13 via the asymmetric-containment signal, which catches an article whose two
+ * extractions differ enough in length that symmetric Jaccard misses them); 85
+ * same-fingerprint skipped (rebuild handles); 10 non-cohesive reported for triage
+ * (9 are the theater-life "Barry Gordin" phantom-byline accuracy bug — a real
+ * review under a wrong critic name, NOT a double-count; 1 is once-upon-a-mattress,
+ * two genuinely-different NYT pieces sharing a URL — a URL-integrity issue).
  *
  * Canonical choice reuses fix-circular-duplicate-pairs.chooseCanonicalForRebuild
  * (includability-first, then score/byline/age), folded across the group so the
@@ -79,6 +84,11 @@ const GATE = args.includes('--gate');
 // genuinely-different reviews (measured cluster <0.5) so we never drop a real
 // review. Same content fingerprint always qualifies regardless.
 const COHESION_THRESHOLD = 0.7;
+// Asymmetric containment floor — the shorter text's words nearly all appear in
+// the longer, i.e. one extraction is a truncated/boilerplate-lighter copy of the
+// other article. 0.85 cleanly separates the 13 same-article groups (all ≥ 0.90)
+// from genuinely-different reviews at one URL (≤ 0.46).
+const CONTAINMENT_THRESHOLD = 0.85;
 const GATE_FLOOR = 15;
 
 // Show lookup for isIncludableForRebuild fidelity (same rationale as
@@ -113,6 +123,25 @@ function jaccard(a, b) {
 }
 
 /**
+ * Asymmetric containment: fraction of the SHORTER text's word-set found in the
+ * longer. Catches the same-article case Jaccard misses — when one extraction is
+ * much shorter than the other (truncation, missing boilerplate) their symmetric
+ * Jaccard drops well below 0.7 even though the shorter is a near-subset of the
+ * longer (NYT Brantley/Isherwood, Guardian misfiled-jesse-green, 2026-07-12).
+ * Measured: the 13 same-article groups score ≥ 0.90; genuinely-different reviews
+ * at one URL (once-upon-a-mattress) and byline-swapped different reviews score
+ * ≤ 0.46. Gated by same-URL in audit(), so a near-subset is the same article.
+ */
+function containment(a, b) {
+  const A = wordSet(a), B = wordSet(b);
+  const [S, L] = A.size <= B.size ? [A, B] : [B, A];
+  if (!S.size) return 0;
+  let inter = 0;
+  for (const w of S) if (L.has(w)) inter++;
+  return inter / S.size;
+}
+
+/**
  * Are these member records cohesive enough to be one article under multiple
  * bylines? True when every text is a non-empty identical fingerprint, or the
  * MINIMUM pairwise Jaccard ≥ COHESION_THRESHOLD. Pure — for unit tests.
@@ -123,14 +152,18 @@ function isCohesiveGroup(datas) {
   if (texts.some(t => !t)) return false; // can't confirm sameness without text
   const fps = texts.map(t => computeContentFingerprint(t));
   if (fps.every(x => x && x === fps[0])) return true;
-  let minJ = 1;
+  let minJ = 1, minC = 1;
   for (let i = 0; i < texts.length; i++) {
     for (let j = i + 1; j < texts.length; j++) {
       const s = jaccard(texts[i], texts[j]);
       if (s < minJ) minJ = s;
+      const c = containment(texts[i], texts[j]);
+      if (c < minC) minC = c;
     }
   }
-  return minJ >= COHESION_THRESHOLD;
+  // Either symmetric overlap is high (similar-length extractions of one article)
+  // OR the shorter is a near-subset of the longer (one extraction truncated).
+  return minJ >= COHESION_THRESHOLD || minC >= CONTAINMENT_THRESHOLD;
 }
 
 /**
@@ -301,4 +334,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { jaccard, wordSet, isCohesiveGroup, rebuildAlreadyCollapses, audit, fix, COHESION_THRESHOLD };
+module.exports = { jaccard, containment, wordSet, isCohesiveGroup, rebuildAlreadyCollapses, audit, fix, COHESION_THRESHOLD, CONTAINMENT_THRESHOLD };
