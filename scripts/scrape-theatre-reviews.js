@@ -31,6 +31,7 @@ const https = require('https');
 const cheerio = require('cheerio');
 const { matchTitleToShow, loadShows, validateRoundupPageTitle } = require('./lib/show-matching');
 const { normalizeOutlet, normalizeCritic, findExistingReviewFile } = require('./lib/review-normalization');
+const { resolveArchiveRowOutletId } = require('./lib/archive-outlet-identity');
 const { isLondonMarket } = require('./lib/venue-classification');
 
 const ARCHIVE_DIR = path.join(__dirname, '..', 'data', 'aggregator-archive', 'theatre-reviews');
@@ -300,7 +301,7 @@ function writeReviewFiles(reviews, showId) {
 
   for (const review of reviews) {
     const criticSlug = normalizeCritic(review.critic);
-    const outletId = review.outletId || normalizeOutlet(review.outlet);
+    const outletId = resolveArchiveRowOutletId({ url: review.url, outletLabel: review.outlet, cachedOutletId: review.outletId });
 
     // Check for existing file
     const existingMatch = findExistingReviewFile(showDir, outletId, criticSlug);
