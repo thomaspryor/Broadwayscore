@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-12T11:41:42.665Z",
-  "processed": 18,
-  "failed": 594,
-  "successRate": "2.9%",
+  "updatedAt": "2026-07-12T11:45:12.854Z",
+  "processed": 22,
+  "failed": 600,
+  "successRate": "3.5%",
   "tierBreakdown": {
-    "playwright": 12,
+    "playwright": 15,
     "amp": 0,
     "browserbase": 3,
     "directCookies": 1,
-    "scrapingbee": 1,
+    "scrapingbee": 2,
     "brightdata": 4,
-    "archiveToday": 17,
+    "archiveToday": 19,
     "archive": 0
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-07-12T09:31:50.501Z",
@@ -47,6 +47,17 @@
       "t": "2026-07-12T10:45:02.094Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-12T11:43:33.321Z",
+      "event": "bb-session",
+      "session": "d5593a2e",
+      "url": "https://www.talkinbroadway.com/page/ob/06_29_26.html?__cf_chl_f_tk=P9RfwACvik9Zf"
+    },
+    {
+      "t": "2026-07-12T11:43:34.133Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }

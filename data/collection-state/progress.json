@@ -17,7 +17,11 @@
     "jesus-christ-superstar-west-end-2026/whatsonstage--matt-barton.json",
     "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json",
     "giulia-the-poison-queen-of-palermo-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
-    "giulia-the-poison-queen-of-palermo-off-broadway-2026/exeunt-magazine--unknown.json"
+    "giulia-the-poison-queen-of-palermo-off-broadway-2026/exeunt-magazine--unknown.json",
+    "birthright-off-broadway-2026/nytimes--helen-shaw.json",
+    "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
+    "birthright-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "birthright-off-broadway-2026/the-recs--unknown.json"
   ],
   "failed": [
     "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/guardian--mark-fisher.json",
@@ -613,7 +617,13 @@
     "dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
     "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/all-that-dazzles-uk--unknown.json",
     "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/londontheatre1--unknown.json",
-    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/west-end-best-friend--unknown.json"
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/west-end-best-friend--unknown.json",
+    "a-walk-on-the-moon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "a-walk-on-the-moon-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "a-walk-on-the-moon-off-broadway-2026/talkinbroadway--marc-miller.json",
+    "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+    "birthright-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "birthright-off-broadway-2026/pages-on-stages--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -629,7 +639,10 @@
       "jesus-christ-superstar-west-end-2026/whatsonstage--jonas-schwartz.json",
       "jesus-christ-superstar-west-end-2026/whatsonstage--matt-barton.json",
       "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json",
-      "giulia-the-poison-queen-of-palermo-off-broadway-2026/exeunt-magazine--unknown.json"
+      "giulia-the-poison-queen-of-palermo-off-broadway-2026/exeunt-magazine--unknown.json",
+      "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
+      "birthright-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "birthright-off-broadway-2026/the-recs--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -641,7 +654,8 @@
       "jesus-christ-superstar-west-end-2026/times-uk--dan-cairns.json"
     ],
     "scrapingbee": [
-      "giulia-the-poison-queen-of-palermo-off-broadway-2026/nytimes--elisabeth-vincentelli.json"
+      "giulia-the-poison-queen-of-palermo-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+      "birthright-off-broadway-2026/nytimes--helen-shaw.json"
     ],
     "brightdata": [
       "giulia-the-poison-queen-of-palermo-off-broadway-2026/vulture--jackson-mchenry.json",
@@ -666,12 +680,14 @@
       "data/review-texts/jesus-christ-superstar-west-end-2026/click-liverpool--unknown.json",
       "data/review-texts/jesus-christ-superstar-west-end-2026/nottingham-confidential--unknown.json",
       "data/review-texts/jesus-christ-superstar-west-end-2026/thestage--holly-o.json",
-      "data/review-texts/the-guilty-west-end-2026/thestage--unknown.json"
+      "data/review-texts/the-guilty-west-end-2026/thestage--unknown.json",
+      "data/review-texts/dukes-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+      "data/review-texts/a-walk-on-the-moon-off-broadway-2026/talkinbroadway--marc-miller.json"
     ],
     "archive": []
   },
   "startTime": "2026-07-12T06:26:43.619Z",
-  "lastProcessed": "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/west-end-best-friend--unknown.json",
+  "lastProcessed": "birthright-off-broadway-2026/the-recs--unknown.json",
   "log": [
     {
       "t": "2026-07-12T09:31:50.501Z",
@@ -705,6 +721,17 @@
       "t": "2026-07-12T10:45:02.094Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-12T11:43:33.321Z",
+      "event": "bb-session",
+      "session": "d5593a2e",
+      "url": "https://www.talkinbroadway.com/page/ob/06_29_26.html?__cf_chl_f_tk=P9RfwACvik9Zf"
+    },
+    {
+      "t": "2026-07-12T11:43:34.133Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
