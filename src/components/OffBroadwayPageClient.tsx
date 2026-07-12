@@ -260,6 +260,12 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews, marketOpenCount
       .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
   }, [shows]);
 
+  const topMusicals = useMemo(() => {
+    return shows
+      .filter(show => show.type === 'musical' && show.status === 'open' && show.criticScore?.score && obHasEnoughReviews(show))
+      .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
+  }, [shows]);
+
   const closingSoonShows = useMemo(() => {
     const now = new Date();
     return shows
@@ -605,6 +611,7 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews, marketOpenCount
       <div className="mt-8 pt-8 border-t border-white/5">
         <FeaturedRow title="Recently Opened · Awaiting Reviews" shows={justOpenedShows} minShows={1} href="/browse/recently-opened-off-broadway" />
         <FeaturedRow title="Top Plays" shows={topPlays} />
+        <FeaturedRow title="Top Musicals" shows={topMusicals} />
         <FeaturedRow title="Closing Soon" shows={closingSoonShows} />
         <FeaturedRow title="Starting Soon" shows={startingSoonShows} />
       </div>
