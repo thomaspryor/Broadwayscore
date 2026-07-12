@@ -127,7 +127,7 @@ export default function StarRating({ rating, onRatingChange, size = 'md', readOn
             key={starIndex}
             type="button"
             disabled={readOnly}
-            className={`relative transition-transform ${readOnly ? 'cursor-default' : 'cursor-pointer hover:scale-110 active:scale-95'}`}
+            className={`relative rounded transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/80 ${readOnly ? 'cursor-default' : 'cursor-pointer hover:scale-110 active:scale-95'}`}
             style={{ width: starSize, height: starSize }}
             onMouseMove={readOnly ? undefined : e => handleMouseMove(e, starIndex)}
             onClick={readOnly ? undefined : e => handleClick(e, starIndex)}
