@@ -636,11 +636,10 @@ jobs:
 
       - name: Check checkout-core-data has matching push-core-data
         run: |
-          # WARNING-ONLY: the original inline version was a dead no-op since
-          # birth (grep -c "0\n0" bug made the integer tests silently error);
-          # fixed, the heuristic matches ~50 mostly-read-only workflows, so it
-          # warns instead of failing until it's redesigned to detect actual
-          # core-data WRITES. See scripts/lint-workflow-guards.sh.
+          # BLOCKING again as of 2026-07-12 (v2): keys on the three audited
+          # core-data-writing scripts instead of the old checkout+write
+          # heuristic (which was a dead no-op since birth — grep -c "0\n0"
+          # bug). Audit + exemption rationale in scripts/lint-workflow-guards.sh.
           bash scripts/lint-workflow-guards.sh core-data-pairing
 
       - name: Check workflows don't git-add private core data files
