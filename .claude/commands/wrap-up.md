@@ -254,4 +254,12 @@ Present a summary to the user:
 
 **Before listing any loose end, ask: can I just do this now?** If a loose end would take <5 minutes to fix, fix it instead of listing it. The user should never have to read a loose end and tell you to go do it. Only list items that genuinely require a separate session (blocked, different repo, would take >15 minutes, needs user decision).
 
+**Every deferred loose end must carry its own handoff.** Format (the finish-line gate enforces this):
+```
+DEFERRED: <what> — <which deferral bar it hits and why>
+HANDOFF PROMPT:
+<complete paste-ready prompt: task, key files, context, what was already tried, acceptance criteria>
+```
+The user pastes the prompt into a fresh session and it works with zero extra context. A Notion card ID alone is NOT a handoff.
+
 If there are no loose ends, say so explicitly — "Clean exit, no loose ends."
