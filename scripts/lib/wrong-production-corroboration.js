@@ -22,6 +22,11 @@
  *     Scope: before_preview flags only — an after_close date is more likely a
  *     successor production mislinked back (which can share the TR month near
  *     closing) than a misparse.
+ *     Known drift (accepted): isIncludableForRebuild() does not model the
+ *     hold (pre-window exclusion lives in the rebuild loop, not the helper),
+ *     so drift/count audits may count a held file as includable while the
+ *     rebuild excludes it — that mismatch POINTS at the file needing human
+ *     review, which is the intended surfacing, and held files are rare.
  *   - 'roundup-excerpt' (WEAK): the current production's aggregator roundup
  *     page cited this review (theatreReviewsExcerpt / theStageExcerpt /
  *     lboRoundupExcerpt). Venue-page ingestion can attach these to genuine
