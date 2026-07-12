@@ -31,6 +31,7 @@ const { listShowDirs } = require('./lib/list-show-dirs');
 const {
   extractClosingDateCandidates,
   aggregateClosingDateCandidates,
+  shouldSuppressCandidate,
   updateTodayTixMissingState,
   decideTodayTixCandidates,
 } = require('./lib/ob-closing-detector');
@@ -66,6 +67,7 @@ function getOpenOffBroadwayShows(showsData) {
 function runReviewTextSweep(obShows) {
   const candidates = [];
   const unconfirmed = [];
+  const suppressed = [];
   let scanned = 0;
   let showsWithNoTexts = 0;
 
@@ -111,13 +113,20 @@ function runReviewTextSweep(obShows) {
 
     const proposal = aggregateClosingDateCandidates(show.id, show.openingDate, reviewMentions);
     if (proposal) {
+      const suppress = shouldSuppressCandidate(show, proposal.proposedClosingDate, new Date().toISOString().slice(0, 10));
+      if (suppress) {
+        suppressed.push({ showId: show.id, proposedClosingDate: proposal.proposedClosingDate, reason: suppress });
+        continue;
+      }
+    }
+    if (proposal) {
       candidates.push(proposal);
     } else {
       unconfirmed.push({ showId: show.id, mentions: reviewMentions });
     }
   }
 
-  return { scanned, showsWithNoTexts, candidates, unconfirmed };
+  return { scanned, showsWithNoTexts, candidates, unconfirmed, suppressed };
 }
 
 function runTodayTixStalenessDiff(obShows) {
@@ -165,6 +174,7 @@ function main() {
       showsWithNoTexts: reviewTextSweep.showsWithNoTexts,
       candidates: reviewTextSweep.candidates,
       unconfirmed: reviewTextSweep.unconfirmed,
+      suppressed: reviewTextSweep.suppressed,
     },
     todaytixStaleness: {
       checked: todaytixStaleness.checked,
