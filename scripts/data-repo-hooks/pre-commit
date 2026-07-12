@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# Block commits containing unresolved merge/stash conflict markers or unparseable
+# JSON in staged .json files. Origin: 2026-07-11 glengarry session committed
+# stash-pop '<<<<<<< Updated upstream' markers into 35 review files, redding
+# main test.yml (Data Validation) for ~5 hours until a repair commit.
+# validate-review-texts.js --gate catches this in CI, but post-push — this hook
+# stops it at the source. Bypass (rare, deliberate): git commit --no-verify.
+fails=0
+while IFS= read -r f; do
+  [ -f "$f" ] || continue
+  if grep -qE '^(<{7}|={7}|>{7})( |$)' "$f"; then
+    echo "✗ conflict markers: $f" >&2; fails=1; continue
+  fi
+  if ! python3 -c "import json,sys; json.load(open(sys.argv[1]))" "$f" 2>/dev/null; then
+    echo "✗ unparseable JSON: $f" >&2; fails=1
+  fi
+done < <(git diff --cached --name-only --diff-filter=ACM -- '*.json')
+if [ "$fails" = "1" ]; then
+  echo "" >&2
+  echo "🛑 Commit blocked: staged .json files contain conflict markers or invalid JSON." >&2
+  echo "   Resolve the conflicts / fix the JSON, then re-stage. (2026-07-11 incident:" >&2
+  echo "   35 files with stash-pop markers redded main CI.) Bypass: --no-verify." >&2
+  exit 1
+fi
+exit 0
