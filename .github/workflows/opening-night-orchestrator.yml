@@ -521,7 +521,9 @@ jobs:
               # wait-for-run.sh polls once per 60-90s (one run-view call, no jobs
               # expansion) instead of gh run watch's 3s default — a 25-min poller
               # watch was ~500 calls against the repo's 1000/hr GITHUB_TOKEN budget.
-              bash scripts/lib/wait-for-run.sh "$RUN_ID" 60 || echo "⚠️ Poller run $RUN_ID finished (may have failed)"
+              # 75 = poller's 60-min job timeout + queue allowance, so we never
+              # abandon a still-running poller (serialization is load-bearing).
+              bash scripts/lib/wait-for-run.sh "$RUN_ID" 75 || echo "⚠️ Poller run $RUN_ID wait exited $? (1=run failed, 2=still running after 75min, 3=gh errors) — continuing"
             else
               echo "⚠️ Could not find new poller run after 2 min. Continuing."
             fi

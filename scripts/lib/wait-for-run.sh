@@ -72,8 +72,11 @@ while :; do
 
   if OUT=$(gh run view "$RUN_ID" --json status,conclusion --jq '"\(.status) \(.conclusion)"' 2>&1); then
     ERRORS=0
-    STATUS="${OUT%% *}"
-    CONCLUSION="${OUT##* }"
+    # stderr is folded into OUT for error diagnosis; gh warnings can precede
+    # the jq line, so parse only the last line.
+    LINE=$(printf '%s\n' "$OUT" | tail -n 1 | tr -d '\r')
+    STATUS="${LINE%% *}"
+    CONCLUSION="${LINE##* }"
     if [[ "$STATUS" == "completed" ]]; then
       echo "run $RUN_ID: $CONCLUSION"
       [[ "$CONCLUSION" == "success" ]] && exit 0
@@ -83,8 +86,12 @@ while :; do
   else
     ERRORS=$(( ERRORS + 1 ))
     if echo "$OUT" | grep -qiE 'could not find|not found|no run'; then
-      echo "run $RUN_ID: not found — $OUT" >&2
-      exit 3
+      # A 404 in the first couple of polls can be list→view eventual
+      # consistency right after dispatch — keep polling briefly.
+      if (( POLLS >= 3 )); then
+        echo "run $RUN_ID: not found — $OUT" >&2
+        exit 3
+      fi
     fi
     if echo "$OUT" | grep -qiE 'rate limit|HTTP 403'; then
       # Never hammer a rate-limited API — read the reset time and back way off.
