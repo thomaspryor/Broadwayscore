@@ -106,6 +106,15 @@ test('commentAnchorsToShow needs 2+ distinctive tokens for long titles (novel-co
   assert.equal(commentAnchorsToShow({ postTitle: 'saw Oscar Wao at Repertorio', body: 'la vida de oscar wao was moving' }, 'La Breve y Maravillosa Vida de Oscar Wao'), true);
 });
 
+test('commentAnchorsToShow full-title match is word-bounded (no substring-in-word anchor)', () => {
+  // "Cats" must not anchor on "advocats"/"catserver" (substring), but must still
+  // anchor on a real word-boundary mention.
+  assert.equal(commentAnchorsToShow({ postTitle: 'r/webdev', body: 'the advocatserver crashed again' }, 'Cats'), false);
+  assert.equal(commentAnchorsToShow({ postTitle: 'Cats revival', body: 'loved it' }, 'Cats'), true);
+  // Multi-word title still matches as a bounded phrase.
+  assert.equal(commentAnchorsToShow({ postTitle: 'x', body: 'saw pied a terre last night' }, 'Pied à Terre'), true);
+});
+
 test('commentAnchorsToShow does not pre-drop when title has no distinctive token', () => {
   // All-short/stopword title → no reliable anchor → let the LLM decide (return true).
   assert.equal(commentAnchorsToShow({ postTitle: 'unrelated', body: 'unrelated' }, 'Us'), true);
