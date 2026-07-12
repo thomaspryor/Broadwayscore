@@ -464,6 +464,13 @@ function safeWriteReview(filePath, newData, options = {}) {
             const i = preserved.indexOf(f);
             if (i !== -1) preserved.splice(i, 1);
           }
+          // The llm-scores sidecar is keyed by filename; when the URL change
+          // cleared the inline llmScore, the sidecar's copy belongs to the old
+          // article and must go too, or sidecar consumers re-read stale scores.
+          if (inv.cleared.includes('llmScore')) {
+            const { removeLlmScoreSidecar } = require('./url-change-invariant');
+            removeLlmScoreSidecar(filePath);
+          }
         }
       }
     }

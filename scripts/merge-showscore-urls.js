@@ -7,6 +7,7 @@
 const fs = require('fs');
 const path = require('path');
 const { normalizeOutlet, normalizeCritic } = require('./lib/review-normalization');
+const { updateFileUrlWithInvariant } = require('./lib/url-change-invariant');
 
 const REVIEW_TEXTS_DIR = 'data/review-texts';
 const SHOW_SCORE_FILE = 'data/show-score.json';
@@ -95,17 +96,25 @@ function main() {
           // Already verified and has text, skip
           alreadyCorrect++;
         } else {
-          // Update the URL
-          match.data.url = newUrl;
-          match.data.urlSource = 'show-score';
-          match.data.urlUpdatedAt = new Date().toISOString();
-
-          // Also update excerpt if we have one
+          // Update the URL through the URL-change invariant (Notion
+          // 39a637c5): a canonical move clears old-URL-derived state with a
+          // durable breadcrumb; first-set / same-canonical-URL falls back to
+          // the plain metadata write.
+          const metadata = {
+            urlSource: 'show-score',
+            urlUpdatedAt: new Date().toISOString(),
+          };
           if (ssReview.excerpt && !match.data.showScoreExcerpt) {
-            match.data.showScoreExcerpt = ssReview.excerpt;
+            metadata.showScoreExcerpt = ssReview.excerpt;
           }
-
-          fs.writeFileSync(match.path, JSON.stringify(match.data, null, 2));
+          const written = updateFileUrlWithInvariant(match.path, newUrl, metadata);
+          if (!written) {
+            match.data.url = newUrl;
+            Object.assign(match.data, metadata);
+            fs.writeFileSync(match.path, JSON.stringify(match.data, null, 2));
+          } else {
+            match.data = written;
+          }
           console.log(`  Updated: ${match.filename}`);
           console.log(`    Old: ${currentUrl.substring(0, 60)}...`);
           console.log(`    New: ${newUrl.substring(0, 60)}...`);

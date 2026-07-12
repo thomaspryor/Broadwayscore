@@ -22,6 +22,7 @@ const path = require('path');
 const { execSync } = require('child_process');
 const { OUTLET_DOMAINS, DOMAIN_REDIRECTS, discoverCorrectUrl } = require('./lib/url-discovery');
 const { shouldRetryUrlDiscovery, recordSerpAttempt } = require('./lib/review-guards');
+const { updateFileUrlWithInvariant } = require('./lib/url-change-invariant');
 
 // ---------------------------------------------------------------------------
 // CONFIG
@@ -141,6 +142,14 @@ function loadCandidates() {
 /**
  * Update a review file with new URL and metadata.
  * Does NOT clear fetchAttempts (per revised plan).
+ *
+ * URL-change invariant (Notion 39a637c5): the previous bespoke clear here
+ * handled wrong flags + text but left llmScore/excerpts/aggregatorStars/
+ * duplicateOf from the OLD url intact. Now routed through
+ * updateFileUrlWithInvariant, which clears the full URL-derived set with a
+ * durable _urlChangedClear breadcrumb (and drops the stale llm-scores
+ * sidecar). The _previousWrongFlags breadcrumb is kept — the rebase-restore
+ * machinery keys the rediscover reset on it.
  */
 function updateReviewUrl(candidate, newUrl, method) {
   if (CONFIG.dryRun) {
@@ -149,33 +158,56 @@ function updateReviewUrl(candidate, newUrl, method) {
   }
 
   const data = candidate.data;
-  data.previousUrl = candidate.url;
-  data.url = newUrl;
-  data.urlDiscoveredAt = new Date().toISOString();
-  data.urlDiscoveryMethod = method;
-
-  // Clear wrong-content flags when rediscovering URL (so collection will re-scrape)
+  const metadata = {
+    urlDiscoveredAt: new Date().toISOString(),
+    urlDiscoveryMethod: method,
+  };
   if (data.wrongProduction || data.wrongShow) {
-    data._previousWrongFlags = {
+    metadata._previousWrongFlags = {
       wrongProduction: data.wrongProduction,
       wrongShow: data.wrongShow,
     };
-    delete data.wrongProduction;
-    delete data.wrongShow;
-    delete data.wrongProductionReason;
-    delete data.wrongShowReason;
-    delete data.showNotMentioned;
-    delete data.contentMismatchNote;
-    delete data.incompleteReason;
-    delete data.incompleteDetail;
-    // Clear stale text so collection will re-scrape with new URL
-    delete data.fullText;
-    delete data.isFullReview;
-    delete data.textQuality;
-    delete data.contentTier;
+    // These two aren't in the invariant's URL_DERIVED_FIELDS clear set but
+    // were cleared by the legacy path — keep that behavior.
+    metadata.contentMismatchNote = undefined;
+    metadata.textQuality = undefined;
   }
 
-  fs.writeFileSync(candidate.filePath, JSON.stringify(data, null, 2));
+  const updated = updateFileUrlWithInvariant(candidate.filePath, newUrl, metadata);
+  if (!updated) {
+    // Same canonical URL (protocol/tracking-only rewrite) or unreadable file —
+    // stamp metadata AND keep the legacy same-URL flag reset: a flagged
+    // wrong-content file being re-stamped here is exactly the "re-scrape this
+    // URL" case, and the collector keys its bypass on the flags being cleared
+    // with the _previousWrongFlags breadcrumb (dropping this reset regressed
+    // the --reason recovery path; Codex review 2026-07-11).
+    data.previousUrl = candidate.url;
+    data.url = newUrl;
+    data.urlDiscoveredAt = metadata.urlDiscoveredAt;
+    data.urlDiscoveryMethod = method;
+    if (data.wrongProduction || data.wrongShow) {
+      data._previousWrongFlags = {
+        wrongProduction: data.wrongProduction,
+        wrongShow: data.wrongShow,
+      };
+      delete data.wrongProduction;
+      delete data.wrongShow;
+      delete data.wrongProductionReason;
+      delete data.wrongShowReason;
+      delete data.showNotMentioned;
+      delete data.contentMismatchNote;
+      delete data.incompleteReason;
+      delete data.incompleteDetail;
+      // Clear stale text so collection will re-scrape with the (re-stamped) URL
+      delete data.fullText;
+      delete data.isFullReview;
+      delete data.textQuality;
+      delete data.contentTier;
+    }
+    fs.writeFileSync(candidate.filePath, JSON.stringify(data, null, 2));
+  } else {
+    candidate.data = updated;
+  }
 
   // Clear from failed-fetches.json if present
   clearFromFailedFetches(candidate.reviewId);

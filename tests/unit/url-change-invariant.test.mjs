@@ -17,6 +17,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 import { createRequire } from 'module';
+import { fileURLToPath } from 'node:url';
 const require = createRequire(import.meta.url);
 
 const { applyUrlChangeInvariant, urlCanonicallyChanged, URL_DERIVED_FIELDS } =
@@ -427,6 +428,107 @@ describe('isIntentionalClear honors _urlChangedClear (rebase-restore durability)
     };
     for (const f of URL_DERIVED_FIELDS) {
       assert.equal(isIntentionalClear(f, local), true, `isIntentionalClear must honor url-change clear of ${f}`);
+    }
+  });
+});
+
+describe('updateFileUrlWithInvariant (raw-writer helper)', () => {
+  let helperTmp;
+  const { updateFileUrlWithInvariant } = require('../../scripts/lib/url-change-invariant');
+
+  beforeEach(() => { helperTmp = fs.mkdtempSync(path.join(os.tmpdir(), 'url-helper-')); });
+  afterEach(() => { fs.rmSync(helperTmp, { recursive: true, force: true }); });
+
+  test('canonical move clears state, stamps metadata + breadcrumb, atomic write', () => {
+    const fp = path.join(helperTmp, 'telegraph--dominic-cavendish.json');
+    fs.writeFileSync(fp, JSON.stringify(dollyContaminatedFile(), null, 2));
+    const written = updateFileUrlWithInvariant(fp, JCS_URL, { urlDiscoveryMethod: 'google-serp' });
+    assert.ok(written);
+    const onDisk = JSON.parse(fs.readFileSync(fp, 'utf8'));
+    assert.equal(onDisk.url, JCS_URL);
+    assert.equal(onDisk.previousUrl, DOLLY_URL);
+    assert.equal(onDisk.urlDiscoveryMethod, 'google-serp');
+    assert.equal(onDisk.wrongShow, undefined);
+    assert.equal(onDisk.llmScore, undefined);
+    assert.ok(onDisk._urlChangedClear);
+    assert.equal(fs.existsSync(`${fp}.tmp`), false, 'tmp file must be renamed away');
+  });
+
+  test('no-ops on same canonical URL and on first-set', () => {
+    const fp = path.join(helperTmp, 'same.json');
+    fs.writeFileSync(fp, JSON.stringify({ url: JCS_URL, wrongShow: true }, null, 2));
+    assert.equal(updateFileUrlWithInvariant(fp, `${JCS_URL}?utm_source=x`, {}), null);
+    const fp2 = path.join(helperTmp, 'firstset.json');
+    fs.writeFileSync(fp2, JSON.stringify({ outletId: 'x' }, null, 2));
+    assert.equal(updateFileUrlWithInvariant(fp2, JCS_URL, {}), null, 'first-set is the plain-write fallback');
+  });
+
+  test('undefined metadata values delete fields (fabricatedEntry clear)', () => {
+    const fp = path.join(helperTmp, 'fab.json');
+    fs.writeFileSync(fp, JSON.stringify({ ...dollyContaminatedFile(), fabricatedEntry: true, fabricatedReason: 'x' }, null, 2));
+    updateFileUrlWithInvariant(fp, JCS_URL, { fabricatedEntry: undefined, fabricatedReason: undefined });
+    const onDisk = JSON.parse(fs.readFileSync(fp, 'utf8'));
+    assert.equal(onDisk.fabricatedEntry, undefined);
+    assert.equal(onDisk.fabricatedReason, undefined);
+  });
+
+  test('preserveFields protects new-era fetch fields (fetch-first flow)', () => {
+    const { NEW_ERA_FETCH_FIELDS } = require('../../scripts/lib/url-change-invariant');
+    const fp = path.join(helperTmp, 'fetchfirst.json');
+    // updateReviewJson already wrote the NEW article's text under the old url.
+    fs.writeFileSync(fp, JSON.stringify({
+      ...dollyContaminatedFile(),
+      fullText: 'Fresh JCS text fetched from the new URL, mentioning Judas.',
+      contentTier: 'complete',
+    }, null, 2));
+    updateFileUrlWithInvariant(fp, JCS_URL, {}, { preserveFields: new Set(NEW_ERA_FETCH_FIELDS) });
+    const onDisk = JSON.parse(fs.readFileSync(fp, 'utf8'));
+    assert.match(onDisk.fullText, /Judas/, 'just-fetched text must survive the url flip');
+    assert.equal(onDisk.contentTier, 'complete');
+    assert.equal(onDisk.aggregatorStars, undefined, 'old-era leftovers still clear');
+    assert.equal(onDisk.wrongShow, undefined);
+  });
+
+  test('sidecar unlink is scoped to data/review-texts — external paths never unlink', () => {
+    const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+    const showId = `zz-test-scope-${process.pid}`;
+    const sidecarDir = path.join(repoRoot, 'data', 'llm-scores', showId);
+    fs.mkdirSync(sidecarDir, { recursive: true });
+    const sidecar = path.join(sidecarDir, 'telegraph--dominic-cavendish.json');
+    // Review file lives in an EXTERNAL tmp dir whose parent basename collides
+    // with the showId — the unlink must not fire.
+    const extDir = path.join(helperTmp, showId);
+    fs.mkdirSync(extDir, { recursive: true });
+    const fp = path.join(extDir, 'telegraph--dominic-cavendish.json');
+    try {
+      fs.writeFileSync(sidecar, JSON.stringify({ score: 75 }, null, 2));
+      fs.writeFileSync(fp, JSON.stringify(dollyContaminatedFile(), null, 2));
+      updateFileUrlWithInvariant(fp, JCS_URL, {});
+      assert.equal(fs.existsSync(sidecar), true, 'external-path write must never unlink a real sidecar');
+    } finally {
+      fs.rmSync(sidecarDir, { recursive: true, force: true });
+    }
+  });
+
+  test('clearing llmScore removes the llm-scores sidecar', () => {
+    // Sidecar path is derived from repo root — build the review under a fake
+    // repo layout matching data/llm-scores/{show}/{file}.
+    const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+    const showId = `zz-test-url-invariant-${process.pid}`;
+    const reviewDir = path.join(repoRoot, 'data', 'review-texts', showId);
+    const sidecarDir = path.join(repoRoot, 'data', 'llm-scores', showId);
+    fs.mkdirSync(reviewDir, { recursive: true });
+    fs.mkdirSync(sidecarDir, { recursive: true });
+    const fp = path.join(reviewDir, 'telegraph--dominic-cavendish.json');
+    const sidecar = path.join(sidecarDir, 'telegraph--dominic-cavendish.json');
+    try {
+      fs.writeFileSync(fp, JSON.stringify(dollyContaminatedFile(), null, 2));
+      fs.writeFileSync(sidecar, JSON.stringify({ score: 75 }, null, 2));
+      updateFileUrlWithInvariant(fp, JCS_URL, {});
+      assert.equal(fs.existsSync(sidecar), false, 'stale sidecar must be unlinked');
+    } finally {
+      fs.rmSync(reviewDir, { recursive: true, force: true });
+      fs.rmSync(sidecarDir, { recursive: true, force: true });
     }
   });
 });
