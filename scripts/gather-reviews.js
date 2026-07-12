@@ -3679,6 +3679,8 @@ function parseRating(rating, outletId) {
 /**
  * Main review gathering for a single show
  */
+const { resolveArchiveRowOutletId } = require('./lib/archive-outlet-identity');
+
 async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {}) {
   console.log(`\n${'='.repeat(60)}`);
   console.log(`Gathering reviews for: ${showId}`);
@@ -4023,7 +4025,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
       for (const lboReview of lboRawReviews) {
         foundReviews.push({
           outlet: lboReview.outlet,
-          outletId: normalizeOutlet(lboReview.outlet),
+          outletId: resolveArchiveRowOutletId({ url: lboReview.url, outletLabel: lboReview.outlet, sourceOutletId: 'london-box-office' }),
           criticName: lboReview.critic,
           url: lboReview.url || '',
           excerpt: lboReview.excerpt || '',
@@ -4059,7 +4061,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
           console.log(`    ✓ WET: ${wetReviews.length} reviews from cache${wetPostDate ? ` (date: ${wetPostDate})` : ''}`);
           for (const r of wetReviews) {
             foundReviews.push({
-              outlet: r.outlet, outletId: r.outletId || normalizeOutlet(r.outlet),
+              outlet: r.outlet, outletId: resolveArchiveRowOutletId({ url: r.url || r.reviewUrl, outletLabel: r.outlet, cachedOutletId: r.outletId, sourceOutletId: 'westendtheatre' }),
               criticName: r.critic || 'Unknown', url: r.url || r.reviewUrl || '',
               excerpt: r.excerpt || '',
               // WET rates shows independently — don't use as outlet's score
@@ -4089,7 +4091,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
           console.log(`    ✓ TR:  ${trReviews.length} reviews from archive${trRoundupDate ? ` (date: ${trRoundupDate})` : ''}`);
           for (const r of trReviews) {
             foundReviews.push({
-              outlet: r.outlet, outletId: normalizeOutlet(r.outlet),
+              outlet: r.outlet, outletId: resolveArchiveRowOutletId({ url: r.url, outletLabel: r.outlet }),
               criticName: r.critic || 'Unknown', url: r.url || '',
               excerpt: r.excerpt || '',
               // TR rates shows independently — don't use as outlet's score
@@ -4141,7 +4143,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
           console.log(`    ✓ TS:  ${tsReviews.length} reviews from archive${tsRoundupDate ? ` (date: ${tsRoundupDate})` : ''}`);
           for (const r of tsReviews) {
             foundReviews.push({
-              outlet: r.outlet, outletId: normalizeOutlet(r.outlet),
+              outlet: r.outlet, outletId: resolveArchiveRowOutletId({ url: r.url, outletLabel: r.outlet, sourceOutletId: 'thestage' }),
               criticName: r.critic || 'Unknown', url: r.url || '',
               excerpt: r.excerpt || '',
               score: r.stars ? Math.round((r.stars / (r.starsOutOf || 5)) * 100) : null,
