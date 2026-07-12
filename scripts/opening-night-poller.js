@@ -915,7 +915,7 @@ async function runAggregators(show) {
           }
           results.push({
             showId: show.id,
-            outletId: normalizeOutlet(r.outlet),
+            outletId: resolveArchiveRowOutletId({ url: r.url || post.link, outletLabel: r.outlet, sourceOutletId: 'westendtheatre' }),
             outlet: r.outlet,
             criticName: r.critic,
             url: r.url || post.link || '',
