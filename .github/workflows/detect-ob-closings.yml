@@ -1,0 +1,102 @@
+# Off-Broadway closing-date detector — ALERT ONLY.
+#
+# OB shows have no closing-date automation today: update-show-status.yml and
+# audit-closing-dates.js are Broadway-only (broadway.com has no reliable OB
+# calendar, see memory/feedback_closing_date_audit_gaps.md). This workflow
+# never writes to shows.json — it only produces
+# data/audit/ob-closing-candidates.json for human review, using two signals
+# that require no new scraping: a review-text closing-date sweep and a
+# TodayTix showtimes-feed staleness diff.
+name: Detect OB Closings
+
+on:
+  schedule:
+    - cron: '0 12 * * 1'  # Weekly Mondays 12:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  detect:
+    name: Run OB closing-date detector
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Run detector
+        run: node scripts/detect-ob-closings.js --dry-run
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet data/audit/ob-closing-candidates.json data/audit/ob-todaytix-missing-state.json 2>/dev/null \
+            && git ls-files --error-unmatch data/audit/ob-closing-candidates.json >/dev/null 2>&1; then
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Check for large files
+        if: steps.changes.outputs.has_changes == 'true'
+        uses: ./.github/actions/check-file-sizes
+
+      - name: Commit and push
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          git add data/audit/ob-closing-candidates.json data/audit/ob-todaytix-missing-state.json
+
+          SUMMARY=$(node -e "
+            const r = require('./data/audit/ob-closing-candidates.json');
+            console.log(r.reviewTextSweep.candidates.length + ' review-text candidates, ' + r.todaytixStaleness.candidates.length + ' TodayTix-stale candidates');
+          ")
+
+          git commit -m "audit: Weekly OB closing-date detector ($SUMMARY)
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Summary
+        run: |
+          echo "## OB Closing-Date Detector (alert-only)" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          node -e "
+            const r = require('./data/audit/ob-closing-candidates.json');
+            console.log('**Review-text sweep:** ' + r.reviewTextSweep.scanned + ' scanned, ' + r.reviewTextSweep.showsWithNoTexts + ' with no review-texts dir');
+            console.log('**Review-text candidates:** ' + r.reviewTextSweep.candidates.length);
+            r.reviewTextSweep.candidates.forEach(c => console.log('- ' + c.showId + ' -> ' + c.proposedClosingDate + ' [' + c.confidence + '] (' + c.reason + ')'));
+            console.log('');
+            console.log('**TodayTix staleness candidates:** ' + r.todaytixStaleness.candidates.length);
+            r.todaytixStaleness.candidates.forEach(c => console.log('- ' + c.showId + ' — missing ' + c.consecutiveMissingChecks + ' consecutive checks since ' + c.firstMissingDate));
+          " >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Detect OB Closings Failed'
+          severity: 'warning'
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
