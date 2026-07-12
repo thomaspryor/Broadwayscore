@@ -187,7 +187,12 @@ function aggregateScore(showId) {
 }
 
 function minReviews(category) {
-  return (category === 'off-broadway' || category === 'off-west-end') ? 5 : 5;
+  // Match the site: OB/OWE shows display a Critic Score at 3+ reviews, so a
+  // 3-review opening is score-backed and newsletter-eligible. Requiring 5 kept
+  // legitimately-scored small shows out (Misterman, 94.89 on 3 reviews, missed
+  // both eligible 2026 issues — owner request 2026-07-12). Broadway stays at 5:
+  // a Broadway opening with <5 reviews is a data gap, not a small show.
+  return (category === 'off-broadway' || category === 'off-west-end') ? 3 : 5;
 }
 
 function getImage(show) {

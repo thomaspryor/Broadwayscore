@@ -378,17 +378,19 @@ export default function MyShowsClient() {
         )}
       </div>
 
-      {/* Stats bar */}
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-gray-400 mb-2">
-        <span><strong className="text-white">{showsSeen}</strong> shows seen</span>
-        {upcomingCount > 0 && (
-          <span><strong className="text-white">{upcomingCount}</strong> upcoming</span>
-        )}
-        <span><strong className="text-white">{watchlist.length}</strong> watchlist</span>
-        {toBeRatedEntries.length > 0 && (
-          <span><strong className="text-amber-400">{toBeRatedEntries.length}</strong> to rate</span>
-        )}
-      </div>
+      {/* Stats bar — tab badges carry the seen/watchlist/lists counts now, so
+          only the two signals WITHOUT a badge live here (owner: the duplicate
+          counts were redundant, 2026-07-12). */}
+      {(toBeRatedEntries.length > 0 || upcomingCount > 0) && (
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-gray-400 mb-2">
+          {toBeRatedEntries.length > 0 && (
+            <span><strong className="text-amber-400">{toBeRatedEntries.length}</strong> to rate</span>
+          )}
+          {upcomingCount > 0 && (
+            <span><strong className="text-white">{upcomingCount}</strong> upcoming</span>
+          )}
+        </div>
+      )}
       {!isMockMode && user && (
         <div className="mb-6">
           <MezzanineImport

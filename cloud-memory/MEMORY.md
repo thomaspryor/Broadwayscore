@@ -17,6 +17,7 @@
 - [Systematic fix: threat model + parity test](feedback_systematic_fix_threat_model_first.md) — check trigger frequency; parity-test bad URLs
 - [Review rituals](feedback_sprint_plan_needs_review.md) — /plan-review before multi-sprint plans; GPT-4o+Gemini parallel on screenshots ([[feedback_two_model_ui_review.md]], [[feedback_three_model_audit_modality.md]])
 - [Test pure function at I/O boundary](feedback_test_pure_function_at_io_boundary.md) — also test wrapper against real data
+- [Show status before external comms](feedback_check_show_status_before_external_comms.md) — surface status/closingDate with show drafts; OB closings lag
 - [Anti-AI-slop writing](feedback_anti_ai_slop_writing.md) — strip em dashes, "not X it's Y", hedges, fake comparisons in external copy ([[feedback_email_drafting.md]])
 - [GitHub polling rate limit](feedback_github_polling_rate_limit.md) — no gh polling loops; NEVER gh run watch, use scripts/lib/wait-for-run.sh; 403 → rate_limit reset + git/raw/prod fallbacks
 
@@ -27,7 +28,7 @@
 ## 🌳 Worktrees & git
 - [Worktrees mandatory for code edits](feedback_worktree_code_changes.md) — src/, scripts/, .github/, CLAUDE.md; prefix paths .claude/worktrees/ ([[feedback_worktree_edit_paths.md]])
 - [Parallel worktree sessions race](feedback_parallel_worktree_race.md) — re-pull + grep scripts/lib/ BEFORE writing; plan "parallel" = subagents ([[feedback_plan_parallel_means_subagents.md]]); same-name worktree may be another session's LIVE locked one, `git worktree list` first ([[feedback_enterworktree_name_collision_live_session.md]])
-- [Dual repo data files](feedback_dual_repo_data_files.md) — shows/reviews/awards/outlet-registry authoritative in private repo, fix BOTH ([[feedback_awards_json_dual_repo.md]], [[feedback_outlet_registry_dual_repo.md]]); data/review-texts NOT a symlink, edit ~/broadway-review-texts/ ([[feedback_review_texts_not_symlink.md]]); NEVER run rebuild-all-reviews.js locally — stale clone + no flag parsing ([[feedback_local_rebuild_stale_clone_hazard.md]])
+- [Dual repo data files](feedback_dual_repo_data_files.md) — shows/reviews/awards/outlet-registry authoritative in private repo, fix BOTH; data/review-texts NOT a symlink, edit ~/broadway-review-texts/ ([[feedback_review_texts_not_symlink.md]]); NEVER run rebuild-all-reviews.js locally ([[feedback_local_rebuild_stale_clone_hazard.md]])
 - [Stray symlink crashes pipeline](feedback_stray_symlink_crashes_pipeline.md) — committed abs-path symlink dangles in CI; use listShowDirs()
 - [audit-review-contamination strict CI gate](feedback_audit_contamination_strict_mode.md) — strict A/B/C fail CI; B = false-pos wrongProduction
 - [Commit data repo edits IMMEDIATELY](feedback_data_repos_clobber_uncommitted.md) — pull --rebase clobbers uncommitted; never reset-hard+rsync ([[feedback_reset_rsync_wipes_ci_fields.md]]); gh api PUT /contents/ when local git broken ([[feedback_gh_api_emergency_commit.md]])
@@ -35,7 +36,7 @@
 ## ⚙️ CI / GitHub Actions / workflows
 - [Workflow cascade prevention](feedback_workflow_cascade_prevention.md) — trace dispatch graph; circular chains → 1000+ runs/day
 - [Cron timeout = script budget](feedback_cron_timeout_needs_script_budget.md) — cancelled-at-timeout crons need --time-budget-min + rotation; check skip-cache checkout wiring
-- [test.yml gotchas](feedback_test_yml_push_path_allowlist.md) — push path allow-list (non-listed scripts/ = ZERO CI); data gates flap on corpus drift, first failure masks rest ([[feedback_test_yml_data_gates_flap_and_shortcircuit.md]], [[feedback_ci_red_stale_state_and_brittle_assertions.md]]); TWO disjoint unit-test batches ([[feedback_test_yml_two_unit_test_batches.md]]); red batch skips colocated tests — verify new test RAN ([[feedback_ci_step_short_circuits_colocated_tests.md]])
+- [test.yml gotchas](feedback_test_yml_push_path_allowlist.md) — push path allow-list (non-listed scripts/ = ZERO CI); data gates flap, first failure masks rest; two disjoint unit batches; verify new test RAN ([[feedback_ci_step_short_circuits_colocated_tests.md]])
 - [push-review-texts reverts intentional clears](feedback_push_review_texts_reverts_intentional_clears.md) — duplicateOf in PROTECTED_FIELDS; needs duplicateClearReason exception
 - [Vercel build config](feedback_vercel_env_block_required.md) — NEXT_PUBLIC_* must go in build step env: block; no dynamic paths in server code, grep src/ before outputFileTracingExcludes ([[feedback_vercel_nft_dynamic_paths.md]])
 - [Conservative default = common case](feedback_conservative_default_can_be_common_case.md) — "unknown → assume X" breaks when unknown IS common
@@ -56,6 +57,7 @@
 - [Fixture E2E specs: dual registration](feedback_fixture_e2e_specs_dual_registration.md) — /test/* specs go in BOTH playwright testIgnore AND test-ugc.yml run list; TestGuard redirects fixtures to / on prod
 
 ## 📋 Open work
+- [Autonomous loop schedule](autonomous-loop-schedule.md) — nightly slot 07:30 UTC, email 7:30am ET; full 157-cron map; DST fallback + Sunday worktree-gc caveats
 - [OB venue historical backfill](project_ob_venue_historical_backfill.md) — Atlantic/Vineyard/MCC archive pages; Tier A deferred TFANA+2ndStage ([[project_ob_tier_a_deferred.md]])
 - [Manual stubs bypass venue/date validation](feedback_manual_stub_bypasses_validation.md) — NEVER stub shows.json from memory; look up Playbill first
 - [Regional auto-promotion](project_regional_expansion_watchlist.md) — roundup=go-live; auto add+reviews+images; transferOf/transferredTo cross-link tryout↔Broadway; cast/audience manual
@@ -65,7 +67,6 @@
 - [_pending no-byline strand](feedback_pending_no_byline_strand_drain.md) — multi-critic outlets w/o byline strand in _pending/; CHECK _pending FIRST when reviews missing; drain rejects KEEP-not-delete
 - [Date-gated flips](feedback_previews_open_flip_needs_review_signal.md) — stuck previews suppresses score, 2d review-driven backstop; OB openingDate==previewsStartDate misses press night ([[feedback_off_broadway_opening_date_gap.md]])
 - [Opening-night runbooks](feedback_admin_ingest_opening_night_2026-04-26.md) — Joe Turner master log (~42 issues, read FIRST) + 25-item failure-mode checklist ([[feedback_manual_ingest_opening_night_runbook.md]])
-- [Aggregator pages post-opening only](feedback_aggregator_pages_post_opening.md) — BWW RR/DTLI/TB don't exist pre-opening
 - [SERP opening night timing](feedback_serp_opening_night_timing.md) — Google indexes major outlets 2.9h+ post-pub; 3h gate
 - [shows.json category at scheduling](feedback_shows_json_category_at_schedule.md) — null category/market must fail validate-data.js
 - [Opening night corrections](feedback_opening_night_corrections.md) — disable orchestrator first; humanReviewScore only override
@@ -79,7 +80,7 @@
 
 ## 📊 Data pipeline & scraping
 - [Scraper architecture](feedback_scraper_architecture.md) — use fetchPage(); BD empty 200s, Playwright 404s as success ([[feedback_fetchpage_gotchas.md]]); BWW soft-404 returns 200 homepage, check <title> ([[feedback_aggregator_soft_404.md]])
-- [SB SERP burns invisibly](feedback_sb_serp_invisible_burn.md) — _serpViaScrapingBee logs nothing; poller preferSpeed=SB-primary + SD-empty fallthrough = 60-100K cr/day; audit via usage-counter sampling not logs. BD zone web_unlocker2 ([[feedback_brightdata_zone_migration.md]]); budgets [[feedback_sb_credit_budget.md]]
+- [SB SERP burns invisibly](feedback_sb_serp_invisible_burn.md) — _serpViaScrapingBee logs nothing; preferSpeed+SD-empty fallthrough = 60-100K cr/day; audit via usage-counter sampling. BD zone web_unlocker2 ([[feedback_brightdata_zone_migration.md]], [[feedback_sb_credit_budget.md]])
 - [Closing-date automation gaps](feedback_closing_date_audit_gaps.md) — 4 silent gaps; broadway.org/TodayTix lag; WE=0 automation
 - [WET venue-page wrong-show ingestion](feedback_wet_venue_page_wrong_show_ingestion.md) — same-venue predecessor show's reviews attach via venue corroboration; check rv URL slugs; flag needs wrongShowReason + delete WET cache
 - [In-place URL update preserves stale state](feedback_inplace_url_update_preserves_stale_state.md) — real reviews merged into flagged slots stay suppressed; check file's CURRENT url before assuming discovery failed; run isScoreable() directly for hidden blockers

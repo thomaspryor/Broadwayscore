@@ -563,18 +563,8 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
     return { ...incoming };
   }
 
-  const merged = { ...existing };
-
-  // Prefer longer/more complete fullText (decode entities on incoming text)
-  if (incoming.fullText) {
-    const decodedFullText = decodeHtmlEntities(incoming.fullText);
-    if (!existing.fullText || decodedFullText.length > existing.fullText.length) {
-      merged.fullText = decodedFullText;
-    }
-  }
-
-  // Prefer valid URLs — and when URL changes, clear stale content flags.
-  // This handles preview-article stubs being replaced by real review URLs.
+  // URL analysis runs BEFORE any field merging so the cross-outlet guard
+  // below can no-op the whole merge, not just the URL swap.
   //
   // EXCEPTION: if existing URL is marked urlVerified or urlManualOverride,
   // don't auto-overwrite with a different URL. First-URL-set (existing.url
@@ -592,6 +582,49 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
     || incoming.url.includes('undefined') || !/^https?:\/\//i.test(incoming.url));
   const urlChanged = incoming.url && existing.url && !incomingUrlGarbage
     && normalizeUrl(incoming.url) !== normalizeUrl(existing.url);
+
+  // Cross-outlet guard: an incoming record whose URL the registry maps to a
+  // DIFFERENT outlet is another outlet's review — do not merge ANY of it
+  // (url, text, critic, dates). Slots whose outletId was minted from a SERP
+  // source label (no registry domain) otherwise swallow other outlets'
+  // reviews on in-place URL updates — Louise Penn's loureviews.blog reviews
+  // were published under the phantom outlet 'Cambridge' this way (her email,
+  // 2026-07-12). An unresolvable incoming domain still merges: blocking
+  // requires positive evidence of a mismatch, not mere ignorance. And a
+  // resolver mismatch is NOT evidence when the existing outlet's own registry
+  // entry owns the incoming domain — shared-domain losers (sunday-telegraph
+  // on telegraph.co.uk) and domainAliases (ap syndicated on abcnews.go.com)
+  // resolve to the domain's primary owner, not the slot's outlet.
+  if (urlChanged && existing.outletId) {
+    const incomingOutlet = resolveOutletFromUrl(incoming.url);
+    if (incomingOutlet && incomingOutlet.outletId !== existing.outletId
+        && !outletOwnsUrlDomain(existing.outletId, incoming.url)) {
+      logExclusion({
+        script: context.script || 'unknown-caller',
+        showId: context.showId || 'unknown',
+        file: context.file || '-',
+        reason: 'skippedCrossOutletMerge',
+        details: {
+          existingUrl: existing.url, incomingUrl: incoming.url, outletId: existing.outletId,
+          criticName: existing.criticName, incomingResolvedOutletId: incomingOutlet.outletId,
+        },
+      });
+      return { ...existing };
+    }
+  }
+
+  const merged = { ...existing };
+
+  // Prefer longer/more complete fullText (decode entities on incoming text)
+  if (incoming.fullText) {
+    const decodedFullText = decodeHtmlEntities(incoming.fullText);
+    if (!existing.fullText || decodedFullText.length > existing.fullText.length) {
+      merged.fullText = decodedFullText;
+    }
+  }
+
+  // Prefer valid URLs — and when URL changes, clear stale content flags.
+  // This handles preview-article stubs being replaced by real review URLs.
   // Block URL changes only when the existing URL is protected AND not
   // obviously broken. First-URL-set and undefined-repair always proceed.
   const blockUrlChange = urlIsProtected && !existingUrlLooksBroken && urlChanged;
@@ -727,6 +760,30 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
  * Get the full outlet object from the registry.
  * Returns { displayName, tier, aliases, domain } or null if not found.
  */
+/**
+ * Does this outlet's own registry entry claim the URL's domain?
+ * Checks `domain` plus `domainAliases` (syndication hosts), matching the
+ * hostname exactly or as a subdomain. Used by the mergeReviews cross-outlet
+ * guard: when two outlets share a domain (telegraph/sunday-telegraph) or an
+ * outlet syndicates on another's domain (ap on abcnews.go.com),
+ * resolveOutletFromUrl returns the domain's primary owner — the slot's outlet
+ * still legitimately owns the URL and must not be blocked.
+ */
+function outletOwnsUrlDomain(outletId, url) {
+  if (!outletId || !url) return false;
+  const entry = getOutletFromRegistry(outletId);
+  if (!entry) return false;
+  let hostname;
+  try {
+    hostname = new URL(url).hostname.replace(/^www\./, '').toLowerCase();
+  } catch {
+    return false;
+  }
+  const owned = [entry.domain, ...(entry.domainAliases || [])]
+    .filter(Boolean).map(d => d.replace(/^www\./, '').toLowerCase());
+  return owned.some(d => hostname === d || hostname.endsWith('.' + d));
+}
+
 function getOutletFromRegistry(outletId) {
   const registry = loadOutletRegistry();
   if (!registry || !registry.outlets) return null;
@@ -1535,6 +1592,7 @@ module.exports = {
   resolveOutletFromCritic,
   clearCriticRegistryCache,
   resolveOutletFromUrl,
+  outletOwnsUrlDomain,
   clearDomainCache,
   getOutletAliases,
   isProfileUrl,
