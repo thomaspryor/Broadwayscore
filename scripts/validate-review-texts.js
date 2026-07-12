@@ -185,7 +185,12 @@ function validateReviewFile(filePath, validOutlets, seenReviews) {
   // and audit-review-duplicates.js — validator must match or it errors on legitimate
   // duplicate-text flags (e.g. a Variety review filed under two critic names after
   // criticEnrichedFrom: html-override:jsonld-person updates criticName post-ingest).
-  if (data.duplicateOf || data.duplicateTextOf || data.wrongProduction || data.wrongShow || data.wrongUrl || data.wrongAttribution || data.isRoundupArticle) {
+  if (data.duplicateOf || data.duplicateTextOf || data.wrongProduction || data.wrongShow || data.wrongUrl || data.wrongAttribution || data.isRoundupArticle
+      // rejection-flagged files are exclusion tombstones — they can't double-count,
+      // so sharing outlet+critic with their canonical sibling is not a duplicate
+      // (the consolidation passes now deliberately leave them in place rather than
+      // folding their flags into the live file — merge-review-fields.js).
+      || data.rejectionReason || data.suspectedMisattribution) {
     return { errors, warnings, skipped: true };
   }
 

@@ -16,6 +16,7 @@ const fs = require('fs');
 const path = require('path');
 const { extractAuthorFromHtml } = require('./lib/content-quality');
 const { normalizeCritic, normalizeOutlet, generateReviewFilename } = require('./lib/review-normalization');
+const { mergeUniqueReviewFields } = require('./lib/merge-review-fields');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
 const args = process.argv.slice(2);
@@ -105,12 +106,15 @@ async function processAll() {
       if (!dryRun) {
         if (c.file !== newFilename) {
           if (fs.existsSync(newPath)) {
-            // Merge unique fields from --unknown into named file, then delete
+            // Merge unique fields from --unknown into named file, then delete.
+            // Guarded: a flagged source never folds into the named sibling
+            // (merge-review-fields.js, Notion 39b637c5-416f-815e) — leave it.
             const existing = JSON.parse(fs.readFileSync(newPath, 'utf8'));
-            for (const [k, v] of Object.entries(c.data)) {
-              if (v != null && !existing[k]) existing[k] = v;
+            const mergeResult = mergeUniqueReviewFields(existing, c.data);
+            if (mergeResult.action === 'skip-flagged-source') continue;
+            if (mergeResult.changed) {
+              fs.writeFileSync(newPath, JSON.stringify(existing, null, 2) + '\n');
             }
-            fs.writeFileSync(newPath, JSON.stringify(existing, null, 2) + '\n');
             fs.unlinkSync(c.filePath);
             dupes++;
           } else {
