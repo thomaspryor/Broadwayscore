@@ -29,7 +29,9 @@ const { isCardEligible, TIER1_ALLOW_PREFIXES, TIER1_ALLOW_FILES } = require('./a
 // forms are accepted; every file argument must be a relative, traversal-free
 // path under tests/, scripts/, or docs//memory/ (for test -f).
 const SAFE_CHECK_FORMS = [
-  { re: /^node --test( --test-timeout \d+)?((?: [\w@./-]+\.test\.(?:mjs|js|ts))+)$/, pathsGroup: 2, pathPrefix: ['tests/', 'scripts/'] },
+  // .test.mjs/.test.js only — matches the documented contract exactly (.ts
+  // test files run via `npx tsx --test`, which is not an allowed form).
+  { re: /^node --test( --test-timeout \d+)?((?: [\w@./-]+\.test\.m?js)+)$/, pathsGroup: 2, pathPrefix: ['tests/', 'scripts/'] },
   { re: /^npx tsc --noEmit$/ },
   { re: /^npx next lint$/ },
   { re: /^test -f((?: [\w@./-]+)+)$/, pathsGroup: 1, pathPrefix: ['docs/', 'memory/', 'tests/'] },
@@ -47,7 +49,7 @@ function isSafeCheckCommand(cmd) {
   return false;
 }
 
-const SAFE_CHECK_DESCRIPTION = '`node --test <*.test.mjs files under tests/ or scripts/>`, `npx tsc --noEmit`, `npx next lint`, or `test -f <docs|memory|tests path>`';
+const SAFE_CHECK_DESCRIPTION = '`node --test <*.test.mjs/*.test.js files under tests/ or scripts/>`, `npx tsc --noEmit`, `npx next lint`, or `test -f <docs|memory|tests path>`';
 
 const SCHEMA_PATH = path.join(__dirname, 'triage-schema.json');
 const schema = JSON.parse(fs.readFileSync(SCHEMA_PATH, 'utf8'));
