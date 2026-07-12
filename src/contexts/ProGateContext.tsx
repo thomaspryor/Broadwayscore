@@ -10,13 +10,19 @@
  * - Provides methods to trigger gate modal
  */
 
-import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback, useRef, ReactNode } from 'react';
 import dynamic from 'next/dynamic';
 import { usePathname } from 'next/navigation';
 import { track } from '@vercel/analytics';
 import { captureEvent } from '@/lib/posthog-events';
 import { type GateTrigger, type CapturedUserData } from '@/components/EmailCaptureModal';
 import { emailCaptureConfig } from '@/config/email-capture';
+import {
+  shouldSuppressPassiveGate,
+  getMobileGateParams,
+  buildGateAbVariant,
+  MOBILE_GATE_FLAG,
+} from '@/lib/gate-logic';
 import { isFormspreeSubscribed } from '@/hooks/useFormspreeSubscribed';
 import { isLondonPath } from '@/hooks/useCurrentMarket';
 
@@ -26,6 +32,14 @@ const STORAGE_KEY = 'bsc_user_data';
 const PAGE_VIEW_KEY = 'bsc_page_views';
 const LAST_VISIT_KEY = 'bsc_last_visit';
 const RECAPTURED_KEY = 'bsc_email_recaptured'; // Pre-fix modal submissions (Jan 29 – Mar 12, 2026) stored email locally only
+// Passive-gate dismissal cooldown stamp (ms epoch). Written on dismiss of any
+// NON-blocking modal; read before firing any non-blocking trigger. Without it,
+// dismissal was React-state only and the same visitor was re-gated every visit
+// (2,992 exit-intent impressions / 2,150 people, 87% mobile dismissal — 2026-07 audit).
+const GATE_DISMISSED_KEY = 'bsc_gate_dismissed_at';
+
+/** Extra analytics props stamped at fire time (A/B variant + demixed source). */
+type GateFireMeta = { trigger_source?: string; ab_variant?: string };
 
 interface ProGateContextValue {
   /** Whether the user has submitted their email */
@@ -126,22 +140,48 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
     setHasEmail(isFormspreeSubscribed(market));
   }, [market, isClient]);
 
-  const triggerGate = useCallback((trigger: GateTrigger) => {
+  // Analytics props stamped when the current modal fired (variant + source) —
+  // merged into gate_modal_shown / gate_modal_dismissed / email_captured so the
+  // A/B analysis can attribute every event to an arm and demix the
+  // return_visitor trigger name (which both the scroll and mouseleave paths reuse).
+  const [gateFireMeta, setGateFireMeta] = useState<GateFireMeta>({});
+
+  const triggerGate = useCallback((trigger: GateTrigger, meta: GateFireMeta = {}) => {
     if (hasEmail) return; // Don't show if already have email
     if (modalOpen) return; // Don't stack modals
     // Don't trigger on excluded pages (feedback, submit-review, etc.)
     if (emailCaptureConfig.excludedPaths.some(p => window.location.pathname.startsWith(p))) return;
+    const blocking = BLOCKING_TRIGGERS.includes(trigger);
+    // Dismissal cooldown: every non-blocking ask (exit_intent, scroll_depth,
+    // return_visitor, page_view_limit) stays quiet for passiveGateCooldownDays
+    // after a dismissal. Blocking feature gates are exempt (user clicked the
+    // gated action); recapture is already one-shot via RECAPTURED_KEY.
+    if (!blocking && trigger !== 'recapture') {
+      try {
+        if (shouldSuppressPassiveGate(
+          localStorage.getItem(GATE_DISMISSED_KEY),
+          Date.now(),
+          emailCaptureConfig.passiveGateCooldownDays,
+        )) return;
+      } catch { /* localStorage unavailable — fail open, show the modal */ }
+    }
+    setGateFireMeta(meta);
     setModalTrigger(trigger);
-    setModalBlocking(BLOCKING_TRIGGERS.includes(trigger));
+    setModalBlocking(blocking);
     setModalOpen(true);
   }, [hasEmail, modalOpen]);
 
   const handleModalClose = useCallback(() => {
     if (modalBlocking) return; // Can't close blocking modals
-    track('gate_modal_dismissed', { trigger: modalTrigger });
-    captureEvent('gate_modal_dismissed', { trigger: modalTrigger });
+    // Close FIRST — nothing below may keep the modal stuck open (Safari
+    // Lockdown/private mode can throw on localStorage.setItem).
     setModalOpen(false);
-  }, [modalBlocking, modalTrigger]);
+    try {
+      localStorage.setItem(GATE_DISMISSED_KEY, String(Date.now()));
+    } catch { /* localStorage unavailable — cooldown just won't persist */ }
+    track('gate_modal_dismissed', { trigger: modalTrigger, ...gateFireMeta });
+    captureEvent('gate_modal_dismissed', { trigger: modalTrigger, ...gateFireMeta });
+  }, [modalBlocking, modalTrigger, gateFireMeta]);
 
   // Recapture: fire non-blocking modal after 4s for pre-fix users who need re-submission to Formspree
   useEffect(() => {
@@ -177,7 +217,7 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
       if (e.clientY <= 0 && !modalOpen) {
         setExitIntentFired(true);
         setPassiveModalFired(true);
-        triggerGate(isReturnVisitor ? 'return_visitor' : 'exit_intent');
+        triggerGate(isReturnVisitor ? 'return_visitor' : 'exit_intent', { trigger_source: 'mouseleave' });
       }
     };
 
@@ -185,26 +225,65 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
     return () => document.removeEventListener('mouseleave', handleMouseLeave);
   }, [isClient, hasEmail, exitIntentFired, passiveModalFired, isReturnVisitor, modalOpen, triggerGate]);
 
+  // ── Mobile gate timing A/B ('mobile-gate-timing' PostHog flag) ─────────────
+  // Resolve the flag BEFORE arming the scroll listener — flags load 0.5-5s after
+  // mount, and a fast scroller crossing the threshold pre-resolution would get
+  // control behavior while PostHog's sticky assignment records the variant
+  // (contaminated arms). Same poll-then-fallback shape as TicketButtonsAB:
+  // 250ms x 20; after 5s unresolved → 'fallback' (control BEHAVIOR, but labeled
+  // fallback so analysis EXCLUDES those users rather than polluting control).
+  // undefined = still resolving (listener stays unarmed); string|null = resolved.
+  const [mobileGateFlag, setMobileGateFlag] = useState<string | null | undefined>(undefined);
+  // Time-on-page clock starts at mount, NOT at listener arming — otherwise flag
+  // latency would silently extend control's min-time and bias the comparison.
+  const mountTimeRef = useRef<number>(0);
+  useEffect(() => {
+    if (!isClient) return;
+    mountTimeRef.current = Date.now();
+    if (!emailCaptureConfig.mobileScrollGate.enabled) return;
+    // Only resolve on touch devices — the experiment exists only there, and
+    // resolving on desktop would put desktop users in PostHog's exposure cohort.
+    if (!window.matchMedia('(pointer: coarse)').matches) return;
+
+    let tries = 0;
+    const poll = setInterval(() => {
+      tries++;
+      const ph = window.posthog; // typed via the global posthog declaration (TicketButtonsAB idiom)
+      const value = ph?.getFeatureFlag?.(MOBILE_GATE_FLAG);
+      if (typeof value === 'string' || value === true) {
+        setMobileGateFlag(String(value));
+        clearInterval(poll);
+      } else if (tries >= 20) {
+        setMobileGateFlag(null); // ad blocker / opt-out / flag missing → fallback
+        clearInterval(poll);
+      }
+    }, 250);
+    return () => clearInterval(poll);
+  }, [isClient]);
+
   // Mobile scroll-depth detection — replaces exit intent for touch devices
   const [scrollFired, setScrollFired] = useState(false);
   useEffect(() => {
-    const config = emailCaptureConfig.mobileScrollGate;
-    if (!config.enabled) return;
+    if (!emailCaptureConfig.mobileScrollGate.enabled) return;
     if (!isClient || hasEmail || scrollFired || passiveModalFired) return;
+    if (mobileGateFlag === undefined) return; // flag unresolved — listener stays unarmed
 
     // Only fire on touch devices (no fine pointer = mobile/tablet)
     const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
     if (!isTouchDevice) return;
 
-    const pageLoadTime = Date.now();
+    const params = getMobileGateParams(mobileGateFlag);
+    const abVariant = buildGateAbVariant(params.timing);
     let fired = false;
 
     const handleScroll = () => {
       if (fired || modalOpen) return;
 
-      // Check time-on-page requirement
-      const elapsedSec = (Date.now() - pageLoadTime) / 1000;
-      if (elapsedSec < config.minTimeOnPageSec) return;
+      // Time-on-page from MOUNT (see mountTimeRef). Both arms keep a minimum —
+      // the variant's small floor guards against instant fire on back-navigation
+      // scroll restoration, it is not a treatment lever.
+      const elapsedSec = (Date.now() - mountTimeRef.current) / 1000;
+      if (elapsedSec < params.minTimeOnPageSec) return;
 
       // Check scroll depth
       const scrollTop = window.scrollY || document.documentElement.scrollTop;
@@ -212,17 +291,20 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
       if (docHeight <= 0) return;
       const scrollPct = scrollTop / docHeight;
 
-      if (scrollPct >= config.scrollThreshold) {
+      if (scrollPct >= params.scrollThreshold) {
         fired = true;
         setScrollFired(true);
         setPassiveModalFired(true);
-        triggerGate(isReturnVisitor ? 'return_visitor' : 'scroll_depth');
+        triggerGate(isReturnVisitor ? 'return_visitor' : 'scroll_depth', {
+          trigger_source: 'scroll',
+          ab_variant: abVariant,
+        });
       }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [isClient, hasEmail, scrollFired, passiveModalFired, isReturnVisitor, modalOpen, triggerGate]);
+  }, [isClient, hasEmail, scrollFired, passiveModalFired, isReturnVisitor, modalOpen, triggerGate, mobileGateFlag]);
 
   const handleModalSubmit = useCallback((data: CapturedUserData) => {
     // Save to localStorage
@@ -269,7 +351,7 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
       if (totalViews >= pageViewThreshold && !hasEmail && !passiveModalFired) {
         // Show gate after short delay to let page render
         setPassiveModalFired(true);
-        setTimeout(() => triggerGate('page_view_limit'), 2000);
+        setTimeout(() => triggerGate('page_view_limit', { trigger_source: 'page_views' }), 2000);
       }
     } catch {
       // localStorage not available
@@ -298,6 +380,7 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
         onSubmit={handleModalSubmit}
         trigger={modalTrigger}
         blocking={modalBlocking}
+        analyticsProps={gateFireMeta}
       />
     </ProGateContext.Provider>
   );

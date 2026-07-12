@@ -32,6 +32,11 @@ interface EmailCaptureModalProps {
   trigger: GateTrigger;
   /** If true, modal cannot be dismissed — user must enter email */
   blocking?: boolean;
+  /**
+   * Extra analytics props stamped by ProGateContext at fire time (A/B variant
+   * + trigger_source) — merged into gate_modal_shown / email_captured.
+   */
+  analyticsProps?: Record<string, string | undefined>;
 }
 
 export interface CapturedUserData {
@@ -70,11 +75,11 @@ function getTriggerCopy(trigger: GateTrigger, isWE: boolean): { heading: string;
     },
     exit_intent: {
       heading: 'Know the score before you book',
-      subheading: 'Get each new show\u2019s score when it opens, so you know what\u2019s worth seeing.',
+      subheading: 'One short email on each opening night: the CriticScore and the critics\u2019 verdict.',
     },
     scroll_depth: {
       heading: 'Know the score before you book',
-      subheading: 'Get each new show\u2019s score when it opens, so you know what\u2019s worth seeing.',
+      subheading: 'One short email on each opening night: the CriticScore and the critics\u2019 verdict.',
     },
     return_visitor: {
       heading: `Never miss a new ${market} show`,
@@ -96,6 +101,7 @@ export default function EmailCaptureModal({
   onSubmit,
   trigger,
   blocking = false,
+  analyticsProps = {},
 }: EmailCaptureModalProps) {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
@@ -119,9 +125,12 @@ export default function EmailCaptureModal({
   // Track modal shown
   useEffect(() => {
     if (isOpen) {
-      track('gate_modal_shown', { trigger, is_return_visitor: trigger === 'return_visitor' });
-      captureEvent('gate_modal_shown', { trigger, is_return_visitor: trigger === 'return_visitor' });
+      track('gate_modal_shown', { trigger, is_return_visitor: trigger === 'return_visitor', ...analyticsProps });
+      captureEvent('gate_modal_shown', { trigger, is_return_visitor: trigger === 'return_visitor', ...analyticsProps });
     }
+    // analyticsProps is set by ProGateContext before isOpen flips; identity may
+    // change per fire but only isOpen/trigger should re-emit the event.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, trigger]);
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
@@ -146,8 +155,15 @@ export default function EmailCaptureModal({
         trigger,
       };
 
-      // Submit to Formspree so the email is actually captured server-side
-      if (formId) {
+      // Submit to Formspree so the email is actually captured server-side.
+      // Missing formId (env var absent from a build) must FAIL VISIBLY — the old
+      // `if (formId)` skip showed "Subscribed!" while capturing nothing.
+      if (!formId) {
+        setError('Something went wrong. Please try again.');
+        setIsSubmitting(false);
+        return;
+      }
+      {
         const body: Record<string, string> = {
           email: userData.email,
           source: `modal-${trigger}`,
@@ -179,6 +195,7 @@ export default function EmailCaptureModal({
         role: userData.role || 'none',
         trigger,
         is_return_visitor: trigger === 'return_visitor',
+        ...analyticsProps,
       };
       track('email_captured', captureProps);
       captureEvent('email_captured', captureProps);
@@ -318,14 +335,25 @@ export default function EmailCaptureModal({
                 Submitting...
               </span>
             ) : (
-              showExtraFields ? 'Get Early Access' : 'Subscribe'
+              showExtraFields ? 'Get Early Access' : 'Send me opening night scores'
             )}
           </button>
 
           {/* Privacy note */}
           <p className="mt-4 text-xs text-gray-500 text-center">
-            We respect your privacy. No spam, unsubscribe anytime.
+            {showExtraFields
+              ? 'We respect your privacy. No spam, unsubscribe anytime.'
+              : 'Join thousands of theater fans \u00B7 No spam, unsubscribe anytime.'}
           </p>
+          {!blocking && (
+            <button
+              type="button"
+              onClick={onClose}
+              className="block mx-auto mt-3 text-sm text-gray-400 underline underline-offset-4 hover:text-gray-300 transition-colors"
+            >
+              Maybe later
+            </button>
+          )}
         </form>
     </Modal>
   );
