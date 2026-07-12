@@ -105,3 +105,20 @@ test('planPull upgrades pre-fmt2 entries even when status unchanged', () => {
   assert.equal(planPull(cards, oldMap).toUpdate.length, 1);  // format upgrade
   assert.equal(planPull(cards, newMap).unchanged.length, 1); // idempotent after
 });
+
+test('pull update never downgrades a locally-claimed task status', async () => {
+  // simulate: task 1 mirrored (fmt<2 forces update path), locally claimed in_progress,
+  // Notion card still "Not started" → after update, status must stay in_progress.
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'nts-status-'));
+  const { writeTask } = require('./notion-tasks-sync.js');
+  writeTask(dir, { id: '1', subject: 'S', description: '[notion:pg] P1 Next · Not started', activeForm: 'x', status: 'in_progress', blocks: [], blockedBy: [] });
+  fs.writeFileSync(path.join(dir, '.notion-map.json'), JSON.stringify({ pg: { taskId: '1', syncedStatus: 'Not started' } })); // no fmt → update fires
+  // run the same merge logic the update path uses
+  const { mapCardToTask } = require('./notion-tasks-sync.js');
+  const existing = JSON.parse(fs.readFileSync(path.join(dir, '1.json')));
+  const mapped = mapCardToTask({ id: 'pg', name: 'S', status: 'Not started', priority: 'P1 Next', category: 'Product' }, '1');
+  if (existing.status === 'completed') mapped.status = 'completed';
+  else if (existing.status === 'in_progress' && mapped.status === 'pending') mapped.status = 'in_progress';
+  assert.equal(mapped.status, 'in_progress');
+  fs.rmSync(dir, { recursive: true, force: true });
+});

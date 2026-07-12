@@ -249,7 +249,14 @@ function cmdPull(args) {
     for (const { card, taskId } of plan.toUpdate) {
       if (!dry && !taskBelongsTo(dir, taskId, card.id)) { doCreate(card); continue; }
       const existing = readTask(dir, taskId) || {};
-      const task = { ...mapCardToTask(card, taskId), blocks: existing.blocks || [], blockedBy: existing.blockedBy || [] };
+      // Never downgrade a live session's local progress: a session that claimed
+      // the task (in_progress) or finished it (completed) outranks the mapped
+      // Notion status, which can lag behind (2026-07-12 ship-check finding —
+      // a pull could un-claim active work and cause duplicate pickup).
+      const mapped = mapCardToTask(card, taskId);
+      if (existing.status === 'completed') mapped.status = 'completed';
+      else if (existing.status === 'in_progress' && mapped.status === 'pending') mapped.status = 'in_progress';
+      const task = { ...mapped, blocks: existing.blocks || [], blockedBy: existing.blockedBy || [] };
       if (!dry) writeTask(dir, task);
       map[card.id].syncedStatus = card.status;
       map[card.id].name = card.name;
