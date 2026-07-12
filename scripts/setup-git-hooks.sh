@@ -32,17 +32,20 @@ else
   fi
 fi
 
-# Sanity check that the hook is executable.
-if [ ! -x "$REPO_ROOT/$DESIRED/pre-push" ]; then
-  chmod +x "$REPO_ROOT/$DESIRED/pre-push"
-  echo "Made $DESIRED/pre-push executable."
-fi
+# Sanity check that every hook is executable.
+for hook in pre-push pre-commit commit-msg; do
+  if [ -f "$REPO_ROOT/$DESIRED/$hook" ] && [ ! -x "$REPO_ROOT/$DESIRED/$hook" ]; then
+    chmod +x "$REPO_ROOT/$DESIRED/$hook"
+    echo "Made $DESIRED/$hook executable."
+  fi
+done
 
 echo ""
-echo "Pre-push hook active. Audits that run on push:"
+echo "Hooks active (pre-push, pre-commit, commit-msg). Pre-push audits:"
 echo "  - audit-tests-vs-derived-data.js (if tests/unit/* changed)"
 echo "  - audit-orphan-tests.js (if tests/unit/* changed)"
 echo "  - audit-playwright-evaluate-click.js (if tests/e2e/* changed)"
+echo "  - lint-write-routing.sh (if scripts/*.js changed — same lint CI runs)"
 echo "  - tsc --noEmit (if *.ts/*.tsx changed)"
 echo ""
 echo "Bypass for emergencies: git push --no-verify"
