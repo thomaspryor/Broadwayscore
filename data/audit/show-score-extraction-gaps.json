@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-12T09:37:33.097Z",
+    "generatedAt": "2026-07-12T15:49:22.933Z",
     "description": "Per-show critic-review extraction gaps (extracted < page-stated count). See scripts/fetch-aggregator-pages.ts carousel-scroll logic."
   },
-  "totalGaps": 496,
-  "errorSeverity": 392,
+  "totalGaps": 497,
+  "errorSeverity": 393,
   "warningSeverity": 104,
   "gaps": [
     {
@@ -2124,6 +2124,15 @@
     },
     {
       "showId": "little-bear-ridge-road-2025",
+      "category": "broadway",
+      "expected": 19,
+      "extracted": 8,
+      "gap": 11,
+      "ratio": 0.42,
+      "severity": "error"
+    },
+    {
+      "showId": "little-bear-ridge-road-regional-2024",
       "category": "broadway",
       "expected": 19,
       "extracted": 8,
