@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-12T12:37:14.252Z",
+  "generatedAt": "2026-07-12T15:39:09.411Z",
   "date": "2026-07-12",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 215238,
+  "entryCount": 224416,
   "shows": [
     {
       "showId": "dukes-off-broadway-2026",
@@ -251,7 +251,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 355627839,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -461,7 +461,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 1414711,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -996,7 +996,7 @@
     },
     {
       "showId": "hercules-west-end-2025",
-      "reviewCount": 23,
+      "reviewCount": 22,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1311,7 +1311,7 @@
     },
     {
       "showId": "zack-off-broadway-2026",
-      "reviewCount": 6,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1416,7 +1416,7 @@
     },
     {
       "showId": "glengarry-glen-ross-2025",
-      "reviewCount": 35,
+      "reviewCount": 34,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1656,7 +1656,7 @@
     },
     {
       "showId": "fat-ham-2023",
-      "reviewCount": 30,
+      "reviewCount": 29,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1701,7 +1701,7 @@
     },
     {
       "showId": "between-riverside-and-crazy-2022",
-      "reviewCount": 31,
+      "reviewCount": 30,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1761,7 +1761,7 @@
     },
     {
       "showId": "funny-girl-2022",
-      "reviewCount": 39,
+      "reviewCount": 38,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1851,7 +1851,7 @@
     },
     {
       "showId": "choir-boy-2019",
-      "reviewCount": 54,
+      "reviewCount": 53,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1956,7 +1956,7 @@
     },
     {
       "showId": "children-of-a-lesser-god-2018",
-      "reviewCount": 40,
+      "reviewCount": 39,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1971,7 +1971,7 @@
     },
     {
       "showId": "frozen-2018",
-      "reviewCount": 54,
+      "reviewCount": 53,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2076,7 +2076,7 @@
     },
     {
       "showId": "charlie-and-the-chocolate-factory-2017",
-      "reviewCount": 49,
+      "reviewCount": 48,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2091,7 +2091,7 @@
     },
     {
       "showId": "the-little-foxes-2017",
-      "reviewCount": 50,
+      "reviewCount": 49,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2121,7 +2121,7 @@
     },
     {
       "showId": "the-price-2017",
-      "reviewCount": 38,
+      "reviewCount": 37,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2331,7 +2331,7 @@
     },
     {
       "showId": "waitress-2016",
-      "reviewCount": 22,
+      "reviewCount": 21,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2376,7 +2376,7 @@
     },
     {
       "showId": "she-loves-me-2016",
-      "reviewCount": 39,
+      "reviewCount": 38,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2406,7 +2406,7 @@
     },
     {
       "showId": "eclipsed-2016",
-      "reviewCount": 28,
+      "reviewCount": 27,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -3156,7 +3156,7 @@
     },
     {
       "showId": "all-the-way-2014",
-      "reviewCount": 21,
+      "reviewCount": 20,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -3336,7 +3336,7 @@
     },
     {
       "showId": "romeo-and-juliet-2013",
-      "reviewCount": 21,
+      "reviewCount": 20,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -3486,7 +3486,7 @@
     },
     {
       "showId": "matilda-the-musical-2013",
-      "reviewCount": 26,
+      "reviewCount": 25,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -3531,7 +3531,7 @@
     },
     {
       "showId": "hands-on-a-hardbody-2013",
-      "reviewCount": 17,
+      "reviewCount": 16,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -5241,7 +5241,7 @@
     },
     {
       "showId": "the-roommate-2024",
-      "reviewCount": 39,
+      "reviewCount": 37,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -5256,7 +5256,7 @@
     },
     {
       "showId": "death-of-a-salesman-2022",
-      "reviewCount": 36,
+      "reviewCount": 35,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -5271,7 +5271,7 @@
     },
     {
       "showId": "macbeth-2022",
-      "reviewCount": 28,
+      "reviewCount": 27,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -5316,7 +5316,7 @@
     },
     {
       "showId": "bernhardthamlet-2018",
-      "reviewCount": 37,
+      "reviewCount": 36,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -5571,7 +5571,7 @@
     },
     {
       "showId": "equus-west-end-2026",
-      "reviewCount": 10,
+      "reviewCount": 11,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -5856,7 +5856,7 @@
     },
     {
       "showId": "back-to-the-future-west-end-2021",
-      "reviewCount": 22,
+      "reviewCount": 21,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -5991,7 +5991,7 @@
     },
     {
       "showId": "war-paint-2017",
-      "reviewCount": 56,
+      "reviewCount": 55,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -6036,7 +6036,7 @@
     },
     {
       "showId": "company-2021",
-      "reviewCount": 28,
+      "reviewCount": 27,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -6057,6 +6057,21 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 964157,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "titanique-2026",
+      "reviewCount": 26,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
