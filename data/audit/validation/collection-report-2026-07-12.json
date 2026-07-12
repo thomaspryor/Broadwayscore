@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-07-12T15:50:20.952Z",
+  "runDate": "2026-07-12T15:51:01.288Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "to-kill-a-mockingbird-west-end-2026",
+    "showFilter": "a-midsummer-nights-dream-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,67 +12,77 @@
   },
   "summary": {
     "processed": 2,
-    "failed": 14,
+    "failed": 23,
     "skipped": 0,
-    "successRate": "12.5%"
+    "successRate": "8.0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 2,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 2,
-    "archive": 1
+    "archiveToday": 1,
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 6,
-    "tier1Success": 4,
+    "tier1Attempts": 5,
+    "tier1Success": 2,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 2,
-    "tier2Success": 0,
-    "tier3Attempts": 2,
-    "tier3Success": 0,
-    "tier3_6Attempts": 2,
-    "tier3_6Success": 2,
+    "tier2Attempts": 5,
+    "tier2Success": 4,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
     "tier4Attempts": 2,
-    "tier4Success": 1,
-    "totalFailed": 14,
-    "scrapingBeePageCredits": 2,
+    "tier4Success": 0,
+    "totalFailed": 23,
+    "scrapingBeePageCredits": 41,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 9,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 20,
+    "urlDiscoverySuccess": 2,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json",
-    "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json"
+    "a-midsummer-nights-dream-west-end-2026/whatsonstage--alex-wood.json",
+    "a-midsummer-nights-dream-west-end-2026/whatsonstage--theo-bosanquet.json"
   ],
   "failed": [
-    "to-kill-a-mockingbird-west-end-2026/hollywood-reporter--david-rooney.json",
-    "to-kill-a-mockingbird-west-end-2026/observer--david-cote.json",
-    "to-kill-a-mockingbird-west-end-2026/thewrap--thom-geier.json",
-    "to-kill-a-mockingbird-west-end-2026/timeout--adam-feldman.json",
-    "to-kill-a-mockingbird-west-end-2026/wsj--terry-teachout.json",
-    "to-kill-a-mockingbird-west-end-2026/british-theatre--unknown.json",
-    "to-kill-a-mockingbird-west-end-2026/chicagotribune--chris-jones.json",
-    "to-kill-a-mockingbird-west-end-2026/inquirer--toby-zinman.json",
-    "to-kill-a-mockingbird-west-end-2026/latimes--unknown.json",
-    "to-kill-a-mockingbird-west-end-2026/the-morning-star--unknown.json",
-    "to-kill-a-mockingbird-west-end-2026/theupcoming--unknown.json",
-    "to-kill-a-mockingbird-west-end-2026/times-uk--libby-purves.json",
-    "to-kill-a-mockingbird-west-end-2026/tribune--unknown.json",
-    "to-kill-a-mockingbird-west-end-2026/western-mail--unknown.json"
+    "a-midsummer-nights-dream-west-end-2026/hollywood-reporter--frank-scheck.json",
+    "a-midsummer-nights-dream-west-end-2026/ew--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/newsday--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/nydailynews--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/observer--kate-kellaway.json",
+    "a-midsummer-nights-dream-west-end-2026/bloomberg--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/cambridge--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/financialtimes--julianna-barnaby.json",
+    "a-midsummer-nights-dream-west-end-2026/financialtimes--sarah-hemming.json",
+    "a-midsummer-nights-dream-west-end-2026/huffpost--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/london-box-office--kit-benjamin.json",
+    "a-midsummer-nights-dream-west-end-2026/london-box-office--stuart-king.json",
+    "a-midsummer-nights-dream-west-end-2026/standard--dominic-cavendish.json",
+    "a-midsummer-nights-dream-west-end-2026/standard--nick-curtis.json",
+    "a-midsummer-nights-dream-west-end-2026/standard--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/telegraph--claire-allfree.json",
+    "a-midsummer-nights-dream-west-end-2026/telegraph--dominic-cavendish.json",
+    "a-midsummer-nights-dream-west-end-2026/thestage--holly-o.json",
+    "a-midsummer-nights-dream-west-end-2026/thestage--katie-chambers.json",
+    "a-midsummer-nights-dream-west-end-2026/thestage--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/times-uk--dominic-maxwell.json",
+    "a-midsummer-nights-dream-west-end-2026/times-uk--rachel-halliburton.json",
+    "a-midsummer-nights-dream-west-end-2026/westendtheatre--west-end-theatre.json"
   ],
   "tierDetails": {
     "playwright": [
-      "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json"
+      "a-midsummer-nights-dream-west-end-2026/whatsonstage--alex-wood.json",
+      "a-midsummer-nights-dream-west-end-2026/whatsonstage--theo-bosanquet.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -80,13 +90,21 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/to-kill-a-mockingbird-west-end-2026/tribune--unknown.json",
-      "data/review-texts/to-kill-a-mockingbird-west-end-2026/western-mail--unknown.json"
+      "data/review-texts/a-midsummer-nights-dream-west-end-2026/thestage--unknown.json"
     ],
-    "archive": [
-      "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json"
-    ]
+    "archive": []
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "a-midsummer-nights-dream-west-end-2026/telegraph--dominic-cavendish.json",
+      "oldUrl": "https://www.telegraph.co.uk/theatre/what-to-see/midsummer-nights-dream-review-shakespeares-globe/",
+      "newUrl": "https://www.telegraph.co.uk/theatre/what-to-see/midsummer-nights-dream-review-regents-park/"
+    },
+    {
+      "reviewId": "a-midsummer-nights-dream-west-end-2026/whatsonstage--theo-bosanquet.json",
+      "oldUrl": "https://www.whatsonstage.com/news/a-midsummer-nights-dream-at-shakespeares-globe-review_1720033/",
+      "newUrl": "https://www.whatsonstage.com/news/a-midsummer-nights-dream-at-regents-park-open-air-theatre-review_1726521/"
+    }
+  ]
 }
