@@ -146,10 +146,11 @@ async function main() {
   // allowlist (or Google/Apple aren't enabled), the sign-in popup fails silently.
   // Informational (doesn't fail the run) — surfaces config gaps the round-trip
   // otherwise can't see.
-  if (process.env.SUPABASE_ACCESS_TOKEN && process.env.SUPABASE_PROJECT_REF) {
+  const projectRef = process.env.SUPABASE_PROJECT_REF || (URL ? new global.URL(URL).hostname.split('.')[0] : '');
+  if (process.env.SUPABASE_ACCESS_TOKEN && projectRef) {
     try {
       const cfg = await (await fetch(
-        `https://api.supabase.com/v1/projects/${process.env.SUPABASE_PROJECT_REF}/config/auth`,
+        `https://api.supabase.com/v1/projects/${projectRef}/config/auth`,
         { headers: { Authorization: `Bearer ${process.env.SUPABASE_ACCESS_TOKEN}` } },
       )).json();
       const allow = cfg.uri_allow_list || '';
