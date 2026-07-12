@@ -40,8 +40,10 @@ test('valid results pass; violations are each named', () => {
   assert.equal(validateTriageResult({ ...GOOD, eligible: 'yes' }).ok, false);
   assert.equal(validateTriageResult({ ...GOOD, reason: 'short' }).ok, false);
   assert.equal(validateTriageResult({ ...GOOD, extra: 1 }).ok, false);
-  // L without a split proposal is invalid; with a conformant one it passes.
+  // Eligible L without a split proposal is invalid; with a conformant one it
+  // passes; ineligible L needs no proposal (the loop won't touch it).
   assert.equal(validateTriageResult({ ...GOOD, size: 'L' }).ok, false);
+  assert.equal(validateTriageResult({ ...GOOD, size: 'L', eligible: false }).ok, true);
   const child = { title: 'Child card one', notes: '## Problem\n' + 'x'.repeat(280) + '\n## Suggested approach\ny\n## Acceptance criteria\nz' };
   assert.equal(validateTriageResult({ ...GOOD, size: 'L', splitProposal: [child] }).ok, true);
   assert.equal(validateTriageResult({ ...GOOD, splitProposal: [{ title: 'ok title here', notes: 'too short' }] }).ok, false);

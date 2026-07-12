@@ -28,7 +28,7 @@
     },
     "splitProposal": {
       "type": "array",
-      "description": "Required non-empty when size is L: child cards, each a self-contained handoff (notion-brain CARD_TEMPLATE sections; children inherit parent priority/tags/parentId at creation time).",
+      "description": "Required non-empty when size is L AND eligible is true (ineligible L cards need no split — the loop won't touch them): child cards, each a self-contained handoff (notion-brain CARD_TEMPLATE sections; children inherit parent priority/tags/parentId at creation time).",
       "items": {
         "type": "object",
         "required": ["title", "notes"],
