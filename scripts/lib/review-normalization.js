@@ -779,8 +779,9 @@ function outletOwnsUrlDomain(outletId, url) {
   } catch {
     return false;
   }
-  const owned = [entry.domain, ...(entry.domainAliases || [])]
-    .filter(Boolean).map(d => d.replace(/^www\./, '').toLowerCase());
+  const owned = [entry.domain, ...(Array.isArray(entry.domainAliases) ? entry.domainAliases : [])]
+    .filter(d => typeof d === 'string' && d)
+    .map(d => d.replace(/^www\./, '').toLowerCase());
   return owned.some(d => hostname === d || hostname.endsWith('.' + d));
 }
 
