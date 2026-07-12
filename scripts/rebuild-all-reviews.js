@@ -2598,26 +2598,30 @@ showDirs.forEach(showId => {
         if (preWindow.exclude) {
           // Current-run corroboration guard: strong contradiction (Theatre
           // Record month inside the run window) means the early date is likely
-          // a misparse (care-west-end-2026 incident 2026-07-11) — keep the
-          // review includable and route to human review instead of
-          // excluding + flagging on the bad date.
+          // a misparse (care-west-end-2026 incident 2026-07-11). HOLD the
+          // permanent wrongProduction flag (recovery = just fix publishDate,
+          // no 8-field manual-clear ceremony) but still EXCLUDE from this
+          // rebuild — a mis-attached TR URL on a genuine prior-run review must
+          // not ship into scores silently. Surfacing: exclusion log here +
+          // validate-data CHECK 0 hard-errors unflagged >180d-early reviews.
           const corrobIncl = evaluateCurrentRunCorroboration({ review: data, show: showById[showId] });
           if (corrobIncl.strength === 'strong') {
-            console.log(`  [PRE-OPENING-HELD] ${showId}/${file}: date ${data.publishDate} pre-window but current-run corroboration [${corrobIncl.signals.join(', ')}] — kept includable, needs human review`);
+            console.log(`  [PRE-OPENING-HELD] ${showId}/${file}: date ${data.publishDate} pre-window but current-run corroboration [${corrobIncl.signals.join(', ')}] — excluded, NOT flagged; verify live date + fix publishDate`);
+            logExclusion("heldPreOpeningCorroboration", showId, file, data, { signals: corrobIncl.signals.join(',') });
             stats.preOpeningHeld = (stats.preOpeningHeld || 0) + 1;
-          } else {
-            console.log(`  [PRE-OPENING] ${showId}/${file}: published ${preWindow.daysBefore} days before opening (${data.publishDate} vs ${openDate.toISOString().split('T')[0]})`);
-            logExclusion("skippedPreOpening", showId, file, data);
-            stats.skippedPreOpening = (stats.skippedPreOpening || 0) + 1;
-            // Also flag the source file for future reference
-            if (!data.wrongProduction && !shouldSkipWrongProductionAudit(data)) {
-              // [GUARD:DAYS-BEFORE-OPENED]
-              data.wrongProduction = true;
-              data.wrongProductionNote = `Review published ${preWindow.daysBefore} days before show opened — pre-window date (>${preWindow.threshold}d), likely reviewing a different production`;
-              safeWriteReview(path.join(showDir, file), data);
-            }
             return;
           }
+          console.log(`  [PRE-OPENING] ${showId}/${file}: published ${preWindow.daysBefore} days before opening (${data.publishDate} vs ${openDate.toISOString().split('T')[0]})`);
+          logExclusion("skippedPreOpening", showId, file, data);
+          stats.skippedPreOpening = (stats.skippedPreOpening || 0) + 1;
+          // Also flag the source file for future reference
+          if (!data.wrongProduction && !shouldSkipWrongProductionAudit(data)) {
+            // [GUARD:DAYS-BEFORE-OPENED]
+            data.wrongProduction = true;
+            data.wrongProductionNote = `Review published ${preWindow.daysBefore} days before show opened — pre-window date (>${preWindow.threshold}d), likely reviewing a different production`;
+            safeWriteReview(path.join(showDir, file), data);
+          }
+          return;
         }
       }
 
