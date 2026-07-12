@@ -48,6 +48,7 @@ const { validatePageMatchesShow } = require('./lib/page-validator');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { llmFallbackExtract, hasStructuralMarkers } = require('./lib/llm-extractor');
 const { normalizeOutlet, normalizeUrl: normalizeUrlCanonical } = require('./lib/review-normalization');
+const { resolveArchiveRowOutletId } = require('./lib/archive-outlet-identity');
 const { extractReviewsFromLBO } = require('./scrape-london-box-office-roundups');
 const { extractReviews: extractTheatreReviews } = require('./scrape-theatre-reviews');
 const { matchTitleToShow } = require('./lib/show-matching');
@@ -790,7 +791,7 @@ async function runAggregators(show) {
         for (const r of lboReviews) {
           results.push({
             showId: show.id,
-            outletId: r.outletId || r.outlet?.toLowerCase().replace(/[^a-z0-9]+/g, '-') || 'unknown',
+            outletId: resolveArchiveRowOutletId({ url: r.url, outletLabel: r.outlet, cachedOutletId: r.outletId, sourceOutletId: 'london-box-office' }),
             outlet: r.outlet || 'Unknown',
             criticName: r.critic || 'Unknown',
             url: r.url || '',
@@ -826,7 +827,7 @@ async function runAggregators(show) {
         for (const r of trReviews) {
           results.push({
             showId: show.id,
-            outletId: r.outletId || 'unknown',
+            outletId: resolveArchiveRowOutletId({ url: r.url, outletLabel: r.outlet, cachedOutletId: r.outletId }),
             outlet: r.outlet || 'Unknown',
             criticName: r.critic || 'Unknown',
             url: r.url || '',
@@ -914,7 +915,7 @@ async function runAggregators(show) {
           }
           results.push({
             showId: show.id,
-            outletId: normalizeOutlet(r.outlet),
+            outletId: resolveArchiveRowOutletId({ url: r.url || post.link, outletLabel: r.outlet, sourceOutletId: 'westendtheatre' }),
             outlet: r.outlet,
             criticName: r.critic,
             url: r.url || post.link || '',
@@ -1094,7 +1095,7 @@ async function runAggregators(show) {
         for (const r of tsReviews) {
           results.push({
             showId: show.id,
-            outletId: r.outletId || normalizeOutlet(r.outlet || ''),
+            outletId: resolveArchiveRowOutletId({ url: r.url, outletLabel: r.outlet, cachedOutletId: r.outletId, sourceOutletId: 'thestage' }),
             outlet: r.outlet || 'Unknown',
             criticName: r.critic || 'Unknown',
             url: r.url || '',
