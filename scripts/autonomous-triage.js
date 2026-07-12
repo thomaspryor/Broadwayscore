@@ -21,7 +21,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { execFileSync } = require('child_process');
-const { triageCard, decide, orderQueue } = require('./lib/autonomous-triage-core.js');
+const { triageCard, decide, orderQueue, isSafeCheckCommand } = require('./lib/autonomous-triage-core.js');
 
 const REPO = path.join(__dirname, '..');
 const QUEUE_PATH = path.join(REPO, 'data', 'audit', 'autonomous-queue.json');
@@ -144,6 +144,14 @@ async function main() {
     const result = await triageCard(card, callSonnet);
     const entry = { card: slim(card), ...result };
     entry.decision = decide(entry);
+    // Defense-in-depth: never persist a non-safe-form command in the queue.
+    // The validator only enforces safe forms for eligible verdicts (an
+    // ineligible card's check never runs, and erroring there would burn a
+    // retry) — but a skipped card's LLM-authored command must not sit in
+    // autonomous-queue.json waiting for a future consumer to trust it.
+    if (entry.triage && entry.decision !== 'attempt' && !isSafeCheckCommand(entry.triage.checkableDone)) {
+      entry.triage = { ...entry.triage, checkableDone: null };
+    }
     entries.push(entry);
     console.error(`[triage] ${i + 1}/${ids.length} ${card.name} → ${entry.decision}${entry.triage ? ` (${entry.triage.size})` : ''}${entry.failed ? ` [${entry.error?.slice(0, 80)}]` : ''}`);
   }
