@@ -341,6 +341,10 @@ on:
       - 'tsconfig.*'
       - 'tailwind.config.*'
       - '.github/workflows/**'
+      # CLAUDE.md edits get zero CI without this — the anchor-integrity gate in
+      # lint-workflows relies on it, and the file is otherwise unguarded.
+      - 'CLAUDE.md'
+      - 'scripts/lib/claude-md-anchors.json'
   pull_request:
     branches: [main]
   schedule:
@@ -475,6 +479,29 @@ jobs:
         # Root cause for each rule: (a) baseline rot via SKIP-VISUAL-CHECK in red CI,
         # (b) browser cache miss wastes 15s/run, (c) bare || echo swallows push failures.
         run: node scripts/audit-workflow-hygiene.js
+
+      - name: Audit — CLAUDE.md integrity anchors + byte cap
+        # Single source of truth: scripts/lib/claude-md-anchors.json. Every listed
+        # phrase MUST appear in CLAUDE.md (a trim/edit that drops one is the bug
+        # this catches — same list ~/.claude/hooks/session-start.sh checks advisorily),
+        # and CLAUDE.md must stay under byteLimit (it loads into every session).
+        run: |
+          node -e '
+            const fs = require("fs");
+            const cfg = JSON.parse(fs.readFileSync("scripts/lib/claude-md-anchors.json", "utf8"));
+            const md = fs.readFileSync("CLAUDE.md", "utf8");
+            const missing = (cfg.anchors || []).filter(p => !md.includes(p));
+            if (missing.length) {
+              console.error("::error::CLAUDE.md missing required anchor phrase(s): " + missing.join(" | "));
+              process.exit(1);
+            }
+            const bytes = Buffer.byteLength(md, "utf8");
+            if (cfg.byteLimit && bytes > cfg.byteLimit) {
+              console.error(`::error::CLAUDE.md is ${bytes}B, over the ${cfg.byteLimit}B cap. Trim it or move detail to memory/.`);
+              process.exit(1);
+            }
+            console.log(`CLAUDE.md OK: ${cfg.anchors.length} anchors present, ${bytes}B <= ${cfg.byteLimit}B`);
+          '
 
       - name: Audit — check-cron-health max_hours vs real cron cadence
         # Catches the 2026-05-24 class of bug where an entry's max_hours is

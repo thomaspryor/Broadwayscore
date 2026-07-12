@@ -154,6 +154,21 @@ for (const vp of VIEWPORTS) {
       await expect(editor).not.toBeVisible({ timeout: 3000 });
     });
 
+    test('modal traps focus — Tab cycles within the editor, not the page behind', async ({ page }) => {
+      await goToEditor(page, '?presentation=modal');
+      // Focus starts inside the modal.
+      const inModal = () => page.evaluate(() => {
+        const dlg = document.querySelector('[role="dialog"][aria-modal="true"]');
+        return !!dlg && dlg.contains(document.activeElement);
+      });
+      await expect.poll(inModal).toBe(true);
+      // Tab many times; focus must never escape the modal.
+      for (let i = 0; i < 12; i++) {
+        await page.keyboard.press('Tab');
+        expect(await inModal()).toBe(true);
+      }
+    });
+
     test('edit state pre-fills note/date and round-trips the reviewId', async ({ page }) => {
       await goToEditor(page, '?state=edit');
       const editor = page.locator('[data-testid="rating-editor"]');
