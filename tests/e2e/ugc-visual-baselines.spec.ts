@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { VIEWPORTS, goToMock, goToShowFixture } from './helpers/mock-helpers';
+import { VIEWPORTS, goToMock, goToRatingEditor } from './helpers/mock-helpers';
 
 /**
  * Visual baseline screenshots for all UGC states.
@@ -51,41 +51,25 @@ for (const vp of VIEWPORTS) {
       });
     });
 
-    // ─── Show Rating Fixture ───────────────────────────────────
+    // ─── Rating Editor (the live editor — legacy ShowPageRating deleted) ──
 
-    test('rating — existing state', async ({ page }) => {
-      await goToShowFixture(page, 'existing');
-      await expect(page.locator('#main-content')).toHaveScreenshot(`rating-existing-${vp.width}.png`, {
+    test('rating editor — new state', async ({ page }) => {
+      await goToRatingEditor(page, '');
+      await expect(page.locator('[data-testid="editor-card"]')).toHaveScreenshot(`editor-new-${vp.width}.png`, {
         animations: 'disabled',
       });
     });
 
-    test('rating — empty state', async ({ page }) => {
-      await goToShowFixture(page, 'empty');
-      await expect(page.locator('#main-content')).toHaveScreenshot(`rating-empty-${vp.width}.png`, {
-        animations: 'disabled',
-      });
-    });
-
-    test('rating — multi state', async ({ page }) => {
-      await goToShowFixture(page, 'multi');
-      await expect(page.locator('#main-content')).toHaveScreenshot(`rating-multi-${vp.width}.png`, {
-        animations: 'disabled',
-      });
-    });
-
-    test('rating — review panel open', async ({ page }) => {
-      await goToShowFixture(page, 'existing');
-      await page.getByRole('button', { name: 'Edit rating' }).click();
-      await expect(page.locator('textarea')).toBeVisible({ timeout: 3000 });
-      await expect(page.locator('#main-content')).toHaveScreenshot(`rating-panel-open-${vp.width}.png`, {
+    test('rating editor — edit state (pre-filled)', async ({ page }) => {
+      await goToRatingEditor(page, '?state=edit');
+      await expect(page.locator('[data-testid="editor-card"]')).toHaveScreenshot(`editor-edit-${vp.width}.png`, {
         animations: 'disabled',
       });
     });
 
     // ─── Half-Star Rendering (catches SVG clipPath regressions) ──
     test('half-star rendering at all sizes', async ({ page }) => {
-      await goToShowFixture(page, 'existing');
+      await goToRatingEditor(page, '');
       const showcase = page.locator('[data-testid="star-showcase"]');
       await expect(showcase).toBeVisible({ timeout: 5000 });
       await expect(showcase).toHaveScreenshot(`half-star-showcase-${vp.width}.png`, {
