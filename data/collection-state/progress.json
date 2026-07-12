@@ -316,7 +316,17 @@
     "the-little-mermaid-2008/nypost--clive-barnes.json",
     "is-he-dead-2007/nypost--clive-barnes.json",
     "inherit-the-wind-2007/nypost--clive-barnes.json",
-    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json"
+    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+    "tender-off-west-end-2026/guardian--arifa-akbar.json",
+    "allegra-west-end-2026/cambridge--kathy-baker-johnson.json",
+    "allegra-west-end-2026/whatsonstage--aliya-al.json",
+    "tender-off-west-end-2026/about-entertainment--ben-brantley.json",
+    "tender-off-west-end-2026/daily-mail--unknown.json",
+    "tender-off-west-end-2026/thestage--dave-fargnoli.json",
+    "tender-off-west-end-2026/times-uk--richard-morrison.json",
+    "tender-off-west-end-2026/times-uk--sam-marlowe.json",
+    "tender-off-west-end-2026/whatsonstage--oliver-ainley.json",
+    "jesus-christ-superstar-west-end-2026/hollywood-reporter--david-rooney.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -324,7 +334,9 @@
       "christmas-carol-goes-wrong-west-end-2026/london-box-office--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [
@@ -332,11 +344,24 @@
       "the-maids-off-broadway-2026/thewrap--unknown.json"
     ],
     "archiveToday": [
-      "data/review-texts/jack-and-the-beanstalk-off-west-end-2026/thestage--paul-vale.json"
+      "data/review-texts/jack-and-the-beanstalk-off-west-end-2026/thestage--paul-vale.json",
+      "data/review-texts/allegra-west-end-2026/cambridge--kathy-baker-johnson.json"
     ],
     "archive": []
   },
   "startTime": "2026-07-12T17:24:29.659Z",
-  "lastProcessed": "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
-  "log": []
+  "lastProcessed": "jesus-christ-superstar-west-end-2026/hollywood-reporter--david-rooney.json",
+  "log": [
+    {
+      "t": "2026-07-12T21:05:29.120Z",
+      "event": "bb-session",
+      "session": "4426e21f",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/sessions-review-a-tender-"
+    },
+    {
+      "t": "2026-07-12T21:05:29.769Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    }
+  ]
 }
