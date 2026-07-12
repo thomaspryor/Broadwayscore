@@ -1,0 +1,49 @@
+name: West End Newsletter Draft
+
+# The West End weekly for WE subscribers. This is a thin cron dispatcher — it
+# fires newsletter-draft.yml with edition=west-end, which reuses the entire
+# generate → pre-send → preview → broadcast-draft pipeline with
+# NEWSLETTER_EDITION=west-end (West End-first sections, "West End Scorecard"
+# branding) and routes the Resend broadcast draft to the west-end audience.
+# No broadcast is ever sent automatically — the owner reviews the draft and
+# clicks Send in the Resend UI (same rule-16-safe flow as the Broadway edition).
+#
+# hygiene-notify-ok: dispatcher only — the dispatched newsletter-draft.yml run
+# carries its own notify-failure. A failed `gh workflow run` surfaces in the run log.
+
+on:
+  # Saturday 11:30 UTC — 30 min after the Broadway edition (0 11 * * 6) so the
+  # two runs don't contend on the shared `newsletter-draft` concurrency group.
+  schedule:
+    - cron: '30 11 * * 6'
+  workflow_dispatch:
+    inputs:
+      weekStart:
+        description: 'Week start (Monday, YYYY-MM-DD). Empty = last Monday.'
+        required: false
+        default: ''
+
+permissions:
+  actions: write
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Dispatch newsletter-draft (west-end edition)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh workflow run newsletter-draft.yml \
+            --ref main \
+            -f edition=west-end \
+            -f audience=west-end \
+            -f weekStart="${{ github.event.inputs.weekStart }}"
+          echo "Dispatched newsletter-draft.yml with edition=west-end → West End audience."
