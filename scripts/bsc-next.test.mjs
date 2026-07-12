@@ -36,6 +36,11 @@ test('pickTask --pick N is 1-indexed over the actionable list', () => {
   assert.equal(pickTask(TASKS, { pick: '99' }), null);
 });
 
+test('pickTask --pick with no value (true) or non-numeric defaults to top task', () => {
+  assert.equal(pickTask(TASKS, { pick: true }).id, '2');   // bare --pick flag
+  assert.equal(pickTask(TASKS, { pick: 'x' }).id, '2');    // garbage value
+});
+
 test('pickTask --id selects that task even if completed', () => {
   assert.equal(pickTask(TASKS, { id: '3' }).id, '3');
   assert.equal(pickTask(TASKS, { id: 'nope' }), null);

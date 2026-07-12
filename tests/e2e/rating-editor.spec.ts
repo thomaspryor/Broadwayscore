@@ -169,6 +169,18 @@ for (const vp of VIEWPORTS) {
       }
     });
 
+    test('keyboard: arrow keys adjust rating in half-star steps', async ({ page }) => {
+      await goToEditor(page);
+      const editor = page.locator('[data-testid="rating-editor"]');
+      await editor.getByRole('button', { name: '1 star' }).focus();
+      await page.keyboard.press('ArrowRight');
+      await expect(editor.getByText('0.5', { exact: true })).toBeVisible();
+      await page.keyboard.press('ArrowRight');
+      await expect(editor.getByText('1.0', { exact: true })).toBeVisible();
+      await page.keyboard.press('ArrowLeft');
+      await expect(editor.getByText('0.5', { exact: true })).toBeVisible();
+    });
+
     test('edit state pre-fills note/date and round-trips the reviewId', async ({ page }) => {
       await goToEditor(page, '?state=edit');
       const editor = page.locator('[data-testid="rating-editor"]');
