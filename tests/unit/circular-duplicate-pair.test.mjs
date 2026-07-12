@@ -237,3 +237,68 @@ test('CI gate: exits zero on a clean corpus', () => {
   fs.writeFileSync(path.join(root, 'clean-2026', 'outlet--a.json'), JSON.stringify({ url: 'u', assignedScore: 80 }));
   assert.equal(runGate(root), 0);
 });
+
+// ---------------------------------------------------------------------------
+// 5. Cross-market exclusion (2026-07-12 class-A main red) — end-to-end via CLI.
+//    A mutual pair whose members are dated on a same-title SIBLING production's
+//    opening (but far from their own show's opening) must NEVER be canonicalized:
+//    clearing duplicateOf un-suppressed a wrong-show review and reddened main.
+//    Run through the real --fix so module-level shows.json caching is isolated
+//    per process (env-driven), which a same-process import cannot exercise.
+// ---------------------------------------------------------------------------
+function runFix(root, showsJsonPath) {
+  execFileSync('node', [SCRIPT, '--fix'], {
+    env: { ...process.env, REVIEW_TEXTS_DIR: root, SHOWS_JSON: showsJsonPath },
+    stdio: 'pipe',
+  });
+}
+
+test('cross-market: a class-A colliding mutual pair is left suppressed (duplicateOf stays set on BOTH); a clean pair is still repaired', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'xmarket-'));
+  const showsJson = path.join(root, 'shows.json');
+  fs.writeFileSync(showsJson, JSON.stringify([
+    // Same-title siblings across markets: WE run (2024) + Broadway run (2025).
+    { id: 'operation-mincemeat-west-end-2024', title: 'Operation Mincemeat', openingDate: '2024-05-01', category: 'west-end' },
+    { id: 'operation-mincemeat-2025', title: 'Operation Mincemeat', openingDate: '2025-03-20', category: 'broadway' },
+    // A unique-title show — its pair is a normal, non-contaminated 2-cycle.
+    { id: 'some-clean-play-2026', title: 'Some Clean Play', openingDate: '2026-04-01', category: 'broadway' },
+  ]));
+
+  // Contaminated pair under the WE folder: both dated on the Broadway sibling's
+  // opening (2025-03-20), ~323d from the WE opening → class-A. Both includable.
+  const cDir = path.join(root, 'operation-mincemeat-west-end-2024');
+  fs.mkdirSync(cDir, { recursive: true });
+  const cUrl = 'https://www.westendtheatre.com/335071/news/reviews/american-psycho';
+  const contam = (dup) => ({
+    url: cUrl, publishDate: 'March 20, 2025', contentTier: 'complete', isFullReview: true,
+    fullText: longReview, assignedScore: 80, duplicateOf: dup, duplicateReason: 'url-collision-detected-at-write',
+  });
+  fs.writeFileSync(path.join(cDir, 'timeout--unknown.json'), JSON.stringify(contam('timeout--paul-raven.json')));
+  fs.writeFileSync(path.join(cDir, 'timeout--paul-raven.json'), JSON.stringify(contam('timeout--unknown.json')));
+
+  // Clean pair: dated on its own show's opening → not class-A → normal repair.
+  const kDir = path.join(root, 'some-clean-play-2026');
+  fs.mkdirSync(kDir, { recursive: true });
+  const kUrl = 'https://example.com/some-clean-play';
+  const clean = (dup) => ({
+    url: kUrl, publishDate: '2026-04-02', contentTier: 'complete', isFullReview: true,
+    fullText: longReview, assignedScore: 80, duplicateOf: dup, duplicateReason: 'url-collision-detected-at-write',
+  });
+  fs.writeFileSync(path.join(kDir, 'outlet--a.json'), JSON.stringify(clean('outlet--b.json')));
+  fs.writeFileSync(path.join(kDir, 'outlet--b.json'), JSON.stringify(clean('outlet--a.json')));
+
+  runFix(root, showsJson);
+
+  // Contaminated pair: BOTH still point at each other → the 2-cycle is intact →
+  // the rebuild keeps both suppressed → the wrong-show review never surfaces.
+  const cu = JSON.parse(fs.readFileSync(path.join(cDir, 'timeout--unknown.json'), 'utf-8'));
+  const cp = JSON.parse(fs.readFileSync(path.join(cDir, 'timeout--paul-raven.json'), 'utf-8'));
+  assert.equal(cu.duplicateOf, 'timeout--paul-raven.json', 'class-A member must NOT be canonicalized');
+  assert.equal(cp.duplicateOf, 'timeout--unknown.json', 'class-A member must NOT be canonicalized');
+
+  // Clean pair: exactly one member canonicalized (duplicateOf cleared), one still dup.
+  const ka = JSON.parse(fs.readFileSync(path.join(kDir, 'outlet--a.json'), 'utf-8'));
+  const kb = JSON.parse(fs.readFileSync(path.join(kDir, 'outlet--b.json'), 'utf-8'));
+  const cleared = [ka, kb].filter(x => (x.duplicateOf ?? null) === null).length;
+  assert.equal(cleared, 1, 'the non-contaminated pair is still collapsed to exactly one canonical');
+});

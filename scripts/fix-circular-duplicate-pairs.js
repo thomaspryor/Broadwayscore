@@ -23,6 +23,18 @@
  * canonical (already true in a 2-cycle); if it points elsewhere we repoint it.
  *
  * Canonical choice — INCLUDABILITY-FIRST (chooseCanonicalForRebuild):
+ *  -1. CROSS-MARKET EXCLUSION (dominant, above rebuild-truth) — a member whose
+ *      publishDate clusters with a same-title SIBLING production's opening (≤30d)
+ *      but is far (>180d) from its OWN show's opening is class-A contaminated
+ *      (the exact audit-review-contamination.js strict-A predicate, shared via
+ *      scripts/lib/cross-market-contamination.js). Such a member LOOKS includable
+ *      but belongs to the sibling run, so it must NEVER be canonicalized. Mutual
+ *      pairs share a URL + publishDate, so this is usually symmetric: BOTH class-A
+ *      → the pair is skipped (2-cycle left intact, both stay suppressed — the safe
+ *      outcome, and audit-review-contamination --gate stays green because a set
+ *      duplicateOf counts as alreadyFlagged). One-sided → the clean member wins.
+ *      Without this, fix-circular canonicalized a Stagedoor excerpt dated on a
+ *      Broadway sibling's opening and reddened main on 2026-07-12.
  *   0. REBUILD TRUTH — if, with duplicateOf cleared, exactly ONE member would be
  *      includable-for-rebuild (isIncludableForRebuild + scoreable), that member
  *      is canonical. This is dominant and non-negotiable: it is the ONLY choice
@@ -67,6 +79,8 @@ const fs = require('fs');
 const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { isIncludableForRebuild } = require('./lib/review-guards');
+const { parseDate } = require('./lib/date-utils');
+const { classifyClassAContamination, buildSiblingOpeningsMap } = require('./lib/cross-market-contamination');
 
 const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '..', 'data', 'review-texts');
 
@@ -262,6 +276,41 @@ function _showById(showId) {
   return _showByIdCache.get(showId);
 }
 
+// Same-title sibling opening epochs per show, memoized. Built from the same
+// shows.json _showById loaded (Map may be empty if shows.json can't be located —
+// then every show has no siblings and the class-A guard is a no-op, matching the
+// audit's own "no siblings → can't be class-A" behavior).
+let _siblingOpeningsCache; // undefined = not built; Map once attempted
+function _siblingOpenings(showId) {
+  if (_siblingOpeningsCache === undefined) {
+    _showById(' ensure-loaded'); // force _showByIdCache population
+    _siblingOpeningsCache = buildSiblingOpeningsMap([..._showByIdCache.values()], parseDate);
+  }
+  return _siblingOpeningsCache.get(showId) || [];
+}
+
+/** This show's openingDate as a Date (or null when show/date unknown). */
+function _showOpening(showId) {
+  const s = _showById(showId);
+  return s ? parseDate(s.openingDate) : null;
+}
+
+/**
+ * True when a review record is strict Category-A cross-market contaminated
+ * relative to its folder show: its publishDate clusters with a same-title
+ * sibling's opening but is far from this show's opening. Such a member must
+ * NEVER be canonicalized — clearing its duplicateOf un-suppressed a wrong-show
+ * review and reddened main on 2026-07-12. Shares the exact predicate with
+ * audit-review-contamination.js class A (scripts/lib/cross-market-contamination.js).
+ */
+function isClassAContaminated(data, showId) {
+  return classifyClassAContamination(
+    parseDate(data && data.publishDate),
+    _showOpening(showId),
+    _siblingOpenings(showId),
+  ).isClassA;
+}
+
 /**
  * Would this record be includable-for-rebuild if its duplicateOf were cleared?
  * This is the rebuild's KEEP predicate — deliberately NOT gated on a score.
@@ -295,6 +344,25 @@ function wouldBeIncludableIfCleared(data, filePath) {
  * @param {string} showDir absolute path to the show directory
  */
 function chooseCanonicalForRebuild(aName, aData, bName, bData, showDir) {
+  // Layer 0 — DOMINANT cross-market exclusion (above rebuild-truth). A class-A
+  // contaminated member LOOKS includable (it passes isIncludableForRebuild — that
+  // is exactly the trap) but belongs to a sibling production; canonicalizing it
+  // clears its duplicateOf and un-suppresses a wrong-show review (2026-07-12
+  // class-A main red). Mutual pairs share a URL + publishDate, so contamination is
+  // usually symmetric: when BOTH members are class-A the pair is left untouched
+  // (skip:true) — the intact 2-cycle keeps both suppressed, which is the safe
+  // outcome and keeps audit-review-contamination --gate green (duplicateOf =
+  // alreadyFlagged). When only one member collides (different dates on the shared
+  // URL), the clean member is canonical and the contaminated one stays a duplicate.
+  const showId = path.basename(showDir);
+  const aClassA = isClassAContaminated(aData, showId);
+  const bClassA = isClassAContaminated(bData, showId);
+  if (aClassA && !bClassA) return pick(bName, aName, 'cross-market: other member is class-A contaminated — excluded from canonical');
+  if (bClassA && !aClassA) return pick(aName, bName, 'cross-market: other member is class-A contaminated — excluded from canonical');
+  if (aClassA && bClassA) {
+    return { ...pick(aName, bName, 'cross-market: BOTH members class-A contaminated — pair left suppressed (2-cycle intact)'), skip: true };
+  }
+
   const aIncl = wouldBeIncludableIfCleared(aData, path.join(showDir, aName));
   const bIncl = wouldBeIncludableIfCleared(bData, path.join(showDir, bName));
   // Dominant: never demote the only member the rebuild would keep.
@@ -344,6 +412,14 @@ function audit() {
       if (seen.has(key)) continue;
       seen.add(key);
       const choice = chooseCanonicalForRebuild(file, d, sibName, sd, showDir);
+      if (choice.skip) {
+        // Class-A contaminated 2-cycle: leave it intact (both stay suppressed).
+        // Not a repairable pair — excluded from report/gate/fix counts.
+        if (!JSON_OUT) {
+          console.error(`  skip (cross-market class-A): ${path.basename(showDir)} — ${file} ↔ ${sibName} left suppressed`);
+        }
+        continue;
+      }
       results.push({
         showId: path.basename(showDir),
         canonical: choice.canonical,
@@ -431,5 +507,5 @@ if (require.main === module) main();
 module.exports = {
   bylineSlug, outletSlug, isUnknownByline, levenshtein, scoreSignals,
   isScoreable, chooseCanonical, chooseCanonicalForRebuild, wouldBeIncludableIfCleared,
-  audit, fix,
+  isClassAContaminated, audit, fix,
 };
