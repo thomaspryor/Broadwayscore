@@ -19,6 +19,8 @@ import * as https from 'https';
 
 // Use the shared show-matching utility (260+ aliases, multi-level matching)
 const { matchTitleToShow, loadShows: loadShowsFromMatching } = require('./lib/show-matching');
+// Pure BWW row parser — extracted for unit testing (see tests/unit/parse-bww-grosses-row.test.mjs)
+const { parseBwwGrossesRow } = require('./lib/parse-bww-grosses-row');
 
 const GROSSES_URL = 'https://www.broadwayworld.com/grosses.php';
 const SHOWS_PATH = path.join(__dirname, '../data/shows.json');
@@ -50,6 +52,10 @@ interface ShowGrosses {
     atpPrevWeek: number | null;
     atpYoY: number | null;
     attendance: number | null;
+    // BWW column [5] second token — seats offered that week (per-perf offered × perfs).
+    // Varies with production configuration (Circle in the Square Just In Time offers
+    // ~690 seats/perf, not the room's nominal max). RevPAS = gross ÷ seatsOffered.
+    seatsOffered: number | null;
     performances: number | null;
   };
   allTime: {
@@ -71,6 +77,9 @@ interface HistoryEntry {
   capacity: number | null;
   atp: number | null;
   attendance: number | null;
+  // Optional because historical entries (pre-2026-07-12) don't have this field.
+  // New rows always populate it; readers must handle undefined for old weeks.
+  seatsOffered?: number | null;
   performances: number | null;
 }
 
@@ -90,6 +99,7 @@ interface BWWRowData {
   grossYoY: number | null;
   atp: number | null;
   attendance: number | null;
+  seatsOffered: number | null;
   performances: number | null;
   capacityPct: number | null;
   capacityPctPrevWeek: number | null;
@@ -281,53 +291,31 @@ function parseWeekEndingToISO(weekEnding: string): string {
 // ============================================================
 
 function parseExtractedRow(cells: string[]): BWWRowData | null {
-  if (cells.length < 10) return null;
+  // Delegates to scripts/lib/parse-bww-grosses-row.js. Kept as a thin wrapper
+  // so unit tests exercise the same pure function this production path calls.
+  // On sanity-guard drop, log the row loudly (the pure lib returns null silently).
+  const row = parseBwwGrossesRow(cells, splitShowTheater);
+  if (row !== null) return row;
 
-  const split = splitShowTheater(cells[0]?.trim() || '');
-  if (!split) return null;
-
-  // BWW grosses table layout (verified 2026-06-28). BWW dropped the two
-  // year-over-year *gross* columns it used to carry, shifting every later
-  // column two slots left. The columns are now:
-  //   [0] Show / Theater
-  //   [1] This-week gross        [2] Last-week gross     [3] gross diff ($)
-  //   [4] "ATP TopTicket"        e.g. "101.74 $344.00"  → ATP is first token
-  //   [5] "Attendance Seats"     e.g. "5,918 8,208"     → attendance is first token
-  //   [6] Performances
-  //   [7] Capacity % this week   [8] Capacity % prev wk  [9] capacity diff (%)
-  // grossYoY is no longer published in this table; it's enriched from history
-  // (prior-year gross) downstream. See feedback_scraper_table_assertions.
-  const row: BWWRowData = {
-    show: split.show,
-    theater: split.theater,
-    gross: parseCurrency(cells[1]),
-    grossPrevWeek: parseCurrency(cells[2]),
-    // cells[3] = week-over-week gross diff (skip)
-    grossYoY: null, // enriched from history (prior-year gross); not in the table anymore
-    atp: parseCurrency(cells[4]?.split(/\s+/)?.[0]),         // "ATP TopTicket" → ATP (first value)
-    attendance: parseNumber(cells[5]?.split(/\s+/)?.[0]),    // "Attendance Seats" → attendance (first value)
-    performances: parseNumber(cells[6]),
-    capacityPct: parsePercentage(cells[7]),
-    capacityPctPrevWeek: parsePercentage(cells[8]),
-    // cells[9] = capacity diff (skip)
-  };
-
-  // Structural sanity guard — if BWW shifts columns again, these ranges break
-  // and we drop the row LOUDLY instead of silently shipping garbage (the
-  // 2026-06 incident: ATP read as "8", capacity as 0.25%, perf as 100).
-  if (row.gross != null) {
-    const sane =
-      (row.atp == null || (row.atp >= 15 && row.atp <= 1000)) &&
-      (row.performances == null || (row.performances >= 1 && row.performances <= 16)) &&
-      (row.capacityPct == null || (row.capacityPct >= 5 && row.capacityPct <= 120));
-    if (!sane) {
-      console.warn(`  ⚠ Dropping "${split.show}" — implausible parsed values ` +
-        `(atp=${row.atp}, perf=${row.performances}, cap=${row.capacityPct}). BWW columns may have shifted.`);
-      return null;
-    }
+  // The lib returned null. Distinguish three cases so we log the interesting one:
+  //   (a) row too short (< 10 cells) — data plumbing bug, skip silently
+  //   (b) splitShowTheater failed — already logged by splitShowTheater itself
+  //   (c) sanity guard failed — log LOUDLY (column shift, ATP/perf/cap malformed)
+  // Case (c) is the one we always logged pre-refactor. Don't re-call
+  // splitShowTheater here — it re-emits its own warn. Use the raw show/theater
+  // cell text as the identifier for the drop log.
+  if (!cells || cells.length < 10) return null;
+  if (cells[1] && parseCurrency(cells[1]) != null) {
+    // Format values the same way the old inline parser did (parsed numbers,
+    // not raw strings with $/%) so grep-alerts on the log message keep working.
+    const atp = parseCurrency(cells[4]?.split(/\s+/)?.[0]);
+    const perfs = parseNumber(cells[6]);
+    const cap = parsePercentage(cells[7]);
+    const showCell = cells[0]?.trim() || '(unknown)';
+    console.warn(`  ⚠ Dropping "${showCell}" — implausible parsed values ` +
+      `(atp=${atp}, perf=${perfs}, cap=${cap}). BWW columns may have shifted.`);
   }
-
-  return row;
+  return null;
 }
 
 function extractWeekEndingFromTitle(title: string): string | null {
@@ -837,6 +825,7 @@ async function scrapeGrosses(): Promise<void> {
         atpPrevWeek: null, // Enriched from history below
         atpYoY: null, // Enriched from history below
         attendance: row.attendance,
+        seatsOffered: row.seatsOffered,
         performances: row.performances
       },
       allTime: existingAllTime || {
@@ -905,6 +894,7 @@ async function scrapeGrosses(): Promise<void> {
         capacity: data.thisWeek.capacity,
         atp: data.thisWeek.atp,
         attendance: data.thisWeek.attendance,
+        seatsOffered: data.thisWeek.seatsOffered,
         performances: data.thisWeek.performances
       };
     }
