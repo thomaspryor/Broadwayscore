@@ -24,7 +24,9 @@ const {
 } = require('./review-normalization');
 
 function resolveArchiveRowOutletId({ url, outletLabel, cachedOutletId, sourceOutletId }) {
-  const fallback = cachedOutletId || normalizeOutlet(outletLabel || '');
+  // Normalize the cached ID too: a cached alias or since-merged ID
+  // (the-upcoming-uk, the-express) canonicalizes even when the row has no URL.
+  const fallback = normalizeOutlet(cachedOutletId || outletLabel || '');
   if (!url) return fallback;
 
   let resolved = null;
