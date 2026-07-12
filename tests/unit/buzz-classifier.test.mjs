@@ -109,6 +109,51 @@ describe('buildPrompt', () => {
   });
 });
 
+describe('production-reference gate (generic-title contamination fix)', () => {
+  const ctx = { venue: 'The Theater Center', market: 'Off-Broadway', type: 'play', openingDate: '2026-03-04' };
+
+  test('thread titles present → MATCH THE PRODUCTION gate is emitted and each thread title is shown', () => {
+    const p = buildPrompt('Pied à Terre', [
+      { id: 1, body: 'I read it in college and loved every page', postTitle: 'Best Latin American novels of the 2000s' },
+    ], false, ctx);
+    assert.ok(/MATCH THE PRODUCTION, NOT JUST THE NAME/.test(p), 'gate instruction must appear when thread titles are present');
+    assert.ok(p.includes('Best Latin American novels of the 2000s'), 'each comment\'s thread title must be shown to the model');
+    assert.ok(/name collision is not evidence/i.test(p), 'gate must instruct that a name collision is not evidence of attendance');
+  });
+
+  test('no thread titles (golden fixture) → gate is OMITTED so fixture behavior is unchanged (legacy assume-target)', () => {
+    const p = buildPrompt('Wicked', [{ id: 1, body: 'I saw it and loved it' }], false, null);
+    assert.ok(!/MATCH THE PRODUCTION, NOT JUST THE NAME/.test(p), 'gate must not fire without thread-title context');
+  });
+
+  test('target production descriptor carries venue + market anchors', () => {
+    const p = buildPrompt('Pied à Terre', [{ id: 1, body: 'x', postTitle: 'Pied à Terre review' }], false, ctx);
+    assert.ok(p.includes('The Theater Center'), 'descriptor must include venue');
+    assert.ok(/Off-Broadway/.test(p), 'descriptor must include market');
+  });
+});
+
+describe('buildProductionDescriptor', () => {
+  const { buildProductionDescriptor } = require('../../scripts/lib/buzz-classifier.js');
+
+  test('null context falls back to bare quoted title', () => {
+    assert.strictEqual(buildProductionDescriptor('Chess', null), '"Chess"');
+  });
+
+  test('Broadway musical reads naturally', () => {
+    const d = buildProductionDescriptor('Wicked', { market: 'Broadway', type: 'musical', venue: 'Gershwin Theatre', openingDate: '2003-10-30' });
+    assert.ok(d.includes('musical'));
+    assert.ok(d.includes('on Broadway'));
+    assert.ok(d.includes('Gershwin Theatre'));
+  });
+
+  test('opera anchors to the Met', () => {
+    const d = buildProductionDescriptor('Innocence', { market: 'the Metropolitan Opera', type: 'opera' });
+    assert.ok(/opera/i.test(d));
+    assert.ok(d.includes('Metropolitan Opera'));
+  });
+});
+
 describe('golden fixture (is-relevant-cases.json) integrity', () => {
   test('fixture exists and all cases have required fields', () => {
     const f = JSON.parse(fs.readFileSync(FIXTURE, 'utf8'));

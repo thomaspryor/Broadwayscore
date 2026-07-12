@@ -574,7 +574,17 @@ async function collectCommentsFromPosts(subreddit, posts, maxComments = 1000, pe
       const comments = flattenComments(response);
       // Cap any single post's contribution — a high-comment roundup/megathread
       // that slips past the title guard can't dominate the sentiment sample.
-      allComments.push(...(Number.isFinite(perPostMax) ? comments.slice(0, perPostMax) : comments));
+      const kept = Number.isFinite(perPostMax) ? comments.slice(0, perPostMax) : comments;
+      // Stamp each comment with the thread it came from. The relevance classifier
+      // uses the post title to tell whether the thread is actually about the target
+      // PRODUCTION (vs. a novel/film/common phrase that merely shares the show's
+      // name), so an ambiguous "I saw it" in an off-topic thread is rejected instead
+      // of blindly attributed. See buzz-classifier.buildPrompt.
+      for (const c of kept) {
+        c.postTitle = post.title || '';
+        c.postId = post.id;
+      }
+      allComments.push(...kept);
 
       if (allComments.length % 200 === 0) {
         console.log(`    Collected ${allComments.length} comments...`);
