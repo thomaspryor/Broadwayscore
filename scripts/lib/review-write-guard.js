@@ -618,7 +618,20 @@ function safeWriteReview(filePath, newData, options = {}) {
       try {
         colliderData = JSON.parse(fs.readFileSync(path.join(path.dirname(filePath), collider), 'utf-8'));
       } catch { /* unreadable collider — fall back to marking dup (historical behavior) */ }
-      if (shouldMarkUrlCollisionDuplicate(newData, colliderData)) {
+      if (wouldFormDuplicateCycle(path.basename(filePath), colliderData)) {
+        // The collider already points its duplicateOf at us — marking us dup of
+        // it would form an A↔B 2-cycle that excludes BOTH files from the rebuild
+        // (242 corpus-wide, 2026-07-11). Decline to mark; we are the canonical
+        // the collider defers to. If we were previously (wrongly) marked dup of
+        // this same collider, clear it now with a breadcrumb so the push-restore
+        // exception (isIntentionalClear) doesn't resurrect the cycle.
+        console.warn(`[review-write-guard] URL collision: ${path.basename(filePath)} shares URL with ${collider}, but ${collider} already points back at us — keeping primary to avoid a duplicateOf cycle`);
+        if (newData.duplicateOf === collider) {
+          newData.duplicateClearReason = `auto-cleared at write: refusing duplicateOf cycle with ${collider} (it already points back at us)`;
+          newData.duplicateOf = null;
+          newData.duplicateReason = null;
+        }
+      } else if (shouldMarkUrlCollisionDuplicate(newData, colliderData)) {
         console.warn(`[review-write-guard] URL collision: ${path.basename(filePath)} shares URL with ${collider} — marking as duplicate`);
         newData.duplicateOf = collider;
         newData.duplicateReason = 'url-collision-detected-at-write';
@@ -716,6 +729,25 @@ function getEffectiveProtectedFields(existingData) {
  * @param {{fullText?:string}|null} colliderData
  * @returns {boolean} true → mark new file duplicate; false → keep new file primary
  */
+/**
+ * Would marking `thisBasename` as duplicateOf the collider form a 2-cycle?
+ * True when the collider ALREADY points its duplicateOf back at this file — i.e.
+ * the collider has declared US canonical. Marking us duplicate of it in turn
+ * makes A.duplicateOf=B AND B.duplicateOf=A, and the rebuild then excludes BOTH
+ * files, silently dropping the review (242 corpus-wide, 2026-07-11). This is the
+ * A↔B analogue of the self-referential auto-clear at ~line 528 — the write-guard
+ * broke the 1-cycle but not the 2-cycle. Break it at write time by declining to
+ * mark: the collider stays pointing at us, so exactly one direction survives.
+ *
+ * Pure (no I/O) for tests/unit/circular-duplicate-pair.test.mjs.
+ * @param {string} thisBasename basename of the file being written
+ * @param {{duplicateOf?:string}|null} colliderData parsed collider record
+ * @returns {boolean}
+ */
+function wouldFormDuplicateCycle(thisBasename, colliderData) {
+  return !!(colliderData && colliderData.duplicateOf === thisBasename);
+}
+
 function shouldMarkUrlCollisionDuplicate(newData, colliderData) {
   // Can't read the collider → defer to historical behavior (mark duplicate). We
   // only keep the new file primary when we can PROVE the collider is thinner.
@@ -1199,4 +1231,4 @@ function _updateSisterStoresOnRename(srcPath, dstPath) {
   return { llmScoreMoved, pointersUpdated, sisterStoreConflict, sisterStoreError };
 }
 
-module.exports = { safeWriteReview, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, shouldMarkUrlCollisionDuplicate, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, isIntentionalClear };
+module.exports = { safeWriteReview, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, shouldMarkUrlCollisionDuplicate, wouldFormDuplicateCycle, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, isIntentionalClear };
