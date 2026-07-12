@@ -155,6 +155,41 @@ describe('CLI --base mode — committed re-creation dropped via git rm + commit'
     assert.equal(git(repo, 'status --porcelain').trim(), '');
   });
 
+  test('rename detection cannot hide a violator (--no-renames regression lock)', () => {
+    // A deletion of a structurally similar stub in the same commit as the
+    // violator gets paired as a RENAME by default git diff — which excludes
+    // the violator from --diff-filter=A. --no-renames keeps it visible.
+    const repo = path.join(tmpDir, 'repo4');
+    fs.mkdirSync(repo);
+    git(repo, 'init -q -b main');
+    git(repo, 'config user.email t@t');
+    git(repo, 'config user.name t');
+    const ownerDir = path.join(repo, OWNER_SHOW);
+    fs.mkdirSync(ownerDir, { recursive: true });
+    fs.writeFileSync(path.join(ownerDir, 'thestage--dave-fargnoli.json'),
+      JSON.stringify({ url: SOHO_URL, fullText: 'real body' }));
+    // stub that the writer commit will delete — near-identical to the violator
+    const sibDir = path.join(repo, SIBLING_SHOW);
+    fs.mkdirSync(sibDir, { recursive: true });
+    fs.writeFileSync(path.join(sibDir, 'thestage--unknown.json'),
+      JSON.stringify({ url: SOHO_URL, outlet: 'The Stage', source: 'show-score' }));
+    git(repo, 'add -A');
+    git(repo, 'commit -qm base');
+    git(repo, 'branch base-marker');
+    // writer: delete stub + re-create violator with near-identical content → rename pairing
+    fs.rmSync(path.join(sibDir, 'thestage--unknown.json'));
+    fs.writeFileSync(path.join(sibDir, 'thestage--dave-fargnoli.json'),
+      JSON.stringify({ url: SOHO_URL, outlet: 'The Stage', source: 'show-score' }));
+    git(repo, 'add -A');
+    git(repo, 'commit -qm "writer changes"');
+    // sanity: default diff DOES pair them as a rename (guards test validity)
+    const renamed = git(repo, 'diff -M --name-status base-marker HEAD');
+    assert.match(renamed, /^R/m, 'fixture should trigger rename detection');
+    execSync(`node ${SCRIPT} --base=base-marker`, { cwd: repo, encoding: 'utf8' });
+    assert.equal(fs.existsSync(path.join(sibDir, 'thestage--dave-fargnoli.json')), false,
+      'violator must be dropped despite rename pairing');
+  });
+
   test('mid-rebase/merge state → gate skips without touching anything', () => {
     const repo = path.join(tmpDir, 'repo3');
     fs.mkdirSync(repo);

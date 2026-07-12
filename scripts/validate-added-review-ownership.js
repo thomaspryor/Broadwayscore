@@ -59,9 +59,21 @@ function isReviewFilePath(rel) {
   return true;
 }
 
-/** Files ADDED between base and HEAD (committed — the retry-loop mode). */
+/**
+ * Files ADDED between base and HEAD (committed — the retry-loop mode).
+ * --no-renames is load-bearing: with rename detection (default-on), a commit
+ * that deletes any structurally similar JSON (dedup cleanup, byline-rename
+ * source) alongside the violator gets the pair reported as R, not A — the
+ * gate would never see the violator in exactly the incident class it exists
+ * for. A same-show rename destination surfacing as A is harmless (same-show
+ * owners are excluded from cross-show lookup). maxBuffer raised: bulk imports
+ * add thousands of files and the 1MB default would throw → fail-open → the
+ * largest pushes get the least protection.
+ */
 function listAddedReviewFiles(cwd, base) {
-  const out = execSync(`git diff --diff-filter=A --name-only ${base} HEAD`, { cwd, encoding: 'utf8' });
+  const out = execSync(`git diff --no-renames --diff-filter=A --name-only ${base} HEAD`, {
+    cwd, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024,
+  });
   return out.split('\n').map((l) => l.trim()).filter(isReviewFilePath);
 }
 
@@ -71,7 +83,9 @@ function listAddedReviewFiles(cwd, base) {
  * one `?? show-dir/` entry and every file inside it would be missed.
  */
 function listNewReviewFiles(cwd) {
-  const out = execSync('git status --porcelain -uall', { cwd, encoding: 'utf8' });
+  const out = execSync('git status --porcelain -uall', {
+    cwd, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024,
+  });
   const files = [];
   for (const line of out.split('\n')) {
     if (!line) continue;
