@@ -2386,13 +2386,13 @@ const html = `<!DOCTYPE html>
 <div style="display:none !important;max-height:0;overflow:hidden;visibility:hidden;mso-hide:all;font-size:1px;line-height:1px;color:transparent;opacity:0;">${ledePlain || 'This week on Broadway and beyond.'}<span style="display:none !important;color:transparent;">${'&zwnj; &nbsp; '.repeat(40)}</span></div>
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#0f0f14" class="gmail-dark-bg"><tr><td align="center" bgcolor="#0f0f14" style="padding:24px 16px;background-color:#0f0f14;">
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width:560px;">
-<tr><td align="left" style="padding:0 4px 4px;">
+<tr><td align="center" style="padding:0 4px 4px;">
   <a href="${SITE}${BRAND.primaryPath}" style="text-decoration:none;color:inherit;display:inline-block;"><span style="font-size:22px;font-weight:700;color:#fff;letter-spacing:-0.02em;">${BRAND.prefix}</span><span style="font-size:22px;font-weight:700;background:${BRAND.accentGrad};-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;color:${BRAND.accentSolid};letter-spacing:-0.02em;">Scorecard</span><span style="font-size:9px;color:#6b7280;font-weight:400;vertical-align:super;margin-left:1px;">™</span></a>
 </td></tr>
-<tr><td align="left" style="padding:0 4px 10px;">
+<tr><td align="center" style="padding:0 4px 10px;">
   <div style="font-size:13px;color:#9ca3af;letter-spacing:0.01em;">Every show. Every review. One score.</div>
 </td></tr>
-<tr><td style="padding:0 4px 8px;">
+<tr><td align="center" style="padding:0 4px 8px;">
   <div style="font-size:13px;color:#9ca3af;">Weekly Round-up · ${fmt(weekStartStr)} – ${fmt(weekEndStr)}, ${yearForFooter}</div>
 </td></tr>
 ${ledeText ? `<tr><td style="padding:6px 4px 20px;">
