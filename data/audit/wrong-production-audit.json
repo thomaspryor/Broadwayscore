@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-12T14:05:41.676Z",
+  "timestamp": "2026-07-12T15:23:21.917Z",
   "stats": {
-    "totalReviews": 39963,
-    "alreadyFlagged": 17552,
+    "totalReviews": 39960,
+    "alreadyFlagged": 17555,
     "dateGuardCatches": 49,
     "directorMismatch": 914,
-    "tvFilmSignals": 1096,
+    "tvFilmSignals": 1097,
     "londonSignals": 742,
     "offBroadwaySignals": 466,
     "yearMismatch": 85,
-    "noPublishDate": 3778
+    "noPublishDate": 3768
   },
   "findings": [
     {
@@ -6578,6 +6578,20 @@
       ]
     },
     {
+      "showId": "equus-west-end-2026",
+      "file": "telegraph--unknown.json",
+      "score": 96,
+      "publishDate": "2026-05-19",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/equus-review-menier-chocolate-factory/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "escape-to-margaritaville-2018",
       "file": "broadwayworld--michael-dale.json",
       "score": 72,
@@ -13001,7 +13015,7 @@
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "telegraph--claire-allfree.json",
       "score": 78,
-      "publishDate": "March 27th, 2026",
+      "publishDate": "2026-03-27",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/royal-court-theatre-john-proctor-is-the-villain-review/",
       "findings": [
         {
@@ -32864,7 +32878,7 @@
       "showId": "hadestown-west-end-2024",
       "file": "london-theatre--marianka-swain.json",
       "score": 95,
-      "publishDate": null,
+      "publishDate": "2024-02-22",
       "url": "https://www.londontheatre.co.uk/reviews/hadestown-review-lyric-theatre",
       "findings": [
         {
