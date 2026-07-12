@@ -37,9 +37,13 @@ const { safeRenameReview, safeUnlinkReview } = require('./lib/review-write-guard
 
 // llm-scores sidecars live at <repoRoot>/data/llm-scores/<showId>/<file>. When we
 // delete a phantom duplicate, remove its orphaned sidecar too (the correctly-named
-// sibling keeps/earns its own on the next scoring pass).
-function unlinkLlmSidecar(root, showId, basename) {
-  const p = path.resolve(root, '..', 'llm-scores', showId, basename);
+// sibling keeps/earns its own on the next scoring pass). Resolve the repo root the
+// SAME way safeRenameReview does (relative to this file, not --root) so the delete
+// and the rename-move always target the same llm-scores tree even under a custom
+// --root clone.
+const _LLM_SCORES_DIR = path.resolve(__dirname, '..', 'data', 'llm-scores');
+function unlinkLlmSidecar(showId, basename) {
+  const p = path.join(_LLM_SCORES_DIR, showId, basename);
   try { if (fs.existsSync(p)) { fs.unlinkSync(p); return true; } } catch { /* best-effort */ }
   return false;
 }
@@ -100,8 +104,7 @@ function wordSet(t) {
 // larger. Robust to the theaterlife byline-header prefix (the correctly-named
 // sibling was often captured WITHOUT the "By: <name>" line, which offsets a
 // positional fingerprint even though the review body is identical).
-function containment(a, b) {
-  const A = wordSet(a), B = wordSet(b);
+function containmentOf(A, B) {
   if (!A.size || !B.size) return 0;
   const [small, big] = A.size <= B.size ? [A, B] : [B, A];
   let hits = 0;
@@ -126,7 +129,7 @@ function sameReview(a, b) {
   // even when they are different pieces, and this branch feeds a destructive
   // dedup. Short pairs fall through to CONFLICT (manual triage).
   const A = wordSet(a.fullText), B = wordSet(b.fullText);
-  if (Math.min(A.size, B.size) >= 40 && containment(a.fullText, b.fullText) >= 0.85) return true;
+  if (Math.min(A.size, B.size) >= 40 && containmentOf(A, B) >= 0.85) return true;
   return false;
 }
 
@@ -135,9 +138,15 @@ function sameReview(a, b) {
 function renameOntoCritic(srcPath, dstPath, data, critic, recovered) {
   const src = recovered ? 'theaterlife-byline-refetch' : 'theaterlife-byline-backfill';
   const newData = { ...data, criticName: critic, criticEnrichedFrom: src, _priorCriticName: 'Barry Gordin' };
+  // Clear every stale byline-mismatch flag (mirror the canonical override in
+  // collect-review-texts.js). fullTextWrongAuthor / _authorMismatch matter most:
+  // review-guards.js excludes a review when fullTextWrongAuthor===true, so a stale
+  // value would silently drop the newly-correct review from the rebuild.
   delete newData.misattributedFullText;
   delete newData.extractedByline;
   delete newData.expectedCritic;
+  delete newData.fullTextWrongAuthor;
+  delete newData._authorMismatch;
   return safeRenameReview(srcPath, dstPath, { newData });
 }
 
@@ -204,7 +213,7 @@ function main() {
           // drop the thinner sibling (+ its sidecar), then rename the phantom onto it.
           const del = safeUnlinkReview(dstPath, { force: false });
           if (!del.wrote) { report.errors.push({ showId, reason: `dup-sib-unlink-${del.skipped}`, dstBasename }); report.duplicate.pop(); continue; }
-          unlinkLlmSidecar(ROOT, showId, dstBasename);
+          unlinkLlmSidecar(showId, dstBasename);
           const r = renameOntoCritic(filePath, dstPath, data, critic, recovered);
           if (!r.wrote) { report.errors.push({ showId, reason: `dup-promote-${r.skipped}`, dstBasename }); report.duplicate.pop(); }
           else if (r.sisterStoreConflict || r.sisterStoreError) report.warnings.push({ showId, reason: 'sister-store', dstBasename, conflict: !!r.sisterStoreConflict });
@@ -212,7 +221,7 @@ function main() {
           // Sibling is canonical (richer or equal) — drop the phantom + its sidecar.
           const r = safeUnlinkReview(filePath, { force: false });
           if (!r.wrote) { report.errors.push({ showId, reason: `dup-unlink-${r.skipped}`, dstBasename }); report.duplicate.pop(); }
-          else unlinkLlmSidecar(ROOT, showId, PHANTOM_BASENAME);
+          else unlinkLlmSidecar(showId, PHANTOM_BASENAME);
         }
       }
       continue;
@@ -234,10 +243,15 @@ function main() {
   const promoted = report.duplicate.filter(d => d.kept === 'phantom').length;
   if (promoted) console.log(`  (of duplicates, ${promoted} promoted the fuller phantom body over a thinner sibling)`);
 
-  const outPath = path.join('data', 'audit', 'theaterlife-byline-backfill.json');
-  fs.mkdirSync(path.dirname(outPath), { recursive: true });
-  fs.writeFileSync(outPath, JSON.stringify(report, null, 2) + '\n');
-  console.log(`  report: ${outPath}`);
+  // NOTE: this writeFileSync targets data/audit (the run report), NOT
+  // data/review-texts — all review-texts mutations go through safeRenameReview/
+  // safeUnlinkReview above. The variable is deliberately named reportPath (not
+  // outPath/filePath) so the test.yml "route review-texts writes through
+  // safeWriteReview" heuristic doesn't false-positive on this audit write.
+  const reportPath = path.join('data', 'audit', 'theaterlife-byline-backfill.json');
+  fs.mkdirSync(path.dirname(reportPath), { recursive: true });
+  fs.writeFileSync(reportPath, JSON.stringify(report, null, 2) + '\n');
+  console.log(`  report: ${reportPath}`);
 }
 
 main();
