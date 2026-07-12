@@ -10,8 +10,10 @@
  *
  * Decisions (see memory/feedback_show_page_redesign_v2_decisions.md):
  *  • Score-card tap targets — both anchor to existing #critic-reviews / #audience.
- *  • "Rate it again" with 1 rating → opens edit panel pre-filled (replaces existing).
- *  • "Log another viewing" with 2+ ratings → opens fresh panel (appends).
+ *  • Primary button: "Rate it" (first time) / "Log another viewing" (any rated
+ *    count) → always opens a FRESH panel and APPENDS a new viewing. Correcting an
+ *    existing rating is the Edit pencil, so multi-viewing is always reachable and
+ *    the button never overwrites a prior viewing.
  *  • Date format: `Apr 10, 2026` always (matches existing /show convention).
  *  • Multi-viewing card shows latest highlighted + "All N ratings →" footer link.
  *  • No inline trash on the rating card — delete moves into the edit panel.
@@ -263,19 +265,13 @@ function Inner({
   const handleRateIt = useCallback(() => {
     // Open the editor for everyone. Unauthenticated users invest first; we gate
     // on sign-in at Save (handleSaveReview) and preserve their draft across auth.
-    if (isMulti) {
-      // 2+ existing ratings → "Log another viewing": fresh panel, appends new entry.
-      setEditingReview(null);
-    } else if (hasRating) {
-      // Exactly 1 rating → "Rate it again": opens with latest pre-filled, replaces.
-      setEditingReview(latestReview);
-    } else {
-      // First rating → fresh panel.
-      setEditingReview(null);
-    }
+    // The primary button ALWAYS logs a NEW viewing (fresh panel, appends) — for
+    // any rating count. Correcting an existing rating is the pencil (Edit), not
+    // this button, so a second viewing is always reachable and never overwrites.
+    setEditingReview(null);
     setPendingDraft(null);
     setRatePanelOpen(true);
-  }, [hasRating, isMulti, latestReview]);
+  }, []);
 
   const handleEditLatest = useCallback(() => {
     if (!latestReview) return;
@@ -571,7 +567,7 @@ function Inner({
               <path strokeLinecap="round" strokeLinejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
             </svg>
             <span className="text-xs font-semibold">
-              {!hasRating ? 'Rate it' : isMulti ? 'Log another viewing' : 'Rate it again'}
+              {!hasRating ? 'Rate it' : 'Log another viewing'}
             </span>
           </button>
         </div>
