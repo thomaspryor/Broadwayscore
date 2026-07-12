@@ -3,7 +3,7 @@ import fs from 'fs';
 import crypto from 'crypto';
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
-import { getBroadwayShows, getOffBroadwayShows, getNotableOffBroadwayShows, getWestEndShows, getOperaShows, getDataStats, getUpcomingShows, getNYTCriticsPickShowIds, getMarketStats } from '@/lib/data-core';
+import { getBroadwayShows, getOffBroadwayShows, getNotableOffBroadwayShows, getWestEndShows, getOperaShows, getRegionalShows, getDataStats, getUpcomingShows, getNYTCriticsPickShowIds, getMarketStats } from '@/lib/data-core';
 import { getAwardWinnerSets } from '@/lib/data-awards';
 import type { ComputedShow } from '@/lib/data-types';
 import { serializeShowForClient } from '@/lib/serialize-show';
@@ -89,6 +89,20 @@ export default function HomePage() {
     (s.status === 'open' || s.status === 'previews') &&
     s.criticScore && s.criticScore.score && s.criticScore.reviewCount !== undefined && s.criticScore.reviewCount >= 2
   );
+
+  // Pre-Broadway tryouts shelf: regional feeder-venue productions (auto-tracked
+  // from aggregator roundups). Small universe like opera; tryouts are limited
+  // runs so CLOSED shows stay on the shelf (the score is the point — it's the
+  // pre-Broadway signal), running productions first, then most recent.
+  const regionalShelfShows = getRegionalShows()
+    .filter(s => s.criticScore?.score)
+    .sort((a, b) => {
+      const aOpen = a.status === 'open' || a.status === 'previews' ? 0 : 1;
+      const bOpen = b.status === 'open' || b.status === 'previews' ? 0 : 1;
+      if (aOpen !== bOpen) return aOpen - bOpen;
+      return (b.openingDate || '').localeCompare(a.openingDate || '');
+    })
+    .slice(0, 10);
 
   // Precompute "Best Recent Shows" server-side for both preload links and SSR featured row
   const twelveMonthsAgo = new Date();
@@ -250,8 +264,14 @@ export default function HomePage() {
     .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
     .map(serializeShow) : [];
 
+  const preBroadwayList = regionalShelfShows.map(serializeShow);
+
   const featuredRows: FeaturedRowData[] = [
     { title: 'Best Off-Broadway', shows: bestOffBroadwayList, viewAllHref: '/off-broadway' },
+    // Pre-Broadway tryouts — differentiating coverage nobody else aggregates;
+    // grouped with the market shelves at the top. Closed tryouts included by
+    // design (the score IS the pre-Broadway signal).
+    { title: 'Pre-Broadway: Out-of-Town Shows', shows: preBroadwayList, viewAllHref: '/browse/pre-broadway-out-of-town-shows', minCount: 2 },
     // Opera shelf \u2014 Met universe is small (3-4 productions running), so minCount 2.
     // Positioned right after Off-Broadway so opera coverage is visible without
     // scrolling past 3 sections (acceptance criterion on Notion 362637c5-416f-8183).

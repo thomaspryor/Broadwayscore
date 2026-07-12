@@ -93,5 +93,7 @@ export function formatOpeningDate(dateStr: string): string {
 export function getDurationSuffix(category?: string): string {
   if (category === 'west-end' || category === 'off-west-end') return 'in London';
   if (category === 'off-broadway') return 'Off-Broadway';
+  // Regional tryouts are emphatically NOT "on Broadway" — that's the point.
+  if (category === 'regional') return 'in tryout';
   return 'on Broadway';
 }

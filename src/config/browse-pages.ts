@@ -35,7 +35,7 @@ export interface BrowsePageConfig {
   sort?: 'score' | 'opening-date' | 'opening-date-asc' | 'closing-date' | 'title' | 'performances';
   limit?: number;
   relatedPages: string[]; // Slugs of related browse pages
-  source?: 'broadway' | 'west-end' | 'off-broadway' | 'off-west-end'; // Data source (default: broadway)
+  source?: 'broadway' | 'west-end' | 'off-broadway' | 'off-west-end' | 'regional'; // Data source (default: broadway)
   /** Optional function to group shows into sections with H2 headings.
    *  Returns a label for each show — shows with the same label are grouped together.
    *  Only applies when using the default/custom sort (client re-sorts lose groupings). */
@@ -233,6 +233,33 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     },
     sort: 'score',
     relatedPages: ['broadway-shows-for-tourists', 'broadway-shows-for-kids', 'broadway-lottery-shows'],
+  },
+
+  'pre-broadway-out-of-town-shows': {
+    slug: 'pre-broadway-out-of-town-shows',
+    title: 'Pre-Broadway: Out-of-Town Shows',
+    h1: 'Pre-Broadway: Out-of-Town Shows',
+    metaTitle: `Pre-Broadway Tryouts \u2014 Out-of-Town Reviews (${CURRENT_YEAR})`,
+    metaDescription: 'Critic scores for Broadway-bound shows in their out-of-town tryouts \u2014 Arena Stage, the Goodman, A.R.T., La Jolla, and other feeder theaters. See how a show reviewed before it reaches New York.',
+    intro: 'Most big Broadway productions are born somewhere else. Before a musical or play reaches New York, it usually premieres at a major regional theater \u2014 Chicago\'s Goodman, D.C.\'s Arena Stage, Cambridge\'s American Repertory Theater, the La Jolla Playhouse \u2014 where critics deliver the first professional verdict. We track those tryout productions and score their reviews the same way we score Broadway, so you can see how a Broadway-bound show is really landing months before it announces a New York theater. When a tryout transfers, we link the two productions so the out-of-town score follows it to Broadway.',
+    filter: () => true, // every regional show belongs here (the pool IS the collection)
+    // customSort (not 'opening-date') so the sectionGroup headings render —
+    // BrowseListClient only shows sections for custom/score sorts. Order:
+    // running tryouts first, then transferred-to-Broadway, then the rest,
+    // newest first within each group (matches the sectionGroup below).
+    customSort: (shows) => [...shows].sort((a, b) => {
+      const rank = (s: ComputedShow) =>
+        s.status === 'open' || s.status === 'previews' ? 0 : s.transferredTo ? 1 : 2;
+      if (rank(a) !== rank(b)) return rank(a) - rank(b);
+      return (b.openingDate || '').localeCompare(a.openingDate || '');
+    }),
+    source: 'regional',
+    sectionGroup: (show) => {
+      if (show.status === 'open' || show.status === 'previews') return 'On Stage Now';
+      if (show.transferredTo) return 'Transferred to Broadway';
+      return 'Recent Tryouts';
+    },
+    relatedPages: ['upcoming-broadway-shows', 'new-broadway-shows-2025', 'best-broadway-show-right-now'],
   },
 
   'broadway-shows-closing-soon': {

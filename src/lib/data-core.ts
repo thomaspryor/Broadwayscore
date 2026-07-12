@@ -122,6 +122,15 @@ export function getOffBroadwayShows(): ComputedShow[] {
   return getAllShows().filter(show => show.category === 'off-broadway');
 }
 
+/**
+ * Regional (Broadway-feeder) tryout productions — Arena Stage, Goodman,
+ * A.R.T., etc. Auto-promoted from aggregator roundups; mostly closed limited
+ * engagements whose value is the pre-Broadway critic signal.
+ */
+export function getRegionalShows(): ComputedShow[] {
+  return getAllShows().filter(show => show.category === 'regional');
+}
+
 // Ticket-buyer platforms that count toward a show's "curated audience footprint"
 // for homepage notability (Path B). Reddit is excluded — see homepage-notability.ts.
 const CURATED_AUDIENCE_SOURCES = ['showScore', 'mezzanine', 'theatr', 'broadwayCom'] as const;
@@ -840,6 +849,7 @@ export function getBrowseList(slug: string): BrowseList | undefined {
   const allShows = config.source === 'west-end' ? getWestEndShows()
     : config.source === 'off-broadway' ? getOffBroadwayShows()
     : config.source === 'off-west-end' ? getOffWestEndShows()
+    : config.source === 'regional' ? getRegionalShows()
     : getBroadwayShows();
 
   // Context for data-dependent filters and custom sorts
