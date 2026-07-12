@@ -921,7 +921,13 @@ export function getBrowseList(slug: string): BrowseList | undefined {
  * Get all browse page slugs for static generation
  */
 export function getAllBrowseSlugs(): string[] {
-  return getBrowseSlugsFromConfig();
+  // Flag-off builds must not emit regional-source browse pages (static params
+  // + sitemap both enumerate through here) — their card links point at
+  // /show/ pages that regionalSlugAllowed excludes, i.e. 404s. Mirrors the
+  // regional gating on detail params/search/sitemap above (ship-check P1).
+  return getBrowseSlugsFromConfig().filter(slug =>
+    featureFlags.regional || BROWSE_PAGES[slug]?.source !== 'regional'
+  );
 }
 
 /**

@@ -7,6 +7,7 @@ import { serializeShowForClient } from '@/lib/serialize-show';
 import { generateBreadcrumbSchema, generateItemListSchema, generateBrowseFAQSchema, BASE_URL, toAbsoluteUrl } from '@/lib/seo';
 import { getBrowsePageConfig } from '@/config/browse-pages';
 import { GUIDE_PAGES } from '@/config/guide-pages';
+import { featureFlags } from '@/config/feature-flags';
 import Breadcrumb from '@/components/Breadcrumb';
 import BrowseListClient from '@/components/BrowseListClient';
 import HowThisWorks from '@/components/HowThisWorks';
@@ -19,6 +20,7 @@ export function generateStaticParams() {
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
   const config = getBrowsePageConfig(params.slug);
   if (!config) return { title: 'Page Not Found' };
+  if (config.source === 'regional' && !featureFlags.regional) return { title: 'Page Not Found' };
 
   const canonicalUrl = `${BASE_URL}/browse/${params.slug}`;
 
@@ -103,6 +105,11 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
   const browseList = getBrowseList(params.slug);
 
   if (!browseList) {
+    notFound();
+  }
+  // Flag-off builds 404 regional browse pages (their show links are excluded
+  // from the site when the regional flag is off — ship-check P1 2026-07-12).
+  if (getBrowsePageConfig(params.slug)?.source === 'regional' && !featureFlags.regional) {
     notFound();
   }
 

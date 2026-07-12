@@ -912,6 +912,13 @@ async function main() {
         continue;
       }
 
+      // Operator-verified reviews never re-enter classification — skipping at
+      // selection (not just apply) saves the LLM call every full run.
+      if (data.nonReviewManualClear === true) {
+        lockedSkipCount++;
+        continue;
+      }
+
       // In incremental mode, skip files already classified (have classifiedAt timestamp)
       if (INCREMENTAL && data.classifiedAt) {
         stats.skippedAlreadyClassified = (stats.skippedAlreadyClassified || 0) + 1;
