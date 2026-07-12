@@ -711,7 +711,17 @@
     "the-little-mermaid-2008/nypost--clive-barnes.json",
     "is-he-dead-2007/nypost--clive-barnes.json",
     "inherit-the-wind-2007/nypost--clive-barnes.json",
-    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json"
+    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+    "tender-off-west-end-2026/guardian--arifa-akbar.json",
+    "allegra-west-end-2026/cambridge--kathy-baker-johnson.json",
+    "allegra-west-end-2026/whatsonstage--aliya-al.json",
+    "tender-off-west-end-2026/about-entertainment--ben-brantley.json",
+    "tender-off-west-end-2026/daily-mail--unknown.json",
+    "tender-off-west-end-2026/thestage--dave-fargnoli.json",
+    "tender-off-west-end-2026/times-uk--richard-morrison.json",
+    "tender-off-west-end-2026/times-uk--sam-marlowe.json",
+    "tender-off-west-end-2026/whatsonstage--oliver-ainley.json",
+    "jesus-christ-superstar-west-end-2026/hollywood-reporter--david-rooney.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -731,6 +741,7 @@
     ],
     "amp": [],
     "browserbase": [
+      "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json",
       "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json",
       "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json",
       "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json",
@@ -772,14 +783,15 @@
       "data/review-texts/jesus-christ-superstar-west-end-2026/click-liverpool--unknown.json",
       "data/review-texts/jesus-christ-superstar-west-end-2026/nottingham-confidential--unknown.json",
       "data/review-texts/jesus-christ-superstar-west-end-2026/thestage--holly-o.json",
-      "data/review-texts/the-guilty-west-end-2026/thestage--unknown.json"
+      "data/review-texts/the-guilty-west-end-2026/thestage--unknown.json",
+      "data/review-texts/allegra-west-end-2026/cambridge--kathy-baker-johnson.json"
     ],
     "archive": [
       "pride-west-end-2026/standard--unknown.json"
     ]
   },
   "startTime": "2026-07-12T06:26:43.619Z",
-  "lastProcessed": "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+  "lastProcessed": "jesus-christ-superstar-west-end-2026/hollywood-reporter--david-rooney.json",
   "log": [
     {
       "t": "2026-07-12T09:31:50.501Z",
@@ -822,6 +834,17 @@
     },
     {
       "t": "2026-07-12T11:35:14.411Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-12T12:21:07.461Z",
+      "event": "bb-session",
+      "session": "3fb7c05d",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/sessions-review-a-tender-"
+    },
+    {
+      "t": "2026-07-12T12:21:08.704Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
     }
