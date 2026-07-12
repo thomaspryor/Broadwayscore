@@ -5,6 +5,7 @@ import { getOffBroadwayShows, getMarketStats } from '@/lib/data-core';
 import { getAwardWinnerSets } from '@/lib/data-awards';
 import { serializeShowForClient } from '@/lib/serialize-show';
 import { generateBreadcrumbSchema, generateItemListSchema, BASE_URL } from '@/lib/seo';
+import { isRecentlyOpenedAwaitingReviews } from '@/lib/recently-opened';
 import OffBroadwayPageClient from '@/components/OffBroadwayPageClient';
 import type { OffBroadwayShow } from '@/components/OffBroadwayPageClient';
 import { featureFlags } from '@/config/feature-flags';
@@ -90,6 +91,21 @@ export default function OffBroadwayPage() {
       return { ...serializeShow(s), subtitle: `Starts ${shortDate(startDate)}`, subtitleColor: 'text-gray-400' };
     });
 
+  // Recently Opened · Awaiting Reviews — open OB shows that opened within the
+  // recency window but don't yet have enough reviews to display a score. These
+  // are the shows that otherwise vanish: dropped from "Upcoming" when they open,
+  // hidden from the scored list by the review gate. Newest first. Uses the same
+  // canonical predicate as the `recently-opened-off-broadway` browse page.
+  const openMs = (s: typeof shows[number]): number => {
+    const raw = s.openingDate?.slice(0, 10);
+    const t = raw ? new Date(`${raw}T12:00:00`).getTime() : NaN;
+    return Number.isNaN(t) ? -Infinity : t;
+  };
+  const justOpenedShows = shows
+    .filter(s => isRecentlyOpenedAwaitingReviews(s))
+    .sort((a, b) => openMs(b) - openMs(a))
+    .map(s => ({ ...serializeShow(s), subtitle: `Opened ${shortDate(s.openingDate)}`, subtitleColor: 'text-emerald-400' }));
+
   return (
     <>
       <script
@@ -101,6 +117,7 @@ export default function OffBroadwayPage() {
         <OffBroadwayPageClient
           shows={serializedShows}
           startingSoonShows={startingSoonShows}
+          justOpenedShows={justOpenedShows}
           totalShows={activeShows.length}
           totalReviews={totalReviews}
           marketOpenCounts={{
