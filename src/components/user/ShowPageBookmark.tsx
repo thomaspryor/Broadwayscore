@@ -1,11 +1,11 @@
 'use client';
 
-import { useEffect, useCallback, useState } from 'react';
+import { useEffect, useCallback, useState, useRef } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useWatchlist } from '@/hooks/useWatchlist';
 import { useMyRating } from '@/hooks/useMyRating';
 import { useToastSafe } from '@/components/ui/Toast';
-import { savePendingAction } from '@/lib/deferred-auth';
+import { savePendingAction, getPendingAction, clearPendingAction } from '@/lib/deferred-auth';
 import { featureFlags } from '@/config/feature-flags';
 
 interface ShowPageBookmarkProps {
@@ -35,6 +35,25 @@ export default function ShowPageBookmark({ showId, size = 'md' }: ShowPageBookma
   useEffect(() => {
     if (isAuthenticated && user) getWatchlist();
   }, [isAuthenticated, user, getWatchlist]);
+
+  // Resume a deferred watchlist-add after sign-in ON ANY PAGE. Previously only
+  // the show-page hero consumed 'watchlist' pendings, so a bookmark tapped on a
+  // homepage/browse card was never completed after auth — and the stale pending
+  // then fired silently on a later show-page visit (the "mystery watchlist
+  // entry", 2026-07-12). Read-then-clear is synchronous, so with several
+  // consumers mounted (hero + cards) the first effect wins and the rest see null.
+  const resumedPending = useRef(false);
+  useEffect(() => {
+    if (!isAuthenticated || !user || resumedPending.current) return;
+    const pending = getPendingAction();
+    if (!pending || pending.type !== 'watchlist' || pending.showId !== showId) return;
+    resumedPending.current = true;
+    clearPendingAction();
+    addToWatchlist(showId)
+      .then(() => showToast?.(<>Added to <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">Watchlist</a></>, 'success'))
+      .catch(() => showToast?.('Failed to add to watchlist.', 'error'));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, user, showId]);
 
   const handleToggle = useCallback(async (e: React.MouseEvent) => {
     e.preventDefault();
