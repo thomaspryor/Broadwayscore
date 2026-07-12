@@ -7,6 +7,7 @@ const {
   isRoundupOrMegathread,
   isGenericTitle,
   isRedditVolumeInflated,
+  commentAnchorsToShow,
   otherSourceReviewCounts,
   buildAudienceSearchQueries,
   isPreFixReddit,
@@ -79,6 +80,35 @@ test('isRedditVolumeInflated protects genuinely Reddit-corroborated shows', () =
   assert.equal(isRedditVolumeInflated(50, [], 'Ice Queen'), false);
   // Reddit not dominant enough (multi-word, 3x < 4x).
   assert.equal(isRedditVolumeInflated(120, [40], 'Some Distinctive Play'), false);
+});
+
+test('commentAnchorsToShow drops non-naming comments from roundup/other-show threads', () => {
+  // The exact false-positive pattern Gemini passed for Pied à Terre (99-seat
+  // immersive show): generic replies + comments in other-show/roundup threads
+  // that never name the production.
+  assert.equal(commentAnchorsToShow({ postTitle: 'Saw eleven Broadway and Off-Broadway shows', body: "I'm totally with you in spirit" }, 'Pied à Terre'), false);
+  assert.equal(commentAnchorsToShow({ postTitle: 'Favorite New Musical of the 2020s?', body: 'I saw an excellent regional production' }, 'Pied à Terre'), false);
+  assert.equal(commentAnchorsToShow({ postTitle: "what's your favorite", body: 'the show was great' }, 'Misterman'), false);
+});
+
+test('commentAnchorsToShow keeps comments that name the show (in body or thread)', () => {
+  assert.equal(commentAnchorsToShow({ postTitle: 'random thread', body: 'Just saw Pied a Terre last night, wonderful' }, 'Pied à Terre'), true);
+  assert.equal(commentAnchorsToShow({ postTitle: 'Pied à Terre review', body: 'loved it' }, 'Pied à Terre'), true);
+  // Thread named after the show anchors even a bare "the show was great" body.
+  assert.equal(commentAnchorsToShow({ postTitle: 'Misterman at Theatre Row', body: 'the show was great' }, 'Misterman'), true);
+  assert.equal(commentAnchorsToShow({ postTitle: 'Maybe Happy Ending discussion', body: 'the ending destroyed me' }, 'Maybe Happy Ending'), true);
+});
+
+test('commentAnchorsToShow needs 2+ distinctive tokens for long titles (novel-collision defense)', () => {
+  // "Oscar Wao" alone (novel chatter) matches only 1 distinctive token of the
+  // long play title → dropped before the LLM. Requires more of the actual title.
+  assert.equal(commentAnchorsToShow({ postTitle: 'Oscar Wao book club', body: 'the novel is a masterpiece' }, 'La Breve y Maravillosa Vida de Oscar Wao'), false);
+  assert.equal(commentAnchorsToShow({ postTitle: 'saw Oscar Wao at Repertorio', body: 'la vida de oscar wao was moving' }, 'La Breve y Maravillosa Vida de Oscar Wao'), true);
+});
+
+test('commentAnchorsToShow does not pre-drop when title has no distinctive token', () => {
+  // All-short/stopword title → no reliable anchor → let the LLM decide (return true).
+  assert.equal(commentAnchorsToShow({ postTitle: 'unrelated', body: 'unrelated' }, 'Us'), true);
 });
 
 test('otherSourceReviewCounts includes West End sources (audit/neutralize parity)', () => {
