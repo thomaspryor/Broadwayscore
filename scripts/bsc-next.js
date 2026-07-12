@@ -66,18 +66,18 @@ function priorityRank(task) {
 function actionable(tasks) {
   return tasks
     .filter(t => t.status === 'pending' || t.status === 'in_progress')
-    .map((t, i) => ({ t, i }))
     .sort((a, b) =>
-      priorityRank(a.t) - priorityRank(b.t) ||
-      (a.t.status === 'pending' ? 0 : 1) - (b.t.status === 'pending' ? 0 : 1) ||
-      parseInt(a.t.id, 10) - parseInt(b.t.id, 10))
-    .map(x => x.t);
+      priorityRank(a) - priorityRank(b) ||
+      (a.status === 'pending' ? 0 : 1) - (b.status === 'pending' ? 0 : 1) ||
+      parseInt(a.id, 10) - parseInt(b.id, 10));
 }
 
 function pickTask(tasks, opts) {
   if (opts.id) return tasks.find(t => String(t.id) === String(opts.id)) || null;
   const list = actionable(tasks);
-  const idx = opts.pick ? parseInt(opts.pick, 10) - 1 : 0;
+  // `--pick` with no value (=== true) or non-numeric → default to the top task.
+  const parsed = parseInt(opts.pick, 10);
+  const idx = Number.isInteger(parsed) ? parsed - 1 : 0;
   return list[idx] || null;
 }
 
@@ -159,10 +159,10 @@ function main() {
   }
 
   if (args.exec) {
-    // Replace this process with an interactive claude on the seed (no Cmux).
-    const { spawnSync: sp } = require('child_process');
-    const r = sp('claude', [seed], { stdio: 'inherit', cwd: REPO });
-    process.exit(r.status || 0);
+    // Run an interactive claude on the seed in this terminal (no Cmux).
+    const r = spawnSync('claude', [seed], { stdio: 'inherit', cwd: REPO });
+    if (r.error) { console.error(`[bsc-next] failed to launch claude: ${r.error.message}`); process.exit(1); }
+    process.exit(r.status == null ? 1 : r.status); // null = killed by signal → non-zero
   }
 
   const res = launchCmux(task, seed);
