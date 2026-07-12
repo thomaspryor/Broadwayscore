@@ -168,9 +168,13 @@ async function main() {
     console.log('');
   }
 
-  const userA = await makeUser('a');
-  const userB = await makeUser('b');
+  // Track every user we create so the finally cleans up even if creation of the
+  // SECOND user throws (otherwise the first would orphan in auth.users and
+  // accumulate across failed runs).
+  const created = [];
   try {
+    const userA = await makeUser('a'); created.push(userA);
+    const userB = await makeUser('b'); created.push(userB);
     const tokenA = await mintToken(userA.email);
     const tokenB = await mintToken(userB.email);
     check('sign-in: minted a real user session (no OAuth popup)', !!tokenA);
@@ -204,7 +208,9 @@ async function main() {
       readB.ok && Array.isArray(readB.json) && readB.json.length === 0,
       `userB saw ${Array.isArray(readB.json) ? readB.json.length : '?'} rows`);
 
-    const stealB = await rest('PATCH', `reviews?id=eq.${reviewId}`, tokenB, { rating: 1.0 });
+    // userB tries to overwrite userA's review; RLS UPDATE (auth.uid()=user_id)
+    // matches 0 rows so this is a silent no-op — verified by re-reading as A.
+    await rest('PATCH', `reviews?id=eq.${reviewId}`, tokenB, { rating: 1.0 });
     const stillMine = await rest('GET', `reviews?id=eq.${reviewId}&select=rating`, tokenA);
     check('rating: RLS blocks another user from editing it',
       Array.isArray(stillMine.json) && stillMine.json[0]?.rating === 4.5,
@@ -238,8 +244,8 @@ async function main() {
     const gone = await rest('GET', `reviews?id=eq.${reviewId}&select=id`, tokenA);
     check('rating: delete persists', Array.isArray(gone.json) && gone.json.length === 0);
   } finally {
-    // Always remove test users — cascades to their reviews/watchlist/lists.
-    for (const u of [userA, userB]) {
+    // Always remove every user we created — cascades to their reviews/watchlist/lists.
+    for (const u of created) {
       try { await deleteUser(u.id); } catch (e) { console.warn(`cleanup ${u.email}: ${e.message}`); }
     }
   }
