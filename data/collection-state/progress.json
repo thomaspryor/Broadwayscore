@@ -569,7 +569,10 @@
     "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/londontheatre1--unknown.json",
     "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/west-end-best-friend--unknown.json",
     "a-walk-on-the-moon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-    "a-walk-on-the-moon-off-broadway-2026/pages-on-stages--mason-pilevsky.json"
+    "a-walk-on-the-moon-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+    "birthright-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "birthright-off-broadway-2026/pages-on-stages--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -631,7 +634,8 @@
     "browserbase": [
       "data/review-texts/a-delicate-balance-1996/variety--jeremy-gerard.json",
       "a-delicate-balance-1996/variety--jeremy-gerard.json",
-      "data/review-texts/birthright-off-broadway-2026/pages-on-stages--mason-pilevsky.json"
+      "data/review-texts/birthright-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+      "data/review-texts/misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json"
     ],
     "directCookies": [
       "jesus-christ-superstar-west-end-2026/times-uk--ann-treneman.json",
@@ -690,7 +694,7 @@
     ]
   },
   "startTime": "2026-07-11T17:18:54.504Z",
-  "lastProcessed": "a-walk-on-the-moon-off-broadway-2026/talkinbroadway--marc-miller.json",
+  "lastProcessed": "birthright-off-broadway-2026/pages-on-stages--unknown.json",
   "log": [
     {
       "t": "2026-07-11T19:34:20.838Z",
@@ -730,6 +734,17 @@
       "t": "2026-07-12T01:40:23.151Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-07-12T01:49:17.225Z",
+      "event": "bb-session",
+      "session": "4ae7e997",
+      "url": "https://www.nytimes.com/2026/06/23/theater/jimmy-awards-bowen-yang-musical-theat"
+    },
+    {
+      "t": "2026-07-12T01:49:17.840Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
