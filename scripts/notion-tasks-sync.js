@@ -134,11 +134,31 @@ function writeTask(dir, task) {
   fs.writeFileSync(tmp, JSON.stringify(task, null, 2));
   fs.renameSync(tmp, path.join(dir, `${task.id}.json`));
 }
-function writeHwm(dir, n) { fs.writeFileSync(hwmPath(dir), String(n)); }
+function readHwm(dir) {
+  try { return parseInt(fs.readFileSync(hwmPath(dir), 'utf8'), 10) || 0; } catch { return 0; }
+}
+// Never regress the highwatermark below a value a concurrent session bumped it to.
+function writeHwm(dir, n) { fs.writeFileSync(hwmPath(dir), String(Math.max(readHwm(dir), n))); }
 
 function readTask(dir, taskId) {
   try { return JSON.parse(fs.readFileSync(path.join(dir, `${taskId}.json`), 'utf8')); }
   catch { return null; }
+}
+
+// Marker embedded in every task we create, so we can prove a task file still
+// belongs to a given Notion card before rewriting or closing it. The integer
+// id namespace is shared with live sessions; the page id is our real key.
+function notionMarker(pageId) { return `[notion:${pageId}]`; }
+function taskBelongsTo(dir, taskId, pageId) {
+  const t = readTask(dir, taskId);
+  return !!(t && typeof t.description === 'string' && t.description.includes(notionMarker(pageId)));
+}
+// Lowest id >= startId whose file does not already exist, so we never clobber a
+// task a live session created in the shared list.
+function allocateFreeId(dir, startId) {
+  let id = startId;
+  while (fs.existsSync(path.join(dir, `${id}.json`))) id++;
+  return id;
 }
 
 // Best-effort cross-process lock so N Cmux panes pulling at once don't race.
@@ -187,8 +207,10 @@ function fetchCards(statuses, priorities, limit) {
 }
 function markCardDone(pageId) {
   const today = new Date().toISOString().slice(0, 10);
+  // --outcome leaves an audit line (the --force reason string is discarded by
+  // updateCard, so it would otherwise be a silent bot mutation).
   notionBrain(['update', pageId, '--status', 'Done', '--completed-date', today,
-    '--force', 'auto-closed by notion-tasks-sync push (task completed)']);
+    '--outcome', `Auto-closed ${today} by notion-tasks-sync: its mirrored task was marked completed in the shared task list.`]);
 }
 
 // ── commands ───────────────────────────────────────────────────────────────
@@ -208,15 +230,20 @@ function cmdPull(args) {
     const plan = planPull(cards, map);
     let id = nextId(dir);
     const created = [], updated = [];
-
-    for (const { card } of plan.toCreate) {
+    // A card whose mapped file was clobbered/reused by a live session is
+    // re-created under a fresh free id, so we never rewrite a stranger's task.
+    const doCreate = (card) => {
+      id = dry ? id : allocateFreeId(dir, id);
       const task = mapCardToTask(card, id);
       if (!dry) writeTask(dir, task);
       map[card.id] = { taskId: task.id, name: card.name, syncedStatus: card.status, url: card.url, pushed: false };
       created.push({ taskId: task.id, name: card.name });
       id++;
-    }
+    };
+
+    for (const { card } of plan.toCreate) doCreate(card);
     for (const { card, taskId } of plan.toUpdate) {
+      if (!dry && !taskBelongsTo(dir, taskId, card.id)) { doCreate(card); continue; }
       const existing = readTask(dir, taskId) || {};
       const task = { ...mapCardToTask(card, taskId), blocks: existing.blocks || [], blockedBy: existing.blockedBy || [] };
       if (!dry) writeTask(dir, task);
@@ -237,20 +264,30 @@ function cmdPull(args) {
 function cmdPush(args) {
   const dir = listDir(args);
   const dry = !!args['dry-run'];
-  const map = readMap(dir);
-  const done = [];
-  for (const [pageId, entry] of Object.entries(map)) {
-    if (entry.pushed) continue;
-    const task = readTask(dir, entry.taskId);
-    if (task && task.status === 'completed') {
+  // Share the pull lock: push mutates the same map, and both do read→modify→
+  // write. Without this, a concurrent pull can clobber a just-set pushed flag
+  // (→ double-close) or lose a new mapping (→ duplicate task).
+  const release = dry ? (() => {}) : acquireLock(dir);
+  if (!release) { console.error('[sync] a sync holds the lock; skipping push'); return { skipped: true }; }
+  try {
+    const map = readMap(dir);
+    const done = [], skipped = [];
+    for (const [pageId, entry] of Object.entries(map)) {
+      if (entry.pushed) continue;
+      const task = readTask(dir, entry.taskId);
+      if (!task || task.status !== 'completed') continue;
+      // The integer id may have been reused by a live session for unrelated
+      // work. Only close the card if this file still carries our marker.
+      if (!taskBelongsTo(dir, entry.taskId, pageId)) { skipped.push({ taskId: entry.taskId, name: entry.name }); continue; }
       if (!dry) { markCardDone(pageId); entry.pushed = true; }
       done.push({ taskId: entry.taskId, name: entry.name, pageId });
     }
-  }
-  if (!dry && done.length) writeMap(dir, map);
-  console.error(`[sync] push: ${done.length} card(s) marked Done${dry ? ' (DRY RUN)' : ''}`);
-  for (const d of done) console.error(`  ✓ ${d.name}`);
-  return { listId: listId(args), done, dry };
+    if (!dry && done.length) writeMap(dir, map);
+    console.error(`[sync] push: ${done.length} card(s) marked Done${skipped.length ? `, ${skipped.length} skipped (id reused)` : ''}${dry ? ' (DRY RUN)' : ''}`);
+    for (const d of done) console.error(`  ✓ ${d.name}`);
+    for (const s of skipped) console.error(`  ⚠ skipped #${s.taskId} (task id no longer maps to this card): ${s.name}`);
+    return { listId: listId(args), done, skipped, dry };
+  } finally { release(); }
 }
 
 function cmdStatus(args) {
@@ -284,4 +321,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { parseArgs, mapStatus, mapCardToTask, planPull, nextId };
+module.exports = { parseArgs, mapStatus, mapCardToTask, planPull, nextId, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readHwm, writeHwm };
