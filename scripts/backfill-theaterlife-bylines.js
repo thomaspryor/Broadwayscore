@@ -33,7 +33,16 @@ const { execFileSync } = require('child_process');
 const { extractTheaterLifeByline, computeContentFingerprint } = require('./lib/content-quality');
 const { extractArticleText } = require('./lib/article-extractor');
 const { normalizeCritic, normalizeUrl } = require('./lib/review-normalization');
-const { safeRenameReview, safeWriteReview } = require('./lib/review-write-guard');
+const { safeRenameReview, safeUnlinkReview } = require('./lib/review-write-guard');
+
+// llm-scores sidecars live at <repoRoot>/data/llm-scores/<showId>/<file>. When we
+// delete a phantom duplicate, remove its orphaned sidecar too (the correctly-named
+// sibling keeps/earns its own on the next scoring pass).
+function unlinkLlmSidecar(root, showId, basename) {
+  const p = path.resolve(root, '..', 'llm-scores', showId, basename);
+  try { if (fs.existsSync(p)) { fs.unlinkSync(p); return true; } } catch { /* best-effort */ }
+  return false;
+}
 
 const args = process.argv.slice(2);
 const APPLY = args.includes('--apply');
@@ -160,12 +169,16 @@ function main() {
     catch (e) { report.errors.push({ showId, reason: 'sibling-unreadable', error: e.message }); continue; }
 
     if (sameReview(data, sib)) {
-      // DUPLICATE: point the phantom at the real-named sibling; rebuild folds it.
+      // DUPLICATE: the correctly-named sibling is canonical — delete the phantom
+      // (and its orphaned llm-scores sidecar). A duplicateOf pointer is the wrong
+      // tool here: when the phantom and sibling URLs differ (theaterlife re-posts),
+      // it trips the duplicate-of-url-mismatch gate, and flag-and-keep tombstones
+      // are discouraged (memory/feedback_outlet_merge_no_flag_and_keep).
       report.duplicate.push({ showId, critic, dstBasename });
       if (APPLY) {
-        const newData = { ...data, duplicateOf: dstBasename, duplicateReason: 'theaterlife-phantom-barry-gordin re-attributed to sibling', criticName: critic, _priorCriticName: 'Barry Gordin' };
-        const r = safeWriteReview(filePath, newData, { force: true });
-        if (!r.wrote) { report.errors.push({ showId, reason: `dup-write-${r.skipped}`, dstBasename }); report.duplicate.pop(); }
+        const r = safeUnlinkReview(filePath, { force: false });
+        if (!r.wrote) { report.errors.push({ showId, reason: `dup-unlink-${r.skipped}`, dstBasename }); report.duplicate.pop(); }
+        else unlinkLlmSidecar(ROOT, showId, PHANTOM_BASENAME);
       }
       continue;
     }
