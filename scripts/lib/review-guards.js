@@ -2444,6 +2444,16 @@ function isIncludableForRebuild(data, show, filePath) {
   // Unflagged roundup pages (flag setter is enrichment-gated; parity with rebuild's
   // inclusion gate so scoring never scores what rebuild excludes — ship-check 2026-07-10)
   if (isRoundupPageAsReview(data)) return false;
+  // Blocked review URLs (google redirect wrappers, ticket pages, aggregator/roundup
+  // domains, social media). Rebuild has auto-rejected these since the gather-time
+  // guard was added (rebuild-all-reviews.js "skippedBlockedUrl" — rebuild does NOT
+  // delegate its main flow to this predicate, so its inline check stays as the
+  // enforcement). This mirror keeps external callers in parity: without it,
+  // check-review-count-drift counted blocklist-dropped files as "suppressed"
+  // forever, and those false suppressions padded the JCS broadcast-block warnings
+  // (2026-07-09, Notion 39a637c5-416f-813a). Canonical-guard rule:
+  // memory/feedback_includability_predicates_must_be_canonical.md.
+  if (data.url && require('./domain-filters').isBlockedReviewUrl(data.url)) return false;
   if (
     data.isNonReview === true ||
     data.isNotReview === true ||

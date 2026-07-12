@@ -720,3 +720,46 @@ describe('safeWriteReview lockedOverride (Joe Turner postmortem P0 #2)', () => {
     assert.equal(written.assignedScore, 72);
   });
 });
+
+describe('safeWriteReview google-redirect URL unwrap (JCS artsdesk 2026-07-09)', () => {
+  test('unwraps google.com/url wrapper and records urlUnwrappedFrom', () => {
+    const filePath = path.join(tmpDir, 'google-wrapped.json');
+    const wrapped = 'https://www.google.com/url?q=https://theartsdesk.com/theatre/jesus-christ-superstar-london-palladium-review&sa=D&source=editors&ust=1783600902761325&usg=AOvVaw1R';
+    safeWriteReview(filePath, {
+      showId: 'jesus-christ-superstar-west-end-2026',
+      outletId: 'artsdesk',
+      criticName: 'Rachel Halliburton',
+      url: wrapped,
+      fullText: 'A real review body long enough to count.',
+    });
+    const written = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    assert.equal(written.url, 'https://theartsdesk.com/theatre/jesus-christ-superstar-london-palladium-review');
+    assert.equal(written.urlUnwrappedFrom, wrapped);
+  });
+
+  test('leaves normal URLs untouched (no urlUnwrappedFrom)', () => {
+    const filePath = path.join(tmpDir, 'normal-url.json');
+    safeWriteReview(filePath, {
+      showId: 'x',
+      outletId: 'guardian',
+      url: 'https://www.theguardian.com/stage/2026/jul/08/jcs-review',
+      fullText: 'A real review body long enough to count.',
+    });
+    const written = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    assert.equal(written.url, 'https://www.theguardian.com/stage/2026/jul/08/jcs-review');
+    assert.equal(written.urlUnwrappedFrom, undefined);
+  });
+
+  test('malformed google url (no q param) passes through unchanged', () => {
+    const filePath = path.join(tmpDir, 'malformed-google.json');
+    const weird = 'https://www.google.com/url?sa=D&source=editors';
+    safeWriteReview(filePath, {
+      showId: 'x',
+      outletId: 'guardian',
+      url: weird,
+      fullText: 'A real review body long enough to count.',
+    });
+    const written = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    assert.equal(written.url, weird);
+  });
+});
