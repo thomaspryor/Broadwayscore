@@ -68,7 +68,7 @@
 const fs = require('fs');
 const path = require('path');
 const { meaningfulTitleTokens } = require('./lib/cast-extraction-guards');
-const { isGenericTitle, isPreFixReddit, REDDIT_CONTAMINATION_FIX_DATE } = require('./lib/reddit-post-filters');
+const { isRedditVolumeInflated, isPreFixReddit, REDDIT_CONTAMINATION_FIX_DATE } = require('./lib/reddit-post-filters');
 const { isRedditEligible } = require('./lib/audience-weighting');
 
 const ROOT = path.join(__dirname, '..');
@@ -89,16 +89,16 @@ const WARN_SIGNALS = new Set([
   'REDDIT_GENERIC_VOLUME_INFLATION',
 ]);
 
-// REDDIT_GENERIC_VOLUME_INFLATION blind spot (2026-06-15, music-city-off-broadway-2026):
-// REDDIT_SCORE_DIVERGENCE misses contamination that inflates Reddit's VOLUME
-// without moving its score far from the others. Combined-score weighting is
-// proportional to reviewCount, so a generic/collision-prone title whose
-// bare-phrase search swept up roundup/megathread comments gets an outsized
-// weight (music-city: reddit rc=148 vs showScore 37 / mezzanine 21 → 72%
-// weight → newsletter "Biggest Mover"). Flag generic titles where Reddit
-// volume dwarfs every other source (or is the sole source).
-const REDDIT_INFLATION_MIN_RC = 80;
-const REDDIT_INFLATION_VOLUME_RATIO = 2;
+// REDDIT_GENERIC_VOLUME_INFLATION (2026-06-15 music-city; 2026-07-11 title-
+// independent rewrite, Notion 39a637c5): REDDIT_SCORE_DIVERGENCE misses
+// contamination that inflates Reddit's VOLUME without moving its score far from
+// the others. Combined-score weighting is proportional to reviewCount, so a
+// bare-phrase search that swept up unrelated chatter gets outsized weight
+// (music-city: reddit 148 vs showScore 37 → 72% weight → false "Biggest Mover").
+// Detection is isRedditVolumeInflated() (scripts/lib/reddit-post-filters.js),
+// shared with the neutralize suppressor. It is title-INDEPENDENT — the old
+// isGenericTitle gate here only caught single-word / denylisted titles and
+// missed multi-word generic phrases (Fear & Wonder, Misterman, Oscar Wao).
 
 // theatr.com (founded ~2021) and seatplan.com's user-rating product are both
 // post-2020 platforms — they cannot have organic users rating shows that
@@ -240,14 +240,16 @@ function audit({ shows: injectedShows, buzz: injectedBuzz, today } = {}) {
       }
       // Already manually suppressed (neutralize-contaminated-reddit-buzz.js) =
       // handled; don't keep warning until the next scrape clears the flag.
-      if (scoreEligible && reddit && !reddit.suppressed && rc >= REDDIT_INFLATION_MIN_RC && isGenericTitle(titleForGeneric)) {
+      if (scoreEligible && reddit && !reddit.suppressed) {
         const otherCounts = SOURCE_NAMES
           .filter(n => n !== 'reddit')
           .map(n => sources[n])
           .filter(s => s && (s.reviewCount || 0) > 0)
           .map(s => s.reviewCount);
         const maxOther = otherCounts.length ? Math.max(...otherCounts) : 0;
-        if (maxOther === 0 || rc >= maxOther * REDDIT_INFLATION_VOLUME_RATIO) {
+        // Title-independent (shared with neutralize) — catches multi-word
+        // generic phrases isGenericTitle alone missed.
+        if (isRedditVolumeInflated(rc, otherCounts, titleForGeneric)) {
           flags.push(`REDDIT_GENERIC_VOLUME_INFLATION:rc=${rc},maxOther=${maxOther},title="${titleForGeneric}"`);
         }
       }

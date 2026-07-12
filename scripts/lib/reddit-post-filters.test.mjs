@@ -6,6 +6,7 @@ const require = createRequire(import.meta.url);
 const {
   isRoundupOrMegathread,
   isGenericTitle,
+  isRedditVolumeInflated,
   buildAudienceSearchQueries,
   isPreFixReddit,
   isRefreshStaleCandidate,
@@ -53,6 +54,38 @@ test('distinctive multi-word titles are NOT generic', () => {
   for (const t of ['Maybe Happy Ending', 'Buena Vista Social Club', 'Two Strangers (Carry a Cake Across New York)', 'Operation Mincemeat']) {
     assert.equal(isGenericTitle(t), false, `${t} should not be generic`);
   }
+});
+
+test('isRedditVolumeInflated catches multi-word generic phrases isGenericTitle misses', () => {
+  // These MULTI-WORD titles are NOT flagged by isGenericTitle (they have 2+
+  // significant words and aren't on the denylist), yet showed the exact
+  // contamination signature (huge Reddit volume, ~zero corroboration).
+  assert.equal(isGenericTitle('Pied à Terre'), false);
+  assert.equal(isGenericTitle('La Breve y Maravillosa Vida de Oscar Wao'), false);
+  assert.equal(isGenericTitle('Drunk Romeo & Juliet'), false);
+  // Sole-source: a real show with 80+ genuine Reddit reviews would have SOME
+  // other audience source, so sole-source + volume floor is unambiguous.
+  assert.equal(isRedditVolumeInflated(371, [], 'La Breve y Maravillosa Vida de Oscar Wao'), true);
+  assert.equal(isRedditVolumeInflated(117, [3], 'Pied à Terre'), true); // 39x, non-generic
+  assert.equal(isRedditVolumeInflated(192, [22], 'Drunk Romeo & Juliet'), true); // 8.7x, non-generic
+});
+
+test('isRedditVolumeInflated protects genuinely Reddit-corroborated shows', () => {
+  // Drunk Shakespeare: real long-running show, 153 Reddit vs 69 ShowScore votes
+  // (2.2x). Non-generic titles need 4x, so it is NOT suppressed.
+  assert.equal(isRedditVolumeInflated(153, [69], 'Drunk Shakespeare'), false);
+  // Below the volume floor — never flagged regardless of ratio.
+  assert.equal(isRedditVolumeInflated(50, [], 'Ice Queen'), false);
+  // Reddit not dominant enough (multi-word, 3x < 4x).
+  assert.equal(isRedditVolumeInflated(120, [40], 'Some Distinctive Play'), false);
+});
+
+test('isRedditVolumeInflated keeps the aggressive 2x ratio for generic titles', () => {
+  // Single-word generic title: 2x dominance is enough (bare-phrase searches are
+  // very leaky), so this IS flagged where a multi-word title would not be.
+  assert.equal(isGenericTitle('Mercury'), true);
+  assert.equal(isRedditVolumeInflated(90, [40], 'Mercury'), true); // 2.25x, generic
+  assert.equal(isRedditVolumeInflated(90, [40], 'A Distinctive Title'), false); // 2.25x, non-generic → safe
 });
 
 test('no show runs a bare-phrase Reddit query; widest query is market-anchored', () => {
