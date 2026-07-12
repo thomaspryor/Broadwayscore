@@ -40,6 +40,13 @@ export function daysSinceOpening(openingDate?: string, now: Date = new Date()): 
  * shows that otherwise fall into the coverage gap: dropped from "Upcoming" once
  * they open, and hidden from the main list / "Best" pages by the review gate.
  */
+// NOTE ON SCOPE: this predicate is Off-Broadway-only today. It defaults the
+// category to 'off-broadway' and omits the `isCuratedHistorical` argument that
+// the score badges pass — both are safe here (curated-historical only lowers
+// the *Broadway* threshold) but would need revisiting before reusing this for
+// Broadway/West End. `status === 'open'` is deliberate: previews/upcoming shows
+// are already covered by the "Starting Soon" / Upcoming surfaces, and this is
+// specifically the post-opening, pre-score gap.
 export function isRecentlyOpenedAwaitingReviews(
   show: AwaitingShowShape,
   now: Date = new Date(),
@@ -49,6 +56,9 @@ export function isRecentlyOpenedAwaitingReviews(
   const t1t2 = (show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0);
   // Already has (or has cleared the bar for) a score → not awaiting.
   if (hasEnoughReviews(reviewCount, show.category ?? 'off-broadway', t1t2)) return false;
+  // Fail closed on a missing/unparseable opening date: without one we can't
+  // place the show in the recency window, and a dateless "open" record is
+  // usually an incomplete stub we shouldn't surface with an empty "Opened —".
   const days = daysSinceOpening(show.openingDate, now);
   return days !== null && days >= 0 && days <= RECENTLY_OPENED_AWAITING_DAYS;
 }

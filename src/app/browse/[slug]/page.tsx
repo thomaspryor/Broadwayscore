@@ -82,6 +82,13 @@ function getAvailableSorts(config: { sort?: string; customSort?: unknown; slug: 
   if (config.sort === 'opening-date-asc') {
     sorts.push('oldest');
     sorts.push('newest');
+  } else if (config.sort === 'opening-date') {
+    // Default order is newest-first. Offer both directions so the active
+    // default is a visible, selectable toggle — otherwise these pages showed
+    // only Critics/A-Z chips, hiding the real order and surfacing a useless
+    // score sort on all-unrated pages (e.g. recently-opened-off-broadway).
+    sorts.push('newest');
+    sorts.push('oldest');
   } else if (config.slug.includes('new-') || config.slug.includes('-season')) {
     sorts.push('newest');
   }
