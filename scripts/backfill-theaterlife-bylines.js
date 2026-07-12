@@ -120,14 +120,37 @@ function sameReview(a, b) {
   if (fa && fb && fa === fb) return true;
   // Near-identical body (byline-prefix offset defeats the fingerprint). Two
   // genuinely different reviews of one show share vocabulary but not phrasing
-  // (~0.3-0.5); the same review modulo the byline header is ~0.9+.
-  if (containment(a.fullText, b.fullText) >= 0.85) return true;
+  // (~0.3-0.5); the same review modulo the byline header is ~0.9+. Require both
+  // texts to carry real substance (>=40 distinct long words) before trusting
+  // containment — a short stub/excerpt is trivially "contained" in a full review
+  // even when they are different pieces, and this branch feeds a destructive
+  // dedup. Short pairs fall through to CONFLICT (manual triage).
+  const A = wordSet(a.fullText), B = wordSet(b.fullText);
+  if (Math.min(A.size, B.size) >= 40 && containment(a.fullText, b.fullText) >= 0.85) return true;
   return false;
+}
+
+// Write the phantom's data under the correct-critic filename, stamping the
+// corrected criticName + provenance and clearing stale byline-mismatch flags.
+function renameOntoCritic(srcPath, dstPath, data, critic, recovered) {
+  const src = recovered ? 'theaterlife-byline-refetch' : 'theaterlife-byline-backfill';
+  const newData = { ...data, criticName: critic, criticEnrichedFrom: src, _priorCriticName: 'Barry Gordin' };
+  delete newData.misattributedFullText;
+  delete newData.extractedByline;
+  delete newData.expectedCritic;
+  return safeRenameReview(srcPath, dstPath, { newData });
+}
+
+// A review carries more signal than another if its body is materially longer,
+// or it is scored while the other is not. Used to avoid discarding the fuller
+// copy when a phantom and its correctly-named sibling are the same review.
+function richness(d) {
+  return { len: (d.fullText || '').length, scored: d.assignedScore != null || !!d.llmScore };
 }
 
 function main() {
   const phantoms = findPhantomFiles(ROOT);
-  const report = { renamed: [], duplicate: [], conflict: [], unparseable: [], errors: [] };
+  const report = { renamed: [], duplicate: [], conflict: [], unparseable: [], warnings: [], errors: [] };
 
   for (const { showId, showDir, filePath } of phantoms) {
     let data;
@@ -150,15 +173,11 @@ function main() {
 
     if (!fs.existsSync(dstPath)) {
       // RENAME: set the real critic and move the file.
-      const src = recovered ? 'theaterlife-byline-refetch' : 'theaterlife-byline-backfill';
-      const newData = { ...data, criticName: critic, criticEnrichedFrom: src, _priorCriticName: 'Barry Gordin' };
-      delete newData.misattributedFullText;
-      delete newData.extractedByline;
-      delete newData.expectedCritic;
       report.renamed.push({ showId, critic, dstBasename, recovered });
       if (APPLY) {
-        const r = safeRenameReview(filePath, dstPath, { newData });
+        const r = renameOntoCritic(filePath, dstPath, data, critic, recovered);
         if (!r.wrote) { report.errors.push({ showId, reason: `rename-${r.skipped}`, dstBasename }); report.renamed.pop(); }
+        else if (r.sisterStoreConflict || r.sisterStoreError) report.warnings.push({ showId, reason: 'sister-store', dstBasename, conflict: !!r.sisterStoreConflict });
       }
       continue;
     }
@@ -169,16 +188,32 @@ function main() {
     catch (e) { report.errors.push({ showId, reason: 'sibling-unreadable', error: e.message }); continue; }
 
     if (sameReview(data, sib)) {
-      // DUPLICATE: the correctly-named sibling is canonical — delete the phantom
-      // (and its orphaned llm-scores sidecar). A duplicateOf pointer is the wrong
-      // tool here: when the phantom and sibling URLs differ (theaterlife re-posts),
-      // it trips the duplicate-of-url-mismatch gate, and flag-and-keep tombstones
-      // are discouraged (memory/feedback_outlet_merge_no_flag_and_keep).
-      report.duplicate.push({ showId, critic, dstBasename });
+      // DUPLICATE: same review as the correctly-named sibling. KEEP THE RICHER
+      // COPY. Deleting the phantom blindly can drop a fuller/scored body when the
+      // sibling is a truncated stub (hells-kitchen: 8663-char phantom vs 3316-char
+      // sibling). A duplicateOf pointer is the wrong tool (different URLs on
+      // theaterlife re-posts trip the duplicate-of-url-mismatch gate; flag-and-keep
+      // tombstones are discouraged — memory/feedback_outlet_merge_no_flag_and_keep),
+      // so we collapse to ONE file under the correct critic name.
+      const p = richness(data), s = richness(sib);
+      const phantomRicher = (p.len > s.len + 200 && p.len > s.len * 1.10) || (p.scored && !s.scored && p.len >= s.len);
+      report.duplicate.push({ showId, critic, dstBasename, kept: phantomRicher ? 'phantom' : 'sibling', phantomLen: p.len, siblingLen: s.len });
       if (APPLY) {
-        const r = safeUnlinkReview(filePath, { force: false });
-        if (!r.wrote) { report.errors.push({ showId, reason: `dup-unlink-${r.skipped}`, dstBasename }); report.duplicate.pop(); }
-        else unlinkLlmSidecar(ROOT, showId, PHANTOM_BASENAME);
+        if (phantomRicher) {
+          // Promote the phantom's richer body under the correct-critic name:
+          // drop the thinner sibling (+ its sidecar), then rename the phantom onto it.
+          const del = safeUnlinkReview(dstPath, { force: false });
+          if (!del.wrote) { report.errors.push({ showId, reason: `dup-sib-unlink-${del.skipped}`, dstBasename }); report.duplicate.pop(); continue; }
+          unlinkLlmSidecar(ROOT, showId, dstBasename);
+          const r = renameOntoCritic(filePath, dstPath, data, critic, recovered);
+          if (!r.wrote) { report.errors.push({ showId, reason: `dup-promote-${r.skipped}`, dstBasename }); report.duplicate.pop(); }
+          else if (r.sisterStoreConflict || r.sisterStoreError) report.warnings.push({ showId, reason: 'sister-store', dstBasename, conflict: !!r.sisterStoreConflict });
+        } else {
+          // Sibling is canonical (richer or equal) — drop the phantom + its sidecar.
+          const r = safeUnlinkReview(filePath, { force: false });
+          if (!r.wrote) { report.errors.push({ showId, reason: `dup-unlink-${r.skipped}`, dstBasename }); report.duplicate.pop(); }
+          else unlinkLlmSidecar(ROOT, showId, PHANTOM_BASENAME);
+        }
       }
       continue;
     }
@@ -194,7 +229,10 @@ function main() {
   console.log(`  → duplicate:    ${report.duplicate.length}`);
   console.log(`  → conflict:     ${report.conflict.length}  (manual)`);
   console.log(`  → unparseable:  ${report.unparseable.length}  (manual / re-fetch)`);
+  console.log(`  → warnings:     ${report.warnings.length}  (sister-store)`);
   console.log(`  → errors:       ${report.errors.length}`);
+  const promoted = report.duplicate.filter(d => d.kept === 'phantom').length;
+  if (promoted) console.log(`  (of duplicates, ${promoted} promoted the fuller phantom body over a thinner sibling)`);
 
   const outPath = path.join('data', 'audit', 'theaterlife-byline-backfill.json');
   fs.mkdirSync(path.dirname(outPath), { recursive: true });

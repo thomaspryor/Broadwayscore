@@ -55,8 +55,25 @@ describe('extractTheaterLifeByline', () => {
     assert.strictEqual(extractTheaterLifeByline('By McDonald Smith\n\nsome review text here'), 'McDonald Smith');
   });
 
+  test('conservatively rejects a month-word name token (ambiguous with a date)', () => {
+    // A surname that is itself a month ("John March") can't be safely told apart
+    // from "By: John" + a "March …" publish date, so the parser returns null and
+    // the file routes to manual triage rather than risk stamping a date as a name.
+    assert.strictEqual(extractTheaterLifeByline('By: John March\n\nA review of the show.'), null);
+  });
+
+  test('does not glue-cut a real name when a month is not followed by a date', () => {
+    // "DeMay" (month substring, no following digit) must survive as one token.
+    assert.strictEqual(extractTheaterLifeByline('By Ada DeMay\n\nA review of the show.'), 'Ada DeMay');
+  });
+
   test('does not match a body sentence starting with "By" + lowercase', () => {
     assert.strictEqual(extractTheaterLifeByline('The show opens.\nBy then the plot has thickened considerably.'), null);
+  });
+
+  test('does not match a no-colon "By Name" that is NOT at text start (mid-body credit)', () => {
+    // A playwright credit deep in the body must not be mistaken for the critic.
+    assert.strictEqual(extractTheaterLifeByline('A long review paragraph about the staging and design choices.\nThe play, By David Mamet, concerns a con.'), null);
   });
 
   test('never re-stamps the phantom "Barry Gordin" even if the body said so', () => {

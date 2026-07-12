@@ -2345,15 +2345,19 @@ function extractTheaterLifeByline(text) {
   // (no-colon form some posts use), anchored so it can't match "directed by" /
   // "produced by" in the body.
   let m = head.match(/\bBy:\s+([A-Z][^\n]{2,60})/);
-  if (!m) m = head.match(/(?:^|\n)\s*By\s+([A-Z][^\n]{2,60})/);
+  // No-colon form: only at the very start of the text (theaterlife's colon-less
+  // posts open with "By <Name>"). Anchoring to ^ avoids matching a mid-body
+  // playwright credit ("By David Mamet") or caption line.
+  if (!m) m = head.match(/^\s*By\s+([A-Z][^\n]{2,60})/);
   if (!m) return null;
   // Some posts glue the article text straight onto the byline with no space
   // ("By: Alix Cohen“We are merchants…" or "By: Alix CohenSeptember 19, 2025").
-  // Cut at the first quote/paren, and cut a glued-on month so the trailing date
-  // prose doesn't corrupt the last name token.
+  // Cut at the first quote/paren, and cut a glued-on month ONLY when it's followed
+  // by a date (digit) — so a real month-surname ("John March", "Ada DeMay") is
+  // preserved while the glued publish date is dropped.
   const captured = m[1]
     .split(/[“”"«»(){}]/)[0]
-    .replace(/([a-z])(January|February|March|April|May|June|July|August|September|October|November|December)\b[\s\S]*/i, '$1');
+    .replace(/([a-z])(?:January|February|March|April|May|June|July|August|September|October|November|December)(?=\s*\d)[\s\S]*/i, '$1');
   const tokens = captured.trim().split(/\s+/);
   const isCap = (t) => /^[A-ZÀ-Þ]/.test(t);
   const isInitial = (t) => /^[A-Z]\.?$/.test(t);
