@@ -5,12 +5,12 @@ import { BASE_URL } from '@/lib/seo';
 export const metadata: Metadata = {
   title: 'Research · Broadway Scorecard',
   description:
-    'Original data studies of Broadway, Off-Broadway, and West End productions, drawn from 14,000+ scored critic reviews and 70,000+ audience ratings.',
+    'Original data studies of Broadway, Off-Broadway, and West End productions, drawn from 17,000+ scored critic reviews and 70,000+ audience ratings.',
   alternates: { canonical: `${BASE_URL}/research` },
   openGraph: {
     title: 'Broadway Scorecard Research',
     description:
-      'Original data studies on Broadway, Off-Broadway, and West End from 14,000+ critic reviews and 70,000+ audience ratings.',
+      'Original data studies on Broadway, Off-Broadway, and West End from 17,000+ critic reviews and 70,000+ audience ratings.',
     url: `${BASE_URL}/research`,
     images: [{ url: `${BASE_URL}/og/home.png`, width: 1200, height: 630 }],
   },
@@ -20,10 +20,10 @@ const studies = [
   {
     slug: 'critic-audience-divergence-2026',
     title:
-      'Critics vs. Audiences: 538 Productions, One Persistent Gap',
+      'Critics vs. Audiences: 583 Productions, One Persistent Gap',
     blurb:
-      'We compared the critic CriticScore and aggregated audience score for every Broadway, Off-Broadway, and West End production with enough data. Audiences score shows 7.4 points higher on average, and disagree most sharply on a familiar list of musicals.',
-    date: '2026-05-26',
+      'We compared the critic CriticScore and aggregated audience score for every Broadway, Off-Broadway, and West End production with enough data. Audiences score shows 7.3 points higher on average, and disagree most sharply on a familiar list of musicals.',
+    date: '2026-07-12',
   },
 ];
 

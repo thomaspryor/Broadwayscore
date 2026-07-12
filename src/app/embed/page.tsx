@@ -65,7 +65,7 @@ export default function EmbedDocsPage() {
       <section className="mb-10">
         <h2 className="text-xl font-semibold text-white mb-3">Dark mode (forced)</h2>
         <p className="text-gray-300 mb-4 text-sm">
-          For dark backgrounds when auto-detection can't see your CSS.
+          For dark backgrounds when auto-detection can&apos;t see your CSS.
         </p>
         <Snippet slug="hamilton" theme="dark" />
       </section>
@@ -73,22 +73,22 @@ export default function EmbedDocsPage() {
       <section className="mb-10">
         <h2 className="text-xl font-semibold text-white mb-3">Light mode (forced)</h2>
         <p className="text-gray-300 mb-4 text-sm">
-          For light backgrounds when auto-detection can't see your CSS.
+          For light backgrounds when auto-detection can&apos;t see your CSS.
         </p>
         <Snippet slug="hamilton" theme="light" />
       </section>
 
       <section className="mb-10">
-        <h2 className="text-xl font-semibold text-white mb-3">Find your show's slug</h2>
+        <h2 className="text-xl font-semibold text-white mb-3">Find your show&apos;s slug</h2>
         <p className="text-gray-300 leading-relaxed text-sm">
-          The embed uses the show's short-form slug. For Hamilton the show page is{' '}
+          The embed uses the show&apos;s short-form slug. For Hamilton the show page is{' '}
           <code className="text-amber-300">broadwayscorecard.com/show/hamilton-2015</code>{' '}
           but the embed slug is just <code className="text-amber-300">hamilton</code>.
           Browse{' '}
           <Link href="/" className="text-amber-300 underline">
             broadwayscorecard.com
           </Link>{' '}
-          to find any show. If an embed returns "Show not found," reach out and we'll
+          to find any show. If an embed returns &ldquo;Show not found,&rdquo; reach out and we&apos;ll
           add the alias.
         </p>
       </section>
@@ -116,7 +116,7 @@ export default function EmbedDocsPage() {
             <div className="text-white font-medium mb-1">Does it track visitors?</div>
             <div className="text-gray-300 leading-relaxed">
               No. The iframe sets no cookies and runs no JavaScript on the parent page.
-              The iframe itself fetches the badge once per pageview from Vercel's CDN.
+              The iframe itself fetches the badge once per pageview from Vercel&apos;s CDN.
             </div>
           </div>
           <div>
@@ -132,7 +132,7 @@ export default function EmbedDocsPage() {
             <div className="text-gray-300 leading-relaxed">
               The iframe is the version we support. A script-tag version that injects
               HTML directly would require us to set CORS headers and add a JS bundle. We
-              can build it if there's demand. Email{' '}
+              can build it if there&apos;s demand. Email{' '}
               <a href="mailto:thomas.pryor@gmail.com" className="text-amber-300 underline">
                 thomas.pryor@gmail.com
               </a>

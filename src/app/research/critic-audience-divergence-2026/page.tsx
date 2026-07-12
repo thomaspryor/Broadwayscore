@@ -50,9 +50,9 @@ function showHref(r: Row): string {
 }
 
 const TITLE =
-  'Critics vs. Audiences: 538 Productions, One Persistent Gap';
+  'Critics vs. Audiences: 583 Productions, One Persistent Gap';
 const DESCRIPTION =
-  'We compared the CriticScore and aggregated audience score for every Broadway, Off-Broadway, and West End production with enough data. Audiences score shows 7.4 points higher than critics on average, and disagree most on a familiar list of musicals.';
+  'We compared the CriticScore and aggregated audience score for every Broadway, Off-Broadway, and West End production with enough data. Audiences score shows 7.3 points higher than critics on average, and disagree most on a familiar list of musicals.';
 const URL = `${BASE_URL}/research/critic-audience-divergence-2026`;
 
 export const metadata: Metadata = {
@@ -64,7 +64,7 @@ export const metadata: Metadata = {
     description: DESCRIPTION,
     url: URL,
     type: 'article',
-    publishedTime: '2026-05-26T00:00:00.000Z',
+    publishedTime: '2026-07-12T00:00:00.000Z',
     authors: ['Tom Pryor'],
     images: [{ url: `${BASE_URL}/og/home.png`, width: 1200, height: 630 }],
   },
@@ -185,7 +185,7 @@ export default function CriticAudienceDivergencePage() {
     headline: TITLE,
     description: DESCRIPTION,
     url: URL,
-    datePublished: '2026-05-26',
+    datePublished: '2026-07-12',
     author: { '@type': 'Person', name: 'Tom Pryor' },
     publisher: {
       '@type': 'Organization',
@@ -217,7 +217,7 @@ export default function CriticAudienceDivergencePage() {
         </h1>
         <p className="text-lg text-gray-300 mt-5 leading-relaxed">{DESCRIPTION}</p>
         <div className="text-xs text-gray-500 mt-4">
-          By Tom Pryor · Published 2026-05-26 · Based on {summary.count.toLocaleString()}{' '}
+          By Tom Pryor · Published 2026-07-12 · Based on {summary.count.toLocaleString()}{' '}
           productions
         </div>
       </header>
@@ -267,7 +267,7 @@ export default function CriticAudienceDivergencePage() {
           </Link>{' '}
           database that has both (a) at least 5 scored critic reviews and (b) at least 100
           audience ratings across Show-Score, Mezzanine, BroadwayBox, TheatreNYC, and Reddit.
-          That's {summary.count.toLocaleString()} productions spanning roughly two decades.
+          That&apos;s {summary.count.toLocaleString()} productions spanning roughly two decades.
         </p>
         <p className="text-gray-200 leading-relaxed mt-4">
           In <strong className="text-white">{audPct}% of them, audiences scored the show higher than critics did</strong>. The average production gets graded{' '}
@@ -286,7 +286,7 @@ export default function CriticAudienceDivergencePage() {
       {/* Audience-higher table */}
       <section className="mb-12">
         <h2 className="text-2xl font-semibold text-white mb-2">
-          The 10 shows audiences loved most that critics didn't
+          The 10 shows audiences loved most that critics didn&apos;t
         </h2>
         <p className="text-sm text-gray-400 mb-2">
           Productions where the aggregated audience score most exceeded the critic
@@ -309,7 +309,7 @@ export default function CriticAudienceDivergencePage() {
       {/* Critic-higher table */}
       <section className="mb-12">
         <h2 className="text-2xl font-semibold text-white mb-2">
-          The 10 shows critics loved most that audiences didn't
+          The 10 shows critics loved most that audiences didn&apos;t
         </h2>
         <p className="text-sm text-gray-400 mb-2">
           The flip: productions where the critic CriticScore most exceeded the aggregated
@@ -402,8 +402,8 @@ export default function CriticAudienceDivergencePage() {
             <strong className="text-white">Critics are systematically harder graders than
             audiences.</strong>{' '}
             Critics see far more theater than the average ticket-buyer and grade against
-            a deeper reference set. The gap (7.4 points on a 100-point scale) is large
-            enough that it changes which shows look "must-see" depending on whose number
+            a deeper reference set. The gap (7.3 points on a 100-point scale) is large
+            enough that it changes which shows look &ldquo;must-see&rdquo; depending on whose number
             you read.
           </li>
           <li>
