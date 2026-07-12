@@ -253,6 +253,20 @@ jobs:
         continue-on-error: true
         run: node scripts/neutralize-contaminated-reddit-buzz.js --apply
 
+      - name: Guard — Reddit scrape drift (rule 13 catastrophe floor)
+        # Same catastrophe-floor drift guard as update-reddit-sentiment.yml. A
+        # bulk run touches every show, so a broken classifier/anchor would move
+        # the whole corpus at once — fail before commit; restore reverts.
+        run: |
+          if [ -f data/audience-buzz.backup.json ]; then
+            node scripts/audience-buzz-scrape-drift-guard.js \
+              --before=data/audience-buzz.backup.json \
+              --after=data/audience-buzz.json \
+              --strict
+          else
+            echo "No pre-scrape backup present — skipping drift guard"
+          fi
+
       - name: Restore backup on failure
         if: failure()
         run: |
