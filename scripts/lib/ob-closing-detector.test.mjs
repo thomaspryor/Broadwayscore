@@ -11,6 +11,7 @@ const {
   aggregateClosingDateCandidates,
   updateTodayTixMissingState,
   decideTodayTixCandidates,
+  shouldSuppressCandidate,
 } = require('./ob-closing-detector.js');
 
 // --- extractClosingDateMentions: date-pattern extraction ---
@@ -193,4 +194,22 @@ test('decideTodayTixCandidates only flags entries at/above the threshold', () =>
   const candidates = decideTodayTixCandidates(state, 2);
   const ids = candidates.map((c) => c.showId).sort();
   assert.deepEqual(ids, ['show-b', 'show-c']);
+});
+
+// --- shouldSuppressCandidate (weekly-alert noise guards) ---
+
+test('suppress: existing closingDate always wins over review boilerplate', () => {
+  const show = { id: 'heathers-2025', closingDate: '2026-11-08', status: 'open' };
+  assert.equal(shouldSuppressCandidate(show, '2026-01-25', '2026-07-12'), 'already-has-closing-date');
+});
+
+test('suppress: proposal more than a year past = extended/open-ended, not stale-open', () => {
+  const show = { id: 'little-shop-2019', closingDate: null, status: 'open' };
+  assert.equal(shouldSuppressCandidate(show, '2020-01-19', '2026-07-12'), 'stale-evidence');
+});
+
+test('suppress: recent past and future proposals on date-less shows are actionable', () => {
+  const show = { id: 'my-joy-2025', closingDate: null, status: 'open' };
+  assert.equal(shouldSuppressCandidate(show, '2026-04-05', '2026-07-12'), null);
+  assert.equal(shouldSuppressCandidate(show, '2026-09-11', '2026-07-12'), null);
 });
