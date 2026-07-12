@@ -36,6 +36,13 @@ jobs:
       historical_shows_count: ${{ steps.discover.outputs.historical_shows_count }}
       historical_shows: ${{ steps.discover.outputs.historical_shows }}
       historical_slugs: ${{ steps.discover.outputs.historical_slugs }}
+      # True only once the discovered shows have actually been pushed (both
+      # repos). Downstream jobs gate on this + always() instead of job success,
+      # so a 30-min-timeout cancellation AFTER the pushes no longer strands the
+      # shows in shows.json with no issue and no gather-reviews dispatch
+      # (manual-only workflow — nothing would ever re-discover them). Also
+      # keeps downstream skipped on dry-run, where shows were never added.
+      data_pushed: ${{ steps.mark-pushed.outputs.data_pushed }}
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -126,14 +133,20 @@ jobs:
           owner_email: ${{ secrets.OWNER_EMAIL }}
 
       - name: Push core data to private repo
+        id: core-push
         if: always()
         uses: ./.github/actions/push-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Update from discover-historical-shows'
+
+      - name: Mark data pushed (gates downstream jobs)
+        id: mark-pushed
+        if: always() && steps.core-push.outcome == 'success' && steps.validate.outcome == 'success' && inputs.dry_run != 'true'
+        run: echo "data_pushed=true" >> "$GITHUB_OUTPUT"
   create-issue:
     needs: discover-historical
-    if: needs.discover-historical.outputs.historical_shows_count != '' && needs.discover-historical.outputs.historical_shows_count != '0'
+    if: always() && needs.discover-historical.outputs.data_pushed == 'true' && needs.discover-historical.outputs.historical_shows_count != '' && needs.discover-historical.outputs.historical_shows_count != '0'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout to read pending shows
@@ -201,7 +214,7 @@ jobs:
   # Trigger review data gathering for historical shows
   trigger-review-gathering:
     needs: discover-historical
-    if: needs.discover-historical.outputs.historical_shows_count != '' && needs.discover-historical.outputs.historical_shows_count != '0'
+    if: always() && needs.discover-historical.outputs.data_pushed == 'true' && needs.discover-historical.outputs.historical_shows_count != '' && needs.discover-historical.outputs.historical_shows_count != '0'
     runs-on: ubuntu-latest
     steps:
       - name: Trigger gather-reviews workflow

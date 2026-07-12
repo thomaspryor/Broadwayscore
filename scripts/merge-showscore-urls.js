@@ -107,14 +107,8 @@ function main() {
           if (ssReview.excerpt && !match.data.showScoreExcerpt) {
             metadata.showScoreExcerpt = ssReview.excerpt;
           }
-          const written = updateFileUrlWithInvariant(match.path, newUrl, metadata);
-          if (!written) {
-            match.data.url = newUrl;
-            Object.assign(match.data, metadata);
-            fs.writeFileSync(match.path, JSON.stringify(match.data, null, 2));
-          } else {
-            match.data = written;
-          }
+          const written = updateFileUrlWithInvariant(match.path, newUrl, metadata, { stampOnNoop: true });
+          if (written) match.data = written;
           console.log(`  Updated: ${match.filename}`);
           console.log(`    Old: ${currentUrl.substring(0, 60)}...`);
           console.log(`    New: ${newUrl.substring(0, 60)}...`);

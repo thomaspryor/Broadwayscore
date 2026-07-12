@@ -282,13 +282,24 @@ function applyUrlChangeInvariant(existing, merged, { fileLabel = '?', preserveFi
  * cleared llmScore — the sidecar is keyed by filename, so a stale score would
  * otherwise survive the URL change and reattach via sidecar consumers.
  *
- * No-ops (returns null) when the file is unreadable or the url isn't actually
- * changing canonically — callers that also want metadata stamped on a
- * same-URL write should keep their own write path for that case.
+ * Returns null without writing when the file is unreadable, or — unless
+ * opts.stampOnNoop — when the url isn't changing canonically.
+ *
+ * opts.stampOnNoop: when the invariant doesn't apply (first-set onto an
+ * empty/broken url, or a same-canonical variant like a protocol/tracking
+ * rewrite), still write url + metadata atomically WITHOUT clearing anything.
+ * URL-discovery callers need this: their legacy inline writes stamped
+ * unconditionally, and dropping the stamp broke no_url/fabricatedEntry
+ * recovery entirely (empty existing url → urlCanonicallyChanged false → the
+ * discovered url was never persisted; /code-review 2026-07-11 P0). A garbage
+ * NEW url is still refused even with stampOnNoop.
  *
  * @param {string} filePath - Absolute path to the review JSON file
  * @param {string} newUrl - The replacement URL
  * @param {object} [metadata] - Extra fields to stamp (urlDiscoveryMethod etc.)
+ * @param {object} [opts]
+ * @param {Set<string>} [opts.preserveFields]
+ * @param {boolean} [opts.stampOnNoop=false]
  * @returns {object|null} The written record, or null if nothing was written
  */
 function updateFileUrlWithInvariant(filePath, newUrl, metadata = {}, opts = {}) {
@@ -300,7 +311,21 @@ function updateFileUrlWithInvariant(filePath, newUrl, metadata = {}, opts = {}) 
   } catch {
     return null;
   }
-  if (!urlCanonicallyChanged(existing.url, newUrl)) return null;
+  const canonicalMove = urlCanonicallyChanged(existing.url, newUrl);
+  if (!canonicalMove && !opts.stampOnNoop) return null;
+  if (!canonicalMove && opts.stampOnNoop) {
+    // Never adopt a garbage replacement url, even as a plain stamp.
+    if (typeof newUrl !== 'string' || !/^https?:\/\//i.test(newUrl) || newUrl.includes('undefined')) {
+      return null;
+    }
+    const stamped = { ...existing, ...metadata };
+    if (existing.url && existing.url !== newUrl) stamped.previousUrl = existing.url;
+    stamped.url = newUrl;
+    const tmp = `${filePath}.tmp`;
+    fs.writeFileSync(tmp, JSON.stringify(stamped, null, 2) + '\n');
+    fs.renameSync(tmp, filePath);
+    return stamped;
+  }
   const updated = { ...existing, ...metadata, previousUrl: existing.url, url: newUrl };
   const inv = applyUrlChangeInvariant(existing, updated, {
     fileLabel: path.basename(filePath),
