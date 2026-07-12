@@ -158,6 +158,40 @@ if echo "$ALL_CHANGED_FILES" | grep -qE "^scripts/[^/]+\.js$|^scripts/lint-write
   fi
 fi
 
+# Workflow-guard lints + workflow audits (same scripts CI runs in test.yml's
+# Lint Workflows job). Workflow-scoped guards fire when the push touches
+# .github/workflows/ (or the guard script / its inputs); demo-flags fires on
+# src/ TypeScript changes. All pure grep / file reads, a few seconds total.
+WF_CHECKS=""
+if echo "$ALL_CHANGED_FILES" | grep -qE "^\.github/workflows/.*\.ya?ml$|^scripts/lint-workflow-guards\.sh$|^\.gitattributes$|^scripts/setup-local-data\.sh$"; then
+  WF_CHECKS="workflows"
+fi
+if echo "$ALL_CHANGED_FILES" | grep -qE "^src/.*\.(ts|tsx)$"; then
+  WF_CHECKS="${WF_CHECKS:+$WF_CHECKS,}demo-flags"
+fi
+if [ -n "$WF_CHECKS" ] && [ -f scripts/lint-workflow-guards.sh ]; then
+  GUARDS_OUT="/tmp/pre-push-wf-guards.$$.out"
+  if ! bash scripts/lint-workflow-guards.sh "$WF_CHECKS" >"$GUARDS_OUT" 2>&1; then
+    echo ""
+    echo "=== PRE-PUSH BLOCKED: workflow-guard lint failed (CI would go red) ==="
+    echo ""
+    cat "$GUARDS_OUT"
+    echo ""
+    echo "(Bypass for emergencies: git push --no-verify)"
+    rm -f "$GUARDS_OUT"
+    exit 1
+  fi
+  rm -f "$GUARDS_OUT"
+fi
+
+# Node workflow audits (concurrency groups, notify-failure/playwright/push-retry
+# hygiene, cron-health coverage) — only when the push touches workflow files.
+if echo "$ALL_CHANGED_FILES" | grep -qE "^\.github/workflows/.*\.ya?ml$"; then
+  run_audit "workflow-concurrency" "scripts/audit-workflow-concurrency.js"
+  run_audit "workflow-hygiene" "scripts/audit-workflow-hygiene.js"
+  run_audit "cron-health-coverage" "scripts/audit-cron-health-coverage.js"
+fi
+
 # TypeScript typecheck — the one diff-local code-correctness gate worth running
 # on push. Runs only when this push touches .ts/.tsx. tsc is project-wide (types
 # interconnect, so it can't be scoped to changed files), but CI keeps main green,
