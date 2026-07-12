@@ -1,0 +1,191 @@
+{
+  "generated": "run dedupe-same-url-bylines.js --report to refresh",
+  "note": "Same URL, DIFFERENT text — genuinely distinct reviews at one URL (one has a wrong URL) or systematic wrong-byline contamination (e.g. theater-life \"Barry Gordin\"). Do NOT collapse; needs URL/byline triage.",
+  "count": 23,
+  "groups": [
+    {
+      "showId": "a-view-from-the-bridge-2015",
+      "members": [
+        "guardian--alexis-soloski.json",
+        "guardian--jesse-green.json"
+      ],
+      "minJaccard": 0.54
+    },
+    {
+      "showId": "aint-too-proud-2019",
+      "members": [
+        "variety--frank-rizzo.json",
+        "variety--marilyn-stasio.json"
+      ],
+      "minJaccard": 0.48
+    },
+    {
+      "showId": "an-enemy-of-the-people-2012",
+      "members": [
+        "nytimes--ben-brantley.json",
+        "nytimes--charles-isherwood.json"
+      ],
+      "minJaccard": 0.63
+    },
+    {
+      "showId": "fish-in-the-dark-2015",
+      "members": [
+        "guardian--jesse-green.json",
+        "guardian--maraithe-thomas.json"
+      ],
+      "minJaccard": 0.66
+    },
+    {
+      "showId": "good-night-oscar-2023",
+      "members": [
+        "theater-life--barry-gordin.json",
+        "theater-life--paulanne-simmons.json"
+      ],
+      "minJaccard": 0.16
+    },
+    {
+      "showId": "here-lies-love-2023",
+      "members": [
+        "theater-life--barry-gordin.json",
+        "theater-life--david-sheward.json"
+      ],
+      "minJaccard": 0.16
+    },
+    {
+      "showId": "ink-2019",
+      "members": [
+        "variety--christopher-kelly.json",
+        "variety--frank-rizzo.json"
+      ],
+      "minJaccard": 0.55
+    },
+    {
+      "showId": "king-lear-2019",
+      "members": [
+        "guardian--alexis-soloski.json",
+        "guardian--jesse-green.json"
+      ],
+      "minJaccard": 0.57
+    },
+    {
+      "showId": "leopoldstadt-2022",
+      "members": [
+        "theater-life--barry-gordin.json",
+        "theater-life--david-sheward.json"
+      ],
+      "minJaccard": 0.16
+    },
+    {
+      "showId": "m-butterfly-2017",
+      "members": [
+        "guardian--alexis-soloski.json",
+        "guardian--jesse-green.json"
+      ],
+      "minJaccard": 0.63
+    },
+    {
+      "showId": "magicbird-2012",
+      "members": [
+        "nytimes--ben-brantley.json",
+        "nytimes--charles-isherwood.json"
+      ],
+      "minJaccard": 0.66
+    },
+    {
+      "showId": "once-upon-a-mattress-2024",
+      "members": [
+        "nytimes--elisabeth-vincentelli.json",
+        "nytimes--jesse-green.json"
+      ],
+      "minJaccard": 0.12
+    },
+    {
+      "showId": "parade-2023",
+      "members": [
+        "theater-life--barry-gordin.json",
+        "theater-life--paulanne-simmons.json"
+      ],
+      "minJaccard": 0.17
+    },
+    {
+      "showId": "sister-act-2011",
+      "members": [
+        "nytimes--ben-brantley.json",
+        "nytimes--charles-isherwood.json"
+      ],
+      "minJaccard": 0.58
+    },
+    {
+      "showId": "some-like-it-hot-2022",
+      "members": [
+        "theater-life--barry-gordin.json",
+        "theater-life--david-sheward.json"
+      ],
+      "minJaccard": 0.19
+    },
+    {
+      "showId": "spring-awakening-2006",
+      "members": [
+        "nytimes--ben-brantley.json",
+        "nytimes--charles-isherwood.json"
+      ],
+      "minJaccard": 0.51
+    },
+    {
+      "showId": "stereophonic-2024",
+      "members": [
+        "guardian--adrian-horton.json",
+        "guardian--gloria-oladipo.json"
+      ],
+      "minJaccard": 0.7
+    },
+    {
+      "showId": "the-cottage-2023",
+      "members": [
+        "theater-life--barry-gordin.json",
+        "theater-life--paulanne-simmons.json"
+      ],
+      "minJaccard": 0.15
+    },
+    {
+      "showId": "the-little-prince-2022",
+      "members": [
+        "theater-life--barry-gordin.json",
+        "theater-life--isa-goldberg.json"
+      ],
+      "minJaccard": 0.15
+    },
+    {
+      "showId": "the-nance-2013",
+      "members": [
+        "timeout--adam-feldman.json",
+        "timeout--david-cote.json"
+      ],
+      "minJaccard": 0.53
+    },
+    {
+      "showId": "the-prom-2018",
+      "members": [
+        "theater-life--barry-gordin.json",
+        "theater-life--isa-goldberg.json"
+      ],
+      "minJaccard": 0.17
+    },
+    {
+      "showId": "the-thanksgiving-play-2023",
+      "members": [
+        "theater-life--barry-gordin.json",
+        "theater-life--samuel-l-leiter.json"
+      ],
+      "minJaccard": 0.16
+    },
+    {
+      "showId": "venus-in-fur-2011",
+      "members": [
+        "nytimes--ben-brantley.json",
+        "nytimes--charles-isherwood.json"
+      ],
+      "minJaccard": 0.54
+    }
+  ]
+}
