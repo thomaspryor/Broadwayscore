@@ -5,6 +5,7 @@ import { featureFlags } from '@/config/feature-flags';
 import { getMarketLabel } from '@/lib/market-utils';
 import { getBroadwayDuration, getRunLength } from '@/lib/date-utils';
 import { hasEnoughReviews } from '@/config/score-buckets';
+import { hasEnoughAudienceReviews } from '@/lib/audience-grade-utils';
 import VideoReviewsShelf from '@/components/VideoReviewsShelf';
 import AudienceBuzzCard from '@/components/AudienceBuzzCard';
 import AwardsCard from '@/components/AwardsCard';
@@ -151,10 +152,10 @@ export default function ShowPageBelowFold({
 
       {/* Audience Scorecard */}
       <div id="audience" className="scroll-mt-20" />
-      {audienceBuzz && audienceBuzz.combinedScore != null && (() => {
-        const totalReviews = Object.values(audienceBuzz.sources || {}).reduce((sum, s) => sum + (s?.reviewCount || 0), 0);
-        return totalReviews >= 5;
-      })() ? (() => {
+      {/* Match the main show page's audience gate exactly (same helper) — a card
+          built on <15 reviews (e.g. "100/Loving" from a single review) is
+          misleading, so hide it rather than display a low-confidence grade. */}
+      {audienceBuzz && audienceBuzz.combinedScore != null && hasEnoughAudienceReviews(audienceBuzz) ? (() => {
         const sourceCount = Object.values(audienceBuzz.sources || {}).filter(Boolean).length;
         const showYear = show.openingDate ? parseInt(show.openingDate.substring(0, 4)) : null;
         const isHistorical = show.status === 'closed' && showYear !== null && showYear < 2015;
