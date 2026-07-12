@@ -43,16 +43,61 @@ function loadData(): Dataset {
   return JSON.parse(fs.readFileSync(p, 'utf8'));
 }
 
+// Headline stats are derived from rows at build time rather than read from the
+// JSON's summary block, so a regenerated dataset can never leave the title,
+// stat cards, and tables disagreeing with each other. The summary block stays
+// in the JSON for external consumers of the download.
+type DerivedStats = {
+  count: number;
+  meanGap: number;
+  audienceHigherCount: number;
+  criticHigherCount: number;
+  byCategory: Record<
+    string,
+    { count: number; meanGap: number; audienceHigher: number; criticHigher: number }
+  >;
+};
+
+function deriveStats(rows: Row[]): DerivedStats {
+  const gaps = rows.map((r) => r.gap);
+  const byCategory: DerivedStats['byCategory'] = {};
+  for (const cat of ['broadway', 'off-broadway', 'west-end', 'off-west-end']) {
+    const subset = rows.filter((r) => r.category === cat);
+    if (!subset.length) continue;
+    const g = subset.map((r) => r.gap);
+    byCategory[cat] = {
+      count: subset.length,
+      meanGap: Math.round((g.reduce((a, b) => a + b, 0) / g.length) * 100) / 100,
+      audienceHigher: g.filter((x) => x > 0).length,
+      criticHigher: g.filter((x) => x < 0).length,
+    };
+  }
+  return {
+    count: rows.length,
+    meanGap: Math.round((gaps.reduce((a, b) => a + b, 0) / gaps.length) * 100) / 100,
+    audienceHigherCount: gaps.filter((g) => g > 0).length,
+    criticHigherCount: gaps.filter((g) => g < 0).length,
+    byCategory,
+  };
+}
+
+// Deterministic ordering: equal gaps tie-break by id so a regenerated dataset
+// emitted in a different file order can't reshuffle the top-10 tables.
+function byGapDesc(a: Row, b: Row): number {
+  return b.gap - a.gap || a.id.localeCompare(b.id);
+}
+function byGapAsc(a: Row, b: Row): number {
+  return a.gap - b.gap || a.id.localeCompare(b.id);
+}
+
 function showHref(r: Row): string {
-  if (r.category === 'west-end') return `/west-end-show/${r.slug}`;
-  if (r.category === 'off-west-end') return `/west-end-show/${r.slug}`;
   return `/show/${r.slug}`;
 }
 
-const TITLE =
-  'Critics vs. Audiences: 583 Productions, One Persistent Gap';
-const DESCRIPTION =
-  'We compared the CriticScore and aggregated audience score for every Broadway, Off-Broadway, and West End production with enough data. Audiences score shows 7.3 points higher than critics on average, and disagree most on a familiar list of musicals.';
+const STATS = deriveStats(loadData().rows);
+
+const TITLE = `Critics vs. Audiences: ${STATS.count} Productions, One Persistent Gap`;
+const DESCRIPTION = `We compared the CriticScore and aggregated audience score for every Broadway, Off-Broadway, and West End production with enough data. Audiences score shows ${STATS.meanGap.toFixed(1)} points higher than critics on average, and disagree most on a familiar list of musicals.`;
 const URL = `${BASE_URL}/research/critic-audience-divergence-2026`;
 
 export const metadata: Metadata = {
@@ -165,19 +210,26 @@ function RowTable({
 }
 
 export default function CriticAudienceDivergencePage() {
-  const data = loadData();
-  const { summary, rows } = data;
+  const { rows } = loadData();
+  const summary = STATS;
 
-  const audienceHigher = [...rows].filter((r) => r.gap > 0).sort((a, b) => b.gap - a.gap);
-  const criticHigher = [...rows].filter((r) => r.gap < 0).sort((a, b) => a.gap - b.gap);
+  const audienceHigher = [...rows].filter((r) => r.gap > 0).sort(byGapDesc);
+  const criticHigher = [...rows].filter((r) => r.gap < 0).sort(byGapAsc);
   const consensus = [...rows]
     .filter((r) => r.critic >= 85 && r.audience >= 85 && Math.abs(r.gap) <= 3)
-    .sort((a, b) => b.critic + b.audience - (a.critic + a.audience));
+    .sort(
+      (a, b) => b.critic + b.audience - (a.critic + a.audience) || a.id.localeCompare(b.id)
+    );
 
   const top10Audience = audienceHigher.slice(0, 10);
   const top10Critic = criticHigher.slice(0, 10);
   const top10Consensus = consensus.slice(0, 10);
   const audPct = Math.round((100 * summary.audienceHigherCount) / summary.count);
+  const byId = (id: string) => rows.find((r) => r.id === id);
+  const wicked = byId('wicked-2003');
+  const neverland = byId('finding-neverland-2015');
+  const beetlejuice = byId('beetlejuice-2019');
+  const stereophonic = byId('stereophonic-2024');
 
   const articleJsonLd = {
     '@context': 'https://schema.org',
@@ -201,7 +253,7 @@ export default function CriticAudienceDivergencePage() {
     <main className="max-w-3xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd).replace(/</g, '\\u003c') }}
       />
 
       {/* Header */}
@@ -319,11 +371,12 @@ export default function CriticAudienceDivergencePage() {
         <RowTable rows={top10Critic} highlight="critic" />
         <p className="text-sm text-gray-400 mt-4 leading-relaxed">
           The pattern reverses. Serious plays, formal experiments, and revivals of
-          canonical texts cluster here. These shows tend to win awards (e.g.{' '}
-          <Link href={showHref(top10Critic.find((r) => r.id === 'stereophonic-2024') || top10Critic[0])} className="text-amber-300 underline">
-            {(top10Critic.find((r) => r.id === 'stereophonic-2024') || top10Critic[0])?.title}
-          </Link>
-          ) while splitting mainstream audiences.
+          canonical texts cluster here.{' '}
+          <Link href={showHref(top10Critic[0])} className="text-amber-300 underline">
+            {top10Critic[0]?.title}
+          </Link>{' '}
+          tops the list: critics scored it {top10Critic[0]?.critic.toFixed(0)} while
+          audiences landed at {top10Critic[0]?.audience.toFixed(0)}.
         </p>
       </section>
 
@@ -402,36 +455,51 @@ export default function CriticAudienceDivergencePage() {
             <strong className="text-white">Critics are systematically harder graders than
             audiences.</strong>{' '}
             Critics see far more theater than the average ticket-buyer and grade against
-            a deeper reference set. The gap (7.3 points on a 100-point scale) is large
-            enough that it changes which shows look &ldquo;must-see&rdquo; depending on whose number
-            you read.
+            a deeper reference set. The gap ({summary.meanGap.toFixed(1)} points on a
+            100-point scale) is large enough that it changes which shows look
+            &ldquo;must-see&rdquo; depending on whose number you read.
           </li>
           <li>
             <strong className="text-white">The biggest commercial musicals show the
             biggest gaps.</strong>{' '}
             Productions like{' '}
-            <Link href="/show/wicked-2003" className="text-amber-300 underline">
-              Wicked
-            </Link>
-            ,{' '}
-            <Link href="/show/finding-neverland-2015" className="text-amber-300 underline">
-              Finding Neverland
-            </Link>
-            , and{' '}
-            <Link href="/show/beetlejuice-2019" className="text-amber-300 underline">
-              Beetlejuice
-            </Link>{' '}
+            {wicked && (
+              <Link href={showHref(wicked)} className="text-amber-300 underline">
+                Wicked
+              </Link>
+            )}
+            {wicked && `, `}
+            {neverland && (
+              <Link href={showHref(neverland)} className="text-amber-300 underline">
+                Finding Neverland
+              </Link>
+            )}
+            {neverland && `, and `}
+            {beetlejuice && (
+              <Link href={showHref(beetlejuice)} className="text-amber-300 underline">
+                Beetlejuice
+              </Link>
+            )}{' '}
             generate huge audience score databases, and those audiences are systematically
             more enthusiastic than the critical consensus.
           </li>
           <li>
             <strong className="text-white">Awards prestige predicts audience
             divergence.</strong>{' '}
-            Tony and Olivier-winning serious plays often cluster on the critic-higher side.{' '}
-            <Link href="/show/stereophonic-2024" className="text-amber-300 underline">
-              Stereophonic
-            </Link>{' '}
-            (Best Play 2024) sits in our top-10 critic-loved-more list.
+            Tony and Olivier-winning serious plays cluster on the critic-higher side.{' '}
+            {stereophonic ? (
+              <>
+                <Link href={showHref(stereophonic)} className="text-amber-300 underline">
+                  Stereophonic
+                </Link>{' '}
+                (Best Play 2024) scored {Math.abs(stereophonic.gap).toFixed(1)} points
+                higher with critics than with audiences, and{' '}
+              </>
+            ) : (
+              <>And </>
+            )}
+            only {summary.criticHigherCount} of {summary.count} productions in the study
+            lean critic-ward at all.
           </li>
         </ul>
       </section>

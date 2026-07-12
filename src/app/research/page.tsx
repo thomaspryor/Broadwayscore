@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import fs from 'fs';
+import path from 'path';
 import { BASE_URL } from '@/lib/seo';
 
 export const metadata: Metadata = {
@@ -16,13 +18,25 @@ export const metadata: Metadata = {
   },
 };
 
+// Card copy derives its numbers from the dataset at build time so the hub can
+// never disagree with the study page after a data regeneration.
+function divergenceStats(): { count: number; meanGap: number } {
+  const p = path.join(
+    process.cwd(),
+    'public/data/research/critic-audience-divergence-2026.json'
+  );
+  const rows: { gap: number }[] = JSON.parse(fs.readFileSync(p, 'utf8')).rows;
+  const meanGap = rows.reduce((a, r) => a + r.gap, 0) / rows.length;
+  return { count: rows.length, meanGap: Math.round(meanGap * 100) / 100 };
+}
+
+const dv = divergenceStats();
+
 const studies = [
   {
     slug: 'critic-audience-divergence-2026',
-    title:
-      'Critics vs. Audiences: 583 Productions, One Persistent Gap',
-    blurb:
-      'We compared the critic CriticScore and aggregated audience score for every Broadway, Off-Broadway, and West End production with enough data. Audiences score shows 7.3 points higher on average, and disagree most sharply on a familiar list of musicals.',
+    title: `Critics vs. Audiences: ${dv.count} Productions, One Persistent Gap`,
+    blurb: `We compared the critic CriticScore and aggregated audience score for every Broadway, Off-Broadway, and West End production with enough data. Audiences score shows ${dv.meanGap.toFixed(1)} points higher on average, and disagree most sharply on a familiar list of musicals.`,
     date: '2026-07-12',
   },
 ];
