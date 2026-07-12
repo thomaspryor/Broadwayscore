@@ -181,6 +181,7 @@ function formatCard(page) {
     priority: getSelectValue(p.Priority),
     category: getSelectValue(p.Category),
     type: getSelectValue(p.Type),
+    auto: getSelectValue(p.Auto),
     tags: getMultiSelectValues(p.Tags),
     notes: getRichTextValue(p.Notes),
     outcome: getRichTextValue(p.Outcome),
@@ -574,6 +575,22 @@ async function updateCard(args) {
     };
   }
 
+  if (args.auto !== undefined) {
+    // Autonomous-loop state lives in its own `Auto` select so the loop never
+    // touches domain Tags. Values are the autonomous-state machine's states;
+    // "clear"/"none"/"" unsets (back to untriaged).
+    if (args.auto === '' || args.auto === 'none' || args.auto === 'clear') {
+      properties.Auto = { select: null };
+    } else {
+      const { STATES } = require('./lib/autonomous-state.js');
+      if (!STATES.includes(args.auto) || args.auto === '') {
+        console.error(`Error: --auto must be one of ${STATES.filter(s => s).join(', ')} (or "clear"), got ${JSON.stringify(args.auto)}`);
+        process.exit(1);
+      }
+      properties.Auto = { select: { name: args.auto } };
+    }
+  }
+
   // Collect per-field overflow so we can write body sections after update.
   const overflow = {};
 
@@ -937,6 +954,9 @@ Options (create/update):
   --notes "## Problem..."   Notes field — REQUIRED on create, validated for quality
   --outcome "## Summary"    Outcome (prepends to existing by default)
   --key-files "file.js"     Key Files field
+  --auto STATE              (update only) Autonomous-loop state select: queued,
+                            attempted, needs-approval, approved, merged,
+                            rejected, failed, split-proposed. "clear" unsets.
   --completed-date DATE     Completed Date (YYYY-MM-DD)
   --due-date DATE           Due Date — YYYY-MM-DD, today, tomorrow, or +Nd
                             On update: "", "none", or "clear" removes the due date
