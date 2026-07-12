@@ -23,7 +23,7 @@ import path from 'node:path';
 const require = createRequire(import.meta.url);
 const { safeWriteReview, wouldFormDuplicateCycle } = require('../../scripts/lib/review-write-guard.js');
 const {
-  chooseCanonical, isUnknownByline, levenshtein, isScoreable,
+  chooseCanonical, chooseCanonicalForRebuild, isUnknownByline, levenshtein, isScoreable,
 } = require('../../scripts/fix-circular-duplicate-pairs.js');
 
 const body = (n) => 'x'.repeat(n);
@@ -143,6 +143,51 @@ test('isScoreable reflects any score signal', () => {
   assert.equal(isScoreable({ assignedScore: 0 }), true);
   assert.equal(isScoreable({ aggregatorStars: 3 }), true);
   assert.equal(isScoreable({ url: 'u' }), false);
+});
+
+// ---------------------------------------------------------------------------
+// 3b. chooseCanonicalForRebuild — includability-first (I/O over a fixture dir)
+// ---------------------------------------------------------------------------
+const longReview = 'A substantive critic review with a clear verdict and analysis. '.repeat(40);
+
+test('includability-first: an includable-but-UNSCORED real review beats scored-but-not-includable named junk', () => {
+  // The 2nd-reviewer P1: a fresh (unscored) opening-night review must NOT be
+  // demoted under a wrongProduction sibling that happens to carry a named byline
+  // + a score. wouldBeIncludableIfCleared must not gate on isScoreable.
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'canon-'));
+  const real = { url: 'https://nyt.com/proof', contentTier: 'complete', isFullReview: true, fullText: longReview, duplicateOf: 'nyt--junk.json' }; // includable, unscored
+  const junk = { url: 'https://nyt.com/proof', contentTier: 'complete', isFullReview: true, fullText: longReview, assignedScore: 80, llmScore: { band: 'x' }, wrongProduction: true, duplicateOf: 'nyt--real.json' }; // scored, NOT includable
+  fs.writeFileSync(path.join(dir, 'nyt--real.json'), JSON.stringify(real));
+  fs.writeFileSync(path.join(dir, 'nyt--junk.json'), JSON.stringify(junk));
+  const c = chooseCanonicalForRebuild('nyt--real.json', real, 'nyt--junk.json', junk, dir);
+  assert.equal(c.canonical, 'nyt--real.json', 'the includable real review must be canonical, not the scored wrongProduction junk');
+  assert.match(c.reason, /rebuild/);
+});
+
+test('includability-first: both includable → the scored one is kept', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'canon-'));
+  const a = { url: 'u', contentTier: 'complete', isFullReview: true, fullText: longReview, duplicateOf: 'o--b.json' }; // includable, unscored
+  const b = { url: 'u', contentTier: 'complete', isFullReview: true, fullText: longReview, assignedScore: 88, duplicateOf: 'o--a.json' }; // includable, scored
+  fs.writeFileSync(path.join(dir, 'o--a.json'), JSON.stringify(a));
+  fs.writeFileSync(path.join(dir, 'o--b.json'), JSON.stringify(b));
+  const c = chooseCanonicalForRebuild('o--a.json', a, 'o--b.json', b, dir);
+  assert.equal(c.canonical, 'o--b.json', 'among includables, prefer the scored member');
+});
+
+// ---------------------------------------------------------------------------
+// 3c. force:true canonical write must NOT re-mark the (shared-URL) canonical dup
+// ---------------------------------------------------------------------------
+test('safeWriteReview force:true skips the URL-collision block (canonical stays primary vs shared-URL loser)', () => {
+  // The repair writes the canonical with force:true precisely because the loser
+  // shares its URL; a non-forced write would re-fire the collision detector and
+  // re-mark the canonical duplicate, silently no-op'ing the fix. Lock it.
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'force-'));
+  const url = 'https://nyt.com/all-my-sons';
+  fs.writeFileSync(path.join(dir, 'nyt--loser.json'), JSON.stringify({ url, fullText: body(2000), duplicateOf: 'nyt--canon.json', duplicateReason: 'url-collision-detected-at-write' }));
+  const canonPath = path.join(dir, 'nyt--canon.json');
+  safeWriteReview(canonPath, { url, fullText: body(3000), assignedScore: 82, duplicateOf: null, duplicateReason: null, duplicateClearReason: 'repair' }, { force: true });
+  const canon = JSON.parse(fs.readFileSync(canonPath, 'utf-8'));
+  assert.equal(canon.duplicateOf ?? null, null, 'force:true must not re-mark the canonical duplicate despite the shared-URL loser');
 });
 
 // ---------------------------------------------------------------------------

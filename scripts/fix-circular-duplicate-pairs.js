@@ -235,16 +235,52 @@ function pick(canonical, loser, reason) {
   return { canonical, loser, reason };
 }
 
+// Show lookup by id, memoized. The rebuild passes showById[showId] to
+// isIncludableForRebuild (scripts/rebuild-all-reviews.js ~1870); the show-aware
+// guards (wrongShow stale-recovery review-guards.js:2389, revival/date checks)
+// diverge when show is undefined, so passing it keeps this sim faithful to the
+// real keep-side (ship-check Codex finding, 2026-07-12). Best-effort: falls back
+// to undefined (prior behavior) when shows.json can't be located — the script
+// then still runs, just without show-context fidelity.
+let _showByIdCache; // undefined = not loaded; Map (possibly empty) once attempted
+function _showById(showId) {
+  if (_showByIdCache === undefined) {
+    _showByIdCache = new Map();
+    const candidates = [
+      process.env.SHOWS_JSON,
+      path.join(__dirname, '..', 'data', 'shows.json'),
+    ].filter(Boolean);
+    for (const p of candidates) {
+      try {
+        const arr = JSON.parse(fs.readFileSync(p, 'utf-8'));
+        const shows = Array.isArray(arr) ? arr : (arr.shows || []);
+        for (const s of shows) if (s && s.id) _showByIdCache.set(s.id, s);
+        if (_showByIdCache.size) break;
+      } catch { /* try next candidate */ }
+    }
+  }
+  return _showByIdCache.get(showId);
+}
+
 /**
- * Would this record be includable-for-rebuild AND scoreable if its duplicateOf
- * were cleared? Mirrors exactly what the rebuild keeps. I/O: reads sibling files
- * (isIncludableForRebuild consults the show dir to resolve duplicate pointers).
+ * Would this record be includable-for-rebuild if its duplicateOf were cleared?
+ * This is the rebuild's KEEP predicate — deliberately NOT gated on a score.
+ * isIncludableForRebuild does not require a score (a body-bearing, unflagged,
+ * not-yet-scored review still passes), so gating on isScoreable here would
+ * mislabel an includable-but-unscored review (e.g. a fresh opening-night review
+ * between ingest and scoring) as "not live" and let the byline tiebreak demote
+ * it under scored-but-not-includable junk — the exact regression this design
+ * prevents (ship-check 2026-07-12, 2nd-reviewer P1). Score is applied only as a
+ * SUB-tiebreak among includables in chooseCanonicalForRebuild.
+ *
+ * I/O: reads sibling files (isIncludableForRebuild resolves duplicate pointers)
+ * and passes the show object so show-aware guards match the rebuild.
  */
-function wouldBeLiveIfCleared(data, filePath) {
-  if (!isScoreable(data)) return false;
+function wouldBeIncludableIfCleared(data, filePath) {
   const sim = { ...data, duplicateOf: null, duplicateReason: null, duplicateClearReason: 'sim' };
+  const showId = path.basename(path.dirname(filePath));
   try {
-    return !!isIncludableForRebuild(sim, undefined, filePath);
+    return !!isIncludableForRebuild(sim, _showById(showId), filePath);
   } catch {
     return false;
   }
@@ -259,12 +295,19 @@ function wouldBeLiveIfCleared(data, filePath) {
  * @param {string} showDir absolute path to the show directory
  */
 function chooseCanonicalForRebuild(aName, aData, bName, bData, showDir) {
-  const aLive = wouldBeLiveIfCleared(aData, path.join(showDir, aName));
-  const bLive = wouldBeLiveIfCleared(bData, path.join(showDir, bName));
-  if (aLive && !bLive) return pick(aName, bName, 'rebuild: only this member is includable after clear');
-  if (bLive && !aLive) return pick(bName, aName, 'rebuild: only this member is includable after clear');
-  // Both would be live (double-count → pick the better one to keep) or neither
-  // would (correctly-excluded noise → cosmetic choice) — defer to the pure rule.
+  const aIncl = wouldBeIncludableIfCleared(aData, path.join(showDir, aName));
+  const bIncl = wouldBeIncludableIfCleared(bData, path.join(showDir, bName));
+  // Dominant: never demote the only member the rebuild would keep.
+  if (aIncl && !bIncl) return pick(aName, bName, 'rebuild: only this member is includable after clear');
+  if (bIncl && !aIncl) return pick(bName, aName, 'rebuild: only this member is includable after clear');
+  // Both includable (double-count) — prefer the scored one so the surviving
+  // review carries a composite-affecting score; only then fall to byline/age.
+  if (aIncl && bIncl) {
+    const aS = isScoreable(aData), bS = isScoreable(bData);
+    if (aS && !bS) return pick(aName, bName, 'rebuild: both includable, only this one scored');
+    if (bS && !aS) return pick(bName, aName, 'rebuild: both includable, only this one scored');
+  }
+  // Both includable+scored (or neither includable — cosmetic) → pure rule.
   return chooseCanonical(aName, aData, bName, bData);
 }
 
@@ -336,9 +379,10 @@ function fix(pairs) {
     // (that's what made the pair mutual), so this is a defensive repoint only. ---
     const loser = JSON.parse(fs.readFileSync(loserPath, 'utf-8'));
     if (loser.duplicateOf !== p.canonical) {
+      const wasPointingAt = loser.duplicateOf;
       loser.duplicateOf = p.canonical;
       loser.duplicateReason =
-        `repointed by fix-circular-duplicate-pairs.js on ${day}: was ${JSON.stringify(loser.duplicateOf)}, now points at canonical ${p.canonical}`;
+        `repointed by fix-circular-duplicate-pairs.js on ${day}: was ${JSON.stringify(wasPointingAt)}, now points at canonical ${p.canonical}`;
       // Clear any stale clear-breadcrumb — this file is a live duplicate.
       loser.duplicateClearReason = null;
       safeWriteReview(loserPath, loser, { force: true });
@@ -386,6 +430,6 @@ if (require.main === module) main();
 
 module.exports = {
   bylineSlug, outletSlug, isUnknownByline, levenshtein, scoreSignals,
-  isScoreable, chooseCanonical, chooseCanonicalForRebuild, wouldBeLiveIfCleared,
+  isScoreable, chooseCanonical, chooseCanonicalForRebuild, wouldBeIncludableIfCleared,
   audit, fix,
 };

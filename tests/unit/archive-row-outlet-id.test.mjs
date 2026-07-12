@@ -93,15 +93,27 @@ describe('resolveArchiveRowOutletId', () => {
   });
 });
 
-describe('gather-reviews wiring', () => {
-  test('WE-aggregator cache blocks call resolveArchiveRowOutletId (not raw cached outletId)', () => {
-    const contents = readFileSync(resolve(ROOT, 'scripts/gather-reviews.js'), 'utf8');
-    assert.match(contents, /require\(['"]\.\/lib\/archive-outlet-identity['"]\)/,
-      'gather-reviews.js must import resolveArchiveRowOutletId — removing the wire re-introduces stale cached outletIds (card 39b637c5-416f-81bb)');
-    const calls = contents.match(/resolveArchiveRowOutletId\s*\(/g) || [];
-    assert.ok(calls.length >= 4,
-      `expected ≥4 resolveArchiveRowOutletId call sites (LBO, WET, TR, TS), found ${calls.length}`);
-    assert.ok(!/outletId:\s*r\.outletId\s*\|\|\s*normalizeOutlet/.test(contents),
-      'a cache-read block trusts cached r.outletId directly — route it through resolveArchiveRowOutletId');
-  });
+describe('WE-aggregator ingestion wiring', () => {
+  // Every path that turns an aggregator row into a review identity must go
+  // through resolveArchiveRowOutletId. The poller and sweep writers ingest the
+  // SAME rows as gather-reviews — a raw `X.outletId || normalizeOutlet(...)`
+  // there re-introduces the divergence (ship-check P1, 2026-07-12).
+  const WIRED = [
+    { file: 'scripts/gather-reviews.js', minCalls: 4, label: 'LBO, WET, TR, TS cache blocks' },
+    { file: 'scripts/opening-night-poller.js', minCalls: 3, label: 'poller LBO, TR, TS blocks' },
+    { file: 'scripts/scrape-theatre-reviews.js', minCalls: 1, label: 'TR sweep writer' },
+    { file: 'scripts/scrape-thestage-roundups.js', minCalls: 1, label: 'TS sweep writer' },
+  ];
+  for (const w of WIRED) {
+    test(`${w.file} routes ${w.label} through resolveArchiveRowOutletId`, () => {
+      const contents = readFileSync(resolve(ROOT, w.file), 'utf8');
+      assert.match(contents, /require\(['"]\.\/lib\/archive-outlet-identity['"]\)/,
+        `${w.file} must import resolveArchiveRowOutletId — removing the wire re-introduces stale/divergent outletIds (card 39b637c5-416f-81bb)`);
+      const calls = contents.match(/resolveArchiveRowOutletId\s*\(/g) || [];
+      assert.ok(calls.length >= w.minCalls,
+        `expected ≥${w.minCalls} resolveArchiveRowOutletId call sites (${w.label}), found ${calls.length}`);
+      assert.ok(!/outletId\s*[:=]\s*(?:r|review|lboReview)\.outletId\s*\|\|/.test(contents),
+        `${w.file} has a row-ingest site trusting .outletId directly — route it through resolveArchiveRowOutletId`);
+    });
+  }
 });
