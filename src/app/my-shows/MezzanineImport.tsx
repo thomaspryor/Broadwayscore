@@ -531,17 +531,17 @@ function ImportEntryRow({ entry, index, onToggle }: { entry: MatchedEntry; index
         <div className="flex items-center gap-2">
           <span className="text-xs text-white truncate">{entry.mezzName}</span>
           {entry.mezzRating && (
-            <span className="text-[10px] text-amber-400 flex-shrink-0">★ {entry.mezzRating}</span>
+            <span className="text-xs text-amber-400 flex-shrink-0">★ {entry.mezzRating}</span>
           )}
         </div>
         {entry.match && !noMatch ? (
-          <div className="text-[10px] text-gray-500 truncate">→ {entry.match.title}</div>
+          <div className="text-xs text-gray-500 truncate">→ {entry.match.title}</div>
         ) : (
-          <div className="text-[10px] text-yellow-500">No match found</div>
+          <div className="text-xs text-yellow-500">No match found</div>
         )}
       </div>
       {entry.listName && (
-        <span className="text-[10px] text-gray-600 flex-shrink-0">{entry.listName}</span>
+        <span className="text-xs text-gray-600 flex-shrink-0">{entry.listName}</span>
       )}
     </label>
   );

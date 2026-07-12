@@ -420,7 +420,7 @@ export default function MyShowsClient() {
         >
           Diary
           {showsSeen > 0 && (
-            <span className="ml-1.5 px-1.5 py-0.5 text-[10px] bg-white/10 rounded-full" aria-hidden="true">
+            <span className="ml-1.5 px-1.5 py-0.5 text-xs bg-white/10 rounded-full" aria-hidden="true">
               {showsSeen}
             </span>
           )}
@@ -441,7 +441,7 @@ export default function MyShowsClient() {
         >
           Watchlist
           {watchlist.length > 0 && (
-            <span className="ml-1.5 px-1.5 py-0.5 text-[10px] bg-white/10 rounded-full" aria-hidden="true">
+            <span className="ml-1.5 px-1.5 py-0.5 text-xs bg-white/10 rounded-full" aria-hidden="true">
               {watchlist.length}
             </span>
           )}
@@ -462,7 +462,7 @@ export default function MyShowsClient() {
         >
           Lists
           {listsCount > 0 && (
-            <span className="ml-1.5 px-1.5 py-0.5 text-[10px] bg-white/10 rounded-full" aria-hidden="true">
+            <span className="ml-1.5 px-1.5 py-0.5 text-xs bg-white/10 rounded-full" aria-hidden="true">
               {listsCount}
             </span>
           )}
@@ -530,7 +530,7 @@ export default function MyShowsClient() {
               value={diarySort}
               onChange={e => setDiarySort(e.target.value as DiarySort)}
               aria-label="Sort diary"
-              className="text-[11px] bg-white/5 border border-white/10 rounded px-1.5 py-1 h-9 text-gray-300 max-w-[90px]"
+              className="text-xs bg-white/5 border border-white/10 rounded px-1.5 py-1 h-9 text-gray-300 max-w-[90px]"
             >
               <option value="date-desc">Newest</option>
               <option value="date-asc">Oldest</option>
@@ -542,7 +542,7 @@ export default function MyShowsClient() {
               value={watchlistSort}
               onChange={e => setWatchlistSort(e.target.value as WatchlistSort)}
               aria-label="Sort watchlist"
-              className="text-[11px] bg-white/5 border border-white/10 rounded px-1.5 py-1 h-9 text-gray-300 max-w-[90px]"
+              className="text-xs bg-white/5 border border-white/10 rounded px-1.5 py-1 h-9 text-gray-300 max-w-[90px]"
             >
               <option value="added-desc">Recent</option>
               <option value="alphabetical">A-Z</option>
@@ -593,7 +593,7 @@ export default function MyShowsClient() {
                 <div className="mb-8">
                   <div className="flex items-center justify-between mb-1">
                     <h3 className="text-xs font-bold text-amber-400/80 uppercase tracking-wider">To Be Rated</h3>
-                    <span className="text-[11px] text-gray-500">{toBeRatedEntries.length} {toBeRatedEntries.length === 1 ? 'entry' : 'entries'}</span>
+                    <span className="text-xs text-gray-500">{toBeRatedEntries.length} {toBeRatedEntries.length === 1 ? 'entry' : 'entries'}</span>
                   </div>
                   <p className="text-xs text-gray-500 mb-3">You saw these shows — how were they?</p>
                   <div className="space-y-2">
@@ -609,7 +609,7 @@ export default function MyShowsClient() {
                 <div className="mb-8">
                   <div className="flex items-center justify-between mb-3">
                     <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">Upcoming</h3>
-                    <span className="text-[11px] text-gray-500">{upcomingWatchlistEntries.length + upcomingReviews.length} {(upcomingWatchlistEntries.length + upcomingReviews.length) === 1 ? 'entry' : 'entries'}</span>
+                    <span className="text-xs text-gray-500">{upcomingWatchlistEntries.length + upcomingReviews.length} {(upcomingWatchlistEntries.length + upcomingReviews.length) === 1 ? 'entry' : 'entries'}</span>
                   </div>
                   {diaryView === 'list' ? (
                     <div className="space-y-2">
@@ -642,7 +642,7 @@ export default function MyShowsClient() {
                             <div className="relative z-[1] flex-shrink-0 text-right pointer-events-none">
                               {entryFormattedDate && <p className="text-sm font-medium text-amber-400">{entryFormattedDate}</p>}
                               {daysUntil !== null && daysUntil > 0 && (
-                                <p className="text-[10px] text-gray-500 mt-0.5">
+                                <p className="text-xs text-gray-500 mt-0.5">
                                   {daysUntil === 1 ? 'Tomorrow' : `${daysUntil}d`}
                                 </p>
                               )}
@@ -692,7 +692,7 @@ export default function MyShowsClient() {
                       {hasOtherSections && (
                         <div className="flex items-center justify-between mb-3">
                           <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">All Rated</h3>
-                          <span className="text-[11px] text-gray-500">{pastReviews.length} {pastReviews.length === 1 ? 'entry' : 'entries'}</span>
+                          <span className="text-xs text-gray-500">{pastReviews.length} {pastReviews.length === 1 ? 'entry' : 'entries'}</span>
                         </div>
                       )}
                       {diaryView === 'list' ? (
@@ -742,7 +742,7 @@ export default function MyShowsClient() {
                     {hasOtherSections && (
                       <div className="flex items-center justify-between mb-3">
                         <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">Past Shows</h3>
-                        <span className="text-[11px] text-gray-500">{pastReviews.length} {pastReviews.length === 1 ? 'entry' : 'entries'}</span>
+                        <span className="text-xs text-gray-500">{pastReviews.length} {pastReviews.length === 1 ? 'entry' : 'entries'}</span>
                       </div>
                     )}
                     <div className="space-y-6">
@@ -751,7 +751,7 @@ export default function MyShowsClient() {
                         {showYearHeaders && (
                           <div className={`flex items-center justify-between mb-3${diaryView === 'list' && yearIdx > 0 ? ' pt-4 border-t border-white/[0.06]' : ''}`}>
                             <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">{year}</h3>
-                            <span className="text-[11px] text-gray-500">{reviewsByYear[year].length} {reviewsByYear[year].length === 1 ? 'entry' : 'entries'}</span>
+                            <span className="text-xs text-gray-500">{reviewsByYear[year].length} {reviewsByYear[year].length === 1 ? 'entry' : 'entries'}</span>
                           </div>
                         )}
                         {diaryView === 'list' ? (
@@ -1015,7 +1015,7 @@ function DiaryCard({ review, show, onDelete }: { review: UserReview; show?: Show
             </button>
           )}
           {confirmDelete && (
-            <span className="relative z-[1] flex items-center gap-1 text-[10px]">
+            <span className="relative z-[1] flex items-center gap-1 text-xs">
               <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); onDelete?.(); }} className="text-red-400 hover:text-red-300 font-medium">Delete?</button>
               <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); setConfirmDelete(false); }} className="text-gray-500 hover:text-white">No</button>
             </span>
@@ -1058,7 +1058,7 @@ function UpcomingGridCard({ href, posterUrl, date, onRemove }: { href: string; p
       </Link>
       {date && (
         <div className="px-2 py-1.5 text-center">
-          <p className="text-[11px] font-medium text-amber-400 truncate">{date}</p>
+          <p className="text-xs font-medium text-amber-400 truncate">{date}</p>
         </div>
       )}
     </div>
@@ -1178,7 +1178,7 @@ function WatchlistCard({ entry, show, onDateChange, onRemove }: {
             tabIndex={0}
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); window.location.href = `${href}?rate=1`; }}
             onKeyDown={(e) => { if (e.key === 'Enter') { window.location.href = `${href}?rate=1`; } }}
-            className="text-[10px] font-semibold text-white/90 flex items-center gap-1 cursor-pointer"
+            className="text-xs font-semibold text-white/90 flex items-center gap-1 cursor-pointer"
           >
             <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
@@ -1245,7 +1245,7 @@ function DatePickerButton({ value, label, hasDate, onChange }: { value: string; 
           e.stopPropagation();
           try { inputRef.current?.showPicker(); } catch { inputRef.current?.focus(); }
         }}
-        className={`w-full flex items-center justify-center gap-1 sm:gap-1.5 text-[11px] sm:text-xs transition-colors cursor-pointer min-h-[32px] sm:min-h-[36px] px-1.5 sm:px-2 rounded-lg ${
+        className={`w-full flex items-center justify-center gap-1 sm:gap-1.5 text-xs sm:text-xs transition-colors cursor-pointer min-h-[32px] sm:min-h-[36px] px-1.5 sm:px-2 rounded-lg ${
           hasDate
             ? 'text-amber-400 hover:text-amber-300'
             : 'text-gray-400 hover:text-gray-300 bg-white/[0.03] border border-white/[0.06] hover:border-white/10'
@@ -1261,6 +1261,10 @@ function DatePickerButton({ value, label, hasDate, onChange }: { value: string; 
       <input
         ref={inputRef}
         type="date"
+          autoComplete="off"
+          data-1p-ignore
+          data-lpignore="true"
+          data-bwignore="true"
         value={value}
         onChange={e => { e.stopPropagation(); onChange(e.target.value); }}
         className="absolute inset-0 opacity-0 pointer-events-none"
@@ -1317,7 +1321,7 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove }: {
           <span className="inline-block mt-1 px-1.5 py-0.5 text-[9px] font-bold uppercase bg-amber-500/90 text-black rounded">Closing Soon</span>
         )}
         {show?.closingDate && (
-          <p className="text-[10px] text-gray-500 mt-1">
+          <p className="text-xs text-gray-500 mt-1">
             Closes {new Date(show.closingDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
           </p>
         )}
@@ -1334,7 +1338,7 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove }: {
         <div className="flex items-center gap-2">
           <Link
             href={`${href}?rate=1`}
-            className="relative z-[1] text-[11px] sm:text-xs text-gray-500 hover:text-amber-400 transition-colors flex items-center gap-1"
+            className="relative z-[1] text-xs sm:text-xs text-gray-500 hover:text-amber-400 transition-colors flex items-center gap-1"
           >
             <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
@@ -1342,7 +1346,7 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove }: {
             Rate
           </Link>
           {confirmRemove ? (
-            <span className="relative z-[1] flex items-center gap-1 text-[10px]">
+            <span className="relative z-[1] flex items-center gap-1 text-xs">
               <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); onRemove(); }} className="text-red-400 hover:text-red-300 font-medium">Remove?</button>
               <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); setConfirmRemove(false); }} className="text-gray-500 hover:text-white">No</button>
             </span>
@@ -1546,7 +1550,7 @@ function AddShowCard({ context, variant = 'grid', onOpen }: { context: 'diary' |
         <svg className="w-8 h-8 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
         </svg>
-        <span className="text-[10px] font-medium">{context === 'diary' ? 'Rate' : 'Add'}</span>
+        <span className="text-xs font-medium">{context === 'diary' ? 'Rate' : 'Add'}</span>
       </div>
       {/* Spacer matching content area below images on real cards */}
       <div className="px-2 py-1.5">&nbsp;</div>

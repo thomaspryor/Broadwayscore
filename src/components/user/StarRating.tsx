@@ -75,8 +75,12 @@ export default function StarRating({ rating, onRatingChange, size = 'md', readOn
     // Keyboard activation (Enter/Space) fires a click with detail 0 and no real
     // coordinates — treat it as the whole star, not a position-derived half.
     if (e.detail === 0) return starIndex;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const isLeftHalf = e.clientX - rect.left < rect.width / 2;
+    // offsetX/offsetWidth are in the element's local (untransformed) space —
+    // getBoundingClientRect is post-transform, so any scale/animation on the
+    // button made the left/right-half math flicker at the midline (the "buggy
+    // desktop half-star" report, 2026-07-12).
+    const el = e.currentTarget as HTMLElement;
+    const isLeftHalf = e.nativeEvent.offsetX < el.offsetWidth / 2;
     return isLeftHalf ? starIndex - 0.5 : starIndex;
   };
 
@@ -127,7 +131,7 @@ export default function StarRating({ rating, onRatingChange, size = 'md', readOn
             key={starIndex}
             type="button"
             disabled={readOnly}
-            className={`relative rounded transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/80 ${readOnly ? 'cursor-default' : 'cursor-pointer hover:scale-110 active:scale-95'}`}
+            className={`relative rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/80 ${readOnly ? 'cursor-default' : 'cursor-pointer'}`}
             style={{ width: starSize, height: starSize }}
             onMouseMove={readOnly ? undefined : e => handleMouseMove(e, starIndex)}
             onClick={readOnly ? undefined : e => handleClick(e, starIndex)}
