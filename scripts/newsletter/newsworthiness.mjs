@@ -116,17 +116,20 @@ export function scoreCandidates(input) {
     const score = input.aggregateScore ? input.aggregateScore(s.id)?.avg : null;
     const tier = reviewVerdictTier(score, s.category);
     const verdict = tier ? VERDICT_VARIANTS[tier][0] : null;
-    // Always Gold, so always use the top phrase
-    const headline = verdict
-      ? `${s.title} opens in London to ${verdict}`
-      : `${s.title} opens in London`;
     // Edition-aware weight: PRIMARY in the West End edition (leads like a
     // Broadway opening); SECONDARY in the US edition (below NY openings so the
     // editorial leads with NY shows when they exist — user 2026-07-12).
     const isWeEdition = (input.edition || 'broadway') === 'west-end';
     const weWeight = isWeEdition ? WEIGHTS.BW_OPENING_BASE : WEIGHTS.WE_OPENING_SECONDARY_BASE;
+    // "in London" is useful context in the US edition, but redundant in the
+    // West End edition (the whole email IS the West End) — drop it there so it
+    // reads "opens to strong reviews", not "opens in London..." (user 2026-07-12).
+    const loc = isWeEdition ? '' : ' in London';
+    const headline = verdict
+      ? `${s.title} opens${loc} to ${verdict}`
+      : `${s.title} opens${loc}`;
     out.push({ kind: 'we-gold-opening', weight: weWeight, headline, show: s, slug: s.slug,
-      verdictTier: tier, verdictPrefix: `${s.title} opens in London to `, openingVenue: 'London' });
+      verdictTier: tier, verdictPrefix: `${s.title} opens${loc} to `, openingVenue: isWeEdition ? 'the West End' : 'London' });
   }
 
   // 2. Off-Broadway openings (or reopenings).
