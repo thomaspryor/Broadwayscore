@@ -112,9 +112,14 @@ function findCandidates() {
  * Returns the merged object (NEW reference; does not mutate inputs).
  */
 function mergeIntoDestStrict(existingData, sourceData) {
+  const { isTransferableField } = require('./lib/merge-review-fields');
   const merged = { ...existingData };
   for (const [key, val] of Object.entries(sourceData || {})) {
     if (val === null || val === undefined) continue;
+    // Flag/pointer/verdict fields describe the file they sit on, never the
+    // sibling — same rule as the rebuild consolidation passes
+    // (merge-review-fields.js, Notion 39b637c5-416f-815e).
+    if (!isTransferableField(key)) continue;
     if (merged[key] === undefined) {
       merged[key] = val;
     }
