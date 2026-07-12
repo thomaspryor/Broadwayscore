@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-12T18:31:37.110Z",
+  "timestamp": "2026-07-12T19:15:29.971Z",
   "stats": {
     "totalReviews": 39880,
-    "alreadyFlagged": 17542,
+    "alreadyFlagged": 17543,
     "dateGuardCatches": 48,
     "directorMismatch": 910,
     "tvFilmSignals": 1093,
-    "londonSignals": 743,
+    "londonSignals": 742,
     "offBroadwaySignals": 465,
     "yearMismatch": 85,
-    "noPublishDate": 3776
+    "noPublishDate": 3777
   },
   "findings": [
     {
@@ -41855,19 +41855,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "the-misanthrope-west-end-2026",
-      "file": "thestage--dave-fargnoli.json",
-      "publishDate": "2026-06-24",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-misanthrope-review-sandra-oh-what-a-disappointment-sbzvf82b2?t=1782310602034",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"lyttelton\""
         }
       ]
     },
