@@ -106,6 +106,16 @@ async function rest(method, path, token, body, prefer = 'return=representation')
 async function main() {
   console.log(`UGC authenticated round-trip → ${URL}\n`);
 
+  // Preflight: is the project even reachable? A network failure here (not an
+  // HTTP error) means the URL is dead/wrong — a hard NOT-ready signal, since the
+  // live site talks to this exact host for auth.
+  try {
+    const health = await fetch(`${URL}/auth/v1/health`, { headers: { apikey: ANON } });
+    console.log(`preflight /auth/v1/health → HTTP ${health.status}`);
+  } catch (e) {
+    throw new Error(`cannot reach ${URL} — ${e.cause?.code || ''} ${e.cause?.message || e.message}`.trim());
+  }
+
   const userA = await makeUser('a');
   const userB = await makeUser('b');
   try {
@@ -184,7 +194,8 @@ async function main() {
 main().catch(e => {
   // A thrown error here (e.g. createUser/generateLink) usually means the project
   // itself is unreachable or auth is misconfigured — a hard NOT-ready signal.
-  console.error(`❌ Round-trip aborted: ${e.message}`);
+  const cause = e.cause ? ` [cause: ${e.cause.code || ''} ${e.cause.message || ''}]` : '';
+  console.error(`❌ Round-trip aborted: ${e.message}${cause}`);
   console.error(e.stack?.split('\n').slice(1, 4).join('\n') || '');
   process.exit(1);
 });
