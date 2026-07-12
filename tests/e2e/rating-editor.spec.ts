@@ -108,6 +108,27 @@ for (const vp of VIEWPORTS) {
       await expect(page.locator('[data-testid="last-saved"]')).toContainText('saved:4:');
     });
 
+    test('stacked modals: Escape closes only the topmost, editor draft survives', async ({ page }) => {
+      // Regression (2026-07-11): a module-level modal stack was split-brain across
+      // webpack chunks, so Escape closed BOTH the sign-in modal and the rating
+      // editor beneath it, discarding the draft. Topmost-ness now comes from DOM
+      // order. This renders the editor as a Modal with a second Modal stacked on top.
+      await goToEditor(page, '?presentation=modal&stack=1');
+      const editor = page.locator('[data-testid="rating-editor"]');
+      const stacked = page.locator('[data-testid="stacked-modal"]');
+      await expect(stacked).toBeVisible();
+
+      await page.locator('textarea').fill('draft must survive');
+      await page.keyboard.press('Escape');
+      await expect(stacked).not.toBeVisible({ timeout: 3000 });
+      await expect(editor).toBeVisible();
+      await expect(page.locator('textarea')).toHaveValue('draft must survive');
+
+      // Second Escape now closes the editor (it is topmost).
+      await page.keyboard.press('Escape');
+      await expect(editor).not.toBeVisible({ timeout: 3000 });
+    });
+
     test('edit state pre-fills note/date and round-trips the reviewId', async ({ page }) => {
       await goToEditor(page, '?state=edit');
       const editor = page.locator('[data-testid="rating-editor"]');
