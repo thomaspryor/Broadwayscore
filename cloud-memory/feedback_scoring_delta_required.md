@@ -51,3 +51,5 @@ Phase B loads HEAD via `git archive BASE -- scripts/lib scripts/llm-scoring | ta
 - `feedback_llm_wrongprod_false_positives.md` — the LLM FP rate that the temporal override is protecting against
 - `feedback_verification_gate_hook.md` — the base Stop hook this extends
 - `feedback_test_extraction_pattern.md` — how guard tests should be structured
+
+**Evaluating an already-committed data sweep (2026-07-12):** scoring-delta always diffs review-texts working tree vs HEAD, so committed+pushed sweeps show "nothing to check". Recreate the diff in the `data/review-texts` clone (scratch copy, CI overwrites it): `git fetch && git reset --hard <post-sweep-sha> && git reset --soft <pre-sweep-sha>` → run scoring-delta → `git reset --hard origin/main` to restore. HEAD=pre, tree=post ⇒ the delta is exactly the sweep.
