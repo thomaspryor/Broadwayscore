@@ -558,8 +558,8 @@ function showRow(show, opts = {}) {
       <td valign="top" style="padding:14px 8px 14px 12px;">
         <div style="font-size:17px;font-weight:700;color:#fff;line-height:1.25;">${showLink(show, show.title)}</div>
         <div style="margin-top:6px;">${marketTag}${formatPill}${revivalPill}${reopenPill}</div>
-        <div style="font-size:13px;color:#9ca3af;margin-top:8px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${metaDate}</div>
-        <div style="font-size:13px;color:#9ca3af;margin-top:2px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${metaVenue}</div>
+        <div style="font-size:13px;color:#9ca3af;margin-top:8px;line-height:1.4;">${metaDate}</div>
+        <div style="font-size:13px;color:#9ca3af;margin-top:2px;line-height:1.4;">${metaVenue}</div>
         ${(() => {
           if (opts.noConsensus || score == null) return '';
           const take = clampTake(criticsTake(show.id));
@@ -2124,6 +2124,7 @@ const weGoldEvents = shows
   .map(s => ({ show: s }));
 
 const newsworthyInputs = {
+  edition: EDITION,  // West End openings are primary in the WE edition, secondary in the US edition
   bwOpenings: bwEvents,
   obOpenings: obEvents,
   weGoldOpenings: weGoldEvents,
