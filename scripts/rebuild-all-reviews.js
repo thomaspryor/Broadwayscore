@@ -59,6 +59,7 @@ const {
   shouldAutoClearStaleDateGuard,
 } = require('./lib/wrong-production-autoclear');
 const { evaluateDatelessRevivalGuard, earliestShowDate, evaluateDateGuard, evaluatePreWindowInclusion, PRE_WINDOW_DAYS } = require('./lib/date-guard');
+const { evaluateCurrentRunCorroboration } = require('./lib/wrong-production-corroboration');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { KNOWN_SYNDICATION_PAIRS } = require('./lib/syndication-pairs');
 const { logExclusion: _sharedLogExclusion } = require('./lib/exclusion-logger');
@@ -1099,6 +1100,7 @@ const crossShowFingerprints = new Map();
 // stale flag on the same file from a prior rebuild run.
 {
   let preOpenFlagged = 0;
+  let preOpenHeld = 0;
   let priorRunSkipped = 0;
   let priorRunAutoCleared = 0;
   let datelessRevivalFlagged = 0;
@@ -1250,11 +1252,21 @@ const crossShowFingerprints = new Map();
             continue;
           }
           if (preWindow.exclude) {
-            console.log(`  [PRE-OPENING] ${sid}/${f}: review ${reviewDate.toISOString().split('T')[0]} is ${preWindow.threshold}+ days before show ${showEarliest.toISOString().split('T')[0]}`);
-            d.wrongProduction = true;
-            d.wrongProductionNote = `Pre-opening guard: pre-window date — review dated ${reviewDate.toISOString().split('T')[0]} is ${preWindow.threshold}+ days before show starts ${showEarliest.toISOString().split('T')[0]}`;
-            safeWriteReview(fp, d);
-            preOpenFlagged++;
+            // Current-run corroboration guard (care-west-end-2026 misparse
+            // incident 2026-07-11): Theatre Record archiving this review under
+            // an in-window month contradicts the early date — likely a
+            // misparsed publishDate. HOLD the auto-flag; route to human review.
+            const corrob = evaluateCurrentRunCorroboration({ review: d, show: showRecord });
+            if (corrob.strength === 'strong') {
+              console.log(`  [PRE-OPENING-HELD] ${sid}/${f}: date ${reviewDate.toISOString().split('T')[0]} pre-window but current-run corroboration [${corrob.signals.join(', ')}] — needs human review, NOT auto-flagged`);
+              preOpenHeld++;
+            } else {
+              console.log(`  [PRE-OPENING] ${sid}/${f}: review ${reviewDate.toISOString().split('T')[0]} is ${preWindow.threshold}+ days before show ${showEarliest.toISOString().split('T')[0]}${corrob.strength === 'weak' ? ` (weak corroboration: ${corrob.signals.join(', ')} — verify live date if this outlet matters)` : ''}`);
+              d.wrongProduction = true;
+              d.wrongProductionNote = `Pre-opening guard: pre-window date — review dated ${reviewDate.toISOString().split('T')[0]} is ${preWindow.threshold}+ days before show starts ${showEarliest.toISOString().split('T')[0]}`;
+              safeWriteReview(fp, d);
+              preOpenFlagged++;
+            }
           }
         } else if (!reviewDate && !d.wrongProductionCleared && d.humanReviewedWrongProduction !== false && !shouldSkipWrongProductionAudit(d)) {
           // Dateless-revival guard: a review with NO usable date escapes every
@@ -1285,6 +1297,9 @@ const crossShowFingerprints = new Map();
   }
   if (preOpenFlagged > 0) {
     console.log(`Pre-opening guard: flagged ${preOpenFlagged} reviews as wrongProduction\n`);
+  }
+  if (preOpenHeld > 0) {
+    console.log(`Pre-opening guard: HELD ${preOpenHeld} reviews (current-run corroboration contradicts date — human review needed)\n`);
   }
   if (datelessRevivalFlagged > 0) {
     console.log(`Dateless-revival guard: held ${datelessRevivalFlagged} dateless reviews on recent revival titles\n`);
@@ -2581,17 +2596,28 @@ showDirs.forEach(showId => {
           priorRuns: showById[showId]?.priorRuns,
         });
         if (preWindow.exclude) {
-          console.log(`  [PRE-OPENING] ${showId}/${file}: published ${preWindow.daysBefore} days before opening (${data.publishDate} vs ${openDate.toISOString().split('T')[0]})`);
-          logExclusion("skippedPreOpening", showId, file, data);
-          stats.skippedPreOpening = (stats.skippedPreOpening || 0) + 1;
-          // Also flag the source file for future reference
-          if (!data.wrongProduction && !shouldSkipWrongProductionAudit(data)) {
-            // [GUARD:DAYS-BEFORE-OPENED]
-            data.wrongProduction = true;
-            data.wrongProductionNote = `Review published ${preWindow.daysBefore} days before show opened — pre-window date (>${preWindow.threshold}d), likely reviewing a different production`;
-            safeWriteReview(path.join(showDir, file), data);
+          // Current-run corroboration guard: strong contradiction (Theatre
+          // Record month inside the run window) means the early date is likely
+          // a misparse (care-west-end-2026 incident 2026-07-11) — keep the
+          // review includable and route to human review instead of
+          // excluding + flagging on the bad date.
+          const corrobIncl = evaluateCurrentRunCorroboration({ review: data, show: showById[showId] });
+          if (corrobIncl.strength === 'strong') {
+            console.log(`  [PRE-OPENING-HELD] ${showId}/${file}: date ${data.publishDate} pre-window but current-run corroboration [${corrobIncl.signals.join(', ')}] — kept includable, needs human review`);
+            stats.preOpeningHeld = (stats.preOpeningHeld || 0) + 1;
+          } else {
+            console.log(`  [PRE-OPENING] ${showId}/${file}: published ${preWindow.daysBefore} days before opening (${data.publishDate} vs ${openDate.toISOString().split('T')[0]})`);
+            logExclusion("skippedPreOpening", showId, file, data);
+            stats.skippedPreOpening = (stats.skippedPreOpening || 0) + 1;
+            // Also flag the source file for future reference
+            if (!data.wrongProduction && !shouldSkipWrongProductionAudit(data)) {
+              // [GUARD:DAYS-BEFORE-OPENED]
+              data.wrongProduction = true;
+              data.wrongProductionNote = `Review published ${preWindow.daysBefore} days before show opened — pre-window date (>${preWindow.threshold}d), likely reviewing a different production`;
+              safeWriteReview(path.join(showDir, file), data);
+            }
+            return;
           }
-          return;
         }
       }
 
