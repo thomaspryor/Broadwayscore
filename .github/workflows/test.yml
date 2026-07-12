@@ -194,6 +194,13 @@ on:
       - 'scripts/lib/date-guard.js'
       - 'scripts/lib/date-guard.test.mjs'
       - 'scripts/lib/wrong-production-autoclear.js'
+      # Corroboration guard for date-based wrongProduction flags (holds the
+      # auto-flag when Theatre Record month contradicts a misparsed publishDate;
+      # care-west-end-2026 incident 2026-07-11). Decides flag/exclusion behavior
+      # in the rebuild + standalone flagger — solo edits need CI.
+      - 'scripts/lib/wrong-production-corroboration.js'
+      - 'scripts/lib/wrong-production-corroboration.test.mjs'
+      - 'scripts/flag-wrong-production-by-date.js'
       - 'scripts/rebuild-all-reviews.js'
       - 'scripts/scoring-delta.js'
       - 'scripts/test-opening-night-fixes.js'
