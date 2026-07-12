@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-07-12T22:12:53.659Z",
+  "runDate": "2026-07-12T22:39:02.387Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -47,7 +47,7 @@
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 77,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoverySuccess": 14,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -617,6 +617,85 @@
     ],
     "archive": []
   },
-  "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "failuresByOutlet": {
+    "Observer": {
+      "count": 14,
+      "domain": "theguardian.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
+  "urlDiscoveries": [
+    {
+      "reviewId": "stereophonic-2024/observer--jesse-green.json",
+      "oldUrl": "https://observer.com/2024/04/stereophonic-broadway-review/",
+      "newUrl": "https://www.theguardian.com/stage/2024/oct/02/fleetwood-mac-stereophonic-broadway"
+    },
+    {
+      "reviewId": "here-lies-love-2023/observer--jesse-green.json",
+      "oldUrl": "https://observer.com/2023/07/here-lies-love-broadway-review/",
+      "newUrl": "https://www.theguardian.com/stage/2023/jul/20/here-lies-love-review-imelda-marcos-broadway"
+    },
+    {
+      "reviewId": "parade-2023/observer--jesse-green.json",
+      "oldUrl": "https://observer.com/2023/03/parade-broadway-review-ben-platt-micaela-diamond/",
+      "newUrl": "https://www.theguardian.com/stage/2023/mar/16/parade-broadway-musical-review-ben-platt-micaela-diamond"
+    },
+    {
+      "reviewId": "aint-no-mo-2022/observer--rex-reed.json",
+      "oldUrl": "https://observer.com/2022/12/aint-no-mo-broadway-review/",
+      "newUrl": "https://www.theguardian.com/stage/2022/dec/05/aint-no-mo-review-broadway-jordan-e-cooper"
+    },
+    {
+      "reviewId": "american-buffalo-2022/observer--jesse-green.json",
+      "oldUrl": "https://observer.com/2022/04/american-buffalo-review-broadway-sam-rockwell-laurence-fishburne-darren-criss/",
+      "newUrl": "https://www.theguardian.com/stage/2022/apr/14/american-buffalo-review-david-mamet-broadway"
+    },
+    {
+      "reviewId": "the-parisian-woman-2017/observer--rex-reed.json",
+      "oldUrl": "https://observer.com/2017/11/the-parisian-woman-broadway-review-uma-thurman/",
+      "newUrl": "https://www.theguardian.com/stage/2017/nov/30/the-parisian-woman-uma-thurman-broadway-review"
+    },
+    {
+      "reviewId": "junk-2017/observer--rex-reed.json",
+      "oldUrl": "https://observer.com/2017/11/junk-broadway-review-steven-pasquale/",
+      "newUrl": "https://www.theguardian.com/stage/2017/nov/02/junk-review-ayad-akhtar-fast-paced-financial-thriller-falls-short"
+    },
+    {
+      "reviewId": "the-crucible-2016/observer--rex-reed.json",
+      "oldUrl": "https://observer.com/2016/03/the-crucible-burns-bright-on-broadway/",
+      "newUrl": "https://www.theguardian.com/culture/2016/apr/01/the-crucible-review-arthur-miller-salem-witch-trials"
+    },
+    {
+      "reviewId": "our-mothers-brief-affair-2016/observer--rex-reed.json",
+      "oldUrl": "https://observer.com/2016/01/our-mothers-brief-affair-is-a-theatrical-therapy-session/",
+      "newUrl": "https://www.theguardian.com/stage/2016/jan/20/our-mothers-brief-affair-review-broadway-theatre-a-very-tame-liaison"
+    },
+    {
+      "reviewId": "old-times-2015/observer--rex-reed.json",
+      "oldUrl": "https://observer.com/2015/10/old-times-on-broadway-is-a-magnificent-reunion/",
+      "newUrl": "https://www.theguardian.com/stage/2015/oct/06/old-times-review-clive-owen"
+    },
+    {
+      "reviewId": "the-elephant-man-2014/observer--rex-reed.json",
+      "oldUrl": "https://observer.com/2014/12/the-elephant-man-bradley-cooper-patricia-clarkson-alessandro-nivola/",
+      "newUrl": "https://www.theguardian.com/stage/2014/dec/08/the-elephant-man-bradley-cooper-review"
+    },
+    {
+      "reviewId": "disgraced-2014/observer--rex-reed.json",
+      "oldUrl": "https://observer.com/2014/10/disgraced-on-broadway-a-pulitzer-prize-winner-that-deserves-the-honor/",
+      "newUrl": "https://www.theguardian.com/stage/2014/oct/24/disgraced-review-broadway-greek-tragedy"
+    },
+    {
+      "reviewId": "hedwig-and-the-angry-inch-2014/observer--rex-reed.json",
+      "oldUrl": "https://observer.com/2014/04/hedwig-and-the-angry-inch-neil-patrick-harris-is-fierce-fabulous-and-flawless/",
+      "newUrl": "https://www.theguardian.com/stage/2014/jul/21/hedwig-and-the-angry-inch-musicals-we-love"
+    },
+    {
+      "reviewId": "all-the-way-2014/observer--rex-reed.json",
+      "oldUrl": "https://observer.com/2014/03/all-the-way-on-broadway-bryan-cranston-as-lbj/",
+      "newUrl": "https://www.theguardian.com/stage/2014/feb/10/bryan-cranston-all-the-way-broadway-breaking-bad"
+    }
+  ]
 }
