@@ -191,9 +191,24 @@ runs:
         # snapshot from overwriting a complete review pushed by another workflow.
         for i in 1 2 3 4 5; do
           # Try fast path first: if no conflicts, rebase + push succeeds immediately
-          if git pull --rebase origin main 2>&1 && git push origin main 2>&1; then
-            echo "Review-texts pushed successfully (attempt $i)"
-            exit 0
+          if git pull --rebase origin main 2>&1; then
+            # CROSS-SHOW OWNERSHIP GATE (2026-07-12, Notion 39b637c5-416f-8134):
+            # in-process guards (url-ownership.js Guard I, gather's cross-production
+            # check) validate against the CHECKOUT snapshot. If a manual cross-show
+            # move landed after this run checked out, a re-created sibling duplicate
+            # passes those guards (stale-checkout race — the tender poller incident,
+            # creation commit 65159277b5b, 6 min after the disambiguation push).
+            # This is the only point where the tree reflects current remote
+            # ownership (the pre-stage pull above is `|| true` and no-ops on a
+            # dirty tree), so validate files our commits ADDED and git-rm +
+            # commit any whose URL is live under another show, before pushing.
+            # Fail-open: a validator crash must never block a data push.
+            node ../../scripts/validate-added-review-ownership.js --base=origin/main \
+              || echo "::warning::validate-added-review-ownership crashed (non-blocking)"
+            if git push origin main 2>&1; then
+              echo "Review-texts pushed successfully (attempt $i)"
+              exit 0
+            fi
           fi
 
           # Rebase hit conflicts — resolve them content-aware
@@ -282,6 +297,14 @@ runs:
                 git commit --amend --no-edit 2>/dev/null || true
               fi
             fi
+
+            # OWNERSHIP GATE, conflict path: the content-aware resolver above
+            # keeps "ours" on a delete/modify conflict whenever our fullText is
+            # longer than the deleted side's 0 chars — which RESURRECTS a file a
+            # manual cross-show move just deleted. Re-validate added files
+            # against the resolved tree before pushing (same gate as fast path).
+            node ../../scripts/validate-added-review-ownership.js --base=origin/main \
+              || echo "::warning::validate-added-review-ownership crashed (non-blocking)"
 
             if git push origin main 2>&1; then
               echo "Review-texts pushed successfully after content-aware merge (attempt $i)"

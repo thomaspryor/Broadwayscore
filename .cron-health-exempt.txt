@@ -110,3 +110,9 @@ weekly-affiliate-report.yml
 weekly-geo-audit.yml
 weekly-integrity.yml
 weekly-stubhub-validate.yml
+# 2026-07-12: daily duplicateOf heal sweep — self-healing legacy backlog; the
+# test.yml same-URL-bylines gate reds if it stops working (digest coverage enough)
+dedupe-same-url-bylines.yml
+# 2026-07-12: weekly WE newsletter DRAFT dispatcher — human reviews before send;
+# a missed draft is noticed at send time, not user-facing staleness
+we-newsletter-draft.yml

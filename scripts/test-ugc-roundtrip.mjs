@@ -113,7 +113,32 @@ async function main() {
     const health = await fetch(`${URL}/auth/v1/health`, { headers: { apikey: ANON } });
     console.log(`preflight /auth/v1/health → HTTP ${health.status}`);
   } catch (e) {
-    throw new Error(`cannot reach ${URL} — ${e.cause?.code || ''} ${e.cause?.message || e.message}`.trim());
+    const code = e.cause?.code || '';
+    // Host doesn't resolve → the configured project is gone/renamed. If we have a
+    // management token, list the account's REAL projects so the fix is obvious.
+    if (code === 'ENOTFOUND' && process.env.SUPABASE_ACCESS_TOKEN) {
+      try {
+        const r = await fetch('https://api.supabase.com/v1/projects', {
+          headers: { Authorization: `Bearer ${process.env.SUPABASE_ACCESS_TOKEN}` },
+        });
+        const list = await r.json();
+        console.error('── Live Supabase projects on this account (Management API) ──');
+        const configuredRef = URL ? new global.URL(URL).hostname.split('.')[0] : '';
+        let hint = '   The configured ref is not in this account → update NEXT_PUBLIC_SUPABASE_URL/ANON_KEY.';
+        for (const p of Array.isArray(list) ? list : []) {
+          console.error(`   ref=${p.id}  name=${p.name}  status=${p.status}  region=${p.region}`);
+          if (p.id === configuredRef) {
+            hint = p.status === 'ACTIVE_HEALTHY'
+              ? '   Project is ACTIVE but still unreachable — transient DNS/outage, retry shortly.'
+              : `   Project is ${p.status} (paused). Restore it: run the "Restore Supabase Project" workflow.`;
+          }
+        }
+        console.error(hint);
+      } catch (mgmtErr) {
+        console.error(`   (could not list projects: ${mgmtErr.message})`);
+      }
+    }
+    throw new Error(`cannot reach ${URL} — ${code} ${e.cause?.message || e.message}`.trim());
   }
 
   const userA = await makeUser('a');
@@ -123,13 +148,23 @@ async function main() {
     const tokenB = await mintToken(userB.email);
     check('sign-in: minted a real user session (no OAuth popup)', !!tokenA);
 
+    // Mirror what the app does on first sign-in (AuthContext.ensureProfile):
+    // upsert a profiles row. reviews/watchlist/lists.user_id all FK to
+    // profiles(id), so writes fail without it. Exercises the profiles INSERT
+    // RLS policy (WITH CHECK auth.uid() = id) via the user's own token.
+    for (const [u, tok] of [[userA, tokenA], [userB, tokenB]]) {
+      const pr = await rest('POST', 'profiles', tok,
+        { id: u.id, display_name: 'Roundtrip Test' }, 'return=representation,resolution=merge-duplicates');
+      if (u === userA) check('sign-in: profile row created (ensureProfile)', pr.ok, `HTTP ${pr.status} ${pr.text.slice(0, 120)}`);
+    }
+
     // ── REVIEW: insert → read back → cross-user isolation → update → delete ──
     const ins = await rest('POST', 'reviews', tokenA, {
       user_id: userA.id, show_id: SHOW_ID, rating: 4.5,
       review_text: 'round-trip note', date_seen: '2024-11-15',
     });
     const reviewId = Array.isArray(ins.json) ? ins.json[0]?.id : ins.json?.id;
-    check('rating: saves via authenticated REST insert', ins.status === 201 && !!reviewId, `HTTP ${ins.status}`);
+    check('rating: saves via authenticated REST insert', ins.status === 201 && !!reviewId, `HTTP ${ins.status} ${ins.ok ? '' : ins.text.slice(0, 160)}`);
     check('rating: stored value is correct', Array.isArray(ins.json) && ins.json[0]?.rating === 4.5,
       `rating=${Array.isArray(ins.json) ? ins.json[0]?.rating : '?'}`);
 

@@ -76,7 +76,11 @@ if (!weekStart || !/^\d{4}-\d{2}-\d{2}$/.test(weekStart)) {
   process.exit(1);
 }
 const isCreate = flags.create === true;
-const audienceKey = (flags.audience || 'general').toString();
+// Edition (NEWSLETTER_EDITION) drives the default audience + broadcast name so
+// the West End weekly can't collide with the Broadway one in Resend (find-by-
+// name would otherwise UPDATE the wrong draft). Explicit --audience wins.
+const EDITION = (process.env.NEWSLETTER_EDITION || 'broadway').trim();
+const audienceKey = (flags.audience || (EDITION === 'west-end' ? 'west-end' : 'general')).toString();
 const audience = AUDIENCES[audienceKey];
 if (!audience) {
   console.error(`Unknown audience "${audienceKey}". Valid: ${Object.keys(AUDIENCES).join(', ')}`);
@@ -97,7 +101,7 @@ if (!fs.existsSync(htmlPath) || !fs.existsSync(metaPath)) {
 const html = fs.readFileSync(htmlPath, 'utf8');
 const meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
 const subject = (flags.subject || meta.subject || '').toString().trim();
-const name = (flags.name || `Scorecard Weekly — ${weekStart}`).toString();
+const name = (flags.name || (EDITION === 'west-end' ? `West End Weekly — ${weekStart}` : `Scorecard Weekly — ${weekStart}`)).toString();
 
 // --- Sanity gates (fail loudly before any API call) ----------------------------
 const problems = [];
