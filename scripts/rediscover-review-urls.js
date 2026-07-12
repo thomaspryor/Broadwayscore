@@ -167,8 +167,10 @@ function updateReviewUrl(candidate, newUrl, method) {
       wrongProduction: data.wrongProduction,
       wrongShow: data.wrongShow,
     };
-    // These two aren't in the invariant's URL_DERIVED_FIELDS clear set but
-    // were cleared by the legacy path — keep that behavior.
+    // contentMismatchNote isn't in the invariant's URL_DERIVED_FIELDS clear
+    // set but was cleared by the legacy path — keep that behavior.
+    // (textQuality IS in URL_DERIVED_FIELDS; stamping it undefined here also
+    // covers the same-canonical fallback branch below.)
     metadata.contentMismatchNote = undefined;
     metadata.textQuality = undefined;
   }
