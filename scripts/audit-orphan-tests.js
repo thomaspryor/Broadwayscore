@@ -1,8 +1,13 @@
 #!/usr/bin/env node
 /**
- * audit-orphan-tests.js — find tests/unit/*.test.mjs files not referenced in any
+ * audit-orphan-tests.js — find *.test.mjs/ts/js files not referenced in any
  * .github/workflows/*.yml. Wired into test.yml's lint-workflows job so a forgotten
  * registration blocks the PR instead of silently going un-tested.
+ *
+ * Scans BOTH tests/unit/ AND the top level of scripts/ (a test placed directly in
+ * scripts/ — not scripts/lib/, which runs via its own glob step — otherwise falls
+ * in a gap: no glob covers it and the old audit never looked there, so it ran
+ * locally but never in CI. Hit 2026-07-12 with notion-tasks-sync/bsc-next tests.)
  *
  * Notion 362637c5-416f-81f4 — discovered 59 orphans (33% of the suite) during the
  * Stuart King Fixes v2 session. The orphan that triggered the audit (bulk-import-
@@ -24,6 +29,7 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
 const TESTS_DIR = path.join(ROOT, 'tests', 'unit');
+const SCRIPTS_DIR = path.join(ROOT, 'scripts'); // top level only; scripts/lib/ runs via its own glob
 const WORKFLOWS_DIR = path.join(ROOT, '.github', 'workflows');
 
 // Known-broken tests that need investigation before they can be wired into CI.
@@ -57,11 +63,17 @@ const EXEMPT_KNOWN_BROKEN = {
 const TEST_FILE_REGEX = /\.test\.(mjs|ts|js)$/;
 const REFERENCE_REGEX = /[a-zA-Z0-9_-]+\.test\.(mjs|ts|js)/g;
 
+// Returns { name, rel } for each test file: name is the bare filename (used for
+// the reference/exempt lookups, matching how they're cited in YAML), rel is the
+// repo-relative path (used in messages). readdirSync is non-recursive, so the
+// scripts/ scan sees top-level files only — scripts/lib/ is excluded by design.
 function listTestFiles() {
-  return fs.readdirSync(TESTS_DIR)
+  const fromDir = (dir, prefix) => fs.readdirSync(dir)
     .filter(f => TEST_FILE_REGEX.test(f))
     .filter(f => !f.startsWith('_skip-'))     // explicit opt-out prefix
-    .sort();
+    .map(f => ({ name: f, rel: `${prefix}/${f}` }));
+  return [...fromDir(TESTS_DIR, 'tests/unit'), ...fromDir(SCRIPTS_DIR, 'scripts')]
+    .sort((a, b) => a.rel.localeCompare(b.rel));
 }
 
 function collectReferencedTests() {
@@ -83,22 +95,22 @@ function main() {
   const json = process.argv.includes('--json');
   const files = listTestFiles();
   const referenced = collectReferencedTests();
-  const rawOrphans = files.filter(f => !referenced.has(f));
-  const orphans = rawOrphans.filter(f => !(f in EXEMPT_KNOWN_BROKEN));
+  const rawOrphans = files.filter(f => !referenced.has(f.name));
+  const orphans = rawOrphans.filter(f => !(f.name in EXEMPT_KNOWN_BROKEN));
   const exemptKnownBroken = rawOrphans
-    .filter(f => f in EXEMPT_KNOWN_BROKEN)
-    .map(f => ({ file: f, notion: EXEMPT_KNOWN_BROKEN[f] }));
+    .filter(f => f.name in EXEMPT_KNOWN_BROKEN)
+    .map(f => ({ file: f.rel, notion: EXEMPT_KNOWN_BROKEN[f.name] }));
 
   if (json) {
     console.log(JSON.stringify({
       total: files.length,
       registered: files.length - rawOrphans.length,
-      orphans,
+      orphans: orphans.map(f => f.rel),
       exemptKnownBroken,
     }, null, 2));
   } else if (orphans.length > 0) {
-    console.error(`❌ ${orphans.length} orphan unit test file(s) — not referenced in any .github/workflows/*.yml:`);
-    for (const f of orphans) console.error(`  tests/unit/${f}`);
+    console.error(`❌ ${orphans.length} orphan test file(s) — not referenced in any .github/workflows/*.yml:`);
+    for (const f of orphans) console.error(`  ${f.rel}`);
     console.error('');
     console.error('Fix: add the file to the appropriate `node --test ...` line in .github/workflows/test.yml.');
     console.error('Opt-out (known-broken): add to EXEMPT_KNOWN_BROKEN in scripts/audit-orphan-tests.js with a Notion card.');
