@@ -603,10 +603,10 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews, marketOpenCount
 
       {/* Featured Rows */}
       <div className="mt-8 pt-8 border-t border-white/5">
+        <FeaturedRow title="Recently Opened · Awaiting Reviews" shows={justOpenedShows} minShows={1} href="/browse/recently-opened-off-broadway" />
         <FeaturedRow title="Top Plays" shows={topPlays} />
         <FeaturedRow title="Closing Soon" shows={closingSoonShows} />
         <FeaturedRow title="Starting Soon" shows={startingSoonShows} />
-        <FeaturedRow title="Recently Opened · Awaiting Reviews" shows={justOpenedShows} minShows={1} href="/browse/recently-opened-off-broadway" />
       </div>
     </div>
   );
