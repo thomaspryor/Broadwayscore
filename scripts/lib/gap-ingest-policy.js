@@ -37,10 +37,12 @@ const { isCurrentRunRoundup } = require('./gap-reference-sources');
  * Date an aggregator article against the show's current opening window.
  * @param {string|null} html  fetched article HTML
  * @param {object} show shows.json record ({openingDate})
+ * @param {string} [url]  the article's fetch URL, so extractPublishDate can scope
+ *   JSON-LD to the entity matching this canonical URL (rejects related-article dates)
  * @returns {{publishDate: string|null, priorRun: boolean}}
  */
-function articleRunIdentity(html, show) {
-  const publishDate = extractPublishDate(html);
+function articleRunIdentity(html, show, url) {
+  const publishDate = extractPublishDate(html, url);
   return { publishDate, priorRun: !isCurrentRunRoundup(publishDate, show) };
 }
 

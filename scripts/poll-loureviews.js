@@ -99,7 +99,7 @@ async function main() {
       const html = await fetchHtml(p.link);
       const text = extractArticleTextFromUrl(html, p.link);
       if (!text || text.length < 300) { summary.weak++; console.log(`  weak-extract ${m.showId} (${text ? text.length : 0}c)`); continue; }
-      const publishDate = (p.date || '').slice(0, 10) || extractPublishDate(html) || null;
+      const publishDate = (p.date || '').slice(0, 10) || extractPublishDate(html, p.link) || null;
       const collision = detectIngestCollision({ showDir, outletId: 'loureviews', criticName: 'Louise Penn', url: p.link, publishDate, forceClearStale: false });
       if (!collision.ok) { summary.collisions++; console.log(`  collision ${m.showId}: ${collision.reason}`); continue; }
       if (dryRun) { summary.ingested++; console.log(`  [dry] would ingest ${m.showId} <- ${parsed.showTitle} (${text.length}c, ${publishDate})`); continue; }

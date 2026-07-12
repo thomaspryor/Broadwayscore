@@ -160,7 +160,7 @@ function extractByline(html) {
   // this the review lands with publishDate:undefined, which fails-open through
   // the anticipatory-pre-opening gate and weakens temporal wrong-production
   // detection. (1minutecritic HR + Maids incident, 2026-05-28.)
-  const publishDate = publishDateArg || extractPublishDate(html) || null;
+  const publishDate = publishDateArg || extractPublishDate(html, url) || null;
   if (!publishDateArg && publishDate) {
     console.log(`  → Extracted publishDate from page metadata: ${publishDate}`);
   }

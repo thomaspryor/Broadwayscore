@@ -393,46 +393,141 @@ function extractArticleTextFromUrl(html, url) {
   return extractArticleText(html, host);
 }
 
+/** Normalize a raw date string to YYYY-MM-DD (or null). */
+function normalizeDate(raw) {
+  if (!raw || typeof raw !== 'string') return null;
+  // Most sources are ISO 8601 (2026-05-27T02:00:00+00:00) — take the date part
+  // verbatim (do NOT UTC-convert; the source's local calendar date is what we want).
+  const iso = raw.match(/^(\d{4}-\d{2}-\d{2})/);
+  if (iso) return iso[1];
+  // Fall back to Date parsing for non-ISO formats (e.g. "June 19, 2026 11:15 AM").
+  const d = new Date(raw);
+  if (!Number.isNaN(d.getTime())) return d.toISOString().slice(0, 10);
+  return null;
+}
+
+/** Canonicalize a URL for loose equality: drop protocol/query/fragment/www, trailing slash, lowercase. */
+function normalizeUrlForMatch(u) {
+  if (!u || typeof u !== 'string') return null;
+  return u
+    .replace(/[#?].*$/, '')
+    .replace(/^https?:\/\//i, '')
+    .replace(/^www\./i, '')
+    .replace(/\/+$/, '')
+    .toLowerCase() || null;
+}
+
 /**
- * Extract a review's publish date from page metadata, normalized to
- * YYYY-MM-DD. Tries the standard CMS sources in priority order:
- *   1. <meta property="article:published_time" content="...">  (OpenGraph,
- *      emitted by WordPress + most CMSs)
- *   2. JSON-LD "datePublished"
- *   3. <time datetime="...">  (HTML5 semantic, theme-dependent)
+ * The page's own canonical URL, so JSON-LD entities can be matched against it.
+ * Prefers an explicitly-passed fetch URL, then <link rel="canonical">, then og:url.
+ */
+function pageCanonicalUrl(html, url) {
+  const fromLink = (html.match(/<link[^>]+rel=["']canonical["'][^>]+href=["']([^"']+)["']/i)
+    || html.match(/<link[^>]+href=["']([^"']+)["'][^>]+rel=["']canonical["']/i) || [])[1];
+  const fromOg = (html.match(/<meta[^>]+property=["']og:url["'][^>]+content=["']([^"']+)["']/i)
+    || html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:url["']/i) || [])[1];
+  return normalizeUrlForMatch(url) || normalizeUrlForMatch(fromLink) || normalizeUrlForMatch(fromOg);
+}
+
+const ARTICLE_LD_TYPES = new Set([
+  'article', 'newsarticle', 'reportagenewsarticle', 'analysisnewsarticle',
+  'reviewnewsarticle', 'review', 'blogposting', 'liveblogposting',
+]);
+
+/** True if a JSON-LD @type (string or array) names an article-like entity. */
+function isArticleType(type) {
+  const list = Array.isArray(type) ? type : [type];
+  return list.some((t) => typeof t === 'string' && ARTICLE_LD_TYPES.has(t.toLowerCase()));
+}
+
+/** Recursively collect article-like entities (with a datePublished) from parsed JSON-LD. */
+function collectArticleEntities(node, out) {
+  if (!node || typeof node !== 'object') return;
+  if (Array.isArray(node)) { for (const el of node) collectArticleEntities(el, out); return; }
+  if (Array.isArray(node['@graph'])) collectArticleEntities(node['@graph'], out);
+  if (isArticleType(node['@type']) && node.datePublished) out.push(node);
+}
+
+/** The URL(s) a JSON-LD entity claims to be the main entity of / located at. */
+function entitySelfUrls(entity) {
+  const urls = [];
+  const push = (v) => { if (typeof v === 'string') urls.push(v); else if (v && typeof v === 'object') { if (typeof v['@id'] === 'string') urls.push(v['@id']); if (typeof v.url === 'string') urls.push(v.url); } };
+  push(entity.mainEntityOfPage);
+  push(entity.url);
+  push(entity['@id']);
+  return urls.map(normalizeUrlForMatch).filter(Boolean);
+}
+
+/**
+ * Extract a review's publish date from page metadata, normalized to YYYY-MM-DD.
+ * Priority (deliberately scoped to the MAIN article — see 2026-07-11 fix below):
+ *   1. <meta property="article:published_time">  (OpenGraph — always page-level,
+ *      never a related article; highest trust)
+ *   2. JSON-LD: parse ALL ld+json blocks and prefer the article-like entity
+ *      (NewsArticle/Review/Article/…) whose mainEntityOfPage/url/@id matches the
+ *      page's own canonical URL. This is the fix for the related-article bug.
+ *   3. First-match fallback (document-wide datePublished / <time datetime>) —
+ *      ONLY when the document carries a single distinct candidate date, so an
+ *      embedded related article's date can never win by document order.
+ *   4. Visible <div class="publish-date"> (Theatrely/Webflow, no meta/time tag).
  *
  * Added 2026-05-28: ingest-review-from-url.js previously had NO page-date
  * extraction — it only used the --publish-date CLI arg, so every URL-ingested
  * review without an explicit date got publishDate:undefined (1minutecritic
  * HR + Maids incident). A missing publishDate fails-open through the
- * anticipatory-pre-opening gate and weakens temporal wrong-production
- * detection. These two tags are present on essentially every WordPress/CMS
- * review page, so this one helper fixes the date gap for all outlets ingested
- * via this path.
+ * anticipatory-pre-opening gate and weakens temporal wrong-production detection.
+ *
+ * Scoped 2026-07-11: the old step 2/3 took the FIRST document-wide datePublished
+ * / <time> match. Aggregator + outlet pages embed related-article JSON-LD, so
+ * when og:published_time is absent that first match could be a DIFFERENT
+ * article's date. Two safety systems consume this: the gap-audit production-
+ * identity gate (a misdate marks a current article priorRun, permanently
+ * blocking its URLs) and publishDate stamping feeding flag-wrong-production-by-
+ * date (care-west-end-2026 false flag). `url` is the page's fetch URL when the
+ * caller has it (self-derived from <link canonical>/og:url otherwise).
  *
  * Returns YYYY-MM-DD string or null.
  */
-function extractPublishDate(html) {
+function extractPublishDate(html, url) {
   if (!html || typeof html !== 'string') return null;
-  const candidates = [
-    html.match(/<meta[^>]+property=["']article:published_time["'][^>]+content=["']([^"']+)["']/i),
-    html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']article:published_time["']/i),
-    html.match(/["']datePublished["']\s*:\s*["']([^"']+)["']/),
-    html.match(/<time[^>]+datetime=["']([^"']+)["']/i),
-    // Theatrely (Webflow) exposes no date meta/time tag — only a visible
-    // <div class="publish-date">June 19, 2026 11:15 AM</div>. Last-resort
-    // fallback; harmless to other outlets (only fires when all tags above miss).
-    html.match(/<div[^>]+class=["'][^"']*publish-date[^"']*["'][^>]*>([^<]+)</i),
-  ];
-  for (const m of candidates) {
-    if (!m || !m[1]) continue;
-    // Most sources are ISO 8601 (2026-05-27T02:00:00+00:00) — take the date part.
-    const iso = m[1].match(/^(\d{4}-\d{2}-\d{2})/);
-    if (iso) return iso[1];
-    // Fall back to Date parsing for non-ISO formats.
-    const d = new Date(m[1]);
-    if (!Number.isNaN(d.getTime())) return d.toISOString().slice(0, 10);
+
+  // 1. OpenGraph published_time — page-level, never a related article.
+  const og = normalizeDate((html.match(/<meta[^>]+property=["']article:published_time["'][^>]+content=["']([^"']+)["']/i)
+    || html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']article:published_time["']/i) || [])[1]);
+  if (og) return og;
+
+  // 2. JSON-LD scoped to the main article by canonical-URL match.
+  const canonical = pageCanonicalUrl(html, url);
+  const entities = [];
+  for (const m of html.matchAll(/<script[^>]+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)) {
+    let parsed;
+    try { parsed = JSON.parse(m[1].trim()); } catch { continue; }
+    collectArticleEntities(parsed, entities);
   }
+  if (entities.length) {
+    if (canonical) {
+      const main = entities.find((e) => entitySelfUrls(e).includes(canonical));
+      if (main) { const d = normalizeDate(main.datePublished); if (d) return d; }
+    }
+    // No canonical, or no entity self-identifies with it: only trust JSON-LD when
+    // every article entity agrees on one date (an unambiguous single-article page).
+    const ldDates = [...new Set(entities.map((e) => normalizeDate(e.datePublished)).filter(Boolean))];
+    if (ldDates.length === 1) return ldDates[0];
+  }
+
+  // 3. First-match fallback — safe only when the document has ONE distinct date.
+  const rawDates = [];
+  for (const re of [/["']datePublished["']\s*:\s*["']([^"']+)["']/g, /<time[^>]+datetime=["']([^"']+)["']/gi]) {
+    for (const m of html.matchAll(re)) { const d = normalizeDate(m[1]); if (d) rawDates.push(d); }
+  }
+  const distinct = [...new Set(rawDates)];
+  if (distinct.length === 1) return distinct[0];
+
+  // 4. Theatrely (Webflow) exposes no date meta/time/JSON-LD — only a visible
+  // <div class="publish-date">June 19, 2026 11:15 AM</div>. Inherently single.
+  const divDate = normalizeDate((html.match(/<div[^>]+class=["'][^"']*publish-date[^"']*["'][^>]*>([^<]+)</i) || [])[1]);
+  if (divDate) return divDate;
+
   return null;
 }
 

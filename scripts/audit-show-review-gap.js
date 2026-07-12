@@ -498,7 +498,7 @@ async function extractAggregatorReviewUrls(articleUrl, show) {
   // articles' URLs priorRun (report-only, never auto-ingested). Computed per
   // (article, show) pair — a multi-show recap can be current for one show and
   // prior for another — so it lives outside the shared HTML cache.
-  const identity = articleRunIdentity(html, show);
+  const identity = articleRunIdentity(html, show, articleUrl);
   return { urls: [...urls], priorRun: identity.priorRun, publishDate: identity.publishDate };
 }
 
