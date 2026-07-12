@@ -203,8 +203,11 @@ async function getWeReferenceRows(show, opts = {}) {
         sources['thestage-archive'].rows = parsed.length;
         if (parsed.length === 0) sources['thestage-archive'].emptyParse = true;
         const { extractPublishDate } = require('./article-extractor');
-        const priorRun = !isCurrentRunRoundup(extractPublishDate(html), show);
         const canonical = (html.match(/<link[^>]+rel=["']canonical["'][^>]+href=["']([^"']+)["']/i) || [])[1] || null;
+        // Pass the archive page's own canonical URL so extractPublishDate scopes
+        // JSON-LD to the main-article entity (multi-article TS roundups embed
+        // related-article dates; without scoping a related date could win).
+        const priorRun = !isCurrentRunRoundup(extractPublishDate(html, canonical), show);
         for (const r of parsed) push('thestage-archive', canonical, priorRun, r);
       }
     }

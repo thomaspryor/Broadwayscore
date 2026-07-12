@@ -224,8 +224,8 @@ describe('safety wiring (audit + workflow must keep the fail-closed invariants)'
     // themselves are date-gated (articleRunIdentity) and prior-run URLs are
     // permanently blocked on every market (2018 TKAM/2013 Midsummer/2014 Last
     // Ship/2025 JLP reviews all ingested onto WE entries in the first run).
-    assert.ok(auditSrc.includes('articleRunIdentity(html, show)'),
-      'every fetched aggregator article must be dated against the opening window');
+    assert.ok(auditSrc.includes('articleRunIdentity(html, show, articleUrl)'),
+      'every fetched aggregator article must be dated against the opening window (article URL threaded so extractPublishDate can scope JSON-LD to the main entity)');
     assert.ok(auditSrc.includes("m.priorRunSource = 'aggregator-article-date'"),
       'prior-production article URLs must be tagged priorRun in missing/flaggedMisses');
   });
