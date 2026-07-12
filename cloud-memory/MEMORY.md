@@ -46,6 +46,7 @@
 - [Test extraction pattern](feedback_test_extraction_pattern.md) — extract to scripts/lib/ + require(); .mjs node:test, register in test.yml ([[feedback_test_format_node_not_jest.md]])
 - [Branch protection: direct pushes not gated](feedback_branch_protection_direct_push.md) — required checks gate PR merges only; direct pushes land red
 - [Hook stdin format](feedback_hook_stdin_format.md) — PostToolUse stdin under tool_input; jq .tool_input.command
+- [Pre-push gate parser trap](feedback_prepush_gate_stash_push_parser.md) — `git stash push` in compound cmd breaks push-target parse; NO-VERIFY must be SAME turn + standalone `git push`
 
 ## 🔌 External APIs & verification
 - [404 is not always terminal](feedback_404_not_terminal.md) — check prior state before flipping success→failure
