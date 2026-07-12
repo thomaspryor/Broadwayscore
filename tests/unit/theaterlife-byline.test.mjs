@@ -39,8 +39,20 @@ describe('extractTheaterLifeByline', () => {
     assert.strictEqual(extractTheaterLifeByline(text), 'David Sheward');
   });
 
-  test('parses "By Name" without a colon at text-start', () => {
+  test('parses "By Name" without a colon, followed by a date', () => {
     assert.strictEqual(extractTheaterLifeByline('By David Sheward\n\nJanuary 22, 2025: Billed as a new play'), 'David Sheward');
+  });
+
+  test('parses "By Name" after an ALL-CAPS headline (date-guarded)', () => {
+    assert.strictEqual(extractTheaterLifeByline('UNITED AGAINST BIAS, DIVIDED BY POWER\n\nBy Alix Cohen\n\nFebruary 27, 2026: Prejudice'), 'Alix Cohen');
+  });
+
+  test('parses "By Name" with byline and date space-separated (stripped HTML)', () => {
+    assert.strictEqual(extractTheaterLifeByline('  By David Sheward  June 13, 2025: Even though'), 'David Sheward');
+  });
+
+  test('requires a date for the no-colon form (bare "By Name" is not enough)', () => {
+    assert.strictEqual(extractTheaterLifeByline('By David Sheward\n\nno date here, just prose about the show'), null);
   });
 
   test('cuts a byline glued to a curly quote ("By: Alix Cohen“We are…")', () => {
@@ -52,7 +64,7 @@ describe('extractTheaterLifeByline', () => {
   });
 
   test('does not split Mc/Mac surnames (no-colon path)', () => {
-    assert.strictEqual(extractTheaterLifeByline('By McDonald Smith\n\nsome review text here'), 'McDonald Smith');
+    assert.strictEqual(extractTheaterLifeByline('By McDonald Smith\n\nApril 1, 2025: some review text'), 'McDonald Smith');
   });
 
   test('conservatively rejects a month-word name token (ambiguous with a date)', () => {
@@ -64,7 +76,7 @@ describe('extractTheaterLifeByline', () => {
 
   test('does not glue-cut a real name when a month is not followed by a date', () => {
     // "DeMay" (month substring, no following digit) must survive as one token.
-    assert.strictEqual(extractTheaterLifeByline('By Ada DeMay\n\nA review of the show.'), 'Ada DeMay');
+    assert.strictEqual(extractTheaterLifeByline('By: Ada DeMay\n\nMarch 3, 2025: A review of the show.'), 'Ada DeMay');
   });
 
   test('does not match a body sentence starting with "By" + lowercase', () => {

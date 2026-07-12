@@ -2345,10 +2345,14 @@ function extractTheaterLifeByline(text) {
   // (no-colon form some posts use), anchored so it can't match "directed by" /
   // "produced by" in the body.
   let m = head.match(/\bBy:\s+([A-Z][^\n]{2,60})/);
-  // No-colon form: only at the very start of the text (theaterlife's colon-less
-  // posts open with "By <Name>"). Anchoring to ^ avoids matching a mid-body
-  // playwright credit ("By David Mamet") or caption line.
-  if (!m) m = head.match(/^\s*By\s+([A-Z][^\n]{2,60})/);
+  // No-colon form ("By <Name>" then the publish date). Require a "Month DD, YYYY"
+  // to follow the name — theaterlife bylines are always "By <Name> <date>". The
+  // trailing date distinguishes the real byline (even when an ALL-CAPS headline
+  // precedes it) from a mid-body playwright credit ("By David Mamet, …"), and
+  // works whether the byline and date are newline- or space-separated.
+  if (!m) {
+    m = head.match(/\bBy\s+([A-Z][A-Za-zÀ-ÿ.'’ -]{2,40}?)\s*\n*\s*(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2}/);
+  }
   if (!m) return null;
   // Some posts glue the article text straight onto the byline with no space
   // ("By: Alix Cohen“We are merchants…" or "By: Alix CohenSeptember 19, 2025").
