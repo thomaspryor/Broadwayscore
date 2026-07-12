@@ -197,6 +197,14 @@ export interface ShowGrosses {
     atpPrevWeek: number | null;
     atpYoY: number | null;
     attendance: number | null;
+    /**
+     * Offered seats for the week (per-perf offered × perfs). Sourced from BWW
+     * column "ATTEND. / CAPACITY" second token. Varies with production
+     * configuration — Circle in the Square's Just In Time offers ~690 seats/perf,
+     * not the room's nominal max. RevPAS = gross ÷ seatsOffered.
+     * Populated for weeks scraped on/after 2026-07-12; earlier weeks are null.
+     */
+    seatsOffered?: number | null;
     performances: number | null;
   };
   allTime: {

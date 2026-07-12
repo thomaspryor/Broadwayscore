@@ -23,6 +23,12 @@ interface HistoryEntry {
   capacity: number | null;
   atp: number | null;
   attendance: number | null;
+  // Playbill (this backfill's source) does not expose seats-offered — it publishes
+  // "Seats Sold + Seats in Theatre" where the second value is nominal capacity,
+  // not per-week offered. BWW does expose the correct value. Keep the field
+  // optional here so backfill writes remain shape-compatible with the forward
+  // scraper's writes without inventing data. See scripts/scrape-grosses.ts.
+  seatsOffered?: number | null;
   performances: number | null;
 }
 
