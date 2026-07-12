@@ -29,6 +29,7 @@ const path = require('path');
 const https = require('https');
 const { matchTitleToShow, loadShows, validateRoundupPageTitle } = require('./lib/show-matching');
 const { normalizeOutlet, normalizeCritic, findExistingReviewFile } = require('./lib/review-normalization');
+const { resolveArchiveRowOutletId } = require('./lib/archive-outlet-identity');
 const { isLondonMarket } = require('./lib/venue-classification');
 
 const ARCHIVE_DIR = path.join(__dirname, '..', 'data', 'aggregator-archive', 'thestage-roundups');
@@ -288,7 +289,7 @@ function writeReviewFiles(reviews, showId) {
 
   for (const review of reviews) {
     const criticSlug = normalizeCritic(review.critic);
-    const outletId = review.outletId || normalizeOutlet(review.outlet);
+    const outletId = resolveArchiveRowOutletId({ url: review.url, outletLabel: review.outlet, cachedOutletId: review.outletId, sourceOutletId: 'thestage' });
 
     const existingMatch = findExistingReviewFile(showDir, outletId, criticSlug);
     const filePath = existingMatch ? existingMatch.path : path.join(showDir, `${outletId}--${criticSlug}.json`);
