@@ -54,6 +54,7 @@ const {
   isSuspiciousOutletId,
   AGGREGATOR_SCORE_SOURCES,
   WIRE_SERVICE_OUTLETS,
+  outletOwnsUrlDomain,
 } = require('./lib/review-normalization');
 const { verifyProduction, quickDateCheck, getShowData } = require('./lib/production-verifier');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
@@ -3571,18 +3572,12 @@ function createReviewFile(showId, reviewData, options = {}) {
       try {
         const resolved = resolveOutletFromUrl(review.url);
         if (resolved && resolved.outletId !== normalizedOutletId) {
-          // Allow if both outlets share the same registry domain (e.g., timeout / timeout-london)
-          const reg = _outletRegistryCache || (() => {
-            try {
-              const r = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'outlet-registry.json'), 'utf8'));
-              _outletRegistryCache = r.outlets || {};
-              return _outletRegistryCache;
-            } catch (e) { return {}; }
-          })();
-          const attrDomain = reg[normalizedOutletId]?.domain?.replace(/^www\./, '').toLowerCase();
-          const resolvedDomain = reg[resolved.outletId]?.domain?.replace(/^www\./, '').toLowerCase();
-          const sharedDomain = attrDomain && resolvedDomain && attrDomain === resolvedDomain;
-          if (!sharedDomain) {
+          // Allow when the attributed outlet's own registry entry claims the
+          // URL's domain — shared domains (timeout/timeout-london,
+          // telegraph/sunday-telegraph) AND domainAliases syndication
+          // (observer on theguardian.com). Same rule as the mergeReviews
+          // cross-outlet guard (outletOwnsUrlDomain).
+          if (!outletOwnsUrlDomain(normalizedOutletId, review.url)) {
             console.log(`    ✗ Skipping ${filename}: URL domain resolves to "${resolved.outletId}" but attributed to "${normalizedOutletId}"`);
             return 'domainMismatch';
           }

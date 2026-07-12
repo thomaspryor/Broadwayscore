@@ -493,18 +493,22 @@ describe('updateFileUrlWithInvariant (raw-writer helper)', () => {
     // The reason-recovery path's whole point: existing url is empty, so the
     // invariant doesn't apply — but the discovered url and fabricated-flag
     // clears MUST persist (P0: without stampOnNoop nothing was written).
+    // Same-outlet URL: a cross-outlet first-set is now refused (see the
+    // cross-outlet refusal tests below), so the recovered URL must belong
+    // to the slot's own outlet.
+    const VARIETY_URL = 'https://variety.com/2026/legit/reviews/jesus-christ-superstar-review-1236123456/';
     const fp = path.join(helperTmp, 'no-url.json');
     fs.writeFileSync(fp, JSON.stringify({
       outletId: 'variety', url: '', fabricatedEntry: true, fabricatedReason: 'x',
       llmScore: { score: 70 },
     }, null, 2));
-    const written = updateFileUrlWithInvariant(fp, JCS_URL, {
+    const written = updateFileUrlWithInvariant(fp, VARIETY_URL, {
       urlDiscoveryMethod: 'google-serp-reason-recovery',
       fabricatedEntry: undefined, fabricatedReason: undefined,
     }, { stampOnNoop: true });
     assert.ok(written, 'first-set must write');
     const onDisk = JSON.parse(fs.readFileSync(fp, 'utf8'));
-    assert.equal(onDisk.url, JCS_URL);
+    assert.equal(onDisk.url, VARIETY_URL);
     assert.equal(onDisk.fabricatedEntry, undefined, 'fabricated flag must clear');
     assert.equal(onDisk.urlDiscoveryMethod, 'google-serp-reason-recovery');
     assert.deepEqual(onDisk.llmScore, { score: 70 }, 'no invariant clearing on first-set — no old article existed');
@@ -596,6 +600,17 @@ describe('updateFileUrlWithInvariant — cross-outlet refusal', () => {
     assert.strictEqual(res, null);
     const after = JSON.parse(fs.readFileSync(fp, 'utf8'));
     assert.strictEqual(after.url, 'https://www.facebook.com/x/posts/1/');
+    fs.rmSync(dir, { recursive: true, force: true });
+  });
+
+  test('refuses cross-outlet even on first-set (URL repair targets a known outlet slot)', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'xoutlet3-'));
+    const fp = path.join(dir, 'cambridge--unknown.json');
+    fs.writeFileSync(fp, JSON.stringify({
+      showId: 'test-show', outletId: 'cambridge', outlet: 'Cambridge', criticName: 'Unknown', url: null,
+    }, null, 2));
+    const res = updateFileUrlWithInvariant(fp, 'https://loureviews.blog/2026/07/08/x/', {}, { stampOnNoop: true });
+    assert.strictEqual(res, null);
     fs.rmSync(dir, { recursive: true, force: true });
   });
 
