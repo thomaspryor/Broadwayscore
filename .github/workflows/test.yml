@@ -49,6 +49,13 @@ on:
       # so a solo edit triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/lib/pending-diagnoses.js'
       - 'scripts/process-feedback.js'
+      # Ranked show-name resolution for feedback triage (GH #393: "Ma" hijacked
+      # "MISTERMAN" via reverse-substring; workflow resolveShow was exact-only).
+      # Colocated test runs in the lib-test glob; path-listed so a solo edit
+      # triggers CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/lib/resolve-show.js'
+      - 'scripts/lib/resolve-show.test.mjs'
+      - 'scripts/diagnose-feedback-bug.js'
       - 'scripts/lib/duplicate-of-gate.js'
       - 'scripts/lib/duplicate-of-gate.test.mjs'
       # Pre-push conflict-marker guard (root-cause fix for the committed-merge-marker

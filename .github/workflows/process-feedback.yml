@@ -148,17 +148,15 @@ jobs:
               .filter(b => b.diagnosis);
             console.log(`Found ${openBugs.length} open bug-diagnosis issue(s) to dedup against`);
 
-            // Load shows.json for resolving show IDs
+            // Load shows.json for resolving show IDs. Ranked matching via the
+            // shared resolver — the old inline exact-match returned null for
+            // "MISTERMAN" vs stored title "Misterman (Theatre Row)" (GH #393),
+            // zeroing showId/showSlug in the diagnosis payload.
             const showsRaw = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
             const allShows = showsRaw.shows || showsRaw;
+            const { resolveShow: resolveShowRanked } = require(`${process.env.GITHUB_WORKSPACE}/scripts/lib/resolve-show.js`);
             function resolveShow(name) {
-              if (!name || name === 'N/A') return null;
-              const lower = name.toLowerCase().trim();
-              return allShows.find(s =>
-                s.title.toLowerCase() === lower ||
-                s.slug === lower ||
-                s.slug === lower.replace(/\s+/g, '-')
-              ) || null;
+              return resolveShowRanked(name, allShows);
             }
 
             // Drain as we go: entries are removed from `remaining` once handled,
