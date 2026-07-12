@@ -19,6 +19,7 @@ const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { isWithinPriorRun } = require('./lib/wrong-production-autoclear');
 const { evaluateDateGuard, evaluateDatelessRevivalGuard, earliestShowDate, DAYS_AFTER_CLOSE } = require('./lib/date-guard');
+const { evaluateCurrentRunCorroboration } = require('./lib/wrong-production-corroboration');
 
 // Multi-production (revival) title index: a show id whose base title has ≥2
 // productions in shows.json. Used by the dateless-revival guard below to decide
@@ -69,8 +70,9 @@ function run() {
 
   let flaggedEarly = 0, flaggedLate = 0, skipped = 0, noDate = 0, noWindow = 0, ok = 0;
   let priorRunSkipped = 0, datelessRevivalFlagged = 0;
-  let lockedSkipCount = 0;
+  let lockedSkipCount = 0, corroborationHeld = 0, corroborationWarned = 0;
   const flaggedDetails = [];
+  const heldDetails = [];
 
   for (const showDir of showDirs) {
     const show = showMap[showDir];
@@ -146,6 +148,20 @@ function run() {
         continue;
       }
 
+      // Current-run corroboration guard: a misparsed publishDate can put a
+      // CURRENT review outside the window (care-west-end-2026 incident,
+      // 2026-07-11). STRONG corroboration (Theatre Record archives the review
+      // under an in-window month) → HOLD the flag, route to human review.
+      // WEAK (roundup excerpts only — ~75% of those flags were correct in the
+      // 2026-07-12 sweep) → flag as usual but count a warning.
+      const corrob = evaluateCurrentRunCorroboration({ review: data, show });
+      if (corrob.strength === 'strong') {
+        corroborationHeld++;
+        heldDetails.push({ showId: showDir, file, date: data.publishDate, outlet: data.outlet || '?', signals: corrob.signals, issue, diffDays });
+        continue;
+      }
+      if (corrob.strength === 'weak') corroborationWarned++;
+
       const note = issue === 'before_preview'
         ? `Date guard: review ${data.publishDate} is ${diffDays}d before ${earliestStr} (preview/open) — likely different production`
         : `Date guard: review ${data.publishDate} is ${diffDays}d after ${show.closingDate} (close+${DAYS_AFTER_CLOSE}d) — likely different production`;
@@ -192,7 +208,20 @@ function run() {
     }
   }
 
+  // Held flags need HUMAN REVIEW — the date says wrong-production but Theatre
+  // Record archives the review inside this run's window (likely misparsed
+  // publishDate). Verify the live page date, then either correct publishDate +
+  // wrongProductionManualClear, or flag manually.
+  if (heldDetails.length > 0) {
+    console.log(`\n--- HELD for human review (current-run corroboration contradicts date) ---`);
+    for (const h of heldDetails) {
+      console.log(`  ${h.showId}/${h.file}  pub=${h.date}  ${h.issue} ${h.diffDays}d  [${h.signals.join(', ')}]`);
+    }
+  }
+
   console.log(`\n--- Summary ---`);
+  console.log(`Held (corroboration):  ${corroborationHeld}`);
+  console.log(`Warned (weak corrob):  ${corroborationWarned}`);
   console.log(`OK (within window):    ${ok}`);
   console.log(`Skipped (priorRuns):   ${priorRunSkipped}`);
   console.log(`Already flagged:       ${skipped}`);

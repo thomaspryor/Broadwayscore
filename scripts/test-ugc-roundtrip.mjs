@@ -123,10 +123,17 @@ async function main() {
         });
         const list = await r.json();
         console.error('── Live Supabase projects on this account (Management API) ──');
+        const configuredRef = URL ? new global.URL(URL).hostname.split('.')[0] : '';
+        let hint = '   The configured ref is not in this account → update NEXT_PUBLIC_SUPABASE_URL/ANON_KEY.';
         for (const p of Array.isArray(list) ? list : []) {
           console.error(`   ref=${p.id}  name=${p.name}  status=${p.status}  region=${p.region}`);
+          if (p.id === configuredRef) {
+            hint = p.status === 'ACTIVE_HEALTHY'
+              ? '   Project is ACTIVE but still unreachable — transient DNS/outage, retry shortly.'
+              : `   Project is ${p.status} (paused). Restore it: run the "Restore Supabase Project" workflow.`;
+          }
         }
-        console.error('   The app is configured for a ref that is NOT in this list → update NEXT_PUBLIC_SUPABASE_URL/ANON_KEY.');
+        console.error(hint);
       } catch (mgmtErr) {
         console.error(`   (could not list projects: ${mgmtErr.message})`);
       }
