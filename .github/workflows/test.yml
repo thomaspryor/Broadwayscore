@@ -246,6 +246,10 @@ on:
       - 'scripts/send-daily-digest.js'
       - 'scripts/lib/reddit-api.js'
       - 'scripts/lib/audience-weighting.js'
+      # Reddit buzz per-comment relevance classifier (production-reference gate).
+      # Colocated tests run in the tests/unit/*.test.mjs node --test list; path-listed
+      # so a solo edit to the classifier still triggers CI (allow-list gate).
+      - 'scripts/lib/buzz-classifier.js'
       - 'scripts/neutralize-contaminated-reddit-buzz.js'
       - 'scripts/scrape-westendtheatre-roundups.js'
       - 'scripts/recover-explicit-ratings.js'

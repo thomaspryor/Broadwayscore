@@ -65,12 +65,87 @@ function sleep(ms) {
 }
 
 /**
- * Build classification prompt for LLM
+ * Human-readable "TARGET PRODUCTION" descriptor from the show context. Gives the
+ * classifier the anchors (venue, market, type, run window) it needs to tell a
+ * comment about THIS staging from an unrelated work that merely shares the name.
  */
-function buildPrompt(showTitle, comments, explicit = false) {
-  const formatted = comments.map((c, i) =>
-    `[${i + 1}] ${c.body.slice(0, 300).replace(/\n/g, ' ')}`
-  ).join('\n\n');
+function buildProductionDescriptor(showTitle, showContext) {
+  if (!showContext) return `"${showTitle}"`;
+  const parts = [];
+  const type = (showContext.type || '').toLowerCase();
+  const typeLabel = type === 'opera' ? 'opera'
+    : type === 'musical' ? 'musical'
+    : type === 'play' ? 'play'
+    : 'stage production';
+  const market = showContext.market || showContext.marketName || '';
+  const marketPhrase = market === 'West End' ? 'in the West End'
+    : market === 'Broadway' ? 'on Broadway'
+    : market === 'Off-Broadway' ? 'Off-Broadway in New York'
+    : market ? `at ${market}` : '';
+  let lead = `the ${typeLabel}`;
+  if (marketPhrase) lead += ` playing ${marketPhrase}`;
+  parts.push(lead);
+  if (showContext.venue) parts.push(`at ${showContext.venue}`);
+  const opened = (showContext.openingDate || '').slice(0, 4);
+  const closed = (showContext.closingDate || '').slice(0, 4);
+  if (opened) parts.push(closed && closed !== opened ? `(${opened}–${closed})` : `(opened ${opened})`);
+  return `"${showTitle}" — ${parts.join(', ')}`;
+}
+
+/**
+ * Build classification prompt for LLM.
+ *
+ * @param {string} showTitle
+ * @param {Array}  comments   each may carry a `postTitle` (the Reddit thread it
+ *                            came from). When present it is shown to the model and
+ *                            the production-reference gate applies; when absent
+ *                            (e.g. golden-fixture cases) the model falls back to the
+ *                            legacy "assume the thread is about the target" behavior
+ *                            so eval fixtures are unaffected.
+ * @param {boolean} explicit  emit the strict-schema note (retry path)
+ * @param {object|null} showContext {venue, market, type, openingDate, closingDate}
+ */
+function buildPrompt(showTitle, comments, explicit = false, showContext = null) {
+  const anyPostTitles = comments.some(c => c && c.postTitle);
+  const formatted = comments.map((c, i) => {
+    const body = c.body.slice(0, 300).replace(/\n/g, ' ');
+    // Prefix each comment with the thread it was posted under, so the model can
+    // judge whether the thread is actually about the target production.
+    const thread = c.postTitle ? `(in Reddit thread titled: "${String(c.postTitle).slice(0, 160).replace(/\n/g, ' ')}") ` : '';
+    return `[${i + 1}] ${thread}${body}`;
+  }).join('\n\n');
+
+  const productionDescriptor = buildProductionDescriptor(showTitle, showContext);
+
+  // Production-reference gate. Only meaningful when the comments carry thread
+  // titles — that's the signal that distinguishes an on-topic staging thread from
+  // a novel/film/common-phrase collision. Without thread titles we preserve the
+  // legacy assume-target default so hand-labeled fixtures (bodies only) still pass.
+  const productionGate = anyPostTitles ? `
+CRITICAL — MATCH THE PRODUCTION, NOT JUST THE NAME:
+Each comment is shown with the title of the Reddit thread it was posted under. Use
+that thread title to decide whether the comment is really about ${productionDescriptor}.
+   - If the thread title is about a DIFFERENT subject that merely shares words with
+     the show's name — a novel, a film/TV adaptation, a city or place, a common
+     phrase, a person, or a DIFFERENT production/revival/tour — mark the comment NOT
+     relevant, EVEN IF it says "I saw it", "I loved it", or "the show was great".
+     A name collision is not evidence the person saw THIS production.
+   - MULTI-SHOW / ROUNDUP THREADS: if the thread title is a general theatre thread
+     that is NOT specifically about "${showTitle}" — e.g. a list of many shows, a
+     "what did you see / what should I see" thread, a season roundup, a first-preview
+     or awards thread, or a thread named after a DIFFERENT show — then the thread is
+     NOT evidence for "${showTitle}". A comment there counts ONLY if it EXPLICITLY
+     names or unmistakably describes seeing "${showTitle}". Ambiguous "I saw it" / "the
+     show was great" in such a thread is NOT relevant (it is almost certainly about a
+     different show being discussed).
+   - Any comment that names or is clearly about a DIFFERENT show is NOT relevant, no
+     matter what thread it is in.
+   - Treat an ambiguous "I saw it" / "the show" as referring to "${showTitle}" ONLY
+     when the thread title is clearly about "${showTitle}" as this staged production
+     (it names the show, its venue, or its market). Otherwise require the comment
+     itself to name "${showTitle}".
+   - If a comment gives NO thread title, assume the thread is about "${showTitle}".
+` : '';
 
   const schemaNote = explicit ? `
 IMPORTANT: You MUST respond with ONLY a JSON array. No other text.
@@ -85,11 +160,10 @@ Example response:
 
   return `Classify each Reddit comment to determine if it's an AUDIENCE REACTION to seeing "${showTitle}".
 
-TARGET SHOW: "${showTitle}"
+TARGET PRODUCTION: ${productionDescriptor}
 
-CONTEXT: These comments are from Reddit threads about "${showTitle}". When a comment says "I saw it" or "the show", it likely refers to "${showTitle}" unless another show is explicitly named.
-
-We want to measure AUDIENCE BUZZ - how theatergoers feel about "${showTitle}" specifically.
+CONTEXT: These comments were pulled from Reddit by searching for "${showTitle}", but a title search also catches threads about unrelated works that share the name. We want to measure AUDIENCE BUZZ — how theatergoers feel about seeing this specific production.
+${productionGate}
 
 For each comment, determine:
 1. is_relevant: Is this comment an AUDIENCE REACTION to seeing "${showTitle}"?
@@ -114,7 +188,7 @@ For each comment, determine:
    - Venue/logistics: stage door experience, usher behavior, concessions, bathrooms, crowd behavior, accessibility — these are about the venue, not the show
    - Just mentions "${showTitle}" in passing without an audience opinion
 
-   IMPORTANT: The person MUST have ALREADY attended/seen the show (past tense). Future tense ("I'm going to see it") or present anticipation ("about to see it") = NOT relevant. If comment discusses a different show BY NAME, mark not relevant. But if it says "I saw it" or "the show" without naming another show, assume it's about "${showTitle}".
+   IMPORTANT: The person MUST have ALREADY attended/seen the show (past tense). Future tense ("I'm going to see it") or present anticipation ("about to see it") = NOT relevant. If comment discusses a different show BY NAME, mark not relevant. For an ambiguous "I saw it" / "the show" that names no other show, resolve it using the thread title per the MATCH THE PRODUCTION rule above (assume "${showTitle}" only when the thread is about this production; when no thread title is given, assume "${showTitle}").
 
 2. sentiment (only if is_relevant is true):
    - enthusiastic: Strong positive - superlatives like amazing, incredible, best, 10/10, life-changing, cried happy tears, "blown away"
@@ -375,7 +449,7 @@ function getDefaultProvider() {
  * @param {number} retryCount - Internal retry counter
  * @returns {Promise<Array>} Array of { id, is_relevant, sentiment? } objects
  */
-async function classifyBatch(showTitle, comments, provider = null, retryCount = 0) {
+async function classifyBatch(showTitle, comments, provider = null, retryCount = 0, showContext = null) {
   if (!provider) provider = getDefaultProvider();
 
   const MAX_RETRIES = 2;
@@ -388,7 +462,7 @@ async function classifyBatch(showTitle, comments, provider = null, retryCount = 
   });
 
   // Build prompt (explicit schema on retry)
-  const prompt = buildPrompt(showTitle, comments, retryCount > 0);
+  const prompt = buildPrompt(showTitle, comments, retryCount > 0, showContext);
 
   let responseText;
   try {
@@ -399,7 +473,7 @@ async function classifyBatch(showTitle, comments, provider = null, retryCount = 
     const nextProvider = PROVIDERS[PROVIDERS.indexOf(provider) + 1];
     if (nextProvider) {
       console.log(`  Falling back to ${nextProvider}...`);
-      return classifyBatch(showTitle, comments, nextProvider, 0);
+      return classifyBatch(showTitle, comments, nextProvider, 0, showContext);
     }
     throw e;
   }
@@ -411,13 +485,13 @@ async function classifyBatch(showTitle, comments, provider = null, retryCount = 
     if (retryCount < MAX_RETRIES) {
       console.log(`  Retrying with explicit schema (attempt ${retryCount + 1})...`);
       await sleep(1000);
-      return classifyBatch(showTitle, comments, provider, retryCount + 1);
+      return classifyBatch(showTitle, comments, provider, retryCount + 1, showContext);
     }
     // Try next provider
     const nextProvider = PROVIDERS[PROVIDERS.indexOf(provider) + 1];
     if (nextProvider) {
       console.log(`  Falling back to ${nextProvider}...`);
-      return classifyBatch(showTitle, comments, nextProvider, 0);
+      return classifyBatch(showTitle, comments, nextProvider, 0, showContext);
     }
     // Return empty array as last resort
     console.warn(`  All providers failed, returning empty classifications`);
@@ -431,13 +505,13 @@ async function classifyBatch(showTitle, comments, provider = null, retryCount = 
     if (retryCount < MAX_RETRIES) {
       console.log(`  Retrying with explicit schema (attempt ${retryCount + 1})...`);
       await sleep(1000);
-      return classifyBatch(showTitle, comments, provider, retryCount + 1);
+      return classifyBatch(showTitle, comments, provider, retryCount + 1, showContext);
     }
     // Try next provider
     const nextProvider = PROVIDERS[PROVIDERS.indexOf(provider) + 1];
     if (nextProvider) {
       console.log(`  Falling back to ${nextProvider}...`);
-      return classifyBatch(showTitle, comments, nextProvider, 0);
+      return classifyBatch(showTitle, comments, nextProvider, 0, showContext);
     }
     // Return what we have, filtering invalid items
     return parsed.filter(validateClassification);
@@ -453,9 +527,12 @@ async function classifyBatch(showTitle, comments, provider = null, retryCount = 
  * @param {Array} comments - All comments to classify
  * @param {number} batchSize - Comments per LLM call (default 50)
  * @param {string} provider - Starting provider (default 'gemini')
+ * @param {number} concurrency - Parallel LLM calls
+ * @param {object|null} showContext - {venue, market, type, openingDate, closingDate}
+ *   for the production-reference gate. Each comment may also carry a `postTitle`.
  * @returns {Promise<Array>} All classifications
  */
-async function classifyAllComments(showTitle, comments, batchSize = 150, provider = 'gemini', concurrency = 4) {
+async function classifyAllComments(showTitle, comments, batchSize = 150, provider = 'gemini', concurrency = 4, showContext = null) {
   const allClassifications = [];
 
   // Create all batch definitions
@@ -469,7 +546,7 @@ async function classifyAllComments(showTitle, comments, batchSize = 150, provide
     const group = batchDefs.slice(g, g + concurrency);
 
     const results = await Promise.all(
-      group.map(({ batch }) => classifyBatch(showTitle, batch, provider))
+      group.map(({ batch }) => classifyBatch(showTitle, batch, provider, 0, showContext))
     );
 
     // Map results back to original comments
@@ -503,6 +580,7 @@ module.exports = {
   classifyAllComments,
   // Expose for testing
   buildPrompt,
+  buildProductionDescriptor,
   parseJsonArray,
   validateClassifications,
   callLLM
