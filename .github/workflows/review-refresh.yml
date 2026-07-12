@@ -371,6 +371,7 @@ jobs:
         run: node scripts/cleanup-phantom-outlets.js --apply
 
       - name: Rebuild reviews.json from review-texts
+        id: rebuild
         if: steps.check.outputs.has_new_reviews == 'true' || inputs.force_collection == 'true'
         run: |
           echo "Rebuilding reviews.json from review-texts data..."
@@ -388,6 +389,22 @@ jobs:
             echo "Changes detected:"
             git diff --stat data/
           fi
+
+      # Persist the rebuilt reviews.json (+ any validate-data/outlet-registry
+      # updates) to the private core-data repo. Without this the rebuild step
+      # above was a silent no-op for 6+ months: reviews.json is gitignored in
+      # this repo, so stage-data-changes.sh never staged it and the weekly
+      # rebuild output was discarded at job end (found 2026-07-12 by the
+      # core-data-pairing audit; the daily rebuild-reviews.yml masked it).
+      # Gated on the rebuild step SUCCEEDING (not always()) so a mid-rebuild
+      # failure can never persist semantically-partial output; skipped-rebuild
+      # runs have nothing to push.
+      - name: Push core data to private repo
+        if: always() && steps.rebuild.outcome == 'success'
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Weekly review refresh (rebuild)'
 
       - name: Push review-texts to private repo
         if: always()

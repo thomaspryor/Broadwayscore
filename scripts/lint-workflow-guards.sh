@@ -47,32 +47,60 @@ check_prebuild() {
 }
 
 check_core_data_pairing() {
-  # Workflows that checkout core data AND have write permissions must also
-  # push-core-data, or changes get lost on next deploy.
-  local MISSING="" f HAS_CHECKOUT HAS_WRITE HAS_PUSH
+  # v2 (2026-07-12): workflows that invoke a KNOWN core-data-writing script
+  # must also push-core-data, or the writes are silently discarded at job end
+  # (core files are gitignored in this repo — only push-core-data persists
+  # them to the private broadway-scorecard-data repo).
+  #
+  # History: v1 matched checkout-core-data + contents:write + no push-core-data
+  # and was a dead no-op since birth ($(grep -c ... || echo 0) yields "0\n0" on
+  # no match, silently erroring every integer test). With the arithmetic fixed
+  # it flagged ~50 workflows, nearly all read-only. The 2026-07-12 audit traced
+  # every script invoked by all 50 (Notion 39b637c5-416f-8127): exactly three
+  # scripts write core files, so v2 keys on those. Add to CORE_WRITER_SCRIPTS
+  # when a new script gains a core-file write (the write-routing lint's
+  # reviews.json check catches new direct writers at PR time).
+  #
+  # validate-data.js    — unconditional shows.json auto-fixes (:585,:636,:776,:830)
+  # pre-deploy-check.js — shows.json self-heal before build (:215)
+  # rebuild-all-reviews.js — reviews.json (:4405) + outlet-registry.json (:4999)
+  local CORE_WRITER_SCRIPTS="validate-data.js pre-deploy-check.js rebuild-all-reviews.js"
+  # Exemptions — audited 2026-07-12, every entry verified benign:
+  #   test.yml                        CI validation; writes never meant to persist
+  #   vercel-deploy/demo/preview.yml  pre-deploy-check self-heal is build-local by design
+  #   update-deploy-watermark.yml     reads counts for the watermark; self-heal incidental
+  #   collect-review-texts.yml        validate-data auto-fix incidental; canonical
+  #   collect-we-ob-reviews.yml       persistence happens in update-show-status /
+  #   sweep-we-aggregators.yml        gather-reviews / rebuild-reviews (all push)
+  #   generate-theater-tips.yml       same validate-data-incidental class
+  #   scoring-audit.yml               rebuild is audit-only (commits data/audit/* only)
+  #   opening-night-stage-alert.yml   mentions rebuild in alert runbook TEXT, not an invocation
+  local EXEMPT="test.yml vercel-deploy.yml vercel-demo.yml vercel-preview.yml update-deploy-watermark.yml collect-review-texts.yml collect-we-ob-reviews.yml sweep-we-aggregators.yml generate-theater-tips.yml scoring-audit.yml opening-night-stage-alert.yml"
+  local MISSING="" f name s
   for f in .github/workflows/*.yml; do
-    # `|| true`, not `|| echo 0`: grep -c already prints "0" on no match (and
-    # exits 1), so `|| echo 0` would yield "0\n0" and break the -gt test. The
-    # old inline test.yml version had exactly that latent bug.
-    HAS_CHECKOUT=$(grep -c 'checkout-core-data' "$f" 2>/dev/null || true)
-    HAS_WRITE=$(grep -c 'contents: write' "$f" 2>/dev/null || true)
-    HAS_PUSH=$(grep -c 'push-core-data' "$f" 2>/dev/null || true)
-    if [ "$HAS_CHECKOUT" -gt 0 ] && [ "$HAS_WRITE" -gt 0 ] && [ "$HAS_PUSH" -eq 0 ]; then
-      MISSING="$MISSING $(basename $f)"
-    fi
+    name=$(basename "$f")
+    # -Fx exact-name match (grep -qw would let vercel-demo.yml exempt a future
+    # foo-vercel-demo.yml — '-' and '.' are non-word chars to grep)
+    if echo "$EXEMPT" | tr ' ' '\n' | grep -Fxq "$name"; then continue; fi
+    # Require an actual `uses: .../push-core-data` step, not a mere text
+    # mention in a comment or heredoc.
+    if grep -qE '^[[:space:]]*uses:.*push-core-data' "$f"; then continue; fi
+    for s in $CORE_WRITER_SCRIPTS; do
+      if grep -q "scripts/$s" "$f"; then
+        MISSING="$MISSING $name($s)"
+        break
+      fi
+    done
   done
   if [ -n "$MISSING" ]; then
-    # WARNING-ONLY, deliberately. The original inline test.yml version of this
-    # check was a dead no-op since birth: the "0\n0" grep-c bug above made the
-    # integer tests error out silently, so it never flagged anything. With the
-    # arithmetic fixed it matches ~50 workflows, most of them false positives
-    # (read-only audits; workflows that push via push-review-texts or dispatch
-    # a rebuild instead). Blocking on it now would redden CI repo-wide. The
-    # heuristic needs a redesign (detect workflows that WRITE core files, not
-    # ones that merely check them out) before it can gate again.
-    echo "::warning::Workflows using checkout-core-data with write permissions but no push-core-data (heuristic — many are read-only false positives):$MISSING"
+    echo "::error::Workflows invoke a core-data-writing script but never push-core-data (writes silently discarded at job end):$MISSING"
+    echo "Core files are gitignored in this repo — only the push-core-data action persists them."
+    echo "Fix: add the push-core-data step (see gather-reviews.yml), or if the write is"
+    echo "genuinely build-local/audit-only, add the workflow to EXEMPT in"
+    echo "scripts/lint-workflow-guards.sh with a one-line reason."
+    FAILED=1
   else
-    echo "All writable workflows with checkout-core-data have matching push-core-data"
+    echo "All workflows invoking core-data writers have push-core-data (or are audited exemptions)"
   fi
 }
 
