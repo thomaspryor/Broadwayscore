@@ -8,6 +8,7 @@ const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
 const { cleanSearchTitle } = require('./lib/title-normalization');
+const { updateFileUrlWithInvariant } = require('./lib/url-change-invariant');
 
 // Outlet search URL patterns
 const OUTLET_SEARCH = {
@@ -227,13 +228,21 @@ async function main() {
         if (verification.valid) {
           console.log(`      VALID: ${verification.wordCount} words`);
 
-          // Update the first matching review
+          // Update the first matching review — through the URL-change
+          // invariant (Notion 39a637c5) when the url canonically moves, so
+          // old-URL-derived state clears with a breadcrumb; plain write on
+          // first-set (helper no-ops when there's no existing http url).
           if (domainReviews.length > 0) {
             const review = domainReviews.shift();
-            review.data.url = found.url;
-            review.data.urlVerified = true;
-            review.data.urlUpdatedAt = new Date().toISOString();
-            fs.writeFileSync(review.filePath, JSON.stringify(review.data, null, 2));
+            const metadata = { urlVerified: true, urlUpdatedAt: new Date().toISOString() };
+            const written = updateFileUrlWithInvariant(review.filePath, found.url, metadata);
+            if (!written) {
+              review.data.url = found.url;
+              Object.assign(review.data, metadata);
+              fs.writeFileSync(review.filePath, JSON.stringify(review.data, null, 2));
+            } else {
+              review.data = written;
+            }
             console.log(`      Updated: ${review.filePath}`);
             updated++;
           }

@@ -120,6 +120,7 @@ const { shouldRetryGarbageConsentWall } = require('./lib/consent-refetch');
 const { checkBrowserbaseCaps } = require('./lib/browserbase-caps');
 const { logExclusion } = require('./lib/exclusion-logger');
 const { shouldSkipPollerUpdate, safeRenameReview } = require('./lib/review-write-guard');
+const { updateFileUrlWithInvariant } = require('./lib/url-change-invariant');
 
 /**
  * Rename a review-text file to match its in-memory criticName when one of the
@@ -6053,20 +6054,22 @@ async function processReview(review) {
 
     if (discoveredUrl) {
       console.log(`  [${reason}] Discovered: ${review.url || '(none)'} → ${discoveredUrl}`);
-      // Update URL on file, but keep wrong-content flags until fetch succeeds
-      // (race condition: if we clear flags now but fetch fails, rebuild would include wrong text)
+      // URL-change invariant (Notion 39a637c5): this write moves the file to a
+      // different article, so old-URL-derived state (flags, excerpts, stars,
+      // scores, old text) clears with a durable breadcrumb. The previous inline
+      // write deliberately KEPT wrong-content flags "until fetch succeeds" —
+      // the invariant closes that race harder: the old fullText clears too, so
+      // a failed fetch leaves an unflagged textless stub the rebuild can't
+      // score, instead of wrong text guarded only by a flag.
       try {
-        const fileData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
-        fileData.previousUrl = fileData.url;
-        fileData.url = discoveredUrl;
-        fileData.urlDiscoveredAt = new Date().toISOString();
-        fileData.urlDiscoveryMethod = 'google-serp-reason-recovery';
-        // Clear fabricated flags on successful URL discovery
-        if (fileData.fabricatedEntry) {
-          delete fileData.fabricatedEntry;
-          delete fileData.fabricatedReason;
-        }
-        fs.writeFileSync(review.filePath, JSON.stringify(fileData, null, 2) + '\n');
+        updateFileUrlWithInvariant(review.filePath, discoveredUrl, {
+          urlDiscoveredAt: new Date().toISOString(),
+          urlDiscoveryMethod: 'google-serp-reason-recovery',
+          // Clear fabricated flags on successful URL discovery (undefined
+          // values are dropped by JSON serialization = deletion).
+          fabricatedEntry: undefined,
+          fabricatedReason: undefined,
+        });
       } catch (e) {}
       review.url = discoveredUrl;
       review._urlDiscovered = true;
@@ -6272,16 +6275,21 @@ async function processReview(review) {
     // Update JSON (pass HTML for score extraction)
     await updateReviewJson(review, result.text, validation, archivePath, result.method, result.attempts, result.archiveData || {}, result.html || '', contentVerification);
 
-    // Persist URL discovery metadata if URL was changed via showNotMentioned recovery
+    // Persist URL discovery metadata if URL was changed via showNotMentioned recovery.
+    // ORDERING NOTE: updateReviewJson above already wrote the NEW article's
+    // text + verification into the file (still under the old url) — those
+    // fields are new-era and must survive the url flip; the invariant's
+    // preserveFields exempts them. What still clears: old-URL leftovers the
+    // fetch didn't overwrite (aggregator excerpts, aggregatorStars, old
+    // llmScore, wrong flags) — the exact JCS suppression state.
     if (review._urlDiscovered && review.filePath) {
       try {
-        const fileData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
-        fileData.url = review.url;
-        fileData.previousUrl = review._previousUrl;
-        fileData.urlDiscoveredAt = new Date().toISOString();
-        fileData.urlDiscoveryMethod = 'show-not-mentioned-recovery';
-        fs.writeFileSync(review.filePath, JSON.stringify(fileData, null, 2) + '\n');
-        console.log(`    → URL updated: ${review._previousUrl} → ${review.url}`);
+        const { NEW_ERA_FETCH_FIELDS } = require('./lib/url-change-invariant');
+        const updated = updateFileUrlWithInvariant(review.filePath, review.url, {
+          urlDiscoveredAt: new Date().toISOString(),
+          urlDiscoveryMethod: 'show-not-mentioned-recovery',
+        }, { preserveFields: new Set(NEW_ERA_FETCH_FIELDS) });
+        if (updated) console.log(`    → URL updated: ${review._previousUrl} → ${review.url}`);
       } catch (e) {
         console.log(`    ⚠ Could not persist URL discovery: ${e.message}`);
       }
@@ -6391,17 +6399,17 @@ async function processReview(review) {
             return { success: false, error: 'garbage_content_from_discovered_url' };
           }
 
-          // Content is good — update the review file's URL atomically (write to .tmp, then rename)
+          // Content is good — update the review file's URL (atomic write inside
+          // the helper). Disk still holds the OLD article's text/state here (the
+          // fresh retryResult.text is written by updateReviewJson further down),
+          // so the full URL-change invariant applies: old-URL-derived flags,
+          // excerpts, stars, scores and text clear with a durable breadcrumb.
           try {
-            const reviewData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
-            reviewData.url = discoveredUrl;
-            reviewData.previousUrl = originalUrl;
-            reviewData.urlDiscoveredAt = new Date().toISOString();
-            reviewData.urlDiscoveryMethod = 'google-serp';
-            const tmpPath = review.filePath + '.tmp';
-            fs.writeFileSync(tmpPath, JSON.stringify(reviewData, null, 2));
-            fs.renameSync(tmpPath, review.filePath);
-            console.log(`    → Updated review URL: ${originalUrl} → ${discoveredUrl}`);
+            const updated = updateFileUrlWithInvariant(review.filePath, discoveredUrl, {
+              urlDiscoveredAt: new Date().toISOString(),
+              urlDiscoveryMethod: 'google-serp',
+            });
+            if (updated) console.log(`    → Updated review URL: ${originalUrl} → ${discoveredUrl}`);
           } catch (writeErr) {
             console.log(`    ⚠ Could not update URL in file: ${writeErr.message}`);
           }

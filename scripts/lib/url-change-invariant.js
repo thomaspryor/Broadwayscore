@@ -269,9 +269,94 @@ function applyUrlChangeInvariant(existing, merged, { fileLabel = '?', preserveFi
   return { changed: true, cleared };
 }
 
+/**
+ * Convenience wrapper for the common raw-writer shape: read a review file,
+ * move its url, stamp discovery metadata, write back — with the invariant
+ * enforced and an atomic write. Replaces the inline
+ * read→mutate→writeFileSync blocks in collect-review-texts,
+ * rediscover-review-urls, and the enrich/merge one-offs, which each updated
+ * `url` in place while old-URL-derived state (flags, excerpts, stars, LLM
+ * scores, text) survived (Notion 39a637c5-416f-81d6).
+ *
+ * Also unlinks the data/llm-scores/{showId}/{file} sidecar when the invariant
+ * cleared llmScore — the sidecar is keyed by filename, so a stale score would
+ * otherwise survive the URL change and reattach via sidecar consumers.
+ *
+ * No-ops (returns null) when the file is unreadable or the url isn't actually
+ * changing canonically — callers that also want metadata stamped on a
+ * same-URL write should keep their own write path for that case.
+ *
+ * @param {string} filePath - Absolute path to the review JSON file
+ * @param {string} newUrl - The replacement URL
+ * @param {object} [metadata] - Extra fields to stamp (urlDiscoveryMethod etc.)
+ * @returns {object|null} The written record, or null if nothing was written
+ */
+function updateFileUrlWithInvariant(filePath, newUrl, metadata = {}, opts = {}) {
+  const fs = require('fs');
+  const path = require('path');
+  let existing;
+  try {
+    existing = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  } catch {
+    return null;
+  }
+  if (!urlCanonicallyChanged(existing.url, newUrl)) return null;
+  const updated = { ...existing, ...metadata, previousUrl: existing.url, url: newUrl };
+  const inv = applyUrlChangeInvariant(existing, updated, {
+    fileLabel: path.basename(filePath),
+    preserveFields: opts.preserveFields || null,
+  });
+  const tmpPath = `${filePath}.tmp`;
+  fs.writeFileSync(tmpPath, JSON.stringify(updated, null, 2) + '\n');
+  fs.renameSync(tmpPath, filePath);
+  if (inv.cleared.includes('llmScore')) {
+    _removeLlmScoreSidecar(filePath);
+  }
+  return updated;
+}
+
+// Fields a just-completed fetch of the NEW url wrote into the file — callers
+// that persist a url flip AFTER updateReviewJson-style writes (fetch-first
+// flows) pass these as preserveFields so the invariant doesn't clear fresh
+// new-era content that happens to already be on disk under the old url.
+// publishDate is deliberately NOT here: updateReviewJson only fills it when
+// absent, so a pre-existing date is the OLD article's and must clear with
+// the URL (the invariant's coupled date-guard logic then applies).
+const NEW_ERA_FETCH_FIELDS = [
+  'fullText', 'textFetchedAt', 'textWordCount', 'textStatus', 'textQuality',
+  'sourceMethod', 'isFullReview', 'contentTier', 'contentTierReason',
+  'contentVerification',
+];
+
+// Best-effort sidecar invalidation: data/llm-scores/{showId}/{basename} holds
+// a copy of the llmScore keyed by filename. When a URL change clears the
+// inline llmScore, the sidecar's score belongs to the OLD article and must go
+// too — audit-llm-scores and opening-night readiness read it directly.
+function _removeLlmScoreSidecar(reviewFilePath) {
+  const fs = require('fs');
+  const path = require('path');
+  try {
+    const repoRoot = path.resolve(__dirname, '..', '..');
+    // Scope strictly to the canonical store: a review file at an EXTERNAL
+    // path (test tmp dir, tool scratch) whose parent-dir basename collides
+    // with a real showId must never unlink a real sidecar.
+    const reviewTextsRoot = path.join(repoRoot, 'data', 'review-texts') + path.sep;
+    if (!path.resolve(reviewFilePath).startsWith(reviewTextsRoot)) return;
+    const showId = path.basename(path.dirname(reviewFilePath));
+    const sidecar = path.join(repoRoot, 'data', 'llm-scores', showId, path.basename(reviewFilePath));
+    if (fs.existsSync(sidecar)) {
+      fs.unlinkSync(sidecar);
+      console.warn(`[url-changed] removed stale llm-scores sidecar ${showId}/${path.basename(reviewFilePath)}`);
+    }
+  } catch { /* best-effort */ }
+}
+
 module.exports = {
   applyUrlChangeInvariant,
   urlCanonicallyChanged,
+  updateFileUrlWithInvariant,
+  removeLlmScoreSidecar: _removeLlmScoreSidecar,
+  NEW_ERA_FETCH_FIELDS,
   URL_DERIVED_FIELDS,
   DATE_BASED_WP_PREFIXES,
 };
