@@ -45,6 +45,12 @@ const MiniShowCard = memo(function MiniShowCard({ show, priority = false }: Mini
       })()
     : null;
 
+  // An open show with no score yet is awaiting reviews — show a distinct "TBD"
+  // chip (status-open green) instead of the neutral gray "—" used for other
+  // no-score cases (e.g. closed historical), so the awaiting state reads on the
+  // card itself, not just via the shelf heading.
+  const isAwaiting = score == null && show.status === 'open';
+
   return (
     <Link
       href={`/show/${show.slug}`}
@@ -90,6 +96,13 @@ const MiniShowCard = memo(function MiniShowCard({ show, priority = false }: Mini
                 <span className="text-[7px] font-bold uppercase tracking-wide text-gray-300">Starts</span>
                 <span className="text-[8px] font-bold uppercase tracking-wide text-brand mt-0.5">{dateBadge.month}</span>
                 <span className="text-sm font-bold text-white">{dateBadge.day}</span>
+              </div>
+            ) : isAwaiting ? (
+              <div
+                className="w-9 h-9 rounded-lg flex items-center justify-center text-xs font-bold bg-status-open-bg text-status-open ring-1 ring-status-open/25 shadow-card"
+                title="Awaiting reviews — score coming soon"
+              >
+                TBD
               </div>
             ) : (
               <div className={`w-9 h-9 rounded-lg flex items-center justify-center text-sm font-bold ${
