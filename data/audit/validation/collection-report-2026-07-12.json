@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-07-12T03:04:20.929Z",
+  "runDate": "2026-07-12T06:01:30.023Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,42 +11,42 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 71,
-    "failed": 732,
+    "processed": 86,
+    "failed": 792,
     "skipped": 0,
-    "successRate": "8.8%"
+    "successRate": "9.8%"
   },
   "tierBreakdown": {
-    "playwright": 52,
+    "playwright": 60,
     "amp": 0,
     "browserbase": 4,
-    "directCookies": 9,
-    "scrapingbee": 4,
-    "brightdata": 2,
-    "archiveToday": 28,
-    "archive": 3
+    "directCookies": 10,
+    "scrapingbee": 6,
+    "brightdata": 4,
+    "archiveToday": 29,
+    "archive": 5
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 21,
+    "tier1Success": 15,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 0,
-    "tier4Success": 0,
-    "totalFailed": 77,
-    "scrapingBeePageCredits": 0,
+    "tier2Attempts": 2,
+    "tier2Success": 1,
+    "tier3Attempts": 2,
+    "tier3Success": 2,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
+    "tier4Attempts": 7,
+    "tier4Success": 2,
+    "totalFailed": 12,
+    "scrapingBeePageCredits": 20,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 77,
+    "urlDiscoveryAttempts": 4,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -121,7 +121,22 @@
     "a-delicate-balance-1996/variety--jeremy-gerard.json",
     "don-quixote-off-broadway-2026/stageandcinema--unknown.json",
     "giant-the-play-off-west-end-2026/london-box-office--stuart-king.json",
-    "a-walk-on-the-moon-off-broadway-2026/talkinbroadway--marc-miller.json"
+    "a-walk-on-the-moon-off-broadway-2026/talkinbroadway--marc-miller.json",
+    "birthright-off-broadway-2026/nytimes--helen-shaw.json",
+    "to-kill-a-mockingbird-west-end-2026/london-theatre--unknown.json",
+    "every-brilliant-thing-2026/timeout--adam-feldman.json",
+    "paranormal-activity-west-end-2025/times-uk--rachel-halliburton.json",
+    "just-in-time-2025/timeout--unknown.json",
+    "oh-mary-2024/culturesauce--thom-geier.json",
+    "showstopper-the-improvised-musical-west-end-2023/timeout-london--andrzej-lukowski.json",
+    "dear-england-new-wimbledon-theatre-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "dear-england-new-wimbledon-theatre-west-end-2026/standard--nick-curtis.json",
+    "11-to-midnight-off-broadway-2026/one-minute-critic--ryan-leeds.json",
+    "evita-west-end-2025/express-uk--neil-norman.json",
+    "a-dolls-house-part-2-2017/huffpost--michael-glitz.json",
+    "war-paint-2017/nytimes--ben-brantley.json",
+    "les-liaisons-dangereuses-2016/washington-times--mark-kennedy.json",
+    "spring-awakening-2015/washington-times--mark-kennedy.json"
   ],
   "failed": [
     "iceboy-regional-2026/chicago-sun-times--mike-davis-wbez.json",
@@ -855,7 +870,67 @@
     "the-little-mermaid-2008/nypost--clive-barnes.json",
     "is-he-dead-2007/nypost--clive-barnes.json",
     "inherit-the-wind-2007/nypost--clive-barnes.json",
-    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json"
+    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+    "dukes-off-broadway-2026/theatermania--linda-buchwald.json",
+    "dukes-off-broadway-2026/theatermania--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/guardian--mark-fisher.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/loureviews--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/all-that-dazzles-uk--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/londontheatre1--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/west-end-best-friend--unknown.json",
+    "a-walk-on-the-moon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "a-walk-on-the-moon-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+    "birthright-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "birthright-off-broadway-2026/pages-on-stages--unknown.json",
+    "dukes-off-broadway-2026/theatermania--linda-buchwald.json",
+    "dukes-off-broadway-2026/theatermania--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/guardian--mark-fisher.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/loureviews--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/all-that-dazzles-uk--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/londontheatre1--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/west-end-best-friend--unknown.json",
+    "a-walk-on-the-moon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "a-walk-on-the-moon-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+    "birthright-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "birthright-off-broadway-2026/pages-on-stages--unknown.json",
+    "dukes-off-broadway-2026/theatermania--linda-buchwald.json",
+    "dukes-off-broadway-2026/theatermania--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/guardian--mark-fisher.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/loureviews--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/all-that-dazzles-uk--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/londontheatre1--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/west-end-best-friend--unknown.json",
+    "a-walk-on-the-moon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "a-walk-on-the-moon-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+    "birthright-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "birthright-off-broadway-2026/pages-on-stages--unknown.json",
+    "dukes-off-broadway-2026/theatermania--linda-buchwald.json",
+    "dukes-off-broadway-2026/theatermania--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/guardian--mark-fisher.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/loureviews--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/all-that-dazzles-uk--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/londontheatre1--unknown.json",
+    "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/west-end-best-friend--unknown.json",
+    "a-walk-on-the-moon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "a-walk-on-the-moon-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "misterman-theatre-row-off-broadway-2026/nytimes--sarah-bahr.json",
+    "birthright-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "birthright-off-broadway-2026/pages-on-stages--unknown.json",
+    "to-kill-a-mockingbird-west-end-2026/theupcoming--unknown.json",
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/theupcoming--unknown.json",
+    "much-ado-about-nothing-globe-off-west-end-2026/theupcoming--unknown.json",
+    "beetlejuice-west-end-2026/theupcoming--unknown.json",
+    "care-west-end-2026/theupcoming--unknown.json",
+    "hadestown-2019/dc-metro-theater-arts--deb-miller.json",
+    "book-of-mormon-2011/boston-com--mark-kennedy.json",
+    "the-lion-king-1997/jasonraize--frank-scheck.json",
+    "the-lion-king-1997/jasonraize--michael-kuchwara.json",
+    "the-lion-king-1997/jasonraize--michael-sommers.json",
+    "les-liaisons-dangereuses-west-end-2026/theupcoming--unknown.json",
+    "consumed-west-end-2026/theupcoming--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -910,7 +985,15 @@
       "romeo-and-juliet-west-end-2026/theatreandtonic--unknown.json",
       "a-little-night-music-2009/theater-mirror--mike-hoban.json",
       "don-quixote-off-broadway-2026/stageandcinema--unknown.json",
-      "giant-the-play-off-west-end-2026/london-box-office--stuart-king.json"
+      "giant-the-play-off-west-end-2026/london-box-office--stuart-king.json",
+      "to-kill-a-mockingbird-west-end-2026/london-theatre--unknown.json",
+      "every-brilliant-thing-2026/timeout--adam-feldman.json",
+      "just-in-time-2025/timeout--unknown.json",
+      "oh-mary-2024/culturesauce--thom-geier.json",
+      "showstopper-the-improvised-musical-west-end-2023/timeout-london--andrzej-lukowski.json",
+      "dear-england-new-wimbledon-theatre-west-end-2026/timeout-london--andrzej-lukowski.json",
+      "11-to-midnight-off-broadway-2026/one-minute-critic--ryan-leeds.json",
+      "a-dolls-house-part-2-2017/huffpost--michael-glitz.json"
     ],
     "amp": [],
     "browserbase": [
@@ -928,17 +1011,22 @@
       "much-ado-about-nothing-globe-off-west-end-2026/times-uk--clive-davis.json",
       "much-ado-about-nothing-globe-off-west-end-2026/times-uk--dominic-maxwell.json",
       "much-ado-about-nothing-globe-off-west-end-2026/times-uk--rachel-halliburton.json",
-      "death-of-a-salesman-2012/times-uk--unknown.json"
+      "death-of-a-salesman-2012/times-uk--unknown.json",
+      "paranormal-activity-west-end-2025/times-uk--rachel-halliburton.json"
     ],
     "scrapingbee": [
       "iceboy-regional-2026/chicagotribune--christopher-borrelli.json",
       "iceboy-regional-2026/chicagotribune--unknown.json",
       "giulia-the-poison-queen-of-palermo-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
-      "oh-mary-2024/independent--unknown.json"
+      "oh-mary-2024/independent--unknown.json",
+      "birthright-off-broadway-2026/nytimes--helen-shaw.json",
+      "war-paint-2017/nytimes--ben-brantley.json"
     ],
     "brightdata": [
       "the-maids-off-broadway-2026/thewrap--unknown.json",
-      "a-walk-on-the-moon-off-broadway-2026/talkinbroadway--marc-miller.json"
+      "a-walk-on-the-moon-off-broadway-2026/talkinbroadway--marc-miller.json",
+      "les-liaisons-dangereuses-2016/washington-times--mark-kennedy.json",
+      "spring-awakening-2015/washington-times--mark-kennedy.json"
     ],
     "archiveToday": [
       "data/review-texts/the-misanthrope-west-end-2026/thestage--dave-fargnoli.json",
@@ -968,14 +1056,32 @@
       "data/review-texts/romeo-and-juliet-west-end-2026/click-liverpool--unknown.json",
       "data/review-texts/the-magic-show-1974/hollywood-reporter--david-rooney.json",
       "data/review-texts/a-walk-on-the-moon-off-broadway-2026/talkinbroadway--marc-miller.json",
-      "data/review-texts/360-allstars-off-west-end-2026/thestage--unknown.json"
+      "data/review-texts/360-allstars-off-west-end-2026/thestage--unknown.json",
+      "data/review-texts/hadestown-2019/dc-metro-theater-arts--deb-miller.json"
     ],
     "archive": [
       "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
       "archduke-west-end-2026/broadwayworld--alexander-cohen.json",
-      "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json"
+      "sabrage-off-west-end-2026/londontheatre1--ryan-collins.json",
+      "dear-england-new-wimbledon-theatre-west-end-2026/standard--nick-curtis.json",
+      "evita-west-end-2025/express-uk--neil-norman.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Boston.com": {
+      "count": 1,
+      "domain": "boston.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Jasonraize": {
+      "count": 3,
+      "domain": "jasonraize.net",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
