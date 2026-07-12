@@ -1459,35 +1459,40 @@ function ToBeRatedCard({ entry, show }: { entry: WatchlistEntry; show?: ShowLook
           <div className="w-full h-full flex items-center justify-center text-gray-600 text-xl">🎭</div>
         )}
       </div>
-      <div className="relative z-[1] flex-1 min-w-0 pointer-events-none">
-        <h4 className="font-bold text-white text-base truncate">{title}</h4>
-        {show?.venue && <p className="text-sm text-gray-500 truncate">{show.venue}</p>}
-        {entry.planned_date && (
-          <p className="text-xs text-amber-400 mt-0.5 whitespace-nowrap">
-            Saw {new Date(entry.planned_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-          </p>
-        )}
-      </div>
-      <div className="relative z-[2] flex-shrink-0 pointer-events-auto">
-        {/* xs stars on mobile, md on desktop */}
-        <span className="sm:hidden">
-          <StarRating
-            rating={null}
-            onRatingChange={(rating) => {
-              router.push(`${href}?rate=1&stars=${rating}`);
-            }}
-            size="xs"
-          />
-        </span>
-        <span className="hidden sm:inline-flex">
-          <StarRating
-            rating={null}
-            onRatingChange={(rating) => {
-              router.push(`${href}?rate=1&stars=${rating}`);
-            }}
-            size="md"
-          />
-        </span>
+      {/* Mobile: stars stack UNDER the title so it stays legible (a side-by-side
+          row crushed titles to one character at 390px — 2026-07-12 design pass).
+          sm+: title and stars side by side as before. */}
+      <div className="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-3">
+        <div className="relative z-[1] flex-1 min-w-0 pointer-events-none">
+          <h4 className="font-bold text-white text-base truncate">{title}</h4>
+          {show?.venue && <p className="text-sm text-gray-500 truncate">{show.venue}</p>}
+          {entry.planned_date && (
+            <p className="text-xs text-amber-400 mt-0.5 whitespace-nowrap">
+              Saw {new Date(entry.planned_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+            </p>
+          )}
+        </div>
+        <div className="relative z-[2] flex-shrink-0 pointer-events-auto">
+          {/* sm stars on mobile (stacked row has room), md on desktop */}
+          <span className="sm:hidden">
+            <StarRating
+              rating={null}
+              onRatingChange={(rating) => {
+                router.push(`${href}?rate=1&stars=${rating}`);
+              }}
+              size="sm"
+            />
+          </span>
+          <span className="hidden sm:inline-flex">
+            <StarRating
+              rating={null}
+              onRatingChange={(rating) => {
+                router.push(`${href}?rate=1&stars=${rating}`);
+              }}
+              size="md"
+            />
+          </span>
+        </div>
       </div>
     </div>
   );

@@ -233,7 +233,7 @@ export default function RatingEditor({
             type="button"
             onClick={onDelete}
             disabled={saving}
-            className="ml-auto text-[11px] text-gray-500 hover:text-score-skip transition-colors px-2 py-1"
+            className="ml-auto text-[11px] text-score-skip/80 hover:text-score-skip transition-colors px-2 py-1"
           >
             Delete this rating
           </button>
