@@ -441,14 +441,13 @@ test.describe('My Shows — Mobile Layout (390px)', () => {
     expect(bodyWidth).toBeLessThanOrEqual(390);
   });
 
-  test('To Be Rated stars use xs size on mobile', async ({ page }) => {
-    await goToMock(page);
-    // On mobile (<640px), the xs StarRating renders with 14px inline style
-    // The button has a larger tap target (min 44px) but the visual star is xs
+  test('To Be Rated stars use sm size on mobile (stacked under title)', async ({ page }) => {
+    await goToMock(page, 'diary');
+    // Stars stack UNDER the title at mobile (2026-07-12 design pass — the old
+    // side-by-side xs row crushed titles to one character), sized sm (20px).
     const starBtn = page.getByRole('button', { name: '1 star' }).first();
-    // Check the inline style sets 14px (xs size from SIZE_MAP)
-    await expect(starBtn).toHaveAttribute('style', /width:\s*14px/);
-    await expect(starBtn).toHaveAttribute('style', /height:\s*14px/);
+    await expect(starBtn).toHaveAttribute('style', /width:\s*20px/);
+    await expect(starBtn).toHaveAttribute('style', /height:\s*20px/);
   });
 
   test('tab bar does not overflow on mobile', async ({ page }) => {
