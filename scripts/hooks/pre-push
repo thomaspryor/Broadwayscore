@@ -47,7 +47,10 @@ cd "$REPO_ROOT"
 ALL_CHANGED_FILES=""
 HAVE_NON_DELETE_SPEC=0
 
-for spec in "${PUSH_SPECS[@]}"; do
+# ${arr[@]+...} guard: /bin/bash is 3.2, where expanding an EMPTY array under
+# `set -u` is a fatal "unbound variable" (fixed in bash 4.4). Git can invoke
+# this hook with empty stdin during push races — the hook must not crash then.
+for spec in ${PUSH_SPECS[@]+"${PUSH_SPECS[@]}"}; do
   read local_ref local_oid remote_ref remote_oid <<<"$spec"
   # Skip deletions (local_oid is all zeros for `git push --delete`)
   [ "$local_oid" = "0000000000000000000000000000000000000000" ] && continue
