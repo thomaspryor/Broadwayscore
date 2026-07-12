@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-12T17:52:23.387Z",
+  "timestamp": "2026-07-12T17:58:43.480Z",
   "stats": {
-    "totalReviews": 39964,
-    "alreadyFlagged": 17546,
+    "totalReviews": 39880,
+    "alreadyFlagged": 17542,
     "dateGuardCatches": 48,
-    "directorMismatch": 914,
-    "tvFilmSignals": 1097,
-    "londonSignals": 744,
-    "offBroadwaySignals": 466,
+    "directorMismatch": 910,
+    "tvFilmSignals": 1093,
+    "londonSignals": 743,
+    "offBroadwaySignals": 465,
     "yearMismatch": 85,
-    "noPublishDate": 3777
+    "noPublishDate": 3776
   },
   "findings": [
     {
@@ -2461,7 +2461,7 @@
     },
     {
       "showId": "betrayal-2019",
-      "file": "theater-life--barry-gordin.json",
+      "file": "theater-life--david-sheward.json",
       "score": 81,
       "publishDate": "2019-10-18T09:00:16",
       "url": "https://theaterlife.com/betrayal-1-2/",
@@ -2881,7 +2881,7 @@
     },
     {
       "showId": "buena-vista-social-club-off-broadway-2023",
-      "file": "theater-life--barry-gordin.json",
+      "file": "theater-life--samuel-l-leiter.json",
       "score": 92,
       "publishDate": "2023-12-23T09:35:37",
       "url": "https://theaterlife.com/buena-vista-social-club-3/",
@@ -3996,7 +3996,7 @@
     },
     {
       "showId": "cats-the-jellicle-ball-off-broadway-2024",
-      "file": "theater-life--barry-gordin.json",
+      "file": "theater-life--david-sheward.json",
       "score": 86,
       "publishDate": "2024-07-21T15:46:16",
       "url": "https://theaterlife.com/cats-the-jellicle-ball-2/",
@@ -5577,7 +5577,7 @@
     },
     {
       "showId": "death-of-a-salesman-2022",
-      "file": "theater-life--barry-gordin.json",
+      "file": "theater-life--david-sheward.json",
       "score": 88,
       "publishDate": "2022-12-30T13:40:37",
       "url": "https://theaterlife.com/death-of-a-salesman-5/",
@@ -5989,7 +5989,7 @@
     },
     {
       "showId": "diana-the-musical-2021",
-      "file": "theater-life--barry-gordin.json",
+      "file": "theater-life--david-sheward.json",
       "score": 25,
       "publishDate": "2021-10-07T00:21:31",
       "url": "https://theaterlife.com/diana-the-musical/",
@@ -9590,7 +9590,7 @@
     },
     {
       "showId": "gypsy-2024",
-      "file": "theater-life--barry-gordin.json",
+      "file": "theater-life--david-sheward.json",
       "score": 95,
       "publishDate": "2025-01-28T15:24:08",
       "url": "https://theaterlife.com/gypsy-3/",
@@ -10516,7 +10516,7 @@
     },
     {
       "showId": "heathers-the-musical-off-broadway-2025",
-      "file": "theater-life--barry-gordin.json",
+      "file": "theater-life--samuel-l-leiter.json",
       "score": 63,
       "publishDate": "2025-07-12T12:50:29",
       "url": "https://theaterlife.com/heathers-the-musical-2/",
@@ -10754,20 +10754,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "home-2024",
-      "file": "theater-life--barry-gordin.json",
-      "score": 89,
-      "publishDate": "2024-06-14T12:38:23",
-      "url": "https://theaterlife.com/home/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"douglas turner ward\" from home-1980"
         }
       ]
     },
@@ -11823,20 +11809,6 @@
       "score": 88,
       "publishDate": "July 11, 2022",
       "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-2022",
-      "file": "theater-life--barry-gordin.json",
-      "score": 96,
-      "publishDate": "2022-07-14T23:21:11",
-      "url": "https://theaterlife.com/into-the-woods/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -14354,7 +14326,7 @@
     },
     {
       "showId": "little-bear-ridge-road-2025",
-      "file": "theater-life--barry-gordin.json",
+      "file": "theater-life--david-sheward.json",
       "score": 80,
       "publishDate": "2025-11-26T11:23:06",
       "url": "https://theaterlife.com/little-bear-ridge-road-1-2/",
@@ -15397,7 +15369,7 @@
     },
     {
       "showId": "miss-saigon-2017",
-      "file": "theater-life--barry-gordin.json",
+      "file": "theater-life--lauren-yarger.json",
       "score": 82,
       "publishDate": "2017-05-06T15:07:02",
       "url": "https://theaterlife.com/miss-saigon/",
@@ -17092,20 +17064,6 @@
       "score": 76,
       "publishDate": "March 16, 2023",
       "url": "https://www.nytimes.com/2023/03/16/theater/parade-review-leo-frank.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"harold prince\" from parade-1998"
-        }
-      ]
-    },
-    {
-      "showId": "parade-2023",
-      "file": "theater-life--barry-gordin.json",
-      "score": 82,
-      "publishDate": "2023-03-25T19:57:41",
-      "url": "https://theaterlife.com/parade-1-2-2/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -20009,20 +19967,6 @@
     },
     {
       "showId": "smash-2025",
-      "file": "theater-life--barry-gordin.json",
-      "score": 42,
-      "publishDate": "2025-04-18T12:07:38",
-      "url": "https://theaterlife.com/smash-3/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "smash-2025",
       "file": "theater-life--patrick-christiano.json",
       "score": 92,
       "publishDate": "2025-04-17T18:40:20",
@@ -20926,7 +20870,7 @@
     },
     {
       "showId": "straight-white-men-2018",
-      "file": "theater-life--barry-gordin.json",
+      "file": "theater-life--isa-goldberg.json",
       "score": 72,
       "publishDate": "2018-08-26T22:12:30",
       "url": "https://theaterlife.com/straight-white-men/",
@@ -21308,23 +21252,9 @@
     },
     {
       "showId": "sunday-in-the-park-with-george-2017",
-      "file": "theater-life--barry-gordin.json",
+      "file": "theater-life--isa-goldberg.json",
       "score": 88,
       "publishDate": "2017-03-30T13:08:48",
-      "url": "https://theaterlife.com/sunday-in-the-park-with-george-12/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from sunday-in-the-park-with-george-1994"
-        }
-      ]
-    },
-    {
-      "showId": "sunday-in-the-park-with-george-2017",
-      "file": "theater-life--isa-goldberg.json",
-      "score": 86,
-      "publishDate": "March 30th, 2017",
       "url": "https://theaterlife.com/sunday-in-the-park-with-george-12/",
       "findings": [
         {
@@ -23047,7 +22977,7 @@
     },
     {
       "showId": "the-cottage-2023",
-      "file": "theater-life--barry-gordin.json",
+      "file": "theater-life--samuel-l-leiter.json",
       "score": 59,
       "publishDate": "2023-07-30T10:35:30",
       "url": "https://theaterlife.com/the-cottage-1-2-2/",
@@ -24562,20 +24492,6 @@
     },
     {
       "showId": "the-parisian-woman-2017",
-      "file": "theater-life--barry-gordin.json",
-      "score": 41,
-      "publishDate": "2017-12-05T15:50:55",
-      "url": "https://theaterlife.com/the-parisian-woman/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "the-parisian-woman-2017",
       "file": "theater-life--david-sheward.json",
       "score": 25,
       "publishDate": "2017-12-05T15:50:55",
@@ -25384,20 +25300,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"episode 3\""
-        }
-      ]
-    },
-    {
-      "showId": "the-shark-is-broken-2023",
-      "file": "theater-life--barry-gordin.json",
-      "score": 65,
-      "publishDate": "2023-08-14T19:21:00",
-      "url": "https://theaterlife.com/the-shark-is-broken/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -26580,20 +26482,6 @@
     },
     {
       "showId": "walking-with-ghosts-2022",
-      "file": "theater-life--barry-gordin.json",
-      "score": 62,
-      "publishDate": "2022-11-01T08:57:00",
-      "url": "https://theaterlife.com/walking-with-ghosts-3/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "walking-with-ghosts-2022",
       "file": "theater-life--samuel-l-leiter.json",
       "score": 65,
       "publishDate": "October 30th, 2022",
@@ -27490,7 +27378,7 @@
     },
     {
       "showId": "west-side-story-2020",
-      "file": "theater-life--barry-gordin.json",
+      "file": "theater-life--david-sheward.json",
       "score": 78,
       "publishDate": "2020-02-23T10:31:01",
       "url": "https://theaterlife.com/west-side-story-2/",
@@ -31377,7 +31265,7 @@
     },
     {
       "showId": "days-of-wine-and-roses-2024",
-      "file": "theater-life--barry-gordin.json",
+      "file": "theater-life--samuel-l-leiter.json",
       "score": 74,
       "publishDate": "2024-02-04T09:21:28",
       "url": "https://theaterlife.com/days-of-wine-and-roses-2/",
@@ -33500,20 +33388,6 @@
       "score": 81,
       "publishDate": "April 21, 2024",
       "url": "https://nypost.com/2024/04/21/entertainment/hells-kitchen-review-alicia-keys-musical-is-a-blazing-triumph/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "hells-kitchen-2024",
-      "file": "theater-life--samuel-l-leiter.json",
-      "score": 84,
-      "publishDate": "2024-05-07",
-      "url": "https://theaterlife.com/hells-kitchen/",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
@@ -37074,7 +36948,7 @@
     },
     {
       "showId": "operation-mincemeat-2025",
-      "file": "theater-life--barry-gordin.json",
+      "file": "theater-life--samuel-l-leiter.json",
       "score": 87,
       "publishDate": "2025-03-25T08:30:00",
       "url": "https://theaterlife.com/operation-mincemeat-2/",
@@ -38488,7 +38362,7 @@
     },
     {
       "showId": "six-2021",
-      "file": "theater-life--barry-gordin.json",
+      "file": "theater-life--lauren-yarger.json",
       "score": 78,
       "publishDate": "2021-10-28T11:19:45",
       "url": "https://theaterlife.com/six/",
@@ -40606,20 +40480,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
-        }
-      ]
-    },
-    {
-      "showId": "the-collaboration-2022",
-      "file": "theater-life--barry-gordin.json",
-      "score": 62,
-      "publishDate": "2023-01-30T18:47:04",
-      "url": "https://theaterlife.com/the-collaboration-1-2/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -42796,7 +42656,7 @@
     },
     {
       "showId": "the-thanksgiving-play-2023",
-      "file": "theater-life--barry-gordin.json",
+      "file": "theater-life--samuel-l-leiter.json",
       "score": 85,
       "publishDate": "2023-04-29T11:34:46",
       "url": "https://theaterlife.com/the-thanksgiving-play-1-2/",
@@ -43104,7 +42964,7 @@
     },
     {
       "showId": "tina-2019",
-      "file": "theater-life--barry-gordin.json",
+      "file": "theater-life--david-sheward.json",
       "score": 85,
       "publishDate": "2020-01-22T09:50:00",
       "url": "https://theaterlife.com/tina/",
@@ -43942,7 +43802,7 @@
     },
     {
       "showId": "yellow-face-2024",
-      "file": "theater-life--barry-gordin.json",
+      "file": "theater-life--samuel-l-leiter.json",
       "score": 67,
       "publishDate": "2024-10-04T17:02:26",
       "url": "https://theaterlife.com/yellow-face/",
