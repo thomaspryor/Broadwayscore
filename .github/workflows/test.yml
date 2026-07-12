@@ -377,6 +377,23 @@ on:
       - 'scripts/notion-tasks-sync.test.mjs'
       - 'scripts/bsc-next.js'
       - 'scripts/bsc-next.test.mjs'
+      # Autonomous nightly loop (Sprint 1, Notion 39b637c5). Colocated
+      # *.test.mjs run in the lib-test glob; path-listed so a solo edit
+      # triggers CI (feedback_test_yml_push_path_allowlist). notion-brain.js
+      # was never path-listed before — its bsc-next/tasks-sync consumers were.
+      - 'scripts/notion-brain.js'
+      - 'scripts/lib/autonomous-eligibility.js'
+      - 'scripts/lib/autonomous-eligibility.test.mjs'
+      - 'scripts/lib/autonomous-state.js'
+      - 'scripts/lib/autonomous-state.test.mjs'
+      - 'scripts/lib/autonomous-triage-core.js'
+      - 'scripts/lib/autonomous-triage-core.test.mjs'
+      - 'scripts/lib/triage-schema.json'
+      - 'scripts/lib/triage-calibration.test.mjs'
+      - 'scripts/autonomous-triage.js'
+      - 'scripts/autonomous-calibrate.js'
+      - 'scripts/autonomous-run.js'
+      - 'scripts/autonomous-probe.js'
   pull_request:
     branches: [main]
   schedule:

@@ -61,29 +61,13 @@ function priorityRank(task) {
   return m ? parseInt(m[1].slice(1), 10) : 9;
 }
 
-// Category is the trailing meta segment (mirrored by notion-tasks-sync).
-// Marketing/Partnerships cards are human territory — the launcher must never
-// default-pick them (2026-07-12: bsc-next seeded a session onto "Scope the
-// TodayTix partnership" and it started drafting business strategy). They can
-// still be selected explicitly via --id / --pick.
-const EXCLUDED_CATEGORIES = new Set(['marketing', 'partnerships']);
-// Second layer: Admin/Product cards that are still human ACTIONS (emailing
-// people, reconnecting accounts, posting) — category can't see these.
-const HUMAN_ACTION_RE = /^(send|reply|follow up|email|recruit|post|repost|meet|reschedule|reconnect|call|text|dm|share|announce|pitch|ask)\b/i;
-function categoryOf(task) {
-  const firstLine = (task.description || '').split('\n')[0];
-  const parts = firstLine.split('·').map(s => s.trim());
-  return parts.length >= 3 ? parts[parts.length - 1].toLowerCase() : null;
-}
-function isExcludedCategory(task) {
-  const c = categoryOf(task);
-  if (c !== null && EXCLUDED_CATEGORIES.has(c)) return true;
-  // Verb layer applies only to short imperatives ("Email volunteers") — long
-  // subjects starting with the same word are product cards ("Email gate
-  // conversion critically low at 0.9%").
-  const subject = (task.subject || '').trim();
-  return HUMAN_ACTION_RE.test(subject) && subject.split(/\s+/).length <= 5;
-}
+// Human-territory filtering (Marketing/Partnerships categories + short
+// human-action imperatives like "Email volunteers") lives in the canonical
+// eligibility module shared with the autonomous nightly loop. History: on
+// 2026-07-12 bsc-next default-picked "Scope the TodayTix partnership" and the
+// session started drafting business strategy — hence the category exclusion.
+// Excluded cards can still be selected explicitly via --id / --pick.
+const { EXCLUDED_CATEGORIES, categoryOf, isExcludedCategory } = require('./lib/autonomous-eligibility.js');
 
 // Actionable list, best-first: by Notion priority, then pending before
 // in_progress (fresh work first), then task id. Completed dropped;
