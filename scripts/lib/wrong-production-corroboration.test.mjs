@@ -105,6 +105,33 @@ describe('evaluateCurrentRunCorroboration', () => {
     assert.equal(r.strength, null);
   });
 
+  test('malformed TR month (13, 0) → no signal (Date.UTC must not normalize)', () => {
+    for (const mo of ['13', '0']) {
+      const r = evaluateCurrentRunCorroboration({
+        review: { theatreRecordUrl: `https://www.theatrerecord.com/archive/2026/${mo}/1-x` },
+        show: CARE,
+      });
+      assert.equal(r.strength, null, `month ${mo}`);
+    }
+  });
+
+  test('malformed show closingDate → no TR signal (conservative: guard flags as usual)', () => {
+    const r = evaluateCurrentRunCorroboration({
+      review: { theatreRecordUrl: 'https://www.theatrerecord.com/archive/2026/5/1-x' },
+      show: { previewsStartDate: '2026-05-11', closingDate: 'TBD' },
+    });
+    assert.equal(r.strength, null);
+  });
+
+  test('month-boundary: TR month ending exactly at window start still corroborates', () => {
+    // window start = previews 2026-05-11 minus 35d = 2026-04-06; April month-end >= start
+    const r = evaluateCurrentRunCorroboration({
+      review: { theatreRecordUrl: 'https://www.theatrerecord.com/archive/2026/4/1-x' },
+      show: CARE,
+    });
+    assert.equal(r.strength, 'strong');
+  });
+
   test('no corroboration fields → null (flag proceeds as before)', () => {
     const r = evaluateCurrentRunCorroboration({
       review: { publishDate: '2009-04-09' },

@@ -151,16 +151,22 @@ function run() {
       // Current-run corroboration guard: a misparsed publishDate can put a
       // CURRENT review outside the window (care-west-end-2026 incident,
       // 2026-07-11). STRONG corroboration (Theatre Record archives the review
-      // under an in-window month) → HOLD the flag, route to human review.
-      // WEAK (roundup excerpts only — ~75% of those flags were correct in the
+      // under an in-window month) → HOLD the flag, route to human review; the
+      // unflagged file stays excluded by the rebuild's own corroboration hold,
+      // and validate-data CHECK 0 reddens CI if it is >180d early. WEAK
+      // (roundup excerpts only — ~75% of those flags were correct in the
       // 2026-07-12 sweep) → flag as usual but count a warning.
-      const corrob = evaluateCurrentRunCorroboration({ review: data, show });
-      if (corrob.strength === 'strong') {
-        corroborationHeld++;
-        heldDetails.push({ showId: showDir, file, date: data.publishDate, outlet: data.outlet || '?', signals: corrob.signals, issue, diffDays });
-        continue;
+      // before_preview only: an after_close date is more likely a successor
+      // production mislinked back (can share the TR month near closing).
+      if (issue === 'before_preview') {
+        const corrob = evaluateCurrentRunCorroboration({ review: data, show });
+        if (corrob.strength === 'strong') {
+          corroborationHeld++;
+          heldDetails.push({ showId: showDir, file, date: data.publishDate, outlet: data.outlet || '?', signals: corrob.signals, issue, diffDays });
+          continue;
+        }
+        if (corrob.strength === 'weak') corroborationWarned++;
       }
-      if (corrob.strength === 'weak') corroborationWarned++;
 
       const note = issue === 'before_preview'
         ? `Date guard: review ${data.publishDate} is ${diffDays}d before ${earliestStr} (preview/open) — likely different production`
