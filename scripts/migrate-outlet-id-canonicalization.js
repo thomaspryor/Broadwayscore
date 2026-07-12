@@ -132,7 +132,7 @@ function main() {
     if (r.status !== 0) {
       console.error('  ⚠ gh workflow dispatch failed — run manually: gh workflow run "Rebuild Reviews Data" -f reason="Post outlet-id migration"');
     } else {
-      console.log('  ✓ Rebuild dispatched. Watch with: gh run watch');
+      console.log('  ✓ Rebuild dispatched. Wait with: scripts/lib/wait-for-run.sh <run-id>');
     }
   } else if (results.renamed > 0 && !DRY_RUN) {
     console.log('\n⚠ Reviews.json still references the legacy outletId until the next rebuild fires.');
