@@ -34,6 +34,7 @@ const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier, computeContentFingerprint } = require('./lib/content-quality');
 const { shouldDeferCvWrongShow } = require('./lib/content-verifier');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
+const { mergeUniqueReviewFields } = require('./lib/merge-review-fields');
 const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extractors');
 const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTLETS } = require('./lib/score-parsers');
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
@@ -1329,16 +1330,13 @@ const crossShowFingerprints = new Map();
         if (expectedFilename === f) continue; // Already correct (shouldn't happen but guard)
         const expectedPath = path.join(sDir, expectedFilename);
         if (fs.existsSync(expectedPath)) {
-          // Named file exists — merge unique fields from --unknown, then delete it
+          // Named file exists — merge unique fields from --unknown, then delete it.
+          // Guarded: an exclusion-flagged source never folds into an unflagged
+          // target (totoro contamination, Notion 39b637c5-416f-815e) — leave it.
           const existingData = JSON.parse(fs.readFileSync(expectedPath, 'utf8'));
-          let merged = false;
-          for (const [key, val] of Object.entries(d)) {
-            if (val != null && !existingData[key]) {
-              existingData[key] = val;
-              merged = true;
-            }
-          }
-          if (merged) {
+          const mergeResult = mergeUniqueReviewFields(existingData, d);
+          if (mergeResult.action === 'skip-flagged-source') continue;
+          if (mergeResult.changed) {
             safeWriteReview(expectedPath, existingData);
           }
           // Clear any sibling files that point at this file via duplicateOf —
@@ -1385,16 +1383,13 @@ const crossShowFingerprints = new Map();
         if (expectedFilename === f) continue;
         const expectedPath = path.join(sDir, expectedFilename);
         if (fs.existsSync(expectedPath)) {
-          // Named file exists — merge unique fields, delete stale
+          // Named file exists — merge unique fields, delete stale.
+          // Guarded: an exclusion-flagged source never folds into an unflagged
+          // target (totoro contamination, Notion 39b637c5-416f-815e) — leave it.
           const existingData = JSON.parse(fs.readFileSync(expectedPath, 'utf8'));
-          let merged = false;
-          for (const [key, val] of Object.entries(d)) {
-            if (val != null && !existingData[key]) {
-              existingData[key] = val;
-              merged = true;
-            }
-          }
-          if (merged) {
+          const mergeResult = mergeUniqueReviewFields(existingData, d);
+          if (mergeResult.action === 'skip-flagged-source') continue;
+          if (mergeResult.changed) {
             safeWriteReview(expectedPath, existingData);
           }
           // Cascade-clear duplicateOf siblings before unlinking (see Pass 1).
