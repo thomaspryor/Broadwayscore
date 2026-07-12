@@ -155,6 +155,29 @@ describe('CLI --base mode — committed re-creation dropped via git rm + commit'
     assert.equal(git(repo, 'status --porcelain').trim(), '');
   });
 
+  test('mid-rebase/merge state → gate skips without touching anything', () => {
+    const repo = path.join(tmpDir, 'repo3');
+    fs.mkdirSync(repo);
+    git(repo, 'init -q -b main');
+    git(repo, 'config user.email t@t');
+    git(repo, 'config user.name t');
+    fs.mkdirSync(path.join(repo, OWNER_SHOW), { recursive: true });
+    fs.writeFileSync(path.join(repo, OWNER_SHOW, 'seed.json'), JSON.stringify({ url: SOHO_URL }));
+    git(repo, 'add -A');
+    git(repo, 'commit -qm base');
+    git(repo, 'branch base-marker');
+    const sibDir = path.join(repo, SIBLING_SHOW);
+    fs.mkdirSync(sibDir, { recursive: true });
+    fs.writeFileSync(path.join(sibDir, 'violator.json'), JSON.stringify({ url: SOHO_URL }));
+    git(repo, 'add -A');
+    git(repo, 'commit -qm "writer changes"');
+    // Simulate an in-progress merge (the action's rebase --continue || true path)
+    fs.writeFileSync(path.join(repo, '.git', 'MERGE_HEAD'), git(repo, 'rev-parse HEAD').trim() + '\n');
+    const out = execSync(`node ${SCRIPT} --base=base-marker`, { cwd: repo, encoding: 'utf8' });
+    assert.match(out, /rebase\/merge in progress — skipping/);
+    assert.equal(fs.existsSync(path.join(sibDir, 'violator.json')), true); // untouched
+  });
+
   test('no violations → no drop commit, tree untouched', () => {
     const repo = path.join(tmpDir, 'repo2');
     fs.mkdirSync(repo);

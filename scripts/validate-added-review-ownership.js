@@ -117,11 +117,34 @@ function decideOwnershipDrops(newFiles, reviewTextsDir) {
   return drops;
 }
 
+/**
+ * True when a rebase/merge/cherry-pick is in progress. The action's
+ * post-conflict call site can reach the gate after `git rebase --continue ||
+ * true` left the rebase UNFINISHED (second conflict); committing drops onto
+ * that detached HEAD is pointless (the loop aborts the rebase on push
+ * failure) and mid-rebase diffs are unreliable — skip and let the next
+ * attempt's fully-rebased tree re-run the gate.
+ */
+function gitOpInProgress(cwd) {
+  for (const marker of ['rebase-merge', 'rebase-apply', 'MERGE_HEAD', 'CHERRY_PICK_HEAD']) {
+    try {
+      const p = execSync(`git rev-parse --git-path ${marker}`, { cwd, encoding: 'utf8' }).trim();
+      if (fs.existsSync(path.resolve(cwd, p))) return true;
+    } catch { /* rev-parse failure → treat as not in progress */ }
+  }
+  return false;
+}
+
 function main() {
   const dryRun = process.argv.includes('--dry-run');
   const baseArg = process.argv.find((a) => a.startsWith('--base='));
   const base = baseArg ? baseArg.split('=')[1] : null;
   const cwd = process.cwd();
+
+  if (base && gitOpInProgress(cwd)) {
+    console.log('::warning::[ownership-gate] rebase/merge in progress — skipping (next attempt re-runs the gate on the completed tree)');
+    return;
+  }
 
   const candidates = base ? listAddedReviewFiles(cwd, base) : listNewReviewFiles(cwd);
   if (candidates.length === 0) {

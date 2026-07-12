@@ -338,6 +338,24 @@ for i in $(seq 1 "$MAX_RETRIES"); do
     fi
   fi
 
+  # CROSS-SHOW OWNERSHIP GATE (2026-07-12, Notion 39b637c5-416f-8134): after a
+  # resolution path brought remote history in, the tree finally reflects any
+  # manual cross-show move that landed after this run checked out. Files our
+  # commits ADD whose URL is live under another show are stale-checkout-race
+  # re-creations (the tender poller incident pushed through THIS helper, not
+  # the push-review-texts action) — git-rm + commit them before the next push
+  # attempt. Review-texts repo only; fail-open (a validator crash must never
+  # block a data push).
+  if [ "$history_changed" = "true" ] && [ -f "$SCRIPT_DIR/../validate-added-review-ownership.js" ]; then
+    _remote_url=$(git remote get-url origin 2>/dev/null || true)
+    case "$_remote_url" in
+      *broadway-review-texts*)
+        node "$SCRIPT_DIR/../validate-added-review-ownership.js" --base="origin/$PULL_BRANCH" \
+          || echo "::warning::validate-added-review-ownership crashed (non-blocking)"
+        ;;
+    esac
+  fi
+
   # Backoff before retry. Shaped fast-then-growing instead of the old flat
   # 10-44s: pushes against the busy public main almost always succeed within
   # 2-3 attempts (a single bot commit landed between our fetch and push, so a
