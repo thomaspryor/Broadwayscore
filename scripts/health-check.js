@@ -1191,6 +1191,49 @@ function repeatFailureResults(workflowSummary) {
   }));
 }
 
+// Open user-feedback issues that auto-fix punted on (label needs-manual-review).
+// The owner deliberately unwatches the repo (process-feedback.yml suppresses
+// GitHub notification emails), so these issues have NO notification channel at
+// all — Kirsten Weiss's MISTERMAN report (GH #393) sat unseen for 9 days and
+// 27 such issues had accumulated by 2026-07-12. The daily digest is the one
+// place the owner reliably reads; surface the backlog there.
+async function getOpenFeedbackReviewIssues() {
+  if (!process.env.GH_TOKEN && !process.env.GITHUB_TOKEN) return { skipped: true, issues: [] };
+  const token = process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
+  try {
+    const url = 'https://api.github.com/repos/thomaspryor/Broadwayscore/issues?labels=needs-manual-review&state=open&per_page=100';
+    const response = await fetchJSON(url, { 'Authorization': `token ${token}`, 'User-Agent': 'bsc-health-check' });
+    if (!Array.isArray(response)) return { skipped: true, issues: [] };
+    return {
+      skipped: false,
+      issues: response
+        .filter(i => !i.pull_request)
+        .map(i => ({ number: i.number, title: i.title, createdAt: i.created_at, url: i.html_url })),
+    };
+  } catch (err) {
+    console.error(`[Feedback issues] API error: ${err.message}`);
+    return { skipped: true, issues: [] };
+  }
+}
+
+// Promote the needs-manual-review backlog into a first-class check result so it
+// drives the digest subject line like every other warning. Pure (no IO) —
+// unit-tested in tests/unit/health-check-repeat-failures.test.mjs.
+function feedbackBacklogResults(feedbackSummary, now = new Date()) {
+  if (!feedbackSummary || feedbackSummary.skipped) return [];
+  const issues = feedbackSummary.issues || [];
+  if (issues.length === 0) return [];
+  const newest = [...issues].sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)))[0];
+  const oldest = [...issues].sort((a, b) => String(a.createdAt).localeCompare(String(b.createdAt)))[0];
+  const oldestDays = Math.floor((now - new Date(oldest.createdAt)) / 86400000);
+  return [{
+    name: 'Feedback: needs-manual-review backlog',
+    status: 'warn',
+    message: `${issues.length} open user-feedback issue(s) awaiting manual review (oldest ${oldestDays}d). Newest: #${newest.number} ${String(newest.title).substring(0, 70)}`,
+    hint: 'gh issue list --label needs-manual-review — these have NO other notification channel (repo is unwatched by design).',
+  }];
+}
+
 // Simple HTTPS GET that returns parsed JSON
 function fetchJSON(url, headers) {
   return new Promise((resolve, reject) => {
@@ -1917,6 +1960,12 @@ async function main() {
       console.log(`[Workflows] ${workflowSummary.succeeded} succeeded, ${workflowSummary.failed} failed (${workflowSummary.total} total in last 24h)`);
     }
     allResults.push(...repeatFailureResults(workflowSummary));
+
+    const feedbackSummary = await getOpenFeedbackReviewIssues();
+    if (!feedbackSummary.skipped) {
+      console.log(`[Feedback issues] ${feedbackSummary.issues.length} open needs-manual-review issue(s)`);
+    }
+    allResults.push(...feedbackBacklogResults(feedbackSummary));
   }
 
   // Print console summary
@@ -2004,4 +2053,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { buildObCandidatesHtml, repeatFailureResults, getDigestSubject, getPlaybookEntry };
+module.exports = { buildObCandidatesHtml, repeatFailureResults, feedbackBacklogResults, getDigestSubject, getPlaybookEntry };
