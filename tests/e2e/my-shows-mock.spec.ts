@@ -27,7 +27,7 @@ const MOCK_URL = '/my-shows?mock=1';
 
 // Helper: wait for mock data to load
 async function waitForMockData(page: Page) {
-  await page.waitForSelector('text=shows seen', { timeout: 10000 });
+  await page.waitForSelector('#tab-watchlist span', { timeout: 10000 });
 }
 
 // Helper: navigate to mock page and wait for data
@@ -47,10 +47,10 @@ test.describe('My Shows — Page Structure', () => {
 
   test('stats bar shows correct counts', async ({ page }) => {
     await goToMock(page);
-    // Stats bar contains "X shows seen", "X watchlist", "X to rate"
-    await expect(page.getByText('shows seen')).toBeVisible();
-    await expect(page.getByText('9', { exact: true }).first()).toBeVisible();
-    await expect(page.getByText('watchlist').first()).toBeVisible();
+    // Counts live in the tab badges (summary bar deduped 2026-07-12);
+    // the amber "to rate" hook is the one non-badge stat.
+    await expect(page.locator('#tab-diary span').first()).toHaveText('9');
+    await expect(page.locator('#tab-watchlist span').first()).toHaveText('6');
     await expect(page.getByText('to rate')).toBeVisible();
   });
 

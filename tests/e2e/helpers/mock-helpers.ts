@@ -19,8 +19,10 @@ export async function goToMock(
   tab: 'diary' | 'watchlist' = 'diary'
 ): Promise<void> {
   await page.goto(`${MOCK_URL}&tab=${tab}`);
-  // "shows seen" text is always visible in the summary bar regardless of active tab
-  await page.waitForSelector('text=shows seen', { timeout: 30000 });
+  // The tablist renders once mock data is loaded (the old "shows seen" summary
+  // text was removed 2026-07-12 — counts live in the tab badges now).
+  await page.waitForSelector('[role="tablist"]', { timeout: 30000 });
+  await page.waitForSelector('#tab-watchlist span', { timeout: 30000 });
 }
 
 /**
