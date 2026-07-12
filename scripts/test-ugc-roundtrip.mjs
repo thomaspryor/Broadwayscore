@@ -256,6 +256,32 @@ async function main() {
     if (listId) {
       const liIns = await rest('POST', 'list_items', tokenA, { list_id: listId, show_id: SHOW_ID, position: 1000 });
       check('lists: add show to list saves', liIns.status === 201);
+
+      // ── PUBLIC SHARING: private by default, then visible to ANON once shared ──
+      const anonBefore = await rest('GET', `lists?id=eq.${listId}&select=id`, ANON);
+      check('lists: private list hidden from anonymous', Array.isArray(anonBefore.json) && anonBefore.json.length === 0,
+        `anon saw ${Array.isArray(anonBefore.json) ? anonBefore.json.length : '?'} rows`);
+
+      const slug = `rt-${listId.slice(0, 8)}`;
+      const pub = await rest('PATCH', `lists?id=eq.${listId}&user_id=eq.${userA.id}`, tokenA,
+        { is_public: true, share_slug: slug });
+      check('lists: owner can make public (share)', Array.isArray(pub.json) && pub.json[0]?.is_public === true);
+
+      // The share page reads by slug with the anon key — exactly this call.
+      const anonList = await rest('GET', `lists?share_slug=eq.${slug}&select=id,name,is_public`, ANON);
+      check('lists: shared list visible to anonymous via slug',
+        anonList.ok && Array.isArray(anonList.json) && anonList.json.length === 1);
+      const anonItems = await rest('GET', `list_items?list_id=eq.${listId}&select=show_id`, ANON);
+      check('lists: shared list ITEMS visible to anonymous',
+        anonItems.ok && Array.isArray(anonItems.json) && anonItems.json.length >= 1);
+      const anonProfile = await rest('GET', `profiles?id=eq.${userA.id}&select=display_name`, ANON);
+      check('lists: sharer display name visible to anonymous (public-list owner policy)',
+        anonProfile.ok && Array.isArray(anonProfile.json) && anonProfile.json.length === 1);
+
+      // Un-share → hidden again (the "make private" escape hatch actually hides it).
+      await rest('PATCH', `lists?id=eq.${listId}&user_id=eq.${userA.id}`, tokenA, { is_public: false });
+      const anonAfter = await rest('GET', `lists?share_slug=eq.${slug}&select=id`, ANON);
+      check('lists: made private again → hidden from anonymous', Array.isArray(anonAfter.json) && anonAfter.json.length === 0);
     }
 
     // ── DELETE (rating) ──

@@ -3,6 +3,7 @@
 import { useState, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import RatingEditor, { type RatingEditorSaveData } from '@/components/user/RatingEditor';
+import StarRating from '@/components/user/StarRating';
 import Modal from '@/components/show-cards/Modal';
 
 /**
@@ -96,6 +97,18 @@ function RatingEditorFixtureInner() {
             saved:{saved.rating}:{saved.reviewText ?? ''}:{saved.dateSeen ?? ''}:{saved.reviewId ?? ''}
           </div>
         )}
+
+        {/* Star size showcase — half-stars at every size, catches SVG clipPath
+            rendering regressions (baseline-screenshotted in ugc-visual-baselines). */}
+        <div className="mt-8" data-testid="star-showcase">
+          <h2 className="text-sm font-bold text-gray-400 mb-3">Half-Star Rendering (all sizes)</h2>
+          {(['xs', 'sm', 'md', 'lg'] as const).map(size => (
+            <div key={size} className="flex items-center gap-3 mb-2">
+              <span className="text-xs text-gray-500 w-8">{size}</span>
+              <StarRating rating={3.5} onRatingChange={() => {}} size={size} readOnly hideLabel />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

@@ -96,6 +96,18 @@ export default function StarRating({ rating, onRatingChange, size = 'md', readOn
     onRatingChange(valueFromPointer(e, starIndex));
   }, [readOnly, onRatingChange]);
 
+  // Arrow keys adjust in half-star steps — Enter/Space on a star can only give
+  // whole values, so without this, keyboard users can't reach 3.5 etc. (audit P2).
+  const handleArrowKey = useCallback((e: React.KeyboardEvent) => {
+    if (readOnly) return;
+    const delta = e.key === 'ArrowRight' || e.key === 'ArrowUp' ? 0.5
+      : e.key === 'ArrowLeft' || e.key === 'ArrowDown' ? -0.5 : 0;
+    if (!delta) return;
+    e.preventDefault();
+    const next = Math.min(5, Math.max(0.5, (rating ?? 0) + delta));
+    onRatingChange(next);
+  }, [readOnly, rating, onRatingChange]);
+
   // Label renders only for a committed rating — mounting it on hover-enter when
   // rating is null shifted tightly-packed rows (My Shows "To Be Rated" renders
   // interactive null-rating stars without hideLabel). Hover previews via fills.
@@ -119,6 +131,7 @@ export default function StarRating({ rating, onRatingChange, size = 'md', readOn
             style={{ width: starSize, height: starSize }}
             onMouseMove={readOnly ? undefined : e => handleMouseMove(e, starIndex)}
             onClick={readOnly ? undefined : e => handleClick(e, starIndex)}
+            onKeyDown={readOnly ? undefined : handleArrowKey}
             aria-label={`${starIndex} star${starIndex !== 1 ? 's' : ''}`}
           >
             <StarShape fill={fillFor(displayRating, starIndex)} clipId={`half-${uid}-${starIndex}`} />

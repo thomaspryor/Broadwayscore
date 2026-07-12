@@ -24,13 +24,10 @@ export async function goToMock(
 }
 
 /**
- * Navigate to the show-rating fixture page.
- * @param state - 'existing' | 'empty' | 'multi'
+ * Navigate to the rating-editor fixture page (the live shared editor).
+ * @param query - e.g. '' | '?state=edit' | '?presentation=modal&stack=1'
  */
-export async function goToShowFixture(
-  page: Page,
-  state: 'existing' | 'empty' | 'multi' = 'existing'
-): Promise<void> {
-  await page.goto(`/test/show-rating-fixture?state=${state}`);
-  await page.waitForSelector('[data-testid="show-rating-fixture"]', { timeout: 30000 });
+export async function goToRatingEditor(page: Page, query = ''): Promise<void> {
+  await page.goto(`/test/rating-editor-fixture${query}`);
+  await page.waitForSelector('[data-testid="rating-editor"]', { timeout: 30000 });
 }
