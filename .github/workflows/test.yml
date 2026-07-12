@@ -243,6 +243,10 @@ on:
       # without these entries a solo edit triggers ZERO CI (allow-list gate).
       - 'scripts/lib/reddit-post-filters.js'
       - 'scripts/lib/reddit-post-filters.test.mjs'
+      # Reddit scrape drift guard (rule 13 catastrophe floor). Colocated
+      # scripts/lib/*.test.mjs step covers audience-buzz-drift.test.mjs.
+      - 'scripts/lib/audience-buzz-drift.js'
+      - 'scripts/lib/audience-buzz-drift.test.mjs'
       # Previews→open flip signal (review open-signal + score-threshold backstop).
       # Colocated scripts/lib/*.test.mjs step covers opening-signal.test.mjs;
       # without these entries a solo edit triggers ZERO CI (allow-list gate).
