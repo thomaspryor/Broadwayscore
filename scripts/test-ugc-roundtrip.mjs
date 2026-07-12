@@ -113,7 +113,25 @@ async function main() {
     const health = await fetch(`${URL}/auth/v1/health`, { headers: { apikey: ANON } });
     console.log(`preflight /auth/v1/health → HTTP ${health.status}`);
   } catch (e) {
-    throw new Error(`cannot reach ${URL} — ${e.cause?.code || ''} ${e.cause?.message || e.message}`.trim());
+    const code = e.cause?.code || '';
+    // Host doesn't resolve → the configured project is gone/renamed. If we have a
+    // management token, list the account's REAL projects so the fix is obvious.
+    if (code === 'ENOTFOUND' && process.env.SUPABASE_ACCESS_TOKEN) {
+      try {
+        const r = await fetch('https://api.supabase.com/v1/projects', {
+          headers: { Authorization: `Bearer ${process.env.SUPABASE_ACCESS_TOKEN}` },
+        });
+        const list = await r.json();
+        console.error('── Live Supabase projects on this account (Management API) ──');
+        for (const p of Array.isArray(list) ? list : []) {
+          console.error(`   ref=${p.id}  name=${p.name}  status=${p.status}  region=${p.region}`);
+        }
+        console.error('   The app is configured for a ref that is NOT in this list → update NEXT_PUBLIC_SUPABASE_URL/ANON_KEY.');
+      } catch (mgmtErr) {
+        console.error(`   (could not list projects: ${mgmtErr.message})`);
+      }
+    }
+    throw new Error(`cannot reach ${URL} — ${code} ${e.cause?.message || e.message}`.trim());
   }
 
   const userA = await makeUser('a');
