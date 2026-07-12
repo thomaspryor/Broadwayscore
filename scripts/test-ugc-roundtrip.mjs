@@ -141,6 +141,32 @@ async function main() {
     throw new Error(`cannot reach ${URL} — ${code} ${e.cause?.message || e.message}`.trim());
   }
 
+  // Auth-config check: does OAuth actually work on the domains friends use? The
+  // data layer can be perfect but if the demo/prod domain isn't in the redirect
+  // allowlist (or Google/Apple aren't enabled), the sign-in popup fails silently.
+  // Informational (doesn't fail the run) — surfaces config gaps the round-trip
+  // otherwise can't see.
+  if (process.env.SUPABASE_ACCESS_TOKEN && process.env.SUPABASE_PROJECT_REF) {
+    try {
+      const cfg = await (await fetch(
+        `https://api.supabase.com/v1/projects/${process.env.SUPABASE_PROJECT_REF}/config/auth`,
+        { headers: { Authorization: `Bearer ${process.env.SUPABASE_ACCESS_TOKEN}` } },
+      )).json();
+      const allow = cfg.uri_allow_list || '';
+      const providers = ['google', 'apple'].filter(p => cfg[`external_${p}_enabled`]);
+      console.log(`auth config: site_url=${cfg.site_url} | providers=[${providers.join(',') || 'NONE'}]`);
+      console.log(`auth redirect allowlist: ${allow || '(empty)'}`);
+      for (const host of ['broadwayscorecard.com', 'demo.broadwayscorecard.com']) {
+        const ok = allow.includes(host);
+        console.log(`  ${ok ? '✓' : '⚠'} ${host} ${ok ? 'in' : 'NOT in'} redirect allowlist${ok ? '' : ' → OAuth sign-in will fail on this domain'}`);
+      }
+      if (!providers.includes('google') || !providers.includes('apple')) {
+        console.log('  ⚠ Google and/or Apple OAuth not enabled — the only sign-in methods.');
+      }
+    } catch (e) { console.log(`(auth-config check skipped: ${e.message})`); }
+    console.log('');
+  }
+
   const userA = await makeUser('a');
   const userB = await makeUser('b');
   try {
