@@ -9,4 +9,4 @@ GitHub Actions concurrency groups with `cancel-in-progress: false` have a queue 
 
 **Why:** GitHub's documented behavior is "queue" but the queue only holds 1 pending run per group.
 
-**How to apply:** For workflows that are dispatched frequently by an orchestrator, use per-run concurrency groups: `group: workflow-name-${{ github.run_id }}`. The orchestrator serializes via `gh run watch` so same-market pollers don't overlap. Cross-market pollers (BW vs WE) can safely run in parallel — they work on different shows.
+**How to apply:** For workflows that are dispatched frequently by an orchestrator, use per-run concurrency groups: `group: workflow-name-${{ github.run_id }}`. The orchestrator serializes by waiting on each poller run (`scripts/lib/wait-for-run.sh` since 2026-07-12) so same-market pollers don't overlap. Cross-market pollers (BW vs WE) can safely run in parallel — they work on different shows.
