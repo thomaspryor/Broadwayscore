@@ -41,6 +41,25 @@ interface EmailCaptureConfig {
     /** Minimum seconds on page before triggering */
     minTimeOnPageSec: number;
   };
+  /**
+   * Days a passive-gate dismissal stays respected before the popup may ask
+   * again (localStorage, per device). Blocking feature gates (csv/json) are
+   * exempt — they gate an action the user clicked, not an unsolicited ask.
+   */
+  passiveGateCooldownDays: number;
+  /**
+   * Mobile scroll-gate timing A/B ('mobile-gate-timing' PostHog flag).
+   * control = current mobileScrollGate behavior; end-of-content fires when the
+   * reader reaches the bottom of the page. The variant keeps a small min-time
+   * as a guard against instant fire on back-navigation scroll restoration —
+   * NOT a treatment lever. Teardown after the test: pin the winner's values
+   * into mobileScrollGate and delete the loser's object (keep the flag-read
+   * branch — see A/B guardrails memory).
+   */
+  mobileScrollGateVariants: {
+    control: { scrollThreshold: number; minTimeOnPageSec: number };
+    'end-of-content': { scrollThreshold: number; minTimeOnPageSec: number };
+  };
 }
 
 const presets: Record<string, EmailCaptureConfig> = {
@@ -62,6 +81,11 @@ const presets: Record<string, EmailCaptureConfig> = {
       scrollThreshold: 0.65,
       minTimeOnPageSec: 15,
     },
+    passiveGateCooldownDays: 14,
+    mobileScrollGateVariants: {
+      control: { scrollThreshold: 0.65, minTimeOnPageSec: 15 },
+      'end-of-content': { scrollThreshold: 0.95, minTimeOnPageSec: 3 },
+    },
   },
   aggressive: {
     excludedPaths: ['/feedback', '/submit-review', '/beat-the-critics'],
@@ -80,6 +104,11 @@ const presets: Record<string, EmailCaptureConfig> = {
       enabled: true,
       scrollThreshold: 0.65,
       minTimeOnPageSec: 10,
+    },
+    passiveGateCooldownDays: 14,
+    mobileScrollGateVariants: {
+      control: { scrollThreshold: 0.65, minTimeOnPageSec: 10 },
+      'end-of-content': { scrollThreshold: 0.95, minTimeOnPageSec: 3 },
     },
   },
 };

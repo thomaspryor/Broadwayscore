@@ -28,6 +28,12 @@ const KEY = process.env.RESEND_API_KEY;
 if (!KEY) { console.error('No RESEND_API_KEY'); process.exit(1); }
 
 const RECIPIENT = process.env.NEWSLETTER_TEST_RECIPIENT || 'thomas.pryor@gmail.com';
+// Edition drives the sender name + unsubscribe market so the WE preview looks
+// exactly like the WE broadcast (from "West End Scorecard", WE unsubscribe).
+const EDITION = (process.env.NEWSLETTER_EDITION || 'broadway').trim();
+const FROM_EMAIL = EDITION === 'west-end'
+  ? 'West End Scorecard <updates@broadwayscorecard.com>'
+  : 'Broadway Scorecard <updates@broadwayscorecard.com>';
 const SLUG = process.env.NEWSLETTER_SLUG || 'A-2026-05-18';
 // Match generate.mjs's output resolution: env override > iCloud path > repo-local.
 const OUT_DIR = process.env.NEWSLETTER_OUT_DIR
@@ -38,7 +44,7 @@ const htmlPath = `${OUT_DIR}/${SLUG}.html`;
 const metaPath = `${OUT_DIR}/${SLUG}.meta.json`;
 
 const htmlRaw = fs.readFileSync(htmlPath, 'utf8');
-const unsubUrl = buildUnsubscribeUrl(RECIPIENT, 'broadway');
+const unsubUrl = buildUnsubscribeUrl(RECIPIENT, EDITION === 'west-end' ? 'west-end' : 'broadway');
 const html = htmlRaw.replace(/\{\{\{RESEND_UNSUBSCRIBE_URL\}\}\}/g, unsubUrl);
 
 // Subject comes from the generator's meta.json sidecar (machine-readable,
@@ -66,13 +72,14 @@ const ALLOW_SEND = process.env.CI === 'true'
   || process.argv.includes('--force');
 if (!ALLOW_SEND) {
   console.log('[DRY RUN] Would send to:', RECIPIENT);
+  console.log('[DRY RUN] From:', FROM_EMAIL);
   console.log('[DRY RUN] Subject:', subject);
   console.log('[DRY RUN] Set NEWSLETTER_SEND=1 or pass --force to actually send.');
   process.exit(0);
 }
 
 const body = {
-  from: 'Broadway Scorecard <updates@broadwayscorecard.com>',
+  from: FROM_EMAIL,
   to: [RECIPIENT],
   subject,
   html,
