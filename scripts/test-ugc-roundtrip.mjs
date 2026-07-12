@@ -19,7 +19,10 @@
  * Exit: 0 all green, 1 any failure. Test users are always deleted (finally).
  */
 
-import { createClient } from '@supabase/supabase-js';
+// Raw fetch only — no @supabase/supabase-js. Its createClient() eagerly builds
+// a Realtime WebSocket client, which throws on Node <22 ("native WebSocket not
+// found"), and we need none of it: every call here is a GoTrue admin/verify or
+// a PostgREST request, all plain HTTP. Node 18+ has global fetch.
 
 const URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const ANON = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -39,32 +42,47 @@ function check(name, ok, detail = '') {
   return ok;
 }
 
-const admin = createClient(URL, SERVICE, { auth: { autoRefreshToken: false, persistSession: false } });
+/** GoTrue admin call with the service-role key. */
+async function adminFetch(method, path, body) {
+  const res = await fetch(`${URL}/auth/v1/${path}`, {
+    method,
+    headers: { apikey: SERVICE, Authorization: `Bearer ${SERVICE}`, 'Content-Type': 'application/json' },
+    ...(body ? { body: JSON.stringify(body) } : {}),
+  });
+  const text = await res.text();
+  let json = null; try { json = text ? JSON.parse(text) : null; } catch { /* non-JSON */ }
+  return { status: res.status, ok: res.ok, json, text };
+}
 
 /** Create a confirmed test user and return {id, email}. */
 async function makeUser(tag) {
   const email = `ugc-roundtrip+${tag}-${Date.now()}@broadwayscorecard-test.invalid`;
-  const { data, error } = await admin.auth.admin.createUser({
-    email,
-    email_confirm: true,
+  const r = await adminFetch('POST', 'admin/users', {
+    email, email_confirm: true,
     user_metadata: { full_name: `Roundtrip Test ${tag}`, roundtripTest: true },
   });
-  if (error) throw new Error(`createUser(${tag}): ${error.message}`);
-  return { id: data.user.id, email };
+  if (!r.ok || !r.json?.id) throw new Error(`createUser(${tag}): HTTP ${r.status} ${r.text.slice(0, 200)}`);
+  return { id: r.json.id, email };
 }
 
 /** Mint a real access token for an existing user — no password / OAuth needed. */
 async function mintToken(email) {
-  const { data: link, error: linkErr } = await admin.auth.admin.generateLink({ type: 'magiclink', email });
-  if (linkErr) throw new Error(`generateLink: ${linkErr.message}`);
-  const anonClient = createClient(URL, ANON, { auth: { persistSession: false } });
-  const { data: sess, error: verErr } = await anonClient.auth.verifyOtp({
-    type: 'magiclink',
-    token_hash: link.properties.hashed_token,
+  const link = await adminFetch('POST', 'admin/generate_link', { type: 'magiclink', email });
+  // GoTrue returns the token either top-level or under .properties depending on version.
+  const hashed = link.json?.hashed_token ?? link.json?.properties?.hashed_token;
+  if (!link.ok || !hashed) throw new Error(`generateLink: HTTP ${link.status} ${link.text.slice(0, 200)}`);
+  const res = await fetch(`${URL}/auth/v1/verify`, {
+    method: 'POST',
+    headers: { apikey: ANON, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ type: 'magiclink', token_hash: hashed }),
   });
-  if (verErr) throw new Error(`verifyOtp: ${verErr.message}`);
-  if (!sess.session?.access_token) throw new Error('verifyOtp returned no access_token');
-  return sess.session.access_token;
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok || !json.access_token) throw new Error(`verify: HTTP ${res.status} ${JSON.stringify(json).slice(0, 200)}`);
+  return json.access_token;
+}
+
+async function deleteUser(id) {
+  await adminFetch('DELETE', `admin/users/${id}`);
 }
 
 /** One PostgREST call with a user JWT — mirrors supabase-rest.ts exactly. */
@@ -150,7 +168,7 @@ async function main() {
   } finally {
     // Always remove test users — cascades to their reviews/watchlist/lists.
     for (const u of [userA, userB]) {
-      try { await admin.auth.admin.deleteUser(u.id); } catch (e) { console.warn(`cleanup ${u.email}: ${e.message}`); }
+      try { await deleteUser(u.id); } catch (e) { console.warn(`cleanup ${u.email}: ${e.message}`); }
     }
   }
 
