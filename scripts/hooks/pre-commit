@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# Pre-commit hook (version-controlled — active via core.hooksPath=scripts/hooks
+# or via the delegator in .git/hooks/pre-commit).
+#
+# 1. Reject tracked symlinks and gitlinks.
+#    Symlinks (120000) dangle in CI; gitlinks (160000) cause submodule errors.
+#    Three incidents: data/reviews.json, .core-data-checkout,
+#    .claude/worktrees/fix-ci-noise. See commit 16f700b3b5 and the CI lint in test.yml.
+# 2. Reject staged poster/thumbnail/hero images with wrong aspect ratio
+#    (evita-west-end-2025 landscape-poster incident, commit a71c3defe4).
+
+BAD=$(git diff --cached --diff-filter=A --raw | grep -E "^:000000 (120000|160000)" | awk '{print $6}')
+
+if [ -n "$BAD" ]; then
+  echo "ERROR: Refusing to commit symlinks or gitlinks:"
+  echo "$BAD"
+  echo ""
+  echo "Symlinks (120000) become dangling in CI — cp -f refuses to write through them."
+  echo "Gitlinks (160000) cause 'No url found for submodule path' errors."
+  echo "Fix: git reset HEAD <path> and add to .gitignore if needed."
+  exit 1
+fi
+
+REPO_ROOT=$(git rev-parse --show-toplevel)
+if [ -f "$REPO_ROOT/scripts/check-image-aspect.js" ]; then
+  node "$REPO_ROOT/scripts/check-image-aspect.js" --staged
+  RC=$?
+  if [ $RC -ne 0 ]; then
+    exit $RC
+  fi
+fi
