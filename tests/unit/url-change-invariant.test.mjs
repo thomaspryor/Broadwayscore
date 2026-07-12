@@ -489,6 +489,57 @@ describe('updateFileUrlWithInvariant (raw-writer helper)', () => {
     assert.equal(onDisk.wrongShow, undefined);
   });
 
+  test('stampOnNoop: first-set onto empty url persists url + metadata (no_url/fabricated recovery)', () => {
+    // The reason-recovery path's whole point: existing url is empty, so the
+    // invariant doesn't apply — but the discovered url and fabricated-flag
+    // clears MUST persist (P0: without stampOnNoop nothing was written).
+    const fp = path.join(helperTmp, 'no-url.json');
+    fs.writeFileSync(fp, JSON.stringify({
+      outletId: 'variety', url: '', fabricatedEntry: true, fabricatedReason: 'x',
+      llmScore: { score: 70 },
+    }, null, 2));
+    const written = updateFileUrlWithInvariant(fp, JCS_URL, {
+      urlDiscoveryMethod: 'google-serp-reason-recovery',
+      fabricatedEntry: undefined, fabricatedReason: undefined,
+    }, { stampOnNoop: true });
+    assert.ok(written, 'first-set must write');
+    const onDisk = JSON.parse(fs.readFileSync(fp, 'utf8'));
+    assert.equal(onDisk.url, JCS_URL);
+    assert.equal(onDisk.fabricatedEntry, undefined, 'fabricated flag must clear');
+    assert.equal(onDisk.urlDiscoveryMethod, 'google-serp-reason-recovery');
+    assert.deepEqual(onDisk.llmScore, { score: 70 }, 'no invariant clearing on first-set — no old article existed');
+  });
+
+  test('stampOnNoop: same-canonical variant stamps metadata without clearing', () => {
+    const fp = path.join(helperTmp, 'variant.json');
+    fs.writeFileSync(fp, JSON.stringify({ ...dollyContaminatedFile() }, null, 2));
+    const variant = DOLLY_URL.replace('https://www.', 'http://') + '?utm_source=serp';
+    const written = updateFileUrlWithInvariant(fp, variant, { urlDiscoveryMethod: 'google-serp' }, { stampOnNoop: true });
+    assert.ok(written);
+    const onDisk = JSON.parse(fs.readFileSync(fp, 'utf8'));
+    assert.equal(onDisk.url, variant);
+    assert.equal(onDisk.urlDiscoveryMethod, 'google-serp');
+    assert.equal(onDisk.wrongShow, true, 'same canonical article — no clearing');
+  });
+
+  test('stampOnNoop still refuses garbage replacement urls', () => {
+    const fp = path.join(helperTmp, 'garbage.json');
+    fs.writeFileSync(fp, JSON.stringify(dollyContaminatedFile(), null, 2));
+    assert.equal(updateFileUrlWithInvariant(fp, '/relative/undefined', {}, { stampOnNoop: true }), null);
+    const onDisk = JSON.parse(fs.readFileSync(fp, 'utf8'));
+    assert.equal(onDisk.url, DOLLY_URL, 'garbage never adopted');
+  });
+
+  test('NEW_ERA_FETCH_FIELDS is a strict subset of URL_DERIVED_FIELDS (drift guard)', () => {
+    const { NEW_ERA_FETCH_FIELDS } = require('../../scripts/lib/url-change-invariant');
+    const derived = new Set(URL_DERIVED_FIELDS);
+    for (const f of NEW_ERA_FETCH_FIELDS) {
+      assert.ok(derived.has(f), `NEW_ERA field ${f} must be in URL_DERIVED_FIELDS (preserveFields only exempts cleared fields)`);
+    }
+    assert.ok(!NEW_ERA_FETCH_FIELDS.includes('publishDate'),
+      'publishDate must NOT be blanket-preserved — pre-fetch dates are the old article\u2019s');
+  });
+
   test('sidecar unlink is scoped to data/review-texts — external paths never unlink', () => {
     const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
     const showId = `zz-test-scope-${process.pid}`;

@@ -145,19 +145,13 @@ jobs:
 
           echo "Drift check complete."
 
-      - name: Commit updated drift state
-        if: steps.rebuild_check.outputs.skip != 'true' && steps.window_check.outputs.skip != 'true'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/audit/drift-state.json
-          if git diff --cached --quiet; then
-            echo "No state changes to commit."
-          else
-            git commit -m "chore: update drift-state.json [skip ci]"
-            bash scripts/lib/push-with-retry.sh 3 main || echo "::warning::State push failed — next run will re-check."
-          fi
-
+      # Alert BEFORE the state commit. The script stamps lastAlertTs into
+      # drift-state.json at decide time; if the state were pushed first and the
+      # job died before this step, the 6h same-fingerprint cooldown would
+      # suppress the alert on every retry — an opening-night drift silently
+      # swallowed (same outputs-before-tracking-commit pattern as the
+      # process-feedback 2026-07-07 incident). Worst case this way is a
+      # duplicate Discord ping if the job dies between alert and push.
       - name: Send drift alert
         if: steps.drift.outputs.exit_code == '1'
         env:
@@ -179,6 +173,19 @@ jobs:
               ],
               url: runUrl,
             }).catch(e => console.error('Alert failed:', e.message));
+
+      - name: Commit updated drift state
+        if: steps.rebuild_check.outputs.skip != 'true' && steps.window_check.outputs.skip != 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/drift-state.json
+          if git diff --cached --quiet; then
+            echo "No state changes to commit."
+          else
+            git commit -m "chore: update drift-state.json [skip ci]"
+            bash scripts/lib/push-with-retry.sh 3 main || echo "::warning::State push failed — next run will re-check."
+          fi
 
       - name: Notify on failure
         if: failure()

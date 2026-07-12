@@ -6062,6 +6062,10 @@ async function processReview(review) {
       // a failed fetch leaves an unflagged textless stub the rebuild can't
       // score, instead of wrong text guarded only by a flag.
       try {
+        // stampOnNoop is REQUIRED here: this path exists for no_url /
+        // fabricatedEntry recovery, where the existing url is empty or broken
+        // — the invariant doesn't apply (nothing to clear), but the discovered
+        // url and the fabricated-flag clears must still persist.
         updateFileUrlWithInvariant(review.filePath, discoveredUrl, {
           urlDiscoveredAt: new Date().toISOString(),
           urlDiscoveryMethod: 'google-serp-reason-recovery',
@@ -6069,7 +6073,7 @@ async function processReview(review) {
           // values are dropped by JSON serialization = deletion).
           fabricatedEntry: undefined,
           fabricatedReason: undefined,
-        });
+        }, { stampOnNoop: true });
       } catch (e) {}
       review.url = discoveredUrl;
       review._urlDiscovered = true;
@@ -6094,9 +6098,14 @@ async function processReview(review) {
   if (review.showNotMentioned && review.filePath) {
     console.log('  [showNotMentioned] Attempting URL discovery before fetch...');
 
-    // Mark as attempted to prevent infinite retries
+    // Mark as attempted to prevent infinite retries. Also capture whether the
+    // file already had a publishDate BEFORE the fetch: updateReviewJson fills
+    // publishDate only when absent, so a date that appears between now and the
+    // post-fetch url flip was extracted from the NEW article and must survive
+    // the flip (while a pre-existing date is the OLD article's and must clear).
     try {
       const fileData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+      review._hadPublishDateBeforeFetch = !!fileData.publishDate;
       fileData._showNotMentionedDiscoveryAttempted = true;
       fs.writeFileSync(review.filePath, JSON.stringify(fileData, null, 2) + '\n');
     } catch (e) {}
@@ -6285,10 +6294,16 @@ async function processReview(review) {
     if (review._urlDiscovered && review.filePath) {
       try {
         const { NEW_ERA_FETCH_FIELDS } = require('./lib/url-change-invariant');
+        const preserve = new Set(NEW_ERA_FETCH_FIELDS);
+        // A publishDate that appeared during this run was extracted from the
+        // NEW article by updateReviewJson (it only fills absent dates) — it
+        // must survive the url flip. A date that predated the fetch is the
+        // OLD article's and clears (/code-review 2026-07-11).
+        if (review._hadPublishDateBeforeFetch === false) preserve.add('publishDate');
         const updated = updateFileUrlWithInvariant(review.filePath, review.url, {
           urlDiscoveredAt: new Date().toISOString(),
           urlDiscoveryMethod: 'show-not-mentioned-recovery',
-        }, { preserveFields: new Set(NEW_ERA_FETCH_FIELDS) });
+        }, { preserveFields: preserve, stampOnNoop: true });
         if (updated) console.log(`    → URL updated: ${review._previousUrl} → ${review.url}`);
       } catch (e) {
         console.log(`    ⚠ Could not persist URL discovery: ${e.message}`);
@@ -6408,7 +6423,7 @@ async function processReview(review) {
             const updated = updateFileUrlWithInvariant(review.filePath, discoveredUrl, {
               urlDiscoveredAt: new Date().toISOString(),
               urlDiscoveryMethod: 'google-serp',
-            });
+            }, { stampOnNoop: true });
             if (updated) console.log(`    → Updated review URL: ${originalUrl} → ${discoveredUrl}`);
           } catch (writeErr) {
             console.log(`    ⚠ Could not update URL in file: ${writeErr.message}`);

@@ -235,14 +235,8 @@ async function main() {
           if (domainReviews.length > 0) {
             const review = domainReviews.shift();
             const metadata = { urlVerified: true, urlUpdatedAt: new Date().toISOString() };
-            const written = updateFileUrlWithInvariant(review.filePath, found.url, metadata);
-            if (!written) {
-              review.data.url = found.url;
-              Object.assign(review.data, metadata);
-              fs.writeFileSync(review.filePath, JSON.stringify(review.data, null, 2));
-            } else {
-              review.data = written;
-            }
+            const written = updateFileUrlWithInvariant(review.filePath, found.url, metadata, { stampOnNoop: true });
+            if (written) review.data = written;
             console.log(`      Updated: ${review.filePath}`);
             updated++;
           }

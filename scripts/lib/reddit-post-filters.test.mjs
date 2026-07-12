@@ -7,6 +7,7 @@ const {
   isRoundupOrMegathread,
   isGenericTitle,
   isRedditVolumeInflated,
+  otherSourceReviewCounts,
   buildAudienceSearchQueries,
   isPreFixReddit,
   isRefreshStaleCandidate,
@@ -78,6 +79,21 @@ test('isRedditVolumeInflated protects genuinely Reddit-corroborated shows', () =
   assert.equal(isRedditVolumeInflated(50, [], 'Ice Queen'), false);
   // Reddit not dominant enough (multi-word, 3x < 4x).
   assert.equal(isRedditVolumeInflated(120, [40], 'Some Distinctive Play'), false);
+});
+
+test('otherSourceReviewCounts includes West End sources (audit/neutralize parity)', () => {
+  // Regression: the audit previously omitted seatplan/lbo/ltd, so it saw a WE
+  // show's Reddit as sole-source and over-flagged shows the suppressor left
+  // alone. myras-story-west-end-2026: reddit 244 vs lbo 98 → 2.5x < 4x → NOT
+  // inflated. Both must agree via this shared counts builder.
+  const weSources = { reddit: { reviewCount: 244 }, lbo: { reviewCount: 98 } };
+  const counts = otherSourceReviewCounts(weSources);
+  assert.deepEqual(counts, [98]);
+  assert.equal(isRedditVolumeInflated(244, counts, "Myra's Story"), false);
+  // ltd and seatplan are counted too (returned in canonical source order).
+  assert.deepEqual(otherSourceReviewCounts({ ltd: { reviewCount: 30 }, seatplan: { reviewCount: 12 } }), [12, 30]);
+  // reddit is never counted as an "other" source; zero-count sources dropped.
+  assert.deepEqual(otherSourceReviewCounts({ reddit: { reviewCount: 500 }, showScore: { reviewCount: 0 } }), []);
 });
 
 test('isRedditVolumeInflated keeps the aggressive 2x ratio for generic titles', () => {
