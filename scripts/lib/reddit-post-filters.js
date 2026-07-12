@@ -114,6 +114,45 @@ function isGenericTitle(title) {
   return words.length <= 1;
 }
 
+// Reddit volume-inflation detection thresholds. Shared by
+// scripts/neutralize-contaminated-reddit-buzz.js and
+// scripts/audit-audience-buzz-contamination.js so the suppressor and the audit
+// never disagree.
+const REDDIT_INFLATION_MIN_RC = 80;
+// Generic/collision-prone titles (single significant word or a known film/phrase
+// collision) get the aggressive ratio — bare-phrase searches sweep up unrelated
+// chatter, so even 2x dominance over the next source is suspect.
+const REDDIT_INFLATION_RATIO_GENERIC = 2;
+// Every OTHER title gets a stricter ratio. isGenericTitle is a hand-maintained
+// heuristic (single-word + an 8-entry denylist) that structurally MISSES
+// multi-word generic PHRASES ("Fear & Wonder", "Pied à Terre", "Misterman",
+// "Oscar Wao") — those contaminate identically but were invisible until they
+// were manually denylisted. The corroboration signal (Reddit is the sole source,
+// or its volume dwarfs every real audience source) is title-independent, so we
+// apply it to all titles; the higher 4x bar + sole-source rule keeps genuinely
+// Reddit-corroborated shows (e.g. Drunk Shakespeare, ~2x with real ShowScore
+// votes) from being falsely suppressed. Notion 39a637c5.
+const REDDIT_INFLATION_RATIO_OTHER = 4;
+
+/**
+ * Does this show's Reddit source look like generic-phrase volume contamination?
+ * Title-INDEPENDENT: the discriminator is corroboration, not the title. True
+ * when Reddit clears the volume floor AND is either the sole audience source or
+ * dwarfs every other one (aggressive ratio for generic titles, stricter ratio
+ * otherwise). Callers still gate on score-eligibility + not-already-suppressed.
+ *
+ * @param {number} rc               reddit.reviewCount
+ * @param {number[]} otherCounts    reviewCounts of every non-reddit source > 0
+ * @param {string} title            show title (drives the generic-vs-other ratio)
+ * @returns {boolean}
+ */
+function isRedditVolumeInflated(rc, otherCounts, title) {
+  if (!(rc >= REDDIT_INFLATION_MIN_RC)) return false;
+  const maxOther = otherCounts && otherCounts.length ? Math.max(...otherCounts) : 0;
+  const ratio = isGenericTitle(title) ? REDDIT_INFLATION_RATIO_GENERIC : REDDIT_INFLATION_RATIO_OTHER;
+  return maxOther === 0 || rc >= maxOther * ratio;
+}
+
 /**
  * Build the ordered Reddit search query list for a show.
  *
@@ -221,6 +260,10 @@ function refreshStaleSortKey(buzzRecord) {
 module.exports = {
   isRoundupOrMegathread,
   isGenericTitle,
+  isRedditVolumeInflated,
+  REDDIT_INFLATION_MIN_RC,
+  REDDIT_INFLATION_RATIO_GENERIC,
+  REDDIT_INFLATION_RATIO_OTHER,
   buildAudienceSearchQueries,
   normalizeForGenericCheck,
   significantWords,

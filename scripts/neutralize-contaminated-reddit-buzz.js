@@ -27,15 +27,14 @@
 
 const fs = require('fs');
 const path = require('path');
-const { isGenericTitle } = require('./lib/reddit-post-filters');
+const { isRedditVolumeInflated, REDDIT_INFLATION_MIN_RC } = require('./lib/reddit-post-filters');
 const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
 
 const ROOT = path.join(__dirname, '..');
 const BUZZ_FILE = path.join(ROOT, 'data', 'audience-buzz.json');
 const SHOWS_FILE = path.join(ROOT, 'data', 'shows.json');
 
-const MIN_RC = 80;
-const VOLUME_RATIO = 2;
+const MIN_RC = REDDIT_INFLATION_MIN_RC;
 const SOURCE_NAMES = ['showScore', 'mezzanine', 'reddit', 'theatr', 'broadwayCom', 'seatplan', 'lbo', 'ltd'];
 
 const apply = process.argv.includes('--apply');
@@ -60,7 +59,6 @@ function main() {
 
     const show = showById.get(id);
     const title = x.title || (show && show.title) || id.replace(/-(off-)?(broadway|west-end)?-?20\d{2}$/, '').replace(/-/g, ' ');
-    if (!isGenericTitle(title)) continue;
 
     // Score-eligibility — same date-precise cutoff as audience-weighting.js
     // isRedditEligible (closed < now-3yr); don't suppress Reddit the live score
@@ -74,7 +72,9 @@ function main() {
     const otherCounts = SOURCE_NAMES.filter((n) => n !== 'reddit')
       .map((n) => sources[n]).filter((s) => s && (s.reviewCount || 0) > 0).map((s) => s.reviewCount);
     const maxOther = otherCounts.length ? Math.max(...otherCounts) : 0;
-    if (!(maxOther === 0 || rc >= maxOther * VOLUME_RATIO)) continue;
+    // Title-independent contamination test (shared with the audit). Catches
+    // multi-word generic phrases the old isGenericTitle gate missed.
+    if (!isRedditVolumeInflated(rc, otherCounts, title)) continue;
 
     const before = x.combinedScore;
     // Project the post-suppression score (used for both the dry-run report and
