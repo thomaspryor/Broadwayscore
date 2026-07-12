@@ -157,7 +157,9 @@ function commentAnchorsToShow(comment, showTitle) {
   const hay = normalizeForGenericCheck(`${comment.postTitle || ''} ${comment.body || ''}`);
   if (!hay) return false;
   const normTitle = normalizeForGenericCheck(showTitle);
-  if (normTitle && hay.includes(normTitle)) return true; // full title phrase present
+  // Word-boundary match (space-pad both sides) so a short title isn't matched
+  // inside a longer word — e.g. title "Cats" must not anchor on "advocats".
+  if (normTitle && ` ${hay} `.includes(` ${normTitle} `)) return true; // full title phrase present
   const distinctive = significantWords(showTitle).filter((w) => w.length >= 4);
   if (distinctive.length === 0) {
     // Title is all short/stopword tokens — no reliable deterministic anchor;
