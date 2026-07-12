@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-07-12T07:24:02.985Z",
+  "runDate": "2026-07-12T07:52:07.797Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,13 +11,13 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
+    "processed": 4,
     "failed": 159,
     "skipped": 0,
-    "successRate": "1.9%"
+    "successRate": "2.5%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 3,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -27,8 +27,8 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 1,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -53,7 +53,8 @@
   "processed": [
     "giulia-the-poison-queen-of-palermo-off-broadway-2026/vulture--jackson-mchenry.json",
     "allegra-west-end-2026/london-theatre--unknown.json",
-    "tender-off-west-end-2026/london-theatre--unknown.json"
+    "tender-off-west-end-2026/london-theatre--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/london-theatre--aliya-al-hassan.json"
   ],
   "failed": [
     "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026/guardian--mark-fisher.json",
@@ -219,7 +220,8 @@
   "tierDetails": {
     "playwright": [
       "allegra-west-end-2026/london-theatre--unknown.json",
-      "tender-off-west-end-2026/london-theatre--unknown.json"
+      "tender-off-west-end-2026/london-theatre--unknown.json",
+      "a-midsummer-nights-dream-west-end-2026/london-theatre--aliya-al-hassan.json"
     ],
     "amp": [],
     "browserbase": [],
