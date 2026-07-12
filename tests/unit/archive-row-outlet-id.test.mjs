@@ -100,7 +100,7 @@ describe('WE-aggregator ingestion wiring', () => {
   // there re-introduces the divergence (ship-check P1, 2026-07-12).
   const WIRED = [
     { file: 'scripts/gather-reviews.js', minCalls: 4, label: 'LBO, WET, TR, TS cache blocks' },
-    { file: 'scripts/opening-night-poller.js', minCalls: 3, label: 'poller LBO, TR, TS blocks' },
+    { file: 'scripts/opening-night-poller.js', minCalls: 4, label: 'poller LBO, WET, TR, TS blocks' },
     { file: 'scripts/scrape-theatre-reviews.js', minCalls: 1, label: 'TR sweep writer' },
     { file: 'scripts/scrape-thestage-roundups.js', minCalls: 1, label: 'TS sweep writer' },
   ];
