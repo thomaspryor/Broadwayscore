@@ -1,80 +1,74 @@
 {
-  "runDate": "2026-07-12T06:25:59.356Z",
+  "runDate": "2026-07-12T06:29:00.314Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "iceboy-regional-2026",
+    "showFilter": "springwood-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 2,
+    "processed": 0,
+    "failed": 6,
     "skipped": 0,
-    "successRate": "33.3%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 1,
+    "tier1Attempts": 6,
+    "tier1Success": 5,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 1,
     "tier2Success": 1,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
-    "tier3_6Attempts": 0,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
+    "tier3_6Attempts": 1,
     "tier3_6Success": 0,
-    "tier4Attempts": 0,
+    "tier4Attempts": 2,
     "tier4Success": 0,
-    "totalFailed": 2,
+    "totalFailed": 5,
     "scrapingBeePageCredits": 10,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 2,
-    "urlDiscoverySuccess": 1,
+    "urlDiscoveryAttempts": 0,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [
-    "iceboy-regional-2026/chicagotribune--christopher-borrelli.json"
-  ],
+  "processed": [],
   "failed": [
-    "iceboy-regional-2026/chicago-sun-times--mike-davis-wbez.json",
-    "iceboy-regional-2026/one-minute-critic--matthew-wexler.json"
+    "springwood-west-end-2026/guardian-uk--unknown.json",
+    "springwood-west-end-2026/artsdesk--unknown.json",
+    "springwood-west-end-2026/standard--nick-curtis.json",
+    "springwood-west-end-2026/theatrecat--unknown.json",
+    "springwood-west-end-2026/thestage--unknown.json",
+    "springwood-west-end-2026/west-end-best-friend--unknown.json"
   ],
   "tierDetails": {
     "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [
-      "iceboy-regional-2026/chicagotribune--christopher-borrelli.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": [
-    {
-      "reviewId": "iceboy-regional-2026/chicagotribune--christopher-borrelli.json",
-      "oldUrl": "https://www.chicagotribune.com/2026/06/25/iceboy-goodman-theatre-musical/",
-      "newUrl": "https://www.chicagotribune.com/2026/06/30/review-iceboy-goodman-theatre/"
-    }
-  ]
+  "urlDiscoveries": []
 }
