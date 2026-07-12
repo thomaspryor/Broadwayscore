@@ -116,12 +116,12 @@
 
 ## 🎨 UI / design system
 - [Design system reference](design-system.md) — surfaces, score tiers, shared components, banned patterns
-- [Local preview before push](feedback_local_preview_before_push.md) — /visual-qa runs locally, APPROVED:<hash> required; worktree gotchas ([[feedback_visual_qa_dev_server_in_worktree.md]]); preserve parallel-session colors ([[feedback_preserve_parallel_session_colors.md]])
-- [Mobile link min-height + row exceptions](feedback_mobile_link_min_height.md) — a{min-height:44px}; .performer-row/.craft-row opt out; e2e-guarded
-- [App Router rendering](feedback_react_lazy_for_app_router_split.md) — next/dynamic from server = no-op, use 'use client' Loader + Suspense; above-fold features render in page.tsx BEFORE HomePageClient ([[feedback_page_tsx_renders_before_homepageclient.md]]); demo flags client-only ([[feedback_demo_flags_client_only.md]])
+- [Local preview before push](feedback_local_preview_before_push.md) — /visual-qa local, APPROVED:<hash> required; worktree gotchas ([[feedback_visual_qa_dev_server_in_worktree.md]]); preserve parallel colors ([[feedback_preserve_parallel_session_colors.md]])
+- [Mobile link min-height](feedback_mobile_link_min_height.md) — a{min-height:44px}; .performer-row/.craft-row opt out; e2e-guarded
+- [App Router rendering](feedback_react_lazy_for_app_router_split.md) — next/dynamic from server = no-op, use 'use client' Loader + Suspense; above-fold renders in page.tsx BEFORE HomePageClient ([[feedback_page_tsx_renders_before_homepageclient.md]]); demo flags client-only ([[feedback_demo_flags_client_only.md]])
 - [A/B tests](feedback_ab_test_guardrails.md) — PostHog filters/exclusions/stat-sig thresholds
-- [.card contain traps fixed modals](feedback_css_contain_traps_fixed_modals.md) — Modal must portal to body; module-scope singletons split across Next chunks, coordinate via DOM; fixtures must exercise every variant in-situ
-- [UGC test patterns](feedback_ugc_test_patterns.md) — Sanity env, mock dates, overflow, 404s; use page.getByRole().click() not page.evaluate, races hydration ([[feedback_playwright_evaluate_click_hydration.md]])
+- [Modal + Next-chunk singletons](feedback_css_contain_traps_fixed_modals.md) — Modal portals to body; module singletons split across chunks → coordinate via DOM
+- [UGC Supabase auth](feedback_supabase_freetier_pause.md) — free-tier pauses 7d idle → NXDOMAIN kills all sign-in/read/write; Management API status + Restore workflow; round-trip keep-alive. Test patterns [[feedback_ugc_test_patterns.md]] [[feedback_playwright_evaluate_click_hydration.md]]
 
 ## 💼 Commercial / features
 - [Commercial slug keys](feedback_commercial_slug_keys.md) — commercial.json keyed by slug not ID
