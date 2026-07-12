@@ -22,10 +22,17 @@
 
 const MIN_FUZZY_LEN = 4;
 
-/** Lowercase, "&"->"and", strip punctuation, collapse whitespace. */
-function normalizeShowName(s) {
+/** Lowercase + fold diacritics so "Misérables" == "Miserables". */
+function foldCase(s) {
   return String(s || '')
     .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+}
+
+/** foldCase, then "&"->"and", strip punctuation, collapse whitespace. */
+function normalizeShowName(s) {
+  return foldCase(s)
     .replace(/&/g, ' and ')
     .replace(/[^a-z0-9]+/g, ' ')
     .trim();
@@ -51,7 +58,7 @@ function tokenSequenceIncludes(haystack, needle) {
  */
 function resolveShowMatches(name, shows) {
   if (!name || name === 'N/A' || !Array.isArray(shows)) return [];
-  const rawLower = String(name).toLowerCase().trim();
+  const rawLower = foldCase(name).trim();
   const norm = normalizeShowName(name);
   if (!norm) return [];
 
@@ -59,7 +66,7 @@ function resolveShowMatches(name, shows) {
 
   for (const show of shows) {
     if (!show || !show.title) continue;
-    const titleLower = show.title.toLowerCase();
+    const titleLower = foldCase(show.title);
 
     // Rank 0: exact title / slug / id
     if (
@@ -99,16 +106,24 @@ function resolveShowMatches(name, shows) {
 
 /**
  * Resolve to a single show. When several productions match at the same rank,
- * prefer currently-running shows, then the most recent openingDate — a user
- * reporting a problem is almost always talking about the current production.
+ * prefer currently-running shows, then Broadway over other markets, then the
+ * most recent openingDate. Status first because a user reporting a problem is
+ * almost always talking about a production they can see now; market second
+ * because transfers open later than originals, so newest-date alone would
+ * systematically route "Hamilton" to the West End transfer instead of the
+ * Broadway original.
  */
+const CATEGORY_RANK = { broadway: 0, 'off-broadway': 1, 'west-end': 2 };
+
 function resolveShow(name, shows) {
   const matches = resolveShowMatches(name, shows);
   if (matches.length === 0) return null;
   const statusRank = (s) => (s.status === 'open' ? 0 : s.status === 'previews' ? 1 : 2);
+  const categoryRank = (s) => CATEGORY_RANK[s.category] ?? 3;
   return [...matches].sort(
     (a, b) =>
       statusRank(a) - statusRank(b) ||
+      categoryRank(a) - categoryRank(b) ||
       String(b.openingDate || '').localeCompare(String(a.openingDate || ''))
   )[0];
 }
@@ -116,7 +131,11 @@ function resolveShow(name, shows) {
 /**
  * Find show titles mentioned in free text. Token-boundary matching on
  * normalized text so "Rent" only matches the word "rent", never "currently".
- * Returns unique original titles.
+ * Returns unique original titles. Deliberate trade-off: titles whose
+ * normalized core is under MIN_FUZZY_LEN ("Six", "Ma") are never extracted
+ * from free text — as standalone English words they are usually not show
+ * mentions ("the six reviews I read"), and the form's show field remains the
+ * primary signal for them.
  */
 function extractShowTitlesFromText(message, shows) {
   if (!message || !Array.isArray(shows)) return [];

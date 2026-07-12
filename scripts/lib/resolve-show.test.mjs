@@ -95,3 +95,27 @@ test('normalizeShowName strips punctuation and case', () => {
   assert.equal(normalizeShowName("  Schmigadoon!  "), 'schmigadoon');
   assert.equal(normalizeShowName("O'Hara's Place"), 'o hara s place');
 });
+
+test('diacritics fold: Misérables == Miserables', () => {
+  assert.equal(normalizeShowName('Les Misérables'), 'les miserables');
+  const shows = [
+    { id: 'lesmis-1987', slug: 'les-miserables', title: 'Les Miserables', status: 'closed', openingDate: '1987-03-12', category: 'broadway' },
+    { id: 'lesmis-we-2021', slug: 'les-miserables-west-end', title: 'Les Misérables', status: 'open', openingDate: '1985-12-04', category: 'west-end' },
+  ];
+  // ASCII query must see BOTH productions (rank 1 normalized-exact), and
+  // single-resolve prefers the open one.
+  assert.equal(resolveShowMatches('Les Miserables', shows).length, 2);
+  assert.equal(resolveShow('Les Miserables', shows)?.id, 'lesmis-we-2021');
+  assert.equal(resolveShow('Les Misérables', shows)?.id, 'lesmis-we-2021');
+});
+
+test('both open: Broadway original beats later-opening West End transfer', () => {
+  const shows = [
+    { id: 'hamilton-2015', slug: 'hamilton', title: 'Hamilton', status: 'open', openingDate: '2015-08-06', category: 'broadway' },
+    { id: 'hamilton-we-2021', slug: 'hamilton-west-end', title: 'Hamilton', status: 'open', openingDate: '2017-12-21', category: 'west-end' },
+  ];
+  assert.equal(resolveShow('Hamilton', shows)?.id, 'hamilton-2015');
+  // But a closed Broadway run loses to an open West End run.
+  shows[0].status = 'closed';
+  assert.equal(resolveShow('Hamilton', shows)?.id, 'hamilton-we-2021');
+});
