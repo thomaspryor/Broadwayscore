@@ -165,6 +165,26 @@ async function main() {
         console.log('  ⚠ Google and/or Apple OAuth not enabled — the only sign-in methods.');
       }
     } catch (e) { console.log(`(auth-config check skipped: ${e.message})`); }
+
+    // Drive the REAL OAuth authorize endpoint for each provider and confirm the
+    // provider ACCEPTS our app (redirects to its own sign-in) instead of erroring
+    // on a misconfig (redirect_uri_mismatch / invalid_client / disabled provider).
+    // This is the automatable slice of "does the Google/Apple button work" — it
+    // exercises the provider-side client config without completing a real login
+    // (which needs a human credential + defeating bot-detection). Informational.
+    const redirectTo = 'https://demo.broadwayscorecard.com/auth/callback';
+    for (const [p, okHost] of [['google', 'accounts.google.com'], ['apple', 'appleid.apple.com']]) {
+      try {
+        const authUrl = `${URL}/auth/v1/authorize?provider=${p}&redirect_to=${encodeURIComponent(redirectTo)}`;
+        const res = await fetch(authUrl, { redirect: 'follow', headers: { 'User-Agent': 'Mozilla/5.0' } });
+        const finalUrl = res.url || '';
+        const body = (await res.text()).slice(0, 4000).toLowerCase();
+        const reachedProvider = finalUrl.includes(okHost);
+        const err = /redirect_uri_mismatch|invalid_client|unauthorized_client|error=|access blocked|400\. that.?s an error/.test(finalUrl + ' ' + body);
+        const ok = reachedProvider && !err;
+        console.log(`  ${ok ? '✓' : '⚠'} ${p} OAuth: ${ok ? `reaches ${okHost} (client config accepted)` : `did NOT cleanly reach ${okHost} → ${finalUrl.slice(0, 90)}`}`);
+      } catch (e) { console.log(`  (${p} OAuth probe skipped: ${e.message})`); }
+    }
     console.log('');
   }
 

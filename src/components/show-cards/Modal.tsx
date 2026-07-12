@@ -48,6 +48,49 @@ export default function Modal({
 }: ModalProps) {
   const scrollYRef = useRef(0);
   const overlayRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  const isTopmost = useCallback(
+    () => {
+      const overlays = document.querySelectorAll('[role="dialog"][aria-modal="true"]');
+      return !overlays.length || overlays[overlays.length - 1] === overlayRef.current;
+    },
+    [],
+  );
+
+  // Focus management: move focus into the modal on open, restore it on close,
+  // and trap Tab within the modal so keyboard/screen-reader users can't wander
+  // onto the obscured page behind the backdrop. Only the TOPMOST modal traps
+  // (same rule as Escape) so a stacked sign-in over the editor behaves right.
+  useEffect(() => {
+    if (!isOpen) return;
+    const restoreTo = document.activeElement as HTMLElement | null;
+    const focusables = () => {
+      const panel = panelRef.current;
+      if (!panel) return [] as HTMLElement[];
+      return Array.from(
+        panel.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])',
+        ),
+      ).filter(el => el.offsetParent !== null);
+    };
+    // Defer initial focus one frame so the panel is painted.
+    const raf = requestAnimationFrame(() => (focusables()[0] || panelRef.current)?.focus?.());
+    const onTab = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab' || !isTopmost()) return;
+      const f = focusables();
+      if (!f.length) { e.preventDefault(); panelRef.current?.focus(); return; }
+      const first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    };
+    document.addEventListener('keydown', onTab);
+    return () => {
+      cancelAnimationFrame(raf);
+      document.removeEventListener('keydown', onTab);
+      restoreTo?.focus?.();
+    };
+  }, [isOpen, isTopmost]);
 
   // Escape dismisses only the TOPMOST open modal — with stacked modals (e.g.
   // sign-in over the rating editor) a single Escape used to close both,
@@ -147,7 +190,11 @@ export default function Modal({
       />
 
       {/* Panel */}
-      <div className={`relative w-full ${MAX_WIDTH_CLASS[maxWidth]} bg-surface-raised border border-white/10 ${panelRounding} shadow-2xl max-h-[85vh] overflow-y-auto`}>
+      <div
+        ref={panelRef}
+        tabIndex={-1}
+        className={`relative w-full ${MAX_WIDTH_CLASS[maxWidth]} bg-surface-raised border border-white/10 ${panelRounding} shadow-2xl max-h-[85vh] overflow-y-auto focus:outline-none`}
+      >
         {children}
       </div>
     </div>,
