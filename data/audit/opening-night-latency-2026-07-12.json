@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-12T17:39:39.700Z",
+  "generatedAt": "2026-07-12T18:37:25.851Z",
   "date": "2026-07-12",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 237251,
+  "entryCount": 240698,
   "shows": [
     {
       "showId": "dukes-off-broadway-2026",
@@ -486,7 +486,7 @@
     },
     {
       "showId": "avenue-q-west-end-2026",
-      "reviewCount": 29,
+      "reviewCount": 30,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1041,7 +1041,7 @@
     },
     {
       "showId": "ragtime-2025",
-      "reviewCount": 33,
+      "reviewCount": 32,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1461,7 +1461,7 @@
     },
     {
       "showId": "once-upon-a-mattress-2024",
-      "reviewCount": 27,
+      "reviewCount": 25,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1536,7 +1536,7 @@
     },
     {
       "showId": "lempicka-2024",
-      "reviewCount": 31,
+      "reviewCount": 30,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1551,7 +1551,7 @@
     },
     {
       "showId": "the-notebook-2024",
-      "reviewCount": 32,
+      "reviewCount": 31,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1806,7 +1806,7 @@
     },
     {
       "showId": "ink-2019",
-      "reviewCount": 45,
+      "reviewCount": 44,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2001,7 +2001,7 @@
     },
     {
       "showId": "john-lithgow-stories-by-heart-2018",
-      "reviewCount": 43,
+      "reviewCount": 42,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2031,7 +2031,7 @@
     },
     {
       "showId": "prince-of-broadway-2017",
-      "reviewCount": 62,
+      "reviewCount": 61,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2046,7 +2046,7 @@
     },
     {
       "showId": "marvins-room-2017",
-      "reviewCount": 36,
+      "reviewCount": 35,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2121,7 +2121,7 @@
     },
     {
       "showId": "the-price-2017",
-      "reviewCount": 37,
+      "reviewCount": 36,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2166,7 +2166,7 @@
     },
     {
       "showId": "jitney-2017",
-      "reviewCount": 48,
+      "reviewCount": 47,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -5271,7 +5271,7 @@
     },
     {
       "showId": "macbeth-2022",
-      "reviewCount": 27,
+      "reviewCount": 26,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -6067,6 +6067,21 @@
     {
       "showId": "titanique-2026",
       "reviewCount": 26,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "jack-and-the-beanstalk-off-west-end-2026",
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
