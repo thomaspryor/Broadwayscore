@@ -595,22 +595,19 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
   // entry owns the incoming domain — shared-domain losers (sunday-telegraph
   // on telegraph.co.uk) and domainAliases (ap syndicated on abcnews.go.com)
   // resolve to the domain's primary owner, not the slot's outlet.
-  if (urlChanged && existing.outletId) {
-    const incomingOutlet = resolveOutletFromUrl(incoming.url);
-    if (incomingOutlet && incomingOutlet.outletId !== existing.outletId
-        && !outletOwnsUrlDomain(existing.outletId, incoming.url)) {
-      logExclusion({
-        script: context.script || 'unknown-caller',
-        showId: context.showId || 'unknown',
-        file: context.file || '-',
-        reason: 'skippedCrossOutletMerge',
-        details: {
-          existingUrl: existing.url, incomingUrl: incoming.url, outletId: existing.outletId,
-          criticName: existing.criticName, incomingResolvedOutletId: incomingOutlet.outletId,
-        },
-      });
-      return { ...existing };
-    }
+  if (urlChanged && existing.outletId && isCrossOutletUrl(existing.outletId, incoming.url)) {
+    logExclusion({
+      script: context.script || 'unknown-caller',
+      showId: context.showId || 'unknown',
+      file: context.file || '-',
+      reason: 'skippedCrossOutletMerge',
+      details: {
+        existingUrl: existing.url, incomingUrl: incoming.url, outletId: existing.outletId,
+        criticName: existing.criticName,
+        incomingResolvedOutletId: (resolveOutletFromUrl(incoming.url) || {}).outletId,
+      },
+    });
+    return { ...existing };
   }
 
   const merged = { ...existing };
@@ -760,6 +757,28 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
  * Get the full outlet object from the registry.
  * Returns { displayName, tier, aliases, domain } or null if not found.
  */
+// Wire services syndicate on arbitrary partner domains (AP reviews live on
+// huffpost.com, sfgate.com, washingtontimes.com, …), so URL-domain identity
+// checks can never apply to them. Single source of truth — gather-reviews'
+// ingestion domain gate and the mergeReviews cross-outlet guard both use it.
+const WIRE_SERVICE_OUTLETS = new Set(['ap', 'reuters', 'bloomberg', 'upi']);
+
+/**
+ * Is this URL positive evidence of a DIFFERENT outlet than outletId?
+ * True only when the registry maps the URL's domain to another outlet AND
+ * outletId's own registry entry does not claim that domain (domain /
+ * domainAliases) AND outletId is not a wire service. Used to refuse
+ * cross-outlet URL swaps (Louise Penn 'Cambridge' incident, 2026-07-12).
+ */
+function isCrossOutletUrl(outletId, url) {
+  if (!outletId || !url) return false;
+  const id = normalizeOutlet(outletId);
+  if (WIRE_SERVICE_OUTLETS.has(id)) return false;
+  const resolved = resolveOutletFromUrl(url);
+  if (!resolved || resolved.outletId === id) return false;
+  return !outletOwnsUrlDomain(id, url);
+}
+
 /**
  * Does this outlet's own registry entry claim the URL's domain?
  * Checks `domain` plus `domainAliases` (syndication hosts), matching the
@@ -1594,6 +1613,8 @@ module.exports = {
   clearCriticRegistryCache,
   resolveOutletFromUrl,
   outletOwnsUrlDomain,
+  isCrossOutletUrl,
+  WIRE_SERVICE_OUTLETS,
   clearDomainCache,
   getOutletAliases,
   isProfileUrl,
