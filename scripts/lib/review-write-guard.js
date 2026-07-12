@@ -334,6 +334,21 @@ function safeWriteReview(filePath, newData, options = {}) {
   const preserved = [];
   let lockedSkipped = false;
 
+  // Google-redirect unwrap at the write choke point. Enrichment writers that
+  // fill `url` from SERP results can store the google.com/url?q=... WRAPPER
+  // instead of the article URL; rebuild then drops the review as a blocked
+  // domain (skippedBlockedUrl) while a byline-less SERP sibling takes its slot
+  // (JCS artsdesk/Halliburton, 2026-07-09, Notion 39a637c5-416f-813a).
+  // fetchPage() unwraps at FETCH time, so this catches only writes — the lazy
+  // require fires exclusively on wrapped URLs (rare) to keep module load light.
+  if (newData && typeof newData.url === 'string' && /\/\/(www\.)?google\.[^/]+\/url\?/.test(newData.url)) {
+    const unwrapped = require('./scraper').unwrapRedirectUrl(newData.url);
+    if (unwrapped !== newData.url) {
+      newData = { ...newData, url: unwrapped, urlUnwrappedFrom: newData.url };
+      console.log(`[review-write-guard] ${path.basename(filePath)}: unwrapped google-redirect url → ${unwrapped}`);
+    }
+  }
+
   // Temporal byline guard — refuse to write attributions to retired/deceased
   // critics for articles dated past their last-active date.
   // (Soft warnings — like Brantley freelance pieces — pass through with a log.)

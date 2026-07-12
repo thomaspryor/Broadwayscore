@@ -112,6 +112,30 @@ describe('isIncludableForRebuild — single-flag exclusions', () => {
     assert.strictEqual(isIncludableForRebuild({ ...withText, isNonReview: true }), false);
   });
 
+  // Blocked-URL mirror (JCS 2026-07-09: google-wrapped artsdesk URL + WET roundup
+  // page were rebuild-dropped as skippedBlockedUrl, but this predicate counted them
+  // includable, so check-review-count-drift reported them "suppressed" forever).
+  it('returns false when url is a google.com/url redirect wrapper', () => {
+    assert.strictEqual(isIncludableForRebuild({
+      ...withText,
+      url: 'https://www.google.com/url?q=https://theartsdesk.com/theatre/some-review&sa=D&source=editors',
+    }), false);
+  });
+
+  it('returns false when url is a blocked aggregator domain (westendtheatre.com)', () => {
+    assert.strictEqual(isIncludableForRebuild({
+      ...withText,
+      url: 'https://www.westendtheatre.com/359762/news/jesus-christ-superstar-reviews/',
+    }), false);
+  });
+
+  it('returns true for a normal outlet review URL', () => {
+    assert.strictEqual(isIncludableForRebuild({
+      ...withText,
+      url: 'https://theartsdesk.com/theatre/jesus-christ-superstar-london-palladium-review',
+    }), true);
+  });
+
   it('returns false when isNotReview: true', () => {
     assert.strictEqual(isIncludableForRebuild({ ...withText, isNotReview: true }), false);
   });
