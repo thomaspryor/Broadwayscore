@@ -100,6 +100,10 @@ Import: `import { ComponentName } from '@/components/show-cards'`
 
 **Rule:** Before creating any new UI component, check this list. If a shared component exists, use it. If you need a new shared component, add it to `show-cards/` and export from `index.ts`.
 
+## Text Size Floor (owner decision 2026-07-12)
+
+UGC / user-facing surfaces: **12px (`text-xs`) is the minimum text size** — no `text-[10px]`/`text-[11px]` micro-labels (owner: "too small"). 36 instances were bumped across ShowHeroRedesign, RatingEditor, My Shows, ListsTab, MezzanineImport on 2026-07-12.
+
 ## Button Hierarchy (owner decision 2026-07-12 — CI-guarded)
 
 One rule, no exceptions: **`.btn-primary` (champagne-gold gradient `#d4a574→#b8956a`, white text — the Get Tickets treatment) = THE single primary action of a screen.** Get Tickets, "+ Add show", "Create a list", Save/Retry in the rating editor. **`.btn-secondary` (neutral fill `bg-white/10 border-white/15 text-white`) = every other tappable action** (Want to See, Rate it, Cancel). **Bright `#FFD700` is reserved for stars and scores ONLY — never a button/border/background fill class** (SVG `fill=` in star/score art is the sanctioned use). Active/selected states use brand tints (`bg-brand/10 border-brand text-brand`), not gold.

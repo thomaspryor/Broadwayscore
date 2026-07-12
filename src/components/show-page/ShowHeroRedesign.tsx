@@ -19,7 +19,9 @@
  *  • No inline trash on the rating card — delete moves into the edit panel.
  *  • Closed shows: rating card renders if rated; tickets CTA + secondary row hidden;
  *    "Want to See" still functions ("wished I'd seen" semantics).
- *  • Watchlist + rating are independent — Want to See persists after rating.
+ *  • Rating a show REMOVES it from the watchlist (watchlist = unseen wants;
+ *    owner rule 2026-07-12). The poster bookmark and Want to See both toggle
+ *    the same watchlist.
  *  • <3 reviews → "Awaiting reviews" replaces score row + bar + Critics' Take.
  *
  * Deferred-auth flow: pending action (rating draft) saved before showSignIn();
@@ -278,11 +280,6 @@ function Inner({
     setRatePanelOpen(true);
   }, []);
 
-  const handleEditLatest = useCallback(() => {
-    if (!latestReview) return;
-    setEditingReview(latestReview);
-    setRatePanelOpen(true);
-  }, [latestReview]);
 
   // NOTE: RatingEditor owns the saving spinner and, critically, keeps the panel
   // open with the typed note intact when this rejects. So on the authed path we
@@ -336,9 +333,16 @@ function Inner({
       if (error) throw new Error(error.message);
       track('rating_submitted', { show_id: show.id, rating: data.rating, has_review_text: !!data.reviewText, is_edit: false });
       showToast?.(<>Added to <a href="/my-shows" className="underline hover:text-white/90">My Ratings &amp; Reviews</a></>, 'success');
+      // Watchlist = shows you WANT to see. Rating a show means you've seen it,
+      // so drop any watchlist entry (owner rule 2026-07-12 — replaces the old
+      // "watchlist and rating are independent" decision). Non-fatal: the rating
+      // itself already saved.
+      if (isWatchlisted(show.id)) {
+        try { await removeFromWatchlist(show.id); } catch { /* rating saved; watchlist cleanup is best-effort */ }
+      }
     }
     await getReviewsForShow(show.id);
-  }, [user, authLoading, show.id, getReviewsForShow, showToast, showSignIn]);
+  }, [user, authLoading, show.id, getReviewsForShow, showToast, showSignIn, isWatchlisted, removeFromWatchlist]);
 
   const handleRateSaved = useCallback(() => {
     setRatePanelOpen(false);
@@ -484,7 +488,7 @@ function Inner({
                   {tier.label}
                 </p>
               )}
-              <p className="text-[11px] text-gray-500 mt-0.5 leading-snug">
+              <p className="text-xs text-gray-500 mt-0.5 leading-snug">
                 {reviewCount} critic {reviewCount === 1 ? 'review' : 'reviews'}
               </p>
             </div>
@@ -502,7 +506,7 @@ function Inner({
                   {audienceGrade.label}
                 </p>
                 {audienceCount > 0 && (
-                  <p className="text-[11px] text-gray-500 mt-0.5 leading-snug">
+                  <p className="text-xs text-gray-500 mt-0.5 leading-snug">
                     {audienceCount.toLocaleString('en-US')} audience reviews
                   </p>
                 )}
@@ -530,7 +534,7 @@ function Inner({
           continuous block. */}
       {hasEnoughCriticReviews && consensusText && (
         <div className="mt-3">
-          <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-500 mb-1.5">
+          <p className="text-xs font-bold uppercase tracking-[0.12em] text-gray-500 mb-1.5">
             Critics&apos; Take
           </p>
           <p className="text-gray-300 text-sm leading-relaxed">{consensusText}</p>
@@ -540,11 +544,9 @@ function Inner({
       {/* Your rating card (rated state, render only when not actively editing inline) */}
       {userFeaturesEnabled && hasRating && latestReview && !ratePanelOpen && (
         <YourRatingInline
-          latestReview={latestReview}
-          isMulti={isMulti}
-          totalRatings={ratingCount}
+          reviews={sortedReviews}
           userAvg={userAvg}
-          onEdit={handleEditLatest}
+          onEditReview={(r) => { setEditingReview(r); setRatePanelOpen(true); }}
         />
       )}
 
@@ -583,7 +585,7 @@ function Inner({
 
       {/* On-list caption — minor indicator (decision: show page stays simple, list mgmt in /my-shows) */}
       {userFeaturesEnabled && firstListContainingShow && (
-        <p className="text-[11px] text-gray-500 flex items-center gap-1.5 -mt-2">
+        <p className="text-xs text-gray-500 flex items-center gap-1.5 -mt-2">
           <svg className="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h10" />
           </svg>
@@ -714,54 +716,52 @@ function AwaitingCard({ show, reviewCount }: { show: ComputedShow; reviewCount: 
 }
 
 function YourRatingInline({
-  latestReview,
-  isMulti,
-  totalRatings,
+  reviews,
   userAvg,
-  onEdit,
+  onEditReview,
 }: {
-  latestReview: UserReview;
-  isMulti: boolean;
-  totalRatings: number;
+  reviews: UserReview[];
   userAvg: number;
-  onEdit: () => void;
+  onEditReview: (review: UserReview) => void;
 }) {
+  const isMulti = reviews.length > 1;
   return (
-    <div className="card p-4 space-y-1.5">
-      <div className="flex items-center gap-3 min-w-0">
-        <div className="flex-shrink-0">
-          <StarRating rating={latestReview.rating} onRatingChange={() => {}} size="sm" readOnly hideLabel />
-        </div>
-        <div className="flex items-baseline gap-1.5 min-w-0 flex-1 text-xs">
-          <span className="font-bold text-gray-200 whitespace-nowrap">
-            {isMulti ? 'Latest viewing' : 'Your rating'}
-          </span>
-          {latestReview.date_seen && (
-            <span className="text-gray-500 whitespace-nowrap">· {formatDate(latestReview.date_seen)}</span>
+    <div className="card p-4 space-y-2.5">
+      {reviews.map((review, i) => (
+        <div key={review.id} className={i > 0 ? 'pt-2.5 border-t border-white/5 space-y-1' : 'space-y-1'}>
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="flex-shrink-0">
+              <StarRating rating={review.rating} onRatingChange={() => {}} size="sm" readOnly hideLabel />
+            </div>
+            <div className="flex items-baseline gap-1.5 min-w-0 flex-1 text-xs">
+              <span className="font-bold text-gray-200 whitespace-nowrap">
+                {!isMulti ? 'Your rating' : i === 0 ? 'Latest viewing' : 'Earlier viewing'}
+              </span>
+              {review.date_seen && (
+                <span className="text-gray-500 whitespace-nowrap">· {formatDate(review.date_seen)}</span>
+              )}
+            </div>
+            <button
+              type="button"
+              onClick={() => onEditReview(review)}
+              className="flex-shrink-0 w-7 h-7 rounded-full bg-surface-overlay border border-white/10 text-gray-300 hover:text-white hover:border-white/20 transition-colors flex items-center justify-center"
+              aria-label={i === 0 ? 'Edit rating' : 'Edit this viewing'}
+            >
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+              </svg>
+            </button>
+          </div>
+          {review.review_text && (
+            <p className="text-sm text-gray-400 italic leading-snug">
+              {`\u201C${review.review_text}\u201D`}
+            </p>
           )}
         </div>
-        <button
-          type="button"
-          onClick={onEdit}
-          className="flex-shrink-0 w-7 h-7 rounded-full bg-surface-overlay border border-white/10 text-gray-300 hover:text-white hover:border-white/20 transition-colors flex items-center justify-center"
-          aria-label="Edit rating"
-        >
-          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-          </svg>
-        </button>
-      </div>
-      {latestReview.review_text && (
-        <p className="text-sm text-gray-400 italic leading-snug line-clamp-3">
-          {`“${latestReview.review_text}”`}
-        </p>
-      )}
+      ))}
       {isMulti && (
-        <div className="pt-2 mt-1 border-t border-white/5 text-[11px] text-gray-500 flex items-center justify-between">
-          <Link href="/my-shows" className="text-gray-400 hover:text-brand transition-colors">
-            All {totalRatings} ratings →
-          </Link>
-          <span>avg {formatStars(userAvg)}</span>
+        <div className="pt-2 border-t border-white/5 text-xs text-gray-500 text-right">
+          avg {formatStars(userAvg)}
         </div>
       )}
     </div>
