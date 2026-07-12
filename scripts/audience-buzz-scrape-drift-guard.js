@@ -12,7 +12,13 @@
  * Usage:
  *   node scripts/audience-buzz-scrape-drift-guard.js \
  *     --before=data/audience-buzz.backup.json --after=data/audience-buzz.json --strict
- *   [--audit-out=data/audit/reddit-scrape-drift.json] [--json-only]
+ *   [--audit-out=PATH] [--json-only]
+ *
+ * NOTE: --audit-out is for LOCAL/manual runs only. Do NOT add it to the CI
+ * workflows — data/audit/ is not committed by the Reddit scrape (push-core-data
+ * excludes it and the public commit doesn't stage it), so a workflow-written
+ * audit file is silently discarded at job end. The ::warning:: annotations +
+ * stdout are the CI-log forensic record.
  *
  * Exit codes:
  *   0 — healthy, or breach WITHOUT --strict (still emits ::warning::)
