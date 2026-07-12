@@ -87,6 +87,10 @@ export default function ShowPageWatchlistButton({ showId }: ShowPageWatchlistBut
           <input
             ref={dateInputRef}
             type="date"
+          autoComplete="off"
+          data-1p-ignore
+          data-lpignore="true"
+          data-bwignore="true"
             value={watchlistDate || ''}
             onChange={e => updatePlannedDate(showId, e.target.value || null).catch(() => showToast?.('Failed to save date.', 'error'))}
             className="absolute top-0 left-0 w-0 h-0 opacity-0 pointer-events-none"

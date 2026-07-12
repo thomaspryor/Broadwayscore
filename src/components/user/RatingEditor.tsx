@@ -165,6 +165,10 @@ export default function RatingEditor({
         </label>
         <input
           type="date"
+          autoComplete="off"
+          data-1p-ignore
+          data-lpignore="true"
+          data-bwignore="true"
           value={dateSeen}
           onChange={e => setDateSeen(e.target.value)}
           onFocus={e => { try { e.currentTarget.showPicker(); } catch {} }}
@@ -233,7 +237,7 @@ export default function RatingEditor({
             type="button"
             onClick={onDelete}
             disabled={saving}
-            className="ml-auto text-[11px] text-score-skip/80 hover:text-score-skip transition-colors px-2 py-1"
+            className="ml-auto text-xs text-score-skip/80 hover:text-score-skip transition-colors px-2 py-1"
           >
             Delete this rating
           </button>

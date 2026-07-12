@@ -302,11 +302,11 @@ function ListRow({ list, showMap, onClick }: { list: UserList; showMap: ShowMap;
       <div className="flex-1 min-w-0">
         <h4 className="font-bold text-white text-base truncate">{list.name}</h4>
         {list.description && (
-          <p className="text-[11px] text-gray-600 truncate mt-0.5">{list.description}</p>
+          <p className="text-xs text-gray-600 truncate mt-0.5">{list.description}</p>
         )}
         <p className="text-xs text-gray-500 mt-0.5">
           {list.item_count || 0} {(list.item_count || 0) === 1 ? 'Show' : 'Shows'}
-          {list.is_ranked && <span className="ml-1.5 text-[10px] font-semibold text-amber-400/70 bg-amber-400/10 px-1.5 py-0.5 rounded">Ranked</span>}
+          {list.is_ranked && <span className="ml-1.5 text-xs font-semibold text-amber-400/70 bg-amber-400/10 px-1.5 py-0.5 rounded">Ranked</span>}
         </p>
       </div>
       {/* Poster previews */}
@@ -495,8 +495,8 @@ function ListDetailView({
       </div>
       <p className="text-xs text-gray-500 mb-1">
         {items.length} {items.length === 1 ? 'Show' : 'Shows'}
-        {list.is_ranked && <span className="ml-1.5 text-[10px] font-semibold text-amber-400/70 bg-amber-400/10 px-1.5 py-0.5 rounded">Ranked</span>}
-        {list.is_public && <span className="ml-1.5 text-[10px] font-semibold text-green-400/70 bg-green-400/10 px-1.5 py-0.5 rounded">Public</span>}
+        {list.is_ranked && <span className="ml-1.5 text-xs font-semibold text-amber-400/70 bg-amber-400/10 px-1.5 py-0.5 rounded">Ranked</span>}
+        {list.is_public && <span className="ml-1.5 text-xs font-semibold text-green-400/70 bg-green-400/10 px-1.5 py-0.5 rounded">Public</span>}
       </p>
       {list.description && (
         <p className="text-sm text-gray-400 mb-4">{list.description}</p>
@@ -891,7 +891,7 @@ function ListModal({
                 <span className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${isRanked ? 'translate-x-[22px]' : 'translate-x-0.5'}`} />
               </button>
             </div>
-            <p className="text-[11px] text-gray-500 -mt-1">Numbers your shows 1, 2, 3…</p>
+            <p className="text-xs text-gray-500 -mt-1">Numbers your shows 1, 2, 3…</p>
           </div>
 
           {/* Public toggle (edit mode only) */}
@@ -909,9 +909,9 @@ function ListModal({
                   <span className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${isPublic ? 'translate-x-[22px]' : 'translate-x-0.5'}`} />
                 </button>
               </div>
-              <p className="text-[11px] text-gray-500 -mt-1">Anyone with the link can view this list</p>
+              <p className="text-xs text-gray-500 -mt-1">Anyone with the link can view this list</p>
               {isPublic && list?.share_slug && (
-                <p className="text-[11px] text-brand mt-1 truncate">
+                <p className="text-xs text-brand mt-1 truncate">
                   {typeof window !== 'undefined' ? `${window.location.origin}/list/${list.share_slug}` : `/list/${list.share_slug}`}
                 </p>
               )}
