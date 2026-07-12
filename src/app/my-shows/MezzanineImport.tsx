@@ -400,7 +400,7 @@ export default function MezzanineImport({
               <div className="text-3xl mb-3">📱</div>
               <p className="text-sm text-gray-300 mb-1">Export your data from Mezzanine:</p>
               <p className="text-xs text-gray-500 mb-6">Settings → Export Data → JSON</p>
-              <label className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-black bg-[#FFD700] rounded-lg hover:bg-[#e6c200] transition-colors cursor-pointer">
+              <label className="btn-primary text-sm gap-2 cursor-pointer">
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                 </svg>
@@ -492,7 +492,7 @@ export default function MezzanineImport({
             <button
               onClick={handleImport}
               disabled={selectedDiary.length + selectedWatchlist.length === 0}
-              className="px-5 py-2 text-sm font-semibold text-black bg-[#FFD700] rounded-lg hover:bg-[#e6c200] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="btn-primary text-sm disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Import {selectedDiary.length + selectedWatchlist.length} Shows
             </button>
@@ -503,7 +503,7 @@ export default function MezzanineImport({
           <div className="px-5 py-3 border-t border-white/10 flex justify-end">
             <button
               onClick={handleClose}
-              className="px-5 py-2 text-sm font-semibold text-black bg-[#FFD700] rounded-lg hover:bg-[#e6c200] transition-colors"
+              className="btn-primary text-sm"
             >
               Done
             </button>

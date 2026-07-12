@@ -14,7 +14,7 @@ export default function WatchlistButton({ isWatchlisted, onToggle, loading = fal
       disabled={loading}
       className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border transition-all duration-200 ${
         isWatchlisted
-          ? 'bg-[#FFD700]/10 border-[#FFD700]/30 text-[#FFD700] hover:bg-[#FFD700]/20'
+          ? 'bg-brand/10 border-brand text-brand hover:bg-brand/20'
           : 'bg-surface-overlay border-white/10 text-gray-300 hover:text-white hover:bg-white/10'
       } ${loading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
       aria-label={isWatchlisted ? 'Remove from watchlist' : 'Add to watchlist'}

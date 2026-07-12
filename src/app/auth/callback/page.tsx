@@ -102,7 +102,7 @@ export default function AuthCallbackPage() {
         )}
         <a
           href="/"
-          className="inline-block px-5 py-2.5 text-sm font-semibold text-black bg-[#FFD700] rounded-lg hover:bg-[#e6c200] transition-colors"
+          className="btn-primary text-sm"
         >
           Go Home
         </a>

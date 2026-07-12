@@ -79,7 +79,7 @@ function RatingEditorFixtureInner() {
               type="button"
               data-testid="reopen"
               onClick={() => setOpen(true)}
-              className="px-4 py-2 text-sm font-semibold text-black bg-[#FFD700] rounded-lg"
+              className="btn-primary text-sm"
             >
               Rate it
             </button>

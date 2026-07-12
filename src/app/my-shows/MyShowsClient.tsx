@@ -323,7 +323,7 @@ export default function MyShowsClient() {
           <button
             type="button"
             onClick={() => showSignIn()}
-            className="inline-block px-6 py-3 text-sm font-semibold text-black bg-[#FFD700] rounded-lg hover:bg-[#e6c200] transition-colors"
+            className="btn-primary text-sm"
           >
             Sign In to Get Started
           </button>
@@ -357,7 +357,7 @@ export default function MyShowsClient() {
           <button
             type="button"
             onClick={() => setCreateListTrigger(t => t + 1)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-gray-400 hover:text-white bg-white/[0.06] hover:bg-white/10 border border-white/10 transition-colors text-xs font-medium"
+            className="btn-primary gap-1.5 text-xs"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
@@ -1425,7 +1425,7 @@ function AddShowSearch({
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-gray-400 hover:text-white bg-white/[0.06] hover:bg-white/10 border border-white/10 transition-colors text-xs font-medium"
+        className="btn-primary gap-1.5 text-xs"
         aria-label={context === 'diary' ? 'Add a show to diary' : 'Add to watchlist'}
         title={context === 'diary' ? 'Rate a show' : 'Add to watchlist'}
       >
@@ -1574,7 +1574,7 @@ function EmptyState({
       <p className="text-sm text-gray-400 mb-4">{description}</p>
       <Link
         href={ctaHref}
-        className="inline-block px-5 py-2.5 text-sm font-semibold text-black bg-[#FFD700] rounded-lg hover:bg-[#e6c200] transition-colors"
+        className="btn-primary text-sm"
       >
         {ctaLabel}
       </Link>
