@@ -134,6 +134,42 @@ const REDDIT_INFLATION_RATIO_GENERIC = 2;
 // votes) from being falsely suppressed. Notion 39a637c5.
 const REDDIT_INFLATION_RATIO_OTHER = 4;
 
+/**
+ * Deterministic anchor pre-gate for Reddit comments — runs BEFORE the LLM to
+ * cheaply drop comments that never reference the show. The LLM relevance gate
+ * (buzz-classifier) is a strong PROMPT but Gemini obeys it loosely: on generic-
+ * phrase titles it still passed ~36 non-naming comments (generic replies, other-
+ * show roundup threads) for a 99-seat immersive show (Pied à Terre, 2026-07-12).
+ * A comment is anchored only if its thread title or body actually names the show:
+ * the full normalized title as a substring, OR >= 2 distinctive title tokens
+ * (>= 4 chars, drops "the"/"la"/"y"/&), OR — for a title with a single
+ * distinctive token (Misterman, Hamilton) — that one token. Anchoring is
+ * necessary, not sufficient: anchored comments still go to the LLM (which
+ * resolves novel/film collisions like "Oscar Wao" that ARE anchored but off-topic).
+ * Non-anchored comments are dropped without an LLM call — cheaper AND stricter.
+ *
+ * @param {{postTitle?: string, body?: string}} comment
+ * @param {string} showTitle
+ * @returns {boolean}
+ */
+function commentAnchorsToShow(comment, showTitle) {
+  if (!comment) return false;
+  const hay = normalizeForGenericCheck(`${comment.postTitle || ''} ${comment.body || ''}`);
+  if (!hay) return false;
+  const normTitle = normalizeForGenericCheck(showTitle);
+  if (normTitle && hay.includes(normTitle)) return true; // full title phrase present
+  const distinctive = significantWords(showTitle).filter((w) => w.length >= 4);
+  if (distinctive.length === 0) {
+    // Title is all short/stopword tokens — no reliable deterministic anchor;
+    // don't pre-drop, let the LLM gate decide.
+    return true;
+  }
+  const hayTokens = new Set(hay.split(' '));
+  const hits = distinctive.filter((w) => hayTokens.has(w)).length;
+  const need = distinctive.length === 1 ? 1 : 2;
+  return hits >= need;
+}
+
 // Canonical non-Reddit audience source keys in audience-buzz.json. Used to build
 // the `otherCounts` fed to isRedditVolumeInflated so the suppressor and the audit
 // measure corroboration against the SAME sources — omitting West End sources
@@ -282,6 +318,7 @@ module.exports = {
   isRoundupOrMegathread,
   isGenericTitle,
   isRedditVolumeInflated,
+  commentAnchorsToShow,
   otherSourceReviewCounts,
   AUDIENCE_OTHER_SOURCE_NAMES,
   REDDIT_INFLATION_MIN_RC,

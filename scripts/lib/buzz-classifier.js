@@ -16,6 +16,7 @@
 
 const https = require('https');
 const { GEMINI_FLASH, GPT4O_MINI, CLAUDE_SONNET, KIMI } = require('./models');
+const { commentAnchorsToShow } = require('./reddit-post-filters');
 
 // Zod-like schema validation (inline to avoid dependency)
 const VALID_SENTIMENTS = ['enthusiastic', 'positive', 'mixed', 'negative', 'neutral'];
@@ -534,6 +535,28 @@ async function classifyBatch(showTitle, comments, provider = null, retryCount = 
  */
 async function classifyAllComments(showTitle, comments, batchSize = 150, provider = 'gemini', concurrency = 4, showContext = null) {
   const allClassifications = [];
+
+  // Deterministic anchor pre-gate: a comment whose thread title AND body never
+  // name the show can't be a genuine review of it, no matter what the LLM says.
+  // Drop those without an LLM call — cheaper, and it removes the non-naming
+  // false positives Gemini was passing (generic replies, other-show roundup
+  // threads). Anchored comments still go to the LLM for the harder novel/film
+  // collision judgment. Only applies when comments carry thread titles (the same
+  // condition the LLM production-gate uses); otherwise fixtures/bodies-only pass.
+  const usePreGate = comments.some((c) => c && c.postTitle);
+  const toClassify = [];
+  for (const c of comments) {
+    // Only pre-drop a comment that HAS a thread title yet neither its title nor
+    // body names the show. A comment with no thread title is left to the LLM,
+    // matching the prompt's "no thread title -> assume about the show" rule, so
+    // the deterministic gate and the LLM gate never disagree on the same input.
+    if (usePreGate && c && c.postTitle && !commentAnchorsToShow(c, showTitle)) {
+      allClassifications.push({ is_relevant: false, comment: c, upvotes: c.score });
+    } else {
+      toClassify.push(c);
+    }
+  }
+  comments = toClassify;
 
   // Create all batch definitions
   const batchDefs = [];
