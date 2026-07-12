@@ -49,6 +49,8 @@ interface OffBroadwayPageClientProps {
   awardWinnerSets?: AwardWinnerSets;
   /** Upcoming OB shows for the "Starting Soon" shelf (computed server-side). */
   startingSoonShows?: OffBroadwayShow[];
+  /** Recently opened OB shows still awaiting a score (computed server-side). */
+  justOpenedShows?: OffBroadwayShow[];
 }
 
 // URL parameter values
@@ -96,14 +98,24 @@ function ShowCardList({ shows, hideStatus, scoreMode }: { shows: OffBroadwayShow
   );
 }
 
-// Featured row with horizontal scroll
-function FeaturedRow({ title, shows }: { title: string; shows: OffBroadwayShow[] }) {
-  if (shows.length <= 3) return null;
+// Featured row with horizontal scroll.
+// minShows: minimum number of shows required to render (default 4 — a shelf of
+//   1-3 looks thin next to the full-width curated rows). The "awaiting" shelf
+//   passes minShows={1} because even a single just-opened show is worth
+//   surfacing there.
+// href: when set, renders a "See all →" link in the header.
+function FeaturedRow({ title, shows, minShows = 4, href }: { title: string; shows: OffBroadwayShow[]; minShows?: number; href?: string }) {
+  if (shows.length < minShows) return null;
 
   return (
     <section className="mb-6">
       <div className="flex items-center justify-between mb-3">
         <h2 className="text-base font-bold text-white">{title}</h2>
+        {href && (
+          <Link href={href} prefetch={false} className="text-xs font-semibold text-brand hover:text-brand-light transition-colors whitespace-nowrap">
+            See all →
+          </Link>
+        )}
       </div>
       <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
         {shows.map((show) => (
@@ -115,7 +127,7 @@ function FeaturedRow({ title, shows }: { title: string; shows: OffBroadwayShow[]
 }
 
 // Inner component that uses searchParams
-function OffBroadwayPageInner({ shows, totalShows, totalReviews, marketOpenCounts, awardWinnerSets, startingSoonShows = [] }: OffBroadwayPageClientProps) {
+function OffBroadwayPageInner({ shows, totalShows, totalReviews, marketOpenCounts, awardWinnerSets, startingSoonShows = [], justOpenedShows = [] }: OffBroadwayPageClientProps) {
   const initialSearchParams = useSearchParams();
   const router = useRouter();
 
@@ -594,6 +606,7 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews, marketOpenCount
         <FeaturedRow title="Top Plays" shows={topPlays} />
         <FeaturedRow title="Closing Soon" shows={closingSoonShows} />
         <FeaturedRow title="Starting Soon" shows={startingSoonShows} />
+        <FeaturedRow title="Recently Opened · Awaiting Reviews" shows={justOpenedShows} minShows={1} href="/browse/recently-opened-off-broadway" />
       </div>
     </div>
   );
