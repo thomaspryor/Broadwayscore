@@ -86,15 +86,15 @@ function detectMarket(id) {
   return 'broadway';
 }
 
-function normalizeTitle(t) {
-  return (t || '').toLowerCase().trim().replace(/[!?.,'"]/g, '');
-}
-
 const { parseDate } = require('./lib/date-utils');
 const { normalizeOutlet } = require('./lib/review-normalization');
 const { isOutletDomainMismatch } = require('./lib/aggregator-domains');
 const { buildOutletMaps } = require('./lib/outlet-region-map');
 const { classifyCrossMarketContamination } = require('./lib/cross-market-guard');
+const {
+  classifyClassAContamination,
+  normalizeShowTitle: normalizeTitle,
+} = require('./lib/cross-market-contamination');
 
 // Shared outlet → region / dual-market lookups (single source of truth with validate-data.js).
 const { outletRegionMap, dualMarket } = buildOutletMaps(registry);
@@ -327,16 +327,15 @@ for (const showId of showDirs) {
     if (shouldRunClass('A') && !alreadyFlagged && !d._auditAllowCrossMarket) {
       const pubDate = parseDate(d.publishDate);
       if (pubDate && showOpening && sibs.length) {
-        const thisDiff = Math.abs(pubDate - showOpening) / 86400000;
-        let best = null;
-        for (const s of sibs) {
-          const diff = Math.abs(pubDate - s.opening) / 86400000;
-          if (!best || diff < best.diff) best = { ...s, diff };
-        }
-        if (best && best.diff <= 30 && thisDiff > 180) {
+        // Shared strict Category-A predicate — single source of truth with
+        // fix-circular-duplicate-pairs.js (which must never canonicalize a class-A
+        // member). scripts/lib/cross-market-contamination.js.
+        const v = classifyClassAContamination(pubDate, showOpening, sibs.map(s => s.opening));
+        if (v.isClassA) {
+          const best = sibs[v.sibIndex];
           hits.A_cross_market.push({
             showId, file: f, thisMarket: show.market, sibId: best.id, sibMarket: best.market,
-            pubDate: d.publishDate, thisDiff: Math.round(thisDiff), sibDiff: Math.round(best.diff),
+            pubDate: d.publishDate, thisDiff: Math.round(v.thisDiff), sibDiff: Math.round(v.sibDiff),
           });
         }
       }

@@ -58,6 +58,10 @@ on:
         options:
           - broadway
           - west-end
+      catchupDays:
+        description: 'One-off: also include scored openings from the last N days before this week (first-issue catch-up). 0 = off.'
+        required: false
+        default: '0'
       audience:
         description: 'Resend audience for the broadcast DRAFT (never sent automatically).'
         required: false
@@ -158,6 +162,7 @@ jobs:
           NEWSLETTER_OB_LEAD: ${{ github.event.inputs.obLead }}
           NEWSLETTER_DROP_SECTIONS: ${{ github.event.inputs.dropSections }}
           NEWSLETTER_EDITION: ${{ github.event.inputs.edition || 'broadway' }}
+          NEWSLETTER_CATCHUP_DAYS: ${{ github.event.inputs.catchupDays || '0' }}
         run: |
           mkdir -p "$NEWSLETTER_OUT_DIR"
           node scripts/newsletter/generate.mjs "${{ steps.week.outputs.weekStart }}"
@@ -193,6 +198,7 @@ jobs:
           NEWSLETTER_OB_LEAD: ${{ github.event.inputs.obLead }}
           NEWSLETTER_DROP_SECTIONS: ${{ github.event.inputs.dropSections }}
           NEWSLETTER_EDITION: ${{ github.event.inputs.edition || 'broadway' }}
+          NEWSLETTER_CATCHUP_DAYS: ${{ github.event.inputs.catchupDays || '0' }}
         run: |
           # Skip regression test if no fixture exists for this week yet —
           # the fixture system is per-week and a fresh weekly run is the
@@ -224,6 +230,7 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           NEWSLETTER_OUT_DIR: ${{ github.workspace }}/data/newsletter-drafts
           NEWSLETTER_EDITION: ${{ github.event.inputs.edition || 'broadway' }}
+          NEWSLETTER_CATCHUP_DAYS: ${{ github.event.inputs.catchupDays || '0' }}
         run: |
           node scripts/newsletter/create-broadcast-draft.mjs "${{ steps.week.outputs.weekStart }}" \
             --audience="${{ github.event.inputs.audience || (github.event.inputs.edition == 'west-end' && 'west-end' || 'general') }}" --create

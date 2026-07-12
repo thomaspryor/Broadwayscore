@@ -1401,6 +1401,45 @@ function closingSection() {
   return sectionWrap(sectionHeading('Closing this Week'), body);
 }
 
+// SECTION: Also Opened Recently — a one-off catch-up for the FIRST issue of an
+// edition (nobody's seen a prior digest). NEWSLETTER_CATCHUP_DAYS>0 pulls in
+// scored openings from the weeks BEFORE this issue's window that aren't already
+// featured or closing this week. Compact rows (thumb + title + score), best
+// first, capped. Default 0 -> section never renders on a normal weekly.
+function catchupOpeningsSection() {
+  const days = parseInt(process.env.NEWSLETTER_CATCHUP_DAYS || '0', 10);
+  if (!days || days <= 0) return null;
+  const start = (() => { const d = new Date(weekStartStr + 'T12:00:00'); d.setDate(d.getDate() - days); return d.toISOString().slice(0, 10); })();
+  const list = shows.map(s => ({ s, a: aggregateScore(s.id) })).filter(({ s, a }) => {
+    if (!isPrimaryMarket(s) || isOperaShow(s)) return false;
+    if (s.status !== 'open') return false;
+    if (!s.openingDate || s.openingDate < start || s.openingDate >= weekStartStr) return false; // before this week's window
+    if (!notFeatured(s.id)) return false; // not already a hero card or a closing-this-week row
+    return a && a.count >= minReviews(s.category);
+  }).sort((a, b) => b.a.avg - a.a.avg)
+    .slice(0, 6);
+  if (!list.length) return null;
+  list.forEach(x => markFeatured(x.s.id));
+  const rows = list.map(({ s, a }, i, arr) => {
+    const isLast = i === arr.length - 1;
+    const border = !isLast ? 'border-bottom:1px solid rgba(255,255,255,0.05);' : '';
+    return `<tr>
+      <td valign="middle" width="68" style="padding:12px 10px 12px 0;${border}">${thumb(s, 56)}</td>
+      <td valign="middle" style="padding:12px 0;${border}">
+        <div style="font-size:16px;color:#fff;font-weight:700;line-height:1.25;">${showLink(s, s.title)} ${marketPill(s.category)}</div>
+        <div style="font-size:13px;color:#9ca3af;margin-top:3px;">Opened ${fmt(s.openingDate)} · ${a.count} reviews</div>
+      </td>
+      <td valign="middle" width="48" align="right" style="padding:12px 0;${border}">${smallBadge(a.avg, 48, s.category)}</td>
+    </tr>`;
+  }).join('');
+  const seeAll = seeAllLink(`${SITE}${BRAND.primaryPath}`, `Explore the full ${BRAND.primaryLabel}`, { color: BRAND.accentSolid });
+  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" class="cardbg">
+    <tr><td style="padding:4px 16px;"><table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">${rows}</table></td></tr>
+    ${seeAll}
+  </table>`;
+  return sectionWrap(sectionHeading('Also Opened Recently', 'the last few weeks'), body);
+}
+
 // SECTION: casting (Broadway, prev 14 days)
 function castingSection() {
   const eventsAll = [];
@@ -1957,11 +1996,15 @@ sections.run('broadway-openings', () => bwO.html);
 sections.run('offbroadway-openings', () => obO.html);
 
 const upcoming = sections.run('upcoming-openings', () => upcomingOpeningsSection());
-const mover = sections.run('biggest-movers', () => biggestMoverSection());
+// Broadway-only sections: SKIP them entirely in the West End edition. They
+// aren't in the WE assembly, but running them still fires markFeatured() as a
+// side-effect — which wrongly suppressed a WE show (Cyrano, a mover) from the
+// catch-up section that IS rendered (2026-07-12). Don't run what won't render.
+const mover = IS_WE ? null : sections.run('biggest-movers', () => biggestMoverSection());
 const clo   = sections.run('closing-this-week', () => closingSection());
-const announced = sections.run('announced-closings', () => announcedClosingsSection());
-const box      = sections.run('box-office', () => boxOfficeSection());
-const commercial = sections.run('recoupment', () => commercialSection());
+const announced = IS_WE ? null : sections.run('announced-closings', () => announcedClosingsSection());
+const box      = IS_WE ? null : sections.run('box-office', () => boxOfficeSection());
+const commercial = IS_WE ? null : sections.run('recoupment', () => commercialSection());
 const bz   = sections.run('social-buzz', () => buzziestSection());
 // Tony Predictions section REMOVED 2026-06-21 — see retired tonyWatchSection()
 // comment above. The 2026-06-08 ceremony is over; this section never renders again.
@@ -1992,6 +2035,9 @@ try {
 } catch (e) { process.stderr.write('[newsletter] state write failed: ' + e.message + '\n'); }
 const lon  = sections.run('london-openings', () => londonSection());
 const opera = sections.run('opera-openings', () => operaOpeningsSection());
+// Runs AFTER london-openings + closing so its notFeatured() gate excludes both
+// this week's hero openings and the closing-this-week rows (NEWSLETTER_CATCHUP_DAYS).
+const catchup = sections.run('also-opened-recently', () => catchupOpeningsSection());
 const ravepan = sections.run('rave-pan-of-the-week', () => ravePanSection());
 
 // Most-read show pages — real GA4 page-view data via popular-pages.mjs.
@@ -2057,6 +2103,7 @@ if (_includeSet.size) process.stderr.write(`[newsletter] opt-in sections: ${[...
 // are the hero.
 const sectionOrder = IS_WE ? [
   _slot('london-openings', lon),
+  _slot('also-opened-recently', catchup),
   _slot('closing-this-week', clo),
   _slot('rave-pan-of-the-week', ravepan),
   _slot('casting-updates', cas),
