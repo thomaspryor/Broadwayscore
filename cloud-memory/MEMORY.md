@@ -57,6 +57,7 @@
 - [Fixture E2E specs: dual registration](feedback_fixture_e2e_specs_dual_registration.md) — /test/* specs go in BOTH playwright testIgnore AND test-ugc.yml run list; TestGuard redirects fixtures to / on prod
 
 ## 📋 Open work
+- [Autonomous loop schedule](autonomous-loop-schedule.md) — nightly slot 07:30 UTC, email 7:30am ET; full 157-cron map; DST fallback + Sunday worktree-gc caveats
 - [OB venue historical backfill](project_ob_venue_historical_backfill.md) — Atlantic/Vineyard/MCC archive pages; Tier A deferred TFANA+2ndStage ([[project_ob_tier_a_deferred.md]])
 - [Manual stubs bypass venue/date validation](feedback_manual_stub_bypasses_validation.md) — NEVER stub shows.json from memory; look up Playbill first
 - [Regional auto-promotion](project_regional_expansion_watchlist.md) — roundup=go-live; auto add+reviews+images; transferOf/transferredTo cross-link tryout↔Broadway; cast/audience manual
