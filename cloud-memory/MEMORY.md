@@ -119,7 +119,7 @@
 - [Mobile link min-height + row exceptions](feedback_mobile_link_min_height.md) — a{min-height:44px}; .performer-row/.craft-row opt out; e2e-guarded
 - [App Router rendering](feedback_react_lazy_for_app_router_split.md) — next/dynamic from server = no-op, use 'use client' Loader + Suspense; above-fold features render in page.tsx BEFORE HomePageClient ([[feedback_page_tsx_renders_before_homepageclient.md]]); demo flags client-only ([[feedback_demo_flags_client_only.md]])
 - [A/B tests](feedback_ab_test_guardrails.md) — PostHog filters/exclusions/stat-sig thresholds
-- [.card contain traps fixed modals](feedback_css_contain_traps_fixed_modals.md) — Modal must portal to body; fixtures must exercise every presentation variant in-situ
+- [.card contain traps fixed modals](feedback_css_contain_traps_fixed_modals.md) — Modal must portal to body; module-scope singletons split across Next chunks, coordinate via DOM; fixtures must exercise every variant in-situ
 - [UGC test patterns](feedback_ugc_test_patterns.md) — Sanity env, mock dates, overflow, 404s; use page.getByRole().click() not page.evaluate, races hydration ([[feedback_playwright_evaluate_click_hydration.md]])
 
 ## 💼 Commercial / features

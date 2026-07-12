@@ -10,6 +10,7 @@ import type { AudienceBuzzData, ShowCommercial, ShowAwards, ShowGrosses } from '
 // canonical per-market threshold (West End / Broadway = 5, Off-West End /
 // Off-Broadway / Regional = 3) from score-buckets.ts.
 import { getMarketMinReviews } from '@/lib/market-utils';
+import { isRecentlyOpenedAwaitingReviews } from '@/lib/recently-opened';
 
 // Context object passed to dataFilter/customSort — avoids importing heavy data modules here
 export interface BrowseFilterContext {
@@ -990,7 +991,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     filter: (show) => show.status === 'open' || show.status === 'previews',
     sort: 'score',
     source: 'off-broadway',
-    relatedPages: ['best-off-broadway-shows', 'best-off-broadway-musicals', 'best-off-broadway-plays', 'upcoming-off-broadway-shows'],
+    relatedPages: ['recently-opened-off-broadway', 'best-off-broadway-shows', 'best-off-broadway-musicals', 'best-off-broadway-plays', 'upcoming-off-broadway-shows'],
   },
 
   'best-off-broadway-shows': {
@@ -1049,7 +1050,21 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     filter: (show) => show.status === 'upcoming' || show.status === 'previews',
     sort: 'opening-date-asc',
     source: 'off-broadway',
-    relatedPages: ['off-broadway-shows', 'best-off-broadway-shows', 'upcoming-broadway-shows'],
+    relatedPages: ['recently-opened-off-broadway', 'off-broadway-shows', 'best-off-broadway-shows', 'upcoming-broadway-shows'],
+  },
+
+  'recently-opened-off-broadway': {
+    slug: 'recently-opened-off-broadway',
+    title: 'Recently Opened Off-Broadway',
+    h1: 'Recently Opened Off-Broadway Shows — Awaiting Reviews',
+    metaTitle: `Recently Opened Off-Broadway Shows (${CURRENT_YEAR})`,
+    metaDescription: 'Off-Broadway shows that just opened in NYC and are still gathering reviews. See what opened this month before the CriticScore lands.',
+    intro: 'Off-Broadway shows that have just opened but don\'t yet have enough reviews for a CriticScore. Off-Broadway critics often take a week or two after opening night to publish, so newly opened productions spend a stretch in limbo — already playing, but not yet scored. This page collects them in one place, newest first, so nothing gets lost in the gap between opening and its first reviews. Check back as reviews land and each show earns its score.',
+    // Canonical predicate shared with the /off-broadway "awaiting" shelf.
+    filter: (show) => isRecentlyOpenedAwaitingReviews(show),
+    sort: 'opening-date',
+    source: 'off-broadway',
+    relatedPages: ['upcoming-off-broadway-shows', 'off-broadway-shows', 'best-off-broadway-shows'],
   },
 
   // === SEO KEYWORD GAP PAGES ===

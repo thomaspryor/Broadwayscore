@@ -3,6 +3,7 @@
 import { useState, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import RatingEditor, { type RatingEditorSaveData } from '@/components/user/RatingEditor';
+import Modal from '@/components/show-cards/Modal';
 
 /**
  * Interactive test fixture for RatingEditor (the shared rating editor).
@@ -26,9 +27,13 @@ function RatingEditorFixtureInner() {
   // ?presentation=modal renders the Modal path INSIDE the .card wrapper —
   // regression fixture for the contain:layout containment trap (2026-07-05).
   const presentation = sp.get('presentation') === 'modal' ? 'modal' as const : 'inline' as const;
+  // ?stack=1 opens a second shared Modal over the editor's modal — regression
+  // fixture for topmost-only Escape (stacked sign-in over editor, 2026-07-11).
+  const stack = sp.get('stack') === '1';
   const isEdit = state === 'edit';
 
   const [open, setOpen] = useState(true);
+  const [stackOpen, setStackOpen] = useState(stack);
   const [saved, setSaved] = useState<RatingEditorSaveData | null>(null);
 
   const handleSave = useCallback(async (data: RatingEditorSaveData) => {
@@ -69,6 +74,12 @@ function RatingEditorFixtureInner() {
             </button>
           )}
         </div>
+
+        {stackOpen && (
+          <Modal isOpen onClose={() => setStackOpen(false)} zIndex={80} maxWidth="sm" ariaLabel="Stacked test modal">
+            <div className="p-6" data-testid="stacked-modal">Second modal (topmost)</div>
+          </Modal>
+        )}
 
         {saved && (
           <div className="mt-4 text-xs text-gray-400" data-testid="last-saved">
