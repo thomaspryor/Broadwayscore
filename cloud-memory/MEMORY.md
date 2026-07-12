@@ -18,7 +18,7 @@
 - [Review rituals](feedback_sprint_plan_needs_review.md) — /plan-review before multi-sprint plans; GPT-4o+Gemini parallel on screenshots ([[feedback_two_model_ui_review.md]], [[feedback_three_model_audit_modality.md]])
 - [Test pure function at I/O boundary](feedback_test_pure_function_at_io_boundary.md) — also test wrapper against real data
 - [Anti-AI-slop writing](feedback_anti_ai_slop_writing.md) — strip em dashes, "not X it's Y", hedges, fake comparisons in external copy ([[feedback_email_drafting.md]])
-- [GitHub polling rate limit](feedback_github_polling_rate_limit.md) — no gh run list loops; watch POLLS 3s default, `-i 60` mandatory, ONE watch at a time; gh run list caps at 20
+- [GitHub polling rate limit](feedback_github_polling_rate_limit.md) — no gh polling loops; NEVER gh run watch, use scripts/lib/wait-for-run.sh; 403 → rate_limit reset + git/raw/prod fallbacks
 
 ## 📇 Notion / brain
 - [Notion brain workflow](notion-brain-workflow.md) — IDs, schema, lifecycle; CLI only, never MCP ([[feedback_notion_cli_only.md]])
