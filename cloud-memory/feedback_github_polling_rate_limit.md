@@ -1,6 +1,6 @@
 ---
 name: github-polling-rate-limit
-description: Never use gh run list in a polling loop, and gh run watch NEEDS -i 60 (default 3s poll = 1200 calls/hr, NOT long-polling). Hook enforces both.
+description: Never use gh run list in a polling loop, and never gh run watch for CI monitoring (default 3s poll = 1200 calls/hr, NOT long-polling) — use scripts/lib/wait-for-run.sh. On 403, check gh api rate_limit (free) and use rate-limit-immune fallbacks. Hook enforces.
 metadata: 
   node_type: memory
   type: feedback
@@ -43,11 +43,11 @@ This is the canonical "pushed ≠ deployed" check when GitHub is unavailable. Se
 
 **How to apply:**
 - Get run ID once: `gh run list --limit 1 --json databaseId --jq '.[0].databaseId'`
-- Then watch it: `gh run watch <id> -i 60 --exit-status` — **`-i 60` is MANDATORY** (hook Rule 5 blocks watches without `-i` >= 30). Watch POLLS every interval; the 3s default is ~1,200 calls/hr per watch (Eighth incident).
-- **One watch at a time.** Don't chase superseded runs with fresh watches — when pushes keep landing, wait for the last push, then watch once.
-- Or: use `gh api repos/OWNER/REPO/actions/runs` directly (doesn't hit workflow-listing endpoint)
-- Or: check once after a fixed wait, report to user, move on to other work
+- Then wait on it with **`scripts/lib/wait-for-run.sh <run-id> [timeout-min]`** (added 2026-07-12, worktree-rate-limit-ci-monitoring) — one `gh run view --json status,conclusion` call per 60-90s jittered iteration (no jobs expansion), checks the free `gh api rate_limit` endpoint before the first poll and every 10th poll, and backs off automatically (<500 remaining → interval doubles; <100 → prints reset time, 5-min intervals). Exit 0 = success, 1 = failure/cancelled, 2 = timeout, 3 = not-found/usage. Measured cost: a 20-min run ≈ 15-20 calls vs ~400 for a default watch. `gh run watch` even with `-i 60` also expands jobs each refresh — the script is strictly cheaper; watch is legacy, don't recommend it.
+- **One wait at a time.** Don't chase superseded runs — when pushes keep landing, wait for the last push, then wait once.
+- **Prefer verifying OUTCOMES over run status** — these are all rate-limit-immune and worked during the 2026-07-11 outage: production URL content / `node scripts/check-prod-deploy.js HEAD` (Vercel API), `raw.githubusercontent.com/<owner>/<repo>/main/<path>` file fetches, data-repo `git log`/`git fetch` (git smart-HTTP is not the REST API), and `gh api rate_limit` itself (free endpoint, never counts).
+- **On HTTP 403 rate-limit: STOP calling gh.** Retrying in a loop is how 20-min outages become 2-hour ones. Run `gh api rate_limit --jq .resources.core` (free) to get `reset` (epoch), then either wait for it or switch to the immune fallbacks above. 403 rate-limit is non-retryable-until-reset by definition.
 - **Never** chain `sleep N && gh run X` in a `while`/`until` loop — applies to `gh run list`, `gh run view`, AND `gh api`.
-- **When pushing multiple repos in sequence:** push all repos first, THEN get the single final run ID and watch it once. Don't watch intermediate cancelled runs.
+- **When pushing multiple repos in sequence:** push all repos first, THEN get the single final run ID and wait on it once. Don't wait on intermediate cancelled runs.
 - If you suspect zombie loops: `ps aux | grep -E 'gh (run|api)' | grep -v grep` — also check `~/.claude/gh-zombie-reap.log` for what the reaper already killed.
 - Manually run the reaper: `~/.claude/hooks/gh-zombie-reap.sh`
