@@ -233,6 +233,7 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
           showTypeFilter={showTypeFilter}
           showScoreToggle={showScoreToggle}
           sectionLabels={sectionLabels}
+          upcomingContext={config.slug.startsWith('upcoming-')}
         />
 
         {/* Related Categories */}
