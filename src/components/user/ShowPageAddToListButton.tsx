@@ -177,7 +177,7 @@ export default function ShowPageAddToListButton({ showId }: ShowPageAddToListBut
                   </span>
                   <span className="text-gray-200 truncate">{list.name}</span>
                   {list.is_ranked && (
-                    <span className="text-[10px] text-gray-500 ml-auto flex-shrink-0">#</span>
+                    <span className="text-xs text-gray-500 ml-auto flex-shrink-0">#</span>
                   )}
                 </button>
               );
