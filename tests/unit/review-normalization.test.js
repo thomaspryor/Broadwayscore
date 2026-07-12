@@ -1378,3 +1378,40 @@ describe('mergeReviews — cross-outlet URL change guard (Louise Penn Cambridge 
     assert.strictEqual(merged.url, incoming.url);
   });
 });
+
+describe('mergeReviews — cross-outlet guard respects existing outlet\'s own domains', () => {
+  // resolveOutletFromUrl awards shared domains to their primary owner
+  // (telegraph.co.uk → telegraph, abcnews.go.com → abc-news). The guard must
+  // not treat that as a mismatch when the slot's own registry entry claims
+  // the incoming domain via `domain` or `domainAliases`.
+  const { outletOwnsUrlDomain } = require('../../scripts/lib/review-normalization.js');
+
+  it('allows ap slot to take an abcnews.go.com URL (domainAliases syndication)', () => {
+    const existing = { outletId: 'ap', outlet: 'Associated Press', criticName: 'Mark Kennedy', url: 'https://apnews.com/article/old-review' };
+    const incoming = { outletId: 'ap', url: 'https://abcnews.go.com/Entertainment/wireStory/review-12345', fullText: 'fresh text' };
+    const merged = mergeReviews(existing, incoming, {}, { script: 'test' });
+    assert.strictEqual(merged.url, incoming.url);
+  });
+
+  it('allows sunday-telegraph slot to take a telegraph.co.uk URL (shared domain)', () => {
+    const existing = { outletId: 'sunday-telegraph', outlet: 'The Sunday Telegraph', url: 'https://www.telegraph.co.uk/theatre/old-slug/' };
+    const incoming = { outletId: 'sunday-telegraph', url: 'https://www.telegraph.co.uk/theatre/new-slug/' };
+    const merged = mergeReviews(existing, incoming, {}, { script: 'test' });
+    assert.strictEqual(merged.url, incoming.url);
+  });
+
+  it('outletOwnsUrlDomain matches subdomains of owned domains', () => {
+    assert.strictEqual(outletOwnsUrlDomain('ap', 'https://abcnews.go.com/x'), true);
+    assert.strictEqual(outletOwnsUrlDomain('sunday-telegraph', 'https://www.telegraph.co.uk/x'), true);
+    assert.strictEqual(outletOwnsUrlDomain('loureviews', 'https://loureviews.blog/x'), true);
+    assert.strictEqual(outletOwnsUrlDomain('ap', 'https://loureviews.blog/x'), false);
+  });
+
+  it('still blocks the phantom-outlet case (no owned domain)', () => {
+    const existing = { outletId: 'cambridge', outlet: 'Cambridge', criticName: 'Unknown', url: 'https://www.facebook.com/LWTheatres/posts/p/', fullText: 'stub' };
+    const incoming = { outletId: 'cambridge', criticName: 'Louise Penn', url: 'https://loureviews.blog/2026/07/08/x/', fullText: 'a much longer real review text body' };
+    const merged = mergeReviews(existing, incoming, {}, { script: 'test' });
+    assert.strictEqual(merged.url, existing.url);
+    assert.strictEqual(merged.criticName, 'Unknown');
+  });
+});
