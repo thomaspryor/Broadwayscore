@@ -505,7 +505,7 @@ function criticsTake(showId) {
 // prefer cutting at the FIRST clause boundary (comma / semicolon / em dash) so
 // the teaser is a complete thought, else fall back to a word boundary. The card
 // links to the show page for the rest.
-function clampTake(text, max = 120) {
+function clampTake(text, max = 112) {
   if (!text || text.length <= 95) return text;
   const window = text.slice(0, max + 1);
   let cut = -1;
@@ -539,13 +539,13 @@ function showRow(show, opts = {}) {
   const metaVenue = venue;
   const audChip = audienceChip(show.id);
   const scoreCol = score != null
-    ? `<td valign="middle" width="92" style="padding:14px 16px 14px 4px;text-align:center;">
+    ? `<td valign="middle" width="92" style="padding:12px 16px 12px 4px;text-align:center;">
         ${tierLabel(score, show.category)}
         ${badgeHtml(score, 64, show.category)}
         <div style="font-size:10px;color:#9ca3af;margin-top:6px;">${a.count} reviews</div>
         ${audChip}
       </td>`
-    : `<td valign="middle" width="92" style="padding:14px 16px 14px 4px;text-align:center;">
+    : `<td valign="middle" width="92" style="padding:12px 16px 12px 4px;text-align:center;">
         <div style="font-size:9px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">Pending</div>
         ${badgeHtml(null, 64)}
         <div style="font-size:10px;color:#9ca3af;margin-top:6px;">${a ? a.count + ' rev' : '0 reviews'}</div>
@@ -554,18 +554,18 @@ function showRow(show, opts = {}) {
   return `
   <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="background:#1a1a24;border-radius:16px;border:1px solid rgba(255,255,255,0.05);box-shadow:0 2px 8px -2px rgba(0,0,0,0.5);margin-bottom:10px;">
     <tr>
-      <td valign="top" width="96" style="padding:14px 0 14px 16px;">${posterOrThumb(show, 80, 120)}</td>
-      <td valign="top" style="padding:14px 8px 14px 12px;">
+      <td valign="top" width="96" style="padding:12px 0 12px 16px;">${posterOrThumb(show, 80, 120)}</td>
+      <td valign="top" style="padding:12px 8px 12px 12px;">
         <div style="font-size:17px;font-weight:700;color:#fff;line-height:1.25;">${showLink(show, show.title)}</div>
         <div style="margin-top:6px;">${marketTag}${formatPill}${revivalPill}${reopenPill}</div>
-        <div style="font-size:13px;color:#9ca3af;margin-top:8px;line-height:1.4;">${metaDate}</div>
-        <div style="font-size:13px;color:#9ca3af;margin-top:2px;line-height:1.4;">${metaVenue}</div>
+        <div style="font-size:13px;color:#9ca3af;margin-top:6px;line-height:1.35;">${metaDate}</div>
+        <div style="font-size:13px;color:#9ca3af;margin-top:1px;line-height:1.35;">${metaVenue}</div>
         ${(() => {
           if (opts.noConsensus || score == null) return '';
           const take = clampTake(criticsTake(show.id));
           if (!take) return '';
           const readMore = show.slug ? ` <a href="${showHref(show)}" style="color:#d4a574;font-weight:600;text-decoration:none;white-space:nowrap;">Read more&nbsp;&rarr;</a>` : '';
-          return `<div style="font-size:13px;color:#c7cbd4;margin-top:10px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.06);line-height:1.5;"><span style="color:#d4a574;font-weight:700;">Critics&#8217; Take&nbsp;&nbsp;</span>${take}${readMore}</div>`;
+          return `<div style="font-size:13px;color:#c7cbd4;margin-top:8px;padding-top:6px;border-top:1px solid rgba(255,255,255,0.06);line-height:1.45;"><span style="color:#d4a574;font-weight:700;">Critics&#8217; Take&nbsp;&nbsp;</span>${take}${readMore}</div>`;
         })()}
       </td>
       ${scoreCol}
