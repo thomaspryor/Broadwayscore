@@ -38,15 +38,38 @@ const weekEndStr = weekEndDate.toISOString().slice(0, 10);
 const horizon7Date = new Date(weekEndDate); horizon7Date.setDate(horizon7Date.getDate() + 7);
 const horizon7Str = horizon7Date.toISOString().slice(0, 10);
 
+// ── Edition (market) ─────────────────────────────────────────────────────────
+// NEWSLETTER_EDITION=west-end produces the West End weekly for WE subscribers;
+// default 'broadway' is the original US edition. The edition flips PRIMARY (the
+// hero markets) and the branding; each section filters on PRIMARY so one
+// generator serves both. West End has no grosses feed, so the WE edition drops
+// Box Office / Recoupment / Season Standing / Opera entirely (see assembly).
+// Defined up here (not with BRAND rendering) because the cross-issue state key
+// below is edition-scoped.
+const EDITION = (process.env.NEWSLETTER_EDITION || 'broadway').trim();
+const IS_WE = EDITION === 'west-end';
+const PRIMARY = IS_WE ? ['west-end', 'off-west-end'] : ['broadway', 'off-broadway'];
+const isPrimaryMarket = (s) => s && PRIMARY.includes(s.category);
+// Branding: gold "Broadway Scorecard" vs pink "West End Scorecard". Same domain
+// (broadwayscorecard.com), but the WE edition's primary CTA is /west-end.
+const BRAND = IS_WE
+  ? { prefix: 'West End', accentGrad: 'linear-gradient(135deg,#f472b6 0%,#db2777 100%)', accentSolid: '#f472b6', primaryPath: '/west-end', primaryLabel: 'West End Scorecard', utm: 'we-weekly' }
+  : { prefix: 'Broadway', accentGrad: 'linear-gradient(135deg,#d4a574 0%,#b8956a 100%)', accentSolid: '#d4a574', primaryPath: '', primaryLabel: 'Broadway Scorecard', utm: 'weekly' };
+
 // --- Cross-issue memory (data/newsletter-state.json) ---------------------------
 // Persisted week-over-week so the digest never re-features last week's biggest
 // mover or re-announces a closing it already announced. Best-effort: a missing
 // or corrupt file degrades to "no memory" (everything is fair game).
+// Entries are EDITION-scoped: the Broadway and West End weeklies both commit
+// this file for the same weekStart, so keying by date alone let the second
+// run clobber the first edition's memory. Read + write filter on edition
+// (legacy entries with no `edition` field are treated as 'broadway').
 const STATE_PATH = path.join(repo, 'data/newsletter-state.json');
 let _priorState = { issues: [] };
 try { _priorState = JSON.parse(fs.readFileSync(STATE_PATH, 'utf8')) || { issues: [] }; } catch {}
+const _issueEdition = (i) => (i && i.edition) || 'broadway';
 const _priorIssues = (_priorState.issues || [])
-  .filter(i => i && i.weekStart && i.weekStart < weekStartStr)
+  .filter(i => i && i.weekStart && i.weekStart < weekStartStr && _issueEdition(i) === EDITION)
   .sort((a, b) => b.weekStart.localeCompare(a.weekStart));
 // Suppression windows are keyed by DATE, not by "the single most recent issue."
 // A stray mid-week regeneration can leave a second issue row (e.g. a 2026-06-02
@@ -280,16 +303,6 @@ function showHref(show) { return show && show.slug ? `${SITE}/show/${show.slug}`
 // hero markets) and the branding; each section filters on PRIMARY so one
 // generator serves both. West End has no grosses feed, so the WE edition drops
 // Box Office / Recoupment / Season Standing / Opera entirely (see assembly).
-const EDITION = (process.env.NEWSLETTER_EDITION || 'broadway').trim();
-const IS_WE = EDITION === 'west-end';
-const PRIMARY = IS_WE ? ['west-end', 'off-west-end'] : ['broadway', 'off-broadway'];
-const isPrimaryMarket = (s) => s && PRIMARY.includes(s.category);
-// Branding: gold "Broadway Scorecard" vs pink "West End Scorecard". Same domain
-// (broadwayscorecard.com), but the WE edition's primary CTA is /west-end.
-const BRAND = IS_WE
-  ? { prefix: 'West End', accentGrad: 'linear-gradient(135deg,#f472b6 0%,#db2777 100%)', accentSolid: '#f472b6', primaryPath: '/west-end', primaryLabel: 'West End Scorecard', utm: 'we-weekly' }
-  : { prefix: 'Broadway', accentGrad: 'linear-gradient(135deg,#d4a574 0%,#b8956a 100%)', accentSolid: '#d4a574', primaryPath: '', primaryLabel: 'Broadway Scorecard', utm: 'weekly' };
-
 // Opera shows (type='opera') are surfaced in their own dedicated Opera
 // Openings section and EXCLUDED from every other section. Opera coverage
 // follows different conventions: T1-flat weighting (per src/lib/engine.ts
@@ -1963,15 +1976,19 @@ const cas  = sections.run('casting-updates', () => castingSection());
 // Persist this issue's memory (mover + announced closings + everything featured)
 // so next week's run suppresses repeats. Best-effort — never fail the build.
 try {
-  const _issues = (_priorState.issues || []).filter(i => i && i.weekStart !== weekStartStr);
+  // Drop only THIS edition's entry for the week — keep the other edition's so
+  // the two weeklies don't clobber each other's memory (they commit the same
+  // file). slice(-24) keeps ~12 weeks × 2 editions.
+  const _issues = (_priorState.issues || []).filter(i => !(i && i.weekStart === weekStartStr && _issueEdition(i) === EDITION));
   _issues.push({
     weekStart: weekStartStr,
+    edition: EDITION,
     moverShowIds: _moverShowIds,
     announcedClosingShowIds: _announcedShowIds,
     featuredShowIds: Array.from(featuredShowIds),
   });
   _issues.sort((a, b) => a.weekStart.localeCompare(b.weekStart));
-  fs.writeFileSync(STATE_PATH, JSON.stringify({ issues: _issues.slice(-12) }, null, 2) + '\n');
+  fs.writeFileSync(STATE_PATH, JSON.stringify({ issues: _issues.slice(-24) }, null, 2) + '\n');
 } catch (e) { process.stderr.write('[newsletter] state write failed: ' + e.message + '\n'); }
 const lon  = sections.run('london-openings', () => londonSection());
 const opera = sections.run('opera-openings', () => operaOpeningsSection());
@@ -2418,7 +2435,7 @@ const slug = `A-${argDate}`;
 // writing the draft (idempotent — see scripts/lib/email-utm.js). Resend
 // click-tracking preserves the query string, so these survive the redirect.
 const { applyUtm } = cjsRequire('../lib/email-utm.js');
-fs.writeFileSync(`${outDir}/${slug}.html`, applyUtm(html, { source: 'newsletter', campaign: `weekly-${weekEndStr}` }));
+fs.writeFileSync(`${outDir}/${slug}.html`, applyUtm(html, { source: 'newsletter', campaign: `${BRAND.utm}-${weekEndStr}` }));
 // Sidecar JSON with subject + section-by-section run report so the send
 // script can pick up the subject without parsing HTML, and so we can detect
 // silently-skipped sections in regression tests / CI.
