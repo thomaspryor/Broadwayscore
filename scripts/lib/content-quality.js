@@ -2339,9 +2339,22 @@ const _BYLINE_MONTHS = new Set([
  */
 function extractTheaterLifeByline(text) {
   if (!text) return null;
-  const m = String(text).slice(0, 1200).match(/\bBy:\s+([A-Z][^\n]{2,60})/);
+  const head = String(text).slice(0, 1200);
+  // "By: Name" anywhere near the top — the colon makes this safe (prose almost
+  // never writes "By:"). Fall back to "By Name" only at text-start or line-start
+  // (no-colon form some posts use), anchored so it can't match "directed by" /
+  // "produced by" in the body.
+  let m = head.match(/\bBy:\s+([A-Z][^\n]{2,60})/);
+  if (!m) m = head.match(/(?:^|\n)\s*By\s+([A-Z][^\n]{2,60})/);
   if (!m) return null;
-  const tokens = m[1].trim().split(/\s+/);
+  // Some posts glue the article text straight onto the byline with no space
+  // ("By: Alix Cohen“We are merchants…" or "By: Alix CohenSeptember 19, 2025").
+  // Cut at the first quote/paren, and cut a glued-on month so the trailing date
+  // prose doesn't corrupt the last name token.
+  const captured = m[1]
+    .split(/[“”"«»(){}]/)[0]
+    .replace(/([a-z])(January|February|March|April|May|June|July|August|September|October|November|December)\b[\s\S]*/i, '$1');
+  const tokens = captured.trim().split(/\s+/);
   const isCap = (t) => /^[A-ZÀ-Þ]/.test(t);
   const isInitial = (t) => /^[A-Z]\.?$/.test(t);
   const isName = (t) => /^[A-ZÀ-Þ][A-Za-zÀ-ÿ'’.\-]*$/.test(t) && !_BYLINE_MONTHS.has(t.toLowerCase());

@@ -39,6 +39,26 @@ describe('extractTheaterLifeByline', () => {
     assert.strictEqual(extractTheaterLifeByline(text), 'David Sheward');
   });
 
+  test('parses "By Name" without a colon at text-start', () => {
+    assert.strictEqual(extractTheaterLifeByline('By David Sheward\n\nJanuary 22, 2025: Billed as a new play'), 'David Sheward');
+  });
+
+  test('cuts a byline glued to a curly quote ("By: Alix Cohen“We are…")', () => {
+    assert.strictEqual(extractTheaterLifeByline('THIS is Great Theater\n\nBy: Alix Cohen“We are merchants of money.'), 'Alix Cohen');
+  });
+
+  test('cuts a byline glued to a month ("By: Alix CohenSeptember 19, 2025")', () => {
+    assert.strictEqual(extractTheaterLifeByline('By: Alix CohenSeptember 19, 2025: On our way out'), 'Alix Cohen');
+  });
+
+  test('does not split Mc/Mac surnames (no-colon path)', () => {
+    assert.strictEqual(extractTheaterLifeByline('By McDonald Smith\n\nsome review text here'), 'McDonald Smith');
+  });
+
+  test('does not match a body sentence starting with "By" + lowercase', () => {
+    assert.strictEqual(extractTheaterLifeByline('The show opens.\nBy then the plot has thickened considerably.'), null);
+  });
+
   test('never re-stamps the phantom "Barry Gordin" even if the body said so', () => {
     assert.strictEqual(extractTheaterLifeByline('By: Barry Gordin\n\nsome text about a show'), null);
   });
