@@ -3,6 +3,7 @@
 import { useEffect, useCallback, useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useWatchlist } from '@/hooks/useWatchlist';
+import { useMyRating } from '@/hooks/useMyRating';
 import { useToastSafe } from '@/components/ui/Toast';
 import { savePendingAction } from '@/lib/deferred-auth';
 import { featureFlags } from '@/config/feature-flags';
@@ -29,6 +30,7 @@ export default function ShowPageBookmark({ showId, size = 'md' }: ShowPageBookma
   const { isWatchlisted, addToWatchlist, removeFromWatchlist, getWatchlist } = useWatchlist(user?.id || null);
   const { showToast } = useToastSafe();
   const [loading, setLoading] = useState(false);
+  const myRating = useMyRating(user?.id || null, showId);
 
   useEffect(() => {
     if (isAuthenticated && user) getWatchlist();
@@ -64,6 +66,22 @@ export default function ShowPageBookmark({ showId, size = 'md' }: ShowPageBookma
   }, [showId, isAuthenticated, authLoading, showSignIn, isWatchlisted, addToWatchlist, removeFromWatchlist, showToast]);
 
   if (!featureFlags.userAccounts) return null;
+
+  // Rated = seen: the corner slot shows YOUR star rating instead of the
+  // bookmark (owner pick 4B, 2026-07-12). One slot, three states:
+  // empty bookmark → nothing yet · filled bookmark → want to see · ★ → seen.
+  if (myRating !== null) {
+    return (
+      <div
+        className={`absolute top-1 right-1 z-10 pointer-events-none flex items-center gap-0.5 rounded-full bg-surface/90 border border-amber-400/30 font-bold text-[#FFD700] ${size === 'sm' ? 'px-1.5 py-0.5 text-xs' : 'px-2 py-0.5 text-xs'}`}
+        aria-label={`Your rating: ${myRating.toFixed(1)} stars`}
+        role="img"
+      >
+        <span aria-hidden="true">★</span>
+        <span className="tabular-nums">{myRating.toFixed(1)}</span>
+      </div>
+    );
+  }
 
   const watched = isWatchlisted(showId);
   const s = SIZES[size];

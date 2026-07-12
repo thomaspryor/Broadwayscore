@@ -83,17 +83,18 @@ for (const vp of VIEWPORTS) {
       await page.getByRole('button', { name: 'List view' }).click();
       await expect(page.getByRole('button', { name: 'List view' })).toHaveClass(/bg-white/, { timeout: 3000 });
 
-      // Get initial "shows seen" count
-      const initialText = await page.getByText('shows seen').textContent();
+      // Diary tab badge carries the seen count (summary bar removed 2026-07-12)
+      const diaryBadge = page.locator('#tab-diary span').first();
+      const initialText = await diaryBadge.textContent();
       const deleteBtn = page.getByRole('button', { name: 'Delete rating' }).first();
       await deleteBtn.click();
 
       // Confirm delete
       await page.getByRole('button', { name: /Delete\?/ }).first().click();
 
-      // Count should change — wait for the text to differ from initial
+      // Badge count should change — wait for the text to differ from initial
       await expect(async () => {
-        const newText = await page.getByText('shows seen').textContent();
+        const newText = await diaryBadge.textContent();
         expect(newText).not.toEqual(initialText);
       }).toPass({ timeout: 3000 });
     });
@@ -221,7 +222,7 @@ for (const vp of VIEWPORTS) {
 
       // Switch back to diary
       await page.getByRole('tab', { name: 'Diary' }).click();
-      await expect(page.getByText('shows seen')).toBeVisible();
+      await expect(page.getByRole('tab', { name: /Diary/ })).toHaveAttribute('aria-selected', 'true', { timeout: 3000 });
     });
 
     // ─── Navigation Links ───────────────────────────────────────
