@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-07-12T10:27:13.554Z",
+  "updatedAt": "2026-07-12T10:56:01.158Z",
   "processed": 16,
-  "failed": 486,
-  "successRate": "3.2%",
+  "failed": 536,
+  "successRate": "2.9%",
   "tierBreakdown": {
     "playwright": 11,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 3,
     "directCookies": 1,
     "scrapingbee": 0,
     "brightdata": 4,
-    "archiveToday": 11,
+    "archiveToday": 17,
     "archive": 0
   },
   "browserbaseSessions": 1,
@@ -34,6 +34,17 @@
     },
     {
       "t": "2026-07-12T10:16:36.222Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-12T10:45:01.451Z",
+      "event": "bb-session",
+      "session": "a5782ceb",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/sessions-review-a-tender-"
+    },
+    {
+      "t": "2026-07-12T10:45:02.094Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
     }
