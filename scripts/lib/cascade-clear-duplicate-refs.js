@@ -71,15 +71,26 @@ function cascadeClearDuplicateRefs(dirPath, deletedFilename, opts = {}) {
     } catch {
       continue; // unreadable / not JSON — skip
     }
-    if (data.duplicateOf !== deletedFilename) continue;
+    const dupOfDangling = data.duplicateOf === deletedFilename;
+    // duplicateTextOf (the content-fingerprint dedup pointer) dangles the same
+    // way. Without this, the sibling stays warned by validate-data until the
+    // audit --fix or a later write-guard self-heal touches it (thea-jacobs,
+    // card 39c637c5, 2026-07-13). Delete the field rather than nulling it —
+    // validate-data flags `null` as "should be string, got object".
+    const dupTextOfDangling = data.duplicateTextOf === deletedFilename;
+    if (!dupOfDangling && !dupTextOfDangling) continue;
 
     data.duplicateClearReason = `cascade-cleared: sibling ${deletedFilename} was deleted`;
-    data.duplicateOf = null;
-    data.duplicateReason = null;
+    if (dupOfDangling) {
+      data.duplicateOf = null;
+      data.duplicateReason = null;
+    }
+    if (dupTextOfDangling) delete data.duplicateTextOf;
     try {
       writeFile(siblingPath, data);
       cleared.push(entry);
-      log(`[cascade-clear] cleared duplicateOf in ${entry} (was pointing at deleted ${deletedFilename})`);
+      const fields = [dupOfDangling && 'duplicateOf', dupTextOfDangling && 'duplicateTextOf'].filter(Boolean).join('+');
+      log(`[cascade-clear] cleared ${fields} in ${entry} (was pointing at deleted ${deletedFilename})`);
     } catch {
       // best-effort — a write failure during the cleanup phase shouldn't
       // block the deletion itself
