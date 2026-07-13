@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-07-13T06:41:05.929Z",
+  "runDate": "2026-07-13T06:44:10.506Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 300,
+    "maxReviews": 0,
     "priority": "all",
-    "showFilter": "tender-off-west-end-2026",
+    "showFilter": "the-guilty-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,132 +12,70 @@
   },
   "summary": {
     "processed": 0,
-    "failed": 7,
+    "failed": 11,
     "skipped": 0,
     "successRate": "0%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 0,
+    "archiveToday": 1,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 0,
+    "tier1Attempts": 4,
+    "tier1Success": 2,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 1,
-    "tier1_5Success": 1,
-    "tier2Attempts": 1,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 1,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 2,
+    "tier2Success": 1,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
+    "tier4Attempts": 2,
     "tier4Success": 0,
-    "totalFailed": 7,
-    "scrapingBeePageCredits": 10,
+    "totalFailed": 11,
+    "scrapingBeePageCredits": 20,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.2,
-    "urlDiscoveryAttempts": 6,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 7,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [],
   "failed": [
-    "tender-off-west-end-2026/guardian--arifa-akbar.json",
-    "tender-off-west-end-2026/about-entertainment--ben-brantley.json",
-    "tender-off-west-end-2026/daily-mail--unknown.json",
-    "tender-off-west-end-2026/thestage--dave-fargnoli.json",
-    "tender-off-west-end-2026/times-uk--richard-morrison.json",
-    "tender-off-west-end-2026/times-uk--sam-marlowe.json",
-    "tender-off-west-end-2026/whatsonstage--oliver-ainley.json"
+    "the-guilty-west-end-2026/hollywood-reporter--angie-han.json",
+    "the-guilty-west-end-2026/hollywood-reporter--lily-ford.json",
+    "the-guilty-west-end-2026/deadline--denise-petski.json",
+    "the-guilty-west-end-2026/deadline--max-goldbart.json",
+    "the-guilty-west-end-2026/deadline--zac-ntim.json",
+    "the-guilty-west-end-2026/guardian-uk--unknown.json",
+    "the-guilty-west-end-2026/monstagigz--unknown.json",
+    "the-guilty-west-end-2026/plays-international--unknown.json",
+    "the-guilty-west-end-2026/rollingstone--charisma-madarang.json",
+    "the-guilty-west-end-2026/thestage--unknown.json",
+    "the-guilty-west-end-2026/times-uk--unknown.json"
   ],
   "tierDetails": {
     "playwright": [],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/the-guilty-west-end-2026/thestage--unknown.json"
+    ],
     "archive": []
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": [
-    {
-      "reviewId": "a-midsummer-nights-dream-west-end-2026/london-box-office--kit-benjamin.json",
-      "oldUrl": "https://www.londonboxoffice.co.uk/news/post/review-midsummer-nights-dream",
-      "newUrl": "https://www.londonboxoffice.co.uk/news/post/a-midsummer-nights-dream-regents-park-open-air-theatre-review"
-    },
-    {
-      "reviewId": "a-midsummer-nights-dream-west-end-2026/london-box-office--marian-pashley.json",
-      "oldUrl": "https://www.londonboxoffice.co.uk/news/post/review-midsummer-nights-dream-open-air",
-      "newUrl": "https://www.londonboxoffice.co.uk/news/post/a-midsummer-nights-dream-regents-park-open-air-theatre-review"
-    },
-    {
-      "reviewId": "a-midsummer-nights-dream-west-end-2026/london-box-office--stuart-king.json",
-      "oldUrl": "https://www.londonboxoffice.co.uk/news/post/review-midsummer-nights-dream-bridge-theatre",
-      "newUrl": "https://www.londonboxoffice.co.uk/news/post/a-midsummer-nights-dream-regents-park-open-air-theatre-review"
-    },
-    {
-      "reviewId": "glengarry-glen-ross-west-end-2026/times-uk--ann-treneman.json",
-      "oldUrl": "https://www.thetimes.co.uk/article/theatre-review-glengarry-glen-ross-playhouse-wc2-zbbsm0kxj",
-      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0"
-    },
-    {
-      "reviewId": "glengarry-glen-ross-west-end-2026/times-uk--benedict-nightingale.json",
-      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-without-men-its-not-just-putting-lipstick-on-mamet-sjc0ff8h0",
-      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0"
-    },
-    {
-      "reviewId": "glengarry-glen-ross-west-end-2026/times-uk--dominic-maxwell.json",
-      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-without-men-its-not-just-putting-lipstick-on-mamet-sjc0ff8h0",
-      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0"
-    },
-    {
-      "reviewId": "glengarry-glen-ross-west-end-2026/times-uk--maxie-szalwinska.json",
-      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-without-men-its-not-just-putting-lipstick-on-mamet-sjc0ff8h0",
-      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0"
-    },
-    {
-      "reviewId": "girl-interrupted-off-broadway-2026/playbill--unknown.json",
-      "oldUrl": "https://playbill.com/production/girl-interrupted-off-broadway-public-theater-martinson-hall-2026",
-      "newUrl": "https://playbill.com/article/what-are-reviews-saying-about-girl-interrupted"
-    },
-    {
-      "reviewId": "celebrity-autobiography-2026/playbill--unknown.json",
-      "oldUrl": "https://playbill.com/article/reviews-did-critics-think-celebrity-autobiography-on-broadway-was-a-novel-idea",
-      "newUrl": "https://playbill.com/article/get-a-1st-look-at-celebrity-autobiography-on-broadway"
-    },
-    {
-      "reviewId": "the-lost-boys-2026/theatermania--editorial-staff.json",
-      "oldUrl": "https://www.theatermania.com/news/the-lost-boys-leads-2026-outer-critics-circle-award-nominations_1833672/",
-      "newUrl": "https://www.theatermania.com/news/review-the-lost-boys-breaks-the-curse-of-the-vampire-musical-on-broadway_1834562/"
-    },
-    {
-      "reviewId": "the-lost-boys-2026/playbill--unknown.json",
-      "oldUrl": "https://playbill.com/article/a-three-story-set-a-65-foot-fly-rig-the-lost-boys-promises-a-true-broadway-spectacle",
-      "newUrl": "https://playbill.com/article/reviews-what-do-the-critics-think-of-the-lost-boys-on-broadway"
-    },
-    {
-      "reviewId": "joe-turners-come-and-gone-2026/playbill--unknown.json",
-      "oldUrl": "https://playbill.com/article/reviews-what-do-the-critics-think-of-joe-turners-come-and-gone-on-broadway",
-      "newUrl": "https://playbill.com/article/video-cast-of-joe-turners-come-and-gone-discuss-doing-august-wilsons-favorite-play"
-    },
-    {
-      "reviewId": "the-rocky-horror-show-2026/ew--dalton-ross.json",
-      "oldUrl": "https://ew.com/the-rocky-horror-show-review-luke-evans-born-to-wear-fishnets-on-broadway-11956084",
-      "newUrl": "https://ew.com/the-rocky-horror-show-review-luke-evans-born-to-wear-fishnets-on-broadway-11956084?srsltid=AfmBOoqZoSXPagnhzfLSrPnXNjLxBzc776IXdQ3LmlB-lFvLhZLfyyxA"
-    }
-  ]
+  "urlDiscoveries": []
 }
