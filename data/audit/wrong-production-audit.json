@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-13T18:06:19.845Z",
+  "timestamp": "2026-07-13T18:11:27.301Z",
   "stats": {
-    "totalReviews": 39978,
-    "alreadyFlagged": 17544,
+    "totalReviews": 39977,
+    "alreadyFlagged": 17542,
     "dateGuardCatches": 48,
     "directorMismatch": 910,
-    "tvFilmSignals": 1097,
+    "tvFilmSignals": 1098,
     "londonSignals": 742,
     "offBroadwaySignals": 466,
     "yearMismatch": 85,
-    "noPublishDate": 3795
+    "noPublishDate": 3794
   },
   "findings": [
     {
@@ -13293,6 +13293,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "king-hedley-ii-2001",
+      "file": "variety--charles-isherwood.json",
+      "publishDate": "2001-05-01",
+      "url": "https://variety.com/2001/legit/news/king-hedley-ii-2-1200468606/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
