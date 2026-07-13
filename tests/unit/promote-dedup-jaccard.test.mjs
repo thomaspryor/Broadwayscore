@@ -99,3 +99,26 @@ test('different venues with same title do NOT match', () => {
   // Different keys → no match (intentional — different productions).
   assert.equal(findExistingMatch(candidate, existing), null);
 });
+
+test('venue aliases: producer-prefix variants collapse to one key (Pels, Newhouse, PAC)', () => {
+  // Playbill lists these venues without the producing company's prefix;
+  // shows.json carries the prefixed canonical names. Both forms must map to
+  // the same key or validate-show-venue.js false-mismatches (batch #109).
+  assert.equal(
+    canonicalVenue('The Laura Pels Theatre at the Harold and Miriam Steinberg Center for Theatre'),
+    canonicalVenue('Roundabout Theatre Company - Laura Pels Theatre'),
+  );
+  assert.equal(
+    canonicalVenue('Lincoln Center Theater - Mitzi E. Newhouse Theater'),
+    canonicalVenue('Mitzi E. Newhouse Theatre'),
+  );
+  assert.equal(
+    canonicalVenue('Perelman Performing Arts Center (PAC NYC)'),
+    canonicalVenue('Perelman Performing Arts Center'),
+  );
+  // Carnegie Hall's Perelman Stage is a DIFFERENT venue — must not collapse
+  assert.notEqual(
+    canonicalVenue('Stern Auditorium / Perelman Stage at Carnegie Hall'),
+    canonicalVenue('Perelman Performing Arts Center'),
+  );
+});
