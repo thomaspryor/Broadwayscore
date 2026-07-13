@@ -151,19 +151,29 @@ async function main() {
   const stats = ledger.usageStats(entries);
   const evidence = latestEvidenceByCard(entries);
 
-  // Needs-approval cards, newest triage first; ≤3 in the email.
+  // Needs-approval cards, priority order (notion-brain list default); ≤3 in
+  // the email. A listing FAILURE must never masquerade as "no items to
+  // approve" (ship-check P1) — the email says so and the subject warns.
   let awaiting = [];
+  let listingFailed = false;
   try { awaiting = notionBrain(['list', '--auto', 'needs-approval', '--limit', '50']); }
-  catch (err) { console.error(`[email] WARN could not list needs-approval cards: ${err.message.slice(0, 120)}`); }
+  catch (err) {
+    listingFailed = true;
+    console.error(`[email] WARN could not list needs-approval cards: ${err.message.slice(0, 120)}`);
+  }
 
   const exp = Math.floor(Date.now() / 1000) + expiryH * 3600;
   const items = [];
+  let missingEvidence = 0;
   for (const row of awaiting.slice(0, MAX_EMAIL_ITEMS)) {
     const ev = evidence.get(row.id) || {};
     const evd = ev.evidence || {};
     let why = null;
     try { why = extractWhy(notionBrain(['get', row.id]).notes); } catch { /* keep null */ }
-    const branch = evd.branch || '(branch unknown)';
+    // Never sign action links for a branch we have no ledger evidence for —
+    // an approve tap must always refer to a branch the executor pushed.
+    if (!evd.branch) { missingEvidence++; continue; }
+    const branch = evd.branch;
     items.push({
       name: row.name,
       why,
@@ -188,7 +198,11 @@ async function main() {
     items,
     moreAwaiting: Math.max(0, awaiting.length - items.length),
     failedCount,
-    throttled,
+    throttled: listingFailed
+      ? 'could not read the approval queue from Notion — items below may be incomplete; check the cards directly'
+      : missingEvidence
+        ? `${missingEvidence} needs-approval card(s) have no ledger evidence on this machine — no action links generated for them${throttled ? `; ${throttled}` : ''}`
+        : throttled,
     stats,
     admin,
     config: { weeklyUSD: cfg.weeklyUSD ?? null },
@@ -196,9 +210,11 @@ async function main() {
     awaitingTotal: awaiting.length,
   });
 
-  const subject = items.length
-    ? `Overnight: ${items.length} item${items.length > 1 ? 's' : ''} awaiting your tap — ${items.map(i => i.name).join(' · ').slice(0, 80)}`
-    : `Overnight: no items to approve (${failedCount} failed)`;
+  const subject = listingFailed
+    ? `Overnight: ⚠️ could not read the approval queue`
+    : items.length
+      ? `Overnight: ${items.length} item${items.length > 1 ? 's' : ''} awaiting your tap — ${items.map(i => i.name).join(' · ').slice(0, 80)}`
+      : `Overnight: no items to approve (${failedCount} failed)`;
 
   if (dryRun) {
     const out = path.join(REPO, 'data', 'audit', 'autonomous-email-preview.html');

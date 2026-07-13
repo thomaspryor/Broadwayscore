@@ -205,9 +205,14 @@ function acquireSingleton(opts = {}) {
     let holder = null;
     try { holder = JSON.parse(fs.readFileSync(pidfilePath, 'utf8')); } catch { /* corrupt → steal */ }
     const age = holder ? now - new Date(holder.startedAt).getTime() : Infinity;
-    const live = holder && isAlive(holder.pid) && Number.isFinite(age) && age < staleMs;
-    if (live) return { acquired: false, holder };
-    // Dead or >6h-old holder: steal (unlink, then loop to recreate with wx).
+    const alive = holder && isAlive(holder.pid);
+    if (alive && Number.isFinite(age) && age < staleMs) return { acquired: false, holder };
+    // A stale-but-ALIVE holder is a wedged run — stealing without killing it
+    // would run two executors at once (ship-check P1). Terminate it first.
+    if (alive) {
+      try { (opts.killPid || (p => process.kill(p, 'SIGTERM')))(holder.pid); } catch { /* already gone */ }
+    }
+    // Dead (or just-killed) holder: steal (unlink, then recreate with wx).
     try { fs.unlinkSync(pidfilePath); } catch { /* raced with another stealer */ }
   }
   // Two failed steal attempts = another live process is racing us; yield.

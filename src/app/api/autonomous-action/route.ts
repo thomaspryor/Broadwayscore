@@ -47,7 +47,19 @@ async function notionApi(
 const VALID_ACTIONS = ['approve', 'reject', 'revert'] as const;
 type AutoAction = (typeof VALID_ACTIONS)[number];
 
+// GET never mutates: mail-security link scanners and preview fetchers open
+// every URL in an email, so a state-changing GET would let a robot approve
+// overnight work (ship-check P0, 2026-07-13). GET validates the signed link
+// and renders a one-button confirm form; the POST it submits does the write.
 export async function GET(req: NextRequest): Promise<Response> {
+  return handle(req, 'GET');
+}
+
+export async function POST(req: NextRequest): Promise<Response> {
+  return handle(req, 'POST');
+}
+
+async function handle(req: NextRequest, method: 'GET' | 'POST'): Promise<Response> {
   const searchParams = req.nextUrl.searchParams;
   const card = searchParams.get('card');
   const branch = searchParams.get('branch');
@@ -101,6 +113,20 @@ export async function GET(req: NextRequest): Promise<Response> {
   if (!sigValid) {
     return html('Invalid Link',
       '<h1>Invalid Link</h1><p>This action link could not be verified.</p>', 403);
+  }
+
+  // Valid signed link opened in a browser: show the one-tap confirm form.
+  // Only the POST it submits mutates anything.
+  if (method === 'GET') {
+    const verb = autoAction === 'approve' ? 'Approve' : autoAction === 'reject' ? 'Reject' : 'Revert';
+    const color = autoAction === 'approve' ? '#16a34a' : '#dc2626';
+    const qs = new URLSearchParams({ card, branch, action: autoAction, exp, sig });
+    if (reason) qs.set('reason', reason);
+    return html(`Confirm ${verb}`,
+      `<h1>Confirm ${verb}</h1><p>${sanitize(branch, 100)}</p>` +
+      `<form method="POST" action="/api/autonomous-action?${qs.toString()}">` +
+      `<button type="submit" style="background:${color};color:#fff;border:0;font-size:17px;font-weight:700;padding:14px 36px;border-radius:10px;">${verb}</button>` +
+      `</form>`);
   }
 
   // revert flow ships in Sprint 3 — signature is valid, but no writes yet.

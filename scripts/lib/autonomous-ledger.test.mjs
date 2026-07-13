@@ -138,13 +138,18 @@ test('dead holder is stolen', () => {
   assert.equal(r.stolen, true);
 });
 
-test('holder older than 6h is stolen even if alive', () => {
+test('holder older than 6h is KILLED then stolen even if alive (no second concurrent run)', () => {
   const pf = tmpFile('run.pid');
   const t0 = Date.parse('2026-07-12T00:00:00Z');
+  const killed = [];
   acquireSingleton({ pidfilePath: pf, pid: 111, now: t0, isAlive: () => true });
-  const r = acquireSingleton({ pidfilePath: pf, pid: 222, now: t0 + 7 * 3600 * 1000, isAlive: () => true });
+  const r = acquireSingleton({
+    pidfilePath: pf, pid: 222, now: t0 + 7 * 3600 * 1000,
+    isAlive: () => true, killPid: p => killed.push(p),
+  });
   assert.equal(r.acquired, true);
   assert.equal(r.stolen, true);
+  assert.deepEqual(killed, [111], 'the wedged holder is terminated before the steal');
 });
 
 test('corrupt pidfile is stolen, not fatal', () => {

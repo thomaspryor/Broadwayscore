@@ -235,12 +235,38 @@ function runRecovery(planIds, runId) {
   }
 }
 
+// The implementer (and anything it wrote) is UNTRUSTED — it must never see
+// the session's secret-bearing environment (.env is fully loaded into
+// process.env: Notion/Resend/HMAC/Vercel tokens). Ship-check P0 2026-07-13:
+// a prompt-injected implementer could otherwise exfiltrate secrets or forge
+// approve links. claude CLI gets only what it needs to run and bill.
+function implementerEnv() {
+  const keep = ['PATH', 'HOME', 'TERM', 'LANG', 'LC_ALL', 'ANTHROPIC_API_KEY', 'NODE_ENV'];
+  const env = {};
+  for (const k of keep) if (process.env[k] !== undefined) env[k] = process.env[k];
+  return env;
+}
+
+// Checks execute implementer-AUTHORED code (a planted tests/x.test.mjs runs
+// under node --test). Beyond the secret-free env, point HOME at an empty
+// temp dir so the git osxkeychain credential helper (configured in the real
+// ~/.gitconfig) is unreachable — a malicious check can't push with the
+// owner's credentials — and disable git prompting so it fails fast.
+function checksEnv() {
+  const env = implementerEnv();
+  delete env.ANTHROPIC_API_KEY;
+  const fakeHome = fs.mkdtempSync(path.join(require('os').tmpdir(), 'auto-checks-home-'));
+  env.HOME = fakeHome;
+  env.GIT_TERMINAL_PROMPT = '0';
+  return env;
+}
+
 function runImplementer(item, card, workdir, model, maxWallMin, mockScript) {
   const t0 = Date.now();
   if (mockScript) {
     const r = spawnSync('node', [path.resolve(String(mockScript))], {
       cwd: workdir, encoding: 'utf8', timeout: maxWallMin * 60e3,
-      env: { ...process.env, CARD_JSON: JSON.stringify({ ...item, notes: card.notes || '' }) },
+      env: { ...implementerEnv(), CARD_JSON: JSON.stringify({ ...item, notes: card.notes || '' }) },
     });
     if (r.status !== 0) return { ok: false, stage: 'implementer-error', error: `mock exited ${r.status}: ${String(r.stderr || '').slice(0, 200)}`, usd: 0, tokensIn: 0, tokensOut: 0, wallMin: (Date.now() - t0) / 60e3 };
     return { ok: true, usd: 0, tokensIn: 0, tokensOut: 0, resultText: String(r.stdout || '').trim().slice(0, 500) || 'mock implementer ran', wallMin: (Date.now() - t0) / 60e3 };
@@ -253,7 +279,7 @@ function runImplementer(item, card, workdir, model, maxWallMin, mockScript) {
     '--model', model,
     '-p', prompt,
     '--output-format', 'json',
-  ], { cwd: workdir, encoding: 'utf8', timeout: maxWallMin * 60e3, maxBuffer: 32 * 1024 * 1024, env: process.env });
+  ], { cwd: workdir, encoding: 'utf8', timeout: maxWallMin * 60e3, maxBuffer: 32 * 1024 * 1024, env: implementerEnv() });
 
   const wallMin = (Date.now() - t0) / 60e3;
   if (r.error && r.error.code === 'ETIMEDOUT') return { ok: false, stage: 'timeout', error: `implementer exceeded ${maxWallMin}min wall clock`, usd: 0, tokensIn: 0, tokensOut: 0, wallMin };
@@ -276,9 +302,10 @@ function runChecks(workdir, changedFiles, checkableDone) {
   if (cardArgv) checks.push({ name: `card-check (${checkableDone})`, argv: cardArgv });
   else if (checkableDone) results.push({ name: 'card-check', pass: false, detail: `checkableDone failed safe-form validation: ${String(checkableDone).slice(0, 120)}` });
 
+  const env = checksEnv();
   for (const c of checks) {
     try {
-      execFileSync(c.argv[0], c.argv.slice(1), { cwd: workdir, stdio: ['ignore', 'pipe', 'pipe'], timeout: CHECK_TIMEOUT_MS, encoding: 'utf8' });
+      execFileSync(c.argv[0], c.argv.slice(1), { cwd: workdir, stdio: ['ignore', 'pipe', 'pipe'], timeout: CHECK_TIMEOUT_MS, encoding: 'utf8', env });
       results.push({ name: c.name, pass: true });
     } catch (err) {
       results.push({ name: c.name, pass: false, detail: String(err.stderr || err.stdout || err.message).slice(0, 400) });
@@ -288,26 +315,26 @@ function runChecks(workdir, changedFiles, checkableDone) {
 }
 
 function attemptCard(item, budget, cfg, runId, opts) {
-  const adm = budget.admit(item.id, item.size);
-  if (!adm.admitted) {
-    console.error(`[run] skip ${item.name}: ${adm.reason}`);
-    ledger.appendEntry({ event: 'card-skip', runId, cardId: item.id, name: item.name, note: adm.reason });
-    return;
-  }
-
-  // Freshness guard: a human or a day-dispatched workspace may have moved the
-  // card since triage — the Status flip is the cross-session claim signal.
+  // Freshness guard BEFORE admission so skipped cards never consume the
+  // night's item slots or reservations (ship-check finding): a human or a
+  // day-dispatched workspace may have moved the card since triage — the
+  // Status flip is the cross-session claim signal.
   let card;
   try { card = notionBrain(['get', item.id]); }
   catch (err) {
-    budget.settle(item.id, 0);
     ledger.appendEntry({ event: 'card-skip', runId, cardId: item.id, name: item.name, note: `fetch failed: ${err.message.slice(0, 120)}` });
     return;
   }
   if (card.status !== 'Not started' || card.auto !== 'queued') {
-    budget.settle(item.id, 0);
     ledger.appendEntry({ event: 'card-skip', runId, cardId: item.id, name: item.name, note: `state moved underneath us (status=${card.status}, auto=${card.auto || 'none'})` });
     console.error(`[run] skip ${item.name}: claimed elsewhere (status=${card.status}, auto=${card.auto || 'none'})`);
+    return;
+  }
+
+  const adm = budget.admit(item.id, item.size);
+  if (!adm.admitted) {
+    console.error(`[run] skip ${item.name}: ${adm.reason}`);
+    ledger.appendEntry({ event: 'card-skip', runId, cardId: item.id, name: item.name, note: adm.reason });
     return;
   }
 
@@ -325,7 +352,14 @@ function attemptCard(item, budget, cfg, runId, opts) {
 
   const fail = (stage, reason) => {
     transition('attempted', 'run.fail', { reason });
-    try { notionUpdate(item.id, ['--auto', 'failed']); } catch (e) { console.error(`[run] WARN could not flip ${item.id} to failed: ${e.message.slice(0, 120)}`); }
+    // Un-wedge the card for humans (ship-check P1): Auto=failed keeps the
+    // loop off it, Status back to "Not started" returns it to the human
+    // backlog, and the reason lands ON the card so the email's "details on
+    // the cards" line is true (the ledger is local and gitignored).
+    try {
+      notionUpdate(item.id, ['--auto', 'failed', '--status', 'Not started',
+        '--outcome', `## Autonomous attempt failed (${new Date().toISOString().slice(0, 10)})\n${stage}: ${String(reason).slice(0, 400)}\n\nBranch was not merged; the loop will not retry this card (Auto=failed) — clear Auto to re-queue it.`]);
+    } catch (e) { console.error(`[run] WARN could not flip ${item.id} to failed: ${e.message.slice(0, 120)}`); }
     // totalUSD (not usd): spend is ledgered on the per-attempt implement
     // lines — a terminal line carrying usd would double-count the night.
     ledger.appendEntry({ event: 'card-fail', runId, cardId: item.id, name: item.name, totalUSD: round2(totalUSD), note: `${stage}: ${String(reason).slice(0, 300)}` });
@@ -334,7 +368,21 @@ function attemptCard(item, budget, cfg, runId, opts) {
 
   try {
     git(REPO, ['fetch', 'origin', 'main']);
-    if (fs.existsSync(workdir)) { try { git(REPO, ['worktree', 'remove', '--force', workdir]); } catch { fs.rmSync(workdir, { recursive: true, force: true }); } }
+    // NEVER delete a pre-existing branch or workdir — it may belong to a
+    // previous pending attempt or a live interactive session (ship-check P0;
+    // same refusal pattern as auto-fix-friction-card.js branchExists).
+    let remoteBranch = '';
+    try { remoteBranch = git(REPO, ['ls-remote', '--heads', 'origin', branch]).trim(); } catch { /* treat as absent */ }
+    if (remoteBranch) {
+      budget.settle(item.id, 0);
+      fail('branch-error', `branch ${branch} already exists on origin (pending previous attempt?) — refusing to overwrite`);
+      return;
+    }
+    if (fs.existsSync(workdir)) {
+      budget.settle(item.id, 0);
+      fail('branch-error', `workdir ${workdir} already exists (another session?) — refusing to remove it`);
+      return;
+    }
     git(REPO, ['worktree', 'add', '-B', branch, workdir, 'origin/main']);
   } catch (err) {
     budget.settle(item.id, 0);
@@ -389,7 +437,9 @@ function attemptCard(item, budget, cfg, runId, opts) {
       }
 
       if (evidence) {
-        try { git(workdir, ['push', '--force-with-lease', '-u', 'origin', branch]); }
+        // Plain push: the branch was refused above if it pre-existed, so a
+        // rejection here means something else claimed it mid-run — fail, don't force.
+        try { git(workdir, ['push', '-u', 'origin', branch]); }
         catch (err) { stage = 'push-error'; detail = err.message.slice(0, 200); }
       }
 

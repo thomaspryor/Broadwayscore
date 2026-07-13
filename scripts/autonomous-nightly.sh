@@ -26,9 +26,14 @@ cd "$REPO" || exit 1
 # skip the night, worktrees fetch again themselves.
 git fetch origin main || echo "[nightly] WARN git fetch failed"
 
+# Owner address: config override, else OWNER_EMAIL from .env (kept out of
+# the committed config — this repo is public).
 OWNER_EMAIL=$(node -e "try{console.log(JSON.parse(require('fs').readFileSync('.claude/autonomous-config.json','utf8')).ownerEmail||'')}catch{console.log('')}")
+if [ -z "$OWNER_EMAIL" ] && [ -f .env ]; then
+  OWNER_EMAIL=$(grep '^OWNER_EMAIL=' .env | head -1 | cut -d= -f2)
+fi
 if [ -z "$OWNER_EMAIL" ]; then
-  echo "[nightly] FATAL no ownerEmail in .claude/autonomous-config.json"
+  echo "[nightly] FATAL no ownerEmail (config) or OWNER_EMAIL (.env)"
   exit 1
 fi
 

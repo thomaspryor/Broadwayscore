@@ -23,7 +23,17 @@ const path = require('path');
 const os = require('os');
 const https = require('https');
 
+const { spawnSync } = require('child_process');
 const { readEntries, deadmanStatus, appendEntry } = require('./lib/autonomous-ledger.js');
+
+// Armed = the nightly job is ACTUALLY LOADED in launchd, not merely that the
+// plist file exists — `launchctl bootout` (the documented kill switch) leaves
+// the file behind, and a kill-switch period must never page (ship-check P1).
+function nightlyJobLoaded() {
+  const uid = process.getuid();
+  const r = spawnSync('launchctl', ['print', `gui/${uid}/com.broadwayscore.autonomous-nightly`], { stdio: 'ignore', timeout: 10000 });
+  return r.status === 0;
+}
 
 const REPO = path.join(__dirname, '..');
 const CONFIG_PATH = path.join(REPO, '.claude', 'autonomous-config.json');
@@ -72,7 +82,7 @@ async function main() {
   const dryRun = args.includes('--dry-run');
   const ledgerFlag = args.indexOf('--ledger');
   const ledgerPath = ledgerFlag !== -1 ? path.resolve(args[ledgerFlag + 1]) : undefined;
-  const armed = args.includes('--armed') || fs.existsSync(PLIST_PATH);
+  const armed = args.includes('--armed') || (fs.existsSync(PLIST_PATH) && nightlyJobLoaded());
 
   const { entries } = readEntries(ledgerPath);
   const status = deadmanStatus(entries, new Date(), { armed });
@@ -81,8 +91,8 @@ async function main() {
 
   if (dryRun) { console.log('[deadman] (dry-run: alert suppressed)'); process.exitCode = 1; return; }
   const cfg = (() => { try { return JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8')); } catch { return {}; } })();
-  const to = cfg.ownerEmail;
-  if (!to) { console.error('[deadman] no ownerEmail in .claude/autonomous-config.json'); process.exit(1); }
+  const to = cfg.ownerEmail || process.env.OWNER_EMAIL;
+  if (!to) { console.error('[deadman] no ownerEmail (config) or OWNER_EMAIL (.env)'); process.exit(1); }
   await sendAlert(to, status.message);
   // The alert itself is ledger activity — it also stops the alert re-firing
   // every run until the loop is actually fixed or another 24h passes.
