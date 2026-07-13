@@ -108,7 +108,11 @@ function cardCheckArgv(checkableDone, isSafeCheckCommand) {
 // OAuth expiry 401s every call. A cheap ping at run start turns that from a
 // per-card stall into one explicit "run skipped — login expired" ledger line
 // + email line. Classifies the spawnSync result of the ping.
-const AUTH_ERROR_RE = /\b401\b|unauthoriz|authentication|oauth|invalid.{0,10}(api.?key|token)|token.{0,20}expired|expired.{0,20}(token|credential)|login|credential/i;
+// Deliberately narrow: an auth verdict is FINAL (no retry, whole night
+// skipped), so bare words like "login"/"credential"/"authentication" must
+// not match — an EACCES on ~/.claude/.credentials.json or a "407 Proxy
+// Authentication Required" is infra, and infra gets a retry.
+const AUTH_ERROR_RE = /\b401\b|authentication_error|unauthoriz|invalid.{0,10}api.?key|api.?key.{0,10}invalid|oauth.{0,30}(expired|invalid|revoked)|token.{0,20}expired|expired.{0,20}token|run \/login|not logged in|please log ?in/i;
 
 function preflightVerdict({ error, status, stdout, stderr } = {}) {
   if (error && error.code === 'ETIMEDOUT') {

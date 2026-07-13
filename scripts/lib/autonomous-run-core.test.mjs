@@ -131,6 +131,13 @@ test('preflight: timeout / spawn failure / garbage output classify as infra', ()
   assert.equal(preflightVerdict({ status: 1, stdout: 'segfault', stderr: '' }).kind, 'infra');
 });
 
+test('preflight: auth-adjacent infra messages do NOT classify as auth (auth is final, infra retries)', () => {
+  // Bare "credential"/"login"/"authentication" words must not skip a whole night.
+  assert.equal(preflightVerdict({ status: 1, stdout: '', stderr: 'EACCES: permission denied, open /Users/x/.claude/.credentials.json' }).kind, 'infra');
+  assert.equal(preflightVerdict({ status: 1, stdout: '', stderr: '407 Proxy Authentication Required' }).kind, 'infra');
+  assert.equal(preflightVerdict({ status: 1, stdout: '', stderr: 'fetch failed: could not reach login.microsoftonline.com proxy' }).kind, 'infra');
+});
+
 test('preflight: nonzero exit with valid JSON still fails (never ok on bad exit)', () => {
   const stdout = JSON.stringify({ is_error: false, result: 'pong' });
   const v = preflightVerdict({ status: 1, stdout, stderr: 'network reset' });

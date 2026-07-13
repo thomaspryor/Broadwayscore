@@ -7,7 +7,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const {
-  appendEntry, readEntries, sumUSD, entriesForRun, lastRunId, statsByModel,
+  appendEntry, readEntries, sumUSD, entriesForRun, entriesForLastSegment, lastRunId, statsByModel,
   spentTonight, usageStats, recoveryActions, acquireSingleton, releaseSingleton,
 } = require('./autonomous-ledger.js');
 
@@ -76,6 +76,35 @@ test('spentTonight sums only the given run', () => {
 test('lastRunId finds the most recent run-start', () => {
   assert.equal(lastRunId(FIXTURE), 'r2');
   assert.equal(lastRunId([]), null);
+});
+
+test('lastRunId: a trailing triage entry opens a new night even before run-start', () => {
+  // Triage ledgered but the executor never fired (launchd miss / stale-queue
+  // exit) — "tonight" must be the triage-only night, not yesterday's run
+  // resurfacing its skip/throttle banners.
+  const withTriage = [...FIXTURE, { ts: '2026-07-13T07:32:00Z', event: 'triage', runId: 'r3', model: 'claude-sonnet-5', tokensIn: 49000, tokensOut: 13000, usd: 0.35 }];
+  assert.equal(lastRunId(withTriage), 'r3');
+  const s = usageStats(withTriage, new Date('2026-07-13T12:00:00Z'));
+  assert.equal(s.runId, 'r3');
+  assert.equal(s.tonight.usd, 0.35); // triage spend, nothing else
+});
+
+test('entriesForLastSegment: re-run under the same runId drops the earlier skip', () => {
+  const rerun = [
+    { ts: 't1', event: 'triage', runId: 'rX', usd: 0.3 },
+    { ts: 't2', event: 'run-start', runId: 'rX' },
+    { ts: 't3', event: 'run-skip', runId: 'rX', note: 'auth: login expired' },
+    { ts: 't4', event: 'run-end', runId: 'rX', note: 'skipped: auth' },
+    { ts: 't5', event: 'run-start', runId: 'rX' }, // manual re-run after /login
+    { ts: 't6', event: 'card-pass', runId: 'rX', cardId: 'a' },
+    { ts: 't7', event: 'run-end', runId: 'rX' },
+  ];
+  const seg = entriesForLastSegment(rerun, 'rX');
+  assert.equal(seg[0].ts, 't5', 'segment starts at the LAST run-start');
+  assert.ok(!seg.some(e => e.event === 'run-skip'), 'stale skip is not in the last segment');
+  // Triage-only night (no run-start at all) → the whole run is the segment.
+  const triageOnly = [{ ts: 't1', event: 'triage', runId: 'rY', usd: 0.3 }];
+  assert.equal(entriesForLastSegment(triageOnly, 'rY').length, 1);
 });
 
 test('statsByModel splits tokens and usd per model', () => {
@@ -186,4 +215,15 @@ test('deadman: stale ledger alerts, fresh ledger is silent, unarmed never alerts
   // not armed → always ok (pre-install days, kill-switch periods)
   assert.equal(deadmanStatus(stale, now, { armed: false }).ok, true);
   assert.equal(deadmanStatus([], now, { armed: false }).ok, true);
+});
+
+test('deadman: fresh triage-only activity does NOT reset the clock (broken executor still alerts)', () => {
+  const { deadmanStatus } = require('./autonomous-ledger.js');
+  const now = new Date('2026-07-14T12:00:00Z');
+  const triageOnly = [
+    { ts: '2026-07-13T07:30:00Z', event: 'run-end' },                      // 28.5h old executor
+    { ts: '2026-07-14T07:31:00Z', event: 'triage', runId: 'r9', usd: 0.3 }, // fresh triage
+  ];
+  const r = deadmanStatus(triageOnly, now);
+  assert.equal(r.ok, false, 'triage activity alone must not keep the dead-man green');
 });

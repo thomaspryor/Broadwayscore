@@ -156,7 +156,9 @@ async function main() {
   const entries = [];
   let candidates = 0;
   for (const [i, id] of ids.entries()) {
-    if (candidates >= limit) {
+    // Window cap applies to backlog mode only — an explicit --cards list is
+    // a test invocation and every named card gets processed.
+    if (!args.cards && candidates >= limit) {
       console.error(`[triage] window full (${candidates} candidates) — ${ids.length - i} fetched card(s) left for tomorrow`);
       break;
     }
@@ -217,7 +219,10 @@ async function main() {
   };
 
   fs.mkdirSync(path.dirname(QUEUE_PATH), { recursive: true });
-  fs.writeFileSync(QUEUE_PATH, JSON.stringify(queue, null, 2) + '\n');
+  // Atomic replace: the executor and email hard-parse this file — a crash
+  // mid-write must leave the previous queue intact, never a truncated one.
+  fs.writeFileSync(`${QUEUE_PATH}.tmp`, JSON.stringify(queue, null, 2) + '\n');
+  fs.renameSync(`${QUEUE_PATH}.tmp`, QUEUE_PATH);
   console.error(`[triage] queue written: ${QUEUE_PATH}`);
   console.log(JSON.stringify({ mode: queue.mode, counts: queue.counts, plan: queue.plan }, null, 2));
 

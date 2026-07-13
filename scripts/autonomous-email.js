@@ -188,7 +188,11 @@ async function main() {
     });
   }
 
-  const runEntries = stats.runId ? ledger.entriesForRun(entries, stats.runId) : [];
+  // Per-execution facts come from the LAST segment of the run: a runId can
+  // span several executions (preflight skip → manual re-run adopts the same
+  // queue.runId), and a stale skip banner or fail count must not outlive a
+  // successful re-run (ship-check finding).
+  const runEntries = stats.runId ? ledger.entriesForLastSegment(entries, stats.runId) : [];
   const failedCount = runEntries.filter(e => e.event === 'card-fail').length;
   const runEnd = runEntries.find(e => e.event === 'run-end');
   const throttled = runEnd && /^throttled:/.test(runEnd.note || '') ? runEnd.note.replace(/^throttled:\s*/, '') : null;
@@ -227,12 +231,15 @@ async function main() {
     awaitingTotal: awaiting.length,
   });
 
-  const subject = listingFailed
-    ? `Overnight: ⚠️ could not read the approval queue`
-    : items.length
-      ? `Overnight: ${items.length} item${items.length > 1 ? 's' : ''} awaiting your tap — ${items.map(i => i.name).join(' · ').slice(0, 80)}`
-      : runSkipped
-        ? `Overnight: ⛔ run skipped — ${/^auth:/.test(runSkipped) ? 'login expired on Mac Studio' : 'preflight failed'}`
+  // A skipped run outranks everything in the subject — stale approvals from
+  // earlier nights must not hide an expired login (ship-check finding).
+  const skipLabel = runSkipped ? (/^auth:/.test(runSkipped) ? 'login expired on Mac Studio' : 'preflight failed') : null;
+  const subject = runSkipped
+    ? `Overnight: ⛔ run skipped — ${skipLabel}${items.length ? ` (+${items.length} still awaiting your tap)` : ''}`
+    : listingFailed
+      ? `Overnight: ⚠️ could not read the approval queue`
+      : items.length
+        ? `Overnight: ${items.length} item${items.length > 1 ? 's' : ''} awaiting your tap — ${items.map(i => i.name).join(' · ').slice(0, 80)}`
         : queueSummary
           ? `Overnight: no items to approve (${queueSummary.total} triaged, 0 workable)`
           : `Overnight: no items to approve (${failedCount} failed)`;

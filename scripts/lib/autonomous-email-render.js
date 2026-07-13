@@ -90,8 +90,11 @@ function renderQueueSummary(qs) {
     `<tr><td style="padding:2px 12px 2px 0;font-size:13px;font-weight:700;text-align:right;">${b.n}</td><td style="padding:2px 0;font-size:13px;color:#333;">${esc(b.reason)}</td></tr>`).join('');
   const scanned = qs.fetched != null && qs.fetched > qs.total
     ? `${qs.total} triaged (of ${qs.fetched} fetched)` : `${qs.total} triaged`;
+  // Self-labeling: the breakdown states WHICH triage it describes, so a
+  // manually re-run triage can never silently pose as last night's.
+  const when = qs.generatedAt ? ` <span style="font-weight:400;color:#999;">(triage ${esc(String(qs.generatedAt).slice(0, 16).replace('T', ' '))} UTC)</span>` : '';
   return `<div style="border:1px solid #e5e5e5;border-radius:10px;padding:14px 16px;margin:0 0 14px;">
-    <div style="font-size:13px;font-weight:700;margin-bottom:6px;">Why nothing was planned — ${esc(scanned)}, 0 workable</div>
+    <div style="font-size:13px;font-weight:700;margin-bottom:6px;">Why nothing was planned — ${esc(scanned)}, 0 workable${when}</div>
     <table style="border-collapse:collapse;">${rows}</table>
     ${qs.unlock ? `<div style="font-size:12px;color:#666;margin-top:8px;">${esc(qs.unlock)}</div>` : ''}
   </div>`;
