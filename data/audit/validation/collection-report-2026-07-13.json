@@ -1,73 +1,96 @@
 {
-  "runDate": "2026-07-13T06:53:11.956Z",
+  "runDate": "2026-07-13T06:56:18.978Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "springwood-west-end-2026",
+    "showFilter": "a-midsummer-nights-dream-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 6,
+    "processed": 3,
+    "failed": 19,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "13.6%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
+    "scrapingbee": 1,
+    "brightdata": 1,
     "archiveToday": 1,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 5,
-    "tier1Success": 4,
+    "tier1Attempts": 4,
+    "tier1Success": 2,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
-    "tier2Success": 1,
-    "tier3Attempts": 1,
-    "tier3Success": 1,
+    "tier2Attempts": 4,
+    "tier2Success": 2,
+    "tier3Attempts": 2,
+    "tier3Success": 2,
     "tier3_6Attempts": 1,
     "tier3_6Success": 1,
-    "tier4Attempts": 2,
-    "tier4Success": 1,
-    "totalFailed": 6,
-    "scrapingBeePageCredits": 10,
+    "tier4Attempts": 3,
+    "tier4Success": 0,
+    "totalFailed": 19,
+    "scrapingBeePageCredits": 30,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "urlDiscoveryAttempts": 16,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "a-midsummer-nights-dream-west-end-2026/telegraph--claire-allfree.json",
+    "a-midsummer-nights-dream-west-end-2026/telegraph--dominic-cavendish.json",
+    "a-midsummer-nights-dream-west-end-2026/whatsonstage--alex-wood.json"
+  ],
   "failed": [
-    "springwood-west-end-2026/guardian-uk--unknown.json",
-    "springwood-west-end-2026/artsdesk--unknown.json",
-    "springwood-west-end-2026/standard--nick-curtis.json",
-    "springwood-west-end-2026/theatrecat--unknown.json",
-    "springwood-west-end-2026/thestage--unknown.json",
-    "springwood-west-end-2026/west-end-best-friend--unknown.json"
+    "a-midsummer-nights-dream-west-end-2026/hollywood-reporter--frank-scheck.json",
+    "a-midsummer-nights-dream-west-end-2026/ew--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/newsday--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/nydailynews--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/observer--kate-kellaway.json",
+    "a-midsummer-nights-dream-west-end-2026/bloomberg--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/east-midlands-theatre--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/financialtimes--julianna-barnaby.json",
+    "a-midsummer-nights-dream-west-end-2026/financialtimes--sarah-hemming.json",
+    "a-midsummer-nights-dream-west-end-2026/huffpost--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/standard--dominic-cavendish.json",
+    "a-midsummer-nights-dream-west-end-2026/standard--nick-curtis.json",
+    "a-midsummer-nights-dream-west-end-2026/standard--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/thestage--holly-o.json",
+    "a-midsummer-nights-dream-west-end-2026/thestage--katie-chambers.json",
+    "a-midsummer-nights-dream-west-end-2026/thestage--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/times-uk--dominic-maxwell.json",
+    "a-midsummer-nights-dream-west-end-2026/times-uk--rachel-halliburton.json",
+    "a-midsummer-nights-dream-west-end-2026/westendtheatre--west-end-theatre.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "a-midsummer-nights-dream-west-end-2026/whatsonstage--alex-wood.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
-    "brightdata": [],
+    "scrapingbee": [
+      "a-midsummer-nights-dream-west-end-2026/telegraph--dominic-cavendish.json"
+    ],
+    "brightdata": [
+      "a-midsummer-nights-dream-west-end-2026/telegraph--claire-allfree.json"
+    ],
     "archiveToday": [
-      "data/review-texts/springwood-west-end-2026/thestage--unknown.json"
+      "data/review-texts/a-midsummer-nights-dream-west-end-2026/thestage--unknown.json"
     ],
     "archive": []
   },
