@@ -98,6 +98,8 @@ function buildManualReviewFields(opts = {}) {
     fields.wrongProductionOverride = true;
     fields.wrongShow = false;
     fields.wrongShowManualClear = true;
+    fields.isNonReview = false;
+    fields.nonReviewManualClear = true;
     fields.wrongArticleManualClear = true;
     fields.humanReviewedWrongProduction = false;
     fields.humanReviewedWrongArticle = false;
@@ -124,6 +126,8 @@ function buildManualReviewFields(opts = {}) {
       'wrongProductionOverride',
       'wrongShow',
       'wrongShowManualClear',
+      'isNonReview',
+      'nonReviewManualClear',
       'wrongArticleManualClear',
       'humanReviewedWrongProduction',
       'humanReviewedWrongArticle',
