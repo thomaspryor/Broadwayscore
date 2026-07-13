@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-13T07:06:24.874Z",
+    "generatedAt": "2026-07-13T07:35:02.556Z",
     "note": "Corpus-statistics drift monitor. Non-blocking; surfaced via health-check.js digest. Not a code-correctness gate."
   },
   "summary": {
@@ -72,7 +72,7 @@
       "exitCode": 1,
       "ok": false,
       "crashed": false,
-      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 7 flagged, 17 exempt, 39 covered\n  ⚠️   116  data/audit/processed-feedback.json  — no merge driver; needs a decision\n  ⚠️   114  data/audit/pipeline-health/test.last-success  — no merge driver; needs a decision\n  ⚠️   114  data/audit/validation-baseline.json  — no merge driver; needs a decision\n  ⚠️   110  data/audit/pipeline-health/collect-review-texts.last-success  — no merge driver; needs a decision\n  ⚠️   109  data/audit/url-collision-report.json  — no merge driver; needs a decision\n  ⚠️    50  .github/workflows/test.yml  — no merge driver; needs a decision\n  ⚠️    50  data/audit/validation/collection-report-2026-07-12.json  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
+      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 7 flagged, 17 exempt, 39 covered\n  ⚠️   115  data/audit/processed-feedback.json  — no merge driver; needs a decision\n  ⚠️   114  data/audit/validation-baseline.json  — no merge driver; needs a decision\n  ⚠️   113  data/audit/pipeline-health/test.last-success  — no merge driver; needs a decision\n  ⚠️   110  data/audit/pipeline-health/collect-review-texts.last-success  — no merge driver; needs a decision\n  ⚠️   109  data/audit/url-collision-report.json  — no merge driver; needs a decision\n  ⚠️    50  .github/workflows/test.yml  — no merge driver; needs a decision\n  ⚠️    50  data/audit/validation/collection-report-2026-07-12.json  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
     },
     {
       "name": "review-contamination",
