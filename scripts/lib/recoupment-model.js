@@ -92,6 +92,55 @@ const RESERVE_FUND_WEEKS = 3;
 /** Tax credit lag in weeks from opening date */
 const TAX_CREDIT_LAG_WEEKS = 78; // ~18 months
 
+/**
+ * NYC Musical and Theatrical Production Tax Credit (enacted 2021, allocations
+ * through 2027): 25% of qualified production + operating costs, capped at $3M
+ * per production. Shows running at any point from Aug 2021 qualify, including
+ * COVID reopenings — NOT just shows that opened after 2021.
+ */
+const TAX_CREDIT_PROGRAM_START = new Date('2021-08-01');
+const TAX_CREDIT_PROGRAM_END = new Date('2027-12-31');
+const TAX_CREDIT_MAX = 3000000;
+const TAX_CREDIT_RATE = 0.25;
+
+/**
+ * Estimated-nut era adjustment: cost defaults are calibrated to 2025-26
+ * price levels, but grosses are nominal to the show's era. Broadway weekly
+ * operating costs inflate ~2.5%/yr, so a 2002 musical's nut was roughly
+ * 55-60% of today's equivalent.
+ */
+const ERA_ANCHOR_YEAR = 2025;
+const ERA_DEFLATION_RATE = 0.015;
+const ERA_DEFLATOR_FLOOR = 0.5;
+
+/**
+ * Broadway theater seat counts, keyed by a distinctive lowercase substring of
+ * the venue name. Used to scale ESTIMATED nuts: a play at the 597-seat Hayes
+ * costs far less to run weekly than one at an 1,100-seat house.
+ */
+const THEATER_SEATS = {
+  'gershwin': 1933, 'broadway theatre': 1761, 'new amsterdam': 1747, 'palace': 1743,
+  'minskoff': 1710, 'st. james': 1709, 'majestic': 1645, 'lyric': 1622,
+  'marquis': 1611, 'winter garden': 1526, 'lunt-fontanne': 1519, 'shubert': 1460,
+  'neil simon': 1445, 'imperial': 1443, 'hirschfeld': 1424, 'richard rodgers': 1319,
+  'august wilson': 1275, 'nederlander': 1235, 'broadhurst': 1156, 'ambassador': 1125,
+  "eugene o'neill": 1108, 'barrymore': 1096, 'james earl jones': 1092, 'cort': 1092,
+  'vivian beaumont': 1080, 'schoenfeld': 1079, 'jacobs': 1078, 'longacre': 1077,
+  'lena horne': 1069, 'brooks atkinson': 1069, 'sondheim': 1055, 'belasco': 1016,
+  'music box': 1009, 'studio 54': 1006, 'hudson': 970, 'walter kerr': 945,
+  'lyceum': 922, 'golden': 805, 'circle in the square': 776, 'booth': 766,
+  'todd haimes': 740, 'american airlines': 740, 'friedman': 650, 'hayes': 597,
+};
+
+/** Seat counts each category's default nut is calibrated to */
+const NUT_SEAT_ANCHORS = {
+  musicalSpectacle: 1700,
+  musical: 1400,
+  play: 1050,
+  playStar: 1050,
+  special: 900,
+};
+
 /** Above-nut marketing surcharges by show type (incremental above base marketing in the nut) */
 const MARKETING_SURCHARGES = {
   openingPush: {
@@ -178,18 +227,64 @@ function classifyShow(show) {
   const title = (show.title || '').toLowerCase();
 
   // Spectacle musicals: large theaters + known spectacle indicators
-  const spectacleKeywords = /cirque|spider|lion king|phantom|wicked|frozen|aladdin|mary poppins|little mermaid/i;
+  // (Great Comet: immersive Imperial rebuild, 30+ cast — spectacle-scale nut)
+  const spectacleKeywords = /cirque|spider|lion king|phantom|wicked|frozen|aladdin|mary poppins|little mermaid|great comet/i;
   const isSpectacle = type === 'musical' && spectacleKeywords.test(title);
 
-  // Star-driven plays: heuristic based on short runs at large theaters
+  // Star-driven plays: short limited runs at larger houses. Star-vehicle
+  // economics (above-scale salaries, premium pricing) need a >=850-seat house;
+  // a short run at the 597-seat Hayes is just a small play, not a star play.
+  const seats = getTheaterSeats(venue);
   const isStarPlay = type === 'play' && show.closingDate && show.openingDate &&
-    (new Date(show.closingDate) - new Date(show.openingDate)) < 180 * 86400000; // < 6 months
+    (new Date(show.closingDate) - new Date(show.openingDate)) < 180 * 86400000 && // < 6 months
+    (seats === null || seats >= 850);
 
-  if (type === 'special') return 'special';
+  if (type === 'special' || isSoloShow(show)) return 'special';
   if (isSpectacle) return 'musicalSpectacle';
   if (isStarPlay) return 'playStar';
   if (type === 'play') return 'play';
   return 'musical';
+}
+
+/**
+ * Solo / one-person shows: 'special' economics (tiny cast, minimal crew,
+ * low variable rate, minimal closing costs) regardless of the play/special
+ * type label in shows.json.
+ */
+function isSoloShow(show) {
+  const title = (show.title || '').toLowerCase();
+  return /\bsolo\b|one.?(?:man|woman|person)\s+show/i.test(title) ||
+    /prima facie|just for us|fleabag|mike birbiglia|alex edelman|colin quinn|john mulaney|derren brown/i.test(title);
+}
+
+/**
+ * Deflate a 2025-anchored estimated cost to the show's opening-year price level.
+ */
+function eraDeflator(openingDate) {
+  const year = openingDate ? parseInt(String(openingDate).split('-')[0], 10) : ERA_ANCHOR_YEAR;
+  if (!year || year >= ERA_ANCHOR_YEAR) return 1;
+  return Math.max(Math.pow(1 - ERA_DEFLATION_RATE, ERA_ANCHOR_YEAR - year), ERA_DEFLATOR_FLOOR);
+}
+
+/** Look up seat count from a venue name; null when unknown. */
+function getTheaterSeats(venueName) {
+  const venue = (venueName || '').toLowerCase();
+  if (!venue) return null;
+  for (const [key, count] of Object.entries(THEATER_SEATS)) {
+    if (venue.includes(key)) return count;
+  }
+  return null;
+}
+
+/**
+ * Scale an estimated nut by venue size relative to the category's anchor house.
+ * Returns 1 when the venue is unknown.
+ */
+function venueSizeFactor(show, category) {
+  const seats = getTheaterSeats(show.venue);
+  if (!seats) return 1;
+  const anchor = NUT_SEAT_ANCHORS[category] || NUT_SEAT_ANCHORS.musical;
+  return Math.min(Math.max(seats / anchor, 0.65), 1.2);
 }
 
 /**
@@ -346,21 +441,17 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly) {
   // --- Effective capitalization ---
   const svogGrant = KNOWN_SVOG[slug] || parseSvogFromNotes(commercial.notes) || 0;
 
-  // Tax credit: only if mentioned in notes OR show opened in eligible window (2004-2025)
-  // Don't assume every show got the credit — only apply when evidence supports it
-  const openYear = show.openingDate ? parseInt(show.openingDate.split('-')[0]) : 2020;
+  // NY theater tax credit: eligible if the show's run overlaps the program
+  // window (Aug 2021 – 2027), which includes COVID reopenings of older shows.
+  // Credit = 25% of qualified production + operating costs (first year),
+  // capped at $3M — Broadway-scale shows nearly always hit the cap.
   const notesCredit = parseTaxCreditFromNotes(commercial.notes);
-  const eligibleForTaxCredit = openYear >= 2004 && openYear <= 2025;
-  // If notes explicitly mention a credit amount, use it. Otherwise estimate for
-  // shows where we have solid data (reported costs or SEC filings).
-  const hasReportedCosts = commercial.costMethodology &&
-    ['sec-filing', 'trade-reported', 'reddit-standard'].includes(commercial.costMethodology);
-  const taxCreditAmount = notesCredit
-    ? notesCredit
-    : (eligibleForTaxCredit && (hasReportedCosts || commercial.weeklyRunningCost) ? Math.min(capitalization * 0.25, 3000000) : 0);
-  if (!taxCreditAmount) {
-    warnings.push('No tax credit applied (no reported cost data)');
-  }
+  const runEndForCredit = show.closingDate ? new Date(show.closingDate) : new Date();
+  const runStartForCredit = show.openingDate ? new Date(show.openingDate) : null;
+  // Undated shows can't prove eligibility — no credit rather than a $3M gift
+  const eligibleForTaxCredit = !!runStartForCredit &&
+    runEndForCredit >= TAX_CREDIT_PROGRAM_START &&
+    runStartForCredit <= TAX_CREDIT_PROGRAM_END;
 
   // Reserve fund: scaled by run length. Long-running shows need full reserve;
   // limited runs (< 6 months) need less because producers budget to the close date.
@@ -370,11 +461,19 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly) {
   const reserveFund = weeklyNut * reserveWeeks;
   // Effective cap can't go below zero (SVOG can't make cap negative)
   const effectiveCap = Math.max(capitalization - svogGrant + reserveFund, reserveFund);
-
   // Tax credit timing: for closed shows, apply at closing (credit is eventual certainty).
   // For running shows, lag 18 months from opening.
   const isClosed = show.closingDate && new Date(show.closingDate) < new Date();
   const taxCreditWeek = isClosed ? Infinity : TAX_CREDIT_LAG_WEEKS; // Infinity = applied at end
+
+  // The reserve delays WHEN recoupment is declared (recoup-week threshold) but
+  // is returned to the treasury, not spent. For CLOSED shows the ledger is
+  // final: recoupment means the cap itself was repaid, so the percentage is
+  // measured against cap net of SVOG without the reserve. Running shows keep
+  // the reserve in the denominator (conservative until the run is final).
+  const capForPct = isClosed
+    ? Math.max(capitalization - svogGrant, weeklyNut)
+    : effectiveCap;
 
   // --- Gross data ---
   const openingDate = show.openingDate ? new Date(show.openingDate) : null;
@@ -407,6 +506,16 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly) {
     const darkWeeks = Math.round((darkEnd - darkStart) / (7 * 86400000));
     totalRunWeeks -= darkWeeks;
     if (darkWeeks > 0) warnings.push(`Excluded ${darkWeeks} COVID dark weeks`);
+  }
+
+  // Tax credit amount (needs run length): 25% of cap + first-year running costs
+  const taxCreditAmount = notesCredit
+    ? notesCredit
+    : (eligibleForTaxCredit
+        ? Math.min(TAX_CREDIT_RATE * (capitalization + weeklyNut * Math.min(Math.max(totalRunWeeks, 0), 52)), TAX_CREDIT_MAX)
+        : 0);
+  if (!taxCreditAmount) {
+    warnings.push('No NY tax credit (run outside 2021-2027 program window)');
   }
 
   // --- Build weekly gross schedule ---
@@ -477,7 +586,7 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly) {
       cumProfit -= closingCost;
     }
 
-    const recoupmentPct = (cumProfit / effectiveCap) * 100;
+    const recoupmentPct = (cumProfit / capForPct) * 100;
 
     results[scenario] = {
       cumulativeProfit: Math.round(cumProfit),
@@ -650,18 +759,8 @@ function buildWeeklySchedule(show, grossesAllTime, grossesWeekly, previewWeeks, 
 // Helper: Estimate Weekly Nut
 // ---------------------------------------------------------------------------
 
-function estimateWeeklyNut(show, commercial) {
-  const type = show.type || 'musical';
+function estimateWeeklyNut(show, commercial, opts = {}) {
   const category = classifyShow(show);
-  const title = (show.title || '').toLowerCase();
-
-  // Solo/one-person shows have much lower costs
-  const isSolo = /solo|one.?(?:man|woman|person)|stand.?up|comedy/i.test(title) ||
-    type === 'special' ||
-    // Known solo shows
-    /prima facie|just for us|fleabag|mike birbiglia|alex edelman|colin quinn/i.test(title);
-
-  if (isSolo) return 175000;
 
   const defaults = {
     musicalSpectacle: 1100000,
@@ -671,7 +770,17 @@ function estimateWeeklyNut(show, commercial) {
     special: 300000,
   };
 
-  return defaults[category] || defaults.musical;
+  // Solo/one-person shows have much lower costs than even 'special' defaults
+  // (type-special shows kept at 175K to match prior calibration)
+  const base = (isSoloShow(show) || show.type === 'special')
+    ? 175000
+    : (defaults[category] || defaults.musical);
+
+  // Defaults are 2025-anchored and calibrated to each category's typical house;
+  // adjust to the show's era and venue size. The lifetime model passes
+  // eraAdjust:false — it deflates the current nut to a run-average itself.
+  const era = opts.eraAdjust === false ? 1 : eraDeflator(show.openingDate);
+  return Math.round(base * era * venueSizeFactor(show, category));
 }
 
 // ---------------------------------------------------------------------------
@@ -736,15 +845,27 @@ function calculateLifetimeRecoupment(show, commercial, grossesAllTime) {
   const slug = show.slug || show.id;
   const category = classifyShow(show);
   const baseVarRate = getBaseVariableRate(category);
-  const weeklyNut = commercial.weeklyRunningCost || estimateWeeklyNut(show, commercial);
+  const weeklyNut = commercial.weeklyRunningCost || estimateWeeklyNut(show, commercial, { eraAdjust: false });
 
   // Effective capitalization
   const svogGrant = KNOWN_SVOG[slug] || parseSvogFromNotes(commercial.notes) || 0;
   const reserveFund = weeklyNut * 1.5; // Minimal for established long-runners
   const effectiveCap = Math.max(capitalization - svogGrant + reserveFund, reserveFund);
+  // Same semantics as the weekly model: closed shows measure against cap net
+  // of SVOG (no reserve); still-running long-runners keep the reserve.
+  const isClosedRun = show.closingDate && new Date(show.closingDate) < new Date();
+  const capForPct = isClosedRun
+    ? Math.max(capitalization - svogGrant, weeklyNut)
+    : effectiveCap;
 
-  // Tax credit (most long-runners got it)
-  const taxCredit = Math.min(capitalization * 0.25, 3000000);
+  // NY tax credit only for shows whose run overlaps the 2021-2027 program
+  // (long-runners still open in Aug 2021 qualified via the reopening provision).
+  // Same formula as the weekly model: 25% of cap + first-year running costs.
+  const closedBeforeCreditProgram = show.closingDate &&
+    new Date(show.closingDate) < TAX_CREDIT_PROGRAM_START;
+  const taxCredit = closedBeforeCreditProgram
+    ? 0
+    : Math.min(TAX_CREDIT_RATE * (capitalization + weeklyNut * 52), TAX_CREDIT_MAX);
 
   // Run duration
   const openDate = show.openingDate ? new Date(show.openingDate) : null;
@@ -795,7 +916,7 @@ function calculateLifetimeRecoupment(show, commercial, grossesAllTime) {
     const adjRawProfit = adjGross - adjVarCosts - adjFixedCosts;
     const adjRoyalty = Math.max(0, adjRawProfit * 0.90) * ROYALTY_POOL_POST_RECOUP;
     const adjProfit = adjRawProfit - adjRoyalty + taxCredit;
-    const pct = (adjProfit / effectiveCap) * 100;
+    const pct = (adjProfit / capForPct) * 100;
 
     scenarios[name] = {
       cumulativeProfit: Math.round(adjProfit),
@@ -849,8 +970,14 @@ module.exports = {
   calcWeeklyProfit,
   calcTheaterOverage,
   estimateWeeklyNut,
+  isSoloShow,
+  eraDeflator,
+  venueSizeFactor,
   SCENARIO_MULTIPLIERS,
   PREVIEW_DEFAULTS,
   COST_COMPONENTS,
   RESERVE_FUND_WEEKS,
+  TAX_CREDIT_PROGRAM_START,
+  TAX_CREDIT_PROGRAM_END,
+  TAX_CREDIT_MAX,
 };
