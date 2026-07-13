@@ -66,7 +66,13 @@
     "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json",
     "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
     "music-city-off-broadway-2026/deadline--greg-evans.json",
-    "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
+    "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
+    "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+    "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+    "every-brilliant-thing-2026/nytimes--ben-brantley.json",
+    "every-brilliant-thing-2026/nydailynews--joe-dziemianowicz.json",
+    "every-brilliant-thing-2026/theatermania--hayley-levitt.json",
+    "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "carmen-off-broadway-2025/guardian--unknown.json",
@@ -916,7 +922,11 @@
     "music-city-off-broadway-2026/dc-theater-arts--isabella-artino.json",
     "music-city-off-broadway-2026/maryland-theatre-guide--posted-by.json",
     "music-city-off-broadway-2026/stageandcinema--lynne-weiss.json",
-    "gotta-dance-off-broadway-2026/theatermania--linda-buchwald.json"
+    "gotta-dance-off-broadway-2026/theatermania--linda-buchwald.json",
+    "gotta-dance-off-broadway-2026/timeout--unknown.json",
+    "gotta-dance-off-broadway-2026/the-interested-bystander--cary-wong.json",
+    "every-brilliant-thing-2026/latimes--unknown.json",
+    "every-brilliant-thing-2026/standard--nick-curtis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -970,7 +980,9 @@
       "cats-the-jellicle-ball-2026/nysr--unknown.json",
       "cats-the-jellicle-ball-2026/one-minute-critic--httpswwwfacebookcomwexlerwrites.json",
       "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
-      "music-city-off-broadway-2026/theatermania--zachary-stewart.json"
+      "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
+      "every-brilliant-thing-2026/theatermania--hayley-levitt.json",
+      "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
     "browserbase": [
@@ -979,7 +991,9 @@
       "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json",
       "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json",
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
-      "music-city-off-broadway-2026/deadline--greg-evans.json"
+      "music-city-off-broadway-2026/deadline--greg-evans.json",
+      "data/review-texts/every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+      "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -988,7 +1002,8 @@
       "giulia-the-poison-queen-of-palermo-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
       "birthright-off-broadway-2026/nytimes--helen-shaw.json",
       "avenue-q-west-end-2026/telegraph--marianka-swain.json",
-      "cats-the-jellicle-ball-2026/nytimes--jesse-green.json"
+      "cats-the-jellicle-ball-2026/nytimes--jesse-green.json",
+      "every-brilliant-thing-2026/nytimes--ben-brantley.json"
     ],
     "brightdata": [
       "carmen-off-broadway-2025/vulture--justin-davidson.json",
@@ -1034,11 +1049,13 @@
       "to-kill-a-mockingbird-west-end-2026/times-uk--clive-davis.json",
       "white-rabbit-red-rabbit-west-end-2026/broadwayworld--mica-blackwell.json",
       "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
-      "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json"
+      "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
+      "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+      "every-brilliant-thing-2026/nydailynews--joe-dziemianowicz.json"
     ]
   },
   "startTime": "2026-07-13T05:15:55.218Z",
-  "lastProcessed": "gotta-dance-off-broadway-2026/theatermania--linda-buchwald.json",
+  "lastProcessed": "every-brilliant-thing-2026/standard--nick-curtis.json",
   "log": [
     {
       "t": "2026-07-13T05:17:40.062Z",
@@ -1111,6 +1128,17 @@
       "t": "2026-07-13T12:05:43.055Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-13T12:07:32.884Z",
+      "event": "bb-session",
+      "session": "2f3e4141",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mariska-hargitay-to-make-broadw"
+    },
+    {
+      "t": "2026-07-13T12:07:33.269Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
