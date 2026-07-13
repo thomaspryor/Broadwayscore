@@ -28,7 +28,7 @@
 ## 🌳 Worktrees & git
 - [Worktrees mandatory for code edits](feedback_worktree_code_changes.md) — src/, scripts/, .github/, CLAUDE.md; prefix paths .claude/worktrees/ ([[feedback_worktree_edit_paths.md]])
 - [Parallel worktree sessions race](feedback_parallel_worktree_race.md) — re-pull + grep scripts/lib/ BEFORE writing; plan "parallel" = subagents ([[feedback_plan_parallel_means_subagents.md]]); same-name worktree may be another session's LIVE locked one, `git worktree list` first ([[feedback_enterworktree_name_collision_live_session.md]])
-- [Dual repo data files](feedback_dual_repo_data_files.md) — shows/reviews/awards/outlet-registry authoritative in private repo, fix BOTH; data/review-texts NOT a symlink, edit ~/broadway-review-texts/ ([[feedback_review_texts_not_symlink.md]]); NEVER run rebuild-all-reviews.js locally ([[feedback_local_rebuild_stale_clone_hazard.md]])
+- [Dual repo data files](feedback_dual_repo_data_files.md) — private repo authoritative, fix BOTH; review-texts NOT a symlink ([[feedback_review_texts_not_symlink.md]]); NEVER rebuild-all-reviews.js locally ([[feedback_local_rebuild_stale_clone_hazard.md]])
 - [Stray symlink crashes pipeline](feedback_stray_symlink_crashes_pipeline.md) — committed abs-path symlink dangles in CI; use listShowDirs()
 - [audit-review-contamination strict CI gate](feedback_audit_contamination_strict_mode.md) — strict A/B/C fail CI; B = false-pos wrongProduction
 - [Commit data repo edits IMMEDIATELY](feedback_data_repos_clobber_uncommitted.md) — pull --rebase clobbers uncommitted; never reset-hard+rsync ([[feedback_reset_rsync_wipes_ci_fields.md]]); gh api PUT /contents/ when local git broken ([[feedback_gh_api_emergency_commit.md]])
