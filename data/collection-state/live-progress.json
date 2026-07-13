@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-13T12:08:46.440Z",
-  "processed": 73,
-  "failed": 852,
-  "successRate": "7.9%",
+  "updatedAt": "2026-07-13T12:09:53.677Z",
+  "processed": 76,
+  "failed": 859,
+  "successRate": "8.1%",
   "tierBreakdown": {
-    "playwright": 52,
+    "playwright": 53,
     "amp": 0,
-    "browserbase": 8,
+    "browserbase": 12,
     "directCookies": 0,
     "scrapingbee": 7,
     "brightdata": 4,
     "archiveToday": 26,
     "archive": 7
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-07-13T05:17:40.062Z",
@@ -95,6 +95,28 @@
     },
     {
       "t": "2026-07-13T12:07:33.269Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-07-13T12:08:58.506Z",
+      "event": "bb-session",
+      "session": "fd4027e2",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/maya-rudolph-broadway-debut-in-"
+    },
+    {
+      "t": "2026-07-13T12:08:58.925Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-07-13T12:09:16.667Z",
+      "event": "bb-session",
+      "session": "37a36be8",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/maya-rudolph-broadway-debut-in-"
+    },
+    {
+      "t": "2026-07-13T12:09:17.077Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }

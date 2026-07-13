@@ -72,7 +72,10 @@
     "every-brilliant-thing-2026/nytimes--ben-brantley.json",
     "every-brilliant-thing-2026/nydailynews--joe-dziemianowicz.json",
     "every-brilliant-thing-2026/theatermania--hayley-levitt.json",
-    "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json"
+    "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json",
+    "oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json",
+    "oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
+    "oh-mary-west-end-2025/nytg--olivia-rook.json"
   ],
   "failed": [
     "carmen-off-broadway-2025/guardian--unknown.json",
@@ -926,7 +929,14 @@
     "gotta-dance-off-broadway-2026/timeout--unknown.json",
     "gotta-dance-off-broadway-2026/the-interested-bystander--cary-wong.json",
     "every-brilliant-thing-2026/latimes--unknown.json",
-    "every-brilliant-thing-2026/standard--nick-curtis.json"
+    "every-brilliant-thing-2026/standard--nick-curtis.json",
+    "every-brilliant-thing-2026/telegraph--marianka-swain.json",
+    "every-brilliant-thing-2026/thestage--dave-fargnoli.json",
+    "every-brilliant-thing-2026/times-uk--alice-jones.json",
+    "every-brilliant-thing-2026/whatsonstage--julia-rank.json",
+    "every-brilliant-thing-2026/theatre-reviews-limited--david-roberts.json",
+    "im-sorry-prime-minister-west-end-2026/british-theatre--rachael-birtwistle.json",
+    "oh-mary-west-end-2025/nyt-theater--jonathan-mandell.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -982,7 +992,8 @@
       "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
       "music-city-off-broadway-2026/theatermania--zachary-stewart.json",
       "every-brilliant-thing-2026/theatermania--hayley-levitt.json",
-      "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json"
+      "every-brilliant-thing-2026/one-minute-critic--matthew-wexler.json",
+      "oh-mary-west-end-2025/nytg--olivia-rook.json"
     ],
     "amp": [],
     "browserbase": [
@@ -993,7 +1004,11 @@
       "data/review-texts/music-city-off-broadway-2026/deadline--greg-evans.json",
       "music-city-off-broadway-2026/deadline--greg-evans.json",
       "data/review-texts/every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
-      "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json"
+      "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json",
+      "oh-mary-west-end-2025/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/oh-mary-west-end-2025/hollywood-reporter--david-rooney.json",
+      "oh-mary-west-end-2025/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1055,7 +1070,7 @@
     ]
   },
   "startTime": "2026-07-13T05:15:55.218Z",
-  "lastProcessed": "every-brilliant-thing-2026/standard--nick-curtis.json",
+  "lastProcessed": "oh-mary-west-end-2025/nytg--olivia-rook.json",
   "log": [
     {
       "t": "2026-07-13T05:17:40.062Z",
@@ -1137,6 +1152,28 @@
     },
     {
       "t": "2026-07-13T12:07:33.269Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-07-13T12:08:58.506Z",
+      "event": "bb-session",
+      "session": "fd4027e2",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/maya-rudolph-broadway-debut-in-"
+    },
+    {
+      "t": "2026-07-13T12:08:58.925Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-07-13T12:09:16.667Z",
+      "event": "bb-session",
+      "session": "37a36be8",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/maya-rudolph-broadway-debut-in-"
+    },
+    {
+      "t": "2026-07-13T12:09:17.077Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
