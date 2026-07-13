@@ -19,6 +19,7 @@ import {
   queryReferenceAttached,
   queryVisualClaimLanguage,
   queryOverrideActiveForPush,
+  queryBypassToken,
 } from './transcript-scan.mjs';
 
 // ── fixture builders ────────────────────────────────────────────────────────
@@ -643,5 +644,109 @@ test('in-flight: NO-VERIFY before LAST user msg does NOT bypass (stale)', () => 
     const r = queryVisualClaimLanguage(walkTranscript(path), { toolUseId: 'tool_stale' });
     assert.equal(r.hasNoVerify, false, 'NO-VERIFY from before last user msg must not bypass');
     assert.equal(r.scope, 'in-flight-turn');
+  } finally { cleanup(); }
+});
+
+// ── bypass-token (pre-push-review-gate, Notion 39c637c5) ───────────────────
+
+test('bypass-token: NO-SHIP-CHECK line with ≥15-char reason in in-flight turn', () => {
+  const { path, cleanup } = writeFixture([
+    makeUserText('push it when ready'),
+    JSON.stringify({
+      type: 'assistant',
+      message: {
+        id: 'msg-bt1',
+        content: [
+          { type: 'text', text: 'Data-only change.\nNO-SHIP-CHECK: docs/data-only push, no reviewable code surface' },
+          { type: 'tool_use', name: 'Bash', input: { command: 'git push' }, id: 'tool_bt1' },
+        ],
+      },
+    }),
+  ]);
+  try {
+    const r = queryBypassToken(walkTranscript(path), { token: 'NO-SHIP-CHECK', toolUseId: 'tool_bt1' });
+    assert.equal(r.hasBypass, true);
+    assert.match(r.line, /^NO-SHIP-CHECK:/);
+  } finally { cleanup(); }
+});
+
+test('bypass-token: short reason does not count', () => {
+  const { path, cleanup } = writeFixture([
+    makeUserText('go'),
+    JSON.stringify({
+      type: 'assistant',
+      message: {
+        id: 'msg-bt2',
+        content: [
+          { type: 'text', text: 'NO-SHIP-CHECK: short' },
+          { type: 'tool_use', name: 'Bash', input: { command: 'git push' }, id: 'tool_bt2' },
+        ],
+      },
+    }),
+  ]);
+  try {
+    const r = queryBypassToken(walkTranscript(path), { token: 'NO-SHIP-CHECK', toolUseId: 'tool_bt2' });
+    assert.equal(r.hasBypass, false);
+  } finally { cleanup(); }
+});
+
+test('bypass-token: mid-sentence mention and fenced example do not count', () => {
+  const { path, cleanup } = writeFixture([
+    makeUserText('go'),
+    JSON.stringify({
+      type: 'assistant',
+      message: {
+        id: 'msg-bt3',
+        content: [
+          { type: 'text', text: 'The gate accepts a NO-SHIP-CHECK: reason of fifteen chars.\n```\nNO-SHIP-CHECK: quoted example inside a code fence\n```' },
+          { type: 'tool_use', name: 'Bash', input: { command: 'git push' }, id: 'tool_bt3' },
+        ],
+      },
+    }),
+  ]);
+  try {
+    const r = queryBypassToken(walkTranscript(path), { token: 'NO-SHIP-CHECK', toolUseId: 'tool_bt3' });
+    assert.equal(r.hasBypass, false, 'mid-sentence/fenced mentions must not bypass');
+  } finally { cleanup(); }
+});
+
+test('bypass-token: token from BEFORE the last user message is stale', () => {
+  const { path, cleanup } = writeFixture([
+    makeAssistantText('NO-SHIP-CHECK: this was a previous unrelated turn entirely'),
+    makeUserText('now do something else and push'),
+    JSON.stringify({
+      type: 'assistant',
+      message: {
+        id: 'msg-bt4',
+        content: [
+          { type: 'text', text: 'Pushing now.' },
+          { type: 'tool_use', name: 'Bash', input: { command: 'git push' }, id: 'tool_bt4' },
+        ],
+      },
+    }),
+  ]);
+  try {
+    const r = queryBypassToken(walkTranscript(path), { token: 'NO-SHIP-CHECK', toolUseId: 'tool_bt4' });
+    assert.equal(r.hasBypass, false, 'stale bypass from a prior turn must not count');
+  } finally { cleanup(); }
+});
+
+test('override marker-ns: review-gate namespace does not collide with visual gate', () => {
+  const sessionId = `sess-ns-${process.pid}-${Date.now()}`;
+  const { path, cleanup } = writeFixture([
+    makeUserText('ship immediately for: opening night is in 20 minutes'),
+  ]);
+  try {
+    // Visual gate consumes the default-namespace marker…
+    const r1 = queryOverrideActiveForPush(walkTranscript(path), { sessionId, consume: true });
+    assert.equal(r1.override, true);
+    // …review gate still gets its own one-shot in its namespace…
+    const r2 = queryOverrideActiveForPush(walkTranscript(path), { sessionId, consume: true, markerNs: 'review-gate' });
+    assert.equal(r2.override, true, 'namespaced marker must be independent of default');
+    // …and the namespaced one is also one-shot.
+    const r3 = queryOverrideActiveForPush(walkTranscript(path), { sessionId, consume: true, markerNs: 'review-gate' });
+    assert.equal(r3.override, false);
+    if (r1.marker && existsSync(r1.marker)) unlinkSync(r1.marker);
+    if (r2.marker && existsSync(r2.marker)) unlinkSync(r2.marker);
   } finally { cleanup(); }
 });
