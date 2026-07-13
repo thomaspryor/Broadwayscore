@@ -82,6 +82,21 @@ jobs:
               --auto-apply-claims-from=recoupment-announcement-scraper
           fi
 
+      - name: Commercial data strict gate (required)
+        if: inputs.dry_run != true
+        # S1-T5: hard gate — recouped:true entries with no citation, or
+        # sources[].url pointing at an LLM tool (chatgpt.com etc.), must never
+        # reach the private repo. On violation we also write the push-core-data
+        # refusal sentinel so the always()-gated push below cannot fire.
+        # Runs right after auto-apply (same position as commercial-weekly.yml)
+        # so it audits the applied state before derived-model refresh.
+        run: |
+          if ! node scripts/audit-commercial-data.js --strict; then
+            echo "commercial strict audit failed (unsourced recouped or LLM-tool source URL) — blocking core-data push" \
+              > "${RUNNER_TEMP:-/tmp}/.skip-push-core-data"
+            exit 1
+          fi
+
       - name: Refresh recoupment model
         if: inputs.dry_run != true
         run: node scripts/merge-model-recoupment.js
