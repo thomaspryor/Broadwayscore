@@ -8,7 +8,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { repeatFailureResults, feedbackBacklogResults, getDigestSubject, getPlaybookEntry } = require('../../scripts/health-check.js');
+const { repeatFailureResults, feedbackBacklogResults, obClosingBacklogResults, getDigestSubject, getPlaybookEntry } = require('../../scripts/health-check.js');
 
 test('repeatFailureResults: skipped summary yields no synthetic checks', () => {
   assert.deepEqual(repeatFailureResults({ skipped: true, repeatFailures: [{ name: 'x.yml', count: 9 }] }), []);
@@ -98,4 +98,22 @@ test('feedbackBacklogResults: open backlog warns with count, oldest age, newest 
   assert.match(results[0].message, /2 open user-feedback issue\(s\)/);
   assert.match(results[0].message, /oldest 78d/);
   assert.match(results[0].message, /#393/);
+});
+
+// --- obClosingBacklogResults (weekly OB closing-detector digest check) ---
+
+test('obClosingBacklogResults: empty or absent report yields nothing', () => {
+  assert.deepEqual(obClosingBacklogResults(null), []);
+  assert.deepEqual(obClosingBacklogResults({ reviewTextSweep: { candidates: [] }, todaytixStaleness: { candidates: [] } }), []);
+});
+
+test('obClosingBacklogResults: candidates warn with count and first show', () => {
+  const results = obClosingBacklogResults({
+    reviewTextSweep: { candidates: [{ showId: 'clara-2026', proposedClosingDate: '2026-05-10', confidence: 'medium' }] },
+    todaytixStaleness: { candidates: [] },
+  });
+  assert.equal(results.length, 1);
+  assert.equal(results[0].status, 'warn');
+  assert.match(results[0].message, /1 open Off-Broadway show/);
+  assert.match(results[0].message, /clara-2026 → 2026-05-10 \[medium\]/);
 });

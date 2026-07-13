@@ -1234,6 +1234,29 @@ function feedbackBacklogResults(feedbackSummary, now = new Date()) {
   }];
 }
 
+// OB closing-date detector candidates (data/audit/ob-closing-candidates.json,
+// committed weekly by detect-ob-closings.yml). The detector is alert-only by
+// design; without a digest line its report is a JSON file nobody reads — the
+// same silent-channel failure as the needs-manual-review backlog above.
+function obClosingBacklogResults(report) {
+  if (!report || !report.reviewTextSweep) return [];
+  const candidates = [
+    ...(report.reviewTextSweep.candidates || []),
+    ...((report.todaytixStaleness && report.todaytixStaleness.candidates) || []),
+  ];
+  if (candidates.length === 0) return [];
+  const first = candidates[0];
+  const label = first.proposedClosingDate
+    ? `${first.showId} → ${first.proposedClosingDate} [${first.confidence}]`
+    : `${first.showId}`;
+  return [{
+    name: 'Data: OB closing candidates awaiting review',
+    status: 'warn',
+    message: `${candidates.length} open Off-Broadway show(s) look closed per the weekly detector. First: ${label}`,
+    hint: 'Review data/audit/ob-closing-candidates.json; confirm evidence quotes, then set closingDate/status in shows.json (data repo).',
+  }];
+}
+
 // Simple HTTPS GET that returns parsed JSON
 function fetchJSON(url, headers) {
   return new Promise((resolve, reject) => {
@@ -1966,6 +1989,11 @@ async function main() {
       console.log(`[Feedback issues] ${feedbackSummary.issues.length} open needs-manual-review issue(s)`);
     }
     allResults.push(...feedbackBacklogResults(feedbackSummary));
+
+    try {
+      const obReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/ob-closing-candidates.json'), 'utf8'));
+      allResults.push(...obClosingBacklogResults(obReport));
+    } catch { /* report absent (detector not yet run) — nothing to surface */ }
   }
 
   // Print console summary
@@ -2053,4 +2081,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { buildObCandidatesHtml, repeatFailureResults, feedbackBacklogResults, getDigestSubject, getPlaybookEntry };
+module.exports = { buildObCandidatesHtml, repeatFailureResults, feedbackBacklogResults, obClosingBacklogResults, getDigestSubject, getPlaybookEntry };
