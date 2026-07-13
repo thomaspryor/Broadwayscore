@@ -21,12 +21,16 @@ export const RATINGS_SYNC_EVENT = 'bsc-ratings-sync';
 
 let cache: { userId: string; promise: Promise<Map<string, number>> } | null = null;
 
-async function fetchRatingsMap(): Promise<Map<string, number>> {
+async function fetchRatingsMap(userId: string): Promise<Map<string, number>> {
   const map = new Map<string, number>();
-  const { data } = await supabaseRestSelect<{ show_id: string; rating: number }>(
+  // Explicit user_id filter: RLS already scopes to own rows today, but a future
+  // public-reviews policy must not turn other people's ratings into "Your rating"
+  // chips. Cap well above any real user's show count.
+  const { data, error } = await supabaseRestSelect<{ show_id: string; rating: number }>(
     'reviews',
-    'select=show_id,rating,created_at&order=created_at.desc',
+    `user_id=eq.${userId}&select=show_id,rating,created_at&order=created_at.desc&limit=2000`,
   );
+  if (error) throw new Error(error.message);
   for (const row of data ?? []) {
     if (!map.has(row.show_id)) map.set(row.show_id, row.rating); // first = latest
   }
@@ -35,7 +39,13 @@ async function fetchRatingsMap(): Promise<Map<string, number>> {
 
 function getRatingsMap(userId: string): Promise<Map<string, number>> {
   if (!cache || cache.userId !== userId) {
-    cache = { userId, promise: fetchRatingsMap() };
+    const promise = fetchRatingsMap(userId).catch(e => {
+      // Never cache a failure — one transient blip must not blank the chips
+      // for the whole session. Next mount retries.
+      if (cache?.promise === promise) cache = null;
+      throw e;
+    });
+    cache = { userId, promise };
   }
   return cache.promise;
 }
