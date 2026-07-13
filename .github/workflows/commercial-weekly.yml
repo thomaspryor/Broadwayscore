@@ -264,6 +264,20 @@ jobs:
             echo "No pending file — nothing to apply"
           fi
 
+      - name: Commercial data strict gate (required)
+        # S1-T5: hard gate — recouped:true entries with no citation, or
+        # sources[].url pointing at an LLM tool (chatgpt.com etc.), must never
+        # reach the private repo. The commit/push steps below are if: always(),
+        # so exit 1 alone would not stop them — the push-core-data refusal
+        # sentinel is what actually blocks the private-repo push. The public
+        # commit is safe regardless (data/commercial.json is gitignored there).
+        run: |
+          if ! node scripts/audit-commercial-data.js --strict; then
+            echo "commercial strict audit failed (unsourced recouped or LLM-tool source URL) — blocking core-data push" \
+              > "${RUNNER_TEMP:-/tmp}/.skip-push-core-data"
+            exit 1
+          fi
+
       - name: Run commercial audit
         # continue-on-error: true — audit is read-only/informational; a failure
         # shouldn't block the deploy. Audit findings surface in the daily digest.

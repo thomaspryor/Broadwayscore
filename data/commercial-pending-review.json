@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-20T18:34:01.218Z",
+  "generatedAt": "2026-07-13T04:39:27.573Z",
   "shows": {
     "the-lost-boys-2026": {
       "title": "The Lost Boys",
@@ -1075,6 +1075,112 @@
       ],
       "confidence": "medium",
       "researchedAt": "2026-07-11T18:46:08.989Z"
+    },
+    "sweeney-todd-2023": {
+      "status": "closed",
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": true,
+      "recoupedSource": null,
+      "designation": "Windfall",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://broadwayjournal.com/solo-shows-deliver-as-aspiring-blockbusters-struggle/",
+          "date": "2023-08-25"
+        }
+      ],
+      "confidence": "low",
+      "researchedAt": "2026-07-13T04:39:27.573Z",
+      "detectedBy": "sprint2-citation-audit",
+      "_recoupedClaim": true,
+      "title": "Sweeney Todd",
+      "slug": "sweeney-todd-2023",
+      "openingDate": "2023-03-26",
+      "recoupedDate": "2023-12",
+      "sourceHost": "broadwayjournal.com",
+      "evidence": "Broadway Journal (Aug 25 2023): capitalized $14.5M, \"on track to recoup later this fall, after about 33 weeks\" — projection only. No formal recoupment announcement found in Deadline/Variety/Playbill/BWW searches (Jul 2026). commercial.json currently claims recouped:true 2023-12 with no recoupedSource.",
+      "notes": "REVIEW: commercial.json says recouped:true (2023-12) but no trade announcement exists. BJ projection supports likely recoupment ~Nov-Dec 2023. Confirm or set humanReviewedDesignation. Do NOT auto-apply."
+    },
+    "appropriate-2023": {
+      "status": "closed",
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": true,
+      "recoupedSource": null,
+      "designation": "Easy Winner",
+      "sources": [],
+      "confidence": "low",
+      "researchedAt": "2026-07-13T04:39:27.573Z",
+      "detectedBy": "sprint2-citation-audit",
+      "_recoupedClaim": true,
+      "title": "Appropriate",
+      "slug": "appropriate",
+      "openingDate": "2023-12-18",
+      "recoupedDate": "2024-03",
+      "sourceHost": null,
+      "evidence": "No recoupment announcement found in Deadline/Playbill/Variety/BWW/Broadway News searches (Jul 2026). Show was a commercial hit (extension + Belasco transfer, 3 Tonys incl. Best Revival) but recouped:true 2024-03 in commercial.json has no citation.",
+      "notes": "REVIEW: recouped:true claim uncited. BWW forum discussion suggests investors were repaid but that is not a citable source. Confirm via producer/trade contact or set humanReviewedDesignation."
+    },
+    "leopoldstadt-2022": {
+      "status": "closed",
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": true,
+      "recoupedSource": null,
+      "designation": "Windfall",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://broadwayjournal.com/solo-shows-deliver-as-aspiring-blockbusters-struggle/",
+          "date": "2023-08-25"
+        }
+      ],
+      "confidence": "low",
+      "researchedAt": "2026-07-13T04:39:27.573Z",
+      "detectedBy": "sprint2-citation-audit",
+      "_recoupedClaim": true,
+      "title": "Leopoldstadt",
+      "slug": "leopoldstadt-2022",
+      "openingDate": "2022-10-02",
+      "recoupedDate": "2023-07",
+      "sourceHost": "broadwayjournal.com",
+      "evidence": "COUNTER-EVIDENCE: Broadway Journal (Aug 25 2023) states Prima Facie was \"the only show from 2022-23 to announce that it recouped\" — Leopoldstadt (2022-23 season, closed Jul 2 2023) had NOT announced recoupment. commercial.json claims recouped:true 2023-07.",
+      "notes": "REVIEW: strongest candidate of the three for correction — trade press states no 2022-23 recoupment announcement other than Prima Facie. Held per no-autonomous-demotion policy (plan v2 Q3). Options: demote to recouped:false, or find post-Aug-2023 announcement."
+    },
+    "into-the-woods-2022": {
+      "status": "closed",
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": true,
+      "recoupedSource": null,
+      "designation": "Easy Winner",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://broadwayjournal.com/solo-shows-deliver-as-aspiring-blockbusters-struggle/",
+          "date": "2023-08-25"
+        }
+      ],
+      "confidence": "low",
+      "researchedAt": "2026-07-13T04:39:27.573Z",
+      "detectedBy": "sprint2-citation-audit",
+      "_recoupedClaim": true,
+      "title": "Into the Woods",
+      "slug": "into-the-woods-2022",
+      "openingDate": "2022-07-10",
+      "recoupedDate": "2022-11",
+      "sourceHost": "broadwayjournal.com",
+      "evidence": "Broadway Journal (Aug 25 2023) lists \"the Jujamcyn-produced $4 million Into the Woods\" among 2022-23 commercial winners — supports recouped:true, but the specific recoupedDate 2022-11 has no announcement.",
+      "notes": "REVIEW (date only): recouped:true is trade-supported (citation now in commercial.json); confirm or clear the 2022-11 recoupedDate. Lower priority than the other three."
     }
   },
   "lastUpdated": "2026-07-11T18:48:21.161Z"
