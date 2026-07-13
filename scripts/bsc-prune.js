@@ -23,12 +23,16 @@ function main() {
   }
 
   const all = listWorkspaces();
-  const closed = pruneDone({ dryRun });
+  const { closed, skipped } = pruneDone({ dryRun });
   if (closed.length) {
     console.log(`${dryRun ? '[dry-run] would close' : 'Closed'} ${closed.length} ✅ workspace(s):`);
     closed.forEach(w => console.log(`  ${w.ref}  ${w.title}`));
   } else {
     console.log('No ✅-marked workspaces to close.');
+  }
+  if (skipped.length) {
+    console.log(`Skipped ${skipped.length} ✅ workspace(s) with claude still running (finishing wrap-up?):`);
+    skipped.forEach(w => console.log(`  ${w.ref}  ${w.title}`));
   }
 
   const closedRefs = new Set(closed.map(w => w.ref));

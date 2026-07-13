@@ -49,10 +49,16 @@ function isDoneTitle(title) {
 }
 
 // `cmux top --workspace X --processes --format tsv` emits one row per node;
-// a live Claude Code session appears as a tag row: … tag … tag:claude_code … Running.
+// a live Claude Code session appears as a tag row whose columns are
+// cpu\trss\tproc\ttype\tid\tparent\tstatus. Column-exact match — a substring
+// test would false-positive on statuses like "NotRunning" or a title
+// containing "Running" (ship-check reviewer finding, 2026-07-12).
 function hasRunningClaude(tsvText) {
-  return String(tsvText).split('\n')
-    .some(l => l.includes('tag:claude_code') && l.includes('Running'));
+  return String(tsvText).split('\n').some(l => {
+    const c = l.split('\t');
+    return c[3] === 'tag' && /:tag:claude_code$/.test(c[4] || '')
+      && (c[6] || '').trim() === 'Running';
+  });
 }
 
 // ── socket wrappers ─────────────────────────────────────────────────────────
@@ -73,17 +79,23 @@ function claudeRunningIn(ref) {
   }
 }
 
-// Close every ✅-marked workspace. Returns the closed entries; failures to
-// close one workspace don't abort the sweep.
+// Close every ✅-marked workspace WITHOUT a running claude. A ✅ title with
+// claude still alive is a session finishing its final turn (wrap-up marks ✅
+// before memory-sync/self-close) or a user-marked workspace they're still in —
+// closing it would kill claude mid-push (ship-check reviewer finding,
+// 2026-07-12). Those are skipped and reported; the next sweep gets them.
+// Returns { closed, skipped }; failures to close one workspace don't abort.
 function pruneDone(opts = {}) {
   const done = listWorkspaces().filter(w => isDoneTitle(w.title));
   const closed = [];
+  const skipped = [];
   for (const w of done) {
+    if (claudeRunningIn(w.ref)) { skipped.push(w); continue; }
     if (opts.dryRun) { closed.push(w); continue; }
     try { closeWorkspace(w.ref); closed.push(w); }
     catch (e) { console.error(`[cmux-workspaces] failed to close ${w.ref}: ${e.message}`); }
   }
-  return closed;
+  return { closed, skipped };
 }
 
 module.exports = {

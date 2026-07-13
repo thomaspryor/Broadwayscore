@@ -200,12 +200,19 @@ function launchCmux(task, seed, commandOverride) {
     lastWs = ws || lastWs;
     // VERIFY the launch (scope add 3): a workspace whose command was mangled
     // never starts claude and never self-marks ✅, so nothing would notice.
-    // Poll for a running claude_code process, up to ~15s.
-    if (ws && pollUntil(() => cmuxws.claudeRunningIn(ws.ref), 15)) {
+    // Poll for a running claude_code process. 30s window: shell init (direnv)
+    // + claude cold start can exceed 15s post-reboot, and a false timeout
+    // kills a healthy launch (ship-check reviewer finding, 2026-07-12).
+    if (ws && pollUntil(() => cmuxws.claudeRunningIn(ws.ref), 30)) {
       return { ok: true, ref: ws.ref, seedFile, command };
     }
     if (attempt === 1) {
-      // Dead launch: close the corpse (if we found it) and retry once.
+      // Verify-before-close: one last check after a beat, so a claude that
+      // registered at the buzzer isn't killed as a corpse.
+      sleepSec(2);
+      if (ws && cmuxws.claudeRunningIn(ws.ref)) {
+        return { ok: true, ref: ws.ref, seedFile, command };
+      }
       if (ws) { try { cmuxws.closeWorkspace(ws.ref); } catch { /* already gone */ } }
       sleepSec(2);
     }
@@ -267,9 +274,12 @@ function main() {
   // dispatch so the workspace list stays honest even without manual bsc-prune.
   if (cmuxws.cmuxAvailable()) {
     try {
-      const pruned = cmuxws.pruneDone();
-      if (pruned.length) {
-        console.log(`[bsc-next] pruned ${pruned.length} finished ✅ workspace(s): ${pruned.map(w => w.ref).join(', ')}`);
+      const { closed, skipped } = cmuxws.pruneDone();
+      if (closed.length) {
+        console.log(`[bsc-next] pruned ${closed.length} finished ✅ workspace(s): ${closed.map(w => w.ref).join(', ')}`);
+      }
+      if (skipped.length) {
+        console.log(`[bsc-next] left ${skipped.length} ✅ workspace(s) with claude still running: ${skipped.map(w => w.ref).join(', ')}`);
       }
     } catch (e) { console.error(`[bsc-next] prune sweep failed (continuing): ${e.message}`); }
   }
