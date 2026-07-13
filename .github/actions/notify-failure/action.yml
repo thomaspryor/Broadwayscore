@@ -33,6 +33,23 @@ inputs:
     description: 'Minutes to suppress duplicate alerts for the same workflow (default: 120)'
     required: false
     default: '120'
+  min_consecutive_failures:
+    description: >-
+      Only alert once this many CONSECUTIVE completed runs have failed (default 1 =
+      alert on every failure). Set '2' for high-frequency crons (30-45 min cadence)
+      whose one-off failures self-resolve on the next run — a single push-contention
+      or scraper blip never pages; persistent breakage still does (the next failed
+      run alerts). Cancelled/skipped runs don't reset the streak.
+    required: false
+    default: '1'
+
+outputs:
+  suppressed:
+    description: >-
+      'true' when the alert was suppressed (cooldown or consecutive-failure grace).
+      Gate follow-up steps (e.g. investigation dispatch) on this != 'true' so they
+      only fire when the failure actually paged.
+    value: ${{ steps.cooldown.outputs.suppressed }}
 
 runs:
   using: composite
@@ -43,10 +60,9 @@ runs:
       uses: actions/github-script@v7
       with:
         script: |
-          // Check if this workflow already alerted recently
           const workflowName = context.workflow;
           const cooldownMinutes = parseInt('${{ inputs.cooldown_minutes }}') || 120;
-          const cutoff = new Date(Date.now() - cooldownMinutes * 60 * 1000);
+          const minConsecutive = parseInt('${{ inputs.min_consecutive_failures }}') || 1;
 
           try {
             // context.workflow is the display name (e.g., "Test Suite"), but
@@ -57,6 +73,51 @@ runs:
             const fileMatch = ref.match(/\.github\/workflows\/([^@]+)/);
             const workflowFile = fileMatch ? fileMatch[1] : workflowName;
 
+            if (minConsecutive > 1) {
+              // Streak mode (high-frequency crons): page exactly when the streak of
+              // consecutive failed runs reaches minConsecutive — one page per streak.
+              // A one-off failure that self-resolves on the next run never pages;
+              // shorter streak = grace, longer streak = already paged earlier.
+              // The time cooldown below is NOT also applied: it counts failures that
+              // may never have alerted (the graced first one), so combining the two
+              // would suppress every page of a real streak.
+              const recent = await github.rest.actions.listWorkflowRuns({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: workflowFile,
+                status: 'completed',
+                per_page: 30,
+              }).catch(() => ({ data: { workflow_runs: [] } }));
+              // Cancelled/skipped runs say nothing about health — they neither
+              // extend nor reset the streak.
+              const prior = (recent.data.workflow_runs || [])
+                .filter(r => r.id !== context.runId)
+                .filter(r => !['cancelled', 'skipped'].includes(r.conclusion))
+                .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+              let streak = 1; // this run
+              for (const r of prior) {
+                if (r.conclusion === 'failure') streak++;
+                else break;
+              }
+              if (streak === minConsecutive) {
+                console.log(`[Streak] ${streak} consecutive failure(s) — threshold ${minConsecutive} reached, alerting.`);
+                core.setOutput('suppressed', 'false');
+              } else {
+                const why = streak < minConsecutive
+                  ? `first failure in streak — pages if the next run also fails`
+                  : `streak already paged when it reached ${minConsecutive}`;
+                console.log(`[Streak] ${streak} consecutive failure(s) (threshold ${minConsecutive}) — suppressing: ${why}.`);
+                if (process.env.GITHUB_STEP_SUMMARY) {
+                  require('fs').appendFileSync(process.env.GITHUB_STEP_SUMMARY,
+                    `\n> ⏳ **Alert suppressed** (${why}).\n`);
+                }
+                core.setOutput('suppressed', 'true');
+              }
+              return;
+            }
+
+            // Default mode: 2h time cooldown per workflow.
+            const cutoff = new Date(Date.now() - cooldownMinutes * 60 * 1000);
             const runs = await github.rest.actions.listWorkflowRuns({
               owner: context.repo.owner,
               repo: context.repo.repo,
