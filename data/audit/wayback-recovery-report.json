@@ -1,20 +1,22 @@
 {
-  "totalCandidates": 1,
-  "cdxFound": 0,
-  "cdxNotFound": 0,
-  "recovered": 0,
+  "totalCandidates": 4,
+  "cdxFound": 1,
+  "cdxNotFound": 1,
+  "recovered": 1,
   "recoveredByTier": {
     "1": 0,
     "2": 0,
-    "3": 0
+    "3": 1
   },
-  "recoveredByDomain": {},
+  "recoveredByDomain": {
+    "culturesauce.com": 1
+  },
   "tooShort": 0,
   "garbage": 0,
   "wrongShow": 0,
   "archiveTodayRecovered": 0,
-  "errors": 1,
-  "notInArchive": 0,
+  "errors": 2,
+  "notInArchive": 1,
   "domainSkipped": 0,
   "circuitBrokenDomains": []
 }
