@@ -35,6 +35,18 @@ test('deny-tag card is ineligible regardless of category', () => {
   }
 });
 
+test('categoryless cards fail closed on human-action verbs regardless of title length', () => {
+  for (const category of ['', null, undefined, 'no-category', 'No-Category']) {
+    const r = isCardEligible({ name: 'Ask Dennis T to mentor (Tony voter + coproducer path)', category, tags: [] });
+    assert.equal(r.eligible, false, `category=${JSON.stringify(category)} must be ineligible`);
+    assert.match(r.reason, /no category/);
+  }
+  // Categoryless technical card stays eligible.
+  assert.equal(isCardEligible({ name: 'Fix stage-latency rotation cron', category: '', tags: [] }).eligible, true);
+  // A real category still vouches for long verb-led product titles.
+  assert.equal(isCardEligible({ name: 'Email gate conversion critically low at 0.9% needs investigation', category: 'Product', tags: [] }).eligible, true);
+});
+
 test('short human-action imperatives are ineligible; long product subjects are not', () => {
   assert.equal(isCardEligible({ name: 'Email volunteers', category: 'Admin', tags: [] }).eligible, false);
   assert.equal(isCardEligible({ name: 'Reconnect App Store Connect', category: 'Admin', tags: [] }).eligible, false);

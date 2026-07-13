@@ -88,6 +88,13 @@ function isCardEligible(card) {
   if (EXCLUDED_CATEGORIES.has(category)) {
     return { eligible: false, reason: `category "${card.category}" is human territory` };
   }
+  // Same fail-closed rule as isExcludedCategory: an empty/'no-category' card
+  // has no category to vouch for a long verb-led title, so the verb filter
+  // applies without the ≤5-word bound ("Ask Dennis T to mentor (Tony voter +
+  // coproducer path)" was card-eligible through the bounded check).
+  if ((category === '' || category === 'no-category') && HUMAN_ACTION_RE.test((card.name || '').trim())) {
+    return { eligible: false, reason: `title is a human action and card has no category ("${(card.name || '').trim()}")` };
+  }
   if (isHumanActionSubject(card.name)) {
     return { eligible: false, reason: `title is a human action ("${(card.name || '').trim()}")` };
   }
