@@ -14,7 +14,6 @@ import Modal from '@/components/show-cards/Modal';
  *   ?state=new   (default) — fresh rating, no reviewId
  *   ?state=edit  — editing review r1 (rating 4.5, note + date pre-filled)
  *   ?fail=1      — onSave rejects, exercising the failed-save-keeps-text path
- *   ?closing=YYYY-MM-DD — closingDate (date-cap test)
  *   ?stars=N     — initial rating for the new state
  *
  * Rendered inline (presentation="inline") so tests are deterministic across widths.
@@ -23,7 +22,6 @@ function RatingEditorFixtureInner() {
   const sp = useSearchParams();
   const state = sp.get('state') || 'new';
   const fail = sp.get('fail') === '1';
-  const closing = sp.get('closing');
   const starsParam = sp.get('stars');
   // ?presentation=modal renders the Modal path INSIDE the .card wrapper —
   // regression fixture for the contain:layout containment trap (2026-07-05).
@@ -63,7 +61,6 @@ function RatingEditorFixtureInner() {
             <RatingEditor
               presentation={presentation}
               showTitle="Hamilton"
-              closingDate={closing}
               reviewId={isEdit ? 'r1' : undefined}
               initialRating={isEdit ? 4.5 : starsParam ? parseFloat(starsParam) : 0}
               initialReviewText={isEdit ? 'Incredible show!' : null}
