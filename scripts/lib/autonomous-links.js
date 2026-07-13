@@ -39,11 +39,13 @@ function buildActionUrl({ action, cardId, branch, exp, secret, baseUrl }) {
  */
 function verifySignature({ action, cardId, branch, exp, secret, sig }) {
   if (!sig || typeof sig !== 'string') return false;
+  // Require exactly 64 lowercase hex chars up front: Buffer.from(_, 'hex')
+  // silently truncates at the first non-hex char, so "<validsig>JUNK" would
+  // otherwise decode back to the valid signature and pass.
+  if (!/^[0-9a-f]{64}$/.test(sig)) return false;
   const expected = buildSignature({ action, cardId, branch, exp, secret });
   const expectedBuf = Buffer.from(expected, 'hex');
   const sigBuf = Buffer.from(sig, 'hex');
-  // Buffer.from(_, 'hex') silently truncates on invalid hex — a length
-  // mismatch (including odd-length / non-hex input) fails here.
   if (sigBuf.length !== expectedBuf.length) return false;
   try {
     return crypto.timingSafeEqual(sigBuf, expectedBuf);
