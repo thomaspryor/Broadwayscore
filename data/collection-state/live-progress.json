@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-07-13T08:37:02.454Z",
-  "processed": 61,
-  "failed": 708,
-  "successRate": "7.9%",
+  "updatedAt": "2026-07-13T08:38:56.870Z",
+  "processed": 51,
+  "failed": 618,
+  "successRate": "7.6%",
   "tierBreakdown": {
-    "playwright": 47,
+    "playwright": 41,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingbee": 4,
-    "brightdata": 5,
-    "archiveToday": 3,
-    "archive": 4
+    "brightdata": 2,
+    "archiveToday": 9,
+    "archive": 3
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-07-13T05:17:40.062Z",
@@ -25,6 +25,23 @@
       "t": "2026-07-13T05:17:41.136Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-07-13T08:26:46.408Z",
+      "event": "bb-session",
+      "session": "105556b0",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/sessions-review-a-tender-"
+    },
+    {
+      "t": "2026-07-13T08:26:47.476Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-13T08:35:55.331Z",
+      "event": "bb-session",
+      "session": "ff44c1e8",
+      "url": "https://www.inkl.com/news/the-guilty-review-russell-tovey-is-commanding-in-cop-t"
     }
   ]
 }
