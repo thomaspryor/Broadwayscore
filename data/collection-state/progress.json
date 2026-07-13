@@ -1,40 +1,27 @@
 {
   "processed": [],
   "failed": [
-    "tender-off-west-end-2026/guardian--arifa-akbar.json",
-    "tender-off-west-end-2026/about-entertainment--ben-brantley.json",
-    "tender-off-west-end-2026/daily-mail--unknown.json",
-    "tender-off-west-end-2026/thestage--dave-fargnoli.json",
-    "tender-off-west-end-2026/times-uk--richard-morrison.json",
-    "tender-off-west-end-2026/times-uk--sam-marlowe.json",
-    "tender-off-west-end-2026/whatsonstage--oliver-ainley.json"
+    "springwood-west-end-2026/guardian-uk--unknown.json",
+    "springwood-west-end-2026/artsdesk--unknown.json",
+    "springwood-west-end-2026/standard--nick-curtis.json",
+    "springwood-west-end-2026/theatrecat--unknown.json",
+    "springwood-west-end-2026/thestage--unknown.json",
+    "springwood-west-end-2026/west-end-best-friend--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/tender-off-west-end-2026/times-uk--sam-marlowe.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/springwood-west-end-2026/thestage--unknown.json"
+    ],
     "archive": []
   },
-  "startTime": "2026-07-13T06:39:09.366Z",
-  "lastProcessed": "tender-off-west-end-2026/whatsonstage--oliver-ainley.json",
-  "log": [
-    {
-      "t": "2026-07-13T06:40:42.614Z",
-      "event": "bb-session",
-      "session": "b33ac790",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/sessions-review-a-tender-"
-    },
-    {
-      "t": "2026-07-13T06:40:43.074Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    }
-  ]
+  "startTime": "2026-07-13T06:50:56.532Z",
+  "lastProcessed": "springwood-west-end-2026/west-end-best-friend--unknown.json",
+  "log": []
 }
