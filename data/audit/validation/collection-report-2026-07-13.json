@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-07-13T17:40:46.442Z",
+  "runDate": "2026-07-13T17:42:40.974Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 0,
     "priority": "all",
-    "showFilter": "springwood-west-end-2026",
+    "showFilter": "the-guilty-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,7 +12,7 @@
   },
   "summary": {
     "processed": 0,
-    "failed": 6,
+    "failed": 11,
     "skipped": 0,
     "successRate": "0%"
   },
@@ -27,37 +27,42 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 5,
-    "tier1Success": 4,
+    "tier1Attempts": 4,
+    "tier1Success": 2,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
+    "tier2Attempts": 2,
     "tier2Success": 1,
     "tier3Attempts": 1,
     "tier3Success": 1,
     "tier3_6Attempts": 1,
     "tier3_6Success": 1,
     "tier4Attempts": 2,
-    "tier4Success": 1,
-    "totalFailed": 6,
+    "tier4Success": 0,
+    "totalFailed": 11,
     "scrapingBeePageCredits": 10,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "urlDiscoveryAttempts": 7,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [],
   "failed": [
-    "springwood-west-end-2026/guardian-uk--unknown.json",
-    "springwood-west-end-2026/artsdesk--unknown.json",
-    "springwood-west-end-2026/standard--nick-curtis.json",
-    "springwood-west-end-2026/theatrecat--unknown.json",
-    "springwood-west-end-2026/thestage--unknown.json",
-    "springwood-west-end-2026/west-end-best-friend--unknown.json"
+    "the-guilty-west-end-2026/hollywood-reporter--angie-han.json",
+    "the-guilty-west-end-2026/hollywood-reporter--lily-ford.json",
+    "the-guilty-west-end-2026/deadline--denise-petski.json",
+    "the-guilty-west-end-2026/deadline--max-goldbart.json",
+    "the-guilty-west-end-2026/deadline--zac-ntim.json",
+    "the-guilty-west-end-2026/guardian-uk--unknown.json",
+    "the-guilty-west-end-2026/monstagigz--unknown.json",
+    "the-guilty-west-end-2026/plays-international--unknown.json",
+    "the-guilty-west-end-2026/rollingstone--charisma-madarang.json",
+    "the-guilty-west-end-2026/thestage--unknown.json",
+    "the-guilty-west-end-2026/times-uk--unknown.json"
   ],
   "tierDetails": {
     "playwright": [],
@@ -67,7 +72,7 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/springwood-west-end-2026/thestage--unknown.json"
+      "data/review-texts/the-guilty-west-end-2026/thestage--unknown.json"
     ],
     "archive": []
   },
