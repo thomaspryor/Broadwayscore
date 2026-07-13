@@ -9,9 +9,13 @@
  * the night's work plan to data/audit/autonomous-queue.json.
  *
  *   node scripts/autonomous-triage.js --dry-run              triage, write queue, NO Notion writes
- *   node scripts/autonomous-triage.js --dry-run --limit 5    first 5 backlog cards
+ *   node scripts/autonomous-triage.js --dry-run --limit 5    stop after 5 triage CANDIDATES
  *   node scripts/autonomous-triage.js --cards id1,id2        explicit card ids (testing)
  *   node scripts/autonomous-triage.js                        live: also stamps Auto=queued/failed
+ *
+ * --limit counts cards that REACH the LLM (pre-filter survivors), not raw
+ * backlog rows: the fetch pulls up to 4x/120 cards and refills past
+ * human-territory/deny-tag/already-processed skips.
  *
  * Live mode only touches the dedicated `Auto` select (never Status, never
  * domain Tags). The executor (scripts/autonomous-run.js) consumes the queue.
@@ -22,10 +26,17 @@ const path = require('path');
 const https = require('https');
 const { execFileSync } = require('child_process');
 const { triageCard, decide, orderQueue, isSafeCheckCommand } = require('./lib/autonomous-triage-core.js');
+const { estimateUSD } = require('./lib/autonomous-budget.js');
+const ledger = require('./lib/autonomous-ledger.js');
 
 const REPO = path.join(__dirname, '..');
 const QUEUE_PATH = path.join(REPO, 'data', 'audit', 'autonomous-queue.json');
 const MODEL = process.env.AUTONOMOUS_TRIAGE_MODEL || 'claude-sonnet-5';
+// Night-1 fix: the backlog's top is crowded with human-territory P0s, so a
+// raw top-N fetch can produce a window with zero workable cards. Fetch a
+// deeper slice and stop once `--limit` cards have actually reached the LLM.
+const FETCH_MULTIPLIER = 4;
+const FETCH_MAX = 120;
 
 // .env may be absent in a worktree (gitignored) — fall back to the primary
 // checkout so ANTHROPIC_API_KEY / NOTION_API_KEY resolve either way.
@@ -62,6 +73,11 @@ function notionBrain(args) {
   return JSON.parse(out);
 }
 
+// Running usage across every callSonnet() this process — ledgered once at
+// the end of main() so the morning email's "Tonight" block counts triage
+// (night-1 fix: 15 Sonnet calls showed as $0.00).
+const usageTally = { calls: 0, tokensIn: 0, tokensOut: 0 };
+
 function callSonnet(prompt) {
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) throw new Error('ANTHROPIC_API_KEY not set');
@@ -87,6 +103,12 @@ function callSonnet(prompt) {
         if (res.statusCode !== 200) return reject(new Error(`Anthropic HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
         try {
           const json = JSON.parse(data);
+          const u = json.usage || {};
+          usageTally.calls++;
+          usageTally.tokensIn += (Number(u.input_tokens) || 0)
+            + (Number(u.cache_creation_input_tokens) || 0)
+            + (Number(u.cache_read_input_tokens) || 0);
+          usageTally.tokensOut += Number(u.output_tokens) || 0;
           // content[0] is not always the text block (thinking-capable models
           // may lead with a thinking block) — collect every text block.
           const text = (json.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
@@ -112,19 +134,34 @@ async function main() {
     process.exit(1);
   }
 
-  // 1. Collect cards.
+  // 1. Collect cards. Fetch deeper than the triage window (night-1 fix):
+  //    prefiltered skips (human categories, deny-tags, already-processed) no
+  //    longer consume window slots — we walk the backlog in priority order
+  //    until `limit` cards have actually reached the LLM or the fetch runs dry.
   let ids;
   if (args.cards) {
     ids = String(args.cards).split(',').map(s => s.trim()).filter(Boolean);
   } else {
-    const table = notionBrain(['list', '--status', 'Not started', '--limit', String(limit)]);
+    const fetchLimit = Math.min(limit * FETCH_MULTIPLIER, FETCH_MAX);
+    const table = notionBrain(['list', '--status', 'Not started', '--limit', String(fetchLimit)]);
     ids = table.map(row => row.id);
   }
-  console.error(`[triage] ${ids.length} backlog card(s), model=${MODEL}, mode=${dryRun ? 'dry-run' : 'LIVE'}`);
+  console.error(`[triage] ${ids.length} backlog card(s) fetched, target ${limit} triage candidate(s), model=${MODEL}, mode=${dryRun ? 'dry-run' : 'LIVE'}`);
+
+  // The runId binds triage → executor → email into one night: the executor
+  // adopts queue.runId, so triage's ledger lines count into "Tonight".
+  const runId = `run-${new Date().toISOString().replace(/[:.]/g, '-')}`;
 
   // 2. Triage each (sequential — nightly batch, no rush; keeps API load low).
   const entries = [];
+  let candidates = 0;
   for (const [i, id] of ids.entries()) {
+    // Window cap applies to backlog mode only — an explicit --cards list is
+    // a test invocation and every named card gets processed.
+    if (!args.cards && candidates >= limit) {
+      console.error(`[triage] window full (${candidates} candidates) — ${ids.length - i} fetched card(s) left for tomorrow`);
+      break;
+    }
     let card;
     try {
       card = notionBrain(['get', id]);
@@ -142,6 +179,7 @@ async function main() {
       continue;
     }
     const result = await triageCard(card, callSonnet);
+    if (result.preFilter.eligible) candidates++; // reached the LLM → consumed a window slot
     const entry = { card: slim(card), ...result };
     entry.decision = decide(entry);
     // Defense-in-depth: never persist a non-safe-form command in the queue.
@@ -166,8 +204,11 @@ async function main() {
     generatedAt: new Date().toISOString(),
     mode: dryRun ? 'dry-run' : 'live',
     model: MODEL,
+    runId,
     counts: {
       total: entries.length,
+      fetched: ids.length,
+      candidates,
       attempt: plan.length,
       split: entries.filter(e => e.decision === 'split').length,
       skip: entries.filter(e => e.decision === 'skip').length,
@@ -178,9 +219,28 @@ async function main() {
   };
 
   fs.mkdirSync(path.dirname(QUEUE_PATH), { recursive: true });
-  fs.writeFileSync(QUEUE_PATH, JSON.stringify(queue, null, 2) + '\n');
+  // Atomic replace: the executor and email hard-parse this file — a crash
+  // mid-write must leave the previous queue intact, never a truncated one.
+  fs.writeFileSync(`${QUEUE_PATH}.tmp`, JSON.stringify(queue, null, 2) + '\n');
+  fs.renameSync(`${QUEUE_PATH}.tmp`, QUEUE_PATH);
   console.error(`[triage] queue written: ${QUEUE_PATH}`);
   console.log(JSON.stringify({ mode: queue.mode, counts: queue.counts, plan: queue.plan }, null, 2));
+
+  // Ledger the triage spend (night-1 fix: triage tokens were unrecorded and
+  // the email showed Tonight $0.00 despite 15 Sonnet calls). Dry-runs spend
+  // real money, so they're ledgered too — the note carries the mode.
+  if (usageTally.calls > 0) {
+    try {
+      ledger.appendEntry({
+        event: 'triage', runId, model: MODEL,
+        tokensIn: usageTally.tokensIn, tokensOut: usageTally.tokensOut,
+        usd: estimateUSD(MODEL, usageTally.tokensIn, usageTally.tokensOut),
+        note: `${usageTally.calls} LLM call(s) over ${candidates} candidate(s) of ${entries.length} triaged (${queue.mode})`,
+      });
+    } catch (err) {
+      console.error(`[triage] WARN could not ledger triage usage: ${err.message.slice(0, 120)}`);
+    }
+  }
 
   // 4. Live mode: stamp Auto on triaged cards (queued / split-proposed / failed).
   //    Dry-run: zero Notion writes.

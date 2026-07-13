@@ -4,7 +4,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const {
-  ENVELOPES, pickModel, createNightBudget, checkSharedDailyCap, FORBIDDEN_MODEL_RE,
+  ENVELOPES, pickModel, createNightBudget, checkSharedDailyCap, FORBIDDEN_MODEL_RE, estimateUSD,
 } = require('./autonomous-budget.js');
 
 // ── pickModel policy ────────────────────────────────────────────────────────
@@ -133,4 +133,18 @@ test('checkSharedDailyCap: $5 ok, half-cap warns, over-cap refuses', () => {
 test('config validation: bad nightUSD/maxItems throw', () => {
   assert.throws(() => createNightBudget({ nightUSD: 0 }), /nightUSD/);
   assert.throws(() => createNightBudget({ maxItems: 0.5 }), /maxItems/);
+});
+
+// ── estimateUSD (raw-API triage cost, night-1 fix #4) ───────────────────────
+
+test('estimateUSD prices by model family and never crashes on junk', () => {
+  // Sonnet: $3/MTok in, $15/MTok out → 100k in + 10k out = $0.45
+  assert.equal(estimateUSD('claude-sonnet-5', 100_000, 10_000), 0.45);
+  // date-suffixed ids still price via substring match
+  assert.equal(estimateUSD('claude-sonnet-5-20260101', 1_000_000, 0), 3);
+  assert.equal(estimateUSD('claude-opus-4-8', 1_000_000, 1_000_000), 30);
+  assert.equal(estimateUSD('claude-haiku-4-5', 2_000_000, 0), 2);
+  // unknown family / junk inputs → 0, never NaN or throw
+  assert.equal(estimateUSD('gpt-4o', 100_000, 100_000), 0);
+  assert.equal(estimateUSD(null, undefined, NaN), 0);
 });

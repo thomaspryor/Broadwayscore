@@ -37,6 +37,69 @@ function extractWhy(notes) {
   return sentence.length > 220 ? `${sentence.slice(0, 217)}…` : sentence;
 }
 
+// ── Queue skip summary (night-1 fix #2) ─────────────────────────────────────
+
+// Bucket a triage-queue entry's skip into an owner-readable reason. Order
+// matters: prefilter reasons are authoritative when present.
+function skipBucket(entry) {
+  if (entry.decision === 'failed') return 'triage failed (retried tomorrow)';
+  if (entry.decision === 'split') return 'too large — split proposed';
+  const r = (entry.preFilter && entry.preFilter.reason) || '';
+  if (/human territory/i.test(r)) return 'human territory (marketing/partnerships)';
+  if (/human action/i.test(r)) return 'human-action title (emailing, posting, meeting)';
+  if (/deny-tag/i.test(r)) return 'deny-tagged domain (email/commercial/scoring/ios)';
+  if (/already in Auto/i.test(r)) return 'already processed by the loop';
+  if (/fetch failed/i.test(r)) return 'card fetch failed (transient)';
+  if (entry.triage && entry.triage.eligible === false) return 'out of Tier-1 scope (needs src/, data/, or CI changes)';
+  return 'other';
+}
+
+/**
+ * Summarize a triage queue (data/audit/autonomous-queue.json) for the email's
+ * "why was nothing planned" section. Returns null when there's nothing useful
+ * to say (no queue, or the queue actually planned work).
+ */
+function summarizeQueue(queue) {
+  if (!queue || !Array.isArray(queue.entries) || !queue.counts) return null;
+  if ((queue.counts.attempt || 0) > 0) return null; // work was planned — items section covers it
+  const tally = new Map();
+  for (const e of queue.entries) {
+    if (e.decision === 'attempt') continue;
+    const b = skipBucket(e);
+    tally.set(b, (tally.get(b) || 0) + 1);
+  }
+  const buckets = [...tally.entries()]
+    .map(([reason, n]) => ({ reason, n }))
+    .sort((a, b) => b.n - a.n || a.reason.localeCompare(b.reason));
+  const workable = buckets.some(b => /Tier-1 scope|human/i.test(b.reason));
+  return {
+    generatedAt: queue.generatedAt || null,
+    total: queue.counts.total || queue.entries.length,
+    fetched: queue.counts.fetched ?? null,
+    candidates: queue.counts.candidates ?? null,
+    buckets,
+    unlock: workable
+      ? 'What would unlock work: backlog cards whose fix lives in Tier-1 paths (tests/, docs/, memory/, leaf tooling scripts). Tonight every triaged card needed human action or out-of-tier changes.'
+      : null,
+  };
+}
+
+function renderQueueSummary(qs) {
+  if (!qs || !qs.buckets.length) return '';
+  const rows = qs.buckets.map(b =>
+    `<tr><td style="padding:2px 12px 2px 0;font-size:13px;font-weight:700;text-align:right;">${b.n}</td><td style="padding:2px 0;font-size:13px;color:#333;">${esc(b.reason)}</td></tr>`).join('');
+  const scanned = qs.fetched != null && qs.fetched > qs.total
+    ? `${qs.total} triaged (of ${qs.fetched} fetched)` : `${qs.total} triaged`;
+  // Self-labeling: the breakdown states WHICH triage it describes, so a
+  // manually re-run triage can never silently pose as last night's.
+  const when = qs.generatedAt ? ` <span style="font-weight:400;color:#999;">(triage ${esc(String(qs.generatedAt).slice(0, 16).replace('T', ' '))} UTC)</span>` : '';
+  return `<div style="border:1px solid #e5e5e5;border-radius:10px;padding:14px 16px;margin:0 0 14px;">
+    <div style="font-size:13px;font-weight:700;margin-bottom:6px;">Why nothing was planned — ${esc(scanned)}, 0 workable${when}</div>
+    <table style="border-collapse:collapse;">${rows}</table>
+    ${qs.unlock ? `<div style="font-size:12px;color:#666;margin-top:8px;">${esc(qs.unlock)}</div>` : ''}
+  </div>`;
+}
+
 function renderItem(item) {
   const badge = `<span style="display:inline-block;background:#16a34a;color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;vertical-align:middle;">PASS</span>`;
   const cost = `<span style="color:#999;font-size:12px;margin-left:6px;">~${money(item.usd)}</span>`;
@@ -92,16 +155,23 @@ function renderUsageBlock(stats, admin, config = {}) {
  *   items: [{ name, why, summary, branch, usd, checks[], approveUrl, rejectUrl }]
  *   moreAwaiting: number (needs-approval beyond the ≤3 shown)
  *   failedCount: number, skippedCount: number, throttled: string|null
+ *   runSkipped: string|null (run-skip ledger note — auth expiry etc.)
+ *   queueSummary: summarizeQueue() result|null (0-planned skip breakdown)
  *   stats: usageStats() result · admin: fetchAdminUsage() result|null
  *   config: { weeklyUSD } · lastRunNote: string|null · awaitingTotal: number
  */
 function renderEmail(data) {
-  const { items = [], moreAwaiting = 0, failedCount = 0, throttled = null, stats, admin = null, config = {}, lastRunNote = null, awaitingTotal = 0 } = data;
+  const { items = [], moreAwaiting = 0, failedCount = 0, throttled = null, runSkipped = null, queueSummary = null, stats, admin = null, config = {}, lastRunNote = null, awaitingTotal = 0 } = data;
 
   const parts = [];
   parts.push(`<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:560px;margin:0 auto;padding:18px 14px;color:#111;">`);
   parts.push(`<h2 style="font-size:18px;margin:0 0 14px;">Overnight work — ${items.length ? `${items.length} item${items.length > 1 ? 's' : ''} awaiting your tap` : 'nothing to approve'}</h2>`);
 
+  if (runSkipped) {
+    // Never a silent no-op night: an auth-expired or broken preflight is the
+    // first thing the owner reads, in red, with what to do about it.
+    parts.push(`<p style="font-size:14px;font-weight:700;color:#dc2626;margin:0 0 12px;">⛔ ${esc(runSkipped)}</p>`);
+  }
   if (throttled) {
     // `throttled` is a generic banner string — it may carry an actual
     // throttle, a Notion listing failure, or a missing-evidence notice, each
@@ -109,6 +179,9 @@ function renderEmail(data) {
     parts.push(`<p style="font-size:13px;color:#b45309;margin:0 0 12px;">⚠️ ${esc(throttled)}</p>`);
   }
   for (const item of items) parts.push(renderItem(item));
+  // 0-planned night: say WHY (night-1 fix — the bare "nothing to approve"
+  // read as a malfunction and the owner immediately distrusted it).
+  if (!items.length && queueSummary) parts.push(renderQueueSummary(queueSummary));
   if (moreAwaiting > 0) {
     parts.push(`<p style="font-size:13px;color:#666;">+${moreAwaiting} more item${moreAwaiting > 1 ? 's' : ''} awaiting approval (shown over the next mornings).</p>`);
   }
@@ -126,4 +199,4 @@ function renderEmail(data) {
   return parts.join('\n');
 }
 
-module.exports = { renderEmail, renderItem, renderUsageBlock, extractWhy, esc };
+module.exports = { renderEmail, renderItem, renderUsageBlock, renderQueueSummary, summarizeQueue, skipBucket, extractWhy, esc };

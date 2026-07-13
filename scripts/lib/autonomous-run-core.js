@@ -102,6 +102,38 @@ function cardCheckArgv(checkableDone, isSafeCheckCommand) {
   return cmd.split(/\s+/);
 }
 
+// ── Auth pre-flight (night-1 fix #3) ────────────────────────────────────────
+
+// The implementer shares the Mac Studio's claude CLI credential; an overnight
+// OAuth expiry 401s every call. A cheap ping at run start turns that from a
+// per-card stall into one explicit "run skipped — login expired" ledger line
+// + email line. Classifies the spawnSync result of the ping.
+// Deliberately narrow: an auth verdict is FINAL (no retry, whole night
+// skipped), so bare words like "login"/"credential"/"authentication" must
+// not match — an EACCES on ~/.claude/.credentials.json or a "407 Proxy
+// Authentication Required" is infra, and infra gets a retry.
+const AUTH_ERROR_RE = /\b401\b|authentication_error|unauthoriz|invalid.{0,10}api.?key|api.?key.{0,10}invalid|oauth.{0,30}(expired|invalid|revoked)|token.{0,20}expired|expired.{0,20}token|run \/login|not logged in|please log ?in/i;
+
+function preflightVerdict({ error, status, stdout, stderr } = {}) {
+  if (error && error.code === 'ETIMEDOUT') {
+    return { ok: false, kind: 'infra', detail: 'preflight ping timed out' };
+  }
+  if (error) {
+    // ENOENT etc. — claude CLI missing is an environment problem, not auth.
+    return { ok: false, kind: 'infra', detail: `preflight spawn failed: ${error.message}` };
+  }
+  const text = `${stdout || ''}\n${stderr || ''}`;
+  const parsed = parseClaudeJson(stdout);
+  if (status === 0 && parsed.ok) return { ok: true };
+  const detail = (parsed.ok === false && parsed.error && parsed.error !== 'unparseable claude CLI output'
+    ? parsed.error
+    : text.trim()).slice(0, 300);
+  if (AUTH_ERROR_RE.test(text)) {
+    return { ok: false, kind: 'auth', detail: detail || 'claude CLI reported an authentication error' };
+  }
+  return { ok: false, kind: 'infra', detail: detail || `claude CLI ping exited ${status}` };
+}
+
 // ── Approval-fatigue throttle ───────────────────────────────────────────────
 
 // More than MAX_OPEN_APPROVALS un-tapped morning items → the night runs
@@ -122,6 +154,8 @@ module.exports = {
   INFRA_STAGES,
   decideChecks,
   cardCheckArgv,
+  preflightVerdict,
+  AUTH_ERROR_RE,
   shouldThrottle,
   MAX_OPEN_APPROVALS,
 };
