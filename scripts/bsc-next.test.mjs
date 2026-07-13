@@ -60,6 +60,11 @@ test('notionIdOf extracts the embedded page id, null when absent', () => {
   assert.equal(notionIdOf(TASKS[3]), null);
 });
 
+test('buildSeed first line is the card identity for /resume findability', () => {
+  const seed = buildSeed(TASKS[1], { url: 'https://n/x', notes: 'n', priority: 'P1', keyFiles: 'a' });
+  assert.equal(seed.split('\n')[0], '[#2] P1 pending —');
+});
+
 test('buildSeed includes the task number, subject, notes, and claim instruction', () => {
   const seed = buildSeed(TASKS[1], { url: 'https://n/x', notes: 'the real problem', priority: 'P1 Next', keyFiles: 'a.ts' });
   assert.match(seed, /task #2 in_progress/);
