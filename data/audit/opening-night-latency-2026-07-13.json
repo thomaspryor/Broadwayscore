@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-13T19:49:59.337Z",
+  "generatedAt": "2026-07-13T20:40:51.949Z",
   "date": "2026-07-13",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 291718,
+  "entryCount": 295233,
   "shows": [
     {
       "showId": "dukes-off-broadway-2026",
@@ -6326,7 +6326,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 51842007,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
