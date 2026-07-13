@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-07-13T18:16:47.338Z",
+    "generatedAt": "2026-07-13T20:32:40.033Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -9,18 +9,18 @@
   "summary": {
     "minChurn": 30,
     "flaggedCount": 7,
-    "exemptCount": 16,
+    "exemptCount": 14,
     "coveredCount": 35,
-    "highChurnTracked": 58
+    "highChurnTracked": 56
   },
   "flagged": [
     {
       "path": "data/audit/pipeline-health/test.last-success",
-      "churn": 118
+      "churn": 119
     },
     {
       "path": "data/audit/processed-feedback.json",
-      "churn": 116
+      "churn": 115
     },
     {
       "path": "data/audit/validation-baseline.json",
@@ -46,15 +46,15 @@
   "exempt": [
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 123
+      "churn": 126
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 123
+      "churn": 126
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 123
+      "churn": 126
     },
     {
       "path": "data/llm-scoring-runs.json",
@@ -62,7 +62,7 @@
     },
     {
       "path": "data/llm-scoring-garbage-skips.json",
-      "churn": 102
+      "churn": 101
     },
     {
       "path": "public/opening-night-status.json",
@@ -70,11 +70,11 @@
     },
     {
       "path": "public/data/shows/jesus-christ-superstar-west-end-2026.json",
-      "churn": 91
+      "churn": 89
     },
     {
       "path": "public/data/shows/a-walk-on-the-moon-off-broadway-2026.json",
-      "churn": 79
+      "churn": 78
     },
     {
       "path": "data/commercial-rss-state.json",
@@ -86,11 +86,11 @@
     },
     {
       "path": "public/data/shows/birthright-off-broadway-2026.json",
-      "churn": 46
+      "churn": 48
     },
     {
       "path": "public/data/shows/a-midsummer-nights-dream-west-end-2026.json",
-      "churn": 43
+      "churn": 45
     },
     {
       "path": "data/show-score-urls.json",
@@ -99,25 +99,17 @@
     {
       "path": "public/data/shows/dad-dont-read-this-off-broadway-2026.json",
       "churn": 39
-    },
-    {
-      "path": "public/data/shows/allegra-west-end-2026.json",
-      "churn": 33
-    },
-    {
-      "path": "public/data/shows/to-kill-a-mockingbird-west-end-2026.json",
-      "churn": 31
     }
   ],
   "covered": [
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 947,
+      "churn": 946,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 932,
+      "churn": 931,
       "mergeAttr": "ours"
     },
     {
@@ -127,7 +119,7 @@
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 434,
+      "churn": 437,
       "mergeAttr": "union"
     },
     {
@@ -142,7 +134,7 @@
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 175,
+      "churn": 179,
       "mergeAttr": "ours"
     },
     {
@@ -152,7 +144,7 @@
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 123,
+      "churn": 126,
       "mergeAttr": "ours"
     },
     {
@@ -167,12 +159,12 @@
     },
     {
       "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 90,
+      "churn": 92,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/syndicated-duplicates.json",
-      "churn": 90,
+      "churn": 92,
       "mergeAttr": "ours"
     },
     {
@@ -221,12 +213,12 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/poller-backoff/tender-off-west-end-2026.json",
-      "churn": 46,
+      "path": "data/audit/poller-backoff/allegra-west-end-2026.json",
+      "churn": 43,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/poller-backoff/allegra-west-end-2026.json",
+      "path": "data/audit/poller-backoff/tender-off-west-end-2026.json",
       "churn": 43,
       "mergeAttr": "ours"
     },
