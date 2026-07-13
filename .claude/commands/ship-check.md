@@ -312,9 +312,17 @@ The only valid reasons to defer:
 
 "Would take 30 minutes" is not a blocker. "Is non-trivial" is not a blocker. Just do the work.
 
-For anything genuinely blocked, create a self-contained Notion card (per `feedback_notion_card_context.md`) and KEEP WORKING on the rest. Never leave a found issue in limbo, and never end the loop with a question when there is more work you can do.
+For anything genuinely blocked: card it in Notion (per `feedback_notion_card_context.md`), and if it's technical + self-contained, DISPATCH it yourself (`node scripts/bsc-next.js --id <task#>` in Broadwayscore, ending with a `DISPATCHED:` line) rather than leaving it as a paste-prompt. KEEP WORKING on the rest. Never leave a found issue in limbo, and never end the loop with a question when there is more work you can do.
 
-**After all issues are resolved:** proceed to `/what-else` and then `/wrap-up` without waiting for the user to ask. The flow is: ship-check → what-else → wrap-up. Keep going.
+**After all issues are resolved — record the verdict (BWSC repo, MANDATORY):**
+
+```bash
+node scripts/lib/review-gate.mjs --query=record --reviewer=ship-check --result=pass
+```
+
+(`--result=fail` if P0/P1s remain unfixed.) This writes the push-boundary breadcrumb (`.claude/review-verdicts.jsonl`) that `pre-push-review-gate.sh` checks on every `git push` touching >30 lines of src/scripts/workflow code. Without it the push is BLOCKED even though ship-check ran — the gate is prose-independent and only trusts the ledger. Run it from the worktree you reviewed in (the ledger lands at the canonical root automatically); if you fix findings after recording, re-run it so the verdict covers the fixed code.
+
+**Then:** proceed to `/what-else` and then `/wrap-up` without waiting for the user to ask. The flow is: ship-check → record verdict → what-else → wrap-up. Keep going.
 
 ### Phase 9: Notion checkpoint (BWSC projects only)
 

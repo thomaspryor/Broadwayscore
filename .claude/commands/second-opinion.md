@@ -107,7 +107,15 @@ Show the agent's findings. Then:
 2. If **warnings only**: Incorporate into the implementation plan. For each warning, state how you'll address it.
 3. If **ready to implement**: Proceed with implementation.
 
-For any issue you truly can't fix now, the bar is high: blocked on user decision, missing creds, different repo, or would push past ~2 hours. "Would take 30 min" is not blocked — that's just the work. For the rare genuine blocker, create a self-contained Notion card and KEEP WORKING on what you can. Never offer to "hand off to a new session" — that phrase is banned (see `feedback_no_premature_handoff.md`).
+**If what you reviewed was IMPLEMENTED code (a working-tree diff, not a plan) in the Broadwayscore repo, record the verdict (MANDATORY):**
+
+```bash
+node scripts/lib/review-gate.mjs --query=record --reviewer=second-opinion --result=pass
+```
+
+(`--result=fail` if blockers remain.) This writes the push-boundary breadcrumb `pre-push-review-gate.sh` checks at `git push` time. A second-opinion verdict only satisfies the gate for diffs ≤100 gated lines — bigger diffs need /ship-check or /code-review. Plan-only reviews (nothing implemented yet) record nothing.
+
+For any issue you truly can't fix now, the bar is high: blocked on user decision, missing creds, different repo, or would push past ~2 hours. "Would take 30 min" is not blocked — that's just the work. For the rare genuine blocker, create a self-contained Notion card — and if it's technical + self-contained, dispatch it yourself (`node scripts/bsc-next.js --id <task#>` in Broadwayscore, ending with a `DISPATCHED:` line) instead of leaving a paste-prompt — then KEEP WORKING on what you can. Never offer to "hand off to a new session" — that phrase is banned (see `feedback_no_premature_handoff.md`).
 
 After presenting findings and fixes, give the user **the actual plan in plain English** — not just what changed:
 
