@@ -102,6 +102,44 @@ const commercialEntries = Object.entries(commercial.shows);
 const commercialKeys = new Set(Object.keys(commercial.shows));
 
 // ============================================
+// CLI reporting flags (exit before the full audit runs)
+// ============================================
+
+const cliArgs = process.argv.slice(2);
+
+if (cliArgs.includes('--list-unsourced-recouped')) {
+  let count = 0;
+  for (const [key, data] of commercialEntries) {
+    if (data.recouped !== true) continue;
+    if (data.recoupedSource) continue;
+    const hasUrlSource = Array.isArray(data.sources) &&
+      data.sources.some(s => s && typeof s.url === 'string' && s.url.trim().length > 0);
+    if (hasUrlSource) continue;
+    console.log(key);
+    count++;
+  }
+  console.error(`${count} unsourced-recouped entries`);
+  process.exit(0);
+}
+
+if (cliArgs.includes('--list-chatgpt-sources')) {
+  const BANNED_URL_SUBSTRINGS = ['chatgpt.com', 'openai.com', 'bard.google.com', 'claude.ai'];
+  let count = 0;
+  for (const [key, data] of commercialEntries) {
+    if (!Array.isArray(data.sources)) continue;
+    for (const src of data.sources) {
+      if (!src || typeof src.url !== 'string') continue;
+      if (BANNED_URL_SUBSTRINGS.some(domain => src.url.includes(domain))) {
+        console.log(`${key}\t${src.url}`);
+        count++;
+      }
+    }
+  }
+  console.error(`${count} chatgpt-source entries`);
+  process.exit(0);
+}
+
+// ============================================
 // Issue collector
 // ============================================
 
