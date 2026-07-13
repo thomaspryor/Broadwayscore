@@ -1306,7 +1306,17 @@
     "glengarry-glen-ross-west-end-2026/amny--matt-windman.json",
     "glengarry-glen-ross-west-end-2026/bloomberg--jeremy-gerard.json",
     "glengarry-glen-ross-west-end-2026/british-theatre--susan-novak.json",
-    "glengarry-glen-ross-west-end-2026/chicagotribune--unknown.json"
+    "glengarry-glen-ross-west-end-2026/chicagotribune--unknown.json",
+    "glengarry-glen-ross-west-end-2026/daily-echo--matthew-baker.json",
+    "glengarry-glen-ross-west-end-2026/dailybeast--tim-teeman.json",
+    "glengarry-glen-ross-west-end-2026/financialtimes--brendan-lemon.json",
+    "glengarry-glen-ross-west-end-2026/front-row-center--yuval-jonas.json",
+    "glengarry-glen-ross-west-end-2026/nysr--frank-scheck.json",
+    "glengarry-glen-ross-west-end-2026/nysr--roma-torre.json",
+    "glengarry-glen-ross-west-end-2026/slantmagazine--dan-rubins.json",
+    "glengarry-glen-ross-west-end-2026/times-uk--benedict-nightingale.json",
+    "glengarry-glen-ross-west-end-2026/times-uk--dominic-maxwell.json",
+    "glengarry-glen-ross-west-end-2026/times-uk--maxie-szalwinska.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1403,7 +1413,10 @@
       "data/review-texts/stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json",
       "stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json",
       "data/review-texts/stranger-things-the-first-shadow-west-end-2023/deadline--greg-evans.json",
-      "stranger-things-the-first-shadow-west-end-2023/deadline--greg-evans.json"
+      "stranger-things-the-first-shadow-west-end-2023/deadline--greg-evans.json",
+      "data/review-texts/glengarry-glen-ross-west-end-2026/times-uk--benedict-nightingale.json",
+      "data/review-texts/glengarry-glen-ross-west-end-2026/times-uk--dominic-maxwell.json",
+      "data/review-texts/glengarry-glen-ross-west-end-2026/times-uk--maxie-szalwinska.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1480,7 +1493,7 @@
     ]
   },
   "startTime": "2026-07-13T05:15:55.218Z",
-  "lastProcessed": "glengarry-glen-ross-west-end-2026/chicagotribune--unknown.json",
+  "lastProcessed": "glengarry-glen-ross-west-end-2026/times-uk--maxie-szalwinska.json",
   "log": [
     {
       "t": "2026-07-13T05:17:40.062Z",
@@ -1663,6 +1676,39 @@
       "t": "2026-07-13T12:52:15.961Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-07-13T13:48:36.526Z",
+      "event": "bb-session",
+      "session": "f7099abd",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-revie"
+    },
+    {
+      "t": "2026-07-13T13:48:37.590Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-13T13:50:16.822Z",
+      "event": "bb-session",
+      "session": "8be371ab",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-revie"
+    },
+    {
+      "t": "2026-07-13T13:50:17.759Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-07-13T13:51:33.457Z",
+      "event": "bb-session",
+      "session": "d4d57d4f",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-revie"
+    },
+    {
+      "t": "2026-07-13T13:51:34.433Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
